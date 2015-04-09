@@ -1,0 +1,40 @@
+{
+  "ProjectName": "ghostgram hybrid",
+  "ProjectGuid": "73905311-744c-48f9-9909-d427fe5ad083",
+  "projectVersion": 1,
+  "AppIdentifier": "com.telerik.ghostgramhybrid",
+  "DisplayName": "ghostgram hybrid",
+  "Author": "",
+  "Description": "",
+  "BundleVersion": "1.0",
+  "AndroidVersionCode": "1",
+  "iOSDeviceFamily": [
+    "1",
+    "2"
+  ],
+  "iOSBackgroundMode": [],
+  "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
+  "FrameworkVersion": "3.5.0",
+  "AndroidPermissions": [],
+  "DeviceOrientations": [
+    "Portrait",
+    "Landscape"
+  ],
+  "AndroidHardwareAcceleration": "false",
+  "iOSStatusBarStyle": "Default",
+  "Framework": "Cordova",
+  "WP8TileTitle": "",
+  "WP8Publisher": "",
+  "WP8Capabilities": [],
+  "WP8Requirements": [],
+  "WP8PublisherID": "{2691b842-7180-47ba-8c64-61c6a1c7b55c}",
+  "WP8ProductID": "{46409395-28d4-45d0-bea5-8441f0c62835}",
+  "WPSdk": "8.0",
+  "WP8PackageIdentityName": "1234Telerik.ghostgramhybrid",
+  "WP8WindowsPublisherName": "CN=Telerik",
+  "WP8SupportedResolutions": [
+    "ID_RESOLUTION_WVGA",
+    "ID_RESOLUTION_WXGA",
+    "ID_RESOLUTION_HD720P"
+  ]
+}
