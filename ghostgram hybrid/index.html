@@ -14,7 +14,8 @@
 
     <script>
         function  togglePrivate () {
-            privateMode = !privateMode;
+            var privateMode = !window.APP.home.privateMode;
+            window.APP.home.privateMode = privateMode;
             if (privateMode) {
                 $('#privateModeButton').text('Private');
                 $('body').removeClass('publicMode');
@@ -27,7 +28,7 @@
             }
         };
     </script>
-    
+
 </head>
 <body>
  
