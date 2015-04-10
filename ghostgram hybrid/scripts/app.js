@@ -48,7 +48,7 @@
         initial: 'views/home.html'
       });
 
-        
+
     }, false);
 
 
