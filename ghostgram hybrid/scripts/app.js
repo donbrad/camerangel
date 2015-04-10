@@ -9,7 +9,22 @@
     window.APP = {
       models: {
         home: {
-          title: 'ghostgrams'
+          title: 'ghostgrams',
+            privateMode: false,
+
+            togglePrivate: function () {
+                privateMode = !privateMode;
+                if (privateMode) {
+                    $('#privateModeButton').text('Private');
+                   $('body').removeClass('publicMode');
+                    $('body').addClass('privateMode');
+
+                } else {
+                    $('#privateModeButton').text('Public');
+                    $('body').addClass('publicMode');
+                    $('body').removeClass('privateMode');
+                }
+            }
         },
           
         profile: {
