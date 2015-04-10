@@ -10,21 +10,9 @@
       models: {
         home: {
           title: 'ghostgrams',
-            privateMode: false,
+            privateMode: false
 
-            togglePrivate: function () {
-                privateMode = !privateMode;
-                if (privateMode) {
-                    $('#privateModeButton').text('Private');
-                   $('body').removeClass('publicMode');
-                    $('body').addClass('privateMode');
 
-                } else {
-                    $('#privateModeButton').text('Public');
-                    $('body').addClass('publicMode');
-                    $('body').removeClass('privateMode');
-                }
-            }
         },
           
         profile: {
@@ -46,6 +34,19 @@
       }
     };
 
+    togglePrivate: function () {
+        privateMode = !privateMode;
+        if (privateMode) {
+            $('#privateModeButton').text('Private');
+            $('body').removeClass('publicMode');
+            $('body').addClass('privateMode');
+
+        } else {
+            $('#privateModeButton').text('Public');
+            $('body').addClass('publicMode');
+            $('body').removeClass('privateMode');
+        }
+    };
     // this function is called by Cordova when the application is loaded by the device
     document.addEventListener('deviceready', function () {  
       
