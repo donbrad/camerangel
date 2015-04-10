@@ -8,11 +8,11 @@ color : white;
 }
 
 .publicMode {
-    filter: blur(1x) opacity(1.0);
-    -webkit-filter: blur(1px) opacity(1.0);
+    filter: opacity(1.0);
+    -webkit-filter: opacity(1.0);
 }
 
 .privateMode {
-    filter: blur(9x) opacity(0.8);
-    -webkit-filter: blur(9px) opacity(0.8);
+    filter: blur(11x) opacity(0.5);
+    -webkit-filter: blur(11px) opacity(0.5);
 }

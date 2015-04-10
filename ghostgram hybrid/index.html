@@ -17,16 +17,30 @@
             var privateMode = !APP.models.home.privateMode;
             APP.models.home.privateMode = privateMode;
             if (privateMode) {
-                $('#privateModeButton').text('Private');
-                $('body').removeClass('publicMode');
-                $('body').addClass('privateMode');
+                $('.privateModeButton').text('Private');
+                $('.user-content').removeClass('publicMode');
+                $('.user-content').addClass('privateMode');
 
             } else {
-                $('#privateModeButton').text('Public');
-                $('body').addClass('publicMode');
-                $('body').removeClass('privateMode');
+                $('.privateModeButton').text('Public');
+                $('.user-content').addClass('publicMode');
+                $('.user-content').removeClass('privateMode');
             }
         };
+        
+      function beforeShowFilter() {
+         
+        if (APP.models.home.privateMode) {
+            $('.privateModeButton').text('Private');
+            $('.user-content').removeClass('publicMode');
+            $('.user-content').addClass('privateMode');
+
+        } else {
+            $('.privateModeButton').text('Public');
+            $('.user-content').addClass('publicMode');
+            $('.user-content').removeClass('privateMode');
+        }   
+    };
     </script>
 
 </head>
@@ -37,10 +51,13 @@
       <div data-role="navbar">
         <span data-role="view-title"></span>
         <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>
-          <a data-role="button" id="privateModeButton" data-click="togglePrivate" data-align="right" >Public</a>
+          <a data-role="button" class="privateModeButton" data-click="togglePrivate" data-align="right" >Public</a>
       </div>
     </div>
 
+    <div data-role="content" class='view-content'>
+
+    </div>
     <!-- application views will be rendered here -->
     
   </div>
