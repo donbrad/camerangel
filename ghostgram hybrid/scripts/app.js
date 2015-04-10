@@ -9,19 +9,24 @@
     window.APP = {
       models: {
         home: {
-          title: 'Home'
+          title: 'ghostgrams'
         },
-        settings: {
-          title: 'Settings'
+          
+        profile: {
+          title: 'Profile'
         },
+          
+       channels: {
+          title: 'Channels'
+        },
+          
+        gallery: {
+          title: 'gallery'
+        },
+          
         contacts: {
           title: 'Contacts',
-          ds: new kendo.data.DataSource({
-            data: [{ id: 1, name: 'Bob' }, { id: 2, name: 'Mary' }, { id: 3, name: 'John' }]
-          }),
-          alert: function(e) {
-            alert(e.data.name);
-          }
+            
         }
       }
     };
@@ -42,6 +47,22 @@
         // the application needs to know which view to load first
         initial: 'views/home.html'
       });
+        
+      var options = new ContactFindOptions();
+      options.filter = "";
+      options.multiple = true;
+      var fields = ["name", "phone"];
+      navigator.contacts.find( fields, onSuccess, onError,  options);
+
+        function onSuccess(contacts) {
+           window.APP.models.contacts.contactsDS = new kendo.data.DataSource({data: contacts});
+
+        }
+
+        function onError(error) {
+          alert(error);
+        }
+     
 
     }, false);
 

@@ -1,0 +1,8 @@
+{
+  "ProjectName": "ghostgram hybridMobileTesting",
+  "ProjectGuid": "27706776-e6fe-4792-acc4-10ef63937428",
+  "projectVersion": 1,
+  "ProjectTypeGuids": "{6319b66f-8dff-4073-91be-3cd48a2fdeb3}",
+  "FrameworkVersion": "1.0",
+  "Framework": "MobileTesting"
+}

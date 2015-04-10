@@ -4,8 +4,8 @@
   "projectVersion": 1,
   "AppIdentifier": "com.telerik.ghostgramhybrid",
   "DisplayName": "ghostgram hybrid",
-  "Author": "",
-  "Description": "",
+  "Author": "don bradford",
+  "Description": "ghostgram hybrid",
   "BundleVersion": "1.0",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
@@ -15,7 +15,11 @@
   "iOSBackgroundMode": [],
   "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
   "FrameworkVersion": "3.5.0",
-  "AndroidPermissions": [],
+  "AndroidPermissions": [
+    "android.permission.CAMERA",
+    "android.permission.READ_CONTACTS",
+    "android.permission.READ_SMS"
+  ],
   "DeviceOrientations": [
     "Portrait",
     "Landscape"
@@ -25,7 +29,11 @@
   "Framework": "Cordova",
   "WP8TileTitle": "",
   "WP8Publisher": "",
-  "WP8Capabilities": [],
+  "WP8Capabilities": [
+    "ID_CAP_CONTACTS",
+    "ID_CAP_IDENTITY_DEVICE",
+    "ID_CAP_IDENTITY_USER"
+  ],
   "WP8Requirements": [],
   "WP8PublisherID": "{2691b842-7180-47ba-8c64-61c6a1c7b55c}",
   "WP8ProductID": "{46409395-28d4-45d0-bea5-8441f0c62835}",

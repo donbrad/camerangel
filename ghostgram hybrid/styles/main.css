@@ -1,1 +1,9 @@
 .km-drawer-button:before, .km-drawer-button:after  { content: "\E077"; }
+
+#home .km-content{ 
+background-image: url('../images/bg.jpg');
+background-size: 100%;
+background-repeat: none;
+color : white;
+ 
+}
