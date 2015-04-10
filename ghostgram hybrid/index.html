@@ -15,7 +15,7 @@
     <script>
         function  togglePrivate () {
             var privateMode = !APP.models.home.privateMode;
-            window.APP.home.privateMode = privateMode;
+            APP.models.home.privateMode = privateMode;
             if (privateMode) {
                 $('#privateModeButton').text('Private');
                 $('body').removeClass('publicMode');
