@@ -16,3 +16,155 @@ color : white;
     filter: blur(11x) opacity(0.5);
     -webkit-filter: blur(11px) opacity(0.5);
 }
+
+.intro {
+    width:100%;
+    background-color: #FFFFFF;
+    color: #4A4A4A;
+}
+.intro-header {
+    margin: 2px;
+    padding: 4px;
+    font-weight:bold;
+    text-align: center;
+    background-color: #A23131;
+    color:#FFFFFF;
+}
+
+.intro ul {
+    list-style-image:url('//winetaster-herokuapp-com.global.ssl.fastly.net/css/images/glass_full.png');
+    list-style-position: outside;
+    background-color: #ffffff;
+    padding-left: 24px;
+    color: #4A4A4A;
+    vertical-align: middle;
+    margin-bottom: 10px;
+}
+
+.intro li {
+    background-color: #ffffff;
+    color: #4A4A4A;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.intro-title {
+    display: inline-block;
+    margin: 4px;
+    padding: 4px;
+    font-size: 1.0em;
+    line-height: 1.1em;
+    width: 100%;
+    text-align: left;
+    margin-top: 4px;
+    background-color: #666;
+    color: #fff;
+}
+
+.intro-text {
+    display: block;
+    margin: 4px;
+    padding: 6px;
+    font-size: 1.0em;
+    line-height: 1.05em;
+    text-align: left;
+    margin-top: 6px;
+    background-color: #fff;
+    color: #4A4A4A;
+}
+
+.intro-photo {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+.intro-photo img {
+    position: absolute;
+    height: 280px;
+    width: 100%;
+}
+
+.intro-photo-block {
+    position: absolute;
+    margin-top: -75px;
+    text-align: left;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    font-size: 1.1em;
+    width: 100%;
+    color: #fff;
+    top: 50%;
+    z-index: 100;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-delay: 0.75s;
+    animation-delay: 0.75s;
+    -webkit-animation-iteration-count: 1;
+    animation-iteration-count: 1;
+}
+
+.intro-photo-title {
+    margin-left: 5%;
+    opacity: 1;
+    font-family: 'Roboto Condensed';
+}
+
+.intro-photo-text {
+    word-wrap: normal;
+    width: 90%;
+    word-break: normal;
+    white-space: normal;
+    margin-left: 5%;
+    line-height: 24px;
+    font-weight: 300;
+}
+
+
+#scrollview-container {
+    padding-bottom: 20px;
+    height: 320px;
+    background: rgba(0,0,0,.1);
+    border: 1px solid rgba(0,0,0,.3);
+    border-width: 1px 0;
+    box-shadow: 0 1px 1px rgba(255,255,255,.3);
+}
+
+#slide-1 {
+    background: url(http://res.cloudinary.com/winetastr/image/upload/v1420218389/webux/slide-2.png) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+}
+
+#slide-2 {
+    background: url(http://res.cloudinary.com/winetastr/image/upload/v1420219365/webux/slide-7.png);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+}
+
+#slide-3 {
+    background: url(http://res.cloudinary.com/winetastr/image/upload/v1420219365/webux/slide-3.png) right;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 100%;
+}
+
+#slide-4 {
+    background: url(http://res.cloudinary.com/winetastr/image/upload/v1420219365/webux/remember-bk.png) right;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 100%;
+}

@@ -40,8 +40,18 @@
             $('.user-content').addClass('publicMode');
             $('.user-content').removeClass('privateMode');
         }   
+     }
+
+    function introChanging () {
+        $('.intro-photo-block').removeClass('animated fadeIn');
+        $('.intro-photo-block').addClass('hidden');
     }
-    </script>
+
+    function introChanged () {
+        $('.intro-photo-block').removeClass('hidden');
+        $('.intro-photo-block').addClass('animated fadeIn');
+    }
+</script>
 
 </head>
 <body>
