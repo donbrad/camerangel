@@ -13,6 +13,7 @@ color : white;
 }
 
 .privateMode {
-    filter: blur(11x) opacity(0.5);
-    -webkit-filter: blur(11px) opacity(0.5);
+    filter: blur(7x) opacity(0.5);
+    -webkit-filter: blur(7px) opacity(0.5);
 }
+

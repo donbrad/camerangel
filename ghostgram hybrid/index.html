@@ -11,6 +11,7 @@
     <script src="kendo/js/kendo.mobile.min.js"></script>
 
     <script src="scripts/app.js"></script>
+    <script src="scripts/parse.js"></script>
 
     <script>
         function  togglePrivate () {
@@ -26,7 +27,7 @@
                 $('.user-content').addClass('publicMode');
                 $('.user-content').removeClass('privateMode');
             }
-        };
+        }
         
       function beforeShowFilter() {
          
@@ -40,30 +41,38 @@
             $('.user-content').addClass('publicMode');
             $('.user-content').removeClass('privateMode');
         }   
-    };
+    }
+    function introChanging () {
+        $('.intro-photo-block').removeClass('animated fadeIn');
+        $('.intro-photo-block').addClass('hidden');
+    }
+
+    function introChanged () {
+        $('.intro-photo-block').removeClass('hidden');
+        $('.intro-photo-block').addClass('animated fadeIn');
+    }
     </script>
 
 </head>
 <body>
  
-  <div data-role="layout" data-id="main">
+<div data-role="layout" data-id="main">
     <div data-role="header">
-      <div data-role="navbar">
-        <span data-role="view-title"></span>
-        <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>
-          <a data-role="button" class="privateModeButton" data-click="togglePrivate" data-align="right" >Public</a>
-      </div>
+        <div data-role="navbar">
+            <span data-role="view-title"></span>
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>
+            <a data-role="button" class="privateModeButton" data-click="togglePrivate" data-align="right" >Public</a>
+        </div>
     </div>
 
     <div data-role="content" class='view-content'>
-
-    </div>
     <!-- application views will be rendered here -->
-    
-  </div>
+    </div>
+
+</div>
 
   <!-- application drawer and contents -->
-  <div data-role="drawer" id="appDrawer" style="width: 240px" data-title="Main Menu">
+  <div data-role="drawer" id="appDrawer" style="width: 180px" data-title="Main Menu">
     <div data-role="header">
       <div data-role="navbar">
         <span data-role="view-title"></span>
