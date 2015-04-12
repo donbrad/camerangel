@@ -53,21 +53,7 @@
         initial: 'views/home.html'
       });
         
-     $(".km-view").kendoTouch({ 
-             surface: $(".km-view"),
-            gesturestart: function (e) { 
-                if (APP.models.home.privateMode) {
-                    $('.km-content').addClass('publicMode');
-                    $('.km-content').removeClass('privateMode');
-                }
-            },
-             gestureend: function (e) { 
-                if (APP.models.home.privateMode) {
-                    $('.km-content').removeClass('publicMode');
-                    $('.km-content').addClass('privateMode');
-                }
-            },
-        });
+     
 
     }, false);
 
