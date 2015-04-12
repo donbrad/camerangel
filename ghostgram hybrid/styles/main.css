@@ -17,3 +17,33 @@ color : white;
     -webkit-filter: blur(7px) opacity(0.5);
 }
 
+
+.km-root .appearance .km-listview label
+    {
+      width: 100%;
+    }
+
+    .km-wp .appearance .km-listview label
+    {
+      color: #999;
+    }
+
+    .km-root .km-pane .km-view.appearance .km-listview input
+    {
+      position: relative;
+      width: 100%;
+      right: 0;
+      margin-top: 0;
+      top: 0;
+    }
+
+    .km-root .km-wp .km-view.appearance .km-listview input
+    {
+      margin-top: .2em;
+    }
+
+    .km-root .km-ios .km-view.appearance .km-listview input,
+    .km-root .km-ios7 .km-view.appearance .km-listview input
+    {
+      padding: .4em 0;
+    }
