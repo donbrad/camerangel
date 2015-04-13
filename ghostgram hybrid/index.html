@@ -15,8 +15,8 @@
 
     <script>
    
-
-    function togglePrivate () {
+    function togglePrivate (e) {
+        e.preventDefault();
         var privateMode = !APP.models.home.privateMode;
         APP.models.home.privateMode = privateMode;
         if (privateMode) {
@@ -31,15 +31,7 @@
         }
     }
         
-    function haveActiveUser () {
-      $('#home-signin').addClass('hidden');
-      $('#home-status').removeClass('hidden');
-    },
-        
-    function noActiveUser () {
-      $('#home-signin').removeClass('hidden');
-      $('#home-status').addClass('hidden');
-    }
+   
 
     function beforeShowFilter() {
 
@@ -53,24 +45,71 @@
             $('.user-content').addClass('publicMode');
             $('.user-content').removeClass('privateMode');
         }   
-    }
-    
-    function homeSignout () {
-       
-        Parse.User.logOut();
-        noActiveUser();
+        
+        
     }
         
-    function homeSignin () {
+    function homeBeforeShow (e) {
+        
+        e.preventDefault();
+        if (APP.models.profile.currentUser) {
+            // Have current user - redirect to user view
+            
+            APP.models.profile.username =  APP.models.profile.currentUser.attributes.username;
+            APP.models.profile.email =  APP.models.profile.currentUser.attributes.email;
+            APP.models.profile.phone =  APP.models.profile.currentUser.attributes.phone;
+            APP.kendo.navigate('#home');
+        } else {
+            // No current user -redirect to no user view
+           APP.kendo.navigate('views/newuser.html');
+        }
+    } 
+        
+    function homeSignout (e) {
+       
+        e.preventDefault();
+        Parse.User.logOut();
+        APP.models.profile.currentUser = '';
+        APP.models.profile.username =  '';
+        APP.models.profile.email =  '';
+        APP.models.profile.phone =  '';
+        APP.kendo.navigate('views/newuser.html');
+    }
+        
+    function homeSignin (e) {
+        
+       e.preventDefault();
        Parse.User.logIn($('#home-signin-username').val(), $('#home-signin-password').val(), {
             success: function(user) {
             // Do stuff after successful login.
                 closeModalViewLogin();
-                haveActiveUser();
+                APP.models.profile.currentUser = user;
+                APP.models.profile.username =  APP.models.profile.currentUser.attributes.username;
+                APP.models.profile.email =  APP.models.profile.currentUser.attributes.email;
+                APP.models.profile.phone =  APP.models.profile.currentUser.attributes.phone;
+                APP.kendo.navigate('views/home.html');
             },
             error: function(user, error) {
             // The login failed. Check error to see why.
                  alert("Error: " + error.code + " " + error.message);
+            }
+        });
+    }
+        
+     function homeRecoverPassword (e) {
+         e.preventDefault();
+         
+        var email = $('#home-recoverPassword-email').val();
+       Parse.User.requestPasswordReset(email, {
+            success: function() {
+                closeModalViewPasswordRecovery();
+            // Password reset request was sent successfully
+               alert("Password recovery instructions sent to " + email);
+              
+            },
+            error: function(error) {
+            // Show the error message somewhere
+            alert("Error: " + error.code + " " + error.message);
             }
         });
     }
@@ -83,14 +122,19 @@
         $("#modalview-signup").kendoMobileModalView("close");
     }
         
-    function homeCreateAccount() {
+    function closeModalViewRecoverPassword() {
+        $("#modalview-recoverPassword").kendoMobileModalView("close");
+    }
+        
+    function homeCreateAccount(e) {
+        e.preventDefault();
         var user = new Parse.User();
         var username = $('#home-signup-username').val();
         var password = $('#home-signup-password').val();
         var email =  $('#home-signup-email').val();
         var phone = $('#home-signup-phone').val();
         
-        APP.models.profile.userName = username;
+        APP.models.profile.username = username;
          APP.models.profile.email = email;
          APP.models.profile.phone = phone;
         
@@ -104,7 +148,7 @@
             success: function(user) {
                 // Hooray! Let them use the app now.
                closeModalViewSignup();
-               haveActiveUser();
+               App.kendo.navigate('views/home.html');
             },
             
             error: function(user, error) {
@@ -113,28 +157,30 @@
             }
         });
     }
-        
-    function introChanging () {
-        $('.intro-photo-block').removeClass('animated fadeIn');
-        $('.intro-photo-block').addClass('hidden');
-    }
 
-    function introChanged () {
-        $('.intro-photo-block').removeClass('hidden');
-        $('.intro-photo-block').addClass('animated fadeIn');
-    }
 </script>
 
 </head>
-<body>
+<body id="body">
  
-<div data-role="layout" data-id="main">
+<div data-role="layout" data-id="main" style="display:none">
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
             <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>
-            <a data-role="button" data-click="togglePrivate" data-align="right" >Public</a>
+            <a data-role="button" class="privateModeButton" data-click="togglePrivate" data-align="right" >Public</a>
         </div>
+    </div>
+
+    <div data-role="content" class='view-content'>
+    <!-- application views will be rendered here -->
+    </div>
+
+</div>
+    
+<div data-role="layout" data-id="newuser" style="display:none">
+    <div data-role="header">
+       
     </div>
 
     <div data-role="content" class='view-content'>
@@ -144,7 +190,7 @@
 </div>
 
   <!-- application drawer and contents -->
-  <div data-role="drawer" id="appDrawer" style="width: 180px" data-title="Main Menu">
+  <div data-role="drawer" id="appDrawer" style="width: 180px" data-title="Main Menu" style="display:none">
     <div data-role="header">
       <div data-role="navbar">
         <span data-role="view-title"></span>

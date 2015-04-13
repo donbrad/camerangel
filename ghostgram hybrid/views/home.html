@@ -1,101 +1,17 @@
-<div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" class='appearance'>
-   <div id="home-intro">
-       <div  style='padding-top: 24px; padding-bottom: 28px; font-size: 24px; text-align: center; color: #aeaeae'>  Personal, private, secure</div>
+<div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" class='appearance' data-before-show="homeBeforeShow">
+   <div >
+       <div  style='padding-top: 24px; padding-bottom: 28px; font-size: 24px; text-align: center; color: #aeaeae'> Personal, private, secure</div>
    </div>
     
     <div id="home-account">
-        <div id="home-signin">
-            <div style='padding-top: 12px; padding-left:12px; padding-bottom: 12px; font-size: 1.3em; text-align: center; font-weight: 400;'>Get your ghost on!!!</div>
-           
-            <div> 
-                <a style="width:98%; font-size: 1.2em; color: #ffffff; font-weight: 600;" class="button"  data-rel="modalview" href="#modalview-login" data-role="button">Sign In</a>
-            </div>
-            
-            <div style="padding-top: 8px;">
-                <a style="width:98%; font-size: 0.9em; color: #e2e2e2;" class="button" id="home-forgotPassword" data-role="button">Forgot your Password?</a>
-            </div>
-            <hr style='clear:both;'>
-            <div style='clear:both; padding-top: 12px; padding-left:12px; font-size: 1.2em; text-align:center;'>
-                Don't have an Account? </br> Sign Up Now!
-            </div>
-            <div style='clear:both; padding-top: 12px;' >
-                <a style="width:98%; font-size: 1.2em; color: #ffffff; font-weight: 600;" class="button" id="home-signup" data-role="button" data-rel="modalview" href="#modalview-signup" >Sign Up</a>
-            </div>
-          
+         <div> 
+            <a style="width:98%; font-size: 1.2em; color: #ffffff; font-weight: 600;" class="button"  data-click="homeSignout" data-role="button">Sign Out</a>
         </div>
-         
-    </div>
 
-    <div id="home-status">
-        
     </div>
 </div>
 
-<div data-role="modalview" id="modalview-login" style="width: 90%;" class="appearance">
-    <div data-role="header">
-        <div data-role="navbar">
-            <span>Sign Up</span>
-            
-        </div>
-    </div>
 
-     <form>
-        <ul data-role="listview" data-style="inset">
-            <li>
-                <label>Username
-                    <input type="text" id="home-signin-username" value="" />
-                </label>
-            </li>
-            <li>
-                <label>Password
-                <input type="password" id="home-signin-password" value="" />
-                </label>
-            </li>
-        </ul>
-    </form> 
-    <div data-role="footer">
-        <div data-role="navbar">
-            <a data-click="closeModalViewLogin" data-role="button" data-align="left">Cancel</a>
-            <a data-click="closeModalViewLogin" id="modalview-login-button" type="button" data-role="button" data-align="right">Sign In</a>
-        </div>
-    </div>
-</div>
-    
-<div data-role="modalview" id="modalview-signup" style="width: 90%;" class="appearance">
-    <div data-role="header">
-        <div data-role="navbar">
-            <span>Create Account</span>
-        </div>
-    </div>
-   <form>
-        <ul data-role="listview" data-style="inset">
-            <li>
-                <label>Username
-                    <input type="text" id="home-signup-username" value="" />
-                </label>
-            </li>
-            <li>
-                <label>Password
-                <input type="password" id="home-signup-password" value="" />
-                </label>
-            </li>
-      
-             <li>
-                <label>Contact email
-                <input type="text" id="home-signup-email" value="" />
-                </label>
-            </li>
-             <li>
-                <label>Mobile Phone
-                <input type="text" id="home-signup-phone" value="" />
-                </label>
-            </li>
-        </ul>
-    </form> 
-    <div data-role="footer">
-        <div data-role="navbar">
-            <a data-click="closeModalViewSignup" data-role="button" data-align="left">Cancel</a>
-            <a data-click="homeCreateAccount" id="home-createAccount" type="button" data-role="button" data-align="right">Sign Up</a>
-    </div>
-</div>
-</div>
+
+
+

@@ -17,7 +17,7 @@
         profile: {
           title: 'Profile',
           currentUser: '',
-          userName: '',
+          username: '',
           email: '',
           phone: '',
           emaiVerified: false,
@@ -35,7 +35,8 @@
           title: 'Contacts'
             
         }
-      }
+      },
+       kendo: ''
     };
 
 
@@ -47,7 +48,7 @@
       // Cordova will wait 5 very long seconds to do it for you.
       navigator.splashscreen.hide();
 
-      app = new kendo.mobile.Application(document.body, {
+      APP.kendo = new kendo.mobile.Application(document.body, {
         
         // comment out the following line to get a UI which matches the look
         // and feel of the operating system
@@ -58,18 +59,11 @@
       });
         
         Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
+
         Parse.User.enableRevocableSession();
         APP.models.profile.currentUser = Parse.User.current();
        
-        if (APP.models.home.currentUser) {
-            // Have current user - hide signup and signin
-            $('#home-signin').addClass('hidden');
-             $('#home-status').removeClass('hidden');
-        } else {
-            // No current user - show signup
-            $('#home-signin').removeClass('hidden');
-             $('#home-status').addClass('hidden');
-        }
+        
 
 
     }, false);
