@@ -10,14 +10,17 @@
       models: {
         home: {
           title: 'ghostgrams',
-          privateMode: false,
-          currentUser: null,
-      
-
+          privateMode: false
+          
         },
           
         profile: {
-          title: 'Profile'
+          title: 'Profile',
+          currentUser: '',
+          userName: '',
+          email: '',
+          phone: '',
+          emaiVerified: false,
         },
           
        channels: {
@@ -54,7 +57,9 @@
         initial: 'views/home.html'
       });
         
-        APP.models.home.currentUser = Parse.User.current();
+        Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
+        Parse.User.enableRevocableSession();
+        APP.models.profile.currentUser = Parse.User.current();
        
         if (APP.models.home.currentUser) {
             // Have current user - hide signup and signin

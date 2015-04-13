@@ -14,10 +14,9 @@
     <script src="scripts/parse.js"></script>
 
     <script>
-    Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
-    Parse.User.enableRevocableSession();
+   
 
-    function  togglePrivate () {
+    function togglePrivate () {
         var privateMode = !APP.models.home.privateMode;
         APP.models.home.privateMode = privateMode;
         if (privateMode) {
@@ -91,6 +90,10 @@
         var email =  $('#home-signup-email').val();
         var phone = $('#home-signup-phone').val();
         
+        APP.models.profile.userName = username;
+         APP.models.profile.email = email;
+         APP.models.profile.phone = phone;
+        
         //Todo: add validation for user entry and prior to parse call
         user.set("username", username);
         user.set("password", password);
@@ -130,7 +133,7 @@
         <div data-role="navbar">
             <span data-role="view-title"></span>
             <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>
-            <a data-role="button" class="privateModeButton" data-click="togglePrivate" data-align="right" >Public</a>
+            <a data-role="button" data-click="togglePrivate" data-align="right" >Public</a>
         </div>
     </div>
 
