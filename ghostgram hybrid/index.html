@@ -46,10 +46,11 @@
         }   
     }
     
-    function homeSignup () {
-       Parse.User.logIn($('#home-signin-username').val, $('#home-signin-password').val, {
+    function homeSignin () {
+       Parse.User.logIn($('#home-signin-username').val(), $('#home-signin-password').val(), {
             success: function(user) {
             // Do stuff after successful login.
+                closeModalViewLogin();
                 alert('Welcome to ghostgrams!');
             },
             error: function(user, error) {
@@ -69,16 +70,19 @@
         
     function homeCreateAccount() {
         var user = new Parse.User();
-        user.set("username", $('#home-signup-username').val());
-        user.set("password", $('#home-signup-password').val());
-        user.set("email", $('#home-signup-email').val());
-
-        // other fields can be set just like with Parse.Object
-        user.set("phone", $('#home-signup-phone').val();
+        var username = $('#home-signup-username').val();
+        var password = $('#home-signup-password').val();
+        var email =  $('#home-signup-email').val();
+        var phone = $('#home-signup-phone').val();
+        user.set("username", username);
+        user.set("password", password);
+        user.set("email",email);
+        user.set("phone", phone);
 
         user.signUp(null, {
             success: function(user) {
                 // Hooray! Let them use the app now.
+               closeModalViewSignup();
                 alert('Welcome to ghostgrams!');
             },
             
