@@ -14,26 +14,26 @@
     <script src="scripts/parse.js"></script>
 
     <script>
-        Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
-        Parse.User.enableRevocableSession();
-        
-        function  togglePrivate () {
-            var privateMode = !APP.models.home.privateMode;
-            APP.models.home.privateMode = privateMode;
-            if (privateMode) {
-                $('.privateModeButton').text('Private');
-                $('.user-content').removeClass('publicMode');
-                $('.user-content').addClass('privateMode');
+    Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
+    Parse.User.enableRevocableSession();
 
-            } else {
-                $('.privateModeButton').text('Public');
-                $('.user-content').addClass('publicMode');
-                $('.user-content').removeClass('privateMode');
-            }
+    function  togglePrivate () {
+        var privateMode = !APP.models.home.privateMode;
+        APP.models.home.privateMode = privateMode;
+        if (privateMode) {
+            $('.privateModeButton').text('Private');
+            $('.user-content').removeClass('publicMode');
+            $('.user-content').addClass('privateMode');
+
+        } else {
+            $('.privateModeButton').text('Public');
+            $('.user-content').addClass('publicMode');
+            $('.user-content').removeClass('privateMode');
         }
-        
-      function beforeShowFilter() {
-         
+    }
+
+    function beforeShowFilter() {
+
         if (APP.models.home.privateMode) {
             $('.privateModeButton').text('Private');
             $('.user-content').removeClass('publicMode');
@@ -45,6 +45,50 @@
             $('.user-content').removeClass('privateMode');
         }   
     }
+    
+    function homeSignup () {
+       Parse.User.logIn($('#home-signin-username').val, $('#home-signin-password').val, {
+            success: function(user) {
+            // Do stuff after successful login.
+                alert('Welcome to ghostgrams!');
+            },
+            error: function(user, error) {
+            // The login failed. Check error to see why.
+                 alert("Error: " + error.code + " " + error.message);
+            }
+        });
+    }
+   
+    function closeModalViewLogin() {
+        $("#modalview-login").kendoMobileModalView("close");
+    }
+        
+    function closeModalViewSignup() {
+        $("#modalview-signup").kendoMobileModalView("close");
+    }
+        
+    function homeCreateAccount() {
+        var user = new Parse.User();
+        user.set("username", $('#home-signup-username').val());
+        user.set("password", $('#home-signup-password').val());
+        user.set("email", $('#home-signup-email').val());
+
+        // other fields can be set just like with Parse.Object
+        user.set("phone", $('#home-signup-phone').val();
+
+        user.signUp(null, {
+            success: function(user) {
+                // Hooray! Let them use the app now.
+                alert('Welcome to ghostgrams!');
+            },
+            
+            error: function(user, error) {
+            // Show the error message somewhere and let the user try again.
+            alert("Error: " + error.code + " " + error.message);
+            }
+        });
+    }
+        
     function introChanging () {
         $('.intro-photo-block').removeClass('animated fadeIn');
         $('.intro-photo-block').addClass('hidden');
@@ -54,7 +98,7 @@
         $('.intro-photo-block').removeClass('hidden');
         $('.intro-photo-block').addClass('animated fadeIn');
     }
-    </script>
+</script>
 
 </head>
 <body>

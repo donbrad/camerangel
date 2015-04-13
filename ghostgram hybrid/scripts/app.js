@@ -10,8 +10,9 @@
       models: {
         home: {
           title: 'ghostgrams',
-            privateMode: false
-
+          privateMode: false,
+          currentUser: null,
+      
 
         },
           
@@ -53,7 +54,18 @@
         initial: 'views/home.html'
       });
         
-     
+        APP.models.home.currentUser = Parse.User.current();
+       
+        if (APP.models.home.currentUser) {
+            // Have current user - hide signup and signin
+            $('#home-signin').addClass('hidden');
+             $('#home-status').removeClass('hidden');
+        } else {
+            // No current user - show signup
+            $('#home-signin').removeClass('hidden');
+             $('#home-status').addClass('hidden');
+        }
+
 
     }, false);
 
