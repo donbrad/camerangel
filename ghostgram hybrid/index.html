@@ -31,6 +31,16 @@
             $('.user-content').removeClass('privateMode');
         }
     }
+        
+    function haveActiveUser () {
+      $('#home-signin').addClass('hidden');
+      $('#home-status').removeClass('hidden');
+    },
+        
+    function noActiveUser () {
+      $('#home-signin').removeClass('hidden');
+      $('#home-status').addClass('hidden');
+    }
 
     function beforeShowFilter() {
 
@@ -46,12 +56,18 @@
         }   
     }
     
+    function homeSignout () {
+       
+        Parse.User.logOut();
+        noActiveUser();
+    }
+        
     function homeSignin () {
        Parse.User.logIn($('#home-signin-username').val(), $('#home-signin-password').val(), {
             success: function(user) {
             // Do stuff after successful login.
                 closeModalViewLogin();
-                alert('Welcome to ghostgrams!');
+                haveActiveUser();
             },
             error: function(user, error) {
             // The login failed. Check error to see why.
@@ -74,16 +90,18 @@
         var password = $('#home-signup-password').val();
         var email =  $('#home-signup-email').val();
         var phone = $('#home-signup-phone').val();
+        
+        //Todo: add validation for user entry and prior to parse call
         user.set("username", username);
         user.set("password", password);
-        user.set("email",email);
+        user.set("email", email);
         user.set("phone", phone);
 
         user.signUp(null, {
             success: function(user) {
                 // Hooray! Let them use the app now.
                closeModalViewSignup();
-                alert('Welcome to ghostgrams!');
+               haveActiveUser();
             },
             
             error: function(user, error) {
