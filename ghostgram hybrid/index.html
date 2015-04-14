@@ -15,8 +15,8 @@
 
     <script>
    
-
-    function togglePrivate () {
+    function togglePrivate (e) {
+        e.preventDefault();
         var privateMode = !APP.models.home.privateMode;
         APP.models.home.privateMode = privateMode;
         if (privateMode) {
@@ -31,15 +31,7 @@
         }
     }
         
-    function haveActiveUser () {
-      $('#home-signin').addClass('hidden');
-      $('#home-status').removeClass('hidden');
-    },
-        
-    function noActiveUser () {
-      $('#home-signin').removeClass('hidden');
-      $('#home-status').addClass('hidden');
-    }
+   
 
     function beforeShowFilter() {
 
@@ -53,12 +45,34 @@
             $('.user-content').addClass('publicMode');
             $('.user-content').removeClass('privateMode');
         }   
+        
+        
     }
-    
+        
+    function homeBeforeShow () {
+        
+        if (APP.models.profile.currentUser) {
+            // Have current user - redirect to user view
+            
+            APP.models.profile.username =  APP.models.profile.currentUser.attributes.username;
+            APP.models.profile.email =  APP.models.profile.currentUser.attributes.email;
+            APP.models.profile.phone =  APP.models.profile.currentUser.attributes.phone;
+            APP.kendo.navigate('#home');
+            
+        } else {
+            // No current user -redirect to no user view
+           APP.kendo.navigate('#nouser');
+        }
+    } 
+        
     function homeSignout () {
        
         Parse.User.logOut();
-        noActiveUser();
+        APP.models.profile.currentUser = '';
+        APP.models.profile.username =  '';
+        APP.models.profile.email =  '';
+        APP.models.profile.phone =  '';
+        APP.kendo.navigate('#newuserhome');
     }
         
     function homeSignin () {
@@ -66,7 +80,11 @@
             success: function(user) {
             // Do stuff after successful login.
                 closeModalViewLogin();
-                haveActiveUser();
+                APP.models.profile.currentUser = user;
+                APP.models.profile.username =  APP.models.profile.currentUser.attributes.username;
+                APP.models.profile.email =  APP.models.profile.currentUser.attributes.email;
+                APP.models.profile.phone =  APP.models.profile.currentUser.attributes.phone;
+                APP.kendo.navigate('#home');
             },
             error: function(user, error) {
             // The login failed. Check error to see why.
@@ -83,6 +101,10 @@
         $("#modalview-signup").kendoMobileModalView("close");
     }
         
+    function closeModalViewRecoverPassword() {
+        $("#modalview-recoverPassword").kendoMobileModalView("close");
+    }
+        
     function homeCreateAccount() {
         var user = new Parse.User();
         var username = $('#home-signup-username').val();
@@ -90,7 +112,7 @@
         var email =  $('#home-signup-email').val();
         var phone = $('#home-signup-phone').val();
         
-        APP.models.profile.userName = username;
+        APP.models.profile.username = username;
          APP.models.profile.email = email;
          APP.models.profile.phone = phone;
         
@@ -126,15 +148,26 @@
 </script>
 
 </head>
-<body>
+<body id="body">
  
-<div data-role="layout" data-id="main">
+<div data-role="layout" data-id="main" style="display:none;">
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
             <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>
-            <a data-role="button" data-click="togglePrivate" data-align="right" >Public</a>
+            <a data-role="button" class="privateModeButton" data-click="togglePrivate" data-align="right" >Public</a>
         </div>
+    </div>
+
+    <div data-role="content" class='view-content'>
+    <!-- application views will be rendered here -->
+    </div>
+
+</div>
+    
+<div data-role="layout" data-id="newuser" style="display:none">
+    <div data-role="header">
+       
     </div>
 
     <div data-role="content" class='view-content'>
@@ -144,7 +177,7 @@
 </div>
 
   <!-- application drawer and contents -->
-  <div data-role="drawer" id="appDrawer" style="width: 180px" data-title="Main Menu">
+  <div data-role="drawer" id="appDrawer" style="width: 180px" data-title="Main Menu" style="display:none;">
     <div data-role="header">
       <div data-role="navbar">
         <span data-role="view-title"></span>
@@ -169,5 +202,137 @@
     </ul>
   </div>       
 
+    <div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" class='appearance' style='display:none;'>
+   <div >
+       <div  style='padding-top: 24px; padding-bottom: 28px; font-size: 24px; text-align: center; color: #aeaeae'> Personal, private, secure</div>
+   </div>
+    
+    <div id="home-account">
+         <div> 
+            <a style="width:98%;" class="button ghostButton"  data-click="homeSignout" data-role="button">Sign Out</a>
+        </div>
+
+    </div>
+</div>
+    
+
+ <div data-role="view" data-title="ghostgrams" id='newuserhome' data-layout="newuser" data-model="APP.models.home" class='appearance' style='display:none;'>
+   <div >
+       <div  style='padding-top: 24px; padding-bottom: 28px; font-size: 24px; text-align: center; color: #aeaeae'>  Personal, private, secure</div>
+   </div>
+    
+
+    <div id="home-signin">
+        <div style='padding-top: 12px; padding-left:12px; padding-bottom: 12px;  text-align: center;'> <span class="ghostTextLarge"> Get your ghost on!!!</span></div>
+
+        <div> 
+            <a style="width:98%;" class="button ghostButton"  data-rel="modalview" href="#modalview-login" data-role="button">Sign In</a>
+        </div>
+
+        <div style="padding-top: 8px;">
+            <a style="width:98%; font-size: 0.9em;" class="button ghostButton" id="home-forgotPassword" data-role="button">Forgot your Password?</a>
+        </div>
+        <div style='clear:both; padding-top: 28px; padding-left:12px;text-align:center;'>
+            <span class="ghostText" >Don't have an Account? </br> Sign Up Now!</span>
+        </div>
+        <div style='clear:both; padding-top: 12px;' >
+            <a style="width:98%;" class="button ghostButton" id="home-signup" data-role="button" data-rel="modalview" href="#modalview-signup" >Sign Up</a>
+        </div>
+         
+    </div>
+</div>
+
+
+
+<div data-role="modalview" id="modalview-login" style="width: 90%;" class="appearance" style="display: none;">
+    <div data-role="header">
+        <div data-role="navbar">
+            <span>Sign In</span>
+            
+        </div>
+    </div>
+
+     <form>
+        <ul data-role="listview" data-style="inset">
+            <li>
+                <label>Username
+                    <input type="text" id="home-signin-username" value="" />
+                </label>
+            </li>
+            <li>
+                <label>Password
+                <input type="password" id="home-signin-password" value="" />
+                </label>
+            </li>
+        </ul>
+    </form> 
+    <div data-role="footer">
+        <div data-role="navbar">
+            <a data-click="closeModalViewLogin" data-role="button" data-align="left">Cancel</a>
+            <a data-click="homeSignin" id="modalview-login-button" type="button" data-role="button" data-align="right">Sign In</a>
+        </div>
+    </div>
+</div>
+    
+<div data-role="modalview" id="modalview-signup" style="width: 90%;" class="appearance" style="display:none;">
+    <div data-role="header">
+        <div data-role="navbar">
+            <span>Create Account</span>
+        </div>
+    </div>
+   <form>
+        <ul data-role="listview" data-style="inset">
+            <li>
+                <label>Username
+                    <input type="text" id="home-signup-username" value="" />
+                </label>
+            </li>
+            <li>
+                <label>Password
+                <input type="password" id="home-signup-password" value="" />
+                </label>
+            </li>
+      
+             <li>
+                <label>Contact email
+                <input type="text" id="home-signup-email" value="" />
+                </label>
+            </li>
+             <li>
+                <label>Mobile Phone
+                <input type="text" id="home-signup-phone" value="" />
+                </label>
+            </li>
+        </ul>
+    </form> 
+    <div data-role="footer">
+        <div data-role="navbar">
+            <a data-click="closeModalViewSignup" data-role="button" data-align="left">Cancel</a>
+            <a data-click="homeCreateAccount" id="home-createAccount" type="button" data-role="button" data-align="right">Sign Up</a>
+    </div>
+</div>
+<div data-role="modalview" id="modalview-RecoverPassword" style="width: 90%;" class="appearance" style="display:none;">
+    <div data-role="header">
+        <div data-role="navbar">
+            <span>Recover Password</span>
+        </div>
+    </div>
+
+     <form>
+        <ul data-role="listview" data-style="inset">
+            <li>
+                <label>Send Recover instructions to: 
+                    <input type="text" id="home-recoverPassword-email" value="" />
+                </label>
+            </li>
+        </ul>
+    </form> 
+    <div data-role="footer">
+        <div data-role="navbar">
+            <a data-click="closeModalViewRecoverPassword" data-role="button" data-align="left">Cancel</a>
+            <a data-click="homeRecoverPassword" id="modalview-re-button" type="button" data-role="button" data-align="right">Recover Password</a>
+        </div>
+    </div>
+</div>
 </body>
 </html>

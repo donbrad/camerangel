@@ -1,7 +1,14 @@
 .km-drawer-button:before, .km-drawer-button:after  { content: "\E077"; }
 
 #home .km-content{ 
-background-image: url('../images/bgcropped.jpg');
+background-image: url('../images/blughostcropped.png');
+background-size: 100% 100%;
+color : white;
+ 
+}
+
+#newuserhome .km-content{ 
+background-image: url('../images/blughostcropped.png');
 background-size: 100% 100%;
 color : white;
  
@@ -17,6 +24,30 @@ color : white;
     -webkit-filter: blur(7px) opacity(0.5);
 }
 
+.ghostButton {
+    
+    color: transparent;
+    font-size: 16px;
+    text-shadow: rgba(37,120,152, 0.8) 1px 3px 3px;
+    font-weight: 700;
+   
+}
+
+.ghostShadow {
+     color: transparent; text-shadow: rgba(245, 245, 255, 0.35) 0 1px 1px, rgba(0, 0, 30, 0.08) 0px 3px 3px, rgba(0, 0, 30, 0.20) 0px 3px 2px, rgba(0, 0, 30, 0.40) 0px 3px 2px, rgba(0, 0, 0, 0.08) -6px 6px 4px;
+}
+
+.ghostText {
+    color: #2e2e2e;
+    font-size: 16px;
+    font-weight:400;
+}
+
+.ghostTextLarge {
+    color: #2e2e2e;
+    font-size: 18px;
+    font-weight:500;
+}
 
 .km-root .appearance .km-listview label
 {
