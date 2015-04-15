@@ -30,6 +30,11 @@ color : white;
     -webkit-filter: blur(7px) opacity(0.5);
 }
 
+.user-content {
+    width: 100%;
+    height: 100%;
+}
+
 .ghostButton {
     
     color: transparent;
