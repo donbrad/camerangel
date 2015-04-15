@@ -1,13 +1,14 @@
  <div data-role="view" data-title="Profile" data-layout="main" data-model="APP.models.profile" data-before-show="beforeShowFilter" class="appearance">
    <div class="user-content ghostContainer">
        <div>
-           <span style="font-size: 20px; padding-left: 10px;">Update Your Profile</span>
+           <div style="font-size: 20px; padding-left: 10px;"> <span id="profile-username">SomeUser</span>'s Profile</div>
        </div>
        <form>
             <ul data-role="listview" data-style="inset">
+                
                 <li>
-                    <label>Username
-                        <input type="text" id="profile-username" value="" readonly/>
+                    <label>Alias
+                    <input type="text" id="profile-alias" value="" />
                     </label>
                 </li>
                 <li>
@@ -15,15 +16,14 @@
                     <input type="password" id="profile-password" value="" />
                     </label>
                 </li>
-
                  <li>
                     <label>Contact email
-                    <input type="text" id="profile-email" value="" />
+                    <input type="email" id="profile-email" value="" />
                     </label>
                 </li>
                  <li>
                     <label>Mobile Phone
-                    <input type="text" id="profile-phone" value="" />
+                    <input type="tel" id="profile-phone" value="" />
                     </label>
                 </li>
             </ul>
@@ -31,5 +31,9 @@
         <div style="text-align: center;">
             <a  style="width:98%;" class="button ghostButton" data-click="profileUpdate" id="profile-Update" data-role="button" >Update</a>
         </div>
+        <div style="text-align: center; padding-top: 12px;">
+            <a  style="width:98%;" class="button ghostButton" data-click="profileChangePassword" id="profile-changePassword" data-role="button" >Change Password</a>
+        </div>
+       
      </div>
 </div>
