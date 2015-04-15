@@ -55,8 +55,14 @@
         Parse.User.enableRevocableSession();
         APP.models.profile.currentUser = Parse.User.current();
         
-        if (APP.models.profile.currentUser)
-            initialView = '#home';
+        if (APP.models.profile.currentUser) {
+             initialView = '#home';
+            APP.models.profile.username =  APP.models.profile.currentUser.attributes.username;
+            APP.models.profile.email =  APP.models.profile.currentUser.attributes.email;
+            APP.models.profile.phone =  APP.models.profile.currentUser.attributes.phone;
+            APP.models.profile.alias =  APP.models.profile.currentUser.attributes.alias;
+        }
+           
             
       APP.kendo = new kendo.mobile.Application(document.body, {
         
