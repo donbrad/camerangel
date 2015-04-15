@@ -20,6 +20,7 @@
           username: '',
           email: '',
           phone: '',
+          alias: '',
           emaiVerified: false,
         },
           
