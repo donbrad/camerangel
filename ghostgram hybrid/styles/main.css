@@ -63,15 +63,15 @@ color : white;
 
 .km-root .appearance .km-listview label
 {
-  color: #6e6e6e;
-  font-size: 10px;
+  color: rgba(37,120,152, 0.9);;
+  font-size: 12px;
   width: 100%;
 }
 
 .km-wp .appearance .km-listview label
 {
-  color: #6e6e6e;
-  font-size: 10px;
+  color: rgba(37,120,152, 0.9);
+  font-size: 12px;
 }
 
 .km-root .km-pane .km-view.appearance .km-listview input
