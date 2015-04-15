@@ -123,7 +123,13 @@
         $("#modalview-recoverPassword").kendoMobileModalView("close");
     }
         
-    function homeCreateAccount() {
+     function closeModalViewAddChannels() {
+        $("#modalview-channels-addChannels").kendoMobileModalView("close");
+    }
+        
+    function homeCreateAccount(e) {
+        e.preventDefault();
+        
         var user = new Parse.User();
         var username = $('#home-signup-username').val();
         var password = $('#home-signup-password').val();
@@ -156,7 +162,11 @@
             }
         });
     }
+    
+    function channelsAddChannel(e) {
+        e.preventDefault();
         
+    }
     function introChanging () {
         $('.intro-photo-block').removeClass('animated fadeIn');
         $('.intro-photo-block').addClass('hidden');
