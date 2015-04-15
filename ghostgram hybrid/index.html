@@ -146,7 +146,8 @@
             success: function(user) {
                 // Hooray! Let them use the app now.
                closeModalViewSignup();
-               haveActiveUser();
+               alert('Welcome to ghostgrams!');
+               App.kendo.navigate('#home');
             },
             
             error: function(user, error) {
