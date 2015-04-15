@@ -1,38 +1,35 @@
- <div data-role="view" data-title="Profile" data-layout="main" data-model="APP.models.settings" data-before-show="beforeShowFilter" class="appearance">
-   <div class="user-content">
+ <div data-role="view" data-title="Profile" data-layout="main" data-model="APP.models.profile" data-before-show="beforeShowFilter" class="appearance">
+   <div class="user-content ghostContainer">
        <div>
-           <span style="font=size: 18px; color: #e2e2e2;">Update your ghostgram Profile</span>
+           <span style="font-size: 20px; padding-left: 10px;">Update Your Profile</span>
        </div>
-   <form>
-        <ul data-role="listview" data-style="inset">
-            <li>
-                <label>Username
-                    <input type="text" id="profile-username" value="" readonly/>
-                </label>
-            </li>
-            <li>
-                <label>Password
-                <input type="password" id="profile-password" value="" />
-                </label>
-            </li>
-      
-             <li>
-                <label>Contact email
-                <input type="text" id="profile-email" value="" />
-                </label>
-            </li>
-             <li>
-                <label>Mobile Phone
-                <input type="text" id="profile-phone" value="" />
-                </label>
-            </li>
-        </ul>
-    </form> 
-    <div data-role="footer">
-        <div data-role="navbar">
-            
-            <a data-click="profileUpdate" id="profile-Update" type="button" data-role="button" data-align="right">Update Profile</a>
-    </div>
+       <form>
+            <ul data-role="listview" data-style="inset">
+                <li>
+                    <label>Username
+                        <input type="text" id="profile-username" value="" readonly/>
+                    </label>
+                </li>
+                <li>
+                    <label>Password
+                    <input type="password" id="profile-password" value="" />
+                    </label>
+                </li>
 
+                 <li>
+                    <label>Contact email
+                    <input type="text" id="profile-email" value="" />
+                    </label>
+                </li>
+                 <li>
+                    <label>Mobile Phone
+                    <input type="text" id="profile-phone" value="" />
+                    </label>
+                </li>
+            </ul>
+        </form> 
+        <div style="text-align: center;">
+            <a  style="width:98%;" class="button ghostButton" data-click="profileUpdate" id="profile-Update" data-role="button" >Update</a>
+        </div>
      </div>
 </div>

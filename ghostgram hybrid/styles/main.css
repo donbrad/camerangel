@@ -49,6 +49,12 @@ color : white;
     font-weight:500;
 }
 
+.ghostContainer {
+   background-color: rgba(37,120,152, 0.9);
+   padding: 12px;
+   color: #e2e2e2;
+}
+
 .km-root .appearance .km-listview label
 {
   color: #6e6e6e;
