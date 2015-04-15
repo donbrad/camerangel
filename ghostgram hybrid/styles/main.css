@@ -14,6 +14,12 @@ color : white;
  
 }
 
+#profile .km-content{ 
+background-image: url('../images/blughostcropped.png');
+background-size: 100% 100%;
+color : white;
+ 
+}
 .publicMode {
     filter: opacity(1.0);
     -webkit-filter: opacity(1.0);

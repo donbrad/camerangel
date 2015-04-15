@@ -48,12 +48,14 @@
         
         $(".user-content").kendoTouch({
             touchstart: function(e) {
+                e.preventDefault();
                 if (!APP.models.home.privateMode)
                     return;
                  $('.user-content').addClass('publicMode');
                  $('.user-content').removeClass('privateMode');
             },
             dragend: function(e) {
+                e.preventDefault();
                  if (!APP.models.home.privateMode)
                     return;
                  $('.user-content').removeClass('publicMode');
@@ -192,7 +194,7 @@
 </div>
 
   <!-- application drawer and contents -->
-  <div data-role="drawer" id="appDrawer" style="width: 180px" data-title="Main Menu" style="display:none;">
+ <div data-role="drawer" id="appDrawer" style="width: 180px" data-title="Main Menu" style="display:none;">
     <div data-role="header">
       <div data-role="navbar">
         <span data-role="view-title"></span>
@@ -216,21 +218,28 @@
       </li>
     </ul>
   </div>       
-
-    <div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" class='appearance' style='display:none;'>
-   <div >
-       <div  style='padding-top: 24px; padding-bottom: 28px; font-size: 24px; text-align: center; color: #aeaeae'> Personal, private, secure</div>
-   </div>
     
-    <div id="home-account">
-         <div> 
-            <a style="width:98%;" class="button ghostButton"  data-click="homeSignout" data-role="button">Sign Out</a>
+<!-- home - for signed in users -->
+<div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" class='appearance' style='display:none;'>
+    <div class="user-content">
+        <div >
+           <div  style='padding-top: 24px; padding-bottom: 28px; font-size: 24px; text-align: center; color: #aeaeae'> Personal, private, secure</div>
+       </div>
+        
+        <div id="home-list">
+                 
         </div>
 
+        <div id="home-footer">
+             <div> 
+                <a style="width:98%;" class="button ghostButton"  data-click="homeSignout" data-role="button">Sign Out</a>
+            </div>
+
+        </div>
     </div>
 </div>
     
-
+<!-- home - for new users -->
  <div data-role="view" data-title="ghostgrams" id='newuserhome' data-layout="newuser" data-model="APP.models.home" class='appearance' style='display:none;'>
    <div >
        <div  style='padding-top: 24px; padding-bottom: 28px; font-size: 24px; text-align: center; color: #aeaeae'>  Personal, private, secure</div>
