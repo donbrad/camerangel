@@ -1,14 +1,38 @@
- <div data-role="view" data-title="Profile" data-layout="main" data-model="APP.models.settings" data-before-show="beforeShowFilter">
+ <div data-role="view" data-title="Profile" data-layout="main" data-model="APP.models.settings" data-before-show="beforeShowFilter" class="appearance">
    <div class="user-content">
-   <div >
-       <div  style='padding-top: 24px; padding-bottom: 28px; font-size: 24px; text-align: center; color: #aeaeae'> Personal, private, secure</div>
-   </div>
-    
-    <div id="home-account">
-         <div> 
-            <a style="width:98%; font-size: 1.2em; color: #ffffff; font-weight: 600;" class="button"  data-click="homeSignout" data-role="button">Sign Out</a>
-        </div>
-
+       <div>
+           <span style="font=size: 18px; color: #e2e2e2;">Update your ghostgram Profile</span>
+       </div>
+   <form>
+        <ul data-role="listview" data-style="inset">
+            <li>
+                <label>Username
+                    <input type="text" id="profile-username" value="" readonly/>
+                </label>
+            </li>
+            <li>
+                <label>Password
+                <input type="password" id="profile-password" value="" />
+                </label>
+            </li>
+      
+             <li>
+                <label>Contact email
+                <input type="text" id="profile-email" value="" />
+                </label>
+            </li>
+             <li>
+                <label>Mobile Phone
+                <input type="text" id="profile-phone" value="" />
+                </label>
+            </li>
+        </ul>
+    </form> 
+    <div data-role="footer">
+        <div data-role="navbar">
+            
+            <a data-click="profileUpdate" id="profile-Update" type="button" data-role="button" data-align="right">Update Profile</a>
     </div>
+
      </div>
 </div>
