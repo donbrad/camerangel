@@ -1,11 +1,10 @@
  <div data-role="view" id="profile" data-title="Profile" data-layout="main" data-model="APP.models.profile" data-before-show="beforeShowFilter" class="appearance">
    <div class="user-content ghostContainer">
        <div>
-           <div style="font-size: 20px; padding-left: 10px;"> <span id="profile-username" data-bind="text:username"></span></div>
+           <div style="font-size: 20px; padding-left: 13px; padding-top: 10px;"> <span id="profile-username" data-bind="text:username"></span></div>
        </div>
        <form>
             <ul data-role="listview" data-style="inset">
-                
                 <li>
                     <label>Alias (How other users see you)
                     <input type="text" id="profile-alias" data-bind="value: alias" />
@@ -18,7 +17,7 @@
                 </li>
                  <li>
                     <label>Mobile Phone 
-                    <input type="tel" id="profile-phone" data-bind="value :phone" />
+                    <input type="tel" id="profile-phone" data-bind="value: phone" />
                     </label>
                 </li>
             </ul>
