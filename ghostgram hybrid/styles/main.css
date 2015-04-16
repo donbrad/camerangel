@@ -1,6 +1,54 @@
 .km-drawer-button:before, .km-drawer-button:after  { content: "\E077"; }
 
-.km-content{ 
+#home .km-content { 
+    background-image: url('../images/blughostcropped.png');
+    background-size: 100% 100%;
+    color : white;
+    width: 100%;
+    height: 100%;
+}
+
+#newuserhome .km-content { 
+    background-image: url('../images/blughostcropped.png');
+    background-size: 100% 100%;
+    color : white;
+    width: 100%;
+    height: 100%;
+}
+
+#profile .km-content { 
+    background-image: url('../images/blughostcropped.png');
+    background-size: 100% 100%;
+    color : white;
+    width: 100%;
+    height: 100%;
+}
+
+#channels .km-content { 
+    background-image: url('../images/blughostcropped.png');
+    background-size: 100% 100%;
+    color : white;
+    width: 100%;
+    height: 100%;
+}
+
+#contacts .km-content { 
+    background-image: url('../images/blughostcropped.png');
+    background-size: 100% 100%;
+    color : white;
+    width: 100%;
+    height: 100%;
+}
+
+#gallery .km-content { 
+    background-image: url('../images/blughostcropped.png');
+    background-size: 100% 100%;
+    color : white;
+    width: 100%;
+    height: 100%;
+}
+
+#places .km-content { 
     background-image: url('../images/blughostcropped.png');
     background-size: 100% 100%;
     color : white;
@@ -19,9 +67,11 @@
 }
 
 .user-content {
-    width: 100%;
-    height: 100%;
+    width: 100%; !important
+    height: 100%; !important
     color: white;
+    background-color: rgba(37,120,152, 0.8);
+  
 }
 
 .ghostButton {

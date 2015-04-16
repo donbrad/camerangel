@@ -7,9 +7,10 @@
     <link href="styles/main.css" rel="stylesheet" />
 
     <script src="cordova.js"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
     <script src="kendo/js/jquery.min.js"></script>
     <script src="kendo/js/kendo.mobile.min.js"></script>
-
+	<script type="text/javascript" src="scripts/appData.js"></script>
     <script src="scripts/app.js"></script>
     <script src="scripts/parse.js"></script>
     <script src="https://cdn.pubnub.com/pubnub-dev.js"></script>
@@ -132,6 +133,11 @@ function closeModalViewAddChannel() {
 function closeModalViewAddPhoto() {
     $("#modalview-gallery-addPhoto").kendoMobileModalView("close");
 }
+    
+function closeModalViewAddPlaces() {
+    $("#modalview-places-addPlace).kendoMobileModalView("close");
+}
+    
         
 function homeCreateAccount(e) {
     e.preventDefault();
@@ -153,6 +159,7 @@ function homeCreateAccount(e) {
     user.set("email", username);
     user.set("phone", phone);
     user.set("alias", alias);
+    user.set("phoneVerified", false);
 
     user.signUp(null, {
         success: function(user) {
@@ -272,6 +279,9 @@ function introChanged () {
       </li>
       <li>
         <a href="views/contacts.html">Contacts</a>
+      </li>
+     <li>
+        <a href="views/places.html">Places</a>
       </li>
     </ul>
   </div>       

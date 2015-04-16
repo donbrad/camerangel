@@ -1,4 +1,4 @@
- <div data-role="view" data-title="Gallery" data-layout="main" data-model="APP.models.gallery" data-before-show="beforeShowFilter" data-init="onInitGallery" >
+ <div data-role="view" data-title="Gallery" id="gallery" data-layout="main" data-model="APP.models.gallery" data-before-show="beforeShowFilter" data-init="onInitGallery" >
    <div class="user-content">
           <div style="padding-top: 12px; padding-buttom: 18px; text-align: right;">
            <a color: #fff; class="button ghostButton" data-rel="modalview" href="#modalview-gallery-AddPhoto" data-role="button">Add Photo </a>
@@ -15,30 +15,7 @@
         </div>
     </div>
 
-     <form>
-        <ul data-role="listview" data-style="inset">
-            <li>
-                <label>Name
-                    <input type="text" id="channels-addChannel-name" value="" />
-                </label>
-            </li>
-            <li>
-               <label>Moderated
-                    <select id="channels-addChannels-moderated">
-                        <option value="channelModerated">Yes, only members you invite</option>
-                        <option value="channelOpen">No, members can invite others</option>
-                    </select>
-                </label>
-            </li>
-            <li>
-            <label>
-                    Expiration Date
-                    <input id="channels-addChannels-expirationDate" type="date"  />
-                </label>
-            </li>
-        </ul>
-    </form> 
-    
+   
     <div data-role="footer">
         <div data-role="navbar">
             <a data-click="closeModalViewAddPhoto" data-role="button" type="button" data-align="left">Cancel</a>
