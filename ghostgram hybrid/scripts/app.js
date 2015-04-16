@@ -180,6 +180,12 @@
 		}
     };
 
+     $.extend(window, {
+		
+		onShowPlaces: _app.placesShow,
+		onInitPlaces: _app.placesInit
+	});
+    
     // this function is called by Cordova when the application is loaded by the device
     document.addEventListener('deviceready', function () {  
         var initialView = '#newuserhome';
@@ -218,10 +224,6 @@
 
     }, false);
 
-    $.extend(window, {
-		
-		onPlacesShow: _app.placesShow,
-		onPlacesInit: _app.placesInit
-	});
+   
 
 }(jQuery, document));
