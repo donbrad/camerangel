@@ -1,10 +1,6 @@
 
 (function () {
 
-    // store a reference to the application object that will be created
-    // later on so that we can use it if need be
-    var app;
-
     // create an object to store the models for each view
     window.APP = {
       models: {
@@ -26,14 +22,17 @@
           
        channels: {
           title: 'Channels'
+          //Todo: Add channel data source and sync if user is signed in
         },
           
         gallery: {
           title: 'gallery'
+          //Todo: Add photo gallery data source and sync if user is signed in
         },
           
         contacts: {
           title: 'Contacts'
+           //Todo: Add contacts cache data source and sync if user is signed in
             
         }
       },
