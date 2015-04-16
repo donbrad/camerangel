@@ -1,7 +1,54 @@
- <div data-role="view" data-title="Gallery" data-layout="main" data-model="APP.models.gallery" data-before-show="beforeShowFilter">
+ <div data-role="view" data-title="Gallery" data-layout="main" data-model="APP.models.gallery" data-before-show="beforeShowFilter" data-init="onInitChannels" class="appearance">
    <div class="user-content">
-      <p>
-          This is Gallery content
-          </p>
+          <div style="padding-top: 12px; padding-buttom: 18px; text-align: right;">
+           <a color: #fff; class="button ghostButton" data-rel="modalview" href="#modalview-gallery-AddPhoto" data-role="button">Add Photo </a>
+         </div>
+          <ul id="gallery-listview"></ul>
      </div>
 </div>
+
+
+<div data-role="modalview" id="modalview-gallery-addPhoto" style="width: 90%; display: none;" class="appearance">
+    <div data-role="header">
+        <div data-role="navbar">
+            <span>Add Photo</span>
+        </div>
+    </div>
+
+     <form>
+        <ul data-role="listview" data-style="inset">
+            <li>
+                <label>Name
+                    <input type="text" id="channels-addChannel-name" value="" />
+                </label>
+            </li>
+            <li>
+               <label>Moderated
+                    <select id="channels-addChannels-moderated">
+                        <option value="channelModerated">Yes, only members you invite</option>
+                        <option value="channelOpen">No, members can invite others</option>
+                    </select>
+                </label>
+            </li>
+            <li>
+            <label>
+                    Expiration Date
+                    <input id="channels-addChannels-expirationDate" type="date"  />
+                </label>
+            </li>
+        </ul>
+    </form> 
+    
+    <div data-role="footer">
+        <div data-role="navbar">
+            <a data-click="closeModalViewAddPhoto" data-role="button" type="button" data-align="left">Cancel</a>
+            <a data-click="galleryAddPhoto" type="button" data-role="button" data-align="right">Add Photo</a>
+        </div>
+    </div>
+</div>
+
+<script type="text/x-kendo-tmpl" id="gallery-listview-template">
+    <div>
+        
+    </div>
+</script>

@@ -79,16 +79,7 @@
         initial: initialView
       });
     
-     // Initialize kendo mobile widgets now that device is ready
-     $("#channels-listview").kendoMobileListView({
-        dataSource: APP.models.channels.datasource,
-        template: $("#channels-listview-template").text(),
-        filterable: {
-            field: "name",
-            operator: "startswith"
-        },
-        endlessScroll: true
-    });
+     
 
     }, false);
 
