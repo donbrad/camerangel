@@ -55,7 +55,130 @@
        kendo: ''
     };
 
+	//Private methods
+	_private = {
+		getLocation: function(options) {
+			var dfd = new $.Deferred();
 
+			//Default value for options
+			if (options === undefined) {
+				options = {enableHighAccuracy: true};
+			}
+
+			navigator.geolocation.getCurrentPosition(
+				function(position) { 
+					dfd.resolve(position);
+				}, 
+				function(error) {
+					dfd.reject(error);
+				}, 
+				options);
+
+			return dfd.promise();
+		},
+		
+		initMap: function(position) {
+			//Delcare function variables
+			var myOptions,
+    			mapObj = _mapObj,
+    			mapElem = _mapElem,
+    			pin,
+    			locations = [],
+                latlng;
+
+			_mapElem = mapElem; //Cache DOM element
+                
+			// Use Google API to get the location data for the current coordinates
+			latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+				
+			myOptions = {
+				zoom: 11,
+				center: latlng,
+				mapTypeControl: false,
+				navigationControlOptions: { style: google.maps.NavigationControlStyle.SMALL },
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+			    
+			mapObj = new google.maps.Map(mapElem, myOptions);
+			_mapObj = mapObj; //Cache at app level
+			    
+			pin = [
+				{
+					position: latlng,
+					title: "Your Location"
+				}
+			];
+
+			_private.addMarkers(pin, mapObj);
+			
+		},
+        
+		addMarkers: function(locations, mapObj) {
+			var marker,
+			    currentMarkerIndex = 0;
+            
+            
+            function createMarker(index) {
+                if (index < locations.length) {
+					var tmpLocation = locations[index];
+
+					marker = new google.maps.Marker({
+						position:tmpLocation.position,
+						map:mapObj,
+						title:tmpLocation.title,
+						icon: tmpLocation.icon,
+						shadow: tmpLocation.shadow,
+						animation: tmpLocation.animation
+					});
+					oneMarkerAtTime();
+				}
+			}
+            
+			function oneMarkerAtTime() {
+				google.maps.event.addListener(marker, "animation_changed", function() {
+                    if (marker.getAnimation() === null) {
+                        createMarker(currentMarkerIndex+=1);
+					}
+				});
+			}				
+            
+            createMarker(0);
+		}
+	};
+
+    _app = {
+		init: function() {
+			
+		},
+        
+        placesInit: function() {
+			_mapElem = $("#places-mapview");
+		},
+        
+		placesShow: function() {
+			//Don't attempt to reload map/sb data if offline
+			//console.log("ONLINE", _isOnline);
+			if (_isOnline === false) {				
+				alert("Please reconnect to the Internet to load locations.");
+				return;
+			}
+    
+			_private.getLocation() 
+			.done(function(position) { 
+				_private.initMap(position); 
+			})
+			.fail(function(error) { 
+				alert(error.message); /*TODO: Better handling*/ 
+			});
+            
+			if (_isOnline === true) {
+                google.maps.event.trigger(map, "resize");
+			}
+			else {
+				alert("Offline....");
+			}
+		}
+    };
 
     // this function is called by Cordova when the application is loaded by the device
     document.addEventListener('deviceready', function () {  
@@ -83,7 +206,7 @@
              subscribe_key: 'sub-c-4866fe96-dcb2-11e4-8fb9-0619f8945a4f' 
          });   
 
-          APP.kendo = new kendo.mobile.Application(document.body, {
+        APP.kendo = new kendo.mobile.Application(document.body, {
 
             // comment out the following line to get a UI which matches the look
             // and feel of the operating system
@@ -91,11 +214,14 @@
 
             // the application needs to know which view to load first
             initial: initialView
-      });
-    
-     
+        });
 
     }, false);
 
+    $.extend(window, {
+		
+		onPlacesShow: _app.placesShow,
+		onPlacesInit: _app.placesInit
+	});
 
-}());
+}(jQuery, document));
