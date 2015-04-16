@@ -173,15 +173,7 @@
     function onShowChannels (e) {
         e.preventDefault();
         // ToDo: Initialize list view
-         $("#channels-listview").kendoMobileListView({
-            dataSource: APP.models.channels.datasource,
-            template: $("#channels-listview-template").text(),
-            filterable: {
-                field: "ProductName",
-                operator: "startswith"
-            },
-            endlessScroll: true
-        });
+        
     }
         
     function introChanging () {
