@@ -173,10 +173,10 @@ function onInitGallery(e){
     e.preventDefault();
     // ToDo: Initialize list view
 
-    if ($("#gallery-listview"").data('kendoMobileListView'))
-        $("#gallery-listview"").data('kendoMobileListView').destroy();
+    if ($("#gallery-listview").data('kendoMobileListView'))
+        $("#gallery-listview").data('kendoMobileListView').destroy();
 
-     $("#gallery-listview"").kendoMobileListView({
+     $("#gallery-listview").kendoMobileListView({
         dataSource: APP.models.channels.datasource,
         template: $("#gallery-listview-template").text(),
         filterable: {
