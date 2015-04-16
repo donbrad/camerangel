@@ -1,4 +1,4 @@
- <div data-role="view" id="channels" data-title="Channels" data-layout="main" data-model="APP.models.channels" data-before-show="beforeShowFilter" data-init="onInitChannels" class="appearance">  
+ <div data-role="view" id="channels" data-title="Channels" data-layout="main" data-model="APP.models.channels" data-before-show="beforeShowFilter" data-init="onInitChannels">  
      <div class="user-content">
           <div style="padding-top: 12px; padding-buttom: 18px; text-align: right;">
            <a color: #fff; class="button ghostButton" data-rel="modalview" href="#modalview-channels-addChannel" data-role="button">Add Channel </a>
@@ -46,19 +46,3 @@
         </div>
     </div>
 </div>
-<script type="text/x-kendo-tmpl" id="channels-listview-template">
-    <div >
-        <h3>#:name#</h3>
-        <table>
-         <tr>
-             <td>Moderated </td> <td> Yes</td>
-         </tr>
-         <tr>
-             <td>Expiration </td> <td> 4/30/15</td>
-         </tr>
-         <tr>
-             <td>Messages </td> <td> 11</td>
-         </tr>
-        </table>
-    </div>
-</script>
