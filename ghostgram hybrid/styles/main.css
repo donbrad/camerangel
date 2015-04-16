@@ -85,7 +85,7 @@ color : white;
   font-size: 12px;
 }
 
-.km-root .km-pane .km-view.appearance .km-listview input
+.km-root .km-pane .km-view.appearance .km-listview input 
 {
   position: relative;
   font-size: 12px;
@@ -96,7 +96,26 @@ color : white;
   border: 1px solid #aeaeae;
 }
 
-.km-root .km-wp .km-view.appearance .km-listview input
+.km-root .km-pane .km-view.appearance .km-listview select 
+{
+  position: relative;
+  font-size: 12px;
+  width: 100%;
+  right: 0;
+  margin-top: 0;
+  top: 0;
+  border: 1px solid #aeaeae;
+}
+
+.km-root .km-wp .km-view.appearance .km-listview input 
+{
+    color: #2e2e2e;
+    font-size: 12px;
+    margin-top: .2em;
+    border: 1px solid #AEAEAE;
+}
+
+.km-root .km-wp .km-view.appearance .km-listview select 
 {
     color: #2e2e2e;
     font-size: 12px;
@@ -106,6 +125,13 @@ color : white;
 
 .km-root .km-ios .km-view.appearance .km-listview input,
 .km-root .km-ios7 .km-view.appearance .km-listview input
+{
+  color: #2e2e2e;
+  padding: .4em 0;
+}
+
+.km-root .km-ios .km-view.appearance .km-listview select,
+.km-root .km-ios7 .km-view.appearance .km-listview select
 {
   color: #2e2e2e;
   padding: .4em 0;

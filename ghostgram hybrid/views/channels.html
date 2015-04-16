@@ -1,4 +1,4 @@
- <div data-role="view" id="channels" data-title="Channels" data-layout="main" data-model="APP.models.channels" data-before-show="onShowChannels">
+ <div data-role="view" id="channels" data-title="Channels" data-layout="main" data-model="APP.models.channels" data-before-show="beforeShowFilter">
       
      <div class="user-content">
           <div style="padding-top: 12px; padding-buttom: 18px; text-align: right;">
@@ -24,26 +24,16 @@
                 </label>
             </li>
             <li>
-                Moderated
-                <ul>
-                <li>
-                    <label>
-                        <input id="channels-addChannels-moderated" type="radio" checked="checked" />
-                        Yes - just users you invite
-                    </label>
-                </li>
-                <li>
-                    <label>
-                        <input id="channels-addChannels-notModerated" type="radio" />
-                       No - users you invite can invite others.
-                    </label>
-                </li>
-                
-            </ul>
+               <label>Moderated
+                    <select id="channels-addChannels-moderated">
+                        <option value="channelModerated">Yes, only members you invite</option>
+                        <option value="channelOpen">No, members can invite others</option>
+                    </select>
+                </label>
             </li>
             <li>
             <label>
-                    Expiration Data
+                    Expiration Date
                     <input id="channels-addChannels-expirationDate" type="date"  />
                 </label>
             </li>
@@ -52,8 +42,8 @@
     
     <div data-role="footer">
         <div data-role="navbar">
-            <a data-click="closeModalViewAddChannels" data-role="button" data-align="left">Cancel</a>
-            <a data-click="channelsAddChannels" id="modalview-login-button" type="button" data-role="button" data-align="right">Add Channel</a>
+            <a data-click="closeModalViewAddChannels" data-role="button" type="button" data-align="left">Cancel</a>
+            <a data-click="channelsAddChannels" type="button" data-role="button" data-align="right">Add Channel</a>
         </div>
     </div>
 </div>
