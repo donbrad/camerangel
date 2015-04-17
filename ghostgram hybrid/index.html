@@ -137,8 +137,33 @@ function closeModalViewAddPhoto() {
 function closeModalViewAddPlace() {
     $("#modalview-places-addPlace").kendoMobileModalView("close");
 }
+
+function closeModalViewAddContacts() {
+    $("#modalview-contacts-addContact").kendoMobileModalView("close");
+}
+
+ function contactsPickContacts(e) {
+    e.preventDefault(e);   
+    var query = $('#contactSearchQuery').val();
+     
+    var options      = new ContactFindOptions();
+    options.filter   = query
+    options.multiple = true;
+    options.desiredFields = [navigator.contacts.fieldType.id];
+    var fields       = [navigator.contacts.fieldType.name, navigator.contacts.fieldType.phone, navigator.contacts.fieldType.email];
+    navigator.contacts.find(fields, function(contacts){alert(contacts)},function(error){alert(error)}, options);
+ }
     
-        
+    
+function contactsPickContact(e) {
+    e.preventDefault(e);
+    navigator.contacts.pickContact(function(contact){
+       alert(JSON.stringify(contact));
+    },function(err){
+        alert('Error: ' + err);
+    });
+}
+    
 function homeCreateAccount(e) {
     e.preventDefault();
 
@@ -245,7 +270,20 @@ function introChanged () {
     </div>
 
 </div>
-    
+
+ <div data-role="layout" data-id="profileLayout" style="display:none;">
+    <div data-role="header">
+        <div data-role="navbar">
+            <span data-role="view-title"></span>
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>
+        </div>
+    </div>
+
+    <div data-role="content" class='view-content'>
+    <!-- application views will be rendered here -->
+    </div>
+
+</div>
 <div data-role="layout" data-id="newuser" style="display:none">
     <div data-role="header">
        

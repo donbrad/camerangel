@@ -2,11 +2,29 @@
         
     <div class="user-content">
         <div style="padding-top: 12px; padding-buttom: 18px; text-align: right;">
-            <a color: #fff; class="button ghostButton" data-rel="modalview" href="#modalview-contacts-AddContact" data-role="button">Add Contact</a>
+            <a color: #fff; class="button ghostButton" data-rel="modalview" href="#modalview-contacts-addContact" data-role="button">Add Contact</a>
         </div>
         <ul id="contact-listview"></ul>
     </div>
         
+</div>
+
+<div data-role="modalview" id="modalview-contacts-addContact" style="width: 90%; display: none;" class="appearance">
+    <div data-role="header">
+        <div data-role="navbar">
+            <span>Add Contact</span>  
+        </div>
+    </div>
+    <div>
+         <input style="font-size: 16px; padding-left: 6px;" id="contactSearchQuery" type="search"/> <a class="button ghostButton" data-role="button" type="button" data-click="contactsFindContacts">Find</a>
+    </div>
+   
+    <div data-role="footer">
+        <div data-role="navbar">
+            <a data-click="closeModalViewAddContact" data-role="button" type="button" data-align="left">Cancel</a>
+            <a data-click="contactsAddContact" type="button" data-role="button" data-align="right">Add Contact</a>
+        </div>
+    </div>
 </div>
 
 <!-- this is the template used by the listview. template items are automatically
