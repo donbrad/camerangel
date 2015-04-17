@@ -99,10 +99,10 @@
                 center: [position.coords.latitude, position.coords.longitude],
                 zoom: 12,
             layers: [{
-                        type: "bing",
-                        imagerySet: "road",
-                        key: "Al_Rd3fwtLurXRbjwI9UbnlJnpsAWCmQBWglXaMyh-U-_C1qEgDByIruHJCR7LNd"
-                    }],
+            type: "tile",
+            urlTemplate: "http://tile.openstreetmap.org/#= zoom #/#= x #/#= y #.png",
+            attribution: "&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors"
+        }],
                     markers: [{
                         location: [APP.models.places.lat,  APP.models.places.lng],
                         shape: "here",
@@ -169,6 +169,8 @@
             APP.models.profile.email =  APP.models.profile.currentUser.attributes.email;
             APP.models.profile.phone =  APP.models.profile.currentUser.attributes.phone;
             APP.models.profile.alias =  APP.models.profile.currentUser.attributes.alias;
+            APP.models.profile.udid = device.uuid;
+            APP.models.profile.plaform = device.platform;
         }
 
          APP.models.channels.pubnub = PUBNUB.init({ 
