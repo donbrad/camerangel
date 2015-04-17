@@ -143,12 +143,6 @@
 				alert(error.message); /*TODO: Better handling*/ 
 			});
             
-			if (_isOnline === true) {
-                google.maps.event.trigger(_mapObj, "resize");
-			}
-			else {
-				alert("Offline....");
-			}
 		}
     };
 
