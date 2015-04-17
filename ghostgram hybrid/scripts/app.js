@@ -3,7 +3,6 @@
     var _app,
     	_mapElem,
     	_mapObj,
-    	_storeListElem,
     	_private,
     	_appData = new AppData(),
     	_isOnline = true;
@@ -92,7 +91,7 @@
 			latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 				
 			myOptions = {
-				zoom: 11,
+				zoom: 12,
 				center: latlng,
 				mapTypeControl: false,
 				navigationControlOptions: { style: google.maps.NavigationControlStyle.SMALL },
@@ -109,40 +108,13 @@
 				}
 			];
 
-			_private.addMarkers(pin, mapObj);
+             var marker = new google.maps.Marker({
+                  position: latlng,
+                  map: mapObj,
+                  title: 'Your Location'
+              });
+			//_private.addMarkers(pin, mapObj);
 			
-		},
-        
-		addMarkers: function(locations, mapObj) {
-			var marker,
-			    currentMarkerIndex = 0;
-            
-            
-            function createMarker(index) {
-                if (index < locations.length) {
-					var tmpLocation = locations[index];
-
-					marker = new google.maps.Marker({
-						position:tmpLocation.position,
-						map:mapObj,
-						title:tmpLocation.title,
-						icon: tmpLocation.icon,
-						shadow: tmpLocation.shadow,
-						animation: tmpLocation.animation
-					});
-					oneMarkerAtTime();
-				}
-			}
-            
-			function oneMarkerAtTime() {
-				google.maps.event.addListener(marker, "animation_changed", function() {
-                    if (marker.getAnimation() === null) {
-                        createMarker(currentMarkerIndex+=1);
-					}
-				});
-			}				
-            
-            createMarker(0);
 		}
 	};
 
@@ -172,7 +144,7 @@
 			});
             
 			if (_isOnline === true) {
-                google.maps.event.trigger(map, "resize");
+                google.maps.event.trigger(_mapObj, "resize");
 			}
 			else {
 				alert("Offline....");

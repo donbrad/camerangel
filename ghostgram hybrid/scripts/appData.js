@@ -1,8 +1,5 @@
 var AppData = function() {
-	var _endpoints,
-    	_initialCards,
-    	_announcements,
-        _private;
+	var _private;
     
     return {
         
