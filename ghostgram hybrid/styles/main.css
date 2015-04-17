@@ -169,3 +169,10 @@
   color: #2e2e2e;
   padding: .4em 0;
 }
+
+.k-marker-here {
+    background-image: url("../images/downloadicon.png")!important;
+    width: 30px !important;
+    height: 40px !important;
+    margin: -40px 0 0 -15px !important;
+}

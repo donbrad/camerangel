@@ -88,32 +88,30 @@
 			_mapElem = mapElem; //Cache DOM element
                 
 			// Use Google API to get the location data for the current coordinates
-			latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-				
-			myOptions = {
-				zoom: 12,
-				center: latlng,
-				mapTypeControl: false,
-				navigationControlOptions: { style: google.maps.NavigationControlStyle.SMALL },
-				mapTypeId: google.maps.MapTypeId.ROADMAP
-			};
+			latlng = [position.coords.latitude, position.coords.longitude];
+			
+            APP.models.places.latlng = latlng;
+            APP.models.places.lat = position.coords.latitude;
+            APP.models.places.lng = position.coords.longitude;
+            APP.models.places.mapZoom = 12;
 			    
-			mapObj = new google.maps.Map(mapElem, myOptions);
-			_mapObj = mapObj; //Cache at app level
-			    
-			pin = [
-				{
-					position: latlng,
-					title: "Your Location"
-				}
-			];
+			mapObj = $("#places-mapview").kendoMap({
+                center: [position.coords.latitude, position.coords.longitude],
+                zoom: 12,
+            layers: [{
+                        type: "bing",
+                        imagerySet: "road",
+                        key: "Al_Rd3fwtLurXRbjwI9UbnlJnpsAWCmQBWglXaMyh-U-_C1qEgDByIruHJCR7LNd"
+                    }],
+                    markers: [{
+                        location: [APP.models.places.lat,  APP.models.places.lng],
+                        shape: "here",
+                        title: "Current Location"
 
-             var marker = new google.maps.Marker({
-                  position: latlng,
-                  map: mapObj,
-                  title: 'Your Location'
-              });
-			//_private.addMarkers(pin, mapObj);
+                    }]
+        });
+			_mapObj = mapObj; //Cache at app level
+			  
 			
 		}
 	};
