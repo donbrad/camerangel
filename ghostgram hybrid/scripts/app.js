@@ -23,6 +23,8 @@
           email: '',
           phone: '',
           alias: '',
+          udid: '',
+          macAddress: '',
           emaiVerified: false,
         },
           
@@ -162,14 +164,19 @@
 
         Parse.User.enableRevocableSession();
         APP.models.profile.currentUser = Parse.User.current();
-
+        APP.models.profile.udid = device.uuid;
+        
+        window.MacAddress.getMacAddress(
+            function(macAddress) {alert(macAddress); APP.models.profile.macAddress = macAddress;},function(fail) {alert(fail);}
+        );
+        APP.models.profile.macAddress = 
+        
         if (APP.models.profile.currentUser) {
              initialView = '#home';
             APP.models.profile.username =  APP.models.profile.currentUser.attributes.username;
             APP.models.profile.email =  APP.models.profile.currentUser.attributes.email;
             APP.models.profile.phone =  APP.models.profile.currentUser.attributes.phone;
             APP.models.profile.alias =  APP.models.profile.currentUser.attributes.alias;
-            APP.models.profile.udid = device.uuid;
             APP.models.profile.plaform = device.platform;
         }
 
