@@ -166,11 +166,6 @@
         APP.models.profile.currentUser = Parse.User.current();
         APP.models.profile.udid = device.uuid;
         
-        window.MacAddress.getMacAddress(
-            function(macAddress) {alert(macAddress); APP.models.profile.macAddress = macAddress;},function(fail) {alert(fail);}
-        );
-        APP.models.profile.macAddress = 
-        
         if (APP.models.profile.currentUser) {
              initialView = '#home';
             APP.models.profile.username =  APP.models.profile.currentUser.attributes.username;
