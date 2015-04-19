@@ -12,7 +12,11 @@
     "1",
     "2"
   ],
-  "iOSBackgroundMode": [],
+  "iOSBackgroundMode": [
+    "location",
+    "bluetooth-central",
+    "bluetooth-peripheral"
+  ],
   "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
   "FrameworkVersion": "3.5.0",
   "AndroidPermissions": [
@@ -30,13 +34,13 @@
     "android.permission.INTERNET",
     "android.permission.LOCATION_HARDWARE",
     "android.permission.PERSISTENT_ACTIVITY",
-    "android.permission.READ_CALENDAR",
     "android.permission.READ_CONTACTS",
     "android.permission.READ_INPUT_STATE",
     "android.permission.READ_PROFILE",
     "android.permission.READ_SMS",
-    "android.permission.RECEIVE_MMS",
-    "android.permission.RECEIVE_SMS",
+    "android.permission.READ_SYNC_SETTINGS",
+    "android.permission.SEND_SMS",
+    "android.permission.STATUS_BAR",
     "android.permission.VIBRATE",
     "android.permission.WRITE_SMS"
   ],
@@ -45,7 +49,7 @@
     "Landscape"
   ],
   "AndroidHardwareAcceleration": "false",
-  "iOSStatusBarStyle": "Default",
+  "iOSStatusBarStyle": "Hidden",
   "Framework": "Cordova",
   "WP8TileTitle": "",
   "WP8Publisher": "",
