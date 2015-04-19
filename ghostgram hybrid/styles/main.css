@@ -49,7 +49,7 @@
 }
 
 #places .km-content { 
-    background-image: url('../images/blughostcropped.png');
+    background-color: rgba(37,120,152, 0.8);
     background-size: 100% 100%;
     color : white;
     width: 100%;
@@ -121,7 +121,7 @@
 .km-root .km-pane .km-view.appearance .km-listview input 
 {
   position: relative;
-  font-size: 12px;
+  font-size: 14px;
   width: 100%;
   right: 0;
   margin-top: 0;
@@ -132,7 +132,7 @@
 .km-root .km-pane .km-view.appearance .km-listview select 
 {
   position: relative;
-  font-size: 12px;
+  font-size: 14px;
   width: 100%;
   right: 0;
   margin-top: 0;
@@ -143,7 +143,7 @@
 .km-root .km-wp .km-view.appearance .km-listview input 
 {
     color: #2e2e2e;
-    font-size: 12px;
+    font-size: 14px;
     margin-top: .2em;
     border: 1px solid #AEAEAE;
 }
@@ -151,7 +151,7 @@
 .km-root .km-wp .km-view.appearance .km-listview select 
 {
     color: #2e2e2e;
-    font-size: 12px;
+    font-size: 14px;
     margin-top: .2em;
     border: 1px solid #AEAEAE;
 }
