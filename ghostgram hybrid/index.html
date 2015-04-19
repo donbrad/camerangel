@@ -148,7 +148,7 @@ function onInitContacts (e){
     
      $("#contacts-listview").kendoMobileListView({
             dataSource: APP.models.contacts.deviceContactsDS,
-            template: $("deviceContactsTemplate").text(),
+            template: $("#deviceContactsTemplate").text(),
             filterable: {
                 field: "name",
                 operator: "contains"
