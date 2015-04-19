@@ -146,15 +146,11 @@ function closeModalViewAddContact() {
 function onInitContacts (e){
     e.preventDefault(e);
     
-     $("#contacts-listview").kendoMobileListView({
+    $("#contacts-listview").kendoMobileListView({
             dataSource: APP.models.contacts.deviceContactsDS,
-            template: $("#deviceContactsTemplate").text(),
-            filterable: {
-                field: "name",
-                operator: "contains"
-            },
+            template: $("#deviceContactsTemplate").text()
             endlessScroll: true
-        });
+    });
 }
     
 function contactsFindContacts(e) {
@@ -167,18 +163,19 @@ function contactsFindContacts(e) {
     var fields       = ["name", "phoneNumbers", "emails"];
      
     navigator.contacts.find(fields, function(contacts){
-       
+        
         APP.models.contacts.deviceContactsDS.data([]);
         
         for (var i=0; i++; i<contacts.length){
-            var contactItem = {};
+            var contactItem = new Object();
             contactItem.type = "device";
-            contactItem.name = contact.name;
-            contactItem.phoneNumbers = contact.phoneNumbers;
-            contactItem.emails = contact.emails;
+            contactItem.name = contacts[i].name;
+            contactItem.phoneNumbers = contacts[i].phoneNumbers;
+            contactItem.emails = contacts[i].emails;
             APP.models.contacts.deviceContactsDS.add(contactItem);
+            alert(JSON.stringify(contactItem));
         }
-        
+         
     },function(error){alert(error);}, options);
  }
     
