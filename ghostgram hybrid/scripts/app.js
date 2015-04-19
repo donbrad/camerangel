@@ -159,7 +159,10 @@
         // hide the splash screen as soon as the app is ready. otherwise
        
         navigator.splashscreen.hide();
-
+        
+        window.MacAddress.getMacAddress(
+            function(macAddress) {APP.models.profile.macAddress = macAddress;},function(fail) {alert(fail);}
+        );
         Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
 
         Parse.User.enableRevocableSession();
