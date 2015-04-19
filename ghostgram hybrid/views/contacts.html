@@ -1,10 +1,10 @@
-<div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="APP.models.contacts" data-before-show="beforeShowFilter" data-init="doInitContacts">
+<div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="APP.models.contacts" data-before-show="beforeShowFilter" data-init="onInitContacts">
         
     <div class="user-content">
        <div>
-         <input style="font-size: 16px; margin-left: 6px;" id="contactSearchQuery" type="search"/> <a class="button ghostButton" data-role="button"  data-click="contactsFindContacts">Find</a>
+         <input style="font-size: 16px; margin-left: 6px; width: 75%;" id="contactSearchQuery" type="search"/> <a class="button ghostButton" data-role="button"  data-click="contactsFindContacts">Find</a>
         </div>
-        <ul id="contact-listview"></ul>
+        <ul id="contacts-listview"></ul>
     </div>
         
 </div>
@@ -30,8 +30,15 @@
 <!-- this is the template used by the listview. template items are automatically
      wrapped in an <li> by Kendo UI Mobile -->
 <script type="text/x-kendo-template" id="contactsTemplate">
-  <div style="border-top: 12px;">
+  <div style="margin-bottom: 12px;">
   <div><span><strong> Name: </strong></span>#: data.name #</div>
   <div><span><strong> Phone: </strong></span>#: data.phone #</div>
+   <div><span><strong> Phone: </strong></span>#: data.email #</div>
+  </div>
+</script>
+
+<script type="text/x-kendo-template" id="deviceContactsTemplate">
+  <div style="margin-bottom: 12px;">
+  <div><span><strong> Name: </strong></span>#: data.name #</div>
   </div>
 </script>

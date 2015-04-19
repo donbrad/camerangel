@@ -143,7 +143,21 @@ function closeModalViewAddContact() {
     $("#modalview-contacts-addContact").kendoMobileModalView("close");
 }
 
- function contactsFindContacts(e) {
+function onInitContacts (e){
+    e.preventDefault(e);
+    
+     $("#contacts-listview").kendoMobileListView({
+            dataSource: APP.models.contacts.deviceContactsDS,
+            template: $("deviceContactsTemplate").text(),
+            filterable: {
+                field: "name",
+                operator: "contains"
+            },
+            endlessScroll: true
+        });
+}
+    
+function contactsFindContacts(e) {
     e.preventDefault(e);   
     var query = $('#contactSearchQuery').val();
    
@@ -151,16 +165,18 @@ function closeModalViewAddContact() {
     options.filter   = query
     options.multiple = true;
     var fields       = ["name", "phoneNumbers", "emails"];
+     
     navigator.contacts.find(fields, function(contacts){
-         var findDS = kendo.data.dataSource();
-         
+       
+        APP.models.contacts.deviceContactsDS.data([]);
+        
         for (var i=0; i++; i<contacts.length){
             var contactItem = {};
             contactItem.type = "device";
             contactItem.name = contact.name;
             contactItem.phoneNumbers = contact.phoneNumbers;
             contactItem.emails = contact.emails;
-            findDS.add(contactItem);
+            APP.models.contacts.deviceContactsDS.add(contactItem);
         }
         
     },function(error){alert(error);}, options);
