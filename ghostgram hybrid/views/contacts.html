@@ -28,19 +28,23 @@
             </li>
             <li>           
                 <label>Phone
-                    <select id="addContactPhone" data-role="dropdownlist"
-                            data-bind="source: APP.models.contacts.phoneDS" 
+                    <select id="addContactPhone" data-role="dropdownlist" 
+                            data-option-label="Select Phone..."
                             data-text-field="name" 
-                            data-value-field="number">
+                            data-value-field="number"
+                            data-bind="source: APP.models.contacts.phoneArray"
+                             >
                     </select>
                 </label>
             </li>
             <li>
                 <label>Email
                      <select id="addContactEmail" data-role="dropdownlist"
-                            data-bind="source: APP.models.contacts.emailDS" 
+                             data-option-label="Select Email..."
                             data-text-field="name" 
-                            data-value-field="address">
+                            data-value-field="address"
+                            data-bind="source: APP.models.contacts.emailArray"
+                             >
                     </select>
                 </label>
             </li>

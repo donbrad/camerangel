@@ -148,8 +148,17 @@ function onInitContacts (e){
             template: $("#deviceContactsTemplate").text(),
             click: function(e) {
                APP.models.contacts.currentDeviceContact = e.dataItem;
-               APP.models.contacts.emailDS.data(APP.models.contacts.currentDeviceContact.emails);
-               APP.models.contacts.phoneDS.data(APP.models.contacts.currentDeviceContact.phoneNumbers);
+               APP.models.contacts.emailArray = new Array();
+                
+               for (var i = 0; i<APP.models.contacts.currentDeviceContact.emails.length; i++) {
+                    var email = new Object();
+                    email.name = APP.models.contacts.currentDeviceContact.emails.name;
+                    email.address =  APP.models.contacts.currentDeviceContact.emails.address;
+                   
+                   APP.models.contacts.emailArray.push(email);
+                   
+               }
+               APP.models.contacts.phoneArray = APP.models.contacts.currentDeviceContact.phoneNumbers;
                APP.kendo.navigate('#contacts-addContact');
              
             }
@@ -365,7 +374,7 @@ function introChanged () {
 
 
   <!-- application drawer and contents -->
- <div data-role="drawer" id="appDrawer" style="width: 180px" data-title="Main Menu" style="display:none;">
+ <div data-role="drawer" id="appDrawer" style="width: 180px" data-title="Main Menu" data-swipe-to-open="false" style="display:none;">
     <div data-role="header">
       <div data-role="navbar">
         <span data-role="view-title"></span>
