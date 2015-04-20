@@ -293,10 +293,11 @@ function channelsAddChannel(e) {
     channel.set("moderated", $('#channels-addChannel-moderated').val() === 0 ? true : false);
     channel.set("expirationDate", $('#channels-addChannel-expirationDate').val());
     channel.setACL(new Parse.ACL(Parse.User.current()));
-   channel.save(null, {
+    channel.save(null, {
       success: function(channel) {
         // Execute any logic that should take place after the object is saved.
-        alert('Created channel : ' + channel.name);
+        alert('Created channel : ' + channel.get('name'));
+          closeModalViewAddChannel();
       },
       error: function(channel, error) {
         // Execute any logic that should take place if the save fails.
