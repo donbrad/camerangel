@@ -10,7 +10,7 @@
  <!-- External scripts -->
     <script src="cordova.js"></script>
     <script src="kendo/js/jquery.min.js"></script>
-    <script src="kendo/js/kendo.all.min.js"></script>
+    <script src="kendo/js/kendo.mobile.min.js"></script>
 	<script src="scripts/parse.js"></script>
     <script src="https://cdn.pubnub.com/pubnub-dev.js"></script>
     <script src="scripts/appData.js"></script>
@@ -33,8 +33,6 @@ function togglePrivate (e) {
         $('.user-content').removeClass('privateMode');
     }
 }
-
-
 
 function beforeShowFilter() {
 
@@ -148,17 +146,13 @@ function onInitContacts (e){
     $("#contacts-listview").kendoMobileListView({
             dataSource: APP.models.contacts.deviceContactsDS,
             template: $("#deviceContactsTemplate").text(),
-            virtualViewSize: 100,
             click: function(e) {
                APP.models.contacts.currentDeviceContact = e.dataItem;
-               
-                
-                APP.models.contacts.emailDS = new kendo.data.DataSource({data: APP.models.contacts.currentDeviceContacts.emails});
-               APP.models.contacts.phoneDS = new kendo.data.DataSource({data: APP.models.contacts.currentDeviceContacts.phoneNumbers});
+               APP.models.contacts.emailDS.data(APP.models.contacts.currentDeviceContact.emails);
+               APP.models.contacts.phoneDS.data(APP.models.contacts.currentDeviceContact.phoneNumbers);
                APP.kendo.navigate('#contacts-addContact');
-              // $("#modalview-contacts-addContact").data("kendoMobileModalView").open();
-            },
-            endlessScroll: true
+             
+            }
     });
 }
    
@@ -208,7 +202,8 @@ function contactsFindContacts(e) {
     
 function doShowAddContacts() {
     var data = APP.models.contacts.currentDeviceContact;
-     $("#addContactName").val(data.name);
+    
+    $("#addContactName").val(data.name);
     
 }
     

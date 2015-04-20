@@ -45,7 +45,9 @@
         contacts: {
           title: 'Contacts',
           contactsDS: new kendo.data.DataSource(),
-          deviceContactsDS: new kendo.data.DataSource()
+          deviceContactsDS: new kendo.data.DataSource(),
+          phoneDS:  new kendo.data.DataSource(),
+          emailDS:  new kendo.data.DataSource()
            //Todo: Add contacts cache data source and sync if user is signed in
             
         },
