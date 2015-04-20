@@ -88,15 +88,28 @@
 }
 
 .ghostText {
-    color: #2e2e2e;
+    color: rgba(37,120,152, 0.9);
     font-size: 16px;
     font-weight:400;
 }
 
 .ghostTextLarge {
-    color: #2e2e2e;
+    color: rgba(37,120,152, 0.9);
     font-size: 18px;
     font-weight:500;
+}
+
+.ghostTitle{
+    color: rgba(37,120,152, 0.9);
+    text-shadow: rgba(37,60,78, 0.5) 0px 2px 2px;
+    font-size: 18px;
+    font-weight:500;
+}
+
+.ghostDescription{
+    color: rgba(37,120,152, 0.9);
+    font-size: 13px;
+    font-weight:400;
 }
 
 .ghostContainer {
