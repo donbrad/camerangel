@@ -1,10 +1,6 @@
 // Type definitions for Kendo UI
 
 declare module kendo {
-    function bind(selector: string, viewModel: any, namespace?: any): void;
-    function bind(element: JQuery, viewModel: any, namespace?: any): void;
-    function bind(element: Element, viewModel: any, namespace?: any): void;
-    function culture(value: string): void;
     function culture(): {
         name: string;
         calendar: {
@@ -171,39 +167,24 @@ declare module kendo {
         };
     }};
 
-    function destroy(selector: string): void;
-    function destroy(element: Element): void;
-    function destroy(element: JQuery): void;
     function format(format: string, ...values: any[]): string;
 
     function fx(selector: string): effects.Element;
     function fx(element: Element): effects.Element;
     function fx(element: JQuery): effects.Element;
 
-    function htmlEncode(value: string): string;
     function init(selector: string, ...namespaces: any[]): void;
     function init(element: JQuery, ...namespaces: any[]): void;
     function init(element: Element, ...namespaces: any[]): void;
+
     function observable(data: any): kendo.data.ObservableObject;
     function observableHierarchy(array: any[]): kendo.data.ObservableArray;
-    function parseDate(value: any, format?: string, culture?: string): Date;
-    function parseFloat(value: any, culture?: string): number;
-    function parseInt(value: any, culture?: string): number;
+
     function render(template:(data: any) => string, data: any[]): string;
-    function resize(selector: string): void;
-    function resize(element: JQuery): void;
-    function resize(element: Element): void;
-    function stringify(value: Object): string;
     function template(template: string, options?: TemplateOptions): (data: any) => string;
-    function touchScroller(selector: string): void;
-    function touchScroller(element: Element): void;
-    function touchScroller(element: JQuery): void;
-    function toString(value: number, format: string): string;
-    function toString(value: Date, format: string): string;
-    function unbind(selector: string): void;
-    function unbind(element: JQuery): void;
-    function unbind(element: Element): void;
+
     function guid(): string;
+
     function widgetInstance(element: JQuery, suite: typeof kendo.ui): kendo.ui.Widget;
     function widgetInstance(element: JQuery, suite: typeof kendo.mobile.ui): kendo.ui.Widget;
 
@@ -307,9 +288,13 @@ declare module kendo {
         model: Object;
     }
 
+    class ViewContainer extends Observable {
+       view: View;
+    }
+
     class Layout extends View {
         showIn(selector: string, view: View): void;
-        regions: { [selector: string]: View; };
+        containers: { [selector: string]: ViewContainer; };
     }
 
     class History extends Observable {
@@ -479,6 +464,12 @@ declare module kendo.data {
         destroy(): void;
     }
 
+    class BindingTarget {
+        target: any;
+        options: any;
+        source: any;
+    }
+
     class EventBinding extends Binding {
         get (): void;
     }
@@ -531,6 +522,7 @@ declare module kendo.data {
         };
         constructor(data?: any);
         init(data?: any):void;
+        accept(data?: any): void;
         dirty: boolean;
         id: any;
         editable(field: string): boolean;
@@ -541,9 +533,23 @@ declare module kendo.data {
         static define(options: DataSourceSchemaModelWithFieldsArray): typeof Model;
     }
 
+    interface SchedulerEventData {
+        description?: string;
+        end?: Date;
+        endTimezone?: string;
+        isAllDay?: boolean;
+        id?: any;
+        start?: Date;
+        startTimezone?: string;
+        recurrenceId?: any;
+        recurrenceRule?: string;
+        recurrenceException?: string;
+        title?: string;
+    }
+
     class SchedulerEvent extends Model {
-        constructor(data?: any);
-        init(data?: any): void;
+        constructor(data?: SchedulerEventData);
+        init(data?: SchedulerEventData): void;
 
         description: string;
         end: Date;
@@ -555,10 +561,90 @@ declare module kendo.data {
         recurrenceId: any;
         recurrenceRule: string;
         recurrenceException: string;
+        title: string;
         static idField: string;
         static fields: DataSourceSchemaModelFields;
         static define(options: DataSourceSchemaModelWithFieldsObject): typeof SchedulerEvent;
         static define(options: DataSourceSchemaModelWithFieldsArray): typeof SchedulerEvent;
+        clone(options: any, updateUid: boolean): SchedulerEvent;
+        duration(): number;
+        expand(start: Date, end: Date, zone: any): SchedulerEvent[];
+        update(eventInfo: SchedulerEventData): void;
+        isMultiDay(): boolean;
+        isException(): boolean;
+        isOccurrence(): boolean;
+        isRecurring(): boolean;
+        isRecurrenceHead(): boolean;
+        toOccurrence(options: any): SchedulerEvent;
+    }
+
+    class TreeListModel extends Model {
+        constructor(data?: any);
+        init(data?: any): void;
+
+        id: any;
+        parentId: any;
+
+        loaded(value: boolean): void;
+        loaded(): boolean;
+
+        static idField: string;
+        static fields: DataSourceSchemaModelFields;
+        static define(options: DataSourceSchemaModelWithFieldsObject): typeof TreeListModel;
+        static define(options: DataSourceSchemaModelWithFieldsArray): typeof TreeListModel;
+    }
+
+    class TreeListDataSource extends DataSource {
+        load(model: kendo.data.TreeListModel): JQueryPromise<any>;
+        childNodes(model: kendo.data.TreeListModel): kendo.data.TreeListModel[];
+        rootNodes(): kendo.data.TreeListModel[];
+        parentNode(model: kendo.data.TreeListModel): kendo.data.TreeListModel;
+        level(model: kendo.data.TreeListModel): number;
+        level(model: any): number;
+
+        add(model: Object): kendo.data.TreeListModel;
+        add(model: kendo.data.TreeListModel): kendo.data.TreeListModel;
+        at(index: number): kendo.data.TreeListModel;
+        cancelChanges(model?: kendo.data.TreeListModel): void;
+        get(id: any): kendo.data.TreeListModel;
+        getByUid(uid: string): kendo.data.TreeListModel;
+        indexOf(value: kendo.data.TreeListModel): number;
+        insert(index: number, model: kendo.data.TreeListModel): kendo.data.TreeListModel;
+        insert(index: number, model: Object): kendo.data.TreeListModel;
+        remove(model: kendo.data.TreeListModel): void;
+    }
+
+    class GanttTask extends Model {
+        constructor(data?: any);
+        init(data?: any): void;
+
+        id: any;
+		parentId: number;
+		orderId: number;
+		title: string;
+		start: Date;
+		end: Date;
+		percentComplete: number;
+		summary: boolean;
+		expanded: boolean;
+        static idField: string;
+        static fields: DataSourceSchemaModelFields;
+        static define(options: DataSourceSchemaModelWithFieldsObject): typeof GanttTask;
+        static define(options: DataSourceSchemaModelWithFieldsArray): typeof GanttTask;
+    }
+
+    class GanttDependency extends Model {
+        constructor(data?: any);
+        init(data?: any): void;
+
+        id: any;
+		predecessorId: number;
+		successorId: number;
+		type: number;
+        static idField: string;
+        static fields: DataSourceSchemaModelFields;
+        static define(options: DataSourceSchemaModelWithFieldsObject): typeof GanttDependency;
+        static define(options: DataSourceSchemaModelWithFieldsArray): typeof GanttDependency;
     }
 
     class Node extends Model {
@@ -585,6 +671,32 @@ declare module kendo.data {
         remove(model: kendo.data.SchedulerEvent): void;
     }
 
+    class GanttDataSource extends DataSource {
+        add(model: Object): kendo.data.GanttTask;
+        add(model: kendo.data.GanttTask): kendo.data.GanttTask;
+        at(index: number): kendo.data.GanttTask;
+        cancelChanges(model?: kendo.data.GanttTask): void;
+        get(id: any): kendo.data.GanttTask;
+        getByUid(uid: string): kendo.data.GanttTask;
+        indexOf(value: kendo.data.GanttTask): number;
+        insert(index: number, model: Object): kendo.data.GanttTask;
+        insert(index: number, model: kendo.data.GanttTask): kendo.data.GanttTask;
+        remove(model: kendo.data.GanttTask): void;
+    }
+
+    class GanttDependencyDataSource extends DataSource {
+        add(model: Object): kendo.data.GanttDependency;
+        add(model: kendo.data.GanttDependency): kendo.data.GanttDependency;
+        at(index: number): kendo.data.GanttDependency;
+        cancelChanges(model?: kendo.data.GanttDependency): void;
+        get(id: any): kendo.data.GanttDependency;
+        getByUid(uid: string): kendo.data.GanttDependency;
+        indexOf(value: kendo.data.GanttDependency): number;
+        insert(index: number, model: Object): kendo.data.GanttDependency;
+        insert(index: number, model: kendo.data.GanttDependency): kendo.data.GanttDependency;
+        remove(model: kendo.data.GanttDependency): void;
+    }
+
     class HierarchicalDataSource extends DataSource {
         constructor(options?: HierarchicalDataSourceOptions);
         init(options?: HierarchicalDataSourceOptions): void;
@@ -604,9 +716,152 @@ declare module kendo.data {
         children?: any;
     }
 
+    interface PivotDiscoverRequestRestrictionOptions {
+        catalogName: string;
+        cubeName: string;
+    }
+
+    interface PivotDiscoverRequestDataOptions {
+        command: string;
+        restrictions: PivotDiscoverRequestRestrictionOptions;
+    }
+
+    interface PivotDiscoverRequestOptions {
+        data: PivotDiscoverRequestDataOptions;
+    }
+
+    interface PivotTransportConnection {
+        catalog?: string;
+        cube?: string;
+    }
+
+    interface PivotTransportDiscover {
+        cache?: boolean;
+        contentType?: string;
+        data?: any;
+        dataType?: string;
+        type?: string;
+        url?: any;
+    }
+
+    interface PivotTransport {
+        discover?: any;
+        read?: any;
+    }
+
+    interface PivotTransportWithObjectOperations extends PivotTransport {
+        connection: PivotTransportConnection;
+        discover?: PivotTransportDiscover;
+        read?: DataSourceTransportRead;
+    }
+
+    interface PivotTransportWithFunctionOperations extends PivotTransport {
+        discover?: (options: DataSourceTransportOptions) => void;
+        read?: (options: DataSourceTransportOptions) => void;
+    }
+
+    interface PivotDataSourceAxisOptions {
+        name: string;
+        expand?: boolean;
+    }
+
+    interface PivotDataSourceMeasureOptions {
+        values: string[];
+        axis?: string;
+    }
+
+    interface PivotDataSourceOptions extends DataSourceOptions {
+        columns?: PivotDataSourceAxisOptions[];
+        measures?: PivotDataSourceMeasureOptions[];
+        rows?: PivotDataSourceAxisOptions[];
+        transport?: PivotTransport;
+        schema?: PivotSchema;
+    }
+
+    interface PivotTupleModel {
+        children: PivotTupleModel[];
+        caption?: string;
+        name: string;
+        levelName?: string;
+        levelNum: number;
+        hasChildren?: boolean;
+        hierarchy?: string;
+    }
+
+    interface PivotSchemaRowAxis {
+        tuples: PivotTupleModel[];
+    }
+
+    interface PivotSchemaColumnAxis {
+        tuples: PivotTupleModel[];
+    }
+
+    interface PivotSchemaAxes {
+        rows: PivotSchemaRowAxis;
+        columns: PivotSchemaColumnAxis;
+    }
+
+    interface PivotSchema extends DataSourceSchema{
+        axes?: any;
+        catalogs?: any;
+        cubes?: any;
+        data?: any;
+        dimensions?: any;
+        hierarchies?: any;
+        levels?: any;
+        measures?: any;
+    }
+
+    class PivotDataSource extends DataSource {
+        axes(): PivotSchemaAxes;
+        constructor(options?: PivotDataSourceOptions);
+        init(options?: PivotDataSourceOptions): void;
+        catalog(val: string): void;
+        columns(val: string[]): string[];
+        cube(val: string): void;
+        discover(options: PivotDiscoverRequestOptions): JQueryPromise<any>;
+        measures(val: string[]): string[];
+        measuresAxis(): string;
+        rows(val: string[]): string[];
+        schemaCatalogs(): JQueryPromise<any>;
+        schemaCubes(): JQueryPromise<any>;
+        schemaDimensions(): JQueryPromise<any>;
+        schemaHierarchies(): JQueryPromise<any>;
+        schemaLevels(): JQueryPromise<any>;
+        schemaMeasures(): JQueryPromise<any>;
+    }
+
     interface DataSourceTransport {
         parameterMap?(data: DataSourceTransportParameterMapData, type: string): any;
+        create?: DataSourceTransportCreate;
+        destroy?: DataSourceTransportDestroy;
+        push?: Function;
+        read?: DataSourceTransportRead;
+        signalr?: DataSourceTransportSignalr;
+        update?: DataSourceTransportUpdate;
     }
+
+    interface DataSourceTransportSignalrClient {
+        create?: string;
+        destroy?: string;
+        read?: string;
+        update?: string;
+    }
+
+    interface DataSourceTransportSignalrServer {
+        create?: string;
+        destroy?: string;
+        read?: string;
+        update?: string;
+    }
+
+    interface DataSourceTransportSignalr {
+        client?: DataSourceTransportSignalrClient;
+        hub?: any;
+        promise?: any;
+        server?: DataSourceTransportSignalrServer;
+    }
+
 
     interface DataSourceParameterMapDataAggregate {
         field?: string;
@@ -693,27 +948,30 @@ declare module kendo.data {
     class ObservableArray extends Observable {
         constructor(array?: any[]);
         init(array?: any[]): void;
-        length: number;
+        [index: number]: any;
+
+        empty(): void;
+        every(callback: (item: Object, index: number, source: ObservableArray) => boolean): boolean;
+        filter(callback: (item: Object, index: number, source: ObservableArray) => boolean): any[];
+        find(callback: (item: Object, index: number, source: ObservableArray) => boolean): any;
+        forEach(callback: (item: Object, index: number, source: ObservableArray) => void ): void;
+        indexOf(item: any): number;
         join(separator: string): string;
+        length: number;
+        map(callback: (item: Object, index: number, source: ObservableArray) => any): any[];
         parent(): ObservableObject;
         pop(): ObservableObject;
         push(...items: any[]): number;
+        remove(item: Object): void;
+        shift(): any;
         slice(begin: number, end?: number): any[];
+        some(callback: (item: Object, index: number, source: ObservableArray) => boolean): boolean;
         splice(start: number): any[];
         splice(start: number, deleteCount: number, ...items: any[]): any[];
-        shift(): any;
         toJSON(): any[];
         unshift(...items: any[]): number;
-        wrapAll(source: Object, target: Object): any;
         wrap(object: Object, parent: Object): any;
-        indexOf(item: any): number;
-        forEach(callback: (item: Object, index: number, source: ObservableArray) => void ): void;
-        map(callback: (item: Object, index: number, source: ObservableArray) => any): any[];
-        filter(callback: (item: Object, index: number, source: ObservableArray) => boolean): any[];
-        find(callback: (item: Object, index: number, source: ObservableArray) => boolean): any;
-        every(callback: (item: Object, index: number, source: ObservableArray) => boolean): boolean;
-        some(callback: (item: Object, index: number, source: ObservableArray) => boolean): boolean;
-        remove(item: Object): void;
+        wrapAll(source: Object, target: Object): any;
     }
 
     interface ObservableArrayEvent {
@@ -730,13 +988,14 @@ declare module kendo.data {
         options: DataSourceOptions;
         add(model: Object): kendo.data.Model;
         add(model: kendo.data.Model): kendo.data.Model;
-        aggregate(val?: any): any;
+        aggregate(val: any): void;
+        aggregate(): any;
         aggregates(): any;
         at(index: number): kendo.data.ObservableObject;
         cancelChanges(model?: kendo.data.Model): void;
         data(): kendo.data.ObservableArray;
         data(value: any): void;
-        fetch(callback?: Function): void;
+        fetch(callback?: Function): JQueryPromise<any>;
         filter(filters: DataSourceFilterItem): void;
         filter(filters: DataSourceFilterItem[]): void;
         filter(filters: DataSourceFilters): void;
@@ -749,17 +1008,21 @@ declare module kendo.data {
         indexOf(value: kendo.data.ObservableObject): number;
         insert(index: number, model: kendo.data.Model): kendo.data.Model;
         insert(index: number, model: Object): kendo.data.Model;
+        online(value: boolean): void;
+        online(): boolean;
+        offlineData(data: any[]): void;
+        offlineData(): any[];
         page(): number;
         page(page: number): void;
         pageSize(): number;
         pageSize(size: number): void;
-        query(options?: any): void;
-        read(data?: any): void;
-        remove(model: kendo.data.Model): void;
+        query(options?: any): JQueryPromise<any>;
+        read(data?: any): JQueryPromise<any>;
+        remove(model: kendo.data.ObservableObject): void;
         sort(sort: DataSourceSortItem): void;
         sort(sort: DataSourceSortItem[]): void;
         sort(): DataSourceSortItem[];
-        sync(): void;
+        sync(): JQueryPromise<any>;
         total(): number;
         totalPages(): number;
         view(): kendo.data.ObservableArray;
@@ -846,13 +1109,6 @@ declare module kendo.data {
         url?: any;
     }
 
-    interface DataSourceTransport {
-        create?: any;
-        destroy?: any;
-        read?: any;
-        update?: any;
-    }
-
     interface DataSourceTransportWithObjectOperations extends DataSourceTransport {
         create?: DataSourceTransportCreate;
         destroy?: DataSourceTransportDestroy;
@@ -876,6 +1132,7 @@ declare module kendo.data {
     interface DataSourceTransportReadOptionsData {
         sort?: DataSourceSortItem[];
         filter?: DataSourceFilters;
+        group?: DataSourceGroupItem[];
         take?: number;
         skip?: number;
     }
@@ -899,6 +1156,7 @@ declare module kendo.data {
         data?: any;
         filter?: any;
         group?: DataSourceGroupItem[];
+        offlineStorage?: any;
         page?: number;
         pageSize?: number;
         schema?: DataSourceSchema;
@@ -949,6 +1207,7 @@ declare module kendo.data {
     }
 
     interface DataSourceRequestStartEvent extends DataSourceEvent {
+        type?: string;
     }
 
     interface DataSourceRequestEndEvent extends DataSourceEvent {
@@ -978,6 +1237,8 @@ declare module kendo.ui {
         element: JQuery;
         setOptions(options: Object): void;
         resize(force?: boolean): void;
+        options: Object;
+        events: string[];
     }
 
     function plugin(widget: typeof kendo.ui.Widget, register?: typeof kendo.ui, prefix?: String): void;
@@ -992,7 +1253,7 @@ declare module kendo.ui {
         options: DraggableOptions;
     }
 
-    interface DraggableEvent extends JQueryEventObject {
+    interface DraggableEvent {
         sender?: Draggable;
     }
 
@@ -1010,7 +1271,7 @@ declare module kendo.ui {
         drop?(e: DropTargetDropEvent): void;
     }
 
-    interface DropTargetEvent extends JQueryEventObject {
+    interface DropTargetEvent {
         sender?: DropTarget;
     }
 
@@ -1040,16 +1301,18 @@ declare module kendo.ui {
         drop?(e: DropTargetAreaDropEvent): void;
     }
 
-    interface DropTargetAreaEvent extends JQueryEventObject {
+    interface DropTargetAreaEvent {
         sender: DropTargetArea;
     }
 
     interface DropTargetAreaDragenterEvent extends DropTargetAreaEvent {
         draggable?: JQuery;
+        dropTarget?: JQuery;
     }
 
     interface DropTargetAreaDragleaveEvent extends DropTargetAreaEvent {
         draggable?: JQuery;
+        dropTarget?: JQuery;
     }
 
     interface DropTargetAreaDropEvent extends DropTargetAreaEvent {
@@ -1059,10 +1322,13 @@ declare module kendo.ui {
 
     interface DraggableOptions {
         axis?: string;
+        container?: JQuery;
         cursorOffset?: any;
         distance?: number;
+        filter?: string;
         group?: string;
         hint?: Function;
+        ignore?: string;
         drag?(e: DraggableEvent): void;
         dragcancel?(e: DraggableEvent): void;
         dragend?(e: DraggableEvent): void;
@@ -1095,6 +1361,8 @@ declare module kendo.mobile {
         scroller(): kendo.mobile.ui.Scroller;
         showLoading(): void;
         view(): kendo.mobile.ui.View;
+        router: kendo.Router;
+        pane: kendo.mobile.ui.Pane;
     }
 
     interface ApplicationOptions {
@@ -1137,33 +1405,721 @@ declare module kendo.mobile.ui {
         y?: number;
     }
 }
+declare module kendo.geometry {
+    class Arc extends Observable {
+        options: ArcOptions;
+        bbox(matrix: kendo.geometry.Matrix): kendo.geometry.Rect;
+        getAnticlockwise(): boolean;
+        getCenter(): kendo.geometry.Point;
+        getEndAngle(): number;
+        getRadiusX(): number;
+        getRadiusY(): number;
+        getStartAngle(): number;
+        pointAt(angle: number): kendo.geometry.Point;
+        setAnticlockwise(value: boolean): kendo.geometry.Arc;
+        setCenter(value: kendo.geometry.Point): kendo.geometry.Arc;
+        setEndAngle(value: number): kendo.geometry.Arc;
+        setRadiusX(value: number): kendo.geometry.Arc;
+        setRadiusY(value: number): kendo.geometry.Arc;
+        setStartAngle(value: number): kendo.geometry.Arc;
+        anticlockwise: boolean;
+        center: kendo.geometry.Point;
+        endAngle: number;
+        radiusX: number;
+        radiusY: number;
+        startAngle: number;
+    }
+
+    interface ArcOptions {
+        name?: string;
+    }
+    interface ArcEvent {
+        sender: Arc;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    class Circle extends Observable {
+        options: CircleOptions;
+        bbox(matrix: kendo.geometry.Matrix): kendo.geometry.Rect;
+        clone(): kendo.geometry.Circle;
+        equals(other: kendo.geometry.Circle): boolean;
+        getCenter(): kendo.geometry.Point;
+        getRadius(): number;
+        pointAt(angle: number): kendo.geometry.Point;
+        setCenter(value: kendo.geometry.Point): kendo.geometry.Point;
+        setCenter(value: any): kendo.geometry.Point;
+        setRadius(value: number): kendo.geometry.Circle;
+        center: kendo.geometry.Point;
+        radius: number;
+    }
+
+    interface CircleOptions {
+        name?: string;
+    }
+    interface CircleEvent {
+        sender: Circle;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    class Matrix extends Observable {
+        options: MatrixOptions;
+        clone(): kendo.geometry.Matrix;
+        equals(other: kendo.geometry.Matrix): boolean;
+        round(digits: number): kendo.geometry.Matrix;
+        multiplyCopy(matrix: kendo.geometry.Matrix): kendo.geometry.Matrix;
+        toArray(digits: number): any;
+        toString(digits: number, separator: string): string;
+        static rotate(angle: number, x: number, y: number): kendo.geometry.Matrix;
+        static scale(scaleX: number, scaleY: number): kendo.geometry.Matrix;
+        static translate(x: number, y: number): kendo.geometry.Matrix;
+        static unit(): kendo.geometry.Matrix;
+        a: number;
+        b: number;
+        c: number;
+        d: number;
+        e: number;
+        f: number;
+    }
+
+    interface MatrixOptions {
+        name?: string;
+    }
+    interface MatrixEvent {
+        sender: Matrix;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    class Point extends Observable {
+        options: PointOptions;
+        clone(): kendo.geometry.Point;
+        distanceTo(point: kendo.geometry.Point): number;
+        equals(other: kendo.geometry.Point): boolean;
+        getX(): number;
+        getY(): number;
+        move(x: number, y: number): kendo.geometry.Point;
+        rotate(angle: number, center: kendo.geometry.Point): kendo.geometry.Point;
+        rotate(angle: number, center: any): kendo.geometry.Point;
+        round(digits: number): kendo.geometry.Point;
+        scale(scaleX: number, scaleY: number): kendo.geometry.Point;
+        scaleCopy(scaleX: number, scaleY: number): kendo.geometry.Point;
+        setX(value: number): kendo.geometry.Point;
+        setY(value: number): kendo.geometry.Point;
+        toArray(digits: number): any;
+        toString(digits: number, separator: string): string;
+        transform(tansformation: kendo.geometry.Transformation): kendo.geometry.Point;
+        transformCopy(tansformation: kendo.geometry.Transformation): kendo.geometry.Point;
+        translate(dx: number, dy: number): kendo.geometry.Point;
+        translateWith(vector: kendo.geometry.Point): kendo.geometry.Point;
+        translateWith(vector: any): kendo.geometry.Point;
+        static create(x: number, y: number): kendo.geometry.Point;
+        static create(x: any, y: number): kendo.geometry.Point;
+        static create(x: kendo.geometry.Point, y: number): kendo.geometry.Point;
+        static min(): kendo.geometry.Point;
+        static max(): kendo.geometry.Point;
+        static minPoint(): kendo.geometry.Point;
+        static maxPoint(): kendo.geometry.Point;
+        x: number;
+        y: number;
+    }
+
+    interface PointOptions {
+        name?: string;
+    }
+    interface PointEvent {
+        sender: Point;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    class Rect extends Observable {
+        options: RectOptions;
+        bbox(matrix: kendo.geometry.Matrix): kendo.geometry.Rect;
+        bottomLeft(): kendo.geometry.Point;
+        bottomRight(): kendo.geometry.Point;
+        center(): kendo.geometry.Point;
+        clone(): kendo.geometry.Rect;
+        equals(other: kendo.geometry.Rect): boolean;
+        getOrigin(): kendo.geometry.Point;
+        getSize(): kendo.geometry.Size;
+        height(): number;
+        setOrigin(value: kendo.geometry.Point): kendo.geometry.Rect;
+        setOrigin(value: any): kendo.geometry.Rect;
+        setSize(value: kendo.geometry.Size): kendo.geometry.Rect;
+        setSize(value: any): kendo.geometry.Rect;
+        topLeft(): kendo.geometry.Point;
+        topRight(): kendo.geometry.Point;
+        width(): number;
+        static fromPoints(pointA: kendo.geometry.Point, pointB: kendo.geometry.Point): kendo.geometry.Rect;
+        static union(rectA: kendo.geometry.Rect, rectB: kendo.geometry.Rect): kendo.geometry.Rect;
+        origin: kendo.geometry.Point;
+        size: kendo.geometry.Size;
+    }
+
+    interface RectOptions {
+        name?: string;
+    }
+    interface RectEvent {
+        sender: Rect;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    class Size extends Observable {
+        options: SizeOptions;
+        clone(): kendo.geometry.Size;
+        equals(other: kendo.geometry.Size): boolean;
+        getWidth(): number;
+        getHeight(): number;
+        setWidth(value: number): kendo.geometry.Size;
+        setHeight(value: number): kendo.geometry.Size;
+        static create(width: number, height: number): kendo.geometry.Size;
+        static create(width: any, height: number): kendo.geometry.Size;
+        static create(width: kendo.geometry.Size, height: number): kendo.geometry.Size;
+        width: number;
+        height: number;
+    }
+
+    interface SizeOptions {
+        name?: string;
+    }
+    interface SizeEvent {
+        sender: Size;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    class Transformation extends Observable {
+        options: TransformationOptions;
+        clone(): kendo.geometry.Transformation;
+        equals(other: kendo.geometry.Transformation): boolean;
+        matrix(): kendo.geometry.Matrix;
+        multiply(transformation: kendo.geometry.Transformation): kendo.geometry.Transformation;
+        rotate(angle: number, center: any): kendo.geometry.Transformation;
+        rotate(angle: number, center: kendo.geometry.Point): kendo.geometry.Transformation;
+        scale(scaleX: number, scaleY: number): kendo.geometry.Transformation;
+        translate(x: number, y: number): kendo.geometry.Transformation;
+    }
+
+    interface TransformationOptions {
+        name?: string;
+    }
+    interface TransformationEvent {
+        sender: Transformation;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+}
+declare module kendo.drawing {
+    class Arc extends kendo.drawing.Element {
+        constructor(options?: ArcOptions);
+        options: ArcOptions;
+        bbox(): kendo.geometry.Rect;
+        clip(): kendo.drawing.Path;
+        clip(clip: kendo.drawing.Path): void;
+        clippedBBox(): kendo.geometry.Rect;
+        geometry(): kendo.geometry.Arc;
+        geometry(value: kendo.geometry.Arc): void;
+        fill(color: string, opacity?: number): kendo.drawing.Arc;
+        opacity(): number;
+        opacity(opacity: number): void;
+        stroke(color: string, width?: number, opacity?: number): kendo.drawing.Arc;
+        transform(): kendo.geometry.Transformation;
+        transform(transform: kendo.geometry.Transformation): void;
+        visible(): boolean;
+        visible(visible: boolean): void;
+    }
+
+    interface ArcOptions {
+        name?: string;
+        clip?: kendo.drawing.Path;
+        fill?: kendo.drawing.FillOptions;
+        opacity?: number;
+        stroke?: kendo.drawing.StrokeOptions;
+        transform?: kendo.geometry.Transformation;
+        visible?: boolean;
+    }
+    interface ArcEvent {
+        sender: Arc;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    class Circle extends kendo.drawing.Element {
+        constructor(options?: CircleOptions);
+        options: CircleOptions;
+        bbox(): kendo.geometry.Rect;
+        clip(): kendo.drawing.Path;
+        clip(clip: kendo.drawing.Path): void;
+        clippedBBox(): kendo.geometry.Rect;
+        geometry(): kendo.geometry.Circle;
+        geometry(value: kendo.geometry.Circle): void;
+        fill(color: string, opacity?: number): kendo.drawing.Circle;
+        opacity(): number;
+        opacity(opacity: number): void;
+        stroke(color: string, width?: number, opacity?: number): kendo.drawing.Circle;
+        transform(): kendo.geometry.Transformation;
+        transform(transform: kendo.geometry.Transformation): void;
+        visible(): boolean;
+        visible(visible: boolean): void;
+    }
+
+    interface CircleOptions {
+        name?: string;
+        clip?: kendo.drawing.Path;
+        fill?: kendo.drawing.FillOptions;
+        opacity?: number;
+        stroke?: kendo.drawing.StrokeOptions;
+        transform?: kendo.geometry.Transformation;
+        visible?: boolean;
+    }
+    interface CircleEvent {
+        sender: Circle;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    class Element extends kendo.Class {
+        constructor(options?: ElementOptions);
+        options: ElementOptions;
+        bbox(): kendo.geometry.Rect;
+        clip(): kendo.drawing.Path;
+        clip(clip: kendo.drawing.Path): void;
+        clippedBBox(): kendo.geometry.Rect;
+        opacity(): number;
+        opacity(opacity: number): void;
+        transform(): kendo.geometry.Transformation;
+        transform(transform: kendo.geometry.Transformation): void;
+        visible(): boolean;
+        visible(visible: boolean): void;
+    }
+
+    interface ElementOptions {
+        name?: string;
+        clip?: kendo.drawing.Path;
+        opacity?: number;
+        transform?: kendo.geometry.Transformation;
+        visible?: boolean;
+    }
+    interface ElementEvent {
+        sender: Element;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    interface FillOptions  {
+        color: string;
+        opacity: number;
+    }
+
+
+
+    class Group extends kendo.drawing.Element {
+        constructor(options?: GroupOptions);
+        options: GroupOptions;
+        append(element: kendo.drawing.Element): void;
+        clear(): void;
+        clip(): kendo.drawing.Path;
+        clip(clip: kendo.drawing.Path): void;
+        clippedBBox(): kendo.geometry.Rect;
+        opacity(): number;
+        opacity(opacity: number): void;
+        remove(element: kendo.drawing.Element): void;
+        removeAt(index: number): void;
+        visible(): boolean;
+        visible(visible: boolean): void;
+        children: any;
+    }
+
+    interface GroupOptions {
+        name?: string;
+        clip?: kendo.drawing.Path;
+        opacity?: number;
+        pdf?: kendo.drawing.PDFOptions;
+        transform?: kendo.geometry.Transformation;
+        visible?: boolean;
+    }
+    interface GroupEvent {
+        sender: Group;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    class Image extends kendo.drawing.Element {
+        constructor(options?: ImageOptions);
+        options: ImageOptions;
+        bbox(): kendo.geometry.Rect;
+        clip(): kendo.drawing.Path;
+        clip(clip: kendo.drawing.Path): void;
+        clippedBBox(): kendo.geometry.Rect;
+        opacity(): number;
+        opacity(opacity: number): void;
+        src(): string;
+        src(value: string): void;
+        rect(): kendo.geometry.Rect;
+        rect(value: kendo.geometry.Rect): void;
+        transform(): kendo.geometry.Transformation;
+        transform(transform: kendo.geometry.Transformation): void;
+        visible(): boolean;
+        visible(visible: boolean): void;
+    }
+
+    interface ImageOptions {
+        name?: string;
+        clip?: kendo.drawing.Path;
+        opacity?: number;
+        transform?: kendo.geometry.Transformation;
+        visible?: boolean;
+    }
+    interface ImageEvent {
+        sender: Image;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    class Layout extends kendo.drawing.Group {
+        constructor(options?: LayoutOptions);
+        options: LayoutOptions;
+        rect(): kendo.geometry.Rect;
+        rect(rect: kendo.geometry.Rect): void;
+        reflow(): void;
+    }
+
+    interface LayoutOptions {
+        name?: string;
+        alignContent?: string;
+        alignItems?: string;
+        justifyContent?: string;
+        lineSpacing?: number;
+        spacing?: number;
+        orientation?: string;
+        wrap?: boolean;
+    }
+    interface LayoutEvent {
+        sender: Layout;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    class MultiPath extends kendo.drawing.Element {
+        constructor(options?: MultiPathOptions);
+        options: MultiPathOptions;
+        bbox(): kendo.geometry.Rect;
+        clip(): kendo.drawing.Path;
+        clip(clip: kendo.drawing.Path): void;
+        clippedBBox(): kendo.geometry.Rect;
+        close(): kendo.drawing.MultiPath;
+        curveTo(controlOut: any, controlIn: any): kendo.drawing.MultiPath;
+        curveTo(controlOut: any, controlIn: kendo.geometry.Point): kendo.drawing.MultiPath;
+        curveTo(controlOut: kendo.geometry.Point, controlIn: any): kendo.drawing.MultiPath;
+        curveTo(controlOut: kendo.geometry.Point, controlIn: kendo.geometry.Point): kendo.drawing.MultiPath;
+        fill(color: string, opacity?: number): kendo.drawing.MultiPath;
+        lineTo(x: number, y?: number): kendo.drawing.MultiPath;
+        lineTo(x: any, y?: number): kendo.drawing.MultiPath;
+        lineTo(x: kendo.geometry.Point, y?: number): kendo.drawing.MultiPath;
+        moveTo(x: number, y?: number): kendo.drawing.MultiPath;
+        moveTo(x: any, y?: number): kendo.drawing.MultiPath;
+        moveTo(x: kendo.geometry.Point, y?: number): kendo.drawing.MultiPath;
+        opacity(): number;
+        opacity(opacity: number): void;
+        stroke(color: string, width?: number, opacity?: number): kendo.drawing.MultiPath;
+        transform(): kendo.geometry.Transformation;
+        transform(transform: kendo.geometry.Transformation): void;
+        visible(): boolean;
+        visible(visible: boolean): void;
+        paths: any;
+    }
+
+    interface MultiPathOptions {
+        name?: string;
+        clip?: kendo.drawing.Path;
+        fill?: kendo.drawing.FillOptions;
+        opacity?: number;
+        stroke?: kendo.drawing.StrokeOptions;
+        transform?: kendo.geometry.Transformation;
+        visible?: boolean;
+    }
+    interface MultiPathEvent {
+        sender: MultiPath;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    class OptionsStore extends kendo.Class {
+        options: OptionsStoreOptions;
+        get(field: string): any;
+        set(field: string, value: any): void;
+        observer: any;
+    }
+
+    interface OptionsStoreOptions {
+        name?: string;
+    }
+    interface OptionsStoreEvent {
+        sender: OptionsStore;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    interface PDFOptions  {
+        creator: string;
+        date: Date;
+        keywords: string;
+        landscape: boolean;
+        margin: any;
+        paperSize: any;
+        subject: string;
+        title: string;
+    }
+
+
+
+    class Path extends kendo.drawing.Element {
+        constructor(options?: PathOptions);
+        options: PathOptions;
+        bbox(): kendo.geometry.Rect;
+        clip(): kendo.drawing.Path;
+        clip(clip: kendo.drawing.Path): void;
+        clippedBBox(): kendo.geometry.Rect;
+        close(): kendo.drawing.Path;
+        curveTo(controlOut: any, controlIn: any): kendo.drawing.Path;
+        curveTo(controlOut: any, controlIn: kendo.geometry.Point): kendo.drawing.Path;
+        curveTo(controlOut: kendo.geometry.Point, controlIn: any): kendo.drawing.Path;
+        curveTo(controlOut: kendo.geometry.Point, controlIn: kendo.geometry.Point): kendo.drawing.Path;
+        fill(color: string, opacity?: number): kendo.drawing.Path;
+        lineTo(x: number, y?: number): kendo.drawing.Path;
+        lineTo(x: any, y?: number): kendo.drawing.Path;
+        lineTo(x: kendo.geometry.Point, y?: number): kendo.drawing.Path;
+        moveTo(x: number, y?: number): kendo.drawing.Path;
+        moveTo(x: any, y?: number): kendo.drawing.Path;
+        moveTo(x: kendo.geometry.Point, y?: number): kendo.drawing.Path;
+        opacity(): number;
+        opacity(opacity: number): void;
+        stroke(color: string, width?: number, opacity?: number): kendo.drawing.Path;
+        transform(): kendo.geometry.Transformation;
+        transform(transform: kendo.geometry.Transformation): void;
+        visible(): boolean;
+        visible(visible: boolean): void;
+        static fromPoints(points: any): kendo.drawing.Path;
+        static fromRect(rect: kendo.geometry.Rect): kendo.drawing.Path;
+        static parse(svgPath: string, options?: any): kendo.drawing.Path;
+        segments: any;
+    }
+
+    interface PathOptions {
+        name?: string;
+        clip?: kendo.drawing.Path;
+        fill?: kendo.drawing.FillOptions;
+        opacity?: number;
+        stroke?: kendo.drawing.StrokeOptions;
+        transform?: kendo.geometry.Transformation;
+        visible?: boolean;
+    }
+    interface PathEvent {
+        sender: Path;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    class Segment extends kendo.Class {
+        options: SegmentOptions;
+        anchor(): kendo.geometry.Point;
+        anchor(value: kendo.geometry.Point): void;
+        controlIn(): kendo.geometry.Point;
+        controlIn(value: kendo.geometry.Point): void;
+        controlOut(): kendo.geometry.Point;
+        controlOut(value: kendo.geometry.Point): void;
+    }
+
+    interface SegmentOptions {
+        name?: string;
+    }
+    interface SegmentEvent {
+        sender: Segment;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    interface StrokeOptions  {
+        color: string;
+        dashType: string;
+        lineCap: string;
+        lineJoin: string;
+        opacity: number;
+        width: number;
+    }
+
+
+
+    class Surface extends kendo.Observable {
+        constructor(options?: SurfaceOptions);
+        options: SurfaceOptions;
+        clear(): void;
+        draw(element: kendo.drawing.Element): void;
+        eventTarget(e: any): kendo.drawing.Element;
+        resize(force?: boolean): void;
+        static create(element: JQuery, options?: any): kendo.drawing.Surface;
+        static create(element: Element, options?: any): kendo.drawing.Surface;
+    }
+
+    interface SurfaceOptions {
+        name?: string;
+        type?: string;
+        height?: string;
+        width?: string;
+        click?(e: SurfaceClickEvent): void;
+        mouseenter?(e: SurfaceMouseenterEvent): void;
+        mouseleave?(e: SurfaceMouseleaveEvent): void;
+    }
+    interface SurfaceEvent {
+        sender: Surface;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+    interface SurfaceClickEvent extends SurfaceEvent {
+        element?: kendo.drawing.Element;
+        originalEvent?: any;
+    }
+
+    interface SurfaceMouseenterEvent extends SurfaceEvent {
+        element?: kendo.drawing.Element;
+        originalEvent?: any;
+    }
+
+    interface SurfaceMouseleaveEvent extends SurfaceEvent {
+        element?: kendo.drawing.Element;
+        originalEvent?: any;
+    }
+
+
+    class Text extends kendo.drawing.Element {
+        constructor(options?: TextOptions);
+        options: TextOptions;
+        bbox(): kendo.geometry.Rect;
+        clip(): kendo.drawing.Path;
+        clip(clip: kendo.drawing.Path): void;
+        clippedBBox(): kendo.geometry.Rect;
+        content(): string;
+        content(value: string): void;
+        fill(color: string, opacity?: number): kendo.drawing.Text;
+        opacity(): number;
+        opacity(opacity: number): void;
+        position(): kendo.geometry.Point;
+        position(value: kendo.geometry.Point): void;
+        stroke(color: string, width?: number, opacity?: number): kendo.drawing.Text;
+        transform(): kendo.geometry.Transformation;
+        transform(transform: kendo.geometry.Transformation): void;
+        visible(): boolean;
+        visible(visible: boolean): void;
+    }
+
+    interface TextOptions {
+        name?: string;
+        clip?: kendo.drawing.Path;
+        fill?: kendo.drawing.FillOptions;
+        opacity?: number;
+        stroke?: kendo.drawing.StrokeOptions;
+        transform?: kendo.geometry.Transformation;
+        visible?: boolean;
+    }
+    interface TextEvent {
+        sender: Text;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+}
 declare module kendo {
     class Color extends Observable {
         options: ColorOptions;
-        /**
-        Computes the relative luminance between two colors.
-        @method
-        @returns The relative luminance.
-        */
         diff(): number;
-        /**
-        Compares two color objects for equality.
-        @method
-        @returns returns true if the two colors are the same. Otherwise, false
-        */
         equals(): boolean;
     }
 
     interface ColorOptions {
         name?: string;
     }
-
     interface ColorEvent {
         sender: Color;
         isDefaultPrevented(): boolean;
         preventDefault: Function;
     }
 
+
+    module drawing {
+        function align(elements: any, rect: kendo.geometry.Rect, alignment: string): void;
+        function drawDOM(element: HTMLElement): JQueryPromise<any>;
+        function exportImage(group: kendo.drawing.Group, options: any): JQueryPromise<any>;
+        function exportPDF(group: kendo.drawing.Group, options: kendo.drawing.PDFOptions): JQueryPromise<any>;
+        function exportSVG(group: kendo.drawing.Group, options: any): JQueryPromise<any>;
+        function fit(element: kendo.drawing.Element, rect: kendo.geometry.Rect): void;
+        function stack(elements: any): void;
+        function vAlign(elements: any, rect: kendo.geometry.Rect, alignment: string): void;
+        function vStack(elements: any): void;
+        function vWrap(elements: any, rect: kendo.geometry.Rect): any;
+        function wrap(elements: any, rect: kendo.geometry.Rect): any;
+    }
+
+    module effects {
+        function box(element: HTMLElement): any;
+        function fillScale(firstElement: HTMLElement, secondElement: HTMLElement): number;
+        function fitScale(firstElement: HTMLElement, secondElement: HTMLElement): number;
+        function transformOrigin(firstElement: HTMLElement, secondElement: HTMLElement): any;
+    }
+
+        function bind(element: string, viewModel: any, namespace?: any): void;
+        function bind(element: string, viewModel: kendo.data.ObservableObject, namespace?: any): void;
+        function bind(element: JQuery, viewModel: any, namespace?: any): void;
+        function bind(element: JQuery, viewModel: kendo.data.ObservableObject, namespace?: any): void;
+        function bind(element: Element, viewModel: any, namespace?: any): void;
+        function bind(element: Element, viewModel: kendo.data.ObservableObject, namespace?: any): void;
+        function observableHierarchy(array: any): void;
+        function culture(culture: string): void;
+        function destroy(element: string): void;
+        function destroy(element: JQuery): void;
+        function destroy(element: Element): void;
+        function htmlEncode(value: string): string;
+        function parseDate(value: string, formats?: string, culture?: string): Date;
+        function parseDate(value: string, formats?: any, culture?: string): Date;
+        function parseFloat(value: string, culture?: string): number;
+        function parseInt(value: string, culture?: string): number;
+        function parseColor(color: string, noerror: boolean): kendo.Color;
+        function resize(element: string, force: boolean): void;
+        function resize(element: JQuery, force: boolean): void;
+        function resize(element: Element, force: boolean): void;
+        function saveAs(options: any): void;
+        function stringify(value: any): string;
+        function throttle(fn: Function, timeout: number): void;
+        function touchScroller(element: string): void;
+        function touchScroller(element: JQuery): void;
+        function touchScroller(element: Element): void;
+        function toString(value: Date, format: string, culture?: string): string;
+        function toString(value: number, format: string, culture?: string): string;
+        function unbind(element: string): void;
+        function unbind(element: JQuery): void;
+        function unbind(element: Element): void;
 
 }
 declare module kendo.mobile.ui {
@@ -1175,70 +2131,25 @@ declare module kendo.mobile.ui {
         wrapper: JQuery;
         constructor(element: Element, options?: ActionSheetOptions);
         options: ActionSheetOptions;
-        /**
-        Close the ActionSheet.
-        @method
-        */
         close(): void;
-        /**
-        Prepares the ActionSheet for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        @method
-        */
         destroy(): void;
-        /**
-        Open the ActionSheet.
-        @method
-        @param target - (optional) The target element of the ActionSheet, available in the callback methods.Notice The target element is mandatory on tablets, as the ActionSheet widget positions itself relative to opening element when a tablet is detected.
-        @param context - (optional) The context of the ActionSheet, available in the callback methods.
-        */
         open(target: JQuery, context: any): void;
     }
 
     interface ActionSheetPopup {
-        /**
-        The direction to which the popup will expand, relative to the target that opened it.
-        @member {any}
-        */
         direction?: any;
-        /**
-        The height of the popup in pixels.
-        @member {any}
-        */
         height?: any;
-        /**
-        The width of the popup in pixels.
-        @member {any}
-        */
         width?: any;
     }
 
     interface ActionSheetOptions {
         name?: string;
-        /**
-        The text of the cancel button.
-        @member {string}
-        */
         cancel?: string;
-        /**
-        The popup configuration options (tablet only).
-        @member {ActionSheetPopup}
-        */
         popup?: ActionSheetPopup;
-        /**
-        By default, the actionsheet opens as a full screen dialog on a phone device or as a popover if a tablet is detected. Setting the type to "phone" or "tablet" will force the looks of the widget regardless of the device.
-        @member {string}
-        */
         type?: string;
-        /**
-        Fires when the ActionSheet is closed.
-        */
         close?(e: ActionSheetEvent): void;
-        /**
-        Fires when the ActionSheet is opened.
-        */
         open?(e: ActionSheetOpenEvent): void;
     }
-
     interface ActionSheetEvent {
         sender: ActionSheet;
         isDefaultPrevented(): boolean;
@@ -1246,15 +2157,7 @@ declare module kendo.mobile.ui {
     }
 
     interface ActionSheetOpenEvent extends ActionSheetEvent {
-        /**
-        The invocation target of the ActionSheet.
-        @member {JQuery}
-        */
         target?: JQuery;
-        /**
-        The defined ActionSheet context.
-        @member {JQuery}
-        */
         context?: JQuery;
     }
 
@@ -1267,21 +2170,13 @@ declare module kendo.mobile.ui {
         wrapper: JQuery;
         constructor(element: Element, options?: BackButtonOptions);
         options: BackButtonOptions;
-        /**
-        Prepares the BackButton for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        @method
-        */
         destroy(): void;
     }
 
     interface BackButtonOptions {
         name?: string;
-        /**
-        Fires when the user taps the button.
-        */
         click?(e: BackButtonClickEvent): void;
     }
-
     interface BackButtonEvent {
         sender: BackButton;
         isDefaultPrevented(): boolean;
@@ -1289,15 +2184,7 @@ declare module kendo.mobile.ui {
     }
 
     interface BackButtonClickEvent extends BackButtonEvent {
-        /**
-        The clicked DOM element
-        @member {JQuery}
-        */
         target?: JQuery;
-        /**
-        The button DOM element
-        @member {JQuery}
-        */
         button?: JQuery;
     }
 
@@ -1310,56 +2197,20 @@ declare module kendo.mobile.ui {
         wrapper: JQuery;
         constructor(element: Element, options?: ButtonOptions);
         options: ButtonOptions;
-        /**
-        Introduced in Q1 2013 SP Sets a badge on the Button with the specified value. If invoked without parameters, returns the current badge value. Set the value to false to remove the badge.
-        @method
-        @param value - The target value to be set or false to be removed.
-        @returns the badge value if invoked without parameters, otherwise the Button object.
-        */
         badge(value: string): string;
-        /**
-        Introduced in Q1 2013 SP Sets a badge on the Button with the specified value. If invoked without parameters, returns the current badge value. Set the value to false to remove the badge.
-        @method
-        @param value - The target value to be set or false to be removed.
-        @returns the badge value if invoked without parameters, otherwise the Button object.
-        */
         badge(value: boolean): string;
-        /**
-        Prepares the Button for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        @method
-        */
         destroy(): void;
-        /**
-        Changes the enabled state of the widget.
-        @method
-        @param enable - Whether to enable or disable the widget.
-        */
         enable(enable: boolean): void;
     }
 
     interface ButtonOptions {
         name?: string;
-        /**
-        The badge of the button.
-        @member {string}
-        */
         badge?: string;
-        /**
-        If set to false the widget will be disabled and will not allow the user to click it. The widget is enabled by default.
-        @member {boolean}
-        */
+        clickOn?: string;
         enable?: boolean;
-        /**
-        The icon of the button. It can be either one of the built-in icons, or a custom one.
-        @member {string}
-        */
         icon?: string;
-        /**
-        Fires when the user taps the button.
-        */
         click?(e: ButtonClickEvent): void;
     }
-
     interface ButtonEvent {
         sender: Button;
         isDefaultPrevented(): boolean;
@@ -1367,15 +2218,7 @@ declare module kendo.mobile.ui {
     }
 
     interface ButtonClickEvent extends ButtonEvent {
-        /**
-        The clicked DOM element
-        @member {JQuery}
-        */
         target?: JQuery;
-        /**
-        The button DOM element
-        @member {JQuery}
-        */
         button?: JQuery;
     }
 
@@ -1388,82 +2231,24 @@ declare module kendo.mobile.ui {
         wrapper: JQuery;
         constructor(element: Element, options?: ButtonGroupOptions);
         options: ButtonGroupOptions;
-        /**
-        Introduced in Q1 2013 SP Sets a badge on one of the ButtonGroup buttons with the specified value. If invoked without parameters, returns the button's current badge value. Set the value to false to remove the badge.
-        @method
-        @param button - The target button specified either as a jQuery selector/object or as an button index.
-        @param value - The target value to be set or false to be removed.
-        @returns the badge value if invoked without parameters, otherwise the ButtonGroup object.
-        */
         badge(button: string, value: string): string;
-        /**
-        Introduced in Q1 2013 SP Sets a badge on one of the ButtonGroup buttons with the specified value. If invoked without parameters, returns the button's current badge value. Set the value to false to remove the badge.
-        @method
-        @param button - The target button specified either as a jQuery selector/object or as an button index.
-        @param value - The target value to be set or false to be removed.
-        @returns the badge value if invoked without parameters, otherwise the ButtonGroup object.
-        */
         badge(button: string, value: boolean): string;
-        /**
-        Introduced in Q1 2013 SP Sets a badge on one of the ButtonGroup buttons with the specified value. If invoked without parameters, returns the button's current badge value. Set the value to false to remove the badge.
-        @method
-        @param button - The target button specified either as a jQuery selector/object or as an button index.
-        @param value - The target value to be set or false to be removed.
-        @returns the badge value if invoked without parameters, otherwise the ButtonGroup object.
-        */
         badge(button: number, value: string): string;
-        /**
-        Introduced in Q1 2013 SP Sets a badge on one of the ButtonGroup buttons with the specified value. If invoked without parameters, returns the button's current badge value. Set the value to false to remove the badge.
-        @method
-        @param button - The target button specified either as a jQuery selector/object or as an button index.
-        @param value - The target value to be set or false to be removed.
-        @returns the badge value if invoked without parameters, otherwise the ButtonGroup object.
-        */
         badge(button: number, value: boolean): string;
-        /**
-        Get the currently selected Button.
-        @method
-        @returns the jQuery object representing the currently selected button.
-        */
         current(): JQuery;
-        /**
-        Prepares the ButtonGroup for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        @method
-        */
         destroy(): void;
-        /**
-        Select a Button.
-        @method
-        @param li - LI element or index of the Button.
-        */
+        enable(enable: boolean): void;
         select(li: JQuery): void;
-        /**
-        Select a Button.
-        @method
-        @param li - LI element or index of the Button.
-        */
         select(li: number): void;
     }
 
     interface ButtonGroupOptions {
         name?: string;
-        /**
-        Defines the initially selected Button (zero based index).
-        @member {number}
-        */
+        enable?: boolean;
         index?: number;
-        /**
-        Sets the DOM event used to select the button. Accepts "up" as an alias for touchend, mouseup and MSPointerUp vendor specific events.By default, buttons are selected immediately after the user presses the button (on touchstart or mousedown or MSPointerDown, depending on the mobile device).
-However, if the widget is placed in a scrollable view, the user may accidentally press the button when scrolling. In such cases, it is recommended to set this option to "up".
-        @member {string}
-        */
         selectOn?: string;
-        /**
-        Fires when a Button is selected.
-        */
         select?(e: ButtonGroupSelectEvent): void;
     }
-
     interface ButtonGroupEvent {
         sender: ButtonGroup;
         isDefaultPrevented(): boolean;
@@ -1471,11 +2256,38 @@ However, if the widget is placed in a scrollable view, the user may accidentally
     }
 
     interface ButtonGroupSelectEvent extends ButtonGroupEvent {
-        /**
-        The index of the selected button
-        @member {number}
-        */
         index?: number;
+    }
+
+
+    class Collapsible extends kendo.mobile.ui.Widget {
+        static fn: Collapsible;
+        static extend(proto: Object): Collapsible;
+
+        element: JQuery;
+        wrapper: JQuery;
+        constructor(element: Element, options?: CollapsibleOptions);
+        options: CollapsibleOptions;
+        collapse(instant: boolean): void;
+        destroy(): void;
+        expand(instant?: boolean): void;
+        toggle(instant?: boolean): void;
+    }
+
+    interface CollapsibleOptions {
+        name?: string;
+        animation?: boolean;
+        collapsed?: boolean;
+        expandIcon?: string;
+        iconPosition?: string;
+        inset?: boolean;
+        collapse?(e: CollapsibleEvent): void;
+        expand?(e: CollapsibleEvent): void;
+    }
+    interface CollapsibleEvent {
+        sender: Collapsible;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
     }
 
 
@@ -1487,21 +2299,13 @@ However, if the widget is placed in a scrollable view, the user may accidentally
         wrapper: JQuery;
         constructor(element: Element, options?: DetailButtonOptions);
         options: DetailButtonOptions;
-        /**
-        Prepares the DetailButton for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        @method
-        */
         destroy(): void;
     }
 
     interface DetailButtonOptions {
         name?: string;
-        /**
-        Fires when the user taps the button.
-        */
         click?(e: DetailButtonClickEvent): void;
     }
-
     interface DetailButtonEvent {
         sender: DetailButton;
         isDefaultPrevented(): boolean;
@@ -1509,15 +2313,7 @@ However, if the widget is placed in a scrollable view, the user may accidentally
     }
 
     interface DetailButtonClickEvent extends DetailButtonEvent {
-        /**
-        The clicked DOM element
-        @member {JQuery}
-        */
         target?: JQuery;
-        /**
-        The button DOM element
-        @member {JQuery}
-        */
         button?: JQuery;
     }
 
@@ -1530,72 +2326,32 @@ However, if the widget is placed in a scrollable view, the user may accidentally
         wrapper: JQuery;
         constructor(element: Element, options?: DrawerOptions);
         options: DrawerOptions;
-        /**
-        Prepares the Drawer for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        @method
-        */
         destroy(): void;
-        /**
-        Hide the Drawer
-        @method
-        */
         hide(): void;
-        /**
-        Show the Drawer
-        @method
-        */
         show(): void;
     }
 
     interface DrawerOptions {
         name?: string;
-        /**
-        Specifies the content element to shift when the drawer appears. Required if the drawer is used outside of a mobile application.
-        @member {JQuery}
-        */
         container?: JQuery;
-        /**
-        The position of the drawer. Can be left (default) or right.
-        @member {string}
-        */
         position?: string;
-        /**
-        If set to false, swiping the view will not activate the drawer. In this case, the drawer will only be open by a designated button
-        @member {boolean}
-        */
         swipeToOpen?: boolean;
-        /**
-        The text to display in the Navbar title (if present).
-        @member {string}
-        */
+        swipeToOpenViews?: any;
         title?: string;
-        /**
-        A list of the view ids on which the drawer will appear. If omitted, the drawer will work on any view in the application.
-        @member {any}
-        */
         views?: any;
-        /**
-        Fires before the mobile Drawer is revealed. The event can be prevented by calling the preventDefault method of the event parameter.
-        */
+        afterHide?(e: DrawerAfterHideEvent): void;
         beforeShow?(e: DrawerEvent): void;
-        /**
-        Fired when the mobile Drawer is closed by the user.
-        */
         hide?(e: DrawerHideEvent): void;
-        /**
-        Fired when the mobile Drawer and its child widgets are initialized.
-        */
         init?(e: DrawerInitEvent): void;
-        /**
-        Fires when the Drawer is shown.
-        */
         show?(e: DrawerShowEvent): void;
     }
-
     interface DrawerEvent {
         sender: Drawer;
         isDefaultPrevented(): boolean;
         preventDefault: Function;
+    }
+
+    interface DrawerAfterHideEvent extends DrawerEvent {
     }
 
     interface DrawerHideEvent extends DrawerEvent {
@@ -1620,31 +2376,12 @@ However, if the widget is placed in a scrollable view, the user may accidentally
 
     interface LayoutOptions {
         name?: string;
-        /**
-        The id of the layout. Required
-        @member {string}
-        */
         id?: string;
-        /**
-        The specific platform this layout targets. By default, layouts are displayed
-on all platforms.
-        @member {string}
-        */
         platform?: string;
-        /**
-        Fires when a mobile View using the layout becomes hidden.
-        */
         hide?(e: LayoutHideEvent): void;
-        /**
-        Fires after a mobile Layout and its child widgets is initialized.
-        */
         init?(e: LayoutInitEvent): void;
-        /**
-        Fires when a mobile View using the layout becomes visible.
-        */
         show?(e: LayoutShowEvent): void;
     }
-
     interface LayoutEvent {
         sender: Layout;
         isDefaultPrevented(): boolean;
@@ -1652,36 +2389,16 @@ on all platforms.
     }
 
     interface LayoutHideEvent extends LayoutEvent {
-        /**
-        The mobile layout instance
-        @member {JQuery}
-        */
         layout?: JQuery;
-        /**
-        The mobile view instance
-        @member {JQuery}
-        */
         view?: JQuery;
     }
 
     interface LayoutInitEvent extends LayoutEvent {
-        /**
-        The mobile layout instance
-        @member {JQuery}
-        */
         layout?: JQuery;
     }
 
     interface LayoutShowEvent extends LayoutEvent {
-        /**
-        The mobile layout instance
-        @member {JQuery}
-        */
         layout?: JQuery;
-        /**
-        The mobile view instance
-        @member {JQuery}
-        */
         view?: JQuery;
     }
 
@@ -1695,182 +2412,54 @@ on all platforms.
         constructor(element: Element, options?: ListViewOptions);
         options: ListViewOptions;
         dataSource: kendo.data.DataSource;
-        /**
-        Appends new items generated by rendering the given data items with the listview template to the bottom of the listview.
-        @method
-        @param dataItems - 
-        */
         append(dataItems: any): void;
-        /**
-        Prepends new items generated by rendering the given data items with the listview template to the top of the listview.
-        @method
-        @param dataItems - 
-        */
         prepend(dataItems: any): void;
-        /**
-        Replaces the contents of the listview with the passed rendered data items.
-        @method
-        @param dataItems - 
-        */
         replace(dataItems: any): void;
-        /**
-        Removes the listview items which are rendered with the passed data items.
-        @method
-        @param dataItems - 
-        */
         remove(dataItems: any): void;
-        /**
-        Re-renders the given listview item with the new dataItem provided. In order for the method to work as expected, the data items should be of type kendo.data.Model.
-        @method
-        @param item - The listview item to update
-        @param dataItem - The new dataItem
-        */
         setDataItem(item: JQuery, dataItem: kendo.data.Model): void;
-        /**
-        Prepares the ListView for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        @method
-        */
         destroy(): void;
-        /**
-        Get the listview DOM element items
-        @method
-        @returns The listview DOM element items
-        */
         items(): JQuery;
-        /**
-        Repaints the listview (works only in databound mode).
-        @method
-        */
         refresh(): void;
-        /**
-        Sets the DataSource of an existing ListView and rebinds it.
-        @method
-        @param dataSource - 
-        */
         setDataSource(dataSource: kendo.data.DataSource): void;
     }
 
     interface ListViewFilterable {
-        /**
-        Placeholder text for search input.
-        @member {string}
-        */
         placeholder?: string;
-        /**
-        Indicates whether filtering should be performed on every key up event or when the user press the Search button of the device keyboard.
-        @member {boolean}
-        */
         autoFilter?: boolean;
-        /**
-        Specifies the field which will be used in the filter expression. The default field value is undefined which is usefull when the list view is bound to a list of primitive types.
-If this is not case the field must be defined.
-        @member {string}
-        */
         field?: string;
-        /**
-        Specifies whether the filter expression must be case sensitive or not.
-        @member {boolean}
-        */
         ignoreCase?: boolean;
-        /**
-        Specifies the comparison operator used in the filter expression. The operator must be one of the available DataSource filter operators.
-        @member {string}
-        */
         operator?: string;
+    }
+
+    interface ListViewMessages {
+        loadMoreText?: string;
+        pullTemplate?: string;
+        refreshTemplate?: string;
+        releaseTemplate?: string;
     }
 
     interface ListViewOptions {
         name?: string;
-        /**
-        Used in combination with pullToRefresh. If set to true, newly loaded data will be appended on top when refreshing. Notice: not applicable if ListView is in a virtual mode.
-        @member {boolean}
-        */
         appendOnRefresh?: boolean;
-        /**
-        Indicates whether the listview will call read on the DataSource initially. If set to false, the listview will be bound after the DataSource instance fetch method is called.
-        @member {boolean}
-        */
         autoBind?: boolean;
-        /**
-        Instance of DataSource or the data that the mobile ListView will be bound to.
-        @member {any}
-        */
         dataSource?: any;
-        /**
-        If set to true, the listview gets the next page of data when the user scrolls near the bottom of the view.
-        @member {boolean}
-        */
         endlessScroll?: boolean;
-        /**
-        If set to true, the group headers will persist their position when the user scrolls through the listview.
-Applicable only when the type is set to group, or when binding to grouped DataSource.Notice: fixed headers are not supported in virtual mode.
-        @member {boolean}
-        */
         fixedHeaders?: boolean;
-        /**
-        The header item template (applicable when the type is set to group).
-        @member {any}
-        */
         headerTemplate?: any;
-        /**
-        If set to true, a button is rendered at the bottom of the listview. Tapping it fetches and displays the items from the next page of the DataSource.
-        @member {boolean}
-        */
         loadMore?: boolean;
-        /**
-        The text of the rendered load-more button (applies only if loadMore is set to true).
-        @member {string}
-        */
-        loadMoreText?: string;
-        /**
-        If set to true, the listview will reload its data when the user pulls the view over the top limit.
-        @member {boolean}
-        */
+        messages?: ListViewMessages;
         pullToRefresh?: boolean;
-        /**
-        A callback function used when the 'pullToRefresh' option is enabled. The result of the function will be send as additional parameters to the DataSource's next method.Notice: When the listview is in a virtual mode, the pull to refresh action removes the previously loaded items in the listview (instead of appending new records at the top).
-Previously loaded pages in the DataSource are also discarded.
-        @member {Function}
-        */
         pullParameters?: Function;
-        /**
-        The style of the widget. Can be either empty string(""), or inset.
-        @member {string}
-        */
         style?: string;
-        /**
-        The item template.
-        @member {any}
-        */
         template?: any;
-        /**
-        The type of the control. Can be either flat (default) or group. Determined automatically in databound mode.
-        @member {string}
-        */
         type?: string;
-        /**
-        Indicates whether the filter input must be visible or not.
-        @member {ListViewFilterable}
-        */
         filterable?: ListViewFilterable;
-        /**
-        Fires when item is tapped.
-        */
+        virtualViewSize?: number;
         click?(e: ListViewClickEvent): void;
-        /**
-        Fires when the ListView has received data from the DataSource.
-        */
         dataBound?(e: ListViewEvent): void;
-        /**
-        Fires when the ListView is about to be rendered.
-        */
         dataBinding?(e: ListViewEvent): void;
-        /**
-        Fires when a new item is added to the listview (usually in virtual mode).
-        */
         itemChange?(e: ListViewEvent): void;
     }
-
     interface ListViewEvent {
         sender: ListView;
         isDefaultPrevented(): boolean;
@@ -1878,26 +2467,9 @@ Previously loaded pages in the DataSource are also discarded.
     }
 
     interface ListViewClickEvent extends ListViewEvent {
-        /**
-        The selected list item.
-        @member {JQuery}
-        */
         item?: JQuery;
-        /**
-        The tapped DOM element.
-        @member {JQuery}
-        */
         target?: JQuery;
-        /**
-        The corresponding dataItem associated with the item (available in databound mode only).
-Note: The dataItem must be from a non-primitive type (Object).
-        @member {any}
-        */
         dataItem?: any;
-        /**
-        The tapped Kendo mobile Button (if present).
-        @member {kendo.mobile.ui.Button}
-        */
         button?: kendo.mobile.ui.Button;
     }
 
@@ -1910,22 +2482,13 @@ Note: The dataItem must be from a non-primitive type (Object).
         wrapper: JQuery;
         constructor(element: Element, options?: LoaderOptions);
         options: LoaderOptions;
-        /**
-        Hide the loading animation.
-        @method
-        */
         hide(): void;
-        /**
-        Show the loading animation.
-        @method
-        */
         show(): void;
     }
 
     interface LoaderOptions {
         name?: string;
     }
-
     interface LoaderEvent {
         sender: Loader;
         isDefaultPrevented(): boolean;
@@ -1941,59 +2504,29 @@ Note: The dataItem must be from a non-primitive type (Object).
         wrapper: JQuery;
         constructor(element: Element, options?: ModalViewOptions);
         options: ModalViewOptions;
-        /**
-        Close the ModalView
-        @method
-        */
         close(): void;
-        /**
-        Prepares the ModalView for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        @method
-        */
         destroy(): void;
-        /**
-        Open the ModalView
-        @method
-        @param target - (optional) The target of the ModalView
-        */
         open(target: JQuery): void;
     }
 
     interface ModalViewOptions {
         name?: string;
-        /**
-        The height of the ModalView container in pixels. If not set, the element style is used.
-        @member {number}
-        */
         height?: number;
-        /**
-        When set to false, the ModalView will close when the user taps outside of its element.
-        @member {boolean}
-        */
         modal?: boolean;
-        /**
-        The width of the ModalView container in pixels. If not set, the element style is used.
-        @member {number}
-        */
         width?: number;
-        /**
-        Fired when the mobile ModalView is closed by the user.
-        */
+        beforeOpen?(e: ModalViewBeforeOpenEvent): void;
         close?(e: ModalViewCloseEvent): void;
-        /**
-        Fired when the mobile ModalView and its child widgets are initialized.
-        */
         init?(e: ModalViewInitEvent): void;
-        /**
-        Fires when the ModalView is shown.
-        */
         open?(e: ModalViewOpenEvent): void;
     }
-
     interface ModalViewEvent {
         sender: ModalView;
         isDefaultPrevented(): boolean;
         preventDefault: Function;
+    }
+
+    interface ModalViewBeforeOpenEvent extends ModalViewEvent {
+        target?: JQuery;
     }
 
     interface ModalViewCloseEvent extends ModalViewEvent {
@@ -2003,10 +2536,6 @@ Note: The dataItem must be from a non-primitive type (Object).
     }
 
     interface ModalViewOpenEvent extends ModalViewEvent {
-        /**
-        The invocation target of the ModalView.
-        @member {JQuery}
-        */
         target?: JQuery;
     }
 
@@ -2019,23 +2548,13 @@ Note: The dataItem must be from a non-primitive type (Object).
         wrapper: JQuery;
         constructor(element: Element, options?: NavBarOptions);
         options: NavBarOptions;
-        /**
-        Prepares the NavBar for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        @method
-        */
         destroy(): void;
-        /**
-        Update the title element text. The title element is specified by setting the role data attribute to view-title.
-        @method
-        @param value - The text of title
-        */
         title(value: string): void;
     }
 
     interface NavBarOptions {
         name?: string;
     }
-
     interface NavBarEvent {
         sender: NavBar;
         isDefaultPrevented(): boolean;
@@ -2051,90 +2570,26 @@ Note: The dataItem must be from a non-primitive type (Object).
         wrapper: JQuery;
         constructor(element: Element, options?: PaneOptions);
         options: PaneOptions;
-        /**
-        Prepares the Pane for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        @method
-        */
         destroy(): void;
-        /**
-        Hide the loading animation.
-        @method
-        */
         hideLoading(): void;
-        /**
-        Navigate the local or remote view.
-        @method
-        @param url - The id or URL of the view.
-        @param transition - The transition to apply when navigating. See View Transitions for more information.
-        */
         navigate(url: string, transition: string): void;
-        /**
-        Navigate to local or to remote view. The view will replace the current one in the history stack.
-        @method
-        @param url - The id or URL of the view.
-        @param transition - The transition to apply when navigating. See View Transitions for more information.
-        */
         replace(url: string, transition: string): void;
-        /**
-        
-        @method
-        */
         Example(): void;
-        /**
-        Show the loading animation.
-        @method
-        */
         showLoading(): void;
-        /**
-        Get a reference to the current view.
-        @method
-        @returns the view instance.
-        */
         view(): kendo.mobile.ui.View;
     }
 
     interface PaneOptions {
         name?: string;
-        /**
-        Applicable when the pane is inside a SplitView. If set to true, the pane will be hidden when the device is in portrait position. The expandPanes SplitView method displays the hidden panes.The id of the initial mobile View to display.
-        @member {boolean}
-        */
         collapsible?: boolean;
-        /**
-        The id of the initial mobile View to display.
-        @member {string}
-        */
         initial?: string;
-        /**
-        The id of the default Pane Layout.
-        @member {string}
-        */
         layout?: string;
-        /**
-        The text displayed in the loading popup. Setting this value to false will disable the loading popup.
-        @member {string}
-        */
         loading?: string;
-        /**
-        Sets the pane width in pixels when the device is in portrait position.
-        @member {number}
-        */
         portraitWidth?: number;
-        /**
-        The default View transition.
-        @member {string}
-        */
         transition?: string;
-        /**
-        Triggered when pane navigates to a view.
-        */
         navigate?(e: PaneNavigateEvent): void;
-        /**
-        Triggered after the pane displays a view.
-        */
         viewShow?(e: PaneViewShowEvent): void;
     }
-
     interface PaneEvent {
         sender: Pane;
         isDefaultPrevented(): boolean;
@@ -2142,18 +2597,10 @@ Note: The dataItem must be from a non-primitive type (Object).
     }
 
     interface PaneNavigateEvent extends PaneEvent {
-        /**
-        The URL of the view
-        @member {JQuery}
-        */
         url?: JQuery;
     }
 
     interface PaneViewShowEvent extends PaneEvent {
-        /**
-        The displayed view
-        @member {kendo.mobile.ui.View}
-        */
         view?: kendo.mobile.ui.View;
     }
 
@@ -2166,82 +2613,30 @@ Note: The dataItem must be from a non-primitive type (Object).
         wrapper: JQuery;
         constructor(element: Element, options?: PopOverOptions);
         options: PopOverOptions;
-        /**
-        Close the popover.
-        @method
-        */
         close(): void;
-        /**
-        Prepares the PopOver for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        @method
-        */
         destroy(): void;
-        /**
-        Open the PopOver.
-        @method
-        @param target - The target of the Popover, to which the visual arrow will point to. This parameter is required for a tablet OS.
-        */
         open(target: JQuery): void;
     }
 
     interface PopOverPane {
-        /**
-        The id of the initial mobile View to display.
-        @member {string}
-        */
         initial?: string;
-        /**
-        The id of the default Pane Layout.
-        @member {string}
-        */
         layout?: string;
-        /**
-        The text displayed in the loading popup. Setting this value to false will disable the loading popup.
-        @member {string}
-        */
         loading?: string;
-        /**
-        The default View transition.
-        @member {string}
-        */
         transition?: string;
     }
 
     interface PopOverPopup {
-        /**
-        The height of the popup in pixels.
-        @member {any}
-        */
         height?: any;
-        /**
-        The width of the popup in pixels.
-        @member {any}
-        */
         width?: any;
     }
 
     interface PopOverOptions {
         name?: string;
-        /**
-        The pane configuration options.
-        @member {PopOverPane}
-        */
         pane?: PopOverPane;
-        /**
-        The popup configuration options.
-        @member {PopOverPopup}
-        */
         popup?: PopOverPopup;
-        /**
-        Fires when popover is closed.
-        */
         close?(e: PopOverCloseEvent): void;
-        /**
-        Fires when popover is opened.
-        */
         open?(e: PopOverOpenEvent): void;
     }
-
     interface PopOverEvent {
         sender: PopOver;
         isDefaultPrevented(): boolean;
@@ -2252,10 +2647,6 @@ Note: The dataItem must be from a non-primitive type (Object).
     }
 
     interface PopOverOpenEvent extends PopOverEvent {
-        /**
-        The DOM element, which triggered the popover opening.
-        @member {JQuery}
-        */
         target?: JQuery;
     }
 
@@ -2269,129 +2660,35 @@ Note: The dataItem must be from a non-primitive type (Object).
         constructor(element: Element, options?: ScrollViewOptions);
         options: ScrollViewOptions;
         dataSource: kendo.data.DataSource;
-        /**
-        Update the ScrollView HTML content.
-        @method
-        @param content - The new ScrollView content.
-        */
         content(content: string): void;
-        /**
-        Update the ScrollView HTML content.
-        @method
-        @param content - The new ScrollView content.
-        */
         content(content: JQuery): void;
-        /**
-        Prepares the ScrollView for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        @method
-        */
         destroy(): void;
-        /**
-        Switches to the next page with animation.
-        @method
-        */
         next(): void;
-        /**
-        Switches to the previous page with animation.
-        @method
-        */
         prev(): void;
-        /**
-        Redraw the mobile ScrollView pager. Called automatically on device orientation change event.
-        @method
-        */
         refresh(): void;
-        /**
-        Scroll to the given page. Pages are zero-based indexed.
-        @method
-        @param page - The page to scroll to.
-        @param instant - If set to true, the ScrollView will jump instantly to the given page without any animation effects.
-        */
         scrollTo(page: number, instant: boolean): void;
-        /**
-        Sets the DataSource of an existing ScrollView and rebinds it.
-        @method
-        @param dataSource - 
-        */
         setDataSource(dataSource: kendo.data.DataSource): void;
+        value(dataItem: any): any;
     }
 
     interface ScrollViewOptions {
         name?: string;
-        /**
-        If set to false the widget will not bind to the DataSource during initialization. In this case data binding will occur when the change event of the data source is fired. By default the widget will bind to the DataSource specified in the configuration.Applicable only in data bound mode.
-        @member {boolean}
-        */
         autoBind?: boolean;
-        /**
-        The velocity threshold after which a swipe will result in a bounce effect.
-        @member {number}
-        */
         bounceVelocityThreshold?: number;
-        /**
-        The height of the ScrollView content. Supports 100% if the ScrollView is embedded in a stretched view and the ScrollView element is an immediate child of the view element.
-        @member {any}
-        */
         contentHeight?: any;
-        /**
-        Instance of DataSource that the mobile ScrollView will be bound to. If DataSource is set, the widget will operate in data bound mode.
-        @member {any}
-        */
         dataSource?: any;
-        /**
-        The milliseconds that take the ScrollView to snap to the current page after released.
-        @member {number}
-        */
         duration?: number;
-        /**
-        The template which is used to render the pages without content. By default the ScrollView renders a blank page.Applicable only in data bound mode.
-        @member {string}
-        */
         emptyTemplate?: string;
-        /**
-        If set to true the ScrollView will display a pager. By default pager is enabled.
-        @member {boolean}
-        */
         enablePager?: boolean;
-        /**
-        Determines how many data items will be passed to the page template.Applicable only in data bound mode.
-        @member {number}
-        */
         itemsPerPage?: number;
-        /**
-        The initial page to display.
-        @member {number}
-        */
         page?: number;
-        /**
-        Multiplier applied to the snap amount of the ScrollView. By default, the widget scrolls to the next screen when swipe. If the pageSize property is set to 0.5, the ScrollView will scroll by half of the widget width.Not applicable in data bound mode.
-        @member {number}
-        */
         pageSize?: number;
-        /**
-        The template which is used to render the content of pages. By default the ScrollView renders a div element for every page.Applicable only in data bound mode.
-        @member {string}
-        */
         template?: string;
-        /**
-        The velocity threshold after which a swipe will navigate to the next page (as opposed to snapping back to the current page).
-        @member {number}
-        */
         velocityThreshold?: number;
-        /**
-        Fires before the widget page is changed. The change can be prevented by calling the preventDefault method of the event parameter, in which case the widget will snap back to the current page.
-        */
         changing?(e: ScrollViewChangingEvent): void;
-        /**
-        Fires when the widget page is changed.
-        */
         change?(e: ScrollViewChangeEvent): void;
-        /**
-        Fires when widget refreshes
-        */
         refresh?(e: ScrollViewRefreshEvent): void;
     }
-
     interface ScrollViewEvent {
         sender: ScrollView;
         isDefaultPrevented(): boolean;
@@ -2399,46 +2696,18 @@ Note: The dataItem must be from a non-primitive type (Object).
     }
 
     interface ScrollViewChangingEvent extends ScrollViewEvent {
-        /**
-        The current page (zero based index)
-        @member {number}
-        */
         currentPage?: number;
-        /**
-        The page about to be displayed (zero based index)
-        @member {number}
-        */
         nextPage?: number;
     }
 
     interface ScrollViewChangeEvent extends ScrollViewEvent {
-        /**
-        The current page (zero based index)
-        @member {number}
-        */
         page?: number;
-        /**
-        The page element. Available only in data bound mode. Parameter will be undefined in standard mode.
-        @member {JQuery}
-        */
         element?: JQuery;
-        /**
-        The data collection. Available only in data bound mode. Parameter will be undefined in standard mode.
-        @member {any}
-        */
         data?: any;
     }
 
     interface ScrollViewRefreshEvent extends ScrollViewEvent {
-        /**
-        The number of pages
-        @member {number}
-        */
         pageCount?: number;
-        /**
-        The current page number (zero based index)
-        @member {number}
-        */
         page?: number;
     }
 
@@ -2451,130 +2720,38 @@ Note: The dataItem must be from a non-primitive type (Object).
         wrapper: JQuery;
         constructor(element: Element, options?: ScrollerOptions);
         options: ScrollerOptions;
-        /**
-        Scrolls the scroll container to the specified location with animation. The arguments should be negative numbers.
-        @method
-        @param x - The horizontal offset in pixels to scroll to.
-        @param y - The vertical offset in pixels to scroll to.
-        */
         animatedScrollTo(x: number, y: number): void;
-        /**
-        Prepares the Scroller for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        @method
-        */
         destroy(): void;
-        /**
-        Disables the scrolling of the element.
-        @method
-        */
         disable(): void;
-        /**
-        Enables the scrolling of the element after it has been disabled by calling disable.
-        @method
-        */
         enable(): void;
-        /**
-        Returns the viewport height of the scrollable element.
-        @method
-        @returns the viewport height in pixels.
-        */
         height(): number;
-        /**
-        Indicate that the pull event is handled (i.e. data from the server has been retrieved).
-        @method
-        */
         pullHandled(): void;
-        /**
-        Scrolls the container to the top.
-        @method
-        */
         reset(): void;
-        /**
-        Returns the height in pixels of the scroller content.
-        @method
-        */
         scrollHeight(): void;
-        /**
-        Scrolls the container to the specified location. The arguments should be negative numbers.
-        @method
-        @param x - The horizontal offset in pixels to scroll to.
-        @param y - The vertical offset in pixels to scroll to.
-        */
         scrollTo(x: number, y: number): void;
-        /**
-        Returns the width in pixels of the scroller content.
-        @method
-        */
         scrollWidth(): void;
-        /**
-        Zooms the scroller out to the minimum zoom level possible.
-        @method
-        */
         zoomOut(): void;
+    }
+
+    interface ScrollerMessages {
+        pullTemplate?: string;
+        refreshTemplate?: string;
+        releaseTemplate?: string;
     }
 
     interface ScrollerOptions {
         name?: string;
-        /**
-        If set to true, the user can zoom in/out the contents of the widget using the pinch/zoom gesture.
-        @member {boolean}
-        */
-        zoom?: boolean;
-        /**
-        Weather or not to allow out of bounds dragging and easing.
-        @member {boolean}
-        */
         elastic?: boolean;
-        /**
-        The threshold below which a releasing the scroller will trigger the pull event.
-Has effect only when the pullToRefresh option is set to true.
-        @member {number}
-        */
+        messages?: ScrollerMessages;
         pullOffset?: number;
-        /**
-        The message template displayed when the user pulls the scroller.
-Has effect only when the pullToRefresh option is set to true.
-        @member {string}
-        */
-        pullTemplate?: string;
-        /**
-        If set to true, the scroller will display a hint when the user pulls the container beyond its top limit.
-If a pull beyond the specified pullOffset occurs, a pull event will be triggered.
-        @member {boolean}
-        */
         pullToRefresh?: boolean;
-        /**
-        The message template displayed during the refresh.
-Has effect only when the pullToRefresh option is set to true.
-        @member {string}
-        */
-        refreshTemplate?: string;
-        /**
-        The message template displayed when the user pulls the scroller below the pullOffset, indicating that pullToRefresh will occur.
-Has effect only when the pullToRefresh option is set to true.
-        @member {string}
-        */
-        releaseTemplate?: string;
-        /**
-        If set to true, the scroller will use the native scrolling available in the current platform. This should help with form issues on some platforms (namely Android and WP8).
-Native scrolling is only enabled on platforms that support it: iOS > 4, Android > 2, WP8. BlackBerry devices do support it, but the native scroller is flaky.
-        @member {boolean}
-        */
         useNative?: boolean;
-        /**
-        Fires when the pull option is set to true, and the user pulls the scrolling container beyond the specified pullThreshold.
-        */
+        visibleScrollHints?: boolean;
+        zoom?: boolean;
         pull?(e: ScrollerEvent): void;
-        /**
-        Fires when the scroller dimensions change (e.g. orientation change or resize)
-        */
         resize?(e: ScrollerEvent): void;
-        /**
-        Fires when the user scrolls through the content.
-        */
         scroll?(e: ScrollerScrollEvent): void;
     }
-
     interface ScrollerEvent {
         sender: Scroller;
         isDefaultPrevented(): boolean;
@@ -2582,15 +2759,7 @@ Native scrolling is only enabled on platforms that support it: iOS > 4, Android 
     }
 
     interface ScrollerScrollEvent extends ScrollerEvent {
-        /**
-        The number of pixels that are hidden from view above the scrollable area.
-        @member {number}
-        */
         scrollTop?: number;
-        /**
-        The number of pixels that are hidden from view to the left of the scrollable area.
-        @member {number}
-        */
         scrollLeft?: number;
     }
 
@@ -2603,40 +2772,17 @@ Native scrolling is only enabled on platforms that support it: iOS > 4, Android 
         wrapper: JQuery;
         constructor(element: Element, options?: SplitViewOptions);
         options: SplitViewOptions;
-        /**
-        Prepares the SplitView for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        @method
-        */
         destroy(): void;
-        /**
-        Displays the collapsible panes; has effect only when the device is in portrait orientation.
-        @method
-        */
         expandPanes(): void;
-        /**
-        Collapses back the collapsible panes (displayed previously with expandPanes); has effect only when the device is in portrait orientation.
-        @method
-        */
         collapsePanes(): void;
     }
 
     interface SplitViewOptions {
         name?: string;
-        /**
-        Defines the SplitView style - horizontal or vertical.
-        @member {string}
-        */
         style?: string;
-        /**
-        Fires after the mobile SplitView and its child widgets are initialized.
-        */
         init?(e: SplitViewInitEvent): void;
-        /**
-        Fires when the mobile SplitView becomes visible.
-        */
         show?(e: SplitViewShowEvent): void;
     }
-
     interface SplitViewEvent {
         sender: SplitView;
         isDefaultPrevented(): boolean;
@@ -2644,18 +2790,10 @@ Native scrolling is only enabled on platforms that support it: iOS > 4, Android 
     }
 
     interface SplitViewInitEvent extends SplitViewEvent {
-        /**
-        The mobile SplitView instance
-        @member {JQuery}
-        */
         view?: JQuery;
     }
 
     interface SplitViewShowEvent extends SplitViewEvent {
-        /**
-        The mobile SplitView instance
-        @member {JQuery}
-        */
         view?: JQuery;
     }
 
@@ -2668,69 +2806,22 @@ Native scrolling is only enabled on platforms that support it: iOS > 4, Android 
         wrapper: JQuery;
         constructor(element: Element, options?: SwitchOptions);
         options: SwitchOptions;
-        /**
-        Get/Set the checked state of the widget.
-        @method
-        @returns The checked state of the widget.
-        */
         check(): boolean;
-        /**
-        Get/Set the checked state of the widget.
-        @method
-        @param check - Whether to turn the widget on or off.
-        */
         check(check: boolean): void;
-        /**
-        Prepares the Switch for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        @method
-        */
         destroy(): void;
-        /**
-        Changes the enabled state of the widget.
-        @method
-        @param enable - Whether to enable or disable the widget.
-        */
         enable(enable: boolean): void;
-        /**
-        Forces the Switch to recalculate its dimensions. Useful when major changes in the interface happen dynamically, like for instance changing the skin.
-        @method
-        */
         refresh(): void;
-        /**
-        Toggle the checked state of the widget.
-        @method
-        */
         toggle(): void;
     }
 
     interface SwitchOptions {
         name?: string;
-        /**
-        The checked state of the widget.
-        @member {boolean}
-        */
         checked?: boolean;
-        /**
-        If set to false the widget will be disabled and will not allow the user to change its checked state. The widget is enabled by default.
-        @member {boolean}
-        */
         enable?: boolean;
-        /**
-        The OFF label.
-        @member {string}
-        */
         offLabel?: string;
-        /**
-        The ON label.
-        @member {string}
-        */
         onLabel?: string;
-        /**
-        Fires when the state of the widget changes
-        */
         change?(e: SwitchChangeEvent): void;
     }
-
     interface SwitchEvent {
         sender: Switch;
         isDefaultPrevented(): boolean;
@@ -2738,10 +2829,6 @@ Native scrolling is only enabled on platforms that support it: iOS > 4, Android 
     }
 
     interface SwitchChangeEvent extends SwitchEvent {
-        /**
-        The checked state of the widget.
-        @member {any}
-        */
         checked?: any;
     }
 
@@ -2754,87 +2841,23 @@ Native scrolling is only enabled on platforms that support it: iOS > 4, Android 
         wrapper: JQuery;
         constructor(element: Element, options?: TabStripOptions);
         options: TabStripOptions;
-        /**
-        Introduced in Q1 2013 SP Sets a badge on one of the tabs with the specified value. If invoked without second parameter, returns the tab's current badge value. Set the value to false to remove the badge.
-        @method
-        @param tab - The target tab specified either as a jQuery selector/object or as an item index.
-        @param value - The target value to be set or false to be removed.
-        @returns Returns the badge value if invoked without parameters, otherwise returns the TabStrip object.
-        */
         badge(tab: string, value: string): string;
-        /**
-        Introduced in Q1 2013 SP Sets a badge on one of the tabs with the specified value. If invoked without second parameter, returns the tab's current badge value. Set the value to false to remove the badge.
-        @method
-        @param tab - The target tab specified either as a jQuery selector/object or as an item index.
-        @param value - The target value to be set or false to be removed.
-        @returns Returns the badge value if invoked without parameters, otherwise returns the TabStrip object.
-        */
         badge(tab: string, value: boolean): string;
-        /**
-        Introduced in Q1 2013 SP Sets a badge on one of the tabs with the specified value. If invoked without second parameter, returns the tab's current badge value. Set the value to false to remove the badge.
-        @method
-        @param tab - The target tab specified either as a jQuery selector/object or as an item index.
-        @param value - The target value to be set or false to be removed.
-        @returns Returns the badge value if invoked without parameters, otherwise returns the TabStrip object.
-        */
         badge(tab: number, value: string): string;
-        /**
-        Introduced in Q1 2013 SP Sets a badge on one of the tabs with the specified value. If invoked without second parameter, returns the tab's current badge value. Set the value to false to remove the badge.
-        @method
-        @param tab - The target tab specified either as a jQuery selector/object or as an item index.
-        @param value - The target value to be set or false to be removed.
-        @returns Returns the badge value if invoked without parameters, otherwise returns the TabStrip object.
-        */
         badge(tab: number, value: boolean): string;
-        /**
-        Get the currently selected tab DOM element.
-        @method
-        @returns the currently selected tab DOM element.
-        */
         currentItem(): JQuery;
-        /**
-        Prepares the TabStrip for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        @method
-        */
         destroy(): void;
-        /**
-        Set the mobile TabStrip active tab to the tab with the specified URL. This method doesn't change the current View. To change the View, use Application's navigate method instead.
-        @method
-        @param url - The URL or zero based index of the tab.
-        */
         switchTo(url: string): void;
-        /**
-        Set the mobile TabStrip active tab to the tab with the specified URL. This method doesn't change the current View. To change the View, use Application's navigate method instead.
-        @method
-        @param url - The URL or zero based index of the tab.
-        */
         switchTo(url: number): void;
-        /**
-        Set the mobile TabStrip active tab to the tab with the specified full URL. This method doesn't change the current View. To change the View, use Application's navigate method instead.
-        @method
-        @param url - The URL of the tab.
-        */
         switchByFullUrl(url: string): void;
-        /**
-        Clear the currently selected tab.
-        @method
-        */
         clear(): void;
     }
 
     interface TabStripOptions {
         name?: string;
-        /**
-        The index of the initially selected tab.
-        @member {number}
-        */
         selectedIndex?: number;
-        /**
-        Fires when tab is selected.
-        */
         select?(e: TabStripSelectEvent): void;
     }
-
     interface TabStripEvent {
         sender: TabStrip;
         isDefaultPrevented(): boolean;
@@ -2842,10 +2865,6 @@ Native scrolling is only enabled on platforms that support it: iOS > 4, Android 
     }
 
     interface TabStripSelectEvent extends TabStripEvent {
-        /**
-        The selected tab
-        @member {JQuery}
-        */
         item?: JQuery;
     }
 
@@ -2858,84 +2877,29 @@ Native scrolling is only enabled on platforms that support it: iOS > 4, Android 
         wrapper: JQuery;
         constructor(element: Element, options?: ViewOptions);
         options: ViewOptions;
-        /**
-        Retrieves the current content holder of the View - this is the content element if the View is stretched or the scroll container otherwise.
-        @method
-        */
         contentElement(): void;
-        /**
-        Prepares the View for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        @method
-        */
         destroy(): void;
-        /**
-        Enables or disables the user interaction with the view and its contents.
-        @method
-        @param enable - Omitting the parameter or passing true enables the view. Passing false disables the view.
-        */
         enable(enable: boolean): void;
     }
 
     interface ViewOptions {
         name?: string;
-        /**
-        The MVVM model to bind to. If a string is passed, The view will try to resolve a reference to the view model variable in the global scope.
-        @member {string}
-        */
         model?: string;
-        /**
-        Applicable to remote views only. If set to true, the remote view contents will be reloaded from the server (using Ajax) each time the view is navigated to.
-        @member {boolean}
-        */
         reload?: boolean;
-        /**
-        If set to true, the view will stretch its child contents to occupy the entire view, while disabling kinetic scrolling.
-Useful if the view contains an image or a map.
-        @member {boolean}
-        */
+        scroller?: any;
         stretch?: boolean;
-        /**
-        The text to display in the NavBar title (if present) and the browser title.
-        @member {string}
-        */
         title?: string;
-        /**
-        If set to true, the view will use the native scrolling available in the current platform. This should help with form issues on some platforms (namely Android and WP8).
-Native scrolling is only enabled on platforms that support it: iOS > 5+, Android > 3+, WP8. BlackBerry devices do support it, but the native scroller is flaky.
-        @member {boolean}
-        */
         useNativeScrolling?: boolean;
-        /**
-        If set to true, the user can zoom in/out the contents of the view using the pinch/zoom gesture.
-        @member {boolean}
-        */
         zoom?: boolean;
-        /**
-        Fires after the mobile View becomes visible. If the view is displayed with transition, the event is triggered after the transition is complete.
-        */
         afterShow?(e: ViewAfterShowEvent): void;
-        /**
-        Fires before the mobile View becomes hidden.
-        */
         beforeHide?(e: ViewBeforeHideEvent): void;
-        /**
-        Fires before the mobile View becomes visible. The event can be prevented by calling the preventDefault method of the event parameter, in case a redirection should happen.
-        */
         beforeShow?(e: ViewBeforeShowEvent): void;
-        /**
-        Fires when the mobile View becomes hidden.
-        */
         hide?(e: ViewHideEvent): void;
-        /**
-        Fires after the mobile View and its child widgets are initialized.
-        */
         init?(e: ViewInitEvent): void;
-        /**
-        Fires when the mobile View becomes visible.
-        */
         show?(e: ViewShowEvent): void;
+        transitionStart?(e: ViewTransitionStartEvent): void;
+        transitionEnd?(e: ViewTransitionEndEvent): void;
     }
-
     interface ViewEvent {
         sender: View;
         isDefaultPrevented(): boolean;
@@ -2943,51 +2907,35 @@ Native scrolling is only enabled on platforms that support it: iOS > 5+, Android
     }
 
     interface ViewAfterShowEvent extends ViewEvent {
-        /**
-        The mobile view instance
-        @member {kendo.mobile.ui.View}
-        */
         view?: kendo.mobile.ui.View;
     }
 
     interface ViewBeforeHideEvent extends ViewEvent {
-        /**
-        The mobile view instance
-        @member {kendo.mobile.ui.View}
-        */
         view?: kendo.mobile.ui.View;
     }
 
     interface ViewBeforeShowEvent extends ViewEvent {
-        /**
-        The mobile view instance
-        @member {kendo.mobile.ui.View}
-        */
         view?: kendo.mobile.ui.View;
     }
 
     interface ViewHideEvent extends ViewEvent {
-        /**
-        The mobile view instance
-        @member {kendo.mobile.ui.View}
-        */
         view?: kendo.mobile.ui.View;
     }
 
     interface ViewInitEvent extends ViewEvent {
-        /**
-        The mobile view instance
-        @member {kendo.mobile.ui.View}
-        */
         view?: kendo.mobile.ui.View;
     }
 
     interface ViewShowEvent extends ViewEvent {
-        /**
-        The mobile view instance.
-        @member {kendo.mobile.ui.View}
-        */
         view?: kendo.mobile.ui.View;
+    }
+
+    interface ViewTransitionStartEvent extends ViewEvent {
+        type?: string;
+    }
+
+    interface ViewTransitionEndEvent extends ViewEvent {
+        type?: string;
     }
 
 
@@ -3001,113 +2949,33 @@ declare module kendo.ui {
         wrapper: JQuery;
         constructor(element: Element, options?: TouchOptions);
         options: TouchOptions;
-        /**
-        Cancels the current touch event sequence. Calling cancel in a touchstart or dragmove will disable subsequent move or tap/end/hold event handlers from being called.
-        @method
-        */
         cancel(): void;
-        /**
-        Prepares the Touch for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        @method
-        */
         destroy(): void;
     }
 
     interface TouchOptions {
         name?: string;
-        /**
-        jQuery selector that specifies child elements that are touchable if a widget is attached to a container.
-        @member {string}
-        */
         filter?: string;
-        /**
-        If specified, the user drags will be tracked within the surface boundaries.
-This option is useful if the widget is instantiated on small DOM elements like buttons, or thin list items.
-        @member {JQuery}
-        */
         surface?: JQuery;
-        /**
-        If set to true, the widget will capture and trigger the gesturestart, gesturechange, and gestureend events when the user touches the element with two fingers.
-        @member {boolean}
-        */
         multiTouch?: boolean;
-        /**
-        If set to true, the Touch widget will recognize horizontal swipes and trigger the swipe event.Notice: if the enableSwipe option is set to true, the dragstart, drag and dragend events will not be triggered.
-        @member {boolean}
-        */
         enableSwipe?: boolean;
-        /**
-        The minimum horizontal distance in pixels the user should swipe before the swipe event is triggered.
-        @member {number}
-        */
         minXDelta?: number;
-        /**
-        The maximum vertical deviation in pixels of the swipe event. Swipes with higher deviation are discarded.
-        @member {number}
-        */
         maxYDelta?: number;
-        /**
-        The maximum amount of time in milliseconds the swipe event can last. Slower swipes are discarded.
-        @member {number}
-        */
         maxDuration?: number;
-        /**
-        The timeout in milliseconds before the hold event is fired.Notice: the hold event will be triggered after the time passes, not after the user lifts his/hers finger.
-        @member {number}
-        */
         minHold?: number;
-        /**
-        The maximum period (in milliseconds) between two consecutive taps which will trigger the doubletap event.
-        @member {number}
-        */
         doubleTapTimeout?: number;
-        /**
-        Fires when the user presses the element.
-        */
         touchstart?(e: TouchTouchstartEvent): void;
-        /**
-        Fires when the user starts dragging the element.
-        */
         dragstart?(e: TouchDragstartEvent): void;
-        /**
-        Fires each time the user drags (within the element boundaries).
-        */
         drag?(e: TouchDragEvent): void;
-        /**
-        Fires when the user lifts his/hers finger, or drags outside of the element boundaries.
-        */
         dragend?(e: TouchDragendEvent): void;
-        /**
-        Fires when the user taps on the element. A touch sequence is considered a tap if the user does not perform dragging.
-        */
         tap?(e: TouchTapEvent): void;
-        /**
-        Fires when the user quickly taps twice on the element.
-        */
         doubletap?(e: TouchDoubletapEvent): void;
-        /**
-        Fires when the user presses and holds  his/hers finger on the element for a minimum amount of time.The minimum amount can be configured through the minHold configuration option.
-        */
         hold?(e: TouchHoldEvent): void;
-        /**
-        Fires when the user performs a horizontal swipe on the element.For this event to be triggered, the enableSwipe configuration option should be set to true.
-        */
         swipe?(e: TouchSwipeEvent): void;
-        /**
-        Fires when the user presses the element with two fingers (or presses with a second finger while a first finger is still touching the element).
-        */
         gesturestart?(e: TouchGesturestartEvent): void;
-        /**
-        Fires when the user moves a finger while multiple fingers are touching the element.
-        */
         gesturechange?(e: TouchGesturechangeEvent): void;
-        /**
-        Fires when the user lifts the second finger from the element.
-Notice: After the last finger is moved, the dragend event is fired.
-        */
         gestureend?(e: TouchGestureendEvent): void;
     }
-
     interface TouchEvent {
         sender: Touch;
         isDefaultPrevented(): boolean;
@@ -3115,263 +2983,784 @@ Notice: After the last finger is moved, the dragend event is fired.
     }
 
     interface TouchTouchstartEvent extends TouchEvent {
-        /**
-        The touch event instance
-        @member {kendo.mobile.ui.TouchEventOptions}
-        */
         touch?: kendo.mobile.ui.TouchEventOptions;
-        /**
-        The jQuery event which triggered the touch event.
-        @member {JQueryEventObject}
-        */
         event?: JQueryEventObject;
     }
 
     interface TouchDragstartEvent extends TouchEvent {
-        /**
-        The touch event instance
-        @member {kendo.mobile.ui.TouchEventOptions}
-        */
         touch?: kendo.mobile.ui.TouchEventOptions;
-        /**
-        The jQuery event which triggered the touch event.
-        @member {JQueryEventObject}
-        */
         event?: JQueryEventObject;
     }
 
     interface TouchDragEvent extends TouchEvent {
-        /**
-        The touch event instance
-        @member {kendo.mobile.ui.TouchEventOptions}
-        */
         touch?: kendo.mobile.ui.TouchEventOptions;
-        /**
-        The jQuery event which triggered the touch event.
-        @member {JQueryEventObject}
-        */
         event?: JQueryEventObject;
     }
 
     interface TouchDragendEvent extends TouchEvent {
-        /**
-        The touch event instance
-        @member {kendo.mobile.ui.TouchEventOptions}
-        */
         touch?: kendo.mobile.ui.TouchEventOptions;
-        /**
-        The jQuery event which triggered the touch event.
-        @member {JQueryEventObject}
-        */
         event?: JQueryEventObject;
     }
 
     interface TouchTapEvent extends TouchEvent {
-        /**
-        The touch event instance
-        @member {kendo.mobile.ui.TouchEventOptions}
-        */
         touch?: kendo.mobile.ui.TouchEventOptions;
-        /**
-        The jQuery event which triggered the touch event.
-        @member {JQueryEventObject}
-        */
         event?: JQueryEventObject;
     }
 
     interface TouchDoubletapEvent extends TouchEvent {
-        /**
-        The touch event instance
-        @member {kendo.mobile.ui.TouchEventOptions}
-        */
         touch?: kendo.mobile.ui.TouchEventOptions;
-        /**
-        The jQuery event which triggered the touch event.
-        @member {JQueryEventObject}
-        */
         event?: JQueryEventObject;
     }
 
     interface TouchHoldEvent extends TouchEvent {
-        /**
-        The touch event instance
-        @member {kendo.mobile.ui.TouchEventOptions}
-        */
         touch?: kendo.mobile.ui.TouchEventOptions;
-        /**
-        The jQuery event which triggered the touch event.
-        @member {JQueryEventObject}
-        */
         event?: JQueryEventObject;
     }
 
     interface TouchSwipeEvent extends TouchEvent {
-        /**
-        The touch event instance
-        @member {kendo.mobile.ui.TouchEventOptions}
-        */
         touch?: kendo.mobile.ui.TouchEventOptions;
-        /**
-        The jQuery event which triggered the touch event.
-        @member {JQueryEventObject}
-        */
         event?: JQueryEventObject;
     }
 
     interface TouchGesturestartEvent extends TouchEvent {
-        /**
-        An array containing the active touches.
-        @member {any}
-        */
         touches?: any;
-        /**
-        The jQuery event which triggered the touch event.
-        @member {JQueryEventObject}
-        */
         event?: JQueryEventObject;
-        /**
-        The distance (in pixels) between the two touches.
-        @member {number}
-        */
         distance?: number;
-        /**
-        The center point between the two touches. The point has two properties, x and y, which contain the x and the y coordinate, respectively.
-        @member {kendo.mobile.ui.Point}
-        */
         center?: kendo.mobile.ui.Point;
     }
 
     interface TouchGesturechangeEvent extends TouchEvent {
-        /**
-        An array containing the active touches.
-        @member {any}
-        */
         touches?: any;
-        /**
-        The jQuery event which triggered the touch event.
-        @member {JQueryEventObject}
-        */
         event?: JQueryEventObject;
-        /**
-        The distance (in pixels) between the two touches
-        @member {number}
-        */
         distance?: number;
-        /**
-        The center point between the two touches. The point has two properties, x and y, which contain the x and the y coordinate, respectively.
-        @member {kendo.mobile.ui.Point}
-        */
         center?: kendo.mobile.ui.Point;
     }
 
     interface TouchGestureendEvent extends TouchEvent {
-        /**
-        An array containing the active touches
-        @member {any}
-        */
         touches?: any;
-        /**
-        The jQuery event which triggered the touch event.
-        @member {JQueryEventObject}
-        */
         event?: JQueryEventObject;
-        /**
-        The distance (in pixels) between the two touches
-        @member {number}
-        */
         distance?: number;
-        /**
-        The center point between the two touches. The point has two properties, x and y, which contain the x and the y coordinate, respectively.
-        @member {kendo.mobile.ui.Point}
-        */
         center?: kendo.mobile.ui.Point;
     }
 
 
-    class Validator extends kendo.ui.Widget {
-        static fn: Validator;
-        static extend(proto: Object): Validator;
-
-        element: JQuery;
-        wrapper: JQuery;
-        constructor(element: Element, options?: ValidatorOptions);
-        options: ValidatorOptions;
-        /**
-        Get the error messages if any.
-        @method
-        @returns Messages for the failed validation rules.
-        */
-        errors(): any;
-        /**
-        Hides the validation messages.
-        @method
-        */
-        hideMessages(): void;
-        /**
-        Validates the input element(s) against the declared validation rules.
-        @method
-        @returns true if all validation rules passed successfully.Note that if a HTML form element is set as validation container, the form submits will be automatically prevented if validation fails.
-        */
-        validate(): boolean;
-        /**
-        Validates the input element against the declared validation rules.
-        @method
-        @param input - Input element to be validated.
-        @returns true if all validation rules passed successfully.
-        */
-        validateInput(input: Element): boolean;
-        /**
-        Validates the input element against the declared validation rules.
-        @method
-        @param input - Input element to be validated.
-        @returns true if all validation rules passed successfully.
-        */
-        validateInput(input: JQuery): boolean;
+}
+declare module kendo.ooxml {
+    class Workbook extends Observable {
+        constructor(options?: WorkbookOptions);
+        options: WorkbookOptions;
+        toDataURL(): string;
+        sheets: WorkbookSheet[];
     }
 
-    interface ValidatorOptions {
+    interface WorkbookSheetColumn {
+        autoWidth?: boolean;
+        width?: number;
+    }
+
+    interface WorkbookSheetFilter {
+        from?: number;
+        to?: number;
+    }
+
+    interface WorkbookSheetFreezePane {
+        colSplit?: number;
+        rowSplit?: number;
+    }
+
+    interface WorkbookSheetRowCell {
+        background?: string;
+        bold?: boolean;
+        color?: string;
+        colSpan?: number;
+        fontName?: string;
+        fontSize?: number;
+        format?: string;
+        hAlign?: string;
+        italic?: boolean;
+        rowSpan?: number;
+        underline?: boolean;
+        wrap?: boolean;
+        vAlign?: string;
+        value?: any;
+    }
+
+    interface WorkbookSheetRow {
+        cells?: WorkbookSheetRowCell[];
+    }
+
+    interface WorkbookSheet {
+        columns?: WorkbookSheetColumn[];
+        freezePane?: WorkbookSheetFreezePane;
+        filter?: WorkbookSheetFilter;
+        rows?: WorkbookSheetRow[];
+        title?: string;
+    }
+
+    interface WorkbookOptions {
         name?: string;
-        /**
-        The template which renders the validation message.
-        @member {string}
-        */
-        errorTemplate?: string;
-        /**
-        Set of messages (either strings or functions) which will be shown when given validation rule fails.
-By setting already existing key the appropriate built-in message will be overridden.
-        @member {any}
-        */
-        messages?: any;
-        /**
-        Set of custom validation rules. Those rules will extend the built-in ones.
-        @member {any}
-        */
-        rules?: any;
-        /**
-        Determines if validation will be triggered when element loses focus. Default value is true.
-        @member {boolean}
-        */
-        validateOnBlur?: boolean;
-        /**
-        Fired when validation completes.The event handler function context (available via the this keyword) will be set to the data source instance.
-        */
-        validate?(e: ValidatorValidateEvent): void;
+        creator?: string;
+        date?: Date;
+        sheets?: WorkbookSheet[];
     }
-
-    interface ValidatorEvent {
-        sender: Validator;
+    interface WorkbookEvent {
+        sender: Workbook;
         isDefaultPrevented(): boolean;
         preventDefault: Function;
     }
 
-    interface ValidatorValidateEvent extends ValidatorEvent {
+
+}
+
+declare module kendo.dataviz.geometry {
+    class Arc extends Observable {
+        options: ArcOptions;
+        bbox(matrix: kendo.geometry.Matrix): kendo.geometry.Rect;
+        getAnticlockwise(): boolean;
+        getCenter(): kendo.geometry.Point;
+        getEndAngle(): number;
+        getRadiusX(): number;
+        getRadiusY(): number;
+        getStartAngle(): number;
+        pointAt(angle: number): kendo.geometry.Point;
+        setAnticlockwise(value: boolean): kendo.geometry.Arc;
+        setCenter(value: kendo.geometry.Point): kendo.geometry.Arc;
+        setEndAngle(value: number): kendo.geometry.Arc;
+        setRadiusX(value: number): kendo.geometry.Arc;
+        setRadiusY(value: number): kendo.geometry.Arc;
+        setStartAngle(value: number): kendo.geometry.Arc;
+        anticlockwise: boolean;
+        center: kendo.geometry.Point;
+        endAngle: number;
+        radiusX: number;
+        radiusY: number;
+        startAngle: number;
+    }
+
+    interface ArcOptions {
+        name?: string;
+    }
+    interface ArcEvent {
+        sender: Arc;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    class Circle extends Observable {
+        options: CircleOptions;
+        bbox(matrix: kendo.geometry.Matrix): kendo.geometry.Rect;
+        clone(): kendo.geometry.Circle;
+        equals(other: kendo.geometry.Circle): boolean;
+        getCenter(): kendo.geometry.Point;
+        getRadius(): number;
+        pointAt(angle: number): kendo.geometry.Point;
+        setCenter(value: kendo.geometry.Point): kendo.geometry.Point;
+        setCenter(value: any): kendo.geometry.Point;
+        setRadius(value: number): kendo.geometry.Circle;
+        center: kendo.geometry.Point;
+        radius: number;
+    }
+
+    interface CircleOptions {
+        name?: string;
+    }
+    interface CircleEvent {
+        sender: Circle;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    class Matrix extends Observable {
+        options: MatrixOptions;
+        clone(): kendo.geometry.Matrix;
+        equals(other: kendo.geometry.Matrix): boolean;
+        round(digits: number): kendo.geometry.Matrix;
+        multiplyCopy(matrix: kendo.geometry.Matrix): kendo.geometry.Matrix;
+        toArray(digits: number): any;
+        toString(digits: number, separator: string): string;
+        static rotate(angle: number, x: number, y: number): kendo.geometry.Matrix;
+        static scale(scaleX: number, scaleY: number): kendo.geometry.Matrix;
+        static translate(x: number, y: number): kendo.geometry.Matrix;
+        static unit(): kendo.geometry.Matrix;
+        a: number;
+        b: number;
+        c: number;
+        d: number;
+        e: number;
+        f: number;
+    }
+
+    interface MatrixOptions {
+        name?: string;
+    }
+    interface MatrixEvent {
+        sender: Matrix;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    class Point extends Observable {
+        options: PointOptions;
+        clone(): kendo.geometry.Point;
+        distanceTo(point: kendo.geometry.Point): number;
+        equals(other: kendo.geometry.Point): boolean;
+        getX(): number;
+        getY(): number;
+        move(x: number, y: number): kendo.geometry.Point;
+        rotate(angle: number, center: kendo.geometry.Point): kendo.geometry.Point;
+        rotate(angle: number, center: any): kendo.geometry.Point;
+        round(digits: number): kendo.geometry.Point;
+        scale(scaleX: number, scaleY: number): kendo.geometry.Point;
+        scaleCopy(scaleX: number, scaleY: number): kendo.geometry.Point;
+        setX(value: number): kendo.geometry.Point;
+        setY(value: number): kendo.geometry.Point;
+        toArray(digits: number): any;
+        toString(digits: number, separator: string): string;
+        transform(tansformation: kendo.geometry.Transformation): kendo.geometry.Point;
+        transformCopy(tansformation: kendo.geometry.Transformation): kendo.geometry.Point;
+        translate(dx: number, dy: number): kendo.geometry.Point;
+        translateWith(vector: kendo.geometry.Point): kendo.geometry.Point;
+        translateWith(vector: any): kendo.geometry.Point;
+        static create(x: number, y: number): kendo.geometry.Point;
+        static create(x: any, y: number): kendo.geometry.Point;
+        static create(x: kendo.geometry.Point, y: number): kendo.geometry.Point;
+        static min(): kendo.geometry.Point;
+        static max(): kendo.geometry.Point;
+        static minPoint(): kendo.geometry.Point;
+        static maxPoint(): kendo.geometry.Point;
+        x: number;
+        y: number;
+    }
+
+    interface PointOptions {
+        name?: string;
+    }
+    interface PointEvent {
+        sender: Point;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    class Rect extends Observable {
+        options: RectOptions;
+        bbox(matrix: kendo.geometry.Matrix): kendo.geometry.Rect;
+        bottomLeft(): kendo.geometry.Point;
+        bottomRight(): kendo.geometry.Point;
+        center(): kendo.geometry.Point;
+        clone(): kendo.geometry.Rect;
+        equals(other: kendo.geometry.Rect): boolean;
+        getOrigin(): kendo.geometry.Point;
+        getSize(): kendo.geometry.Size;
+        height(): number;
+        setOrigin(value: kendo.geometry.Point): kendo.geometry.Rect;
+        setOrigin(value: any): kendo.geometry.Rect;
+        setSize(value: kendo.geometry.Size): kendo.geometry.Rect;
+        setSize(value: any): kendo.geometry.Rect;
+        topLeft(): kendo.geometry.Point;
+        topRight(): kendo.geometry.Point;
+        width(): number;
+        static fromPoints(pointA: kendo.geometry.Point, pointB: kendo.geometry.Point): kendo.geometry.Rect;
+        static union(rectA: kendo.geometry.Rect, rectB: kendo.geometry.Rect): kendo.geometry.Rect;
+        origin: kendo.geometry.Point;
+        size: kendo.geometry.Size;
+    }
+
+    interface RectOptions {
+        name?: string;
+    }
+    interface RectEvent {
+        sender: Rect;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    class Size extends Observable {
+        options: SizeOptions;
+        clone(): kendo.geometry.Size;
+        equals(other: kendo.geometry.Size): boolean;
+        getWidth(): number;
+        getHeight(): number;
+        setWidth(value: number): kendo.geometry.Size;
+        setHeight(value: number): kendo.geometry.Size;
+        static create(width: number, height: number): kendo.geometry.Size;
+        static create(width: any, height: number): kendo.geometry.Size;
+        static create(width: kendo.geometry.Size, height: number): kendo.geometry.Size;
+        width: number;
+        height: number;
+    }
+
+    interface SizeOptions {
+        name?: string;
+    }
+    interface SizeEvent {
+        sender: Size;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    class Transformation extends Observable {
+        options: TransformationOptions;
+        clone(): kendo.geometry.Transformation;
+        equals(other: kendo.geometry.Transformation): boolean;
+        matrix(): kendo.geometry.Matrix;
+        multiply(transformation: kendo.geometry.Transformation): kendo.geometry.Transformation;
+        rotate(angle: number, center: any): kendo.geometry.Transformation;
+        rotate(angle: number, center: kendo.geometry.Point): kendo.geometry.Transformation;
+        scale(scaleX: number, scaleY: number): kendo.geometry.Transformation;
+        translate(x: number, y: number): kendo.geometry.Transformation;
+    }
+
+    interface TransformationOptions {
+        name?: string;
+    }
+    interface TransformationEvent {
+        sender: Transformation;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+}
+declare module kendo.dataviz.drawing {
+    class Arc extends kendo.drawing.Element {
+        constructor(options?: ArcOptions);
+        options: ArcOptions;
+        bbox(): kendo.geometry.Rect;
+        clip(): kendo.drawing.Path;
+        clip(clip: kendo.drawing.Path): void;
+        clippedBBox(): kendo.geometry.Rect;
+        geometry(): kendo.geometry.Arc;
+        geometry(value: kendo.geometry.Arc): void;
+        fill(color: string, opacity?: number): kendo.drawing.Arc;
+        opacity(): number;
+        opacity(opacity: number): void;
+        stroke(color: string, width?: number, opacity?: number): kendo.drawing.Arc;
+        transform(): kendo.geometry.Transformation;
+        transform(transform: kendo.geometry.Transformation): void;
+        visible(): boolean;
+        visible(visible: boolean): void;
+    }
+
+    interface ArcOptions {
+        name?: string;
+        clip?: kendo.drawing.Path;
+        fill?: kendo.drawing.FillOptions;
+        opacity?: number;
+        stroke?: kendo.drawing.StrokeOptions;
+        transform?: kendo.geometry.Transformation;
+        visible?: boolean;
+    }
+    interface ArcEvent {
+        sender: Arc;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    class Circle extends kendo.drawing.Element {
+        constructor(options?: CircleOptions);
+        options: CircleOptions;
+        bbox(): kendo.geometry.Rect;
+        clip(): kendo.drawing.Path;
+        clip(clip: kendo.drawing.Path): void;
+        clippedBBox(): kendo.geometry.Rect;
+        geometry(): kendo.geometry.Circle;
+        geometry(value: kendo.geometry.Circle): void;
+        fill(color: string, opacity?: number): kendo.drawing.Circle;
+        opacity(): number;
+        opacity(opacity: number): void;
+        stroke(color: string, width?: number, opacity?: number): kendo.drawing.Circle;
+        transform(): kendo.geometry.Transformation;
+        transform(transform: kendo.geometry.Transformation): void;
+        visible(): boolean;
+        visible(visible: boolean): void;
+    }
+
+    interface CircleOptions {
+        name?: string;
+        clip?: kendo.drawing.Path;
+        fill?: kendo.drawing.FillOptions;
+        opacity?: number;
+        stroke?: kendo.drawing.StrokeOptions;
+        transform?: kendo.geometry.Transformation;
+        visible?: boolean;
+    }
+    interface CircleEvent {
+        sender: Circle;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    class Element extends kendo.Class {
+        constructor(options?: ElementOptions);
+        options: ElementOptions;
+        bbox(): kendo.geometry.Rect;
+        clip(): kendo.drawing.Path;
+        clip(clip: kendo.drawing.Path): void;
+        clippedBBox(): kendo.geometry.Rect;
+        opacity(): number;
+        opacity(opacity: number): void;
+        transform(): kendo.geometry.Transformation;
+        transform(transform: kendo.geometry.Transformation): void;
+        visible(): boolean;
+        visible(visible: boolean): void;
+    }
+
+    interface ElementOptions {
+        name?: string;
+        clip?: kendo.drawing.Path;
+        opacity?: number;
+        transform?: kendo.geometry.Transformation;
+        visible?: boolean;
+    }
+    interface ElementEvent {
+        sender: Element;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    interface FillOptions  {
+        color: string;
+        opacity: number;
+    }
+
+
+
+    class Group extends kendo.drawing.Element {
+        constructor(options?: GroupOptions);
+        options: GroupOptions;
+        append(element: kendo.drawing.Element): void;
+        clear(): void;
+        clip(): kendo.drawing.Path;
+        clip(clip: kendo.drawing.Path): void;
+        clippedBBox(): kendo.geometry.Rect;
+        opacity(): number;
+        opacity(opacity: number): void;
+        remove(element: kendo.drawing.Element): void;
+        removeAt(index: number): void;
+        visible(): boolean;
+        visible(visible: boolean): void;
+        children: any;
+    }
+
+    interface GroupOptions {
+        name?: string;
+        clip?: kendo.drawing.Path;
+        opacity?: number;
+        pdf?: kendo.drawing.PDFOptions;
+        transform?: kendo.geometry.Transformation;
+        visible?: boolean;
+    }
+    interface GroupEvent {
+        sender: Group;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    class Image extends kendo.drawing.Element {
+        constructor(options?: ImageOptions);
+        options: ImageOptions;
+        bbox(): kendo.geometry.Rect;
+        clip(): kendo.drawing.Path;
+        clip(clip: kendo.drawing.Path): void;
+        clippedBBox(): kendo.geometry.Rect;
+        opacity(): number;
+        opacity(opacity: number): void;
+        src(): string;
+        src(value: string): void;
+        rect(): kendo.geometry.Rect;
+        rect(value: kendo.geometry.Rect): void;
+        transform(): kendo.geometry.Transformation;
+        transform(transform: kendo.geometry.Transformation): void;
+        visible(): boolean;
+        visible(visible: boolean): void;
+    }
+
+    interface ImageOptions {
+        name?: string;
+        clip?: kendo.drawing.Path;
+        opacity?: number;
+        transform?: kendo.geometry.Transformation;
+        visible?: boolean;
+    }
+    interface ImageEvent {
+        sender: Image;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    class Layout extends kendo.drawing.Group {
+        constructor(options?: LayoutOptions);
+        options: LayoutOptions;
+        rect(): kendo.geometry.Rect;
+        rect(rect: kendo.geometry.Rect): void;
+        reflow(): void;
+    }
+
+    interface LayoutOptions {
+        name?: string;
+        alignContent?: string;
+        alignItems?: string;
+        justifyContent?: string;
+        lineSpacing?: number;
+        spacing?: number;
+        orientation?: string;
+        wrap?: boolean;
+    }
+    interface LayoutEvent {
+        sender: Layout;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    class MultiPath extends kendo.drawing.Element {
+        constructor(options?: MultiPathOptions);
+        options: MultiPathOptions;
+        bbox(): kendo.geometry.Rect;
+        clip(): kendo.drawing.Path;
+        clip(clip: kendo.drawing.Path): void;
+        clippedBBox(): kendo.geometry.Rect;
+        close(): kendo.drawing.MultiPath;
+        curveTo(controlOut: any, controlIn: any): kendo.drawing.MultiPath;
+        curveTo(controlOut: any, controlIn: kendo.geometry.Point): kendo.drawing.MultiPath;
+        curveTo(controlOut: kendo.geometry.Point, controlIn: any): kendo.drawing.MultiPath;
+        curveTo(controlOut: kendo.geometry.Point, controlIn: kendo.geometry.Point): kendo.drawing.MultiPath;
+        fill(color: string, opacity?: number): kendo.drawing.MultiPath;
+        lineTo(x: number, y?: number): kendo.drawing.MultiPath;
+        lineTo(x: any, y?: number): kendo.drawing.MultiPath;
+        lineTo(x: kendo.geometry.Point, y?: number): kendo.drawing.MultiPath;
+        moveTo(x: number, y?: number): kendo.drawing.MultiPath;
+        moveTo(x: any, y?: number): kendo.drawing.MultiPath;
+        moveTo(x: kendo.geometry.Point, y?: number): kendo.drawing.MultiPath;
+        opacity(): number;
+        opacity(opacity: number): void;
+        stroke(color: string, width?: number, opacity?: number): kendo.drawing.MultiPath;
+        transform(): kendo.geometry.Transformation;
+        transform(transform: kendo.geometry.Transformation): void;
+        visible(): boolean;
+        visible(visible: boolean): void;
+        paths: any;
+    }
+
+    interface MultiPathOptions {
+        name?: string;
+        clip?: kendo.drawing.Path;
+        fill?: kendo.drawing.FillOptions;
+        opacity?: number;
+        stroke?: kendo.drawing.StrokeOptions;
+        transform?: kendo.geometry.Transformation;
+        visible?: boolean;
+    }
+    interface MultiPathEvent {
+        sender: MultiPath;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    class OptionsStore extends kendo.Class {
+        options: OptionsStoreOptions;
+        get(field: string): any;
+        set(field: string, value: any): void;
+        observer: any;
+    }
+
+    interface OptionsStoreOptions {
+        name?: string;
+    }
+    interface OptionsStoreEvent {
+        sender: OptionsStore;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    interface PDFOptions  {
+        creator: string;
+        date: Date;
+        keywords: string;
+        landscape: boolean;
+        margin: any;
+        paperSize: any;
+        subject: string;
+        title: string;
+    }
+
+
+
+    class Path extends kendo.drawing.Element {
+        constructor(options?: PathOptions);
+        options: PathOptions;
+        bbox(): kendo.geometry.Rect;
+        clip(): kendo.drawing.Path;
+        clip(clip: kendo.drawing.Path): void;
+        clippedBBox(): kendo.geometry.Rect;
+        close(): kendo.drawing.Path;
+        curveTo(controlOut: any, controlIn: any): kendo.drawing.Path;
+        curveTo(controlOut: any, controlIn: kendo.geometry.Point): kendo.drawing.Path;
+        curveTo(controlOut: kendo.geometry.Point, controlIn: any): kendo.drawing.Path;
+        curveTo(controlOut: kendo.geometry.Point, controlIn: kendo.geometry.Point): kendo.drawing.Path;
+        fill(color: string, opacity?: number): kendo.drawing.Path;
+        lineTo(x: number, y?: number): kendo.drawing.Path;
+        lineTo(x: any, y?: number): kendo.drawing.Path;
+        lineTo(x: kendo.geometry.Point, y?: number): kendo.drawing.Path;
+        moveTo(x: number, y?: number): kendo.drawing.Path;
+        moveTo(x: any, y?: number): kendo.drawing.Path;
+        moveTo(x: kendo.geometry.Point, y?: number): kendo.drawing.Path;
+        opacity(): number;
+        opacity(opacity: number): void;
+        stroke(color: string, width?: number, opacity?: number): kendo.drawing.Path;
+        transform(): kendo.geometry.Transformation;
+        transform(transform: kendo.geometry.Transformation): void;
+        visible(): boolean;
+        visible(visible: boolean): void;
+        static fromPoints(points: any): kendo.drawing.Path;
+        static fromRect(rect: kendo.geometry.Rect): kendo.drawing.Path;
+        static parse(svgPath: string, options?: any): kendo.drawing.Path;
+        segments: any;
+    }
+
+    interface PathOptions {
+        name?: string;
+        clip?: kendo.drawing.Path;
+        fill?: kendo.drawing.FillOptions;
+        opacity?: number;
+        stroke?: kendo.drawing.StrokeOptions;
+        transform?: kendo.geometry.Transformation;
+        visible?: boolean;
+    }
+    interface PathEvent {
+        sender: Path;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    class Segment extends kendo.Class {
+        options: SegmentOptions;
+        anchor(): kendo.geometry.Point;
+        anchor(value: kendo.geometry.Point): void;
+        controlIn(): kendo.geometry.Point;
+        controlIn(value: kendo.geometry.Point): void;
+        controlOut(): kendo.geometry.Point;
+        controlOut(value: kendo.geometry.Point): void;
+    }
+
+    interface SegmentOptions {
+        name?: string;
+    }
+    interface SegmentEvent {
+        sender: Segment;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+
+    interface StrokeOptions  {
+        color: string;
+        dashType: string;
+        lineCap: string;
+        lineJoin: string;
+        opacity: number;
+        width: number;
+    }
+
+
+
+    class Surface extends kendo.Observable {
+        constructor(options?: SurfaceOptions);
+        options: SurfaceOptions;
+        clear(): void;
+        draw(element: kendo.drawing.Element): void;
+        eventTarget(e: any): kendo.drawing.Element;
+        resize(force?: boolean): void;
+        static create(element: JQuery, options?: any): kendo.drawing.Surface;
+        static create(element: Element, options?: any): kendo.drawing.Surface;
+    }
+
+    interface SurfaceOptions {
+        name?: string;
+        type?: string;
+        height?: string;
+        width?: string;
+        click?(e: SurfaceClickEvent): void;
+        mouseenter?(e: SurfaceMouseenterEvent): void;
+        mouseleave?(e: SurfaceMouseleaveEvent): void;
+    }
+    interface SurfaceEvent {
+        sender: Surface;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
+    }
+
+    interface SurfaceClickEvent extends SurfaceEvent {
+        element?: kendo.drawing.Element;
+        originalEvent?: any;
+    }
+
+    interface SurfaceMouseenterEvent extends SurfaceEvent {
+        element?: kendo.drawing.Element;
+        originalEvent?: any;
+    }
+
+    interface SurfaceMouseleaveEvent extends SurfaceEvent {
+        element?: kendo.drawing.Element;
+        originalEvent?: any;
+    }
+
+
+    class Text extends kendo.drawing.Element {
+        constructor(options?: TextOptions);
+        options: TextOptions;
+        bbox(): kendo.geometry.Rect;
+        clip(): kendo.drawing.Path;
+        clip(clip: kendo.drawing.Path): void;
+        clippedBBox(): kendo.geometry.Rect;
+        content(): string;
+        content(value: string): void;
+        fill(color: string, opacity?: number): kendo.drawing.Text;
+        opacity(): number;
+        opacity(opacity: number): void;
+        position(): kendo.geometry.Point;
+        position(value: kendo.geometry.Point): void;
+        stroke(color: string, width?: number, opacity?: number): kendo.drawing.Text;
+        transform(): kendo.geometry.Transformation;
+        transform(transform: kendo.geometry.Transformation): void;
+        visible(): boolean;
+        visible(visible: boolean): void;
+    }
+
+    interface TextOptions {
+        name?: string;
+        clip?: kendo.drawing.Path;
+        fill?: kendo.drawing.FillOptions;
+        opacity?: number;
+        stroke?: kendo.drawing.StrokeOptions;
+        transform?: kendo.geometry.Transformation;
+        visible?: boolean;
+    }
+    interface TextEvent {
+        sender: Text;
+        isDefaultPrevented(): boolean;
+        preventDefault: Function;
     }
 
 
 }
 
 interface HTMLElement {
-    kendoBindingTarget: kendo.data.Binding;
+    kendoBindingTarget: kendo.data.BindingTarget;
 }
 
 interface JQueryXHR {
@@ -3381,6 +3770,8 @@ interface JQueryEventObject {
 }
 
 interface JQueryPromise<T> {
+    pipe(doneFilter?: (x: any) => any, failFilter?: (x: any) => any, progressFilter?: (x: any) => any): JQueryPromise<T>;
+    then(doneCallbacks: any, failCallbacks: any, progressCallbacks?: any): JQueryPromise<T>;
 }
 
 interface JQuery {
@@ -3411,6 +3802,10 @@ interface JQuery {
     kendoMobileButtonGroup(): JQuery;
     kendoMobileButtonGroup(options: kendo.mobile.ui.ButtonGroupOptions): JQuery;
     data(key: "kendoMobileButtonGroup") : kendo.mobile.ui.ButtonGroup;
+
+    kendoMobileCollapsible(): JQuery;
+    kendoMobileCollapsible(options: kendo.mobile.ui.CollapsibleOptions): JQuery;
+    data(key: "kendoMobileCollapsible") : kendo.mobile.ui.Collapsible;
 
     kendoMobileDetailButton(): JQuery;
     kendoMobileDetailButton(options: kendo.mobile.ui.DetailButtonOptions): JQuery;
@@ -3475,9 +3870,5 @@ interface JQuery {
     kendoTouch(): JQuery;
     kendoTouch(options: kendo.ui.TouchOptions): JQuery;
     data(key: "kendoTouch") : kendo.ui.Touch;
-
-    kendoValidator(): JQuery;
-    kendoValidator(options: kendo.ui.ValidatorOptions): JQuery;
-    data(key: "kendoValidator") : kendo.ui.Validator;
 
 }
