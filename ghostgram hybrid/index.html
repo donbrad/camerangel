@@ -288,13 +288,11 @@ function channelsAddChannel(e) {
     var name = $('#channels-addChannel-name').val(),
         moderated = $('#channels-addChannel-moderated').val(),
         expirationDate = $('#channels-addChannel-expirationDate').val(),
-        tags = $('#channels-addChannel-tags').val(),
         description = $('#channels-addChannel-description').val();
     channel.set("name", name );
     channel.set("isOwner", true);
     channel.set("moderated",  moderated === 0 ? true : false);
     channel.set("expirationDate", expirationDate);
-    channel.set("tags", tags);
     channel.set("description", description);
     
     channel.setACL(new Parse.ACL(Parse.User.current()));
@@ -319,11 +317,7 @@ function onInitChannels (e) {
     
      $("#channels-listview").kendoMobileListView({
         dataSource: APP.models.channels.channelDS,
-        template: $("#channels-listview-template").text(),
-        filterable: {
-            field: "name",
-            operator: "startswith"
-        }
+        template: $("#channels-listview-template").text()
     });
 }
 
@@ -566,21 +560,13 @@ function introChanged () {
 </div>
     
 <script type="text/x-kendo-tmpl" id="channels-listview-template">
-    <div>
-        <div class="ghostTextLarge">#:name#</div>
-       
-        <div class="ghostText">
-            <div> #: description # </div>
-            <table>
-                <tr>
-                    <td> <em> Expiration Date </em> </td> <td> #: expirationDate #</td>
-                </tr>
-                <tr>
-                    <td> <em> Moderated </em> </td> <td> # if (moderated) { # Yes # } else { # No # }#</td>
-                </tr>
-            </table>
+    <div style="clear:both;">
+       <div class="ghostTextLarge">#:name#</div>
+       <div style="font-size: 10px; padding-top: 12px; padding-bottom: 18px;"> #: description # </div>
+        <div style="font-size: 12px;">
+           <span style="float: left;"> # if (moderated) { # Moderated by Creator # } else { # Not Moderated # }#</span>
+           <span style="float: right;">Expires: #: expirationDate #</span>
         </div>
-    
     </div>
 </script>
     
