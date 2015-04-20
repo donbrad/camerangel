@@ -285,6 +285,26 @@ function onInitGallery(e){
 function channelsAddChannel(e) {
     e.preventDefault();
 
+    var Channels = Parse.Object.extend("channels");
+    var channel = new Channels();
+    
+    channel.set("name", $('#channels-addChannel-name').val());
+    channel.set("isOwner", true);
+    channel.set("moderated", $('#channels-addChannel-moderated').val() === 0 ? true : false);
+    channel.set("expirationDate", $('#channels-addChannel-expirationDate').val());
+    channel.setACL(new Parse.ACL(Parse.User.current()));
+   channel.save(null, {
+      success: function(channel) {
+        // Execute any logic that should take place after the object is saved.
+        alert('Created channel : ' + channel.name);
+      },
+      error: function(channel, error) {
+        // Execute any logic that should take place if the save fails.
+        // error is a Parse.Error with an error code and message.
+        alert('Error creating channel: ' + error.message);
+      }
+    });
+ 
 }
 
 function onInitChannels (e) {
