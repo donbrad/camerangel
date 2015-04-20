@@ -136,7 +136,12 @@
             
             channels.fetch({
                   success: function(collection) {
-                     APP.models.channels.channelDS.data(collection);
+                     var models = new Array();
+                     for (var i=0; i<collection.models.length; i++) {
+                         models.push(collection.models[i].attributes);
+                     }
+                         
+                     APP.models.channels.channelDS.data(models);
                   },
                   error: function(collection, error) {
                    alert("Error fetching channels : " + error);

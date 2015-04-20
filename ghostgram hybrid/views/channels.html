@@ -3,7 +3,10 @@
           <div style="padding-top: 12px; padding-buttom: 18px; text-align: right;">
            <a color: #fff; class="button ghostButton" data-rel="modalview" href="#modalview-channels-addChannel" data-role="button">Add Channel </a>
          </div>
-          <ul id="channels-listview"></ul>
+         <div class="ghostContainer">
+             <ul style="color: #2e2e2e;" id="channels-listview"></ul>
+         </div>
+          
      </div>
 </div>
 
@@ -22,9 +25,19 @@
                     <input type="text" id="channels-addChannel-name" value="" />
                 </label>
             </li>
+             <li>
+                <label>Description
+                    <input type="text" id="channels-addChannel-description" value="" />
+                </label>
+            </li>
+             <li>
+                <label>Tags
+                    <input type="text" id="channels-addChannel-tags" value="" />
+                </label>
+            </li>
             <li>
                <label>Moderated
-                    <select id="channels-addChannels-moderated">
+                    <select id="channels-addChannel-moderated">
                         <option value="channelModerated">Yes, only members you invite</option>
                         <option value="channelOpen">No, members can invite others</option>
                     </select>
@@ -33,7 +46,7 @@
             <li>
             <label>
                     Expiration Date
-                    <input id="channels-addChannels-expirationDate" type="date"  />
+                    <input id="channels-addChannel-expirationDate" type="date"  />
                 </label>
             </li>
         </ul>
