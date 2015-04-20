@@ -98,7 +98,7 @@
             APP.models.places.lng = position.coords.longitude;
             APP.models.places.mapZoom = 12;
 			    
-			mapObj = $("#places-mapview").kendoMap({
+/*			mapObj = $("#places-mapview").kendoMap({
                 center: [position.coords.latitude, position.coords.longitude],
                 zoom: 12,
             layers: [{
@@ -114,7 +114,7 @@
                     }]
         });
 			_mapObj = mapObj; //Cache at app level
-			  
+		*/	  
 			
 		}
 	};

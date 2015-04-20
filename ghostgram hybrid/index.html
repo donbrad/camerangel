@@ -10,7 +10,7 @@
  <!-- External scripts -->
     <script src="cordova.js"></script>
     <script src="kendo/js/jquery.min.js"></script>
-    <script src="kendo/js/kendo.all.min.js"></script>
+    <script src="kendo/js/kendo.mobile.min.js"></script>
 	<script src="scripts/parse.js"></script>
     <script src="https://cdn.pubnub.com/pubnub-dev.js"></script>
     <script src="scripts/appData.js"></script>
@@ -148,7 +148,7 @@ function onInitContacts (e){
     
     $("#contacts-listview").kendoMobileListView({
             dataSource: APP.models.contacts.deviceContactsDS,
-            template: $("#deviceContactsTemplate").text()
+            template: $("#deviceContactsTemplate").text(),
             endlessScroll: true
     });
 }
@@ -165,15 +165,14 @@ function contactsFindContacts(e) {
     navigator.contacts.find(fields, function(contacts){
         
         APP.models.contacts.deviceContactsDS.data([]);
-        
-        for (var i=0; i++; i<contacts.length){
+        var contactsCount = contacts.length;
+        for (var i=0;  i<contactsCount; i++){
             var contactItem = new Object();
             contactItem.type = "device";
-            contactItem.name = contacts[i].name;
+            contactItem.name = contacts[i].name.formatted;
             contactItem.phoneNumbers = contacts[i].phoneNumbers;
             contactItem.emails = contacts[i].emails;
             APP.models.contacts.deviceContactsDS.add(contactItem);
-            alert(JSON.stringify(contactItem));
         }
          
     },function(error){alert(error);}, options);

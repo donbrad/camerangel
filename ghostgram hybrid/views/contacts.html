@@ -1,10 +1,10 @@
 <div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="APP.models.contacts" data-before-show="beforeShowFilter" data-init="onInitContacts">
         
     <div class="ghostContainer">
-       <div>
-         <input style="font-size: 16px; margin-left: 6px; width: 70%;" id="contactSearchQuery" type="search"/> <a class="button ghostButton" data-role="button"  data-click="contactsFindContacts">Find</a>
+       <div style='padding-bottom: 16px;'>
+         <input style="font-size: 16px; margin-left: 6px; width: 70%" id="contactSearchQuery" type="search"/> <a class="button ghostButton" data-role="button"  data-click="contactsFindContacts"> Find</a>
         </div>
-        <ul data-role="listview" id="contacts-listview"></ul>
+        <ul data-role="listview" data-style='inset' id="contacts-listview"></ul>
     </div>
         
 </div>
@@ -15,9 +15,7 @@
             <span>Add Contact</span>  
         </div>
     </div>
-    <div>
-         <input style="font-size: 16px; margin-left: 6px;" id="contactSearchQuery" type="search"/> <a class="button ghostButton" data-role="button"  data-click="contactsFindContacts">Find</a>
-    </div>
+   
    
     <div data-role="footer">
         <div data-role="navbar">
@@ -38,7 +36,7 @@
 </script>
 
 <script type="text/x-kendo-template" id="deviceContactsTemplate">
-  <div style="margin-bottom: 12px;">
-  <div><span><strong> Name: </strong></span>#: data.name #</div>
+  <div>
+  <div class="ghostText">#: data.name #</div>
   </div>
 </script>
