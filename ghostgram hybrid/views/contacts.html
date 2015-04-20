@@ -12,17 +12,19 @@
         
 </div>
 
-<div data-role="modalview" id="modalview-contacts-addContact" style="width: 90%; display: none;" data-show="doShowAddContacts" data-model="APP.models.contacts" class="appearance">
+<div data-role="view" data-show="doShowAddContacts"  id="contacts-addContact" class="appearance">
     <div data-role="header">
         <div data-role="navbar">
-            <span>Add Contact</span>  
+            <a class="nav-button" data-align="left" data-role="backbutton">Back</a>
+            <span data-role="view-title"></span>
+            <a data-align="right" data-role="button" class="ghostButton" data-click="contactsAddContact">Add</a>
         </div>
     </div>
    <form>
         <ul data-role="listview" data-style="inset" >
             <li>
                 <label> Name
-                    <input type="text" id="addContactName" data-bind="value: currentDeviceContact.name"/>
+                    <input type="text" id="addContactName" />
                 </label>
             </li>
             <li>
@@ -46,13 +48,6 @@
             </li>
         </ul>
     </form>
-   
-    <div data-role="footer">
-        <div data-role="navbar">
-            <a data-click="closeModalViewAddContact" data-role="button" type="button" data-align="left">Cancel</a>
-            <a data-click="contactsAddContact" type="button" data-role="button" data-align="right">Add Contact</a>
-        </div>
-    </div>
 </div>
 
 <!-- this is the template used by the listview. template items are automatically
