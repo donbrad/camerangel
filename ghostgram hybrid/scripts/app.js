@@ -32,7 +32,7 @@
           title: 'Channels',
           pubnub: '',
           currentChannel: '',
-          channelDS : new kendo.data.DataSource({pageSize: 64})
+          channelDS : new kendo.data.DataSource()
           //Todo: Add channel data source and sync if user is signed in
         },
           
@@ -126,6 +126,25 @@
 			
 		},
         
+        fetchParseData : function () {
+            var ChannelModel = Parse.Object.extend("channels");
+            var ChannelCollection = Parse.Collection.extend({
+              model: ChannelModel
+            });
+            
+            var channels = new ChannelCollection();
+            
+            channels.fetch({
+                  success: function(collection) {
+                     APP.models.channels.channelDS.data(collection);
+                  },
+                  error: function(collection, error) {
+                   alert("Error fetching channels : " + error);
+                  }
+                });
+            
+        },
+        
         placesInit: function() {
 			_mapElem = $("#places-mapview");
 		},
@@ -176,6 +195,7 @@
             APP.models.profile.phone =  APP.models.profile.currentUser.attributes.phone;
             APP.models.profile.alias =  APP.models.profile.currentUser.attributes.alias;
             APP.models.profile.plaform = device.platform;
+            _app.fetchParseData();
         }
 
          APP.models.channels.pubnub = PUBNUB.init({ 
