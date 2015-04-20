@@ -12,7 +12,7 @@
         
 </div>
 
-<div data-role="modalview" id="modalview-contacts-addContact" style="width: 90%; display: none;" data-show="doInitAddContacts" data-model="APP.models.contacts"class="appearance">
+<div data-role="modalview" id="modalview-contacts-addContact" style="width: 90%; display: none;" data-show="doShowAddContacts" data-model="APP.models.contacts" class="appearance">
     <div data-role="header">
         <div data-role="navbar">
             <span>Add Contact</span>  
@@ -27,19 +27,19 @@
             </li>
             <li>
                 <label> Alias
-                    <input type="text" id="addContactAlias"/>
+                    <input type="text" id="addContactAlias" />
                 </label>
             </li>
             <li>           
                 <label>Phone
-                    <select id="addContactPhone" style="width: 200px">
-                        <option>Select Email</option>
+                    <select id="addContactPhone" >
+                        <option>Select Phone</option>
                     </select>
                 </label>
             </li>
             <li>
                 <label>Email
-                     <select id="addContactEmail" style="width: 200px">
+                     <select id="addContactEmail" >
                         <option>Select Email</option>
                     </select>
                 </label>
