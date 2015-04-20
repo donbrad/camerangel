@@ -148,17 +148,6 @@ function onInitContacts (e){
             template: $("#deviceContactsTemplate").text(),
             click: function(e) {
                APP.models.contacts.currentDeviceContact = e.dataItem;
-               APP.models.contacts.emailArray = new Array();
-                
-               for (var i = 0; i<APP.models.contacts.currentDeviceContact.emails.length; i++) {
-                    var email = new Object();
-                    email.name = APP.models.contacts.currentDeviceContact.emails.name;
-                    email.address =  APP.models.contacts.currentDeviceContact.emails.address;
-                   
-                   APP.models.contacts.emailArray.push(email);
-                   
-               }
-               APP.models.contacts.phoneArray = APP.models.contacts.currentDeviceContact.phoneNumbers;
                APP.kendo.navigate('#contacts-addContact');
              
             }
@@ -213,6 +202,19 @@ function doShowAddContacts() {
     var data = APP.models.contacts.currentDeviceContact;
     
     $("#addContactName").val(data.name);
+    APP.models.contacts.emailArray = new Array();
+                
+   for (var i = 0; i<APP.models.contacts.currentDeviceContact.emails.length; i++) {
+        var email = new Object();
+        email.name = APP.models.contacts.currentDeviceContact.emails[i].name;
+        email.address =  APP.models.contacts.currentDeviceContact.emails[i].address;
+
+       APP.models.contacts.emailArray.push(email);
+
+   }
+   APP.models.contacts.emailDS.data(APP.models.contacts.emailArray);
+   APP.models.contacts.phoneArray = APP.models.contacts.currentDeviceContact.phoneNumbers;
+   APP.models.contacts.phoneDS.data(APP.models.contacts.currentDeviceContact.phoneNumbers);
     
 }
     
