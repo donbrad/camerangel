@@ -176,7 +176,8 @@
      $.extend(window, {
 		
 		onShowPlaces: _app.placesShow,
-		onInitPlaces: _app.placesInit
+		onInitPlaces: _app.placesInit,
+        onUserSignIn: _app.fetchParseData
 	});
     
     // this function is called by Cordova when the application is loaded by the device
