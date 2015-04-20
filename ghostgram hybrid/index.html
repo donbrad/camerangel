@@ -170,8 +170,22 @@ function contactsFindContacts(e) {
             var contactItem = new Object();
             contactItem.type = "device";
             contactItem.name = contacts[i].name.formatted;
+            contactItem.phoneNumbers = new Array();
+            for (var j=0; j<contacts[i].phoneNumbers.length; j++){
+                var phone = new Object();
+                phone.type = contacts[i].phoneNumbers[j].type;
+                phone.number = contacts[i].phoneNumbers[j].value;
+                contactItem.phoneNumbers.push(phone);
+            }
+            contactItem.emails = new Array();
             contactItem.phoneNumbers = contacts[i].phoneNumbers;
-            contactItem.emails = contacts[i].emails;
+             for (var k=0; j<contacts[i].emails.length; k++){
+                var email = new Object();
+                email.type = contacts[i].emails[k].type;
+                email.address = contacts[i].emails[k].value;
+                contactItem.emails.push(email);
+            }
+           
             APP.models.contacts.deviceContactsDS.add(contactItem);
         }
          
