@@ -105,6 +105,14 @@
    color: #e2e2e2;
 }
 
+.ghostList {
+   background-color: #fff;
+   color: rgba(37,120,152, 0.9);
+   padding: 12px;
+   font-size: 14px
+
+}
+
 .km-root .appearance .km-listview label
 {
   color: rgba(37,120,152, 0.9);;

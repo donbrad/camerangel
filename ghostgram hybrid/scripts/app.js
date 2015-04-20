@@ -32,26 +32,26 @@
           title: 'Channels',
           pubnub: '',
           currentChannel: '',
-          channelDS : new kendo.data.DataSource({pageSize: 16})
+          channelDS : new kendo.data.DataSource({pageSize: 64})
           //Todo: Add channel data source and sync if user is signed in
         },
           
         gallery: {
           title: 'gallery',
-          galleryDS: new kendo.data.DataSource({pageSize: 16})
+          galleryDS: new kendo.data.DataSource({pageSize: 64})
           //Todo: Add photo gallery data source and sync if user is signed in
         },
           
         contacts: {
           title: 'Contacts',
-          contactsDS: new kendo.data.DataSource({pageSize: 16}),
-          deviceContactsDS: new kendo.data.DataSource({pageSize: 16})
+          contactsDS: new kendo.data.DataSource({pageSize: 64}),
+          deviceContactsDS: new kendo.data.DataSource({pageSize: 64})
            //Todo: Add contacts cache data source and sync if user is signed in
             
         },
         places: {
             title: 'Places',
-            placesDS: new kendo.data.DataSource({pageSize: 16})
+            placesDS: new kendo.data.DataSource({pageSize: 64})
         }
       },
        kendo: ''
