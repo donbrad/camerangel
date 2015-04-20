@@ -10,7 +10,7 @@
  <!-- External scripts -->
     <script src="cordova.js"></script>
     <script src="kendo/js/jquery.min.js"></script>
-    <script src="kendo/js/kendo.mobile.min.js"></script>
+    <script src="kendo/js/kendo.all.min.js"></script>
 	<script src="scripts/parse.js"></script>
     <script src="https://cdn.pubnub.com/pubnub-dev.js"></script>
     <script src="scripts/appData.js"></script>
@@ -151,7 +151,11 @@ function onInitContacts (e){
             virtualViewSize: 100,
             click: function(e) {
                APP.models.contacts.currentDeviceContact = e.dataItem;
-                APP.kendo.navigate('#contacts-addContact');
+               
+                
+                APP.models.contacts.emailDS = new kendo.data.DataSource({data: APP.models.contacts.currentDeviceContacts.emails});
+               APP.models.contacts.phoneDS = new kendo.data.DataSource({data: APP.models.contacts.currentDeviceContacts.phoneNumbers});
+               APP.kendo.navigate('#contacts-addContact');
               // $("#modalview-contacts-addContact").data("kendoMobileModalView").open();
             },
             endlessScroll: true
@@ -172,6 +176,7 @@ function contactsFindContacts(e) {
         
         APP.models.contacts.deviceContactsDS.data([]);
         var contactsCount = contacts.length;
+        
         for (var i=0;  i<contactsCount; i++){
             var contactItem = new Object();
             contactItem.type = "device";
@@ -204,17 +209,6 @@ function contactsFindContacts(e) {
 function doShowAddContacts() {
     var data = APP.models.contacts.currentDeviceContact;
      $("#addContactName").val(data.name);
-     $("#addContactPhone").kendoDropDownList({
-                dataTextField: "name",
-                dataValueField: "number",
-                dataSource: new kendo.data.DataSource({data: data.phoneNumbers})
-    });
-    
-     $("#addContactEmail").kendoDropDownList({
-                dataTextField: "name",
-                dataValueField: "address",
-                dataSource: new kendo.data.DataSource({data: data.emails})
-    });
     
 }
     
@@ -361,7 +355,11 @@ function introChanged () {
     
  <div data-role="layout" data-id="addcontacts" style="display:none">
     <div data-role="header">
-       
+      <div data-role="navbar">
+            <a class="nav-button" data-align="left" data-role="backbutton">Back</a>
+            <span data-role="view-title"></span>
+            <a data-align="right" data-role="button"  data-click="contactsAddContact">Add</a>
+        </div>
     </div>
 
     <div data-role="content" class='view-content'>
