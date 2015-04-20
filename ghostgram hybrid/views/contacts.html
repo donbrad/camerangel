@@ -12,17 +12,9 @@
         
 </div>
 
-<div data-role="view"  data-title="Add Contact" id="contacts-addContact" data-layout="addcontacts" data-use-native-scrolling="true" data-show="doShowAddContacts">
-    <div data-role="header">
-        <div data-role="navbar">
-            <a class="nav-button" data-align="left" data-role="backbutton">Back</a>
-            <span data-role="view-title"></span>
-            <a data-align="right" data-role="button" class="ghostButton" data-click="contactsAddContact">Add</a>
-        </div>
-    </div>
+<div data-role="view"  data-title="Add Contact" id="contacts-addContact" data-layout="addcontacts" data-use-native-scrolling="true" data-show="doShowAddContacts" class="appearance">
   
-    <form class="appearance">
-
+    <form >
         <ul data-role="listview" data-style="inset" >
             <li>
                 <label> Name
@@ -36,13 +28,19 @@
             </li>
             <li>           
                 <label>Phone
-                    <select id="addContactPhone">
+                    <select id="addContactPhone" data-role="dropdownlist"
+                            data-bind="source: APP.models.contacts.phoneDS" 
+                            data-text-field="name" 
+                            data-value-field="number">
                     </select>
                 </label>
             </li>
             <li>
                 <label>Email
-                     <select id="addContactEmail">
+                     <select id="addContactEmail" data-role="dropdownlist"
+                            data-bind="source: APP.models.contacts.emailDS" 
+                            data-text-field="name" 
+                            data-value-field="address">
                     </select>
                 </label>
             </li>
