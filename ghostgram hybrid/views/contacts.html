@@ -12,13 +12,40 @@
         
 </div>
 
-<div data-role="modalview" id="modalview-contacts-addContact" style="width: 90%; display: none;" class="appearance">
+<div data-role="modalview" id="modalview-contacts-addContact" style="width: 90%; display: none;" data-show="doInitAddContacts" data-model="APP.models.contacts"class="appearance">
     <div data-role="header">
         <div data-role="navbar">
             <span>Add Contact</span>  
         </div>
     </div>
-   
+   <form>
+        <ul data-role="listview" data-style="inset" >
+            <li>
+                <label> Name
+                    <input type="text" id="addContactName" data-bind="value: currentDeviceContact.name"/>
+                </label>
+            </li>
+            <li>
+                <label> Alias
+                    <input type="text" id="addContactAlias"/>
+                </label>
+            </li>
+            <li>           
+                <label>Phone
+                    <select id="addContactPhone" style="width: 200px">
+                        <option>Select Email</option>
+                    </select>
+                </label>
+            </li>
+            <li>
+                <label>Email
+                     <select id="addContactEmail" style="width: 200px">
+                        <option>Select Email</option>
+                    </select>
+                </label>
+            </li>
+        </ul>
+    </form>
    
     <div data-role="footer">
         <div data-role="navbar">
@@ -40,6 +67,6 @@
 
 <script type="text/x-kendo-template" id="deviceContactsTemplate">
   <div>
-  <div class="ghostText">#: data.name #</div>
+  <div class="ghostText">#: data.name # <a data-role="detailbutton" data-style="detaildisclose" ></a></div>
   </div>
 </script>

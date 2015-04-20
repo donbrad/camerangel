@@ -144,13 +144,22 @@ function closeModalViewAddContact() {
 }
 
 function onInitContacts (e){
-    e.preventDefault(e);
     
     $("#contacts-listview").kendoMobileListView({
             dataSource: APP.models.contacts.deviceContactsDS,
             template: $("#deviceContactsTemplate").text(),
+            virtualViewSize: 100,
+            click: function(e) {
+               APP.models.contacts.currentDeviceContact = e.dataItem;
+               $("#modalview-contacts-addContact").data("kendoMobileModalView").open();
+            },
             endlessScroll: true
     });
+}
+    
+function contactsClick(e) {
+    e.preventDefault(e);
+    var item = e.item;
 }
     
 function contactsFindContacts(e) {
@@ -171,27 +180,45 @@ function contactsFindContacts(e) {
             contactItem.type = "device";
             contactItem.name = contacts[i].name.formatted;
             contactItem.phoneNumbers = new Array();
-            for (var j=0; j<contacts[i].phoneNumbers.length; j++){
-                var phone = new Object();
-                phone.type = contacts[i].phoneNumbers[j].type;
-                phone.number = contacts[i].phoneNumbers[j].value;
-                contactItem.phoneNumbers.push(phone);
+            if (contacts[i].phoneNumbers !== null) {
+                for (var j=0; j<contacts[i].phoneNumbers.length; j++){
+                    var phone = new Object();
+                    phone.name = contacts[i].phoneNumbers[j].type + " : " + contacts[i].phoneNumbers[j].value ;
+                    phone.number = contacts[i].phoneNumbers[j].value;
+                    contactItem.phoneNumbers.push(phone);
+                }
             }
+            
             contactItem.emails = new Array();
-            contactItem.phoneNumbers = contacts[i].phoneNumbers;
-             for (var k=0; j<contacts[i].emails.length; k++){
-                var email = new Object();
-                email.type = contacts[i].emails[k].type;
-                email.address = contacts[i].emails[k].value;
-                contactItem.emails.push(email);
+            if (contacts[i].emails !== null) {
+                 for (var k=0; k<contacts[i].emails.length; k++){
+                    var email = new Object();
+                    email.name = contacts[i].emails[k].type + " : " + contacts[i].emails[k].value;
+                    email.address = contacts[i].emails[k].value;
+                    contactItem.emails.push(email);
+                }
             }
-           
             APP.models.contacts.deviceContactsDS.add(contactItem);
         }
          
     },function(error){alert(error);}, options);
  }
     
+function doInitAddContacts() {
+    var data = APP.models.contacts.currentDeviceContact;
+    
+     $("#addContactPhone").kendoDropDownList({
+                dataTextField: "name",
+                dataValueField: "phone",
+                dataSource: new kendo.data.DataSource({data: data.phoneNumbers})
+    });
+     $("#addContactEmail").kendoDropDownList({
+                dataTextField: "name",
+                dataValueField: "address",
+                dataSource: new kendo.data.DataSource({data: data.emails})
+    });
+    
+}
     
 function contactsPickContact(e) {
     e.preventDefault(e);

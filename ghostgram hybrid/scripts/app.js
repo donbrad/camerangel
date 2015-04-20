@@ -44,8 +44,8 @@
           
         contacts: {
           title: 'Contacts',
-          contactsDS: new kendo.data.DataSource({pageSize: 64}),
-          deviceContactsDS: new kendo.data.DataSource({pageSize: 512})
+          contactsDS: new kendo.data.DataSource(),
+          deviceContactsDS: new kendo.data.DataSource()
            //Todo: Add contacts cache data source and sync if user is signed in
             
         },
