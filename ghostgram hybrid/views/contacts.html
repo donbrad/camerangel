@@ -12,7 +12,7 @@
         
 </div>
 
-<div data-role="view" data-show="doShowAddContacts" data-title="Add Contact" id="contacts-addContact" class="appearance">
+<div data-role="view"  data-title="Add Contact" id="contacts-addContact" data-layout="addcontacts" data-use-native-scrolling="true" data-show="doShowAddContacts">
     <div data-role="header">
         <div data-role="navbar">
             <a class="nav-button" data-align="left" data-role="backbutton">Back</a>
@@ -21,7 +21,8 @@
         </div>
     </div>
   
-    <form>
+    <form class="appearance">
+
         <ul data-role="listview" data-style="inset" >
             <li>
                 <label> Name
@@ -35,15 +36,13 @@
             </li>
             <li>           
                 <label>Phone
-                    <select id="addContactPhone"  data-role="dropdownlist">
-                        <option>Select Phone</option>
+                    <select id="addContactPhone">
                     </select>
                 </label>
             </li>
             <li>
                 <label>Email
-                     <select id="addContactEmail"  data-role="dropdownlist">
-                        <option>Select Email</option>
+                     <select id="addContactEmail">
                     </select>
                 </label>
             </li>
