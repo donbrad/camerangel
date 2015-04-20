@@ -291,7 +291,7 @@ function channelsAddChannel(e) {
         description = $('#channels-addChannel-description').val();
     channel.set("name", name );
     channel.set("isOwner", true);
-    channel.set("moderated",  moderated === 0 ? true : false);
+    channel.set("moderated",  moderated === "channelModerated" ? true : false);
     channel.set("expirationDate", expirationDate);
     channel.set("description", description);
     
@@ -300,6 +300,7 @@ function channelsAddChannel(e) {
       success: function(channel) {
         // Execute any logic that should take place after the object is saved.
         alert('Created channel : ' + channel.get('name'));
+          APP.models.channels.channelDS.add(channel.attributes);
           closeModalViewAddChannel();
       },
       error: function(channel, error) {
@@ -562,7 +563,7 @@ function introChanged () {
 <script type="text/x-kendo-tmpl" id="channels-listview-template">
     <div style="clear:both;">
        <div class="ghostTextLarge">#:name#</div>
-       <div style="font-size: 10px; padding-top: 12px; padding-bottom: 18px;"> #: description # </div>
+       <div style="font-size: 10px; padding-top: 8px; padding-bottom: 12px;"> #: description # </div>
         <div style="font-size: 12px;">
            <span style="float: left;"> # if (moderated) { # Moderated by Creator # } else { # Not Moderated # }#</span>
            <span style="float: right;">Expires: #: expirationDate #</span>
