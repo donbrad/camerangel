@@ -395,7 +395,7 @@ function channelsAddChannel(e) {
     channel.save(null, {
       success: function(channel) {
         // Execute any logic that should take place after the object is saved.
-        alert('Created channel : ' + channel.get('name'));
+        //alert('Created channel : ' + channel.get('name'));
           APP.models.channels.channelDS.add(channel.attributes);
           closeModalViewAddChannel();
       },

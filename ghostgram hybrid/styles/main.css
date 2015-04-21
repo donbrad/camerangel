@@ -101,8 +101,8 @@
 }
 
 .ghostTiny {
-    color: rgba(37,120,152, 0.9);
-    font-size: 8px;
+    color: rgba(37,120,152, 0.5);
+    font-size: 10px;
     font-weight:400;
 }
 
