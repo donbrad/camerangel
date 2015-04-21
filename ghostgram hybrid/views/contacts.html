@@ -7,6 +7,7 @@
             <a data-role="button" href="#contactImport" data-align="right" >Import</a>
         </div>
     </div>       
+    
     <div class="ghostContainer">
 
         <ul id="contacts-listview"></ul>
@@ -17,7 +18,7 @@
 
 
 <div data-role="view" data-title="Import Contacts" id="contactImport" data-layout="main" data-model="APP.models.contacts" data-init="onInitContactImport">
-      <div data-role="header">
+    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
             <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>
@@ -55,6 +56,14 @@
                     <input type="text" id="addContactAlias" />
                 </label>
             </li>
+             <li>
+                <label> Private Channel
+                    <select id="addContactPrivate">
+                        <option value="yes">Yes - Enabled</option>
+                        <option value="no">No - Disabled</option>
+                    </select>
+                </label>
+            </li>
             <li>           
                 <label>Phone
                     <select id="addContactPhone" data-role="dropdownlist" 
@@ -80,6 +89,57 @@
     </form>
     </div>
 </div>
+
+
+<div data-role="view" data-model="APP.models.contacts.currentContact" data-title="Edit Contact" id="contactsEditContact" 
+     data-layout="main"  data-before-show="doShowEditContacts" class="appearance">
+    <div data-role="header">
+        <div data-role="navbar">
+            <span data-role="view-title"></span>
+            <a data-role="button" href="#contacts" data-align="left" >Contacts</a>
+             <a data-role="button" data-click="contactsUpdateContact" data-align="right" >Update</a>
+        </div>
+    </div> 
+     <div class="ghostContainer">
+    <form >
+        <ul data-role="listview" data-style="inset" >
+            <li>
+                <label> Name
+                    <input type="text" id="editContactName" data-bind="value: name"/>
+                </label>
+            </li>
+            <li>
+                <label> Nickname
+                    <input type="text" id="editContactAlias" data-bind="value: alias"/>
+                </label>
+            </li>
+             <li>
+                <label> Private Channel
+                    <select id="editContactPrivate" data-bind="value: privateMessage">
+                        <option value="yes">Yes - Enabled</option>
+                        <option value="no">No - Disabled</option>
+                    </select>
+                </label>
+            </li>
+            <li>           
+                <label>Phone
+                    <input id="editContactPhone" data-bind="value: phone">
+                    </input>
+                </label>
+            </li>
+            <li>
+                <label>Email
+                     <input id="editContactEmail" data-bind="value: email">
+                       
+                    </input>
+                </label>
+            </li>
+        </ul>
+    </form>
+    </div>
+</div>
+
+
 
 <!-- this is the template used by the listview. template items are automatically
      wrapped in an <li> by Kendo UI Mobile -->

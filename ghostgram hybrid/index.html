@@ -161,7 +161,15 @@ function onInitContacts(e) {
      $("#contacts-listview").kendoMobileListView({
             dataSource: APP.models.contacts.contactsDS,
             template: $("#contactsTemplate").text(),
+           filterable: {
+                field: "name",
+                operator: "startswith"
+            },
             click: function(e) {
+                e.preventDefault();
+                var contact = e.dataItem;
+                APP.models.contacts.currentContact = contact;
+                APP.kendo.navigate("#contactsEditContact");
             }
      });
 }
@@ -278,12 +286,14 @@ function contactsAddContact(e){
         alias = $('#addContactAlias').val(),
         phone = $('#addContactPhone').val(),
         email = $('#addContactEmail').val(), 
+        private = $('#addContactPrivate').val();
         guid = uuid.v4();
         
     contact.set("name", name );
     contact.set("alias", alias);
     contact.set("phone", phone);
     contact.set("email", email);
+    contact.set("privateChannel", private === 'yes' ? true : false);
     contact.set("uuid", guid);
     
     contact.setACL(APP.models.profile.parseACL);
