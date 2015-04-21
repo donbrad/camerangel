@@ -12,7 +12,8 @@
         
 </div>
 
-<div data-role="view"  data-title="Add Contact" id="contacts-addContact" data-layout="addcontacts" data-use-native-scrolling="true" data-show="doShowAddContacts" class="appearance">
+<div data-role="view" data-model="APP.models.contacts" data-title="Add Contact" id="contacts-addContact" 
+     data-layout="addcontacts"  data-before-show="doShowAddContacts" class="appearance">
   
     <form >
         <ul data-role="listview" data-style="inset" >
@@ -29,20 +30,20 @@
             <li>           
                 <label>Phone
                     <select id="addContactPhone" data-role="dropdownlist" 
-                            data-option-label="Select Phone..."
                             data-text-field="name" 
                             data-value-field="number"
-                            data-bind="source: APP.models.contacts.phoneArray">
+                            data-bind="source: phoneArray"
+                            >
                     </select>
                 </label>
             </li>
             <li>
                 <label>Email
                      <select id="addContactEmail" data-role="dropdownlist"
-                             data-option-label="Select Email..."
                             data-text-field="name" 
                             data-value-field="address"
-                            data-bind="source: APP.models.contacts.emailArray">
+                            data-bind="source: emailArray"
+                           >
                        
                     </select>
                 </label>

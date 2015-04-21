@@ -159,6 +159,27 @@ function onInitContacts (e){
             template: $("#deviceContactsTemplate").text(),
             click: function(e) {
                APP.models.contacts.currentDeviceContact = e.dataItem;
+               APP.models.contacts.emailArray = new Array();
+                
+               for (var i = 0; i<APP.models.contacts.currentDeviceContact.emails.length; i++) {
+                    var email = new Object();
+                    email.name = APP.models.contacts.currentDeviceContact.emails[i].name;
+                    email.address =  APP.models.contacts.currentDeviceContact.emails[i].address;
+
+                   APP.models.contacts.emailArray.push(email);
+
+               }
+
+               APP.models.contacts.phoneArray = new Array();
+                 for (var j = 0; j<APP.models.contacts.currentDeviceContact.phoneNumbers.length; j++) {
+                    var phone = new Object();
+                    phone.name = APP.models.contacts.currentDeviceContact.phoneNumbers[j].name;
+                    phone.number =  APP.models.contacts.currentDeviceContact.phoneNumbers[j].number;
+
+                   APP.models.contacts.phoneArray.push(phone);
+
+               }
+
                APP.kendo.navigate('#contacts-addContact');
              
             }
@@ -188,7 +209,7 @@ function contactsFindContacts(e) {
             if (contacts[i].phoneNumbers !== null) {
                 for (var j=0; j<contacts[i].phoneNumbers.length; j++){
                     var phone = new Object();
-                    phone.name = contacts[i].phoneNumbers[j].type + "  " + contacts[i].phoneNumbers[j].value ;
+                    phone.name = contacts[i].phoneNumbers[j].type + " : " + contacts[i].phoneNumbers[j].value ;
                     phone.number = contacts[i].phoneNumbers[j].value;
                     contactItem.phoneNumbers.push(phone);
                 }
@@ -198,7 +219,7 @@ function contactsFindContacts(e) {
             if (contacts[i].emails !== null) {
                  for (var k=0; k<contacts[i].emails.length; k++){
                     var email = new Object();
-                    email.name = contacts[i].emails[k].type + "  " + contacts[i].emails[k].value;
+                    email.name = contacts[i].emails[k].type + " : " + contacts[i].emails[k].value;
                     email.address = contacts[i].emails[k].value;
                     contactItem.emails.push(email);
                 }
@@ -213,20 +234,7 @@ function doShowAddContacts() {
     var data = APP.models.contacts.currentDeviceContact;
     
     $("#addContactName").val(data.name);
-    APP.models.contacts.emailArray = new Array();
-                
-   for (var i = 0; i<APP.models.contacts.currentDeviceContact.emails.length; i++) {
-        var email = new Object();
-        email.name = APP.models.contacts.currentDeviceContact.emails[i].name;
-        email.address =  APP.models.contacts.currentDeviceContact.emails[i].address;
-
-       APP.models.contacts.emailArray.push(email);
-
-   }
-   APP.models.contacts.emailDS.data(APP.models.contacts.emailArray);
-   APP.models.contacts.phoneArray = APP.models.contacts.currentDeviceContact.phoneNumbers;
-   APP.models.contacts.phoneDS.data(APP.models.contacts.currentDeviceContact.phoneNumbers);
-    
+   
 }
     
 function contactsPickContact(e) {
