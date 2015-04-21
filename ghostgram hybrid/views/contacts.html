@@ -14,7 +14,11 @@
 
 <div data-role="view" data-model="APP.models.contacts" data-title="Add Contact" id="contacts-addContact" 
      data-layout="addcontacts"  data-before-show="doShowAddContacts" class="appearance">
-  
+     <div class="ghostContainer">
+      <div style="padding: 12px;">  
+      Please choose a <strong>phone number</strong> and an <strong>email address</strong> for this contact. </br>  
+    You may also add a <strong>nickname</strong> for this user.
+    </div>
     <form >
         <ul data-role="listview" data-style="inset" >
             <li>
@@ -23,7 +27,7 @@
                 </label>
             </li>
             <li>
-                <label> Alias
+                <label> Nickname
                     <input type="text" id="addContactAlias" />
                 </label>
             </li>
@@ -33,7 +37,7 @@
                             data-text-field="name" 
                             data-value-field="number"
                             data-bind="source: phoneArray"
-                            >
+                            auto-bind="false">
                     </select>
                 </label>
             </li>
@@ -43,13 +47,14 @@
                             data-text-field="name" 
                             data-value-field="address"
                             data-bind="source: emailArray"
-                           >
+                           auto-bind="false">
                        
                     </select>
                 </label>
             </li>
         </ul>
     </form>
+    </div>
 </div>
 
 <!-- this is the template used by the listview. template items are automatically

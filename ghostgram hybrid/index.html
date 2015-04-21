@@ -152,6 +152,7 @@ function closeModalViewAddContact() {
 function closeModalViewEditChannel() {
     $("#modalview-channels-editChannel").kendoMobileModalView("close");
 }
+    
 function onInitContacts (e){
     
     $("#contacts-listview").kendoMobileListView({
@@ -235,6 +236,41 @@ function doShowAddContacts() {
     
     $("#addContactName").val(data.name);
    
+}
+
+function contactsAddContact(e){
+    e.preventDefault(e);
+     var Contacts = Parse.Object.extend("contacts");
+    var contact = new Contacts();
+    
+    var name = $('#addContactName').val(),
+        alias = $('#addContactAlias').val(),
+        phone = $('#addContactPhone').val(),
+        email = $('#addContactEmail').val(), 
+        guid = Guid.create();
+        
+    contact.set("name", name );
+    contact.set("alias", alias);
+    contact.set("phone", phone);
+    contact.set("email", email);
+    contact.set("uuid", guid);
+    
+    contact.setACL(new Parse.ACL(Parse.User.current()));
+    contact.save(null, {
+      success: function(contact) {
+        // Execute any logic that should take place after the object is saved.
+        alert('Created contact : ' + contact.get('name'));
+          APP.models.contacts.contactsDS.add(contact.attributes);
+          
+      },
+      error: function(contact, error) {
+        // Execute any logic that should take place if the save fails.
+        // error is a Parse.Error with an error code and message.
+        alert('Error creating contact: ' + error.message);
+      }
+    });
+ 
+    
 }
     
 function contactsPickContact(e) {
