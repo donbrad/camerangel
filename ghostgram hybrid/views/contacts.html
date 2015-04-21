@@ -115,7 +115,7 @@
             </li>
              <li>
                 <label> Private Channel
-                    <select id="editContactPrivate" data-bind="value: privateMessage">
+                    <select id="editContactPrivate" data-bind="value: privateChannel">
                         <option value="yes">Yes - Enabled</option>
                         <option value="no">No - Disabled</option>
                     </select>
@@ -145,8 +145,8 @@
      wrapped in an <li> by Kendo UI Mobile -->
 <script type="text/x-kendo-template" id="contactsTemplate">
   <div>
-      <div ><span class="ghostTextLarge"> #: data.alias # </span>   <span  style="float:right;"> # if (privateChannel === true) { # <a class="ghostText" data-click="personalMessage(this)" data-icon="personal-message"></a>  # } #</span></div>
-      <div><span class="ghostTiny">(#: data.name #)</span> <span  style="float:right;"> <a class="ghostText" data-icon="personal-message"></a></span></div>
+      <div ><span class="ghostTextLarge"> #: data.alias # </span>   <span  style="float:right;"> # if (privateChannel === true) { # <a class="ghostText" data-click="personalMessage(this)" data-icon="personalmessage"></a>  # } #</span></div>
+      <div><span class="ghostTiny">(#: data.name #)</span> <span  style="float:right;"> <a class="ghostText" data-icon="phone"></a> <a class="ghostText" data-icon="email"></a></span></div>
   </div>
 </script>
 
