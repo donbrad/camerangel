@@ -145,7 +145,8 @@
      wrapped in an <li> by Kendo UI Mobile -->
 <script type="text/x-kendo-template" id="contactsTemplate">
   <div>
-  <div ><span class="ghostTextLarge"> #: data.alias # </span>  <span style="vertical-align: middle;" class="ghostTiny">(#: data.name #)<span  style="float:right;"> # if (privateChannel) { # <a href="#next" data-icon="personal-message"></a>  # } #</span></div>
+      <div ><span class="ghostTextLarge"> #: data.alias # </span>   <span  style="float:right;"> # if (privateChannel === true) { # <a class="ghostText" data-click="personalMessage(this)" data-icon="personal-message"></a>  # } #</span></div>
+      <div><span class="ghostTiny">(#: data.name #)</span> <span  style="float:right;"> <a class="ghostText" data-icon="personal-message"></a></span></div>
   </div>
 </script>
 

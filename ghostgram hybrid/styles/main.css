@@ -219,16 +219,22 @@
     content: "\e226";
 }
 
+.km-email:after,
+.km-email:before
+{
+    content: "\e099";
+}
+
 .km-local:after,
 .km-local:before
 {
     content: "\e0b4";
 }
 
-.km-personal-message:after,
-.km-personal-message:before
+.km-personalmessage:after,
+.km-personalmessage:before
 {
-    content: "\e219";
+    content: "\e094";
 }
 
 .km-photo:after,
