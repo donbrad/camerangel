@@ -147,7 +147,7 @@
                      APP.models.channels.channelDS.data(models);
                   },
                   error: function(collection, error) {
-                   alert("Error fetching channels : " + error);
+                      handleParseError(error);
                   }
                 });
             

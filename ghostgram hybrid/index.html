@@ -95,6 +95,7 @@ function homeSignout (e) {
     APP.models.profile.email =  '';
     APP.models.profile.phone =  '';
     APP.models.profile.alias =  '';
+    APP.models.profile.userUUID = '';
     APP.kendo.navigate('#newuserhome');
 }
 
@@ -188,7 +189,21 @@ function onInitContacts (e){
             }
     });
 }
-   
+function handleParseError(err) {
+  switch (err.code) {
+    case Parse.Error.INVALID_SESSION_TOKEN:
+     
+      Parse.User.logOut();
+        APP.models.profile.currentUser = '';
+        APP.models.profile.username =  '';
+        APP.models.profile.email =  '';
+        APP.models.profile.phone =  '';
+        APP.models.profile.alias =  '';
+        APP.models.profile.userUUID = '';
+        APP.kendo.navigate('#newuserhome');
+      break;
+  }
+}
     
 function contactsFindContacts(e) {
     e.preventDefault(e);   
@@ -268,7 +283,8 @@ function contactsAddContact(e){
       error: function(contact, error) {
         // Execute any logic that should take place if the save fails.
         // error is a Parse.Error with an error code and message.
-        alert('Error creating contact: ' + error.message);
+          handleParseError(error);
+       
       }
     });
  
@@ -370,6 +386,7 @@ function channelsAddChannel(e) {
         // Execute any logic that should take place if the save fails.
         // error is a Parse.Error with an error code and message.
         alert('Error creating channel: ' + error.message);
+        handleParseError(error);
       }
     });
  
