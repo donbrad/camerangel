@@ -96,6 +96,7 @@ function homeSignout (e) {
     APP.models.profile.phone =  '';
     APP.models.profile.alias =  '';
     APP.models.profile.userUUID = '';
+    APP.models.profile.parseACL = '';
     APP.kendo.navigate('#newuserhome');
 }
 
@@ -112,6 +113,7 @@ function homeSignin (e) {
             APP.models.profile.phone =  APP.models.profile.currentUser.phone;
             APP.models.profile.alias =  APP.models.profile.currentUser.alias;
             APP.models.profile.userUUID =  APP.models.profile.currentUser.userUUID;
+            APP.models.profile.parseACL = new Parse.ACL(Parse.User.current());
             window.onUserSignIn();
             APP.kendo.navigate('#home');
         },
@@ -153,10 +155,21 @@ function closeModalViewAddContact() {
 function closeModalViewEditChannel() {
     $("#modalview-channels-editChannel").kendoMobileModalView("close");
 }
+   
+function onInitContacts(e) {
+   e.preventDefault();   
+     $("#contacts-listview").kendoMobileListView({
+            dataSource: APP.models.contacts.contactsDS,
+            template: $("#contactsTemplate").text(),
+            click: function(e) {
+            }
+     });
+}
     
-function onInitContacts (e){
     
-    $("#contacts-listview").kendoMobileListView({
+function onInitContactImport (e) {
+    e.preventDefault();
+    $("#contactimport-listview").kendoMobileListView({
             dataSource: APP.models.contacts.deviceContactsDS,
             template: $("#deviceContactsTemplate").text(),
             click: function(e) {
@@ -189,6 +202,7 @@ function onInitContacts (e){
             }
     });
 }
+    
 function handleParseError(err) {
   switch (err.code) {
     case Parse.Error.INVALID_SESSION_TOKEN:
@@ -272,12 +286,13 @@ function contactsAddContact(e){
     contact.set("email", email);
     contact.set("uuid", guid);
     
-    contact.setACL(new Parse.ACL(Parse.User.current()));
+    contact.setACL(APP.models.profile.parseACL);
     contact.save(null, {
       success: function(contact) {
         // Execute any logic that should take place after the object is saved.
         alert('Created contact : ' + contact.get('name'));
-          APP.models.contacts.contactsDS.add(contact.attributes);
+        APP.models.contacts.contactsDS.add(contact.attributes);
+        APP.kendo.navigate('#contactImport');
           
       },
       error: function(contact, error) {
@@ -311,11 +326,6 @@ function homeCreateAccount(e) {
 
     var userUUID = uuid.v4();
     
-    APP.models.profile.username = username;
-    APP.models.profile.email = username;
-    APP.models.profile.phone = phone;
-    APP.models.profile.alias = alias;
-
     //Todo: add validation for user entry and prior to parse call
     user.set("username", username);
     user.set("password", password);
@@ -325,10 +335,17 @@ function homeCreateAccount(e) {
     user.set("phoneVerified", false);
     user.set("userUUID", userUUID);
 
+    APP.models.profile.username = username;
+    APP.models.profile.email = username;
+    APP.models.profile.phone = phone;
+    APP.models.profile.alias = alias;
+    APP.models.profile.userUUID = userUUID;
+    
     user.signUp(null, {
         success: function(user) {
             // Hooray! Let them use the app now.
            closeModalViewSignup();
+            APP.models.profile.parseACL = new Parse.ACL(Parse.User.current());
            alert('Welcome to ghostgrams!');
            APP.kendo.navigate('#home');
         },
@@ -374,7 +391,7 @@ function channelsAddChannel(e) {
     channel.set("description", description);
     channel.set("channelId", guid);
     
-    channel.setACL(new Parse.ACL(Parse.User.current()));
+    channel.setACL(APP.models.profile.parseACL);
     channel.save(null, {
       success: function(channel) {
         // Execute any logic that should take place after the object is saved.

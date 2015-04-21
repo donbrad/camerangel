@@ -1,11 +1,35 @@
+
 <div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="APP.models.contacts" data-init="onInitContacts">
+  <div data-role="header">
+        <div data-role="navbar">
+            <span data-role="view-title"></span>
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>
+            <a data-role="button" href="#contactImport" data-align="right" >Import</a>
+        </div>
+    </div>       
+    <div class="ghostContainer">
+
+        <ul id="contacts-listview"></ul>
         
+    </div>
+        
+</div>
+
+
+<div data-role="view" data-title="Import Contacts" id="contactImport" data-layout="main" data-model="APP.models.contacts" data-init="onInitContactImport">
+      <div data-role="header">
+        <div data-role="navbar">
+            <span data-role="view-title"></span>
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>
+            <a data-role="button" href="#contacts" data-align="right" >Contacts</a>
+        </div>
+    </div>    
     <div class="ghostContainer">
        <div style='padding-bottom: 16px;'>
          <input style="font-size: 16px; margin-left: 6px; width: 70%" id="contactSearchQuery" type="search"/> <a class="button ghostButton" data-role="button"  data-click="contactsFindContacts"> Find</a>
         </div>
 
-        <ul id="contacts-listview"></ul>
+        <ul id="contactimport-listview"></ul>
       
        
     </div>
@@ -60,10 +84,8 @@
 <!-- this is the template used by the listview. template items are automatically
      wrapped in an <li> by Kendo UI Mobile -->
 <script type="text/x-kendo-template" id="contactsTemplate">
-  <div style="margin-bottom: 12px;">
-  <div><span><strong> Name: </strong></span>#: data.name #</div>
-  <div><span><strong> Phone: </strong></span>#: data.phone #</div>
-   <div><span><strong> Phone: </strong></span>#: data.email #</div>
+  <div>
+  <div class="ghostText">#: data.name #  (#: data.alias #)</div>
   </div>
 </script>
 

@@ -151,6 +151,26 @@
                   }
                 });
             
+             var ContactModel = Parse.Object.extend("contacts");
+            var ContactCollection = Parse.Collection.extend({
+              model: ContactModel
+            });
+            
+            var contacts = new ContactCollection();
+            
+            contacts.fetch({
+                  success: function(collection) {
+                     var models = new Array();
+                     for (var i=0; i<collection.models.length; i++) {
+                         models.push(collection.models[i].attributes);
+                     }
+                         
+                     APP.models.contacts.contactsDS.data(models);
+                  },
+                  error: function(collection, error) {
+                      handleParseError(error);
+                  }
+                });
         },
         
         placesInit: function() {
