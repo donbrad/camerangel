@@ -15,6 +15,8 @@
     <script src="https://cdn.pubnub.com/pubnub-dev.js"></script>
     <script src="scripts/appData.js"></script>
     <script src="scripts/app.js"></script>
+    <script src="scripts/guid.js"></script>
+    <script src="scripts/uuid.js"></script>
     
 <script>
 
@@ -73,8 +75,9 @@ function homeBeforeShow () {
         APP.models.profile.username =  APP.models.profile.currentUser.attributes.username;
         APP.models.profile.email =  APP.models.profile.currentUser.attributes.email;
         APP.models.profile.phone =  APP.models.profile.currentUser.attributes.phone;
-         APP.models.profile.alias =  APP.models.profile.currentUser.attributes.alias;
-         APP.models.profile.udid =  APP.models.profile.currentUser.attributes.udid;
+        APP.models.profile.alias =  APP.models.profile.currentUser.attributes.alias;
+        APP.models.profile.udid =  APP.models.profile.currentUser.attributes.udid;
+        APP.models.profile.userUUID = APP.models.profile.currentUser.attributes.UUID;
         APP.kendo.navigate('#home');
 
     } else {
@@ -104,6 +107,7 @@ function homeSignin () {
             APP.models.profile.email =  APP.models.profile.currentUser.attributes.email;
             APP.models.profile.phone =  APP.models.profile.currentUser.attributes.phone;
             APP.models.profile.alias =  APP.models.profile.currentUser.attributes.alias;
+            APP.models.profile.userUUID =  APP.models.profile.currentUser.attributes.userUUID;
             window.onUserSignIn();
             APP.kendo.navigate('#home');
         },
@@ -240,6 +244,8 @@ function homeCreateAccount(e) {
     var phone = $('#home-signup-phone').val();
     var alias = $('#home-signup-alias').val();
 
+    var userUUID = uuid.v4();
+    
     APP.models.profile.username = username;
     APP.models.profile.email = username;
     APP.models.profile.phone = phone;
@@ -252,6 +258,7 @@ function homeCreateAccount(e) {
     user.set("phone", phone);
     user.set("alias", alias);
     user.set("phoneVerified", false);
+    user.set("userUUID", userUUID);
 
     user.signUp(null, {
         success: function(user) {
@@ -292,12 +299,15 @@ function channelsAddChannel(e) {
     var name = $('#channels-addChannel-name').val(),
         moderated = $('#channels-addChannel-moderated').val(),
         expirationDate = $('#channels-addChannel-expirationDate').val(),
-        description = $('#channels-addChannel-description').val();
+        description = $('#channels-addChannel-description').val(), 
+        guid = Guid.create();
+        
     channel.set("name", name );
     channel.set("isOwner", true);
     channel.set("moderated",  moderated === "channelModerated" ? true : false);
     channel.set("expirationDate", expirationDate);
     channel.set("description", description);
+    channel.set("channelId", guid);
     
     channel.setACL(new Parse.ACL(Parse.User.current()));
     channel.save(null, {
