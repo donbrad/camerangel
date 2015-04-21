@@ -223,6 +223,8 @@
             APP.models.profile.email =  APP.models.profile.currentUser.attributes.email;
             APP.models.profile.phone =  APP.models.profile.currentUser.attributes.phone;
             APP.models.profile.alias =  APP.models.profile.currentUser.attributes.alias;
+            APP.models.profile.userUUID =  APP.models.profile.currentUser.attributes.userUUID;
+            APP.models.profile.parseACL = new Parse.ACL(APP.models.profile.currentUser);
             APP.models.profile.plaform = device.platform;
             _app.fetchParseData();
         }

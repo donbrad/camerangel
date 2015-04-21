@@ -113,7 +113,7 @@ function homeSignin (e) {
             APP.models.profile.phone =  APP.models.profile.currentUser.phone;
             APP.models.profile.alias =  APP.models.profile.currentUser.alias;
             APP.models.profile.userUUID =  APP.models.profile.currentUser.userUUID;
-            APP.models.profile.parseACL = new Parse.ACL(Parse.User.current());
+            APP.models.profile.parseACL = new Parse.ACL(user);
             window.onUserSignIn();
             APP.kendo.navigate('#home');
         },
@@ -278,7 +278,7 @@ function contactsAddContact(e){
         alias = $('#addContactAlias').val(),
         phone = $('#addContactPhone').val(),
         email = $('#addContactEmail').val(), 
-        guid = Guid.create();
+        guid = uuid.v4();
         
     contact.set("name", name );
     contact.set("alias", alias);
@@ -382,7 +382,7 @@ function channelsAddChannel(e) {
         moderated = $('#channels-addChannel-moderated').val(),
         expirationDate = $('#channels-addChannel-expirationDate').val(),
         description = $('#channels-addChannel-description').val(), 
-        guid = Guid.create();
+        guid = uuid.v4()
         
     channel.set("name", name );
     channel.set("isOwner", true);
