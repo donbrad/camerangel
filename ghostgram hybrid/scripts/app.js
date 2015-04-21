@@ -47,6 +47,8 @@
           contactsDS: new kendo.data.DataSource(),
           deviceContactsDS: new kendo.data.DataSource(),
           currentDeviceContact: {},
+          phoneDS: new kendo.data.DataSource(),
+          emailDS: new kendo.data.DataSource(),
           phoneArray: [],
           emailArray:  []
            //Todo: Add contacts cache data source and sync if user is signed in
