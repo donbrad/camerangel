@@ -72,12 +72,12 @@ function homeBeforeShow () {
     if (APP.models.profile.currentUser) {
         // Have current user - redirect to user view
 
-        APP.models.profile.username =  APP.models.profile.currentUser.attributes.username;
-        APP.models.profile.email =  APP.models.profile.currentUser.attributes.email;
-        APP.models.profile.phone =  APP.models.profile.currentUser.attributes.phone;
-        APP.models.profile.alias =  APP.models.profile.currentUser.attributes.alias;
-        APP.models.profile.udid =  APP.models.profile.currentUser.attributes.udid;
-        APP.models.profile.userUUID = APP.models.profile.currentUser.attributes.UUID;
+        APP.models.profile.username =  APP.models.profile.currentUser.username;
+        APP.models.profile.email =  APP.models.profile.currentUser.email;
+        APP.models.profile.phone =  APP.models.profile.currentUser.phone;
+        APP.models.profile.alias =  APP.models.profile.currentUser.alias;
+        APP.models.profile.udid =  APP.models.profile.currentUser.udid;
+        APP.models.profile.userUUID = APP.models.profile.currentUser.UUID;
         APP.kendo.navigate('#home');
 
     } else {
@@ -86,8 +86,9 @@ function homeBeforeShow () {
     }
 } 
 
-function homeSignout () {
+function homeSignout (e) {
 
+    e.preventDefault();
     Parse.User.logOut();
     APP.models.profile.currentUser = '';
     APP.models.profile.username =  '';
@@ -97,17 +98,19 @@ function homeSignout () {
     APP.kendo.navigate('#newuserhome');
 }
 
-function homeSignin () {
+function homeSignin (e) {
+    e.preventDefault();
+    
    Parse.User.logIn($('#home-signin-username').val(), $('#home-signin-password').val(), {
         success: function(user) {
         // Do stuff after successful login.
             closeModalViewLogin();
-            APP.models.profile.currentUser = user;
-            APP.models.profile.username =  APP.models.profile.currentUser.attributes.username;
-            APP.models.profile.email =  APP.models.profile.currentUser.attributes.email;
-            APP.models.profile.phone =  APP.models.profile.currentUser.attributes.phone;
-            APP.models.profile.alias =  APP.models.profile.currentUser.attributes.alias;
-            APP.models.profile.userUUID =  APP.models.profile.currentUser.attributes.userUUID;
+            APP.models.profile.currentUser = user.attributes;
+            APP.models.profile.username =  APP.models.profile.currentUser.username;
+            APP.models.profile.email =  APP.models.profile.currentUser.email;
+            APP.models.profile.phone =  APP.models.profile.currentUser.phone;
+            APP.models.profile.alias =  APP.models.profile.currentUser.alias;
+            APP.models.profile.userUUID =  APP.models.profile.currentUser.userUUID;
             window.onUserSignIn();
             APP.kendo.navigate('#home');
         },
@@ -185,7 +188,7 @@ function contactsFindContacts(e) {
             if (contacts[i].phoneNumbers !== null) {
                 for (var j=0; j<contacts[i].phoneNumbers.length; j++){
                     var phone = new Object();
-                    phone.name = contacts[i].phoneNumbers[j].type + " : " + contacts[i].phoneNumbers[j].value ;
+                    phone.name = contacts[i].phoneNumbers[j].type + "  " + contacts[i].phoneNumbers[j].value ;
                     phone.number = contacts[i].phoneNumbers[j].value;
                     contactItem.phoneNumbers.push(phone);
                 }
@@ -195,7 +198,7 @@ function contactsFindContacts(e) {
             if (contacts[i].emails !== null) {
                  for (var k=0; k<contacts[i].emails.length; k++){
                     var email = new Object();
-                    email.name = contacts[i].emails[k].type + " : " + contacts[i].emails[k].value;
+                    email.name = contacts[i].emails[k].type + "  " + contacts[i].emails[k].value;
                     email.address = contacts[i].emails[k].value;
                     contactItem.emails.push(email);
                 }
