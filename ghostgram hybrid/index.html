@@ -156,7 +156,12 @@ function closeModalViewAddContact() {
 function closeModalViewEditChannel() {
     $("#modalview-channels-editChannel").kendoMobileModalView("close");
 }
-   
+
+function updateCurrentContact(e) {
+    e.preventDefault();
+    APP.models.currentContact.unbind('change');
+}
+    
 function onInitContacts(e) {
    e.preventDefault();   
      $("#contacts-listview").kendoMobileListView({
@@ -174,7 +179,16 @@ function onInitContacts(e) {
                     contact.privateChannelBind = 'yes';
                 else
                     contact.privateChannelBind = 'no';
-                APP.models.contacts.currentContact = contact;
+                
+                // Wish observables set took an object -- need to set fields individually
+                APP.models.contacts.currentContact.set('name', contact.name);
+                APP.models.contacts.currentContact.set('alias', contact.alias);
+                APP.models.contacts.currentContact.set('phone', contact.phone);
+                APP.models.contacts.currentContact.set('email', contact.email);
+                APP.models.contacts.currentContact.set('privateChannel', contact.privateChannel);
+                APP.models.contacts.currentContact.set('privateChannelBind', contact.privateChannelBind);
+                APP.models.contacts.currentContact.bind('change', updateCurrentContact);
+                
                 APP.kendo.navigate("#contactsEditContact");
             }
      });

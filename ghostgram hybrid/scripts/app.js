@@ -47,7 +47,7 @@
           contactsDS: new kendo.data.DataSource({offlineStorage: "contacts-offline"}),
           deviceContactsDS: new kendo.data.DataSource(),
           currentDeviceContact: {},
-          currentContact: {},
+          currentContact: new kendo.data.ObservableObject(),
           phoneDS: new kendo.data.DataSource(),
           emailDS: new kendo.data.DataSource(),
           phoneArray: [],
