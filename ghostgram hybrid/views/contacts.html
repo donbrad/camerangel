@@ -144,8 +144,15 @@
 
 <script type="text/x-kendo-template" id="contactsTemplate">
   <div>
-      <div ><span class="ghostTextLarge"> #: data.alias # </span>   <span  style="float:right;"> # if (privateChannel === true) { # <a data-click="personalMessage(this)" ><i  class="ghostText fa fa-mobile"> </i></a>  # } #</span></div>
-      <div class="ghostText"><span class="ghostTiny">(#: data.name #)</span> <span  style="float:right;"> <i class="ghostText fa fa-phone-square"></i> <i class="ghostText fa fa-envelope"></i></span></div>
+      <div ><span class="ghostTextLarge"> #: data.alias # </span>   
+            <span  style="float:right;"> 
+                 <i class="ghostIcon fa fa-edit"></i> 
+                 <i class="ghostIcon fa fa-phone-square"></i> 
+                 <i class="ghostIcon fa fa-envelope"></i> 
+                 # if (privateChannel === true) { # <a data-click="personalMessage(this)" ><i  class="ghostIcon fa fa-comments"> </i></a>  # } #
+            </span>
+        </div>
+      <div class="ghostText"><span class="ghostTiny">(#: data.name #)</span>   </div>
   </div>
 </script>
 
