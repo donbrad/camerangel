@@ -166,9 +166,15 @@ function onInitContacts(e) {
                 field: "name",
                 operator: "startswith"
             },
+            autoBind: false,
             click: function(e) {
                 e.preventDefault();
                 var contact = e.dataItem;
+                // Map the stored value to a bindable value for the control
+                if (contact.privateChannel)
+                    contact.privateChannelBind = 'yes';
+                else
+                    contact.privateChannelBind = 'no';
                 APP.models.contacts.currentContact = contact;
                 APP.kendo.navigate("#contactsEditContact");
             }
