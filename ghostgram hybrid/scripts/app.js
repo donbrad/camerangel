@@ -32,19 +32,19 @@
           title: 'Channels',
           pubnub: '',
           currentChannel: '',
-          channelDS : new kendo.data.DataSource()
+          channelDS : new kendo.data.DataSource({offlineStorage: "contacts-offline"})
           //Todo: Add channel data source and sync if user is signed in
         },
           
         gallery: {
           title: 'gallery',
-          galleryDS: new kendo.data.DataSource({pageSize: 64})
+          galleryDS: new kendo.data.DataSource({offlineStorage: "contacts-offline"})
           //Todo: Add photo gallery data source and sync if user is signed in
         },
           
         contacts: {
           title: 'Contacts',
-          contactsDS: new kendo.data.DataSource(),
+          contactsDS: new kendo.data.DataSource({offlineStorage: "contacts-offline"}),
           deviceContactsDS: new kendo.data.DataSource(),
           currentDeviceContact: {},
           currentContact: {},
@@ -57,7 +57,7 @@
         },
         places: {
             title: 'Places',
-            placesDS: new kendo.data.DataSource({pageSize: 64})
+            placesDS: new kendo.data.DataSource({offlineStorage: "contacts-offline"})
         }
       },
        kendo: ''

@@ -91,7 +91,7 @@
 </div>
 
 
-<div data-role="view" data-model="APP.models.contacts.currentContact" data-title="Edit Contact" id="contactsEditContact" 
+<div data-role="view"  data-title="Edit Contact" id="contactsEditContact" 
      data-layout="main"  data-before-show="doShowEditContacts" class="appearance">
     <div data-role="header">
         <div data-role="navbar">
@@ -105,17 +105,17 @@
         <ul data-role="listview" data-style="inset" >
             <li>
                 <label> Name
-                    <input type="text" id="editContactName" data-bind="value: name"/>
+                    <input type="text" id="editContactName" data-bind="value: APP.model.contacts.currentContact.name"/>
                 </label>
             </li>
             <li>
                 <label> Nickname
-                    <input type="text" id="editContactAlias" data-bind="value: alias"/>
+                    <input type="text" id="editContactAlias" data-bind="value: APP.model.contacts.currentContact.alias"/>
                 </label>
             </li>
              <li>
                 <label> Private Channel
-                    <select id="editContactPrivate" data-bind="value: privateChannel">
+                    <select id="editContactPrivate" data-bind="value: APP.model.contacts.currentContact.privateChannelBind">
                         <option value="yes">Yes - Enabled</option>
                         <option value="no">No - Disabled</option>
                     </select>
@@ -123,13 +123,13 @@
             </li>
             <li>           
                 <label>Phone
-                    <input id="editContactPhone" data-bind="value: phone">
+                    <input id="editContactPhone" data-bind="value: APP.model.contacts.currentContact.phone">
                     </input>
                 </label>
             </li>
             <li>
                 <label>Email
-                     <input id="editContactEmail" data-bind="value: email">
+                     <input id="editContactEmail" data-bind="value: APP.model.contacts.currentContact.email">
                        
                     </input>
                 </label>
