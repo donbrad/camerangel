@@ -1,8 +1,13 @@
- <div data-role="view" data-title="Gallery" id="gallery" data-layout="main" data-model="APP.models.gallery" data-before-show="beforeShowFilter" data-init="onInitGallery" >
-   <div class="user-content">
-          <div style="padding-top: 12px; padding-buttom: 18px; text-align: right;">
-           <a color: #fff; class="button ghostButton" data-rel="modalview" href="#modalview-gallery-AddPhoto" data-role="button">Add Photo </a>
-         </div>
+ <div data-role="view" data-title="Gallery" id="gallery" data-layout="main" data-model="APP.models.gallery" data-before-show="beforeShowFilter">
+    <div data-role="header">
+        <div data-role="navbar">
+            <span data-role="view-title"></span>
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><i class="ghostIconNavbar fa fa-bars"></i></a>
+           <a data-align="right" data-role="button"  data-rel="modalview" href="#modalview-gallery-AddPhoto"> <i class="ghostIconNavbar fa fa-plus"></i> </a>
+        </div>
+    </div>
+     
+     <div class="user-content">
           <ul id="gallery-listview"></ul>
      </div>
 </div>
