@@ -167,18 +167,31 @@ function personalMessage(e) {
 }
     
 function onInitContacts(e) {
-   e.preventDefault();   
-     $("#contacts-listview").kendoMobileListView({
-            dataSource: APP.models.contacts.contactsDS,
-            template: $("#contactsTemplate").text(),
-           filterable: {
-                field: "name",
-                operator: "startswith"
-            },
-            click: function(e) {
-                e.preventDefault();
-                var contact = e.dataItem;
-                // Map the stored value to a bindable value for the control
+   e.preventDefault();
+    
+    function swipe(e) {
+        var button = kendo.fx($(e.touch.currentTarget).find("[data-role=button]"));
+        button.expand().duration(200).play();        
+    }
+     function touchstart(e) {
+        var target = $(e.touch.initialTouch),
+            listview = $("#contacts-listview").data("kendoMobileListView"),
+            contact,
+            dataSource = APP.models.contacts.contactsDS,
+            button = $(e.touch.target).find("[data-role=button]:visible");
+            
+
+        if (target.closest(".sildeGearButton")[0]) {
+            contact = dataSource.getByUid($(e.touch.target).attr("data-uid"));
+            dataSource.remove(model);
+            //prevent `swipe`
+            this.events.cancel();
+            e.event.stopPropagation();
+        } else if (target.closest("[data-role=button]")[0]) {
+            contact = dataSource.getByUid($(e.touch.target).attr("data-uid"));
+           this.events.cancel();
+            e.event.stopPropagation();
+        	 // Map the stored value to a bindable value for the control
                 if (contact.privateChannel)
                     contact.privateChannelBind = 'yes';
                 else
@@ -193,9 +206,37 @@ function onInitContacts(e) {
                 APP.models.contacts.currentContact.set('privateChannelBind', contact.privateChannelBind);
                 APP.models.contacts.currentContact.bind('change', updateCurrentContact);
                 
-                APP.kendo.navigate("#contactsEditContact");
-            }
-     });
+               /* if (target.closest(".goContacts")[0]) {
+                    contactsPickContact(e);
+                } else if (target.closest(".goPrivateChannel")[0]) {
+                    alert("Private channel with " + contact.alias);
+                } else {
+                    APP.kendo.navigate("#contactsEditContact");
+                } */
+       } else if (button[0]) {
+            button.hide();
+
+            //prevent `swipe`
+            this.events.cancel();
+        } else {
+            listview.items().find("[data-role=button]:visible").hide();
+        }
+    }
+     $("#contacts-listview").kendoMobileListView({
+        dataSource: APP.models.contacts.contactsDS,
+        template: $("#contactsTemplate").html(),
+        filterable: {
+            field: "name",
+            operator: "startswith"
+        }
+     }).kendoTouch({
+            filter: ">li",
+            enableSwipe: true,
+            touchstart: touchstart,
+            swipe: swipe
+        });
+    
+    
 }
     
     
@@ -341,7 +382,7 @@ function contactsAddContact(e){
 }
     
 function contactsPickContact(e) {
-    e.preventDefault(e);
+   // e.preventDefault(e);
     navigator.contacts.pickContact(function(contact){
        alert(JSON.stringify(contact));
     },function(err){

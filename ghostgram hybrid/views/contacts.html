@@ -9,9 +9,7 @@
     </div>       
     
     <div class="ghostContainer">
-
-        <ul id="contacts-listview"></ul>
-        
+        <ul id="contacts-listview"></ul>  
     </div>
         
 </div>
@@ -144,13 +142,19 @@
 
 <script type="text/x-kendo-template" id="contactsTemplate">
   <div>
-      <div ><span class="ghostTextLarge"> #: data.alias # </span>   
-            <span  style="float:right;"> 
-                 <a><i class="ghostIcon fa fa-user"></i> </a>
-                 # if (privateChannel === true) { # <a data-click="personalMessage(this)" ><i  class="ghostIcon fa fa-user-secret"> </i></a>  # } #
-            </span>
-        </div>
-      <div class="ghostText"><span class="ghostTiny">(#: data.name #)</span>   </div>
+      <div>
+          <div ><span class="ghostTextLarge"> #: data.alias # </span>   
+                <span  style="float:right;"> 
+                     <a class="goContacts"><i class="ghostIcon fa fa-user"></i> </a>
+                     # if (privateChannel === true) { # <a class="goPrivateChannel" ><i  class="ghostIcon fa fa-user-secret"> </i></a>  # } #
+                </span>
+            </div>
+          <div class="ghostText"><span class="ghostTiny">(#: data.name #)</span>   </div>
+      </div>
+
+      <a data-role="button" data-icon="compose" class="slideGearButton ghostButton" ><i class="ghostIcon fa-2x fa-cog"></i></a>
+
+
   </div>
 </script>
 

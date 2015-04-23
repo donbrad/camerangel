@@ -300,7 +300,16 @@
     content: "\f030";
 }
 
-
+ #contacts .slideGearButton {
+    display:none;
+    position: absolute;
+    top: .05em;
+    right: .05em;
+    width: 60px;
+    height: 90%;
+    background-color: rgb(37,120,152);
+    color: #fff;
+}
 
 
 .km-flat .km-switch-handle,
