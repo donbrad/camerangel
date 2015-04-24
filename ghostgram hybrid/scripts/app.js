@@ -44,7 +44,7 @@
           
         contacts: {
           title: 'Contacts',
-          contactsDS: new kendo.data.DataSource({offlineStorage: "contacts-offline"}),
+          contactsDS: new kendo.data.DataSource({offlineStorage: "contacts-offline",  sort: { field: "name", dir: "asc" }}),
           deviceContactsDS: new kendo.data.DataSource(),
           currentDeviceContact: {},
           currentContact: new kendo.data.ObservableObject(),

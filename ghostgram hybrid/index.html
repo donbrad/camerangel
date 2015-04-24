@@ -160,7 +160,7 @@ function closeModalViewEditChannel() {
 function syncCurrentContact(e) {
     e.preventDefault();
     APP.models.contacts.currentContact.unbind('change');
-    updateParseObject('contacts','uuid', APP.models.contacts.currentContact.uuid, APP.models.contacts.currentContact);
+    updateParseObject('contacts','uuid', APP.models.contacts.currentContact.uuid, e.field, this[e.field]);
 }
 
 function personalMessage() {
@@ -170,13 +170,13 @@ function editContact() {
     APP.kendo.navigate("#contactsEditContact");  
 }
 
-function updateParseObject(objectName, field, fieldValue, newObject) {
+function updateParseObject(objectName, idField, idFieldValue, newField, newFieldValue) {
     var object = Parse.Object.extend(objectName);
     var query = new Parse.Query(object);
-    query.equalTo(field, fieldValue);
+    query.equalTo(idField, idFieldValue);
     query.find({
       success: function(results) {
-        results[0].set(newObject);
+        results[0].set(newField, newFieldValue);
         results[0].save({
           success: function(myObject) {
             // The object was deleted from the Parse Cloud.
