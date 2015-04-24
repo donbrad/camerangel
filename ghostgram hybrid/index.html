@@ -161,6 +161,7 @@ function syncCurrentContact(e) {
     e.preventDefault();
     APP.models.contacts.currentContact.unbind('change');
     updateParseObject('contacts','uuid', APP.models.contacts.currentContact.uuid, e.field, this[e.field]);
+    APP.kendo.navigate('#contacts');
 }
 
 function personalMessage() {
@@ -561,7 +562,6 @@ function archiveChannel(e) {
 }
     
 function deleteChannel (e) {
-    e.preventDefault();
    var channelId = e.context;  
     var dataSource = APP.models.channels.channelDS;
     dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
