@@ -157,13 +157,97 @@ function closeModalViewEditChannel() {
     $("#modalview-channels-editChannel").kendoMobileModalView("close");
 }
 
-function updateCurrentContact(e) {
+function syncCurrentContact(e) {
     e.preventDefault();
     APP.models.contacts.currentContact.unbind('change');
+    updateParseObject('contacts','uuid', APP.models.contacts.currentContact.uuid, APP.models.contacts.currentContact);
 }
 
-function personalMessage(e) {
-    e.preventDefault();
+function personalMessage() {
+}
+    
+function editContact() {
+    APP.kendo.navigate("#contactsEditContact");  
+}
+
+function updateParseObject(objectName, field, fieldValue, newObject) {
+    var object = Parse.Object.extend(objectName);
+    var query = new Parse.Query(object);
+    query.equalTo(field, fieldValue);
+    query.find({
+      success: function(results) {
+        results[0].set(newObject);
+        results[0].save({
+          success: function(myObject) {
+            // The object was deleted from the Parse Cloud.
+          },
+          error: function(myObject, error) {
+             alert("Error: " + error.code + " " + error.message);
+          }
+        });
+        
+      },
+      error: function(error) {
+        alert("Error: " + error.code + " " + error.message);
+      }
+    });
+}
+function deleteParseObject(objectName, field, fieldValue) {
+    var object = Parse.Object.extend(objectName);
+    var query = new Parse.Query(object);
+    query.equalTo(field, fieldValue);
+    query.find({
+      success: function(results) {
+        results[0].destroy({
+          success: function(myObject) {
+            // The object was deleted from the Parse Cloud.
+          },
+          error: function(myObject, error) {
+            // The delete failed.
+            // error is a Parse.Error with an error code and message.
+          }
+        });
+        
+      },
+      error: function(error) {
+        alert("Error: " + error.code + " " + error.message);
+      }
+    });
+}
+
+function deleteContact() {
+    var dataSource = APP.models.contacts.contactsDS;
+    dataSource.filter( { field: "uuid", operator: "eq", value: APP.models.contacts.currentContact.uuid });
+    var view = dataSource.view();
+    var contact = view[0];
+    dataSource.remove(contact); 
+    deleteParseObject("contacts", 'uuid', APP.models.contacts.currentContact.uuid);
+}
+    
+function updateCurrentContact (contact) {
+     // Map the stored value to a bindable value for the control
+    if (contact.privateChannel)
+        contact.privateChannelBind = 'yes';
+    else
+        contact.privateChannelBind = 'no';
+
+    // Wish observables set took an object -- need to set fields individually
+    APP.models.contacts.currentContact.set('name', contact.name);
+    APP.models.contacts.currentContact.set('alias', contact.alias);
+    APP.models.contacts.currentContact.set('phone', contact.phone);
+    APP.models.contacts.currentContact.set('email', contact.email);
+     APP.models.contacts.currentContact.set('uuid', contact.uuid);
+    APP.models.contacts.currentContact.set('privateChannel', contact.privateChannel);
+    APP.models.contacts.currentContact.set('privateChannelBind', contact.privateChannelBind);
+}
+
+function onCommandActionSheet(e) {
+    var currentTarget = e.currentTarget,
+        parentElement = currentTarget.parent();
+
+    setTimeout(function() {
+        currentTarget.remove().appendTo(parentElement);
+    }, 100);
 }
     
 function onInitContacts(e) {
@@ -173,6 +257,13 @@ function onInitContacts(e) {
         var button = kendo.fx($(e.touch.currentTarget).find("[data-role=button]"));
         button.expand().duration(200).play();        
     }
+    
+    function tap(e) {
+        var contact = APP.models.contacts.contactsDS.getByUid($(e.touch.target).attr("data-uid"));
+        updateCurrentContact(contact);
+         APP.models.contacts.currentContact.bind('change', syncCurrentContact);
+        APP.kendo.navigate("#contactsEditContact");
+    }
      function touchstart(e) {
         var target = $(e.touch.initialTouch),
             listview = $("#contacts-listview").data("kendoMobileListView"),
@@ -180,42 +271,17 @@ function onInitContacts(e) {
             dataSource = APP.models.contacts.contactsDS,
             button = $(e.touch.target).find("[data-role=button]:visible");
             
-
-        if (target.closest(".sildeGearButton")[0]) {
+        if (target.closest("[data-role=button]")[0]) {
             contact = dataSource.getByUid($(e.touch.target).attr("data-uid"));
-            dataSource.remove(model);
-            //prevent `swipe`
             this.events.cancel();
             e.event.stopPropagation();
-        } else if (target.closest("[data-role=button]")[0]) {
-            contact = dataSource.getByUid($(e.touch.target).attr("data-uid"));
-           this.events.cancel();
-            e.event.stopPropagation();
-        	 // Map the stored value to a bindable value for the control
-                if (contact.privateChannel)
-                    contact.privateChannelBind = 'yes';
-                else
-                    contact.privateChannelBind = 'no';
-                
-                // Wish observables set took an object -- need to set fields individually
-                APP.models.contacts.currentContact.set('name', contact.name);
-                APP.models.contacts.currentContact.set('alias', contact.alias);
-                APP.models.contacts.currentContact.set('phone', contact.phone);
-                APP.models.contacts.currentContact.set('email', contact.email);
-                APP.models.contacts.currentContact.set('privateChannel', contact.privateChannel);
-                APP.models.contacts.currentContact.set('privateChannelBind', contact.privateChannelBind);
-                APP.models.contacts.currentContact.bind('change', updateCurrentContact);
-                
-               /* if (target.closest(".goContacts")[0]) {
-                    contactsPickContact(e);
-                } else if (target.closest(".goPrivateChannel")[0]) {
-                    alert("Private channel with " + contact.alias);
-                } else {
-                    APP.kendo.navigate("#contactsEditContact");
-                } */
+            updateCurrentContact(contact);
+            
+             $("#contactActions").data("kendoMobileActionSheet").open();
+            
+        	
        } else if (button[0]) {
             button.hide();
-
             //prevent `swipe`
             this.events.cancel();
         } else {
@@ -232,11 +298,10 @@ function onInitContacts(e) {
      }).kendoTouch({
             filter: ">li",
             enableSwipe: true,
+            tap: tap,
             touchstart: touchstart,
             swipe: swipe
-        });
-    
-    
+       });
 }
     
     
@@ -513,7 +578,7 @@ function introChanged () {
         <div data-role="navbar">
             <span data-role="view-title"></span>
             <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" > <i class="ghostIconNavbar fa fa-bars"></i> </a>
-            <a data-role="button" class="privateModeButton" data-click="togglePrivate" data-align="right" >Public</a>
+          
         </div>
     </div>
 
@@ -595,6 +660,14 @@ function introChanged () {
     
 <!-- home - for signed in users -->
 <div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" style='display:none;'>
+   <div data-role="header">
+      <div data-role="navbar">
+        <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" > <i class="ghostIconNavbar fa fa-bars"></i> </a>
+        <span data-role="view-title"></span>
+        <a  data-click="homeSignout" data-role="button" data-align="right">Sign Out</a>
+      </div>
+    </div>
+    
     <div class="user-content">
         <div >
            <div  style='padding-top: 24px; padding-bottom: 28px; font-size: 24px; text-align: center; color: #aeaeae'> Personal, private, secure</div>
@@ -602,13 +675,6 @@ function introChanged () {
         
         <div id="home-list">
                  
-        </div>
-
-        <div data-role="footer" id="home-footer">
-             <div> 
-                <a style="width:98%; padding-left: 12px;" class="ghostButton"  data-click="homeSignout" data-role="button">Sign Out</a>
-            </div>
-
         </div>
     </div>
 </div>
