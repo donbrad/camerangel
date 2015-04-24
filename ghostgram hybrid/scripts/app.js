@@ -31,14 +31,14 @@
        channels: {
           title: 'Channels',
           pubnub: '',
-          currentChannel: '',
-          channelDS : new kendo.data.DataSource({offlineStorage: "contacts-offline"})
+          currentChannel: new kendo.data.ObservableObject(),
+          channelDS : new kendo.data.DataSource({offlineStorage: "channels-offline", sort: { field: "name", dir: "asc" }})
           //Todo: Add channel data source and sync if user is signed in
         },
           
         gallery: {
           title: 'gallery',
-          galleryDS: new kendo.data.DataSource({offlineStorage: "contacts-offline"})
+          galleryDS: new kendo.data.DataSource({offlineStorage: "gallery-offline"})
           //Todo: Add photo gallery data source and sync if user is signed in
         },
           
@@ -57,7 +57,7 @@
         },
         places: {
             title: 'Places',
-            placesDS: new kendo.data.DataSource({offlineStorage: "contacts-offline"})
+            placesDS: new kendo.data.DataSource({offlineStorage: "places-offline"})
         }
       },
        kendo: ''
