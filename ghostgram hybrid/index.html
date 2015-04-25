@@ -275,9 +275,8 @@ function contactSendSMS() {
     
 function updateCurrentContact (contact) {
    
-
     // Wish observables set took an object -- need to set fields individually
-     
+    APP.models.contacts.currentContact.unbind('change');
     APP.models.contacts.currentContact.set('name', contact.name);
     APP.models.contacts.currentContact.set('alias', contact.alias);
     APP.models.contacts.currentContact.set('phone', contact.phone);
@@ -285,6 +284,7 @@ function updateCurrentContact (contact) {
     APP.models.contacts.currentContact.set('address', contact.address);
     APP.models.contacts.currentContact.set('uuid', contact.uuid);
     APP.models.contacts.currentContact.set('privateChannel', contact.privateChannel);
+    APP.models.contacts.currentContact.bind('change', syncCurrentContact);
    
 }
 
@@ -454,7 +454,7 @@ function contactsFindContacts(e) {
             
             contactItem.addresses = new Array();
               if (contacts[i].addresses !== null) {
-                 for (var a=0; a<contacts[i].emails.length; a++){
+                 for (var a=0; a<contacts[i].addresses.length; a++){
                     var address = new Object();
                     if (contacts[i].addresses[a].type === null) {
                          address.type = 'Home';
@@ -471,10 +471,10 @@ function contactsFindContacts(e) {
                     contactItem.addresses.push(address);
                 }
             } 
-            contactItem.photo = null;
+            contactItem.photo = 'images/missing_profile_photo.jpg';
             if (contacts[i].photos !== null) {
                 contactItem.photo = contacts[i].photos[0].value;
-            }
+            } 
             APP.models.contacts.deviceContactsDS.add(contactItem);
         }
          
@@ -511,35 +511,8 @@ function contactsAddContact(e){
         address = $('#addContactAddress').val();
         guid = uuid.v4();
  
+    mobileNotify("Saving new contact...");
     contact.setACL(APP.models.profile.parseACL);
-    
-    getBase64FromImageUrl(photo, function (fileData) {
-        var parseFile = new Parse.File(guid+".png", fileData, "image/png");
-        parseFile.save().then(function() {
-          // The file has been saved to Parse.
-            mobileNotify("Saved contact image");
-            contact.set("parsePhoto", parseFile);
-             contact.save(null, {
-                  success: function(contact) {
-                    // Execute any logic that should take place after the object is saved.
-                   
-                   
-
-                  },
-                  error: function(contact, error) {
-                    // Execute any logic that should take place if the save fails.
-                    // error is a Parse.Error with an error code and message.
-                      handleParseError(error);
-
-                  }
-                });
-            }, function(error) {
-              // The file either could not be read, or could not be saved to Parse.
-                mobileNofity("Image save error: " + error);
-            }); 
-        });
-   
-    
     contact.set("name", name );
     contact.set("alias", alias);
     contact.set("phone", phone);
@@ -549,24 +522,28 @@ function contactsAddContact(e){
     contact.set("privateChannel", private === 'yes' ? true : false);
     contact.set("uuid", guid);
     
-    
-    contact.save(null, {
-      success: function(contact) {
-        // Execute any logic that should take place after the object is saved.
-        mobileNotify('Added contact : ' + contact.get('name'));
-        APP.models.contacts.contactsDS.add(contact.attributes);
-        APP.kendo.navigate('#contactImport');
-          
-      },
-      error: function(contact, error) {
-        // Execute any logic that should take place if the save fails.
-        // error is a Parse.Error with an error code and message.
-          handleParseError(error);
-       
-      }
-    });
- 
-    
+    getBase64FromImageUrl(photo, function (fileData) {
+        var parseFile = new Parse.File(guid+".png", {base64 : fileData}, "image/png");
+        parseFile.save().then(function() {
+            contact.set("parsePhoto", parseFile);
+             contact.save(null, {
+                  success: function(contact) {
+                    // Execute any logic that should take place after the object is saved.
+                    mobileNotify('Added contact : ' + contact.get('name'));
+                    APP.models.contacts.contactsDS.add(contact.attributes);
+                    APP.kendo.navigate('#contactImport');
+                  },
+                  error: function(contact, error) {
+                    // Execute any logic that should take place if the save fails.
+                    // error is a Parse.Error with an error code and message.
+                      handleParseError(error);
+                  }
+                });
+            }, function(error) {
+              // The file either could not be read, or could not be saved to Parse.
+                     handleParseError(error);
+            }); 
+        });    
 }
     
 function contactsPickContact(e) {

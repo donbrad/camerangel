@@ -32,7 +32,7 @@
     </div>    
     <div class="ghostContainer">
        <div style='padding-bottom: 16px;'>
-         <input style="font-size: 16px; margin-left: 6px; width: 70%" id="contactSearchQuery" type="search"/> <a data-role="button"  data-click="contactsFindContacts">  <i class="ghostIconSmall fa fa-search"></i> </a>
+         <input style="font-size: 16px; margin-left: 6px; width: 80%" id="contactSearchQuery" type="search"/> <a data-role="button"  data-click="contactsFindContacts">  <i class="ghostIconSmall fa fa-search"></i> </a>
         </div>
 
         <ul id="contactimport-listview"></ul>
@@ -46,7 +46,7 @@
      data-layout="addcontacts"  data-before-show="doShowAddContacts" class="appearance">
      <div class="ghostContainer">
         <div style=" padding: 12px;">  
-            <img class="contactPhoto" style="float:left; margin: 0px 15px 15px 0px; width=100;" id="addContactPhoto" src="">
+            <img  style="float:left; margin: 0px 15px 15px 0px; width: 80px; height: auto;" id="addContactPhoto" src="">
             Please choose a <strong>phone number</strong> and an <strong>email address</strong>. </br>  
             You may also add a <strong>nickname</strong> for this user.
         </div>
@@ -59,7 +59,7 @@
             </li>
             <li>
                 <label> Nickname
-                    <input type="text" id="addContactAlias" />
+                    <input type="text" id="addContactAlias" value="Pick nickname"/>
                 </label>
             </li>
              <li>
@@ -152,6 +152,12 @@
                 <label>Email
                      <input id="editContactEmail" data-bind="value: email">
                        
+                    </input>
+                </label>
+            </li>
+             <li>
+                <label>Address
+                     <input id="editContactAddress" data-bind="value: address">
                     </input>
                 </label>
             </li>

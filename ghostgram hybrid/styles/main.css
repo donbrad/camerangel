@@ -348,10 +348,19 @@
 }
 
 .contactPhoto {
-   background-repeat: no-repeat;
-    background-position: 50%;
+    width: 80px;
+    height: auto;
+}
+
+.round {
+    display:block;
+    width: 55px;
+    height: 55px;
     border-radius: 50%;
-    width: 100px;
-    height: 100px;   
+    overflow: hidden;
+    padding:5px 4px;
+}
+.round img {
+    width: 45px;
 }
  
