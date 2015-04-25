@@ -44,13 +44,14 @@
 <div data-role="view" data-model="APP.models.contacts" data-title="Add Contact" id="contacts-addContact" 
      data-layout="addcontacts"  data-before-show="doShowAddContacts" class="appearance">
      <div class="ghostContainer">
-      <div style="padding: 12px;">  
-      Please choose a <strong>phone number</strong> and an <strong>email address</strong> for this contact. </br>  
-    You may also add a <strong>nickname</strong> for this user.
-    </div>
-    <div style="float:right;" >
-        <img id="addContactPhoto" src="">
-    </div>
+        <div style="float:left;">
+            <img id="addContactPhoto" src="">
+        </div>
+        <div style="clear: both; padding: 12px;">  
+        Please choose a <strong>phone number</strong> and an <strong>email address</strong>. </br>  
+        You may also add a <strong>nickname</strong> for this user.
+        </div>
+    
     <form style="clear: both;">
         <ul data-role="listview" data-style="inset" >
             <li>
@@ -93,7 +94,7 @@
                 </label>
             </li>
             <li>
-                <label>Email
+                <label>Address
                      <select id="addContactAddress" data-role="dropdownlist"
                             data-text-field="name" 
                             data-value-field="address"
@@ -103,9 +104,13 @@
                     </select>
                 </label>
             </li>
+            
         </ul>
     </form>
-    </div>
+    
+</div>
+   
+    
 </div>
 
 
