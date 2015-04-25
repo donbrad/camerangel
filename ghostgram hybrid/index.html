@@ -159,12 +159,12 @@ function closeModalViewEditChannel() {
 
 function syncCurrentContact(e) {
     e.preventDefault();
-    APP.models.contacts.currentContact.unbind('change');
     updateParseObject('contacts','uuid', APP.models.contacts.currentContact.uuid, e.field, this[e.field]);
     APP.kendo.navigate('#contacts');
 }
 
 function personalMessage() {
+    
 }
     
 function editContact() {
@@ -233,6 +233,7 @@ function updateCurrentContact (contact) {
         contact.privateChannelBind = 'no';
 
     // Wish observables set took an object -- need to set fields individually
+     
     APP.models.contacts.currentContact.set('name', contact.name);
     APP.models.contacts.currentContact.set('alias', contact.alias);
     APP.models.contacts.currentContact.set('phone', contact.phone);
@@ -261,6 +262,7 @@ function onInitContacts(e) {
     
     function tap(e) {
         var contact = APP.models.contacts.contactsDS.getByUid($(e.touch.target).attr("data-uid"));
+       APP.models.contacts.currentContact.unbind('change');
         updateCurrentContact(contact);
          APP.models.contacts.currentContact.bind('change', syncCurrentContact);
         APP.kendo.navigate("#contactsEditContact");
@@ -513,21 +515,23 @@ function onInitGallery(e){
     }); 
 }
 
-function channelsAddChannel(e) {
+function addChannel(e) {
     e.preventDefault();
 
     var Channels = Parse.Object.extend("channels");
     var channel = new Channels();
     
     var name = $('#channels-addChannel-name').val(),
-        moderated = $('#channels-addChannel-moderated').val(),
+        media = $('#channels-addChannel-media').val(),
+        archive = $('#channels-addChannel-archive').val(),
         expirationDate = $('#channels-addChannel-expirationDate').val(),
         description = $('#channels-addChannel-description').val(), 
         guid = uuid.v4()
         
     channel.set("name", name );
     channel.set("isOwner", true);
-    channel.set("moderated",  moderated === "channelModerated" ? true : false);
+    channel.set("media",  media === "true" ? true : false);
+    channel.set("archive",  archive === "true" ? true : false);
     channel.set("expirationDate", expirationDate);
     channel.set("description", description);
     channel.set("channelId", guid);
@@ -539,6 +543,7 @@ function channelsAddChannel(e) {
         //alert('Created channel : ' + channel.get('name'));
           APP.models.channels.channelDS.add(channel.attributes);
           closeModalViewAddChannel();
+          window.plugins.toast.showShortBottom('Created channel : ' + channel.get('name'));
       },
       error: function(channel, error) {
         // Execute any logic that should take place if the save fails.
@@ -549,16 +554,35 @@ function channelsAddChannel(e) {
     });
  
 }
+    
+function syncCurrentChannel(e)
+{
+   updateParseObject('channels','channelId', APP.models.channels.currentChannel.channelId, e.field, this[e.field]);
+   APP.kendo.navigate('#channels');   
+}
+    
 function editChannel(e) {
-   var channel = e.context; 
+   var channelId = e.context; 
+   var dataSource = APP.models.channels.channelDS;
+    dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
+    var view = dataSource.view();
+    var channel = view[0];
+    App.models.channels.currentChannel.set('channelId', channel.channelId);
+    App.models.channels.currentChannel.set('name', channel.name);
+    App.models.channels.currentChannel.set('description', channel.description);
+    App.models.channels.currentChannel.set('expirationDate', channel.expirationDate);
+    App.models.channels.currentChannel.set('media', channel.media);
+    App.models.channels.currentChannel.set('archive', channel.archive);
+    App.models.channels.currentChannel.bind('change', syncCurrentChannel);
+    
 }
     
 function eraseChannel(e) {
-    var channel = e.context; 
+    var channelId = e.context;  
 }
 
 function archiveChannel(e) {
-    var channel = e.context; 
+    var channelId = e.context; 
 }
     
 function deleteChannel (e) {
