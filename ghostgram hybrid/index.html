@@ -224,6 +224,26 @@ function deleteContact() {
     deleteParseObject("contacts", 'uuid', APP.models.contacts.currentContact.uuid);
     
 }
+
+function contactSendSMS() {
+    sendSms: function() {
+        var number = APP.models.contacts.currentContact.phone;
+        var message = "ghostgrams: ";
+        
+
+        //CONFIGURATION
+        var options = {
+            android: {
+                intent: 'INTENT'  // send SMS with the native android SMS messaging
+                //intent: '' // send SMS without open any other app
+            }
+        };
+
+        var success = function () { mobileNotify('Message sent successfully'); };
+        var error = function (e) { mobileNotify('Message Failed:' + e); };
+        window.plugins.sms.send(number, message, options, success, error);
+    }
+}
     
 function updateCurrentContact (contact) {
      // Map the stored value to a bindable value for the control
