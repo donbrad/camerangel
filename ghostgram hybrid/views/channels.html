@@ -10,7 +10,13 @@
      <div class="ghostContainer">
          <ul id="channels-listview"></ul>
      </div>
-
+     
+    <ul data-role="actionsheet" id="channelActions" data-command="onCommandActionSheet" data-popup='{"direction": "left"}'>
+        <li><a data-action="editChannel">Edit Channel</a></li>
+        <li><a data-action="eraseChannel">Erase Channel Content</a></li>
+        <li><a data-action="archiveChannel">Archive Channel </a></li>
+        <li><a data-action="deleteChannel">Delete Channel</a></li>
+    </ul>
     
 </div>
 
@@ -19,7 +25,7 @@
        <div style="float:right; font-size: 10px;"> <a data-rel="actionsheet" href="\\#channelActions" data-actionsheet-context="#:channelId#" data-role="button"><i class="ghostIcon fa fa-cog"></i></a> </div>
        <div class="ghostTextLarge"><a>#:name#</a></div>
        <div class="ghostDescription" style="padding-top: 8px; padding-bottom: 4px;"> #: description # </div>
-        <div >
+        <div style="color: \\#2e2e2e;">
            <span style="float: left;"> 
            # if (media) { # Text, Photos, Videos # } else { # Text # }#,  # if (archive) { # Archived # } else { # Not Archived # }#
            </span>
@@ -101,12 +107,12 @@
     </div>
 </div>
 
-<div data-role="modalview" id="modalview-channels-editChannel" data-model="APP.models.channels.currentChannel" style="width: 90%; display: none; background-color: #e2e2e2;" class="appearance">
+<div data-role="view" id="editChannel" data-model="APP.models.channels.currentChannel" style="display: none;" class="appearance">
     <div data-role="header">
         <div data-role="navbar">
-            <a data-click="closeModalViewEditChannel" data-role="button" type="button" data-align="left" > Back</a>
+            <a href="#:back" data-role="button" type="button" data-align="left" >Back</a>
             <span> Edit Channel</span>
-             <a data-click="channelsUpdateChannel" type="button" data-role="button" data-align="right" >Save</a>
+             <a href="#:back" type="button" data-role="button" data-align="right" >Done</a>
         </div>
     </div>
 
@@ -114,24 +120,24 @@
         <ul data-role="listview" data-style="inset">
             <li>
                 <label>Name
-                    <input type="text" id="channels-editChannel-name" value="" />
+                    <input type="text" id="channels-editChannel-name" data-bind="value: name" />
                 </label>
             </li>
              <li>
                 <label>Description
-                    <input type="text" id="channels-editChannel-description" value="" />
+                    <input type="text" id="channels-editChannel-description" data-bind="value: description" />
                 </label>
             </li>
             <li>
             <label>
                     Expiration Date
-                    <input id="channels-editChannel-expirationDate" type="date"  />
+                    <input id="channels-editChannel-expirationDate" type="date"  data-bind="value: expirationDate"/>
                 </label>
             </li>
           
              <li>
                <label>Media
-                    <select id="channels-editChannel-media">
+                    <select id="channels-editChannel-media" data-bind="value: media">
                         <option value="false">No: users can just text</option>
                         <option value="true">Yes: users can share media</option>
                     </select>
@@ -139,7 +145,7 @@
             </li>
               <li>
                <label>Archive
-                    <select id="channels-editChannel-archive">
+                    <select id="channels-editChannel-archive" data-bind="value: media">
                         <option value="false">No: Nothing is saved</option>
                         <option value="true">Yes: Content can be saved</option>
                     </select>
@@ -154,10 +160,5 @@
            
         </div>
     </div>
-  <ul data-role="actionsheet" id="channelActions" data-command="onCommandActionSheet" data-popup='{"direction": "left"}'>
-        <li><a data-action="editChannel">Edit Channel</a></li>
-        <li><a data-action="eraseChannel">Erase Channel Content</a></li>
-        <li><a data-action="archiveChannel">Archive Channel </a></li>
-        <li><a data-action="deleteChannel">Delete Channel</a></li>
-    </ul>
+ 
 </div>

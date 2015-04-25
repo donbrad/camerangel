@@ -12,8 +12,8 @@
         <ul id="contacts-listview"></ul>  
     </div>
     
-    <ul data-role="actionsheet" id="contactActions" data-command="onCommandActionSheet" data-popup='{"direction": "left"}'>
-        <li><a  data-action="editContact">Edit Contact</a></li>
+    <ul data-role="actionsheet" id="contactActions"  data-popup='{"direction": "left"}'>
+        <li><a data-action="editContact">Edit Contact</a></li>
         <li><a data-action="showPhoneContact">Display Phone Contact</a></li>
         <li><a data-action="privateMessage">Private Message</a></li>
         <li><a data-action="deleteContact">Delete Contact</a></li>
@@ -48,7 +48,10 @@
       Please choose a <strong>phone number</strong> and an <strong>email address</strong> for this contact. </br>  
     You may also add a <strong>nickname</strong> for this user.
     </div>
-    <form >
+    <div style="float:right;" >
+        <img id="addContactPhoto" src="">
+    </div>
+    <form style="clear: both;">
         <ul data-role="listview" data-style="inset" >
             <li>
                 <label> Name
@@ -89,6 +92,17 @@
                     </select>
                 </label>
             </li>
+            <li>
+                <label>Email
+                     <select id="addContactAddress" data-role="dropdownlist"
+                            data-text-field="name" 
+                            data-value-field="address"
+                            data-bind="source: addressDS"
+                           auto-bind="false">
+                       
+                    </select>
+                </label>
+            </li>
         </ul>
     </form>
     </div>
@@ -100,8 +114,8 @@
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" href="#contacts" data-align="left" >Back</a>
-            <a data-role="button" data-click="syncCurrentContact" data-align="right" >Update</a>
+            <a data-role="button" href="#:back" data-align="left" >Back</a>
+            <a data-role="button" href="#:back" data-align="right" >Done</a>
         </div>
     </div> 
      <div class="ghostContainer">

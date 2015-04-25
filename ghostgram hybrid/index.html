@@ -158,9 +158,7 @@ function closeModalViewEditChannel() {
 }
 
 function syncCurrentContact(e) {
-    e.preventDefault();
-    updateParseObject('contacts','uuid', APP.models.contacts.currentContact.uuid, e.field, this[e.field]);
-    APP.kendo.navigate('#contacts');
+    updateParseObject('contacts','uuid', APP.models.contacts.currentContact.uuid, e.field, this[e.field]);  
 }
 
 function personalMessage() {
@@ -183,13 +181,13 @@ function updateParseObject(objectName, idField, idFieldValue, newField, newField
             // The object was deleted from the Parse Cloud.
           },
           error: function(myObject, error) {
-             alert("Error: " + error.code + " " + error.message);
+             mobileNotify("Error: " + error.code + " " + error.message);
           }
         });
         
       },
       error: function(error) {
-        alert("Error: " + error.code + " " + error.message);
+        mobileNotify("Error: " + error.code + " " + error.message);
       }
     });
 }
@@ -206,12 +204,13 @@ function deleteParseObject(objectName, field, fieldValue) {
           error: function(myObject, error) {
             // The delete failed.
             // error is a Parse.Error with an error code and message.
+              mobileNotify("Error: " + error.code + " " + error.message);
           }
         });
         
       },
       error: function(error) {
-        alert("Error: " + error.code + " " + error.message);
+        mobileNotify("Error: " + error.code + " " + error.message);
       }
     });
 }
@@ -223,6 +222,7 @@ function deleteContact() {
     var contact = view[0];
     dataSource.remove(contact); 
     deleteParseObject("contacts", 'uuid', APP.models.contacts.currentContact.uuid);
+    
 }
     
 function updateCurrentContact (contact) {
@@ -335,9 +335,19 @@ function onInitContactImport (e) {
                    APP.models.contacts.phoneArray.push(phone);
 
                }
+                
+                APP.models.contacts.addressArray = new Array();
+                    for (var a = 0; a<APP.models.contacts.currentDeviceContact.addresses.length; a++) {
+                    var address = new Object();
+                    address.name = APP.models.contacts.currentDeviceContact.addresses[a].name;
+                    address.address =  APP.models.contacts.currentDeviceContact.addresses[a].fullAddress;
+
+                    APP.models.contacts.addressArray.push(address);
+               }
                
                APP.models.contacts.phoneDS.data( APP.models.contacts.phoneArray);
                APP.models.contacts.emailDS.data( APP.models.contacts.emailArray);
+               APP.models.contacts.addressDS.data( APP.models.contacts.addressArray);
                APP.kendo.navigate('#contacts-addContact');
              
             }
@@ -347,7 +357,6 @@ function onInitContactImport (e) {
 function handleParseError(err) {
   switch (err.code) {
     case Parse.Error.INVALID_SESSION_TOKEN:
-     
       Parse.User.logOut();
         APP.models.profile.currentUser = '';
         APP.models.profile.username =  '';
@@ -367,7 +376,7 @@ function contactsFindContacts(e) {
     var options      = new ContactFindOptions();
     options.filter   = query
     options.multiple = true;
-    var fields       = ["name", "phoneNumbers", "emails"];
+    var fields       = ["name", "phoneNumbers", "emails", "addresses"];
      
     navigator.contacts.find(fields, function(contacts){
         
@@ -397,6 +406,25 @@ function contactsFindContacts(e) {
                     contactItem.emails.push(email);
                 }
             }
+            
+            contactItem.addresses = new Array();
+              if (contacts[i].addresses !== null) {
+                 for (var a=0; a<contacts[i].emails.length; a++){
+                    var address = new Object();
+                    address.type = contacts[i].addresses[a].type
+                    address.name = contacts[i].addresses[a].type + " : " + contacts[i].addresses[a].streetAddress;
+                    address.address = contacts[i].addresses[a].streetAddress;
+                    address.city = contacts[i].addresses[a].locality;
+                    address.state = contacts[i].addresses[a].region;
+                    address.zipcode = contacts[i].addresses[a].postalcode;
+                    address.fullAddress = address.address + " ," + address.city + ' , ' + address.state;
+                    contactItem.addresses.push(address);
+                }
+            } 
+            contactItem.photo = null;
+            if (contacts[i].photos !== null) {
+                contactItem.photo = contacts[i].photos[0].value;
+            }
             APP.models.contacts.deviceContactsDS.add(contactItem);
         }
          
@@ -407,6 +435,11 @@ function doShowAddContacts() {
     var data = APP.models.contacts.currentDeviceContact;
     
     $("#addContactName").val(data.name);
+    
+    if (data.photo !== null) {
+        $("#addContactPhoto").attr("src",data.photo);
+    }
+    
    
 }
 
@@ -419,13 +452,16 @@ function contactsAddContact(e){
         alias = $('#addContactAlias').val(),
         phone = $('#addContactPhone').val(),
         email = $('#addContactEmail').val(), 
-        private = $('#addContactPrivate').val();
+        private = $('#addContactPrivate').val(),
+        photo = $('#addContactPrivate').prop('src'),
+        address = $('#addContactAddress').val();
         guid = uuid.v4();
         
     contact.set("name", name );
     contact.set("alias", alias);
     contact.set("phone", phone);
     contact.set("email", email);
+     contact.set("address", address);
     contact.set("privateChannel", private === 'yes' ? true : false);
     contact.set("uuid", guid);
     
@@ -433,7 +469,7 @@ function contactsAddContact(e){
     contact.save(null, {
       success: function(contact) {
         // Execute any logic that should take place after the object is saved.
-        alert('Created contact : ' + contact.get('name'));
+        mobileNotify('Added contact : ' + contact.get('name'));
         APP.models.contacts.contactsDS.add(contact.attributes);
         APP.kendo.navigate('#contactImport');
           
@@ -489,13 +525,13 @@ function homeCreateAccount(e) {
             // Hooray! Let them use the app now.
            closeModalViewSignup();
             APP.models.profile.parseACL = new Parse.ACL(Parse.User.current());
-           alert('Welcome to ghostgrams!');
+           mobileNotify('Welcome to ghostgrams!');
            APP.kendo.navigate('#home');
         },
 
         error: function(user, error) {
         // Show the error message somewhere and let the user try again.
-        alert("Error: " + error.code + " " + error.message);
+        mobileNotify("Error: " + error.code + " " + error.message);
         }
     });
 }
@@ -522,7 +558,7 @@ function mobileNotify(message) {
     }
     else{
     //running on a device
-        window.plugins.toast.showShortBottom(message);
+        window.plugins.toast.showShortTop(message);
     }
  
 }
@@ -551,11 +587,11 @@ function addChannel(e) {
     channel.save(null, {
       success: function(channel) {
         // Execute any logic that should take place after the object is saved.
-        //alert('Created channel : ' + channel.get('name'));
+         
           APP.models.channels.channelsDS.add(channel.attributes);
           closeModalViewAddChannel();
           
-          mobileNotify('Created channel : ' + channel.get('name'));
+          mobileNotify('Added channel : ' + channel.get('name'));
       },
       error: function(channel, error) {
         // Execute any logic that should take place if the save fails.
@@ -569,8 +605,7 @@ function addChannel(e) {
     
 function syncCurrentChannel(e)
 {
-   updateParseObject('channels','channelId', APP.models.channels.currentChannel.channelId, e.field, this[e.field]);
-   APP.kendo.navigate('#channels');   
+   updateParseObject('channels','channelId', APP.models.channels.currentChannel.channelId, e.field, this[e.field]); 
 }
     
 function editChannel(e) {
@@ -579,15 +614,15 @@ function editChannel(e) {
     dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
     var view = dataSource.view();
     var channel = view[0];
-    App.models.channels.currentChannel.unbind('change');
-    App.models.channels.currentChannel.set('channelId', channel.channelId);
-    App.models.channels.currentChannel.set('name', channel.name);
-    App.models.channels.currentChannel.set('description', channel.description);
-    App.models.channels.currentChannel.set('expirationDate', channel.expirationDate);
-    App.models.channels.currentChannel.set('media', channel.media);
-    App.models.channels.currentChannel.set('archive', channel.archive);
-    App.models.channels.currentChannel.bind('change', syncCurrentChannel);
-    $("#modalview-channels-editChannel").data("kendoMobileModalView").open();
+    APP.models.channels.currentChannel.unbind('change');
+    APP.models.channels.currentChannel.set('channelId', channel.channelId);
+    APP.models.channels.currentChannel.set('name', channel.name);
+    APP.models.channels.currentChannel.set('description', channel.description);
+    APP.models.channels.currentChannel.set('expirationDate', channel.expirationDate);
+    APP.models.channels.currentChannel.set('media', channel.media);
+    APP.models.channels.currentChannel.set('archive', channel.archive);
+    APP.models.channels.currentChannel.bind('change', syncCurrentChannel);
+    APP.kendo.navigate('#editChannel');
 }
     
 function eraseChannel(e) {
@@ -606,6 +641,7 @@ function deleteChannel (e) {
     var channel = view[0];
     dataSource.remove(channel); 
     deleteParseObject("channels", 'channelId', channelId);
+     mobileNotify("Removed channel : " + channel.get('name'));
 }
     
 function onInitChannels (e) {
