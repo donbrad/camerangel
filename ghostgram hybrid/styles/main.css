@@ -346,3 +346,12 @@
 {
     border-color: #369;
 }
+
+.contactPhoto {
+   background-repeat: no-repeat;
+    background-position: 50%;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;   
+}
+ 

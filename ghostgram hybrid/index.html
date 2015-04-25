@@ -436,8 +436,12 @@ function doShowAddContacts() {
     
     $("#addContactName").val(data.name);
     
-    
-    $("#addContactPhoto").attr("src",data.photo);
+    if (data.photo === null) {
+        $("#addContactPhoto").attr("src",'images/missing_profile_photo.jpg');
+    } else {
+         $("#addContactPhoto").attr("src",data.photo);
+    }
+   
     
     
    
