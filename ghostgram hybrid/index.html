@@ -191,6 +191,7 @@ function updateParseObject(objectName, idField, idFieldValue, newField, newField
       }
     });
 }
+    
 function deleteParseObject(objectName, field, fieldValue) {
     var object = Parse.Object.extend(objectName);
     var query = new Parse.Query(object);
@@ -214,7 +215,28 @@ function deleteParseObject(objectName, field, fieldValue) {
       }
     });
 }
+    
+function getBase64FromImageUrl(URL) {
+    var img = new Image();
+    img.src = URL;
+    img.onload = function () {
 
+
+    var canvas = document.createElement("canvas");
+    canvas.width =this.width;
+    canvas.height =this.height;
+
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(this, 0, 0);
+
+
+    var dataURL = canvas.toDataURL("image/png");
+
+    alert(  dataURL.replace(/^data:image\/(png|jpg);base64,/, ""));
+
+    }
+}
+    
 function deleteContact() {
     var dataSource = APP.models.contacts.contactsDS;
     dataSource.filter( { field: "uuid", operator: "eq", value: APP.models.contacts.currentContact.uuid });
@@ -243,8 +265,8 @@ function contactSendSMS() {
     var error = function (e) { mobileNotify('Message Failed:' + e); };
     
     if (window.navigator.simulator === true){
-    //running in the simulator
-        alert('SMS to ' + number + ' message: ' + message);
+   //running in the simulator
+        alert('Simulating SMS to ' + number + ' message: ' + message);
     } else {
        sms.send(number, message, options, success, error);
     }
@@ -252,11 +274,7 @@ function contactSendSMS() {
 }
     
 function updateCurrentContact (contact) {
-     // Map the stored value to a bindable value for the control
-    if (contact.privateChannel)
-        contact.privateChannelBind = 'yes';
-    else
-        contact.privateChannelBind = 'no';
+   
 
     // Wish observables set took an object -- need to set fields individually
      
@@ -264,9 +282,10 @@ function updateCurrentContact (contact) {
     APP.models.contacts.currentContact.set('alias', contact.alias);
     APP.models.contacts.currentContact.set('phone', contact.phone);
     APP.models.contacts.currentContact.set('email', contact.email);
-     APP.models.contacts.currentContact.set('uuid', contact.uuid);
+    APP.models.contacts.currentContact.set('address', contact.address);
+    APP.models.contacts.currentContact.set('uuid', contact.uuid);
     APP.models.contacts.currentContact.set('privateChannel', contact.privateChannel);
-    APP.models.contacts.currentContact.set('privateChannelBind', contact.privateChannelBind);
+   
 }
 
 function onCommandActionSheet(e) {
@@ -486,12 +505,23 @@ function contactsAddContact(e){
         photo = $('#addContactPrivate').prop('src'),
         address = $('#addContactAddress').val();
         guid = uuid.v4();
-        
+ 
+    var fileData = getBase64FromImageUrl(photo);
+    var parseFile = new Parse.File(guid+".png", fileData, "image/png");
+    parseFile.save().then(function() {
+      // The file has been saved to Parse.
+        mobileNotify("Saved contact image");
+    }, function(error) {
+      // The file either could not be read, or could not be saved to Parse.
+        mobileNofity("Image save error: " + error);
+    });
     contact.set("name", name );
     contact.set("alias", alias);
     contact.set("phone", phone);
     contact.set("email", email);
-     contact.set("address", address);
+    contact.set("address", address);
+     ontact.set("photo", photo);
+    contact.set("parsePhoto", parseFile);
     contact.set("privateChannel", private === 'yes' ? true : false);
     contact.set("uuid", guid);
     
