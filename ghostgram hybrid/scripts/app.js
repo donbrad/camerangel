@@ -32,7 +32,7 @@
           title: 'Channels',
           pubnub: '',
           currentChannel: new kendo.data.ObservableObject(),
-          channelDS : new kendo.data.DataSource({offlineStorage: "channels-offline", sort: { field: "name", dir: "asc" }})
+          channelsDS : new kendo.data.DataSource({offlineStorage: "channels-offline", sort: { field: "name", dir: "asc" }})
           //Todo: Add channel data source and sync if user is signed in
         },
           
@@ -145,7 +145,7 @@
                          models.push(collection.models[i].attributes);
                      }
                          
-                     APP.models.channels.channelDS.data(models);
+                     APP.models.channels.channelsDS.data(models);
                   },
                   error: function(collection, error) {
                       handleParseError(error);

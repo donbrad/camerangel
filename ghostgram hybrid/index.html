@@ -515,6 +515,17 @@ function onInitGallery(e){
     }); 
 }
 
+function mobileNotify(message) {
+    if (window.navigator.simulator === true){
+    //running in the simulator
+        alert(message);
+    }
+    else{
+    //running on a device
+        window.plugins.toast.showShortBottom(message);
+    }
+ 
+}
 function addChannel(e) {
     e.preventDefault();
 
@@ -541,14 +552,15 @@ function addChannel(e) {
       success: function(channel) {
         // Execute any logic that should take place after the object is saved.
         //alert('Created channel : ' + channel.get('name'));
-          APP.models.channels.channelDS.add(channel.attributes);
+          APP.models.channels.channelsDS.add(channel.attributes);
           closeModalViewAddChannel();
-          window.plugins.toast.showShortBottom('Created channel : ' + channel.get('name'));
+          
+          mobileNotify('Created channel : ' + channel.get('name'));
       },
       error: function(channel, error) {
         // Execute any logic that should take place if the save fails.
         // error is a Parse.Error with an error code and message.
-        alert('Error creating channel: ' + error.message);
+        mobileNotify('Error creating channel: ' + error.message);
         handleParseError(error);
       }
     });
@@ -563,10 +575,11 @@ function syncCurrentChannel(e)
     
 function editChannel(e) {
    var channelId = e.context; 
-   var dataSource = APP.models.channels.channelDS;
+   var dataSource = APP.models.channels.channelsDS;
     dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
     var view = dataSource.view();
     var channel = view[0];
+    App.models.channels.currentChannel.unbind('change');
     App.models.channels.currentChannel.set('channelId', channel.channelId);
     App.models.channels.currentChannel.set('name', channel.name);
     App.models.channels.currentChannel.set('description', channel.description);
@@ -574,7 +587,7 @@ function editChannel(e) {
     App.models.channels.currentChannel.set('media', channel.media);
     App.models.channels.currentChannel.set('archive', channel.archive);
     App.models.channels.currentChannel.bind('change', syncCurrentChannel);
-    
+    $("#modalview-channels-editChannel").data("kendoMobileModalView").open();
 }
     
 function eraseChannel(e) {
@@ -587,7 +600,7 @@ function archiveChannel(e) {
     
 function deleteChannel (e) {
    var channelId = e.context;  
-    var dataSource = APP.models.channels.channelDS;
+    var dataSource = APP.models.channels.channelsDS;
     dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
     var view = dataSource.view();
     var channel = view[0];
@@ -600,7 +613,7 @@ function onInitChannels (e) {
     // ToDo: Initialize list view
     
      $("#channels-listview").kendoMobileListView({
-        dataSource: APP.models.channels.channelDS,
+        dataSource: APP.models.channels.channelsDS,
         template: $("#channels-listview-template").text()
     });
 }

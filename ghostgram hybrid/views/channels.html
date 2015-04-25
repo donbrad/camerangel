@@ -1,4 +1,4 @@
- <div data-role="view" id="channels" data-title="Channels" data-layout="main" data-model="APP.models.channels" data-before-show="beforeShowFilter" data-init="onInitChannels">  
+ <div data-role="view" id="channels" data-title="Channels" data-layout="main" data-model="APP.models.channels" data-init="onInitChannels">  
      <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -6,18 +6,12 @@
            <a data-align="right" data-role="button"  data-rel="modalview" href="#modalview-channels-addChannel"> <i class="ghostIconNavbar fa fa-plus"></i> </a>
         </div>
     </div>
-     <div class="user-content">
-         <div class="ghostContainer">
-             <ul style="color: #2e2e2e;" id="channels-listview"></ul>
-         </div>
-          
+     
+     <div class="ghostContainer">
+         <ul id="channels-listview"></ul>
      </div>
-        <ul data-role="actionsheet" id="channelActions" data-command="onCommandActionSheet" data-popup='{"direction": "left"}'>
-        <li><a  data-action="editChannel">Edit Channel</a></li>
-        <li><a data-action="eraseChannel">Erase Channel Content</a></li>
-        <li><a data-action="archiveChannel">Archive Channel </a></li>
-        <li><a data-action="deleteChannel">Delete Channel</a></li>
-    </ul>
+
+    
 </div>
 
 <script type="text/x-kendo-tmpl" id="channels-listview-template">
@@ -160,5 +154,10 @@
            
         </div>
     </div>
- 
+  <ul data-role="actionsheet" id="channelActions" data-command="onCommandActionSheet" data-popup='{"direction": "left"}'>
+        <li><a data-action="editChannel">Edit Channel</a></li>
+        <li><a data-action="eraseChannel">Erase Channel Content</a></li>
+        <li><a data-action="archiveChannel">Archive Channel </a></li>
+        <li><a data-action="deleteChannel">Delete Channel</a></li>
+    </ul>
 </div>
