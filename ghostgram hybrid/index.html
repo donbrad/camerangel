@@ -216,7 +216,7 @@ function deleteParseObject(objectName, field, fieldValue) {
     });
 }
     
-function getBase64FromImageUrl(URL) {
+function getBase64FromImageUrl(URL, callback) {
     var img = new Image();
     img.src = URL;
     img.onload = function () {
@@ -232,7 +232,7 @@ function getBase64FromImageUrl(URL) {
 
     var dataURL = canvas.toDataURL("image/png");
 
-    alert(  dataURL.replace(/^data:image\/(png|jpg);base64,/, ""));
+    callback(dataURL.replace(/^data:image\/(png|jpg);base64,/, ""));
 
     }
 }
@@ -456,8 +456,13 @@ function contactsFindContacts(e) {
               if (contacts[i].addresses !== null) {
                  for (var a=0; a<contacts[i].emails.length; a++){
                     var address = new Object();
-                    address.type = contacts[i].addresses[a].type
-                    address.name = contacts[i].addresses[a].type + " : " + contacts[i].addresses[a].streetAddress;
+                    if (contacts[i].addresses[a].type === null) {
+                         address.type = 'Home';
+                    } else {
+                        address.type = contacts[i].addresses[a].type;
+                    }
+                    address.name = address.type + " : " + contacts[i].addresses[a].streetAddress + ', ' +
+                        contacts[i].addresses[a].locality;
                     address.address = contacts[i].addresses[a].streetAddress;
                     address.city = contacts[i].addresses[a].locality;
                     address.state = contacts[i].addresses[a].region;
@@ -506,26 +511,45 @@ function contactsAddContact(e){
         address = $('#addContactAddress').val();
         guid = uuid.v4();
  
-    var fileData = getBase64FromImageUrl(photo);
-    var parseFile = new Parse.File(guid+".png", fileData, "image/png");
-    parseFile.save().then(function() {
-      // The file has been saved to Parse.
-        mobileNotify("Saved contact image");
-    }, function(error) {
-      // The file either could not be read, or could not be saved to Parse.
-        mobileNofity("Image save error: " + error);
-    });
+    contact.setACL(APP.models.profile.parseACL);
+    
+    getBase64FromImageUrl(photo, function (fileData) {
+        var parseFile = new Parse.File(guid+".png", fileData, "image/png");
+        parseFile.save().then(function() {
+          // The file has been saved to Parse.
+            mobileNotify("Saved contact image");
+            contact.set("parsePhoto", parseFile);
+             contact.save(null, {
+                  success: function(contact) {
+                    // Execute any logic that should take place after the object is saved.
+                   
+                   
+
+                  },
+                  error: function(contact, error) {
+                    // Execute any logic that should take place if the save fails.
+                    // error is a Parse.Error with an error code and message.
+                      handleParseError(error);
+
+                  }
+                });
+            }, function(error) {
+              // The file either could not be read, or could not be saved to Parse.
+                mobileNofity("Image save error: " + error);
+            }); 
+        });
+   
+    
     contact.set("name", name );
     contact.set("alias", alias);
     contact.set("phone", phone);
     contact.set("email", email);
     contact.set("address", address);
-     ontact.set("photo", photo);
-    contact.set("parsePhoto", parseFile);
+    contact.set("photo", photo);
     contact.set("privateChannel", private === 'yes' ? true : false);
     contact.set("uuid", guid);
     
-    contact.setACL(APP.models.profile.parseACL);
+    
     contact.save(null, {
       success: function(contact) {
         // Execute any logic that should take place after the object is saved.
