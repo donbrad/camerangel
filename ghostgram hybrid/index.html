@@ -276,7 +276,7 @@ function contactSendSMS() {
 function updateCurrentContact (contact) {
    
     // Wish observables set took an object -- need to set fields individually
-    APP.models.contacts.currentContact.unbind('change');
+    
     APP.models.contacts.currentContact.set('name', contact.name);
     APP.models.contacts.currentContact.set('alias', contact.alias);
     APP.models.contacts.currentContact.set('phone', contact.phone);
@@ -284,7 +284,7 @@ function updateCurrentContact (contact) {
     APP.models.contacts.currentContact.set('address', contact.address);
     APP.models.contacts.currentContact.set('uuid', contact.uuid);
     APP.models.contacts.currentContact.set('privateChannel', contact.privateChannel);
-    APP.models.contacts.currentContact.bind('change', syncCurrentContact);
+   
    
 }
 
@@ -307,7 +307,7 @@ function onInitContacts(e) {
     
     function tap(e) {
         var contact = APP.models.contacts.contactsDS.getByUid($(e.touch.target).attr("data-uid"));
-       APP.models.contacts.currentContact.unbind('change');
+       APP.models.contacts.currentContact.unbind('change' , syncCurrentContact));
         updateCurrentContact(contact);
          APP.models.contacts.currentContact.bind('change', syncCurrentContact);
         APP.kendo.navigate("#contactsEditContact");
