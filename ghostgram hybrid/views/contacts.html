@@ -14,10 +14,17 @@
     
     <ul data-role="actionsheet" id="contactActions"  data-popup='{"direction": "left"}'>
         <li><a data-action="editContact">Edit Contact</a></li>
+        <li><a data-action="inviteContact">Invite Contact</a></li>
+        <li><a data-action="contactSendSMS">Send SMS</a></li>
+        <li><a data-action="deleteContact">Delete Contact</a></li>
+    </ul> 
+    
+      <ul data-role="actionsheet" id="contactUserActions"  data-popup='{"direction": "left"}'>
+         <li><a data-action="editContact">Edit Contact</a></li>
         <li><a data-action="privateMessage">Private Message</a></li>
         <li><a data-action="contactSendSMS">Send SMS</a></li>
         <li><a data-action="deleteContact">Delete Contact</a></li>
-    </ul>        
+    </ul> 
 </div>
 
 
@@ -30,7 +37,7 @@
         </div>
     </div>    
     <div class="ghostContainer">
-       <div style='padding-bottom: 16px;'>
+       <div style='padding-bottom: 8px; padding-top: 8px; '>
          <input style="font-size: 16px; margin-left: 6px; width: 80%" id="contactSearchQuery" type="search"/> <a data-role="button"  data-click="contactsFindContacts">  <i class="ghostIconSmall fa fa-search"></i> </a>
         </div>
 
@@ -169,16 +176,19 @@
 
 
 <script type="text/x-kendo-template" id="contactsTemplate">      
-     <a data-role="button" class="slideGearButton ghostButton" style="display:none; float:right;"><i class="ghostIcon fa fa-cog"></i></a>
-    <img style="width: 40px; height: auto; float:left; margin: 0px 8px 8px 0px;" src="#:data.photo#">
-    <div style="clear: both:">
-      <span class="ghostTextLarge"> #: data.alias # </span>         
+    <div style="height: 56px; clear: both;">
+         <a data-role="button" class="slideGearButton ghostButton" style="display:none; float:right;"><i class="ghostIcon fa fa-cog"></i></a>
+        <img style="width: 48px; height: auto; max-height: 48px; over-flow: hidden; float:left; margin: 0px 8px 8px 0px;" src="#:data.photo#">
+        <div style="clear: both:">
+          <span class="ghostTextLarge"> #: data.alias # </span>         
+        </div>
+        <div class="ghostText">
+          <span class="ghostTiny">(#: data.name #)</span>   
+        </div>
+        <div style="float: right; color:\\#2e2e2e; font-size: 11px;">
+            #if (data.contactUUID === undefined) { # <em> New User - Invite! </em> # } else {#  <strong> Verified User </strong> #} #
+        <div>
     </div>
-    <div class="ghostText">
-      <span class="ghostTiny">(#: data.name #)</span>   
-    </div>
-  
-
 </script>
 
 <script type="text/x-kendo-template" id="deviceContactsTemplate">

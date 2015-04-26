@@ -717,10 +717,16 @@ function onInitChannels (e) {
     
      $("#channels-listview").kendoMobileListView({
         dataSource: APP.models.channels.channelsDS,
-        template: $("#channels-listview-template").text()
+        template: $("#channels-listview-template").html()
     });
 }
 
+function onInitChannel (e) {
+    e.preventDefault();
+    var params = e.view.params;
+    // ToDo: Initialize list view
+}
+    
 function introChanging () {
     $('.intro-photo-block').removeClass('animated fadeIn');
     $('.intro-photo-block').addClass('hidden');

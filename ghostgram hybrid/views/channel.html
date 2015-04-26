@@ -1,0 +1,22 @@
+ <div data-role="view" id="channel" data-title="Channel" data-layout="main" data-model="APP.models.channel" data-init="onInitChannel">  
+     <div data-role="header">
+        <div data-role="navbar">
+            <span data-role="view-title"></span>
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><i class="ghostIconNavbar fa fa-bars"></i></a>
+           <a data-align="right" data-role="button"  data-rel="actionsheet" href="#messageActions"> <i class="ghostIconNavbar fa fa-cog"></i> </a>
+        </div>
+    </div>
+     <div class="ghostContainer">
+         <ul id="messages-listview"></ul>
+     </div>
+     
+    <ul data-role="actionsheet" id="messageActions" data-popup='{"direction": "left"}'>
+        <li><a data-action="addMessagePhoto">Add Photo</a></li>
+        <li><a data-action="archiveMessage">Archive Message</a></li>
+        <li><a data-action="eraseMessage">Erase Message</a></li>
+        <li><a data-action="archiveChannel">Archive Channel</a></li>
+        <li><a data-action="eraseChannel">Erase Channel </a></li>
+        
+    </ul>
+    
+</div>

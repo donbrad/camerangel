@@ -1,43 +1,88 @@
  <div data-role="view" id="profile" data-title="Profile" data-layout="profileLayout" data-model="APP.models.profile" data-before-show="beforeShowFilter" class="appearance">
    <div class="ghostContainer">
-       <div>
-           <div style="font-size: 20px; padding-left: 13px; padding-top: 10px;"> <span id="profile-username" data-bind="text:username"></span>  <span style="float:right" data-bind="text:version"></span></div>
+
+       <div style="padding: 12px; font-size: 20px; text-align: center;">    
+           <span id="profile-username" data-bind="text:currentUser.username">  </span> 
        </div>
+
+       <h3>Account Info </h3> 
        <form style="clear:both;">
             <ul data-role="listview" data-style="inset">
                 <li>
                     <label>Alias (How other users see you)
-                    <input type="text" id="profile-alias" data-bind="value: alias" />
+                    <input type="text" id="profile-alias" data-bind="value: currentUser.alias" />
                     </label>
                 </li>
                  <li>
                     <label>Contact email (if it's not your Username)
-                    <input type="email" id="profile-email" data-bind="value: email" />
+                    <input type="email" id="profile-email" data-bind="value: currentUser.email" />
                     </label>
                 </li>
-                 <li>
+               <li>
                     <label>Mobile Phone 
-                    <input type="tel" id="profile-phone" data-bind="value: phone" />
+                    <input type="tel" id="profile-phone" data-bind="value: currentUser.phone" />
                     </label>
-                </li>
-                  <li>
-                    <label>Device Id (udid) 
-                    <input type="text" id="profile-udid" data-bind="value: udid" readonly/>
-                    </label>
-                </li>
-                </li>
-                  <li>
-                    <label>User Id (UUID) 
-                    <input type="text" id="profile-uuid" data-bind="value: userUUID" readonly/>
-                    </label>
-                </li>
-            </ul>
-        </form> 
+                </li> 
+           </ul>
+       </form>
+       
+      
+            <h3>
+               Personalization
+            </h3>
+            <form>
+                <ul data-role="listview" data-style="inset">
+                  <li> 
+                      <label>Profile Photo
+                      </label>
+                  </li>
+                   <li> 
+                      <label> Background
+                      </label>
+                  </li>
+                  <li> 
+                      <label>Public  Alias
+                      </label>
+                  </li>
+                   <li> 
+                      <labeL Public  Photo
+                      </label>
+                  </li>
+                </ul>
+           </form>
+
+       
+ 
+            <h3>
+                Development
+            </h3>
+           <form >
+              <ul data-role="listview" data-style="inset">
+                     <li>
+                        <label>Device Id (udid) 
+                        <input type="text" id="profile-udid" data-bind="value: udid" readonly/>
+                        </label>
+                    </li>
+                    </li>
+                      <li>
+                        <label>User Id (UUID) 
+                        <input type="text" id="profile-uuid" data-bind="value: currentUser.userUUID" readonly/>
+                        </label>
+                    </li>
+                   <li>
+                        <label>App Version
+                        <input type="text" id="profile-version" data-bind="value: version" readonly/>
+                        </label>
+                    </li>
+                </ul>
+            </form> 
+
+     
         <div style="text-align: center;">
             <a  style="width:98%;" class="button ghostButton" data-click="profileUpdate" id="profile-Update" data-role="button" >Update</a>
         </div>
         <div style="text-align: center; padding-top: 12px;">
-            <a  style="width:98%;" class="button ghostButton" data-click="profileChangePassword" id="profile-changePassword" data-role="button" >Change Password</a>
+            <a  class="button ghostButton" data-click="profileChangePassword" id="profile-changePassword" data-role="button" >Change Password</a>
         </div>
        
      </div>

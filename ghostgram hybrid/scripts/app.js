@@ -18,14 +18,22 @@
           
         profile: {
           title: 'Profile',
-          currentUser: '',
-          username: '',
-          email: '',
-          phone: '',
-          alias: '',
-          udid: '',
-          macAddress: '',
-          emaiVerified: false,
+          parseUser: null,
+          currentUser: new kendo.data.ObservableObject({
+              username: '',
+              userUUID: '',
+              email: '',
+              phone: '',
+              alias: '',
+              aliasPhoto: '',
+              publicAlias: '',
+              publicAliasPhoto: '',
+              udid: '',
+              macAddress: '',
+              emaiVerified: false,
+              phoneVerified: false 
+          }),
+         
         },
           
        channels: {
@@ -34,6 +42,13 @@
           currentChannel: new kendo.data.ObservableObject(),
           channelsDS : new kendo.data.DataSource({offlineStorage: "channels-offline", sort: { field: "name", dir: "asc" }})
           //Todo: Add channel data source and sync if user is signed in
+        },
+        
+        channel: {
+            title: 'Channel', 
+            currentChannel: {},
+            members: new kendo.data.DataSource({sort: { field: "name", dir: "asc" }}),
+            messages: new kendo.data.DataSource({sort: { field: "date", dir: "desc" }})
         },
           
         gallery: {
@@ -224,18 +239,21 @@
         Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
 
         Parse.User.enableRevocableSession();
-        APP.models.profile.currentUser = Parse.User.current();
+        APP.models.profile.parseUser = Parse.User.current();
         APP.models.profile.udid = device.uuid;
+        APP.models.profile.plaform = device.platform;
         
-        if (APP.models.profile.currentUser) {
+        if (APP.models.profile.parseUser !== null) {
              initialView = '#home';
-            APP.models.profile.username =  APP.models.profile.currentUser.attributes.username;
-            APP.models.profile.email =  APP.models.profile.currentUser.attributes.email;
-            APP.models.profile.phone =  APP.models.profile.currentUser.attributes.phone;
-            APP.models.profile.alias =  APP.models.profile.currentUser.attributes.alias;
-            APP.models.profile.userUUID =  APP.models.profile.currentUser.attributes.userUUID;
-            APP.models.profile.parseACL = new Parse.ACL(APP.models.profile.currentUser);
-            APP.models.profile.plaform = device.platform;
+            APP.models.profile.currentUser.set('username', APP.models.profile.parseUser.get('username'));
+            APP.models.profile.currentUser.set('email', APP.models.profile.parseUser.get('email'));
+            APP.models.profile.currentUser.set('phone', APP.models.profile.parseUser.get('phone'));
+            APP.models.profile.currentUser.set('alias', APP.models.profile.parseUser.get('alias'));
+            APP.models.profile.currentUser.set('userUUID', APP.models.profile.parseUser.get('userUUID'));
+            APP.models.profile.currentUser.set('phoneVerified', APP.models.profile.parseUser.get('phoneVerified'));
+            APP.models.profile.currentUser.set('emailVerified', APP.models.profile.parseUser.get('emailVerified'));
+            APP.models.profile.parseACL = new Parse.ACL(APP.models.profile.parseUser);
+           
             _app.fetchParseData();
         }
 
