@@ -125,7 +125,10 @@ function homeSignin (e) {
         }
     });
 }
-   
+
+function closeModalViewSupport() {
+     $('#modalview-support').kendoMobileModalView("close");
+}
 function closeModalViewLogin() {
     $("#modalview-login").kendoMobileModalView("close");
 }
@@ -738,6 +741,10 @@ function onInitChannel (e) {
     var params = e.view.params;
     // ToDo: Initialize list view
 }
+
+function sendSupportRequest(e) {
+    
+}
     
 function introChanging () {
     $('.intro-photo-block').removeClass('animated fadeIn');
@@ -748,6 +755,8 @@ function introChanged () {
     $('.intro-photo-block').removeClass('hidden');
     $('.intro-photo-block').addClass('animated fadeIn');
 }
+    
+    
 </script>
 
 </head>
@@ -835,6 +844,9 @@ function introChanged () {
      <li>
         <a href="views/places.html"> <i class="ghostIconSmall fa fa-map-marker"></i> Places</a>
       </li>
+        <li>
+        <a href="#modalview-support" data-rel="modalview"> <i class="ghostIconSmall fa fa-question"></i> Contact Support</a>
+      </li>
     </ul>
   </div>       
     
@@ -886,7 +898,40 @@ function introChanged () {
     </div>
 </div>
 
+<div data-role="modalview" id="modalview-support" style="width: 90%; display: none;" class="appearance">
+    <div data-role="header">
+        <div data-role="navbar">
+            <span>Contact ghostgrams</span>
+            
+        </div>
+    </div>
 
+     <form>
+        <ul data-role="listview" data-style="inset">
+            <li>
+                <label>Topic
+                    <select id="support-topic">
+                        <option value="installation">Installation</option>
+                        <option value="ios">iPhone iOS</option>
+                        <option value="android">Android Phones</option>
+                        <option value="bug">Software Bug</option>
+                        <option value="feature">Feature Request</option>
+                    </select>
+                </label>
+            </li>
+            <li>
+                <label>Question
+                <textarea id="support-question" style="height:120px;"></textarea>
+            </li>
+        </ul>
+    </form> 
+    <div data-role="footer">
+        <div data-role="navbar">
+            <a data-click="closeModalViewSupport;" data-role="button" data-align="left">Cancel</a>
+            <a data-click="sendSupportRequest"  type="button" data-role="button" data-align="right">Send</a>
+        </div>
+    </div>
+</div>
 
 <div data-role="modalview" id="modalview-login" style="width: 90%; display: none;" class="appearance">
     <div data-role="header">

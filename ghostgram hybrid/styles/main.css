@@ -225,6 +225,17 @@
   border: 1px solid #aeaeae;
 }
 
+.km-root .km-pane .km-view.appearance .km-listview textarea 
+{
+  clear:both;
+  position: relative;
+  font-size: 14px;
+  width: 98%;
+  margin-top: 0;
+  left: -12px;
+  top: 0;
+  border: 1px solid #aeaeae;
+}
 .km-root .km-button
 {
     color: rgba(37,120,152, 1.0);
