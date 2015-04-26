@@ -254,6 +254,7 @@
             APP.models.profile.currentUser.set('emailVerified', APP.models.profile.parseUser.get('emailVerified'));
             APP.models.profile.parseACL = new Parse.ACL(APP.models.profile.parseUser);
            
+            APP.models.profile.currentUser.bind('change', syncProfile);
             _app.fetchParseData();
         }
 
