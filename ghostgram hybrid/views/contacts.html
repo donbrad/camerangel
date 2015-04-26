@@ -14,7 +14,6 @@
     
     <ul data-role="actionsheet" id="contactActions"  data-popup='{"direction": "left"}'>
         <li><a data-action="editContact">Edit Contact</a></li>
-        <li><a data-action="showPhoneContact">Display Phone Contact</a></li>
         <li><a data-action="privateMessage">Private Message</a></li>
         <li><a data-action="contactSendSMS">Send SMS</a></li>
         <li><a data-action="deleteContact">Delete Contact</a></li>
@@ -171,6 +170,7 @@
 
 <script type="text/x-kendo-template" id="contactsTemplate">      
      <a data-role="button" class="slideGearButton ghostButton" style="display:none; float:right;"><i class="ghostIcon fa fa-cog"></i></a>
+    <img style="width: 40px; height: auto; float:left; margin: 0px 8px 8px 0px;" src="#:data.photo#">
     <div style="clear: both:">
       <span class="ghostTextLarge"> #: data.alias # </span>         
     </div>

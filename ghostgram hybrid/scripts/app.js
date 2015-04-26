@@ -153,7 +153,7 @@
                   }
                 });
             
-             var ContactModel = Parse.Object.extend("contacts");
+            var ContactModel = Parse.Object.extend("contacts");
             var ContactCollection = Parse.Collection.extend({
               model: ContactModel
             });
@@ -164,6 +164,11 @@
                   success: function(collection) {
                      var models = new Array();
                      for (var i=0; i<collection.models.length; i++) {
+                         var model = collection.models[i];
+                         // Load the contactPhoto data from parse and update the url
+                         var contactPhoto = model.get("parsePhoto");
+                         if (contactPhoto !== undefined && contactPhoto !== null)
+                         model.set('photo', contactPhoto._url);
                          models.push(collection.models[i].attributes);
                      }
                          
@@ -213,13 +218,7 @@
        
         navigator.splashscreen.hide();
        
-        if (window.navigator.simulator === true){
-             APP.models.profile.version = "1.3"
-        } else {
-              cordova.getAppVersion(function (version) {
-            APP.models.profile.version = version;
-        }); 
-        }
+        
      
         
         Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
@@ -255,6 +254,13 @@
             initial: initialView
         });
 
+        if (window.navigator.simulator === true){
+             APP.models.profile.version = "1.3";
+        } else {
+            cordova.getAppVersion(function (version) {
+            APP.models.profile.version = version;
+            }); 
+        }
     }, false);
 
    
