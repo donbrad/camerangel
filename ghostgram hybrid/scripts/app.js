@@ -213,6 +213,15 @@
        
         navigator.splashscreen.hide();
        
+        if (window.navigator.simulator === true){
+             APP.models.profile.version = "1.3"
+        } else {
+              cordova.getAppVersion(function (version) {
+            APP.models.profile.version = version;
+        }); 
+        }
+     
+        
         Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
 
         Parse.User.enableRevocableSession();
