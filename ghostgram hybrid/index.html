@@ -160,6 +160,7 @@ function closeModalViewEditChannel() {
 
 function syncCurrentContact(e) {
     updateParseObject('contacts','uuid', APP.models.contacts.currentContact.uuid, e.field, this[e.field]);  
+    APP.models.contacts.currentModel.set(e.field, this[e.field]);
 }
 
 function personalMessage() {
@@ -277,14 +278,16 @@ function contactSendSMS() {
 function updateCurrentContact (contact) {
    
     // Wish observables set took an object -- need to set fields individually
-    
+     APP.models.contacts.currentModel = contact;
+    APP.models.contacts.currentContact.unbind('change' , syncCurrentContact);
     APP.models.contacts.currentContact.set('name', contact.name);
     APP.models.contacts.currentContact.set('alias', contact.alias);
     APP.models.contacts.currentContact.set('phone', contact.phone);
     APP.models.contacts.currentContact.set('email', contact.email);
     APP.models.contacts.currentContact.set('address', contact.address);
     APP.models.contacts.currentContact.set('uuid', contact.uuid);
-    APP.models.contacts.currentContact.set('privateChannel', contact.privateChannel);
+    APP.models.contacts.currentContact.set('privateChannel', contact.privateChannel === 'true');
+    APP.models.contacts.currentContact.bind('change' , syncCurrentContact);
    
    
 }
@@ -308,9 +311,7 @@ function onInitContacts(e) {
     
     function tap(e) {
         var contact = APP.models.contacts.contactsDS.getByUid($(e.touch.target).attr("data-uid"));
-       APP.models.contacts.currentContact.unbind('change' , syncCurrentContact);
         updateCurrentContact(contact);
-         APP.models.contacts.currentContact.bind('change', syncCurrentContact);
         APP.kendo.navigate("#contactsEditContact");
     }
      function touchstart(e) {
@@ -325,7 +326,6 @@ function onInitContacts(e) {
             this.events.cancel();
             e.event.stopPropagation();
             updateCurrentContact(contact);
-            
              $("#contactActions").data("kendoMobileActionSheet").open();
             
         	
@@ -668,7 +668,7 @@ function addChannel(e) {
 function syncCurrentChannel(e)
 {
    updateParseObject('channels','channelId', APP.models.channels.currentChannel.channelId, e.field, this[e.field]); 
-    APP.models.channels.currentModel.set(e.field, this[e.field]);
+   APP.models.channels.currentModel.set(e.field, this[e.field]);
 }
     
 function editChannel(e) {
