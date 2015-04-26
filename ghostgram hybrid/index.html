@@ -4,8 +4,9 @@
     <title></title>
     <meta charset="utf-8" />
     <!-- Styles -->
-    <link href="kendo/styles/kendo.mobile.flat.min.css" rel="stylesheet" />
+    
     <link href="kendo/styles/kendo.mobile.aLL.min.css" rel="stylesheet" />
+    <link href="kendo/styles/kendo.mobile.flat.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="styles/font-awesome.css">
     <link href="styles/main.css" rel="stylesheet" />
  <!-- External scripts -->
@@ -307,7 +308,7 @@ function onInitContacts(e) {
     
     function tap(e) {
         var contact = APP.models.contacts.contactsDS.getByUid($(e.touch.target).attr("data-uid"));
-       APP.models.contacts.currentContact.unbind('change' , syncCurrentContact));
+       APP.models.contacts.currentContact.unbind('change' , syncCurrentContact);
         updateCurrentContact(contact);
          APP.models.contacts.currentContact.bind('change', syncCurrentContact);
         APP.kendo.navigate("#contactsEditContact");
@@ -667,6 +668,7 @@ function addChannel(e) {
 function syncCurrentChannel(e)
 {
    updateParseObject('channels','channelId', APP.models.channels.currentChannel.channelId, e.field, this[e.field]); 
+    APP.models.channels.currentModel.set(e.field, this[e.field]);
 }
     
 function editChannel(e) {
@@ -675,7 +677,10 @@ function editChannel(e) {
     dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
     var view = dataSource.view();
     var channel = view[0];
-    APP.models.channels.currentChannel.unbind('change');
+    dataSource.filter([]);
+    
+    APP.models.channels.currentModel = channel;
+    APP.models.channels.currentChannel.unbind('change', syncCurrentChannel);
     APP.models.channels.currentChannel.set('channelId', channel.channelId);
     APP.models.channels.currentChannel.set('name', channel.name);
     APP.models.channels.currentChannel.set('description', channel.description);
@@ -683,6 +688,7 @@ function editChannel(e) {
     APP.models.channels.currentChannel.set('media', channel.media);
     APP.models.channels.currentChannel.set('archive', channel.archive);
     APP.models.channels.currentChannel.bind('change', syncCurrentChannel);
+    
     APP.kendo.navigate('#editChannel');
 }
     
