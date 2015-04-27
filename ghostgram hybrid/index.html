@@ -776,7 +776,6 @@ function requestBeta (e) {
     beta.save(null, {
         success: function(support) {
             mobileNotify("You beta request was sent. Thank you!");
-            closeModalViewSupport();
             APP.models.sync.requestActive = false;
         },
         error: function(support, error) {
