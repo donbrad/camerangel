@@ -741,16 +741,68 @@ function onInitChannel (e) {
     var params = e.view.params;
     // ToDo: Initialize list view
 }
-
-function sendSupportRequest(e) {
-    var category = $('#supportCategory').val(), message =  $('#supportMessage').val();
-    var userUUID = null, name = null, email = null, phone = null;
     
-    if (APP.models.profile.parseUser !== null) {
+function requestBeta (e) {
+    e.preventDefault();
+    if (APP.models.sync.requestActive) {
+        mobileNotify("Processing current request.")
+        return;
+    }
+    APP.models.sync.requestActive = true;
+    var userUUID = null, name = null, email = null, phone = null;
+    mobileNotify("Preparing your beta request");
+    
+    if (APP.models.profile.parseUser === null) { 
+        mobileNotify("You must be a user to join iPhone beta");
+        return;
+    } else {
         userUUID = APP.models.profile.currentUser.get('userUUID');
         name = APP.models.profile.currentUser.get('name');
         email = APP.models.profile.currentUser.get('email');
-        email = APP.models.profile.currentUser.get('phone');
+        phone = APP.models.profile.currentUser.get('phone');
+    }
+    
+    var Beta = Parse.Object.extend('betarequest');
+    var beta = new Beta();
+    beta.set("userUUID", userUUID);
+    beta.set("name", name);
+    beta.set("email",email );
+    beta.set("phone", phone);
+    beta.set("udid", APP.models.profile.udid);
+    beta.set("device", APP.models.profile.device);
+    beta.set("model", APP.models.profile.model);
+    beta.set("platform", APP.models.profile.platform);
+    
+    beta.save(null, {
+        success: function(support) {
+            mobileNotify("You beta request was sent. Thank you!");
+            closeModalViewSupport();
+            APP.models.sync.requestActive = false;
+        },
+        error: function(support, error) {
+            mobileNotify("Error sending your beta request: " + error);
+            APP.models.sync.requestActive = false;
+        }
+    })
+}
+    
+function sendSupportRequest(e) {
+    e.preventDefault();
+    if (APP.models.sync.requestActive){
+        mobileNotify("Processing current support request.")
+        return;
+    }
+        
+    APP.models.sync.requestActive = true;
+    var category = $('#supportCategory').val(), message =  $('#supportMessage').val();
+    var userUUID = null, name = null, email = null, phone = null;
+    mobileNotify("Preparing your support request");
+    
+   if (APP.models.profile.parseUser !== null) {
+        userUUID = APP.models.profile.currentUser.get('userUUID');
+        name = APP.models.profile.currentUser.get('name');
+        email = APP.models.profile.currentUser.get('email');
+        phone = APP.models.profile.currentUser.get('phone');
     }
     
     var Support = Parse.Object.extend('support');
@@ -761,16 +813,20 @@ function sendSupportRequest(e) {
     support.set("phone", phone);
     support.set("category", category);
     support.set("message", message);
+    support.set("udid", APP.models.profile.udid);
     support.set("device", APP.models.profile.device);
-    support.set("modle", APP.models.profile.model);
+    support.set("model", APP.models.profile.model);
     support.set("platform", APP.models.profile.platform);
     
     support.save(null, {
         success: function(support) {
             mobileNotify("You support request was sent. Thank you!");
+            closeModalViewSupport();
+            APP.models.sync.requestActive = false;
         },
         error: function(support, error) {
             mobileNotify("Error sending your support request: " + error);
+            APP.models.sync.requestActive = false;
         }
     })
 }

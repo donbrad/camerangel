@@ -68,9 +68,13 @@
           addressDS: new kendo.data.DataSource(),
           phoneArray: [],
           emailArray:  []
-          
-            
         },
+          
+        sync: {
+            operation: '',
+            requestActive: false
+        },
+          
         places: {
             title: 'Places',
             placesDS: new kendo.data.DataSource({offlineStorage: "places-offline"})
