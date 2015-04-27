@@ -48,7 +48,7 @@
         
 </div>
 
-<div data-role="view" data-model="APP.models.contacts" data-title="Add Contact" id="contacts-addContact" 
+<div data-role="view" data-model="APP.models.contacts" data-title="Add Contact" id="addContact" 
      data-layout="addcontacts"  data-before-show="doShowAddContacts" class="appearance">
      <div class="ghostContainer">
         <div style=" padding: 12px;">  
@@ -118,7 +118,7 @@
 </div>
 
 
-<div data-role="view" data-model="APP.models.contacts.currentContact" data-title="Edit Contact" id="contactsEditContact" 
+<div data-role="view" data-model="APP.models.contacts.currentContact" data-title="Edit Contact" id="editContact" 
      data-layout="main"  data-before-show="doShowEditContacts" class="appearance">
     <div data-role="header">
         <div data-role="navbar">
@@ -127,7 +127,7 @@
             <a data-role="button" href="#:back" data-align="right" >Done</a>
         </div>
     </div> 
-     <div class="ghostContainer">
+    <div class="ghostContent" style="padding-bottom: 12px;">
     <form >
         <ul data-role="listview" data-style="inset" >
             <li>
@@ -169,6 +169,7 @@
             </li>
         </ul>
     </form>
+</br>
     </div>
 </div>
 

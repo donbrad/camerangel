@@ -36,18 +36,24 @@
                 <ul data-role="listview" data-style="inset">
                   <li> 
                       <label>Profile Photo
+                           <select id="profilePhoto">
+                               <option value="none">None</option>
+                               <option value="current">Use Current</option>
+                               <option value="new">Import New Photo</option>
+                          </select>
                       </label>
                   </li>
-                   <li> 
-                      <label> Background
-                      </label>
-                  </li>
-                  <li> 
+                    <li> 
                       <label>Public  Alias
+                           <input type="text" id="profile-aliasPublic" data-bind="value: currentUser.aliasPublic" />
                       </label>
                   </li>
-                   <li> 
-                      <labeL Public  Photo
+                     <li> 
+                      <label>Public Photo
+                           <select id="profilePublicPhoto">
+                               <option value="none">None</option>
+                               <option value="userProfile">Use Profile Photo</option>
+                          </select>
                       </label>
                   </li>
                 </ul>

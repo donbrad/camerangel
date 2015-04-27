@@ -153,9 +153,6 @@ function closeModalViewAddPlace() {
     $("#modalview-places-addPlace").kendoMobileModalView("close");
 }
 
-function closeModalViewAddContact() {
-    $("#modalview-contacts-addContact").kendoMobileModalView("close");
-}
 
 function closeModalViewEditChannel() {
     $("#modalview-channels-editChannel").kendoMobileModalView("close");
@@ -183,7 +180,7 @@ function personalMessage() {
 }
     
 function editContact() {
-    APP.kendo.navigate("#contactsEditContact");  
+    APP.kendo.navigate("#editContact");  
 }
 
 function updateParseObject(objectName, idField, idFieldValue, newField, newFieldValue) {
@@ -327,7 +324,7 @@ function onInitContacts(e) {
     function tap(e) {
         var contact = APP.models.contacts.contactsDS.getByUid($(e.touch.target).attr("data-uid"));
         updateCurrentContact(contact);
-        APP.kendo.navigate("#contactsEditContact");
+        APP.kendo.navigate("#editContact");
     }
      function touchstart(e) {
         var target = $(e.touch.initialTouch),
@@ -409,7 +406,7 @@ function onInitContactImport (e) {
                APP.models.contacts.phoneDS.data( APP.models.contacts.phoneArray);
                APP.models.contacts.emailDS.data( APP.models.contacts.emailArray);
                APP.models.contacts.addressDS.data( APP.models.contacts.addressArray);
-               APP.kendo.navigate('#contacts-addContact');
+               APP.kendo.navigate('#addContact');
              
             }
     });
@@ -588,19 +585,23 @@ function homeCreateAccount(e) {
     user.set("email", username);
     user.set("phone", phone);
     user.set("alias", alias);
+    user.set("aliasPublic", "ghostgram user");
+    user.set("profilePhoto", null)
     user.set("phoneVerified", false);
     user.set("userUUID", userUUID);
 
-    APP.models.profile.username = username;
-    APP.models.profile.email = username;
-    APP.models.profile.phone = phone;
-    APP.models.profile.alias = alias;
-    APP.models.profile.userUUID = userUUID;
-    
     user.signUp(null, {
         success: function(user) {
             // Hooray! Let them use the app now.
            closeModalViewSignup();
+            APP.models.profile.currentUser.set('username', user.get('username'));
+            APP.models.profile.currentUser.set('email', user.get('email'));
+            APP.models.profile.currentUser.set('phone', user.get('phone'));
+            APP.models.profile.currentUser.set('alias', user.get('alias'));
+            APP.models.profile.currentUser.set('userUUID', user.get('userUUID'));
+            APP.models.profile.currentUser.set('phoneVerified', false);
+            APP.models.profile.currentUser.set('emailVerified',user.get('emailVerified'));
+            APP.models.profile.currentUser.bind('change', syncProfile);
             APP.models.profile.parseACL = new Parse.ACL(Parse.User.current());
            mobileNotify('Welcome to ghostgrams!');
            APP.kendo.navigate('#home');
@@ -909,21 +910,21 @@ function introChanged () {
         <span data-role="view-title"></span>
       </div>
     </div>
-    <ul data-role="listview">
+    <ul data-role="listview" style="font-size: 1.1em;">
       <li>
         <a href="#home"> <i class="ghostIconSmall fa fa-home"></i> Home</a>
       </li>
       <li>
         <a href="views/profile.html"> <i class="ghostIconSmall fa fa-user"></i> Profile</a>
       </li>
+     <li>
+        <a href="views/contacts.html"> <i class="ghostIconSmall fa fa-users"></i> Contacts</a>
+      </li>
       <li>
         <a href="views/channels.html"> <i class="ghostIconSmall fa fa-comment-o"></i> Channels</a>
       </li>
        <li>
         <a href="views/gallery.html"> <i class="ghostIconSmall fa fa-photo"></i> Gallery</a>
-      </li>
-      <li>
-        <a href="views/contacts.html"> <i class="ghostIconSmall fa fa-users"></i> Contacts</a>
       </li>
      <li>
         <a href="views/places.html"> <i class="ghostIconSmall fa fa-map-marker"></i> Places</a>
