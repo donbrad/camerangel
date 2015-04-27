@@ -743,7 +743,36 @@ function onInitChannel (e) {
 }
 
 function sendSupportRequest(e) {
+    var category = $('#supportCategory').val(), message =  $('#supportMessage').val();
+    var userUUID = null, name = null, email = null, phone = null;
     
+    if (APP.models.profile.parseUser !== null) {
+        userUUID = APP.models.profile.currentUser.get('userUUID');
+        name = APP.models.profile.currentUser.get('name');
+        email = APP.models.profile.currentUser.get('email');
+        email = APP.models.profile.currentUser.get('phone');
+    }
+    
+    var Support = Parse.Object.extend('support');
+    var support = new Support();
+    support.set("userUUID", userUUID);
+    support.set("name", name);
+    support.set("email",email );
+    support.set("phone", phone);
+    support.set("category", category);
+    support.set("message", message);
+    support.set("device", APP.models.profile.device);
+    support.set("modle", APP.models.profile.model);
+    support.set("platform", APP.models.profile.platform);
+    
+    support.save(null, {
+        success: function(support) {
+            mobileNotify("You support request was sent. Thank you!");
+        },
+        error: function(support, error) {
+            mobileNotify("Error sending your support request: " + error);
+        }
+    })
 }
     
 function introChanging () {
@@ -910,18 +939,21 @@ function introChanged () {
         <ul data-role="listview" data-style="inset">
             <li>
                 <label>Topic
-                    <select id="support-topic">
+                    <select id="supportCategory">
                         <option value="installation">Installation</option>
+                        <option value="login">Sign In or Sign Up</option>
+                         <option value="verification">Verification</option>
                         <option value="ios">iPhone iOS</option>
                         <option value="android">Android Phones</option>
                         <option value="bug">Software Bug</option>
                         <option value="feature">Feature Request</option>
+                        <option value="other">Other</option>
                     </select>
                 </label>
             </li>
             <li>
-                <label>Question
-                <textarea id="support-question" style="height:120px;"></textarea>
+                <label>Message
+                <textarea id="supportMessage" style="height:120px;"></textarea>
             </li>
         </ul>
     </form> 

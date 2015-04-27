@@ -242,6 +242,8 @@
         APP.models.profile.parseUser = Parse.User.current();
         APP.models.profile.udid = device.uuid;
         APP.models.profile.plaform = device.platform;
+        APP.models.profile.device = device.name;
+        APP.models.profile.model = device.model;
         
         if (APP.models.profile.parseUser !== null) {
              initialView = '#home';
