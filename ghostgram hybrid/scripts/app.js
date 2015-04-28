@@ -164,6 +164,22 @@
 			
 		},
         
+        dataChannelRead : function (m, envelope, channel) {
+            
+        },
+        
+        // Send the invite through the data channel
+        privateChannelInvite : function(contactUUID, message) {
+             APP.pubnub.publish({
+                 channel: contactUUID,        
+                 message: message
+             });
+        },
+        
+        privateChannelInitiate : function (contactUUID) {
+            
+        },
+       
         newNotification: function (type, title, date, description, actionTitle, action, href, dismissable) {
             var notification = new APP.models.home.Notification(type, title, date, description, actionTitle, action, href, dismissable);
             APP.models.home.notificationDS.add(notification);        
@@ -331,17 +347,19 @@
                  restore: true,
                  uuid: uuid
              });
-            APP.pubnub.time(function(time)
-            {    
-                mobileNotify('Pubnub time: ' + kendo.toString(time, "dddd, MMMM dd, yyyy h:mm:ss tt") );
-            });
+            
+         
             
              // Subscribe to the data / notifications channel
              APP.pubnub.subscribe({
                 channel : uuid,
-                message : function(m) {
-                    console.log(m)
-                }
+                windowing: 1000,    
+                message : _app.dataChannelRead,
+                connect: function(){notifyMobile("Data Channel Connected")},
+                disconnect: function(){console.log("Data Channel Disconnected")},
+                reconnect: function(){console.log("Data Channel Reconnected")},
+                error: function(){console.log("Data Channel Network Error")} 
+                 
              });
             
             _app.fetchParseData();
@@ -363,6 +381,15 @@
             cordova.getAppVersion(function (version) {
             APP.models.profile.version = version;
             }); 
+        }
+        
+        // Test the pubnub connection
+        if (APP.pubnub !== null){
+            APP.pubnub.time(function(time)
+            {   
+                var date = kendo.toString(time, "F");
+                mobileNotify('Pubnub time: ' + date );
+            });
         }
     }, false);
 
