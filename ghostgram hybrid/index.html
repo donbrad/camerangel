@@ -117,6 +117,18 @@ function homeSignin (e) {
             APP.models.profile.parseACL = new Parse.ACL(APP.models.profile.parseUser);
             APP.models.profile.currentUser.bind('change', syncProfile);
             window.onUserSignIn();
+            
+            if (!APP.models.profile.currentUser.get('emailVerified')) {
+               Parse.Cloud.run('sendPhoneVerificationCode ', { phoneNumber: phone }, {
+                              success: function(result) {
+                                  modileNotify('Please verify your phone');
+                                  $("#modalview-verifyPhone").data("kendoMobileModalView").open();
+                              },
+                             error(result,error){
+                                 
+                             }
+                         });
+            }
             APP.kendo.navigate('#home');
         },
         error: function(user, error) {
