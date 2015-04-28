@@ -388,7 +388,8 @@ function onInitContactImport (e) {
                  for (var j = 0; j<APP.models.contacts.currentDeviceContact.phoneNumbers.length; j++) {
                     var phone = new Object();
                     phone.name = APP.models.contacts.currentDeviceContact.phoneNumbers[j].name;
-                    phone.number =  APP.models.contacts.currentDeviceContact.phoneNumbers[j].number;
+                    var cleanPhone = APP.models.contacts.currentDeviceContact.phoneNumbers[j].number.replace(/[0-9]{1-2}+/,"");
+                    phone.number =  cleanPhone.replace(/\D+/g, "");
 
                    APP.models.contacts.phoneArray.push(phone);
 
@@ -579,40 +580,58 @@ function homeCreateAccount(e) {
 
     var userUUID = uuid.v4();
     
-    //Todo: add validation for user entry and prior to parse call
-    user.set("username", username);
-    user.set("password", password);
-    user.set("email", username);
-    user.set("phone", phone);
-    user.set("alias", alias);
-    user.set("aliasPublic", "ghostgram user");
-    user.set("profilePhoto", null)
-    user.set("phoneVerified", false);
-    user.set("userUUID", userUUID);
+    // clean up the phone number
+    phone = phone.replace(/+[0-9]{1-2}/,'');
+    phone = phone.replace(/\D+/g, "");
+    
+    Parse.Cloud.run('preflightPhone', { phone: phone }, {
+      success: function(result) {
+           if (result.status !== 'ok' || result.count !== 0) {
+               mobileNotify("Phone number matches existing user");
+               return;
+           } else {
+               
+                 //Phone number isn't a duplicate -- create user
+                user.set("username", username);
+                user.set("password", password);
+                user.set("email", username);
+                user.set("phone", phone);
+                user.set("alias", alias);
+                user.set("aliasPublic", "ghostgram user");
+                user.set("profilePhoto", null)
+                user.set("phoneVerified", false);
+                user.set("userUUID", userUUID);
 
-    user.signUp(null, {
-        success: function(user) {
-            // Hooray! Let them use the app now.
-           closeModalViewSignup();
-            APP.models.profile.currentUser.set('username', user.get('username'));
-            APP.models.profile.currentUser.set('email', user.get('email'));
-            APP.models.profile.currentUser.set('phone', user.get('phone'));
-            APP.models.profile.currentUser.set('alias', user.get('alias'));
-            APP.models.profile.currentUser.set('userUUID', user.get('userUUID'));
-            APP.models.profile.currentUser.set('phoneVerified', false);
-            APP.models.profile.currentUser.set('emailVerified',user.get('emailVerified'));
-            APP.models.profile.currentUser.bind('change', syncProfile);
-            APP.models.profile.parseACL = new Parse.ACL(Parse.User.current());
-           mobileNotify('Welcome to ghostgrams!');
-           APP.kendo.navigate('#home');
-        },
+                user.signUp(null, {
+                    success: function(user) {
+                        // Hooray! Let them use the app now.
+                       closeModalViewSignup();
+                        APP.models.profile.currentUser.set('username', user.get('username'));
+                        APP.models.profile.currentUser.set('email', user.get('email'));
+                        APP.models.profile.currentUser.set('phone', user.get('phone'));
+                        APP.models.profile.currentUser.set('alias', user.get('alias'));
+                        APP.models.profile.currentUser.set('userUUID', user.get('userUUID'));
+                        APP.models.profile.currentUser.set('phoneVerified', false);
+                        APP.models.profile.currentUser.set('emailVerified',user.get('emailVerified'));
+                        APP.models.profile.currentUser.bind('change', syncProfile);
+                        APP.models.profile.parseACL = new Parse.ACL(Parse.User.current());
+                       mobileNotify('Welcome to ghostgrams!');
+                       APP.kendo.navigate('#home');
+                    },
 
-        error: function(user, error) {
-        // Show the error message somewhere and let the user try again.
-        mobileNotify("Error: " + error.code + " " + error.message);
-        }
+                    error: function(user, error) {
+                    // Show the error message somewhere and let the user try again.
+                    mobileNotify("Error: " + error.code + " " + error.message);
+                    }
+                });
+            
+           }
+      },
+      error: function(error) {
+          mobileNotify("Error checking phone number" + error);
+      }
     });
-}
+  }
 
 function onInitGallery(e){
     e.preventDefault();
