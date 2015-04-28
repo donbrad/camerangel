@@ -1020,6 +1020,33 @@ function introChanged () {
         </div>
     </div>
 </div>
+    
+<div data-role="modalview" id="modalview-verifyPhone" style="width: 90%; display: none;" class="appearance">
+    <div data-role="header">
+        <div data-role="navbar">
+            <span>Verify Phone</span>
+            
+        </div>
+    </div>
+
+     <form>
+        <ul data-role="listview" data-style="inset">
+            <li>
+                <label>Verification Code
+                    <input type="number" id="verifyPhone-code" value="" />
+                </label>
+            </li>
+            
+        </ul>
+    </form> 
+    <div data-role="footer">
+        <div data-role="navbar">
+            <a data-click="closeModalViewVerifyPhone" data-role="button" data-align="left">Cancel</a>
+            <a data-click="verifyPhone"  type="button" data-role="button" data-align="right">Verify</a>
+        </div>
+    </div>
+</div>
+
 
 <div data-role="modalview" id="modalview-login" style="width: 90%; display: none;" class="appearance">
     <div data-role="header">
