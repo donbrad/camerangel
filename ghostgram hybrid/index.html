@@ -574,6 +574,22 @@ function contactsPickContact(e) {
     });
 }
     
+function verifyPhone(e){
+    e.preventDefault();
+    var code = $('#verifyPhone-code').val();
+    
+    Parse.Cloud.run('verifyPhoneNumber ', { phoneVerificationCode: code }, 
+    {
+        success: function(result) {
+          modileNotify('Please verify your phone');
+          $("#modalview-verifyPhone").data("kendoMobileModalView").close();
+        },
+        error(result,error){
+
+        }
+    });
+    
+}
 function homeCreateAccount(e) {
     e.preventDefault();
 
@@ -621,8 +637,18 @@ function homeCreateAccount(e) {
                         APP.models.profile.currentUser.bind('change', syncProfile);
                         APP.models.profile.parseACL = new Parse.ACL(Parse.User.current());
                        mobileNotify('Welcome to ghostgrams!');
-                       modileNotify('Please verify your phone');
-                        $("#modalview-verifyPhone").data("kendoMobileModalView").open();
+                         Parse.Cloud.run('sendPhoneVerificationCode ', { phoneNumber: phone }, {
+                              success: function(result) {
+                                  modileNotify('Please verify your phone');
+                                  $("#modalview-verifyPhone").data("kendoMobileModalView").open();
+                              },
+                             error(result,error){
+                                 
+                             }
+                         });
+                       
+                        
+            
                        ///APP.kendo.navigate('#home');
                     },
 
