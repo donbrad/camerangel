@@ -1035,18 +1035,16 @@ function introChanged () {
                  
         </ul>
     </div>
-    <script type="text/x-kendo-template" id="notification-template">      
-    <div style="clear: both;">
-        <div class="ghostTitle"> <span> #=title# </span>  <span style="float: right;"> #=date# </span> </div>
-        <div class="ghostDescription"> #=description# </div>
-        # if (action !== null) {#  
-         <a data-action="#=action#"> #=actionTitle# </a>
-        #} else if (href !=== null) {# 
-        <a href="#=href#"> #=actionTitle# </a>
-        #}#
-    </div>
-</script>
+
 </div>
+    
+<script type="text/x-kendo-template" id="notification-template">      
+    <div>
+        <div class="ghostTitle"> <span> #=title# </span>  <span style="float: right;"> #=date# </span> </div>
+        <div style="clear: both;" class="ghostDescription"> #=description# </div>
+        # if (action !== null) {#  <a data-action="#=action#"> #=actionTitle# </a> #} else if (href !== null) {# <a href="#=href#"> #=actionTitle# </a>#}#
+    </div>
+</script> 
     
 <!-- home - for new users -->
  <div data-role="view" data-title="ghostgrams" id='newuserhome' data-layout="newuser" data-model="APP.models.home" class='appearance' style='display:none;'>
