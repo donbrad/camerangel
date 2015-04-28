@@ -13,8 +13,9 @@
         home: {
           title: 'ghostgrams',
           privateMode: false,
+          invitesDS : new kendo.data.DataSource({offlineStorage: "invites-offline", sort: { field: "date", dir: "desc" }}),
           notificationDS : new kendo.data.DataSource({offlineStorage: "notifications-offline", sort: { field: "date", dir: "desc" }}),
-          notification: function (type, title, date, description, actionTitle, action, href, dismissable )
+          Notification: function (type, title, date, description, actionTitle, action, href, dismissable )
             {
                 this.type = type ? type : 'system',
                 this.title = title ? title : '',
@@ -65,7 +66,7 @@
           
         gallery: {
           title: 'gallery',
-          galleryDS: new kendo.data.DataSource({offlineStorage: "gallery-offline"})
+          photosDS: new kendo.data.DataSource({offlineStorage: "gallery-offline"})
           //Todo: Add photo gallery data source and sync if user is signed in
         },
           
@@ -162,6 +163,11 @@
 			
 		},
         
+        newNotification: function (type, title, date, description, actionTitle, action, href, dismissable) {
+            var notification = new APP.models.home.Notification(type, title, date, description, actionTitle, action, href, dismissable);
+            APP.models.home.notificationDS.add(notification);        
+        },
+        
         fetchParseData : function () {
             var ChannelModel = Parse.Object.extend("channels");
             var ChannelCollection = Parse.Collection.extend({
@@ -204,6 +210,48 @@
                      }
                          
                      APP.models.contacts.contactsDS.data(models);
+                  },
+                  error: function(collection, error) {
+                      handleParseError(error);
+                  }
+                });
+            
+            var PhotoModel = Parse.Object.extend("photos");
+            var PhotoCollection = Parse.Collection.extend({
+              model: PhotoModel
+            });
+            
+            var photos = new ContactCollection();
+            
+            photos.fetch({
+                  success: function(collection) {
+                     var models = new Array();
+                     for (var i=0; i<collection.models.length; i++) {
+                         models.push(collection.models[i].attributes);
+                     }
+                         
+                     APP.models.gallery.photosDS.data(models);
+                  },
+                  error: function(collection, error) {
+                      handleParseError(error);
+                  }
+                });
+            
+            var InviteModel = Parse.Object.extend("invites");
+            var InviteCollection = Parse.Collection.extend({
+              model: InviteModel
+            });
+            
+            var invites = new InviteCollection();
+            
+            invites.fetch({
+                  success: function(collection) {
+                     var models = new Array();
+                     for (var i=0; i<collection.models.length; i++) {
+                         models.push(collection.models[i].attributes);
+                     }
+                         
+                     APP.models.home.invitesDS.data(models);
                   },
                   error: function(collection, error) {
                       handleParseError(error);
