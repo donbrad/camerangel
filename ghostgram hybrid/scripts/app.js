@@ -93,7 +93,8 @@
             placesDS: new kendo.data.DataSource({offlineStorage: "places-offline"})
         }
       },
-       kendo: ''
+       kendo: null,
+       pubnub: null
     };
 
 	//Private methods
@@ -319,15 +320,32 @@
             APP.models.profile.currentUser.set('phoneVerified', APP.models.profile.parseUser.get('phoneVerified'));
             APP.models.profile.currentUser.set('emailVerified', APP.models.profile.parseUser.get('emailVerified'));
             APP.models.profile.parseACL = new Parse.ACL(APP.models.profile.parseUser);
-           
+            var uuid = APP.models.profile.currentUser.get('userUUID');
             APP.models.profile.currentUser.bind('change', syncProfile);
+            
+            APP.pubnub = PUBNUB.init({ 
+                 publish_key: 'pub-c-7344645a-12aa-4481-8ad8-01b2e29deba9', 
+                 subscribe_key: 'sub-c-4866fe96-dcb2-11e4-8fb9-0619f8945a4f',
+                 ssl: true,
+                 jsonp: true,
+                 restore: true,
+                 uuid: uuid
+             });
+            APP.pubnub.time(function(time)
+            {    
+                mobileNotify('Pubnub time: ' + kendo.toString(time, "dddd, MMMM dd, yyyy h:mm:ss tt") );
+            });
+            
+             // Subscribe to the data / notifications channel
+             APP.pubnub.subscribe({
+                channel : uuid,
+                message : function(m) {
+                    console.log(m)
+                }
+             });
+            
             _app.fetchParseData();
-        }
-
-         APP.models.channels.pubnub = PUBNUB.init({ 
-             publish_key: 'pub-c-7344645a-12aa-4481-8ad8-01b2e29deba9', 
-             subscribe_key: 'sub-c-4866fe96-dcb2-11e4-8fb9-0619f8945a4f' 
-         });   
+        }  
 
         APP.kendo = new kendo.mobile.Application(document.body, {
 
