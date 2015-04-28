@@ -547,7 +547,7 @@ function contactsAddContact(e){
         address = $('#addContactAddress').val();
         guid = uuid.v4();
  
-    phone = phone.replace(/+[0-9]{1-2}/,'');
+    //phone = phone.replace(/\+[0-9]{1-2}/,'');
     phone = phone.replace(/\D+/g, "");
     mobileNotify("Saving new contact...");
     contact.setACL(APP.models.profile.parseACL);
@@ -596,12 +596,22 @@ function contactsPickContact(e) {
 function verifyPhone(e){
     e.preventDefault();
     var code = $('#verifyPhone-code').val();
+    // all verification codes are 5 or 6 numbers
+    if (code.length < 5) {
+       mobileNotify("Invalid verification code, please try again");
+        return;
+    }
     
-    Parse.Cloud.run('verifyPhoneNumber ', { phoneVerificationCode: code }, 
+    Parse.Cloud.run('verifyPhoneNumber', { phoneVerificationCode: code }, 
     {
         success: function(result) {
-          modileNotify('Please verify your phone');
-          $("#modalview-verifyPhone").data("kendoMobileModalView").close();
+          if (result.verified) {
+               mobileNotify("Your phone number is verified.  Thank You!");
+               $("#modalview-verifyPhone").data("kendoMobileModalView").close();
+          } else {
+               mobileNotify("Sorry, your verification number didn't match. ");
+          }
+         
         },
         error: function (result,error){
             mobileNotify('Error verifying phone ' + error);
@@ -621,7 +631,7 @@ function homeCreateAccount(e) {
     var userUUID = uuid.v4();
     
     // clean up the phone number
-    phone = phone.replace(/+[0-9]{1-2}/,'');
+   // phone = phone.replace(/\+[0-9]{1-2}/,'');
     phone = phone.replace(/\D+/g, "");
     
     Parse.Cloud.run('preflightPhone', { phone: phone }, {
@@ -656,13 +666,13 @@ function homeCreateAccount(e) {
                         APP.models.profile.currentUser.bind('change', syncProfile);
                         APP.models.profile.parseACL = new Parse.ACL(Parse.User.current());
                        mobileNotify('Welcome to ghostgrams!');
-                         Parse.Cloud.run('sendPhoneVerificationCode ', { phoneNumber: phone }, {
-                              success: function(result) {
+                         Parse.Cloud.run('sendPhoneVerificationCode', { phoneNumber: phone }, {
+                              success: function (result) {
                                   modileNotify('Please verify your phone');
                                   $("#modalview-verifyPhone").data("kendoMobileModalView").open();
                               },
-                             error(result,error){
-                                 
+                             error: function (result, error){
+                                 mobileNotify('Error sending verification code ' + error);
                              }
                          });
                        
