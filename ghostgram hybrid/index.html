@@ -602,7 +602,7 @@ function verifyPhone(e){
         return;
     }
     
-    Parse.Cloud.run('verifyPhoneNumber', { phoneVerificationCode: code }, 
+    Parse.Cloud.run('verifyPhoneNumber', { code: code }, 
     {
         success: function(result) {
           if (result.verified) {
