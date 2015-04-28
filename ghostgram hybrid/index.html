@@ -1031,10 +1031,21 @@ function introChanged () {
            <div  style='padding-top: 24px; padding-bottom: 28px; font-size: 24px; text-align: center; color: #aeaeae'> Personal, private, secure</div>
        </div>
         
-        <div id="home-list">
+        <ul data-role="listview" id="notification-list" data-source="APP.models.home.notificationDS"  data-template="notification-template">
                  
-        </div>
+        </ul>
     </div>
+    <script type="text/x-kendo-template" id="notification-template">      
+    <div style="clear: both;">
+        <div class="ghostTitle"> <span> #=title# </span>  <span style="float: right;"> #=date# </span> </div>
+        <div class="ghostDescription"> #=description# </div>
+        # if (action !== null) {#  
+         <a data-action=#=action#> #=actionTitle# </a>
+        #} else if (href !=== null) {# 
+        <a href=#=href#> #=actionTitle# </a>
+        #}#
+    </div>
+</script>
 </div>
     
 <!-- home - for new users -->

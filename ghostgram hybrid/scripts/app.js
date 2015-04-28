@@ -12,7 +12,19 @@
       models: {
         home: {
           title: 'ghostgrams',
-          privateMode: false
+          privateMode: false,
+          notificationDS : new kendo.data.DataSource({offlineStorage: "notifications-offline", sort: { field: "date", dir: "desc" }}),
+          notification: function (type, title, date, description, actionTitle, action, href, dismissable )
+            {
+                this.type = type ? type : 'system',
+                this.title = title ? title : '',
+                this.actionTitle = actionTitle ? actionTitle : '',
+                this.action = action ? action : null,
+                this.href = href ? href : null,
+                this.description = description ? description : '',
+                this.date = date ? date : new Date().getTime(),
+                this.dismissable = dismissable ? dismissable : false        
+            }
           
         },
           
