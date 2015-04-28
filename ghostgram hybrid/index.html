@@ -609,7 +609,7 @@ function verifyPhone(e){
                mobileNotify("Your phone number is verified.  Thank You!");
                $("#modalview-verifyPhone").data("kendoMobileModalView").close();
           } else {
-               mobileNotify("Sorry, your verification number didn't match. ");
+               mobileNotify("Sorry, your verification number: ' + result.recieved + ' didn't match. ");
           }
          
         },
