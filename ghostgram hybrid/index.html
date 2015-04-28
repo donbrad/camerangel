@@ -94,7 +94,13 @@ function homeSignout (e) {
     Parse.User.logOut();
     APP.models.profile.parseUser = null;
     APP.models.profile.currentUser.unbind('change', syncProfile);
-    APP.models.profile.currentUser = null;
+    APP.models.profile.currentUser.set('username', null);
+    APP.models.profile.currentUser.set('email', null);
+    APP.models.profile.currentUser.set('phone',null);
+    APP.models.profile.currentUser.set('alias', null);
+    APP.models.profile.currentUser.set('userUUID', null);
+    APP.models.profile.currentUser.set('phoneVerified', null);
+    APP.models.profile.currentUser.set('emailVerified', null);
     APP.models.profile.parseACL = '';
     APP.kendo.navigate('#newuserhome');
 }
@@ -118,14 +124,15 @@ function homeSignin (e) {
             APP.models.profile.currentUser.bind('change', syncProfile);
             window.onUserSignIn();
             
-            if (!APP.models.profile.currentUser.get('emailVerified')) {
-               Parse.Cloud.run('sendPhoneVerificationCode ', { phoneNumber: phone }, {
+            if (!APP.models.profile.currentUser.get('phoneVerified')) {
+                var phone = APP.models.profile.currentUser.get('phone');
+               Parse.Cloud.run('sendPhoneVerificationCode', { phoneNumber:  phone}, {
                               success: function(result) {
-                                  modileNotify('Please verify your phone');
+                                  mobileNotify('Please verify your phone');
                                   $("#modalview-verifyPhone").data("kendoMobileModalView").open();
                               },
-                             error(result,error){
-                                 
+                             error: function (result,error){
+                                 mobileNotify("Error sending phone verification " + error);
                              }
                          });
             }
@@ -596,8 +603,8 @@ function verifyPhone(e){
           modileNotify('Please verify your phone');
           $("#modalview-verifyPhone").data("kendoMobileModalView").close();
         },
-        error(result,error){
-
+        error: function (result,error){
+            mobileNotify('Error verifying phone ' + error);
         }
     });
     
