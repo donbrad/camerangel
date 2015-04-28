@@ -157,7 +157,11 @@ function closeModalViewAddPlace() {
 function closeModalViewEditChannel() {
     $("#modalview-channels-editChannel").kendoMobileModalView("close");
 }
-
+    
+function closeModalViewVerifyPhone() {
+    $("#modalview-channels-verifyPhone").kendoMobileModalView("close");
+}
+    
 function syncCurrentContact(e) {
     updateParseObject('contacts','uuid', APP.models.contacts.currentContact.uuid, e.field, this[e.field]);  
     APP.models.contacts.currentModel.set(e.field, this[e.field]);
@@ -388,8 +392,7 @@ function onInitContactImport (e) {
                  for (var j = 0; j<APP.models.contacts.currentDeviceContact.phoneNumbers.length; j++) {
                     var phone = new Object();
                     phone.name = APP.models.contacts.currentDeviceContact.phoneNumbers[j].name;
-                    var cleanPhone = APP.models.contacts.currentDeviceContact.phoneNumbers[j].number.replace(/[0-9]{1-2}+/,"");
-                    phone.number =  cleanPhone.replace(/\D+/g, "");
+                    phone.number =  APP.models.contacts.currentDeviceContact.phoneNumbers[j].number;
 
                    APP.models.contacts.phoneArray.push(phone);
 
@@ -525,6 +528,8 @@ function contactsAddContact(e){
         address = $('#addContactAddress').val();
         guid = uuid.v4();
  
+    phone = phone.replace(/+[0-9]{1-2}/,'');
+    phone = phone.replace(/\D+/g, "");
     mobileNotify("Saving new contact...");
     contact.setACL(APP.models.profile.parseACL);
     contact.set("name", name );
@@ -616,7 +621,9 @@ function homeCreateAccount(e) {
                         APP.models.profile.currentUser.bind('change', syncProfile);
                         APP.models.profile.parseACL = new Parse.ACL(Parse.User.current());
                        mobileNotify('Welcome to ghostgrams!');
-                       APP.kendo.navigate('#home');
+                       modileNotify('Please verify your phone');
+                        $("#modalview-verifyPhone").data("kendoMobileModalView").open();
+                       ///APP.kendo.navigate('#home');
                     },
 
                     error: function(user, error) {
