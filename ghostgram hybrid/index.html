@@ -73,13 +73,6 @@ function homeBeforeShow () {
 
     if (APP.models.profile.currentUser) {
         // Have current user - redirect to user view
-
-        APP.models.profile.username =  APP.models.profile.currentUser.username;
-        APP.models.profile.email =  APP.models.profile.currentUser.email;
-        APP.models.profile.phone =  APP.models.profile.currentUser.phone;
-        APP.models.profile.alias =  APP.models.profile.currentUser.alias;
-        APP.models.profile.udid =  APP.models.profile.currentUser.udid;
-        APP.models.profile.userUUID = APP.models.profile.currentUser.UUID;
         APP.kendo.navigate('#home');
 
     } else {
@@ -321,7 +314,7 @@ function updateCurrentContact (contact) {
     APP.models.contacts.currentContact.set('email', contact.email);
     APP.models.contacts.currentContact.set('address', contact.address);
     APP.models.contacts.currentContact.set('uuid', contact.uuid);
-    APP.models.contacts.currentContact.set('privateChannel', contact.privateChannel === 'true');
+    APP.models.contacts.currentContact.set('privateChannel', contact.privateChannel);
     APP.models.contacts.currentContact.bind('change' , syncCurrentContact);
    
    
@@ -338,7 +331,7 @@ function onCommandActionSheet(e) {
     
 function onInitContacts(e) {
    e.preventDefault();
-    
+    /*
     function swipe(e) {
         var button = kendo.fx($(e.touch.currentTarget).find("[data-role=button]"));
         button.expand().duration(200).play();        
@@ -386,6 +379,21 @@ function onInitContacts(e) {
             touchstart: touchstart,
             swipe: swipe
        });
+       */
+    
+     $("#contacts-listview").kendoMobileListView({
+        dataSource: APP.models.contacts.contactsDS,
+        template: $("#contactsTemplate").html(),
+        click: function (e) {
+            var contact = e.dataItem;
+            updateCurrentContact(contact);
+             $("#contactActions").data("kendoMobileActionSheet").open();
+        },
+         filterable: {
+            field: "name",
+            operator: "startswith"
+        }
+     });
 }
     
     
@@ -557,7 +565,7 @@ function contactsAddContact(e){
     contact.set("email", email);
     contact.set("address", address);
     contact.set("photo", photo);
-    contact.set("privateChannel", private === 'yes' ? true : false);
+    contact.set("privateChannel", private === true ? true : false);
     contact.set("uuid", guid);
     
     getBase64FromImageUrl(photo, function (fileData) {
@@ -1054,27 +1062,22 @@ function introChanged () {
     
 
     <div id="home-signin">
-         <div style='clear:both; padding-top: 28px; padding-left:12px;text-align:center;'>
-            <span class="ghostWhiteTitle" >Don't have an Account? </br> Sign Up Now!</span>
-        </div>
-        <div style='clear:both; padding-top: 12px; padding-bottom: 28px; text-align: center;' >
-            <a style="font-size: 1.3em;" class="button ghostButton" id="home-signup" data-role="button" data-rel="modalview" href="#modalview-signup" >Sign Up</a>
-        </div>
-         
-        
         <div style='padding-top: 12px; padding-left:12px; padding-bottom: 12px;  text-align: center;'> <span class="ghostWhiteTitle"> Get your ghost on!!!</span></div>
 
-        <div style="text-align: center;"> 
-            <a  style="font-size: 1.3em;" class="button ghostButton"  data-rel="modalview" href="#modalview-login" data-role="button">Sign In</a>
+        <div> 
+            <a style="width:98%;" class="button ghostButton"  data-rel="modalview" href="#modalview-login" data-role="button">Sign In</a>
         </div>
 
-        <div style='padding-top: 32px; padding-left:12px; padding-bottom: 4px;  text-align: center;'> <span class="ghostWhiteTitle">Having trouble Signing In?</span></div>
-
-        <div style="padding-top: 8px; text-align: center;">
-            <a style="font-size: 0.9em;" class="button ghostButton" data-rel="modalview" href="#modalview-recoverPassword" data-role="button">Recover your Password?</a>
+        <div style="padding-top: 8px;">
+            <a style="width:98%; font-size: 0.9em;" class="button ghostButton" data-rel="modalview" href="#modalview-recoverPassword" data-role="button">Forgot your Password?</a>
         </div>
-        
-       
+        <div style='clear:both; padding-top: 28px; padding-left:12px;text-align:center;'>
+            <span class="ghostWhiteTitle" >Don't have an Account? </br> Sign Up Now!</span>
+        </div>
+        <div style='clear:both; padding-top: 12px;' >
+            <a style="width:98%;" class="button ghostButton" id="home-signup" data-role="button" data-rel="modalview" href="#modalview-signup" >Sign Up</a>
+        </div>
+         
     </div>
 </div>
 
