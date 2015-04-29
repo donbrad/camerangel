@@ -382,6 +382,11 @@
             APP.models.profile.version = version;
             }); 
         }
+		
+		APP.emailAvailable = false;
+	    cordova.plugins.email.isAvailable(function (result){
+			APP.emailAvailable = result;
+		});
         
         // Test the pubnub connection
         if (APP.pubnub !== null){

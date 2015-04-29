@@ -278,7 +278,7 @@ function deleteContact() {
 }
 
 function contactSendEmail() {
-    
+    var email = APP.models.contacts.currentContact.email;
 }
     
 function contactCallPhone() {
@@ -573,7 +573,12 @@ function contactsAddContact(e){
     contact.set("email", email);
     contact.set("address", address);
     contact.set("photo", photo);
-    contact.set("privateChannel", private === true ? true : false);
+	contact.set("group", '');
+	contact.set("priority", 0);
+	contact.set("contactUUID", null);
+	contact.set("contactPhone", null);
+	contact.set("contactEmail", null);
+    contact.set("privateChannel", private);
     contact.set("uuid", guid);
     
     getBase64FromImageUrl(photo, function (fileData) {
