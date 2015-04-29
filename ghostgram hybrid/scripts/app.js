@@ -342,6 +342,7 @@
             APP.pubnub = PUBNUB.init({ 
                  publish_key: 'pub-c-7344645a-12aa-4481-8ad8-01b2e29deba9', 
                  subscribe_key: 'sub-c-4866fe96-dcb2-11e4-8fb9-0619f8945a4f',
+				 secret_key: 'sec-c-NDFiNzlmNTUtNWEyNy00OGUzLWExZjYtNDc3ZTI2ZGRlOGMw',
                  ssl: true,
                  jsonp: true,
                  restore: true,
