@@ -357,10 +357,10 @@
                 channel : uuid,
                 windowing: 1000,    
                 message : _app.dataChannelRead,
-                connect: function(){notifyMobile("Data Channel Connected")},
-                disconnect: function(){console.log("Data Channel Disconnected")},
-                reconnect: function(){console.log("Data Channel Reconnected")},
-                error: function(){console.log("Data Channel Network Error")} 
+                connect: function(){mobileNotify("Data Channel Connected")},
+                disconnect: function(){mobileNotify("Data Channel Disconnected")},
+                reconnect: function(){mobileNotify("Data Channel Reconnected")},
+                error: function(){mobileNotify("Data Channel Network Error")} 
                  
              });
             

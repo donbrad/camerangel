@@ -1,0 +1,360 @@
+function syncCurrentContact(e) {
+    updateParseObject('contacts','uuid', APP.models.contacts.currentContact.uuid, e.field, this[e.field]);  
+    APP.models.contacts.currentModel.set(e.field, this[e.field]);
+}
+    
+function syncProfile (e) {
+    APP.models.profile.parseUser.set(e.field, APP.models.profile.currentUser.get(e.field));
+    APP.models.profile.parseUser.save(null, {
+        success : function (user){
+            mobileNotify("Updated your " + e.field);
+        },
+        error: function (user, error){
+            mobileNotify("Profile save error: " + error);
+        }
+    });
+}
+
+function personalMessage() {
+    
+}
+    
+function editContact() {
+    APP.kendo.navigate("#editContact");  
+}
+
+
+function deleteContact() {
+    var dataSource = APP.models.contacts.contactsDS;
+    dataSource.filter( { field: "uuid", operator: "eq", value: APP.models.contacts.currentContact.uuid });
+    var view = dataSource.view();
+    var contact = view[0];
+    dataSource.remove(contact); 
+    deleteParseObject("contacts", 'uuid', APP.models.contacts.currentContact.uuid);
+    
+}
+
+function contactSendEmail() {
+    var email = APP.models.contacts.currentContact.email;
+}
+    
+function contactCallPhone() {
+     var number = APP.models.contacts.currentContact.phone;
+}
+    
+function contactSendSMS() {
+
+    var number = APP.models.contacts.currentContact.phone;
+    var message = "";
+
+
+    //CONFIGURATION
+    var options = {
+        android: {
+            intent: 'INTENT'  // send SMS with the native android SMS messaging
+            //intent: '' // send SMS without openning any other app
+        }
+    };
+
+    var success = function () { mobileNotify('Message sent successfully'); };
+    var error = function (e) { mobileNotify('Message Failed:' + e); };
+    
+    if (window.navigator.simulator === true){
+   //running in the simulator
+        alert('Simulating SMS to ' + number + ' message: ' + message);
+    } else {
+       sms.send(number, message, options, success, error);
+    }
+
+}
+    
+function updateCurrentContact (contact) {
+   
+    // Wish observables set took an object -- need to set fields individually
+     APP.models.contacts.currentModel = contact;
+    APP.models.contacts.currentContact.unbind('change' , syncCurrentContact);
+    APP.models.contacts.currentContact.set('name', contact.name);
+    APP.models.contacts.currentContact.set('alias', contact.alias);
+    APP.models.contacts.currentContact.set('phone', contact.phone);
+    APP.models.contacts.currentContact.set('email', contact.email);
+    APP.models.contacts.currentContact.set('address', contact.address);
+    APP.models.contacts.currentContact.set('uuid', contact.uuid);
+    APP.models.contacts.currentContact.set('privateChannel', contact.privateChannel);
+    APP.models.contacts.currentContact.bind('change' , syncCurrentContact);
+   
+   
+}
+
+function onCommandActionSheet(e) {
+    var currentTarget = e.currentTarget,
+        parentElement = currentTarget.parent();
+
+    setTimeout(function() {
+        currentTarget.remove().appendTo(parentElement);
+    }, 100);
+}
+    
+function onInitContacts(e) {
+   e.preventDefault();
+    /*
+    function swipe(e) {
+        var button = kendo.fx($(e.touch.currentTarget).find("[data-role=button]"));
+        button.expand().duration(200).play();        
+    }
+    
+    function tap(e) {
+        var contact = APP.models.contacts.contactsDS.getByUid($(e.touch.target).attr("data-uid"));
+        updateCurrentContact(contact);
+        APP.kendo.navigate("#editContact");
+    }
+     function touchstart(e) {
+        var target = $(e.touch.initialTouch),
+            listview = $("#contacts-listview").data("kendoMobileListView"),
+            contact,
+            dataSource = APP.models.contacts.contactsDS,
+            button = $(e.touch.target).find("[data-role=button]:visible");
+            
+        if (target.closest("[data-role=button]")[0]) {
+            contact = dataSource.getByUid($(e.touch.target).attr("data-uid"));
+            this.events.cancel();
+            e.event.stopPropagation();
+            updateCurrentContact(contact);
+             $("#contactActions").data("kendoMobileActionSheet").open();
+            
+        	
+       } else if (button[0]) {
+            button.hide();
+            //prevent `swipe`
+            this.events.cancel();
+        } else {
+            listview.items().find("[data-role=button]:visible").hide();
+        }
+    }
+     $("#contacts-listview").kendoMobileListView({
+        dataSource: APP.models.contacts.contactsDS,
+        template: $("#contactsTemplate").html(),
+        filterable: {
+            field: "name",
+            operator: "startswith"
+        }
+     }).kendoTouch({
+            filter: ">li",
+            enableSwipe: true,
+            tap: tap,
+            touchstart: touchstart,
+            swipe: swipe
+       });
+       */
+    
+     $("#contacts-listview").kendoMobileListView({
+        dataSource: APP.models.contacts.contactsDS,
+        template: $("#contactsTemplate").html(),
+        click: function (e) {
+            var contact = e.dataItem;
+            updateCurrentContact(contact);
+             $("#contactActions").data("kendoMobileActionSheet").open();
+        },
+         filterable: {
+            field: "name",
+            operator: "startswith"
+        }
+     });
+}
+    
+    
+function onInitContactImport (e) {
+    e.preventDefault();
+    $("#contactimport-listview").kendoMobileListView({
+            dataSource: APP.models.contacts.deviceContactsDS,
+            template: $("#deviceContactsTemplate").text(),
+            click: function(e) {
+               APP.models.contacts.currentDeviceContact = e.dataItem;
+               APP.models.contacts.emailArray = new Array();
+                
+               for (var i = 0; i<APP.models.contacts.currentDeviceContact.emails.length; i++) {
+                    var email = new Object();
+                    email.name = APP.models.contacts.currentDeviceContact.emails[i].name;
+                    email.address =  APP.models.contacts.currentDeviceContact.emails[i].address;
+
+                   APP.models.contacts.emailArray.push(email);
+
+               }
+
+               APP.models.contacts.phoneArray = new Array();
+                 for (var j = 0; j<APP.models.contacts.currentDeviceContact.phoneNumbers.length; j++) {
+                    var phone = new Object();
+                    phone.name = APP.models.contacts.currentDeviceContact.phoneNumbers[j].name;
+                    phone.number =  APP.models.contacts.currentDeviceContact.phoneNumbers[j].number;
+
+                   APP.models.contacts.phoneArray.push(phone);
+
+               }
+                
+                APP.models.contacts.addressArray = new Array();
+                    for (var a = 0; a<APP.models.contacts.currentDeviceContact.addresses.length; a++) {
+                    var address = new Object();
+                    address.name = APP.models.contacts.currentDeviceContact.addresses[a].name;
+                    address.address =  APP.models.contacts.currentDeviceContact.addresses[a].fullAddress;
+
+                    APP.models.contacts.addressArray.push(address);
+               }
+               
+               APP.models.contacts.phoneDS.data( APP.models.contacts.phoneArray);
+               APP.models.contacts.emailDS.data( APP.models.contacts.emailArray);
+               APP.models.contacts.addressDS.data( APP.models.contacts.addressArray);
+               APP.kendo.navigate('#addContact');
+             
+            }
+    });
+}
+    
+
+    
+function contactsFindContacts(e) {
+    e.preventDefault(e);   
+    var query = $('#contactSearchQuery').val();
+   
+    var options      = new ContactFindOptions();
+    options.filter   = query
+    options.multiple = true;
+    var fields       = ["name", "phoneNumbers", "emails", "addresses"];
+     
+    navigator.contacts.find(fields, function(contacts){
+        
+        APP.models.contacts.deviceContactsDS.data([]);
+        var contactsCount = contacts.length;
+        
+        for (var i=0;  i<contactsCount; i++){
+            var contactItem = new Object();
+            contactItem.type = "device";
+            contactItem.name = contacts[i].name.formatted;
+            contactItem.phoneNumbers = new Array();
+            if (contacts[i].phoneNumbers !== null) {
+                for (var j=0; j<contacts[i].phoneNumbers.length; j++){
+                    var phone = new Object();
+                    phone.name = contacts[i].phoneNumbers[j].type + " : " + contacts[i].phoneNumbers[j].value ;
+                    phone.number = contacts[i].phoneNumbers[j].value;
+                    contactItem.phoneNumbers.push(phone);
+                }
+            }
+            
+            contactItem.emails = new Array();
+            if (contacts[i].emails !== null) {
+                 for (var k=0; k<contacts[i].emails.length; k++){
+                    var email = new Object();
+                    email.name = contacts[i].emails[k].type + " : " + contacts[i].emails[k].value;
+                    email.address = contacts[i].emails[k].value;
+                    contactItem.emails.push(email);
+                }
+            }
+            
+            contactItem.addresses = new Array();
+              if (contacts[i].addresses !== null) {
+                 for (var a=0; a<contacts[i].addresses.length; a++){
+                    var address = new Object();
+                    if (contacts[i].addresses[a].type === null) {
+                         address.type = 'Home';
+                    } else {
+                        address.type = contacts[i].addresses[a].type;
+                    }
+                    address.name = address.type + " : " + contacts[i].addresses[a].streetAddress + ', ' +
+                        contacts[i].addresses[a].locality;
+                    address.address = contacts[i].addresses[a].streetAddress;
+                    address.city = contacts[i].addresses[a].locality;
+                    address.state = contacts[i].addresses[a].region;
+                    address.zipcode = contacts[i].addresses[a].postalcode;
+                    address.fullAddress = address.address + " ," + address.city + ' , ' + address.state;
+                    contactItem.addresses.push(address);
+                }
+            } 
+            contactItem.photo = 'images/missing_profile_photo.jpg';
+            if (contacts[i].photos !== null) {
+                contactItem.photo = contacts[i].photos[0].value;
+            } 
+            APP.models.contacts.deviceContactsDS.add(contactItem);
+        }
+         
+    },function(error){alert(error);}, options);
+ }
+    
+function doShowAddContacts() {
+    var data = APP.models.contacts.currentDeviceContact;
+    
+    $("#addContactName").val(data.name);
+    
+    if (data.photo === null) {
+        $("#addContactPhoto").attr("src",'images/missing_profile_photo.jpg');
+    } else {
+         $("#addContactPhoto").attr("src",data.photo);
+    }
+   
+    
+    
+   
+}
+
+function contactsAddContact(e){
+    e.preventDefault(e);
+     var Contacts = Parse.Object.extend("contacts");
+    var contact = new Contacts();
+    
+    var name = $('#addContactName').val(),
+        alias = $('#addContactAlias').val(),
+        phone = $('#addContactPhone').val(),
+        email = $('#addContactEmail').val(), 
+        private = $('#addContactPrivate').val(),
+        photo = $('#addContactPhoto').prop('src'),
+        address = $('#addContactAddress').val();
+        guid = uuid.v4();
+ 
+    //phone = phone.replace(/\+[0-9]{1-2}/,'');
+    phone = phone.replace(/\D+/g, "");
+    mobileNotify("Saving new contact...");
+    contact.setACL(APP.models.profile.parseACL);
+    contact.set("name", name );
+    contact.set("alias", alias);
+    contact.set("phone", phone);
+    contact.set("email", email);
+    contact.set("address", address);
+    contact.set("photo", photo);
+	contact.set("group", '');
+	contact.set("priority", 0);
+	contact.set("contactUUID", null);
+	contact.set("contactPhone", null);
+	contact.set("contactEmail", null);
+    contact.set("privateChannel", private);
+    contact.set("uuid", guid);
+    
+    getBase64FromImageUrl(photo, function (fileData) {
+        var parseFile = new Parse.File(guid+".png", {base64 : fileData}, "image/png");
+        parseFile.save().then(function() {
+            contact.set("parsePhoto", parseFile);
+             contact.save(null, {
+                  success: function(contact) {
+                    // Execute any logic that should take place after the object is saved.
+                    mobileNotify('Added contact : ' + contact.get('name'));
+                    APP.models.contacts.contactsDS.add(contact.attributes);
+                    APP.kendo.navigate('#contactImport');
+                  },
+                  error: function(contact, error) {
+                    // Execute any logic that should take place if the save fails.
+                    // error is a Parse.Error with an error code and message.
+                      handleParseError(error);
+                  }
+                });
+            }, function(error) {
+              // The file either could not be read, or could not be saved to Parse.
+                     handleParseError(error);
+            }); 
+        });    
+}
+    
+function contactsPickContact(e) {
+   // e.preventDefault(e);
+    navigator.contacts.pickContact(function(contact){
+       alert(JSON.stringify(contact));
+    },function(err){
+        alert('Error: ' + err);
+    });
+}
+    
