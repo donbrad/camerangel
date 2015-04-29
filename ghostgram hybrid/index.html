@@ -277,10 +277,20 @@ function deleteContact() {
     
 }
 
+function contactSendEmail() {
+    
+}
+    
+function contactPhoneCall() {
+     var number = APP.models.contacts.currentContact.phone;
+    window.plugins.CallNumber.callNumber(function(){}, function(){}, number);
+ 
+}
+    
 function contactSendSMS() {
 
     var number = APP.models.contacts.currentContact.phone;
-    var message = "ghostgrams";
+    var message = "";
 
 
     //CONFIGURATION
