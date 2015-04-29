@@ -281,10 +281,8 @@ function contactSendEmail() {
     
 }
     
-function contactPhoneCall() {
+function contactCallPhone() {
      var number = APP.models.contacts.currentContact.phone;
-    window.plugins.CallNumber.callNumber(function(){}, function(){}, number);
- 
 }
     
 function contactSendSMS() {
