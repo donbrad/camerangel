@@ -19,7 +19,7 @@
         <li><a data-action="contactSendSMS">Send SMS</a></li>
         <li><a data-action="contactCallPhone">Phone Call</a></li>
          <li><a data-action="contactSendEmail">Send Email</a></li>
-        <li><a data-action="deleteContact">Delete Contact</a></li>
+        
     </ul> 
     
       <ul data-role="actionsheet" id="contactUserActions"  data-popup='{"direction": "left"}'>
@@ -28,7 +28,7 @@
         <li><a data-action="contactSendSMS">Send SMS</a></li>
         <li><a data-action="contactCallPhone">Phone Call</a></li>
         <li><a data-action="contactEmail">Send Email</a></li>
-        <li><a data-action="deleteContact">Delete Contact</a></li>
+    
     </ul> 
 </div>
 
@@ -133,49 +133,52 @@
         </div>
     </div> 
     <div class="ghostContent" style="padding-bottom: 12px;">
-    <form >
-        <ul data-role="listview" data-style="inset" >
-            <li>
-                <label> Name
-                    <input type="text" id="editContactName" data-bind="value: name"/>
-                </label>
-            </li>
-            <li>
-                <label> Nickname
-                    <input type="text" id="editContactAlias" data-bind="value: alias"/>
-                </label>
-            </li>
-             <li>
-                <label> Private Channel
-                    <select id="editContactPrivate" data-bind="value: privateChannel">
-                        <option value=true>Yes - Enabled</option>
-                        <option value=false>No - Disabled</option>
-                    </select>
-                </label>
-            </li>
-            <li>           
-                <label>Phone
-                    <input id="editContactPhone" data-bind="value:phone">
-                    </input>
-                </label>
-            </li>
-            <li>
-                <label>Email
-                     <input id="editContactEmail" data-bind="value: email">
-                       
-                    </input>
-                </label>
-            </li>
-             <li>
-                <label>Address
-                     <input id="editContactAddress" data-bind="value: address">
-                    </input>
-                </label>
-            </li>
-        </ul>
-    </form>
-</br>
-    </div>
+		<form >
+			<ul data-role="listview" data-style="inset" >
+				<li>
+					<label> Name
+						<input type="text" id="editContactName" data-bind="value: name"/>
+					</label>
+				</li>
+				<li>
+					<label> Nickname
+						<input type="text" id="editContactAlias" data-bind="value: alias"/>
+					</label>
+				</li>
+				 <li>
+					<label> Private Channel
+						<select id="editContactPrivate" data-bind="value: privateChannel">
+							<option value=true>Yes - Enabled</option>
+							<option value=false>No - Disabled</option>
+						</select>
+					</label>
+				</li>
+				<li>           
+					<label>Phone
+						<input id="editContactPhone" data-bind="value:phone">
+						</input>
+					</label>
+				</li>
+				<li>
+					<label>Email
+						 <input id="editContactEmail" data-bind="value: email">
+
+						</input>
+					</label>
+				</li>
+				 <li>
+					<label>Address
+						 <input id="editContactAddress" data-bind="value: address">
+						</input>
+					</label>
+				</li>
+			</ul>
+		</form>
+		</br>
+		<div style="text-align: center; padding-top: 16px; padding-bottom: 16px;">
+		 <a data-role="button"  data-click="deleteContact">  <i class="ghostIconl fa fa-trash-0"></i> Delete Contact</a>
+		</div>
+	</div>
 </div>
 
 
