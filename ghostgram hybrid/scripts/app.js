@@ -351,6 +351,7 @@
          
             
              // Subscribe to the data / notifications channel
+			mobileNotify("Created data channel : " + uuid);
              APP.pubnub.subscribe({
                 channel : uuid,
                 windowing: 1000,    
@@ -384,10 +385,10 @@
         }
 		
 		APP.emailAvailable = false;
-	    cordova.plugins.email.isAvailable(function (result){
+	  /*  window.plugins.email.isAvailable(function (result){
 			APP.emailAvailable = result;
 		});
-        
+        */
         // Test the pubnub connection
         if (APP.pubnub !== null){
             APP.pubnub.time(function(time)
