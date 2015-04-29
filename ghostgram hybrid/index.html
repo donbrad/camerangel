@@ -1070,26 +1070,30 @@ function introChanged () {
 <!-- home - for new users -->
  <div data-role="view" data-title="ghostgrams" id='newuserhome' data-layout="newuser" data-model="APP.models.home" class='appearance' style='display:none;'>
    <div >
-       <div  style='padding-top: 24px; padding-bottom: 28px; font-size: 24px; text-align: center; color: #aeaeae'>  Personal, private, secure</div>
+       <div  style='padding-top: 24px; padding-bottom: 32px; font-size: 24px; text-align: center; color: #aeaeae'>  Personal, private, secure</div>
    </div>
     
 
-    <div id="home-signin">
-        <div style='padding-top: 12px; padding-left:12px; padding-bottom: 12px;  text-align: center;'> <span class="ghostWhiteTitle"> Get your ghost on!!!</span></div>
-
-        <div> 
-            <a style="width:98%;" class="button ghostButton"  data-rel="modalview" href="#modalview-login" data-role="button">Sign In</a>
+    <div id="home-signin" style="padding-bottom: 16px;">
+		
+		 <div style='padding-top: 24px; text-align:center;'>
+            <span class="ghostWhiteTitle" >Don't have an Account? </br> Create a free account now!</span>
+        </div>
+        <div style='padding-top: 12px; text-align:center;' >
+            <a style="font-size: 1.2em;" class="button ghostButton" id="home-signup" data-role="button" data-rel="modalview" href="#modalview-signup" >Sign Up</a>
+        </div>
+	 
+        <div style='padding-top: 32px; padding-bottom: 12px;  text-align: center;'> <span class="ghostWhiteTitle"> Already a ghostgram's User? </span></div>
+        <div style="text-align: center;"> 
+            <a style="font-size: 1.2em;" class="button ghostButton"  data-rel="modalview" href="#modalview-login" data-role="button">Sign In</a>
         </div>
 
-        <div style="padding-top: 8px;">
-            <a style="width:98%; font-size: 0.9em;" class="button ghostButton" data-rel="modalview" href="#modalview-recoverPassword" data-role="button">Forgot your Password?</a>
-        </div>
-        <div style='clear:both; padding-top: 28px; padding-left:12px;text-align:center;'>
-            <span class="ghostWhiteTitle" >Don't have an Account? </br> Sign Up Now!</span>
-        </div>
-        <div style='clear:both; padding-top: 12px;' >
-            <a style="width:98%;" class="button ghostButton" id="home-signup" data-role="button" data-rel="modalview" href="#modalview-signup" >Sign Up</a>
-        </div>
+	 <div style='padding-top: 18px; padding-left:12px; padding-bottom: 12px;  text-align: center;'> <span class="ghostWhiteTitle"> Having trouble signing in? </span></div>
+	<div style="padding-top: 8px; text-align:center;">
+		<a style="font-size: 0.9em;" class="button ghostButton" data-rel="modalview" href="#modalview-recoverPassword" data-role="button">Recover your Password?</a>
+	</div>
+		
+       
          
     </div>
 </div>
