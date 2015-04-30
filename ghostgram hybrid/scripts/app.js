@@ -69,7 +69,7 @@
 			channelUUID: null,
 			contactUUID: null,
 			contactAlias: null
-		}
+		},
           
         gallery: {
           title: 'gallery',

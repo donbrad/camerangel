@@ -2,13 +2,13 @@ function dataChannelRead (m, envelope, channel) {
     switch(m.type) {
 		case 'privateInvite' : {
 				
-		},
+		} break;
 			
 		case 'privateInitiate' : {
 			APP.models.privateChannel.contactUUID = m.senderUUID;
 			APP.models.privateChannel.contactAlias = m.senderAlias;	
 			APP.models.privateChannel.channelUUID = m.channelUUID;	
-		}
+		} break;
 	}
 }
 
