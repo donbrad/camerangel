@@ -1,9 +1,9 @@
-dataChannelRead : function (m, envelope, channel) {
+function dataChannelRead (m, envelope, channel) {
             
-},
+}
 
 // Send the invite through the data channel
-privateChannelInvite : function(contactUUID, message) {
+function privateChannelInvite(contactUUID, message) {
 	 var msg = new Object();
 
 	msg.type = 'privateinvite';
@@ -19,8 +19,8 @@ privateChannelInvite : function(contactUUID, message) {
 		 success: function (status) {notifyMobile('Private message invite sent');},
 		 error: function (error) {notifyMobile('Error sending Private message invite: ' + error);},
 	 });
-},
+}
 
-privateChannelInitiate : function (contactUUID) {
+function privateChannelInvite (contactUUID) {
 
-},
+}
