@@ -63,6 +63,13 @@
             members: new kendo.data.DataSource({sort: { field: "name", dir: "asc" }}),
             messages: new kendo.data.DataSource({sort: { field: "date", dir: "desc" }})
         },
+		  
+		privateChannel : {
+			title: 'Private Channel',
+			channelUUID: null,
+			contactUUID: null,
+			contactAlias: null
+		}
           
         gallery: {
           title: 'gallery',
