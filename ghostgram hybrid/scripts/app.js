@@ -164,32 +164,7 @@
 			
 		},
         
-        dataChannelRead : function (m, envelope, channel) {
-            
-        },
         
-        // Send the invite through the data channel
-        privateChannelInvite : function(contactUUID, message) {
-             var msg = new Object();
-			
-			msg.type = 'privateinvite';
-			msg.sender = APP.models.profile.currentUser.get('uuid');
-			msg.senderName = APP.models.profile.currentUser.get('alias');
-			msg.content  = {type: 'text', message : message};
-			msg.time = new Date().getTime();
-			
-			
-			APP.pubnub.publish({
-                 channel: contactUUID,        
-                 message: msg,
-				 success: function (status) {notifyMobile('Private message invite sent');},
-				 error: function (error) {notifyMobile('Error sending Private message invite: ' + error);},
-             });
-        },
-        
-        privateChannelInitiate : function (contactUUID) {
-            
-        },
        
         newNotification: function (type, title, date, description, actionTitle, action, href, dismissable) {
             var notification = new APP.models.home.Notification(type, title, date, description, actionTitle, action, href, dismissable);
@@ -325,9 +300,6 @@
        
         navigator.splashscreen.hide();
        
-        
-     
-        
         Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
 
         Parse.User.enableRevocableSession();
@@ -363,11 +335,11 @@
          
             
              // Subscribe to the data / notifications channel
-			mobileNotify("Created data channel : " + uuid);
+			//mobileNotify("Created data channel : " + uuid);
              APP.pubnub.subscribe({
                 channel : uuid,
                 windowing: 1000,    
-                message : _app.dataChannelRead,
+                message : dataChannelRead,
                 connect: function(){mobileNotify("Data Channel Connected")},
                 disconnect: function(){mobileNotify("Data Channel Disconnected")},
                 reconnect: function(){mobileNotify("Data Channel Reconnected")},
@@ -401,14 +373,7 @@
 			APP.emailAvailable = result;
 		});
         */
-        // Test the pubnub connection
-        if (APP.pubnub !== null){
-            APP.pubnub.time(function(time)
-            {   
-                var date = kendo.toString(time, "F");
-                mobileNotify('Pubnub time: ' + date );
-            });
-        }
+       
     }, false);
 
    

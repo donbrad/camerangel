@@ -15,18 +15,22 @@ function syncProfile (e) {
     });
 }
 
-function personalMessage(e) {
-	if (e !== undefined)
-		e.preventDefault();
+function inviteUser(e) {
+	
+}
+
+function privateMessage(e) {
+
 	var contact = APP.models.contacts.currentContact;
-	var contactUUID = contact.get('contactUUID');
+	var contactUUID = contact.contactUUID;
 	
 	if (contactUUID === undefined || contactUUID === null) {
 		// TODO: look up contact in user table...
-		notifyMobile(contact.get('name') + "hasn't verified their contact info");
+		mobileNotify(contact.get('name') + "hasn't verified their contact info");
 		return;
 	}
-    _app.privateChannelInvite(contactUUID, "");
+	
+    privateChannelInvite(contactUUID, "");
 }
     
 function editContact() {
@@ -91,6 +95,8 @@ function updateCurrentContact (contact) {
     APP.models.contacts.currentContact.set('email', contact.email);
     APP.models.contacts.currentContact.set('address', contact.address);
     APP.models.contacts.currentContact.set('uuid', contact.uuid);
+	APP.models.contacts.currentContact.set('contactUUID', contact.contactUUID);
+	APP.models.contacts.currentContact.set('contactEmail', contact.contactEmail);
     APP.models.contacts.currentContact.set('privateChannel', contact.privateChannel);
     APP.models.contacts.currentContact.bind('change' , syncCurrentContact);
    
@@ -164,7 +170,13 @@ function onInitContacts(e) {
         click: function (e) {
             var contact = e.dataItem;
             updateCurrentContact(contact);
-             $("#contactActions").data("kendoMobileActionSheet").open();
+			// If we know the contacts uuid enable the full feature set
+			if (contact.contactUUID !== undefined && contact.contactUUID !== null){
+				$("#contactUserActions").data("kendoMobileActionSheet").open();
+			} else {
+				$("#contactActions").data("kendoMobileActionSheet").open();
+			}
+             
         },
          filterable: {
             field: "name",
@@ -360,7 +372,7 @@ function contactsAddContact(e){
 									  contact.set('contactEmail', result.contact.get('email'));
 									  contact.save(null, {
 										  success: function(contact) {
-											  mobileNotify(result.contact.name + "is Ghostgrams User");
+											  mobileNotify(result.contact.get('name') + "is Ghostgrams User!");
 										  },
 										  error: function (contact, error) {
 											  mobileNotify("Error mapping contact to exiting user " + error);
