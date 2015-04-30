@@ -355,10 +355,9 @@ function contactsAddContact(e){
 					Parse.Cloud.run('matchContactToUser', { phone:  phone}, {
                               success: function(result) {
 								  if (result.currentUser === true){
-									  var contact = result.contact;
-									  contact.set('contactUUID', result.contact.get('userUUID');
-									  contact.set('contactPhone', result.contact.get('phone');
-									  contact.set('contactEmail', result.contact.get('email');
+									  contact.set('contactUUID', result.contact.get('userUUID'));
+									  contact.set('contactPhone', result.contact.get('phone'));
+									  contact.set('contactEmail', result.contact.get('email'));
 									  contact.save(null, {
 										  success: function(contact) {
 											  mobileNotify(result.contact.name + "is Ghostgrams User");
