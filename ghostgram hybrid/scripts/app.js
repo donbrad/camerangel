@@ -170,9 +170,20 @@
         
         // Send the invite through the data channel
         privateChannelInvite : function(contactUUID, message) {
-             APP.pubnub.publish({
+             var msg = new Object();
+			
+			msg.type = 'privateinvite';
+			msg.sender = APP.models.profile.currentUser.get('uuid');
+			msg.senderName = APP.models.profile.currentUser.get('alias');
+			msg.content  = {type: 'text', message : message};
+			msg.time = new Date().getTime();
+			
+			
+			APP.pubnub.publish({
                  channel: contactUUID,        
-                 message: message
+                 message: msg,
+				 success: function (status) {notifyMobile('Private message invite sent');},
+				 error: function (error) {notifyMobile('Error sending Private message invite: ' + error);},
              });
         },
         

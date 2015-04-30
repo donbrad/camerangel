@@ -15,8 +15,18 @@ function syncProfile (e) {
     });
 }
 
-function personalMessage() {
-    
+function personalMessage(e) {
+	if (e !== undefined)
+		e.preventDefault();
+	var contact = APP.models.contacts.currentContact;
+	var contactUUID = contact.get('contactUUID');
+	
+	if (contactUUID === undefined || contactUUID === null) {
+		// TODO: look up contact in user table...
+		notifyMobile(contact.get('name') + "hasn't verified their contact info");
+		return;
+	}
+    _app.privateChannelInvite(contactUUID, "");
 }
     
 function editContact() {
@@ -24,27 +34,29 @@ function editContact() {
 }
 
 
-function deleteContact() {
+function deleteContact(e) {
+	if (e !== undefined)
+		e.preventDefault();
     var dataSource = APP.models.contacts.contactsDS;
     dataSource.filter( { field: "uuid", operator: "eq", value: APP.models.contacts.currentContact.uuid });
     var view = dataSource.view();
     var contact = view[0];
     dataSource.remove(contact); 
-    deleteParseObject("contacts", 'uuid', APP.models.contacts.currentContact.uuid);
+    deleteParseObject("contacts", 'uuid', APP.models.contacts.currentContact.get('uuid'));
     
 }
 
 function contactSendEmail() {
-    var email = APP.models.contacts.currentContact.email;
+    var email = APP.models.contacts.currentContact.get('email');
 }
     
 function contactCallPhone() {
-     var number = APP.models.contacts.currentContact.phone;
+     var number = APP.models.contacts.currentContact.get('phone');
 }
     
 function contactSendSMS() {
 
-    var number = APP.models.contacts.currentContact.phone;
+    var number = APP.models.contacts.currentContact.get('phone');
     var message = "";
 
 
@@ -71,7 +83,7 @@ function contactSendSMS() {
 function updateCurrentContact (contact) {
    
     // Wish observables set took an object -- need to set fields individually
-     APP.models.contacts.currentModel = contact;
+    APP.models.contacts.currentModel = contact;
     APP.models.contacts.currentContact.unbind('change' , syncCurrentContact);
     APP.models.contacts.currentContact.set('name', contact.name);
     APP.models.contacts.currentContact.set('alias', contact.alias);
@@ -164,6 +176,7 @@ function onInitContacts(e) {
     
 function onInitContactImport (e) {
     e.preventDefault();
+	
     $("#contactimport-listview").kendoMobileListView({
             dataSource: APP.models.contacts.deviceContactsDS,
             template: $("#deviceContactsTemplate").text(),
@@ -307,6 +320,9 @@ function contactsAddContact(e){
         address = $('#addContactAddress').val();
         guid = uuid.v4();
  
+	if (private !== false)
+		private = true;
+	
     //phone = phone.replace(/\+[0-9]{1-2}/,'');
     phone = phone.replace(/\D+/g, "");
     mobileNotify("Saving new contact...");
@@ -335,6 +351,30 @@ function contactsAddContact(e){
                     mobileNotify('Added contact : ' + contact.get('name'));
                     APP.models.contacts.contactsDS.add(contact.attributes);
                     APP.kendo.navigate('#contactImport');
+					  
+					Parse.Cloud.run('matchContactToUser', { phone:  phone}, {
+                              success: function(result) {
+								  if (result.currentUser === true){
+									  contact.set('contactUUID', result.contact.uuid);
+									  contact.set('contactPhone', result.contact.phone);
+									  contact.set('contactEmail', result.contact.email);
+									  contact.save(null, {
+										  success: function(contact) {
+											  mobileNotify(result.contact.name + "is Ghostgrams User");
+										  },
+										  error: function (contact, error) {
+											  mobileNotify("Error mapping contact to exiting user " + error);
+											  
+										  }
+									  })
+									  
+								  }
+                                 
+                              },
+                             error: function (result,error){
+                                 mobileNotify("Error Matching contact to existing user" + error);
+                             }
+                         });
                   },
                   error: function(contact, error) {
                     // Execute any logic that should take place if the save fails.
