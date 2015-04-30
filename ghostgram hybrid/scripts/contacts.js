@@ -355,6 +355,7 @@ function contactsAddContact(e){
 					Parse.Cloud.run('matchContactToUser', { phone:  phone}, {
                               success: function(result) {
 								  if (result.currentUser === true){
+									  var contact = result.contact;
 									  contact.set('contactUUID', result.contact.uuid);
 									  contact.set('contactPhone', result.contact.phone);
 									  contact.set('contactEmail', result.contact.email);
