@@ -348,17 +348,17 @@ function contactsAddContact(e){
              contact.save(null, {
                   success: function(contact) {
                     // Execute any logic that should take place after the object is saved.
-                    mobileNotify('Added contact : ' + contact.get('name'));
+                    mobileNotify('Added contact : ' + contact.get('name') + ", looking up in Directory");
                     APP.models.contacts.contactsDS.add(contact.attributes);
-                    APP.kendo.navigate('#contactImport');
+                   
 					  
 					Parse.Cloud.run('matchContactToUser', { phone:  phone}, {
                               success: function(result) {
 								  if (result.currentUser === true){
 									  var contact = result.contact;
-									  contact.set('contactUUID', result.contact.uuid);
-									  contact.set('contactPhone', result.contact.phone);
-									  contact.set('contactEmail', result.contact.email);
+									  contact.set('contactUUID', result.contact.get('userUUID');
+									  contact.set('contactPhone', result.contact.get('phone');
+									  contact.set('contactEmail', result.contact.get('email');
 									  contact.save(null, {
 										  success: function(contact) {
 											  mobileNotify(result.contact.name + "is Ghostgrams User");
@@ -369,7 +369,10 @@ function contactsAddContact(e){
 										  }
 									  })
 									  
-								  }
+								  } else {
+						
+								}
+						 		APP.kendo.navigate('#contactImport');
                                  
                               },
                              error: function (result,error){
