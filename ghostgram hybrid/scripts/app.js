@@ -361,10 +361,15 @@
                 error: function(){mobileNotify("Data Channel Network Error")} 
                  
              });
-             pubnub.history({
-				 channel: 'my_channel',
+			
+			// Get any messages in the channel
+             APP.pubnub.history({
+				 channel: uuid,
 				 count: 100,
-				 callback: function(m){console.log(m)}
+				 callback: function(m){
+					 // TODO:  Add to datachannel datasource
+					 console.log(m)
+				 }
 			 });
             _app.fetchParseData();
         }  
