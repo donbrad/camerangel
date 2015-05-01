@@ -396,7 +396,7 @@
     		mobileNotify('Permission has been granted: ' + granted);
 		});
 		
-		 cordova.plugins.notification.local({
+		 cordova.plugins.notification.local.schedule({
 			id: 1,
 			title: "Welcome",
 			text: "Welcome to ghostgrams!"
