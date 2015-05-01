@@ -392,6 +392,12 @@
             }); 
         }
 		
+		 cordova.plugins.notification.local({
+			id: 1,
+			title: "Welcome",
+			text: "Welcome to ghostgrams!"
+    	});
+		
 		APP.emailAvailable = false;
 	  /*  window.plugins.email.isAvailable(function (result){
 			APP.emailAvailable = result;
