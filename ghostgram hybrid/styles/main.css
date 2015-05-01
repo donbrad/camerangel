@@ -330,6 +330,14 @@
     color: #2e2e2e;
 }
 
+.fa-lg  .km-icon:after,
+.fa-lg .km-icon:before,
+{
+  font-size: 1.33333333em/1.3333333em 'FontAwesome';
+  line-height: 0.75em;
+  vertical-align: -15%;
+}
+
 .km-fa-phone:after,
 .km-fa-phone:before
 {
