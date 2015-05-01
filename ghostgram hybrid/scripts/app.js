@@ -66,9 +66,17 @@
 		  
 		privateChannel : {
 			title: 'Private Channel',
+			privateChannelsDS: new kendo.data.DataSource({sort: { field: "date", dir: "desc" }}),
+			currentPrivateChannel: {},
+			messages: new kendo.data.DataSource({sort: { field: "date", dir: "desc" }}),
 			channelUUID: null,
 			contactUUID: null,
 			contactAlias: null
+		},
+		  
+		dataChannel: {
+			title: 'Data Channel',
+			messages: new kendo.data.DataSource({sort: { field: "date", dir: "desc" }})
 		},
           
         gallery: {
@@ -353,7 +361,11 @@
                 error: function(){mobileNotify("Data Channel Network Error")} 
                  
              });
-            
+             pubnub.history({
+				 channel: 'my_channel',
+				 count: 100,
+				 callback: function(m){console.log(m)}
+			 });
             _app.fetchParseData();
         }  
 
