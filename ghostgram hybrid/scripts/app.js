@@ -391,7 +391,9 @@
             APP.models.profile.version = version;
             }); 
         }
-		
+		cordova.plugins.notification.local.hasPermission(function (granted) {
+    		mobileNotify('Permission has been granted: ' + granted);
+		});
 		 cordova.plugins.notification.local({
 			id: 1,
 			title: "Welcome",
