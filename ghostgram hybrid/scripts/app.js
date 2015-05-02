@@ -384,23 +384,19 @@
             initial: initialView
         });
 
+		// Provide basic functionality in the simulator and deployable simulator
         if (window.navigator.simulator === true){
-             APP.models.profile.version = "1.3";
+             APP.models.profile.version = "1.4.1";
         } else {
             cordova.getAppVersion(function (version) {
             APP.models.profile.version = version;
             }); 
+			
+			cordova.plugins.notification.local.hasPermission(function (granted) {
+    			mobileNotify('Permission has been granted: ' + granted);
+			});
         }
 		
-		cordova.plugins.notification.local.hasPermission(function (granted) {
-    		mobileNotify('Permission has been granted: ' + granted);
-		});
-		
-		 cordova.plugins.notification.local.schedule({
-			id: 1,
-			title: "Welcome",
-			text: "Welcome to ghostgrams!"
-    	});
 		
 		APP.emailAvailable = false;
 	  /*  window.plugins.email.isAvailable(function (result){

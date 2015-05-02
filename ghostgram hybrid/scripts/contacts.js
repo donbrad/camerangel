@@ -30,12 +30,23 @@ function privateMessage(e) {
 		return;
 	}
 	
-    privateChannelInvite(contactUUID, "");
+    processPrivateInvite(contactUUID, APP.models.profile.currentUser.get('alias') + " requests a Private Channel");
 }
-    
+
+function getContactData(contactUUID) {
+	 var dataSource = APP.models.contacts.contactsDS;
+    dataSource.filter( { field: "uuid", operator: "eq", value: contactUUID });
+    var view = dataSource.view();
+    var contact = view[0];
+	
+	return(contact);
+}
+
+
 function editContact() {
     APP.kendo.navigate("#editContact");  
 }
+
 
 
 function deleteContact(e) {

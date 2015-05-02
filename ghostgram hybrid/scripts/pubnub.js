@@ -17,7 +17,7 @@ function privateChannelInvite(contactUUID, message) {
 	 var msg = new Object();
 
 	msg.type = 'privateinvite';
-	msg.senderUUID = APP.models.profile.currentUser.get('uuid');
+	msg.senderUUID = APP.models.profile.currentUser.get('userUUID');
 	msg.senderName = APP.models.profile.currentUser.get('alias');
 	msg.content  = {type: 'text', message : message};
 	msg.time = new Date().getTime();
