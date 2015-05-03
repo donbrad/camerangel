@@ -60,6 +60,7 @@
         channel: {
             title: 'Channel', 
             currentChannel: {},
+			currentModel: {},
             members: new kendo.data.DataSource({sort: { field: "name", dir: "asc" }}),
             messages: new kendo.data.DataSource({sort: { field: "date", dir: "desc" }})
         },
@@ -368,7 +369,7 @@
 				 count: 100,
 				 callback: function(m){
 					 // TODO:  Add to datachannel datasource
-					 console.log(m)
+					// console.log(m)
 				 }
 			 });
             _app.fetchParseData();

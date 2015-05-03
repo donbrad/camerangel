@@ -110,6 +110,7 @@ function updateCurrentContact (contact) {
 	APP.models.contacts.currentContact.set('contactUUID', contact.contactUUID);
 	APP.models.contacts.currentContact.set('contactEmail', contact.contactEmail);
     APP.models.contacts.currentContact.set('privateChannel', contact.privateChannel);
+	 APP.models.contacts.currentContact.set('privateChannelUUID', contact.privateChannelUUID);
     APP.models.contacts.currentContact.bind('change' , syncCurrentContact);
    
    
