@@ -40,7 +40,7 @@ function addChannel(e) {
  
 }
 
-function addPrivateChannel(user, contact, contactAlias, channel) {
+function addPrivateChannel (contact, contactAlias, channel) {
     e.preventDefault();
 
     var Channels = Parse.Object.extend("channels");
