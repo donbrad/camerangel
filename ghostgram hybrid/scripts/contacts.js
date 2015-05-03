@@ -35,7 +35,7 @@ function privateMessage(e) {
 
 function getContactData(contactUUID) {
 	 var dataSource = APP.models.contacts.contactsDS;
-    dataSource.filter( { field: "uuid", operator: "eq", value: contactUUID });
+    dataSource.filter( { field: "contactUUID", operator: "eq", value: contactUUID });
     var view = dataSource.view();
     var contact = view[0];
 	
