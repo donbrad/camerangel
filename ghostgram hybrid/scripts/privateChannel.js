@@ -8,15 +8,46 @@ function p2pObject(user, contact, channel) {
 	return(obj);
 }
 
+function newP2PEntry(user, contact, channel, callback) {
+	var P2P = Parse.Object.extend('p2pmap');
+	p2p = new P2P();
+	p2p.set('members', [user, contact]);
+	p2p.set('channel', channel);
+	p2p.save(null, {
+		success: function (channel) {
+			if (callback) {
+				callback(channel, null);
+			}
+			
+		},
+		error: function(channel, error){
+			if (callback) {
+				callback(null, err);
+			}
+		}
+	})
+}
+
 //check the p2p map 
-function processPrivateInvite(contactUUID, message){
+function processPrivateInvite(contactUUID, message) {
 	var userUUID = APP.models.profile.currentUser.get('userUUID'),
 		contact = getContactData(contactUUID),
 		privateChannelUUID = contact.privateChannelUUID;
 	
 	if (privateChannelUUID === undefined || privateChannelUUID === null) {
-		queryP2Pmap(contactUUID, userUUID, function(channel) {
-			privateChannelUUID = channel;
+		queryP2Pmap(contactUUID, userUUID, function(results) {
+			
+			if (results.length === 0) {
+				privateChannelUUID = uuid.v4();
+				newP2PEntry(userUUID, contactUUID, privateChannelUUID, function (results, error) {
+					success: function (model) {
+						
+					},
+					error : function (model, error){
+						
+					}
+				});
+			}
 			updateParseObject('contacts', 'uuid', contactUUID, 'privateChannelUUID', privateChannelUUID);
 		});
 	}
