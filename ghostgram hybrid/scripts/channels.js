@@ -59,7 +59,7 @@ function addPrivateChannel (contact, contactAlias, channel) {
     channel.set("media",  true);
     channel.set("archive",  false);
     channel.set("expirationDate", null);
-    channel.set("description", ");
+    channel.set("description", "Person to Person with " + contactAlias);
     channel.set("channelId", channel);
     
     channel.setACL(APP.models.profile.parseACL);
