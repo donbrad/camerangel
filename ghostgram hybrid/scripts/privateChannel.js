@@ -59,7 +59,7 @@ function processPrivateInvite(contactUUID, message) {
 
 // search the p2pmap for an existing mapping between user and contact
 function queryP2Pmap(contactUUID, userUUID, callBack) {
-	var user = APP.models.profile.currentContact.get('userUUID');
+	var user = APP.models.profile.currentUser.get('userUUID');
 	var contactQuery = new Parse.Query("p2pmap");
 	contactQuery.containsAll("members", contactUUID);
 

@@ -38,6 +38,7 @@ function getContactData(contactUUID) {
     dataSource.filter( { field: "contactUUID", operator: "eq", value: contactUUID });
     var view = dataSource.view();
     var contact = view[0];
+	dataSource.filter([]);
 	
 	return(contact);
 }
