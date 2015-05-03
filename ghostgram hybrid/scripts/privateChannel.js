@@ -40,12 +40,11 @@ function processPrivateInvite(contactUUID, message) {
 			if (results.length === 0) {
 				privateChannelUUID = uuid.v4();
 				newP2PEntry(userUUID, contactUUID, privateChannelUUID, function (result, error) {
-						  if (error === null) {
-							  addPrivateChannel(contactUUID, contact.alias, privateChannelUUID);
-							updateParseObject('contacts', 'uuid', contactUUID, 'privateChannelUUID', privateChannelUUID);
-							privateChannelInvite(contactUUID, message);
-						  }
-					}
+					  if (error === null) {
+						  addPrivateChannel(contactUUID, contact.alias, privateChannelUUID);
+						updateParseObject('contacts', 'uuid', contactUUID, 'privateChannelUUID', privateChannelUUID);
+						privateChannelInvite(contactUUID, message);
+					  }
 				});
 			}
 			
