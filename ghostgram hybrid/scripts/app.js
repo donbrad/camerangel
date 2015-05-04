@@ -43,6 +43,7 @@
               publicAliasPhoto: '',
               udid: '',
               macAddress: '',
+			  rememberUsername: false,
               emaiVerified: false,
               phoneVerified: false 
           }),
@@ -324,6 +325,13 @@
         APP.models.profile.platform = device.platform;
         APP.models.profile.device = device.name;
         APP.models.profile.model = device.model;
+		APP.models.profile.rememberUsername = localStorage.getItem('ggRememberUsername');
+		
+		// If remembering Username, get it from localstorage and prefill signin.
+		if (APP.models.profile.rememberUsername) {
+			APP.models.profile.username = localStorage.getItem('ggUsername');
+			$('#home-signin-username').val(App.models.profile.username );
+		}
         
         if (APP.models.profile.parseUser !== null) {
              initialView = '#home';
@@ -332,12 +340,18 @@
             APP.models.profile.currentUser.set('phone', APP.models.profile.parseUser.get('phone'));
             APP.models.profile.currentUser.set('alias', APP.models.profile.parseUser.get('alias'));
             APP.models.profile.currentUser.set('userUUID', APP.models.profile.parseUser.get('userUUID'));
+			 APP.models.profile.currentUser.set('rememberUsername', APP.models.profile.parseUser.get('rememberUsername'));
             APP.models.profile.currentUser.set('phoneVerified', APP.models.profile.parseUser.get('phoneVerified'));
             APP.models.profile.currentUser.set('emailVerified', APP.models.profile.parseUser.get('emailVerified'));
             APP.models.profile.parseACL = new Parse.ACL(APP.models.profile.parseUser);
             var uuid = APP.models.profile.currentUser.get('userUUID');
             APP.models.profile.currentUser.bind('change', syncProfile);
             
+			if (APP.models.profile.currentUser.get('rememberUsername')){
+				localStorage.setItem('ggRememberUsername', true);
+				localStorage.setItem('ggUsername', APP.models.profile.currentUser.get('username'));
+			}
+			
             APP.pubnub = PUBNUB.init({ 
                  publish_key: 'pub-c-d4fcc2b9-2c1c-4a38-9e2c-a11331c895be', 
                  subscribe_key: 'sub-c-4624e1d4-dcad-11e4-adc7-0619f8945a4f',

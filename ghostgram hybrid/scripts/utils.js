@@ -2,7 +2,13 @@ function updateParseObject(objectName, idField, idFieldValue, newField, newField
     var object = Parse.Object.extend(objectName);
     var query = new Parse.Query(object);
     query.equalTo(idField, idFieldValue);
-    query.find({
+	
+	if (newFieldValue === 'true')
+		newFieldValue = true;
+	if (newFieldValue === 'false')
+		newFieldValue - false;
+    
+	query.find({
       success: function(results) {
         results[0].set(newField, newFieldValue);
         results[0].save({

@@ -21,12 +21,19 @@ function homeSignout (e) {
     APP.models.profile.currentUser.set('phone',null);
     APP.models.profile.currentUser.set('alias', null);
     APP.models.profile.currentUser.set('userUUID', null);
-    APP.models.profile.currentUser.set('phoneVerified', null);
-    APP.models.profile.currentUser.set('emailVerified', null);
+	 APP.models.profile.currentUser.set('rememberUsername', false)
+    APP.models.profile.currentUser.set('phoneVerified', false);
+    APP.models.profile.currentUser.set('emailVerified', false);
     APP.models.profile.parseACL = '';
     APP.kendo.navigate('#newuserhome');
 }
 
+function doInitSignIn () {
+	if (APP.models.profile.rememberUsername && APP.models.profile.username !== '') {
+		$('#home-signin-username').val(APP.models.profile.username)
+	}
+}
+	
 function homeSignin (e) {
     e.preventDefault();
     
@@ -40,6 +47,7 @@ function homeSignin (e) {
             APP.models.profile.currentUser.set('phone', APP.models.profile.parseUser.get('phone'));
             APP.models.profile.currentUser.set('alias', APP.models.profile.parseUser.get('alias'));
             APP.models.profile.currentUser.set('userUUID', APP.models.profile.parseUser.get('userUUID'));
+			 APP.models.profile.currentUser.set('rememberUsername', APP.models.profile.parseUser.get('rememberUsername'));
             APP.models.profile.currentUser.set('phoneVerified', APP.models.profile.parseUser.get('phoneVerified'));
             APP.models.profile.currentUser.set('emailVerified', APP.models.profile.parseUser.get('emailVerified'));
             APP.models.profile.parseACL = new Parse.ACL(APP.models.profile.parseUser);
@@ -98,6 +106,7 @@ function homeCreateAccount(e) {
                 user.set("aliasPublic", "ghostgram user");
                 user.set("profilePhoto", null)
                 user.set("phoneVerified", false);
+			    user.set("rememberUsername", false);
                 user.set("userUUID", userUUID);
 
                 user.signUp(null, {
