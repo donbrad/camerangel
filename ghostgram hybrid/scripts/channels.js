@@ -52,7 +52,7 @@ function findChannelModel(channelId) {
 }
 
 
-function addPrivateChannel (contact, contactAlias, channel) {
+function addPrivateChannel (contact, contactAlias, channelUUID) {
     var Channels = Parse.Object.extend("channels");
     var channel = new Channels();
     
@@ -65,7 +65,7 @@ function addPrivateChannel (contact, contactAlias, channel) {
     channel.set("archive",  false);
     channel.set("expirationDate", null);
     channel.set("description", "Person to Person with " + contactAlias);
-    channel.set("channelId", channel);
+    channel.set("channelId", channelUUID);
     
     channel.setACL(APP.models.profile.parseACL);
     channel.save(null, {
