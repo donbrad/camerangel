@@ -9,8 +9,8 @@ function p2pObject(user, contact, channel) {
 }
 
 function newP2PEntry(user, contact, channel, callback) {
-	var P2P = Parse.Object.extend('p2pmap');
-	p2p = new P2P();
+	var P2PObject = Parse.Object.extend('p2pmap');
+	p2p = new P2PObject();
 	p2p.set('members', [user, contact]);
 	p2p.set('channel', channel);
 	p2p.save(null, {
@@ -68,7 +68,7 @@ function processPrivateInvite(contactUUID, message) {
 function queryP2Pmap(contactUUID, userUUID, callBack) {
 	var user = APP.models.profile.currentUser.get('userUUID');
 	var contactQuery = new Parse.Query("p2pmap");
-	contactQuery.containsAll("members", contactUUID);
+	contactQuery.containsAll("members", [contactUUID]);
 
 	contactQuery.find({
 	  success: function(results) {
