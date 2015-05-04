@@ -44,7 +44,8 @@ function processPrivateInvite(contactUUID, message) {
 					  if (error === null) {
 						addPrivateChannel(contactUUID, contact.alias, privateChannelUUID);
 						updateParseObject('contacts', 'uuid', contactUUID, 'privateChannelUUID', privateChannelUUID);
-						
+					  } else {
+						 mobileNotify("newP2PEntry - error: " + error); 
 					  }
 				});
 			} else {
@@ -59,7 +60,7 @@ function processPrivateInvite(contactUUID, message) {
 					var contactModel = getContactData(contactUUID);
 					if (contactModel !== undefined) {
 						var contactAlias = contactModel.get('alias');
-						AddPrivateChannel(contactUUID, contactAlias, privateChannelUUID);
+						addPrivateChannel(contactUUID, contactAlias, privateChannelUUID);
 						
 					} else {
 						mobileNotify("Null contact in processPrivateInvite!!");
