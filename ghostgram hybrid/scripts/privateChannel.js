@@ -38,16 +38,23 @@ function processPrivateInvite(contactUUID, message) {
 		queryP2Pmap(contactUUID, userUUID, function(results) {
 			
 			if (results.length === 0) {
+				// No p2pmap entry
 				privateChannelUUID = uuid.v4();
 				newP2PEntry(userUUID, contactUUID, privateChannelUUID, function (result, error) {
 					  if (error === null) {
-						  addPrivateChannel(contactUUID, contact.alias, privateChannelUUID);
+						addPrivateChannel(contactUUID, contact.alias, privateChannelUUID);
 						updateParseObject('contacts', 'uuid', contactUUID, 'privateChannelUUID', privateChannelUUID);
-						privateChannelInvite(contactUUID, message);
+						
 					  }
 				});
+			} else {
+				// Process p2p map
+				var entry = results[0];
+				privateChannelUUID = entry.channel;
+				
 			}
 			
+			privateChannelInvite(contactUUID, message);
 		});
 	} else {
 		privateChannelInvite(contactUUID, message);
@@ -65,10 +72,11 @@ function queryP2Pmap(contactUUID, userUUID, callBack) {
 
 	contactQuery.find({
 	  success: function(results) {
-		  callBack(results);
+		  callBack(results, null);
 	  },
-	  error: function(error) {
+	  error: function(results, error) {
 		// There was an error.
+		 callBack(null, error);
 	  }
 	});
 }

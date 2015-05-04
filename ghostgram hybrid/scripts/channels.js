@@ -18,6 +18,7 @@ function addChannel(e) {
     channel.set("archive",  archive === "true" ? true : false);
     channel.set("expirationDate", expirationDate);
     channel.set("description", description);
+	channel.set("members", []),
     channel.set("channelId", guid);
     
     channel.setACL(APP.models.profile.parseACL);
@@ -40,18 +41,24 @@ function addChannel(e) {
  
 }
 
+function findChannelModel(channelId) {
+	 var dataSource = APP.models.channels.channelsDS;
+    dataSource.filter( { field: "contactId", operator: "eq", value: channelId });
+    var view = dataSource.view();
+    var channel = view[0];
+	dataSource.filter([]);
+	
+	return(channel);
+}
+
+
 function addPrivateChannel (contact, contactAlias, channel) {
     e.preventDefault();
 
     var Channels = Parse.Object.extend("channels");
     var channel = new Channels();
     
-    var name = $('#channels-addChannel-name').val(),
-        media = $('#channels-addChannel-media').val(),
-        archive = $('#channels-addChannel-archive').val(),
-        expirationDate = $('#channels-addChannel-expirationDate').val(),
-        description = $('#channels-addChannel-description').val(), 
-        guid = uuid.v4()
+    var guid = uuid.v4()
         
     channel.set("name", "Private: " + contactAlias);
     channel.set("isOwner", true);
@@ -64,13 +71,10 @@ function addPrivateChannel (contact, contactAlias, channel) {
     
     channel.setACL(APP.models.profile.parseACL);
     channel.save(null, {
-      success: function(channel) {
-        // Execute any logic that should take place after the object is saved.
-         
+      success: function(channel) {     
           APP.models.channels.channelsDS.add(channel.attributes);
-          closeModalViewAddChannel();
-          
-          mobileNotify('Added channel : ' + channel.get('name'));
+          //closeModalViewAddChannel();
+          mobileNotify('Added private channel : ' + channel.get('name'));
       },
       error: function(channel, error) {
         // Execute any logic that should take place if the save fails.
