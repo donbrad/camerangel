@@ -50,7 +50,22 @@ function processPrivateInvite(contactUUID, message) {
 			} else {
 				// Process p2p map
 				var entry = results[0];
-				privateChannelUUID = entry.channel;
+				privateChannelUUID = entry.get('channel');
+				// Does this user have an existing privateChannel with this contact?
+				var channelModel = findChannelModel(privateChannelUUID);
+				
+				if (channelModel === undefined) {
+					// No existing private channel need to create one
+					var contactModel = getContactData(contactUUID);
+					if (contactModel !== undefined) {
+						var contactAlias = contactModel.get('alias');
+						AddPrivateChannel(contactUUID, contactAlias, privateChannelUUID);
+						
+					} else {
+						mobileNotify("Null contact in processPrivateInvite!!");
+					}
+													  
+				}
 				
 			}
 			

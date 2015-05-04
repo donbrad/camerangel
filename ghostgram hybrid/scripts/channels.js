@@ -53,8 +53,6 @@ function findChannelModel(channelId) {
 
 
 function addPrivateChannel (contact, contactAlias, channel) {
-    e.preventDefault();
-
     var Channels = Parse.Object.extend("channels");
     var channel = new Channels();
     
