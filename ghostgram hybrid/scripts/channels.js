@@ -105,6 +105,7 @@ function editChannel(e) {
     APP.models.channels.currentChannel.set('description', channel.description);
     APP.models.channels.currentChannel.set('expirationDate', channel.expirationDate);
     APP.models.channels.currentChannel.set('media', channel.media);
+	 APP.models.channels.currentChannel.set('isPrivate', channel.isPrivate);
     APP.models.channels.currentChannel.set('archive', channel.archive);
     APP.models.channels.currentChannel.bind('change', syncCurrentChannel);
     
@@ -130,19 +131,24 @@ function deleteChannel (e) {
      mobileNotify("Removed channel : " + channel.get('name'));
 }
     
+function onChannelsClick(e) {
+	e.preventDefault();
+	var channel = e.dataItem;
+	
+	APP.kendo.navigate('views/channel.html#channel?channel='+channel.channelId);
+	
+}
+
 function onInitChannels (e) {
     e.preventDefault();
     // ToDo: Initialize list view
     
      $("#channels-listview").kendoMobileListView({
         dataSource: APP.models.channels.channelsDS,
-        template: $("#channels-listview-template").html()
+        template: $("#channels-listview-template").html(),
+		click: onChannelsClick
+		
     });
 }
 
-function onInitChannel (e) {
-    e.preventDefault();
-    var params = e.view.params;
-    // ToDo: Initialize list view
-}
     

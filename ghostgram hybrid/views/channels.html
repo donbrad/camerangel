@@ -22,14 +22,14 @@
 <script type="text/x-kendo-tmpl" id="channels-listview-template">
     <div style="clear:both;">
        <div style="float:right; font-size: 10px;"> <a data-rel="actionsheet" href="\\#channelActions" data-actionsheet-context="#:channelId#" data-role="button"><i class="ghostIcon fa fa-cog"></i></a> </div>
-       <div class="ghostTextLarge"><a>#:name#</a></div>
+       <div class="ghostTextLarge"> #if (isPrivate) {# <i class="ghostIconNavbar fa fa-user-secret"> </i> #}#<a>#:name#</a></div>
        <div class="ghostDescription" style="padding-top: 8px; padding-bottom: 4px;"> #: description # </div>
         <div style="color: \\#2e2e2e;">
            <span style="float: left;"> 
-           # if (media) { # Text, Photos, Videos # } else { # Text # }#,  # if (archive) { # Archived # } else { # Not Archived # }#
+           # if (media) { # All Media # } else { # Text # }#,  # if (archive) { # Archived # } else { # Not Archived # }#
            </span>
 
-          <span style="float:right;">#= kendo.toString(kendo.parseDate(expirationDate), 'MM/dd/yyyy') # </span>
+          <span style="float:right;"># if (expirationDate === undefined || expirationDate === null) {# Open # } else { # #= kendo.toString(kendo.parseDate(expirationDate), 'MM/dd/yyyy') #  #}#</span>
         </div>
     </div>
 </script>
