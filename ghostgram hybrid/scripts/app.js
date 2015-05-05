@@ -306,7 +306,7 @@
 			//Don't attempt to reload map/sb data if offline
 			//console.log("ONLINE", _isOnline);
 			if (_isOnline === false) {				
-				alert("Please reconnect to the Internet to load locations.");
+				mobileNotify("Please reconnect to the Internet to load locations.");
 				return;
 			}
     
@@ -381,18 +381,16 @@
                  uuid: uuid
              });
             
-         
-            
              // Subscribe to the data / notifications channel
 			//mobileNotify("Created data channel : " + uuid);
              APP.pubnub.subscribe({
                 channel : uuid,
                 windowing: 1000,    
                 message : dataChannelRead,
-                connect: function(){mobileNotify("Data Channel Connected")},
-                disconnect: function(){mobileNotify("Data Channel Disconnected")},
-                reconnect: function(){mobileNotify("Data Channel Reconnected")},
-                error: function(){mobileNotify("Data Channel Network Error")} 
+                connect: function(){mobileNotify("Secure Data Channel Connected")},
+                disconnect: function(){mobileNotify("Secure Data Channel Disconnected")},
+                reconnect: function(){mobileNotify("Secure Data Channel Reconnected")},
+                error: function(){mobileNotify("Secure Data Channel Network Error")} 
                  
              });
 			
@@ -401,8 +399,7 @@
 				 channel: uuid,
 				 count: 100,
 				 callback: function(m){
-					 // TODO:  Add to datachannel datasource
-					// console.log(m)
+					
 				 }
 			 });
             _app.fetchParseData();
