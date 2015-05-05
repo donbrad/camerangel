@@ -277,6 +277,25 @@
                       handleParseError(error);
                   }
                 });
+			
+			 var p2pModel = Parse.Object.extend("p2pmap");
+            var p2pCollection = Parse.Collection.extend({
+              model: p2pModel
+            });
+            
+            var p2pmap = new p2pCollection();
+            
+            p2pmap.fetch({
+                  success: function(collection) {
+                     var models = new Array();
+                     for (var i=0; i<collection.models.length; i++) {
+                         models.push(collection.models[i].attributes);
+                     }
+                  },
+                  error: function(collection, error) {
+                      handleParseError(error);
+                  }
+                });
         },
         
         placesInit: function() {

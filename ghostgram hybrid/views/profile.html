@@ -1,5 +1,12 @@
  <div data-role="view" id="profile" data-title="Profile" data-layout="profileLayout" data-model="APP.models.profile"  class="appearance">
-   <div class="ghostContainer">
+   <div data-role="header">
+        <div data-role="navbar">
+            <span data-role="view-title"></span>
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>
+            <a data-role="button"  data-click="requestBeta"  data-align="right" ><i class="ghostIconNavbar fa fa-eye"></i>Get Beta </a>
+        </div>
+    </div> 
+	 <div class="ghostContainer">
 
        <div style="padding: 12px; font-size: 20px; text-align: center;">    
            <span id="profile-username" data-bind="text:currentUser.username">  </span> 
@@ -33,8 +40,8 @@
                 </li> 
            </ul>
        </form>
-        <div style="text-align: center;">
-            <a  class="button ghostButton" data-click="requestBeta" data-role="button" >Request iPhone Native</a>
+         <div style="text-align: center; padding-top: 12px;">
+            <a  class="button ghostButton" data-click="profileChangePassword" id="profile-changePassword" data-role="button" >Change Password</a>
         </div>
       
 		<h3>
@@ -93,9 +100,7 @@
                 </ul>
             </form> 
 
-        <div style="text-align: center; padding-top: 12px;">
-            <a  class="button ghostButton" data-click="profileChangePassword" id="profile-changePassword" data-role="button" >Change Password</a>
-        </div>
+      
        
      </div>
 </div>
