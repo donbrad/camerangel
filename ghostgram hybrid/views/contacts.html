@@ -195,7 +195,7 @@
           <span class="ghostTiny">(#: data.name #)</span>   
         </div>
         <div style="float: right; color:\\#2e2e2e; font-size: 11px;">
-            #if (data.contactUUID === undefined) { # <em> New User - Invite! </em> # } else {#  <strong> Verified User </strong> #} #
+            #if (data.contactUUID === undefined || data.contactUUID === null || data.contactUUID === '') { # <em> New User - Invite! </em> # } else {#  <strong> Verified User </strong> #} #
         <div>
     </div>
 </script>
