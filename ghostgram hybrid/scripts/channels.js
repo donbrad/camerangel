@@ -135,7 +135,7 @@ function onChannelsClick(e) {
 	e.preventDefault();
 	var channel = e.dataItem;
 	
-	APP.kendo.navigate('views/channel.html#channel?channel='+channel.channelId);
+	APP.kendo.navigate('views/channel.html?channel='+channel.channelId);
 	
 }
 

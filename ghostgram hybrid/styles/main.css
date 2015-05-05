@@ -56,6 +56,14 @@
     height: 100%;
 }
 
+#channel .km-content { 
+    background-image: url('../images/blughostcropped.png');
+    background-size: 100% 100%;
+    color : white;
+    width: 100%;
+    height: 100%;
+}
+
 #contacts .km-content { 
     background-image: url('../images/blughostcropped.png');
     background-size: 100% 100%;
