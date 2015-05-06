@@ -15,8 +15,20 @@
          <ul id="messages-listview"></ul>
      </div>
      
-	 <div id="messageEditor">
-		 
+	 <div data-role="footer" class="ghostContainer" id="messageEditor" style="min-height: 48px;" >
+		 <div style="float: right; font-size: 1.3em;">
+			<i class="fa fa-unlock"> </i> <i class="fa fa-lock"> </i> <i class="fa fa-map-marker"> </i> <i class="fa fa-calendar"> </i> <i class="fa fa-camera"> </i> 
+		</div>
+		 <div style="display: inline-block; width: 90%; clear:both;">
+				 <textarea id="messageTextArea" onkeyup="AutoGrowTextArea(this)" rows=1 autofocus=true wrap=soft spellcheck= true style="width: 100%; font-size: 1.0em;"></textarea>
+		 </div>
+		 <div style="display: inline-block; color: #e2e2e2; font-size: 1.2em;">
+			 
+			 <div>
+				 <i class="fa fa-paper-plane-o"> </i>
+			 </div>
+			 
+		 </div>
 	 </div>
 	 
     <ul data-role="actionsheet" id="messageActions" data-popup='{"direction": "left"}'>
