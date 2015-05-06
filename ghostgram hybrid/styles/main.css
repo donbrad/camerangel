@@ -25,7 +25,7 @@
     bottom: 0:
 }
 #home .km-content { 
-    background-image: url('../images/ghostgrams.png');
+    background-image: url('../images/blughostcropped.png');
     background-size: 100% 100%;
     color : white;
     width: 100%;
@@ -421,4 +421,131 @@
 .round img {
     width: 45px;
 }
+
+.module {
+  width: 360px;
+  margin: 20px auto;
+}
+
+.top-bar {
+  color: white;
+  padding: 0.5rem;
+  position: relative;
+  overflow: hidden;
+  h1 {
+    display: inline;
+    font-size: 1.1rem;
+  }
+  .typicons-message {
+    display: inline-block;
+    padding: 4px 5px 2px 5px;
+  }
+  .typicons-minus {
+    position: relative;
+    top: 3px;
+  }
+  .left {
+    float: left;
+  }
+  .right {
+    float: right;
+    padding-top: 5px;
+  }
+  &::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: -100%;
+    left: 0;
+    right: 0;
+    bottom: -100%;
+    opacity: 0.25;
+    background: radial-gradient(white, black);
+    animation: pulse 1s ease alternate infinite;
+  }
+
+    &::after { background: #666; content: ""; position: absolute; z-index: -2; top: 0; left: 0; right: 0; bottom: 0; }
+}
+
+.discussion {
+  list-style: none;
+  background: #e2e2e2;
+  margin: 0;
+  padding: 0 0 50px 0; // finality
+  li {
+    padding: 0.5rem;
+    overflow: hidden;
+    display: flex;
+  }
+  .avatar {
+    width: 40px; // stronger than %
+    // could set height, but gonna bottom-align instead
+    position: relative; // for triangle
+    img {
+      display: block; // triangle position
+      width: 100%;
+    }
+  }
+}
+
+.other {
+  .avatar {
+    &:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      border: 5px solid white;
+      border-left-color: transparent;
+      border-bottom-color: transparent;
+    }
+  }
+}
+
+.self {
+  justify-content: flex-end;
+  align-items: flex-end;
+  .messages {
+    order: 1;
+    border-bottom-right-radius: 0; // weird shadow fix
+  }
+  .avatar {
+    order: 2;
+    &:after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border: 5px solid white;
+      border-right-color: transparent;
+      border-top-color: transparent;
+      box-shadow: 1px 1px 2px rgba(black, 0.2); // not quite perfect but close
+    }
+  }
+}
+
+.messages {
+  background: white;
+  padding: 10px;
+  border-radius: 3px;
+  box-shadow: 3px 3px 3px rgba(black, 0.4);
+  p {
+    font-size: 0.8rem;
+    margin: 0 0 0.2rem 0;
+  }
+  time {
+    font-size: 0.7rem;
+    color: #6b6b6b;
+  }
+}
+
+@keyframes pulse {
+  from { opacity: 0; }
+  to { opacity: 0.5; }
+}
+
  
