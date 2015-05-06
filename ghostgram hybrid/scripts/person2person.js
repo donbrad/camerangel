@@ -156,7 +156,7 @@ function person2person(userUUID, channelUUID) {
                         message: {
                             recipient: recipient,
                             msgID: msgID,
-                            sender: username,
+                            sender: userUUID,
                             message: message,
                             ttl: ttl
                         },
@@ -165,7 +165,7 @@ function person2person(userUUID, channelUUID) {
                                 msgID: msgID,
                                 plaintext: plaintext,
                                 TTL: ttl,
-                                sender: username,
+                                sender: userUUID,
                                 recipient: recipient
                             };
                             if (messages[recipient] === undefined) {

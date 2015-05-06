@@ -1,33 +1,62 @@
 function onInitChannel(e) {
 	e.preventDefault();
 	
+	 $("#contacts-listview").kendoMobileListView({
+        dataSource: APP.models.channel.messagesDS,
+        template: $("#messagesTemplate").html(),
+        click: function (e) {
+            var message = e.dataItem;
+			APP.models.channel.currentModel = message;
+            // display message actionsheet    
+			$("#messageActions").data("kendoMobileActionSheet").open();
+        }
+     });
+}	
 
+function onChannelPresence () {
+	
+}
+
+function onChannelRead() {
+	
+}
+
+function onChannelWrite() {
+	
+}
 
 function onShowChannel(e) {
 	e.preventDefault();
 	var channelUUID = e.view.params.channel;
 	var thisChannel = findChannelModel(channelUUID);
-	var name = thisChannel.name.substring(0,17)+"...";
+	var thisUser = APP.models.profile.currentUser;
+	var thisP2P = new person2person(thisUser.userUUID, channelUUID);
 	
-	$("#channelNavBar").kendoMobileNavBar("title", name);
+	var name = thisChannel.name;
 	
-	APP.models.channel.textAreaHeight = $('#messageTextArea').clientHeight;
-}
+	if (thisChannel.isPrivate) {
+		name = '{' + name + '!}';
+		if (name.length > 16)
+		 name = name.substring(0,16)+ '...!}';
+	} else {
+		if (name.length > 17)
+		name = name.substring(0,17)+"...";
+	}
 	
+	$("#channelNavBar").data('kendoMobileNavBar').title(name);
 }
 
 function messageSend(e) {
 	e.preventDefault();
 	var text = $('#messageTextArea').val();
+	_initMessageTextArea();
 }
 
 function _initMessageTextArea() {
-	var textField = $('#messageTextArea');
+	
 	$('#messageTextArea').val('');
-	if (APP.models.channel.textAreaHeight !== undefined)
-		textField.style.height = APP.models.channel.textAreaHeight;
-	else 
-		textField.style.height = 36;
+	$('#messageTextArea').attr("rows", "2");
+	
 }
 
 function messageEraser (e) {
