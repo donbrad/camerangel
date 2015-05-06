@@ -43,7 +43,7 @@ function addChannel(e) {
 
 function findChannelModel(channelId) {
 	 var dataSource = APP.models.channels.channelsDS;
-    dataSource.filter( { field: "contactId", operator: "eq", value: channelId });
+    dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
     var view = dataSource.view();
     var channel = view[0];
 	dataSource.filter([]);
@@ -133,8 +133,7 @@ function deleteChannel (e) {
     
 function onChannelsClick(e) {
 	e.preventDefault();
-	var channel = e.dataItem;
-	
+	var channel = e.dataItem;	
 	APP.kendo.navigate('views/channel.html?channel='+channel.channelId);
 	
 }

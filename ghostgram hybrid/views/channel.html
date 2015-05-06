@@ -1,6 +1,6 @@
- <div data-role="view" id="channel" data-title="Channel" data-layout="main" data-model="APP.models.channel" data-init="onInitChannel">  
+ <div data-role="view" id="channel"  data-layout="main" data-model="APP.models.channel" data-show="onShowChannel" data-init="onInitChannel">  
      <div data-role="header">
-        <div data-role="navbar">
+        <div data-role="navbar" id="channelNavBar">
             <span data-role="view-title"></span>
             <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><i class="ghostIconNavbar fa fa-bars"></i></a>
            <a data-align="right" data-role="button"  data-rel="actionsheet" href="#messageActions"> <i class="ghostIconNavbar fa fa-cog"></i> </a>
