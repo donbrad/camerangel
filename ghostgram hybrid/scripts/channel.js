@@ -9,7 +9,7 @@ function onShowChannel(e) {
 	var thisChannel = findChannelModel(channelUUID);
 	var name = thisChannel.name.substring(0,17)+"...";
 	
-	 $("#channelNavBar").kendoMobileNavBar("title", name);
+	$("#channelNavBar").kendoMobileNavBar("title", name);
 	
 	APP.models.channel.textAreaHeight = $('#messageTextArea').clientHeight;
 }
@@ -24,7 +24,10 @@ function messageSend(e) {
 function _initMessageTextArea() {
 	var textField = $('#messageTextArea');
 	$('#messageTextArea').val('');
-	textField.style.height = APP.models.channel.textAreaHeight;
+	if (APP.models.channel.textAreaHeight !== undefined)
+		textField.style.height = APP.models.channel.textAreaHeight;
+	else 
+		textField.style.height = 36;
 }
 
 function messageEraser (e) {
