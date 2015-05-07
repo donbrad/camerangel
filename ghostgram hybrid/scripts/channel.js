@@ -25,24 +25,36 @@ function onInitChannel(e) {
 }	
 
 function onChannelPresence () {
-	
+	var users = APP.models.channel.currentChannel.listUsers();
 }
 
-function onChannelRead() {
-	
+function onChannelRead(message) {
+	APP.models.channel.messagesDS.add(message);	
 }
 
 
 function onShowChannel(e) {
 	e.preventDefault();
 	var channelUUID = e.view.params.channel;
-	var thisChannel = findChannelModel(channelUUID);
+	var thisChannelModel = findChannelModel(channelUUID);
 	var thisUser = APP.models.profile.currentUser;
-	var thisP2P = new person2person(thisUser.userUUID, channelUUID);
+	var thisChannel = new secureChannel(thisUser.userUUID, channelUUID);
+	var contactUUID = null;
+	thisChannel.onMessage(onChannelRead);
+	thisChannel.onPresence(onChannelPresence);
+ 			 	
+	if (thisChannelModel.members[0] === thisUser.userUUID)
+		contactUUID = thisChannelModel.members[1];
+    else 
+		contactUUID = thisChannelModel.members[0];
+
+	APP.models.channel.currentContactUUID = contactUUID;
+	APP.models.channel.currentContactModel = getContactModel(contactUUID);
+	APP.models.channel.currentChannel = thisChannel;
+	APP.models.channel.currentModel = thisChannelModel;
+	var name = thisChannelModel.name;
 	
-	var name = thisChannel.name;
-	
-	if (thisChannel.isPrivate) {
+	if (thisChannelModel.isPrivate) {
 		name = '{' + name + '}';
 		if (name.length > 16)
 		 name = name.substring(0,15)+ '...}';
@@ -57,6 +69,7 @@ function onShowChannel(e) {
 function messageSend(e) {
 	e.preventDefault();
 	var text = $('#messageTextArea').val();
+	APP.models.channel.currentChannel.sendMessage(APP.models.channel.currentContactUUID, text, 86400);
 	_initMessageTextArea();
 }
 

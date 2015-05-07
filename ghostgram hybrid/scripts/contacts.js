@@ -33,7 +33,7 @@ function privateMessage(e) {
     processPrivateInvite(contactUUID, APP.models.profile.currentUser.get('alias') + " requests a Private Channel");
 }
 
-function getContactData(contactUUID) {
+function getContactModel(contactUUID) {
 	 var dataSource = APP.models.contacts.contactsDS;
     dataSource.filter( { field: "contactUUID", operator: "eq", value: contactUUID });
     var view = dataSource.view();
