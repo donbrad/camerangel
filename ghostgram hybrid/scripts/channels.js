@@ -58,13 +58,13 @@ function addPrivateChannel (contactUUID, contactAlias, channelUUID) {
     
     var guid = uuid.v4();
         
-    channel.set("name", "Private: " + contactAlias);
+    channel.set("name", contactAlias);
     channel.set("isOwner", true);
 	channel.set('isPrivate', true);
     channel.set("media",  true);
     channel.set("archive",  false);
     channel.set("expirationDate", null);
-    channel.set("description", "Person to Person with " + contactAlias);
+    channel.set("description", "P2P : " + contactAlias);
     channel.set("channelId", channelUUID);
     channel.set("members", [APP.models.profile.currentUser.userUUID, contactUUID]);
     
