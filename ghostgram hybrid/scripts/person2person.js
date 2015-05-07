@@ -11,6 +11,7 @@ function person2person(userUUID, channelUUID) {
     // An object userUUID and publicKey. It will be given 
     // to other users.
     var thisUser = {
+		alias: APP.models.profile.currentUser.alias,
         username: userUUID,
         publicKey: publicKey
     };
@@ -69,8 +70,9 @@ function person2person(userUUID, channelUUID) {
         if (msg.action === "join" || msg.action === "state-change") {
             // If the presence message contains data aka *state*, add this to our users object. 
             if ("data" in msg) { 
-                users[msg.data.userUUID] = msg.data.publicKey;
-				updateParseObject('channels', 'channelId', channelUUID, 'contactKey', msg.data.publicKey);
+                users[msg.data.username] = msg.data.publicKey;
+				if (msg.data.username !== userUUID)
+					updateParseObject('channels', 'channelId', channelUUID, 'contactKey', msg.data.publicKey);
             } 
             // Otherwise, we have to call `here_now` to get the state of the new subscriber to the channel.
             else { 

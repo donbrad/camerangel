@@ -35,9 +35,9 @@ function onShowChannel(e) {
 	var name = thisChannel.name;
 	
 	if (thisChannel.isPrivate) {
-		name = '{' + name + '!}';
+		name = '{' + name + '}';
 		if (name.length > 16)
-		 name = name.substring(0,16)+ '...!}';
+		 name = name.substring(0,15)+ '...}';
 	} else {
 		if (name.length > 17)
 		name = name.substring(0,17)+"...";
