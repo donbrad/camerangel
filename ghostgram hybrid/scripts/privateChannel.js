@@ -31,7 +31,7 @@ function newP2PEntry(user, contact, channel, callback) {
 //check the p2p map 
 function processPrivateInvite(contactUUID, message) {
 	var userUUID = APP.models.profile.currentUser.get('userUUID'),
-		contact = getContactData(contactUUID),
+		contact = getContactModel(contactUUID),
 		privateChannelUUID = contact.privateChannelUUID;
 	
 	if (privateChannelUUID === undefined || privateChannelUUID === null) {
@@ -57,7 +57,7 @@ function processPrivateInvite(contactUUID, message) {
 				
 				if (channelModel === undefined) {
 					// No existing private channel need to create one
-					var contactModel = getContactData(contactUUID);
+					var contactModel = getContactModel(contactUUID);
 					if (contactModel !== undefined) {
 						var contactAlias = contactModel.get('alias');
 						addPrivateChannel(contactUUID, contactAlias, privateChannelUUID);
