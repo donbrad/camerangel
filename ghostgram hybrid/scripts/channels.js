@@ -52,11 +52,11 @@ function findChannelModel(channelId) {
 }
 
 
-function addPrivateChannel (contact, contactAlias, channelUUID) {
+function addPrivateChannel (contactUUID, contactAlias, channelUUID) {
     var Channels = Parse.Object.extend("channels");
     var channel = new Channels();
     
-    var guid = uuid.v4()
+    var guid = uuid.v4();
         
     channel.set("name", "Private: " + contactAlias);
     channel.set("isOwner", true);
@@ -66,6 +66,7 @@ function addPrivateChannel (contact, contactAlias, channelUUID) {
     channel.set("expirationDate", null);
     channel.set("description", "Person to Person with " + contactAlias);
     channel.set("channelId", channelUUID);
+    channel.set("members", [APP.models.profile.currentUser.userUUID, contactUUID]);
     
     channel.setACL(APP.models.profile.parseACL);
     channel.save(null, {
