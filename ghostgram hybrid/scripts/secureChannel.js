@@ -40,8 +40,8 @@ function secureChannel(userUUID, channelUUID) {
     //  then call `receiveMessage` with the decrypted message.
     var messageHandler = function (msg) {
         if (msg.recipient === userUUID) {
-            var content = cryptico.decrypt(msg.content.cipher, RSAkey).content;
-            parsedMsg = {
+            var content = cryptico.decrypt(msg.content.cipher, RSAkey);
+            var parsedMsg = {
                 msgID: msg.msgID,
                 content: content,
                 TTL: msg.ttl,
