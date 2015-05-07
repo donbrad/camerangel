@@ -22,7 +22,7 @@
 <script type="text/x-kendo-tmpl" id="channels-listview-template">
     <div style="clear:both;">
        <div style="float:right; font-size: 10px;"> <a data-rel="actionsheet" href="\\#channelActions" data-actionsheet-context="#:channelId#" data-role="button"><i class="ghostIcon fa fa-cog"></i></a> </div>
-       <div class="ghostTextLarge"> #if (isPrivate) {# <i class="ghostIconNavbar fa fa-user-secret"> </i> #}#<a data-role="button" data-click="gotoChannel(#:channelId#)">#:name#</a></div>
+       <div class="ghostTextLarge">  #if (isPrivate) {# <i class="ghostIconNavbar fa fa-user-secret"> </i> #}# <a data-rel='view' href="\\#channel?channel=#:channelId#"> #:name# </a></div>
        <div class="ghostDescription" style="padding-top: 8px; padding-bottom: 4px;"> #: description # </div>
         <div style="color: \\#2e2e2e;">
            <span style="float: left;"> 
@@ -161,3 +161,65 @@
     </div>
  
 </div>
+
+ <div data-role="view" id="channel"  data-layout="main" data-model="APP.models.channel" data-show="onShowChannel" data-init="onInitChannel">  
+     <div data-role="header">
+        <div data-role="navbar" id="channelNavBar">
+            <span data-role="view-title"></span>
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><i class="ghostIconNavbar fa fa-bars"></i></a>
+            <a data-align="right" data-role="button" id="messagePresenceButton"> <i style="color: #e2e2e2;" class="ghostIconNavbar fa fa-user"></i> </a>
+        </div>
+    </div>
+	 
+	 <div id="messageHeader">
+		 
+	 </div>
+	 
+     <div class="ghostContainer" style="padding-top: 12px;">
+         <ul class="discussion" id="messages-listview"></ul>
+     </div>
+     
+	 <div data-role="footer" style="padding: 8px; background: #e2e2e2;"  id="messageEditor" style="min-height: 48px;" >
+		 <div style="clear:both; min-width: 260px; width: 100%;">
+			<textarea id="messageTextArea" onkeyup="AutoGrowTextArea(this)" rows=2 autofocus=true wrap=soft spellcheck= true style="width: 100%; font-size: 1.0em;"></textarea>
+		 </div>
+		 <div style=" font-size: 1.0em;">
+			 <span style="float:left;  font-size: 0.9em;"> 
+				 <a data-role="button" data-click="messageCamera"><i class="fa fa-camera"> </i> </a>
+				 <a data-role="button" data-click="messageVoice"><i class="fa fa-microphone"> </i> </a>
+				 <a data-role="button" data-click="messageVideo"><i class="fa fa-video-camera"> </i> </a>
+			 </span>
+			 <span style="float:right; font-size: 0.9em;"> 
+				 <a data-role="button"  data-rel="actionsheet" href="#newMessageActions"><i class="fa fa-cog"></i></a>
+				 <a data-role="button" id="messageLockButton" data-click="messageLockButton"><i class="fa fa-lock"></i></a>
+				 <a data-role="button"  data-click="messageSend"><i class="fa fa-send-o"></i></a> 
+			 </span>
+		</div>
+	 </div>
+	 
+    <ul data-role="actionsheet" id="newMessageActions" data-popup='{"direction": "left"}'>
+       <li><a data-action="messageLocation"><i class="fa fa-map-marker"> </i> Add Location</a></li>
+		<li><a data-action="messageCalendar"><i class="fa fa-calendar"> </i> Add Calendar</a></li>
+	    <li><a data-action="smartScanMessage"><i class="fa fa-magic"> </i> Smart Scan Message</a></li>
+        <li><a data-action="messageEraser"><i class="fa fa-eraser"> </i> Erase Message</a></li>
+    </ul>
+	 
+	  <ul data-role="actionsheet" id="messageActions" data-popup='{"direction": "left"}'>
+		<li><a data-action="archiveMessage"><i class="fa fa-archive"> </i> Archive Message</a></li>
+		<li><a data-action="smartScanMessage"><i class="fa fa-magic"> </i> Smart Scan Message</a></li>
+        <li><a data-action="messageEraser"><i class="fa fa-eraser"> </i> Erase Message</a></li>
+    </ul>
+    
+</div>
+
+<script type="text/x-kendo-tmpl" id="messagesTemplate">
+<div style="clear:both;" # if (sender === APP.models.channel.currentContactUUID) { # class="other" # } else { # class="self" #}#>
+	<div class="avatar">
+	<img src="http://s3-us-west-2.amazonaws.com/s.cdpn.io/5/profile/profile-80_9.jpg" />
+  </div>
+  <div class="messages">
+	<div>#: content #</div>
+	<time datetime="2009-11-13T20:00"># if (sender === APP.models.channel.currentContactUUID) { # #: APP.models.channel.currentContactModel.alias # } else { # #:APP.models.profile.currentUser.alias# #}#</time>
+  </div>
+</div>
+</script>

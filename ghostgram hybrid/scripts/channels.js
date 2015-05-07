@@ -137,12 +137,13 @@ function deleteChannel (e) {
 function onChannelsClick(e) {
 	e.preventDefault();
 	var channel = e.dataItem;	
-	APP.kendo.navigate('views/channel.html?channel='+channel.channelId);
+	var target = e.closest('a');
+	APP.kendo.navigate('#channel?channel='+channel.channelId);
 	
 }
 
 function gotoChannel(channelId) {
-	APP.kendo.navigate('views/channel.html?channel='+channelId);
+	APP.kendo.navigate('#channel?channel='+channelId);
 }
 
 function onInitChannels (e) {
