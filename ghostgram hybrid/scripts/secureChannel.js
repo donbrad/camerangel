@@ -1,6 +1,6 @@
 // Setup
 // ---
-function person2person(userUUID, channelUUID) {
+function secureChannel(userUUID, channelUUID) {
     var channel = channelUUID;
     
     // Generate an RSA key and grab the public key.
@@ -16,7 +16,7 @@ function person2person(userUUID, channelUUID) {
         publicKey: publicKey
     };
 
-    // A mapping of all currently connected users' usernames to their public keys.
+    // A mapping of all currently connected users' usernames userUUID's to their public keys.
     var users = new Array();
 	users[userUUID] = publicKey;
     
@@ -43,7 +43,6 @@ function person2person(userUUID, channelUUID) {
             var content = cryptico.decrypt(msg.message.cipher, RSAkey).content;
             parsedMsg = {
                 msgID: msg.msgID,
-                contentType: msg.contentType,
                 content: content,
                 TTL: msg.ttl,
                 sender: msg.sender,
@@ -105,20 +104,10 @@ function person2person(userUUID, channelUUID) {
         state: thisUser
     });
 
-    pubnub.history({
-        channel: channel,
-        limit: 100,
-        callback: function (messages) {
-            messages = messages[0];
-            messages = messages || [];
-            for(var i = 0; i < messages.length; i++) {
-                messageHandler(messages[i]);
-            }
-        }
 
-    });
+ 
 
-    // person2person Private Methods
+    // secureChannel Private Methods
     // ---
     // `herenowUpdate` is only called as a callback to 'here_now'. 
     // It does a complete update of our `users` object and then
@@ -151,7 +140,7 @@ function person2person(userUUID, channelUUID) {
         }, 1000);
     };
 
-    // person2person public methods
+    // secureChannel public methods
     // ---
     return {
         // Sends `message` to `recipient`. After `ttl` seconds, the message
@@ -172,13 +161,12 @@ function person2person(userUUID, channelUUID) {
                             recipient: recipient,
                             msgID: msgID,
                             sender: userUUID,
-                            message: message,
+                            content: message,
                             ttl: ttl
                         },
                         callback: function () {
                             parsedMsg = {
                                 msgID: msgID,
-                                contentType: 'text',
                                 content: content,
                                 TTL: ttl,
                                 sender: userUUID,
@@ -202,7 +190,7 @@ function person2person(userUUID, channelUUID) {
         // An argument of this form is passed to the callback.
         //
         //      {msgID: "487f703e-3189-4f66-87a1-62cb0ffb52fd", contentType: 'text' | 'image'
-        //      content: "very example message", TTL: 5, sender: "foobar",
+        //      content: "very example message", TTL: 86400, sender: "foobar",
         //      recipient: "barfoo"}
         onMessage: function (callback) {
             receiveMessage = callback;
@@ -216,16 +204,34 @@ function person2person(userUUID, channelUUID) {
         listUsers: function () {
             return users;
         },
+		
         // Returns a mapping of usernames and the messages they've sent.
         // (Messages you've sent are mapped by the the username of the reciever)
         returnMessages: function () {
             return messages;
         },
+		
+		// Get any messages that are in the channel
+		getMessageHistory: function () {
+		   pubnub.history({
+				channel: channel,
+				limit: 100,
+				callback: function (messages) {
+					messages = messages[0];
+					messages = messages || [];
+					for(var i = 0; i < messages.length; i++) {
+						messageHandler(messages[i]);
+					}
+				}
+
+			});
+		},
+		
         // Returns your [Cryptico](https://github.com/wwwtyro/cryptico) RSAkey.
         myKey: function () {
             return RSAkey;
         },
-        // Quits person2person. Other users will no longer be able to retrieve your
+        // Quits secureChannel. Other users will no longer be able to retrieve your
         // public key or send messages to you.
         quit: function () {
             pubnub.unsubscribe({
