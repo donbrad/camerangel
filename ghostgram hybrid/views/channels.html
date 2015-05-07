@@ -176,10 +176,6 @@
         </div>
     </div>
 	 
-	 <div id="messageHeader">
-		 
-	 </div>
-	 
      <div class="ghostContainer" style="padding-top: 12px;">
          <ul class="discussion" id="messages-listview"></ul>
      </div>
@@ -229,6 +225,20 @@
 </div>
 </script>
 
+<script type="text/x-kendo-template" id="memberTemplate">      
+    <div style="height: 56px; clear: both;">
+        <img style="width: 48px; height: auto; max-height: 48px; over-flow: hidden; float:left; margin: 0px 8px 8px 0px;" src="#:data.photo#">
+        <div style="clear: both:">
+          <span class="ghostTextLarge"> #: data.alias # </span>         
+        </div>
+        <div class="ghostText">
+          <span class="ghostTiny">(#: data.name #)</span>   
+        </div>
+        <div style="float: right; color:\\#2e2e2e; font-size: 11px;">
+            #if (data.contactUUID === undefined || data.contactUUID === null || data.contactUUID === '') { # <em> New User - Invite! </em> # } else {#  <strong> Verified User </strong> #} #
+        <div>
+    </div>
+</script>
 
 <div data-role="drawer" id="channelMembers" style="width: 240px" data-title="Members" data-position='right' data-views="['channel', 'editChannel']">
     <header data-role="header">
@@ -237,6 +247,7 @@
         </div>
     </header>
 
-    <ul id="channelMembers-listview" data-role="listview">
+    <ul id="channelMembers-listview">
+		
     </ul>
 </div>

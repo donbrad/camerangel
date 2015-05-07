@@ -1,7 +1,7 @@
 function onInitChannel(e) {
 	e.preventDefault();
 	
-	 $("#contacts-listview").kendoMobileListView({
+	 $("#messages-listview").kendoMobileListView({
         dataSource: APP.models.channel.messagesDS,
         template: $("#messagesTemplate").html(),
         click: function (e) {
@@ -11,43 +11,38 @@ function onInitChannel(e) {
 			$("#messageActions").data("kendoMobileActionSheet").open();
         }
      });
+	
+		$("#channelMembers-listview").kendoMobileListView({
+        dataSource: APP.models.channel.membersDS,
+        template: $("#membersTemplate").html(),
+        click: function (e) {
+            var member = e.dataItem;
+			APP.models.channel.currentMember = member;
+            // display message actionsheet    
+			$("#memberActions").data("kendoMobileActionSheet").open();
+        }
+     });
 }	
 
 function onChannelPresence () {
-	var users = APP.models.channel.currentChannel.listUsers();
+	
 }
 
-function onChannelRead(message) {
-	APP.models.channel.messagesDS.add(message);
+function onChannelRead() {
+	
 }
 
 
 function onShowChannel(e) {
 	e.preventDefault();
 	var channelUUID = e.view.params.channel;
-	var thisChannelModel = findChannelModel(channelUUID);
+	var thisChannel = findChannelModel(channelUUID);
 	var thisUser = APP.models.profile.currentUser;
-	var thisChannel = new secureChannel(thisUser.userUUID, channelUUID);
-	var contactUUID = null;
+	var thisP2P = new person2person(thisUser.userUUID, channelUUID);
 	
-	thisChannel.onMessage(onChannelRead);
-	thisChannel.onPresence(onChannelPresence);
+	var name = thisChannel.name;
 	
-	if (thisChannelModel.members[0] === thisUser.userUUID)
-		contactUUID = thisChannelModel.members[1];
-    else 
-		contactUUID = thisChannelModel.members[0];
-	
-	var thisContactModel = getContactData(contactUUID);
-	
-	APP.models.channel.currentContactUUID = contactUUID;
-	APP.models.channel.currentContactModel = thisContactModel;
-	APP.models.channel.currentChannel = thisChannel;
-	APP.models.channel.currentModel = thisChannelModel;
-	
-	var name = thisChannelModel.name;
-	
-	if (thisChannelModel.isPrivate) {
+	if (thisChannel.isPrivate) {
 		name = '{' + name + '}';
 		if (name.length > 16)
 		 name = name.substring(0,15)+ '...}';
@@ -62,9 +57,6 @@ function onShowChannel(e) {
 function messageSend(e) {
 	e.preventDefault();
 	var text = $('#messageTextArea').val();
-	var msg = new Object();
-	
-	APP.models.channel.currentChannel.sendMessage(APP.models.channel.currentContactUUID, text, 86400);
 	_initMessageTextArea();
 }
 
