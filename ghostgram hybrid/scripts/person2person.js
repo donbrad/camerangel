@@ -27,6 +27,7 @@ function person2person(userUUID, channelUUID) {
     // by the publicly accessible methods `onMessage` and `onPresence`.
     var receiveMessage = function(){};
     var presenceChange = function(){};
+    var messageHistory = function(){};
 
     // messageHandler
     // ---
@@ -36,10 +37,11 @@ function person2person(userUUID, channelUUID) {
     //  then call `receiveMessage` with the decrypted message.
     var messageHandler = function (msg) {
         if (msg.recipient === userUUID) {
-            var plaintext = cryptico.decrypt(msg.message.cipher, RSAkey).plaintext;
+            var content = cryptico.decrypt(msg.message.cipher, RSAkey).content;
             parsedMsg = {
                 msgID: msg.msgID,
-                plaintext: plaintext,
+                contentType: msg.contentType,
+                content: content,
                 TTL: msg.ttl,
                 sender: msg.sender,
                 recipient: msg.recipient
@@ -93,7 +95,7 @@ function person2person(userUUID, channelUUID) {
         subscribe_key: 'gg2p2',
 
         uuid: userUUID,
-        ssl: true,
+        ssl: true
     });
 
     // Subscribe to our PubNub channel.
@@ -102,7 +104,20 @@ function person2person(userUUID, channelUUID) {
         callback: messageHandler,
         presence: presenceHandler,
         // Set our state to our user object, which contains our username and public key.
-        state: thisUser,
+        state: thisUser
+    });
+
+    pubnub.history({
+        channel: channel,
+        limit: 100,
+        callback: function (messages) {
+            messages = messages[0];
+            messages = messages || [];
+            for(var i = 0; i < messages.length; i++) {
+                messageHandler(messages[i]);
+            }
+        }
+
     });
 
     // person2person Private Methods
@@ -145,8 +160,10 @@ function person2person(userUUID, channelUUID) {
         // will self-destruct, and neither you or the recipient will be able 
         // to retrieve the message from your `messages` object.
         sendMessage: function (recipient, message, ttl) {
+            if (ttl === undefined || ttl < 60)
+                ttl = 86400;  // 24 hours
             if (recipient in users) {
-                var plaintext = message;
+                var content = message;
                 var recipient_key = users[recipient];
                 message = cryptico.encrypt(message, recipient_key);
 
@@ -163,7 +180,8 @@ function person2person(userUUID, channelUUID) {
                         callback: function () {
                             parsedMsg = {
                                 msgID: msgID,
-                                plaintext: plaintext,
+                                contentType: 'text',
+                                content: content,
                                 TTL: ttl,
                                 sender: userUUID,
                                 recipient: recipient
@@ -185,8 +203,8 @@ function person2person(userUUID, channelUUID) {
         //
         // An argument of this form is passed to the callback.
         //
-        //      {msgID: "487f703e-3189-4f66-87a1-62cb0ffb52fd",
-        //      plaintext: "very example message", TTL: 5, sender: "foobar", 
+        //      {msgID: "487f703e-3189-4f66-87a1-62cb0ffb52fd", contentType: 'text' | 'image'
+        //      content: "very example message", TTL: 5, sender: "foobar",
         //      recipient: "barfoo"}
         onMessage: function (callback) {
             receiveMessage = callback;
@@ -209,7 +227,7 @@ function person2person(userUUID, channelUUID) {
         myKey: function () {
             return RSAkey;
         },
-        // Quits Babel. Other users will no longer be able to retrieve your 
+        // Quits person2person. Other users will no longer be able to retrieve your
         // public key or send messages to you.
         quit: function () {
             pubnub.unsubscribe({
