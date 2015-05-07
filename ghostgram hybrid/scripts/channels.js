@@ -141,14 +141,17 @@ function onChannelsClick(e) {
 	
 }
 
+function gotoChannel(channelId) {
+	APP.kendo.navigate('views/channel.html?channel='+channelId);
+}
+
 function onInitChannels (e) {
     e.preventDefault();
     // ToDo: Initialize list view
     
      $("#channels-listview").kendoMobileListView({
         dataSource: APP.models.channels.channelsDS,
-        template: $("#channels-listview-template").html(),
-		click: onChannelsClick
+        template: $("#channels-listview-template").html()
 		
     });
 }
