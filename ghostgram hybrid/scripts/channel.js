@@ -33,12 +33,15 @@ function onShowChannel(e) {
 	thisChannel.onMessage(onChannelRead);
 	thisChannel.onPresence(onChannelPresence);
 	
-	if (this.channelModel.members[0] === thisUser.userUUID)
-		contactUUID = this.channelModel.members[1];
+	if (thisChannelModel.members[0] === thisUser.userUUID)
+		contactUUID = thisChannelModel.members[1];
     else 
-		contactUUID = this.channelModel.members[0];
+		contactUUID = thisChannelModel.members[0];
+	
+	var thisContactModel = getContactData(contactUUID);
 	
 	APP.models.channel.currentContactUUID = contactUUID;
+	APP.models.channel.currentContactModel = thisContactModel;
 	APP.models.channel.currentChannel = thisChannel;
 	APP.models.channel.currentModel = thisChannelModel;
 	
