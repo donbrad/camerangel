@@ -111,7 +111,7 @@
         <div data-role="navbar">
             <a href="#:back" data-role="button" type="button" data-align="left" >Back</a>
             <span> Edit Channel</span>
-             <a href="#:back" type="button" data-role="button" data-align="right" >Done</a>
+             <a data-align="right" data-role="button"  data-rel="drawer" href="#channelMembers" > <i class="ghostIconNavbar fa fa-users"></i> </a>
         </div>
     </div>
 
@@ -120,6 +120,11 @@
             <li>
                 <label>Name
                     <input type="text" id="channels-editChannel-name" data-bind="value: name" />
+                </label>
+            </li>
+			<li>
+                <label>Private Channel
+                    <input type="boolean" id="channels-editChannel-private" readonly data-bind="value: isPrivate" />
                 </label>
             </li>
              <li>
@@ -167,7 +172,7 @@
         <div data-role="navbar" id="channelNavBar">
             <span data-role="view-title"></span>
             <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><i class="ghostIconNavbar fa fa-bars"></i></a>
-            <a data-align="right" data-role="button" id="messagePresenceButton"> <i style="color: #e2e2e2;" class="ghostIconNavbar fa fa-user"></i> </a>
+            <a data-align="right" data-role="button" id="messagePresenceButton" data-rel="drawer" href="#channelMembers" > <i class="ghostIconNavbar fa fa-user"></i> </a>
         </div>
     </div>
 	 
@@ -223,3 +228,15 @@
   </div>
 </div>
 </script>
+
+
+<div data-role="drawer" id="channelMembers" style="width: 240px" data-title="Members" data-position='right' data-views="['channel', 'editChannel']">
+    <header data-role="header">
+        <div data-role="navbar">
+            <span data-role="view-title"></span>
+        </div>
+    </header>
+
+    <ul id="channelMembers-listview" data-role="listview">
+    </ul>
+</div>
