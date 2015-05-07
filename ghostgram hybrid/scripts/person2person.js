@@ -7,6 +7,7 @@ function person2person(userUUID, channelUUID) {
     var RSAkey = cryptico.generateRSAKey(1024);
     var publicKey = cryptico.publicKeyString(RSAkey);
     
+	updateParseObject('channels', 'channelId', channelUUID, 'userKey', publicKey);
     // An object userUUID and publicKey. It will be given 
     // to other users.
     var thisUser = {
@@ -15,7 +16,8 @@ function person2person(userUUID, channelUUID) {
     };
 
     // A mapping of all currently connected users' usernames to their public keys.
-    var users = {ggp2p: publicKey};
+    var users = new Array();
+	users[userUUID] = publicKey;
     
     // A mapping of usernames and the messages they've sent.
     // (Messages you've sent are mapped by the the username of the reciever)
@@ -27,7 +29,7 @@ function person2person(userUUID, channelUUID) {
     // by the publicly accessible methods `onMessage` and `onPresence`.
     var receiveMessage = function(){};
     var presenceChange = function(){};
-    var messageHistory = function(){};
+ 
 
     // messageHandler
     // ---
@@ -68,6 +70,7 @@ function person2person(userUUID, channelUUID) {
             // If the presence message contains data aka *state*, add this to our users object. 
             if ("data" in msg) { 
                 users[msg.data.userUUID] = msg.data.publicKey;
+				updateParseObject('channels', 'channelId', channelUUID, 'contactKey', msg.data.publicKey);
             } 
             // Otherwise, we have to call `here_now` to get the state of the new subscriber to the channel.
             else { 
@@ -89,14 +92,7 @@ function person2person(userUUID, channelUUID) {
     // Starting up PubNub
     // ---
     // Initialize PubNub.
-    var pubnub = PUBNUB.init({
-        // You can replace `demo` with your own PubNub publish and subscribe keys.
-        publish_key: 'ggp2p',
-        subscribe_key: 'gg2p2',
-
-        uuid: userUUID,
-        ssl: true
-    });
+    var pubnub = APP.pubnub;
 
     // Subscribe to our PubNub channel.
     pubnub.subscribe({
@@ -126,7 +122,7 @@ function person2person(userUUID, channelUUID) {
     // It does a complete update of our `users` object and then
     // calls `presenceChange()`.
     var herenowUpdate = function (msg) {
-        users = {demo : publicKey};
+        users = {gg2p2 : publicKey};
         for (var i = 0; i < msg.uuids.length; i++) {
             if ("state" in msg.uuids[i]) {
                 users[msg.uuids[i].state.userUUID] = msg.uuids[i].state.publicKey;

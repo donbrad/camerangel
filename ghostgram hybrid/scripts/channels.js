@@ -66,6 +66,8 @@ function addPrivateChannel (contactUUID, contactAlias, channelUUID) {
     channel.set("expirationDate", null);
     channel.set("description", "P2P : " + contactAlias);
     channel.set("channelId", channelUUID);
+	channel.set('userKey',  null);
+	channel.set('contactKey', null);
     channel.set("members", [APP.models.profile.currentUser.userUUID, contactUUID]);
     
     channel.setACL(APP.models.profile.parseACL);
