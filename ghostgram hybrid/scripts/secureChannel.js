@@ -189,7 +189,7 @@ function secureChannel(userUUID, channelUUID) {
         //
         // An argument of this form is passed to the callback.
         //
-        //      {msgID: "487f703e-3189-4f66-87a1-62cb0ffb52fd", contentType: 'text' | 'image'
+        //      {msgID: "487f703e-3189-4f66-87a1-62cb0ffb52fd",
         //      content: "very example message", TTL: 86400, sender: "foobar",
         //      recipient: "barfoo"}
         onMessage: function (callback) {
