@@ -113,10 +113,10 @@ function secureChannel(userUUID, channelUUID) {
     // It does a complete update of our `users` object and then
     // calls `presenceChange()`.
     var herenowUpdate = function (msg) {
-        users = {gg2p2 : publicKey};
+       users[userUUID] = publicKey;
         for (var i = 0; i < msg.uuids.length; i++) {
             if ("state" in msg.uuids[i]) {
-                users[msg.uuids[i].state.userUUID] = msg.uuids[i].state.publicKey;
+                users[msg.uuids[i].state.username] = msg.uuids[i].state.publicKey;
             }
         }
         presenceChange();
