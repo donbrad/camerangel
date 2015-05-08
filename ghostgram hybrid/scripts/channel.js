@@ -67,10 +67,11 @@ function onShowChannel(e) {
 		if (thisChannelModel.userKey === undefined || thisChannelModel.userPrivateKey === undefined) {
 			var RSAkey = cryptico.generateRSAKey(1024);
 			var publicKey = cryptico.publicKeyString(RSAkey);
+			
 			thisChannelModel.userKey = publicKey;
 			thisChannelModel.userPrivateKey = RSAkey;
 			updateParseObject('channels', 'channelId', channelUUID, 'userKey', publicKey);
-			updateParseObject('channels', 'channelId', channelUUID, 'userPrivateKey', RSAkey);
+			updateParseObject('channels', 'channelId', channelUUID, 'userPrivateKey', JSON.stringify(RSAkey);
 		}
 		
 		if (thisChannelModel.members[0] === thisUser.userUUID)

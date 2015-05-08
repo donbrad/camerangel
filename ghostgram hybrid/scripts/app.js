@@ -201,6 +201,9 @@
                   success: function(collection) {
                      var models = new Array();
                      for (var i=0; i<collection.models.length; i++) {
+						 if (collection.models[i].attributes.userPrivateKey !== undefined) {
+							 collection.models[i].attributes.userPrivateKey = JSON.parse(collection.models[i].attributes.userPrivateKey);
+						 }
                          models.push(collection.models[i].attributes);
                      }
                          
