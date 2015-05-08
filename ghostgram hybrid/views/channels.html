@@ -176,8 +176,8 @@
         </div>
     </div>
 	 
-     <div class="ghostContainer" style="padding-top: 12px;">
-         <ul class="discussion" id="messages-listview"></ul>
+     <div style="padding-top: 12px; paddding-left: 8px; padding-right: 8px;">
+         <ul id="messages-listview"></ul>
      </div>
      
 	 <div data-role="footer" style="padding: 8px; background: #e2e2e2;"  id="messageEditor" style="min-height: 48px;" >
@@ -214,13 +214,17 @@
 </div>
 
 <script type="text/x-kendo-tmpl" id="messagesTemplate">
-<div # if var className = "message bubble-right"; (sender === APP.models.channel.currentContactUUID) {  className="message bubble-left";  }# class="#:className#" >
- # var name; if (sender === APP.models.channel.currentContactUUID) { name =  APP.models.channel.currentContactModel.alias; } else {name = APP.models.profile.currentUser.alias; }  #
- <label class="message-user">#:name# </label>
-   <label class="message-timestamp"># var formattedTime = timeSince(time); # #: formattedTime #</label>
-	<p>#: content #</p>
+   <div style="clear:both; background: transparent; color:\\#2e2e2e; min-height: 36px;">
+	<div #var className = "float: right; background: \\#aabbcc;"; if (sender === APP.models.channel.currentContactUUID) {  className="float:left ;background: \\#c8c8c8; ";  }# style="width: 80%; #:className#" >
+	 # var name; if (sender === APP.models.channel.currentContactUUID) { name =  APP.models.channel.currentContactModel.alias; } else {name = APP.models.profile.currentUser.alias; }  #
+	  <div style="clear:both;">
+		  <span font-size: 1.5em;">#:name# </span>
+		   <span style="float: right;"># var formattedTime = timeSince(time); # #: formattedTime #</span>
+	   </div>
+	   <div style="font-size: 1.0em; clear:both;">#: content #</div>
 
-</div>
+	</div>
+  </div> 
 </script>
 
 <script type="text/x-kendo-template" id="memberTemplate">      
