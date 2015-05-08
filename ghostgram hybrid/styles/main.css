@@ -422,87 +422,103 @@
     width: 45px;
 }
 
-.module {
-  width: 360px;
-  margin: 20px auto;
+
+
+
+.bubble-left {
+  float: left;
+  clear: both;
+  background: #aabbcc;
 }
 
+.bubble-left:hover {
+  background: #ccddee;
+}
 
+.bubble-left:before {
+  content: " ";
+  display: block;
+  position: relative;
+  top: 0px;
+  left: -11px;
+  height: 13px;
+  width: 13px;
+  background: inherit;
+  /*#B7CC90*/
 
-.discussion {
-  list-style: none;
+  z-index: 100;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+
+.bubble-right {
+  float: right;
+  clear: both;
+  text-align: right;
+  background: #c8c8c8;
+}
+
+.bubble-right:hover {
   background: #e2e2e2;
-  margin: 0;
-  padding: 0 0 50px 0; // finality
-  li {
-    padding: 0.5rem;
-    overflow: hidden;
-    display: flex;
-  }
-  .avatar {
-    width: 40px; // stronger than %
-    // could set height, but gonna bottom-align instead
-    position: relative; // for triangle
-    img {
-      display: block; // triangle position
-      width: 100%;
-    }
-  }
 }
 
-.other {
-  .avatar {
-    &:after {
-      content: "";
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 0;
-      height: 0;
-      border: 5px solid white;
-      border-left-color: transparent;
-      border-bottom-color: transparent;
-    }
-  }
+.bubble-right:before {
+  content: " ";
+  display: block;
+  position: relative;
+  top: 0px;
+  right: -99.8%;
+  height: 13px;
+  width: 13px;
+  background: inherit;
+  /*#90B2CC*/
+
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
 }
 
-.self {
-  justify-content: flex-end;
-  align-items: flex-end;
-  .messages {
-    order: 1;
-    border-bottom-right-radius: 0; // weird shadow fix
-  }
-  .avatar {
-    order: 2;
-    &:after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 0;
-      border: 5px solid white;
-      border-right-color: transparent;
-      border-top-color: transparent;
-      box-shadow: 1px 1px 2px rgba(black, 0.2); // not quite perfect but close
-    }
-  }
+
+ .message {
+	 color: #2e2e2e;
+  min-width: 40%;
+  max-width: 70%;
+  margin: 5px;
+  margin-bottom: 2%;
+  padding: 3px 5px 3px 5px;
+  cursor: pointer;
 }
 
-.messages {
-  background: white;
-  padding: 10px;
-  border-radius: 3px;
-  box-shadow: 3px 3px 3px rgba(black, 0.4);
-  p {
-    font-size: 0.8rem;
-    margin: 0 0 0.2rem 0;
-  }
-  time {
-    font-size: 0.7rem;
-    color: #6b6b6b;
-  }
+ .message > p {
+  display: block;
+  clear: both;
+  margin-left: 3px;
+  margin-right: 3px;
+  font-size: 15px;
+}
+
+ .message label {
+  margin-top: -13px;
+  font-size: 13px;
+  font-weight: bold;
+  color: #5A5A5A;
+  cursor: pointer;
+}
+
+ .message .message-user {
+  display: block;
+  float: left;
+  margin-left: 3px;
+}
+
+ .message .message-timestamp {
+  display: block;
+  float: right;
+  margin-right: 3px;
+  text-align: right;
 }
 
 @keyframes pulse {

@@ -214,14 +214,12 @@
 </div>
 
 <script type="text/x-kendo-tmpl" id="messagesTemplate">
-<div style="clear:both;" # if (sender === APP.models.channel.currentContactUUID) { # class="other" # } else { # class="self" #}#>
-	<div class="avatar">
-	<img src="images/missing_profile_photo.jpg" />
-  </div>
-  <div class="messages">
-	<div>#: content #</div>
-	<time datetime="2009-11-13T20:00"># var name; if (sender === APP.models.channel.currentContactUUID) { name =  APP.models.channel.currentContactModel.alias; } else {name = APP.models.profile.currentUser.alias; }  # #:name#</time>
-  </div>
+<div # if var className = "message bubble-right"; (sender === APP.models.channel.currentContactUUID) {  className="message bubble-left";  }# class="#:className#" >
+ # var name; if (sender === APP.models.channel.currentContactUUID) { name =  APP.models.channel.currentContactModel.alias; } else {name = APP.models.profile.currentUser.alias; }  #
+ <label class="message-user">#:name# </label>
+   <label class="message-timestamp"># var formattedTime = timeSince(time); # #: formattedTime #</label>
+	<p>#: content #</p>
+
 </div>
 </script>
 

@@ -18,7 +18,7 @@ function secureChannel(userUUID, channelUUID) {
 
     // A mapping of all currently connected users' usernames userUUID's to their public keys.
     var users = new Array();
-	users[userUUID] = publicKey;
+	users[userUUID] = publicKey;     
     
     // A mapping of usernames and the messages they've sent.
     // (Messages you've sent are mapped by the the username of the reciever)
@@ -40,11 +40,12 @@ function secureChannel(userUUID, channelUUID) {
     //  then call `receiveMessage` with the decrypted message.
     var messageHandler = function (msg) {
         if (msg.recipient === userUUID) {
-            var content = cryptico.decrypt(msg.content.cipher, RSAkey);
+            var content = cryptico.decrypt(msg.content.cipher, RSAkey).plaintext;
             var parsedMsg = {
                 msgID: msg.msgID,
                 content: content,
                 TTL: msg.ttl,
+				time: msg.time,
                 sender: msg.sender,
                 recipient: msg.recipient
             };
@@ -152,6 +153,7 @@ function secureChannel(userUUID, channelUUID) {
             if (recipient in users) {
                 var content = message;
                 var recipient_key = users[recipient];
+				var currentTime =  new Date().getTime()/1000;
                 message = cryptico.encrypt(message, recipient_key);
 
                 pubnub.uuid(function (msgID) {
@@ -162,6 +164,7 @@ function secureChannel(userUUID, channelUUID) {
                             msgID: msgID,
                             sender: userUUID,
                             content: message,
+							time: currentTime,
                             ttl: ttl
                         },
                         callback: function () {
@@ -169,6 +172,7 @@ function secureChannel(userUUID, channelUUID) {
                                 msgID: msgID,
                                 content: content,
                                 TTL: ttl,
+								time: currentTime,
                                 sender: userUUID,
                                 recipient: recipient
                             };
