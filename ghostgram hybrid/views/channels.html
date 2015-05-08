@@ -215,7 +215,7 @@
 
 <script type="text/x-kendo-tmpl" id="messagesTemplate">
    <div style="clear:both; background: transparent; color:\\#2e2e2e; min-height: 36px;">
-	<div #var className = "float: right; background: \\#aabbcc;"; if (sender === APP.models.channel.currentContactUUID) {  className="float:left ;background: \\#c8c8c8; ";  }# style="width: 80%; #:className#" >
+	<div #var className = "float: right; background: \\#aabbcc; text-align: right;"; if (sender === APP.models.channel.currentContactUUID) {  className="float:left; background: \\#c8c8c8; ";  }# style="width: 80%; #:className#" >
 	 # var name; if (sender === APP.models.channel.currentContactUUID) { name =  APP.models.channel.currentContactModel.alias; } else {name = APP.models.profile.currentUser.alias; }  #
 	  <div style="clear:both;">
 		  <span font-size: 1.5em;">#:name# </span>

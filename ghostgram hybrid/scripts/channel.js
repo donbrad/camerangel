@@ -58,15 +58,31 @@ function onShowChannel(e) {
 	var channelUUID = e.view.params.channel;
 	var thisChannelModel = findChannelModel(channelUUID);
 	var thisUser = APP.models.profile.currentUser;
-	var thisChannel = new secureChannel(thisUser.userUUID, channelUUID);
+	
 	var contactUUID = null;
-	thisChannel.onMessage(onChannelRead);
-	thisChannel.onPresence(onChannelPresence);
- 			 	
-	if (thisChannelModel.members[0] === thisUser.userUUID)
-		contactUUID = thisChannelModel.members[1];
-    else 
-		contactUUID = thisChannelModel.members[0];
+	
+ 
+	if (thisChannelModel.isPrivate) {
+		
+		if (thisChannelModel.userKey === undefined || thisChannelModel.userPrivateKey === undefined) {
+			var RSAkey = cryptico.generateRSAKey(1024);
+			var publicKey = cryptico.publicKeyString(RSAkey);
+			thisChannelModel.userKey = publicKey;
+			thisChannelModel.userPrivateKey = RSAkey;
+			updateParseObject('channels', 'channelId', channelUUID, 'userKey', publicKey);
+			updateParseObject('channels', 'channelId', channelUUID, 'userPrivateKey', RSAkey);
+		}
+		
+		if (thisChannelModel.members[0] === thisUser.userUUID)
+			contactUUID = thisChannelModel.members[1];
+		else 
+			contactUUID = thisChannelModel.members[0];	
+		
+		var thisChannel = new secureChannel(thisUser.userUUID, channelUUID);
+		thisChannel.onMessage(onChannelRead);
+		thisChannel.onPresence(onChannelPresence);
+	}
+	
 
 	APP.models.channel.currentContactUUID = contactUUID;
 	APP.models.channel.currentContactModel = getContactModel(contactUUID);
