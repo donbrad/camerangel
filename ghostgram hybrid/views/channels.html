@@ -29,7 +29,7 @@
            # if (media) { # All Media # } else { # Text # }#,  # if (archive) { # Archived # } else { # Not Archived # }#
            </span>
 
-          <span style="float:right;"># if (expirationDate === undefined || expirationDate === null) {# Open # } else { # #= kendo.toString(kendo.parseDate(expirationDate), 'MM/dd/yyyy') #  #}#</span>
+          <span style="float:right;"> 0 new Messages</span>
         </div>
     </div>
 </script>
@@ -239,7 +239,7 @@
     </div>
 </script>
 
-<div data-role="drawer" id="channelMembers" style="width: 240px" data-title="Members" data-position='right' data-views="['channel', 'editChannel']">
+<div data-role="drawer" id="channelMembers" style="width: 240px" data-title="Members" data-position='right' data-views="['channel', 'editChannel', 'addChannel']">
     <header data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
