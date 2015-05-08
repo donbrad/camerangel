@@ -71,7 +71,7 @@ function onShowChannel(e) {
 			thisChannelModel.userKey = publicKey;
 			thisChannelModel.userPrivateKey = RSAkey;
 			updateParseObject('channels', 'channelId', channelUUID, 'userKey', publicKey);
-			updateParseObject('channels', 'channelId', channelUUID, 'userPrivateKey', JSON.stringify(RSAkey);
+			updateParseObject('channels', 'channelId', channelUUID, 'userPrivateKey', JSON.stringify(RSAkey));
 		}
 		
 		if (thisChannelModel.members[0] === thisUser.userUUID)
