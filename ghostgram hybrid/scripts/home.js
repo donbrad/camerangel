@@ -42,12 +42,29 @@ function homeSignin (e) {
         // Do stuff after successful login.
             closeModalViewLogin();
             APP.models.profile.parseUser = user;
+			
+			
+			var publicKey = user.get('publicKey');
+			var privateKey = user.get('privateKey');
+			if (publicKey === undefined || privateKey === undefined) {
+				var RSAkey = cryptico.generateRSAKey(1024);
+				publicKey = cryptico.publicKeyString(RSAkey);
+				privateKey = cryptico.privateKeyString(RSAkey);
+				
+				user.set('privateKey', privateKey);
+				user.set('publicKey', publicKey);
+				
+				user.save();
+			}
+			   
+			
+			   
             APP.models.profile.currentUser.set('username', APP.models.profile.parseUser.get('username'));
             APP.models.profile.currentUser.set('email', APP.models.profile.parseUser.get('email'));
             APP.models.profile.currentUser.set('phone', APP.models.profile.parseUser.get('phone'));
             APP.models.profile.currentUser.set('alias', APP.models.profile.parseUser.get('alias'));
             APP.models.profile.currentUser.set('userUUID', APP.models.profile.parseUser.get('userUUID'));
-			 APP.models.profile.currentUser.set('rememberUsername', APP.models.profile.parseUser.get('rememberUsername'));
+			APP.models.profile.currentUser.set('rememberUsername', APP.models.profile.parseUser.get('rememberUsername'));
             APP.models.profile.currentUser.set('phoneVerified', APP.models.profile.parseUser.get('phoneVerified'));
             APP.models.profile.currentUser.set('emailVerified', APP.models.profile.parseUser.get('emailVerified'));
             APP.models.profile.parseACL = new Parse.ACL(APP.models.profile.parseUser);
@@ -96,7 +113,12 @@ function homeCreateAccount(e) {
                mobileNotify("Phone number matches existing user");
                return;
            } else {
-               
+               // Generate Keys for the user.  
+			   	var RSAkey = cryptico.generateRSAKey(1024);
+				var publicKey = cryptico.publicKeyString(RSAkey);
+				var privateKey = cryptico.privateKeyString(RSAkey);
+			   
+			   
                  //Phone number isn't a duplicate -- create user
                 user.set("username", username);
                 user.set("password", password);
@@ -108,6 +130,8 @@ function homeCreateAccount(e) {
                 user.set("phoneVerified", false);
 			    user.set("rememberUsername", false);
                 user.set("userUUID", userUUID);
+			    user.set("publicKey", publicKey);
+			    user.set("privateKey", privateKey)
 
                 user.signUp(null, {
                     success: function(user) {
@@ -120,6 +144,8 @@ function homeCreateAccount(e) {
                         APP.models.profile.currentUser.set('userUUID', user.get('userUUID'));
                         APP.models.profile.currentUser.set('phoneVerified', false);
                         APP.models.profile.currentUser.set('emailVerified',user.get('emailVerified'));
+						APP.models.profile.currentUser.set('publicKey',user.get('publicKey'));
+						APP.models.profile.currentUser.set('privateKey',user.get('privateKey'));
                         APP.models.profile.currentUser.bind('change', syncProfile);
                         APP.models.profile.parseACL = new Parse.ACL(Parse.User.current());
                        mobileNotify('Welcome to ghostgrams!');

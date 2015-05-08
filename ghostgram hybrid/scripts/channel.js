@@ -89,7 +89,14 @@ function onShowChannel(e) {
 		else 
 			contactUUID = thisChannelModel.members[0];	
 		
-		var thisChannel = new secureChannel(thisUser.userUUID, channelUUID, thisChannelModel.userKey, thisChannelModel.userPrivateKey);
+		APP.models.channel.currentContactUUID = contactUUID;
+		APP.models.channel.currentContactModel = getContactModel(contactUUID);
+		var contactKey = thisChannelModel.contactKey;
+		if (contactKey === undefined) {
+			mobileNotify("No public key for this contact");
+		}
+		
+		var thisChannel = new secureChannel(thisUser.userUUID, channelUUID, thisChannelModel.userKey, thisChannelModel.userPrivateKey, contactKey);
 		thisChannel.onMessage(onChannelRead);
 		thisChannel.onPresence(onChannelPresence);
 		mobileNotify("Getting Previous Messages...");
@@ -97,11 +104,10 @@ function onShowChannel(e) {
 			APP.models.channels.messagesDS.data([]);
 			APP.models.channels.messagesDS.data(messages);		
 		});
-	}
+	} 
 	
 
-	APP.models.channel.currentContactUUID = contactUUID;
-	APP.models.channel.currentContactModel = getContactModel(contactUUID);
+	
 	APP.models.channel.currentChannel = thisChannel;
 	APP.models.channel.currentModel = thisChannelModel;
 	var name = thisChannelModel.name;

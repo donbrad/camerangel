@@ -1,11 +1,12 @@
 // Setup
 // ---
-function secureChannel(userUUID, channelUUID, publicKey, RSAkeyString) {
+function secureChannel(userUUID, channelUUID, publicKey, RSAkeyString, contactKey) {
     var channel = channelUUID;
     
 	var RSAkey = cryptico.privateKeyFromString(RSAkeyString);
     // An object userUUID and publicKey. It will be given 
     // to other users.
+	
     var thisUser = {
 		alias: APP.models.profile.currentUser.alias,
         username: userUUID,
@@ -148,9 +149,8 @@ function secureChannel(userUUID, channelUUID, publicKey, RSAkeyString) {
                 ttl = 86400;  // 24 hours
            // if (recipient in users) {
                 var content = message;
-                var recipient_key = users[recipient];
 				var currentTime =  new Date().getTime()/1000;
-                message = cryptico.encrypt(message, recipient_key);
+                message = cryptico.encrypt(message, contactKey);
 
                 pubnub.uuid(function (msgID) {
                     pubnub.publish({
@@ -217,14 +217,31 @@ function secureChannel(userUUID, channelUUID, publicKey, RSAkeyString) {
 				channel: channel,
 				limit: 64,
 				callback: function (messages) {
+					var clearMessageArray = [];
 					messages = messages[0];
 					messages = messages || [];
+					
 					for(var i = 0; i < messages.length; i++) {
-						messageHandler(messages[i]);
+						var msg = messages[i];
+						var content = '';
+						if (msg.recipient === userUUID)  {
+							// Just process messages from other user
+							content = cryptico.decrypt(msg.content.cipher, RSAkey).plaintext;
+							 var parsedMsg = {
+								msgID: msg.msgID,
+								content: content,
+								TTL: msg.ttl,
+								time: msg.time,
+								sender: msg.sender,
+								recipient: msg.recipient
+							};
+
+							clearMessageArray.push(parsedMsg);
+						}
 					}
 					
 					if(callBack)
-						callBack(messages);
+						callBack(clearMessageArray);
 				}
 
 			});
