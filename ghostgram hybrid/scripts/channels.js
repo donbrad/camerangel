@@ -69,7 +69,7 @@ function addPrivateChannel (contactUUID, contactAlias, channelUUID) {
     channel.set("description", "P2P : " + contactAlias);
     channel.set("channelId", channelUUID);
 	channel.set('userKey',  publicKey);
-	channel.set('userPrivateKey', JSON.stringify(RSAkey));
+	channel.set('userPrivateKey', cryptico.privateKeyString(RSAkey));
 	channel.set('contactKey', null);
     channel.set("members", [APP.models.profile.currentUser.userUUID, contactUUID]);
     

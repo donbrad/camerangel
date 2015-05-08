@@ -1,9 +1,9 @@
 // Setup
 // ---
-function secureChannel(userUUID, channelUUID, publicKey, RSAkey) {
+function secureChannel(userUUID, channelUUID, publicKey, RSAkeyString) {
     var channel = channelUUID;
     
-
+	var RSAKey = cryptico.privateKeyFromString(RSAkeyString);
     // An object userUUID and publicKey. It will be given 
     // to other users.
     var thisUser = {

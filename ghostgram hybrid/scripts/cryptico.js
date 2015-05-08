@@ -3188,7 +3188,27 @@ var cryptico = (function() {
     aes.Init();
 
     var base64Chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
-
+	var parametersBigint = ["n", "d", "p", "q", "dmp1", "dmq1", "coeff"];
+	
+	my.privateKeyString = function(rsakey) {
+        var keyObj = {};
+        parametersBigint.forEach(function(parameter){
+            keyObj[parameter] = c.b16to64(rsakey[parameter].toString(16));
+        });
+        // e is 3 implicitly
+        return JSON.stringify(keyObj);
+    }
+	
+    my.privateKeyFromString = function(string) {
+        var keyObj = JSON.parse(string);
+        var rsa = new RSAKey();
+        parametersBigint.forEach(function(parameter){
+            rsa[parameter] = parseBigInt(c.b64to16(keyObj[parameter].split("|")[0]), 16);
+        });
+        rsa.e = parseInt("03", 16);
+        return rsa
+    }
+	
     my.b256to64 = function(t) {
         var a, c, n;
         var r = '', l = 0, s = 0;
