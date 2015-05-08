@@ -1,6 +1,9 @@
 function onInitChannel(e) {
 	e.preventDefault();
 	
+	APP.models.channel.messagesDS.data([]);
+	APP.models.channel.membersDS.data([]);
+	
 	 $("#messages-listview").kendoMobileListView({
         dataSource: APP.models.channel.messagesDS,
         template: $("#messagesTemplate").html(),
@@ -52,11 +55,13 @@ function timeSince(date) {
 
 	return Math.floor(seconds) + "s";
 }
+
 function onHideChannel(e) {
 	e.preventDefault();
 	if (APP.models.channel.currentChannel !== undefined)
 		APP.models.channel.currentChannel.quit();   // Unsubscribe on current channel.
 }
+
 function onShowChannel(e) {
 	e.preventDefault();
 	var channelUUID = e.view.params.channel;
@@ -87,6 +92,11 @@ function onShowChannel(e) {
 		var thisChannel = new secureChannel(thisUser.userUUID, channelUUID, thisChannelModel.userKey, thisChannelModel.userPrivateKey);
 		thisChannel.onMessage(onChannelRead);
 		thisChannel.onPresence(onChannelPresence);
+		mobileNotify("Getting Previous Messages...");
+		thisChannel.getMessageHistory(function (messages) {
+			APP.models.channels.messagesDS.data([]);
+			APP.models.channels.messagesDS.data(messages);		
+		});
 	}
 	
 

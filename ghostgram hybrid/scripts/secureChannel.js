@@ -212,16 +212,19 @@ function secureChannel(userUUID, channelUUID, publicKey, RSAkeyString) {
         },
 		
 		// Get any messages that are in the channel
-		getMessageHistory: function () {
+		getMessageHistory: function (callBack) {
 		   pubnub.history({
 				channel: channel,
-				limit: 100,
+				limit: 64,
 				callback: function (messages) {
 					messages = messages[0];
 					messages = messages || [];
 					for(var i = 0; i < messages.length; i++) {
 						messageHandler(messages[i]);
 					}
+					
+					if(callBack)
+						callBack(messages);
 				}
 
 			});

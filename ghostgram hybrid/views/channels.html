@@ -214,14 +214,15 @@
 </div>
 
 <script type="text/x-kendo-tmpl" id="messagesTemplate">
-   <div style="clear:both; background: transparent; color:\\#2e2e2e; min-height: 36px;">
-	<div #var className = "float: right; background: \\#aabbcc; text-align: right;"; if (sender === APP.models.channel.currentContactUUID) {  className="float:left; background: \\#c8c8c8; ";  }# style="width: 80%; #:className#" >
-	 # var name; if (sender === APP.models.channel.currentContactUUID) { name =  APP.models.channel.currentContactModel.alias; } else {name = APP.models.profile.currentUser.alias; }  #
-	  <div style="clear:both;">
-		  <span font-size: 1.5em;">#:name# </span>
-		   <span style="float: right;"># var formattedTime = timeSince(time); # #: formattedTime #</span>
+   <div style="min-height: 36px;">
+	<div #var className = "float: right; if (sender === APP.models.channel.currentContactUUID) {  className="float:left; ";  }# style="width: 90%; #=className#" >
+	 # var formattedTime = timeSince(time); var name = ""; if (sender === APP.models.channel.currentContactUUID) { name =  APP.models.channel.currentContactModel.alias; }  #	
+	 <div style="clear:both;">
+		   #if (name !== "") {# <span style="font-size: 18px;">#=name# </span> #}#
+		   <span style="float: right; font-size: 14px;"> #:formattedTime#</span>
 	   </div>
-	   <div style="font-size: 1.0em; clear:both;">#: content #</div>
+	  
+	   <div style="clear:both;">#= content #</div>
 
 	</div>
   </div> 
