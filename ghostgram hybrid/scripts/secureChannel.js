@@ -146,7 +146,7 @@ function secureChannel(userUUID, channelUUID, publicKey, RSAkey) {
         sendMessage: function (recipient, message, ttl) {
             if (ttl === undefined || ttl < 60)
                 ttl = 86400;  // 24 hours
-            if (recipient in users) {
+           // if (recipient in users) {
                 var content = message;
                 var recipient_key = users[recipient];
 				var currentTime =  new Date().getTime()/1000;
@@ -182,7 +182,7 @@ function secureChannel(userUUID, channelUUID, publicKey, RSAkey) {
                         }
                     });
                 });
-            }
+          //  }
         },
         // Changes the function that is called when you are sent a message or
         // when you send a message.
