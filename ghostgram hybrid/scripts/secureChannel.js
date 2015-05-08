@@ -3,11 +3,12 @@
 function secureChannel(userUUID, channelUUID) {
     var channel = channelUUID;
     
-    // Generate an RSA key and grab the public key.
-    var RSAkey = cryptico.generateRSAKey(1024);
-    var publicKey = cryptico.publicKeyString(RSAkey);
+    // Get the persistent keys for this model
+    var RSAkey = APP.models.channel.currentModel.userPrivateKey;
+    var publicKey = APP.models.channel.currentModel.userKey;
     
-	updateParseObject('channels', 'channelId', channelUUID, 'userKey', publicKey);
+	
+	
     // An object userUUID and publicKey. It will be given 
     // to other users.
     var thisUser = {
