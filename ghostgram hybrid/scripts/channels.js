@@ -7,7 +7,6 @@ function addChannel(e) {
     var name = $('#channels-addChannel-name').val(),
         media = $('#channels-addChannel-media').val(),
         archive = $('#channels-addChannel-archive').val(),
-        expirationDate = $('#channels-addChannel-expirationDate').val(),
         description = $('#channels-addChannel-description').val(), 
         guid = uuid.v4()
         
@@ -16,7 +15,7 @@ function addChannel(e) {
 	channel.set('isPrivate', false);
     channel.set("media",  media === "true" ? true : false);
     channel.set("archive",  archive === "true" ? true : false);
-    channel.set("expirationDate", expirationDate);
+  
     channel.set("description", description);
 	channel.set("members", []),
     channel.set("channelId", guid);
@@ -27,8 +26,6 @@ function addChannel(e) {
         // Execute any logic that should take place after the object is saved.
          
           APP.models.channels.channelsDS.add(channel.attributes);
-          closeModalViewAddChannel();
-          
           mobileNotify('Added channel : ' + channel.get('name'));
       },
       error: function(channel, error) {
@@ -66,7 +63,6 @@ function addPrivateChannel (contactUUID, contactAlias, channelUUID) {
 	channel.set('isPrivate', true);
     channel.set("media",  true);
     channel.set("archive",  false);
-    channel.set("expirationDate", null);
     channel.set("description", "P2P : " + contactAlias);
     channel.set("channelId", channelUUID);
 	channel.set('userKey',  publicKey);
@@ -110,7 +106,6 @@ function editChannel(e) {
     APP.models.channels.currentChannel.set('channelId', channel.channelId);
     APP.models.channels.currentChannel.set('name', channel.name);
     APP.models.channels.currentChannel.set('description', channel.description);
-    APP.models.channels.currentChannel.set('expirationDate', channel.expirationDate);
     APP.models.channels.currentChannel.set('media', channel.media);
 	 APP.models.channels.currentChannel.set('isPrivate', channel.isPrivate);
     APP.models.channels.currentChannel.set('archive', channel.archive);

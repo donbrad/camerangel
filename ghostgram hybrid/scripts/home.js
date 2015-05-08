@@ -65,6 +65,8 @@ function homeSignin (e) {
             APP.models.profile.currentUser.set('alias', APP.models.profile.parseUser.get('alias'));
             APP.models.profile.currentUser.set('userUUID', APP.models.profile.parseUser.get('userUUID'));
 			APP.models.profile.currentUser.set('rememberUsername', APP.models.profile.parseUser.get('rememberUsername'));
+			APP.models.profile.currentUser.set('publicKey', publicKey);
+			APP.models.profile.currentUser.set('privateKey', privateKey);
             APP.models.profile.currentUser.set('phoneVerified', APP.models.profile.parseUser.get('phoneVerified'));
             APP.models.profile.currentUser.set('emailVerified', APP.models.profile.parseUser.get('emailVerified'));
             APP.models.profile.parseACL = new Parse.ACL(APP.models.profile.parseUser);
