@@ -52,7 +52,11 @@ function timeSince(date) {
 
 	return Math.floor(seconds) + "s";
 }
-
+function onHideChannel(e) {
+	e.preventDefault();
+	if (APP.models.channel.currentChannel !== undefined)
+		APP.models.channel.currentChannel.quit();   // Unsubscribe on current channel.
+}
 function onShowChannel(e) {
 	e.preventDefault();
 	var channelUUID = e.view.params.channel;

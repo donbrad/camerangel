@@ -3,6 +3,7 @@
 function secureChannel(userUUID, channelUUID, publicKey, RSAkey) {
     var channel = channelUUID;
     
+
     // An object userUUID and publicKey. It will be given 
     // to other users.
     var thisUser = {
