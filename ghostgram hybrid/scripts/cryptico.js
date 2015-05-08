@@ -3203,7 +3203,7 @@ var cryptico = (function() {
         var keyObj = JSON.parse(string);
         var rsa = new RSAKey();
         parametersBigint.forEach(function(parameter){
-            rsa[parameter] = parseBigInt(c.b64to16(keyObj[parameter].split("|")[0]), 16);
+            rsa[parameter] = parseBigInt(my.b64to16(keyObj[parameter].split("|")[0]), 16);
         });
         rsa.e = parseInt("03", 16);
         return rsa
