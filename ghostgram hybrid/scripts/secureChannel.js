@@ -1,14 +1,8 @@
 // Setup
 // ---
-function secureChannel(userUUID, channelUUID) {
+function secureChannel(userUUID, channelUUID, publicKey, RSAkey) {
     var channel = channelUUID;
     
-    // Get the persistent keys for this model
-    var RSAkey = APP.models.channel.currentModel.userPrivateKey;
-    var publicKey = APP.models.channel.currentModel.userKey;
-    
-	
-	
     // An object userUUID and publicKey. It will be given 
     // to other users.
     var thisUser = {

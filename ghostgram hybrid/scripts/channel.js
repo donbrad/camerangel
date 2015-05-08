@@ -78,7 +78,7 @@ function onShowChannel(e) {
 		else 
 			contactUUID = thisChannelModel.members[0];	
 		
-		var thisChannel = new secureChannel(thisUser.userUUID, channelUUID);
+		var thisChannel = new secureChannel(thisUser.userUUID, channelUUID, thisChannelModel.userKey, thisChannelModel.userPrivateKey);
 		thisChannel.onMessage(onChannelRead);
 		thisChannel.onPresence(onChannelPresence);
 	}

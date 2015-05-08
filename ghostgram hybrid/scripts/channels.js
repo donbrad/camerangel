@@ -57,7 +57,9 @@ function addPrivateChannel (contactUUID, contactAlias, channelUUID) {
     var channel = new Channels();
     
     var guid = uuid.v4();
-        
+    var RSAkey = cryptico.generateRSAKey(1024);
+	var publicKey = cryptico.publicKeyString(RSAkey);
+	
     channel.set("name", contactAlias);
     channel.set("isOwner", true);
 	channel.set('isPrivate', true);
@@ -66,7 +68,8 @@ function addPrivateChannel (contactUUID, contactAlias, channelUUID) {
     channel.set("expirationDate", null);
     channel.set("description", "P2P : " + contactAlias);
     channel.set("channelId", channelUUID);
-	channel.set('userKey',  null);
+	channel.set('userKey',  publicKey);
+	channel.set('userPrivateKey', RSAkey);
 	channel.set('contactKey', null);
     channel.set("members", [APP.models.profile.currentUser.userUUID, contactUUID]);
     
