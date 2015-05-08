@@ -3193,7 +3193,7 @@ var cryptico = (function() {
 	my.privateKeyString = function(rsakey) {
         var keyObj = {};
         parametersBigint.forEach(function(parameter){
-            keyObj[parameter] = c.b16to64(rsakey[parameter].toString(16));
+            keyObj[parameter] = my.b16to64(rsakey[parameter].toString(16));
         });
         // e is 3 implicitly
         return JSON.stringify(keyObj);
