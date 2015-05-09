@@ -2,54 +2,37 @@
 
 function dataChannelRead (m, envelope, channel) {
     switch(m.type) {
-			//  { type: 'privateInvite',  channelId: <channelUUID>,  owner: <ownerUUID>}
+			//  { type: 'privateInvite',  channelId: <channelUUID>,  owner: <ownerUUID>, message: <text>, time: current time}
 		case 'privateInvite' : {
-				
+				// Todo:  Does private channel exist?  If not create,  if so notify user of request
 		} break;
 			
 			//  { type: 'channelInvite',  channelId: <channelUUID>, owner: <ownerUUID>}
 		case 'channelInvite' : {
-			
+			// Todo:  Does private channel exist?  If not create,  if so notify user of request
 		} break;
-			//  { type: 'packageOffer',  channelId: <channelUUID>, owner: <ownerUUID>, type: 'text'|'pdf'|'image'|'video', title: <text>, message: <text>}
+			//  { type: 'packageOffer',  channelId: <channelUUID>, owner: <ownerUUID>, packageId: <packageUUID>, private: true|false, type: 'text'|'pdf'|'image'|'video', title: <text>, message: <text>}
 		case 'packageOffer' : {
 			
 		} break;
+				//  { type: 'packageRequest',  channelId: <channelUUID>, owner: <ownerUUID>, packageId: <packageUUID>, private: true|false, message: <text>}
+		case 'packageRequest' : {
+			
+		} break;
+
 			
 	}
 }
 
-function appChannelRead (m, envelope, channel) {
-    switch(m.type) {		
-			//  { type: 'newUser',  userID: <userUUID>,  phone: <phone>, email: <email>}
-			// New user joined service -- enables users to update contact info
-		case 'newUser' : {
-			
-		} break;
-			
-			//  { type: 'userValidated',  userID: <userUUID>,  phone: <phone>, email: <email>}
-			// User has validated phone and email -- enables users to update contact info
-		case 'userValidated' : {
-			
-		} break;
-			//  { type: 'userBlock',  userID: <userUUID>,  phone: <phone>, email: <email>}
-		case 'userBlock' : {
-			
-		} break;
-			//  { type: 'appInfo',  level: 'info'|'update'|issue', id: <id>  message: <text>, url: <url>}
-		case 'appInfo' : {
-			
-		} break;
-	}
-}
+
 // Send the invite through the data channel
-function privateChannelInvite(contactUUID, message) {
+function privateChannelInvite(contactUUID, channelUUID, message) {
 	 var msg = new Object();
 
-	msg.type = 'privateinvite';
-	msg.senderUUID = APP.models.profile.currentUser.get('userUUID');
-	msg.senderName = APP.models.profile.currentUser.get('alias');
-	msg.content  = {type: 'text', message : message};
+	msg.type = 'privateInvite';
+	msg.owner = APP.models.profile.currentUser.get('userUUID');
+	msg.channel = channelUUID;
+	msg.message  = message;
 	msg.time = new Date().getTime();
 
 
