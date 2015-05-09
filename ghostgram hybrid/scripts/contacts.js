@@ -54,12 +54,16 @@ function deleteContact(e) {
 	if (e !== undefined)
 		e.preventDefault();
     var dataSource = APP.models.contacts.contactsDS;
+	var string = "Deleted contact: " + APP.models.contacts.currentContact.name + " ("+ APP.models.contacts.currentContact.alias + ")" ;
+	
     dataSource.filter( { field: "uuid", operator: "eq", value: APP.models.contacts.currentContact.uuid });
     var view = dataSource.view();
     var contact = view[0];
 	 dataSource.filter([]);
     dataSource.remove(contact); 
     deleteParseObject("contacts", 'uuid', APP.models.contacts.currentContact.get('uuid'));
+	mobileNotify(string);
+	APP.kendo.navigate('#contacts');
     
 }
 
