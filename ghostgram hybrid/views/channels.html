@@ -22,7 +22,7 @@
 <script type="text/x-kendo-tmpl" id="channels-listview-template">
     <div style="clear:both;">
        <div style="float:right; font-size: 10px;"> <a data-rel="actionsheet" href="\\#channelActions" data-actionsheet-context="#:channelId#" data-role="button"><i class="ghostIcon fa fa-cog"></i></a> </div>
-       <div class="ghostTextLarge">  #if (isPrivate) {# <i class="ghostIconNavbar fa fa-user-secret"> </i> #}# <a data-rel='view' href="\\#channel?channel=#:channelId#"> #:name# </a></div>
+       <div class="ghostTextLarge">  #if (isPrivate) {# <i class="ghostIconNavbar fa fa-user-secret"> </i> #} else { # <i class="ghostIconNavbar fa fa-users"> </i> #}# <a data-rel='view' href="\\#channel?channel=#:channelId#"> #:name# </a></div>
        <div class="ghostDescription" style="padding-top: 8px; padding-bottom: 4px;"> #: description # </div>
         <div style="color: \\#2e2e2e;">
            <span style="float: left;"> 

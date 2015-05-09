@@ -395,6 +395,17 @@
                  
              });
 			
+			APP.pubnub.subscribe({
+                channel : 'ghostgramsapp129195720',
+                windowing: 1000,    
+                message : appChannelRead,
+                connect: function(){mobileNotify("App Channel Connected")},
+                disconnect: function(){mobileNotify("App Channel Disconnected")},
+                reconnect: function(){mobileNotify("App Channel Reconnected")},
+                error: function(){mobileNotify("App Channel Network Error")} 
+                 
+             });
+			
 			// Get any messages in the channel
              APP.pubnub.history({
 				 channel: uuid,

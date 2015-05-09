@@ -1,17 +1,47 @@
+
+
 function dataChannelRead (m, envelope, channel) {
     switch(m.type) {
+			//  { type: 'privateInvite',  channelId: <channelUUID>,  owner: <ownerUUID>}
 		case 'privateInvite' : {
 				
 		} break;
 			
-		case 'privateInitiate' : {
-			APP.models.privateChannel.contactUUID = m.senderUUID;
-			APP.models.privateChannel.contactAlias = m.senderAlias;	
-			APP.models.privateChannel.channelUUID = m.channelUUID;	
+			//  { type: 'channelInvite',  channelId: <channelUUID>, owner: <ownerUUID>}
+		case 'channelInvite' : {
+			
 		} break;
+			//  { type: 'packageOffer',  channelId: <channelUUID>, owner: <ownerUUID>, type: 'text'|'pdf'|'image'|'video', title: <text>, message: <text>}
+		case 'packageOffer' : {
+			
+		} break;
+			
 	}
 }
 
+function appChannelRead (m, envelope, channel) {
+    switch(m.type) {		
+			//  { type: 'newUser',  userID: <userUUID>,  phone: <phone>, email: <email>}
+			// New user joined service -- enables users to update contact info
+		case 'newUser' : {
+			
+		} break;
+			
+			//  { type: 'userValidated',  userID: <userUUID>,  phone: <phone>, email: <email>}
+			// User has validated phone and email -- enables users to update contact info
+		case 'userValidated' : {
+			
+		} break;
+			//  { type: 'userBlock',  userID: <userUUID>,  phone: <phone>, email: <email>}
+		case 'userBlock' : {
+			
+		} break;
+			//  { type: 'appInfo',  level: 'info'|'update'|issue', id: <id>  message: <text>, url: <url>}
+		case 'appInfo' : {
+			
+		} break;
+	}
+}
 // Send the invite through the data channel
 function privateChannelInvite(contactUUID, message) {
 	 var msg = new Object();
