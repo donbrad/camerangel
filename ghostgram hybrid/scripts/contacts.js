@@ -341,81 +341,72 @@ function contactsAddContact(e){
         alias = $('#addContactAlias').val(),
         phone = $('#addContactPhone').val(),
         email = $('#addContactEmail').val(), 
-        private = $('#addContactPrivate').val(),
         photo = $('#addContactPhoto').prop('src'),
         address = $('#addContactAddress').val();
         guid = uuid.v4();
- 
-	if (private !== false)
-		private = true;
 	
     //phone = phone.replace(/\+[0-9]{1-2}/,'');
     phone = phone.replace(/\D+/g, "");
-    mobileNotify("Saving new contact...");
-    contact.setACL(APP.models.profile.parseACL);
-    contact.set("name", name );
-    contact.set("alias", alias);
-    contact.set("phone", phone);
-    contact.set("email", email);
-    contact.set("address", address);
-    contact.set("photo", photo);
-	contact.set("group", '');
-	contact.set("priority", 0);
-	contact.set("contactUUID", null);
-	contact.set("contactPhone", null);
-	contact.set("contactEmail", null);
-    contact.set("privateChannel", private);
-    contact.set("uuid", guid);
-    
-    getBase64FromImageUrl(photo, function (fileData) {
-        var parseFile = new Parse.File(guid+".png", {base64 : fileData}, "image/png");
-        parseFile.save().then(function() {
-            contact.set("parsePhoto", parseFile);
-             contact.save(null, {
-                  success: function(contact) {
-                    // Execute any logic that should take place after the object is saved.
-                    mobileNotify('Added contact : ' + contact.get('name') + ", looking up in Directory");
-                    APP.models.contacts.contactsDS.add(contact.attributes);
-                   
-					  
-					Parse.Cloud.run('matchContactToUser', { phone:  phone}, {
-                              success: function(result) {
-								  if (result.currentUser === true){
-									  contact.set('contactUUID', result.contact.get('userUUID'));
-									  contact.set('contactPhone', result.contact.get('phone'));
-									  contact.set('contactEmail', result.contact.get('email'));
-									  contact.save(null, {
-										  success: function(contact) {
-											  mobileNotify(result.contact.get('name') + "is Ghostgrams User!");
-										  },
-										  error: function (contact, error) {
-											  mobileNotify("Error mapping contact to exiting user " + error);
-											  
-										  }
-									  })
-									  
-								  } else {
-						
-								}
-						 		APP.kendo.navigate('#contactImport');
-                                 
-                              },
-                             error: function (result,error){
-                                 mobileNotify("Error Matching contact to existing user" + error);
-                             }
-                         });
-                  },
-                  error: function(contact, error) {
-                    // Execute any logic that should take place if the save fails.
-                    // error is a Parse.Error with an error code and message.
-                      handleParseError(error);
-                  }
-                });
-            }, function(error) {
-              // The file either could not be read, or could not be saved to Parse.
-                     handleParseError(error);
-            }); 
-        });    
+	 mobileNotify("Saving new contact...");
+	// Look up this contacts phone number in the gg directory
+	findUserByPhone(phone, function (result) {
+		contact.setACL(APP.models.profile.parseACL);
+		contact.set("name", name );
+		contact.set("alias", alias);
+		contact.set("phone", phone);
+		contact.set("address", address);
+		contact.set("photo", photo);
+		contact.set("group", '');
+		contact.set("priority", 0);
+		contact.set("privateChannel", null);
+		contact.set("uuid", guid);
+		if (result.found) {	
+			contact.set("phoneVerified", result.user.phoneVerified);
+			contact.set("emailVerified", result.user.emailVerified);
+			// Does the contact have a verified email address
+			if (result.user.emailVerified) {
+				// Yes - save the email address the contact verified
+				contact.set("email", result.user.email);
+			} else {
+				// No - just use the email addres the our user selected
+				contact.set("email", email);
+			}
+			contact.set('publicKey',  result.user.publicKey);
+			contact.set("contactUUID", result.user.userUUID);
+			
+		} else {
+			contact.set("phoneVerified", false);
+			contact.set("emailVerified", false);	
+			contact.set('publicKey',  null);
+			contact.set("contactUUID", null);
+		}
+							
+			
+
+		getBase64FromImageUrl(photo, function (fileData) {
+			var parseFile = new Parse.File(guid+".png", {base64 : fileData}, "image/png");
+			parseFile.save().then(function() {
+				contact.set("parsePhoto", parseFile);
+				 contact.save(null, {
+					  success: function(contact) {
+						// Execute any logic that should take place after the object is saved.
+						mobileNotify('Added contact : ' + contact.get('name'));
+						APP.models.contacts.contactsDS.add(contact.attributes);
+					  },
+					  error: function(contact, error) {
+						// Execute any logic that should take place if the save fails.
+						// error is a Parse.Error with an error code and message.
+						  handleParseError(error);
+					  }
+					});
+				}, function(error) {
+				  // The file either could not be read, or could not be saved to Parse.
+						 handleParseError(error);
+				}); 
+		});    
+
+	});
+   
 }
     
 function contactsPickContact(e) {

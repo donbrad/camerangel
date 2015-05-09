@@ -98,6 +98,60 @@ function mobileNotify(message) {
  
 }
 
+function findUserByPhone (phone) {
+	 Parse.Cloud.run('verifyPhoneNumber', { phone: phone }, 
+    {
+        success: function(result) {
+          if (result.verified) {
+               mobileNotify("Your phone number is verified.  Thank You!");
+               $("#modalview-verifyPhone").data("kendoMobileModalView").close();
+          } else {
+               mobileNotify("Sorry, your verification number: ' + result.recieved + ' didn't match. ");
+          }
+         
+        },
+        error: function (result,error){
+            mobileNotify('Error verifying phone ' + error);
+        }
+    });
+}
+
+function findUserByEmail (email, callBack) {
+	 Parse.Cloud.run('findUserByEmail', { email: email }, 
+    {
+        success: function(result) {
+          	if (result.status === 'ok') {
+				callBack({found: true, user: result});
+			} else {
+				callBack({found: false});
+			}
+         
+        },
+        error: function (result,error){
+            mobileNotify('Error Finding User by email  ' + error);
+			callBack({found: false});
+        }
+    });
+}
+
+function findUserByPhone (phone, callBack) {
+	 Parse.Cloud.run('findUserByPhone', { phone: phone }, 
+    {
+        success: function(result) {
+          	if (result.status === 'ok') {
+				callBack({found: true, user: result});
+			} else {
+				callBack({found: false});
+			}
+         
+        },
+        error: function (result,error){
+            mobileNotify('Error Finding User by email  ' + error);
+			callBack({found: false});
+        }
+    });
+}
+
 function verifyPhone(e){
     e.preventDefault();
     var code = $('#verifyPhone-code').val();
