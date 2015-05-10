@@ -94,8 +94,8 @@ function onShowChannel(e) {
 					thisChannel.onPresence(onChannelPresence);
 					mobileNotify("Getting Previous Messages...");
 					thisChannel.getMessageHistory(function (messages) {
-						APP.models.channels.messagesDS.data([]);
-						APP.models.channels.messagesDS.data(messages);		
+						APP.models.channel.messagesDS.data([]);
+						APP.models.channel.messagesDS.data(messages);		
 					});
 				} else {
 					mobileNotify('No secure connect for ' + thisContact.alias + ' ' + thisContact.name);
