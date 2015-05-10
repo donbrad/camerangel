@@ -84,10 +84,12 @@ function onShowChannel(e) {
 		APP.models.channel.currentContactModel = thisContact;
 		var contactKey = thisContact.publicKey;
 		if (contactKey === undefined) {
-			getUserPublicKey(contactUUID, function(){
+			getUserPublicKey(contactUUID, {
 				success: function (result, error) {
 					if (result.found) {
 						contactKey = result.publcKey;
+						thisContact.publicKey = contactKey;
+						updateParseObject('contacts', 'contactUUID', contactUUID, 'publicKey', contactKey);
 						var thisChannel = new secureChannel(thisUser.userUUID, channelUUID, userKey, privateKey, contactKey);
 						thisChannel.onMessage(onChannelRead);
 						thisChannel.onPresence(onChannelPresence);
