@@ -84,42 +84,36 @@ function onShowChannel(e) {
 		APP.models.channel.currentContactModel = thisContact;
 		var contactKey = thisContact.publicKey;
 		if (contactKey === undefined) {
-			getUserPublicKey(contactUUID, {
-				success: function (result, error) {
-					if (result.found) {
-						contactKey = result.publcKey;
-						thisContact.publicKey = contactKey;
-						updateParseObject('contacts', 'contactUUID', contactUUID, 'publicKey', contactKey);
-						var thisChannel = new secureChannel(thisUser.userUUID, channelUUID, userKey, privateKey, contactKey);
-						thisChannel.onMessage(onChannelRead);
-						thisChannel.onPresence(onChannelPresence);
-						mobileNotify("Getting Previous Messages...");
-						thisChannel.getMessageHistory(function (messages) {
-							APP.models.channels.messagesDS.data([]);
-							APP.models.channels.messagesDS.data(messages);		
-						});
-					} else {
-						mobileNotify('No secure connect for ' + thisContact.alias + ' ' + thisContact.name);
-					}
-					APP.models.channel.currentChannel = thisChannel;
-					APP.models.channel.currentModel = thisChannelModel;
-					var name = thisChannelModel.name;
-
-					if (thisChannelModel.isPrivate) {
-						name = '{' + name + '}';
-						if (name.length > 16)
-						 name = name.substring(0,15)+ '...}';
-					} else {
-						if (name.length > 17)
-						name = name.substring(0,17)+"...";
-					}
-
-					$("#channelNavBar").data('kendoMobileNavBar').title(name);
-					
-				},
-				error: function (result, error) {
+			getUserPublicKey(contactUUID, function (result, error) {
+				if (result.found) {
+					contactKey = result.publcKey;
+					thisContact.publicKey = contactKey;
+					updateParseObject('contacts', 'contactUUID', contactUUID, 'publicKey', contactKey);
+					var thisChannel = new secureChannel(thisUser.userUUID, channelUUID, userKey, privateKey, contactKey);
+					thisChannel.onMessage(onChannelRead);
+					thisChannel.onPresence(onChannelPresence);
+					mobileNotify("Getting Previous Messages...");
+					thisChannel.getMessageHistory(function (messages) {
+						APP.models.channels.messagesDS.data([]);
+						APP.models.channels.messagesDS.data(messages);		
+					});
+				} else {
 					mobileNotify('No secure connect for ' + thisContact.alias + ' ' + thisContact.name);
 				}
+				APP.models.channel.currentChannel = thisChannel;
+				APP.models.channel.currentModel = thisChannelModel;
+				var name = thisChannelModel.name;
+
+				if (thisChannelModel.isPrivate) {
+					name = '{' + name + '}';
+					if (name.length > 16)
+					 name = name.substring(0,15)+ '...}';
+				} else {
+					if (name.length > 17)
+					name = name.substring(0,17)+"...";
+				}
+
+				$("#channelNavBar").data('kendoMobileNavBar').title(name);	
 			});
 		} else {
 			var thisChannel = new secureChannel(thisUser.userUUID, channelUUID, userKey, privateKey, contactKey);
@@ -127,8 +121,8 @@ function onShowChannel(e) {
 			thisChannel.onPresence(onChannelPresence);
 			mobileNotify("Getting Previous Messages...");
 			thisChannel.getMessageHistory(function (messages) {
-				APP.models.channels.messagesDS.data([]);
-				APP.models.channels.messagesDS.data(messages);		
+				APP.models.channel.messagesDS.data([]);
+				APP.models.channel.messagesDS.data(messages);		
 			});
 			APP.models.channel.currentChannel = thisChannel;
 			APP.models.channel.currentModel = thisChannelModel;

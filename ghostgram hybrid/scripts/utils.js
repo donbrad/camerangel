@@ -99,9 +99,9 @@ function mobileNotify(message) {
 }
 
 function getUserPublicKey (uuid, callBack) {
-	 Parse.Cloud.run('getUserPublicKey', { uuid: uuid }, 
+	Parse.Cloud.run('getUserPublicKey', { uuid: uuid }, 
     {
-        success: function(result) {
+        success: function(result, error) {
           if (result.status === 'ok') {
              	callBack({found: true, publicKey: result.publicKey});
           } else {
@@ -109,7 +109,7 @@ function getUserPublicKey (uuid, callBack) {
           }
          
         },
-        error: function (result,error){
+        error: function (result, error){
            callBack(null, error)
         }
     });
