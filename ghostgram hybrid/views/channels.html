@@ -213,18 +213,15 @@
 </div>
 
 <script type="text/x-kendo-tmpl" id="messagesTemplate">
-<div style="min-height: 36px;">
-	# var className = "float: right"; if (sender === APP.models.channel.currentContactUUID) {  className="float:left; ";  }#
+<div class='ghostMessage' style="min-height: 36px;">
+	# var className = "ghostMessageBodyUser"; if (sender === APP.models.channel.currentContactUUID) {  className="ghostMessageBodyOther";  }#
 	# var formattedTime = timeSince(time); var name = ""; if (sender === APP.models.channel.currentContactUUID) { name =  APP.models.channel.currentContactModel.alias; }  #	
-	<div style="width: 90%; #=className#" >
-		
-		<div style="clear:both;">
-		   #if (name !== "") {# <span style="font-size: 18px;">#=name# </span> #}#
-		   <span style="float: right; font-size: 14px;"> #:formattedTime#</span>
-		</div>
-
-		<div style="clear:both;">#= content #</div>
-
+	<div style="clear:both;">
+		   #if (name !== "") {# <span class="ghostMessageContact">#=name# </span> #}#
+		   <span class="ghostMessageTime"> #:formattedTime#</span>
+	</div>
+	<div style="clear:both;">
+		<div class="#=className#">#= content #</div>
 	</div>
 </div> 
 </script>

@@ -208,6 +208,37 @@
     font-weight:400;
 }
 
+.ghostMessage {
+	background-color : transparent;
+ 	color: #2e2e2e;
+    font-size: 14px;	
+}
+
+.ghostMessageBodyUser {
+	color: #2e2e2e;
+	padding-left: 20%;
+	max-width: 80%;
+}
+
+.ghostMessageBodyOther {
+	color: #2e2e2e;
+	clear: both;
+	max-width: 80%;
+}
+
+.ghostMessageContact {
+ 	color: rgb(37,120,152);
+    font-size: 14px;
+    font-weight:400;	
+}
+
+.ghostMessageTime {
+	float: right;
+	color: #888888;
+    font-size: 12px;
+    font-weight:400;
+}
+
 .ghostContent {
    background-color: rgb(37,120,152);
    background: cover;
