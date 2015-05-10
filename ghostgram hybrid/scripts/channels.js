@@ -107,7 +107,8 @@ function editChannel(e) {
     APP.models.channels.currentChannel.set('name', channel.name);
     APP.models.channels.currentChannel.set('description', channel.description);
     APP.models.channels.currentChannel.set('media', channel.media);
-	 APP.models.channels.currentChannel.set('isPrivate', channel.isPrivate);
+	APP.models.channels.currentChannel.set('members', channel.members);
+	APP.models.channels.currentChannel.set('isPrivate', channel.isPrivate);
     APP.models.channels.currentChannel.set('archive', channel.archive);
     APP.models.channels.currentChannel.bind('change', syncCurrentChannel);
     
@@ -148,7 +149,7 @@ function gotoChannel(channelId) {
 function onInitChannels (e) {
     e.preventDefault();
     // ToDo: Initialize list view
-    
+	
      $("#channels-listview").kendoMobileListView({
         dataSource: APP.models.channels.channelsDS,
         template: $("#channels-listview-template").html()
@@ -156,4 +157,70 @@ function onInitChannels (e) {
     });
 }
 
-    
+function onShowEditChannel (e) {
+	var currentChannelModel = APP.models.channels.currentChannel;
+	var members = currentChannelModel.members;
+	var memberString = '';
+	
+	if (members.length > 0) {
+		if (currentChannelModel.isPrivate) {
+			// Private channel members are referenced by contactUUID -- users official id 
+			// as private channels are only between verified members
+			//
+			var privateContact = ''
+			if (members[0] === APP.models.profile.currentUser.userUUID) {
+				privateContact = getContactModel(members[1]);
+			} else {
+				privateContact = getContactModel(members[0]);
+			}
+			memberString = privateContact.name + ' (' + privateContact.alias + ') ';
+		} else {
+			// Group channel members are referenced indirectly by uuid 
+			// channel can include invited users who havent signed up yet
+			for (var i=0; i<members.length; i++) {
+				var thisMember = findContactByUUID(members[i]);
+				memberString += thisMember.name + ' (' + thisMember.alias + ')';
+			}
+		}
+		
+		$('#editChannelMembers').val(memberString);
+	}
+}
+
+function doShowChannelMembers (e) {
+	e.preventDefault();
+	var currentChannelModel = APP.models.channels.currentChannel;
+	if (currentChannelModel.isPrivate) {
+		mobileNotify("Sorry, you cannot change members in a Private Channel");
+		APP.kendo.navigate('#:back');
+	}
+    APP.models.channel.currentModel = currentChannelModel;
+	var members = currentChannelModel.members;
+	APP.models.channel.membersDS.data([]);
+	if (currentChannelModel.isPrivate) {
+		var privateContact = ''
+		if (members[0] === APP.models.profile.currentUser.userUUID) {
+			privateContact = getContactModel(members[1]);
+		} else {
+			privateContact = getContactModel(members[0]);
+		}
+		APP.models.channel.membersDS.add(privateContact);
+	} else {
+		if (members.length > 0) {
+			for (var i=0; i<members.length; i++) {
+				var thisMember = findContactByUUID(members[i]);
+				APP.models.channel.membersDS.add(thisMember);
+			}
+		}		
+	}
+	
+}
+  function doInitChannelMembers (e) {
+	e.preventDefault(); 
+	  
+	$("#channelMembers-listview").kendoMobileListView({
+        dataSource: APP.models.channel.membersDS,
+        template: $("#memberTemplate").html()
+		
+    });
+}

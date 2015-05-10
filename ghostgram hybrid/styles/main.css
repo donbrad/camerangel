@@ -277,6 +277,17 @@
   border: 1px solid #aeaeae;
 }
 
+.km-root .km-pane .km-view.appearance .km-listview a 
+{
+  position: relative;
+  font-size: 14px;
+  width: 100%;
+  right: 0;
+  margin-top: 0;
+  top: 0;
+  border: 1px solid #aeaeae;
+}
+
 .km-root .km-pane .km-view.appearance .km-listview textarea 
 {
   clear:both;

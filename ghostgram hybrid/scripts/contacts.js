@@ -43,6 +43,16 @@ function getContactModel(contactUUID) {
 	return(contact);
 }
 
+function findContactByUUID(uuid) {
+var dataSource = APP.models.contacts.contactsDS;
+    dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
+    var view = dataSource.view();
+    var contact = view[0];
+	dataSource.filter([]);
+	
+	return(contact);	
+}
+
 
 function editContact() {
     APP.kendo.navigate("#editContact");  

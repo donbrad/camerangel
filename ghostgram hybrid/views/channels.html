@@ -56,7 +56,7 @@
    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><i class="ghostIconNavbar fa fa-bars"></i></a>
+             <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><i class="ghostIconNavbar fa fa-bars"></i></a>
             <a data-align="right" data-role="button"  data-rel="drawer" href="#channelMembers" > <i class="ghostIconNavbar fa fa-users"></i> </a>
         </div>
     </div>
@@ -90,22 +90,25 @@
                 </label>
             </li>
 			 <li>
-                <label><a data-role="button" data-rel="drawer" href='#channelMembers' >Members</a>
-                    <textarea cols=40 rows=2 type="text" id="channels-addChannel-members" value="" />
+                <label> Members
+					
+					<a data-role="button" data-rel="drawer" href="#channelMembers"><i class="ghostIconNavbar fa fa-plus"></i> Add Members</a>
                 </label>
+				 
 			</li> 
         </ul>
     </form> 
 
     <div data-role="footer">
         <div data-role="navbar">
+			<a data-role="button" href="#:back"  data-align="left">Cancel</a>
             <a data-click="addChannel" type="button" data-role="button" data-align="right">Create Channel</a>
         </div>
     </div>
 </div>
 
 
-<div data-role="view" id="editChannel" data-model="APP.models.channels.currentChannel" style="display: none;" class="appearance">
+<div data-role="view" id="editChannel" data-model="APP.models.channels.currentChannel" style="display: none;" data-show="onShowEditChannel" class="appearance">
     <div data-role="header">
         <div data-role="navbar">
             <a href="#:back" data-role="button" type="button" data-align="left" >Back</a>
@@ -131,13 +134,6 @@
                     <input type="text" id="channels-editChannel-description" data-bind="value: description" />
                 </label>
             </li>
-            <li>
-            <label>
-                    Expiration Date
-                    <input id="channels-editChannel-expirationDate" type="date"  data-bind="value: expirationDate"/>
-                </label>
-            </li>
-          
              <li>
                <label>Media
                     <select id="channels-editChannel-media" data-bind="value: media">
@@ -154,7 +150,11 @@
                     </select>
                 </label>
             </li>
-  
+  			<li>
+               <label>Members
+				   <textarea id='editChannelMembers' readonly></textarea>
+				</label>
+			</li>
         </ul>
     </form> 
 
@@ -244,7 +244,7 @@
     </div>
 </script>
 
-<div data-role="drawer" id="channelMembers" style="width: 240px" data-title="Members" data-position='right' data-views="['channel', 'editChannel', 'addChannel']">
+<div data-role="drawer" id="channelMembers" style="width: 240px" data-title="Members" data-position='right' data-init="doInitChannelMembers" data-show="doShowChannelMembers" data-views="['channel', 'editChannel', 'addChannel']">
     <header data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>

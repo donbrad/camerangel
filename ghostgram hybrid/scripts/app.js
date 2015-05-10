@@ -41,11 +41,14 @@
               aliasPhoto: '',
               publicAlias: '',
               publicAliasPhoto: '',
+			  privateKey: '',
+			  publicKey: '',
               udid: '',
               macAddress: '',
 			  rememberUsername: false,
               emaiVerified: false,
-              phoneVerified: false 
+              phoneVerified: false,
+			  isVerified: false
           }),
          
         },
