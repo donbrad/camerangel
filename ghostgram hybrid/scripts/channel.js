@@ -73,55 +73,83 @@ function onShowChannel(e) {
  
 	if (thisChannelModel.isPrivate) {
 		
-		if (thisChannelModel.userKey === undefined || thisChannelModel.userPrivateKey === undefined) {
-			var RSAkey = cryptico.generateRSAKey(1024);
-			var publicKey = cryptico.publicKeyString(RSAkey);
-			var privateKey = cryptico.privateKeyString(RSAkey);
-			
-			thisChannelModel.userKey = publicKey;
-			thisChannelModel.userPrivateKey = privateKey;
-			updateParseObject('channels', 'channelId', channelUUID, 'userKey', publicKey);
-			updateParseObject('channels', 'channelId', channelUUID, 'userPrivateKey', privateKey);
-		}
-		
+		var userKey = thisUser.publicKey, privateKey = thisUser.privateKey;
 		if (thisChannelModel.members[0] === thisUser.userUUID)
 			contactUUID = thisChannelModel.members[1];
 		else 
 			contactUUID = thisChannelModel.members[0];	
 		
 		APP.models.channel.currentContactUUID = contactUUID;
-		APP.models.channel.currentContactModel = getContactModel(contactUUID);
-		var contactKey = thisChannelModel.contactKey;
+		var thisContact = getContactModel(contactUUID);
+		APP.models.channel.currentContactModel = thisContact;
+		var contactKey = thisContact.publicKey;
 		if (contactKey === undefined) {
-			mobileNotify("No public key for this contact");
+			getUserPublicKey(contactUUID, function(){
+				success: function (result, error) {
+					if (result.found) {
+						contactKey = result.publcKey;
+						var thisChannel = new secureChannel(thisUser.userUUID, channelUUID, userKey, privateKey, contactKey);
+						thisChannel.onMessage(onChannelRead);
+						thisChannel.onPresence(onChannelPresence);
+						mobileNotify("Getting Previous Messages...");
+						thisChannel.getMessageHistory(function (messages) {
+							APP.models.channels.messagesDS.data([]);
+							APP.models.channels.messagesDS.data(messages);		
+						});
+					} else {
+						mobileNotify('No secure connect for ' + thisContact.alias + ' ' + thisContact.name);
+					}
+					APP.models.channel.currentChannel = thisChannel;
+					APP.models.channel.currentModel = thisChannelModel;
+					var name = thisChannelModel.name;
+
+					if (thisChannelModel.isPrivate) {
+						name = '{' + name + '}';
+						if (name.length > 16)
+						 name = name.substring(0,15)+ '...}';
+					} else {
+						if (name.length > 17)
+						name = name.substring(0,17)+"...";
+					}
+
+					$("#channelNavBar").data('kendoMobileNavBar').title(name);
+					
+				},
+				error: function (result, error) {
+					mobileNotify('No secure connect for ' + thisContact.alias + ' ' + thisContact.name);
+				}
+			});
+		} else {
+			var thisChannel = new secureChannel(thisUser.userUUID, channelUUID, userKey, privateKey, contactKey);
+			thisChannel.onMessage(onChannelRead);
+			thisChannel.onPresence(onChannelPresence);
+			mobileNotify("Getting Previous Messages...");
+			thisChannel.getMessageHistory(function (messages) {
+				APP.models.channels.messagesDS.data([]);
+				APP.models.channels.messagesDS.data(messages);		
+			});
+			APP.models.channel.currentChannel = thisChannel;
+			APP.models.channel.currentModel = thisChannelModel;
+			var name = thisChannelModel.name;
+
+			if (thisChannelModel.isPrivate) {
+				name = '{' + name + '}';
+				if (name.length > 16)
+				 name = name.substring(0,15)+ '...}';
+			} else {
+				if (name.length > 17)
+				name = name.substring(0,17)+"...";
+			}
+
+			$("#channelNavBar").data('kendoMobileNavBar').title(name);
 		}
 		
-		var thisChannel = new secureChannel(thisUser.userUUID, channelUUID, thisChannelModel.userKey, thisChannelModel.userPrivateKey, contactKey);
-		thisChannel.onMessage(onChannelRead);
-		thisChannel.onPresence(onChannelPresence);
-		mobileNotify("Getting Previous Messages...");
-		thisChannel.getMessageHistory(function (messages) {
-			APP.models.channels.messagesDS.data([]);
-			APP.models.channels.messagesDS.data(messages);		
-		});
+		
 	} 
 	
 
 	
-	APP.models.channel.currentChannel = thisChannel;
-	APP.models.channel.currentModel = thisChannelModel;
-	var name = thisChannelModel.name;
 	
-	if (thisChannelModel.isPrivate) {
-		name = '{' + name + '}';
-		if (name.length > 16)
-		 name = name.substring(0,15)+ '...}';
-	} else {
-		if (name.length > 17)
-		name = name.substring(0,17)+"...";
-	}
-	
-	$("#channelNavBar").data('kendoMobileNavBar').title(name);
 }
 
 function messageSend(e) {

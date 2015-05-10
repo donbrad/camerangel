@@ -98,20 +98,19 @@ function mobileNotify(message) {
  
 }
 
-function findUserByPhone (phone) {
-	 Parse.Cloud.run('verifyPhoneNumber', { phone: phone }, 
+function getUserPublicKey (uuid, callBack) {
+	 Parse.Cloud.run('getUserPublicKey', { uuid: uuid }, 
     {
         success: function(result) {
-          if (result.verified) {
-               mobileNotify("Your phone number is verified.  Thank You!");
-               $("#modalview-verifyPhone").data("kendoMobileModalView").close();
+          if (result.status === 'ok') {
+             	callBack({found: true, publicKey: result.publicKey});
           } else {
-               mobileNotify("Sorry, your verification number: ' + result.recieved + ' didn't match. ");
+              callBack({found: false, publicKey: null});
           }
          
         },
         error: function (result,error){
-            mobileNotify('Error verifying phone ' + error);
+           callBack(null, error)
         }
     });
 }
