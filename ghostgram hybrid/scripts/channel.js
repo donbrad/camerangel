@@ -86,7 +86,7 @@ function onShowChannel(e) {
 		if (contactKey === undefined) {
 			getUserPublicKey(contactUUID, function (result, error) {
 				if (result.found) {
-					contactKey = result.publcKey;
+					contactKey = result.publicKey;
 					thisContact.publicKey = contactKey;
 					updateParseObject('contacts', 'contactUUID', contactUUID, 'publicKey', contactKey);
 					var thisChannel = new secureChannel(thisUser.userUUID, channelUUID, userKey, privateKey, contactKey);
