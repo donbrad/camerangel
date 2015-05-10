@@ -196,7 +196,7 @@ function doShowChannelMembers (e) {
 	}
     APP.models.channel.currentModel = currentChannelModel;
 	var members = currentChannelModel.members;
-	APP.models.channel.membersDS.data([]);
+	APP.models.channel.membersDS.data(APP.models.contacts.contactsDS.data());
 	if (currentChannelModel.isPrivate) {
 		var privateContact = ''
 		if (members[0] === APP.models.profile.currentUser.userUUID) {
@@ -204,12 +204,13 @@ function doShowChannelMembers (e) {
 		} else {
 			privateContact = getContactModel(members[0]);
 		}
+		APP.models.channel.membersDS.data([]);
 		APP.models.channel.membersDS.add(privateContact);
 	} else {
 		if (members.length > 0) {
 			for (var i=0; i<members.length; i++) {
 				var thisMember = findContactByUUID(members[i]);
-				APP.models.channel.membersDS.add(thisMember);
+				//APP.models.channel.membersDS.add(thisMember);
 			}
 		}		
 	}
@@ -217,10 +218,22 @@ function doShowChannelMembers (e) {
 }
   function doInitChannelMembers (e) {
 	e.preventDefault(); 
-	  
+
 	$("#channelMembers-listview").kendoMobileListView({
         dataSource: APP.models.channel.membersDS,
-        template: $("#memberTemplate").html()
+        template: $("#memberTemplate").html(),
+		filterable: {
+                field: "name",
+                operator: "startswith"
+            },
+		click: function (e) {
+			var thisMember = e.dataItem;
+			var memberString = $('#editChannelMembers').val();
+			 memberString += thisMember.name + ' (' + thisMember.alias + ')  ';
+			$('#editChannelMembers').val(memberString);
+			APP.models.channel.membersDS.remove(thisMember);
+			
+		}
 		
     });
 }
