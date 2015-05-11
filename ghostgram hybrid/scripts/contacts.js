@@ -83,8 +83,7 @@ function syncContact(model) {
 		 if (result.found) {
 			 var uuid = model.get('uuid'), contactUUID = model.get('contactUUID'), publicKey = model.get('publicKey'), 
 				 phoneVerified = model.get('phoneVerfied'),  emailVerified = model.get('emailVerfied');
-			 model.set("phoneVerified", result.user.phoneVerified);
-			 model.set("emailVerified", result.user.emailVerified);
+			
 			// Does the contact have a verified email address
 			if (result.user.emailVerified) {
 				// Yes - save the email address the contact verified
@@ -102,12 +101,15 @@ function syncContact(model) {
 			 if (emailVerified !== result.user.emailVerified) {
 				 if (result.user.emailVerified === undefined)
 					 result.user.emailVerified = false;
+				 
+			 	model.set("emailVerified", result.user.emailVerified);
 				  updateParseObject('contacts', 'uuid', uuid, 'emailVerified',result.user.emailVerified );
 			 }
 			 
 			 if (phoneVerified !== result.user.phoneVerified) {
 				 if (result.user.phoneVerified === undefined)
 					 result.user.ogibeVerified = false;
+				  model.set("phoneVerified", result.user.phoneVerified);
 				  updateParseObject('contacts', 'uuid', uuid, 'phoneVerified',result.user.phoneVerified );
 			 }
 		 }
