@@ -1,9 +1,4 @@
 
-
-
-
-
-
 <div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="APP.models.contacts" data-init="onInitContacts">
   <div data-role="header">
         <div data-role="navbar">
@@ -129,7 +124,7 @@
 
 
 <div data-role="view" data-model="APP.models.contacts.currentContact" data-title="Edit Contact" id="editContact" 
-     data-layout="main"  data-before-show="doShowEditContacts" class="appearance">
+     data-layout="main"  data-before-show="onShowEditContact" class="appearance">
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -167,7 +162,6 @@
 				<li>
 					<label>Email
 						 <input id="editContactEmail" data-bind="value: email">
-
 						</input>
 					</label>
 				</li>

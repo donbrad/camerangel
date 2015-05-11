@@ -77,8 +77,42 @@ function deleteContact(e) {
     
 }
 
-function syncContact(contact) {
-	
+function syncContact(model) {
+	var phone = model.get('phone');
+	 findUserByPhone(phone, function (result) {
+		 if (result.found) {
+			 var uuid = model.get('uuid'), contactUUID = model.get('contactUUID'), publicKey = model.get('publicKey'), 
+				 phoneVerified = model.get('phoneVerfied'),  emailVerified = model.get('emailVerfied');
+			 model.set("phoneVerified", result.user.phoneVerified);
+			 model.set("emailVerified", result.user.emailVerified);
+			// Does the contact have a verified email address
+			if (result.user.emailVerified) {
+				// Yes - save the email address the contact verified
+				model.set("email", result.user.email);
+			} 
+			model.set('publicKey',  result.user.publicKey);
+			model.set("contactUUID", result.user.userUUID);
+			 if (contactUUID === undefined) {
+				 updateParseObject('contacts', 'uuid', uuid, 'contactUUID',  result.user.userUUID);
+			 }
+			 if (publicKey === undefined) {
+				 updateParseObject('contacts', 'uuid', uuid, 'publicKey',result.user.publicKey );
+			 }
+			 
+			 if (emailVerified !== result.user.emailVerified) {
+				 if (result.user.emailVerified === undefined)
+					 result.user.emailVerified = false;
+				  updateParseObject('contacts', 'uuid', uuid, 'emailVerified',result.user.emailVerified );
+			 }
+			 
+			 if (phoneVerified !== result.user.phoneVerified) {
+				 if (result.user.phoneVerified === undefined)
+					 result.user.ogibeVerified = false;
+				  updateParseObject('contacts', 'uuid', uuid, 'phoneVerified',result.user.phoneVerified );
+			 }
+		 }
+
+	 });
 }
 
 function contactSendEmail() {
@@ -130,6 +164,8 @@ function updateCurrentContact (contact) {
 	APP.models.contacts.currentContact.set('contactEmail', contact.contactEmail);
     APP.models.contacts.currentContact.set('privateChannel', contact.privateChannel);
 	APP.models.contacts.currentContact.set('privateChannelUUID', contact.privateChannelUUID);
+	APP.models.contacts.currentContact.set('phoneVerified',contact.phoneVerified);
+	APP.models.contacts.currentContact.set('emailVerified',contact.emailVerified);
 	APP.models.contacts.currentContact.set('publicKey',contact.publicKey);
     APP.models.contacts.currentContact.bind('change' , syncCurrentContact);
    
@@ -148,6 +184,11 @@ function onCommandActionSheet(e) {
 function onInitContact(e) {
 	e.preventDefault();
 	
+}
+
+function onShowEditContact(e) {
+	e.preventDefault();
+	syncContact(APP.models.contacts.currentContact);
 }
 
 function onInitContacts(e) {

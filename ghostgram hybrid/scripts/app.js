@@ -231,22 +231,8 @@
                          var contactPhoto = model.get("parsePhoto");
                          if (contactPhoto !== undefined && contactPhoto !== null)
                          model.set('photo', contactPhoto._url);
+						 models.push(model.attributes);
 						 
-						 var phone = model.get('phone');
-						 findUserByPhone(phone, function (result) {
-							 if (result.found) {
-								 model.set("phoneVerified", result.user.phoneVerified);
-								 model.set("emailVerified", result.user.emailVerified);
-								// Does the contact have a verified email address
-								if (result.user.emailVerified) {
-									// Yes - save the email address the contact verified
-									model.set("email", result.user.email);
-								} 
-								model.set('publicKey',  result.user.publicKey);
-								model.set("contactUUID", result.user.userUUID);
-							 }
-                         	 models.push(model.attributes);
-						 });
                      }
                          
                      APP.models.contacts.contactsDS.data(models);
