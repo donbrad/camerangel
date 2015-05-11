@@ -204,6 +204,7 @@
                   success: function(collection) {
                      var models = new Array();
                      for (var i=0; i<collection.models.length; i++) {
+						 // Todo: check status of members
                          models.push(collection.models[i].attributes);
                      }
                          
@@ -230,7 +231,22 @@
                          var contactPhoto = model.get("parsePhoto");
                          if (contactPhoto !== undefined && contactPhoto !== null)
                          model.set('photo', contactPhoto._url);
-                         models.push(collection.models[i].attributes);
+						 
+						 var phone = model.get('phone');
+						 findUserByPhone(phone, function (result) {
+							 if (result.found) {
+								 model.set("phoneVerified", result.user.phoneVerified);
+								model.set("emailVerified", result.user.emailVerified);
+								// Does the contact have a verified email address
+								if (result.user.emailVerified) {
+									// Yes - save the email address the contact verified
+									model.set("email", result.user.email);
+								} 
+								model.set('publicKey',  result.user.publicKey);
+								model.set("contactUUID", result.user.userUUID);
+							 }
+                         	 models.push(collection.models[i].attributes);
+						 });
                      }
                          
                      APP.models.contacts.contactsDS.data(models);

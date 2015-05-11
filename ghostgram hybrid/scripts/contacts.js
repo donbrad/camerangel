@@ -77,6 +77,10 @@ function deleteContact(e) {
     
 }
 
+function syncContact(contact) {
+	
+}
+
 function contactSendEmail() {
     var email = APP.models.contacts.currentContact.get('email');
 }
@@ -125,7 +129,8 @@ function updateCurrentContact (contact) {
 	APP.models.contacts.currentContact.set('contactUUID', contact.contactUUID);
 	APP.models.contacts.currentContact.set('contactEmail', contact.contactEmail);
     APP.models.contacts.currentContact.set('privateChannel', contact.privateChannel);
-	 APP.models.contacts.currentContact.set('privateChannelUUID', contact.privateChannelUUID);
+	APP.models.contacts.currentContact.set('privateChannelUUID', contact.privateChannelUUID);
+	APP.models.contacts.currentContact.set('publicKey',contact.publicKey);
     APP.models.contacts.currentContact.bind('change' , syncCurrentContact);
    
    
@@ -139,7 +144,12 @@ function onCommandActionSheet(e) {
         currentTarget.remove().appendTo(parentElement);
     }, 100);
 }
-    
+
+function onInitContact(e) {
+	e.preventDefault();
+	
+}
+
 function onInitContacts(e) {
    e.preventDefault();
     /*
@@ -361,6 +371,9 @@ function contactsAddContact(e){
 	
     //phone = phone.replace(/\+[0-9]{1-2}/,'');
     phone = phone.replace(/\D+/g, "");
+	if (phone[0] !== '1')
+		phone = '1' + phone;
+	
 	 mobileNotify("Saving new contact...");
 	// Look up this contacts phone number in the gg directory
 	findUserByPhone(phone, function (result) {
