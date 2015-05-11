@@ -236,7 +236,7 @@
 						 findUserByPhone(phone, function (result) {
 							 if (result.found) {
 								 model.set("phoneVerified", result.user.phoneVerified);
-								model.set("emailVerified", result.user.emailVerified);
+								 model.set("emailVerified", result.user.emailVerified);
 								// Does the contact have a verified email address
 								if (result.user.emailVerified) {
 									// Yes - save the email address the contact verified
@@ -245,7 +245,7 @@
 								model.set('publicKey',  result.user.publicKey);
 								model.set("contactUUID", result.user.userUUID);
 							 }
-                         	 models.push(collection.models[i].attributes);
+                         	 models.push(model.attributes);
 						 });
                      }
                          

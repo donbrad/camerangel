@@ -120,7 +120,7 @@ function findUserByEmail (email, callBack) {
     {
         success: function(result) {
           	if (result.status === 'ok') {
-				callBack({found: true, user: result});
+				callBack({found: true, user: result.user});
 			} else {
 				callBack({found: false});
 			}
@@ -138,7 +138,7 @@ function findUserByPhone (phone, callBack) {
     {
         success: function(result) {
           	if (result.status === 'ok') {
-				callBack({found: true, user: result});
+				callBack({found: true, user: result.user});
 			} else {
 				callBack({found: false});
 			}
