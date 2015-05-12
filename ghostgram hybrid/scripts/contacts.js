@@ -85,12 +85,12 @@ function syncContact(model) {
 				 phoneVerified = model.get('phoneVerfied'),  emailVerified = model.get('emailVerfied');
 			
 			// Does the contact have a verified email address
-			if (result.user.get('emailVerified') {
+			if (result.user.get('emailVerified')) {
 				// Yes - save the email address the contact verified
 				model.set("email", result.user.get('email'));
 			} 
 			model.set('publicKey',  result.user.get('publicKey'));
-			model.set("contactUUID", result.user.get('userUUID');
+			model.set("contactUUID", result.user.get('userUUID'));
 			 if (contactUUID === undefined) {
 				 updateParseObject('contacts', 'uuid', uuid, 'contactUUID',  result.user.userUUID);
 			 }
