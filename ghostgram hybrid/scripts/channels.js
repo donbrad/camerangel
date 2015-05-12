@@ -183,7 +183,8 @@ function onShowAddChannel (e) {
 }
 
 function onShowEditChannel (e) {
-	var currentChannelModel = APP.models.channel.currentModel;
+	APP.models.channel.currentModel = APP.models.channels.currentChannel;
+	var currentChannelModel = App.models.channel.currentModel;
 	var members = currentChannelModel.members;
 	var memberString = '';
 	
