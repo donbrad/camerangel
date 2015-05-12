@@ -101,8 +101,9 @@ function syncContact(model) {
 			 if (emailVerified !== result.user.get('emailVerified')) {
 				 if (result.user.get('emailVerified') === undefined)
 					 result.user.set('emailVerified', false);
-				 
-			 	model.set("emailVerified", result.user.get('emailVerified'));
+				 // Need to trick parse Object to update local copy.
+				 model.attributes.emailVerified = result.user.get('emailVerified')
+			 	
 			 }
 			 
 			 if (phoneVerified !== result.user.get('phoneVerified')) {
