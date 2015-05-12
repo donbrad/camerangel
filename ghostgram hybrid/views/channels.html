@@ -111,7 +111,7 @@
 <div data-role="view" id="editChannel" data-model="APP.models.channels.currentChannel" style="display: none;" data-show="onShowEditChannel" class="appearance">
     <div data-role="header">
         <div data-role="navbar">
-            <a href="#:back" data-role="button" type="button" data-align="left" >Back</a>
+            <a data-click="finalizeChannelEdit" data-role="button" type="button" data-align="left" >Back</a>
             <span> Edit Channel</span>
              <a data-align="right" data-role="button"  data-rel="drawer" href="#channelMembers" > <i class="ghostIconNavbar fa fa-users"></i> </a>
         </div>
@@ -154,7 +154,7 @@
         </ul>
     </form> 
 	<div style="padding: 12px;">
-		<div style="padding-top: 18px;" class="ghostTitle">
+		<div style="padding-top: 18px; font-size: 16px;" >
 			Members
 		</div>
 		<div style="padding-top: 12px;" id="editChannel-listView">

@@ -182,11 +182,45 @@ function onShowAddChannel (e) {
 	
 }
 
+function finalizeEditChannel(e) {
+	e.preventDefault();
+	var memberArray = new Array(), members = APP.models.channel.membersDS.data();
+	
+	for (var i=0; i<members.length; i++) {
+		memberArray.push(members[i].uuid);
+	}
+	
+	APP.models.channel.currentModel.set('members', memberArray);
+	
+	updateParseObject('channels', 'channelId', APP.models.channel.currentModel.get('channelID'), 'members', membersArray);
+	
+	APP.kendo.navigate('#:back');
+}
+
+function onInitEditChannel (e) {
+	e.preventDefault();
+	APP.models.channel.membersDS.data([]);
+	
+	$("#editChannel-listview").kendoMobileListView({
+			dataSource: APP.models.channel.membersDS,
+			template: $("#memberTemplate").html(),
+			
+			click: function (e) {
+				if (APP.models.channels.currentChannel.isPrivate) {
+					mobileNotify("Can't delete other member in Private Channel");
+				} else {
+					var thisMember = e.dataItem;
+					APP.models.channel.membersDS.remove(thisMember);
+					APP.models.channel.potentialMembersDS.add(thisMember);
+				}
+				
+			}		
+		});
+}
 function onShowEditChannel (e) {
-	APP.models.channel.currentModel = APP.models.channels.currentChannel;
-	var currentChannelModel = App.models.channel.currentModel;
+	var currentChannelModel = APP.models.channels.currentModel;
 	var members = currentChannelModel.members;
-	var memberString = '';
+	var membersArray = new Array();
 	
 	if (members.length > 0) {
 		if (currentChannelModel.isPrivate) {
@@ -210,27 +244,9 @@ function onShowEditChannel (e) {
 				APP.models.channel.membersDS.add(thisMember);
 				
 			}
-		}
-		
+		}		
 		$('#editChannelMembers').val(memberString);
-		
 	}
-	$("#editChannel-listview").kendoMobileListView({
-			dataSource: APP.models.channel.membersDS,
-			template: $("#memberTemplate").html(),
-			
-			click: function (e) {
-				if (APP.models.channels.currentChannel.isPrivate) {
-					mobileNotify("Can't delete other member in Private Channel");
-				} else {
-					var thisMember = e.dataItem;
-					APP.models.channel.membersDS.remove(thisMember);
-					members.splice( $.inArray(thisMember.uuid, members), 1 );
-					APP.models.channel.potentialMembersDS.add(thisMember);
-				}
-				
-			}		
-		});
 		
 }
 
@@ -273,8 +289,6 @@ function doShowChannelMembers (e) {
 function doInitChannelMembers (e) {
 	e.preventDefault(); 
 
-
-	  
 	$("#channelMembers-listview").kendoMobileListView({
         dataSource: APP.models.channel.potentialMembersDS,
         template: $("#memberTemplate").html(),
@@ -285,7 +299,9 @@ function doInitChannelMembers (e) {
 		click: function (e) {
 			var thisMember = e.dataItem;
 			
-			APP.models.channel.currentModel.members.push(thisMember.uuid);
+			var members = APP.models.channel.currentModel.get('members');
+			members.push(thisMember.uuid);
+			APP.models.channel.currentModel.set('members', members);
 			APP.models.channel.membersDS.add(thisMember);
 			APP.models.channel.potentialMembersDS.remove(thisMember);
 			
