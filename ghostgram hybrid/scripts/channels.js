@@ -161,6 +161,7 @@ function onShowAddChannel (e) {
 	e.preventDefault();
 	APP.models.channel.potentialMembersDS.data([]);
 	APP.models.channel.potentialMembersDS.data(APP.models.contacts.contactsDS.data());
+	APP.models.channel.memberDS.data([]);
 	
 	$("#addChannel-listview").kendoMobileListView({
 			dataSource: APP.models.channel.membersDS,
@@ -182,7 +183,7 @@ function onShowAddChannel (e) {
 }
 
 function onShowEditChannel (e) {
-	var currentChannelModel = APP.models.channels.currentChannel;
+	var currentChannelModel = APP.models.channel.currentModel;
 	var members = currentChannelModel.members;
 	var memberString = '';
 	
@@ -198,20 +199,22 @@ function onShowEditChannel (e) {
 				privateContact = getContactModel(members[0]);
 			}
 			memberString = privateContact.name + ' (' + privateContact.alias + ') ';
-			APP.models.channel.membersDS.push(privateContact);
+			APP.models.channel.membersDS.add(privateContact);
 		} else {
 			// Group channel members are referenced indirectly by uuid 
 			// channel can include invited users who havent signed up yet
 			
 			for (var i=0; i<members.length; i++) {
 				var thisMember = findContactByUUID(members[i]);
-				APP.models.channel.membersDS.push(thisMember);
-				memberString += thisMember.name + ' (' + thisMember.alias + ')';
+				APP.models.channel.membersDS.add(thisMember);
+				
 			}
 		}
 		
 		$('#editChannelMembers').val(memberString);
-		$("#editChannel-listview").kendoMobileListView({
+		
+	}
+	$("#editChannel-listview").kendoMobileListView({
 			dataSource: APP.models.channel.membersDS,
 			template: $("#memberTemplate").html(),
 			
@@ -221,17 +224,18 @@ function onShowEditChannel (e) {
 				} else {
 					var thisMember = e.dataItem;
 					APP.models.channel.membersDS.remove(thisMember);
+					members.splice( $.inArray(thisMember.uuid, members), 1 );
 					APP.models.channel.potentialMembersDS.add(thisMember);
 				}
 				
 			}		
 		});
 		
-	}
 }
 
 function doShowChannelMembers (e) {
 	e.preventDefault();
+	
 	var currentChannelModel = APP.models.channels.currentChannel;
 	if (currentChannelModel.isPrivate) {
 		mobileNotify("Sorry, you cannot change members in a Private Channel");
@@ -242,6 +246,7 @@ function doShowChannelMembers (e) {
 	APP.models.channel.potentialMembersDS.data([]);
 	APP.models.channel.potentialMembersDS.data(APP.models.contacts.contactsDS.data());
 	if (currentChannelModel.isPrivate) {
+		
 		var privateContact = ''
 		if (members[0] === APP.models.profile.currentUser.userUUID) {
 			privateContact = getContactModel(members[1]);
@@ -253,6 +258,7 @@ function doShowChannelMembers (e) {
 		APP.models.channel.potentialMembersDS.data([]);
 		
 	} else {
+		
 		if (members.length > 0) {
 			for (var i=0; i<members.length; i++) {
 				var thisMember = findContactByUUID(members[i]);
@@ -260,12 +266,14 @@ function doShowChannelMembers (e) {
 				APP.models.channel.potentialMembersDS.remove(thisMember);
 			}
 		}		
-	}
-	
+	}	
 }
-  function doInitChannelMembers (e) {
+
+function doInitChannelMembers (e) {
 	e.preventDefault(); 
 
+
+	  
 	$("#channelMembers-listview").kendoMobileListView({
         dataSource: APP.models.channel.potentialMembersDS,
         template: $("#memberTemplate").html(),
@@ -275,9 +283,8 @@ function doShowChannelMembers (e) {
             },
 		click: function (e) {
 			var thisMember = e.dataItem;
-			var memberString = $('#editChannelMembers').val();
-			 memberString += thisMember.name + ' (' + thisMember.alias + ')  ';
-			$('#editChannelMembers').val(memberString);
+			
+			APP.models.channel.currentModel.members.push(thisMember.uuid);
 			APP.models.channel.membersDS.add(thisMember);
 			APP.models.channel.potentialMembersDS.remove(thisMember);
 			
