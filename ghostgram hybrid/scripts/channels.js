@@ -27,6 +27,8 @@ function addChannel(e) {
          
           APP.models.channels.channelsDS.add(channel.attributes);
           mobileNotify('Added channel : ' + channel.get('name'));
+		  APP.models.channels.currentModel = findChannelModel(guid);
+		  APP.kendo.navigate('#editChannel');
       },
       error: function(channel, error) {
         // Execute any logic that should take place if the save fails.
@@ -131,7 +133,7 @@ function deleteChannel (e) {
     var channel = view[0];
     dataSource.remove(channel); 
     deleteParseObject("channels", 'channelId', channelId);
-     mobileNotify("Removed channel : " + channel.get('name'));
+    mobileNotify("Removed channel : " + channel.get('name'));
 }
     
 function onChannelsClick(e) {
@@ -162,24 +164,6 @@ function onShowAddChannel (e) {
 	APP.models.channel.potentialMembersDS.data([]);
 	APP.models.channel.potentialMembersDS.data(APP.models.contacts.contactsDS.data());
 	APP.models.channel.memberDS.data([]);
-	
-	$("#addChannel-listview").kendoMobileListView({
-			dataSource: APP.models.channel.membersDS,
-			template: $("#memberTemplate").html(),
-			
-			click: function (e) {
-				if (APP.models.channels.currentChannel.isPrivate) {
-					mobileNotify("Can't delete other member in Private Channel");
-				} else {
-					var thisMember = e.dataItem;
-					APP.models.channel.membersDS.remove(thisMember);
-					APP.models.channel.potentialMembersDS.add(thisMember);
-				}
-				
-			}		
-		});
-		
-	
 }
 
 function finalizeEditChannel(e) {
@@ -201,26 +185,13 @@ function onInitEditChannel (e) {
 	e.preventDefault();
 	APP.models.channel.membersDS.data([]);
 	
-	$("#editChannel-listview").kendoMobileListView({
-			dataSource: APP.models.channel.membersDS,
-			template: $("#memberTemplate").html(),
-			
-			click: function (e) {
-				if (APP.models.channels.currentChannel.isPrivate) {
-					mobileNotify("Can't delete other member in Private Channel");
-				} else {
-					var thisMember = e.dataItem;
-					APP.models.channel.membersDS.remove(thisMember);
-					APP.models.channel.potentialMembersDS.add(thisMember);
-				}
-				
-			}		
-		});
 }
+
 function onShowEditChannel (e) {
 	var currentChannelModel = APP.models.channels.currentModel;
 	var members = currentChannelModel.members;
 	var membersArray = new Array();
+	var memberString = '';
 	
 	if (members.length > 0) {
 		if (currentChannelModel.isPrivate) {
@@ -242,6 +213,7 @@ function onShowEditChannel (e) {
 			for (var i=0; i<members.length; i++) {
 				var thisMember = findContactByUUID(members[i]);
 				APP.models.channel.membersDS.add(thisMember);
+				memberString += thisMember.name + ' (' + thisMember.alias + ')';
 				
 			}
 		}		
@@ -298,10 +270,6 @@ function doInitChannelMembers (e) {
             },
 		click: function (e) {
 			var thisMember = e.dataItem;
-			
-			var members = APP.models.channel.currentModel.get('members');
-			members.push(thisMember.uuid);
-			APP.models.channel.currentModel.set('members', members);
 			APP.models.channel.membersDS.add(thisMember);
 			APP.models.channel.potentialMembersDS.remove(thisMember);
 			

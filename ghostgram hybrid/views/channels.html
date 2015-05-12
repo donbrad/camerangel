@@ -33,24 +33,7 @@
         </div>
     </div>
 </script>
-     
-
-<div data-role="modalview" id="modalview-channels-joinChannel" style="width: 90%; display: none; background-color: #e2e2e2;" class="appearance">
-    <div data-role="header">
-        <div data-role="navbar">
-            <span>Join Channel</span>
-        </div>
-    </div>
-    <div>
-       
-    </div>
-    <div data-role="footer">
-        <div data-role="navbar">
-            <a data-click="closeModalViewJoinChannel" data-role="button" type="button" data-align="left">Cancel</a>
-            <a data-click="channelsJoinChannel" type="button" data-role="button" data-align="right">Join Channel</a>
-        </div>
-    </div>
-</div>
+ 
 
 <div data-role="view" data-layout="main" data-title='Add Channel' id="addChannel" style="display: none;"  data-init="onShowAddChannel" class="appearance">
    <div data-role="header">
@@ -89,15 +72,8 @@
                     </select>
                 </label>
             </li>
-			 
         </ul>
     </form> 
-	<div style="padding-top: 18px;" class="ghostTitle">
-		Members
-	</div>
-	<div style="padding-top: 12px;" id="addChannel-listView">
-		
-	</div>
 	
     <div data-role="footer">
         <div data-role="navbar">
@@ -108,7 +84,7 @@
 </div>
 
 
-<div data-role="view" id="editChannel" data-model="APP.models.channels.currentChannel" style="display: none;" data-show="onShowEditChannel" class="appearance">
+<div data-role="view" data-layout="main" id="editChannel" data-model="APP.models.channels.currentChannel" style="display: none;" data-show="onShowEditChannel"  data-init="onInitEditChannel" class="appearance">
     <div data-role="header">
         <div data-role="navbar">
             <a data-click="finalizeChannelEdit" data-role="button" type="button" data-align="left" >Back</a>
@@ -142,7 +118,7 @@
                     </select>
                 </label>
             </li>
-              <li>
+             <li>
                <label>Archive
                     <select id="channels-editChannel-archive" data-bind="value: media">
                         <option value="false">No: Nothing is saved</option>
@@ -150,23 +126,20 @@
                     </select>
                 </label>
             </li>
-  			
+  			 <li>
+               <label>Members
+                    <textarea id="editChannelMembers" rows=5 cols=40 readonly>
+                    </textarea>
+                </label>
+            </li>
         </ul>
     </form> 
-	<div style="padding: 12px;">
-		<div style="padding-top: 18px; font-size: 16px;" >
-			Members
-		</div>
-		<div style="padding-top: 12px;" id="editChannel-listView">
-
-		</div>
-	</div
+		
     <div data-role="footer">
         <div data-role="navbar">
            
         </div>
     </div>
- 
 </div>
 
  <div data-role="view" id="channel"  data-layout="main" data-model="APP.models.channel" data-show="onShowChannel" data-init="onInitChannel">  
