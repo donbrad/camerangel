@@ -103,13 +103,12 @@ function syncContact(model) {
 					 result.user.set('emailVerified', false);
 				 
 			 	model.set("emailVerified", result.user.get('emailVerified'));
-				  updateParseObject('contacts', 'uuid', uuid, 'emailVerified',result.user.get('emailVerified') );
 			 }
 			 
 			 if (phoneVerified !== result.user.get('phoneVerified')) {
-				 if (result.user.get('phoneVerified) === undefined)
+				 if (result.user.get('phoneVerified') === undefined)
 					 result.user.set('phoneVerified',false);
-				  model.set("phoneVerified", result.user.get('phoneVerified');
+				  model.set("phoneVerified", result.user.get('phoneVerified'));
 				  updateParseObject('contacts', 'uuid', uuid, 'phoneVerified',result.user.get('phoneVerified') );
 			 }
 		 }
