@@ -177,8 +177,10 @@ function onShowEditChannel (e) {
 		} else {
 			// Group channel members are referenced indirectly by uuid 
 			// channel can include invited users who havent signed up yet
+			var APP.models.channel.memberArray = new Array();
 			for (var i=0; i<members.length; i++) {
 				var thisMember = findContactByUUID(members[i]);
+				APP.models.channel.memberArray.push(thisMember);
 				memberString += thisMember.name + ' (' + thisMember.alias + ')';
 			}
 		}
@@ -196,7 +198,8 @@ function doShowChannelMembers (e) {
 	}
     APP.models.channel.currentModel = currentChannelModel;
 	var members = currentChannelModel.members;
-	APP.models.channel.membersDS.data(APP.models.contacts.contactsDS.data());
+	APP.models.channel.potentialMembersDS.data([]);
+	APP.models.channel.potentialMembersDS.data(APP.models.contacts.contactsDS.data());
 	if (currentChannelModel.isPrivate) {
 		var privateContact = ''
 		if (members[0] === APP.models.profile.currentUser.userUUID) {
@@ -206,11 +209,14 @@ function doShowChannelMembers (e) {
 		}
 		APP.models.channel.membersDS.data([]);
 		APP.models.channel.membersDS.add(privateContact);
+		APP.models.channel.potentialMembersDS.data([]);
+		
 	} else {
 		if (members.length > 0) {
 			for (var i=0; i<members.length; i++) {
 				var thisMember = findContactByUUID(members[i]);
-				//APP.models.channel.membersDS.add(thisMember);
+				APP.models.channel.membersDS.add(thisMember);
+				APP.models.channel.potentialMembersDS.remove(thisMember);
 			}
 		}		
 	}
@@ -220,7 +226,7 @@ function doShowChannelMembers (e) {
 	e.preventDefault(); 
 
 	$("#channelMembers-listview").kendoMobileListView({
-        dataSource: APP.models.channel.membersDS,
+        dataSource: APP.models.channel.potentialMembersDS,
         template: $("#memberTemplate").html(),
 		filterable: {
                 field: "name",
@@ -232,6 +238,7 @@ function doShowChannelMembers (e) {
 			 memberString += thisMember.name + ' (' + thisMember.alias + ')  ';
 			$('#editChannelMembers').val(memberString);
 			APP.models.channel.membersDS.remove(thisMember);
+			APP.models.channel.potentialMembersDS.remove(thisMember);
 			
 		}
 		
