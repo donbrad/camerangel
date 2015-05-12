@@ -157,6 +157,30 @@ function onInitChannels (e) {
     });
 }
 
+function onShowAddChannel (e) {
+	e.preventDefault();
+	APP.models.channel.potentialMembersDS.data([]);
+	APP.models.channel.potentialMembersDS.data(APP.models.contacts.contactsDS.data());
+	
+	$("#addChannel-listview").kendoMobileListView({
+			dataSource: APP.models.channel.membersDS,
+			template: $("#memberTemplate").html(),
+			
+			click: function (e) {
+				if (APP.models.channels.currentChannel.isPrivate) {
+					mobileNotify("Can't delete other member in Private Channel");
+				} else {
+					var thisMember = e.dataItem;
+					APP.models.channel.membersDS.remove(thisMember);
+					APP.models.channel.potentialMembersDS.add(thisMember);
+				}
+				
+			}		
+		});
+		
+	
+}
+
 function onShowEditChannel (e) {
 	var currentChannelModel = APP.models.channels.currentChannel;
 	var members = currentChannelModel.members;

@@ -66,7 +66,7 @@
             currentChannel: {},
 			currentModel: {},
 			messageLock: true,
-			potentialMembers:  new kendo.data.DataSource({sort: { field: "name", dir: "asc" }}),
+			potentialMembersDS:  new kendo.data.DataSource({sort: { field: "name", dir: "asc" }}),
             membersDS: new kendo.data.DataSource({sort: { field: "name", dir: "asc" }}),
             messagesDS: new kendo.data.DataSource({sort: { field: "date", dir: "desc" }})
         },
