@@ -74,16 +74,8 @@ function homeSignin (e) {
             window.onUserSignIn();
             
             if (!APP.models.profile.currentUser.get('phoneVerified')) {
-                var phone = APP.models.profile.currentUser.get('phone');
-               Parse.Cloud.run('sendPhoneVerificationCode', { phoneNumber:  phone}, {
-                              success: function(result) {
-                                  mobileNotify('Please verify your phone');
-                                  $("#modalview-verifyPhone").data("kendoMobileModalView").open();
-                              },
-                             error: function (result,error){
-                                 mobileNotify("Error sending phone verification " + error);
-                             }
-                         });
+			  mobileNotify("Please verify your phone number");
+              $("#modalview-verifyPhone").data("kendoMobileModalView").open();
             }
             APP.kendo.navigate('#home');
         },
@@ -94,6 +86,19 @@ function homeSignin (e) {
     });
 }
 
+function sendVerificationCode ()
+{
+  var phone = APP.models.profile.currentUser.get('phone');
+   Parse.Cloud.run('sendPhoneVerificationCode', { phoneNumber:  phone}, {
+				  success: function(result) {
+					  mobileNotify('Sent your phone');
+					  $("#modalview-verifyPhone").data("kendoMobileModalView").open();
+				  },
+				 error: function (result,error){
+					 mobileNotify("Error sending phone verification " + error);
+				 }
+  });
+}
 function homeCreateAccount(e) {
     e.preventDefault();
 
