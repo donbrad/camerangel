@@ -85,12 +85,12 @@ function syncContact(model) {
 				 phoneVerified = model.get('phoneVerfied'),  emailVerified = model.get('emailVerfied');
 			
 			// Does the contact have a verified email address
-			if (result.user.emailVerified) {
+			if (result.user.get('emailVerified') {
 				// Yes - save the email address the contact verified
-				model.set("email", result.user.email);
+				model.set("email", result.user.get('email'));
 			} 
-			model.set('publicKey',  result.user.publicKey);
-			model.set("contactUUID", result.user.userUUID);
+			model.set('publicKey',  result.user.get('publicKey'));
+			model.set("contactUUID", result.user.get('userUUID');
 			 if (contactUUID === undefined) {
 				 updateParseObject('contacts', 'uuid', uuid, 'contactUUID',  result.user.userUUID);
 			 }
@@ -98,19 +98,19 @@ function syncContact(model) {
 				 updateParseObject('contacts', 'uuid', uuid, 'publicKey',result.user.publicKey );
 			 }
 			 
-			 if (emailVerified !== result.user.emailVerified) {
-				 if (result.user.emailVerified === undefined)
-					 result.user.emailVerified = false;
+			 if (emailVerified !== result.user.get('emailVerified')) {
+				 if (result.user.get('emailVerified') === undefined)
+					 result.user.set('emailVerified', false);
 				 
-			 	model.set("emailVerified", result.user.emailVerified);
-				  updateParseObject('contacts', 'uuid', uuid, 'emailVerified',result.user.emailVerified );
+			 	model.set("emailVerified", result.user.get('emailVerified'));
+				  updateParseObject('contacts', 'uuid', uuid, 'emailVerified',result.user.get('emailVerified') );
 			 }
 			 
-			 if (phoneVerified !== result.user.phoneVerified) {
-				 if (result.user.phoneVerified === undefined)
-					 result.user.ogibeVerified = false;
-				  model.set("phoneVerified", result.user.phoneVerified);
-				  updateParseObject('contacts', 'uuid', uuid, 'phoneVerified',result.user.phoneVerified );
+			 if (phoneVerified !== result.user.get('phoneVerified')) {
+				 if (result.user.get('phoneVerified) === undefined)
+					 result.user.set('phoneVerified',false);
+				  model.set("phoneVerified", result.user.get('phoneVerified');
+				  updateParseObject('contacts', 'uuid', uuid, 'phoneVerified',result.user.get('phoneVerified') );
 			 }
 		 }
 
