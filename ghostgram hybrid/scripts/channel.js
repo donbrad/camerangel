@@ -27,6 +27,22 @@ function onInitChannel(e) {
      });
 }	
 
+function formatMessage(string) {
+	var workingString = string.split("\n").join("<br />");
+	
+	if (workingString[0] === '!') {
+		workingString = workingString.splice(1);
+		workingString = "<strong>" + workingString + "</strong>"
+	}
+	
+	if (workingString[0] === '{') {
+		workingString = workingString.splice(1);
+		workingString = "<em>" + workingString + "</em>"
+	}
+	
+	return(workingString);
+	
+}
 function onChannelPresence () {
 	var users = APP.models.channel.currentChannel.listUsers();
 }
@@ -34,10 +50,11 @@ function onChannelPresence () {
 function onChannelRead(message) {
 	var formattedContent = '';
 	if (message.content !== null) {
-		formattedContent = message.content.replace('//r', '</br>');
+		formattedContent = message.content;
+	} else {
+		message.formattedContent = formatMessage(string);
 	}
 	
-	message.formattedContent = formattedContent;
 	
 	
 	APP.models.channel.messagesDS.add(message);	
@@ -108,7 +125,7 @@ function onShowChannel(e) {
 							var message = messages[i];
 							var formattedContent = '';
 							if (message.content !== null) {
-								formattedContent = message.content.split("\n").join("<br />");
+								formattedContent = formatMessage(message.content);
 							}
 							message.formattedContent = formattedContent;
 						}
@@ -144,7 +161,7 @@ function onShowChannel(e) {
 							var message = messages[i];
 							var formattedContent = '';
 							if (message.content !== null) {
-								formattedContent = message.content.split("\n").join("<br />");
+								formattedContent = formatMessage(message.content);
 							}
 							message.formattedContent = formattedContent;
 						}
