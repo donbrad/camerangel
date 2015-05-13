@@ -37,7 +37,13 @@ function doInitSignIn () {
 function homeSignin (e) {
     e.preventDefault();
     
-   Parse.User.logIn($('#home-signin-username').val(), $('#home-signin-password').val(), {
+   var username = $('#home-signin-username').val(), password = $('#home-signin-password').val();
+	if (username === '' || password === '') {
+		mobileNotify("Username or password cannont be blank");
+		return;
+	}
+
+   Parse.User.logIn(username,password , {
         success: function(user) {
         // Do stuff after successful login.
             closeModalViewLogin();
