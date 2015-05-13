@@ -108,21 +108,43 @@ function syncContact(model) {
 	 });
 }
 
+
 function contactSendEmail() {
     var email = APP.models.contacts.currentContact.get('email');
 	 if (window.navigator.simulator === true){
-		 alert('Mail isn't supported in the emulator');
+		 alert("Mail isn't supported in the emulator");
 	 } else {
+		 var thisUser = APP.models.profile.currentUser.get('name');
 		 cordova.plugins.email.open({
 			   to:          [email],
-			   subject:     'Check out ghostgrams',
-			   body:        '<h2>A invitation From ' + APP.models.profile.currentUser.name + ' to try Ghostgrams</h2>',
+			   subject:     '',
+			   body:        '</br></br></br></br><em>From ' + thisUser + ' via ghostgrams</em>',
 			   isHtml:      true
-			}, callback);
+			}, function (msg) {
+			  navigator.notification.alert(JSON.stringify(msg), null, 'EmailComposer callback', 'Close');
+		 });
 	 }
 	
 }
     
+
+function contactSendEmailInvite() {
+    var email = APP.models.contacts.currentContact.get('email');
+	 if (window.navigator.simulator === true){
+		 alert("Mail isn't supported in the emulator");
+	 } else {
+		 var thisUser = APP.models.profile.currentUser.get('name');
+		 cordova.plugins.email.open({
+			   to:          [email],
+			   subject:     'Check out ghostgrams',
+			   body:        '<h2>A invitation From ' + thisUser + ' to try Ghostgrams</h2>',
+			   isHtml:      true
+			}, function (msg) {
+			  navigator.notification.alert(JSON.stringify(msg), null, 'EmailComposer callback', 'Close');
+		 });
+	 }
+	
+}
 function contactCallPhone() {
      var number = APP.models.contacts.currentContact.get('phone');
 }
