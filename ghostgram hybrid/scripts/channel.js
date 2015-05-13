@@ -32,12 +32,12 @@ function formatMessage(string) {
 	
 	if (workingString[0] === '!') {
 		workingString = workingString.splice(1);
-		workingString = "<strong>" + workingString + "</strong>"
+		workingString = "<strong>" + workingString + "</strong>";
 	}
 	
 	if (workingString[0] === '{') {
 		workingString = workingString.splice(1);
-		workingString = "<em>" + workingString + "</em>"
+		workingString = "<em>" + workingString + "</em>";
 	}
 	
 	return(workingString);
