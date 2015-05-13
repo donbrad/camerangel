@@ -35,11 +35,11 @@
 </script>
  
 
-<div data-role="view" data-layout="main" data-title='Add Channel' id="addChannel" style="display: none;"  data-init="onShowAddChannel" class="appearance">
+<div data-role="view"  data-title='Add Channel' id="addChannel" style="display: none;"  data-init="onShowAddChannel" class="appearance">
    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-             <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><i class="ghostIconNavbar fa fa-bars"></i></a>
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><i class="ghostIconNavbar fa fa-bars"></i></a>
             <a data-align="right" data-role="button"  data-rel="drawer" href="#channelMembers" > <i class="ghostIconNavbar fa fa-users"></i> </a>
         </div>
     </div>
@@ -84,10 +84,10 @@
 </div>
 
 
-<div data-role="view" data-layout="main" id="editChannel" data-model="APP.models.channels.currentChannel" style="display: none;" data-show="onShowEditChannel"  data-init="onInitEditChannel" class="appearance">
+<div data-role="view" id="editChannel" data-model="APP.models.channels.currentChannel" style="display: none;" data-show="onShowEditChannel"  data-init="onInitEditChannel" class="appearance">
     <div data-role="header">
         <div data-role="navbar">
-            <a data-click="finalizeChannelEdit" data-role="button" type="button" data-align="left" >Back</a>
+			<a data-click="finalizeEditChannel" type="button" data-role="button" data-align="left" >Done</a>
             <span> Edit Channel</span>
              <a data-align="right" data-role="button"  data-rel="drawer" href="#channelMembers" > <i class="ghostIconNavbar fa fa-users"></i> </a>
         </div>
@@ -128,12 +128,20 @@
             </li>
   			 <li>
                <label>Members
-                    <textarea id="editChannelMembers" rows=5 cols=40 readonly>
-                    </textarea>
+                    <textarea id="editChannelMembers" rows=5 cols=40 readonly></textarea>
                 </label>
             </li>
         </ul>
     </form> 
+	
+	<div style="padding-left: 12px; paddding-top: 12px;">
+		Channel Memebers
+	</div>
+	<div style="padding-top: 4px;">
+		<ul style="list-style-type: none;" id="editChannelMemberList">
+			
+		</ul>
+	</div>
 		
     <div data-role="footer">
         <div data-role="navbar">

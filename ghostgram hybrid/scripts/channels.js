@@ -131,6 +131,7 @@ function deleteChannel (e) {
     dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
     var view = dataSource.view();
     var channel = view[0];
+	 dataSource.filter([]);
     dataSource.remove(channel); 
     deleteParseObject("channels", 'channelId', channelId);
     mobileNotify("Removed channel : " + channel.get('name'));
@@ -163,20 +164,21 @@ function onShowAddChannel (e) {
 	e.preventDefault();
 	APP.models.channel.potentialMembersDS.data([]);
 	APP.models.channel.potentialMembersDS.data(APP.models.contacts.contactsDS.data());
-	APP.models.channel.memberDS.data([]);
+	APP.models.channel.membersDS.data([]);
 }
 
 function finalizeEditChannel(e) {
 	e.preventDefault();
 	var memberArray = new Array(), members = APP.models.channel.membersDS.data();
+	var channelId = APP.models.channel.currentModel.channelId;
 	
 	for (var i=0; i<members.length; i++) {
 		memberArray.push(members[i].uuid);
 	}
 	
-	APP.models.channel.currentModel.set('members', memberArray);
+	APP.models.channel.currentModel.members = memberArray;
 	
-	updateParseObject('channels', 'channelId', APP.models.channel.currentModel.get('channelID'), 'members', membersArray);
+	updateParseObject('channels', 'channelId', channelId, 'members', memberArray);
 	
 	APP.kendo.navigate('#:back');
 }
@@ -184,6 +186,16 @@ function finalizeEditChannel(e) {
 function onInitEditChannel (e) {
 	e.preventDefault();
 	APP.models.channel.membersDS.data([]);
+	$('#editChannelMemberList li').remove(); 
+	
+}
+
+function deleteMember (e) {
+	var channelId = e.attributes['data-param'].value;
+	var thisMember = findContactByUUID(channelId);
+	APP.models.channel.membersDS.remove(thisMember);
+	APP.models.channel.potentialMembersDS.add(thisMember);
+	$('#'+channelId).remove();
 	
 }
 
@@ -213,7 +225,8 @@ function onShowEditChannel (e) {
 			for (var i=0; i<members.length; i++) {
 				var thisMember = findContactByUUID(members[i]);
 				APP.models.channel.membersDS.add(thisMember);
-				memberString += thisMember.name + ' (' + thisMember.alias + ')';
+				memberString += thisMember.name + ' (' + thisMember.alias + ')\r';
+				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'" style="clear:both; font-size: 16px;">'+ thisMember.name + ' (' + thisMember.alias + ')' + '<span style="float:right"> <a data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><i class="ghostIconNavbar fa fa-trash"></i></a></span></li>');
 				
 			}
 		}		
@@ -271,6 +284,9 @@ function doInitChannelMembers (e) {
 		click: function (e) {
 			var thisMember = e.dataItem;
 			APP.models.channel.membersDS.add(thisMember);
+			var memberString = $('#editChannelMembers').val();
+			memberString += thisMember.name + ' (' + thisMember.alias + ')\r';
+			 $('#editChannelMembers').val(memberString);
 			APP.models.channel.potentialMembersDS.remove(thisMember);
 			
 		}
