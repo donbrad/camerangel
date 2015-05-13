@@ -89,7 +89,7 @@ function onShowChannel(e) {
 					contactKey = result.publicKey;
 					thisContact.publicKey = contactKey;
 					updateParseObject('contacts', 'contactUUID', contactUUID, 'publicKey', contactKey);
-					var thisChannel = new secureChannel(thisUser.userUUID, channelUUID, userKey, privateKey, contactKey);
+					var thisChannel = new secureChannel(channelUUID, thisUser.userUUID, thisUser.alias, userKey, privateKey, contactUUID, contactKey);
 					thisChannel.onMessage(onChannelRead);
 					thisChannel.onPresence(onChannelPresence);
 					mobileNotify("Getting Previous Messages...");
