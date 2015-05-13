@@ -194,7 +194,9 @@ function deleteMember (e) {
 	var contactId = e.attributes['data-param'].value;
 	var thisMember = findContactByUUID(contactId);
 	APP.models.channel.potentialMembersDS.add(thisMember);
+	APP.models.channel.potentialMembersDS.sync();
 	APP.models.channel.membersDS.remove(thisMember);
+	APP.models.channel.membersDS.sync();
 	$('#'+contactId).remove();
 	
 }
@@ -262,6 +264,7 @@ function doShowChannelMembers (e) {
 	} else {
 		
 		if (members.length > 0) {
+			APP.models.channel.membersDS.data([]);
 			for (var i=0; i<members.length; i++) {
 				var thisMember = findContactByUUID(members[i]);
 				APP.models.channel.membersDS.add(thisMember);
@@ -284,10 +287,13 @@ function doInitChannelMembers (e) {
 		click: function (e) {
 			var thisMember = e.dataItem;
 			APP.models.channel.membersDS.add(thisMember);
+			APP.models.channel.membersDS.sync();
 			var memberString = $('#editChannelMembers').val();
 			memberString += thisMember.name + ' (' + thisMember.alias + ')\r';
 			 $('#editChannelMembers').val(memberString);
+			$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'" style="clear:both; font-size: 16px;">'+ thisMember.name + ' (' + thisMember.alias + ')' + '<span style="float:right"> <a data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><i class="ghostIconNavbar fa fa-trash"></i></a></span></li>');
 			APP.models.channel.potentialMembersDS.remove(thisMember);
+			APP.models.channel.potentialMembersDS.sync();
 			
 		}
 		
