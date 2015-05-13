@@ -170,7 +170,7 @@ function onShowAddChannel (e) {
 function finalizeEditChannel(e) {
 	e.preventDefault();
 	var memberArray = new Array(), members = APP.models.channel.membersDS.data();
-	var channelId = APP.models.channel.currentModel.channelId;
+	var channelId = APP.models.channels.currentModel.channelId;
 	
 	for (var i=0; i<members.length; i++) {
 		memberArray.push(members[i].uuid);
@@ -191,11 +191,11 @@ function onInitEditChannel (e) {
 }
 
 function deleteMember (e) {
-	var channelId = e.attributes['data-param'].value;
-	var thisMember = findContactByUUID(channelId);
-	APP.models.channel.membersDS.remove(thisMember);
+	var contactId = e.attributes['data-param'].value;
+	var thisMember = findContactByUUID(contactId);
 	APP.models.channel.potentialMembersDS.add(thisMember);
-	$('#'+channelId).remove();
+	APP.models.channel.membersDS.remove(thisMember);
+	$('#'+contactId).remove();
 	
 }
 
