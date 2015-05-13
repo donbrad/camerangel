@@ -180,7 +180,9 @@ function finalizeEditChannel(e) {
 	
 	updateParseObject('channels', 'channelId', channelId, 'members', memberArray);
 	
-	APP.kendo.navigate('#:back');
+	APP.models.channels.currentChannel.unbind('change', syncCurrentChannel);
+	
+	APP.kendo.navigate('#channels');
 }
 
 function onInitEditChannel (e) {
