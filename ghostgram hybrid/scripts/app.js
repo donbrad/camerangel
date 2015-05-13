@@ -454,12 +454,12 @@
 			};
 			
 			cordova.plugins.notification.local.hasPermission(function (granted) {
-    			mobileNotify('Location notifications: ' + granted);
-				cordova.plugins.notification.local.cancelAll(
+    			mobileNotify('Local notifications: ' + granted);
+				/*cordova.plugins.notification.local.cancelAll(
 				  function() {
-					alert('ok, all canceled');
+					MobileNotify("Local notifications cleared");
 				  }
-				);
+				);*/
 				
 			});
         }
