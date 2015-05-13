@@ -1,7 +1,8 @@
 
 
-function dataChannelRead (m, envelope, channel) {
+function dataChannelRead (m) {
     switch(m.type) {
+			
 			//  { type: 'privateInvite',  channelId: <channelUUID>,  owner: <ownerUUID>, message: <text>, time: current time}
 		case 'privateInvite' : {
 				// Todo:  Does private channel exist?  If not create,  if so notify user of request
@@ -11,10 +12,12 @@ function dataChannelRead (m, envelope, channel) {
 		case 'channelInvite' : {
 			// Todo:  Does private channel exist?  If not create,  if so notify user of request
 		} break;
+			
 			//  { type: 'packageOffer',  channelId: <channelUUID>, owner: <ownerUUID>, packageId: <packageUUID>, private: true|false, type: 'text'|'pdf'|'image'|'video', title: <text>, message: <text>}
 		case 'packageOffer' : {
 			
 		} break;
+			
 				//  { type: 'packageRequest',  channelId: <channelUUID>, owner: <ownerUUID>, packageId: <packageUUID>, private: true|false, message: <text>}
 		case 'packageRequest' : {
 			

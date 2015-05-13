@@ -110,6 +110,17 @@ function syncContact(model) {
 
 function contactSendEmail() {
     var email = APP.models.contacts.currentContact.get('email');
+	 if (window.navigator.simulator === true){
+		 alert('Mail isn't supported in the emulator');
+	 } else {
+		 cordova.plugins.email.open({
+			   to:          [email],
+			   subject:     'Check out ghostgrams',
+			   body:        '<h2>A invitation From ' + APP.models.profile.currentUser.name + ' to try Ghostgrams</h2>',
+			   isHtml:      true
+			}, callback);
+	 }
+	
 }
     
 function contactCallPhone() {

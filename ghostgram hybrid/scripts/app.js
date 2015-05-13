@@ -418,7 +418,12 @@
              APP.pubnub.history({
 				 channel: uuid,
 				 count: 100,
-				 callback: function(m){
+				 callback: function(messages){
+					 messages = messages[0];
+					 messages = messages || [];
+					 for(var i = 0; i < messages.length; i++) {
+					 	dataChannelRead(messages[i]);
+					 }
 					
 				 }
 			 });
