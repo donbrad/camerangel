@@ -3,7 +3,8 @@ function onInitChannel(e) {
 	
 	APP.models.channel.messagesDS.data([]);
 	APP.models.channel.membersDS.data([]);
-	
+	APP.models.channel.topOffset = APP.kendo.scroller().scrollTop;
+	 
 	 $("#messages-listview").kendoMobileListView({
         dataSource: APP.models.channel.messagesDS,
         template: $("#messagesTemplate").html(),
@@ -26,6 +27,22 @@ function onInitChannel(e) {
         }
      });
 }	
+
+function scrollToBottom() {
+    // topOffset set when the view loads like the following
+   
+    var scroller = APP.kendo.scroller;
+
+
+	var scrollerHeight =  APP.kendo.scroller().scrollHeight();
+	var viewportHeight =  APP.kendo.scroller().height();
+
+	if ((scrollerHeight + APP.models.channel.topOffset) > viewportHeight) {
+		var position = -1 * (scrollerHeight - viewportHeight - APP.models.channel.topOffset);
+		 APP.kendo.scroller().animatedScrollTo(0, position);
+	}
+
+}
 
 function formatMessage(string) {
 	var workingString = string.split("\n").join("<br />");
@@ -65,6 +82,7 @@ function onChannelRead(message) {
 		message.formattedContent = '';
 	}
 	APP.models.channel.messagesDS.add(message);	
+	scrollToBottom();
 }
 
 function timeSince(date) {
@@ -137,7 +155,8 @@ function onShowChannel(e) {
 							message.formattedContent = formattedContent;
 						}
 	
-						APP.models.channel.messagesDS.data(messages);		
+						APP.models.channel.messagesDS.data(messages);	
+						scrollToBottom();
 					});
 				} else {
 					mobileNotify('No secure connect for ' + thisContact.alias + ' ' + thisContact.name);
@@ -174,6 +193,7 @@ function onShowChannel(e) {
 						}
 	
 				APP.models.channel.messagesDS.data(messages);		
+				scrollToBottom();
 			});
 			APP.models.channel.currentChannel = thisChannel;
 			APP.models.channel.currentModel = thisChannelModel;
