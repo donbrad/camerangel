@@ -116,7 +116,7 @@ function onShowChannel(e) {
 				$("#channelNavBar").data('kendoMobileNavBar').title(name);	
 			});
 		} else {
-			var thisChannel = new secureChannel(thisUser.userUUID, channelUUID, userKey, privateKey, contactKey);
+			var thisChannel = new secureChannel(channelUUID, thisUser.userUUID, thisUser.alias, userKey, privateKey, contactUUID, contactKey);
 			thisChannel.onMessage(onChannelRead);
 			thisChannel.onPresence(onChannelPresence);
 			mobileNotify("Getting Previous Messages...");
@@ -141,7 +141,9 @@ function onShowChannel(e) {
 		}
 		
 		
-	} 
+	} else {
+		// Provision a group channel
+	}
 	
 
 	

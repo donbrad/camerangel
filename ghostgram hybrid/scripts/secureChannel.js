@@ -1,6 +1,6 @@
 // Setup
 // ---
-function secureChannel(userUUID, channelUUID, publicKey, RSAkeyString, contactKey) {
+function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, contactUUID, contactKey) {
     var channel = channelUUID;
     
 	var RSAkey = cryptico.privateKeyFromString(RSAkeyString);
@@ -8,7 +8,7 @@ function secureChannel(userUUID, channelUUID, publicKey, RSAkeyString, contactKe
     // to other users.
 	
     var thisUser = {
-		alias: APP.models.profile.currentUser.alias,
+		alias: alias,
         username: userUUID,
         publicKey: publicKey
     };
@@ -68,8 +68,6 @@ function secureChannel(userUUID, channelUUID, publicKey, RSAkeyString, contactKe
             // If the presence message contains data aka *state*, add this to our users object. 
             if ("data" in msg) { 
                 users[msg.data.username] = msg.data.publicKey;
-				if (msg.data.username !== userUUID)
-					updateParseObject('channels', 'channelId', channelUUID, 'contactKey', msg.data.publicKey);
             } 
             // Otherwise, we have to call `here_now` to get the state of the new subscriber to the channel.
             else { 
@@ -88,9 +86,7 @@ function secureChannel(userUUID, channelUUID, publicKey, RSAkeyString, contactKe
         } 
     };
 
-    // Starting up PubNub
-    // ---
-    // Initialize PubNub.
+    // Connect to current instance of pubnub
     var pubnub = APP.pubnub;
 
     // Subscribe to our PubNub channel.

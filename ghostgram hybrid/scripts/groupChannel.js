@@ -1,6 +1,6 @@
 // Setup
 // ---
-function secureChannel( channelUUID, publicKey, RSAkeyString, contactKey) {
+function groupChannel( channelUUID, publicKey, RSAkeyString, contactKey) {
     var channel = channelUUID;
     
 	

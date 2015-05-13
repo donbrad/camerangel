@@ -6,7 +6,7 @@
   "DisplayName": "ghostgrams",
   "Author": "don bradford",
   "Description": "ghostgram for iOS and Android",
-  "BundleVersion": "1.4.6",
+  "BundleVersion": "1.4.7",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1",
@@ -18,7 +18,7 @@
     "bluetooth-peripheral"
   ],
   "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
-  "FrameworkVersion": "3.5.0",
+  "FrameworkVersion": "3.7.0",
   "AndroidPermissions": [
     "android.permission.ACCESS_CHECKIN_PROPERTIES",
     "android.permission.ACCESS_COARSE_LOCATION",
@@ -45,7 +45,8 @@
     "android.permission.WRITE_SMS"
   ],
   "DeviceOrientations": [
-    "Portrait"
+    "Portrait",
+    "Landscape"
   ],
   "AndroidHardwareAcceleration": "false",
   "iOSStatusBarStyle": "Hidden",
