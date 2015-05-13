@@ -291,7 +291,7 @@ function doInitChannelMembers (e) {
 			var memberString = $('#editChannelMembers').val();
 			memberString += thisMember.name + ' (' + thisMember.alias + ')\r';
 			 $('#editChannelMembers').val(memberString);
-			$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'" style="clear:both; font-size: 16px;">'+ thisMember.name + ' (' + thisMember.alias + ')' + '<span style="float:right"> <a data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><i class="ghostIconNavbar fa fa-trash"></i></a></span></li>');
+			$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'" style="clear:both; font-size: 13px;">'+ thisMember.name + ' (' + thisMember.alias + ')' + '<span style="float:right; padding-right: 12px; font-size: 10px;"> <a data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><i class="ghostIconNavbar fa fa-trash"></i></a></span></li>');
 			APP.models.channel.potentialMembersDS.remove(thisMember);
 			APP.models.channel.potentialMembersDS.sync();
 			
