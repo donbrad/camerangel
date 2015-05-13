@@ -455,7 +455,6 @@ function contactsAddContact(e){
 		contact.set("uuid", guid);
 		if (result.found) {	
 			contact.set("phoneVerified", result.user.phoneVerified);
-			contact.set("emailVerified", result.user.emailVerified);
 			// Does the contact have a verified email address
 			if (result.user.emailVerified) {
 				// Yes - save the email address the contact verified
@@ -469,7 +468,6 @@ function contactsAddContact(e){
 			
 		} else {
 			contact.set("phoneVerified", false);
-			contact.set("emailVerified", false);	
 			contact.set('publicKey',  null);
 			contact.set("contactUUID", null);
 		}
