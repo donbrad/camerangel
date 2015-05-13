@@ -205,7 +205,7 @@ function onShowEditChannel (e) {
 	var currentChannelModel = APP.models.channels.currentModel;
 	var members = currentChannelModel.members;
 	var membersArray = new Array();
-	var memberString = '';
+	
 	
 	if (members.length > 0) {
 		if (currentChannelModel.isPrivate) {
@@ -218,7 +218,7 @@ function onShowEditChannel (e) {
 			} else {
 				privateContact = getContactModel(members[0]);
 			}
-			memberString = privateContact.name + ' (' + privateContact.alias + ') ';
+			
 			APP.models.channel.membersDS.add(privateContact);
 		} else {
 			// Group channel members are referenced indirectly by uuid 
@@ -227,12 +227,12 @@ function onShowEditChannel (e) {
 			for (var i=0; i<members.length; i++) {
 				var thisMember = findContactByUUID(members[i]);
 				APP.models.channel.membersDS.add(thisMember);
-				memberString += thisMember.name + ' (' + thisMember.alias + ')\r';
+				
 				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'" class="ghostMemberLi"> <span class="ghostMemberName">'+ thisMember.name + ' (' + thisMember.alias + ')' + '</span><span style="float:right; font-size: 10px;"> <a data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><i class="ghostIconNavbar fa fa-trash"></i></a></span></li>');
 				
 			}
 		}		
-		$('#editChannelMembers').val(memberString);
+		
 	}
 		
 }

@@ -190,7 +190,7 @@
 
 .ghostLabel {
   color: rgba(37,120,152, 0.9);
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .ghostData {
@@ -211,10 +211,7 @@
 	width: 100%;	
 	list-style-type: none;
 	list-style-position:inside;
-	height: 28px;
-	margin: 0px;
-	padding: 0px;
-	display: block;
+	min-height: 32px;
 }
 .ghostMemberName {
 	display: inline-block;
