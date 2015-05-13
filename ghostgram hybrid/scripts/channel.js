@@ -30,33 +30,40 @@ function onInitChannel(e) {
 function formatMessage(string) {
 	var workingString = string.split("\n").join("<br />");
 	
-	if (workingString[0] === '!') {
-		workingString = workingString.splice(1);
-		workingString = "<strong>" + workingString + "</strong>";
+	if (workingString.charAt(0) === '!') {
+		workingString = workingString.slice(1);
+		workingString = workingString.bold();
 	}
 	
-	if (workingString[0] === '{') {
-		workingString = workingString.splice(1);
-		workingString = "<em>" + workingString + "</em>";
+	if (workingString.charAt(0) === '{') {
+		workingString = workingString.slice(1);
+		workingString = workingString.italics();
 	}
 	
-	return(workingString);
+	if (workingString.charAt(0) === '+') {
+		workingString = workingString.slice(1);
+		workingString = workingString.big();
+	}
 	
+	if (workingString.charAt(0) === '-') {
+		workingString = workingString.slice(1);
+		workingString = workingString.small();
+	}
+	
+	return(workingString);	
 }
+
 function onChannelPresence () {
 	var users = APP.models.channel.currentChannel.listUsers();
 }
 
 function onChannelRead(message) {
-	var formattedContent = '';
+	
 	if (message.content !== null) {
-		formattedContent = message.content;
+		message.formattedContent = formatMessage(message.content);
 	} else {
-		message.formattedContent = formatMessage(string);
+		message.formattedContent = '';
 	}
-	
-	
-	
 	APP.models.channel.messagesDS.add(message);	
 }
 
