@@ -214,11 +214,12 @@ function onInitContact(e) {
 function onShowEditContact(e) {
 
 	syncContact(APP.models.contacts.currentContact);
-	APP.kendo.navigate("#contacts");
+	
 }
 
 function onDoneEditContact (e) {
 	 APP.models.contacts.currentContact.unbind('change' , syncCurrentContact);
+	APP.kendo.navigate("#contacts");
 }
 
 function onInitContacts(e) {
