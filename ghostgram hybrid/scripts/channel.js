@@ -32,6 +32,14 @@ function onChannelPresence () {
 }
 
 function onChannelRead(message) {
+	var formattedContent = '';
+	if (message.content !== null) {
+		formattedContent = message.content.replace('//r', '</br>');
+	}
+	
+	message.formattedContent = formattedContent;
+	
+	
 	APP.models.channel.messagesDS.add(message);	
 }
 
@@ -95,6 +103,16 @@ function onShowChannel(e) {
 					mobileNotify("Getting Previous Messages...");
 					thisChannel.getMessageHistory(function (messages) {
 						APP.models.channel.messagesDS.data([]);
+						
+						for (var i=0; i<messages.length; i++){		
+							var message = messages[i];
+							var formattedContent = '';
+							if (message.content !== null) {
+								formattedContent = message.content.split("\n").join("<br />");
+							}
+							message.formattedContent = formattedContent;
+						}
+	
 						APP.models.channel.messagesDS.data(messages);		
 					});
 				} else {
@@ -122,6 +140,15 @@ function onShowChannel(e) {
 			mobileNotify("Getting Previous Messages...");
 			thisChannel.getMessageHistory(function (messages) {
 				APP.models.channel.messagesDS.data([]);
+				for (var i=0; i<messages.length; i++){		
+							var message = messages[i];
+							var formattedContent = '';
+							if (message.content !== null) {
+								formattedContent = message.content.split("\n").join("<br />");
+							}
+							message.formattedContent = formattedContent;
+						}
+	
 				APP.models.channel.messagesDS.data(messages);		
 			});
 			APP.models.channel.currentChannel = thisChannel;
