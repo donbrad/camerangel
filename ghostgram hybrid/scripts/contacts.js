@@ -410,7 +410,8 @@ function doShowAddContacts() {
     var data = APP.models.contacts.currentDeviceContact;
     
     $("#addContactName").val(data.name);
-    
+    $('#addContactAlias').val(data.name);
+	
     if (data.photo === null) {
         $("#addContactPhoto").attr("src",'images/missing_profile_photo.jpg');
     } else {
@@ -483,6 +484,7 @@ function contactsAddContact(e){
 						// Execute any logic that should take place after the object is saved.
 						mobileNotify('Added contact : ' + contact.get('name'));
 						APP.models.contacts.contactsDS.add(contact.attributes);
+						APP.kendo.navigate('#contacts');
 					  },
 					  error: function(contact, error) {
 						// Execute any logic that should take place if the save fails.
