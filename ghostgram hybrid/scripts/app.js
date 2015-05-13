@@ -396,10 +396,10 @@
                 channel : uuid,
                 windowing: 1000,    
                 message : dataChannelRead,
-                connect: function(){mobileNotify("Secure Data Channel Connected")},
-                disconnect: function(){mobileNotify("Secure Data Channel Disconnected")},
-                reconnect: function(){mobileNotify("Secure Data Channel Reconnected")},
-                error: function(){mobileNotify("Secure Data Channel Network Error")} 
+                connect: function(){},
+                disconnect: function(){},
+                reconnect: function(){},
+                error: function(){mobileNotify("Data Channel Network Error")} 
                  
              });
 			
@@ -407,8 +407,8 @@
                 channel : 'ghostgramsapp129195720',
                 windowing: 1000,    
                 message : appChannelRead,
-                connect: function(){mobileNotify("App Channel Connected")},
-                disconnect: function(){mobileNotify("App Channel Disconnected")},
+                connect: function(){},
+                disconnect: function(){},
                 reconnect: function(){mobileNotify("App Channel Reconnected")},
                 error: function(){mobileNotify("App Channel Network Error")} 
                  

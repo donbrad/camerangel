@@ -183,9 +183,51 @@
 }
 
 .ghostTiny {
-    color: rgba(37,120,152, 0.5);
+    color: rgba(37,120,152, 0.9);
     font-size: 12px;
     font-weight:400;
+}
+
+.ghostLabel {
+  color: rgba(37,120,152, 0.9);
+  font-size: 14px;
+}
+
+.ghostData {
+   color: #2e2e2e;
+  font-size: 14px;
+}
+
+.ghostMemberUl {
+	list-style-type: none;
+	list-style-position:inside;
+	margin:6px;
+	padding:6px;
+	border-radius: 5px;
+    border: 1px solid rgb(37,120,152);
+}
+.ghostMemberLi {
+	color: rgb(37,120,152);
+	width: 100%;	
+	list-style-type: none;
+	list-style-position:inside;
+	height: 28px;
+	margin: 0px;
+	padding: 0px;
+	display: block;
+}
+.ghostMemberName {
+	display: inline-block;
+	margin-top: 5px;
+	font-size: 14px;
+	color: #2e2e2e;
+	vertical-align: bottom;
+	
+}
+.ghostMemberLi a {
+	margin-right: 12px;
+	display: inline-block;
+	vertical-align: middle;
 }
 
 .ghostWhiteTitle {

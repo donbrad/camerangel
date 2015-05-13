@@ -228,7 +228,7 @@ function onShowEditChannel (e) {
 				var thisMember = findContactByUUID(members[i]);
 				APP.models.channel.membersDS.add(thisMember);
 				memberString += thisMember.name + ' (' + thisMember.alias + ')\r';
-				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'" style="clear:both; font-size: 16px;">'+ thisMember.name + ' (' + thisMember.alias + ')' + '<span style="float:right"> <a data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><i class="ghostIconNavbar fa fa-trash"></i></a></span></li>');
+				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'" class="ghostMemberLi"> <span class="ghostMemberName">'+ thisMember.name + ' (' + thisMember.alias + ')' + '</span><span style="float:right; font-size: 10px;"> <a data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><i class="ghostIconNavbar fa fa-trash"></i></a></span></li>');
 				
 			}
 		}		
