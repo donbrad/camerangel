@@ -82,7 +82,7 @@ function syncContact(model) {
 	 findUserByPhone(phone, function (result) {
 		 if (result.found) {
 			 var uuid = model.get('uuid'), contactUUID = model.get('contactUUID'), publicKey = model.get('publicKey'), 
-				 phoneVerified = model.get('phoneVerfied'),  emailVerified = model.get('emailVerfied');
+				 phoneVerified = model.get('phoneVerfied'),  emailVerified = model.get('emailVerfied'), parseEmailVerified = result.user.get('emailVerified') ;
 			
 			// Does the contact have a verified email address
 			if (result.user.get('emailVerified')) {
@@ -97,15 +97,6 @@ function syncContact(model) {
 			 if (publicKey === undefined) {
 				 updateParseObject('contacts', 'uuid', uuid, 'publicKey',result.user.publicKey );
 			 }
-			 
-			 if (emailVerified !== result.user.get('emailVerified')) {
-				 if (result.user.get('emailVerified') === undefined)
-					 result.user.set('emailVerified', false);
-				 // Need to trick parse Object to update local copy.
-				 model.attributes.emailVerified = result.user.get('emailVerified')
-			 	
-			 }
-			 
 			 if (phoneVerified !== result.user.get('phoneVerified')) {
 				 if (result.user.get('phoneVerified') === undefined)
 					 result.user.set('phoneVerified',false);
@@ -189,7 +180,7 @@ function onInitContact(e) {
 }
 
 function onShowEditContact(e) {
-	e.preventDefault();
+
 	syncContact(APP.models.contacts.currentContact);
 }
 
