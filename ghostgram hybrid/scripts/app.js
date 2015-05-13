@@ -398,7 +398,7 @@
                 message : dataChannelRead,
                 connect: function(){},
                 disconnect: function(){},
-                reconnect: function(){},
+                reconnect: function(){mobileNotify("Data Channel Reconnected")},
                 error: function(){mobileNotify("Data Channel Network Error")} 
                  
              });
@@ -437,14 +437,25 @@
 
 		// Provide basic functionality in the simulator and deployable simulator
         if (window.navigator.simulator === true){
-             APP.models.profile.version = "1.4.1";
+             APP.models.profile.version = "1.4.8";
         } else {
             cordova.getAppVersion(function (version) {
-            APP.models.profile.version = version;
+           	 	APP.models.profile.version = version;
             }); 
 			
+			cordova.plugins.notification.local.ontrigger = function (id, state, json) {
+			  var message = 'ID: ' + id + (json == '' ? '' : '\nData: ' + json);
+			  navigator.notification.alert(message, null, 'Notification received while the app was in the foreground', 'Close');
+			};
+			
 			cordova.plugins.notification.local.hasPermission(function (granted) {
-    			mobileNotify('Permission has been granted: ' + granted);
+    			mobileNotify('Location notifications: ' + granted);
+				cordova.plugins.notification.local.cancelAll(
+				  function() {
+					alert('ok, all canceled');
+				  }
+				);
+				
 			});
         }
 		

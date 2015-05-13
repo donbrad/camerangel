@@ -162,6 +162,16 @@ function homeCreateAccount(e) {
                         APP.models.profile.currentUser.bind('change', syncProfile);
                         APP.models.profile.parseACL = new Parse.ACL(Parse.User.current());
                        mobileNotify('Welcome to ghostgrams!');
+						if (window.navigator.simulator !== true) {
+							
+							cordova.plugins.notification.local.add({
+							  id         : 'userWelcome',
+							  title      : 'Welcome to ghostgrams',
+							  message    : 'You have a secure connection to your family, friends and favorite places',
+							  autoCancel : true,
+							  date : new Date(new Date().getTime() + 120 * 1000)
+							});
+						}
                          Parse.Cloud.run('sendPhoneVerificationCode', { phoneNumber: phone }, {
                               success: function (result) {
                                   modileNotify('Please verify your phone');
