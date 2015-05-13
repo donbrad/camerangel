@@ -158,7 +158,6 @@ function updateCurrentContact (contact) {
     APP.models.contacts.currentContact.set('privateChannel', contact.privateChannel);
 	APP.models.contacts.currentContact.set('privateChannelUUID', contact.privateChannelUUID);
 	APP.models.contacts.currentContact.set('phoneVerified',contact.phoneVerified);
-	APP.models.contacts.currentContact.set('emailVerified',contact.emailVerified);
 	APP.models.contacts.currentContact.set('publicKey',contact.publicKey);
     APP.models.contacts.currentContact.bind('change' , syncCurrentContact);
    
