@@ -292,7 +292,7 @@
                   }
                 });
 			
-			 var p2pModel = Parse.Object.extend("p2pmap");
+			var p2pModel = Parse.Object.extend("p2pmap");
             var p2pCollection = Parse.Collection.extend({
               model: p2pModel
             });
@@ -309,7 +309,26 @@
                   error: function(collection, error) {
                       handleParseError(error);
                   }
-                });
+			});
+			
+			var channelMapModel = Parse.Object.extend("channelmap");
+            var channelMapCollection = Parse.Collection.extend({
+              model: channelMapModel
+            });
+            
+            var channelMap = new channelMapCollection();
+            
+            channelMap.fetch({
+                  success: function(collection) {
+                     var channels = new Array();
+                     for (var i=0; i<collection.models.length; i++) {
+                         channels.push(collection.models[i].attributes);
+                     }
+                  },
+                  error: function(collection, error) {
+                      handleParseError(error);
+                  }
+			});
         },
         
         placesInit: function() {

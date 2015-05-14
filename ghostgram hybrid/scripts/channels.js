@@ -157,8 +157,12 @@ function deleteChannel (e) {
     var view = dataSource.view();
     var channel = view[0];
 	 dataSource.filter([]);
+	if (channel.isOwner) {
+		// If this user is the owner -- delete the channel map
+		deleteParseObject("channelmap", 'channelId', channelId);
+	}
     dataSource.remove(channel); 
-    deleteParseObject("channels", 'channelId', channelId);
+    deleteParseObject("channels", 'channelId', channelId); 
     mobileNotify("Removed channel : " + channel.get('name'));
 }
     
@@ -195,7 +199,7 @@ function onShowAddChannel (e) {
 function finalizeEditChannel(e) {
 	e.preventDefault();
 	
-	var memberArray = new Array(), invitedMemberArray = new Array(), members = APP.models.channel.membersDS.data();
+	var memberArray = new Array(), invitedMemberArray = new Array(), invitedPhoneArray = new Array(), members = APP.models.channel.membersDS.data();
 	
 	var channelId = APP.models.channels.currentModel.channelId;
 	// It's a group channel so push this users UUID
@@ -205,8 +209,12 @@ function finalizeEditChannel(e) {
 		if(members[i].contactUUID !== null) {
 			memberArray.push(members[i].contactUUID);
 		} else {
-			// No contactUUID so this user hasn't signed up yet
+			// No contactUUID so this user hasn't signed up yet - use the owners uuid for the contact
 			invitedMemberArray.push(members[i].uuid);
+			
+			// User isn't signed up yet, store their phone number in the channel map so we can autoprovision their channels
+			// when they do sign up
+			invitedPhoneArray.push(members[i].phone);
 		}
 		
 	}
@@ -216,6 +224,11 @@ function finalizeEditChannel(e) {
 	updateParseObject('channels', 'channelId', channelId, 'members', memberArray);
 	updateParseObject('channels', 'channelId', channelId, 'invitedMembers', invitedMemberArray);
 	
+	// Update the channelmap entry so members can update or create the channel
+	updateParseObject('channelmap', 'channelId', channelId, 'members', memberArray);
+	// Add new members phone numbers to the channel map
+	updateParseObject('channelmap', 'channelId', channelId, 'invitedMembers', invitedPhoneArray);
+	
 	APP.kendo.navigate('#channels');
 }
 
@@ -223,7 +236,6 @@ function onInitEditChannel (e) {
 	e.preventDefault();
 	APP.models.channel.membersDS.data([]);
 	$('#editChannelMemberList li').remove(); 
-	
 }
 
 function deleteMember (e) {
@@ -261,7 +273,7 @@ function onShowEditChannel (e) {
 			// channel can include invited users who havent signed up yet
 			
 			for (var i=0; i<members.length; i++) {
-				thisMember = findContactModel(members[i]);
+				thisMember = getContactModel(members[i]);
 				// Current user will be undefined in contact list.
 				if (thisMember !== undefined) {
 					APP.models.channel.membersDS.add(thisMember);
