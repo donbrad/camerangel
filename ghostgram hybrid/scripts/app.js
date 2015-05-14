@@ -116,7 +116,8 @@
         }
       },
        kendo: null,
-       pubnub: null
+       pubnub: null,
+	   inBackground: false
     };
 
 	//Private methods
@@ -186,7 +187,14 @@
 			
 		},
         
-       
+       	onPause : function() {
+   			APP.inBackground = true;
+		},
+		
+		onResume : function () {
+			APP.inBackground = false;	
+		},
+		
         newNotification: function (type, title, date, description, actionTitle, action, href, dismissable) {
             var notification = new APP.models.home.Notification(type, title, date, description, actionTitle, action, href, dismissable);
             APP.models.home.notificationDS.add(notification);        
@@ -335,19 +343,24 @@
         onUserSignIn: _app.fetchParseData
 	});
     
+	document.addEventListener("pause", onPause, false);
+	document.addEventListener("resume", onResume, false);
+
     // this function is called by Cordova when the application is loaded by the device
     document.addEventListener('deviceready', function () {  
         var initialView = '#newuserhome';
 
 		APP.geoLocator = new GeoLocator();
 		APP.location = new Object();
-		if (window.navigator.simulator === false) {
-			APP.map = cordova.plugins.google.maps.Map.getMap($("#places-mapview"));
+		
+/*		if (window.navigator.simulator === undefined) {
+			APP.map = plugin.google.maps.Map.getMap($("#places-mapview"));
 			APP.mapReady = false;
 			 APP.map.on(plugin.google.maps.event.MAP_READY, function () {
 				 APP.mapReady = true;	 	 
 			 });
 		}
+*/
 		
 		APP.geoLocator.getCurrentPosition(function (position, error){
 			if (error === null) {
