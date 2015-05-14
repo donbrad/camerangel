@@ -406,7 +406,9 @@ function contactsFindContacts(e) {
             if (contacts[i].photos !== null) {
                 contactItem.photo = contacts[i].photos[0].value;
             } 
-            APP.models.contacts.deviceContactsDS.add(contactItem);
+			// Only add device contacts with phone numbers
+			if (contacts[i].phoneNumbers !== null)
+            	APP.models.contacts.deviceContactsDS.add(contactItem);
         }
          
     },function(error){alert(error);}, options);

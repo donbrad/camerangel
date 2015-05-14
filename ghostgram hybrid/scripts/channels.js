@@ -245,7 +245,7 @@ function doShowChannelMembers (e) {
 	var currentChannelModel = APP.models.channels.currentChannel;
 	if (currentChannelModel.isPrivate) {
 		mobileNotify("Sorry, you cannot change members in a Private Channel");
-		APP.kendo.navigate('#:back');
+		APP.kendo.navigate('#channels');
 	}
     APP.models.channel.currentModel = currentChannelModel;
 	var members = currentChannelModel.members;
