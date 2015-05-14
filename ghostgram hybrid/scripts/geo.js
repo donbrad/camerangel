@@ -1,3 +1,7 @@
+
+function GeoLocator() {
+}
+
 GeoLocator.prototype = {
 	_watchID:null,
 	_currentPosition: null,
@@ -5,25 +9,35 @@ GeoLocator.prototype = {
     
     
 	getCurrentPosition: function (callBack) {
+		 var options = {
+            	enableHighAccuracy: true
+            }, that = this;
+		
 		if (this._currentPosition !== null) {
 			callBack(this._currentPosition, null);
-		} else {
+		} else {	
 			this._watchCallBack = callBack;
-			this._handleRefresh();
-		}
+			navigator.geolocation.getCurrentPosition(function(position) {
+				 callBack(position, null);
+				}, function(error) {
+					callBack(null, position);
+				}, options);
+			}
 	},
 	
 	watchCurrentPosition: function (callBack) {
+		var that = this;
 		this._watchCallBack = callBack;
-		this._handleWatch();
+		this._handleWatch.apply(this, arguments);
 		
 	},
 	
 	stopWatchingCurrentPosition: function() {
-		this._watchCallBack = null;
-		if (this._watchID != null) {
-			navigator.geolocation.clearWatch(this._watchID);
-			this._watchID = null;
+		var that = this;
+		that._watchCallBack = null;
+		if (that._watchID != null) {
+			navigator.geolocation.clearWatch(that._watchID);
+			that._watchID = null;
 		}
 		
 	},
