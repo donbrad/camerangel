@@ -332,10 +332,12 @@ function doShowChannelMembers (e) {
 		if (members.length > 0) {
 			APP.models.channel.membersDS.data([]);
 			for (var i=0; i<members.length; i++) {
-				var thisMember = findContactByUUID(members[i]);
+				var thisMember = getContactModel(members[i]);
 				APP.models.channel.membersDS.add(thisMember);
 				APP.models.channel.potentialMembersDS.remove(thisMember);
 			}
+			
+			//Todo:   Add invited members if this user owns the channel
 		}		
 	}	
 }
