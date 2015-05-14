@@ -11,7 +11,7 @@ function addChannel(e) {
         media = $('#channels-addChannel-media').val(),
         archive = $('#channels-addChannel-archive').val(),
         description = $('#channels-addChannel-description').val(), 
-        guid = uuid.v4()
+        guid = uuid.v4();
         
     channel.set("name", name );
     channel.set("isOwner", true);
@@ -339,7 +339,7 @@ function doShowChannelMembers (e) {
 				var thisMember = getContactModel(members[i]);
 				if (thisMember === undefined)
 					thisMember = findContactByUUID(members[i]);
-				if (thisMember !== ) {
+				if (thisMember !== undefined) {
 					APP.models.channel.membersDS.add(thisMember);
 					APP.models.channel.potentialMembersDS.remove(thisMember);
 				}
