@@ -343,8 +343,8 @@
         onUserSignIn: _app.fetchParseData
 	});
     
-	document.addEventListener("pause", onPause, false);
-	document.addEventListener("resume", onResume, false);
+	document.addEventListener("pause", _app.onPause, false);
+	document.addEventListener("resume", _app.onResume, false);
 
     // this function is called by Cordova when the application is loaded by the device
     document.addEventListener('deviceready', function () {  
