@@ -89,7 +89,7 @@
         <div data-role="navbar">
 			<a data-click="finalizeEditChannel" type="button" data-role="button" data-align="left" >Done</a>
             <span> Edit Channel</span>
-             <a data-align="right" data-role="button"  data-rel="drawer" href="#channelPresence" > <i class="ghostIconNavbar fa fa-users"></i> </a>
+             <a data-align="right" data-role="button"  data-rel="drawer" href="#channelMembers" > <i class="ghostIconNavbar fa fa-users"></i> </a>
         </div>
     </div>
 
@@ -156,7 +156,7 @@
         <div data-role="navbar" id="channelNavBar">
             <span data-role="view-title"></span>
             <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><i class="ghostIconNavbar fa fa-bars"></i></a>
-            <a data-align="right" data-role="button" id="messagePresenceButton" data-rel="drawer" href="#channelMembers" > <i class="ghostIconNavbar fa fa-user"></i> </a>
+            <a data-align="right" data-role="button" id="messagePresenceButton" data-rel="drawer" href="#channelPresence" > <i class="ghostIconNavbar fa fa-users"></i> </a>
         </div>
     </div>
 	 
@@ -240,7 +240,7 @@
     </ul>
 </div>
 
-<div data-role="drawer" id="channelPresence" style="width: 240px" data-title="Members" data-position='right' data-init="doInitChannelPresence" data-show="doShowChannelPresence" data-views="['channel']">
+<div data-role="drawer" id="channelPresence" style="width: 240px" data-title="Presence" data-position='right' data-init="doInitChannelPresence" data-show="doShowChannelPresence" data-views="['channel']">
     <header data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
