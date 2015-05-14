@@ -404,16 +404,32 @@ function contactsFindContacts(e) {
             } 
             contactItem.photo = 'images/missing_profile_photo.jpg';
             if (contacts[i].photos !== null) {
-                contactItem.photo = contacts[i].photos[0].value;
+				returnValidphoto(contacts[i].photos[0].value, function(validUrl) {
+                	contactItem.photo = validUrl;
+					if (contacts[i].phoneNumbers !== null)
+            			APP.models.contacts.deviceContactsDS.add(contactItem);
+				});
             } 
 			// Only add device contacts with phone numbers
-			if (contacts[i].phoneNumbers !== null)
-            	APP.models.contacts.deviceContactsDS.add(contactItem);
+			
         }
          
     },function(error){alert(error);}, options);
  }
-    
+			
+ function returnValidPhoto(url,callback){
+    var img = new Image();
+    img.onload = function() {
+    //Image is ok
+        callback(url);
+    };
+    img.onerror = function(err) {
+        //Returning a default image for users without photo 
+        callback("images/missing_profile_photo.jpg");
+    }
+    img.src = url;
+}
+			
 function doShowAddContacts() {
     var data = APP.models.contacts.currentDeviceContact;
     

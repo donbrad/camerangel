@@ -65,49 +65,27 @@ function handleParseError(err) {
       break;
   }
 }
+
+
 function getBase64FromImageUrl(URL, callback) {
-	
-	window.requestFileSystem(LocalFileSystem.TEMPORARY, 0, function(fs){
-		fs.root.getFile("temp", {create: true, exclusive: false},
-		  function(entry){
-			fileTransfer.download(
-					URL, // the filesystem uri you mentioned
-					entry.fullPath,
-					function(entry) {
-						// do what you want with the entry here
-						var img = new Image();
-						img.src = entry.fullPath;
-						img.onload = function () {
+    var img = new Image();
+    img.src = URL;
+    img.onload = function () {
 
 
-						var canvas = document.createElement("canvas");
-						canvas.width =this.width;
-						canvas.height =this.height;
+    var canvas = document.createElement("canvas");
+    canvas.width =this.width;
+    canvas.height =this.height;
 
-						var ctx = canvas.getContext("2d");
-						ctx.drawImage(this, 0, 0);
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(this, 0, 0);
 
 
-						var dataURL = canvas.toDataURL("image/png");
+    var dataURL = canvas.toDataURL("image/png");
 
-						callback(dataURL.replace(/^data:image\/(png|jpg);base64,/, ""));
+    callback(dataURL.replace(/^data:image\/(png|jpg);base64,/, ""));
 
-						}
-						//console.log("download complete: " + entry.fullPath);
-					},
-					function(error) {
-						console.log("error source " + error.source);
-						console.log("error target " + error.target);
-						console.log("error code " + error.code);
-					},
-					false,
-					null
-			);
-		}, function(){
-			alert("file create error");
-		});
-	}, null);
-    
+    }
 }
 
 function mobileNotify(message) {
