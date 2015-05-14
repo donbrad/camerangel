@@ -186,7 +186,6 @@
 			
 		},
         
-        
        
         newNotification: function (type, title, date, description, actionTitle, action, href, dismissable) {
             var notification = new APP.models.home.Notification(type, title, date, description, actionTitle, action, href, dismissable);
@@ -307,6 +306,7 @@
         
         placesInit: function() {
 			_mapElem = $("#places-mapview");
+			
 		},
         
 		placesShow: function() {
@@ -341,6 +341,13 @@
 
 		APP.geoLocator = new GeoLocator();
 		APP.location = new Object();
+		if (window.navigator.simulator === false) {
+			APP.map = cordova.plugins.google.maps.Map.getMap($("#places-mapview"));
+			APP.mapReady = false;
+			 APP.map.on(plugin.google.maps.event.MAP_READY, function () {
+				 APP.mapReady = true;	 	 
+			 });
+		}
 		
 		APP.geoLocator.getCurrentPosition(function (position, error){
 			if (error === null) {
