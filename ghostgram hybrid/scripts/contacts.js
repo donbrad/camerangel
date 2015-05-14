@@ -404,7 +404,7 @@ function contactsFindContacts(e) {
             } 
             contactItem.photo = 'images/missing_profile_photo.jpg';
             if (contacts[i].photos !== null) {
-				returnValidphoto(contacts[i].photos[0].value, function(validUrl) {
+				returnValidPhoto(contacts[i].photos[0].value, function(validUrl) {
                 	contactItem.photo = validUrl;
 					if (contacts[i].phoneNumbers !== null)
             			APP.models.contacts.deviceContactsDS.add(contactItem);
