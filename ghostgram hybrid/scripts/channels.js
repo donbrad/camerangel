@@ -25,7 +25,6 @@ function addChannel(e) {
     channel.set("channelId", guid);
     
     channel.setACL(APP.models.profile.parseACL);
-    channel.save(null, {
       success: function(channel) {
         // Execute any logic that should take place after the object is saved.
          
@@ -337,8 +336,13 @@ function doShowChannelMembers (e) {
 			APP.models.channel.membersDS.data([]);
 			for (var i=0; i<members.length; i++) {
 				var thisMember = getContactModel(members[i]);
-				APP.models.channel.membersDS.add(thisMember);
-				APP.models.channel.potentialMembersDS.remove(thisMember);
+				if (thisMember === undefined)
+					thisMember = findContactByUUID(members[i]);
+				if (thisMember !== ) {
+					APP.models.channel.membersDS.add(thisMember);
+					APP.models.channel.potentialMembersDS.remove(thisMember);
+				}
+				
 			}
 			
 			//Todo:   Add invited members if this user owns the channel
