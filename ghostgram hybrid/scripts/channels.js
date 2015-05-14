@@ -301,3 +301,45 @@ function doInitChannelMembers (e) {
 		
     });
 }
+
+
+
+function doInitChannelPresence (e) {
+	e.preventDefault(); 
+
+	$("#channelPresence-listview").kendoMobileListView({
+        dataSource: APP.models.channel.membersDS,
+        template: $("#memberTemplate").html(),
+
+		click: function (e) {
+			var thisMember = e.dataItem;
+			// ToDo: enable private message and private package for this memeber
+			
+		}
+		
+    });
+}
+
+function doShowChannelPresence (e) {
+	e.preventDefault();
+		var currentChannelModel = APP.models.channels.currentChannel;
+	APP.models.channel.currentModel = currentChannelModel;
+	APP.models.channel.membersDS.data([]);
+	var members = currentChannelModel.members;
+	if (currentChannelModel.isPrivate) {
+		var privateContact = ''
+		if (members[0] === APP.models.profile.currentUser.userUUID) {
+			privateContact = getContactModel(members[1]);
+		} else {
+			privateContact = getContactModel(members[0]);
+		}
+		APP.models.channel.membersDS.add(privateContact);
+	} else {
+		for (var i=0; i<members.length; i++) {
+			var contact = findContactByUUID(members[i]);
+			APP.models.channel.membersDS.add(contact);
+		}
+	}
+	
+  
+}

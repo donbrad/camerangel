@@ -89,7 +89,7 @@
         <div data-role="navbar">
 			<a data-click="finalizeEditChannel" type="button" data-role="button" data-align="left" >Done</a>
             <span> Edit Channel</span>
-             <a data-align="right" data-role="button"  data-rel="drawer" href="#channelMembers" > <i class="ghostIconNavbar fa fa-users"></i> </a>
+             <a data-align="right" data-role="button"  data-rel="drawer" href="#channelPresence" > <i class="ghostIconNavbar fa fa-users"></i> </a>
         </div>
     </div>
 
@@ -226,7 +226,7 @@
     </div>
 </script>
 
-<div data-role="drawer" id="channelMembers" style="width: 240px" data-title="Members" data-position='right' data-init="doInitChannelMembers" data-show="doShowChannelMembers" data-views="['channel', 'editChannel', 'addChannel']">
+<div data-role="drawer" id="channelMembers" style="width: 240px" data-title="Members" data-position='right' data-init="doInitChannelMembers" data-show="doShowChannelMembers" data-views="['editChannel', 'addChannel']">
     <header data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -236,6 +236,19 @@
 
 	
     <ul id="channelMembers-listview">
+		
+    </ul>
+</div>
+
+<div data-role="drawer" id="channelPresence" style="width: 240px" data-title="Members" data-position='right' data-init="doInitChannelPresence" data-show="doShowChannelPresence" data-views="['channel']">
+    <header data-role="header">
+        <div data-role="navbar">
+            <span data-role="view-title"></span>
+        </div>
+    </header>
+
+	
+    <ul id="channelPresence-listview">
 		
     </ul>
 </div>
