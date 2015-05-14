@@ -214,6 +214,38 @@ function onShowChannel(e) {
 		
 	} else {
 		// Provision a group channel
+		var thisChannel = new groupChannel(channelUUID, thisUser.userUUID, thisUser.alias, userKey);
+			thisChannel.onMessage(onChannelRead);
+			thisChannel.onPresence(onChannelPresence);
+			mobileNotify("Getting Previous Messages...");
+			thisChannel.getMessageHistory(function (messages) {
+				APP.models.channel.messagesDS.data([]);
+				for (var i=0; i<messages.length; i++){		
+							var message = messages[i];
+							var formattedContent = '';
+							if (message.content !== null) {
+								formattedContent = formatMessage(message.content);
+							}
+							message.formattedContent = formattedContent;
+						}
+	
+				APP.models.channel.messagesDS.data(messages);		
+				scrollToBottom();
+			});
+			APP.models.channel.currentChannel = thisChannel;
+			APP.models.channel.currentModel = thisChannelModel;
+			var name = thisChannelModel.name;
+
+			if (thisChannelModel.isPrivate) {
+				name = '{' + name + '}';
+				if (name.length > 16)
+				 name = name.substring(0,15)+ '...}';
+			} else {
+				if (name.length > 17)
+				name = name.substring(0,17)+"...";
+			}
+
+			$("#channelNavBar").data('kendoMobileNavBar').title(name);
 	}
 	
 

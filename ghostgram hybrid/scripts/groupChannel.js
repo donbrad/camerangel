@@ -1,11 +1,11 @@
 // Setup
 // ---
-function groupChannel( channelUUID, publicKey, RSAkeyString, contactKey) {
+function groupChannel( channelUUID, userUUID, alias, publicKey) {
     var channel = channelUUID;
     
 	
     var thisUser = {
-		alias: APP.models.profile.currentUser.alias,
+		alias: alias,
         username: userUUID,
         publicKey: publicKey
     };
@@ -39,6 +39,7 @@ function groupChannel( channelUUID, publicKey, RSAkeyString, contactKey) {
                 content: content,
                 TTL: msg.ttl,
 				time: msg.time,
+				deltaTime: msg.time,
                 sender: msg.sender,
                 recipient: msg.recipient
             };
@@ -224,6 +225,7 @@ function groupChannel( channelUUID, publicKey, RSAkeyString, contactKey) {
 								content: content,
 								TTL: msg.ttl,
 								time: msg.time,
+								deltaTime: msg.time,
 								sender: msg.sender,
 								recipient: msg.recipient
 							};
