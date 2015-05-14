@@ -20,7 +20,7 @@ function addChannel(e) {
     channel.set("archive",  archive === "true" ? true : false);
   
     channel.set("description", description);
-	channel.set("members", []),
+	channel.set("members", [APP.models.profile.currentUser.userUUID]),
 	channel.set("invitedMembers", []),
     channel.set("channelId", guid);
     
@@ -47,7 +47,7 @@ function addChannel(e) {
 	channelMap.set("name", name);
 	channelMap.set("channelId", guid);
 	channelMap.set("channelOwner", APP.models.profile.currentUser.userUUID);
-	channelMap.set("members", []);
+	channelMap.set("members", [APP.models.profile.currentUser.userUUID]);
 	
 	 channelMap.save(null, {
       success: function(channel) {
