@@ -169,21 +169,22 @@ function onShowAddChannel (e) {
 
 function finalizeEditChannel(e) {
 	e.preventDefault();
+	
 	var memberArray = new Array(), invitedMemberArray = new Array(), members = APP.models.channel.membersDS.data();
+	
 	var channelId = APP.models.channels.currentModel.channelId;
 	// It's a group channel so push this users UUID
+	
 	memberArray.push(APP.models.profile.currentUser.userUUID);
 	for (var i=0; i<members.length; i++) {
-		var contact = findContactByUUID(members[i].uuid);
-		if (contact !== undefined) {
-			memberArray.push(contact.contactUUID);
+		if(members[i].contactUUID !== null) {
+			memberArray.push(members[i].contactUUID);
 		} else {
 			// No contactUUID so this user hasn't signed up yet
 			invitedMemberArray.push(members[i].uuid);
 		}
 		
 	}
-	
 	APP.models.channel.currentModel.members = memberArray;
 	APP.models.channels.currentChannel.unbind('change', syncCurrentChannel);
 	
