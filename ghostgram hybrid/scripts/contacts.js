@@ -465,7 +465,7 @@ function contactsAddContact(e){
 		contact.set("alias", alias);
 		contact.set("phone", phone);
 		contact.set("address", address);
-		contact.set("photo", null);
+		
 		contact.set("group", '');
 		contact.set("priority", 0);
 		contact.set("privateChannel", null);
@@ -504,6 +504,7 @@ function contactsAddContact(e){
 			var parseFile = new Parse.File(guid+".png", {base64 : fileData}, "image/png");
 			parseFile.save().then(function() {
 				contact.set("parsePhoto", parseFile);
+				contact.set("photo", parseFile._url);
 				 contact.save(null, {
 					  success: function(contact) {
 						// Execute any logic that should take place after the object is saved.

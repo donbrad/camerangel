@@ -339,6 +339,19 @@
     document.addEventListener('deviceready', function () {  
         var initialView = '#newuserhome';
 
+		APP.geoLocator = new GeoLocator();
+		APP.location = new Object();
+		
+		APP.geoLocator.getCurrentPosition(function (position, error){
+			if (error === null) {
+				APP.location.position = position;
+				mobileNotify("Current positiion: " + position);
+			} else {
+				mobileNotify("GeoLocator error : " + error);
+			}
+			
+		});
+		
         // hide the splash screen as soon as the app is ready. otherwise
        
         navigator.splashscreen.hide();
