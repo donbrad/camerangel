@@ -169,18 +169,26 @@ function onShowAddChannel (e) {
 
 function finalizeEditChannel(e) {
 	e.preventDefault();
-	var memberArray = new Array(), members = APP.models.channel.membersDS.data();
+	var memberArray = new Array(), invitedMemberArray = new Array(), members = APP.models.channel.membersDS.data();
 	var channelId = APP.models.channels.currentModel.channelId;
-	
+	// It's a group channel so push this users UUID
+	memberArray.push(APP.models.profile.currentUser.userUUID);
 	for (var i=0; i<members.length; i++) {
-		memberArray.push(members[i].uuid);
+		var contact = findContactByUUID(members[i].uuid);
+		if (contact !== undefined) {
+			memberArray.push(contact.contactUUID);
+		} else {
+			// No contactUUID so this user hasn't signed up yet
+			invitedMemberArray.push(members[i].uuid);
+		}
+		
 	}
 	
 	APP.models.channel.currentModel.members = memberArray;
+	APP.models.channels.currentChannel.unbind('change', syncCurrentChannel);
 	
 	updateParseObject('channels', 'channelId', channelId, 'members', memberArray);
-	
-	APP.models.channels.currentChannel.unbind('change', syncCurrentChannel);
+	updateParseObject('channels', 'channelId', channelId, 'invitedMembers', invitedMemberArray);
 	
 	APP.kendo.navigate('#channels');
 }
@@ -205,7 +213,7 @@ function deleteMember (e) {
 
 function onShowEditChannel (e) {
 	var currentChannelModel = APP.models.channels.currentModel;
-	var members = currentChannelModel.members;
+	var members = currentChannelModel.members, thisMember = {};
 	var membersArray = new Array();
 	
 	
@@ -227,11 +235,21 @@ function onShowEditChannel (e) {
 			// channel can include invited users who havent signed up yet
 			
 			for (var i=0; i<members.length; i++) {
-				var thisMember = findContactByUUID(members[i]);
+				thisMember = findContactModel(members[i]);
 				APP.models.channel.membersDS.add(thisMember);
 				
-				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'" class="ghostMemberLi"> <span class="ghostMemberName">'+ thisMember.name + ' (' + thisMember.alias + ')' + '</span><span style="float:right; font-size: 10px;"> <a data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><i class="ghostIconNavbar fa fa-trash"></i></a></span></li>');
+				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'" class="ghostMemberLi"> <span class="ghostMemberName">'+ thisMember.name + ' (' + thisMember.alias + ')' + '</span><span style="float:right; font-size: 10px;"> <a data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><i class="ghostIconNavbar fa fa-trash"></i></a></span></li>');	
+			}
+			
+			if (currentChannelModel.isOwner && currentChannelModel.invitedMembers !== undefined) {
+				members = currentChannelModel.invitedMembers;
+				for (var j=0; j<members.length; j++) {
+					thisMember = findContactByUUID(members[i]);
+					APP.models.channel.membersDS.add(thisMember);
 				
+					$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'" class="ghostMemberLi"> <span class="ghostMemberName">'+ thisMember.name + ' (' + thisMember.alias + ')' + '</span><span style="float:right; font-size: 10px;"> <a data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><i class="ghostIconNavbar fa fa-trash"></i></a></span></li>');	
+
+				}
 			}
 		}		
 		
