@@ -25,6 +25,7 @@ function addChannel(e) {
     channel.set("channelId", guid);
     
     channel.setACL(APP.models.profile.parseACL);
+	channel.save(null, {
       success: function(channel) {
         // Execute any logic that should take place after the object is saved.
          
