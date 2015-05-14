@@ -3,6 +3,9 @@ function addChannel(e) {
 
     var Channels = Parse.Object.extend("channels");
     var channel = new Channels();
+	
+	var ChannelMap = Parse.Object.extend('channelmap');
+	var channelMap = new ChannelMap();
     
     var name = $('#channels-addChannel-name').val(),
         media = $('#channels-addChannel-media').val(),
@@ -18,6 +21,7 @@ function addChannel(e) {
   
     channel.set("description", description);
 	channel.set("members", []),
+	channel.set("invitedMembers", []),
     channel.set("channelId", guid);
     
     channel.setACL(APP.models.profile.parseACL);
@@ -27,7 +31,9 @@ function addChannel(e) {
          
           APP.models.channels.channelsDS.add(channel.attributes);
           mobileNotify('Added channel : ' + channel.get('name'));
+		  
 		  APP.models.channels.currentModel = findChannelModel(guid);
+		  APP.modeles.channels.currentChannel = APP.models.channels.currentModel;
 		  APP.kendo.navigate('#editChannel');
       },
       error: function(channel, error) {
@@ -37,7 +43,26 @@ function addChannel(e) {
         handleParseError(error);
       }
     });
- 
+	
+	channelMap.set("name", name);
+	channelMap.set("channelId", guid);
+	channelMap.set("channelOwner", APP.models.profile.currentUser.userUUID);
+	channelMap.set("members", []);
+	
+	 channelMap.save(null, {
+      success: function(channel) {
+        // Execute any logic that should take place after the object is saved.
+         
+         
+      },
+      error: function(channel, error) {
+        // Execute any logic that should take place if the save fails.
+        // error is a Parse.Error with an error code and message.
+        mobileNotify('Error creating channelMap: ' + error.message);
+        handleParseError(error);
+      }
+    });
+	
 }
 
 function findChannelModel(channelId) {
@@ -237,9 +262,17 @@ function onShowEditChannel (e) {
 			
 			for (var i=0; i<members.length; i++) {
 				thisMember = findContactModel(members[i]);
-				APP.models.channel.membersDS.add(thisMember);
+				// Current user will be undefined in contact list.
+				if (thisMember !== undefined) {
+					APP.models.channel.membersDS.add(thisMember);
 				
-				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'" class="ghostMemberLi"> <span class="ghostMemberName">'+ thisMember.name + ' (' + thisMember.alias + ')' + '</span><span style="float:right; font-size: 10px;"> <a data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><i class="ghostIconNavbar fa fa-trash"></i></a></span></li>');	
+					$("#editChannelMemberList").append('<li id="'+thisMember.uuid+
+													   '" class="ghostMemberLi"> <span class="ghostMemberName">'+ 
+													   thisMember.name + ' (' + thisMember.alias + ')' + 
+													   '</span><span style="float:right; font-size: 10px;"> <a data-param="' + 
+													   thisMember.uuid +
+													   '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><i class="ghostIconNavbar fa fa-trash"></i></a></span></li>');	
+				}
 			}
 			
 			if (currentChannelModel.isOwner && currentChannelModel.invitedMembers !== undefined) {
