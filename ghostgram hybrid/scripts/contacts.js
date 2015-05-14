@@ -406,7 +406,7 @@ function contactsFindContacts(e) {
             if (contacts[i].photos !== null) {
 				returnValidPhoto(contacts[i].photos[0].value, function(validUrl) {
                 	contactItem.photo = validUrl;
-					if (contacts[i].phoneNumbers !== null)
+					if (contactItem.phoneNumbers.length > 0)
             			APP.models.contacts.deviceContactsDS.add(contactItem);
 				});
             } 
@@ -460,6 +460,17 @@ function contactsAddContact(e){
         address = $('#addContactAddress').val();
         guid = uuid.v4();
 	
+		contact.setACL(APP.models.profile.parseACL);
+		contact.set("name", name );
+		contact.set("alias", alias);
+		contact.set("phone", phone);
+		contact.set("address", address);
+		contact.set("photo", null);
+		contact.set("group", '');
+		contact.set("priority", 0);
+		contact.set("privateChannel", null);
+		contact.set("uuid", guid);
+	
     //phone = phone.replace(/\+[0-9]{1-2}/,'');
     phone = phone.replace(/\D+/g, "");
 	if (phone[0] !== '1')
@@ -468,16 +479,7 @@ function contactsAddContact(e){
 	 mobileNotify("Saving new contact...");
 	// Look up this contacts phone number in the gg directory
 	findUserByPhone(phone, function (result) {
-		contact.setACL(APP.models.profile.parseACL);
-		contact.set("name", name );
-		contact.set("alias", alias);
-		contact.set("phone", phone);
-		contact.set("address", address);
-		contact.set("photo", photo);
-		contact.set("group", '');
-		contact.set("priority", 0);
-		contact.set("privateChannel", null);
-		contact.set("uuid", guid);
+		
 		if (result.found) {	
 			contact.set("phoneVerified", result.user.phoneVerified);
 			// Does the contact have a verified email address
@@ -497,7 +499,6 @@ function contactsAddContact(e){
 			contact.set("contactUUID", null);
 		}
 							
-			
 
 		getBase64FromImageUrl(photo, function (fileData) {
 			var parseFile = new Parse.File(guid+".png", {base64 : fileData}, "image/png");
