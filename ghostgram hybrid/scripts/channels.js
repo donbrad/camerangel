@@ -134,6 +134,10 @@ function editChannel(e) {
     APP.models.channels.currentChannel.set('name', channel.name);
     APP.models.channels.currentChannel.set('description', channel.description);
     APP.models.channels.currentChannel.set('media', channel.media);
+	if (channel.invitedMembers === undefined) {
+		channel.invitedMembers = [];
+	}
+	APP.models.channels.currentChannel.set('invitedMembers', channel.invitedMembers);
 	APP.models.channels.currentChannel.set('members', channel.members);
 	APP.models.channels.currentChannel.set('isPrivate', channel.isPrivate);
     APP.models.channels.currentChannel.set('archive', channel.archive);
