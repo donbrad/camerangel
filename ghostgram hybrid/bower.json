@@ -1,0 +1,9 @@
+{
+  "name": "ghostgrams",
+  "version": "0.1.5",
+  "private": true,
+  "dependencies": {
+    "autosize": "~3.0.4",
+    "moment": "~2.10.3"
+  }
+}
