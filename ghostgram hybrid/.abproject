@@ -51,8 +51,7 @@
     "android.permission.WRITE_SMS"
   ],
   "DeviceOrientations": [
-    "Portrait",
-    "Landscape"
+    "Portrait"
   ],
   "AndroidHardwareAcceleration": "false",
   "iOSStatusBarStyle": "Hidden",
