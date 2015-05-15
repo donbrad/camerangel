@@ -384,7 +384,7 @@
 		APP.geoLocator.getCurrentPosition(function (position, error){
 			if (error === null) {
 				APP.location.position = position;
-				mobileNotify("Located you at " + position.coords.latitude + " , " + position.coords.longitude);
+				//mobileNotify("Located you at " + position.coords.latitude + " , " + position.coords.longitude);
 			} else {
 				mobileNotify("GeoLocator error : " + error);
 			}

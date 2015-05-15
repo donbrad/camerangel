@@ -61,7 +61,7 @@ function addChannel(e) {
         mobileNotify('Error creating channelMap: ' + error.message);
         handleParseError(error);
       }
-    });
+    });	
 	
 }
 
