@@ -4,7 +4,7 @@ function onInitChannel(e) {
 	APP.models.channel.messagesDS.data([]);
 	APP.models.channel.membersDS.data([]);
 	APP.models.channel.topOffset = APP.kendo.scroller().scrollTop;
-	 
+	 autosize($('#messageTextArea'));
 	 $("#messages-listview").kendoMobileListView({
         dataSource: APP.models.channel.messagesDS,
         template: $("#messagesTemplate").html(),
@@ -263,8 +263,6 @@ function messageSend(e) {
 function _initMessageTextArea() {
 	
 	$('#messageTextArea').val('');
-	$('#messageTextArea').attr("rows", "2");
-	
 }
 
 function messageEraser (e) {

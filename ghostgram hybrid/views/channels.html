@@ -60,7 +60,7 @@
         <ul data-role="listview" data-style="inset">
             <li>
                 <label>Name
-                    <input type="text" id="channels-addChannel-name" value="" />
+                    <input type="text" id="channels-addChannel-name" value="" required />
                 </label>
             </li>
              <li>
@@ -110,7 +110,7 @@
 			<ul data-role="listview" data-style="inset">
 				<li>
 					<label>Name
-						<input type="text" id="channels-editChannel-name" data-bind="value: name" />
+						<input type="text" id="channels-editChannel-name" data-bind="value: name"  />
 					</label>
 				</li>
 				<li>
@@ -179,7 +179,7 @@
      
 	 <div data-role="footer" style="padding: 8px; background: #e2e2e2;"  id="messageEditor" style="min-height: 48px;" >
 		 <div style="clear:both; min-width: 260px; width: 100%;">
-			<textarea id="messageTextArea" onkeyup="AutoGrowTextArea(this)" rows=2 autofocus=true wrap=soft spellcheck= true style="width: 100%; font-size: 1.0em;"></textarea>
+			<textarea id="messageTextArea" rows=2 autofocus=true wrap=soft spellcheck= true style="width: 100%; font-size: 1.0em; resize: none;"></textarea>
 		 </div>
 		 <div style=" font-size: 1.0em;">
 			 <span style="float:left;  font-size: 0.9em;"> 
@@ -214,6 +214,7 @@
 <div class='ghostMessage' style="min-height: 36px;">
 	# var className = "ghostMessageBodyUser"; if (sender === APP.models.channel.currentContactUUID) {  className="ghostMessageBodyOther";  }#
 	# var formattedTime = timeSince(time); var name = ""; if (sender === APP.models.channel.currentContactUUID) { name =  APP.models.channel.currentContactModel.alias; }  #	
+	<hr>
 	<div style="clear:both;">
 		   #if (name !== "") {# <span class="ghostMessageContact">#=name# </span> #}#
 		   <span class="ghostMessageTime"> #:formattedTime#</span>
