@@ -116,14 +116,17 @@ function homeCreateAccount(e) {
 
     var userUUID = uuid.v4();
     
-    // clean up the phone number
+    // clean up the phone number and ensure it's prefixed with 1
    // phone = phone.replace(/\+[0-9]{1-2}/,'');
     phone = phone.replace(/\D+/g, "");
+	if (phone[0] !== '1') {
+		phone = '1'+phone;
+	}
     
     Parse.Cloud.run('preflightPhone', { phone: phone }, {
       success: function(result) {
            if (result.status !== 'ok' || result.count !== 0) {
-               mobileNotify("Phone number matches existing user");
+               mobileNotify("Your phone number matches existing user.");
                return;
            } else {
                // Generate Keys for the user.  
