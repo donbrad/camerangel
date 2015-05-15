@@ -295,7 +295,7 @@ function onShowEditChannel (e) {
 			if (currentChannelModel.isOwner && currentChannelModel.invitedMembers !== undefined) {
 				members = currentChannelModel.invitedMembers;
 				for (var j=0; j<members.length; j++) {
-					thisMember = findContactByUUID(members[i]);
+					thisMember = findContactByUUID(members[j]);
 					APP.models.channel.membersDS.add(thisMember);
 				
 					$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'" class="ghostMemberLi"> <span class="ghostMemberName">'+ thisMember.name + ' (' + thisMember.alias + ')' + '</span><span style="float:right; font-size: 10px;"> <a data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><i class="ghostIconNavbar fa fa-trash"></i></a></span></li>');	
