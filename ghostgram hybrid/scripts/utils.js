@@ -162,6 +162,8 @@ function verifyPhone(e){
           if (result.verified) {
                mobileNotify("Your phone number is verified.  Thank You!");
                $("#modalview-verifyPhone").data("kendoMobileModalView").close();
+			  var thisUser = APP.models.profile.currentUser;
+			  appUserValdated(thisUser.userUUID, thisUser.phone, thisUser.email, thisUser.publicKey );
           } else {
                mobileNotify("Sorry, your verification number: ' + result.recieved + ' didn't match. ");
           }

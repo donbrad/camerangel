@@ -5,6 +5,7 @@ function dataChannelRead (m) {
 			
 			//  { type: 'privateInvite',  channelId: <channelUUID>,  owner: <ownerUUID>, message: <text>, time: current time}
 		case 'privateInvite' : {
+			
 				// Todo:  Does private channel exist?  If not create,  if so notify user of request
 		} break;
 			

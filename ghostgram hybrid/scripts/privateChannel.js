@@ -70,10 +70,10 @@ function processPrivateInvite(contactUUID, message) {
 				
 			}
 			
-			privateChannelInvite(contactUUID, message);
+			privateChannelInvite(contactUUID, privateChannelUUID, message);
 		});
 	} else {
-		privateChannelInvite(contactUUID, message);
+		privateChannelInvite(contactUUID, privateChannelUUID, message);
 	}
 	
 	
