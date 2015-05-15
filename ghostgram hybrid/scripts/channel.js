@@ -29,10 +29,8 @@ function onInitChannel(e) {
 }	
 
 function scrollToBottom() {
-    // topOffset set when the view loads like the following
-   
+    // topOffset set when the view loads like the following   
     var scroller = APP.kendo.scroller;
-
 
 	var scrollerHeight =  APP.kendo.scroller().scrollHeight();
 	var viewportHeight =  APP.kendo.scroller().height();
@@ -81,7 +79,9 @@ function onChannelRead(message) {
 	} else {
 		message.formattedContent = '';
 	}
+	
 	APP.models.channel.messagesDS.add(message);	
+	
 	scrollToBottom();
 }
 
@@ -89,27 +89,30 @@ function timeSince(date) {
 	var seconds = Math.floor(((new Date().getTime()/1000) - date)),
 	interval = Math.floor(seconds / 31536000);
 
-	if (interval > 1) return interval + "y";
+	if (interval > 1) return interval + " years";
 
 	interval = Math.floor(seconds / 2592000);
-	if (interval > 1) return interval + "m";
+	if (interval > 1) return interval + " months";
 
 	interval = Math.floor(seconds / 86400);
-	if (interval >= 1) return interval + "d";
+	if (interval >= 1) return interval + " days";
 
 	interval = Math.floor(seconds / 3600);
-	if (interval >= 1) return interval + "h";
+	if (interval >= 1) return interval + " hours";
 
 	interval = Math.floor(seconds / 60);
-	if (interval > 1) return interval + "m ";
+	if (interval > 1) return interval + " minutes";
 
-	return Math.floor(seconds) + "s";
+	return Math.floor(seconds) + " seconds";
 }
 
 function onHideChannel(e) {
 	e.preventDefault();
-	if (APP.models.channel.currentChannel !== undefined)
+	if (APP.models.channel.currentChannel !== undefined) {
 		APP.models.channel.currentChannel.quit();   // Unsubscribe on current channel.
+		mobileNotify("Closing current channel");
+	}
+		
 }
 
 function onShowChannel(e) {
@@ -247,10 +250,6 @@ function onShowChannel(e) {
 
 			$("#channelNavBar").data('kendoMobileNavBar').title(name);
 	}
-	
-
-	
-	
 }
 
 function messageSend(e) {

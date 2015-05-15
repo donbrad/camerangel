@@ -211,16 +211,13 @@
 </div>
 
 <script type="text/x-kendo-tmpl" id="messagesTemplate">
-<div class='ghostMessage' style="min-height: 36px;">
-	# var className = "ghostMessageBodyUser"; if (sender === APP.models.channel.currentContactUUID) {  className="ghostMessageBodyOther";  }#
-	# var formattedTime = timeSince(time); var name = ""; if (sender === APP.models.channel.currentContactUUID) { name =  APP.models.channel.currentContactModel.alias; }  #	
-	<hr>
-	<div style="clear:both;">
-		   #if (name !== "") {# <span class="ghostMessageContact">#=name# </span> #}#
-		   <span class="ghostMessageTime"> #:formattedTime#</span>
-	</div>
-	<div style="clear:both;">
-		<div class="#=className#">#= formattedContent #</div>
+<div class="chat-message clearfix">
+	# var formattedTime = timeSince(time); var name = "Me"; var photoUrl = 'images/ghostgramcontact.png'; if (sender === APP.models.channel.currentContactUUID) { name =  APP.models.channel.currentContactModel.alias; photoUrl = APP.models.channel.currentContactModel.photo; }  #
+	<img src="#:photoUrl#" alt="" width="36" height="36">
+	<div class="chat-message-content clearfix">
+		<span class="chat-time"> #:formattedTime#</span>
+		<h5>#=name#</h5>
+		<p>#= formattedContent #</p>
 	</div>
 </div> 
 </script>

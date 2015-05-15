@@ -70,102 +70,14 @@ h5 {
      background-color: #27476e;
 }
 .km-flat .km-pages .km-current-page {
-    background-color:  #27476e;
+    background-color:  #212121;
     background: cover;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0:
 }
-#home .km-content { 
-    background-color: #27476e;
-    background-size: 100% 100%;
-    color : white;
-    width: 100%;
-    height: 100%;
-}
 
-#newuserhome .km-content { 
-    background-image: url('../images/ghostgrams.png');
-    background-size: 100% 100%;
-    color : white;
-    width: 100%;
-    height: 100%;
-}
-
-
-
-#channels .km-content { 
-    background-image: url('../images/ghostgrams.png');
-    background-size: 100% 100%;
-    color : white;
-    width: 100%;
-    height: 100%;
-}
-
-#addChannel .km-content { 
-    background-image: url('../images/ghostgrams.png');
-    background-size: 100% 100%;
-    color : white;
-    width: 100%;
-    height: 100%;
-}
-
-#channel .km-content { 
-     background-image: url('../images/ghostgrams.png');
-   background-size: 100% 100%;
-    color : white;
-    width: 100%;
-    height: 100%;
-}
-
-#contacts .km-content { 
-    background-image: url('../images/ghostgrams.png');
-    background-size: 100% 100%;
-    color : white;
-    width: 100%;
-    height: 100%;
-}
-
-#editContact .km-content { 
-    background-image: url('../images/ghostgrams.png');
-    background-size: 100% 100%;
-    color : white;
-    width: 100%;
-    height: 100%;
-}
-
-#addContact .km-content { 
-    background-image: url('../images/ghostgrams.png');
-    background-size: 100% 100%;
-    color : white;
-    width: 100%;
-    height: 100%;
-}
-
-#contactImport .km-content { 
-    background-image: url('../images/ghostgrams.png');
-    background-size: 100% 100%;
-    color : white;
-    width: 100%;
-    height: 100%;
-}
-
-#gallery .km-content { 
-     background-image: url('../images/ghostgrams.png');
-   background-size: 100% 100%;
-    color : white;
-    width: 100%;
-    height: 100%;
-}
-
-#places .km-content { 
-    background-color: rgba(37,120,152, 0.8);
-    background-size: 100% 100%;
-    color : white;
-    width: 100%;
-    height: 100%;
-}
 
 .publicMode {
     filter: opacity(1.0);
@@ -299,16 +211,46 @@ h5 {
     font-size: 14px;	
 }
 
-.ghostMessageBodyUser {
-	color: #2e2e2e;
-	padding-left: 20%;
-	max-width: 80%;
+
+.clearfix { *zoom: 1; } /* For IE 6/7 */
+.clearfix:before, .clearfix:after {
+    content: "";
+	display: table;
+}
+.clearfix:after { clear: both; }
+
+.chat-message {
+	margin: 8px 0;
+	line-height: 16px;
 }
 
-.ghostMessageBodyOther {
+.chat-message p {
+	margin: 0;
+}
+
+.chat-message h5 {
+	line-height: 1.5em;
+	opacity: 0.5;
+	color: #27476e;
+	margin: 0;
+	font-size: 12px;
+	font-weight: 600;
+}
+
+.chat-message img {
+	border-radius: 50%;
+	float: left;
+}
+
+.chat-message-content {
+	margin-left: 48px;
 	color: #2e2e2e;
-	clear: both;
-	max-width: 80%;
+}
+
+.chat-time {
+	float: right;
+	opacity: 0.7;
+	font-size: 12px;
 }
 
 .ghostMessageContact {
