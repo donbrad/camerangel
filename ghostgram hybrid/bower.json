@@ -3,14 +3,14 @@
   "version": "0.1.5",
   "dependencies": {
     "fontawesome": "~4.3.0",
-	"autosize": "~3.0.4"
+    "autosize": "~3.0.4",
+    "jquery-autosize": "~3.0.4"
   },
   "homepage": "https://github.com/donbrad/ghostgram",
   "authors": [
     "Don Bradford <donbrad@hotmail.com>"
   ],
   "description": "ghostgrams hybrid prototype",
-  "main": "index.html",
   "moduleType": [
     "globals"
   ],

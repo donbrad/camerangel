@@ -31,5 +31,6 @@
   },
   "_source": "git://github.com/jackmoore/autosize.git",
   "_target": "~3.0.4",
-  "_originalSource": "autosize"
+  "_originalSource": "jquery-autosize",
+  "_direct": true
 }
