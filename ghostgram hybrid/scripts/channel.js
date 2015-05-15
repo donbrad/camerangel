@@ -263,6 +263,7 @@ function messageSend(e) {
 function _initMessageTextArea() {
 	
 	$('#messageTextArea').val('');
+	autosize.update($('#messageTextArea'));
 }
 
 function messageEraser (e) {
