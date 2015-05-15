@@ -40,6 +40,7 @@ h5 {
 .blue-200 {
   background-color: #27476e;
 }
+
 /* Elements */
 .line {
   border: 1px solid rgba(0, 0, 0, 0.12);
@@ -52,21 +53,24 @@ h5 {
 .km-content,
  .km-navbar {
     font-size: 0.9em;
-    background-color:  rgba(37,120,152, 1.0);
+    background-color:  #27476e;
     background:  cover;
-    color: #fff;
+   background-size: 100% 100%;
+    color : white;
+    width: 100%;
+    height: 100%;
 }
 
 .km-flat  .km-navbar {
     font-size: 0.9em;
-    color: rgba(37,120,152, 0.7);
+    color: rgb(39,71,110);
 }
 
 .km-flat.km-pages li {
-     background-color:  rgba(37,120,152, 1.0);
+     background-color: #27476e;
 }
 .km-flat .km-pages .km-current-page {
-    background-color:  rgba(37,120,152, 1.0);
+    background-color:  #27476e;
     background: cover;
     top: 0;
     left: 0;
@@ -74,7 +78,7 @@ h5 {
     bottom: 0:
 }
 #home .km-content { 
-    background-image: url('../images/blughostcropped.png');
+    background-color: #27476e;
     background-size: 100% 100%;
     color : white;
     width: 100%;
@@ -82,23 +86,17 @@ h5 {
 }
 
 #newuserhome .km-content { 
-    background-image: url('../images/blughostcropped.png');
+    background-image: url('../images/ghostgrams.png');
     background-size: 100% 100%;
     color : white;
     width: 100%;
     height: 100%;
 }
 
-#profile .km-content { 
-    background-image: url('../images/blughostcropped.png');
-    background-size: 100% 100%;
-    color : white;
-    width: 100%;
-    height: 100%;
-}
+
 
 #channels .km-content { 
-    background-image: url('../images/blughostcropped.png');
+    background-image: url('../images/ghostgrams.png');
     background-size: 100% 100%;
     color : white;
     width: 100%;
@@ -106,7 +104,7 @@ h5 {
 }
 
 #addChannel .km-content { 
-    background-image: url('../images/blughostcropped.png');
+    background-image: url('../images/ghostgrams.png');
     background-size: 100% 100%;
     color : white;
     width: 100%;
@@ -114,15 +112,15 @@ h5 {
 }
 
 #channel .km-content { 
-    background-image: url('../images/blughostcropped.png');
-    background-size: 100% 100%;
+     background-image: url('../images/ghostgrams.png');
+   background-size: 100% 100%;
     color : white;
     width: 100%;
     height: 100%;
 }
 
 #contacts .km-content { 
-    background-image: url('../images/blughostcropped.png');
+    background-image: url('../images/ghostgrams.png');
     background-size: 100% 100%;
     color : white;
     width: 100%;
@@ -130,7 +128,7 @@ h5 {
 }
 
 #editContact .km-content { 
-    background-image: url('../images/blughostcropped.png');
+    background-image: url('../images/ghostgrams.png');
     background-size: 100% 100%;
     color : white;
     width: 100%;
@@ -138,7 +136,7 @@ h5 {
 }
 
 #addContact .km-content { 
-    background-image: url('../images/blughostcropped.png');
+    background-image: url('../images/ghostgrams.png');
     background-size: 100% 100%;
     color : white;
     width: 100%;
@@ -146,7 +144,7 @@ h5 {
 }
 
 #contactImport .km-content { 
-    background-image: url('../images/blughostcropped.png');
+    background-image: url('../images/ghostgrams.png');
     background-size: 100% 100%;
     color : white;
     width: 100%;
@@ -154,8 +152,8 @@ h5 {
 }
 
 #gallery .km-content { 
-    background-image: url('../images/blughostcropped.png');
-    background-size: 100% 100%;
+     background-image: url('../images/ghostgrams.png');
+   background-size: 100% 100%;
     color : white;
     width: 100%;
     height: 100%;
@@ -183,25 +181,22 @@ h5 {
     width: 100%; !important
     height: 100%; !important
     color: white;
-    background-color: rgba(37,120,152, 0.9);
+    background-color: #27476e;
   
 }
 
 .ghostButton {
-    
     color: #fff;
     font-size: 1.2em;
-    text-shadow: rgba(37,120,152, 0.6) 1px 3px 3px;
     font-weight: 700;
-   
 }
 
 .ghostShadow {
-     color: transparent; text-shadow: rgba(245, 245, 255, 0.35) 0 1px 1px, rgba(0, 0, 30, 0.08) 0px 3px 3px, rgba(0, 0, 30, 0.20) 0px 3px 2px, rgba(0, 0, 30, 0.40) 0px 3px 2px, rgba(0, 0, 0, 0.08) -6px 6px 4px;
+     color: transparent; text-shadow: #27476e 0 1px 1px, rgba(0, 0, 30, 0.08) 0px 3px 3px, rgba(0, 0, 30, 0.20) 0px 3px 2px, rgba(0, 0, 30, 0.40) 0px 3px 2px, rgba(0, 0, 0, 0.08) -6px 6px 4px;
 }
 
 .ghostIcon {
-    color: rgba(37,120,152, .8);
+    color: #27476e;
     font-size: 20px;
     font-weight:500;
     padding-right: 3px;
@@ -209,36 +204,36 @@ h5 {
 }
 
 .ghostIconSmall {
-    color: rgba(37,120,152, .8);
+    color: #27476e;
     font-size: 16px;
     font-weight:500;
 }
 
 .ghostIconNavbar {
-    color: rgba(37,120,152, .8);
+    color: #27476e;
     font-size: 14px;
     font-weight:400;
 }
 .ghostText {
-    color: rgba(37,120,152, 1.0);
+    color: #27476e;
     font-size: 16px;
     font-weight:400;
 }
 
 .ghostTextLarge {
-    color: rgba(37,120,152, 0.9);
+    color: #27476e;
     font-size: 18px;
     font-weight:500;
 }
 
 .ghostTiny {
-    color: rgba(37,120,152, 0.9);
+    color: #27476e;
     font-size: 12px;
     font-weight:400;
 }
 
 .ghostLabel {
-  color: rgba(37,120,152, 0.9);
+  color: #27476e;
   font-size: 12px;
 }
 
@@ -253,14 +248,14 @@ h5 {
 	margin:6px;
 	padding:6px;
 	border-radius: 5px;
-    border: 1px solid rgb(37,120,152);
+    border: 1px solid #27476e;
 }
 .ghostMemberLi {
-	color: rgb(37,120,152);
+	color: #27476e;
 	width: 100%;	
 	list-style-type: none;
 	list-style-position:inside;
-	height: 32px;
+	height: 38px;
 	display: block;
 }
 .ghostMemberName {
@@ -279,20 +274,21 @@ h5 {
 
 .ghostWhiteTitle {
     color: rgba(255,255,255, 0.9);
+	background-color: #27476e;
     text-shadow: rgba(64,64,64, 0.9) 0px 3px 3px;
     font-size: 18px;
     font-weight:700;
 }
 
 .ghostTitle {
-    color: rgba(37,120,152, 0.9);
-    text-shadow: rgba(37,60,78, 0.5) 0px 2px 2px;
+    color: #27476e;
+    text-shadow: #27476e 0px 2px 2px;
     font-size: 18px;
     font-weight:500;
 }
 
 .ghostDescription {
-    color: rgba(37,120,152, 0.9);
+    color:#27476e;
     font-size: 13px;
     font-weight:400;
 }
@@ -316,7 +312,7 @@ h5 {
 }
 
 .ghostMessageContact {
- 	color: rgb(37,120,152);
+ 	color: #27476e;
     font-size: 14px;
     font-weight:400;	
 }
@@ -329,14 +325,17 @@ h5 {
 }
 
 .ghostContent {
-   background-color: rgb(37,120,152);
+   background-color: #27476e;
    background: cover;
+   width: 100%;
+   height: 100%;
    padding-top: 12px;
+   padding-bottom: 24px;
    color: #e2e2e2;  
 }
 
 .ghostContainer {
-   background-color: rgb(37,120,152);
+   background-color: #27476e;
    padding-left: 12px;
    padding-right: 12px;
    color: #e2e2e2;
@@ -344,19 +343,19 @@ h5 {
 
 .ghostContainer h3 {
     font-size: 16px;
-    background-color: rgb(37,120,152);
+    background-color: #27476e;
     color: #fff;
 }
 
 .ghostCollapsible {
     font-size: 16px;
-    background-color: rgb(37,120,152);
+    background-color: #27476e;
     color: #fff;
 }
 
 .ghostList {
    background-color: #fff;
-   color: rgba(37,120,152, 0.9);
+   color: #27476e;
    padding: 12px;
    font-size: 14px
 
@@ -364,14 +363,14 @@ h5 {
 
 .km-root .appearance .km-listview label
 {
-  color: rgba(37,120,152, 0.9);
+  color: #27476e;
   font-size: 12px;
   width: 100%;
 }
 
 .km-wp .appearance .km-listview label
 {
-  color: rgba(37,120,152, 0.9);
+  color: #27476e;
   font-size: 12px;
 }
 
@@ -421,13 +420,13 @@ h5 {
 }
 .km-root .km-button
 {
-    color: rgba(37,120,152, 1.0);
+    color: #27476e;
     font-size: 0.9em;
     background-color: #fff;
-    border: 1px solid rgba(37,120,152, 1.0);
-    -webkit-box-shadow: 1px 1px 2px 2px rgba(37,120,152, .4);  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
-      -moz-box-shadow:    1px 1px 2px 2px rgba(37,120,152, .4;  /* Firefox 3.5 - 3.6 */
-  box-shadow:         1px 1px 2px 2px rgba(37,120,152, .4);
+    border: 1px solid #27476e;
+    -webkit-box-shadow: 1px 1px 2px 2px rgba(39,71,110, .4);  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+      -moz-box-shadow:    1px 1px 2px 2px rgba(39,71,110, .4);  /* Firefox 3.5 - 3.6 */
+  box-shadow:         1px 1px 2px 2px rgba(39,71,110, .4);
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -521,7 +520,7 @@ h5 {
     top: .15em;
     right: .5em;
     width: 60px;
-    background-color: rgb(37,120,152);
+    background-color: #27476e;
     color: #fff;
 }
 

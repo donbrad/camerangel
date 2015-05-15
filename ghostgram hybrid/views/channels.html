@@ -1,4 +1,4 @@
- <div data-role="view" id="channels" data-title="Channels" data-layout="main" data-model="APP.models.channels" data-init="onInitChannels">  
+ <div data-role="view" id="channels" data-title="Channels" data-layout="main" data-model="APP.models.channels" data-init="onInitChannels" class="ghostContent">  
      <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -6,7 +6,7 @@
            <a data-align="right" data-role="button" href="#addChannel"> <i class="ghostIconNavbar fa fa-plus"></i> </a>
         </div>
     </div>
-     <div class="ghostContainer" style="padding-top: 12px;">
+     <div class="ghostContainer" style="padding-top: 12px; padding-bottom: 24px;">
          <ul id="channels-listview"></ul>
      </div>
      
@@ -105,57 +105,58 @@
         </div>
     </div>
 
-     <form>
-        <ul data-role="listview" data-style="inset">
-            <li>
-                <label>Name
-                    <input type="text" id="channels-editChannel-name" data-bind="value: name" />
-                </label>
-            </li>
-			<li>
-                <label>Private Channel
-                    <input type="boolean" id="channels-editChannel-private" readonly data-bind="value: isPrivate" />
-                </label>
-            </li>
-             <li>
-                <label>Description
-                    <input type="text" id="channels-editChannel-description" data-bind="value: description" />
-                </label>
-            </li>
-             <li>
-               <label>Media
-                    <select id="channels-editChannel-media" data-bind="value: media">
-                        <option value="false">No: users can just text</option>
-                        <option value="true">Yes: users can share media</option>
-                    </select>
-                </label>
-            </li>
-             <li>
-               <label>Archive
-                    <select id="channels-editChannel-archive" data-bind="value: media">
-                        <option value="false">No: Nothing is saved</option>
-                        <option value="true">Yes: Content can be saved</option>
-                    </select>
-                </label>
-            </li>
-        </ul>
-    </form> 
-	
-	<div style="padding-left: 16px; padding-right: 16px; padding-bottom: 12px;">
-		<div style="background: #fff; padding-bottom: 12px; padding-top: 2px;">
-			<div class="ghostLabel" style="padding-left: 6px;" >
-				Members
-			</div>
-			<div >
-				<ul class="ghostMemberUl" id="editChannelMemberList">
+	<div class="ghostContent">
+		 <form>
+			<ul data-role="listview" data-style="inset">
+				<li>
+					<label>Name
+						<input type="text" id="channels-editChannel-name" data-bind="value: name" />
+					</label>
+				</li>
+				<li>
+					<label>Private Channel
+						<input type="boolean" id="channels-editChannel-private" readonly data-bind="value: isPrivate" />
+					</label>
+				</li>
+				 <li>
+					<label>Description
+						<input type="text" id="channels-editChannel-description" data-bind="value: description" />
+					</label>
+				</li>
+				 <li>
+				   <label>Media
+						<select id="channels-editChannel-media" data-bind="value: media">
+							<option value="false">No: users can just text</option>
+							<option value="true">Yes: users can share media</option>
+						</select>
+					</label>
+				</li>
+				 <li>
+				   <label>Archive
+						<select id="channels-editChannel-archive" data-bind="value: media">
+							<option value="false">No: Nothing is saved</option>
+							<option value="true">Yes: Content can be saved</option>
+						</select>
+					</label>
+				</li>
+			</ul>
+		</form> 
 
-				</ul>
+		<div style="padding-left: 16px; padding-right: 16px; padding-bottom: 12px;">
+			<div style="background: #fff; padding-bottom: 12px; padding-top: 2px;">
+				<div class="ghostLabel" style="padding-left: 6px;" >
+					Members
+				</div>
+				<div >
+					<ul class="ghostMemberUl" id="editChannelMemberList">
 
+					</ul>
+
+				</div>
 			</div>
 		</div>
-	</div>
-
-		
+	</div>	
+	
     <div data-role="footer">
         <div data-role="navbar">
            
