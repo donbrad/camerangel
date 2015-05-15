@@ -378,8 +378,6 @@ function doInitChannelMembers (e) {
     });
 }
 
-
-
 function doInitChannelPresence (e) {
 	e.preventDefault(); 
 
@@ -415,7 +413,6 @@ function doShowChannelPresence (e) {
 			var contact = findContactByUUID(members[i]);
 			APP.models.channel.membersDS.add(contact);
 		}
-	}
-	
+	}	
   
 }
