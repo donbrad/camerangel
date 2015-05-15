@@ -33,7 +33,7 @@ function addChannel(e) {
           mobileNotify('Added channel : ' + channel.get('name'));
 		  
 		  APP.models.channels.currentModel = findChannelModel(guid);
-		  APP.modeles.channels.currentChannel = APP.models.channels.currentModel;
+		  APP.models.channels.currentChannel = APP.models.channels.currentModel;
 		  APP.kendo.navigate('#editChannel');
       },
       error: function(channel, error) {
@@ -140,6 +140,7 @@ function editChannel(e) {
 	APP.models.channels.currentChannel.set('invitedMembers', channel.invitedMembers);
 	APP.models.channels.currentChannel.set('members', channel.members);
 	APP.models.channels.currentChannel.set('isPrivate', channel.isPrivate);
+	APP.models.channels.currentChannel.set('isOwner', channel.isOwner);
     APP.models.channels.currentChannel.set('archive', channel.archive);
     APP.models.channels.currentChannel.bind('change', syncCurrentChannel);
     

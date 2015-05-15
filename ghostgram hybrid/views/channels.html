@@ -11,9 +11,20 @@
      </div>
      
     <ul data-role="actionsheet" id="channelActions" data-popup='{"direction": "left"}'>
+        <li><a data-action="eraseChannel">Erase Channel Content</a></li>
+        <li><a data-action="archiveChannel">Archive Channel </a></li>
+        <li><a data-action="deleteChannel">Delete Channel</a></li>
+    </ul>
+	 
+	  <ul data-role="actionsheet" id="channelActionsOwner" data-popup='{"direction": "left"}'>
         <li><a data-action="editChannel">Edit Channel</a></li>
         <li><a data-action="eraseChannel">Erase Channel Content</a></li>
         <li><a data-action="archiveChannel">Archive Channel </a></li>
+        <li><a data-action="deleteChannel">Delete Channel</a></li>
+    </ul>
+	 
+	 <ul data-role="actionsheet" id="channelActionsPrivate" data-popup='{"direction": "left"}'>
+	    <li><a data-action="eraseChannel">Erase Channel Content</a></li>
         <li><a data-action="deleteChannel">Delete Channel</a></li>
     </ul>
     
@@ -21,7 +32,8 @@
 
 <script type="text/x-kendo-tmpl" id="channels-listview-template">
     <div style="clear:both;">
-       <div style="float:right; font-size: 10px;"> <a data-rel="actionsheet" href="\\#channelActions" data-actionsheet-context="#:channelId#" data-role="button"><i class="ghostIcon fa fa-cog"></i></a> </div>
+	  # var actionSheet = "channelActions"; if ( isOwner ) { actionSheet = "channelActionsOwner"; } if (isPrivate ) { actionSheet = "channelActionsPrivate"; } #
+       <div style="float:right; font-size: 10px;"> <a data-rel="actionsheet" href="\\##:actionSheet# data-actionsheet-context="#:channelId#" data-role="button"><i class="ghostIcon fa fa-cog"></i></a> </div>
        <div class="ghostTextLarge">  #if (isPrivate) {# <i class="ghostIconNavbar fa fa-user-secret"> </i> #} else { # <i class="ghostIconNavbar fa fa-users"> </i> #}# <a data-rel='view' href="\\#channel?channel=#:channelId#"> #:name# </a></div>
        <div class="ghostDescription" style="padding-top: 8px; padding-bottom: 4px;"> #: description # </div>
         <div style="color: \\#2e2e2e;">
