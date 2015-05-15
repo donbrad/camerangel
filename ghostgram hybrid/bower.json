@@ -1,9 +1,22 @@
 {
   "name": "ghostgrams",
   "version": "0.1.5",
-  "private": true,
   "dependencies": {
-    "autosize": "~3.0.4",
-    "moment": "~2.10.3"
-  }
+    "fontawesome": "~4.3.0"
+  },
+  "homepage": "https://github.com/donbrad/ghostgram",
+  "authors": [
+    "Don Bradford <donbrad@hotmail.com>"
+  ],
+  "description": "ghostgrams hybrid prototype",
+  "main": "index.html",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "sms",
+    "email",
+    "better"
+  ],
+  "license": "MIT"
 }
