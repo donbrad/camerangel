@@ -120,10 +120,21 @@ function onShowChannel(e) {
 	var channelUUID = e.view.params.channel;
 	var thisChannelModel = findChannelModel(channelUUID);
 	var thisUser = APP.models.profile.currentUser;
-	
+	var thisChannel = {};
 	var contactUUID = null;
-	
- 
+	APP.models.channel.currentModel = thisChannelModel;
+	var name = thisChannelModel.name;
+
+	if (thisChannelModel.isPrivate) {
+		name = '{' + name + '}';
+		if (name.length > 16)
+		 name = name.substring(0,15)+ '...}';
+	} else {
+		if (name.length > 17)
+		name = name.substring(0,17)+"...";
+	}
+    $("#channelNavBar").data('kendoMobileNavBar').title(name);	
+
 	if (thisChannelModel.isPrivate) {
 		
 		var userKey = thisUser.publicKey, privateKey = thisUser.privateKey;
@@ -131,6 +142,8 @@ function onShowChannel(e) {
 			contactUUID = thisChannelModel.members[1];
 		else 
 			contactUUID = thisChannelModel.members[0];	
+		
+
 		
 		APP.models.channel.currentContactUUID = contactUUID;
 		var thisContact = getContactModel(contactUUID);
@@ -142,7 +155,7 @@ function onShowChannel(e) {
 					contactKey = result.publicKey;
 					thisContact.publicKey = contactKey;
 					updateParseObject('contacts', 'contactUUID', contactUUID, 'publicKey', contactKey);
-					var thisChannel = new secureChannel(channelUUID, thisUser.userUUID, thisUser.alias, userKey, privateKey, contactUUID, contactKey);
+					thisChannel = new secureChannel(channelUUID, thisUser.userUUID, thisUser.alias, userKey, privateKey, contactUUID, contactKey);
 					thisChannel.onMessage(onChannelRead);
 					thisChannel.onPresence(onChannelPresence);
 					mobileNotify("Getting Previous Messages...");
@@ -165,22 +178,12 @@ function onShowChannel(e) {
 					mobileNotify('No secure connect for ' + thisContact.alias + ' ' + thisContact.name);
 				}
 				APP.models.channel.currentChannel = thisChannel;
-				APP.models.channel.currentModel = thisChannelModel;
-				var name = thisChannelModel.name;
-
-				if (thisChannelModel.isPrivate) {
-					name = '{' + name + '}';
-					if (name.length > 16)
-					 name = name.substring(0,15)+ '...}';
-				} else {
-					if (name.length > 17)
-					name = name.substring(0,17)+"...";
-				}
-
-				$("#channelNavBar").data('kendoMobileNavBar').title(name);	
+				
+				
 			});
 		} else {
-			var thisChannel = new secureChannel(channelUUID, thisUser.userUUID, thisUser.alias, userKey, privateKey, contactUUID, contactKey);
+			APP.models.channel.currentModel = thisChannelModel;
+			thisChannel = new secureChannel(channelUUID, thisUser.userUUID, thisUser.alias, userKey, privateKey, contactUUID, contactKey);
 			thisChannel.onMessage(onChannelRead);
 			thisChannel.onPresence(onChannelPresence);
 			mobileNotify("Getting Previous Messages...");
@@ -199,56 +202,32 @@ function onShowChannel(e) {
 				scrollToBottom();
 			});
 			APP.models.channel.currentChannel = thisChannel;
-			APP.models.channel.currentModel = thisChannelModel;
-			var name = thisChannelModel.name;
-
-			if (thisChannelModel.isPrivate) {
-				name = '{' + name + '}';
-				if (name.length > 16)
-				 name = name.substring(0,15)+ '...}';
-			} else {
-				if (name.length > 17)
-				name = name.substring(0,17)+"...";
-			}
-
-			$("#channelNavBar").data('kendoMobileNavBar').title(name);
+			
+			
 		}
 		
 		
 	} else {
 		// Provision a group channel
-		var thisChannel = new groupChannel(channelUUID, thisUser.userUUID, thisUser.alias, userKey);
-			thisChannel.onMessage(onChannelRead);
-			thisChannel.onPresence(onChannelPresence);
-			mobileNotify("Getting Previous Messages...");
-			thisChannel.getMessageHistory(function (messages) {
-				APP.models.channel.messagesDS.data([]);
-				for (var i=0; i<messages.length; i++){		
-							var message = messages[i];
-							var formattedContent = '';
-							if (message.content !== null) {
-								formattedContent = formatMessage(message.content);
-							}
-							message.formattedContent = formattedContent;
+		thisChannel = new groupChannel(channelUUID, thisUser.userUUID, thisUser.alias, userKey);
+		thisChannel.onMessage(onChannelRead);
+		thisChannel.onPresence(onChannelPresence);
+		mobileNotify("Getting Previous Messages...");
+		thisChannel.getMessageHistory(function (messages) {
+			APP.models.channel.messagesDS.data([]);
+			for (var i=0; i<messages.length; i++){		
+						var message = messages[i];
+						var formattedContent = '';
+						if (message.content !== null) {
+							formattedContent = formatMessage(message.content);
 						}
-	
-				APP.models.channel.messagesDS.data(messages);		
-				scrollToBottom();
-			});
-			APP.models.channel.currentChannel = thisChannel;
-			APP.models.channel.currentModel = thisChannelModel;
-			var name = thisChannelModel.name;
+						message.formattedContent = formattedContent;
+					}
 
-			if (thisChannelModel.isPrivate) {
-				name = '{' + name + '}';
-				if (name.length > 16)
-				 name = name.substring(0,15)+ '...}';
-			} else {
-				if (name.length > 17)
-				name = name.substring(0,17)+"...";
-			}
-
-			$("#channelNavBar").data('kendoMobileNavBar').title(name);
+			APP.models.channel.messagesDS.data(messages);		
+			scrollToBottom();
+		});
+		APP.models.channel.currentChannel = thisChannel;
 	}
 }
 

@@ -55,11 +55,12 @@ h5 {
     font-size: 0.9em;
     background-color:  #27476e;
     background:  cover;
-   background-size: 100% 100%;
+    background-size: 100% 100%;
     color : white;
     width: 100%;
     height: 100%;
 }
+
 
 .km-flat  .km-navbar {
     font-size: 0.9em;
@@ -67,15 +68,23 @@ h5 {
 }
 
 .km-flat.km-pages li {
-     background-color: #27476e;
+     background-color: #d3d3d3;
 }
+
+#newuserhome .km-content { 
+    background-image: url('../images/ghostgrams.png');
+    background-size: 100% 100%;
+    color : white;
+    width: 100%;
+    height: 100%;
+}
+
 .km-flat .km-pages .km-current-page {
-    background-color:  #212121;
-    background: cover;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0:
+    background-image: url('../images/ghostgrams.png');
+    background-size: 100% 100%;
+    color : white;
+    width: 100%;
+    height: 100%;
 }
 
 
@@ -163,7 +172,7 @@ h5 {
     border: 1px solid #27476e;
 }
 .ghostMemberLi {
-	color: #27476e;
+	color: #d3d3d3;
 	width: 100%;	
 	list-style-type: none;
 	list-style-position:inside;
@@ -193,10 +202,9 @@ h5 {
 }
 
 .ghostTitle {
-    color: #27476e;
-    text-shadow: #27476e 0px 2px 2px;
+    color: #979797;
     font-size: 18px;
-    font-weight:500;
+    font-weight:700;
 }
 
 .ghostDescription {
@@ -267,32 +275,34 @@ h5 {
 }
 
 .ghostContent {
-   background-color: #27476e;
+   background-color: #d2d2d2;
+	color: #27476e;
    background: cover;
    width: 100%;
    height: 100%;
    padding-top: 12px;
    padding-bottom: 24px;
-   color: #e2e2e2;  
+  
 }
 
 .ghostContainer {
-   background-color: #27476e;
+   background-color: #d2d2d2;
+   color: #27476e;
    padding-left: 12px;
    padding-right: 12px;
-   color: #e2e2e2;
+   
 }
 
 .ghostContainer h3 {
     font-size: 16px;
-    background-color: #27476e;
-    color: #fff;
+    background-color: #d2d2d2;
+   color: #27476e;
 }
 
 .ghostCollapsible {
     font-size: 16px;
-    background-color: #27476e;
-    color: #fff;
+    background-color: #d2d2d2;
+	color: #27476e;
 }
 
 .ghostList {
@@ -324,7 +334,7 @@ h5 {
   right: 0;
   margin-top: 0;
   top: 0;
-  border: 1px solid #aeaeae;
+  border: 1px solid #27476e;
 }
 
 .km-root .km-pane .km-view.appearance .km-listview select 
@@ -335,7 +345,7 @@ h5 {
   right: 0;
   margin-top: 0;
   top: 0;
-  border: 1px solid #aeaeae;
+  border: 1px solid #27476e;
 }
 
 .km-root .km-pane .km-view.appearance .km-listview a 
@@ -346,7 +356,7 @@ h5 {
   right: 0;
   margin-top: 0;
   top: 0;
-  border: 1px solid #aeaeae;
+  border: 1px solid #27476e;
 }
 
 .km-root .km-pane .km-view.appearance .km-listview textarea 
@@ -358,7 +368,7 @@ h5 {
   margin-top: 0;
   left: -18px;
   top: 0;
-  border: 1px solid #aeaeae;
+  border: 1px solid #27476e;
 }
 .km-root .km-button
 {

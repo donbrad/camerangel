@@ -5,7 +5,7 @@
   "AppIdentifier": "com.telerik.ghostgramhybrid",
   "DisplayName": "ghostgrams",
   "Author": "don bradford",
-  "Description": "ghostgram for iOS and Android",
+  "Description": "ghostgrams for iOS and Android (and maybe Win8)",
   "BundleVersion": "0.1.6",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
