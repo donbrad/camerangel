@@ -2,7 +2,8 @@
   "name": "ghostgrams",
   "version": "0.1.5",
   "dependencies": {
-    "fontawesome": "~4.3.0"
+    "fontawesome": "~4.3.0",
+	"autosize": "~3.0.4"
   },
   "homepage": "https://github.com/donbrad/ghostgram",
   "authors": [
