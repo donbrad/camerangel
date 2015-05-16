@@ -12,6 +12,9 @@ function homeBeforeShow () {
 
 function dismissNotification (e) {
 	e.preventDefault();
+	var uuid = e.sender.element[0].attributes['data-param'].value;
+	
+	deleteNotificationModel(uuid);
 	
 }
 
@@ -25,7 +28,7 @@ function findNotificationModel(uuid) {
 	return(contact);
 }
 
-function deleteNoficationModel(uuid) {
+function deleteNotificationModel(uuid) {
 	 var dataSource = APP.models.home.notificationDS;
     dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
     var view = dataSource.view();
