@@ -24,6 +24,7 @@
                 this.href = href ? href : null,
                 this.description = description ? description : '',
                 this.date = date ? date : new Date().getTime(),
+			    this.dismissed = dismissed ? dismissed : false       
                 this.dismissable = dismissable ? dismissable : false        
             }
           

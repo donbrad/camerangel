@@ -110,7 +110,7 @@
   </div>       
     
 <!-- home - for signed in users -->
-<div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" style='display:none;'>
+<div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" style='display:none;  data-show="onShowHome">
    <div data-role="header">
       <div data-role="navbar">
         <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" > <i class="ghostIconNavbar fa fa-bars"></i> </a>
@@ -119,23 +119,19 @@
       </div>
     </div>
     
-    <div class="user-content">
-        <div >
-           <div  style='padding-top: 24px; padding-bottom: 28px; font-size: 24px; text-align: center; color: #aeaeae'> Personal, private, secure</div>
-       </div>
-        
-        <ul data-role="listview" id="notification-list" data-source="APP.models.home.notificationDS"  data-template="notification-template">
+    <div class="user-content" style="padding-bottom: 18px;">
+        <ul id="notifications-listview" >
                  
         </ul>
     </div>
 
 </div>
     
-<script type="text/x-kendo-template" id="notification-template">      
+<script type="text/x-kendo-template" id="notificationTemplate">      
     <div>
         <div class="ghostTitle"> <span> #=title# </span>  <span style="float: right;"> #=date# </span> </div>
         <div style="clear: both;" class="ghostDescription"> #=description# </div>
-        # if (action !== null) {#  <a data-action="#=action#"> #=actionTitle# </a> #} else if (href !== null) {# <a href="#=href#"> #=actionTitle# </a>#}#
+        <div style="float:right"> # if (href !== null) {# <a href="#=action#"> #=actionTitle# </a>#}# </div>
     </div>
 </script> 
     

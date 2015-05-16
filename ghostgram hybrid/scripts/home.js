@@ -8,6 +8,43 @@ function homeBeforeShow () {
         // No current user -redirect to no user view
        APP.kendo.navigate('#nouser');
     }
+	 var NotificationModel = Parse.Object.extend("notifications");
+	var NotificationCollection = Parse.Collection.extend({
+	  model: ChannelModel
+	});
+}
+
+function onShowHome() {
+	var notifications = new NotificationCollection();
+
+	notifications.fetch({
+		  success: function(collection) {
+			 var models = new Array();
+			 for (var i=0; i<collection.models.length; i++) {
+				 // Todo: check status of members
+				 models.push(collection.models[i].attributes);
+			 }
+
+			 APP.models.home.notificationDS.data(models);
+		  },
+		  error: function(collection, error) {
+			  handleParseError(error);
+		  }
+	});
+	
+	$("#notifications-listview").kendoMobileListView({
+        dataSource: APP.models.home.notificationsDS,
+        template: $("#notificationTemplate").html(),
+		filterable: {
+                field: "title",
+                operator: "startswith"
+            },
+		click: function (e) {
+			var thisNotification = e.dataItem;
+			
+		}
+		
+    });
 } 
 
 function homeSignout (e) {
