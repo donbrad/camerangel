@@ -10,41 +10,13 @@ function homeBeforeShow () {
     }
 }
 
-function dismissNotification () {
+function dismissNotification (e) {
+	e.preventDefault();
 	
 }
 
 function onInitHome () {
-	    var NotificationModel = Parse.Object.extend("notifications");
-	var NotificationCollection = Parse.Collection.extend({
-	  model: NotificationModel
-	});
-
-	var notifications = new NotificationCollection();
-
-	notifications.fetch({
-		  success: function(collection) {
-			 for (var i=0; i<collection.models.length; i++) {
-				 // Todo: check status of members
-				 var date = collection.models[i].updatedAt;
-				 collection.models[i].attributes.date = Date.parse(date);
-				  APP.models.home.notificationDS.add(collection.models[i].attributes);
-			 }
-		  },
-		  error: function(collection, error) {
-			  handleParseError(error);
-		  }
-	});
 	
-	$("#notification-listview").kendoMobileListView({
-        dataSource: APP.models.home.notificationsDS,
-        template: $("#notificationTemplate").html(),
-		click: function (e) {
-			var thisNotification = e.dataItem;
-			
-		}
-		
-    });
 }
 
 function onShowHome() {

@@ -110,7 +110,7 @@
   </div>       
     
 <!-- home - for signed in users -->
-<div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" style="display:none;" data-init="onInitHome"  data-show="onShowHome">
+<div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" style="display:none;" >
    <div data-role="header">
       <div data-role="navbar">
         <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" > <i class="ghostIconNavbar fa fa-bars"></i> </a>
@@ -119,17 +119,22 @@
       </div>
     </div>
     
-    <div class="user-content" style="padding-bottom: 18px;">
-        <ul id="notification-listview" ></ul>
+     <div class="ghostContainer" style="padding-top: 12px; padding-bottom: 24px;">
+        <ul data-role="listview"  data-source="APP.models.home.notificationDS" data-template="notificationTemplate" id="notification-listview" ></ul>
     </div>
 
 </div>
     
 <script type="text/x-kendo-template" id="notificationTemplate">      
-    <div>
-        <div class="ghostTitle"> <span> #=title# </span>  <span style="float: right;"> #=date# </span> </div>
-        <div style="clear: both;" class="ghostDescription"> #=description# </div>
-        <div style="float:right"> # if (href !== null) {# <a data-role="button" href="#=href#"> #=actionTitle# </a>#} else if ( action !== null ) {#  <a data-role="button" data-click="#=action#"> #=actionTitle# </a> #}#</div>
+    <div class="notification-message clearfix">
+		# var dateTime= new Date(date);   var formattedDate = dateTime.toDateString(); var photoUrl = "images/ghostgramcontact.png" ;#
+		<img src="#:photoUrl#" alt="" width="36" height="36">
+		<div class="notification-message-content clearfix">
+			
+			# if (href !== null) {# <a  href="#=href#"> #=title# </a>#} else if ( action !== null ) {#  <a  data-click="#=action#"> #=title# </a> #}#
+			<p>#= description #</p>
+		</div>
+		<div class="notification-time"> #:formattedDate#</div>
     </div>
 </script> 
     
