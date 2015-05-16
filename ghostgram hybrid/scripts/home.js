@@ -24,26 +24,21 @@ function onInitHome () {
 
 	notifications.fetch({
 		  success: function(collection) {
-			 var models = new Array();
 			 for (var i=0; i<collection.models.length; i++) {
 				 // Todo: check status of members
-				 models.push(collection.models[i].attributes);
+				 var date = collection.models[i].updatedAt;
+				 collection.models[i].attributes.date = Date.parse(date);
+				  APP.models.home.notificationDS.add(collection.models[i].attributes);
 			 }
-
-			 APP.models.home.notificationDS.data(models);
 		  },
 		  error: function(collection, error) {
 			  handleParseError(error);
 		  }
 	});
 	
-	$("#notifications-listview").kendoMobileListView({
+	$("#notification-listview").kendoMobileListView({
         dataSource: APP.models.home.notificationsDS,
         template: $("#notificationTemplate").html(),
-		filterable: {
-                field: "title",
-                operator: "startswith"
-            },
 		click: function (e) {
 			var thisNotification = e.dataItem;
 			
@@ -53,7 +48,7 @@ function onInitHome () {
 }
 
 function onShowHome() {
-
+	
 } 
 
 function homeSignout (e) {
