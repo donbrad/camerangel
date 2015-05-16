@@ -15,6 +15,26 @@ function dismissNotification (e) {
 	
 }
 
+function findNotificationModel(uuid) {
+	 var dataSource = APP.models.home.notificationDS;
+    dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
+    var view = dataSource.view();
+    var contact = view[0];
+	dataSource.filter([]);
+	
+	return(contact);
+}
+
+function deleteNoficationModel(uuid) {
+	 var dataSource = APP.models.home.notificationDS;
+    dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
+    var view = dataSource.view();
+    var notification = view[0];
+	dataSource.filter([]);
+	
+	dataSource.remove(notification);
+}
+
 function onInitHome () {
 	
 }
@@ -103,12 +123,18 @@ function homeSignin (e) {
     });
 }
 
+
+
+function closeModalViewVerifyPhone() {
+	$("#modalview-verifyPhone").data("kendoMobileModalView").close();
+}
+
 function sendVerificationCode ()
 {
   var phone = APP.models.profile.currentUser.get('phone');
    Parse.Cloud.run('sendPhoneVerificationCode', { phoneNumber:  phone}, {
 				  success: function(result) {
-					  mobileNotify('Sent your phone');
+					  mobileNotify('Your phone verification was sent');
 					  $("#modalview-verifyPhone").data("kendoMobileModalView").open();
 				  },
 				 error: function (result,error){

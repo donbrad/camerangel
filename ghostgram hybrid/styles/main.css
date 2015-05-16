@@ -242,6 +242,7 @@ h5 {
 }
 
 .notification-message p {
+	padding-top: 6px;
 	margin: 0;
 }
 
@@ -258,6 +259,20 @@ h5 {
 	border-radius: 50%;
 	float: left;
 }
+
+.notification-message .km-button:not(.km-back)
+ {
+	color: #2e2e2e;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-right : 4px;
+	padding-left : 4px;
+	 
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+ }
+
 
 .notification-message-content {
 	margin-left: 48px;

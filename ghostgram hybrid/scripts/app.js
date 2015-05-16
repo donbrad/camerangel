@@ -14,7 +14,7 @@
           title: 'ghostgrams',
           privateMode: false,
           invitesDS : new kendo.data.DataSource({offlineStorage: "invites-offline", sort: { field: "date", dir: "desc" }}),
-          notificationDS : new kendo.data.DataSource({offlineStorage: "notifications-offline", sort: { field: "date", dir: "desc" }}),
+          notificationDS : new kendo.data.DataSource({offlineStorage: "notifications-offline", sort: { field: "priority", dir: "asc" }}),
           Notification: function (type, title, date, description, actionTitle, action, href, dismissable )
             {
                 this.type = type ? type : 'system',
