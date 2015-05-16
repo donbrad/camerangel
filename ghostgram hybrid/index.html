@@ -110,7 +110,7 @@
   </div>       
     
 <!-- home - for signed in users -->
-<div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" style='display:none;  data-show="onShowHome">
+<div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" style="display:none;" data-init="onInitHome"  data-show="onShowHome">
    <div data-role="header">
       <div data-role="navbar">
         <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" > <i class="ghostIconNavbar fa fa-bars"></i> </a>
@@ -131,24 +131,24 @@
     <div>
         <div class="ghostTitle"> <span> #=title# </span>  <span style="float: right;"> #=date# </span> </div>
         <div style="clear: both;" class="ghostDescription"> #=description# </div>
-        <div style="float:right"> # if (href !== null) {# <a href="#=action#"> #=actionTitle# </a>#}# </div>
+        <div style="float:right"> # if (href !== null) {# <a data-role="button" href="#=href#"> #=actionTitle# </a>#} else if ( action !== null ) {#  <a data-role="button" data-click="#=action#"> #=actionTitle# </a> #}#</div>
     </div>
 </script> 
     
 <!-- home - for new users -->
- <div data-role="view" data-title="ghostgrams" id='newuserhome' data-layout="newuser" data-model="APP.models.home" class='appearance' style='display:none;'>
+ <div data-role="view" data-title="ghostgrams" id="newuserhome" data-layout="newuser" data-model="APP.models.home" class="appearance" style="display:none;">
  
 
     <div id="home-signin" style="padding-bottom: 16px;">
 		
-		 <div style='padding-top: 15%; text-align:center;'>
+		 <div style="padding-top: 15%; text-align:center;">
             <span class="ghostTitle" >Create a free account now!</span>
         </div>
-        <div style='padding-top: 12px; text-align:center;' >
+        <div style="padding-top: 12px; text-align:center;" >
             <a style="font-size: 1.1em;" class="button ghostButton" id="home-signup" data-role="button" data-rel="modalview" href="#modalview-signup" >Sign Up</a>
         </div>
 	 
-        <div style='padding-top: 50%; padding-bottom: 12px;  text-align: center;'> <span class="ghostTitle"> Already a ghostgram's User? </span></div>
+        <div style="padding-top: 50%; padding-bottom: 12px;  text-align: center;"> <span class="ghostTitle"> Already a ghostgram's User? </span></div>
         <div style="text-align: center;"> 
             <a style="font-size: 1.1em;" class="button ghostButton"  data-rel="modalview" href="#modalview-login" data-role="button">Sign In</a>
         </div>

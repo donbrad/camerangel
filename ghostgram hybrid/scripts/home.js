@@ -8,13 +8,18 @@ function homeBeforeShow () {
         // No current user -redirect to no user view
        APP.kendo.navigate('#nouser');
     }
-	 var NotificationModel = Parse.Object.extend("notifications");
-	var NotificationCollection = Parse.Collection.extend({
-	  model: ChannelModel
-	});
 }
 
-function onShowHome() {
+function dismissNotification () {
+	
+}
+
+function onInitHome () {
+	    var NotificationModel = Parse.Object.extend("notifications");
+	var NotificationCollection = Parse.Collection.extend({
+	  model: NotificationModel
+	});
+
 	var notifications = new NotificationCollection();
 
 	notifications.fetch({
@@ -45,6 +50,10 @@ function onShowHome() {
 		}
 		
     });
+}
+
+function onShowHome() {
+
 } 
 
 function homeSignout (e) {
