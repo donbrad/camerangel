@@ -148,7 +148,7 @@
             <span class="ghostTitle" >Create a free account now!</span>
         </div>
         <div style="padding-top: 12px; text-align:center;" >
-            <a style="font-size: 1.1em;" class="button ghostButton" data-role="button" data-rel="modalview" href="#signup" >Sign Up</a>
+            <a style="font-size: 1.1em;" class="button ghostButton" data-role="button" href="#signup" >Sign Up</a>
         </div>
 	 
         <div style="padding-top: 50%; padding-bottom: 12px;  text-align: center;"> <span class="ghostTitle"> Already a ghostgram's User? </span></div>
@@ -266,10 +266,10 @@
     </div>
 </div>
     
-<div data-role="view" id="signup" style="display: none;" class="appearance" >
+<div data-role="view" id="signup" data-title="Sign Up" data-layout="main" style="display: none;" class="appearance" >
    	<div data-role="header">
       <div data-role="navbar">
-        <a data-role="backbutton" href="#appDrawer" data-align="left" > Cancel </a>
+        <a data-role="button" href="#newuserhome" data-align="left" > Cancel </a>
         <span data-role="view-title"></span>
         <a  data-click="importMe" data-role="button" data-align="right">Import Me</a>
       </div>
@@ -277,12 +277,17 @@
    <form>
         <ul data-role="listview" data-style="inset">
             <li>
-                <label>Username (Email address)
+                <label>Email  (only shared when you approve)
                     <input type="email" id="home-signup-username" value="" required/>
                 </label>
             </li>
-             <li>
-                <label>Alias (How other users will see you)
+			  <li>
+                <label>Your Name (only shared when you approve)
+                    <input type="email" id="home-signup-fullname" value="" required/>
+                </label>
+            </li>
+            <li>
+                <label>Alias (How users you know will see you)
                     <input type="text" id="home-signup-alias" value="" required />
                 </label>
             </li>
@@ -292,10 +297,20 @@
                 </label>
             </li>
              <li>
-                <label>Mobile Phone
+                <label>Mobile Phone (Your ghostgrams address)
                 <input type="tel" id="home-signup-phone" value="" required />
                 </label>
             </li>
+
+			<li> 
+				  <label>Profile Photo
+					   <select id="home-signup-profilePhoto">
+						   <option value="none">None</option>
+						   <option value="current">Use Current</option>
+						   <option value="new">Import New Photo</option>
+					  </select>
+				  </label>
+			  </li>
         </ul>
     </form> 
     <div data-role="footer">

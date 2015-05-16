@@ -352,7 +352,7 @@ function contactsFindContacts(e) {
     var options      = new ContactFindOptions();
     options.filter   = query
     options.multiple = true;
-    var fields       = ["name", "phoneNumbers", "emails", "addresses"];
+    var fields       = ["name", "displayName", "nickName" ,"phoneNumbers", "emails", "addresses", "photos"];
      
     navigator.contacts.find(fields, function(contacts){
         
@@ -409,7 +409,10 @@ function contactsFindContacts(e) {
 					if (contactItem.phoneNumbers.length > 0)
             			APP.models.contacts.deviceContactsDS.add(contactItem);
 				});
-            } 
+            } else {
+				if (contactItem.phoneNumbers.length > 0)
+            			APP.models.contacts.deviceContactsDS.add(contactItem);
+			}
 			// Only add device contacts with phone numbers
 			
         }
@@ -531,9 +534,9 @@ function contactsAddContact(e){
 function contactsPickContact(e) {
    // e.preventDefault(e);
     navigator.contacts.pickContact(function(contact){
-       alert(JSON.stringify(contact));
+       mobileNotify(JSON.stringify(contact));
     },function(err){
-        alert('Error: ' + err);
+        mobileNotify('Error: ' + err);
     });
 }
     
