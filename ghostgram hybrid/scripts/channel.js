@@ -83,8 +83,8 @@ function onChannelRead(message) {
 	APP.models.channel.messagesDS.add(message);	
 	
 	scrollToBottom();
-	
-	kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(12000).play();
+	if (APP.models.channel.currentModel.isPrivate)
+		kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(12000).play();
 }
 
 function timeSince(date) {
@@ -171,6 +171,8 @@ function onShowChannel(e) {
 								formattedContent = formatMessage(message.content);
 							}
 							message.formattedContent = formattedContent;
+							// this is a private channel to activate the message timer
+							kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(18000).play();
 						}
 	
 						APP.models.channel.messagesDS.data(messages);	
@@ -198,6 +200,7 @@ function onShowChannel(e) {
 								formattedContent = formatMessage(message.content);
 							}
 							message.formattedContent = formattedContent;
+						kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(18000).play();
 						}
 	
 				APP.models.channel.messagesDS.data(messages);		
