@@ -83,6 +83,8 @@ function onChannelRead(message) {
 	APP.models.channel.messagesDS.add(message);	
 	
 	scrollToBottom();
+	
+	kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(12000).play();
 }
 
 function timeSince(date) {
