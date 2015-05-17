@@ -95,14 +95,15 @@ h5 {
 }
 
 
+
 .publicMode {
     filter: opacity(1.0);
     -webkit-filter: opacity(1.0);
 }
 
 .privateMode {
-    filter: blur(7x) opacity(0.5);
-    -webkit-filter: blur(7px) opacity(0.5);
+    filter: opacity(0.1);
+    -webkit-filter: opacity(0.1);
 }
 
 .user-content {

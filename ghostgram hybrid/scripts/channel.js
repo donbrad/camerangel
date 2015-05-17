@@ -10,22 +10,29 @@ function onInitChannel(e) {
         template: $("#messagesTemplate").html(),
         click: function (e) {
             var message = e.dataItem;
-			APP.models.channel.currentModel = message;
-            // display message actionsheet    
-			$("#messageActions").data("kendoMobileActionSheet").open();
+		
+			APP.models.channel.currentMessage = message;
+			if (APP.models.channel.currentModel.isPrivate) {
+				$('#'+message.msgID).removeClass('privateMode');
+				kendo.fx($("#"+message.msgID)).fade("out").endValue(0.1).duration(6000).play();
+ 			} else {
+				// display message actionsheet for group messages 
+				$("#messageActions").data("kendoMobileActionSheet").open();
+			}
+            
         }
      });
 	
-		$("#channelMembers-listview").kendoMobileListView({
-        dataSource: APP.models.channel.membersDS,
-        template: $("#membersTemplate").html(),
-        click: function (e) {
-            var member = e.dataItem;
-			APP.models.channel.currentMember = member;
-            // display message actionsheet    
-			$("#memberActions").data("kendoMobileActionSheet").open();
-        }
-     });
+	$("#channelMembers-listview").kendoMobileListView({
+	dataSource: APP.models.channel.membersDS,
+	template: $("#membersTemplate").html(),
+	click: function (e) {
+		var member = e.dataItem;
+		APP.models.channel.currentMember = member;
+		// display message actionsheet    
+		$("#memberActions").data("kendoMobileActionSheet").open();
+	}
+ });
 }	
 
 function scrollToBottom() {
@@ -172,7 +179,7 @@ function onShowChannel(e) {
 							}
 							message.formattedContent = formattedContent;
 							// this is a private channel to activate the message timer
-							kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(18000).play();
+							message.fromHistory = true;
 						}
 	
 						APP.models.channel.messagesDS.data(messages);	
@@ -200,7 +207,7 @@ function onShowChannel(e) {
 								formattedContent = formatMessage(message.content);
 							}
 							message.formattedContent = formattedContent;
-						kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(18000).play();
+						    message.fromHistory = true;
 						}
 	
 				APP.models.channel.messagesDS.data(messages);		
