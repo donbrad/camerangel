@@ -87,13 +87,27 @@ function onChannelRead(message) {
 		message.formattedContent = '';
 	}
 	
+	if (message.fromHistory === undefined) {
+		message.fromHistory = false;
+	}
+	
 	APP.models.channel.messagesDS.add(message);	
 	
 	scrollToBottom();
+	
 	if (APP.models.channel.currentModel.isPrivate)
 		kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(12000).play();
 }
 
+
+function messageSend(e) {
+	e.preventDefault();
+	var text = $('#messageTextArea').val();
+	if (text.length === 0)
+		return;
+	APP.models.channel.currentChannel.sendMessage(APP.models.channel.currentContactUUID, text, 86400);
+	_initMessageTextArea();
+}
 function timeSince(date) {
 	var seconds = Math.floor(((new Date().getTime()/1000) - date)),
 	interval = Math.floor(seconds / 31536000);
@@ -243,12 +257,7 @@ function onShowChannel(e) {
 	}
 }
 
-function messageSend(e) {
-	e.preventDefault();
-	var text = $('#messageTextArea').val();
-	APP.models.channel.currentChannel.sendMessage(APP.models.channel.currentContactUUID, text, 86400);
-	_initMessageTextArea();
-}
+
 
 function _initMessageTextArea() {
 	

@@ -156,7 +156,8 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
                             msgID: msgID,
                             sender: userUUID,
                             content: message,
-							time: currentTime,						
+							time: currentTime,		
+							fromHistory: false,
                             ttl: ttl
                         },
                         callback: function () {
@@ -166,7 +167,8 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
                                 TTL: ttl,
 								time: currentTime,
                                 sender: userUUID,
-                                recipient: recipient,
+								fromHistory: false,
+                                recipient: recipient
                             };
                             if (messages[recipient] === undefined) {
                                 messages[recipient] = [parsedMsg];
