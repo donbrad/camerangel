@@ -8,43 +8,42 @@ function homeBeforeShow () {
         // No current user -redirect to no user view
        APP.kendo.navigate('#nouser');
     }
-	 var NotificationModel = Parse.Object.extend("notifications");
-	var NotificationCollection = Parse.Collection.extend({
-	  model: ChannelModel
-	});
+}
+
+function dismissNotification (e) {
+	e.preventDefault();
+	var uuid = e.sender.element[0].attributes['data-param'].value;
+	
+	deleteNotificationModel(uuid);
+	
+}
+
+function findNotificationModel(uuid) {
+	 var dataSource = APP.models.home.notificationDS;
+    dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
+    var view = dataSource.view();
+    var contact = view[0];
+	dataSource.filter([]);
+	
+	return(contact);
+}
+
+function deleteNotificationModel(uuid) {
+	 var dataSource = APP.models.home.notificationDS;
+    dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
+    var view = dataSource.view();
+    var notification = view[0];
+	dataSource.filter([]);
+	
+	dataSource.remove(notification);
+}
+
+function onInitHome () {
+	
 }
 
 function onShowHome() {
-	var notifications = new NotificationCollection();
-
-	notifications.fetch({
-		  success: function(collection) {
-			 var models = new Array();
-			 for (var i=0; i<collection.models.length; i++) {
-				 // Todo: check status of members
-				 models.push(collection.models[i].attributes);
-			 }
-
-			 APP.models.home.notificationDS.data(models);
-		  },
-		  error: function(collection, error) {
-			  handleParseError(error);
-		  }
-	});
 	
-	$("#notifications-listview").kendoMobileListView({
-        dataSource: APP.models.home.notificationsDS,
-        template: $("#notificationTemplate").html(),
-		filterable: {
-                field: "title",
-                operator: "startswith"
-            },
-		click: function (e) {
-			var thisNotification = e.dataItem;
-			
-		}
-		
-    });
 } 
 
 function homeSignout (e) {
@@ -127,12 +126,18 @@ function homeSignin (e) {
     });
 }
 
+
+
+function closeModalViewVerifyPhone() {
+	$("#modalview-verifyPhone").data("kendoMobileModalView").close();
+}
+
 function sendVerificationCode ()
 {
   var phone = APP.models.profile.currentUser.get('phone');
    Parse.Cloud.run('sendPhoneVerificationCode', { phoneNumber:  phone}, {
 				  success: function(result) {
-					  mobileNotify('Sent your phone');
+					  mobileNotify('Your phone verification was sent');
 					  $("#modalview-verifyPhone").data("kendoMobileModalView").open();
 				  },
 				 error: function (result,error){
@@ -324,4 +329,85 @@ function sendSupportRequest(e) {
             APP.models.sync.requestActive = false;
         }
     })
+}
+
+function importMe(e) {
+	e.preventDefault();
+	var username = $('#home-signup-fullname').val();
+	if (username.length === 0) {
+		mobileNotify("Please enter your name and try again");
+		return;
+	}
+}
+
+function findContactMe(query) {
+	var options      = new ContactFindOptions();
+    options.filter   = query
+    options.multiple = true;
+    var fields       = ["name", "displayName", "nickName" ,"phoneNumbers", "emails", "addresses", "photos"];
+     
+    navigator.contacts.find(fields, function(contacts){
+        
+        APP.models.contacts.deviceContactsDS.data([]);
+        var contactsCount = contacts.length;
+        
+        for (var i=0;  i<contactsCount; i++){
+            var contactItem = new Object();
+            contactItem.type = "device";
+            contactItem.name = contacts[i].name.formatted;
+            contactItem.phoneNumbers = new Array();
+            if (contacts[i].phoneNumbers !== null) {
+                for (var j=0; j<contacts[i].phoneNumbers.length; j++){
+                    var phone = new Object();
+                    phone.name = contacts[i].phoneNumbers[j].type + " : " + contacts[i].phoneNumbers[j].value ;
+                    phone.number = contacts[i].phoneNumbers[j].value;
+                    contactItem.phoneNumbers.push(phone);
+                }
+            }
+            
+            contactItem.emails = new Array();
+            if (contacts[i].emails !== null) {
+                 for (var k=0; k<contacts[i].emails.length; k++){
+                    var email = new Object();
+                    email.name = contacts[i].emails[k].type + " : " + contacts[i].emails[k].value;
+                    email.address = contacts[i].emails[k].value;
+                    contactItem.emails.push(email);
+                }
+            }
+            
+            contactItem.addresses = new Array();
+              if (contacts[i].addresses !== null) {
+                 for (var a=0; a<contacts[i].addresses.length; a++){
+                    var address = new Object();
+                    if (contacts[i].addresses[a].type === null) {
+                         address.type = 'Home';
+                    } else {
+                        address.type = contacts[i].addresses[a].type;
+                    }
+                    address.name = address.type + " : " + contacts[i].addresses[a].streetAddress + ', ' +
+                        contacts[i].addresses[a].locality;
+                    address.address = contacts[i].addresses[a].streetAddress;
+                    address.city = contacts[i].addresses[a].locality;
+                    address.state = contacts[i].addresses[a].region;
+                    address.zipcode = contacts[i].addresses[a].postalcode;
+                    address.fullAddress = address.address + " ," + address.city + ' , ' + address.state;
+                    contactItem.addresses.push(address);
+                }
+            } 
+            contactItem.photo = 'images/missing_profile_photo.jpg';
+            if (contacts[i].photos !== null) {
+				returnValidPhoto(contacts[i].photos[0].value, function(validUrl) {
+                	contactItem.photo = validUrl;
+					if (contactItem.phoneNumbers.length > 0)
+            			APP.models.contacts.deviceContactsDS.add(contactItem);
+				});
+            } else {
+				if (contactItem.phoneNumbers.length > 0)
+            			APP.models.contacts.deviceContactsDS.add(contactItem);
+			}
+			// Only add device contacts with phone numbers
+			
+        }
+         
+    },function(error){alert(error);}, options);
 }

@@ -234,6 +234,58 @@ h5 {
 }
 .clearfix:after { clear: both; }
 
+
+.notification-message {
+	margin: 8px 0;
+	line-height: 16px;
+	border-radius: 25px;
+}
+
+.notification-message p {
+	padding-top: 6px;
+	margin: 0;
+}
+
+.notification-message a {
+	line-height: 1.5em;
+	opacity: 0.7;
+	color: #27476e;
+	margin: 0;
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.notification-message img {
+	border-radius: 50%;
+	float: left;
+}
+
+.notification-message .km-button:not(.km-back)
+ {
+	color: #2e2e2e;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-right : 4px;
+	padding-left : 4px;
+	 
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+ }
+
+
+.notification-message-content {
+	margin-left: 48px;
+	color: #2e2e2e;
+}
+
+.notification-time {
+	float: right;
+	opacity: 0.7;
+	padding-top: 6px;
+	font-size: 12px;
+}
+
 .chat-message {
 	margin: 8px 0;
 	line-height: 16px;
@@ -314,7 +366,7 @@ h5 {
 
 .ghostList {
    background-color: #fff;
-   color: #27476e;
+   color: #d2d2d2;
    padding: 12px;
    font-size: 14px
 

@@ -110,57 +110,60 @@
   </div>       
     
 <!-- home - for signed in users -->
-<div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" style='display:none;  data-show="onShowHome">
-   <div data-role="header">
+<div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" style="display:none;" >
+	<div data-role="header">
       <div data-role="navbar">
         <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" > <i class="ghostIconNavbar fa fa-bars"></i> </a>
         <span data-role="view-title"></span>
         <a  data-click="homeSignout" data-role="button" data-align="right">Sign Out</a>
       </div>
-    </div>
+	</div>
     
-    <div class="user-content" style="padding-bottom: 18px;">
-        <ul id="notifications-listview" >
-                 
-        </ul>
+     <div class="ghostContainer" style="padding-top: 12px; padding-bottom: 24px;">
+        <ul data-role="listview"  data-source="APP.models.home.notificationDS" data-template="notificationTemplate" id="notification-listview" ></ul>
     </div>
 
 </div>
     
 <script type="text/x-kendo-template" id="notificationTemplate">      
-    <div>
-        <div class="ghostTitle"> <span> #=title# </span>  <span style="float: right;"> #=date# </span> </div>
-        <div style="clear: both;" class="ghostDescription"> #=description# </div>
-        <div style="float:right"> # if (href !== null) {# <a href="#=action#"> #=actionTitle# </a>#}# </div>
+    <div class="notification-message clearfix">
+		# var dateTime= new Date(date);   var formattedDate = dateTime.toDateString(); var photoUrl = "images/ghostgramcontact.png" ;#
+		<img src="#:photoUrl#" alt="" width="40" height="40">
+		<div class="notification-message-content clearfix">
+			# if (action !== undefined && action !== 'none') {# <a data-role="button" data-param="#:uuid#" href="\\#" data-click="#=action#"> #=title# </a> #} else {# <a data-role="button" data-param="#:uuid#" href="#=href#"  > #=title# </a>  #}#
+			 <span style="float:right;"><a data-role="button" href="\\#" data-param="#:uuid#" data-click="dismissNotification"><i class="ghostIconNavbar fa fa-trash"></i></a> </span>
+			<p>#= description #</p>
+		</div>
+		
+		
     </div>
 </script> 
     
 <!-- home - for new users -->
- <div data-role="view" data-title="ghostgrams" id='newuserhome' data-layout="newuser" data-model="APP.models.home" class='appearance' style='display:none;'>
+ <div data-role="view" data-title="ghostgrams" id="newuserhome" data-layout="newuser" data-model="APP.models.home" class="appearance" style="display:none;">
  
-
     <div id="home-signin" style="padding-bottom: 16px;">
 		
-		 <div style='padding-top: 15%; text-align:center;'>
+		 <div style="padding-top: 15%; text-align:center;">
             <span class="ghostTitle" >Create a free account now!</span>
         </div>
-        <div style='padding-top: 12px; text-align:center;' >
-            <a style="font-size: 1.1em;" class="button ghostButton" id="home-signup" data-role="button" data-rel="modalview" href="#modalview-signup" >Sign Up</a>
+        <div style="padding-top: 12px; text-align:center;" >
+            <a style="font-size: 1.1em;" class="button ghostButton" data-role="button" href="#signup" >Sign Up</a>
         </div>
 	 
-        <div style='padding-top: 50%; padding-bottom: 12px;  text-align: center;'> <span class="ghostTitle"> Already a ghostgram's User? </span></div>
+        <div style="padding-top: 50%; padding-bottom: 12px;  text-align: center;"> <span class="ghostTitle"> Already a ghostgram's User? </span></div>
         <div style="text-align: center;"> 
             <a style="font-size: 1.1em;" class="button ghostButton"  data-rel="modalview" href="#modalview-login" data-role="button">Sign In</a>
         </div>
 
-	 <div style='padding-top: 24px; padding-left:12px; padding-bottom: 12px;  text-align: center;'> <span class="ghostTitle"> Having trouble signing in? </span></div>
-	<div style="padding-top: 8px; text-align:center;">
-		<a style="font-size: 0.9em;" class="button ghostButton" data-rel="modalview" href="#modalview-recoverPassword" data-role="button">Recover your Password?</a>
-	</div>
-		
-       
+	 	<div style='padding-top: 24px; padding-left:12px; padding-bottom: 12px;  text-align: center;'> <span class="ghostTitle"> Having trouble signing in? </span>
+		</div>
+		<div style="padding-top: 8px; text-align:center;">
+			<a style="font-size: 0.9em;" class="button ghostButton" data-rel="modalview" href="#modalview-recoverPassword" data-role="button">Recover your Password?</a>
+		</div>   
          
     </div>
+	 
 </div>
 
 <div data-role="modalview" id="modalview-support" style="width: 90%; display: none;" class="appearance">
@@ -263,21 +266,28 @@
     </div>
 </div>
     
-<div data-role="modalview" id="modalview-signup" style="width: 90%; display: none;" class="appearance" >
-    <div data-role="header">
-        <div data-role="navbar">
-            <span>Create Account</span>
-        </div>
-    </div>
+<div data-role="view" id="signup" data-title="Sign Up" data-layout="main" style="display: none;" class="appearance" >
+   	<div data-role="header">
+      <div data-role="navbar">
+        <a data-role="button" href="#newuserhome" data-align="left" > Cancel </a>
+        <span data-role="view-title"></span>
+        <a  data-click="contactsPickContact" data-role="button" data-align="right">Import Me</a>
+      </div>
+	</div>
    <form>
         <ul data-role="listview" data-style="inset">
             <li>
-                <label>Username (Email address)
+                <label>Email  (only shared when you approve)
                     <input type="email" id="home-signup-username" value="" required/>
                 </label>
             </li>
-             <li>
-                <label>Alias (How other users will see you)
+			  <li>
+                <label>Your Name (Enter and click Import Me to prefill)
+                    <input type="email" id="home-signup-fullname" value="" required/>
+                </label>
+            </li>
+            <li>
+                <label>Alias (How users you know will see you)
                     <input type="text" id="home-signup-alias" value="" required />
                 </label>
             </li>
@@ -287,18 +297,30 @@
                 </label>
             </li>
              <li>
-                <label>Mobile Phone
+                <label>Mobile Phone (Your ghostgrams address)
                 <input type="tel" id="home-signup-phone" value="" required />
                 </label>
             </li>
+
+			<li> 
+				  <label>Profile Photo
+					   <select id="home-signup-profilePhoto">
+						   <option value="none">None</option>
+						   <option value="current">Use Current</option>
+						   <option value="new">Import New Photo</option>
+					  </select>
+				  </label>
+			  </li>
         </ul>
     </form> 
     <div data-role="footer">
         <div data-role="navbar">
-            <a data-click="closeModalViewSignup" data-role="button" data-align="left">Cancel</a>
             <a data-click="homeCreateAccount" id="home-createAccount" type="button" data-role="button" data-align="right">Sign Up</a>
+		</div>
     </div>
 </div>
+	
+	
 <div data-role="modalview" id="modalview-recoverPassword" style="width: 90%; display:none;" class="appearance">
     <div data-role="header">
         <div data-role="navbar">

@@ -14,7 +14,7 @@
           title: 'ghostgrams',
           privateMode: false,
           invitesDS : new kendo.data.DataSource({offlineStorage: "invites-offline", sort: { field: "date", dir: "desc" }}),
-          notificationDS : new kendo.data.DataSource({offlineStorage: "notifications-offline", sort: { field: "date", dir: "desc" }}),
+          notificationDS : new kendo.data.DataSource({offlineStorage: "notifications-offline", sort: { field: "priority", dir: "asc" }}),
           Notification: function (type, title, date, description, actionTitle, action, href, dismissable )
             {
                 this.type = type ? type : 'system',
@@ -398,6 +398,27 @@
        
         Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
 
+		var NotificationModel = Parse.Object.extend("notifications");
+		var NotificationCollection = Parse.Collection.extend({
+		  model: NotificationModel
+		});
+
+		var notifications = new NotificationCollection();
+
+		notifications.fetch({
+			  success: function(collection) {
+				 for (var i=0; i<collection.models.length; i++) {
+					 // Todo: check status of members
+					 var date = collection.models[i].updatedAt;
+					 collection.models[i].attributes.date = Date.parse(date);
+					  APP.models.home.notificationDS.add(collection.models[i].attributes);
+				 }
+			  },
+			  error: function(collection, error) {
+				  handleParseError(error);
+			  }
+		});
+
         Parse.User.enableRevocableSession();
         APP.models.profile.parseUser = Parse.User.current();
         APP.models.profile.udid = device.uuid;
@@ -409,7 +430,12 @@
 		// If remembering Username, get it from localstorage and prefill signin.
 		if (APP.models.profile.rememberUsername) {
 			APP.models.profile.username = localStorage.getItem('ggUsername');
-			$('#home-signin-username').val(App.models.profile.username );
+			if (APP.models.profile.username == undefined  || APP.models.profile.username === '') {
+				localStorage.setItem('ggUsername', APP.models.profile.parseUser.get('username'));
+			} else {
+				$('#home-signin-username').val(App.models.profile.username );
+			}
+			
 		}
         
         if (APP.models.profile.parseUser !== null) {

@@ -77,6 +77,7 @@ function closeModalViewEditChannel() {
     $("#modalview-channels-editChannel").kendoMobileModalView("close");
 }
     
-function closeModalViewVerifyPhone() {
-    $("#modalview-channels-verifyPhone").kendoMobileModalView("close");
+function notificationVerifyPhone (e) {
+	e.preventDefault();
+	$("#modalview-verifyPhone").data("kendoMobileModalView").open();
 }
