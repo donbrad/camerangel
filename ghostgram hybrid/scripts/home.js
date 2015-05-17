@@ -103,6 +103,7 @@ function homeSignin (e) {
             APP.models.profile.currentUser.set('email', APP.models.profile.parseUser.get('email'));
             APP.models.profile.currentUser.set('phone', APP.models.profile.parseUser.get('phone'));
             APP.models.profile.currentUser.set('alias', APP.models.profile.parseUser.get('alias'));
+			 APP.models.profile.currentUser.set('aliasPublic', APP.models.profile.parseUser.get('aliasPublic'));
             APP.models.profile.currentUser.set('userUUID', APP.models.profile.parseUser.get('userUUID'));
 			APP.models.profile.currentUser.set('rememberUsername', APP.models.profile.parseUser.get('rememberUsername'));
 			APP.models.profile.currentUser.set('publicKey', publicKey);
@@ -338,6 +339,8 @@ function importMe(e) {
 		mobileNotify("Please enter your name and try again");
 		return;
 	}
+	
+	findContactMe(query);
 }
 
 function findContactMe(query) {
@@ -409,5 +412,5 @@ function findContactMe(query) {
 			
         }
          
-    },function(error){alert(error);}, options);
+    },function(error){mobileNotify(error);}, options);
 }

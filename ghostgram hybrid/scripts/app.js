@@ -447,6 +447,7 @@
             APP.models.profile.currentUser.set('userUUID', APP.models.profile.parseUser.get('userUUID'));
 			 APP.models.profile.currentUser.set('publicKey', APP.models.profile.parseUser.get('publicKey'));
 			APP.models.profile.currentUser.set('privateKey', APP.models.profile.parseUser.get('privateKey'));
+			APP.models.profile.currentUser.set('aliasPublic', APP.models.profile.parseUser.get('aliasPublic'));
 			 APP.models.profile.currentUser.set('rememberUsername', APP.models.profile.parseUser.get('rememberUsername'));
             APP.models.profile.currentUser.set('phoneVerified', APP.models.profile.parseUser.get('phoneVerified'));
             APP.models.profile.currentUser.set('emailVerified', APP.models.profile.parseUser.get('emailVerified'));

@@ -68,7 +68,7 @@ h5 {
 }
 
 .km-flat.km-pages li {
-     background-color: #d3d3d3;
+     background-color: #e0e0e0;
 }
 
 #newuserhome .km-content { 
@@ -80,14 +80,14 @@ h5 {
 }
 
 #home .km-content { 
-    background-image: url('../images/ghostgrams.png');
+    background-image: url('../images/blank-bk@2x.png');
     background-size: 100% 100%;
     color : white;
     width: 100%;
     height: 100%;
 }
 .km-flat .km-pages .km-current-page {
-    background-image: url('../images/ghostgrams.png');
+    background-image: url('../images/blank-bk.png');
     background-size: 100% 100%;
     color : white;
     width: 100%;
@@ -179,7 +179,7 @@ h5 {
     border: 1px solid #27476e;
 }
 .ghostMemberLi {
-	color: #d3d3d3;
+	color: #e0e0e0;
 	width: 100%;	
 	list-style-type: none;
 	list-style-position:inside;
@@ -334,7 +334,7 @@ h5 {
 }
 
 .ghostContent {
-   background-color: #d2d2d2;
+   background-color: #e0e0e0;
 	color: #27476e;
    background: cover;
    width: 100%;
@@ -345,7 +345,7 @@ h5 {
 }
 
 .ghostContainer {
-   background-color: #d2d2d2;
+   background-color: #e0e0e0;
    color: #27476e;
    padding-left: 12px;
    padding-right: 12px;
@@ -354,13 +354,13 @@ h5 {
 
 .ghostContainer h3 {
     font-size: 16px;
-    background-color: #d2d2d2;
+    background-color: #e0e0e0;
    color: #27476e;
 }
 
 .ghostCollapsible {
     font-size: 16px;
-    background-color: #d2d2d2;
+    background-color: #e0e0e0;
 	color: #27476e;
 }
 
