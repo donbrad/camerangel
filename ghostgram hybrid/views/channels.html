@@ -1,4 +1,4 @@
- <div data-role="view" id="channels" data-title="Channels" data-layout="main" data-model="APP.models.channels" data-init="onInitChannels">  
+ <div data-role="view" id="channels" data-title="Chats" data-layout="main" data-model="APP.models.channels" data-init="onInitChannels">  
      <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -11,21 +11,21 @@
      </div>
      
     <ul data-role="actionsheet" id="channelActions" data-popup='{"direction": "left"}'>
-        <li><a data-action="eraseChannel">Erase Channel Content</a></li>
-        <li><a data-action="archiveChannel">Archive Channel </a></li>
-        <li><a data-action="deleteChannel">Delete Channel</a></li>
+        <li><a data-action="eraseChannel">Erase Chat Content</a></li>
+        <li><a data-action="archiveChannel">Archive Chat </a></li>
+        <li><a data-action="deleteChannel">Delete Chat</a></li>
     </ul>
 	 
 	  <ul data-role="actionsheet" id="channelActionsOwner" data-popup='{"direction": "left"}'>
-        <li><a data-action="editChannel">Edit Channel</a></li>
-        <li><a data-action="eraseChannel">Erase Channel Content</a></li>
-        <li><a data-action="archiveChannel">Archive Channel </a></li>
-        <li><a data-action="deleteChannel">Delete Channel</a></li>
+        <li><a data-action="editChannel">Edit Chat</a></li>
+        <li><a data-action="eraseChannel">Erase Chat Content</a></li>
+        <li><a data-action="archiveChannel">Archive Chat </a></li>
+        <li><a data-action="deleteChannel">Delete Chat</a></li>
     </ul>
 	 
 	 <ul data-role="actionsheet" id="channelActionsPrivate" data-popup='{"direction": "left"}'>
-	    <li><a data-action="eraseChannel">Erase Channel Content</a></li>
-        <li><a data-action="deleteChannel">Delete Channel</a></li>
+	    <li><a data-action="eraseChannel">Erase Chat Content</a></li>
+        <li><a data-action="deleteChannel">Delete Chat</a></li>
     </ul>
     
 </div>
@@ -47,7 +47,7 @@
 </script>
  
 
-<div data-role="view"  data-title='Add Channel' id="addChannel" style="display: none;"  data-init="onShowAddChannel" class="appearance">
+<div data-role="view"  data-title='Add Chat' id="addChannel" style="display: none;"  data-init="onShowAddChannel" class="appearance">
    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -100,7 +100,7 @@
     <div data-role="header">
         <div data-role="navbar">
 			<a data-click="finalizeEditChannel" type="button" data-role="button" data-align="left" >Done</a>
-            <span> Edit Channel</span>
+            <span> Edit Chat</span>
              <a data-align="right" data-role="button"  data-rel="drawer" href="#channelMembers" > <i class="ghostIconNavbar fa fa-users"></i> </a>
         </div>
     </div>
@@ -160,7 +160,7 @@
   
 </div>
 
- <div data-role="view" id="channel"  data-layout="main" data-model="APP.models.channel" data-show="onShowChannel" data-init="onInitChannel">  
+ <div data-role="view" id="channel" data-layout="main" data-model="APP.models.channel" data-show="onShowChannel" data-init="onInitChannel">  
      <div data-role="header">
         <div data-role="navbar" id="channelNavBar">
             <span data-role="view-title"></span>
