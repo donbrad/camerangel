@@ -175,3 +175,20 @@ function verifyPhone(e){
     });
     
 }
+
+
+function reverseGeoCode(lat,lng) {
+	 var latlng = new google.maps.LatLng(lat, lng);
+	APP.map.geocoder.geocode({'latLng': latlng}, function(results, status) {
+    if (status == google.maps.GeocoderStatus.OK) {
+      if (results.length > 0) {
+        mobileNotify("Located you at " + results[0].formatted_address);
+      } else {
+        mobileNotify('No results found for locaiton');
+      }
+    } else {
+      mobileNotify('Geocoder failed with: ' + status);
+    }
+  });
+	
+}

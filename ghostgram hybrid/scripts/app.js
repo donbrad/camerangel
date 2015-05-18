@@ -388,11 +388,13 @@
 			if (error === null) {
 				APP.location.position = position;
 				APP.map = new Object();
+				APP.map.geocoder = new google.maps.Geocoder();
 				APP.map.mapOptions = new Object();
 				APP.map.mapOptions.center =  {lat: position.coords.latitude, lng: position.coords.longitude};
 				APP.map.mapOptions.zoom = 14;
 				APP.map.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
 				APP.map.googleMap = new google.maps.Map(document.getElementById('map-mapdiv'), APP.map.mapOptions);
+				reverseGeoCode(position.coords.latitude, position.coords.longitude);
 				//mobileNotify("Located you at " + position.coords.latitude + " , " + position.coords.longitude);
 			} else {
 				mobileNotify("GeoLocator error : " + error);
