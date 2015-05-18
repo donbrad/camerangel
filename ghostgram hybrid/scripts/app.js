@@ -114,7 +114,8 @@
           
         places: {
             title: 'Places',
-            placesDS: new kendo.data.DataSource({offlineStorage: "places-offline"})
+            placesDS: new kendo.data.DataSource({offlineStorage: "places-offline"}),
+			geoPlacesDS: new kendo.data.DataSource()
         }
       },
        kendo: null,

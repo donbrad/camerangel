@@ -182,7 +182,7 @@ function reverseGeoCode(lat,lng) {
 	APP.map.geocoder.geocode({'latLng': latlng}, function(results, status) {
     if (status == google.maps.GeocoderStatus.OK) {
       if (results.length > 0) {
-        mobileNotify("Located you at " + results[0].formatted_address);
+        APP.models.places.geoPlacesDS.data(results);
       } else {
         mobileNotify('No results found for locaiton');
       }

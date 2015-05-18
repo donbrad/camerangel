@@ -1,9 +1,9 @@
- <div data-role="view" data-title="Places" id="places" data-layout="main" data-model="APP.models.places" data-before-show="beforeShowFilter" data-show="onShowPlaces" data-init="onInitPlaces" >
+ <div data-role="view" data-title="Places" id="places" data-layout="main" data-model="APP.models.places" data-show="onShowPlaces" data-init="onInitPlaces" >
    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
             <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><i class="ghostIconNavbar fa fa-bars"></i></a>
-           <a data-align="right" data-role="button"  data-rel="modalview" href="#modalview-places-addPlace"> <i class="ghostIconNavbar fa fa-plus"></i> </a>
+           <a data-align="right" data-role="button" href="#findplace"> <i class="ghostIconNavbar fa fa-map-marker"></i> </a>
         </div>
     </div>
      <div class="user-content">
@@ -11,7 +11,21 @@
      </div>
 </div>
 
- 
+  <div data-role="view" data-title="Find Place" id="findplace" data-layout="main" data-model="APP.models.places" data-show="onShowFindPlace" data-init="onInitFindPlace" >
+   <div data-role="header">
+        <div data-role="navbar">
+            <span data-role="view-title"></span>
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><i class="ghostIconNavbar fa fa-bars"></i></a>
+           <a data-align="right" data-role="button"  data-rel="modalview" href="#modalview-places-addPlace"> <i class="ghostIconNavbar fa fa-plus"></i> </a>
+        </div>
+    </div>
+	    <div style='padding-bottom: 4px; padding-top: 4px; '>
+         <input style="font-size: 16px; margin-left: 6px; width: 80%" id="placeSearchQuery" type="search"/> <a data-role="button"  data-click="findPlace">  <i class="ghostIconSmall fa fa-search"></i> </a>
+        </div>
+     <div class="user-content">
+           <ul id="findplace-listview"></ul>
+     </div>
+</div>
 
 <div data-role="modalview" id="modalview-places-addPlace" style="width: 90%; display: none;" class="appearance">
     <div data-role="header">
@@ -28,3 +42,4 @@
         </div>
     </div>
 </div>
+
