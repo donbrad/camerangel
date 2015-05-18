@@ -15,6 +15,27 @@ function onShowPlaces(e) {
 	
 }
 
+function parseAddress(address) {
+	var addrArray = address.split(',');
+	var addrObject = new Object();
+	
+	if (addrArray.length === 4) {
+		addrObject.address = addrArray[0];
+		addrObject.city= addrArray[1];
+		addrObject.state= addrArray[2];
+		addrObject.zipcode= addrArray[3];
+	} else {
+		addrObject.name = addrArray[0];
+		addrObject.address = addrArray[1];
+		addrObject.city= addrArray[2];
+		addrObject.state= addrArray[3];
+		addrObject.zipcode= addrArray[4];
+	}
+	
+	
+	return(addrObject);
+	
+}
 function onInitFindPlace(e) {
 
 	 APP.models.places.googlePlaces = new google.maps.places.PlacesService(APP.map.googleMap);
@@ -32,8 +53,10 @@ function onInitFindPlace(e) {
 			place.lng = APP.location.position.coords.longitude;
 			// Todo: add lat/lng for this location
            APP.models.places.currentGeoPlace = place;
-			$('#addPlaceAddress').val(place.formatted_address);
-			  $("#modalview-addPlace").kendoMobileModalView("open");
+			var addressObj = parseAddress(place.formatted_address);
+			$('#addPlaceName').val(place.name);
+			$('#addPlaceAddress').val(addressObj.address + ", " + addressObj.city + ", " + addressObj.state);
+			 $("#modalview-addPlace").kendoMobileModalView("open");
            
         }
      });
@@ -42,20 +65,15 @@ function onInitFindPlace(e) {
 function onPlaceChanged() {
 	var place = APP.models.places.autocomplete.getPlace();
  	APP.models.places.currentGeoPlace = place;
-	
-	APP.map.geocoder.geocode( { 'address': place.formatted_address}, function(results, status) {
-      if (status == google.maps.GeocoderStatus.OK) {
-        
-		  APP.models.places.currentGeoPlace.lat = results[0].geometry.location[0];
-		  APP.models.places.currentGeoPlace.lng = results[0].geometry.location[1];
-		  $('#addPlaceAddress').val(place.formatted_address);
-		   $("#modalview-addPlace").kendoMobileModalView("open");
+
+	APP.models.places.currentGeoPlace.lat = place.geometry.location.A;
+	APP.models.places.currentGeoPlace.lng = place.geometry.location.F
+	var addressObj = parseAddress(place.formatted_address);
+	$('#addPlaceAddress').val(addressObj.address + ", " + addressObj.city + ", " + addressObj.state);
+	$('#addPlaceName').val(place.name);
+	$("#modalview-addPlace").kendoMobileModalView("open");
       
-      } else {
-        mobileNotify("Geocode was not successful for the following reason: " + status);
-      }
-    });
-	
+     
 
 }
 

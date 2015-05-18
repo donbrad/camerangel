@@ -259,7 +259,7 @@
               model: PhotoModel
             });
             
-            var photos = new ContactCollection();
+            var photos = new PhotoCollection();
             
             photos.fetch({
                   success: function(collection) {
@@ -269,6 +269,27 @@
                      }
                          
                      APP.models.gallery.photosDS.data(models);
+                  },
+                  error: function(collection, error) {
+                      handleParseError(error);
+                  }
+                });
+            
+			 var PlacesModel = Parse.Object.extend("places");
+            var PlacesCollection = Parse.Collection.extend({
+              model: PlacesModel
+            });
+            
+            var places = new PlacesCollection();
+            
+            places.fetch({
+                  success: function(collection) {
+                     var models = new Array();
+                     for (var i=0; i<collection.models.length; i++) {
+                         models.push(collection.models[i].attributes);
+                     }
+                         
+                     APP.models.places.placesDS.data(models);
                   },
                   error: function(collection, error) {
                       handleParseError(error);
