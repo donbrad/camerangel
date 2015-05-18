@@ -259,50 +259,38 @@ function onShowEditChannel (e) {
 	var members = currentChannelModel.members, thisMember = {};
 	var membersArray = new Array();
 	
+	$('#editChannelMemberList').empty();
 	
 	if (members.length > 0) {
-		if (currentChannelModel.isPrivate) {
-			// Private channel members are referenced by contactUUID -- users official id 
-			// as private channels are only between verified members
-			//
-			var privateContact = ''
-			if (members[0] === APP.models.profile.currentUser.userUUID) {
-				privateContact = getContactModel(members[1]);
-			} else {
-				privateContact = getContactModel(members[0]);
-			}
-			
-			APP.models.channel.membersDS.add(privateContact);
-		} else {
-			// Group channel members are referenced indirectly by uuid 
-			// channel can include invited users who havent signed up yet
-			
-			for (var i=0; i<members.length; i++) {
-				thisMember = getContactModel(members[i]);
-				// Current user will be undefined in contact list.
-				if (thisMember !== undefined) {
-					APP.models.channel.membersDS.add(thisMember);
-				
-					$("#editChannelMemberList").append('<li id="'+thisMember.uuid+
-													   '" class="ghostMemberLi"> <span class="ghostMemberName">'+ 
-													   thisMember.name + ' (' + thisMember.alias + ')' + 
-													   '</span><span style="float:right; font-size: 10px;"> <a data-param="' + 
-													   thisMember.uuid +
-													   '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><i class="ghostIconNavbar fa fa-trash"></i></a></span></li>');	
-				}
-			}
-			
-			if (currentChannelModel.isOwner && currentChannelModel.invitedMembers !== undefined) {
-				members = currentChannelModel.invitedMembers;
-				for (var j=0; j<members.length; j++) {
-					thisMember = findContactByUUID(members[j]);
-					APP.models.channel.membersDS.add(thisMember);
-				
-					$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'" class="ghostMemberLi"> <span class="ghostMemberName">'+ thisMember.name + ' (' + thisMember.alias + ')' + '</span><span style="float:right; font-size: 10px;"> <a data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><i class="ghostIconNavbar fa fa-trash"></i></a></span></li>');	
 
-				}
+		// Group channel members are referenced indirectly by uuid 
+		// channel can include invited users who havent signed up yet
+
+		for (var i=0; i<members.length; i++) {
+			thisMember = getContactModel(members[i]);
+			// Current user will be undefined in contact list.
+			if (thisMember !== undefined) {
+				APP.models.channel.membersDS.add(thisMember);
+
+				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+
+												   '" class="ghostMemberLi"> <span class="ghostMemberName">'+ 
+												   thisMember.name + ' (' + thisMember.alias + ')' + 
+												   '</span><span style="float:right; font-size: 10px;"> <a data-param="' + 
+												   thisMember.uuid +
+												   '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><i class="ghostIconNavbar fa fa-trash"></i></a></span></li>');	
 			}
-		}		
+		}
+
+		if (currentChannelModel.isOwner && currentChannelModel.invitedMembers !== undefined) {
+			members = currentChannelModel.invitedMembers;
+			for (var j=0; j<members.length; j++) {
+				thisMember = findContactByUUID(members[j]);
+				APP.models.channel.membersDS.add(thisMember);
+
+				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'" class="ghostMemberLi"> <span class="ghostMemberName">'+ thisMember.name + ' (' + thisMember.alias + ')' + '</span><span style="float:right; font-size: 10px;"> <a data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><i class="ghostIconNavbar fa fa-trash"></i></a></span></li>');	
+
+			}
+		}	
 		
 	}
 		

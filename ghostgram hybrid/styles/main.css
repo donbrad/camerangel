@@ -190,6 +190,7 @@ p {
 .ghostMemberUl {
     list-style-type: none;
     list-style-position: inside;
+	min-height: 48px;
     margin: 6px;
     padding: 6px;
     border-radius: 5px;
@@ -198,11 +199,9 @@ p {
 .ghostMemberLi {
     color: #e0e0e0;
     width: 100%;
-    list-style-type: none;
-    list-style-position: inside;
-    height: 40px;
+    height: 44px;
     display: block;
-	padding-bottom: 6px;
+	padding 4px;
 }
 .ghostMemberName {
     display: inline-block;
