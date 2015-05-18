@@ -45,6 +45,9 @@ function beforeShowFilter() {
     }); 
 }
 
+function onInitMap() {
+	
+}
 
 function closeModalViewSupport() {
      $('#modalview-support').kendoMobileModalView("close");

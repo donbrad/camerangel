@@ -13,7 +13,7 @@
     <script src="kendo/js/jquery.min.js"></script>
     <script src="kendo/js/kendo.mobile.min.js"></script>
 	<script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-XdXhoF08ubebxTjTh9jf0Ra4xFV1Jwo">
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-XdXhoF08ubebxTjTh9jf0Ra4xFV1Jwo&sensor=true">
     </script>
 	<script src="scripts/parse.js"></script>
     <script src="https://cdn.pubnub.com/pubnub-dev.js"></script>
@@ -104,7 +104,10 @@
         <a href="views/gallery.html"> <i class="ghostIconSmall fa fa-photo"></i> Gallery</a>
       </li>
      <li>
-        <a href="views/places.html"> <i class="ghostIconSmall fa fa-map-marker"></i> Places</a>
+        <a href="views/places.html"> <i class="ghostIconSmall fa fa-location-arrow"></i> Places</a>
+      </li>
+	 <li>
+        <a href="#map" data-rel="view"> <i class="ghostIconSmall fa fa-map-marker"></i> Map</a>
       </li>
         <li>
         <a href="#modalview-support" data-rel="modalview"> <i class="ghostIconSmall fa fa-question"></i> Contact Support</a>
@@ -347,7 +350,22 @@
     </div>
 </div>
     
-
+<div data-role="view" data-title="Map" id="map" data-layout="main" data-model="APP.models.places"  data-show="onShowMap" data-init="onInitMap" >
+   <div data-role="header">
+        <div data-role="navbar">
+            <span data-role="view-title"></span>
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><i class="ghostIconNavbar fa fa-bars"></i></a>
+           <a data-align="right" data-role="button"  data-rel="modalview" href="#modalview-places-addPlace"> <i class="ghostIconNavbar fa fa-plus"></i> </a>
+        </div>
+    </div>
+     <div class="user-content">
+          
+          <div id="map-mapdiv">
+               
+          </div>
+          
+     </div>
+</div>
     
 <script type="text/x-kendo-tmpl" id="gallery-listview-template">
 <div>

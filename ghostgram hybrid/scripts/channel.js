@@ -10,7 +10,7 @@ function onInitChannel(e) {
 			messageSend();
 		},
 		hold: function(e) {
-			$("#newMessageActions").data("kendoMobileActionSheet").open();
+			$("#sendMessageActions").data("kendoMobileActionSheet").open();
 		}
 	});
 	
@@ -20,7 +20,7 @@ function onInitChannel(e) {
 			messageCamera();
 		},
 		hold: function(e) {
-			$("#sendMessageActions").data("kendoMobileActionSheet").open();
+			$("#newMessageActions").data("kendoMobileActionSheet").open();
 		}
 	});
 	

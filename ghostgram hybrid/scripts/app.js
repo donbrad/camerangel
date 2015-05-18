@@ -53,7 +53,8 @@
           }),
          
         },
-          
+        
+		  
        channels: {
           title: 'Channels',
           pubnub: '',
@@ -118,6 +119,7 @@
       },
        kendo: null,
        pubnub: null,
+	   map: null,
 	   inBackground: false
     };
 
@@ -385,6 +387,12 @@
 		APP.geoLocator.getCurrentPosition(function (position, error){
 			if (error === null) {
 				APP.location.position = position;
+				APP.map = new Object();
+				APP.map.mapOptions = new Object();
+				APP.map.mapOptions.center =  {lat: position.coords.latitude, lng: position.coords.longitude};
+				APP.map.mapOptions.zoom = 14;
+				APP.map.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
+				APP.map.googleMap = new google.maps.Map(document.getElementById('map-mapdiv'), APP.map.mapOptions);
 				//mobileNotify("Located you at " + position.coords.latitude + " , " + position.coords.longitude);
 			} else {
 				mobileNotify("GeoLocator error : " + error);
