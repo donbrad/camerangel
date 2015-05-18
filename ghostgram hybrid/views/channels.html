@@ -173,24 +173,27 @@
          <ul id="messages-listview"></ul>
      </div>
      
-	 <div data-role="footer" style="display: block; padding: 8px; background: #e0e0e0;"  id="messageEditor" style="min-height: 48px;" >
-		 <span style="width: 42px;">
-			  <a data-role="button" data-click="messageCamera"><i class="fa fa-camera"> </i> </a>
+	 <div data-role="footer" style="display: block; background: #e0e0e0; padding-left: 2px;"  id="messageEditor" style="min-height: 48px;" >
+		 <span style="font-size: 14px; width: 44px; float:left; margin-top: 6px; margin-left: 3px;">
+			  <a data-role="button" id="messageCamera"><i class="fa fa-camera"> </i> </a>
 		 </span>
 		<textarea id="messageTextArea" rows=2 autofocus=true wrap=soft spellcheck= true style="font-size: 1.0em; resize: none;"></textarea>
-		 <span style="width:42px;">
-			 <a data-role="button"  data-click="messageSend"><i class="fa fa-send-o"></i></a> 
-		 </span>
-		
+		 <span style="font-size: 14px; width:44px; float:right; margin-top: 6px;">
+			 <a data-role="button"  id="messageSend"><i class="fa fa-send-o"></i></a> 
+		 </span>		
 	 </div>
 	 
     <ul data-role="actionsheet" id="newMessageActions" data-popup='{"direction": "left"}'>
-       <li><a data-action="messageLocation"><i class="fa fa-map-marker"> </i> Add Location</a></li>
+       <li><a data-action="messagePhoto"><i class="fa fa-file-image-o"> </i> Add Photo</a></li>
+		<li><a data-action="messagePhoto"><i class="fa fa-file-microphone"> </i> Add Audio</a></li>
+		<li><a data-action="messageLocation"><i class="fa fa-map-marker"> </i> Add Location</a></li>
 		<li><a data-action="messageCalendar"><i class="fa fa-calendar"> </i> Add Calendar</a></li>
+    </ul>
+	 
+	  <ul data-role="actionsheet" id="sendMessageActions" data-popup='{"direction": "left"}'>
 	    <li><a data-action="smartScanMessage"><i class="fa fa-magic"> </i> Smart Scan Message</a></li>
         <li><a data-action="messageEraser"><i class="fa fa-eraser"> </i> Erase Message</a></li>
     </ul>
-	 
 	  <ul data-role="actionsheet" id="messageActions" data-popup='{"direction": "left"}'>
 		<li><a data-action="archiveMessage"><i class="fa fa-archive"> </i> Archive Message</a></li>
 		<li><a data-action="smartScanMessage"><i class="fa fa-magic"> </i> Smart Scan Message</a></li>

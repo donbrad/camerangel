@@ -4,6 +4,26 @@ function onInitChannel(e) {
 	APP.models.channel.messagesDS.data([]);
 	APP.models.channel.membersDS.data([]);
 	
+	$("#messageSend").kendoTouch({
+   
+		tap: function(e) {
+			messageSend();
+		},
+		hold: function(e) {
+			$("#newMessageActions").data("kendoMobileActionSheet").open();
+		}
+	});
+	
+	$("#messageCamera").kendoTouch({
+   
+		tap: function(e) {
+			messageCamera();
+		},
+		hold: function(e) {
+			$("#sendMessageActions").data("kendoMobileActionSheet").open();
+		}
+	});
+	
 	var width = window.innerWidth - 96;
 	$('#messageTextArea').css("width", width+'px');
 	APP.models.channel.topOffset = APP.kendo.scroller().scrollTop;
@@ -164,9 +184,42 @@ function onChannelRead(message) {
 		kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(12000).play();
 }
 
+function messageCamera (e) {
+	var pictureSource = navigator.camera.PictureSourceType;   // picture source
+    var destinationType = navigator.camera.DestinationType; // sets the format of returned value
+	 navigator.camera.getPicture(
+		 function (imageData) { 
+			 var imageDataSource = "data:image/jpeg;base64," + imageData;
+		 }, 
+		 function (error) {
+			 mobileNotify("Camera error " + error);
+		 }, { 
+			 quality: 20, 
+			 allowEdit: true,
+        	destinationType: destinationType.DATA_URL 
+		 }
+	 );
+}
+
+function messagePhoto (e) {
+	var pictureSource = navigator.camera.PictureSourceType;   // picture source
+    var destinationType = navigator.camera.DestinationType; // sets the format of returned value
+	 navigator.camera.getPicture(
+		 function (imageData) { 
+			 var imageDataSource = "data:image/jpeg;base64," + imageData;
+		 }, 
+		 function (error) {
+			 mobileNotify("Camera error " + error);
+		 }, { 
+			sourceType: pictureSource.SAVEDPHOTOALBUM,
+        	destinationType: destinationType.DATA_URL 
+		 }
+	 );
+}
+
 
 function messageSend(e) {
-	e.preventDefault();
+	//e.preventDefault();
 	var text = $('#messageTextArea').val();
 	if (text.length === 0)
 		return;
