@@ -40,7 +40,7 @@ function onInitFindPlace(e) {
 }
 
 function onPlaceChanged() {
-	var place = autocomplete.getPlace();
+	var place = APP.models.places.autocomplete.getPlace();
  	APP.models.places.currentGeoPlace = place;
 	
 	APP.map.geocoder.geocode( { 'address': place.formatted_address}, function(results, status) {
