@@ -13,7 +13,7 @@
     <script src="kendo/js/jquery.min.js"></script>
     <script src="kendo/js/kendo.mobile.min.js"></script>
 	<script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-XdXhoF08ubebxTjTh9jf0Ra4xFV1Jwo&sensor=true">
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-XdXhoF08ubebxTjTh9jf0Ra4xFV1Jwo&sensor=true&libraries=places">
     </script>
 	<script src="scripts/parse.js"></script>
     <script src="https://cdn.pubnub.com/pubnub-dev.js"></script>
@@ -28,6 +28,8 @@
 	<script src="scripts/channel.js"></script>
 	<script src="scripts/privateChannel.js"></script>
 	<script src="scripts/contacts.js"></script>
+	<script src="scripts/places.js"></script>
+	<script src="scripts/gallery.js"></script>
 	<script src="scripts/gallery.js"></script>
 	<script src="scripts/utils.js"></script>
 	<script src="scripts/pubnub.js"></script>
@@ -372,6 +374,11 @@
 
 </div>
 </script>
-
+	
+<script type="text/x-kendo-template" id="geoPlacesTemplate">
+  <div>
+  <div class="ghostText">#: data.formatted_address # </div>
+  </div>
+</script>
 </body>
 </html>
