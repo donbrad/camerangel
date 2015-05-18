@@ -4,7 +4,8 @@
   "dependencies": {
     "fontawesome": "~4.3.0",
     "autosize": "~3.0.4",
-    "jquery-autosize": "~3.0.4"
+    "jquery-autosize": "~3.0.4",
+    "jquery-cloudinary": "~1.0.24"
   },
   "homepage": "https://github.com/donbrad/ghostgram",
   "authors": [
