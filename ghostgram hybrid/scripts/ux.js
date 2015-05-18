@@ -73,7 +73,7 @@ function closeModalViewAddPhoto() {
 }
     
 function closeModalViewAddPlace() {
-    $("#modalview-places-addPlace").kendoMobileModalView("close");
+    $("#modalview-addPlace").kendoMobileModalView("close");
 }
 
 function closeModalViewEditChannel() {

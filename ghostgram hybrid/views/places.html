@@ -27,18 +27,51 @@
      </div>
 </div>
 
-<div data-role="modalview" id="modalview-places-addPlace" style="width: 90%; display: none;" class="appearance">
+<div data-role="modalview" id="modalview-places-addPlace" style="width: 90%; display: none;" class="appearance" data-show="onShowAddPlace">
     <div data-role="header">
         <div data-role="navbar">
-            <span>Add Place</span>
+            <span>Add New Place</span>
         </div>
     </div>
+ 	<form style="clear: both;">
+        <ul data-role="listview" data-style="inset" >
+            <li>
+                <label> Name
+                    <input type="text" id="addPlaceName" required />
+                </label>
+            </li>
+
+            <li>
+                <label> Address
+                    <input type="text" id="addPlaceAddress" required/>
+                </label>
+            </li>
+             <li>
+                <label> Enable Privacy Mode (Default - you can change)
+                    <select id="addPlacePrivacy">
+                        <option value=true>Yes - It's a public place</option>
+                        <option value=false>No - I have privacy here</option>
+                    </select>
+                </label>
+            </li>
+			
+			<li>
+                <label> Visible Here (Default - you can change)
+                    <select id="addPlaceVisible">
+                        <option value=true>Yes - Let people know I'm here</option>
+                        <option value=false>No - Keep me hidden</option>
+                    </select>
+                </label>
+            </li>
+              
+        </ul>
+    </form>
 
    
     <div data-role="footer">
         <div data-role="navbar">
             <a data-click="closeModalViewAddPlace" data-role="button" type="button" data-align="left">Cancel</a>
-            <a data-click="placesAddPlace" type="button" data-role="button" data-align="right">Add Place</a>
+            <a data-click="addPlaceAdd" type="button" data-role="button" data-align="right">Add Place</a>
         </div>
     </div>
 </div>

@@ -375,6 +375,19 @@
 </div>
 </script>
 	
+<script type="text/x-kendo-template" id="placesTemplate">
+  <div>
+  <div class="ghostText">#: data.name # </div>
+  <div class="ghostDescription">#: data.address # </div>
+   <div style="color: \\#2e2e2e;">
+           <span style="float: left;"> 
+           # if (privacy) { # Privacy Mode # } else { # Public Mode # }#,  # if (visible) { # Visible # } else { # Not Visible # }#
+           </span>
+
+          <span style="float:right;"> 0 new Messages</span>
+        </div>
+  </div>
+</script>
 <script type="text/x-kendo-template" id="geoPlacesTemplate">
   <div>
   <div class="ghostText">#: data.formatted_address # </div>
