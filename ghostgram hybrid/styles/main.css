@@ -102,8 +102,8 @@ h5 {
 }
 
 .privateMode {
-    filter: opacity(0.1);
-    -webkit-filter: opacity(0.1);
+    filter: blur(7px) opacity(0.3);
+    -webkit-filter: blur(7px) opacity(0.3);
 }
 
 .user-content {
@@ -596,3 +596,22 @@ h5 {
     animation-timing-function: cubic-bezier(.71,.55,.62,1.57);
 }
  
+#messages-listview .delete {
+        display:none;
+        position: absolute;
+        top: .35em;
+        right: .5em;
+        width: 60px;
+        background-color: #e0e0e0;
+        color: ##27476e;
+    }
+
+#messages-listview .archive {
+        display:none;
+        position: absolute;
+        top: .35em;
+        left: .5em;
+        width: 60px;
+        background-color: #e0e0e0;
+        color: ##27476e;
+    }

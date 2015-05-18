@@ -7,7 +7,7 @@ function onInitChannel(e) {
 	 autosize($('#messageTextArea'));
 	 $("#messages-listview").kendoMobileListView({
         dataSource: APP.models.channel.messagesDS,
-        template: $("#messagesTemplate").html(),
+        template: $("#messagesTemplate").html() /*,
         click: function (e) {
             var message = e.dataItem;
 		
@@ -20,8 +20,14 @@ function onInitChannel(e) {
 				$("#messageActions").data("kendoMobileActionSheet").open();
 			}
             
-        }
-     });
+        } */
+     }).kendoTouch({
+            filter: ">li",
+         //   enableSwipe: true,
+            tap: tapChannel,
+           // swipe: swipeChannel,
+		 	hold: holdChannel
+        });
 	
 	$("#channelMembers-listview").kendoMobileListView({
 	dataSource: APP.models.channel.membersDS,
@@ -34,6 +40,61 @@ function onInitChannel(e) {
 	}
  });
 }	
+
+function tapChannel(e) {
+	var dataSource = APP.models.channel.messagesDS;
+	var messageUID = $(e.touch.currentTarget).data("uid");
+	var message = dataSource.getByUid(messageUID);
+	$('.delete').css('display', 'none');
+	$('.archive').css('display', 'none');
+	if (APP.models.channel.currentModel.isPrivate) {
+		$('#'+message.msgID).removeClass('privateMode');
+		$.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(6000).play()).then(function () {
+			$("#"+message.msgID).css("opacity", "1.0");
+			$("#"+message.msgID).addClass('privateMode');
+		});
+	}
+}
+
+function swipeChannel (e) {
+	
+	var dataSource = APP.models.channel.messagesDS;
+	var messageUID = $(e.touch.currentTarget).data("uid");
+	var message = dataSource.getByUid(messageUID);
+	
+	if (APP.models.channel.currentModel.isPrivate) {
+		$('#'+message.msgID).removeClass('privateMode');
+	}
+	if (e.direction === 'left') {
+		// display the delete button
+		var button = kendo.fx($(e.touch.currentTarget).find(".delete"));
+        $.when(button.expand().duration(200).play()).then(function () {
+			$.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(9000).play()).then(function () {
+				
+			$("#"+message.msgID).addClass('privateMode');
+		});
+		});
+	} else if (e.direction === 'right') {
+		// display the archive button
+		var button = kendo.fx($(e.touch.currentTarget).find(".archive"));
+        button.expand().duration(200).play();
+	}
+	
+}
+
+function holdChannel (e) {
+	var dataSource = APP.models.channel.messagesDS;
+	var messageUID = $(e.touch.currentTarget).data("uid");
+	var message = dataSource.getByUid(messageUID);
+	if (APP.models.channel.currentModel.isPrivate) {
+		$('#'+message.msgID).removeClass('privateMode');
+		$.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(9000).play()).then(function () {
+			$("#"+message.msgID).css("opacity", "1.0");
+			$("#"+message.msgID).addClass('privateMode');
+		});
+	}
+	$("#messageActions").data("kendoMobileActionSheet").open();
+}
 
 function scrollToBottom() {
     // topOffset set when the view loads like the following   
@@ -87,6 +148,7 @@ function onChannelRead(message) {
 		message.formattedContent = '';
 	}
 	
+	// Ensure that new messages get the timer
 	if (message.fromHistory === undefined) {
 		message.fromHistory = false;
 	}
@@ -108,6 +170,7 @@ function messageSend(e) {
 	APP.models.channel.currentChannel.sendMessage(APP.models.channel.currentContactUUID, text, 86400);
 	_initMessageTextArea();
 }
+
 function timeSince(date) {
 	var seconds = Math.floor(((new Date().getTime()/1000) - date)),
 	interval = Math.floor(seconds / 31536000);
@@ -165,9 +228,7 @@ function onShowChannel(e) {
 			contactUUID = thisChannelModel.members[1];
 		else 
 			contactUUID = thisChannelModel.members[0];	
-		
 
-		
 		APP.models.channel.currentContactUUID = contactUUID;
 		var thisContact = getContactModel(contactUUID);
 		APP.models.channel.currentContactModel = thisContact;
