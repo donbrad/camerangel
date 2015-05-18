@@ -319,7 +319,8 @@ function doShowChannelMembers (e) {
     APP.models.channel.currentModel = currentChannelModel;
 	var members = currentChannelModel.members;
 	APP.models.channel.potentialMembersDS.data([]);
-	APP.models.channel.potentialMembersDS.data(APP.models.contacts.contactsDS.data());
+	var contactArray = APP.models.contacts.contactsDS.data().toJSON();
+	APP.models.channel.potentialMembersDS.data(contactArray);
 	if (currentChannelModel.isPrivate) {
 		
 		var privateContact = ''

@@ -200,8 +200,9 @@ p {
     width: 100%;
     list-style-type: none;
     list-style-position: inside;
-    height: 38px;
+    height: 40px;
     display: block;
+	padding-bottom: 6px;
 }
 .ghostMemberName {
     display: inline-block;
