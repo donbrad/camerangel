@@ -3,6 +3,9 @@ function onInitChannel(e) {
 	
 	APP.models.channel.messagesDS.data([]);
 	APP.models.channel.membersDS.data([]);
+	
+	var width = window.innerWidth - 96;
+	$('#messageTextArea').css("width", width+'px');
 	APP.models.channel.topOffset = APP.kendo.scroller().scrollTop;
 	 autosize($('#messageTextArea'));
 	 $("#messages-listview").kendoMobileListView({
@@ -198,6 +201,7 @@ function onHideChannel(e) {
 		APP.models.channel.currentChannel.quit();   // Unsubscribe on current channel.
 		mobileNotify("Closing current channel");
 	}
+	
 		
 }
 
