@@ -80,9 +80,10 @@ function onShowAddPlace(e) {
 function addPlaceAdd(e) {
 	 var Places = Parse.Object.extend("places");
     var place = new Places();
-	var uuid = uuid.v4();
+	var guid = uuid.v4();
 	
-	place.set('uuid', uuid);
+	place.set('uuid', guid);
+	place.set('googleId', APP.models.places.currentGeoPlace.place_id);
 	place.set('name', $('#addPlaceName').val());
 	place.set('address', $('#addPlaceAddress').val());
 	place.set('privacy', $('#addPlacePrivacy').val());
@@ -93,9 +94,9 @@ function addPlaceAdd(e) {
 	place.save(null, {
 	  success: function(place) {
 		// Execute any logic that should take place after the object is saved.
+		 $("#modalview-addPlace").kendoMobileModalView("close");
 		mobileNotify('Added place : ' + place.get('name'));
-		APP.models.places.placesDS.add(place.attributes);
-		  $("#modalview-addPlace").kendoMobileModalView("close");
+		APP.models.places.placesDS.add(place.attributes); 
 		APP.kendo.navigate('#places');
 	  },
 	  error: function(contact, error) {
