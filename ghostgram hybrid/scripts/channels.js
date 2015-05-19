@@ -305,38 +305,32 @@ function doShowChannelMembers (e) {
     APP.models.channel.currentModel = currentChannelModel;
 	var members = currentChannelModel.members;
 	APP.models.channel.potentialMembersDS.data([]);
+	// Need to break observable link or contacts get deleted.
 	var contactArray = APP.models.contacts.contactsDS.data().toJSON();
 	APP.models.channel.potentialMembersDS.data(contactArray);
-	if (currentChannelModel.isPrivate) {
-		
-		var privateContact = ''
-		if (members[0] === APP.models.profile.currentUser.userUUID) {
-			privateContact = getContactModel(members[1]);
-		} else {
-			privateContact = getContactModel(members[0]);
-		}
+	
+	if (members.length > 0) {
 		APP.models.channel.membersDS.data([]);
-		APP.models.channel.membersDS.add(privateContact);
-		APP.models.channel.potentialMembersDS.data([]);
-		
-	} else {
-		
-		if (members.length > 0) {
-			APP.models.channel.membersDS.data([]);
-			for (var i=0; i<members.length; i++) {
-				var thisMember = getContactModel(members[i]);
-				if (thisMember === undefined)
-					thisMember = findContactByUUID(members[i]);
-				if (thisMember !== undefined) {
-					APP.models.channel.membersDS.add(thisMember);
-					APP.models.channel.potentialMembersDS.remove(thisMember);
-				}
-				
+		var dataSource = APP.models.channel.potentialMembersDS;
+		for (var i=0; i<members.length; i++) {
+			var thisMember = getContactModel(members[i]);
+			if (thisMember === undefined)
+				thisMember = findContactByUUID(members[i]);
+			if (thisMember !== undefined) {
+				thisMember = thisMember;
+				APP.models.channel.membersDS.add(thisMember);
+				dataSource.filter( { field: "uuid", operator: "eq", value: thisMember.uuid});
+				var view = dataSource.view();
+				var contact = view[0];
+				dataSource.filter([]);
+				APP.models.channel.potentialMembersDS.remove(contact);
 			}
-			
-			//Todo:   Add invited members if this user owns the channel
-		}		
-	}	
+
+		}
+		APP.models.channel.potentialMembersDS.sync();
+		//Todo:   Add invited members if this user owns the channel
+	}		
+	
 }
 
 function doInitChannelMembers (e) {
