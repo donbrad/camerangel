@@ -50,7 +50,7 @@
               emaiVerified: false,
               phoneVerified: false,
 			  isVerified: false
-          }),
+          })
          
         },
         
@@ -154,7 +154,7 @@
 		   hasChannels: false,
 		   hasPlaces: false,
 		   introFetched: false
-	   },
+	   }
 	  
     };
 
@@ -293,7 +293,7 @@
             
             contacts.fetch({
                   success: function(collection) {
-                     var models = new Array();
+                     var models = [];
                      for (var i=0; i<collection.models.length; i++) {
                          var model = collection.models[i];
                          // Load the contactPhoto data from parse and update the url
@@ -539,7 +539,7 @@
 			if (APP.models.profile.username == undefined  || APP.models.profile.username === '') {
 				localStorage.setItem('ggUsername', APP.models.profile.parseUser.get('username'));
 			} else {
-				$('#home-signin-username').val(App.models.profile.username );
+				$('#home-signin-username').val(APP.models.profile.username );
 			}
 			
 		}
