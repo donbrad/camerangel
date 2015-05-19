@@ -148,7 +148,11 @@
 		   rememberUsername: false,
 		   isOnline: true,
 		   inBackground: false,
+		   userNotifications: [],
 		   phoneVerified: false,
+		   hasContacts: false,
+		   hasChannels: false,
+		   hasPlaces: false,
 		   introFetched: false
 	   },
 	  
@@ -505,7 +509,7 @@
 						 APP.setAppState('introFetched', true);
 					 }
 					 window.localStorage.setItem('ggUserNotifications', userNotifications);
-					 pruneNotifications();
+					APP.state.userNotifications = userNotifications;
 				  },
 				  error: function(collection, error) {
 					  handleParseError(error);
@@ -513,6 +517,7 @@
 			});
 		} else {
 			var userNotifications =  window.localStorage.getItem('ggUserNotifications');
+			APP.state.userNotifications = userNotifications;
 			if (userNotifications !== null && userNotifications.length > 0) {
 				for (var j=0; j<userNotifications.length; j++) {
 					 APP.models.home.notificationDS.add(userNotifications);

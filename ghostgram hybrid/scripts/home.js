@@ -14,6 +14,15 @@ function dismissNotification (e) {
 	e.preventDefault();
 	var uuid = e.sender.element[0].attributes['data-param'].value;
 	
+	var data = APP.state.userNotifications;
+	for(var i = 0; i < data.length; i++) {
+		if(data[i].uuid == uuid) {
+			data.splice(i, 1);
+			break;
+		}
+	}
+	
+	APP.setAppState('userNotifications', data);
 	deleteNotificationModel(uuid);
 	
 }
