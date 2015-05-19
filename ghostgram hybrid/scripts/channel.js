@@ -201,6 +201,18 @@ function messageCamera (e) {
 	 );
 }
 
+function messageAudio (e) {
+	
+	navigator.device.capture.captureAudio(
+		function (mediaFiles) {
+			var mediaUrl = mediaFiles[0].fullPath;
+		}, 
+		function(error) {
+			mobileNotify("Audio capture error " + JSON.stringify(error));
+		}, 
+		{limit:1, duration: 5}
+	);
+}
 function messagePhoto (e) {
 	var pictureSource = navigator.camera.PictureSourceType;   // picture source
     var destinationType = navigator.camera.DestinationType; // sets the format of returned value
