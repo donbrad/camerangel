@@ -690,6 +690,19 @@ p {
     font-family:'Open Sans', sans-serif;
     padding: 1.2em;
 }
+
+.menuBox .km-button:not(.km-back)
+{
+    color: #e2e2e2;
+    padding-top: 2px;
+    padding-bottom: 1px;
+    padding-right : 1px;
+    padding-left : 2px;
+    
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
 .profileTop {
     vertical-align: middle;
     width:90%;
@@ -721,6 +734,7 @@ p {
 }
 .menu li {
     list-style-type:none;
+	background: #121212;
     line-height: 1.5;
     font-weight: 300;
     margin-bottom: 1.42em;

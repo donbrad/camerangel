@@ -3,6 +3,7 @@ function homeBeforeShow () {
     if (APP.models.profile.currentUser) {
         // Have current user - redirect to user view
         APP.kendo.navigate('#home');
+		
 
     } else {
         // No current user -redirect to no user view
@@ -68,6 +69,9 @@ function onInitHome () {
 
 function onShowHome() {
 	pruneNotifications();
+	$('#profileName').text(APP.models.profile.currentUser.alias);
+	//TODO:  add code to update user profile image
+	
 } 
 
 function homeSignout (e) {
