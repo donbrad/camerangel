@@ -82,34 +82,43 @@
    
   <!-- application drawer and contents -->
  <div data-role="drawer" id="appDrawer" style="width: 180px" data-title="Main Menu" data-swipe-to-open="false" style="display:none;">
-    <div data-role="header">
-      <div data-role="navbar">
-        <span data-role="view-title"></span>
-      </div>
+    <!-- Menu -->
+<div class="menuBox">
+    <div class="profileTop">
+        <div class="profileImg">
+            <!-- User photo -->
+            <img src="images/ghostgramcontact.png" />
+        </div>
+        <div id="profileName">John Smith
+            <br/> <span class="caption"><a href="views/profile.html">View Profile</a></span>
+
+        </div>
     </div>
-    <ul data-role="listview" style="font-size: 1.1em;">
-      <li>
-        <a href="#home"> <i class="ghostIconSmall fa fa-home"></i> Home</a>
-      </li>
-      <li>
-        <a href="views/profile.html"> <i class="ghostIconSmall fa fa-user"></i> Profile</a>
-      </li>
-     <li>
-        <a href="views/contacts.html"> <i class="ghostIconSmall fa fa-users"></i> Contacts</a>
-      </li>
-      <li>
-        <a href="views/channels.html"> <i class="ghostIconSmall fa fa-comment-o"></i> Channels</a>
-      </li>
-       <li>
-        <a href="views/gallery.html"> <i class="ghostIconSmall fa fa-photo"></i> Gallery</a>
-      </li>
-     <li>
-        <a href="views/places.html"> <i class="ghostIconSmall fa fa-map-marker"></i> Places</a>
-      </li>
-        <li>
-        <a href="#modalview-support" data-rel="modalview"> <i class="ghostIconSmall fa fa-question"></i> Contact Support</a>
-      </li>
-    </ul>
+    <div class="clearfix"></div>
+    <div class="menuLinks">
+        <ul class="menu">
+            <li><a href="#home"><img src="images/menu-home.svg" height="22" width="22" />Home</a>
+            </li>
+            <li><a href="views/channels.html"><img src="images/menu-chat.svg" height="22" width="22" />Chats</a>
+            </li>
+            <li><a href="views/gallery.html"><img src="images/menu-contact.svg" height="22" width="22" />Contacts</a>
+            </li>
+            <li><a href="views/gallery.html"><img src="images/menu-gallery.svg" height="22" width="22" />Gallery</a>
+            </li>
+            <li><a href="views/places.html"><img src="images/menu-places.svg" height="22" width="22" />Places</a>
+            </li>
+            <li><a href="#modalview-support"><img src="images/menu-support.svg" height="22" width="22" />Support</a>
+            </li>
+            <li id="menuSetting">
+                <a >Settings</a>
+            </li>
+            <li>
+                <a>Sign out</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- End Menu -->
   </div>       
     
 <!-- home - for signed in users -->

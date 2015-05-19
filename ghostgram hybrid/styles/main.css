@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800,300|Hind:400,500);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800,300|Hind:400,500);
 /*** Guidelines - updated 3/14/15 (see https://www.dropbox.com/s/vw40iwbmvo1tkol/styles-0.1.pdf?dl=0) ***/
 body {
     font-family: 'Open Sans', sans-serif;
@@ -660,4 +660,78 @@ p {
 
 .km-flat .km-list>li {
     background-color: #fff;
+}
+
+/* Menu Styles */
+
+.menuBox a:link {
+    color: #fff;
+    text-decoration: none;
+}
+.menuBox a:active, a:hover {
+    color: #3CAAEE;
+}
+
+.menuBox a:visited {
+    color: #fff;
+}
+
+
+ .menuBox {
+    background-color: #323642;
+    width: 100%;
+    color: #fff;
+    font-family:'Open Sans', sans-serif;
+    padding: 1.2em;
+}
+.profileTop {
+    vertical-align: middle;
+    width:90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.profileImg {
+    float: left;
+}
+.profileTop img {
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    border: 1px solid #F2EFF0;
+    line-height: 1.5;
+    margin-right: 12px;
+}
+#profileName {
+    font-size: 18px;
+    float: left;
+}
+.menu {
+    padding:0;
+    margin:0;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+.menu li {
+    list-style-type:none;
+    line-height: 1.5;
+    font-weight: 300;
+    margin-bottom: 1.42em;
+}
+
+.menu li * {
+    vertical-align: top;
+}
+
+.menu li img {
+    margin-right: 10px;
+}
+.menuLinks {
+    text-align: center;
+    margin-top: 1.5em;
+}
+
+#menuSetting {
+    margin-top:40px;
 }
