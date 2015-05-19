@@ -99,12 +99,12 @@
 
     <div class="clearfix"></div>
     <div class="menuLinks">
-        <ul class="menu">
+        <ul data-role="listview" class="menu">
             <li><a href="#home"><img src="images/menu-home.svg" height="22" width="22" />Home</a>
             </li>
             <li><a href="views/channels.html"><img src="images/menu-chat.svg" height="22" width="22" />Chats</a>
             </li>
-            <li><a href="views/gallery.html"><img src="images/menu-contact.svg" height="22" width="22" />Contacts</a>
+            <li><a href="views/contacts.html"><img src="images/menu-contact.svg" height="22" width="22" />Contacts</a>
             </li>
             <li><a href="views/gallery.html"><img src="images/menu-gallery.svg" height="22" width="22" />Gallery</a>
             </li>
@@ -116,7 +116,7 @@
                 <a >Settings</a>
             </li>
             <li>
-                <a>Sign out</a>
+                <a href="#" onclick="homeSignout">Sign out</a>
             </li>
         </ul>
     </div>
@@ -208,6 +208,7 @@
             <li>
                 <label>Message
                 <textarea id="supportMessage" style="height:120px;"></textarea>
+				</label>
             </li>
         </ul>
     </form> 
