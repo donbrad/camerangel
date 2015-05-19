@@ -276,7 +276,9 @@
 						 // Todo: check status of members
                          models.push(collection.models[i].attributes);
                      }
-                         
+                     if (models.length > 0) {
+						 APP.setAppState('hasChannels', true);
+					 }    
                      APP.models.channels.channelsDS.data(models);
                   },
                   error: function(collection, error) {
@@ -303,7 +305,9 @@
 						 models.push(model.attributes);
 						 
                      }
-                         
+                     if (models.length > 0) {
+						 APP.setAppState('hasContacts', true);
+					 }   
                      APP.models.contacts.contactsDS.data(models);
                   },
                   error: function(collection, error) {
@@ -324,7 +328,9 @@
                      for (var i=0; i<collection.models.length; i++) {
                          models.push(collection.models[i].attributes);
                      }
-                         
+                     if (models.length > 0) {
+						 APP.setAppState('hasPhotos', true);
+					 }  
                      APP.models.gallery.photosDS.data(models);
                   },
                   error: function(collection, error) {
@@ -345,7 +351,9 @@
                      for (var i=0; i<collection.models.length; i++) {
                          models.push(collection.models[i].attributes);
                      }
-                         
+                     if (models.length > 0) {
+						 APP.setAppState('hasPlaces', true);
+					 }
                      APP.models.places.placesDS.data(models);
                   },
                   error: function(collection, error) {
@@ -504,11 +512,11 @@
 						 // Todo: check status of members
 						 var date = collection.models[i].updatedAt;
 						 collection.models[i].attributes.date = Date.parse(date);
-						 userNotifications.push(collection.models[i].attributes);
+						 userNotifications.push(JSON.stringify(collection.models[i].attributes));
 						 APP.models.home.notificationDS.add(collection.models[i].attributes);
 						 APP.setAppState('introFetched', true);
 					 }
-					 window.localStorage.setItem('ggUserNotifications', userNotifications);
+					 window.localStorage.setItem('ggUserNotifications', JSON.stringify(userNotifications));
 					APP.state.userNotifications = userNotifications;
 				  },
 				  error: function(collection, error) {
@@ -517,10 +525,14 @@
 			});
 		} else {
 			var userNotifications =  window.localStorage.getItem('ggUserNotifications');
-			APP.state.userNotifications = userNotifications;
+			
+			userNotifications = JSON.parse(userNotifications);
+			APP.state.userNotifications = [];
 			if (userNotifications !== null && userNotifications.length > 0) {
 				for (var j=0; j<userNotifications.length; j++) {
-					 APP.models.home.notificationDS.add(userNotifications);
+					var notification = JSON.parse(userNotifications[j]);
+					 APP.models.home.notificationDS.add(notification);
+					APP.state.userNotifications.push(notification);
 				}
 			}
 		}

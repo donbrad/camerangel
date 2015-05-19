@@ -22,7 +22,7 @@ function dismissNotification (e) {
 		}
 	}
 	
-	APP.setAppState('userNotifications', data);
+	APP.setAppState('userNotifications', JSON.stringify(data));
 	deleteNotificationModel(uuid);
 	
 }
@@ -44,6 +44,14 @@ function deleteNotificationModel(uuid) {
     var notification = view[0];
 	dataSource.filter([]);
 	
+	var data = APP.state.userNotifications;
+	for(var i = 0; i < data.length; i++) {
+		if(data[i].uuid == uuid) {
+			data.splice(i, 1);
+			break;
+		}
+	}
+	APP.setAppState('userNotifications', JSON.stringify(data));
 	dataSource.remove(notification);
 }
 
@@ -51,6 +59,7 @@ function pruneNotifications() {
 	if 	( APP.state.phoneVerified) {
 		deleteNotificationModel('verifyphone');
 	}
+
 }
 
 function onInitHome () {
@@ -127,17 +136,15 @@ function homeSignin (e) {
             APP.models.profile.currentUser.set('phoneVerified', phoneVerified);
 			if (phoneVerified) {
 				APP.setAppState('phoneVerified', true);
-				pruneNotifications();
+				deleteNotificationModel('phoneVerified');
+			} else {
+				  mobileNotify("Please verify your phone number");
+              $("#modalview-verifyPhone").data("kendoMobileModalView").open();
 			}
             APP.models.profile.currentUser.set('emailVerified', APP.models.profile.parseUser.get('emailVerified'));
             APP.models.profile.parseACL = new Parse.ACL(APP.models.profile.parseUser);
             APP.models.profile.currentUser.bind('change', syncProfile);
             window.onUserSignIn();
-            
-            if (!APP.models.profile.currentUser.get('phoneVerified')) {
-			  mobileNotify("Please verify your phone number");
-              $("#modalview-verifyPhone").data("kendoMobileModalView").open();
-            }
             APP.kendo.navigate('#home');
         },
         error: function(user, error) {
