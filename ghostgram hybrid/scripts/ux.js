@@ -45,6 +45,9 @@ function beforeShowFilter() {
     }); 
 }
 
+function onInitMap() {
+	
+}
 
 function closeModalViewSupport() {
      $('#modalview-support').kendoMobileModalView("close");
@@ -70,7 +73,7 @@ function closeModalViewAddPhoto() {
 }
     
 function closeModalViewAddPlace() {
-    $("#modalview-places-addPlace").kendoMobileModalView("close");
+    $("#modalview-addPlace").kendoMobileModalView("close");
 }
 
 function closeModalViewEditChannel() {

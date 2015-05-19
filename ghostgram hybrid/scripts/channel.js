@@ -10,7 +10,7 @@ function onInitChannel(e) {
 			messageSend();
 		},
 		hold: function(e) {
-			$("#newMessageActions").data("kendoMobileActionSheet").open();
+			$("#sendMessageActions").data("kendoMobileActionSheet").open();
 		}
 	});
 	
@@ -20,7 +20,7 @@ function onInitChannel(e) {
 			messageCamera();
 		},
 		hold: function(e) {
-			$("#sendMessageActions").data("kendoMobileActionSheet").open();
+			$("#newMessageActions").data("kendoMobileActionSheet").open();
 		}
 	});
 	
@@ -272,9 +272,11 @@ function onShowChannel(e) {
 		name = '{' + name + '}';
 		if (name.length > 16)
 		 name = name.substring(0,15)+ '...}';
+		$('#messagePresenceButton').hide();
 	} else {
 		if (name.length > 17)
 		name = name.substring(0,17)+"...";
+		$('#messagePresenceButton').show();
 	}
     $("#channelNavBar").data('kendoMobileNavBar').title(name);	
 

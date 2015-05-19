@@ -1,4 +1,4 @@
- <div data-role="view" id="channels" data-title="Channels" data-layout="main" data-model="APP.models.channels" data-init="onInitChannels">  
+ <div data-role="view" id="channels" data-title="Chats" data-layout="main" data-model="APP.models.channels" data-init="onInitChannels">  
      <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -11,21 +11,21 @@
      </div>
      
     <ul data-role="actionsheet" id="channelActions" data-popup='{"direction": "left"}'>
-        <li><a data-action="eraseChannel">Erase Channel Content</a></li>
-        <li><a data-action="archiveChannel">Archive Channel </a></li>
-        <li><a data-action="deleteChannel">Delete Channel</a></li>
+        <li><a data-action="eraseChannel">Erase Chat Content</a></li>
+        <li><a data-action="archiveChannel">Archive Chat </a></li>
+        <li><a data-action="deleteChannel">Delete Chat</a></li>
     </ul>
 	 
 	  <ul data-role="actionsheet" id="channelActionsOwner" data-popup='{"direction": "left"}'>
-        <li><a data-action="editChannel">Edit Channel</a></li>
-        <li><a data-action="eraseChannel">Erase Channel Content</a></li>
-        <li><a data-action="archiveChannel">Archive Channel </a></li>
-        <li><a data-action="deleteChannel">Delete Channel</a></li>
+        <li><a data-action="editChannel">Edit Chat</a></li>
+        <li><a data-action="eraseChannel">Erase Chat Content</a></li>
+        <li><a data-action="archiveChannel">Archive Chat </a></li>
+        <li><a data-action="deleteChannel">Delete Chat</a></li>
     </ul>
 	 
 	 <ul data-role="actionsheet" id="channelActionsPrivate" data-popup='{"direction": "left"}'>
-	    <li><a data-action="eraseChannel">Erase Channel Content</a></li>
-        <li><a data-action="deleteChannel">Delete Channel</a></li>
+	    <li><a data-action="eraseChannel">Erase Chat Content</a></li>
+        <li><a data-action="deleteChannel">Delete Chat</a></li>
     </ul>
     
 </div>
@@ -47,7 +47,7 @@
 </script>
  
 
-<div data-role="view"  data-title='Add Channel' id="addChannel" style="display: none;"  data-init="onShowAddChannel" class="appearance">
+<div data-role="view"  data-title='Add Chat' id="addChannel" style="display: none;"  data-init="onShowAddChannel" class="appearance">
    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -100,7 +100,7 @@
     <div data-role="header">
         <div data-role="navbar">
 			<a data-click="finalizeEditChannel" type="button" data-role="button" data-align="left" >Done</a>
-            <span> Edit Channel</span>
+            <span> Edit Chat</span>
              <a data-align="right" data-role="button"  data-rel="drawer" href="#channelMembers" > <i class="ghostIconNavbar fa fa-users"></i> </a>
         </div>
     </div>
@@ -111,11 +111,6 @@
 				<li>
 					<label>Name
 						<input type="text" id="channels-editChannel-name" data-bind="value: name"  />
-					</label>
-				</li>
-				<li>
-					<label>Private Channel
-						<input type="boolean" id="channels-editChannel-private" readonly data-bind="value: isPrivate" />
 					</label>
 				</li>
 				 <li>
@@ -160,7 +155,8 @@
   
 </div>
 
- <div data-role="view" id="channel"  data-layout="main" data-model="APP.models.channel" data-show="onShowChannel" data-init="onInitChannel">  
+
+ <div data-role="view" id="channel" data-layout="main" data-model="APP.models.channel" data-show="onShowChannel" data-init="onInitChannel">  
      <div data-role="header">
         <div data-role="navbar" id="channelNavBar">
             <span data-role="view-title"></span>
@@ -169,7 +165,7 @@
         </div>
     </div>
 	 
-     <div style="padding-top: 12px; padding-left: 8px; padding-right: 8px; padding-bottom: 12px;">
+     <div style="padding-top: 18px; padding-left: 8px; padding-right: 8px; padding-bottom: 12px;">
          <ul id="messages-listview"></ul>
      </div>
      
@@ -205,13 +201,18 @@
 <script type="text/x-kendo-tmpl" id="messagesTemplate">
 # var history='';  if (fromHistory !== undefined && fromHistory === true && APP.models.channel.currentModel.isPrivate) {history = "privateMode"; } #
 <div id=#:msgID# class="chat-message #=history# clearfix">
-	# var formattedTime = timeSince(time); var name = "Me"; var photoUrl = 'images/ghostgramcontact.png'; if (sender === APP.models.channel.currentContactUUID) { name =  APP.models.channel.currentContactModel.alias; photoUrl = APP.models.channel.currentContactModel.photo; }  #
-	<img src="#:photoUrl#" alt="" width="36" height="36">
+	# var formattedTime = timeSince(time); var name = "Me"; var photoUrl = ''; if (sender === APP.models.channel.currentContactUUID) { name =  APP.models.channel.currentContactModel.alias; photoUrl = APP.models.channel.currentContactModel.photo; }  #
+	 <div class="chat-time"> #:formattedTime# ago </div> 
+	# if(photoUrl !== '') { #<img src="#:photoUrl#" alt="" width="36" height="36">
 	<div class="chat-message-content clearfix">
-		<span class="chat-time"> #:formattedTime#</span>
 		<h5>#=name#</h5>
 		<p>#= formattedContent #</p>
 	</div>
+	 #} else {#
+	 <div class="chat-message-user-content clearfix">
+		<p>#= formattedContent #</p>
+	</div>
+	 #}#
 	<a href="\\#" data-role="button" class="delete" >Delete</a>
 	<a href="\\#" data-role="button" class="archive" >Archive</a>
 </div> 

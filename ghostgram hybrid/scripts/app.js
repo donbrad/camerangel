@@ -50,10 +50,11 @@
               emaiVerified: false,
               phoneVerified: false,
 			  isVerified: false
-          }),
+          })
          
         },
-          
+        
+		  
        channels: {
           title: 'Channels',
           pubnub: '',
@@ -64,10 +65,17 @@
         
         channel: {
             title: 'Channel', 
-            currentChannel: {},
+			currentChannel: {},
 			currentModel: {},
 			messageLock: true,
-			potentialMembersDS:  new kendo.data.DataSource({sort: { field: "name", dir: "asc" }}),
+			potentialMembersDS:  new kendo.data.DataSource({
+				sort: { field: "name", dir: "asc" },
+				schema : {
+					model : {
+						id : "uuid"
+					} 
+				}   
+    		}),
             membersDS: new kendo.data.DataSource({sort: { field: "name", dir: "asc" }}),
             messagesDS: new kendo.data.DataSource({sort: { field: "date", dir: "desc" }})
         },
@@ -76,10 +84,20 @@
 			title: 'Private Channel',
 			privateChannelsDS: new kendo.data.DataSource({sort: { field: "date", dir: "desc" }}),
 			currentPrivateChannel: {},
-			messages: new kendo.data.DataSource({sort: { field: "date", dir: "desc" }}),
+			messagesDS: new kendo.data.DataSource({sort: { field: "date", dir: "desc" }}),
 			channelUUID: null,
 			contactUUID: null,
 			contactAlias: null
+		},
+		  
+		placeChannel: {
+			title: 'Place Chat',
+			placeChannelDS:  new kendo.data.DataSource({sort: { field: "date", dir: "desc" }}),
+			placeArchiveDS: new kendo.data.DataSource(),
+			googleId: '',
+			lat: 0,
+			lng: 0
+			
 		},
 		  
 		dataChannel: {
@@ -113,12 +131,31 @@
           
         places: {
             title: 'Places',
-            placesDS: new kendo.data.DataSource({offlineStorage: "places-offline"})
+            placesDS: new kendo.data.DataSource({offlineStorage: "places-offline"}),
+			geoPlacesDS: new kendo.data.DataSource()
         }
       },
        kendo: null,
        pubnub: null,
-	   inBackground: false
+	   map: null,
+	  setAppState : function (field, value) {
+			APP.state[field] = value;
+			_app.saveAppState();
+		},
+	   state: {
+		   inPrivacyMode: false,
+		   isVisible: true,
+		   rememberUsername: false,
+		   isOnline: true,
+		   inBackground: false,
+		   userNotifications: [],
+		   phoneVerified: false,
+		   hasContacts: false,
+		   hasChannels: false,
+		   hasPlaces: false,
+		   introFetched: false
+	   }
+	  
     };
 
 	//Private methods
@@ -189,11 +226,34 @@
 		},
         
        	onPause : function() {
-   			APP.inBackground = true;
+			_app.setAppState('inBackground', true);
+   			
 		},
 		
 		onResume : function () {
-			APP.inBackground = false;	
+			_app.setAppState('inBackground', false);
+		},
+		
+		onOnline : function () {
+			_app.setAppState('isOnline', true);
+		},
+		
+		onOffline : function () {
+			_app.setAppState('isOnline', false);
+		},
+		
+		
+		
+		saveAppState : function () {
+			window.localStorage.setItem('ggAppState', JSON.stringify(APP.state));
+		},
+		
+		getAppState : function () {
+			var state = window.localStorage.getItem('ggAppState');
+			if (state !== undefined && state !== null)
+				APP.state = JSON.parse(state);	
+			else
+				_app.saveAppState();
 		},
 		
         newNotification: function (type, title, date, description, actionTitle, action, href, dismissable) {
@@ -233,7 +293,7 @@
             
             contacts.fetch({
                   success: function(collection) {
-                     var models = new Array();
+                     var models = [];
                      for (var i=0; i<collection.models.length; i++) {
                          var model = collection.models[i];
                          // Load the contactPhoto data from parse and update the url
@@ -256,7 +316,7 @@
               model: PhotoModel
             });
             
-            var photos = new ContactCollection();
+            var photos = new PhotoCollection();
             
             photos.fetch({
                   success: function(collection) {
@@ -266,6 +326,27 @@
                      }
                          
                      APP.models.gallery.photosDS.data(models);
+                  },
+                  error: function(collection, error) {
+                      handleParseError(error);
+                  }
+                });
+            
+			 var PlacesModel = Parse.Object.extend("places");
+            var PlacesCollection = Parse.Collection.extend({
+              model: PlacesModel
+            });
+            
+            var places = new PlacesCollection();
+            
+            places.fetch({
+                  success: function(collection) {
+                     var models = new Array();
+                     for (var i=0; i<collection.models.length; i++) {
+                         models.push(collection.models[i].attributes);
+                     }
+                         
+                     APP.models.places.placesDS.data(models);
                   },
                   error: function(collection, error) {
                       handleParseError(error);
@@ -369,7 +450,8 @@
     // this function is called by Cordova when the application is loaded by the device
     document.addEventListener('deviceready', function () {  
         var initialView = '#newuserhome';
-
+		_app.getAppState();
+		
 		APP.geoLocator = new GeoLocator();
 		APP.location = new Object();
 		
@@ -385,6 +467,14 @@
 		APP.geoLocator.getCurrentPosition(function (position, error){
 			if (error === null) {
 				APP.location.position = position;
+				APP.map = new Object();
+				APP.map.geocoder = new google.maps.Geocoder();
+				APP.map.mapOptions = new Object();
+				APP.map.mapOptions.center =  {lat: position.coords.latitude, lng: position.coords.longitude};
+				APP.map.mapOptions.zoom = 14;
+				APP.map.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
+				APP.map.googleMap = new google.maps.Map(document.getElementById('map-mapdiv'), APP.map.mapOptions);
+				reverseGeoCode(position.coords.latitude, position.coords.longitude);
 				//mobileNotify("Located you at " + position.coords.latitude + " , " + position.coords.longitude);
 			} else {
 				mobileNotify("GeoLocator error : " + error);
@@ -398,27 +488,43 @@
        
         Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
 
-		var NotificationModel = Parse.Object.extend("notifications");
-		var NotificationCollection = Parse.Collection.extend({
-		  model: NotificationModel
-		});
+		if (!APP.state.introFetched) {
+			
+			var NotificationModel = Parse.Object.extend("notifications");
+			var NotificationCollection = Parse.Collection.extend({
+			  model: NotificationModel
+			});
 
-		var notifications = new NotificationCollection();
+			var notifications = new NotificationCollection();
 
-		notifications.fetch({
-			  success: function(collection) {
-				 for (var i=0; i<collection.models.length; i++) {
-					 // Todo: check status of members
-					 var date = collection.models[i].updatedAt;
-					 collection.models[i].attributes.date = Date.parse(date);
-					  APP.models.home.notificationDS.add(collection.models[i].attributes);
-				 }
-			  },
-			  error: function(collection, error) {
-				  handleParseError(error);
-			  }
-		});
-
+			notifications.fetch({
+				  success: function(collection) {
+					 var userNotifications = new Array();
+					 for (var i=0; i<collection.models.length; i++) {
+						 // Todo: check status of members
+						 var date = collection.models[i].updatedAt;
+						 collection.models[i].attributes.date = Date.parse(date);
+						 userNotifications.push(collection.models[i].attributes);
+						 APP.models.home.notificationDS.add(collection.models[i].attributes);
+						 APP.setAppState('introFetched', true);
+					 }
+					 window.localStorage.setItem('ggUserNotifications', userNotifications);
+					APP.state.userNotifications = userNotifications;
+				  },
+				  error: function(collection, error) {
+					  handleParseError(error);
+				  }
+			});
+		} else {
+			var userNotifications =  window.localStorage.getItem('ggUserNotifications');
+			APP.state.userNotifications = userNotifications;
+			if (userNotifications !== null && userNotifications.length > 0) {
+				for (var j=0; j<userNotifications.length; j++) {
+					 APP.models.home.notificationDS.add(userNotifications);
+				}
+			}
+		}
+		 pruneNotifications();
         Parse.User.enableRevocableSession();
         APP.models.profile.parseUser = Parse.User.current();
         APP.models.profile.udid = device.uuid;
@@ -433,7 +539,7 @@
 			if (APP.models.profile.username == undefined  || APP.models.profile.username === '') {
 				localStorage.setItem('ggUsername', APP.models.profile.parseUser.get('username'));
 			} else {
-				$('#home-signin-username').val(App.models.profile.username );
+				$('#home-signin-username').val(APP.models.profile.username );
 			}
 			
 		}

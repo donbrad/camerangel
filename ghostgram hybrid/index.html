@@ -13,7 +13,7 @@
     <script src="kendo/js/jquery.min.js"></script>
     <script src="kendo/js/kendo.mobile.min.js"></script>
 	<script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-XdXhoF08ubebxTjTh9jf0Ra4xFV1Jwo">
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-XdXhoF08ubebxTjTh9jf0Ra4xFV1Jwo&sensor=true&libraries=places">
     </script>
 	<script src="scripts/parse.js"></script>
     <script src="https://cdn.pubnub.com/pubnub-dev.js"></script>
@@ -22,12 +22,13 @@
 	<script src="scripts/appChannel.js"></script>
 	<script src="scripts/geo.js"></script>
     <script src="scripts/guid.js"></script>
-    <script src="scripts/uuid.js"></script>
 	<script src="scripts/home.js"></script>
 	<script src="scripts/channels.js"></script>
 	<script src="scripts/channel.js"></script>
 	<script src="scripts/privateChannel.js"></script>
 	<script src="scripts/contacts.js"></script>
+	<script src="scripts/places.js"></script>
+	<script src="scripts/gallery.js"></script>
 	<script src="scripts/gallery.js"></script>
 	<script src="scripts/utils.js"></script>
 	<script src="scripts/pubnub.js"></script>
@@ -37,6 +38,7 @@
 	<script src="scripts/ux.js"></script>
 	<script src="scripts/lunr.js"></script>
 	<script src='bower_components/autosize/dest/autosize.js'></script>
+	  <script src="scripts/uuid.js"></script>
 
 
 </head>
@@ -94,6 +96,7 @@
 
         </div>
     </div>
+
     <div class="clearfix"></div>
     <div class="menuLinks">
         <ul class="menu">
@@ -119,10 +122,9 @@
     </div>
 </div>
 <!-- End Menu -->
-  </div>       
     
 <!-- home - for signed in users -->
-<div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" style="display:none;" >
+<div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" style="display:none;" data-show="onShowHome" >
 	<div data-role="header">
       <div data-role="navbar">
         <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" > <i class="ghostIconNavbar fa fa-bars"></i> </a>
@@ -356,13 +358,46 @@
     </div>
 </div>
     
-
+<div data-role="view" data-title="Map" id="map" data-layout="main" data-model="APP.models.places"  data-show="onShowMap" data-init="onInitMap" >
+   <div data-role="header">
+        <div data-role="navbar">
+            <span data-role="view-title"></span>
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><i class="ghostIconNavbar fa fa-bars"></i></a>
+           <a data-align="right" data-role="button"  data-rel="modalview" href="#modalview-places-addPlace"> <i class="ghostIconNavbar fa fa-plus"></i> </a>
+        </div>
+    </div>
+     <div class="user-content">
+          
+          <div id="map-mapdiv">
+               
+          </div>
+          
+     </div>
+</div>
     
 <script type="text/x-kendo-tmpl" id="gallery-listview-template">
 <div>
 
 </div>
 </script>
+	
+<script type="text/x-kendo-template" id="placesTemplate">
+  <div>
+  <div class="ghostText">#: data.name # </div>
+  <div class="ghostDescription">#: data.address # </div>
+   <div style="color: \\#2e2e2e;">
+           <span style="float: left;"> 
+           # if (privacy === 'true') { # Privacy Mode # } else { # Public Mode # }#,  # if (visible === 'true') { # Visible # } else { # Not Visible # }#
+           </span>
 
+          <span style="float:right;"> 0 <i class="fa fa-users"> </i> 0 <i class="fa fa-comments"> </i></span>
+        </div>
+  </div>
+</script>
+<script type="text/x-kendo-template" id="geoPlacesTemplate">
+  <div>
+  <div class="ghostText">#: data.formatted_address # </div>
+  </div>
+</script>
 </body>
 </html>
