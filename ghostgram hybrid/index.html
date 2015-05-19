@@ -89,9 +89,9 @@
     <div class="profileTop">
         <div class="profileImg">
             <!-- User photo -->
-            <img src="images/ghostgramcontact.png" />
+            <img id="profilePhoto" src="images/ghostgramcontact.png" />
         </div>
-        <div id="profileName">John Smith
+        <div > <span id="profileName">John Smith</span>
             <br/> <span class="caption"><a href="views/profile.html">View Profile</a></span>
 
         </div>
@@ -113,7 +113,7 @@
             <li><a href="#modalview-support"><img src="images/menu-support.svg" height="22" width="22" />Support</a>
             </li>
             <li id="menuSetting">
-                <a >Settings</a>
+                <a href="#" onclick="homeSettings">Settings</a>
             </li>
             <li>
                 <a href="#" onclick="homeSignout">Sign out</a>
@@ -223,8 +223,7 @@
 <div data-role="modalview" id="modalview-verifyPhone" style="width: 90%; display: none;" class="appearance">
     <div data-role="header">
         <div data-role="navbar">
-            <span>Verify Phone</span>
-            
+            <span>Verify Phone</span>    
         </div>
     </div>
 
@@ -401,5 +400,10 @@
   <div class="ghostText">#: data.formatted_address # </div>
   </div>
 </script>
+	
+	
+	
+	
+	
 </body>
 </html>
