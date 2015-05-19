@@ -138,6 +138,7 @@
        kendo: null,
        pubnub: null,
 	   map: null,
+	   setAppState:_app.setAppState,
 	   state: {
 		   inPrivacyMode: false,
 		   rememberUsername: false,

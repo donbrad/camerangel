@@ -117,7 +117,7 @@ function homeSignin (e) {
 			var phoneVerified = APP.models.profile.parseUser.get('phoneVerified');
             APP.models.profile.currentUser.set('phoneVerified', phoneVerified);
 			if (phoneVerified) {
-				_app.setAppState('phoneVerified', true);
+				APP.setAppState('phoneVerified', true);
 				pruneNotifications();
 			}
             APP.models.profile.currentUser.set('emailVerified', APP.models.profile.parseUser.get('emailVerified'));
