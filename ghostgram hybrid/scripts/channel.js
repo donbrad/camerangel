@@ -272,9 +272,11 @@ function onShowChannel(e) {
 		name = '{' + name + '}';
 		if (name.length > 16)
 		 name = name.substring(0,15)+ '...}';
+		$('#messagePresenceButton').hide();
 	} else {
 		if (name.length > 17)
 		name = name.substring(0,17)+"...";
+		$('#messagePresenceButton').show();
 	}
     $("#channelNavBar").data('kendoMobileNavBar').title(name);	
 

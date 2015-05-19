@@ -65,7 +65,7 @@
         
         channel: {
             title: 'Channel', 
-            currentChannel: {},
+			currentChannel: {},
 			currentModel: {},
 			messageLock: true,
 			potentialMembersDS:  new kendo.data.DataSource({sort: { field: "name", dir: "asc" }}),
@@ -77,10 +77,20 @@
 			title: 'Private Channel',
 			privateChannelsDS: new kendo.data.DataSource({sort: { field: "date", dir: "desc" }}),
 			currentPrivateChannel: {},
-			messages: new kendo.data.DataSource({sort: { field: "date", dir: "desc" }}),
+			messagesDS: new kendo.data.DataSource({sort: { field: "date", dir: "desc" }}),
 			channelUUID: null,
 			contactUUID: null,
 			contactAlias: null
+		},
+		  
+		placeChannel: {
+			title: 'Place Chat',
+			placeChannelDS:  new kendo.data.DataSource({sort: { field: "date", dir: "desc" }}),
+			placeArchiveDS: new kendo.data.DataSource(),
+			googleId: '',
+			lat: 0,
+			lng: 0
+			
 		},
 		  
 		dataChannel: {
