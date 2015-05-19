@@ -138,7 +138,15 @@
        kendo: null,
        pubnub: null,
 	   map: null,
-	   inBackground: false
+	   state: {
+		   inPrivacyMode: false,
+		   rememberUsername: false,
+		   isOnline: true,
+		   inBackground: false,
+		   phoneVerified: false,
+		   introFetched: false
+	   },
+	  
     };
 
 	//Private methods
@@ -209,11 +217,37 @@
 		},
         
        	onPause : function() {
-   			APP.inBackground = true;
+			_app.setAppState('inBackground', true);
+   			
 		},
 		
 		onResume : function () {
-			APP.inBackground = false;	
+			_app.setAppState('inBackground', false);
+		},
+		
+		onOnline : function () {
+			_app.setAppState('isOnline', true);
+		},
+		
+		onOffline : function () {
+			_app.setAppState('isOnline', false);
+		},
+		
+		setAppState : function (field, value) {
+			APP.state[field] = value;
+			_app.saveAppState();
+		},
+		
+		saveAppState : function () {
+			window.localStorage.setItem('ggAppState', JSON.stringify(APP.state));
+		},
+		
+		getAppState : function () {
+			var state = window.localStorage.getItem('ggAppState');
+			if (state !== undefined && state !== null)
+				APP.state = JSON.parse(state);	
+			else
+				_app.saveAppState();
 		},
 		
         newNotification: function (type, title, date, description, actionTitle, action, href, dismissable) {
@@ -410,7 +444,8 @@
     // this function is called by Cordova when the application is loaded by the device
     document.addEventListener('deviceready', function () {  
         var initialView = '#newuserhome';
-
+		_app.getAppState();
+		
 		APP.geoLocator = new GeoLocator();
 		APP.location = new Object();
 		
@@ -447,27 +482,32 @@
        
         Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
 
-		var NotificationModel = Parse.Object.extend("notifications");
-		var NotificationCollection = Parse.Collection.extend({
-		  model: NotificationModel
-		});
+		if (!APP.state.introFetched) {
+			
+			var NotificationModel = Parse.Object.extend("notifications");
+			var NotificationCollection = Parse.Collection.extend({
+			  model: NotificationModel
+			});
 
-		var notifications = new NotificationCollection();
+			var notifications = new NotificationCollection();
 
-		notifications.fetch({
-			  success: function(collection) {
-				 for (var i=0; i<collection.models.length; i++) {
-					 // Todo: check status of members
-					 var date = collection.models[i].updatedAt;
-					 collection.models[i].attributes.date = Date.parse(date);
-					  APP.models.home.notificationDS.add(collection.models[i].attributes);
-				 }
-			  },
-			  error: function(collection, error) {
-				  handleParseError(error);
-			  }
-		});
-
+			notifications.fetch({
+				  success: function(collection) {
+					 for (var i=0; i<collection.models.length; i++) {
+						 // Todo: check status of members
+						 var date = collection.models[i].updatedAt;
+						 collection.models[i].attributes.date = Date.parse(date);
+						  APP.models.home.notificationDS.add(collection.models[i].attributes);
+						 _app.setAppState('introFetched', true);
+						pruneNotifications();
+					 }
+				  },
+				  error: function(collection, error) {
+					  handleParseError(error);
+				  }
+			});
+		}
+		 pruneNotifications();
         Parse.User.enableRevocableSession();
         APP.models.profile.parseUser = Parse.User.current();
         APP.models.profile.udid = device.uuid;

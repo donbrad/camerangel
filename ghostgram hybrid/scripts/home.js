@@ -38,12 +38,18 @@ function deleteNotificationModel(uuid) {
 	dataSource.remove(notification);
 }
 
+function pruneNotifications() {
+	if 	( APP.state.phoneVerified) {
+		deleteNotificationModel('verifyphone');
+	}
+}
+
 function onInitHome () {
 	
 }
 
 function onShowHome() {
-	
+	pruneNotifications();
 } 
 
 function homeSignout (e) {
@@ -108,7 +114,12 @@ function homeSignin (e) {
 			APP.models.profile.currentUser.set('rememberUsername', APP.models.profile.parseUser.get('rememberUsername'));
 			APP.models.profile.currentUser.set('publicKey', publicKey);
 			APP.models.profile.currentUser.set('privateKey', privateKey);
-            APP.models.profile.currentUser.set('phoneVerified', APP.models.profile.parseUser.get('phoneVerified'));
+			var phoneVerified = APP.models.profile.parseUser.get('phoneVerified');
+            APP.models.profile.currentUser.set('phoneVerified', phoneVerified);
+			if (phoneVerified) {
+				_app.setAppState('phoneVerified', true);
+				pruneNotifications();
+			}
             APP.models.profile.currentUser.set('emailVerified', APP.models.profile.parseUser.get('emailVerified'));
             APP.models.profile.parseACL = new Parse.ACL(APP.models.profile.parseUser);
             APP.models.profile.currentUser.bind('change', syncProfile);
