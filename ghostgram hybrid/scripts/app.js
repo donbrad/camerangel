@@ -138,9 +138,13 @@
        kendo: null,
        pubnub: null,
 	   map: null,
-	   setAppState:_app.setAppState,
+	  setAppState : function (field, value) {
+			APP.state[field] = value;
+			_app.saveAppState();
+		},
 	   state: {
 		   inPrivacyMode: false,
+		   isVisible: true,
 		   rememberUsername: false,
 		   isOnline: true,
 		   inBackground: false,
@@ -234,10 +238,7 @@
 			_app.setAppState('isOnline', false);
 		},
 		
-		setAppState : function (field, value) {
-			APP.state[field] = value;
-			_app.saveAppState();
-		},
+		
 		
 		saveAppState : function () {
 			window.localStorage.setItem('ggAppState', JSON.stringify(APP.state));
@@ -494,19 +495,29 @@
 
 			notifications.fetch({
 				  success: function(collection) {
+					 var userNotifications = new Array();
 					 for (var i=0; i<collection.models.length; i++) {
 						 // Todo: check status of members
 						 var date = collection.models[i].updatedAt;
 						 collection.models[i].attributes.date = Date.parse(date);
-						  APP.models.home.notificationDS.add(collection.models[i].attributes);
-						 _app.setAppState('introFetched', true);
-						pruneNotifications();
+						 userNotifications.push(collection.models[i].attributes);
+						 APP.models.home.notificationDS.add(collection.models[i].attributes);
+						 APP.setAppState('introFetched', true);
 					 }
+					 window.localStorage.setItem('ggUserNotifications', userNotifications);
+					 pruneNotifications();
 				  },
 				  error: function(collection, error) {
 					  handleParseError(error);
 				  }
 			});
+		} else {
+			var userNotifications =  window.localStorage.getItem('ggUserNotifications');
+			if (userNotifications !== null && userNotifications.length > 0) {
+				for (var j=0; j<userNotifications.length; j++) {
+					 APP.models.home.notificationDS.add(userNotifications);
+				}
+			}
 		}
 		 pruneNotifications();
         Parse.User.enableRevocableSession();
