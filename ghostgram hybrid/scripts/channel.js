@@ -196,7 +196,7 @@ function hideChatImagePreview() {
 
 function resizeSuccess (data) { 
 
-	APP.models.gallery.currentPhoto.scaledsrc = "data:image/jpeg;base64," + data.imageData; 
+	APP.models.gallery.currentPhoto.scaledsrc = data.imageData; 
 }
 	
 
@@ -212,7 +212,9 @@ function messageCamera (e) {
 	 navigator.camera.getPicture(
 		 function (imageData) { 
 			 var photouuid = uuid.v4();
-			
+			 // convert uuid into valid file name;
+			 photouuid = photouuid.replace(/-/g,'');
+			 
 			 APP.models.gallery.currentPhoto.src=imageData;
 			  $('#chatImage').attr('src', APP.models.gallery.currentPhoto.src);	
 			 showChatImagePreview();
