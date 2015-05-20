@@ -54,7 +54,7 @@ ImageResizer.prototype.resizeImage = function(success, fail, imageData, width, h
         width: width ? width : 0,
         height: height ? height : 0,
         format: options.format ? options.format : ImageResizer.FORMAT_JPG,
-        imageDataType: options.imageType ? options.imageType : ImageResizer.IMAGE_DATA_TYPE_URL,
+        imageDataType: options.imageDataType ? options.imageDataType : ImageResizer.IMAGE_DATA_TYPE_URL,
         resizeType: options.resizeType ? options.resizeType : ImageResizer.RESIZE_TYPE_MAX_PIXEL,
         quality: options.quality ? options.quality : 75,
         storeImage: (typeof options.storeImage !== "undefined") ? options.storeImage : 0,

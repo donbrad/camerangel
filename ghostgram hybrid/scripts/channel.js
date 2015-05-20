@@ -3,6 +3,7 @@ function onInitChannel(e) {
 	
 	APP.models.channel.messagesDS.data([]);
 	APP.models.channel.membersDS.data([]);
+	APP.checkPubnub();
 	
 	$("#messageSend").kendoTouch({
    
