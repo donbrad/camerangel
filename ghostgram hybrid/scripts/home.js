@@ -44,7 +44,9 @@ function deleteNotificationModel(uuid) {
     var view = dataSource.view();
     var notification = view[0];
 	dataSource.filter([]);
-	
+	// Does this notification exist?  if not, just return
+	if (notification === undefined)
+		return;
 	var data = APP.state.userNotifications;
 	for(var i = 0; i < data.length; i++) {
 		if(data[i].uuid == uuid) {
