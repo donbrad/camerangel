@@ -184,6 +184,15 @@ function onChannelRead(message) {
 		kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(12000).play();
 }
 
+function showChatImagePreview() {
+	$('#chatImagePreview').show();
+}
+
+function hideChatImagePreview() {
+	$('#chatImagePreview').hide();
+	$('#chatImage').attr('src', null);	
+}
+
 function messageCamera (e) {
 	var pictureSource = navigator.camera.PictureSourceType;   // picture source
     var destinationType = navigator.camera.DestinationType; // sets the format of returned value
@@ -191,7 +200,9 @@ function messageCamera (e) {
 		 function (imageData) { 
 			 var imageDataSource = "data:image/jpeg;base64," + imageData;
 			 APP.models.gallery.currentPhoto.src=imageDataSource;
-			 $('#modalview-photo').kendoMobileModalView("open");
+			 showChatImagePreview();
+			 $('#chatImage').attr('src', APP.models.gallery.currentPhoto.src);	
+			 
 		 }, 
 		 function (error) {
 			 mobileNotify("Camera error " + error);
@@ -222,7 +233,9 @@ function messagePhoto (e) {
 		 function (imageData) { 
 			 var imageDataSource = "data:image/jpeg;base64," + imageData;
 			 APP.models.gallery.currentPhoto.src=imageDataSource;
-			  $('#modalview-photo').kendoMobileModalView("open");
+			  showChatImagePreview();
+			 $('#chatImage').attr('src', APP.models.gallery.currentPhoto.src);	
+			 
 		 }, 
 		 function (error) {
 			 mobileNotify("Camera error " + error);
@@ -240,7 +253,9 @@ function messageSend(e) {
 	if (text.length === 0)
 		return;
 	APP.models.channel.currentChannel.sendMessage(APP.models.channel.currentContactUUID, text, 86400);
+	 hideChatImagePreview();
 	_initMessageTextArea();
+	
 }
 
 function timeSince(date) {
@@ -269,9 +284,7 @@ function onHideChannel(e) {
 	if (APP.models.channel.currentChannel !== undefined) {
 		APP.models.channel.currentChannel.quit();   // Unsubscribe on current channel.
 		mobileNotify("Closing current channel");
-	}
-	
-		
+	}		
 }
 
 function onShowChannel(e) {
@@ -283,7 +296,10 @@ function onShowChannel(e) {
 	var contactUUID = null;
 	APP.models.channel.currentModel = thisChannelModel;
 	var name = thisChannelModel.name;
-
+	
+	// Hide the image preview div
+	hideChatImagePreview();
+	
 	if (thisChannelModel.isPrivate) {
 		name = '{' + name + '}';
 		if (name.length > 16)
