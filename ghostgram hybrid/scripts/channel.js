@@ -215,8 +215,8 @@ function messageCamera (e) {
 			 var imageDataSource = "data:image/jpeg;base64," + imageData;
 			  mobileNotify("Image Size = " + imageDataSource.length);
 			 window.imageResizer.resizeImage(
-			  resizeSuccess, resizeFailure,  imageDataSource, 140, 0, { quality: 50});
-			 APP.models.gallery.currentPhoto.src=imageDataSource;
+			  resizeSuccess, resizeFailure,  imageData, 140, 0, { quality: 50});
+			 APP.models.gallery.currentPhoto.src=imageData;
 			 showChatImagePreview();
 			 $('#chatImage').attr('src', APP.models.gallery.currentPhoto.src);	
 			 
@@ -224,9 +224,8 @@ function messageCamera (e) {
 		 function (error) {
 			 mobileNotify("Camera error " + error);
 		 }, { 
-			 quality: 20, 
-			 allowEdit: true,
-        	destinationType: destinationType.DATA_URL 
+			 quality: 70, 
+        	destinationType: destinationType.FILE_URL 
 		 }
 	 );
 }
