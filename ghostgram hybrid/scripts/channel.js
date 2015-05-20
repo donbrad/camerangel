@@ -207,10 +207,9 @@ function messageCamera (e) {
 				  mobileNotify("Scaled image Size = " + imageDataSource.length);
 			  }, function (error) {
 				mobileNotify("Image Resizer :" + error);
-			  }, imageData, 140, 0, {resizeType: ImageResizer.RESIZE_TYPE_FACTOR ,
-											 imageDataType: ImageResizer.IMAGE_DATA_TYPE_BASE64, 
-											 filename: photouuid,
-											 format:'jpg'});
+			  }, imageData, 140, 0, {resizeType: 
+											 imageDataType: ImageResizer.IMAGE_DATA_TYPE_BASE64,
+									 		 quality: 50});
 			 APP.models.gallery.currentPhoto.src=imageDataSource;
 			 showChatImagePreview();
 			 $('#chatImage').attr('src', APP.models.gallery.currentPhoto.src);	
