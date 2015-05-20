@@ -197,29 +197,28 @@ function hideChatImagePreview() {
 function resizeSuccess (data) { 
 
 	APP.models.gallery.currentPhoto.scaledsrc = "data:image/jpeg;base64," + data.imageData; 
-	var newSize = APP.models.gallery.currentPhoto.scaledsrc.length
-	mobileNotify("Scaled image Size = " + newSizer);		  
 }
+	
 
 function resizeFailure (error) {
 
 	mobileNotify("Image Resizer :" + error);
 	
 }
+
 function messageCamera (e) {
 	var pictureSource = navigator.camera.PictureSourceType;   // picture source
     var destinationType = navigator.camera.DestinationType; // sets the format of returned value
 	 navigator.camera.getPicture(
 		 function (imageData) { 
 			 var photouuid = uuid.v4();
-			 var imageDataSource = "data:image/jpeg;base64," + imageData;
-			  mobileNotify("Image Size = " + imageDataSource.length);
-			 window.imageResizer.resizeImage(
-			  resizeSuccess, resizeFailure,  imageData, 140, 0, { quality: 50});
+			
 			 APP.models.gallery.currentPhoto.src=imageData;
+			  $('#chatImage').attr('src', APP.models.gallery.currentPhoto.src);	
 			 showChatImagePreview();
-			 $('#chatImage').attr('src', APP.models.gallery.currentPhoto.src);	
-			 
+	
+			  window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageData, 140, 0, { 
+				  quality: 50, storeImage: 1, photoAlbum: 0, filename: photouuid });
 		 }, 
 		 function (error) {
 			 mobileNotify("Camera error " + error);

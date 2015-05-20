@@ -82,6 +82,7 @@
     "org.apache.cordova.console",
     "org.apache.cordova.contacts",
     "org.apache.cordova.device",
+    "org.apache.cordova.device-motion",
     "org.apache.cordova.device-orientation",
     "org.apache.cordova.dialogs",
     "org.apache.cordova.file",
