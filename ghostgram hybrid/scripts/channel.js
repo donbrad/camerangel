@@ -198,7 +198,19 @@ function messageCamera (e) {
     var destinationType = navigator.camera.DestinationType; // sets the format of returned value
 	 navigator.camera.getPicture(
 		 function (imageData) { 
+			 var photouuid = uuid.v4();
 			 var imageDataSource = "data:image/jpeg;base64," + imageData;
+			  mobileNotify("Image Size = " + imageDataSource.length);
+			 window.imageResizer.resizeImage(
+			  function(data) { 
+					APP.models.gallery.currentPhoto.scaledsrc = "data:image/jpeg;base64," + data.imageData; 
+				  mobileNotify("Scaled image Size = " + imageDataSource.length);
+			  }, function (error) {
+				mobileNotify("Image Resizer :" + error);
+			  }, imageData, 140, 0, {resizeType: ImageResizer.RESIZE_TYPE_FACTOR ,
+											 imageDataType: ImageResizer.IMAGE_DATA_TYPE_BASE64, 
+											 filename: photouuid,
+											 format:'jpg'});
 			 APP.models.gallery.currentPhoto.src=imageDataSource;
 			 showChatImagePreview();
 			 $('#chatImage').attr('src', APP.models.gallery.currentPhoto.src);	
@@ -232,6 +244,7 @@ function messagePhoto (e) {
 	 navigator.camera.getPicture(
 		 function (imageData) { 
 			 var imageDataSource = "data:image/jpeg;base64," + imageData;
+			 mobileNotify("Image Size = " + imageDataSource.length);
 			 APP.models.gallery.currentPhoto.src=imageDataSource;
 			  showChatImagePreview();
 			 $('#chatImage').attr('src', APP.models.gallery.currentPhoto.src);	
