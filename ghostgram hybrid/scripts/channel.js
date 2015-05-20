@@ -196,7 +196,20 @@ function hideChatImagePreview() {
 
 function resizeSuccess (data) { 
 
+	var thumbNail = {src: '', width: 0, height: 0};
+	var imageUrl = data.filename;
+	thumbNail.src =  imageUrl;
+	thumbNail.width = data.width;
+	thumbNail.height = data.height;
+	
 	APP.models.gallery.currentPhoto.scaledsrc = data.imageData; 
+	APP.models.gallery.currentPhoto.thumbNail = thumbNail;
+	
+	getBase64FromImageUrl(imageUrl, function(data) {
+		var size = data.length;
+		APP.models.gallery.currentPhoto.thumbNail.imageData = data;
+		APP.models.gallery.currentPhoto.thumbNail.imageSize = size;
+	});
 }
 	
 
@@ -212,6 +225,7 @@ function messageCamera (e) {
 	 navigator.camera.getPicture(
 		 function (imageData) { 
 			 var photouuid = uuid.v4();
+			 var imageUrl = imageData.replace('file://', '');
 			 // convert uuid into valid file name;
 			 photouuid = photouuid.replace(/-/g,'');
 			 
@@ -219,8 +233,8 @@ function messageCamera (e) {
 			  $('#chatImage').attr('src', APP.models.gallery.currentPhoto.src);	
 			 showChatImagePreview();
 	
-			  window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageData, 140, 0, { 
-				  quality: 50, storeImage: 1, photoAlbum: 0, filename: photouuid });
+			  window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 140, 0, { 
+				  quality: 50, storeImage: 1, photoAlbum: 0, directory: 'ghostphotos', filename: photouuid });
 		 }, 
 		 function (error) {
 			 mobileNotify("Camera error " + error);

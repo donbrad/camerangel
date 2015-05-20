@@ -479,6 +479,24 @@
 		APP.geoLocator = new GeoLocator();
 		APP.location = new Object();
 		
+		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, 
+			 function(fileSystem){ 
+				APP.fileDirectory = fileSystem;
+				mobileNotify(APP.fileDirectory);
+			},
+			function(error) {
+			mobileNotify("Filesystem error : " + JSON.stringify(error));
+		});
+		
+		window.requestFileSystem(LocalFileSystem.TEMPORARY, 0, 
+			 function(fileSystem){ 
+				APP.tempDirectory = fileSystem;
+				mobileNotify(APP.tempDirectory);
+			},
+			function(error) {
+			mobileNotify("Filesystem error : " + JSON.stringify(error));
+		});
+								 
 /*		if (window.navigator.simulator === undefined) {
 			APP.map = plugin.google.maps.Map.getMap($("#places-mapview"));
 			APP.mapReady = false;
