@@ -197,7 +197,7 @@ function hideChatImagePreview() {
 function resizeSuccess (data) { 
 
 	var thumbNail = {src: '', width: 0, height: 0};
-	var imageUrl = data.filename;
+	var imageUrl = APP.tempDirectory+data.filename;
 	thumbNail.src =  imageUrl;
 	thumbNail.width = data.width;
 	thumbNail.height = data.height;
@@ -234,7 +234,7 @@ function messageCamera (e) {
 			 showChatImagePreview();
 	
 			  window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 140, 0, { 
-				  quality: 50, storeImage: 1, photoAlbum: 0, directory: 'ghostphotos', filename: photouuid });
+				  quality: 50, storeImage: 1, photoAlbum: 0, filename: photouuid+'.jpg' });
 		 }, 
 		 function (error) {
 			 mobileNotify("Camera error " + error);
