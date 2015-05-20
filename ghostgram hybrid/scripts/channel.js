@@ -190,6 +190,8 @@ function messageCamera (e) {
 	 navigator.camera.getPicture(
 		 function (imageData) { 
 			 var imageDataSource = "data:image/jpeg;base64," + imageData;
+			 APP.models.gallery.currentPhoto.src=imageDataSource;
+			 $('#modalview-photo').kendoMobileModalView("open");
 		 }, 
 		 function (error) {
 			 mobileNotify("Camera error " + error);
@@ -219,6 +221,8 @@ function messagePhoto (e) {
 	 navigator.camera.getPicture(
 		 function (imageData) { 
 			 var imageDataSource = "data:image/jpeg;base64," + imageData;
+			 APP.models.gallery.currentPhoto.src=imageDataSource;
+			  $('#modalview-photo').kendoMobileModalView("open");
 		 }, 
 		 function (error) {
 			 mobileNotify("Camera error " + error);

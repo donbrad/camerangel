@@ -56,6 +56,15 @@ function deleteNotificationModel(uuid) {
 	dataSource.remove(notification);
 }
 
+function onBeforeOpenPhoto() {
+	$('#photoImage').attr('src', APP.models.gallery.currentPhoto.src);	
+}
+
+
+function savePhoto () {
+	
+}
+
 function pruneNotifications() {
 	if 	( APP.state.phoneVerified) {
 		deleteNotificationModel('verifyphone');
