@@ -194,6 +194,18 @@ function hideChatImagePreview() {
 	$('#chatImage').attr('src', null);	
 }
 
+function resizeSuccess (data) { 
+
+	APP.models.gallery.currentPhoto.scaledsrc = "data:image/jpeg;base64," + data.imageData; 
+	var newSize = APP.models.gallery.currentPhoto.scaledsrc.length
+	mobileNotify("Scaled image Size = " + newSizer);		  
+}
+
+function resizeFailure (error) {
+
+	mobileNotify("Image Resizer :" + error);
+	
+}
 function messageCamera (e) {
 	var pictureSource = navigator.camera.PictureSourceType;   // picture source
     var destinationType = navigator.camera.DestinationType; // sets the format of returned value
@@ -203,12 +215,7 @@ function messageCamera (e) {
 			 var imageDataSource = "data:image/jpeg;base64," + imageData;
 			  mobileNotify("Image Size = " + imageDataSource.length);
 			 window.imageResizer.resizeImage(
-			  function(data) { 
-					APP.models.gallery.currentPhoto.scaledsrc = "data:image/jpeg;base64," + data.imageData; 
-				  mobileNotify("Scaled image Size = " + imageDataSource.length);
-			  }, function (error) {
-				mobileNotify("Image Resizer :" + error);
-			  }, imageDataSource, 140, 0, { imageDataType: ImageResizer.IMAGE_DATA_TYPE_BASE64, quality: 50});
+			  resizeSuccess, resizeFailure,  imageDataSource, 140, 0, { quality: 50});
 			 APP.models.gallery.currentPhoto.src=imageDataSource;
 			 showChatImagePreview();
 			 $('#chatImage').attr('src', APP.models.gallery.currentPhoto.src);	
