@@ -54,6 +54,12 @@ p {
     color: #A4A4A4;
     border: none;
 }
+
+/* Scrollbar */
+.km-flat .km-touch-scrollbar {
+    background: rgba(224,224,224,0.5);
+}
+
 /*** ***/
 
 /* Styles */
@@ -96,16 +102,18 @@ p {
 #home .km-content {
     background-image: url('../images/blank-bk@2x.png');
     background-size: 100% 100%;
-    color : white;
-    width: 100%;
-    height: 100%;
+    -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 .km-flat .km-pages .km-current-page {
     background-image: url('../images/blank-bk.png');
     background-size: 100% 100%;
-    color : white;
-    width: 100%;
-    height: 100%;
+    -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 
@@ -664,10 +672,6 @@ p {
     background-color: #fff;
 }
 
-.km-flat .km-list>li {
-    background-color: #fff;
-}
-
 /* Menu Styles */
 
 .menuBox a:link {
@@ -685,9 +689,14 @@ p {
  .menuBox {
     background-color: #323642;
     width: 100%;
+	min-height: 100%;
     color: #fff;
     font-family:'Open Sans', sans-serif;
     padding: 1.2em;
+}
+
+#appDrawer > div > div.km-scroll-container {
+    height: 100%;
 }
 
 .menuBox .km-button:not(.km-back)
@@ -713,21 +722,28 @@ p {
 }
 .profileTop img {
     border-radius: 50%;
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
     border: 1px solid #F2EFF0;
     line-height: 1.5;
-    margin-right: 12px;
+    margin-right: 14px;
 }
 #profileName {
-    font-size: 18px;
+    margin: 0px;
     float: left;
 }
+
+#profileLink {
+	position: absolute;
+  	left: 72px;
+  	margin-top: 10px;    
+}
+
 .menu {
     padding:0;
 	 background-color: #323642;
     margin:0;
-    width: 80%;
+    width: 90%;
     margin-left: auto;
     margin-right: auto;
     text-align: left;
@@ -735,11 +751,10 @@ p {
     list-style-position: inside;
 }
 .menu li {
-  
+    font-size: 16px;
 	background-color: #323642;
     line-height: 1.5;
     font-weight: 300;
-    margin-bottom: 1.42em;
 }
 
 .menu li * {
@@ -747,8 +762,13 @@ p {
 }
 
 .menu li img {
+    margin-right: 18px;
+}
+
+#appDrawer > div > div.km-scroll-container > div > div.menuLinks > div > ul > li:nth-child(2) > a > img {
     margin-right: 10px;
 }
+
 .menuLinks {
     text-align: center;
     margin-top: 1.5em;
@@ -756,4 +776,17 @@ p {
 
 #menuSetting {
     margin-top:40px;
+}
+
+.km-flat .km-list>li {
+    background: transparent;
+    box-shadow: none;
+}
+
+#appDrawer > div > div.km-scroll-container > div > div.menuLinks > div > ul > li {
+    border-bottom: none;
+}
+
+.km-listview-link:after, .km-listview-label:after {
+    display: none;
 }

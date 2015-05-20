@@ -83,7 +83,7 @@
 </div>
    
   <!-- application drawer and contents -->
-<div data-role="drawer" id="appDrawer" style="width: 200px" data-title="Main Menu" data-swipe-to-open="false" style="display:none;">
+<div data-role="drawer" id="appDrawer" style="width: 200px; height: 100%;" data-title="Main Menu" data-swipe-to-open="false" style="display:none;">
     <!-- Menu -->
 <div class="menuBox">
     <div class="profileTop">
@@ -91,9 +91,9 @@
             <!-- User photo -->
             <img id="profilePhoto" src="images/ghostgramcontact.png" />
         </div>
-        <div > 
-			<div id="profileName">John Smith</div>
-            <div class="caption"><a data-role="button" href="views/profile.html">View Profile</a></div>
+        <div> 
+			<h3 id="profileName">John Smith</h3><br/>
+            <div class="caption" id="profileLink"><a data-role="button" href="views/profile.html">View Profile</a></div>
         </div>
     </div>
 
@@ -102,7 +102,7 @@
         <ul data-role="listview" class="menu">
             <li ><a href="#home"><img src="images/menu-home.svg" height="22" width="22" />Home</a>
             </li>
-            <li><a href="views/channels.html"><img src="images/menu-chat.svg" height="22" width="22" />Chats</a>
+            <li><a href="views/channels.html"><img src="images/menu-chat.svg" height="30" width="30" />Chats</a>
             </li>
             <li><a href="views/contacts.html"><img src="images/menu-contact.svg" height="22" width="22" />Contacts</a>
             </li>
