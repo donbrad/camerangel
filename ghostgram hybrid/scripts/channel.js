@@ -206,6 +206,10 @@ function resizeSuccess (data) {
 	APP.models.gallery.currentPhoto.thumbNail = thumbNail;
 	
 	getBase64FromImageUrl(imageUrl, function(data) {
+		if (data === null) {
+			mobileNotify("Error getting image data from thumbnail");
+			return;
+		}
 		var size = data.length;
 		APP.models.gallery.currentPhoto.thumbNail.imageData = data;
 		APP.models.gallery.currentPhoto.thumbNail.imageSize = size;

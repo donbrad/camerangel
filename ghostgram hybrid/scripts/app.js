@@ -481,8 +481,8 @@
 		
 		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, 
 			 function(fileSystem){ 
-				var url = filesystem.root.nativeURL;
-				url = url.replace('file://');
+				var url = fileSystem.root.nativeURL;
+				url = url.replace('file://','');
 				APP.fileDirectory = url;
 				mobileNotify(APP.fileDirectory);
 			},
@@ -492,8 +492,8 @@
 		
 		window.requestFileSystem(LocalFileSystem.TEMPORARY, 0, 
 			 function(fileSystem){ 
-				var url = filesystem.root.nativeURL;
-				url = url.replace('file://');
+				var url = fileSystem.root.nativeURL;
+				url = url.replace('file://','');
 				APP.tempDirectory = url;
 				mobileNotify(APP.tempDirectory);
 			},
