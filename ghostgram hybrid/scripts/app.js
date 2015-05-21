@@ -696,7 +696,7 @@
 
 		// Provide basic functionality in the simulator and deployable simulator
         if (window.navigator.simulator === true){
-             APP.models.profile.version = "1.4.8";
+             APP.models.profile.version = "0.1.7.4";
         } else {
             cordova.getAppVersion(function (version) {
            	 	APP.models.profile.version = version;

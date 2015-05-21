@@ -208,7 +208,7 @@ function resizeSuccessThumb (data) {
 			photo.set("thumbnailUrl", parseFile._url);
 			APP.models.gallery.currentPhoto.thumbnailUrl = parseFile._url;
 		});
-	})
+	});
 	
 	
 	getBase64FromImageUrl (APP.models.gallery.currentPhoto.photoUrl, function(imageData) {
@@ -232,7 +232,7 @@ function resizeSuccessThumb (data) {
 			  }
 			});
 		});
-	}
+	});
 						   
 	
 }
@@ -378,9 +378,6 @@ function onShowChannel(e) {
 	if (name.length > 13) {
 		name = name.substring(0,13)+"...";
 	}
-		
-	
-	
 
     $("#channelNavBar").data('kendoMobileNavBar').title(name);	
 
