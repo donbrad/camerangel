@@ -61,7 +61,7 @@ function tapChannel(e) {
 	var message = dataSource.getByUid(messageUID);
 	$('.delete').css('display', 'none');
 	$('.archive').css('display', 'none');
-	if (APP.models.channel.currentModel.isPrivate) {
+	if (APP.models.channel.currentModel.privacyMode) {
 		$('#'+message.msgID).removeClass('privateMode');
 		$.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(6000).play()).then(function () {
 			$("#"+message.msgID).css("opacity", "1.0");
@@ -76,7 +76,7 @@ function swipeChannel (e) {
 	var messageUID = $(e.touch.currentTarget).data("uid");
 	var message = dataSource.getByUid(messageUID);
 	
-	if (APP.models.channel.currentModel.isPrivate) {
+	if (APP.models.channel.currentModel.privacyMode) {
 		$('#'+message.msgID).removeClass('privateMode');
 	}
 	if (e.direction === 'left') {
@@ -183,6 +183,8 @@ function hideChatImagePreview() {
 	$('#chatImagePreview').hide();
 	$('#chatImage').attr('src', null);	
 }
+
+
 
 function resizeSuccessThumb (data) { 
 	
@@ -380,6 +382,16 @@ function onHideChannel(e) {
 	}		
 }
 
+function togglePrivacyMode (e) {
+	e.preventDefault(e);
+	APP.models.channel.currentModel.privacyMode = ! APP.models.channel.currentModel.privacyMode;
+	if (APP.models.channel.currentModel.privacyMode) {
+		$('#privacyMode').html('<i class="fa fa-eye-slash"> </i>Turn Privacy Off');
+	} else {
+		$('#privacyMode').html('<i class="fa fa-eye"> </i>Turn Privacy On');
+	}
+	
+}
 function onShowChannel(e) {
 	e.preventDefault();
 	var channelUUID = e.view.params.channel;
@@ -397,12 +409,14 @@ function onShowChannel(e) {
 	if (name.length > 13) {
 		name = name.substring(0,13)+"...";
 	}
-
+	APP.models.channel.currentModel.privacyMode = false;
+	$('#privacyMode').html('<i class="fa fa-eye"> </i>Turn Privacy On');
     $("#channelNavBar").data('kendoMobileNavBar').title(name);	
 
 	if (thisChannelModel.isPrivate) {
 		$('#messagePresenceButton').hide();
-		
+		APP.models.channel.currentModel.privacyMode = true;
+		$('#privacyMode').html('<i class="fa fa-eye-slash"> </i>Turn Privacy Off');
 		var userKey = thisUser.publicKey, privateKey = thisUser.privateKey;
 		if (thisChannelModel.members[0] === thisUser.userUUID)
 			contactUUID = thisChannelModel.members[1];

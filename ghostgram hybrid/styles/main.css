@@ -368,6 +368,16 @@ p {
     border: 1.5px solid #F2EFF0;
 }
 
+.chat-message-photo {
+    max-width: 50%;
+    border: 1.5px solid #F2EFF0;
+}
+
+.chat-message-photo-expanded {
+    max-width: 100%;
+    border: 1.5px solid #F2EFF0;
+}
+
 .chat-message-content {
     margin-left: 44px;
     color: #2e2e2e;

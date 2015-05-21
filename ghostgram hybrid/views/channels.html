@@ -206,6 +206,7 @@
 	  <ul data-role="actionsheet" id="sendMessageActions" data-popup='{"direction": "left"}'>
 	    <li><a data-action="smartScanMessage"><i class="fa fa-magic"> </i> Smart Scan Message</a></li>
         <li><a data-action="messageEraser"><i class="fa fa-eraser"> </i> Erase Message</a></li>
+		<li><a id="privacyMode"onclick="togglePrivacyMode"><i class="fa fa-eye"> </i>Turn Privacy On</a></li>
     </ul>
 	  <ul data-role="actionsheet" id="messageActions" data-popup='{"direction": "left"}'>
 		<li><a data-action="archiveMessage"><i class="fa fa-archive"> </i> Archive Message</a></li>
@@ -216,7 +217,7 @@
 </div>
 
 <script type="text/x-kendo-tmpl" id="messagesTemplate">
-# var history='';  if (fromHistory !== undefined && fromHistory === true && APP.models.channel.currentModel.isPrivate) {history = "privateMode"; } #
+# var history='';  if (fromHistory !== undefined && fromHistory === true && APP.models.channel.currentModel.privacyMode) {history = "privateMode"; } #
 <div id=#:msgID# class="chat-message #=history# clearfix">
 	# var formattedTime = timeSince(time); var name = "Me"; var photoUrl = ''; if (sender === APP.models.channel.currentContactUUID) { name =  APP.models.channel.currentContactModel.alias; photoUrl = APP.models.channel.currentContactModel.photo; }  #
 	 <div class="chat-time"> #:formattedTime# ago </div> 
@@ -224,12 +225,12 @@
 	<div class="chat-message-content clearfix">
 		<h5>#=name#</h5>
 		<p>#= formattedContent #</p>
-		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# <img src="#:data.photo.thumb#" alt="" width="140"> #}#
+		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# <img class="chat-message-photo" src="#:data.photo.thumb#" alt="" width="140"> #}#
 	</div>
 	 #} else {#
 	 <div class="chat-message-user-content clearfix">
 		<p>#= formattedContent #</p>
-		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# <img src="#:data.photo.thumb#" alt="" width="140"> #}#
+		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# <img class="chat-message-photo" src="#:data.photo.thumb#" alt="" width="140"> #}#
 	</div>
 	 #}#
 	<a href="\\#" data-role="button" class="delete" >Delete</a>
