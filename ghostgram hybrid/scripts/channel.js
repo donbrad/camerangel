@@ -201,6 +201,41 @@ function resizeSuccessThumb (data) {
 	APP.models.gallery.currentPhoto.thumbNailUrl = imageUrl;
 	
 	// Todo: add additional processing to create ParsePhoto and photoOffer
+	var Photos = Parse.Object.extend("photos");
+    var photo = new Photo();
+	
+	photo.set('photoId', APP.models.gallery.currentPhoto.photoId);
+	photo.set('thumbnailUrl', APP.models.gallery.currentPhoto.photoId);
+	photo.set('channelId', APP.models.channel.currentModel.channelId);
+	photo.set('date', new Date().getTime());
+	
+	var parseFile = new Parse.File("thumbnail_"+APP.models.gallery.currentPhoto.filename + ".jpeg",imageUrl , "image/jpeg");
+	parseFile.save().then(function() {
+		photo.set("thumbnail", parseFile);
+		photo.set("thumbnailUrl", parseFile._url);
+		APP.models.gallery.currentPhoto.thumbnailUrl = parseFile._url;
+	});
+	var parseFile2 = new Parse.File("photo_"+APP.models.gallery.currentPhoto.filename + ".jpeg",APP.models.gallery.currentPhoto.photoUrl , "image/jpeg");
+	parseFile2.save().then(function() {
+		photo.set("image", parseFile2);
+		photo.set("imageUrl", parseFile2._url);
+		APP.models.gallery.currentPhoto.photoUrl = parseFile2._url;
+	});
+	
+	photo.save(null, {
+	  success: function(photo) {
+		// Execute any logic that should take place after the object is saved.
+		mobileNotify('Photo added to ghostgrams gallery');
+		APP.models.gallery.photoDS.add(photo.attributes);
+		 APP.models.gallery.parsePhoto = photo;
+		
+	  },
+	  error: function(contact, error) {
+		// Execute any logic that should take place if the save fails.
+		// error is a Parse.Error with an error code and message.
+		  handleParseError(error);
+	  }
+	});
 }
 
 
@@ -231,8 +266,8 @@ function messageCamera (e) {
 			 // convert uuid into valid file name;
 			 var filename = photouuid.replace(/-/g,'');
 			 
-			 APP.models.gallery.currentPhoto.photoId=photouuid;
-			  APP.models.gallery.currentPhoto.filename=filename;
+			 APP.models.gallery.currentPhoto.photoId = photouuid;
+			  APP.models.gallery.currentPhoto.filename = filename;
 			 
 			  $('#chatImage').attr('src', imageData);	
 			 showChatImagePreview();

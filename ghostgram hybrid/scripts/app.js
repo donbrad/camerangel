@@ -108,6 +108,7 @@
         gallery: {
           title: 'gallery',
 		  currentPhoto: {},
+		  parsePhoto: {},
           photosDS: new kendo.data.DataSource({offlineStorage: "gallery-offline"})
           //Todo: Add photo gallery data source and sync if user is signed in
         },
