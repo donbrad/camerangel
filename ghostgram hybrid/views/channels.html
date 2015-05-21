@@ -160,7 +160,7 @@
  <div data-role="view" id="channel" data-layout="main" data-model="APP.models.channel" data-show="onShowChannel" data-init="onInitChannel">  
      <div data-role="header">
         <div data-role="navbar" id="channelNavBar">
-             <img src="" id="channelImage" height="33" style="vertical-align: middle; border-radius: 50%"/>
+             <img src="" id="channelImage" height="32" style="vertical-align: middle; border-radius: 50%"/>
             <span data-role="view-title"></span>
             <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img src="images/menu-icon.svg"/></a>
             <a data-align="right" data-role="button" id="messagePresenceButton" data-rel="drawer" href="#channelPresence" > <i class="ghostIconNavbar fa fa-users"></i> </a>
@@ -185,11 +185,11 @@
 			 </div>
              <div class="messageMediaBar">
              	<ul>
-                    <li><a data-role="button" id="messageCamera"><img src="images/chat-camera.svg" height="24"></a></li>
-                    <li><a data-role="button" id="messagePhoto"><img src="images/chat-photo.svg" height="24"></a></li>
-                    <li><a data-role="button" id="messageAudio"><img src="images/chat-sound.svg" height="24"></a></li>
-                    <li><a data-role="button" id="messageLocation"><img src="images/chat-places.svg" height="24"></a></li>
-                    <li><a data-role="button" id="messageSmart"><img src="images/chat-smart.svg" height="24"></a></li>
+                    <li><a data-role="button" data-click="messageCamera"><img src="images/chat-camera.svg" height="24"></a></li>
+                    <li><a data-role="button" data-click="messagePhoto"><img src="images/chat-photo.svg" height="24"></a></li>
+                    <li><a data-role="button" data-click="messageAudio"><img src="images/chat-sound.svg" height="24"></a></li>
+                    <li><a data-role="button" data-click="messageLocation"><img src="images/chat-places.svg" height="24"></a></li>
+                    <li><a data-role="button" data-rel="actionsheet" href="#newMessageActions"><img src="images/chat-smart.svg" height="24"></a></li>
                  </ul>
              </div>
 		  </div>

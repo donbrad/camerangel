@@ -15,12 +15,7 @@ function onInitChannel(e) {
 		}
 	});
 	
-	$("#messageCamera").kendoTouch({
-   
-		tap: function(e) {
-			messageCamera();
-		}
-	});
+
     
     $("#messageSmart").kendoTouch({
 		tap: function(e) {
@@ -28,33 +23,7 @@ function onInitChannel(e) {
 		}
 	});
  	
- 	$("#messageCamera").kendoTouch({
    
- 		tap: function(e) {
- 			messageCamera();
-		},
-		hold: function(e) {
-			$("#newMessageActions").data("kendoMobileActionSheet").open();
- 		}
- 	});
-    
-    $("#messagePhoto").kendoTouch({
-		tap: function(e) {
-			messagePhoto();
-		}
-	});
-    
-    $("#messageAudio").kendoTouch({
-		tap: function(e) {
-			messageAudio();
-		}
-	});
-    
-    $("#messageLocation").kendoTouch({
-		tap: function(e) {
-			messageLocation();
-		}
-	});
 	
 	var width = window.innerWidth - 96;
 	$('#messageTextArea').css("width", width+'px');
