@@ -1,3 +1,4 @@
+function addChannel(e) {
     e.preventDefault();
 
     var Channels = Parse.Object.extend("channels");
