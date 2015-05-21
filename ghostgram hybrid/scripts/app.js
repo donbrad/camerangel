@@ -159,6 +159,23 @@
 			APP.state[field] = value;
 			_app.saveAppState();
 		},
+		
+		updateGeoLocation : function (callback) {
+		APP.geoLocator.getCurrentPosition(function (position, error){
+				if (error === null) {
+					APP.location.position = position;
+					if (callback !== undefined) {
+						callback (position.coords.latitude, position.coords.longitude);
+					}
+					reverseGeoCode(position.coords.latitude, position.coords.longitude);
+					//mobileNotify("Located you at " + position.coords.latitude + " , " + position.coords.longitude);
+				} else {
+					mobileNotify("GeoLocator error : " + error);
+				}
+
+			});		
+		},
+		
 	   state: {
 		   inPrivacyMode: false,
 		   isVisible: true,
