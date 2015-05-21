@@ -211,7 +211,7 @@ function resizeSuccess (data) {
 	
 	// Have the photo scaled, now generate the thumbnail from it
 	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  imageUrl, 140, 0, { 
-			  quality: 50, storeImage: 1, photoAlbum: 0, filename: "thumb_"+photouuid+'.jpg' });			
+			  quality: 50, storeImage: 1, photoAlbum: 0, filename: "thumb_"+APP.models.gallery.currentPhoto.filename+'.jpg' });			
 	
 }
 
@@ -229,16 +229,17 @@ function messageCamera (e) {
 			 var photouuid = uuid.v4();
 			 var imageUrl = imageData.replace('file://', '');
 			 // convert uuid into valid file name;
-			 photouuid = photouuid.replace(/-/g,'');
+			 var filename = photouuid.replace(/-/g,'');
 			 
 			 APP.models.gallery.currentPhoto.photoId=photouuid;
+			  APP.models.gallery.currentPhoto.filename=filename;
 			 
 			  $('#chatImage').attr('src', imageData);	
 			 showChatImagePreview();
 			 
 				//resize image to 1200 pixels high
 			   window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1200, { 
-				  quality: 75, storeImage: 1, photoAlbum: 0, filename: "photo_"+photouuid+'.jpg' });
+				  quality: 75, storeImage: 1, photoAlbum: 0, filename: "photo_"+filename+'.jpg' });
 			 
 		 }, 
 		 function (error) {
