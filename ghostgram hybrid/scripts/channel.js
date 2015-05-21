@@ -231,8 +231,20 @@ function resizeSuccessThumb (data) {
 	
 	APP.models.gallery.currentPhoto.thumbNailUrl = imageUrl;
 	
+	// Todo: add additional processing to create ParsePhoto and photoOffer
 }
+
+
+function resizeSuccess (data) { 
 	
+	var imageUrl = APP.tempDirectory+data.filename;
+	APP.models.gallery.currentPhoto.photoUrl = imageUrl;
+	
+	// Have the photo scaled, now generate the thumbnail from it
+	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  imageUrl, 140, 0, { 
+			  quality: 50, storeImage: 1, photoAlbum: 0, filename: "thumb_"+photouuid+'.jpg' });			
+	
+}
 
 function resizeFailure (error) {
 
@@ -256,15 +268,7 @@ function messageCamera (e) {
 			 showChatImagePreview();
 			 
 				//resize image to 1200 pixels high
-			   window.imageResizer.resizeImage(function(data) {
-				   // finished resize of primary image, generate thumbnail
-				   window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  imageUrl, 140, 0, { 
-				  quality: 50, storeImage: 1, photoAlbum: 0, filename: "thumb_"+photouuid+'.jpg' });
-				 
-					var imageUrl = APP.tempDirectory+data.filename;
-					APP.models.gallery.currentPhoto.photoUrl = imageUrl;
-				   
-			   }, resizeFailure,  imageUrl, 0, 1200, { 
+			   window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1200, { 
 				  quality: 75, storeImage: 1, photoAlbum: 0, filename: "photo_"+photouuid+'.jpg' });
 			 
 		 }, 
