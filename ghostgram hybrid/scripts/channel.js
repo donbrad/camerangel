@@ -225,26 +225,12 @@ function hideChatImagePreview() {
 	$('#chatImage').attr('src', null);	
 }
 
-function resizeSuccess (data) { 
-
-	var thumbNail = {src: '', width: 0, height: 0};
+function resizeSuccessThumb (data) { 
+	
 	var imageUrl = APP.tempDirectory+data.filename;
-	thumbNail.src =  imageUrl;
-	thumbNail.width = data.width;
-	thumbNail.height = data.height;
 	
-	APP.models.gallery.currentPhoto.scaledsrc = data.imageData; 
-	APP.models.gallery.currentPhoto.thumbNail = thumbNail;
+	APP.models.gallery.currentPhoto.thumbNailUrl = imageUrl;
 	
-	getBase64FromImageUrl('file://'+imageUrl, function(data) {
-		if (data === null) {
-			mobileNotify("Error getting image data from thumbnail");
-			return;
-		}
-		var size = data.length;
-		APP.models.gallery.currentPhoto.thumbNail.imageData = data;
-		APP.models.gallery.currentPhoto.thumbNail.imageSize = size;
-	});
 }
 	
 
@@ -264,12 +250,23 @@ function messageCamera (e) {
 			 // convert uuid into valid file name;
 			 photouuid = photouuid.replace(/-/g,'');
 			 
-			 APP.models.gallery.currentPhoto.src=imageData;
-			  $('#chatImage').attr('src', APP.models.gallery.currentPhoto.src);	
+			 APP.models.gallery.currentPhoto.photoId=photouuid;
+			 
+			  $('#chatImage').attr('src', imageData);	
 			 showChatImagePreview();
-	
-			  window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 140, 0, { 
-				  quality: 50, storeImage: 1, photoAlbum: 0, filename: photouuid+'.jpg' });
+			 
+				//resize image to 1200 pixels high
+			   window.imageResizer.resizeImage(function(data) {
+				   // finished resize of primary image, generate thumbnail
+				   window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  imageUrl, 140, 0, { 
+				  quality: 50, storeImage: 1, photoAlbum: 0, filename: "thumb_"+photouuid+'.jpg' });
+				 
+					var imageUrl = APP.tempDirectory+data.filename;
+					APP.models.gallery.currentPhoto.photoUrl = imageUrl;
+				   
+			   }, resizeFailure,  imageUrl, 0, 1200, { 
+				  quality: 75, storeImage: 1, photoAlbum: 0, filename: "photo_"+photouuid+'.jpg' });
+			 
 		 }, 
 		 function (error) {
 			 mobileNotify("Camera error " + error);
