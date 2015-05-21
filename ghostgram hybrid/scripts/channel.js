@@ -211,33 +211,40 @@ function resizeSuccessThumb (data) {
 	photo.set('date', new Date().getTime());
 	photo.set('geopoint', new Parse.GeoPoint(APP.location.position.coords.latitude, APP.location.position.coords.latitude));
 	
-	var parseFile = new Parse.File("thumbnail_"+APP.models.gallery.currentPhoto.filename + ".jpeg",imageUrl);
-	parseFile.save().then(function() {
-		photo.set("thumbnail", parseFile);
-		photo.set("thumbnailUrl", parseFile._url);
-		APP.models.gallery.currentPhoto.thumbnailUrl = parseFile._url;
-	});
-	var parseFile2 = new Parse.File("photo_"+APP.models.gallery.currentPhoto.filename + ".jpeg",APP.models.gallery.currentPhoto.photoUrl);
-	parseFile2.save().then(function() {
-		photo.set("image", parseFile2);
-		photo.set("imageUrl", parseFile2._url);
-		APP.models.gallery.currentPhoto.photoUrl = parseFile2._url;
-	});
+	getBase64FromImageUrl (imageUrl,function(imageData) {
+		var parseFile = new Parse.File("thumbnail_"+APP.models.gallery.currentPhoto.filename + ".jpeg",{'base64': imageData});
+		parseFile.save().then(function() {
+			photo.set("thumbnail", parseFile);
+			photo.set("thumbnailUrl", parseFile._url);
+			APP.models.gallery.currentPhoto.thumbnailUrl = parseFile._url;
+		});
+	})
 	
-	photo.save(null, {
-	  success: function(photo) {
-		// Execute any logic that should take place after the object is saved.
-		mobileNotify('Photo added to ghostgrams gallery');
-		APP.models.gallery.photoDS.add(photo.attributes);
-		 APP.models.gallery.parsePhoto = photo;
-		
-	  },
-	  error: function(contact, error) {
-		// Execute any logic that should take place if the save fails.
-		// error is a Parse.Error with an error code and message.
-		  handleParseError(error);
-	  }
-	});
+	
+	getBase64FromImageUrl (APP.models.gallery.currentPhoto.photoUrl, function(imageData) {
+		var parseFile2 = new Parse.File("photo_"+APP.models.gallery.currentPhoto.filename + ".jpeg",{'base64': imageData});
+		parseFile2.save().then(function() {
+			photo.set("image", parseFile2);
+			photo.set("imageUrl", parseFile2._url);
+			APP.models.gallery.currentPhoto.photoUrl = parseFile2._url;
+			photo.save(null, {
+			  success: function(photo) {
+				// Execute any logic that should take place after the object is saved.
+				mobileNotify('Photo added to ghostgrams gallery');
+				APP.models.gallery.photoDS.add(photo.attributes);
+				 APP.models.gallery.parsePhoto = photo;
+
+			  },
+			  error: function(contact, error) {
+				// Execute any logic that should take place if the save fails.
+				// error is a Parse.Error with an error code and message.
+				  handleParseError(error);
+			  }
+			});
+		});
+	}
+						   
+	
 }
 
 
