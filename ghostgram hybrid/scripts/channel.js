@@ -188,7 +188,6 @@ function resizeSuccessThumb (data) {
 	
 	var imageUrl = APP.tempDirectory+data.filename;
 	
-	APP.models.gallery.currentPhoto.thumbNailUrl = imageUrl;
 	
 	// Todo: add additional processing to create ParsePhoto and photoOffer
 	var Photos = Parse.Object.extend("photos");
@@ -202,7 +201,7 @@ function resizeSuccessThumb (data) {
 	photo.set('geopoint', new Parse.GeoPoint(APP.location.position.coords.latitude, APP.location.position.coords.latitude));
 	
 
-	var parseFile = new Parse.File("thumbnail_"+APP.models.gallery.currentPhoto.filename + ".jpeg",{'base64': imageData});
+	var parseFile = new Parse.File("thumbnail_"+APP.models.gallery.currentPhoto.filename + ".jpeg",{'base64': data.imageData});
 	parseFile.save().then(function() {
 		photo.set("thumbnail", parseFile);
 		photo.set("thumbnailUrl", parseFile._url);
@@ -211,7 +210,7 @@ function resizeSuccessThumb (data) {
 
 	
 
-	var parseFile2 = new Parse.File("photo_"+APP.models.gallery.currentPhoto.filename + ".jpeg",{'base64': imageData});
+	var parseFile2 = new Parse.File("photo_"+APP.models.gallery.currentPhoto.filename + ".jpeg",{'base64': APP.models.gallery.currentPhoto.photoUrl});
 	parseFile2.save().then(function() {
 		photo.set("image", parseFile2);
 		photo.set("imageUrl", parseFile2._url);
@@ -239,16 +238,16 @@ function resizeSuccessThumb (data) {
 
 function resizeSuccess (data) { 
 	
-	var imageUrl = APP.tempDirectory+data.filename;
 	var filename = "thumb_"+APP.models.gallery.currentPhoto.filename+'.jpg';
-	APP.models.gallery.currentPhoto.photoUrl = imageUrl;
+	APP.models.gallery.currentPhoto.photoUrl = data.imageData;
 	
 	// Have the photo scaled, now generate the thumbnail from it
 /*	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 140, 0, { 
 			  quality: 50, storeImage: 1, photoAlbum: 0, filename: filename });		*/
 	
 	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 140, 0, { 
-			  imageDataType: ImageResizer.IMAGE_DATA_TYPE_BASE64, quality: 75 });
+			   storeImage: 0, quality: 75 });
+}
 
 function resizeFailure (error) {
 
@@ -277,7 +276,7 @@ function messageCamera (e) {
 	/*		   window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1200, { 
 				  quality: 75, storeImage: 1, photoAlbum: 0, filename: "photo_"+filename+'.jpg' }); */
 			  window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1200, { 
-				 imageDataType: ImageResizer.IMAGE_DATA_TYPE_BASE64, quality: 75 });
+				 storeImage: 0, quality: 75 });
 		 }, 
 		 function (error) {
 			 mobileNotify("Camera error " + error);
@@ -300,6 +299,7 @@ function messageAudio (e) {
 		{limit:1, duration: 5}
 	);
 }
+	
 function messagePhoto (e) {
 	var pictureSource = navigator.camera.PictureSourceType;   // picture source
     var destinationType = navigator.camera.DestinationType; // sets the format of returned value
