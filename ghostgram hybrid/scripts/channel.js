@@ -15,16 +15,6 @@ function onInitChannel(e) {
 		}
 	});
 	
-
-    
-    $("#messageSmart").kendoTouch({
-		tap: function(e) {
-        $("#newMessageActions").data("kendoMobileActionSheet").open();
-		}
-	});
- 	
-   
-	
 	var width = window.innerWidth - 96;
 	$('#messageTextArea').css("width", width+'px');
 	APP.models.channel.topOffset = APP.kendo.scroller().scrollTop;
@@ -385,8 +375,10 @@ function onShowChannel(e) {
 	hideChatImagePreview();
 	APP.updateGeoLocation();
 	
-	if (name.length > 13)
+	if (name.length > 13) {
 		name = name.substring(0,13)+"...";
+	}
+		
 	
 	
 
@@ -394,6 +386,7 @@ function onShowChannel(e) {
 
 	if (thisChannelModel.isPrivate) {
 		$('#messagePresenceButton').hide();
+		
 		var userKey = thisUser.publicKey, privateKey = thisUser.privateKey;
 		if (thisChannelModel.members[0] === thisUser.userUUID)
 			contactUUID = thisChannelModel.members[1];
@@ -405,6 +398,7 @@ function onShowChannel(e) {
 		if (thisChannelModel.isPrivate) {
 			$('#channelImage').attr('src', thisContact.photo);
 		}
+		
 		APP.models.channel.currentContactModel = thisContact;
 		var contactKey = thisContact.publicKey;
 		if (contactKey === undefined) {
