@@ -10,7 +10,7 @@
  * 
  * @author Raanan Weber, webXells GmbH, http://www.webxells.com
  */
-package com.raananw;
+package com.synconset;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

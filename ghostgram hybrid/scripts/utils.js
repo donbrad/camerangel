@@ -80,6 +80,10 @@ function getBase64FromImageUrl(URL, callback) {
 		var dataURL = canvas.toDataURL("image/png");
 		callback(dataURL.replace(/^data:image\/(png|jpg);base64,/, ""));
     }
+	
+	img.onerror = function () {
+		callback(null);
+	}
 }
 
 function mobileNotify(message) {

@@ -139,6 +139,21 @@
        kendo: null,
        pubnub: null,
 	   map: null,
+	   checkPubnub: function () {
+		   if (APP.pubnub === undefined || APP.pubnub === null) {
+		   
+				APP.pubnub = PUBNUB.init({ 
+					 publish_key: 'pub-c-d4fcc2b9-2c1c-4a38-9e2c-a11331c895be', 
+					 subscribe_key: 'sub-c-4624e1d4-dcad-11e4-adc7-0619f8945a4f',
+					 secret_key: 'sec-c-NDFiNzlmNTUtNWEyNy00OGUzLWExZjYtNDc3ZTI2ZGRlOGMw',
+					 ssl: true,
+					 jsonp: true,
+					 restore: true,
+					 uuid: uuid
+				 });
+		   }
+	   },
+		
 	  setAppState : function (field, value) {
 			APP.state[field] = value;
 			_app.saveAppState();
@@ -464,6 +479,28 @@
 		APP.geoLocator = new GeoLocator();
 		APP.location = new Object();
 		
+		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, 
+			 function(fileSystem){ 
+				var url = fileSystem.root.nativeURL;
+				url = url.replace('file://','');
+				APP.fileDirectory = url;
+				mobileNotify(APP.fileDirectory);
+			},
+			function(error) {
+			mobileNotify("Filesystem error : " + JSON.stringify(error));
+		});
+		
+		window.requestFileSystem(LocalFileSystem.TEMPORARY, 0, 
+			 function(fileSystem){ 
+				var url = fileSystem.root.nativeURL;
+				url = url.replace('file://','');
+				APP.tempDirectory = url;
+				mobileNotify(APP.tempDirectory);
+			},
+			function(error) {
+			mobileNotify("Filesystem error : " + JSON.stringify(error));
+		});
+								 
 /*		if (window.navigator.simulator === undefined) {
 			APP.map = plugin.google.maps.Map.getMap($("#places-mapview"));
 			APP.mapReady = false;

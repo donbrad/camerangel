@@ -711,12 +711,11 @@ p {
 
 .menuBox .km-button:not(.km-back)
 {
-    color: #e2e2e2;
-    padding-top: 2px;
+    color: #fff;
+    padding-top: 1px;
     padding-bottom: 1px;
-    padding-right : 1px;
-    padding-left : 2px;
-    
+    padding-right : 3px;
+    padding-left : 3px;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -738,6 +737,7 @@ p {
     line-height: 1.5;
     margin-right: 14px;
 }
+
 #profileName {
     margin: 0px;
   	float: left;

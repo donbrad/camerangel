@@ -78,8 +78,9 @@ function onInitHome () {
 	
 }
 
-function onShowHome() {
-	pruneNotifications();
+function onShowHome(e) {
+	e.preventDefault();
+
 	$('#profileName').text(APP.models.profile.currentUser.alias);
 	//TODO:  add code to update user profile image
 	

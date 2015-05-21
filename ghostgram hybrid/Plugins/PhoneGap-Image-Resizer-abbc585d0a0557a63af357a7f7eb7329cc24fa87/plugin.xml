@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
   xmlns:android="http://schemas.android.com/apk/res/android"
-  id="com.raananw.imageResizer"
-  version="0.1.2">
+  id="com.synconset.imageResizer"
+  version="0.1.1">
 
 	<name>ImageResizer</name>
 	 
 	<description>
 		The plugin will resize images natively using phonegap/cordova's plugin architecture
 	</description>
-
+	<license>Apache 2.0</license>
 	<engines>
 		<engine name="cordova" version=">=3.0.0" />
 	</engines>  
-	
-	<dependency id="org.apache.cordova.file" version="1.0.1" />
 
 	<js-module src="www/imageresize.js" name="ImageResizePlugin">
 		<clobbers target="plugins.imageResizer" />
@@ -42,10 +40,10 @@
 	<platform name="android">
 		<config-file target="res/xml/config.xml" parent="/*">
 			<feature name="ImageResizePlugin">
-				<param name="android-package" value="com.raananw.ImageResizePlugin"/>
+				<param name="android-package" value="com.synconset.ImageResizePlugin"/>
 			</feature>
 		</config-file>
 
-		<source-file src="src/Android/com/raananw/ImageResizer/ImageResizePlugin.java" target-dir="src/com/raananws" />
+		<source-file src="src/Android/com/synconset/ImageResizer/ImageResizePlugin.java" target-dir="src/com/synconset" />
 	</platform>
 </plugin>

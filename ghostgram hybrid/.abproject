@@ -6,7 +6,7 @@
   "DisplayName": "ghostgrams",
   "Author": "don bradford",
   "Description": "ghostgrams for iOS and Android (and maybe Win8)",
-  "BundleVersion": "0.1.7",
+  "BundleVersion": "0.1.7.2",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1",
@@ -18,7 +18,7 @@
     "bluetooth-peripheral"
   ],
   "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
-  "FrameworkVersion": "3.5.0",
+  "FrameworkVersion": "3.8.0",
   "AndroidPermissions": [
     "android.permission.ACCESS_CHECKIN_PROPERTIES",
     "android.permission.ACCESS_COARSE_LOCATION",
@@ -82,11 +82,13 @@
     "org.apache.cordova.console",
     "org.apache.cordova.contacts",
     "org.apache.cordova.device",
+    "org.apache.cordova.device-motion",
     "org.apache.cordova.device-orientation",
     "org.apache.cordova.dialogs",
     "org.apache.cordova.file",
     "org.apache.cordova.file-transfer",
     "org.apache.cordova.geolocation",
+    "org.apache.cordova.inappbrowser",
     "org.apache.cordova.keyboard",
     "org.apache.cordova.media",
     "org.apache.cordova.media-capture",
@@ -94,6 +96,7 @@
     "org.apache.cordova.plugin.sms@0.1.1",
     "org.apache.cordova.splashscreen",
     "org.apache.cordova.statusbar",
+    "org.apache.cordova.vibration",
     "org.devgeeks.privacyscreen@0.0.7",
     "uk.co.whiteoctober.cordova.appversion@0.1.5"
   ]
