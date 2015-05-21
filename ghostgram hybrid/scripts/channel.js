@@ -205,7 +205,7 @@ function resizeSuccess (data) {
 	APP.models.gallery.currentPhoto.scaledsrc = data.imageData; 
 	APP.models.gallery.currentPhoto.thumbNail = thumbNail;
 	
-	getBase64FromImageUrl(imageUrl, function(data) {
+	getBase64FromImageUrl('file://'+imageUrl, function(data) {
 		if (data === null) {
 			mobileNotify("Error getting image data from thumbnail");
 			return;
