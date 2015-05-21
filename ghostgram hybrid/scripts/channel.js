@@ -19,9 +19,40 @@ function onInitChannel(e) {
    
 		tap: function(e) {
 			messageCamera();
+		}
+	});
+    
+    $("#messageSmart").kendoTouch({
+		tap: function(e) {
+        $("#newMessageActions").data("kendoMobileActionSheet").open();
+		}
+	});
+ 	
+ 	$("#messageCamera").kendoTouch({
+   
+ 		tap: function(e) {
+ 			messageCamera();
 		},
 		hold: function(e) {
 			$("#newMessageActions").data("kendoMobileActionSheet").open();
+ 		}
+ 	});
+    
+    $("#messagePhoto").kendoTouch({
+		tap: function(e) {
+			messagePhoto();
+		}
+	});
+    
+    $("#messageAudio").kendoTouch({
+		tap: function(e) {
+			messageAudio();
+		}
+	});
+    
+    $("#messageLocation").kendoTouch({
+		tap: function(e) {
+			messageLocation();
 		}
 	});
 	
