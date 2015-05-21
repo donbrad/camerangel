@@ -195,22 +195,34 @@ function resizeSuccessThumb (data) {
 	
 	photo.setACL(APP.models.profile.parseACL);
 	photo.set('photoId', APP.models.gallery.currentPhoto.photoId);
-	photo.set('thumbnailUrl', APP.models.gallery.currentPhoto.thumbNailUrl);
 	photo.set('channelId', APP.models.channel.currentModel.channelId);
-	photo.set('date', new Date().getTime());
+	var timeStamp = new Date().getTime();
+	photo.set("timestamp", timeStamp);
 	photo.set('geoPoint', new Parse.GeoPoint(APP.location.position.coords.latitude, APP.location.position.coords.latitude));
 	
 
-	var parseFile = new Parse.File("thumbnail_"+APP.models.gallery.currentPhoto.filename + ".jpeg",{'base64': data.imageData});
+	var parseFile = new Parse.File("thumbnail_"+APP.models.gallery.currentPhoto.filename + ".jpeg",{'base64': data.imageData}, "image/jpg");
 	parseFile.save().then(function() {
 		photo.set("thumbnail", parseFile);
 		photo.set("thumbnailUrl", parseFile._url);
 		APP.models.gallery.currentPhoto.thumbnailUrl = parseFile._url;
+		photo.save(null, {
+		  success: function(photo) {
+			// Execute any logic that should take place after the object is saved.
+			 APP.models.gallery.parsePhoto = photo;
+
+		  },
+		  error: function(contact, error) {
+			// Execute any logic that should take place if the save fails.
+			// error is a Parse.Error with an error code and message.
+			  handleParseError(error);
+		  }
+		});
 	});
 
 	
 
-	var parseFile2 = new Parse.File("photo_"+APP.models.gallery.currentPhoto.filename + ".jpeg",{'base64': APP.models.gallery.currentPhoto.photoUrl});
+	var parseFile2 = new Parse.File("photo_"+APP.models.gallery.currentPhoto.filename + ".jpeg",{'base64': APP.models.gallery.currentPhoto.photoUrl},"image/jpg");
 	parseFile2.save().then(function() {
 		photo.set("image", parseFile2);
 		photo.set("imageUrl", parseFile2._url);
@@ -219,7 +231,7 @@ function resizeSuccessThumb (data) {
 		  success: function(photo) {
 			// Execute any logic that should take place after the object is saved.
 			mobileNotify('Photo added to ghostgrams gallery');
-			APP.models.gallery.photoDS.add(photo.attributes);
+			APP.models.gallery.photosDS.add(photo.attributes);
 			 APP.models.gallery.parsePhoto = photo;
 
 		  },
@@ -327,7 +339,8 @@ function messageSend(e) {
 	var text = $('#messageTextArea').val();
 	if (text.length === 0)
 		return;
-	APP.models.channel.currentChannel.sendMessage(APP.models.channel.currentContactUUID, text, 86400);
+	var messageData = null;
+	APP.models.channel.currentChannel.sendMessage(APP.models.channel.currentContactUUID, text, messageData, 86400);
 	 hideChatImagePreview();
 	_initMessageTextArea();
 	
