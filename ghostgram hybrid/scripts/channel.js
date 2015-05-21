@@ -201,38 +201,37 @@ function resizeSuccessThumb (data) {
 	photo.set('date', new Date().getTime());
 	photo.set('geopoint', new Parse.GeoPoint(APP.location.position.coords.latitude, APP.location.position.coords.latitude));
 	
-	getBase64FromImageUrl (imageUrl,function(imageData) {
-		var parseFile = new Parse.File("thumbnail_"+APP.models.gallery.currentPhoto.filename + ".jpeg",{'base64': imageData});
-		parseFile.save().then(function() {
-			photo.set("thumbnail", parseFile);
-			photo.set("thumbnailUrl", parseFile._url);
-			APP.models.gallery.currentPhoto.thumbnailUrl = parseFile._url;
-		});
-	});
-	
-	
-	getBase64FromImageUrl (APP.models.gallery.currentPhoto.photoUrl, function(imageData) {
-		var parseFile2 = new Parse.File("photo_"+APP.models.gallery.currentPhoto.filename + ".jpeg",{'base64': imageData});
-		parseFile2.save().then(function() {
-			photo.set("image", parseFile2);
-			photo.set("imageUrl", parseFile2._url);
-			APP.models.gallery.currentPhoto.photoUrl = parseFile2._url;
-			photo.save(null, {
-			  success: function(photo) {
-				// Execute any logic that should take place after the object is saved.
-				mobileNotify('Photo added to ghostgrams gallery');
-				APP.models.gallery.photoDS.add(photo.attributes);
-				 APP.models.gallery.parsePhoto = photo;
 
-			  },
-			  error: function(contact, error) {
-				// Execute any logic that should take place if the save fails.
-				// error is a Parse.Error with an error code and message.
-				  handleParseError(error);
-			  }
-			});
+	var parseFile = new Parse.File("thumbnail_"+APP.models.gallery.currentPhoto.filename + ".jpeg",{'base64': imageData});
+	parseFile.save().then(function() {
+		photo.set("thumbnail", parseFile);
+		photo.set("thumbnailUrl", parseFile._url);
+		APP.models.gallery.currentPhoto.thumbnailUrl = parseFile._url;
+	});
+
+	
+
+	var parseFile2 = new Parse.File("photo_"+APP.models.gallery.currentPhoto.filename + ".jpeg",{'base64': imageData});
+	parseFile2.save().then(function() {
+		photo.set("image", parseFile2);
+		photo.set("imageUrl", parseFile2._url);
+		APP.models.gallery.currentPhoto.photoUrl = parseFile2._url;
+		photo.save(null, {
+		  success: function(photo) {
+			// Execute any logic that should take place after the object is saved.
+			mobileNotify('Photo added to ghostgrams gallery');
+			APP.models.gallery.photoDS.add(photo.attributes);
+			 APP.models.gallery.parsePhoto = photo;
+
+		  },
+		  error: function(contact, error) {
+			// Execute any logic that should take place if the save fails.
+			// error is a Parse.Error with an error code and message.
+			  handleParseError(error);
+		  }
 		});
 	});
+
 						   
 	
 }
@@ -245,10 +244,11 @@ function resizeSuccess (data) {
 	APP.models.gallery.currentPhoto.photoUrl = imageUrl;
 	
 	// Have the photo scaled, now generate the thumbnail from it
-	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 140, 0, { 
-			  quality: 50, storeImage: 1, photoAlbum: 0, filename: filename });			
+/*	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 140, 0, { 
+			  quality: 50, storeImage: 1, photoAlbum: 0, filename: filename });		*/
 	
-}
+	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 140, 0, { 
+			  imageDataType: ImageResizer.IMAGE_DATA_TYPE_BASE64, quality: 75 });
 
 function resizeFailure (error) {
 
@@ -274,9 +274,10 @@ function messageCamera (e) {
 			 showChatImagePreview();
 			 
 				//resize image to 1200 pixels high
-			   window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1200, { 
-				  quality: 75, storeImage: 1, photoAlbum: 0, filename: "photo_"+filename+'.jpg' });
-			 
+	/*		   window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1200, { 
+				  quality: 75, storeImage: 1, photoAlbum: 0, filename: "photo_"+filename+'.jpg' }); */
+			  window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1200, { 
+				 imageDataType: ImageResizer.IMAGE_DATA_TYPE_BASE64, quality: 75 });
 		 }, 
 		 function (error) {
 			 mobileNotify("Camera error " + error);
