@@ -33,10 +33,12 @@
     "android.permission.CAPTURE_VIDEO_OUTPUT",
     "android.permission.INTERNET",
     "android.permission.LOCATION_HARDWARE",
+    "android.permission.MANAGE_DOCUMENTS",
     "android.permission.NFC",
     "android.permission.PERSISTENT_ACTIVITY",
     "android.permission.READ_CALENDAR",
     "android.permission.READ_CONTACTS",
+    "android.permission.READ_EXTERNAL_STORAGE",
     "android.permission.READ_INPUT_STATE",
     "android.permission.READ_PROFILE",
     "android.permission.READ_SMS",
@@ -48,6 +50,7 @@
     "android.permission.VIBRATE",
     "android.permission.WRITE_CALENDAR",
     "android.permission.WRITE_CONTACTS",
+    "android.permission.WRITE_EXTERNAL_STORAGE",
     "android.permission.WRITE_SMS"
   ],
   "DeviceOrientations": [
