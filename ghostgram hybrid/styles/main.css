@@ -362,7 +362,7 @@ p {
     display: none;
 }
 
-.chat-message img {
+.chat-message-profileImg {
     border-radius: 50%;
     float: left;
     border: 1.5px solid #F2EFF0;

@@ -39,7 +39,7 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
         if (msg.recipient === userUUID) {
 			var data = null;
             var content = cryptico.decrypt(msg.content.cipher, RSAkey).plaintext;
-			if (msg.data !== null) {
+			if (msg.data !== undefined && msg.data !== null) {
 				data = cryptico.decrypt(msg.data.cipher, RSAkey).plaintext;
 				data = JSON.parse(data);
 			}
@@ -238,10 +238,16 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
 						var content = '';
 						if (msg.recipient === userUUID)  {
 							// Just process messages from other user
-							content = cryptico.decrypt(msg.content.cipher, RSAkey).plaintext;
+								var data = null;
+							var content = cryptico.decrypt(msg.content.cipher, RSAkey).plaintext;
+							if (msg.data !== undefined && msg.data !== null) {
+								data = cryptico.decrypt(msg.data.cipher, RSAkey).plaintext;
+								data = JSON.parse(data);
+							}
 							 var parsedMsg = {
 								msgID: msg.msgID,
 								content: content,
+								data: data,
 								TTL: msg.ttl,
 								time: msg.time,
 								sender: msg.sender,
