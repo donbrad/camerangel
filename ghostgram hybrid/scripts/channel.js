@@ -198,7 +198,7 @@ function resizeSuccessThumb (data) {
 	photo.set('thumbnailUrl', APP.models.gallery.currentPhoto.thumbNailUrl);
 	photo.set('channelId', APP.models.channel.currentModel.channelId);
 	photo.set('date', new Date().getTime());
-	photo.set('geopoint', new Parse.GeoPoint(APP.location.position.coords.latitude, APP.location.position.coords.latitude));
+	photo.set('geoPoint', new Parse.GeoPoint(APP.location.position.coords.latitude, APP.location.position.coords.latitude));
 	
 
 	var parseFile = new Parse.File("thumbnail_"+APP.models.gallery.currentPhoto.filename + ".jpeg",{'base64': data.imageData});
