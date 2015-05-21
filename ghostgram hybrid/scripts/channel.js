@@ -202,20 +202,20 @@ function resizeSuccessThumb (data) {
 	
 	// Todo: add additional processing to create ParsePhoto and photoOffer
 	var Photos = Parse.Object.extend("photos");
-    var photo = new Photo();
+    var photo = new Photos();
 	
 	photo.set('photoId', APP.models.gallery.currentPhoto.photoId);
-	photo.set('thumbnailUrl', APP.models.gallery.currentPhoto.photoId);
+	photo.set('thumbnailUrl', APP.models.gallery.currentPhoto.thumbNailUrl);
 	photo.set('channelId', APP.models.channel.currentModel.channelId);
 	photo.set('date', new Date().getTime());
 	
-	var parseFile = new Parse.File("thumbnail_"+APP.models.gallery.currentPhoto.filename + ".jpeg",imageUrl , "image/jpeg");
+	var parseFile = new Parse.File("thumbnail_"+APP.models.gallery.currentPhoto.filename + ".jpeg",imageUrl);
 	parseFile.save().then(function() {
 		photo.set("thumbnail", parseFile);
 		photo.set("thumbnailUrl", parseFile._url);
 		APP.models.gallery.currentPhoto.thumbnailUrl = parseFile._url;
 	});
-	var parseFile2 = new Parse.File("photo_"+APP.models.gallery.currentPhoto.filename + ".jpeg",APP.models.gallery.currentPhoto.photoUrl , "image/jpeg");
+	var parseFile2 = new Parse.File("photo_"+APP.models.gallery.currentPhoto.filename + ".jpeg",APP.models.gallery.currentPhoto.photoUrl);
 	parseFile2.save().then(function() {
 		photo.set("image", parseFile2);
 		photo.set("imageUrl", parseFile2._url);
@@ -242,11 +242,12 @@ function resizeSuccessThumb (data) {
 function resizeSuccess (data) { 
 	
 	var imageUrl = APP.tempDirectory+data.filename;
+	var filename = "thumb_"+APP.models.gallery.currentPhoto.filename+'.jpg';
 	APP.models.gallery.currentPhoto.photoUrl = imageUrl;
 	
 	// Have the photo scaled, now generate the thumbnail from it
-	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  imageUrl, 140, 0, { 
-			  quality: 50, storeImage: 1, photoAlbum: 0, filename: "thumb_"+APP.models.gallery.currentPhoto.filename+'.jpg' });			
+	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 140, 0, { 
+			  quality: 50, storeImage: 1, photoAlbum: 0, filename: filename });			
 	
 }
 
@@ -267,7 +268,8 @@ function messageCamera (e) {
 			 var filename = photouuid.replace(/-/g,'');
 			 
 			 APP.models.gallery.currentPhoto.photoId = photouuid;
-			  APP.models.gallery.currentPhoto.filename = filename;
+			 APP.models.gallery.currentPhoto.filename = filename;
+			  APP.models.gallery.currentPhoto.imageUrl = imageUrl;
 			 
 			  $('#chatImage').attr('src', imageData);	
 			 showChatImagePreview();
@@ -314,7 +316,7 @@ function messagePhoto (e) {
 			 mobileNotify("Camera error " + error);
 		 }, { 
 			sourceType: pictureSource.SAVEDPHOTOALBUM,
-        	destinationType: destinationType.DATA_URL 
+        	destinationType: destinationType.FILE_URL 
 		 }
 	 );
 }
