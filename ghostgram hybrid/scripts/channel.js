@@ -367,20 +367,16 @@ function onShowChannel(e) {
 	// Hide the image preview div
 	hideChatImagePreview();
 	
-	if (thisChannelModel.isPrivate) {
-		name = '{' + name + '}';
-		if (name.length > 16)
-		 name = name.substring(0,15)+ '...}';
-		$('#messagePresenceButton').hide();
-	} else {
-		if (name.length > 17)
-		name = name.substring(0,17)+"...";
-		$('#messagePresenceButton').show();
-	}
+	
+	if (name.length > 13)
+		name = name.substring(0,13)+"...";
+	
+	
+
     $("#channelNavBar").data('kendoMobileNavBar').title(name);	
 
 	if (thisChannelModel.isPrivate) {
-		
+		$('#messagePresenceButton').hide();
 		var userKey = thisUser.publicKey, privateKey = thisUser.privateKey;
 		if (thisChannelModel.members[0] === thisUser.userUUID)
 			contactUUID = thisChannelModel.members[1];
@@ -389,6 +385,9 @@ function onShowChannel(e) {
 
 		APP.models.channel.currentContactUUID = contactUUID;
 		var thisContact = getContactModel(contactUUID);
+		if (thisChannelModel.isPrivate) {
+			$('#channelImage').attr('src', thisContact.photo);
+		}
 		APP.models.channel.currentContactModel = thisContact;
 		var contactKey = thisContact.publicKey;
 		if (contactKey === undefined) {
@@ -453,6 +452,7 @@ function onShowChannel(e) {
 		
 		
 	} else {
+		$('#messagePresenceButton').show();
 		// Provision a group channel
 		thisChannel = new groupChannel(channelUUID, thisUser.userUUID, thisUser.alias, userKey);
 		thisChannel.onMessage(onChannelRead);

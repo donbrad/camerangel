@@ -164,7 +164,7 @@ p {
 }
 
 .ghostButton {
-    color: #fff;
+    background: #27476e;
     font-size: 1.2em;
     font-weight: 700;
 }
@@ -825,6 +825,7 @@ p {
     padding:0px;
     margin: 0px;
 }
+
 
 .messageMediaBar ul li {
     display: inline-block;
