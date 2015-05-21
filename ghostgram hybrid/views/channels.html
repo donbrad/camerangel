@@ -1,8 +1,10 @@
  <div data-role="view" id="channels" data-title="Chats" data-layout="main" data-model="APP.models.channels" data-init="onInitChannels">  
      <div data-role="header">
         <div data-role="navbar">
+            <img src="images/ghost.svg" id="nav-ghost" height="25"/>
             <span data-role="view-title"></span>
-            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><i class="ghostIconNavbar fa fa-bars"></i></a>
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img src=
+"images/menu-icon.svg"/></a>
            <a data-align="right" data-role="button" href="#addChannel"> <i class="ghostIconNavbar fa fa-plus"></i> </a>
         </div>
     </div>
@@ -165,26 +167,31 @@
         </div>
     </div>
 	 
-     <div style="padding-top: 18px; padding-left: 8px; padding-right: 8px; padding-bottom: 12px;">
+     <div style="padding-bottom: 12px;">
          <ul id="messages-listview"></ul>
      </div>
      
-	 <div data-role="footer" style="display: block; background: #e0e0e0; padding-left: 2px;"  id="messageEditor" style="min-height: 48px;" >
+	 <div data-role="footer" style="display: block; background: #fff; padding-left: 2px;"  id="messageEditor" style="min-height: 48px;" >
 		 <div id="chatImagePreview" style="margin: 8px; width: 95%; height: auto; ">
 			 <form id="chatImageForm" style="display:none;">
 				  <input id="chatImageInput"></input>
 			 </form>
-			
 			<img id="chatImage" src="" style="max-width: 100%; max-height: 100%; text-align: center; vertical-align: middle;"> </img>
 		 </div>
-		 <div>
-			 <span style="font-size: 14px; width: 44px; float:left; margin-top: 6px; margin-left: 3px;">
-				  <a data-role="button" id="messageCamera"><i class="fa fa-camera"> </i> </a>
-			 </span>
-			<textarea id="messageTextArea" rows=2 autofocus=true wrap=soft spellcheck= true style="font-size: 1.0em; resize: none;"></textarea>
-			 <span style="font-size: 14px; width:44px; float:right; margin-top: 6px;">
-				 <a data-role="button"  id="messageSend"><i class="fa fa-send-o"></i></a> 
-			 </span>	
+		 <div class="messageCompose">
+			<textarea id="messageTextArea" rows="2" autofocus="true" wrap="soft" spellcheck="true" placeholder="Message..."></textarea>
+			 <div style="font-size: 14px; float:right;">
+				 <a data-role="button" id="messageSend">Send</a>
+			 </div>
+             <div class="messageMediaBar">
+             	<ul>
+                    <li><a data-role="button" id="messageCamera"><img src="images/chat-camera.svg" height="24"></a></li>
+                    <li><a data-role="button" id="messagePhoto"><img src="images/chat-photo.svg" height="24"></a></li>
+                    <li><a data-role="button" id="messageSound"><img src="images/chat-sound.svg" height="24"></a></li>
+                    <li><a data-role="button" id="messagePlace"><img src="images/chat-places.svg" height="24"></a></li>
+                    <li><a data-role="button" id="messageSmart"><img src="images/chat-smart.svg" height="24"></a></li>
+                 </ul>
+             </div>
 		  </div>
 	 </div>
 	 

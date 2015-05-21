@@ -47,7 +47,8 @@
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" > <i class="ghostIconNavbar fa fa-bars"></i> </a>    
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" > <img src=
+"images/menu-icon.svg"/> </a>    
         </div>
     </div>
 
@@ -61,7 +62,8 @@
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" ><i class="ghostIconNavbar fa fa-bars"></i></a>
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" ><img src=
+"images/menu-icon.svg"/></a>
         </div>
     </div>
 
@@ -92,7 +94,7 @@
             <img id="profilePhoto" src="images/ghostgramcontact.png" />
         </div>
         <div> 
-			<h3 id="profileName">John Smith</h3><br/>
+			<div id="profileName">John Smith</div><br/>
             <div class="caption" id="profileLink"><a data-role="button" href="views/profile.html">View Profile</a></div>
         </div>
     </div>
@@ -100,7 +102,7 @@
     <div class="clearfix"></div>
     <div class="menuLinks">
         <ul data-role="listview" class="menu">
-            <li ><a href="#home"><img src="images/menu-home.svg" height="22" width="22" />Home</a>
+            <li><a href="#home"><img src="images/menu-home.svg" height="22" width="22" />Home</a>
             </li>
             <li><a href="views/channels.html"><img src="images/menu-chat.svg" height="30" width="30" />Chats</a>
             </li>
@@ -128,8 +130,10 @@
 <div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" style="display:none;" data-show="onShowHome" >
 	<div data-role="header">
       <div data-role="navbar">
-        <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" > <i class="ghostIconNavbar fa fa-bars"></i> </a>
-        <span data-role="view-title"></span>
+        <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"> 
+            <img class="nav-menu" src="images/menu-icon.svg"/> 
+        </a>
+        <img src="images/logo.svg" class="nav-logo"/>
         <a  data-click="homeSignout" data-role="button" data-align="right">Sign Out</a>
       </div>
 	</div>
@@ -160,7 +164,7 @@
     <div id="home-signin" style="padding-bottom: 16px;">
 		
 		 <div style="padding-top: 15%; text-align:center;">
-            <span class="ghostTitle" >Create a free account now!</span>
+            <span class="ghostTitle">Create a free account now!</span>
         </div>
         <div style="padding-top: 12px; text-align:center;" >
             <a style="font-size: 1.1em;" class="button ghostButton" data-role="button" href="#signup" >Sign Up</a>
@@ -363,7 +367,8 @@
    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><i class="ghostIconNavbar fa fa-bars"></i></a>
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img src=
+"images/menu-icon.svg"/></a>
            <a data-align="right" data-role="button"  data-rel="modalview" href="#modalview-places-addPlace"> <i class="ghostIconNavbar fa fa-plus"></i> </a>
         </div>
     </div>

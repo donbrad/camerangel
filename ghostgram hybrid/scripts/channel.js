@@ -15,10 +15,12 @@ function onInitChannel(e) {
 	});
 	
 	$("#messageCamera").kendoTouch({
-   
 		tap: function(e) {
 			messageCamera();
-		},
+		}
+	});
+    
+    $("#messageSmart").kendoTouch({
 		hold: function(e) {
 			$("#newMessageActions").data("kendoMobileActionSheet").open();
 		}
