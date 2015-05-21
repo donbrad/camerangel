@@ -3,7 +3,6 @@ function onInitChannel(e) {
 	
 	APP.models.channel.messagesDS.data([]);
 	APP.models.channel.membersDS.data([]);
-	APP.checkPubnub();
 	
 	$("#messageSend").kendoTouch({
    
@@ -14,6 +13,12 @@ function onInitChannel(e) {
 			$("#sendMessageActions").data("kendoMobileActionSheet").open();
 		}
 	});
+    
+    $("#messageSmart").kendoTouch({
+		tap: function(e) {
+			$("#newMessageActions").data("kendoMobileActionSheet").open();
+		}
+	});
 	
 	$("#messageCamera").kendoTouch({
 		tap: function(e) {
@@ -21,11 +26,24 @@ function onInitChannel(e) {
 		}
 	});
     
-    $("#messageSmart").kendoTouch({
-		hold: function(e) {
-			$("#newMessageActions").data("kendoMobileActionSheet").open();
+    $("#messagePhoto").kendoTouch({
+		tap: function(e) {
+			messagePhoto();
 		}
 	});
+    
+    $("#messageAudio").kendoTouch({
+		tap: function(e) {
+			messageAudio();
+		}
+	});
+    
+    $("#messageLocation").kendoTouch({
+		tap: function(e) {
+			messageLocation();
+		}
+	});
+    
 	
 	var width = window.innerWidth - 96;
 	$('#messageTextArea').css("width", width+'px');
@@ -196,57 +214,23 @@ function hideChatImagePreview() {
 	$('#chatImage').attr('src', null);	
 }
 
-function resizeSuccess (data) { 
-
-	var thumbNail = {src: '', width: 0, height: 0};
-	var imageUrl = APP.tempDirectory+data.filename;
-	thumbNail.src =  imageUrl;
-	thumbNail.width = data.width;
-	thumbNail.height = data.height;
-	
-	APP.models.gallery.currentPhoto.scaledsrc = data.imageData; 
-	APP.models.gallery.currentPhoto.thumbNail = thumbNail;
-	
-	getBase64FromImageUrl(imageUrl, function(data) {
-		if (data === null) {
-			mobileNotify("Error getting image data from thumbnail");
-			return;
-		}
-		var size = data.length;
-		APP.models.gallery.currentPhoto.thumbNail.imageData = data;
-		APP.models.gallery.currentPhoto.thumbNail.imageSize = size;
-	});
-}
-	
-
-function resizeFailure (error) {
-
-	mobileNotify("Image Resizer :" + error);
-	
-}
-
 function messageCamera (e) {
 	var pictureSource = navigator.camera.PictureSourceType;   // picture source
     var destinationType = navigator.camera.DestinationType; // sets the format of returned value
 	 navigator.camera.getPicture(
 		 function (imageData) { 
-			 var photouuid = uuid.v4();
-			 var imageUrl = imageData.replace('file://', '');
-			 // convert uuid into valid file name;
-			 photouuid = photouuid.replace(/-/g,'');
-			 
-			 APP.models.gallery.currentPhoto.src=imageData;
-			  $('#chatImage').attr('src', APP.models.gallery.currentPhoto.src);	
+			 var imageDataSource = "data:image/jpeg;base64," + imageData;
+			 APP.models.gallery.currentPhoto.src=imageDataSource;
 			 showChatImagePreview();
-	
-			  window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 140, 0, { 
-				  quality: 50, storeImage: 1, photoAlbum: 0, filename: photouuid+'.jpg' });
+			 $('#chatImage').attr('src', APP.models.gallery.currentPhoto.src);	
+			 
 		 }, 
 		 function (error) {
 			 mobileNotify("Camera error " + error);
 		 }, { 
-			 quality: 70, 
-        	destinationType: destinationType.FILE_URL 
+			 quality: 20, 
+			 allowEdit: true,
+        	destinationType: destinationType.DATA_URL 
 		 }
 	 );
 }
@@ -269,7 +253,6 @@ function messagePhoto (e) {
 	 navigator.camera.getPicture(
 		 function (imageData) { 
 			 var imageDataSource = "data:image/jpeg;base64," + imageData;
-			 mobileNotify("Image Size = " + imageDataSource.length);
 			 APP.models.gallery.currentPhoto.src=imageDataSource;
 			  showChatImagePreview();
 			 $('#chatImage').attr('src', APP.models.gallery.currentPhoto.src);	
