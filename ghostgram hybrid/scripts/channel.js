@@ -233,6 +233,7 @@ function resizeSuccessThumb (data) {
 			mobileNotify('Photo added to ghostgrams gallery');
 			APP.models.gallery.photosDS.add(photo.attributes);
 			 APP.models.gallery.parsePhoto = photo;
+			APP.models.channel.currentMessage.photo = {thumb: photo.get('thumbnailUrl'), photo: photo.get('imageUrl')};
 
 		  },
 		  error: function(contact, error) {
@@ -339,10 +340,14 @@ function messageSend(e) {
 	var text = $('#messageTextArea').val();
 	if (text.length === 0)
 		return;
-	var messageData = null;
+	var messageData = {geo: APP.location.position.coords };
+	if (APP.models.channel.currentMessage.photo !== null) {
+		messageData.photo = APP.models.channel.currentMessage.photo;
+	}
 	APP.models.channel.currentChannel.sendMessage(APP.models.channel.currentContactUUID, text, messageData, 86400);
 	 hideChatImagePreview();
 	_initMessageTextArea();
+	APP.models.channel.currentMessage = {};
 	
 }
 

@@ -67,6 +67,7 @@
             title: 'Channel', 
 			currentChannel: {},
 			currentModel: {},
+			currentMessage: {},
 			messageLock: true,
 			potentialMembersDS:  new kendo.data.DataSource({
 				sort: { field: "name", dir: "asc" },
