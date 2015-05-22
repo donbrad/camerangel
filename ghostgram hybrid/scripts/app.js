@@ -56,6 +56,27 @@
          
         },
         
+		settings : {
+			title: 'Settings',
+			privacyModeEnabled: true,
+			defaultVisible: false,
+			locationTrigger: true,
+			defaultTextSize: 14
+			
+		},
+		  
+		presence : {
+			title: 'Presence',
+			current: new kendo.data.ObservableObject({
+				AmBusy: false,
+				AmVisible: true,
+				location: "",
+				activity: "",
+				activityInfo: "",
+				message: ""
+			})
+			
+		},
 		  
        channels: {
           title: 'Channels',
