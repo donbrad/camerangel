@@ -879,3 +879,12 @@ div.chat-message-user-content.clearfix > p {
 #messageEditor > div.messageCompose > div.messageMediaBar > ul > li > a {
     
 }
+.tile {
+	height: 50%;
+	width: 50%;
+	float: left;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
