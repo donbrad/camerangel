@@ -108,7 +108,7 @@ function holdChannel (e) {
 	var dataSource = APP.models.channel.messagesDS;
 	var messageUID = $(e.touch.currentTarget).data("uid");
 	var message = dataSource.getByUid(messageUID);
-	if (APP.models.channel.currentModel.isPrivate) {
+	if (APP.models.channel.currentModel.privacyMode) {
 		$('#'+message.msgID).removeClass('privateMode');
 		$.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(9000).play()).then(function () {
 			$("#"+message.msgID).css("opacity", "1.0");
@@ -179,8 +179,9 @@ function onChannelRead(message) {
 	
 	scrollToBottom();
 	
-	if (APP.models.channel.currentModel.isPrivate)
+	if (APP.models.channel.currentModel.privacyMode) {
 		kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(12000).play();
+	}
 }
 
 function showChatImagePreview() {
@@ -269,7 +270,7 @@ function resizeSuccess (data) {
 			  quality: 50, storeImage: 1, photoAlbum: 0, filename: filename });		*/
 	
 	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 140, 0, { 
-			   storeImage: 0, pixelDensity: 1, quality: 75 });
+			   storeImage: false, pixelDensity: true, quality: 75 });
 }
 
 function resizeFailure (error) {
@@ -300,7 +301,7 @@ function messageCamera (e) {
 	/*		   window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1200, { 
 				  quality: 75, storeImage: 1, photoAlbum: 0, filename: "photo_"+filename+'.jpg' }); */
 			  window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1200, { 
-				 storeImage: 0, pixelDensity: 1, quality: 75 });
+				 storeImage: false, pixelDensity: true, quality: 75 });
 		 }, 
 		 function (error) {
 			 mobileNotify("Camera error " + error);

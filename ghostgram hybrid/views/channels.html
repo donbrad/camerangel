@@ -217,7 +217,7 @@
 </div>
 
 <script type="text/x-kendo-tmpl" id="messagesTemplate">
-# var history='';  if (fromHistory !== undefined && fromHistory === true && APP.models.channel.currentModel.privacyMode) {history = "privateMode"; } #
+# var history='';  if (APP.models.channel.currentModel.privacyMode) { if (fromHistory !== undefined && fromHistory === true ) {history = "privateMode"; } }#
 <div id=#:msgID# class="chat-message #=history# clearfix">
 	# var formattedTime = timeSince(time); var name = "Me"; var photoUrl = ''; if (sender === APP.models.channel.currentContactUUID) { name =  APP.models.channel.currentContactModel.alias; photoUrl = APP.models.channel.currentContactModel.photo; }  #
 	 <div class="chat-time"> #:formattedTime# ago </div> 
