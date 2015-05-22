@@ -75,7 +75,6 @@
     
 <div data-role="layout" data-id="newuser" style="display:none">
     <div data-role="header">
-       
     </div>
 
     <div data-role="content" class='view-content'>
@@ -160,8 +159,47 @@
     
 <!-- home - for new users -->
  <div data-role="view" data-title="ghostgrams" id="newuserhome" data-layout="newuser" data-model="APP.models.home" class="appearance" style="display:none;">
- 
-    <div id="home-signin" style="padding-bottom: 16px;">
+ 	<div class="newuserBox">
+        <img id="newuser-ghost" src="images/newuser-ghost.png">
+        <h1>
+            Hello,
+        </h1>
+        <p>
+            Welecome to ghostgrams!
+        </p>
+    </div>
+    <div class="clearfix"></div>
+    <div class="loginBox">
+        <h3>
+            Login
+        </h3>
+        <form>
+        	<ul data-role="listview" data-style="inset">
+                <li>
+                    <label>Username</label>
+                        <input type="text" id="home-signin-username" value=""  required />
+                </li>
+                <li>
+                    <label>Password</label>
+                    <input type="password" id="home-signin-password" value=""  required />
+					<!--<div><a id="forgotPassword" data-rel="modalview" href="#modalview-recoverPassword" data-role="button">Forgot?</a></div>-->
+                </li>
+        	</ul>
+            <a class="btnClear" data-click="homeSignin" id="modalview-login-button" type="button" data-role="button">Sign In</a>
+    	</form>
+        <div class="forgotBox">
+            <h3>
+                New to ghostgram?
+            </h3>
+            <a class="btnYellow btnSpan" data-role="button" href="#signup">Join ghostgrams</a>
+        </div>
+        </div>
+        
+     </div>
+   
+     
+<!--     
+     <div id="home-signin" style="padding-bottom: 16px;">
 		
 		 <div style="padding-top: 15%; text-align:center;">
             <span class="ghostTitle">Create a free account now!</span>
@@ -182,8 +220,8 @@
 		</div>   
          
     </div>
-	 
-</div>
+-->
+
 
 <div data-role="modalview" id="modalview-support" style="width: 90%; display: none;" class="appearance">
     <div data-role="header">

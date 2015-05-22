@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800,300|Hind:400,500);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800,300|Hind:300,400,500);
 /*** Guidelines - updated 3/14/15 (see https://www.dropbox.com/s/vw40iwbmvo1tkol/styles-0.1.pdf?dl=0) ***/
 body {
     font-family: 'Open Sans', sans-serif;
@@ -12,23 +12,29 @@ h1 {
     /* 34px */
     
     font-family: 'Hind', sans-serif;
+    font-weight: 300;
 }
 h2 {
     font-size: 1.71428571em;
+    font-weight:300;
     /* 24px */
     
     font-family: 'Hind', sans-serif;
 }
 h3 {
     font-size: 1.42857143em;
+    font-weight:300;
     /* 20px */
-
 }
 h4 {
     font-size: 1.14285714em;
 }
 h5 {
     font-weight: 600;
+}
+
+h1,h2,h3,h4,h5,p {
+    margin: 0px;
 }
 .caption {
     font-size: 13px;
@@ -55,6 +61,52 @@ p {
     border: none;
 }
 
+.btnYellow {
+  -webkit-border-radius: 2;
+  -moz-border-radius: 2;
+  border-radius: 2px;
+  -webkit-box-shadow: 0px 1px 1px rgba(0,0,0,0.24);
+  -moz-box-shadow: 0px 1px 1px rgba(0,0,0,0.24);
+  box-shadow: 0px 1px 1px rgba(0,0,0,0.24);
+  color: #ffffff;
+  font-size: 14px !important;
+  background: #FFB74D !important;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+.btnYellow:hover {
+  background: #E5A545 !important;
+  text-decoration: none;
+}
+
+.btnYellow:disabled {
+    background: #A4A4A4 !important;
+}
+
+.btnClear {
+    background: transparent;
+    color: #2D93FF !important;
+    text-decoration: none;
+    font-size: 14px !important;
+    font-weight: 400;
+    padding: 0px !important;
+}
+
+.btnClear:active {
+    color: #3CAAEE !important;
+    background: transparent !important;
+}
+
+.btnClear:disabled {
+    color: #A4A4A4  !important;
+    background: transparent !important;
+}
+
+.btnSpan {
+    width: 100%;
+}
+
 #nav-ghost {
     position: relative;
   	top: 5px;
@@ -71,7 +123,7 @@ p {
 
 /* Scrollbar */
 .km-flat .km-touch-scrollbar {
-    background: rgba(224,224,224,0.5);
+    background: rgba(224,224,224,1);
 }
 
 /*** ***/
@@ -115,15 +167,11 @@ p {
   border-color: transparent;
 }
 
-/***/
-#newuserhome .km-content {
-    background-image: url('../images/ghostgrams.png');
-    background-size: 100% 100%;
-    color : white;
-    width: 100%;
-    height: 100%;
+.km-flat .km-content {
+    background-color: #fff;
 }
 
+/***/
 #home .km-content {
     background-image: url('../images/blank-bk@2x.png');
     background-size: 100% 100%;
@@ -440,14 +488,14 @@ p {
 
 .km-root .appearance .km-listview label
 {
-    color: #27476e;
+    color: #212121;
     font-size: 12px;
     width: 100%;
 }
 
 .km-wp .appearance .km-listview label
 {
-    color: #27476e;
+    color: #212121;
     font-size: 12px;
 }
 
@@ -459,7 +507,7 @@ p {
     right: 0;
     margin-top: 0;
     top: 0;
-    border: 1px solid #27476e;
+    border-bottom: 1px solid #E0E0E0;
 }
 
 .km-root .km-pane .km-view.appearance .km-listview select
@@ -792,6 +840,7 @@ p {
 .km-flat .km-list>li {
     background: transparent;
     box-shadow: none;
+    border: none;
 }
 
 #appDrawer > div > div.km-scroll-container > div > div.menuLinks > div > ul > li {
@@ -846,11 +895,12 @@ p {
     background-color: #fff;
     border: none;
     padding: 6px;
-    font-size: 1.2em;
+    font-size: 14px;
 }
 
 #messageSend {
     padding: 0px;
+    padding-top: 3px;
 }
 
 div.chat-message-user-content.clearfix > p {
@@ -859,4 +909,73 @@ div.chat-message-user-content.clearfix > p {
 
 #messageEditor > div.messageCompose > div.messageMediaBar > ul > li > a {
     
+}
+
+.newuserBox {
+    width:100%;
+    background-color: #27476E;
+    height: 150px;
+    position: relative;
+  	top: 0px;
+    color: #fff;
+	box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.12), 0px 2px 2px 0px rgba(0,0,0,0.24);
+} 
+
+#newuser-ghost {
+    position: absolute;
+    right: 0px;
+    top: 20px;
+}
+
+.newuserBox h1 {
+    margin-bottom: 0px;
+}
+
+.loginBox {
+    position: relative;
+  	top: 0px;
+    margin-top: 1rem;
+}
+
+.loginBox form {
+    padding: 1rem;
+}
+
+div.loginBox > form > div > ul {
+   margin:0px; 
+}
+
+div.loginBox > form > div > ul > li {
+    border: none;
+	padding: 0px;
+}
+
+#modalview-login-button {
+    margin-top: 1rem;
+}
+
+#newuserhome > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > div.loginBox > form > div > ul > li {
+    margin-bottom: 0.5rem;
+    border: none !important;
+}
+
+#home-signin-username {
+    margin-bottom: 1px;
+}
+
+#forgotPassword {
+    width: 100%;
+  	text-align: right;
+  	position: relative;
+  	top: -22px;
+    font-size: 12px;
+}
+
+.forgotBox {
+    padding: 1rem;
+}
+
+.forgotBox h3 {
+    margin: 0px;
+    padding-bottom: 1rem;
 }
