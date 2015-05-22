@@ -261,20 +261,20 @@
 		},
         
        	onPause : function() {
-			_app.setAppState('inBackground', true);
+			APP.setAppState('inBackground', true);
    			
 		},
 		
 		onResume : function () {
-			_app.setAppState('inBackground', false);
+			APP.setAppState('inBackground', false);
 		},
 		
 		onOnline : function () {
-			_app.setAppState('isOnline', true);
+			APP.setAppState('isOnline', true);
 		},
 		
 		onOffline : function () {
-			_app.setAppState('isOnline', false);
+			APP.setAppState('isOnline', false);
 		},
 		
 		

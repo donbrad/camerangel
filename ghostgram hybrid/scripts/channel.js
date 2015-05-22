@@ -284,7 +284,8 @@ function messageCamera (e) {
 	 navigator.camera.getPicture(
 		 function (imageData) { 
 			 var photouuid = uuid.v4();
-			 var imageUrl = imageData.replace('file://', '');
+//var imageUrl = imageData.replace('file://', '');
+			 var imageUrl = imageData;
 			 // convert uuid into valid file name;
 			 var filename = photouuid.replace(/-/g,'');
 			 
@@ -304,7 +305,8 @@ function messageCamera (e) {
 		 function (error) {
 			 mobileNotify("Camera error " + error);
 		 }, { 
-			 quality: 70, 
+			correctOrientation: true,
+			targetWidth: 1200,
         	destinationType: destinationType.FILE_URL 
 		 }
 	 );
