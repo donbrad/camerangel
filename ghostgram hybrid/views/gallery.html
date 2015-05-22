@@ -1,4 +1,4 @@
- <div data-role="view" data-title="Gallery" id="gallery" data-layout="main" data-model="APP.models.gallery" data-before-show="beforeShowFilter">
+ <div data-role="view" data-title="Gallery" id="gallery" data-layout="main" data-model="APP.models.gallery" data-stretch='true'>
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -8,10 +8,25 @@
     </div>
      
      <div class="ghostContainer" style="padding-top: 12px; padding-bottom: 24px; height: 100%;">
-          <ul id="gallery-listview"></ul>
+		<div data-role="scrollview"
+			data-source="APP.models.gallery.photosDS"
+			data-template="gallery-template"
+			data-items-per-page="4"
+			data-content-height="100%"
+			data-enable-pager="false">
+		</div>
      </div>
 </div>
 
+
+<script id="gallery-template" type="text/x-kendo-template">
+    <div class="batch-page">
+        <div class="tile" data-id="#: data[0].id #" style="background: url('#: data[0].thumb #') no-repeat center center;"></div>
+        <div class="tile" data-id="#: data[1].id #" style="background: url('#: data[1].thumb #') no-repeat center center;"></div>
+        <div class="tile" data-id="#: data[2].id #" style="background: url('#: data[2].thumb #') no-repeat center center;"></div>
+        <div class="tile" data-id="#: data[3].id #" style="background: url('#: data[3].thumb #') no-repeat center center;"></div>
+    </div>
+</script>
 
 <div data-role="modalview" id="modalview-gallery-addPhoto" style="width: 90%; display: none;" class="appearance">
     <div data-role="header">
