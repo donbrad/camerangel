@@ -489,7 +489,7 @@ function onShowChannel(e) {
 			mobileNotify("Getting Previous Messages...");
 			thisChannel.getMessageHistory(function (messages) {
 				APP.models.channel.messagesDS.data([]);
-				for (var i=0; i<messages.length; i++){		
+				for (var i=0; i<messages.length; i++){
 							var message = messages[i];
 							var formattedContent = '';
 							if (message.content !== null) {
