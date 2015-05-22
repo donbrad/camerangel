@@ -37,10 +37,17 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
     //  then call `receiveMessage` with the decrypted message.
     var messageHandler = function (msg) {
         if (msg.recipient === userUUID) {
+			var data = null;
             var content = cryptico.decrypt(msg.content.cipher, RSAkey).plaintext;
+			if (msg.data !== undefined && msg.data !== null) {
+				data = cryptico.decrypt(msg.data.cipher, RSAkey).plaintext;
+				data = JSON.parse(data);
+			}
+				
             var parsedMsg = {
                 msgID: msg.msgID,
                 content: content,
+				data: data,
                 TTL: msg.ttl,
 				time: msg.time,
                 sender: msg.sender,
@@ -140,13 +147,18 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
         // Sends `message` to `recipient`. After `ttl` seconds, the message
         // will self-destruct, and neither you or the recipient will be able 
         // to retrieve the message from your `messages` object.
-        sendMessage: function (recipient, message, ttl) {
+        sendMessage: function (recipient, message, data, ttl) {
             if (ttl === undefined || ttl < 60)
                 ttl = 86400;  // 24 hours
            // if (recipient in users) {
                 var content = message;
+				var contentData = data;
 				var currentTime =  new Date().getTime()/1000;
                 message = cryptico.encrypt(message, contactKey);
+			    if (data !== undefined && data !== null)
+					data = cryptico.encrypt(JSON.stringify(data), contactKey);
+				else
+					data = null;
 
                 pubnub.uuid(function (msgID) {
                     pubnub.publish({
@@ -156,6 +168,7 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
                             msgID: msgID,
                             sender: userUUID,
                             content: message,
+							data: data,
 							time: currentTime,		
 							fromHistory: false,
                             ttl: ttl
@@ -164,6 +177,7 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
                             parsedMsg = {
                                 msgID: msgID,
                                 content: content,
+								data: contentData,
                                 TTL: ttl,
 								time: currentTime,
                                 sender: userUUID,
@@ -224,10 +238,16 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
 						var content = '';
 						if (msg.recipient === userUUID)  {
 							// Just process messages from other user
-							content = cryptico.decrypt(msg.content.cipher, RSAkey).plaintext;
+								var data = null;
+							var content = cryptico.decrypt(msg.content.cipher, RSAkey).plaintext;
+							if (msg.data !== undefined && msg.data !== null) {
+								data = cryptico.decrypt(msg.data.cipher, RSAkey).plaintext;
+								data = JSON.parse(data);
+							}
 							 var parsedMsg = {
 								msgID: msg.msgID,
 								content: content,
+								data: data,
 								TTL: msg.ttl,
 								time: msg.time,
 								sender: msg.sender,

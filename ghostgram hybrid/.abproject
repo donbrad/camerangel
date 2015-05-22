@@ -6,7 +6,7 @@
   "DisplayName": "ghostgrams",
   "Author": "don bradford",
   "Description": "ghostgrams for iOS and Android (and maybe Win8)",
-  "BundleVersion": "0.1.7.2",
+  "BundleVersion": "0.1.8",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1",
@@ -33,10 +33,12 @@
     "android.permission.CAPTURE_VIDEO_OUTPUT",
     "android.permission.INTERNET",
     "android.permission.LOCATION_HARDWARE",
+    "android.permission.MANAGE_DOCUMENTS",
     "android.permission.NFC",
     "android.permission.PERSISTENT_ACTIVITY",
     "android.permission.READ_CALENDAR",
     "android.permission.READ_CONTACTS",
+    "android.permission.READ_EXTERNAL_STORAGE",
     "android.permission.READ_INPUT_STATE",
     "android.permission.READ_PROFILE",
     "android.permission.READ_SMS",
@@ -45,9 +47,11 @@
     "android.permission.RECORD_AUDIO",
     "android.permission.SEND_SMS",
     "android.permission.STATUS_BAR",
+    "android.permission.USE_CREDENTIALS",
     "android.permission.VIBRATE",
     "android.permission.WRITE_CALENDAR",
     "android.permission.WRITE_CONTACTS",
+    "android.permission.WRITE_EXTERNAL_STORAGE",
     "android.permission.WRITE_SMS"
   ],
   "DeviceOrientations": [

@@ -33,6 +33,8 @@
         profile: {
           title: 'Profile',
           parseUser: null,
+		  tempDirectory: '',
+		  appDirectory: '',
           currentUser: new kendo.data.ObservableObject({
               username: '',
               userUUID: '',
@@ -67,6 +69,7 @@
             title: 'Channel', 
 			currentChannel: {},
 			currentModel: {},
+			currentMessage: {},
 			messageLock: true,
 			potentialMembersDS:  new kendo.data.DataSource({
 				sort: { field: "name", dir: "asc" },
@@ -260,20 +263,20 @@
 		},
         
        	onPause : function() {
-			_app.setAppState('inBackground', true);
+			APP.setAppState('inBackground', true);
    			
 		},
 		
 		onResume : function () {
-			_app.setAppState('inBackground', false);
+			APP.setAppState('inBackground', false);
 		},
 		
 		onOnline : function () {
-			_app.setAppState('isOnline', true);
+			APP.setAppState('isOnline', true);
 		},
 		
 		onOffline : function () {
-			_app.setAppState('isOnline', false);
+			APP.setAppState('isOnline', false);
 		},
 		
 		
@@ -502,7 +505,8 @@
 				var url = fileSystem.root.nativeURL;
 				url = url.replace('file://','');
 				APP.fileDirectory = url;
-				mobileNotify(APP.fileDirectory);
+			  APP.models.profile.appDirectory = url;
+				//mobileNotify(APP.fileDirectory);
 			},
 			function(error) {
 			mobileNotify("Filesystem error : " + JSON.stringify(error));
@@ -513,7 +517,8 @@
 				var url = fileSystem.root.nativeURL;
 				url = url.replace('file://','');
 				APP.tempDirectory = url;
-				mobileNotify(APP.tempDirectory);
+			    APP.models.profile.tempDirectory = url;
+				//mobileNotify(APP.tempDirectory);
 			},
 			function(error) {
 			mobileNotify("Filesystem error : " + JSON.stringify(error));
@@ -698,7 +703,7 @@
 
 		// Provide basic functionality in the simulator and deployable simulator
         if (window.navigator.simulator === true){
-             APP.models.profile.version = "1.4.8";
+             APP.models.profile.version = "0.1.7.4";
         } else {
             cordova.getAppVersion(function (version) {
            	 	APP.models.profile.version = version;
@@ -710,7 +715,8 @@
 			};
 			
 			cordova.plugins.notification.local.hasPermission(function (granted) {
-    			mobileNotify('Local notifications: ' + granted);
+				if (!granted)
+    				mobileNotify('Local notifications Disabled !!!');
 				/*cordova.plugins.notification.local.cancelAll(
 				  function() {
 					MobileNotify("Local notifications cleared");

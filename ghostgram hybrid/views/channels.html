@@ -151,23 +151,20 @@
 				</div>
 			</div>
 		</div>
-	</div>	
-	
-  
+	</div>	  
 </div>
-
 
  <div data-role="view" id="channel" data-layout="main" data-model="APP.models.channel" data-show="onShowChannel" data-init="onInitChannel">  
      <div data-role="header">
         <div data-role="navbar" id="channelNavBar">
-             <img src="" id="channelImage" height="32" style="vertical-align: middle; border-radius: 50%"/>
+            <img src="" id="channelImage" height="32" style="vertical-align: middle; border-radius: 50%"/>
             <span data-role="view-title"></span>
             <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img src="images/menu-icon.svg"/></a>
             <a data-align="right" data-role="button" id="messagePresenceButton" data-rel="drawer" href="#channelPresence" > <i class="ghostIconNavbar fa fa-users"></i> </a>
         </div>
     </div>
 	 
-     <div style="padding-bottom: 12px;">
+     <div style="padding-bottom: 24px;">
          <ul id="messages-listview"></ul>
      </div>
      
@@ -209,6 +206,7 @@
 	  <ul data-role="actionsheet" id="sendMessageActions" data-popup='{"direction": "left"}'>
 	    <li><a data-action="smartScanMessage"><i class="fa fa-magic"> </i> Smart Scan Message</a></li>
         <li><a data-action="messageEraser"><i class="fa fa-eraser"> </i> Erase Message</a></li>
+		<li><a id="privacyMode" data-action="togglePrivacyMode"><i class="fa fa-eye"> </i>Turn Privacy On</a></li>
     </ul>
 	  <ul data-role="actionsheet" id="messageActions" data-popup='{"direction": "left"}'>
 		<li><a data-action="archiveMessage"><i class="fa fa-archive"> </i> Archive Message</a></li>
@@ -219,18 +217,20 @@
 </div>
 
 <script type="text/x-kendo-tmpl" id="messagesTemplate">
-# var history='';  if (fromHistory !== undefined && fromHistory === true && APP.models.channel.currentModel.isPrivate) {history = "privateMode"; } #
+# var history='';  if (APP.models.channel.currentModel.privacyMode) { if (fromHistory !== undefined && fromHistory === true ) {history = "privateMode"; } }#
 <div id=#:msgID# class="chat-message #=history# clearfix">
 	# var formattedTime = timeSince(time); var name = "Me"; var photoUrl = ''; if (sender === APP.models.channel.currentContactUUID) { name =  APP.models.channel.currentContactModel.alias; photoUrl = APP.models.channel.currentContactModel.photo; }  #
 	 <div class="chat-time"> #:formattedTime# ago </div> 
-	# if(photoUrl !== '') { #<img src="#:photoUrl#" alt="" width="36" height="36">
+	# if(photoUrl !== '') { #<img class="chat-message-profileImg" src="#:photoUrl#" alt="" width="36" height="36">
 	<div class="chat-message-content clearfix">
 		<h5>#=name#</h5>
-		<p>#= formattedContent #</p>
+		<div class="chat-message-text">#= formattedContent #</div>
+		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# <img class="chat-message-photo" src="#:data.photo.thumb#" alt="" > #}#
 	</div>
 	 #} else {#
 	 <div class="chat-message-user-content clearfix">
-		<p>#= formattedContent #</p>
+		<div class="chat-message-text">#= formattedContent #</div>
+		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# <img class="chat-message-photo" src="#:data.photo.thumb#" alt="" > #}#
 	</div>
 	 #}#
 	<a href="\\#" data-role="button" class="delete" >Delete</a>

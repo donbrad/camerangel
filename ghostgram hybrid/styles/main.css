@@ -979,3 +979,13 @@ div.loginBox > form > div > ul > li {
     margin: 0px;
     padding-bottom: 1rem;
 }
+/**/
+
+.tile {
+	height: 50%;
+    width: 50%;
+	float: left;
+    -webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+    background-size: cover;

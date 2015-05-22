@@ -15,16 +15,6 @@ function onInitChannel(e) {
 		}
 	});
 	
-
-    
-    $("#messageSmart").kendoTouch({
-		tap: function(e) {
-        $("#newMessageActions").data("kendoMobileActionSheet").open();
-		}
-	});
- 	
-   
-	
 	var width = window.innerWidth - 96;
 	$('#messageTextArea').css("width", width+'px');
 	APP.models.channel.topOffset = APP.kendo.scroller().scrollTop;
@@ -66,12 +56,20 @@ function onInitChannel(e) {
 }	
 
 function tapChannel(e) {
+	var target = $(e.touch.initialTouch);
 	var dataSource = APP.models.channel.messagesDS;
 	var messageUID = $(e.touch.currentTarget).data("uid");
 	var message = dataSource.getByUid(messageUID);
 	$('.delete').css('display', 'none');
 	$('.archive').css('display', 'none');
-	if (APP.models.channel.currentModel.isPrivate) {
+	
+	if (target[0].className === 'chat-message-photo') {
+		var photoUrl = message.data.photo.photo;
+		$('#photoViewImage').attr('src', photoUrl);
+		$('#modalview-photoView').kendoMobileModalView("open");
+	}
+	
+	if (APP.models.channel.currentModel.privacyMode) {
 		$('#'+message.msgID).removeClass('privateMode');
 		$.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(6000).play()).then(function () {
 			$("#"+message.msgID).css("opacity", "1.0");
@@ -86,7 +84,7 @@ function swipeChannel (e) {
 	var messageUID = $(e.touch.currentTarget).data("uid");
 	var message = dataSource.getByUid(messageUID);
 	
-	if (APP.models.channel.currentModel.isPrivate) {
+	if (APP.models.channel.currentModel.privacyMode) {
 		$('#'+message.msgID).removeClass('privateMode');
 	}
 	if (e.direction === 'left') {
@@ -110,7 +108,7 @@ function holdChannel (e) {
 	var dataSource = APP.models.channel.messagesDS;
 	var messageUID = $(e.touch.currentTarget).data("uid");
 	var message = dataSource.getByUid(messageUID);
-	if (APP.models.channel.currentModel.isPrivate) {
+	if (APP.models.channel.currentModel.privacyMode) {
 		$('#'+message.msgID).removeClass('privateMode');
 		$.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(9000).play()).then(function () {
 			$("#"+message.msgID).css("opacity", "1.0");
@@ -181,8 +179,9 @@ function onChannelRead(message) {
 	
 	scrollToBottom();
 	
-	if (APP.models.channel.currentModel.isPrivate)
+	if (APP.models.channel.currentModel.privacyMode) {
 		kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(12000).play();
+	}
 }
 
 function showChatImagePreview() {
@@ -194,11 +193,12 @@ function hideChatImagePreview() {
 	$('#chatImage').attr('src', null);	
 }
 
+
+
 function resizeSuccessThumb (data) { 
 	
 	var imageUrl = APP.tempDirectory+data.filename;
 	
-	APP.models.gallery.currentPhoto.thumbNailUrl = imageUrl;
 	
 	// Todo: add additional processing to create ParsePhoto and photoOffer
 	var Photos = Parse.Object.extend("photos");
@@ -206,51 +206,71 @@ function resizeSuccessThumb (data) {
 	
 	photo.setACL(APP.models.profile.parseACL);
 	photo.set('photoId', APP.models.gallery.currentPhoto.photoId);
-	photo.set('thumbnailUrl', APP.models.gallery.currentPhoto.thumbNailUrl);
 	photo.set('channelId', APP.models.channel.currentModel.channelId);
-	photo.set('date', new Date().getTime());
-	photo.set('geopoint', new Parse.GeoPoint(APP.location.position.coords.latitude, APP.location.position.coords.latitude));
+	var timeStamp = new Date().getTime();
+	photo.set("timestamp", timeStamp);
+	photo.set('geoPoint', new Parse.GeoPoint(APP.location.position.coords.latitude, APP.location.position.coords.latitude));
 	
-	var parseFile = new Parse.File("thumbnail_"+APP.models.gallery.currentPhoto.filename + ".jpeg",imageUrl);
+
+	var parseFile = new Parse.File("thumbnail_"+APP.models.gallery.currentPhoto.filename + ".jpeg",{'base64': data.imageData}, "image/jpg");
 	parseFile.save().then(function() {
 		photo.set("thumbnail", parseFile);
 		photo.set("thumbnailUrl", parseFile._url);
 		APP.models.gallery.currentPhoto.thumbnailUrl = parseFile._url;
+		photo.save(null, {
+		  success: function(photo) {
+			// Execute any logic that should take place after the object is saved.
+			 APP.models.gallery.parsePhoto = photo;
+
+		  },
+		  error: function(contact, error) {
+			// Execute any logic that should take place if the save fails.
+			// error is a Parse.Error with an error code and message.
+			  handleParseError(error);
+		  }
+		});
 	});
-	var parseFile2 = new Parse.File("photo_"+APP.models.gallery.currentPhoto.filename + ".jpeg",APP.models.gallery.currentPhoto.photoUrl);
+
+	
+
+	var parseFile2 = new Parse.File("photo_"+APP.models.gallery.currentPhoto.filename + ".jpeg",{'base64': APP.models.gallery.currentPhoto.photoUrl},"image/jpg");
 	parseFile2.save().then(function() {
 		photo.set("image", parseFile2);
 		photo.set("imageUrl", parseFile2._url);
 		APP.models.gallery.currentPhoto.photoUrl = parseFile2._url;
+		photo.save(null, {
+		  success: function(photo) {
+			// Execute any logic that should take place after the object is saved.
+			mobileNotify('Photo added to ghostgrams gallery');
+			APP.models.gallery.photosDS.add(photo.attributes);
+			 APP.models.gallery.parsePhoto = photo;
+			APP.models.channel.currentMessage.photo = {thumb: photo.get('thumbnailUrl'), photo: photo.get('imageUrl')};
+
+		  },
+		  error: function(contact, error) {
+			// Execute any logic that should take place if the save fails.
+			// error is a Parse.Error with an error code and message.
+			  handleParseError(error);
+		  }
+		});
 	});
+
+						   
 	
-	photo.save(null, {
-	  success: function(photo) {
-		// Execute any logic that should take place after the object is saved.
-		mobileNotify('Photo added to ghostgrams gallery');
-		APP.models.gallery.photoDS.add(photo.attributes);
-		 APP.models.gallery.parsePhoto = photo;
-		
-	  },
-	  error: function(contact, error) {
-		// Execute any logic that should take place if the save fails.
-		// error is a Parse.Error with an error code and message.
-		  handleParseError(error);
-	  }
-	});
 }
 
 
 function resizeSuccess (data) { 
 	
-	var imageUrl = APP.tempDirectory+data.filename;
 	var filename = "thumb_"+APP.models.gallery.currentPhoto.filename+'.jpg';
-	APP.models.gallery.currentPhoto.photoUrl = imageUrl;
+	APP.models.gallery.currentPhoto.photoUrl = data.imageData;
 	
 	// Have the photo scaled, now generate the thumbnail from it
-	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 140, 0, { 
-			  quality: 50, storeImage: 1, photoAlbum: 0, filename: filename });			
+/*	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 140, 0, { 
+			  quality: 50, storeImage: 1, photoAlbum: 0, filename: filename });		*/
 	
+	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 140, 0, { 
+			   storeImage: false, pixelDensity: true, quality: 75 });
 }
 
 function resizeFailure (error) {
@@ -265,7 +285,10 @@ function messageCamera (e) {
 	 navigator.camera.getPicture(
 		 function (imageData) { 
 			 var photouuid = uuid.v4();
-			 var imageUrl = imageData.replace('file://', '');
+			 var imageUrl = imageData;
+			 if (device.platform === 'iOS') {
+				 imageUrl = imageData.replace('file://', '');
+			 }			 
 			 // convert uuid into valid file name;
 			 var filename = photouuid.replace(/-/g,'');
 			 
@@ -277,14 +300,16 @@ function messageCamera (e) {
 			 showChatImagePreview();
 			 
 				//resize image to 1200 pixels high
-			   window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1200, { 
-				  quality: 75, storeImage: 1, photoAlbum: 0, filename: "photo_"+filename+'.jpg' });
-			 
+	/*		   window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1200, { 
+				  quality: 75, storeImage: 1, photoAlbum: 0, filename: "photo_"+filename+'.jpg' }); */
+			  window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1200, { 
+				 storeImage: false, pixelDensity: true, quality: 75 });
 		 }, 
 		 function (error) {
 			 mobileNotify("Camera error " + error);
 		 }, { 
-			 quality: 70, 
+			correctOrientation: true,
+			targetWidth: 1200,
         	destinationType: destinationType.FILE_URL 
 		 }
 	 );
@@ -302,6 +327,7 @@ function messageAudio (e) {
 		{limit:1, duration: 5}
 	);
 }
+	
 function messagePhoto (e) {
 	var pictureSource = navigator.camera.PictureSourceType;   // picture source
     var destinationType = navigator.camera.DestinationType; // sets the format of returned value
@@ -329,9 +355,14 @@ function messageSend(e) {
 	var text = $('#messageTextArea').val();
 	if (text.length === 0)
 		return;
-	APP.models.channel.currentChannel.sendMessage(APP.models.channel.currentContactUUID, text, 86400);
+	var messageData = {geo: APP.location.position.coords };
+	if (APP.models.channel.currentMessage.photo !== null) {
+		messageData.photo = APP.models.channel.currentMessage.photo;
+	}
+	APP.models.channel.currentChannel.sendMessage(APP.models.channel.currentContactUUID, text, messageData, 86400);
 	 hideChatImagePreview();
 	_initMessageTextArea();
+	APP.models.channel.currentMessage = {};
 	
 }
 
@@ -364,6 +395,19 @@ function onHideChannel(e) {
 	}		
 }
 
+function togglePrivacyMode (e) {
+	APP.models.channel.currentModel.privacyMode = ! APP.models.channel.currentModel.privacyMode;
+	if (APP.models.channel.currentModel.privacyMode) {
+		$('#privacyMode').html('<i class="fa fa-eye-slash"> </i>Turn Privacy Off');
+		$( ".chat-message" ).addClass( 'privateMode' );
+		$( ".chat-message" ).removeClass( 'publicMode' );
+	} else {
+		$('#privacyMode').html('<i class="fa fa-eye"> </i>Turn Privacy On');
+		$( ".chat-message" ).removeClass( 'privateMode' );
+		$( ".chat-message" ).addClass( 'publicMode' );
+	}
+	
+}
 function onShowChannel(e) {
 	e.preventDefault();
 	var channelUUID = e.view.params.channel;
@@ -378,15 +422,17 @@ function onShowChannel(e) {
 	hideChatImagePreview();
 	APP.updateGeoLocation();
 	
-	if (name.length > 13)
+	if (name.length > 13) {
 		name = name.substring(0,13)+"...";
-	
-	
-
+	}
+	APP.models.channel.currentModel.privacyMode = false;
+	$('#privacyMode').html('<i class="fa fa-eye"> </i>Turn Privacy On');
     $("#channelNavBar").data('kendoMobileNavBar').title(name);	
 
 	if (thisChannelModel.isPrivate) {
 		$('#messagePresenceButton').hide();
+		APP.models.channel.currentModel.privacyMode = true;
+		$('#privacyMode').html('<i class="fa fa-eye-slash"> </i>Turn Privacy Off');
 		var userKey = thisUser.publicKey, privateKey = thisUser.privateKey;
 		if (thisChannelModel.members[0] === thisUser.userUUID)
 			contactUUID = thisChannelModel.members[1];
@@ -398,6 +444,7 @@ function onShowChannel(e) {
 		if (thisChannelModel.isPrivate) {
 			$('#channelImage').attr('src', thisContact.photo);
 		}
+		
 		APP.models.channel.currentContactModel = thisContact;
 		var contactKey = thisContact.publicKey;
 		if (contactKey === undefined) {
