@@ -224,12 +224,12 @@
 	# if(photoUrl !== '') { #<img class="chat-message-profileImg" src="#:photoUrl#" alt="" width="36" height="36">
 	<div class="chat-message-content clearfix">
 		<h5>#=name#</h5>
-		<p>#= formattedContent #</p>
+		<div class="chat-message-text">#= formattedContent #</div>
 		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# <img class="chat-message-photo" src="#:data.photo.thumb#" alt="" > #}#
 	</div>
 	 #} else {#
 	 <div class="chat-message-user-content clearfix">
-		<p>#= formattedContent #</p>
+		<div class="chat-message-text">#= formattedContent #</div>
 		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# <img class="chat-message-photo" src="#:data.photo.thumb#" alt="" > #}#
 	</div>
 	 #}#
