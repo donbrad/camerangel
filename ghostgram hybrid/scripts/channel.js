@@ -269,7 +269,7 @@ function resizeSuccess (data) {
 			  quality: 50, storeImage: 1, photoAlbum: 0, filename: filename });		*/
 	
 	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 140, 0, { 
-			   storeImage: 0, quality: 75 });
+			   storeImage: 0, pixelDensity: 2, quality: 75 });
 }
 
 function resizeFailure (error) {
@@ -300,7 +300,7 @@ function messageCamera (e) {
 	/*		   window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1200, { 
 				  quality: 75, storeImage: 1, photoAlbum: 0, filename: "photo_"+filename+'.jpg' }); */
 			  window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1200, { 
-				 storeImage: 0, quality: 75 });
+				 storeImage: 0, pixelDensity: 2, quality: 75 });
 		 }, 
 		 function (error) {
 			 mobileNotify("Camera error " + error);
