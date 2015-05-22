@@ -416,7 +416,7 @@ p {
     border: 1.5px solid #F2EFF0;
 }
 
-chat-message-photo {
+.chat-message-photo {
 	width: 70%;
 	height: auto;
 }
