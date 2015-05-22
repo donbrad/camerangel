@@ -410,10 +410,15 @@ p {
     display: none;
 }
 
-.chat-message img {
+.chat-message-profileImg {
     border-radius: 50%;
     float: left;
     border: 1.5px solid #F2EFF0;
+}
+
+chat-message-photo {
+	width: 70%;
+	height: auto;
 }
 
 .chat-message-content {
@@ -421,6 +426,7 @@ p {
     color: #2e2e2e;
     height: 100%;
 }
+
 
 .chat-message-user-content {
     margin-left: 72px;
