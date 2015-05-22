@@ -33,6 +33,8 @@
         profile: {
           title: 'Profile',
           parseUser: null,
+		  tempDirectory: '',
+		  appDirectory: '',
           currentUser: new kendo.data.ObservableObject({
               username: '',
               userUUID: '',
@@ -503,7 +505,8 @@
 				var url = fileSystem.root.nativeURL;
 				url = url.replace('file://','');
 				APP.fileDirectory = url;
-				mobileNotify(APP.fileDirectory);
+			  APP.models.profile.appDirectory = url;
+				//mobileNotify(APP.fileDirectory);
 			},
 			function(error) {
 			mobileNotify("Filesystem error : " + JSON.stringify(error));
@@ -514,7 +517,8 @@
 				var url = fileSystem.root.nativeURL;
 				url = url.replace('file://','');
 				APP.tempDirectory = url;
-				mobileNotify(APP.tempDirectory);
+			    APP.models.profile.tempDirectory = url;
+				//mobileNotify(APP.tempDirectory);
 			},
 			function(error) {
 			mobileNotify("Filesystem error : " + JSON.stringify(error));
@@ -709,7 +713,8 @@
 			};
 			
 			cordova.plugins.notification.local.hasPermission(function (granted) {
-    			mobileNotify('Local notifications: ' + granted);
+				if (!granted)
+    				mobileNotify('Local notifications Disabled !!!');
 				/*cordova.plugins.notification.local.cancelAll(
 				  function() {
 					MobileNotify("Local notifications cleared");
