@@ -132,6 +132,9 @@ p {
   -o-background-size: cover;
   background-size: cover;
 }
+
+
+
 .km-flat .km-pages .km-current-page {
     background-image: url('../images/blank-bk.png');
     background-size: 100% 100%;
@@ -164,7 +167,9 @@ p {
 }
 
 .ghostButton {
+	color: #2e2e2e;
     background: #27476e;
+	border: 1px solid #27476e;
     font-size: 1.2em;
     font-weight: 700;
 }
@@ -369,12 +374,15 @@ p {
 }
 
 .chat-message-photo {
-    max-width: 50%;
+    width: 50%;
+	height: auto;
     border: 1.5px solid #F2EFF0;
 }
 
 .chat-message-photo-expanded {
-    max-width: 100%;
+    width: 100%;
+	height: auto;
+	max-height: 80%;
     border: 1.5px solid #F2EFF0;
 }
 
@@ -505,7 +513,8 @@ p {
     top: 0;
     border: 1px solid #27476e;
 }
-.km-root .km-button
+
+.menuBox .km-button
 {
     color: #fff;
     font-size: 0.9em;

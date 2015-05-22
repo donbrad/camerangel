@@ -56,11 +56,19 @@ function onInitChannel(e) {
 }	
 
 function tapChannel(e) {
+	var target = $(e.touch.initialTouch);
 	var dataSource = APP.models.channel.messagesDS;
 	var messageUID = $(e.touch.currentTarget).data("uid");
 	var message = dataSource.getByUid(messageUID);
 	$('.delete').css('display', 'none');
 	$('.archive').css('display', 'none');
+	
+	if (target[0].className === 'chat-message-photo') {
+		var photoUrl = message.data.photo.photo;
+		$('#photoViewImage').attr('src', photoUrl);
+		$('#modalview-photoView').kendoMobileModalView("open");
+	}
+	
 	if (APP.models.channel.currentModel.privacyMode) {
 		$('#'+message.msgID).removeClass('privateMode');
 		$.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(6000).play()).then(function () {
@@ -383,12 +391,15 @@ function onHideChannel(e) {
 }
 
 function togglePrivacyMode (e) {
-	e.preventDefault(e);
 	APP.models.channel.currentModel.privacyMode = ! APP.models.channel.currentModel.privacyMode;
 	if (APP.models.channel.currentModel.privacyMode) {
 		$('#privacyMode').html('<i class="fa fa-eye-slash"> </i>Turn Privacy Off');
+		$( ".chat-message" ).addClass( 'privateMode' );
+		$( ".chat-message" ).removeClass( 'publicMode' );
 	} else {
 		$('#privacyMode').html('<i class="fa fa-eye"> </i>Turn Privacy On');
+		$( ".chat-message" ).removeClass( 'privateMode' );
+		$( ".chat-message" ).addClass( 'publicMode' );
 	}
 	
 }

@@ -164,7 +164,7 @@
         </div>
     </div>
 	 
-     <div style="padding-bottom: 12px;">
+     <div style="padding-bottom: 24px;">
          <ul id="messages-listview"></ul>
      </div>
      
@@ -206,7 +206,7 @@
 	  <ul data-role="actionsheet" id="sendMessageActions" data-popup='{"direction": "left"}'>
 	    <li><a data-action="smartScanMessage"><i class="fa fa-magic"> </i> Smart Scan Message</a></li>
         <li><a data-action="messageEraser"><i class="fa fa-eraser"> </i> Erase Message</a></li>
-		<li><a id="privacyMode"onclick="togglePrivacyMode"><i class="fa fa-eye"> </i>Turn Privacy On</a></li>
+		<li><a id="privacyMode" data-action="togglePrivacyMode"><i class="fa fa-eye"> </i>Turn Privacy On</a></li>
     </ul>
 	  <ul data-role="actionsheet" id="messageActions" data-popup='{"direction": "left"}'>
 		<li><a data-action="archiveMessage"><i class="fa fa-archive"> </i> Archive Message</a></li>
@@ -225,12 +225,12 @@
 	<div class="chat-message-content clearfix">
 		<h5>#=name#</h5>
 		<p>#= formattedContent #</p>
-		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# <img class="chat-message-photo" src="#:data.photo.thumb#" alt="" width="140"> #}#
+		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# <img class="chat-message-photo" src="#:data.photo.thumb#" alt="" > #}#
 	</div>
 	 #} else {#
 	 <div class="chat-message-user-content clearfix">
 		<p>#= formattedContent #</p>
-		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# <img class="chat-message-photo" src="#:data.photo.thumb#" alt="" width="140"> #}#
+		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# <img class="chat-message-photo" src="#:data.photo.thumb#" alt="" > #}#
 	</div>
 	 #}#
 	<a href="\\#" data-role="button" class="delete" >Delete</a>
