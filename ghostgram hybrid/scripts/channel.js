@@ -333,12 +333,26 @@ function messagePhoto (e) {
     var destinationType = navigator.camera.DestinationType; // sets the format of returned value
 	 navigator.camera.getPicture(
 		 function (imageData) { 
-			 var imageDataSource = "data:image/jpeg;base64," + imageData;
-			 mobileNotify("Image Size = " + imageDataSource.length);
-			 APP.models.gallery.currentPhoto.src=imageDataSource;
-			  showChatImagePreview();
-			 $('#chatImage').attr('src', APP.models.gallery.currentPhoto.src);	
+			 var photouuid = uuid.v4();
+			 var imageUrl = imageData;
+			 if (device.platform === 'iOS') {
+				 imageUrl = imageData.replace('file://', '');
+			 }			 
+			 // convert uuid into valid file name;
+			 var filename = photouuid.replace(/-/g,'');
 			 
+			 APP.models.gallery.currentPhoto.photoId = photouuid;
+			 APP.models.gallery.currentPhoto.filename = filename;
+			  APP.models.gallery.currentPhoto.imageUrl = imageUrl;
+			 
+			  $('#chatImage').attr('src', imageData);	
+			 showChatImagePreview();
+			 
+				//resize image to 1200 pixels high
+	/*		   window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1200, { 
+				  quality: 75, storeImage: 1, photoAlbum: 0, filename: "photo_"+filename+'.jpg' }); */
+			  window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1200, { 
+				 storeImage: false, pixelDensity: true, quality: 75 });
 		 }, 
 		 function (error) {
 			 mobileNotify("Camera error " + error);
