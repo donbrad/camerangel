@@ -351,7 +351,7 @@ p {
     line-height: 16px;
 }
 
-.chat-message p {
+.chat-message-text {
     margin: 0px 0px 4px;
     font-size: 14px;
     height: 100%;
@@ -374,7 +374,7 @@ p {
 }
 
 .chat-message-photo {
-    width: 50%;
+    width: 70%;
 	height: auto;
     border: 1.5px solid #F2EFF0;
 }

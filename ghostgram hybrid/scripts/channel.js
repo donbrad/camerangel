@@ -285,8 +285,10 @@ function messageCamera (e) {
 	 navigator.camera.getPicture(
 		 function (imageData) { 
 			 var photouuid = uuid.v4();
-//var imageUrl = imageData.replace('file://', '');
 			 var imageUrl = imageData;
+			 if (device.platform === 'iOS') {
+				 imageUrl = imageData.replace('file://', '');
+			 }			 
 			 // convert uuid into valid file name;
 			 var filename = photouuid.replace(/-/g,'');
 			 
