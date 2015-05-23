@@ -990,11 +990,14 @@ div.loginBox > form > div > ul > li {
 }
 /**/
 
-.tile {
-	height: 50%;
-    width: 50%;
-	float: left;
-    -webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-    background-size: cover;
+
+.gallery-item {
+	width: 50%;
+}
+
+.gallery-item .largeImage{
+	width: 100%;
+}
+
+
+

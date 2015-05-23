@@ -1,4 +1,4 @@
- <div data-role="view" data-title="Gallery" id="gallery" data-layout="main" data-model="APP.models.gallery" data-stretch='true'>
+ <div data-role="view" data-title="Gallery" id="gallery" data-layout="main" data-model="APP.models.gallery" data-init="onInitGallery" data-show="onShowGallery">
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -8,14 +8,14 @@
     </div>
      
      <div class="ghostContainer" style="padding-top: 12px; padding-bottom: 24px; height: 100%;">
-		<div data-role="scrollview"
-			data-source="APP.models.gallery.photosDS"
-			data-template="gallery-template"
-			data-items-per-page="4"
-			data-content-height="100%"
-			data-enable-pager="false">
-		</div>
-     </div>
+	 	<div id="gallery-bar">
+			
+		
+		 </div>
+		 <div id="gallery-grid">
+			
+		 </div>
+	 </div>
 </div>
 
 
