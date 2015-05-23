@@ -269,7 +269,7 @@ function resizeSuccess (data) {
 /*	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 140, 0, { 
 			  quality: 50, storeImage: 1, photoAlbum: 0, filename: filename });		*/
 	
-	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 140, 0, { 
+	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 196, 0, { 
 			   storeImage: false, pixelDensity: true, quality: 75 });
 }
 
@@ -282,7 +282,7 @@ function resizeSuccessAndroid (data) {
 /*	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 140, 0, { 
 			  quality: 50, storeImage: 1, photoAlbum: 0, filename: filename });		*/
 	
-	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 140, 0, { 
+	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 196, 0, { 
 			   imageDataType: ImageResizer.IMAGE_DATA_TYPE_BASE64, storeImage: false, pixelDensity: true, quality: 75 });
 }
 
@@ -361,10 +361,10 @@ function messagePhoto (e) {
 			 var photouuid = uuid.v4();
 			 var imageUrl = imageData;
 			 var displayUrl = imageData;
-			 var successCallback = resizeSuccessAndroid;
+			
 			 if (device.platform === 'iOS') {
 				 imageUrl = imageData.replace('file://', '');
-				 successCallback = resizeSuccess;
+			
 			 }	else {
 				 displayUrl = "data:image/jpg;base64," + imageData;
 			 }		 
@@ -381,8 +381,13 @@ function messagePhoto (e) {
 				//resize image to 1200 pixels high
 	/*		   window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1200, { 
 				  quality: 75, storeImage: 1, photoAlbum: 0, filename: "photo_"+filename+'.jpg' }); */
-			  window.imageResizer.resizeImage(successCallback, resizeFailure,  imageUrl, 0, 1200, { 
-				  imageDataType: ImageResizer.IMAGE_DATA_TYPE_BASE64, storeImage: false, pixelDensity: true, quality: 75 });
+			if (device.platform === 'iOS') {
+				 window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1200, { 
+					 storeImage: false, pixelDensity: true, quality: 95 });
+			} else {
+				 window.imageResizer.resizeImage(resizeSuccessAndroid, resizeFailure,  imageUrl, 0, 1200, { 
+					  imageDataType: ImageResizer.IMAGE_DATA_TYPE_BASE64, storeImage: false, pixelDensity: true, quality: 95 });
+			}
 		 }, 
 		 function (error) {
 			 mobileNotify("Camera error " + error);
