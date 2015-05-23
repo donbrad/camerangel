@@ -992,12 +992,16 @@ div.loginBox > form > div > ul > li {
 
 
 .gallery-item {
-	width: 50%;
+	margin: 1px;
+	float: left;
+	width: 24%;
 }
 
-.gallery-item .largeImage{
-	width: 100%;
+.gallery-item img {
+  display: block;
+  width: 100%;
 }
+
 
 
 
