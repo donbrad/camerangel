@@ -273,6 +273,19 @@ function resizeSuccess (data) {
 			   storeImage: false, pixelDensity: true, quality: 75 });
 }
 
+function resizeSuccessAndroid (data) { 
+	
+	var filename = "thumb_"+APP.models.gallery.currentPhoto.filename+'.jpg';
+	APP.models.gallery.currentPhoto.photoUrl = data.imageData;
+	
+	// Have the photo scaled, now generate the thumbnail from it
+/*	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 140, 0, { 
+			  quality: 50, storeImage: 1, photoAlbum: 0, filename: filename });		*/
+	
+	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 140, 0, { 
+			   imageDataType: ImageResizer.IMAGE_DATA_TYPE_BASE64, storeImage: false, pixelDensity: true, quality: 75 });
+}
+
 function resizeFailure (error) {
 
 	mobileNotify("Image Resizer :" + error);
@@ -331,9 +344,11 @@ function messageAudio (e) {
 function messagePhoto (e) {
 	var pictureSource = navigator.camera.PictureSourceType;   // picture source
     var destinationType = navigator.camera.DestinationType; // sets the format of returned value
+	// Android storage is seriously different -- multiple photo directories with different permissions.   
+	// So need to get a data url in our space rather an direct link to the image in current storage
 	var options = {
 		sourceType: pictureSource.SAVEDPHOTOALBUM,
-        destinationType: destinationType.FILE_URL 
+        destinationType: destinationType.DATA_URL 
 	}
 	if (device.platform === 'iOS') {
 		options = {
@@ -345,15 +360,18 @@ function messagePhoto (e) {
 		 function (imageData) { 
 			 var photouuid = uuid.v4();
 			 var imageUrl = imageData;
+			 var displayUrl = imageData;
 			 if (device.platform === 'iOS') {
 				 imageUrl = imageData.replace('file://', '');
-			 }			 
+			 }	else {
+				 displayUrl = "data:image/jpg;base64";
+			 }		 
 			 // convert uuid into valid file name;
 			 var filename = photouuid.replace(/-/g,'');
 			 
 			 APP.models.gallery.currentPhoto.photoId = photouuid;
 			 APP.models.gallery.currentPhoto.filename = filename;
-			  APP.models.gallery.currentPhoto.imageUrl = imageUrl;
+			  APP.models.gallery.currentPhoto.imageUrl = displayUrl;
 			 
 			  $('#chatImage').attr('src', imageData);	
 			 showChatImagePreview();
@@ -361,15 +379,12 @@ function messagePhoto (e) {
 				//resize image to 1200 pixels high
 	/*		   window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1200, { 
 				  quality: 75, storeImage: 1, photoAlbum: 0, filename: "photo_"+filename+'.jpg' }); */
-			  window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1200, { 
-				 storeImage: false, pixelDensity: true, quality: 75 });
+			  window.imageResizer.resizeImage(resizeSuccessAndroid, resizeFailure,  imageUrl, 0, 1200, { 
+				  imageDataType: ImageResizer.IMAGE_DATA_TYPE_BASE64, storeImage: false, pixelDensity: true, quality: 75 });
 		 }, 
 		 function (error) {
 			 mobileNotify("Camera error " + error);
-		 }, { 
-			sourceType: pictureSource.SAVEDPHOTOALBUM,
-        	destinationType: destinationType.FILE_URL 
-		 }
+		 }, options
 	 );
 }
 
