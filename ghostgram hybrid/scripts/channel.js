@@ -364,16 +364,16 @@ function messagePhoto (e) {
 			 if (device.platform === 'iOS') {
 				 imageUrl = imageData.replace('file://', '');
 			 }	else {
-				 displayUrl = "data:image/jpg;base64";
+				 displayUrl = "data:image/jpg;base64" + imageData;
 			 }		 
 			 // convert uuid into valid file name;
 			 var filename = photouuid.replace(/-/g,'');
 			 
 			 APP.models.gallery.currentPhoto.photoId = photouuid;
 			 APP.models.gallery.currentPhoto.filename = filename;
-			  APP.models.gallery.currentPhoto.imageUrl = displayUrl;
+			  APP.models.gallery.currentPhoto.imageUrl = imageUrl;
 			 
-			  $('#chatImage').attr('src', imageData);	
+			  $('#chatImage').attr('src', displayUrl);	
 			 showChatImagePreview();
 			 
 				//resize image to 1200 pixels high
