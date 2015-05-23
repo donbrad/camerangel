@@ -361,10 +361,12 @@ function messagePhoto (e) {
 			 var photouuid = uuid.v4();
 			 var imageUrl = imageData;
 			 var displayUrl = imageData;
+			 var successCallback = "resizeSuccessAndroid";
 			 if (device.platform === 'iOS') {
 				 imageUrl = imageData.replace('file://', '');
+				 successCallback = "resizeSuccess";
 			 }	else {
-				 displayUrl = "data:image/jpg;base64" + imageData;
+				 displayUrl = "data:image/jpg;base64," + imageData;
 			 }		 
 			 // convert uuid into valid file name;
 			 var filename = photouuid.replace(/-/g,'');
@@ -379,7 +381,7 @@ function messagePhoto (e) {
 				//resize image to 1200 pixels high
 	/*		   window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1200, { 
 				  quality: 75, storeImage: 1, photoAlbum: 0, filename: "photo_"+filename+'.jpg' }); */
-			  window.imageResizer.resizeImage(resizeSuccessAndroid, resizeFailure,  imageUrl, 0, 1200, { 
+			  window.imageResizer.resizeImage(successCallback, resizeFailure,  imageUrl, 0, 1200, { 
 				  imageDataType: ImageResizer.IMAGE_DATA_TYPE_BASE64, storeImage: false, pixelDensity: true, quality: 75 });
 		 }, 
 		 function (error) {
