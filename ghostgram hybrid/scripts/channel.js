@@ -331,7 +331,17 @@ function messageAudio (e) {
 function messagePhoto (e) {
 	var pictureSource = navigator.camera.PictureSourceType;   // picture source
     var destinationType = navigator.camera.DestinationType; // sets the format of returned value
-	 navigator.camera.getPicture(
+	var options = {
+		sourceType: pictureSource.SAVEDPHOTOALBUM,
+        destinationType: destinationType.FILE_URL 
+	}
+	if (device.platform === 'iOS') {
+		options = {
+		sourceType: pictureSource.SAVEDPHOTOALBUM,
+        destinationType: destinationType.FILE_URL 
+		}
+	}
+	navigator.camera.getPicture(
 		 function (imageData) { 
 			 var photouuid = uuid.v4();
 			 var imageUrl = imageData;
