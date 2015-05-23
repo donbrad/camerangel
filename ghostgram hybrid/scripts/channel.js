@@ -361,10 +361,10 @@ function messagePhoto (e) {
 			 var photouuid = uuid.v4();
 			 var imageUrl = imageData;
 			 var displayUrl = imageData;
-			 var successCallback = "resizeSuccessAndroid";
+			 var successCallback = resizeSuccessAndroid;
 			 if (device.platform === 'iOS') {
 				 imageUrl = imageData.replace('file://', '');
-				 successCallback = "resizeSuccess";
+				 successCallback = resizeSuccess;
 			 }	else {
 				 displayUrl = "data:image/jpg;base64," + imageData;
 			 }		 
