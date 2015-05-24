@@ -314,6 +314,8 @@ function requestBeta (e) {
     var Beta = Parse.Object.extend('betarequest');
     var beta = new Beta();
     beta.set("userUUID", userUUID);
+	if (name === undefined || name === null)
+		name = email;
     beta.set("name", name);
     beta.set("email",email );
     beta.set("phone", phone);
