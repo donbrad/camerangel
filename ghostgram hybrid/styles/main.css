@@ -996,6 +996,12 @@ div.loginBox > form > div > ul > li {
 	float: left;
 	width: 24%;
 }
+.gallery-item .large {
+	margin: 1px;
+	float: left;
+	width: 49%;
+}
+
 
 .gallery-item img {
   display: block;

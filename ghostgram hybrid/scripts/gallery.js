@@ -6,6 +6,7 @@ function onInitGallery(e){
 	 //$('#gallery-grid').attr('width', $(window).width());
      $('#gallery-grid').isotope({
 		itemSelector: '.gallery-item',
+		 isInitLayout: false,
 		layoutMode: 'packery',
 		  masonry: {
         	columnWidth: itemWidth
@@ -27,10 +28,13 @@ function onShowGallery(e) {
 	var photoArray = APP.models.gallery.photosDS.data();
 	
 	for (var i=0; i< photoArray.length; i++) {
-		grid.append('<div class="gallery-item" style="height: auto; width='+ itemWidth +  'px;" > <img  id="' 
-					+ photoArray[i].photoId + '" src="' + photoArray[i].thumbnailUrl + '"/> </div>');
+		var element = '<div class="gallery-item" id="' + photoArray[i].photoId  +  '" style="height: auto; width='+ itemWidth +  
+				'px;" >  <img src="' + photoArray[i].thumbnailUrl + '"/> </div>';
+		grid.append(element);
+		isotope.insert([$('#'+photoArray[i])]);
 	}
 	
+	isotope.arrange();
 	isotope.layout();
 }
 
