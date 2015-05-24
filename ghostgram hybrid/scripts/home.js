@@ -189,6 +189,7 @@ function sendVerificationCode ()
 				 }
   });
 }
+
 function homeCreateAccount(e) {
     e.preventDefault();
 
