@@ -180,6 +180,7 @@ p {
   -o-background-size: cover;
   background-size: cover;
 }
+
 .km-flat .km-pages .km-current-page {
     background-image: url('../images/blank-bk.png');
     background-size: 100% 100%;
@@ -757,6 +758,17 @@ p {
     color: #fff;
     font-family:'Open Sans', sans-serif;
     padding: 1.2em;
+}
+.menuBox select
+{
+	position: relative;
+    color: #27476e;
+	font-size: 10px;
+    right: 0;
+    margin-top: 0;
+	margin-bottom: 2px;
+    top: 0;
+    border: 1px solid #27476e;
 }
 
 #appDrawer > div > div.km-scroll-container {
