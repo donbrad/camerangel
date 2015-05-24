@@ -3,7 +3,7 @@ function onInitGallery(e){
     // ToDo: Initialize list view
     var itemWidth = $(window).width()/3;
 	
-	 //$('#gallery-grid').attr('width', $(window).width());
+	 $('#gallery-grid').attr('width', $(window).width());
      $('#gallery-grid').isotope({
 		itemSelector: '.gallery-item',
 		 isInitLayout: false,

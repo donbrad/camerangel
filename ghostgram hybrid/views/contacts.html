@@ -3,7 +3,10 @@
   <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>
+			 <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"> 
+            <img class="nav-menu" src="images/menu-icon.svg"/> 
+        	</a>
+            
             <a data-role="button" href="#contactImport" data-align="right" ><i class="ghostIconNavbar fa fa-plus"></i> Import </a>
         </div>
     </div>       
@@ -37,7 +40,9 @@
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>
+             <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"> 
+            <img class="nav-menu" src="images/menu-icon.svg"/> 
+        	</a>
             <a data-role="button" href="#contacts" data-align="right" >Contacts</a>
         </div>
     </div>    
@@ -181,10 +186,10 @@
 
 
 <script type="text/x-kendo-template" id="contactsTemplate">      
-    <div style="min-height: 48px; clear: both;">
+    <div style="min-height: 48px; clear: both; border-radius: 9px; background-color: \\#fff; padding: 4px;">
 	     <div>
 			 <a data-role="button" class="slideGearButton ghostButton" style="display:none; float:right;"><i class="ghostIcon fa fa-cog"></i></a>
-			<img style="width: 48px; height: auto; max-height: 48px; over-flow: hidden; float:left; margin: 0px 8px 8px 0px;" src="#:data.photo#">
+			<img style="border-radius: 50%; width: 48px; height: auto; max-height: 48px; over-flow: hidden; float:left; margin: 0px 8px 8px 0px;" src="#:data.photo#">
 			<div >
 			  <span class="ghostTextLarge"> #if (data.contactUUID === undefined || data.contactUUID === null || data.contactUUID === '') { # <em> <i class="fa fa-user-times"></i> </em> # } else {#  <strong> <i class="fa fa-user-secret"></i> </strong> #} #
 	 #: data.alias # </span>  <span>  #if (data.isAvailable) { # (Available)  # } else { # Busy! #}#</span>
@@ -212,8 +217,9 @@
   <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" >Back</a>
-            <a data-role="button" href="#contactImport" data-align="right" ><i class="ghostIconNavbar fa fa-plus"></i> </a>
+ 				<a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"> 
+            <img class="nav-menu" src="images/menu-icon.svg"/> 
+        	</a>            <a data-role="button" href="#contactImport" data-align="right" ><i class="ghostIconNavbar fa fa-plus"></i> </a>
         </div>
     </div>       
     
