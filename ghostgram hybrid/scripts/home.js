@@ -86,9 +86,15 @@ function onShowHome(e) {
 	
 } 
 
+function homeSettings(e) {
+	if (e !== undefined && e.preventDefault !== undefined)
+		e.preventDefault();
+}
 function homeSignout (e) {
 
-    e.preventDefault();
+   if (e !== undefined && e.preventDefault !== undefined)
+		e.preventDefault();
+	
     Parse.User.logOut();
     APP.models.profile.parseUser = null;
     APP.models.profile.currentUser.unbind('change', syncProfile);
