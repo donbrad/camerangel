@@ -340,9 +340,11 @@ p {
 
 
 .notification-message {
-    margin: 8px 0;
+    margin: 0;
+	padding: 4px;
+	background-color: #fff;
     line-height: 16px;
-    border-radius: 25px;
+    border-radius: 9px;
 }
 
 .notification-message p {
