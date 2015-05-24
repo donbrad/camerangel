@@ -31,9 +31,9 @@ function onShowGallery(e) {
 		var element = '<div class="gallery-item" id="' + photoArray[i].photoId  +  '" style="height: auto; width='+ itemWidth +  
 				'px;" >  <img src="' + photoArray[i].thumbnailUrl + '"/> </div>';
 		grid.append(element);
-		isotope.insert([$('#'+photoArray[i])]);
+		
 	}
-	
+	isotope.insert(photoArray);
 	isotope.arrange();
 	isotope.layout();
 }
