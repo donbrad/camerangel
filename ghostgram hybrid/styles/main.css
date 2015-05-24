@@ -43,6 +43,15 @@ h1,h2,h3,h4,h5,p {
 p {
     font-family: 'Open Sans', sans-serif;
 }
+
+input[readonly]{
+    background-color:#e0e0e0 !important;
+}
+
+select {
+    border: 0px 0px 1px 0px solid #e0e0e0 !important;
+}
+
 /* Colors */
 .blue-100 {
     background-color: #3caaee;
@@ -126,9 +135,25 @@ p {
     background: rgba(224,224,224,1);
 }
 
-/*** ***/
+/* Font Sizing */
+
+.smallTxt {
+    font-size: 85.71%;
+}
+
+.largeTxt {
+    font-size: 128.57%;
+}
+
+.xlTxt {
+    font-size: 157.14%;
+}
 
 /* Override Styles */
+.km-flat {
+    font-family: 'Open Sans', sans-serif;
+}
+
 .km-drawer-button:before, .km-drawer-button:after {
     content: "\E077";
 }
@@ -171,7 +196,22 @@ p {
     background-color: #fff;
 }
 
-/***/
+/* Helpers */
+.helper {
+    color: #979797;
+}
+
+.helper-right {
+    float:right;
+}
+
+#helper-profilePhone {
+    border: none;
+    position: relative;
+    right: 0px;
+}
+/* */
+
 #home .km-content {
     background-image: url('../images/blank-bk@2x.png');
     background-size: 100% 100%;
@@ -418,14 +458,19 @@ p {
 
 .chat-message-content {
     margin-left: 44px;
-    color: #2e2e2e;
     height: 100%;
+    
 }
 
 .chat-message-user-content {
     margin-left: 72px;
-    color: #2e2e2e;
     height: 100%;
+    float: right;
+}
+
+.chat-message-text {
+    font-size: 14px;
+    letter-spacing: 0.05em;
 }
 
 .chat-time {
@@ -518,7 +563,6 @@ p {
     right: 0;
     margin-top: 0;
     top: 0;
-    border: 1px solid #27476e;
 }
 
 .km-root .km-pane .km-view.appearance .km-listview a
@@ -557,7 +601,7 @@ p {
     margin-top: .2em;
     border: 1px solid #AEAEAE;
 }
-
+/*
 .km-root .km-wp .km-view.appearance .km-listview select
 {
     color: #2e2e2e;
@@ -565,7 +609,7 @@ p {
     margin-top: .2em;
     border: 1px solid #AEAEAE;
 }
-
+*/
 .km-root .km-ios .km-view.appearance .km-listview input,
 .km-root .km-ios7 .km-view.appearance .km-listview input
 {
