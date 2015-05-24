@@ -29,7 +29,6 @@
 	<script src="scripts/contacts.js"></script>
 	<script src="scripts/places.js"></script>
 	<script src="scripts/gallery.js"></script>
-	<script src="scripts/gallery.js"></script>
 	<script src="scripts/utils.js"></script>
 	<script src="scripts/pubnub.js"></script>
 	<script src="scripts/cryptico.js"></script>
@@ -39,6 +38,7 @@
 	<script src="scripts/lunr.js"></script>
 	<script src='bower_components/autosize/dest/autosize.js'></script>
 	<script src='bower_components/isotope/dist/isotope.pkgd.js'></script>
+	<script src='bower_components/isotope/dist/packery.js'></script>
 	<script src="scripts/uuid.js"></script>
 
 
@@ -98,8 +98,18 @@
             <div class="caption" id="profileLink"><a data-role="button" href="views/profile.html">View Profile</a></div>
         </div>
     </div>
-
-    <div class="clearfix"></div>
+	<div style="clear:both; padding-top: 4px; padding-bottom: 4px;">
+		<select id="menuVisible">
+			<option value=true>Visible</option>
+			<option value=false>InVisible</option>
+		</select>
+		
+		<select id="menuAvailable">
+			<option value=true>Available</option>
+			<option value=false>Busy</option>
+		</select>
+	</div>
+    
     <div class="menuLinks">
         <ul data-role="listview" class="menu">
             <li><a href="#home"><img src="images/menu-home.svg" height="22" width="22" />Home</a>
@@ -118,7 +128,7 @@
                 <a href="#" data-role="button" onclick="homeSettings">Settings</a>
             </li>
             <li>
-                <a href="#" data-role="button" onclick="homeSignout">Sign out</a>
+                <a href="#" data-role="button" data-click="homeSignout">Sign out</a>
             </li>
         </ul>
     </div>
@@ -339,12 +349,12 @@
                 </label>
             </li>
 			  <li>
-                <label>Your Name (Enter and click Import Me to prefill)
-                    <input type="email" id="home-signup-fullname" value="" required/>
+                <label>Your Name (Your name: First and Last)
+                    <input type="text" id="home-signup-fullname" value="" required/>
                 </label>
             </li>
             <li>
-                <label>Alias (How users you know will see you)
+                <label>Alias (Your First Name or Nickname)
                     <input type="text" id="home-signup-alias" value="" required />
                 </label>
             </li>
@@ -354,7 +364,7 @@
                 </label>
             </li>
              <li>
-                <label>Mobile Phone (Your ghostgrams address)
+                <label>Mobile Phone (Your ghostgrams id)
                 <input type="tel" id="home-signup-phone" value="" required />
                 </label>
             </li>

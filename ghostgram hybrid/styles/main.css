@@ -220,6 +220,7 @@ select {
   -o-background-size: cover;
   background-size: cover;
 }
+
 .km-flat .km-pages .km-current-page {
     background-image: url('../images/blank-bk.png');
     background-size: 100% 100%;
@@ -450,10 +451,15 @@ select {
     display: none;
 }
 
-.chat-message img {
+.chat-message-profileImg {
     border-radius: 50%;
     float: left;
     border: 1.5px solid #F2EFF0;
+}
+
+.chat-message-photo {
+	width: 80%;
+	height: auto;
 }
 
 .chat-message-content {
@@ -461,6 +467,7 @@ select {
     height: 100%;
     
 }
+
 
 .chat-message-user-content {
     margin-left: 72px;
@@ -796,6 +803,17 @@ select {
     font-family:'Open Sans', sans-serif;
     padding: 1.2em;
 }
+.menuBox select
+{
+	position: relative;
+    color: #27476e;
+	font-size: 10px;
+    right: 0;
+    margin-top: 0;
+	margin-bottom: 2px;
+    top: 0;
+    border: 1px solid #27476e;
+}
 
 #appDrawer > div > div.km-scroll-container {
     height: 100%;
@@ -1028,11 +1046,24 @@ div.loginBox > form > div > ul > li {
 }
 /**/
 
-.tile {
-	height: 50%;
-    width: 50%;
+
+.gallery-item {
+	margin: 1px;
 	float: left;
-    -webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-    background-size: cover;
+	width: 24%;
+}
+.gallery-item .large {
+	margin: 1px;
+	float: left;
+	width: 49%;
+}
+
+
+.gallery-item img {
+  display: block;
+  width: 100%;
+}
+
+
+
+
