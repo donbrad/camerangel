@@ -8,10 +8,10 @@
 			<a data-align="right" data-role="button"  data-rel="drawer" href="#galleryDrawer"> <i class="ghostIconNavbar fa fa-gear"></i> Settings </a>
         </div>
     </div>
-     <div id="gallery-grid" style="padding-left: 4px; padding-top: 8px;padding-bottom: 24px; height: 100%;">
-	 			
-
-	 </div>
+     
+     <div id="gallery-grid" style="padding-top: 12px; padding-left: 4px; padding-right: 4px; padding-bottom: 24px; height: 100%;">
+		
+     </div>
 </div>
 
 <div data-role="drawer" id="galleryDrawer" style="width: 200px; height: 100%;" data-title="Gallery Options" data-position="right" data-views="['gallery']" data-swipe-to-open="false" style="display:none;" class="appearance">
@@ -42,9 +42,7 @@
 </div>
 
 
-<script id="gallery-template" type="text/x-kendo-template">
-        <div class="gallery-item" data-id="#: data.photoId #" style="background: url('#: data.thumbnailUrl #') no-repeat center center;"></div>
-</script>
+
 
 <div data-role="modalview" id="modalview-gallery-addPhoto" style="width: 90%; display: none;" class="appearance">
     <div data-role="header">

@@ -1,7 +1,7 @@
 function onInitGallery(e){
     e.preventDefault();
     // ToDo: Initialize list view
-    var itemWidth = $(window).width()/3;
+    var itemWidth = $(window).width()/4;
 	
 	 $('#gallery-grid').attr('width', $(window).width());
      $('#gallery-grid').isotope({
@@ -19,7 +19,7 @@ function onInitGallery(e){
 function onShowGallery(e) {
 	e.preventDefault();
 	var grid = $('#gallery-grid'), isotope = grid.data('isotope');
-	var itemWidth = $(window).width()/3;
+	var itemWidth = $(window).width()/4;
 	itemWidth -= 2;  // account for the borders
 	
 	//Clear out previous content
@@ -33,7 +33,7 @@ function onShowGallery(e) {
 		grid.append(element);
 		
 	}
-	isotope.insert(photoArray);
+	//isotope.insert(photoArray);
 	isotope.arrange();
 	isotope.layout();
 }
