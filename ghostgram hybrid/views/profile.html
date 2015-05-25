@@ -1,12 +1,12 @@
- <div data-role="view" id="profile" data-title="Profile" data-layout="profileLayout" data-model="APP.models.profile"  class="appearance">
+<div data-role="view" id="profile" data-title="Profile" data-layout="profileLayout" data-model="APP.models.profile"  class="appearance">
    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
             <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img class="menuIcon" src="images/menu-icon.svg"/></a>
-            <a data-role="button"  data-click="requestBeta" data-align="right" >Get Beta </a>
+            <a data-role="button"  data-click="requestBeta"  data-align="right" ><i class="ghostIconNavbar fa fa-eye"></i>Get Beta </a>
         </div>
     </div> 
-	 <div class="ghostContainer" style="padding-bottom: 24px;">
+	 <div style="padding-bottom: 24px;">
 
        <div style="padding: 12px; font-size: 20px; text-align: center; color: #27476e;">    
            <span id="profile-username" data-bind="text:currentUser.username">  </span> 
@@ -26,7 +26,7 @@
                     </label>
                 </li>
                <li>
-                    <label>Mobile Phone (Locked to this account)
+                   <label>Mobile Phone <span class="helper helper-right"><i class="fa fa-lock"></i> Locked <a class="btnClear" id="helper-profilePhone"></a></span>
                     <input type="tel" id="profile-phone" data-bind="value: currentUser.phone" readonly />
                     </label>
                 </li> 
@@ -40,8 +40,8 @@
                 </li> 
            </ul>
        </form>
-         <div style="text-align: center; padding-top: 12px;">
-            <a  class="button ghostButton" data-click="profileChangePassword" id="profile-changePassword" data-role="button" >Change Password</a>
+         <div style="padding-top: 0.5rem; padding-bottom: 0.5rem; padding-left: 1rem;">
+            <a class="btnClear" data-click="profileChangePassword" id="profile-changePassword" data-role="button" >Change Password</a>
         </div>
       
 		<h3>
@@ -82,28 +82,28 @@
            <form style="border-radius: 25px;">
               <ul data-role="listview" data-style="inset">
                      <li>
-                        <label>Device Id (udid) 
+                        <label>Device Id (udid) <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
                         <input type="text" id="profile-udid" data-bind="value: udid" readonly/>
                         </label>
                     </li>
                     </li>
                       <li>
-                        <label>User Id (UUID) 
+                        <label>User Id (UUID) <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
                         <input type="text" id="profile-uuid" data-bind="value: currentUser.userUUID" readonly/>
                         </label>
                     </li>
                    <li>
-                        <label>App Version
+                        <label>App Version <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
                         <input type="text" id="profile-version" data-bind="value: version" readonly/>
                         </label>
                     </li>
 			   		<li>
-                        <label> Application Directory
+                        <label> Application <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
                         <input type="text" id="profile-version" data-bind="value: appDirectory" readonly/>
                         </label>
                     </li>
 			   		<li>
-                        <label> Temporary Directory
+                        <label> Temporary <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
                         <input type="text" id="profile-version" data-bind="value: tempDirectory" readonly/>
                         </label>
                     </li>
