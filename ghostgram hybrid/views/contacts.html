@@ -181,10 +181,10 @@
 
 
 <script type="text/x-kendo-template" id="contactsTemplate">      
-    <div style="min-height: 48px; clear: both;">
+    <div style="min-height: 48px; padding: 4px; border-radius: 9px; background-color: \\#fff; clear: both;">
 	     <div>
 			 <a data-role="button" class="slideGearButton ghostButton" style="display:none; float:right;"><i class="ghostIcon fa fa-cog"></i></a>
-			<img style="width: 48px; height: auto; max-height: 48px; over-flow: hidden; float:left; margin: 0px 8px 8px 0px;" src="#:data.photo#">
+			<img style="border-radius: 50%; width: 48px; height: auto; max-height: 48px; over-flow: hidden; float:left; margin: 0px 8px 8px 0px;" src="#:data.photo#">
 			<div >
 			  <span class="ghostTextLarge"> #if (data.contactUUID === undefined || data.contactUUID === null || data.contactUUID === '') { # <em> <i class="fa fa-user-times"></i> </em> # } else {#  <strong> <i class="fa fa-user-secret"></i> </strong> #} #
 	 #: data.alias # </span>  <span>  #if (data.isAvailable) { # (Available)  # } else { # Busy! #}#</span>
@@ -197,8 +197,9 @@
 			 </div>
 		 </div>
 		 # if (data.message !== undefined && data.message !== '') { #
-		 <div style="clear:both;"> <i class="fa fa-comment-o"></i> #: data.message # </div>
+		 <div> <i class="fa fa-comment-o"></i> #: data.message # </div>
 		 #} #
+		<div style="clear:both;"> </div> 
     </div>
 </script>
 
