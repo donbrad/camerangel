@@ -8,8 +8,13 @@ function onInitGallery(e){
 		itemSelector: '.gallery-item',
 		 isInitLayout: false,
 		layoutMode: 'packery',
-		 sortBy: 'timestamp',
-  		sortAscending: false,
+		getSortData: {
+    		timestamp: '[data-timestamp]'
+   
+  		},
+		 sortDescending: {
+    		timestamp: true
+		 },
 		  masonry: {
         	columnWidth: itemWidth
       		}
@@ -49,10 +54,10 @@ function onShowGallery(e) {
 		var element = '<div class="gallery-item" id="' + photoArray[i].photoId  + '" data-timestamp="' + photoArray[i].timestamp + '" style="height: auto; width='+ itemWidth +  
 				'px;" >  <img src="' + photoArray[i].thumbnailUrl + '"/> </div>';
 		grid.append(element);
+		isotope.insert([$('#'+photoArray[i].photoId)]);
 		
 	}
 	//isotope.insert(photoArray);
 	isotope.arrange();
-	isotope.layout();
 }
 
