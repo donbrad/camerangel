@@ -15,7 +15,7 @@
           privateMode: false,
           invitesDS : new kendo.data.DataSource({offlineStorage: "invites-offline", sort: { field: "date", dir: "desc" }}),
           notificationDS : new kendo.data.DataSource({offlineStorage: "notifications-offline", sort: { field: "priority", dir: "asc" }}),
-          Notification: function (type, title, date, description, actionTitle, action, href, dismissed, dismissable)
+          Notification: function (type, title, date, description, actionTitle, action, href, dismissable )
             {
                 this.type = type ? type : 'system',
                 this.title = title ? title : '',
@@ -24,7 +24,7 @@
                 this.href = href ? href : null,
                 this.description = description ? description : '',
                 this.date = date ? date : new Date().getTime(),
-			    this.dismissed = dismissed ? dismissed : false,
+			    this.dismissed = dismissed ? dismissed : false       
                 this.dismissable = dismissable ? dismissable : false        
             }
           
@@ -56,27 +56,6 @@
          
         },
         
-		settings : {
-			title: 'Settings',
-			privacyModeEnabled: true,
-			defaultVisible: false,
-			locationTrigger: true,
-			defaultTextSize: 14
-			
-		},
-		  
-		presence : {
-			title: 'Presence',
-			current: new kendo.data.ObservableObject({
-				AmBusy: false,
-				AmVisible: true,
-				location: "",
-				activity: "",
-				activityInfo: "",
-				message: ""
-			})
-			
-		},
 		  
        channels: {
           title: 'Channels',
@@ -118,15 +97,9 @@
 			title: 'Place Chat',
 			placeChannelDS:  new kendo.data.DataSource({sort: { field: "date", dir: "desc" }}),
 			placeArchiveDS: new kendo.data.DataSource(),
-			current: new kendo.data.ObservableObject({
-				placeId: '',
-				googleId: '',
-				factualId: '',
-				lat: 0,
-				lng: 0,
-				publicName: '',
-				alias: ''
-			})
+			googleId: '',
+			lat: 0,
+			lng: 0
 			
 		},
 		  
@@ -164,18 +137,7 @@
         places: {
             title: 'Places',
             placesDS: new kendo.data.DataSource({offlineStorage: "places-offline"}),
-			geoPlacesDS: new kendo.data.DataSource(),
-			current: new kendo.data.ObservableObject({
-				placeId: '',
-				name: '',
-				address: '',
-				googleId: '',
-				factualId: '',
-				lat: 0,
-				lng: 0,
-				publicName: '',
-				alias: ''
-			})
+			geoPlacesDS: new kendo.data.DataSource()
         }
       },
        kendo: null,

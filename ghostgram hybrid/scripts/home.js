@@ -189,13 +189,11 @@ function sendVerificationCode ()
 				 }
   });
 }
-
 function homeCreateAccount(e) {
     e.preventDefault();
 
     var user = new Parse.User();
     var username = $('#home-signup-username').val();
-	var name = $('#home-signup-fullname').val();
     var password = $('#home-signup-password').val();
     var phone = $('#home-signup-phone').val();
     var alias = $('#home-signup-alias').val();
@@ -225,7 +223,6 @@ function homeCreateAccount(e) {
                 user.set("username", username);
                 user.set("password", password);
                 user.set("email", username);
-			    user.set("name", name);
                 user.set("phone", phone);
                 user.set("alias", alias);
                 user.set("aliasPublic", "ghostgram user");
@@ -274,7 +271,7 @@ function homeCreateAccount(e) {
                        
                         
             
-                       APP.kendo.navigate('#home');
+                       ///APP.kendo.navigate('#home');
                     },
 
                     error: function(user, error) {
@@ -290,7 +287,6 @@ function homeCreateAccount(e) {
       }
     });
   }
-
 function requestBeta (e) {
     e.preventDefault();
     if (APP.models.sync.requestActive) {
@@ -314,8 +310,6 @@ function requestBeta (e) {
     var Beta = Parse.Object.extend('betarequest');
     var beta = new Beta();
     beta.set("userUUID", userUUID);
-	if (name === undefined || name === null)
-		name = email;
     beta.set("name", name);
     beta.set("email",email );
     beta.set("phone", phone);

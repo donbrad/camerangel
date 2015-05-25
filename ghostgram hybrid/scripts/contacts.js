@@ -287,6 +287,10 @@ function onInitContacts(e) {
 				$("#contactActions").data("kendoMobileActionSheet").open();
 			}
              
+        },
+         filterable: {
+            field: "name",
+            operator: "startswith"
         }
      });
 }

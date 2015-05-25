@@ -269,21 +269,8 @@ function resizeSuccess (data) {
 /*	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 140, 0, { 
 			  quality: 50, storeImage: 1, photoAlbum: 0, filename: filename });		*/
 	
-	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 196, 0, { 
+	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 140, 0, { 
 			   storeImage: false, pixelDensity: true, quality: 75 });
-}
-
-function resizeSuccessAndroid (data) { 
-	
-	var filename = "thumb_"+APP.models.gallery.currentPhoto.filename+'.jpg';
-	APP.models.gallery.currentPhoto.photoUrl = data.imageData;
-	
-	// Have the photo scaled, now generate the thumbnail from it
-/*	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 140, 0, { 
-			  quality: 50, storeImage: 1, photoAlbum: 0, filename: filename });		*/
-	
-	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 196, 0, { 
-			   imageDataType: ImageResizer.IMAGE_DATA_TYPE_BASE64, storeImage: false, pixelDensity: true, quality: 75 });
 }
 
 function resizeFailure (error) {
@@ -344,54 +331,21 @@ function messageAudio (e) {
 function messagePhoto (e) {
 	var pictureSource = navigator.camera.PictureSourceType;   // picture source
     var destinationType = navigator.camera.DestinationType; // sets the format of returned value
-	// Android storage is seriously different -- multiple photo directories with different permissions.   
-	// So need to get a data url in our space rather an direct link to the image in current storage
-	var options = {
-		sourceType: pictureSource.SAVEDPHOTOALBUM,
-        destinationType: destinationType.DATA_URL 
-	}
-	if (device.platform === 'iOS') {
-		options = {
-		sourceType: pictureSource.SAVEDPHOTOALBUM,
-        destinationType: destinationType.FILE_URL 
-		}
-	}
-	navigator.camera.getPicture(
+	 navigator.camera.getPicture(
 		 function (imageData) { 
-			 var photouuid = uuid.v4();
-			 var imageUrl = imageData;
-			 var displayUrl = imageData;
-			
-			 if (device.platform === 'iOS') {
-				 imageUrl = imageData.replace('file://', '');
-			
-			 }	else {
-				 displayUrl = "data:image/jpg;base64," + imageData;
-			 }		 
-			 // convert uuid into valid file name;
-			 var filename = photouuid.replace(/-/g,'');
+			 var imageDataSource = "data:image/jpeg;base64," + imageData;
+			 mobileNotify("Image Size = " + imageDataSource.length);
+			 APP.models.gallery.currentPhoto.src=imageDataSource;
+			  showChatImagePreview();
+			 $('#chatImage').attr('src', APP.models.gallery.currentPhoto.src);	
 			 
-			 APP.models.gallery.currentPhoto.photoId = photouuid;
-			 APP.models.gallery.currentPhoto.filename = filename;
-			  APP.models.gallery.currentPhoto.imageUrl = imageUrl;
-			 
-			  $('#chatImage').attr('src', displayUrl);	
-			 showChatImagePreview();
-			 
-				//resize image to 1200 pixels high
-	/*		   window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1200, { 
-				  quality: 75, storeImage: 1, photoAlbum: 0, filename: "photo_"+filename+'.jpg' }); */
-			if (device.platform === 'iOS') {
-				 window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1200, { 
-					 storeImage: false, pixelDensity: true, quality: 95 });
-			} else {
-				 window.imageResizer.resizeImage(resizeSuccessAndroid, resizeFailure,  imageUrl, 0, 1200, { 
-					  imageDataType: ImageResizer.IMAGE_DATA_TYPE_BASE64, storeImage: false, pixelDensity: true, quality: 95 });
-			}
 		 }, 
 		 function (error) {
 			 mobileNotify("Camera error " + error);
-		 }, options
+		 }, { 
+			sourceType: pictureSource.SAVEDPHOTOALBUM,
+        	destinationType: destinationType.FILE_URL 
+		 }
 	 );
 }
 
