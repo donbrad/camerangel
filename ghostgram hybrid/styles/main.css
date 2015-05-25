@@ -855,7 +855,7 @@ p {
 }
 
 #menuSetting {
-    margin-top:40px;
+    margin-top:20px;
 }
 
 .km-flat .km-list>li {
@@ -1016,7 +1016,6 @@ div.loginBox > form > div > ul > li {
 	float: left;
 	width: 49%;
 }
-
 
 .gallery-item img {
   display: block;
