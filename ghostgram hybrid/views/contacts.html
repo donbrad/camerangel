@@ -37,7 +37,7 @@
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img class="menuIcon" src="images/menu-icon.svg"/></a>
             <a data-role="button" href="#contacts" data-align="right" >Contacts</a>
         </div>
     </div>    
@@ -172,7 +172,7 @@
 		</form>
 		</br>
 		<div style="text-align: center; padding-top: 16px; padding-bottom: 16px;">
-		 <a data-role="button"  data-click="deleteContact">  <i class="ghostIconl fa fa-trash-0"></i> Delete Contact</a>
+		 <a data-role="button"  data-click="deleteContact">  <i class="ghostIcon fa fa-trash-0"></i> Delete Contact</a>
 		</div>
 	</div>
 </div>
@@ -181,18 +181,24 @@
 
 
 <script type="text/x-kendo-template" id="contactsTemplate">      
-    <div style="height: 56px; clear: both;">
-         <a data-role="button" class="slideGearButton ghostButton" style="display:none; float:right;"><i class="ghostIcon fa fa-cog"></i></a>
-        <img style="width: 48px; height: auto; max-height: 48px; over-flow: hidden; float:left; margin: 0px 8px 8px 0px;" src="#:data.photo#">
-        <div style="clear: both:">
-          <span class="ghostTextLarge"> #: data.alias # </span>         
-        </div>
-        <div class="ghostText">
-          <span class="ghostTiny">(#: data.name #)</span>   
-        </div>
-        <div style="float: right; color:\\#2e2e2e; font-size: 11px;">
-            #if (data.contactUUID === undefined || data.contactUUID === null || data.contactUUID === '') { # <em> New User - Invite! </em> # } else {#  <strong> Verified User </strong> #} #
-        <div>
+    <div style="min-height: 48px; clear: both;">
+	     <div>
+			 <a data-role="button" class="slideGearButton ghostButton" style="display:none; float:right;"><i class="ghostIcon fa fa-cog"></i></a>
+			<img style="width: 48px; height: auto; max-height: 48px; over-flow: hidden; float:left; margin: 0px 8px 8px 0px;" src="#:data.photo#">
+			<div >
+			  <span class="ghostTextLarge"> #if (data.contactUUID === undefined || data.contactUUID === null || data.contactUUID === '') { # <em> <i class="fa fa-user-times"></i> </em> # } else {#  <strong> <i class="fa fa-user-secret"></i> </strong> #} #
+	 #: data.alias # </span>  <span>  #if (data.isAvailable) { # (Available)  # } else { # Busy! #}#</span>
+			</div>
+			<div>
+			  <span class="ghostTiny">(#: data.name #)</span>   
+			</div>
+			 <div style="font-size: 12px;">
+			 <span>  <i class="fa fa-map-marker"></i> #: data.location # </span> 
+			 </div>
+		 </div>
+		 # if (data.message !== undefined && data.message !== '') { #
+		 <div style="clear:both;"> <i class="fa fa-comment-o"></i> #: data.message # </div>
+		 #} #
     </div>
 </script>
 
@@ -206,7 +212,7 @@
   <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" >Back</a>
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img class="menuIcon" src="images/menu-icon.svg"/></a>
             <a data-role="button" href="#contactImport" data-align="right" ><i class="ghostIconNavbar fa fa-plus"></i> </a>
         </div>
     </div>       

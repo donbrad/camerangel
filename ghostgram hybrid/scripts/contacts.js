@@ -77,31 +77,32 @@ function deleteContact(e) {
     
 }
 
-function syncContact(model) {
-	var phone = model.get('phone');
+function syncContact(contact) {
+	var phone = contact.get('phone');
 	 findUserByPhone(phone, function (result) {
 		 if (result.found) {
-			 var uuid = model.get('uuid'), contactUUID = model.get('contactUUID'), publicKey = model.get('publicKey'), 
-				 phoneVerified = model.get('phoneVerfied'),  emailVerified = model.get('emailVerfied'), parseEmailVerified = result.user.get('emailVerified') ;
+			 var uuid = result.user.uuid, contactUUID = result.user.contactUUID, publicKey = result.user.publicKey, 
+				 phoneVerified = result.user.phoneVerfied,  emailVerified = result.user.emailVerfied, 
+				 parseEmailVerified = result.user.emailVerified;
 			
 			// Does the contact have a verified email address
-			if (result.user.get('emailVerified')) {
+			if (result.user.emailVerified) {
 				// Yes - save the email address the contact verified
-				model.set("email", result.user.get('email'));
+				contact.set("email", result.user.email);
 			} 
-			model.set('publicKey',  result.user.get('publicKey'));
-			model.set("contactUUID", result.user.get('userUUID'));
+			contact.set('publicKey',  result.user.publicKey);
+			contact.set("contactUUID", result.user.userUUID);
 			 if (contactUUID === undefined) {
 				 updateParseObject('contacts', 'uuid', uuid, 'contactUUID',  result.user.userUUID);
 			 }
 			 if (publicKey === undefined) {
 				 updateParseObject('contacts', 'uuid', uuid, 'publicKey',result.user.publicKey );
 			 }
-			 if (phoneVerified !== result.user.get('phoneVerified')) {
+			 if (phoneVerified !== result.user.phoneVerified) {
 				 if (result.user.get('phoneVerified') === undefined)
 					 result.user.set('phoneVerified',false);
-				  model.set("phoneVerified", result.user.get('phoneVerified'));
-				  updateParseObject('contacts', 'uuid', uuid, 'phoneVerified',result.user.get('phoneVerified') );
+				  model.set("phoneVerified", result.user.phoneVerified);
+				  updateParseObject('contacts', 'uuid', uuid, 'phoneVerified',result.user.phoneVerified);
 			 }
 		 }
 
