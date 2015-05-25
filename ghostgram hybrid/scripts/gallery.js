@@ -8,12 +8,30 @@ function onInitGallery(e){
 		itemSelector: '.gallery-item',
 		 isInitLayout: false,
 		layoutMode: 'packery',
+		 sortBy: 'timestamp',
+  		sortAscending: false,
 		  masonry: {
         	columnWidth: itemWidth
       		}
 		});
 	
-	}
+	$( "#galleryDateSelect" ).change(function () {
+		var grid =  $('#gallery-grid'), isotope= grid.data('isotope');
+		var dateStr = $( "#galleryDateSelect option:selected" ).val();
+		if (dateStr === 'newest') {
+			$('#gallery-grid').isotope({
+			  sortBy: 'timestamp',
+			  sortAscending: false
+			});
+
+		} else {
+			$('#gallery-grid').isotope({
+			  sortBy: 'timestamp',
+			  sortAscending: true
+			});
+		}
+	});
+}
 
 
 function onShowGallery(e) {
@@ -28,7 +46,7 @@ function onShowGallery(e) {
 	var photoArray = APP.models.gallery.photosDS.data();
 	
 	for (var i=0; i< photoArray.length; i++) {
-		var element = '<div class="gallery-item" id="' + photoArray[i].photoId  +  '" style="height: auto; width='+ itemWidth +  
+		var element = '<div class="gallery-item" id="' + photoArray[i].photoId  + '" data-timestamp="' + photoArray[i].timestamp + '" style="height: auto; width='+ itemWidth +  
 				'px;" >  <img src="' + photoArray[i].thumbnailUrl + '"/> </div>';
 		grid.append(element);
 		

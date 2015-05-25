@@ -32,7 +32,7 @@
 </div>
 
 <script type="text/x-kendo-tmpl" id="channels-listview-template">
-    <div  style="clear:both;">
+    <div  style="padding: 4px; border-radius: 9px; background-color: \\#fff;">
 	  # var actionSheet = "channelActions"; if ( isOwner ) { actionSheet = "channelActionsOwner"; } if (isPrivate ) { actionSheet = "channelActionsPrivate"; } #
        <div style="float:right; font-size: 10px;"> <a data-rel="actionsheet" href="\\##:actionSheet#" data-actionsheet-context="#:channelId#" data-role="button"><i class="ghostIcon fa fa-cog"></i></a> </div>
        <div class="ghostTextLarge">  #if (isPrivate) {# <i class="ghostIconNavbar fa fa-user-secret"> </i> #} else { # <i class="ghostIconNavbar fa fa-users"> </i> #}# <a data-rel='view' href="\\#channel?channel=#:channelId#"> #:name# </a></div>
@@ -44,6 +44,7 @@
 
           <span style="float:right;"> 0 new Messages</span>
         </div>
+		 <div  style="clear:both;"> </div>
     </div>
 </script>
  
