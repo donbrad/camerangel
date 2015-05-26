@@ -3,17 +3,80 @@
         <div data-role="navbar">
             <span data-role="view-title"></span>
             <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img class="menuIcon" src="images/menu-icon.svg"/></a>
-            <a data-role="button"  data-click="profileChangePassword"  data-align="right" ><i class="ghostIconNavbar fa fa-lock"></i>Update Password</a>
-        </div>
-    </div> 
-	 <div style="padding-bottom: 24px;">
-
-       <div style="padding: 12px; font-size: 20px; text-align: center; color: #27476e;">    
-           <span id="profile-username" data-bind="text:currentUser.username">  </span> 
+           <a data-role="button" data-align="right">Save</a> 
        </div>
-
-       <h3>Account Info </h3> 
-       <form style="clear:both; border-radius: 25px;">
+    </div> 
+	 <div class="profileDiv">
+         <!-- Display Profile -->
+         <div class="profileTopBox hidden">
+             <img src="images/ghostgramcontact.png" id="profileTopImg" />
+             <h4 id="profile-username" data-bind="text:currentUser.alias"></h4>
+             <p data-bind="text:currentUser.username"></p>
+             <p class="caption"><a>Tap to view private profile photo</a></p>
+         </div>
+         <div class="line"></div>
+         <div class="profileDisplay hidden">
+             <h3>My Info 
+                 <div style="float:right">
+                     <a id="editProfile" class="btnClear"> Edit Profile </a>
+                 </div>
+             </h3>
+             <ul data-role="listview" data-style="inset">
+                 <li>
+                     <label>Alias (How other users see you)</label>
+                     <p data-bind="text:currentUser.alias"></p>
+                 </li>
+                 <li>
+                     <label>Contact email 
+                         <span class="helper helper-verified hidden" id="verified-email">
+                         <img class="helper-verified-img" src="images/verified.svg" height="14" /> 
+                             Verified 
+                         </span>
+                      </label>
+                    <p data-bind="text: currentUser.email"></p>
+                 </li>
+                 <li>
+                     <label>Mobile Phone 
+                       <span class="helper helper-verified hidden" id="verified-phone"><img class="helper-verified-img" src="images/verified.svg" height="14" /> Verified</span>
+                    </label>
+                    <p data-bind="text: currentUser.phone"></p>
+                 </li>
+             </ul>
+         </div>
+       <!-- Profile Edit -->
+       <div class="profileEdit">
+       <div class="profileTopBox">
+           <div class="profileEditPublic">
+               <div class="profilePublicImg">
+                   <img src="images/ghostgramcontact.png" />
+               </div>
+               <div class="profilePublicImgBtn">
+                   <label>Public photo</label>
+                   <p class="caption">
+                       Your public photo is visible to everyone on ghostgrams.
+                   </p>
+                   <a class="btnClear">Choose ghost</a>
+               </div>
+           </div>
+           <div class="clearfix"></div>
+           <div class="profileEditPrivate">
+               <div class="profilePrivateImg">
+                   <img src="images/default-private.svg" />
+               </div>
+               <div class="profilePrivateImgBtn">
+                   <label>Private photo</label>
+                   <p class="caption">
+                       Your private photo is visible <b>ONLY</b> to approved contacts.
+                   </p>
+                   <a class="btnClear">Choose photo</a>
+               </div>
+           </div>
+         </div>
+       </div>
+       <div class="line"></div>
+       <div class="profileEditBtm">
+           <h3>Edit Info</h3> 
+           <form style="clear:both;">
             <ul data-role="listview" data-style="inset">
                 <li>
                     <label>Alias (How other users see you)
@@ -21,26 +84,33 @@
                     </label>
                 </li>
                  <li>
-                    <label>Contact email (if it's not your Username)
+                    <label>Contact email 
                     <input type="email" id="profile-email" data-bind="value: currentUser.email" />
                     </label>
                 </li>
                <li>
-                   <label>Mobile Phone <span class="helper helper-right"><i class="fa fa-lock"></i> Locked <a class="btnClear" id="helper-profilePhone"></a></span>
+                   <label>Mobile Phone 
+                       <span class="helper helper-right helper-form"><i class="fa fa-lock"></i> Locked <a class="btnClear" id="helper-profilePhone"></a></span>
                     <input type="tel" id="profile-phone" data-bind="value: currentUser.phone" readonly />
                     </label>
-                </li> 
+                </li>
+                <li>
+                    <a class="btnClear" data-click="profileChangePassword" id="profile-changePassword" data-role="button" >Change Password</a>
+                </li>
+<!--
 				 <li>
-                    <label>Remember Username
+                    <label>Remember me at sign in
 						 <select id="profileRememberUsername">
 							   <option value=false>No, Use Full SignIn.</option>
 								<option value=true>Yes, Just enter password</option>
 						  </select>
                     </label>
-                </li> 
+                </li>
+-->
            </ul>
-       </form>
-      
+           </form>
+        </div>
+<!--
 		<h3>
 		   Personalization
 		</h3>
@@ -72,6 +142,42 @@
 	   </form>
 
        
-        
-     </div>
+
+            <h3>
+                Development
+            </h3>
+           <form style="border-radius: 25px;">
+              <ul data-role="listview" data-style="inset">
+                     <li>
+                        <label>Device Id (udid) <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
+                        <input type="text" id="profile-udid" data-bind="value: udid" readonly/>
+                        </label>
+                    </li>
+                    </li>
+                      <li>
+                        <label>User Id (UUID) <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
+                        <input type="text" id="profile-uuid" data-bind="value: currentUser.userUUID" readonly/>
+                        </label>
+                    </li>
+                   <li>
+                        <label>App Version <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
+                        <input type="text" id="profile-version" data-bind="value: version" readonly/>
+                        </label>
+                    </li>
+			   		<li>
+                        <label> Application <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
+                        <input type="text" id="profile-version" data-bind="value: appDirectory" readonly/>
+                        </label>
+                    </li>
+			   		<li>
+                        <label> Temporary <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
+                        <input type="text" id="profile-version" data-bind="value: tempDirectory" readonly/>
+                        </label>
+                    </li>
+                </ul>
+            </form>
+-->
+       </div>
+       
+     </div><!-- Profile Div -->
 </div>

@@ -52,6 +52,20 @@ select {
     border: 0px 0px 1px 0px solid #e0e0e0 !important;
 }
 
+.show {
+  display: block !important;
+}
+
+.hidden {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+
 /* Colors */
 .blue-100 {
     background-color: #3caaee;
@@ -210,6 +224,29 @@ select {
     position: relative;
     right: 0px;
 }
+
+.helper-left {
+    float: left;
+}
+
+.helper-form {
+  position: relative;
+  top: 27px;
+  z-index: 99;
+  right: 10px;
+}
+
+.helper-verified {
+  color: #43A047;
+  vertical-align: baseline;
+  font-size: 10px;
+}
+
+.helper-verified-img {
+    margin-right: -3px;
+    padding-top: 3px;
+}
+
 /* */
 
 #home .km-content {
@@ -379,11 +416,9 @@ select {
 
 
 .notification-message {
-    margin: 0;
-	padding: 4px;
-	background-color: #fff;
+    margin: 8px 0;
     line-height: 16px;
-    border-radius: 9px;
+    border-radius: 25px;
 }
 
 .notification-message p {
@@ -452,15 +487,10 @@ select {
     display: none;
 }
 
-.chat-message-profileImg {
+.chat-message img {
     border-radius: 50%;
     float: left;
     border: 1.5px solid #F2EFF0;
-}
-
-.chat-message-photo {
-    width: 80%;
-	height: auto;
 }
 
 .chat-message-content {
@@ -574,13 +604,7 @@ select {
 
 .km-root .km-pane .km-view.appearance .km-listview a
 {
-    position: relative;
-    font-size: 14px;
-    width: 100%;
-    right: 0;
-    margin-top: 0;
-    top: 0;
-    border: 1px solid #27476e;
+    border: none;
 }
 
 .km-root .km-pane .km-view.appearance .km-listview textarea
@@ -712,7 +736,6 @@ select {
 .km-flat .km-view .km-content .km-list > li .km-switch .km-switch-container {
     background-color: rgb(0, 100, 181);
 }
-
 .contactPhoto {
     width: 80px;
     height: auto;
@@ -1036,14 +1059,59 @@ div.loginBox > form > div > ul > li {
 }
 /**/
 
-.gallery-item {
-  width: 24%;
-  margin: 1px;
-  float: left;
+.tile {
+	height: 50%;
+    width: 50%;
+	float: left;
+    -webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+    background-size: cover;
+}   
+/* Profile styles */
+
+.profileDisplay {
+   padding-top:1rem; 
 }
 
-.gallery-item img {
-  display: block;
-  width: 100%;
+.profileTopBox {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    text-align: center;
+    background-color: #f5f5f5;
+} 
+
+.profileTopBox img {
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  border: 1px solid #F2EFF0;
+  line-height: 1.5;
+  box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.12), 0px 1px 1px 0px rgba(0,0,0,0.24);
 }
 
+.profileEdit {
+    
+}
+.profilePrivateImg,
+.profilePublicImg {
+    float: left;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+.profilePrivateImgBtn,
+.profilePublicImgBtn {
+    text-align: left;
+}
+
+.profileEditPublic {
+    margin-bottom: 1rem;
+}
+
+.profileEditBtm {
+    padding-top:1rem;
+}
+
+#profile-changePassword {
+    margin-top: 1rem;
+}
