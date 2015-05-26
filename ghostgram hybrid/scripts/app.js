@@ -68,12 +68,12 @@
 		presence : {
 			title: 'Presence',
 			current: new kendo.data.ObservableObject({
-				AmBusy: false,
-				AmVisible: true,
+				isAvailable: true,
+				isVisible: true,
 				location: "",
 				activity: "",
 				activityInfo: "",
-				message: ""
+				message: "No personal message"
 			})
 			
 		},
