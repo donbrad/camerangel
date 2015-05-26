@@ -32,9 +32,9 @@ function newP2PEntry(user, contact, channel, callback) {
 function processPrivateInvite(contactUUID, message) {
 	var userUUID = APP.models.profile.currentUser.get('userUUID'),
 		contact = getContactModel(contactUUID),
-		privateChannelUUID = contact.privateChannelUUID;
+		privateChannelId = contact.privateChannelId;
 	
-	if (privateChannelUUID === undefined || privateChannelUUID === null) {
+	if (privateChannelId === undefined || privateChannelId === null) {
 		queryP2Pmap(contactUUID, userUUID, function(results) {
 			
 			if (results.length === 0) {
@@ -42,8 +42,10 @@ function processPrivateInvite(contactUUID, message) {
 				privateChannelUUID = uuid.v4();
 				newP2PEntry(userUUID, contactUUID, privateChannelUUID, function (result, error) {
 					  if (error === null) {
+						  // Create a channnel for this user
 						addPrivateChannel(contactUUID, contact.alias, privateChannelUUID);
-						updateParseObject('contacts', 'uuid', contactUUID, 'privateChannelUUID', privateChannelUUID);
+						  // Update the private channel for this contact
+						updateParseObject('contacts', 'uuid', contactUUID, 'privateChannelId', privateChannelId);
 					  } else {
 						 mobileNotify("newP2PEntry - error: " + error); 
 					  }
@@ -51,7 +53,7 @@ function processPrivateInvite(contactUUID, message) {
 			} else {
 				// Process p2p map
 				var entry = results[0];
-				privateChannelUUID = entry.get('channel');
+				privateChannelId = entry.get('channel');
 				// Does this user have an existing privateChannel with this contact?
 				var channelModel = findChannelModel(privateChannelUUID);
 				
@@ -60,7 +62,7 @@ function processPrivateInvite(contactUUID, message) {
 					var contactModel = getContactModel(contactUUID);
 					if (contactModel !== undefined) {
 						var contactAlias = contactModel.get('alias');
-						addPrivateChannel(contactUUID, contactAlias, privateChannelUUID);
+						addPrivateChannel(contactUUID, contactAlias, privateChannelId);
 						
 					} else {
 						mobileNotify("Null contact in processPrivateInvite!!");
