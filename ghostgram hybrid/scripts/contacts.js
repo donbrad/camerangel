@@ -19,7 +19,7 @@ function inviteUser(e) {
 	
 }
 
-function privateMessage(e) {
+function privateChat(e) {
 
 	var contact = APP.models.contacts.currentContact;
 	var contactUUID = contact.contactUUID;
@@ -425,7 +425,7 @@ function contactsFindContacts(e) {
     img.onerror = function(err) {
         //Returning a default image for users without photo 
         callback("images/missing_profile_photo.jpg");
-    }
+    };
     img.src = url;
 }
 			
