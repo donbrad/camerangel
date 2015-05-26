@@ -462,9 +462,7 @@ function contactsAddContact(e){
 		contact.setACL(APP.models.profile.parseACL);
 		contact.set("name", name );
 		contact.set("alias", alias);
-		contact.set("phone", phone);
 		contact.set("address", address);
-		
 		contact.set("group", '');
 		contact.set("priority", 0);
 		contact.set("privateChannel", null);
@@ -474,7 +472,8 @@ function contactsAddContact(e){
     phone = phone.replace(/\D+/g, "");
 	if (phone[0] !== '1')
 		phone = '1' + phone;
-	
+	contact.set("phone", phone);
+
 	 mobileNotify("Saving new contact...");
 	// Look up this contacts phone number in the gg directory
 	findUserByPhone(phone, function (result) {
