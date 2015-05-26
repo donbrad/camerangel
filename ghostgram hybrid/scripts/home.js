@@ -7,7 +7,7 @@ function homeBeforeShow () {
 
     } else {
         // No current user -redirect to no user view
-       APP.kendo.navigate('#nouser');
+       APP.kendo.navigate('#newuserhome');
     }
 }
 
@@ -97,7 +97,7 @@ function homeSignout (e) {
     APP.models.profile.currentUser.set('phone',null);
     APP.models.profile.currentUser.set('alias', null);
     APP.models.profile.currentUser.set('userUUID', null);
-	 APP.models.profile.currentUser.set('rememberUsername', false)
+	 APP.models.profile.currentUser.set('rememberUsername', false);
     APP.models.profile.currentUser.set('phoneVerified', false);
     APP.models.profile.currentUser.set('emailVerified', false);
     APP.models.profile.parseACL = '';
@@ -118,6 +118,7 @@ function homeSignin (e) {
 		mobileNotify("Username or password cannont be blank");
 		return;
 	}
+    mobileNotify("Signing you in to ghostgrams....");
 
    Parse.User.logIn(username,password , {
         success: function(user) {
@@ -165,7 +166,7 @@ function homeSignin (e) {
         },
         error: function(user, error) {
         // The login failed. Check error to see why.
-             alert("Error: " + error.code + " " + error.message);
+             mobileNotify("Error: " + error.code + " " + error.message);
         }
     });
 }

@@ -32,18 +32,19 @@ function newP2PEntry(user, contact, channel, callback) {
 function processPrivateInvite(contactUUID, message) {
 	var userUUID = APP.models.profile.currentUser.get('userUUID'),
 		contact = getContactModel(contactUUID),
-		privateChannelId = contact.privateChannelId;
-	
+		privateChannelId = contact.privateChannelId;   // Is the already a private channel allocated for this contact
+
+	// No private channel in contact entry is there a p2p entry on parse?
 	if (privateChannelId === undefined || privateChannelId === null) {
 		queryP2Pmap(contactUUID, userUUID, function(results) {
 			
 			if (results.length === 0) {
-				// No p2pmap entry
-				privateChannelUUID = uuid.v4();
-				newP2PEntry(userUUID, contactUUID, privateChannelUUID, function (result, error) {
+				// No p2pmap entry on parse -- need to create one
+				privateChannelId = uuid.v4();
+				newP2PEntry(userUUID, contactUUID, privateChannelId, function (result, error) {
 					  if (error === null) {
 						  // Create a channnel for this user
-						addPrivateChannel(contactUUID, contact.alias, privateChannelUUID);
+						addPrivateChannel(contactUUID, contact.alias, privateChannelId);
 						  // Update the private channel for this contact
 						updateParseObject('contacts', 'uuid', contactUUID, 'privateChannelId', privateChannelId);
 					  } else {
@@ -51,11 +52,11 @@ function processPrivateInvite(contactUUID, message) {
 					  }
 				});
 			} else {
-				// Process p2p map
+				// Yes - there's a p2pmap on parse. Process p2p map
 				var entry = results[0];
 				privateChannelId = entry.get('channel');
 				// Does this user have an existing privateChannel with this contact?
-				var channelModel = findChannelModel(privateChannelUUID);
+				var channelModel = findChannelModel(privateChannelId);
 				
 				if (channelModel === undefined) {
 					// No existing private channel need to create one
@@ -71,11 +72,11 @@ function processPrivateInvite(contactUUID, message) {
 				}
 				
 			}
-			
-			privateChannelInvite(contactUUID, privateChannelUUID, message);
+
+			privateChannelInvite(contactUUID, privateChannelId, message);
 		});
 	} else {
-		privateChannelInvite(contactUUID, privateChannelUUID, message);
+		privateChannelInvite(contactUUID, privateChannelId, message);
 	}
 	
 	
