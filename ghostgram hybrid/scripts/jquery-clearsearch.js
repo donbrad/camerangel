@@ -39,7 +39,7 @@
         var settings = $.extend({
             'clearClass' : 'clear_input',
             'focusAfterClear' : true,
-            'linkText' : '<i class="fa fa-times"></i>'
+            'linkText' : '&times;'
         }, options);
         return this.each(function() {
             var $this = $(this), btn,
@@ -78,11 +78,11 @@
             }
 
             function update() {
-                var width = $this.outerWidth(), height = $this
+                var width = $this.outerWidth(), height = $this, left = width - height / 2 - btn.width() / 2, top = height / 2 - btn.height() / 2,
                     .outerHeight();
                 btn.css({
-                    top : height / 2 - btn.height() / 2,
-                    left : width - height / 2 - btn.height() / 2
+                    top : top,
+                    left : left
                 });
             }
 
