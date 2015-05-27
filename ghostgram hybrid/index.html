@@ -85,7 +85,7 @@
 </div>
    
   <!-- application drawer and contents -->
-<div data-role="drawer" id="appDrawer" style="width: 200px; height: 100%;" data-title="Main Menu" data-swipe-to-open="false" style="display:none;">
+<div data-role="drawer" id="appDrawer" style="width: 200px; height: 100%;" data-title="Main Menu" data-swipe-to-open="false" data-model="APP.models.presence.current" style="display:none;">
     <!-- Menu -->
 <div class="menuBox">
     <div class="profileTop">
@@ -100,13 +100,13 @@
     </div>
 	<div style="clear:both; padding-top: 4px; padding-bottom: 4px;">
 		<span> Status</span>
-		<select id="menuAvailable" data-bind="value: APP.models.presence.current.isVisible">
+		<select id="menuAvailable" data-bind="value: isVisible">
 			<option value=true>Available</option>
 			<option value=false>Busy</option>
 		</select>
 	</div>
     <div>
-     <input id="menuCurrentMessage" type="text" style="width: 90%;" value="Personal message..."  data-bind="value: APP.models.presence.current.message"/>
+     <input id="menuCurrentMessage" type="text" style="width: 90%;" value="Personal message..."  data-bind="value: message"/>
     </div>
     
     <div class="menuLinks">
