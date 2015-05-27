@@ -444,11 +444,11 @@ function onHideChannel(e) {
 function togglePrivacyMode (e) {
 	APP.models.channel.currentModel.privacyMode = ! APP.models.channel.currentModel.privacyMode;
 	if (APP.models.channel.currentModel.privacyMode) {
-		$('#privacyMode').html('<i class="fa fa-eye-slash"> </i>Turn Privacy Off');
+		$('#privacyMode').html('<i class="fa fa-eye-slash"> </i>');
 		$( ".chat-message" ).addClass( 'privateMode' );
 		$( ".chat-message" ).removeClass( 'publicMode' );
 	} else {
-		$('#privacyMode').html('<i class="fa fa-eye"> </i>Turn Privacy On');
+		$('#privacyMode').html('<i class="fa fa-eye"> </i>');
 		$( ".chat-message" ).removeClass( 'privateMode' );
 		$( ".chat-message" ).addClass( 'publicMode' );
 	}

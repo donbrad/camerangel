@@ -64,7 +64,7 @@ function privateChannelInititate (contactUUID) {
 		 channel: contactUUID,        
 		 message: msg,
 		 success: channelSuccess,
-		 error: channelError,
+		 error: channelError
 	 });
 }
 
@@ -73,5 +73,5 @@ function channelSuccess(status) {
 }
 
 function channelError(error) {
-	notifyMobile('Channel Error : ' + error)
+	mobileNotify('Channel Error : ' + error)
 }

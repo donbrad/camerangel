@@ -109,6 +109,7 @@
 			privateChannelsDS: new kendo.data.DataSource({sort: { field: "date", dir: "desc" }}),
 			currentPrivateChannel: {},
 			messagesDS: new kendo.data.DataSource({sort: { field: "date", dir: "desc" }}),
+            messagesSentDS: new kendo.data.DataSource({sort: { field: "date", dir: "desc" }}),
 			channelUUID: null,
 			contactUUID: null,
 			contactAlias: null

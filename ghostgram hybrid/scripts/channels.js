@@ -20,8 +20,8 @@ function addChannel(e) {
     channel.set("archive",  archive === "true" ? true : false);
   
     channel.set("description", description);
-	channel.set("members", [APP.models.profile.currentUser.userUUID]),
-	channel.set("invitedMembers", []),
+	channel.set("members", [APP.models.profile.currentUser.userUUID]);
+	channel.set("invitedMembers", []);
     channel.set("channelId", guid);
     
     channel.setACL(APP.models.profile.parseACL);
@@ -388,4 +388,9 @@ function doShowChannelPresence (e) {
 		}
 	}	
   
+}
+
+// Get message count for this Chat
+function getMessageCount(callback) {
+
 }
