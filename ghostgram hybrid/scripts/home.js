@@ -109,20 +109,28 @@ function doInitSignIn () {
 		$('#home-signin-username').val(APP.models.profile.username)
 	}
 }
+
+// sign in validator 
+function signInValidate(e){
+    e.preventDefault();
+    var form = $("#formSignIn").kendoValidator().data("kendoValidator");
+
+    if (form.validate()) {
+        // If the form is valid, run sign in
+        homeSignin();
+    } 
+}
 	
 function homeSignin (e) {
-    e.preventDefault();
     
-   var username = $('#home-signin-username').val(), password = $('#home-signin-password').val();
-	if (username === '' || password === '') {
-		mobileNotify("Username or password cannont be blank");
-		return;
-	}
+   var username = $('#home-signin-username').val(), password = $('#home-signin-password').val()
 
    Parse.User.logIn(username,password , {
         success: function(user) {
         // Do stuff after successful login.
             closeModalViewLogin();
+            // Clear sign in form
+            $("#home-signin-username, #home-signin-password").val("");
             APP.models.profile.parseUser = user;
 			
 			
@@ -190,9 +198,17 @@ function sendVerificationCode ()
   });
 }
 
-function homeCreateAccount(e) {
+function validateCreateAccount(e) {
     e.preventDefault();
+    var form = $("#formCreateAccount").kendoValidator().data("kendoValidator");
+    
+    if (form.validate()) {
+        homeCreateAccount();
+    } 
+}
 
+function homeCreateAccount() {
+    
     var user = new Parse.User();
     var username = $('#home-signup-username').val();
 	var name = $('#home-signup-fullname').val();
@@ -470,6 +486,10 @@ function homeRecoverPassword(e) {
     var emailAddress = $("#home-recoverPassword-email").val();
     console.log("Sending email to " + emailAddress);
 }
+
+
+
+
 
 
 

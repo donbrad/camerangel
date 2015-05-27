@@ -218,6 +218,21 @@ select {
     font-size: 157.14%;
 }
 
+/* validation styles */
+.k-invalid-msg {
+  color: #fff;
+  background: #EA6262;
+  border-radius: 2px;
+  font-size: 12px;
+  padding: 1px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.error {
+    color: #EA6262;
+}
+
 /* Override Styles */
 
 .km-flat, input, textarea, keygen, select, button {
