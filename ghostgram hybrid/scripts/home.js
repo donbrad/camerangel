@@ -463,3 +463,17 @@ function findContactMe(query) {
          
     },function(error){mobileNotify(error);}, options);
 }
+
+
+function homeRecoverPassword(e) {
+    // ToDo - need to wire password reset
+    var emailAddress = $("#home-recoverPassword-email").val();
+    console.log("Sending email to " + emailAddress);
+}
+
+
+
+
+
+
+

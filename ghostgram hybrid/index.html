@@ -195,7 +195,12 @@
                 <li>
                     <label>Password</label>
                     <input type="password" id="home-signin-password" value=""  required />
+                    <span id="forgotPassword" class="helper helper-right btnClear-grey" href="#modalview-recoverPassword" data-rel="modalview" data-role="button">Forgot password?</span>
 					<!--<div><a id="forgotPassword" data-rel="modalview" href="#modalview-recoverPassword" data-role="button">Forgot?</a></div>-->
+                </li>
+                <li>
+    	            <input type="checkbox" id="eeeeq4" class="k-checkbox" disabled="disabled">
+			        <label class="k-checkbox-label" for="eeeeq4">Towbar preparation</label>
                 </li>
         	</ul>
             <a class="btnClear" data-click="homeSignin" id="modalview-login-button" type="button" data-role="button">Sign In</a>
@@ -391,27 +396,26 @@
 	
 	
 <div data-role="modalview" id="modalview-recoverPassword" style="width: 90%; display:none;" class="appearance">
-    <div data-role="header">
-        <div data-role="navbar">
-            <span>Recover Password</span>
-        </div>
+     <h2>Password reset
+        <a data-click="closeModalViewRecoverPassword" data-role="button" style="float: right;">Cancel</a>
+    </h2>
+    <div class="modalview-content">
+        <form>
+            <label>Email password reset link to 
+                <input type="email" id="home-recoverPassword-email" value="" placeholder="email address"/>
+            </label>
+        </form>
     </div>
-
-     <form>
-        <ul data-role="listview" data-style="inset">
-            <li>
-                <label>Send Recover instructions to: 
-                    <input type="text" id="home-recoverPassword-email" value="" />
-                </label>
-            </li>
-        </ul>
-    </form> 
-    <div data-role="footer">
-        <div data-role="navbar">
-            <a data-click="closeModalViewRecoverPassword" data-role="button" data-align="left">Cancel</a>
-            <a data-click="homeRecoverPassword" id="modalview-recoverPassword-button" type="button" data-role="button" data-align="right">Recover Password</a>
+    <a class="btnFull btnYellow" data-click="homeRecoverPassword" id="modalview-recoverPassword-button" type="button" data-role="button">Send</a>
+<!--
+        <div data-role="footer">
+            <div data-role="navbar">
+                <a data-click="closeModalViewRecoverPassword" data-role="button" data-align="left">Cancel</a>
+                <a data-click="homeRecoverPassword" id="modalview-recoverPassword-button" type="button" data-role="button" data-align="right">Recover Password</a>
+            </div>
         </div>
-    </div>
+-->
+    
 </div>
     
 <div data-role="view" data-title="Map" id="map" data-layout="main" data-model="APP.models.places"  data-show="onShowMap" data-init="onInitMap" >

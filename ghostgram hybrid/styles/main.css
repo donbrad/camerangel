@@ -44,6 +44,18 @@ p {
     font-family: 'Open Sans', sans-serif;
 }
 
+input {
+    width: 100%;
+    border: 0px;
+    font-size: 14px;
+    border-bottom: 1px solid #e0e0e0;
+    padding: .5em .7em;
+}
+
+label {
+    font-size: 12px;
+}
+
 input[readonly]{
     background-color:#e0e0e0 !important;
 }
@@ -68,10 +80,14 @@ select {
 
 /* Colors */
 .blue-100 {
-    background-color: #3caaee;
+    background-color: #3caaee !important;
 }
 .blue-200 {
-    background-color: #27476e;
+    background-color: #27476e !important;
+}
+
+.yellow-100 {
+    background-color: #FFB74D !important;
 }
 
 /* Elements */
@@ -103,6 +119,13 @@ select {
   text-decoration: none;
 }
 
+.btnYellow:active {
+    background: #FADDB0 !important;
+    text-decoration: none;
+    transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 .btnYellow:disabled {
     background: #A4A4A4 !important;
 }
@@ -126,6 +149,34 @@ select {
     background: transparent !important;
 }
 
+.btnClear-grey {
+    background: transparent;
+    color: #979797 !important;
+    text-decoration: none;
+    font-size: 14px !important;
+    font-weight: 400;
+    padding: 0px !important;
+}
+
+.btnClear-grey:active {
+    color: #3CAAEE !important;
+    background: transparent !important;
+}
+
+.btnClear-grey:disabled {
+    color: #A4A4A4  !important;
+    background: transparent !important;
+}
+
+.btnFull {
+    width: 100%;
+    padding: .5em .7em;
+    color: #fff;
+    font-size: 14px !important;
+    font-weight: 400;
+    text-align: center;
+}
+
 .btnSpan {
     width: 100%;
 }
@@ -142,6 +193,10 @@ select {
 }
 .nav-menu {
     height: 16px;
+}
+
+.modalview-content {
+    padding: 1rem;
 }
 
 /* Scrollbar */
@@ -164,7 +219,8 @@ select {
 }
 
 /* Override Styles */
-.km-flat {
+
+.km-flat, input, textarea, keygen, select, button {
     font-family: 'Open Sans', sans-serif;
 }
 
@@ -197,7 +253,7 @@ select {
 }
 
 .km-view-title span {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif !important;
     font-weight: 300;
 }
 
@@ -208,6 +264,14 @@ select {
 
 .km-flat .km-content {
     background-color: #fff;
+}
+
+.km-modalview {
+    border-radius: 2px;
+}
+
+.km-listinset, .km-listgroupinset {
+    margin: 0px;
 }
 
 /* Helpers */
@@ -237,7 +301,7 @@ select {
 }
 
 .helper-verified {
-  color: #43A047;
+  color: #43A047 !important;
   vertical-align: baseline;
   font-size: 10px;
 }
@@ -247,8 +311,10 @@ select {
     padding-top: 3px;
 }
 
-/* */
+/* Modal styles */
 
+
+/* Initial Styles */
 #home .km-content {
     background-image: url('../images/blank-bk@2x.png');
     background-size: 100% 100%;
@@ -1039,11 +1105,7 @@ div.loginBox > form > div > ul > li {
 }
 
 #forgotPassword {
-    width: 100%;
-  	text-align: right;
-  	position: relative;
-  	top: -22px;
-    font-size: 12px;
+    font-size: 12px !important;
 }
 
 .forgotBox {
