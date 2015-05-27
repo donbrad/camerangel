@@ -71,6 +71,7 @@
 				isAvailable: true,
 				isVisible: true,
 				location: "",
+                locationId: "",
 				activity: "",
 				activityInfo: "",
 				message: "No personal message"
