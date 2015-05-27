@@ -99,18 +99,14 @@
         </div>
     </div>
 	<div style="clear:both; padding-top: 4px; padding-bottom: 4px;">
-		<select id="menuVisible" data-bind="value: APP.models.presence.current.isVisible">
-			<option value=true>Visible</option>
-			<option value=false>InVisible</option>
-		</select>
-		
+		<span> Status</span>
 		<select id="menuAvailable"   data-bind="value: APP.models.presence.current.isVisible">
 			<option value=true>Available</option>
 			<option value=false>Busy</option>
 		</select>
 	</div>
     <div>
-     <input id="menuCurrentMessage" type="text" style="width: 90%;" value="Personal message..."  data-bind="value: APP.models.presence.current.message/>
+     <input id="menuCurrentMessage" type="text" style="width: 90%;" value="Personal message..."  data-bind="value: APP.models.presence.current.message"/>
     </div>
     
     <div class="menuLinks">
