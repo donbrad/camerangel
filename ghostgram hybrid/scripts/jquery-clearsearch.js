@@ -48,7 +48,7 @@
             if (!$this.parent().hasClass(divClass)) {
                 $this.wrap('<div style="position: relative;" class="'
                     + divClass + '">' + $this.html() + '</div>');
-                $this.after('<a style="position: absolute; cursor: pointer;" class="'
+                $this.after('<a style="position: absolute; cursor: pointer; color: #2e2e2e;" class="'
                     + settings.clearClass + '">' + settings.linkText + '</a>');
             }
             btn = $this.next();
@@ -78,8 +78,7 @@
             }
 
             function update() {
-                var width = $this.outerWidth(), height = $this, left = width - height / 2 - btn.width() / 2, top = height / 2 - btn.height() / 2,
-                    .outerHeight();
+                var width = $this.outerWidth(), height = $this.outerHeight(), left = width - height / 2 - btn.width() / 2, top = height / 2 - btn.height() / 2;
                 btn.css({
                     top : top,
                     left : left
