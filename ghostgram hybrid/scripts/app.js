@@ -772,7 +772,9 @@
 			APP.emailAvailable = result;
 		});
         */
-       
+
+        $('.clearable').clearSearch();
+
     }, false);
 
    
