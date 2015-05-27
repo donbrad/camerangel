@@ -220,6 +220,7 @@
 	   state: {
 		   inPrivacyMode: false,
 		   isVisible: true,
+		   isAvailable: true,
 		   rememberUsername: false,
 		   isOnline: true,
 		   inBackground: false,
