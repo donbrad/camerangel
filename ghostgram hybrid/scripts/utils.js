@@ -26,7 +26,24 @@ function updateParseObject(objectName, idField, idFieldValue, newField, newField
       }
     });
 }
-    
+
+function findParseObject(objectName, field, fieldValue, callback) {
+    var parseObject = Parse.Object.extend(objectName);
+    var query = new Parse.Query(parseObject);
+
+    query.equalTo(field, fieldValue);
+
+    query.find({
+        success: function (results) {
+            callback(results);
+        },
+        error: function (error) {
+            handleParseError(error);
+        }
+    });
+
+}
+
 function deleteParseObject(objectName, field, fieldValue) {
     var object = Parse.Object.extend(objectName);
     var query = new Parse.Query(object);
