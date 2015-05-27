@@ -71,6 +71,7 @@
 				isAvailable: true,
 				isVisible: true,
 				location: "",
+                locationId: "",
 				activity: "",
 				activityInfo: "",
 				message: "No personal message"
@@ -221,6 +222,7 @@
 	   state: {
 		   inPrivacyMode: false,
 		   isVisible: true,
+		   isAvailable: true,
 		   rememberUsername: false,
 		   isOnline: true,
 		   inBackground: false,
@@ -771,7 +773,9 @@
 			APP.emailAvailable = result;
 		});
         */
-       
+
+        $('.clearable').clearSearch();
+
     }, false);
 
    
