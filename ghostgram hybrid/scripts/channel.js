@@ -472,13 +472,13 @@ function onShowChannel(e) {
 		name = name.substring(0,13)+"...";
 	}
 	APP.models.channel.currentModel.privacyMode = false;
-	$('#privacyMode').html('<i class="fa fa-eye"> </i>Turn Privacy On');
+	$('#privacyMode').html('<i class="fa fa-eye"> </i>');
     $("#channelNavBar").data('kendoMobileNavBar').title(name);	
 
 	if (thisChannelModel.isPrivate) {
 		$('#messagePresenceButton').hide();
 		APP.models.channel.currentModel.privacyMode = true;
-		$('#privacyMode').html('<i class="fa fa-eye-slash"> </i>Turn Privacy Off');
+		$('#privacyMode').html('<i class="fa fa-eye-slash"> </i>');
 		var userKey = thisUser.publicKey, privateKey = thisUser.privateKey;
 		if (thisChannelModel.members[0] === thisUser.userUUID)
 			contactUUID = thisChannelModel.members[1];
