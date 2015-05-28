@@ -68,12 +68,13 @@
 		presence : {
 			title: 'Presence',
 			current: new kendo.data.ObservableObject({
-				AmBusy: false,
-				AmVisible: true,
+				isAvailable: true,
+				isVisible: true,
 				location: "",
+                locationId: "",
 				activity: "",
 				activityInfo: "",
-				message: ""
+				message: "No personal message"
 			})
 			
 		},
@@ -109,6 +110,7 @@
 			privateChannelsDS: new kendo.data.DataSource({sort: { field: "date", dir: "desc" }}),
 			currentPrivateChannel: {},
 			messagesDS: new kendo.data.DataSource({sort: { field: "date", dir: "desc" }}),
+            messagesSentDS: new kendo.data.DataSource({sort: { field: "date", dir: "desc" }}),
 			channelUUID: null,
 			contactUUID: null,
 			contactAlias: null
@@ -220,6 +222,7 @@
 	   state: {
 		   inPrivacyMode: false,
 		   isVisible: true,
+		   isAvailable: true,
 		   rememberUsername: false,
 		   isOnline: true,
 		   inBackground: false,
@@ -770,7 +773,9 @@
 			APP.emailAvailable = result;
 		});
         */
-       
+
+        $('.clearable').clearSearch();
+
     }, false);
 
    

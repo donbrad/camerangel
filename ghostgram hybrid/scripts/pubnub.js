@@ -28,7 +28,6 @@ function dataChannelRead (m) {
 	}
 }
 
-
 // Send the invite through the data channel
 function privateChannelInvite(contactUUID, channelUUID, message) {
 	 var msg = new Object();
@@ -44,7 +43,7 @@ function privateChannelInvite(contactUUID, channelUUID, message) {
 		 channel: contactUUID,        
 		 message: msg,
 		 success: channelSuccess,
-		 error: channelError,
+		 error: channelError
 	 });
 }
 
@@ -65,7 +64,7 @@ function privateChannelInititate (contactUUID) {
 		 channel: contactUUID,        
 		 message: msg,
 		 success: channelSuccess,
-		 error: channelError,
+		 error: channelError
 	 });
 }
 
@@ -74,5 +73,5 @@ function channelSuccess(status) {
 }
 
 function channelError(error) {
-	notifyMobile('Channel Error : ' + error)
+	mobileNotify('Channel Error : ' + error)
 }

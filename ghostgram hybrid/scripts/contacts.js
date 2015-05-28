@@ -19,7 +19,7 @@ function inviteUser(e) {
 	
 }
 
-function privateMessage(e) {
+function privateChat(e) {
 
 	var contact = APP.models.contacts.currentContact;
 	var contactUUID = contact.contactUUID;
@@ -189,7 +189,7 @@ function updateCurrentContact (contact) {
 	APP.models.contacts.currentContact.set('contactUUID', contact.contactUUID);
 	APP.models.contacts.currentContact.set('contactEmail', contact.contactEmail);
     APP.models.contacts.currentContact.set('privateChannel', contact.privateChannel);
-	APP.models.contacts.currentContact.set('privateChannelUUID', contact.privateChannelUUID);
+	APP.models.contacts.currentContact.set('privateChannelId', contact.privateChannelId);
 	APP.models.contacts.currentContact.set('phoneVerified',contact.phoneVerified);
 	APP.models.contacts.currentContact.set('publicKey',contact.publicKey);
     APP.models.contacts.currentContact.bind('change' , syncCurrentContact);
@@ -425,7 +425,7 @@ function contactsFindContacts(e) {
     img.onerror = function(err) {
         //Returning a default image for users without photo 
         callback("images/missing_profile_photo.jpg");
-    }
+    };
     img.src = url;
 }
 			

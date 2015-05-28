@@ -40,6 +40,7 @@
 	<script src='bower_components/isotope/dist/isotope.pkgd.js'></script>
 	<script src='bower_components/isotope/dist/packery.js'></script>
 	<script src="scripts/uuid.js"></script>
+    <script src="scripts/jquery-clearsearch.js"></script>
 
 
 </head>
@@ -85,7 +86,7 @@
 </div>
    
   <!-- application drawer and contents -->
-<div data-role="drawer" id="appDrawer" style="width: 200px; height: 100%;" data-title="Main Menu" data-swipe-to-open="false" style="display:none;">
+<div data-role="drawer" id="appDrawer" style="width: 200px; height: 100%;" data-title="Main Menu" data-swipe-to-open="false" data-model="APP.models.presence.current" style="display:none;">
     <!-- Menu -->
 <div class="menuBox">
     <div class="profileTop">
@@ -99,16 +100,15 @@
         </div>
     </div>
 	<div style="clear:both; padding-top: 4px; padding-bottom: 4px;">
-		<select id="menuVisible">
-			<option value=true>Visible</option>
-			<option value=false>InVisible</option>
-		</select>
-		
-		<select id="menuAvailable">
+		<span> Status</span>
+		<select id="menuAvailable" data-bind="value: isVisible">
 			<option value=true>Available</option>
 			<option value=false>Busy</option>
 		</select>
 	</div>
+    <div>
+     <input id="menuCurrentMessage" class="clearable" type="text" style="width: 90%;" value="Personal message..."  data-bind="value: message"/>
+    </div>
     
     <div class="menuLinks">
         <ul data-role="listview" class="menu">
@@ -209,31 +209,6 @@
         </div>
         
      </div>
-   
-     
-<!--     
-     <div id="home-signin" style="padding-bottom: 16px;">
-		
-		 <div style="padding-top: 15%; text-align:center;">
-            <span class="ghostTitle">Create a free account now!</span>
-        </div>
-        <div style="padding-top: 12px; text-align:center;" >
-            <a style="font-size: 1.1em;" class="button ghostButton" data-role="button" href="#signup" >Sign Up</a>
-        </div>
-	 
-        <div style="padding-top: 50%; padding-bottom: 12px;  text-align: center;"> <span class="ghostTitle"> Already a ghostgram's User? </span></div>
-        <div style="text-align: center;"> 
-            <a style="font-size: 1.1em;" class="button ghostButton"  data-rel="modalview" href="#modalview-login" data-role="button">Sign In</a>
-        </div>
-
-	 	<div style='padding-top: 24px; padding-left:12px; padding-bottom: 12px;  text-align: center;'> <span class="ghostTitle"> Having trouble signing in? </span>
-		</div>
-		<div style="padding-top: 8px; text-align:center;">
-			<a style="font-size: 0.9em;" class="button ghostButton" data-rel="modalview" href="#modalview-recoverPassword" data-role="button">Recover your Password?</a>
-		</div>   
-         
-    </div>
--->
 
 
 <div data-role="modalview" id="modalview-support" style="width: 90%; display: none;" class="appearance">
@@ -289,14 +264,13 @@
                     <input type="number" id="verifyPhone-code" value="" />
                 </label>
             </li>
-			<li>
-			<div style="padding-top: 8px; text-align:center;">
-				<a style="font-size: 0.9em;" class="button ghostButton"  data-click="sendVerificationCode" data-role="button">Resend Verification Code</a>
-			</div>
-			</li>
-            
         </ul>
-    </form> 
+    </form>
+
+    <div style="padding-top: 8px; text-align:center;">
+        <a class="button ghostButton"  data-click="sendVerificationCode" data-role="button">Resend Verification Code</a>
+    </div>
+
     <div data-role="footer">
         <div data-role="navbar">
             <a data-click="closeModalViewVerifyPhone" data-role="button" data-align="left">Cancel</a>

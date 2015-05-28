@@ -7,7 +7,7 @@ function homeBeforeShow () {
 
     } else {
         // No current user -redirect to no user view
-       APP.kendo.navigate('#nouser');
+       APP.kendo.navigate('#newuserhome');
     }
     
 }
@@ -84,7 +84,8 @@ function onShowHome(e) {
 
 	$('#profileName').text(APP.models.profile.currentUser.alias);
 	//TODO:  add code to update user profile image
-	
+
+    APP.models.presence.current.bind('change' , syncPresence);
 } 
 
 function homeSignout (e) {
@@ -98,7 +99,7 @@ function homeSignout (e) {
     APP.models.profile.currentUser.set('phone',null);
     APP.models.profile.currentUser.set('alias', null);
     APP.models.profile.currentUser.set('userUUID', null);
-	 APP.models.profile.currentUser.set('rememberUsername', false)
+	 APP.models.profile.currentUser.set('rememberUsername', false);
     APP.models.profile.currentUser.set('phoneVerified', false);
     APP.models.profile.currentUser.set('emailVerified', false);
     APP.models.profile.parseACL = '';
@@ -124,7 +125,11 @@ function signInValidate(e){
 	
 function homeSignin (e) {
     
+
    var username = $('#home-signin-username').val(), password = $('#home-signin-password').val()
+
+    mobileNotify("Signing you in to ghostgrams....");
+
 
    Parse.User.logIn(username,password , {
         success: function(user) {
@@ -174,7 +179,7 @@ function homeSignin (e) {
         },
         error: function(user, error) {
         // The login failed. Check error to see why.
-             alert("Error: " + error.code + " " + error.message);
+             mobileNotify("Error: " + error.code + " " + error.message);
         }
     });
 }
@@ -488,9 +493,40 @@ function homeRecoverPassword(e) {
     console.log("Sending email to " + emailAddress);
 }
 	
+function syncPresence () {
+
+    var userId = APP.models.profile.currentUser.get('userUUID'), presence = '';
+
+    findParseObject('presence', 'userId', userId, function (results) {
+       if (results !== undefined && results.length > 0) {
+           presence = results[0];
+           APP.models.presence.current.unbind('change' , syncPresence);
+           presence.set('isAvailable', APP.models.presence.current.get('isAvailable'));
+
+           APP.models.presence.current.bind('change' , syncPresence);
+       } else {
+           var PresObject = Parse.Object.extend('presence');
+           presence = new PresObject()
 
 
+       }
+        presence.set('isVisible', APP.models.presence.current.get('isVisible'));
+        presence.set('message', APP.models.presence.current.get('message'));
+        presence.set('activity', APP.models.presence.current.get('activity'));
+        presence.set('activityInfo', APP.models.presence.current.get('activityInfo'));
+        presence.set('location', APP.models.presence.current.get('location'));
+        presence.set('locationId', APP.models.presence.current.get('locationId'));
+
+        presence.save(null, {
+            success: function (model) {
+
+            },
+            error: function (error) {
+                handleParseError(error);
+            }
+        });
+    });
 
 
-
+}
 
