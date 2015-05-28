@@ -444,11 +444,11 @@ function onHideChannel(e) {
 function togglePrivacyMode (e) {
 	APP.models.channel.currentModel.privacyMode = ! APP.models.channel.currentModel.privacyMode;
 	if (APP.models.channel.currentModel.privacyMode) {
-		$('#privacyMode').html('<i class="fa fa-eye-slash"> </i>');
+		$('#privacyMode').html('<i class="fa-lg fa-eye-slash"> </i>');
 		$( ".chat-message" ).addClass( 'privateMode' );
 		$( ".chat-message" ).removeClass( 'publicMode' );
 	} else {
-		$('#privacyMode').html('<i class="fa fa-eye"> </i>');
+		$('#privacyMode').html('<i class="fa-lg fa-eye"> </i>');
 		$( ".chat-message" ).removeClass( 'privateMode' );
 		$( ".chat-message" ).addClass( 'publicMode' );
 	}
@@ -472,13 +472,13 @@ function onShowChannel(e) {
 		name = name.substring(0,13)+"...";
 	}
 	APP.models.channel.currentModel.privacyMode = false;
-	$('#privacyMode').html('<i class="fa fa-eye"> </i>');
+	$('#privacyMode').html('<i class="fa-lg fa-eye"> </i>');
     $("#channelNavBar").data('kendoMobileNavBar').title(name);	
 
 	if (thisChannelModel.isPrivate) {
 		$('#messagePresenceButton').hide();
 		APP.models.channel.currentModel.privacyMode = true;
-		$('#privacyMode').html('<i class="fa fa-eye-slash"> </i>');
+		$('#privacyMode').html('<i class="fa-lg fa-eye-slash"> </i>');
 		var userKey = thisUser.publicKey, privateKey = thisUser.privateKey;
 		if (thisChannelModel.members[0] === thisUser.userUUID)
 			contactUUID = thisChannelModel.members[1];
