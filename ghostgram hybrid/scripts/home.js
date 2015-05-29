@@ -110,6 +110,9 @@ function doInitSignIn () {
 	if (APP.models.profile.rememberUsername && APP.models.profile.username !== '') {
 		$('#home-signin-username').val(APP.models.profile.username)
 	}
+	// Set profile verified status
+    $("#verified-phone").removeClass("hidden");
+    console.log("verified phone");
 }
 
 // sign in validator 
@@ -164,7 +167,8 @@ function homeSignin (e) {
 			APP.models.profile.currentUser.set('privateKey', privateKey);
 			var phoneVerified = APP.models.profile.parseUser.get('phoneVerified');
             APP.models.profile.currentUser.set('phoneVerified', phoneVerified);
-			if (phoneVerified) {
+			console.log(APP.models.profile.currentUser);
+            if (phoneVerified) {
 				APP.setAppState('phoneVerified', true);
 				deleteNotificationModel('phoneVerified');
 			} else {
@@ -528,5 +532,38 @@ function syncPresence () {
     });
 
 
+}
+
+function closeChooseGhost() {
+    console.log("clicked");
+    $("#modalview-chooseGhost").data("kendoMobileModalView").close();
+}
+
+function viewEditProfile() {
+    console.log("clicked");
+    //$("#profileTopView, .profileDisplay").addClass("hidden");
+    //$("#profileEditPhotos, .profileEditBtm").removeClass("hidden");
+}
+
+function profileInfoToggle() {
+     console.log("profile clicked");
+}
+
+function saveNewPass() {
+    $("#modalview-changePassword").data("kendoMobileModalView").close();
+    // ToDo - wire save password
+}
+
+function closeNewPass(){
+    $("#modalview-changePassword").data("kendoMobileModalView").close();
+}
+
+// ToDo - Need to wire change password
+function changePassword(){
+    
+}
+// Select new ghost icon
+function whichGhost(e){
+    console.log(e.target);
 }
 

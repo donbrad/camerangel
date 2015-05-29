@@ -38,6 +38,7 @@ h1,h2,h3,h4,h5,p {
 }
 .caption {
     font-size: 13px;
+    color: #979797;
 }
 
 p {
@@ -62,6 +63,10 @@ input[readonly]{
 
 select {
     border: 0px 0px 1px 0px solid #e0e0e0 !important;
+}
+
+form {
+    padding: 1rem;
 }
 
 .show {
@@ -93,6 +98,22 @@ select {
 /* Elements */
 .line {
     border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.list-inline {
+    display: inline-block;
+    padding: 0;
+	margin: 0;
+ 	list-style: none;
+}
+
+.circle-img {
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  border: 1px solid #F2EFF0;
+  line-height: 1.5;
+  box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.12), 0px 1px 1px 0px rgba(0,0,0,0.24);
 }
 
 .greyBtn {
@@ -243,6 +264,11 @@ select {
     content: "\E077";
 }
 
+.km-list>li {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
 .km-content,
 .km-navbar {
     font-size: 0.9em;
@@ -282,6 +308,8 @@ select {
 }
 
 .km-modalview {
+    border: 1px solid #979797;
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.12), 0px 1px 1px 0px rgba(0,0,0,0.24);
     border-radius: 2px;
 }
 
@@ -327,8 +355,56 @@ select {
 }
 
 /* Modal styles */
+.modalTop {
+    background: #FAFAFA;
+    padding: 0.5rem 0.75rem;
+    line-height: 1.5;
+    border-radius: 2px 2px 0px 0px;
+}
 
+.modalTop h1,
+.modalTop h2,
+.modalTop h3,
+.modalTop h4,
+.modalTop h5,
+.modalTop p {
+    margin-left: 0px;
+    margin-right: 0px;
+}
 
+.closeBox {
+  position: relative;
+  top: -7px;
+  right: -10px;
+}
+
+/* ghost selection modal */
+.ghostSelectionBox {
+    padding: 0.5rem;
+}
+
+.ghostPhotoBox {
+    width: 30%;
+    margin-left: 1.5%;
+    margin-right: 1.5%;
+    float: left;
+    text-align: center;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.ghostPhotoBox img {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#currentGhost {
+    border: 2px solid #3A779D;
+}
+
+.ghostPhotoBox .km-button:active {
+    background: #fff !important;
+}
 /* Initial Styles */
 #home .km-content {
     background-image: url('../images/blank-bk@2x.png');
@@ -799,6 +875,9 @@ select {
     color: #fff;
 }
 
+#profile-changePassword {
+    margin: 0px;
+}
 
 .km-flat .km-view .km-navbar .km-button.km-state-active {
     background-color: rgb(0, 100, 181);
@@ -1095,7 +1174,7 @@ div.chat-message-user-content.clearfix > p {
 }
 
 .loginBox form {
-    padding: 1rem;
+    
 }
 
 div.loginBox > form > div > ul {
@@ -1193,3 +1272,18 @@ div.loginBox > form > div > ul > li {
 #profile-changePassword {
     margin-top: 1rem;
 }
+
+/* Create account */
+
+.profileGhostSelection {
+    padding: 0.5em;
+    background: #FFFFFF;
+    box-shadow: inset 0px 1px 3px 0px rgba(0,0,0,0.12), inset 0px -1px 3px 0px rgba(0,0,0,0.12);
+    display: inline-block;
+    height: 75px;
+    white-space: nowrap;
+}
+
+
+
+
