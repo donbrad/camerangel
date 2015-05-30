@@ -66,7 +66,7 @@ function onShowGallery(e) {
 	//isotope.insert(photoArray);
 	isotope.arrange();
 	$('.gallery-item').click(function () {
-		var photoUrl = this.
+		var photoUrl = this.firstElementChild.src;
 
 		$('#photoViewImage').attr('src', photoUrl);
 		$('#photoImage').attr('src', photoUrl);
