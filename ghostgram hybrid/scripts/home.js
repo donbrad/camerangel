@@ -83,8 +83,13 @@ function onShowHome(e) {
 	e.preventDefault();
 
 	$('#profileName').text(APP.models.profile.currentUser.alias);
+    var myPublicImg = APP.models.profile.currentUser.aliasPhoto;
 	//TODO:  add code to update user profile image
-
+	if (myPublicImg !== ""){
+        $(".myPublicImg").attr("src", APP.models.profile.currentUser.aliasPhoto);
+    }
+        
+        
     APP.models.presence.current.bind('change' , syncPresence);
 } 
 
@@ -535,35 +540,63 @@ function syncPresence () {
 }
 
 function closeChooseGhost() {
-    console.log("clicked");
     $("#modalview-chooseGhost").data("kendoMobileModalView").close();
 }
 
-function viewEditProfile() {
-    console.log("clicked");
-    //$("#profileTopView, .profileDisplay").addClass("hidden");
-    //$("#profileEditPhotos, .profileEditBtm").removeClass("hidden");
-}
-
-function profileInfoToggle() {
-     console.log("profile clicked");
+function validNewPass(e) {
+    e.preventDefault();
+    var pass1 = $("#newPassword1").val();
+    var pass2 = $("#newPassword2").val();
+    
+    if(pass1 !== pass2){
+        mobileNotify("Passwords don't match, try again");
+    } else {
+        saveNewPass();
+    }
 }
 
 function saveNewPass() {
     $("#modalview-changePassword").data("kendoMobileModalView").close();
+    
+   	// Clear forms
+    $("#newPassword1, #newPassword2").val("");
+    
     // ToDo - wire save password
 }
 
 function closeNewPass(){
     $("#modalview-changePassword").data("kendoMobileModalView").close();
+    
+    // Clear forms
+    $("#newPassword1, #newPassword2").val("");
 }
 
-// ToDo - Need to wire change password
-function changePassword(){
-    
-}
+
 // Select new ghost icon
 function whichGhost(e){
-    console.log(e.target);
+    var selection = e.target[0].id;
+    var selectionPath = "images/" + selection + ".svg";
+    var currentAlias = APP.models.profile.currentUser.aliasPhoto;
+    
+    if (selection !== undefined){
+        $(".myPublicImg").attr("src", selectionPath);
+        // ToDo - save ghost selection
+    	APP.models.profile.currentUser.set("aliasPhoto", selectionPath);
+    }
+    showLoading();
+    closeChooseGhost()
 }
+
+// Loading 
+function showLoading(){
+    console.log("loading");
+    $(".loading").removeClass("hidden");
+    setTimeout(function(){
+    	$(".loading").addClass("hidden");
+    },1000)
+}
+
+
+
+
 
