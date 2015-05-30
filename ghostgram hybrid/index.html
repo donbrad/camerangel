@@ -425,11 +425,14 @@
 <div data-role="modalview" id="modalview-photo" style="width: 90%; display: none;"  data-before-open="onBeforeOpenPhoto" class="appearance">
     <div data-role="header">
         <div data-role="navbar">
-            <span>Photo</span>    
+            <span>Tag Photo</span>
+                <a data-click="closeModalViewPhoto" data-role="button" data-align="left">Cancel</a>
+                <a data-click="savePhoto"  type="button" data-role="button" data-align="right">Save Photo</a>
+            </div>
         </div>
     </div>
 
-	<div style="margin: 16px; height: 25%; width: auto; text-align: center">
+	<div style="margin:8px; max-height: 25%; width: auto; text-align: center">
 		<img id="photoImage" src="" style="max-width: 100%; max-height: 100%; vertical-align: middle;"> </img>
 	</div>
 	
@@ -448,12 +451,7 @@
             
         </ul>
     </form> 
-    <div data-role="footer">
-        <div data-role="navbar">
-            <a data-click="closeModalViewPhoto" data-role="button" data-align="left">Cancel</a>
-            <a data-click="savePhoto"  type="button" data-role="button" data-align="right">Save Photo</a>
-        </div>
-    </div>
+
 </div>
 	
 	
