@@ -38,25 +38,22 @@ function onInitGallery(e){
 		}
 	});
 
-	$('.gallery-item').click(function () {
-		var photoUrl = this.
-
-		$('#photoViewImage').attr('src', photoUrl);
-		$('#photoImage').attr('src', photoUrl);
-		$('#modalview-photoView').kendoMobileModalView("open");
-	});
+	
 }
 
 
 function onShowGallery(e) {
 	e.preventDefault();
+	
+
 	var grid = $('#gallery-grid'), isotope = grid.data('isotope');
 	var itemWidth = $(window).width()/4;
 	itemWidth -= 2;  // account for the borders
 	
 	//Clear out previous content
+	$('.gallery-item').off();
 	grid.empty();
-	
+		
 	var photoArray = APP.models.gallery.photosDS.data();
 	
 	for (var i=0; i< photoArray.length; i++) {
@@ -68,5 +65,12 @@ function onShowGallery(e) {
 	}
 	//isotope.insert(photoArray);
 	isotope.arrange();
+	$('.gallery-item').click(function () {
+		var photoUrl = this.
+
+		$('#photoViewImage').attr('src', photoUrl);
+		$('#photoImage').attr('src', photoUrl);
+		$('#modalview-photoView').kendoMobileModalView("open");
+	});
 }
 
