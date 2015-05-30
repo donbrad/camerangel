@@ -2,7 +2,8 @@ function onInitGallery(e){
     e.preventDefault();
     // ToDo: Initialize list view
     var itemWidth = $(window).width()/4;
-	
+
+
 	 $('#gallery-grid').attr('width', $(window).width());
      $('#gallery-grid').isotope({
 		itemSelector: '.gallery-item',
@@ -35,6 +36,14 @@ function onInitGallery(e){
 			  sortAscending: true
 			});
 		}
+	});
+
+	$('.gallery-item').click(function () {
+		var photoUrl = this.
+
+		$('#photoViewImage').attr('src', photoUrl);
+		$('#photoImage').attr('src', photoUrl);
+		$('#modalview-photoView').kendoMobileModalView("open");
 	});
 }
 
