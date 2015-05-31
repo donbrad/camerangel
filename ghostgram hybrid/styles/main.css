@@ -363,7 +363,7 @@ form {
 .helper-verified {
   color: #43A047 !important;
   vertical-align: baseline;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .helper-verified-img {
@@ -1111,6 +1111,7 @@ form {
     border: none;
     padding-bottom: 0px;
     line-height: 1.5;
+    margin-bottom: 0.5rem;
 }
 
 #messageSend {
@@ -1125,7 +1126,8 @@ form {
 
 .messageMediaBar ul {
     padding:0px;
-    margin: 0px;
+    margin-bottom: 1px;
+    margin-top: 0px;
 }
 
 
@@ -1156,12 +1158,30 @@ form {
     padding-top: 3px;
 }
 
+#privacyStatus {
+    width:100%;
+    background: rgba(0,0,0,0.4);
+    color: #fff;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 1rem;
+}
+
+#privacyMode {
+    border-left: 2px solid #e0e0e0;
+    position: absolute;
+    right: 0px;
+    top: 48px;
+}
+
 div.chat-message-user-content.clearfix > p {
     float:right;
 }
 
 #messageEditor > div.messageCompose > div.messageMediaBar > ul > li > a {
-    
+  padding: 0.5rem;
+  vertical-align: middle;
+  margin:0px !important;
 }
 
 .newuserBox {

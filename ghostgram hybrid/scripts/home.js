@@ -79,6 +79,23 @@ function onInitHome () {
 	
 }
 
+function onInitProfile() {
+    var myPublicImg = APP.models.profile.currentUser.aliasPhoto;
+	
+	if (myPublicImg !== ""){
+        $(".myPublicImg").attr("src", APP.models.profile.currentUser.aliasPhoto);
+    }
+    
+    if (APP.models.profile.currentUser.emailVerified){
+        $("#verified-email").removeClass("hidden");
+    }
+    
+    if(APP.models.profile.currentUser.phoneVerified){
+        $("#verified-phone").removeClass("hidden");
+    }
+    // ToDo - need to add "resend" btn (JE)
+}
+
 function onShowHome(e) {
 	e.preventDefault();
 
@@ -115,9 +132,6 @@ function doInitSignIn () {
 	if (APP.models.profile.rememberUsername && APP.models.profile.username !== '') {
 		$('#home-signin-username').val(APP.models.profile.username)
 	}
-	// Set profile verified status
-    $("#verified-phone").removeClass("hidden");
-    console.log("verified phone");
 }
 
 // sign in validator 
@@ -165,6 +179,7 @@ function homeSignin (e) {
             APP.models.profile.currentUser.set('email', APP.models.profile.parseUser.get('email'));
             APP.models.profile.currentUser.set('phone', APP.models.profile.parseUser.get('phone'));
             APP.models.profile.currentUser.set('alias', APP.models.profile.parseUser.get('alias'));
+            APP.models.profile.currentUser.set('aliasPhoto', APP.models.profile.parseUser.get('aliasPhoto'))
 			 APP.models.profile.currentUser.set('aliasPublic', APP.models.profile.parseUser.get('aliasPublic'));
             APP.models.profile.currentUser.set('userUUID', APP.models.profile.parseUser.get('userUUID'));
 			APP.models.profile.currentUser.set('rememberUsername', APP.models.profile.parseUser.get('rememberUsername'));
@@ -172,7 +187,7 @@ function homeSignin (e) {
 			APP.models.profile.currentUser.set('privateKey', privateKey);
 			var phoneVerified = APP.models.profile.parseUser.get('phoneVerified');
             APP.models.profile.currentUser.set('phoneVerified', phoneVerified);
-			console.log(APP.models.profile.currentUser);
+			console.log(APP.models.profile.parseUser);
             if (phoneVerified) {
 				APP.setAppState('phoneVerified', true);
 				deleteNotificationModel('phoneVerified');
@@ -561,6 +576,7 @@ function saveNewPass() {
    	// Clear forms
     $("#newPassword1, #newPassword2").val("");
     
+    mobileNotify("Your password was updated");
     // ToDo - wire save password
 }
 
@@ -583,20 +599,14 @@ function whichGhost(e){
         // ToDo - save ghost selection
     	APP.models.profile.currentUser.set("aliasPhoto", selectionPath);
     }
-    showLoading();
     closeChooseGhost()
 }
 
-// Loading 
-function showLoading(){
-    console.log("loading");
-    $(".loading").removeClass("hidden");
-    setTimeout(function(){
-    	$(".loading").addClass("hidden");
-    },1000)
+
+// Todo - wire save profile, may not need w/ profile sync
+function saveEditProfile() {
+    mobileNotify("Your profile was updated")
 }
-
-
 
 
 

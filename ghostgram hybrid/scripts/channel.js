@@ -444,13 +444,14 @@ function onHideChannel(e) {
 function togglePrivacyMode (e) {
 	APP.models.channel.currentModel.privacyMode = ! APP.models.channel.currentModel.privacyMode;
 	if (APP.models.channel.currentModel.privacyMode) {
-		$('#privacyMode').html('<i class="fa fa-eye-slash"> </i>');
-		$( ".chat-message" ).addClass( 'privateMode' );
-		$( ".chat-message" ).removeClass( 'publicMode' );
+		$('#privacyMode').html('<img src="images/privacy-on.svg" />');
+		$( ".chat-message" ).addClass('privateMode').removeClass('publicMode');
+        $("#privacyStatus").removeClass("hidden");
+        kendo.fx($("#privacyStatus")).expand("vertical").play();
 	} else {
-		$('#privacyMode').html('<i class="fa fa-eye"> </i>');
-		$( ".chat-message" ).removeClass( 'privateMode' );
-		$( ".chat-message" ).addClass( 'publicMode' );
+		$('#privacyMode').html('<img src="images/privacy-off.svg" />');
+		$( ".chat-message" ).removeClass('privateMode').addClass('publicMode');
+        $("#privacyStatus").addClass("hidden");
 	}
 	
 }
@@ -472,13 +473,17 @@ function onShowChannel(e) {
 		name = name.substring(0,13)+"...";
 	}
 	APP.models.channel.currentModel.privacyMode = false;
-	$('#privacyMode').html('<i class="fa fa-eye"> </i>');
+    // Privacy UI
+	$('#privacyMode').html('<img src="images/privacy-off.svg" />');
+	$("#privacyStatus").addClass("hidden");
     $("#channelNavBar").data('kendoMobileNavBar').title(name);	
 
 	if (thisChannelModel.isPrivate) {
 		$('#messagePresenceButton').hide();
 		APP.models.channel.currentModel.privacyMode = true;
-		$('#privacyMode').html('<i class="fa fa-eye-slash"> </i>');
+        // Privacy UI 
+		$('#privacyMode').html('<img src="images/privacy-on.svg" />');
+        $("#privacyStatus").removeClass("hidden");
 		var userKey = thisUser.publicKey, privateKey = thisUser.privateKey;
 		if (thisChannelModel.members[0] === thisUser.userUUID)
 			contactUUID = thisChannelModel.members[1];

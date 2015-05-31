@@ -1,5 +1,5 @@
 <!-- profile view -->
-<div data-role="view" id="profile" data-title="Profile" data-layout="profileLayout" data-model="APP.models.profile"  class="appearance">
+<div data-role="view" id="profile" data-title="Profile" data-layout="profileLayout" data-model="APP.models.profile"  class="appearance" data-init="onInitProfile">
    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -61,12 +61,9 @@
         <div data-role="navbar">
             <span data-role="view-title"></span>
             <a data-role="button" href="#profile" data-align="left"><img src="images/nav-back.svg"/></a>
-           <a data-role="button" data-align="right">Save</a> 
+           <a data-role="button" href="#profile" data-click="saveEditProfile" data-align="right">Save</a> 
        </div>
-    </div>
-    <!-- Loading -->  
-    <div class="loading"></div>
-    
+    </div>    
        <div class="profileEdit" id="profileEditPhotos">
        <div class="profileTopBox">
            <div class="profileEditPublic">
@@ -91,7 +88,7 @@
                    <p class="caption">
                        Your private photo is visible <b>ONLY</b> to approved contacts.
                    </p>
-                   <a class="btnClear" data-click="showLoading" data-role="button">Choose photo</a>
+                   <a class="btnClear" data-role="button">Choose photo</a>
                </div>
            </div>
          </div>
