@@ -9,6 +9,7 @@ function homeBeforeShow () {
         // No current user -redirect to no user view
        APP.kendo.navigate('#newuserhome');
     }
+    
 }
 
 function dismissNotification (e) {
@@ -78,12 +79,34 @@ function onInitHome () {
 	
 }
 
+function onInitProfile() {
+    var myPublicImg = APP.models.profile.currentUser.aliasPhoto;
+	
+	if (myPublicImg !== ""){
+        $(".myPublicImg").attr("src", APP.models.profile.currentUser.aliasPhoto);
+    }
+    
+    if (APP.models.profile.currentUser.emailVerified){
+        $("#verified-email").removeClass("hidden");
+    }
+    
+    if(APP.models.profile.currentUser.phoneVerified){
+        $("#verified-phone").removeClass("hidden");
+    }
+    // ToDo - need to add "resend" btn (JE)
+}
+
 function onShowHome(e) {
 	e.preventDefault();
 
 	$('#profileName').text(APP.models.profile.currentUser.alias);
+    var myPublicImg = APP.models.profile.currentUser.aliasPhoto;
 	//TODO:  add code to update user profile image
-
+	if (myPublicImg !== ""){
+        $(".myPublicImg").attr("src", APP.models.profile.currentUser.aliasPhoto);
+    }
+        
+        
     APP.models.presence.current.bind('change' , syncPresence);
 } 
 
@@ -110,21 +133,32 @@ function doInitSignIn () {
 		$('#home-signin-username').val(APP.models.profile.username)
 	}
 }
+
+// sign in validator 
+function signInValidate(e){
+    e.preventDefault();
+    var form = $("#formSignIn").kendoValidator().data("kendoValidator");
+
+    if (form.validate()) {
+        // If the form is valid, run sign in
+        homeSignin();
+    } 
+}
 	
 function homeSignin (e) {
-    e.preventDefault();
     
-   var username = $('#home-signin-username').val(), password = $('#home-signin-password').val();
-	if (username === '' || password === '') {
-		mobileNotify("Username or password cannont be blank");
-		return;
-	}
+
+   var username = $('#home-signin-username').val(), password = $('#home-signin-password').val()
+
     mobileNotify("Signing you in to ghostgrams....");
+
 
    Parse.User.logIn(username,password , {
         success: function(user) {
         // Do stuff after successful login.
             closeModalViewLogin();
+            // Clear sign in form
+            $("#home-signin-username, #home-signin-password").val("");
             APP.models.profile.parseUser = user;
 			
 			
@@ -145,6 +179,7 @@ function homeSignin (e) {
             APP.models.profile.currentUser.set('email', APP.models.profile.parseUser.get('email'));
             APP.models.profile.currentUser.set('phone', APP.models.profile.parseUser.get('phone'));
             APP.models.profile.currentUser.set('alias', APP.models.profile.parseUser.get('alias'));
+            APP.models.profile.currentUser.set('aliasPhoto', APP.models.profile.parseUser.get('aliasPhoto'))
 			 APP.models.profile.currentUser.set('aliasPublic', APP.models.profile.parseUser.get('aliasPublic'));
             APP.models.profile.currentUser.set('userUUID', APP.models.profile.parseUser.get('userUUID'));
 			APP.models.profile.currentUser.set('rememberUsername', APP.models.profile.parseUser.get('rememberUsername'));
@@ -152,7 +187,8 @@ function homeSignin (e) {
 			APP.models.profile.currentUser.set('privateKey', privateKey);
 			var phoneVerified = APP.models.profile.parseUser.get('phoneVerified');
             APP.models.profile.currentUser.set('phoneVerified', phoneVerified);
-			if (phoneVerified) {
+			console.log(APP.models.profile.parseUser);
+            if (phoneVerified) {
 				APP.setAppState('phoneVerified', true);
 				deleteNotificationModel('phoneVerified');
 			} else {
@@ -192,9 +228,17 @@ function sendVerificationCode ()
   });
 }
 
-function homeCreateAccount(e) {
+function validateCreateAccount(e) {
     e.preventDefault();
+    var form = $("#formCreateAccount").kendoValidator().data("kendoValidator");
+    
+    if (form.validate()) {
+        homeCreateAccount();
+    } 
+}
 
+function homeCreateAccount() {
+    
     var user = new Parse.User();
     var username = $('#home-signup-username').val();
 	var name = $('#home-signup-fullname').val();
@@ -467,6 +511,12 @@ function findContactMe(query) {
 }
 
 
+function homeRecoverPassword(e) {
+    // ToDo - need to wire password reset
+    var emailAddress = $("#home-recoverPassword-email").val();
+    console.log("Sending email to " + emailAddress);
+}
+	
 function syncPresence () {
 
     var userId = APP.models.profile.currentUser.get('userUUID'), presence = '';
@@ -503,3 +553,60 @@ function syncPresence () {
 
 
 }
+
+function closeChooseGhost() {
+    $("#modalview-chooseGhost").data("kendoMobileModalView").close();
+}
+
+function validNewPass(e) {
+    e.preventDefault();
+    var pass1 = $("#newPassword1").val();
+    var pass2 = $("#newPassword2").val();
+    
+    if(pass1 !== pass2){
+        mobileNotify("Passwords don't match, try again");
+    } else {
+        saveNewPass();
+    }
+}
+
+function saveNewPass() {
+    $("#modalview-changePassword").data("kendoMobileModalView").close();
+    
+   	// Clear forms
+    $("#newPassword1, #newPassword2").val("");
+    
+    mobileNotify("Your password was updated");
+    // ToDo - wire save password
+}
+
+function closeNewPass(){
+    $("#modalview-changePassword").data("kendoMobileModalView").close();
+    
+    // Clear forms
+    $("#newPassword1, #newPassword2").val("");
+}
+
+
+// Select new ghost icon
+function whichGhost(e){
+    var selection = e.target[0].id;
+    var selectionPath = "images/" + selection + ".svg";
+    var currentAlias = APP.models.profile.currentUser.aliasPhoto;
+    
+    if (selection !== undefined){
+        $(".myPublicImg").attr("src", selectionPath);
+        // ToDo - save ghost selection
+    	APP.models.profile.currentUser.set("aliasPhoto", selectionPath);
+    }
+    closeChooseGhost()
+}
+
+
+// Todo - wire save profile, may not need w/ profile sync
+function saveEditProfile() {
+    mobileNotify("Your profile was updated")
+}
+
+
+
