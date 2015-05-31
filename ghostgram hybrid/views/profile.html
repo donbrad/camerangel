@@ -1,19 +1,103 @@
-<div data-role="view" id="profile" data-title="Profile" data-layout="profileLayout" data-model="APP.models.profile"  class="appearance">
+<!-- profile view -->
+<div data-role="view" id="profile" data-title="Profile" data-layout="profileLayout" data-model="APP.models.profile"  class="appearance" data-init="onInitProfile">
    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img class="menuIcon" src="images/menu-icon.svg"/></a>
-            <a data-role="button"  data-click="profileChangePassword"  data-align="right" ><i class="ghostIconNavbar fa fa-lock"></i>Update Password</a>
-        </div>
-    </div> 
-	 <div style="padding-bottom: 24px;">
-
-       <div style="padding: 12px; font-size: 20px; text-align: center; color: #27476e;">    
-           <span id="profile-username" data-bind="text:currentUser.username">  </span> 
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left">
+                <img class="menuIcon" src="images/menu-icon.svg"/>
+            </a>
        </div>
+    </div> 
+	 <div class="profileDiv">
+         <!-- Display Profile -->
+         <div class="profileTopBox" id="profileTopView">
+             <div class="caption hidden" style="float: left">
+                 Public View
+             </div>
+             <div class="clearfix"></div>
+             <img src="images/ghostgramcontact.png" class="myPublicImg" id="profileTopImg" />
+             <h4 id="profile-username" data-bind="text:currentUser.alias"></h4>
+             <p class="caption"><a>Tap to view private</a></p>
+         </div>
+         <div class="line"></div>
+         <!-- Display My Info -->
+         <div class="profileDisplay">
+             <h3>My Info 
+                 <div style="float:right">
+                     <a id="editProfile" href="#profileEdit" data-role="button" class="btnClear"> Edit Profile </a>
+                 </div>
+             </h3>
+             <ul data-role="listview" data-style="inset">
+                 <li>
+                     <label>Alias (How other users see you)</label>
+                     <p data-bind="text:currentUser.alias"></p>
+                 </li>
+                 <li>
+                     <label>Contact email 
+                         <span class="helper helper-verified hidden" id="verified-email">
+                         <img class="helper-verified-img" src="images/verified.svg" height="14" /> 
+                             Verified 
+                         </span>
+                      </label>
+                    <p data-bind="text: currentUser.email"></p>
+                 </li>
+                 <li>
+                     <label>Mobile Phone 
+                       <span class="helper helper-verified hidden" id="verified-phone">
+                       <img class="helper-verified-img" src="images/verified.svg" height="14" /> 
+                           Verified
+                       </span>
+                    </label>
+                    <p data-bind="text: currentUser.phone"></p>
+                 </li>
+             </ul>
+         </div>
+    </div>
+</div>
 
-       <h3>Account Info </h3> 
-       <form style="clear:both; border-radius: 25px;">
+<!-- Profile Edit -->  
+<div data-role="view" id="profileEdit" data-title="Edit Profile" data-layout="profileLayout" data-model="APP.models.profile" class="appearance">
+    <div data-role="header">
+        <div data-role="navbar">
+            <span data-role="view-title"></span>
+            <a data-role="button" href="#profile" data-align="left"><img src="images/nav-back.svg"/></a>
+           <a data-role="button" href="#profile" data-click="saveEditProfile" data-align="right">Save</a> 
+       </div>
+    </div>    
+       <div class="profileEdit" id="profileEditPhotos">
+       <div class="profileTopBox">
+           <div class="profileEditPublic">
+               <div class="profilePublicImg">
+                   <img class="myPublicImg" src="images/ghostgramcontact.png" />
+               </div>
+               <div class="profilePublicImgBtn">
+                   <label>Public photo</label>
+                   <p class="caption">
+                       Your public photo is visible to everyone on ghostgrams.
+                   </p>
+                   <a class="btnClear" href="#modalview-chooseGhost" data-rel="modalview" data-role="button">Change ghost</a>
+               </div>
+           </div>
+           <div class="clearfix"></div>
+           <div class="profileEditPrivate">
+               <div class="profilePrivateImg">
+                   <img src="images/default-private.svg" />
+               </div>
+               <div class="profilePrivateImgBtn">
+                   <label>Private photo</label>
+                   <p class="caption">
+                       Your private photo is visible <b>ONLY</b> to approved contacts.
+                   </p>
+                   <a class="btnClear" data-role="button">Choose photo</a>
+               </div>
+           </div>
+         </div>
+           <div class="line"></div>
+       </div>
+       <!-- Edit info -->
+       <div class="profileEditBtm">
+           <form style="clear:both;">
+            <h3>Edit Info</h3> 
             <ul data-role="listview" data-style="inset">
                 <li>
                     <label>Alias (How other users see you)
@@ -21,57 +105,111 @@
                     </label>
                 </li>
                  <li>
-                    <label>Contact email (if it's not your Username)
+                    <label>Contact email 
                     <input type="email" id="profile-email" data-bind="value: currentUser.email" />
                     </label>
                 </li>
                <li>
-                   <label>Mobile Phone <span class="helper helper-right"><i class="fa fa-lock"></i> Locked <a class="btnClear" id="helper-profilePhone"></a></span>
+                   <label>Mobile Phone 
+                       <span class="helper helper-right helper-form"><i class="fa fa-lock"></i> Locked <a class="btnClear" id="helper-profilePhone"></a></span>
                     <input type="tel" id="profile-phone" data-bind="value: currentUser.phone" readonly />
                     </label>
-                </li> 
-				 <li>
-                    <label>Remember Username
-						 <select id="profileRememberUsername">
-							   <option value=false>No, Use Full SignIn.</option>
-								<option value=true>Yes, Just enter password</option>
-						  </select>
-                    </label>
-                </li> 
+                </li>
            </ul>
-       </form>
-      
-		<h3>
-		   Personalization
-		</h3>
-		<form style="border-radius: 25px; ">
-			<ul data-role="listview" data-style="inset" >
-			  <li> 
-				  <label>Profile Photo
-					   <select id="profilePhoto">
-						   <option value="none">None</option>
-						   <option value="current">Use Current</option>
-						   <option value="new">Import New Photo</option>
-					  </select>
-				  </label>
-			  </li>
-				<li> 
-				  <label>Public  Alias
-					   <input type="text" id="profile-aliasPublic" data-bind="value: currentUser.aliasPublic" />
-				  </label>
-			  </li>
-				 <li> 
-				  <label>Public Photo
-					   <select id="profilePublicPhoto">
-						   <option value="none">None</option>
-						   <option value="userProfile">Use Profile Photo</option>
-					  </select>
-				  </label>
-			  </li>
-			</ul>
-	   </form>
-
-       
-        
-     </div>
+               <a class="btnClear" href="#modalview-changePassword" data-rel="modalview" id="profile-changePassword" data-role="button" >Change Password</a>
+           </form>
+        </div>
 </div>
+    
+<!-- Ghost selection modal -->
+<div data-role="modalview" id="modalview-chooseGhost" style="width: 90%; display:none;" class="appearance">
+    <div class="modalTop">
+        <h2>
+            Let's do this
+            <span class="closeBox" style="float:right;">
+                <a data-click="closeChooseGhost;" data-role="button"><img src="images/close.svg" /></a>
+            </span>
+        </h2>
+        <p>
+        Select a public ghost. 
+    </p>
+    </div>
+    <div class="line"></div>
+    
+    <div class="ghostSelectionBox">
+            <div class="ghostPhotoBox">
+                <a data-click="whichGhost" id="ghost-red" data-role="button">
+                    <img class="circle-img" src="images/ghost-red.svg"/>
+                </a>
+            </div>
+            <div class="ghostPhotoBox">
+                <a data-click="whichGhost" id="ghost-purple" data-role="button">
+                	<img class="circle-img" src="images/ghost-purple.svg"/>
+                </a>
+            </div>
+            <div class="ghostPhotoBox">
+                <a data-click="whichGhost" class="currentGhost" id="ghost-blue" data-role="button">
+                	<img class="circle-img" src="images/ghost-blue.svg"/>
+                </a>
+            </div>
+            <div class="ghostPhotoBox">
+                <a data-click="whichGhost"  id="ghost-teal" data-role="button">
+                	<img class="circle-img" src="images/ghost-teal.svg"/>
+                </a>
+            </div>
+            <div class="ghostPhotoBox">
+                <a data-click="whichGhost" id="ghost-green" data-role="button">
+                	<img class="circle-img"  src="images/ghost-green.svg"/>
+                </a>
+            </div>
+            <div class="ghostPhotoBox">
+                <a data-click="whichGhost" id="ghost-yellow" data-role="button">
+                	<img class="circle-img"  src="images/ghost-yellow.svg"/>
+                </a>
+            </div>
+            <div class="ghostPhotoBox">
+                <a data-click="whichGhost" id="ghost-orange" data-role="button">
+                	<img class="circle-img"  src="images/ghost-orange.svg"/>
+                </a>
+            </div>
+            <div class="ghostPhotoBox">
+                <a data-click="whichGhost" id="ghost-grey" data-role="button">
+                	<img class="circle-img" src="images/ghost-grey.svg"/>
+                </a>
+            </div>
+            <div class="ghostPhotoBox">
+                <a data-click="whichGhost" id="ghost-black" data-role="button">
+                	<img class="circle-img"  src="images/ghost-black.svg"/>
+                </a>
+            </div>
+    </div>
+    <div class="clearfix"></div>
+    </div>
+   
+<!-- change password modal -->
+<div data-role="modalview" id="modalview-changePassword" style="width: 90%; display:none;" class="appearance">
+    <div class="modalTop">
+        <h3>Change Password
+            <span class="closeBox" style="float:right;">
+                <a data-click="closeNewPass;" data-role="button"><img src="images/close.svg" /></a>
+            </span>
+        </h3>
+    </div>
+    <div class="line"></div>
+    <form id="changePassForm">
+       <ul data-role="listview" data-style="inset">
+        <li>
+            <label>New Password</label>
+            <input type="text" id="newPassword1" />
+        </li>
+        <li>
+            <label>Confirm Password</label>
+            <input type="text" id="newPassword2" />
+        </li>
+       </ul>
+      <a class="btnClear" data-click="validNewPass" data-role="button">Save</a>
+    </form>
+    
+</div>
+    
+    
