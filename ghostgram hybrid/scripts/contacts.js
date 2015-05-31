@@ -82,12 +82,12 @@ function syncContact(model) {
 	 findUserByPhone(phone, function (result) {
 		 if (result.found) {
 			 var uuid = model.get('uuid'), contactUUID = model.get('contactUUID'), publicKey = model.get('publicKey'), 
-				 phoneVerified = model.get('phoneVerfied'),  emailVerified = model.get('emailVerfied'), parseEmailVerified = result.user.get('emailVerified') ;
+				 phoneVerified = model.get('phoneVerfied'),  emailVerified = model.get('emailVerfied'), parseEmailVerified = result.user.emailVerified ;
 			
 			// Does the contact have a verified email address
-			if (result.user.get('emailVerified')) {
+			if (result.user.emailVerified) {
 				// Yes - save the email address the contact verified
-				model.set("email", result.user.get('email'));
+				model.set("email", result.user.email);
 			} 
 			model.set('publicKey',  result.user.get('publicKey'));
 			model.set("contactUUID", result.user.get('userUUID'));
