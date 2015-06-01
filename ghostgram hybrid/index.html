@@ -100,17 +100,22 @@
             <div class="caption" id="profileLink"><a data-role="button" href="views/profile.html">View Profile</a></div>
         </div>
     </div>
-	<div style="clear:both; padding-top: 4px; padding-bottom: 4px;">
-		<span> Status</span>
-		<select id="menuAvailable" data-bind="value: isVisible">
-			<option value=true>Available</option>
-			<option value=false>Busy</option>
-		</select>
+    <div class="clearfix"></div>
+	<div class="menuStatus">
+		<span id="statusCircle"><img width="18" src="images/status-away.svg"/></span>
+        <span class="menuSelectBox">
+            <select id="menuAvailable" data-bind="value: isVisible">
+                <option> Update Status</option>
+			    <option value=true> Available</option>
+			    <option value=false> Busy </option>
+                <option value=false> Add Message </option>
+		    </select>
+        </span>
 	</div>
-    <div>
+    <div class="hidden">
      <input id="menuCurrentMessage" class="clearable" type="text" style="width: 90%;" value="Personal message..."  data-bind="value: message"/>
     </div>
-    
+    <div class="clearfix"></div>
     <div class="menuLinks">
         <ul data-role="listview" class="menu">
             <li><a href="#home"><img src="images/menu-home.svg" height="22" width="22" />Home</a>
@@ -127,7 +132,7 @@
             </li>
         </ul>
     </div>
-	<div style="padding-left: 16px;  font-size: 16px;">
+	<div style="padding-top: 1rem;  font-size: 16px;">
 		<div style="padding-bottom: 6px;">
 			<a data-role="button" id="menuSettings" href="views/settings.html">Settings</a>
 		</div>
