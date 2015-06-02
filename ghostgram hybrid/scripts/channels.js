@@ -186,8 +186,12 @@ function onInitChannels (e) {
      $("#channels-listview").kendoMobileListView({
         dataSource: APP.models.channels.channelsDS,
         template: $("#channels-listview-template").html()
-		
     });
+    //console.log(APP.models.channels.channelsDS);
+}
+
+function listViewClick(e){
+    console.log("Clicked list");
 }
 
 function onShowAddChannel (e) {

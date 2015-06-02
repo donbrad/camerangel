@@ -516,11 +516,11 @@ function homeRecoverPassword(e) {
     var emailAddress = $("#home-recoverPassword-email").val();
     console.log("Sending email to " + emailAddress);
 }
-	
+
 function syncPresence () {
 
     var userId = APP.models.profile.currentUser.get('userUUID'), presence = '';
-
+	// Todo - Update status UI (JE)
     findParseObject('presence', 'userId', userId, function (results) {
        if (results !== undefined && results.length > 0) {
            presence = results[0];
@@ -550,9 +550,8 @@ function syncPresence () {
             }
         });
     });
-
-
 }
+
 
 function closeChooseGhost() {
     $("#modalview-chooseGhost").data("kendoMobileModalView").close();

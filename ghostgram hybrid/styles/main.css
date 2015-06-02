@@ -1083,7 +1083,6 @@ form {
 
 .menuLinks {
     text-align: center;
-    margin-top: 1.5em;
 }
 
 .menuStatus {
@@ -1134,6 +1133,34 @@ form {
 
 .km-listview-link:after, .km-listview-label:after {
     display: none;
+}
+
+/* Chat menu */
+#channels-listview > li {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-bottom: 1px solid #E4E4E4 !important;
+}
+
+#channels-listview > li > div > h3 {
+    margin-left: 0px;
+    margin-right: 0px;
+    font-weight: 600;
+}
+
+#channels-listview > li > div > h3 > a {
+    text-decoration: none;
+}
+
+.chatActivityTime {
+    float: right;
+    color: #979797;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.chatDetails img {
+    vertical-align: text-top;
 }
 
 /* Chat styles */
