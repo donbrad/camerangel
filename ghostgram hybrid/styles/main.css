@@ -1266,7 +1266,13 @@ div.loginBox > form > div > ul > li {
 	-moz-background-size: cover;
 	-o-background-size: cover;
     background-size: cover;
-}   
+}
+
+.gallery-item {
+    width: 24%;
+    height: auto;
+    float: left;
+}
 /* Profile styles */
 
 .profileDisplay {
