@@ -7,8 +7,6 @@ function onInitGallery(e){
 	 $('#gallery-grid').attr('width', $(window).width());
      $('#gallery-grid').isotope({
 		itemSelector: '.gallery-item',
-		 isInitLayout: false,
-		layoutMode: 'packery',
 		getSortData: {
     		timestamp: '[data-timestamp]'
    
@@ -22,7 +20,7 @@ function onInitGallery(e){
 		});
 	
 	$( "#galleryDateSelect" ).change(function () {
-		var grid =  $('#gallery-grid'), isotope= grid.data('isotope');
+		var grid =  $('#gallery-grid'), isotope = grid.data('isotope');
 		var dateStr = $( "#galleryDateSelect option:selected" ).val();
 		if (dateStr === 'newest') {
 			$('#gallery-grid').isotope({
@@ -45,11 +43,10 @@ function onInitGallery(e){
 function onShowGallery(e) {
 	e.preventDefault();
 	
-
 	var grid = $('#gallery-grid'), isotope = grid.data('isotope');
 	var itemWidth = $(window).width()/4;
 	itemWidth -= 2;  // account for the borders
-	
+
 	//Clear out previous content
 	$('.gallery-item').off();
 	grid.empty();
