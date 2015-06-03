@@ -42,7 +42,7 @@ function onInitGallery(e){
 
 function onShowGallery(e) {
 	e.preventDefault();
-	
+
 	var grid = $('#gallery-grid'), isotope = grid.data('isotope');
 	var itemWidth = $(window).width()/4;
 	itemWidth -= 2;  // account for the borders
@@ -54,7 +54,7 @@ function onShowGallery(e) {
 	var photoArray = APP.models.gallery.photosDS.data();
 	
 	for (var i=0; i< photoArray.length; i++) {
-		var element = '<div class="gallery-item" id="' + photoArray[i].photoId  + '" data-timestamp="' + photoArray[i].timestamp + '" style="height: auto; width='+ itemWidth +  
+		var element = '<div class="gallery-item" id="' + photoArray[i].photoId  + '" data-timestamp="' + photoArray[i].timestamp + '" data-imageurl="' + photoArray[i].imageUrl + '" style="height: auto; width='+ itemWidth +
 				'px;" >  <img src="' + photoArray[i].thumbnailUrl + '"/> </div>';
 		grid.append(element);
 		isotope.insert([$('#'+photoArray[i].photoId)]);
