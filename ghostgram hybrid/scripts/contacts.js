@@ -89,19 +89,19 @@ function syncContact(model) {
 				// Yes - save the email address the contact verified
 				model.set("email", result.user.email);
 			} 
-			model.set('publicKey',  result.user.get('publicKey'));
-			model.set("contactUUID", result.user.get('userUUID'));
+			model.set('publicKey',  result.user.publicKey);
+			model.set("contactUUID", result.user.userUUID);
 			 if (contactUUID === undefined) {
 				 updateParseObject('contacts', 'uuid', uuid, 'contactUUID',  result.user.userUUID);
 			 }
 			 if (publicKey === undefined) {
 				 updateParseObject('contacts', 'uuid', uuid, 'publicKey',result.user.publicKey );
 			 }
-			 if (phoneVerified !== result.user.get('phoneVerified')) {
-				 if (result.user.get('phoneVerified') === undefined)
-					 result.user.set('phoneVerified',false);
-				  model.set("phoneVerified", result.user.get('phoneVerified'));
-				  updateParseObject('contacts', 'uuid', uuid, 'phoneVerified',result.user.get('phoneVerified') );
+			 if (phoneVerified !== result.user.phoneVerified) {
+				 if (result.user.phoneVerified === undefined)
+					 result.user.phoneVerified = false;
+				  model.set("phoneVerified", result.user.phoneVerified);
+				  updateParseObject('contacts', 'uuid', uuid, 'phoneVerified',result.user.phoneVerified );
 			 }
 		 }
 

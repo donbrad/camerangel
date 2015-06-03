@@ -1268,10 +1268,23 @@ div.loginBox > form > div > ul > li {
     background-size: cover;
 }
 
+#gallery-grid {
+	width: 100%;
+}
+
 .gallery-item {
     width: 24%;
-    height: auto;
+	margin: 1px;
     float: left;
+}
+
+.gallery-item .large {
+	width: 49%;
+}
+
+.gallery-item img {
+  display: block;
+  width: 100%;
 }
 /* Profile styles */
 
