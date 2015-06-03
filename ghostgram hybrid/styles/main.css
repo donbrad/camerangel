@@ -1275,6 +1275,7 @@ div.loginBox > form > div > ul > li {
 
 .gallery-item {
     width: 24%;
+    max-height: 12%;
 	margin: 1px;
     float: left;
 }

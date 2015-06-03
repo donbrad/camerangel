@@ -72,7 +72,6 @@ function onShowGallery(e) {
 	});
 
 	$('#gallery-grid').imagesLoaded( function() {
-
 		// images have loaded
 		$('#gallery-grid').isotope('layout');
 	});
