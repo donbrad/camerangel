@@ -7,6 +7,7 @@ function onInitGallery(e){
 	 $('#gallery-grid').attr('width', $(window).width());
      $('#gallery-grid').isotope({
 		itemSelector: '.gallery-item',
+	   percentPosition: true,
 		getSortData: {
     		timestamp: '[data-timestamp]'
    
