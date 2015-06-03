@@ -172,7 +172,6 @@ function onChannelsClick(e) {
 	var channel = e.dataItem;	
 	var target = e.closest('a');
 	APP.kendo.navigate('#channel?channel='+channel.channelId);
-	
 }
 
 function gotoChannel(channelId) {
