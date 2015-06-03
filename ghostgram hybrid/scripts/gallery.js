@@ -61,13 +61,20 @@ function onShowGallery(e) {
 		
 	}
 	//isotope.insert(photoArray);
-	isotope.arrange();
+	//isotope.arrange();
+
 	$('.gallery-item').click(function () {
 		var photoUrl = this.attributes['data-imageurl'].value;
 
 		$('#photoViewImage').attr('src', photoUrl);
 		$('#photoImage').attr('src', photoUrl);
 		$('#modalview-photoView').kendoMobileModalView("open");
+	});
+
+	$('#gallery-grid').imagesLoaded( function() {
+
+		// images have loaded
+		$('#gallery-grid').isotope('layout');
 	});
 }
 
