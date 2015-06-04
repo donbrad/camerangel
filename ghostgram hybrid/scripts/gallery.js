@@ -41,6 +41,15 @@ function onInitGallery(e){
 	
 }
 
+function onShowPhotoEditor (e) {
+	e.preventDefault();
+
+
+	APP.featherEditor.launch({
+		image: 'photoEditImage',
+		url: $('#photoEditImage').attr('src')
+	});
+}
 
 function onShowGallery(e) {
 	e.preventDefault();
@@ -70,6 +79,7 @@ function onShowGallery(e) {
 
 		$('#photoViewImage').attr('src', photoUrl);
 		$('#photoTagImage').attr('src', photoUrl);
+		$('#photoEditImage').attr('src', photoUrl);
 		APP.kendo.navigate('#photoView');
 		//$('#modalview-photoView').kendoMobileModalView("open");
 	});
