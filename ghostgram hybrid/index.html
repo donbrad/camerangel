@@ -15,6 +15,7 @@
 	<script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-XdXhoF08ubebxTjTh9jf0Ra4xFV1Jwo&sensor=true&libraries=places">
     </script>
+    <script type="text/javascript" src="http://feather.aviary.com/js/feather.js"></script>
 	<script src="scripts/parse.js"></script>
     <script src="https://cdn.pubnub.com/pubnub-3.7.11.js"></script>
     <script src="scripts/appData.js"></script>
@@ -415,7 +416,7 @@
         <div data-role="navbar">
             <a data-align="left" data-role="backbutton"  >Back </a>
             <span>Photo View</span>
-			<a data-align="right" data-role="button"  data-rel="modalview"  href="#modalview-photo">Edit</a>
+			<a data-align="right" data-role="button"  data-rel="lview"  href="#photoEditor">Edit</a>
         </div>
     </div>
 	<div style="margin: 2px; height: 98%; width: auto; text-align: center; background: #27476e;">
@@ -423,9 +424,25 @@
 	</div>
 
 </div>
-	
-	
-	
+
+
+<div data-role="view" id="photoEditor"  style="width: 100%; height:100%; display: none;" data-show="onShowPhotoEditor">
+    <div data-role="header">
+        <div data-role="navbar">
+            <a data-align="left" data-role="backbutton" >Back </a>
+            <span>Photo Editor</span>
+            <a data-align="right" data-role="button"  data-rel="modalview"  href="#modalview-photo">Tag</a>
+        </div>
+    </div>
+    <div id='injection_site'></div>
+
+    <img id="photoEditImage" src="" > </img>
+
+
+</div>
+
+
+
 <div data-role="modalview" id="modalview-photo" style="width: 100%; height:100%; display: none;"  class="appearance">
     <div data-role="header">
         <div data-role="navbar">
@@ -437,7 +454,7 @@
     </div>
 
 	<div style="margin:8px; height: 25%; width: auto; text-align: center">
-		<img id="photoTagImage" src="" style="width: auto; height: 100%; vertical-align: middle;"> </img>
+		<img id="photoEditImage" src="" style="width: auto; height: 100%; vertical-align: middle;"> </img>
 	</div>
 	
      <form id="photoForm">
