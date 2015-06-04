@@ -1,6 +1,6 @@
 #import "Aviary.h"
 #import <Cordova/CDVPlugin.h>
-#import "AFPhotoEditorController.h"
+
 
 @implementation Aviary
 
