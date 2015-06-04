@@ -1284,6 +1284,10 @@ div.loginBox > form > div > ul > li {
     background:  #EFF1F2;
 }
 
+.gallery-sizer {
+	width: 25%;
+}
+
 .gallery-item {
     width: 24%;
     margin: 1px;
