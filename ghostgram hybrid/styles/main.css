@@ -1358,3 +1358,126 @@ div.loginBox > form > div > ul > li {
     font-size: 12px;
     color: #979797;
 }
+
+
+.avpw_is_fullscreen #avpw_controls, #avpw_holder #avpw_controls, #avpw_holder .avpw_is_fullscreen #avpw_controls {
+    position: absolute;
+    left: 5px;
+    right: 5px;
+    min-width: 300px;
+
+    -webkit-sizing: border-box;
+    -moz-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#avpw_holder #avpw_tool_content_wrapper {
+    position: relative;
+
+    padding-bottom: 56px;
+
+}
+
+#avpw_holder #avpw_tool_main_container {
+    position: relative;
+}
+
+#avpw_holder #avpw_tool_options_container {
+    position: relative;
+}
+
+#avpw_holder #avpw_tool_container {
+    left: 0;
+    right: 0;
+    min-width: 300px;
+}
+
+#avpw_holder .avpw_prev, #avpw_holder .avpw_next {
+
+}
+
+#avpw_holder .avpw_tool_pager .avpw_clip {
+    right: 48px;
+}
+
+#avpw_holder .avpw_scroll_strip {
+}
+
+#avpw_holder .avpw_scroll_strip .avpw_scroll_page {
+    /* max-width:200px; */
+    /* width: 300px !important; */
+}
+
+#avpw_holder #avpw_rghtArrow {
+    right: 0;
+}
+
+#avpw_holder #avpw_canvas_embed {
+    -webkit-sizing: border-box;
+    -moz-sizing: border-box;
+    box-sizing: border-box;
+    top: 188px;
+
+}
+
+#avpw_holder #avpw_zoom_container {
+    width: auto;
+    min-width: 42px;
+    left: 5px;
+    /* right: 5px; */
+    background: rgba(51, 51, 51, 0.59);
+}
+
+#avpw_holder #avpw_canvas_element, #avpw_holder #avpw_canvas_element.avpw_position_by_transform {
+    -webkit-sizing: border-box;
+    -moz-sizing: border-box;
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    width: 100% !important;
+
+    -webkit-transform: none !important;
+    -moz-transform: none !important;
+    transform: none !important;
+
+}
+
+#avpw_holder .avpw_mode_action {
+    position: relative;
+    height: 55px;
+    width: 100%;
+    top: 100%;
+    /* background: #303740; */
+}
+
+#avpw_holder .avpw_mode_action_left,
+#avpw_holder .avpw_mode_action_left + .avpw_mode_action_right {
+    width: 50%;
+}
+
+#avpw_holder .avpw_mode_action_left {
+    float: left;
+}
+
+#avpw_holder .avpw_mode_action_right {
+    float: right;
+}
+
+.avpw_mode_action_left:after, .avpw_mode_action_right:before, .avpw_tool_pager .avpw_scroll_rule {
+    height: auto !important;
+
+    top: 0 !important;
+    bottom: 0 !important;
+}
+
+#avpw_holder .avpw_mode_action .avpw_button {
+    /* position: relative; */
+
+}
+
+#avpw_holder .avpw_back_button {
+    float: left;
+}
