@@ -69,7 +69,7 @@ function onShowGallery(e) {
 		var photoUrl = this.attributes['data-imageurl'].value;
 
 		$('#photoViewImage').attr('src', photoUrl);
-		$('#photoImage').attr('src', photoUrl);
+		$('#photoTagImage').attr('src', photoUrl);
 		APP.kendo.navigate('#photoView');
 		//$('#modalview-photoView').kendoMobileModalView("open");
 	});
