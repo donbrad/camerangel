@@ -607,5 +607,7 @@ function saveEditProfile() {
     mobileNotify("Your profile was updated")
 }
 
-
+function closeStartModal() {
+	$("#modalview-start").data("kendoMobileModalView").close();
+}
 
