@@ -70,7 +70,8 @@ function onShowGallery(e) {
 
 		$('#photoViewImage').attr('src', photoUrl);
 		$('#photoImage').attr('src', photoUrl);
-		$('#modalview-photoView').kendoMobileModalView("open");
+		APP.kendo.navigate('#photoView');
+		//$('#modalview-photoView').kendoMobileModalView("open");
 	});
 
 	$('#gallery-grid').imagesLoaded( function() {
