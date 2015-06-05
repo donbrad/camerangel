@@ -42,63 +42,63 @@
             }
             else if ([object isEqualToString:@"EFFECTS"])
             {
-                [tools addObject:kAVYEffects];
+                [tools addObject:kAFEffects];
             }
             else if ([object isEqualToString:@"RED_EYE"])
             {
-                [tools addObject:kAVYRedeye];
+                [tools addObject:kAFRedeye];
             }
             else if ([object isEqualToString:@"CROP"])
             {
-                [tools addObject:kAVYCrop];
+                [tools addObject:kAFCrop];
             }
             else if ([object isEqualToString:@"WHITEN"])
             {
-                [tools addObject:kAVYWhiten];
+                [tools addObject:kAFWhiten];
             }
             else if ([object isEqualToString:@"DRAWING"])
             {
-                [tools addObject:kAVYDraw];
+                [tools addObject:kAFDraw];
             }
             else if ([object isEqualToString:@"STICKERS"])
             {
-                [tools addObject:kAVYStickers];
+                [tools addObject:kAFStickers];
             }
             else if ([object isEqualToString:@"TEXT"])
             {
-                [tools addObject:kAVYText];
+                [tools addObject:kAFText];
             }
             else if ([object isEqualToString:@"BLEMISH"])
             {
-                [tools addObject:kAVYBlemish];
+                [tools addObject:kAFBlemish];
             }
             else if ([object isEqualToString:@"MEME"])
             {
-                [tools addObject:kAVYMeme];
+                [tools addObject:kAFMeme];
             }
             else if ([object isEqualToString:@"ADJUST"])
             {
-                [tools addObject:kAVYAdjustments];
+                [tools addObject:kAFAdjustments];
             }
             else if ([object isEqualToString:@"ENHANCE"])
             {
-                [tools addObject:kAVYEnhance];
+                [tools addObject:kAFEnhance];
             }
             else if ([object isEqualToString:@"COLOR_SPLASH"])
             {
-                [tools addObject:kAVYSplash];
+                [tools addObject:kAFSplash];
             }
             else if ([object isEqualToString:@"TILT_SHIFT"])
             {
-                [tools addObject:kAVYFocus];
+                [tools addObject:kAFFocus];
             }
             else if ([object isEqualToString:@"ORIENTATION"])
             {
-                [tools addObject:kAVYOrientation];
+                [tools addObject:kAFOrientation];
             }
             else if ([object isEqualToString:@"FRAMES"])
             {
-                [tools addObject:kAVYFrames];
+                [tools addObject:kAFFrames];
             }
         }
         
