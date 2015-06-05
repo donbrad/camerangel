@@ -49,7 +49,7 @@
             <!-- for Icenium since I don't know how to set variables for it yet -->
             <meta-data
                 android:name="com.aviary.android.feather.v1.API_KEY"
-                android:value="dbc1109b282e01c0" />
+                android:value="125698b6-7f23-4a1f-b20f-40bad96ba047" />
             <!--
             <preference name="API_KEY" />
             <meta-data
@@ -503,7 +503,8 @@
                 <param name="ios-package" value="Aviary" />
             </feature>
         </config-file>
-
+		<framework src="src/ios/AviarySDK.framework"/>
+		<header-file src="src/ios/AviarySDK.framework/Versions/A/Headers/AVYPhotoEditorController.h" />
         <source-file src="src/ios/Aviary.m" />
         <header-file src="src/ios/Aviary.h" />
     </platform>
