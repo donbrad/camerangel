@@ -29,14 +29,6 @@ DEPRECATED_MSG_ATTRIBUTE("The AFPhotoEditorControllerDelegate has been depreciat
                          "Please use AVYPhotoEditorControllerDelegate.")
 @protocol AFPhotoEditorControllerDelegate <AVYPhotoEditorControllerDelegate> @end
 
-DEPRECATED_MSG_ATTRIBUTE("The AFInAppPurchaseManager has been depreciated. " \
-                         "Please use AVYInAppPurchaseManager.")
-@protocol AFInAppPurchaseManager <AVYInAppPurchaseManager> @end
-
-DEPRECATED_MSG_ATTRIBUTE("The AFInAppPurchaseManagerDelegate has been depreciated. " \
-                         "Please use AVYInAppPurchaseManagerDelegate.")
-@protocol AFInAppPurchaseManagerDelegate <AVYInAppPurchaseManagerDelegate> @end
-
 extern NSString *const AFPhotoEditorSessionCancelledNotification DEPRECATED_ATTRIBUTE;
 extern NSString *const kAFPhotoEditorEffectsIAPEnabledKey DEPRECATED_ATTRIBUTE;
 

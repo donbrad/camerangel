@@ -1,6 +1,6 @@
 #import "Aviary.h"
 #import <Cordova/CDVPlugin.h>
-#import "AVYPhotoEditorController.h"
+
 
 @implementation Aviary
 
@@ -11,7 +11,7 @@
 
 - (void) prepareForShow:(CDVInvokedUrlCommand*) command
 {
-    [AFOpenGLManager beginOpenGLLoad];
+    [AVYOpenGLManager beginOpenGLLoad];
     CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
 }
@@ -38,71 +38,71 @@
         {
             if ([object isEqualToString:@"SHARPNESS"])
             {
-                [tools addObject:kAFSharpness];
+                [tools addObject:kAVYSharpness];
             }
             else if ([object isEqualToString:@"EFFECTS"])
             {
-                [tools addObject:kAFEffects];
+                [tools addObject:kAVYEffects];
             }
             else if ([object isEqualToString:@"RED_EYE"])
             {
-                [tools addObject:kAFRedeye];
+                [tools addObject:kAVYRedeye];
             }
             else if ([object isEqualToString:@"CROP"])
             {
-                [tools addObject:kAFCrop];
+                [tools addObject:kAVYCrop];
             }
             else if ([object isEqualToString:@"WHITEN"])
             {
-                [tools addObject:kAFWhiten];
+                [tools addObject:kAVYWhiten];
             }
             else if ([object isEqualToString:@"DRAWING"])
             {
-                [tools addObject:kAFDraw];
+                [tools addObject:kAVYDraw];
             }
             else if ([object isEqualToString:@"STICKERS"])
             {
-                [tools addObject:kAFStickers];
+                [tools addObject:kAVYStickers];
             }
             else if ([object isEqualToString:@"TEXT"])
             {
-                [tools addObject:kAFText];
+                [tools addObject:kAVYText];
             }
             else if ([object isEqualToString:@"BLEMISH"])
             {
-                [tools addObject:kAFBlemish];
+                [tools addObject:kAVYBlemish];
             }
             else if ([object isEqualToString:@"MEME"])
             {
-                [tools addObject:kAFMeme];
+                [tools addObject:kAVYMeme];
             }
             else if ([object isEqualToString:@"ADJUST"])
             {
-                [tools addObject:kAFAdjustments];
+                [tools addObject:kAVYAdjustments];
             }
             else if ([object isEqualToString:@"ENHANCE"])
             {
-                [tools addObject:kAFEnhance];
+                [tools addObject:kAVYEnhance];
             }
             else if ([object isEqualToString:@"COLOR_SPLASH"])
             {
-                [tools addObject:kAFSplash];
+                [tools addObject:kAVYSplash];
             }
             else if ([object isEqualToString:@"TILT_SHIFT"])
             {
-                [tools addObject:kAFFocus];
+                [tools addObject:kAVYFocus];
             }
             else if ([object isEqualToString:@"ORIENTATION"])
             {
-                [tools addObject:kAFOrientation];
+                [tools addObject:kAVYOrientation];
             }
             else if ([object isEqualToString:@"FRAMES"])
             {
-                [tools addObject:kAFFrames];
+                [tools addObject:kAVYFrames];
             }
         }
         
-        [AFPhotoEditorCustomization setToolOrder:tools];
+        [AVYPhotoEditorCustomization setToolOrder:tools];
     }
     
     self.aviary = [[AVYPhotoEditorController alloc] initWithImage:image];
@@ -166,7 +166,7 @@
     [self closeAviary];
 }
 
--(void) photoEditorCanceled:(AFPhotoEditorController *)editor
+-(void) photoEditorCanceled:(AVYPhotoEditorController *)editor
 {
     [self closeAviary];
 }

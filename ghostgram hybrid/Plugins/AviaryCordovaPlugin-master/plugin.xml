@@ -503,7 +503,14 @@
                 <param name="ios-package" value="Aviary" />
             </feature>
         </config-file>
-		<framework src="src/ios/AviarySDK.framework" custom="true" />
+		<header-file src="src/ios/AVYPhotoEditorController.h" />
+		<header-file src="src/ios/AVYPhotoEditorContext.h" />
+		<header-file src="src/ios/AVYPhotoEditorCustomization.h" />
+		<header-file src="src/ios/AVYPhotoEditorProduct.h" />
+		<header-file src="src/ios/AVYPhotoEditorSession.h" />
+		<header-file src="src/ios/AVYPhotoEditorCompatibility.h" />
+		<header-file src="src/ios/AVYOpenGLManager.h" />
+		<header-file src="src/ios/AviarySDK.h" />
         <source-file src="src/ios/Aviary.m" />
         <header-file src="src/ios/Aviary.h" />
     </platform>
