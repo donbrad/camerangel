@@ -434,14 +434,14 @@
         </div>
     </div>
 	
-    <div id='photoEditTools'>
-        <ul data-role="buttongroup" data-index="0">
-            <li style="font-size: 1.3em">Rotate Left</li>
-            <li style="font-size: 1.3em">Rotate Right</li>
-            <li style="font-size: 1.3em">Crop</li>
-        </ul>
+    <div id='photoEditTools' style="text-align: center; padding-top: 8px; padding-bottom: 6px;">
+        <a  data-role="button"  id="photoEditRotateLeft" data-click="photoEditRotateLeft"> <i class="ghostIconNavbar fa fa-rotate-left"></i> Left </a>
+        <a  data-role="button"  id="photoEditRotateRight" data-click="photoEditRotateRight"> <i class="ghostIconNavbar fa fa-rotate-right"></i> Right </a>
+        <a  data-role="button"  id="photoEditCrop" data-click="photoEditCrop"> <i class="ghostIconNavbar fa fa-scissors"></i> Crop </a>
     </div>
-    <img id="photoEditImage" src=""  style="height: 100%; width: auto;"/>
+    <div style="margin: 6px; text-align: center;">
+        <img id="photoEditImage" src=""  style="max-height: 100%; max-width: 100%;"/>
+    </div>
 
 
 </div>
