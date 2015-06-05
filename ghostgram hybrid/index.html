@@ -426,16 +426,16 @@
 </div>
 
 
-<div data-role="view" id="photoEditor"  style="width: 100%; height:100%; display: none;" data-show="onShowPhotoEditor">
+<div data-role="view" id="photoEditor"  style="display: none;" data-show="onShowPhotoEditor">
     <div data-role="header">
         <div data-role="navbar">
-            <a data-align="left" data-role="backbutton" >Back </a>
+            <a data-align="left" data-role="backbutton">Back </a>
             <span>Photo Editor</span>
             <a data-align="right" data-role="button"  data-rel="modalview"  href="#modalview-photo">Tag</a>
         </div>
     </div>
+	
     <div id='injection_site'></div>
-
     <img id="photoEditImage" src="" > </img>
 
 
@@ -449,9 +449,9 @@
             <span>Tag Photo</span>
                 <a data-click="closeModalViewPhoto" data-role="button" data-align="left">Cancel</a>
                 <a data-click="savePhoto"  type="button" data-role="button" data-align="right">Save</a>
-            </div>
-        </div>
-    </div>
+		</div>
+	</div>
+]
 
 	<div style="margin:8px; height: 25%; width: auto; text-align: center">
 		<img id="photoEditImage" src="" style="width: auto; height: 100%; vertical-align: middle;"> </img>
@@ -472,7 +472,6 @@
             
         </ul>
     </form> 
-
 </div>
 	
 	
