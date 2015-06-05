@@ -425,7 +425,7 @@
 </div>
 
 
-<div data-role="view" id="photoEditor"  style="display: none;" data-show="onShowPhotoEditor" class="appearance">
+<div data-role="view" id="photoEditor"  style="display: none; max-height: window.height;" stretch="true" data-show="onShowPhotoEditor" class="appearance">
     <div data-role="header">
         <div data-role="navbar">
             <a data-align="left" data-role="backbutton">Back </a>
@@ -439,7 +439,7 @@
         <a  data-role="button"class="btnYellow"  id="photoEditRotateRight" data-click="photoEditRotateRight"> <i class="fa fa-rotate-right"></i> Right </a>
         <a  data-role="button" class="btnYellow"  id="photoEditCrop" data-click="photoEditCrop"> <i class=" fa fa-scissors"></i> Crop </a>
     </div>
-    <div style="margin: 6px; text-align: center;">
+    <div style="margin: 6px; text-align: center; max-height: 100%;">
         <img id="photoEditImage" src=""  style="max-height: 100%; max-width: 100%;"/>
     </div>
 
