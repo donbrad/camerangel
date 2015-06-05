@@ -422,6 +422,7 @@ form {
 .ghostPhotoBox .km-button:active {
     background: #fff !important;
 }
+
 /* Initial Styles */
 #home .km-content {
     background-image: url('../images/blank-bk@2x.png');
@@ -431,6 +432,7 @@ form {
   -o-background-size: cover;
   background-size: cover;
 }
+
 .km-flat .km-pages .km-current-page {
     background-image: url('../images/blank-bk.png');
     background-size: 100% 100%;
@@ -464,8 +466,15 @@ form {
 
 .ghostButton {
     background: #27476e;
+	color: #fff;
     font-size: 1.2em;
     font-weight: 700;
+}
+
+.ghostButtonSmall {
+    background: #27476e;
+	color: #fff;
+    font-size: 0.8em;
 }
 
 .ghostShadow {
@@ -535,6 +544,7 @@ form {
     display: block;
 	padding: 4px;
 }
+
 .ghostMemberName {
     display: inline-block;
     margin-top: 5px;
