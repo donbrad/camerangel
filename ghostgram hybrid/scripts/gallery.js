@@ -45,10 +45,6 @@ function onShowPhotoEditor (e) {
 	e.preventDefault();
 
 
-	APP.featherEditor.launch({
-		image: 'photoEditImage',
-		url: $('#photoEditImage').attr('src')
-	});
 }
 
 function onShowGallery(e) {

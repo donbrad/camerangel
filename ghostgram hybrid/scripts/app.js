@@ -542,17 +542,6 @@
 		APP.location = new Object();
 
 
-        APP.featherEditor = new Aviary.Feather({
-            apiKey: '125698b6-7f23-4a1f-b20f-40bad96ba047',
-            apiVersion: 3,
-            tools: ['enhance', 'crop', 'resize', 'text', 'orientation'],
-            onSave: function(imageID, newURL) {
-                var img = document.getElementById(imageID);
-                img.src = newURL;
-                //TODO: add image edit save function
-            }
-        });
-
 		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, 
 			 function(fileSystem){ 
 				var url = fileSystem.root.nativeURL;
