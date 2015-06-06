@@ -20,6 +20,18 @@
 .right {
   float: right;
 }
+.appBox {
+  padding: 1rem;
+}
+.listBox {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+.full {
+  width: 100%;
+}
 body {
   font-family: 'Open Sans', sans-serif;
   line-height: 1.5;
@@ -48,7 +60,8 @@ h3 {
 
 }
 h4 {
-  font-size: 1.14285714em;
+  font-size: 16px;
+  font-weight: 400;
 }
 h5 {
   font-weight: 600;
@@ -123,7 +136,40 @@ form {
   height: 60px;
   border: 1px solid #F2EFF0;
   line-height: 1.5;
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);
+}
+.circle-img-sm {
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  border: 1px solid #F2EFF0;
+  line-height: 1.5;
+  width: 30px;
+  height: 30px;
+}
+.circle-img-md {
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  border: 1px solid #F2EFF0;
+  line-height: 1.5;
+  width: 40px;
+  height: 40px;
+}
+.circle-img-lg {
+  border-radius: 50%;
+  border: 1px solid #F2EFF0;
+  line-height: 1.5;
+  width: 60px;
+  height: 60px;
+}
+.circle-img-xl {
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  border: 1px solid #F2EFF0;
+  line-height: 1.5;
+  width: 120px;
+  height: 120px;
 }
 .greyBtn {
   color: #A4A4A4;
@@ -154,6 +200,29 @@ form {
 }
 .btnYellow:disabled {
   background: #A4A4A4 !important;
+}
+.btnBlack {
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  -webkit-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
+  -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
+  color: #ffffff;
+  font-size: 14px !important;
+  background: #424242 !important;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+.btnBlack:hover {
+  background: #616161 !important;
+  text-decoration: none;
+}
+.btnBlack:active {
+  background: #757575 !important;
+  text-decoration: none;
+  transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .btnClear {
   background: transparent;
@@ -957,6 +1026,11 @@ a:hover {
   top: 42px;
   left: 48px;
 }
+.statusContactList {
+  position: relative;
+  left: 24px;
+  top: -20px;
+}
 #menuAvailable {
   background: transparent;
   color: #fff;
@@ -969,7 +1043,19 @@ a:hover {
 .km-flat .km-list > li {
   background: transparent;
   box-shadow: none;
-  border: none !important;
+  border: transparent;
+}
+#profileEdit > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > div.profileEditBtm > form > div > ul > li:nth-child(1),
+.km-flat .km-listinset > li:last-child,
+.km-flat .km-listgroupinset .km-list > li:last-child,
+.km-flat .km-listinset > li:last-child,
+.km-flat .km-listgroupinset .km-list > li:first-child {
+  border: transparent !important;
+  border-color: rgba(0, 0, 0, 0) !important;
+}
+#profile > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > div > div.profileDisplay > div > ul > li:nth-child(1),
+#formCreateAccount > div > ul > li:nth-child(1) {
+  border: transparent;
 }
 #appDrawer > div > div.km-scroll-container > div > div.menuLinks > div > ul > li {
   border-bottom: none;
@@ -1234,4 +1320,25 @@ div.loginBox > form > div > ul > li {
 #modalview-start > div > div.km-scroll-container > div > div > div {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
+}
+/* Contact List styles */
+#contacts-listview > li {
+  border-bottom: 1px solid #e0e0e0;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+#contacts-listview > li > div > div:nth-child(1) > div:nth-child(3) > h4 {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+.listPhoto {
+  width: 20%;
+  height: 40px;
+}
+.listName {
+  width: 80%;
+}
+#contacts-listview > li > div > div:nth-child(1) > p {
+  margin-left: 0px;
+  margin-right: 0px;
 }

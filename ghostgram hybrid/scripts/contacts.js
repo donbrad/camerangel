@@ -398,7 +398,7 @@ function contactsFindContacts(e) {
                     contactItem.addresses.push(address);
                 }
             } 
-            contactItem.photo = 'images/missing_profile_photo.jpg';
+            contactItem.photo = 'images/default-img.png';
             if (contacts[i].photos !== null) {
 				returnValidPhoto(contacts[i].photos[0].value, function(validUrl) {
                 	contactItem.photo = validUrl;
@@ -424,7 +424,7 @@ function contactsFindContacts(e) {
     };
     img.onerror = function(err) {
         //Returning a default image for users without photo 
-        callback("images/missing_profile_photo.jpg");
+        callback("images/default-img.png");
     };
     img.src = url;
 }
@@ -436,8 +436,7 @@ function doShowAddContacts() {
     $('#addContactAlias').val(data.name);
 	
     if (data.photo === null) {
-        $("#addContactPhoto").attr("src",'images/missing_profile_photo.jpg');
-    } else {
+        $("#addContactPhoto").attr("src","images/default-img.png");
          $("#addContactPhoto").attr("src",data.photo);
     }
    

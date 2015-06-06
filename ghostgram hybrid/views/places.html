@@ -25,12 +25,17 @@
            -->
         </div>
 	    </div>
-		    <div style='padding-bottom: 4px; padding-top: 4px; '>
-	         <input style="font-size: 16px; margin-left: 6px; width: 80%" id="placeSearchQuery" type="search"/> <a data-role="button"  data-click="findPlace">  <i class="fa fa-search"></i> </a>
+	    <div class="appBox">
+		    <div style="padding-bottom: 4px; padding-top: 4px;">
+	        	<input style="font-size: 16px; margin-left: 6px; width: 80%" id="placeSearchQuery" type="search"/> 
+		         <a data-role="button" data-click="findPlace">  
+		         	<i class="fa fa-search"></i> 
+		         </a>
 	        </div>
-	     <div>
-	           <ul id="findplace-listview"></ul>
-	     </div>
+		     <div>
+		           <ul id="findplace-listview"></ul>
+		     </div>
+		</div>
 </div>
 
 <div data-role="modalview" id="modalview-addPlace" style="width: 90%; display: none;" class="appearance" data-before-open="onShowAddPlace">
@@ -55,8 +60,8 @@
              <li>
                 <label> Enable Privacy Mode (Default - you can change)
                     <select id="addPlacePrivacy">
-                        <option value=true>Yes - It's a public place</option>
-                        <option value=false>No - I have privacy here</option>
+                        <option value="true">Yes - It's a public place</option>
+                        <option value="false">No - I have privacy here</option>
                     </select>
                 </label>
             </li>
@@ -64,8 +69,8 @@
 			<li>
                 <label> Visible Here (Default - you can change)
                     <select id="addPlaceVisible">
-                        <option value=true>Yes - Let people know I'm here</option>
-                        <option value=false>No - Keep me hidden</option>
+                        <option value="true">Yes - Let people know I'm here</option>
+                        <option value="false">No - Keep me hidden</option>
                     </select>
                 </label>
             </li>

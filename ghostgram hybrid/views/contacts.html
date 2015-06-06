@@ -8,11 +8,11 @@
         </div>
     </div>       
     
-    <div class="ghostContent" style="padding-bottom: 24px;">
+    <div style="padding-bottom: 24px;">
         <ul id="contacts-listview"></ul>  
     </div>
     
-    <ul data-role="actionsheet" id="contactActions"  data-popup='{"direction": "left"}'>
+    <ul data-role="actionsheet" id="contactActions" data-popup='{"direction": "left"}'>
       
         <li><a data-action="inviteContact">Invite Contact</a></li>
        <li><a data-action="editContact">Edit Contact</a></li>
@@ -22,7 +22,7 @@
         
     </ul> 
     
-      <ul data-role="actionsheet" id="contactUserActions"  data-popup='{"direction": "left"}'>
+      <ul data-role="actionsheet" id="contactUserActions" data-popup='{"direction": "left"}'>
          <li><a data-action="editContact">Edit Contact</a></li>
         <li><a data-action="privateChat">Private Chat</a></li>
         <li><a data-action="contactSendSMS">Send SMS</a></li>
@@ -57,11 +57,11 @@
        <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-             <a data-role="backbutton" data-align="left">Back</a>
+             <a data-role="backbutton" data-align="left" data-role="button">Back</a>
              <a data-align="right" data-role="button" data-click="contactsAddContact">Add</a>
         </div>
     </div> 
-	<div class="ghostContainer" style="padding-bottom: 28px;">
+	<div style="padding-bottom: 28px;">
         <div style=" padding: 12px;">  
             <img  style="float:left; margin: 0px 15px 15px 0px; width: 80px; height: auto;" id="addContactPhoto" src="">
             Please choose a <strong>phone number</strong> and an <strong>email address</strong>. </br>  
@@ -82,8 +82,8 @@
              <li>
                 <label> Private Channel
                     <select id="addContactPrivate">
-                        <option value=true>Yes - Enabled</option>
-                        <option value=false>No - Disabled</option>
+                        <option value="true">Yes - Enabled</option>
+                        <option value="false">No - Disabled</option>
                     </select>
                 </label>
             </li>
@@ -181,26 +181,42 @@
 
 
 <script type="text/x-kendo-template" id="contactsTemplate">      
-    <div style="min-height: 48px; padding: 4px; border-radius: 9px; background-color: \\#fff; clear: both;">
+    <div class="listBox">
 	     <div>
-			 <a data-role="button" class="slideGearButton ghostButton" style="display:none; float:right;"><i class="ghostIcon fa fa-cog"></i></a>
-			<img style="border-radius: 50%; width: 48px; height: auto; max-height: 48px; over-flow: hidden; float:left; margin: 0px 8px 8px 0px;" src="#:data.photo#">
-			<div >
-			  <span class="ghostTextLarge"> #if (data.contactUUID === undefined || data.contactUUID === null || data.contactUUID === '') { # <em> <i class="fa fa-user-times"></i> </em> # } else {#  <strong> <i class="fa fa-user-secret"></i> </strong> #} #
-	 #: data.alias # </span>  <span>  #if (data.isAvailable) { # (Available)  # } else { # Busy! #}#</span>
-			</div>
-			<div>
-			  <span class="ghostTiny">(#: data.name #)</span>   
-			</div>
-			 <div style="font-size: 12px;">
-			 <span>  <i class="fa fa-map-marker"></i> #: data.location # </span> 
+			 <a data-role="button" class="slideGearButton ghostButton" style="display:none; float:right;">
+			 	<i class="ghostIcon fa fa-cog"></i>
+			 </a>
+			 <div class="left listPhoto">
+			 	<img class="circle-img-md" src="#:data.photo#" />
+			 	<span class="statusContactList">  
+		 			#if (data.isAvailable) { #  
+		 				<img width="16" src="images/status-available.svg" />
+		 			# } 
+		 			else { # 
+		 				<img width="16" src="images/status-away.svg" />
+		 			#}#
+		 		</span>
+			 </div><!-- left -->
+			
+			<div class="left listName">
+				<h4>#: data.alias # </h4>
+			  	<span class="ghostTextLarge hidden"> 
+				  #if (data.contactUUID === undefined || data.contactUUID === null || data.contactUUID === '') { # <em> <i class="fa fa-user-times"></i> </em> # } 
+				  else {#  
+				  	<strong> <i class="fa fa-user-secret"></i> </strong> #} #
+	 			</span>  
+			</div><!-- left -->
+			<p class="left caption">#: data.name #</p>  
+			<div class="clearfix"></div> 
+			<div class="hidden">
+			 	<span> <i class="fa fa-map-marker"></i> #: data.location # </span> 
 			 </div>
 		 </div>
 		 # if (data.message !== undefined && data.message !== '') { #
 		 <div> <i class="fa fa-comment-o"></i> #: data.message # </div>
 		 #} #
-		<div style="clear:both;"> </div> 
-    </div>
+	</div>
+</div><!-- listBox -->
 </script>
 
 <script type="text/x-kendo-template" id="deviceContactsTemplate">
