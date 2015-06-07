@@ -7,9 +7,14 @@
             <a data-role="button" href="#contactImport" data-align="right" ><i class="ghostIconNavbar fa fa-plus"></i> Import </a>
         </div>
     </div>       
-    
+    <div class="contactBanner">Friends</div>
     <div style="padding-bottom: 24px;">
-        <ul id="contacts-listview"></ul>  
+        <ul id="contacts-listview"></ul>
+        <div class="contactBanner">On Device</div>
+        <a class="btnClear">
+        	<img src="images/import.svg" height="16" />
+        	Import from device
+        </a>
     </div>
     
     <ul data-role="actionsheet" id="contactActions" data-popup='{"direction": "left"}'>
@@ -42,13 +47,14 @@
         </div>
     </div>    
     <div  style="padding-bottom: 24px;">
-       <div style='padding-bottom: 4px; padding-top: 4px; '>
-         <input style="font-size: 16px; margin-left: 6px; width: 80%" id="contactSearchQuery" type="search"/> <a data-role="button"  data-click="contactsFindContacts">  <i class="ghostIconSmall fa fa-search"></i> </a>
+       <div style="padding-bottom: 4px; padding-top: 4px;">
+         <input style="font-size: 16px; margin-left: 6px; width: 80%" id="contactSearchQuery" type="search"/> 
+         <a data-role="button"  data-click="contactsFindContacts">  
+         	<i class="ghostIconSmall fa fa-search"></i>
+         </a>
         </div>
 
         <ul id="contactimport-listview"></ul>
-      
-       
     </div>
         
 </div>
@@ -221,7 +227,11 @@
 
 <script type="text/x-kendo-template" id="deviceContactsTemplate">
   <div>
-  <div class="ghostText">#: data.name # <a data-role="detailbutton" data-style="detaildisclose" ></a></div>
+	  <div>
+	  # if (data.name == '') {#
+	  	<h4>John Smith</h4>
+	  #}#  
+	  </div>
   </div>
 </script>
 

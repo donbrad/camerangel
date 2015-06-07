@@ -32,6 +32,13 @@
 .full {
   width: 100%;
 }
+.contactBanner {
+  width: 100%;
+  background-color: #e0e0e0;
+  padding: 3px 1rem 3px 1rem;
+  color: #979797;
+  font-size: 11px;
+}
 body {
   font-family: 'Open Sans', sans-serif;
   line-height: 1.5;
@@ -1049,7 +1056,8 @@ a:hover {
 .km-flat .km-listinset > li:last-child,
 .km-flat .km-listgroupinset .km-list > li:last-child,
 .km-flat .km-listinset > li:last-child,
-.km-flat .km-listgroupinset .km-list > li:first-child {
+.km-flat .km-listgroupinset .km-list > li:first-child,
+#addContact > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > div > form > div > ul > li:nth-child(1) {
   border: transparent !important;
   border-color: rgba(0, 0, 0, 0) !important;
 }
@@ -1322,7 +1330,8 @@ div.loginBox > form > div > ul > li {
   margin-bottom: 0.5rem;
 }
 /* Contact List styles */
-#contacts-listview > li {
+#contacts-listview > li,
+#contactimport-listview > li {
   border-bottom: 1px solid #e0e0e0;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
