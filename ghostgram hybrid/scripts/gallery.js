@@ -52,6 +52,10 @@ function photoEditRotateRight(e) {
 function onShowPhotoEditor (e) {
 	e.preventDefault();
 
+	var canvas = new fabric.Canvas('photoEditCanvas');
+	var imgElement = document.getElementById('photoEditImage');
+	var imgInstance = new fabric.Image(imgElement);
+	canvas.add(imgInstance);
 
 }
 
