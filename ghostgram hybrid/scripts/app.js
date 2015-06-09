@@ -540,7 +540,8 @@
 		
 		APP.geoLocator = new GeoLocator();
 		APP.location = new Object();
-		
+
+
 		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, 
 			 function(fileSystem){ 
 				var url = fileSystem.root.nativeURL;

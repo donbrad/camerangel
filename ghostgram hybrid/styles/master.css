@@ -1425,3 +1425,91 @@ div.loginBox > form > div > ul > li {
   margin-top: 0.5rem;
   text-align: center;
 }
+/* Don's development styles...*/
+.tile {
+  height: 50%;
+  width: 50%;
+  float: left;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+#gallery-grid {
+  width: 100%;
+  background: #EFF1F2;
+}
+.gallery-sizer {
+  width: 25%;
+}
+.gallery-item {
+  width: 24%;
+  margin: 1px;
+  float: left;
+}
+.gallery-item .large {
+  width: 49%;
+}
+.gallery-item img {
+  display: block;
+  width: 100%;
+}
+.chat-message {
+  margin: 8px 8px;
+  line-height: 16px;
+}
+.chat-message p {
+  margin: 0px 0px 4px;
+  font-size: 14px;
+  height: 100%;
+}
+.chat-message h5 {
+  line-height: 1.5em;
+  opacity: 0.5;
+  color: #27476e;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  display: none;
+}
+.chat-message-profileImg {
+  border-radius: 50%;
+  float: left;
+  border: 1px solid #F2EFF0;
+}
+.chat-message-photo {
+  width: 80%;
+  height: auto;
+}
+.chat-message-content {
+  margin-left: 44px;
+  height: 100%;
+}
+.chat-message-user-content {
+  margin-left: 72px;
+  height: 100%;
+  float: right;
+}
+.chat-message-text {
+  font-size: 14px;
+  letter-spacing: 0.05em;
+}
+.chat-time {
+  text-align: center;
+  font-size: 12px;
+  color: #979797;
+}
+.cropper {
+  position: relative;
+  cursor: crosshair;
+}
+.cropper-area-handle {
+  width: 6px;
+  height: 6px;
+  background: yellow;
+}
+.cropper-overlay {
+  background: black;
+  opacity: 0.5;
+  filter: rgba(74, 74, 74, 0.5);
+}

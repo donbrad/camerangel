@@ -78,13 +78,13 @@
      <form>
         <ul data-role="listview" data-style="inset">
             <li>
-                <label>What's the topic?
-                    <input type="text" id="channels-addChannel-name" value="" required />
+                <label>Name
+                    <input type="text" class="clearable" id="channels-addChannel-name" value="" required />
                 </label>
             </li>
              <li>
                 <label>Description
-                    <input type="text" id="channels-addChannel-description" value="" />
+                    <input type="text" class="clearable" id="channels-addChannel-description" value="" />
                 </label>
 			</li> 
              <li class="hidden">
@@ -268,7 +268,7 @@
         </div>
         <div style="float: right; color:\\#2e2e2e; font-size: 11px;">
             #if (data.contactUUID === undefined || data.contactUUID === null || data.contactUUID === '') { # <em> New User - Invite! </em> # } else {#  <strong> Verified User </strong> #} #
-        <div>
+        </div>
     </div>
 </script>
 

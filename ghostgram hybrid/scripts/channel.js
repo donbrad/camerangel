@@ -66,6 +66,7 @@ function tapChannel(e) {
 	if (target[0].className === 'chat-message-photo') {
 		var photoUrl = message.data.photo.photo;
 		$('#photoViewImage').attr('src', photoUrl);
+		$('#photoImage').attr('src', photoUrl);
 		$('#modalview-photoView').kendoMobileModalView("open");
 	}
 	
