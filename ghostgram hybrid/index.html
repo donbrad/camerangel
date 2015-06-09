@@ -158,11 +158,9 @@
 
     <div class="startBox">
 		<h2>Let's Get Started
-			<span class="right closeBox">
-				<a data-role="button">
-					<img src="images/close.svg"/>
-				</a>
-			</span>
+			<a class="right closeBox" data-role="button">
+				<img src="images/close.svg"/>
+			</a>
 		</h2>
 		<div class="clearfix"></div>
 		<div class="imgLine">
@@ -171,10 +169,19 @@
 		<div class="startOptions">
 			<div class="startTask">
 				<div class="startLine-photo">
+					<img src="images/verified-phone.svg" height="36"/>
+				</div>
+				<div class="startLine-text"> 
+					<a class="btnClear" data-role="button" data-rel="modalview" href="#modalview-verifyPhone">Verified your number</a>
+					<p>Send a text message to your phone and copy the code.  </p>
+				</div>
+			</div>
+			<div class="startTask">
+				<div class="startLine-photo">
 					<img src="images/start-chat.svg" height="26"/>
 				</div>
 				<div class="startLine-text">
-					<a class="btnClear">Create a chat</a>
+					<a class="btnClear" href="#testing" data-role="button" data-rel="modalview">Create a chat</a>
 					<p>Chat with a group or set up a private secure chat with a friend. </p>
 				</div>
 			</div>
@@ -183,7 +190,7 @@
 					<img src="images/start-invite.svg" height="30"/>
 				</div>
 				<div class="startLine-text">
-					<a class="btnClear">Invite your friends</a>
+					<a class="btnClear" href="#testing" data-role="button" data-rel="modalview">Invite your friends</a>
 					<p>Share photo and personal details securly with friends and family.</p>
 				</div> 
 			</div>
@@ -192,7 +199,7 @@
 					<img src="images/start-place.svg" height="30"/>
 				</div>
 				<div class="startLine-text">
-					<a class="btnClear">Join a place chat</a>
+					<a class="btnClear" href="#testing" data-role="button" data-rel="modalview">Join a place chat</a>
 					<p>See what’s happing at your favorite places.</p>
 				</div>
 			</div> 
@@ -295,32 +302,26 @@
 </div>
     
 <div data-role="modalview" id="modalview-verifyPhone" style="width: 90%; display: none;" class="appearance">
-    <div data-role="header">
-        <div data-role="navbar">
-            <span>Verify Phone</span>    
-        </div>
-    </div>
-
-     <form>
-        <ul data-role="listview" data-style="inset">
-            <li>
-                <label>Verification Code
-                    <input type="number" id="verifyPhone-code" value="" />
-                </label>
-            </li>
-        </ul>
-    </form>
-
-    <div style="padding-top: 8px; text-align:center;">
-        <a class="button ghostButton"  data-click="sendVerificationCode" data-role="button">Resend Verification Code</a>
-    </div>
-
-    <div data-role="footer">
-        <div data-role="navbar">
-            <a data-click="closeModalViewVerifyPhone" data-role="button" data-align="left">Cancel</a>
-            <a data-click="verifyPhone"  type="button" data-role="button" data-align="right">Verify</a>
-        </div>
-    </div>
+    <div class="modalview-content">
+	    <h3>
+	    	Verify Number
+	    	<a class="right closeBox" data-click="closeModalViewVerifyPhone" data-role="button">
+	    		<img src="images/close.svg" />
+	    	</a>
+	    </h3>
+	        <ul data-role="listview" data-style="inset">
+	            <li>
+	                <label>Enter code from text message</label>
+	                <input type="tel" id="verifyPhone-code" value="" />
+	              	<span class="helper helper-right btnClear-grey" data-click="sendVerificationCode" data-role="button">
+	              		Resend code
+	              	</span>
+	            </li>
+	        </ul>
+	    <div style="padding-top: 8px; text-align:center;">
+	        <a class="btnYellow btnSpan" data-click="verifyPhone" type="button" data-role="button" data-align="right">Verify</a>
+	    </div>
+   	</div>
 </div>
 	
 <div data-role="modalview" id="modalview-login" style="width: 90%; display: none;" class="appearance"  data-init="doInitSignIn">
@@ -388,17 +389,6 @@
                 <input type="tel" id="home-signup-phone" value="" name="Mobile Phone" required />
                 </label>
             </li>
-<!--
-			<li> 
-				  <label>Profile Photo
-					   <select id="home-signup-profilePhoto">
-						   <option value="none">None</option>
-						   <option value="current">Use Current</option>
-						   <option value="new">Import New Photo</option>
-					  </select>
-				  </label>
-			  </li>
--->
         </ul>  
     </form> 
     <div data-role="footer">
@@ -410,28 +400,20 @@
 	
 	
 <div data-role="modalview" id="modalview-recoverPassword" style="width: 90%; display:none;" class="appearance">
-     <h2>Password reset
-        <a data-click="closeModalViewRecoverPassword" data-role="button" style="float: right;">
-            <img src="images/close.svg" />
-        </a>
-    </h2>
-    <div class="modalview-content">
-        <form>
-            <label>Email password reset link to 
-                <input type="email" id="home-recoverPassword-email" value="" placeholder="email address"/>
-            </label>
-        </form>
-    </div>
-    <a class="btnFull btnYellow" data-click="homeRecoverPassword" id="modalview-recoverPassword-button" type="button" data-role="button">Send</a>
-<!--
-        <div data-role="footer">
-            <div data-role="navbar">
-                <a data-click="closeModalViewRecoverPassword" data-role="button" data-align="left">Cancel</a>
-                <a data-click="homeRecoverPassword" id="modalview-recoverPassword-button" type="button" data-role="button" data-align="right">Recover Password</a>
-            </div>
-        </div>
--->
-    
+	<div class="modalview-content">
+	    <h2>Password reset
+	        <a class="closeBox" data-click="closeModalViewRecoverPassword" data-role="button" style="float: right;">
+	            <img src="images/close.svg" />
+	        </a>
+	    </h2>
+	    <label>Email password password to 
+	    	<input type="email" id="home-recoverPassword-email" value="" placeholder="email address"/>
+	    </label>
+	    <div class="modalview-button">
+	    	<a class="btnFull btnYellow" data-click="homeRecoverPassword" id="modalview-recoverPassword-button" type="button" data-role="button">Send</a>
+	    </div>
+
+	</div>
 </div>
     
 <div data-role="view" data-title="Map" id="map" data-layout="main" data-model="APP.models.places"  data-show="onShowMap" data-init="onInitMap" >
@@ -499,8 +481,18 @@
         </div>
     </div>
 </div>
-	
-	
+
+<!-- Testing modal -->
+<div data-role="modalview" id="testing" style="width: 90%; display:none;" class="appearance">
+	<div class="modalview-content">
+	    <a class="closeBox right" data-click="closeTestingBox" data-role="button">
+	    	<img src="images/close.svg" />
+	    </a>
+	    <p>This feature is in the works!</p>
+	        <img id="testingImg" src="images/testing.svg" />
+	</div>
+</div>
+
 <script type="text/x-kendo-tmpl" id="gallery-listview-template">
 <div>
 

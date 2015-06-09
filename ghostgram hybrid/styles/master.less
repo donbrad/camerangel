@@ -2,8 +2,8 @@
 /*** Guidelines - updated 3/14/15 (see https://www.dropbox.com/s/vw40iwbmvo1tkol/styles-0.1.pdf?dl=0) ***/
 /* Colors */
 
-@darkBlue: #27476E;
-@lightBlue: #2D93FF;
+@blue100: #27476E;
+@blue200: #2D93FF;
 @lightYellow: #FADDB0;
 @grey100: #979797;
 @grey200: #E0E0E0;
@@ -34,6 +34,10 @@
 	float: right;
 }
 
+.center {
+	text-align: center;
+}
+
 .appBox {
 	.pad;
 }
@@ -52,7 +56,7 @@
 .contactBanner { 
 	width: 100%;
 	background-color: @grey200;
-	padding: 3px 1rem 3px 1rem;
+	padding: 2px 1rem;
 	color: @grey100;
 	font-size: 11px;
 }
@@ -259,6 +263,26 @@ form {
     color: #A4A4A4 !important;
     background: transparent !important;
 }
+.btnClearLine {
+    background: transparent;
+    color: #2D93FF !important;
+    text-decoration: none;
+    font-size: 14px !important;
+    font-weight: 400;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border: 1px solid @blue200;
+    border-radius: 2px;
+}
+.btnClearLine:active {
+    color: #3A779D !important;
+    background: transparent !important;
+}
+.btnClearLine:disabled {
+    color: #A4A4A4 !important;
+    background: transparent !important;
+}
+
 .btnClear-grey {
     background: transparent;
     color: #979797 !important;
@@ -301,7 +325,22 @@ form {
 .modalview-content {
     padding: 1rem;
 }
-.loadingBox {} .loading {
+
+.modalview-button {
+	margin-top:	0.5rem;
+	margin-bottom: 0.5rem;
+}
+
+.modalview-content h1,
+.modalview-content h2,
+.modalview-content h3,
+.modalview-content h4,
+.modalview-content h5 {
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+.loading {
     background: rgba(0, 0, 0, 0.50);
     border-radius: 8px;
     text-align: center;
@@ -352,6 +391,9 @@ keygen,
 select,
 button {
     font-family: 'Open Sans', sans-serif;
+}
+div.km-header a img{
+	height: 16px;
 }
 .km-drawer-button:before,
 .km-drawer-button:after {
@@ -454,6 +496,7 @@ button {
     position: absolute;
     top: 0px;
     right: 0px;
+    padding: 14px 14px !important; 
 }
 /* ghost selection modal */
 
@@ -1078,7 +1121,9 @@ a:hover {
 #profileEdit > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > div.profileEditBtm > form > div > ul > li:nth-child(1),
 .km-flat .km-listinset>li:last-child, .km-flat .km-listgroupinset .km-list>li:last-child,
 .km-flat .km-listinset>li:last-child, .km-flat .km-listgroupinset .km-list>li:first-child,
-#addContact > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > div > form > div > ul > li:nth-child(1) {
+#addContact > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > div > form > div > ul > li:nth-child(1),
+#addContact > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > div.inviteContactImg > div > ul > li:nth-child(1),
+#modalview-AddContact > div > div.km-scroll-container > div.inviteContactImg > div > ul > li:nth-child(1) {
 	border: transparent !important;
 	border-color: rgba(0,0,0,0) !important;
 }
@@ -1388,4 +1433,40 @@ div.loginBox > form > div > ul > li {
 	margin-right: 0px;
 }
 
+.toContactDiv {
+	padding-left: 1rem;
+	padding-right: 1rem;
+	input {
+		width: 90%;
+	}
+	img {
+		vertical-align: middle;
+	}
+}
 
+
+.inviteContactImg {
+	.pad;
+	text-align: center;
+	img {
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
+.inviteContactInfo {
+	text-align: left;
+}
+
+#testing {
+	p {
+		text-align: center;
+	}
+	#testingImg {
+		.centerObject;
+		width: 40px;
+		margin-left: 45%;
+		margin-top: 0.5rem;
+		text-align: center;
+	}
+}

@@ -20,6 +20,9 @@
 .right {
   float: right;
 }
+.center {
+  text-align: center;
+}
 .appBox {
   padding: 1rem;
 }
@@ -35,7 +38,7 @@
 .contactBanner {
   width: 100%;
   background-color: #e0e0e0;
-  padding: 3px 1rem 3px 1rem;
+  padding: 2px 1rem;
   color: #979797;
   font-size: 11px;
 }
@@ -247,6 +250,25 @@ form {
   color: #A4A4A4 !important;
   background: transparent !important;
 }
+.btnClearLine {
+  background: transparent;
+  color: #2D93FF !important;
+  text-decoration: none;
+  font-size: 14px !important;
+  font-weight: 400;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border: 1px solid #2d93ff;
+  border-radius: 2px;
+}
+.btnClearLine:active {
+  color: #3A779D !important;
+  background: transparent !important;
+}
+.btnClearLine:disabled {
+  color: #A4A4A4 !important;
+  background: transparent !important;
+}
 .btnClear-grey {
   background: transparent;
   color: #979797 !important;
@@ -288,6 +310,18 @@ form {
 }
 .modalview-content {
   padding: 1rem;
+}
+.modalview-button {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.modalview-content h1,
+.modalview-content h2,
+.modalview-content h3,
+.modalview-content h4,
+.modalview-content h5 {
+  margin-left: 0px;
+  margin-right: 0px;
 }
 .loading {
   background: rgba(0, 0, 0, 0.5);
@@ -336,6 +370,9 @@ keygen,
 select,
 button {
   font-family: 'Open Sans', sans-serif;
+}
+div.km-header a img {
+  height: 16px;
 }
 .km-drawer-button:before,
 .km-drawer-button:after {
@@ -437,6 +474,7 @@ button {
   position: absolute;
   top: 0px;
   right: 0px;
+  padding: 14px 14px !important;
 }
 /* ghost selection modal */
 .ghostSelectionBox {
@@ -1057,7 +1095,9 @@ a:hover {
 .km-flat .km-listgroupinset .km-list > li:last-child,
 .km-flat .km-listinset > li:last-child,
 .km-flat .km-listgroupinset .km-list > li:first-child,
-#addContact > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > div > form > div > ul > li:nth-child(1) {
+#addContact > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > div > form > div > ul > li:nth-child(1),
+#addContact > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > div.inviteContactImg > div > ul > li:nth-child(1),
+#modalview-AddContact > div > div.km-scroll-container > div.inviteContactImg > div > ul > li:nth-child(1) {
   border: transparent !important;
   border-color: rgba(0, 0, 0, 0) !important;
 }
@@ -1350,4 +1390,38 @@ div.loginBox > form > div > ul > li {
 #contacts-listview > li > div > div:nth-child(1) > p {
   margin-left: 0px;
   margin-right: 0px;
+}
+.toContactDiv {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.toContactDiv input {
+  width: 90%;
+}
+.toContactDiv img {
+  vertical-align: middle;
+}
+.inviteContactImg {
+  padding: 1rem;
+  text-align: center;
+}
+.inviteContactImg img {
+  margin-left: auto;
+  margin-right: auto;
+}
+.inviteContactInfo {
+  text-align: left;
+}
+#testing p {
+  text-align: center;
+}
+#testing #testingImg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50%;
+  width: 40px;
+  margin-left: 45%;
+  margin-top: 0.5rem;
+  text-align: center;
 }

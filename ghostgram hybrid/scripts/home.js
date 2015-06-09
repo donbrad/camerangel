@@ -218,13 +218,13 @@ function sendVerificationCode ()
 {
   var phone = APP.models.profile.currentUser.get('phone');
    Parse.Cloud.run('sendPhoneVerificationCode', { phoneNumber:  phone}, {
-				  success: function(result) {
-					  mobileNotify('Your phone verification was sent');
-					  $("#modalview-verifyPhone").data("kendoMobileModalView").open();
-				  },
-				 error: function (result,error){
-					 mobileNotify("Error sending phone verification " + error);
-				 }
+		success: function(result) {
+			mobileNotify('Your phone verification was sent');
+			$("#modalview-verifyPhone").data("kendoMobileModalView").open();
+		},
+		error: function (result,error){
+			mobileNotify("Error sending phone verification " + error);
+		}
   });
 }
 
@@ -609,5 +609,9 @@ function saveEditProfile() {
 
 function closeStartModal() {
 	$("#modalview-start").data("kendoMobileModalView").close();
+}
+
+function closeTestingBox(){
+	$("#testing").data("kendoMobileModalView").close();
 }
 

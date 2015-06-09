@@ -333,7 +333,8 @@ function onInitContactImport (e) {
                APP.models.contacts.phoneDS.data( APP.models.contacts.phoneArray);
                APP.models.contacts.emailDS.data( APP.models.contacts.emailArray);
                APP.models.contacts.addressDS.data( APP.models.contacts.addressArray);
-               APP.kendo.navigate('#addContact');
+               //APP.kendo.navigate('#addContact');
+               $("#modalview-AddContact").data("kendoMobileModalView").open();
              
             }
     });
@@ -434,15 +435,13 @@ function doShowAddContacts() {
     
     $("#addContactName").val(data.name);
     $('#addContactAlias').val(data.name);
-	
+
+    
     if (data.photo === null) {
         $("#addContactPhoto").attr("src","images/default-img.png");
          $("#addContactPhoto").attr("src",data.photo);
     }
-   
-    
-    
-   
+
 }
 
 function contactsAddContact(e){
@@ -473,7 +472,7 @@ function contactsAddContact(e){
 		phone = '1' + phone;
 	contact.set("phone", phone);
 
-	 mobileNotify("Saving new contact...");
+	 mobileNotify("Invite sent");
 	// Look up this contacts phone number in the gg directory
 	findUserByPhone(phone, function (result) {
 		
@@ -519,9 +518,9 @@ function contactsAddContact(e){
 				  // The file either could not be read, or could not be saved to Parse.
 						 handleParseError(error);
 				}); 
-		});    
+			});    
 
-	});
+		});
    
 }
     
@@ -534,3 +533,6 @@ function contactsPickContact(e) {
     });
 }
     
+function closeAddContact() {
+	$("#modalview-AddContact").data("kendoMobileModalView").close();
+}
