@@ -38,8 +38,16 @@ function onInitGallery(e){
 		}
 	});
 
-	
 }
+
+function photoEditRotateLeft(e) {
+	$('#photoEditImage').css('transform','rotate(' + -90 + 'deg)');
+}
+
+function photoEditRotateRight(e) {
+	$('#photoEditImage').css('transform','rotate(' + 90 + 'deg)');
+}
+
 
 function onShowPhotoEditor (e) {
 	e.preventDefault();
