@@ -68,6 +68,7 @@ function onShowPhotoEditor (e) {
 	  change: function(data) {
 		    var $image = $('#photoEditImage');
 		  	var cropBoxData = $image.cropper('getCropBoxData');
+		    var cropCanvas = $image.cropper('getCroppedCanvas');
  		 	var canvasData = $image.cropper('getCanvasData');
 		// Output the result data for cropping image.
  	 }
