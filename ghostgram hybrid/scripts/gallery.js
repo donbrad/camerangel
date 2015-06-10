@@ -43,9 +43,10 @@ function onInitGallery(e){
 function photoEditCrop(e) {
 	e.preventDefault();	
 	var $image = $('#photoEditImage');
-	var cropBoxData = $image.cropper('getCropBoxData');
 	var cropCanvas = $image.cropper('getCroppedCanvas');
-	var canvasData = $image.cropper('getCanvasData');
+	var cropUrl = cropCanvas.toDataURL("image/jpeg");
+	
+	$('#photoEditImage').attr('src', cropUrl);
 	
 	
 }
