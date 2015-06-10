@@ -130,6 +130,11 @@ form {
 .yellow-100 {
   background-color: #FFB74D !important;
 }
+/* Margins */
+.topHalf {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
 /* Elements */
 .line {
   border: 1px solid rgba(0, 0, 0, 0.12);
@@ -250,6 +255,22 @@ form {
   color: #A4A4A4 !important;
   background: transparent !important;
 }
+.btnClear-sm {
+  background: transparent;
+  color: #2D93FF !important;
+  text-decoration: none;
+  font-size: 14px !important;
+  font-weight: 400;
+  padding: 0px !important;
+}
+.btnClear-sm:active {
+  color: #3A779D !important;
+  background: transparent !important;
+}
+.btnClear-sm:disabled {
+  color: #A4A4A4 !important;
+  background: transparent !important;
+}
 .btnClearLine {
   background: transparent;
   color: #2D93FF !important;
@@ -267,6 +288,24 @@ form {
 }
 .btnClearLine:disabled {
   color: #A4A4A4 !important;
+  background: transparent !important;
+}
+.btnClearLine-grey-sm {
+  background: transparent;
+  color: #979797 !important;
+  text-decoration: none;
+  font-size: 12px !important;
+  font-weight: 400;
+  padding: 0.25rem 1rem !important;
+  border: 1px solid #e0e0e0 !important;
+  border-radius: 2px;
+}
+.btnClearLine-grey-sm:active {
+  color: #e0e0e0 !important;
+  background: transparent !important;
+}
+.btnClearLine-grey-sm:disabled {
+  color: #e0e0e0 !important;
   background: transparent !important;
 }
 .btnClear-grey {
@@ -1148,6 +1187,11 @@ a:hover {
   font-weight: 600;
   color: #2D93FF;
   margin-top: 0px;
+  padding: 0px;
+  padding-top: 3px;
+  position: absolute;
+  bottom: 48px;
+  right: 8px;
 }
 .messageCompose {
   padding: 8px;
@@ -1175,11 +1219,7 @@ a:hover {
   background-color: #fff;
   border: none;
   padding: 6px;
-  font-size: 14px;
-}
-#messageSend {
-  padding: 0px;
-  padding-top: 3px;
+  font-size: 16px;
 }
 #privacyStatus {
   width: 100%;
@@ -1192,8 +1232,9 @@ a:hover {
 #privacyMode {
   border-left: 2px solid #e0e0e0;
   position: absolute;
-  right: 0px;
-  top: 48px;
+  right: 12px;
+  bottom: 8px;
+  padding-left: 16px !important;
 }
 div.chat-message-user-content.clearfix > p {
   float: right;
@@ -1403,7 +1444,10 @@ div.loginBox > form > div > ul > li {
 }
 .inviteContactImg {
   padding: 1rem;
-  text-align: center;
+}
+.inviteContactImg h3 {
+  margin-left: 0px;
+  margin-right: 0px;
 }
 .inviteContactImg img {
   margin-left: auto;
@@ -1411,6 +1455,27 @@ div.loginBox > form > div > ul > li {
 }
 .inviteContactInfo {
   text-align: left;
+}
+.inviteTop {
+  width: 100%;
+}
+.inviteTop img {
+  margin-left: 35%;
+  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+  width: 30%;
+}
+#addContactName {
+  text-align: left;
+}
+.topHalfLeft {
+  width: 30%;
+  float: left;
+}
+.topHalfRight {
+  width: 70%;
+  float: left;
+  padding-top: 0.5rem;
 }
 #testing p {
   text-align: center;
@@ -1424,6 +1489,11 @@ div.loginBox > form > div > ul > li {
   margin-left: 45%;
   margin-top: 0.5rem;
   text-align: center;
+}
+.input-sm {
+  padding: 0px;
+  width: 75%;
+  float: left;
 }
 /* Don's development styles...*/
 .tile {

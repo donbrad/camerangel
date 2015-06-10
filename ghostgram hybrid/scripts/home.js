@@ -105,7 +105,10 @@ function onShowHome(e) {
 	if (myPublicImg !== ""){
         $(".myPublicImg").attr("src", APP.models.profile.currentUser.aliasPhoto);
     }
-        
+    // set verified ui for start screen 
+    if(APP.models.profile.currentUser.phoneVerified) {
+    	$("#startPhoneVerified").addClass("hidden");
+    }   
         
     APP.models.presence.current.bind('change' , syncPresence);
 } 
@@ -614,4 +617,3 @@ function closeStartModal() {
 function closeTestingBox(){
 	$("#testing").data("kendoMobileModalView").close();
 }
-

@@ -68,11 +68,31 @@
     </div>    
 </div>
 
-<div data-role="modalview" data-model="APP.models.contacts" data-title="Add Contact" id="modalview-AddContact" data-before-show="doShowAddContacts" class="appearance" style="width: 90%; display: none;">
+<div data-role="modalview" data-model="APP.models.contacts" data-title="Add Contact" id="modalview-AddContact" data-init="doShowAddContacts" class="appearance" style="width: 90%; min-height: 100%; display: none;">
     <div class="inviteContactImg">
-    	<span class="right closeBox"><a data-role="button" data-click="closeAddContact"><img src="images/close.svg"/></a></span>
-    	<img class="circle-img-lg shadow" src="images/ghost-blue.svg" />
-    	<h4 id="addContactName">John Smith</h4>
+    	<div class="inviteTop hidden">
+    		<img src="images/invite.svg" height="16" />
+    	</div>
+    	<span class="right closeBox">
+    		<a data-role="button" data-click="closeAddContact">
+    			<img src="images/close.svg"/>
+    		</a>
+    	</span>
+    	
+    	<div class="topHalf">
+    		<div class="topHalfLeft">
+    			<img class="circle-img shadow" id="addContactPhoto" src="" />
+    		</div>
+    		<div class="topHalfRight">
+    			<h3 id="addContactName"></h3>
+    			<span class="caption">aka</span>
+    			<a class="btnClear-sm" data-role="button" data-click="addNicknameBtn" id="addNicknameBtn"> add nickname </a>
+    			<div class="hidden" id="contactNicknameInput">
+                	<input class="input-sm" type="text" placeholder="nickname"/>
+    			</div>
+    		</div>
+    	</div>
+    	<div class="clearfix"></div>
     	<ul data-role="listview" data-style="inset" class="inviteContactInfo">
     		<li>           
                 <label>Phone
@@ -107,71 +127,6 @@
     	</ul>
     	<a class="btnYellow btnSpan" data-role="button" data-click="contactsAddContact">Invite to ghostgrams</a>
     </div> 
-	<div class="hidden" style="padding-bottom: 28px;">
-        <div style=" padding: 12px;">  
-            <img  style="float:left; margin: 0px 15px 15px 0px; width: 80px; height: auto;" id="addContactPhoto" src="">
-            Please choose a <strong>phone number</strong> and an <strong>email address</strong>. </br>  
-            You may also add a <strong>nickname</strong> for this user.
-        </div>
-    <form style="clear: both;">
-        <ul data-role="listview" data-style="inset" >
-            <li>
-                <label> Name
-                    <input type="text" />
-                </label>
-            </li>
-            <li>
-                <label> Nickname
-                    <input type="text" id="addContactAlias" value="Pick nickname"/>
-                </label>
-            </li>
-             <li>
-                <label> Private Channel
-                    <select id="addContactPrivate">
-                        <option value="true">Yes - Enabled</option>
-                        <option value="false">No - Disabled</option>
-                    </select>
-                </label>
-            </li>
-            <li>           
-                <label>Phone
-                    <select id="addContactPhone" data-role="dropdownlist" 
-                            data-text-field="name" 
-                            data-value-field="number"
-                            data-bind="source: phoneDS"
-                            auto-bind="false">
-                    </select>
-                </label>
-            </li>
-            <li>
-                <label>Email
-                     <select id="addContactEmail" data-role="dropdownlist"
-                            data-text-field="name" 
-                            data-value-field="address"
-                            data-bind="source: emailDS"
-                           auto-bind="false">
-                       
-                    </select>
-                </label>
-            </li>
-            <li>
-                <label>Address
-                     <select id="addContactAddress" data-role="dropdownlist"
-                            data-text-field="name" 
-                            data-value-field="address"
-                            data-bind="source: addressDS"
-                           auto-bind="false">
-                       
-                    </select>
-                </label>
-            </li>
-            
-        </ul>
-    </form>
-    
-</div>
-   
-    
 </div>
 
 

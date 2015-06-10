@@ -15,13 +15,13 @@ function onInitChannel(e) {
 		}
 	});
 	
-	var width = window.innerWidth - 96;
+	var width = window.innerWidth - 68;
 	$('#messageTextArea').css("width", width+'px');
 	APP.models.channel.topOffset = APP.kendo.scroller().scrollTop;
 	 autosize($('#messageTextArea'));
 	 $("#messages-listview").kendoMobileListView({
         dataSource: APP.models.channel.messagesDS,
-        template: $("#messagesTemplate").html() /*,
+        template: $("#messagesTemplate").html(),
         click: function (e) {
             var message = e.dataItem;
 		
@@ -34,7 +34,7 @@ function onInitChannel(e) {
 				$("#messageActions").data("kendoMobileActionSheet").open();
 			}
             
-        } */
+        } 
      }).kendoTouch({
             filter: ">li",
          //   enableSwipe: true,

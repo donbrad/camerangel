@@ -329,11 +329,27 @@ function onInitContactImport (e) {
 
                     APP.models.contacts.addressArray.push(address);
                }
+
+               // Set name
+               var name = APP.models.contacts.currentDeviceContact.name;
+               console.log(APP.models.contacts.currentDeviceContact);
+               if (name !== ""){
+               		$("#addContactName").text(name);
+               } else {
+               		$("#addContactName").text("No name");
+               }
+               
+               
                
                APP.models.contacts.phoneDS.data( APP.models.contacts.phoneArray);
                APP.models.contacts.emailDS.data( APP.models.contacts.emailArray);
                APP.models.contacts.addressDS.data( APP.models.contacts.addressArray);
                //APP.kendo.navigate('#addContact');
+
+               // ToDo - add alias wiring 
+    		   $("#addNicknameBtn").removeClass("hidden");
+    		   $("#contactNicknameInput input").val("");
+
                $("#modalview-AddContact").data("kendoMobileModalView").open();
              
             }
@@ -431,15 +447,15 @@ function contactsFindContacts(e) {
 }
 			
 function doShowAddContacts() {
-    var data = APP.models.contacts.currentDeviceContact;
+    var data = APP.models.contacts;
     
-    $("#addContactName").val(data.name);
-    $('#addContactAlias').val(data.name);
+    $("#addContactName").text("");
+    $('#addContactAlias').text("");
 
-    
+    console.log(data);
     if (data.photo === null) {
-        $("#addContactPhoto").attr("src","images/default-img.png");
-         $("#addContactPhoto").attr("src",data.photo);
+        $("#addContactPhoto").attr("src","images/ghostgramcontact.png");
+        $("#addContactPhoto").attr("src",data.photo);
     }
 
 }
@@ -471,6 +487,9 @@ function contactsAddContact(e){
 	if (phone[0] !== '1')
 		phone = '1' + phone;
 	contact.set("phone", phone);
+
+	// Close modal
+	$("#modalview-AddContact").data("kendoMobileModalView").close();
 
 	 mobileNotify("Invite sent");
 	// Look up this contacts phone number in the gg directory
@@ -535,4 +554,10 @@ function contactsPickContact(e) {
     
 function closeAddContact() {
 	$("#modalview-AddContact").data("kendoMobileModalView").close();
+	$("#contactNicknameInput").addClass("hidden");
+}
+
+function addNicknameBtn() {
+	$("#addNicknameBtn").addClass("hidden");
+	$("#contactNicknameInput").removeClass("hidden");
 }
