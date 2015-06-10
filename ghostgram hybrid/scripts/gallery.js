@@ -62,9 +62,13 @@ function onShowPhotoEditor (e) {
 	var imgInstance = new fabric.Image(imgElement);
 	canvas.add(imgInstance);
 	*/
+	$('#photoEditImage').cropper('destroy');
+	
 	$('#photoEditImage').cropper({
-	  crop: function(data) {
-		  
+	  change: function(data) {
+		    var $image = $('#photoEditImage');
+		  	var cropBoxData = $image.cropper('getCropBoxData');
+ 		 	var canvasData = $image.cropper('getCanvasData');
 		// Output the result data for cropping image.
  	 }
 	});
