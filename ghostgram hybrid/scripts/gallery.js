@@ -40,16 +40,34 @@ function onInitGallery(e){
 
 }
 
+function photoEditCrop(e) {
+	e.preventDefault();	
+	var $image = $('#photoEditImage');
+	var cropBoxData = $image.cropper('getCropBoxData');
+	var cropCanvas = $image.cropper('getCroppedCanvas');
+	var canvasData = $image.cropper('getCanvasData');
+	
+	
+}
+
 function photoEditRotateLeft(e) {
+	e.preventDefault();
 	//$('#photoEditImage').css('transform','rotate(' + -90 + 'deg)');'
 	APP.models.gallery.rotationAngle -= 90;
 	$('#photoEditImage').cropper('rotate', APP.models.gallery.rotationAngle);
 }
 
 function photoEditRotateRight(e) {
+	e.preventDefault();
 	//$('#photoEditImage').css('transform','rotate(' + 90 + 'deg)');
 	APP.models.gallery.rotationAngle += 90;
 	$('#photoEditImage').cropper('rotate', APP.models.gallery.rotationAngle);
+}
+
+function onHidePhotoEditor(e) {
+	e.preventDefault();
+	
+	$('#photoEditImage').cropper('destroy');
 }
 
 
@@ -64,15 +82,7 @@ function onShowPhotoEditor (e) {
 	*/
 	$('#photoEditImage').cropper('destroy');
 	
-	$('#photoEditImage').cropper({
-	  change: function(data) {
-		    var $image = $('#photoEditImage');
-		  	var cropBoxData = $image.cropper('getCropBoxData');
-		    var cropCanvas = $image.cropper('getCroppedCanvas');
- 		 	var canvasData = $image.cropper('getCanvasData');
-		// Output the result data for cropping image.
- 	 }
-	});
+	$('#photoEditImage').cropper();
 }
 
 function onShowGallery(e) {
