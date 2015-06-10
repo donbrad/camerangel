@@ -1413,6 +1413,7 @@ div.loginBox > form > div > ul > li {
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
 }
+
 .cropper-container img {
   display: block;
   width: 100%;
@@ -1584,6 +1585,13 @@ div.loginBox > form > div > ul > li {
   filter: alpha(opacity=0);
   opacity: 0;
 }
+
+@media (min-width: 256px) {
+  .cropper-point.point-se {
+    width: 5px;
+    height: 5px;
+  }
+}
 @media (min-width: 768px) {
   .cropper-point.point-se {
     width: 15px;
@@ -1611,6 +1619,7 @@ div.loginBox > form > div > ul > li {
   filter: alpha(opacity=0);
   opacity: 0;
 }
+
 .cropper-hide {
   position: fixed;
   top: 0;
