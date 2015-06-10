@@ -2,7 +2,7 @@ function onInitGallery(e){
     e.preventDefault();
     // ToDo: Initialize list view
     var itemWidth = $(window).width()/4;
-
+	APP.models.gallery.rotationAngle = 0;
 
 	 $('#gallery-grid').attr('width', $(window).width());
      $('#gallery-grid').isotope({
@@ -41,13 +41,15 @@ function onInitGallery(e){
 }
 
 function photoEditRotateLeft(e) {
-	//$('#photoEditImage').css('transform','rotate(' + -90 + 'deg)');
-	$('#photoEditImage').cropper('rotate', -90);
+	//$('#photoEditImage').css('transform','rotate(' + -90 + 'deg)');'
+	APP.models.gallery.rotationAngle -= 90;
+	$('#photoEditImage').cropper('rotate', APP.models.gallery.rotationAngle);
 }
 
 function photoEditRotateRight(e) {
 	//$('#photoEditImage').css('transform','rotate(' + 90 + 'deg)');
-	$('#photoEditImage').cropper('rotate', 90);
+	APP.models.gallery.rotationAngle += 90;
+	$('#photoEditImage').cropper('rotate', APP.models.gallery.rotationAngle);
 }
 
 
@@ -61,7 +63,6 @@ function onShowPhotoEditor (e) {
 	canvas.add(imgInstance);
 	*/
 	$('#photoEditImage').cropper({
-	  aspectRatio: 16 / 9,
 	  crop: function(data) {
 		  
 		// Output the result data for cropping image.
@@ -71,6 +72,7 @@ function onShowPhotoEditor (e) {
 
 function onShowGallery(e) {
 	e.preventDefault();
+	APP.models.gallery.rotationAngle = 0;
 
 	var grid = $('#gallery-grid'), isotope = grid.data('isotope');
 	var itemWidth = $(window).width()/4;
