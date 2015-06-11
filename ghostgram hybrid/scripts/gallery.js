@@ -74,6 +74,13 @@ function onHidePhotoEditor(e) {
 	$('#photoEditImage').cropper('destroy');
 }
 
+function photoExport (e) {
+	e.preventDefault();
+}
+
+function photoDelete (e) {
+	e.preventDefault();
+}
 
 function onShowPhotoEditor (e) {
 	e.preventDefault();
