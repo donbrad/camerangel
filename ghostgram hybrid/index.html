@@ -281,7 +281,36 @@
 	    </div>
    	</div>
 </div>
+	
+<div data-role="modalview" id="modalview-login" style="width: 90%; display: none;" class="appearance"  data-init="doInitSignIn">
+    <div data-role="header">
+        <div data-role="navbar">
+            <span>Sign In</span>
+            
+        </div>
+    </div>
 
+     <form>
+        <ul data-role="listview" data-style="inset">
+            <li>
+                <label>Username
+                    <input type="text" id="home-signin-username" value="" required />
+                </label>
+            </li>
+            <li>
+                <label>Password
+                <input type="password" id="home-signin-password" value="" required />
+                </label>
+            </li>
+        </ul>
+    </form> 
+    <div data-role="footer">
+        <div data-role="navbar">
+            <a data-click="closeModalViewLogin" data-role="button" data-align="left">Cancel</a>
+            <a data-click="homeSignin" id="modalview-login-button" type="button" data-role="button" data-align="right">Sign In</a>
+        </div>
+    </div>
+</div>
     
 <div data-role="view" id="signup" data-title="Sign Up" data-layout="main" style="display: none;" class="appearance" data-init="initSignUp">
    	<div data-role="header">
@@ -362,10 +391,10 @@
      </div>
 </div>
 
-<div data-role="view" id="photoView" data-zoom="true" style="width: 100%; height:100%; display: none;">
+<div data-role="view" id="photoView" data-zoom="true" data-elastic="false" style="width: 100%; height:100%; display: none;">
     <div data-role="header">
         <div data-role="navbar">
-            <a data-align="left" data-role="backbutton">Back</a>
+            <a data-align="left" data-role="backbutton" >Back</a>
             <span>Photo View</span>
 			<a data-align="right" data-role="button" href="#photoEditor">Edit</a>
         </div>
@@ -376,18 +405,19 @@
 	 <div data-role="footer">
 			<div data-role="navbar">
 				<a data-align="left" data-role="button" >Share</a>
+			
 				<a data-align="right" data-role="button" href="#photoEditor">Delete</a>
 			</div>
 	</div>
 </div>
 
 
-<div data-role="view" id="photoEditor" style="width: 100%; height:100%; display: none;"  data-show="onShowPhotoEditor"  data-hide="onHidePhotoEditor">
+<div data-role="modalview" id="photoEditor" style="width: 100%; height:100%; display: none;"  data-open="onShowPhotoEditor"  data-close="onHidePhotoEditor">
     <div data-role="header">
         <div data-role="navbar">
-            <a data-align="left" data-role="backbutton">Back</a>
+            <a data-align="left" data-role="button"  data-click="closeModalViewPhotoEditor">Cancel</a>
             <span>Photo Editor</span>
-            <a data-align="right" data-role="button"  data-rel="modalview"  href="#modalview-photo">Tag</a>
+            <a data-align="right" data-role="button"  data-click="photoEditSave">Save</a>
         </div>
     </div>
 	

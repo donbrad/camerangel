@@ -47,9 +47,11 @@ function photoEditCrop(e) {
 	var cropUrl = cropCanvas.toDataURL("image/jpeg");
 	
 	$image.cropper('replace', cropUrl);
-	$('#photoEditImage').attr('src', cropUrl);
-	
-	
+	$('#photoEditImage').attr('src', cropUrl);	
+}
+
+function photoEditSave(e) {
+	e.preventDefault();	
 }
 
 function photoEditRotateLeft(e) {
@@ -116,8 +118,8 @@ function onShowGallery(e) {
 		$('#photoViewImage').attr('src', photoUrl);
 		$('#photoTagImage').attr('src', photoUrl);
 		$('#photoEditImage').attr('src', photoUrl);
-		APP.kendo.navigate('#photoView');
-		//$('#modalview-photoView').kendoMobileModalView("open");
+		//APP.kendo.navigate('#photoView');
+		$('#photoEditor').kendoMobileModalView("open");
 	});
 
 	$('#gallery-grid').imagesLoaded( function() {
