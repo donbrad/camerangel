@@ -64,14 +64,14 @@ function tapChannel(e) {
 	$('.archive').css('display', 'none');
 	
 	// If the photo is minimized and the user just clicked in the message zoom the photo in place
-	$('#'+message.msgID + '.chat-message-photo-small').removeClass('chat-message-photo-small').addClass('chat-message-photo');
+	$('#'+message.msgID + ' .chat-message-photo-small').removeClass('chat-message-photo-small').addClass('chat-message-photo');
 	
 	// User actually clicked on the photo so show the open the photo viewer
 	if (target[0].className === 'chat-message-photo' || target[0].className === 'chat-message-photo-small') {
 		var photoUrl = message.data.photo.photo;
-		$('#photoViewImage').attr('src', photoUrl);
-		$('#photoImage').attr('src', photoUrl);
-		$('#modalview-photoView').kendoMobileModalView("open");
+		$('#modalPhotoViewImage').attr('src', photoUrl);
+		
+		$('#modalPhotoView').kendoMobileModalView("open");
 	}
 	
 	if (APP.models.channel.currentModel.privacyMode) {

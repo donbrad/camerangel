@@ -49,8 +49,8 @@ function onInitMap() {
 	
 }
 
-function closeModalViewPhotoView() {
-     $('#modalview-photoView').kendoMobileModalView("close");
+function closeModalViewPhoto() {
+     $('#modalPhotoView').kendoMobileModalView("close");
 }
 
 function closeModalViewPhotoEditor() {
