@@ -87,6 +87,13 @@ function onShowPhotoEditor (e) {
 	$('#photoEditImage').cropper();
 }
 
+function onHidePhotoView(e) {
+	e.preventDefault();
+	
+	$('#photoViewImage').attr('src', "");
+}
+
+
 function onShowGallery(e) {
 	e.preventDefault();
 	APP.models.gallery.rotationAngle = 0;
