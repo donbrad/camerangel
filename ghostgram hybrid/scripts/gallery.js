@@ -151,9 +151,18 @@ function photoExport (e) {
 function photoDelete (e) {
 	e.preventDefault();
 	var photo = APP.models.gallery.currentPhotoModel;
+	// Todo:  Add confirmation prior to photo delete
 	
+	// Delete from local datasource
 	APP.models.gallery.photosDS.remove(APP.models.gallery.currentPhotoModel);
-	deleteParseObject('photos', 'photoId', photo.photoId);
+	// Remove from isotope and then rerender the layout
 	$('#gallery-grid').isotope( 'remove', APP.models.gallery.currentIsoModel ).isotope('layout');
+	// Delete from remote parse collection
+	deleteParseObject('photos', 'photoId', photo.photoId);
+	
+	mobileNotify("Deleted current photo");
+	
+	// Navigate to previous page as the photo is gone...
+	APP.kendo.navigate('#:back');
 }
 
