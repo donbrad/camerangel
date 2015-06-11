@@ -530,30 +530,31 @@
 	</div>
 </div>
 
-		<script type="text/x-kendo-tmpl" id="gallery-listview-template">
-		<div>
+<script type="text/x-kendo-tmpl" id="gallery-listview-template">
+<div>
 
-		</div>
-		</script>
+</div>
+</script>
 	
-		<script type="text/x-kendo-template" id="placesTemplate">
-		  <div style="min-height: 42px; border-radius: 9px; background-color: \\#fff; padding: 4px;">
-			<div class="ghostText">#: data.name # </div>
-			<div class="ghostDescription">#: data.address # </div>
-			<div style="color: \\#2e2e2e;">
-				   <span style="float: left;"> 
-				   # if (privacy === 'true') { # Privacy Mode # } else { # Public Mode # }#,  # if (visible === 'true') { # Visible # } else { # Not Visible # }#
-				   </span>
+<script type="text/x-kendo-template" id="placesTemplate">
+  <div style="min-height: 42px; border-radius: 9px; background-color: \\#fff; padding: 4px;">
+	<div class="ghostText">#: data.name # </div>
+	<div class="ghostDescription">#: data.address # </div>
+	<div style="color: \\#2e2e2e;">
+		   <span style="float: left;"> 
+		   # if (privacy === 'true') { # Privacy Mode # } else { # Public Mode # }#,  # if (visible === 'true') { # Visible # } else { # Not Visible # }#
+		   </span>
 
-				  <span style="float:right;"> 0 <i class="fa fa-users"> </i> 0 <i class="fa fa-comments"> </i></span>
-			</div>
-			<div style="clear:both;"> </div>
-		  </div>
-		</script>
-		<script type="text/x-kendo-template" id="geoPlacesTemplate">
-		  <div>
-		  <div class="ghostText">#: data.formatted_address # </div>
-		  </div>
-		</script>	
+		  <span style="float:right;"> 0 <i class="fa fa-users"> </i> 0 <i class="fa fa-comments"> </i></span>
+	</div>
+	<div style="clear:both;"> </div>
+  </div>
+</script>
+	
+<script type="text/x-kendo-template" id="geoPlacesTemplate">
+  <div>
+  <div class="ghostText">#: data.formatted_address # </div>
+  </div>
+</script>	
 	</body>
 </html>
