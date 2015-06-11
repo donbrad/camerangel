@@ -56,6 +56,7 @@ function onInitChannel(e) {
 }	
 
 function tapChannel(e) {
+	e.preventDefault();
 	var target = $(e.touch.initialTouch);
 	var dataSource = APP.models.channel.messagesDS;
 	var messageUID = $(e.touch.currentTarget).data("uid");

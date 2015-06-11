@@ -49,13 +49,11 @@ function onInitMap() {
 	
 }
 
-function closeModalViewPhoto() {
+function closeModalPhotoView(e) {
+	e.preventDefault();
      $('#modalPhotoView').kendoMobileModalView("close");
 }
 
-function closeModalViewPhotoEditor() {
-     $('#photoEditor').kendoMobileModalView("close");
-}
 
 function closeModalViewSupport() {
      $('#modalview-support').kendoMobileModalView("close");
