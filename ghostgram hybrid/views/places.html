@@ -17,13 +17,26 @@
    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><i class="ghostIconNavbar fa fa-bars"></i></a>
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" > 
+            	<img src="images/menu-icon.svg"/>
+            </a>
+           <!--
            <a data-align="right" data-role="button"  data-rel="modalview" href="#modalview-places-addPlace"> <i class="ghostIconNavbar fa fa-plus"></i> </a>
+           -->
         </div>
+	   </div>
+	    <div class="appBox">
+		    <div style="padding-bottom: 4px; padding-top: 4px;">
+	        	<input style="font-size: 16px; margin-left: 6px; width: 80%" id="placeSearchQuery" class="clearable" type="search"/> 
+		         <a data-role="button" data-click="findPlace">  
+		         	<i class="fa fa-search"></i> 
+		         </a>
+	        </div>
+		     <div>
+		           <ul id="findplace-listview"></ul>
+		     </div>
+		</div>
     </div>
-	    <div style='padding-bottom: 4px; padding-top: 4px; '>
-         <input style="font-size: 16px; margin-left: 6px; width: 80%" id="placeSearchQuery" type="search"  class="clearable"/> <a data-role="button"  data-click="findPlace">  <i class="ghostIconSmall fa fa-search"></i> </a>
-        </div>
      <div class="user-content">
            <ul id="findplace-listview"></ul>
      </div>
@@ -51,8 +64,8 @@
              <li>
                 <label> Enable Privacy Mode (Default - you can change)
                     <select id="addPlacePrivacy">
-                        <option value=true>Yes - It's a public place</option>
-                        <option value=false>No - I have privacy here</option>
+                        <option value="true">Yes - It's a public place</option>
+                        <option value="false">No - I have privacy here</option>
                     </select>
                 </label>
             </li>
@@ -60,8 +73,8 @@
 			<li>
                 <label> Visible Here (Default - you can change)
                     <select id="addPlaceVisible">
-                        <option value=true>Yes - Let people know I'm here</option>
-                        <option value=false>No - Keep me hidden</option>
+                        <option value="true">Yes - Let people know I'm here</option>
+                        <option value="false">No - Keep me hidden</option>
                     </select>
                 </label>
             </li>

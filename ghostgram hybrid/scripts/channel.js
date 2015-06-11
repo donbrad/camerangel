@@ -15,7 +15,7 @@ function onInitChannel(e) {
 		}
 	});
 	
-	var width = window.innerWidth - 96;
+	var width = window.innerWidth - 68;
 	$('#messageTextArea').css("width", width+'px');
 	APP.models.channel.topOffset = APP.kendo.scroller().scrollTop;
 	 autosize($('#messageTextArea'));

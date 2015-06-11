@@ -4,15 +4,31 @@
         <div data-role="navbar">
             <span data-role="view-title"></span>
             <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img class="menuIcon" src="images/menu-icon.svg"/></a>
-            <a data-role="button" href="#contactImport" data-align="right" ><i class="ghostIconNavbar fa fa-plus"></i> Import </a>
+            <a data-role="button" href="#contactImport" data-align="right" >
+            	<img src="images/search-white.svg" />
+            </a>
         </div>
+    </div>
+    <div class="contactSearch hidden">
+    	<div class="toContactDiv">
+    		<span><img src="images/search.svg" width="18" /></span>
+    		<input type="search" />
+    	</div>
     </div>       
-    
-    <div class="ghostContent" style="padding-bottom: 24px;">
-        <ul id="contacts-listview"></ul>  
+    <div class="contactBanner">Friends</div>
+    <div style="padding-bottom: 24px;">
+        <ul id="contacts-listview"></ul>
+        <div class="contactBanner">On Device</div>
+        <!-- Only display if device permission is needed --> 
+        <div class="pad center">
+	       <a class="btnClear">
+	        	<img src="images/import.svg" height="16" />
+	        	Find contacts on device
+	        </a>
+	    </div>
     </div>
     
-    <ul data-role="actionsheet" id="contactActions"  data-popup='{"direction": "left"}'>
+    <ul data-role="actionsheet" id="contactActions" data-popup='{"direction": "left"}'>
       
         <li><a data-action="inviteContact">Invite Contact</a></li>
        <li><a data-action="editContact">Edit Contact</a></li>
@@ -22,7 +38,7 @@
         
     </ul> 
     
-      <ul data-role="actionsheet" id="contactUserActions"  data-popup='{"direction": "left"}'>
+      <ul data-role="actionsheet" id="contactUserActions" data-popup='{"direction": "left"}'>
          <li><a data-action="editContact">Edit Contact</a></li>
         <li><a data-action="privateChat">Private Chat</a></li>
         <li><a data-action="contactSendSMS">Send SMS</a></li>
@@ -41,56 +57,47 @@
             <a data-role="button" href="#contacts" data-align="right" >Contacts</a>
         </div>
     </div>    
-    <div class="ghostContainer"  style="padding-bottom: 24px;">
-       <div style='padding-bottom: 4px; padding-top: 4px; '>
-         <input style="font-size: 16px; margin-left: 6px; width: 80%" id="contactSearchQuery" type="search" class="clearable"/> <a data-role="button"  data-click="contactsFindContacts">  <i class="ghostIconSmall fa fa-search"></i> </a>
+    <div  style="padding-bottom: 24px;">
+       <div style="padding-bottom: 4px; padding-top: 4px;">
+         <input class="clearable" style="font-size: 16px; margin-left: 6px; width: 80%" id="contactSearchQuery" type="search"/> 
+         <a data-role="button"  data-click="contactsFindContacts">  
+         	<i class="ghostIconSmall fa fa-search"></i>
+         </a>
         </div>
-
         <ul id="contactimport-listview"></ul>
-      
-       
-    </div>
-        
+    </div>    
 </div>
 
-<div data-role="view" data-model="APP.models.contacts" data-title="Add Contact" id="addContact"    data-before-show="doShowAddContacts" class="appearance">
-       <div data-role="header">
-        <div data-role="navbar">
-            <span data-role="view-title"></span>
-             <a data-role="backbutton" data-align="left">Back</a>
-             <a data-align="right" data-role="button" data-click="contactsAddContact">Add</a>
-        </div>
-    </div> 
-	<div class="ghostContainer" style="padding-bottom: 28px;">
-        <div style=" padding: 12px;">  
-            <img  style="float:left; margin: 0px 15px 15px 0px; width: 80px; height: auto;" id="addContactPhoto" src="">
-            Please choose a <strong>phone number</strong> and an <strong>email address</strong>. </br>  
-            You may also add a <strong>nickname</strong> for this user.
-        </div>
-    <form style="clear: both;">
-        <ul data-role="listview" data-style="inset" >
-            <li>
-                <label> Name
-                    <input type="text" id="addContactName" />
-                </label>
-            </li>
-            <li>
-                <label> Nickname
-                    <input type="text" id="addContactAlias" value="Pick nickname"/>
-                </label>
-            </li>
-             <li>
-                <label> Private Channel
-                    <select id="addContactPrivate">
-                        <option value=true>Yes - Enabled</option>
-                        <option value=false>No - Disabled</option>
-                    </select>
-                </label>
-            </li>
-            <li>           
+<div data-role="modalview" data-model="APP.models.contacts" data-title="Add Contact" id="modalview-AddContact" data-init="doShowAddContacts" class="appearance" style="width: 90%; min-height: 100%; display: none;">
+    <div class="inviteContactImg">
+    	<div class="inviteTop hidden">
+    		<img src="images/invite.svg" height="16" />
+    	</div>
+    	<span class="right closeBox">
+    		<a data-role="button" data-click="closeAddContact">
+    			<img src="images/close.svg"/>
+    		</a>
+    	</span>
+    	
+    	<div class="topHalf">
+    		<div class="topHalfLeft">
+    			<img class="circle-img shadow" id="addContactPhoto" src="" />
+    		</div>
+    		<div class="topHalfRight">
+    			<h3 id="addContactName"></h3>
+    			<span class="caption">aka</span>
+    			<a class="btnClear-sm" data-role="button" data-click="addNicknameBtn" id="addNicknameBtn"> add nickname </a>
+    			<div class="hidden" id="contactNicknameInput">
+                	<input class="input-sm" type="text" placeholder="nickname"/>
+    			</div>
+    		</div>
+    	</div>
+    	<div class="clearfix"></div>
+    	<ul data-role="listview" data-style="inset" class="inviteContactInfo">
+    		<li>           
                 <label>Phone
                     <select id="addContactPhone" data-role="dropdownlist" 
-                            data-text-field="name" 
+                            data-text-field="number" 
                             data-value-field="number"
                             data-bind="source: phoneDS"
                             auto-bind="false">
@@ -100,32 +107,26 @@
             <li>
                 <label>Email
                      <select id="addContactEmail" data-role="dropdownlist"
-                            data-text-field="name" 
+                            data-text-field="address" 
                             data-value-field="address"
                             data-bind="source: emailDS"
-                           auto-bind="false">
-                       
+                           	auto-bind="false">
                     </select>
                 </label>
             </li>
             <li>
                 <label>Address
                      <select id="addContactAddress" data-role="dropdownlist"
-                            data-text-field="name" 
+                            data-text-field="address" 
                             data-value-field="address"
                             data-bind="source: addressDS"
-                           auto-bind="false">
-                       
+                           	auto-bind="false">
                     </select>
                 </label>
             </li>
-            
-        </ul>
-    </form>
-    
-</div>
-   
-    
+    	</ul>
+    	<a class="btnYellow btnSpan" data-role="button" data-click="contactsAddContact">Invite to ghostgrams</a>
+    </div> 
 </div>
 
 
@@ -181,31 +182,62 @@
 
 
 <script type="text/x-kendo-template" id="contactsTemplate">      
-    <div style="min-height: 48px; padding: 4px; border-radius: 9px; background-color: \\#fff; clear: both;">
+    <div class="listBox">
 	     <div>
-			 <a data-role="button" class="slideGearButton ghostButton" style="display:none; float:right;"><i class="ghostIcon fa fa-cog"></i></a>
-			<img style="border-radius: 50%; width: 48px; height: auto; max-height: 48px; over-flow: hidden; float:left; margin: 0px 8px 8px 0px;" src="#:data.photo#">
-			<div >
-			  <span class="ghostTextLarge"> #if (data.contactUUID === undefined || data.contactUUID === null || data.contactUUID === '') { # <em> <i class="fa fa-user-times"></i> </em> # } else {#  <strong> <i class="fa fa-user-secret"></i> </strong> #} #
-	 #: data.alias # </span>  <span>  #if (data.isAvailable) { # (Available)  # } else { # Busy! #}#</span>
-			</div>
-			<div>
-			  <span class="ghostTiny">(#: data.name #)</span>   
-			</div>
-			 <div style="font-size: 12px;">
-			 <span>  <i class="fa fa-map-marker"></i> #: data.location # </span> 
+			 <a data-role="button" class="slideGearButton ghostButton" style="display:none; float:right;">
+			 	<i class="ghostIcon fa fa-cog"></i>
+			 </a>
+			 <div class="left listPhoto">
+			 	<img class="circle-img-md" src="#:data.photo#" />
+			 	<span class="statusContactList">  
+		 			#if (data.isAvailable) { #  
+		 				<img width="16" src="images/status-available.svg" />
+		 			# } 
+		 			else { # 
+		 				<img width="16" src="images/status-away.svg" />
+		 			#}#
+		 		</span>
+			 </div><!-- left -->
+			
+			<div class="left listName">
+				<h4>#: data.alias # </h4>
+			  	<span class="ghostTextLarge hidden"> 
+				  #if (data.contactUUID === undefined || data.contactUUID === null || data.contactUUID === '') { # <em> <i class="fa fa-user-times"></i> </em> # } 
+				  else {#  
+				  	<strong> <i class="fa fa-user-secret"></i> </strong> #} #
+	 			</span>  
+			</div><!-- left -->
+			<p class="left caption">#: data.name #</p>  
+			<div class="clearfix"></div> 
+			<div class="hidden">
+			 	<span> <i class="fa fa-map-marker"></i> #: data.location # </span> 
 			 </div>
 		 </div>
 		 # if (data.message !== undefined && data.message !== '') { #
 		 <div> <i class="fa fa-comment-o"></i> #: data.message # </div>
 		 #} #
-		<div style="clear:both;"> </div> 
-    </div>
+	</div>
+</div><!-- listBox -->
 </script>
 
 <script type="text/x-kendo-template" id="deviceContactsTemplate">
   <div>
-  <div class="ghostText">#: data.name # <a data-role="detailbutton" data-style="detaildisclose" ></a></div>
+	  <div>
+	  # if (data.name == '') {#
+	  	<!-- only for simulator -->
+	  	<h4>John Smith
+	  		<span class="right">
+	  			<a class="btnClearLine">Add</a>
+	  		</span>
+	  	</h4>
+	  #} else {# 
+	  		<h4>#:data.name #
+	  		<span class="right">
+	  			<a class="btnClearLine">Add</a>
+	  		</span>
+	  	</h4>
+	  #}#  
+	  </div>
   </div>
 </script>
 

@@ -7,7 +7,7 @@
     
     <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="styles/font-awesome.css">
-    <link href="styles/main.css" rel="stylesheet" />
+    <link href="styles/master.css" rel="stylesheet" />
  <!-- External scripts -->
     <script src="cordova.js"></script>
     <script src="kendo/js/jquery.min.js"></script>
@@ -51,8 +51,9 @@
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" > <img src=
-"images/menu-icon.svg"/> </a>    
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left">
+            	<img src="images/menu-icon.svg"/>
+            </a>    
         </div>
     </div>
 
@@ -102,17 +103,20 @@
             <div class="caption" id="profileLink"><a data-role="button" href="views/profile.html">View Profile</a></div>
         </div>
     </div>
-	<div style="clear:both; padding-top: 4px; padding-bottom: 4px;">
-		<span> Status</span>
-		<select id="menuAvailable" data-bind="value: isVisible">
-			<option value=true>Available</option>
-			<option value=false>Busy</option>
-		</select>
+    <div class="clearfix"></div>
+	<div class="menuStatus">
+		<span id="statusCircle"><img width="18" src="images/status-available.svg"/></span>
+        <span class="menuSelectBox">
+            <select id="menuAvailable" data-bind="value: isVisible">
+			    <option value="true"> Available</option>
+			    <option value="false"> Busy </option>
+		    </select>
+        </span>
 	</div>
-    <div>
+    <div class="hidden">
      <input id="menuCurrentMessage" class="clearable" type="text" style="font-size: 11px; width: 95%;" value="Personal message..."  data-bind="value: message"/>
     </div>
-    
+    <div class="clearfix"></div>
     <div class="menuLinks">
         <ul data-role="listview" class="menu">
             <li><a href="#home"><img src="images/menu-home.svg" height="22" width="22" />Home</a>
@@ -121,6 +125,7 @@
             </li>
             <li><a href="views/contacts.html"><img src="images/menu-contact.svg" height="22" width="22" />Contacts</a>
             </li>
+            <li><a href="views/archive.html"><img src="images/menu-archive.svg" height="22" width="22" />Archive</a></li>
             <li><a href="views/gallery.html"><img src="images/menu-gallery.svg" height="22" width="22" />Gallery</a>
             </li>
             <li><a href="views/places.html"><img src="images/menu-places.svg" height="22" width="22" />Places</a>
@@ -129,7 +134,7 @@
             </li>
         </ul>
     </div>
-	<div style="padding-left: 16px;  font-size: 16px;">
+	<div style="padding-top: 1rem;  font-size: 16px;">
 		<div style="padding-bottom: 6px;">
 			<a data-role="button" id="menuSettings" href="views/settings.html">Settings</a>
 		</div>
@@ -149,13 +154,15 @@
             <img class="nav-menu" src="images/menu-icon.svg"/> 
         </a>
         <img src="images/logo.svg" class="nav-logo"/>
-        <a  data-click="homeSignout" data-role="button" data-align="right">Sign Out</a>
+        <a data-click="homeSignout" data-role="button" data-align="right">Sign Out</a>
       </div>
 	</div>
-    
-     <div class="ghostContainer" style="padding-top: 12px; padding-bottom: 24px;">
-        <ul data-role="listview"  data-source="APP.models.home.notificationDS" data-template="notificationTemplate" id="notification-listview" ></ul>
+	<div data-role="content" class='view-content'>
+    <!-- application views will be rendered here -->
+    	<ul data-role="listview"  data-source="APP.models.home.notificationDS" data-template="notificationTemplate" id="notification-listview" ></ul>
+
     </div>
+    
 
 </div>
     
@@ -164,7 +171,7 @@
 		# var dateTime= new Date(date);   var formattedDate = dateTime.toDateString(); var photoUrl = "images/ghostgramcontact.png" ;#
 		<img src="#:photoUrl#" alt="" width="40" height="40">
 		<div class="notification-message-content clearfix">
-			# if (action !== undefined && action !== 'none') {# <a data-role="button" data-param="#:uuid#" href="\\#" data-click="#=action#"> #=title# </a> #} else {# <a data-role="button" data-param="#:uuid#" href="#=href#"  > #=title# </a>  #}#
+			# if (action !== undefined && action !== 'none') {# <a data-role="button" data-param="#:uuid#" href="\\#" data-click="#=action#" class="btnClear"> #=title# </a> #} else {# <a data-role="button" data-param="#:uuid#" href="#=href#"  class="btnClear"> #=title# </a>  #}#
 			 <span style="float:right;"><a data-role="button" href="\\#" data-param="#:uuid#" data-click="dismissNotification"><i class="ghostIconNavbar fa fa-trash"></i></a> </span>
 			<p>#= description #</p>
 		</div>
@@ -209,9 +216,8 @@
             </h3>
             <a class="btnYellow btnSpan" data-role="button" href="#signup">Join ghostgrams</a>
         </div>
-        </div>
-        
-     </div>
+    </div>
+</div>
 
 
 <div data-role="modalview" id="modalview-support" style="width: 90%; display: none;" class="appearance">
@@ -254,32 +260,26 @@
 </div>
     
 <div data-role="modalview" id="modalview-verifyPhone" style="width: 90%; display: none;" class="appearance">
-    <div data-role="header">
-        <div data-role="navbar">
-            <span>Verify Phone</span>    
-        </div>
-    </div>
-
-     <form>
-        <ul data-role="listview" data-style="inset">
-            <li>
-                <label>Verification Code
-                    <input type="number" id="verifyPhone-code" value="" />
-                </label>
-            </li>
-        </ul>
-    </form>
-
-    <div style="padding-top: 8px; text-align:center;">
-        <a class="button ghostButton"  data-click="sendVerificationCode" data-role="button">Resend Verification Code</a>
-    </div>
-
-    <div data-role="footer">
-        <div data-role="navbar">
-            <a data-click="closeModalViewVerifyPhone" data-role="button" data-align="left">Cancel</a>
-            <a data-click="verifyPhone"  type="button" data-role="button" data-align="right">Verify</a>
-        </div>
-    </div>
+    <div class="modalview-content">
+	    <h3>
+	    	Verify Number
+	    	<a class="right closeBox" data-click="closeModalViewVerifyPhone" data-role="button">
+	    		<img src="images/close.svg" />
+	    	</a>
+	    </h3>
+	        <ul data-role="listview" data-style="inset">
+	            <li>
+	                <label>Enter code from text message</label>
+	                <input type="tel" id="verifyPhone-code" value="" />
+	              	<span class="helper helper-right btnClear-grey" data-click="sendVerificationCode" data-role="button">
+	              		Resend code
+	              	</span>
+	            </li>
+	        </ul>
+	    <div style="padding-top: 8px; text-align:center;">
+	        <a class="btnYellow btnSpan" data-click="verifyPhone" type="button" data-role="button" data-align="right">Verify</a>
+	    </div>
+   	</div>
 </div>
 	
 <div data-role="modalview" id="modalview-login" style="width: 90%; display: none;" class="appearance"  data-init="doInitSignIn">
@@ -347,17 +347,6 @@
                 <input type="tel" id="home-signup-phone" value="" name="Mobile Phone" required />
                 </label>
             </li>
-<!--
-			<li> 
-				  <label>Profile Photo
-					   <select id="home-signup-profilePhoto">
-						   <option value="none">None</option>
-						   <option value="current">Use Current</option>
-						   <option value="new">Import New Photo</option>
-					  </select>
-				  </label>
-			  </li>
--->
         </ul>  
     </form> 
     <div data-role="footer">
@@ -369,28 +358,20 @@
 	
 	
 <div data-role="modalview" id="modalview-recoverPassword" style="width: 90%; display:none;" class="appearance">
-     <h2>Password reset
-        <a data-click="closeModalViewRecoverPassword" data-role="button" style="float: right;">
-            <img src="images/close.svg" />
-        </a>
-    </h2>
-    <div class="modalview-content">
-        <form>
-            <label>Email password reset link to 
-                <input type="email" id="home-recoverPassword-email" value="" placeholder="email address"/>
-            </label>
-        </form>
-    </div>
-    <a class="btnFull btnYellow" data-click="homeRecoverPassword" id="modalview-recoverPassword-button" type="button" data-role="button">Send</a>
-<!--
-        <div data-role="footer">
-            <div data-role="navbar">
-                <a data-click="closeModalViewRecoverPassword" data-role="button" data-align="left">Cancel</a>
-                <a data-click="homeRecoverPassword" id="modalview-recoverPassword-button" type="button" data-role="button" data-align="right">Recover Password</a>
-            </div>
-        </div>
--->
-    
+	<div class="modalview-content">
+	    <h2>Password reset
+	        <a class="closeBox" data-click="closeModalViewRecoverPassword" data-role="button" style="float: right;">
+	            <img src="images/close.svg" />
+	        </a>
+	    </h2>
+	    <label>Email password password to 
+	    	<input type="email" id="home-recoverPassword-email" value="" placeholder="email address"/>
+	    </label>
+	    <div class="modalview-button">
+	    	<a class="btnFull btnYellow" data-click="homeRecoverPassword" id="modalview-recoverPassword-button" type="button" data-role="button">Send</a>
+	    </div>
+
+	</div>
 </div>
     
 <div data-role="view" data-title="Map" id="map" data-layout="main" data-model="APP.models.places"  data-show="onShowMap" data-init="onInitMap" >
@@ -427,6 +408,7 @@
 
 
 <div data-role="view" id="photoEditor" style="width: 100%; height:100%; display: none;"  data-show="onShowPhotoEditor" >
+
     <div data-role="header">
         <div data-role="navbar">
             <a data-align="left" data-role="backbutton">Back </a>
@@ -461,7 +443,7 @@
 ]
 
 	<div style="margin:8px; height: 25%; width: auto; text-align: center">
-		<img id="photoImage" src="" style=" max-height: 100%; vertical-align: middle;"> </img>
+		<img id="photoImage" src="" style=" max-height: 100%; vertical-align: middle;">
 	</div>
 	
      <form id="photoForm">
@@ -480,37 +462,94 @@
         </ul>
     </form> 
 </div>
-	
-	
-<script type="text/x-kendo-tmpl" id="gallery-listview-template">
-<div>
 
+<!-- get started -->
+<div data-role="modalview" id="modalview-start" style="width: 90%; display:none;" class="appearance">
+	<div class="startBox">
+			<h2>Let's Get Started
+				<a class="right closeBox" data-role="button" data-click="closeStartModal">
+					<img src="images/close.svg"/>
+				</a>
+			</h2>
+			<div class="clearfix"></div>
+			<div class="imgLine">
+				<img src="images/ballons.svg" width="100" />
+			</div>
+			<div class="startOptions">
+				<div class="startTask" id="startPhoneVerified">
+					<div class="startLine-photo">
+						<img src="images/verified-phone.svg" height="36"/>
+					</div>
+					<div class="startLine-text"> 
+						<a class="btnClear" data-role="button" data-rel="modalview" href="#modalview-verifyPhone">Verified your number</a>
+						<p>Send a text message to your phone and enter the code. It's easy! </p>
+					</div>
+				</div>
+				<div class="startTask">
+					<div class="startLine-photo">
+						<img src="images/start-chat.svg" height="26"/>
+					</div>
+					<div class="startLine-text">
+						<a class="btnClear" href="#testing" data-role="button" data-rel="modalview" data-click="closeStartModal">Create a chat</a>
+						<p>Chat with a group or set up a private secure chat with a friend. </p>
+					</div>
+				</div>
+				<div class="startTask">
+					<div class="startLine-photo">
+						<img src="images/start-invite.svg" height="30"/>
+					</div>
+					<div class="startLine-text">
+						<a class="btnClear" href="#testing" data-role="button" data-rel="modalview" data-click="closeStartModal">Invite your friends</a>
+						<p>Share photo and personal details securely with friends and family.</p>
+					</div> 
+				</div>
+				<div class="startTask">
+					<div class="startLine-photo">
+						<img src="images/start-place.svg" height="30"/>
+					</div>
+					<div class="startLine-text">
+						<a class="btnClear" href="#testing" data-role="button" data-rel="modalview" data-click="closeStartModal">Join a place chat</a>
+						<p>See what’s happening at your favorite places.</p>
+					</div>
+				</div> 
+			</div>
+		</div>
 </div>
-</script>
-	
-<script type="text/x-kendo-template" id="placesTemplate">
-  <div style="min-height: 42px; border-radius: 9px; background-color: \\#fff; padding: 4px;">
-	<div class="ghostText">#: data.name # </div>
-	<div class="ghostDescription">#: data.address # </div>
-	<div style="color: \\#2e2e2e;">
-		   <span style="float: left;"> 
-		   # if (privacy === 'true') { # Privacy Mode # } else { # Public Mode # }#,  # if (visible === 'true') { # Visible # } else { # Not Visible # }#
-		   </span>
-
-		  <span style="float:right;"> 0 <i class="fa fa-users"> </i> 0 <i class="fa fa-comments"> </i></span>
+<!-- Testing modal -->
+<div data-role="modalview" id="testing" style="width: 90%; display:none;" class="appearance">
+	<div class="modalview-content">
+	    <a class="closeBox right" data-click="closeTestingBox" data-role="button">
+	    	<img src="images/close.svg" />
+	    </a>
+	    <p>This feature is in the works!</p>
+	        <img id="testingImg" src="images/testing.svg" />
 	</div>
-	<div style="clear:both;"> </div>
-  </div>
-</script>
-<script type="text/x-kendo-template" id="geoPlacesTemplate">
-  <div>
-  <div class="ghostText">#: data.formatted_address # </div>
-  </div>
-</script>
+</div>
+
+		<script type="text/x-kendo-tmpl" id="gallery-listview-template">
+		<div>
+
+		</div>
+		</script>
 	
-	
-	
-	
-	
-</body>
+		<script type="text/x-kendo-template" id="placesTemplate">
+		  <div style="min-height: 42px; border-radius: 9px; background-color: \\#fff; padding: 4px;">
+			<div class="ghostText">#: data.name # </div>
+			<div class="ghostDescription">#: data.address # </div>
+			<div style="color: \\#2e2e2e;">
+				   <span style="float: left;"> 
+				   # if (privacy === 'true') { # Privacy Mode # } else { # Public Mode # }#,  # if (visible === 'true') { # Visible # } else { # Not Visible # }#
+				   </span>
+
+				  <span style="float:right;"> 0 <i class="fa fa-users"> </i> 0 <i class="fa fa-comments"> </i></span>
+			</div>
+			<div style="clear:both;"> </div>
+		  </div>
+		</script>
+		<script type="text/x-kendo-template" id="geoPlacesTemplate">
+		  <div>
+		  <div class="ghostText">#: data.formatted_address # </div>
+		  </div>
+		</script>	
+	</body>
 </html>

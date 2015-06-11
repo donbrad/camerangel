@@ -7,8 +7,8 @@
            <a data-align="right" data-role="button" href="#addChannel"> <i class="ghostIconNavbar fa fa-plus"></i> </a>
         </div>
     </div>
-     <div class="ghostContainer" style="padding-top: 12px; padding-bottom: 24px;">
-         <ul id="channels-listview"></ul>
+     <div>
+         <ul id="channels-listview" data-click="listViewClick;"></ul>
      </div>
      
     <ul data-role="actionsheet" id="channelActions" data-popup='{"direction": "left"}'>
@@ -32,20 +32,37 @@
 </div>
 
 <script type="text/x-kendo-tmpl" id="channels-listview-template">
-    <div  style="padding: 4px; border-radius: 9px; background-color: \\#fff;">
-	  # var actionSheet = "channelActions"; if ( isOwner ) { actionSheet = "channelActionsOwner"; } if (isPrivate ) { actionSheet = "channelActionsPrivate"; } #
-       <div style="float:right; font-size: 10px;"> <a data-rel="actionsheet" href="\\##:actionSheet#" data-actionsheet-context="#:channelId#" data-role="button"><i class="ghostIcon fa fa-cog"></i></a> </div>
-       <div class="ghostTextLarge">  #if (isPrivate) {# <i class="ghostIconNavbar fa fa-user-secret"> </i> #} else { # <i class="ghostIconNavbar fa fa-users"> </i> #}# <a data-rel='view' href="\\#channel?channel=#:channelId#"> #:name# </a></div>
-       <div class="ghostDescription" style="padding-top: 8px; padding-bottom: 4px;"> #: description # </div>
-        <div style="color: \\#2e2e2e;">
-           <span style="float: left;"> 
-           # if (media) { # All Media # } else { # Text # }#,  # if (archive) { # Archived # } else { # Not Archived # }#
-           </span>
-
-          <span style="float:right;"> 0 new Messages</span>
+    <div>
+        # var actionSheet = "channelActions"; 
+        if ( isOwner ) { actionSheet = "channelActionsOwner"; } 
+        if (isPrivate ) { actionSheet = "channelActionsPrivate"; } #
+        <div class="" style="float:right; font-size: 10px;"> 
+           <a data-rel="actionsheet" href="\\##:actionSheet#" data-actionsheet-context="#:channelId#" data-role="button">
+            <i class="ghostIcon fa fa-cog"></i>
+          </a> 
         </div>
-		 <div  style="clear:both;"> </div>
-    </div>
+        <div class="hidden">
+            #if (isPrivate) {# 
+                <i class="ghostIconNavbar fa fa-user-secret"> </i>
+            #} else { # 
+                <img id="profilePhoto" class="circle-img" src="images/ghostgramcontact.png" height="30"/> 
+            #}# 
+           
+        </div>
+        <h3><a data-rel='view' href="\\#channel?channel=#:channelId#" id="chatName"> #:name# </a>
+    	<span class="chatActivityTime">1 hr ago</span>
+    	</h3>
+        <div class="hidden"> #: description # </div>
+        <div>
+            <div class="caption chatDetails" style="float: left;"> 
+            	 # if (archive) { #
+                	<img src="images/archive.svg" height="16" /> Archivable
+                #}#
+                # if (isPrivate) { # Private chat # } #
+            </div>
+        </div>
+        <div style="clear:both;"> </div>
+   </div>
 </script>
  
 
@@ -53,7 +70,7 @@
    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><i class="ghostIconNavbar fa fa-bars"></i></a>
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img src="images/menu-icon.svg"/></a>
             <a data-align="right" data-role="button"  data-rel="drawer" href="#channelMembers" > <i class="ghostIconNavbar fa fa-users"></i> </a>
         </div>
     </div>
@@ -70,7 +87,7 @@
                     <input type="text" class="clearable" id="channels-addChannel-description" value="" />
                 </label>
 			</li> 
-             <li>
+             <li class="hidden">
                <label>Media
                     <select id="channels-addChannel-media">
                         <option value="false">No: users can just text</option>
@@ -78,7 +95,7 @@
                     </select>
                 </label>
             </li>
-              <li>
+              <li class="hidden">
                <label>Archive
                     <select id="channels-addChannel-archive">
                         <option value="false">No: Nothing is saved</option>
@@ -107,7 +124,7 @@
         </div>
     </div>
 
-	<div class="ghostContent">
+	<div>
 		 <form>
 			<ul data-role="listview" data-style="inset">
 				<li>
@@ -179,7 +196,7 @@
 		 </div>
 		 <div class="messageCompose">
 			<textarea id="messageTextArea" rows="1" autofocus="true" wrap="soft" spellcheck="true" placeholder="Message..."></textarea>
-			 <div style="font-size: 14px; float:right;">
+			 <div class="right">
 				 <a data-role="button" id="messageSend">Send</a>
 			 </div>
              <div class="messageMediaBar">

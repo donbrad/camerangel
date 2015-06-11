@@ -329,11 +329,28 @@ function onInitContactImport (e) {
 
                     APP.models.contacts.addressArray.push(address);
                }
+
+               // Set name
+               var name = APP.models.contacts.currentDeviceContact.name;
+               console.log(APP.models.contacts.currentDeviceContact);
+               if (name !== ""){
+               		$("#addContactName").text(name);
+               } else {
+               		$("#addContactName").text("No name");
+               }
+               
+               
                
                APP.models.contacts.phoneDS.data( APP.models.contacts.phoneArray);
                APP.models.contacts.emailDS.data( APP.models.contacts.emailArray);
                APP.models.contacts.addressDS.data( APP.models.contacts.addressArray);
-               APP.kendo.navigate('#addContact');
+               //APP.kendo.navigate('#addContact');
+
+               // ToDo - add alias wiring 
+    		   $("#addNicknameBtn").removeClass("hidden");
+    		   $("#contactNicknameInput input").val("");
+
+               $("#modalview-AddContact").data("kendoMobileModalView").open();
              
             }
     });
@@ -398,7 +415,7 @@ function contactsFindContacts(e) {
                     contactItem.addresses.push(address);
                 }
             } 
-            contactItem.photo = 'images/missing_profile_photo.jpg';
+            contactItem.photo = 'images/default-img.png';
             if (contacts[i].photos !== null) {
 				returnValidPhoto(contacts[i].photos[0].value, function(validUrl) {
                 	contactItem.photo = validUrl;
@@ -424,26 +441,23 @@ function contactsFindContacts(e) {
     };
     img.onerror = function(err) {
         //Returning a default image for users without photo 
-        callback("images/missing_profile_photo.jpg");
+        callback("images/default-img.png");
     };
     img.src = url;
 }
 			
 function doShowAddContacts() {
-    var data = APP.models.contacts.currentDeviceContact;
+    var data = APP.models.contacts;
     
-    $("#addContactName").val(data.name);
-    $('#addContactAlias').val(data.name);
-	
+    $("#addContactName").text("");
+    $('#addContactAlias').text("");
+
+    console.log(data);
     if (data.photo === null) {
-        $("#addContactPhoto").attr("src",'images/missing_profile_photo.jpg');
-    } else {
-         $("#addContactPhoto").attr("src",data.photo);
+        $("#addContactPhoto").attr("src","images/ghostgramcontact.png");
+        $("#addContactPhoto").attr("src",data.photo);
     }
-   
-    
-    
-   
+
 }
 
 function contactsAddContact(e){
@@ -474,7 +488,10 @@ function contactsAddContact(e){
 		phone = '1' + phone;
 	contact.set("phone", phone);
 
-	 mobileNotify("Saving new contact...");
+	// Close modal
+	$("#modalview-AddContact").data("kendoMobileModalView").close();
+
+	 mobileNotify("Invite sent");
 	// Look up this contacts phone number in the gg directory
 	findUserByPhone(phone, function (result) {
 		
@@ -520,9 +537,9 @@ function contactsAddContact(e){
 				  // The file either could not be read, or could not be saved to Parse.
 						 handleParseError(error);
 				}); 
-		});    
+			});    
 
-	});
+		});
    
 }
     
@@ -535,3 +552,12 @@ function contactsPickContact(e) {
     });
 }
     
+function closeAddContact() {
+	$("#modalview-AddContact").data("kendoMobileModalView").close();
+	$("#contactNicknameInput").addClass("hidden");
+}
+
+function addNicknameBtn() {
+	$("#addNicknameBtn").addClass("hidden");
+	$("#contactNicknameInput").removeClass("hidden");
+}

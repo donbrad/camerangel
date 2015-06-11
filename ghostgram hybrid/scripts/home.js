@@ -3,7 +3,6 @@ function homeBeforeShow () {
     if (APP.models.profile.currentUser) {
         // Have current user - redirect to user view
         APP.kendo.navigate('#home');
-		
 
     } else {
         // No current user -redirect to no user view
@@ -105,7 +104,11 @@ function onShowHome(e) {
 	if (myPublicImg !== ""){
         $(".myPublicImg").attr("src", APP.models.profile.currentUser.aliasPhoto);
     }
-        
+    // set verified ui for start screen 
+    if(APP.models.profile.currentUser.phoneVerified) {
+    	$("#startPhoneVerified").addClass("hidden");
+    }
+
         
     APP.models.presence.current.bind('change' , syncPresence);
 } 
@@ -218,13 +221,13 @@ function sendVerificationCode ()
 {
   var phone = APP.models.profile.currentUser.get('phone');
    Parse.Cloud.run('sendPhoneVerificationCode', { phoneNumber:  phone}, {
-				  success: function(result) {
-					  mobileNotify('Your phone verification was sent');
-					  $("#modalview-verifyPhone").data("kendoMobileModalView").open();
-				  },
-				 error: function (result,error){
-					 mobileNotify("Error sending phone verification " + error);
-				 }
+		success: function(result) {
+			mobileNotify('Your phone verification was sent');
+			$("#modalview-verifyPhone").data("kendoMobileModalView").open();
+		},
+		error: function (result,error){
+			mobileNotify("Error sending phone verification " + error);
+		}
   });
 }
 
@@ -516,11 +519,11 @@ function homeRecoverPassword(e) {
     var emailAddress = $("#home-recoverPassword-email").val();
     console.log("Sending email to " + emailAddress);
 }
-	
+
 function syncPresence () {
 
     var userId = APP.models.profile.currentUser.get('userUUID'), presence = '';
-
+	// Todo - Update status UI (JE)
     findParseObject('presence', 'userId', userId, function (results) {
        if (results !== undefined && results.length > 0) {
            presence = results[0];
@@ -550,9 +553,8 @@ function syncPresence () {
             }
         });
     });
-
-
 }
+
 
 function closeChooseGhost() {
     $("#modalview-chooseGhost").data("kendoMobileModalView").close();
@@ -608,5 +610,11 @@ function saveEditProfile() {
     mobileNotify("Your profile was updated")
 }
 
+function closeStartModal() {
+	$("#modalview-start").data("kendoMobileModalView").close();
+}
 
+function closeTestingBox(){
+	$("#testing").data("kendoMobileModalView").close();
+}
 
