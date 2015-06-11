@@ -382,6 +382,7 @@ function messagePhoto (e) {
 				//resize image to 1200 pixels high
 	/*		   window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1200, { 
 				  quality: 75, storeImage: 1, photoAlbum: 0, filename: "photo_"+filename+'.jpg' }); */
+			
 			if (device.platform === 'iOS') {
 				 window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1200, { 
 					 storeImage: false, pixelDensity: true, quality: 95 });
