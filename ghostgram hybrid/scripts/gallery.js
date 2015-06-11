@@ -74,14 +74,6 @@ function onHidePhotoEditor(e) {
 	$('#photoEditImage').cropper('destroy');
 }
 
-function photoExport (e) {
-	e.preventDefault();
-}
-
-function photoDelete (e) {
-	e.preventDefault();
-}
-
 function onShowPhotoEditor (e) {
 	e.preventDefault();
 
@@ -121,7 +113,11 @@ function onShowGallery(e) {
 
 	$('.gallery-item').click(function () {
 		var photoUrl = this.attributes['data-imageurl'].value;
-
+		var photoId = this.id;
+		
+		APP.models.gallery.currentPhotoModel = getPhotoModel(photoId);
+		APP.models.gallery.currentIsoModel = this;
+		
 		$('#photoViewImage').attr('src', photoUrl);
 		$('#photoTagImage').attr('src', photoUrl);
 		$('#photoEditImage').attr('src', photoUrl);
@@ -133,5 +129,31 @@ function onShowGallery(e) {
 		// images have loaded
 		$('#gallery-grid').isotope('layout');
 	});
+}
+
+function getPhotoModel(photoId) {
+	 var dataSource = APP.models.gallery.photosDS;
+    dataSource.filter( { field: "photoId", operator: "eq", value: photoId });
+    var view = dataSource.view();
+    var photo = view[0];
+	dataSource.filter([]);
+	
+	return(photo);
+}
+
+function photoExport (e) {
+	e.preventDefault();
+	var photo = APP.models.gallery.currentPhotoModel;
+	
+	
+}
+
+function photoDelete (e) {
+	e.preventDefault();
+	var photo = APP.models.gallery.currentPhotoModel;
+	
+	APP.models.gallery.photosDS.remove(APP.models.gallery.currentPhotoModel);
+	deleteParseObject('photos', 'photoId', photo.photoId);
+	$('#gallery-grid').isotope( 'remove', APP.models.gallery.currentIsoModel ).isotope('layout');
 }
 
