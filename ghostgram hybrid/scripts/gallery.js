@@ -118,8 +118,8 @@ function onShowGallery(e) {
 		$('#photoViewImage').attr('src', photoUrl);
 		$('#photoTagImage').attr('src', photoUrl);
 		$('#photoEditImage').attr('src', photoUrl);
-		//APP.kendo.navigate('#photoView');
-		$('#photoEditor').kendoMobileModalView("open");
+		APP.kendo.navigate('#photoView');
+		//$('#photoEditor').kendoMobileModalView("open");
 	});
 
 	$('#gallery-grid').imagesLoaded( function() {
