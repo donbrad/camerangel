@@ -63,6 +63,9 @@ function tapChannel(e) {
 	$('.delete').css('display', 'none');
 	$('.archive').css('display', 'none');
 	
+	// Scale down the other photos in this chat...
+	$('.chat-message-photo').removeClass('chat-message-photo').addClass('chat-message-photo-small');
+	
 	// If the photo is minimized and the user just clicked in the message zoom the photo in place
 	$('#'+message.msgID + ' .chat-message-photo-small').removeClass('chat-message-photo-small').addClass('chat-message-photo');
 	
