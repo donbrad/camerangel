@@ -3,7 +3,6 @@ function homeBeforeShow () {
     if (APP.models.profile.currentUser) {
         // Have current user - redirect to user view
         APP.kendo.navigate('#home');
-		
 
     } else {
         // No current user -redirect to no user view
@@ -108,7 +107,8 @@ function onShowHome(e) {
     // set verified ui for start screen 
     if(APP.models.profile.currentUser.phoneVerified) {
     	$("#startPhoneVerified").addClass("hidden");
-    }   
+    }
+
         
     APP.models.presence.current.bind('change' , syncPresence);
 } 
