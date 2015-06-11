@@ -82,7 +82,6 @@ function onShowPhotoEditor (e) {
 	var imgInstance = new fabric.Image(imgElement);
 	canvas.add(imgInstance);
 	*/
-	$('#photoEditImage').cropper('destroy');
 	
 	$('#photoEditImage').cropper();
 }
