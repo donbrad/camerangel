@@ -391,12 +391,12 @@
      </div>
 </div>
 
-<div data-role="view" id="photoView" data-zoom="true" data-elastic="false" style="width: 100%; height:100%; display: none;">
+<div data-role="view" id="photoView" data-zoom="true" data-style="width: 100%; height:100%; display: none;">
     <div data-role="header">
         <div data-role="navbar">
-            <a data-align="left" data-role="backbutton" >Back</a>
+            <a data-align="left" id="photoViewBack" data-role="backbutton">Back</a>
             <span>Photo View</span>
-			<a data-align="right" data-role="button" data-rel="modalview" href="#photoEditor">Edit</a>
+			<a data-align="right" data-role="button" href="#photoEditor">Edit</a>
         </div>
     </div>
 	<div style="margin: 2px; height: 98%; width: auto; text-align: center; background: #27476e;">
@@ -412,12 +412,12 @@
 </div>
 
 
-<div data-role="modalview" id="photoEditor" style="width: 100%; height:100%; display: none;"  data-open="onShowPhotoEditor"  data-close="onHidePhotoEditor">
+<div data-role="view" id="photoEditor" style="width: 100%; height:100%; display: none;"  data-show="onShowPhotoEditor"  data-hide="onHidePhotoEditor">
     <div data-role="header">
         <div data-role="navbar">
-            <a data-align="left" data-role="button"  data-click="closeModalViewPhotoEditor">Cancel</a>
+            <a data-align="left" id="photoEditorBack" data-role="backbutton">Back</a>
             <span>Photo Editor</span>
-            <a data-align="right" data-role="button" data-click="photoEditSave">Save</a>
+            <a data-align="right" data-role="button"  data-rel="modalview"  href="#modalview-photo">Tag</a>
         </div>
     </div>
 	
