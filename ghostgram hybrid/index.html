@@ -154,59 +154,15 @@
             <img class="nav-menu" src="images/menu-icon.svg"/> 
         </a>
         <img src="images/logo.svg" class="nav-logo"/>
-        <a  data-click="homeSignout" data-role="button" data-align="right">Sign Out</a>
+        <a data-click="homeSignout" data-role="button" data-align="right">Sign Out</a>
       </div>
 	</div>
+	<div data-role="content" class='view-content'>
+    <!-- application views will be rendered here -->
+    <a class="btnClear" data-role="button"  data-rel="modalview"  href="#modalview-start">open</a>
 
-    <div class="startBox">
-		<h2>Let's Get Started
-			<a class="right closeBox" data-role="button">
-				<img src="images/close.svg"/>
-			</a>
-		</h2>
-		<div class="clearfix"></div>
-		<div class="imgLine">
-			<img src="images/ballons.svg" width="100" />
-		</div>
-		<div class="startOptions">
-			<div class="startTask" id="startPhoneVerified">
-				<div class="startLine-photo">
-					<img src="images/verified-phone.svg" height="36"/>
-				</div>
-				<div class="startLine-text"> 
-					<a class="btnClear" data-role="button" data-rel="modalview" href="#modalview-verifyPhone">Verified your number</a>
-					<p>Send a text message to your phone and copy the code.  </p>
-				</div>
-			</div>
-			<div class="startTask">
-				<div class="startLine-photo">
-					<img src="images/start-chat.svg" height="26"/>
-				</div>
-				<div class="startLine-text">
-					<a class="btnClear" href="#testing" data-role="button" data-rel="modalview">Create a chat</a>
-					<p>Chat with a group or set up a private secure chat with a friend. </p>
-				</div>
-			</div>
-			<div class="startTask">
-				<div class="startLine-photo">
-					<img src="images/start-invite.svg" height="30"/>
-				</div>
-				<div class="startLine-text">
-					<a class="btnClear" href="#testing" data-role="button" data-rel="modalview">Invite your friends</a>
-					<p>Share photo and personal details securly with friends and family.</p>
-				</div> 
-			</div>
-			<div class="startTask">
-				<div class="startLine-photo">
-					<img src="images/start-place.svg" height="30"/>
-				</div>
-				<div class="startLine-text">
-					<a class="btnClear" href="#testing" data-role="button" data-rel="modalview">Join a place chat</a>
-					<p>See what’s happing at your favorite places.</p>
-				</div>
-			</div> 
-		</div>
-	</div>
+    </div>
+    
 
 </div>
     
@@ -506,6 +462,58 @@
     </form> 
 </div>
 
+<!-- get started -->
+<div data-role="modalview" id="modalview-start" style="width: 90%; display:none;" class="appearance">
+	<div class="startBox">
+			<h2>Let's Get Started
+				<a class="right closeBox" data-role="button" data-click="closeStartModal">
+					<img src="images/close.svg"/>
+				</a>
+			</h2>
+			<div class="clearfix"></div>
+			<div class="imgLine">
+				<img src="images/ballons.svg" width="100" />
+			</div>
+			<div class="startOptions">
+				<div class="startTask" id="startPhoneVerified">
+					<div class="startLine-photo">
+						<img src="images/verified-phone.svg" height="36"/>
+					</div>
+					<div class="startLine-text"> 
+						<a class="btnClear" data-role="button" data-rel="modalview" href="#modalview-verifyPhone">Verified your number</a>
+						<p>Send a text message to your phone and enter the code. It's easy! </p>
+					</div>
+				</div>
+				<div class="startTask">
+					<div class="startLine-photo">
+						<img src="images/start-chat.svg" height="26"/>
+					</div>
+					<div class="startLine-text">
+						<a class="btnClear" href="#testing" data-role="button" data-rel="modalview" data-click="closeStartModal">Create a chat</a>
+						<p>Chat with a group or set up a private secure chat with a friend. </p>
+					</div>
+				</div>
+				<div class="startTask">
+					<div class="startLine-photo">
+						<img src="images/start-invite.svg" height="30"/>
+					</div>
+					<div class="startLine-text">
+						<a class="btnClear" href="#testing" data-role="button" data-rel="modalview" data-click="closeStartModal">Invite your friends</a>
+						<p>Share photo and personal details securely with friends and family.</p>
+					</div> 
+				</div>
+				<div class="startTask">
+					<div class="startLine-photo">
+						<img src="images/start-place.svg" height="30"/>
+					</div>
+					<div class="startLine-text">
+						<a class="btnClear" href="#testing" data-role="button" data-rel="modalview" data-click="closeStartModal">Join a place chat</a>
+						<p>See what’s happening at your favorite places.</p>
+					</div>
+				</div> 
+			</div>
+		</div>
+</div>
 <!-- Testing modal -->
 <div data-role="modalview" id="testing" style="width: 90%; display:none;" class="appearance">
 	<div class="modalview-content">

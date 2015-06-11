@@ -617,3 +617,4 @@ function closeStartModal() {
 function closeTestingBox(){
 	$("#testing").data("kendoMobileModalView").close();
 }
+

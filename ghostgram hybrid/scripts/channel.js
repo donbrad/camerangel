@@ -21,7 +21,7 @@ function onInitChannel(e) {
 	 autosize($('#messageTextArea'));
 	 $("#messages-listview").kendoMobileListView({
         dataSource: APP.models.channel.messagesDS,
-        template: $("#messagesTemplate").html(),
+        template: $("#messagesTemplate").html() /*,
         click: function (e) {
             var message = e.dataItem;
 		
@@ -34,7 +34,7 @@ function onInitChannel(e) {
 				$("#messageActions").data("kendoMobileActionSheet").open();
 			}
             
-        } 
+        } */
      }).kendoTouch({
             filter: ">li",
          //   enableSwipe: true,
