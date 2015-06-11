@@ -42,7 +42,7 @@
     <script src='bower_components/imagesloaded/imagesloaded.js'></script>
 	<script src="scripts/uuid.js"></script>
     <script src="scripts/jquery-clearsearch.js"></script>
-    <script src="scripts/fabric.js"></script>
+    <script src="scripts/cropper.js"></script>
 
 
 </head>
@@ -395,9 +395,9 @@
 <div data-role="view" id="photoView" data-zoom="true" data-elastic="false" style="width: 100%; height:100%; display: none;">
     <div data-role="header">
         <div data-role="navbar">
-            <a data-align="left" data-role="backbutton"  >Back </a>
+            <a data-align="left" data-role="backbutton">Back </a>
             <span>Photo View</span>
-			<a data-align="right" data-role="button"  data-rel="lview"  href="#photoEditor">Edit</a>
+			<a data-align="right" data-role="button"  href="#photoEditor">Edit</a>
         </div>
     </div>
 	<div style="margin: 2px; height: 98%; width: auto; text-align: center; background: #27476e;">
@@ -405,8 +405,10 @@
 	</div>
 
 </div>
-	
-<div data-role="modalview" id="modalview-photo" style="width: 90%; display: none;"  data-before-open="onBeforeOpenPhoto" class="appearance">
+
+
+<div data-role="view" id="photoEditor" style="width: 100%; height:100%; display: none;"  data-show="onShowPhotoEditor" >
+
     <div data-role="header">
         <div data-role="navbar">
             <a data-align="left" data-role="backbutton">Back </a>
@@ -415,15 +417,14 @@
         </div>
     </div>
 	
-    <div style="text-align: center; padding-bottom: 8px;">
+    <div style="text-align: center; padding-top: 4px; padding-bottom: 6px; background: #e2e2e2; ">
         <a  data-role="button" class="btnBlack" id="photoEditRotateLeft" data-click="photoEditRotateLeft"> <i class="fa fa-rotate-left"></i> Left </a>
         <a  data-role="button" class="btnBlack"  id="photoEditRotateRight" data-click="photoEditRotateRight"> <i class="fa fa-rotate-right"></i> Right </a>
         <a  data-role="button" class="btnBlack"  id="photoEditCrop" data-click="photoEditCrop"> <i class=" fa fa-scissors"></i> Crop </a>
     </div>
 	
-    <div style="margin: 4px; max-height:60%;">
-        <img id="photoEditImage" src="" style="max-height: 100%; max-width: 100%; display: none;"/>
-        <canvas id="photoEditCanvas"> </canvas>
+    <div style="margin: 4px; height:60%;">
+        <img id="photoEditImage" src="" style="max-height: 100%; max-width: 100%;"/>
     </div>
 
 

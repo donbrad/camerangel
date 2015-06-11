@@ -2,7 +2,7 @@ function onInitGallery(e){
     e.preventDefault();
     // ToDo: Initialize list view
     var itemWidth = $(window).width()/4;
-
+	APP.models.gallery.rotationAngle = 0;
 
 	 $('#gallery-grid').attr('width', $(window).width());
      $('#gallery-grid').isotope({
@@ -40,27 +40,56 @@ function onInitGallery(e){
 
 }
 
+function photoEditCrop(e) {
+	e.preventDefault();	
+	var $image = $('#photoEditImage');
+	var cropCanvas = $image.cropper('getCroppedCanvas');
+	var cropUrl = cropCanvas.toDataURL("image/jpeg");
+	
+	$image.cropper.replace(cropUrl);
+	$('#photoEditImage').attr('src', cropUrl);
+	
+	
+}
+
 function photoEditRotateLeft(e) {
-	$('#photoEditImage').css('transform','rotate(' + -90 + 'deg)');
+	e.preventDefault();
+	//$('#photoEditImage').css('transform','rotate(' + -90 + 'deg)');'
+	APP.models.gallery.rotationAngle -= 90;
+	$('#photoEditImage').cropper('rotate', APP.models.gallery.rotationAngle);
 }
 
 function photoEditRotateRight(e) {
-	$('#photoEditImage').css('transform','rotate(' + 90 + 'deg)');
+	e.preventDefault();
+	//$('#photoEditImage').css('transform','rotate(' + 90 + 'deg)');
+	APP.models.gallery.rotationAngle += 90;
+	$('#photoEditImage').cropper('rotate', APP.models.gallery.rotationAngle);
+}
+
+function onHidePhotoEditor(e) {
+	e.preventDefault();
+	
+	$('#photoEditImage').cropper('destroy');
 }
 
 
 function onShowPhotoEditor (e) {
 	e.preventDefault();
 
+	/*
 	var canvas = new fabric.Canvas('photoEditCanvas');
 	var imgElement = document.getElementById('photoEditImage');
 	var imgInstance = new fabric.Image(imgElement);
 	canvas.add(imgInstance);
-
+	*/
+	$('#photoEditImage').cropper('destroy');
+	
+	$('#photoEditImage').cropper();
 }
 
 function onShowGallery(e) {
 	e.preventDefault();
+	APP.models.gallery.rotationAngle = 0;
 
 	var grid = $('#gallery-grid'), isotope = grid.data('isotope');
 	var itemWidth = $(window).width()/4;
