@@ -244,12 +244,12 @@
 	<div class="chat-message-content clearfix">
 		<h5>#=name#</h5>
 		<div class="chat-message-text">#= formattedContent #</div>
-		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# <img class="chat-message-photo" src="#:data.photo.thumb#" alt="" > #}#
+		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# <img class="chat-message-photo-small" src="#:data.photo.thumb#" alt="" > #}#
 	</div>
 	 #} else {#
 	 <div class="chat-message-user-content clearfix">
 		<div class="chat-message-text">#= formattedContent #</div>
-		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# <img class="chat-message-photo" src="#:data.photo.thumb#" alt="" > #}#
+		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# <img class="chat-message-photo-small" src="#:data.photo.thumb#" alt="" > #}#
 	</div>
 	 #}#
 	<a href="\\#" data-role="button" class="delete" >Delete</a>

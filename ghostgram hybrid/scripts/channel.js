@@ -63,7 +63,11 @@ function tapChannel(e) {
 	$('.delete').css('display', 'none');
 	$('.archive').css('display', 'none');
 	
-	if (target[0].className === 'chat-message-photo') {
+	// If the photo is minimized and the user just clicked in the message zoom the photo in place
+	$('#'+message.msgID + '.chat-message-photo-small').removeClass('chat-message-photo-small').addClass('chat-message-photo');
+	
+	// User actually clicked on the photo so show the open the photo viewer
+	if (target[0].className === 'chat-message-photo' || target[0].className === 'chat-message-photo-small') {
 		var photoUrl = message.data.photo.photo;
 		$('#photoViewImage').attr('src', photoUrl);
 		$('#photoImage').attr('src', photoUrl);
