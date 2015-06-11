@@ -1112,8 +1112,11 @@ a:hover {
 }
 .statusContactList {
   position: relative;
+}
+.statusContactList-icon {
+  position: absolute;
+  top: 24px;
   left: 24px;
-  top: -20px;
 }
 #menuAvailable {
   background: transparent;

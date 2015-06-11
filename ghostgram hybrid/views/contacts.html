@@ -188,15 +188,17 @@
 			 	<i class="ghostIcon fa fa-cog"></i>
 			 </a>
 			 <div class="left listPhoto">
-			 	<img class="circle-img-md" src="#:data.photo#" />
-			 	<span class="statusContactList">  
-		 			#if (data.isAvailable) { #  
-		 				<img width="16" src="images/status-available.svg" />
+			 	<div class="statusContactList">
+			 		<img class="circle-img-md" src="#:data.photo#" />  
+		 			#if (data.isAvailable) { #
+		 				<img width="16" src="images/status-available.svg" class="statusContactList-icon" />
 		 			# } 
-		 			else { # 
-		 				<img width="16" src="images/status-away.svg" />
+		 			else { #
+		 				<img width="16" src="images/status-away.svg" class="statusContactList-icon" />
 		 			#}#
-		 		</span>
+		 		</div>
+			 	
+			 	
 			 </div><!-- left -->
 			
 			<div class="left listName">
