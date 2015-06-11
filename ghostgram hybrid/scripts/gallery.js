@@ -46,7 +46,7 @@ function photoEditCrop(e) {
 	var cropCanvas = $image.cropper('getCroppedCanvas');
 	var cropUrl = cropCanvas.toDataURL("image/jpeg");
 	
-	$image.cropper.replace(cropUrl);
+	$image.cropper('replace', cropUrl);
 	$('#photoEditImage').attr('src', cropUrl);
 	
 	
