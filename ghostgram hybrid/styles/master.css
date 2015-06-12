@@ -1425,6 +1425,7 @@ div.loginBox > form > div > ul > li {
   margin-right: 0px;
 }
 #searchContactDiv {
+  display: inline-block;
   padding-left: 1rem;
   padding-right: 1rem;
 }
