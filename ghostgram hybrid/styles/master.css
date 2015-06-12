@@ -1424,14 +1424,16 @@ div.loginBox > form > div > ul > li {
   margin-left: 0px;
   margin-right: 0px;
 }
-.toContactDiv {
+#searchContactDiv {
   padding-left: 1rem;
   padding-right: 1rem;
 }
-.toContactDiv input {
-  width: 90%;
+#searchContactDiv input {
+  display: inline;
+  width: 88%;
 }
-.toContactDiv img {
+#searchContactDiv img {
+  display: inline;
   vertical-align: middle;
 }
 .inviteContactImg {

@@ -282,7 +282,24 @@ function onInitContacts(e) {
             swipe: swipe
        });
        */
-    
+	
+	var dataSource = APP.models.contacts.contactsDS;
+	
+	// Activate clearsearch and zero the filter when it's called
+     $('#contactSearchInput').clearSearch({ callback: function() { dataSource.filter([]);  } });
+	
+	// Filter current contacts and query device contacts on keyup
+	// Todo: cache local contacts on first call and then just filter that list
+	$('#contactSearchInput').keyup(function() {
+		 var query = this.value;
+		 
+		 if (query.length > 0) {
+			  dataSource.filter( { field: "name", operator: "contains", value: query });
+		 } else {
+			dataSource.filter([]);
+		 }
+	 });
+	
      $("#contacts-listview").kendoMobileListView({
         dataSource: APP.models.contacts.contactsDS,
         template: $("#contactsTemplate").html(),
