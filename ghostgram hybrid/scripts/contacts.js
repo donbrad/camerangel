@@ -15,12 +15,21 @@ function syncProfile (e) {
     });
 }
 
+function contactSearchActivate (e) {
+    if (e !== undefined)
+        e.preventDefault();
+    $('#contactSearch').removeClass('hidden');
+}
+
 function inviteUser(e) {
+    if (e !== undefined)
+        e.preventDefault();
 	
 }
 
 function privateChat(e) {
-
+    if (e !== undefined)
+        e.preventDefault();
 	var contact = APP.models.contacts.currentContact;
 	var contactUUID = contact.contactUUID;
 	

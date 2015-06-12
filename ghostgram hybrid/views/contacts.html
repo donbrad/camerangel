@@ -9,23 +9,29 @@
             </a>
         </div>
     </div>
-    <div class="contactSearch hidden">
+
+	<div class="contactSearch hidden">
     	<div class="toContactDiv">
     		<span><img src="images/search.svg" width="18" /></span>
-    		<input type="search" />
+    		<input id="contactSearchInput" class="clearable" type="search" />
     	</div>
-    </div>       
-    <div class="contactBanner">Friends</div>
-    <div style="padding-bottom: 24px;">
+    </div>
+
+	<div id="contactSearchDiv" class="hidden" style="padding-bottom: 24px;" >
+
+		<ul id="contacts-searchview"></ul>
+
+	</div>
+
+	<div id="contactListDiv"  style="padding-bottom: 24px;">
         <ul id="contacts-listview"></ul>
-        <div class="contactBanner">On Device</div>
-        <!-- Only display if device permission is needed --> 
-        <div class="pad center">
-	       <a class="btnClear">
-	        	<img src="images/import.svg" height="16" />
-	        	Find contacts on device
-	        </a>
-	    </div>
+		<!-- Only display if device permission is needed -->
+		<div id="deviceContactPermission" class="pad center hidden">
+			<a class="btnClear">
+				<img src="images/import.svg" height="16" />
+				Find contacts on device
+			</a>
+		</div>
     </div>
     
     <ul data-role="actionsheet" id="contactActions" data-popup='{"direction": "left"}'>
