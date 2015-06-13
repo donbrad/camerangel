@@ -1,5 +1,5 @@
 
-<div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="APP.models.contacts" data-init="onInitContacts">
+<div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="APP.models.contacts" data-init="onInitContacts" data-show="onShowContacts" data-hide="onHideContacts">
   <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -12,7 +12,8 @@
 
 	<div id="searchContactDiv" >	
 		<img src="images/search.svg" width="18" /> 
-		<input id="contactSearchInput" class="clearable" type="text" />
+		<span><input id="contactSearchInput" class="clearable" type="text" /></span>
+		
     </div>
 
 
@@ -189,15 +190,13 @@
 			 <div class="left listPhoto">
 			 	<div class="statusContactList">
 			 		<img class="circle-img-md" src="#:data.photo#" />  
-		 			#if (data.isAvailable) { #
+		 			#if (data.isAvailable !== undefined && data.isAvailable) { #
 		 				<img width="16" src="images/status-available.svg" class="statusContactList-icon" />
 		 			# } 
 		 			else { #
 		 				<img width="16" src="images/status-away.svg" class="statusContactList-icon" />
 		 			#}#
 		 		</div>
-			 	
-			 	
 			 </div><!-- left -->
 			
 			<div class="left listName">
@@ -210,13 +209,7 @@
 			</div><!-- left -->
 			<p class="left caption">#: data.name #</p>  
 			<div class="clearfix"></div> 
-			<div class="hidden">
-			 	<span> <i class="fa fa-map-marker"></i> #: data.location # </span> 
-			 </div>
 		 </div>
-		 # if (data.message !== undefined && data.message !== '') { #
-		 <div> <i class="fa fa-comment-o"></i> #: data.message # </div>
-		 #} #
 	</div>
 </div><!-- listBox -->
 </script>

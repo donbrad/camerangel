@@ -149,6 +149,7 @@
           title: 'Contacts',
           contactsDS: new kendo.data.DataSource({offlineStorage: "contacts-offline",  sort: { field: "name", dir: "asc" }}),
           deviceContactsDS: new kendo.data.DataSource(),
+		  contactListDS:  new kendo.data.DataSource({group: 'category'}),
           currentDeviceContact: {},
           currentContact: new kendo.data.ObservableObject(),
           phoneDS: new kendo.data.DataSource(),

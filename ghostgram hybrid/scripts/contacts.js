@@ -99,18 +99,24 @@ function syncContact(model) {
 				model.set("email", result.user.email);
 			} 
 			model.set('publicKey',  result.user.publicKey);
+			 
 			model.set("contactUUID", result.user.userUUID);
 			 if (contactUUID === undefined) {
 				 updateParseObject('contacts', 'uuid', uuid, 'contactUUID',  result.user.userUUID);
 			 }
+			 
 			 if (publicKey === undefined) {
 				 updateParseObject('contacts', 'uuid', uuid, 'publicKey',result.user.publicKey );
 			 }
 			 if (phoneVerified !== result.user.phoneVerified) {
 				 if (result.user.phoneVerified === undefined)
 					 result.user.phoneVerified = false;
+				 
+				  if (result.user.phoneVerified){
+					   model.set('category', "member");
+				  }
 				  model.set("phoneVerified", result.user.phoneVerified);
-				  updateParseObject('contacts', 'uuid', uuid, 'phoneVerified',result.user.phoneVerified );
+				  updateParseObject('contacts', 'uuid', uuid, 'phoneVerified', result.user.phoneVerified );
 			 }
 		 }
 
@@ -195,6 +201,7 @@ function updateCurrentContact (contact) {
     APP.models.contacts.currentContact.set('email', contact.email);
     APP.models.contacts.currentContact.set('address', contact.address);
     APP.models.contacts.currentContact.set('uuid', contact.uuid);
+	APP.models.contacts.currentContact.set('category', contact.category);
 	APP.models.contacts.currentContact.set('contactUUID', contact.contactUUID);
 	APP.models.contacts.currentContact.set('contactEmail', contact.contactEmail);
     APP.models.contacts.currentContact.set('privateChannel', contact.privateChannel);
@@ -301,7 +308,7 @@ function onInitContacts(e) {
 	 });
 	
      $("#contacts-listview").kendoMobileListView({
-        dataSource: APP.models.contacts.contactsDS,
+        dataSource: APP.models.contacts.contactListDS,
         template: $("#contactsTemplate").html(),
         click: function (e) {
             var contact = e.dataItem;
@@ -316,14 +323,25 @@ function onInitContacts(e) {
         }
      });
 }
-    
+ 
+function onShowContacts (e) {
+	e.preventDefault();
+	APP.models.contacts.contactListDS.data(APP.models.contacts.contactsDS.data());
+}
+
+function onHideContacts (e) {
+	e.preventDefault();
+	//APP.models.contacts.contactListDS.data(APP.models.contacts.contactsDS.data());
+}
     
 function onInitContactImport (e) {
     e.preventDefault();
 	
     $("#contactimport-listview").kendoMobileListView({
             dataSource: APP.models.contacts.deviceContactsDS,
-            template: $("#deviceContactsTemplate").text(),
+            template: $("#deviceContactsTemplate").html(),
+			headerTemplate: "${value}",
+            fixedHeaders: true,
             click: function(e) {
                APP.models.contacts.currentDeviceContact = e.dataItem;
                APP.models.contacts.emailArray = new Array();
@@ -403,6 +421,7 @@ function contactsFindContacts(e) {
             contactItem.type = "device";
             contactItem.name = contacts[i].name.formatted;
             contactItem.phoneNumbers = new Array();
+			contactItem.category = 'device';
             if (contacts[i].phoneNumbers !== null) {
                 for (var j=0; j<contacts[i].phoneNumbers.length; j++){
                     var phone = new Object();
@@ -504,6 +523,7 @@ function contactsAddContact(e){
 		contact.set("alias", alias);
 		contact.set("address", address);
 		contact.set("group", '');
+	    contact.set('category', "new");
 		contact.set("priority", 0);
 		contact.set("privateChannel", null);
 		contact.set("uuid", guid);
