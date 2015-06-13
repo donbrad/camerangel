@@ -43,7 +43,7 @@
 	<script src="scripts/uuid.js"></script>
     <script src="scripts/jquery-clearsearch.js"></script>
     <script src="scripts/cropper.js"></script>
-
+    <script src="bower_components/velocity/velocity.js"></script>
 
 </head>
 <body id="body">
@@ -158,9 +158,10 @@
       </div>
 	</div>
 	<div data-role="content" class='view-content'>
-    <!-- application views will be rendered here -->
-    	<ul data-role="listview"  data-source="APP.models.home.notificationDS" data-template="notificationTemplate" id="notification-listview" ></ul>
-
+		<div class="appBox">
+	    <!-- application views will be rendered here -->
+	    	<ul data-role="listview"  data-source="APP.models.home.notificationDS" data-template="notificationTemplate" id="notification-listview" ></ul>
+	    </div>
     </div>
     
 

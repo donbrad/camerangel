@@ -45,12 +45,13 @@
             #if (isPrivate) {# 
                 <i class="ghostIconNavbar fa fa-user-secret"> </i>
             #} else { # 
-                <img id="profilePhoto" class="circle-img" src="images/ghostgramcontact.png" height="30"/> 
+                <img id="profilePhoto" class="circle-img" src="images/ghostgramcontact.png" height="30" /> 
             #}# 
            
         </div>
-        <h3><a data-rel='view' href="\\#channel?channel=#:channelId#" id="chatName"> #:name# </a>
-    	<span class="chatActivityTime">1 hr ago</span>
+        <h3>
+        	<a data-rel='view' href="\\#channel?channel=#:channelId#" id="chatName"> #:name# </a>
+    		<span class="chatActivityTime">1 hr ago</span>
     	</h3>
         <div class="hidden"> #: description # </div>
         <div>
@@ -70,7 +71,9 @@
    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img src="images/menu-icon.svg"/></a>
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left">
+            	<img src="images/menu-icon.svg" />
+            </a>
             <a data-align="right" data-role="button"  data-rel="drawer" href="#channelMembers" > <i class="ghostIconNavbar fa fa-users"></i> </a>
         </div>
     </div>
