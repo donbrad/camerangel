@@ -296,7 +296,6 @@ function onInitContacts(e) {
      $('#contactSearchInput').clearSearch({ 
 		 callback: function() { 
 			 dataSource.filter([]);  
-			 APP.models.contacts.deviceContactsDS.data([]);
 		 } 
 	 });
 	
@@ -306,6 +305,7 @@ function onInitContacts(e) {
 		 var query = this.value;
 		 if (query.length > 0) {
 			  dataSource.filter( { field: "name", operator: "contains", value: query });
+			
 		 } else {
 			dataSource.filter([]);
 		 }
@@ -319,11 +319,17 @@ function onInitContacts(e) {
         click: function (e) {
             var contact = e.dataItem;
             updateCurrentContact(contact);
-			// If we know the contacts uuid enable the full feature set
-			if (contact.contactUUID !== undefined && contact.contactUUID !== null){
-				$("#contactUserActions").data("kendoMobileActionSheet").open();
-			} else {
-				$("#contactActions").data("kendoMobileActionSheet").open();
+			
+			if (contact.category === 'phone') {
+				// Need to import contact...
+				
+			} else {		
+				// If we know the contacts uuid enable the full feature set
+				if (contact.contactUUID !== undefined && contact.contactUUID !== null){
+					$("#contactUserActions").data("kendoMobileActionSheet").open();
+				} else {
+					$("#contactActions").data("kendoMobileActionSheet").open();
+				}
 			}
              
         }
@@ -333,6 +339,8 @@ function onInitContacts(e) {
 function onShowContacts (e) {
 	e.preventDefault();
 	APP.models.contacts.contactListDS.data(APP.models.contacts.contactsDS.data());
+	APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
+	
 }
 
 function onHideContacts (e) {

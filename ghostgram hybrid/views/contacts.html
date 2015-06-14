@@ -188,7 +188,7 @@
 			 <div class="left listPhoto">
 			 	<div class="statusContactList">
 			 		<img class="circle-img-md" src="#:data.photo#" />  
-		 			#if (data.isAvailable !== undefined && data.isAvailable) { #
+		 			#if (data.category !== 'phone' && data.isAvailable !== undefined && data.isAvailable) { #
 		 				<img width="16" src="images/status-available.svg" class="statusContactList-icon" />
 		 			# } 
 		 			else { #
@@ -197,6 +197,7 @@
 		 		</div>
 			 </div><!-- left -->
 			
+			# if (data.category !== 'phone') {#
 			<div class="left listName">
 				<h4>#: data.alias # </h4>
 			  	<span class="ghostTextLarge hidden"> 
@@ -205,6 +206,8 @@
 				  	<strong> <i class="fa fa-user-secret"></i> </strong> #} #
 	 			</span>  
 			</div><!-- left -->
+			#}#
+			
 			<p class="left caption">#: data.name #</p>  
 			<div class="clearfix"></div> 
 		 </div>
