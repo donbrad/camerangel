@@ -290,16 +290,20 @@ function onInitContacts(e) {
        });
        */
 	
-	var dataSource = APP.models.contacts.contactsDS;
+	var dataSource = APP.models.contacts.contactListDS;
 	
 	// Activate clearsearch and zero the filter when it's called
-     $('#contactSearchInput').clearSearch({ callback: function() { dataSource.filter([]);  } });
+     $('#contactSearchInput').clearSearch({ 
+		 callback: function() { 
+			 dataSource.filter([]);  
+			 APP.models.contacts.deviceContactsDS.data([]);
+		 } 
+	 });
 	
 	// Filter current contacts and query device contacts on keyup
 	// Todo: cache local contacts on first call and then just filter that list
 	$('#contactSearchInput').keyup(function() {
 		 var query = this.value;
-		 
 		 if (query.length > 0) {
 			  dataSource.filter( { field: "name", operator: "contains", value: query });
 		 } else {
@@ -310,6 +314,8 @@ function onInitContacts(e) {
      $("#contacts-listview").kendoMobileListView({
         dataSource: APP.models.contacts.contactListDS,
         template: $("#contactsTemplate").html(),
+		headerTemplate: "${value}",
+        fixedHeaders: true,
         click: function (e) {
             var contact = e.dataItem;
             updateCurrentContact(contact);
@@ -402,9 +408,9 @@ function onInitContactImport (e) {
     
 
     
-function contactsFindContacts(e) {
-    e.preventDefault(e);   
-    var query = $('#contactSearchQuery').val();
+function contactsFindContacts(query, callback) {
+  //  e.preventDefault(e);   
+ //   var query = $('#contactSearchQuery').val();
    
     var options      = new ContactFindOptions();
     options.filter   = query
@@ -421,7 +427,7 @@ function contactsFindContacts(e) {
             contactItem.type = "device";
             contactItem.name = contacts[i].name.formatted;
             contactItem.phoneNumbers = new Array();
-			contactItem.category = 'device';
+			contactItem.category = 'phone';
             if (contacts[i].phoneNumbers !== null) {
                 for (var j=0; j<contacts[i].phoneNumbers.length; j++){
                     var phone = new Object();
@@ -471,11 +477,16 @@ function contactsFindContacts(e) {
 				if (contactItem.phoneNumbers.length > 0)
             			APP.models.contacts.deviceContactsDS.add(contactItem);
 			}
-			// Only add device contacts with phone numbers
-			
+			// Only add device contacts with phone numbers	
         }
-         
-    },function(error){alert(error);}, options);
+		
+        if (callback !== undefined) {
+			callback(APP.models.contacts.deviceContactsDS.data());
+		} 
+    },
+	function(error){
+		mobileNotify(error);
+	}, options);
  }
 			
  function returnValidPhoto(url,callback){
