@@ -296,6 +296,7 @@ function onInitContacts(e) {
      $('#contactSearchInput').clearSearch({ 
 		 callback: function() { 
 			 dataSource.filter([]);  
+			 $('#btnSearchDeviceContacts').addClass('hidden');
 		 } 
 	 });
 	
@@ -305,9 +306,13 @@ function onInitContacts(e) {
 		 var query = this.value;
 		 if (query.length > 0) {
 			  dataSource.filter( { field: "name", operator: "contains", value: query });
+			  if (query.length > 2) {
+				  $('#btnSearchDeviceContacts').removeClass('hidden');
+			  }
 			
 		 } else {
 			dataSource.filter([]);
+			  $('#btnSearchDeviceContacts').addClass('hidden');
 		 }
 	 });
 	
@@ -414,6 +419,17 @@ function onInitContactImport (e) {
     });
 }
     
+
+function searchDeviceContacts(e) {
+	e.preventDefault();
+	query = $('#contactSearchInput').val();
+	contactsFindContacts(query, function(array) {
+		for (var i=0; i<array.length; i++) {
+			APP.models.contacts.contactListDS.add(array[i]);
+		}
+		
+	});
+}
 
     
 function contactsFindContacts(query, callback) {
