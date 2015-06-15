@@ -502,7 +502,7 @@
 		
         importDeviceContacts: function () {
 			var options      = new ContactFindOptions();
-			options.filter   = ''
+			options.filter   = '';
 			options.multiple = true;
 			var fields       = ["name", "displayName", "nickName" ,"phoneNumbers", "emails", "addresses", "photos"];
 
