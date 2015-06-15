@@ -4,16 +4,16 @@
         <div data-role="navbar">
             <span data-role="view-title"></span>
             <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img class="menuIcon" src="images/menu-icon.svg"/></a>
-            <a data-role="button" data-click="contactSearchActivate" id="activateContactSearch" data-align="right" >
+            <a data-role="button" data-click="contactSearchActivate" id="btnContactSearchActivate" data-align="right" >
             	<img src="images/search-white.svg" />
             </a>
         </div>
     </div>
 
-	<div id="searchContactDiv" >	
+	<div id="searchContactsDiv">	
 		<img src="images/search.svg" width="18" /> 
-		<span><input id="contactSearchInput" class="clearable" type="text" /></span>
-		
+		<input id="contactSearchInput" type="text" />
+		<a data-role="button" data-click="searchDeviceContacts" id="btnSearchDeviceContacts"> <i class="ghostIcon fa fa-mobile"></i> </a>
     </div>
 
 

@@ -339,7 +339,7 @@ function onInitContacts(e) {
 function onShowContacts (e) {
 	e.preventDefault();
 	APP.models.contacts.contactListDS.data(APP.models.contacts.contactsDS.data());
-	APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
+	//APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
 	
 }
 

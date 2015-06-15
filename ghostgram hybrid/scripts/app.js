@@ -570,7 +570,7 @@
 				}
 
 
-				} 
+				 
 			},
 			function(error){
 				mobileNotify(error);
@@ -810,7 +810,7 @@
 				 }
 			 });
             _app.fetchParseData();
-			_app.importDeviceContacts();
+			//_app.importDeviceContacts();
         }  
 
         APP.kendo = new kendo.mobile.Application(document.body, {
