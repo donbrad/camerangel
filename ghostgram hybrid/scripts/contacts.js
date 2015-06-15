@@ -298,6 +298,7 @@ function onInitContacts(e) {
 			 dataSource.data([]);
 			 dataSource.data(APP.models.contacts.contactsDS.data());
 			 dataSource.filter([]);  
+			  APP.models.contacts.deviceContactsDS.data([]);
 			 $('#btnSearchDeviceContacts').addClass('hidden');
 		 } 
 	 });
@@ -314,6 +315,7 @@ function onInitContacts(e) {
 			
 		 } else {
 			 dataSource.data([]);
+			 APP.models.contacts.deviceContactsDS.data([]);
 			 dataSource.data(APP.models.contacts.contactsDS.data());
 			 dataSource.filter([]);
 			 
@@ -331,6 +333,7 @@ function onInitContacts(e) {
             updateCurrentContact(contact);
 			
 			if (contact.category === 'phone') {
+				APP.kendo.navigate('#contactImport?query=' + contact.name);
 				// Need to import contact...
 				
 			} else {		
@@ -423,7 +426,13 @@ function onInitContactImport (e) {
             }
     });
 }
-    
+
+function onShowContactImport (e) {
+	e.preventDefault();
+	var query = e.view.params.query;
+	contactsFindContacts(query);
+	
+}
 
 function searchDeviceContacts(e) {
 	e.preventDefault();
