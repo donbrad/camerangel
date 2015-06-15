@@ -295,6 +295,8 @@ function onInitContacts(e) {
 	// Activate clearsearch and zero the filter when it's called
      $('#contactSearchInput').clearSearch({ 
 		 callback: function() { 
+			 dataSource.data([]);
+			 dataSource.data(APP.models.contacts.contactsDS.data());
 			 dataSource.filter([]);  
 			 $('#btnSearchDeviceContacts').addClass('hidden');
 		 } 
@@ -311,7 +313,10 @@ function onInitContacts(e) {
 			  }
 			
 		 } else {
-			dataSource.filter([]);
+			 dataSource.data([]);
+			 dataSource.data(APP.models.contacts.contactsDS.data());
+			 dataSource.filter([]);
+			 
 			  $('#btnSearchDeviceContacts').addClass('hidden');
 		 }
 	 });
