@@ -1425,21 +1425,18 @@ div.loginBox > form > div > ul > li {
   margin-right: 0px;
 }
 #searchContactsDiv {
-  display: table;
-  padding-left: 6px;
-  padding-right: 6px;
-}
-#searchContactsDiv input {
-  display: table-cell;
-  width: 80%;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 #searchContactsDiv img {
-  display: table-cell;
   vertical-align: middle;
+}
+#searchContactsDiv input {
+  width: 80%;
 }
 #searchContactsDiv a {
   width: 18px;
-  display: table-cell;
+  vertical-align: middle;
 }
 .inviteContactImg {
   padding: 1rem;
