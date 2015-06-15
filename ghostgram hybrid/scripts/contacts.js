@@ -62,6 +62,15 @@ var dataSource = APP.models.contacts.contactsDS;
 	return(contact);	
 }
 
+function findContactByPhone(phone) {
+var dataSource = APP.models.contacts.contactsDS;
+    dataSource.filter( { field: "phone", operator: "eq", value: phone });
+    var view = dataSource.view();
+    var contact = view[0];
+	dataSource.filter([]);
+	
+	return(contact);	
+}
 
 function editContact() {
     APP.kendo.navigate("#editContact");  
@@ -581,12 +590,19 @@ function contactsAddContact(e){
     phone = phone.replace(/\D+/g, "");
 	if (phone[0] !== '1')
 		phone = '1' + phone;
+	
+	if (findContactByPhone(phone) !== undefined) {
+		mobileNotify("Existing contact with this phone number");
+		$("#modalview-AddContact").data("kendoMobileModalView").close();
+		return;
+	}
+	
 	contact.set("phone", phone);
 
 	// Close modal
 	$("#modalview-AddContact").data("kendoMobileModalView").close();
 
-	 mobileNotify("Invite sent");
+	mobileNotify("Invite sent");
 	// Look up this contacts phone number in the gg directory
 	findUserByPhone(phone, function (result) {
 		
