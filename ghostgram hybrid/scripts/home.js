@@ -257,87 +257,100 @@ function homeCreateAccount() {
 	if (phone[0] !== '1') {
 		phone = '1'+phone;
 	}
-    
-    Parse.Cloud.run('preflightPhone', { phone: phone }, {
+	
+	Parse.Cloud.run('validateMobileNumber', { phone: phone }, {
       success: function(result) {
-           if (result.status !== 'ok' || result.count !== 0) {
-               mobileNotify("Your phone number matches existing user.");
+    		if (result.status !== 'ok' || result.type !== 'mobile') {
+               mobileNotify("Your phone number is not a valid mobile number.");
                return;
            } else {
-               // Generate Keys for the user.  
-			   	var RSAkey = cryptico.generateRSAKey(1024);
-				var publicKey = cryptico.publicKeyString(RSAkey);
-				var privateKey = cryptico.privateKeyString(RSAkey);
-			   
-			   
-                 //Phone number isn't a duplicate -- create user
-                user.set("username", username);
-                user.set("password", password);
-                user.set("email", username);
-			    user.set("name", name);
-                user.set("phone", phone);
-                user.set("alias", alias);
-                user.set("aliasPublic", "ghostgram user");
-                user.set("profilePhoto", null)
-                user.set("phoneVerified", false);
-			    user.set("rememberUsername", false);
-                user.set("userUUID", userUUID);
-			    user.set("publicKey", publicKey);
-			    user.set("privateKey", privateKey)
+    			Parse.Cloud.run('preflightPhone', { phone: phone }, {
+				  success: function(result) {
+					   if (result.status !== 'ok' || result.count !== 0) {
+						   mobileNotify("Your phone number matches existing user.");
+						   return;
+					   } else {
+				   // Generate Keys for the user.  
+					var RSAkey = cryptico.generateRSAKey(1024);
+					var publicKey = cryptico.publicKeyString(RSAkey);
+					var privateKey = cryptico.privateKeyString(RSAkey);
 
-                user.signUp(null, {
-                    success: function(user) {
-                        // Hooray! Let them use the app now.
-                       closeModalViewSignup();
-                        APP.models.profile.currentUser.set('username', user.get('username'));
-                        APP.models.profile.currentUser.set('email', user.get('email'));
-                        APP.models.profile.currentUser.set('phone', user.get('phone'));
-                        APP.models.profile.currentUser.set('alias', user.get('alias'));
-                        APP.models.profile.currentUser.set('userUUID', user.get('userUUID'));
-                        APP.models.profile.currentUser.set('phoneVerified', false);
-                        APP.models.profile.currentUser.set('emailVerified',user.get('emailVerified'));
-						APP.models.profile.currentUser.set('publicKey',user.get('publicKey'));
-						APP.models.profile.currentUser.set('privateKey',user.get('privateKey'));
-                        APP.models.profile.currentUser.bind('change', syncProfile);
-                        APP.models.profile.parseACL = new Parse.ACL(Parse.User.current());
-                       mobileNotify('Welcome to ghostgrams!');
-						if (window.navigator.simulator !== true) {
-							
-							cordova.plugins.notification.local.add({
-							  id         : 'userWelcome',
-							  title      : 'Welcome to ghostgrams',
-							  message    : 'You have a secure connection to your family, friends and favorite places',
-							  autoCancel : true,
-							  date : new Date(new Date().getTime() + 120 * 1000)
-							});
-						}
-                         Parse.Cloud.run('sendPhoneVerificationCode', { phoneNumber: phone }, {
-                              success: function (result) {
-                                  modileNotify('Please verify your phone');
-                                  $("#modalview-verifyPhone").data("kendoMobileModalView").open();
-                              },
-                             error: function (result, error){
-                                 mobileNotify('Error sending verification code ' + error);
-                             }
-                         });
-                       
-                        
-            
-                       APP.kendo.navigate('#home');
-                    },
+
+					 //Phone number isn't a duplicate -- create user
+					user.set("username", username);
+					user.set("password", password);
+					user.set("email", username);
+					user.set("name", name);
+					user.set("phone", phone);
+					user.set("alias", alias);
+					user.set("aliasPublic", "ghostgram user");
+					user.set("profilePhoto", null)
+					user.set("phoneVerified", false);
+					user.set("rememberUsername", false);
+					user.set("userUUID", userUUID);
+					user.set("publicKey", publicKey);
+					user.set("privateKey", privateKey)
+
+					user.signUp(null, {
+						success: function(user) {
+							// Hooray! Let them use the app now.
+						   closeModalViewSignup();
+							APP.models.profile.currentUser.set('username', user.get('username'));
+							APP.models.profile.currentUser.set('email', user.get('email'));
+							APP.models.profile.currentUser.set('phone', user.get('phone'));
+							APP.models.profile.currentUser.set('alias', user.get('alias'));
+							APP.models.profile.currentUser.set('userUUID', user.get('userUUID'));
+							APP.models.profile.currentUser.set('phoneVerified', false);
+							APP.models.profile.currentUser.set('emailVerified',user.get('emailVerified'));
+							APP.models.profile.currentUser.set('publicKey',user.get('publicKey'));
+							APP.models.profile.currentUser.set('privateKey',user.get('privateKey'));
+							APP.models.profile.currentUser.bind('change', syncProfile);
+							APP.models.profile.parseACL = new Parse.ACL(Parse.User.current());
+						   mobileNotify('Welcome to ghostgrams!');
+							if (window.navigator.simulator !== true) {
+
+								cordova.plugins.notification.local.add({
+								  id         : 'userWelcome',
+								  title      : 'Welcome to ghostgrams',
+								  message    : 'You have a secure connection to your family, friends and favorite places',
+								  autoCancel : true,
+								  date : new Date(new Date().getTime() + 120 * 1000)
+								});
+							}
+							 Parse.Cloud.run('sendPhoneVerificationCode', { phoneNumber: phone }, {
+								  success: function (result) {
+									  modileNotify('Please verify your phone');
+									  $("#modalview-verifyPhone").data("kendoMobileModalView").open();
+								  },
+								 error: function (result, error){
+									 mobileNotify('Error sending verification code ' + error);
+								 }
+							 });
+
+
+
+						   APP.kendo.navigate('#home');
+						},
 
                     error: function(user, error) {
                     // Show the error message somewhere and let the user try again.
-                    mobileNotify("Error: " + error.code + " " + error.message);
+                    	mobileNotify("Error: " + error.code + " " + error.message);
                     }
                 });
             
-           }
-      },
-      error: function(error) {
-          mobileNotify("Error checking phone number" + error);
-      }
-    });
+				   }
+			  },
+			  error: function(error) {
+				  mobileNotify("Error checking phone number" + error);
+			  }
+			});
+		   }
+	  },
+		error: function(user, error) {
+                    // Show the error message somewhere and let the user try again.
+                    	mobileNotify("Error: " + error.code + " " + error.message);
+                    }
+	  });
   }
 
 function requestBeta (e) {
