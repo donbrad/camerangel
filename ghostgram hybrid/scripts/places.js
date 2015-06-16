@@ -68,7 +68,7 @@ function onPlaceChanged() {
  	APP.models.places.currentGeoPlace = place;
 
 	APP.models.places.currentGeoPlace.lat = place.geometry.location.A;
-	APP.models.places.currentGeoPlace.lng = place.geometry.location.F
+	APP.models.places.currentGeoPlace.lng = place.geometry.location.F;
 	var addressObj = parseAddress(place.formatted_address);
 	$('#addPlaceAddress').val(addressObj.address + ", " + addressObj.city + ", " + addressObj.state);
 	$('#addPlaceName').val(place.name);
