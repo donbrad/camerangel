@@ -1,4 +1,5 @@
 function onInitPlaces(e) {
+	e.preventDefault();
      $("#places-listview").kendoMobileListView({
         dataSource: APP.models.places.placesDS,
         template: $("#placesTemplate").html(),
@@ -12,7 +13,7 @@ function onInitPlaces(e) {
 }
 
 function onShowPlaces(e) {
-	
+	e.preventDefault();
 }
 
 function parseAddress(address) {
@@ -37,7 +38,7 @@ function parseAddress(address) {
 	
 }
 function onInitFindPlace(e) {
-
+	e.preventDefault();
 	 APP.models.places.googlePlaces = new google.maps.places.PlacesService(APP.map.googleMap);
 	APP.models.places.autocomplete = new google.maps.places.Autocomplete(document.getElementById('placeSearchQuery'));
    
