@@ -88,7 +88,7 @@ function tapChannel(e) {
 }
 
 function swipeChannel (e) {
-	
+	e.preventDefault();
 	var dataSource = APP.models.channel.messagesDS;
 	var messageUID = $(e.touch.currentTarget).data("uid");
 	var message = dataSource.getByUid(messageUID);
@@ -114,6 +114,7 @@ function swipeChannel (e) {
 }
 
 function holdChannel (e) {
+	e.preventDefault();
 	var dataSource = APP.models.channel.messagesDS;
 	var messageUID = $(e.touch.currentTarget).data("uid");
 	var message = dataSource.getByUid(messageUID);
@@ -302,6 +303,7 @@ function resizeFailure (error) {
 }
 
 function messageCamera (e) {
+	e.preventDefault();
 	var pictureSource = navigator.camera.PictureSourceType;   // picture source
     var destinationType = navigator.camera.DestinationType; // sets the format of returned value
 	 navigator.camera.getPicture(
@@ -338,7 +340,7 @@ function messageCamera (e) {
 }
 
 function messageAudio (e) {
-	
+	e.preventDefault();
 	navigator.device.capture.captureAudio(
 		function (mediaFiles) {
 			var mediaUrl = mediaFiles[0].fullPath;
@@ -351,6 +353,7 @@ function messageAudio (e) {
 }
 	
 function messagePhoto (e) {
+	e.preventDefault();
 	var pictureSource = navigator.camera.PictureSourceType;   // picture source
     var destinationType = navigator.camera.DestinationType; // sets the format of returned value
 	// Android storage is seriously different -- multiple photo directories with different permissions.   
@@ -451,6 +454,7 @@ function onHideChannel(e) {
 }
 
 function togglePrivacyMode (e) {
+	e.preventDefault();
 	APP.models.channel.currentModel.privacyMode = ! APP.models.channel.currentModel.privacyMode;
 	if (APP.models.channel.currentModel.privacyMode) {
 		$('#privacyMode').html('<img src="images/privacy-on.svg" />');

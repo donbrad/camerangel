@@ -223,6 +223,7 @@ function updateCurrentContact (contact) {
 }
 
 function onCommandActionSheet(e) {
+    e.preventDefault();
     var currentTarget = e.currentTarget,
         parentElement = currentTarget.parent();
 
@@ -237,12 +238,13 @@ function onInitContact(e) {
 }
 
 function onShowEditContact(e) {
-
+    e.preventDefault();
 	syncContact(APP.models.contacts.currentContact);
 	
 }
 
 function onDoneEditContact (e) {
+    e.preventDefault();
 	 APP.models.contacts.currentContact.unbind('change' , syncCurrentContact);
 	APP.kendo.navigate("#contacts");
 }
@@ -549,7 +551,8 @@ function contactsFindContacts(query, callback) {
     img.src = url;
 }
 			
-function doShowAddContacts() {
+function doShowAddContacts(e) {
+    e.preventDefault();
     var data = APP.models.contacts;
     
     $("#addContactName").text("");
