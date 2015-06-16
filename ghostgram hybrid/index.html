@@ -160,25 +160,39 @@
 	<div data-role="content" class='view-content'>
 		<div class="appBox">
 	    <!-- application views will be rendered here -->
+	    <div>
+	    	<div class="notify-title">
+		    	<img src="images/notify-icon.svg" height="14" />
+		    		Notifications
+	    	</div>
 	    	<ul data-role="listview"  data-source="APP.models.home.notificationDS" data-template="notificationTemplate" id="notification-listview" ></ul>
-	    </div>
-    </div>
-    
-
+	   	</div>
+	  </div>
+   </div>
 </div>
     
-<script type="text/x-kendo-template" id="notificationTemplate">      
-    <div class="notification-message clearfix">
-		# var dateTime= new Date(date);   var formattedDate = dateTime.toDateString(); var photoUrl = "images/ghostgramcontact.png" ;#
-		<img src="#:photoUrl#" alt="" width="40" height="40">
-		<div class="notification-message-content clearfix">
-			# if (action !== undefined && action !== 'none') {# <a data-role="button" data-param="#:uuid#" href="\\#" data-click="#=action#" class="btnClear"> #=title# </a> #} else {# <a data-role="button" data-param="#:uuid#" href="#=href#"  class="btnClear"> #=title# </a>  #}#
-			 <span style="float:right;"><a data-role="button" href="\\#" data-param="#:uuid#" data-click="dismissNotification"><i class="ghostIconNavbar fa fa-trash"></i></a> </span>
-			<p>#= description #</p>
-		</div>
-		
-		
-    </div>
+<script type="text/x-kendo-template" id="notificationTemplate">
+		# 	var dateTime= new Date(date);   
+			var formattedDate = dateTime.toDateString(); #
+		<div class="notify-box">
+	    		<div class="notify-info">
+	    			<span class="notify-helper">Ghostgram recommends</span>
+	    			<a class="right" data-role="button" data-role="button" href="\\#" data-param="#:uuid#" data-click="dismissNotification">
+	    				<img src="images/close.svg" />
+	    			</a>
+	    		</div>
+	    		<div class="notify-content">
+	    			<h4>#= title #</h4>
+	    			<p>#= description # </p>
+	    			<div class="notify-action">
+	    			# if (action !== undefined && action !== 'none') {# 
+	    				<a data-role="button" data-param="#:uuid#" href="\\#" data-click="#=action#" class="btnClear">Action</a>
+	    			#} else {# 
+						<a data-role="button" data-param="#:uuid#" href="#=href#"  class="btnClear"> Action </a>  
+					#}#
+	    			</div>
+	    		</div>
+	    	</div><!-- notify-box -->     
 </script> 
     
 <!-- home - for new users -->

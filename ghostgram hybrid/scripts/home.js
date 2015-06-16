@@ -34,7 +34,7 @@ function findNotificationModel(uuid) {
     var view = dataSource.view();
     var contact = view[0];
 	dataSource.filter([]);
-	
+	console.log(dataSource);
 	return(contact);
 }
 
