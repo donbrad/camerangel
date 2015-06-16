@@ -260,8 +260,8 @@ function homeCreateAccount() {
 	
 	Parse.Cloud.run('validateMobileNumber', { phone: phone }, {
       success: function(result) {
-    		if (result.status !== 'ok' || result.type !== 'mobile') {
-               mobileNotify("Your phone number is not a valid mobile number.");
+    		if (result.status !== 'ok' || result.result.carrier.type !== 'mobile') {
+               mobileNotify("This phone number is not a valid mobile number.");
                return;
            } else {
     			Parse.Cloud.run('preflightPhone', { phone: phone }, {
