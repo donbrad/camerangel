@@ -1,31 +1,31 @@
 
-<div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="APP.models.contacts" data-init="onInitContacts">
+<div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="APP.models.contacts" data-init="onInitContacts" data-show="onShowContacts" data-hide="onHideContacts">
   <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
             <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img class="menuIcon" src="images/menu-icon.svg"/></a>
-            <a data-role="button" href="#contactImport" data-align="right" >
+            <a data-role="button" data-click="contactSearchActivate" id="btnContactSearchActivate" data-align="right" >
             	<img src="images/search-white.svg" />
             </a>
         </div>
     </div>
-    <div class="contactSearch hidden">
-    	<div class="toContactDiv">
-    		<span><img src="images/search.svg" width="18" /></span>
-    		<input type="search" />
-    	</div>
-    </div>       
-    <div class="contactBanner">Friends</div>
-    <div style="padding-bottom: 24px;">
+
+	<div style="padding: 4px; width: 100%; display:block;">	
+		<img src="images/search.svg" width="18" style="vertical-align: middle; display: inline-block; width=24px;"/>
+		<input id="contactSearchInput" class="clearable" type="text" prompt="Search for ..."  style="width: 80%; display: inline-block;"/>
+		<a data-role="button" data-click="searchDeviceContacts" id="btnSearchDeviceContacts" class="hidden" style="display: inline-block;"> <i class="ghostIcon fa fa-mobile"></i> </a>
+    </div>
+
+
+	<div id="contactListDiv"  style="padding-bottom: 24px;">
         <ul id="contacts-listview"></ul>
-        <div class="contactBanner">On Device</div>
-        <!-- Only display if device permission is needed --> 
-        <div class="pad center">
-	       <a class="btnClear">
-	        	<img src="images/import.svg" height="16" />
-	        	Find contacts on device
-	        </a>
-	    </div>
+		<!-- Only display if device permission is needed -->
+		<div id="deviceContactPermission" class="pad center hidden">
+			<a class="btnClear">
+				<img src="images/import.svg" height="16" />
+				Find contacts on device
+			</a>
+		</div>
     </div>
     
     <ul data-role="actionsheet" id="contactActions" data-popup='{"direction": "left"}'>
@@ -49,7 +49,7 @@
 </div>
 
 
-<div data-role="view" data-title="Import Contacts" id="contactImport" data-layout="main" data-model="APP.models.contacts" data-init="onInitContactImport">
+<div data-role="view" data-title="Import Contacts" id="contactImport" data-layout="main" data-model="APP.models.contacts" data-init="onInitContactImport" data-show="onShowContactImport">
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -179,8 +179,6 @@
 </div>
 
 
-
-
 <script type="text/x-kendo-template" id="contactsTemplate">      
     <div class="listBox">
 	     <div>
@@ -190,17 +188,16 @@
 			 <div class="left listPhoto">
 			 	<div class="statusContactList">
 			 		<img class="circle-img-md" src="#:data.photo#" />  
-		 			#if (data.isAvailable) { #
+		 			#if (data.category !== 'phone' && data.isAvailable !== undefined && data.isAvailable) { #
 		 				<img width="16" src="images/status-available.svg" class="statusContactList-icon" />
 		 			# } 
 		 			else { #
 		 				<img width="16" src="images/status-away.svg" class="statusContactList-icon" />
 		 			#}#
 		 		</div>
-			 	
-			 	
 			 </div><!-- left -->
 			
+			# if (data.category !== 'phone') {#
 			<div class="left listName">
 				<h4>#: data.alias # </h4>
 			  	<span class="ghostTextLarge hidden"> 
@@ -209,15 +206,11 @@
 				  	<strong> <i class="fa fa-user-secret"></i> </strong> #} #
 	 			</span>  
 			</div><!-- left -->
+			#}#
+			
 			<p class="left caption">#: data.name #</p>  
 			<div class="clearfix"></div> 
-			<div class="hidden">
-			 	<span> <i class="fa fa-map-marker"></i> #: data.location # </span> 
-			 </div>
 		 </div>
-		 # if (data.message !== undefined && data.message !== '') { #
-		 <div> <i class="fa fa-comment-o"></i> #: data.message # </div>
-		 #} #
 	</div>
 </div><!-- listBox -->
 </script>

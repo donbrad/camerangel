@@ -74,7 +74,6 @@ function onHidePhotoEditor(e) {
 	$('#photoEditImage').cropper('destroy');
 }
 
-
 function onShowPhotoEditor (e) {
 	e.preventDefault();
 
@@ -87,6 +86,13 @@ function onShowPhotoEditor (e) {
 	
 	$('#photoEditImage').cropper();
 }
+
+function onHidePhotoView(e) {
+	e.preventDefault();
+	
+	$('#photoViewImage').attr('src', "");
+}
+
 
 function onShowGallery(e) {
 	e.preventDefault();
@@ -114,7 +120,11 @@ function onShowGallery(e) {
 
 	$('.gallery-item').click(function () {
 		var photoUrl = this.attributes['data-imageurl'].value;
-
+		var photoId = this.id;
+		
+		APP.models.gallery.currentPhotoModel = getPhotoModel(photoId);
+		APP.models.gallery.currentIsoModel = this;
+		
 		$('#photoViewImage').attr('src', photoUrl);
 		$('#photoTagImage').attr('src', photoUrl);
 		$('#photoEditImage').attr('src', photoUrl);
@@ -126,5 +136,40 @@ function onShowGallery(e) {
 		// images have loaded
 		$('#gallery-grid').isotope('layout');
 	});
+}
+
+function getPhotoModel(photoId) {
+	 var dataSource = APP.models.gallery.photosDS;
+    dataSource.filter( { field: "photoId", operator: "eq", value: photoId });
+    var view = dataSource.view();
+    var photo = view[0];
+	dataSource.filter([]);
+	
+	return(photo);
+}
+
+function photoExport (e) {
+	e.preventDefault();
+	var photo = APP.models.gallery.currentPhotoModel;
+	
+	
+}
+
+function photoDelete (e) {
+	e.preventDefault();
+	var photo = APP.models.gallery.currentPhotoModel;
+	// Todo:  Add confirmation prior to photo delete
+	
+	// Delete from local datasource
+	APP.models.gallery.photosDS.remove(APP.models.gallery.currentPhotoModel);
+	// Remove from isotope and then rerender the layout
+	$('#gallery-grid').isotope( 'remove', APP.models.gallery.currentIsoModel ).isotope('layout');
+	// Delete from remote parse collection
+	deleteParseObject('photos', 'photoId', photo.photoId);
+	
+	mobileNotify("Deleted current photo");
+	
+	// Navigate to previous page as the photo is gone...
+	APP.kendo.navigate('#:back');
 }
 

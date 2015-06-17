@@ -743,11 +743,6 @@ div.km-header a img {
   font-weight: 600;
   display: none;
 }
-.chat-message img {
-  border-radius: 50%;
-  float: left;
-  border: 1.5px solid #F2EFF0;
-}
 .chat-message-content {
   margin-left: 44px;
   height: 100%;
@@ -1237,13 +1232,15 @@ a:hover {
   padding-bottom: 2px;
   padding-left: 1rem;
 }
+/*
 #privacyMode {
-  border-left: 2px solid #e0e0e0;
-  position: absolute;
-  right: 12px;
-  bottom: 8px;
-  padding-left: 16px !important;
+    border-left: 2px solid #e0e0e0;
+	position: absolute;
+	right: 12px;
+	bottom: 8px;
+	padding-left: 16px !important;
 }
+*/
 div.chat-message-user-content.clearfix > p {
   float: right;
 }
@@ -1440,14 +1437,18 @@ div.loginBox > form > div > ul > li {
   margin-left: 0px;
   margin-right: 0px;
 }
-.toContactDiv {
+#searchContactsDiv {
   padding-left: 1rem;
   padding-right: 1rem;
 }
-.toContactDiv input {
-  width: 90%;
+#searchContactsDiv img {
+  vertical-align: middle;
 }
-.toContactDiv img {
+#searchContactsDiv input {
+  width: 80%;
+}
+#searchContactsDiv a {
+  width: 18px;
   vertical-align: middle;
 }
 .inviteContactImg {
@@ -1634,6 +1635,12 @@ div.loginBox > form > div > ul > li {
 .chat-message-photo {
   width: 80%;
   height: auto;
+  border: 1px solid #27476e;
+}
+.chat-message-photo-small {
+  width: 20%;
+  height: auto;
+  border: 1px solid #27476e;
 }
 .chat-message-content {
   margin-left: 44px;
@@ -1776,8 +1783,8 @@ div.loginBox > form > div > ul > li {
   cursor: s-resize;
 }
 .cropper-point {
-  width: 5px;
-  height: 5px;
+  width: 15px;
+  height: 15px;
   background-color: #69f;
   filter: alpha(opacity=75);
   opacity: .75;
@@ -1844,8 +1851,8 @@ div.loginBox > form > div > ul > li {
 }
 @media (min-width: 256px) {
   .cropper-point.point-se {
-    width: 5px;
-    height: 5px;
+    width: 15px;
+    height: 15px;
   }
 }
 @media (min-width: 768px) {

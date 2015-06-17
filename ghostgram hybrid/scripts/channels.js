@@ -112,11 +112,13 @@ function addPrivateChannel (contactUUID, contactAlias, channelUUID) {
     
 function syncCurrentChannel(e)
 {
+	e.preventDefault();
    updateParseObject('channels','channelId', APP.models.channels.currentChannel.channelId, e.field, this[e.field]); 
    APP.models.channels.currentModel.set(e.field, this[e.field]);
 }
     
 function editChannel(e) {
+	e.preventDefault();
    var channelId = e.context; 
    var dataSource = APP.models.channels.channelsDS;
     dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
@@ -144,14 +146,17 @@ function editChannel(e) {
 }
     
 function eraseChannel(e) {
+	e.preventDefault();
     var channelId = e.context;  
 }
 
 function archiveChannel(e) {
+	e.preventDefault();
     var channelId = e.context; 
 }
     
 function deleteChannel (e) {
+	e.preventDefault();
    var channelId = e.context;  
     var dataSource = APP.models.channels.channelsDS;
     dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
@@ -243,6 +248,7 @@ function onInitEditChannel (e) {
 }
 
 function deleteMember (e) {
+	e.preventDefault();
 	var contactId = e.attributes['data-param'].value;
 	var thisMember = findContactByUUID(contactId);
 	APP.models.channel.potentialMembersDS.add(thisMember);
@@ -254,6 +260,7 @@ function deleteMember (e) {
 }
 
 function onShowEditChannel (e) {
+	e.preventDefault();
 	var currentChannelModel = APP.models.channels.currentModel;
 	var members = currentChannelModel.members, thisMember = {};
 	var membersArray = new Array();

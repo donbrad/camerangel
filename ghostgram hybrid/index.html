@@ -411,8 +411,20 @@
           
      </div>
 </div>
+	
+<div data-role="modalview" id="modalPhotoView" data-zoom="true" data-elastic="true" style="width: 100%; height:100%; display: none;">
+    
+	<div style="margin: 2px; height: 98%; width: auto; text-align: center; background: #27476e;">
+		<img id="modalPhotoViewImage" src="" style="width: 100%; height:auto; vertical-align: middle;"> </img>
+	</div>
+	<div data-role="footer">
+        <div data-role="navbar">
+            <a data-align="right" data-role="button" data-click="closeModalPhotoView">Close</a>
+        </div>
+    </div>
+</div>	
 
-<div data-role="view" id="photoView" data-zoom="true" data-style="width: 100%; height:100%; display: none;">
+<div data-role="view" id="photoView" data-zoom="true"  data-style="width: 100%; height:100%; display: none;">
     <div data-role="header">
         <div data-role="navbar">
             <a data-align="left" id="photoViewBack" data-role="backbutton">Back</a>
@@ -425,9 +437,9 @@
 	</div>
 	 <div data-role="footer">
 			<div data-role="navbar">
-				<a data-align="left" data-role="button" >Share</a>
+				<a data-align="left" data-role="button"  data-click="photoExport"><i class="ghostIconNavbar fa fa-share-square-o"></i> </a>
 			
-				<a data-align="right" data-role="button" href="#photoEditor">Delete</a>
+				<a data-align="right" data-role="button" data-click="photoDelete"><i class="ghostIconNavbar fa fa-trash-o"></i> </a>
 			</div>
 	</div>
 </div>
@@ -551,30 +563,31 @@
 	</div>
 </div>
 
-		<script type="text/x-kendo-tmpl" id="gallery-listview-template">
-		<div>
+<script type="text/x-kendo-tmpl" id="gallery-listview-template">
+<div>
 
-		</div>
-		</script>
+</div>
+</script>
 	
-		<script type="text/x-kendo-template" id="placesTemplate">
-		  <div style="min-height: 42px; border-radius: 9px; background-color: \\#fff; padding: 4px;">
-			<div class="ghostText">#: data.name # </div>
-			<div class="ghostDescription">#: data.address # </div>
-			<div style="color: \\#2e2e2e;">
-				   <span style="float: left;"> 
-				   # if (privacy === 'true') { # Privacy Mode # } else { # Public Mode # }#,  # if (visible === 'true') { # Visible # } else { # Not Visible # }#
-				   </span>
+<script type="text/x-kendo-template" id="placesTemplate">
+  <div style="min-height: 42px; border-radius: 9px; background-color: \\#fff; padding: 4px;">
+	<div class="ghostText">#: data.name # </div>
+	<div class="ghostDescription">#: data.address # </div>
+	<div style="color: \\#2e2e2e;">
+		   <span style="float: left;"> 
+		   # if (privacy === 'true') { # Privacy Mode # } else { # Public Mode # }#,  # if (visible === 'true') { # Visible # } else { # Not Visible # }#
+		   </span>
 
-				  <span style="float:right;"> 0 <i class="fa fa-users"> </i> 0 <i class="fa fa-comments"> </i></span>
-			</div>
-			<div style="clear:both;"> </div>
-		  </div>
-		</script>
-		<script type="text/x-kendo-template" id="geoPlacesTemplate">
-		  <div>
-		  <div class="ghostText">#: data.formatted_address # </div>
-		  </div>
-		</script>	
+		  <span style="float:right;"> 0 <i class="fa fa-users"> </i> 0 <i class="fa fa-comments"> </i></span>
+	</div>
+	<div style="clear:both;"> </div>
+  </div>
+</script>
+	
+<script type="text/x-kendo-template" id="geoPlacesTemplate">
+  <div>
+  <div class="ghostText">#: data.formatted_address # </div>
+  </div>
+</script>	
 	</body>
 </html>

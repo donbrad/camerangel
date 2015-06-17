@@ -56,6 +56,7 @@ function onInitChannel(e) {
 }	
 
 function tapChannel(e) {
+	e.preventDefault();
 	var target = $(e.touch.initialTouch);
 	var dataSource = APP.models.channel.messagesDS;
 	var messageUID = $(e.touch.currentTarget).data("uid");
@@ -63,11 +64,18 @@ function tapChannel(e) {
 	$('.delete').css('display', 'none');
 	$('.archive').css('display', 'none');
 	
-	if (target[0].className === 'chat-message-photo') {
+	// Scale down the other photos in this chat...
+	$('.chat-message-photo').removeClass('chat-message-photo').addClass('chat-message-photo-small');
+	
+	// If the photo is minimized and the user just clicked in the message zoom the photo in place
+	$('#'+message.msgID + ' .chat-message-photo-small').removeClass('chat-message-photo-small').addClass('chat-message-photo');
+	
+	// User actually clicked on the photo so show the open the photo viewer
+	if (target[0].className === 'chat-message-photo' || target[0].className === 'chat-message-photo-small') {
 		var photoUrl = message.data.photo.photo;
-		$('#photoViewImage').attr('src', photoUrl);
-		$('#photoImage').attr('src', photoUrl);
-		$('#modalview-photoView').kendoMobileModalView("open");
+		$('#modalPhotoViewImage').attr('src', photoUrl);
+		
+		$('#modalPhotoView').kendoMobileModalView("open");
 	}
 	
 	if (APP.models.channel.currentModel.privacyMode) {
@@ -80,7 +88,7 @@ function tapChannel(e) {
 }
 
 function swipeChannel (e) {
-	
+	e.preventDefault();
 	var dataSource = APP.models.channel.messagesDS;
 	var messageUID = $(e.touch.currentTarget).data("uid");
 	var message = dataSource.getByUid(messageUID);
@@ -106,6 +114,7 @@ function swipeChannel (e) {
 }
 
 function holdChannel (e) {
+	e.preventDefault();
 	var dataSource = APP.models.channel.messagesDS;
 	var messageUID = $(e.touch.currentTarget).data("uid");
 	var message = dataSource.getByUid(messageUID);
@@ -294,6 +303,7 @@ function resizeFailure (error) {
 }
 
 function messageCamera (e) {
+	e.preventDefault();
 	var pictureSource = navigator.camera.PictureSourceType;   // picture source
     var destinationType = navigator.camera.DestinationType; // sets the format of returned value
 	 navigator.camera.getPicture(
@@ -330,7 +340,7 @@ function messageCamera (e) {
 }
 
 function messageAudio (e) {
-	
+	e.preventDefault();
 	navigator.device.capture.captureAudio(
 		function (mediaFiles) {
 			var mediaUrl = mediaFiles[0].fullPath;
@@ -343,6 +353,7 @@ function messageAudio (e) {
 }
 	
 function messagePhoto (e) {
+	e.preventDefault();
 	var pictureSource = navigator.camera.PictureSourceType;   // picture source
     var destinationType = navigator.camera.DestinationType; // sets the format of returned value
 	// Android storage is seriously different -- multiple photo directories with different permissions.   
@@ -444,6 +455,7 @@ function onHideChannel(e) {
 }
 
 function togglePrivacyMode (e) {
+	e.preventDefault();
 	APP.models.channel.currentModel.privacyMode = ! APP.models.channel.currentModel.privacyMode;
 	if (APP.models.channel.currentModel.privacyMode) {
 		$('#privacyMode').html('<img src="images/privacy-on.svg" />');

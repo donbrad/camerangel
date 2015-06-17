@@ -211,7 +211,7 @@
                     <li><a data-role="button" data-click="messageCamera"><img src="images/chat-camera.svg" height="24"></a></li>
                     <li><a data-role="button" data-click="messagePhoto"><img src="images/chat-photo.svg" height="24"></a></li>
                     <li><a data-role="button" data-click="messageAudio"><img src="images/chat-sound.svg" height="24"></a></li>
-                    <li><a data-role="button" data-click="messageLocation"><img src="images/chat-places.svg" height="24"></a></li>
+                    <li class="hidden"><a data-role="button" data-click="messageLocation"><img src="images/chat-places.svg" height="24"></a></li>
                     <li><a data-role="button" data-rel="actionsheet" href="#newMessageActions"><img src="images/chat-smart.svg" height="24"></a></li>
                     <li><a data-role="button" data-click="togglePrivacyMode" id="privacyMode"><img src="images/privacy-off.svg" /></a></li>
                  </ul>
@@ -263,14 +263,13 @@
 		<div class="chat-message-content clearfix">
 		<h5>#=name#</h5>
 		<div class="chat-message-text">#= formattedContent #</div>
-		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# 
-			<img class="chat-message-photo" src="#:data.photo.thumb#" alt="" > #}#
+
+		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# <img class="chat-message-photo-small" src="#:data.photo.thumb#" alt="" > #}#
 	</div>
 	 #} else {#
 	 	<div class="chat-message-user-content clearfix">
 		<div class="chat-message-text">#= formattedContent #</div>
-		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# 
-			<img class="chat-message-photo" src="#:data.photo.thumb#" alt="" > #}#
+		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# <img class="chat-message-photo-small" src="#:data.photo.thumb#" alt="" > #}#
 	</div>
 	 #}#
 	<a href="\\#" data-role="button" class="delete" >Delete</a>
