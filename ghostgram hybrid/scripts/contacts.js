@@ -427,7 +427,7 @@ function onInitContactImport (e) {
 
                // Set name
                var name = APP.models.contacts.currentDeviceContact.name;
-               console.log(APP.models.contacts.currentDeviceContact);
+               //console.log(APP.models.contacts.currentDeviceContact);
                if (name !== ""){
                		$("#addContactName").text(name);
                } else {
@@ -571,7 +571,7 @@ function doShowAddContacts(e) {
     $("#addContactName").text("");
     $('#addContactAlias').text("");
 
-    console.log(data);
+    //console.log(data);
     if (data.photo === null) {
         $("#addContactPhoto").attr("src","images/ghostgramcontact.png");
         $("#addContactPhoto").attr("src",data.photo);
