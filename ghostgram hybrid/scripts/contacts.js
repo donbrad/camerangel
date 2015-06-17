@@ -72,14 +72,17 @@ var dataSource = APP.models.contacts.contactsDS;
 	return(contact);	
 }
 
-function editContact() {
+function doEditContact(e) {
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
+	
     APP.kendo.navigate("#editContact");  
 }
 
 
 
 function deleteContact(e) {
-	if (e !== undefined)
+	if (e.preventDefault !== undefined)
 		e.preventDefault();
     var dataSource = APP.models.contacts.contactsDS;
 	var string = "Deleted contact: " + APP.models.contacts.currentContact.name + " ("+ APP.models.contacts.currentContact.alias + ")" ;
@@ -223,7 +226,9 @@ function updateCurrentContact (contact) {
 }
 
 function onCommandActionSheet(e) {
-    e.preventDefault();
+   if (e.preventDefault !== undefined)
+    	e.preventDefault();
+	
     var currentTarget = e.currentTarget,
         parentElement = currentTarget.parent();
 
@@ -233,24 +238,29 @@ function onCommandActionSheet(e) {
 }
 
 function onInitContact(e) {
-	e.preventDefault();
+	if (e.preventDefault !== undefined)
+    	e.preventDefault();
 	
 }
 
 function onShowEditContact(e) {
-    e.preventDefault();
+	if (e.preventDefault !== undefined)
+    	e.preventDefault();
 	syncContact(APP.models.contacts.currentContact);
 	
 }
 
 function onDoneEditContact (e) {
-    e.preventDefault();
+	if (e.preventDefault !== undefined)
+    	e.preventDefault();
+   
 	 APP.models.contacts.currentContact.unbind('change' , syncCurrentContact);
 	APP.kendo.navigate("#contacts");
 }
 
 function onInitContacts(e) {
-   e.preventDefault();
+ if (e.preventDefault !== undefined)
+    	e.preventDefault();
     /*
     function swipe(e) {
         var button = kendo.fx($(e.touch.currentTarget).find("[data-role=button]"));
@@ -361,19 +371,22 @@ function onInitContacts(e) {
 }
  
 function onShowContacts (e) {
-	e.preventDefault();
+	if (e.preventDefault !== undefined)
+    	e.preventDefault();
 	APP.models.contacts.contactListDS.data(APP.models.contacts.contactsDS.data());
 	//APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
 	
 }
 
 function onHideContacts (e) {
-	e.preventDefault();
+	if (e.preventDefault !== undefined)
+    	e.preventDefault();
 	//APP.models.contacts.contactListDS.data(APP.models.contacts.contactsDS.data());
 }
     
 function onInitContactImport (e) {
-    e.preventDefault();
+  if (e.preventDefault !== undefined)
+    	e.preventDefault();
 	
     $("#contactimport-listview").kendoMobileListView({
             dataSource: APP.models.contacts.deviceContactsDS,
