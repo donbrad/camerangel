@@ -164,8 +164,10 @@
 	    	<div class="notify-title">
 		    	<img src="images/notify-icon.svg" height="14" />
 		    		Notifications
+		    	<span class="right"><a class="btnClear-grey" data-role="button" data-rel="modalview" href="#testing">Clear</a></span>
 	    	</div>
-	    	<ul data-role="listview"  data-source="APP.models.home.notificationDS" data-template="notificationTemplate" id="notification-listview" ></ul>
+	    	<div class="clearfix"></div>
+	    	<ul data-role="listview"  data-source="APP.models.home.notificationDS" data-template="notificationTemplate" id="notification-listview"></ul>
 	   	</div>
 	  </div>
    </div>
@@ -177,19 +179,23 @@
 		<div class="notify-box">
 	    		<div class="notify-info">
 	    			<span class="notify-helper">Ghostgram recommends</span>
-	    			<a class="right" data-role="button" data-role="button" href="\\#" data-param="#:uuid#" data-click="dismissNotification">
+	    			<a class="right notify-close" data-role="button" data-role="button" href="\\#" data-param="#:uuid#" data-click="dismissNotification">
 	    				<img src="images/close.svg" />
 	    			</a>
 	    		</div>
 	    		<div class="notify-content">
-	    			<h4>#= title #</h4>
+	    			# if (action !== undefined && action !== 'none') {# 
+	    				<h4>
+	    					<a data-role="button" data-param="#:uuid#" href="\\#" data-click="#=action#" class="btnClear">#= title #</a>
+	    				</h4>
+	    			#} else {# 
+						<h4>
+							<a data-role="button" data-param="#:uuid#" href="#=href#"  class="btnClear"> #= title # </a>
+						</h4>
+					#}#
 	    			<p>#= description # </p>
 	    			<div class="notify-action">
-	    			# if (action !== undefined && action !== 'none') {# 
-	    				<a data-role="button" data-param="#:uuid#" href="\\#" data-click="#=action#" class="btnClear">Action</a>
-	    			#} else {# 
-						<a data-role="button" data-param="#:uuid#" href="#=href#"  class="btnClear"> Action </a>  
-					#}#
+	    			
 	    			</div>
 	    		</div>
 	    	</div><!-- notify-box -->     

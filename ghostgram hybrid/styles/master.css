@@ -1546,6 +1546,10 @@ div.loginBox > form > div > ul > li {
   padding: 0.5rem;
   margin-top: 0.5rem;
 }
+.notify-close {
+  position: absolute;
+  right: 5px;
+}
 .notify-content-name {
   font-size: 12px;
   font-weight: 600;
