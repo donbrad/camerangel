@@ -342,6 +342,15 @@ form {
 .btnSpan {
   width: 100%;
 }
+.btnSpan-btm {
+  width: 100%;
+  margin: 0 !important;
+  padding: 0px;
+  border-radius: 0px !important;
+  overflow-x: hidden;
+  position: absolute;
+  bottom: 0px;
+}
 .input-text-sm {
   font-size: 12px;
 }
@@ -1579,6 +1588,39 @@ div.loginBox > form > div > ul > li {
 }
 .notify-invite-img {
   margin-right: 1rem;
+}
+/* sign up */
+.mobile-countryCode {
+  background-color: #2d93ff;
+  color: #fff;
+  font-size: 30px;
+  padding: 0.5rem 1rem;
+  float: left;
+  position: absolute;
+  top: 28px;
+  left: -15px;
+}
+.mobile-input {
+  float: left;
+  font-size: 30px !important;
+  width: 80% !important;
+  margin-left: 20%;
+}
+.mobile-helper {
+  width: 80%;
+  margin-left: 20%;
+  font-size: 11px;
+}
+#formCreateAccount > div > ul > li,
+#formCreateAccount > div > ul {
+  overflow: visible;
+}
+.banner-welcome {
+  margin-top: 1rem;
+  text-align: center;
+}
+.banner-welcome img {
+  vertical-align: text-top;
 }
 /* Don's development styles...*/
 .tile {

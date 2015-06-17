@@ -78,6 +78,83 @@ function onInitHome () {
 	
 }
 
+function initSignUp() {
+	// Simple phone mask - http://jsfiddle.net/mykisscool/VpNMA/
+	$('#home-signup-phone')
+
+	.keydown(function (e) {
+		var key = e.charCode || e.keyCode || 0;
+		$phone = $(this);
+
+		// Auto-format- do not expose the mask as the user begins to type
+		if (key !== 8 && key !== 9) {
+			if ($phone.val().length === 4) {
+				$phone.val($phone.val() + ')');
+			}
+			if ($phone.val().length === 5) {
+				$phone.val($phone.val() + ' ');
+			}			
+			if ($phone.val().length === 9) {
+				$phone.val($phone.val() + '-');
+			}
+		}
+
+		// Allow numeric (and tab, backspace, delete) keys only
+		return (key == 8 || 
+				key == 9 ||
+				key == 46 ||
+				(key >= 48 && key <= 57) ||
+				(key >= 96 && key <= 105));	
+	})
+	.keyup(function(e){
+		if ($(this).val().length === 14) {
+				continueSignUp();
+			$('#home-signup-phone').unbind("keyup")
+			}
+	})
+	
+	.bind('focus click', function () {
+		$phone = $(this);
+		
+		if ($phone.val().length === 0) {
+			$phone.val('(');
+		}
+		else {
+			var val = $phone.val();
+			$phone.val('').val(val); // Ensure cursor remains at the end
+		}
+	})
+	
+	.blur(function () {
+		$phone = $(this);
+		
+		if ($phone.val() === '(') {
+			$phone.val('');
+		}
+	});
+	
+
+	$("#create-user-email, #create-user-name, #create-user-alias, #create-user-password").css("display", "none");
+
+
+}
+
+function continueSignUp() {
+
+	$("#create-user-email, #create-user-name, #create-user-alias, #create-user-password").velocity("slideDown", { delay: 500, duration: 300 }, [ 250, 15 ]);
+	// ToDo - Add step form validation
+	var form = $("#formCreateAccount").kendoValidator().data("kendoValidator");
+	
+	$("#formCreateAccount").keyup(function(){
+		if (form.validate()){
+			console.log("validated");
+		}
+    		console.log("No good");
+	})
+    
+
+}
+
 function onInitProfile() {
     var myPublicImg = APP.models.profile.currentUser.aliasPhoto;
 	
@@ -250,13 +327,14 @@ function homeCreateAccount() {
     var alias = $('#home-signup-alias').val();
 
     var userUUID = uuid.v4();
-    
+
     // clean up the phone number and ensure it's prefixed with 1
    // phone = phone.replace(/\+[0-9]{1-2}/,'');
-    phone = phone.replace(/\D+/g, "");
+    phone = phone.replace(/[^0-9]+/g, "");
 	if (phone[0] !== '1') {
 		phone = '1'+phone;
 	}
+	
 	
 	Parse.Cloud.run('validateMobileNumber', { phone: phone }, {
       success: function(result) {
@@ -351,6 +429,7 @@ function homeCreateAccount() {
                     	mobileNotify("Error: " + error.code + " " + error.message);
                     }
 	  });
+
   }
 
 function requestBeta (e) {

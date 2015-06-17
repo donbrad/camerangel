@@ -341,39 +341,39 @@
         <!--<a  data-click="contactsPickContact" data-role="button" data-align="right">Import Me</a>-->
       </div>
 	</div>
+	<div class="banner-welcome">
+		<h2>
+			<img src="images/sign-up-icon.svg" /> Welcome
+		</h2>
+		<p>Let's get some basic info.</p>
+	</div>
    <form id="formCreateAccount">
         <ul data-role="listview" data-style="inset">
-            <li>
-                <label for="home-signup-username">Email Address
+        	<li>
+
+                <label class="left" for="home-signup-phone"> Mobile Phone</label>
+                	<div class="mobile-countryCode">+1</div>
+                	<input class="mobile-phone mobile-input" type="tel" id="home-signup-phone" value="" name="Mobile Phone" placeholder="(•••) ••• - ••••" maxlength="14" required />
+                	<div class="mobile-helper">Important! Your number is how friends and family will find and connect with you. </div>
+                	<div class="clearfix"></div>
+            </li>
+            <li id="create-user-email">
+                <label for="home-signup-username">Email Address</label>
                     <input type="email" id="home-signup-username" name="Email" value="" required/>
-                </label>
             </li>
-			  <li>
-                <label for="home-signup-fullname">Full Name 
+			  <li id="create-user-name">
+                <label for="home-signup-fullname">Full Name</label>
                     <input type="text" id="home-signup-fullname" value="" name="Name" required/>
-                </label>
             </li>
-            <li>
-                <label for="home-signup-alias">Alias (Your First Name or Nickname)
-                    <input type="text" id="home-signup-alias" name="Alias" value="" required />
-                </label>
-            </li>
-            <li>
-                <label for="home-signup-password">Password
+            <li id="create-user-password">
+                <label for="home-signup-password">Password</label>
                 <input type="password" id="home-signup-password" name="Password" value="" required />
-                </label>
             </li>
-             <li>
-                <label for="home-signup-phone">Mobile Phone (Your ghostgrams id)
-                <input type="tel" id="home-signup-phone" value="" name="Mobile Phone" required />
-                </label>
-            </li>
+             
         </ul>  
     </form> 
     <div data-role="footer">
-        <div data-role="navbar">
-            <a data-click="validateCreateAccount" id="home-createAccount" type="button" data-role="button" data-align="right">Sign Up</a>
-		</div>
+            <a class="btnSpan-btm btnYellow" data-click="homeCreateAccount" id="home-createAccount" type="button" data-role="button" disabled>Awaiting form completion</a>
     </div>
 </div>
 	
