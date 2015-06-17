@@ -110,15 +110,16 @@ function addPrivateChannel (contactUUID, contactAlias, channelUUID) {
  
 }
     
-function syncCurrentChannel(e)
-{
-	e.preventDefault();
+function syncCurrentChannel(e) {
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
    updateParseObject('channels','channelId', APP.models.channels.currentChannel.channelId, e.field, this[e.field]); 
    APP.models.channels.currentModel.set(e.field, this[e.field]);
 }
     
 function editChannel(e) {
-	e.preventDefault();
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
    var channelId = e.context; 
    var dataSource = APP.models.channels.channelsDS;
     dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
@@ -242,13 +243,15 @@ function finalizeEditChannel(e) {
 }
 
 function onInitEditChannel (e) {
-	e.preventDefault();
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
 	APP.models.channel.membersDS.data([]);
 	$('#editChannelMemberList li').remove(); 
 }
 
 function deleteMember (e) {
-	e.preventDefault();
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
 	var contactId = e.attributes['data-param'].value;
 	var thisMember = findContactByUUID(contactId);
 	APP.models.channel.potentialMembersDS.add(thisMember);
@@ -260,7 +263,8 @@ function deleteMember (e) {
 }
 
 function onShowEditChannel (e) {
-	e.preventDefault();
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
 	var currentChannelModel = APP.models.channels.currentModel;
 	var members = currentChannelModel.members, thisMember = {};
 	var membersArray = new Array();
@@ -305,7 +309,8 @@ function onShowEditChannel (e) {
 }
 
 function doShowChannelMembers (e) {
-	e.preventDefault();
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
 	
 	var currentChannelModel = APP.models.channels.currentChannel;
     APP.models.channel.currentModel = currentChannelModel;
@@ -340,7 +345,8 @@ function doShowChannelMembers (e) {
 }
 
 function doInitChannelMembers (e) {
-	e.preventDefault(); 
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
 
 	$("#channelMembers-listview").kendoMobileListView({
         dataSource: APP.models.channel.potentialMembersDS,
@@ -362,7 +368,8 @@ function doInitChannelMembers (e) {
 }
 
 function doInitChannelPresence (e) {
-	e.preventDefault(); 
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
 
 	$("#channelPresence-listview").kendoMobileListView({
         dataSource: APP.models.channel.membersDS,
@@ -378,7 +385,8 @@ function doInitChannelPresence (e) {
 }
 
 function doShowChannelPresence (e) {
-	e.preventDefault();
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
 		var currentChannelModel = APP.models.channels.currentChannel;
 	APP.models.channel.currentModel = currentChannelModel;
 	APP.models.channel.membersDS.data([]);
