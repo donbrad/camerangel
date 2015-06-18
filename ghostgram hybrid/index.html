@@ -43,7 +43,7 @@
 	<script src="scripts/uuid.js"></script>
     <script src="scripts/jquery-clearsearch.js"></script>
     <script src="scripts/cropper.js"></script>
-
+    <script src="bower_components/velocity/velocity.js"></script>
 
 </head>
 <body id="body">
@@ -158,26 +158,47 @@
       </div>
 	</div>
 	<div data-role="content" class='view-content'>
-    <!-- application views will be rendered here -->
-    	<ul data-role="listview"  data-source="APP.models.home.notificationDS" data-template="notificationTemplate" id="notification-listview" ></ul>
-
-    </div>
-    
-
+		<div class="appBox">
+	    <!-- application views will be rendered here -->
+	    <div>
+	    	<div class="notify-title">
+		    	<img src="images/notify-icon.svg" height="14" />
+		    		Notifications
+		    	<span class="right"><a class="btnClear-grey" data-role="button" data-rel="modalview" href="#testing">Clear</a></span>
+	    	</div>
+	    	<div class="clearfix"></div>
+	    	<ul data-role="listview"  data-source="APP.models.home.notificationDS" data-template="notificationTemplate" id="notification-listview"></ul>
+	   	</div>
+	  </div>
+   </div>
 </div>
     
-<script type="text/x-kendo-template" id="notificationTemplate">      
-    <div class="notification-message clearfix">
-		# var dateTime= new Date(date);   var formattedDate = dateTime.toDateString(); var photoUrl = "images/ghostgramcontact.png" ;#
-		<img src="#:photoUrl#" alt="" width="40" height="40">
-		<div class="notification-message-content clearfix">
-			# if (action !== undefined && action !== 'none') {# <a data-role="button" data-param="#:uuid#" href="\\#" data-click="#=action#" class="btnClear"> #=title# </a> #} else {# <a data-role="button" data-param="#:uuid#" href="#=href#"  class="btnClear"> #=title# </a>  #}#
-			 <span style="float:right;"><a data-role="button" href="\\#" data-param="#:uuid#" data-click="dismissNotification"><i class="ghostIconNavbar fa fa-trash"></i></a> </span>
-			<p>#= description #</p>
-		</div>
-		
-		
-    </div>
+<script type="text/x-kendo-template" id="notificationTemplate">
+		# 	var dateTime= new Date(date);   
+			var formattedDate = dateTime.toDateString(); #
+		<div class="notify-box">
+	    		<div class="notify-info">
+	    			<span class="notify-helper">Ghostgram recommends</span>
+	    			<a class="right notify-close" data-role="button" data-role="button" href="\\#" data-param="#:uuid#" data-click="dismissNotification">
+	    				<img src="images/close.svg" />
+	    			</a>
+	    		</div>
+	    		<div class="notify-content">
+	    			# if (action !== undefined && action !== 'none') {# 
+	    				<h4>
+	    					<a data-role="button" data-param="#:uuid#" href="\\#" data-click="#=action#" class="btnClear">#= title #</a>
+	    				</h4>
+	    			#} else {# 
+						<h4>
+							<a data-role="button" data-param="#:uuid#" href="#=href#"  class="btnClear"> #= title # </a>
+						</h4>
+					#}#
+	    			<p>#= description # </p>
+	    			<div class="notify-action">
+	    			
+	    			</div>
+	    		</div>
+	    	</div><!-- notify-box -->     
 </script> 
     
 <!-- home - for new users -->
@@ -320,39 +341,39 @@
         <!--<a  data-click="contactsPickContact" data-role="button" data-align="right">Import Me</a>-->
       </div>
 	</div>
+	<div class="banner-welcome">
+		<h2>
+			<img src="images/sign-up-icon.svg" /> Welcome
+		</h2>
+		<p>Let's get some basic info.</p>
+	</div>
    <form id="formCreateAccount">
         <ul data-role="listview" data-style="inset">
-            <li>
-                <label for="home-signup-username">Email Address
+        	<li>
+
+                <label class="left" for="home-signup-phone"> Mobile Phone</label>
+                	<div class="mobile-countryCode">+1</div>
+                	<input class="mobile-phone mobile-input" type="tel" id="home-signup-phone" value="" name="Mobile Phone" placeholder="(•••) ••• - ••••" maxlength="14" required />
+                	<div class="mobile-helper">Important! Your number is how friends and family will find and connect with you. </div>
+                	<div class="clearfix"></div>
+            </li>
+            <li id="create-user-email">
+                <label for="home-signup-username">Email Address</label>
                     <input type="email" id="home-signup-username" name="Email" value="" required/>
-                </label>
             </li>
-			  <li>
-                <label for="home-signup-fullname">Full Name 
+			  <li id="create-user-name">
+                <label for="home-signup-fullname">Full Name</label>
                     <input type="text" id="home-signup-fullname" value="" name="Name" required/>
-                </label>
             </li>
-            <li>
-                <label for="home-signup-alias">Alias (Your First Name or Nickname)
-                    <input type="text" id="home-signup-alias" name="Alias" value="" required />
-                </label>
-            </li>
-            <li>
-                <label for="home-signup-password">Password
+            <li id="create-user-password">
+                <label for="home-signup-password">Password</label>
                 <input type="password" id="home-signup-password" name="Password" value="" required />
-                </label>
             </li>
-             <li>
-                <label for="home-signup-phone">Mobile Phone (Your ghostgrams id)
-                <input type="tel" id="home-signup-phone" value="" name="Mobile Phone" required />
-                </label>
-            </li>
+             
         </ul>  
     </form> 
     <div data-role="footer">
-        <div data-role="navbar">
-            <a data-click="validateCreateAccount" id="home-createAccount" type="button" data-role="button" data-align="right">Sign Up</a>
-		</div>
+            <a class="btnSpan-btm btnYellow" data-click="homeCreateAccount" id="home-createAccount" type="button" data-role="button" disabled>Awaiting form completion</a>
     </div>
 </div>
 	

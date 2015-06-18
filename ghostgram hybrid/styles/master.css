@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800,300|Hind:300,400,500);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Hind:300,400,500);
 /*** Guidelines - updated 3/14/15 (see https://www.dropbox.com/s/vw40iwbmvo1tkol/styles-0.1.pdf?dl=0) ***/
 /* Colors */
 /* elements */
@@ -52,6 +52,7 @@ body {
 h1 {
   font-size: 2.42857143em;
   /* 34px */
+
   font-family: 'Hind', sans-serif;
   font-weight: 300;
 }
@@ -59,12 +60,14 @@ h2 {
   font-size: 1.71428571em;
   font-weight: 300;
   /* 24px */
+
   font-family: 'Hind', sans-serif;
 }
 h3 {
   font-size: 1.42857143em;
   font-weight: 300;
   /* 20px */
+
 }
 h4 {
   font-size: 16px;
@@ -126,6 +129,13 @@ form {
 }
 .yellow-100 {
   background-color: #FFB74D !important;
+}
+/* Text colors */
+.blue-100-txt {
+  color: #27476e;
+}
+.blue-200-txt {
+  color: #2d93ff;
 }
 /* Margins */
 .topHalf {
@@ -314,7 +324,7 @@ form {
   padding: 0px !important;
 }
 .btnClear-grey:active {
-  color: #3CAAEE !important;
+  color: #DC4242 !important;
   background: transparent !important;
 }
 .btnClear-grey:disabled {
@@ -331,6 +341,18 @@ form {
 }
 .btnSpan {
   width: 100%;
+}
+.btnSpan-btm {
+  width: 100%;
+  margin: 0 !important;
+  padding: 0px;
+  border-radius: 0px !important;
+  overflow-x: hidden;
+  position: absolute;
+  bottom: 0px;
+}
+.input-text-sm {
+  font-size: 12px;
 }
 #nav-ghost {
   position: relative;
@@ -430,7 +452,9 @@ div.km-header a img {
 }
 .km-flat .km-navbar {
   /* font-size: 0.9em; */
+
   /* color: rgb(39,71,110); */
+
   background-color: #27476E;
   color: #fff;
   box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.12), 0px 2px 2px 0px rgba(0, 0, 0, 0.24);
@@ -535,12 +559,7 @@ div.km-header a img {
 }
 /* Initial Styles */
 #home .km-content {
-  background-image: url('../images/blank-bk@2x.png');
-  background-size: 100% 100%;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+  background: #eff1f2;
 }
 .km-flat .km-pages .km-current-page {
   background-image: url('../images/blank-bk.png');
@@ -836,6 +855,7 @@ div.km-header a img {
   color: #fff;
   font-size: 0.9em;
   /* border: 1px solid #27476e; */
+
 }
 .km-root .km-wp .km-view.appearance .km-listview input {
   color: #2e2e2e;
@@ -1405,11 +1425,26 @@ div.loginBox > form > div > ul > li {
   margin-bottom: 0.5rem;
 }
 /* Contact List styles */
+.contactSearchBox {
+  padding: 0.5rem 1rem;
+  width: 100%;
+}
+.contactSearchBox > img {
+  float: left;
+  vertical-align: middle;
+  padding-top: 10px;
+  margin-left: 0.5rem;
+}
+.contactSearchBox input {
+  width: 91%;
+  float: left;
+}
+#btnSearchDeviceContacts img {
+  vertical-align: text-top;
+}
 #contacts-listview > li,
 #contactimport-listview > li {
   border-bottom: 1px solid #e0e0e0;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
 }
 #contacts-listview > li > div > div:nth-child(1) > div:nth-child(3) > h4 {
   margin-left: 0px;
@@ -1492,6 +1527,123 @@ div.loginBox > form > div > ul > li {
   padding: 0px;
   width: 75%;
   float: left;
+}
+#contacts-listview > li > div {
+  background-color: #e0e0e0;
+  color: #979797;
+  font-size: 11px;
+  font-weight: 400;
+  padding: 1px 0px 1px 0.5rem;
+  border: none;
+}
+/* Notify styles */
+.notify-box {
+  padding: 0.5rem 1rem;
+  background: #FFFFFF;
+  border: 1px solid rgba(228, 228, 228, 0.3);
+  box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.12), 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+  border-radius: 2px;
+}
+.notify-box:not(:first-child) {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.notify-helper {
+  font-size: 12px;
+  color: #979797;
+}
+.notify-content h4,
+.notify-content p {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+.notify-content h4 {
+  font-weight: 600;
+}
+.notify-title img {
+  vertical-align: middle;
+}
+.notify-info {
+  margin-bottom: 0.25rem;
+}
+.notify-action {
+  margin-top: 0.5rem;
+}
+.notify-dismiss {
+  margin-left: 1rem;
+}
+.notify-content-text {
+  background: #eff1f2;
+  border: 1px solid #e0e0e0;
+  border-radius: 2px;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+}
+.notify-close {
+  position: absolute;
+  right: 5px;
+}
+.notify-content-name {
+  font-size: 12px;
+  font-weight: 600;
+}
+.notify-content-preview-img {
+  width: 40px;
+  padding-right: 1rem;
+}
+.notify-content-preview-img,
+.notify-content-preview,
+.notify-invite-img,
+.notify-invite-txt {
+  float: left;
+}
+.notify-invite-dismiss {
+  margin-left: 1rem;
+}
+.invite-options {
+  margin-top: 0.5rem;
+}
+.invite-options a {
+  vertical-align: top;
+}
+.notify-content-reply {
+  margin-top: 0.25rem;
+}
+.notify-invite-img {
+  margin-right: 1rem;
+}
+/* sign up */
+.mobile-countryCode {
+  background-color: #2d93ff;
+  color: #fff;
+  font-size: 30px;
+  padding: 0.5rem 1rem;
+  float: left;
+  position: absolute;
+  top: 28px;
+  left: -15px;
+}
+.mobile-input {
+  float: left;
+  font-size: 30px !important;
+  width: 80% !important;
+  margin-left: 20%;
+}
+.mobile-helper {
+  width: 80%;
+  margin-left: 20%;
+  font-size: 11px;
+}
+#formCreateAccount > div > ul > li,
+#formCreateAccount > div > ul {
+  overflow: visible;
+}
+.banner-welcome {
+  margin-top: 1rem;
+  text-align: center;
+}
+.banner-welcome img {
+  vertical-align: text-top;
 }
 /* Don's development styles...*/
 .tile {

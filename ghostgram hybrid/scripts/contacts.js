@@ -275,6 +275,7 @@ function onDoneEditContact (e) {
 }
 
 function onInitContacts(e) {
+
  if (e.preventDefault !== undefined)
     	e.preventDefault();
     /*
@@ -349,6 +350,7 @@ function onInitContacts(e) {
 			  if (query.length > 2) {
 				  $('#btnSearchDeviceContacts').removeClass('hidden');
 			  }
+			  $("#btnSearchDeviceName").text(query);
 			
 		 } else {
 			 dataSource.data([]);
@@ -356,7 +358,8 @@ function onInitContacts(e) {
 			 dataSource.data(APP.models.contacts.contactsDS.data());
 			 dataSource.filter([]);
 			 
-			  $('#btnSearchDeviceContacts').addClass('hidden');
+			 $('#btnSearchDeviceContacts').addClass('hidden');
+			  
 		 }
 	 });
 	
