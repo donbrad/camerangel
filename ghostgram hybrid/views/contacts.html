@@ -1,5 +1,5 @@
 
-<div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="APP.models.contacts" data-init="onInitContacts" data-show="onShowContacts" data-hide="onHideContacts">
+<div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="APP.models.contacts" data-init="onInitContacts" data-show="onShowContacts" data-hide="onHideContacts" style="display: none;">
   <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -11,7 +11,7 @@
     </div>
 
 	<div style="padding: 4px; width: 100%; display:block;">	
-		<img src="images/search.svg" width="18" style="vertical-align: middle; display: inline-block; width=24px;"/>
+		<img src="images/search.svg" width="18" style="vertical-align: middle; display: inline-block; width: 24px;"/>
 		<input id="contactSearchInput" class="clearable" type="text" prompt="Search for ..."  style="width: 80%; display: inline-block;"/>
 		<a data-role="button" data-click="searchDeviceContacts" id="btnSearchDeviceContacts" class="hidden" style="display: inline-block;"> <i class="ghostIcon fa fa-mobile"></i> </a>
     </div>
@@ -29,17 +29,17 @@
     </div>
     
     <ul data-role="actionsheet" id="contactActions" data-popup='{"direction": "left"}'>
-      
-        <li><a data-action="inviteContact">Invite Contact</a></li>
-       <li><a data-action="editContact">Edit Contact</a></li>
-        <li><a data-action="contactSendSMS">Send SMS</a></li>
-        <li><a data-action="contactCallPhone">Phone Call</a></li>
-         <li><a data-action="contactSendEmail">Send Email</a></li>
+
+		<li><a data-action="inviteContact">Invite Contact</a></li>
+		<li><a  data-action="doEditContact">Edit Contact</a></li>
+		<li><a data-action="contactSendSMS">Send SMS</a></li>
+		<li><a data-action="contactCallPhone">Phone Call</a></li>
+		 <li><a data-action="contactSendEmail">Send Email</a></li>
         
     </ul> 
     
       <ul data-role="actionsheet" id="contactUserActions" data-popup='{"direction": "left"}'>
-         <li><a data-action="editContact">Edit Contact</a></li>
+        <li><a data-action="doEditContact">Edit Contact</a></li>
         <li><a data-action="privateChat">Private Chat</a></li>
         <li><a data-action="contactSendSMS">Send SMS</a></li>
         <li><a data-action="contactCallPhone">Phone Call</a></li>
@@ -49,7 +49,7 @@
 </div>
 
 
-<div data-role="view" data-title="Import Contacts" id="contactImport" data-layout="main" data-model="APP.models.contacts" data-init="onInitContactImport" data-show="onShowContactImport">
+<div data-role="view" data-title="Import Contacts" id="contactImport" data-layout="main" data-model="APP.models.contacts" data-init="onInitContactImport" data-show="onShowContactImport" style="display: none;">
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -130,13 +130,14 @@
 </div>
 
 
-<div data-role="view" data-model="APP.models.contacts.currentContact" data-title="Edit Contact" id="editContact" data-layout="main"  data-before-show="onShowEditContact" class="appearance">
+<div data-role="view" data-model="APP.models.contacts.currentContact" data-title="Edit Contact" id="editContact" data-layout="main"  data-show="onShowEditContact" class="appearance" style="display: none;">
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
             <a data-role="button" data-click="onDoneEditContact" data-align="left" >Done</a>         
         </div>
-    </div> 
+    </div>
+
     <div class="ghostContent" style="padding-bottom: 12px;">
 		<form >
 			<ul data-role="listview" data-style="inset" >
@@ -153,25 +154,23 @@
 				 
 				<li>           
 					<label>Phone
-						<input id="editContactPhone" type="phone" data-bind="value:phone">
-						</input>
+						<input id="editContactPhone" type="phone" data-bind="value:phone"/>
 					</label>
 				</li>
 				<li>
 					<label>Email
-						 <input id="editContactEmail" type="email" data-bind="value: email">
-						</input>
+						 <input id="editContactEmail" type="email" data-bind="value: email"/>
+
 					</label>
 				</li>
 				 <li>
 					<label>Address
-						 <input id="editContactAddress" data-bind="value: address">
-						</input>
+						 <input id="editContactAddress" data-bind="value: address"/>
 					</label>
 				</li>
 			</ul>
 		</form>
-		</br>
+
 		<div style="text-align: center; padding-top: 16px; padding-bottom: 16px;">
 		 <a data-role="button"  data-click="deleteContact">  <i class="ghostIcon fa fa-trash-0"></i> Delete Contact</a>
 		</div>
@@ -246,7 +245,7 @@
     </div>       
     
     <div class="ghostContainer">
-        <ul id="contacts-listview"></ul>  
+        <ul id="xcontacts-listview"></ul>
     </div>
     
     
