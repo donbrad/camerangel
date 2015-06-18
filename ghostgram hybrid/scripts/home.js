@@ -143,15 +143,7 @@ function continueSignUp() {
 
 	$("#create-user-email, #create-user-name, #create-user-alias, #create-user-password").velocity("slideDown", { delay: 500, duration: 300 }, [ 250, 15 ]);
 	// ToDo - Add step form validation
-	var form = $("#formCreateAccount").kendoValidator().data("kendoValidator");
 	
-	$("#formCreateAccount").keyup(function(){
-		if (form.validate()){
-			console.log("validated");
-		}
-    		console.log("No good");
-	})
-    
 
 }
 
@@ -335,7 +327,6 @@ function homeCreateAccount() {
 		phone = '1'+phone;
 	}
 	
-	
 	Parse.Cloud.run('validateMobileNumber', { phone: phone }, {
       success: function(result) {
     		if (result.status !== 'ok' || result.result.carrier.type !== 'mobile') {
@@ -397,7 +388,7 @@ function homeCreateAccount() {
 							}
 							 Parse.Cloud.run('sendPhoneVerificationCode', { phoneNumber: phone }, {
 								  success: function (result) {
-									  modileNotify('Please verify your phone');
+									  mobileNotify('Please verify your phone');
 									  $("#modalview-verifyPhone").data("kendoMobileModalView").open();
 								  },
 								 error: function (result, error){
