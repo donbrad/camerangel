@@ -1476,11 +1476,28 @@ div.loginBox > form > div > ul > li {
 }
 
 /* Contact List styles */
+.contactSearchBox {
+	padding: 0.5rem 1rem;
+	width: 100%;
+	> img {
+		float: left;
+		vertical-align: middle;
+		padding-top: 10px;
+		margin-left: 0.5rem;
+	}
+	input {
+		width: 91%;
+		float: left;
+	}
+}
+
+#btnSearchDeviceContacts img {
+	vertical-align: text-top;
+}
+
 #contacts-listview > li,
 #contactimport-listview > li {
 	border-bottom: 1px solid @grey200;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
 }
 
 #contacts-listview > li > div > div:nth-child(1) > div:nth-child(3) > h4 {
@@ -1576,6 +1593,15 @@ div.loginBox > form > div > ul > li {
 	padding: 0px;
 	width: 75%;
 	float: left;
+}
+
+#contacts-listview > li > div {
+	background-color: @grey200;
+	color: @grey100;
+	font-size: 11px;
+	font-weight: 400;
+	padding: 1px 0px 1px 0.5rem; 
+	border: none;
 }
 
 /* Notify styles */

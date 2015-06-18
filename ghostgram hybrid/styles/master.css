@@ -52,6 +52,7 @@ body {
 h1 {
   font-size: 2.42857143em;
   /* 34px */
+
   font-family: 'Hind', sans-serif;
   font-weight: 300;
 }
@@ -59,12 +60,14 @@ h2 {
   font-size: 1.71428571em;
   font-weight: 300;
   /* 24px */
+
   font-family: 'Hind', sans-serif;
 }
 h3 {
   font-size: 1.42857143em;
   font-weight: 300;
   /* 20px */
+
 }
 h4 {
   font-size: 16px;
@@ -449,7 +452,9 @@ div.km-header a img {
 }
 .km-flat .km-navbar {
   /* font-size: 0.9em; */
+
   /* color: rgb(39,71,110); */
+
   background-color: #27476E;
   color: #fff;
   box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.12), 0px 2px 2px 0px rgba(0, 0, 0, 0.24);
@@ -850,6 +855,7 @@ div.km-header a img {
   color: #fff;
   font-size: 0.9em;
   /* border: 1px solid #27476e; */
+
 }
 .km-root .km-wp .km-view.appearance .km-listview input {
   color: #2e2e2e;
@@ -1419,11 +1425,26 @@ div.loginBox > form > div > ul > li {
   margin-bottom: 0.5rem;
 }
 /* Contact List styles */
+.contactSearchBox {
+  padding: 0.5rem 1rem;
+  width: 100%;
+}
+.contactSearchBox > img {
+  float: left;
+  vertical-align: middle;
+  padding-top: 10px;
+  margin-left: 0.5rem;
+}
+.contactSearchBox input {
+  width: 91%;
+  float: left;
+}
+#btnSearchDeviceContacts img {
+  vertical-align: text-top;
+}
 #contacts-listview > li,
 #contactimport-listview > li {
   border-bottom: 1px solid #e0e0e0;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
 }
 #contacts-listview > li > div > div:nth-child(1) > div:nth-child(3) > h4 {
   margin-left: 0px;
@@ -1506,6 +1527,14 @@ div.loginBox > form > div > ul > li {
   padding: 0px;
   width: 75%;
   float: left;
+}
+#contacts-listview > li > div {
+  background-color: #e0e0e0;
+  color: #979797;
+  font-size: 11px;
+  font-weight: 400;
+  padding: 1px 0px 1px 0.5rem;
+  border: none;
 }
 /* Notify styles */
 .notify-box {
