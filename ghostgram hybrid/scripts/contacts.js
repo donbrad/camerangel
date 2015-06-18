@@ -91,7 +91,8 @@ function deleteContact(e) {
     var view = dataSource.view();
     var contact = view[0];
 	 dataSource.filter([]);
-    dataSource.remove(contact); 
+    dataSource.remove(contact);
+
     deleteParseObject("contacts", 'uuid', APP.models.contacts.currentContact.get('uuid'));
 	mobileNotify(string);
 	APP.kendo.navigate('#contacts');
@@ -141,14 +142,14 @@ function contactSendEmail() {
 	 if (window.navigator.simulator === true){
 		 alert("Mail isn't supported in the emulator");
 	 } else {
-		 var thisUser = APP.models.profile.currentUser.get('name');
+		 var thisUser = APP.models.profile.currentUser.name;
 		 cordova.plugins.email.open({
 			   to:          [email],
 			   subject:     '',
 			   body:        '</br></br></br></br><em>From ' + thisUser + ' via ghostgrams</em>',
 			   isHtml:      true
 			}, function (msg) {
-			  navigator.notification.alert(JSON.stringify(msg), null, 'EmailComposer callback', 'Close');
+			  //navigator.notification.alert(JSON.stringify(msg), null, 'EmailComposer callback', 'Close');
 		 });
 	 }
 	
