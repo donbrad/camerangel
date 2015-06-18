@@ -244,8 +244,10 @@ function onInitContact(e) {
 }
 
 function onShowEditContact(e) {
+
 	if (e.preventDefault !== undefined)
     	e.preventDefault();
+
 	syncContact(APP.models.contacts.currentContact);
 	
 }
@@ -374,6 +376,7 @@ function onInitContacts(e) {
 function onShowContacts (e) {
 	if (e.preventDefault !== undefined)
     	e.preventDefault();
+
 	APP.models.contacts.contactListDS.data(APP.models.contacts.contactsDS.data());
 	//APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
 	
