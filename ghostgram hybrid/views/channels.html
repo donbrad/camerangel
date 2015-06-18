@@ -45,12 +45,13 @@
             #if (isPrivate) {# 
                 <i class="ghostIconNavbar fa fa-user-secret"> </i>
             #} else { # 
-                <img id="profilePhoto" class="circle-img" src="images/ghostgramcontact.png" height="30"/> 
+                <img id="profilePhoto" class="circle-img" src="images/ghostgramcontact.png" height="30" /> 
             #}# 
            
         </div>
-        <h3><a data-rel='view' href="\\#channel?channel=#:channelId#" id="chatName"> #:name# </a>
-    	<span class="chatActivityTime">1 hr ago</span>
+        <h3>
+        	<a data-rel='view' href="\\#channel?channel=#:channelId#" id="chatName"> #:name# </a>
+    		<span class="chatActivityTime">1 hr ago</span>
     	</h3>
         <div class="hidden"> #: description # </div>
         <div>
@@ -70,7 +71,9 @@
    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img src="images/menu-icon.svg"/></a>
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left">
+            	<img src="images/menu-icon.svg" />
+            </a>
             <a data-align="right" data-role="button"  data-rel="drawer" href="#channelMembers" > <i class="ghostIconNavbar fa fa-users"></i> </a>
         </div>
     </div>
@@ -177,22 +180,26 @@
         <div data-role="navbar" id="channelNavBar">
             <img src="" id="channelImage" height="32" style="vertical-align: middle; border-radius: 50%"/>
             <span data-role="view-title"></span>
-            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img src="images/menu-icon.svg"/></a>
-            <a data-align="right" data-role="button" id="messagePresenceButton" data-rel="drawer" href="#channelPresence" > <i class="ghostIconNavbar fa fa-users"></i> </a>
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left">
+            	<img src="images/menu-icon.svg"/>
+            </a>
+            <a data-align="right" data-role="button" id="messagePresenceButton" data-rel="drawer" href="#channelPresence"> 
+            	<i class="ghostIconNavbar fa fa-users"></i> 
+            </a>
         </div>
          <div id="privacyStatus" class="hidden"><h5>Privacy Mode On</h5></div>
     </div>
 	 
-     <div style="padding-bottom: 24px;">
+     <div class="appBox" style="padding-bottom: 24px;">
          <ul id="messages-listview"></ul>
      </div>
      
-	 <div data-role="footer" style="display: block; background: #fff; padding-left: 2px;"  id="messageEditor" style="min-height: 48px;" >
+	 <div data-role="footer" style="display: block; background: #fff; padding-left: 2px;"  id="messageEditor" style="min-height: 48px;">
 		 <div id="chatImagePreview" style="margin: 8px; width: 95%; height: auto; ">
 			 <form id="chatImageForm" style="display:none;">
-				  <input id="chatImageInput"/>
+				  <input id="chatImageInput" />
 			 </form>
-			<img id="chatImage" src="" style="max-width: 100%; max-height: 100%; text-align: center; vertical-align: middle;"> </img>
+			<img id="chatImage" src="" style="max-width: 100%; max-height: 100%; text-align: center; vertical-align: middle;" />
 		 </div>
 		 <div class="messageCompose">
 			<textarea id="messageTextArea" rows="1" autofocus="true" wrap="soft" spellcheck="true" placeholder="Message..."></textarea>
@@ -236,18 +243,31 @@
 </div>
 
 <script type="text/x-kendo-tmpl" id="messagesTemplate">
-# var history='';  if (APP.models.channel.currentModel.privacyMode) { if (fromHistory !== undefined && fromHistory === true ) {history = "privateMode"; } }#
-<div id=#:msgID# class="chat-message #=history# clearfix">
-	# var formattedTime = timeSince(time); var name = "Me"; var photoUrl = ''; if (sender === APP.models.channel.currentContactUUID) { name =  APP.models.channel.currentContactModel.alias; photoUrl = APP.models.channel.currentContactModel.photo; }  #
+	# var history='';  
+		if (APP.models.channel.currentModel.privacyMode) { 
+			if (fromHistory !== undefined && fromHistory === true ) {
+				history = "privateMode"; }
+		}#
+	<div id=#:msgID# class="chat-message #=history# clearfix">
+	# 	var formattedTime = timeSince(time); 
+		var name = "Me"; 
+		var photoUrl = ''; 
+		if (sender === APP.models.channel.currentContactUUID) { 
+			name =  APP.models.channel.currentContactModel.alias; 
+			photoUrl = APP.models.channel.currentContactModel.photo; 
+		}  
+	#
 	 <div class="chat-time"> #:formattedTime# ago </div> 
-	# if(photoUrl !== '') { #<img class="chat-message-profileImg" src="#:photoUrl#" alt="" width="36" height="36">
-	<div class="chat-message-content clearfix">
+	# if(photoUrl !== '') { #
+		<img class="chat-message-profileImg" src="#:photoUrl#" alt="" width="36" height="36">
+		<div class="chat-message-content clearfix">
 		<h5>#=name#</h5>
 		<div class="chat-message-text">#= formattedContent #</div>
+
 		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# <img class="chat-message-photo-small" src="#:data.photo.thumb#" alt="" > #}#
 	</div>
 	 #} else {#
-	 <div class="chat-message-user-content clearfix">
+	 	<div class="chat-message-user-content clearfix">
 		<div class="chat-message-text">#= formattedContent #</div>
 		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# <img class="chat-message-photo-small" src="#:data.photo.thumb#" alt="" > #}#
 	</div>
