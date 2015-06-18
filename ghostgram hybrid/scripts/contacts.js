@@ -146,7 +146,7 @@ function contactSendEmail() {
 		 cordova.plugins.email.open({
 			   to:          [email],
 			   subject:     '',
-			   body:        '</br></br></br></br><em>From ' + thisUser + ' via ghostgrams</em>',
+			   body:        '</br></br></br></br><em>Via ghostgrams</em>',
 			   isHtml:      true
 			}, function (msg) {
 			  //navigator.notification.alert(JSON.stringify(msg), null, 'EmailComposer callback', 'Close');
