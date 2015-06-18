@@ -142,7 +142,7 @@ function contactSendEmail() {
 	 if (window.navigator.simulator === true){
 		 alert("Mail isn't supported in the emulator");
 	 } else {
-		 var thisUser = APP.models.profile.currentUser.name;
+		 var thisUser = APP.models.profile.currentUser.get('name');
 		 cordova.plugins.email.open({
 			   to:          [email],
 			   subject:     '',
@@ -168,13 +168,26 @@ function contactSendEmailInvite() {
 			   body:        '<h2>A invitation From ' + thisUser + ' to try Ghostgrams</h2>',
 			   isHtml:      true
 			}, function (msg) {
-			  navigator.notification.alert(JSON.stringify(msg), null, 'EmailComposer callback', 'Close');
+			 // navigator.notification.alert(JSON.stringify(msg), null, 'EmailComposer callback', 'Close');
 		 });
 	 }
 	
 }
 function contactCallPhone() {
      var number = APP.models.contacts.currentContact.get('phone');
+    phonedialer.dial(
+        number,
+        function(err) {
+            if (err == "empty")
+                navigator.notification.alert("Invalid phone number", null, 'ghostgrams dailer', 'Close');
+            else
+                navigator.notification.alert("Error: " + err , null, 'ghostgrams dailer', 'Close');
+        },
+        function(success) {
+            mobileNotify("Dialing " + number);
+        }
+    );
+
 }
     
 function contactSendSMS() {
