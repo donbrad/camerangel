@@ -91,7 +91,8 @@ function deleteContact(e) {
     var view = dataSource.view();
     var contact = view[0];
 	 dataSource.filter([]);
-    dataSource.remove(contact); 
+    dataSource.remove(contact);
+
     deleteParseObject("contacts", 'uuid', APP.models.contacts.currentContact.get('uuid'));
 	mobileNotify(string);
 	APP.kendo.navigate('#contacts');
@@ -145,10 +146,10 @@ function contactSendEmail() {
 		 cordova.plugins.email.open({
 			   to:          [email],
 			   subject:     '',
-			   body:        '</br></br></br></br><em>From ' + thisUser + ' via ghostgrams</em>',
+			   body:        '</br></br></br></br><em>Via ghostgrams</em>',
 			   isHtml:      true
 			}, function (msg) {
-			  navigator.notification.alert(JSON.stringify(msg), null, 'EmailComposer callback', 'Close');
+			  //navigator.notification.alert(JSON.stringify(msg), null, 'EmailComposer callback', 'Close');
 		 });
 	 }
 	
@@ -167,13 +168,26 @@ function contactSendEmailInvite() {
 			   body:        '<h2>A invitation From ' + thisUser + ' to try Ghostgrams</h2>',
 			   isHtml:      true
 			}, function (msg) {
-			  navigator.notification.alert(JSON.stringify(msg), null, 'EmailComposer callback', 'Close');
+			 // navigator.notification.alert(JSON.stringify(msg), null, 'EmailComposer callback', 'Close');
 		 });
 	 }
 	
 }
 function contactCallPhone() {
      var number = APP.models.contacts.currentContact.get('phone');
+    phonedialer.dial(
+        number,
+        function(err) {
+            if (err == "empty")
+                navigator.notification.alert("Invalid phone number", null, 'ghostgrams dailer', 'Close');
+            else
+                navigator.notification.alert("Error: " + err , null, 'ghostgrams dailer', 'Close');
+        },
+        function(success) {
+            mobileNotify("Dialing " + number);
+        }
+    );
+
 }
     
 function contactSendSMS() {
@@ -476,6 +490,28 @@ function searchDeviceContacts(e) {
 	});
 }
 
+function unifyContacts(contacts) {
+    var emailArray = new Array(), phoneArray = new Array(), addressArray = new Array();
+
+
+    //Build histograms for email, phone and address
+    for (var i=0; i<contacts.length; i++) {
+        for (var e=0; e<contacts[i].emails.length; e++) {
+            emailArray[contacts[i].emails[e].address] = contacts[i].emails[e].address;
+
+        }
+
+        for (var p=0; p<contacts[i].phoneNumbers.length; p++) {
+            phoneArray[contacts[i].phoneNumbers[p].number] = contacts[i].phoneNumbers[p].number;
+        }
+
+        for (var a=0; a<contacts[i].addresses.length; a++) {
+            addressArray[contacts[i].addresses[a].fullAddress] = contacts[i].addresses[a].fullAddress;
+        }
+    }
+
+
+}
     
 function contactsFindContacts(query, callback) {
   //  e.preventDefault(e);   
