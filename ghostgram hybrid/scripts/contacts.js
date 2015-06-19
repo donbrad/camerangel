@@ -438,7 +438,7 @@ function onInitContactImport (e) {
                }
                 
                 APP.models.contacts.addressArray = new Array();
-                    for (var a = 0; a<APP.models.contacts.currentDeviceContact.addresses.length; a++) {
+                for (var a = 0; a<APP.models.contacts.currentDeviceContact.addresses.length; a++) {
                     var address = new Object();
                     address.name = APP.models.contacts.currentDeviceContact.addresses[a].name;
                     address.address =  APP.models.contacts.currentDeviceContact.addresses[a].fullAddress;
@@ -483,34 +483,72 @@ function searchDeviceContacts(e) {
 	e.preventDefault();
 	query = $('#contactSearchInput').val();
 	contactsFindContacts(query, function(array) {
-		for (var i=0; i<array.length; i++) {
-			APP.models.contacts.contactListDS.add(array[i]);
-		}
+        var name = query.toLowerCase(), nameArray = name.split(' ');
+
+        // Two names?
+        if (nameArray.length > 1) {
+
+        } else {
+            for (var i=0; i<array.length; i++) {
+                APP.models.contacts.contactListDS.add(array[i]);
+            }
+        }
+
 		
 	});
 }
 
 function unifyContacts(contacts) {
-    var emailArray = new Array(), phoneArray = new Array(), addressArray = new Array();
+    var emailArray = [], phoneArray = [], addressArray = [],
+        emails = [], phones = [], addresses = [];
 
 
     //Build histograms for email, phone and address
     for (var i=0; i<contacts.length; i++) {
         for (var e=0; e<contacts[i].emails.length; e++) {
-            emailArray[contacts[i].emails[e].address] = contacts[i].emails[e].address;
+            emailArray[contacts[i].emails[e].address] = contacts[i].emails[e].name ? contacts[i].emails[e].name : '';
 
         }
 
         for (var p=0; p<contacts[i].phoneNumbers.length; p++) {
-            phoneArray[contacts[i].phoneNumbers[p].number] = contacts[i].phoneNumbers[p].number;
+            phoneArray[contacts[i].phoneNumbers[p].number] = contacts[i].phoneNumbers[p].name ? contacts[i].phoneNumbers[p].name : '';
         }
 
         for (var a=0; a<contacts[i].addresses.length; a++) {
-            addressArray[contacts[i].addresses[a].fullAddress] = contacts[i].addresses[a].fullAddress;
+            addressArray[contacts[i].addresses[a].fullAddress] = contacts[i].addresses[a].name ? contacts[i].addresses[a].name : '';
         }
     }
 
+    emails = Object.keys(emailArray);
+    phones = Object.keys(phoneArray);
+    addresses = Object.keys(addressArray);
 
+    for (e = 0; e<emails.length; e++) {
+        var email = {};
+        email.name = emailArray[emails[e]];
+        email.address =  emails[e];
+
+        APP.models.contacts.emailArray.push(email);
+    }
+    APP.models.contacts.currentDeviceContact.emails = APP.models.contacts.emailArray;
+
+    for (p = 0; p<phones.length; p++) {
+        var phone = {};
+        phone.name = phoneArray[phones[a]];
+        phone.number =  phones[a];
+
+        APP.models.contacts.phoneArray.push(phone);
+    }
+    APP.models.contacts.currentDeviceContact.phoneNumbers = APP.models.contacts.phoneArray;
+
+    for (a = 0; a<addresses.length; a++) {
+        var address = {};
+        address.name = addressArray[addresses[a]];
+        address.address =  addresses[a];
+
+        APP.models.contacts.addressArray.push(address);
+    }
+    APP.models.contacts.currentDeviceContact.addresses =  APP.models.contacts.addressArray;
 }
     
 function contactsFindContacts(query, callback) {
