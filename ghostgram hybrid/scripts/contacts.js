@@ -263,6 +263,7 @@ function onShowEditContact(e) {
     	e.preventDefault();
 
 	syncContact(APP.models.contacts.currentContact);
+	// Todo - wire up verified status/read only fields
 	
 }
 
@@ -370,7 +371,7 @@ function onInitContacts(e) {
         fixedHeaders: true,
         click: function (e) {
             var contact = e.dataItem;
-
+            //console.log(contact);
             updateCurrentContact(contact);
 			
 			if (contact.category === 'phone') {
@@ -393,7 +394,7 @@ function onInitContacts(e) {
 function onShowContacts (e) {
 	if (e.preventDefault !== undefined)
     	e.preventDefault();
-
+    //console.log(APP.models.contacts.contactsDS.data());
 	APP.models.contacts.contactListDS.data(APP.models.contacts.contactsDS.data());
 	//APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
 	
@@ -417,7 +418,7 @@ function onInitContactImport (e) {
             click: function(e) {
                APP.models.contacts.currentDeviceContact = e.dataItem;
                APP.models.contacts.emailArray = new Array();
-                
+               
                for (var i = 0; i<APP.models.contacts.currentDeviceContact.emails.length; i++) {
                     var email = new Object();
                     email.name = APP.models.contacts.currentDeviceContact.emails[i].name;
