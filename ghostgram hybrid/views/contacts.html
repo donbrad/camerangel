@@ -25,6 +25,7 @@
         <ul id="contacts-listview"></ul>
 		<!-- Only display if device permission is needed -->
 		<div id="deviceContactPermission" class="pad center hidden">
+
 			<a class="btnClear">
 				<img src="images/import.svg" height="16" />
 				Find contacts on device
@@ -146,7 +147,7 @@
 		<form >
 			<div class="topHalf">
 	    		<div class="topHalfLeft">
-	    			<img class="circle-img-lg shadow" src="images/ghost-red.svg" />
+	    			<img class="circle-img-lg shadow" src="images/ghost-blue.svg" />
 	    		</div>
 	    		<div class="contactImg">
 	    			<label for="contactFullName">
@@ -181,7 +182,7 @@
 		</form>
 
 		<div style="text-align: center; padding-top: 16px; padding-bottom: 16px;">
-		 <a data-role="button" class="btnClear-red" id="editContact-deleteBtn" data-click="deleteContact"><img src="images/trash.svg" />  Delete Contact</a>
+			<a data-role="button" class="btnClear-red" id="editContact-deleteBtn" data-click="deleteContact"><img src="images/trash.svg" />  Delete Contact</a>
 		</div>
 	</div>
 </div>
@@ -193,31 +194,38 @@
 			 <a data-role="button" class="slideGearButton ghostButton" style="display:none; float:right;">
 			 	<i class="ghostIcon fa fa-cog"></i>
 			 </a>
-			 <div class="left listPhoto">
-			 	<div class="statusContactList">
-			 		<img class="circle-img-md" src="#:data.photo#" />  
-		 			#if (data.category !== 'phone' && data.isAvailable !== undefined && data.isAvailable) { #
-		 				<img width="16" src="images/status-available.svg" class="statusContactList-icon" />
-		 			# } 
-		 			else { #
-		 				<img width="16" src="images/status-away.svg" class="statusContactList-icon" />
-		 			#}#
-		 		</div>
-			 </div><!-- left -->
-			
-			# if (data.category !== 'phone') {#
-			<div class="left listName">
-				<h4>#: data.alias # </h4>
-			  	<span class="ghostTextLarge hidden"> 
-				  #if (data.contactUUID === undefined || data.contactUUID === null || data.contactUUID === '') { # <em> <i class="fa fa-user-times"></i> </em> # } 
-				  else {#  
-				  	<strong> <i class="fa fa-user-secret"></i> </strong> #} #
-	 			</span>  
-			</div><!-- left -->
+			 #if (data.category !== 'phone') {#
+			 	<div class="left listPhoto">
+				 	<div class="statusContactList">
+				 		  
+			 			#if (data.isAvailable !== undefined && data.isAvailable) { #
+			 				<img class="circle-img-md" src="#:data.photo#" />
+			 				<img width="16" src="images/status-available.svg" class="statusContactList-icon" />
+			 			# } 
+			 			else { #
+			 				<img class="circle-img-md" src="#:data.photo#" />
+			 				<img width="16" src="images/status-away.svg" class="statusContactList-icon" />
+			 			#}#
+			 		</div>
+			 	</div><!-- left -->
+
+				# if (data.category !== 'phone') {#
+					<div class="left listName">
+						<h4>#: data.alias # </h4> 
+					</div><!-- left -->
+					<p class="left caption">#: data.name #</p> 
+				#} else {#
+					<div class="left listName">
+						<h4>#: data.name # </h4> 
+					</div><!-- left -->
+				#}#
+				<div class="clearfix"></div> 
+			#} else {#
+				<div class="phoneContact">
+					<h4>#: data.name # </h4>
+				</div>
 			#}#
-			
-			<p class="left caption">#: data.name #</p>  
-			<div class="clearfix"></div> 
+			 
 		 </div>
 	</div>
 </div><!-- listBox -->

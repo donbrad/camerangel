@@ -394,7 +394,7 @@ function onInitContacts(e) {
 function onShowContacts (e) {
 	if (e.preventDefault !== undefined)
     	e.preventDefault();
-    //console.log(APP.models.contacts.contactsDS.data());
+    
 	APP.models.contacts.contactListDS.data(APP.models.contacts.contactsDS.data());
 	//APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
 	
@@ -456,7 +456,7 @@ function onInitContactImport (e) {
                		$("#addContactName").text("No name");
                }
                
-               
+
                
                APP.models.contacts.phoneDS.data( APP.models.contacts.phoneArray);
                APP.models.contacts.emailDS.data( APP.models.contacts.emailArray);
@@ -487,7 +487,6 @@ function searchDeviceContacts(e) {
 		for (var i=0; i<array.length; i++) {
 			APP.models.contacts.contactListDS.add(array[i]);
 		}
-		
 	});
 }
 
