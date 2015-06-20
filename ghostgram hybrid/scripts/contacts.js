@@ -647,7 +647,7 @@ function contactsFindContacts(query, callback) {
 			
 function doShowAddContacts(e) {
     e.preventDefault();
-    var data = APP.models.contacts;
+    var data = APP.models.contacts.currentContact;
     
     $("#addContactName").text("");
     $('#addContactAlias').text("");
@@ -655,6 +655,8 @@ function doShowAddContacts(e) {
     //console.log(data);
     if (data.photo === null) {
         $("#addContactPhoto").attr("src","images/ghostgramcontact.png");
+
+    } else {
         $("#addContactPhoto").attr("src",data.photo);
     }
 
