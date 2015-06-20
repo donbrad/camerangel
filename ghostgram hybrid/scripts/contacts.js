@@ -487,7 +487,7 @@ function searchDeviceContacts(e) {
 
         // Two names?
         if (nameArray.length > 1) {
-
+            unifyContacts(array);
         } else {
             for (var i=0; i<array.length; i++) {
                 APP.models.contacts.contactListDS.add(array[i]);
