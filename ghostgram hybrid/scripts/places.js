@@ -15,20 +15,24 @@ function onInitPlaces(e) {
 }
 
 function doEditPlace (e) {
-	e.preventDefault();
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
 }
 
 function doDeletePlace (e) {
-	e.preventDefault();
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
 	APP.models.places.placesDS.remove(APP.models.places.currentGeoPlace);
 }
 
 function doCheckInPlace (e) {
-	e.preventDefault();
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
 }
 
 function onShowPlaces(e) {
-	e.preventDefault();
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
 }
 
 function parseAddress(address) {
@@ -53,8 +57,9 @@ function parseAddress(address) {
 	
 }
 function onInitFindPlace(e) {
-	e.preventDefault();
-	 APP.models.places.googlePlaces = new google.maps.places.PlacesService(APP.map.googleMap);
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
+	APP.models.places.googlePlaces = new google.maps.places.PlacesService(APP.map.googleMap);
 	APP.models.places.autocomplete = new google.maps.places.Autocomplete(document.getElementById('placeSearchQuery'));
    
 
@@ -95,16 +100,18 @@ function onPlaceChanged() {
 
 
 function onShowFindPlace(e) {
-	
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
 	
 }
 function onInitAddPlace(e) {
-	
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
 }
 
 function onShowAddPlace(e) {
-	e.preventDefault();
-	
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
 	var place = APP.models.places.currentGeoPlace;
 	
 	$('#addPlaceAddress').val(place.formatted_address);
@@ -112,6 +119,9 @@ function onShowAddPlace(e) {
 }
 
 function addPlaceAdd(e) {
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
+	
 	 var Places = Parse.Object.extend("places");
     var place = new Places();
 	var guid = uuid.v4();
