@@ -263,6 +263,7 @@ function onShowEditContact(e) {
     	e.preventDefault();
 
 	syncContact(APP.models.contacts.currentContact);
+	// Todo - wire up verified status/read only fields
 	
 }
 
@@ -370,7 +371,7 @@ function onInitContacts(e) {
         fixedHeaders: true,
         click: function (e) {
             var contact = e.dataItem;
-
+            //console.log(contact);
             updateCurrentContact(contact);
 			
 			if (contact.category === 'phone') {
@@ -393,7 +394,7 @@ function onInitContacts(e) {
 function onShowContacts (e) {
 	if (e.preventDefault !== undefined)
     	e.preventDefault();
-
+    
 	APP.models.contacts.contactListDS.data(APP.models.contacts.contactsDS.data());
 	//APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
 	
@@ -417,7 +418,7 @@ function onInitContactImport (e) {
             click: function(e) {
                APP.models.contacts.currentDeviceContact = e.dataItem;
                APP.models.contacts.emailArray = new Array();
-                
+               
                for (var i = 0; i<APP.models.contacts.currentDeviceContact.emails.length; i++) {
                     var email = new Object();
                     email.name = APP.models.contacts.currentDeviceContact.emails[i].name;
@@ -455,7 +456,7 @@ function onInitContactImport (e) {
                		$("#addContactName").text("No name");
                }
                
-               
+
                
                APP.models.contacts.phoneDS.data( APP.models.contacts.phoneArray);
                APP.models.contacts.emailDS.data( APP.models.contacts.emailArray);
@@ -483,6 +484,7 @@ function searchDeviceContacts(e) {
 	e.preventDefault();
 	query = $('#contactSearchInput').val();
 	contactsFindContacts(query, function(array) {
+
         var name = query.toLowerCase(), nameArray = name.split(' ');
 
         // Two names?
@@ -494,7 +496,6 @@ function searchDeviceContacts(e) {
             }
         }
 
-		
 	});
 }
 
