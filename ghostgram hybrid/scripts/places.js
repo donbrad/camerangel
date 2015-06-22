@@ -20,6 +20,7 @@ function doEditPlace (e) {
 
 function doDeletePlace (e) {
 	e.preventDefault();
+	APP.models.places.placesDS.remove(APP.models.places.currentGeoPlace);
 }
 
 function doCheckInPlace (e) {
