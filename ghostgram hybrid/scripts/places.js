@@ -1,3 +1,4 @@
+
 function onInitPlaces(e) {
 	e.preventDefault();
      $("#places-listview").kendoMobileListView({
@@ -5,11 +6,24 @@ function onInitPlaces(e) {
         template: $("#placesTemplate").html(),
         click: function (e) {
             var place = e.dataItem;
-           APP.models.places.currentPlace = place;
+           	APP.models.places.currentPlace = place;
+			$("#placesActions").data("kendoMobileActionSheet").open();
 			
          
         }
      });	
+}
+
+function doEditPlace (e) {
+	e.preventDefault();
+}
+
+function doDeletePlace (e) {
+	e.preventDefault();
+}
+
+function doCheckInPlace (e) {
+	e.preventDefault();
 }
 
 function onShowPlaces(e) {

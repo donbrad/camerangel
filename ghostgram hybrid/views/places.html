@@ -11,9 +11,15 @@
      <div class="ghostContainer" style="padding-top: 12px; padding-bottom: 24px;">
            <ul id="places-listview"></ul>
      </div>
-</div>
 
-  <div data-role="view" data-title="Find Place" id="findplace" data-layout="main" data-model="APP.models.places" data-show="onShowFindPlace" data-init="onInitFindPlace" >
+     <ul data-role="actionsheet" id="placesActions" data-popup='{"direction": "left"}'>
+         <li><a data-action="doCheckInPlace">Check In</a></li>
+         <li><a data-action="doEditPlace">Edit Place</a></li>
+         <li><a data-action="doDeletePlace">Delete Place</a></li>
+     </ul>
+ </div>
+
+ <div data-role="view" data-title="Find Place" id="findplace" data-layout="main" data-model="APP.models.places" data-show="onShowFindPlace" data-init="onInitFindPlace" >
    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -91,3 +97,23 @@
     </div>
 </div>
 
+ <script type="text/x-kendo-template" id="placesTemplate">
+     <div style="min-height: 42px; border-radius: 9px; background-color: \\#fff; padding: 4px;">
+         <div class="ghostText">#: data.name # </div>
+         <div class="ghostDescription">#: data.address # </div>
+         <div style="color: \\#2e2e2e;">
+		   <span style="float: left;">
+		   # if (privacy === 'true') { # Privacy Mode # } else { # Public Mode # }#,  # if (visible === 'true') { # Visible # } else { # Not Visible # }#
+		   </span>
+
+             <span style="float:right;"> 0 <i class="fa fa-users"> </i> 0 <i class="fa fa-comments"> </i></span>
+         </div>
+         <div style="clear:both;"> </div>
+     </div>
+ </script>
+
+ <script type="text/x-kendo-template" id="geoPlacesTemplate">
+     <div>
+         <div class="ghostText">#: data.formatted_address # </div>
+     </div>
+ </script>
