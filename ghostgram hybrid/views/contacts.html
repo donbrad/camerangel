@@ -25,6 +25,7 @@
         <ul id="contacts-listview"></ul>
 		<!-- Only display if device permission is needed -->
 		<div id="deviceContactPermission" class="pad center hidden">
+
 			<a class="btnClear">
 				<img src="images/import.svg" height="16" />
 				Find contacts on device
@@ -52,7 +53,7 @@
     </ul> 
 </div>
 
-
+<!-- Import Contacts -->
 <div data-role="view" data-title="Import Contacts" id="contactImport" data-layout="main" data-model="APP.models.contacts" data-init="onInitContactImport" data-show="onShowContactImport" style="display: none;">
     <div data-role="header">
         <div data-role="navbar">
@@ -70,8 +71,7 @@
         <ul id="contactimport-listview"></ul>
     </div>    
 </div>
-
-
+<!-- Modal add contact -->
 <div data-role="modalview" data-model="APP.models.contacts" data-title="Add Contact" id="modalview-AddContact" data-before-open="doShowAddContacts" class="appearance" style="width: 90%; min-height: 100%; display: none;">
     <div class="inviteContactImg">
     	<div class="inviteTop hidden">
@@ -133,7 +133,7 @@
     </div> 
 </div>
 
-
+<!-- Edit Contacts -->
 <div data-role="view" data-model="APP.models.contacts.currentContact" data-title="Edit Contact" id="editContact" data-layout="main"  data-show="onShowEditContact" class="appearance" style="display: none;">
     <div data-role="header">
         <div data-role="navbar">
@@ -142,20 +142,25 @@
         </div>
     </div>
 
-    <div class="ghostContent" style="padding-bottom: 12px;">
+    <div style="padding-bottom: 12px;">
 		<form >
-			<ul data-role="listview" data-style="inset" >
-				<li>
-					<label> Name
-						<input type="text" id="editContactName" data-bind="value: name"/>
-					</label>
-				</li>
-				<li>
-					<label> Nickname
-						<input type="text" id="editContactAlias" data-bind="value: alias"/>
-					</label>
-				</li>
-				 
+			<div class="topHalf">
+	    		<div class="topHalfLeft">
+	    			<img class="circle-img-lg shadow" src="images/ghost-blue.svg" />
+	    		</div>
+	    		<div class="contactImg">
+	    			<label for="contactFullName">
+	    				<input class="input-text-lg" type="text" id="editContactName" data-bind="value: name"/>
+	    			</label>
+	    			<span class="caption">aka</span>
+	    			<a class="btnClear-sm" data-role="button" data-click="addNicknameBtn" id="addNicknameBtn"> add nickname </a>
+	    			<div class="hidden" id="contactNicknameInput">
+	                	<input class="input-sm" type="text" placeholder="nickname" id="editContactAlias" data-bind="value: alias"/>
+	    			</div>
+	    		</div>
+	    	</div>
+	    	<div class="clearfix"></div>
+			<ul data-role="listview" data-style="inset" id="contactEditList">				 
 				<li>           
 					<label>Phone
 						<input id="editContactPhone" type="phone" data-bind="value:phone"/>
@@ -176,7 +181,7 @@
 		</form>
 
 		<div style="text-align: center; padding-top: 16px; padding-bottom: 16px;">
-		 <a data-role="button"  data-click="deleteContact">  <i class="ghostIcon fa fa-trash-0"></i> Delete Contact</a>
+			<a data-role="button" class="btnClear-red" id="editContact-deleteBtn" data-click="deleteContact"><img src="images/trash.svg" />  Delete Contact</a>
 		</div>
 	</div>
 </div>
@@ -188,31 +193,38 @@
 			 <a data-role="button" class="slideGearButton ghostButton" style="display:none; float:right;">
 			 	<i class="ghostIcon fa fa-cog"></i>
 			 </a>
-			 <div class="left listPhoto">
-			 	<div class="statusContactList">
-			 		<img class="circle-img-md" src="#:data.photo#" />  
-		 			#if (data.category !== 'phone' && data.isAvailable !== undefined && data.isAvailable) { #
-		 				<img width="16" src="images/status-available.svg" class="statusContactList-icon" />
-		 			# } 
-		 			else { #
-		 				<img width="16" src="images/status-away.svg" class="statusContactList-icon" />
-		 			#}#
-		 		</div>
-			 </div><!-- left -->
-			
-			# if (data.category !== 'phone') {#
-			<div class="left listName">
-				<h4>#: data.alias # </h4>
-			  	<span class="ghostTextLarge hidden"> 
-				  #if (data.contactUUID === undefined || data.contactUUID === null || data.contactUUID === '') { # <em> <i class="fa fa-user-times"></i> </em> # } 
-				  else {#  
-				  	<strong> <i class="fa fa-user-secret"></i> </strong> #} #
-	 			</span>  
-			</div><!-- left -->
+			 #if (data.category !== 'phone') {#
+			 	<div class="left listPhoto">
+				 	<div class="statusContactList">
+				 		  
+			 			#if (data.isAvailable !== undefined && data.isAvailable) { #
+			 				<img class="circle-img-md" src="#:data.photo#" />
+			 				<img width="16" src="images/status-available.svg" class="statusContactList-icon" />
+			 			# } 
+			 			else { #
+			 				<img class="circle-img-md" src="#:data.photo#" />
+			 				<img width="16" src="images/status-away.svg" class="statusContactList-icon" />
+			 			#}#
+			 		</div>
+			 	</div><!-- left -->
+
+				# if (data.category !== 'phone') {#
+					<div class="left listName">
+						<h4>#: data.alias # </h4> 
+					</div><!-- left -->
+					<p class="left caption">#: data.name #</p> 
+				#} else {#
+					<div class="left listName">
+						<h4>#: data.name # </h4> 
+					</div><!-- left -->
+				#}#
+				<div class="clearfix"></div> 
+			#} else {#
+				<div class="phoneContact">
+					<h4>#: data.name # </h4>
+				</div>
 			#}#
-			
-			<p class="left caption">#: data.name #</p>  
-			<div class="clearfix"></div> 
+			 
 		 </div>
 	</div>
 </div><!-- listBox -->
@@ -248,7 +260,7 @@
         </div>
     </div>       
     
-    <div class="ghostContainer">
+    <div>
         <ul id="xcontacts-listview"></ul>
     </div>
     

@@ -354,6 +354,23 @@ form {
     color: #A4A4A4 !important;
     background: transparent !important;
 }
+.btnClear-red {
+    background: transparent;
+    color: #f44336 !important;
+    text-decoration: none;
+    font-size: 14px !important;
+    font-weight: 400;
+    padding: 0px !important;
+}
+.btnClear-red:active {
+    color: #d32f2f !important;
+    background: transparent !important;
+}
+.btnClear-red:disabled {
+    color: #ef9a9a !important;
+    background: transparent !important;
+}
+
 .btnFull {
     width: 100%;
     padding: .5em .7em;
@@ -378,6 +395,10 @@ form {
 
 .input-text-sm {
 	font-size: 12px;
+}
+
+.input-text-lg {
+	font-size: 20px;
 }
 
 #nav-ghost {
@@ -1049,6 +1070,12 @@ div.km-header a img{
 #channel > div.km-content.km-widget.km-scroll-wrapper {
     background-color: #fff;
 }
+
+#channel-addChannel-list li:first-child,
+#channels-editChannel-list li:first-child {
+	border: none !important;
+}
+
 /* Menu Styles */
 
 .menuBox a:link {
@@ -1568,6 +1595,7 @@ div.loginBox > form > div > ul > li {
 .topHalfLeft {
 	width: 30%;
 	float: left;
+	text-align: center;
 }
 
 .topHalfRight {
@@ -1734,6 +1762,27 @@ div.loginBox > form > div > ul > li {
 	img {
 		vertical-align: text-top;
 	}
+}
+
+/* Contacts */
+.contactImg {
+	.topHalfRight;
+	padding-top: 0px;
+	margin-top: -1rem;
+}
+
+#contactEditList li:first-child {
+	border: none !important;
+}
+
+#editContact-deleteBtn img {
+	vertical-align: text-top;
+}
+
+.phoneContact h4 {
+	margin-top: 0.5rem;
+	margin-bottom:0.5rem;
+	margin-left: 0px !important;
 }
 
 /* Don's development styles...*/
