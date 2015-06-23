@@ -3,6 +3,8 @@ function onInitPlaces(e) {
 	e.preventDefault();
      $("#places-listview").kendoMobileListView({
         dataSource: APP.models.places.placesDS,
+		 headerTemplate: "${value}",
+		 fixedHeaders: true,
         template: $("#placesTemplate").html(),
         click: function (e) {
             var place = e.dataItem;
@@ -66,8 +68,26 @@ function parseAddress(address) {
 	
 }
 
-function placesSearch () {
+function placeSearchQuery (e) {
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
+}
 
+function onLocateMe(e) {
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
+
+	placesSearch(function (results, status) {
+		if (status === null && results !== null) {
+
+		} else {
+			mobileNotify("Places lookup error: " + status);
+		}
+	});
+
+}
+
+function placesSearch (callback) {
 	var request = {
 		location: new google.maps.LatLng(APP.location.position.coords.latitude, APP.location.position.coords.longitude),
 		radius: 500
@@ -75,9 +95,9 @@ function placesSearch () {
 
 	APP.models.places.googlePlaces.nearbySearch(request,function (results, status) {
 		if (status == google.maps.places.PlacesServiceStatus.OK) {
-			for (var i = 0; i < results.length; i++) {
-
-			}
+			callback(results, null);
+		} else {
+			callback(null, status)
 		}
 	});
 }

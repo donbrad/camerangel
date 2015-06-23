@@ -6,7 +6,14 @@
             <a data-align="right" data-role="button" data-click="onLocateMe"> <i class="ghostIconNavbar fa fa-map-marker"></i> </a>
         </div>
     </div>
+
      <div class="ghostContainer" style="padding-top: 12px; padding-bottom: 24px;">
+         <div style="padding-bottom: 4px; padding-top: 4px;">
+             <input class="clearable" style="font-size: 16px; margin-left: 6px; width: 80%" id= "placeSearchQuery" type="search"/>
+             <a data-role="button"  data-click="placeSearchQuery">
+                 <i class="ghostIconSmall fa fa-search"></i>
+             </a>
+         </div>
            <ul id="places-listview"></ul>
      </div>
 
@@ -31,7 +38,7 @@
 	   </div>
 	    <div class="appBox">
 		    <div style="padding-bottom: 4px; padding-top: 4px;">
-	        	<input style="font-size: 16px; margin-left: 6px; width: 90%;" id="placeSearchQuery" class="clearable" type="search"/>
+	        	<input style="font-size: 16px; margin-left: 6px; width: 90%;" id="findPlaceSearchQuery" class="clearable" type="search"/>
 		         <a data-role="button" data-click="findPlace">  
 		         	<i class="fa fa-search"></i> 
 		         </a>
@@ -141,17 +148,19 @@
 
 
  <script type="text/x-kendo-template" id="placesTemplate">
-     <div style="min-height: 42px; border-radius: 9px; background-color: \\#fff; padding: 4px;">
+     <div style="min-height: 38px; border-radius: 9px; background-color: \\#fff; padding: 4px;">
+         # if (data.category === 'Places') { #
          <div class="ghostText">#: data.name # </div>
          <div class="ghostDescription">#: data.address # </div>
          <div style="color: \\#2e2e2e;">
 		   <span style="float: left;">
-		   # if (privacy === 'true') { # Privacy Mode # } else { # Public Mode # }#,  # if (visible === 'true') { # Visible # } else { # Not Visible # }#
+		   # if (privacy === 'true') { # Privacy On # } else { # Privacy Off # }#,  # if (visible === 'true') { # Visible # } else { # Not Visible # }#
 		   </span>
-
-             <span style="float:right;"> 0 <i class="fa fa-users"> </i> 0 <i class="fa fa-comments"> </i></span>
          </div>
          <div style="clear:both;"> </div>
+         # } else { #
+            <div class="ghostText">#: data.formatted_address # </div>
+         # } #
      </div>
  </script>
 
