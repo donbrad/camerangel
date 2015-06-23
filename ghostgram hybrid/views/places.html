@@ -43,9 +43,7 @@
 		     </div>
 		</div>
     </div>
-     <div class="user-content">
-           <ul id="findplace-listview"></ul>
-     </div>
+
 </div>
 
 <div data-role="modalview" id="modalview-addPlace" style="width: 90%; display: none;" class="appearance" data-before-open="onShowAddPlace">
@@ -96,6 +94,53 @@
         </div>
     </div>
 </div>
+
+
+ <div data-role="view" id="editPlace" style="display: none;" class="appearance" data-show="onShowEditPlace">
+     <div data-role="header">
+         <div data-role="navbar">
+             <span>Edit Place</span>
+         </div>
+     </div>
+
+     <form style="clear: both;">
+         <ul data-role="listview" data-style="inset" >
+             <li>
+                 <label> Name
+                     <input type="text" id="editPlaceName" required />
+                 </label>
+             </li>
+
+             <li>
+                 <label> Address
+                     <input type="text" id="editPlaceAddress" required/>
+                 </label>
+             </li>
+             <li>
+                 <label> Enable Privacy Mode (Screen is blurred)
+                     <select id="editPlacePrivacy">
+                         <option value="true">Yes - It's a public place</option>
+                         <option value="false">No - I have privacy here</option>
+                     </select>
+                 </label>
+             </li>
+
+             <li>
+                 <label> Visible Here (Visible to others...)
+                     <select id="editPlaceVisible">
+                         <option value="true">Yes - Let people know I'm here</option>
+                         <option value="false">No - Keep me hidden</option>
+                     </select>
+                 </label>
+             </li>
+
+         </ul>
+     </form>
+
+
+
+ </div>
+
 
  <script type="text/x-kendo-template" id="placesTemplate">
      <div style="min-height: 42px; border-radius: 9px; background-color: \\#fff; padding: 4px;">

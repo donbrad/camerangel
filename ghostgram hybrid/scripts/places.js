@@ -93,7 +93,7 @@ function onPlaceChanged() {
 	$('#addPlaceAddress').val(addressObj.address + ", " + addressObj.city + ", " + addressObj.state);
 	$('#addPlaceName').val(place.name);
 	$("#modalview-addPlace").kendoMobileModalView("open");
-	
+
 }
 
 
