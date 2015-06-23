@@ -96,7 +96,7 @@
 </div>
 
 
- <div data-role="view" id="editPlace" style="display: none;" class="appearance" data-show="onShowEditPlace">
+ <div data-role="view" id="editPlace" style="display: none;" data-model="APP.models.places.currentPlace" class="appearance" data-show="onShowEditPlace">
      <div data-role="header">
          <div data-role="navbar">
              <span>Edit Place</span>
@@ -107,29 +107,29 @@
          <ul data-role="listview" data-style="inset" >
              <li>
                  <label> Name
-                     <input type="text" id="editPlaceName" required />
+                     <input type="text" id="editPlaceName" required data-bind="value: name" />
                  </label>
              </li>
 
              <li>
                  <label> Address
-                     <input type="text" id="editPlaceAddress" required/>
+                     <input type="text" id="editPlaceAddress" required data-bind="value: address"/>
                  </label>
              </li>
              <li>
                  <label> Enable Privacy Mode (Screen is blurred)
-                     <select id="editPlacePrivacy">
-                         <option value="true">Yes - It's a public place</option>
-                         <option value="false">No - I have privacy here</option>
+                     <select id="editPlacePrivacy" data-bind="value: privacy">
+                         <option value=true>Yes - It's a public place</option>
+                         <option value=false>No - I have privacy here</option>
                      </select>
                  </label>
              </li>
 
              <li>
                  <label> Visible Here (Visible to others...)
-                     <select id="editPlaceVisible">
-                         <option value="true">Yes - Let people know I'm here</option>
-                         <option value="false">No - Keep me hidden</option>
+                     <select id="editPlaceVisible" data-bind="value: visible">
+                         <option value=true>Yes - Let people know I'm here</option>
+                         <option value=false>No - Keep me hidden</option>
                      </select>
                  </label>
              </li>

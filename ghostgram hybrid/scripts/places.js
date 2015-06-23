@@ -22,7 +22,8 @@ function doEditPlace (e) {
 function doDeletePlace (e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
-	APP.models.places.placesDS.remove(APP.models.places.currentGeoPlace);
+
+	APP.models.places.placesDS.remove(APP.models.places.currentPlace);
 }
 
 function doCheckInPlace (e) {
@@ -31,6 +32,11 @@ function doCheckInPlace (e) {
 }
 
 function onShowPlaces(e) {
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
+}
+
+function onShowEditPlace(e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
 }
