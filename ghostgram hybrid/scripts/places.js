@@ -25,6 +25,7 @@ function doDeletePlace (e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
 
+	deleteParseObject("places", 'uuid', APP.models.places.currentPlace.get('uuid'));
 	APP.models.places.placesDS.remove(APP.models.places.currentPlace);
 }
 
