@@ -720,7 +720,7 @@
 				}
 			}
 		}
-		 pruneNotifications();
+        pruneNotifications();
         Parse.User.enableRevocableSession();
         APP.models.profile.parseUser = Parse.User.current();
         APP.models.profile.udid = device.uuid;

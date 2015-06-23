@@ -1,11 +1,9 @@
  <div data-role="view" data-title="Places" id="places" data-layout="main" data-model="APP.models.places" data-show="onShowPlaces" data-init="onInitPlaces" >
    <div data-role="header">
         <div data-role="navbar">
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img class="nav-menu" src="images/menu-icon.svg"/></a>
             <span data-role="view-title"></span>
-            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"> 
-            <img class="nav-menu" src="images/menu-icon.svg"/> 
-        	</a>
-           <a data-align="right" data-role="button" href="#findplace"> <i class="ghostIconNavbar fa fa-map-marker"></i> </a>
+            <a data-align="right" data-role="button" data-click="onLocateMe"> <i class="ghostIconNavbar fa fa-map-marker"></i> </a>
         </div>
     </div>
      <div class="ghostContainer" style="padding-top: 12px; padding-bottom: 24px;">

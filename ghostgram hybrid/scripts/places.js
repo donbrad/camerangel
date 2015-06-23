@@ -72,7 +72,7 @@ function placesSearch () {
 		location: new google.maps.LatLng(APP.location.position.coords.latitude, APP.location.position.coords.longitude),
 		radius: 500
 	};
-	
+
 	APP.models.places.googlePlaces.nearbySearch(request,function (results, status) {
 		if (status == google.maps.places.PlacesServiceStatus.OK) {
 			for (var i = 0; i < results.length; i++) {
@@ -122,12 +122,18 @@ function onPlaceChanged() {
 
 }
 
+function onLocateMe(e) {
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
+
+}
 
 function onShowFindPlace(e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
 	
 }
+
 function onInitAddPlace(e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
