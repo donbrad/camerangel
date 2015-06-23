@@ -17,6 +17,8 @@ function onInitPlaces(e) {
 function doEditPlace (e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
+
+	APP.kendo.navigate('#editPlace');
 }
 
 function doDeletePlace (e) {
