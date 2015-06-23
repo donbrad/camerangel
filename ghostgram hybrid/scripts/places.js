@@ -93,9 +93,7 @@ function onPlaceChanged() {
 	$('#addPlaceAddress').val(addressObj.address + ", " + addressObj.city + ", " + addressObj.state);
 	$('#addPlaceName').val(place.name);
 	$("#modalview-addPlace").kendoMobileModalView("open");
-      
-     
-
+	
 }
 
 
@@ -121,7 +119,7 @@ function onShowAddPlace(e) {
 function addPlaceAdd(e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
-	
+
 	 var Places = Parse.Object.extend("places");
     var place = new Places();
 	var guid = uuid.v4();
