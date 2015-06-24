@@ -1,6 +1,37 @@
 
 function onInitPlaces(e) {
 	e.preventDefault();
+
+
+	var dataSource = APP.models.places.placeListDS;
+
+	// Activate clearsearch and zero the filter when it's called
+	$('#placeSearchQuery').clearSearch({
+		callback: function() {
+			dataSource.data([]);
+			dataSource.data(APP.models.places.placesDS.data());
+			dataSource.filter([]);
+			APP.models.places.geoPlacesDS.data([]);
+
+		}
+	});
+
+	// Filter current places and query google places on keyup
+	$('#placeSearchQuery').keyup(function() {
+		var query = this.value;
+		if (query.length > 0) {
+			dataSource.filter( { field: "address", operator: "contains", value: query });
+
+		} else {
+			dataSource.data([]);
+			APP.models.places.geoPlacesDS.data([]);
+			dataSource.data(APP.models.places.placesDS.data());
+			dataSource.filter([]);
+		}
+	});
+
+
+
      $("#places-listview").kendoMobileListView({
         dataSource: APP.models.places.placesDS,
 		 headerTemplate: "${value}",
@@ -68,7 +99,7 @@ function parseAddress(address) {
 	
 }
 
-function placeSearchQuery (e) {
+function goPlaceSearchQuery (e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
 }
@@ -77,7 +108,7 @@ function onLocateMe(e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
 
-	placesSearch(function (results, status) {
+	placesGPSSearch(function (results, status) {
 		if (status === null && results !== null) {
 
 		} else {
@@ -87,7 +118,7 @@ function onLocateMe(e) {
 
 }
 
-function placesSearch (callback) {
+function placesGPSSearch (callback) {
 	var request = {
 		location: new google.maps.LatLng(APP.location.position.coords.latitude, APP.location.position.coords.longitude),
 		radius: 500
