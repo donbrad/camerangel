@@ -5,6 +5,8 @@ function onInitPlaces(e) {
 
 	var dataSource = APP.models.places.placeListDS;
 
+	dataSource.data(APP.models.places.placesDS.data());
+
 	// Activate clearsearch and zero the filter when it's called
 	$('#placeSearchQuery').clearSearch({
 		callback: function() {

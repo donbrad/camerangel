@@ -347,7 +347,17 @@ function onInitContacts(e) {
 	$('#contactSearchInput').keyup(function() {
 		 var query = this.value;
 		 if (query.length > 0) {
-			  dataSource.filter( { field: "name", operator: "contains", value: query });
+			  dataSource.filter( {"logic":"or",
+                  "filters":[
+                      {
+                          "field":"name",
+                          "operator":"contains",
+                          "value":query},
+                      {
+                          "field":"alias",
+                          "operator":"contains",
+                          "value":query}
+                  ]});
 			  if (query.length > 2) {
 				  $('#btnSearchDeviceContacts').removeClass('hidden');
 			  }
