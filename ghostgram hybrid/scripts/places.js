@@ -120,6 +120,7 @@ function onLocateMe(e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
 
+
 	placesGPSSearch(function (results, status) {
 		if (status === null && results !== null) {
 
@@ -128,6 +129,17 @@ function onLocateMe(e) {
 		}
 	});
 
+}
+function matchLocationToUserPlace  (lat, lng) {
+	var array = APP.models.places.placesDS.data(), matchArray = [];
+
+	for (var i=0; i< array.length; i++){
+		if (inPlaceRadius(lat, lng, array[i].lat,array[i].lng, 50)){
+			matchArray.push(array[i]);
+		}
+	}
+
+	return(matchArray);
 }
 
 function placesGPSSearch (callback) {
@@ -143,6 +155,10 @@ function placesGPSSearch (callback) {
 			callback(null, status)
 		}
 	});
+}
+
+function matchLocation(lat, lng) {
+
 }
 
 function onInitFindPlace(e) {
@@ -245,3 +261,47 @@ function addPlaceAdd(e) {
  
 
 }
+
+function getDistanceInKm  (lat1, lon1, lat2, lon2) {
+	var R = 6371; // Radius of the earth in km
+	var dLat = this.deg2rad(lat2-lat1);  // deg2rad below
+	var dLon = this.deg2rad(lon2-lon1);
+	var a =
+			Math.sin(dLat/2) * Math.sin(dLat/2) +
+			Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
+			Math.sin(dLon/2) * Math.sin(dLon/2)
+		;
+	var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+	var d = R * c; // Distance in km
+	return d;
+}
+
+function deg2rad (deg) {
+	return deg * (Math.PI/180);
+}
+// Are two points withing a specific distance
+function inPlaceRadius (lat1, lng1, lat2, lng2, radius) {
+
+	if (radius === undefined || radius < 10) {
+		radius = 30;
+	}
+
+	if (typeof lat1 === 'string') {
+		lat1 = Number(lat1);
+		lng1 = Number(lng1);
+	}
+
+	if (typeof lat2 === 'string') {
+		lat2 = Number(lat2);
+		lng2 = Number(lng2);
+	}
+
+	var distance = getDistanceInKm(lat1, lng1, lat2, lng2) * 1000;
+
+	if (distance <= radius) {
+		return true;
+	} else {
+		return false;
+	}
+}
+

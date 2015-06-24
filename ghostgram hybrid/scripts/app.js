@@ -206,7 +206,7 @@
 		},
 		
 		updateGeoLocation : function (callback) {
-		APP.geoLocator.getCurrentPosition(function (position, error){
+		        APP.geoLocator.getCurrentPosition(function (position, error){
 				if (error === null) {
 					APP.location.position = position;
 					if (callback !== undefined) {
@@ -418,7 +418,7 @@
                   }
                 });
             
-			 var PlacesModel = Parse.Object.extend("places");
+            var PlacesModel = Parse.Object.extend("places");
             var PlacesCollection = Parse.Collection.extend({
               model: PlacesModel
             });
@@ -654,10 +654,22 @@
 			 });
 		}
 */
-		
+        var location = window.localStorage.getItem('ggLastPosition');
+        if (location !== undefined)
+            APP.location.lastPosition = JSON.parse(location);
+        else
+            APP.location.lastPosition = {lat: 0, lng: 0};
+        
 		APP.geoLocator.getCurrentPosition(function (position, error){
 			if (error === null) {
-				APP.location.position = position;
+				APP.location.position = {lat: position.coords.latitude, lng: position.coords.longitude};
+
+                // If last known position doesn't equal current position -- need to update and map to location.
+                if (APP.location.lastPosition.lat !== APP.location.position.lat || APP.location.lastPosition.lng !== APP.location.position.lng) {
+                    window.localStorage.setItem('ggLastPosition', JSON.stringify(APP.location.position));
+
+                    //
+                }
 				APP.map = new Object();
 				APP.map.geocoder = new google.maps.Geocoder();
 				APP.map.mapOptions = new Object();
