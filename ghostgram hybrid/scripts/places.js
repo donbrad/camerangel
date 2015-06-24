@@ -20,7 +20,17 @@ function onInitPlaces(e) {
 	$('#placeSearchQuery').keyup(function() {
 		var query = this.value;
 		if (query.length > 0) {
-			dataSource.filter( { field: "address", operator: "contains", value: query });
+			dataSource.filter(  {"logic":"or",
+				"filters":[
+					{
+						"field":"address",
+						"operator":"contains",
+						"value":query},
+					{
+						"field":"name",
+						"operator":"contains",
+						"value":query}
+				]});
 
 		} else {
 			dataSource.data([]);
