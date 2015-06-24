@@ -144,7 +144,7 @@ function matchLocationToUserPlace  (lat, lng) {
 
 function placesGPSSearch (callback) {
 	var request = {
-		location: new google.maps.LatLng(APP.location.position.coords.latitude, APP.location.position.coords.longitude),
+		location: new google.maps.LatLng(APP.location.position.lat, APP.location.position.lng),
 		radius: 500
 	};
 
@@ -157,9 +157,7 @@ function placesGPSSearch (callback) {
 	});
 }
 
-function matchLocation(lat, lng) {
 
-}
 
 function onInitFindPlace(e) {
 	if (e.preventDefault !== undefined)
@@ -175,8 +173,8 @@ function onInitFindPlace(e) {
         template: $("#geoPlacesTemplate").html(),
         click: function (e) {
             var place = e.dataItem;
-			place.lat = APP.location.position.coords.latitude;
-			place.lng = APP.location.position.coords.longitude;
+			place.lat = APP.location.position.lat;
+			place.lng = APP.location.position.lng;
 			// Todo: add lat/lng for this location
            APP.models.places.currentGeoPlace = place;
 			var addressObj = parseAddress(place.formatted_address);
