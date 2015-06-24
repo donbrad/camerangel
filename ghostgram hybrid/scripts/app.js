@@ -666,9 +666,18 @@
 
                 // If last known position doesn't equal current position -- need to update and map to location.
                 if (APP.location.lastPosition.lat !== APP.location.position.lat || APP.location.lastPosition.lng !== APP.location.position.lng) {
+                    // Update the last position
                     window.localStorage.setItem('ggLastPosition', JSON.stringify(APP.location.position));
 
-                    //
+                    // See if the new position matches an existing place
+                    var places = matchLocationToUserPlace  (APP.location.position.lat, APP.location.position.lng);
+                    if (places.length === 0) {
+                        // No matching places -- get a list of places that match the coord and prompt user to select one
+                    } else if (places.length === 1) {
+                        // Just 1 matching place so prompt the user to check in there
+                    } else {
+                        // Multiple place matches for this coord, prompt the user to select one.
+                    }
                 }
 				APP.map = new Object();
 				APP.map.geocoder = new google.maps.Geocoder();
