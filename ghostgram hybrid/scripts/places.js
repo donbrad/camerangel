@@ -33,7 +33,7 @@ function onInitPlaces(e) {
 
 
      $("#places-listview").kendoMobileListView({
-        dataSource: APP.models.places.placesDS,
+        dataSource: APP.models.places.placeListDS,
 		 headerTemplate: "${value}",
 		 fixedHeaders: true,
         template: $("#placesTemplate").html(),
