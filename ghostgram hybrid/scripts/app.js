@@ -655,11 +655,11 @@
 		}
 */
         var location = window.localStorage.getItem('ggLastPosition');
-        if (location !== undefined)
+        if (location !== undefined && location !== null)
             APP.location.lastPosition = JSON.parse(location);
         else
             APP.location.lastPosition = {lat: 0, lng: 0};
-        
+
 		APP.geoLocator.getCurrentPosition(function (position, error){
 			if (error === null) {
 				APP.location.position = {lat: position.coords.latitude, lng: position.coords.longitude};
