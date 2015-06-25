@@ -125,19 +125,11 @@
                 <label>Description
                     <input type="text" class="clearable" id="channels-addChannel-description" value="" />
                 </label>
-			</li> 
-             <li class="hidden">
-               <label>Media
-                    <select id="channels-addChannel-media">
-                        <option value="false">No: users can just text</option>
-                        <option value="true">Yes: users can share media</option>
-                    </select>
-                </label>
-            </li>
+			</li>
               <li class="hidden">
                <label>Archive
                     <select id="channels-addChannel-archive">
-                        <option value="false">No: Nothing is saved</option>
+                        <option value="false">No: Nothing is archived</option>
                         <option value="true">Yes: Content can be saved</option>
                     </select>
                 </label>
@@ -177,17 +169,9 @@
 					</label>
 				</li>
 				 <li>
-				   <label>Media
-						<select id="channels-editChannel-media" data-bind="value: media">
-							<option value="false">No: users can just text</option>
-							<option value="true">Yes: users can share media</option>
-						</select>
-					</label>
-				</li>
-				 <li>
 				   <label>Archive
 						<select id="channels-editChannel-archive" data-bind="value: media">
-							<option value="false">No: Nothing is saved</option>
+							<option value="false">No: Nothing is archived</option>
 							<option value="true">Yes: Content can be saved</option>
 						</select>
 					</label>

@@ -312,12 +312,12 @@ function onShowEditChannel (e) {
 			if (thisMember !== undefined) {
 				APP.models.channel.membersDS.add(thisMember);
 
-				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+
-												   '" class="ghostMemberLi"> <span class="ghostMemberName">'+ 
+				$("#editChannelMemberList").append('<li style="clear:both;" id="'+thisMember.uuid+
+												   '" class="ghostMemberLi"> <span style="float: left;" class="ghostMemberName">'+ 
 												   thisMember.name + ' (' + thisMember.alias + ')' + 
-												   '</span><span style="float:right; font-size: 10px;"> <a data-param="' + 
+												   '</span><span style="float:right; "> <a data-param="' + 
 												   thisMember.uuid +
-												   '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><i class="ghostIconNavbar fa fa-trash"></i></a></span></li>');	
+												   '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><img src="images/trash.svg" /></i></a></span></li>');	
 			}
 		}
 

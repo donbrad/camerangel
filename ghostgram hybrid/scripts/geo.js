@@ -1,5 +1,6 @@
 
 function GeoLocator() {
+
 }
 
 GeoLocator.prototype = {
@@ -94,4 +95,4 @@ GeoLocator.prototype = {
 			that._watchCallBack(null, error);
 		}
 	}
-}
+};
