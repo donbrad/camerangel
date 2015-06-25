@@ -33,36 +33,72 @@
 
 <script type="text/x-kendo-tmpl" id="channels-listview-template">
     <div>
-        # var actionSheet = "channelActions"; 
-        if ( isOwner ) { actionSheet = "channelActionsOwner"; } 
-        if (isPrivate ) { actionSheet = "channelActionsPrivate"; } #
-        <div class="" style="float:right; font-size: 10px;"> 
-           <a data-rel="actionsheet" href="\\##:actionSheet#" data-actionsheet-context="#:channelId#" data-role="button">
-            <i class="ghostIcon fa fa-cog"></i>
-          </a> 
-        </div>
-        <div class="hidden">
-            #if (isPrivate) {# 
-                <i class="ghostIconNavbar fa fa-user-secret"> </i>
-            #} else { # 
-                <img id="profilePhoto" class="circle-img" src="images/ghostgramcontact.png" height="30" /> 
-            #}# 
-           
-        </div>
-        <h3>
-        	<a data-rel='view' href="\\#channel?channel=#:channelId#" id="chatName"> #:name# </a>
-    		<span class="chatActivityTime">1 hr ago</span>
-    	</h3>
-        <div class="hidden"> #: description # </div>
-        <div>
-            <div class="caption chatDetails" style="float: left;"> 
-            	 # if (archive) { #
-                	<img src="images/archive.svg" height="16" /> Archivable
-                #}#
-                # if (isPrivate) { # Private chat # } #
-            </div>
-        </div>
-        <div style="clear:both;"> </div>
+    	<div class="chat-options">
+    		<div>
+    			<ul class="chat-option-ul">
+    				# if (isPrivate){#
+    					<li>
+		    				<a class="btnClear-red" data-role="button" id="chat-option-delete" data-click="deleteChannel">
+		    					<img src="images/trash.svg" />
+		    					<p class="chat-option-selection"> Delete</p>
+		    				</a>
+	    				</li>
+	    				<li>
+		    				<a class="btnClear-grey" data-role="button" id="chat-option-clear" data-click="eraseChannel">
+			    				<img src="images/option-clear.svg" id="chat-option-clearBtn"/>
+			    				<p class="chat-option-selection">Clear</p>
+			    			</a>
+	    				</li>
+    				#} else {#
+    					<li>
+		    				<a class="btnClear-red" data-role="button" id="chat-option-delete" data-click="deleteChannel">
+		    					<img src="images/trash.svg" />
+		    					<p class="chat-option-selection"> Delete</p>
+		    				</a>
+	    				</li>
+	    				<li>
+		    				<a class="btnClear-grey" data-role="button" id="chat-option-clear" data-click="editChannel">
+			    				<img src="images/option-clear.svg" id="chat-option-clearBtn"/>
+			    				<p class="chat-option-selection">Clear</p>
+			    			</a>
+	    				</li>
+	    				<li>
+		    				<a class="btnClear-grey" data-role="button" id="chat-option-archive">
+			    				<img src="images/option-archive.svg" />
+			    				<p class="chat-option-selection">Archive</p>
+			    			</a>
+	    				</li>
+	    				
+    				#}#
+    				# if(isPrivate !== true && isOwner){#
+    						<li>
+			    				<a class="btnClear-grey" data-role="button" id="chat-option-edit" data-click="editChannel">
+				    				<img src="images/option-edit.svg" />
+				    				<p class="chat-option-selection">Edit</p>
+				    			</a>
+	    					</li>
+    					#}#
+    				
+    			</ul>
+    		</div>
+    	</div><!-- chat-options -->
+    	<div class="chat-mainBox">
+
+    		<h3>
+    		<span><img src="images/status-new.svg" class="list-status" /></span>
+        		 #:name# 
+        		<span class="chatActivityTime">1 hr ago</span>
+    		</h3>
+    		
+    		# if(isPrivate && members.length <= 2){#
+    			<img src="images/private-icon.svg" /> Private Chat
+    		#} else {#
+    			<img src="images/group-icon.svg" /> Group Chat
+    		#}#
+
+ 
+    	</div><!-- chat-mainBox -->
+    	
    </div>
 </script>
  

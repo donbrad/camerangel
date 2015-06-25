@@ -120,6 +120,8 @@ function syncCurrentChannel(e) {
 function editChannel(e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
+
+/*
    var channelId = e.context; 
    var dataSource = APP.models.channels.channelsDS;
     dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
@@ -144,6 +146,7 @@ function editChannel(e) {
     APP.models.channels.currentChannel.bind('change', syncCurrentChannel);
     
     APP.kendo.navigate('#editChannel');
+*/
 }
     
 function eraseChannel(e) {
@@ -153,12 +156,15 @@ function eraseChannel(e) {
 
 function archiveChannel(e) {
 	e.preventDefault();
-    var channelId = e.context; 
+    var channelId = e.context;
+    mobileNotify("Archiving channel"); 
 }
     
 function deleteChannel (e) {
 	e.preventDefault();
-   var channelId = e.context;  
+	mobileNotify("Deleting channel");
+	/*
+    var channelId = e.context;  
     var dataSource = APP.models.channels.channelsDS;
     dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
     var view = dataSource.view();
@@ -171,6 +177,7 @@ function deleteChannel (e) {
     dataSource.remove(channel); 
     deleteParseObject("channels", 'channelId', channelId); 
     mobileNotify("Removed channel : " + channel.get('name'));
+    */
 }
     
 function onChannelsClick(e) {
@@ -190,9 +197,30 @@ function onInitChannels (e) {
 	
      $("#channels-listview").kendoMobileListView({
         dataSource: APP.models.channels.channelsDS,
-        template: $("#channels-listview-template").html()
+        template: $("#channels-listview-template").html(),
+        click: function(e){
+        	
+        	if(e.target[0].className === "chat-mainBox"){
+        		var channelUrl = "#channel?channel=" + e.dataItem.channelId;
+        		APP.kendo.navigate(channelUrl);
+        	} 
+        }
+    }).kendoTouch({
+    	filter: "div",
+    	enableSwipe: true,
+    	swipe: function(e){
+    		var selection = e.sender.events.currentTarget;
+ 			
+    		if(e.direction === "left"){
+    			$(selection).velocity({translateX:"-70%"},{duration: "fast"}).addClass("chat-active");
+    		}
+    		if (e.direction === "right" && $(selection).hasClass("chat-active")){
+    			$(selection).velocity({translateX:"0"},{duration: "fast"}).removeClass("chat-active");
+    		}
+    	},
+    	
     });
-    //console.log(APP.models.channels.channelsDS);
+    console.log(APP.models.channels.channelsDS);
 }
 
 function listViewClick(e){

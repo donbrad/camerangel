@@ -416,6 +416,7 @@ function onInitContactImport (e) {
 			headerTemplate: "${value}",
             fixedHeaders: true,
             click: function(e) {
+         
                APP.models.contacts.currentDeviceContact = e.dataItem;
                APP.models.contacts.emailArray = new Array();
                
