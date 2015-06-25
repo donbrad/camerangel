@@ -347,7 +347,7 @@ form {
     padding: 0px !important;
 }
 .btnClear-grey:active {
-    color: #DC4242 !important;
+    color: @blue200 !important;
     background: transparent !important;
 }
 .btnClear-grey:disabled {
@@ -1235,11 +1235,13 @@ a:hover {
 /* Chat menu */
 
 #channels-listview > li {
-    padding-left: 1rem;
-    padding-right: 1rem;
     border-bottom: 1px solid #E4E4E4 !important;
+    background: #fff;
+    z-index:9999;
+    padding-top: 0px;
+    padding-bottom: 0px;
 }
-#channels-listview > li > div > h3 {
+.chat-mainBox h3 {
     margin-left: 0px;
     margin-right: 0px;
     font-weight: 600;
@@ -1250,12 +1252,74 @@ a:hover {
 .chatActivityTime {
     float: right;
     color: #979797;
-    font-size: 12px;
-    line-height: 1.5;
+    font-size: 14px;
+    line-height: 1.9;
+    font-weight: 400;
+    font-family: 'Hind', sans-serif;
 }
 .chatDetails img {
     vertical-align: text-top;
 }
+
+.chat-typeBox img {
+	height: 10px;
+}
+
+.chat-mainBox {
+	z-index: 0;
+	background-color: #fff;
+	width: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    box-shadow: 3px 0 3px -3px @grey100;
+}
+
+.chat-options {
+	width: 100%;
+	height: 100%;
+	background-color: @grey300;
+	z-index:-1;
+    display: inline-block;
+    padding-top: 0.25rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: -0.25rem;
+}
+
+.chat-option-ul li {
+	display: inline-block;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    float: right;
+}
+
+.chat-option-ul li a img {
+	height: 16px;
+}
+
+.chat-option-selection {
+	font-size: 11px;
+}
+
+#chat-option-clearBtn {
+	width: 24px;
+}
+
+.list-status {
+	vertical-align: baseline;
+	margin-right: 0.25rem;
+	margin-left: 0.25rem;
+}
+
+#channels-listview > li > div > div.chat-mainBox > img {
+	margin-left: 1.25rem;
+}
+
 /* Chat styles */
 
 #messageTextArea {

@@ -219,7 +219,7 @@ function resizeSuccessThumb (data) {
 	photo.set('channelId', APP.models.channel.currentModel.channelId);
 	var timeStamp = new Date().getTime();
 	photo.set("timestamp", timeStamp);
-	photo.set('geoPoint', new Parse.GeoPoint(APP.location.position.coords.latitude, APP.location.position.coords.latitude));
+	photo.set('geoPoint', new Parse.GeoPoint(APP.location.position.lat, APP.location.position.lng));
 	
 
 	var parseFile = new Parse.File("thumbnail_"+APP.models.gallery.currentPhoto.filename + ".jpeg",{'base64': data.imageData}, "image/jpg");
@@ -414,7 +414,7 @@ function messageSend(e) {
 	var text = $('#messageTextArea').val();
 	if (text.length === 0)
 		return;
-	var messageData = {geo: APP.location.position.coords };
+	var messageData = {geo: APP.location.position};
 	if (APP.models.channel.currentMessage.photo !== null) {
 		messageData.photo = APP.models.channel.currentMessage.photo;
 	}
