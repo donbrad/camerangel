@@ -660,40 +660,6 @@
         else
             APP.location.lastPosition = {lat: 0, lng: 0};
 
-		APP.geoLocator.getCurrentPosition(function (position, error){
-			if (error === null) {
-				APP.location.position = {lat: position.coords.latitude, lng: position.coords.longitude};
-
-                // If last known position doesn't equal current position -- need to update and map to location.
-                if (APP.location.lastPosition.lat !== APP.location.position.lat || APP.location.lastPosition.lng !== APP.location.position.lng) {
-                    // Update the last position
-                    window.localStorage.setItem('ggLastPosition', JSON.stringify(APP.location.position));
-
-                    // See if the new position matches an existing place
-                    var places = matchLocationToUserPlace  (APP.location.position.lat, APP.location.position.lng);
-                    if (places.length === 0) {
-                        // No matching places -- get a list of places that match the coord and prompt user to select one
-                    } else if (places.length === 1) {
-                        // Just 1 matching place so prompt the user to check in there
-                    } else {
-                        // Multiple place matches for this coord, prompt the user to select one.
-                    }
-                }
-				APP.map = new Object();
-				APP.map.geocoder = new google.maps.Geocoder();
-				APP.map.mapOptions = new Object();
-				APP.map.mapOptions.center =  {lat: position.coords.latitude, lng: position.coords.longitude};
-				APP.map.mapOptions.zoom = 14;
-				APP.map.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
-				APP.map.googleMap = new google.maps.Map(document.getElementById('map-mapdiv'), APP.map.mapOptions);
-				reverseGeoCode(position.coords.latitude, position.coords.longitude);
-				//mobileNotify("Located you at " + position.coords.latitude + " , " + position.coords.longitude);
-			} else {
-				mobileNotify("GeoLocator error : " + error);
-			}
-			
-		});
-		
         // hide the splash screen as soon as the app is ready. otherwise
        
         navigator.splashscreen.hide();
@@ -831,8 +797,44 @@
 					
 				 }
 			 });
+
             _app.fetchParseData();
-			//_app.importDeviceContacts();
+            APP.geoLocator.getCurrentPosition(function (position, error){
+                if (error === null) {
+                    APP.location.position = {lat: position.coords.latitude, lng: position.coords.longitude};
+
+                    // If last known position doesn't equal current position -- need to update and map to location.
+                    if (APP.location.lastPosition.lat !== APP.location.position.lat || APP.location.lastPosition.lng !== APP.location.position.lng) {
+                        // Update the last position
+                        window.localStorage.setItem('ggLastPosition', JSON.stringify(APP.location.position));
+
+                        // See if the new position matches an existing place
+                        var places = matchLocationToUserPlace  (APP.location.position.lat, APP.location.position.lng);
+                        if (places.length === 0) {
+                            // No matching places -- get a list of places that match the coord and prompt user to select one
+                        } else if (places.length === 1) {
+                            // Just 1 matching place so prompt the user to check in there
+                        } else {
+                            // Multiple place matches for this coord, prompt the user to select one.
+                        }
+                    }
+                    APP.map = new Object();
+                    APP.map.geocoder = new google.maps.Geocoder();
+                    APP.map.mapOptions = new Object();
+                    APP.map.mapOptions.center =  {lat: position.coords.latitude, lng: position.coords.longitude};
+                    APP.map.mapOptions.zoom = 14;
+                    APP.map.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
+                    APP.map.googleMap = new google.maps.Map(document.getElementById('map-mapdiv'), APP.map.mapOptions);
+                    reverseGeoCode(position.coords.latitude, position.coords.longitude);
+                    //mobileNotify("Located you at " + position.coords.latitude + " , " + position.coords.longitude);
+                } else {
+                    mobileNotify("GeoLocator error : " + error);
+                }
+
+            });
+
+
+            //_app.importDeviceContacts();
         }  
 
         APP.kendo = new kendo.mobile.Application(document.body, {
@@ -847,7 +849,7 @@
 
 		// Provide basic functionality in the simulator and deployable simulator
         if (window.navigator.simulator === true){
-             APP.models.profile.version = "0.1.7.4";
+             APP.models.profile.version = "0.1.9.2";
         } else {
             cordova.getAppVersion(function (version) {
            	 	APP.models.profile.version = version;
