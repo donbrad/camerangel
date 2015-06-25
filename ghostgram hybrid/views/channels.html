@@ -4,7 +4,9 @@
             <img src="images/ghost.svg" id="nav-ghost" height="25"/>
             <span data-role="view-title"></span>
             <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img src="images/menu-icon.svg"/></a>
-           <a data-align="right" data-role="button" href="#addChannel"> <i class="ghostIconNavbar fa fa-plus"></i> </a>
+           <a data-align="right" data-role="button" href="#addChannel">
+           		<img src="images/menu-add.svg" />
+           </a>
         </div>
     </div>
      <div>
@@ -107,25 +109,25 @@
    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left">
-            	<img src="images/menu-icon.svg" />
+            <a data-role="button" href="#:back" data-click="resetAddChatUI" data-align="left">
+            	<img src="images/nav-back.svg" />
             </a>
-            <a data-align="right" data-role="button"  data-rel="drawer" href="#channelMembers" > <i class="ghostIconNavbar fa fa-users"></i> </a>
+            <a class="hidden" data-align="right" data-role="button"  data-rel="drawer" href="#channelMembers"> <i class="ghostIconNavbar fa fa-users"></i> </a>
         </div>
     </div>
-
      <form>
+     	<h3>
+     		<img src="images/flag.svg" id="start-chat-img"/> Start a chat
+     	</h3>
+     	<p>Chat with friends and family around topics, shared interests, and places.</p>
         <ul data-role="listview" data-style="inset" id="channel-addChannel-list">
             <li>
-                <label>Name
-                    <input type="text" class="clearable" id="channels-addChannel-name" value="" required />
-                </label>
+                <input type="text" class="clearable" id="channels-addChannel-name" value="" required placeholder="What's the topic?"/>
+                
+                <input type="text" class="clearable" style="display: none" id="channels-addChannel-description" value="" placeholder="Description"/>
+                <a class="btnClear" data-role="button" data-click="showChatDescription" id="addChatDescription">Add description</a>
+                
             </li>
-             <li>
-                <label>Description
-                    <input type="text" class="clearable" id="channels-addChannel-description" value="" />
-                </label>
-			</li>
               <li class="hidden">
                <label>Archive
                     <select id="channels-addChannel-archive">
@@ -135,13 +137,17 @@
                 </label>
             </li>
         </ul>
+
     </form> 
 	
     <div data-role="footer">
-        <div data-role="navbar">
-			<a data-role="button" href="#:back"  data-align="left">Cancel</a>
-            <a data-click="addChannel" type="button" data-role="button" data-align="right">Create Channel</a>
-        </div>
+    	<div data-role="footer">
+    		<div class="helperBox">
+    			<p><img src="images/help.svg" /> Looking to set up a 1-on-1 private chat?</p>
+    			<a class="btnClear hidden">Go to contacts</a>
+    		</div>
+            <a class="btnSpan-btm btnYellow hidden" data-click="addChannel" type="button" data-role="button" disabled>Create</a>
+    	</div>
     </div>
 </div>
 

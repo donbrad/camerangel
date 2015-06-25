@@ -128,6 +128,10 @@ select {
 }
 form {
     padding: 1rem;
+    h1, h2, h3, h4, h5, p {
+    	margin-left: 0px !important;
+    	margin-right: 0px !important;
+    }
 }
 .show {
     display: block !important;
@@ -391,6 +395,8 @@ form {
     overflow-x: hidden;
     position: absolute;
     bottom: 0px;
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
 }
 
 .input-text-sm {
@@ -1318,6 +1324,28 @@ a:hover {
 
 #channels-listview > li > div > div.chat-mainBox > img {
 	margin-left: 1.25rem;
+}
+
+#start-chat-img {
+	width: 18px;
+	vertical-align: baseline;
+}
+
+#channels-addChannel-name {
+	font-size: 24px !important;
+}
+
+.helperBox {
+	background-color: @grey300;
+	width: 100%;
+	.pad;
+	p {
+		margin-left:0px;
+		margin-bottom: 0.5rem;
+	}
+	p img {
+		vertical-align: bottom;
+	}
 }
 
 /* Chat styles */

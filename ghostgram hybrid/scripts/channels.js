@@ -199,8 +199,8 @@ function onInitChannels (e) {
         dataSource: APP.models.channels.channelsDS,
         template: $("#channels-listview-template").html(),
         click: function(e){
-        	
-        	if(e.target[0].className === "chat-mainBox"){
+        	console.log(e.target)
+        	if(e.target[0].parentElement.className === "chat-mainBox" || e.target[0].className === "chat-mainBox"){
         		var channelUrl = "#channel?channel=" + e.dataItem.channelId;
         		APP.kendo.navigate(channelUrl);
         	} 
@@ -232,6 +232,10 @@ function onShowAddChannel (e) {
 	APP.models.channel.potentialMembersDS.data([]);
 	APP.models.channel.potentialMembersDS.data(APP.models.contacts.contactsDS.data());
 	APP.models.channel.membersDS.data([]);
+
+	// hide channel description
+	$("#channels-addChannel-description").css("display","none");
+
 }
 
 function finalizeEditChannel(e) {
@@ -440,3 +444,15 @@ function doShowChannelPresence (e) {
 function getMessageCount(callback) {
 
 }
+
+function showChatDescription(e){
+	$("#channels-addChannel-description").velocity("slideDown",{duration: 1500, easing: "spring", display: "block"});
+	$("#addChatDescription").velocity("fadeOut");
+}
+
+function resetAddChatUI(e){
+	$("#channels-addChannel-description").css("display","none");
+	$("#channels-addChannel-description, #channels-addChannel-name").val("");
+	$("#addChatDescription").velocity("fadeIn");
+}
+
