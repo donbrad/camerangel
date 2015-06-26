@@ -4,11 +4,13 @@
             <img src="images/ghost.svg" id="nav-ghost" height="25"/>
             <span data-role="view-title"></span>
             <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img src="images/menu-icon.svg"/></a>
-           <a data-align="right" data-role="button" href="#addChannel"> <i class="ghostIconNavbar fa fa-plus"></i> </a>
+           <a data-align="right" data-role="button" href="#addChannel">
+           		<img src="images/menu-add.svg" />
+           </a>
         </div>
     </div>
      <div>
-         <ul id="channels-listview" data-click="listViewClick;"></ul>
+         <ul id="channels-listview"></ul>
      </div>
      
     <ul data-role="actionsheet" id="channelActions" data-popup='{"direction": "left"}'>
@@ -38,7 +40,7 @@
     			<ul class="chat-option-ul">
     				# if (isPrivate){#
     					<li>
-		    				<a class="btnClear-red" data-role="button" id="chat-option-delete" data-click="deleteChannel">
+		    				<a class="btnClear-red" data-channel="#:channelId #" data-role="button" id="chat-option-delete" data-click="deleteChannel">
 		    					<img src="images/trash.svg" />
 		    					<p class="chat-option-selection"> Delete</p>
 		    				</a>
@@ -51,19 +53,19 @@
 	    				</li>
     				#} else {#
     					<li>
-		    				<a class="btnClear-red" data-role="button" id="chat-option-delete" data-click="deleteChannel">
+		    				<a class="btnClear-red" data-role="button" id="chat-option-delete" data-click="deleteChannel" data-channel="#:channelId #">
 		    					<img src="images/trash.svg" />
 		    					<p class="chat-option-selection"> Delete</p>
 		    				</a>
 	    				</li>
 	    				<li>
-		    				<a class="btnClear-grey" data-role="button" id="chat-option-clear" data-click="editChannel">
+		    				<a class="btnClear-grey" data-role="button" id="chat-option-clear" data-click="eraseChannel">
 			    				<img src="images/option-clear.svg" id="chat-option-clearBtn"/>
 			    				<p class="chat-option-selection">Clear</p>
 			    			</a>
 	    				</li>
 	    				<li>
-		    				<a class="btnClear-grey" data-role="button" id="chat-option-archive">
+		    				<a class="btnClear-grey" data-role="button" id="chat-option-archive" data-click="archiveChannel">
 			    				<img src="images/option-archive.svg" />
 			    				<p class="chat-option-selection">Archive</p>
 			    			</a>
@@ -72,7 +74,7 @@
     				#}#
     				# if(isPrivate !== true && isOwner){#
     						<li>
-			    				<a class="btnClear-grey" data-role="button" id="chat-option-edit" data-click="editChannel">
+			    				<a class="btnClear-grey" data-role="button" id="chat-option-edit" data-click="editChannel" data-channel="#:channelId #">
 				    				<img src="images/option-edit.svg" />
 				    				<p class="chat-option-selection">Edit</p>
 				    			</a>
@@ -82,8 +84,12 @@
     			</ul>
     		</div>
     	</div><!-- chat-options -->
-    	<div class="chat-mainBox">
-
+    	#if (isPrivate){#
+    		<div class="chat-mainBox private">
+    	#} else {#
+    		<div class="chat-mainBox">
+    	#}#
+    	
     		<h3>
     		<span><img src="images/status-new.svg" class="list-status" /></span>
         		 #:name# 
@@ -92,6 +98,8 @@
     		
     		# if(isPrivate && members.length <= 2){#
     			<img src="images/private-icon.svg" /> Private Chat
+    		#} else if (false) {# // For place chats
+    			<img src="images/place-icon.svg" id="chatList-place-icon" /> Place Chat
     		#} else {#
     			<img src="images/group-icon.svg" /> Group Chat
     		#}#
@@ -107,25 +115,31 @@
    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left">
-            	<img src="images/menu-icon.svg" />
+            <a data-role="button" href="#:back" data-click="resetAddChatUI" data-align="left">
+            	<img src="images/nav-back.svg" />
             </a>
-            <a data-align="right" data-role="button"  data-rel="drawer" href="#channelMembers" > <i class="ghostIconNavbar fa fa-users"></i> </a>
+            <a class="hidden" data-align="right" data-role="button"  data-rel="drawer" href="#channelMembers"> <i class="ghostIconNavbar fa fa-users"></i> </a>
         </div>
     </div>
-
-     <form>
+    <div id="chat-title-setup">
+    	<span id="chat-title-step1"></span>
+    	<span class="right">
+    		<a id="editChatName" data-click="addChatStep1" data-role="button">edit</a>
+    	</span>
+    </div>
+     <form id="addChat-step1">
+     	<h3>
+     		<img src="images/flag.svg" id="start-chat-img"/> Start a chat
+     	</h3>
+     	<p>Chat with friends and family around topics, shared interests, and places.</p>
         <ul data-role="listview" data-style="inset" id="channel-addChannel-list">
             <li>
-                <label>Name
-                    <input type="text" class="clearable" id="channels-addChannel-name" value="" required />
-                </label>
+            	
+                <input type="text" class="clearable" id="channels-addChannel-name" placeholder="What's the topic?" value="" required />
+                
+                <input type="text" class="clearable" style="display: none" id="channels-addChannel-description" value="" placeholder="Description"/>
+                <a class="btnClear-grey" data-role="button" data-click="showChatDescription" id="addChatDescription">Add description</a>
             </li>
-             <li>
-                <label>Description
-                    <input type="text" class="clearable" id="channels-addChannel-description" value="" />
-                </label>
-			</li>
               <li class="hidden">
                <label>Archive
                     <select id="channels-addChannel-archive">
@@ -135,14 +149,23 @@
                 </label>
             </li>
         </ul>
-    </form> 
+        <a class="btnClear" data-role="button" style="opacity: 0" data-click="addChatStep2" id="btnAddChannel-step1">Next</a>
+    </form>
+    <form id="addChat-step2">
+    	<p>Invite friends</p>
+    	<img src="images/search.svg" width="18" />
+		<input id="contactSearchInput" class="clearable" type="text" placeholder="Search contacts" />
+    </form>
 	
-    <div data-role="footer">
-        <div data-role="navbar">
-			<a data-role="button" href="#:back"  data-align="left">Cancel</a>
-            <a data-click="addChannel" type="button" data-role="button" data-align="right">Create Channel</a>
-        </div>
-    </div>
+    
+    	<div class="footerBk" data-role="footer">
+    		<div class="helperBox" id="addChat-helper1">
+    			<p class="helper"><img src="images/help.svg" /> Looking to set up a 1-on-1 private chat?</p>
+    			<a class="btnClear" data-role="button" href="views/contacts.html">Go to contacts</a>
+    		</div>
+            <a id="addChat-createBtn" class="btnSpan-btm btnYellow" style="display: none" data-click="addChannel" type="button" data-role="button" disabled>Create</a>
+    	</div>
+ 
 </div>
 
 
@@ -151,7 +174,7 @@
         <div data-role="navbar">
 			<a data-click="finalizeEditChannel" type="button" data-role="button" data-align="left" >Done</a>
             <span> Edit Chat</span>
-             <a data-align="right" data-role="button"  data-rel="drawer" href="#channelMembers" > <i class="ghostIconNavbar fa fa-users"></i> </a>
+            <a data-align="right" data-role="button"  data-rel="drawer" href="#channelMembers" > <i class="ghostIconNavbar fa fa-users"></i> </a>
         </div>
     </div>
 

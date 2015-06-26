@@ -121,8 +121,8 @@ function editChannel(e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
 
-/*
-   var channelId = e.context; 
+	// Did a quick bind to the button, feel free to change 
+   var channelId = e.button[0].attributes["data-channel"].value; 
    var dataSource = APP.models.channels.channelsDS;
     dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
     var view = dataSource.view();
@@ -146,12 +146,13 @@ function editChannel(e) {
     APP.models.channels.currentChannel.bind('change', syncCurrentChannel);
     
     APP.kendo.navigate('#editChannel');
-*/
+
 }
     
 function eraseChannel(e) {
 	e.preventDefault();
-    var channelId = e.context;  
+    var channelId = e.context;
+    mobileNotify("Clearing channel");
 }
 
 function archiveChannel(e) {
@@ -160,11 +161,10 @@ function archiveChannel(e) {
     mobileNotify("Archiving channel"); 
 }
     
-function deleteChannel (e) {
+function deleteChannel(e) {
 	e.preventDefault();
-	mobileNotify("Deleting channel");
-	/*
-    var channelId = e.context;  
+	
+    var channelId = e.button[0].attributes["data-channel"].value;  
     var dataSource = APP.models.channels.channelsDS;
     dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
     var view = dataSource.view();
@@ -177,7 +177,7 @@ function deleteChannel (e) {
     dataSource.remove(channel); 
     deleteParseObject("channels", 'channelId', channelId); 
     mobileNotify("Removed channel : " + channel.get('name'));
-    */
+
 }
     
 function onChannelsClick(e) {
@@ -199,8 +199,8 @@ function onInitChannels (e) {
         dataSource: APP.models.channels.channelsDS,
         template: $("#channels-listview-template").html(),
         click: function(e){
-        	
-        	if(e.target[0].className === "chat-mainBox"){
+        
+        	if(e.target[0].parentElement.className === "chat-mainBox" || e.target[0].className === "chat-mainBox"){
         		var channelUrl = "#channel?channel=" + e.dataItem.channelId;
         		APP.kendo.navigate(channelUrl);
         	} 
@@ -210,9 +210,17 @@ function onInitChannels (e) {
     	enableSwipe: true,
     	swipe: function(e){
     		var selection = e.sender.events.currentTarget;
- 			
+
     		if(e.direction === "left"){
-    			$(selection).velocity({translateX:"-70%"},{duration: "fast"}).addClass("chat-active");
+    			if($(selection).hasClass("private") !== true && $(window).width() < 375){
+    				$(selection).velocity({translateX:"-80%"},{duration: "fast"}).addClass("chat-active");
+    			} else if ($(selection).hasClass("private")){
+    				$(selection).velocity({translateX:"-40%"},{duration: "fast"}).addClass("chat-active");
+    			} else {
+    				$(selection).velocity({translateX:"-70%"},{duration: "fast"}).addClass("chat-active");
+    			}
+    			
+    			
     		}
     		if (e.direction === "right" && $(selection).hasClass("chat-active")){
     			$(selection).velocity({translateX:"0"},{duration: "fast"}).removeClass("chat-active");
@@ -220,7 +228,7 @@ function onInitChannels (e) {
     	},
     	
     });
-    console.log(APP.models.channels.channelsDS);
+   
 }
 
 function listViewClick(e){
@@ -232,6 +240,20 @@ function onShowAddChannel (e) {
 	APP.models.channel.potentialMembersDS.data([]);
 	APP.models.channel.potentialMembersDS.data(APP.models.contacts.contactsDS.data());
 	APP.models.channel.membersDS.data([]);
+
+	// hide channel description
+	$("#channels-addChannel-description").css("display","none");
+
+	$("#channels-addChannel-name").keyup(function(){
+		if($("#channels-addChannel-name").val !== ""){
+			$("#btnAddChannel-step1").velocity({opacity: 1}, {duration: 500, easing: "spring"});
+			$("#channels-addChannel-name").unbind();
+		}
+	});
+
+	$("#addChat-step2").css("opacity", 0);
+
+
 }
 
 function finalizeEditChannel(e) {
@@ -440,3 +462,52 @@ function doShowChannelPresence (e) {
 function getMessageCount(callback) {
 
 }
+
+function showChatDescription(e){
+	$("#channels-addChannel-description").velocity("slideDown",{duration: 1500, easing: "spring", display: "block"});
+	$("#addChatDescription").velocity("fadeOut");
+}
+
+function resetAddChatUI(e){
+	$("#channels-addChannel-description").css("display","none");
+	$("#channels-addChannel-description, #channels-addChannel-name").val("");
+	$("#addChatDescription").velocity("fadeIn");
+	$("#btnAddChannel-step1, #addChat-step2").velocity({opacity: 0});
+	
+		$("#channels-addChannel-name").keyup(function(){
+		if($("#channels-addChannel-name").val !== ""){
+			$("#btnAddChannel-step1").velocity({opacity: 1}, {duration: 500, easing: "spring"});
+			$("#channels-addChannel-name").unbind();
+		}
+	});
+	addChatStep1();
+	
+}
+function addChatStep1(e){
+	$("#chat-title-setup").velocity("slideUp", {duration: 300});
+	$("#addChat-step2").velocity("fadeOut", {duration: 200});
+	$("#addChat-step1").velocity("fadeIn", {duration: 200, delay:200});
+	$("#addChat-createBtn").velocity("slideUp", {display: "none", duration: 300});
+}
+
+
+function addChatStep2(e) {
+	if($("#channels-addChannel-name").val() !== ""){
+		// Todo - need to add UI cleaners
+		var chatTitle = $("#channels-addChannel-name").val();
+		$("#chat-title-step1").empty().prepend("+ " + chatTitle);
+		$("#chat-title-setup").velocity("slideDown", {display: "block", duration: 500});
+
+		// fade out step 1
+		$("#addChat-step1, #addChat-helper1").velocity("fadeOut", {duration: 300});
+
+		//Slide up create btn
+		//$("#addChat-createBtn").velocity("slideUp", {duration: 500, easing: "spring", display: "block"});
+
+		$("#addChat-step2").velocity("fadeIn", {duration: 100, delay:300, display: "block"});
+	} else {
+		mobileNotify("Chat name is required");
+	}
+
+}
+

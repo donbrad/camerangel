@@ -68,6 +68,7 @@ body {
     color: #212121;
     font-size: 14px;
     margin: 1.14285714em;
+    background: #fff;
 }
 h1 {
     font-size: 2.42857143em;
@@ -128,6 +129,10 @@ select {
 }
 form {
     padding: 1rem;
+    h1, h2, h3, h4, h5, p {
+    	margin-left: 0px !important;
+    	margin-right: 0px !important;
+    }
 }
 .show {
     display: block !important;
@@ -391,6 +396,8 @@ form {
     overflow-x: hidden;
     position: absolute;
     bottom: 0px;
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
 }
 
 .input-text-sm {
@@ -1318,6 +1325,80 @@ a:hover {
 
 #channels-listview > li > div > div.chat-mainBox > img {
 	margin-left: 1.25rem;
+}
+
+#start-chat-img {
+	width: 18px;
+	vertical-align: baseline;
+}
+
+#channels-addChannel-name {
+	font-size: 24px !important;
+}
+
+.helperBox {
+	background-color: @grey300;
+	width: 100%;
+	.pad;
+	p {
+		margin-left:0px;
+	}
+	p img {
+		vertical-align: bottom;
+	}
+}
+
+#chat-title-setup {
+	width: 100%;
+	background-color: @blue200;
+	padding: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	font-size: 20px;
+	color: #fff;
+	display: none;
+}
+
+#editChatName {
+	font-size: 14px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	line-height: 1.5;
+	padding: 0px;
+	padding-top: 0.5rem;
+	padding-right: 1rem;
+	padding-left: 1rem;
+	padding-bottom: 0.5rem;
+}
+
+#addChat-step2 {
+	padding: 0.5rem 1rem;
+	width: 100%;
+	> img {
+		float: left;
+		vertical-align: middle;
+		padding-top: 10px;
+		margin-left: 0.5rem;
+	}
+	input {
+		width: 91%;
+		float: left;
+	}
+}
+
+.footerBk {
+	background: #fff;
+}
+
+#addChat-helper1 {
+	position: absolute;
+	bottom: 100%;
+	margin-top: -60px;
+}
+
+#chatList-place-icon {
+	height: 14px;
 }
 
 /* Chat styles */
