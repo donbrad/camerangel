@@ -220,7 +220,7 @@ function onInitChannels (e) {
     	},
     	
     });
-    console.log(APP.models.channels.channelsDS);
+    console.log(APP.models.channels);
 }
 
 function listViewClick(e){
@@ -472,6 +472,7 @@ function resetAddChatUI(e){
 			$("#channels-addChannel-name").unbind();
 		}
 	});
+	addChatStep1();
 	
 }
 function addChatStep1(e){
