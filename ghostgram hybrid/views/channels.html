@@ -115,18 +115,24 @@
             <a class="hidden" data-align="right" data-role="button"  data-rel="drawer" href="#channelMembers"> <i class="ghostIconNavbar fa fa-users"></i> </a>
         </div>
     </div>
-     <form>
+    <div id="chat-title-setup">
+    	<span id="chat-title-step1"></span>
+    	<span class="right">
+    		<a id="editChatName" data-click="addChatStep1" data-role="button">edit</a>
+    	</span>
+    </div>
+     <form id="addChat-step1">
      	<h3>
      		<img src="images/flag.svg" id="start-chat-img"/> Start a chat
      	</h3>
      	<p>Chat with friends and family around topics, shared interests, and places.</p>
         <ul data-role="listview" data-style="inset" id="channel-addChannel-list">
             <li>
-                <input type="text" class="clearable" id="channels-addChannel-name" value="" required placeholder="What's the topic?"/>
+            	
+                <input type="text" class="clearable" id="channels-addChannel-name" placeholder="What's the topic?" value="" required />
                 
                 <input type="text" class="clearable" style="display: none" id="channels-addChannel-description" value="" placeholder="Description"/>
-                <a class="btnClear" data-role="button" data-click="showChatDescription" id="addChatDescription">Add description</a>
-                
+                <a class="btnClear-grey" data-role="button" data-click="showChatDescription" id="addChatDescription">Add description</a>
             </li>
               <li class="hidden">
                <label>Archive
@@ -137,18 +143,23 @@
                 </label>
             </li>
         </ul>
-
-    </form> 
+        <a class="btnClear" data-role="button" style="opacity: 0" data-click="addChatStep2" id="btnAddChannel-step1">Next</a>
+    </form>
+    <form id="addChat-step2">
+    	<p>Invite friends</p>
+    	<img src="images/search.svg" width="18" />
+		<input id="contactSearchInput" class="clearable" type="text" placeholder="Search contacts" />
+    </form>
 	
-    <div data-role="footer">
-    	<div data-role="footer">
-    		<div class="helperBox">
-    			<p><img src="images/help.svg" /> Looking to set up a 1-on-1 private chat?</p>
-    			<a class="btnClear hidden">Go to contacts</a>
+    
+    	<div class="footerBk" data-role="footer">
+    		<div class="helperBox" id="addChat-helper1">
+    			<p class="helper"><img src="images/help.svg" /> Looking to set up a 1-on-1 private chat?</p>
+    			<a class="btnClear" data-role="button" href="views/contacts.html">Go to contacts</a>
     		</div>
-            <a class="btnSpan-btm btnYellow hidden" data-click="addChannel" type="button" data-role="button" disabled>Create</a>
+            <a id="addChat-createBtn" class="btnSpan-btm btnYellow" style="display: none" data-click="addChannel" type="button" data-role="button" disabled>Create</a>
     	</div>
-    </div>
+ 
 </div>
 
 
@@ -157,7 +168,7 @@
         <div data-role="navbar">
 			<a data-click="finalizeEditChannel" type="button" data-role="button" data-align="left" >Done</a>
             <span> Edit Chat</span>
-             <a data-align="right" data-role="button"  data-rel="drawer" href="#channelMembers" > <i class="ghostIconNavbar fa fa-users"></i> </a>
+            <a data-align="right" data-role="button"  data-rel="drawer" href="#channelMembers" > <i class="ghostIconNavbar fa fa-users"></i> </a>
         </div>
     </div>
 

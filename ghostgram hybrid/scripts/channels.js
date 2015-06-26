@@ -236,6 +236,16 @@ function onShowAddChannel (e) {
 	// hide channel description
 	$("#channels-addChannel-description").css("display","none");
 
+	$("#channels-addChannel-name").keyup(function(){
+		if($("#channels-addChannel-name").val !== ""){
+			$("#btnAddChannel-step1").velocity({opacity: 1}, {duration: 500, easing: "spring"});
+			$("#channels-addChannel-name").unbind();
+		}
+	});
+
+	$("#addChat-step2").css("opacity", 0);
+
+
 }
 
 function finalizeEditChannel(e) {
@@ -454,5 +464,41 @@ function resetAddChatUI(e){
 	$("#channels-addChannel-description").css("display","none");
 	$("#channels-addChannel-description, #channels-addChannel-name").val("");
 	$("#addChatDescription").velocity("fadeIn");
+	$("#btnAddChannel-step1, #addChat-step2").velocity({opacity: 0});
+	
+		$("#channels-addChannel-name").keyup(function(){
+		if($("#channels-addChannel-name").val !== ""){
+			$("#btnAddChannel-step1").velocity({opacity: 1}, {duration: 500, easing: "spring"});
+			$("#channels-addChannel-name").unbind();
+		}
+	});
+	
+}
+function addChatStep1(e){
+	$("#chat-title-setup").velocity("slideUp", {duration: 300});
+	$("#addChat-step2").velocity("fadeOut", {duration: 200});
+	$("#addChat-step1").velocity("fadeIn", {duration: 200, delay:200});
+	$("#addChat-createBtn").velocity("slideUp", {display: "none", duration: 300});
+}
+
+
+function addChatStep2(e) {
+	if($("#channels-addChannel-name").val() !== ""){
+		// Todo - need to add UI cleaners
+		var chatTitle = $("#channels-addChannel-name").val();
+		$("#chat-title-step1").empty().prepend("+ " + chatTitle);
+		$("#chat-title-setup").velocity("slideDown", {display: "block", duration: 500});
+
+		// fade out step 1
+		$("#addChat-step1, #addChat-helper1").velocity("fadeOut", {duration: 300});
+
+		//Slide up create btn
+		//$("#addChat-createBtn").velocity("slideUp", {duration: 500, easing: "spring", display: "block"});
+
+		$("#addChat-step2").velocity("fadeIn", {duration: 100, delay:300, display: "block"});
+	} else {
+		mobileNotify("Chat name is required");
+	}
+
 }
 
