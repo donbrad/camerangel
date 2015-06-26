@@ -199,8 +199,8 @@ function onInitChannels (e) {
         dataSource: APP.models.channels.channelsDS,
         template: $("#channels-listview-template").html(),
         click: function(e){
-        
-        	if(e.target[0].parentElement.className === "chat-mainBox" || e.target[0].className === "chat-mainBox"){
+        	var selector = e.target[0].parentElement
+        	if($(selector).hasClass("chat-mainBox") === true || e.target[0].className === "chat-mainBox"){
         		var channelUrl = "#channel?channel=" + e.dataItem.channelId;
         		APP.kendo.navigate(channelUrl);
         	} 
