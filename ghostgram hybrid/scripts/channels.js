@@ -121,8 +121,8 @@ function editChannel(e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
 
-/*
-   var channelId = e.context; 
+	// Did a quick bind to the button, feel free to change 
+   var channelId = e.button[0].attributes["data-channel"].value; 
    var dataSource = APP.models.channels.channelsDS;
     dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
     var view = dataSource.view();
@@ -146,12 +146,13 @@ function editChannel(e) {
     APP.models.channels.currentChannel.bind('change', syncCurrentChannel);
     
     APP.kendo.navigate('#editChannel');
-*/
+
 }
     
 function eraseChannel(e) {
 	e.preventDefault();
-    var channelId = e.context;  
+    var channelId = e.context;
+    mobileNotify("Clearing channel");
 }
 
 function archiveChannel(e) {
@@ -160,11 +161,10 @@ function archiveChannel(e) {
     mobileNotify("Archiving channel"); 
 }
     
-function deleteChannel (e) {
+function deleteChannel(e) {
 	e.preventDefault();
-	mobileNotify("Deleting channel");
-	/*
-    var channelId = e.context;  
+	
+    var channelId = e.button[0].attributes["data-channel"].value;  
     var dataSource = APP.models.channels.channelsDS;
     dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
     var view = dataSource.view();
@@ -177,7 +177,7 @@ function deleteChannel (e) {
     dataSource.remove(channel); 
     deleteParseObject("channels", 'channelId', channelId); 
     mobileNotify("Removed channel : " + channel.get('name'));
-    */
+
 }
     
 function onChannelsClick(e) {
@@ -199,7 +199,7 @@ function onInitChannels (e) {
         dataSource: APP.models.channels.channelsDS,
         template: $("#channels-listview-template").html(),
         click: function(e){
-        	console.log(e.target)
+        
         	if(e.target[0].parentElement.className === "chat-mainBox" || e.target[0].className === "chat-mainBox"){
         		var channelUrl = "#channel?channel=" + e.dataItem.channelId;
         		APP.kendo.navigate(channelUrl);
@@ -210,9 +210,17 @@ function onInitChannels (e) {
     	enableSwipe: true,
     	swipe: function(e){
     		var selection = e.sender.events.currentTarget;
- 			
+
     		if(e.direction === "left"){
-    			$(selection).velocity({translateX:"-70%"},{duration: "fast"}).addClass("chat-active");
+    			if($(selection).hasClass("private") !== true && $(window).width() < 375){
+    				$(selection).velocity({translateX:"-80%"},{duration: "fast"}).addClass("chat-active");
+    			} else if ($(selection).hasClass("private")){
+    				$(selection).velocity({translateX:"-40%"},{duration: "fast"}).addClass("chat-active");
+    			} else {
+    				$(selection).velocity({translateX:"-70%"},{duration: "fast"}).addClass("chat-active");
+    			}
+    			
+    			
     		}
     		if (e.direction === "right" && $(selection).hasClass("chat-active")){
     			$(selection).velocity({translateX:"0"},{duration: "fast"}).removeClass("chat-active");
@@ -220,7 +228,7 @@ function onInitChannels (e) {
     	},
     	
     });
-    console.log(APP.models.channels);
+   
 }
 
 function listViewClick(e){
