@@ -199,8 +199,8 @@ function onInitChannels (e) {
         dataSource: APP.models.channels.channelsDS,
         template: $("#channels-listview-template").html(),
         click: function(e){
-        
-        	if(e.target[0].parentElement.className === "chat-mainBox" || e.target[0].className === "chat-mainBox"){
+        	var selector = e.target[0].parentElement
+        	if($(selector).hasClass("chat-mainBox") === true || e.target[0].className === "chat-mainBox"){
         		var channelUrl = "#channel?channel=" + e.dataItem.channelId;
         		APP.kendo.navigate(channelUrl);
         	} 
@@ -296,7 +296,7 @@ function onInitEditChannel (e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
 	APP.models.channel.membersDS.data([]);
-	$('#editChannelMemberList li').remove(); 
+	$('#editChannelMemberList li').remove();
 }
 
 function deleteMember (e) {
@@ -318,7 +318,7 @@ function onShowEditChannel (e) {
 	var currentChannelModel = APP.models.channels.currentModel;
 	var members = currentChannelModel.members, thisMember = {};
 	var membersArray = new Array();
-	
+
 	//Zero out current members as we're going rebuild ds and ux
 	APP.models.channel.membersDS.data([]);
 	$('#editChannelMemberList').empty();
@@ -330,16 +330,18 @@ function onShowEditChannel (e) {
 
 		for (var i=0; i<members.length; i++) {
 			thisMember = getContactModel(members[i]);
+
 			// Current user will be undefined in contact list.
 			if (thisMember !== undefined) {
 				APP.models.channel.membersDS.add(thisMember);
 
-				$("#editChannelMemberList").append('<li style="clear:both;" id="'+thisMember.uuid+
-												   '" class="ghostMemberLi"> <span style="float: left;" class="ghostMemberName">'+ 
-												   thisMember.name + ' (' + thisMember.alias + ')' + 
-												   '</span><span style="float:right; "> <a data-param="' + 
-												   thisMember.uuid +
-												   '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><img src="images/trash.svg" /></i></a></span></li>');	
+				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+
+												   '"> <h4>'+ thisMember.name +
+												   '<span class="right">' +
+												   '<a data-param="' + thisMember.uuid +
+												   '" data-role="button" class="clearBtn" data-click="deleteMember" onclick="deleteMember(this)" ><img src="images/trash.svg" /></a></span>' +
+												   '</h4><p>' + thisMember.alias + '</p>' + 
+												   '</li>');	
 			}
 		}
 
@@ -349,12 +351,17 @@ function onShowEditChannel (e) {
 				thisMember = findContactByUUID(members[j]);
 				APP.models.channel.membersDS.add(thisMember);
 
-				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'" class="ghostMemberLi"> <span class="ghostMemberName">'+ thisMember.name + ' (' + thisMember.alias + ')' + '</span><span style="float:right; font-size: 10px;"> <a data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><i class="ghostIconNavbar fa fa-trash"></i></a></span></li>');	
+				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'"> <h4>'+ thisMember.name + 
+					'<a class="right listTrash" data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)"><img src="images/trash.svg" /></a>' +
+					'</h4><p>' + thisMember.alias + '</p></li>');	
 
 			}
 		}	
 		
 	}
+
+	// hide trash cans
+	$(".listTrash, #listDone").css("display", "none");
 		
 }
 
@@ -407,8 +414,9 @@ function doInitChannelMembers (e) {
             },
 		click: function (e) {
 			var thisMember = e.dataItem;
+			console.log(thisMember);
 			APP.models.channel.membersDS.add(thisMember);
-			$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'">'+ thisMember.name + ' (' + thisMember.alias + ')' + '<span style="float:right; padding-right: 12px; font-size: 10px;"> <a data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><i class="ghostIconNavbar fa fa-trash"></i></a></span></li>');
+			$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'">'+ thisMember.name + ' (' + thisMember.alias + ')' + '<span style="float:right; padding-right: 12px; font-size: 10px;"> <a data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><img src="images/trash.svg" /></a></span></li>');
 			APP.models.channel.potentialMembersDS.remove(thisMember);
 		
 			
@@ -510,4 +518,23 @@ function addChatStep2(e) {
 	}
 
 }
+
+
+function toggleListTrash() {
+	$(".listTrash").velocity("fadeIn", {duration: 100});
+	$("#listTrash").velocity("fadeOut", {duration: 100});
+	$("#listDone").velocity("fadeIn", {delay: 100, duration: 100});
+	$(".addChatMembersBanner").velocity("slideUp", {duration: 100});
+	console.log("trash");
+}
+
+function toggleListDone(){
+	$("#listDone").velocity("fadeOut", {duration: 100});
+	$(".addChatMembersBanner").velocity("slideDown", {duration: 100});
+	$(".listTrash").velocity("fadeOut", {duration: 100});
+	$("#listTrash").velocity("fadeIn", {delay: 100, duration: 100});
+	console.log("list");
+}
+
+
 
