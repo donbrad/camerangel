@@ -129,6 +129,24 @@ function doCheckIn(e) {
 
 }
 
+function updateCurrentLocation (loc) {
+	if (loc.uuid !== undefined && loc.uuid === APP.models.places.current.get('uuid')) {
+		return;
+	} else {
+		loc.uuid = uuid.v4();
+
+		var current = APP.models.places.current;
+
+		current.set('address', loc.address);
+		current.set('category', loc.category);
+		current.set('name', loc.name ? loc.name : '');
+		current.set('lat', loc.lat);
+		current.set('lat', loc.lng);
+		current.set('factualId', loc.factualId ? loc.factualId : '');
+		current.set('privacy', loc.privacy ? loc.privacy : "false");
+		current.set('visible', loc.visible ? loc.visible : "true");
+	}
+}
 function onLocateMe(e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
@@ -143,23 +161,67 @@ function onLocateMe(e) {
 	locationsArray = matchLocationToUserPlace(APP.location.position.lat, APP.location.position.lng);
 	if (locationsArray.length !== 0) {
 		thisLocation = locationsArray[0];
-	} else {
+		updateCurrentLocation(thisLocation);
 
+	} else {
+		var loc = {};
 		// Reverse Geocode first to ensure we have a valid address
 		APP.map.geocoder.geocode({'latLng': latlng}, function(results, status) {
 			if (status == google.maps.GeocoderStatus.OK) {
 				if (results.length > 0) {
+					var number = '', street = '', city='', state = '', zip = '';
+					loc = {};
+
+					loc.category = "Location";
+					loc.googleId = results[0].place_id;
+					loc.lat = results[0].geometry.location.A;
+					loc.lat = results[0].geometry.location.F;
+
+					for (var i=0; i<results[0].address_components.length; i++) {
+						if (results[0].address_components[i].types.length > 0) {
+
+							switch (results[0].address_components[i].types[0]) {
+								case "street_number" :
+									number = results[0].address_components[i].long_name + " ";
+									break;
+
+								case "route" :
+									street = results[0].address_components[i].long_name + ", ";
+									break;
+
+								case "locality" :
+									city = results[0].address_components[i].long_name + ", ";
+									break;
+
+								case "administrative_area_level_1" :
+									state = results[0].address_components[i].short_name;
+									break;
+
+								case "postal_code" :
+									zip = "  " + results[0].address_components[i].long_name;
+									break;
+
+
+							}
+						}
+					}
+
+					loc.address = number + street + city + state + zip;
+					APP.models.places.geoPlacesDS.add(loc);
+
 					// add this results to the locationsDS
 					locationsArray = results;
 					placesGPSSearch(function (results, status) {
 						if (status === null && results !== null) {
-							if (results.length === 1) {
-								// That's easy -- just one place
-							} else {
-								// Multiple places -- need to get the user to pick one...
+							if (results.length === 0) {
+								for (var j=0; j<results.length; j++) {
+									loc = {};
+
+
+									loc.category = "Place";
+									APP.models.places.geoPlacesDS.add(loc);
+								}
 							}
-						} else {
-							// No places so must be a personal residence
 						}
 					});
 				} else {
@@ -184,10 +246,14 @@ function matchLocationToUserPlace  (lat, lng) {
 	return(matchArray);
 }
 
-function placesGPSSearch (callback) {
+function placesGPSSearch (callback, radius) {
+
+	if (radius === undefined)
+		radius = 50;
+
 	var request = {
 		location: new google.maps.LatLng(APP.location.position.lat, APP.location.position.lng),
-		radius: 500
+		radius: radius
 	};
 
 	APP.map.googlePlaces.nearbySearch(request,function (results, status) {
