@@ -825,6 +825,7 @@
                     APP.map.mapOptions.zoom = 14;
                     APP.map.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
                     APP.map.googleMap = new google.maps.Map(document.getElementById('map-mapdiv'), APP.map.mapOptions);
+                    APP.map.googlePlaces = new google.maps.places.PlacesService(APP.map.googleMap);
                     reverseGeoCode(position.coords.latitude, position.coords.longitude);
                     //mobileNotify("Located you at " + position.coords.latitude + " , " + position.coords.longitude);
                 } else {

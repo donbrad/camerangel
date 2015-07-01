@@ -3,6 +3,7 @@ function onInitPlaces(e) {
 	e.preventDefault();
 
 
+
 	var dataSource = APP.models.places.placeListDS;
 
 	dataSource.data(APP.models.places.placesDS.data());
@@ -164,7 +165,7 @@ function placesGPSSearch (callback) {
 		radius: 500
 	};
 
-	APP.models.places.googlePlaces.nearbySearch(request,function (results, status) {
+	APP.map.googlePlaces.nearbySearch(request,function (results, status) {
 		if (status == google.maps.places.PlacesServiceStatus.OK) {
 			callback(results, null);
 		} else {
@@ -178,7 +179,7 @@ function placesGPSSearch (callback) {
 function onInitFindPlace(e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
-	APP.models.places.googlePlaces = new google.maps.places.PlacesService(APP.map.googleMap);
+
 	APP.models.places.autocomplete = new google.maps.places.Autocomplete(document.getElementById('placeSearchQuery'));
    
 
