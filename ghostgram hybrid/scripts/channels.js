@@ -324,7 +324,7 @@ function onShowEditChannel (e) {
 	var currentChannelModel = APP.models.channels.currentModel;
 	var members = currentChannelModel.members, thisMember = {};
 	var membersArray = new Array();
-	console.log(currentChannelModel);
+	
 	//Zero out current members as we're going rebuild ds and ux
 	APP.models.channel.membersDS.data([]);
 	$('#editChannelMemberList').empty();
@@ -344,7 +344,7 @@ function onShowEditChannel (e) {
 				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+
 												   '">'+
 												   '<div class="left"><img class="circle-img-md editChatImg" src="'+ thisMember.photo +'"/></div>' + 
-												   '<h4>'+ thisMember.name +
+												   '<h4>'+ thisMember.name + ' <img class="user-verified" src="images/user-verified.svg" />'+
 												   '<span class="right">' +
 												   '<a class="listTrash" data-param="' + thisMember.uuid +
 												   '" data-role="button" class="clearBtn" data-click="deleteMember" onclick="deleteMember(this)" ><img src="images/trash.svg" /></a></span>' +
@@ -422,14 +422,15 @@ function doInitChannelMembers (e) {
         template: $("#memberTemplate").html(),
 		filterable: {
                 field: "name",
-                operator: "startswith"
+                operator: "startswith",
+                placeholder: "Search contacts..."
             },
 		click: function (e) {
 			var thisMember = e.dataItem;
 			APP.models.channel.membersDS.add(thisMember);
 			$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'">'+ thisMember.name + ' (' + thisMember.alias + ')' + '<span style="float:right; padding-right: 12px; font-size: 10px;"> <a data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><img src="images/trash.svg" /></a></span></li>');
 			APP.models.channel.potentialMembersDS.remove(thisMember);
-			$(".addedChatMember").text("+ " + thisMember.name).velocity("slideDown", { duration: 300, display: "block"}).velocity("slideUp", {delay: 1400, duration: 300, display: "none"});
+			$(".addedChatMember").text("+ added " + thisMember.name).velocity("slideDown", { duration: 300, display: "block"}).velocity("slideUp", {delay: 1400, duration: 300, display: "none"});
 		}
 		
     });

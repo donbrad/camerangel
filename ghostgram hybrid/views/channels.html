@@ -310,7 +310,7 @@
 
 
 <!-- edit chat members -->
-<div data-role="view" id="channelMembers" data-layout="main" data-title="Members" data-init="doInitChannelMembers" data-show="doShowChannelMembers">
+<div data-role="view" id="channelMembers" data-layout="main" data-title="Invite" data-init="doInitChannelMembers" data-show="doShowChannelMembers" data-transition="overlay:up">
     <header data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -322,18 +322,24 @@
 </div>
 
 <script type="text/x-kendo-template" id="memberTemplate">      
-    <div style="height: 56px; clear: both;">
-        <img style="width: 48px; height: auto; max-height: 48px; over-flow: hidden; float:left; margin: 0px 8px 8px 0px;" src="#:data.photo#">
-        <div style="clear: both;">
-          <span class="ghostTextLarge"> #: data.alias # </span>         
-        </div>
-        <div class="ghostText">
-          <span class="ghostTiny">(#: data.name #)</span>   
-        </div>
-        <div style="float: right; color:\\#2e2e2e; font-size: 11px;">
-            #if (data.contactUUID === undefined || data.contactUUID === null || data.contactUUID === '') { # <em> New User - Invite! </em> # } else {#  <strong> Verified User </strong> #} #
-        </div>
-    </div>
+    <div>
+    	<div class="left">
+    	<img src="#: data.photo #" class="circle-img-md" />
+    	</div>
+    	<div class="left">
+    		<h4>#: data.name #
+    	#if (data.phoneVerified){#
+    		<img class="user-verified" src="images/user-verified.svg" />
+    	#}#
+    		</h4>
+		#if (data.contactUUID === undefined || data.contactUUID === null || data.contactUUID === '') { #
+			<p class="helper"><img class="status" src="images/status-new.svg" /> Awaiting verification </p>
+		#} else {#
+			<p>#: data.alias #</p>
+		#}#
+    	</div>
+            
+     </div>
 </script>
 
 <div data-role="drawer" id="channelPresence" style="width: 240px" data-title="Presence" data-swipe-to-open="false" data-position='right' data-init="doInitChannelPresence" data-show="doShowChannelPresence" data-views="['channel']">

@@ -118,6 +118,14 @@ input {
     border-bottom: 1px solid #e0e0e0;
     padding: .5em .7em;
 }
+.standard-input {
+	width: 100%;
+    border: 0px;
+    font-size: 14px;
+    border-bottom: 1px solid #e0e0e0;
+    padding: .5em .7em;
+}
+
 label {
     font-size: 12px;
 }
@@ -175,6 +183,10 @@ form {
 
 .status {
 	height: 10px;
+}
+
+.user-verified {
+	height: 1rem;
 }
 
 .line {
@@ -1988,6 +2000,23 @@ div.loginBox > form > div > ul > li {
 	padding-top: 0.25rem;
 	padding-bottom: 0.25rem;
 	color: #fff;
+}
+
+#channelMembers-listview li {
+	border-bottom: 1px solid @grey200;
+	padding: 0.25rem 1rem 0.25rem 1rem;
+}
+
+#channelMembers > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div.km-listview-wrapper > form > div > input[type="search"] {
+	width: 100%;
+    border: 0px;
+    font-size: 14px;
+    border-bottom: 1px solid #e0e0e0;
+    padding: .5em .7em;
+}
+
+.km-widget .km-filter-wrap:before {
+	display: none;
 }
 
 /* Don's development styles...*/
