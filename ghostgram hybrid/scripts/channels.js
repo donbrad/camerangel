@@ -288,6 +288,12 @@ function finalizeEditChannel(e) {
 	updateParseObject('channelmap', 'channelId', channelId, 'members', memberArray);
 	// Add new members phone numbers to the channel map
 	updateParseObject('channelmap', 'channelId', channelId, 'invitedMembers', invitedPhoneArray);
+
+	// Reset UI
+	$("#showEditDescriptionBtn").velocity("fadeIn");
+	$("#channels-editChannel-description").css("display","none").val("");
+
+	mobileNotify("Saving");
 	
 	APP.kendo.navigate('#channels');
 }
@@ -318,11 +324,11 @@ function onShowEditChannel (e) {
 	var currentChannelModel = APP.models.channels.currentModel;
 	var members = currentChannelModel.members, thisMember = {};
 	var membersArray = new Array();
-
+	console.log(currentChannelModel);
 	//Zero out current members as we're going rebuild ds and ux
 	APP.models.channel.membersDS.data([]);
 	$('#editChannelMemberList').empty();
-	
+
 	if (members.length > 0) {
 
 		// Group channel members are referenced indirectly by uuid 
@@ -334,14 +340,16 @@ function onShowEditChannel (e) {
 			// Current user will be undefined in contact list.
 			if (thisMember !== undefined) {
 				APP.models.channel.membersDS.add(thisMember);
-
+				console.log(thisMember);
 				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+
-												   '"> <h4>'+ thisMember.name +
+												   '">'+
+												   '<div class="left"><img class="circle-img-md editChatImg" src="'+ thisMember.photo +'"/></div>' + 
+												   '<h4>'+ thisMember.name +
 												   '<span class="right">' +
-												   '<a data-param="' + thisMember.uuid +
+												   '<a class="listTrash" data-param="' + thisMember.uuid +
 												   '" data-role="button" class="clearBtn" data-click="deleteMember" onclick="deleteMember(this)" ><img src="images/trash.svg" /></a></span>' +
 												   '</h4><p>' + thisMember.alias + '</p>' + 
-												   '</li>');	
+												   '<div class="clearfix"></div></li>');	
 			}
 		}
 
@@ -350,14 +358,18 @@ function onShowEditChannel (e) {
 			for (var j=0; j<members.length; j++) {
 				thisMember = findContactByUUID(members[j]);
 				APP.models.channel.membersDS.add(thisMember);
-
-				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'"> <h4>'+ thisMember.name + 
+				console.log(thisMember);
+				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'">' +
+					'<h4>'+ thisMember.name + 
 					'<a class="right listTrash" data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)"><img src="images/trash.svg" /></a>' +
-					'</h4><p>' + thisMember.alias + '</p></li>');	
+					'</h4><p class="helper"><img class="status" src="images/status-waiting.svg" /> Awaiting verification</p><div class="clearfix"></div></li>');	
 
 			}
 		}	
 		
+	} else {
+		$(".addChatMembersBanner a").text("No one is invited. Tap to send invites");
+		console.log("No one here");
 	}
 
 	// hide trash cans
@@ -414,12 +426,10 @@ function doInitChannelMembers (e) {
             },
 		click: function (e) {
 			var thisMember = e.dataItem;
-			console.log(thisMember);
 			APP.models.channel.membersDS.add(thisMember);
 			$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'">'+ thisMember.name + ' (' + thisMember.alias + ')' + '<span style="float:right; padding-right: 12px; font-size: 10px;"> <a data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><img src="images/trash.svg" /></a></span></li>');
 			APP.models.channel.potentialMembersDS.remove(thisMember);
-		
-			
+			$(".addedChatMember").text("+ " + thisMember.name).velocity("slideDown", { duration: 300, display: "block"}).velocity("slideUp", {delay: 1400, duration: 300, display: "none"});
 		}
 		
     });
@@ -525,7 +535,6 @@ function toggleListTrash() {
 	$("#listTrash").velocity("fadeOut", {duration: 100});
 	$("#listDone").velocity("fadeIn", {delay: 100, duration: 100});
 	$(".addChatMembersBanner").velocity("slideUp", {duration: 100});
-	console.log("trash");
 }
 
 function toggleListDone(){
@@ -533,8 +542,10 @@ function toggleListDone(){
 	$(".addChatMembersBanner").velocity("slideDown", {duration: 100});
 	$(".listTrash").velocity("fadeOut", {duration: 100});
 	$("#listTrash").velocity("fadeIn", {delay: 100, duration: 100});
-	console.log("list");
 }
 
-
+function showEditDescription(){
+	$("#channels-editChannel-description").velocity("slideDown",{duration: 1500, easing: "spring", display: "block"});
+	$("#showEditDescriptionBtn").velocity("fadeOut");
+}
 
