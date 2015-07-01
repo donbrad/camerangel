@@ -135,13 +135,14 @@ function onLocateMe(e) {
 
 	var latlng = new google.maps.LatLng(APP.location.position.lat, APP.location.position.lng);
 	APP.models.places.geoPlacesDS.data([]);
+	var locationsArray = [], placesArray = [];
 
 	// Reverse Geocode first to ensure we have a valid address
 	APP.map.geocoder.geocode({'latLng': latlng}, function(results, status) {
 		if (status == google.maps.GeocoderStatus.OK) {
 			if (results.length > 0) {
 				// add this results to the locationsDS
-
+				locationsArray = results;
 				placesGPSSearch(function (results, status) {
 					if (status === null && results !== null) {
 						if (results.length === 1) {
