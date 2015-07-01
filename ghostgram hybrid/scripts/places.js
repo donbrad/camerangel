@@ -214,7 +214,7 @@ function onLocateMe(e) {
 					locationsArray = results;
 					placesGPSSearch(function (results, status) {
 						if (status === null && results !== null) {
-							if (results.length === 0) {
+							if (results.length !== 0) {
 								for (var j=0; j<results.length; j++) {
 									if (results[j].types[results[j].types.length-1] === 'establishment') {
 										loc = {};
