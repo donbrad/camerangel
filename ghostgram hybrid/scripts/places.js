@@ -116,6 +116,18 @@ function goPlaceSearchQuery (e) {
 		e.preventDefault();
 }
 
+function onShowCheckIn(e) {
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
+
+}
+
+function doCheckIn(e) {
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
+
+}
+
 function onLocateMe(e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
@@ -200,12 +212,6 @@ function onPlaceChanged() {
 	$('#addPlaceAddress').val(addressObj.address + ", " + addressObj.city + ", " + addressObj.state);
 	$('#addPlaceName').val(place.name);
 	$("#modalview-addPlace").kendoMobileModalView("open");
-
-}
-
-function onLocateMe(e) {
-	if (e.preventDefault !== undefined)
-		e.preventDefault();
 
 }
 
