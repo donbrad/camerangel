@@ -133,18 +133,34 @@ function onLocateMe(e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
 
+	var latlng = new google.maps.LatLng(APP.location.position.lat, APP.location.position.lng);
+	APP.models.places.geoPlacesDS.data([]);
 
-	placesGPSSearch(function (results, status) {
-		if (status === null && results !== null) {
-			if (results.length === 1) {
-				// That's easy -- just one place
+	// Reverse Geocode first to ensure we have a valid address
+	APP.map.geocoder.geocode({'latLng': latlng}, function(results, status) {
+		if (status == google.maps.GeocoderStatus.OK) {
+			if (results.length > 0) {
+				// add this results to the locationsDS
+
+				placesGPSSearch(function (results, status) {
+					if (status === null && results !== null) {
+						if (results.length === 1) {
+							// That's easy -- just one place
+						} else {
+							// Multiple places -- need to get the user to pick one...
+						}
+					} else {
+						// No places so must be a personal residence
+					}
+				});
 			} else {
-				// Multiple places -- need to get the user to pick one...
+				mobileNotify('No results found for locaiton');
 			}
 		} else {
-			mobileNotify("Places lookup error: " + status);
+			mobileNotify('Geocoder failed with: ' + status);
 		}
 	});
+
 
 }
 function matchLocationToUserPlace  (lat, lng) {

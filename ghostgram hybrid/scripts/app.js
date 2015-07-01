@@ -168,7 +168,7 @@
             title: 'Places',
             placesDS: new kendo.data.DataSource({offlineStorage: "places-offline"}, {group: 'category'}),
             placeListDS:  new kendo.data.DataSource({group: 'category'}),
-			geoPlacesDS: new kendo.data.DataSource(),
+			geoPlacesDS: new kendo.data.DataSource({group: 'category'}),
 			current: new kendo.data.ObservableObject({
 				placeId: '',
 				name: '',
