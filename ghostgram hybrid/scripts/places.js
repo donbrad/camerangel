@@ -174,8 +174,9 @@ function onLocateMe(e) {
 
 					loc.category = "Location";
 					loc.googleId = results[0].place_id;
+					loc.name = "Address";
 					loc.lat = results[0].geometry.location.A;
-					loc.lat = results[0].geometry.location.F;
+					loc.lng = results[0].geometry.location.F;
 
 					for (var i=0; i<results[0].address_components.length; i++) {
 						if (results[0].address_components[i].types.length > 0) {
@@ -215,10 +216,16 @@ function onLocateMe(e) {
 						if (status === null && results !== null) {
 							if (results.length === 0) {
 								for (var j=0; j<results.length; j++) {
+									if (results[j].types[results[j].types.length-1] === 'establishment')
 									loc = {};
 
 
 									loc.category = "Place";
+									loc.googleId = results[j].place_id;
+									loc.name = results[j].name;
+									loc.address = results[j].vicinity;
+									loc.lat = results[j].geometry.location.A;
+									loc.lng = results[j].geometry.location.F;
 									APP.models.places.geoPlacesDS.add(loc);
 								}
 							}
