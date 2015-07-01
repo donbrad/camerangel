@@ -137,31 +137,39 @@ function onLocateMe(e) {
 	APP.models.places.geoPlacesDS.data([]);
 	var locationsArray = [], placesArray = [];
 
-	// Reverse Geocode first to ensure we have a valid address
-	APP.map.geocoder.geocode({'latLng': latlng}, function(results, status) {
-		if (status == google.maps.GeocoderStatus.OK) {
-			if (results.length > 0) {
-				// add this results to the locationsDS
-				locationsArray = results;
-				placesGPSSearch(function (results, status) {
-					if (status === null && results !== null) {
-						if (results.length === 1) {
-							// That's easy -- just one place
-						} else {
-							// Multiple places -- need to get the user to pick one...
-						}
-					} else {
-						// No places so must be a personal residence
-					}
-				});
-			} else {
-				mobileNotify('No results found for locaiton');
-			}
-		} else {
-			mobileNotify('Geocoder failed with: ' + status);
-		}
-	});
+	var thisLocation = '';
 
+	// Is current location an existing user location?
+	locationsArray = matchLocationToUserPlace(APP.location.position.lat, APP.location.position.lng);
+	if (locationsArray.length !== 0) {
+		thisLocation = locationsArray[0];
+	} else {
+
+		// Reverse Geocode first to ensure we have a valid address
+		APP.map.geocoder.geocode({'latLng': latlng}, function(results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+				if (results.length > 0) {
+					// add this results to the locationsDS
+					locationsArray = results;
+					placesGPSSearch(function (results, status) {
+						if (status === null && results !== null) {
+							if (results.length === 1) {
+								// That's easy -- just one place
+							} else {
+								// Multiple places -- need to get the user to pick one...
+							}
+						} else {
+							// No places so must be a personal residence
+						}
+					});
+				} else {
+					mobileNotify('No results found for locaiton');
+				}
+			} else {
+				mobileNotify('Geocoder failed with: ' + status);
+			}
+		});
+	}
 
 }
 function matchLocationToUserPlace  (lat, lng) {
