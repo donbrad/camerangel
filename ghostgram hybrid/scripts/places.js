@@ -123,7 +123,11 @@ function onLocateMe(e) {
 
 	placesGPSSearch(function (results, status) {
 		if (status === null && results !== null) {
-
+			if (results.length === 1) {
+				// That's easy -- just one place
+			} else {
+				// Multiple places -- need to get the user to pick one...
+			}
 		} else {
 			mobileNotify("Places lookup error: " + status);
 		}
