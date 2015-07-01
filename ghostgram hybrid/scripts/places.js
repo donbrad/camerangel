@@ -216,17 +216,18 @@ function onLocateMe(e) {
 						if (status === null && results !== null) {
 							if (results.length === 0) {
 								for (var j=0; j<results.length; j++) {
-									if (results[j].types[results[j].types.length-1] === 'establishment')
-									loc = {};
+									if (results[j].types[results[j].types.length-1] === 'establishment') {
+										loc = {};
 
 
-									loc.category = "Place";
-									loc.googleId = results[j].place_id;
-									loc.name = results[j].name;
-									loc.address = results[j].vicinity;
-									loc.lat = results[j].geometry.location.A;
-									loc.lng = results[j].geometry.location.F;
-									APP.models.places.geoPlacesDS.add(loc);
+										loc.category = "Place";
+										loc.googleId = results[j].place_id;
+										loc.name = results[j].name;
+										loc.address = results[j].vicinity;
+										loc.lat = results[j].geometry.location.A;
+										loc.lng = results[j].geometry.location.F;
+										APP.models.places.geoPlacesDS.add(loc);
+									}
 								}
 							}
 						}
