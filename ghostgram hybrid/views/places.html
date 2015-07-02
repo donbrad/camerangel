@@ -3,7 +3,7 @@
         <div data-role="navbar">
             <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img class="nav-menu" src="images/menu-icon.svg"/></a>
             <span data-role="view-title"></span>
-            <a data-align="right" data-role="button" id="buttonOnLocateMe" data-click="onLocateMe"> <i class="ghostIconNavbar fa fa-map-marker"></i> </a>
+            <a data-role="button" id="buttonOnLocateMe" data-click="onLocateMe" data-align="right"> <i class="ghostIconNavbar fa fa-map-marker"></i> </a>
         </div>
     </div>
 
@@ -50,6 +50,24 @@
 		</div>
     </div>
 </div>
+
+
+ <div data-role="modalview" id="modalview-checkIn" style="width: 90%; display: none;" class="appearance" data-before-open="onShowCheckIn">
+     <div data-role="header">
+         <div data-role="navbar">
+             <span>Check In</span>
+         </div>
+     </div>
+
+
+     <div data-role="footer">
+         <div data-role="navbar">
+             <a data-click="closeModalViewCheckIn" data-role="button" type="button" data-align="left">Cancel</a>
+             <a data-click="doCheckIn" type="button" data-role="button" data-align="right">Check In</a>
+         </div>
+     </div>
+
+ </div>
 
 <div data-role="modalview" id="modalview-addPlace" style="width: 90%; display: none;" class="appearance" data-before-open="onShowAddPlace">
     <div data-role="header">
