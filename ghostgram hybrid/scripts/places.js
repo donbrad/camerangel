@@ -2,7 +2,7 @@
 function onInitPlaces(e) {
 	e.preventDefault();
 
-
+	$("#place-checkin-text").velocity("fadeIn", {delay: 1000});
 
 	var dataSource = APP.models.places.placeListDS;
 
@@ -52,6 +52,7 @@ function onInitPlaces(e) {
         template: $("#placesTemplate").html(),
         click: function (e) {
             var place = e.dataItem;
+            console.log(place);
            	APP.models.places.currentPlace = place;
 			$("#placesActions").data("kendoMobileActionSheet").open();
 			
@@ -150,6 +151,7 @@ function updateCurrentLocation (loc) {
 function onLocateMe(e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
+	console.log("locate");
 
 	var latlng = new google.maps.LatLng(APP.location.position.lat, APP.location.position.lng);
 	APP.models.places.geoPlacesDS.data([]);
@@ -165,6 +167,7 @@ function onLocateMe(e) {
 
 	} else {
 		var loc = {};
+
 		// Reverse Geocode first to ensure we have a valid address
 		APP.map.geocoder.geocode({'latLng': latlng}, function(results, status) {
 			if (status == google.maps.GeocoderStatus.OK) {
@@ -212,6 +215,7 @@ function onLocateMe(e) {
 
 					// add this results to the locationsDS
 					locationsArray = results;
+					console.log(results);
 					placesGPSSearch(function (results, status) {
 						if (status === null && results !== null) {
 							if (results.length !== 0) {
@@ -411,3 +415,6 @@ function inPlaceRadius (lat1, lng1, lat2, lng2, radius) {
 	}
 }
 
+function findplaceTest() {
+	APP.kendo.navigate('#findplace');
+}

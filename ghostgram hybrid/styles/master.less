@@ -41,6 +41,10 @@
 
 .appBox {
 	.pad;
+	h1, h2, h3, h4, h5, p {
+		margin-left: 0px;
+		margin-right: 0px;
+	}
 }
 
 .listBox {
@@ -285,6 +289,33 @@ form {
     transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.btnBlue {
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    -webkit-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
+    -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
+    color: #ffffff !important;
+    font-size: 14px !important;
+    background: @blue200 !important;
+    padding: 10px 20px 10px 20px;
+    text-decoration: none;
+}
+.btnBlue:hover {
+    background: @blue100 !important;
+    text-decoration: none;
+}
+.btnBlue:active {
+    background: @blue100 !important;
+    text-decoration: none;
+    transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.btnBlue:disabled {
+    background: @blue200 !important;
+}
+
 .btnClear {
     background: transparent;
     color: #2D93FF !important;
@@ -465,6 +496,10 @@ form {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.fullWidth {
+	width: 100%;
 }
 /* Scrollbar */
 
@@ -1095,7 +1130,8 @@ div.km-header a img{
 }
 
 #channel-addChannel-list li:first-child,
-#channels-editChannel-list li:first-child {
+#channels-editChannel-list li:first-child,
+* li:first-child {
 	border: none !important;
 }
 
@@ -1681,6 +1717,48 @@ div.loginBox > form > div > ul > li {
         width: 91%;
         float: left;
     }
+}
+
+#place-checkInImg {
+	vertical-align: bottom;
+	height: 18px;
+}
+
+#place-checkIn-circle {
+	height: 4rem;
+	width: 4rem;
+	.shadow;
+	border-radius: 2rem;
+	text-align: center;
+	position: absolute;
+	top: 85%;
+	right: 1rem;
+	padding-top: 1rem;
+	p {
+		width: 55px;
+		position: absolute;
+		right: 3.5rem;
+		top: 1.25rem;
+	}
+	img {
+		right: 30px;
+		position: initial;
+	}
+}
+
+.places-map {
+	background: url("../images/places-map.png") center center fixed;
+	background-image: cover;
+	background-width: 100%;
+	height: 250px;
+}
+
+.mapInfo {
+	box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.12);
+}
+
+.circleBtn-text {
+	color: @black;
 }
 
 /* Contact List styles */

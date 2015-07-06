@@ -7,41 +7,102 @@
     </div> 
 	
 	
-	<h3>
-		Development
-	</h3>
-   <form style="border-radius: 25px;">
-	  <ul data-role="listview" data-style="inset">
-			 <li>
-				<label>Device Id (udid) <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
-				<input type="text" id="profile-udid" data-bind="value: udid" readonly/>
-				</label>
-			</li>
-			</li>
-			  <li>
-				<label>User Id (UUID) <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
-				<input type="text" id="profile-uuid" data-bind="value: currentUser.userUUID" readonly/>
-				</label>
-			</li>
-		   <li>
-				<label>App Version <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
-				<input type="text" id="profile-version" data-bind="value: version" readonly/>
-				</label>
-			</li>
-			<li>
-				<label> Application Directory <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
-				<input type="text" id="profile-version" data-bind="value: appDirectory" readonly/>
-				</label>
-			</li>
-			<li>
-				<label> Temporary Directory <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
-				<input type="text" id="profile-version" data-bind="value: tempDirectory" readonly/>
-				</label>
-			</li>
-		</ul>
-	</form> 
-
-      
-
-	
+		<h3>
+			Development
+		</h3>
+	   	<form style="border-radius: 25px;">
+		  <ul data-role="listview" data-style="inset">
+				 <li>
+					<label>Device Id (udid) <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
+					<input type="text" id="profile-udid" data-bind="value: udid" readonly/>
+					</label>
+				</li>
+				</li>
+				  <li>
+					<label>User Id (UUID) <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
+					<input type="text" id="profile-uuid" data-bind="value: currentUser.userUUID" readonly/>
+					</label>
+				</li>
+			   <li>
+					<label>App Version <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
+					<input type="text" id="profile-version" data-bind="value: version" readonly/>
+					</label>
+				</li>
+				<li>
+					<label> Application Directory <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
+					<input type="text" id="profile-version" data-bind="value: appDirectory" readonly/>
+					</label>
+				</li>
+				<li>
+					<label> Temporary Directory <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
+					<input type="text" id="profile-version" data-bind="value: tempDirectory" readonly/>
+					</label>
+				</li>
+			</ul>
+			<a class="btnClear" data-role="button" href="#settingsDesign">View design guideline</a>
+		</form>
 </div>
+
+
+<div data-role="view" data-title="Design" id="settingsDesign" data-layout="main" class="appearance">
+	<div data-role="header">
+        <div data-role="navbar">
+            <span data-role="view-title"></span>
+            <a data-role="backbutton" data-align="left"><img class="menuIcon" src="images/nav-back.svg"/></a>
+        </div>
+    </div>
+
+    <!-- Design Guidelines -->
+    <div class="appBox">
+    	<div class="fullWidth">
+    	<h3>Buttons</h3>
+	    	<ul data-role="listview" data-style="inset">
+	    		<li>
+	    			<p>.btnClear</p>
+	    			<a class="btnClear">button</a>
+	    		</li>
+	    		<li>
+	    			<p>.btnClear-grey</p>
+	    			<a class="btnClear-grey">button</a>
+	    		</li>
+	    		<li>
+	    			<p>.btnClear-red</p>
+	    			<a class="btnClear-red">button</a>
+	    		</li>
+	    		<li>
+	    			<p>.btnYellow</p><br />
+	    			<a class="btnYellow">button</a>
+	    		</li>
+	    		<li>
+	    			<p>.btnBlue</p><br />
+	    			<a class="btnBlue">button</a>
+	    		</li>
+	    		<li>
+	    			<p>.btnClearLine-grey-sm</p>
+	    			<a class="btnClearLine-grey-sm">button</a>
+	    		</li>
+	    	</ul>
+    	</div>
+    </div>
+    
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

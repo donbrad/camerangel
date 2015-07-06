@@ -1,4 +1,4 @@
- <div data-role="view" data-title="Places" id="places" data-layout="main" data-model="APP.models.places" data-show="onShowPlaces" data-init="onInitPlaces" >
+ <div data-role="view" data-title="Places" id="places" data-layout="main" data-model="APP.models.places" data-show="onShowPlaces" data-init="onInitPlaces">
    <div data-role="header">
         <div data-role="navbar">
             <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img class="nav-menu" src="images/menu-icon.svg"/></a>
@@ -6,8 +6,11 @@
             <a data-role="button" id="buttonOnLocateMe" data-click="onLocateMe" data-align="right"> <i class="ghostIconNavbar fa fa-map-marker"></i> </a>
         </div>
     </div>
-
-     <div style="padding-top: 6px; padding-bottom: 18px;">
+    <div class="places-map">
+    	
+    </div>
+	
+    <div class="mapInfo">
          <div class="placesSearchBox">
              <input class="clearable" style="width: 85%;" id= "placeSearchQuery" type="text" placeholder="Search places..."/>
              <a data-role="button"  data-click="goPlaceSearchQuery">
@@ -17,6 +20,15 @@
 
          <ul id="places-listview"></ul>
      </div>
+     <a class="btnBlue" id="place-checkIn-circle" data-role="button" data-click="findplaceTest">
+     	<p class="circleBtn-text" id="place-checkin-text">check in</p>
+     	<img src="images/check-in.svg" />
+     </a>
+     <div class="hidden" data-role="footer">
+            <a class="btnSpan-btm btnBlue" type="button" data-role="button">
+            	<img src="images/check-in.svg" id="place-checkInImg" /> Check in
+            </a>
+    </div>
 
      <ul data-role="actionsheet" id="placesActions" data-popup='{"direction": "left"}'>
          <li><a data-action="doCheckInPlace">Check In</a></li>
@@ -40,7 +52,7 @@
 	    <div class="appBox">
 		    <div style="padding-bottom: 4px; padding-top: 4px;">
 	        	<input style="font-size: 16px; margin-left: 6px; width: 90%;" id="findPlaceSearchQuery" class="clearable" type="search"/>
-		         <a data-role="button" data-click="findPlace">  
+		         <a class="btnClear" data-role="button" data-click="findPlace">  
 		         	<i class="fa fa-search"></i> 
 		         </a>
 	        </div>
@@ -169,16 +181,20 @@
  <script type="text/x-kendo-template" id="placesTemplate">
      <div style="min-height: 38px; border-radius: 9px; background-color: \\#fff; padding: 4px;">
          # if (data.category === 'Place') { #
-         <div class="ghostText">#: data.name # </div>
-         <div class="ghostDescription">#: data.address # </div>
-         <div style="color: \\#2e2e2e;">
-		   <span style="float: left;">
-		   # if (privacy === 'true') { # Privacy On # } else { # Privacy Off # }#,  # if (visible === 'true') { # Visible # } else { # Not Visible # }#
-		   </span>
-         </div>
-         <div style="clear:both;"> </div>
+	         <h4>#: data.name # </h4>
+	         <p>#: data.address # </p>
+	         <p class="helper">
+			   <span class="left">
+			 # if (visible === 'true') { # 
+			 	<img src="images/place-public.svg" /> Public # } 
+			 else { # 
+			 	<img src="images/place-private.svg" /> Secret # }#
+			   </span>
+	         </p>
+	         <div class="clearfix"> </div>
          # } else { #
-            <div class="ghostText">#: data.formatted_address # </div>
+            <div class="ghostText">#: data.name # </div>
+            #: console.log(data) #
          # } #
      </div>
  </script>
