@@ -51,7 +51,8 @@
 			  rememberUsername: false,
               emaiVerified: false,
               phoneVerified: false,
-			  isVerified: false
+			  isVerified: false,
+			  currentPlace: null
           })
          
         },
@@ -741,6 +742,7 @@
 			 APP.models.profile.currentUser.set('rememberUsername', APP.models.profile.parseUser.get('rememberUsername'));
             APP.models.profile.currentUser.set('phoneVerified', APP.models.profile.parseUser.get('phoneVerified'));
             APP.models.profile.currentUser.set('emailVerified', APP.models.profile.parseUser.get('emailVerified'));
+            APP.models.profile.currentUser.set('currentPlace', APP.models.profile.parseUser.get('currentPlace'));
             APP.models.profile.parseACL = new Parse.ACL(APP.models.profile.parseUser);
             var uuid = APP.models.profile.currentUser.get('userUUID');
             APP.models.profile.currentUser.bind('change', syncProfile);

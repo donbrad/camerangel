@@ -16,6 +16,7 @@
          </div>
 
          <ul id="places-listview"></ul>
+         <ul id="geoPlaces-listview"></ul>
      </div>
 
      <ul data-role="actionsheet" id="placesActions" data-popup='{"direction": "left"}'>
@@ -178,13 +179,13 @@
          </div>
          <div style="clear:both;"> </div>
          # } else { #
-            <div class="ghostText">#: data.formatted_address # </div>
+            <div class="ghostText">#: data.address # </div>
          # } #
      </div>
  </script>
 
  <script type="text/x-kendo-template" id="geoPlacesTemplate">
      <div>
-         <div class="ghostText">#: data.formatted_address # </div>
+         <div class="ghostText">#: data.name # </div>
      </div>
  </script>
