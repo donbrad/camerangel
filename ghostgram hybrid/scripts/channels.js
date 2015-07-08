@@ -340,7 +340,7 @@ function onShowEditChannel (e) {
 			// Current user will be undefined in contact list.
 			if (thisMember !== undefined) {
 				APP.models.channel.membersDS.add(thisMember);
-				console.log(thisMember);
+				//console.log(thisMember);
 				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+
 												   '">'+
 												   '<div class="left"><img class="circle-img-md editChatImg" src="'+ thisMember.photo +'"/></div>' + 
@@ -358,7 +358,7 @@ function onShowEditChannel (e) {
 			for (var j=0; j<members.length; j++) {
 				thisMember = findContactByUUID(members[j]);
 				APP.models.channel.membersDS.add(thisMember);
-				console.log(thisMember);
+				//console.log(thisMember);
 				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'">' +
 					'<h4>'+ thisMember.name + 
 					'<a class="right listTrash" data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)"><img src="images/trash.svg" /></a>' +
@@ -369,7 +369,7 @@ function onShowEditChannel (e) {
 		
 	} else {
 		$(".addChatMembersBanner a").text("No one is invited. Tap to send invites");
-		console.log("No one here");
+		//console.log("No one here");
 	}
 
 	// hide trash cans
@@ -428,7 +428,10 @@ function doInitChannelMembers (e) {
 		click: function (e) {
 			var thisMember = e.dataItem;
 			APP.models.channel.membersDS.add(thisMember);
-			APP.models.channels.currentChannel.members.push(thisMember.uuid);
+			if (thisMember.contactUUID === null)
+				APP.models.channels.currentChannel.invitedMembers.push(thisMember.uuid);
+			else
+				APP.models.channels.currentChannel.members.push(thisMember.uuid);
 			APP.models.channel.membersDS.sync();
 			$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'">'+ thisMember.name + ' (' + thisMember.alias + ')' + '<span style="float:right; padding-right: 12px; font-size: 10px;"> <a data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><img src="images/trash.svg" /></a></span></li>');
 			APP.models.channel.potentialMembersDS.remove(thisMember);
