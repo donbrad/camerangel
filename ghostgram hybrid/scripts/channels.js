@@ -8,21 +8,19 @@ function addChannel(e) {
 	var channelMap = new ChannelMap();
     
     var name = $('#channels-addChannel-name').val(),
-        media = $('#channels-addChannel-media').val(),
-        archive = $('#channels-addChannel-archive').val(),
         description = $('#channels-addChannel-description').val(), 
-        guid = uuid.v4();
+        channelId = uuid.v4();
         
     channel.set("name", name );
     channel.set("isOwner", true);
 	channel.set('isPrivate', false);
-    channel.set("media",  media === "true" ? true : false);
-    channel.set("archive",  archive === "true" ? true : false);
+    channel.set("media",   true);
+    channel.set("archive", true);
   
     channel.set("description", description);
 	channel.set("members", [APP.models.profile.currentUser.userUUID]);
 	channel.set("invitedMembers", []);
-    channel.set("channelId", guid);
+    channel.set("channelId", channelId);
     
     channel.setACL(APP.models.profile.parseACL);
 	channel.save(null, {
@@ -32,7 +30,7 @@ function addChannel(e) {
           APP.models.channels.channelsDS.add(channel.attributes);
           mobileNotify('Added channel : ' + channel.get('name'));
 		  
-		  APP.models.channels.currentModel = findChannelModel(guid);
+		  APP.models.channels.currentModel = findChannelModel(channelId);
 		  APP.models.channels.currentChannel = APP.models.channels.currentModel;
 		  APP.kendo.navigate('#editChannel');
       },
@@ -64,6 +62,7 @@ function addChannel(e) {
     });	
 	
 }
+
 
 function findChannelModel(channelId) {
 	 var dataSource = APP.models.channels.channelsDS;
