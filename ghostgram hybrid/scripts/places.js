@@ -65,8 +65,22 @@ function doDeletePlace (e) {
 }
 
 function doCheckInPlace (e) {
-	if (e.preventDefault !== undefined)
+	if (e.preventDefault !== undefined) {
 		e.preventDefault();
+	}
+
+	var templateText = $('#placesTemplate').text();
+	var template = kendo.template(templateText);
+
+	$('#current-place').show();
+	$('#current-place > div').html(template(APP.models.places.currentPlace));
+
+	if (APP.models.places.checkedInPlace !== undefined) {
+		APP.models.places.placeListDS.add(APP.models.places.checkedInPlace);
+	}
+	APP.models.places.placeListDS.remove(APP.models.places.currentPlace);
+	APP.models.places.checkedInPlace = APP.models.places.currentPlace;
+
 }
 
 function onShowPlaces(e) {

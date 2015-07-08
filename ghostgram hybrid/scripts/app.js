@@ -52,7 +52,7 @@
               emaiVerified: false,
               phoneVerified: false,
 			  isVerified: false,
-			  currentPlace: null
+			  currentPlace: ''
           })
          
         },
@@ -170,7 +170,7 @@
             placesDS: new kendo.data.DataSource({offlineStorage: "places-offline"}, {group: 'category'}),
             placeListDS:  new kendo.data.DataSource({group: 'category'}),
 			geoPlacesDS: new kendo.data.DataSource({group: 'category'}),
-			current: new kendo.data.ObservableObject({
+			currentPlace: new kendo.data.ObservableObject({
 				placeId: '',
 				name: '',
 				address: '',
@@ -180,7 +180,8 @@
 				lng: 0,
 				publicName: '',
 				alias: ''
-			})
+			}),
+			checkedInPlace: undefined
         }
       },
        kendo: null,
@@ -742,7 +743,7 @@
 			 APP.models.profile.currentUser.set('rememberUsername', APP.models.profile.parseUser.get('rememberUsername'));
             APP.models.profile.currentUser.set('phoneVerified', APP.models.profile.parseUser.get('phoneVerified'));
             APP.models.profile.currentUser.set('emailVerified', APP.models.profile.parseUser.get('emailVerified'));
-            APP.models.profile.currentUser.set('currentPlace', APP.models.profile.parseUser.get('currentPlace'));
+
             APP.models.profile.parseACL = new Parse.ACL(APP.models.profile.parseUser);
             var uuid = APP.models.profile.currentUser.get('userUUID');
             APP.models.profile.currentUser.bind('change', syncProfile);
