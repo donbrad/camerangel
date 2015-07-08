@@ -292,7 +292,7 @@ function finalizeEditChannel(e) {
 	$("#showEditDescriptionBtn").velocity("fadeIn");
 	$("#channels-editChannel-description").css("display","none").val("");
 
-	mobileNotify("Saving");
+	mobileNotify("Updating " + APP.models.channels.currentModel.name);
 	
 	APP.kendo.navigate('#channels');
 }
@@ -320,6 +320,7 @@ function deleteMember (e) {
 function onShowEditChannel (e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
+	
 	var currentChannelModel = APP.models.channels.currentModel;
 	var members = currentChannelModel.members, thisMember = {};
 	var membersArray = new Array();
