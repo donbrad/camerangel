@@ -4,12 +4,13 @@
 
 @blue100: #27476E;
 @blue200: #2D93FF;
-@lightYellow: #FADDB0;
 @grey100: #979797;
 @grey200: #E0E0E0;
 @grey300: #f5f5f5;
 @greyBk: #EFF1F2;
 @black: #4A4A4A;
+@yellow100: #FFB74D;
+@yellow200: #FADDB0;
  
 
 /* elements */
@@ -35,12 +36,24 @@
 	float: right;
 }
 
-.center {
+.center-txt {
 	text-align: center;
+}
+
+.right-txt {
+	text-align: right;
+}
+
+.left-txt {
+	text-align: left;
 }
 
 .appBox {
 	.pad;
+	h1, h2, h3, h4, h5, p {
+		margin-left: 0px;
+		margin-right: 0px;
+	}
 }
 
 .listBox {
@@ -103,6 +116,7 @@ h4,
 h5,
 p {
     margin: 0px;
+    line-height: 1.5;
 }
 .caption {
     font-size: 13px;
@@ -118,6 +132,14 @@ input {
     border-bottom: 1px solid #e0e0e0;
     padding: .5em .7em;
 }
+.standard-input {
+	width: 100%;
+    border: 0px;
+    font-size: 14px;
+    border-bottom: 1px solid #e0e0e0;
+    padding: .5em .7em;
+}
+
 label {
     font-size: 12px;
 }
@@ -143,6 +165,10 @@ form {
 }
 .invisible {
     visibility: hidden;
+}
+
+.loading-sm {
+	height: 24px;
 }
 /* Colors */
 
@@ -172,6 +198,35 @@ form {
 }
 
 /* Elements */
+
+.status {
+	height: 10px;
+}
+
+.verified-txt {
+	color: @blue200;
+	font-size: 12px;
+	vertical-align: top;
+	line-height: 2;
+}
+
+.unverified-txt {
+	color: @yellow100;
+	font-size: 12px;
+	vertical-align: top;
+	line-height: 2;
+}
+
+.guest-txt {
+	font-size: 12px;
+	color: #979797;
+	vertical-align: top;
+	line-height: 2;
+}
+
+.user-status-icon {
+	height: 1rem;
+}
 
 .line {
     border: 1px solid rgba(0, 0, 0, 0.12);
@@ -267,6 +322,33 @@ form {
     text-decoration: none;
     transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btnBlue {
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    -webkit-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
+    -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
+    color: #ffffff !important;
+    font-size: 14px !important;
+    background: @blue200 !important;
+    padding: 10px 20px 10px 20px;
+    text-decoration: none;
+}
+.btnBlue:hover {
+    background: @blue100 !important;
+    text-decoration: none;
+}
+.btnBlue:active {
+    background: @blue100 !important;
+    text-decoration: none;
+    transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.btnBlue:disabled {
+    background: @blue200 !important;
 }
 
 .btnClear {
@@ -450,6 +532,10 @@ form {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.fullWidth {
+	width: 100%;
+}
 /* Scrollbar */
 
 .km-flat .km-touch-scrollbar {
@@ -514,7 +600,6 @@ div.km-header a img{
 .km-flat .km-navbar {
     /* font-size: 0.9em; */
     /* color: rgb(39,71,110); */
-    
     background-color: #27476E;
     color: #fff;
     box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.12), 0px 2px 2px 0px rgba(0, 0, 0, 0.24);
@@ -1079,7 +1164,8 @@ div.km-header a img{
 }
 
 #channel-addChannel-list li:first-child,
-#channels-editChannel-list li:first-child {
+#channels-editChannel-list li:first-child,
+* li:first-child {
 	border: none !important;
 }
 
@@ -1667,6 +1753,89 @@ div.loginBox > form > div > ul > li {
     }
 }
 
+#place-checkInImg {
+	vertical-align: bottom;
+	height: 18px;
+}
+
+#place-checkIn-circle {
+	height: 4rem;
+	width: 4rem;
+	.shadow;
+	border-radius: 2rem;
+	text-align: center;
+	position: fixed;
+	bottom: 2rem;
+	right: 1rem;
+	padding-top: 1rem;
+	p {
+		width: 55px;
+		position: absolute;
+		right: 4.5rem;
+		top: 1.25rem;
+	}
+	img {
+		right: 30px;
+		position: initial;
+	}
+}
+
+.locatingBox {
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	margin-top: 1rem;
+	margin: 0.75rem 1rem 0.75rem 1rem;
+	h4 {
+		margin-bottom: 1rem;
+	}
+	img {
+		vertical-align: middle;
+	}
+}
+
+.places-map {
+	background: url("../images/places-map.png") center center fixed;
+	background-image: cover;
+	background-width: 100%;
+	height: 250px;
+}
+
+.confirmPlaceAddress {
+	box-shadow: 0px -2px 4px 0px rgba(0,0,0,0.12);
+	padding: 1rem;
+	h4, p {
+		margin-left: 0px;
+		margin-right: 0px;
+	}
+	#autoCheckInText {
+		vertical-align: super;
+		font-size: 14px;
+		margin-left: 0.5rem;
+	}
+}
+
+.mapInfo {
+	box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.12);
+}
+
+.circleBtn-text {
+	color: @black;
+}
+
+.km-flat .km-switch-handle,
+.km-flat .km-switch-wrapper, .km-flat .km-switch-container, .km-flat .km-switch-background {
+	border-radius: 0.8em;
+}
+
+.km-flat .km-switch-handle, .km-flat .k-slider-selection, .km-flat .km-switch-background {
+	color: @blue200;
+}
+
+#places-checkIn > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.confirmPlaceAddress > p:nth-child(1) > span > span > img {
+	vertical-align: sub;
+}
+
 /* Contact List styles */
 .contactSearchBox {
 	padding: 0.5rem 1rem;
@@ -1970,6 +2139,37 @@ div.loginBox > form > div > ul > li {
 	background-color: @greyBk;
 	color: @blue200;
 	padding: 0.5rem 1rem;
+}
+
+.editChatImg {
+	margin-left: 1rem;
+	margin-right: 0.5rem;
+}
+
+.addedChatMember {
+	background: @blue200;
+	width: 100%;
+	padding-left: 1rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
+	color: #fff;
+}
+
+#channelMembers-listview li {
+	border-bottom: 1px solid @grey200;
+	padding: 0.25rem 1rem 0.25rem 1rem;
+}
+
+#channelMembers > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div.km-listview-wrapper > form > div > input[type="search"] {
+	width: 100%;
+    border: 0px;
+    font-size: 14px;
+    border-bottom: 1px solid #e0e0e0;
+    padding: .5em .7em;
+}
+
+.km-widget .km-filter-wrap:before {
+	display: none;
 }
 
 /* Don's development styles...*/
