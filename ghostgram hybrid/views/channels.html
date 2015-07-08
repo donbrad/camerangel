@@ -168,57 +168,45 @@
  
 </div>
 
-
+<!-- Edit chat -->
 <div data-role="view" id="editChannel" data-model="APP.models.channels.currentChannel" style="display: none;" data-show="onShowEditChannel"  data-init="onInitEditChannel" class="appearance">
     <div data-role="header">
         <div data-role="navbar">
-			<a data-click="finalizeEditChannel" type="button" data-role="button" data-align="left" >Done</a>
-            <span> Edit Chat</span>
-            <a data-align="right" data-role="button"  data-rel="drawer" href="#channelMembers" > <i class="ghostIconNavbar fa fa-users"></i> </a>
+            <span> Edit Chat </span>
+            <a data-role="button" href="#:back" data-align="left">
+            	<img src="images/nav-back.svg" />
+            </a>
         </div>
     </div>
 
 	<div>
 		 <form>
-			<ul data-role="listview" data-style="inset" id="channels-editChannel-list">
-				<li>
-					<label>Name
-						<input type="text" id="channels-editChannel-name" data-bind="value: name"  />
-					</label>
-				</li>
-				 <li>
-					<label>Description
-						<input type="text" id="channels-editChannel-description" data-bind="value: description" />
-					</label>
-				</li>
-				 <li>
-				   <label>Archive
-						<select id="channels-editChannel-archive" data-bind="value: media">
-							<option value="false">No: Nothing is archived</option>
-							<option value="true">Yes: Content can be saved</option>
-						</select>
-					</label>
-				</li>
-			</ul>
+			<input type="text" id="channels-editChannel-name" data-bind="value: name"  />
+			<input type="text" class="clearable" style="display: none" id="channels-editChannel-description" value="" placeholder="Description"/>
+			<a class="btnClear-grey" data-role="button" data-click="showEditDescription" id="showEditDescriptionBtn">Add description</a>
 		</form> 
-
-		<div style="padding-left: 16px; padding-right: 16px; padding-bottom: 12px;">
-			<div style="background: #fff; padding-bottom: 12px; padding-top: 2px;">
-				<div class="ghostLabel" style="padding-left: 6px;" >
-					Members
-				</div>
-				<div >
-					<ul class="ghostMemberUl" id="editChannelMemberList">
-
-					</ul>
-
-				</div>
+		<div>
+			<div class="pad">
+				<img src="images/edit-chat.svg" /> Chat Members
+				<span class="right">
+					<a class="btnClear" data-role="button" data-click="toggleListTrash;" id="listTrash">Edit</a>
+					<a class="btnClear" data-role="button" data-click="toggleListDone;" id="listDone">Done</a>
+				</span>
 			</div>
+			<div class="addChatMembersBanner">
+				<a class="btnClear-sm" data-role="button" href="#channelMembers">+ add new members</a>
+			</div>
+			<div>
+				<ul class="list-inline" id="editChannelMemberList"></ul>
+			</div>	
 		</div>
 	</div>	  
+	<div class="footerBk" data-role="footer">
+            <a class="btnSpan-btm btnYellow" data-click="finalizeEditChannel" type="button" data-role="button">Save</a>
+    	</div>
 </div>
 
- <div data-role="view" id="channel" data-layout="main" data-model="APP.models.channel" data-show="onShowChannel" data-init="onInitChannel">  
+ <div data-role="view" id="channel" data-layout="main" data-model="APP.models.channel" data-show="onShowChannel" data-init="onInitChannel">
      <div data-role="header">
         <div data-role="navbar" id="channelNavBar">
             <img src="" id="channelImage" height="32" style="vertical-align: middle; border-radius: 50%"/>
@@ -232,7 +220,7 @@
         </div>
          
     </div>
-	 <div id="privacyStatus" class="hidden">Privacy Mode On</div>
+	 <div id="privacyStatus" class="hidden">Ghost Mode On</div>
      <div class="appBox" style="padding-bottom: 24px;">
          <ul id="messages-listview"></ul>
      </div>
@@ -320,34 +308,48 @@
 </div> 
 </script>
 
-<script type="text/x-kendo-template" id="memberTemplate">      
-    <div style="height: 56px; clear: both;">
-        <img style="width: 48px; height: auto; max-height: 48px; over-flow: hidden; float:left; margin: 0px 8px 8px 0px;" src="#:data.photo#">
-        <div style="clear: both;">
-          <span class="ghostTextLarge"> #: data.alias # </span>         
-        </div>
-        <div class="ghostText">
-          <span class="ghostTiny">(#: data.name #)</span>   
-        </div>
-        <div style="float: right; color:\\#2e2e2e; font-size: 11px;">
-            #if (data.contactUUID === undefined || data.contactUUID === null || data.contactUUID === '') { # <em> New User - Invite! </em> # } else {#  <strong> Verified User </strong> #} #
-        </div>
-    </div>
-</script>
 
-<div data-role="drawer" id="channelMembers" style="width: 240px" data-title="Members" data-position='right' data-swipe-to-open="false" data-init="doInitChannelMembers" data-show="doShowChannelMembers" data-views="['editChannel', 'addChannel']">
+<!-- edit chat members -->
+<div data-role="view" id="channelMembers" data-layout="main" data-title="Invite" data-init="doInitChannelMembers" data-show="doShowChannelMembers" data-transition="overlay:up">
     <header data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-			<a data-click="addChannelMember" type="button" data-role="button" data-align="right" ><i class="fa fa-plus"></i></a>
+            <a data-role="backbutton" data-align="left">Back</a>
         </div>
     </header>
-
-	
-    <ul id="channelMembers-listview">
-		
-    </ul>
+    <div class="addedChatMember" style="display: none"></div>
+    <ul id="channelMembers-listview"></ul>
 </div>
+
+<script type="text/x-kendo-template" id="memberTemplate">      
+    <div>
+    	<div class="left">
+    	<img src="#: data.photo #" class="circle-img-md" />
+    	</div>
+    	<div class="left">
+    		<h4>#: data.name #
+	    	#if (data.phoneVerified){#
+	    		
+		    		<img class="user-status-icon" src="images/user-verified.svg" />
+		    		<span class="verified-txt">  Verified </span>
+	    		</h4>
+	    	#} else if (data.contactUUID === undefined || data.contactUUID === null || data.contactUUID === '') {#
+	    		
+		    		<img class="user-status-icon" src="images/status-guest.svg" />
+		    		<span class="guest-txt">  Awaiting sign up </span>
+	    		
+	    	#} else {#
+	    		
+		    		<img class="user-status-icon" src="images/status-unverified.svg" />
+		    		<span class="unverified-txt">  Awaiting verification </span>
+	    	
+	    	#}#
+  		</h4>
+		<p>#: data.alias #</p>
+    	</div>
+            
+     </div>
+</script>
 
 <div data-role="drawer" id="channelPresence" style="width: 240px" data-title="Presence" data-swipe-to-open="false" data-position='right' data-init="doInitChannelPresence" data-show="doShowChannelPresence" data-views="['channel']">
     <header data-role="header">

@@ -1,15 +1,14 @@
- <div data-role="view" data-title="Places" id="places" data-layout="main" data-model="APP.models.places" data-show="onShowPlaces" data-init="onInitPlaces" >
+ <div data-role="view" data-title="Places" id="places" data-layout="main" data-model="APP.models.places" data-show="onShowPlaces" data-init="onInitPlaces">
    <div data-role="header">
         <div data-role="navbar">
             <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img class="nav-menu" src="images/menu-icon.svg"/></a>
             <span data-role="view-title"></span>
             <a data-role="button" id="buttonOnLocateMe" data-click="onLocateMe" data-align="right"> <i class="ghostIconNavbar fa fa-map-marker"></i> </a>
         </div>
-    </div>
-
-     <div style="padding-top: 6px; padding-bottom: 18px;">
+    </div>	
+    <div class="mapInfo">
          <div class="placesSearchBox">
-             <input class="clearable" style="width: 85%;" id= "placeSearchQuery" type="text" placeholder="Search places..."/>
+             <input class="clearable" style="width: 85%;" id= "placeSearchQuery" type="text" placeholder="Search my places..."/>
              <a data-role="button"  data-click="goPlaceSearchQuery">
                  <i class="ghostIconSmall fa fa-search"></i>
              </a>
@@ -22,6 +21,12 @@
 
          <ul id="places-listview"></ul>
      </div>
+     <div class="hidden" data-role="footer">
+            <a class="btnBlue" id="place-checkIn-circle" data-role="button" data-rel="modalview" href="#modalview-places-locate" data-click="findplaceTest">
+	     		<p class="circleBtn-text" id="place-checkin-text">check in</p>
+	     		<img src="images/check-in.svg" />
+     		</a>
+    </div>
 
      <ul data-role="actionsheet" id="placesActions" data-popup='{"direction": "left"}'>
          <li><a data-action="doCheckInPlace">Check In</a></li>
@@ -30,7 +35,57 @@
      </ul>
  </div>
 
- <div data-role="view" data-title="Find Place" id="findplace" data-layout="main" data-model="APP.models.places" data-show="onShowFindPlace" data-init="onInitFindPlace" >
+<!-- Locate Modal-->
+<div data-role="modalview" style="width: 50%; display: none;" data-title="Locating" id="modalview-places-locate" data-layout="main" data-init="onShowFindPlace" data-model="APP.models.places">
+		<div class="locatingBox">
+			<h4 class="helper">
+				<img src="images/loading.svg" class="loading-sm"/> Locating...
+			</h4>
+			<img id="location-search" src="images/location-search.svg" />
+		</div>
+</div>
+
+<!-- Locate View-->
+<div data-role="view" data-title="Check in" id="places-checkIn" data-layout="main" data-init="onShowFindPlace" data-native-transition="slide" data-model="APP.models.places">
+	<div data-role="header">
+        <div data-role="navbar">
+            <a data-role="backbutton" data-align="left">
+            	<img class="nav-menu" src="images/nav-back.svg"/>
+            </a>
+            <span data-role="view-title"></span>
+        </div>
+    </div>
+		<div class="confirmPlaceLocation">
+			<!-- replace map here -->
+			<div class="places-map"></div>
+			<div class="confirmPlaceAddress">
+				<p>Current location
+					<span class="right right-txt">
+						<span class="helper">
+							<img src="images/help.svg" />
+							Not the right place?
+						</span><br />
+						<a class="btnClear-sm">
+							See other places
+						</a>
+					</span>
+				</p>
+				<h4> 123 Main St</h4>
+				<p><span>Los Angeles</span> <span>CA</span> <span>90001</span> </p>
+				<br />
+				<input type="checkbox" data-role="switch" data-checked="false" data-change="autoCheckInChange" id="autoCheckIn"/> <span id="autoCheckInText">Auto check-in when I'm here</span>
+			</div>
+		</div>
+		<div data-role="footer">
+            <a class="btnYellow btnSpan-btm" data-role="button">
+	     		Check in
+     		</a>
+    	</div>
+</div>
+
+
+<!-- Find Place -->
+ <div data-role="view" data-title="Find Place" id="findplace" data-layout="main" data-model="APP.models.places" data-show="onShowFindPlace" data-before-open="onShowFindPlace" >
    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -45,7 +100,7 @@
 	    <div class="appBox">
 		    <div style="padding-bottom: 4px; padding-top: 4px;">
 	        	<input style="font-size: 16px; margin-left: 6px; width: 90%;" id="findPlaceSearchQuery" class="clearable" type="search"/>
-		         <a data-role="button" data-click="findPlace">  
+		         <a class="btnClear" data-role="button" data-click="findPlace">  
 		         	<i class="fa fa-search"></i> 
 		         </a>
 	        </div>
@@ -174,16 +229,20 @@
  <script type="text/x-kendo-template" id="placesTemplate">
      <div style="min-height: 38px; border-radius: 9px; background-color: \\#fff; padding: 4px;">
          # if (data.category === 'Place') { #
-         <div class="ghostText">#: data.name # </div>
-         <div class="ghostDescription">#: data.address # </div>
-         <div style="color: \\#2e2e2e;">
-		   <span style="float: left;">
-		   # if (privacy === 'true') { # Privacy On # } else { # Privacy Off # }#,  # if (visible === 'true') { # Visible # } else { # Not Visible # }#
-		   </span>
-         </div>
-         <div style="clear:both;"> </div>
+	         <h4>#: data.name # </h4>
+	         <p>#: data.address # </p>
+	         <p class="helper">
+			   <span class="left">
+			 # if (visible === 'true') { # 
+			 	<img src="images/place-public.svg" /> Public # } 
+			 else { # 
+			 	<img src="images/place-private.svg" /> Secret # }#
+			   </span>
+	         </p>
+	         <div class="clearfix"> </div>
          # } else { #
-            <div class="ghostText">#: data.address # </div>
+            <div class="ghostText">#: data.name # </div>
+            #: console.log(data) #
          # } #
      </div>
  </script>

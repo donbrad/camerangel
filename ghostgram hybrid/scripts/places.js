@@ -155,6 +155,7 @@ function onLocateMe(e) {
 		e.preventDefault();
 	}
 
+
 	var latlng = new google.maps.LatLng(APP.location.position.lat, APP.location.position.lng);
 	APP.models.places.geoPlacesDS.data([]);
 	var locationsArray = [], placesArray = [];
@@ -233,6 +234,7 @@ function onLocateMe(e) {
 				return;
 			}
 			if (results.length === 0) {
+				mobileNotify('No results found for locaiton');
 				return;
 			}
 
@@ -428,4 +430,23 @@ function inPlaceRadius (lat1, lng1, lat2, lng2, radius) {
 		return false;
 	}
 }
+
+function onShowFindPlace() {
+	
+}
+
+function findplaceTest() {
+	setTimeout(function(){
+		$("#modalview-places-locate").data("kendoMobileModalView").close();
+		APP.kendo.navigate('#places-checkIn');
+	}, 2000);
+	
+	
+}
+
+// Auto check in
+function autoCheckInChange(e) {
+	console.log(e.checked);
+}
+
 

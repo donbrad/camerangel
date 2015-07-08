@@ -288,6 +288,12 @@ function finalizeEditChannel(e) {
 	updateParseObject('channelmap', 'channelId', channelId, 'members', memberArray);
 	// Add new members phone numbers to the channel map
 	updateParseObject('channelmap', 'channelId', channelId, 'invitedMembers', invitedPhoneArray);
+
+	// Reset UI
+	$("#showEditDescriptionBtn").velocity("fadeIn");
+	$("#channels-editChannel-description").css("display","none").val("");
+
+	mobileNotify("Saving");
 	
 	APP.kendo.navigate('#channels');
 }
@@ -296,7 +302,7 @@ function onInitEditChannel (e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
 	APP.models.channel.membersDS.data([]);
-	$('#editChannelMemberList li').remove(); 
+	$('#editChannelMemberList li').remove();
 }
 
 function deleteMember (e) {
@@ -322,7 +328,7 @@ function onShowEditChannel (e) {
 	//Zero out current members as we're going rebuild ds and ux
 	APP.models.channel.membersDS.data([]);
 	$('#editChannelMemberList').empty();
-	
+
 	if (members.length > 0) {
 
 		// Group channel members are referenced indirectly by uuid 
@@ -330,16 +336,20 @@ function onShowEditChannel (e) {
 
 		for (var i=0; i<members.length; i++) {
 			thisMember = getContactModel(members[i]);
+
 			// Current user will be undefined in contact list.
 			if (thisMember !== undefined) {
 				APP.models.channel.membersDS.add(thisMember);
-
-				$("#editChannelMemberList").append('<li style="clear:both;" id="'+thisMember.uuid+
-												   '" class="ghostMemberLi"> <span style="float: left;" class="ghostMemberName">'+ 
-												   thisMember.name + ' (' + thisMember.alias + ')' + 
-												   '</span><span style="float:right; "> <a data-param="' + 
-												   thisMember.uuid +
-												   '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><img src="images/trash.svg" /></i></a></span></li>');	
+				console.log(thisMember);
+				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+
+												   '">'+
+												   '<div class="left"><img class="circle-img-md editChatImg" src="'+ thisMember.photo +'"/></div>' + 
+												   '<h4>'+ thisMember.name + ' <img class="user-status-icon" src="images/user-verified.svg" />'+
+												   '<span class="right">' +
+												   '<a class="listTrash" data-param="' + thisMember.uuid +
+												   '" data-role="button" class="clearBtn" data-click="deleteMember" onclick="deleteMember(this)" ><img src="images/trash.svg" /></a></span>' +
+												   '</h4><p>' + thisMember.alias + '</p>' + 
+												   '<div class="clearfix"></div></li>');	
 			}
 		}
 
@@ -348,13 +358,22 @@ function onShowEditChannel (e) {
 			for (var j=0; j<members.length; j++) {
 				thisMember = findContactByUUID(members[j]);
 				APP.models.channel.membersDS.add(thisMember);
-
-				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'" class="ghostMemberLi"> <span class="ghostMemberName">'+ thisMember.name + ' (' + thisMember.alias + ')' + '</span><span style="float:right; font-size: 10px;"> <a data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><i class="ghostIconNavbar fa fa-trash"></i></a></span></li>');	
+				console.log(thisMember);
+				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'">' +
+					'<h4>'+ thisMember.name + 
+					'<a class="right listTrash" data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)"><img src="images/trash.svg" /></a>' +
+					'</h4><p class="helper">'+ thisMember.alias +'<div class="clearfix"></div></li>');	
 
 			}
 		}	
 		
+	} else {
+		$(".addChatMembersBanner a").text("No one is invited. Tap to send invites");
+		console.log("No one here");
 	}
+
+	// hide trash cans
+	$(".listTrash, #listDone").css("display", "none");
 		
 }
 
@@ -403,16 +422,17 @@ function doInitChannelMembers (e) {
         template: $("#memberTemplate").html(),
 		filterable: {
                 field: "name",
-                operator: "startswith"
+                operator: "startswith",
+                placeholder: "Search contacts..."
             },
 		click: function (e) {
 			var thisMember = e.dataItem;
 			APP.models.channel.membersDS.add(thisMember);
-			$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'">'+ thisMember.name + ' (' + thisMember.alias + ')' + '<span style="float:right; padding-right: 12px; font-size: 10px;"> <a data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><i class="ghostIconNavbar fa fa-trash"></i></a></span></li>');
+			$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'">'+ thisMember.name + ' (' + thisMember.alias + ')' + '<span style="float:right; padding-right: 12px; font-size: 10px;"> <a data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><img src="images/trash.svg" /></a></span></li>');
 			APP.models.channel.potentialMembersDS.remove(thisMember);
-		
-			
+			$(".addedChatMember").text("+ added " + thisMember.name).velocity("slideDown", { duration: 300, display: "block"}).velocity("slideUp", {delay: 1400, duration: 300, display: "none"});
 		}
+		// ToDo (Don): Fix broken wiring of adding members
 		
     });
 }
@@ -509,5 +529,25 @@ function addChatStep2(e) {
 		mobileNotify("Chat name is required");
 	}
 
+}
+
+
+function toggleListTrash() {
+	$(".listTrash").velocity("fadeIn", {duration: 100});
+	$("#listTrash").velocity("fadeOut", {duration: 100});
+	$("#listDone").velocity("fadeIn", {delay: 100, duration: 100});
+	$(".addChatMembersBanner").velocity("slideUp", {duration: 100});
+}
+
+function toggleListDone(){
+	$("#listDone").velocity("fadeOut", {duration: 100});
+	$(".addChatMembersBanner").velocity("slideDown", {duration: 100});
+	$(".listTrash").velocity("fadeOut", {duration: 100});
+	$("#listTrash").velocity("fadeIn", {delay: 100, duration: 100});
+}
+
+function showEditDescription(){
+	$("#channels-editChannel-description").velocity("slideDown",{duration: 1500, easing: "spring", display: "block"});
+	$("#showEditDescriptionBtn").velocity("fadeOut");
 }
 
