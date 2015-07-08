@@ -420,7 +420,7 @@ function doShowChannelMembers (e) {
 				APP.models.channel.membersDS.add(invitedMember);
 				dataSource.filter( { field: "uuid", operator: "eq", value: invitedMember.uuid});
 				var view1 = dataSource.view();
-				var contact1 = view[0];
+				var contact1 = view1[0];
 				dataSource.filter([]);
 				APP.models.channel.potentialMembersDS.remove(contact1);
 			}
