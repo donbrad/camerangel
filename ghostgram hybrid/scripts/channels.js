@@ -433,7 +433,7 @@ function doInitChannelMembers (e) {
 				APP.models.channels.currentChannel.invitedMembers.push(thisMember.uuid);
 				updateParseObject('channels', 'uuid', APP.models.channels.currentChannel.uuid, 'invitedMembers', APP.models.channels.currentChannel.invitedMembers);
 			} else {
-				APP.models.channels.currentChannel.members.push(thisMember.uuid);
+				APP.models.channels.currentChannel.members.push(thisMember.contactUUID);
 				updateParseObject('channels', 'uuid', APP.models.channels.currentChannel.uuid, 'members', APP.models.channels.currentChannel.members);
 			}
 			APP.models.channel.membersDS.sync();
