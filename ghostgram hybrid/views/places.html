@@ -5,14 +5,10 @@
             <span data-role="view-title"></span>
             <a data-role="button" id="buttonOnLocateMe" data-click="onLocateMe" data-align="right"> <i class="ghostIconNavbar fa fa-map-marker"></i> </a>
         </div>
-    </div>
-    <div class="places-map">
-    	
-    </div>
-	
+    </div>	
     <div class="mapInfo">
          <div class="placesSearchBox">
-             <input class="clearable" style="width: 85%;" id= "placeSearchQuery" type="text" placeholder="Search places..."/>
+             <input class="clearable" style="width: 85%;" id= "placeSearchQuery" type="text" placeholder="Search my places..."/>
              <a data-role="button"  data-click="goPlaceSearchQuery">
                  <i class="ghostIconSmall fa fa-search"></i>
              </a>
@@ -20,14 +16,11 @@
 
          <ul id="places-listview"></ul>
      </div>
-     <a class="btnBlue" id="place-checkIn-circle" data-role="button" data-click="findplaceTest">
-     	<p class="circleBtn-text" id="place-checkin-text">check in</p>
-     	<img src="images/check-in.svg" />
-     </a>
-     <div class="hidden" data-role="footer">
-            <a class="btnSpan-btm btnBlue" type="button" data-role="button">
-            	<img src="images/check-in.svg" id="place-checkInImg" /> Check in
-            </a>
+     <div data-role="footer">
+            <a class="btnBlue" id="place-checkIn-circle" data-role="button" data-rel="modalview" href="#modalview-places-locate" data-click="findplaceTest">
+	     		<p class="circleBtn-text" id="place-checkin-text">check in</p>
+	     		<img src="images/check-in.svg" />
+     		</a>
     </div>
 
      <ul data-role="actionsheet" id="placesActions" data-popup='{"direction": "left"}'>
@@ -37,7 +30,57 @@
      </ul>
  </div>
 
- <div data-role="view" data-title="Find Place" id="findplace" data-layout="main" data-model="APP.models.places" data-show="onShowFindPlace" data-init="onInitFindPlace" >
+<!-- Locate Modal-->
+<div data-role="modalview" style="width: 50%; display: none;" data-title="Locating" id="modalview-places-locate" data-layout="main" data-init="onShowFindPlace" data-model="APP.models.places">
+		<div class="locatingBox">
+			<h4 class="helper">
+				<img src="images/loading.svg" class="loading-sm"/> Locating...
+			</h4>
+			<img id="location-search" src="images/location-search.svg" />
+		</div>
+</div>
+
+<!-- Locate View-->
+<div data-role="view" data-title="Check in" id="places-checkIn" data-layout="main" data-init="onShowFindPlace" data-native-transition="slide" data-model="APP.models.places">
+	<div data-role="header">
+        <div data-role="navbar">
+            <a data-role="backbutton" data-align="left">
+            	<img class="nav-menu" src="images/nav-back.svg"/>
+            </a>
+            <span data-role="view-title"></span>
+        </div>
+    </div>
+		<div class="confirmPlaceLocation">
+			<!-- replace map here -->
+			<div class="places-map"></div>
+			<div class="confirmPlaceAddress">
+				<p>Current location
+					<span class="right right-txt">
+						<span class="helper">
+							<img src="images/help.svg" />
+							Not the right place?
+						</span><br />
+						<a class="btnClear-sm">
+							See other places
+						</a>
+					</span>
+				</p>
+				<h4> 123 Main St</h4>
+				<p><span>Los Angeles</span> <span>CA</span> <span>90001</span> </p>
+				<br />
+				<input type="checkbox" data-role="switch" data-checked="false" data-change="autoCheckInChange" id="autoCheckIn"/> <span id="autoCheckInText">Auto check-in when I'm here</span>
+			</div>
+		</div>
+		<div data-role="footer">
+            <a class="btnYellow btnSpan-btm" data-role="button">
+	     		Check in
+     		</a>
+    	</div>
+</div>
+
+
+<!-- Find Place -->
+ <div data-role="view" data-title="Find Place" id="findplace" data-layout="main" data-model="APP.models.places" data-show="onShowFindPlace" data-before-open="onShowFindPlace" >
    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>

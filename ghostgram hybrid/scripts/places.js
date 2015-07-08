@@ -2,7 +2,7 @@
 function onInitPlaces(e) {
 	e.preventDefault();
 
-	$("#place-checkin-text").velocity("fadeIn", {delay: 1000});
+	//$("#place-checkin-text").velocity("fadeIn", {delay: 1000});
 
 	var dataSource = APP.models.places.placeListDS;
 
@@ -151,7 +151,7 @@ function updateCurrentLocation (loc) {
 function onLocateMe(e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
-	console.log("locate");
+
 
 	var latlng = new google.maps.LatLng(APP.location.position.lat, APP.location.position.lng);
 	APP.models.places.geoPlacesDS.data([]);
@@ -415,6 +415,22 @@ function inPlaceRadius (lat1, lng1, lat2, lng2, radius) {
 	}
 }
 
-function findplaceTest() {
-	APP.kendo.navigate('#findplace');
+function onShowFindPlace() {
+	
 }
+
+function findplaceTest() {
+	setTimeout(function(){
+		$("#modalview-places-locate").data("kendoMobileModalView").close();
+		APP.kendo.navigate('#places-checkIn');
+	}, 2000);
+	
+	
+}
+
+// Auto check in
+function autoCheckInChange(e) {
+	console.log(e.checked);
+}
+
+
