@@ -47,6 +47,17 @@ function onInitPlaces(e) {
 			$("#placesActions").data("kendoMobileActionSheet").open();
 		}
 	});
+
+	$('#current-place > div').click( function () {
+		var placesActions = $('#placesActions').data('kendoMobileActionSheet');
+
+		$('#do-check-in-place').hide();
+
+		placesActions.one('close', function () {
+			$('#do-check-in-place').show();
+		});
+		placesActions.open();
+	});
 }
 
 function doEditPlace (e) {
