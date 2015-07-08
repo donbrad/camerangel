@@ -129,12 +129,12 @@
     </div>
      <form id="addChat-step1">
      	<h3>
-     		<img src="images/flag.svg" id="start-chat-img"/> Start a chat
+     		<img src="images/flag.svg" id="start-chat-img"/> Create a New Chat
      	</h3>
-     	<p>Chat with friends and family around topics, shared interests, and places.</p>
+     	<p>Chat with friends and family around shared interests.</p>
+		
         <ul data-role="listview" data-style="inset" id="channel-addChannel-list">
-            <li>
-            	
+            <li>         	
                 <input type="text" class="clearable" id="channels-addChannel-name" placeholder="What's the topic?" value="" required />
                 
                 <input type="text" class="clearable" style="display: none" id="channels-addChannel-description" value="" placeholder="Description"/>
@@ -149,22 +149,25 @@
                 </label>
             </li>
         </ul>
-        <a class="btnClear" data-role="button" style="opacity: 0" data-click="addChatStep2" id="btnAddChannel-step1">Next</a>
+		  <p>
+			 It's easy!.  First pick a topic.  Add a description if you like.  And then invite everyone. 
+		 </p>
     </form>
-    <form id="addChat-step2">
-    	<p>Invite friends</p>
-    	<img src="images/search.svg" width="18" />
-		<input id="contactSearchInput" class="clearable" type="text" placeholder="Search contacts" />
-    </form>
+   
 	
-    
-    	<div class="footerBk" data-role="footer">
-    		<div class="helperBox" id="addChat-helper1">
-    			<p class="helper"><img src="images/help.svg" /> Looking for 1-on-1 private chat?</p>
-    			<a class="btnClear" data-role="button" href="views/contacts.html">Go to contacts</a>
-    		</div>
-            <a id="addChat-createBtn" class="btnSpan-btm btnYellow" style="display: none" data-click="addChannel" type="button" data-role="button" disabled>Create</a>
-    	</div>
+	<div class="footerBk" data-role="footer">
+ 		<div class="helperBox" id="addChat-helper1" >
+			<p class="helper"><img src="images/help.svg" /> Looking for 1-on-1 private chat?</p>
+			<a class="btnClear" data-role="button" href="views/contacts.html">See your ghostgram contacts</a>
+		</div>
+		<div style="height: 18px;">
+		</div>
+		<div>
+			 <p>Create this chat and then select people to invite</p>
+			<a id="addChat-createBtn" class="btnSpan-btm btnYellow" data-click="addChannel" type="button" data-role="button">Create</a>
+		</div>
+		
+	</div>
  
 </div>
 
@@ -182,8 +185,8 @@
 	<div>
 		 <form>
 			<input type="text" id="channels-editChannel-name" data-bind="value: name"  />
-			<input type="text" class="clearable" style="display: none" id="channels-editChannel-description" value="" placeholder="Description"/>
-			<a class="btnClear-grey" data-role="button" data-click="showEditDescription" id="showEditDescriptionBtn">Add description</a>
+			<input type="text" class="clearable" id="channels-editChannel-description" data-bind="value: description" placeholder="Add optional description"/>
+			
 		</form> 
 		<div>
 			<div class="pad">
@@ -313,8 +316,10 @@
 <div data-role="view" id="channelMembers" data-layout="main" data-title="Invite" data-init="doInitChannelMembers" data-show="doShowChannelMembers" data-transition="overlay:up">
     <header data-role="header">
         <div data-role="navbar">
-            <span data-role="view-title"></span>
             <a data-role="backbutton" data-align="left">Back</a>
+            <span data-role="view-title"></span>
+            <a data-role="button" data-align="right" href="views/contacts.html#contactImport"> Import</a>
+
         </div>
     </header>
     <div class="addedChatMember" style="display: none"></div>
@@ -336,12 +341,12 @@
 	    	#} else if (data.contactUUID === undefined || data.contactUUID === null || data.contactUUID === '') {#
 	    		
 		    		<img class="user-status-icon" src="images/status-guest.svg" />
-		    		<span class="guest-txt">  Awaiting sign up </span>
+		    		<span class="guest-txt">  New User </span>
 	    		
 	    	#} else {#
 	    		
 		    		<img class="user-status-icon" src="images/status-unverified.svg" />
-		    		<span class="unverified-txt">  Awaiting verification </span>
+		    		<span class="unverified-txt">  UnVerified</span>
 	    	
 	    	#}#
   		</h4>

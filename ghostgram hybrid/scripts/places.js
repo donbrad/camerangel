@@ -161,6 +161,7 @@ function updateCurrentLocation (loc) {
 		current.set('visible', loc.visible ? loc.visible : "true");
 	}
 }
+
 function onLocateMe(e) {
 	if (e.preventDefault !== undefined) {
 		e.preventDefault();

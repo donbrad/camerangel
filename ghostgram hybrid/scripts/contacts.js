@@ -501,6 +501,8 @@ function searchDeviceContacts(e) {
         // Two names?
         if (nameArray.length > 1) {
             unifyContacts(array);
+            APP.models.contacts.contactListDS.data([]);
+            APP.models.contacts.contactListDS.add(array[0]);
         } else {
             for (var i=0; i<array.length; i++) {
                 APP.models.contacts.contactListDS.add(array[i]);
@@ -508,6 +510,19 @@ function searchDeviceContacts(e) {
         }
 
 	});
+}
+
+// Filter contacts - unify matching names
+function filterContactsByName(contacts, firstName, lastName) {
+
+    var nameArray= [];
+    for (var i=0; i<contacts.length; i++) {
+        var familyName = contacts[i].familyName, middleName = contacts[i].middleName, givenName = contacts[i].givenName,
+            formattedName = contacts[i].formatted;
+
+
+    }
+
 }
 
 function unifyContacts(contacts) {
