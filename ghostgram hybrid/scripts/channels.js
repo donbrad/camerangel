@@ -384,21 +384,22 @@ function doShowChannelMembers (e) {
 	
 	var currentChannelModel = APP.models.channels.currentChannel;
     APP.models.channel.currentModel = currentChannelModel;
-	var members = currentChannelModel.members;
+	var members = currentChannelModel.members, invitedMembers = currentChannelModel.invitedMembers;
 	APP.models.channel.potentialMembersDS.data([]);
 	// Need to break observable link or contacts get deleted.
 	var contactArray = APP.models.contacts.contactsDS.data().toJSON();
 	APP.models.channel.potentialMembersDS.data(contactArray);
-	
+	var dataSource = APP.models.channel.potentialMembersDS;
+	APP.models.channel.membersDS.data([]);
+
 	if (members.length > 0) {
-		APP.models.channel.membersDS.data([]);
-		var dataSource = APP.models.channel.potentialMembersDS;
+
 		for (var i=0; i<members.length; i++) {
 			var thisMember = getContactModel(members[i]);
 			if (thisMember === undefined)
 				thisMember = findContactByUUID(members[i]);
 			if (thisMember !== undefined) {
-				thisMember = thisMember;
+
 				APP.models.channel.membersDS.add(thisMember);
 				dataSource.filter( { field: "uuid", operator: "eq", value: thisMember.uuid});
 				var view = dataSource.view();
@@ -409,8 +410,25 @@ function doShowChannelMembers (e) {
 
 		}
 		APP.models.channel.potentialMembersDS.sync();
-		//Todo:   Add invited members if this user owns the channel
-	}		
+	}
+	
+	if (invitedMembers.length > 0) {
+		for (var j=0; j<invitedMembers.length; j++) {
+			var invitedMember = findContactByUUID(invitedMembers[j]);
+			if (invitedMember !== undefined) {
+
+				APP.models.channel.membersDS.add(invitedMember);
+				dataSource.filter( { field: "uuid", operator: "eq", value: invitedMember.uuid});
+				var view1 = dataSource.view();
+				var contact1 = view[0];
+				dataSource.filter([]);
+				APP.models.channel.potentialMembersDS.remove(contact1);
+			}
+
+
+		}
+
+	}
 	
 }
 
