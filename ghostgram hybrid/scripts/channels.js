@@ -344,7 +344,7 @@ function onShowEditChannel (e) {
 				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+
 												   '">'+
 												   '<div class="left"><img class="circle-img-md editChatImg" src="'+ thisMember.photo +'"/></div>' + 
-												   '<h4>'+ thisMember.name + ' <img class="user-verified" src="images/user-verified.svg" />'+
+												   '<h4>'+ thisMember.name + ' <img class="user-status-icon" src="images/user-verified.svg" />'+
 												   '<span class="right">' +
 												   '<a class="listTrash" data-param="' + thisMember.uuid +
 												   '" data-role="button" class="clearBtn" data-click="deleteMember" onclick="deleteMember(this)" ><img src="images/trash.svg" /></a></span>' +
@@ -362,7 +362,7 @@ function onShowEditChannel (e) {
 				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'">' +
 					'<h4>'+ thisMember.name + 
 					'<a class="right listTrash" data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)"><img src="images/trash.svg" /></a>' +
-					'</h4><p class="helper"><img class="status" src="images/status-waiting.svg" /> Awaiting verification</p><div class="clearfix"></div></li>');	
+					'</h4><p class="helper">'+ thisMember.alias +'<div class="clearfix"></div></li>');	
 
 			}
 		}	
@@ -432,6 +432,7 @@ function doInitChannelMembers (e) {
 			APP.models.channel.potentialMembersDS.remove(thisMember);
 			$(".addedChatMember").text("+ added " + thisMember.name).velocity("slideDown", { duration: 300, display: "block"}).velocity("slideUp", {delay: 1400, duration: 300, display: "none"});
 		}
+		// ToDo (Don): Fix broken wiring of adding members
 		
     });
 }

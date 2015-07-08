@@ -4,12 +4,13 @@
 
 @blue100: #27476E;
 @blue200: #2D93FF;
-@lightYellow: #FADDB0;
 @grey100: #979797;
 @grey200: #E0E0E0;
 @grey300: #f5f5f5;
 @greyBk: #EFF1F2;
 @black: #4A4A4A;
+@yellow100: #FFB74D;
+@yellow200: #FADDB0;
  
 
 /* elements */
@@ -202,7 +203,28 @@ form {
 	height: 10px;
 }
 
-.user-verified {
+.verified-txt {
+	color: @blue200;
+	font-size: 12px;
+	vertical-align: top;
+	line-height: 2;
+}
+
+.unverified-txt {
+	color: @yellow100;
+	font-size: 12px;
+	vertical-align: top;
+	line-height: 2;
+}
+
+.guest-txt {
+	font-size: 12px;
+	color: #979797;
+	vertical-align: top;
+	line-height: 2;
+}
+
+.user-status-icon {
 	height: 1rem;
 }
 

@@ -328,15 +328,24 @@
     	</div>
     	<div class="left">
     		<h4>#: data.name #
-    	#if (data.phoneVerified){#
-    		<img class="user-verified" src="images/user-verified.svg" />
-    	#}#
-    		</h4>
-		#if (data.contactUUID === undefined || data.contactUUID === null || data.contactUUID === '') { #
-			<p class="helper"><img class="status" src="images/status-new.svg" /> Awaiting verification </p>
-		#} else {#
-			<p>#: data.alias #</p>
-		#}#
+	    	#if (data.phoneVerified){#
+	    		
+		    		<img class="user-status-icon" src="images/user-verified.svg" />
+		    		<span class="verified-txt">  Verified </span>
+	    		</h4>
+	    	#} else if (data.contactUUID === undefined || data.contactUUID === null || data.contactUUID === '') {#
+	    		
+		    		<img class="user-status-icon" src="images/status-guest.svg" />
+		    		<span class="guest-txt">  Awaiting sign up </span>
+	    		
+	    	#} else {#
+	    		
+		    		<img class="user-status-icon" src="images/status-unverified.svg" />
+		    		<span class="unverified-txt">  Awaiting verification </span>
+	    	
+	    	#}#
+  		</h4>
+		<p>#: data.alias #</p>
     	</div>
             
      </div>
