@@ -360,7 +360,8 @@ function onShowEditChannel (e) {
 				APP.models.channel.membersDS.add(thisMember);
 				//console.log(thisMember);
 				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'">' +
-					'<h4>'+ thisMember.name + 
+					'<div class="left"><img class="circle-img-md editChatImg" src="'+ thisMember.photo +'"/></div>' +
+					'<h4>'+ thisMember.name +  ' <img class="user-status-icon" src="images/status-unverified.svg" />'+
 					'<a class="right listTrash" data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)"><img src="images/trash.svg" /></a>' +
 					'</h4><p class="helper">'+ thisMember.alias +'<div class="clearfix"></div></li>');	
 
@@ -428,10 +429,13 @@ function doInitChannelMembers (e) {
 		click: function (e) {
 			var thisMember = e.dataItem;
 			APP.models.channel.membersDS.add(thisMember);
-			if (thisMember.contactUUID === null)
+			if (thisMember.contactUUID === null) {
 				APP.models.channels.currentChannel.invitedMembers.push(thisMember.uuid);
-			else
+				updateParseObject('channels', 'uuid', APP.models.channels.currentChannel.uuid, 'invitedMembers', APP.models.channels.currentChannel.invitedMembers);
+			} else {
 				APP.models.channels.currentChannel.members.push(thisMember.uuid);
+				updateParseObject('channels', 'uuid', APP.models.channels.currentChannel.uuid, 'members', APP.models.channels.currentChannel.members);
+			}
 			APP.models.channel.membersDS.sync();
 			$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'">'+ thisMember.name + ' (' + thisMember.alias + ')' + '<span style="float:right; padding-right: 12px; font-size: 10px;"> <a data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><img src="images/trash.svg" /></a></span></li>');
 			APP.models.channel.potentialMembersDS.remove(thisMember);
