@@ -411,7 +411,7 @@ function doShowChannelMembers (e) {
 		}
 		APP.models.channel.potentialMembersDS.sync();
 	}
-	
+
 	if (invitedMembers.length > 0) {
 		for (var j=0; j<invitedMembers.length; j++) {
 			var invitedMember = findContactByUUID(invitedMembers[j]);
