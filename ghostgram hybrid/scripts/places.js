@@ -2,18 +2,13 @@
 function onInitPlaces(e) {
 	e.preventDefault();
 
-	//$("#place-checkin-text").velocity("fadeIn", {delay: 1000});
-
-	var dataSource = APP.models.places.placeListDS;
-
-	dataSource.data(APP.models.places.placesDS.data());
+	APP.models.places.placeListDS.data(APP.models.places.placesDS.data());
 
 	// Activate clearsearch and zero the filter when it's called
 	$('#placeSearchQuery').clearSearch({
 		callback: function() {
-			dataSource.data([]);
-			dataSource.data(APP.models.places.placesDS.data());
-			dataSource.filter([]);
+			APP.models.places.placeListDS.data(APP.models.places.placesDS.data());
+			APP.models.places.placeListDS.filter({});
 			APP.models.places.geoPlacesDS.data([]);
 
 		}
@@ -23,7 +18,7 @@ function onInitPlaces(e) {
 	$('#placeSearchQuery').keyup(function() {
 		var query = this.value;
 		if (query.length > 0) {
-			dataSource.filter(  {"logic":"or",
+			APP.models.places.placeListDS.filter(  {"logic":"or",
 				"filters":[
 					{
 						"field":"address",
@@ -36,29 +31,22 @@ function onInitPlaces(e) {
 				]});
 
 		} else {
-			dataSource.data([]);
 			APP.models.places.geoPlacesDS.data([]);
-			dataSource.data(APP.models.places.placesDS.data());
-			dataSource.filter([]);
+			APP.models.places.placeListDS.data(APP.models.places.placesDS.data());
+			APP.models.places.placeListDS.filter([]);
 		}
 	});
 
-
-
-     $("#places-listview").kendoMobileListView({
-        dataSource: APP.models.places.placeListDS,
-		 headerTemplate: "${value}",
-		 fixedHeaders: true,
-        template: $("#placesTemplate").html(),
-        click: function (e) {
-            var place = e.dataItem;
-            console.log(place);
-           	APP.models.places.currentPlace = place;
+	$("#places-listview").kendoMobileListView({
+		dataSource: APP.models.places.placeListDS,
+		fixedHeaders: true,
+		template: $("#placesTemplate").html(),
+		click: function(e) {
+			var place = e.dataItem;
+			APP.models.places.currentPlace = place;
 			$("#placesActions").data("kendoMobileActionSheet").open();
-			
-         
-        }
-     });	
+		}
+	});
 }
 
 function doEditPlace (e) {
@@ -77,8 +65,22 @@ function doDeletePlace (e) {
 }
 
 function doCheckInPlace (e) {
-	if (e.preventDefault !== undefined)
+	if (e.preventDefault !== undefined) {
 		e.preventDefault();
+	}
+
+	var templateText = $('#placesTemplate').text();
+	var template = kendo.template(templateText);
+
+	$('#current-place').show();
+	$('#current-place > div').html(template(APP.models.places.currentPlace));
+
+	if (APP.models.places.checkedInPlace !== undefined) {
+		APP.models.places.placeListDS.add(APP.models.places.checkedInPlace);
+	}
+	APP.models.places.placeListDS.remove(APP.models.places.currentPlace);
+	APP.models.places.checkedInPlace = APP.models.places.currentPlace;
+
 }
 
 function onShowPlaces(e) {
@@ -148,9 +150,11 @@ function updateCurrentLocation (loc) {
 		current.set('visible', loc.visible ? loc.visible : "true");
 	}
 }
+
 function onLocateMe(e) {
-	if (e.preventDefault !== undefined)
+	if (e.preventDefault !== undefined) {
 		e.preventDefault();
+	}
 
 
 	var latlng = new google.maps.LatLng(APP.location.position.lat, APP.location.position.lng);
@@ -165,83 +169,96 @@ function onLocateMe(e) {
 		thisLocation = locationsArray[0];
 		updateCurrentLocation(thisLocation);
 
-	} else {
-		var loc = {};
+		return;
+	}
 
-		// Reverse Geocode first to ensure we have a valid address
-		APP.map.geocoder.geocode({'latLng': latlng}, function(results, status) {
-			if (status == google.maps.GeocoderStatus.OK) {
-				if (results.length > 0) {
-					var number = '', street = '', city='', state = '', zip = '';
-					loc = {};
+	var loc;
 
-					loc.category = "Location";
-					loc.googleId = results[0].place_id;
-					loc.name = "Address";
-					loc.lat = results[0].geometry.location.A;
-					loc.lng = results[0].geometry.location.F;
+	// Reverse Geocode first to ensure we have a valid address
+	APP.map.geocoder.geocode({'latLng': latlng}, function(results, status) {
+		if (status !== google.maps.GeocoderStatus.OK) {
+			mobileNotify('Geocoder failed with: ' + status);
+			return;
+		}
 
-					for (var i=0; i<results[0].address_components.length; i++) {
-						if (results[0].address_components[i].types.length > 0) {
+		if (results.length === 0) {
+			mobileNotify('No results found for location');
+			return;
+		}
 
-							switch (results[0].address_components[i].types[0]) {
-								case "street_number" :
-									number = results[0].address_components[i].long_name + " ";
-									break;
+		var number = '', street = '', city='', state = '', zip = '';
+		loc = {
+			category: 'Location',
+			googleId: results[0].place_id,
+			name: 'Address',
+			lat: results[0].geometry.location.A,
+			lng: results[1].geometry.location.F
+		};
 
-								case "route" :
-									street = results[0].address_components[i].long_name + ", ";
-									break;
+		for (var i=0; i < results[0].address_components.length; i++) {
+			if (results[0].address_components[i].types.length === 0) {
+				break;
+			}
 
-								case "locality" :
-									city = results[0].address_components[i].long_name + ", ";
-									break;
+			switch (results[0].address_components[i].types[0]) {
+				case "street_number" :
+					number = results[0].address_components[i].long_name + " ";
+					break;
 
-								case "administrative_area_level_1" :
-									state = results[0].address_components[i].short_name;
-									break;
+				case "route" :
+					street = results[0].address_components[i].long_name + ", ";
+					break;
 
-								case "postal_code" :
-									zip = "  " + results[0].address_components[i].long_name;
-									break;
+				case "locality" :
+					city = results[0].address_components[i].long_name + ", ";
+					break;
+
+				case "administrative_area_level_1" :
+					state = results[0].address_components[i].short_name;
+					break;
+
+				case "postal_code" :
+					zip = "  " + results[0].address_components[i].long_name;
+					break;
 
 
-							}
-						}
-					}
+			}
+		}
 
-					loc.address = number + street + city + state + zip;
-					APP.models.places.geoPlacesDS.add(loc);
+		loc.address = number + street + city + state + zip;
+		APP.models.places.geoPlacesDS.add(loc);
 
-					// add this results to the locationsDS
-					locationsArray = results;
-					console.log(results);
-					placesGPSSearch(function (results, status) {
-						if (status === null && results !== null) {
-							if (results.length !== 0) {
-								for (var j=0; j<results.length; j++) {
-									if (results[j].types[results[j].types.length-1] === 'establishment') {
-										loc = {};
-										loc.category = "Place";
-										loc.googleId = results[j].place_id;
-										loc.name = results[j].name;
-										loc.address = results[j].vicinity;
-										loc.lat = results[j].geometry.location.A;
-										loc.lng = results[j].geometry.location.F;
-										APP.models.places.geoPlacesDS.add(loc);
-									}
-								}
-							}
-						}
-					});
-				} else {
-					mobileNotify('No results found for locaiton');
+		// add this results to the locationsDS
+		locationsArray = results;
+		placesGPSSearch(function (results, status) {
+			if (status !== null || results === null) {
+				return;
+			}
+			if (results.length === 0) {
+				mobileNotify('No results found for locaiton');
+				return;
+			}
+
+			for (var j=0; j<results.length; j++) {
+				if (results[j].types[results[j].types.length-1] !== 'establishment') {
+					return;
 				}
-			} else {
-				mobileNotify('Geocoder failed with: ' + status);
+
+				var place = APP.models.places.geoPlacesDS.add({
+					category: 'Place',
+					googleId: results[j].place_id,
+					name: results[j].name,
+					address: results[j].vicinity,
+					lat: results[j].geometry.location.A,
+					lng: results[j].geometry.location.F,
+					privacy: 'false',
+					visible: 'false'
+				});
+
+				APP.models.places.placeListDS.add(place);
 			}
 		});
-	}
+	});
 
 }
 function matchLocationToUserPlace  (lat, lng) {
@@ -389,7 +406,7 @@ function getDistanceInKm  (lat1, lon1, lat2, lon2) {
 function deg2rad (deg) {
 	return deg * (Math.PI/180);
 }
-// Are two points withing a specific distance
+// Are two points within a specific distance
 function inPlaceRadius (lat1, lng1, lat2, lng2, radius) {
 
 	if (radius === undefined || radius < 10) {

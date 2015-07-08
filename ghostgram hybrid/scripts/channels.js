@@ -340,7 +340,7 @@ function onShowEditChannel (e) {
 			// Current user will be undefined in contact list.
 			if (thisMember !== undefined) {
 				APP.models.channel.membersDS.add(thisMember);
-				console.log(thisMember);
+				//console.log(thisMember);
 				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+
 												   '">'+
 												   '<div class="left"><img class="circle-img-md editChatImg" src="'+ thisMember.photo +'"/></div>' + 
@@ -358,9 +358,10 @@ function onShowEditChannel (e) {
 			for (var j=0; j<members.length; j++) {
 				thisMember = findContactByUUID(members[j]);
 				APP.models.channel.membersDS.add(thisMember);
-				console.log(thisMember);
+				//console.log(thisMember);
 				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'">' +
-					'<h4>'+ thisMember.name + 
+					'<div class="left"><img class="circle-img-md editChatImg" src="'+ thisMember.photo +'"/></div>' +
+					'<h4>'+ thisMember.name +  ' <img class="user-status-icon" src="images/status-unverified.svg" />'+
 					'<a class="right listTrash" data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)"><img src="images/trash.svg" /></a>' +
 					'</h4><p class="helper">'+ thisMember.alias +'<div class="clearfix"></div></li>');	
 
@@ -369,7 +370,7 @@ function onShowEditChannel (e) {
 		
 	} else {
 		$(".addChatMembersBanner a").text("No one is invited. Tap to send invites");
-		console.log("No one here");
+		//console.log("No one here");
 	}
 
 	// hide trash cans
@@ -383,21 +384,22 @@ function doShowChannelMembers (e) {
 	
 	var currentChannelModel = APP.models.channels.currentChannel;
     APP.models.channel.currentModel = currentChannelModel;
-	var members = currentChannelModel.members;
+	var members = currentChannelModel.members, invitedMembers = currentChannelModel.invitedMembers;
 	APP.models.channel.potentialMembersDS.data([]);
 	// Need to break observable link or contacts get deleted.
 	var contactArray = APP.models.contacts.contactsDS.data().toJSON();
 	APP.models.channel.potentialMembersDS.data(contactArray);
-	
+	var dataSource = APP.models.channel.potentialMembersDS;
+	APP.models.channel.membersDS.data([]);
+
 	if (members.length > 0) {
-		APP.models.channel.membersDS.data([]);
-		var dataSource = APP.models.channel.potentialMembersDS;
+
 		for (var i=0; i<members.length; i++) {
 			var thisMember = getContactModel(members[i]);
 			if (thisMember === undefined)
 				thisMember = findContactByUUID(members[i]);
 			if (thisMember !== undefined) {
-				thisMember = thisMember;
+
 				APP.models.channel.membersDS.add(thisMember);
 				dataSource.filter( { field: "uuid", operator: "eq", value: thisMember.uuid});
 				var view = dataSource.view();
@@ -408,8 +410,25 @@ function doShowChannelMembers (e) {
 
 		}
 		APP.models.channel.potentialMembersDS.sync();
-		//Todo:   Add invited members if this user owns the channel
-	}		
+	}
+
+	if (invitedMembers.length > 0) {
+		for (var j=0; j<invitedMembers.length; j++) {
+			var invitedMember = findContactByUUID(invitedMembers[j]);
+			if (invitedMember !== undefined) {
+
+				APP.models.channel.membersDS.add(invitedMember);
+				dataSource.filter( { field: "uuid", operator: "eq", value: invitedMember.uuid});
+				var view1 = dataSource.view();
+				var contact1 = view1[0];
+				dataSource.filter([]);
+				APP.models.channel.potentialMembersDS.remove(contact1);
+			}
+
+
+		}
+
+	}
 	
 }
 
@@ -428,6 +447,13 @@ function doInitChannelMembers (e) {
 		click: function (e) {
 			var thisMember = e.dataItem;
 			APP.models.channel.membersDS.add(thisMember);
+			if (thisMember.contactUUID === null) {
+				APP.models.channels.currentChannel.invitedMembers.push(thisMember.uuid);
+
+			} else {
+				APP.models.channels.currentChannel.members.push(thisMember.contactUUID);
+			}
+			APP.models.channel.membersDS.sync();
 			$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'">'+ thisMember.name + ' (' + thisMember.alias + ')' + '<span style="float:right; padding-right: 12px; font-size: 10px;"> <a data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><img src="images/trash.svg" /></a></span></li>');
 			APP.models.channel.potentialMembersDS.remove(thisMember);
 			$(".addedChatMember").text("+ added " + thisMember.name).velocity("slideDown", { duration: 300, display: "block"}).velocity("slideUp", {delay: 1400, duration: 300, display: "none"});
