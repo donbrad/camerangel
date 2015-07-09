@@ -277,57 +277,10 @@ function onDoneEditContact (e) {
 
 function onInitContacts(e) {
 
- if (e.preventDefault !== undefined)
+	if (e.preventDefault !== undefined)
     	e.preventDefault();
-    /*
-    function swipe(e) {
-        var button = kendo.fx($(e.touch.currentTarget).find("[data-role=button]"));
-        button.expand().duration(200).play();        
-    }
-    
-    function tap(e) {
-        var contact = APP.models.contacts.contactsDS.getByUid($(e.touch.target).attr("data-uid"));
-        updateCurrentContact(contact);
-        APP.kendo.navigate("#editContact");
-    }
-     function touchstart(e) {
-        var target = $(e.touch.initialTouch),
-            listview = $("#contacts-listview").data("kendoMobileListView"),
-            contact,
-            dataSource = APP.models.contacts.contactsDS,
-            button = $(e.touch.target).find("[data-role=button]:visible");
-            
-        if (target.closest("[data-role=button]")[0]) {
-            contact = dataSource.getByUid($(e.touch.target).attr("data-uid"));
-            this.events.cancel();
-            e.event.stopPropagation();
-            updateCurrentContact(contact);
-             $("#contactActions").data("kendoMobileActionSheet").open();
-            
-        	
-       } else if (button[0]) {
-            button.hide();
-            //prevent `swipe`
-            this.events.cancel();
-        } else {
-            listview.items().find("[data-role=button]:visible").hide();
-        }
-    }
-     $("#contacts-listview").kendoMobileListView({
-        dataSource: APP.models.contacts.contactsDS,
-        template: $("#contactsTemplate").html(),
-        filterable: {
-            field: "name",
-            operator: "startswith"
-        }
-     }).kendoTouch({
-            filter: ">li",
-            enableSwipe: true,
-            tap: tap,
-            touchstart: touchstart,
-            swipe: swipe
-       });
-       */
+
+	APP.models.contacts.deviceQueryActive = false;
 	
 	var dataSource = APP.models.contacts.contactListDS;
 	
@@ -550,7 +503,7 @@ function unifyContacts(contacts) {
         }
 		
 		
-		if (contacts[i].photos !== null && photo === '') {
+		if (contacts[i].photos !== null && contacts[i].photos.length > 0 && photo === '') {
 			returnValidPhoto(contacts[i].photos[0].value, function(validUrl) {
 				photo = validUrl;
 			});
@@ -601,13 +554,20 @@ function contactsFindContacts(query, callback) {
   //  e.preventDefault(e);   
  //   var query = $('#contactSearchQuery').val();
    
+	if (APP.models.contacts.deviceQueryActive) {
+		return;
+	} else {
+		APP.models.contacts.deviceQueryActive = true;
+	}
+	
     var options      = new ContactFindOptions();
     options.filter   = query
     options.multiple = true;
     var fields       = ["name", "displayName", "nickName" ,"phoneNumbers", "emails", "addresses", "photos"];
      
     navigator.contacts.find(fields, function(contacts){
-        
+        APP.models.contacts.deviceQueryActive = true;
+		
         APP.models.contacts.deviceContactsDS.data([]);
         var contactsCount = contacts.length;
         
