@@ -410,15 +410,6 @@ function launchAddContact(e) {
         APP.models.contacts.addressArray.push(address);
     }
 
-    // Set name
-    var name = APP.models.contacts.currentDeviceContact.name;
-    //console.log(APP.models.contacts.currentDeviceContact);
-    if (name !== ""){
-        $("#addContactName").text(name);
-    } else {
-        $("#addContactName").text("No name");
-    }
-
 
 
     APP.models.contacts.phoneDS.data( APP.models.contacts.phoneArray);
@@ -535,8 +526,8 @@ function unifyContacts(contacts) {
 	APP.models.contacts.phoneArray = [];
     for (p = 0; p<phones.length; p++) {
         var phone = {};
-        phone.name = phoneArray[phones[a]];
-        phone.number =  phones[a];
+        phone.name = phoneArray[phones[p]];
+        phone.number =  phones[p];
 
         APP.models.contacts.phoneArray.push(phone);
     }
@@ -626,15 +617,6 @@ function contactsFindContacts(query, callback) {
 
             if (contactItem.phoneNumbers.length > 0)
                 APP.models.contacts.deviceContactsDS.add(contactItem);
-
-  /*   Todo:  move photo validation to addContact.   Synchronization issues with validating photos during deviceContact processing
-         returnValidPhoto(photoUrl, function(validUrl) {
-                contactItem.photo = validUrl;
-                // Only add device contacts with phone numbers
-                if (contactItem.phoneNumbers.length > 0)
-                    APP.models.contacts.deviceContactsDS.add(contactItem);
-            });
- */
         }
 		
         if (callback !== undefined) {
@@ -664,13 +646,20 @@ function contactsFindContacts(query, callback) {
 }
 			
 function doShowAddContacts(e) {
-    e.preventDefault();
-    var data = APP.models.contacts.currentContact;
-    
-    $("#addContactName").text("");
-    $('#addContactAlias').text("");
+    if (e !== undefined && e.preventDefault !== undefined)
+        e.preventDefault();
 
-    //console.log(data);
+    var data = APP.models.contacts.currentDeviceContact;
+
+    // Set name
+    var name = data.name;
+
+    if (name !== ""){
+        $("#addContactName").text(name);
+    } else {
+        $("#addContactName").text("No name");
+    }
+
     if (data.photo === null) {
         $("#addContactPhoto").attr("src","images/ghostgramcontact.png");
 
