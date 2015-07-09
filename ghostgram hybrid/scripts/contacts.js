@@ -227,6 +227,7 @@ function updateCurrentContact (contact) {
     APP.models.contacts.currentContact.set('email', contact.email);
     APP.models.contacts.currentContact.set('address', contact.address);
     APP.models.contacts.currentContact.set('uuid', contact.uuid);
+	APP.models.contacts.currentContact.set('photo', contact.photo);
 	APP.models.contacts.currentContact.set('category', contact.category);
 	APP.models.contacts.currentContact.set('contactUUID', contact.contactUUID);
 	APP.models.contacts.currentContact.set('contactEmail', contact.contactEmail);
