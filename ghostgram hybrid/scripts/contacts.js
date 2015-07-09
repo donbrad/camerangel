@@ -458,6 +458,7 @@ function searchDeviceContacts(e) {
 
         // Two names?
         if (nameArray.length > 1) {
+            mobileNotify("Unifying " + query + "'s data");
             unifyContacts(array);
             APP.models.contacts.unifiedDeviceContact = true;
             APP.models.contacts.contactListDS.data([]);
