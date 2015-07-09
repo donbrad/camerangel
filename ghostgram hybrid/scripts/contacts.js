@@ -646,7 +646,7 @@ function contactsFindContacts(query, callback) {
     img.src = url;
 }
 			
-function doShowAddContacts(e) {
+function doShowAddContact(e) {
     if (e !== undefined && e.preventDefault !== undefined)
         e.preventDefault();
 
@@ -655,11 +655,9 @@ function doShowAddContacts(e) {
     // Set name
     var name = data.name;
 
-    if (name !== ""){
-        $("#addContactName").text(name);
-    } else {
-        $("#addContactName").text("No name");
-    }
+
+    $("#addContactName").val(name);
+
 
     if (data.photo === null) {
         $("#addContactPhoto").attr("src","images/ghostgramcontact.png");

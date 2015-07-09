@@ -73,7 +73,7 @@
 </div>
 
 <!-- Modal add contact -->
-<div data-role="modalview" data-model="APP.models.contacts" data-title="Add Contact" id="modalview-AddContact" data-before-open="doShowAddContacts" class="appearance" style="width: 90%; min-height: 100%; display: none;">
+<div data-role="modalview" data-model="APP.models.contacts" data-title="Add Contact" id="modalview-AddContact" data-before-open="doShowAddContact" class="appearance" style="width: 90%; min-height: 100%; display: none;">
     <div class="inviteContactImg">
     	<div class="inviteTop hidden">
     		<img src="images/invite.svg" height="16" />
@@ -86,14 +86,15 @@
     	
     	<div class="topHalf">
     		<div class="topHalfLeft">
-    			<img class="circle-img shadow" id="addContactPhoto" src="" />
+    			<img class="circle-img shadow" id="addContactPhoto" />
     		</div>
     		<div class="topHalfRight">
-    			<h3 id="addContactName"></h3>
-    			<span class="caption">aka</span>
-    			<a class="btnClear-sm" data-role="button" data-click="addNicknameBtn" id="addNicknameBtn"> add nickname </a>
-    			<div class="hidden" id="contactNicknameInput">
-                	<input class="input-sm" type="text" placeholder="Add a nickname"/>
+				<div>
+					<input class="input-text-md clearable" id="addContactName" type="text" placeholder="Contact full name"/>
+				</div>
+				<div>
+    				<span class="caption">aka</span>
+                	<input class="input-text-sm clearable" id="addContactAlias" type="text" placeholder="Add a nickname"/>
     			</div>
     		</div>
     	</div>
