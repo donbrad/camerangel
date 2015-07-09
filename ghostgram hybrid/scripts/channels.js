@@ -212,6 +212,9 @@ function onInitChannels (e) {
     		var selection = e.sender.events.currentTarget;
 
     		if(e.direction === "left"){
+    			var otherOpenedLi = $(".chat-active");
+    			$(otherOpenedLi).velocity({translateX:"0"},{duration: "fast"}).removeClass("chat-active");
+
     			if($(selection).hasClass("private") !== true && $(window).width() < 375){
     				$(selection).velocity({translateX:"-80%"},{duration: "fast"}).addClass("chat-active");
     			} else if ($(selection).hasClass("private")){

@@ -36,7 +36,7 @@
  </div>
 
 <!-- Locate Modal-->
-<div data-role="modalview" style="width: 50%; display: none;" data-title="Locating" id="modalview-places-locate" data-layout="main" data-init="onShowFindPlace" data-model="APP.models.places">
+<div data-role="modalview" style="width: 50%; display: none;" data-title="Locating" id="modalview-places-locate" data-layout="main" data-model="APP.models.places">
 		<div class="locatingBox">
 			<h4 class="helper">
 				<img src="images/loading.svg" class="loading-sm"/> Locating...
@@ -46,7 +46,7 @@
 </div>
 
 <!-- Locate View-->
-<div data-role="view" data-title="Check in" id="places-checkIn" data-layout="main" data-init="onShowFindPlace" data-native-transition="slide" data-model="APP.models.places">
+<div data-role="view" data-title="Check in" id="places-checkIn" data-layout="main" data-before-show="doBeforePlaceCheckIn" data-init="onCheckInPlace" data-native-transition="slide" data-model="APP.models.places">
 	<div data-role="header">
         <div data-role="navbar">
             <a data-role="backbutton" data-align="left">
@@ -77,8 +77,9 @@
 			</div>
 		</div>
 		<div data-role="footer">
-            <a class="btnYellow btnSpan-btm" data-role="button">
-	     		Check in
+            <a class="btnBlue btnSpan-btm" data-role="button" id="checkInHere" data-click="holdTest">
+	     		<h3>Check in</h3>
+	     		<p id="invisibleGhost"><img src="images/checkin-invisible.svg" /></p> 
      		</a>
     	</div>
 </div>

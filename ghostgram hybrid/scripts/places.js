@@ -334,9 +334,7 @@ function onPlaceChanged() {
 
 }
 
-function onShowFindPlace(e) {
-	if (e.preventDefault !== undefined)
-		e.preventDefault();
+function onShowFindPlace() {
 	
 }
 
@@ -450,4 +448,11 @@ function autoCheckInChange(e) {
 	console.log(e.checked);
 }
 
+function doBeforePlaceCheckIn(e){
+	
+}
 
+// 
+function onCheckInPlace(e) {
+	
+}
