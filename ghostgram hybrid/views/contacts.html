@@ -86,11 +86,11 @@
     	
     	<div class="topHalf">
     		<div class="topHalfLeft">
-    			<img class="circle-img shadow" id="addContactPhoto" />
+    			<img class="circle-img shadow" id="addContactPhoto" data-bind="attr:{src: currentDeviceContact.photo}" />
     		</div>
     		<div class="topHalfRight">
 				<div>
-					<input class="input-text-md clearable" id="addContactName" type="text" placeholder="Contact full name"/>
+					<input class="input-text-md clearable" id="addContactName" type="text" data-bind="value: currentDeviceContact.name" placeholder="Contact full name"/>
 				</div>
 				<div>
     				<span class="caption">aka</span>
