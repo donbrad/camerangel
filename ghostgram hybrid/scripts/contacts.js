@@ -415,11 +415,23 @@ function launchAddContact(e) {
     APP.models.contacts.phoneDS.data( APP.models.contacts.phoneArray);
     APP.models.contacts.emailDS.data( APP.models.contacts.emailArray);
     APP.models.contacts.addressDS.data( APP.models.contacts.addressArray);
-    //APP.kendo.navigate('#addContact');
 
-    // ToDo - add alias wiring
+  /*  // ToDo - add alias wiring
     $("#addNicknameBtn").removeClass("hidden");
-    $("#contactNicknameInput input").val("");
+    $("#contactNicknameInput input").val("");*/
+
+    var data = APP.models.contacts.currentDeviceContact;
+
+    // Set name
+    var name = data.name;
+    $("#addContactName").val(name);
+
+
+    if (data.photo !== null) {
+        returnValidPhoto(data.photo, function(validUrl) {
+            $("#addContactPhoto").attr("src",validUrl);
+        });
+    }
 
     $("#modalview-AddContact").data("kendoMobileModalView").open();
 
