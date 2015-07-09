@@ -428,7 +428,7 @@ function onInitContactImport (e) {
             click: function(e) {
          
                APP.models.contacts.currentDeviceContact = e.dataItem;
-               APP.models.contacts.emailArray = new Array();
+               APP.models.contacts.emailArray = [];
                
                for (var i = 0; i<APP.models.contacts.currentDeviceContact.emails.length; i++) {
                     var email = new Object();
@@ -439,7 +439,7 @@ function onInitContactImport (e) {
 
                }
 
-               APP.models.contacts.phoneArray = new Array();
+               APP.models.contacts.phoneArray = [];
                  for (var j = 0; j<APP.models.contacts.currentDeviceContact.phoneNumbers.length; j++) {
                     var phone = new Object();
                     phone.name = APP.models.contacts.currentDeviceContact.phoneNumbers[j].name;
@@ -449,7 +449,7 @@ function onInitContactImport (e) {
 
                }
                 
-                APP.models.contacts.addressArray = new Array();
+                APP.models.contacts.addressArray = [];
                 for (var a = 0; a<APP.models.contacts.currentDeviceContact.addresses.length; a++) {
                     var address = new Object();
                     address.name = APP.models.contacts.currentDeviceContact.addresses[a].name;
@@ -563,8 +563,8 @@ function unifyContacts(contacts) {
 
     for (p = 0; p<phones.length; p++) {
         var phone = {};
-        phone.name = phoneArray[phones[a]];
-        phone.number =  phones[a];
+        phone.name = phoneArray[phones[p]];
+        phone.number =  phones[p];
 
         APP.models.contacts.phoneArray.push(phone);
     }
