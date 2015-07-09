@@ -278,6 +278,7 @@ function onDoneEditContact (e) {
 	APP.kendo.navigate("#contacts");
 }
 
+
 function onInitContacts(e) {
 
 	if (e.preventDefault !== undefined)
@@ -500,6 +501,17 @@ function filterContactsByName(contacts, firstName, lastName) {
 
 }
 
+function onDoneSyncContact (e) {
+	if (e.preventDefault !== undefined) {
+		e.preventDefault();
+	}	
+	APP.models.contacts.currentContact.set('phone', $( "#syncContactPhone option:selected" ).text() );
+	APP.models.contacts.currentContact.set('email', $( "#syncContactEmail option:selected" ).text() );
+	APP.models.contacts.currentContact.set('address', $( "#syncContactAddress option:selected" ).text() );
+	
+	$('#contactEditList').removeClass('hidden');
+	$('#syncEditList').addClass('hidden');
+}
 
 function doSyncContact(e) {
 	if (e.preventDefault !== undefined) {
