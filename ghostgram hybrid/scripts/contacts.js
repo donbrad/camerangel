@@ -500,19 +500,8 @@ function unifyContacts(contacts) {
 			// Only store the address if both the name and full address don't contain null
 			if (contacts[i].addresses[a].fullAddress.indexOf('null') == -1 && contacts[i].addresses[a].name == -1)
             	addressArray[contacts[i].addresses[a].fullAddress] = contacts[i].addresses[a].name ? contacts[i].addresses[a].name : '';
-        }
-		
-		
-		if (contacts[i].photos !== null && contacts[i].photos.length > 0 && photo === '') {
-			returnValidPhoto(contacts[i].photos[0].value, function(validUrl) {
-				photo = validUrl;
-			});
 		}
-
-		if (photo === '') {
-			photo = 'images/default-img.png';
-		}
-		APP.models.contacts.photoUrl = photo;
+		
     }
 
     emails = Object.keys(emailArray);
@@ -566,7 +555,7 @@ function contactsFindContacts(query, callback) {
     var fields       = ["name", "displayName", "nickName" ,"phoneNumbers", "emails", "addresses", "photos"];
      
     navigator.contacts.find(fields, function(contacts){
-        APP.models.contacts.deviceQueryActive = true;
+        APP.models.contacts.deviceQueryActive = false;
 		
         APP.models.contacts.deviceContactsDS.data([]);
         var contactsCount = contacts.length;
