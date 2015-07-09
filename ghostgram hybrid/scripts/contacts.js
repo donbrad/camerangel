@@ -428,7 +428,7 @@ function onInitContactImport (e) {
             click: function(e) {
          
                APP.models.contacts.currentDeviceContact = e.dataItem;
-               APP.models.contacts.emailArray = [];
+               APP.models.contacts.emailArray = new Array();
                
                for (var i = 0; i<APP.models.contacts.currentDeviceContact.emails.length; i++) {
                     var email = new Object();
@@ -439,7 +439,7 @@ function onInitContactImport (e) {
 
                }
 
-               APP.models.contacts.phoneArray = [];
+               APP.models.contacts.phoneArray = new Array();
                  for (var j = 0; j<APP.models.contacts.currentDeviceContact.phoneNumbers.length; j++) {
                     var phone = new Object();
                     phone.name = APP.models.contacts.currentDeviceContact.phoneNumbers[j].name;
@@ -449,7 +449,7 @@ function onInitContactImport (e) {
 
                }
                 
-                APP.models.contacts.addressArray = [];
+                APP.models.contacts.addressArray = new Array();
                 for (var a = 0; a<APP.models.contacts.currentDeviceContact.addresses.length; a++) {
                     var address = new Object();
                     address.name = APP.models.contacts.currentDeviceContact.addresses[a].name;
@@ -544,7 +544,9 @@ function unifyContacts(contacts) {
         }
 
         for (var a=0; a<contacts[i].addresses.length; a++) {
-            addressArray[contacts[i].addresses[a].fullAddress] = contacts[i].addresses[a].name ? contacts[i].addresses[a].name : '';
+			// Only store the address if both the name and full address don't contain null
+			if (contacts[i].addresses[a].fullAddress.indexOf('null') == -1 && contacts[i].addresses[a].name == -1)
+            	addressArray[contacts[i].addresses[a].fullAddress] = contacts[i].addresses[a].name ? contacts[i].addresses[a].name : '';
         }
     }
 
@@ -552,6 +554,7 @@ function unifyContacts(contacts) {
     phones = Object.keys(phoneArray);
     addresses = Object.keys(addressArray);
 
+	 APP.models.contacts.emailArray = [];
     for (e = 0; e<emails.length; e++) {
         var email = {};
         email.name = emailArray[emails[e]];
@@ -561,15 +564,17 @@ function unifyContacts(contacts) {
     }
     APP.models.contacts.currentDeviceContact.emails = APP.models.contacts.emailArray;
 
+	APP.models.contacts.phoneArray = [];
     for (p = 0; p<phones.length; p++) {
         var phone = {};
-        phone.name = phoneArray[phones[p]];
-        phone.number =  phones[p];
+        phone.name = phoneArray[phones[a]];
+        phone.number =  phones[a];
 
         APP.models.contacts.phoneArray.push(phone);
     }
     APP.models.contacts.currentDeviceContact.phoneNumbers = APP.models.contacts.phoneArray;
 
+	APP.models.contacts.addressArray = [];
     for (a = 0; a<addresses.length; a++) {
         var address = {};
         address.name = addressArray[addresses[a]];
