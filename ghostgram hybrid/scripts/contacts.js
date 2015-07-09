@@ -263,6 +263,8 @@ function onShowEditContact(e) {
 	if (e.preventDefault !== undefined)
     	e.preventDefault();
 
+	$('#contactEditList').removeClass('hidden');
+	$('#syncEditList').addClass('hidden');
 	syncContact(APP.models.contacts.currentContact);
 	// Todo - wire up verified status/read only fields
 	
@@ -498,6 +500,31 @@ function filterContactsByName(contacts, firstName, lastName) {
 
 }
 
+
+function doSyncContact(e) {
+	if (e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+	
+	var name = APP.models.contacts.currentContact.name;
+	syncContact(name, function() {
+		$('#contactEditList').addClass('hidden');
+		$('#syncEditList').removeClass('hidden');
+	});
+}
+
+// Given a full contact name as a string, fetch matching device contacts and then build a unified list of:
+// phone numbers, emails and addresses -- and first photo found. 
+function syncContact(name, callback) {
+	contactsFindContacts(name, function (contacts) {
+		unifyContacts(contacts);
+		if (callback !== undefined) {
+			callback();
+		}
+	});
+}
+
+// Unify contacts - process array of contacts that have matched full names
 function unifyContacts(contacts) {
     var emailArray = [], phoneArray = [], addressArray = [],
         emails = [], phones = [], addresses = [], photo='';
