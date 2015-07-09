@@ -606,16 +606,16 @@ function contactsFindContacts(query, callback) {
                 }
             }
 
-
             contactItem.photo = "images/default-img.png";
             if (contacts[i].photos !== null) {
 				contactItem.photo = contacts[i].photos[0].value;
             }
-            
+
             if (contactItem.phoneNumbers.length > 0)
                 APP.models.contacts.deviceContactsDS.add(contactItem);
 
-  /*          returnValidPhoto(photoUrl, function(validUrl) {
+  /*   Todo:  move photo validation to addContact.   Synchronization issues with validating photos during deviceContact processing
+         returnValidPhoto(photoUrl, function(validUrl) {
                 contactItem.photo = validUrl;
                 // Only add device contacts with phone numbers
                 if (contactItem.phoneNumbers.length > 0)
@@ -633,7 +633,11 @@ function contactsFindContacts(query, callback) {
 	}, options);
  }
 			
- function returnValidPhoto(url,callback){
+ function returnValidPhoto(url,callback) {
+     if (url === '') {
+         callback("images/ghostgramcontact.png");
+     }
+
     var img = new Image();
     img.onload = function() {
     //Image is ok
@@ -641,7 +645,7 @@ function contactsFindContacts(query, callback) {
     };
     img.onerror = function(err) {
         //Returning a default image for users without photo 
-        callback("images/default-img.png");
+        callback("images/ghostgramcontact.png");
     };
     img.src = url;
 }
@@ -658,7 +662,9 @@ function doShowAddContacts(e) {
         $("#addContactPhoto").attr("src","images/ghostgramcontact.png");
 
     } else {
-        $("#addContactPhoto").attr("src",data.photo);
+        returnValidPhoto(data.photo, function(validUrl) {
+            $("#addContactPhoto").attr("src",validUrl);
+        });
     }
 
 }
