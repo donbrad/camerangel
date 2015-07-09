@@ -494,7 +494,8 @@ function onShowContactImport (e) {
 function searchDeviceContacts(e) {
 	e.preventDefault();
 
-	query = $('#contactSearchInput').val();
+	var query = $('#contactSearchInput').val();
+	
 	contactsFindContacts(query, function(array) {
 
         var name = query.toLowerCase(), nameArray = name.split(' ');
