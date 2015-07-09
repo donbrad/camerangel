@@ -86,7 +86,7 @@
     	
     	<div class="topHalf">
     		<div class="topHalfLeft">
-    			<img class="circle-img shadow" id="addContactPhoto"  />
+    			<img class="circle-img shadow" id="addContactPhoto" src="" />
     		</div>
     		<div class="topHalfRight">
     			<h3 id="addContactName"></h3>
@@ -151,17 +151,22 @@
 	    		</div>
 	    		<div class="contactImg">
 	    			<label for="editContactName">
-	    				<input class="input-text-lg" type="text" id="editContactName" data-bind="value: name"/>
+	    				<input class="input-text-md" type="text" id="editContactName" data-bind="value: name"/>
 	    			</label>
-	    			<span class="caption">aka</span>
-					<input class="input-sm" type="text" placeholder="Add a nickname" id="editContactAlias" data-bind="value: alias"/>
+					<div>
+						<span class="caption">aka</span>
+						<span>
+							<input style="width: 75%;" type="text" placeholder="Add a nickname" id="editContactAlias" data-bind="value: alias"/>
+						</span>
+					</div>
+	    			
 	    		</div>
 	    	</div>
 	    	<div class="clearfix"></div>
 			<ul data-role="listview" data-style="inset" id="contactEditList">				 
 				<li>           
 					<label>Phone
-						<input id="editContactPhone" type="phone" data-bind="value:phone"/>
+						<input id="editContactPhone" type="phone" data-bind="value:phone" readonly/>
 					</label>
 				</li>
 				<li>
