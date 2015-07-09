@@ -227,6 +227,7 @@ function updateCurrentContact (contact) {
     APP.models.contacts.currentContact.set('email', contact.email);
     APP.models.contacts.currentContact.set('address', contact.address);
     APP.models.contacts.currentContact.set('uuid', contact.uuid);
+	APP.models.contacts.currentContact.set('photo', contact.photo);
 	APP.models.contacts.currentContact.set('category', contact.category);
 	APP.models.contacts.currentContact.set('contactUUID', contact.contactUUID);
 	APP.models.contacts.currentContact.set('contactEmail', contact.contactEmail);
@@ -277,57 +278,10 @@ function onDoneEditContact (e) {
 
 function onInitContacts(e) {
 
- if (e.preventDefault !== undefined)
+	if (e.preventDefault !== undefined)
     	e.preventDefault();
-    /*
-    function swipe(e) {
-        var button = kendo.fx($(e.touch.currentTarget).find("[data-role=button]"));
-        button.expand().duration(200).play();        
-    }
-    
-    function tap(e) {
-        var contact = APP.models.contacts.contactsDS.getByUid($(e.touch.target).attr("data-uid"));
-        updateCurrentContact(contact);
-        APP.kendo.navigate("#editContact");
-    }
-     function touchstart(e) {
-        var target = $(e.touch.initialTouch),
-            listview = $("#contacts-listview").data("kendoMobileListView"),
-            contact,
-            dataSource = APP.models.contacts.contactsDS,
-            button = $(e.touch.target).find("[data-role=button]:visible");
-            
-        if (target.closest("[data-role=button]")[0]) {
-            contact = dataSource.getByUid($(e.touch.target).attr("data-uid"));
-            this.events.cancel();
-            e.event.stopPropagation();
-            updateCurrentContact(contact);
-             $("#contactActions").data("kendoMobileActionSheet").open();
-            
-        	
-       } else if (button[0]) {
-            button.hide();
-            //prevent `swipe`
-            this.events.cancel();
-        } else {
-            listview.items().find("[data-role=button]:visible").hide();
-        }
-    }
-     $("#contacts-listview").kendoMobileListView({
-        dataSource: APP.models.contacts.contactsDS,
-        template: $("#contactsTemplate").html(),
-        filterable: {
-            field: "name",
-            operator: "startswith"
-        }
-     }).kendoTouch({
-            filter: ">li",
-            enableSwipe: true,
-            tap: tap,
-            touchstart: touchstart,
-            swipe: swipe
-       });
-       */
+
+	APP.models.contacts.deviceQueryActive = false;
 	
 	var dataSource = APP.models.contacts.contactListDS;
 	
@@ -385,8 +339,15 @@ function onInitContacts(e) {
             updateCurrentContact(contact);
 			
 			if (contact.category === 'phone') {
-				APP.kendo.navigate('#contactImport?query=' + contact.name);
-				// Need to import contact...
+                if (APP.models.contacts.unifiedDeviceContact) {
+                    // Have a unified device contact -- just to add contact
+                    launchAddContact({dataItem : contact});
+                } else {
+                    // Still have multiple contacts
+                    APP.kendo.navigate('#contactImport?query=' + contact.name);
+                }
+
+
 				
 			} else {		
 				// If we know the contacts uuid enable the full feature set
@@ -415,7 +376,55 @@ function onHideContacts (e) {
     	e.preventDefault();
 	//APP.models.contacts.contactListDS.data(APP.models.contacts.contactsDS.data());
 }
-    
+
+function launchAddContact(e) {
+
+    APP.models.contacts.currentDeviceContact = e.dataItem;
+    APP.models.contacts.emailArray = new Array();
+
+    for (var i = 0; i<APP.models.contacts.currentDeviceContact.emails.length; i++) {
+        var email = new Object();
+        email.name = APP.models.contacts.currentDeviceContact.emails[i].name;
+        email.address =  APP.models.contacts.currentDeviceContact.emails[i].address;
+
+        APP.models.contacts.emailArray.push(email);
+
+    }
+
+    APP.models.contacts.phoneArray = new Array();
+    for (var j = 0; j<APP.models.contacts.currentDeviceContact.phoneNumbers.length; j++) {
+        var phone = new Object();
+        phone.name = APP.models.contacts.currentDeviceContact.phoneNumbers[j].name;
+        phone.number =  APP.models.contacts.currentDeviceContact.phoneNumbers[j].number;
+
+        APP.models.contacts.phoneArray.push(phone);
+
+    }
+
+    APP.models.contacts.addressArray = new Array();
+    for (var a = 0; a<APP.models.contacts.currentDeviceContact.addresses.length; a++) {
+        var address = new Object();
+        address.name = APP.models.contacts.currentDeviceContact.addresses[a].name;
+        address.address =  APP.models.contacts.currentDeviceContact.addresses[a].fullAddress;
+
+        APP.models.contacts.addressArray.push(address);
+    }
+
+
+
+    APP.models.contacts.phoneDS.data( APP.models.contacts.phoneArray);
+    APP.models.contacts.emailDS.data( APP.models.contacts.emailArray);
+    APP.models.contacts.addressDS.data( APP.models.contacts.addressArray);
+    //APP.kendo.navigate('#addContact');
+
+    // ToDo - add alias wiring
+    $("#addNicknameBtn").removeClass("hidden");
+    $("#contactNicknameInput input").val("");
+
+    $("#modalview-AddContact").data("kendoMobileModalView").open();
+
+}
+
 function onInitContactImport (e) {
   if (e.preventDefault !== undefined)
     	e.preventDefault();
@@ -425,83 +434,37 @@ function onInitContactImport (e) {
             template: $("#deviceContactsTemplate").html(),
 			headerTemplate: "${value}",
             fixedHeaders: true,
-            click: function(e) {
-         
-               APP.models.contacts.currentDeviceContact = e.dataItem;
-               APP.models.contacts.emailArray = new Array();
-               
-               for (var i = 0; i<APP.models.contacts.currentDeviceContact.emails.length; i++) {
-                    var email = new Object();
-                    email.name = APP.models.contacts.currentDeviceContact.emails[i].name;
-                    email.address =  APP.models.contacts.currentDeviceContact.emails[i].address;
+            click: launchAddContact
 
-                   APP.models.contacts.emailArray.push(email);
 
-               }
-
-               APP.models.contacts.phoneArray = new Array();
-                 for (var j = 0; j<APP.models.contacts.currentDeviceContact.phoneNumbers.length; j++) {
-                    var phone = new Object();
-                    phone.name = APP.models.contacts.currentDeviceContact.phoneNumbers[j].name;
-                    phone.number =  APP.models.contacts.currentDeviceContact.phoneNumbers[j].number;
-
-                   APP.models.contacts.phoneArray.push(phone);
-
-               }
-                
-                APP.models.contacts.addressArray = new Array();
-                for (var a = 0; a<APP.models.contacts.currentDeviceContact.addresses.length; a++) {
-                    var address = new Object();
-                    address.name = APP.models.contacts.currentDeviceContact.addresses[a].name;
-                    address.address =  APP.models.contacts.currentDeviceContact.addresses[a].fullAddress;
-
-                    APP.models.contacts.addressArray.push(address);
-               }
-
-               // Set name
-               var name = APP.models.contacts.currentDeviceContact.name;
-               //console.log(APP.models.contacts.currentDeviceContact);
-               if (name !== ""){
-               		$("#addContactName").text(name);
-               } else {
-               		$("#addContactName").text("No name");
-               }
-               
-
-               
-               APP.models.contacts.phoneDS.data( APP.models.contacts.phoneArray);
-               APP.models.contacts.emailDS.data( APP.models.contacts.emailArray);
-               APP.models.contacts.addressDS.data( APP.models.contacts.addressArray);
-               //APP.kendo.navigate('#addContact');
-
-               // ToDo - add alias wiring 
-    		   $("#addNicknameBtn").removeClass("hidden");
-    		   $("#contactNicknameInput input").val("");
-
-               $("#modalview-AddContact").data("kendoMobileModalView").open();
-             
-            }
     });
 }
 
 function onShowContactImport (e) {
 	e.preventDefault();
 	var query = e.view.params.query;
-	contactsFindContacts(query);
+	//contactsFindContacts(query);
 	
 }
 
 function searchDeviceContacts(e) {
 	e.preventDefault();
-	query = $('#contactSearchInput').val();
+
+	var query = $('#contactSearchInput').val();
+	
 	contactsFindContacts(query, function(array) {
 
         var name = query.toLowerCase(), nameArray = name.split(' ');
 
         // Two names?
         if (nameArray.length > 1) {
+            mobileNotify("Unifying " + query + "'s data");
             unifyContacts(array);
+            APP.models.contacts.unifiedDeviceContact = true;
+            APP.models.contacts.contactListDS.data([]);
+            APP.models.contacts.contactListDS.add(array[0]);
         } else {
+            APP.models.contacts.unifiedDeviceContact = false;
             for (var i=0; i<array.length; i++) {
                 APP.models.contacts.contactListDS.add(array[i]);
             }
@@ -510,9 +473,22 @@ function searchDeviceContacts(e) {
 	});
 }
 
+// Filter contacts - unify matching names
+function filterContactsByName(contacts, firstName, lastName) {
+
+    var nameArray= [];
+    for (var i=0; i<contacts.length; i++) {
+        var familyName = contacts[i].familyName, middleName = contacts[i].middleName, givenName = contacts[i].givenName,
+            formattedName = contacts[i].formatted;
+
+
+    }
+
+}
+
 function unifyContacts(contacts) {
     var emailArray = [], phoneArray = [], addressArray = [],
-        emails = [], phones = [], addresses = [];
+        emails = [], phones = [], addresses = [], photo='';
 
 
     //Build histograms for email, phone and address
@@ -527,14 +503,18 @@ function unifyContacts(contacts) {
         }
 
         for (var a=0; a<contacts[i].addresses.length; a++) {
-            addressArray[contacts[i].addresses[a].fullAddress] = contacts[i].addresses[a].name ? contacts[i].addresses[a].name : '';
-        }
+			// Only store the address if both the name and full address don't contain null
+			if (contacts[i].addresses[a].fullAddress.indexOf('null') == -1 && contacts[i].addresses[a].name == -1)
+            	addressArray[contacts[i].addresses[a].fullAddress] = contacts[i].addresses[a].name ? contacts[i].addresses[a].name : '';
+		}
+		
     }
 
     emails = Object.keys(emailArray);
     phones = Object.keys(phoneArray);
     addresses = Object.keys(addressArray);
 
+	 APP.models.contacts.emailArray = [];
     for (e = 0; e<emails.length; e++) {
         var email = {};
         email.name = emailArray[emails[e]];
@@ -544,15 +524,17 @@ function unifyContacts(contacts) {
     }
     APP.models.contacts.currentDeviceContact.emails = APP.models.contacts.emailArray;
 
+	APP.models.contacts.phoneArray = [];
     for (p = 0; p<phones.length; p++) {
         var phone = {};
-        phone.name = phoneArray[phones[a]];
-        phone.number =  phones[a];
+        phone.name = phoneArray[phones[p]];
+        phone.number =  phones[p];
 
         APP.models.contacts.phoneArray.push(phone);
     }
     APP.models.contacts.currentDeviceContact.phoneNumbers = APP.models.contacts.phoneArray;
 
+	APP.models.contacts.addressArray = [];
     for (a = 0; a<addresses.length; a++) {
         var address = {};
         address.name = addressArray[addresses[a]];
@@ -567,17 +549,24 @@ function contactsFindContacts(query, callback) {
   //  e.preventDefault(e);   
  //   var query = $('#contactSearchQuery').val();
    
+	if (APP.models.contacts.deviceQueryActive) {
+		return;
+	} else {
+		APP.models.contacts.deviceQueryActive = true;
+	}
+	
     var options      = new ContactFindOptions();
     options.filter   = query
     options.multiple = true;
     var fields       = ["name", "displayName", "nickName" ,"phoneNumbers", "emails", "addresses", "photos"];
      
-    navigator.contacts.find(fields, function(contacts){
-        
+    navigator.contacts.find(fields, function(contacts) {
+        APP.models.contacts.deviceQueryActive = false;
+		
         APP.models.contacts.deviceContactsDS.data([]);
         var contactsCount = contacts.length;
         
-        for (var i=0;  i<contactsCount; i++){
+        for (var i=0;  i<contactsCount; i++) {
             var contactItem = new Object();
             contactItem.type = "device";
             contactItem.name = contacts[i].name.formatted;
@@ -620,19 +609,15 @@ function contactsFindContacts(query, callback) {
                     address.fullAddress = address.address + " ," + address.city + ' , ' + address.state;
                     contactItem.addresses.push(address);
                 }
-            } 
-            contactItem.photo = 'images/default-img.png';
+            }
+
+            contactItem.photo = "images/default-img.png";
             if (contacts[i].photos !== null) {
-				returnValidPhoto(contacts[i].photos[0].value, function(validUrl) {
-                	contactItem.photo = validUrl;
-					if (contactItem.phoneNumbers.length > 0)
-            			APP.models.contacts.deviceContactsDS.add(contactItem);
-				});
-            } else {
-				if (contactItem.phoneNumbers.length > 0)
-            			APP.models.contacts.deviceContactsDS.add(contactItem);
-			}
-			// Only add device contacts with phone numbers	
+				contactItem.photo = contacts[i].photos[0].value;
+            }
+
+            if (contactItem.phoneNumbers.length > 0)
+                APP.models.contacts.deviceContactsDS.add(contactItem);
         }
 		
         if (callback !== undefined) {
@@ -644,7 +629,11 @@ function contactsFindContacts(query, callback) {
 	}, options);
  }
 			
- function returnValidPhoto(url,callback){
+ function returnValidPhoto(url,callback) {
+     if (url === '') {
+         callback("images/ghostgramcontact.png");
+     }
+
     var img = new Image();
     img.onload = function() {
     //Image is ok
@@ -652,24 +641,33 @@ function contactsFindContacts(query, callback) {
     };
     img.onerror = function(err) {
         //Returning a default image for users without photo 
-        callback("images/default-img.png");
+        callback("images/ghostgramcontact.png");
     };
     img.src = url;
 }
 			
 function doShowAddContacts(e) {
-    e.preventDefault();
-    var data = APP.models.contacts.currentContact;
-    
-    $("#addContactName").text("");
-    $('#addContactAlias').text("");
+    if (e !== undefined && e.preventDefault !== undefined)
+        e.preventDefault();
 
-    //console.log(data);
+    var data = APP.models.contacts.currentDeviceContact;
+
+    // Set name
+    var name = data.name;
+
+    if (name !== ""){
+        $("#addContactName").text(name);
+    } else {
+        $("#addContactName").text("No name");
+    }
+
     if (data.photo === null) {
         $("#addContactPhoto").attr("src","images/ghostgramcontact.png");
 
     } else {
-        $("#addContactPhoto").attr("src",data.photo);
+        returnValidPhoto(data.photo, function(validUrl) {
+            $("#addContactPhoto").attr("src",validUrl);
+        });
     }
 
 }
@@ -714,6 +712,7 @@ function contactsAddContact(e){
 	$("#modalview-AddContact").data("kendoMobileModalView").close();
 
 	mobileNotify("Invite sent");
+
 	// Look up this contacts phone number in the gg directory
 	findUserByPhone(phone, function (result) {
 		

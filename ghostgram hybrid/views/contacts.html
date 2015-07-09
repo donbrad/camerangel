@@ -71,6 +71,7 @@
         <ul id="contactimport-listview"></ul>
     </div>    
 </div>
+
 <!-- Modal add contact -->
 <div data-role="modalview" data-model="APP.models.contacts" data-title="Add Contact" id="modalview-AddContact" data-before-open="doShowAddContacts" class="appearance" style="width: 90%; min-height: 100%; display: none;">
     <div class="inviteContactImg">
@@ -92,7 +93,7 @@
     			<span class="caption">aka</span>
     			<a class="btnClear-sm" data-role="button" data-click="addNicknameBtn" id="addNicknameBtn"> add nickname </a>
     			<div class="hidden" id="contactNicknameInput">
-                	<input class="input-sm" type="text" placeholder="nickname"/>
+                	<input class="input-sm" type="text" placeholder="Add a nickname"/>
     			</div>
     		</div>
     	</div>
@@ -146,24 +147,26 @@
 		<form >
 			<div class="topHalf">
 	    		<div class="topHalfLeft">
-	    			<img class="circle-img-lg shadow" src="images/ghost-blue.svg" />
+	    			<img class="circle-img-lg shadow" data-bind="attr:{src: photo}" />
 	    		</div>
 	    		<div class="contactImg">
 	    			<label for="editContactName">
-	    				<input class="input-text-lg" type="text" id="editContactName" data-bind="value: name"/>
+	    				<input class="input-text-md" type="text" id="editContactName" data-bind="value: name"/>
 	    			</label>
-	    			<span class="caption">aka</span>
-	    			<a class="btnClear-sm" data-role="button" data-click="addNicknameBtn" id="addNicknameBtn"> add nickname </a>
-	    			<div class="hidden" id="contactNicknameInput">
-	                	<input class="input-sm" type="text" placeholder="nickname" id="editContactAlias" data-bind="value: alias"/>
-	    			</div>
+					<div>
+						<span class="caption">aka</span>
+						<span>
+							<input style="width: 75%;" type="text" placeholder="Add a nickname" id="editContactAlias" data-bind="value: alias"/>
+						</span>
+					</div>
+	    			
 	    		</div>
 	    	</div>
 	    	<div class="clearfix"></div>
 			<ul data-role="listview" data-style="inset" id="contactEditList">				 
 				<li>           
 					<label>Phone
-						<input id="editContactPhone" type="phone" data-bind="value:phone"/>
+						<input id="editContactPhone" type="phone" data-bind="value:phone" readonly/>
 					</label>
 				</li>
 				<li>
@@ -181,6 +184,8 @@
 		</form>
 
 		<div style="text-align: center; padding-top: 16px; padding-bottom: 16px;">
+			<a data-role="button" class="btnClear-grey" id="editContact-resyncBtn" data-click="resyncContact"><img src="images/contacts.svg" />  Sync Contact With Device</a>
+			<br>
 			<a data-role="button" class="btnClear-red" id="editContact-deleteBtn" data-click="deleteContact"><img src="images/trash.svg" />  Delete Contact</a>
 		</div>
 	</div>
