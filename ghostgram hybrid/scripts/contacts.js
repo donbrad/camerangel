@@ -555,13 +555,13 @@ function contactsFindContacts(query, callback) {
     options.multiple = true;
     var fields       = ["name", "displayName", "nickName" ,"phoneNumbers", "emails", "addresses", "photos"];
      
-    navigator.contacts.find(fields, function(contacts){
+    navigator.contacts.find(fields, function(contacts) {
         APP.models.contacts.deviceQueryActive = false;
 		
         APP.models.contacts.deviceContactsDS.data([]);
         var contactsCount = contacts.length;
         
-        for (var i=0;  i<contactsCount; i++){
+        for (var i=0;  i<contactsCount; i++) {
             var contactItem = new Object();
             contactItem.type = "device";
             contactItem.name = contacts[i].name.formatted;
@@ -604,19 +604,24 @@ function contactsFindContacts(query, callback) {
                     address.fullAddress = address.address + " ," + address.city + ' , ' + address.state;
                     contactItem.addresses.push(address);
                 }
-            } 
-            contactItem.photo = 'images/default-img.png';
+            }
+
+
+            contactItem.photo = "images/default-img.png";
             if (contacts[i].photos !== null) {
-				returnValidPhoto(contacts[i].photos[0].value, function(validUrl) {
-                	contactItem.photo = validUrl;
-					if (contactItem.phoneNumbers.length > 0)
-            			APP.models.contacts.deviceContactsDS.add(contactItem);
-				});
-            } else {
-				if (contactItem.phoneNumbers.length > 0)
-            			APP.models.contacts.deviceContactsDS.add(contactItem);
-			}
-			// Only add device contacts with phone numbers	
+				contactItem.photo = contacts[i].photos[0].value;
+            }
+            
+            if (contactItem.phoneNumbers.length > 0)
+                APP.models.contacts.deviceContactsDS.add(contactItem);
+
+  /*          returnValidPhoto(photoUrl, function(validUrl) {
+                contactItem.photo = validUrl;
+                // Only add device contacts with phone numbers
+                if (contactItem.phoneNumbers.length > 0)
+                    APP.models.contacts.deviceContactsDS.add(contactItem);
+            });
+ */
         }
 		
         if (callback !== undefined) {
