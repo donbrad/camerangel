@@ -339,8 +339,15 @@ function onInitContacts(e) {
             updateCurrentContact(contact);
 			
 			if (contact.category === 'phone') {
-				APP.kendo.navigate('#contactImport?query=' + contact.name);
-				// Need to import contact...
+                if (APP.models.contacts.unifiedDeviceContact) {
+                    // Have a unified device contact -- just to add contact
+                    launchAddContact({dataItem : contact});
+                } else {
+                    // Still have multiple contacts
+                    APP.kendo.navigate('#contactImport?query=' + contact.name);
+                }
+
+
 				
 			} else {		
 				// If we know the contacts uuid enable the full feature set
@@ -369,7 +376,64 @@ function onHideContacts (e) {
     	e.preventDefault();
 	//APP.models.contacts.contactListDS.data(APP.models.contacts.contactsDS.data());
 }
-    
+
+function launchAddContact(e) {
+
+    APP.models.contacts.currentDeviceContact = e.dataItem;
+    APP.models.contacts.emailArray = new Array();
+
+    for (var i = 0; i<APP.models.contacts.currentDeviceContact.emails.length; i++) {
+        var email = new Object();
+        email.name = APP.models.contacts.currentDeviceContact.emails[i].name;
+        email.address =  APP.models.contacts.currentDeviceContact.emails[i].address;
+
+        APP.models.contacts.emailArray.push(email);
+
+    }
+
+    APP.models.contacts.phoneArray = new Array();
+    for (var j = 0; j<APP.models.contacts.currentDeviceContact.phoneNumbers.length; j++) {
+        var phone = new Object();
+        phone.name = APP.models.contacts.currentDeviceContact.phoneNumbers[j].name;
+        phone.number =  APP.models.contacts.currentDeviceContact.phoneNumbers[j].number;
+
+        APP.models.contacts.phoneArray.push(phone);
+
+    }
+
+    APP.models.contacts.addressArray = new Array();
+    for (var a = 0; a<APP.models.contacts.currentDeviceContact.addresses.length; a++) {
+        var address = new Object();
+        address.name = APP.models.contacts.currentDeviceContact.addresses[a].name;
+        address.address =  APP.models.contacts.currentDeviceContact.addresses[a].fullAddress;
+
+        APP.models.contacts.addressArray.push(address);
+    }
+
+    // Set name
+    var name = APP.models.contacts.currentDeviceContact.name;
+    //console.log(APP.models.contacts.currentDeviceContact);
+    if (name !== ""){
+        $("#addContactName").text(name);
+    } else {
+        $("#addContactName").text("No name");
+    }
+
+
+
+    APP.models.contacts.phoneDS.data( APP.models.contacts.phoneArray);
+    APP.models.contacts.emailDS.data( APP.models.contacts.emailArray);
+    APP.models.contacts.addressDS.data( APP.models.contacts.addressArray);
+    //APP.kendo.navigate('#addContact');
+
+    // ToDo - add alias wiring
+    $("#addNicknameBtn").removeClass("hidden");
+    $("#contactNicknameInput input").val("");
+
+    $("#modalview-AddContact").data("kendoMobileModalView").open();
+
+}
+
 function onInitContactImport (e) {
   if (e.preventDefault !== undefined)
     	e.preventDefault();
@@ -379,62 +443,9 @@ function onInitContactImport (e) {
             template: $("#deviceContactsTemplate").html(),
 			headerTemplate: "${value}",
             fixedHeaders: true,
-            click: function(e) {
-         
-               APP.models.contacts.currentDeviceContact = e.dataItem;
-               APP.models.contacts.emailArray = new Array();
-               
-               for (var i = 0; i<APP.models.contacts.currentDeviceContact.emails.length; i++) {
-                    var email = new Object();
-                    email.name = APP.models.contacts.currentDeviceContact.emails[i].name;
-                    email.address =  APP.models.contacts.currentDeviceContact.emails[i].address;
+            click: launchAddContact
 
-                   APP.models.contacts.emailArray.push(email);
 
-               }
-
-               APP.models.contacts.phoneArray = new Array();
-                 for (var j = 0; j<APP.models.contacts.currentDeviceContact.phoneNumbers.length; j++) {
-                    var phone = new Object();
-                    phone.name = APP.models.contacts.currentDeviceContact.phoneNumbers[j].name;
-                    phone.number =  APP.models.contacts.currentDeviceContact.phoneNumbers[j].number;
-
-                   APP.models.contacts.phoneArray.push(phone);
-
-               }
-                
-                APP.models.contacts.addressArray = new Array();
-                for (var a = 0; a<APP.models.contacts.currentDeviceContact.addresses.length; a++) {
-                    var address = new Object();
-                    address.name = APP.models.contacts.currentDeviceContact.addresses[a].name;
-                    address.address =  APP.models.contacts.currentDeviceContact.addresses[a].fullAddress;
-
-                    APP.models.contacts.addressArray.push(address);
-               }
-
-               // Set name
-               var name = APP.models.contacts.currentDeviceContact.name;
-               //console.log(APP.models.contacts.currentDeviceContact);
-               if (name !== ""){
-               		$("#addContactName").text(name);
-               } else {
-               		$("#addContactName").text("No name");
-               }
-               
-
-               
-               APP.models.contacts.phoneDS.data( APP.models.contacts.phoneArray);
-               APP.models.contacts.emailDS.data( APP.models.contacts.emailArray);
-               APP.models.contacts.addressDS.data( APP.models.contacts.addressArray);
-               //APP.kendo.navigate('#addContact');
-
-               // ToDo - add alias wiring 
-    		   $("#addNicknameBtn").removeClass("hidden");
-    		   $("#contactNicknameInput input").val("");
-
-               $("#modalview-AddContact").data("kendoMobileModalView").open();
-             
-            }
     });
 }
 
@@ -457,9 +468,11 @@ function searchDeviceContacts(e) {
         // Two names?
         if (nameArray.length > 1) {
             unifyContacts(array);
+            APP.models.contacts.unifiedDeviceContact = true;
             APP.models.contacts.contactListDS.data([]);
             APP.models.contacts.contactListDS.add(array[0]);
         } else {
+            APP.models.contacts.unifiedDeviceContact = false;
             for (var i=0; i<array.length; i++) {
                 APP.models.contacts.contactListDS.add(array[i]);
             }
@@ -709,6 +722,7 @@ function contactsAddContact(e){
 	$("#modalview-AddContact").data("kendoMobileModalView").close();
 
 	mobileNotify("Invite sent");
+
 	// Look up this contacts phone number in the gg directory
 	findUserByPhone(phone, function (result) {
 		
