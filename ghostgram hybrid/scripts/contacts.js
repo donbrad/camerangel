@@ -227,7 +227,6 @@ function updateCurrentContact (contact) {
     APP.models.contacts.currentContact.set('email', contact.email);
     APP.models.contacts.currentContact.set('address', contact.address);
     APP.models.contacts.currentContact.set('uuid', contact.uuid);
-    APP.models.contacts.currentContact.set('photo', contact.photo);
 	APP.models.contacts.currentContact.set('category', contact.category);
 	APP.models.contacts.currentContact.set('contactUUID', contact.contactUUID);
 	APP.models.contacts.currentContact.set('contactEmail', contact.contactEmail);
@@ -530,7 +529,7 @@ function filterContactsByName(contacts, firstName, lastName) {
 
 function unifyContacts(contacts) {
     var emailArray = [], phoneArray = [], addressArray = [],
-        emails = [], phones = [], addresses = [];
+        emails = [], phones = [], addresses = [], photo='';
 
 
     //Build histograms for email, phone and address
@@ -549,6 +548,18 @@ function unifyContacts(contacts) {
 			if (contacts[i].addresses[a].fullAddress.indexOf('null') == -1 && contacts[i].addresses[a].name == -1)
             	addressArray[contacts[i].addresses[a].fullAddress] = contacts[i].addresses[a].name ? contacts[i].addresses[a].name : '';
         }
+		
+		
+		if (contacts[i].photos !== null && photo === '') {
+			returnValidPhoto(contacts[i].photos[0].value, function(validUrl) {
+				photo = validUrl;
+			});
+		}
+
+		if (photo === '') {
+			photo = 'images/default-img.png';
+		}
+		APP.models.contacts.photoUrl = photo;
     }
 
     emails = Object.keys(emailArray);
