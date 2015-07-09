@@ -487,12 +487,13 @@ function onInitContactImport (e) {
 function onShowContactImport (e) {
 	e.preventDefault();
 	var query = e.view.params.query;
-	contactsFindContacts(query);
+	//contactsFindContacts(query);
 	
 }
 
 function searchDeviceContacts(e) {
 	e.preventDefault();
+
 	query = $('#contactSearchInput').val();
 	contactsFindContacts(query, function(array) {
 
