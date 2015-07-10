@@ -610,7 +610,7 @@ function contactsFindContacts(query, callback) {
 	}
 	
     var options      = new ContactFindOptions();
-    options.filter   = query
+    options.filter   = query;
     options.multiple = true;
     var fields       = ["name", "displayName", "nickName" ,"phoneNumbers", "emails", "addresses", "photos"];
      
@@ -630,7 +630,7 @@ function contactsFindContacts(query, callback) {
                 for (var j=0; j<contacts[i].phoneNumbers.length; j++){
                     var phone = new Object();
                     phone.name = contacts[i].phoneNumbers[j].type + " : " + contacts[i].phoneNumbers[j].value ;
-                    phone.number = contacts[i].phoneNumbers[j].value;
+                    phone.number = unformatPhoneNumber( contacts[i].phoneNumbers[j].value);
                     contactItem.phoneNumbers.push(phone);
                 }
             }

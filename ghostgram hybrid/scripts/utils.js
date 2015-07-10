@@ -197,6 +197,34 @@ function verifyPhone(e){
     
 }
 
+//Remove all formatting from  phone number and add 1 for 10 digit US numbers.
+function unformatPhoneNumber(phone) {
+    if (phone === null && phone === undefined)
+        return ('');
+
+    var newPhone = phone.replace(/[\-+xX\(\)]/g, '');
+    newPhone = newPhone.replace(/\s/g, '');
+    if (newPhone.length === 10) {
+        newPhone = '1'+newPhone;
+    }
+    return(newPhone);
+}
+
+function isValidMobileNumber (phone, callback) {
+    Parse.Cloud.run('validateMobileNumber', {phone: phone}, {
+        success: function (result) {
+            if (result.status !== 'ok' || result.result.carrier.type !== 'mobile') {
+                callback({status: 'ok', valid: false, result: result.result});
+            } else {
+                callback({status: 'ok', valid: true , result: result.result});
+            }
+        },
+        error: function(error) {
+            mobileNotify("Error checking phone number" + error);
+            callback({status: 'error', valid: false,  error: error});
+        }
+    });
+}
 
 function reverseGeoCode(lat,lng) {
     var latlng = new google.maps.LatLng(lat, lng);
