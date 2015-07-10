@@ -34,7 +34,6 @@ function privateChat(e) {
 	var contactUUID = contact.contactUUID;
 	
 	if (contactUUID === undefined || contactUUID === null) {
-		// TODO: look up contact in user table...
 		mobileNotify(contact.get('name') + "hasn't verified their contact info");
 		return;
 	}
@@ -435,6 +434,18 @@ function launchAddContact(e) {
             $("#addContactPhoto").attr("src",validUrl);
         });
     }
+
+    $( "#addContactPhone" ).change(function() {
+        var phone = $("#addContactPhone").val();
+
+        isValidMobileNumber(phone, function(result){
+           if (result.status === 'ok') {
+               if (result.valid === false) {
+                   mobileNotify(phone + 'is not a valid mobile number');
+               }
+           }
+        });
+    });
 
     $("#modalview-AddContact").data("kendoMobileModalView").open();
 
