@@ -236,9 +236,7 @@
 <script type="text/x-kendo-template" id="contactsTemplate">      
     <div class="listBox">
 	     <div>
-			 <a data-role="button" class="slideGearButton ghostButton" style="display:none; float:right;">
-			 	<i class="ghostIcon fa fa-cog"></i>
-			 </a>
+			 
 			 #if (data.category !== 'phone') {#
 			 	<div class="left listPhoto">
 				 	<div class="statusContactList">
@@ -253,21 +251,29 @@
 			 			#}#
 			 		</div>
 			 	</div><!-- left -->
+					
+					<div class="left listName">
+						<h3>
+						#if (data.phoneVerified){#
+								#: data.name # 
+								<img src="images/user-verified.svg" class="user-status-icon" />
+						#} else if (data.name) {#
+							 #: data.name # 
+								
+						#}#
+						# if(data.name !== data.alias) {#
+							<span class="contacts-alias-sm">#: data.alias #</span>
+						#}#
+						
+						</h3>
+					</div>
 
-				# if (data.category !== 'phone') {#
-					<div class="left listName">
-						<h4>#: data.alias # </h4> 
-					</div><!-- left -->
-					<p class="left caption">#: data.name #</p> 
-				#} else {#
-					<div class="left listName">
-						<h4>#: data.name # </h4> 
-					</div><!-- left -->
-				#}#
+					<p class="left caption">Busy @ home</p>
+					
 				<div class="clearfix"></div> 
 			#} else {#
 				<div class="phoneContact">
-					<h4>#: data.name # </h4>
+					<h4> #: data.name # </h4>
 				</div>
 			#}#
 			 

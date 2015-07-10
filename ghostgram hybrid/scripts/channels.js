@@ -348,10 +348,11 @@ function onShowEditChannel (e) {
 												   '">'+
 												   '<div class="left"><img class="circle-img-md editChatImg" src="'+ thisMember.photo +'"/></div>' + 
 												   '<h4>'+ thisMember.name + ' <img class="user-status-icon" src="images/user-verified.svg" />'+
+												   '<span class="contacts-alias-sm"> '+ thisMember.alias +'</span>' +
 												   '<span class="right">' +
 												   '<a class="listTrash" data-param="' + thisMember.uuid +
 												   '" data-role="button" class="clearBtn" data-click="deleteMember" onclick="deleteMember(this)" ><img src="images/trash.svg" /></a></span>' +
-												   '</h4><p>' + thisMember.alias + '</p>' + 
+												   '</h4><p class="helper">Status</p>' + 
 												   '<div class="clearfix"></div></li>');	
 			}
 		}

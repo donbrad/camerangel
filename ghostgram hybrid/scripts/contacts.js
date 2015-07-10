@@ -338,7 +338,7 @@ function onInitContacts(e) {
         fixedHeaders: true,
         click: function (e) {
             var contact = e.dataItem;
-            //console.log(contact);
+            console.log(contact);
             updateCurrentContact(contact);
 			
 			if (contact.category === 'phone') {
@@ -350,8 +350,6 @@ function onInitContacts(e) {
                     APP.kendo.navigate('#contactImport?query=' + contact.name);
                 }
 
-
-				
 			} else {		
 				// If we know the contacts uuid enable the full feature set
 				if (contact.contactUUID !== undefined && contact.contactUUID !== null){
