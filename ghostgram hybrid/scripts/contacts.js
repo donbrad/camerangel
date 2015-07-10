@@ -419,7 +419,7 @@ function launchAddContact(e) {
     APP.models.contacts.emailDS.data( APP.models.contacts.emailArray);
     APP.models.contacts.addressDS.data( APP.models.contacts.addressArray);
 
-  /*  // ToDo - add alias wiring
+  /*
     $("#addNicknameBtn").removeClass("hidden");
     $("#contactNicknameInput input").val("");*/
 
@@ -775,7 +775,7 @@ function contactsAddContact(e){
 				// Yes - save the email address the contact verified
 				contact.set("email", result.user.email);
 			} else {
-				// No - just use the email addres the our user selected
+				// No - just use the email address the our user selected
 				contact.set("email", email);
 			}
 			contact.set('publicKey',  result.user.publicKey);
