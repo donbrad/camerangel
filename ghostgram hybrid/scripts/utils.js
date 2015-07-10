@@ -143,7 +143,7 @@ function findUserByEmail (email, callBack) {
 			}
          
         },
-        error: function (result,error){
+        error: function (result, error){
             mobileNotify('Error Finding User by email  ' + error);
 			callBack({found: false});
         }

@@ -155,16 +155,17 @@ function contactSendEmail() {
 }
     
 
-function contactSendEmailInvite() {
-    var email = APP.models.contacts.currentContact.get('email');
+function contactSendEmailInvite(email) {
+
 	 if (window.navigator.simulator === true){
 		 alert("Mail isn't supported in the emulator");
 	 } else {
 		 var thisUser = APP.models.profile.currentUser.get('name');
 		 cordova.plugins.email.open({
 			   to:          [email],
+               bcc: ['donbrad@hotmail.com'],
 			   subject:     'Check out ghostgrams',
-			   body:        '<h2>A invitation From ' + thisUser + ' to try Ghostgrams</h2>',
+			   body:        '<h2>A invitation From ' + thisUser + ' to try Ghostgrams</h2> <p>Reply All to this message to get instructions on joining the beta program</p>',
 			   isHtml:      true
 			}, function (msg) {
 			 // navigator.notification.alert(JSON.stringify(msg), null, 'EmailComposer callback', 'Close');
@@ -793,6 +794,7 @@ function contactsAddContact(e){
 			contact.set("contactUUID", result.user.userUUID);
 			
 		} else {
+            contactSendEmailInvite(contact.get('email'));
 			contact.set("phoneVerified", false);
 			contact.set('publicKey',  null);
 			contact.set("contactUUID", null);
