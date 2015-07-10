@@ -519,7 +519,7 @@ function doSyncContact(e) {
 	}
 	
 	var name = APP.models.contacts.currentContact.name;
-	syncContact(name, function() {
+	syncContactWithDevice(name, function() {
 		$('#contactEditList').addClass('hidden');
 		$('#syncEditList').removeClass('hidden');
 	});
@@ -527,7 +527,7 @@ function doSyncContact(e) {
 
 // Given a full contact name as a string, fetch matching device contacts and then build a unified list of:
 // phone numbers, emails and addresses -- and first photo found. 
-function syncContact(name, callback) {
+function syncContactWithDevice(name, callback) {
 	contactsFindContacts(name, function (contacts) {
 		unifyContacts(contacts);
 		if (callback !== undefined) {
