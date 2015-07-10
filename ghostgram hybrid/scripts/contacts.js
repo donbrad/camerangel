@@ -136,8 +136,13 @@ function syncContact(model) {
 }
 
 
-function contactSendEmail() {
+function contactSendEmail(e) {
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
+
     var email = APP.models.contacts.currentContact.get('email');
+
 	 if (window.navigator.simulator === true){
 		 alert("Mail isn't supported in the emulator");
 	 } else {
@@ -153,7 +158,42 @@ function contactSendEmail() {
 	 }
 	
 }
-    
+
+function inviteContact(e) {
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
+
+    var email = APP.models.contacts.currentContact.get('email');
+
+    contactSendEmailInvite(email);
+}
+
+function contactSendSMSInvite(phone) {
+
+    var message = "Check out ghostgrams: link tbd...";
+
+
+    //CONFIGURATION
+    var options = {
+        android: {
+            intent: 'INTENT'  // send SMS with the native android SMS messaging
+            //intent: '' // send SMS without openning any other app
+        }
+    };
+
+    var success = function () { mobileNotify('Message sent successfully'); };
+    var error = function (e) { mobileNotify('Message Failed:' + e); };
+
+    if (window.navigator.simulator === true){
+        //running in the simulator
+        alert('Simulating SMS to ' + number + ' message: ' + message);
+    } else {
+        sms.send(number, message, options, success, error);
+    }
+
+
+}
 
 function contactSendEmailInvite(email) {
 
@@ -173,7 +213,12 @@ function contactSendEmailInvite(email) {
 	 }
 	
 }
-function contactCallPhone() {
+function contactCallPhone(e) {
+
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
+
      var number = APP.models.contacts.currentContact.get('phone');
     phonedialer.dial(
         number,
@@ -190,7 +235,11 @@ function contactCallPhone() {
 
 }
     
-function contactSendSMS() {
+function contactSendSMS(e) {
+
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
 
     var number = APP.models.contacts.currentContact.get('phone');
     var message = "";
