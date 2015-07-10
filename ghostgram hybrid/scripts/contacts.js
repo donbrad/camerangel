@@ -571,6 +571,7 @@ function unifyContacts(contacts) {
 
         APP.models.contacts.emailArray.push(email);
     }
+    APP.models.contacts.emailDS.data(APP.models.contacts.emailArray);
     APP.models.contacts.currentDeviceContact.emails = APP.models.contacts.emailArray;
 
 	APP.models.contacts.phoneArray = [];
@@ -581,6 +582,7 @@ function unifyContacts(contacts) {
 
         APP.models.contacts.phoneArray.push(phone);
     }
+    APP.models.contacts.phoneDS.data(APP.models.contacts.phoneArray);
     APP.models.contacts.currentDeviceContact.phoneNumbers = APP.models.contacts.phoneArray;
 
 	APP.models.contacts.addressArray = [];
@@ -591,6 +593,7 @@ function unifyContacts(contacts) {
 
         APP.models.contacts.addressArray.push(address);
     }
+    APP.models.contacts.addressDS.data(APP.models.contacts.addressArray);
     APP.models.contacts.currentDeviceContact.addresses =  APP.models.contacts.addressArray;
 }
     
