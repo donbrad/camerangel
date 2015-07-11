@@ -322,10 +322,7 @@ function homeCreateAccount() {
 
     // clean up the phone number and ensure it's prefixed with 1
    // phone = phone.replace(/\+[0-9]{1-2}/,'');
-    phone = phone.replace(/[^0-9]+/g, "");
-	if (phone[0] !== '1') {
-		phone = '1'+phone;
-	}
+    phone = unformatPhoneNumber(phone);
 	
 	Parse.Cloud.run('validateMobileNumber', { phone: phone }, {
       success: function(result) {
@@ -358,7 +355,7 @@ function homeCreateAccount() {
 					user.set("rememberUsername", false);
 					user.set("userUUID", userUUID);
 					user.set("publicKey", publicKey);
-					user.set("privateKey", privateKey)
+					user.set("privateKey", privateKey);
 
 					user.signUp(null, {
 						success: function(user) {

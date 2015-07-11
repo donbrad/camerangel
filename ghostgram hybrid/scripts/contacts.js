@@ -34,7 +34,6 @@ function privateChat(e) {
 	var contactUUID = contact.contactUUID;
 	
 	if (contactUUID === undefined || contactUUID === null) {
-		// TODO: look up contact in user table...
 		mobileNotify(contact.get('name') + "hasn't verified their contact info");
 		return;
 	}
@@ -137,8 +136,13 @@ function syncContact(model) {
 }
 
 
-function contactSendEmail() {
+function contactSendEmail(e) {
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
+
     var email = APP.models.contacts.currentContact.get('email');
+
 	 if (window.navigator.simulator === true){
 		 alert("Mail isn't supported in the emulator");
 	 } else {
@@ -154,18 +158,54 @@ function contactSendEmail() {
 	 }
 	
 }
-    
 
-function contactSendEmailInvite() {
+function inviteContact(e) {
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
+
     var email = APP.models.contacts.currentContact.get('email');
+
+    contactSendEmailInvite(email);
+}
+
+function contactSendSMSInvite(phone) {
+
+    var message = "Check out ghostgrams: link tbd...";
+
+
+    //CONFIGURATION
+    var options = {
+        android: {
+            intent: 'INTENT'  // send SMS with the native android SMS messaging
+            //intent: '' // send SMS without openning any other app
+        }
+    };
+
+    var success = function () { mobileNotify('Message sent successfully'); };
+    var error = function (e) { mobileNotify('Message Failed:' + e); };
+
+    if (window.navigator.simulator === true){
+        //running in the simulator
+        alert('Simulating SMS to ' + number + ' message: ' + message);
+    } else {
+        sms.send(number, message, options, success, error);
+    }
+
+
+}
+
+function contactSendEmailInvite(email) {
+
 	 if (window.navigator.simulator === true){
 		 alert("Mail isn't supported in the emulator");
 	 } else {
 		 var thisUser = APP.models.profile.currentUser.get('name');
 		 cordova.plugins.email.open({
 			   to:          [email],
+               bcc: ['donbrad@hotmail.com'],
 			   subject:     'Check out ghostgrams',
-			   body:        '<h2>A invitation From ' + thisUser + ' to try Ghostgrams</h2>',
+			   body:        '<h2>A invitation From ' + thisUser + ' to try Ghostgrams</h2> <p>Reply All to this message to get instructions on joining the beta program</p>',
 			   isHtml:      true
 			}, function (msg) {
 			 // navigator.notification.alert(JSON.stringify(msg), null, 'EmailComposer callback', 'Close');
@@ -173,7 +213,12 @@ function contactSendEmailInvite() {
 	 }
 	
 }
-function contactCallPhone() {
+function contactCallPhone(e) {
+
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
+
      var number = APP.models.contacts.currentContact.get('phone');
     phonedialer.dial(
         number,
@@ -190,7 +235,11 @@ function contactCallPhone() {
 
 }
     
-function contactSendSMS() {
+function contactSendSMS(e) {
+
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
 
     var number = APP.models.contacts.currentContact.get('phone');
     var message = "";
@@ -417,7 +466,7 @@ function launchAddContact(e) {
     APP.models.contacts.emailDS.data( APP.models.contacts.emailArray);
     APP.models.contacts.addressDS.data( APP.models.contacts.addressArray);
 
-  /*  // ToDo - add alias wiring
+  /*
     $("#addNicknameBtn").removeClass("hidden");
     $("#contactNicknameInput input").val("");*/
 
@@ -433,6 +482,18 @@ function launchAddContact(e) {
             $("#addContactPhoto").attr("src",validUrl);
         });
     }
+
+    $( "#addContactPhone" ).change(function() {
+        var phone = $("#addContactPhone").val();
+
+        isValidMobileNumber(phone, function(result){
+           if (result.status === 'ok') {
+               if (result.valid === false) {
+                   mobileNotify(phone + 'is not a valid mobile number');
+               }
+           }
+        });
+    });
 
     $("#modalview-AddContact").data("kendoMobileModalView").open();
 
@@ -608,7 +669,7 @@ function contactsFindContacts(query, callback) {
 	}
 	
     var options      = new ContactFindOptions();
-    options.filter   = query
+    options.filter   = query;
     options.multiple = true;
     var fields       = ["name", "displayName", "nickName" ,"phoneNumbers", "emails", "addresses", "photos"];
      
@@ -628,7 +689,7 @@ function contactsFindContacts(query, callback) {
                 for (var j=0; j<contacts[i].phoneNumbers.length; j++){
                     var phone = new Object();
                     phone.name = contacts[i].phoneNumbers[j].type + " : " + contacts[i].phoneNumbers[j].value ;
-                    phone.number = contacts[i].phoneNumbers[j].value;
+                    phone.number = unformatPhoneNumber( contacts[i].phoneNumbers[j].value);
                     contactItem.phoneNumbers.push(phone);
                 }
             }
@@ -773,13 +834,14 @@ function contactsAddContact(e){
 				// Yes - save the email address the contact verified
 				contact.set("email", result.user.email);
 			} else {
-				// No - just use the email addres the our user selected
+				// No - just use the email address the our user selected
 				contact.set("email", email);
 			}
 			contact.set('publicKey',  result.user.publicKey);
 			contact.set("contactUUID", result.user.userUUID);
 			
 		} else {
+            contactSendEmailInvite(contact.get('email'));
 			contact.set("phoneVerified", false);
 			contact.set('publicKey',  null);
 			contact.set("contactUUID", null);
