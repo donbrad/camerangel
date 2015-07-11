@@ -1,66 +1,71 @@
 function addChannel(e) {
-    e.preventDefault();
+	e.preventDefault();
+	
+	// make sure chat has a name
+	if($("#channels-addChannel-name").val() !== ''){
 
-    var Channels = Parse.Object.extend("channels");
-    var channel = new Channels();
-	
-	var ChannelMap = Parse.Object.extend('channelmap');
-	var channelMap = new ChannelMap();
-    
-    var name = $('#channels-addChannel-name').val(),
-        description = $('#channels-addChannel-description').val(), 
-        channelId = uuid.v4();
-        
-    channel.set("name", name );
-    channel.set("isOwner", true);
-	channel.set('isPrivate', false);
-    channel.set("media",   true);
-    channel.set("archive", true);
-  
-    channel.set("description", description);
-	channel.set("members", [APP.models.profile.currentUser.userUUID]);
-	channel.set("invitedMembers", []);
-    channel.set("channelId", channelId);
-    
-    channel.setACL(APP.models.profile.parseACL);
-	channel.save(null, {
-      success: function(channel) {
-        // Execute any logic that should take place after the object is saved.
-         
-          APP.models.channels.channelsDS.add(channel.attributes);
-          mobileNotify('Added channel : ' + channel.get('name'));
-		  
-		  APP.models.channels.currentModel = findChannelModel(channelId);
-		  APP.models.channels.currentChannel = APP.models.channels.currentModel;
-		  APP.kendo.navigate('#editChannel');
-      },
-      error: function(channel, error) {
-        // Execute any logic that should take place if the save fails.
-        // error is a Parse.Error with an error code and message.
-        mobileNotify('Error creating channel: ' + error.message);
-        handleParseError(error);
-      }
-    });
-	
-	channelMap.set("name", name);
-	channelMap.set("channelId", guid);
-	channelMap.set("channelOwner", APP.models.profile.currentUser.userUUID);
-	channelMap.set("members", [APP.models.profile.currentUser.userUUID]);
-	
-	 channelMap.save(null, {
-      success: function(channel) {
-        // Execute any logic that should take place after the object is saved.
-         
-         
-      },
-      error: function(channel, error) {
-        // Execute any logic that should take place if the save fails.
-        // error is a Parse.Error with an error code and message.
-        mobileNotify('Error creating channelMap: ' + error.message);
-        handleParseError(error);
-      }
-    });	
-	
+	    var Channels = Parse.Object.extend("channels");
+	    var channel = new Channels();
+		
+		var ChannelMap = Parse.Object.extend('channelmap');
+		var channelMap = new ChannelMap();
+	    
+	    var name = $('#channels-addChannel-name').val(),
+	        description = $('#channels-addChannel-description').val(), 
+	        channelId = uuid.v4();
+	        
+	    channel.set("name", name );
+	    channel.set("isOwner", true);
+		channel.set('isPrivate', false);
+	    channel.set("media",   true);
+	    channel.set("archive", true);
+	  
+	    channel.set("description", description);
+		channel.set("members", [APP.models.profile.currentUser.userUUID]);
+		channel.set("invitedMembers", []);
+	    channel.set("channelId", channelId);
+	    
+	    channel.setACL(APP.models.profile.parseACL);
+		channel.save(null, {
+	      success: function(channel) {
+	        // Execute any logic that should take place after the object is saved.
+	         
+	          APP.models.channels.channelsDS.add(channel.attributes);
+	          mobileNotify('Added channel : ' + channel.get('name'));
+			  
+			  APP.models.channels.currentModel = findChannelModel(channelId);
+			  APP.models.channels.currentChannel = APP.models.channels.currentModel;
+			  APP.kendo.navigate('#editChannel');
+	      },
+	      error: function(channel, error) {
+	        // Execute any logic that should take place if the save fails.
+	        // error is a Parse.Error with an error code and message.
+	        mobileNotify('Error creating channel: ' + error.message);
+	        handleParseError(error);
+	      }
+	    });
+		
+		channelMap.set("name", name);
+		channelMap.set("channelId", channelId);
+		channelMap.set("channelOwner", APP.models.profile.currentUser.userUUID);
+		channelMap.set("members", [APP.models.profile.currentUser.userUUID]);
+		
+		 channelMap.save(null, {
+	      success: function(channel) {
+	        // Execute any logic that should take place after the object is saved.
+	         
+	         
+	      },
+	      error: function(channel, error) {
+	        // Execute any logic that should take place if the save fails.
+	        // error is a Parse.Error with an error code and message.
+	        mobileNotify('Error creating channelMap: ' + error.message);
+	        handleParseError(error);
+	      }
+	    });	
+	} else {
+		mobileNotify("Chat name is required");
+	}
 }
 
 
@@ -248,7 +253,7 @@ function onShowAddChannel (e) {
 
 	$("#channels-addChannel-name").keyup(function(){
 		if($("#channels-addChannel-name").val !== ""){
-			$("#btnAddChannel-step1").velocity({opacity: 1}, {duration: 500, easing: "spring"});
+			$("#addChat-createBtn").velocity({opacity: 1}, {duration: 500, easing: "spring"});
 			$("#channels-addChannel-name").unbind();
 		}
 	});
@@ -298,6 +303,9 @@ function finalizeEditChannel(e) {
 	mobileNotify("Updating " + APP.models.channels.currentModel.name);
 	
 	APP.kendo.navigate('#channels');
+
+	// Reset UI
+	$("#channels-addChannel-description, #channels-addChannel-name").val('');
 }
 
 function onInitEditChannel (e) {
@@ -548,11 +556,11 @@ function resetAddChatUI(e){
 	$("#channels-addChannel-description").css("display","none");
 	$("#channels-addChannel-description, #channels-addChannel-name").val("");
 	$("#addChatDescription").velocity("fadeIn");
-	$("#btnAddChannel-step1, #addChat-step2").velocity({opacity: 0});
+	//$("#addChat-createBtn").velocity({opacity: 0});
 	
 		$("#channels-addChannel-name").keyup(function(){
 		if($("#channels-addChannel-name").val !== ""){
-			$("#btnAddChannel-step1").velocity({opacity: 1}, {duration: 500, easing: "spring"});
+			$("#addChat-createBtn").velocity({opacity: 1}, {duration: 500, easing: "spring"});
 			$("#channels-addChannel-name").unbind();
 		}
 	});
@@ -563,7 +571,7 @@ function addChatStep1(e){
 	$("#chat-title-setup").velocity("slideUp", {duration: 300});
 	$("#addChat-step2").velocity("fadeOut", {duration: 200});
 	$("#addChat-step1").velocity("fadeIn", {duration: 200, delay:200});
-	$("#addChat-createBtn").velocity("slideUp", {display: "none", duration: 300});
+	//$("#addChat-createBtn").velocity("slideUp", {display: "none", duration: 300});
 }
 
 
@@ -576,9 +584,6 @@ function addChatStep2(e) {
 
 		// fade out step 1
 		$("#addChat-step1, #addChat-helper1").velocity("fadeOut", {duration: 300});
-
-		//Slide up create btn
-		//$("#addChat-createBtn").velocity("slideUp", {duration: 500, easing: "spring", display: "block"});
 
 		$("#addChat-step2").velocity("fadeIn", {duration: 100, delay:300, display: "block"});
 	} else {
