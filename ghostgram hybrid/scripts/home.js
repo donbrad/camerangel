@@ -595,9 +595,18 @@ function findContactMe(query) {
 
 
 function homeRecoverPassword(e) {
-    // ToDo - need to wire password reset
+
     var emailAddress = $("#home-recoverPassword-email").val();
-    console.log("Sending email to " + emailAddress);
+	Parse.User.requestPasswordReset(emailAddress, {
+		success: function() {
+			mobileNotify("Sent password recovery to " + emailAddress);
+		},
+		error: function(error) {
+			// Show the error message somewhere
+			mobileNotify("Recover Password Error: " + error.code + " " + error.message);
+		}
+	});
+
 }
 
 function syncPresence () {
@@ -636,59 +645,14 @@ function syncPresence () {
 }
 
 
-function closeChooseGhost() {
-    $("#modalview-chooseGhost").data("kendoMobileModalView").close();
-}
-
-function validNewPass(e) {
-    e.preventDefault();
-    var pass1 = $("#newPassword1").val();
-    var pass2 = $("#newPassword2").val();
-    
-    if(pass1 !== pass2){
-        mobileNotify("Passwords don't match, try again");
-    } else {
-        saveNewPass();
-    }
-}
-
-function saveNewPass() {
-    $("#modalview-changePassword").data("kendoMobileModalView").close();
-    
-   	// Clear forms
-    $("#newPassword1, #newPassword2").val("");
-    
-    mobileNotify("Your password was updated");
-    // ToDo - wire save password
-}
-
-function closeNewPass(){
-    $("#modalview-changePassword").data("kendoMobileModalView").close();
-    
-    // Clear forms
-    $("#newPassword1, #newPassword2").val("");
-}
 
 
-// Select new ghost icon
-function whichGhost(e){
-    var selection = e.target[0].id;
-    var selectionPath = "images/" + selection + ".svg";
-    var currentAlias = APP.models.profile.currentUser.aliasPhoto;
-    
-    if (selection !== undefined){
-        $(".myPublicImg").attr("src", selectionPath);
-        // ToDo - save ghost selection
-    	APP.models.profile.currentUser.set("aliasPhoto", selectionPath);
-    }
-    closeChooseGhost()
-}
 
 
-// Todo - wire save profile, may not need w/ profile sync
-function saveEditProfile() {
-    mobileNotify("Your profile was updated")
-}
+
+
+
+
 
 function closeStartModal() {
 	$("#modalview-start").data("kendoMobileModalView").close();
