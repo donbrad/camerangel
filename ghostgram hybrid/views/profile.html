@@ -86,9 +86,9 @@
                <div class="profilePrivateImgBtn">
                    <label>Private photo</label>
                    <p class="caption">
-                       Your private photo is visible <b>ONLY</b> to approved contacts.
+                       Your private photo is visible <b>ONLY</b> to your contacts.
                    </p>
-                   <a class="btnClear" data-role="button">Choose photo</a>
+                   <a class="btnClear" data-role="button" data-click="updateProfilePhoto" >Choose photo</a>
                </div>
            </div>
          </div>
@@ -189,8 +189,8 @@
 <!-- change password modal -->
 <div data-role="modalview" id="modalview-changePassword" style="width: 90%; display:none;" class="appearance">
     <div class="modalTop">
-        <h3>Change Password
-            <span class="closeBox" style="float:right;">
+        <h3 style="height: 48px; vertical-align: middle;">Change Password
+            <span class="closeBox" style="float:right; ">
                 <a data-click="closeNewPass;" data-role="button"><img src="images/close.svg" /></a>
             </span>
         </h3>
@@ -200,11 +200,11 @@
        <ul data-role="listview" data-style="inset">
         <li>
             <label>New Password</label>
-            <input type="text" id="newPassword1" />
+            <input type="password" id="newPassword1" />
         </li>
         <li>
             <label>Confirm Password</label>
-            <input type="text" id="newPassword2" />
+            <input type="password" id="newPassword2" />
         </li>
        </ul>
       <a class="btnClear" data-click="validNewPass" data-role="button">Save</a>
