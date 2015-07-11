@@ -254,21 +254,25 @@
 					
 					<div class="left listName">
 						<h3>
+						#if(data.alias !== ''){#
+							#: data.alias #
+						#} else {#
+							#: data.name #
+						#}#
 						#if (data.phoneVerified){#
-								#: data.name # 
 								<img src="images/user-verified.svg" class="user-status-icon" />
-						#} else if (data.name) {#
-							 #: data.name # 
-								
 						#}#
-						# if(data.name !== data.alias) {#
-							<span class="contacts-alias-sm">#: data.alias #</span>
+						# if(data.alias !== '' && data.name !== data.alias) {#
+							<span class="contacts-alias-sm">#: data.name #</span>
 						#}#
-						
 						</h3>
 					</div>
 
-					<p class="left caption">Busy @ home</p>
+					<p class="left caption">
+					#if(data.phoneVerified !== true){#
+						Unverified •  
+					#}#	Busy @ home
+					</p>
 					
 				<div class="clearfix"></div> 
 			#} else {#

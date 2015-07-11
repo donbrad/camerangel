@@ -234,7 +234,7 @@ function onInitChannels (e) {
 }
 
 function listViewClick(e){
-    console.log("Clicked list");
+    
 }
 
 function onShowAddChannel (e) {
@@ -343,17 +343,28 @@ function onShowEditChannel (e) {
 			// Current user will be undefined in contact list.
 			if (thisMember !== undefined) {
 				APP.models.channel.membersDS.add(thisMember);
-				//console.log(thisMember);
+				
+				// Display the right data for name
+				var name = thisMember.name; 
+				var alias = thisMember.alias;
+				var mainName, smallName = null;
+				if (alias !== ''){
+					mainName = alias;
+					smallName = name;
+				} else {
+					mainName = name;
+					smallName = alias;
+				}
 				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+
-												   '">'+
-												   '<div class="left"><img class="circle-img-md editChatImg" src="'+ thisMember.photo +'"/></div>' + 
-												   '<h4>'+ thisMember.name + ' <img class="user-status-icon" src="images/user-verified.svg" />'+
-												   '<span class="contacts-alias-sm"> '+ thisMember.alias +'</span>' +
-												   '<span class="right">' +
-												   '<a class="listTrash" data-param="' + thisMember.uuid +
-												   '" data-role="button" class="clearBtn" data-click="deleteMember" onclick="deleteMember(this)" ><img src="images/trash.svg" /></a></span>' +
-												   '</h4><p class="helper">Status</p>' + 
-												   '<div class="clearfix"></div></li>');	
+					'">'+
+					'<div class="left"><img class="circle-img-md editChatImg" src="'+ thisMember.photo +'"/></div>' + 
+					'<h4>'+ mainName + ' <img class="user-status-icon" src="images/user-verified.svg" />'+
+					'<span class="contacts-alias-sm"> '+ smallName +'</span>' +
+					'<span class="right">' +
+					'<a class="listTrash" data-param="' + thisMember.uuid +
+					'" data-role="button" class="clearBtn" data-click="deleteMember" onclick="deleteMember(this)" ><img src="images/trash.svg" /></a></span>' +
+					'</h4><p class="helper">Status</p>' + 
+					'<div class="clearfix"></div></li>');	
 			}
 		}
 
@@ -362,19 +373,31 @@ function onShowEditChannel (e) {
 			for (var j=0; j<members.length; j++) {
 				thisMember = findContactByUUID(members[j]);
 				APP.models.channel.membersDS.add(thisMember);
-				//console.log(thisMember);
+				// Display the right data for name
+				var name = thisMember.name; 
+				var alias = thisMember.alias;
+				var mainName, smallName = "";
+				if (alias !== '' && name === alias){
+					mainName = alias;
+				} else if (alias !== ''){
+					mainName = alias;
+					smallName = name;
+				} else {
+					mainName = name;
+					smallName = alias;
+				}
 				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'">' +
 					'<div class="left"><img class="circle-img-md editChatImg" src="'+ thisMember.photo +'"/></div>' +
-					'<h4>'+ thisMember.name +  ' <img class="user-status-icon" src="images/status-unverified.svg" />'+
+					'<h4>'+ mainName + 
+					'<span class="contacts-alias-sm"> '+ smallName +'</span>' +
 					'<a class="right listTrash" data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)"><img src="images/trash.svg" /></a>' +
-					'</h4><p class="helper">'+ thisMember.alias +'<div class="clearfix"></div></li>');	
-
+					'</h4><p class="helper">Unverified • Status</p><div class="clearfix"></div></li>');	
 			}
 		}	
 		
 	} else {
 		$(".addChatMembersBanner a").text("No one is invited. Tap to send invites");
-		//console.log("No one here");
+		
 	}
 
 	// hide trash cans
@@ -450,6 +473,7 @@ function doInitChannelMembers (e) {
             },
 		click: function (e) {
 			var thisMember = e.dataItem;
+			
 			APP.models.channel.membersDS.add(thisMember);
 			if (thisMember.contactUUID === null) {
 				APP.models.channels.currentChannel.invitedMembers.push(thisMember.uuid);
@@ -458,7 +482,9 @@ function doInitChannelMembers (e) {
 				APP.models.channels.currentChannel.members.push(thisMember.contactUUID);
 			}
 			APP.models.channel.membersDS.sync();
-			$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'">'+ thisMember.name + ' (' + thisMember.alias + ')' + '<span style="float:right; padding-right: 12px; font-size: 10px;"> <a data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><img src="images/trash.svg" /></a></span></li>');
+			
+
+
 			APP.models.channel.potentialMembersDS.remove(thisMember);
 			$(".addedChatMember").text("+ added " + thisMember.name).velocity("slideDown", { duration: 300, display: "block"}).velocity("slideUp", {delay: 1400, duration: 300, display: "none"});
 		}

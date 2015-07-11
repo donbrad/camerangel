@@ -332,25 +332,26 @@
     	<img src="#: data.photo #" class="circle-img-md" />
     	</div>
     	<div class="left">
-    		<h4>#: data.name #
-	    	#if (data.phoneVerified){#
-	    		
-		    		<img class="user-status-icon" src="images/user-verified.svg" />
-		    		<span class="verified-txt">  Verified </span>
-	    		</h4>
-	    	#} else if (data.contactUUID === undefined || data.contactUUID === null || data.contactUUID === '') {#
-	    		
-		    		<img class="user-status-icon" src="images/status-guest.svg" />
-		    		<span class="guest-txt">  New User </span>
-	    		
+    		
+    		#if (data.alias !== '' && data.name !== data.alias && data.phoneVerified){#
+    			<h4>
+    				#: data.alias #
+    				<img class="user-status-icon" src="images/user-verified.svg" />
+    				<span class="contacts-alias-sm">#: data.name #</span>
+    			</h4>
+    		#} else if(data.alias !== '' && data.name !== data.alias) {#
+    			<h4>
+    				#: data.alias #
+    				<span class="contacts-alias-sm">#: data.name #</span>
+    			</h4>
+    		#} else {#
+    			<h4>#: data.name #</h4>
+    		#}#
+	    	#if(data.phoneVerified !== true){#
+	    		<p class="helper">Unverified • Status </p>
 	    	#} else {#
-	    		
-		    		<img class="user-status-icon" src="images/status-unverified.svg" />
-		    		<span class="unverified-txt">  UnVerified</span>
-	    	
+	    		<p class="helper">Status </p>
 	    	#}#
-  		</h4>
-		<p>#: data.alias #</p>
     	</div>
             
      </div>
