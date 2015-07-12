@@ -23,17 +23,6 @@ function whichGhost(e) {
     closeChooseGhost()
 }
 
-
-function doOpenRecoverPassword(e) {
-    if (e.preventDefault !== undefined)
-        e.preventDefault();
-	
-	var email = APP.models.profile.currrentUser.get('email');
-	
-	$('#home-recoverPassword-email').val(email);
-	
-}
-
 function saveEditProfile() {
     mobileNotify("Your profile was updated")
 }
