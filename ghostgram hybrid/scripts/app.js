@@ -885,7 +885,7 @@
 
         $('.clearable').clearSearch();
 
-        $("#email-Autocomplete").emailautocomplete({
+        $(".email-Autocomplete").emailautocomplete({
             suggClass: "email-Autocomplete", //default: "eac-sugg". your custom classname (optional)
             domains: _emailDomainList //additional domains (optional)
         });
