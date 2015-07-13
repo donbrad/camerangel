@@ -279,7 +279,7 @@ function resizeSuccess (data) {
 /*	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 140, 0, { 
 			  quality: 50, storeImage: 1, photoAlbum: 0, filename: filename });		*/
 	
-	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 196, 0, { 
+	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 256, 0, {
 			   storeImage: false, pixelDensity: true, quality: 75 });
 }
 
@@ -292,7 +292,7 @@ function resizeSuccessAndroid (data) {
 /*	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 140, 0, { 
 			  quality: 50, storeImage: 1, photoAlbum: 0, filename: filename });		*/
 	
-	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 196, 0, { 
+	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 256, 0, {
 			   imageDataType: ImageResizer.IMAGE_DATA_TYPE_BASE64, storeImage: false, pixelDensity: true, quality: 75 });
 }
 
@@ -385,7 +385,7 @@ function messagePhoto (e) {
 			 
 			 APP.models.gallery.currentPhoto.photoId = photouuid;
 			 APP.models.gallery.currentPhoto.filename = filename;
-			  APP.models.gallery.currentPhoto.imageUrl = imageUrl;
+			 APP.models.gallery.currentPhoto.imageUrl = imageUrl;
 			 
 			  $('#chatImage').attr('src', displayUrl);	
 			 showChatImagePreview();
@@ -395,10 +395,10 @@ function messagePhoto (e) {
 				  quality: 75, storeImage: 1, photoAlbum: 0, filename: "photo_"+filename+'.jpg' }); */
 			
 			if (device.platform === 'iOS') {
-				 window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1200, { 
+				 window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1600, {
 					 storeImage: false, pixelDensity: true, quality: 95 });
 			} else {
-				 window.imageResizer.resizeImage(resizeSuccessAndroid, resizeFailure,  imageUrl, 0, 1200, { 
+				 window.imageResizer.resizeImage(resizeSuccessAndroid, resizeFailure,  imageUrl, 0, 1600, {
 					  imageDataType: ImageResizer.IMAGE_DATA_TYPE_BASE64, storeImage: false, pixelDensity: true, quality: 95 });
 			}
 		 }, 

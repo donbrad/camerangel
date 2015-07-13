@@ -71,7 +71,7 @@ function photoEditRotateLeft(e) {
 	//$('#photoEditImage').css('transform','rotate(' + -90 + 'deg)');'
 	APP.models.gallery.rotationAngle -= 90;
 	$('#photoEditImage').cropper('rotate', APP.models.gallery.rotationAngle);
-	$('#photoEditSaveDiv').removeClass('hidden');
+
 
 }
 
@@ -80,7 +80,7 @@ function photoEditRotateRight(e) {
 	//$('#photoEditImage').css('transform','rotate(' + 90 + 'deg)');
 	APP.models.gallery.rotationAngle += 90;
 	$('#photoEditImage').cropper('rotate', APP.models.gallery.rotationAngle);
-	$('#photoEditSaveDiv').removeClass('hidden');
+
 }
 
 function onHidePhotoEditor(e) {
@@ -95,7 +95,6 @@ function onShowPhotoEditor (e) {
 
 	var source = e.view.params.source; // source can be: chat, gallery or profile.  determines parameters and return path
 
-	$('#photoEditSaveDiv').addClass('hidden');
 	if (source === undefined || source === null) {
 		mobileNotify("PhotoEditor: source parameter is missing!");
 		return;
