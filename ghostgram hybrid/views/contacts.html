@@ -86,7 +86,7 @@
     	
     	<div class="topHalf">
     		<div class="topHalfLeft">
-    			<img class="circle-img shadow" id="addContactPhoto" src="images/ghostgramcontact.png" />
+    			<img class="circle-img-lg shadow" id="addContactPhoto" src="images/ghostgramcontact.png" />
     		</div>
     		<div class="topHalfRight">
 				<div>
@@ -136,7 +136,7 @@
 </div>
 
 <!-- Edit Contacts -->
-<div data-role="view" data-model="APP.models.contacts.currentContact" data-title="Edit Contact" id="editContact" data-layout="main"  data-show="onShowEditContact" class="appearance" style="display: none;">
+<div data-role="view" data-model="APP.models.contacts.currentContact" data-title="Edit Contact" id="editContact" data-layout="main"  data-transition="slide" data-show="onShowEditContact" class="appearance" style="display: none;">
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -145,7 +145,7 @@
     </div>
 
     <div style="padding-bottom: 12px;">
-		<form >
+		<form>
 			<div class="topHalf">
 	    		<div class="topHalfLeft">
 	    			<img class="circle-img-lg shadow" data-bind="attr:{src: photo}" />
@@ -168,12 +168,24 @@
 			<ul data-role="listview" data-style="inset" id="contactEditList">				 
 				<li>           
 					<label>Phone
-						<input id="editContactPhone" type="phone" data-bind="value:phone" readonly/>
+						<span class="helper helper-verified hidden" id="edit-verified-phone">
+	                         <img class="helper-verified-img" src="images/verified.svg" height="14"> 
+	                             Verified
+	                    <span class="helper helper-right"> <i class="fa fa-lock"> Locked</i></span>
+                        </span>
+						
+						<input id="editContactPhone" type="phone" data-bind="value:phone"/>
 					</label>
 				</li>
 				<li>
 					<label>Email
-						 <input id="editContactEmail" type="email" data-bind="value: email" readonly/>
+						<span class="helper helper-verified hidden" id="edit-verified-email">
+	                         <img class="helper-verified-img" src="images/verified.svg" height="14"> 
+	                             Verified
+	                    <span class="helper helper-right"> <i class="fa fa-lock"> Locked</i></span>
+                        </span>
+						
+						 <input id="editContactEmail" type="email" data-bind="value: email"/>
 
 					</label>
 				</li>
@@ -184,12 +196,12 @@
 				</li>
 			</ul>
 			
-			<ul data-role="listview" data-style="inset" id="syncEditList" class="hidden">
+			<ul data-role="listview" data-style="inset" id="syncEditList">
 				<li>
-					<div style="text-align: center;">Updated information from your phone:</div>
+					<p> Device Info</p>
 				</li>
 				<li>           
-                <label>Phone Numbers
+                <label>Phone <span class="input-count hidden" id="syncEditPhoneCount"></span>
                     <select id="syncContactPhone" data-role="dropdownlist" 
                             data-text-field="number" 
                             data-value-field="number"
@@ -220,17 +232,23 @@
 				</li>
 				<li>
 					<div style="text-align: center; padding-top: 6px; padding-bottom: 6px;">
-					<a data-role="button" class="btnClear-grey" id="editContact-syncCompleteBtn" data-click="onDoneSyncContact"> Sync Complete</a>
+					<a data-role="button" class="btnBlue btnSpan" id="editContact-syncCompleteBtn" data-click="onDoneSyncContact" style="display: none;"> Update Contact</a>
 					</div>
 				</li>
     		</ul>
-			
+    		<div class="edit-contacts-options">
+				<a data-role="button" class="btnClear-grey" id="editContact-resyncBtn" data-click="doSyncContact">
+					<img src="images/contacts.svg" />  Sync Contact With Device
+				</a>
+			<br />
+				<a data-role="button" class="btnClear-red" id="editContact-deleteBtn" data-click="deleteContact">
+					<img src="images/trash.svg" />  Delete Contact
+				</a>
+			</div>
 		</form>
 
-		<div style="text-align: center; padding-top: 16px; padding-bottom: 16px;">
-			<a data-role="button" class="btnClear-grey" id="editContact-resyncBtn" data-click="doSyncContact"><img src="images/contacts.svg" />  Sync Contact With Device</a>
-			<br>
-			<a data-role="button" class="btnClear-red" id="editContact-deleteBtn" data-click="deleteContact"><img src="images/trash.svg" />  Delete Contact</a>
+		<div style="padding-top: 16px; padding-bottom: 16px;">
+			
 		</div>
 	</div>
 </div>

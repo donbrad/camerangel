@@ -11,6 +11,7 @@
 @black: #4A4A4A;
 @yellow100: #FFB74D;
 @yellow200: #FADDB0;
+@purple100: #9E788F;
  
 
 /* elements */
@@ -633,6 +634,7 @@ div.km-header a img{
     color: #979797;
 }
 .helper-right {
+	.helper;
     float: right;
 }
 #helper-profilePhone {
@@ -641,6 +643,7 @@ div.km-header a img{
     right: 0px;
 }
 .helper-left {
+	.helper;
     float: left;
 }
 .helper-form {
@@ -1863,8 +1866,11 @@ div.loginBox > form > div > ul > li {
 	}
 }
 
-#btnSearchDeviceContacts img {
-	vertical-align: text-top;
+#btnSearchDeviceContacts {
+	margin-top: 1rem;
+	img {
+		vertical-align: text-top;
+	}
 }
 
 #contacts-listview > li,
@@ -1983,6 +1989,43 @@ div.loginBox > form > div > ul > li {
 	color: #979797;
 	vertical-align: middle;
 }
+
+/* Contact sync */
+#syncEditList {
+	margin-top: 1rem;
+	.shadow;
+	border-radius: 4px;
+	.pad;
+	background: @greyBk;
+}
+
+.input-count {
+	color: #fff;
+	background-color: #9e788f;
+	padding: 0.5rem;
+	border-radius: 0.25rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
+	font-size: 11px;
+}
+
+#editContact-resyncBtn img {
+	vertical-align: bottom;
+}
+
+.edit-contacts-options {
+	text-align: center;
+	a {
+		margin-top: 1rem;
+		margin-bottom: 1rem;
+	}
+}
+
+#editContact-deleteBtn {
+	margin-top: 2rem;
+}
+
+
 
 /* Notify styles */
 .notify-box {
@@ -2123,8 +2166,11 @@ div.loginBox > form > div > ul > li {
 	margin-top: -1rem;
 }
 
-#contactEditList li:first-child {
-	border: none !important;
+#contactEditList {
+	li:first-child {
+		border: none !important;
+	}
+	margin-top: 1rem;
 }
 
 #editContact-deleteBtn img {
