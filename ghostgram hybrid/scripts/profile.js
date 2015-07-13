@@ -67,7 +67,8 @@ function validNewPass(e) {
 
 function profilePhotoScaleSuccess (data) {
     var scaledImageUrl = data.imageData;
-
+    $('#photoEditImage').attr('src', scaledImageUrl);
+    APP.kendo.navigate('#editPhoto?source=profile')
 }
 
 function updateProfilePhoto (e) {
