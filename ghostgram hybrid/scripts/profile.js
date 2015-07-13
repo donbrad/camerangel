@@ -139,9 +139,15 @@ function updateProfilePhoto (e) {
         function (imageData) {
             var imageUrl = imageData;
             var displayUrl = imageData;
-            
-            var scaledImageUrl = "data:image/jpg;base64," + imageData;
-            $('#photoEditImage').attr('src', scaledImageUrl);
+
+            if (device.platform === 'iOS') {
+                imageUrl = imageData.replace('file://', '');
+
+            } else {
+                displayUrl = "data:image/jpg;base64," + imageData;
+            }
+            //var scaledImageUrl = "data:image/jpg;base64," + imageData;
+            $('#photoEditImage').attr('src', displayUrl);
             APP.kendo.navigate('#photoEditor?source=profile')
         },
         function (error) {
