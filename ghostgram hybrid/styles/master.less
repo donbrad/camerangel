@@ -11,12 +11,17 @@
 @black: #4A4A4A;
 @yellow100: #FFB74D;
 @yellow200: #FADDB0;
+@purple100: #9E788F;
  
 
 /* elements */
 .shadow {
     box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);
 }
+.top-shadow {
+	box-shadow: 0px -2px 4px 0px rgba(0,0,0,0.12);
+}
+
 .centerObject {
   display: flex;
   justify-content: center;
@@ -239,8 +244,6 @@ form {
 }
 .circle-img {
     border-radius: 50%;
-    width: 60px;
-    height: 60px;
     border: 1px solid #F2EFF0;
     line-height: 1.5;
 }
@@ -253,8 +256,8 @@ form {
 
 .circle-img-md {
 	.circle-img;
-	width: 40px;
-	height: 40px;
+	width: 48px;
+	height: 48px;
 }
 
 .circle-img-lg {
@@ -635,6 +638,7 @@ div.km-header a img{
     color: #979797;
 }
 .helper-right {
+	.helper;
     float: right;
 }
 #helper-profilePhone {
@@ -643,6 +647,7 @@ div.km-header a img{
     right: 0px;
 }
 .helper-left {
+	.helper;
     float: left;
 }
 .helper-form {
@@ -687,6 +692,7 @@ div.km-header a img{
 
 .ghostSelectionBox {
     padding: 0.5rem;
+    display: inline-block;
 }
 .ghostPhotoBox {
     width: 30%;
@@ -700,6 +706,7 @@ div.km-header a img{
 .ghostPhotoBox img {
     margin-left: auto;
     margin-right: auto;
+    .shadow;
 }
 #currentGhost {
     border: 2px solid #3A779D;
@@ -1287,8 +1294,8 @@ a:hover {
 }
 .statusContactList-icon {
 	position: absolute;
-	top: 24px;
-	left: 24px;
+	top: 30px;
+	left: 32px;
 }
 #menuAvailable {
     background: transparent;
@@ -1299,7 +1306,7 @@ a:hover {
 #menuSetting {
     margin-top: 40px;
 }
-.km-flat .km-list>li {
+.km-flat .km-list > li {
     background: transparent;
     box-shadow: none;
     border: transparent;
@@ -1865,14 +1872,20 @@ div.loginBox > form > div > ul > li {
 	}
 }
 
-#btnSearchDeviceContacts img {
-	vertical-align: text-top;
+#btnSearchDeviceContacts {
+	margin-top: 1rem;
+	img {
+		vertical-align: text-top;
+	}
 }
 
 #contacts-listview > li,
-#contactimport-listview > li,
-#editChannelMemberList > li {
+#contactimport-listview > li {
 	border-bottom: 1px solid @grey200;
+}
+
+#contacts-listview li:nth-child(2){
+	border-top: 1px solid @grey200;
 }
 
 #contacts-listview > li > div > div:nth-child(1) > div:nth-child(3) > h4 {
@@ -1979,6 +1992,49 @@ div.loginBox > form > div > ul > li {
 	padding: 1px 0px 1px 0.5rem; 
 	border: none;
 }
+
+.contacts-alias-sm { 
+	font-size: 11px;
+	color: #979797;
+	vertical-align: middle;
+}
+
+/* Contact sync */
+#syncEditList {
+	margin-top: 1rem;
+	.shadow;
+	border-radius: 4px;
+	.pad;
+	background: @greyBk;
+}
+
+.input-count {
+	color: #fff;
+	background-color: #9e788f;
+	padding: 0.5rem;
+	border-radius: 0.25rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
+	font-size: 11px;
+}
+
+#editContact-resyncBtn img {
+	vertical-align: bottom;
+}
+
+.edit-contacts-options {
+	text-align: center;
+	a {
+		margin-top: 1rem;
+		margin-bottom: 1rem;
+	}
+}
+
+#editContact-deleteBtn {
+	text-align: center;
+}
+
+
 
 /* Notify styles */
 .notify-box {
@@ -2119,8 +2175,11 @@ div.loginBox > form > div > ul > li {
 	margin-top: -1rem;
 }
 
-#contactEditList li:first-child {
-	border: none !important;
+#contactEditList {
+	li:first-child {
+		border: none !important;
+	}
+	margin-top: 1rem;
 }
 
 #editContact-deleteBtn img {
@@ -2137,13 +2196,20 @@ div.loginBox > form > div > ul > li {
 	font-size: 24px !important;
 }
 
+.aliasName {
+	font-size: 11px !important;
+	color: #979797;
+	text-align: right;
+}
 
 /* Edit chat */
 #editChannelMemberList {
 	width: 100%;
+	margin-bottom: 4rem;
 	li {
 		padding-top: 0.5rem;
 		padding-bottom: 0.5rem;
+		border-top: 1px solid @grey200;
 	}
 }
 
@@ -2169,8 +2235,12 @@ div.loginBox > form > div > ul > li {
 }
 
 #channelMembers-listview li {
-	border-bottom: 1px solid @grey200;
 	padding: 0.25rem 1rem 0.25rem 1rem;
+}
+
+#channelMembers-listview li:nth-child(2) {
+	border-top: 1px solid @grey200;
+	border-bottom: 1px solid @grey200;
 }
 
 #channelMembers > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div.km-listview-wrapper > form > div > input[type="search"] {

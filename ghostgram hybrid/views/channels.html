@@ -149,9 +149,10 @@
                 </label>
             </li>
         </ul>
-		  <p>
-			 It's easy!.  First pick a topic.  Add a description if you like.  And then invite everyone. 
-		 </p>
+        <p class="right-txt">
+        	<a id="addChat-createBtn" class="btnClear" data-click="addChannel" type="button" data-role="button">Next - Invite friends</a>
+        </p>
+		  
     </form>
    
 	
@@ -159,14 +160,7 @@
  		<div class="helperBox" id="addChat-helper1" >
 			<p class="helper"><img src="images/help.svg" /> Looking for 1-on-1 private chat?</p>
 			<a class="btnClear" data-role="button" href="views/contacts.html">See your ghostgram contacts</a>
-		</div>
-		<div style="height: 18px;">
-		</div>
-		<div>
-			 <p>Create this chat and then select people to invite</p>
-			<a id="addChat-createBtn" class="btnSpan-btm btnYellow" data-click="addChannel" type="button" data-role="button">Create</a>
-		</div>
-		
+		</div>	
 	</div>
  
 </div>
@@ -316,7 +310,6 @@
 <div data-role="view" id="channelMembers" data-layout="main" data-title="Invite" data-init="doInitChannelMembers" data-show="doShowChannelMembers" data-transition="overlay:up">
     <header data-role="header">
         <div data-role="navbar">
-            <a data-role="backbutton" data-align="left">Back</a>
             <span data-role="view-title"></span>
             <a data-role="button" data-align="right" href="views/contacts.html#contactImport"> Import</a>
 
@@ -324,6 +317,9 @@
     </header>
     <div class="addedChatMember" style="display: none"></div>
     <ul id="channelMembers-listview"></ul>
+    <div class="footerBk" data-role="footer">
+            <a class="btnSpan-btm btnBlue" type="button" data-role="backbutton">Done</a>
+    	</div>
 </div>
 
 <script type="text/x-kendo-template" id="memberTemplate">      
@@ -332,25 +328,26 @@
     	<img src="#: data.photo #" class="circle-img-md" />
     	</div>
     	<div class="left">
-    		<h4>#: data.name #
-	    	#if (data.phoneVerified){#
-	    		
-		    		<img class="user-status-icon" src="images/user-verified.svg" />
-		    		<span class="verified-txt">  Verified </span>
-	    		</h4>
-	    	#} else if (data.contactUUID === undefined || data.contactUUID === null || data.contactUUID === '') {#
-	    		
-		    		<img class="user-status-icon" src="images/status-guest.svg" />
-		    		<span class="guest-txt">  New User </span>
-	    		
+    		
+    		#if (data.alias !== '' && data.name !== data.alias && data.phoneVerified){#
+    			<h4>
+    				#: data.alias #
+    				<img class="user-status-icon" src="images/user-verified.svg" />
+    				<span class="contacts-alias-sm">#: data.name #</span>
+    			</h4>
+    		#} else if(data.alias !== '' && data.name !== data.alias) {#
+    			<h4>
+    				#: data.alias #
+    				<span class="contacts-alias-sm">#: data.name #</span>
+    			</h4>
+    		#} else {#
+    			<h4>#: data.name #</h4>
+    		#}#
+	    	#if(data.phoneVerified !== true){#
+	    		<p class="helper">Unverified • Status </p>
 	    	#} else {#
-	    		
-		    		<img class="user-status-icon" src="images/status-unverified.svg" />
-		    		<span class="unverified-txt">  UnVerified</span>
-	    	
+	    		<p class="helper">Status </p>
 	    	#}#
-  		</h4>
-		<p>#: data.alias #</p>
     	</div>
             
      </div>

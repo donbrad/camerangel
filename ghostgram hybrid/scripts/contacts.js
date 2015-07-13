@@ -302,20 +302,36 @@ function onCommandActionSheet(e) {
 }
 
 function onInitContact(e) {
-	if (e.preventDefault !== undefined)
+	if (e.preventDefault !== undefined) {
     	e.preventDefault();
-	
+	}
 }
 
 function onShowEditContact(e) {
-
-	if (e.preventDefault !== undefined)
+	if (e.preventDefault !== undefined){
     	e.preventDefault();
 
+	}
+	
+	$("#syncEditList").velocity("slideUp", {duration: 0});
+
 	$('#contactEditList').removeClass('hidden');
-	$('#syncEditList').addClass('hidden');
+	
 	syncContact(APP.models.contacts.currentContact);
 	// Todo - wire up verified status/read only fields
+	
+	var contactVerified = APP.models.contacts.currentContact.phoneVerified;
+	var contactEmail = APP.models.contacts.currentContact.email;
+
+	if (contactVerified){
+		$("#edit-verified-phone").removeClass("hidden");
+		$("#editContactPhone").prop("readonly", true);
+	}
+	// Use to have emailVerified?
+	if(contactEmail !== ''){
+		$("#edit-verified-email").removeClass("hidden");
+		$("#editContactEmail").prop("readonly", true);
+	}
 	
 }
 
@@ -325,6 +341,9 @@ function onDoneEditContact (e) {
    
 	 APP.models.contacts.currentContact.unbind('change' , syncCurrentContact);
 	APP.kendo.navigate("#contacts");
+
+	// reset UI
+	$("#contactEditList").velocity("fadeIn");
 }
 
 
@@ -387,7 +406,7 @@ function onInitContacts(e) {
         fixedHeaders: true,
         click: function (e) {
             var contact = e.dataItem;
-            //console.log(contact);
+            
             updateCurrentContact(contact);
 			
 			if (contact.category === 'phone') {
@@ -399,12 +418,11 @@ function onInitContacts(e) {
                     APP.kendo.navigate('#contactImport?query=' + contact.name);
                 }
 
-
-				
 			} else {		
 				// If we know the contacts uuid enable the full feature set
 				if (contact.contactUUID !== undefined && contact.contactUUID !== null){
-					$("#contactUserActions").data("kendoMobileActionSheet").open();
+					//$("#contactUserActions").data("kendoMobileActionSheet").open();
+					doEditContact(e);
 				} else {
 					$("#contactActions").data("kendoMobileActionSheet").open();
 				}
@@ -467,6 +485,7 @@ function launchAddContact(e) {
     APP.models.contacts.phoneDS.data( APP.models.contacts.phoneArray);
     APP.models.contacts.emailDS.data( APP.models.contacts.emailArray);
     APP.models.contacts.addressDS.data( APP.models.contacts.addressArray);
+
 
   /*
     $("#addNicknameBtn").removeClass("hidden");
@@ -570,8 +589,11 @@ function onDoneSyncContact (e) {
 	APP.models.contacts.currentContact.set('email', $( "#syncContactEmail option:selected" ).text() );
 	APP.models.contacts.currentContact.set('address', $( "#syncContactAddress option:selected" ).text() );
 	
-	$('#contactEditList').removeClass('hidden');
-	$('#syncEditList').addClass('hidden');
+	$('#syncEditList').velocity("fadeOut", {duration: 300});
+	$('#contactEditList, #editContact-deleteBtn').velocity("fadeIn", {duration: 300, delay: 300, display: "inline-block"});
+	
+
+	$("#editContact-resyncBtn").velocity("fadeIn",{duration: 300}).html('<img src="images/contacts.svg" /> Sync Contact With Device');
 }
 
 function doSyncContact(e) {
@@ -581,9 +603,16 @@ function doSyncContact(e) {
 	
 	var name = APP.models.contacts.currentContact.name;
 	syncContactWithDevice(name, function() {
-		$('#contactEditList').addClass('hidden');
-		$('#syncEditList').removeClass('hidden');
+		$('#contactEditList, #editContact-deleteBtn').velocity("fadeOut", {duration: 300, delay: 1000});
+		$('#syncEditList').velocity("fadeIn", { duration: 300, delay: 1500});
 	});
+
+	$("#editContact-resyncBtn").html('<img src="images/loading.svg" class="loading-sm" /> Syncing...').velocity("slideUp",{delay: 1000, duration: 300});
+
+	// 
+	$("#editContact-syncCompleteBtn").velocity("fadeIn", {delay: 1300, duration: 300});
+	
+
 }
 
 // Given a full contact name as a string, fetch matching device contacts and then build a unified list of:
