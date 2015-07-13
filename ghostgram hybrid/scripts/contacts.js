@@ -421,8 +421,8 @@ function onInitContacts(e) {
 			} else {		
 				// If we know the contacts uuid enable the full feature set
 				if (contact.contactUUID !== undefined && contact.contactUUID !== null){
-					//$("#contactUserActions").data("kendoMobileActionSheet").open();
-					doEditContact(e);
+					$("#contactUserActions").data("kendoMobileActionSheet").open();
+					//doEditContact(e);
 				} else {
 					$("#contactActions").data("kendoMobileActionSheet").open();
 				}
