@@ -81,16 +81,33 @@ function onHidePhotoEditor(e) {
 }
 
 function onShowPhotoEditor (e) {
-	e.preventDefault();
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
 
+	var source = e.view.params.source; // source can be: chat, gallery or profile.  determines parameters and return path
+
+	$('#photoEditSaveDiv').addClass('hidden');
+	if (source === undefined || source === null) {
+		mobileNotify("PhotoEditor: source parameter is missing!");
+		return;
+	}
+
+	APP.models.gallery.currentPhoto.source = source;
+
+
+	if (source === "gallery" || source === "chat") {
+		$('#photoEditImage').cropper();
+	} else {
+		$('#photoEditImage').cropper({aspectRatio: 1});
+	}
 	/*
 	var canvas = new fabric.Canvas('photoEditCanvas');
 	var imgElement = document.getElementById('photoEditImage');
 	var imgInstance = new fabric.Image(imgElement);
 	canvas.add(imgInstance);
 	*/
-	$('#photoEditSaveDiv').addClass('hidden');
-	$('#photoEditImage').cropper();
+
+
 }
 
 function onHidePhotoView(e) {
