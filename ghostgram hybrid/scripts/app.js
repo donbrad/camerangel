@@ -885,6 +885,10 @@
 
         $('.clearable').clearSearch();
 
+        $(".email-Autocomplete").emailautocomplete({
+            domains: _emailDomainList //additional domains (optional)
+        });
+
     }, false);
 
    

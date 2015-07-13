@@ -600,6 +600,7 @@ function homeRecoverPassword(e) {
 	Parse.User.requestPasswordReset(emailAddress, {
 		success: function() {
 			mobileNotify("Sent password recovery to " + emailAddress);
+			closeModalViewRecoverPassword();
 		},
 		error: function(error) {
 			// Show the error message somewhere

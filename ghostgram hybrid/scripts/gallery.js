@@ -47,11 +47,14 @@ function photoEditCrop(e) {
 	var cropUrl = cropCanvas.toDataURL("image/jpeg");
 	
 	$image.cropper('replace', cropUrl);
-	$('#photoEditImage').attr('src', cropUrl);	
+	$('#photoEditImage').attr('src', cropUrl);
+	$('#photoEditSaveDiv').removeClass('hidden');
 }
 
 function photoEditSave(e) {
-	e.preventDefault();	
+	e.preventDefault();
+	var urlToSave = $('#photoEditImage').attr('src');
+	// Save photoEditImage source...
 }
 
 function photoEditRotateLeft(e) {
@@ -59,6 +62,8 @@ function photoEditRotateLeft(e) {
 	//$('#photoEditImage').css('transform','rotate(' + -90 + 'deg)');'
 	APP.models.gallery.rotationAngle -= 90;
 	$('#photoEditImage').cropper('rotate', APP.models.gallery.rotationAngle);
+	$('#photoEditSaveDiv').removeClass('hidden');
+
 }
 
 function photoEditRotateRight(e) {
@@ -66,6 +71,7 @@ function photoEditRotateRight(e) {
 	//$('#photoEditImage').css('transform','rotate(' + 90 + 'deg)');
 	APP.models.gallery.rotationAngle += 90;
 	$('#photoEditImage').cropper('rotate', APP.models.gallery.rotationAngle);
+	$('#photoEditSaveDiv').removeClass('hidden');
 }
 
 function onHidePhotoEditor(e) {
@@ -75,22 +81,40 @@ function onHidePhotoEditor(e) {
 }
 
 function onShowPhotoEditor (e) {
-	e.preventDefault();
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
 
+	var source = e.view.params.source; // source can be: chat, gallery or profile.  determines parameters and return path
+
+	$('#photoEditSaveDiv').addClass('hidden');
+	if (source === undefined || source === null) {
+		mobileNotify("PhotoEditor: source parameter is missing!");
+		return;
+	}
+
+	APP.models.gallery.currentPhoto.source = source;
+
+
+	if (source === "gallery" || source === "chat") {
+		$('#photoEditImage').cropper();
+	} else {
+		$('#photoEditImage').cropper({aspectRatio: 1});
+	}
 	/*
 	var canvas = new fabric.Canvas('photoEditCanvas');
 	var imgElement = document.getElementById('photoEditImage');
 	var imgInstance = new fabric.Image(imgElement);
 	canvas.add(imgInstance);
 	*/
-	
-	$('#photoEditImage').cropper();
+
+
 }
 
 function onHidePhotoView(e) {
 	e.preventDefault();
 	
 	$('#photoViewImage').attr('src', "");
+	$('#photoEditSaveDiv').addClass('hidden');
 }
 
 

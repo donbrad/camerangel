@@ -23,9 +23,6 @@ function whichGhost(e) {
     closeChooseGhost()
 }
 
-
-
-
 function saveEditProfile() {
     mobileNotify("Your profile was updated")
 }
