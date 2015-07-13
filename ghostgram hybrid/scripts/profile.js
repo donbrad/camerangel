@@ -66,15 +66,15 @@ function validNewPass(e) {
 }
 
 function profilePhotoScaleSuccess (data) {
-    var scaledImageUrl = data.imageData;
+    var scaledImageUrl = "data:image/jpg;base64," + data.imageData;
     $('#photoEditImage').attr('src', scaledImageUrl);
-    APP.kendo.navigate('#editPhoto?source=profile')
+    APP.kendo.navigate('#photoEditor?source=profile')
 }
 
 function saveUserProfilePhoto (url) {
-    var profileUrl = url, uuid = APP.models.profile.currentUser.get('userUUID'), user = Parse.User.Current();
+    var profileUrl = url, uuid = APP.models.profile.currentUser.get('userUUID'), user = Parse.User.current();
 
-    getBase64FromImageUrl(photo, function (fileData) {
+    getBase64FromImageUrl(profileUrl, function (fileData) {
         var parseFile = new Parse.File(uuid+".png", {base64 : fileData}, "image/png");
         parseFile.save().then(function() {
             user.set("parsePhoto", parseFile);
