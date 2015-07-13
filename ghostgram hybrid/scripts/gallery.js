@@ -47,11 +47,14 @@ function photoEditCrop(e) {
 	var cropUrl = cropCanvas.toDataURL("image/jpeg");
 	
 	$image.cropper('replace', cropUrl);
-	$('#photoEditImage').attr('src', cropUrl);	
+	$('#photoEditImage').attr('src', cropUrl);
+	$('#photoEditSaveDiv').removeClass('hidden');
 }
 
 function photoEditSave(e) {
-	e.preventDefault();	
+	e.preventDefault();
+	var urlToSave = $('#photoEditImage').attr('src');
+	// Save photoEditImage source...
 }
 
 function photoEditRotateLeft(e) {
@@ -59,6 +62,8 @@ function photoEditRotateLeft(e) {
 	//$('#photoEditImage').css('transform','rotate(' + -90 + 'deg)');'
 	APP.models.gallery.rotationAngle -= 90;
 	$('#photoEditImage').cropper('rotate', APP.models.gallery.rotationAngle);
+	$('#photoEditSaveDiv').removeClass('hidden');
+
 }
 
 function photoEditRotateRight(e) {
@@ -66,6 +71,7 @@ function photoEditRotateRight(e) {
 	//$('#photoEditImage').css('transform','rotate(' + 90 + 'deg)');
 	APP.models.gallery.rotationAngle += 90;
 	$('#photoEditImage').cropper('rotate', APP.models.gallery.rotationAngle);
+	$('#photoEditSaveDiv').removeClass('hidden');
 }
 
 function onHidePhotoEditor(e) {
@@ -83,7 +89,7 @@ function onShowPhotoEditor (e) {
 	var imgInstance = new fabric.Image(imgElement);
 	canvas.add(imgInstance);
 	*/
-	
+	$('#photoEditSaveDiv').addClass('hidden');
 	$('#photoEditImage').cropper();
 }
 
@@ -91,6 +97,7 @@ function onHidePhotoView(e) {
 	e.preventDefault();
 	
 	$('#photoViewImage').attr('src', "");
+	$('#photoEditSaveDiv').addClass('hidden');
 }
 
 
