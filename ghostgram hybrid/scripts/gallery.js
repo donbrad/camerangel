@@ -51,6 +51,7 @@ function photoEditCrop(e) {
 	$('#photoEditSaveDiv').removeClass('hidden');
 }
 
+// this got more complex trying to reuse across 3 flows: chat, gallery and profile...
 function photoEditSave(e) {
 	e.preventDefault();
 	var urlToSave = $('#photoEditImage').attr('src');
