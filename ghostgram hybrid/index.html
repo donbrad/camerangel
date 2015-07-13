@@ -452,7 +452,6 @@
         <div data-role="navbar">
             <a data-align="left" id="photoEditorBack" data-role="backbutton">Cancel</a>
             <span>Photo Editor</span>
-            <a data-align="right" data-role="button"  data-rel="modalview"  href="#modalview-photoTag">Tag</a>
         </div>
     </div>
 	
@@ -467,8 +466,9 @@
     </div>
 
     <div data-role="footer">
-        <div style="text-align: center; padding-top: 4px; padding-bottom: 6px; background: #e2e2e2; " id="photoEditSaveDiv" class="hidden">
-            <a  data-role="button" class="btnBlack"  data-click="photoEditSave"> Save Photo </a>
+        <div style="padding-top: 4px; padding-bottom: 6px; background: #e2e2e2; " id="photoEditSaveDiv">
+            <span style="float:left"><a  data-role="button" class="btnBlack" data-rel="modalview"  href="#modalview-photoTag">Tag Photo</a></span>
+            <span style="float:right"><a  data-role="button" class="btnBlack"  data-click="photoEditSave"> Save Photo </a></span>
         </div>
     </div>
 
