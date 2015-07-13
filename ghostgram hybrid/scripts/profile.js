@@ -66,9 +66,7 @@ function validNewPass(e) {
 }
 
 function profilePhotoScaleSuccess (data) {
-    var scaledImageUrl = "data:image/jpg;base64," + data.imageData;
-    $('#photoEditImage').attr('src', scaledImageUrl);
-    APP.kendo.navigate('#photoEditor?source=profile')
+
 }
 
 function saveUserProfilePhoto (url) {
@@ -99,6 +97,24 @@ function saveUserProfilePhoto (url) {
 
 }
 
+function scaleProfileImage (imageData) {
+    if (device.platform === 'iOS') {
+        imageUrl = imageData.replace('file://', '');
+
+    } else {
+        displayUrl = "data:image/jpg;base64," + imageData;
+    }
+
+    if (device.platform === 'iOS') {
+        window.imageResizer.resizeImage(profilePhotoScaleSuccess, resizeFailure,  imageUrl, 0, 140, {
+            storeImage: false, pixelDensity: true, quality: 95 });
+    } else {
+        window.imageResizer.resizeImage(profilePhotoScaleSuccess, resizeFailure,  imageUrl, 0, 140, {
+            imageDataType: ImageResizer.IMAGE_DATA_TYPE_BASE64, storeImage: false, pixelDensity: true, quality: 95 });
+    }
+
+}
+
 function updateProfilePhoto (e) {
     if (e.preventDefault !== undefined)
         e.preventDefault();
@@ -110,45 +126,23 @@ function updateProfilePhoto (e) {
     var options = {
         sourceType: pictureSource.SAVEDPHOTOALBUM,
         destinationType: destinationType.DATA_URL
-    }
+    };
+
     if (device.platform === 'iOS') {
         options = {
             sourceType: pictureSource.SAVEDPHOTOALBUM,
             destinationType: destinationType.FILE_URL
         }
     }
+
     navigator.camera.getPicture(
         function (imageData) {
-            var photouuid = uuid.v4();
             var imageUrl = imageData;
             var displayUrl = imageData;
-            var scaledImageUrl  = '';
-
-            if (device.platform === 'iOS') {
-                imageUrl = imageData.replace('file://', '');
-
-            }	else {
-                displayUrl = "data:image/jpg;base64," + imageData;
-            }
-            // convert uuid into valid file name;
-            var filename = photouuid.replace(/-/g,'');
-
-           /* APP.models.gallery.currentPhoto.photoId = photouuid;
-            APP.models.gallery.currentPhoto.filename = filename;
-            APP.models.gallery.currentPhoto.imageUrl = imageUrl;
-            */
-
-            //resize image to 1200 pixels high
-            /*		   window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1200, {
-             quality: 75, storeImage: 1, photoAlbum: 0, filename: "photo_"+filename+'.jpg' }); */
-
-            if (device.platform === 'iOS') {
-                window.imageResizer.resizeImage(profilePhotoScaleSuccess, resizeFailure,  imageUrl, 0, 140, {
-                    storeImage: false, pixelDensity: true, quality: 95 });
-            } else {
-                window.imageResizer.resizeImage(profilePhotoScaleSuccess, resizeFailure,  imageUrl, 0, 140, {
-                    imageDataType: ImageResizer.IMAGE_DATA_TYPE_BASE64, storeImage: false, pixelDensity: true, quality: 95 });
-            }
+            
+            var scaledImageUrl = "data:image/jpg;base64," + imageData;
+            $('#photoEditImage').attr('src', scaledImageUrl);
+            APP.kendo.navigate('#photoEditor?source=profile')
         },
         function (error) {
             mobileNotify("Camera error " + error);
