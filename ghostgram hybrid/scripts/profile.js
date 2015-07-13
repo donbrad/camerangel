@@ -72,7 +72,7 @@ function profilePhotoScaleSuccess (data) {
 }
 
 function saveUserProfilePhoto (url) {
-    var profileUrl = url, uuid = APP.models.profile.currentUser.get('userUUID'), user = Parse.User.Current();
+    var profileUrl = url, uuid = APP.models.profile.currentUser.get('userUUID'), user = Parse.User.current();
 
     getBase64FromImageUrl(profileUrl, function (fileData) {
         var parseFile = new Parse.File(uuid+".png", {base64 : fileData}, "image/png");
