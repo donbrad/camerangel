@@ -54,6 +54,14 @@ function photoEditCrop(e) {
 function photoEditSave(e) {
 	e.preventDefault();
 	var urlToSave = $('#photoEditImage').attr('src');
+	if (APP.models.gallery.currentPhoto.source === 'chat') {
+		// Save image to chat image preview
+	} else if (APP.models.gallery.currentPhoto.source === 'gallery') {
+		// Save image to gallery
+	} else if (APP.models.gallery.currentPhoto.source === 'profile') {
+		// Save image to user profile
+		saveUserProfilePhoto(urlToSave);
+	}
 	// Save photoEditImage source...
 }
 
@@ -98,6 +106,7 @@ function onShowPhotoEditor (e) {
 	if (source === "gallery" || source === "chat") {
 		$('#photoEditImage').cropper();
 	} else {
+		// must be a profile image
 		$('#photoEditImage').cropper({aspectRatio: 1});
 	}
 	/*
