@@ -71,6 +71,34 @@ function profilePhotoScaleSuccess (data) {
     APP.kendo.navigate('#editPhoto?source=profile')
 }
 
+function saveUserProfilePhoto (url) {
+    var profileUrl = url, uuid = APP.models.profile.currentUser.get('userUUID'), user = Parse.User.Current();
+
+    getBase64FromImageUrl(photo, function (fileData) {
+        var parseFile = new Parse.File(uuid+".png", {base64 : fileData}, "image/png");
+        parseFile.save().then(function() {
+            user.set("parsePhoto", parseFile);
+            user.set("photo", parseFile._url);
+            user.save(null, {
+                success: function(contact) {
+                    // Execute any logic that should take place after the object is saved.
+                    mobileNotify('Updated your Profile Photo!');
+
+                },
+                error: function(contact, error) {
+                    // Execute any logic that should take place if the save fails.
+                    // error is a Parse.Error with an error code and message.
+                    handleParseError(error);
+                }
+            });
+        }, function(error) {
+            // The file either could not be read, or could not be saved to Parse.
+            handleParseError(error);
+        });
+    });
+
+}
+
 function updateProfilePhoto (e) {
     if (e.preventDefault !== undefined)
         e.preventDefault();

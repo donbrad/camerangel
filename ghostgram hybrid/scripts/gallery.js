@@ -60,6 +60,7 @@ function photoEditSave(e) {
 		// Save image to gallery
 	} else if (APP.models.gallery.currentPhoto.source === 'profile') {
 		// Save image to user profile
+		saveUserProfilePhoto(urlToSave);
 	}
 	// Save photoEditImage source...
 }
