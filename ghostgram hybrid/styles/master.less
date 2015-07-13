@@ -18,6 +18,10 @@
 .shadow {
     box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);
 }
+.top-shadow {
+	box-shadow: 0px -2px 4px 0px rgba(0,0,0,0.12);
+}
+
 .centerObject {
   display: flex;
   justify-content: center;
@@ -688,6 +692,7 @@ div.km-header a img{
 
 .ghostSelectionBox {
     padding: 0.5rem;
+    display: inline-block;
 }
 .ghostPhotoBox {
     width: 30%;
@@ -701,6 +706,7 @@ div.km-header a img{
 .ghostPhotoBox img {
     margin-left: auto;
     margin-right: auto;
+    .shadow;
 }
 #currentGhost {
     border: 2px solid #3A779D;
@@ -1300,7 +1306,7 @@ a:hover {
 #menuSetting {
     margin-top: 40px;
 }
-.km-flat .km-list>li {
+.km-flat .km-list > li {
     background: transparent;
     box-shadow: none;
     border: transparent;
@@ -1874,9 +1880,12 @@ div.loginBox > form > div > ul > li {
 }
 
 #contacts-listview > li,
-#contactimport-listview > li,
-#editChannelMemberList > li {
+#contactimport-listview > li {
 	border-bottom: 1px solid @grey200;
+}
+
+#contacts-listview li:nth-child(2){
+	border-top: 1px solid @grey200;
 }
 
 #contacts-listview > li > div > div:nth-child(1) > div:nth-child(3) > h4 {
@@ -2196,6 +2205,7 @@ div.loginBox > form > div > ul > li {
 /* Edit chat */
 #editChannelMemberList {
 	width: 100%;
+	margin-bottom: 4rem;
 	li {
 		padding-top: 0.5rem;
 		padding-bottom: 0.5rem;
@@ -2225,8 +2235,12 @@ div.loginBox > form > div > ul > li {
 }
 
 #channelMembers-listview li {
-	border-top: 1px solid @grey200;
 	padding: 0.25rem 1rem 0.25rem 1rem;
+}
+
+#channelMembers-listview li:nth-child(2) {
+	border-top: 1px solid @grey200;
+	border-bottom: 1px solid @grey200;
 }
 
 #channelMembers > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div.km-listview-wrapper > form > div > input[type="search"] {
