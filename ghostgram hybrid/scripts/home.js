@@ -589,6 +589,19 @@ function findContactMe(query) {
     },function(error){mobileNotify(error);}, options);
 }
 
+function openMailMenuDrawer(e) {
+	if (e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+
+	var profilePhoto = APP.models.profile.currentUser.get('photo');
+
+	if (profilePhoto === undefined) {
+		profilePhoto = 'images/ghost-default.svg';
+	}
+
+	$('#profilePhoto').attr('src', profilePhoto);
+}
 
 function homeRecoverPassword(e) {
 
