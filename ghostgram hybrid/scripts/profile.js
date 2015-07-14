@@ -6,6 +6,20 @@ function closeChooseGhost() {
     $("#modalview-chooseGhost").data("kendoMobileModalView").close();
 }
 
+function toggleProfilePhoto(e) {
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
+
+    var currentUrl = $('#profileTopImg').attr(src), user = Parse.User.current(), photo = user.get('photo'), public = user.get('aliasPhoto');
+
+    if (photo !== undefined && currentUrl === public ){
+        $('#profileTopImg').attr(src, photo);
+    } else {
+        $('#profileTopImg').attr(src, public);
+    }
+}
+
 
 // Select new ghost icon
 function whichGhost(e) {
