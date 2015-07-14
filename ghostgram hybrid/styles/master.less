@@ -2615,4 +2615,73 @@ div.loginBox > form > div > ul > li {
 }
 
 
- 
+// image caption experiment - don
+/* wraptions */
+
+.wraption-wrap
+{
+    position:relative;
+
+    padding:10px;
+
+    border:1px solid #eee;
+    border-color:#eee #ddd #ccc #ddd;
+
+    -webkit-box-shadow:0 2px 2px 0 rgba(0,0,0,0.1);
+    -moz-box-shadow:0 2px 2px 0 rgba(0,0,0,0.1);
+    box-shadow:0 2px 2px 0 rgba(0,0,0,0.1);
+
+    -webkit-border-radius:2px;
+    -moz-border-radius:2px;
+    border-radius:2px;
+}
+
+.wraption-wrap img.wraption
+{
+	z-index: 0;
+	height: 50%;
+}
+
+.wraption-wrap .wraption-caption
+{
+    position:absolute;
+    bottom:15%;
+    left:-10px;
+	z-index: 99999;
+
+    padding:1em 1em 0.9em 1em;
+
+    background:#333;
+    border:1px solid #333;
+    border-left:0;
+
+    color:#fff;
+    text-shadow:0 -1px 0 rgba(0,0,0,0.25);
+    font-size:12px;
+
+    -webkit-box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.3);
+    -moz-box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.3);
+    box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.3);
+
+    -webkit-border-radius:2px;
+    -moz-border-radius:2px;
+    border-radius:2px;
+}
+
+.wraption-wrap .wraption-caption:before
+{
+    content:'';
+
+    position: absolute;
+    bottom: 100%;
+    left:0;
+
+    width:0;
+    height:0;
+
+    border: 5px solid #000;
+
+    border-left-color: transparent;
+    border-top-color: transparent;
+}
+

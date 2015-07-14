@@ -589,10 +589,22 @@ function findContactMe(query) {
     },function(error){mobileNotify(error);}, options);
 }
 
-function doProfilePhotoEdit(e) {
+function doUpdateStatusMessage(e) {
 	if (e.preventDefault !== undefined) {
 		e.preventDefault();
 	}
+	
+	var message = $('#profilePhotoMessage').val();
+	
+	APP.models.profile.currentUser.set('statusMessage', message);
+
+}
+
+function initProfilePhotoEdit(e) {
+	if (e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+	
 }
 
 function saveProfilePhoto(e) {
@@ -668,15 +680,6 @@ function syncPresence () {
         });
     });
 }
-
-
-
-
-
-
-
-
-
 
 
 function closeStartModal() {
