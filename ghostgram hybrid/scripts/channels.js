@@ -420,11 +420,23 @@ function doShowChannelMembers (e) {
 	var currentChannelModel = APP.models.channels.currentChannel;
     APP.models.channel.currentModel = currentChannelModel;
 	var members = currentChannelModel.members, invitedMembers = currentChannelModel.invitedMembers;
-	APP.models.channel.potentialMembersDS.data([]);
+
+
 	// Need to break observable link or contacts get deleted.
 	var contactArray = APP.models.contacts.contactsDS.data().toJSON();
-	APP.models.channel.potentialMembersDS.data(contactArray);
+
+	// create an easy reference to the potential members data source
 	var dataSource = APP.models.channel.potentialMembersDS;
+
+	// Zero potential members data source so we can add all contacts
+	dataSource.data([]);
+
+	// Add current contacts to potential members data source
+	// we delete members from potential members as we add them to members data source
+	dataSource.data(contactArray);
+
+
+	// Zero out member datasource so we can rebuild it
 	APP.models.channel.membersDS.data([]);
 
 	if (members.length > 0) {
@@ -440,7 +452,7 @@ function doShowChannelMembers (e) {
 				var view = dataSource.view();
 				var contact = view[0];
 				dataSource.filter([]);
-				APP.models.channel.potentialMembersDS.remove(contact);
+				dataSource.remove(contact);
 			}
 
 		}
@@ -457,7 +469,7 @@ function doShowChannelMembers (e) {
 				var view1 = dataSource.view();
 				var contact1 = view1[0];
 				dataSource.filter([]);
-				APP.models.channel.potentialMembersDS.remove(contact1);
+				dataSource.remove(contact1);
 			}
 
 
@@ -471,6 +483,7 @@ function doInitChannelMembers (e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
 
+	APP.models.channel.potentialMembersDS.data([]);
 	$("#channelMembers-listview").kendoMobileListView({
         dataSource: APP.models.channel.potentialMembersDS,
         template: $("#memberTemplate").html(),
