@@ -99,7 +99,7 @@
     <div class="profileTop">
         <div class="profileImg" >
             <!-- User photo -->
-            <a id="profilePhotoEditButton" data-rel="modalview" href="#modalview-profilePhotoEdit"><img id="profilePhoto" class="myPublicImg"  /></a>
+            <a data-role="button" data-rel="modalview" href="#modalview-profilePhotoEdit"><img id="profilePhoto" class="myPublicImg"  /></a>
         </div>
         <div> 
 			<div id="profileName">John Smith</div>
@@ -304,6 +304,36 @@
 	    </div>
    	</div>
 </div>
+	
+<div data-role="modalview" id="modalview-login" style="width: 90%; display: none;" class="appearance"  data-init="doInitSignIn">
+    <div data-role="header">
+        <div data-role="navbar">
+            <span>Sign In</span>
+            
+        </div>
+    </div>
+
+     <form>
+        <ul data-role="listview" data-style="inset">
+            <li>
+                <label>Username
+                    <input type="text" id="home-signin-username" value="" required />
+                </label>
+            </li>
+            <li>
+                <label>Password
+                <input type="password" id="home-signin-password" value="" required />
+                </label>
+            </li>
+        </ul>
+    </form> 
+    <div data-role="footer">
+        <div data-role="navbar">
+            <a data-click="closeModalViewLogin" data-role="button" data-align="left">Cancel</a>
+            <a data-click="homeSignin" id="modalview-login-button" type="button" data-role="button" data-align="right">Sign In</a>
+        </div>
+    </div>
+</div>
     
 <div data-role="view" id="signup" data-title="Sign Up" data-layout="main" style="display: none;" class="appearance" data-init="initSignUp">
    	<div data-role="header">
@@ -452,10 +482,10 @@
                 <a data-click="saveProfilePhoto"  type="button" data-role="button" data-align="right">Save</a>
 		</div>
 	</div>
-]
 
-	<div style="margin:8px; height: 25%; width: auto; text-align: center">
-		<img id="profilePhotoImage" src="" style=" max-height: 100%; vertical-align: middle;">
+
+	<div style="margin:8px; height: 50%; width: auto; text-align: center">
+		<img id="profilePhotoImage" src="" style="height: 50%; vertical-align: middle;">
 	</div>
 	
      <form id="profilePhotoForm">
