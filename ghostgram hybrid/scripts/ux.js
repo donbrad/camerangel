@@ -74,6 +74,10 @@ function closeModalViewRecoverPassword() {
     $("#modalview-recoverPassword").kendoMobileModalView("close");
 }
 
+function closeModalViewProfilePhotoEdit() {
+    $("#modalview-profilePhotoEdit").kendoMobileModalView("close");
+}
+
 function closeModalViewAddChannel() {
     $("#modalview-channels-addChannel").kendoMobileModalView("close");
 }

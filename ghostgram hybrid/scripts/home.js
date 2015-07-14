@@ -589,11 +589,24 @@ function findContactMe(query) {
     },function(error){mobileNotify(error);}, options);
 }
 
-function openMailMenuDrawer(e) {
+function doProfilePhotoEdit(e) {
 	if (e.preventDefault !== undefined) {
 		e.preventDefault();
 	}
+}
 
+function saveProfilePhoto(e) {
+	if (e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+	
+	var photoMessage = $('#profilePhotoMessage').val();
+}
+
+function onShowMainMenuDrawer(e) {
+	if (e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
 	var profilePhoto = APP.models.profile.currentUser.get('photo');
 
 	if (profilePhoto === undefined) {
@@ -601,6 +614,8 @@ function openMailMenuDrawer(e) {
 	}
 
 	$('#profilePhoto').attr('src', profilePhoto);
+	$('#profilePhotoImage').attr('src', profilePhoto);
+	
 }
 
 function homeRecoverPassword(e) {
