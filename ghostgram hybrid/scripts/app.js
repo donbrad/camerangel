@@ -889,9 +889,12 @@
 
         $('.clearable').clearSearch();
 
-        $(".email-Autocomplete").emailautocomplete({
+			// Enable ghost caption
+		$('.wraption.img').wraption();
+		
+       /* $(".email-Autocomplete").emailautocomplete({
             domains: _emailDomainList //additional domains (optional)
-        });
+        }); */
 
     }, false);
 

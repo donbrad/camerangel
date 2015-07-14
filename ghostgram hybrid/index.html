@@ -475,7 +475,7 @@
 
 </div>
 
-<div data-role="modalview" id="modalview-profilePhotoEdit" data-open="doProfilePhotoEdit" style="width: 100%; height:100%; display: none;"  class="appearance">
+<div data-role="modalview" id="modalview-profilePhotoEdit" data-open="doProfilePhotoEdit" data-init="initProfilePhotoEdit" style="width: 100%; height:100%; display: none;" data-model="APP.models.profile.currentUser" class="appearance">
     <div data-role="header">
         <div data-role="navbar">
             <span>My Ghost</span>
@@ -486,7 +486,7 @@
 
 
 	<div style="margin:8px; height: 50%; width: auto; text-align: center">
-		<img id="profilePhotoImage" title="" class="wraption" style="height: 50%; vertical-align: middle;">
+		<img id="profilePhotoImage" data-bind="attr: {title: statusMessage, src: photo}" class="wraption" style="height: 50%; vertical-align: middle;">
 	</div>
 	
      <form id="profilePhotoForm">
@@ -496,7 +496,11 @@
                     <input type="text" id="profilePhotoMessage" default="Express yourself..." />
                 </label>
             </li>
-            
+            <li>
+				<div style="text-align: center;">
+					<a class="btnClear"  data-role="button"data-click="doUpdateStatusMessage">Update Status Message</a>
+				</div>
+			</li>
         </ul>
     </form> 
 </div>

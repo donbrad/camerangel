@@ -589,21 +589,24 @@ function findContactMe(query) {
     },function(error){mobileNotify(error);}, options);
 }
 
-function doProfilePhotoEdit(e) {
+function doUpdateStatusMessage(e) {
 	if (e.preventDefault !== undefined) {
 		e.preventDefault();
 	}
-	// Enable ghost caption
-	$('#profilePhotoImage').wraption();
+	
+	var message = $('#profilePhotoMessage').val();
+	
+	APP.models.profile.currentUser.set('statusMessage', message);
 
-	// Update caption on photo as user types message
-	$('#profilePhotoMessage').keyup(function () {
-		var message = $('#profilePhotoMessage').val();
+}
 
-		if (message.length > 0) {
-			$('#profilePhotoImage').attr('title', message);
-		}
-	})
+function initProfilePhotoEdit(e) {
+	if (e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+	
+	$("#profilePhotoImage").wraption();
+	
 }
 
 function saveProfilePhoto(e) {
