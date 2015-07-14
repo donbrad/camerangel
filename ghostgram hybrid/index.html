@@ -480,7 +480,7 @@
         <div data-role="navbar">
             <span>My Ghost</span>
                 <a data-click="closeModalViewProfilePhotoEdit" data-role="button" data-align="left">Cancel</a>
-                <a data-click="saveProfilePhoto"  type="button" data-role="button" data-align="right">Save</a>
+                <a data-click="doUpdateStatusMessage"  type="button" data-role="button" data-align="right">Update</a>
 		</div>
 	</div>
 
@@ -488,11 +488,8 @@
 	<div style="margin:8px; height: 50%; width: auto; text-align: center">
 		<div class="wraption-wrap" style="height: 50%;">
 			<img id="profilePhotoImage" class="wraption" data-bind="attr: {src: photo}" style="height: 50%; vertical-align: middle;">
-			<span class="wraption-caption"  data-bind="html: statusMessage" >
+			<span class="wraption-caption"  data-bind="html: statusMessage" ></span>
 		</div>
-		
-		
-		</span>
 		
 	</div>
 	
@@ -500,14 +497,10 @@
         <ul data-role="listview" data-style="inset">
             <li>
                 <label> Status
-                    <input type="text" id="profilePhotoMessage" default="Express yourself..." />
+                    <input type="text" id="profilePhotoMessage" class="clearable"  data-bind="value: statusMessage" default="Express yourself..." />
                 </label>
             </li>
-            <li>
-				<div style="text-align: center;">
-					<a class="btnClear"  data-role="button"data-click="doUpdateStatusMessage">Update Status Message</a>
-				</div>
-			</li>
+            
         </ul>
     </form> 
 </div>
@@ -531,12 +524,12 @@
         <ul data-role="listview" data-style="inset">
             <li>
                 <label>Title
-                    <input type="text" id="photoTitle" value="" />
+                    <input type="text" id="photoTitle" class="clearable" />
                 </label>
             </li>
 			<li>
                 <label>Tags
-                    <input type="text" id="photoTags" value="" />
+                    <input type="text" id="photoTags" class="clearable" />
                 </label>
 			</li>
             
