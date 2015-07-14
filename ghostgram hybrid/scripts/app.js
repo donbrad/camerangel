@@ -95,6 +95,7 @@
 			currentMessage: {},
 			messageLock: true,
 			potentialMembersDS:  new kendo.data.DataSource({
+                group: 'category',
 				sort: { field: "name", dir: "asc" },
 				schema : {
 					model : {

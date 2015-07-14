@@ -474,6 +474,7 @@ function doInitChannelMembers (e) {
 	$("#channelMembers-listview").kendoMobileListView({
         dataSource: APP.models.channel.potentialMembersDS,
         template: $("#memberTemplate").html(),
+		headerTemplate: "${value}",
 		filterable: {
                 field: "name",
                 operator: "startswith",
@@ -490,8 +491,6 @@ function doInitChannelMembers (e) {
 				APP.models.channels.currentChannel.members.push(thisMember.contactUUID);
 			}
 			APP.models.channel.membersDS.sync();
-			
-
 
 			APP.models.channel.potentialMembersDS.remove(thisMember);
 			$(".addedChatMember").text("+ added " + thisMember.name).velocity("slideDown", { duration: 300, display: "block"}).velocity("slideUp", {delay: 1400, duration: 300, display: "none"});
