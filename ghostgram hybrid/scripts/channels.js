@@ -452,7 +452,7 @@ function doShowChannelMembers (e) {
 				var view = dataSource.view();
 				var contact = view[0];
 				dataSource.filter([]);
-				dataSource.remove(contact);
+				dataSource.remove(contact.items[0]);  // new object layout for aggregate datasources
 			}
 
 		}
@@ -469,7 +469,7 @@ function doShowChannelMembers (e) {
 				var view1 = dataSource.view();
 				var contact1 = view1[0];
 				dataSource.filter([]);
-				dataSource.remove(contact1);
+				dataSource.remove(contact1.items[0]); // new object layout for aggregate datasources
 			}
 
 
