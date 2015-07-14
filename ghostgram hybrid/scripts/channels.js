@@ -495,7 +495,6 @@ function doInitChannelMembers (e) {
 			APP.models.channel.potentialMembersDS.remove(thisMember);
 			$(".addedChatMember").text("+ added " + thisMember.name).velocity("slideDown", { duration: 300, display: "block"}).velocity("slideUp", {delay: 1400, duration: 300, display: "none"});
 		}
-		// ToDo (Don): Fix broken wiring of adding members
 		
     });
 }
