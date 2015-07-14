@@ -605,8 +605,6 @@ function initProfilePhotoEdit(e) {
 		e.preventDefault();
 	}
 	
-	$("#profilePhotoImage").wraption();
-	
 }
 
 function saveProfilePhoto(e) {

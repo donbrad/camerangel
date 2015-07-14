@@ -486,13 +486,20 @@
 
 
 	<div style="margin:8px; height: 50%; width: auto; text-align: center">
-		<img id="profilePhotoImage" data-bind="attr: {title: statusMessage, src: photo}" class="wraption" style="height: 50%; vertical-align: middle;">
+		<div class="wraption-wrap" style="height: 50%;">
+			<img id="profilePhotoImage" class="wraption" data-bind="attr: {src: photo}" style="height: 50%; vertical-align: middle;">
+			<span class="wraption-caption"  data-bind="html: statusMessage" >
+		</div>
+		
+		
+		</span>
+		
 	</div>
 	
      <form id="profilePhotoForm">
         <ul data-role="listview" data-style="inset">
             <li>
-                <label>Title
+                <label> Status
                     <input type="text" id="profilePhotoMessage" default="Express yourself..." />
                 </label>
             </li>
