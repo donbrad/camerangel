@@ -59,8 +59,8 @@ function closeModalViewSupport() {
      $('#modalview-support').kendoMobileModalView("close");
 }
 
-function closeModalViewPhoto() {
-     $('#modalview-photo').kendoMobileModalView("close");
+function closeModalViewPhotoTag() {
+     $('#modalview-photoTag').kendoMobileModalView("close");
 }
 function closeModalViewLogin() {
     $("#modalview-login").kendoMobileModalView("close");
@@ -72,6 +72,10 @@ function closeModalViewSignup() {
 
 function closeModalViewRecoverPassword() {
     $("#modalview-recoverPassword").kendoMobileModalView("close");
+}
+
+function closeModalViewProfilePhotoEdit() {
+    $("#modalview-profilePhotoEdit").kendoMobileModalView("close");
 }
 
 function closeModalViewAddChannel() {

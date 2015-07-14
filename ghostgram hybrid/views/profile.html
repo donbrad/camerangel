@@ -15,9 +15,22 @@
                  Public View
              </div>
              <div class="clearfix"></div>
-             <img src="images/ghostgramcontact.png" class="myPublicImg" id="profileTopImg" />
              <h4 id="profile-username" data-bind="text:currentUser.alias"></h4>
-             <p class="caption"><a>Tap to view private</a></p>
+             <div style="display: block-inline;">
+                 <span style="width: 50%; text-align: center;">
+                    <div>
+                        <img  class="myPublicImg" id="profileTopImg"  data-bind="attr: { src: currentUser.aliasPhoto}"/>
+                        <p>Public Image</p>
+                    </div>
+                 </span>
+                 <span style="width: 50%; text-align: center;">
+                    <div>
+                        <img  class="myPublicImg" id="privateTopImg" data-bind="attr: { src: currentUser.photo}"/>
+                        <p>Private Image</p>
+                    </div>
+                 </span>
+
+             </div>
          </div>
          <div class="line"></div>
          <!-- Display My Info -->
@@ -86,9 +99,9 @@
                <div class="profilePrivateImgBtn">
                    <label>Private photo</label>
                    <p class="caption">
-                       Your private photo is visible <b>ONLY</b> to approved contacts.
+                       Your private photo is visible <b>ONLY</b> to your contacts.
                    </p>
-                   <a class="btnClear" data-role="button">Choose photo</a>
+                   <a class="btnClear" data-role="button" data-click="updateProfilePhoto" >Choose photo</a>
                </div>
            </div>
          </div>
@@ -139,47 +152,47 @@
     <div class="ghostSelectionBox">
             <div class="ghostPhotoBox">
                 <a data-click="whichGhost" id="ghost-red" data-role="button">
-                    <img class="circle-img" src="images/ghost-red.svg"/>
+                    <img class="circle-img-lg" src="images/ghost-red.svg"/>
                 </a>
             </div>
             <div class="ghostPhotoBox">
                 <a data-click="whichGhost" id="ghost-purple" data-role="button">
-                	<img class="circle-img" src="images/ghost-purple.svg"/>
+                	<img class="circle-img-lg" src="images/ghost-purple.svg"/>
                 </a>
             </div>
             <div class="ghostPhotoBox">
                 <a data-click="whichGhost" class="currentGhost" id="ghost-blue" data-role="button">
-                	<img class="circle-img" src="images/ghost-blue.svg"/>
+                	<img class="circle-img-lg" src="images/ghost-blue.svg"/>
                 </a>
             </div>
             <div class="ghostPhotoBox">
                 <a data-click="whichGhost"  id="ghost-teal" data-role="button">
-                	<img class="circle-img" src="images/ghost-teal.svg"/>
+                	<img class="circle-img-lg" src="images/ghost-teal.svg"/>
                 </a>
             </div>
             <div class="ghostPhotoBox">
                 <a data-click="whichGhost" id="ghost-green" data-role="button">
-                	<img class="circle-img"  src="images/ghost-green.svg"/>
+                	<img class="circle-img-lg"  src="images/ghost-green.svg"/>
                 </a>
             </div>
             <div class="ghostPhotoBox">
                 <a data-click="whichGhost" id="ghost-yellow" data-role="button">
-                	<img class="circle-img"  src="images/ghost-yellow.svg"/>
+                	<img class="circle-img-lg"  src="images/ghost-yellow.svg"/>
                 </a>
             </div>
             <div class="ghostPhotoBox">
                 <a data-click="whichGhost" id="ghost-orange" data-role="button">
-                	<img class="circle-img"  src="images/ghost-orange.svg"/>
+                	<img class="circle-img-lg"  src="images/ghost-orange.svg"/>
                 </a>
             </div>
             <div class="ghostPhotoBox">
                 <a data-click="whichGhost" id="ghost-grey" data-role="button">
-                	<img class="circle-img" src="images/ghost-grey.svg"/>
+                	<img class="circle-img-lg" src="images/ghost-grey.svg"/>
                 </a>
             </div>
             <div class="ghostPhotoBox">
                 <a data-click="whichGhost" id="ghost-black" data-role="button">
-                	<img class="circle-img"  src="images/ghost-black.svg"/>
+                	<img class="circle-img-lg"  src="images/ghost-black.svg"/>
                 </a>
             </div>
     </div>
@@ -189,8 +202,8 @@
 <!-- change password modal -->
 <div data-role="modalview" id="modalview-changePassword" style="width: 90%; display:none;" class="appearance">
     <div class="modalTop">
-        <h3>Change Password
-            <span class="closeBox" style="float:right;">
+        <h3 style="height: 48px; vertical-align: middle;">Change Password
+            <span class="closeBox" style="float:right; ">
                 <a data-click="closeNewPass;" data-role="button"><img src="images/close.svg" /></a>
             </span>
         </h3>
@@ -200,11 +213,11 @@
        <ul data-role="listview" data-style="inset">
         <li>
             <label>New Password</label>
-            <input type="text" id="newPassword1" />
+            <input type="password" id="newPassword1" />
         </li>
         <li>
             <label>Confirm Password</label>
-            <input type="text" id="newPassword2" />
+            <input type="password" id="newPassword2" />
         </li>
        </ul>
       <a class="btnClear" data-click="validNewPass" data-role="button">Save</a>

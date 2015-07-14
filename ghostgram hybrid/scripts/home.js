@@ -147,12 +147,8 @@ function continueSignUp() {
 
 }
 
-function onInitProfile() {
-    var myPublicImg = APP.models.profile.currentUser.aliasPhoto;
-	
-	if (myPublicImg !== ""){
-        $(".myPublicImg").attr("src", APP.models.profile.currentUser.aliasPhoto);
-    }
+function onInitProfile(e) {
+	e.preventDefault();
     
     if (APP.models.profile.currentUser.emailVerified){
         $("#verified-email").removeClass("hidden");
@@ -161,7 +157,7 @@ function onInitProfile() {
     if(APP.models.profile.currentUser.phoneVerified){
         $("#verified-phone").removeClass("hidden");
     }
-    // ToDo - need to add "resend" btn (JE)
+
 }
 
 function onShowHome(e) {
@@ -322,10 +318,7 @@ function homeCreateAccount() {
 
     // clean up the phone number and ensure it's prefixed with 1
    // phone = phone.replace(/\+[0-9]{1-2}/,'');
-    phone = phone.replace(/[^0-9]+/g, "");
-	if (phone[0] !== '1') {
-		phone = '1'+phone;
-	}
+    phone = unformatPhoneNumber(phone);
 	
 	Parse.Cloud.run('validateMobileNumber', { phone: phone }, {
       success: function(result) {
@@ -358,7 +351,7 @@ function homeCreateAccount() {
 					user.set("rememberUsername", false);
 					user.set("userUUID", userUUID);
 					user.set("publicKey", publicKey);
-					user.set("privateKey", privateKey)
+					user.set("privateKey", privateKey);
 
 					user.signUp(null, {
 						success: function(user) {
@@ -596,11 +589,49 @@ function findContactMe(query) {
     },function(error){mobileNotify(error);}, options);
 }
 
+function doProfilePhotoEdit(e) {
+	if (e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+}
+
+function saveProfilePhoto(e) {
+	if (e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+	
+	var photoMessage = $('#profilePhotoMessage').val();
+}
+
+function onShowMainMenuDrawer(e) {
+	if (e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+	var profilePhoto = APP.models.profile.currentUser.get('photo');
+
+	if (profilePhoto === undefined) {
+		profilePhoto = 'images/ghost-default.svg';
+	}
+
+	$('#profilePhoto').attr('src', profilePhoto);
+	$('#profilePhotoImage').attr('src', profilePhoto);
+	
+}
 
 function homeRecoverPassword(e) {
-    // ToDo - need to wire password reset
+
     var emailAddress = $("#home-recoverPassword-email").val();
-    console.log("Sending email to " + emailAddress);
+	Parse.User.requestPasswordReset(emailAddress, {
+		success: function() {
+			mobileNotify("Sent password recovery to " + emailAddress);
+			closeModalViewRecoverPassword();
+		},
+		error: function(error) {
+			// Show the error message somewhere
+			mobileNotify("Recover Password Error: " + error.code + " " + error.message);
+		}
+	});
+
 }
 
 function syncPresence () {
@@ -639,59 +670,14 @@ function syncPresence () {
 }
 
 
-function closeChooseGhost() {
-    $("#modalview-chooseGhost").data("kendoMobileModalView").close();
-}
-
-function validNewPass(e) {
-    e.preventDefault();
-    var pass1 = $("#newPassword1").val();
-    var pass2 = $("#newPassword2").val();
-    
-    if(pass1 !== pass2){
-        mobileNotify("Passwords don't match, try again");
-    } else {
-        saveNewPass();
-    }
-}
-
-function saveNewPass() {
-    $("#modalview-changePassword").data("kendoMobileModalView").close();
-    
-   	// Clear forms
-    $("#newPassword1, #newPassword2").val("");
-    
-    mobileNotify("Your password was updated");
-    // ToDo - wire save password
-}
-
-function closeNewPass(){
-    $("#modalview-changePassword").data("kendoMobileModalView").close();
-    
-    // Clear forms
-    $("#newPassword1, #newPassword2").val("");
-}
 
 
-// Select new ghost icon
-function whichGhost(e){
-    var selection = e.target[0].id;
-    var selectionPath = "images/" + selection + ".svg";
-    var currentAlias = APP.models.profile.currentUser.aliasPhoto;
-    
-    if (selection !== undefined){
-        $(".myPublicImg").attr("src", selectionPath);
-        // ToDo - save ghost selection
-    	APP.models.profile.currentUser.set("aliasPhoto", selectionPath);
-    }
-    closeChooseGhost()
-}
 
 
-// Todo - wire save profile, may not need w/ profile sync
-function saveEditProfile() {
-    mobileNotify("Your profile was updated")
-}
+
+
+
+
 
 function closeStartModal() {
 	$("#modalview-start").data("kendoMobileModalView").close();

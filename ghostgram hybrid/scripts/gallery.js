@@ -47,11 +47,23 @@ function photoEditCrop(e) {
 	var cropUrl = cropCanvas.toDataURL("image/jpeg");
 	
 	$image.cropper('replace', cropUrl);
-	$('#photoEditImage').attr('src', cropUrl);	
+	$('#photoEditImage').attr('src', cropUrl);
+	$('#photoEditSaveDiv').removeClass('hidden');
 }
 
+// this got more complex trying to reuse across 3 flows: chat, gallery and profile...
 function photoEditSave(e) {
-	e.preventDefault();	
+	e.preventDefault();
+	var urlToSave = $('#photoEditImage').attr('src');
+	if (APP.models.gallery.currentPhoto.source === 'chat') {
+		// Save image to chat image preview
+	} else if (APP.models.gallery.currentPhoto.source === 'gallery') {
+		// Save image to gallery
+	} else if (APP.models.gallery.currentPhoto.source === 'profile') {
+		// Save image to user profile
+		saveUserProfilePhoto(urlToSave);
+	}
+	// Save photoEditImage source...
 }
 
 function photoEditRotateLeft(e) {
@@ -59,6 +71,8 @@ function photoEditRotateLeft(e) {
 	//$('#photoEditImage').css('transform','rotate(' + -90 + 'deg)');'
 	APP.models.gallery.rotationAngle -= 90;
 	$('#photoEditImage').cropper('rotate', APP.models.gallery.rotationAngle);
+
+
 }
 
 function photoEditRotateRight(e) {
@@ -66,6 +80,7 @@ function photoEditRotateRight(e) {
 	//$('#photoEditImage').css('transform','rotate(' + 90 + 'deg)');
 	APP.models.gallery.rotationAngle += 90;
 	$('#photoEditImage').cropper('rotate', APP.models.gallery.rotationAngle);
+
 }
 
 function onHidePhotoEditor(e) {
@@ -75,22 +90,40 @@ function onHidePhotoEditor(e) {
 }
 
 function onShowPhotoEditor (e) {
-	e.preventDefault();
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
 
+	var source = e.view.params.source; // source can be: chat, gallery or profile.  determines parameters and return path
+
+	if (source === undefined || source === null) {
+		mobileNotify("PhotoEditor: source parameter is missing!");
+		return;
+	}
+
+	APP.models.gallery.currentPhoto.source = source;
+
+
+	if (source === "gallery" || source === "chat") {
+		$('#photoEditImage').cropper();
+	} else {
+		// must be a profile image
+		$('#photoEditImage').cropper({aspectRatio: 1});
+	}
 	/*
 	var canvas = new fabric.Canvas('photoEditCanvas');
 	var imgElement = document.getElementById('photoEditImage');
 	var imgInstance = new fabric.Image(imgElement);
 	canvas.add(imgInstance);
 	*/
-	
-	$('#photoEditImage').cropper();
+
+
 }
 
 function onHidePhotoView(e) {
 	e.preventDefault();
 	
 	$('#photoViewImage').attr('src', "");
+	$('#photoEditSaveDiv').addClass('hidden');
 }
 
 
