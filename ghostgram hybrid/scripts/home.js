@@ -593,6 +593,17 @@ function doProfilePhotoEdit(e) {
 	if (e.preventDefault !== undefined) {
 		e.preventDefault();
 	}
+	// Enable ghost caption
+	$('#profilePhotoImage').wraption();
+
+	// Update caption on photo as user types message
+	$('#profilePhotoMessage').keyup(function () {
+		var message = $('#profilePhotoMessage').val();
+
+		if (message.length > 0) {
+			$('#profilePhotoImage').attr('title', message);
+		}
+	})
 }
 
 function saveProfilePhoto(e) {
@@ -668,15 +679,6 @@ function syncPresence () {
         });
     });
 }
-
-
-
-
-
-
-
-
-
 
 
 function closeStartModal() {
