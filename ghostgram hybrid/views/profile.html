@@ -19,21 +19,18 @@
              <div>
                  <span style="width: 50%; text-align: center;">
                     <div>
-                        <img src="images/ghostgramcontact.png" class="myPublicImg" id="profileTopImg" />
+                        <img  class="myPublicImg" id="profileTopImg"  data-bind="attr: { src: currentUser.aliasPhoto}"/>
                         <p>Public Image</p>
                     </div>
                  </span>
                  <span style="width: 50%; text-align: center;">
                     <div>
-                        <img src="images/ghostgramcontact.png" class="myPublicImg" id="privateTopImg" />
+                        <img  class="myPublicImg" id="privateTopImg" data-bind="attr: { src: currentUser.photo}"/>
                         <p>Private Image</p>
                     </div>
                  </span>
 
              </div>
-
-
-             <p class="caption"><a id="toggleProfilePhoto" data-click="toggleProfilePhoto">Tap to view private</a></p>
          </div>
          <div class="line"></div>
          <!-- Display My Info -->

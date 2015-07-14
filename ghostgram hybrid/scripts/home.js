@@ -147,12 +147,8 @@ function continueSignUp() {
 
 }
 
-function onInitProfile() {
-    var myPublicImg = APP.models.profile.currentUser.aliasPhoto;
-	
-	if (myPublicImg !== ""){
-        $(".myPublicImg").attr("src", APP.models.profile.currentUser.aliasPhoto);
-    }
+function onInitProfile(e) {
+	e.preventDefault();
     
     if (APP.models.profile.currentUser.emailVerified){
         $("#verified-email").removeClass("hidden");
@@ -161,7 +157,7 @@ function onInitProfile() {
     if(APP.models.profile.currentUser.phoneVerified){
         $("#verified-phone").removeClass("hidden");
     }
-    // ToDo - need to add "resend" btn (JE)
+
 }
 
 function onShowHome(e) {
