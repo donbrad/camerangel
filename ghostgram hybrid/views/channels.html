@@ -311,7 +311,7 @@
     <header data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" data-align="right" href="views/contacts.html#contactImport"> Import</a>
+            <a data-role="button" data-align="right" href="views/contacts.html#contactImport">Import Contact</a>
 
         </div>
     </header>
@@ -343,11 +343,6 @@
     		#} else {#
     			<h4>#: data.name #</h4>
     		#}#
-	    	#if(data.phoneVerified !== true){#
-	    		<p class="helper">Unverified • Status </p>
-	    	#} else {#
-	    		<p class="helper">Status </p>
-	    	#}#
     	</div>
             
      </div>
