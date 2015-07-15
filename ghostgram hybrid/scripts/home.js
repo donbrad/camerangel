@@ -242,13 +242,17 @@ function homeSignin (e) {
 				
 				user.save();
 			}
-			   
-            APP.models.profile.currentUser.set('username', APP.models.profile.parseUser.get('username'));
+
+
+
+			APP.models.profile.currentUser.set('username', APP.models.profile.parseUser.get('username'));
             APP.models.profile.currentUser.set('email', APP.models.profile.parseUser.get('email'));
             APP.models.profile.currentUser.set('phone', APP.models.profile.parseUser.get('phone'));
             APP.models.profile.currentUser.set('alias', APP.models.profile.parseUser.get('alias'));
-            APP.models.profile.currentUser.set('aliasPhoto', APP.models.profile.parseUser.get('aliasPhoto'))
-			 APP.models.profile.currentUser.set('aliasPublic', APP.models.profile.parseUser.get('aliasPublic'));
+			APP.models.profile.currentUser.set('statusMessage', APP.models.profile.parseUser.get('statusMessage'));
+			APP.models.profile.currentUser.set('aliasPublic', APP.models.profile.parseUser.get('aliasPublic'));
+			APP.models.profile.currentUser.set('aliasPhoto', APP.models.profile.parseUser.get('aliasPhoto'));
+			APP.models.profile.currentUser.set('photo', APP.models.profile.parseUser.get('photo'));
             APP.models.profile.currentUser.set('userUUID', APP.models.profile.parseUser.get('userUUID'));
 			APP.models.profile.currentUser.set('rememberUsername', APP.models.profile.parseUser.get('rememberUsername'));
 			APP.models.profile.currentUser.set('publicKey', publicKey);
@@ -346,7 +350,10 @@ function homeCreateAccount() {
 					user.set("phone", phone);
 					user.set("alias", alias);
 					user.set("aliasPublic", "ghostgram user");
-					user.set("profilePhoto", null)
+				   user.set('statusMessage', "Not Telling");
+				   user.set('aliasPublic', "ghostgrams user");
+				   user.set('aliasPhoto', "images/ghost-default.svg");
+				   user.set('photo', "images/ghost-default.svg");
 					user.set("phoneVerified", false);
 					user.set("rememberUsername", false);
 					user.set("userUUID", userUUID);
@@ -361,6 +368,10 @@ function homeCreateAccount() {
 							APP.models.profile.currentUser.set('email', user.get('email'));
 							APP.models.profile.currentUser.set('phone', user.get('phone'));
 							APP.models.profile.currentUser.set('alias', user.get('alias'));
+							APP.models.profile.currentUser.set('statusMessage', user.get('statusMessage'));
+							APP.models.profile.currentUser.set('aliasPublic', user.get('aliasPublic'));
+							APP.models.profile.currentUser.set('aliasPublic', user.get('aliasPublic'));
+							APP.models.profile.currentUser.set('photo', user.get('photo'));
 							APP.models.profile.currentUser.set('userUUID', user.get('userUUID'));
 							APP.models.profile.currentUser.set('phoneVerified', false);
 							APP.models.profile.currentUser.set('emailVerified',user.get('emailVerified'));
