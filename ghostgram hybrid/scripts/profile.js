@@ -195,7 +195,7 @@ function doProfilePhotos(e) {
 	if (e.preventDefault !== undefined) {
 		e.preventDefault();
 	}
-    
+
     deviceGallery(
         1600, // max resolution in pixels
         75,  // quality: 1-99.
