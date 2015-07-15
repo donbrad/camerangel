@@ -292,7 +292,7 @@
 		<h5>#=name#</h5>
 		<div class="chat-message-text">#= formattedContent #</div>
 
-		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# <img class="chat-message-photo-small" src="#:data.photo.thumb#" alt="" > #}#
+		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# <div data-role="touch" data-hold="chatPhotoHold" data-tap="chatPhotoTap"> <img class="chat-message-photo-small" src="#:data.photo.thumb#" alt="" > </div> #}#
 	</div>
 	 #} else {#
 	 	<div class="chat-message-user-content clearfix">

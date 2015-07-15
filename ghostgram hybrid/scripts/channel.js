@@ -80,7 +80,7 @@ function tapChannel(e) {
 	
 	if (APP.models.channel.currentModel.privacyMode) {
 		$('#'+message.msgID).removeClass('privateMode');
-		$.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(6000).play()).then(function () {
+		$.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(3000).play()).then(function () {
 			$("#"+message.msgID).css("opacity", "1.0");
 			$("#"+message.msgID).addClass('privateMode');
 		});
@@ -100,7 +100,7 @@ function swipeChannel (e) {
 		// display the delete button
 		var button = kendo.fx($(e.touch.currentTarget).find(".delete"));
         $.when(button.expand().duration(200).play()).then(function () {
-			$.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(9000).play()).then(function () {
+			$.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(3000).play()).then(function () {
 				
 			$("#"+message.msgID).addClass('privateMode');
 		});
@@ -120,7 +120,7 @@ function holdChannel (e) {
 	var message = dataSource.getByUid(messageUID);
 	if (APP.models.channel.currentModel.privacyMode) {
 		$('#'+message.msgID).removeClass('privateMode');
-		$.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(9000).play()).then(function () {
+		$.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(3000).play()).then(function () {
 			$("#"+message.msgID).css("opacity", "1.0");
 			$("#"+message.msgID).addClass('privateMode');
 		});
@@ -226,7 +226,16 @@ function messageAudio (e) {
 		{limit:1, duration: 5}
 	);
 }
-	
+
+
+function chatPhotoHold (e) {
+
+}
+
+function chatPhotoTap(e) {
+
+}
+
 function messagePhoto (e) {
 	e.preventDefault();
 
