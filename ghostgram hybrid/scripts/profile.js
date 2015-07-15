@@ -174,52 +174,33 @@ function updateProfilePhoto (e) {
     );
 }
 
+function profilePhotoComplete () {
+
+}
 
 function doProfileCamera(e) {
 	if (e.preventDefault !== undefined) {
 		e.preventDefault();
 	}
+
+    deviceCamera(
+        1600, // max resolution in pixels
+        75,  // quality: 1-99.
+        false,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+        profilePhotoComplete  // Optional preview callback
+    );
 }
 
 function doProfilePhotos(e) {
 	if (e.preventDefault !== undefined) {
 		e.preventDefault();
 	}
-	
-	    var pictureSource = navigator.camera.PictureSourceType;   // picture source
-    var destinationType = navigator.camera.DestinationType; // sets the format of returned value
-    // Android storage is seriously different -- multiple photo directories with different permissions.
-    // So need to get a data url in our space rather an direct link to the image in current storage
-    var options = {
-        sourceType: pictureSource.SAVEDPHOTOALBUM,
-        destinationType: destinationType.DATA_URL
-    };
-
-    if (device.platform === 'iOS') {
-        options = {
-            sourceType: pictureSource.SAVEDPHOTOALBUM,
-            destinationType: destinationType.FILE_URL
-        }
-    }
-
-    navigator.camera.getPicture(
-        function (imageData) {
-            var imageUrl = imageData;
-            var displayUrl = imageData;
-
-            if (device.platform === 'iOS') {
-                imageUrl = imageData.replace('file://', '');
-
-            } else {
-                displayUrl = "data:image/jpg;base64," + imageData;
-            }
-            //var scaledImageUrl = "data:image/jpg;base64," + imageData;
-            $('#photoEditImage').attr('src', displayUrl);
-            APP.kendo.navigate('#photoEditor?source=profile')
-        },
-        function (error) {
-            mobileNotify("Camera error " + error);
-        }, options
+    
+    deviceGallery(
+        1600, // max resolution in pixels
+        75,  // quality: 1-99.
+        false,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+        profilePhotoComplete  // Optional preview callback
     );
 }
 
