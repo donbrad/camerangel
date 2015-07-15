@@ -214,6 +214,25 @@ function messageCamera (e) {
 	);
 }
 
+function messagePhoto (e) {
+	e.preventDefault();
+
+	// Call the device gallery function to get a photo and get it scaled to gg resolution
+	//todo: need to parameterize these...
+	deviceGallery(
+		1600, // max resolution in pixels
+		75,  // quality: 1-99.
+		true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+		showChatImagePreview  // Optional preview callback
+	);
+}
+
+function messageGallery (e) {
+	e.preventDefault();
+
+
+}
+
 function messageAudio (e) {
 	e.preventDefault();
 	navigator.device.capture.captureAudio(
@@ -236,18 +255,7 @@ function chatPhotoTap(e) {
 
 }
 
-function messagePhoto (e) {
-	e.preventDefault();
 
-	// Call the device gallery function to get a photo and get it scaled to gg resolution
-	//todo: need to parameterize these...
-	deviceGallery(
-		1600, // max resolution in pixels
-		75,  // quality: 1-99.
-		true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
-		showChatImagePreview  // Optional preview callback
-	);
-}
 
 
 function messageSend(e) {
