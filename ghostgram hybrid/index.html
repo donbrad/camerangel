@@ -445,21 +445,21 @@
 
 </div>
 
-<div data-role="modalview" id="modalview-profilePhotoEdit" data-open="doProfilePhotoEdit" data-init="initProfilePhotoEdit" style="width: 100%; height:100%; display: none;" data-model="APP.models.profile.currentUser" class="appearance">
+<div data-role="modalview" id="modalview-profilePhotoEdit" data-open="doProfilePhotoEdit" data-init="initProfilePhotoEdit" style="width: 100%; height:100%;  display: none;" data-model="APP.models.profile.currentUser" class="appearance">
     <div data-role="header">
         <div data-role="navbar">
-            <span>Update Status</span>
+            <span>Profile Photo</span>
                 <a data-click="closeModalViewProfilePhotoEdit" data-role="button" data-align="left">Cancel</a>
-                <a data-click="doUpdateStatusMessage"  type="button" data-role="button" data-align="right">Update Status</a>
+                <a data-click="doUpdateStatusMessage"  type="button" data-role="button" data-align="right">Update</a>
 		</div>
 	</div>
 
-    <div style="display: inline-block; text-align: center; padding-top: 6px;" id="profilePhotoImportDiv">
-        <span>
-            <a type="button" data-role="button" class="btnClearLine-grey-sm">Camera</a>
-            <a type="button" data-role="button" class="btnClearLine-grey-sm">Photos</a>
-            <a type="button" data-role="button" class="btnClearLine-grey-sm">Gallery</a>
-        </span>
+    <div style="text-align: center; padding-top: 6px;" id="profilePhotoImportDiv">
+        <div style="display: inline-block;">
+			<a type="button" data-role="button" data-click="doProfileCamera" class="btnClearLine-grey-sm">Camera</a>
+			<a type="button" data-role="button" data-click="doProfilePhotos" class="btnClearLine-grey-sm">Photos</a>
+			<a type="button" data-role="button" data-click="doProfileGallery" class="btnClearLine-grey-sm">Gallery</a>
+		 </div>
     </div>
 
 	<div style="margin:8px; height: 50%; width: auto; text-align: center">
@@ -473,7 +473,7 @@
         <ul data-role="listview" data-style="inset">
             <li>
                 <label> Status
-                    <input type="text" id="profilePhotoMessage" default="Express yourself..." />
+                    <input type="text" id="profilePhotoMessage" data-bind="value: statusMessage" default="Express yourself..." />
                 </label>
             </li>
         </ul>
@@ -500,12 +500,12 @@
         <ul data-role="listview" data-style="inset">
             <li>
                 <label>Title
-                    <input type="text" id="photoTitle" value="" />
+                    <input type="text" id="photoTitle" class="clearable" />
                 </label>
             </li>
 			<li>
                 <label>Tags
-                    <input type="text" id="photoTags" value="" />
+                    <input type="text" id="photoTags" class="clearable" />
                 </label>
 			</li>
             
