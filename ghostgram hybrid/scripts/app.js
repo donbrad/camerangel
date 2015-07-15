@@ -741,9 +741,13 @@
             APP.models.profile.currentUser.set('publicKey', APP.models.profile.parseUser.get('publicKey'));
 			APP.models.profile.currentUser.set('privateKey', APP.models.profile.parseUser.get('privateKey'));
             APP.models.profile.currentUser.set('statusMessage', APP.models.profile.parseUser.get('statusMessage'));
+			APP.models.profile.currentUser.set('currentPlace', APP.models.profile.parseUser.get('currentPlace'));
+			APP.models.profile.currentUser.set('currentPlaceUUID', APP.models.profile.parseUser.get('currentPlaceUUID'));
 			APP.models.profile.currentUser.set('aliasPublic', APP.models.profile.parseUser.get('aliasPublic'));
             APP.models.profile.currentUser.set('aliasPhoto', APP.models.profile.parseUser.get('aliasPhoto'));
             APP.models.profile.currentUser.set('photo', APP.models.profile.parseUser.get('photo'));
+			APP.models.profile.currentUser.set('isAvailable', APP.models.profile.parseUser.get('isAvailable'));
+			APP.models.profile.currentUser.set('isVisible', APP.models.profile.parseUser.get('isVisible'));
             APP.models.profile.currentUser.set('rememberUsername', APP.models.profile.parseUser.get('rememberUsername'));
             APP.models.profile.currentUser.set('phoneVerified', APP.models.profile.parseUser.get('phoneVerified'));
             APP.models.profile.currentUser.set('emailVerified', APP.models.profile.parseUser.get('emailVerified'));

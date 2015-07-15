@@ -449,7 +449,7 @@
     <div data-role="header">
         <div data-role="navbar">
             <span>Profile Photo</span>
-                <a data-click="closeModalViewProfilePhotoEdit" data-role="button" data-align="left">Cancel</a>
+                <a data-click="closeModalViewProfilePhotoEdit" data-role="button" data-align="left">Back</a>
                 <a data-click="doUpdateStatusMessage"  type="button" data-role="button" data-align="right">Update</a>
 		</div>
 	</div>
@@ -463,9 +463,9 @@
     </div>
 
 	<div style="margin:8px; height: 50%; width: auto; text-align: center">
-		<div class="wraption-wrap" style="height: 50%;">
-			<img id="profilePhotoImage" class="wraption" data-bind="attr: {src: photo}" style="height: 50%; vertical-align: middle;">
-			<span class="wraption-caption"  data-bind="html: statusMessage" ></span>
+		<div class="wraption-wrap">
+			<img id="profilePhotoImage" class="wraption" data-bind="attr: {src: photo}" style="max-height: 100%; max-width:100%; vertical-align: middle;">
+			<span class="wraption-caption"data-bind="html: statusMessage" ></span>
 		</div>
 	</div>
 	
@@ -473,7 +473,7 @@
         <ul data-role="listview" data-style="inset">
             <li>
                 <label> Status
-                    <input type="text" id="profilePhotoMessage" data-bind="value: statusMessage" default="Express yourself..." />
+                    <input type="search" id="profilePhotoMessage" data-bind="value: statusMessage" default="Express yourself..." />
                 </label>
             </li>
         </ul>
@@ -500,12 +500,12 @@
         <ul data-role="listview" data-style="inset">
             <li>
                 <label>Title
-                    <input type="text" id="photoTitle" class="clearable" />
+                    <input type="search" id="photoTitle" default="Title or description" />
                 </label>
             </li>
 			<li>
                 <label>Tags
-                    <input type="text" id="photoTags" class="clearable" />
+                    <input type="search" id="photoTags" default="People, event, location..." />
                 </label>
 			</li>
             
