@@ -1,5 +1,5 @@
 <!-- profile view -->
-<div data-role="view" id="profile" data-title="Profile" data-layout="profileLayout" data-model="APP.models.profile"  class="appearance" data-init="onInitProfile">
+<div data-role="view" id="profile" data-title="Profile" data-layout="profileLayout" data-model="APP.models.profile.currentUser"  class="appearance" data-init="onInitProfile">
    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -19,13 +19,13 @@
              <div style="display: block-inline;">
                  <span style="width: 50%; text-align: center;">
                     <div>
-                        <img  class="myPublicImg" id="profileTopImg"  data-bind="attr: { src: currentUser.aliasPhoto}"/>
+                        <img  class="myPublicImg" id="profileTopImg"  data-bind="attr: { src: aliasPhoto}"/>
                         <p>Public Image</p>
                     </div>
                  </span>
                  <span style="width: 50%; text-align: center;">
                     <div>
-                        <img  class="myPublicImg" id="privateTopImg" data-bind="attr: { src: currentUser.photo}"/>
+                        <img  class="myPublicImg" id="privateTopImg" data-bind="attr: { src: photo}"/>
                         <p>Private Image</p>
                     </div>
                  </span>
@@ -43,7 +43,7 @@
              <ul data-role="listview" data-style="inset">
                  <li>
                      <label>Alias (How other users see you)</label>
-                     <p data-bind="text:currentUser.alias"></p>
+                     <p data-bind="text:alias"></p>
                  </li>
                  <li>
                      <label>Contact email 
@@ -52,7 +52,7 @@
                              Verified 
                          </span>
                       </label>
-                    <p data-bind="text: currentUser.email"></p>
+                    <p data-bind="text: email"></p>
                  </li>
                  <li>
                      <label>Mobile Phone 
@@ -61,7 +61,7 @@
                            Verified
                        </span>
                     </label>
-                    <p data-bind="text: currentUser.phone"></p>
+                    <p data-bind="text: phone"></p>
                  </li>
              </ul>
          </div>
@@ -69,7 +69,7 @@
 </div>
 
 <!-- Profile Edit -->  
-<div data-role="view" id="profileEdit" data-title="Edit Profile" data-layout="profileLayout" data-model="APP.models.profile" class="appearance">
+<div data-role="view" id="profileEdit" data-title="Edit Profile" data-layout="profileLayout" data-model="APP.models.profile.currentUser" class="appearance">
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -114,18 +114,18 @@
             <ul data-role="listview" data-style="inset">
                 <li>
                     <label>Alias (How other users see you)
-                    <input type="text" id="profile-alias" data-bind="value: currentUser.alias" />
+                    <input type="search" id="profile-alias" data-bind="value: alias" />
                     </label>
                 </li>
                  <li>
                     <label>Contact email 
-                    <input type="email" id="profile-email" data-bind="value: currentUser.email" />
+                    <input type="email" id="profile-email" data-bind="value: email" />
                     </label>
                 </li>
                <li>
                    <label>Mobile Phone 
                        <span class="helper helper-right helper-form"><i class="fa fa-lock"></i> Locked <a class="btnClear" id="helper-profilePhone"></a></span>
-                    <input type="tel" id="profile-phone" data-bind="value: currentUser.phone" readonly />
+                    <input type="tel" id="profile-phone" data-bind="value: phone" readonly />
                     </label>
                 </li>
            </ul>

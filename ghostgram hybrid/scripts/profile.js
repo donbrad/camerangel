@@ -31,7 +31,6 @@ function whichGhost(e) {
 
     if (selection !== undefined){
         $(".myPublicImg").attr("src", selectionPath);
-        // ToDo - save ghost selection
         APP.models.profile.currentUser.set("aliasPhoto", selectionPath);
     }
     closeChooseGhost()
@@ -84,13 +83,18 @@ function profilePhotoScaleSuccess (data) {
 }
 
 function saveUserProfilePhoto (url) {
-    var profileUrl = url, uuid = APP.models.profile.currentUser.get('userUUID'), user = Parse.User.current();
+    var profileUrl = url, currentUser = APP.models.profile.currentUser,  uuid = currentUser.get('userUUID'), user = Parse.User.current();
 
+	mobileNotify('Syncing your Profile Photo....');
     getBase64FromImageUrl(profileUrl, function (fileData) {
         var parseFile = new Parse.File(uuid+".png", {base64 : fileData}, "image/png");
         parseFile.save().then(function() {
             user.set("parsePhoto", parseFile);
             user.set("photo", parseFile._url);
+			
+			// Update currentUser (local) to sync all instances of profile photo
+			currentUser.set("parsePhoto", parseFile);
+            currentUser.set("photo", parseFile._url);
             user.save(null, {
                 success: function(contact) {
                     // Execute any logic that should take place after the object is saved.
