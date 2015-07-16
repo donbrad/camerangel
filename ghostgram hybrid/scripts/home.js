@@ -254,8 +254,14 @@ function homeSignin (e) {
             APP.models.profile.currentUser.set('email', APP.models.profile.parseUser.get('email'));
             APP.models.profile.currentUser.set('phone', APP.models.profile.parseUser.get('phone'));
             APP.models.profile.currentUser.set('alias', APP.models.profile.parseUser.get('alias'));
-            APP.models.profile.currentUser.set('aliasPhoto', APP.models.profile.parseUser.get('aliasPhoto'))
-			 APP.models.profile.currentUser.set('aliasPublic', APP.models.profile.parseUser.get('aliasPublic'));
+            APP.models.profile.currentUser.set('aliasPhoto', APP.models.profile.parseUser.get('aliasPhoto'));
+			APP.models.profile.currentUser.set('statusMessage', APP.models.profile.parseUser.get('statusMessage'));
+			APP.models.profile.currentUser.set('isAvailable', APP.models.profile.parseUser.get('isAvailable'));
+			APP.models.profile.currentUser.set('isVisible', APP.models.profile.parseUser.get('isVisible'));
+			APP.models.profile.currentUser.set('currentPlace', APP.models.profile.parseUser.get('currentPlace'));
+			APP.models.profile.currentUser.set('currentPlaceUUID', APP.models.profile.parseUser.get('currentPlaceUUID'));
+			APP.models.profile.currentUser.set('photo', APP.models.profile.parseUser.get('photo'));
+			APP.models.profile.currentUser.set('aliasPublic', APP.models.profile.parseUser.get('aliasPublic'));
             APP.models.profile.currentUser.set('userUUID', APP.models.profile.parseUser.get('userUUID'));
 			APP.models.profile.currentUser.set('rememberUsername', APP.models.profile.parseUser.get('rememberUsername'));
 			APP.models.profile.currentUser.set('publicKey', publicKey);
@@ -353,7 +359,11 @@ function homeCreateAccount() {
 					user.set("phone", phone);
 					user.set("alias", alias);
 					user.set("aliasPublic", "ghostgram user");
-					user.set("profilePhoto", null)
+					user.set("currentPlace", "");
+				    user.set('photo', "images/ghost-default.svg");
+				    user.set('aliasPhoto', "images/ghost-default.svg");
+					user.set("isAvailable", true);	   
+					user.set("isVisible", true);	 
 					user.set("phoneVerified", false);
 					user.set("rememberUsername", false);
 					user.set("userUUID", userUUID);
@@ -368,6 +378,11 @@ function homeCreateAccount() {
 							APP.models.profile.currentUser.set('email', user.get('email'));
 							APP.models.profile.currentUser.set('phone', user.get('phone'));
 							APP.models.profile.currentUser.set('alias', user.get('alias'));
+							APP.models.profile.currentUser.set('currentPlace', user.get('currentPlace'));
+							APP.models.profile.currentUser.set('photo', user.get('photo'));
+							APP.models.profile.currentUser.set('isAvailable', user.get('isAvailable'));
+							APP.models.profile.currentUser.set('isVisible', user.get('isVisible'));
+							APP.models.profile.currentUser.set('aliasPhoto', user.get('aliasPhoto'));
 							APP.models.profile.currentUser.set('userUUID', user.get('userUUID'));
 							APP.models.profile.currentUser.set('phoneVerified', false);
 							APP.models.profile.currentUser.set('emailVerified',user.get('emailVerified'));
@@ -688,6 +703,11 @@ function syncPresence () {
     });
 }
 
+function galleryPickerClick(e) {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+}
 
 function closeStartModal() {
 	$("#modalview-start").data("kendoMobileModalView").close();

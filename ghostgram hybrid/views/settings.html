@@ -5,8 +5,30 @@
             <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img class="menuIcon" src="images/menu-icon.svg"/></a>
         </div>
     </div> 
-	
-	
+		<h3>
+			Photos
+		</h3>
+		<form style="border-radius: 25px;">
+		  <ul data-role="listview" data-style="inset">
+				 <li>
+					<label>Photo Size
+					 <select id="settingsPhotoSize">
+                        <option value="normal">Normal - Smaller Size & Bandwidth</option>
+                        <option value="retina">Retina - Larger Size & Bandwidth</option>
+                    </select>
+					</label>
+				</li>
+				 <li>
+					<label> Photo Sync
+					 <select id="settingsPhotoSync">
+                        <option value="wifi">WIFI only - Sync only on WIFI</option>
+                        <option value="retina">Always - Sync on WIFI & Cellular</option>
+                    </select>
+					</label>
+				</li>
+			</ul>		
+		</form>
+
 		<h3>
 			Development
 		</h3>
@@ -38,59 +60,9 @@
 					<input type="text" id="profile-version" data-bind="value: tempDirectory" readonly/>
 					</label>
 				</li>
-			</ul>
-			<a class="btnClear" data-role="button" href="#settingsDesign">View design guideline</a>
+			</ul>		
 		</form>
 </div>
-
-
-<div data-role="view" data-title="Design" id="settingsDesign" data-layout="main" class="appearance">
-	<div data-role="header">
-        <div data-role="navbar">
-            <span data-role="view-title"></span>
-            <a data-role="backbutton" data-align="left"><img class="menuIcon" src="images/nav-back.svg"/></a>
-        </div>
-    </div>
-
-    <!-- Design Guidelines -->
-    <div class="appBox">
-    	<div class="fullWidth">
-    	<h3>Buttons</h3>
-	    	<ul data-role="listview" data-style="inset">
-	    		<li>
-	    			<p>.btnClear</p>
-	    			<a class="btnClear">button</a>
-	    		</li>
-	    		<li>
-	    			<p>.btnClear-grey</p>
-	    			<a class="btnClear-grey">button</a>
-	    		</li>
-	    		<li>
-	    			<p>.btnClear-red</p>
-	    			<a class="btnClear-red">button</a>
-	    		</li>
-	    		<li>
-	    			<p>.btnYellow</p><br />
-	    			<a class="btnYellow">button</a>
-	    		</li>
-	    		<li>
-	    			<p>.btnBlue</p><br />
-	    			<a class="btnBlue">button</a>
-	    		</li>
-	    		<li>
-	    			<p>.btnClearLine-grey-sm</p>
-	    			<a class="btnClearLine-grey-sm">button</a>
-	    		</li>
-	    	</ul>
-    	</div>
-    </div>
-    
-
-
-
-
-</div>
-
 
 
 

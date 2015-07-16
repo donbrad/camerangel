@@ -742,9 +742,13 @@
             APP.models.profile.currentUser.set('publicKey', APP.models.profile.parseUser.get('publicKey'));
 			APP.models.profile.currentUser.set('privateKey', APP.models.profile.parseUser.get('privateKey'));
             APP.models.profile.currentUser.set('statusMessage', APP.models.profile.parseUser.get('statusMessage'));
+			APP.models.profile.currentUser.set('currentPlace', APP.models.profile.parseUser.get('currentPlace'));
+			APP.models.profile.currentUser.set('currentPlaceUUID', APP.models.profile.parseUser.get('currentPlaceUUID'));
 			APP.models.profile.currentUser.set('aliasPublic', APP.models.profile.parseUser.get('aliasPublic'));
             APP.models.profile.currentUser.set('aliasPhoto', APP.models.profile.parseUser.get('aliasPhoto'));
             APP.models.profile.currentUser.set('photo', APP.models.profile.parseUser.get('photo'));
+			APP.models.profile.currentUser.set('isAvailable', APP.models.profile.parseUser.get('isAvailable'));
+			APP.models.profile.currentUser.set('isVisible', APP.models.profile.parseUser.get('isVisible'));
             APP.models.profile.currentUser.set('rememberUsername', APP.models.profile.parseUser.get('rememberUsername'));
             APP.models.profile.currentUser.set('phoneVerified', APP.models.profile.parseUser.get('phoneVerified'));
             APP.models.profile.currentUser.set('emailVerified', APP.models.profile.parseUser.get('emailVerified'));
@@ -759,7 +763,7 @@
 			}
 			
             APP.pubnub = PUBNUB.init({ 
-                 publish_key: 'pub-c-d4fcc2b9-2c1c-4a38-9e2c-a11331c895be', 
+                 publish_key: 'pub-c-d4fcc2b9-2c1c-4a38-9e2c-a11331c895be',
                  subscribe_key: 'sub-c-4624e1d4-dcad-11e4-adc7-0619f8945a4f',
 				 secret_key: 'sec-c-NDFiNzlmNTUtNWEyNy00OGUzLWExZjYtNDc3ZTI2ZGRlOGMw',
                  ssl: true,
@@ -772,7 +776,7 @@
 			//mobileNotify("Created data channel : " + uuid);
              APP.pubnub.subscribe({
                 channel : uuid,
-                windowing: 1000,    
+                windowing: 50000,
                 message : dataChannelRead,
                 connect: function(){},
                 disconnect: function(){},
@@ -783,7 +787,7 @@
 			
 			APP.pubnub.subscribe({
                 channel : 'ghostgramsapp129195720',
-                windowing: 1000,    
+                windowing: 50000,
                 message : appChannelRead,
                 connect: function(){},
                 disconnect: function(){},

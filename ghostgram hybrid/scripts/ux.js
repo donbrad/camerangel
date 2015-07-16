@@ -70,6 +70,10 @@ function closeModalViewSignup() {
     $("#modalview-signup").kendoMobileModalView("close");
 }
 
+function closeModalViewGalleryPicker() {
+    $("#modalview-galleryPicker").kendoMobileModalView("close");
+}
+
 function closeModalViewRecoverPassword() {
     $("#modalview-recoverPassword").kendoMobileModalView("close");
 }

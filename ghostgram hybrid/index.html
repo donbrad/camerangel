@@ -25,6 +25,7 @@
 	<script src="scripts/home.js"></script>
 	<script src="scripts/channels.js"></script>
 	<script src="scripts/channel.js"></script>
+    <script src="scripts/devicephoto.js"></script>
 	<script src="scripts/privateChannel.js"></script>
 	<script src="scripts/contacts.js"></script>
 	<script src="scripts/places.js"></script>
@@ -229,7 +230,7 @@
             Hello,
         </h1>
         <p>
-            Welecome to ghostgrams!
+            Welcome to ghostgrams!
         </p>
     </div>
     <div class="clearfix"></div>
@@ -321,36 +322,6 @@
 	        <a class="btnYellow btnSpan" data-click="verifyPhone" type="button" data-role="button" data-align="right">Verify</a>
 	    </div>
    	</div>
-</div>
-	
-<div data-role="modalview" id="modalview-login" style="width: 90%; display: none;" class="appearance"  data-init="doInitSignIn">
-    <div data-role="header">
-        <div data-role="navbar">
-            <span>Sign In</span>
-            
-        </div>
-    </div>
-
-     <form>
-        <ul data-role="listview" data-style="inset">
-            <li>
-                <label>Username
-                    <input type="text" id="home-signin-username" value="" required />
-                </label>
-            </li>
-            <li>
-                <label>Password
-                <input type="password" id="home-signin-password" value="" required />
-                </label>
-            </li>
-        </ul>
-    </form> 
-    <div data-role="footer">
-        <div data-role="navbar">
-            <a data-click="closeModalViewLogin" data-role="button" data-align="left">Cancel</a>
-            <a data-click="homeSignin" id="modalview-login-button" type="button" data-role="button" data-align="right">Sign In</a>
-        </div>
-    </div>
 </div>
     
 <div data-role="view" id="signup" data-title="Sign Up" data-layout="main" style="display: none;" class="appearance" data-init="initSignUp">
@@ -492,25 +463,27 @@
 
 </div>
 
-<div data-role="modalview" id="modalview-profilePhotoEdit" data-open="doProfilePhotoEdit" data-init="initProfilePhotoEdit" style="width: 100%; height:100%; display: none;" data-model="APP.models.profile.currentUser" class="appearance">
+<div data-role="modalview" id="modalview-profilePhotoEdit" data-open="doProfilePhotoEdit" data-init="initProfilePhotoEdit" style="width: 100%; height:100%;  display: none;" data-model="APP.models.profile.currentUser" class="appearance">
     <div data-role="header">
         <div data-role="navbar">
-            <span>Update Status</span>
-                <a data-click="closeModalViewProfilePhotoEdit" data-role="button" data-align="left">Cancel</a>
-                <a data-click="saveProfilePhoto"  type="button" data-role="button" data-align="right">Save</a>
+            <span>Profile Photo</span>
+                <a data-click="closeModalViewProfilePhotoEdit" data-role="button" data-align="left">Back</a>
+                <a data-click="doUpdateStatusMessage"  type="button" data-role="button" data-align="right">Update</a>
 		</div>
 	</div>
 
-    <div style="display: inline-block" id="profilePhotoImportDiv">
-        <a type="button" data-role="button" class="btnClearLine-grey-sm">Camera</a>
-        <a type="button" data-role="button" class="btnClearLine-grey-sm">Photos</a>
-        <a type="button" data-role="button" class="btnClearLine-grey-sm">Gallery</a>
+    <div style="text-align: center; padding-top: 6px;" id="profilePhotoImportDiv">
+        <div style="display: inline-block;">
+			<a type="button" data-role="button" data-click="doProfileCamera" class="btnClearLine-grey-sm">Camera</a>
+			<a type="button" data-role="button" data-click="doProfilePhotos" class="btnClearLine-grey-sm">Photos</a>
+			<a type="button" data-role="button" data-rel="modalview" href="#modalview-galleryPicker" class="btnClearLine-grey-sm">Gallery</a>
+		 </div>
     </div>
 
 	<div style="margin:8px; height: 50%; width: auto; text-align: center">
-		<div class="wraption-wrap" style="height: 50%;">
-			<img id="profilePhotoImage" class="wraption" data-bind="attr: {src: photo}" style="height: 50%; vertical-align: middle;">
-			<span class="wraption-caption"  data-bind="html: statusMessage" ></span>
+		<div class="wraption-wrap">
+			<img id="profilePhotoImage" class="wraption" data-bind="attr: {src: photo}" style="max-height: 100%; max-width:100%; vertical-align: middle;">
+			<span class="wraption-caption"data-bind="html: statusMessage" ></span>
 		</div>
 	</div>
 	
@@ -518,14 +491,9 @@
         <ul data-role="listview" data-style="inset">
             <li>
                 <label> Status
-                    <input type="text" id="profilePhotoMessage" default="Express yourself..." />
+                    <input type="search" id="profilePhotoMessage" data-bind="value: statusMessage" default="Express yourself..." />
                 </label>
             </li>
-            <li>
-				<div style="text-align: center;">
-					<a class="btnClear"  data-role="button"data-click="doUpdateStatusMessage">Update Status Message</a>
-				</div>
-			</li>
         </ul>
     </form>
 
@@ -540,7 +508,6 @@
                 <a data-click="savePhoto"  type="button" data-role="button" data-align="right">Save</a>
 		</div>
 	</div>
-]
 
 	<div style="margin:8px; height: 60%; width: auto; text-align: center">
 		<img id="photoImage" src="" style=" max-height: 60%; vertical-align: middle;">
@@ -550,12 +517,12 @@
         <ul data-role="listview" data-style="inset">
             <li>
                 <label>Title
-                    <input type="text" id="photoTitle" value="" />
+                    <input type="search" id="photoTitle" default="Title or description" />
                 </label>
             </li>
 			<li>
                 <label>Tags
-                    <input type="text" id="photoTags" value="" />
+                    <input type="search" id="photoTags" default="People, event, location..." />
                 </label>
 			</li>
             
@@ -563,7 +530,33 @@
     </form> 
 </div>
 
-<!-- get started -->
+
+<!-- Gallery Picker -- pick an image from the ghostgrams Gallery -->
+<div data-role="modalview" id="modalview-galleryPicker" style="width: 100%; height:100%; display: none;"  class="appearance">
+    <div data-role="header">
+        <div data-role="navbar">
+            <span>Gallery</span>
+            <a data-click="closeModalViewGalleryPicker" data-role="button" data-align="left">Done</a>
+        </div>
+    </div>
+
+    <div style="width: 100%;">
+        <ul id="galleryPicker-listview" data-role="listview" data-click="galleryPickerClick" data-source="APP.models.gallery.photosDS" data-template="galleryPicker-template"></ul>
+    </div>
+
+</div>
+
+<!-- galleryPicker template -->
+<script type="text/x-kendo-template" id="galleryPicker-template">
+    <div style="float: left; position: relative; width:24%; height: 24%;">
+		<div style="overflow: hidden; top: 1px; left: 1px; right: 1px; bottom: 1px;">
+        	<img src="#=thumbnailUrl#" style="width:100%; height:100%;">
+		</div>
+    </div>
+</script>
+
+
+    <!-- get started -->
 <div data-role="modalview" id="modalview-start" style="width: 90%; display:none;" class="appearance">
 	<div class="startBox">
 			<h2>Let's Get Started
