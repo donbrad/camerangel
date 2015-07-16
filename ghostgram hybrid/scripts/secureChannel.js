@@ -99,6 +99,8 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
     // Subscribe to our PubNub channel.
     pubnub.subscribe({
         channel: channel,
+        windowing: 50000,
+        restore: true,
         callback: messageHandler,
         presence: presenceHandler,
         // Set our state to our user object, which contains our username and public key.

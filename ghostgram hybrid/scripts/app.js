@@ -762,7 +762,7 @@
 			}
 			
             APP.pubnub = PUBNUB.init({ 
-                 publish_key: 'pub-c-d4fcc2b9-2c1c-4a38-9e2c-a11331c895be', 
+                 publish_key: 'pub-c-d4fcc2b9-2c1c-4a38-9e2c-a11331c895be',
                  subscribe_key: 'sub-c-4624e1d4-dcad-11e4-adc7-0619f8945a4f',
 				 secret_key: 'sec-c-NDFiNzlmNTUtNWEyNy00OGUzLWExZjYtNDc3ZTI2ZGRlOGMw',
                  ssl: true,
@@ -775,7 +775,7 @@
 			//mobileNotify("Created data channel : " + uuid);
              APP.pubnub.subscribe({
                 channel : uuid,
-                windowing: 1000,    
+                windowing: 50000,
                 message : dataChannelRead,
                 connect: function(){},
                 disconnect: function(){},
@@ -786,7 +786,7 @@
 			
 			APP.pubnub.subscribe({
                 channel : 'ghostgramsapp129195720',
-                windowing: 1000,    
+                windowing: 50000,
                 message : appChannelRead,
                 connect: function(){},
                 disconnect: function(){},
