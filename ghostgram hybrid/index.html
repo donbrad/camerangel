@@ -459,7 +459,7 @@
         <div style="display: inline-block;">
 			<a type="button" data-role="button" data-click="doProfileCamera" class="btnClearLine-grey-sm">Camera</a>
 			<a type="button" data-role="button" data-click="doProfilePhotos" class="btnClearLine-grey-sm">Photos</a>
-			<a type="button" data-role="button" data-click="doProfileGallery" class="btnClearLine-grey-sm">Gallery</a>
+			<a type="button" data-rel="modalview" href="#modalview-GalleryPicker" class="btnClearLine-grey-sm">Gallery</a>
 		 </div>
     </div>
 
@@ -520,7 +520,6 @@
         <div data-role="navbar">
             <span>Gallery</span>
             <a data-click="closeModalViewGalleryPicker" data-role="button" data-align="left">Done</a>
-
         </div>
     </div>
 
@@ -532,7 +531,7 @@
 </div>
 
 <!-- galleryPicker template -->
-<script type="text/x-kendo-template" id="memberTemplate">
+<script type="text/x-kendo-template" id="galleryPicker-template">
     <div class="float:left; width:24%; margin: 1px;">
         <img src="data.thumbnailUrl">
     </div>

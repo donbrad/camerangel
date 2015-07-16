@@ -129,6 +129,12 @@ function onHidePhotoView(e) {
 
 function onShowGallery(e) {
 	e.preventDefault();
+	
+	APP.models.gallery.chatPhoto = false;
+	if (e.view.params.action !== undefined && e.view.params.action === 'chat') {
+		APP.models.gallery.chatPhoto = true;
+		mobileNotify("Please select an image to send...")
+	}
 	APP.models.gallery.rotationAngle = 0;
 
 	var grid = $('#gallery-grid'), isotope = grid.data('isotope');
@@ -161,7 +167,13 @@ function onShowGallery(e) {
 		$('#photoViewImage').attr('src', photoUrl);
 		$('#photoTagImage').attr('src', photoUrl);
 		$('#photoEditImage').attr('src', photoUrl);
-		APP.kendo.navigate('#photoView');
+		if (APP.models.gallery.chatPhoto) {
+			showChatImagePreview(photoUrl);
+			APP.kendo.navigate('#:back');
+			
+		} else {
+			APP.kendo.navigate('#photoView');
+		}
 		//$('#photoEditor').kendoMobileModalView("open");
 	});
 
@@ -184,7 +196,6 @@ function getPhotoModel(photoId) {
 function photoExport (e) {
 	e.preventDefault();
 	var photo = APP.models.gallery.currentPhotoModel;
-	
 	
 }
 

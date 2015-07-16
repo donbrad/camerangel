@@ -190,7 +190,7 @@ function onChannelRead(message) {
 	scrollToBottom();
 	
 	if (APP.models.channel.currentModel.privacyMode) {
-		kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(12000).play();
+		kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(9000).play();
 	}
 }
 
@@ -215,7 +215,8 @@ function messageCamera (e) {
 }
 
 function messagePhoto (e) {
-	e.preventDefault();
+	if (e !== undefined && e.preventDefault !== undefined)
+		e.preventDefault();
 
 	// Call the device gallery function to get a photo and get it scaled to gg resolution
 	//todo: need to parameterize these...
@@ -228,7 +229,10 @@ function messagePhoto (e) {
 }
 
 function messageGallery (e) {
-	e.preventDefault();
+	if (e !== undefined && e.preventDefault !== undefined)
+		e.preventDefault();
+	
+	APP.kendo.navigate("views/gallery.html#gallery?action=chat");
 
 
 }
