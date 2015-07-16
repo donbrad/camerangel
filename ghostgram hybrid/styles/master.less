@@ -501,7 +501,7 @@ form {
 }
 .nav-logo {
     position: relative;
-    top: 5px;
+    top: 4px;
     height: 18px;
 }
 .nav-menu {
@@ -595,7 +595,7 @@ div.km-header a img{
 .km-content,
 .km-navbar {
     font-size: 0.9em;
-    background-color: #27476e;
+    background: #f5f5f5;
     background: cover;
     background-size: 100% 100%;
     color: white;
@@ -605,8 +605,8 @@ div.km-header a img{
 .km-flat .km-navbar {
     /* font-size: 0.9em; */
     /* color: rgb(39,71,110); */
-    background-color: #27476E;
-    color: #fff;
+    //background-color: #27476E;
+    color: @grey100;
     box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.12), 0px 2px 2px 0px rgba(0, 0, 0, 0.24);
 }
 .km-flat.km-pages li {
@@ -664,6 +664,62 @@ div.km-header a img{
 .helper-verified-img {
     margin-right: -3px;
     padding-top: 3px;
+}
+/* Home status menu */
+
+#home > div.km-header > div {
+	background: #f5f5f5;
+	border: none;
+	box-shadow: none;
+}
+
+#home > div.view-content.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
+	background-image: linear-gradient(-1deg, #F5F5F5 53%, #FFFFFF 100%);
+}
+
+#homeStatus-name,
+#homeStatus-status {
+	color: #4A4A4A;
+}
+
+#homeStatus-name {
+	font-size: 16px !important;
+}
+
+#homeStatus-status {
+	text-align: left;
+	font-size: 11px !important;
+	color: @grey100;
+}
+
+#home > div.km-header > div > div.km-view-title {
+	margin-left: auto;
+	margin-right: auto;
+	width: 70%; 
+}
+
+.circle-img-home {
+	.circle-img;
+	width: 40px;
+	height: 40px;
+	.shadow;
+	margin-right: 0.5rem;
+}
+
+#home-status {
+	position: relative;
+	right: -50px;
+	top: 1px;
+}
+
+.home-status-img {
+	margin-right: 0.5rem;
+}
+
+.user-status {
+	height: 40px;
+	padding-top: 4px;
+	padding: 0px !important;
 }
 /* Modal styles */
 
@@ -1094,16 +1150,16 @@ div.km-header a img{
     margin: 0px;
 }
 .km-flat .km-view .km-navbar .km-button.km-state-active {
-    background-color: rgb(0, 100, 181);
+    background-color: transparent;
 }
 .km-flat .km-view .km-content .km-list .km-state-active .km-listview-link {
-    background-color: rgb(0, 100, 181);
+    background-color: transparent;
 }
 .km-flat .km-view .km-tabstrip .km-button.km-state-active {
-    background-color: rgb(0, 100, 181);
+    background-color: transparent;
 }
 .km-flat .km-view .km-content .km-button.km-state-active {
-    background-color: rgb(0, 100, 181);
+    background-color: transparent;
 }
 .km-flat .km-view .km-content .km-list > li .km-switch .km-switch-container .km-switch-handle .km-switch-label-on {
     color: rgb(255, 255, 255);

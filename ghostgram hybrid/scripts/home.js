@@ -174,9 +174,16 @@ function onShowHome(e) {
     	$("#startPhoneVerified").addClass("hidden");
     }
 
+    // Show status
+    //$("#logo-header").velocity("fadeOut", {delay: 1000, duration: 500});
+    //$(".user-status").velocity("fadeIn", {delay:1000});
         
     APP.models.presence.current.bind('change' , syncPresence);
 } 
+
+function testingStatus(e) {
+	console.log("testing");
+}
 
 function homeSignout (e) {
 

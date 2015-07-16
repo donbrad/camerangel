@@ -667,8 +667,9 @@
        
         navigator.splashscreen.hide();
         // Set status bar color
-       	StatusBar.backgroundColorByHexString("#27476E");
-        
+       	//StatusBar.backgroundColorByHexString("#fff");
+       	StatusBar.styleDefault();
+
         Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
 
 		if (!APP.state.introFetched) {

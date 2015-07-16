@@ -62,7 +62,7 @@
     </div>
 
     <div data-role="content" class='view-content'>
-    <!-- application views will be rendered here -->
+    	<!-- application views will be rendered here -->
     </div>
 
 </div>
@@ -78,7 +78,7 @@
     </div>
 
     <div data-role="content" class='view-content'>
-    <!-- application views will be rendered here -->
+    	<!-- application views will be rendered here -->
     </div>
 
 </div>
@@ -154,10 +154,27 @@
 <div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" style="display:none;" data-show="onShowHome" >
 	<div data-role="header">
       <div data-role="navbar">
-        <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"> 
-            <img class="nav-menu" src="images/menu-icon.svg"/> 
+        <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" class="left"> 
+            <img class="nav-menu" src="images/menu-icon-grey.svg"/> 
         </a>
-        <img src="images/logo.svg" class="nav-logo"/>
+        <div class="header-img" id="logo-header">
+        	<img src="images/logo-blue.svg" class="nav-logo"/>
+        </div>
+        <div class="user-status hidden" style="opacity: 0;" data-rel="modalview" href="#modalview-profilePhotoEdit" data-click="testingStatus" data-role="button">
+	        	<div class="left home-status-img">
+	        		<span id="home-status"><img width="18" src="images/status-available.svg"/></span>
+	        		<img src="" class="myPublicImg circle-img-home" />
+	        	</div>
+	        	<div class="left"> 
+	        		<h3 id="homeStatus-name"> Johnny 
+	        			<img src="images/user-verified.svg" class="user-status-icon">
+	        			<span class="contacts-alias-sm hidden">John Smith</span>
+	        		</h3>
+	        		<p id="homeStatus-status" class="helper"> Busy @ home </p>
+	        	</div>
+	        	<div class="clearfix"></div>
+        	
+        </div>
       </div>
 	</div>
 	<div data-role="content" class='view-content'>
