@@ -491,7 +491,6 @@
                 <a data-click="savePhoto"  type="button" data-role="button" data-align="right">Save</a>
 		</div>
 	</div>
-]
 
 	<div style="margin:8px; height: 60%; width: auto; text-align: center">
 		<img id="photoImage" src="" style=" max-height: 60%; vertical-align: middle;">
@@ -514,7 +513,33 @@
     </form> 
 </div>
 
-<!-- get started -->
+
+<-- Gallery Picker -- pick an image from the ghostgrams Gallery -->
+<div data-role="modalview" id="modalview-GalleryPicker" data-model="APP.models.gallery" style="width: 100%; height:100%; display: none;"  class="appearance">
+    <div data-role="header">
+        <div data-role="navbar">
+            <span>Gallery</span>
+            <a data-click="closeModalViewGalleryPicker" data-role="button" data-align="left">Done</a>
+
+        </div>
+    </div>
+
+    <div>
+        <h3>Select a Photo</h3>
+        <ul id="galleryPicker-listview" data-role="listview" data-click="galleryPickerClick" data-source="galleryDS" data-template="galleryPicker-template"></ul>
+    </div>
+
+</div>
+
+<!-- galleryPicker template -->
+<script type="text/x-kendo-template" id="memberTemplate">
+    <div class="float:left; width:24%; margin: 1px;">
+        <img src="data.thumbnailUrl">
+    </div>
+</script>
+
+
+    <!-- get started -->
 <div data-role="modalview" id="modalview-start" style="width: 90%; display:none;" class="appearance">
 	<div class="startBox">
 			<h2>Let's Get Started

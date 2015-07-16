@@ -696,6 +696,11 @@ function syncPresence () {
     });
 }
 
+function galleryPickerClick(e) {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+}
 
 function closeStartModal() {
 	$("#modalview-start").data("kendoMobileModalView").close();
