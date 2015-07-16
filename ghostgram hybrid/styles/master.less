@@ -2295,18 +2295,35 @@ div.loginBox > form > div > ul > li {
 
 #galleryPicker-listview {
 	line-height: 0 !important; 
-   
+   	
+   	/* need to work on better responsive
 	  -webkit-column-count: 2;
 	  -webkit-column-gap:   1px;
 	  -moz-column-count:   	2;
 	  -moz-column-gap:      1px;
 	  column-count:         2;
 	  column-gap:           1px;
-
+	*/
 }
 
 #galleryPicker-listview li {
 	padding: 0px !important;
+	float: left;
+	width: 33.3%;
+	border: 1px solid #fff !important;
+	margin-bottom: -3px;
+}
+
+.galleryImg-2up {
+	width: 50%;
+}
+
+.galleryImg-3up {
+	width: 33%;
+}
+
+.galleryImg-4up {
+	width: 25%;
 }
 
 .galleryImg {
