@@ -952,7 +952,7 @@ function onInitGhostEmail(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
     }
-    var editor = new Quill('#ghostEmailEditor', {
+    APP.models.contacts.ghostEditor = new Quill('#ghostEmailEditor', {
         modules: {
             'toolbar': { container: '#ghostEmailToolbar' }
         }
