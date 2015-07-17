@@ -2294,8 +2294,7 @@ div.loginBox > form > div > ul > li {
 }
 
 #galleryPicker-listview {
-	line-height: 0 !important; 
-   	
+	line-height: 0 !important;
    	/* need to work on better responsive
 	  -webkit-column-count: 2;
 	  -webkit-column-gap:   1px;
@@ -2308,13 +2307,10 @@ div.loginBox > form > div > ul > li {
 
 #galleryPicker-listview li {
 	padding: 0px !important;
-	float: left;
-    position: relative;
-    vertical-align: middle;
+	display: inline-block;
 	width: 25%;
     padding-bottom: 25%;
 	border: 1px solid #fff !important;
-
 }
 
 .galleryImg-2up {
@@ -2333,16 +2329,17 @@ div.loginBox > form > div > ul > li {
 }
 
 .galleryImgBox {
-    position: absolute;
     left: 1px;
     right: 1px;
     top: 1px;
-    bottom: 1px;
-    overflow: hidden;
+    bottom: 0px;
+	background: #e2e2e2;
+	overflow: hidden;
 }
 
 .galleryImg {
-	width: 100% !important;
+	width: 100%;	
+	height: 100% !important;
 }
 
 .chat-message {
