@@ -941,6 +941,13 @@ function contactsPickContact(e) {
         mobileNotify('Error: ' + err);
     });
 }
+function ghostEmail(e) {
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
+    APP.kendo.navigate("#ghostEmail");
+}
+
 function onInitGhostEmail(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
