@@ -941,7 +941,29 @@ function contactsPickContact(e) {
         mobileNotify('Error: ' + err);
     });
 }
-    
+function onInitGhostEmail(e) {
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
+    var editor = new Quill('#ghostEmailEditor', {
+        modules: {
+            'toolbar': { container: '#ghostEmailToolbar' }
+        }
+    });
+}
+
+function onShowGhostEmail(e) {
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
+}
+
+function sendGhostEmail(e) {
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
+}
+
 function closeAddContact() {
 	$("#modalview-AddContact").data("kendoMobileModalView").close();
 	$("#contactNicknameInput").addClass("hidden");
