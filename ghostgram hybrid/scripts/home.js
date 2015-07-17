@@ -622,6 +622,18 @@ function initProfilePhotoEdit(e) {
 	
 }
 
+function updateProfilePhototUrl(url) {
+	APP.models.profile.currentUser.set("photo", url);
+	saveUserProfilePhoto(url);
+}
+
+function doProfilePhotoEdit(e) {
+	if (e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+
+	APP.models.gallery.currentPhoto.callBack = updateProfilePhotoUrl;
+}
 function saveProfilePhoto(e) {
 	if (e.preventDefault !== undefined) {
 		e.preventDefault();
@@ -700,6 +712,11 @@ function galleryPickerClick(e) {
 	if (e !== undefined && e.preventDefault !== undefined) {
 		e.preventDefault();
 	}
+
+	var image = e.item;
+	var url = APP.models.gallery.currentPhoto.targetUrl;
+
+	APP.models.gallery.currentPhoto.callback(e.item.photoUrl);
 }
 
 function closeStartModal() {
