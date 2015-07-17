@@ -629,6 +629,18 @@ function initProfilePhotoEdit(e) {
 	
 }
 
+function updateProfilePhototUrl(url) {
+	APP.models.profile.currentUser.set("photo", url);
+	saveUserProfilePhoto(url);
+}
+
+function doProfilePhotoEdit(e) {
+	if (e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+
+	APP.models.gallery.currentPhoto.callBack = updateProfilePhototUrl;
+}
 function saveProfilePhoto(e) {
 	if (e.preventDefault !== undefined) {
 		e.preventDefault();
@@ -704,6 +716,44 @@ function syncPresence () {
 }
 
 function galleryPickerClick(e) {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+
+	var imageUrl = e.dataItem.imageUrl;
+
+	APP.models.gallery.currentPhoto.callBack(imageUrl);
+}
+
+function modalGalleryZoomIn (e)  {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();	
+	}
+
+	$("#galleryPicker-listview li").css("width","50%");
+	$("#galleryPicker-listview li").css("padding-bottom","50%");
+	//$("#galleryPicker-listview").data("kendoMobileListView").refresh();
+
+}
+
+function modalGalleryZoomOut (e)  {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+
+	$("#galleryPicker-listview li").css("width","25%");
+	$("#galleryPicker-listview li").css("padding-bottom","25%");
+	//$("#galleryPicker-listview").data("kendoMobileListView").refresh();
+
+}
+
+function modalGallerySortAsc (e)  {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+}
+
+function modalGallerySortDesc (e)  {
 	if (e !== undefined && e.preventDefault !== undefined) {
 		e.preventDefault();
 	}

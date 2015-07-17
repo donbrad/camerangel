@@ -153,9 +153,9 @@
 		
         <ul data-role="listview" data-style="inset" id="channel-addChannel-list">
             <li>         	
-                <input type="text" class="clearable" id="channels-addChannel-name" placeholder="What's the topic?" value="" required />
+                <input type="search" id="channels-addChannel-name" placeholder="What's the topic?" value="" required />
                 
-                <input type="text" class="clearable" style="display: none" id="channels-addChannel-description" value="" placeholder="Description"/>
+                <input type="search" style="display: none" id="channels-addChannel-description" value="" placeholder="Description"/>
                 <a class="btnClear-grey" data-role="button" data-click="showChatDescription" id="addChatDescription">Add description</a>
             </li>
               <li class="hidden">
@@ -196,8 +196,8 @@
 
 	<div>
 		 <form>
-			<input type="text" id="channels-editChannel-name" data-bind="value: name"  />
-			<input type="text" class="clearable" id="channels-editChannel-description" data-bind="value: description" placeholder="Add optional description"/>
+			<input type="search" id="channels-editChannel-name" data-bind="value: name"  />
+			<input type="search" id="channels-editChannel-description" data-bind="value: description" placeholder="Add optional description"/>
 			
 		</form> 
 		<div>
@@ -243,7 +243,7 @@
 	 <div data-role="footer" style="display: block; background: #fff; padding-left: 2px;"  id="messageEditor" style="min-height: 48px; max-height: 60%;">
 		 <div id="chatImagePreview" style="margin: 8px; ">
 			 <form id="chatImageForm" style="display:none;">
-				  <input id="chatImageInput" />
+				  <input type="search" id="chatImageInput" />
 			 </form>
 			<img id="chatImage" src="" style="max-width: 100%; max-height: 100%; text-align: center; vertical-align: middle;" />
 		 </div>
