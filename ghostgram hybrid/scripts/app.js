@@ -52,7 +52,7 @@
               emaiVerified: false,
               phoneVerified: false,
 			  isVerified: false,
-			  currentPlace: ''
+			         currentPlaceUUID: ''
           })
          
         },
@@ -167,21 +167,20 @@
           
         places: {
             title: 'Places',
-            placesDS: new kendo.data.DataSource({offlineStorage: "places-offline"}, {group: 'category'}),
-            placeListDS:  new kendo.data.DataSource({group: 'category'}),
-			geoPlacesDS: new kendo.data.DataSource({group: 'category'}),
-			currentPlace: new kendo.data.ObservableObject({
-				placeId: '',
-				name: '',
-				address: '',
-				googleId: '',
-				factualId: '',
-				lat: 0,
-				lng: 0,
-				publicName: '',
-				alias: ''
-			}),
-			checkedInPlace: undefined
+            places: parseKendoDataSourceFactory.make('places', {
+                category: 'Place',
+                placeId: '',
+                name: '',
+                address: '',
+                googleId: '',
+                factualId: '',
+                lat: 0,
+                lng: 0,
+                publicName: '',
+                alias: '',
+                visible: true
+              }
+            )
         }
       },
        kendo: null,
@@ -344,6 +343,8 @@
         },
         
         fetchParseData : function () {
+            APP.models.places.places.fetch();
+
             var ChannelModel = Parse.Object.extend("channels");
             var ChannelCollection = Parse.Collection.extend({
               model: ChannelModel
@@ -414,29 +415,6 @@
 						 APP.setAppState('hasPhotos', true);
 					 }  
                      APP.models.gallery.photosDS.data(models);
-                  },
-                  error: function(collection, error) {
-                      handleParseError(error);
-                  }
-                });
-            
-            var PlacesModel = Parse.Object.extend("places");
-            var PlacesCollection = Parse.Collection.extend({
-              model: PlacesModel
-            });
-            
-            var places = new PlacesCollection();
-            
-            places.fetch({
-                  success: function(collection) {
-                     var models = new Array();
-                     for (var i=0; i<collection.models.length; i++) {
-                         models.push(collection.models[i].attributes);
-                     }
-                     if (models.length > 0) {
-						 APP.setAppState('hasPlaces', true);
-					 }
-                     APP.models.places.placesDS.data(models);
                   },
                   error: function(collection, error) {
                       handleParseError(error);

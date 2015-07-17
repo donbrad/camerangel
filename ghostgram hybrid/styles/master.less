@@ -974,7 +974,7 @@ div.km-header a img{
     color: #212121;
     font-size: 12px;
 }
-.km-root .km-pane .km-view.appearance .km-listview input {
+.km-root .km-pane .km-view.appearance .km-listview input:not([type='checkbox']) {
     position: relative;
     font-size: 14px;
     width: 100%;
@@ -1757,6 +1757,8 @@ div.loginBox > form > div > ul > li {
 
 #current-place {
     display: none;
+    margin: 0 1.6rem;
+    border-bottom: 1px solid @grey200;
 
     h1 {
         padding: 0;
@@ -1847,6 +1849,13 @@ div.loginBox > form > div > ul > li {
 
 #places-checkIn > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.confirmPlaceAddress > p:nth-child(1) > span > span > img {
 	vertical-align: sub;
+}
+
+#close-nearby-results {
+    float: right;
+
+    padding: 0;
+    margin: 0 1.8rem 0 0;
 }
 
 /* Contact List styles */

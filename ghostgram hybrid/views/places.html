@@ -15,7 +15,7 @@
          </div>
 
          <div id="current-place">
-            <h1>Checked in to:</h1>
+            <h1>Checked-in to:</h1>
             <div></div>
          </div>
 
@@ -29,11 +29,23 @@
     </div>
 
      <ul data-role="actionsheet" id="placesActions" data-popup='{"direction": "left"}'>
-         <li id="do-check-in-place"><a data-action="doCheckInPlace">Check In</a></li>
+         <li id="go-to-chat"><a data-action="goToChat">Go To Chat</a></li>
          <li><a data-action="doEditPlace">Edit Place</a></li>
          <li><a data-action="doDeletePlace">Delete Place</a></li>
      </ul>
  </div>
+
+<!-- Nearby Results -->
+<div data-role="modalview" data-tile="Nearby Results" id="nearby-results" data-layout="main" style="height:90%; width:90%;">
+    <div data-role="header">
+        <div data-role="navbar">
+            <span>Nearby Results</span>
+            <a id="close-nearby-results" data-role="button" data-click="closeNearbyResults"><i class="fa fa-close"></i></a>
+        </div>
+    </div>
+
+    <ul id="nearby-results-list"></ul>
+</div>
 
 <!-- Locate Modal-->
 <div data-role="modalview" style="width: 50%; display: none;" data-title="Locating" id="modalview-places-locate" data-layout="main" data-init="onShowFindPlace" data-model="APP.models.places">
@@ -201,21 +213,13 @@
                  </label>
              </li>
              <li>
-                 <label> Enable Privacy Mode (Screen is blurred)
-                     <select id="editPlacePrivacy" data-bind="value: privacy">
-                         <option value=true>Yes - It's a public place</option>
-                         <option value=false>No - I have privacy here</option>
-                     </select>
-                 </label>
+                 <label> Enable Privacy Mode (Screen is blurred) </label>
+                 <input type="checkbox" data-bind"checked: privacy" />
              </li>
 
              <li>
-                 <label> Visible Here (Visible to others...)
-                     <select id="editPlaceVisible" data-bind="value: visible">
-                         <option value=true>Yes - Let people know I'm here</option>
-                         <option value=false>No - Keep me hidden</option>
-                     </select>
-                 </label>
+                 <label> Visible Here (Visible to others...) </label>
+                 <input type="checkbox" data-bind"checked: visible" />
              </li>
 
          </ul>
@@ -233,16 +237,16 @@
 	         <p>#: data.address # </p>
 	         <p class="helper">
 			   <span class="left">
-			 # if (visible === 'true') { # 
-			 	<img src="images/place-public.svg" /> Public # } 
-			 else { # 
-			 	<img src="images/place-private.svg" /> Secret # }#
+			 # if (visible === true) { # 
+			 	<img src="images/place-public.svg" /> Public
+			 # } else { # 
+			 	<img src="images/place-private.svg" /> Secret
+             # }#
 			   </span>
 	         </p>
 	         <div class="clearfix"> </div>
          # } else { #
-            <div class="ghostText">#: data.name # </div>
-            #: console.log(data) #
+            <div class="ghostText">#: data.address # </div>
          # } #
      </div>
  </script>

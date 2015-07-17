@@ -1,8 +1,54 @@
-
 function onInitPlaces(e) {
 	e.preventDefault();
 
-	APP.models.places.placeListDS.data(APP.models.places.placesDS.data());
+	navigator.geolocation.getCurrentPosition( function (position) {
+		var geocoder = new google.maps.Geocoder();
+		var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+		geocoder.geocode({ 'latLng': latlng }, function (results, status) {
+			if (status !== google.maps.GeocoderStatus.OK) {
+				navigator.notification.alert('Something went wrong with the Google geocoding service.');
+				return;
+			}
+			if (results.length === 0) {
+				navigator.notification.alert('We couldn\'t locate you.');
+				return;
+			}
+
+			var locations = matchLocationToUserPlace(position.coords.latitude, position.coords.longitude);
+			if (locations.length === 0) {
+				return;
+			}
+
+			checkInTo(locations[0]);
+		});
+	});
+
+	$('#nearby-results-list').kendoMobileListView({
+		template: $("#placesTemplate").html(),
+		click: function (e) {
+
+			APP.models.places.places.filter({
+				field: 'googleId',
+				operator: 'eq',
+				value: e.dataItem.googleId
+			});
+
+			// If matches current place, check in to that
+			var view = APP.models.places.places.view();
+			if (view.length > 1) {
+				checkInTo(view[0]);
+				return;
+			}
+
+			// Otherwise, add place, sync
+			e.dataItem.uuid = uuid.v4();
+			var newPlace = APP.models.places.places.add(e.dataItem);
+			APP.models.places.places.sync();
+			checkInTo(e.dataItem);
+
+			$('#nearby-results').data('kendoMobileModalView').close();
+		}
+	});
 
 	// Activate clearsearch and zero the filter when it's called
 	$('#placeSearchQuery').clearSearch({
@@ -38,11 +84,34 @@ function onInitPlaces(e) {
 	});
 
 	$("#places-listview").kendoMobileListView({
-		dataSource: APP.models.places.placeListDS,
+		dataSource: APP.models.places.places,
 		fixedHeaders: true,
 		template: $("#placesTemplate").html(),
 		click: function(e) {
 			var place = e.dataItem;
+			place.bind('change', function () {
+				// Returning out of these because changing privacy/visible triggers another change
+				// There's probably a more elegant way to do this, but f it
+				if (place.privacy === 'true') {
+					place.privacy = true;
+					return;
+				} else {
+					place.privacy = false;
+					return;
+				}
+
+				if (place.visible === 'true') {
+					place.visible = true;
+					return;
+				} else {
+					place.visible = false;
+					return;
+				}
+
+				console.log('heyy');
+
+				APP.models.places.places.sync();
+			});
 			APP.models.places.currentPlace = place;
 			$("#placesActions").data("kendoMobileActionSheet").open();
 		}
@@ -51,13 +120,34 @@ function onInitPlaces(e) {
 	$('#current-place > div').click( function () {
 		var placesActions = $('#placesActions').data('kendoMobileActionSheet');
 
-		$('#do-check-in-place').hide();
-
-		placesActions.one('close', function () {
-			$('#do-check-in-place').show();
-		});
 		placesActions.open();
 	});
+}
+
+function resetPlacesFilter() {
+	if (APP.models.profile.currentUser.currentPlaceUUID === undefined) {
+		APP.models.places.places.filter({});
+		return;
+	}
+
+	APP.models.places.places.filter({
+		field: 'uuid',
+		operator: 'neq',
+		value: APP.models.profile.currentUser.currentPlaceUUID
+	});
+}
+
+function checkInTo(place) {
+	APP.models.profile.currentUser.currentPlaceUUID = place.uuid;
+
+	var templateText = $('#placesTemplate').text();
+	var template = kendo.template(templateText);
+
+	$('#current-place').show();
+	$('#current-place > div').html(template(place));
+
+	// Then filter out currently-checked-in-place
+	resetPlacesFilter();
 }
 
 function doEditPlace (e) {
@@ -71,26 +161,15 @@ function doDeletePlace (e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
 
-	deleteParseObject("places", 'uuid', APP.models.places.currentPlace.uuid);
-	APP.models.places.placesDS.remove(APP.models.places.currentPlace);
+	//APP.models.places.places.remove();
 }
 
-function doCheckInPlace (e) {
+function goToChat (e) {
 	if (e.preventDefault !== undefined) {
 		e.preventDefault();
 	}
 
-	var templateText = $('#placesTemplate').text();
-	var template = kendo.template(templateText);
-
-	$('#current-place').show();
-	$('#current-place > div').html(template(APP.models.places.currentPlace));
-
-	if (APP.models.places.checkedInPlace !== undefined) {
-		APP.models.places.placeListDS.add(APP.models.places.checkedInPlace);
-	}
-	APP.models.places.placeListDS.remove(APP.models.places.currentPlace);
-	APP.models.places.checkedInPlace = APP.models.places.currentPlace;
+	// Something
 
 }
 
@@ -167,117 +246,106 @@ function onLocateMe(e) {
 		e.preventDefault();
 	}
 
+	navigator.geolocation.getCurrentPosition( function (position) {
+		var geocoder = new google.maps.Geocoder();
+		var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
-	var latlng = new google.maps.LatLng(APP.location.position.lat, APP.location.position.lng);
-	APP.models.places.geoPlacesDS.data([]);
-	var locationsArray = [], placesArray = [];
+		var places = new google.maps.places.PlacesService(APP.map.googleMap);
 
-	var thisLocation = '';
-
-	// Is current location an existing user location?
-	locationsArray = matchLocationToUserPlace(APP.location.position.lat, APP.location.position.lng);
-	if (locationsArray.length !== 0) {
-		thisLocation = locationsArray[0];
-		updateCurrentLocation(thisLocation);
-
-		return;
-	}
-
-	var loc;
-
-	// Reverse Geocode first to ensure we have a valid address
-	APP.map.geocoder.geocode({'latLng': latlng}, function(results, status) {
-		if (status !== google.maps.GeocoderStatus.OK) {
-			mobileNotify('Geocoder failed with: ' + status);
+		var locations = matchLocationToUserPlace(position.coords.latitude, position.coords.longitude);
+		if (locations.length !== 0) {
+			checkInTo(locations[0]);
 			return;
 		}
 
-		if (results.length === 0) {
-			mobileNotify('No results found for location');
-			return;
-		}
+		places.nearbySearch({
+			location: latlng,
+			radius: 10,
+			types: ['establishment']
+		}, function (placesResults, placesStatus) {
+			if (placesStatus === google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
+				geocoder.geocode({ 'latLng': latlng }, function (geoResults, geoStatus) {
+					if (geoStatus !== google.maps.GeocoderStatus.OK) {
+						navigator.notification.alert('Something went wrong with the Google geocoding service.');
+						return;
+					}
+					if (geoResults.length === 0 || geoResults[0].types[0] !== 'street_address') {
+						navigator.notification.alert('We couldn\'t match your position to a street address.');
+						return;
+					}
 
-		var number = '', street = '', city='', state = '', zip = '';
-		loc = {
-			category: 'Location',
-			googleId: results[0].place_id,
-			name: 'Address',
-			lat: results[0].geometry.location.A,
-			lng: results[1].geometry.location.F
-		};
+					navigator.notification.confirm(
+						'Do you want to check into street address '+geoResults[0].formatted_address+'?',
+						function () {
+							var newPlace = APP.models.places.places.add({
+								uuid: uuid.v4(),
+								category: 'Street Address',
+								placeId: '',
+								name: '',
+								address: geoResults[0].formatted_address,
+								googleId: '',
+								factualId: '',
+								lat: position.coords.latitude,
+								lng: position.coords.longitude,
+								publicName: '',
+								alias: '',
+								visible: true,
+								privacy: true
+							});
 
-		for (var i=0; i < results[0].address_components.length; i++) {
-			if (results[0].address_components[i].types.length === 0) {
-				break;
-			}
+							APP.models.places.places.sync();
 
-			switch (results[0].address_components[i].types[0]) {
-				case "street_number" :
-					number = results[0].address_components[i].long_name + " ";
-					break;
-
-				case "route" :
-					street = results[0].address_components[i].long_name + ", ";
-					break;
-
-				case "locality" :
-					city = results[0].address_components[i].long_name + ", ";
-					break;
-
-				case "administrative_area_level_1" :
-					state = results[0].address_components[i].short_name;
-					break;
-
-				case "postal_code" :
-					zip = "  " + results[0].address_components[i].long_name;
-					break;
-
-
-			}
-		}
-
-		loc.address = number + street + city + state + zip;
-		APP.models.places.geoPlacesDS.add(loc);
-
-		// add this results to the locationsDS
-		locationsArray = results;
-		placesGPSSearch(function (results, status) {
-			if (status !== null || results === null) {
-				return;
-			}
-			if (results.length === 0) {
-				mobileNotify('No results found for locaiton');
-				return;
-			}
-
-			for (var j=0; j<results.length; j++) {
-				if (results[j].types[results[j].types.length-1] !== 'establishment') {
-					return;
-				}
-
-				var place = APP.models.places.geoPlacesDS.add({
-					category: 'Place',
-					googleId: results[j].place_id,
-					name: results[j].name,
-					address: results[j].vicinity,
-					lat: results[j].geometry.location.A,
-					lng: results[j].geometry.location.F,
-					privacy: 'false',
-					visible: 'false'
+							checkInTo(newPlace);
+						}
+					)
+					
 				});
 
-				APP.models.places.placeListDS.add(place);
+				return;
+			} else if (placesStatus !== google.maps.places.PlacesServiceStatus.OK) {
+				navigator.notification.alert('Something went wrong with the Google Places service. '+placesStatus);
+				return;
 			}
+
+			var nearbyResults = new kendo.data.DataSource();
+
+			placesResults.forEach( function (placeResult) {
+				nearbyResults.add({
+					category: 'Place',
+					placeId: placeResult.place_id,
+					name: placeResult.name,
+					address: placeResult.vicinity,
+					googleId: placeResult.id,
+					factualId: '',
+					lat: placeResult.geometry.location.A,
+					lng: placeResult.geometry.location.F,
+					publicName: placeResult.name,
+					alias: '',
+					visible: true,
+					privacy: true
+				});
+			});
+
+			$('#nearby-results').data('kendoMobileModalView').open();
+			$('#nearby-results-list').data('kendoMobileListView').setDataSource(nearbyResults);
+
+			// Show modal letting user select current place
+
 		});
 	});
-
 }
-function matchLocationToUserPlace  (lat, lng) {
-	var array = APP.models.places.placesDS.data(), matchArray = [];
 
-	for (var i=0; i< array.length; i++){
-		if (inPlaceRadius(lat, lng, array[i].lat,array[i].lng, 50)){
-			matchArray.push(array[i]);
+function closeNearbyResults() {
+	$('#nearby-results').data('kendoMobileModalView').close();
+}
+
+function matchLocationToUserPlace  (lat, lng) {
+	var placesData = APP.models.places.places.data();
+
+	var matchArray = [];
+	for (var i=0; i< placesData.length; i++){
+		if (inPlaceRadius(lat, lng, placesData[i].lat,placesData[i].lng, 50)){
+			matchArray.push(placesData[i]);
 		}
 	}
 
