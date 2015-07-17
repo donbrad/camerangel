@@ -344,7 +344,7 @@
 </div>
 
 
-<div data-role="view" data-title="ghost Email" id="ghostEmail" data-layout="main" data-init="onInitGhostEmail" data-show="onShowGhostEmail">
+<div data-role="view" data-title="ghost Email" id="ghostEmail" data-layout="main" data-init="onInitGhostEmail" data-show="onShowGhostEmail" class="appearance">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
@@ -356,24 +356,25 @@
 	<div id="ghostEmailwrapper" style="width: 100%; height:100%;">
 		<div id="ghostEmailToolbar">
 			<select title="Size" class="ql-size">
+				<option value="8px">Smaller</option>
 				<option value="10px">Small</option>
 				<option value="13px" selected>Normal</option>
 				<option value="18px">Big</option>
 				<option value="24px">Bigger</option>
 			</select>
 			<select title="Text Alignment" class="ql-align">
-				<option value="left" selected>Left</option>
-				<option value="center">Center</option>
-				<option value="right">Right</option>
-				<option value="justify">Justify</option>
+				<option value="left" selected><i class="ghostIconNavbar fa fa-align-left"></i></option>
+				<option value="center"><i class="ghostIconNavbar fa fa-align-center"></i></option>
+				<option value="right"><i class="ghostIconNavbar fa fa-align-right"></i></option>
+				<option value="justify"><i class="ghostIconNavbar fa fa-align-justify"></i></option>
 			</select>
-			<button title="Bold" class="ql-format-button ql-bold">Bold</button>
-			<button title="Italic" class="ql-format-button ql-italic">Italic</button>
-			<button title="Underline" class="ql-format-button ql-underline">Under</button>
-			<button title="Bullet" class="ql-format-button ql-bullet">Bullet</button>
-			<button title="List" class="ql-format-button ql-list">List</button>
+			<button title="Bold" class="ql-format-button ql-bold"><i class="ghostIconNavbar fa fa-bold"></i></button>
+			<button title="Italic" class="ql-format-button ql-italic"><i class="ghostIconNavbar fa fa-italic"></i></button>
+			<button title="Underline" class="ql-format-button ql-underline"><i class="ghostIconNavbar fa fa-underline"></i></button>
+			<button title="Bullet" class="ql-format-button ql-bullet"><i class="ghostIconNavbar fa fa-list-ul"></i></button>
+			<button title="List" class="ql-format-button ql-list"><i class="ghostIconNavbar fa fa-list-ol"></button>
 		</div>
-		<div id="ghostEmailEditor" style="width:100%; height:100%; border: 1px solid #2e2e2e; margin: 6px; color: #111111;"></div>
+		<div id="ghostEmailEditor" style="width:95%; min-height:60%; border: 1px solid #2e2e2e; margin: 6px; color: #111111;"></div>
 	</div>
 
 
