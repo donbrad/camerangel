@@ -27,6 +27,32 @@ function inviteUser(e) {
 	
 }
 
+function sendSecureEmail () {
+    var email = APP.models.contacts.currentContact.get('email');
+
+    if (window.navigator.simulator === true){
+        alert("Mail isn't supported in the emulator");
+    } else {
+        var thisUser = APP.models.profile.currentUser.get('name');
+        cordova.plugins.email.open({
+            to:          [email],
+            subject:     '',
+            body:        '</br></br></br></br><em>Via ghostgrams</em>',
+            isHtml:      true
+        }, function (msg) {
+            //navigator.notification.alert(JSON.stringify(msg), null, 'EmailComposer callback', 'Close');
+        });
+    }
+}
+
+function secureEmail(e) {
+    if (e !== undefined)
+        e.preventDefault();
+
+    var email = APP.models.contacts.currentContact.get('email');
+
+}
+
 function privateChat(e) {
     if (e !== undefined)
         e.preventDefault();
