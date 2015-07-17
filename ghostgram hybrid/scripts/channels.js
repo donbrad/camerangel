@@ -197,6 +197,7 @@ function gotoChannel(channelId) {
 
 function onInitChannels (e) {
     e.preventDefault();
+    
     // ToDo: Initialize list view
 	
      $("#channels-listview").kendoMobileListView({
