@@ -713,10 +713,9 @@ function galleryPickerClick(e) {
 		e.preventDefault();
 	}
 
-	var image = e.item;
-	var url = APP.models.gallery.currentPhoto.targetUrl;
+	var imageUrl = e.dataItem.imageUrl;
 
-	APP.models.gallery.currentPhoto.callBack(e.item.photoUrl);
+	APP.models.gallery.currentPhoto.callBack(imageUrl);
 }
 
 function closeStartModal() {
