@@ -716,7 +716,7 @@ function galleryPickerClick(e) {
 	var image = e.item;
 	var url = APP.models.gallery.currentPhoto.targetUrl;
 
-	APP.models.gallery.currentPhoto.callback(e.item.photoUrl);
+	APP.models.gallery.currentPhoto.callBack(e.item.photoUrl);
 }
 
 function closeStartModal() {
