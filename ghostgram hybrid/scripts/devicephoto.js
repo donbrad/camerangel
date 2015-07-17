@@ -1,0 +1,259 @@
+/**
+ * Created by donbrad on 7/15/15.
+ * devicephoto.js
+ * device specific photo interface for camera and gallery
+ */
+
+
+function deviceCamera(resolution, quality, isChat, displayCallback) {
+    if (resolution === undefined) {
+        resolution = 1600;  // default resolution for ghostgrams
+    }
+    if (quality === undefined) {
+        quality = 75;      // default quality for ghostgrams
+    }
+    if (isChat === undefined) {
+        isChat = false;
+    }
+    var pictureSource = navigator.camera.PictureSourceType;   // picture source
+    var destinationType = navigator.camera.DestinationType; // sets the format of returned value
+    navigator.camera.getPicture(
+        function (imageData) {
+            var photouuid = uuid.v4();
+            var imageUrl = imageData;
+            if (device.platform === 'iOS') {
+                imageUrl = imageData.replace('file://', '');
+            }
+            // convert uuid into valid file name;
+            var filename = photouuid.replace(/-/g,'');
+
+            APP.models.gallery.currentPhoto.photoId = photouuid;
+            APP.models.gallery.currentPhoto.filename = filename;
+            APP.models.gallery.currentPhoto.imageUrl = imageUrl;
+
+            if (displayCallback !== undefined) {
+                displayCallback(imageData);
+            }
+
+            mobileNotify("Processing photo...");
+
+            if (isChat) {
+                window.imageResizer.resizeImage(resizeSuccessChat, resizeFailure,  imageUrl, 0, resolution, {
+                    storeImage: false, pixelDensity: true, quality: quality });
+            } else {
+                window.imageResizer.resizeImage(resizeSuccessProfile, resizeFailure,  imageUrl, 0, resolution, {
+                    storeImage: false, pixelDensity: true, quality: quality });
+            }
+
+        },
+        function (error) {
+            mobileNotify("Device Camera error " + error);
+        }, {
+            correctOrientation: true,
+            targetWidth: resolution,
+            destinationType: destinationType.FILE_URL
+        }
+    );
+}
+
+
+function deviceGallery(resolution, quality, isChat, displayCallback) {
+    if (resolution === undefined) {
+        resolution = 1600;  // default resolution for ghostgrams
+    }
+    if (quality === undefined) {
+        quality = 75;      // default quality for ghostgrams
+    }
+    if (isChat === undefined) {
+        isChat = false;
+    }
+
+    var pictureSource = navigator.camera.PictureSourceType;   // picture source
+    var destinationType = navigator.camera.DestinationType; // sets the format of returned value
+    // Android storage is seriously different -- multiple photo directories with different permissions.
+    // So need to get a data url in our space rather an direct link to the image in current storage
+    var options = {
+        sourceType: pictureSource.SAVEDPHOTOALBUM,
+        destinationType: destinationType.DATA_URL
+    };
+
+    if (device.platform === 'iOS') {
+        options = {
+            sourceType: pictureSource.SAVEDPHOTOALBUM,
+            destinationType: destinationType.FILE_URL
+        }
+    }
+
+    navigator.camera.getPicture(
+        function (imageData) {
+            var photouuid = uuid.v4();
+            var imageUrl = imageData;
+            var displayUrl = imageData;
+
+            if (device.platform === 'iOS') {
+                imageUrl = imageData.replace('file://', '');
+
+            }	else {
+                displayUrl = "data:image/jpg;base64," + imageData;
+            }
+            // convert uuid into valid file name;
+            var filename = photouuid.replace(/-/g,'');
+
+            APP.models.gallery.currentPhoto.photoId = photouuid;
+            APP.models.gallery.currentPhoto.filename = filename;
+            APP.models.gallery.currentPhoto.imageUrl = imageUrl;
+
+            if (displayCallback !== undefined) {
+                displayCallback(displayUrl);
+            }
+
+            mobileNotify("Processing photo...");
+            //resize image to 1200 pixels high
+            /*		   window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1200, {
+             quality: 75, storeImage: 1, photoAlbum: 0, filename: "photo_"+filename+'.jpg' }); */
+
+            if (device.platform === 'iOS') {
+                if (isChat) {
+                    window.imageResizer.resizeImage(resizeSuccessChat, resizeFailure,  imageUrl, 0, resolution, {
+                        storeImage: false, pixelDensity: true, quality: quality });
+                } else {
+                    window.imageResizer.resizeImage(resizeSuccessProfile, resizeFailure,  imageUrl, 0, resolution, {
+                        storeImage: false, pixelDensity: true, quality: quality });
+                }
+
+            } else {
+                if (isChat) {
+                    window.imageResizer.resizeImage(resizeSuccessAndroidChat, resizeFailure, imageUrl, 0, resolution, {
+                        imageDataType: ImageResizer.IMAGE_DATA_TYPE_BASE64,
+                        storeImage: false,
+                        pixelDensity: true,
+                        quality: quality
+                    });
+                } else {
+                    window.imageResizer.resizeImage(resizeSuccessProfile, resizeFailure, imageUrl, 0, resolution, {
+                        imageDataType: ImageResizer.IMAGE_DATA_TYPE_BASE64,
+                        storeImage: false,
+                        pixelDensity: true,
+                        quality: quality
+                    });
+                }
+            }
+        },
+        function (error) {
+            mobileNotify("Phone Gallery error " + error);
+        }, options
+    );
+
+}
+
+// Universal success function for profile images -- just resizes the image and
+function resizeSuccessProfile (data) {
+    var imageData = data.imageData, displayUrl = imageData;
+
+    if (device.platform === 'iOS') {
+        imageUrl = imageData.replace('file://', '');
+
+    } else {
+        displayUrl = "data:image/jpg;base64," + imageData;
+    }
+    //var scaledImageUrl = "data:image/jpg;base64," + imageData;
+    $('#photoEditImage').attr('src', displayUrl);
+
+
+}
+
+// IOS success function for chat photos -- calls resize again to generate thumbnails
+function resizeSuccessChat (data) {
+
+    var filename = "thumb_"+APP.models.gallery.currentPhoto.filename+'.jpg';
+    APP.models.gallery.currentPhoto.photoUrl = data.imageData;
+
+    // Have the photo scaled, now generate the thumbnail from it
+    /*	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 140, 0, {
+     quality: 50, storeImage: 1, photoAlbum: 0, filename: filename });		*/
+
+    window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 256, 0, {
+        storeImage: false, pixelDensity: true, quality: 75 });
+}
+
+// Android success function for chat photos -- calls resize again to generate thumbnails
+function resizeSuccessAndroidChat (data) {
+
+    var filename = "thumb_"+APP.models.gallery.currentPhoto.filename+'.jpg';
+    APP.models.gallery.currentPhoto.photoUrl = data.imageData;
+
+    // Have the photo scaled, now generate the thumbnail from it
+    /*	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 140, 0, {
+     quality: 50, storeImage: 1, photoAlbum: 0, filename: filename });		*/
+
+    window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 256, 0, {
+        imageDataType: ImageResizer.IMAGE_DATA_TYPE_BASE64, storeImage: false, pixelDensity: true, quality: 75 });
+}
+
+function resizeFailure (error) {
+
+    mobileNotify("Image Resizer :" + error);
+
+}
+
+function resizeSuccessThumb (data) {
+
+    var imageUrl = APP.tempDirectory+data.filename;
+
+
+    // Todo: add additional processing to create ParsePhoto and photoOffer
+    var Photos = Parse.Object.extend("photos");
+    var photo = new Photos();
+
+    photo.setACL(APP.models.profile.parseACL);
+    photo.set('photoId', APP.models.gallery.currentPhoto.photoId);
+    photo.set('channelId', APP.models.channel.currentModel.channelId);
+    var timeStamp = new Date().getTime();
+    photo.set("timestamp", timeStamp);
+    photo.set('geoPoint', new Parse.GeoPoint(APP.location.position.lat, APP.location.position.lng));
+
+
+    var parseFile = new Parse.File("thumbnail_"+APP.models.gallery.currentPhoto.filename + ".jpeg",{'base64': data.imageData}, "image/jpg");
+    parseFile.save().then(function() {
+        photo.set("thumbnail", parseFile);
+        photo.set("thumbnailUrl", parseFile._url);
+        APP.models.gallery.currentPhoto.thumbnailUrl = parseFile._url;
+        photo.save(null, {
+            success: function(photo) {
+                // Execute any logic that should take place after the object is saved.
+                APP.models.gallery.parsePhoto = photo;
+
+            },
+            error: function(contact, error) {
+                // Execute any logic that should take place if the save fails.
+                // error is a Parse.Error with an error code and message.
+                handleParseError(error);
+            }
+        });
+    });
+
+
+
+    var parseFile2 = new Parse.File("photo_"+APP.models.gallery.currentPhoto.filename + ".jpeg",{'base64': APP.models.gallery.currentPhoto.photoUrl},"image/jpg");
+    parseFile2.save().then(function() {
+        photo.set("image", parseFile2);
+        photo.set("imageUrl", parseFile2._url);
+        APP.models.gallery.currentPhoto.photoUrl = parseFile2._url;
+        photo.save(null, {
+            success: function(photo) {
+                // Execute any logic that should take place after the object is saved.
+                mobileNotify('Photo added to ghostgrams gallery');
+                APP.models.gallery.photosDS.add(photo.attributes);
+                APP.models.gallery.parsePhoto = photo;
+                APP.models.channel.currentMessage.photo = {thumb: photo.get('thumbnailUrl'), photo: photo.get('imageUrl')};
+
+            },
+            error: function(contact, error) {
+                // Execute any logic that should take place if the save fails.
+                // error is a Parse.Error with an error code and message.
+                handleParseError(error);
+            }
+        });
+    });
+
+}

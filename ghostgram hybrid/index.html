@@ -16,7 +16,7 @@
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-XdXhoF08ubebxTjTh9jf0Ra4xFV1Jwo&sensor=true&libraries=places">
     </script>
 	<script src="scripts/parse.js"></script>
-    <script src="https://cdn.pubnub.com/pubnub-3.7.11.js"></script>
+    <script src="https://cdn.pubnub.com/pubnub-3.7.12.js"></script>
     <script src="scripts/parseKendoDataSourceFactory.js"></script>
     <script src="scripts/appData.js"></script>
     <script src="scripts/app.js"></script>
@@ -26,17 +26,22 @@
 	<script src="scripts/home.js"></script>
 	<script src="scripts/channels.js"></script>
 	<script src="scripts/channel.js"></script>
+    <script src="scripts/devicephoto.js"></script>
 	<script src="scripts/privateChannel.js"></script>
 	<script src="scripts/contacts.js"></script>
 	<script src="scripts/places.js"></script>
+    <script src="scripts/profile.js"></script>
 	<script src="scripts/gallery.js"></script>
 	<script src="scripts/utils.js"></script>
 	<script src="scripts/pubnub.js"></script>
 	<script src="scripts/cryptico.js"></script>
 	<script src="scripts/secureChannel.js"></script>
+    <script src="scripts/smartcrop.js"></script>
 	<script src="scripts/groupChannel.js"></script>
 	<script src="scripts/ux.js"></script>
 	<script src="scripts/lunr.js"></script>
+    <script src="scripts/jq.wraptions.js"></script>
+    <script src="scripts/jquery.email-autocomplete.js"></script>
 	<script src='bower_components/autosize/dest/autosize.js'></script>
 	<script src='bower_components/isotope/dist/isotope.pkgd.js'></script>
 	<script src='bower_components/isotope/dist/packery.js'></script>
@@ -91,13 +96,13 @@
 </div>
    
   <!-- application drawer and contents -->
-<div data-role="drawer" id="appDrawer" style="width: 200px; height: 100%;" data-title="Main Menu" data-swipe-to-open="false" data-model="APP.models.presence.current" style="display:none;">
+<div data-role="drawer" id="appDrawer" style="width: 200px; height: 100%;" data-title="Main Menu" data-swipe-to-open="false" data-show="onShowMainMenuDrawer" data-model="APP.models.presence.current" style="display:none;">
     <!-- Menu -->
 <div class="menuBox">
     <div class="profileTop">
         <div class="profileImg" >
             <!-- User photo -->
-            <img id="profilePhoto" class="myPublicImg" src="images/ghostgramcontact.png" />
+            <a data-role="button" data-rel="modalview" href="#modalview-profilePhotoEdit"><img id="profilePhoto" class="myPublicImg"  /></a>
         </div>
         <div> 
 			<div id="profileName">John Smith</div>
@@ -209,7 +214,7 @@
             Hello,
         </h1>
         <p>
-            Welecome to ghostgrams!
+            Welcome to ghostgrams!
         </p>
     </div>
     <div class="clearfix"></div>
@@ -221,7 +226,7 @@
         	<ul data-role="listview" data-style="inset">
                 <li>
                     <label for="home-signin-username">Email Address</label>
-                        <input type="email" id="home-signin-username" value=""  name="Email" required />
+                        <input type="email" id="home-signin-username" name="Email" default="Enter your email..." required />
                 </li>
                 <li>
                     <label>Password</label>
@@ -302,36 +307,6 @@
 	    </div>
    	</div>
 </div>
-	
-<div data-role="modalview" id="modalview-login" style="width: 90%; display: none;" class="appearance"  data-init="doInitSignIn">
-    <div data-role="header">
-        <div data-role="navbar">
-            <span>Sign In</span>
-            
-        </div>
-    </div>
-
-     <form>
-        <ul data-role="listview" data-style="inset">
-            <li>
-                <label>Username
-                    <input type="text" id="home-signin-username" value="" required />
-                </label>
-            </li>
-            <li>
-                <label>Password
-                <input type="password" id="home-signin-password" value="" required />
-                </label>
-            </li>
-        </ul>
-    </form> 
-    <div data-role="footer">
-        <div data-role="navbar">
-            <a data-click="closeModalViewLogin" data-role="button" data-align="left">Cancel</a>
-            <a data-click="homeSignin" id="modalview-login-button" type="button" data-role="button" data-align="right">Sign In</a>
-        </div>
-    </div>
-</div>
     
 <div data-role="view" id="signup" data-title="Sign Up" data-layout="main" style="display: none;" class="appearance" data-init="initSignUp">
    	<div data-role="header">
@@ -359,11 +334,11 @@
             </li>
             <li id="create-user-email">
                 <label for="home-signup-username">Email Address</label>
-                    <input type="email" id="home-signup-username" name="Email" value="" required/>
+                    <input type="email" id="home-signup-username" name="Email" default="Enter your email" required/>
             </li>
 			  <li id="create-user-name">
                 <label for="home-signup-fullname">Full Name</label>
-                    <input type="text" id="home-signup-fullname" value="" name="Name" required/>
+                    <input type="text" id="home-signup-fullname" default="Enter your full name" required/>
             </li>
             <li id="create-user-password">
                 <label for="home-signup-password">Password</label>
@@ -378,15 +353,15 @@
 </div>
 	
 	
-<div data-role="modalview" id="modalview-recoverPassword" style="width: 90%; display:none;" class="appearance">
+<div data-role="modalview" id="modalview-recoverPassword"  style="width: 90%; display:none;" class="appearance">
 	<div class="modalview-content">
-	    <h2>Password reset
+	    <h2>Password Recovery
 	        <a class="closeBox" data-click="closeModalViewRecoverPassword" data-role="button" style="float: right;">
 	            <img src="images/close.svg" />
 	        </a>
 	    </h2>
-	    <label>Email password password to 
-	    	<input type="email" id="home-recoverPassword-email" value="" placeholder="email address"/>
+	    <label>Email password recovery instructions to 
+	    	<input type="email" id="home-recoverPassword-email"  placeholder="Enter recovery email address"/>
 	    </label>
 	    <div class="modalview-button">
 	    	<a class="btnFull btnYellow" data-click="homeRecoverPassword" id="modalview-recoverPassword-button" type="button" data-role="button">Send</a>
@@ -429,7 +404,7 @@
         <div data-role="navbar">
             <a data-align="left" id="photoViewBack" data-role="backbutton">Back</a>
             <span>Photo View</span>
-			<a data-align="right" data-role="button" href="#photoEditor">Edit</a>
+			<a data-align="right" data-role="button" href="#photoEditor?source=gallery">Edit</a>
         </div>
     </div>
 	<div style="margin: 2px; height: 98%; width: auto; text-align: center; background: #27476e;">
@@ -448,51 +423,90 @@
 <div data-role="view" id="photoEditor" style="width: 100%; height:100%; display: none;"  data-show="onShowPhotoEditor"  data-hide="onHidePhotoEditor">
     <div data-role="header">
         <div data-role="navbar">
-            <a data-align="left" id="photoEditorBack" data-role="backbutton">Back</a>
+            <a data-align="left" id="photoEditorBack" data-role="backbutton">Cancel</a>
             <span>Photo Editor</span>
-            <a data-align="right" data-role="button"  data-rel="modalview"  href="#modalview-photo">Tag</a>
         </div>
     </div>
 	
     <div style="text-align: center; padding-top: 4px; padding-bottom: 6px; background: #e2e2e2; ">
-        <a  data-role="button" class="btnBlack" id="photoEditRotateLeft" data-click="photoEditRotateLeft"> <i class="fa fa-rotate-left"></i> Left </a>
-        <a  data-role="button" class="btnBlack"  id="photoEditRotateRight" data-click="photoEditRotateRight"> <i class="fa fa-rotate-right"></i> Right </a>
-        <a  data-role="button" class="btnBlack"  id="photoEditCrop" data-click="photoEditCrop"> <i class=" fa fa-scissors"></i> Crop </a>
+        <a  data-role="button" class="btnBlack"  data-click="photoEditRotateLeft"> <i class="fa fa-rotate-left"></i> Left </a>
+        <a  data-role="button" class="btnBlack"  data-click="photoEditRotateRight"> <i class="fa fa-rotate-right"></i> Right </a>
+        <a  data-role="button" class="btnBlack"  data-click="photoEditCrop"> <i class=" fa fa-scissors"></i> Crop </a>
     </div>
 	
     <div style="margin: 4px; height:60%;">
         <img id="photoEditImage" src="" style="max-height: 100%; max-width: 100%;"/>
     </div>
 
+    <div data-role="footer">
+        <div style="padding-top: 4px; padding-bottom: 6px; background: #e2e2e2; " id="photoEditSaveDiv">
+            <span style="float:left"><a  data-role="button" class="btnBlack" data-rel="modalview"  href="#modalview-photoTag">Tag Photo</a></span>
+            <span style="float:right"><a  data-role="button" class="btnBlack"  data-click="photoEditSave"> Save Photo </a></span>
+        </div>
+    </div>
+
+</div>
+
+<div data-role="modalview" id="modalview-profilePhotoEdit" data-open="doProfilePhotoEdit" data-init="initProfilePhotoEdit" style="width: 100%; height:100%;  display: none;" data-model="APP.models.profile.currentUser" class="appearance">
+    <div data-role="header">
+        <div data-role="navbar">
+            <span>Profile Photo</span>
+                <a data-click="closeModalViewProfilePhotoEdit" data-role="button" data-align="left">Back</a>
+                <a data-click="doUpdateStatusMessage"  type="button" data-role="button" data-align="right">Update</a>
+		</div>
+	</div>
+
+    <div style="text-align: center; padding-top: 6px;" id="profilePhotoImportDiv">
+        <div style="display: inline-block;">
+			<a type="button" data-role="button" data-click="doProfileCamera" class="btnClearLine-grey-sm">Camera</a>
+			<a type="button" data-role="button" data-click="doProfilePhotos" class="btnClearLine-grey-sm">Photos</a>
+			<a type="button" data-role="button" data-rel="modalview" href="#modalview-galleryPicker" class="btnClearLine-grey-sm">Gallery</a>
+		 </div>
+    </div>
+
+	<div style="margin:8px; height: 50%; width: auto; text-align: center">
+		<div class="wraption-wrap">
+			<img id="profilePhotoImage" class="wraption" data-bind="attr: {src: photo}" style="max-height: 100%; max-width:100%; vertical-align: middle;">
+			<span class="wraption-caption"data-bind="html: statusMessage" ></span>
+		</div>
+	</div>
+	
+     <form id="profilePhotoForm">
+        <ul data-role="listview" data-style="inset">
+            <li>
+                <label> Status
+                    <input type="search" id="profilePhotoMessage" data-bind="value: statusMessage" default="Express yourself..." />
+                </label>
+            </li>
+        </ul>
+    </form>
 
 </div>
 
 
-
-<div data-role="modalview" id="modalview-photo" style="width: 100%; height:100%; display: none;"  class="appearance">
+<div data-role="modalview" id="modalview-photoTag" style="width: 100%; height:100%; display: none;"  class="appearance">
     <div data-role="header">
         <div data-role="navbar">
             <span>Tag Photo</span>
-                <a data-click="closeModalViewPhoto" data-role="button" data-align="left">Cancel</a>
+                <a data-click="closeModalViewPhotoTag" data-role="button" data-align="left">Cancel</a>
                 <a data-click="savePhoto"  type="button" data-role="button" data-align="right">Save</a>
 		</div>
 	</div>
-]
 
-	<div style="margin:8px; height: 25%; width: auto; text-align: center">
-		<img id="photoImage" src="" style=" max-height: 100%; vertical-align: middle;">
+	<div style="margin:8px; height: 60%; width: auto; text-align: center">
+		<img id="photoImage" src="" style=" max-height: 60%; vertical-align: middle;">
 	</div>
 	
      <form id="photoForm">
         <ul data-role="listview" data-style="inset">
             <li>
                 <label>Title
-                    <input type="text" id="photoTitle" value="" />
+                    <input type="search" id="photoTitle" default="Title or description" />
                 </label>
             </li>
 			<li>
                 <label>Tags
-                    <input type="text" id="photoTags" value="" />
+                    <input type="search" id="photoTags" default="People, event, location..." />
                 </label>
 			</li>
             
@@ -500,7 +514,45 @@
     </form> 
 </div>
 
-<!-- get started -->
+<style>
+#galleryPicker-listview .li {
+	display: inline;
+}
+</style>
+
+<!-- Gallery Picker -- pick an image from the ghostgrams Gallery -->
+<div data-role="modalview" id="modalview-galleryPicker" style="width: 100%; height:100%; display: none;"  class="appearance">
+    <div data-role="header">
+        <div data-role="navbar">
+            <span>Gallery Picker</span>
+            <a data-click="closeModalViewGalleryPicker" data-role="button" data-align="left">Done</a>
+        </div>
+	</div>
+		
+	<div style="text-align: center; padding-top: 4px; padding-bottom: 6px; background: #e2e2e2; ">
+        <a  data-role="button" class="btnBlack"  data-click="modalGalleryZoomIn"> <i class="fa fa-search-plus"></i> </a>
+        <a  data-role="button" class="btnBlack"  data-click="modalGalleryZoomOut"> <i class="fa fa-search-minus"></i> </a>
+        <a  data-role="button" class="btnBlack"  data-click="modalGallerySortAsc"> <i class=" fa fa-sort-asc"></i></a>
+		<a  data-role="button" class="btnBlack"  data-click="modalGallerySortDesc"> <i class=" fa fa-sort-desc"></i></a>
+    </div>
+
+    <div>
+        <ul id="galleryPicker-listview" class="list-inline" data-role="listview" data-click="galleryPickerClick" data-source="APP.models.gallery.photosDS" data-template="galleryPicker-template"></ul>
+    </div>
+
+</div>
+
+<!-- galleryPicker template -->
+<script type="text/x-kendo-template" id="galleryPicker-template">
+	<div>
+		<div class="galleryImgBox">
+			<img class="galleryImg" src="#=thumbnailUrl#" />
+		</div>
+	</div>
+</script>
+
+
+    <!-- get started -->
 <div data-role="modalview" id="modalview-start" style="width: 90%; display:none;" class="appearance">
 	<div class="startBox">
 			<h2>Let's Get Started

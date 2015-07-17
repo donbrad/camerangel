@@ -1,66 +1,71 @@
 function addChannel(e) {
-    e.preventDefault();
+	e.preventDefault();
+	
+	// make sure chat has a name
+	if($("#channels-addChannel-name").val() !== ''){
 
-    var Channels = Parse.Object.extend("channels");
-    var channel = new Channels();
-	
-	var ChannelMap = Parse.Object.extend('channelmap');
-	var channelMap = new ChannelMap();
-    
-    var name = $('#channels-addChannel-name').val(),
-        description = $('#channels-addChannel-description').val(), 
-        channelId = uuid.v4();
-        
-    channel.set("name", name );
-    channel.set("isOwner", true);
-	channel.set('isPrivate', false);
-    channel.set("media",   true);
-    channel.set("archive", true);
-  
-    channel.set("description", description);
-	channel.set("members", [APP.models.profile.currentUser.userUUID]);
-	channel.set("invitedMembers", []);
-    channel.set("channelId", channelId);
-    
-    channel.setACL(APP.models.profile.parseACL);
-	channel.save(null, {
-      success: function(channel) {
-        // Execute any logic that should take place after the object is saved.
-         
-          APP.models.channels.channelsDS.add(channel.attributes);
-          mobileNotify('Added channel : ' + channel.get('name'));
-		  
-		  APP.models.channels.currentModel = findChannelModel(channelId);
-		  APP.models.channels.currentChannel = APP.models.channels.currentModel;
-		  APP.kendo.navigate('#editChannel');
-      },
-      error: function(channel, error) {
-        // Execute any logic that should take place if the save fails.
-        // error is a Parse.Error with an error code and message.
-        mobileNotify('Error creating channel: ' + error.message);
-        handleParseError(error);
-      }
-    });
-	
-	channelMap.set("name", name);
-	channelMap.set("channelId", guid);
-	channelMap.set("channelOwner", APP.models.profile.currentUser.userUUID);
-	channelMap.set("members", [APP.models.profile.currentUser.userUUID]);
-	
-	 channelMap.save(null, {
-      success: function(channel) {
-        // Execute any logic that should take place after the object is saved.
-         
-         
-      },
-      error: function(channel, error) {
-        // Execute any logic that should take place if the save fails.
-        // error is a Parse.Error with an error code and message.
-        mobileNotify('Error creating channelMap: ' + error.message);
-        handleParseError(error);
-      }
-    });	
-	
+	    var Channels = Parse.Object.extend("channels");
+	    var channel = new Channels();
+		
+		var ChannelMap = Parse.Object.extend('channelmap');
+		var channelMap = new ChannelMap();
+	    
+	    var name = $('#channels-addChannel-name').val(),
+	        description = $('#channels-addChannel-description').val(), 
+	        channelId = uuid.v4();
+	        
+	    channel.set("name", name );
+	    channel.set("isOwner", true);
+		channel.set('isPrivate', false);
+	    channel.set("media",   true);
+	    channel.set("archive", true);
+	  
+	    channel.set("description", description);
+		channel.set("members", [APP.models.profile.currentUser.userUUID]);
+		channel.set("invitedMembers", []);
+	    channel.set("channelId", channelId);
+	    
+	    channel.setACL(APP.models.profile.parseACL);
+		channel.save(null, {
+	      success: function(channel) {
+	        // Execute any logic that should take place after the object is saved.
+	         
+	          APP.models.channels.channelsDS.add(channel.attributes);
+	          mobileNotify('Added channel : ' + channel.get('name'));
+			  
+			  APP.models.channels.currentModel = findChannelModel(channelId);
+			  APP.models.channels.currentChannel = APP.models.channels.currentModel;
+			  APP.kendo.navigate('#editChannel');
+	      },
+	      error: function(channel, error) {
+	        // Execute any logic that should take place if the save fails.
+	        // error is a Parse.Error with an error code and message.
+	        mobileNotify('Error creating channel: ' + error.message);
+	        handleParseError(error);
+	      }
+	    });
+		
+		channelMap.set("name", name);
+		channelMap.set("channelId", channelId);
+		channelMap.set("channelOwner", APP.models.profile.currentUser.userUUID);
+		channelMap.set("members", [APP.models.profile.currentUser.userUUID]);
+		
+		 channelMap.save(null, {
+	      success: function(channel) {
+	        // Execute any logic that should take place after the object is saved.
+	         
+	         
+	      },
+	      error: function(channel, error) {
+	        // Execute any logic that should take place if the save fails.
+	        // error is a Parse.Error with an error code and message.
+	        mobileNotify('Error creating channelMap: ' + error.message);
+	        handleParseError(error);
+	      }
+	    });	
+	} else {
+		mobileNotify("Chat name is required");
+	}
 }
 
 
@@ -234,7 +239,7 @@ function onInitChannels (e) {
 }
 
 function listViewClick(e){
-    console.log("Clicked list");
+    
 }
 
 function onShowAddChannel (e) {
@@ -248,7 +253,7 @@ function onShowAddChannel (e) {
 
 	$("#channels-addChannel-name").keyup(function(){
 		if($("#channels-addChannel-name").val !== ""){
-			$("#btnAddChannel-step1").velocity({opacity: 1}, {duration: 500, easing: "spring"});
+			$("#addChat-createBtn").velocity({opacity: 1}, {duration: 500, easing: "spring"});
 			$("#channels-addChannel-name").unbind();
 		}
 	});
@@ -298,6 +303,9 @@ function finalizeEditChannel(e) {
 	mobileNotify("Updating " + APP.models.channels.currentModel.name);
 	
 	APP.kendo.navigate('#channels');
+
+	// Reset UI
+	$("#channels-addChannel-description, #channels-addChannel-name").val('');
 }
 
 function onInitEditChannel (e) {
@@ -343,16 +351,28 @@ function onShowEditChannel (e) {
 			// Current user will be undefined in contact list.
 			if (thisMember !== undefined) {
 				APP.models.channel.membersDS.add(thisMember);
-				//console.log(thisMember);
+				
+				// Display the right data for name
+				var name = thisMember.name; 
+				var alias = thisMember.alias;
+				var mainName, smallName = null;
+				if (alias !== ''){
+					mainName = alias;
+					smallName = name;
+				} else {
+					mainName = name;
+					smallName = alias;
+				}
 				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+
-												   '">'+
-												   '<div class="left"><img class="circle-img-md editChatImg" src="'+ thisMember.photo +'"/></div>' + 
-												   '<h4>'+ thisMember.name + ' <img class="user-status-icon" src="images/user-verified.svg" />'+
-												   '<span class="right">' +
-												   '<a class="listTrash" data-param="' + thisMember.uuid +
-												   '" data-role="button" class="clearBtn" data-click="deleteMember" onclick="deleteMember(this)" ><img src="images/trash.svg" /></a></span>' +
-												   '</h4><p>' + thisMember.alias + '</p>' + 
-												   '<div class="clearfix"></div></li>');	
+					'">'+
+					'<div class="left"><img class="circle-img-md editChatImg" src="'+ thisMember.photo +'"/></div>' + 
+					'<h4>'+ mainName + ' <img class="user-status-icon" src="images/user-verified.svg" />'+
+					'<span class="contacts-alias-sm"> '+ smallName +'</span>' +
+					'<span class="right">' +
+					'<a class="listTrash" data-param="' + thisMember.uuid +
+					'" data-role="button" class="clearBtn" data-click="deleteMember" onclick="deleteMember(this)" ><img src="images/trash.svg" /></a></span>' +
+					'</h4><p class="helper">Status</p>' + 
+					'<div class="clearfix"></div></li>');	
 			}
 		}
 
@@ -361,19 +381,31 @@ function onShowEditChannel (e) {
 			for (var j=0; j<members.length; j++) {
 				thisMember = findContactByUUID(members[j]);
 				APP.models.channel.membersDS.add(thisMember);
-				//console.log(thisMember);
+				// Display the right data for name
+				var name = thisMember.name; 
+				var alias = thisMember.alias;
+				var mainName, smallName = "";
+				if (alias !== '' && name === alias){
+					mainName = alias;
+				} else if (alias !== ''){
+					mainName = alias;
+					smallName = name;
+				} else {
+					mainName = name;
+					smallName = alias;
+				}
 				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'">' +
 					'<div class="left"><img class="circle-img-md editChatImg" src="'+ thisMember.photo +'"/></div>' +
-					'<h4>'+ thisMember.name +  ' <img class="user-status-icon" src="images/status-unverified.svg" />'+
+					'<h4>'+ mainName + 
+					'<span class="contacts-alias-sm"> '+ smallName +'</span>' +
 					'<a class="right listTrash" data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)"><img src="images/trash.svg" /></a>' +
-					'</h4><p class="helper">'+ thisMember.alias +'<div class="clearfix"></div></li>');	
-
+					'</h4><p class="helper">Unverified • Status</p><div class="clearfix"></div></li>');	
 			}
 		}	
 		
 	} else {
 		$(".addChatMembersBanner a").text("No one is invited. Tap to send invites");
-		//console.log("No one here");
+		
 	}
 
 	// hide trash cans
@@ -388,11 +420,23 @@ function doShowChannelMembers (e) {
 	var currentChannelModel = APP.models.channels.currentChannel;
     APP.models.channel.currentModel = currentChannelModel;
 	var members = currentChannelModel.members, invitedMembers = currentChannelModel.invitedMembers;
-	APP.models.channel.potentialMembersDS.data([]);
+
+
 	// Need to break observable link or contacts get deleted.
 	var contactArray = APP.models.contacts.contactsDS.data().toJSON();
-	APP.models.channel.potentialMembersDS.data(contactArray);
+
+	// create an easy reference to the potential members data source
 	var dataSource = APP.models.channel.potentialMembersDS;
+
+	// Zero potential members data source so we can add all contacts
+	dataSource.data([]);
+
+	// Add current contacts to potential members data source
+	// we delete members from potential members as we add them to members data source
+	dataSource.data(contactArray);
+
+
+	// Zero out member datasource so we can rebuild it
 	APP.models.channel.membersDS.data([]);
 
 	if (members.length > 0) {
@@ -408,7 +452,7 @@ function doShowChannelMembers (e) {
 				var view = dataSource.view();
 				var contact = view[0];
 				dataSource.filter([]);
-				APP.models.channel.potentialMembersDS.remove(contact);
+				dataSource.remove(contact.items[0]);  // new object layout for aggregate datasources
 			}
 
 		}
@@ -425,7 +469,7 @@ function doShowChannelMembers (e) {
 				var view1 = dataSource.view();
 				var contact1 = view1[0];
 				dataSource.filter([]);
-				APP.models.channel.potentialMembersDS.remove(contact1);
+				dataSource.remove(contact1.items[0]); // new object layout for aggregate datasources
 			}
 
 
@@ -439,9 +483,11 @@ function doInitChannelMembers (e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
 
+	APP.models.channel.potentialMembersDS.data([]);
 	$("#channelMembers-listview").kendoMobileListView({
         dataSource: APP.models.channel.potentialMembersDS,
         template: $("#memberTemplate").html(),
+		headerTemplate: "${value}",
 		filterable: {
                 field: "name",
                 operator: "startswith",
@@ -449,6 +495,7 @@ function doInitChannelMembers (e) {
             },
 		click: function (e) {
 			var thisMember = e.dataItem;
+			
 			APP.models.channel.membersDS.add(thisMember);
 			if (thisMember.contactUUID === null) {
 				APP.models.channels.currentChannel.invitedMembers.push(thisMember.uuid);
@@ -457,11 +504,10 @@ function doInitChannelMembers (e) {
 				APP.models.channels.currentChannel.members.push(thisMember.contactUUID);
 			}
 			APP.models.channel.membersDS.sync();
-			$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'">'+ thisMember.name + ' (' + thisMember.alias + ')' + '<span style="float:right; padding-right: 12px; font-size: 10px;"> <a data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)" ><img src="images/trash.svg" /></a></span></li>');
+
 			APP.models.channel.potentialMembersDS.remove(thisMember);
 			$(".addedChatMember").text("+ added " + thisMember.name).velocity("slideDown", { duration: 300, display: "block"}).velocity("slideUp", {delay: 1400, duration: 300, display: "none"});
 		}
-		// ToDo (Don): Fix broken wiring of adding members
 		
     });
 }
@@ -521,11 +567,11 @@ function resetAddChatUI(e){
 	$("#channels-addChannel-description").css("display","none");
 	$("#channels-addChannel-description, #channels-addChannel-name").val("");
 	$("#addChatDescription").velocity("fadeIn");
-	$("#btnAddChannel-step1, #addChat-step2").velocity({opacity: 0});
+	//$("#addChat-createBtn").velocity({opacity: 0});
 	
 		$("#channels-addChannel-name").keyup(function(){
 		if($("#channels-addChannel-name").val !== ""){
-			$("#btnAddChannel-step1").velocity({opacity: 1}, {duration: 500, easing: "spring"});
+			$("#addChat-createBtn").velocity({opacity: 1}, {duration: 500, easing: "spring"});
 			$("#channels-addChannel-name").unbind();
 		}
 	});
@@ -536,7 +582,7 @@ function addChatStep1(e){
 	$("#chat-title-setup").velocity("slideUp", {duration: 300});
 	$("#addChat-step2").velocity("fadeOut", {duration: 200});
 	$("#addChat-step1").velocity("fadeIn", {duration: 200, delay:200});
-	$("#addChat-createBtn").velocity("slideUp", {display: "none", duration: 300});
+	//$("#addChat-createBtn").velocity("slideUp", {display: "none", duration: 300});
 }
 
 
@@ -549,9 +595,6 @@ function addChatStep2(e) {
 
 		// fade out step 1
 		$("#addChat-step1, #addChat-helper1").velocity("fadeOut", {duration: 300});
-
-		//Slide up create btn
-		//$("#addChat-createBtn").velocity("slideUp", {duration: 500, easing: "spring", display: "block"});
 
 		$("#addChat-step2").velocity("fadeIn", {duration: 100, delay:300, display: "block"});
 	} else {

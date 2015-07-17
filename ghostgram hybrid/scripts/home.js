@@ -147,12 +147,8 @@ function continueSignUp() {
 
 }
 
-function onInitProfile() {
-    var myPublicImg = APP.models.profile.currentUser.aliasPhoto;
-	
-	if (myPublicImg !== ""){
-        $(".myPublicImg").attr("src", APP.models.profile.currentUser.aliasPhoto);
-    }
+function onInitProfile(e) {
+	e.preventDefault();
     
     if (APP.models.profile.currentUser.emailVerified){
         $("#verified-email").removeClass("hidden");
@@ -161,7 +157,7 @@ function onInitProfile() {
     if(APP.models.profile.currentUser.phoneVerified){
         $("#verified-phone").removeClass("hidden");
     }
-    // ToDo - need to add "resend" btn (JE)
+
 }
 
 function onShowHome(e) {
@@ -251,8 +247,14 @@ function homeSignin (e) {
             APP.models.profile.currentUser.set('email', APP.models.profile.parseUser.get('email'));
             APP.models.profile.currentUser.set('phone', APP.models.profile.parseUser.get('phone'));
             APP.models.profile.currentUser.set('alias', APP.models.profile.parseUser.get('alias'));
-            APP.models.profile.currentUser.set('aliasPhoto', APP.models.profile.parseUser.get('aliasPhoto'))
-			 APP.models.profile.currentUser.set('aliasPublic', APP.models.profile.parseUser.get('aliasPublic'));
+            APP.models.profile.currentUser.set('aliasPhoto', APP.models.profile.parseUser.get('aliasPhoto'));
+			APP.models.profile.currentUser.set('statusMessage', APP.models.profile.parseUser.get('statusMessage'));
+			APP.models.profile.currentUser.set('isAvailable', APP.models.profile.parseUser.get('isAvailable'));
+			APP.models.profile.currentUser.set('isVisible', APP.models.profile.parseUser.get('isVisible'));
+			APP.models.profile.currentUser.set('currentPlace', APP.models.profile.parseUser.get('currentPlace'));
+			APP.models.profile.currentUser.set('currentPlaceUUID', APP.models.profile.parseUser.get('currentPlaceUUID'));
+			APP.models.profile.currentUser.set('photo', APP.models.profile.parseUser.get('photo'));
+			APP.models.profile.currentUser.set('aliasPublic', APP.models.profile.parseUser.get('aliasPublic'));
             APP.models.profile.currentUser.set('userUUID', APP.models.profile.parseUser.get('userUUID'));
 			APP.models.profile.currentUser.set('rememberUsername', APP.models.profile.parseUser.get('rememberUsername'));
 			APP.models.profile.currentUser.set('publicKey', publicKey);
@@ -322,10 +324,7 @@ function homeCreateAccount() {
 
     // clean up the phone number and ensure it's prefixed with 1
    // phone = phone.replace(/\+[0-9]{1-2}/,'');
-    phone = phone.replace(/[^0-9]+/g, "");
-	if (phone[0] !== '1') {
-		phone = '1'+phone;
-	}
+    phone = unformatPhoneNumber(phone);
 	
 	Parse.Cloud.run('validateMobileNumber', { phone: phone }, {
       success: function(result) {
@@ -353,12 +352,16 @@ function homeCreateAccount() {
 					user.set("phone", phone);
 					user.set("alias", alias);
 					user.set("aliasPublic", "ghostgram user");
-					user.set("profilePhoto", null)
+					user.set("currentPlace", "");
+				    user.set('photo', "images/ghost-default.svg");
+				    user.set('aliasPhoto', "images/ghost-default.svg");
+					user.set("isAvailable", true);	   
+					user.set("isVisible", true);	 
 					user.set("phoneVerified", false);
 					user.set("rememberUsername", false);
 					user.set("userUUID", userUUID);
 					user.set("publicKey", publicKey);
-					user.set("privateKey", privateKey)
+					user.set("privateKey", privateKey);
 
 					user.signUp(null, {
 						success: function(user) {
@@ -368,6 +371,11 @@ function homeCreateAccount() {
 							APP.models.profile.currentUser.set('email', user.get('email'));
 							APP.models.profile.currentUser.set('phone', user.get('phone'));
 							APP.models.profile.currentUser.set('alias', user.get('alias'));
+							APP.models.profile.currentUser.set('currentPlace', user.get('currentPlace'));
+							APP.models.profile.currentUser.set('photo', user.get('photo'));
+							APP.models.profile.currentUser.set('isAvailable', user.get('isAvailable'));
+							APP.models.profile.currentUser.set('isVisible', user.get('isVisible'));
+							APP.models.profile.currentUser.set('aliasPhoto', user.get('aliasPhoto'));
 							APP.models.profile.currentUser.set('userUUID', user.get('userUUID'));
 							APP.models.profile.currentUser.set('phoneVerified', false);
 							APP.models.profile.currentUser.set('emailVerified',user.get('emailVerified'));
@@ -596,11 +604,73 @@ function findContactMe(query) {
     },function(error){mobileNotify(error);}, options);
 }
 
+function doUpdateStatusMessage(e) {
+	if (e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+	
+	var message = $('#profilePhotoMessage').val();
+	
+	APP.models.profile.currentUser.set('statusMessage', message);
+
+}
+
+function initProfilePhotoEdit(e) {
+	if (e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+	
+}
+
+function updateProfilePhototUrl(url) {
+	APP.models.profile.currentUser.set("photo", url);
+	saveUserProfilePhoto(url);
+}
+
+function doProfilePhotoEdit(e) {
+	if (e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+
+	APP.models.gallery.currentPhoto.callBack = updateProfilePhototUrl;
+}
+function saveProfilePhoto(e) {
+	if (e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+	
+	var photoMessage = $('#profilePhotoMessage').val();
+}
+
+function onShowMainMenuDrawer(e) {
+	if (e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+	var profilePhoto = APP.models.profile.currentUser.get('photo');
+
+	if (profilePhoto === undefined) {
+		profilePhoto = 'images/ghost-default.svg';
+	}
+
+	$('#profilePhoto').attr('src', profilePhoto);
+	$('#profilePhotoImage').attr('src', profilePhoto);
+	
+}
 
 function homeRecoverPassword(e) {
-    // ToDo - need to wire password reset
+
     var emailAddress = $("#home-recoverPassword-email").val();
-    console.log("Sending email to " + emailAddress);
+	Parse.User.requestPasswordReset(emailAddress, {
+		success: function() {
+			mobileNotify("Sent password recovery to " + emailAddress);
+			closeModalViewRecoverPassword();
+		},
+		error: function(error) {
+			// Show the error message somewhere
+			mobileNotify("Recover Password Error: " + error.code + " " + error.message);
+		}
+	});
+
 }
 
 function syncPresence () {
@@ -638,59 +708,48 @@ function syncPresence () {
     });
 }
 
+function galleryPickerClick(e) {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
 
-function closeChooseGhost() {
-    $("#modalview-chooseGhost").data("kendoMobileModalView").close();
+	var imageUrl = e.dataItem.imageUrl;
+
+	APP.models.gallery.currentPhoto.callBack(imageUrl);
 }
 
-function validNewPass(e) {
-    e.preventDefault();
-    var pass1 = $("#newPassword1").val();
-    var pass2 = $("#newPassword2").val();
-    
-    if(pass1 !== pass2){
-        mobileNotify("Passwords don't match, try again");
-    } else {
-        saveNewPass();
-    }
+function modalGalleryZoomIn (e)  {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();	
+	}
+
+	$("#galleryPicker-listview li").css("width","50%");
+	$("#galleryPicker-listview li").css("padding-bottom","50%");
+	//$("#galleryPicker-listview").data("kendoMobileListView").refresh();
+
 }
 
-function saveNewPass() {
-    $("#modalview-changePassword").data("kendoMobileModalView").close();
-    
-   	// Clear forms
-    $("#newPassword1, #newPassword2").val("");
-    
-    mobileNotify("Your password was updated");
-    // ToDo - wire save password
+function modalGalleryZoomOut (e)  {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+
+	$("#galleryPicker-listview li").css("width","25%");
+	$("#galleryPicker-listview li").css("padding-bottom","25%");
+	//$("#galleryPicker-listview").data("kendoMobileListView").refresh();
+
 }
 
-function closeNewPass(){
-    $("#modalview-changePassword").data("kendoMobileModalView").close();
-    
-    // Clear forms
-    $("#newPassword1, #newPassword2").val("");
+function modalGallerySortAsc (e)  {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
 }
 
-
-// Select new ghost icon
-function whichGhost(e){
-    var selection = e.target[0].id;
-    var selectionPath = "images/" + selection + ".svg";
-    var currentAlias = APP.models.profile.currentUser.aliasPhoto;
-    
-    if (selection !== undefined){
-        $(".myPublicImg").attr("src", selectionPath);
-        // ToDo - save ghost selection
-    	APP.models.profile.currentUser.set("aliasPhoto", selectionPath);
-    }
-    closeChooseGhost()
-}
-
-
-// Todo - wire save profile, may not need w/ profile sync
-function saveEditProfile() {
-    mobileNotify("Your profile was updated")
+function modalGallerySortDesc (e)  {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
 }
 
 function closeStartModal() {

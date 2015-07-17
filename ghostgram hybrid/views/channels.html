@@ -135,9 +135,9 @@
 		
         <ul data-role="listview" data-style="inset" id="channel-addChannel-list">
             <li>         	
-                <input type="text" class="clearable" id="channels-addChannel-name" placeholder="What's the topic?" value="" required />
+                <input type="search" id="channels-addChannel-name" placeholder="What's the topic?" value="" required />
                 
-                <input type="text" class="clearable" style="display: none" id="channels-addChannel-description" value="" placeholder="Description"/>
+                <input type="search" style="display: none" id="channels-addChannel-description" value="" placeholder="Description"/>
                 <a class="btnClear-grey" data-role="button" data-click="showChatDescription" id="addChatDescription">Add description</a>
             </li>
               <li class="hidden">
@@ -149,9 +149,10 @@
                 </label>
             </li>
         </ul>
-		  <p>
-			 It's easy!.  First pick a topic.  Add a description if you like.  And then invite everyone. 
-		 </p>
+        <p class="right-txt">
+        	<a id="addChat-createBtn" class="btnClear" data-click="addChannel" type="button" data-role="button">Next - Invite friends</a>
+        </p>
+		  
     </form>
    
 	
@@ -159,14 +160,7 @@
  		<div class="helperBox" id="addChat-helper1" >
 			<p class="helper"><img src="images/help.svg" /> Looking for 1-on-1 private chat?</p>
 			<a class="btnClear" data-role="button" href="views/contacts.html">See your ghostgram contacts</a>
-		</div>
-		<div style="height: 18px;">
-		</div>
-		<div>
-			 <p>Create this chat and then select people to invite</p>
-			<a id="addChat-createBtn" class="btnSpan-btm btnYellow" data-click="addChannel" type="button" data-role="button">Create</a>
-		</div>
-		
+		</div>	
 	</div>
  
 </div>
@@ -184,8 +178,8 @@
 
 	<div>
 		 <form>
-			<input type="text" id="channels-editChannel-name" data-bind="value: name"  />
-			<input type="text" class="clearable" id="channels-editChannel-description" data-bind="value: description" placeholder="Add optional description"/>
+			<input type="search" id="channels-editChannel-name" data-bind="value: name"  />
+			<input type="search" id="channels-editChannel-description" data-bind="value: description" placeholder="Add optional description"/>
 			
 		</form> 
 		<div>
@@ -228,10 +222,10 @@
          <ul id="messages-listview"></ul>
      </div>
      
-	 <div data-role="footer" style="display: block; background: #fff; padding-left: 2px;"  id="messageEditor" style="min-height: 48px;">
-		 <div id="chatImagePreview" style="margin: 8px; width: 95%; height: auto; ">
+	 <div data-role="footer" style="display: block; background: #fff; padding-left: 2px;"  id="messageEditor" style="min-height: 48px; max-height: 60%;">
+		 <div id="chatImagePreview" style="margin: 8px; ">
 			 <form id="chatImageForm" style="display:none;">
-				  <input id="chatImageInput" />
+				  <input type="search" id="chatImageInput" />
 			 </form>
 			<img id="chatImage" src="" style="max-width: 100%; max-height: 100%; text-align: center; vertical-align: middle;" />
 		 </div>
@@ -243,7 +237,7 @@
              <div class="messageMediaBar">
              	<ul>
                     <li><a data-role="button" data-click="messageCamera"><img src="images/chat-camera.svg" height="24"></a></li>
-                    <li><a data-role="button" data-click="messagePhoto"><img src="images/chat-photo.svg" height="24"></a></li>
+                    <li><a data-role="button" data-rel="actionsheet" href="#galleryActions"><img src="images/chat-photo.svg" height="24"></a></li>
                     <li><a data-role="button" data-click="messageAudio"><img src="images/chat-sound.svg" height="24"></a></li>
                     <li class="hidden"><a data-role="button" data-click="messageLocation"><img src="images/chat-places.svg" height="24"></a></li>
                     <li><a data-role="button" data-rel="actionsheet" href="#newMessageActions"><img src="images/chat-smart.svg" height="24"></a></li>
@@ -254,20 +248,17 @@
 	 </div>
 	 
     <ul data-role="actionsheet" id="newMessageActions" data-popup='{"direction": "left"}'>
-<!--	<li><a data-action="messagePhoto"><i class="fa fa-file-image-o"> </i> Add Photo</a></li>
-		<li><a data-action="messageAudio"><i class="fa fa-microphone"> </i> Add Audio</a></li>
-		<li><a data-action="messageLocation"><i class="fa fa-map-marker"> </i> Add Location</a></li>
--->
 		<li><a data-action="messageCalendar"><i class="fa fa-calendar"> </i> Add Calendar</a></li>
 		<li><a data-action="messageMovie"><i class="fa fa-film"> </i> Add Movie</a></li>
 		<li><a data-action="messageEvent"><i class="fa fa-ticket"> </i> Add Event</a></li>
 		<li><a data-action="messageMusic"><i class="fa fa-music"> </i> Add Music</a></li>
     </ul>
 	 
-	  <ul data-role="actionsheet" id="sendMessageActions" data-popup='{"direction": "left"}'>
-	    <li><a data-action="smartScanMessage"><i class="fa fa-magic"> </i> Smart Scan Message</a></li>
-        <li><a data-action="messageEraser"><i class="fa fa-eraser"> </i> Erase Message</a></li>
-    </ul>
+	<ul data-role="actionsheet" id="galleryActions" data-popup='{"direction": "left"}'>
+	    <li><a data-action="messagePhoto"><i class="fa fa-phone"> </i> Phone Gallery</a></li>
+        <li><a data-action="messageGallery"><i class="fa fa-th-large"> </i> ghostgrams Gallery</a></li>
+     </ul>
+
 	  <ul data-role="actionsheet" id="messageActions" data-popup='{"direction": "left"}'>
 		<li><a data-action="archiveMessage"><i class="fa fa-archive"> </i> Archive Message</a></li>
 		<li><a data-action="smartScanMessage"><i class="fa fa-magic"> </i> Smart Scan Message</a></li>
@@ -298,7 +289,7 @@
 		<h5>#=name#</h5>
 		<div class="chat-message-text">#= formattedContent #</div>
 
-		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# <img class="chat-message-photo-small" src="#:data.photo.thumb#" alt="" > #}#
+		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# <div data-role="touch" data-hold="chatPhotoHold" data-tap="chatPhotoTap"> <img class="chat-message-photo-small" src="#:data.photo.thumb#" alt="" > </div> #}#
 	</div>
 	 #} else {#
 	 	<div class="chat-message-user-content clearfix">
@@ -316,14 +307,16 @@
 <div data-role="view" id="channelMembers" data-layout="main" data-title="Invite" data-init="doInitChannelMembers" data-show="doShowChannelMembers" data-transition="overlay:up">
     <header data-role="header">
         <div data-role="navbar">
-            <a data-role="backbutton" data-align="left">Back</a>
             <span data-role="view-title"></span>
-            <a data-role="button" data-align="right" href="views/contacts.html#contactImport"> Import</a>
+            <a data-role="button" data-align="right" href="views/contacts.html#contactImport">Import Contact</a>
 
         </div>
     </header>
     <div class="addedChatMember" style="display: none"></div>
     <ul id="channelMembers-listview"></ul>
+    <div class="footerBk" data-role="footer">
+            <a class="btnSpan-btm btnBlue" type="button" data-role="backbutton">Done</a>
+    	</div>
 </div>
 
 <script type="text/x-kendo-template" id="memberTemplate">      
@@ -332,25 +325,21 @@
     	<img src="#: data.photo #" class="circle-img-md" />
     	</div>
     	<div class="left">
-    		<h4>#: data.name #
-	    	#if (data.phoneVerified){#
-	    		
-		    		<img class="user-status-icon" src="images/user-verified.svg" />
-		    		<span class="verified-txt">  Verified </span>
-	    		</h4>
-	    	#} else if (data.contactUUID === undefined || data.contactUUID === null || data.contactUUID === '') {#
-	    		
-		    		<img class="user-status-icon" src="images/status-guest.svg" />
-		    		<span class="guest-txt">  New User </span>
-	    		
-	    	#} else {#
-	    		
-		    		<img class="user-status-icon" src="images/status-unverified.svg" />
-		    		<span class="unverified-txt">  UnVerified</span>
-	    	
-	    	#}#
-  		</h4>
-		<p>#: data.alias #</p>
+    		
+    		#if (data.alias !== '' && data.name !== data.alias && data.phoneVerified){#
+    			<h4>
+    				#: data.alias #
+    				<img class="user-status-icon" src="images/user-verified.svg" />
+    				<span class="contacts-alias-sm">#: data.name #</span>
+    			</h4>
+    		#} else if(data.alias !== '' && data.name !== data.alias) {#
+    			<h4>
+    				#: data.alias #
+    				<span class="contacts-alias-sm">#: data.name #</span>
+    			</h4>
+    		#} else {#
+    			<h4>#: data.name #</h4>
+    		#}#
     	</div>
             
      </div>
