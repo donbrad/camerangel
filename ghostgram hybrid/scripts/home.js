@@ -632,7 +632,7 @@ function doProfilePhotoEdit(e) {
 		e.preventDefault();
 	}
 
-	APP.models.gallery.currentPhoto.callBack = updateProfilePhotoUrl;
+	APP.models.gallery.currentPhoto.callBack = updateProfilePhototUrl;
 }
 function saveProfilePhoto(e) {
 	if (e.preventDefault !== undefined) {
