@@ -718,6 +718,36 @@ function galleryPickerClick(e) {
 	APP.models.gallery.currentPhoto.callBack(imageUrl);
 }
 
+function modalGalleryZoomIn (e)  {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();	
+	}
+	$('#galleryPicker-listview .li').css('width',"50%");
+	$('#galleryPicker-listview .li').css('padding-bottom',"50%");
+	$("#galleryPicker-listview").data("kendoMobileListView").refresh();
+}
+
+function modalGalleryZoomOut (e)  {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+	$('#galleryPicker-listview .li').css('width',"25%");
+	$('#galleryPicker-listview .li').css('padding-bottom',"25%");
+	$("#galleryPicker-listview").data("kendoMobileListView").refresh();
+}
+
+function modalGallerySortAsc (e)  {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+}
+
+function modalGallerySortDesc (e)  {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+}
+
 function closeStartModal() {
 	$("#modalview-start").data("kendoMobileModalView").close();
 }
