@@ -115,7 +115,7 @@
 	<div class="menuStatus">
 		<span id="statusCircle"><img width="18" src="images/status-available.svg"/></span>
         <span class="menuSelectBox">
-            <select id="menuAvailable" data-bind="value: isVisible">
+            <select>
 			    <option value="true"> Available</option>
 			    <option value="false"> Busy </option>
 		    </select>
@@ -147,7 +147,7 @@
 			<a data-role="button" id="menuSettings" href="views/settings.html">Settings</a>
 		</div>
 		<div>
-			<a data-role="button" id="menuSignOut" data-click="homeSignout" >Sign out</a>	
+			<a data-role="button" id="menuSignOut" data-click="homeSignout"> Sign out</a>	
 		</div>
 	</div>
 </div>
@@ -158,7 +158,7 @@
 <div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" style="display:none;" data-show="onShowHome" >
 	<div data-role="header">
       <div data-role="navbar">
-        	<a data-role="button" href="#appDrawer" data-rel="drawer" data-align="right">
+        	<a data-role="button" href="#settingsAction" data-rel="actionsheet" data-align="right">
             	<img id="nav-gear" src="images/nav-gear.svg"/>
             </a>
         <div class="header-img" id="logo-header">
@@ -207,6 +207,14 @@
 	  			</li>
 	  		</ul>
 	  </div>
+	  <ul data-role="actionsheet" id="settingsAction" data-popup='{"direction": "left"}'>
+	    <li>
+	    	<a data-role="button" id="menuSettings" href="views/settings.html">Settings</a>
+	    </li>
+		<li>
+			<a data-role="button" id="menuSignOut" data-click="homeSignout" >Sign out</a>
+		</li>
+     </ul>
 </div>
     
 <script type="text/x-kendo-template" id="notificationTemplate">
@@ -501,17 +509,18 @@
 		</div>
 	</div>
 	<div class="topHeaderProfile">
-		<img class="circle-img-xl shadow" src="images/ghost-green.svg" />
-		<p><a class="btnClear-sm">edit</a></p>
+		<img class="circle-img-xl shadow myPublicImg" src="" />
+		<p><a class="btnClear-sm">Edit photo</a></p>
 		<h3 data-bind="text: alias">
 			<span class="contacts-alias-sm" data-bind="text: name"></span>
 		</h3>
-		<span><img src="images/status-away.svg" /></span>
-		<select class="statusLg">
-			<option>Busy</option>
-			<option>Availible</option>
-		</select>
-		<span class="helper"><i class="fa fa-chevron-down"></i></span>
+		
+		<div class="statusSelect">
+			<select id="menuAvailable" data-bind="value: isVisible">
+				<option value="true">Available</option>
+				<option value="false">Busy</option>
+			</select>
+		</div>
 	</div>
 	
      <form id="profilePhotoForm">

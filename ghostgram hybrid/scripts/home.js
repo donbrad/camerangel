@@ -179,6 +179,8 @@ function onShowHome(e) {
     //$(".user-status").velocity("fadeIn", {delay:1000});
         
     APP.models.presence.current.bind('change' , syncPresence);
+
+    console.log(APP.models.profile.currentUser);
 } 
 
 function testingStatus(e) {

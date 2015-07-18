@@ -1359,12 +1359,6 @@ a:hover {
 	top: 30px;
 	left: 32px;
 }
-#menuAvailable {
-    background: transparent;
-    color: #fff;
-    font-size: 14px;
-    border: none;
-}
 #menuSetting {
     margin-top: 40px;
 }
@@ -1578,6 +1572,34 @@ a:hover {
 
 .topHeaderProfile {
 	text-align: center;
+}
+
+.statusSelect {
+	border-bottom: 1px solid @grey200;
+    width: 120px;
+    border-radius: 3px;
+    overflow: hidden;
+    background: #fff url("../images/select-dropdown.svg") no-repeat 90% 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.statusSelect select {
+	padding: 5px 8px;
+    width: 130%;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    background-image: none;
+    -webkit-appearance: none;
+}
+
+.statusSelect select:focus {
+    outline: none;
+}
+
+.statusSelect select option[value="busy"]   { 
+	background: url(../images/status-away.png);   
 }
 
 #addChat-helper1 {
