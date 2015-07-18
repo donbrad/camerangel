@@ -49,7 +49,7 @@
               udid: '',
               macAddress: '',
 			  rememberUsername: false,
-              emaiVerified: false,
+              emailVerified: false,
               phoneVerified: false,
 			  isVerified: false,
 			  currentPlace: ''
