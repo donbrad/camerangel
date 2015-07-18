@@ -244,6 +244,7 @@ function homeSignin (e) {
 			}
 			   
             APP.models.profile.currentUser.set('username', APP.models.profile.parseUser.get('username'));
+			APP.models.profile.currentUser.set('name', APP.models.profile.parseUser.get('name'));
             APP.models.profile.currentUser.set('email', APP.models.profile.parseUser.get('email'));
             APP.models.profile.currentUser.set('phone', APP.models.profile.parseUser.get('phone'));
             APP.models.profile.currentUser.set('alias', APP.models.profile.parseUser.get('alias'));
@@ -368,6 +369,7 @@ function homeCreateAccount() {
 							// Hooray! Let them use the app now.
 						   closeModalViewSignup();
 							APP.models.profile.currentUser.set('username', user.get('username'));
+							APP.models.profile.currentUser.set('name', user.get('name'));
 							APP.models.profile.currentUser.set('email', user.get('email'));
 							APP.models.profile.currentUser.set('phone', user.get('phone'));
 							APP.models.profile.currentUser.set('alias', user.get('alias'));
