@@ -105,7 +105,7 @@
             <a data-role="button" data-rel="modalview" href="#modalview-profilePhotoEdit"><img id="profilePhoto" class="myPublicImg"  /></a>
         </div>
         <div> 
-			<div id="profileName">John Smith</div>
+			<div id="profileName"></div>
             <div class="caption" id="profileLink"><a data-role="button" href="views/profile.html">View Profile</a></div>
         </div>
     </div>
@@ -156,7 +156,7 @@
 <div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" style="display:none;" data-show="onShowHome" >
 	<div data-role="header">
       <div data-role="navbar">
-        	<a data-role="button" data-align="right">
+        	<a data-role="button" href="#appDrawer" data-rel="drawer" data-align="right">
             	<img id="nav-gear" src="images/nav-gear.svg"/>
             </a>
         <div class="header-img" id="logo-header">
@@ -479,13 +479,12 @@
 <div data-role="modalview" id="modalview-profilePhotoEdit" data-open="doProfilePhotoEdit" data-init="initProfilePhotoEdit" style="width: 100%; height:100%;  display: none;" data-model="APP.models.profile.currentUser" class="appearance">
     <div data-role="header">
         <div data-role="navbar">
-            <span>Profile Photo</span>
-                <a data-click="closeModalViewProfilePhotoEdit" data-role="button" data-align="left">Back</a>
-                <a data-click="doUpdateStatusMessage"  type="button" data-role="button" data-align="right">Update</a>
+            <a data-click="closeModalViewProfilePhotoEdit" data-role="button" data-align="right"><img src="images/close.svg" /></a>
+            <a data-click="doUpdateStatusMessage"  type="button" data-role="button" data-align="left">Update</a>
 		</div>
 	</div>
 
-    <div style="text-align: center; padding-top: 6px;" id="profilePhotoImportDiv">
+    <div class="hidden" style="text-align: center; padding-top: 6px;" id="profilePhotoImportDiv">
         <div style="display: inline-block;">
 			<a type="button" data-role="button" data-click="doProfileCamera" class="btnClearLine-grey-sm">Camera</a>
 			<a type="button" data-role="button" data-click="doProfilePhotos" class="btnClearLine-grey-sm">Photos</a>
@@ -493,11 +492,24 @@
 		 </div>
     </div>
 
-	<div style="margin:8px; height: 50%; width: auto; text-align: center">
+	<div class="hidden" style="margin:8px; height: 50%; width: auto; text-align: center">
 		<div class="wraption-wrap">
 			<img id="profilePhotoImage" class="wraption" data-bind="attr: {src: photo}" style="max-height: 100%; max-width:100%; vertical-align: middle;">
 			<span class="wraption-caption"data-bind="html: statusMessage" ></span>
 		</div>
+	</div>
+	<div class="topHeaderProfile">
+		<img class="circle-img-xl shadow" src="images/ghost-green.svg" />
+		<p><a class="btnClear-sm">edit</a></p>
+		<h3 data-bind="text: alias">
+			<span class="contacts-alias-sm" data-bind="text: name"></span>
+		</h3>
+		<span><img src="images/status-away.svg" /></span>
+		<select class="statusLg">
+			<option>Busy</option>
+			<option>Availible</option>
+		</select>
+		<span class="helper"><i class="fa fa-chevron-down"></i></span>
 	</div>
 	
      <form id="profilePhotoForm">
