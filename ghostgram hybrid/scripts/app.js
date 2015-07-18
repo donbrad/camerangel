@@ -735,6 +735,7 @@
         if (APP.models.profile.parseUser !== null) {
              initialView = '#home';
             APP.models.profile.currentUser.set('username', APP.models.profile.parseUser.get('username'));
+            APP.models.profile.currentUser.set('name', APP.models.profile.parseUser.get('name'));
             APP.models.profile.currentUser.set('email', APP.models.profile.parseUser.get('email'));
             APP.models.profile.currentUser.set('phone', APP.models.profile.parseUser.get('phone'));
             APP.models.profile.currentUser.set('alias', APP.models.profile.parseUser.get('alias'));

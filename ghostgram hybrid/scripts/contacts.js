@@ -941,7 +941,36 @@ function contactsPickContact(e) {
         mobileNotify('Error: ' + err);
     });
 }
-    
+function ghostEmail(e) {
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
+    APP.kendo.navigate("#ghostEmail");
+}
+
+function onInitGhostEmail(e) {
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
+    APP.models.contacts.ghostEditor = new Quill('#ghostEmailEditor', {
+        modules: {
+            'toolbar': { container: '#ghostEmailToolbar' }
+        }
+    });
+}
+
+function onShowGhostEmail(e) {
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
+}
+
+function sendGhostEmail(e) {
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
+}
+
 function closeAddContact() {
 	$("#modalview-AddContact").data("kendoMobileModalView").close();
 	$("#contactNicknameInput").addClass("hidden");
