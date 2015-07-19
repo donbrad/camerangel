@@ -320,22 +320,9 @@
 		onOnline : function () {
 			APP.setAppState('isOnline', true);
             // Take all data sources online
-            var networkState = navigator.connection.type;
-            switch (networkState) {
-                case Connection.ETHERNET:
-                case Connection.WIFI:
-                    APP.setAppState('connection', "internet");
-                    mobileNotify("Online via Wifi");
-                    break;
-                case Connection.CELL:
-                case Connection.CELL_2G:
-                case Connection.CELL_3G:
-                case Connection.CELL_4G:
-                    APP.setAppState('connection', "cell");
-                    mobileNotify("Online via Cell");
-                    break;
-            }
 
+            // Update network state / connection type
+            getNetworkState();
 		},
 		
 		onOffline : function () {
@@ -650,7 +637,8 @@
 		APP.geoLocator = new GeoLocator();
 		APP.location = new Object();
 
-
+        getNetworkState();
+        
 		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, 
 			 function(fileSystem){ 
 				var url = fileSystem.root.nativeURL;
