@@ -771,3 +771,8 @@ function closeTestingBox(){
 	$("#testing").data("kendoMobileModalView").close();
 }
 
+function go2settings(e){
+	e.preventDefault;
+	APP.kendo.navigate("views/settings.html");
+	console.log("settings");
+}

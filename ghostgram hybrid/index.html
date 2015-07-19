@@ -75,9 +75,6 @@
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" >
-                <img src="images/menu-icon.svg"/>
-            </a>
         </div>
     </div>
 
@@ -158,7 +155,7 @@
 <div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" style="display:none;" data-show="onShowHome" >
 	<div data-role="header">
       <div data-role="navbar">
-        	<a data-role="button" href="#settingsAction" data-rel="actionsheet" data-align="right">
+        	<a data-role="button" data-click="go2settings" data-align="right">
             	<img id="nav-gear" src="images/nav-gear.svg"/>
             </a>
         <div class="header-img" id="logo-header">
@@ -209,7 +206,10 @@
 	  </div>
 	  <ul data-role="actionsheet" id="settingsAction" data-popup='{"direction": "left"}'>
 	    <li>
-	    	<a data-role="button" id="menuSettings" href="views/settings.html">Settings</a>
+	    	<a data-role="button" id="menuSettings" data-click="go2settings">Settings</a>
+	    </li>
+	    <li>
+	    	<a data-role="button" href="#modalview-support" data-rel='modalview'>Support</a>
 	    </li>
 		<li>
 			<a data-role="button" id="menuSignOut" data-click="homeSignout" >Sign out</a>
@@ -257,7 +257,7 @@
         </p>
     </div>
     <div class="clearfix"></div>
-    <div class="loginBox">
+    <div class="loginBox whiteBk">
         <h3>
             Login
         </h3>
