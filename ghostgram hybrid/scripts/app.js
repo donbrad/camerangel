@@ -319,10 +319,29 @@
 		
 		onOnline : function () {
 			APP.setAppState('isOnline', true);
+            // Take all data sources online
+            var networkState = navigator.connection.type;
+            switch (networkState) {
+                case Connection.ETHERNET:
+                case Connection.WIFI:
+                    APP.setAppState('connection', "internet");
+                    mobileNotify("Online via Wifi");
+                    break;
+                case Connection.CELL:
+                case Connection.CELL_2G:
+                case Connection.CELL_3G:
+                case Connection.CELL_4G:
+                    APP.setAppState('connection', "cell");
+                    mobileNotify("Online via Cell");
+                    break;
+            }
+
 		},
 		
 		onOffline : function () {
 			APP.setAppState('isOnline', false);
+            // Take all data sources offline
+
 		},
 		
 		
@@ -612,9 +631,16 @@
 		onInitPlaces: _app.placesInit,
         onUserSignIn: _app.fetchParseData
 	});
-    
+
+    // Add event listeners
 	document.addEventListener("pause", _app.onPause, false);
 	document.addEventListener("resume", _app.onResume, false);
+
+
+    document.addEventListener("online", _app.onOnline, false);
+    document.addEventListener("offline", _app.onOffline, false);
+
+
 
     // this function is called by Cordova when the application is loaded by the device
     document.addEventListener('deviceready', function () {  
