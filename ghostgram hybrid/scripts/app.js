@@ -169,7 +169,7 @@
         places: {
             title: 'Places',
             locatorActive: false,
-            places: parseKendoDataSourceFactory.make('places', {
+            placesDS: parseKendoDataSourceFactory.make('places', {
                 id: 'id',
                 fields: {
                   uuid: { editable: false, nullable: false },
@@ -331,14 +331,27 @@
 		onOnline : function () {
 			APP.setAppState('isOnline', true);
             // Take all data sources online
+            
+            APP.models.home.invitesDS.online(true);
+            APP.models.home.notificationDS.online(true);
+            APP.models.channels.channelsDS.online(true);
+            APP.models.gallery.photosDS.online(true);
+            APP.models.contacts.contactsDS.online(true);
+            APP.models.places.placesDS.online(true);
 
-            // Update network state / connection type
             getNetworkState();
 		},
 		
 		onOffline : function () {
 			APP.setAppState('isOnline', false);
             // Take all data sources offline
+            
+            APP.models.home.invitesDS.online(false);
+            APP.models.home.notificationDS.online(false);
+            APP.models.channels.channelsDS.online(false);
+            APP.models.gallery.photosDS.online(false);
+            APP.models.contacts.contactsDS.online(false);
+            APP.models.places.placesDS.online(false);
 
 		},
 		
@@ -362,7 +375,7 @@
         },
         
         fetchParseData : function () {
-            APP.models.places.places.fetch();
+            APP.models.places.placesDS.fetch();
 
             var ChannelModel = Parse.Object.extend("channels");
             var ChannelCollection = Parse.Collection.extend({

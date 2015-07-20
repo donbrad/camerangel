@@ -7,14 +7,14 @@ function onInitPlaces(e) {
 		template: $("#placesTemplate").html(),
 		click: function (e) {
 
-			APP.models.places.places.filter({
+			APP.models.places.placesDS.filter({
 				field: 'googleId',
 				operator: 'eq',
 				value: e.dataItem.googleId
 			});
 
 			// If matches current place, check in to that
-			var view = APP.models.places.places.view();
+			var view = APP.models.places.placesDS.view();
 			if (view.length > 1) {
 				checkInTo(view[0]);
 				return;
@@ -22,8 +22,8 @@ function onInitPlaces(e) {
 
 			// Otherwise, add place, sync
 			e.dataItem.uuid = uuid.v4();
-			var newPlace = APP.models.places.places.add(e.dataItem);
-			APP.models.places.places.sync();
+			var newPlace = APP.models.places.placesDS.add(e.dataItem);
+			APP.models.places.placesDS.sync();
 			checkInTo(e.dataItem);
 
 			$('#nearby-results').data('kendoMobileModalView').close();
@@ -64,7 +64,7 @@ function onInitPlaces(e) {
 	});
 
 	var syncPlaces = function () {
-		APP.models.places.places.sync();
+		APP.models.places.placesDS.sync();
 	}
 
 	var clickPlace = function (e) {
@@ -77,7 +77,7 @@ function onInitPlaces(e) {
 	}
 
 	$("#places-listview").kendoMobileListView({
-		dataSource: APP.models.places.places,
+		dataSource: APP.models.places.placesDS,
 		fixedHeaders: true,
 		template: $("#placesTemplate").html(),
 		click: function (e) {
@@ -90,13 +90,13 @@ function onInitPlaces(e) {
 	$('#current-place > div').click( function () {
 		$('#check-out').show();
 
-		APP.models.places.places.filter({
+		APP.models.places.placesDS.filter({
 			field: 'uuid',
 			operator: 'eq',
 			value: APP.models.profile.currentUser.currentPlaceUUID
 		});
 
-		var view = APP.models.places.places.view();
+		var view = APP.models.places.placesDS.view();
 		clickPlace({
 			dataItem: view[0]
 		});
@@ -107,11 +107,11 @@ function onInitPlaces(e) {
 
 function resetPlacesFilter() {
 	if (APP.models.profile.currentUser.currentPlaceUUID === undefined) {
-		APP.models.places.places.filter({});
+		APP.models.places.placesDS.filter({});
 		return;
 	}
 
-	APP.models.places.places.filter({
+	APP.models.places.placesDS.filter({
 		field: 'uuid',
 		operator: 'neq',
 		value: APP.models.profile.currentUser.currentPlaceUUID
@@ -214,12 +214,12 @@ function onHideEditPlace (e) {
 
 	$("#places-listview").data('kendoMobileListView').refresh();
 	// "Refresh" the current place
-	APP.models.places.places.filter({
+	APP.models.places.placesDS.filter({
 		field: 'uuid',
 		operator: 'eq',
 		value: APP.models.profile.currentUser.currentPlaceUUID
 	});
-	var view = APP.models.places.places.view();
+	var view = APP.models.places.placesDS.view();
 	if (view.length !== 0) {
 		checkInTo(view[0]);
 		resetPlacesFilter();
@@ -235,8 +235,8 @@ function doDeletePlace (e) {
 		checkOut();
 	}
 
-	APP.models.places.places.remove(APP.models.places.currentPlace);
-	APP.models.places.places.sync();
+	APP.models.places.placesDS.remove(APP.models.places.currentPlace);
+	APP.models.places.placesDS.sync();
 }
 
 function goToChat (e) {
@@ -400,7 +400,7 @@ function onLocateMe(e) {
 
 							var address = getAddressFromComponents(geoResults[0].address_components);
 
-							var newPlace = APP.models.places.places.add({
+							var newPlace = APP.models.places.placesDS.add({
 								uuid: uuid.v4(),
 								category: 'Street Address',
 								streetNumber: address.streetNumber,
@@ -413,7 +413,7 @@ function onLocateMe(e) {
 								lng: position.coords.longitude
 							});
 
-							APP.models.places.places.sync();
+							APP.models.places.placesDS.sync();
 
 							checkInTo(newPlace);
 						}
@@ -476,7 +476,7 @@ function closeNearbyResults() {
 }
 
 function matchLocationToUserPlace  (lat, lng) {
-	var placesData = APP.models.places.places.data();
+	var placesData = APP.models.places.placesDS.data();
 
 	var matchArray = [];
 	for (var i=0; i< placesData.length; i++){
