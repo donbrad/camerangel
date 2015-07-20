@@ -253,15 +253,22 @@ function onShowPlaces(e) {
 		e.preventDefault();
 	}
 
-	checkOut();
-
 	navigator.geolocation.getCurrentPosition( function (position) {
 		var locations = matchLocationToUserPlace(position.coords.latitude, position.coords.longitude);
 		// If no matching places, or the matched place has auto-check-in disabled, return out
-		if (locations.length === 0 || locations[0].get('autoCheckIn') !== true) {
+		if (locations.length === 0) {
+			checkOut();
+			return;
+		}
+		if (locations[0].get('uuid') === APP.models.profile.currentUser.currentPlaceUUID) {
+			return;
+		}
+		if (locations[0].get('autoCheckIn') !== true) {
+			checkOut();
 			return;
 		}
 
+		checkOut();
 		checkInTo(locations[0]);
 	});
 }
