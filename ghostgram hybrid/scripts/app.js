@@ -169,17 +169,27 @@
         places: {
             title: 'Places',
             places: parseKendoDataSourceFactory.make('places', {
-                category: 'Place',
-                placeId: '',
-                name: '',
-                address: '',
-                googleId: '',
-                factualId: '',
-                lat: 0,
-                lng: 0,
-                publicName: '',
-                alias: '',
-                visible: true
+                id: 'id',
+                fields: {
+                  uuid: { editable: false, nullable: false },
+                  category: { editable: true, nullable: false, defaultValue: 'Place' },
+                  placeId: { editable: false, defaultValue: '' },
+                  name: { editable: true, nullable: false, defaultValue: '' },
+                  streetNumber: { editable: true, nullable: false, defaultValue: '' },
+                  street: { editable: false, defaultValue: '' },
+                  city: { editable: false, defaultValue: '' },
+                  state: { editable: false, defaultValue: '' },
+                  zip: { editable: false, defaultValue: '' },
+                  country: { editable: false, defaultValue: '' },
+                  googleId: { editable: false, defaultValue: '' },
+                  factualId: { editable: false, defaultValue: '' },
+                  lat: { editable: false, type: 'number' },
+                  lng: { editable: false, type: 'number' },
+                  publicName: { editable: false },
+                  alias: { editable: true, nullable: false, defaultValue: '' },
+                  visible: { editable: true, nullable: false, type: 'boolean', defaultValue: true},
+                  privacy: { editable: true, nullable: false, type: 'boolean', defaultValue: true}
+                }
               }
             )
         }
@@ -719,7 +729,6 @@
             APP.models.profile.currentUser.set('publicKey', APP.models.profile.parseUser.get('publicKey'));
 			APP.models.profile.currentUser.set('privateKey', APP.models.profile.parseUser.get('privateKey'));
             APP.models.profile.currentUser.set('statusMessage', APP.models.profile.parseUser.get('statusMessage'));
-			APP.models.profile.currentUser.set('currentPlace', APP.models.profile.parseUser.get('currentPlace'));
 			APP.models.profile.currentUser.set('currentPlaceUUID', APP.models.profile.parseUser.get('currentPlaceUUID'));
 			APP.models.profile.currentUser.set('aliasPublic', APP.models.profile.parseUser.get('aliasPublic'));
             APP.models.profile.currentUser.set('aliasPhoto', APP.models.profile.parseUser.get('aliasPhoto'));
