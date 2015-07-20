@@ -1,6 +1,8 @@
 function onInitPlaces(e) {
 	e.preventDefault();
 
+	APP.models.places.locatorActive = false;
+
 	navigator.geolocation.getCurrentPosition( function (position) {
 		var geocoder = new google.maps.Geocoder();
 		var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -354,6 +356,12 @@ function onLocateMe(e) {
 	if (e.preventDefault !== undefined) {
 		e.preventDefault();
 	}
+	if (APP.models.places.locatorActive) {
+		return;
+	}
+	APP.models.places.locatorActive = true;
+
+	mobileNotify('Determining your current location....');
 
 	navigator.geolocation.getCurrentPosition( function (position) {
 		var geocoder = new google.maps.Geocoder();
@@ -366,6 +374,7 @@ function onLocateMe(e) {
 			checkInTo(locations[0]);
 			return;
 		}
+		APP.models.places.locatorActive = false;
 
 		places.nearbySearch({
 			location: latlng,
