@@ -241,12 +241,19 @@ function onInitChannels (e) {
 function listViewClick(e){
     
 }
+function doShowEventInputs(e) {
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
+	$('.addChannelEvent').removeClass('hidden');
+}
 
 function onShowAddChannel (e) {
 	e.preventDefault();
 	APP.models.channel.potentialMembersDS.data([]);
 	APP.models.channel.potentialMembersDS.data(APP.models.contacts.contactsDS.data());
 	APP.models.channel.membersDS.data([]);
+
+	$('.addChannelEvent').addClass('hidden');
 
 	// hide channel description
 	$("#channels-addChannel-description").css("display","none");
@@ -327,6 +334,7 @@ function deleteMember (e) {
 	$('#'+contactId).remove();
 	
 }
+
 
 function onShowEditChannel (e) {
 	if (e.preventDefault !== undefined)

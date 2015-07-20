@@ -328,10 +328,16 @@
 		
 		onOnline : function () {
 			APP.setAppState('isOnline', true);
+            // Take all data sources online
+
+            // Update network state / connection type
+            getNetworkState();
 		},
 		
 		onOffline : function () {
 			APP.setAppState('isOnline', false);
+            // Take all data sources offline
+
 		},
 		
 		
@@ -600,9 +606,16 @@
 		onInitPlaces: _app.placesInit,
         onUserSignIn: _app.fetchParseData
 	});
-    
+
+    // Add event listeners
 	document.addEventListener("pause", _app.onPause, false);
 	document.addEventListener("resume", _app.onResume, false);
+
+
+    document.addEventListener("online", _app.onOnline, false);
+    document.addEventListener("offline", _app.onOffline, false);
+
+
 
     // this function is called by Cordova when the application is loaded by the device
     document.addEventListener('deviceready', function () {  
@@ -612,6 +625,7 @@
 		APP.geoLocator = new GeoLocator();
 		APP.location = new Object();
 
+        getNetworkState();
 
 		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, 
 			 function(fileSystem){ 
@@ -722,6 +736,7 @@
         if (APP.models.profile.parseUser !== null) {
              initialView = '#home';
             APP.models.profile.currentUser.set('username', APP.models.profile.parseUser.get('username'));
+            APP.models.profile.currentUser.set('name', APP.models.profile.parseUser.get('name'));
             APP.models.profile.currentUser.set('email', APP.models.profile.parseUser.get('email'));
             APP.models.profile.currentUser.set('phone', APP.models.profile.parseUser.get('phone'));
             APP.models.profile.currentUser.set('alias', APP.models.profile.parseUser.get('alias'));

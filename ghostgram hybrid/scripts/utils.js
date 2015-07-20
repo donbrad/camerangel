@@ -67,7 +67,24 @@ function deleteParseObject(objectName, field, fieldValue) {
       }
     });
 }
-    
+
+function getNetworkState() {
+    var networkState = navigator.connection.type;
+    switch (networkState) {
+        case Connection.ETHERNET:
+        case Connection.WIFI:
+            APP.setAppState('connection', "internet");
+            mobileNotify("Online via Wifi");
+            break;
+        case Connection.CELL:
+        case Connection.CELL_2G:
+        case Connection.CELL_3G:
+        case Connection.CELL_4G:
+            APP.setAppState('connection', "cell");
+            mobileNotify("Online via Cell");
+            break;
+    }
+}
 function handleParseError(err) {
   switch (err.code) {
     case Parse.Error.INVALID_SESSION_TOKEN:
