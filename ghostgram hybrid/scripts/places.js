@@ -359,7 +359,7 @@ function onLocateMe(e) {
 		var geocoder = new google.maps.Geocoder();
 		var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
-		var places = new google.maps.places.PlacesService(APP.map.googleMap);
+		var places = APP.map.googlePlaces;
 
 		var locations = matchLocationToUserPlace(position.coords.latitude, position.coords.longitude);
 		if (locations.length !== 0) {
