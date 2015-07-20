@@ -253,6 +253,8 @@ function onShowPlaces(e) {
 		e.preventDefault();
 	}
 
+	checkOut();
+
 	navigator.geolocation.getCurrentPosition( function (position) {
 		var locations = matchLocationToUserPlace(position.coords.latitude, position.coords.longitude);
 		// If no matching places, or the matched place has auto-check-in disabled, return out
