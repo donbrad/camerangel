@@ -714,7 +714,7 @@
 				}
 			}
 		}
-        pruneNotifications();
+
         Parse.User.enableRevocableSession();
         APP.models.profile.parseUser = Parse.User.current();
         APP.models.profile.udid = device.uuid;
@@ -722,7 +722,7 @@
         APP.models.profile.device = device.name;
         APP.models.profile.model = device.model;
 		APP.models.profile.rememberUsername = localStorage.getItem('ggRememberUsername');
-		
+
 		// If remembering Username, get it from localstorage and prefill signin.
 		if (APP.models.profile.rememberUsername) {
 			APP.models.profile.username = localStorage.getItem('ggUsername');
@@ -731,11 +731,49 @@
 			} else {
 				$('#home-signin-username').val(APP.models.profile.username );
 			}
-			
+
 		}
-        
+
+        pruneNotifications();
+
+        APP.geoLocator.getCurrentPosition(function (position, error){
+            if (error === null) {
+                APP.location.position = {lat: position.coords.latitude, lng: position.coords.longitude};
+
+                // If last known position doesn't equal current position -- need to update and map to location.
+                if (APP.location.lastPosition.lat !== APP.location.position.lat || APP.location.lastPosition.lng !== APP.location.position.lng) {
+                    // Update the last position
+                    window.localStorage.setItem('ggLastPosition', JSON.stringify(APP.location.position));
+
+                    // See if the new position matches an existing place
+                    var places = matchLocationToUserPlace  (APP.location.position.lat, APP.location.position.lng);
+                    if (places.length === 0) {
+                        // No matching places -- get a list of places that match the coord and prompt user to select one
+                    } else if (places.length === 1) {
+                        // Just 1 matching place so prompt the user to check in there
+                    } else {
+                        // Multiple place matches for this coord, prompt the user to select one.
+                    }
+                }
+                APP.map = new Object();
+                APP.map.geocoder = new google.maps.Geocoder();
+                APP.map.mapOptions = new Object();
+                APP.map.mapOptions.center =  {lat: position.coords.latitude, lng: position.coords.longitude};
+                APP.map.mapOptions.zoom = 14;
+                APP.map.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
+                APP.map.googleMap = new google.maps.Map(document.getElementById('map-mapdiv'), APP.map.mapOptions);
+                APP.map.googlePlaces = new google.maps.places.PlacesService(APP.map.googleMap);
+                reverseGeoCode(position.coords.latitude, position.coords.longitude);
+                //mobileNotify("Located you at " + position.coords.latitude + " , " + position.coords.longitude);
+            } else {
+                mobileNotify("GeoLocator error : " + error);
+            }
+
+        });
+
+
         if (APP.models.profile.parseUser !== null) {
-             initialView = '#home';
+            initialView = '#home';
             APP.models.profile.currentUser.set('username', APP.models.profile.parseUser.get('username'));
             APP.models.profile.currentUser.set('name', APP.models.profile.parseUser.get('name'));
             APP.models.profile.currentUser.set('email', APP.models.profile.parseUser.get('email'));
@@ -743,14 +781,14 @@
             APP.models.profile.currentUser.set('alias', APP.models.profile.parseUser.get('alias'));
             APP.models.profile.currentUser.set('userUUID', APP.models.profile.parseUser.get('userUUID'));
             APP.models.profile.currentUser.set('publicKey', APP.models.profile.parseUser.get('publicKey'));
-			APP.models.profile.currentUser.set('privateKey', APP.models.profile.parseUser.get('privateKey'));
+            APP.models.profile.currentUser.set('privateKey', APP.models.profile.parseUser.get('privateKey'));
             APP.models.profile.currentUser.set('statusMessage', APP.models.profile.parseUser.get('statusMessage'));
-			APP.models.profile.currentUser.set('currentPlaceUUID', APP.models.profile.parseUser.get('currentPlaceUUID'));
-			APP.models.profile.currentUser.set('aliasPublic', APP.models.profile.parseUser.get('aliasPublic'));
+            APP.models.profile.currentUser.set('currentPlaceUUID', APP.models.profile.parseUser.get('currentPlaceUUID'));
+            APP.models.profile.currentUser.set('aliasPublic', APP.models.profile.parseUser.get('aliasPublic'));
             APP.models.profile.currentUser.set('aliasPhoto', APP.models.profile.parseUser.get('aliasPhoto'));
             APP.models.profile.currentUser.set('photo', APP.models.profile.parseUser.get('photo'));
-			APP.models.profile.currentUser.set('isAvailable', APP.models.profile.parseUser.get('isAvailable'));
-			APP.models.profile.currentUser.set('isVisible', APP.models.profile.parseUser.get('isVisible'));
+            APP.models.profile.currentUser.set('isAvailable', APP.models.profile.parseUser.get('isAvailable'));
+            APP.models.profile.currentUser.set('isVisible', APP.models.profile.parseUser.get('isVisible'));
             APP.models.profile.currentUser.set('rememberUsername', APP.models.profile.parseUser.get('rememberUsername'));
             APP.models.profile.currentUser.set('phoneVerified', APP.models.profile.parseUser.get('phoneVerified'));
             APP.models.profile.currentUser.set('emailVerified', APP.models.profile.parseUser.get('emailVerified'));
@@ -758,99 +796,65 @@
             APP.models.profile.parseACL = new Parse.ACL(APP.models.profile.parseUser);
             var uuid = APP.models.profile.currentUser.get('userUUID');
             APP.models.profile.currentUser.bind('change', syncProfile);
-            
-			if (APP.models.profile.currentUser.get('rememberUsername')){
-				localStorage.setItem('ggRememberUsername', true);
-				localStorage.setItem('ggUsername', APP.models.profile.currentUser.get('username'));
-			}
-			
-            APP.pubnub = PUBNUB.init({ 
-                 publish_key: 'pub-c-d4fcc2b9-2c1c-4a38-9e2c-a11331c895be',
-                 subscribe_key: 'sub-c-4624e1d4-dcad-11e4-adc7-0619f8945a4f',
-				 secret_key: 'sec-c-NDFiNzlmNTUtNWEyNy00OGUzLWExZjYtNDc3ZTI2ZGRlOGMw',
-                 ssl: true,
-                 jsonp: true,
-                 restore: true,
-                 uuid: uuid
-             });
-            
-             // Subscribe to the data / notifications channel
-			//mobileNotify("Created data channel : " + uuid);
-             APP.pubnub.subscribe({
-                channel : uuid,
-                windowing: 50000,
-                message : dataChannelRead,
-                connect: function(){},
-                disconnect: function(){},
-                reconnect: function(){mobileNotify("Data Channel Reconnected")},
-                error: function(){mobileNotify("Data Channel Network Error")} 
-                 
-             });
-			
-			APP.pubnub.subscribe({
-                channel : 'ghostgramsapp129195720',
-                windowing: 50000,
-                message : appChannelRead,
-                connect: function(){},
-                disconnect: function(){},
-                reconnect: function(){mobileNotify("App Channel Reconnected")},
-                error: function(){mobileNotify("App Channel Network Error")} 
-                 
-             });
-			
-			// Get any messages in the channel
-             APP.pubnub.history({
-				 channel: uuid,
-				 count: 100,
-				 callback: function(messages){
-					 messages = messages[0];
-					 messages = messages || [];
-					 for(var i = 0; i < messages.length; i++) {
-					 	dataChannelRead(messages[i]);
-					 }
-					
-				 }
-			 });
 
             _app.fetchParseData();
-            APP.geoLocator.getCurrentPosition(function (position, error){
-                if (error === null) {
-                    APP.location.position = {lat: position.coords.latitude, lng: position.coords.longitude};
+        }
 
-                    // If last known position doesn't equal current position -- need to update and map to location.
-                    if (APP.location.lastPosition.lat !== APP.location.position.lat || APP.location.lastPosition.lng !== APP.location.position.lng) {
-                        // Update the last position
-                        window.localStorage.setItem('ggLastPosition', JSON.stringify(APP.location.position));
+        if (APP.models.profile.currentUser.get('rememberUsername')){
+            localStorage.setItem('ggRememberUsername', true);
+            localStorage.setItem('ggUsername', APP.models.profile.currentUser.get('username'));
+        }
+			
+        APP.pubnub = PUBNUB.init({
+             publish_key: 'pub-c-d4fcc2b9-2c1c-4a38-9e2c-a11331c895be',
+             subscribe_key: 'sub-c-4624e1d4-dcad-11e4-adc7-0619f8945a4f',
+             secret_key: 'sec-c-NDFiNzlmNTUtNWEyNy00OGUzLWExZjYtNDc3ZTI2ZGRlOGMw',
+             ssl: true,
+             jsonp: true,
+             restore: true,
+             uuid: uuid
+         });
 
-                        // See if the new position matches an existing place
-                        var places = matchLocationToUserPlace  (APP.location.position.lat, APP.location.position.lng);
-                        if (places.length === 0) {
-                            // No matching places -- get a list of places that match the coord and prompt user to select one
-                        } else if (places.length === 1) {
-                            // Just 1 matching place so prompt the user to check in there
-                        } else {
-                            // Multiple place matches for this coord, prompt the user to select one.
-                        }
-                    }
-                    APP.map = new Object();
-                    APP.map.geocoder = new google.maps.Geocoder();
-                    APP.map.mapOptions = new Object();
-                    APP.map.mapOptions.center =  {lat: position.coords.latitude, lng: position.coords.longitude};
-                    APP.map.mapOptions.zoom = 14;
-                    APP.map.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
-                    APP.map.googleMap = new google.maps.Map(document.getElementById('map-mapdiv'), APP.map.mapOptions);
-                    APP.map.googlePlaces = new google.maps.places.PlacesService(APP.map.googleMap);
-                    reverseGeoCode(position.coords.latitude, position.coords.longitude);
-                    //mobileNotify("Located you at " + position.coords.latitude + " , " + position.coords.longitude);
-                } else {
-                    mobileNotify("GeoLocator error : " + error);
-                }
+         // Subscribe to the data / notifications channel
+        //mobileNotify("Created data channel : " + uuid);
+         APP.pubnub.subscribe({
+            channel : uuid,
+            windowing: 50000,
+            message : dataChannelRead,
+            connect: function(){},
+            disconnect: function(){},
+            reconnect: function(){mobileNotify("Data Channel Reconnected")},
+            error: function(){mobileNotify("Data Channel Network Error")}
 
-            });
+         });
 
+        APP.pubnub.subscribe({
+            channel : 'ghostgramsapp129195720',
+            windowing: 50000,
+            message : appChannelRead,
+            connect: function(){},
+            disconnect: function(){},
+            reconnect: function(){mobileNotify("App Channel Reconnected")},
+            error: function(){mobileNotify("App Channel Network Error")}
 
-            //_app.importDeviceContacts();
-        }  
+         });
+
+        // Get any messages in the channel
+         APP.pubnub.history({
+             channel: uuid,
+             count: 100,
+             callback: function(messages){
+                 messages = messages[0];
+                 messages = messages || [];
+                 for(var i = 0; i < messages.length; i++) {
+                    dataChannelRead(messages[i]);
+                 }
+
+             }
+         });
+
+        //_app.importDeviceContacts();
+
 
         APP.kendo = new kendo.mobile.Application(document.body, {
 
