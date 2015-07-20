@@ -188,8 +188,9 @@
                   lng: { editable: false, type: 'number' },
                   publicName: { editable: false },
                   alias: { editable: true, nullable: false, defaultValue: '' },
-                  visible: { editable: true, nullable: false, type: 'boolean', defaultValue: true},
-                  privacy: { editable: true, nullable: false, type: 'boolean', defaultValue: true}
+                  visible: { editable: true, nullable: false, type: 'boolean', defaultValue: true },
+                  privacy: { editable: true, nullable: false, type: 'boolean', defaultValue: true },
+                  autoCheckIn: { editable: true, nullable: false, type: 'boolean', defaultValue: false }
                 }
               }
             )

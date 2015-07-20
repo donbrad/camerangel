@@ -219,6 +219,11 @@
                  <input type="checkbox" id="editPlaceVisible" data-role="switch" />
              </li>
 
+             <li>
+                 <label> Automatically Check In </label>
+                 <input type="checkbox" id="editPlaceAuto" data-role="switch" />
+             </li>
+
          </ul>
      </form>
     </div>
@@ -240,7 +245,7 @@
 	         </p>
 	         <div class="clearfix"> </div>
          # } else { #
-            # if (data.name === '') { #
+            # if (data.name === '' || data.name === undefined) { #
                 <div class="ghostText">#: data.streetNumber # #: data.street #, #: data.city #, #: data.state #</div>
             # } else { #
                 <div class="ghostText">#: data.name # </div>

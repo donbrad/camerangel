@@ -217,6 +217,11 @@ function onShowEditPlace (e) {
 	$('#editPlaceVisible').data('kendoMobileSwitch').bind('change', function () {
 		APP.models.places.currentPlace.set('visible', $('#editPlaceVisible').data('kendoMobileSwitch').check());
 	});
+
+	$('#editPlaceAuto').data('kendoMobileSwitch').check(APP.models.places.currentPlace.autoCheckIn);
+	$('#editPlaceAuto').data('kendoMobileSwitch').bind('change', function () {
+		APP.models.places.currentPlace.set('autoCheckIn', $('#editPlaceAuto').data('kendoMobileSwitch').check());
+	});
 }
 
 function onHideEditPlace (e) {
@@ -400,22 +405,14 @@ function onLocateMe(e) {
 							var newPlace = APP.models.places.places.add({
 								uuid: uuid.v4(),
 								category: 'Street Address',
-								placeId: '',
-								name: '',
 								streetNumber: address.streetNumber,
 								street: address.street,
 								city: address.city,
 								state: address.state,
 								zip: address.zip,
 								country: address.country,
-								googleId: '',
-								factualId: '',
 								lat: position.coords.latitude,
-								lng: position.coords.longitude,
-								publicName: '',
-								alias: '',
-								visible: true,
-								privacy: true
+								lng: position.coords.longitude
 							});
 
 							APP.models.places.places.sync();
@@ -460,13 +457,9 @@ function onLocateMe(e) {
 						zip: address.zip,
 						country: address.country,
 						googleId: placeResult.id,
-						factualId: '',
 						lat: placeResult.geometry.location.A,
 						lng: placeResult.geometry.location.F,
-						publicName: placeResult.name,
-						alias: '',
-						visible: true,
-						privacy: true
+						publicName: placeResult.name
 					});
 				});
 			});
