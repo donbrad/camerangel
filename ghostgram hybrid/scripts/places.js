@@ -4,29 +4,48 @@ function onInitPlaces(e) {
 	APP.models.places.locatorActive = false;
 
 	$('#nearby-results-list').kendoMobileListView({
-		template: $("#placesTemplate").html(),
+		template: $("#nearby-results-template").html(),
 		click: function (e) {
+			var placeLatLng = new google.maps.LatLng(e.dataItem.geometry.location.A, e.dataItem.geometry.location.F);
+			APP.map.geocoder.geocode({ 'latLng': placeLatLng }, function (geoResults, geoStatus) {
+				if (geoStatus !== google.maps.GeocoderStatus.OK) {
+					navigator.notification.alert('Something went wrong with the Google geocoding service.');
+					return;
+				}
+				if (geoResults.length === 0 || geoResults[0].types[0] !== 'street_address') {
+					navigator.notification.alert('We couldn\'t match your position to a street address.');
+					return;
+				}
 
-			APP.models.places.placesDS.filter({
-				field: 'googleId',
-				operator: 'eq',
-				value: e.dataItem.googleId
+				var address = getAddressFromComponents(geoResults[0].address_components);
+
+				var newPlace = APP.models.places.placesDS.add({
+					uuid: uuid.v4(),
+					category: 'Place',
+					placeId: e.dataItem.place_id,
+					name: e.dataItem.name,
+					streetNumber: address.streetNumber,
+					street: address.street,
+					city: address.city,
+					state: address.state,
+					zip: address.zip,
+					country: address.country,
+					googleId: e.dataItem.id,
+					factualId: '',
+					lat: e.dataItem.geometry.location.A,
+					lng: e.dataItem.geometry.location.F,
+					publicName: e.dataItem.name,
+					alias: '',
+					visible: true,
+					privacy: true,
+					autoCheckIn: false
+				});
+
+				APP.models.places.placesDS.sync();
+				checkInTo(newPlace);
+
+				$('#nearby-results').data('kendoMobileModalView').close();
 			});
-
-			// If matches current place, check in to that
-			var view = APP.models.places.placesDS.view();
-			if (view.length > 1) {
-				checkInTo(view[0]);
-				return;
-			}
-
-			// Otherwise, add place, sync
-			e.dataItem.uuid = uuid.v4();
-			var newPlace = APP.models.places.placesDS.add(e.dataItem);
-			APP.models.places.placesDS.sync();
-			checkInTo(e.dataItem);
-
-			$('#nearby-results').data('kendoMobileModalView').close();
 		}
 	});
 
@@ -368,7 +387,6 @@ function onLocateMe(e) {
 
 	navigator.geolocation.getCurrentPosition( function (position) {
 		var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-		var geocoder = APP.map.geocoder;
 		var places = APP.map.googlePlaces;
 
 		var locations = matchLocationToUserPlace(position.coords.latitude, position.coords.longitude);
@@ -384,7 +402,7 @@ function onLocateMe(e) {
 			types: ['establishment']
 		}, function (placesResults, placesStatus) {
 			if (placesStatus === google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
-				geocoder.geocode({ 'latLng': latlng }, function (geoResults, geoStatus) {
+				APP.map.geocoder.geocode({ 'latLng': latlng }, function (geoResults, geoStatus) {
 					if (geoStatus !== google.maps.GeocoderStatus.OK) {
 						navigator.notification.alert('Something went wrong with the Google geocoding service.');
 						return;
@@ -403,14 +421,23 @@ function onLocateMe(e) {
 							var newPlace = APP.models.places.placesDS.add({
 								uuid: uuid.v4(),
 								category: 'Street Address',
+								placeId: '',
+								name: '',
 								streetNumber: address.streetNumber,
 								street: address.street,
 								city: address.city,
 								state: address.state,
 								zip: address.zip,
 								country: address.country,
+								googleId: '',
+								factualId: '',
 								lat: position.coords.latitude,
-								lng: position.coords.longitude
+								lng: position.coords.longitude,
+								publicName: '',
+								alias: '',
+								visible: true,
+								privacy: true,
+								autoCheckIn: false
 							});
 
 							APP.models.places.placesDS.sync();
@@ -430,36 +457,7 @@ function onLocateMe(e) {
 			var nearbyResults = new kendo.data.DataSource();
 
 			placesResults.forEach( function (placeResult) {
-				var placeLatLng = new google.maps.LatLng(placeResult.geometry.location.A, placeResult.geometry.location.F);
-				geocoder.geocode({ 'latLng': placeLatLng }, function (geoResults, geoStatus) {
-					if (geoStatus !== google.maps.GeocoderStatus.OK) {
-						navigator.notification.alert('Something went wrong with the Google geocoding service.');
-						return;
-					}
-					if (geoResults.length === 0 || geoResults[0].types[0] !== 'street_address') {
-						navigator.notification.alert('We couldn\'t match your position to a street address.');
-						return;
-					}
-
-					var address = getAddressFromComponents(geoResults[0].address_components);
-
-					nearbyResults.add({
-						uuid: uuid.v4(),
-						category: 'Place',
-						placeId: placeResult.place_id,
-						name: placeResult.name,
-						streetNumber: address.streetNumber,
-						street: address.street,
-						city: address.city,
-						state: address.state,
-						zip: address.zip,
-						country: address.country,
-						googleId: placeResult.id,
-						lat: placeResult.geometry.location.A,
-						lng: placeResult.geometry.location.F,
-						publicName: placeResult.name
-					});
-				});
+				nearbyResults.add(placeResult);
 			});
 
 			$('#nearby-results').data('kendoMobileModalView').open();
