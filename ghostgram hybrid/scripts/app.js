@@ -221,6 +221,11 @@
 				contactListDS: new kendo.data.DataSource({
 					group: 'category'
 				}),
+                ghostEditor : new Quill('#ghostEmailEditor', {
+					modules: {
+						'toolbar': { container: '#ghostEmailToolbar' }
+					}
+            	}),
 				currentDeviceContact: {},
 				currentContact: new kendo.data.ObservableObject(),
 				phoneDS: new kendo.data.DataSource(),
