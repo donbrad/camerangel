@@ -364,9 +364,8 @@ function onLocateMe(e) {
 	mobileNotify('Determining your current location....');
 
 	navigator.geolocation.getCurrentPosition( function (position) {
-		var geocoder = new google.maps.Geocoder();
 		var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-
+		var geocoder = APP.map.geocoder;
 		var places = APP.map.googlePlaces;
 
 		var locations = matchLocationToUserPlace(position.coords.latitude, position.coords.longitude);
