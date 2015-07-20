@@ -168,6 +168,7 @@
           
         places: {
             title: 'Places',
+            locatorActive: false,
             places: parseKendoDataSourceFactory.make('places', {
                 id: 'id',
                 fields: {
