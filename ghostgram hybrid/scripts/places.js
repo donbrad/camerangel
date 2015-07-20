@@ -3,28 +3,6 @@ function onInitPlaces(e) {
 
 	APP.models.places.locatorActive = false;
 
-	navigator.geolocation.getCurrentPosition( function (position) {
-		var geocoder = new google.maps.Geocoder();
-		var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-		geocoder.geocode({ 'latLng': latlng }, function (results, status) {
-			if (status !== google.maps.GeocoderStatus.OK) {
-				navigator.notification.alert('Something went wrong with the Google geocoding service.');
-				return;
-			}
-			if (results.length === 0) {
-				navigator.notification.alert('We couldn\'t locate you.');
-				return;
-			}
-
-			var locations = matchLocationToUserPlace(position.coords.latitude, position.coords.longitude);
-			if (locations.length === 0) {
-				return;
-			}
-
-			checkInTo(locations[0]);
-		});
-	});
-
 	$('#nearby-results-list').kendoMobileListView({
 		template: $("#placesTemplate").html(),
 		click: function (e) {
@@ -271,8 +249,19 @@ function goToChat (e) {
 }
 
 function onShowPlaces(e) {
-	if (e.preventDefault !== undefined)
+	if (e.preventDefault !== undefined) {
 		e.preventDefault();
+	}
+
+	navigator.geolocation.getCurrentPosition( function (position) {
+		var locations = matchLocationToUserPlace(position.coords.latitude, position.coords.longitude);
+		// If no matching places, or the matched place has auto-check-in disabled, return out
+		if (locations.length === 0 || locations[0].get('autoCheckIn') !== true) {
+			return;
+		}
+
+		checkInTo(locations[0]);
+	});
 }
 
 function parseAddress(address) {
@@ -366,7 +355,7 @@ function onLocateMe(e) {
 	}
 	APP.models.places.locatorActive = true;
 
-	mobileNotify('Determining your current location....');
+	mobileNotify('Determining your current location...');
 
 	navigator.geolocation.getCurrentPosition( function (position) {
 		var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
