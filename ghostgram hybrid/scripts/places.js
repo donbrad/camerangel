@@ -386,6 +386,7 @@ function onLocateMe(e) {
 	mobileNotify('Determining your current location...');
 
 	navigator.geolocation.getCurrentPosition( function (position) {
+		APP.models.places.locatorActive = false;
 		var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 		var places = APP.map.googlePlaces;
 
@@ -394,7 +395,6 @@ function onLocateMe(e) {
 			checkInTo(locations[0]);
 			return;
 		}
-		APP.models.places.locatorActive = false;
 
 		places.nearbySearch({
 			location: latlng,
