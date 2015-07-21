@@ -941,6 +941,7 @@ function contactsPickContact(e) {
         mobileNotify('Error: ' + err);
     });
 }
+
 function ghostEmail(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
@@ -963,7 +964,16 @@ function onShowGhostEmail(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
     }
+    // Set focus to the editor
     $('#ghostEmailEditor').focus();
+
+    // Set the title...   should be easier!
+    var navbar = app.view()
+        .header
+        .find(".km-navbar")
+        .data("kendoMobileNavBar");
+
+    navbar.title(APP.views.ghostEditor.title);
 }
 
 function sendGhostEmail(e) {

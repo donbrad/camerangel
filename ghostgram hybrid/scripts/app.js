@@ -15,6 +15,12 @@
 				show: onShowGhostEmail,
 				sendTitle: "Send",
 				sendAction: sendGhostEmail
+			},
+			gallery: {
+				title: "Gallery",
+				init: onInitGhostEmail,
+				show: onShowGhostEmail,
+				clickAction: sendGhostEmail
 			}
 		},
 		models: {
