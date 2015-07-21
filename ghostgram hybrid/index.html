@@ -554,6 +554,41 @@
 	</div>
 </script>
 
+<div data-role="modalview" data-title="ghostChat" id="modalview-ghostChat" data-layout="main" data-init="onInitGhostChat" data-open="onOpenGhostChat" >
+    <div data-role="header">
+        <div data-role="navbar">
+            <span data-role="view-title"></span>
+            <a data-role="button" data-click="closeModalGhostChat" data-align="left" >Close</a>
+            <a data-role="button" data-click="sendGhostChat" data-align="right" ></i>Send</a>
+        </div>
+    </div>
+
+    <div id="ghostChatwrapper" style="width: 100%; height:100%;">
+        <div id="ghostChatToolbar" style="padding: 4px; background: #cccccc;">
+            <select title="Size" class="ql-size">
+                <option value="8px">Smaller</option>
+                <option value="10px">Small</option>
+                <option value="13px" selected>Normal</option>
+                <option value="18px">Big</option>
+                <option value="24px">Bigger</option>
+            </select>
+            <select title="Align" class="ql-align">
+                <option value="left" selected><i class="ghostIconNavbar fa fa-align-left"></i>Left</option>
+                <option value="center"><i class="ghostIconNavbar fa fa-align-center"></i>Center</option>
+                <option value="right"><i class="ghostIconNavbar fa fa-align-right"></i>Right</option>
+                <option value="justify"><i class="ghostIconNavbar fa fa-align-justify"></i>Justified</option>
+            </select>
+            <button title="Bold" class="ql-format-button ql-bold"><i class="ghostIconNavbar fa fa-bold"></i></button>
+            <button title="Italic" class="ql-format-button ql-italic"><i class="ghostIconNavbar fa fa-italic"></i></button>
+            <button title="Underline" class="ql-format-button ql-underline"><i class="ghostIconNavbar fa fa-underline"></i></button>
+            <button title="Bullet" class="ql-format-button ql-bullet"><i class="ghostIconNavbar fa fa-list-ul"></i></button>
+            <button title="List" class="ql-format-button ql-list"><i class="ghostIconNavbar fa fa-list-ol"></i></button>
+        </div>
+        <div id="ghostChatEditor" style="width:95%; min-height:250px; border: 1px solid #2e2e2e; padding: 4px; margin: 6px; color: #111111;"></div>
+    </div>
+
+</div>
+
 
     <!-- get started -->
 <div data-role="modalview" id="modalview-start" style="width: 90%; display:none;" class="appearance">
@@ -623,40 +658,7 @@
 
 </div>
 
-<div data-role="modalview" data-title="ghost Chat" id="modalview-ghostChat" data-layout="main" data-init="onInitGhostChat" data-open="onOpenGhostChat" >
-	 <div data-role="header">
-		 <div data-role="navbar">
-			 <span data-role="view-title"></span>
-			 <a data-role="button" data-click="closeModalGhostChat" data-align="left" >Close</a>
-			 <a data-role="button" data-click="sendGhostChat" data-align="right" ></i>Send</a>
-		 </div>
-	 </div>
 
-	 <div id="ghostChatwrapper" style="width: 100%; height:100%;">
-		 <div id="ghostChatToolbar" style="padding: 4px; background: #cccccc;">
-			 <select title="Size" class="ql-size">
-				 <option value="8px">Smaller</option>
-				 <option value="10px">Small</option>
-				 <option value="13px" selected>Normal</option>
-				 <option value="18px">Big</option>
-				 <option value="24px">Bigger</option>
-			 </select>
-			 <select title="Align" class="ql-align">
-				 <option value="left" selected><i class="ghostIconNavbar fa fa-align-left"></i>Left</option>
-				 <option value="center"><i class="ghostIconNavbar fa fa-align-center"></i>Center</option>
-				 <option value="right"><i class="ghostIconNavbar fa fa-align-right"></i>Right</option>
-				 <option value="justify"><i class="ghostIconNavbar fa fa-align-justify"></i>Justified</option>
-			 </select>
-			 <button title="Bold" class="ql-format-button ql-bold"><i class="ghostIconNavbar fa fa-bold"></i></button>
-			 <button title="Italic" class="ql-format-button ql-italic"><i class="ghostIconNavbar fa fa-italic"></i></button>
-			 <button title="Underline" class="ql-format-button ql-underline"><i class="ghostIconNavbar fa fa-underline"></i></button>
-			 <button title="Bullet" class="ql-format-button ql-bullet"><i class="ghostIconNavbar fa fa-list-ul"></i></button>
-			 <button title="List" class="ql-format-button ql-list"><i class="ghostIconNavbar fa fa-list-ol"></i></button>
-		 </div>
-		 <div id="ghostChatEditor" style="width:95%; min-height:250px; border: 1px solid #2e2e2e; padding: 4px; margin: 6px; color: #111111;"></div>
-	 </div>
-
- </div>
 </script>
 	
 
