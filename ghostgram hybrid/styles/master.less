@@ -165,6 +165,31 @@ form {
     	margin-right: 0px !important;
     }
 }
+
+.select {
+	border-bottom: 1px solid @grey200;
+    width: 100%;
+    border-radius: 3px;
+    overflow: hidden;
+    background: #fff url("../images/select-dropdown.svg") no-repeat 95% 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.select select {
+	padding: 5px 8px;
+    width: 120%;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    background-image: none;
+    -webkit-appearance: none;
+}
+
+.select select:focus {
+    outline: none;
+}
+
 .show {
     display: block !important;
 }
@@ -1055,6 +1080,7 @@ div.km-header a img{
     margin-top: 0;
     top: 0;
     border-bottom: 1px solid #E0E0E0;
+    background: #fff;
 }
 .km-root .km-pane .km-view.appearance .km-listview select {
     position: relative;
@@ -1265,7 +1291,8 @@ a:hover {
     font-family: 'Open Sans', sans-serif;
     padding: 1.2em;
 }
-#appDrawer > div > div.km-scroll-container {
+#appDrawer > div > div.km-scroll-container,
+#channelPresence > div > div.km-scroll-container {
     height: 100%;
 }
 .menuBox .km-button:not(.km-back) {
@@ -1396,12 +1423,15 @@ a:hover {
 }
 /* Chat menu */
 
-#channels-listview > li {
+#channels-listview { 
+	padding-bottom: 3rem;
+	li {
     border-bottom: 1px solid #E4E4E4 !important;
     background: #fff;
     z-index:9999;
     padding-top: 0px;
     padding-bottom: 0px;
+	}
 }
 .chat-mainBox h3 {
     margin-left: 0px;
@@ -1561,6 +1591,28 @@ a:hover {
 	padding: 0px !important;
 }
 
+.footerBtn-nav {
+	height: 3rem;
+	width: 3rem;
+	.shadow;
+	border-radius: 1.5rem !important;
+	text-align: center;
+	position: fixed;
+	bottom: 4rem;
+	right: 1rem;
+	p {
+		width: 60px;
+		position: absolute;
+		right: 4.5rem;
+		top: 1.25rem;
+	}
+	img {
+		right: 30px;
+		position: initial;
+		vertical-align: -webkit-baseline-middle;
+	}
+}
+
 .menuNav {
 	width: 100%;
 	li {
@@ -1610,6 +1662,7 @@ a:hover {
 	position: absolute;
 	bottom: 100%;
 	margin-top: -60px;
+	border-top: 1px solid @grey200;
 }
 
 #chatList-place-icon {
@@ -1896,6 +1949,7 @@ div.loginBox > form > div > ul > li {
 	height: 18px;
 }
 
+
 #place-checkIn-circle {
 	height: 4rem;
 	width: 4rem;
@@ -1958,7 +2012,7 @@ div.loginBox > form > div > ul > li {
 }
 
 .circleBtn-text {
-	color: @black;
+	color: #979797;
 }
 
 .km-flat .km-switch-handle,
@@ -1997,9 +2051,13 @@ div.loginBox > form > div > ul > li {
 	}
 }
 
-#contacts-listview > li,
-#contactimport-listview > li {
-	border-bottom: 1px solid @grey200;
+#contacts-listview,
+#contactimport-listview {
+	padding-bottom: 3rem;
+	li {
+		border-bottom: 1px solid @grey200;
+		background: #fff;
+	}
 }
 
 #contacts-listview li:nth-child(2){

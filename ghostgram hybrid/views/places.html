@@ -2,7 +2,6 @@
    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" id="buttonOnLocateMe" data-click="onLocateMe" data-align="right"> <i class="ghostIconNavbar fa fa-map-marker"></i> </a>
         </div>
     </div>	
     <div class="mapInfo">
@@ -20,12 +19,6 @@
 
          <ul id="places-listview"></ul>
      </div>
-     <div class="hidden" data-role="footer">
-            <a class="btnBlue" id="place-checkIn-circle" data-role="button" data-rel="modalview" href="#modalview-places-locate" data-click="findplaceTest">
-	     		<p class="circleBtn-text" id="place-checkin-text">check in</p>
-	     		<img src="images/check-in.svg" />
-     		</a>
-    </div>
 
      <ul data-role="actionsheet" id="placesActions" data-popup='{"direction": "left"}'>
          <li id="do-check-in-place"><a data-action="doCheckInPlace">Check In</a></li>
@@ -34,6 +27,9 @@
      </ul>
 
      <div class="footerMenu" data-role="footer">
+     		<a class="btnYellow footerBtn-nav" id="buttonOnLocateMe" data-role="button" data-click="onLocateMe">
+		     	<img src="images/nav-places-white.svg" />
+     		</a>
 	  		<ul class="list-inline menuNav">
 	  			<li>
 	  				<a data-role="button" href="#home"><img src="images/nav-home.svg" /></a>

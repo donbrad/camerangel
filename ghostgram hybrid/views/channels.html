@@ -3,15 +3,12 @@
         <div data-role="navbar">
             <img src="images/ghost.svg" id="nav-ghost" height="25"/>
             <span data-role="view-title"></span>
-            
-           <a data-align="right" data-role="button" href="#addChannel">
-           		<img src="images/menu-add.svg" />
-           </a>
         </div>
     </div>
      <div>
          <ul id="channels-listview"></ul>
      </div>
+     	
      
     <ul data-role="actionsheet" id="channelActions" data-popup='{"direction": "left"}'>
         <li><a data-action="eraseChannel">Erase Chat Content</a></li>
@@ -31,6 +28,9 @@
         <li><a data-action="deleteChannel">Delete Chat</a></li>
     </ul>
     <div class="footerMenu" data-role="footer">
+    		<a class="btnYellow footerBtn-nav" id="addChannelBtn" data-role="button" href="#addChannel">
+		     	<img src="images/nav-add-white.svg" />
+     		</a>
 	  		<ul class="list-inline menuNav">
 	  			<li>
 	  				<a data-role="button" href="#home"><img src="images/nav-home.svg" id="nav-home" /></a>
@@ -129,7 +129,7 @@
 </script>
  
 
-<div data-role="view"  data-title='Add Chat' id="addChannel" style="display: none;"  data-init="onShowAddChannel" class="appearance">
+<div data-role="view" data-title='Add Chat' id="addChannel" style="display: none;" data-init="onShowAddChannel" class="appearance" data-transition="slide">
    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -227,7 +227,7 @@
             <img src="" id="channelImage" height="32" style="vertical-align: middle; border-radius: 50%"/>
             <span data-role="view-title"></span>
             <a data-align="right" data-role="button" id="messagePresenceButton" data-rel="drawer" href="#channelPresence"> 
-            	<i class="ghostIconNavbar fa fa-users"></i> 
+            	<img src="images/group-icon.svg" />
             </a>
         </div>
          
@@ -360,15 +360,10 @@
      </div>
 </script>
 
-<div data-role="drawer" id="channelPresence" style="width: 240px" data-title="Presence" data-swipe-to-open="false" data-position='right' data-init="doInitChannelPresence" data-show="doShowChannelPresence" data-views="['channel']">
-    <header data-role="header">
-        <div data-role="navbar">
-            <span data-role="view-title"></span>
-        </div>
-    </header>
-
+<div data-role="drawer" id="channelPresence" style="width: 240px" data-swipe-to-open="false" data-position='right' data-init="doInitChannelPresence" data-show="doShowChannelPresence" data-views="['channel']">
+    <div class="menuBox">
+    	<ul id="channelPresence-listview"></ul>
+    </div>
 	
-    <ul id="channelPresence-listview">
-		
-    </ul>
+    
 </div>

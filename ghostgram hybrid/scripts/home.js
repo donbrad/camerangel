@@ -179,8 +179,7 @@ function onShowHome(e) {
     //$(".user-status").velocity("fadeIn", {delay:1000});
         
     APP.models.presence.current.bind('change' , syncPresence);
-
-    console.log(APP.models.profile.currentUser);
+    
 } 
 
 function testingStatus(e) {
@@ -271,7 +270,7 @@ function homeSignin (e) {
 			APP.models.profile.currentUser.set('privateKey', privateKey);
 			var phoneVerified = APP.models.profile.parseUser.get('phoneVerified');
             APP.models.profile.currentUser.set('phoneVerified', phoneVerified);
-			console.log(APP.models.profile.parseUser);
+			
             if (phoneVerified) {
 				APP.setAppState('phoneVerified', true);
 				deleteNotificationModel('phoneVerified');
@@ -774,5 +773,4 @@ function closeTestingBox(){
 function go2settings(e){
 	e.preventDefault;
 	APP.kendo.navigate("views/settings.html");
-	console.log("settings");
 }

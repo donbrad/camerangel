@@ -95,13 +95,15 @@ function doCheckInPlace (e) {
 }
 
 function onShowPlaces(e) {
-	if (e.preventDefault !== undefined)
+	if (e.preventDefault !== undefined){
 		e.preventDefault();
+	}
 }
 
 function onShowEditPlace(e) {
-	if (e.preventDefault !== undefined)
+	if (e.preventDefault !== undefined){
 		e.preventDefault();
+	}
 }
 
 function parseAddress(address) {

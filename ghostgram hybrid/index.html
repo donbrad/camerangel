@@ -99,7 +99,7 @@
     <!-- Menu -->
 <div class="menuBox">
     <div class="profileTop">
-        <div class="profileImg" >
+        <div class="profileImg">
             <!-- User photo -->
             <a data-role="button" data-rel="modalview" href="#modalview-profilePhotoEdit"><img id="profilePhoto" class="myPublicImg"  /></a>
         </div>
@@ -155,13 +155,13 @@
 <div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" style="display:none;" data-show="onShowHome" >
 	<div data-role="header">
       <div data-role="navbar">
-        	<a data-role="button" data-click="go2settings" data-align="right">
+        	<a data-role="button" data-rel="actionsheet" href="#settingsAction" data-align="right">
             	<img id="nav-gear" src="images/nav-gear.svg"/>
             </a>
         <div class="header-img" id="logo-header">
         	<img src="images/logo-blue.svg" class="nav-logo"/>
         </div>
-        <div class="user-status" data-rel="modalview" href="#modalview-profilePhotoEdit" data-click="testingStatus" data-role="button" data-align="left">
+        <div class="user-status" data-rel="modalview" href="#modalview-profilePhotoEdit" data-role="button" data-align="left">
 	        	<div class="left home-status-img">
 	        		<span id="home-status"><img width="18" src="images/status-available.svg"/></span>
 	        		<img src="" class="myPublicImg circle-img-home" />
@@ -257,7 +257,7 @@
         </p>
     </div>
     <div class="clearfix"></div>
-    <div class="loginBox whiteBk">
+    <div class="loginBox">
         <h3>
             Login
         </h3>

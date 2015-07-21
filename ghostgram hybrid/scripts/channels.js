@@ -236,6 +236,14 @@ function onInitChannels (e) {
     	},
     	
     });
+
+    var scroller = e.view.scroller;
+    var currentScrollPos = 0
+    scroller.bind("scroll", function(e) {
+    // Todo (JE) - test interaction for button
+
+    });
+
    
 }
 
@@ -514,9 +522,9 @@ function doInitChannelMembers (e) {
 }
 
 function doInitChannelPresence (e) {
-	if (e.preventDefault !== undefined)
+	if (e.preventDefault !== undefined){
 		e.preventDefault();
-
+	}
 	$("#channelPresence-listview").kendoMobileListView({
         dataSource: APP.models.channel.membersDS,
         template: $("#memberTemplate").html(),
@@ -546,10 +554,8 @@ function doShowChannelPresence (e) {
 		}
 		APP.models.channel.membersDS.add(privateContact);
 	} else {
-		for (var i=0; i<members.length; i++) {
-			var contact = findContactByUUID(members[i]);
-			APP.models.channel.membersDS.add(contact);
-		}
+		console.log(members); 
+		
 	}	
   
 }
