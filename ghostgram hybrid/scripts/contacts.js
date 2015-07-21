@@ -984,7 +984,7 @@ function sendGhostEmail(e) {
         cordova.plugins.email.open({
             to:          [email],
             subject:     'ghostEmail',
-            body:        '<h2>ghostEmail From ' + thisUser+ '</h2> <p>'+ content +'</p>',
+            body:        '<h2>ghostEmail From ' + thisUser+ '</h2> <p>'+ content +'</p> <p>'+ encryptContent + '</p>',
             isHtml:      true
         }, function (msg) {
             // navigator.notification.alert(JSON.stringify(msg), null, 'EmailComposer callback', 'Close');
