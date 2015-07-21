@@ -967,13 +967,6 @@ function onShowGhostEmail(e) {
     // Set focus to the editor
     $('#ghostEmailEditor').focus();
 
-    // Set the title...   should be easier!
-    var navbar = app.view()
-        .header
-        .find(".km-navbar")
-        .data("kendoMobileNavBar");
-
-    navbar.title(APP.views.ghostEditor.title);
 }
 
 function sendGhostEmail(e) {
