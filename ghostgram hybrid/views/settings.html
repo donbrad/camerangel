@@ -16,25 +16,20 @@
 		<form>
 		  <ul data-role="listview" data-style="inset">
 				 <li>
-					<label>Photo Size
-						<div class="select">
-							<select id="settingsPhotoSize">
-		                        <option value="normal">Normal - Smaller Size & Bandwidth</option>
-		                        <option value="retina">Retina - Larger Size & Bandwidth</option>
-		                    </select>
-		                </div>
+					<label>Use Retina Photos
+						<input type="checkbox" id="settingsRetinaPhoto" data-role="switch" />
 					</label>
 				</li>
 				 <li>
-					<label> Photo Sync
-						<div class="select">
-							 <select id="settingsPhotoSync">
-		                        <option value="wifi">WIFI only - Sync only on WIFI</option>
-		                        <option value="retina">Always - Sync on WIFI & Cellular</option>
-		                    </select>
-		                </div>
+					<label> Sync on WIFI Only
+						<input type="checkbox" id="settingsWIFIOnly" data-role="switch" />
 					</label>
 				</li>
+			  <li>
+				  <label> Keep Original Photo
+					  <input type="checkbox" id="settingsKeepPhoto" data-role="switch" />
+				  </label>
+			  </li>
 			</ul>		
 		</form>
 

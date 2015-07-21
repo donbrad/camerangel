@@ -13,7 +13,7 @@
          </div>
 
          <div id="current-place">
-            <h1>Checked in to:</h1>
+            <h1>Checked-in to:</h1>
             <div></div>
          </div>
 
@@ -21,7 +21,8 @@
      </div>
 
      <ul data-role="actionsheet" id="placesActions" data-popup='{"direction": "left"}'>
-         <li id="do-check-in-place"><a data-action="doCheckInPlace">Check In</a></li>
+         <li id="check-out"><a data-action="checkOut">Check Out</a></li>
+         <li id="go-to-chat"><a data-action="goToChat">Go To Chat</a></li>
          <li><a data-action="doEditPlace">Edit Place</a></li>
          <li><a data-action="doDeletePlace">Delete Place</a></li>
      </ul>
@@ -50,6 +51,18 @@
 	  </div>
 
  </div>
+
+<!-- Nearby Results -->
+<div data-role="modalview" data-tile="Nearby Results" id="nearby-results" data-layout="main" style="height:90%; width:90%;">
+    <div data-role="header">
+        <div data-role="navbar">
+            <span>Nearby Results</span>
+            <a id="close-nearby-results" data-role="button" data-click="closeNearbyResults"><i class="fa fa-close"></i></a>
+        </div>
+    </div>
+
+    <ul id="nearby-results-list"></ul>
+</div>
 
 <!-- Locate Modal-->
 <div data-role="modalview" style="width: 50%; display: none;" data-title="Locating" id="modalview-places-locate" data-layout="main" data-model="APP.models.places">
@@ -146,6 +159,7 @@
 
  </div>
 
+
 <div data-role="modalview" id="modalview-addPlace" style="width: 90%; display: none;" class="appearance" data-before-open="onShowAddPlace">
     <div data-role="header">
         <div data-role="navbar">
@@ -195,11 +209,10 @@
     </div>
 </div>
 
-
- <div data-role="view" id="editPlace" style="display: none;" data-model="APP.models.places.currentPlace" class="appearance" data-show="onShowEditPlace">
+<div data-role="view" id="editPlace" class="appearance" data-show="onShowEditPlace" data-hide="onHideEditPlace">
      <div data-role="header">
          <div data-role="navbar">
-             <a data-role="backbutton" id="bbuttonEditPlace" data-align="left" >Back</a>
+             <a data-role="backbutton" id="buttonEditPlace" data-align="left">Back</a>
              <span>Edit Place</span>
          </div>
      </div>
@@ -207,60 +220,63 @@
      <form style="clear: both;">
          <ul data-role="listview" data-style="inset" >
              <li>
-                 <label> Name
-                     <input type="text" id="editPlaceName" required data-bind="value: name" />
-                 </label>
+                 <label> Name </label>
+                 <input type="text" id="editPlaceName" required />
              </li>
 
              <li>
-                 <label> Address
-                     <input type="text" id="editPlaceAddress" required data-bind="value: address"/>
-                 </label>
+                 <label> Address </label>
+                 <input type="text" id="editPlaceAddress" required /><span id="restOfAddress"></span>
              </li>
              <li>
-                 <label> Enable Privacy Mode (Screen is blurred)
-                     <select id="editPlacePrivacy" data-bind="value: privacy">
-                         <option value=true>Yes - It's a public place</option>
-                         <option value=false>No - I have privacy here</option>
-                     </select>
-                 </label>
+                 <label> Available for call/chat ?</label>
+                 <input type="checkbox" id="editPlaceIsAvailable" data-role="switch" />
              </li>
 
              <li>
-                 <label> Visible Here (Visible to others...)
-                     <select id="editPlaceVisible" data-bind="value: visible">
-                         <option value=true>Yes - Let people know I'm here</option>
-                         <option value=false>No - Keep me hidden</option>
-                     </select>
-                 </label>
+                 <label> Visible to Others Here  </label>
+                 <input type="checkbox" id="editPlaceIsVisible" data-role="switch" />
+             </li>
+
+             <li>
+                 <label> Automatically Check In </label>
+                 <input type="checkbox" id="editPlaceAuto" data-role="switch" />
              </li>
 
          </ul>
      </form>
-
-
-
- </div>
+    </div>
 
 
  <script type="text/x-kendo-template" id="placesTemplate">
      <div style="min-height: 38px; border-radius: 9px; background-color: \\#fff; padding: 4px;">
          # if (data.category === 'Place') { #
 	         <h4>#: data.name # </h4>
-	         <p>#: data.address # </p>
+	         <p>#: data.streetNumber # #: data.street #, #: data.city #, #: data.state # </p>
 	         <p class="helper">
 			   <span class="left">
-			 # if (visible === 'true') { # 
-			 	<img src="images/place-public.svg" /> Public # } 
-			 else { # 
-			 	<img src="images/place-private.svg" /> Secret # }#
+			 # if (visible === true) { # 
+			 	<img src="images/place-public.svg" /> Public
+			 # } else { # 
+			 	<img src="images/place-private.svg" /> Secret
+             # }#
 			   </span>
 	         </p>
 	         <div class="clearfix"> </div>
          # } else { #
-            <div class="ghostText">#: data.name # </div>
-            #: console.log(data) #
+            # if (data.name === '' || data.name === undefined) { #
+                <div class="ghostText">#: data.streetNumber # #: data.street #, #: data.city #, #: data.state #</div>
+            # } else { #
+                <div class="ghostText">#: data.name # </div>
+            # } #
          # } #
+     </div>
+ </script>
+
+ <script type="text/x-kendo-template" id="nearby-results-template">
+     <div style="min-height: 38px; border-radius: 9px; background-color: \\#fff; padding: 4px;">
+         <h4>#: data.name # </h4>
+         <p>#: data.vicinity # </p>
      </div>
  </script>
 

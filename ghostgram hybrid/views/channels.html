@@ -158,14 +158,27 @@
                 <input type="search" style="display: none" id="channels-addChannel-description" value="" placeholder="Description"/>
                 <a class="btnClear-grey" data-role="button" data-click="showChatDescription" id="addChatDescription">Add description</a>
             </li>
-              <li class="hidden">
+			<li >
                <label>Archive
                     <select id="channels-addChannel-archive">
-                        <option value="false">No: Nothing is archived</option>
-                        <option value="true">Yes: Content can be saved</option>
+                        <option value="1">One (1) Day</option>
+                        <option value="7">Seven (7) Days</option>
+						<option value="30">Thirty (30) Days</option>
                     </select>
                 </label>
             </li>
+			<li>
+				<label class="addChannelEvent hidden">Place (Location for event)
+					<select id="channels-addChannel-place">
+						<option value="0">None - Virtual Event</option>
+					</select>
+				</label>
+				<label class="addChannelEvent hidden">Date (Date of the event)
+					<input type="date" id="channels-addChannel-eventDate"  />
+				</label>
+
+				<a class="btnClear-grey" data-role="button" data-click="doShowEventInputs" id="addChatEvent">Is This An Event?</a>
+			</li>
         </ul>
         <p class="right-txt">
         	<a id="addChat-createBtn" class="btnClear" data-click="addChannel" type="button" data-role="button">Next - Invite friends</a>

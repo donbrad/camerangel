@@ -963,6 +963,7 @@ function onShowGhostEmail(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
     }
+    $('#ghostEmailEditor').focus();
 }
 
 function sendGhostEmail(e) {

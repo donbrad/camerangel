@@ -1,8 +1,55 @@
-
 function onInitPlaces(e) {
 	e.preventDefault();
 
-	APP.models.places.placeListDS.data(APP.models.places.placesDS.data());
+	APP.models.places.locatorActive = false;
+
+	$('#nearby-results-list').kendoMobileListView({
+		template: $("#nearby-results-template").html(),
+		click: function (e) {
+			var placeLatLng = new google.maps.LatLng(e.dataItem.geometry.location.A, e.dataItem.geometry.location.F);
+			APP.map.geocoder.geocode({ 'latLng': placeLatLng }, function (geoResults, geoStatus) {
+				if (geoStatus !== google.maps.GeocoderStatus.OK) {
+					navigator.notification.alert('Something went wrong with the Google geocoding service.');
+					return;
+				}
+				if (geoResults.length === 0 || geoResults[0].types[0] !== 'street_address') {
+					navigator.notification.alert('We couldn\'t match your position to a street address.');
+					return;
+				}
+
+				var address = getAddressFromComponents(geoResults[0].address_components);
+
+				var newPlace = APP.models.places.placesDS.add({
+					uuid: uuid.v4(),
+					category: 'Place',
+					placeId: e.dataItem.place_id,
+					name: e.dataItem.name,   // Name created / edited by user
+					venueName: e.dataItem.name,   // Name from googlePlace or factual
+					streetNumber: address.streetNumber,
+					street: address.street,
+					city: address.city,
+					state: address.state,
+					zip: address.zip,
+					country: address.country,
+					googleId: e.dataItem.id,
+					factualId: '',
+					lat: e.dataItem.geometry.location.A,
+					lng: e.dataItem.geometry.location.F,
+					publicName: e.dataItem.name,
+					alias: '',
+					isAvailable: true,
+					isVisible: true,
+					isPrivate: true,
+					autoCheckIn: false
+				});
+
+				APP.models.places.placesDS.sync();
+				checkInTo(newPlace);
+
+				$('#nearby-results').data('kendoMobileModalView').close();
+			});
+		}
+	});
 
 	// Activate clearsearch and zero the filter when it's called
 	$('#placeSearchQuery').clearSearch({
@@ -37,73 +84,216 @@ function onInitPlaces(e) {
 		}
 	});
 
+	var syncPlaces = function () {
+		APP.models.places.placesDS.sync();
+	}
+
+	var clickPlace = function (e) {
+		if (APP.models.places.currentPlace !== undefined) {
+			APP.models.places.currentPlace.unbind('change', syncPlaces);
+		}
+		APP.models.places.currentPlace = e.dataItem;
+		APP.models.places.currentPlace.bind('change', syncPlaces);
+		$("#placesActions").data("kendoMobileActionSheet").open();
+	}
+
 	$("#places-listview").kendoMobileListView({
-		dataSource: APP.models.places.placeListDS,
+		dataSource: APP.models.places.placesDS,
 		fixedHeaders: true,
 		template: $("#placesTemplate").html(),
-		click: function(e) {
-			var place = e.dataItem;
-			APP.models.places.currentPlace = place;
-			$("#placesActions").data("kendoMobileActionSheet").open();
+		click: function (e) {
+			$('#check-out').hide();
+			clickPlace(e);
 		}
 	});
 
+	// Fake an event by binding
 	$('#current-place > div').click( function () {
-		var placesActions = $('#placesActions').data('kendoMobileActionSheet');
+		$('#check-out').show();
 
-		$('#do-check-in-place').hide();
-
-		placesActions.one('close', function () {
-			$('#do-check-in-place').show();
+		APP.models.places.placesDS.filter({
+			field: 'uuid',
+			operator: 'eq',
+			value: APP.models.profile.currentUser.currentPlaceUUID
 		});
-		placesActions.open();
+
+		var view = APP.models.places.placesDS.view();
+		clickPlace({
+			dataItem: view[0]
+		});
+
+		resetPlacesFilter();
 	});
 }
 
-function doEditPlace (e) {
-	if (e.preventDefault !== undefined)
-		e.preventDefault();
-
-	APP.kendo.navigate('#editPlace');
-}
-
-function doDeletePlace (e) {
-	if (e.preventDefault !== undefined)
-		e.preventDefault();
-
-	deleteParseObject("places", 'uuid', APP.models.places.currentPlace.uuid);
-	APP.models.places.placesDS.remove(APP.models.places.currentPlace);
-}
-
-function doCheckInPlace (e) {
-	if (e.preventDefault !== undefined) {
-		e.preventDefault();
+function resetPlacesFilter() {
+	if (APP.models.profile.currentUser.currentPlaceUUID === undefined) {
+		APP.models.places.placesDS.filter({});
+		return;
 	}
+
+	APP.models.places.placesDS.filter({
+		field: 'uuid',
+		operator: 'neq',
+		value: APP.models.profile.currentUser.currentPlaceUUID
+	});
+}
+
+function checkInTo(place) {
+	APP.models.profile.currentUser.currentPlaceUUID = place.uuid;
 
 	var templateText = $('#placesTemplate').text();
 	var template = kendo.template(templateText);
 
 	$('#current-place').show();
-	$('#current-place > div').html(template(APP.models.places.currentPlace));
+	$('#current-place > div').html(template(place));
 
-	if (APP.models.places.checkedInPlace !== undefined) {
-		APP.models.places.placeListDS.add(APP.models.places.checkedInPlace);
+	// Then filter out currently-checked-in-place
+	resetPlacesFilter();
+}
+
+
+function checkOut() {
+	APP.models.profile.currentUser.currentPlaceUUID = '';
+
+	$('#current-place').hide();
+
+	resetPlacesFilter();
+}
+
+function doEditPlace (e) {
+	if (e.preventDefault !== undefined) {
+		e.preventDefault();
 	}
-	APP.models.places.placeListDS.remove(APP.models.places.currentPlace);
-	APP.models.places.checkedInPlace = APP.models.places.currentPlace;
+
+	APP.kendo.navigate('#editPlace');
+}
+
+// Tried everything to re-bind the editPlace view to a new model--nothing worked, so gotta do custom
+// binding
+function onShowEditPlace (e) {
+	if (e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+
+	$('#editPlaceName')
+		.val(APP.models.places.currentPlace.name)
+		.on('change', function () {
+			APP.models.places.currentPlace.set('name', $('#editPlaceName').val());
+		});
+
+	if (APP.models.places.currentPlace.category === 'Location') {
+		$('#editPlaceAddress').show().next('br').remove();
+		$('#editPlaceAddress')
+			.val(APP.models.places.currentPlace.streetNumber)
+			.on('change', function () {
+				APP.models.places.currentPlace.set('streetNumber', $('#editPlaceAddress').val());
+			});
+
+		$('#restOfAddress').html(
+			APP.models.places.currentPlace.street + ', ' +
+			APP.models.places.currentPlace.city + ', ' +
+			APP.models.places.currentPlace.state
+		);
+	} else {
+		$('#editPlaceAddress')
+			.after('<br />')
+			.hide();
+		$('#restOfAddress').html(
+			APP.models.places.currentPlace.streetNumber + ' ' +
+			APP.models.places.currentPlace.street + ', ' +
+			APP.models.places.currentPlace.city + ', ' +
+			APP.models.places.currentPlace.state
+		);
+	}
+
+	$('#editPlaceIsAvailable').data('kendoMobileSwitch').check(APP.models.places.currentPlace.isAvailable);
+	$('#editPlaceIsAvailable').data('kendoMobileSwitch').bind('change', function () {
+		APP.models.places.currentPlace.set('isAvailable', $('#editPlacePrivacy').data('kendoMobileSwitch').check());
+	});
+
+	$('#editPlaceIsVisible').data('kendoMobileSwitch').check(APP.models.places.currentPlace.isVisible);
+	$('#editPlaceIsVisible').data('kendoMobileSwitch').bind('change', function () {
+		APP.models.places.currentPlace.set('isVisible', $('#editPlaceVisible').data('kendoMobileSwitch').check());
+	});
+
+	$('#editPlaceAuto').data('kendoMobileSwitch').check(APP.models.places.currentPlace.autoCheckIn);
+	$('#editPlaceAuto').data('kendoMobileSwitch').bind('change', function () {
+		APP.models.places.currentPlace.set('autoCheckIn', $('#editPlaceAuto').data('kendoMobileSwitch').check());
+	});
+}
+
+function onHideEditPlace (e) {
+	if (e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+
+	$('#editPlaceName').off('change');
+	$('#editPlaceAddress').off('change');
+	$('#editPlacePrivacy').data('kendoMobileSwitch').unbind('change');
+	$('#editPlaceVisible').data('kendoMobileSwitch').unbind('change');
+
+	$("#places-listview").data('kendoMobileListView').refresh();
+	// "Refresh" the current place
+	APP.models.places.placesDS.filter({
+		field: 'uuid',
+		operator: 'eq',
+		value: APP.models.profile.currentUser.currentPlaceUUID
+	});
+	var view = APP.models.places.placesDS.view();
+	if (view.length !== 0) {
+		checkInTo(view[0]);
+		resetPlacesFilter();
+	}
+}
+
+function doDeletePlace (e) {
+	if (e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+
+	if (APP.models.places.currentPlace.get('uuid') === APP.models.profile.currentUser.currentPlaceUUID) {
+		checkOut();
+	}
+
+	APP.models.places.placesDS.remove(APP.models.places.currentPlace);
+	APP.models.places.placesDS.sync();
+}
+
+
+function goToChat (e) {
+	if (e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+
+	// Something
 
 }
 
 function onShowPlaces(e) {
-	if (e.preventDefault !== undefined){
+	if (e.preventDefault !== undefined) {
 		e.preventDefault();
 	}
-}
 
-function onShowEditPlace(e) {
-	if (e.preventDefault !== undefined){
-		e.preventDefault();
-	}
+	navigator.geolocation.getCurrentPosition( function (position) {
+		var locations = matchLocationToUserPlace(position.coords.latitude, position.coords.longitude);
+		// If no matching places, or the matched place has auto-check-in disabled, return out
+		if (locations.length === 0) {
+			checkOut();
+			return;
+		}
+		if (locations[0].get('uuid') === APP.models.profile.currentUser.currentPlaceUUID) {
+			return;
+		}
+		if (locations[0].get('autoCheckIn') !== true) {
+			checkOut();
+			return;
+		}
+
+		checkOut();
+		checkInTo(locations[0]);
+	});
+
 }
 
 function parseAddress(address) {
@@ -164,122 +354,137 @@ function updateCurrentLocation (loc) {
 	}
 }
 
+function getAddressFromComponents(addressComponents) {
+	var address = {};
+
+	address.streetNumber = _.findWhere(addressComponents, { 'types': [ 'street_number' ] });
+	address.streetNumber = address.streetNumber === undefined ? '' : address.streetNumber.short_name;
+
+	address.street = _.findWhere(addressComponents, { 'types': [ 'route' ] });
+	address.street = address.street === undefined ? '' : address.street.short_name;
+
+	address.city = _.findWhere(addressComponents, { 'types': [ 'locality', 'political' ] });
+	address.city = address.city === undefined ? '' : address.city.short_name;
+
+	address.state = _.findWhere(addressComponents, { 'types': [ 'administrative_area_level_1', 'political' ] });
+	address.state = address.state === undefined ? '' : address.state.short_name;
+
+	address.zip = _.findWhere(addressComponents, { 'types': [ 'postal_code' ] });
+	address.zip = address.zip === undefined ? '' : address.zip.short_name;
+
+	address.country = _.findWhere(addressComponents, { 'types': [ 'country', 'political' ] });
+	address.country = address.country === undefined ? '' : address.country.short_name;
+
+	return address;
+}
+
 function onLocateMe(e) {
 	if (e.preventDefault !== undefined) {
 		e.preventDefault();
 	}
-
-
-	var latlng = new google.maps.LatLng(APP.location.position.lat, APP.location.position.lng);
-	APP.models.places.geoPlacesDS.data([]);
-	var locationsArray = [], placesArray = [];
-
-	var thisLocation = '';
-
-	// Is current location an existing user location?
-	locationsArray = matchLocationToUserPlace(APP.location.position.lat, APP.location.position.lng);
-	if (locationsArray.length !== 0) {
-		thisLocation = locationsArray[0];
-		updateCurrentLocation(thisLocation);
-
+	if (APP.models.places.locatorActive) {
 		return;
 	}
+	APP.models.places.locatorActive = true;
 
-	var loc;
+	mobileNotify('Determining your current location...');
 
-	// Reverse Geocode first to ensure we have a valid address
-	APP.map.geocoder.geocode({'latLng': latlng}, function(results, status) {
-		if (status !== google.maps.GeocoderStatus.OK) {
-			mobileNotify('Geocoder failed with: ' + status);
+	navigator.geolocation.getCurrentPosition( function (position) {
+		APP.models.places.locatorActive = false;
+		var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+		var places = APP.map.googlePlaces;
+
+		var locations = matchLocationToUserPlace(position.coords.latitude, position.coords.longitude);
+		if (locations.length !== 0) {
+			checkInTo(locations[0]);
 			return;
 		}
 
-		if (results.length === 0) {
-			mobileNotify('No results found for location');
-			return;
-		}
+		places.nearbySearch({
+			location: latlng,
+			radius: 10,
+			types: ['establishment']
+		}, function (placesResults, placesStatus) {
+			if (placesStatus === google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
+				APP.map.geocoder.geocode({ 'latLng': latlng }, function (geoResults, geoStatus) {
+					if (geoStatus !== google.maps.GeocoderStatus.OK) {
+						navigator.notification.alert('Something went wrong with the Google geocoding service.');
+						return;
+					}
+					if (geoResults.length === 0 || geoResults[0].types[0] !== 'street_address') {
+						navigator.notification.alert('We couldn\'t match your position to a street address.');
+						return;
+					}
 
-		var number = '', street = '', city='', state = '', zip = '';
-		loc = {
-			category: 'Location',
-			googleId: results[0].place_id,
-			name: 'Address',
-			lat: results[0].geometry.location.A,
-			lng: results[1].geometry.location.F
-		};
+					navigator.notification.confirm(
+						'Do you want to check into street address '+geoResults[0].formatted_address+'?',
+						function () {
 
-		for (var i=0; i < results[0].address_components.length; i++) {
-			if (results[0].address_components[i].types.length === 0) {
-				break;
-			}
+							var address = getAddressFromComponents(geoResults[0].address_components);
 
-			switch (results[0].address_components[i].types[0]) {
-				case "street_number" :
-					number = results[0].address_components[i].long_name + " ";
-					break;
+							var newPlace = APP.models.places.placesDS.add({
+								uuid: uuid.v4(),
+								category: 'Location',   // valid categories are: Place and Location
+								placeId: '',
+								name: '',
+								venueName: '',
+								streetNumber: address.streetNumber,
+								street: address.street,
+								city: address.city,
+								state: address.state,
+								zip: address.zip,
+								country: address.country,
+								googleId: '',
+								factualId: '',
+								lat: position.coords.latitude,
+								lng: position.coords.longitude,
+								publicName: '',
+								alias: '',
+								isVisible: true,
+								isPrivate: true,
+								autoCheckIn: false
+							});
 
-				case "route" :
-					street = results[0].address_components[i].long_name + ", ";
-					break;
+							APP.models.places.placesDS.sync();
 
-				case "locality" :
-					city = results[0].address_components[i].long_name + ", ";
-					break;
-
-				case "administrative_area_level_1" :
-					state = results[0].address_components[i].short_name;
-					break;
-
-				case "postal_code" :
-					zip = "  " + results[0].address_components[i].long_name;
-					break;
-
-
-			}
-		}
-
-		loc.address = number + street + city + state + zip;
-		APP.models.places.geoPlacesDS.add(loc);
-
-		// add this results to the locationsDS
-		locationsArray = results;
-		placesGPSSearch(function (results, status) {
-			if (status !== null || results === null) {
-				return;
-			}
-			if (results.length === 0) {
-				mobileNotify('No results found for locaiton');
-				return;
-			}
-
-			for (var j=0; j<results.length; j++) {
-				if (results[j].types[results[j].types.length-1] !== 'establishment') {
-					return;
-				}
-
-				var place = APP.models.places.geoPlacesDS.add({
-					category: 'Place',
-					googleId: results[j].place_id,
-					name: results[j].name,
-					address: results[j].vicinity,
-					lat: results[j].geometry.location.A,
-					lng: results[j].geometry.location.F,
-					privacy: 'false',
-					visible: 'false'
+							checkInTo(newPlace);
+						}
+					)
+					
 				});
 
-				APP.models.places.placeListDS.add(place);
+				return;
+			} else if (placesStatus !== google.maps.places.PlacesServiceStatus.OK) {
+				navigator.notification.alert('Something went wrong with the Google Places service. '+placesStatus);
+				return;
 			}
+
+			var nearbyResults = new kendo.data.DataSource();
+
+			placesResults.forEach( function (placeResult) {
+				nearbyResults.add(placeResult);
+			});
+
+			$('#nearby-results').data('kendoMobileModalView').open();
+			$('#nearby-results-list').data('kendoMobileListView').setDataSource(nearbyResults);
+
+			// Show modal letting user select current place
+
 		});
 	});
-
 }
-function matchLocationToUserPlace  (lat, lng) {
-	var array = APP.models.places.placesDS.data(), matchArray = [];
 
-	for (var i=0; i< array.length; i++){
-		if (inPlaceRadius(lat, lng, array[i].lat,array[i].lng, 50)){
-			matchArray.push(array[i]);
+function closeNearbyResults() {
+	$('#nearby-results').data('kendoMobileModalView').close();
+}
+
+function matchLocationToUserPlace  (lat, lng) {
+	var placesData = APP.models.places.placesDS.data();
+
+	var matchArray = [];
+	for (var i=0; i< placesData.length; i++){
+		if (inPlaceRadius(lat, lng, placesData[i].lat,placesData[i].lng, 50)){
+			matchArray.push(placesData[i]);
 		}
 	}
 
@@ -377,8 +582,8 @@ function addPlaceAdd(e) {
 	place.set('googleId', APP.models.places.currentGeoPlace.place_id);
 	place.set('name', $('#addPlaceName').val());
 	place.set('address', $('#addPlaceAddress').val());
-	place.set('privacy', $('#addPlacePrivacy').val());
-	place.set('visible', $('#addPlaceVisible').val());
+	place.set('isPrivate', $('#addPlacePrivacy').val());
+	place.set('isVisible', $('#addPlaceVisible').val());
 	place.set('lat',  APP.models.places.currentGeoPlace.lat);
 	place.set('lng', APP.models.places.currentGeoPlace.lng);
 	
