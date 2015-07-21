@@ -970,6 +970,27 @@ function sendGhostEmail(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
     }
+    var content = $('#ghostEmailEditor').html();
+    var contactKey = APP.models.contacts.currentContact.get('publicKey'), email = APP.models.contacts.currentContact.get('email');
+    if (contactKey === null) {
+        mobileNotify("Invalid Public Key for " + APP.models.contacts.currentContact.get('name'));
+        return;
+    }
+    var encryptContent = cryptico.encrypt(content, contactKey);
+    if (window.navigator.simulator === true){
+        alert("Mail isn't supported in the emulator");
+    } else {
+        var thisUser = APP.models.profile.currentUser.get('name');
+        cordova.plugins.email.open({
+            to:          [email],
+            subject:     'ghostEmail',
+            body:        '<h2>ghostEmail From ' + thisUser+ '</h2> <p>'+ content +'</p>',
+            isHtml:      true
+        }, function (msg) {
+            // navigator.notification.alert(JSON.stringify(msg), null, 'EmailComposer callback', 'Close');
+        });
+    }
+
 }
 
 function closeAddContact() {
