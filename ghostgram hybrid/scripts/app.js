@@ -52,6 +52,7 @@
 					phone: '',
 					alias: '',
 					aliasPhoto: '',
+					photo: '',
 					publicAlias: '',
 					publicAliasPhoto: '',
 					privateKey: '',
@@ -62,6 +63,9 @@
 					emaiVerified: false,
 					phoneVerified: false,
 					isVerified: false,
+					isRetina: false,
+					isWIFIOnly: false,
+					isPhotoStored: false,
 					currentPlaceUUID: ''
 				})
 

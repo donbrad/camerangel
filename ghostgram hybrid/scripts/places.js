@@ -37,8 +37,9 @@ function onInitPlaces(e) {
 					lng: e.dataItem.geometry.location.F,
 					publicName: e.dataItem.name,
 					alias: '',
-					visible: true,
-					privacy: true,
+					isAvailable: true,
+					isVisible: true,
+					isPrivate: true,
 					autoCheckIn: false
 				});
 
@@ -206,14 +207,14 @@ function onShowEditPlace (e) {
 		);
 	}
 
-	$('#editPlacePrivacy').data('kendoMobileSwitch').check(APP.models.places.currentPlace.privacy);
-	$('#editPlacePrivacy').data('kendoMobileSwitch').bind('change', function () {
-		APP.models.places.currentPlace.set('privacy', $('#editPlacePrivacy').data('kendoMobileSwitch').check());
+	$('#editPlaceIsAvailable').data('kendoMobileSwitch').check(APP.models.places.currentPlace.isAvailable);
+	$('#editPlaceIsAvailable').data('kendoMobileSwitch').bind('change', function () {
+		APP.models.places.currentPlace.set('isAvailable', $('#editPlacePrivacy').data('kendoMobileSwitch').check());
 	});
 
-	$('#editPlaceVisible').data('kendoMobileSwitch').check(APP.models.places.currentPlace.visible);
-	$('#editPlaceVisible').data('kendoMobileSwitch').bind('change', function () {
-		APP.models.places.currentPlace.set('visible', $('#editPlaceVisible').data('kendoMobileSwitch').check());
+	$('#editPlaceIsVisible').data('kendoMobileSwitch').check(APP.models.places.currentPlace.isVisible);
+	$('#editPlaceIsVisible').data('kendoMobileSwitch').bind('change', function () {
+		APP.models.places.currentPlace.set('isVisible', $('#editPlaceVisible').data('kendoMobileSwitch').check());
 	});
 
 	$('#editPlaceAuto').data('kendoMobileSwitch').check(APP.models.places.currentPlace.autoCheckIn);
