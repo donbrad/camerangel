@@ -816,13 +816,14 @@
 				}
 		*/
 		var location = window.localStorage.getItem('ggLastPosition');
-		if (location !== undefined && location !== null)
+		if (location !== undefined && location !== null) {
 			APP.location.lastPosition = JSON.parse(location);
-		else
+		} else {
 			APP.location.lastPosition = {
 				lat: 0,
 				lng: 0
 			};
+		}
 
 		// hide the splash screen as soon as the app is ready. otherwise
 
@@ -1030,7 +1031,61 @@
 		});
 
 		//_app.importDeviceContacts();
+		
+		APP.archives = {};
 
+		APP.archives.chat = new Archive('chat', function () {
+			this.field('type', { boost: 5 });
+			this.field('tags', { boost: 5 });
+
+			this.field('message', { boost: 10 });
+			this.field('sender');
+			this.field('date');
+		});
+
+		APP.archives.contacts = new Archive('contacts', function () {
+			this.field('type', { boost: 5 });
+			this.field('tags', { boost: 5 });
+
+			this.field('name', { boost: 10 });
+			this.field('alias');
+			this.field('phone');
+		});
+
+		APP.archives.locations = new Archive('locations', function () {
+			this.field('type', { boost: 5 });
+			this.field('tags', { boost: 5 });
+
+			this.field('name', { boost: 10 });
+			this.field('address');
+		});
+
+		APP.archives.events = new Archive('events', function () {
+			this.field('type', { boost: 5 });
+			this.field('tags', { boost: 5 });
+
+			this.field('name', { boost: 10 });
+			this.field('venue');
+			this.field('date');
+		});
+
+		APP.archives.urls = new Archive('urls', function () {
+			this.field('type', { boost: 5 });
+			this.field('tags', { boost: 5 });
+
+			this.field('title', { boost: 10 });
+			this.field('url');
+			this.field('sender');
+			this.field('date');
+		});
+
+		APP.archives.photos = new Archive('photos', function () {
+			this.field('type', { boost: 5 });
+			this.field('tags', { boost: 5 });
+
+			this.ref('parseId');
+			this.field('date');
+		});
 
 		APP.kendo = new kendo.mobile.Application(document.body, {
 
