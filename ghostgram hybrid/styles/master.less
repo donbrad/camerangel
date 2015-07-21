@@ -1,3 +1,4 @@
+@import (less) 'font-awesome.css';
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Hind:300,400,500);
 /*** Guidelines - updated 3/14/15 (see https://www.dropbox.com/s/vw40iwbmvo1tkol/styles-0.1.pdf?dl=0) ***/
 /* Colors */
@@ -1691,9 +1692,36 @@ div.loginBox > form > div > ul > li {
 }
 /* Archive */
 
-.archiveBox {
+#archive main {
+    display: flex;
+    margin: .2rem;
+}
+
+#archive .nothing-found {
+    .centerObject;
+
+    display: none;
+    width: 100%;
+
     background: #fff;
-    .centerObject;  
+
+    h1 {
+        font-size: 1.6rem;
+        text-align: center;
+    }
+}
+
+#search-archives {
+    width: 100%;
+}
+
+#go-search-archives {
+    &:extend(.fa, .fa-search all);
+
+    width: 4rem;
+    border: none;
+
+    background: none;
 }
 
 /* modalview-start */

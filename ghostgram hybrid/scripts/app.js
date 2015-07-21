@@ -1035,7 +1035,7 @@
 		APP.archives = {};
 
 		APP.archives.chat = new Archive('chat', function () {
-			this.field('type', { boost: 5 });
+			this.field('channel', { boost: 5 });
 			this.field('tags', { boost: 5 });
 
 			this.field('message', { boost: 10 });
@@ -1044,7 +1044,7 @@
 		});
 
 		APP.archives.contacts = new Archive('contacts', function () {
-			this.field('type', { boost: 5 });
+			this.field('channel', { boost: 5 });
 			this.field('tags', { boost: 5 });
 
 			this.field('name', { boost: 10 });
@@ -1053,7 +1053,7 @@
 		});
 
 		APP.archives.locations = new Archive('locations', function () {
-			this.field('type', { boost: 5 });
+			this.field('channel', { boost: 5 });
 			this.field('tags', { boost: 5 });
 
 			this.field('name', { boost: 10 });
@@ -1061,7 +1061,7 @@
 		});
 
 		APP.archives.events = new Archive('events', function () {
-			this.field('type', { boost: 5 });
+			this.field('channel', { boost: 5 });
 			this.field('tags', { boost: 5 });
 
 			this.field('name', { boost: 10 });
@@ -1070,7 +1070,7 @@
 		});
 
 		APP.archives.urls = new Archive('urls', function () {
-			this.field('type', { boost: 5 });
+			this.field('channel', { boost: 5 });
 			this.field('tags', { boost: 5 });
 
 			this.field('title', { boost: 10 });
@@ -1080,10 +1080,9 @@
 		});
 
 		APP.archives.photos = new Archive('photos', function () {
-			this.field('type', { boost: 5 });
+			this.field('channel', { boost: 5 });
 			this.field('tags', { boost: 5 });
 
-			this.ref('parseId');
 			this.field('date');
 		});
 

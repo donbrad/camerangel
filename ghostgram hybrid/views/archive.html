@@ -1,14 +1,16 @@
-<div data-role="view" id="archive" data-title="Archive" data-layout="main">  
-     <div data-role="header">
-        <div data-role="navbar">
-            <span data-role="view-title"></span>
-            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img src="images/menu-icon.svg"/></a>
-        </div>
-    </div>
-    <div class="archiveBox">
-        <h4>
-            Nothing Archived yet :(
-        </h4>
-        
-    </div>
+<div data-role="view" id="archive" data-title="Archive" data-layout="main" data-init="window.archiveView.init">  
+	 <div data-role="header">
+		<div data-role="navbar">
+			<span data-role="view-title"></span>
+			<a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img src="images/menu-icon.svg"/></a>
+		</div>
+	</div>
+	<main>
+		<div class="nothing-found">
+			<h1>Nothing archived yet :(</h1>
+		</div>
+
+		<input id="search-archives" class="clearable" type="text" placeholder="Search archives..." />
+		<button id="go-search-archives"></button>
+	<main>
 </div>
