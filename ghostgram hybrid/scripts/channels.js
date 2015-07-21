@@ -622,6 +622,15 @@ function onInitGhostChat(e) {
 	});
 }
 
+function doOpenGhostChat(e) {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+	$("#modalview-ghostChat").kendoMobileModalView("open");
+
+}
+
+
 function onOpenGhostChat(e) {
 	if (e !== undefined && e.preventDefault !== undefined) {
 		e.preventDefault();
