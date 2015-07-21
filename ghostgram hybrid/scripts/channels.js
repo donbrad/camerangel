@@ -614,7 +614,7 @@ function onInitGhostChat(e) {
 	if (e !== undefined && e.preventDefault !== undefined) {
 		e.preventDefault();
 	}
-	
+
 	APP.models.channels.ghostEditor = new Quill('#ghostChatEditor', {
 		modules: {
 			'toolbar': { container: '#ghostChatToolbar' }
