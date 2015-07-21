@@ -626,7 +626,7 @@ function doOpenGhostChat(e) {
 	if (e !== undefined && e.preventDefault !== undefined) {
 		e.preventDefault();
 	}
-	
+
 	$("#modalview-ghostChat").data('kendoMobileModalView').open();
 
 }
