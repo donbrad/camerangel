@@ -232,10 +232,9 @@ function onInitChannels (e) {
     		if (e.direction === "right" && $(selection).hasClass("chat-active")){
     			$(selection).velocity({translateX:"0"},{duration: "fast"}).removeClass("chat-active");
     		}
-    	},
+    	}
     	
     });
-   
 }
 
 function listViewClick(e){
