@@ -611,6 +611,23 @@ function addChatStep2(e) {
 
 }
 
+function onInitGhostChat(e) {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+	APP.models.channels.ghostEditor = new Quill('#ghostChatEditor', {
+		modules: {
+			'toolbar': { container: '#ghostChatToolbar' }
+		}
+	});
+}
+
+function onOpenGhostChat(e) {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+	$('#ghostChatEditor').text();
+}
 
 function toggleListTrash() {
 	$(".listTrash").velocity("fadeIn", {duration: 100});

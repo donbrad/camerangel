@@ -953,6 +953,10 @@
 			APP.models.profile.currentUser.set('photo', APP.models.profile.parseUser.get('photo'));
 			APP.models.profile.currentUser.set('isAvailable', APP.models.profile.parseUser.get('isAvailable'));
 			APP.models.profile.currentUser.set('isVisible', APP.models.profile.parseUser.get('isVisible'));
+			APP.models.profile.currentUser.set('isRetina', APP.models.profile.parseUser.get('isRetina'));
+			APP.models.profile.currentUser.set('isWIFIOnly', APP.models.profile.parseUser.get('isWIFIOnly'));
+			APP.models.profile.currentUser.set('isPhotoStored', APP.models.profile.parseUser.get('isPhotoStored'));
+			APP.models.profile.currentUser.set('saveToPhotoAlbum', APP.models.profile.parseUser.get('saveToPhotoAlbum'));
 			APP.models.profile.currentUser.set('rememberUsername', APP.models.profile.parseUser.get('rememberUsername'));
 			APP.models.profile.currentUser.set('phoneVerified', APP.models.profile.parseUser.get('phoneVerified'));
 			APP.models.profile.currentUser.set('emailVerified', APP.models.profile.parseUser.get('emailVerified'));
