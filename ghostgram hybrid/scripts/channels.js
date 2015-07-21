@@ -232,10 +232,9 @@ function onInitChannels (e) {
     		if (e.direction === "right" && $(selection).hasClass("chat-active")){
     			$(selection).velocity({translateX:"0"},{duration: "fast"}).removeClass("chat-active");
     		}
-    	},
+    	}
     	
     });
-   
 }
 
 function listViewClick(e){
@@ -611,6 +610,32 @@ function addChatStep2(e) {
 
 }
 
+function onInitGhostChat(e) {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+
+	APP.models.channels.ghostEditor = new Quill('#ghostChatEditor', {
+		modules: {
+			'toolbar': { container: '#ghostChatToolbar' }
+		}
+	});
+}
+
+function doOpenGhostChat(e) {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+	$("#modalview-ghostChat").data('kendoMobileModalView').open();
+
+}
+
+
+function onOpenGhostChat(e) {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+}
 
 function toggleListTrash() {
 	$(".listTrash").velocity("fadeIn", {duration: 100});

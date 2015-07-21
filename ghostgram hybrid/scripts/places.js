@@ -23,7 +23,8 @@ function onInitPlaces(e) {
 					uuid: uuid.v4(),
 					category: 'Place',
 					placeId: e.dataItem.place_id,
-					name: e.dataItem.name,
+					name: e.dataItem.name,   // Name created / edited by user
+					venueName: e.dataItem.name,   // Name from googlePlace or factual
 					streetNumber: address.streetNumber,
 					street: address.street,
 					city: address.city,
@@ -36,8 +37,9 @@ function onInitPlaces(e) {
 					lng: e.dataItem.geometry.location.F,
 					publicName: e.dataItem.name,
 					alias: '',
-					visible: true,
-					privacy: true,
+					isAvailable: true,
+					isVisible: true,
+					isPrivate: true,
 					autoCheckIn: false
 				});
 
@@ -180,7 +182,7 @@ function onShowEditPlace (e) {
 			APP.models.places.currentPlace.set('name', $('#editPlaceName').val());
 		});
 
-	if (APP.models.places.currentPlace.category === 'Street Address') {
+	if (APP.models.places.currentPlace.category === 'Location') {
 		$('#editPlaceAddress').show().next('br').remove();
 		$('#editPlaceAddress')
 			.val(APP.models.places.currentPlace.streetNumber)
@@ -205,14 +207,14 @@ function onShowEditPlace (e) {
 		);
 	}
 
-	$('#editPlacePrivacy').data('kendoMobileSwitch').check(APP.models.places.currentPlace.privacy);
-	$('#editPlacePrivacy').data('kendoMobileSwitch').bind('change', function () {
-		APP.models.places.currentPlace.set('privacy', $('#editPlacePrivacy').data('kendoMobileSwitch').check());
+	$('#editPlaceIsAvailable').data('kendoMobileSwitch').check(APP.models.places.currentPlace.isAvailable);
+	$('#editPlaceIsAvailable').data('kendoMobileSwitch').bind('change', function () {
+		APP.models.places.currentPlace.set('isAvailable', $('#editPlacePrivacy').data('kendoMobileSwitch').check());
 	});
 
-	$('#editPlaceVisible').data('kendoMobileSwitch').check(APP.models.places.currentPlace.visible);
-	$('#editPlaceVisible').data('kendoMobileSwitch').bind('change', function () {
-		APP.models.places.currentPlace.set('visible', $('#editPlaceVisible').data('kendoMobileSwitch').check());
+	$('#editPlaceIsVisible').data('kendoMobileSwitch').check(APP.models.places.currentPlace.isVisible);
+	$('#editPlaceIsVisible').data('kendoMobileSwitch').bind('change', function () {
+		APP.models.places.currentPlace.set('isVisible', $('#editPlaceVisible').data('kendoMobileSwitch').check());
 	});
 
 	$('#editPlaceAuto').data('kendoMobileSwitch').check(APP.models.places.currentPlace.autoCheckIn);
@@ -420,9 +422,10 @@ function onLocateMe(e) {
 
 							var newPlace = APP.models.places.placesDS.add({
 								uuid: uuid.v4(),
-								category: 'Street Address',
+								category: 'Location',   // valid categories are: Place and Location
 								placeId: '',
 								name: '',
+								venueName: '',
 								streetNumber: address.streetNumber,
 								street: address.street,
 								city: address.city,
@@ -435,8 +438,8 @@ function onLocateMe(e) {
 								lng: position.coords.longitude,
 								publicName: '',
 								alias: '',
-								visible: true,
-								privacy: true,
+								isVisible: true,
+								isPrivate: true,
 								autoCheckIn: false
 							});
 
@@ -579,8 +582,8 @@ function addPlaceAdd(e) {
 	place.set('googleId', APP.models.places.currentGeoPlace.place_id);
 	place.set('name', $('#addPlaceName').val());
 	place.set('address', $('#addPlaceAddress').val());
-	place.set('privacy', $('#addPlacePrivacy').val());
-	place.set('visible', $('#addPlaceVisible').val());
+	place.set('isPrivate', $('#addPlacePrivacy').val());
+	place.set('isVisible', $('#addPlaceVisible').val());
 	place.set('lat',  APP.models.places.currentGeoPlace.lat);
 	place.set('lng', APP.models.places.currentGeoPlace.lng);
 	
