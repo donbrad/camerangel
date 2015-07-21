@@ -634,7 +634,6 @@ function onOpenGhostChat(e) {
 	if (e !== undefined && e.preventDefault !== undefined) {
 		e.preventDefault();
 	}
-	$('#ghostChatEditor').text();
 }
 
 function toggleListTrash() {
