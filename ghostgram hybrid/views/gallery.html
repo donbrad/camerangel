@@ -1,6 +1,6 @@
  <div data-role="view" data-title="Gallery" id="gallery" data-layout="main" data-model="APP.models.gallery" data-init="onInitGallery" data-show="onShowGallery">
     <div data-role="header">
-        <div data-role="navbar">
+         <div data-role="navbar">
             <span data-role="view-title"></span>
  				<a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"> 
             <img class="nav-menu" src="images/menu-icon.svg"/> 
@@ -8,10 +8,12 @@
 			<a data-align="right" data-role="button"  data-rel="drawer" href="#galleryDrawer"> <i class="ghostIconNavbar fa fa-gear"></i> Settings </a>
         </div>
     </div>
-     
-     <div id="gallery-grid" style="padding-top: 12px; padding-left: 4px; padding-right: 4px; padding-bottom: 24px; height: 100%;">
-		
+
+
+     <div style="padding-top: 12px; padding-left: 4px; padding-right: 4px; padding-bottom: 24px; height: 100%;">
+         <ul id="gallery-listview" class="list-inline" data-role="listview" data-click="galleryClick" data-source="APP.models.gallery.photosDS" data-template="gallery-template"></ul>
      </div>
+
 </div>
 
 <div data-role="drawer" id="galleryDrawer" style="width: 200px; height: 100%;" data-title="Gallery Options" data-position="right" data-views="['gallery']" data-swipe-to-open="false" style="display:none;" class="appearance">
@@ -61,3 +63,11 @@
     </div>
 </div>
 
+ <!-- galleryPicker template -->
+ <script type="text/x-kendo-template" id="gallery-template">
+     <div>
+         <div class="galleryImgBox">
+             <img class="galleryImg" src="#=thumbnailUrl#" />
+         </div>
+     </div>
+ </script>
