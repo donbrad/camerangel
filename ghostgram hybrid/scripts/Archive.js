@@ -150,7 +150,10 @@ var archives = {
 		return false;
 	},
 
-	search: function (term) {
+	search: function (query) {
+
+		query = utils.replaceTextWithNumbers(query);
+
 		// Loop through all the archives
 		for (var key in this) {
 			// Ignore anything on the Object that's not an Archive (such as methods, other properties)
@@ -158,7 +161,7 @@ var archives = {
 				return;
 			}
 
-			var lunrMatches = this[key].index.search(term);
+			var lunrMatches = this[key].index.search(query);
 
 			var filter = {
 				logic: 'or',

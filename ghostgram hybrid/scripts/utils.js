@@ -300,3 +300,84 @@ var _emailDomainList = [
     /* Domains used in Mexico */
     "hotmail.com", "gmail.com", "yahoo.com.mx", "live.com.mx", "yahoo.com", "hotmail.es", "live.com", "hotmail.com.mx", "prodigy.net.mx", "msn.com"
 ];
+
+var utils = {
+    /**
+     * Replaces all text numbers in a string with numerical numbers
+     * Adapted from http://stackoverflow.com/questions/11980087/javascript-words-to-numbers
+     * @param  {String} string
+     * @return {String}
+     */
+    replaceTextWithNumbers: function (string) {
+        var smalls = {
+            zero: 0,
+            one: 1,
+            two: 2,
+            three: 3,
+            four: 4,
+            five: 5,
+            six: 6,
+            seven: 7,
+            eight: 8,
+            nine: 9,
+            ten: 10,
+            eleven: 11,
+            twelve: 12,
+            thirteen: 13,
+            fourteen: 14,
+            fifteen: 15,
+            sixteen: 16,
+            seventeen: 17,
+            eighteen: 18,
+            nineteen: 19,
+            twenty: 20,
+            thirty: 30,
+            forty: 40,
+            fifty: 50,
+            sixty: 60,
+            seventy: 70,
+            eighty: 80,
+            ninety: 90
+        };
+
+        var magnitudes = {
+            thousand: 1000
+        }
+        var returnString = string;
+        var words = string.split(/[\s-]+/i);
+        var smallTotal = 0;
+        var magnitudeTotal = 0;
+        var foundNumberWords = [];
+        words.forEach( function (word) {
+            var small = smalls[word];
+            if (small !== undefined) {
+                smallTotal += small;
+                foundNumberWords.push(word);
+            } else if (word === 'hundred') {
+                smallTotal *= 100;
+                foundNumberWords.push('hundred');
+            } else {
+                var magnitude = magnitudes[word];
+                if (magnitude !== undefined) {
+                    magnitudeTotal = magnitudeTotal + smallTotal * magnitude;
+                    smallTotal = 0;
+                    foundNumberWords.push(word);
+                // Just reached the end of a number
+                } else if (smallTotal !== 0 || magnitudeTotal !== 0) {
+                    var regex = new RegExp(foundNumberWords.join('[\\s-]+'), 'i');
+                    returnString = returnString.replace(regex, magnitudeTotal + smallTotal);
+                    smallTotal = 0;
+                    magnitudeTotal = 0;
+                    foundNumberWords = [];
+                }
+            }
+        });
+
+        if (smallTotal !== 0 || magnitudeTotal !== 0) {
+            var regex = new RegExp(foundNumberWords.join('[\\s-]+'), 'i');
+            returnString = returnString.replace(regex, magnitudeTotal + smallTotal);
+        }
+
+        return returnString;
+    }
+}
