@@ -1690,12 +1690,8 @@ div.loginBox > form > div > ul > li {
     height: 75px;
     white-space: nowrap;
 }
-/* Archive */
 
-#archive main {
-    display: flex;
-    margin: .2rem;
-}
+/* Archive */
 
 #archive .nothing-found {
     .centerObject;
@@ -1711,17 +1707,47 @@ div.loginBox > form > div > ul > li {
     }
 }
 
-#search-archives {
-    width: 100%;
+#archive button {
+    width: 4rem;
+
+    color: black;
+
+    &:active {
+        color: white;
+    }
 }
 
-#go-search-archives {
-    &:extend(.fa, .fa-search all);
+#search-archives {
+    display: flex;
+    margin: .2rem;
+    
+    input {
+        width: 100%;
+    }
 
-    width: 4rem;
-    border: none;
+    & > button {
+        &:extend(.fa, .fa-search all);
+    }
+}
 
-    background: none;
+.archive-list .delete {
+    &:extend(.fa, .fa-remove all);
+}
+
+#archive-chat-list li {
+    display: flex;
+
+    .sender {
+        width: 6rem;
+    }
+
+    .message {
+        width: 100%;
+    }
+
+    .date {
+        width: 10rem;
+    }
 }
 
 /* modalview-start */
