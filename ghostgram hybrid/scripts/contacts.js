@@ -977,18 +977,32 @@ function onInitGhostEmail(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
     }
-    APP.models.contacts.ghostEditor = new Quill('#ghostEmailEditor', {
-        modules: {
-            'toolbar': { container: '#ghostEmailToolbar' }
-        }
+
+    $("#ghostEmailEditor").kendoEditor({
+        tools: [
+            "bold",
+            "italic",
+            "underline",
+            "strikethrough",
+            "justifyLeft",
+            "justifyCenter",
+            "justifyRight",
+            "justifyFull",
+            "insertUnorderedList",
+            "insertOrderedList",
+            "indent",
+            "outdent",
+            "insertImage"
+
+        ]
     });
+
 }
 
 function onShowGhostEmail(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
     }
-    $('#ghostEmailEditor').focus();
     setTimeout(function() {
         cordova.plugins.Keyboard.show();
     }, 310)

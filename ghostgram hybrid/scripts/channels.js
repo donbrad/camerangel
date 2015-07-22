@@ -627,6 +627,25 @@ function doOpenGhostChat(e) {
 	APP.views.ghostEditor.title="ghostChat";
 	APP.views.ghostEditor.sendAction = sendGhostChat;
 
+	$("#ghostChatEditor").kendoEditor({
+		tools: [
+			"bold",
+			"italic",
+			"underline",
+			"strikethrough",
+			"justifyLeft",
+			"justifyCenter",
+			"justifyRight",
+			"justifyFull",
+			"insertUnorderedList",
+			"insertOrderedList",
+			"indent",
+			"outdent",
+			"insertImage"
+
+		]
+	});
+
 }
 
 
