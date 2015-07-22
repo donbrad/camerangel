@@ -999,9 +999,6 @@ function onShowGhostEmail(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
     }
-    setTimeout(function() {
-        cordova.plugins.Keyboard.show();
-    }, 310)
 
 }
 
