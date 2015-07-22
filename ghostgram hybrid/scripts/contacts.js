@@ -941,6 +941,7 @@ function contactsPickContact(e) {
         mobileNotify('Error: ' + err);
     });
 }
+
 function ghostEmail(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
@@ -963,7 +964,9 @@ function onShowGhostEmail(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
     }
+    // Set focus to the editor
     $('#ghostEmailEditor').focus();
+
 }
 
 function sendGhostEmail(e) {

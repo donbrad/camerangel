@@ -610,24 +610,22 @@ function addChatStep2(e) {
 
 }
 
-function onInitGhostChat(e) {
+function sendGhostChat(e) {
 	if (e !== undefined && e.preventDefault !== undefined) {
 		e.preventDefault();
 	}
 
-	APP.models.channels.ghostEditor = new Quill('#ghostChatEditor', {
-		modules: {
-			'toolbar': { container: '#ghostChatToolbar' }
-		}
-	});
+
+	APP.kendo.navigate('#:back');
 }
 
 function doOpenGhostChat(e) {
 	if (e !== undefined && e.preventDefault !== undefined) {
 		e.preventDefault();
 	}
-	
-	$("#modalview-ghostChat").data('kendoMobileModalView').open();
+
+	APP.views.ghostEditor.title="ghostChat";
+	APP.views.ghostEditor.sendAction = sendGhostChat;
 
 }
 

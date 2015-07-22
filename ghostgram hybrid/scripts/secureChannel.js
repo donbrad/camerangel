@@ -155,12 +155,13 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
            // if (recipient in users) {
                 var content = message;
 				var contentData = data;
+                var encryptMessage = '', encryptData = '';
 				var currentTime =  new Date().getTime()/1000;
-                message = cryptico.encrypt(message, contactKey);
+                encryptMessage = cryptico.encrypt(message, contactKey);
 			    if (data !== undefined && data !== null)
-					data = cryptico.encrypt(JSON.stringify(data), contactKey);
+					encryptData = cryptico.encrypt(JSON.stringify(data), contactKey);
 				else
-					data = null;
+					encryptData = null;
 
                 pubnub.uuid(function (msgID) {
                     pubnub.publish({
@@ -169,9 +170,9 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
                             recipient: recipient,
                             msgID: msgID,
                             sender: userUUID,
-                            content: message,
-							data: data,
-							time: currentTime,		
+                            content: encryptMessage,  // publish the encryptedMessage
+							data: encryptData,        // publish the encryptedData.
+							time: currentTime,
 							fromHistory: false,
                             ttl: ttl
                         },
