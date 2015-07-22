@@ -120,7 +120,7 @@
 							dir: "asc"
 						}
 					})
-					//Todo: Add channel data source and sync if user is signed in
+
 			},
 
 			channel: {
@@ -171,6 +171,7 @@
 					}
 				}),
 				messagesSentDS: new kendo.data.DataSource({
+					offlineStorage: "privateSent-offline",
 					sort: {
 						field: "date",
 						dir: "desc"
@@ -216,10 +217,10 @@
 				title: 'gallery',
 				currentPhoto: {},
 				parsePhoto: {},
-				photosDS: new kendo.data.DataSource({
+				photosDS: new kendo.data.DataSource({  // this is the gallery datasource
 						offlineStorage: "gallery-offline"
 					})
-					//Todo: Add photo gallery data source and sync if user is signed in
+
 			},
 
 			contacts: {
@@ -258,6 +259,7 @@
 			places: {
 				title: 'Places',
 				locatorActive: false,
+
 				placesDS: parseKendoDataSourceFactory.make('places', {
 					id: 'id',
 					fields: {
@@ -265,17 +267,27 @@
 							editable: false,
 							nullable: false
 						},
-						category: {
+						category: {  // Place or CheckIn
 							editable: true,
 							nullable: false,
 							defaultValue: 'Place'
 						},
-						placeId: {
+						placeChatId: {
 							editable: false,
 							defaultValue: ''
 						},
-						name: {
+						name: {   // Name chosen by the user
 							editable: true,
+							nullable: false,
+							defaultValue: ''
+						},
+						venueName: {  // Name from googlePlaces or factual
+							editable: false,
+							nullable: true,
+							defaultValue: ''
+						},
+						address: {  // Composite field for display - built from streetNumber, street, city, state and zip
+							editable: false,
 							nullable: false,
 							defaultValue: ''
 						},
@@ -304,11 +316,11 @@
 							editable: false,
 							defaultValue: ''
 						},
-						googleId: {
+						googleId: {   // googleid - from googlePlaces
 							editable: false,
 							defaultValue: ''
 						},
-						factualId: {
+						factualId: {  // factualId -- optional if place exists in factual
 							editable: false,
 							defaultValue: ''
 						},
@@ -320,31 +332,23 @@
 							editable: false,
 							type: 'number'
 						},
-						publicName: {
-							editable: false
-						},
-						alias: {
-							editable: true,
-							nullable: false,
-							defaultValue: ''
-						},
-						visible: {
+						isAvailable: {  // Is the user avaiable or busy here?  Sets default value, user can override
 							editable: true,
 							nullable: false,
 							type: 'boolean',
 							defaultValue: true
 						},
-						privacy: {
+						isVisible: {  // Is the user visible here?  Sets default value, user can override
 							editable: true,
 							nullable: false,
 							type: 'boolean',
 							defaultValue: true
 						},
-						autoCheckIn: {
+						isPrivate: {   // Private place = only members can see it, Public Place = visible to gg users
 							editable: true,
 							nullable: false,
 							type: 'boolean',
-							defaultValue: false
+							defaultValue: true
 						}
 					}
 				})
