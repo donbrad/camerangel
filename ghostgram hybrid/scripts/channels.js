@@ -632,16 +632,13 @@ function doOpenGhostChat(e) {
 			"bold",
 			"italic",
 			"underline",
-			"strikethrough",
 			"justifyLeft",
 			"justifyCenter",
 			"justifyRight",
-			"justifyFull",
 			"insertUnorderedList",
 			"insertOrderedList",
 			"indent",
-			"outdent",
-			"insertImage"
+			"outdent"
 
 		]
 	});
