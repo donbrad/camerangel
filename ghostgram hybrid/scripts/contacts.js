@@ -999,7 +999,7 @@ function onShowGhostEmail(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
     }
-
+	$('#ghostEmailEditor').data("kendoEditor").val("");
 }
 
 function sendGhostEmail(e) {
@@ -1020,9 +1020,10 @@ function sendGhostEmail(e) {
         cordova.plugins.email.open({
             to:          [email],
             subject:     'ghostEmail',
-            body:        '<h2>ghostEmail From ' + thisUser+ '</h2> <p> !!Test - clear text included !!</p><p>'+ content +'</p> <p>'+ encryptContent.cipher + '</p>',
+            body:        '<h2>ghostEmail From ' + thisUser + '</h2> <p> !!Test - clear text included !!</p><p>'+ content +'</p> <p>'+ encryptContent.cipher + '</p>',
             isHtml:      true
         }, function (msg) {
+			mobileNotify("Email sent to " + thisUser);
             // navigator.notification.alert(JSON.stringify(msg), null, 'EmailComposer callback', 'Close');
         });
     }
