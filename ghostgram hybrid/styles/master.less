@@ -2327,38 +2327,24 @@ div.loginBox > form > div > ul > li {
 
 /* Don's development styles...*/
 
-.tile {
-    height: 50%;
-    width: 50%;
-    float: left;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+#gallery-listview {
+    line-height: 0 !important;
+    /* need to work on better responsive
+   -webkit-column-count: 2;
+   -webkit-column-gap:   1px;
+   -moz-column-count:   	2;
+   -moz-column-gap:      1px;
+   column-count:         2;
+   column-gap:           1px;
+ */
 }
 
-#gallery-grid {
-    width: 100%;
-    background:  #EFF1F2;
-}
-
-.gallery-sizer {
-	width: 25%;
-}
-
-.gallery-item {
-    width: 24%;
-    margin: 1px;
-    float: left;
-}
-
-.gallery-item .large {
-    width: 49%;
-}
-
-.gallery-item img {
-    display: block;
-    width: 100%;
+#gallery-listview li {
+    padding: 0px !important;
+    display: inline-block;
+    width: 25%;
+    padding-bottom: 25%;
+    border: 1px solid #fff !important;
 }
 
 #galleryPicker-listview {
