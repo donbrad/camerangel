@@ -1,14 +1,28 @@
-<div data-role="view" id="archive" data-title="Archive" data-layout="main">  
-     <div data-role="header">
-        <div data-role="navbar">
-            <span data-role="view-title"></span>
-            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img src="images/menu-icon.svg"/></a>
-        </div>
-    </div>
-    <div class="archiveBox">
-        <h4>
-            Nothing Archived yet :(
-        </h4>
-        
-    </div>
+<div data-role="view" id="archive" data-title="Archive" data-layout="main" data-init="window.archiveView.init">  
+	 <div data-role="header">
+		<div data-role="navbar">
+			<span data-role="view-title"></span>
+			<a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img src="images/menu-icon.svg"/></a>
+		</div>
+	</div>
+	<main>
+		<div class="nothing-found">
+			<h1>Nothing archived yet :(</h1>
+		</div>
+
+		<div id="search-archives">
+			<input class="clearable" type="text" placeholder="Search archives..." />
+			<button data-role="button" data-click="archiveView.search"> </button>
+		</div>
+
+		<h1>Chat</h1>
+		<ul id="archive-chat-list" class="archive-list" data-role="listview" data-source="archives.chat.dataSource" data-template="archive-chat-template"></ul>
+	<main>
 </div>
+
+<script type="text/x-kendo-template" id="archive-chat-template">
+	<span class="sender">#= data.sender #</span>
+	<span class="message">#= data.message #</span>
+	<span class="date">#= moment(data.date).fromNow() #</span>
+	<button class="delete" data-role="button" data-click="archiveView.deleteDoc" data-id="#= data.id #"></button>
+</script>

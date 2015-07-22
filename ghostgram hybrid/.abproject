@@ -6,7 +6,7 @@
   "DisplayName": "ghostgrams",
   "Author": "don bradford",
   "Description": "ghostgrams for iOS and Android (and maybe Win8)",
-  "BundleVersion": "0.1.9.0",
+  "BundleVersion": "0.1.9.1",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1",
@@ -98,8 +98,8 @@
     "org.apache.cordova.file",
     "org.apache.cordova.file-transfer",
     "org.apache.cordova.geolocation",
+    "org.apache.cordova.globalization",
     "org.apache.cordova.inappbrowser",
-    "org.apache.cordova.keyboard",
     "org.apache.cordova.media",
     "org.apache.cordova.media-capture",
     "org.apache.cordova.network-information",

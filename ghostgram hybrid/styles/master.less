@@ -1,3 +1,4 @@
+@import (less) 'font-awesome.css';
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Hind:300,400,500);
 /*** Guidelines - updated 3/14/15 (see https://www.dropbox.com/s/vw40iwbmvo1tkol/styles-0.1.pdf?dl=0) ***/
 /* Colors */
@@ -327,6 +328,29 @@ form {
     transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.btnBlack-sm {
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    -webkit-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
+    -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
+    color: #ffffff;
+    font-size: 12px !important;
+    background: #424242 !important;
+    padding: 4px 8px 4px 8px;
+    text-decoration: none;
+}
+.btnBlack-sm:hover { 
+    background: #616161 !important;
+    text-decoration: none;
+}
+.btnBlack-sm:active {
+    background: #757575 !important;
+    text-decoration: none;
+    transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
 .btnBlue {
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
@@ -1689,11 +1713,64 @@ div.loginBox > form > div > ul > li {
     height: 75px;
     white-space: nowrap;
 }
+
 /* Archive */
 
-.archiveBox {
+#archive .nothing-found {
+    .centerObject;
+
+    display: none;
+    width: 100%;
+
     background: #fff;
-    .centerObject;  
+
+    h1 {
+        font-size: 1.6rem;
+        text-align: center;
+    }
+}
+
+#archive button {
+    width: 4rem;
+
+    color: black;
+
+    &:active {
+        color: white;
+    }
+}
+
+#search-archives {
+    display: flex;
+    margin: .2rem;
+    
+    input {
+        width: 100%;
+    }
+
+    & > button {
+        &:extend(.fa, .fa-search all);
+    }
+}
+
+.archive-list .delete {
+    &:extend(.fa, .fa-remove all);
+}
+
+#archive-chat-list li {
+    display: flex;
+
+    .sender {
+        width: 6rem;
+    }
+
+    .message {
+        width: 100%;
+    }
+
+    .date {
+        width: 10rem;
+    }
 }
 
 /* modalview-start */
@@ -2273,38 +2350,24 @@ div.loginBox > form > div > ul > li {
 
 /* Don's development styles...*/
 
-.tile {
-    height: 50%;
-    width: 50%;
-    float: left;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+#gallery-listview {
+    line-height: 0 !important;
+    /* need to work on better responsive
+   -webkit-column-count: 2;
+   -webkit-column-gap:   1px;
+   -moz-column-count:   	2;
+   -moz-column-gap:      1px;
+   column-count:         2;
+   column-gap:           1px;
+ */
 }
 
-#gallery-grid {
-    width: 100%;
-    background:  #EFF1F2;
-}
-
-.gallery-sizer {
-	width: 25%;
-}
-
-.gallery-item {
-    width: 24%;
-    margin: 1px;
-    float: left;
-}
-
-.gallery-item .large {
-    width: 49%;
-}
-
-.gallery-item img {
-    display: block;
-    width: 100%;
+#gallery-listview li {
+    padding: 0px !important;
+    display: inline-block;
+    width: 25%;
+    padding-bottom: 25%;
+    border: 1px solid #fff !important;
 }
 
 #galleryPicker-listview {
