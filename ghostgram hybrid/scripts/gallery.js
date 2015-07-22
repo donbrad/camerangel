@@ -4,6 +4,53 @@ function onInitGallery(e){
     var itemWidth = $(window).width()/4;
 	APP.models.gallery.rotationAngle = 0;
 
+
+	$("#gallery-toolbar").kendoToolBar({
+		items: [
+			{template: "<label>Date:</label>"},
+			{
+				template: "<input id='galleryDateSelect' style='width: 80px;' />",
+				overflow: "never"
+			},
+			{template: "<label>Chat:</label>"},
+			{
+				template: "<input id='galleryChatSelect' style='width: 80px;' />",
+				overflow: "never"
+			},
+			{template: "<label>Find:</label>"},
+			{
+				template: "<input id='galleryChatQuery' type='search' style='width: 120px;' />",
+				overflow: "never"
+			}
+		]
+
+	});
+
+	$("#galleryDateSelect").kendoDropDownList({
+		optionLabel: "All",
+		dataTextField: "text",
+		dataValueField: "value",
+		dataSource: [
+			{ text: "Yesterday", value: -1 },
+			{ text: "Last Week", value: -7 },
+			{ text: "Last Month", value: -30 },
+			{ text: "Title", value: 4 },
+			{ text: "Subtitle", value: 5 }
+		]
+	});
+
+	$("#galleryChatSelect").kendoDropDownList({
+		optionLabel: "All",
+		dataTextField: "name",
+		dataValueField: "channelId",
+		dataSource: APP.models.channels.channelsDS
+	});
+
+
+
+
+
+
 	/* $('#gallery-grid').attr('width', $(window).width());
      $('#gallery-grid').isotope({
 		itemSelector: '.gallery-item',
