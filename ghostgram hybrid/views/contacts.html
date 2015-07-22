@@ -37,19 +37,19 @@
 
 		<li><a data-action="inviteContact">Invite Contact</a></li>
 		<li><a  data-action="doEditContact">Edit Contact</a></li>
-		<li><a data-action="contactSendSMS">instant SMS</a></li>
-		 <li><a data-action="contactSendEmail">instant Email</a></li>
-		<li><a data-action="contactCallPhone">instantPhone Call</a></li>
+		<li><a data-action="contactSendSMS">Send SMS</a></li>
+		 <li><a data-action="contactSendEmail">Send Email</a></li>
+		<li><a data-action="contactCallPhone">Phone Call</a></li>
         
     </ul> 
     
       <ul data-role="actionsheet" id="contactUserActions" data-popup='{"direction": "left"}'>
         <li><a data-action="doEditContact">Edit Contact</a></li>
-        <li><a data-action="privateChat">ghost Chat</a></li>
-	  	<li><a data-action="ghostEmail">ghost Email</a></li>
-		<li><a data-action="contactSendSMS">instant SMS</a></li>
-		<li><a data-action="contactSendEmail">instant Email</a></li>
-		<li><a data-action="contactCallPhone">instant Phone Call</a></li>
+        <li><a data-action="privateChat">Private Chat</a></li>
+		<li><a data-action="ghostEmail">Send Secure Email</a></li>
+		<li><a data-action="contactSendSMS">Send SMS</a></li>
+		<li><a data-action="contactSendEmail">Send Email</a></li>
+		<li><a data-action="contactCallPhone">Phone Call</a></li>
     
     </ul> 
 </div>
@@ -354,28 +354,10 @@
 	</div>
 
 	<div id="ghostEmailwrapper" style="width: 100%; height:100%;">
-		<div id="ghostEmailToolbar" style="padding: 4px; background: #cccccc;">
-			<select title="Size" class="ql-size">
-				<option value="8px">Smaller</option>
-				<option value="10px">Small</option>
-				<option value="13px" selected>Normal</option>
-				<option value="18px">Big</option>
-				<option value="24px">Bigger</option>
-			</select>
-			<select title="Align" class="ql-align">
-				<option value="left" selected><i class="ghostIconNavbar fa fa-align-left"></i>Left</option>
-				<option value="center"><i class="ghostIconNavbar fa fa-align-center"></i>Center</option>
-				<option value="right"><i class="ghostIconNavbar fa fa-align-right"></i>Right</option>
-				<option value="justify"><i class="ghostIconNavbar fa fa-align-justify"></i>Justified</option>
-			</select>
-			<button title="Bold" class="ql-format-button ql-bold"><i class="ghostIconNavbar fa fa-bold"></i></button>
-			<button title="Italic" class="ql-format-button ql-italic"><i class="ghostIconNavbar fa fa-italic"></i></button>
-			<button title="Underline" class="ql-format-button ql-underline"><i class="ghostIconNavbar fa fa-underline"></i></button>
-			<button title="Bullet" class="ql-format-button ql-bullet"><i class="ghostIconNavbar fa fa-list-ul"></i></button>
-			<button title="List" class="ql-format-button ql-list"><i class="ghostIconNavbar fa fa-list-ol"></i></button>
-		</div>
 		
-		<div id="ghostEmailEditor" contenteditable="true" class="editor" style="width:95%; min-height:250px; border: 1px solid #2e2e2e; padding: 4px; margin: 6px; color: #111111;"><textarea style="width: 100%; height: 100%; display:none;"></textarea></div>
+		<textarea id="ghostEmailEditor" contenteditable="true" class="editor" rows="20" cols="80" style="width:100%; min-height:320px; border: 1px solid #2e2e2e; padding: 4px; margin: 6px; color: #111111;">
+
+		</textarea>
 		
 	</div>
 

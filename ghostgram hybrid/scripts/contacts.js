@@ -977,29 +977,36 @@ function onInitGhostEmail(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
     }
-    APP.models.contacts.ghostEditor = new Quill('#ghostEmailEditor', {
-        modules: {
-            'toolbar': { container: '#ghostEmailToolbar' }
-        }
+
+    $("#ghostEmailEditor").kendoEditor({
+        tools: [
+            "bold",
+            "italic",
+            "underline",
+            "justifyLeft",
+            "justifyCenter",
+            "justifyRight",
+            "insertUnorderedList",
+            "insertOrderedList",
+            "indent",
+            "outdent"
+        ]
     });
+
 }
 
 function onShowGhostEmail(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
     }
-    $('#ghostEmailEditor').focus();
-    setTimeout(function() {
-        cordova.plugins.Keyboard.show();
-    }, 310)
-
+	$('#ghostEmailEditor').data("kendoEditor").val("");
 }
 
 function sendGhostEmail(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
     }
-    var content = $('#ghostEmailEditor').html();
+    var content = $('#ghostEmailEditor').data("kendoEditor").val();
     var contactKey = APP.models.contacts.currentContact.get('publicKey'), email = APP.models.contacts.currentContact.get('email');
     if (contactKey === null) {
         mobileNotify("Invalid Public Key for " + APP.models.contacts.currentContact.get('name'));
@@ -1013,9 +1020,10 @@ function sendGhostEmail(e) {
         cordova.plugins.email.open({
             to:          [email],
             subject:     'ghostEmail',
-            body:        '<h2>ghostEmail From ' + thisUser+ '</h2> <p> !!Test - clear text included !!</p><p>'+ content +'</p> <p>'+ encryptContent.cipher + '</p>',
+            body:        '<h2>ghostEmail From ' + thisUser + '</h2> <p> !!Test - clear text included !!</p><p>'+ content +'</p> <p>'+ encryptContent.cipher + '</p>',
             isHtml:      true
         }, function (msg) {
+			mobileNotify("Email sent to " + thisUser);
             // navigator.notification.alert(JSON.stringify(msg), null, 'EmailComposer callback', 'Close');
         });
     }
