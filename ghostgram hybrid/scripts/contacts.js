@@ -1009,7 +1009,7 @@ function sendGhostEmail(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
     }
-    var content = $('#ghostEmailEditor').html();
+    var content = $('#ghostEmailEditor').data("kendoEditor").val();
     var contactKey = APP.models.contacts.currentContact.get('publicKey'), email = APP.models.contacts.currentContact.get('email');
     if (contactKey === null) {
         mobileNotify("Invalid Public Key for " + APP.models.contacts.currentContact.get('name'));
