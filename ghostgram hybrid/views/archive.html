@@ -10,7 +10,19 @@
 			<h1>Nothing archived yet :(</h1>
 		</div>
 
-		<input id="search-archives" class="clearable" type="text" placeholder="Search archives..." />
-		<button id="go-search-archives"></button>
+		<div id="search-archives">
+			<input class="clearable" type="text" placeholder="Search archives..." />
+			<button data-role="button" data-click="archiveView.search"> </button>
+		</div>
+
+		<h1>Chat</h1>
+		<ul id="archive-chat-list" class="archive-list" data-role="listview" data-source="archives.chat.dataSource" data-template="archive-chat-template"></ul>
 	<main>
 </div>
+
+<script type="text/x-kendo-template" id="archive-chat-template">
+	<span class="sender">#= data.sender #</span>
+	<span class="message">#= data.message #</span>
+	<span class="date">#= moment(data.date).fromNow() #</span>
+	<button class="delete" data-role="button" data-click="archiveView.deleteDoc" data-id="#= data.id #"></button>
+</script>
