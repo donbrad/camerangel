@@ -1,9 +1,16 @@
 function syncCurrentContact(e) {
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
     updateParseObject('contacts','uuid', APP.models.contacts.currentContact.uuid, e.field, this[e.field]);  
     APP.models.contacts.currentModel.set(e.field, this[e.field]);
 }
     
 function syncProfile (e) {
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
+
     APP.models.profile.parseUser.set(e.field, APP.models.profile.currentUser.get(e.field));
     APP.models.profile.parseUser.save(null, {
         success : function (user){
@@ -16,14 +23,16 @@ function syncProfile (e) {
 }
 
 function contactSearchActivate (e) {
-    if (e !== undefined)
+    if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
+    }
     $('#contactSearch').removeClass('hidden');
 }
 
 function inviteUser(e) {
-    if (e !== undefined)
+    if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
+    }
 	
 }
 
@@ -46,16 +55,18 @@ function sendSecureEmail () {
 }
 
 function secureEmail(e) {
-    if (e !== undefined)
+    if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
+    }
 
     var email = APP.models.contacts.currentContact.get('email');
 
 }
 
 function privateChat(e) {
-    if (e !== undefined)
+    if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
+    }
 	var contact = APP.models.contacts.currentContact;
 	var contactUUID = contact.contactUUID;
 	
@@ -98,8 +109,9 @@ var dataSource = APP.models.contacts.contactsDS;
 }
 
 function doEditContact(e) {
-	if (e.preventDefault !== undefined)
-		e.preventDefault();
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
 	
     APP.kendo.navigate("#editContact");  
 }
@@ -107,8 +119,9 @@ function doEditContact(e) {
 
 
 function deleteContact(e) {
-	if (e.preventDefault !== undefined)
-		e.preventDefault();
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
     var dataSource = APP.models.contacts.contactsDS;
 	var string = "Deleted contact: " + APP.models.contacts.currentContact.name + " ("+ APP.models.contacts.currentContact.alias + ")" ;
 	
@@ -547,8 +560,9 @@ function launchAddContact(e) {
 }
 
 function onInitContactImport (e) {
-  if (e.preventDefault !== undefined)
-    	e.preventDefault();
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
 	
     $("#contactimport-listview").kendoMobileListView({
             dataSource: APP.models.contacts.deviceContactsDS,
@@ -562,14 +576,18 @@ function onInitContactImport (e) {
 }
 
 function onShowContactImport (e) {
-	e.preventDefault();
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
 	var query = e.view.params.query;
 	//contactsFindContacts(query);
 	
 }
 
 function searchDeviceContacts(e) {
-	e.preventDefault();
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
 
 	var query = $('#contactSearchInput').val();
 	
@@ -716,7 +734,9 @@ function unifyContacts(contacts) {
 }
     
 function contactsFindContacts(query, callback) {
-  //  e.preventDefault(e);   
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
  //   var query = $('#contactSearchQuery').val();
    
 	if (APP.models.contacts.deviceQueryActive) {
@@ -841,7 +861,9 @@ function doShowAddContact(e) {
 }
 
 function contactsAddContact(e){
-    e.preventDefault(e);
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
      var Contacts = Parse.Object.extend("contacts");
     var contact = new Contacts();
     
@@ -934,7 +956,9 @@ function contactsAddContact(e){
 }
     
 function contactsPickContact(e) {
-   // e.preventDefault(e);
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
     navigator.contacts.pickContact(function(contact){
        mobileNotify(JSON.stringify(contact));
     },function(err){
@@ -964,8 +988,10 @@ function onShowGhostEmail(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
     }
-    // Set focus to the editor
     $('#ghostEmailEditor').focus();
+    setTimeout(function() {
+        cordova.plugins.Keyboard.show();
+    }, 310)
 
 }
 
