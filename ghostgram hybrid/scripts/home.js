@@ -786,13 +786,19 @@ function modalGallerySortDesc (e)  {
 	}
 }
 
-function go2settings(e){
+function go2Settings(e){
 	e.preventDefault;
 	APP.kendo.navigate("views/settings.html");
 }
-function go2profile(e){
+function go2Profile(e){
 	e.preventDefault;
 	APP.kendo.navigate("views/profile.html");
+}
+
+function go2Support(e){
+	e.preventDefault;
+	$("#settingsAction").data("kendoMobileActionSheet").close();
+	$("#modalview-support").data("kendoMobileModalView").open();
 }
 
 function onShowProfileStatus(){

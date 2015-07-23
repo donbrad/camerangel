@@ -210,13 +210,13 @@
 	  </div>
 	  <ul data-role="actionsheet" id="settingsAction" data-popup='{"direction": "left"}'>
 	  	<li>
-	  		<a data-role="button" data-click="go2profile">View profile</a>
+	  		<a data-role="button" data-click="go2Profile">View profile</a>
 	  	</li>
 	    <li>
-	    	<a data-role="button" id="menuSettings" data-click="go2settings">Settings</a>
+	    	<a data-role="button" id="menuSettings" data-click="go2Settings">Settings</a>
 	    </li>
 	    <li>
-	    	<a data-role="button" href="#modalview-support" data-rel='modalview'>Support</a>
+	    	<a data-role="button" data-click="go2Support">Support</a>
 	    </li>
 		<li>
 			<a data-role="button" id="menuSignOut" data-click="homeSignout">Sign out</a>
@@ -445,7 +445,7 @@
     </div>
 </div>	
 
-<div data-role="view" id="photoView" data-zoom="true"  data-style="width: 100%; height:100%; display: none;">
+<div data-role="view" id="photoView" data-zoom="true" data-style="width: 100%; height:100%; display: none;">
     <div data-role="header">
         <div data-role="navbar">
             <a data-align="left" id="photoViewBack" data-role="backbutton">Back</a>
@@ -466,22 +466,16 @@
 </div>
 
 
-<div data-role="view" id="photoEditor" style="width: 100%; height:100%; display: none;"  data-show="onShowPhotoEditor"  data-hide="onHidePhotoEditor">
-    <div data-role="header">
-        <div data-role="navbar">
-            <a data-align="left" id="photoEditorBack" data-role="backbutton">Cancel</a>
-            <span>Photo Editor</span>
-        </div>
-    </div>
-	
+<div data-role="view" id="photoEditor" style="width: 100%; height:100%; display: none;"  data-show="onShowPhotoEditor"  data-hide="onHidePhotoEditor">	
     <div style="text-align: center; padding-top: 4px; padding-bottom: 6px; background: #e2e2e2; ">
+    <a data-align="left" id="photoEditorBack" data-role="backbutton">Cancel</a>
         <a  data-role="button" class="btnBlack"  data-click="photoEditRotateLeft"> <i class="fa fa-rotate-left"></i> Left </a>
         <a  data-role="button" class="btnBlack"  data-click="photoEditRotateRight"> <i class="fa fa-rotate-right"></i> Right </a>
         <a  data-role="button" class="btnBlack"  data-click="photoEditCrop"> <i class=" fa fa-scissors"></i> Crop </a>
     </div>
 	
     <div style="margin: 4px; height:60%;">
-        <img id="photoEditImage" src="" style="max-height: 100%; max-width: 100%;"/>
+        <img id="photoEditImage" src="" />
     </div>
 
     <div data-role="footer">

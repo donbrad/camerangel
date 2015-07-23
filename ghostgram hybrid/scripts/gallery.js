@@ -55,6 +55,7 @@ function photoEditCrop(e) {
 function photoEditSave(e) {
 	e.preventDefault();
 	var urlToSave = $('#photoEditImage').attr('src');
+	
 	if (APP.models.gallery.currentPhoto.source === 'chat') {
 		// Save image to chat image preview
 	} else if (APP.models.gallery.currentPhoto.source === 'gallery') {

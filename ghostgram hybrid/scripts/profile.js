@@ -95,6 +95,7 @@ function saveUserProfilePhoto (url) {
 			// Update currentUser (local) to sync all instances of profile photo
 			currentUser.set("parsePhoto", parseFile);
             currentUser.set("photo", parseFile._url);
+            
             user.save(null, {
                 success: function(contact) {
                     // Execute any logic that should take place after the object is saved.
