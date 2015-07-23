@@ -1055,7 +1055,7 @@
 
 			// comment out the following line to get a UI which matches the look
 			// and feel of the operating system
-			skin: 'material',
+			skin: 'flat',
 
 			// the application needs to know which view to load first
 			initial: initialView

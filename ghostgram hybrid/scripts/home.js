@@ -723,8 +723,6 @@ function onGalleryPickerInit(e) {
 		e.preventDefault();
 	}
 	var galleryOptions = [
-		{name: "Newest", value: 1, group: "Sort"},
-		{name: "Oldest", value: -1, group: "Sort"},
 		{name: "Today", value: 0, group: "Date"},
 		{name: "Yesterday", value: -1, group: "Date"},
 		{name: "This Week", value: -7, group: "Date"},
@@ -738,12 +736,11 @@ function onGalleryPickerInit(e) {
 		dataValueField: "value",
 		height: 320,
 		dataSource: {
-			data: galleryOptions,
-			group: { field: "group" }
+			data: galleryOptions
 		},
 		select: function(e) {
-			var item = e.item;
-			var text = item.text();
+			var view = this.dataSource.view(), index = e.item.index();
+			var dataItem = view[index];
 			// Use the selected item or its text
 		}
 	});
