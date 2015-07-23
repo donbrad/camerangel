@@ -134,9 +134,9 @@ function scaleProfileImage (imageData) {
 }
 
 function updateProfilePhoto (e) {
-    if (e.preventDefault !== undefined)
+    if (e.preventDefault !== undefined){
         e.preventDefault();
-
+	}
     var pictureSource = navigator.camera.PictureSourceType;   // picture source
     var destinationType = navigator.camera.DestinationType; // sets the format of returned value
     // Android storage is seriously different -- multiple photo directories with different permissions.

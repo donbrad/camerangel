@@ -174,12 +174,7 @@ function onShowHome(e) {
     }
     
     // Set user availibility 
-    var currentAvailible = APP.models.profile.currentUser.isAvailable;
-    if (currentAvailible) {
-    	$("#home-status-icon").attr("src","images/status-available.svg");
-    } else {
-    	$("#home-status-icon").attr("src","images/status-away.svg");
-    }
+    setUserStatusUI();
 
     // Show status
     //$("#logo-header").velocity("fadeOut", {delay: 1000, duration: 500});
@@ -189,7 +184,27 @@ function onShowHome(e) {
 
     console.log(APP.models.profile.currentUser);
     
-} 
+}
+
+function setUserStatusUI(e){
+	//Set available
+	var currentAvailable = APP.models.profile.currentUser.isAvailable;
+    if (currentAvailable) {
+    	$(".userStatus-icon").attr("src","images/status-available.svg");
+    } else {
+    	$(".userStatus-icon").attr("src","images/status-away.svg");
+    }
+
+    //set private photo
+    var privatePhoto = APP.models.profile.currentUser.photo;
+    var publicPhoto = APP.models.profile.currentUser.aliasPhoto;
+
+    if(privatePhoto !== ""){
+    	$(".userStatus-photo").attr("src", privatePhoto);
+    } else {
+    	$(".userStatus-photo").attr("src", publicPhoto);
+    }
+}
 
 function testingStatus(e) {
 	console.log("testing");
@@ -784,14 +799,14 @@ function onShowProfileStatus(){
 	var alias = APP.models.profile.currentUser.alias;
 	var verified = APP.models.profile.currentUser.isVerified;
 	var name = APP.models.profile.currentUser.name;
-	var photo = APP.models.profile.currentUser.photo;
+	
 	var status = APP.models.profile.currentUser.statusMessage;
 	var available = APP.models.profile.currentUser.isAvailable;
 	var availableSwitch = $("#home-status-switch").data("kendoMobileSwitch");
 	// Set profile status
 	$("#profileStatusName").text(alias);
 	$("#profileStatusAlias").text(name);
-	$("#profileStatusPhoto").attr("src", photo);
+	
 	$("#profileStatusMessage").text(status);
 	if(verified){
 		$("#profileStatusVerified").removeClass("hidden");
@@ -799,14 +814,15 @@ function onShowProfileStatus(){
 	if(available){
 		availableSwitch.check(true);
 	}
-
+	setUserStatusUI();
 }
 
 function statusSwitch(e) {
 	console.log(e.checked);
 	var currentState = e.checked;
 	
-	APP.models.profile.currentUser.isAvailable.set("isAvailable",currentState);
+	APP.models.profile.currentUser.set("isAvailable", currentState);
+	setUserStatusUI();
 }
 
 function setStatus(){
