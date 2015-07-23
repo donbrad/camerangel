@@ -7,15 +7,18 @@ function onInitGallery(e){
 
 	$("#gallery-toolbar").kendoToolBar({
 		items: [
-			{template: "<label>Date:</label>"},
+			{ type: "button", text: "Small Photo", id: "gallerySizeButton", togglable: true },
 			{
-				template: "<input id='galleryDateSelect' style='width: 80px;' />",
-				overflow: "never"
-			},
-			{template: "<label>Chat:</label>"},
-			{
-				template: "<input id='galleryChatSelect' style='width: 80px;' />",
-				overflow: "never"
+				type: "splitButton",
+				text: "Sent",
+				menuButtons: [
+					{ text: "Today" },
+					{ text: "Yesterday" },
+					{ text: "This Week" },
+					{ text: "Last Week" },
+					{ text: "This Month" },
+					{ text: "Last Month" }
+				]
 			},
 			{template: "<label>Find:</label>"},
 			{
