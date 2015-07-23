@@ -178,6 +178,7 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
                         },
                         callback: function () {
                             parsedMsg = {
+                                channelId: channelUUID,
                                 msgID: msgID,
                                 content: content,
 								data: contentData,
@@ -187,13 +188,16 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
 								fromHistory: false,
                                 recipient: recipient
                             };
+
                             if (messages[recipient] === undefined) {
                                 messages[recipient] = [parsedMsg];
                             } else {
                                 messages[recipient].push(parsedMsg);
                             }
+                            // add the message to the sentMessageDataSource
+                            APP.models.privateChannel.messagesSentDS.add(parsedMsg);
                             receiveMessage(parsedMsg);
-                            deleteMessage(recipient, msgID, ttl);
+                            //deleteMessage(recipient, msgID, ttl);
                         }
                     });
                 });

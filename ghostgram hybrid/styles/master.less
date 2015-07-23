@@ -1730,6 +1730,10 @@ div.loginBox > form > div > ul > li {
     }
 }
 
+#archive h1 {
+    color: black;
+}
+
 #archive button {
     width: 4rem;
 
@@ -1753,11 +1757,7 @@ div.loginBox > form > div > ul > li {
     }
 }
 
-.archive-list .delete {
-    &:extend(.fa, .fa-remove all);
-}
-
-#archive-chat-list li {
+#archive-list li {
     display: flex;
 
     .sender {
@@ -1770,6 +1770,10 @@ div.loginBox > form > div > ul > li {
 
     .date {
         width: 10rem;
+    }
+
+    .delete {
+        &:extend(.fa, .fa-remove all);
     }
 }
 

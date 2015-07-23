@@ -14,15 +14,14 @@
 			<input class="clearable" type="text" placeholder="Search archives..." />
 			<button data-role="button" data-click="archiveView.search"> </button>
 		</div>
-
-		<h1>Chat</h1>
-		<ul id="archive-chat-list" class="archive-list" data-role="listview" data-source="archives.chat.dataSource" data-template="archive-chat-template"></ul>
+		
+		<ul id="archive-list" data-role="listview" data-source="archive.dataSource" data-template="archive-template"></ul>
 	<main>
 </div>
 
-<script type="text/x-kendo-template" id="archive-chat-template">
-	<span class="sender">#= data.sender #</span>
-	<span class="message">#= data.message #</span>
+<script type="text/x-kendo-template" id="archive-template">
+	<span class="sender"></span>
+	<span class="message">#= data.value #</span>
 	<span class="date">#= moment(data.date).fromNow() #</span>
 	<button class="delete" data-role="button" data-click="archiveView.deleteDoc" data-id="#= data.id #"></button>
 </script>

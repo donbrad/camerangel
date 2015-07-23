@@ -402,7 +402,7 @@ var utils = {
 					magnitudeTotal = magnitudeTotal + smallTotal * magnitude;
 					smallTotal = 0;
 					foundNumberWords.push(word);
-					// Just reached the end of a number
+				// Just reached the end of a number
 				} else if (smallTotal !== 0 || magnitudeTotal !== 0) {
 					var regex = new RegExp(foundNumberWords.join('[\\s-]+'), 'i');
 					returnString = returnString.replace(regex, magnitudeTotal + smallTotal);
