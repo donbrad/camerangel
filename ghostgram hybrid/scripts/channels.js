@@ -272,6 +272,7 @@ function onShowAddChannel (e) {
 			$("#addChat-createBtn").velocity({opacity: 1}, {duration: 500, easing: "spring"});
 			$("#channels-addChannel-name").unbind();
 		}
+		$("#addChat-helper-1").velocity("fadeOut", {duration: 300});
 	});
 
 	$("#addChat-step2").css("opacity", 0);

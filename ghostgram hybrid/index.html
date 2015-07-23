@@ -96,7 +96,7 @@
 
 </div>
    
-  <!-- application drawer and contents -->
+  <!-- deprecated drawer -->
 <div data-role="drawer" id="appDrawer" style="width: 200px; height: 100%;" data-title="Main Menu" data-swipe-to-open="false" data-show="onShowMainMenuDrawer" data-model="APP.models.presence.current" style="display:none;">
     <!-- Menu -->
 <div class="menuBox">
@@ -163,12 +163,12 @@
         <div class="header-img" id="logo-header">
         	<img src="images/logo-blue.svg" class="nav-logo"/>
         </div>
-        <div class="user-status" data-rel="modalview" href="#modalview-profilePhotoEdit" data-role="button" data-align="left">
-	        	<div class="left home-status-img">
-	        		<span id="home-status"><img width="18" src="images/status-available.svg"/></span>
-	        		<img src="" class="myPublicImg circle-img-home" />
-	        	</div>
-	        	<div class="clearfix"></div>
+        <div class="user-status" data-rel="modalview" href="#modalview-profileStatus" data-role="button" data-align="left">
+	        <div class="left home-status-img">
+	        	<span id="home-status"><img width="18" id="home-status-icon" src="images/status-available.svg"/></span>
+	        	<img src="" class="myPublicImg circle-img-home" />
+	        </div>
+	        <div class="clearfix"></div>
         </div>
       </div>
 	</div>
@@ -207,6 +207,9 @@
 	  		</ul>
 	  </div>
 	  <ul data-role="actionsheet" id="settingsAction" data-popup='{"direction": "left"}'>
+	  	<li>
+	  		<a data-role="button" data-click="go2profile">View profile</a>
+	  	</li>
 	    <li>
 	    	<a data-role="button" id="menuSettings" data-click="go2settings">Settings</a>
 	    </li>
@@ -214,7 +217,7 @@
 	    	<a data-role="button" href="#modalview-support" data-rel='modalview'>Support</a>
 	    </li>
 		<li>
-			<a data-role="button" id="menuSignOut" data-click="homeSignout" >Sign out</a>
+			<a data-role="button" id="menuSignOut" data-click="homeSignout">Sign out</a>
 		</li>
      </ul>
 </div>
@@ -488,15 +491,15 @@
 
 </div>
 
-<div data-role="modalview" id="modalview-profilePhotoEdit" data-open="doProfilePhotoEdit" data-init="initProfilePhotoEdit" style="width: 100%; height:100%;  display: none;" data-model="APP.models.profile.currentUser" class="appearance">
+<div data-role="modalview" id="modalview-profilePhotoEdit" data-open="doProfilePhotoEdit" data-init="initProfilePhotoEdit" style="width: 90%; height:50%;  display: none;" data-model="APP.models.profile.currentUser" class="appearance">
     <div data-role="header">
         <div data-role="navbar">
-            <a data-click="closeModalViewProfilePhotoEdit" data-role="button" data-align="right"><img src="images/close.svg" /></a>
+            
             <a data-click="doUpdateStatusMessage"  type="button" data-role="button" data-align="left">Update</a>
 		</div>
 	</div>
 
-    <div class="hidden" style="text-align: center; padding-top: 6px;" id="profilePhotoImportDiv">
+    <div style="text-align: center; padding-top: 6px;" id="profilePhotoImportDiv">
         <div style="display: inline-block;">
 			<a type="button" data-role="button" data-click="doProfileCamera" class="btnClearLine-grey-sm">Camera</a>
 			<a type="button" data-role="button" data-click="doProfilePhotos" class="btnClearLine-grey-sm">Photos</a>
@@ -504,39 +507,53 @@
 		 </div>
     </div>
 
-	<div class="hidden" style="margin:8px; height: 50%; width: auto; text-align: center">
+	<div style="margin:8px; height: 50%; width: auto; text-align: center">
 		<div class="wraption-wrap">
 			<img id="profilePhotoImage" class="wraption" data-bind="attr: {src: photo}" style="max-height: 100%; max-width:100%; vertical-align: middle;">
 			<span class="wraption-caption"data-bind="html: statusMessage" ></span>
 		</div>
 	</div>
-	<div class="topHeaderProfile">
-		<img class="circle-img-xl shadow myPublicImg" src="" />
-		<p><a class="btnClear-sm">Edit photo</a></p>
-		<h3 data-bind="text: alias">
-			<span class="contacts-alias-sm" data-bind="text: name"></span>
-		</h3>
-		
-		<div class="statusSelect">
-			<select id="menuAvailable" data-bind="value: isVisible">
-				<option value="true">Available</option>
-				<option value="false">Busy</option>
-			</select>
-		</div>
-	</div>
 	
-     <form id="profilePhotoForm">
-        <ul data-role="listview" data-style="inset">
-            <li>
-                <label> Status
-                    <input type="search" id="profilePhotoMessage" data-bind="value: statusMessage" default="Express yourself..." />
-                </label>
-            </li>
-        </ul>
-    </form>
-
 </div>
 
+<div data-role="modalview" id="modalview-profileStatus" style="width: 90%; display: none;"  data-init="onShowProfileStatus" data-model="APP.models.profile.currentUser" class="appearance">
+	<form id="profilePhotoForm">
+        <ul data-role="listview" data-style="inset">
+        	<li>
+        		<div class="left listPhoto">
+					<div class="statusContactList">
+					 	<img class="circle-img-md" id="profileStatusPhoto" src="">
+					 	<img width="16" src="images/status-away.svg" class="statusContactList-icon">
+					 </div>
+				</div><!-- left -->
+				<div class="left listName profileTextBox">
+					<h3>
+						<span id="profileStatusName"></span>
+						<img src="images/user-verified.svg" class="user-status-icon hidden" id="profileStatusVerified">
+						<span class="contacts-alias-sm" id="profileStatusAlias"></span>
+					</h3>
+				</div>
+				<p class="left caption profileTextBox"><span id="profileStatusMessage"></span></p>
+				<div class="clearfix"></div>
+        	</li>
+        	<li><p class="caption right"><a data-role="button" class="btnClear-sm" href="views/profile.html">Edit Profile</a></p></li>
+        	<li><img src="images/ghost-sm.svg" class="ghost-sm-text" /> Update Status</li>
+        	<li>
+                <label>
+                	<div class="select">
+                    	<input type="search" id="profilePhotoMessage" placeholder="What's going on..." />
+                    </div>
+                </label>
+            </li>
+        	<li>
+        		<label> Available
+					<input type="checkbox" id="home-status-switch" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="statusSwitch"/>
+				</label>
+        	</li>
+        </ul>
+    </form>
+    <a class="btnBlue btnFull-modal" data-click="closeModalViewProfileStatus" data-role="button">Done</a>
+</div>
 
 <div data-role="modalview" id="modalview-photoTag" style="width: 100%; height:100%; display: none;"  class="appearance">
     <div data-role="header">

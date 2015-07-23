@@ -140,6 +140,7 @@ input {
     font-size: 14px;
     border-bottom: 1px solid #e0e0e0;
     padding: .5em .7em;
+    border-radius: 3px !important;
 }
 .standard-input {
 	width: 100%;
@@ -172,8 +173,21 @@ form {
     border-radius: 3px;
     overflow: hidden;
     background: #fff url("../images/select-dropdown.svg") no-repeat 95% 50%;
-    margin-left: auto;
-    margin-right: auto;
+}
+
+.select-sm {
+	.select;
+	width: 25%;
+}
+
+.select-md {
+	.select;
+	width: 50%;
+}
+
+.select-lg {
+	.select;
+	width: 100%;
 }
 
 .select select {
@@ -497,6 +511,7 @@ form {
     font-size: 14px !important;
     font-weight: 400;
     text-align: center;
+    margin: 0px;
 }
 .btnSpan {
     width: 100%;
@@ -512,6 +527,13 @@ form {
     bottom: 0px;
     padding-top: 1rem !important;
     padding-bottom: 1rem !important;
+}
+
+.btnFull-modal {
+	.btnFull;
+	border-radius: 0px !important;
+	position: relative;
+	bottom: -2px;
 }
 
 .input-text-sm {
@@ -642,7 +664,7 @@ div.km-header a img{
 }
 .km-view-title span {
     font-family: 'Open Sans', sans-serif !important;
-    font-weight: 300;
+    font-weight: 400;
 }
 .km-flat .km-button {
     background: transparent;
@@ -740,8 +762,8 @@ div.km-header a img{
 
 #home-status {
 	position: relative;
-	right: -50px;
-	top: 1px;
+	right: -46px;
+	top: 3px; 
 }
 
 .home-status-img {
@@ -756,6 +778,29 @@ div.km-header a img{
 	padding-top: 4px;
 	padding: 0px !important;
 }
+
+.ghost-sm-text {
+	height: 12px;
+}
+
+.km-flat .km-rowinsert, .km-flat .km-state-active, .km-flat .km-scroller-pull, .km-flat .km-loader:before, .km-flat .k-slider-selection, .km-flat .km-touch-scrollbar, .km-flat .km-pages .km-current-page, .km-flat .k-slider .k-draghandle, .km-flat .k-slider .k-draghandle:hover, .km-flat .km-tabstrip .km-state-active, .km-flat .km-scroller-refresh.km-load-more, .km-flat .km-popup .k-state-hover, .km-flat .km-popup .k-state-focused, .km-flat .km-popup .k-state-selected, .km-flat .km-actionsheet>li>a:active, .km-flat .km-actionsheet>li>a:hover, .km-flat .km-actionsheet>li>.km-state-active, .km-flat li.km-state-active .km-listview-link, .km-flat li.km-state-active .km-listview-label, .km-flat .km-listview-label input[type=radio]:checked, .km-flat .km-listview-label input[type=checkbox]:checked {
+	background: transparent !important;
+}
+
+.km-flat .km-switch-label-on, .km-flat .km-switch-label-off {
+	font-size: 12px;
+	width: auto;
+	line-height: 2;
+}
+
+.km-flat .km-switch-label-off {
+	margin-left: 1rem;
+}
+
+.profileTextBox {
+	padding-left: 1rem;
+}
+
 /* Modal styles */
 
 .modalTop {
@@ -1079,7 +1124,6 @@ div.km-header a img{
     right: 0;
     margin-top: 0;
     top: 0;
-    border-bottom: 1px solid #E0E0E0;
     background: #fff;
 }
 .km-root .km-pane .km-view.appearance .km-listview select {
@@ -1426,13 +1470,22 @@ a:hover {
 #channels-listview { 
 	padding-bottom: 3rem;
 	li {
-    border-bottom: 1px solid #E4E4E4 !important;
+    border-bottom: 1px solid #E4E4E4;
     background: #fff;
     z-index:9999;
     padding-top: 0px;
     padding-bottom: 0px;
 	}
+	li:nth-child(2){
+		border-top: 1px solid #E4E4E4;
+	}
 }
+
+.chat-option-ul li {
+	background: transparent !important;
+	border: transparent !important;
+}
+
 .chat-mainBox h3 {
     margin-left: 0px;
     margin-right: 0px;
@@ -1521,10 +1574,14 @@ a:hover {
 	font-size: 24px !important;
 }
 
+#addChat-step1 {
+	padding-bottom: 5.5rem;
+}
+
 .helperBox {
 	background-color: @grey300;
 	width: 100%;
-	.pad;
+	padding: 0.5rem 1rem;
 	p {
 		margin-left:0px;
 		font-size: 14px;
@@ -1573,6 +1630,11 @@ a:hover {
 	}
 }
 
+.chatOptionImg {
+	vertical-align: middle;
+	height: 30px;
+}
+
 .footerMenu {
 	background: #fff;
 	height: 3rem;
@@ -1600,6 +1662,7 @@ a:hover {
 	position: fixed;
 	bottom: 4rem;
 	right: 1rem;
+	padding-top: 0.75rem !important;
 	p {
 		width: 60px;
 		position: absolute;
@@ -1627,8 +1690,19 @@ a:hover {
 	vertical-align: bottom;
 }
 
+#status-profile-img {
+	.circle-img-md;
+	.shadow;
+	.left;
+	margin-right: 0.5rem;
+}
+ 
 .topHeaderProfile {
-	text-align: center;
+	.pad;
+}
+
+#modalview-profilePhotoEdit > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > div.topHeaderProfile > h3:nth-child(1) > img {
+	vertical-align: middle;
 }
 
 .statusSelect {

@@ -3,7 +3,6 @@ function homeBeforeShow () {
     if (APP.models.profile.currentUser) {
         // Have current user - redirect to user view
         APP.kendo.navigate('#home');
-
     } else {
         // No current user -redirect to no user view
        APP.kendo.navigate('#newuserhome');
@@ -165,7 +164,7 @@ function onShowHome(e) {
 
 	$('#profileName').text(APP.models.profile.currentUser.alias);
     var myPublicImg = APP.models.profile.currentUser.aliasPhoto;
-	//TODO:  add code to update user profile image
+	// set user alias photo
 	if (myPublicImg !== ""){
         $(".myPublicImg").attr("src", APP.models.profile.currentUser.aliasPhoto);
     }
@@ -173,12 +172,22 @@ function onShowHome(e) {
     if(APP.models.profile.currentUser.phoneVerified) {
     	$("#startPhoneVerified").addClass("hidden");
     }
+    
+    // Set user availibility 
+    var currentAvailible = APP.models.profile.currentUser.isAvailable;
+    if (currentAvailible) {
+    	$("#home-status-icon").attr("src","images/status-available.svg");
+    } else {
+    	$("#home-status-icon").attr("src","images/status-away.svg");
+    }
 
     // Show status
     //$("#logo-header").velocity("fadeOut", {delay: 1000, duration: 500});
     //$(".user-status").velocity("fadeIn", {delay:1000});
         
     APP.models.presence.current.bind('change' , syncPresence);
+
+    console.log(APP.models.profile.currentUser);
     
 } 
 
@@ -762,15 +771,44 @@ function modalGallerySortDesc (e)  {
 	}
 }
 
-function closeStartModal() {
-	$("#modalview-start").data("kendoMobileModalView").close();
-}
-
-function closeTestingBox(){
-	$("#testing").data("kendoMobileModalView").close();
-}
-
 function go2settings(e){
 	e.preventDefault;
 	APP.kendo.navigate("views/settings.html");
+}
+function go2profile(e){
+	e.preventDefault;
+	APP.kendo.navigate("views/profile.html");
+}
+
+function onShowProfileStatus(){
+	var alias = APP.models.profile.currentUser.alias;
+	var verified = APP.models.profile.currentUser.isVerified;
+	var name = APP.models.profile.currentUser.name;
+	var photo = APP.models.profile.currentUser.photo;
+	var status = APP.models.profile.currentUser.statusMessage;
+	var available = APP.models.profile.currentUser.isAvailable;
+	var availableSwitch = $("#home-status-switch").data("kendoMobileSwitch");
+	// Set profile status
+	$("#profileStatusName").text(alias);
+	$("#profileStatusAlias").text(name);
+	$("#profileStatusPhoto").attr("src", photo);
+	$("#profileStatusMessage").text(status);
+	if(verified){
+		$("#profileStatusVerified").removeClass("hidden");
+	}
+	if(available){
+		availableSwitch.check(true);
+	}
+
+}
+
+function statusSwitch(e) {
+	console.log(e.checked);
+	var currentState = e.checked;
+	
+	APP.models.profile.currentUser.isAvailable.set("isAvailable",currentState);
+}
+
+function setStatus(){
+
 }
