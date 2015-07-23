@@ -718,6 +718,39 @@ function syncPresence () {
     });
 }
 
+function onGalleryPickerInit(e) {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+	var galleryOptions = [
+		{name: "Newest", value: 1, group: "Sort"},
+		{name: "Oldest", value: -1, group: "Sort"},
+		{name: "Today", value: 0, group: "Date"},
+		{name: "Yesterday", value: -1, group: "Date"},
+		{name: "This Week", value: -7, group: "Date"},
+		{name: "Last Week", value: -14, group: "Date"},
+		{name: "This Month", value: -30, group: "Date"},
+		{name: "Last Month", value: -60, group: "Date"}
+	];
+
+	$("#galleryPickerSearch").kendoMultiSelect({
+		dataTextField: "name",
+		dataValueField: "value",
+		height: 320,
+		dataSource: {
+			data: galleryOptions,
+			group: { field: "group" }
+		},
+		select: function(e) {
+			var item = e.item;
+			var text = item.text();
+			// Use the selected item or its text
+		}
+	});
+
+
+}
+
 function galleryPickerClick(e) {
 	if (e !== undefined && e.preventDefault !== undefined) {
 		e.preventDefault();

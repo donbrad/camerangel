@@ -4,7 +4,54 @@ function onInitGallery(e){
     var itemWidth = $(window).width()/4;
 	APP.models.gallery.rotationAngle = 0;
 
-	 $('#gallery-grid').attr('width', $(window).width());
+
+	$("#gallery-toolbar").kendoToolBar({
+		items: [
+			{template: "<label>Date:</label>"},
+			{
+				template: "<input id='galleryDateSelect' style='width: 80px;' />",
+				overflow: "never"
+			},
+			{template: "<label>Chat:</label>"},
+			{
+				template: "<input id='galleryChatSelect' style='width: 80px;' />",
+				overflow: "never"
+			},
+			{template: "<label>Find:</label>"},
+			{
+				template: "<input id='galleryChatQuery' type='search' style='width: 120px;' />",
+				overflow: "never"
+			}
+		]
+
+	});
+
+	$("#galleryDateSelect").kendoDropDownList({
+		optionLabel: "All",
+		dataTextField: "text",
+		dataValueField: "value",
+		dataSource: [
+			{ text: "Yesterday", value: -1 },
+			{ text: "Last Week", value: -7 },
+			{ text: "Last Month", value: -30 },
+			{ text: "Title", value: 4 },
+			{ text: "Subtitle", value: 5 }
+		]
+	});
+
+	$("#galleryChatSelect").kendoDropDownList({
+		optionLabel: "All",
+		dataTextField: "name",
+		dataValueField: "channelId",
+		dataSource: APP.models.channels.channelsDS
+	});
+
+
+
+
+
+
+	/* $('#gallery-grid').attr('width', $(window).width());
      $('#gallery-grid').isotope({
 		itemSelector: '.gallery-item',
 		 isInitLayout: false,
@@ -36,7 +83,7 @@ function onInitGallery(e){
 			  sortAscending: true
 			});
 		}
-	});
+	});*/
 
 }
 
@@ -137,6 +184,7 @@ function onShowGallery(e) {
 	}
 	APP.models.gallery.rotationAngle = 0;
 
+/*
 	var grid = $('#gallery-grid'), isotope = grid.data('isotope');
 	var itemWidth = $(window).width()/4;
 	itemWidth -= 2;  // account for the borders
@@ -181,7 +229,30 @@ function onShowGallery(e) {
 		// images have loaded
 		$('#gallery-grid').isotope('layout');
 	});
+*/
 }
+
+function galleryClick(e) {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+
+	var photoId = e.dataItem.id, photoUrl = e.dataItem.imageUrl;
+	APP.models.gallery.currentPhotoModel = getPhotoModel(photoId);
+	$('#photoViewImage').attr('src', photoUrl);
+	$('#photoTagImage').attr('src', photoUrl);
+	$('#photoEditImage').attr('src', photoUrl);
+
+	if (APP.models.gallery.chatPhoto) {
+		showChatImagePreview(photoUrl);
+		APP.kendo.navigate('#:back');
+
+	} else {
+		APP.kendo.navigate('#photoView');
+	}
+
+}
+
 
 function getPhotoModel(photoId) {
 	 var dataSource = APP.models.gallery.photosDS;
@@ -207,7 +278,7 @@ function photoDelete (e) {
 	// Delete from local datasource
 	APP.models.gallery.photosDS.remove(APP.models.gallery.currentPhotoModel);
 	// Remove from isotope and then rerender the layout
-	$('#gallery-grid').isotope( 'remove', APP.models.gallery.currentIsoModel ).isotope('layout');
+	//$('#gallery-grid').isotope( 'remove', APP.models.gallery.currentIsoModel ).isotope('layout');
 	// Delete from remote parse collection
 	deleteParseObject('photos', 'photoId', photo.photoId);
 	
