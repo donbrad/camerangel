@@ -22,18 +22,21 @@ var archiveView = {
 		}
 
 		archiveView.checkIfEmpty();
+
+		archives.search('green two days ago');
 	},
 
 	checkIfEmpty: function () {
 		if (archives.areEmpty() === true) {
 			$('#archive .nothing-found').show();
 			$('#archive main > *:not(.nothing-found)').hide();
-			return;
 		}
 	},
 
 	search: function () {
-		archives.search($('#search-archives input').val());
+		if (archives.search($('#search-archives input').val()) === false) {
+			// Show nothing found
+		};
 	},
 
 	deleteDoc: function (e) {

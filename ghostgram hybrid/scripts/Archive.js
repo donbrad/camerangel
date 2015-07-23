@@ -151,8 +151,40 @@ var archives = {
 	},
 
 	search: function (query) {
+		// Start the dataSource filter
+		var filter = {
+			logic: 'and',
+			filters: [
+				{
+					logic: 'or',
+					// ids from lunr go in here (id = this, or id = that, where this and that are lunr matches)
+					filters: []
+				}
+				// Date filters would go here (less than certain date, greater than certain date)
+			]
+		};
 
+		// Begin the epic regexs
+		
 		query = utils.replaceTextWithNumbers(query);
+
+		// Days, weeks, etc. ago
+
+		var xDaysAgo = /\d+\s(day|week|month|year)s?\sago/i;
+		var matches = query.match(xDaysAgo);
+		if (matches !== null) {
+			var number = parseInt(query);
+			var unit = matches[1];
+
+			var middle = moment().subtract(number, unit+'s');
+			var start = moment(middle).subtract(.5, unit+'s');
+			var end = moment(middle).add(.5, unit+'s');
+
+			filter.filters.push({ field: 'date', operator: 'gt', value: start.toDate() });
+			filter.filters.push({ field: 'date', operator: 'lt', value: end.toDate() });
+
+			query = query.replace(xDaysAgo, '');
+		}
 
 		// Loop through all the archives
 		for (var key in this) {
@@ -163,16 +195,17 @@ var archives = {
 
 			var lunrMatches = this[key].index.search(query);
 
-			var filter = {
-				logic: 'or',
-				filters: []
-			};
+			if (lunrMatches.length === 0) {
+				continue;
+			}
 
 			lunrMatches.forEach( function (lunrMatch) {
-				filter.filters.push({ field: 'id', operator: 'eq', value: parseInt(lunrMatch.ref) });
+				filter.filters[0].filters.push({ field: 'id', operator: 'eq', value: parseInt(lunrMatch.ref) });
 			});
 
 			this[key].dataSource.filter(filter);
 		}
+
+		return true;
 	}
 }
