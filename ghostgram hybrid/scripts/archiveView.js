@@ -3,31 +3,34 @@
 var archiveView = {
 
 	init: function () {
-		if (archives.chat.dataSource.total() === 0 && 1) {
-			archives.chat.add({
-				id: 1,
-				message: 'Testing yo',
-				sender: 'Don',
-				tags: 'red, blue',
-				date: new Date()
+		if (archive.dataSource.total() === 0 && 1) {
+			archive.add({
+				relID: 1,
+				value: 'Testing yo',
+				date: new Date(),
+				internalTags: 'Don',
+				userTags: 'blue, red',
+				category: 'chat'
+
 			});
 
-			archives.chat.add({
-				id: 2,
-				message: 'More tests!',
-				sender: 'Don',
-				tags: 'green',
-				date: new Date()
+			archive.add({
+				relID: 2,
+				value: 'More tests!',
+				date: new Date(),
+				internalTags: 'Don',
+				userTags: 'green',
+				category: 'chat'
 			});
 		}
 
 		archiveView.checkIfEmpty();
 
-		archives.search('green two days ago');
+		//archive.search('blue one days ago');
 	},
 
 	checkIfEmpty: function () {
-		if (archives.areEmpty() === true) {
+		if (archive.dataSource.total() === 0) {
 			$('#archive .nothing-found').show();
 			$('#archive main > *:not(.nothing-found)').hide();
 		}
@@ -40,8 +43,8 @@ var archiveView = {
 	},
 
 	deleteDoc: function (e) {
-		archives.chat.remove(
-			archives.chat.dataSource.get($(e.target).data('id'))
+		archive.remove(
+			archive.dataSource.get($(e.target).data('id'))
 		);
 
 		archiveView.checkIfEmpty();
