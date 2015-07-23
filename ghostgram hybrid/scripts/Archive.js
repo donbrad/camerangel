@@ -129,9 +129,8 @@ var archive = {
 		query = utils.replaceTextWithNumbers(query);
 
 		// x days, weeks, etc. ago
-
-		var xDaysAgo = /\d+\s(day|week|month|year)s?\sago/i;
-		var matches = query.match(xDaysAgo);
+		var regex = /\d+\s(day|week|month|year)s?\sago/i;
+		var matches = query.match(regex);
 		if (matches !== null) {
 			var number = parseInt(query);
 			var unit = matches[1];
@@ -139,12 +138,62 @@ var archive = {
 			var middle = moment().subtract(number, unit+'s');
 			var start = moment(middle).subtract(.5, unit+'s');
 			var end = moment(middle).add(.5, unit+'s');
-
-			filter.filters.push({ field: 'date', operator: 'gt', value: start.toDate() });
-			filter.filters.push({ field: 'date', operator: 'lt', value: end.toDate() });
-
-			query = query.replace(xDaysAgo, '');
 		}
+
+		// yesterday
+		regex = /yesterday/i;
+		matches = query.match(regex);
+		if ( matches !== null) {
+			var start = moment().subtract(1, 'days').startOf('day');
+			var end = moment().startOf('day');
+		}
+
+		// since/before
+		regex = /(since|before)\s((january|february|march|april|may|june|july|august|september|october|november|december)|(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec))\s(\d){1,2}(st|nd|rd|th)?(\s\d{2,4})?/i;
+		matches = query.match(regex);
+		if (matches !== null) {
+			var dateString = matches[2]+' '+matches[5];
+			var pattern = '';
+			// matches[3] is the full month name
+			if (matches[3] !== undefined) {
+				patttern += 'MMMM';
+			// matches[4] is the 3-letter abbreviation of the month
+			} else {
+				pattern += 'MMM';
+			}
+
+			pattern += ' D';
+
+			// matches[7] is the year
+			if (matches[7] !== undefined) {
+				dateString += matches[7];
+				// If the year is only two digits long
+				if (matches[7].length === 3) {
+					pattern += ' YY';
+				// If it's 4 digits long
+				} else if(matches[7].length === 5) {
+					pattern += ' YYYY';
+				}
+			}
+
+			if (matches[0] === 'since') {
+				var start = moment(dateString, pattern);
+			} else if (matches[0] === 'before') {
+				var end = moment(dateString, pattern);
+			}
+		}
+
+		// Add the filters and remove the matched string from the query
+		if (start !== undefined) {
+			filter.filters.push({ field: 'date', operator: 'gt', value: start.toDate() });
+		}
+		if (end !== undefined) {
+			filter.filters.push({ field: 'date', operator: 'lt', value: end.toDate() });
+		}
+		if (start !== undefined || end !== undefined) {
+			query = query.replace(regex, '');
+		}
+		console.log(filter, query);
 
 		// Get lunr matches
 

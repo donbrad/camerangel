@@ -26,7 +26,7 @@ var archiveView = {
 
 		archiveView.checkIfEmpty();
 
-		//archive.search('blue one days ago');
+		//archive.search('green since jan 1st 14');
 	},
 
 	checkIfEmpty: function () {
