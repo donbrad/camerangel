@@ -5,11 +5,23 @@
  				<a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"> 
             <img class="nav-menu" src="images/menu-icon.svg"/> 
         	</a>           
-			<a data-align="right" data-role="button"  data-rel="drawer" href="#galleryDrawer"> <i class="ghostIconNavbar fa fa-gear"></i> Settings </a>
+			<a data-align="right" data-role="button" type="button" id="btnGalleryOptionsToggle" data-click="galleryOptionsToggle"> <i class="ghostIconNavbar fa fa-gear"></i></a>
         </div>
     </div>
 
-     <div id="gallery-toolbar"></div>
+	<div style="padding-top: 4px; padding-bottom: 6px; padding-left: 6px; background: #e2e2e2; vertical-align: middle;">
+		 <ul data-role="buttongroup" data-index="0" class="km-small" data-select="selectGalleryZoom">
+			<li> <i class="fa fa-search-minus"></i> Small Photos</li>
+			<li> <i class="fa fa-search-plus"></i> Large Photos</li>
+		</ul>
+	</div>
+	 
+	<div id="gallerySearchOptions" class="hidden">
+		<input type="search"  id="gallerySearch" style="width:90%;"> </input>
+		<div id="gallerySearchTags" style="width:90%;"></div>
+	</div>
+	
+	 
      <div style="padding-top: 12px; padding-left: 4px; padding-right: 4px; padding-bottom: 24px; height: 100%;">
          <ul id="gallery-listview" class="list-inline" data-role="listview" data-click="galleryClick" data-source="APP.models.gallery.photosDS" data-template="gallery-template"></ul>
      </div>
