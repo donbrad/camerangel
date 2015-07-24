@@ -1,5 +1,6 @@
 function onInitGallery(e){
-    e.preventDefault();
+   if (e !== undefined && e.preventDefault !== undefined)
+		e.preventDefault();
     // ToDo: Initialize list view
     var itemWidth = $(window).width()/4;
 	APP.models.gallery.rotationAngle = 0;
@@ -14,13 +15,17 @@ function onInitGallery(e){
 }
 
 function galleryOptionsToggle (e) {
+	if (e !== undefined && e.preventDefault !== undefined)
+		e.preventDefault();
+
 	
-	APP.models.gallery.optionsShown = !APP.models.gallery.optionsShown;
-	
-	if (APP.models.gallery.optionsHidden) {
+	if (APP.models.gallery.optionsShown) {
 		$('#gallerySearchOptions').addClass('hidden');
+		APP.models.gallery.optionsShown = false;
+		
 	} else {
 		$('#gallerySearchOptions').removeClass('hidden');
+		APP.models.gallery.optionsShown = true;
 	}
 }
 
@@ -39,7 +44,8 @@ function selectGalleryZoom() {
 }
 
 function photoEditCrop(e) {
-	e.preventDefault();	
+	if (e !== undefined && e.preventDefault !== undefined)
+		e.preventDefault();
 	var $image = $('#photoEditImage');
 	var cropCanvas = $image.cropper('getCroppedCanvas');
 	var cropUrl = cropCanvas.toDataURL("image/jpeg");
@@ -51,7 +57,8 @@ function photoEditCrop(e) {
 
 // this got more complex trying to reuse across 3 flows: chat, gallery and profile...
 function photoEditSave(e) {
-	e.preventDefault();
+	if (e !== undefined && e.preventDefault !== undefined)
+		e.preventDefault();
 	var urlToSave = $('#photoEditImage').attr('src');
 	if (APP.models.gallery.currentPhoto.source === 'chat') {
 		// Save image to chat image preview
@@ -65,7 +72,8 @@ function photoEditSave(e) {
 }
 
 function photoEditRotateLeft(e) {
-	e.preventDefault();
+	if (e !== undefined && e.preventDefault !== undefined)
+		e.preventDefault();
 	//$('#photoEditImage').css('transform','rotate(' + -90 + 'deg)');'
 	APP.models.gallery.rotationAngle -= 90;
 	$('#photoEditImage').cropper('rotate', APP.models.gallery.rotationAngle);
@@ -74,7 +82,8 @@ function photoEditRotateLeft(e) {
 }
 
 function photoEditRotateRight(e) {
-	e.preventDefault();
+	if (e !== undefined && e.preventDefault !== undefined)
+		e.preventDefault();
 	//$('#photoEditImage').css('transform','rotate(' + 90 + 'deg)');
 	APP.models.gallery.rotationAngle += 90;
 	$('#photoEditImage').cropper('rotate', APP.models.gallery.rotationAngle);
@@ -82,7 +91,8 @@ function photoEditRotateRight(e) {
 }
 
 function onHidePhotoEditor(e) {
-	e.preventDefault();
+	if (e !== undefined && e.preventDefault !== undefined)
+		e.preventDefault();
 	
 	$('#photoEditImage').cropper('destroy');
 }

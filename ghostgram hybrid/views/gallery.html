@@ -8,17 +8,23 @@
 			<a data-align="right" data-role="button" type="button" id="btnGalleryOptionsToggle" data-click="galleryOptionsToggle"> <i class="ghostIconNavbar fa fa-gear"></i></a>
         </div>
     </div>
-
-	<div style="padding-top: 4px; padding-bottom: 6px; padding-left: 6px; background: #e2e2e2; vertical-align: middle;">
-		 <ul data-role="buttongroup" data-index="0" class="km-small" data-select="selectGalleryZoom">
-			<li> <i class="fa fa-search-minus"></i> Small Photos</li>
-			<li> <i class="fa fa-search-plus"></i> Large Photos</li>
-		</ul>
-	</div>
-	 
-	<div id="gallerySearchOptions" class="hidden">
-		<input type="search"  id="gallerySearch" style="width:90%;"> </input>
-		<div id="gallerySearchTags" style="width:90%;"></div>
+	
+		<div style="padding-top: 4px; padding-bottom: 6px; padding-left: 6px;  border: 1px solid #2e2e2e; background: #e2e2e2; vertical-align: middle;">
+			 <ul data-role="buttongroup" data-index="0" class="km-small" data-select="selectGalleryZoom">
+				<li> <i class="fa fa-search-minus"></i> Small Photos</li>
+				<li> <i class="fa fa-search-plus"></i> Large Photos</li>
+			</ul>
+		</div>
+	 <div id="gallerySearchOptions" style="background: #e2e2e2;" class="hidden">
+		<div style="width: 98%; display: inline; text-align: center;">
+			<a  data-role="button" class="btnBlack-sm"  data-click="galleryFieldUser"> <i class="fa fa-user"></i> </a>
+        	<a  data-role="button" class="btnBlack-sm"  data-click="galleryFieldChat"> <i class="fa fa-comment-o"></i> </a>
+			<a  data-role="button" class="btnBlack-sm"  data-click="galleryFieldCalendar"> <i class="fa fa-calendar"></i> </a>
+			<a  data-role="button" class="btnBlack-sm"  data-click="galleryFieldLocation"> <i class="fa fa-location-arrow"></i> </a>
+			<a  data-role="button" class="btnBlack-sm"  data-click="galleryFieldSearch"> <i class="fa fa-search"></i> </a>	
+		</div>
+		<input type="search"  id="gallerySearch" style="width:95%;"> </input>
+		<div id="gallerySearchTags" style="width:95%;"></div>	
 	</div>
 	
 	 
