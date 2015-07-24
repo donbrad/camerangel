@@ -160,6 +160,16 @@ function onInitProfile(e) {
 
 }
 
+function onShowSignIn(e){
+	e.preventDefault();
+
+	$("#home-signin-password").on("keyup", function(e){
+		if (e.keyCode === 13) {
+			signInValidate(e);
+		};
+	});
+}
+
 function onShowHome(e) {
 	e.preventDefault();
 
@@ -182,8 +192,6 @@ function onShowHome(e) {
     //$(".user-status").velocity("fadeIn", {delay:1000});
         
     APP.models.presence.current.bind('change' , syncPresence);
-
-    console.log(APP.models.profile.currentUser);
     
 }
 
@@ -825,7 +833,6 @@ function onShowProfileStatus(){
 }
 
 function statusSwitch(e) {
-	console.log(e.checked);
 	var currentState = e.checked;
 	
 	APP.models.profile.currentUser.set("isAvailable", currentState);

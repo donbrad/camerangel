@@ -159,7 +159,7 @@
       <div data-role="navbar">
         	<a data-role="button" data-rel="actionsheet" href="#settingsAction" data-align="right">
             	<img id="nav-gear" src="images/nav-gear.svg"/>
-            </a>
+            </a>   
         <div class="header-img" id="logo-header">
         	<img src="images/logo-blue.svg" class="nav-logo"/>
         </div>
@@ -253,7 +253,7 @@
 </script> 
     
 <!-- home - for new users -->
- <div data-role="view" data-title="ghostgrams" id="newuserhome" data-layout="newuser" data-model="APP.models.home" class="appearance" style="display:none;">
+ <div data-role="view" data-title="ghostgrams" id="newuserhome" data-layout="newuser" data-model="APP.models.home" class="appearance" style="display:none;" data-show="onShowSignIn">
  	<div class="newuserBox">
         <img id="newuser-ghost" src="images/newuser-ghost.png">
         <h1>
@@ -276,7 +276,7 @@
                 </li>
                 <li>
                     <label>Password</label>
-                    <input type="password" id="home-signin-password" value=""  name="Password" data-message="My custom password message" required />
+                    <input type="password" id="home-signin-password" value=""  name="Password" required />
                     <span id="forgotPassword" class="helper helper-right btnClear-grey" href="#modalview-recoverPassword" data-rel="modalview" data-role="button">Forgot password?</span>
                 </li>
         	</ul>
