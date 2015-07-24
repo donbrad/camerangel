@@ -1039,3 +1039,7 @@ function addNicknameBtn() {
 	$("#addNicknameBtn").addClass("hidden");
 	$("#contactNicknameInput").removeClass("hidden");
 }
+
+function contactAddNew(){
+
+}

@@ -106,3 +106,17 @@ function notificationVerifyPhone (e) {
 	e.preventDefault();
 	$("#modalview-verifyPhone").data("kendoMobileModalView").open();
 }
+
+function closeModalViewProfileStatus() {
+	$("#modalview-profileStatus").data("kendoMobileModalView").close();
+}
+
+function closeStartModal() {
+	$("#modalview-start").data("kendoMobileModalView").close();
+}
+
+function closeTestingBox(){
+	$("#testing").data("kendoMobileModalView").close();
+}
+
+

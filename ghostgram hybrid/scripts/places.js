@@ -260,6 +260,7 @@ function doDeletePlace (e) {
 	APP.models.places.placesDS.sync();
 }
 
+
 function goToChat (e) {
 	if (e.preventDefault !== undefined) {
 		e.preventDefault();
@@ -292,6 +293,7 @@ function onShowPlaces(e) {
 		checkOut();
 		checkInTo(locations[0]);
 	});
+
 }
 
 function parseAddress(address) {
@@ -550,9 +552,7 @@ function onPlaceChanged() {
 
 }
 
-function onShowFindPlace(e) {
-	if (e.preventDefault !== undefined)
-		e.preventDefault();
+function onShowFindPlace() {
 	
 }
 
@@ -666,4 +666,11 @@ function autoCheckInChange(e) {
 	console.log(e.checked);
 }
 
+function doBeforePlaceCheckIn(e){
+	
+}
 
+// 
+function onCheckInPlace(e) {
+	
+}

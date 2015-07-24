@@ -53,6 +53,7 @@ function photoEditCrop(e) {
 function photoEditSave(e) {
 	e.preventDefault();
 	var urlToSave = $('#photoEditImage').attr('src');
+
 	if (APP.models.gallery.currentPhoto.source === 'chat') {
 		// Save image to chat image preview
 	} else if (APP.models.gallery.currentPhoto.source === 'gallery') {
@@ -66,11 +67,9 @@ function photoEditSave(e) {
 
 function photoEditRotateLeft(e) {
 	e.preventDefault();
-	//$('#photoEditImage').css('transform','rotate(' + -90 + 'deg)');'
+	//$('#photoEditImage').css('transform','rotate(' + -90 + 'deg)');
 	APP.models.gallery.rotationAngle -= 90;
 	$('#photoEditImage').cropper('rotate', APP.models.gallery.rotationAngle);
-
-
 }
 
 function photoEditRotateRight(e) {
@@ -78,7 +77,6 @@ function photoEditRotateRight(e) {
 	//$('#photoEditImage').css('transform','rotate(' + 90 + 'deg)');
 	APP.models.gallery.rotationAngle += 90;
 	$('#photoEditImage').cropper('rotate', APP.models.gallery.rotationAngle);
-
 }
 
 function onHidePhotoEditor(e) {
