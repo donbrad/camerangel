@@ -197,6 +197,7 @@ function gotoChannel(channelId) {
 
 function onInitChannels (e) {
     e.preventDefault();
+    
     // ToDo: Initialize list view
 	
      $("#channels-listview").kendoMobileListView({
@@ -218,7 +219,7 @@ function onInitChannels (e) {
     		if(e.direction === "left"){
     			var otherOpenedLi = $(".chat-active");
     			$(otherOpenedLi).velocity({translateX:"0"},{duration: "fast"}).removeClass("chat-active");
-    			
+
     			if($(selection).hasClass("private") !== true && $(window).width() < 375){
     				$(selection).velocity({translateX:"-80%"},{duration: "fast"}).addClass("chat-active");
     			} else if ($(selection).hasClass("private")){
@@ -235,6 +236,7 @@ function onInitChannels (e) {
     	}
     	
     });
+   
 }
 
 function listViewClick(e){
@@ -262,6 +264,7 @@ function onShowAddChannel (e) {
 			$("#addChat-createBtn").velocity({opacity: 1}, {duration: 500, easing: "spring"});
 			$("#channels-addChannel-name").unbind();
 		}
+		$("#addChat-helper-1").velocity("fadeOut", {duration: 300});
 	});
 
 	$("#addChat-step2").css("opacity", 0);
@@ -520,9 +523,9 @@ function doInitChannelMembers (e) {
 }
 
 function doInitChannelPresence (e) {
-	if (e.preventDefault !== undefined)
+	if (e.preventDefault !== undefined){
 		e.preventDefault();
-
+	}
 	$("#channelPresence-listview").kendoMobileListView({
         dataSource: APP.models.channel.membersDS,
         template: $("#memberTemplate").html(),
@@ -551,12 +554,7 @@ function doShowChannelPresence (e) {
 			privateContact = getContactModel(members[0]);
 		}
 		APP.models.channel.membersDS.add(privateContact);
-	} else {
-		for (var i=0; i<members.length; i++) {
-			var contact = findContactByUUID(members[i]);
-			APP.models.channel.membersDS.add(contact);
-		}
-	}	
+	} 
   
 }
 

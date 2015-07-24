@@ -3,7 +3,6 @@ function homeBeforeShow () {
     if (APP.models.profile.currentUser) {
         // Have current user - redirect to user view
         APP.kendo.navigate('#home');
-
     } else {
         // No current user -redirect to no user view
        APP.kendo.navigate('#newuserhome');
@@ -64,7 +63,8 @@ function onBeforeOpenPhoto() {
 
 
 function savePhoto () {
-	
+	mobileNotify("Added tags");
+	closeModalViewPhotoTag();
 }
 
 function pruneNotifications() {
@@ -160,12 +160,22 @@ function onInitProfile(e) {
 
 }
 
+function onShowSignIn(e){
+	e.preventDefault();
+
+	$("#home-signin-password").on("keyup", function(e){
+		if (e.keyCode === 13) {
+			signInValidate(e);
+		};
+	});
+}
+
 function onShowHome(e) {
 	e.preventDefault();
 
 	$('#profileName').text(APP.models.profile.currentUser.alias);
     var myPublicImg = APP.models.profile.currentUser.aliasPhoto;
-	//TODO:  add code to update user profile image
+	// set user alias photo
 	if (myPublicImg !== ""){
         $(".myPublicImg").attr("src", APP.models.profile.currentUser.aliasPhoto);
     }
@@ -173,10 +183,41 @@ function onShowHome(e) {
     if(APP.models.profile.currentUser.phoneVerified) {
     	$("#startPhoneVerified").addClass("hidden");
     }
+    
+    // Set user availibility 
+    setUserStatusUI();
 
+    // Show status
+    //$("#logo-header").velocity("fadeOut", {delay: 1000, duration: 500});
+    //$(".user-status").velocity("fadeIn", {delay:1000});
         
     APP.models.presence.current.bind('change' , syncPresence);
-} 
+    
+}
+
+function setUserStatusUI(e){
+	//Set available
+	var currentAvailable = APP.models.profile.currentUser.isAvailable;
+    if (currentAvailable) {
+    	$(".userStatus-icon").attr("src","images/status-available.svg");
+    } else {
+    	$(".userStatus-icon").attr("src","images/status-away.svg");
+    }
+
+    //set private photo
+    var privatePhoto = APP.models.profile.currentUser.photo;
+    var publicPhoto = APP.models.profile.currentUser.aliasPhoto;
+
+    if(privatePhoto !== ""){
+    	$(".userStatus-photo").attr("src", privatePhoto);
+    } else {
+    	$(".userStatus-photo").attr("src", publicPhoto);
+    }
+}
+
+function testingStatus(e) {
+	console.log("testing");
+}
 
 function homeSignout (e) {
 
@@ -266,7 +307,7 @@ function homeSignin (e) {
 			APP.models.profile.currentUser.set('privateKey', privateKey);
 			var phoneVerified = APP.models.profile.parseUser.get('phoneVerified');
             APP.models.profile.currentUser.set('phoneVerified', phoneVerified);
-			console.log(APP.models.profile.parseUser);
+			
             if (phoneVerified) {
 				APP.setAppState('phoneVerified', true);
 				deleteNotificationModel('phoneVerified');
@@ -792,11 +833,51 @@ function modalGallerySortDesc (e)  {
 	}
 }
 
-function closeStartModal() {
-	$("#modalview-start").data("kendoMobileModalView").close();
+function go2Settings(e){
+	e.preventDefault;
+	APP.kendo.navigate("views/settings.html");
+}
+function go2Profile(e){
+	e.preventDefault;
+	APP.kendo.navigate("views/profile.html");
 }
 
-function closeTestingBox(){
-	$("#testing").data("kendoMobileModalView").close();
+function go2Support(e){
+	e.preventDefault;
+	$("#settingsAction").data("kendoMobileActionSheet").close();
+	$("#modalview-support").data("kendoMobileModalView").open();
 }
 
+function onShowProfileStatus(){
+	var alias = APP.models.profile.currentUser.alias;
+	var verified = APP.models.profile.currentUser.isVerified;
+	var name = APP.models.profile.currentUser.name;
+	
+	var status = APP.models.profile.currentUser.statusMessage;
+	var available = APP.models.profile.currentUser.isAvailable;
+	var availableSwitch = $("#home-status-switch").data("kendoMobileSwitch");
+	// Set profile status
+	$("#profileStatusName").text(alias);
+	$("#profileStatusAlias").text(name);
+	
+	$("#profileStatusMessage").text(status);
+	if(verified){
+		$("#profileStatusVerified").removeClass("hidden");
+	}
+	if(available){
+		availableSwitch.check(true);
+	}
+	setUserStatusUI();
+
+}
+
+function statusSwitch(e) {
+	var currentState = e.checked;
+	
+	APP.models.profile.currentUser.set("isAvailable", currentState);
+	setUserStatusUI();
+}
+
+function setStatus(){
+
+}

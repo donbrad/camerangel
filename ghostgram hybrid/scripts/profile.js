@@ -95,6 +95,7 @@ function saveUserProfilePhoto (url) {
 			// Update currentUser (local) to sync all instances of profile photo
 			currentUser.set("parsePhoto", parseFile);
             currentUser.set("photo", parseFile._url);
+            
             user.save(null, {
                 success: function(contact) {
                     // Execute any logic that should take place after the object is saved.
@@ -134,9 +135,9 @@ function scaleProfileImage (imageData) {
 }
 
 function updateProfilePhoto (e) {
-    if (e.preventDefault !== undefined)
+    if (e.preventDefault !== undefined){
         e.preventDefault();
-
+	}
     var pictureSource = navigator.camera.PictureSourceType;   // picture source
     var destinationType = navigator.camera.DestinationType; // sets the format of returned value
     // Android storage is seriously different -- multiple photo directories with different permissions.

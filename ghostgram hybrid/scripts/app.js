@@ -75,7 +75,7 @@
 					udid: '',
 					macAddress: '',
 					rememberUsername: false,
-					emaiVerified: false,
+					emailVerified: false,
 					phoneVerified: false,
 					isVerified: false,
 					isRetina: false,
@@ -466,7 +466,6 @@
 			                        location: [APP.models.places.lat,  APP.models.places.lng],
 			                        shape: "here",
 			                        title: "Current Location"
-
 			                    }]
 			        });
 						_mapObj = mapObj; //Cache at app level
@@ -849,7 +848,8 @@
 
 		navigator.splashscreen.hide();
 		// Set status bar color
-		StatusBar.backgroundColorByHexString("#27476E");
+		StatusBar.backgroundColorByHexString("#fff");
+		StatusBar.styleLightContent;
 
 		Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
 

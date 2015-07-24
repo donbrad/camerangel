@@ -3,15 +3,12 @@
         <div data-role="navbar">
             <img src="images/ghost.svg" id="nav-ghost" height="25"/>
             <span data-role="view-title"></span>
-            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img src="images/menu-icon.svg"/></a>
-           <a data-align="right" data-role="button" href="#addChannel">
-           		<img src="images/menu-add.svg" />
-           </a>
         </div>
     </div>
      <div>
          <ul id="channels-listview"></ul>
      </div>
+     	
      
     <ul data-role="actionsheet" id="channelActions" data-popup='{"direction": "left"}'>
         <li><a data-action="eraseChannel">Erase Chat Content</a></li>
@@ -30,7 +27,28 @@
 	    <li><a data-action="eraseChannel">Erase Chat Content</a></li>
         <li><a data-action="deleteChannel">Delete Chat</a></li>
     </ul>
-    
+    <div class="footerMenu" data-role="footer">
+    		<a class="btnYellow footerBtn-nav" id="addChannelBtn" data-role="button" href="#addChannel">
+		     	<img src="images/nav-add-white.svg" />
+     		</a>
+	  		<ul class="list-inline menuNav">
+	  			<li>
+	  				<a data-role="button" href="#home"><img src="images/nav-home.svg" id="nav-home" /></a>
+	  			</li>
+	  			<li>
+	  				<a data-role="button" href="views/channels.html"><img src="images/nav-chat-active.svg" id="nav-chat" /></a>
+	  			</li>
+	  			<li>
+	  				<a data-role="button" href="views/contacts.html"><img src="images/nav-contact.svg" id="nav-contact" /></a>
+	  			</li>
+	  			<li>
+	  				<a data-role="button" href="views/places.html"><img src="images/nav-places.svg" id="nav-places" /></a>
+	  			</li>
+	  			<li>
+	  				<a data-role="button" href="views/archive.html"><img src="images/nav-archive.svg" id="nav-archive" /></a>
+	  			</li>
+	  		</ul>
+	  </div>
 </div>
 
 <script type="text/x-kendo-tmpl" id="channels-listview-template">
@@ -111,12 +129,12 @@
 </script>
  
 
-<div data-role="view"  data-title='Add Chat' id="addChannel" style="display: none;"  data-init="onShowAddChannel" class="appearance">
+<div data-role="view" data-title='Add Chat' id="addChannel" style="display: none;" data-init="onShowAddChannel" class="appearance" data-transition="overlay:up">
    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" href="#:back" data-click="resetAddChatUI" data-align="left">
-            	<img src="images/nav-back.svg" />
+            <a data-role="button" href="#:back" data-click="resetAddChatUI" data-align="right">
+            	<img src="images/close.svg" />
             </a>
             <a class="hidden" data-align="right" data-role="button"  data-rel="drawer" href="#channelMembers"> <i class="ghostIconNavbar fa fa-users"></i> </a>
         </div>
@@ -141,38 +159,51 @@
                 <a class="btnClear-grey" data-role="button" data-click="showChatDescription" id="addChatDescription">Add description</a>
             </li>
 			<li >
-               <label>Archive
+               <label>Save messages for
+               	<div class="select-md">
                     <select id="channels-addChannel-archive">
-                        <option value="1">One (1) Day</option>
-                        <option value="7">Seven (7) Days</option>
-						<option value="30">Thirty (30) Days</option>
+                        <option value="1">24 hrs</option>
+                        <option value="7">7 Days</option>
+						<option value="30">30 Days</option>
                     </select>
+                </div>
                 </label>
+            </li>
+            <li>
+            	<p class="right">
+		        	<a id="addChat-createBtn" class="btnClear" data-click="addChannel" type="button" data-role="button">Next - Invite friends</a>
+		        </p>
+            </li>
+            <li class="hidden">
+            	<div class="line"></div>
+            	<label>Optional
+            		<div class="chatOption-event">
+            			<img class="chatOptionImg" src="images/event.svg" />
+            			<a class="btnClear-grey" data-role="button" data-click="doShowEventInputs" id="addChatEvent">Add Event info</a>
+            		</div>
+
+            	</label>
             </li>
 			<li>
 				<label class="addChannelEvent hidden">Place (Location for event)
-					<select id="channels-addChannel-place">
-						<option value="0">None - Virtual Event</option>
-					</select>
+					<div class="select">
+						<select id="channels-addChannel-place">
+							<option value="0">None - Virtual Event</option>
+						</select>
+					</div>
 				</label>
 				<label class="addChannelEvent hidden">Date (Date of the event)
 					<input type="date" id="channels-addChannel-eventDate"  />
 				</label>
-
-				<a class="btnClear-grey" data-role="button" data-click="doShowEventInputs" id="addChatEvent">Is This An Event?</a>
 			</li>
-        </ul>
-        <p class="right-txt">
-        	<a id="addChat-createBtn" class="btnClear" data-click="addChannel" type="button" data-role="button">Next - Invite friends</a>
-        </p>
-		  
+        </ul>		  
     </form>
    
 	
-	<div class="footerBk" data-role="footer">
+	<div class="footerBk" data-role="footer" id="addChat-helper-1">
  		<div class="helperBox" id="addChat-helper1" >
 			<p class="helper"><img src="images/help.svg" /> Looking for 1-on-1 private chat?</p>
-			<a class="btnClear" data-role="button" href="views/contacts.html">See your ghostgram contacts</a>
+			<a class="btnClear" data-role="button" href="views/contacts.html">Go to ghostgram contacts</a>
 		</div>	
 	</div>
  
@@ -216,16 +247,16 @@
     	</div>
 </div>
 
-<div data-role="view" id="channel" data-layout="main" data-model="APP.models.channel" data-show="onShowChannel" data-init="onInitChannel">
+<div data-role="view" id="channel" data-layout="main" data-model="APP.models.channel" data-show="onShowChannel" data-init="onInitChannel" data-transition="slide">
      <div data-role="header">
         <div data-role="navbar" id="channelNavBar">
+        	<a data-align="left" data-role="backbutton"> 
+            	<img src="images/nav-back.svg" />
+            </a>
             <img src="" id="channelImage" height="32" style="vertical-align: middle; border-radius: 50%"/>
             <span data-role="view-title"></span>
-            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left">
-            	<img src="images/menu-icon.svg"/>
-            </a>
             <a data-align="right" data-role="button" id="messagePresenceButton" data-rel="drawer" href="#channelPresence"> 
-            	<i class="ghostIconNavbar fa fa-users"></i> 
+            	<img src="images/group-icon.svg" />
             </a>
         </div>
          
@@ -358,17 +389,12 @@
      </div>
 </script>
 
-<div data-role="drawer" id="channelPresence" style="width: 240px" data-title="Presence" data-swipe-to-open="false" data-position='right' data-init="doInitChannelPresence" data-show="doShowChannelPresence" data-views="['channel']">
-    <header data-role="header">
-        <div data-role="navbar">
-            <span data-role="view-title"></span>
-        </div>
-    </header>
-
+<div data-role="drawer" id="channelPresence" style="width: 240px" data-swipe-to-open="false" data-position='right' data-init="doInitChannelPresence" data-show="doShowChannelPresence" data-views="['channel']">
+    <div class="menuBox">
+    	<ul id="channelPresence-listview"></ul>
+    </div>
 	
-    <ul id="channelPresence-listview">
-		
-    </ul>
+    
 </div>
 
 

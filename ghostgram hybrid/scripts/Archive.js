@@ -12,18 +12,18 @@ var archive = {
 		// If the localStorage wasn't set, create a new index
 		} else {
 			this.index = lunr(function () {
-				this.field('value');
+				this.field('channel');
+				this.field('sender');
+				this.field('place');
+				this.field('address');
+				this.field('event');
+				this.field('tags');
 				this.field('date');
-				this.field('internalTags');
-				this.field('userTags');
-				this.field('category');
+				this.field('type');
+				this.field('text');
+				this.field('content');
 			});
 			localStorage.setItem('archiveIndex', JSON.stringify(this.index.toJSON()));
-		}
-
-		// Used for auto-incrementing IDs in the add method
-		if (localStorage.getItem('archiveID') === null) {
-			localStorage.setItem('archiveID', 0);
 		}
 
 		// Offline data sources with a schema create an empty element for some reason.
@@ -35,17 +35,31 @@ var archive = {
 
 		this.dataSource = new kendo.data.DataSource({
 			offlineStorage: 'archiveDS',
-			group: { field: 'category' },
+			group: { field: 'type' },
 			schema: {
 				model: {
 					id: 'id',
 					fields: {
-						relID: { editable: false },
-						value: { editable: false },
+						/*
+						channelId: { editable: false },
+						channelName: { editable: false },
+
+						senderId: { editable: false },
+						senderName: { editable: false },
+
+						placeId: { editable: false },
+						placeName: { editable: false },
+						address: { editable: false },
+
+						eventId: { editable: false },
+						eventName: { editable: false },
+
+						tags: { editable: false },
 						date: { editable: false, type: 'date' },
-						internalTags: { editable: false },
-						userTags: { editable: false },
-						category: { editable: false }
+						type: { editable: false },
+						text: { editable: false },
+						content: { editable: false }
+						*/
 					}
 				}
 			}
@@ -61,18 +75,26 @@ var archive = {
 	},
 
 	add: function (model) {
+		model.id = uuid.v4();
 
-		// Auto increment ID
-		model.id = parseInt(localStorage.getItem('archiveID'));
-		localStorage.setItem('archiveID', model.id+1);
+		var doc = {
+			messageChannelName: model.message.channelName,
+			messageSenderName: model.message.sender.name,
+			messagePlaceName: model.message.placeName,
+			messageAddress: model.message.address,
+			messageEventName: model.message.eventName,
+			messageText: model.message.text,
+
+			type: model.type,
+			tags: model.tags
+		}
 
 		// Model is what we're putting in the dataSource, doc is what we're putting the lunr index
 		var doc = _.cloneDeep(model);
-		delete doc.relID;
 
 		// Format the doc date into a string
 		var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-		doc.date = doc.date.getDate() + ' ' + months[doc.date.getMonth()] + ' ' + doc.date.getFullYear();
+		doc.date = model.message.date.getDate() + ' ' + months[model.message.date.getMonth()] + ' ' + model.message.date.getFullYear();
 
 		this.index.add(doc);
 		// Update the local storage so the new doc in the index persists
@@ -193,7 +215,6 @@ var archive = {
 		if (start !== undefined || end !== undefined) {
 			query = query.replace(regex, '');
 		}
-		console.log(filter, query);
 
 		// Get lunr matches
 
@@ -204,7 +225,7 @@ var archive = {
 		}
 
 		lunrMatches.forEach( function (lunrMatch) {
-			filter.filters[0].filters.push({ field: 'id', operator: 'eq', value: parseInt(lunrMatch.ref) });
+			filter.filters[0].filters.push({ field: 'id', operator: 'eq', value: lunrMatch.ref });
 		});
 
 		this.dataSource.filter(filter);
