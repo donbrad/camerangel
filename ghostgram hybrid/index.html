@@ -4,15 +4,15 @@
     <title></title>
     <meta charset="utf-8" />
     <!-- Styles -->
-    
+    <link href="kendo/styles/kendo.common.min.css" rel="stylesheet" />
+	 <link href="kendo/styles/kendo.flat.min.css" rel="stylesheet" />
     <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="styles/font-awesome.css">
-    <link rel="stylesheet" href="styles/quill.base.css">
     <link href="styles/master.css" rel="stylesheet" />
  <!-- External scripts -->
     <script src="cordova.js"></script>
     <script src="kendo/js/jquery.min.js"></script>
-    <script src="kendo/js/kendo.mobile.min.js"></script>
+    <script src="kendo/js/kendo.all.min.js"></script>
 	<script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-XdXhoF08ubebxTjTh9jf0Ra4xFV1Jwo&sensor=true&libraries=places">
     </script>
@@ -20,8 +20,6 @@
     <script src="https://cdn.pubnub.com/pubnub-3.7.12.js"></script>
     <script src="scripts/parseKendoDataSourceFactory.js"></script>
     <script src="scripts/appData.js"></script>
-    <script src="scripts/quill.js"></script>
-    <script src="scripts/app.js"></script>
 	<script src="scripts/appChannel.js"></script>
 	<script src="scripts/geo.js"></script>
     <script src="scripts/guid.js"></script>
@@ -45,14 +43,15 @@
     <script src="scripts/jq.wraptions.js"></script>
     <script src="scripts/jquery.email-autocomplete.js"></script>
 	<script src='bower_components/autosize/dest/autosize.js'></script>
-	<script src='bower_components/isotope/dist/isotope.pkgd.js'></script>
-	<script src='bower_components/isotope/dist/packery.js'></script>
-    <script src='bower_components/imagesloaded/imagesloaded.js'></script>
+    <script src="bower_components/moment/moment.js"></script>
 	<script src="scripts/uuid.js"></script>
     <script src="scripts/jquery-clearsearch.js"></script>
     <script src="scripts/cropper.js"></script>
     <script src="bower_components/velocity/velocity.js"></script>
     <script src="bower_components/lodash/lodash.js"></script>
+    <script src="scripts/Archive.js"></script>
+    <script src="scripts/archiveView.js"></script>
+	<script src="scripts/app.js"></script>
 
 </head>
 <body id="body">
@@ -583,7 +582,7 @@
 </style>
 
 <!-- Gallery Picker -- pick an image from the ghostgrams Gallery -->
-<div data-role="modalview" id="modalview-galleryPicker" style="width: 100%; height:100%; display: none;"  class="appearance">
+<div data-role="modalview" id="modalview-galleryPicker" style="width: 100%; height:100%; display: none;"  class="appearance" data-init="onGalleryPickerInit">
     <div data-role="header">
         <div data-role="navbar">
             <span>Gallery Picker</span>
@@ -591,11 +590,10 @@
         </div>
 	</div>
 		
-	<div style="text-align: center; padding-top: 4px; padding-bottom: 6px; background: #e2e2e2; ">
-        <a  data-role="button" class="btnBlack"  data-click="modalGalleryZoomIn"> <i class="fa fa-search-plus"></i> </a>
-        <a  data-role="button" class="btnBlack"  data-click="modalGalleryZoomOut"> <i class="fa fa-search-minus"></i> </a>
-        <a  data-role="button" class="btnBlack"  data-click="modalGallerySortAsc"> <i class=" fa fa-sort-asc"></i></a>
-		<a  data-role="button" class="btnBlack"  data-click="modalGallerySortDesc"> <i class=" fa fa-sort-desc"></i></a>
+	<div style="padding-top: 4px; padding-bottom: 6px; padding-left: 6px; background: #e2e2e2; ">
+        <a  data-role="button" class="btnBlack-sm"  data-click="modalGalleryZoomIn"> <i class="fa fa-search-plus"></i> </a>
+        <a  data-role="button" class="btnBlack-sm"  data-click="modalGalleryZoomOut"> <i class="fa fa-search-minus"></i> </a>
+        <select  id="galleryPickerSearch" multiple="multiple" style="width:75%; padding-top: 2px;"> </select>
     </div>
 
     <div>
@@ -612,6 +610,24 @@
 		</div>
 	</div>
 </script>
+
+<div data-role="modalview" data-title="ghostChat" id="modalview-ghostChat" style="width: 100%; height: 100%; display:none;" data-init="onInitGhostChat" data-open="onOpenGhostChat" >
+    <div data-role="header">
+        <div data-role="navbar">
+            <span data-role="view-title"></span>
+            <a data-role="button" data-click="closeModalGhostChat" data-align="left" >Close</a>
+            <a data-role="button" data-click="sendGhostChat" data-align="right" ></i>Send</a>
+        </div>
+    </div>
+
+    <div id="ghostChatwrapper" style="width: 100%; height:100%;">
+
+  	    <textarea id="ghostChatEditor" contenteditable="true" class="editor" rows="20" cols="80" style="width:100%; min-height:320px; border: 1px solid #2e2e2e; padding: 4px; margin: 6px; color: #111111;">
+
+		</textarea>
+    </div>
+
+</div>
 
 
     <!-- get started -->
@@ -681,6 +697,8 @@
 <div>
 
 </div>
+
+
 </script>
 	
 

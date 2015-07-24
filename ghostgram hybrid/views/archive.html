@@ -1,32 +1,28 @@
-<div data-role="view" id="archive" data-title="Archive" data-layout="main">  
-     <div data-role="header">
-        <div data-role="navbar">
-            <span data-role="view-title"></span>
-        </div>
-    </div>
-    <div class="archiveBox">
-        <h4>
-            Nothing Archived yet :(
-        </h4>
-        
-    </div>
-    <div class="footerMenu" data-role="footer">
-	  		<ul class="list-inline menuNav">
-	  			<li>
-	  				<a data-role="button" href="#home"><img src="images/nav-home.svg" /></a>
-	  			</li>
-	  			<li>
-	  				<a data-role="button" href="views/channels.html"><img src="images/nav-chat.svg" /></a>
-	  			</li>
-	  			<li>
-	  				<a data-role="button" href="views/contacts.html"><img src="images/nav-contact.svg" /></a>
-	  			</li>
-	  			<li>
-	  				<a data-role="button" href="views/places.html"><img src="images/nav-places.svg" /></a>
-	  			</li>
-	  			<li>
-	  				<a data-role="button" href="views/archive.html"><img src="images/nav-archive-active.svg" /></a>
-	  			</li>
-	  		</ul>
-	  </div>
+<div data-role="view" id="archive" data-title="Archive" data-layout="main" data-init="window.archiveView.init">  
+	 <div data-role="header">
+		<div data-role="navbar">
+			<span data-role="view-title"></span>
+			<a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img src="images/menu-icon.svg"/></a>
+		</div>
+	</div>
+	<main>
+		<div class="nothing-found">
+			<h1>Nothing archived yet :(</h1>
+		</div>
+
+		<div id="search-archives">
+			<input class="clearable" type="text" placeholder="Search archives..." />
+			<button data-role="button" data-click="archiveView.search"> </button>
+		</div>
+		
+		<ul id="archive-list" data-role="listview" data-source="archive.dataSource" data-template="archive-template"></ul>
+	<main>
 </div>
+
+<script type="text/x-kendo-template" id="archive-template">
+	<span class="sender"></span>
+	<span class="message">#= data.value #</span>
+	<span class="date">#= moment(data.date).fromNow() #</span>
+	<button class="delete" data-role="button" data-click="archiveView.deleteDoc" data-id="#= data.id #"></button>
+</script>
+

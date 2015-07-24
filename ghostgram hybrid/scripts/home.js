@@ -293,6 +293,10 @@ function homeSignin (e) {
 			APP.models.profile.currentUser.set('statusMessage', APP.models.profile.parseUser.get('statusMessage'));
 			APP.models.profile.currentUser.set('isAvailable', APP.models.profile.parseUser.get('isAvailable'));
 			APP.models.profile.currentUser.set('isVisible', APP.models.profile.parseUser.get('isVisible'));
+			APP.models.profile.currentUser.set('isRetina', APP.models.profile.parseUser.get('isRetina'));
+			APP.models.profile.currentUser.set('isWIFIOnly', APP.models.profile.parseUser.get('isWIFIOnly'));
+			APP.models.profile.currentUser.set('isPhotoStored', APP.models.profile.parseUser.get('isPhotoStored'));
+			APP.models.profile.currentUser.set('saveToPhotoAlbum', APP.models.profile.parseUser.get('saveToPhotoAlbum'));
 			APP.models.profile.currentUser.set('currentPlace', APP.models.profile.parseUser.get('currentPlace'));
 			APP.models.profile.currentUser.set('currentPlaceUUID', APP.models.profile.parseUser.get('currentPlaceUUID'));
 			APP.models.profile.currentUser.set('photo', APP.models.profile.parseUser.get('photo'));
@@ -418,6 +422,10 @@ function homeCreateAccount() {
 							APP.models.profile.currentUser.set('photo', user.get('photo'));
 							APP.models.profile.currentUser.set('isAvailable', user.get('isAvailable'));
 							APP.models.profile.currentUser.set('isVisible', user.get('isVisible'));
+							APP.models.profile.currentUser.set('isRetina', user.get('isRetina'));
+							APP.models.profile.currentUser.set('isWIFIOnly', user.get('isWIFIOnly'));
+							APP.models.profile.currentUser.set('isPhotoStored', user.get('isPhotoStored'));
+							APP.models.profile.currentUser.set('saveToPhotoAlbum', user.get('saveToPhotoAlbum'));
 							APP.models.profile.currentUser.set('aliasPhoto', user.get('aliasPhoto'));
 							APP.models.profile.currentUser.set('userUUID', user.get('userUUID'));
 							APP.models.profile.currentUser.set('phoneVerified', false);
@@ -749,6 +757,36 @@ function syncPresence () {
             }
         });
     });
+}
+
+function onGalleryPickerInit(e) {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+	var galleryOptions = [
+		{name: "Today", value: 0, group: "Date"},
+		{name: "Yesterday", value: -1, group: "Date"},
+		{name: "This Week", value: -7, group: "Date"},
+		{name: "Last Week", value: -14, group: "Date"},
+		{name: "This Month", value: -30, group: "Date"},
+		{name: "Last Month", value: -60, group: "Date"}
+	];
+
+	$("#galleryPickerSearch").kendoMultiSelect({
+		dataTextField: "name",
+		dataValueField: "value",
+		height: 320,
+		dataSource: {
+			data: galleryOptions
+		},
+		select: function(e) {
+			var view = this.dataSource.view(), index = e.item.index();
+			var dataItem = view[index];
+			// Use the selected item or its text
+		}
+	});
+
+
 }
 
 function galleryPickerClick(e) {

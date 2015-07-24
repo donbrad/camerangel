@@ -66,6 +66,10 @@ function closeModalViewLogin() {
     $("#modalview-login").kendoMobileModalView("close");
 }
 
+function closeModalGhostChat() {
+    $("#modalview-ghostChat").kendoMobileModalView("close");
+}
+
 function closeModalViewSignup() {
     $("#modalview-signup").kendoMobileModalView("close");
 }

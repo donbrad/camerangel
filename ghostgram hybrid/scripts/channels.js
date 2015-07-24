@@ -233,17 +233,9 @@ function onInitChannels (e) {
     		if (e.direction === "right" && $(selection).hasClass("chat-active")){
     			$(selection).velocity({translateX:"0"},{duration: "fast"}).removeClass("chat-active");
     		}
-    	},
+    	}
     	
     });
-
-    var scroller = e.view.scroller;
-    var currentScrollPos = 0
-    scroller.bind("scroll", function(e) {
-    // Todo (JE) - test interaction for button
-
-    });
-
    
 }
 
@@ -619,6 +611,47 @@ function addChatStep2(e) {
 
 }
 
+function sendGhostChat(e) {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+
+
+	APP.kendo.navigate('#:back');
+}
+
+function doOpenGhostChat(e) {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+
+	APP.views.ghostEditor.title="ghostChat";
+	APP.views.ghostEditor.sendAction = sendGhostChat;
+
+	$("#ghostChatEditor").kendoEditor({
+		tools: [
+			"bold",
+			"italic",
+			"underline",
+			"justifyLeft",
+			"justifyCenter",
+			"justifyRight",
+			"insertUnorderedList",
+			"insertOrderedList",
+			"indent",
+			"outdent"
+
+		]
+	});
+
+}
+
+
+function onOpenGhostChat(e) {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+}
 
 function toggleListTrash() {
 	$(".listTrash").velocity("fadeIn", {duration: 100});
