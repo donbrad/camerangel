@@ -1730,7 +1730,14 @@ div.loginBox > form > div > ul > li {
     }
 }
 
-#archive h1 {
+#archive main {
+    margin: .1rem .2rem;
+}
+
+#archive h1,
+#archive h2 {
+    margin: 0;
+
     color: black;
 }
 
@@ -1746,8 +1753,7 @@ div.loginBox > form > div > ul > li {
 
 #search-archives {
     display: flex;
-    margin: .2rem;
-    
+
     input {
         width: 100%;
     }
@@ -1757,23 +1763,82 @@ div.loginBox > form > div > ul > li {
     }
 }
 
-#archive-list li {
-    display: flex;
+// Archive list
 
-    .sender {
-        width: 6rem;
+#archive-list .km-group-title {
+    font-size: 1.1rem;
+}
+
+#archive-list .km-list li {
+    margin: 0 .4rem;
+
+    header {
+        margin-bottom: .9rem;
+
+        img {
+            // An actually legitimate use of float lol
+            float: left;
+
+            width: 32px;
+            margin-right: 1rem;
+            border-radius: 50%;
+        }
+
+        h1 {
+            display: inline-block;
+
+            font-size: 1.1rem;
+            line-height: 1;
+        }
+
+        h2 {
+            display: inline-block;
+
+            font-size: .9rem;
+            line-height: 1;
+        }
+
+        .delete {
+            float: right;
+
+            width: 10%;
+            vertical-align: top;
+
+            //&:extend(.fa, .fa-remove all);
+        }
     }
 
     .message {
-        width: 100%;
+        display: inline-block;
+        width: 70%;
     }
 
-    .date {
-        width: 10rem;
-    }
+    // Smart objects
+    .object {
+        padding: .1rem .3rem;
+        border: 1px solid @grey200;
+        margin-top: .9rem;
+        box-shadow: 0 5px 16px -10px rgba(0,0,0,0.50);
 
-    .delete {
-        //&:extend(.fa, .fa-remove all);
+        background-color: @grey300;
+
+        h1 {
+            font-size: 1.1rem;
+        }
+
+        h2 {
+            font-size: .9rem;
+
+            strong + span {
+                float: right;
+            }
+        }
+
+
+        img {
+            width: 100%;
+        }
+
     }
 }
 
