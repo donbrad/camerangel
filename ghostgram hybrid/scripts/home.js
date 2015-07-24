@@ -63,7 +63,8 @@ function onBeforeOpenPhoto() {
 
 
 function savePhoto () {
-	
+	mobileNotify("Added tags");
+	closeModalViewPhotoTag();
 }
 
 function pruneNotifications() {

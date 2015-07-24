@@ -467,22 +467,20 @@
 
 
 <div data-role="view" id="photoEditor" style="width: 100%; height:100%; display: none;"  data-show="onShowPhotoEditor"  data-hide="onHidePhotoEditor">	
-    <div style="text-align: center; padding-top: 4px; padding-bottom: 6px; background: #e2e2e2; ">
-    <a data-align="left" id="photoEditorBack" data-role="backbutton">Cancel</a>
-        <a  data-role="button" class="btnBlack"  data-click="photoEditRotateLeft"> <i class="fa fa-rotate-left"></i> Left </a>
-        <a  data-role="button" class="btnBlack"  data-click="photoEditRotateRight"> <i class="fa fa-rotate-right"></i> Right </a>
-        <a  data-role="button" class="btnBlack"  data-click="photoEditCrop"> <i class=" fa fa-scissors"></i> Crop </a>
+		<a id="photoEditorBack" class="right" data-role="backbutton"><img src="images/close-white.svg" /></a>
+		<div class="clearfix"></div>
+    	<div style="text-align: center; padding-top: 1rem; background: #a4a4a4a; ">
+        <a  data-role="button"  data-click="photoEditRotateLeft"><img src="images/photo-left.svg" /> </a>
+        <a  data-role="button"  data-click="photoEditRotateRight"> <img src="images/photo-right.svg" /></a>
+        <a  data-role="button" data-click="photoEditCrop"> <img class="photo-options" src="images/photo-crop.svg" /> </a>
     </div>
 	
     <div style="margin: 4px; height:60%;">
-        <img id="photoEditImage" src="" />
+        <img id="photoEditImage" src="images/photo-default.svg" />
     </div>
-
+    <span class="left"><a data-role="button" data-rel="modalview"  href="#modalview-photoTag"><img src="images/photo-tag.svg" /></a></span>
     <div data-role="footer">
-        <div style="padding-top: 4px; padding-bottom: 6px; background: #e2e2e2; " id="photoEditSaveDiv">
-            <span style="float:left"><a  data-role="button" class="btnBlack" data-rel="modalview"  href="#modalview-photoTag">Tag Photo</a></span>
-            <span style="float:right"><a  data-role="button" class="btnBlack"  data-click="photoEditSave"> Save Photo </a></span>
-        </div>
+		<a class="btnSpan-btm btnYellow" id="photoEditSaveDiv" data-role="button" data-click="photoEditSave"> Save Photo </a>
     </div>
 
 </div>
@@ -551,7 +549,8 @@
     <a class="btnBlue btnFull-modal" data-click="closeModalViewProfileStatus" data-role="button">Done</a>
 </div>
 
-<div data-role="modalview" id="modalview-photoTag" style="width: 100%; height:100%; display: none;"  class="appearance">
+<!-- Photo tag modal -->
+<div data-role="modalview" id="modalview-photoTag" style="width: 100%; display: none;"  class="appearance">
     <div data-role="header">
         <div data-role="navbar">
             <span>Tag Photo</span>
@@ -559,21 +558,17 @@
                 <a data-click="savePhoto"  type="button" data-role="button" data-align="right">Save</a>
 		</div>
 	</div>
-
-	<div style="margin:8px; height: 60%; width: auto; text-align: center">
-		<img id="photoImage" src="" style=" max-height: 60%; vertical-align: middle;">
-	</div>
 	
      <form id="photoForm">
         <ul data-role="listview" data-style="inset">
             <li>
                 <label>Title
-                    <input type="search" id="photoTitle" default="Title or description" />
+                    <input type="search" id="photoTitle" placeholder="Title or description" />
                 </label>
             </li>
 			<li>
                 <label>Tags
-                    <input type="search" id="photoTags" default="People, event, location..." />
+                    <input type="search" id="photoTags" placeholder="People, event, location..." />
                 </label>
 			</li>
             
