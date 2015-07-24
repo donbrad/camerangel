@@ -554,10 +554,7 @@ function doShowChannelPresence (e) {
 			privateContact = getContactModel(members[0]);
 		}
 		APP.models.channel.membersDS.add(privateContact);
-	} else {
-		console.log(members); 
-		
-	}	
+	} 
   
 }
 

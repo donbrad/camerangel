@@ -868,6 +868,7 @@ function onShowProfileStatus(){
 		availableSwitch.check(true);
 	}
 	setUserStatusUI();
+
 }
 
 function statusSwitch(e) {
