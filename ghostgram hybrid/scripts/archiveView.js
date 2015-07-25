@@ -134,10 +134,12 @@ var archiveView = {
 
 		archiveView.checkIfEmpty();
 
+		$('#search-archives input').clearSearch({ callback: archiveView.clearSearch });
+
 		// Binding this manually because data-role="button" messes up the styles
 		$('#archive-list').on('click', '.object', archiveView.openObject);
 
-		//archive.search('green since jan 1st 14');
+		//archive.search('concert');
 	},
 
 	checkIfEmpty: function () {
@@ -145,6 +147,8 @@ var archiveView = {
 			// If the total still equals 0 after remove the filters
 			archive.dataSource.filter({});
 			if (archive.dataSource.total() === 0) {
+				$('#archive .archive-empty').show();
+				$('#archive .search-empty').hide();
 				$('#archive .nothing-found').show();
 				$('#archive main > *:not(.nothing-found)').hide();
 			}
@@ -153,8 +157,15 @@ var archiveView = {
 
 	search: function () {
 		if (archive.search($('#search-archives input').val()) === false) {
-			// Show nothing found
+			$('#archive .archive-empty').hide();
+			$('#archive .search-empty').show();
+			$('#archive .nothing-found').show();
 		};
+	},
+
+	clearSearch: function () {
+		$('#archive .nothing-found').hide();
+		archive.dataSource.filter({});
 	},
 
 	deleteDoc: function (e) {

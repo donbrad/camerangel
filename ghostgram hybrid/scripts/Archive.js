@@ -12,16 +12,16 @@ var archive = {
 		// If the localStorage wasn't set, create a new index
 		} else {
 			this.index = lunr(function () {
-				this.field('channel');
-				this.field('sender');
-				this.field('place');
-				this.field('address');
-				this.field('event');
+				this.field('messageChannelName');
+				this.field('messageSenderName');
+				this.field('messagePlaceName');
+				this.field('messageAddress');
+				this.field('messageEventName');
+				this.field('messageText');
+
+				this.field('type');
 				this.field('tags');
 				this.field('date');
-				this.field('type');
-				this.field('text');
-				this.field('content');
 			});
 			localStorage.setItem('archiveIndex', JSON.stringify(this.index.toJSON()));
 		}
@@ -75,9 +75,11 @@ var archive = {
 	},
 
 	add: function (model) {
+		// Model is what we're putting in the dataSource, doc is what we're putting the lunr index
 		model.id = uuid.v4();
 
 		var doc = {
+			id: model.id,
 			messageChannelName: model.message.channelName,
 			messageSenderName: model.message.sender.name,
 			messagePlaceName: model.message.placeName,
@@ -88,9 +90,6 @@ var archive = {
 			type: model.type,
 			tags: model.tags
 		}
-
-		// Model is what we're putting in the dataSource, doc is what we're putting the lunr index
-		var doc = _.cloneDeep(model);
 
 		// Format the doc date into a string
 		var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];

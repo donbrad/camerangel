@@ -1,4 +1,4 @@
-@import 'font-awesome.css';
+@import (less) 'font-awesome.css';
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Hind:300,400,500);
 /*** Guidelines - updated 3/14/15 (see https://www.dropbox.com/s/vw40iwbmvo1tkol/styles-0.1.pdf?dl=0) ***/
 /* Colors */
@@ -2013,12 +2013,16 @@ div.loginBox > form > div > ul > li {
 #search-archives {
     display: flex;
 
+    .clear_input_div {
+        width: 100%;
+    }
+
     input {
         width: 100%;
     }
 
     & > button {
-        //&:extend(.fa, .fa-search all);
+        &:extend(.fa, .fa-search all);
     }
 }
 
