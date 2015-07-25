@@ -147,24 +147,28 @@ var archiveView = {
 			// If the total still equals 0 after remove the filters
 			archive.dataSource.filter({});
 			if (archive.dataSource.total() === 0) {
-				$('#archive .archive-empty').show();
-				$('#archive .search-empty').hide();
-				$('#archive .nothing-found').show();
-				$('#archive main > *:not(.nothing-found)').hide();
+				$('#archive-empty').show();
+				$('#archive main > *:not(#archive-empty)').hide();
 			}
 		}
 	},
 
 	search: function () {
+		if ($('#search-archives input').val() === '') {
+			archiveView.clearSearch();
+			return;
+		}
+
 		if (archive.search($('#search-archives input').val()) === false) {
-			$('#archive .archive-empty').hide();
-			$('#archive .search-empty').show();
-			$('#archive .nothing-found').show();
+			// Show nothing found
+			$('#archive-search-empty').show();
+			$('#archive-list').hide();
 		};
 	},
 
 	clearSearch: function () {
-		$('#archive .nothing-found').hide();
+		$('#archive-search-empty').hide();
+		$('#archive-list').show();
 		archive.dataSource.filter({});
 	},
 

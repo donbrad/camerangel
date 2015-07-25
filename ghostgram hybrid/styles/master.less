@@ -706,6 +706,15 @@ div.km-header a img{
 .km-listgroupinset {
     margin: 0px;
 }
+
+.km-view {
+    display: flex;
+
+    & > .km-content {
+        height: 100%;
+    }
+}
+
 /* Helpers */
 
 .helper {
@@ -1677,8 +1686,6 @@ a:hover {
 	padding-top: 0.5rem;
 	padding-bottom: 0.5rem;
 	border-top: 1px solid @grey200;
-	position: fixed;
-	bottom: 0px;
 }
 
 .footerBk {
@@ -1975,21 +1982,23 @@ div.loginBox > form > div > ul > li {
 
 /* Archive */
 
-#archive .nothing-found {
-    .centerObject;
-
+#archive-empty,
+#archive-search-empty {
     display: none;
     width: 100%;
+    margin: auto;
 
-    background: #fff;
-
-    h1 {
-        font-size: 1.6rem;
-        text-align: center;
-    }
+    font-size: 1.6rem;
+    text-align: center;
 }
 
 #archive main {
+    // Not sure why this is needed
+    position: absolute;
+
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     margin: .1rem .2rem;
 }
 
@@ -2012,6 +2021,7 @@ div.loginBox > form > div > ul > li {
 
 #search-archives {
     display: flex;
+    height: 2.8rem;
 
     .clear_input_div {
         width: 100%;
@@ -2028,6 +2038,10 @@ div.loginBox > form > div > ul > li {
 
 
 // Archive list
+
+#archive-list {
+    height: 100%;
+}
 
 #archive-list .km-group-title {
     font-size: 1.1rem;
@@ -2068,7 +2082,7 @@ div.loginBox > form > div > ul > li {
             width: 10%;
             vertical-align: top;
 
-            //&:extend(.fa, .fa-remove all); Doesn't compile with this line
+            &:extend(.fa, .fa-remove all);
         }
 
     }

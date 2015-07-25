@@ -1,4 +1,4 @@
-<div data-role="view" id="archive" data-title="Archive" data-layout="main" data-init="window.archiveView.init">  
+<div data-role="view" id="archive" data-title="Archive" data-layout="main" data-stretch="true" data-init="window.archiveView.init">  
 	 <div data-role="header">
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
@@ -6,17 +6,17 @@
 		</div>
 	</div>
 	<main>
-		<div class="nothing-found">
-			<h1 class="archive-empty">Nothing here :(</h1>
-			<h1 class="search-empty">Nothing found</h1>
-		</div>
-
 		<div id="search-archives">
-			<input type="text" placeholder="Search archives..." />
+			<input type="text" placeholder="Search archive..." />
 			<button data-role="button" data-click="archiveView.search"> </button>
 		</div>
 
-		<ul id="archive-list" data-role="listview" data-source="archive.dataSource" data-template="archive-template"></ul>
+		<div id="archive-list" data-role="scroller">
+			<ul data-role="listview" data-source="archive.dataSource" data-template="archive-template"></ul>
+		</div>
+
+		<div id="archive-empty">Your archive is empty :(</div>
+		<div id="archive-search-empty">Nothing found</div>
 	<main>
 </div>
 
@@ -57,5 +57,4 @@
 			<h2><strong>#= data.object.placeName #, #= data.object.address #</strong> <span>#= moment(data.object.date).fromNow() #</h2><span>
 		</div> 
 	# } #
-		
 </script>
