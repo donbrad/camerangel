@@ -56,19 +56,63 @@
 </head>
 <body id="body">
 <div data-role="layout" data-id="main" style="display:none;">
-    <div data-role="header">
+    <div data-role="header" style="height: 56px; vertical-align: middle;">
         <div data-role="navbar">
-            <span data-role="view-title"></span>
-            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left">
-            	<img src="images/menu-icon.svg"/>
+            <div class="user-status" data-rel="modalview" href="#modalview-profileStatus" data-role="button" data-align="left">
+                <div class="left home-status-img">
+	        	<span id="home-status">
+	        		<img width="18" class="userStatus-icon" id="home-status-icon" src=""/>
+	        	</span>
+                    <img src="" class="userStatus-photo circle-img-home" />
+                </div>
+                <div class="clearfix"></div>
+            </div>
+			<span data-role="view-title"></span>
+			 <a data-role="button" data-rel="actionsheet" href="#settingsAction" data-align="right">
+                <img id="nav-gear" src="images/nav-gear.svg"/>
             </a>
-            
         </div>
     </div>
 
     <div data-role="content" class='view-content'>
     	<!-- application views will be rendered here -->
     </div>
+
+
+    <div class="footerMenu" data-role="footer">
+        <ul class="list-inline menuNav">
+            <li>
+                <a data-role="button" href="#home"><img src="images/nav-home-active.svg" /></a>
+            </li>
+            <li>
+                <a data-role="button" href="views/channels.html"><img src="images/nav-chat.svg" /></a>
+            </li>
+            <li>
+                <a data-role="button" href="views/contacts.html"><img src="images/nav-contact.svg" /></a>
+            </li>
+            <li>
+                <a data-role="button" href="views/archive.html"><img src="images/nav-places.svg" /></a>
+            </li>
+            <li>
+                <a data-role="button" href="views/gallery.html#gallery"><img src="images/nav-archive.svg" /></a>
+            </li>
+        </ul>
+    </div>
+	
+	<ul data-role="actionsheet" id="settingsAction" data-popup='{"direction": "left"}'>
+	  	<li>
+	  		<a data-role="button" data-click="go2Profile">View profile</a>
+	  	</li>
+	    <li>
+	    	<a data-role="button" id="menuSettings" data-click="go2Settings">Settings</a>
+	    </li>
+	    <li>
+	    	<a data-role="button" data-click="go2Support">Support</a>
+	    </li>
+		<li>
+			<a data-role="button" id="menuSignOut" data-click="homeSignout">Sign out</a>
+		</li>
+     </ul>
 
 </div>
 
@@ -153,26 +197,8 @@
 </div>
     
 <!-- home - for signed in users -->
-<div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" style="display:none;" data-show="onShowHome" >
-	<div data-role="header">
-      <div data-role="navbar">
-        	<a data-role="button" data-rel="actionsheet" href="#settingsAction" data-align="right">
-            	<img id="nav-gear" src="images/nav-gear.svg"/>
-            </a>   
-        <div class="header-img" id="logo-header">
-        	<img src="images/logo-blue.svg" class="nav-logo"/>
-        </div>
-        <div class="user-status" data-rel="modalview" href="#modalview-profileStatus" data-role="button" data-align="left">
-	        <div class="left home-status-img">
-	        	<span id="home-status">
-	        		<img width="18" class="userStatus-icon" id="home-status-icon" src=""/>
-	        	</span>
-	        	<img src="" class="userStatus-photo circle-img-home" />
-	        </div>
-	        <div class="clearfix"></div>
-        </div>
-      </div>
-	</div>
+<div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" style="display:none;" data-show="onShowHome">
+
 	<div data-role="content" class='view-content'>
 		<div class="appBox">
 	    <!-- application views will be rendered here -->
@@ -188,39 +214,6 @@
 	  </div>
 	  
    </div>
-   <div class="footerMenu" data-role="footer">
-	  		<ul class="list-inline menuNav">
-	  			<li>
-	  				<a data-role="button" href="#home"><img src="images/nav-home-active.svg" /></a>
-	  			</li>
-	  			<li>
-	  				<a data-role="button" href="views/channels.html"><img src="images/nav-chat.svg" /></a>
-	  			</li>
-	  			<li>
-	  				<a data-role="button" href="views/contacts.html"><img src="images/nav-contact.svg" /></a>
-	  			</li>
-	  			<li>
-	  				<a data-role="button" href="views/places.html"><img src="images/nav-places.svg" /></a>
-	  			</li>
-	  			<li>
-	  				<a data-role="button" href="views/archive.html"><img src="images/nav-archive.svg" /></a>
-	  			</li>
-	  		</ul>
-	  </div>
-	  <ul data-role="actionsheet" id="settingsAction" data-popup='{"direction": "left"}'>
-	  	<li>
-	  		<a data-role="button" data-click="go2Profile">View profile</a>
-	  	</li>
-	    <li>
-	    	<a data-role="button" id="menuSettings" data-click="go2Settings">Settings</a>
-	    </li>
-	    <li>
-	    	<a data-role="button" data-click="go2Support">Support</a>
-	    </li>
-		<li>
-			<a data-role="button" id="menuSignOut" data-click="homeSignout">Sign out</a>
-		</li>
-     </ul>
 </div>
     
 <script type="text/x-kendo-template" id="notificationTemplate">
@@ -252,7 +245,7 @@
 </script> 
     
 <!-- home - for new users -->
- <div data-role="view" data-title="ghostgrams" id="newuserhome" data-layout="newuser" data-model="APP.models.home" class="appearance" style="display:none;" data-show="onShowSignIn">
+ <div data-role="view" data-title="ghostgrams" id="newuserhome" data-layout="newuser" data-model="APP.models.home" class="appearance" style="display:none;" data-show="onShowSignIn" data-transition="fade">
  	<div class="newuserBox">
         <img id="newuser-ghost" src="images/newuser-ghost.png">
         <h1>
@@ -509,7 +502,7 @@
 	
 </div>
 
-<div data-role="modalview" id="modalview-profileStatus" style="width: 90%; display: none;"  data-init="onShowProfileStatus" data-model="APP.models.profile.currentUser" class="appearance">
+<div data-role="modalview" id="modalview-profileStatus" style="width: 90%; display: none;"  data-open="onShowProfileStatus" data-model="APP.models.profile.currentUser" class="appearance">
 	<form id="profilePhotoForm">
         <ul data-role="listview" data-style="inset">
         	<li>
@@ -533,9 +526,9 @@
         	<li><img src="images/ghost-sm.svg" class="ghost-sm-text" /> Update Status</li>
         	<li>
                 <label>
-                	<div class="select">
+                	
                     	<input type="search" id="profilePhotoMessage" placeholder="What's going on..." />
-                    </div>
+                    
                 </label>
             </li>
         	<li>

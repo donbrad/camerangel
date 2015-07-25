@@ -1,4 +1,4 @@
-@import 'font-awesome.css';
+@import (less) 'font-awesome.css';
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Hind:300,400,500);
 /*** Guidelines - updated 3/14/15 (see https://www.dropbox.com/s/vw40iwbmvo1tkol/styles-0.1.pdf?dl=0) ***/
 /* Colors */
@@ -379,9 +379,9 @@ form {
     -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
     color: #ffffff;
-    font-size: 12px !important;
+    font-size: 10px !important;
     background: #424242 !important;
-    padding: 4px 8px 4px 8px;
+    padding: 2px 4px 2px 4px;
     text-decoration: none;
 }
 .btnBlack-sm:hover { 
@@ -442,7 +442,7 @@ form {
 	background: transparent;
     color: #2D93FF !important;
     text-decoration: none;
-    font-size: 14px !important;
+    font-size: 12px !important;
     font-weight: 400;
     padding: 0px !important;
 }
@@ -557,7 +557,7 @@ form {
 	.btnFull;
 	border-radius: 0px !important;
 	position: relative;
-	bottom: 0px;
+	bottom: 7px;
 }
 
 .input-text-sm {
@@ -706,6 +706,15 @@ div.km-header a img{
 .km-listgroupinset {
     margin: 0px;
 }
+
+.km-view {
+    display: flex;
+
+    & > .km-content {
+        height: 100%;
+    }
+}
+
 /* Helpers */
 
 .helper {
@@ -787,6 +796,7 @@ div.km-header a img{
 
 #nav-gear {
 	height: 24px;
+	margin-top: 4px;
 }
 
 #home-status {
@@ -1676,8 +1686,6 @@ a:hover {
 	padding-top: 0.5rem;
 	padding-bottom: 0.5rem;
 	border-top: 1px solid @grey200;
-	position: fixed;
-	bottom: 0px;
 }
 
 .footerBk {
@@ -1974,21 +1982,30 @@ div.loginBox > form > div > ul > li {
 
 /* Archive */
 
-#archive .nothing-found {
-    .centerObject;
-
+#archive-empty,
+#archive-search-empty {
     display: none;
     width: 100%;
+    margin: auto;
 
-    background: #fff;
-
-    h1 {
-        font-size: 1.6rem;
-        text-align: center;
-    }
+    font-size: 1.6rem;
+    text-align: center;
 }
 
-#archive h1 {
+#archive main {
+    // Not sure why this is needed
+    position: absolute;
+
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin: .1rem .2rem;
+}
+
+#archive h1,
+#archive h2 {
+    margin: 0;
+
     color: black;
 }
 
@@ -2004,34 +2021,103 @@ div.loginBox > form > div > ul > li {
 
 #search-archives {
     display: flex;
-    margin: .2rem;
-    
+    height: 2.8rem;
+
+    .clear_input_div {
+        width: 100%;
+    }
+
     input {
         width: 100%;
     }
 
     & > button {
-        //&:extend(.fa, .fa-search all);
+        &:extend(.fa, .fa-search all);
     }
 }
 
-#archive-list li {
-    //display: flex;
-    width: 100%;
-    .sender {
-        width: 6rem;
+
+// Archive list
+
+#archive-list {
+    height: 100%;
+}
+
+#archive-list .km-group-title {
+    font-size: 1.1rem;
+}
+
+#archive-list .km-list li {
+    margin: 0 .4rem;
+
+    header {
+        margin-bottom: .9rem;
+
+        img {
+            // An actually legitimate use of float lol
+            float: left;
+
+            width: 32px;
+            margin-right: 1rem;
+            border-radius: 50%;
+        }
+
+        h1 {
+            display: inline-block;
+
+            font-size: 1.1rem;
+            line-height: 1;
+        }
+
+        h2 {
+            display: inline-block;
+
+            font-size: .9rem;
+            line-height: 1;
+        }
+
+        .delete {
+            float: right;
+
+            width: 10%;
+            vertical-align: top;
+
+            &:extend(.fa, .fa-remove all);
+        }
+
     }
 
     .message {
-        width: 100%;
+        display: inline-block;
+        width: 70%;
     }
 
-    .date {
-        width: 10rem;
-    }
+    // Smart objects
+    .object {
+        padding: .1rem .3rem;
+        border: 1px solid @grey200;
+        margin-top: .9rem;
+        box-shadow: 0 5px 16px -10px rgba(0,0,0,0.50);
 
-    .delete {
-        //&:extend(.fa, .fa-remove all);
+        background-color: @grey300;
+
+        h1 {
+            font-size: 1.1rem;
+        }
+
+        h2 {
+            font-size: .9rem;
+
+            strong + span {
+                float: right;
+            }
+        }
+
+
+        img {
+            width: 100%;
+        }
+
     }
 }
 
@@ -2661,7 +2747,7 @@ div.loginBox > form > div > ul > li {
 	  column-count:         2;
 	  column-gap:           1px;
 	*/
-}
+} 
 
 #galleryPicker-listview li {
 	padding: 0px !important;
