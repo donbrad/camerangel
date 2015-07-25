@@ -96,13 +96,25 @@
                 <a data-role="button" href="views/places.html"><img src="images/nav-places.svg" /></a>
             </li>
             <li>
-                <a data-role="button" href="views/gallery.html#gallery"><img src="images/menu-gallery.svg" /></a>
-            </li>
-            <li>
-                <a data-role="button" href="views/archive.html"><img src="images/nav-archive.svg" /></a>
+                <a data-role="button" href="views/gallery.html#gallery"><img src="images/nav-archive.svg" /></a>
             </li>
         </ul>
     </div>
+	
+	<ul data-role="actionsheet" id="settingsAction" data-popup='{"direction": "left"}'>
+	  	<li>
+	  		<a data-role="button" data-click="go2Profile">View profile</a>
+	  	</li>
+	    <li>
+	    	<a data-role="button" id="menuSettings" data-click="go2Settings">Settings</a>
+	    </li>
+	    <li>
+	    	<a data-role="button" data-click="go2Support">Support</a>
+	    </li>
+		<li>
+			<a data-role="button" id="menuSignOut" data-click="homeSignout">Sign out</a>
+		</li>
+     </ul>
 
 </div>
 
@@ -236,11 +248,8 @@
 	  			<li>
 	  				<a data-role="button" href="views/places.html"><img src="images/nav-places.svg" /></a>
 	  			</li>
-                <li>
-                    <a data-role="button" href="views/gallery.html#gallery"><img src="images/menu-gallery.svg" /></a>
-                </li>
 	  			<li>
-	  				<a data-role="button" href="views/archive.html"><img src="images/nav-archive.svg" /></a>
+	  				<a data-role="button" href="views/gallery.html#gallery"><img src="images/nav-archive.svg" /></a>
 	  			</li>
 	  		</ul>
 	  </div>
