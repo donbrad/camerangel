@@ -58,16 +58,50 @@
 <div data-role="layout" data-id="main" style="display:none;">
     <div data-role="header">
         <div data-role="navbar">
-            <span data-role="view-title"></span>
-            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left">
-            	<img src="images/menu-icon.svg"/>
+            <a data-role="button" data-rel="actionsheet" href="#settingsAction" data-align="right">
+                <img id="nav-gear" src="images/nav-gear.svg"/>
             </a>
-            
+            <div class="header-img" id="logo-header">
+                <img src="images/logo-blue.svg" class="nav-logo"/>
+            </div>
+            <div class="user-status" data-rel="modalview" href="#modalview-profileStatus" data-role="button" data-align="left">
+                <div class="left home-status-img">
+	        	<span id="home-status">
+	        		<img width="18" class="userStatus-icon" id="home-status-icon" src=""/>
+	        	</span>
+                    <img src="" class="userStatus-photo circle-img-home" />
+                </div>
+                <div class="clearfix"></div>
+            </div>
         </div>
     </div>
 
     <div data-role="content" class='view-content'>
     	<!-- application views will be rendered here -->
+    </div>
+
+
+    <div class="footerMenu" data-role="footer">
+        <ul class="list-inline menuNav">
+            <li>
+                <a data-role="button" href="#home"><img src="images/nav-home-active.svg" /></a>
+            </li>
+            <li>
+                <a data-role="button" href="views/channels.html"><img src="images/nav-chat.svg" /></a>
+            </li>
+            <li>
+                <a data-role="button" href="views/contacts.html"><img src="images/nav-contact.svg" /></a>
+            </li>
+            <li>
+                <a data-role="button" href="views/places.html"><img src="images/nav-places.svg" /></a>
+            </li>
+            <li>
+                <a data-role="button" href="views/gallery.html#gallery"><img src="images/menu-gallery.svg" /></a>
+            </li>
+            <li>
+                <a data-role="button" href="views/archive.html"><img src="images/nav-archive.svg" /></a>
+            </li>
+        </ul>
     </div>
 
 </div>
@@ -210,6 +244,7 @@
 	  			</li>
 	  		</ul>
 	  </div>
+
 	  <ul data-role="actionsheet" id="settingsAction" data-popup='{"direction": "left"}'>
 	  	<li>
 	  		<a data-role="button" data-click="go2Profile">View profile</a>
