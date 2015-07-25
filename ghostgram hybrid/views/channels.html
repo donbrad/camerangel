@@ -1,10 +1,4 @@
  <div data-role="view" id="channels" data-title="Chats" data-layout="main" data-model="APP.models.channels" data-init="onInitChannels">  
-     <div data-role="header">
-        <div data-role="navbar">
-            <img src="images/ghost.svg" id="nav-ghost" height="25"/>
-            <span data-role="view-title"></span>
-        </div>
-    </div>
      <div>
          <ul id="channels-listview"></ul>
      </div>
@@ -27,28 +21,7 @@
 	    <li><a data-action="eraseChannel">Erase Chat Content</a></li>
         <li><a data-action="deleteChannel">Delete Chat</a></li>
     </ul>
-    <div class="footerMenu" data-role="footer">
-    		<a class="btnYellow footerBtn-nav" id="addChannelBtn" data-role="button" href="#addChannel">
-		     	<img src="images/nav-add-white.svg" />
-     		</a>
-	  		<ul class="list-inline menuNav">
-	  			<li>
-	  				<a data-role="button" href="#home"><img src="images/nav-home.svg" id="nav-home" /></a>
-	  			</li>
-	  			<li>
-	  				<a data-role="button" href="views/channels.html"><img src="images/nav-chat-active.svg" id="nav-chat" /></a>
-	  			</li>
-	  			<li>
-	  				<a data-role="button" href="views/contacts.html"><img src="images/nav-contact.svg" id="nav-contact" /></a>
-	  			</li>
-	  			<li>
-	  				<a data-role="button" href="views/places.html"><img src="images/nav-places.svg" id="nav-places" /></a>
-	  			</li>
-	  			<li>
-	  				<a data-role="button" href="views/archive.html"><img src="images/nav-archive.svg" id="nav-archive" /></a>
-	  			</li>
-	  		</ul>
-	  </div>
+   
 </div>
 
 <script type="text/x-kendo-tmpl" id="channels-listview-template">
