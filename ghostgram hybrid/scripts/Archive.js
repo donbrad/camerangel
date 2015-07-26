@@ -38,30 +38,12 @@ var archive = {
 			group: { field: 'type' },
 			schema: {
 				model: {
-					id: 'id',
-					fields: {
-						/*
-						channelId: { editable: false },
-						channelName: { editable: false },
-
-						senderId: { editable: false },
-						senderName: { editable: false },
-
-						placeId: { editable: false },
-						placeName: { editable: false },
-						address: { editable: false },
-
-						eventId: { editable: false },
-						eventName: { editable: false },
-
-						tags: { editable: false },
-						date: { editable: false, type: 'date' },
-						type: { editable: false },
-						text: { editable: false },
-						content: { editable: false }
-						*/
-					}
+					id: 'id'
 				}
+			},
+			filter: {
+				logic: 'and',
+				filters: []
 			}
 		});
 		this.dataSource.online(false);
