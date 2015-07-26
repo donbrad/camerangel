@@ -60,15 +60,15 @@
 <div data-role="layout" data-id="main" style="display:none;">
     <div data-role="header" style="height: 56px; vertical-align: middle;">
         <div data-role="navbar">
-            <a class="user-status" data-rel="modalview" href="#modalview-profileStatus" data-role="button" data-align="left">
-                <div class="left home-status-img">
-	        	<span id="home-status">
-	        		<img width="18" class="userStatus-icon" id="home-status-icon" src=""/>
-	        	</span>
-                    <img src="" class="userStatus-photo circle-img-home" />
-                </div>
-                <div class="clearfix"></div>
-            </a>
+			<div class="user-status" data-align="left">
+				<div class="left home-status-img">
+				<span id="home-status">
+					<img width="18" class="userStatus-icon" id="home-status-icon" src=""/>
+				</span>
+					<img src="" class="userStatus-photo circle-img-home" /> 
+				</div>
+				<div class="clearfix"></div>
+			</div>
 			<span data-role="view-title"></span>
 			 <a data-role="button" data-rel="actionsheet" href="#settingsAction" data-align="right">
                 <img id="nav-gear" src="images/nav-gear.svg"/>
@@ -76,7 +76,7 @@
         </div>
     </div>
 
-    <div data-role="content" class='view-content'>
+    <div data-role="content" class='view-content' >
     	<!-- application views will be rendered here -->
     </div>
 

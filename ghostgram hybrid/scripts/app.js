@@ -1087,7 +1087,11 @@
 			});
 		}
 
-
+	// work around the kendo navbar bug that overrides styles for anchors in navbar 
+		$(".user-status").click(function() {
+			$("#modalview-profileStatus").data('kendoMobileModalView').open();
+		});
+		
 		APP.emailAvailable = false;
 		/*  window.plugins.email.isAvailable(function (result){
 			APP.emailAvailable = result;

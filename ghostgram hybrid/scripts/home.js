@@ -7,6 +7,8 @@ function homeBeforeShow () {
         // No current user -redirect to no user view
        APP.kendo.navigate('#newuserhome');
     }
+	
+	
     
 }
 
