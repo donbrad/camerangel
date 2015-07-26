@@ -5,6 +5,7 @@ function onInitGallery(e){
     var itemWidth = $(window).width()/4;
 	APP.models.gallery.rotationAngle = 0;
 	APP.models.gallery.optionsHidden = true;
+	APP.models.gallery.previewSize = "25%";
 	$( "#gallerySearch" ).keyup(function() {
   		var query = ("#gallerySearch").val();
 		if (query.length > 0) {
@@ -29,17 +30,56 @@ function galleryOptionsToggle (e) {
 	}
 }
 
-function selectGalleryZoom() {
+
+function selectGallerySearchTool(e) {
+	if (e !== undefined && e.preventDefault !== undefined)
+		e.preventDefault();
 	var index = this.current().index();
-	if (index === 0) {
-		APP.models.gallery.smallPreview = true;
-		$("#gallery-listview li").css("width","25%");
-		$("#gallery-listview li").css("padding-bottom","25%");
-	} else {
-		APP.models.gallery.smallPreview = false;
-		$("#gallery-listview li").css("width","50%");
-		$("#gallery-listview li").css("padding-bottom","50%");
+	
+	switch (index) {
+			
+		case 0: // Contacts
+			break;
+			
+		case 1: // Chats
+			break;
+			
+		case 2: // Dates
+			break;
+			
+		case 3: // Places
+			break;
+			
+		case 4: // Search
+			break;
 	}
+	
+}
+
+function selectGalleryZoom(e) {
+		if (e !== undefined && e.preventDefault !== undefined)
+		e.preventDefault();
+
+	var index = this.current().index();
+	switch (index) {
+		case 0:
+			APP.models.gallery.previewSize = "25%";
+			$("#gallery-listview li").css("width","25%");
+			$("#gallery-listview li").css("padding-bottom","25%");
+			break;
+		case 1 :
+			APP.models.gallery.previewSize = "50%";
+			$("#gallery-listview li").css("width","50%");
+			$("#gallery-listview li").css("padding-bottom","50%");
+			break;
+		case 2 :
+			APP.models.gallery.previewSize = "100%";
+			$("#gallery-listview li").css("width","100%");
+			$("#gallery-listview li").css("padding-bottom","100%");
+			break;
+			
+	}
+	
 	
 }
 

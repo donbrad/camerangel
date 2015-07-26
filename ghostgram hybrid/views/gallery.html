@@ -1,34 +1,31 @@
  <div data-role="view" data-title="Gallery" id="gallery" data-layout="main" data-model="APP.models.gallery" data-init="onInitGallery" data-show="onShowGallery">
-    <div data-role="header">
-         <div data-role="navbar">
-            <span data-role="view-title"></span>
- 				<a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"> 
-            <img class="nav-menu" src="images/menu-icon.svg"/> 
-        	</a>           
-			<a data-align="right" data-role="button" type="button" id="btnGalleryOptionsToggle" data-click="galleryOptionsToggle"> <i class="ghostIconNavbar fa fa-gear"></i></a>
-        </div>
-    </div>
 	
-	<div style="padding-top: 4px; padding-left: 6px;  border: 1px solid #2e2e2e; background: #e2e2e2; vertical-align: middle;">
-		 <ul data-role="buttongroup" data-index="0" class="km-small" data-select="selectGalleryZoom">
-			<li> <i class="fa fa-search-minus"></i> Small Photos</li>
-			<li> <i class="fa fa-search-plus"></i> Large Photos</li>
-		</ul>
-	</div>
-	 <div id="gallerySearchOptions" style="background: #e2e2e2;" class="hidden">
-		<div style="width: 98%; display: inline; text-align: center;">
-			<a  data-role="button" class="btnBlack-sm"  data-click="galleryFieldUser"> <i class="fa fa-user"></i> </a>
-        	<a  data-role="button" class="btnBlack-sm"  data-click="galleryFieldChat"> <i class="fa fa-comment-o"></i> </a>
-			<a  data-role="button" class="btnBlack-sm"  data-click="galleryFieldCalendar"> <i class="fa fa-calendar"></i> </a>
-			<a  data-role="button" class="btnBlack-sm"  data-click="galleryFieldLocation"> <i class="fa fa-location-arrow"></i> </a>
-			<a  data-role="button" class="btnBlack-sm"  data-click="galleryFieldSearch"> <i class="fa fa-search"></i> </a>	
+	<div style="padding-left: 3px; padding-right: 3px; background: #e2e2e2; vertical-align: middle;">
+		<div style="float: right;">
+			<a data-align="right" data-role="button" type="button" id="btnGalleryOptionsToggle" data-click="galleryOptionsToggle"> <i class=" fa fa-search"></i></a>
 		</div>
+		<ul data-role="buttongroup" data-index="0" class="km-small" data-select="selectGalleryZoom">
+			<li> <i class="fa fa-th"></i></li>
+			<li> <i class="fa fa-th-large"></i></li>
+			<li> <i class="fa fa-film"></i></li>
+		</ul>
+		
+	</div>
+	 <div id="gallerySearchOptions" style="padding: 3px; background: #e2e2e2; text-align: center;  border: 1px solid #2e2e2e;" class="hidden">
+		  <ul data-role="buttongroup" data-index="4" class="km-small" data-select="selectGallerySearchTool">
+			<li> <i class="fa fa-user"></i></li>
+			<li> <i class="fa fa-comment-o"></i></li>
+			<li> <i class="fa fa-calendar"></i></li>
+			<li> <i class="fa fa-map-marker"></i></li>
+			<li> <i class="fa fa-search"></i></li>
+		</ul>
+		 
 		<input type="search"  id="gallerySearch" style="width:95%;"> </input>
-		<div id="gallerySearchTags" style="width:95%;"></div>	
+		<div id="gallerySearchTags" style="width:95%; min-height: 18px; "></div>	
 	</div>
 	
 	 
-     <div style="padding-top: 12px; padding-left: 4px; padding-right: 4px; padding-bottom: 24px; height: 100%;">
+     <div style="padding-top: 8px; padding-left: 4px; padding-right: 4px; padding-bottom: 48px; height: 100%;">
          <ul id="gallery-listview" class="list-inline" data-role="listview" data-click="galleryClick" data-source="APP.models.gallery.photosDS" data-template="gallery-template"></ul>
      </div>
 
