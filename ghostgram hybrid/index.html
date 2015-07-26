@@ -508,7 +508,7 @@
 	
 </div>
 
-<div data-role="modalview" id="modalview-profileStatus" style="display: none;" data-open="onShowProfileStatus" class="appearance ghostModal">
+<div data-role="modalview" id="modalview-profileStatus" style="display: none;" data-open="onShowProfileStatus" data-model="APP.models.profile.currentUser" class="appearance ghostModal">
 	<form id="profilePhotoForm">
         <ul data-role="listview" data-style="inset">
         	<li>
@@ -527,16 +527,14 @@
 						<span class="contacts-alias-sm" id="profileStatusAlias"></span>
 					</h3>
 				</div>
-				<div style="padding-top: 12px;" class="left caption profileTextBox"><span id="profileStatusMessage"></span></div>
+				<div style="padding-top: 12px;" class="left caption profileTextBox"><span id="profileStatusMessage" data-bind="text: statusMessage"></span></div>
 				<div class="clearfix"></div>
         	</li>
         	<li><p class="caption right"><a data-role="button" class="btnClear-sm" href="views/profile.html">Edit Profile</a></p></li>
         	<li><img src="images/ghost-sm.svg" class="ghost-sm-text" /> Update Status</li>
         	<li>
                 <label>
-                	
-                    	<input type="search" id="profilePhotoMessage" placeholder="What's going on..." />
-                    
+                   <input type="search" id="profilePhotoMessage" placeholder="What's going on..." data-bind="value: statusMessage"/>
                 </label>
             </li>
         	<li>
