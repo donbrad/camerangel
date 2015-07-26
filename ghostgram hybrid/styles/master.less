@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Hind:300,400,500);
+
 /*** Guidelines - updated 3/14/15 (see https://www.dropbox.com/s/vw40iwbmvo1tkol/styles-0.1.pdf?dl=0) ***/
 
 /* Colors */
@@ -14,9 +14,11 @@
 @yellow200: #FADDB0;
 @purple100: #9E788F;
 
-@import (less) 'lib/font-awesome.css';
+/* Imports */
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Hind:300,400,500);
+@import "bower_components/fontawesome/less/font-awesome.css";
 
-@import '_sentinel.less';
+@import "_sentinel.less";
  
 
 /* elements */
@@ -792,7 +794,7 @@ div.km-header a img{
 .circle-img-home {
 	.circle-img;
 	width: 40px;
-	height: 40px;
+	height: 40px !important;
 	.shadow;
 	margin-right: 0.5rem;
 }
@@ -2032,7 +2034,7 @@ div.loginBox > form > div > ul > li {
     }
 
     & > button {
-        &:extend(.fa, .fa-search all);
+       &:extend(.fa, .fa-search all){};
 
         width: 4rem;
         height: 2.9rem;
@@ -2091,7 +2093,7 @@ div.loginBox > form > div > ul > li {
             width: 10%;
             vertical-align: top;
 
-            &:extend(.fa, .fa-remove all);
+            &:extend(.fa, .fa-remove all){};
         }
 
     }
