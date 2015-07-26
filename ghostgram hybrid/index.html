@@ -153,7 +153,7 @@
     <div class="profileTop">
         <div class="profileImg">
             <!-- User photo -->
-            <a data-role="button" data-rel="modalview" href="#modalview-profilePhotoEdit"><img id="profilePhoto" class="myPublicImg"  /></a>
+            <a data-role="button"  href="#profilePhotoEdit"><img id="profilePhoto" class="myPublicImg"  /></a>
         </div>
         <div> 
 			<div id="profileName"></div>
@@ -484,10 +484,11 @@
 
 </div>
 
-<div data-role="modalview" id="modalview-profilePhotoEdit" data-open="doProfilePhotoEdit" data-init="initProfilePhotoEdit" style="width: 90%; height:50%;  display: none;" data-model="APP.models.profile.currentUser" class="appearance">
+<div data-role="view" id="profilePhotoEdit" data-show="doProfilePhotoEdit" data-init="initProfilePhotoEdit" style="width: 90%; height:50%;  display: none;" data-model="APP.models.profile.currentUser" class="appearance">
     <div data-role="header">
         <div data-role="navbar">
-            
+            <a data-align="left" id="profilePhotoViewBack" data-role="backbutton">Back</a>
+            <span>Profile Photo</span>
             <a data-click="doUpdateStatusMessage"  type="button" data-role="button" data-align="left">Update</a>
 		</div>
 	</div>

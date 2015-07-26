@@ -74,6 +74,7 @@
 					publicKey: '',
 					udid: '',
 					macAddress: '',
+					statusMessage: '',
 					rememberUsername: false,
 					emailVerified: false,
 					phoneVerified: false,
