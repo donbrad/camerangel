@@ -185,15 +185,28 @@ function onShowGallery(e) {
 	}
 	APP.models.gallery.rotationAngle = 0;
 	
-	if (APP.models.gallery.smallPreview) {
-		$("#gallery-listview li").css("width","25%");
-		$("#gallery-listview li").css("padding-bottom","25%");
-	} else {
-		$("#gallery-listview li").css("width","50%");
-		$("#gallery-listview li").css("padding-bottom","50%");
+
+	$("#gallery-listview li").css("width",APP.models.gallery.previewSize);
+	$("#gallery-listview li").css("padding-bottom",APP.models.gallery.previewSize);
+
+
+	switch(APP.models.gallery.previewSize) {
+		case "25%" :
+			setButtonGroupIndex("#gallerySearchToolSelect", 0);
+			break;
+
+		case "50%" :
+			setButtonGroupIndex("#gallerySearchToolSelect", 1);
+			break;
+
+		case "100%" :
+			setButtonGroupIndex("#gallerySearchToolSelect", 2);
+			break;
 	}
 
+
 }
+
 
 function galleryClick(e) {
 	if (e !== undefined && e.preventDefault !== undefined) {
