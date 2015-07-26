@@ -854,7 +854,12 @@ function go2Support(e){
 	$("#modalview-support").data("kendoMobileModalView").open();
 }
 
-function onShowProfileStatus(){
+function onShowProfileStatus(e){
+
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+
 	var alias = APP.models.profile.currentUser.alias;
 	var verified = APP.models.profile.currentUser.isVerified;
 	var name = APP.models.profile.currentUser.name;
