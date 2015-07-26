@@ -64,9 +64,9 @@
 				<div class="user-status">
 					<div class="left home-status-img">
 						<span id="home-status">
-						<a data-role="button" data-rel="modalview" href="#modalview-profilePhotoEdit">	<img width="18" class="userStatus-icon" id="home-status-icon" src=""/> </a>
+							<img width="18" class="userStatus-icon" id="home-status-icon" src=""/>
 						</span>
-						<img src="" class="userStatus-photo circle-img-home" /> 
+						<img src="" class="userStatus-photo circle-img-home" />
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -432,7 +432,7 @@
      </div>
 </div>
 	
-<div data-role="modalview" id="modalPhotoView" data-zoom="true" data-elastic="true" style="width: 100%; height:100%; display: none;">
+<div data-role="modalview" id="modalPhotoView" data-zoom="true" data-elastic="true" style="width: 100%; height:100%; display: none;" class="ghostFullModal">
     
 	<div style="margin: 2px; height: 98%; width: auto; text-align: center; background: #27476e;">
 		<img id="modalPhotoViewImage" src="" style="width: 100%; height:auto; vertical-align: middle;"> </img>
@@ -484,11 +484,10 @@
 
 </div>
 
-<div data-role="modalview" id="modalview-profilePhotoEdit" data-open="doProfilePhotoEdit" data-init="initProfilePhotoEdit" style="width: 90%; height:50%;  display: none;" data-model="APP.models.profile.currentUser" class="appearance">
+<div data-role="modalview" id="modalview-profilePhotoEdit" data-open="doProfilePhotoEdit" data-init="initProfilePhotoEdit" style="display: none;" data-model="APP.models.profile.currentUser" class="appearance ghostFullModal">
     <div data-role="header">
         <div data-role="navbar">
-            
-            <a data-click="doUpdateStatusMessage"  type="button" data-role="button" data-align="left">Update</a>
+            <a data-click="doUpdateStatusMessage"  type="button" data-role="button" data-align="left">Update Profile Photo</a>
 		</div>
 	</div>
 
@@ -509,15 +508,17 @@
 	
 </div>
 
-<div data-role="modalview" id="modalview-profileStatus" style="display: none;" data-open="onShowProfileStatus" class="appearance">
+<div data-role="modalview" id="modalview-profileStatus" style="display: none;" data-open="onShowProfileStatus" class="appearance ghostModal">
 	<form id="profilePhotoForm">
         <ul data-role="listview" data-style="inset">
         	<li>
         		<div class="left listPhoto">
-					<div class="statusContactList">
-					 	<img class="circle-img-md userStatus-photo" id="profileStatusPhoto" src="" />
-					 	<img width="16" src="images/status-away.svg" class="statusContactList-icon userStatus-icon" />
-					 </div>
+					
+						<div class="statusContactList">
+							<img class="circle-img-md userStatus-photo" id="profileStatusPhoto" src="" />
+							<img width="16" src="images/status-away.svg" class="statusContactList-icon userStatus-icon" />
+						 </div>
+					
 				</div><!-- left -->
 				<div class="left listName profileTextBox">
 					<h3>
@@ -526,7 +527,7 @@
 						<span class="contacts-alias-sm" id="profileStatusAlias"></span>
 					</h3>
 				</div>
-				<p class="left caption profileTextBox"><span id="profileStatusMessage"></span></p>
+				<div style="padding-top: 12px;" class="left caption profileTextBox"><span id="profileStatusMessage"></span></div>
 				<div class="clearfix"></div>
         	</li>
         	<li><p class="caption right"><a data-role="button" class="btnClear-sm" href="views/profile.html">Edit Profile</a></p></li>
@@ -549,7 +550,7 @@
 </div>
 
 <!-- Photo tag modal -->
-<div data-role="modalview" id="modalview-photoTag" style="width: 100%; display: none;"  class="appearance">
+<div data-role="modalview" id="modalview-photoTag" style="width: 100%; display: none;"  class="appearance ghostModal">
     <div data-role="header">
         <div data-role="navbar">
             <span>Tag Photo</span>
@@ -582,7 +583,7 @@
 </style>
 
 <!-- Gallery Picker -- pick an image from the ghostgrams Gallery -->
-<div data-role="modalview" id="modalview-galleryPicker" style="width: 100%; height:100%; display: none;"  class="appearance" data-init="onGalleryPickerInit">
+<div data-role="modalview" id="modalview-galleryPicker" style="width: 100%; height:100%; display: none;"  class="appearance ghostModal" data-init="onGalleryPickerInit">
     <div data-role="header">
         <div data-role="navbar">
             <span>Gallery Picker</span>
