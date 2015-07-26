@@ -7,7 +7,7 @@ var archiveView = {
 			// chat
 			archive.add({
 				message: {
-					channelId: 'asdf',
+					channelId: '1',
 					channelName: 'myplacez design',
 
 					sender: {
@@ -28,13 +28,14 @@ var archiveView = {
 				},
 				type: 'Chat',
 				tags: '',
+				date: new Date(),
 				object: {}
 			});
 
 			// events
 			archive.add({
 				message: {
-					channelId: 'asdf',
+					channelId: '1',
 					channelName: 'myplacez design',
 
 					sender: {
@@ -55,6 +56,7 @@ var archiveView = {
 				},
 				type: 'Events',
 				tags: '',
+				date: new Date(),
 				object: {
 					name: 'Margot and the Nukes',
 
@@ -70,8 +72,8 @@ var archiveView = {
 			// urls
 			archive.add({
 				message: {
-					channelId: 'asdf',
-					channelName: 'myplacez design',
+					channelId: '2',
+					channelName: 'ghostgram design',
 
 					sender: {
 						id: 'asdf',
@@ -91,6 +93,7 @@ var archiveView = {
 				},
 				type: 'Links',
 				tags: '',
+				date: moment().subtract(1, 'days').toDate(),
 				object: {
 					title: 'Refactoring',
 					url: 'http://www.refactoring.com/'
@@ -100,8 +103,8 @@ var archiveView = {
 			// photos
 			archive.add({
 				message: {
-					channelId: 'asdf',
-					channelName: 'myplacez design',
+					channelId: '2',
+					channelName: 'ghostgram design',
 
 					sender: {
 						id: 'asdf',
@@ -121,6 +124,7 @@ var archiveView = {
 				},
 				type: 'Photos',
 				tags: '',
+				date: new Date(),
 				object: {
 					url: 'http://www.craterlakenational.com/image/crater_lake_large1.jpg',
 
@@ -136,7 +140,8 @@ var archiveView = {
 
 		$('#search-archives input').clearSearch({ callback: archiveView.clearSearch });
 		new Sentinel($('#search-archives input'), archive.dataSource, [
-			onDateFilter
+			onDateFilter,
+			inChatFilter
 		]);
 
 		// Binding this manually because data-role="button" messes up the styles
