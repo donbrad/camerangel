@@ -1,3 +1,12 @@
+function setButtonGroupIndex(buttonSelector, index) {
+
+	var buttonGroup = $(buttonSelector).data("kendoMobileButtonGroup");
+
+	if (buttonGroup !== undefined) {
+		buttonGroup.select(index);
+	}
+}
+
 function updateParseObject(objectName, idField, idFieldValue, newField, newFieldValue) {
 	var object = Parse.Object.extend(objectName);
 	var query = new Parse.Query(object);
@@ -420,4 +429,4 @@ var utils = {
 
 		return returnString;
 	}
-}
+};

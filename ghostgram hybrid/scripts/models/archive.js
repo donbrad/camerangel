@@ -162,7 +162,7 @@ var archive = {
 			var pattern = '';
 			// matches[3] is the full month name
 			if (matches[3] !== undefined) {
-				patttern += 'MMMM';
+				pattern += 'MMMM';
 			// matches[4] is the 3-letter abbreviation of the month
 			} else {
 				pattern += 'MMM';

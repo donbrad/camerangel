@@ -216,7 +216,7 @@
 			gallery: {
 				title: 'gallery',
 				currentPhoto: {},
-				smallPreview: true,
+				previewSize: "33%",
 				parsePhoto: {},
 				photosDS: new kendo.data.DataSource({  // this is the gallery datasource
 						offlineStorage: "gallery-offline"
@@ -1086,8 +1086,7 @@
 
 			});
 		}
-
-
+		
 		APP.emailAvailable = false;
 		/*  window.plugins.email.isAvailable(function (result){
 			APP.emailAvailable = result;

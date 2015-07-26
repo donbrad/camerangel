@@ -7,6 +7,8 @@ function homeBeforeShow () {
         // No current user -redirect to no user view
        APP.kendo.navigate('#newuserhome');
     }
+	
+	
     
 }
 
@@ -815,8 +817,8 @@ function modalGalleryZoomOut (e)  {
 		e.preventDefault();
 	}
 
-	$("#galleryPicker-listview li").css("width","25%");
-	$("#galleryPicker-listview li").css("padding-bottom","25%");
+	$("#galleryPicker-listview li").css("width","33%");
+	$("#galleryPicker-listview li").css("padding-bottom","33%");
 	//$("#galleryPicker-listview").data("kendoMobileListView").refresh();
 
 }
@@ -833,6 +835,10 @@ function modalGallerySortDesc (e)  {
 	}
 }
 
+function go2Archive(e){
+	e.preventDefault;
+	APP.kendo.navigate("views/archive.html");
+}
 function go2Settings(e){
 	e.preventDefault;
 	APP.kendo.navigate("views/settings.html");
@@ -848,7 +854,12 @@ function go2Support(e){
 	$("#modalview-support").data("kendoMobileModalView").open();
 }
 
-function onShowProfileStatus(){
+function onShowProfileStatus(e){
+
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+
 	var alias = APP.models.profile.currentUser.alias;
 	var verified = APP.models.profile.currentUser.isVerified;
 	var name = APP.models.profile.currentUser.name;
