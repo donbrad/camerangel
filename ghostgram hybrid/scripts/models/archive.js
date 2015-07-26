@@ -38,7 +38,10 @@ var archive = {
 			group: { field: 'type' },
 			schema: {
 				model: {
-					id: 'id'
+					id: 'id',
+					fields: {
+						'date': { type: 'date' }
+					}
 				}
 			},
 			filter: {

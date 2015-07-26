@@ -16,7 +16,7 @@
 
 @import (less) 'lib/font-awesome.css';
 
-@import 'app/_sentinel.less';
+@import '_sentinel.less';
  
 
 /* elements */
@@ -2013,19 +2013,8 @@ div.loginBox > form > div > ul > li {
     color: black;
 }
 
-#archive button {
-    width: 4rem;
-
-    color: black;
-
-    &:active {
-        color: white;
-    }
-}
-
 #search-archives {
     display: flex;
-    height: 2.8rem;
 
     .clear_input_div {
         width: 100%;
@@ -2037,6 +2026,15 @@ div.loginBox > form > div > ul > li {
 
     & > button {
         &:extend(.fa, .fa-search all);
+
+        width: 4rem;
+        height: 2.9rem;
+
+        color: black;
+
+        &:active {
+            color: white;
+        }
     }
 }
 
