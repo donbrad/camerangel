@@ -216,7 +216,7 @@
 			gallery: {
 				title: 'gallery',
 				currentPhoto: {},
-				previewSize: "25%",
+				previewSize: "33%",
 				parsePhoto: {},
 				photosDS: new kendo.data.DataSource({  // this is the gallery datasource
 						offlineStorage: "gallery-offline"

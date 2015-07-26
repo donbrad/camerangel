@@ -5,7 +5,7 @@ function onInitGallery(e){
     var itemWidth = $(window).width()/4;
 	APP.models.gallery.rotationAngle = 0;
 	APP.models.gallery.optionsHidden = true;
-	APP.models.gallery.previewSize = "25%";
+	APP.models.gallery.previewSize = "33%";
 	$( "#gallerySearch" ).keyup(function() {
   		var query = ("#gallerySearch").val();
 		if (query.length > 0) {
@@ -63,9 +63,9 @@ function selectGalleryZoom(e) {
 	var index = this.current().index();
 	switch (index) {
 		case 0:
-			APP.models.gallery.previewSize = "25%";
-			$("#gallery-listview li").css("width","25%");
-			$("#gallery-listview li").css("padding-bottom","25%");
+			APP.models.gallery.previewSize = "33%";
+			$("#gallery-listview li").css("width","33%");
+			$("#gallery-listview li").css("padding-bottom","33%");
 			break;
 		case 1 :
 			APP.models.gallery.previewSize = "50%";
@@ -191,7 +191,7 @@ function onShowGallery(e) {
 
 
 	switch(APP.models.gallery.previewSize) {
-		case "25%" :
+		case "33%" :
 			setButtonGroupIndex("#gallerySearchToolSelect", 0);
 			break;
 
@@ -282,8 +282,8 @@ function galleryZoomOut (e)  {
 	}
 	
 	APP.models.gallery.smallPreview = true;
-	$("#gallery-listview li").css("width","25%");
-	$("#gallery-listview li").css("padding-bottom","25%");
+	$("#gallery-listview li").css("width","33%");
+	$("#gallery-listview li").css("padding-bottom","33%");
 	//$("#galleryPicker-listview").data("kendoMobileListView").refresh();
 
 }

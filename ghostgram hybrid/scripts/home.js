@@ -815,8 +815,8 @@ function modalGalleryZoomOut (e)  {
 		e.preventDefault();
 	}
 
-	$("#galleryPicker-listview li").css("width","25%");
-	$("#galleryPicker-listview li").css("padding-bottom","25%");
+	$("#galleryPicker-listview li").css("width","33%");
+	$("#galleryPicker-listview li").css("padding-bottom","33%");
 	//$("#galleryPicker-listview").data("kendoMobileListView").refresh();
 
 }
