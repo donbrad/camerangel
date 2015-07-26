@@ -833,6 +833,10 @@ function modalGallerySortDesc (e)  {
 	}
 }
 
+function go2Archive(e){
+	e.preventDefault;
+	APP.kendo.navigate("views/archive.html");
+}
 function go2Settings(e){
 	e.preventDefault;
 	APP.kendo.navigate("views/settings.html");
