@@ -257,6 +257,42 @@
 				requestActive: false
 			},
 
+			semantic : {
+				masterDS: new kendo.data.DataSource({
+					group: 'category',
+					sort: {
+						field: "name",
+						dir: "asc"
+					},
+					schema: {
+						model: {
+							id: "uuid"
+						}
+					}
+				}),
+				contactsDS : new kendo.data.DataSource({
+					sort: {
+						field: "name",
+						dir: "asc"
+					}
+				}),
+				chatsDS : new kendo.data.DataSource({
+					sort: {
+						field: "name",
+						dir: "asc"
+					}
+				}),
+				placesDS : new kendo.data.DataSource({
+					sort: {
+						field: "name",
+						dir: "asc"
+					}
+				}),
+				datesDS : new kendo.data.DataSource({
+
+				})
+			},
+
 			places: {
 				title: 'Places',
 				locatorActive: false,
@@ -987,6 +1023,7 @@
 			APP.models.profile.currentUser.bind('change', syncProfile);
 
 			_app.fetchParseData();
+
 		}
 
 		if (APP.models.profile.currentUser.get('rememberUsername')) {
