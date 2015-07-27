@@ -38,30 +38,12 @@ var archive = {
 			group: { field: 'type' },
 			schema: {
 				model: {
-					id: 'id',
-					fields: {
-						/*
-						channelId: { editable: false },
-						channelName: { editable: false },
-
-						senderId: { editable: false },
-						senderName: { editable: false },
-
-						placeId: { editable: false },
-						placeName: { editable: false },
-						address: { editable: false },
-
-						eventId: { editable: false },
-						eventName: { editable: false },
-
-						tags: { editable: false },
-						date: { editable: false, type: 'date' },
-						type: { editable: false },
-						text: { editable: false },
-						content: { editable: false }
-						*/
-					}
+					id: 'id'
 				}
+			},
+			filter: {
+				logic: 'and',
+				filters: []
 			}
 		});
 		this.dataSource.online(false);
@@ -177,7 +159,7 @@ var archive = {
 			var pattern = '';
 			// matches[3] is the full month name
 			if (matches[3] !== undefined) {
-				patttern += 'MMMM';
+				pattern += 'MMMM';
 			// matches[4] is the 3-letter abbreviation of the month
 			} else {
 				pattern += 'MMM';

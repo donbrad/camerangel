@@ -74,6 +74,7 @@
 					publicKey: '',
 					udid: '',
 					macAddress: '',
+					statusMessage: '',
 					rememberUsername: false,
 					emailVerified: false,
 					phoneVerified: false,
@@ -216,7 +217,7 @@
 			gallery: {
 				title: 'gallery',
 				currentPhoto: {},
-				smallPreview: true,
+				previewSize: "33%",
 				parsePhoto: {},
 				photosDS: new kendo.data.DataSource({  // this is the gallery datasource
 						offlineStorage: "gallery-offline"
@@ -255,6 +256,42 @@
 			sync: {
 				operation: '',
 				requestActive: false
+			},
+
+			semantic : {
+				masterDS: new kendo.data.DataSource({
+					group: 'category',
+					sort: {
+						field: "name",
+						dir: "asc"
+					},
+					schema: {
+						model: {
+							id: "uuid"
+						}
+					}
+				}),
+				contactsDS : new kendo.data.DataSource({
+					sort: {
+						field: "name",
+						dir: "asc"
+					}
+				}),
+				chatsDS : new kendo.data.DataSource({
+					sort: {
+						field: "name",
+						dir: "asc"
+					}
+				}),
+				placesDS : new kendo.data.DataSource({
+					sort: {
+						field: "name",
+						dir: "asc"
+					}
+				}),
+				datesDS : new kendo.data.DataSource({
+
+				})
 			},
 
 			places: {
@@ -848,7 +885,7 @@
 
 		navigator.splashscreen.hide();
 		// Set status bar color
-		StatusBar.backgroundColorByHexString("#fff");
+		//StatusBar.backgroundColorByHexString("#fff");
 		StatusBar.styleLightContent;
 
 		Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
@@ -987,6 +1024,7 @@
 			APP.models.profile.currentUser.bind('change', syncProfile);
 
 			_app.fetchParseData();
+
 		}
 
 		if (APP.models.profile.currentUser.get('rememberUsername')) {
@@ -1086,8 +1124,7 @@
 
 			});
 		}
-
-
+		
 		APP.emailAvailable = false;
 		/*  window.plugins.email.isAvailable(function (result){
 			APP.emailAvailable = result;

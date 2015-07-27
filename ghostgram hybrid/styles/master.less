@@ -1,6 +1,6 @@
-@import (less) 'font-awesome.css';
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Hind:300,400,500);
+
 /*** Guidelines - updated 3/14/15 (see https://www.dropbox.com/s/vw40iwbmvo1tkol/styles-0.1.pdf?dl=0) ***/
+
 /* Colors */
 
 @blue100: #27476E;
@@ -13,6 +13,12 @@
 @yellow100: #FFB74D;
 @yellow200: #FADDB0;
 @purple100: #9E788F;
+
+/* Imports */
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Hind:300,400,500|PT+Sans+Caption:400,700);
+@import "../bower_components/fontawesome/css/font-awesome.css";
+
+@import "_sentinel.less";
  
 
 /* elements */
@@ -582,6 +588,7 @@ form {
 .nav-menu {
     height: 16px;
 }
+
 .modalview-content {
     padding: 1rem;
 }
@@ -687,7 +694,7 @@ div.km-header a img{
     background-color: #e0e0e0;
 }
 .km-view-title span {
-    font-family: 'Open Sans', sans-serif !important;
+    font-family: 'Open Sans', sans-serif;
     font-weight: 400;
 }
 .km-flat .km-button {
@@ -695,7 +702,7 @@ div.km-header a img{
     border-color: transparent;
 }
 .km-flat .km-content {
-    background-image: linear-gradient(-1deg, #F5F5F5 53%, #FFFFFF 100%);
+    background-image: linear-gradient(-1deg, #F5F5F5 60%, #FFFFFF 100%);
 }
 .km-modalview {
     border: 1px solid #979797;
@@ -707,6 +714,7 @@ div.km-header a img{
     margin: 0px;
 }
 
+/*
 .km-view {
     display: flex;
 
@@ -714,7 +722,7 @@ div.km-header a img{
         height: 100%;
     }
 }
-
+*/
 /* Helpers */
 
 .helper {
@@ -749,13 +757,16 @@ div.km-header a img{
     padding-top: 3px;
 }
 /* Home status menu */
-
-#home > div.km-header > div {
+.home-header > div.km-header > div {
 	
 }
 
-#home > div.view-content.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
+.home-header > div.view-content.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
 	background-image: linear-gradient(-1deg, #F5F5F5 53%, #FFFFFF 100%);
+}
+
+#home-headerBtn {
+	padding: 0px;
 }
 
 #profilePhotoForm > div > ul > li:nth-child(3) {
@@ -778,7 +789,7 @@ div.km-header a img{
 	color: @grey100;
 }
 
-#home > div.km-header > div > div.km-view-title {
+div.km-header > div > div.km-view-title {
 	margin-left: auto;
 	margin-right: auto;
 	width: 70%;
@@ -786,10 +797,21 @@ div.km-header a img{
 	margin-bottom: 0.5rem; 
 }
 
+#home > div.km-header > div > div.km-view-title > span {
+	font-family: 'PT Sans Caption', sans-serif !important; 
+	color: @blue200;
+	font-weight: 600;
+}
+
+#home-status-icon {
+	width: 18px;
+	height: 18px;
+}
+
 .circle-img-home {
 	.circle-img;
 	width: 40px;
-	height: 40px;
+	height: 40px !important;
 	.shadow;
 	margin-right: 0.5rem;
 }
@@ -810,6 +832,29 @@ div.km-header a img{
 	position: relative;
 	top: 0px;
 	left: -1rem;
+}
+
+#profileStatusMessage {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 190px;
+}
+
+.ghostModal {
+	height:  auto;
+	width: 98% !important;
+	position: fixed !important;
+	top: 5%;
+	left: 5%;    
+}
+
+.ghostFullModal {
+	height:  100% !important;
+	width: 100% !important;
+	position: fixed !important;
+	top: 0;
+	left: 0;    
 }
 
 .user-status {
@@ -891,9 +936,6 @@ div.km-header a img{
 }
 /* Initial Styles */
 
-#home .km-content {
-    background: @greyBk;
-}
 .km-flat .km-pages .km-current-page {
     background-image: url('../images/blank-bk.png');
     background-size: 100% 100%;
@@ -2009,19 +2051,8 @@ div.loginBox > form > div > ul > li {
     color: black;
 }
 
-#archive button {
-    width: 4rem;
-
-    color: black;
-
-    &:active {
-        color: white;
-    }
-}
-
 #search-archives {
     display: flex;
-    height: 2.8rem;
 
     .clear_input_div {
         width: 100%;
@@ -2032,7 +2063,16 @@ div.loginBox > form > div > ul > li {
     }
 
     & > button {
-        &:extend(.fa, .fa-search all);
+       &:extend(.fa, .fa-search all){};
+
+        width: 4rem;
+        height: 2.9rem;
+
+        color: black;
+
+        &:active {
+            color: white;
+        }
     }
 }
 
@@ -2082,7 +2122,7 @@ div.loginBox > form > div > ul > li {
             width: 10%;
             vertical-align: top;
 
-            &:extend(.fa, .fa-remove all);
+            &:extend(.fa, .fa-remove all){};
         }
 
     }
