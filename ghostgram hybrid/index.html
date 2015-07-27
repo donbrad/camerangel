@@ -64,16 +64,16 @@
 				<div class="user-status">
 					<div class="left home-status-img">
 						<span class="home-status">
-							<img width="18" class="home-status-icon" src=""/>
+							<img width="18" class="home-status-icon"  data-bind="addr:{src: APP.models.profile.currentUser.availImgUrl}"/>
 						</span>
-						<img src="" class="userStatus-photo circle-img-home" />
+						<img data-bind="addr:{src: APP.models.profile.currentUser.aliasPhoto}" class="userStatus-photo circle-img-home" />
 					</div>
 					<div class="clearfix"></div>
 				</div>
 			</a>
 			<span data-role="view-title"></span>
 			 <a data-role="button" data-rel="actionsheet" href="#settingsAction" data-align="right">
-                <img id="nav-gear" src="images/nav-gear.svg"/>
+                <img class="nav-gear" src="images/nav-gear.svg"/>
             </a>
         </div>
     </div>
