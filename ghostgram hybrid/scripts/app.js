@@ -82,6 +82,10 @@
 					isRetina: false,
 					isWIFIOnly: false,
 					isPhotoStored: false,
+					isVisible: true,
+					isAvailable: true,
+					availImgUrl: 'images/status-available.svg',
+					currentPlaceName: '',
 					currentPlaceUUID: ''
 				})
 
