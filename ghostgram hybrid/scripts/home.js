@@ -694,6 +694,7 @@ function doProfilePhotoEdit(e) {
 
 	APP.models.gallery.currentPhoto.callBack = updateProfilePhototUrl;
 }
+
 function saveProfilePhoto(e) {
 	if (e.preventDefault !== undefined) {
 		e.preventDefault();
