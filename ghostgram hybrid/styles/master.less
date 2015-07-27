@@ -15,7 +15,7 @@
 @purple100: #9E788F;
 
 /* Imports */
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Hind:300,400,500);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Hind:300,400,500|PT+Sans+Caption:400,700);
 @import "../bower_components/fontawesome/css/font-awesome.css";
 
 @import "_sentinel.less";
@@ -694,7 +694,7 @@ div.km-header a img{
     background-color: #e0e0e0;
 }
 .km-view-title span {
-    font-family: 'Open Sans', sans-serif !important;
+    font-family: 'Open Sans', sans-serif;
     font-weight: 400;
 }
 .km-flat .km-button {
@@ -702,7 +702,7 @@ div.km-header a img{
     border-color: transparent;
 }
 .km-flat .km-content {
-    background-image: linear-gradient(-1deg, #F5F5F5 53%, #FFFFFF 100%);
+    background-image: linear-gradient(-1deg, #F5F5F5 60%, #FFFFFF 100%);
 }
 .km-modalview {
     border: 1px solid #979797;
@@ -714,6 +714,7 @@ div.km-header a img{
     margin: 0px;
 }
 
+/*
 .km-view {
     display: flex;
 
@@ -721,7 +722,7 @@ div.km-header a img{
         height: 100%;
     }
 }
-
+*/
 /* Helpers */
 
 .helper {
@@ -764,6 +765,10 @@ div.km-header a img{
 	background-image: linear-gradient(-1deg, #F5F5F5 53%, #FFFFFF 100%);
 }
 
+#home-headerBtn {
+	padding: 0px;
+}
+
 #profilePhotoForm > div > ul > li:nth-child(3) {
 	padding-top: 0px;
 	padding-bottom: 0px;
@@ -784,12 +789,23 @@ div.km-header a img{
 	color: @grey100;
 }
 
-#home > div.km-header > div > div.km-view-title {
+div.km-header > div > div.km-view-title {
 	margin-left: auto;
 	margin-right: auto;
 	width: 70%;
 	margin-top: 0.5rem;
 	margin-bottom: 0.5rem; 
+}
+
+#home > div.km-header > div > div.km-view-title > span {
+	font-family: 'PT Sans Caption', sans-serif !important; 
+	color: @blue200;
+	font-weight: 600;
+}
+
+#home-status-icon {
+	width: 18px;
+	height: 18px;
 }
 
 .circle-img-home {
@@ -816,6 +832,13 @@ div.km-header a img{
 	position: relative;
 	top: 0px;
 	left: -1rem;
+}
+
+#profileStatusMessage {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 190px;
 }
 
 .ghostModal {
@@ -913,9 +936,6 @@ div.km-header a img{
 }
 /* Initial Styles */
 
-#home .km-content {
-    background: @greyBk;
-}
 .km-flat .km-pages .km-current-page {
     background-image: url('../images/blank-bk.png');
     background-size: 100% 100%;
