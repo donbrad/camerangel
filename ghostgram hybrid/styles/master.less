@@ -114,7 +114,7 @@ h2 {
     font-family: 'Hind', sans-serif;
 }
 h3 {
-    font-size: 1.42857143em;
+    font-size: 18px;
     font-weight: 300;
     /* 20px */
 }
@@ -536,7 +536,7 @@ form {
 
 .btnFull {
     width: 100%;
-    padding: .5em .7em;
+    padding: .5em .7em !important;
     color: #fff;
     font-size: 14px !important;
     font-weight: 400;
@@ -563,7 +563,8 @@ form {
 	.btnFull;
 	border-radius: 0px !important;
 	position: relative;
-	bottom: 7px;
+	bottom: 8px;
+	height: 2.25rem;
 }
 
 .input-text-sm {
@@ -688,6 +689,7 @@ div.km-header a img{
     background-color: #fff;
     color: @grey100;
     box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.12);
+    height: 56px;
     //border: transparent;
 }
 .km-material.km-pages li {
@@ -743,6 +745,48 @@ div.km-header a img{
 	text-transform: inherit;
 	font-size: inherit;
 	font-weight: inherit;
+}
+
+.km-material .km-navbar .km-view-title {
+	line-height: inherit;
+}
+
+.km-material input[type=password], .km-material input[type=search], .km-material input[type=number], .km-material input[type=tel], .km-material input[type=url], .km-material input[type=email], .km-material input[type=text]:not(.k-input), .km-root .km-material textarea {
+	background: #fff;
+}
+
+.km-material input[type=password], .km-material input[type=search], .km-material input[type=number], .km-material input[type=tel], .km-material input[type=url], .km-material input[type=email], .km-material input[type=text]:not(.k-input) {
+	outline-width: inherit;
+	outline-style: inherit;
+	outline-offset: inherit;
+	border-width: inherit;
+	border-style: inherit;
+}
+
+.km-material, .km-material .km-header, .km-material .km-content, .km-material .km-pane, .km-material .km-scroll-header .km-group-title, .km-material input[type=password], .km-material input[type=search], .km-material input[type=number], .km-material input[type=tel], .km-material input[type=url], .km-material input[type=email], .km-material input[type=text]:not(.k-input), .km-root .km-material textarea {
+	color: #4a4a4a;
+}
+
+.km-material .km-content .km-button.km-state-active {
+	box-shadow: inherit;
+	-webkit-box-shadow: inherit;
+}
+
+.km-material input[type=password], .km-material input[type=search], .km-material input[type=number], .km-material input[type=tel], .km-material input[type=url], .km-material input[type=email], .km-material input[type=text]:not(.k-input), .km-root .km-material textarea, .km-material input[type=password]:focus, .km-material input[type=search]:focus, .km-material input[type=number]:focus, .km-material input[type=tel]:focus, .km-material input[type=url]:focus, .km-material input[type=email]:focus, .km-material input[type=text]:not(.k-input):focus {
+	border-bottom: 1px solid @grey200;
+}
+
+.km-modalview {
+	border: inherit;
+}
+
+.km-material .km-switch-handle {
+	background: #fff;
+}
+
+.km-button .km-back::before {
+	display: none;
+	content: ""; 
 }
 
 /* Helpers */
@@ -815,14 +859,16 @@ div.km-header > div > div.km-view-title {
 	margin-left: auto;
 	margin-right: auto;
 	width: 70%;
-	margin-top: 0.5rem !important;
-	margin-bottom: 0.5rem !important; 
+	margin-top: 0.75rem !important;
+	margin-bottom: 0.5rem !important;
+	font-size: 20px; 
 }
 
 #home > div.km-header > div > div.km-view-title > span {
 	font-family: 'PT Sans Caption', sans-serif !important; 
 	color: @blue200;
 	font-weight: 600;
+	font-size: 18px;
 }
 
 #home-status-icon {
@@ -841,6 +887,7 @@ div.km-header > div > div.km-view-title {
 #nav-gear {
 	height: 24px;
 	margin-top: 4px;
+	margin-right: 0.5rem;
 }
 
 #home-status {
@@ -861,6 +908,10 @@ div.km-header > div > div.km-view-title {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	width: 190px;
+}
+
+#profilePhotoForm > div > ul > li:nth-child(1) {
+	padding:0px;
 }
 
 .ghostModal {
@@ -1339,16 +1390,20 @@ div.km-header > div > div.km-view-title {
     margin: 0px;
 }
 .km-material .km-view .km-navbar .km-button.km-state-active {
-    background-color: transparent;
+    background-color: rgba(0,0,0,0.05);
+    border-radius: 3px;
 }
 .km-material .km-view .km-content .km-list .km-state-active .km-listview-link {
-    background-color: transparent;
+    background-color: rgba(0,0,0,0.05);
+    border-radius: 3px;
 }
 .km-material .km-view .km-tabstrip .km-button.km-state-active {
-    background-color: transparent;
+    background-color: rgba(0,0,0,0.05);
+    border-radius: 3px;
 }
 .km-material .km-view .km-content .km-button.km-state-active {
-    background-color: transparent;
+    background-color: rgba(0,0,0,0.05);
+    border-radius: 3px;
 }
 .km-material .km-view .km-content .km-list > li .km-switch .km-switch-container .km-switch-handle .km-switch-label-on {
     color: rgb(255, 255, 255);
@@ -1595,18 +1650,18 @@ a:hover {
 	border: transparent !important;
 }
 
-.chat-mainBox h3 {
+.chat-mainBox h4 {
     margin-left: 0px;
     margin-right: 0px;
     font-weight: 600;
 }
-#channels-listview > li > div > h3 > a {
+#channels-listview > li > div > h4 > a {
     text-decoration: none;
 }
 .chatActivityTime {
     float: right;
     color: #979797;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.9;
     font-weight: 400;
     font-family: 'Hind', sans-serif;
@@ -1631,6 +1686,7 @@ a:hover {
     padding-top: 0.25rem;
     padding-bottom: 0.25rem;
     box-shadow: 3px 0 3px -3px @grey100;
+    font-size: 14px;
 }
 
 .chat-options {
