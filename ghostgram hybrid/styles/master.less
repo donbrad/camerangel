@@ -9,6 +9,7 @@
 @grey200: #E0E0E0;
 @grey300: #f5f5f5;
 @greyBk: #EFF1F2;
+@btnActiveBk: rgba(0,0,0,0.5);
 @black: #4A4A4A;
 @yellow100: #FFB74D;
 @yellow200: #FADDB0;
@@ -437,7 +438,7 @@ form {
 }
 .btnClear:active {
     color: #3A779D !important;
-    background: transparent !important;
+    background: @btnActiveBk !important;
 }
 .btnClear:disabled {
     color: #A4A4A4 !important;
@@ -784,9 +785,18 @@ div.km-header a img{
 	background: #fff;
 }
 
-.km-button .km-back::before {
-	display: none;
-	content: ""; 
+.km-root .km-pane .km-view .km-back:after,
+    .km-root .km-pane .km-view .km-back:before
+    {
+        visibility: hidden;
+    }
+
+.km-leftitem {
+	left: 1rem;
+}
+
+.km-rightitem {
+	right: 1rem; 
 }
 
 /* Helpers */
@@ -882,25 +892,24 @@ div.km-header > div > div.km-view-title {
 	height: 40px !important;
 	.shadow;
 	margin-right: 0.5rem;
+	position: absolute;
+	top: 5px;
+	left: 0px;
 }
 
 #nav-gear {
 	height: 24px;
-	margin-top: 4px;
-	margin-right: 0.5rem;
 }
 
 #home-status {
-	position: relative;
-	right: -46px;
-	top: 3px; 
+	position: absolute;
+	right: 6px;
+	bottom: 0px;
+	z-index: 1;
 }
 
 .home-status-img {
-	margin-right: 0.5rem;
-	position: relative;
-	top: 0px;
-	left: -1rem;
+	
 }
 
 #profileStatusMessage {
@@ -931,7 +940,8 @@ div.km-header > div > div.km-view-title {
 }
 
 .user-status {
-	height: 40px;
+	height: 50px;
+	width: 50px;
 	padding-top: 4px;
 	padding: 0px !important;
 }
@@ -941,7 +951,7 @@ div.km-header > div > div.km-view-title {
 }
 
 .km-material .km-rowinsert, .km-material .km-state-active, .km-material .km-scroller-pull, .km-material .km-loader:before, .km-material .k-slider-selection, .km-material .km-touch-scrollbar, .km-material .km-pages .km-current-page, .km-material .k-slider .k-draghandle, .km-material .k-slider .k-draghandle:hover, .km-material .km-tabstrip .km-state-active, .km-material .km-scroller-refresh.km-load-more, .km-material .km-popup .k-state-hover, .km-material .km-popup .k-state-focused, .km-material .km-popup .k-state-selected, .km-material .km-actionsheet>li>a:active, .km-material .km-actionsheet>li>a:hover, .km-material .km-actionsheet>li>.km-state-active, .km-material li.km-state-active .km-listview-link, .km-material li.km-state-active .km-listview-label, .km-material .km-listview-label input[type=radio]:checked, .km-material .km-listview-label input[type=checkbox]:checked {
-	background: transparent;
+	background: rgba(0,0,0,0.05);
 }
 
 .km-material .km-switch-label-on, .km-material .km-switch-label-off {
@@ -1802,9 +1812,6 @@ a:hover {
 
 .footerMenu {
 	background: #fff;
-	height: 3rem;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
 	border-top: 1px solid @grey200;
 }
 
@@ -1812,8 +1819,16 @@ a:hover {
 	background: #fff;
 }
 
-.footerMenu > ul > li > a {
-	padding: 0px !important;
+.footerMenu ul li a {
+	padding: 0.75rem;
+}
+.footerImg {
+	height: 1.6rem;
+}
+
+div.footerMenu.km-footer > ul > li > a {
+	padding: 0.50rem;
+	margin: 0px;
 }
 
 .footerBtn-nav {
@@ -1842,6 +1857,8 @@ a:hover {
 
 .menuNav {
 	width: 100%;
+	height: 2.5rem;
+	overflow: hidden;
 	li {
 	text-align: center;
 	width: 20%;
@@ -1849,9 +1866,42 @@ a:hover {
 	}
 }
 
-.footerMenu.km-footer > ul > li > a > span > img {
+.footerMenu.km-footer > ul > li > a > span > svg {
 	vertical-align: bottom;
 }
+
+div.footerMenu.km-footer > ul > li > a > span > svg {
+	height: 1.5rem;
+}
+
+// Footer nav svg
+
+#home > div.footerMenu.km-footer > ul > li:nth-child(1) > a #nav-home,
+div.footerMenu.km-footer > ul > li:nth-child(1) > a.km-state-active #nav-home{
+	fill: @blue200;
+}
+
+#channels > div.footerMenu.km-footer > ul > li:nth-child(2) > a #nav-chat,
+div.footerMenu.km-footer > ul > li:nth-child(2) > a.km-state-active #nav-chat{
+	fill: @blue200;
+}
+
+#contacts > div.footerMenu.km-footer > ul > li:nth-child(3) > a #nav-contacts,
+div.footerMenu.km-footer > ul > li:nth-child(3) > a.km-state-active #nav-contacts {
+	fill: @blue200;
+}
+
+#places > div.footerMenu.km-footer > ul > li:nth-child(4) > a #nav-places,
+div.footerMenu.km-footer > ul > li:nth-child(4) > a.km-state-active #nav-places {
+	//fill: @blue200;
+	stroke: @blue200;
+}
+
+#gallery > div.footerMenu.km-footer > ul > li:nth-child(5) > a #nav-archive,
+div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-archive {
+	stroke: @blue200;
+}	
+
 
 #status-profile-img {
 	.circle-img-md;
@@ -2788,12 +2838,12 @@ div.loginBox > form > div > ul > li {
 		padding-top: 0.5rem;
 		padding-bottom: 0.5rem;
 		border-top: 1px solid @grey200;
+		background-color: #fff;
 	}
 }
 
 .addChatMembersBanner {
 	width: 100%;
-	background-color: @greyBk;
 	color: @blue200;
 	padding: 0.5rem 1rem;
 }
