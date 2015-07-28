@@ -82,6 +82,10 @@
 					isRetina: false,
 					isWIFIOnly: false,
 					isPhotoStored: false,
+					isVisible: true,
+					isAvailable: true,
+					availImgUrl: 'images/status-available.svg',
+					currentPlaceName: '',
 					currentPlaceUUID: ''
 				})
 
@@ -885,7 +889,7 @@
 
 		navigator.splashscreen.hide();
 		// Set status bar color
-		StatusBar.backgroundColorByHexString("#fff");
+		//StatusBar.backgroundColorByHexString("#fff");
 		StatusBar.styleLightContent;
 
 		Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
@@ -1018,7 +1022,11 @@
 			APP.models.profile.currentUser.set('rememberUsername', APP.models.profile.parseUser.get('rememberUsername'));
 			APP.models.profile.currentUser.set('phoneVerified', APP.models.profile.parseUser.get('phoneVerified'));
 			APP.models.profile.currentUser.set('emailVerified', APP.models.profile.parseUser.get('emailVerified'));
-
+			APP.models.profile.currentUser.set('availImgUrl', 'images/status-away.svg');
+			var isAvailable  = APP.models.profile.currentUser.get('isAvailable');
+			if (isAvailable) {
+				APP.models.profile.currentUser.set('availImgUrl', 'images/status-available.svg');
+			}
 			APP.models.profile.parseACL = new Parse.ACL(APP.models.profile.parseUser);
 			var uuid = APP.models.profile.currentUser.get('userUUID');
 			APP.models.profile.currentUser.bind('change', syncProfile);

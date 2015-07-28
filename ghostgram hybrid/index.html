@@ -7,7 +7,6 @@
     <link href="kendo/styles/kendo.common.min.css" rel="stylesheet" />
 	 <link href="kendo/styles/kendo.flat.min.css" rel="stylesheet" />
     <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.css">
     <link href="styles/master.css" rel="stylesheet" />
  <!-- External scripts -->
     <script src="cordova.js"></script>
@@ -59,22 +58,22 @@
 </head>
 <body id="body">
 <div data-role="layout" data-id="main" style="display:none;" >
-    <div data-role="header" style="height: 58px;">
+    <div data-role="header">
         <div data-role="navbar">
-			<a data-role="button" data-rel="modalview" href="#modalview-profileStatus" data-align="left" style="height: 58px !important;" >
+			<a data-role="button" data-rel="modalview" href="#modalview-profileStatus" data-align="left" class="home-headerBtn">
 				<div class="user-status">
 					<div class="left home-status-img">
-						<span id="home-status">
-							<img width="18" class="userStatus-icon" id="home-status-icon" src=""/>
+						<span class="home-status">
+							<img width="18" class="home-status-icon" data-bind="addr:{src: APP.models.profile.currentUser.availImgUrl}"/>
 						</span>
-						<img src="" class="userStatus-photo circle-img-home" />
+						<img data-bind="addr:{src: APP.models.profile.currentUser.photo}" class="circle-img-home" />
 					</div>
 					<div class="clearfix"></div>
 				</div>
 			</a>
 			<span data-role="view-title"></span>
 			 <a data-role="button" data-rel="actionsheet" href="#settingsAction" data-align="right">
-                <img id="nav-gear" src="images/nav-gear.svg"/>
+                <img class="nav-gear" src="images/nav-gear.svg"/>
             </a>
         </div>
     </div>
@@ -87,7 +86,7 @@
     <div class="footerMenu" data-role="footer">
         <ul class="list-inline menuNav">
             <li>
-                <a data-role="button" href="#home"><img src="images/nav-home-active.svg" /></a>
+                <a data-role="button" class="active-menu" href="#home"><img src="images/nav-home-active.svg" /></a>
             </li>
             <li>
                 <a data-role="button" href="views/channels.html"><img src="images/nav-chat.svg" /></a>
@@ -485,13 +484,12 @@
 
 </div>
 
-<div data-role="view" id="profilePhotoEdit" data-show="doProfilePhotoEdit" data-init="initProfilePhotoEdit" style="w display: none;" data-model="APP.models.profile.currentUser" class="appearance">
+<div data-role="view" id="profilePhotoEdit" data-show="doProfilePhotoEdit" data-init="initProfilePhotoEdit" style="display: none;" data-model="APP.models.profile.currentUser" class="appearance">
     <div data-role="header">
         <div data-role="navbar">
-            <a data-click="doUpdateStatusMessage"  type="button" data-role="button" data-align="left">Update Profile Photo</a>
             <a data-align="left" id="profilePhotoViewBack" data-role="backbutton">Back</a>
             <span>Profile Photo</span>
-            <a data-click="doUpdateStatusMessage"  type="button" data-role="button" data-align="left">Update</a>
+            <a data-click="doUpdateStatusMessage"  type="button" data-role="button" data-align="right">Update</a>
 		</div>
 	</div>
 
@@ -512,7 +510,7 @@
 	
 </div>
 
-<div data-role="modalview" id="modalview-profileStatus" style="display: none;" data-open="onShowProfileStatus" data-model="APP.models.profile.currentUser" class="appearance ghostModal">
+<div data-role="modalview" id="modalview-profileStatus" style="width: 90%; display: none;" data-open="onShowProfileStatus" data-model="APP.models.profile.currentUser" class="appearance">
 	<form id="profilePhotoForm">
         <ul data-role="listview" data-style="inset">
         	<li>
@@ -531,7 +529,7 @@
 						<span class="contacts-alias-sm" id="profileStatusAlias"></span>
 					</h3>
 				</div>
-				<div style="padding-top: 12px;" class="left caption profileTextBox"><span id="profileStatusMessage" data-bind="text: statusMessage"></span></div>
+				<div class="left caption profileTextBox"><p id="profileStatusMessage" data-bind="text: statusMessage"></p></div>
 				<div class="clearfix"></div>
         	</li>
         	<li><p class="caption right"><a data-role="button" class="btnClear-sm" href="views/profile.html">Edit Profile</a></p></li>

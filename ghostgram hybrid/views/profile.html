@@ -75,19 +75,6 @@
     </div>    
        <div class="profileEdit" id="profileEditPhotos">
        <div class="profileTopBox">
-           <div class="profileEditPublic">
-               <div class="profilePublicImg">
-                   <img src="" data-bind="attr: {src: aliasPhoto}"/>
-               </div>
-               <div class="profilePublicImgBtn">
-                   <label>Public photo</label>
-                   <p class="caption">
-                       Your public photo is visible to everyone on ghostgrams.
-                   </p>
-                   <a class="btnClear" href="#modalview-chooseGhost" data-rel="modalview" data-role="button">Change ghost</a>
-               </div>
-           </div>
-           <div class="clearfix"></div>
            <div class="profileEditPrivate">
                <div class="profilePrivateImg">
                    <img src="images/default-private.svg" data-bind="attr: {src: photo}"/>
@@ -95,9 +82,9 @@
                <div class="profilePrivateImgBtn">
                    <label>Private photo</label>
                    <p class="caption">
-                       Your private photo is visible <b>ONLY</b> to your contacts.
+                       Your profile photo is visible <b>ONLY</b> to your contacts.
                    </p>
-                   <a class="btnClear" data-role="button" data-click="updateProfilePhoto" >Choose photo</a>
+                   <a class="btnClear" data-role="button" href="#profilePhotoEdit" >Update Profile Photo</a>
                </div>
            </div>
          </div>
