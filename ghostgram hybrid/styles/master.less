@@ -16,9 +16,7 @@
 
 /* Imports */
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Hind:300,400,500);
-@import "../bower_components/fontawesome/css/font-awesome.css";
-
-@import "_sentinel.less";
+@import (less) "../bower_components/fontawesome/css/font-awesome.css";
  
 
 /* elements */
@@ -2033,6 +2031,15 @@ div.loginBox > form > div > ul > li {
 
 #search-archives {
     display: flex;
+    padding: .5rem 0;
+
+    .k-autocomplete {
+        width: 100%;
+        height: 1.7rem;
+        border-color: @grey200;
+
+        background-color: white;
+    }
 
     .clear_input_div {
         width: 100%;
@@ -2040,13 +2047,16 @@ div.loginBox > form > div > ul > li {
 
     input {
         width: 100%;
+        box-sizing: border-box;
     }
 
     & > button {
-       &:extend(.fa, .fa-search all){};
+       &:extend(.fa, .fa-search all);
 
         width: 4rem;
-        height: 2.9rem;
+        height: 1.7rem;
+        padding: 0;
+        margin: 0;
 
         color: black;
 
@@ -2102,7 +2112,7 @@ div.loginBox > form > div > ul > li {
             width: 10%;
             vertical-align: top;
 
-            &:extend(.fa, .fa-remove all){};
+            &:extend(.fa, .fa-remove all);
         }
 
     }

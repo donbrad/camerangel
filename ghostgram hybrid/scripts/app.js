@@ -1140,6 +1140,8 @@
 		     domains: _emailDomainList //additional domains (optional)
 		 }); */
 
+		window.semanticDSs = new SemanticDSs();
+
 	}, false);
 
 
