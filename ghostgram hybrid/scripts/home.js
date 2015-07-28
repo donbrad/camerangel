@@ -232,7 +232,7 @@ function homeSignout (e) {
     APP.models.profile.currentUser.set('phone',null);
     APP.models.profile.currentUser.set('alias', null);
     APP.models.profile.currentUser.set('userUUID', null);
-	 APP.models.profile.currentUser.set('rememberUsername', false);
+	APP.models.profile.currentUser.set('rememberUsername', false);
     APP.models.profile.currentUser.set('phoneVerified', false);
     APP.models.profile.currentUser.set('emailVerified', false);
     APP.models.profile.parseACL = '';
@@ -309,7 +309,13 @@ function homeSignin (e) {
 			APP.models.profile.currentUser.set('privateKey', privateKey);
 			var phoneVerified = APP.models.profile.parseUser.get('phoneVerified');
             APP.models.profile.currentUser.set('phoneVerified', phoneVerified);
-			
+
+			APP.models.profile.currentUser.set('availImgUrl', 'images/status-away.svg');
+			var isAvailable  = APP.models.profile.currentUser.get('isAvailable');
+			if (isAvailable) {
+				APP.models.profile.currentUser.set('availImgUrl', 'images/status-available.svg');
+			}
+
             if (phoneVerified) {
 				APP.setAppState('phoneVerified', true);
 				deleteNotificationModel('phoneVerified');
@@ -404,7 +410,8 @@ function homeCreateAccount() {
 				    user.set('photo', "images/ghost-default.svg");
 				    user.set('aliasPhoto', "images/ghost-default.svg");
 					user.set("isAvailable", true);	   
-					user.set("isVisible", true);	 
+					user.set("isVisible", true);
+				   user.set("availImgUrl", "images/status-available.svg");
 					user.set("phoneVerified", false);
 					user.set("rememberUsername", false);
 					user.set("userUUID", userUUID);
@@ -687,6 +694,7 @@ function doProfilePhotoEdit(e) {
 
 	APP.models.gallery.currentPhoto.callBack = updateProfilePhototUrl;
 }
+
 function saveProfilePhoto(e) {
 	if (e.preventDefault !== undefined) {
 		e.preventDefault();

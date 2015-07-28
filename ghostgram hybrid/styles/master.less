@@ -17,7 +17,6 @@
 
 /* Imports */
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Hind:300,400,500|PT+Sans+Caption:400,700);
-@import "../bower_components/fontawesome/css/font-awesome.css";
 
 @import "_sentinel.less";
  
@@ -843,8 +842,10 @@ div.km-header a img{
 	background-image: linear-gradient(-1deg, #F5F5F5 53%, #FFFFFF 100%);
 }
 
-#home-headerBtn {
+
+.home-headerBtn {
 	padding: 0px;
+	height: 58px !important;
 }
 
 #profilePhotoForm > div > ul > li:nth-child(3) {
@@ -852,16 +853,16 @@ div.km-header a img{
 	padding-bottom: 0px;
 }
 
-#homeStatus-name,
-#homeStatus-status {
+.homeStatus-name,
+.homeStatus-status {
 	color: #4A4A4A;
 }
 
-#homeStatus-name {
+.homeStatus-name {
 	font-size: 16px !important;
 }
 
-#homeStatus-status {
+.homeStatus-status {
 	text-align: left;
 	font-size: 11px !important;
 	color: @grey100;
@@ -885,7 +886,7 @@ div.km-header a img{
 	font-size: 18px;
 }
 
-#home-status-icon {
+.home-status-icon {
 	width: 18px;
 	height: 18px;
 }
@@ -901,11 +902,12 @@ div.km-header a img{
 	left: 0px;
 }
 
-#nav-gear {
-	height: 24px;
+.nav-gear {
+	height: 24px !important;
 }
 
-#home-status {
+
+.home-status {
 	position: absolute;
 	right: 6px;
 	bottom: 0px;
