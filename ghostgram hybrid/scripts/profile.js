@@ -20,6 +20,15 @@ function toggleProfilePhoto(e) {
     }
 }
 
+// Globally update profile and status images in the application header
+function updateHeaderStatusImages (){
+	var isAvailable  = APP.models.profile.currentUser.get('isAvailable');
+	if (isAvailable) {
+		APP.models.profile.currentUser.set('availImgUrl', 'images/status-available.svg');
+	}
+	$('.home-status-img').attr('src',APP.models.profile.currentUser.get('availImgUrl'));
+	$('.home-profile-img').attr('src',APP.models.profile.currentUser.get('photo'));
+}
 
 // Select new ghost icon
 function whichGhost(e) {

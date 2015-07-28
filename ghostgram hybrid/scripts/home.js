@@ -175,19 +175,14 @@ function onShowSignIn(e){
 function onShowHome(e) {
 	e.preventDefault();
 
-	$('#profileName').text(APP.models.profile.currentUser.alias);
-    var myPublicImg = APP.models.profile.currentUser.aliasPhoto;
-	// set user alias photo
-	if (myPublicImg !== ""){
-        $(".myPublicImg").attr("src", APP.models.profile.currentUser.aliasPhoto);
-    }
+
     // set verified ui for start screen 
     if(APP.models.profile.currentUser.phoneVerified) {
     	$("#startPhoneVerified").addClass("hidden");
     }
     
     // Set user availibility 
-    setUserStatusUI();
+    updateHeaderStatusImages();
 
     // Show status
     //$("#logo-header").velocity("fadeOut", {delay: 1000, duration: 500});
