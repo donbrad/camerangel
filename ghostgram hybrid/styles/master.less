@@ -9,7 +9,7 @@
 @grey200: #E0E0E0;
 @grey300: #f5f5f5;
 @greyBk: #EFF1F2;
-@btnActiveBk: rgba(0,0,0,0.5);
+@btnActiveBk: rgba(0,0,0,0.15);
 @black: #4A4A4A;
 @yellow100: #FFB74D;
 @yellow200: #FADDB0;
@@ -749,7 +749,9 @@ div.km-header a img{
 }
 
 .km-material .km-navbar .km-view-title {
-	line-height: inherit;
+	line-height: 1.5;
+	font-size: 18px;
+	padding: 0.8rem;
 }
 
 .km-material input[type=password], .km-material input[type=search], .km-material input[type=number], .km-material input[type=tel], .km-material input[type=url], .km-material input[type=email], .km-material input[type=text]:not(.k-input), .km-root .km-material textarea {
@@ -865,13 +867,15 @@ div.km-header a img{
 	color: @grey100;
 }
 
-div.km-header > div > div.km-view-title {
+#home div.km-header > div > div.km-view-title {
 	margin-left: auto;
 	margin-right: auto;
 	width: 70%;
 	margin-top: 0.75rem !important;
 	margin-bottom: 0.5rem !important;
 	font-size: 20px; 
+	line-height: 1.5 !important;
+	padding: 0px;
 }
 
 #home > div.km-header > div > div.km-view-title > span {
