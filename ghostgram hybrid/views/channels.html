@@ -81,11 +81,11 @@
     		<div class="chat-mainBox">
     	#}#
     	
-    		<h3>
+    		<h4>
     		<span><img src="images/status-new.svg" class="list-status" /></span>
         		 #:name# 
         		<span class="chatActivityTime">1 hr ago</span>
-    		</h3>
+    		</h4>
     		
     		# if(isPrivate && members.length <= 2){#
     			<img src="images/private-icon.svg" /> Private Chat
@@ -223,7 +223,7 @@
 <div data-role="view" id="channel" data-layout="main" data-model="APP.models.channel" data-show="onShowChannel" data-init="onInitChannel" data-transition="slide">
      <div data-role="header">
         <div data-role="navbar" id="channelNavBar">
-        	<a data-align="left" data-role="backbutton"> 
+        	<a data-align="left" data-role="button" href="#:back"> 
             	<img src="images/nav-back.svg" />
             </a>
             <img src="" id="channelImage" height="32" style="vertical-align: middle; border-radius: 50%"/>
@@ -326,7 +326,7 @@
         <div data-role="navbar">
             <span data-role="view-title"></span>
             <a data-role="button" data-align="right" href="views/contacts.html#contactImport">Import Contact</a>
-
+            <a data-role="button" data-align="left"><img src="images/nav-back.svg"/></a>
         </div>
     </header>
     <div class="addedChatMember" style="display: none"></div>

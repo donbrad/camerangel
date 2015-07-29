@@ -889,9 +889,11 @@
 
 		navigator.splashscreen.hide();
 		// Set status bar color
-		//StatusBar.backgroundColorByHexString("#fff");
-		StatusBar.styleLightContent;
 
+		StatusBar.overlaysWebView(false);
+		StatusBar.backgroundColorByHexString("#fff");
+		StatusBar.styleDefault();
+		
 		Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
 
 		if (!APP.state.introFetched) {
@@ -1100,7 +1102,7 @@
 
 			// comment out the following line to get a UI which matches the look
 			// and feel of the operating system
-			skin: 'flat',
+			skin: 'material',
 
 			// the application needs to know which view to load first
 			initial: initialView

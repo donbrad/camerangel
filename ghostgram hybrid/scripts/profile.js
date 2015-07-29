@@ -25,6 +25,8 @@ function updateHeaderStatusImages (){
 	var isAvailable  = APP.models.profile.currentUser.get('isAvailable');
 	if (isAvailable) {
 		APP.models.profile.currentUser.set('availImgUrl', 'images/status-available.svg');
+	} else {
+		APP.models.profile.currentUser.set('availImgUrl', 'images/status-away.svg');
 	}
 	$('.home-status-img').attr('src',APP.models.profile.currentUser.get('availImgUrl'));
 	$('.home-profile-img').attr('src',APP.models.profile.currentUser.get('photo'));

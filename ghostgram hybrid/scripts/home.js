@@ -175,7 +175,6 @@ function onShowSignIn(e){
 function onShowHome(e) {
 	e.preventDefault();
 
-
     // set verified ui for start screen 
     if(APP.models.profile.currentUser.phoneVerified) {
     	$("#startPhoneVerified").addClass("hidden");
@@ -881,17 +880,15 @@ function onShowProfileStatus(e){
 	if(available){
 		availableSwitch.check(true);
 	}
-	setUserStatusUI();
-
 }
 
 function statusSwitch(e) {
 	var currentState = e.checked;
 	
 	APP.models.profile.currentUser.set("isAvailable", currentState);
-	setUserStatusUI();
+	updateHeaderStatusImages();
 }
 
-function setStatus(){
-
+function closeThisModal(e){
+	console.log(e);
 }
