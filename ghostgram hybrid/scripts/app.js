@@ -1025,10 +1025,8 @@
 			APP.models.profile.currentUser.set('phoneVerified', APP.models.profile.parseUser.get('phoneVerified'));
 			APP.models.profile.currentUser.set('emailVerified', APP.models.profile.parseUser.get('emailVerified'));
 			APP.models.profile.currentUser.set('availImgUrl', 'images/status-away.svg');
-			var isAvailable  = APP.models.profile.currentUser.get('isAvailable');
-			if (isAvailable) {
-				APP.models.profile.currentUser.set('availImgUrl', 'images/status-available.svg');
-			}
+			updateHeaderStatusImages();
+			
 			APP.models.profile.parseACL = new Parse.ACL(APP.models.profile.parseUser);
 			var uuid = APP.models.profile.currentUser.get('userUUID');
 			APP.models.profile.currentUser.bind('change', syncProfile);
@@ -1149,6 +1147,8 @@
 		/* $(".email-Autocomplete").emailautocomplete({
 		     domains: _emailDomainList //additional domains (optional)
 		 }); */
+
+		window.semanticDSs = new SemanticDSs();
 
 	}, false);
 

@@ -49,8 +49,9 @@
     <script src="scripts/cropper.js"></script>
     <script src="bower_components/velocity/velocity.js"></script>
     <script src="bower_components/lodash/lodash.js"></script>
-    <script src="scripts/models/Sentinel.js"></script>
+    <script src="scripts/models/semanticDSs.js"></script>
     <script src="scripts/models/archive.js"></script>
+    <script src="scripts/views/sentinel.js"></script>
     <script src="scripts/views/archiveView.js"></script>
 	<script src="scripts/app.js"></script>
 
@@ -61,11 +62,11 @@
         <div data-role="navbar">
 			<a data-role="button" data-rel="modalview" href="#modalview-profileStatus" data-align="left" class="home-headerBtn">
 				<div class="user-status">
-					<div class="left home-status-img">
+					<div class="left">
 						<span class="home-status">
-							<img width="18" class="home-status-icon" src="images/status-away.svg"/>
+							<img width="18" class="home-status-img" src="images/status-away.svg"/>
 						</span>
-						<img class="circle-img-home" />
+						<img class="circle-img-home home-profile-img" />
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -567,13 +568,14 @@
 
 <div data-role="modalview" id="modalview-profileStatus" style="width: 90%; display: none;" data-open="onShowProfileStatus" data-model="APP.models.profile.currentUser" class="appearance">
 	<form id="profilePhotoForm">
+
         <ul data-role="listview" data-style="inset">
         	<li>
         		<div class="left listPhoto">
 					
 						<div class="statusContactList">
-							<img class="circle-img-md userStatus-photo" id="profileStatusPhoto" src="" />
-							<img width="16" src="images/status-away.svg" class="statusContactList-icon userStatus-icon" />
+							<img class="circle-img-md home-profile-img" id="profileStatusPhoto" src="" />
+							<img width="16" src="images/status-away.svg" class="statusContactList-icon home-status-img" />
 						 </div>
 					
 				</div><!-- left -->
@@ -601,7 +603,9 @@
         	</li>
         </ul>
     </form>
-    <a class="btnBlue btnFull-modal" data-click="closeModalViewProfileStatus" data-role="button">Done</a>
+    <div data-role="footer">
+    	<a class="btnBlue btnFull-modal" data-click="closeModalViewProfileStatus" data-role="button">Done</a>
+    </div>
 </div>
 
 <!-- Photo tag modal -->

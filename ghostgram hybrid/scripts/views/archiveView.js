@@ -139,15 +139,11 @@ var archiveView = {
 		archiveView.checkIfEmpty();
 
 		$('#search-archives input').clearSearch({ callback: archiveView.clearSearch });
-		new Sentinel($('#search-archives input'), archive.dataSource, [
-			onDateFilter,
-			inChatFilter
-		]);
 
 		// Binding this manually because data-role="button" messes up the styles
 		$('#archive-list').on('click', '.object', archiveView.openObject);
 
-		//archive.search('concert');
+		new Sentinel($('#search-archives input'));
 	},
 
 	checkIfEmpty: function () {

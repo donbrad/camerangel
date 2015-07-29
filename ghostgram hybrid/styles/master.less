@@ -16,9 +16,7 @@
 @purple100: #9E788F;
 
 /* Imports */
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Hind:300,400,500|PT+Sans+Caption:400,700);
-
-@import "_sentinel.less";
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Hind:300,400,500);
  
 
 /* elements */
@@ -562,8 +560,6 @@ form {
 .btnFull-modal {
 	.btnFull;
 	border-radius: 0px !important;
-	position: relative;
-	bottom: 8px;
 	height: 2.25rem;
 }
 
@@ -886,9 +882,9 @@ div.km-header a img{
 	font-size: 18px;
 }
 
-.home-status-icon {
+.home-status-img {
 	width: 18px;
-	height: 18px;
+	height: 18px !important;
 }
 
 .circle-img-home {
@@ -910,13 +906,10 @@ div.km-header a img{
 .home-status {
 	position: absolute;
 	right: 6px;
-	bottom: 0px;
+	bottom: 6px;
 	z-index: 1;
 }
 
-.home-status-img {
-	
-}
 
 #profileStatusMessage {
 	white-space: nowrap;
@@ -2187,6 +2180,15 @@ div.loginBox > form > div > ul > li {
 
 #search-archives {
     display: flex;
+    padding: .5rem 0;
+
+    .k-autocomplete {
+        width: 100%;
+        height: 1.7rem;
+        border-color: @grey200;
+
+        background-color: white;
+    }
 
     .clear_input_div {
         width: 100%;
@@ -2194,13 +2196,14 @@ div.loginBox > form > div > ul > li {
 
     input {
         width: 100%;
+        box-sizing: border-box;
     }
 
     & > button {
-       &:extend(.fa, .fa-search all){};
-
         width: 4rem;
-        height: 2.9rem;
+        height: 1.7rem;
+        padding: 0;
+        margin: 0;
 
         color: black;
 
@@ -2255,8 +2258,6 @@ div.loginBox > form > div > ul > li {
 
             width: 10%;
             vertical-align: top;
-
-            &:extend(.fa, .fa-remove all){};
         }
 
     }
