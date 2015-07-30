@@ -15,8 +15,24 @@ Sentinel.prototype = {
 	filters: [],
 
 	initialize: function ($div) {
+		$div.addClass('sentinel');
+
 		var $input = $div.find('input');
 		var $list = $div.find('ul');
+		var $tags = $div.find('tags');
+
+		$list.data('kendoMobileButtonGroup').bind('select', function () {
+			var currentButton = currentButton;
+			if (currentButton.hasClass('contacts')) {
+
+			} else if (currentButton.hasClass('chats')) {
+
+			} else if (currentButton.hasClass('date')) {
+
+			} else if (currentButton.hasClass('place')) {
+
+			}
+		});
 
 		$input.kendoAutoComplete({
 			separator: ' ',

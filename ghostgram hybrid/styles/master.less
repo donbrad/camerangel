@@ -17,7 +17,8 @@
 
 /* Imports */
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Hind:300,400,500);
- 
+
+@import "_sentinel.less";
 
 /* elements */
 .shadow {
@@ -2185,7 +2186,7 @@ div.loginBox > form > div > ul > li {
     // HACK: Not sure why, think it's a bug with display: flex and margin together on
     // #archive-filters
     & > div {
-        height: 5.4rem;
+        margin-bottom: 2rem;
     }
 
     .k-autocomplete {

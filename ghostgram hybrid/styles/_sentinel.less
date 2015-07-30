@@ -1,0 +1,44 @@
+.sentinel {
+	.tags {
+		padding: 0;
+		margin: 0;
+
+		list-style-type: none;
+
+		li {
+			display: inline-block;
+			padding: 0 .6rem;
+			margin: .3rem .6rem 0 0;
+			border-radius: 1rem;
+
+			background-color: @grey200;
+
+			img {
+				vertical-align: middle;
+
+				height: .8rem;
+				margin: -.2rem .3rem 0 0;
+			}
+
+			button {
+				vertical-align: middle;
+
+				width: .8rem;
+				height: .8rem;
+				border: 0;
+				border-radius: 1rem;
+				margin: -.2rem 0 0 .6rem;
+
+				background-color: @greyBk;
+				background-image: url("../images/close.svg");
+				background-position: 50% 50%;
+				background-repeat: no-repeat;
+				background-size: 50%;
+
+				&:active {
+					background-color: @btnActiveBk;
+				}
+			}
+		}
+	}
+}
