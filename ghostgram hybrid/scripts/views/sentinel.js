@@ -2,7 +2,7 @@
 
 var Sentinel = function ($input) {
 	this.initialize($input);
-}
+};
 
 Sentinel.prototype = {
 
@@ -14,7 +14,10 @@ Sentinel.prototype = {
 
 	filters: [],
 
-	initialize: function ($input) {
+	initialize: function ($div) {
+		var $input = $div.find('input');
+		var $list = $div.find('ul');
+
 		$input.kendoAutoComplete({
 			separator: ' ',
 			filter: 'startswith',
@@ -44,4 +47,4 @@ Sentinel.prototype = {
 			}.bind(this));
 		}.bind(this));
 	}
-}
+};

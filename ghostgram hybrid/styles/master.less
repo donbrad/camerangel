@@ -2179,8 +2179,14 @@ div.loginBox > form > div > ul > li {
 }
 
 #search-archives {
-    display: flex;
+    min-height: 2rem;
     padding: .5rem 0;
+
+    // HACK: Not sure why, think it's a bug with display: flex and margin together on
+    // #archive-filters
+    & > div {
+        height: 5.4rem;
+    }
 
     .k-autocomplete {
         width: 100%;
@@ -2197,9 +2203,14 @@ div.loginBox > form > div > ul > li {
     input {
         width: 100%;
         box-sizing: border-box;
+
+        font-size: 1rem;
     }
 
     & > button {
+        position: absolute;
+        right: 0;
+
         width: 4rem;
         height: 1.7rem;
         padding: 0;
@@ -2210,6 +2221,20 @@ div.loginBox > form > div > ul > li {
         &:active {
             color: white;
         }
+    }
+}
+
+#archive-filters {
+    display: flex;
+    width: 50%;
+    margin: 0 20%;
+
+    li {
+        padding: .3rem;
+    }
+
+    img {
+        width: 100%;
     }
 }
 

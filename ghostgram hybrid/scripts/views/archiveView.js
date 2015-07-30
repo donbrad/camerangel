@@ -1,3 +1,5 @@
+/* global archive, Sentinel */
+
 'use strict';
 
 var archiveView = {
@@ -143,7 +145,7 @@ var archiveView = {
 		// Binding this manually because data-role="button" messes up the styles
 		$('#archive-list').on('click', '.object', archiveView.openObject);
 
-		new Sentinel($('#search-archives input'));
+		new Sentinel($('#search-archives'));
 	},
 
 	checkIfEmpty: function () {
@@ -157,6 +159,10 @@ var archiveView = {
 		}
 	},
 
+	toggleSearch: function () {
+		$('#search-archives > div').toggle(200);
+	},
+
 	search: function () {
 		if ($('#search-archives input').val() === '') {
 			archiveView.clearSearch();
@@ -167,7 +173,7 @@ var archiveView = {
 			// Show nothing found
 			$('#archive-search-empty').show();
 			$('#archive-list').hide();
-		};
+		}
 	},
 
 	clearSearch: function () {
@@ -187,7 +193,7 @@ var archiveView = {
 	openObject: function (e) {
 		var $object = $(e.currentTarget);
 		if ($object.hasClass('link')) {
-			window.open($object.data('url'), '_system');;
+			window.open($object.data('url'), '_system');
 		}
 	}
 };
