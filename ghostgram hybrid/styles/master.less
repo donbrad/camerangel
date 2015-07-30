@@ -712,6 +712,11 @@ div.km-header a img{
     margin: 0px;
 }
 
+.km-root .km-material .km-buttongroup > .km-state-active {
+	color: @blue200;
+	border-color: @blue200;
+}
+
 /*
 .km-view {
     display: flex;
@@ -1640,8 +1645,10 @@ a:hover {
 }
 /* Chat menu */
 
-#channels-listview { 
-	padding-bottom: 3rem;
+#channels-listview {
+	z-index: 0;
+	position: absolute;
+	width: 100%;
 	li {
     border-bottom: 1px solid #E4E4E4;
     background: #fff;
@@ -1653,6 +1660,17 @@ a:hover {
 		border-top: 1px solid #E4E4E4;
 	}
 }
+
+#addChannelBtn {
+	.shadow;
+	position: fixed;
+}
+
+.footerAction {
+	position: absolute;
+	z-index: 2;
+}
+
 
 .chat-option-ul li {
 	background: transparent !important;
@@ -1837,7 +1855,6 @@ div.footerMenu.km-footer > ul > li > a {
 	border-radius: 1.5rem !important;
 	text-align: center;
 	position: fixed;
-	bottom: 4rem;
 	right: 1rem;
 	padding-top: 0.85rem !important;
 	p {
@@ -2959,6 +2976,79 @@ div.loginBox > form > div > ul > li {
 
 .galleryImg {
 	width: 100%;	
+}
+
+#galleryZoomSelect {
+	background: @grey300;
+	li:nth-child(1){
+		position: absolute;
+		left: 1rem;
+		list-style: none;
+		a > span > img {
+			-moz-transform: scaleY(-1);
+	        -o-transform: scaleY(-1);
+	        -webkit-transform: scaleY(-1);
+	        transform: scaleY(-1);
+	        vertical-align: middle;
+		}
+	}
+}
+
+#galleryZoomSelect li {
+	//padding: 0.5rem 1rem;
+}
+
+// Gallery SVG
+#galleryZoomSelect > li > span > svg{
+	height: 18px;
+}
+
+#galleryToggle {
+	position: absolute;
+	left: 1rem;
+	z-index: 1;
+	top: 4px;
+	svg {
+		height: 18px;
+	}
+}
+
+#galleryZoomSelect > li.km-button.km-state-active > span > svg #gallery-grid-1,
+#galleryZoomSelect > li.km-button.km-state-active > span > svg #gallery-grid-2,
+#galleryZoomSelect > li.km-button.km-state-active > span > svg #gallery-grid-3 {
+	fill: @yellow100;
+}
+
+.appendSearch {
+	background: #fff;
+	display: inline-block;
+	width: 100%;
+	border-bottom: 1px solid @grey300;
+	input {
+		width: auto;
+		float: left;
+		border: none !important;
+		width: 80%;
+		padding-left: 0px !important;
+		padding-right: 1rem !important;
+	}
+	span {
+		float: left;
+		padding-top: 0.75rem;
+		color: @grey100;
+		padding-left: 0.5rem !important;
+		font-size: 11px;
+		width: 20%;
+		text-align: center;
+	}
+}
+
+.km-material .km-buttongroup, .km-material .km-widget.km-navbar .km-buttongroup {
+	border: inherit;
+}
+
+.km-material .km-buttongroup .km-button {
+	padding: 0.25rem 0.75rem;
 }
 
 .chat-message {

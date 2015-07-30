@@ -6,8 +6,12 @@ function onInitGallery(e){
 	APP.models.gallery.rotationAngle = 0;
 	APP.models.gallery.optionsHidden = true;
 	APP.models.gallery.previewSize = "33%";
-	$( "#gallerySearch" ).keyup(function() {
-  		var query = ("#gallerySearch").val();
+
+	// hide serch 
+	$("#galleryZoomSelect > li:first-child()").css("display", "none");
+
+	$("#gallerySearch").keyup(function() {
+  		var query = $("#gallerySearch").val();
 		if (query.length > 0) {
 			
 		}
@@ -16,18 +20,27 @@ function onInitGallery(e){
 }
 
 function galleryOptionsToggle (e) {
-	if (e !== undefined && e.preventDefault !== undefined)
+	if (e !== undefined && e.preventDefault !== undefined){
 		e.preventDefault();
-
-	
-	if (APP.models.gallery.optionsShown) {
-		$('#gallerySearchOptions').addClass('hidden');
-		APP.models.gallery.optionsShown = false;
-		
-	} else {
-		$('#gallerySearchOptions').removeClass('hidden');
-		APP.models.gallery.optionsShown = true;
 	}
+	
+	console.log(e.index);
+
+	if (APP.models.gallery.optionsShown) {
+		$("#galleryToggle").velocity("fadeOut",{duration: 150});
+		$('#gallerySearchOptions').velocity("slideDown",{duration: 300});
+		$("#galleryZoomSelect > li:first-child").velocity("fadeIn", {duration: 300});
+		APP.models.gallery.optionsShown = false;
+		$("#gallerySearch").focus();
+	} else {
+		$('#gallerySearchOptions').velocity("slideUp",{duration: 300});
+		$("#galleryToggle").velocity("fadeIn",{delay: 150, duration: 150});
+		$("#galleryZoomSelect > li:first-child").velocity("fadeOut", {duration: 300});
+		//$('#gallerySearchOptions').removeClass('hidden');
+		APP.models.gallery.optionsShown = true;
+		
+	}
+	
 }
 
 
@@ -39,18 +52,23 @@ function selectGallerySearchTool(e) {
 	switch (index) {
 			
 		case 0: // Contacts
+			$("#galleryInputHelper").text("Search:");
 			break;
 			
 		case 1: // Chats
+			$("#galleryInputHelper").text("Chat:");
 			break;
 			
 		case 2: // Dates
+			$("#galleryInputHelper").text("Dates:");
 			break;
 			
 		case 3: // Places
+			$("#galleryInputHelper").text("Places:");
 			break;
 			
 		case 4: // Search
+			$("#galleryInputHelper").text("Contacts:");
 			break;
 	}
 	
@@ -67,12 +85,12 @@ function selectGalleryZoom(e) {
 			$("#gallery-listview li").css("width","33%");
 			$("#gallery-listview li").css("padding-bottom","33%");
 			break;
-		case 1 :
+		case 1:
 			APP.models.gallery.previewSize = "50%";
 			$("#gallery-listview li").css("width","50%");
 			$("#gallery-listview li").css("padding-bottom","50%");
 			break;
-		case 2 :
+		case 2:
 			APP.models.gallery.previewSize = "100%";
 			$("#gallery-listview li").css("width","100%");
 			$("#gallery-listview li").css("padding-bottom","100%");

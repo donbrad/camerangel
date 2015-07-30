@@ -1,9 +1,8 @@
- <div data-role="view" id="channels" data-title="Chats" data-layout="main" data-model="APP.models.channels" data-init="onInitChannels">  
+ <div data-role="view" id="channels" data-title="Chats" data-layout="main" data-model="APP.models.channels" data-init="onInitChannels" data-before-show="setActionBtnHeight">
      <div>
          <ul id="channels-listview"></ul>
      </div>
      	
-     
     <ul data-role="actionsheet" id="channelActions" data-popup='{"direction": "left"}'>
         <li><a data-action="eraseChannel">Erase Chat Content</a></li>
         <li><a data-action="archiveChannel">Archive Chat </a></li>

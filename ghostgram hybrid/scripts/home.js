@@ -188,7 +188,7 @@ function onShowHome(e) {
     //$(".user-status").velocity("fadeIn", {delay:1000});
         
     APP.models.presence.current.bind('change' , syncPresence);
-    
+
 }
 
 function setUserStatusUI(e){
