@@ -80,7 +80,7 @@
                    <img src="images/default-private.svg" data-bind="attr: {src: photo}"/>
                </div>
                <div class="profilePrivateImgBtn">
-                   <label>Private photo</label>
+                   <label>Profile photo</label>
                    <p class="caption">
                        Your profile photo is visible <b>ONLY</b> to your contacts.
                    </p>
@@ -95,6 +95,11 @@
            <form style="clear:both;">
             <h3>Edit Info</h3> 
             <ul data-role="listview" data-style="inset">
+                <li>
+                    <label>Name (Your First and Last Name)
+                        <input type="search" id="profile-name" data-bind="value: name" />
+                    </label>
+                </li>
                 <li>
                     <label>Alias (How other users see you)
                     <input type="search" id="profile-alias" data-bind="value: alias" />
