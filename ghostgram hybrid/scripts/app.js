@@ -1012,6 +1012,7 @@
 			APP.models.profile.currentUser.set('privateKey', APP.models.profile.parseUser.get('privateKey'));
 			APP.models.profile.currentUser.set('statusMessage', APP.models.profile.parseUser.get('statusMessage'));
 			APP.models.profile.currentUser.set('currentPlaceUUID', APP.models.profile.parseUser.get('currentPlaceUUID'));
+			APP.models.profile.currentUser.set('currentPlace', APP.models.profile.parseUser.get('currentPlace'));
 			APP.models.profile.currentUser.set('aliasPublic', APP.models.profile.parseUser.get('aliasPublic'));
 			APP.models.profile.currentUser.set('aliasPhoto', APP.models.profile.parseUser.get('aliasPhoto'));
 			APP.models.profile.currentUser.set('photo', APP.models.profile.parseUser.get('photo'));
