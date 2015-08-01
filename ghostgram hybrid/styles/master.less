@@ -833,6 +833,7 @@ div.km-header a img{
 .helper-verified-img {
     margin-right: -3px;
     padding-top: 3px;
+    height: 14px;
 }
 /* Home status menu */
 .home-header > div.km-header > div {
@@ -888,7 +889,7 @@ div.km-header a img{
 }
 
 .home-status-img {
-	width: 18px;
+	width: 18px !important;;
 	height: 18px !important;
 }
 
@@ -1971,6 +1972,49 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 
 #chatList-place-icon {
 	height: 14px;
+}
+
+/* ghost mail */
+
+.emailOptions {
+	color: #fff;
+	position: fixed;
+	bottom: 0px;
+	li {
+		display: inline-flex;
+	}
+}
+
+#ghostEmailEditor {
+	line-height: 1.5;
+	font-size: 1rem;
+	color: @black !important;
+}
+
+.recipientInfo,
+.recipientPhoto {
+	.left;
+}
+
+.recipientPhoto {
+	margin-right: 1rem;
+}
+
+/*
+.editorToolbarWindow {
+	position: absolute !important;
+	top: 200px;
+}
+*/
+
+#body > div.k-widget.k-window.k-window-titleless.k-editor-widget {
+	visibility: hidden;
+}
+
+.k-state-active, .k-state-active:hover, .k-active-filter, .k-tabstrip .k-state-active {
+	background-color: inherit;
+	border-color: inherit;
+	//color: #4a4a4a;
 }
 
 /* Chat styles */

@@ -124,6 +124,4 @@ function setActionBtnHeight(){
 	console.log(windowHeight);
 	var btnPos = (windowHeight - 160) + "px";
 	$(".footerAction").css("top", btnPos);
-	
-	$("#channels > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-header").append('<a class="btnYellow footerBtn-nav" id="addChannelBtn" data-role="button" href="#addChannel"><img src="images/nav-add-white.svg" /></a>');
 }

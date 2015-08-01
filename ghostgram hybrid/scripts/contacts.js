@@ -461,6 +461,7 @@ function onInitContacts(e) {
 				// If we know the contacts uuid enable the full feature set
 				if (contact.contactUUID !== undefined && contact.contactUUID !== null){
 					$("#contactUserActions").data("kendoMobileActionSheet").open();
+					APP.kendo.navigate("#ghostEmail"); 
 					//doEditContact(e);
 				} else {
 					$("#contactActions").data("kendoMobileActionSheet").open();
@@ -993,6 +994,13 @@ function onInitGhostEmail(e) {
         ]
     });
 
+}
+
+function editorBold(){
+	//$("#body > div.k-widget.k-window.k-window-titleless.k-editor-widget > div > div.km-scroll-container > ul > li:nth-child(1) > a").click();
+	var editor = $("#ghostEmailEditor").data("kendoEditor");
+	var bold = editor.state("bold");
+	editor.exec("bold");
 }
 
 function onShowGhostEmail(e) {
