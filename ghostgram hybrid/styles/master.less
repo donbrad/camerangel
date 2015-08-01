@@ -1,23 +1,24 @@
+/* Imports */
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Hind:300,400,500);
+@import "mixins";
 
-/*** Guidelines - updated 3/14/15 (see https://www.dropbox.com/s/vw40iwbmvo1tkol/styles-0.1.pdf?dl=0) ***/
 
 /* Colors */
 
-@blue100: #27476E;
-@blue200: #2D93FF;
-@grey100: #979797;
-@grey200: #E0E0E0;
-@grey300: #f5f5f5;
-@greyBk: #EFF1F2;
+@primary-100: #27476E;
+@primary-200: #2D93FF;
+@secondary-100: #FFB74D;
+@secondary-200: #FADDB0;
+@shade-100: #979797;
+@shade-200: #E0E0E0;
+@shade-300: #f5f5f5;
+@shade-400: #EFF1F2;
 @btnActiveBk: rgba(0,0,0,0.15);
 @black: #4A4A4A;
-@yellow100: #FFB74D;
-@yellow200: #FADDB0;
-@purple100: #9E788F;
 
-/* Imports */
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Hind:300,400,500);
- 
+/* variables */
+@baseFontSize: 16;
+
 
 /* elements */
 .shadow {
@@ -83,41 +84,40 @@
 
 .contactBanner { 
 	width: 100%;
-	background-color: @grey200;
+	background-color: @shade-200;
 	padding: 2px 1rem;
-	color: @grey100;
-	font-size: 11px;
+	color: @shade-100;
+	.font-size(11);
+}
+
+html, .km-root {
+	font-size: 16px;
 }
 
 body {
     font-family: 'Open Sans', sans-serif;
     line-height: 1.5;
     color: #212121;
-    font-size: 14px;
-    margin: 1.14285714em;
+    margin: 1rem;
     background: #fff;
+    font-size: @baseFontSize;
 }
 h1 {
-    font-size: 2.42857143em;
-    /* 34px */
-    
+    .font-size(34); /* 34px */
     font-family: 'Hind', sans-serif;
     font-weight: 300;
 }
 h2 {
-    font-size: 1.71428571em;
-    font-weight: 300;
-    /* 24px */
-    
+    .font-size(24); /* 24px */
+    font-weight: 300; 
     font-family: 'Hind', sans-serif;
 }
 h3 {
-    font-size: 18px;
+    .font-size(20);  /* 20px */
     font-weight: 300;
-    /* 20px */
 }
 h4 {
-    font-size: 16px;
+    .font-size(16);
     font-weight: 400;
 }
 h5 {
@@ -133,30 +133,32 @@ p {
     line-height: 1.5;
 }
 .caption {
-    font-size: 13px;
+    .font-size(13);
     color: #979797;
 }
 p {
+	.font-size(14);
     font-family: 'Open Sans', sans-serif;
+
 }
 input {
     width: 100%;
     border: 0px;
-    font-size: 14px;
+    .font-size(14);
     border-bottom: 1px solid #e0e0e0;
-    padding: .5em .7em;
-    border-radius: 3px !important;
+    padding: .5rem .7rem;
+    border-radius: 3px !important; 
 }
 .standard-input {
 	width: 100%;
     border: 0px;
-    font-size: 14px;
+    .font-size(14);
     border-bottom: 1px solid #e0e0e0;
-    padding: .5em .7em;
+    padding: .5rem .7rem;
 }
 
 label {
-    font-size: 12px;
+    .font-size(12);
 }
 input[readonly] {
     background-color: #e0e0e0 !important;
@@ -173,7 +175,7 @@ form {
 }
 
 .select {
-	border-bottom: 1px solid @grey200;
+	border-bottom: 1px solid @shade-200;
     width: 100%;
     border-radius: 3px;
     overflow: hidden;
@@ -237,11 +239,11 @@ form {
 
 /* Text colors */
 .blue-100-txt {
-	color: @blue100;
+	color: @primary-100;
 }
 
 .blue-200-txt {
-	color: @blue200;
+	color: @primary-200;
 }
 
 /* Margins */
@@ -257,21 +259,21 @@ form {
 }
 
 .verified-txt {
-	color: @blue200;
-	font-size: 12px;
+	color: @primary-200;
+	.font-size(12);
 	vertical-align: top;
 	line-height: 2;
 }
 
 .unverified-txt {
-	color: @yellow100;
-	font-size: 12px;
+	color: @secondary-100;
+	.font-size(12);
 	vertical-align: top;
 	line-height: 2;
 }
 
 .guest-txt {
-	font-size: 12px;
+	.font-size(12);
 	color: #979797;
 	vertical-align: top;
 	line-height: 2;
@@ -324,7 +326,22 @@ form {
     color: #A4A4A4 !important;
     border: none; 
 }
+
+.btnStyle {
+	text-decoration: none;
+    .font-size(16);
+    font-weight: 400;
+    padding: 0.25em 0.5em;
+    margin: 0px;
+}
+
+.km-root .km-button,
+.km-material .km-button {
+	.btnStyle;
+}
+
 .btnYellow {
+	&:extend(.btnStyle){};
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
@@ -332,10 +349,7 @@ form {
     -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
     color: #fff !important;
-    font-size: 14px !important;
     background: #FFB74D !important;
-    padding: 10px 20px 10px 20px;
-    text-decoration: none;
 }
 .btnYellow:hover {
     background: #E5A545 !important;
@@ -352,6 +366,7 @@ form {
 }
 
 .btnBlack {
+	&:extend(.btnStyle){};
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
@@ -359,10 +374,7 @@ form {
     -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
     color: #fff !important;
-    font-size: 14px !important;
     background: #424242 !important;
-    padding: 10px 20px 10px 20px;
-    text-decoration: none;
 }
 .btnBlack:hover { 
     background: #616161 !important;
@@ -376,6 +388,7 @@ form {
 }
 
 .btnBlack-sm {
+	&:extend(.btnStyle){};
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
@@ -383,10 +396,8 @@ form {
     -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
     color: #ffffff;
-    font-size: 10px !important;
+    .font-size(10) !important;
     background: #424242 !important;
-    padding: 2px 4px 2px 4px;
-    text-decoration: none;
 }
 .btnBlack-sm:hover { 
     background: #616161 !important;
@@ -399,6 +410,7 @@ form {
     transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .btnBlue {
+	&:extend(.btnStyle){};
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
@@ -406,32 +418,27 @@ form {
     -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
     color: #ffffff !important;
-    font-size: 14px !important;
-    background: @blue200 !important;
-    padding: 10px 20px 10px 20px;
-    text-decoration: none;
+    background: @primary-200 !important;
 }
 .btnBlue:hover {
-    background: @blue100 !important;
+    background: @primary-100 !important;
     text-decoration: none;
 }
 .btnBlue:active {
-    background: @blue100 !important;
+    background: @primary-100 !important;
     text-decoration: none;
     transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .btnBlue:disabled {
-    background: @blue200 !important;
+    background: @primary-200 !important;
 }
 
 .btnClear {
+	&:extend(.btnStyle){};
     background: transparent;
     color: #2D93FF !important;
-    text-decoration: none;
-    font-size: 16px !important;
     font-weight: 400;
-    padding: 0px !important;
 }
 .btnClear:active {
     color: #3A779D !important;
@@ -443,12 +450,9 @@ form {
 }
 
 .btnClear-sm {
+	&:extend(.btnStyle){};
 	background: transparent;
     color: #2D93FF !important;
-    text-decoration: none;
-    font-size: 12px !important;
-    font-weight: 400;
-    padding: 0px !important;
 }
 
 .btnClear-sm:active {
@@ -461,14 +465,10 @@ form {
 }
 
 .btnClearLine {
+	&:extend(.btnStyle){};
     background: transparent;
     color: #2D93FF !important;
-    text-decoration: none;
-    font-size: 14px !important;
-    font-weight: 400;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    border: 1px solid @blue200;
+    border: 1px solid @primary-200;
     border-radius: 2px;
 }
 .btnClearLine:active {
@@ -481,34 +481,29 @@ form {
 }
 
 .btnClearLine-grey-sm {
+	&:extend(.btnStyle){};
     background: transparent;
-    color: @grey100 !important;
-    text-decoration: none;
-    font-size: 12px !important;
-    font-weight: 400;
-    padding: 0.25rem 1rem !important;
-    border: 1px solid @grey200 !important;
+    color: @shade-100 !important;
+    .font-size(12) !important;
+    border: 1px solid @shade-200 !important;
     border-radius: 2px;
 }
 .btnClearLine-grey-sm:active {
-    color: @grey200 !important; 
+    color: @shade-200 !important; 
     background: transparent !important;
 }
 .btnClearLine-grey-sm:disabled {
-    color: @grey200 !important;
+    color: @shade-200 !important;
     background: transparent !important;
 }
 
 .btnClear-grey {
+	&:extend(.btnStyle){};
     background: transparent;
     color: #979797 !important;
-    text-decoration: none;
-    font-size: 14px !important;
-    font-weight: 400;
-    padding: 0px !important;
 }
 .btnClear-grey:active {
-    color: @blue200 !important;
+    color: @primary-200 !important;
     background: transparent !important;
 }
 .btnClear-grey:disabled {
@@ -516,12 +511,9 @@ form {
     background: transparent !important;
 }
 .btnClear-red {
+	&:extend(.btnStyle){};
     background: transparent;
     color: #f44336 !important;
-    text-decoration: none;
-    font-size: 14px !important;
-    font-weight: 400;
-    padding: 0px !important;
 }
 .btnClear-red:active {
     color: #d32f2f !important;
@@ -533,13 +525,10 @@ form {
 }
 
 .btnFull {
+	&:extend(.btnStyle){};
     width: 100%;
-    padding: .5em .7em !important;
     color: #fff;
-    font-size: 14px !important;
-    font-weight: 400;
     text-align: center;
-    margin: 0px;
 }
 .btnSpan {
     width: 100%;
@@ -564,13 +553,13 @@ form {
 }
 
 .input-text-sm {
-	font-size: 12px;
+	.font-size(12);
 }
 .input-text-md {
-	font-size: 16px;
+	.font-size(16);
 }
 .input-text-lg {
-	font-size: 20px;
+	.font-size(20);
 }
 
 #nav-ghost {
@@ -608,7 +597,7 @@ form {
     background: rgba(0, 0, 0, 0.50);
     border-radius: 8px;
     text-align: center;
-    font-size: 16px;
+    .font-size(16);
     padding: 0.5rem 1rem;
     color: #fff;
     position: absolute;
@@ -642,7 +631,7 @@ form {
     color: #fff;
     background: #EA6262;
     border-radius: 2px;
-    font-size: 12px;
+    .font-size(12);
     padding: 1px;
     padding-left: 2px;
     padding-right: 2px;
@@ -673,7 +662,7 @@ div.km-header a img{
 }
 .km-content,
 .km-navbar {
-    font-size: 0.9em;
+    .font-size(14);
     background: #f5f5f5;
     background: cover;
     background-size: 100% 100%;
@@ -683,7 +672,7 @@ div.km-header a img{
 }
 .km-material .km-navbar { 
     background-color: #fff;
-    color: @grey100;
+    color: @shade-100;
     box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.12);
     height: 56px;
     //border: transparent;
@@ -713,8 +702,8 @@ div.km-header a img{
 }
 
 .km-root .km-material .km-buttongroup > .km-state-active {
-	color: @blue200;
-	border-color: @blue200;
+	color: @primary-200;
+	border-color: @primary-200;
 }
 
 /*
@@ -739,18 +728,18 @@ div.km-header a img{
 }
 
 .km-material .km-button {
-	padding: inherit;
-	border-style: inherit;
-	border-width: inherit;
-	border-radius: inherit;
-	text-transform: inherit;
-	font-size: inherit;
-	font-weight: inherit;
+	padding: initial;
+	border-style: initial;
+	border-width: initial;
+	border-radius: initial;
+	text-transform: initial;
+	font-size: initial;
+	font-weight: initial;
 }
 
 .km-material .km-navbar .km-view-title {
 	line-height: 1.5;
-	font-size: 18px;
+	.font-size(18);
 	padding: 0.8rem;
 }
 
@@ -776,7 +765,7 @@ div.km-header a img{
 }
 
 .km-material input[type=password], .km-material input[type=search], .km-material input[type=number], .km-material input[type=tel], .km-material input[type=url], .km-material input[type=email], .km-material input[type=text]:not(.k-input), .km-root .km-material textarea, .km-material input[type=password]:focus, .km-material input[type=search]:focus, .km-material input[type=number]:focus, .km-material input[type=tel]:focus, .km-material input[type=url]:focus, .km-material input[type=email]:focus, .km-material input[type=text]:not(.k-input):focus {
-	border-bottom: 1px solid @grey200;
+	border-bottom: 1px solid @shade-200;
 }
 
 .km-modalview {
@@ -828,7 +817,7 @@ div.km-header a img{
 .helper-verified {
     color: #43A047 !important;
     vertical-align: baseline;
-    font-size: 11px;
+    .font-size(11);
 }
 .helper-verified-img {
     margin-right: -3px;
@@ -861,13 +850,13 @@ div.km-header a img{
 }
 
 .homeStatus-name {
-	font-size: 16px !important;
+	.font-size(16) !important;
 }
 
 .homeStatus-status {
 	text-align: left;
-	font-size: 11px !important;
-	color: @grey100;
+	.font-size(11) !important;
+	color: @shade-100;
 }
 
 #home div.km-header > div > div.km-view-title {
@@ -876,16 +865,16 @@ div.km-header a img{
 	width: 70%;
 	margin-top: 0.75rem !important;
 	margin-bottom: 0.5rem !important;
-	font-size: 20px; 
+	.font-size(20); 
 	line-height: 1.5 !important;
 	padding: 0px;
 }
 
 #home > div.km-header > div > div.km-view-title > span {
 	font-family: 'PT Sans Caption', sans-serif !important; 
-	color: @blue200;
+	color: @primary-200;
 	font-weight: 600;
-	font-size: 18px;
+	.font-size(18);
 }
 
 .home-status-img {
@@ -960,7 +949,7 @@ div.km-header a img{
 }
 
 .km-material .km-switch-label-on, .km-material .km-switch-label-off {
-	font-size: 12px;
+	.font-size(12);
 	width: auto;
 	line-height: 2;
 }
@@ -1048,7 +1037,7 @@ div.km-header a img{
 }
 .ghostButton {
     background: #27476e;
-    font-size: 1.2em;
+    .font-size(16);
     font-weight: 700;
 }
 .ghostShadow {
@@ -1057,42 +1046,42 @@ div.km-header a img{
 }
 .ghostIcon {
     color: #27476e;
-    font-size: 20px;
+    .font-size(20);
     font-weight: 500;
     padding-right: 3px;
     padding-left: 3px;
 }
 .ghostIconSmall {
     color: #27476e;
-    font-size: 16px;
+    .font-size(16);
     font-weight: 500;
 }
 .ghostIconNavbar {
-    font-size: 14px;
+    .font-size(14);
     font-weight: 400;
 }
 .ghostText {
     color: #27476e;
-    font-size: 16px;
+    .font-size(16);
     font-weight: 400;
 }
 .ghostTextLarge {
     color: #27476e;
-    font-size: 18px;
+    .font-size(18);
     font-weight: 500;
 }
 .ghostTiny {
     color: #27476e;
-    font-size: 12px;
+    .font-size(12);
     font-weight: 400;
 }
 .ghostLabel {
     color: #27476e;
-    font-size: 12px;
+    .font-size(12);
 }
 .ghostData {
     color: #2e2e2e;
-    font-size: 14px;
+    .font-size(14);
 }
 .ghostMemberUl {
     list-style-type: none;
@@ -1113,7 +1102,7 @@ div.km-header a img{
 .ghostMemberName {
     display: inline-block;
     margin-top: 5px;
-    font-size: 14px;
+    .font-size(14);
     color: #2e2e2e;
     vertical-align: bottom;
 }
@@ -1126,23 +1115,23 @@ div.km-header a img{
     color: rgba(255, 255, 255, 0.9);
     background-color: #27476e;
     text-shadow: rgba(64, 64, 64, 0.9) 0px 3px 3px;
-    font-size: 18px;
+    .font-size(18);
     font-weight: 700;
 }
 .ghostTitle {
     color: #979797;
-    font-size: 18px;
+    .font-size(18);
     font-weight: 700;
 }
 .ghostDescription {
     color: #27476e;
-    font-size: 13px;
+    .font-size(13);
     font-weight: 400;
 }
 .ghostMessage {
     background-color: transparent;
     color: #2e2e2e;
-    font-size: 14px;
+    .font-size(14);
 }
 .clearfix {
     *zoom: 1;
@@ -1171,7 +1160,7 @@ div.km-header a img{
     opacity: 0.7;
     color: #27476e;
     margin: 0;
-    font-size: 14px;
+    .font-size(14);
     font-weight: 600;
 }
 .notification-message img {
@@ -1196,7 +1185,7 @@ div.km-header a img{
     float: right;
     opacity: 0.7;
     padding-top: 6px;
-    font-size: 12px;
+    .font-size(12);
 }
 .chat-message {
     margin: 8px 8px;
@@ -1204,7 +1193,7 @@ div.km-header a img{
 }
 .chat-message p {
     margin: 0px 0px 4px;
-    font-size: 14px;
+    .font-size(14);
     height: 100%;
 }
 .chat-message h5 {
@@ -1212,7 +1201,7 @@ div.km-header a img{
     opacity: 0.5;
     color: #27476e;
     margin: 0;
-    font-size: 12px;
+    .font-size(12);
     font-weight: 600;
     display: none;
 }
@@ -1227,23 +1216,23 @@ div.km-header a img{
     float: right;
 }
 .chat-message-text {
-    font-size: 14px;
+    .font-size(14);
     letter-spacing: 0.05em;
 }
 .chat-time {
     text-align: center;
-    font-size: 12px;
+    .font-size(12);
     color: #979797;
 }
 .ghostMessageContact {
     color: #27476e;
-    font-size: 14px;
+    .font-size(14);
     font-weight: 400;
 }
 .ghostMessageTime {
     float: right;
     color: #888888;
-    font-size: 12px;
+    .font-size(12);
     font-weight: 400;
 }
 .ghostContent {
@@ -1262,12 +1251,11 @@ div.km-header a img{
     padding-right: 2px;
 }
 .ghostContainer h3 {
-    font-size: 16px;
     background-color: #e0e0e0;
     color: #27476e;
 }
 .ghostCollapsible {
-    font-size: 16px;
+    .font-size(16);
     background-color: #e0e0e0;
     color: #27476e;
 }
@@ -1275,26 +1263,26 @@ div.km-header a img{
     background-color: #fff;
     color: #d2d2d2;
     padding: 12px;
-    font-size: 14px
+    .font-size(14);
 }
 .km-root .appearance .km-listview label {
     color: #212121;
-    font-size: 12px;
+    .font-size(12);
     width: 100%;
 }
 .km-wp .appearance .km-listview label {
     color: #212121;
-    font-size: 12px;
+    .font-size(12);
 }
 .km-root .km-pane .km-view.appearance .km-listview input {
     position: relative;
-    font-size: 14px;
+    .font-size(14);
     width: 100%;
     right: 0;
     margin-top: 0;
     top: 0;
     background: #fff;
-    border-bottom: 1px solid @grey200;
+    border-bottom: 1px solid @shade-200;
 }
 
 .km-root .km-pane .km-view.appearance .km-listview .select input[type="select"]{
@@ -1303,7 +1291,7 @@ div.km-header a img{
 
 .km-root .km-pane .km-view.appearance .km-listview select {
     position: relative;
-    font-size: 14px;
+    .font-size(14);
     width: 100%;
     right: 0;
     margin-top: 0;
@@ -1315,23 +1303,19 @@ div.km-header a img{
 .km-root .km-pane .km-view.appearance .km-listview textarea {
     clear: both;
     position: relative;
-    font-size: 14px;
+    .font-size(14);
     width: 95%;
     margin-top: 0;
     left: -18px;
     top: 0;
     border: 1px solid #27476e;
 }
-.km-root .km-button {
-    color: @blue100;
-    font-size: 0.9em;
-    /* border: 1px solid #27476e; */
-}
+
 .km-root .km-wp .km-view.appearance .km-listview input {
     color: #2e2e2e;
-    font-size: 14px;
+    .font-size(14);
     margin-top: .2em;
-    border: 1px solid #AEAEAE;
+    border: 1px solid @shade-200;
 }
 /*
 .km-root .km-wp .km-view.appearance .km-listview select
@@ -1548,7 +1532,7 @@ a:hover {
 #profileName {
     margin: 0px;
     float: left;
-    font-size: 16px;
+    .font-size(16);
 }
 #profileLink {
     position: absolute;
@@ -1567,7 +1551,7 @@ a:hover {
     list-style-position: inside;
 }
 .menu li {
-    font-size: 16px;
+    .font-size(16);
     background-color: #323642;
     line-height: 1.5;
     font-weight: 300;
@@ -1689,7 +1673,7 @@ a:hover {
 .chatActivityTime {
     float: right;
     color: #979797;
-    font-size: 13px;
+    .font-size(13);
     line-height: 1.9;
     font-weight: 400;
     font-family: 'Hind', sans-serif;
@@ -1713,14 +1697,14 @@ a:hover {
     padding-right: 1rem;
     padding-top: 0.25rem;
     padding-bottom: 0.25rem;
-    box-shadow: 3px 0 3px -3px @grey100;
-    font-size: 14px;
+    box-shadow: 3px 0 3px -3px @shade-100;
+    .font-size(14);
 }
 
 .chat-options {
 	width: 100%;
 	height: 100%;
-	background-color: @grey300;
+	background-color: @shade-300;
 	z-index:-1;
     display: inline-block;
     padding-top: 0.25rem;
@@ -1741,7 +1725,7 @@ a:hover {
 }
 
 .chat-option-selection {
-	font-size: 11px;
+	.font-size(11);
 }
 
 #chat-option-clearBtn {
@@ -1764,7 +1748,7 @@ a:hover {
 }
 
 #channels-addChannel-name {
-	font-size: 24px !important;
+	.font-size(24) !important;
 }
 
 #addChat-step1 {
@@ -1772,12 +1756,12 @@ a:hover {
 }
 
 .helperBox {
-	background-color: @grey300;
+	background-color: @shade-300;
 	width: 100%;
 	padding: 0.5rem 1rem;
 	p {
 		margin-left:0px;
-		font-size: 14px;
+		.font-size(14);
 	}
 	p img {
 		vertical-align: bottom;
@@ -1786,17 +1770,17 @@ a:hover {
 
 #chat-title-setup {
 	width: 100%;
-	background-color: @blue200;
+	background-color: @primary-200;
 	padding: 0.5rem;
 	padding-left: 1rem;
 	padding-right: 1rem;
-	font-size: 20px;
+	.font-size(20);
 	color: #fff;
 	display: none;
 }
 
 #editChatName {
-	font-size: 14px;
+	.font-size(14);
 	position: absolute;
 	top: 0px;
 	right: 0px;
@@ -1830,7 +1814,7 @@ a:hover {
 
 .footerMenu {
 	background: #fff;
-	border-top: 1px solid @grey200;
+	border-top: 1px solid @shade-200;
 }
 
 .footerBk {
@@ -1895,28 +1879,28 @@ div.footerMenu.km-footer > ul > li > a > span > svg {
 
 #home > div.footerMenu.km-footer > ul > li:nth-child(1) > a #nav-home,
 div.footerMenu.km-footer > ul > li:nth-child(1) > a.km-state-active #nav-home{
-	fill: @blue200;
+	fill: @primary-200;
 }
 
 #channels > div.footerMenu.km-footer > ul > li:nth-child(2) > a #nav-chat,
 div.footerMenu.km-footer > ul > li:nth-child(2) > a.km-state-active #nav-chat{
-	fill: @blue200;
+	fill: @primary-200;
 }
 
 #contacts > div.footerMenu.km-footer > ul > li:nth-child(3) > a #nav-contacts,
 div.footerMenu.km-footer > ul > li:nth-child(3) > a.km-state-active #nav-contacts {
-	fill: @blue200;
+	fill: @primary-200;
 }
 
 #places > div.footerMenu.km-footer > ul > li:nth-child(4) > a #nav-places,
 div.footerMenu.km-footer > ul > li:nth-child(4) > a.km-state-active #nav-places {
-	//fill: @blue200;
-	stroke: @blue200;
+	//fill: @primary-200;
+	stroke: @primary-200;
 }
 
 #gallery > div.footerMenu.km-footer > ul > li:nth-child(5) > a #nav-gallery,
 div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery {
-	fill: @blue200;
+	fill: @primary-200;
 }	
 
 
@@ -1936,7 +1920,7 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 }
 
 .statusSelect {
-	border-bottom: 1px solid @grey200;
+	border-bottom: 1px solid @shade-200;
     width: 120px;
     border-radius: 3px;
     overflow: hidden;
@@ -1967,7 +1951,7 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 	position: absolute;
 	bottom: 100%;
 	margin-top: -60px;
-	border-top: 1px solid @grey200;
+	border-top: 1px solid @shade-200;
 }
 
 #chatList-place-icon {
@@ -1987,7 +1971,7 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 
 #ghostEmailEditor {
 	line-height: 1.5;
-	font-size: 1rem;
+	.font-size(16);
 	color: @black !important;
 }
 
@@ -2020,7 +2004,7 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 /* Chat styles */
 
 #messageTextArea {
-    font-size: 14px;
+    .font-size(14);
     resize: none;
     border: none;
     padding-bottom: 0px;
@@ -2063,7 +2047,7 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
     background-color: #fff;
     border: none;
     padding: 6px;
-    font-size: 16px;
+    .font-size(16);
 }
 #privacyStatus {
     width: 100%;
@@ -2072,7 +2056,7 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
     padding-top: 2px;
     padding-bottom: 2px;
     padding-left: 1rem;
-    font-size: 12px;
+    .font-size(12);
 }
 /*
 #privacyMode {
@@ -2136,7 +2120,7 @@ div.loginBox > form > div > ul > li {
     margin-bottom: 1px;
 }
 #forgotPassword {
-    font-size: 12px !important;
+    .font-size(12) !important;
 }
 .forgotBox {
     padding: 1rem;
@@ -2218,7 +2202,7 @@ div.loginBox > form > div > ul > li {
     width: 100%;
     margin: auto;
 
-    font-size: 1.6rem;
+    .font-size(16);
     text-align: center;
 }
 
@@ -2246,7 +2230,7 @@ div.loginBox > form > div > ul > li {
     .k-autocomplete {
         width: 100%;
         height: 1.7rem;
-        border-color: @grey200;
+        border-color: @shade-200;
 
         background-color: white;
     }
@@ -2282,7 +2266,7 @@ div.loginBox > form > div > ul > li {
 }
 
 #archive-list .km-group-title {
-    font-size: 1.1rem;
+    .font-size(14);
 }
 
 #archive-list .km-list li {
@@ -2294,7 +2278,6 @@ div.loginBox > form > div > ul > li {
         img {
             // An actually legitimate use of float lol
             float: left;
-
             width: 32px;
             margin-right: 1rem;
             border-radius: 50%;
@@ -2302,25 +2285,19 @@ div.loginBox > form > div > ul > li {
 
         h1 {
             display: inline-block;
-
-            font-size: 1.1rem;
             line-height: 1;
         }
 
         h2 {
             display: inline-block;
-
-            font-size: .9rem;
             line-height: 1;
         }
 
         .delete {
             float: right;
-
             width: 10%;
             vertical-align: top;
         }
-
     }
 
     .message {
@@ -2331,25 +2308,15 @@ div.loginBox > form > div > ul > li {
     // Smart objects
     .object {
         padding: .1rem .3rem;
-        border: 1px solid @grey200;
+        border: 1px solid @shade-200;
         margin-top: .9rem;
         box-shadow: 0 5px 16px -10px rgba(0,0,0,0.50);
-
-        background-color: @grey300;
-
-        h1 {
-            font-size: 1.1rem;
-        }
-
+        background-color: @shade-300;
         h2 {
-            font-size: .9rem;
-
             strong + span {
                 float: right;
             }
         }
-
-
         img {
             width: 100%;
         }
@@ -2426,13 +2393,11 @@ div.loginBox > form > div > ul > li {
 #current-place {
     display: none;
     margin: 0 1.6rem;
-    border-bottom: 1px solid @grey200;
+    border-bottom: 1px solid @shade-200;
 
     h1 {
         padding: 0;
         margin: 1rem 0 .4rem;
-        
-        font-size: 1.4rem;
     }
 }
 
@@ -2494,7 +2459,7 @@ div.loginBox > form > div > ul > li {
 	}
 	#autoCheckInText {
 		vertical-align: super;
-		font-size: 14px;
+		.font-size(14);
 		margin-left: 0.5rem;
 	}
 }
@@ -2513,7 +2478,7 @@ div.loginBox > form > div > ul > li {
 }
 
 .km-material .km-switch-handle, .km-material .k-slider-selection, .km-material .km-switch-background {
-	color: @blue200;
+	color: @primary-200;
 }
 
 #places-checkIn > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.confirmPlaceAddress > p:nth-child(1) > span > span > img {
@@ -2559,14 +2524,14 @@ div.loginBox > form > div > ul > li {
 #contactimport-listview {
 	padding-bottom: 3rem;
 	li {
-		border-bottom: 1px solid @grey200;
+		border-bottom: 1px solid @shade-200;
 		background: #fff;
 	}
 }
 
 #contacts-listview li:nth-child(2){
-	border-top: 1px solid @grey200;
-	border-bottom: 1px solid @grey200;
+	border-top: 1px solid @shade-200;
+	border-bottom: 1px solid @shade-200;
 }
 
 #contacts-listview > li > div > div:nth-child(1) > div:nth-child(3) > h4 {
@@ -2666,16 +2631,16 @@ div.loginBox > form > div > ul > li {
 }
 
 #contacts-listview > li > div {
-	background-color: @grey200;
-	color: @grey100;
-	font-size: 11px;
+	background-color: @shade-200;
+	color: @shade-100;
+	.font-size(11);
 	font-weight: 400;
 	padding: 1px 0px 1px 0.5rem; 
 	border: none;
 }
 
 .contacts-alias-sm { 
-	font-size: 11px;
+	.font-size(11);
 	color: #979797;
 	vertical-align: middle;
 }
@@ -2686,7 +2651,7 @@ div.loginBox > form > div > ul > li {
 	.shadow;
 	border-radius: 4px;
 	.pad;
-	background: @greyBk;
+	background: @shade-400;
 }
 
 .input-count {
@@ -2696,7 +2661,7 @@ div.loginBox > form > div > ul > li {
 	border-radius: 0.25rem;
 	padding-top: 0.25rem;
 	padding-bottom: 0.25rem;
-	font-size: 11px;
+	.font-size(11);
 }
 
 #editContact-resyncBtn img {
@@ -2732,8 +2697,8 @@ div.loginBox > form > div > ul > li {
 }
 
 .notify-helper {
-	font-size: 12px;
-	color: @grey100;
+	.font-size(12);
+	color: @shade-100;
 }
 
 .notify-content {
@@ -2763,8 +2728,8 @@ div.loginBox > form > div > ul > li {
 }
 
 .notify-content-text {
-	background: @greyBk;
-	border: 1px solid @grey200;
+	background: @shade-400;
+	border: 1px solid @shade-200;
 	border-radius: 2px;
 	padding: 0.5rem;
 	margin-top: 0.5rem;
@@ -2777,7 +2742,7 @@ div.loginBox > form > div > ul > li {
 }
 
 .notify-content-name {
-	font-size: 12px;
+	.font-size(12);
 	font-weight: 600;
 }
 
@@ -2814,9 +2779,9 @@ div.loginBox > form > div > ul > li {
 
 /* sign up */
 .mobile-countryCode {
-	background-color: @blue200;
+	background-color: @primary-200;
 	color: #fff;
-	font-size: 30px;
+	.font-size(30);
 	padding: 0.5rem 1rem;
 	float: left;
 	position: absolute;
@@ -2826,7 +2791,7 @@ div.loginBox > form > div > ul > li {
 
 .mobile-input {
 	float: left;
-	font-size: 30px !important;
+	.font-size(30) !important;
 	width: 80% !important;
 	margin-left: 20%;
 }
@@ -2834,7 +2799,7 @@ div.loginBox > form > div > ul > li {
 .mobile-helper {
 	width: 80%;
 	margin-left: 20%;
-	font-size: 11px;
+	.font-size(11);
 }
 
 #formCreateAccount > div > ul > li, 
@@ -2889,11 +2854,11 @@ div.loginBox > form > div > ul > li {
 }
 
 #channels-editChannel-name {
-	font-size: 24px !important;
+	.font-size(24) !important;
 }
 
 .aliasName {
-	font-size: 11px !important;
+	.font-size(11) !important;
 	color: #979797;
 	text-align: right;
 }
@@ -2905,14 +2870,14 @@ div.loginBox > form > div > ul > li {
 	li {
 		padding-top: 0.5rem;
 		padding-bottom: 0.5rem;
-		border-top: 1px solid @grey200;
+		border-top: 1px solid @shade-200;
 		background-color: #fff;
 	}
 }
 
 .addChatMembersBanner {
 	width: 100%;
-	color: @blue200;
+	color: @primary-200;
 	padding: 0.5rem 1rem;
 }
 
@@ -2922,7 +2887,7 @@ div.loginBox > form > div > ul > li {
 }
 
 .addedChatMember {
-	background: @blue200;
+	background: @primary-200;
 	width: 100%;
 	padding-left: 1rem;
 	padding-top: 0.25rem;
@@ -2932,18 +2897,18 @@ div.loginBox > form > div > ul > li {
 
 #channelMembers-listview li {
 	padding: 0.25rem 1rem 0.25rem 1rem;
-	border-bottom: 1px solid @grey200;
+	border-bottom: 1px solid @shade-200;
 }
 
 #channelMembers-listview li:nth-child(2) {
-	border-top: 1px solid @grey200;
-	border-bottom: 1px solid @grey200;
+	border-top: 1px solid @shade-200;
+	border-bottom: 1px solid @shade-200;
 }
 
 #channelMembers > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div.km-listview-wrapper > form > div > input[type="search"] {
 	width: 100%;
     border: 0px;
-    font-size: 14px;
+    .font-size(14);
     border-bottom: 1px solid #e0e0e0;
     padding: .5em .7em;
 }
@@ -3023,13 +2988,13 @@ div.loginBox > form > div > ul > li {
 }
 
 #gallerySearchOptions {
-	background: @grey300;
+	background: @shade-300;
 }
 
 #galleryZoomSelect {
-	background: @grey300;
+	background: @shade-300;
 	width: 100%;
-	border-bottom: 1px solid @grey200;
+	border-bottom: 1px solid @shade-200;
 	li:nth-child(1){
 		position: absolute;
 		left: 1rem;
@@ -3066,7 +3031,7 @@ div.loginBox > form > div > ul > li {
 #galleryZoomSelect > li.km-button.km-state-active > span > svg #gallery-grid-1,
 #galleryZoomSelect > li.km-button.km-state-active > span > svg #gallery-grid-2,
 #galleryZoomSelect > li.km-button.km-state-active > span > svg #gallery-grid-3 {
-	fill: @yellow100;
+	fill: @secondary-100;
 }
 
 .appendSearch {
@@ -3075,7 +3040,7 @@ div.loginBox > form > div > ul > li {
 	width: 90%;
 	margin-left: 5%;
 	margin-right: 5%;
-	border-bottom: 1px solid @grey200;
+	border-bottom: 1px solid @shade-200;
 	margin-top: 0.25rem;
 	input {
 		width: auto;
@@ -3088,9 +3053,9 @@ div.loginBox > form > div > ul > li {
 	span {
 		float: left;
 		padding-top: 0.75rem;
-		color: @grey100;
+		color: @shade-100;
 		padding-left: 0.5rem !important;
-		font-size: 11px;
+		.font-size(11);
 		width: 20%;
 		text-align: center;
 	}
@@ -3101,7 +3066,7 @@ div.loginBox > form > div > ul > li {
 }
 
 .km-material .km-buttongroup .km-button {
-	padding: 0.25rem 0.75rem;
+	&:extend(.btnStyle){};
 }
 
 .chat-message {
@@ -3111,7 +3076,7 @@ div.loginBox > form > div > ul > li {
 
 .chat-message p {
     margin: 0px 0px 4px;
-    font-size: 14px;
+    .font-size(14);
     height: 100%;
 }
 
@@ -3120,7 +3085,7 @@ div.loginBox > form > div > ul > li {
     opacity: 0.5;
     color: #27476e;
     margin: 0;
-    font-size: 12px;
+    .font-size(12);
     font-weight: 600;
     display: none;
 }
@@ -3156,13 +3121,13 @@ div.loginBox > form > div > ul > li {
 }
 
 .chat-message-text {
-    font-size: 14px;
+    .font-size(14);
     letter-spacing: 0.05em;
 }
 
 .chat-time {
     text-align: center;
-    font-size: 12px;
+    .font-size(12);
     color: #979797;
 }
 
