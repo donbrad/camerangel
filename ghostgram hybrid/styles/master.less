@@ -2166,8 +2166,6 @@ div.loginBox > form > div > ul > li {
     // Not sure why this is needed
     position: absolute;
 
-    display: flex;
-    flex-direction: column;
     height: 100%;
     margin: .1rem .2rem;
 }
@@ -2182,12 +2180,6 @@ div.loginBox > form > div > ul > li {
 #search-archives {
     min-height: 2rem;
     padding: .5rem 0;
-
-    // HACK: Not sure why, think it's a bug with display: flex and margin together on
-    // #archive-filters
-    & > div {
-        margin-bottom: 2rem;
-    }
 
     .k-autocomplete {
         width: 100%;

@@ -145,7 +145,16 @@ var archiveView = {
 		// Binding this manually because data-role="button" messes up the styles
 		$('#archive-list').on('click', '.object', archiveView.openObject);
 
-		new Sentinel($('#search-archives'));
+		var sentinel = new Sentinel($('#search-archives'));
+
+		// HACK: Something's up with flex, so automatically calculating heights
+		var adjustListHeight = function () {
+			var searchArchivesHeight = $('#search-archives').height()+20;
+			$('#archive-list').css('height', 'calc(100% - '+searchArchivesHeight+'px)');
+		};
+		adjustListHeight();
+		sentinel.addListener('add', adjustListHeight);
+		sentinel.addListener('remove', adjustListHeight);
 	},
 
 	checkIfEmpty: function () {
