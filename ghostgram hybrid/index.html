@@ -596,11 +596,18 @@
                    <input type="search" id="profilePhotoMessage" placeholder="What's going on..." data-bind="value: statusMessage"/>
                 </label>
             </li>
+            <li>
+                <label class="ghost-sm-text"> Location
+                    <input type="search" id="profileLocationName" placeholder="Your current location" data-bind="value: currentPlace"/>
+                </label>
+            </li>
         	<li>
         		<label> Available
 					<input type="checkbox" id="home-status-switch" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="statusSwitch"/>
 				</label>
         	</li>
+
+
         </ul>
     </form>
     <div data-role="footer">
