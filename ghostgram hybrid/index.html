@@ -292,11 +292,11 @@
 	    		<div class="notify-content">
 	    			# if (action !== undefined && action !== 'none') {# 
 	    				<h4>
-	    					<a data-role="button" data-param="#:uuid#" href="\\#" data-click="#=action#" class="btnClear">#= title #</a>
+	    					<a data-role="button" data-param="#:uuid#" href="\\#" data-click="#=action#" class="btnClear-link">#= title #</a>
 	    				</h4>
 	    			#} else {# 
 						<h4>
-							<a data-role="button" data-param="#:uuid#" href="#=href#"  class="btnClear"> #= title # </a>
+							<a data-role="button" data-param="#:uuid#" href="#=href#"  class="btnClear-link"> #= title # </a>
 						</h4>
 					#}#
 	    			<p>#= description # </p>
@@ -341,7 +341,7 @@
             <h3>
                 New to ghostgram?
             </h3>
-            <a class="btnYellow btnSpan" data-role="button" href="#signup">Join ghostgrams</a>
+            <a class="btnPrimary btnSpan" data-role="button" href="#signup">Join ghostgrams</a>
         </div>
     </div>
 </div>
@@ -404,7 +404,7 @@
 	            </li>
 	        </ul>
 	    <div style="padding-top: 8px; text-align:center;">
-	        <a class="btnYellow btnSpan" data-click="verifyPhone" type="button" data-role="button" data-align="right">Verify</a>
+	        <a class="btnPrimary btnSpan" data-click="verifyPhone" type="button" data-role="button" data-align="right">Verify</a>
 	    </div>
    	</div>
 </div>
@@ -449,7 +449,7 @@
         </ul>  
     </form> 
     <div data-role="footer">
-            <a class="btnSpan-btm btnYellow" data-click="validateCreateAccount" id="home-createAccount" type="button" data-role="button">Submit</a>
+            <a class="btnSpan-btm btnPrimary" data-click="validateCreateAccount" id="home-createAccount" type="button" data-role="button">Submit</a>
     </div>
 </div>
 	
@@ -465,7 +465,7 @@
 	    	<input type="email" id="home-recoverPassword-email"  placeholder="Enter recovery email address"/>
 	    </label>
 	    <div class="modalview-button">
-	    	<a class="btnFull btnYellow" data-click="homeRecoverPassword" id="modalview-recoverPassword-button" type="button" data-role="button">Send</a>
+	    	<a class="btnFull btnPrimary" data-click="homeRecoverPassword" id="modalview-recoverPassword-button" type="button" data-role="button">Send</a>
 	    </div>
 
 	</div>
@@ -535,7 +535,7 @@
     </div>
     <span class="left"><a data-role="button" data-rel="modalview"  href="#modalview-photoTag"><img src="images/photo-tag.svg" /></a></span>
     <div data-role="footer">
-		<a class="btnSpan-btm btnYellow" id="photoEditSaveDiv" data-role="button" data-click="photoEditSave"> Save Photo </a>
+		<a class="btnSpan-btm btnPrimary" id="photoEditSaveDiv" data-role="button" data-click="photoEditSave"> Save Photo </a>
     </div>
 
 </div>
@@ -590,7 +590,7 @@
 				<div class="clearfix"></div>
         	</li>
         	<li><p class="caption right"><a data-role="button" class="btnClear-sm" href="views/profile.html">Edit Profile</a></p></li>
-        	<li><img src="images/ghost-sm.svg" class="ghost-sm-text" /> Update Status</li>
+        	<li><p><img src="images/ghost-sm.svg" class="ghost-sm-text" /> Update Status</p></li>
         	<li>
                 <label>
                    <input type="search" id="profilePhotoMessage" placeholder="What's going on..." data-bind="value: statusMessage"/>
@@ -604,7 +604,7 @@
         </ul>
     </form>
     <div data-role="footer">
-    	<a class="btnBlue btnFull-modal" data-click="closeModalViewProfileStatus" data-role="button">Done</a>
+    	<a class="btnSecondary btnFull-modal" data-click="closeModalViewProfileStatus" data-role="button">Done</a>
     </div>
 </div>
 

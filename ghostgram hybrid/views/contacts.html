@@ -123,7 +123,7 @@
                 </label>
             </li>
     	</ul>
-    	<a class="btnYellow btnSpan" data-role="button" data-click="contactsAddContact">Invite to ghostgrams</a>
+    	<a class="btnPrimary btnSpan" data-role="button" data-click="contactsAddContact">Invite to ghostgrams</a>
     </div> 
 </div>
 
@@ -163,7 +163,8 @@
 						<span class="helper helper-verified hidden" id="edit-verified-phone">
 	                         <img class="helper-verified-img" src="images/verified.svg" height="14"> 
 	                             Verified
-	                    <span class="helper helper-right"> <i class="fa fa-lock"> Locked</i></span>
+	                    	<span class="helper helper-right helper-form"> <img src="images/lock.svg"/> Locked
+	                    	</span>
                         </span>
 						
 						<input id="editContactPhone" type="phone" data-bind="value:phone"/>
@@ -174,7 +175,9 @@
 						<span class="helper helper-verified hidden" id="edit-verified-email">
 	                         <img class="helper-verified-img" src="images/verified.svg" height="14"> 
 	                             Verified
-	                    <span class="helper helper-right"> <i class="fa fa-lock"> Locked</i></span>
+		                    <span class="helper helper-right"> 
+		                    	<img class="helper-img" src="images/lock.svg"/> Locked
+		                    </span>
                         </span>
 						
 						 <input id="editContactEmail" type="email" data-bind="value: email"/>

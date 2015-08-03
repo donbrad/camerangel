@@ -139,7 +139,6 @@ p {
 p {
 	.font-size(14);
     font-family: 'Open Sans', sans-serif;
-
 }
 input {
     width: 100%;
@@ -174,14 +173,6 @@ form {
     }
 }
 
-.select {
-	border-bottom: 1px solid @shade-200;
-    width: 100%;
-    border-radius: 3px;
-    overflow: hidden;
-    background: #fff url("../images/select-dropdown.svg") no-repeat 95% 50%;
-}
-
 .select-sm {
 	.select;
 	width: 25%;
@@ -197,18 +188,24 @@ form {
 	width: 100%;
 }
 
-.select select {
-	padding: 5px 8px;
-    width: 120%;
-    border: none;
-    box-shadow: none;
-    background: transparent;
-    background-image: none;
-    -webkit-appearance: none;
-}
-
-.select select:focus {
-    outline: none;
+.select {
+	border-bottom: 1px solid @shade-200;
+    width: 100%;
+    border-radius: 3px;
+    overflow: hidden;
+    background: #fff url("../images/select-dropdown.svg") no-repeat 95% 50%;
+	select {
+		padding: 5px 8px;
+	    width: 120%;
+	    border: none;
+	    box-shadow: none;
+	    background: transparent;
+	    background-image: none;
+	    -webkit-appearance: none;
+	    select:focus {
+	    	outline: none;
+		}
+	}
 }
 
 .show {
@@ -235,6 +232,22 @@ form {
 }
 .yellow-100 {
     background-color: #FFB74D !important;
+}
+
+.primary-100 {
+	background: @primary-100;
+}
+
+.primary-200 {
+	background: @primary-200;
+}
+
+.secondary-100 {
+	background: @secondary-100;
+}
+
+.secondary-200 {
+	background: @secondary-200;
 }
 
 /* Text colors */
@@ -340,7 +353,11 @@ form {
 	.btnStyle;
 }
 
-.btnYellow {
+.km-material .km-navbar .km-button.km-state-active, .km-material .k-toolbar .km-button.km-state-active {
+	background: none;
+}
+
+.btnPrimary {
 	&:extend(.btnStyle){};
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
@@ -350,19 +367,19 @@ form {
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
     color: #fff !important;
     background: #FFB74D !important;
-}
-.btnYellow:hover {
-    background: #E5A545 !important;
-    text-decoration: none;
-}
-.btnYellow:active {
-    background: #FADDB0 !important;
-    text-decoration: none;
-    transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.btnYellow:disabled {
-    background: #A4A4A4 !important;
+    :hover {
+    	background: #E5A545 !important;
+    	text-decoration: none;
+	}
+	:active {
+    	background: #FADDB0 !important;
+    	text-decoration: none;
+    	transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    	transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+	:disabled {
+    	background: #A4A4A4 !important;
+	}
 }
 
 .btnBlack {
@@ -375,16 +392,16 @@ form {
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
     color: #fff !important;
     background: #424242 !important;
-}
-.btnBlack:hover { 
-    background: #616161 !important;
-    text-decoration: none;
-}
-.btnBlack:active {
-    background: #757575 !important;
-    text-decoration: none;
-    transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    :hover { 
+    	background: #616161 !important;
+    	text-decoration: none;
+	}
+	:active {
+    	background: #757575 !important;
+    	text-decoration: none;
+    	transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    	transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	}
 }
 
 .btnBlack-sm {
@@ -398,18 +415,19 @@ form {
     color: #ffffff;
     .font-size(10) !important;
     background: #424242 !important;
+    :hover { 
+    	background: #616161 !important;
+    	text-decoration: none;
+	}
+	:active {
+	    background: #757575 !important;
+	    text-decoration: none;
+	    transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	}
 }
-.btnBlack-sm:hover { 
-    background: #616161 !important;
-    text-decoration: none;
-}
-.btnBlack-sm:active {
-    background: #757575 !important;
-    text-decoration: none;
-    transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.btnBlue {
+
+.btnSecondary {
 	&:extend(.btnStyle){};
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
@@ -419,19 +437,19 @@ form {
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
     color: #ffffff !important;
     background: @primary-200 !important;
-}
-.btnBlue:hover {
-    background: @primary-100 !important;
-    text-decoration: none;
-}
-.btnBlue:active {
-    background: @primary-100 !important;
-    text-decoration: none;
-    transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.btnBlue:disabled {
-    background: @primary-200 !important;
+    :hover {
+    	background: @primary-100 !important;
+    	text-decoration: none;
+	}
+	:active {
+	    background: @primary-100 !important;
+	    text-decoration: none;
+	    transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+	:disabled {
+    	background: @primary-200 !important;
+	}
 }
 
 .btnClear {
@@ -439,29 +457,42 @@ form {
     background: transparent;
     color: #2D93FF !important;
     font-weight: 400;
-}
-.btnClear:active {
-    color: #3A779D !important;
-    background: @btnActiveBk !important;
-}
-.btnClear:disabled {
-    color: #A4A4A4 !important;
-    background: transparent !important;
+    :active {
+    	color: #3A779D !important;
+	}
+	:disabled {
+    	color: #A4A4A4 !important;
+    	background: transparent !important;
+	}
 }
 
 .btnClear-sm {
 	&:extend(.btnStyle){};
 	background: transparent;
     color: #2D93FF !important;
+    .font-size(13) !important;
+    :active {
+    	color: #3A779D !important;
+    	background: transparent !important;
+    }
+    :disabled {
+    	color: #A4A4A4 !important;
+    	background: transparent !important;
+	}
 }
 
-.btnClear-sm:active {
-    color: #3A779D !important;
-    background: transparent !important;
-}
-.btnClear-sm:disabled {
-    color: #A4A4A4 !important;
-    background: transparent !important;
+.btnClear-link {
+	background: transparent;
+    color: @primary-200 !important;
+    padding: 0px !important;
+    :active {
+    	color: #3A779D !important;
+    	background: transparent !important;
+    }
+    :disabled {
+    	color: #A4A4A4 !important;
+    	background: transparent !important;
+	}
 }
 
 .btnClearLine {
@@ -470,15 +501,16 @@ form {
     color: #2D93FF !important;
     border: 1px solid @primary-200;
     border-radius: 2px;
+    :active {
+    	color: #3A779D !important;
+    	background: transparent !important;
+	}
+    :disabled {
+    	color: #A4A4A4 !important;
+    	background: transparent !important;
+	}
 }
-.btnClearLine:active {
-    color: #3A779D !important;
-    background: transparent !important;
-}
-.btnClearLine:disabled {
-    color: #A4A4A4 !important;
-    background: transparent !important;
-}
+
 
 .btnClearLine-grey-sm {
 	&:extend(.btnStyle){};
@@ -487,41 +519,42 @@ form {
     .font-size(12) !important;
     border: 1px solid @shade-200 !important;
     border-radius: 2px;
-}
-.btnClearLine-grey-sm:active {
-    color: @shade-200 !important; 
-    background: transparent !important;
-}
-.btnClearLine-grey-sm:disabled {
-    color: @shade-200 !important;
-    background: transparent !important;
+    :active {
+    	color: @shade-200 !important; 
+    	background: transparent !important;
+	}
+	:disabled {
+    	color: @shade-200 !important;
+    	background: transparent !important;
+	}
 }
 
 .btnClear-grey {
 	&:extend(.btnStyle){};
     background: transparent;
     color: #979797 !important;
+    :active {
+    	color: @primary-200 !important;
+    	background: transparent !important;
+	}
+	:disabled {
+    	color: #A4A4A4 !important;
+    	background: transparent !important;
+	}
 }
-.btnClear-grey:active {
-    color: @primary-200 !important;
-    background: transparent !important;
-}
-.btnClear-grey:disabled {
-    color: #A4A4A4 !important;
-    background: transparent !important;
-}
+
 .btnClear-red {
 	&:extend(.btnStyle){};
     background: transparent;
     color: #f44336 !important;
-}
-.btnClear-red:active {
-    color: #d32f2f !important;
-    background: transparent !important;
-}
-.btnClear-red:disabled {
-    color: #ef9a9a !important;
-    background: transparent !important;
+    :active {
+    	color: #d32f2f !important;
+    	background: transparent !important;
+	}
+	:disabled {
+    	color: #ef9a9a !important;
+    	background: transparent !important;
+	}
 }
 
 .btnFull {
@@ -550,6 +583,10 @@ form {
 	.btnFull;
 	border-radius: 0px !important;
 	height: 2.25rem;
+	padding-top: 0.5rem !important;
+	:hover {
+		background: transparent !important;
+	}
 }
 
 .input-text-sm {
@@ -677,6 +714,11 @@ div.km-header a img{
     height: 56px;
     //border: transparent;
 }
+
+.km-material .k-popup .km-button {
+	text-transform: none;
+}
+
 .km-material.km-pages li {
     background-color: #e0e0e0;
 }
@@ -717,7 +759,7 @@ div.km-header a img{
 */
 
 /* material defualt overrides */
-.km-material .km-list>li {
+.km-material .km-list > li {
 	padding: inherit;
 	line-height: inherit;
 	padding: 0.5rem 1rem;
@@ -728,7 +770,6 @@ div.km-header a img{
 }
 
 .km-material .km-button {
-	padding: initial;
 	border-style: initial;
 	border-width: initial;
 	border-radius: initial;
@@ -768,6 +809,14 @@ div.km-header a img{
 	border-bottom: 1px solid @shade-200;
 }
 
+.km-material .km-buttongroup .km-button {
+	padding: 0.25em 0.5em;
+}
+
+div.footerMenu.km-footer > ul > li > a:active {
+	background: @btnActiveBk;
+}
+
 .km-modalview {
 	border: inherit;
 }
@@ -783,17 +832,20 @@ div.km-header a img{
     }
 
 .km-leftitem {
-	left: 1rem;
+	//left: 1rem;
 }
 
 .km-rightitem {
-	right: 1rem; 
+	//right: 1rem; 
 }
 
 /* Helpers */
 
 .helper {
     color: #979797;
+	    img {
+	    	height: 12px;
+	    }
 }
 .helper-right {
 	.helper;
@@ -810,7 +862,7 @@ div.km-header a img{
 }
 .helper-form {
     position: relative;
-    top: 27px;
+    top: 35px;
     z-index: 99;
     right: 10px;
 }
@@ -889,20 +941,22 @@ div.km-header a img{
 	.shadow;
 	margin-right: 0.5rem;
 	position: absolute;
-	top: 5px;
-	left: 0px;
+	top: 8px;
+	left: 0.5rem;
+	z-index: -1;
 }
 
 .nav-gear {
 	height: 24px !important;
+	vertical-align: middle;
 }
 
 
 .home-status {
-	position: absolute;
-	right: 6px;
-	bottom: 6px;
 	z-index: 1;
+	top: 34px;
+	position: absolute;
+	left: 32px;
 }
 
 
@@ -944,10 +998,6 @@ div.km-header a img{
 	height: 12px;
 }
 
-.km-material .km-rowinsert, .km-material .km-state-active, .km-material .km-scroller-pull, .km-material .km-loader:before, .km-material .k-slider-selection, .km-material .km-touch-scrollbar, .km-material .km-pages .km-current-page, .km-material .k-slider .k-draghandle, .km-material .k-slider .k-draghandle:hover, .km-material .km-tabstrip .km-state-active, .km-material .km-scroller-refresh.km-load-more, .km-material .km-popup .k-state-hover, .km-material .km-popup .k-state-focused, .km-material .km-popup .k-state-selected, .km-material .km-actionsheet>li>a:active, .km-material .km-actionsheet>li>a:hover, .km-material .km-actionsheet>li>.km-state-active, .km-material li.km-state-active .km-listview-link, .km-material li.km-state-active .km-listview-label, .km-material .km-listview-label input[type=radio]:checked, .km-material .km-listview-label input[type=checkbox]:checked {
-	background: rgba(0,0,0,0.05);
-}
-
 .km-material .km-switch-label-on, .km-material .km-switch-label-off {
 	.font-size(12);
 	width: auto;
@@ -959,7 +1009,8 @@ div.km-header a img{
 }
 
 .profileTextBox {
-	padding-left: 1rem;
+	position: relative;
+	left: 1rem;
 }
 
 /* Modal styles */
@@ -1388,10 +1439,17 @@ div.km-header a img{
 #profile-changePassword {
     margin: 0px;
 }
-.km-material .km-view .km-navbar .km-button.km-state-active {
-    background-color: rgba(0,0,0,0.05);
-    border-radius: 3px;
+
+
+.km-material .km-view .km-navbar .km-button {
+	padding: 0.25em 0.5em;
 }
+
+.km-material .km-view .km-navbar .km-button:active {
+	background-color: @btnActiveBk;
+	color: @black;
+}
+
 .km-material .km-view .km-content .km-list .km-state-active .km-listview-link {
     background-color: rgba(0,0,0,0.05);
     border-radius: 3px;
@@ -1600,6 +1658,11 @@ a:hover {
 #menuSetting {
     margin-top: 40px;
 }
+
+#profileStatusPhoto {
+	margin-right: 1rem;
+}
+
 .km-material .km-list > li {
     background: transparent;
     box-shadow: none;
@@ -1657,9 +1720,14 @@ a:hover {
 }
 
 
-.chat-option-ul li {
-	background: transparent !important;
-	border: transparent !important;
+.chat-option-ul {
+	li {
+		background: transparent !important;
+		border: transparent !important;
+		a {
+			padding: 0px !important;
+		}
+	}
 }
 
 .chat-mainBox h4 {
@@ -1829,7 +1897,7 @@ a:hover {
 }
 
 div.footerMenu.km-footer > ul > li > a {
-	padding: 0.50rem;
+	padding: 0.65rem;
 	margin: 0px;
 }
 
@@ -1859,11 +1927,10 @@ div.footerMenu.km-footer > ul > li > a {
 .menuNav {
 	width: 100%;
 	height: 2.5rem;
-	overflow: hidden;
 	li {
-	text-align: center;
-	width: 20%;
-	float: left;
+		text-align: center;
+		width: 20%;
+		float: left;
 	}
 }
 
@@ -2508,7 +2575,7 @@ div.loginBox > form > div > ul > li {
 		margin-left: 0.5rem;
 	}
 	input {
-		width: 91%;
+		width: 90%; 
 		float: left;
 	}
 }
