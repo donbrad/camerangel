@@ -9,37 +9,38 @@ var Sentinel = function ($input) {
 Sentinel.prototype = _.assign({
 
 	KEYWORDS_TO_CATEGORIES: {
-		in: 'Chats',
-		at: 'Places',
-		from: 'Contacts'
+		in: 'chats',
+		at: 'places',
+		from: 'contacts'
 	},
 
-	filters: [],
+	filters: {},
 
 	initialize: function ($div) {
 		$div.addClass('sentinel');
 
 		var $input = $div.find('input');
-		var $list = $div.find('ul');
+		var $filters = $div.find('.filters');
 		var $tags = $div.find('.tags');
 
-		$list.data('kendoMobileButtonGroup').bind('select', function () {
-			var currentButton = currentButton;
-			if (currentButton.hasClass('contacts')) {
-				
-			} else if (currentButton.hasClass('chats')) {
+		$filters.on('click', '.km-button', function (e) {
+			for (var keyword in this.KEYWORDS_TO_CATEGORIES) {
+				if ($(e.currentTarget).hasClass(this.KEYWORDS_TO_CATEGORIES[keyword])) {
+					window.semanticDSs.master.filter({ field: 'category', operator: 'eq', value: this.KEYWORDS_TO_CATEGORIES[keyword]});
+					$input.data('kendoAutoComplete').search();
 
-			} else if (currentButton.hasClass('date')) {
-
-			} else if (currentButton.hasClass('place')) {
-
+					break;
+				}
 			}
-		});
+		}.bind(this));
 
 		$tags.on('click', 'button', function (e) {
 			$(e.target).parent().fadeOut(100, function () {
 				$(e.target).parent().remove();
 				this.emitEvent('remove');
+
+				var category = $(e.target).parent().data('category');
+				$filters.find('.'+category).removeClass('pressed');
 			}.bind(this));
 		}.bind(this));
 
@@ -49,14 +50,26 @@ Sentinel.prototype = _.assign({
 			dataSource: window.semanticDSs.master,
 			dataTextField: 'value',
 			select: function (e) {
+				var dataItem = e.sender.dataItem(e.item.index());
+
+				// Remove existing tag if there is one in the same category
+				$tags.find('li').each( function () {
+					if ($(this).data('category') === dataItem.category) {
+						$(this).remove();
+					}
+				});
 
 				$tags.append(
-					'<li>' +
-						'<img src="images/sentinel-'+e.sender.dataItem(e.item.index()).category.toLowerCase()+'.svg" />'+
+					'<li data-category="'+dataItem.category+'">' +
+						'<img src="images/sentinel-'+dataItem.category.toLowerCase()+'.svg" />'+
 						e.item.text() +
 						'<button />' +
 					'</li>'
 				);
+
+				$filters
+					.find('.'+dataItem.category.toLowerCase())
+					.addClass('pressed');
 
 				this.emitEvent('add');
 

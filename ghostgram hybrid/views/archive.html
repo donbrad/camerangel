@@ -9,19 +9,31 @@
 		<div id="search-archives">
 			<button data-role="button" data-click="archiveView.toggleSearch"><img height="18" src="images/sentinel-search.svg" /> </button>
 			<div>
-				<ul id="archive-filters" data-role="buttongroup">
-					<li class="contacts"><img src="images/sentinel-contacts.svg" /></li>
-					<li class="chat"><img src="images/sentinel-chats.svg" /></li>
-					<li class="date"><img src="images/sentinel-date.svg" /></li>
-					<li class="place"><img src="images/sentinel-places.svg" /></li>
-					<li class="search"><img src="images/sentinel-search.svg" /></li>
-				</ul>
+				<div class="filters">
+					<button class="contacts" data-role="button">
+						<img src="images/sentinel-contacts.svg" />
+					</button>
+					<button class="chats" data-role="button">
+						<img src="images/sentinel-chats.svg" />
+					</button>
+					<button class="date" data-role="button">
+						<img src="images/sentinel-date.svg" />
+					</button>
+					<button class="places" data-role="button">
+						<img src="images/sentinel-places.svg" />
+					</button>
+					<button class="search" data-role="button">
+						<img src="images/sentinel-search.svg" />
+					</button>
+				</div>
 
 				<input type="search" placeholder="Search archive..." />
 
 				<ul class="tags">
+					<!-- Test tags :)
 					<li><img src="images/sentinel-contacts.svg" />Don<button></button></li>
 					<li><img src="images/sentinel-chats.svg" />myplacez design<button></button></li>
+					-->
 				</ul>
 			</div>
 		</div>
