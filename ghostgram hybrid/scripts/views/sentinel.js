@@ -24,6 +24,26 @@ Sentinel.prototype = _.assign({
 		var $tags = $div.find('.tags');
 
 		$filters.on('click', '.km-button', function (e) {
+			if ($(e.currentTarget).hasClass('date')) {
+				var $date = $('<input type="date" />')
+					.on('click', function (e) {
+						e.stopPropagation();
+					})
+					.appendTo($div)
+					.slideDown(200);
+				// Gotta defer or the original click event triggers this one
+				// as well
+				_.defer( function () {
+					$('body').one('click', function (e) {
+						$date.slideUp(200, function () {
+							$date.remove();
+						});
+					});
+				});
+
+				return;
+			}
+
 			for (var keyword in this.KEYWORDS_TO_CATEGORIES) {
 				if ($(e.currentTarget).hasClass(this.KEYWORDS_TO_CATEGORIES[keyword])) {
 					window.semanticDSs.master.filter({ field: 'category', operator: 'eq', value: this.KEYWORDS_TO_CATEGORIES[keyword]});
