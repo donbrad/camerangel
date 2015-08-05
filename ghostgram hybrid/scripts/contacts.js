@@ -445,7 +445,7 @@ function onInitContacts(e) {
         fixedHeaders: true,
         click: function (e) {
             var contact = e.dataItem;
-            
+
             updateCurrentContact(contact);
 			
 			if (contact.category === 'phone') {
@@ -461,7 +461,7 @@ function onInitContacts(e) {
 				// If we know the contacts uuid enable the full feature set
 				if (contact.contactUUID !== undefined && contact.contactUUID !== null){
 					$("#contactUserActions").data("kendoMobileActionSheet").open();
-					APP.kendo.navigate("#ghostEmail"); 
+					//APP.kendo.navigate("#ghostEmail"); 
 					//doEditContact(e);
 				} else {
 					$("#contactActions").data("kendoMobileActionSheet").open();
@@ -979,7 +979,7 @@ function onInitGhostEmail(e) {
         e.preventDefault();
     }
 
-    $("#ghostEmailEditor").kendoEditor({
+    $("#inputTest").kendoEditor({
         tools: [
             "bold",
             "italic",
@@ -997,17 +997,34 @@ function onInitGhostEmail(e) {
 }
 
 function editorBold(){
-	//$("#body > div.k-widget.k-window.k-window-titleless.k-editor-widget > div > div.km-scroll-container > ul > li:nth-child(1) > a").click();
-	var editor = $("#ghostEmailEditor").data("kendoEditor");
+	var editor = $("#inputTest").data("kendoEditor");
 	var bold = editor.state("bold");
 	editor.exec("bold");
+}
+
+function editorItalic(){
+	var editor = $("#inputTest").data("kendoEditor");
+	var bold = editor.state("itlaic");
+	editor.exec("itlaic");
 }
 
 function onShowGhostEmail(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
     }
-	$('#ghostEmailEditor').data("kendoEditor").value("");
+	$('#inputTest').data("kendoEditor").value("");
+}
+
+function testingEditor(e){
+	var editor = $("#inputTest").data("kendoEditor").value();
+
+	if(editor !== ""){
+		mobileNotify(editor);
+		//$("#inputTest").val(editorVal);
+	} else {
+		mobileNotify("nothing");
+	}
+	
 }
 
 function sendGhostEmail(e) {

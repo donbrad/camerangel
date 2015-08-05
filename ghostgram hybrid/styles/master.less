@@ -1,5 +1,5 @@
 /* Imports */
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Hind:300,400,500);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Hind:300,400,500|PT+Sans:400,700);
 @import "mixins";
 
 
@@ -18,7 +18,9 @@
 
 /* variables */
 @baseFontSize: 16;
-
+@defaultFont: 'PT Sans', sans-serif;
+@secondaryFont: 'Open Sans', sans-serif;
+@displayFont: 'Hind', sans-serif;
 
 /* elements */
 .shadow {
@@ -95,7 +97,7 @@ html, .km-root {
 }
 
 body {
-    font-family: 'Open Sans', sans-serif;
+    font-family: @defaultFont;
     line-height: 1.5;
     margin: 1rem;
     background: #fff;
@@ -103,21 +105,23 @@ body {
 }
 h1 {
     .font-size(34); /* 34px */
-    font-family: 'Hind', sans-serif;
+    font-family: @displayFont !important;
     font-weight: 300;
 }
 h2 {
     .font-size(24); /* 24px */
     font-weight: 300; 
-    font-family: 'Hind', sans-serif;
+    font-family: @displayFont !important;
 }
 h3 {
     .font-size(20);  /* 20px */
     font-weight: 300;
+    font-family: @displayFont !important;
 }
 h4 {
     .font-size(16);
     font-weight: 400;
+    font-family: @secondaryFont !important;
 }
 h5 {
     font-weight: 600;
@@ -137,7 +141,6 @@ p {
 }
 p {
 	.font-size(14);
-    font-family: 'Open Sans', sans-serif;
 }
 input {
     width: 100%;
@@ -684,14 +687,16 @@ form {
     color: #EA6262;
 }
 /* Override Styles */
+.km-material {
+	font-family: @defaultFont;
+}
 
-.km-material,
 input,
 textarea,
 keygen,
 select,
 button {
-    font-family: 'Open Sans', sans-serif;
+    font-family: @defaultFont;
 }
 div.km-header a img{
 	height: 16px;
@@ -730,7 +735,7 @@ div.km-header a img{
     background-color: #e0e0e0;
 }
 .km-view-title span {
-    font-family: 'Open Sans', sans-serif;
+    font-family: @defaultFont;
     font-weight: 400;
 }
 .km-material .km-button {
@@ -1823,7 +1828,7 @@ a:hover {
 	margin-left: 0.25rem;
 }
 
-#channels-listview > li > div > div.chat-mainBox > img {
+#channels-listview > li > div > a > div > img {
 	margin-left: 1.25rem;
 }
 
@@ -2084,7 +2089,7 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 }
 
 #body > div.k-widget.k-window.k-window-titleless.k-editor-widget {
-	//visibility: hidden;
+	visibility: hidden;
 }
 
 .k-state-active, .k-state-active:hover, .k-active-filter, .k-tabstrip .k-state-active {

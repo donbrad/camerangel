@@ -72,7 +72,7 @@
 				</div>
 			</a>
 			<span data-role="view-title"></span>
-				<a data-role="button" id="menuSignOut" data-click="homeSignout" data-align="right" data-click-on="down">
+				<a data-role="button" data-rel="actionsheet" href="#settingsAction" data-align="right" data-click-on="down">
                 <img class="nav-gear" src="images/nav-gear.svg"/>
             </a>
         </div>
@@ -231,13 +231,13 @@
 	    		</div>
 	    		<div class="notify-content">
 	    			# if (action !== undefined && action !== 'none') {# 
-	    				<h4>
+	    				<h3>
 	    					<a data-role="button" data-param="#:uuid#" href="\\#" data-click="#=action#" class="btnClear-link">#= title #</a>
-	    				</h4>
+	    				</h3>
 	    			#} else {# 
-						<h4>
+						<h3>
 							<a data-role="button" data-param="#:uuid#" href="#=href#"  class="btnClear-link"> #= title # </a>
-						</h4>
+						</h3>
 					#}#
 	    			<p>#= description # </p>
 	    			<div class="notify-action">
