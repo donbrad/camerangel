@@ -249,7 +249,7 @@
 
 <script type="text/x-kendo-template" id="contactsTemplate">      
     <div class="listBox">
-	     <div>
+	     <a class="contactListItem">
 			 
 			 #if (data.category !== 'phone') {#
 			 	<div class="left listPhoto">
@@ -296,7 +296,7 @@
 			#}#
 			 
 		 </div>
-	</div>
+	</a>
 </div><!-- listBox -->
 </script>
 
@@ -352,19 +352,18 @@
 				<img class="circle-img-md" src="images/default-img.png" />
 			</div>
 			<div class="recipientInfo">
-				<h3>John Smith</h3>
+				<h3>John Smith1</h3>
 				<p>johnsmith@gmail.com <span class="helper helper-verified"><img class="helper-verified-img" src="images/verified.svg"/> Verified</span></p>
 			</div>
 			<div class="clearfix"></div>
 		</div>
-		<div id="ghostEmailEditor" contenteditable="true" class="editor">
-		</div>
+		<div id="inputTest" contenteditable="true" type="text"></div>
 	</div>
 	<div data-role="footer">
 		<div class="emailOptions">
 			<ul class="list-inline">
 				<li><a class="btnClear" data-role="button" data-click="editorBold" id="editorBold">Bold</a></li>
-				<li>Italic</li>
+				<li><a class="btnClear" data-role="button" data-click="testingEditor"> Italic </a></li>
 			</ul>
 		</div>
 	</div>

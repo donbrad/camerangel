@@ -145,7 +145,10 @@ input {
     .font-size(14);
     border-bottom: 1px solid #e0e0e0;
     padding: .5em .7em;
+    -webkit-appearance: none;
+    -webkit-border-radius: 3px;
     border-radius: 3px !important; 
+    color: @black;
 }
 .standard-input {
 	&:extend(input){};
@@ -362,6 +365,7 @@ form {
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
     color: #fff !important;
     background: #FFB74D !important;
+    /*
     :hover {
     	background: #E5A545 !important;
     	text-decoration: none;
@@ -375,6 +379,7 @@ form {
 	:disabled {
     	background: #A4A4A4 !important;
 	}
+	*/
 }
 
 .btnBlack {
@@ -432,6 +437,7 @@ form {
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
     color: #ffffff !important;
     background: @primary-200 !important;
+    /*
     :hover {
     	background: @primary-100 !important;
     	text-decoration: none;
@@ -445,6 +451,7 @@ form {
 	:disabled {
     	background: @primary-200 !important;
 	}
+	*/
 }
 
 .btnClear {
@@ -580,7 +587,7 @@ form {
     padding-bottom: 1rem !important;
 }
 
-.btnFull-modal {
+.btnFull-modal { 
 	.btnFull;
 	border-radius: 0px !important;
 	height: 2.25rem;
@@ -778,6 +785,10 @@ div.km-header a img{
 	.font-size(18);
 	padding: 0.8rem;
 }
+
+.km-root * {
+	-webkit-tap-highlight-color: @btnActiveBk;
+} 
 
 .km-material input[type=password], .km-material input[type=search], .km-material input[type=number], .km-material input[type=tel], .km-material input[type=url], .km-material input[type=email], .km-material input[type=text]:not(.k-input), .km-root .km-material textarea {
 	background: #fff;
@@ -1540,8 +1551,18 @@ div.footerMenu.km-footer > ul > li > a:active {
 a:hover {
     color: #3CAAEE;
 }
+
+#channels-listview > li > div > a:hover > div {
+	color: @black;
+}
+
+#channels-listview > li > div > a:active > div {
+	background-color: @shade-300;
+	color: @black;
+}
+
 .menuBox a:visited {
-    color: #fff;
+    color: #fff; 
 }
 .menuBox {
     background-color: #323642;
@@ -1756,6 +1777,7 @@ a:hover {
 	position: absolute;
 	top: 0px;
 	left: 0px;
+	display: block;
 	padding-left: 1rem;
     padding-right: 1rem;
     padding-top: 0.25rem;
@@ -2031,7 +2053,7 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 	position: fixed;
 	bottom: 0px;
 	li {
-		display: inline-flex;
+		display: inline-block;
 	}
 }
 
@@ -2057,14 +2079,18 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 }
 */
 
+.k-state-active, .k-state-active:hover, .k-active-filter, .k-tabstrip .k-state-active {
+	color: @black !important;
+}
+
 #body > div.k-widget.k-window.k-window-titleless.k-editor-widget {
-	visibility: hidden;
+	//visibility: hidden;
 }
 
 .k-state-active, .k-state-active:hover, .k-active-filter, .k-tabstrip .k-state-active {
 	background-color: inherit;
 	border-color: inherit;
-	//color: #4a4a4a;
+	color: #4a4a4a;
 }
 
 /* Chat styles */
@@ -2124,6 +2150,7 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
     padding-left: 1rem;
     .font-size(12);
 }
+
 /*
 #privacyMode {
     border-left: 2px solid #e0e0e0;
@@ -2611,6 +2638,21 @@ div.loginBox > form > div > ul > li {
 	margin-left: 0px;
 	margin-right: 0px;
 }
+
+.contactListItem {
+	display: block;
+}
+
+.contactListItem:hover {
+	color: @black;
+}
+
+#contacts-listview > li > ul > li:active {
+	background: @shade-300;
+}
+
+
+//#contacts-listview > li > ul > li
 
 .listPhoto {
 	width: 20%;

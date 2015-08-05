@@ -74,29 +74,30 @@
     			</ul>
     		</div>
     	</div><!-- chat-options -->
-    	#if (isPrivate){#
-    		<div class="chat-mainBox private">
-    	#} else {#
-    		<div class="chat-mainBox">
-    	#}#
-    	
-    		<h4>
-    		<span><img src="images/status-new.svg" class="list-status" /></span>
-        		 #:name# 
-        		<span class="chatActivityTime">1 hr ago</span>
-    		</h4>
-    		
-    		# if(isPrivate && members.length <= 2){#
-    			<img src="images/private-icon.svg" /> Private Chat
-    		#} else if (false) {# // For place chats
-    			<img src="images/place-icon.svg" id="chatList-place-icon" /> Place Chat
-    		#} else {#
-    			<img src="images/group-icon.svg" /> Group Chat
-    		#}#
+    	<a class="chat-mainBoxLink">
+	    	#if (isPrivate){#
+	    		<div class="chat-mainBox private">
+	    	#} else {#
+	    		<div class="chat-mainBox">
+	    	#}#
+	    	
+	    		<h4>
+	    		<span><img src="images/status-new.svg" class="list-status" /></span>
+	        		 #:name# 
+	        		<span class="chatActivityTime">1 hr ago</span>
+	    		</h4>
+	    		
+	    		# if(isPrivate && members.length <= 2){#
+	    			<img src="images/private-icon.svg" /> Private Chat
+	    		#} else if (false) {# // For place chats
+	    			<img src="images/place-icon.svg" id="chatList-place-icon" /> Place Chat
+	    		#} else {#
+	    			<img src="images/group-icon.svg" /> Group Chat
+	    		#}#
 
- 
-    	</div><!-- chat-mainBox -->
-    	
+	 
+	    	</div><!-- chat-mainBox -->
+    	</a>
    </div>
 </script>
  

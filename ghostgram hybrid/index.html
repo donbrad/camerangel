@@ -60,7 +60,7 @@
 <div data-role="layout" data-id="main" style="display:none;" >
     <div data-role="header">
         <div data-role="navbar">
-			<a data-role="button" data-rel="modalview" href="#modalview-profileStatus" data-align="left" class="home-headerBtn">
+			<a data-role="button" data-rel="modalview" href="#modalview-profileStatus" data-align="left" class="home-headerBtn" data-click-on="down">
 				<div class="user-status">
 					<div class="left">
 						<span class="home-status">
@@ -72,7 +72,7 @@
 				</div>
 			</a>
 			<span data-role="view-title"></span>
-				<a data-role="button" id="menuSignOut" data-click="homeSignout" data-align="right">
+				<a data-role="button" id="menuSignOut" data-click="homeSignout" data-align="right" data-click-on="down">
                 <img class="nav-gear" src="images/nav-gear.svg"/>
             </a>
         </div>
@@ -86,7 +86,7 @@
     <div class="footerMenu" data-role="footer">
         <ul class="list-inline menuNav">
             <li>
-                <a data-role="button" href="#home">
+                <a data-role="button" href="#home" data-click-on="down">
                 	<svg width="26px" height="24px" viewBox="0 0 26 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
 					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 					        <g id="nav-home" transform="translate(-18.000000, -634.000000)" fill="#979797">
@@ -97,7 +97,7 @@
                 </a>
             </li>
             <li>
-                <a data-role="button" href="views/channels.html">
+                <a data-role="button" href="views/channels.html" data-click-on="down">
 	                <svg width="28px" height="23px" viewBox="0 0 28 23" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
 					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 					        <g id="nav-chat" transform="translate(-97.000000, -635.000000)" fill="#979797">
@@ -111,7 +111,7 @@
 				</a>
             </li>
             <li>
-                <a data-role="button" href="views/contacts.html">
+                <a data-role="button" href="views/contacts.html" data-click-on="down">
                 	<svg width="22px" height="24px" viewBox="0 0 22 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
 					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 					        <g transform="translate(-176.000000, -634.000000)" fill="#979797">
@@ -130,7 +130,7 @@
                 </a>
             </li>
             <li>
-                <a data-role="button" href="views/places.html">
+                <a data-role="button" href="views/places.html" data-click-on="down">
                 	<svg width="19px" height="27px" viewBox="0 0 19 27" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
 					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
 					        <g transform="translate(-253.000000, -633.000000)" stroke="#979797">
@@ -143,7 +143,7 @@
                 </a>
             </li>
             <li>
-                <a data-role="button" href="views/gallery.html#gallery">
+                <a data-role="button" href="views/gallery.html#gallery" data-click-on="down">
                 	<svg width="24px" height="19px" viewBox="0 0 24 19" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
 					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 					        <g id="nav-gallery" transform="translate(-323.000000, -636.000000)" fill="#979797">
@@ -282,7 +282,7 @@
     	<a class="btnPrimary btnSpan-btm" data-role="button" href="#signup">Join ghostgrams</a>
     </div>
 </div>
-
+   
 
 <div data-role="modalview" id="modalview-support" style="width: 90%; display: none;" class="appearance">
     <div data-role="header">
@@ -349,9 +349,8 @@
 <div data-role="view" id="signup" data-title="Sign Up" data-layout="main" style="display: none;" class="appearance" data-init="initSignUp">
    	<div data-role="header">
       <div data-role="navbar">
-        <a data-role="button" href="#newuserhome" data-align="left"><img src="images/nav-back.svg" />  </a>
+        <a data-role="button" href="#:back" data-align="left"><img src="images/nav-back.svg" />  </a>
         <span data-role="view-title"></span>
-        <!--<a  data-click="contactsPickContact" data-role="button" data-align="right">Import Me</a>-->
       </div>
 	</div>
 	<div class="banner-welcome">
@@ -399,12 +398,14 @@
 	        </a>
 	    </h2>
 	    <label>Email password recovery instructions to 
-	    	<input type="email" id="home-recoverPassword-email"  placeholder="Enter recovery email address"/>
+	    	<input type="email" id="home-recoverPassword-email"  placeholder="Email address"/>
 	    </label>
 	    <div class="modalview-button">
-	    	<a class="btnFull btnPrimary" data-click="homeRecoverPassword" id="modalview-recoverPassword-button" type="button" data-role="button">Send</a>
+	    	
 	    </div>
-
+	</div>
+	<div data-role="footer">
+		<a class="btnFull btnPrimary" data-click="homeRecoverPassword" id="modalview-recoverPassword-button" type="button" data-role="button">Send</a>
 	</div>
 </div>
     
