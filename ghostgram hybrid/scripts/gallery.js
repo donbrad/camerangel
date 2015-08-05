@@ -6,6 +6,7 @@ function onInitGallery(e){
 	APP.models.gallery.rotationAngle = 0;
 	APP.models.gallery.optionsHidden = true;
 	APP.models.gallery.previewSize = "33%";
+	APP.models.gallery.optionsShown = true;
 
 	// hide serch 
 	$("#galleryZoomSelect > li:first-child ").css("display", "none");
@@ -50,24 +51,24 @@ function selectGallerySearchTool(e) {
 	
 	switch (index) {
 			
-		case 0: // Contacts
+		case 0: // Search
 			$("#galleryInputHelper").text("Search:");
 			break;
 			
-		case 1: // Chats
-			$("#galleryInputHelper").text("Chat:");
-			break;
-			
-		case 2: // Dates
-			$("#galleryInputHelper").text("Dates:");
-			break;
-			
-		case 3: // Places
-			$("#galleryInputHelper").text("Places:");
-			break;
-			
-		case 4: // Search
+		case 1: // Contacts
 			$("#galleryInputHelper").text("Contacts:");
+			break;
+			
+		case 2: // Chats
+			$("#galleryInputHelper").text("Chats:");
+			break;
+			
+		case 3: // Calendar
+			$("#galleryInputHelper").text("Calendar:");
+			break;
+			
+		case 4: // Places
+			$("#galleryInputHelper").text("Places:");
 			break;
 	}
 	
@@ -80,16 +81,19 @@ function selectGalleryZoom(e) {
 	var index = this.current().index();
 	switch (index) {
 		case 0:
+			galleryOptionsToggle();
+			break;
+		case 1:
 			APP.models.gallery.previewSize = "33%";
 			$("#gallery-listview li").css("width","33%");
 			$("#gallery-listview li").css("padding-bottom","33%");
 			break;
-		case 1:
+		case 2:
 			APP.models.gallery.previewSize = "50%";
 			$("#gallery-listview li").css("width","50%");
 			$("#gallery-listview li").css("padding-bottom","50%");
 			break;
-		case 2:
+		case 3:
 			APP.models.gallery.previewSize = "100%";
 			$("#gallery-listview li").css("width","100%");
 			$("#gallery-listview li").css("padding-bottom","100%");
