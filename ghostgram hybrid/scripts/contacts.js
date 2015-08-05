@@ -979,7 +979,7 @@ function onInitGhostEmail(e) {
         e.preventDefault();
     }
 
-    $("#inputTest").kendoEditor({
+    $("#ghostEmailEditor").kendoEditor({
         tools: [
             "bold",
             "italic",
@@ -996,35 +996,11 @@ function onInitGhostEmail(e) {
 
 }
 
-function editorBold(){
-	var editor = $("#inputTest").data("kendoEditor");
-	var bold = editor.state("bold");
-	editor.exec("bold");
-}
-
-function editorItalic(){
-	var editor = $("#inputTest").data("kendoEditor");
-	var bold = editor.state("itlaic");
-	editor.exec("itlaic");
-}
-
 function onShowGhostEmail(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
     }
-	$('#inputTest').data("kendoEditor").value("");
-}
-
-function testingEditor(e){
-	var editor = $("#inputTest").data("kendoEditor").value();
-
-	if(editor !== ""){
-		mobileNotify(editor);
-		//$("#inputTest").val(editorVal);
-	} else {
-		mobileNotify("nothing");
-	}
-	
+	$('#ghostEmailEditor').data("kendoEditor").value("");
 }
 
 function sendGhostEmail(e) {
@@ -1054,6 +1030,7 @@ function sendGhostEmail(e) {
     }
 
 }
+
 
 function closeAddContact() {
 	$("#modalview-AddContact").data("kendoMobileModalView").close();
