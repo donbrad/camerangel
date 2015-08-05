@@ -15,6 +15,7 @@
 	<script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-XdXhoF08ubebxTjTh9jf0Ra4xFV1Jwo&sensor=true&libraries=places">
     </script>
+    <script src="bower_components/eventEmitter/EventEmitter.js"></script>
     <script src="bower_components/q/q.js"></script>
 	<script src="scripts/parse.js"></script>
     <script src="https://cdn.pubnub.com/pubnub-3.7.12.js"></script>
@@ -130,7 +131,7 @@
                 </a>
             </li>
             <li>
-                <a data-role="button" href="views/places.html" data-click-on="down">
+                <a data-role="button" href="views/archive.html" data-click-on="down">
                 	<svg width="19px" height="27px" viewBox="0 0 19 27" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
 					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
 					        <g transform="translate(-253.000000, -633.000000)" stroke="#979797">
@@ -441,8 +442,8 @@
 <div data-role="view" id="photoView" data-zoom="true" data-style="width: 100%; height:100%; display: none;">
     <div data-role="header">
         <div data-role="navbar">
-            <a data-align="left" id="photoViewBack" data-role="backbutton">Back</a>
-            <span>Photo View</span>
+           <a data-role="button"  data-align="left" href="#:back" ><img src="images/nav-back.svg" /></a>
+            <span>Photo Viewer</span>
 			<a data-align="right" data-role="button" href="#photoEditor?source=gallery">Edit</a>
         </div>
     </div>
@@ -460,8 +461,7 @@
 
 
 <div data-role="view" id="photoEditor" style="width: 100%; height:100%; display: none;"  data-show="onShowPhotoEditor"  data-hide="onHidePhotoEditor">	
-		<a id="photoEditorBack" class="right" data-role="backbutton"><img src="images/close-white.svg" /></a>
-		<div class="clearfix"></div>
+		<a data-role="button"  data-align="left" href="#:back" ><img src="images/close.svg" /></a>
     	<div style="text-align: center; padding-top: 1rem; background: #a4a4a4a; ">
         <a  data-role="button"  data-click="photoEditRotateLeft"><img src="images/photo-left.svg" /> </a>
         <a  data-role="button"  data-click="photoEditRotateRight"> <img src="images/photo-right.svg" /></a>
@@ -481,7 +481,7 @@
 <div data-role="view" id="profilePhotoEdit" data-show="doProfilePhotoEdit" data-init="initProfilePhotoEdit" style="display: none;" data-model="APP.models.profile.currentUser" class="appearance">
     <div data-role="header">
         <div data-role="navbar">
-            <a data-align="left" id="profilePhotoViewBack" data-role="backbutton">Back</a>
+            <a data-role="button"  data-align="left" href="#:back" ><img src="images/nav-back.svg" /></a>
             <span>Profile Photo</span>
             <a data-click="doUpdateStatusMessage"  type="button" data-role="button" data-align="right">Update</a>
 		</div>
@@ -534,11 +534,19 @@
                    <input type="search" id="profilePhotoMessage" placeholder="What's going on..." data-bind="value: statusMessage"/>
                 </label>
             </li>
+            <li><img src="images/place-icon.svg" class="ghost-sm-text" /> Location </li>
+            <li>
+                <label class="ghost-sm-text">
+                    <input type="search" id="profileLocationName" placeholder="Your current location" data-bind="value: currentPlace"/>
+                </label>
+            </li>
         	<li>
         		<label> Available
 					<input type="checkbox" id="home-status-switch" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="statusSwitch"/>
 				</label>
         	</li>
+
+
         </ul>
     </form>
     <div data-role="footer">

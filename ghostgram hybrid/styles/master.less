@@ -16,11 +16,18 @@
 @btnActiveBk: rgba(0,0,0,0.15);
 @black: #4A4A4A;
 
+<<<<<<< HEAD
 /* variables */
 @baseFontSize: 16;
 @defaultFont: 'PT Sans', sans-serif;
 @secondaryFont: 'Open Sans', sans-serif;
 @displayFont: 'Hind', sans-serif;
+=======
+/* Imports */
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Hind:300,400,500);
+
+@import "_sentinel.less";
+>>>>>>> master
 
 /* elements */
 .shadow {
@@ -2315,8 +2322,6 @@ div.loginBox > form > div > ul > li {
     // Not sure why this is needed
     position: absolute;
 
-    display: flex;
-    flex-direction: column;
     height: 100%;
     margin: .1rem .2rem;
 }
@@ -2329,7 +2334,7 @@ div.loginBox > form > div > ul > li {
 }
 
 #search-archives {
-    display: flex;
+    min-height: 2rem;
     padding: .5rem 0;
 
     .k-autocomplete {
@@ -2347,9 +2352,14 @@ div.loginBox > form > div > ul > li {
     input {
         width: 100%;
         box-sizing: border-box;
+
+        font-size: 1rem;
     }
 
     & > button {
+        position: absolute;
+        right: 0;
+
         width: 4rem;
         height: 1.7rem;
         padding: 0;

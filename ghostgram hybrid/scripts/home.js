@@ -401,6 +401,7 @@ function homeCreateAccount() {
 					user.set("alias", alias);
 					user.set("aliasPublic", "ghostgram user");
 					user.set("currentPlace", "");
+				    user.set("currentPlaceUUID", "");
 				    user.set('photo', "images/ghost-default.svg");
 				    user.set('aliasPhoto', "images/ghost-default.svg");
 					user.set("isAvailable", true);	   
@@ -422,6 +423,7 @@ function homeCreateAccount() {
 							APP.models.profile.currentUser.set('phone', user.get('phone'));
 							APP.models.profile.currentUser.set('alias', user.get('alias'));
 							APP.models.profile.currentUser.set('currentPlace', user.get('currentPlace'));
+							APP.models.profile.currentUser.set('currentPlaceUUID', user.get('currentPlaceUUID'));
 							APP.models.profile.currentUser.set('photo', user.get('photo'));
 							APP.models.profile.currentUser.set('isAvailable', user.get('isAvailable'));
 							APP.models.profile.currentUser.set('isVisible', user.get('isVisible'));

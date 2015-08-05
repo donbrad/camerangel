@@ -7,8 +7,35 @@
 	</div>
 	<main>
 		<div id="search-archives">
-			<input type="search" placeholder="Search archive..." />
-			<button data-role="button" data-click="archiveView.search"><img height="18" src="images/gallery-search.svg" /> </button>
+			<button data-role="button" data-click="archiveView.toggleSearch"><img height="18" src="images/sentinel-search.svg" /> </button>
+			<div>
+				<div class="filters">
+					<button class="contacts" data-role="button">
+						<img src="images/sentinel-contacts.svg" />
+					</button>
+					<button class="chats" data-role="button">
+						<img src="images/sentinel-chats.svg" />
+					</button>
+					<button class="date" data-role="button">
+						<img src="images/sentinel-date.svg" />
+					</button>
+					<button class="places" data-role="button">
+						<img src="images/sentinel-places.svg" />
+					</button>
+					<button class="search" data-role="button">
+						<img src="images/sentinel-search.svg" />
+					</button>
+				</div>
+
+				<input type="search" placeholder="Search archive..." />
+
+				<ul class="tags">
+					<!-- Test tags :)
+					<li><img src="images/sentinel-contacts.svg" />Don<button></button></li>
+					<li><img src="images/sentinel-chats.svg" />myplacez design<button></button></li>
+					-->
+				</ul>
+			</div>
 		</div>
 
 		<div id="archive-list" data-role="scroller">

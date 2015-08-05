@@ -37,7 +37,7 @@ SemanticDSs.prototype = {
 				alias: 'Don',
 				value: 'Don Bradford',
 				uuid: '1',
-				category: 'Contacts'
+				category: 'contacts'
 			});
 
 			this.contacts.add({
@@ -45,7 +45,7 @@ SemanticDSs.prototype = {
 				alias: 'Jordan',
 				value: 'Jordan Escoto',
 				uuid: '2',
-				category: 'Contacts'
+				category: 'contacts'
 			});
 
 			this.places.add({
@@ -53,7 +53,7 @@ SemanticDSs.prototype = {
 				alias: 'Home',
 				value: '221 Davis St.',
 				uuid: '3',
-				category: 'Places'
+				category: 'places'
 			});
 
 			this.places.add({
@@ -61,7 +61,7 @@ SemanticDSs.prototype = {
 				alias: 'Brass Buckle',
 				value: 'Brass Buckle',
 				uuid: '4',
-				category: 'Places'
+				category: 'places'
 			});
 
 			this.chats.add({
@@ -69,7 +69,7 @@ SemanticDSs.prototype = {
 				alias: 'myplacez design',
 				value: 'myplacez design',
 				uuid: '5',
-				category: 'Chats'
+				category: 'chats'
 			});
 
 			this.chats.add({
@@ -77,7 +77,7 @@ SemanticDSs.prototype = {
 				alias: 'ghostgrams design',
 				value: 'ghostgrams design',
 				uuid: '6',
-				category: 'Chats'
+				category: 'chats'
 			});
 
 			this.contacts.sync();
