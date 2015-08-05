@@ -121,7 +121,6 @@ function closeTestingBox(){
 
 function setActionBtnHeight(){
 	var windowHeight = $(window).height();
-	console.log(windowHeight);
 	var btnPos = (windowHeight - 160) + "px";
 	$(".footerAction").css("top", btnPos);
 }

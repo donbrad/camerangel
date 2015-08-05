@@ -8,7 +8,7 @@ function onInitGallery(e){
 	APP.models.gallery.previewSize = "33%";
 
 	// hide serch 
-	$("#galleryZoomSelect > li:first-child()").css("display", "none");
+	$("#galleryZoomSelect > li:first-child ").css("display", "none");
 
 	$("#gallerySearch").keyup(function() {
   		var query = $("#gallerySearch").val();
@@ -24,7 +24,6 @@ function galleryOptionsToggle (e) {
 		e.preventDefault();
 	}
 	
-	console.log(e.index);
 
 	if (APP.models.gallery.optionsShown) {
 		$("#galleryToggle").velocity("fadeOut",{duration: 150});
