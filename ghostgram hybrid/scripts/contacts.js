@@ -445,7 +445,7 @@ function onInitContacts(e) {
         fixedHeaders: true,
         click: function (e) {
             var contact = e.dataItem;
-            
+
             updateCurrentContact(contact);
 			
 			if (contact.category === 'phone') {
@@ -461,6 +461,7 @@ function onInitContacts(e) {
 				// If we know the contacts uuid enable the full feature set
 				if (contact.contactUUID !== undefined && contact.contactUUID !== null){
 					$("#contactUserActions").data("kendoMobileActionSheet").open();
+					//APP.kendo.navigate("#ghostEmail"); 
 					//doEditContact(e);
 				} else {
 					$("#contactActions").data("kendoMobileActionSheet").open();
@@ -1029,6 +1030,7 @@ function sendGhostEmail(e) {
     }
 
 }
+
 
 function closeAddContact() {
 	$("#modalview-AddContact").data("kendoMobileModalView").close();

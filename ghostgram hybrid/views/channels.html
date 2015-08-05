@@ -1,9 +1,8 @@
- <div data-role="view" id="channels" data-title="Chats" data-layout="main" data-model="APP.models.channels" data-init="onInitChannels">  
+ <div data-role="view" id="channels" data-title="Chats" data-layout="main" data-model="APP.models.channels" data-init="onInitChannels" data-before-show="setActionBtnHeight">
      <div>
          <ul id="channels-listview"></ul>
      </div>
      	
-     
     <ul data-role="actionsheet" id="channelActions" data-popup='{"direction": "left"}'>
         <li><a data-action="eraseChannel">Erase Chat Content</a></li>
         <li><a data-action="archiveChannel">Archive Chat </a></li>
@@ -75,29 +74,30 @@
     			</ul>
     		</div>
     	</div><!-- chat-options -->
-    	#if (isPrivate){#
-    		<div class="chat-mainBox private">
-    	#} else {#
-    		<div class="chat-mainBox">
-    	#}#
-    	
-    		<h4>
-    		<span><img src="images/status-new.svg" class="list-status" /></span>
-        		 #:name# 
-        		<span class="chatActivityTime">1 hr ago</span>
-    		</h4>
-    		
-    		# if(isPrivate && members.length <= 2){#
-    			<img src="images/private-icon.svg" /> Private Chat
-    		#} else if (false) {# // For place chats
-    			<img src="images/place-icon.svg" id="chatList-place-icon" /> Place Chat
-    		#} else {#
-    			<img src="images/group-icon.svg" /> Group Chat
-    		#}#
+    	<a class="chat-mainBoxLink">
+	    	#if (isPrivate){#
+	    		<div class="chat-mainBox private">
+	    	#} else {#
+	    		<div class="chat-mainBox">
+	    	#}#
+	    	
+	    		<h4>
+	    		<span><img src="images/status-new.svg" class="list-status" /></span>
+	        		 #:name# 
+	        		<span class="chatActivityTime">1 hr ago</span>
+	    		</h4>
+	    		
+	    		# if(isPrivate && members.length <= 2){#
+	    			<img src="images/private-icon.svg" /> Private Chat
+	    		#} else if (false) {# // For place chats
+	    			<img src="images/place-icon.svg" id="chatList-place-icon" /> Place Chat
+	    		#} else {#
+	    			<img src="images/group-icon.svg" /> Group Chat
+	    		#}#
 
- 
-    	</div><!-- chat-mainBox -->
-    	
+	 
+	    	</div><!-- chat-mainBox -->
+    	</a>
    </div>
 </script>
  
@@ -109,7 +109,6 @@
             <a data-role="button" href="#:back" data-click="resetAddChatUI" data-align="right">
             	<img src="images/close.svg" />
             </a>
-            <a class="hidden" data-align="right" data-role="button"  data-rel="drawer" href="#channelMembers"> <i class="ghostIconNavbar fa fa-users"></i> </a>
         </div>
     </div>
     <div id="chat-title-setup">
@@ -216,7 +215,7 @@
 		</div>
 	</div>	  
 	<div class="footerBk" data-role="footer">
-            <a class="btnSpan-btm btnYellow" data-click="finalizeEditChannel" type="button" data-role="button">Save</a>
+            <a class="btnSpan-btm btnPrimary" data-click="finalizeEditChannel" type="button" data-role="button">Save</a>
     	</div>
 </div>
 
@@ -332,7 +331,7 @@
     <div class="addedChatMember" style="display: none"></div>
     <ul id="channelMembers-listview"></ul>
     <div class="footerBk" data-role="footer">
-            <a class="btnSpan-btm btnBlue" type="button" data-role="backbutton">Done</a>
+            <a class="btnSpan-btm btnSecondary" type="button" data-role="backbutton">Done</a>
     	</div>
 </div>
 
