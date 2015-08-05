@@ -1,30 +1,90 @@
  <div data-role="view" data-title="Gallery" id="gallery" data-layout="main" data-model="APP.models.gallery" data-init="onInitGallery" data-show="onShowGallery">
 	
-	<div style="padding-left: 3px; padding-right: 3px; color: blue200; vertical-align: middle; display: inline;">
-		<div style="float: right;">
-			<a data-align="right" data-role="button" type="button" id="btnGalleryOptionsToggle" data-click="galleryOptionsToggle"><img height="24" src="images/sentinel-search.svg" /></a>
+	
+	 <div id="gallerySearchOptions" style="display: none;">
+		<div class="appendSearch">
+			<span id="galleryInputHelper">Search:</span>
+			<input type="search" id="gallerySearch"/>
 		</div>
-		<ul data-role="buttongroup" data-index="0" class="km-small" data-select="selectGalleryZoom" id="galleryZoomSelect">
-			<li> <img height="18" src="images/grid-3.svg" /></li>
-			<li> <img height="18" src="images/grid-2.svg" /></li>
-			<li> <img height="18" src="images/grid-1.svg" /></li>
+
+		<ul data-role="buttongroup" data-index="1" class="km-small" data-select="selectGallerySearchTool" id="gallerySearchToolSelect">
+			<li> <img height="18" src="images/sentinel-search.svg" /> </li>
+			<li> <img height="18" src="images/sentinel-contacts.svg" /> </li>
+			<li> <img height="18" src="images/sentinel-chats.svg" /> </li>
+			<li> <img height="18" src="images/sentinel-date.svg" /> </li>
+			<li> <img height="18" src="images/sentinel-places.svg" /> </li>
 		</ul>
 		
+		<div id="gallerySearchTags" style="width:95%; min-height: 18px; "></div>
+		
 	</div>
-	 <div id="gallerySearchOptions" style="margin: 3px; padding: 3px;  color: blue200; text-align: center;  border: 1px solid #2e2e2e;" class="hidden">
-		<ul data-role="buttongroup" data-index="4" class="km-small" data-select="selectGallerySearchTool" id="gallerySearchToolSelect">
-			<li><img height="18" src="images/sentinel-contacts.svg" /></li>
-			<li><img height="18" src="images/sentinel-chats.svg" /></li>
-			<li><img height="18" src="images/sentinel-date.svg" /></li>
-			<li><img height="18" src="images/sentinel-places.svg" /></li>
-			<li><img height="18" src="images/sentinel-search.svg" /></li>
+	<div style="padding-left: 3px; padding-right: 3px; color: blue200; vertical-align: middle;">
+		<a class="btnClear-grey" data-role="button" data-click="galleryOptionsToggle" id="galleryToggle"> 
+			<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+  
+		    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+		        <g id="gallery-search" sketch:type="MSArtboardGroup" transform="translate(-15.000000, -76.000000)" fill="#8E8E93">
+		            <path d="M29.7696168,92.6157707 C28.2267928,93.7747565 26.3089843,94.4615385 24.2307692,94.4615385 C19.1327562,94.4615385 15,90.3287823 15,85.2307692 C15,80.1327562 19.1327562,76 24.2307692,76 C29.3287823,76 33.4615385,80.1327562 33.4615385,85.2307692 C33.4615385,87.3089843 32.7747565,89.2267928 31.6157707,90.7696168 L39,98.1538462 L37.1538462,100 L29.7696168,92.6157707 L29.7696168,92.6157707 Z M24.2307692,92.6153846 C28.3091797,92.6153846 31.6153846,89.3091797 31.6153846,85.2307692 C31.6153846,81.1523588 28.3091797,77.8461538 24.2307692,77.8461538 C20.1523588,77.8461538 16.8461538,81.1523588 16.8461538,85.2307692 C16.8461538,89.3091797 20.1523588,92.6153846 24.2307692,92.6153846 Z" sketch:type="MSShapeGroup"></path>
+		        </g>
+		    </g>
+		</svg> 
+		</a>
+		<ul data-role="buttongroup" data-index="1" class="km-small" data-select="selectGalleryZoom" id="galleryZoomSelect">
+			<li><a class="btnClear-sm" data-role="button" data-click="galleryOptionsToggle">
+				<img src="images/select-dropdown.svg" /> Hide</a>
+			</li>
+			<li>
+				<svg width="37px" height="24px" viewBox="0 0 37 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+				    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+				        <g id="gallery-grid-3" sketch:type="MSArtboardGroup" transform="translate(-109.000000, -76.000000)" fill="#979797">
+				            <g sketch:type="MSLayerGroup" transform="translate(109.000000, 76.000000)">
+				                <g sketch:type="MSShapeGroup">
+				                    <path d="M26.2730667,0.191466667 L36.7690667,0.191466667 L36.7690667,10.6874667 L26.2730667,10.6874667 L26.2730667,0.191466667 Z" ></path>
+				                    <path d="M26.2730667,13.3125333 L36.7690667,13.3125333 L36.7690667,23.8085333 L26.2730667,23.8085333 L26.2730667,13.3125333 Z" ></path>
+				                    <path d="M13.152,0.191466667 L23.648,0.191466667 L23.648,10.6874667 L13.152,10.6874667 L13.152,0.191466667 Z" ></path>
+				                    <path d="M13.152,13.3125333 L23.648,13.3125333 L23.648,23.8085333 L13.152,23.8085333 L13.152,13.3125333 Z" ></path>
+				                    <path d="M0.0314666667,0.191466667 L10.5274667,0.191466667 L10.5274667,10.6874667 L0.0314666667,10.6874667 L0.0314666667,0.191466667 Z" ></path>
+				                    <path d="M0.0314666667,13.3125333 L10.5274667,13.3125333 L10.5274667,23.8085333 L0.0314666667,23.8085333 L0.0314666667,13.3125333 Z"></path>
+				                </g>
+				            </g>
+				        </g>
+				    </g>
+				</svg>
+			</li>
+			<li>
+				<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+				    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+				        <g id="gallery-grid-2" sketch:type="MSArtboardGroup" transform="translate(-180.000000, -76.000000)" fill="#979797">
+				            <g sketch:type="MSLayerGroup" transform="translate(109.000000, 76.000000)">
+				                <g transform="translate(71.000000, 0.000000)" sketch:type="MSShapeGroup">
+				                    <path d="M12.8,0 L23.296,0 L23.296,10.496 L12.8,10.496 L12.8,0 Z"></path>
+				                    <path d="M12.8,13.3333333 L23.296,13.3333333 L23.296,23.8293333 L12.8,23.8293333 L12.8,13.3333333 Z"></path>
+				                    <path d="M0,0 L10.496,0 L10.496,10.496 L0,10.496 L0,0 Z"></path>
+				                    <path d="M0,13.3333333 L10.496,13.3333333 L10.496,23.8293333 L0,23.8293333 L0,13.3333333 Z"></path>
+				                </g>
+				            </g>
+				        </g>
+				    </g>
+				</svg>
+			</li>
+			<li> 
+				<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+				    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+				        <g id="gallery-grid-1" sketch:type="MSArtboardGroup" transform="translate(-242.000000, -76.000000)" fill="#979797">
+				            <g sketch:type="MSLayerGroup" transform="translate(109.000000, 76.000000)">
+				                <g transform="translate(133.000000, 0.000000)" sketch:type="MSShapeGroup">
+				                    <path d="M0,0 L24,0 L24,24 L0,24 L0,0 Z"></path>
+				                </g>
+				            </g>
+				        </g>
+				    </g>
+				</svg>
+			</li>
 		</ul>
-		 
-		<input type="search" id="gallerySearch" style="width:95%;"> </input>
-		<div id="gallerySearchTags" style="width:95%; min-height: 18px; "></div>	
+		
+
 	</div>
-	
-	 
+
      <div style="padding-top: 8px; padding-left: 4px; padding-right: 4px; padding-bottom: 48px; height: 100%;">
          <ul id="gallery-listview" class="list-inline" data-role="listview" data-click="galleryClick" data-source="APP.models.gallery.photosDS" data-template="gallery-template"></ul>
      </div>
