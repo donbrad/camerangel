@@ -53,8 +53,7 @@ Sentinel.prototype = _.assign({
 				}
 			}
 		}.bind(this));
-
-		$tags.on('click', 'button', function (e) {
+gs.on('click', 'button', function (e) {
 			$(e.target).parent().fadeOut(100, function () {
 				$(e.target).parent().remove();
 				this.emitEvent('remove');
