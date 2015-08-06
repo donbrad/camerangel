@@ -1,6 +1,6 @@
 /* Imports */
-@import url('http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Hind:300,400,500|PT+Sans:400,700');
-@import (less) "mixins.less";
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Hind:300,400,500|PT+Sans:400,700);
+@import "mixins.less";
 
 
 /* Colors */
@@ -35,7 +35,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 50%;
+  margin-top: 50%; 
 }
 
 .pad {
@@ -155,7 +155,7 @@ input {
     color: @black;
 }
 .standard-input {
-	&:extend(input){};
+	&:extend(input);
 }
 
 label {
@@ -360,7 +360,7 @@ form {
 }
 
 .btnPrimary {
-	&:extend(.btnStyle){};
+	&:extend(.btnStyle);
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
@@ -387,7 +387,7 @@ form {
 }
 
 .btnBlack {
-	&:extend(.btnStyle){};
+	&:extend(.btnStyle);
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
@@ -409,7 +409,7 @@ form {
 }
 
 .btnBlack-sm {
-	&:extend(.btnStyle){};
+	&:extend(.btnStyle);
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
@@ -432,7 +432,7 @@ form {
 }
 
 .btnSecondary {
-	&:extend(.btnStyle){};
+	&:extend(.btnStyle);
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
@@ -459,7 +459,7 @@ form {
 }
 
 .btnClear {
-	&:extend(.btnStyle){};
+	&:extend(.btnStyle);
     background: transparent;
     color: #2D93FF !important;
     font-weight: 400;
@@ -473,7 +473,7 @@ form {
 }
 
 .btnClear-sm {
-	&:extend(.btnStyle){};
+	&:extend(.btnStyle);
 	background: transparent;
     color: #2D93FF !important;
     .font-size(13) !important;
@@ -503,7 +503,7 @@ form {
 }
 
 .btnClearLine {
-	&:extend(.btnStyle){};
+	&:extend(.btnStyle);
     background: transparent;
     color: #2D93FF !important;
     border: 1px solid @primary-200;
@@ -520,7 +520,7 @@ form {
 
 
 .btnClearLine-grey-sm {
-	&:extend(.btnStyle){};
+	&:extend(.btnStyle);
     background: transparent;
     color: @shade-100 !important;
     .font-size(12) !important;
@@ -537,7 +537,7 @@ form {
 }
 
 .btnClear-grey {
-	&:extend(.btnStyle){};
+	&:extend(.btnStyle);
     background: transparent;
     color: #979797 !important;
     :active {
@@ -551,12 +551,12 @@ form {
 }
 
 .btnClear-grey-sm {
-	&:extend(.btnClear-grey){};
+	&:extend(.btnClear-grey);
 	.font-size(13) !important;
 }
 
 .btnClear-red {
-	&:extend(.btnStyle){};
+	&:extend(.btnStyle);
     background: transparent;
     color: #f44336 !important;
     :active {
@@ -570,7 +570,7 @@ form {
 }
 
 .btnFull {
-	&:extend(.btnStyle){};
+	&:extend(.btnStyle);
     width: 100%;
     color: #fff;
     text-align: center;
@@ -3190,7 +3190,7 @@ div.loginBox > form > div > ul > li {
 }
 
 .km-material .km-buttongroup .km-button {
-	&:extend(.btnStyle){};
+	&:extend(.btnStyle);
 }
 
 .chat-message {
