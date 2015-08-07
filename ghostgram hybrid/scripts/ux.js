@@ -119,4 +119,8 @@ function closeTestingBox(){
 	$("#testing").data("kendoMobileModalView").close();
 }
 
-
+function setActionBtnHeight(){
+	var windowHeight = $(window).height();
+	var btnPos = (windowHeight - 160) + "px";
+	$(".footerAction").css("top", btnPos);
+}

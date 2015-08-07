@@ -2,7 +2,7 @@
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="backbutton"  data-align="right">
+            <a data-role="button" href="#home" data-align="right">
             	<img class="menuIcon" src="images/close.svg"/>
             </a>
         </div>
@@ -14,17 +14,22 @@
 		  <ul data-role="listview" data-style="inset">
 				 <li>
 					<label>Use Retina Photos
-						<input type="checkbox" id="settingsRetinaPhoto" data-role="switch" />
+						<input type="checkbox" id="settingsRetinaPhoto" data-role="switch" data-bind="checked: currentUser.isRetina"/>
 					</label>
 				</li>
 				 <li>
 					<label> Sync on WIFI Only
-						<input type="checkbox" id="settingsWIFIOnly" data-role="switch" />
+						<input type="checkbox" id="settingsWIFIOnly" data-role="switch" data-bind="checked: currentUser.isWIFIOnly" />
 					</label>
 				</li>
 			  <li>
 				  <label> Keep Original Photo
-					  <input type="checkbox" id="settingsKeepPhoto" data-role="switch" />
+					  <input type="checkbox" id="settingsKeepPhoto" data-role="switch" data-bind="checked: currentUser.isPhotoStored" />
+				  </label>
+			  </li>
+			  <li>
+				  <label> Save to Phone Photo Album
+					  <input type="checkbox" id="settingsSaveToAlbum" data-role="switch"  data-bind="checked: currentUser.savePhotoToAlbum"/>
 				  </label>
 			  </li>
 			</ul>		

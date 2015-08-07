@@ -6,8 +6,13 @@ function onInitGallery(e){
 	APP.models.gallery.rotationAngle = 0;
 	APP.models.gallery.optionsHidden = true;
 	APP.models.gallery.previewSize = "33%";
-	$( "#gallerySearch" ).keyup(function() {
-  		var query = ("#gallerySearch").val();
+	APP.models.gallery.optionsShown = true;
+
+	// hide serch 
+	$("#galleryZoomSelect > li:first-child ").css("display", "none");
+
+	$("#gallerySearch").keyup(function() {
+  		var query = $("#gallerySearch").val();
 		if (query.length > 0) {
 			
 		}
@@ -16,18 +21,26 @@ function onInitGallery(e){
 }
 
 function galleryOptionsToggle (e) {
-	if (e !== undefined && e.preventDefault !== undefined)
+	if (e !== undefined && e.preventDefault !== undefined){
 		e.preventDefault();
-
-	
-	if (APP.models.gallery.optionsShown) {
-		$('#gallerySearchOptions').addClass('hidden');
-		APP.models.gallery.optionsShown = false;
-		
-	} else {
-		$('#gallerySearchOptions').removeClass('hidden');
-		APP.models.gallery.optionsShown = true;
 	}
+	
+
+	if (APP.models.gallery.optionsShown) {
+		$("#galleryToggle").velocity("fadeOut",{duration: 150});
+		$('#gallerySearchOptions').velocity("slideDown",{duration: 300});
+		$("#galleryZoomSelect > li:first-child").velocity("fadeIn", {duration: 300});
+		APP.models.gallery.optionsShown = false;
+		$("#gallerySearch").focus();
+	} else {
+		$('#gallerySearchOptions').velocity("slideUp",{duration: 300});
+		$("#galleryToggle").velocity("fadeIn",{delay: 150, duration: 150});
+		$("#galleryZoomSelect > li:first-child").velocity("fadeOut", {duration: 300});
+		//$('#gallerySearchOptions').removeClass('hidden');
+		APP.models.gallery.optionsShown = true;
+		
+	}
+	
 }
 
 
@@ -38,19 +51,24 @@ function selectGallerySearchTool(e) {
 	
 	switch (index) {
 			
-		case 0: // Contacts
+		case 0: // Search
+			$("#galleryInputHelper").text("Search:");
 			break;
 			
-		case 1: // Chats
+		case 1: // Contacts
+			$("#galleryInputHelper").text("Contacts:");
 			break;
 			
-		case 2: // Dates
+		case 2: // Chats
+			$("#galleryInputHelper").text("Chats:");
 			break;
 			
-		case 3: // Places
+		case 3: // Calendar
+			$("#galleryInputHelper").text("Calendar:");
 			break;
 			
-		case 4: // Search
+		case 4: // Places
+			$("#galleryInputHelper").text("Places:");
 			break;
 	}
 	
@@ -63,16 +81,19 @@ function selectGalleryZoom(e) {
 	var index = this.current().index();
 	switch (index) {
 		case 0:
+			galleryOptionsToggle();
+			break;
+		case 1:
 			APP.models.gallery.previewSize = "33%";
 			$("#gallery-listview li").css("width","33%");
 			$("#gallery-listview li").css("padding-bottom","33%");
 			break;
-		case 1 :
+		case 2:
 			APP.models.gallery.previewSize = "50%";
 			$("#gallery-listview li").css("width","50%");
 			$("#gallery-listview li").css("padding-bottom","50%");
 			break;
-		case 2 :
+		case 3:
 			APP.models.gallery.previewSize = "100%";
 			$("#gallery-listview li").css("width","100%");
 			$("#gallery-listview li").css("padding-bottom","100%");

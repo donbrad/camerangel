@@ -61,11 +61,11 @@
 <div data-role="layout" data-id="main" style="display:none;" >
     <div data-role="header">
         <div data-role="navbar">
-			<a data-role="button" data-rel="modalview" href="#modalview-profileStatus" data-align="left" class="home-headerBtn">
+			<a data-role="button" data-rel="modalview" href="#modalview-profileStatus" data-align="left" class="home-headerBtn" data-click-on="down">
 				<div class="user-status">
 					<div class="left">
 						<span class="home-status">
-							<img width="18" class="home-status-img" src="images/status-away.svg"/>
+							<img class="home-status-img" src="images/status-away.svg"/>
 						</span>
 						<img class="circle-img-home home-profile-img" />
 					</div>
@@ -73,7 +73,7 @@
 				</div>
 			</a>
 			<span data-role="view-title"></span>
-			 <a data-role="button" data-rel="actionsheet" href="#settingsAction" data-align="right">
+				<a data-role="button" data-rel="actionsheet" href="#settingsAction" data-align="right" data-click-on="down">
                 <img class="nav-gear" src="images/nav-gear.svg"/>
             </a>
         </div>
@@ -87,27 +87,24 @@
     <div class="footerMenu" data-role="footer">
         <ul class="list-inline menuNav">
             <li>
-                <a data-role="button" href="#home">
+                <a data-role="button" href="#home" data-click-on="down">
                 	<svg width="26px" height="24px" viewBox="0 0 26 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
-					    <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
-					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-					        <g id="nav-home" sketch:type="MSArtboardGroup" transform="translate(-18.000000, -634.000000)" fill="#979797">
-					            <path d="M21.4032787,646.609836 L21.4032787,646.590164 L22.4065574,646.590164 L22.4065574,656.918033 C23.9870388,656.918033 25.4901066,656.918033 27.0885246,656.898837 L27.0885246,649.698361 L27.1278689,649.698361 L27.1278689,649.678689 L34.3868852,649.678689 L34.3868852,656.878689 L39.0295082,656.878689 L39.0295082,646.590164 L39.0688525,646.590164 L39.0688525,646.570492 L40.0918033,646.570492 C40.0918033,646.727869 40.1114754,646.865574 40.1114754,647.022951 C40.1114754,650.504918 40.0918033,654.006557 40.1114754,657.488525 C40.1114754,657.74835 40.0685791,657.879485 39.9261299,657.938589 C39.8505211,657.98388 39.7396043,658 39.5803279,658 C37.652459,657.980328 35.704918,658 33.7770492,658 L33.304918,658 L33.304918,650.740984 L28.1508197,650.740984 L28.1508197,657.960656 L28.1114754,657.960656 L28.1114754,657.980328 L21.3639344,657.980328 L21.3639344,646.609836 L21.4032787,646.609836 Z M18,646.904918 C18.3934426,646.531148 18.7868852,646.157377 19.1803279,645.763934 C21.0295082,643.914754 22.8786885,642.065574 24.7278689,640.196721 C24.8852459,640.039344 25.0032787,639.763934 25.0032787,639.547541 C25.0229508,638.24918 25.0229508,636.931148 25.0229508,635.632787 L25.0229508,635.140984 L26.0852459,635.140984 L26.0852459,638.780328 C27.6786885,637.167213 29.2327869,635.613115 30.8262295,634 C34.9967213,638.347541 39.0885246,642.616393 43.2,646.885246 C42.9442623,647.140984 42.7081967,647.377049 42.452459,647.613115 C38.5967213,643.619672 34.7409836,639.606557 30.8852459,635.593443 C26.852459,639.62623 22.8196721,643.659016 18.7868852,647.691803 C18.4918033,647.416393 18.2360656,647.2 18,646.983607 L18,646.904918 Z" sketch:type="MSShapeGroup"></path>
+					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+					        <g id="nav-home" transform="translate(-18.000000, -634.000000)" fill="#979797">
+					            <path d="M21.4032787,646.609836 L21.4032787,646.590164 L22.4065574,646.590164 L22.4065574,656.918033 C23.9870388,656.918033 25.4901066,656.918033 27.0885246,656.898837 L27.0885246,649.698361 L27.1278689,649.698361 L27.1278689,649.678689 L34.3868852,649.678689 L34.3868852,656.878689 L39.0295082,656.878689 L39.0295082,646.590164 L39.0688525,646.590164 L39.0688525,646.570492 L40.0918033,646.570492 C40.0918033,646.727869 40.1114754,646.865574 40.1114754,647.022951 C40.1114754,650.504918 40.0918033,654.006557 40.1114754,657.488525 C40.1114754,657.74835 40.0685791,657.879485 39.9261299,657.938589 C39.8505211,657.98388 39.7396043,658 39.5803279,658 C37.652459,657.980328 35.704918,658 33.7770492,658 L33.304918,658 L33.304918,650.740984 L28.1508197,650.740984 L28.1508197,657.960656 L28.1114754,657.960656 L28.1114754,657.980328 L21.3639344,657.980328 L21.3639344,646.609836 L21.4032787,646.609836 Z M18,646.904918 C18.3934426,646.531148 18.7868852,646.157377 19.1803279,645.763934 C21.0295082,643.914754 22.8786885,642.065574 24.7278689,640.196721 C24.8852459,640.039344 25.0032787,639.763934 25.0032787,639.547541 C25.0229508,638.24918 25.0229508,636.931148 25.0229508,635.632787 L25.0229508,635.140984 L26.0852459,635.140984 L26.0852459,638.780328 C27.6786885,637.167213 29.2327869,635.613115 30.8262295,634 C34.9967213,638.347541 39.0885246,642.616393 43.2,646.885246 C42.9442623,647.140984 42.7081967,647.377049 42.452459,647.613115 C38.5967213,643.619672 34.7409836,639.606557 30.8852459,635.593443 C26.852459,639.62623 22.8196721,643.659016 18.7868852,647.691803 C18.4918033,647.416393 18.2360656,647.2 18,646.983607 L18,646.904918 Z"></path>
 					        </g>
 					    </g>
 					</svg>
                 </a>
             </li>
             <li>
-                <a data-role="button" href="views/channels.html">
+                <a data-role="button" href="views/channels.html" data-click-on="down">
 	                <svg width="28px" height="23px" viewBox="0 0 28 23" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
-					    <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
-					  
-					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-					        <g id="nav-chat" sketch:type="MSArtboardGroup" transform="translate(-97.000000, -635.000000)" fill="#979797">
-					            <g class="Shape" sketch:type="MSLayerGroup" transform="translate(97.000000, 635.000000)">
-					                <path d="M26.4079734,13.1614618 C26.4079734,14.4797342 25.6212625,15.6704319 24.3880399,16.1594684 C24.2392027,16.2232558 24.069103,16.2870432 23.8990033,16.3083056 C23.792691,16.3295681 23.7076412,16.4358804 23.7076412,16.5634551 L23.7076412,20.0930233 L21.007309,17.0099668 L20.5395349,16.4784053 C20.49701,16.4146179 20.4119601,16.3933555 20.3481728,16.3933555 L12.8637874,16.3933555 C11.0777409,16.3933555 9.63189369,14.9475083 9.63189369,13.1614618 L9.63189369,7.7820598 C9.63189369,5.99601329 11.0777409,4.55016611 12.8637874,4.55016611 L23.1760797,4.55016611 C24.9621262,4.55016611 26.4079734,5.99601329 26.4079734,7.7820598 L26.4079734,13.1614618 L26.4079734,13.1614618 Z M23.1548173,3.50830565 L12.8637874,3.50830565 C10.5036545,3.50830565 8.59003322,5.42192691 8.59003322,7.7820598 L8.59003322,13.1401993 C8.59003322,15.5003322 10.5036545,17.4139535 12.8637874,17.4139535 L20.0079734,17.4139535 L23.3674419,21.2624585 L24.2817276,22.3043189 C24.3242525,22.3681063 24.4093023,22.3893688 24.4730897,22.3893688 C24.4943522,22.3893688 24.5368771,22.3893688 24.5581395,22.3681063 C24.6644518,22.3255814 24.7282392,22.2405316 24.7282392,22.1342193 L24.7282392,17.1162791 C26.344186,16.4784053 27.4285714,14.9049834 27.4285714,13.1401993 L27.4285714,7.7820598 C27.4285714,5.42192691 25.5149502,3.50830565 23.1548173,3.50830565 L23.1548173,3.50830565 Z" sketch:type="MSShapeGroup"></path>
-					                <path d="M7.84584718,9.95083056 L6.4,9.95083056 C6.33621262,9.95083056 6.25116279,9.97209302 6.20863787,10.0358804 L5.74086379,10.5674419 L3.93355482,12.7362126 L3.93355482,10.1209302 C3.93355482,9.99335548 3.84850498,9.90830565 3.74219269,9.86578073 C3.57209302,9.82325581 3.40199336,9.7807309 3.25315615,9.71694352 C2.01993355,9.20664452 1.23322259,8.0372093 1.23322259,6.71893688 L1.23322259,4.31627907 C1.23322259,2.53023256 2.67906977,1.08438538 4.46511628,1.08438538 L11.9707641,1.08438538 C13.2039867,1.08438538 14.3096346,1.76478405 14.8624585,2.84916944 L15.9893688,2.84916944 C15.8830565,2.59401993 15.7767442,2.33887043 15.627907,2.08372093 C14.841196,0.807973422 13.4803987,0.0425249169 11.9920266,0.0425249169 L4.48637874,0.0425249169 C2.12624585,0.0425249169 0.212624585,1.95614618 0.212624585,4.31627907 L0.212624585,6.71893688 C0.212624585,8.48372093 1.29700997,10.0571429 2.91295681,10.6950166 L2.91295681,14.841196 C2.91295681,14.9475083 2.97674419,15.0325581 3.08305648,15.0750831 C3.10431894,15.0963455 3.14684385,15.0963455 3.16810631,15.0963455 C3.23189369,15.0963455 3.31694352,15.0750831 3.35946844,15.0112957 L4.27375415,13.9694352 L4.27375415,13.9694352 L6.76146179,11.0139535 L7.84584718,11.0139535 L7.84584718,9.95083056 L7.84584718,9.95083056 Z" sketch:type="MSShapeGroup"></path>
+					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+					        <g id="nav-chat" transform="translate(-97.000000, -635.000000)" fill="#979797">
+					            <g class="Shape" transform="translate(97.000000, 635.000000)">
+					                <path d="M26.4079734,13.1614618 C26.4079734,14.4797342 25.6212625,15.6704319 24.3880399,16.1594684 C24.2392027,16.2232558 24.069103,16.2870432 23.8990033,16.3083056 C23.792691,16.3295681 23.7076412,16.4358804 23.7076412,16.5634551 L23.7076412,20.0930233 L21.007309,17.0099668 L20.5395349,16.4784053 C20.49701,16.4146179 20.4119601,16.3933555 20.3481728,16.3933555 L12.8637874,16.3933555 C11.0777409,16.3933555 9.63189369,14.9475083 9.63189369,13.1614618 L9.63189369,7.7820598 C9.63189369,5.99601329 11.0777409,4.55016611 12.8637874,4.55016611 L23.1760797,4.55016611 C24.9621262,4.55016611 26.4079734,5.99601329 26.4079734,7.7820598 L26.4079734,13.1614618 L26.4079734,13.1614618 Z M23.1548173,3.50830565 L12.8637874,3.50830565 C10.5036545,3.50830565 8.59003322,5.42192691 8.59003322,7.7820598 L8.59003322,13.1401993 C8.59003322,15.5003322 10.5036545,17.4139535 12.8637874,17.4139535 L20.0079734,17.4139535 L23.3674419,21.2624585 L24.2817276,22.3043189 C24.3242525,22.3681063 24.4093023,22.3893688 24.4730897,22.3893688 C24.4943522,22.3893688 24.5368771,22.3893688 24.5581395,22.3681063 C24.6644518,22.3255814 24.7282392,22.2405316 24.7282392,22.1342193 L24.7282392,17.1162791 C26.344186,16.4784053 27.4285714,14.9049834 27.4285714,13.1401993 L27.4285714,7.7820598 C27.4285714,5.42192691 25.5149502,3.50830565 23.1548173,3.50830565 L23.1548173,3.50830565 Z"></path>
+					                <path d="M7.84584718,9.95083056 L6.4,9.95083056 C6.33621262,9.95083056 6.25116279,9.97209302 6.20863787,10.0358804 L5.74086379,10.5674419 L3.93355482,12.7362126 L3.93355482,10.1209302 C3.93355482,9.99335548 3.84850498,9.90830565 3.74219269,9.86578073 C3.57209302,9.82325581 3.40199336,9.7807309 3.25315615,9.71694352 C2.01993355,9.20664452 1.23322259,8.0372093 1.23322259,6.71893688 L1.23322259,4.31627907 C1.23322259,2.53023256 2.67906977,1.08438538 4.46511628,1.08438538 L11.9707641,1.08438538 C13.2039867,1.08438538 14.3096346,1.76478405 14.8624585,2.84916944 L15.9893688,2.84916944 C15.8830565,2.59401993 15.7767442,2.33887043 15.627907,2.08372093 C14.841196,0.807973422 13.4803987,0.0425249169 11.9920266,0.0425249169 L4.48637874,0.0425249169 C2.12624585,0.0425249169 0.212624585,1.95614618 0.212624585,4.31627907 L0.212624585,6.71893688 C0.212624585,8.48372093 1.29700997,10.0571429 2.91295681,10.6950166 L2.91295681,14.841196 C2.91295681,14.9475083 2.97674419,15.0325581 3.08305648,15.0750831 C3.10431894,15.0963455 3.14684385,15.0963455 3.16810631,15.0963455 C3.23189369,15.0963455 3.31694352,15.0750831 3.35946844,15.0112957 L4.27375415,13.9694352 L4.27375415,13.9694352 L6.76146179,11.0139535 L7.84584718,11.0139535 L7.84584718,9.95083056 L7.84584718,9.95083056 Z"></path>
 					            </g>
 					        </g>
 					    </g>
@@ -115,18 +112,18 @@
 				</a>
             </li>
             <li>
-                <a data-role="button" href="views/contacts.html">
+                <a data-role="button" href="views/contacts.html" data-click-on="down">
                 	<svg width="22px" height="24px" viewBox="0 0 22 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
-					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-					        <g sketch:type="MSArtboardGroup" transform="translate(-176.000000, -634.000000)" fill="#979797">
-					            <g id="nav-contacts" sketch:type="MSLayerGroup" transform="translate(176.500000, 634.000000)">
-					                <path d="M19.5177931,23.5862069 L3.65462069,23.5862069 C2.79310345,23.5862069 2.06896552,22.862069 2.06896552,22.0005517 L2.06896552,18.8971034 C2.06896552,18.6206897 2.3097931,18.3798621 2.5862069,18.3798621 C2.86262069,18.3798621 3.10344828,18.6206897 3.10344828,18.8971034 L3.10344828,22.0005517 C3.10344828,22.3108966 3.34427586,22.5517241 3.65462069,22.5517241 L19.5161379,22.5517241 C19.8264828,22.5517241 20.0673103,22.3108966 20.0673103,22.0005517 L20.0673103,1.62124138 C20.0673103,1.31089655 19.8264828,1.07006897 19.5161379,1.07006897 L3.65462069,1.07006897 C3.34427586,1.07006897 3.10344828,1.31089655 3.10344828,1.62124138 L3.10344828,4.72468966 C3.10344828,5.00110345 2.86262069,5.24193103 2.5862069,5.24193103 C2.3097931,5.24193103 2.06896552,5.00110345 2.06896552,4.72468966 L2.06896552,1.62124138 C2.06896552,0.759724138 2.79310345,0.0355862069 3.65462069,0.0355862069 L19.5161379,0.0355862069 C20.3776552,0.0355862069 21.1017931,0.759724138 21.1017931,1.62124138 L21.1017931,22.0005517 C21.1034483,22.862069 20.3793103,23.5862069 19.5177931,23.5862069 L19.5177931,23.5862069 Z" sketch:type="MSShapeGroup"></path>
-					                <path d="M11.5862069,13.0005517 C9.75806897,13.0005517 8.24193103,11.5183448 8.24193103,9.65627586 C8.24193103,7.7942069 9.72413793,6.312 11.5862069,6.312 C13.4143448,6.312 14.9304828,7.7942069 14.9304828,9.65627586 C14.9304828,11.5183448 13.4143448,13.0005517 11.5862069,13.0005517 L11.5862069,13.0005517 Z M11.5862069,7.37875862 C10.3108966,7.37875862 9.27641379,8.41324138 9.27641379,9.68855172 C9.27641379,10.9638621 10.3108966,11.9983448 11.5862069,11.9983448 C12.8615172,11.9983448 13.896,10.9638621 13.896,9.68855172 C13.896,8.41158621 12.8615172,7.37875862 11.5862069,7.37875862 L11.5862069,7.37875862 Z" sketch:type="MSShapeGroup"></path>
-					                <path d="M16.4143448,16.5856552 L6.75806897,16.5856552 L6.75806897,16.0684138 C6.75806897,13.8264828 8.93048276,12.033931 11.5862069,12.033931 C14.241931,12.033931 16.4143448,13.862069 16.4143448,16.0684138 L16.4143448,16.5856552 Z M7.82813793,15.5511724 L15.3103448,15.5511724 C15,14.1368276 13.4482759,13.0684138 11.5522759,13.0684138 C9.72413793,13.0684138 8.13848276,14.1724138 7.82813793,15.5511724 L7.82813793,15.5511724 Z" sketch:type="MSShapeGroup"></path>
-					                <path d="M4.44827586,7.5177931 L0.517241379,7.5177931 C0.240827586,7.5177931 0,7.27696552 0,7.00055172 C0,6.72413793 0.240827586,6.48331034 0.517241379,6.48331034 L4.44827586,6.48331034 C4.72468966,6.48331034 4.96551724,6.72413793 4.96551724,7.00055172 C4.96551724,7.27696552 4.72468966,7.5177931 4.44827586,7.5177931 L4.44827586,7.5177931 Z" sketch:type="MSShapeGroup"></path>
-					                <path d="M4.44827586,10.7246897 L0.517241379,10.7246897 C0.240827586,10.7246897 0,10.4838621 0,10.2074483 C0,9.93103448 0.240827586,9.6902069 0.517241379,9.6902069 L4.44827586,9.6902069 C4.72468966,9.6902069 4.96551724,9.93103448 4.96551724,10.2074483 C4.96551724,10.4838621 4.72468966,10.7246897 4.44827586,10.7246897 L4.44827586,10.7246897 Z" sketch:type="MSShapeGroup"></path>
-					                <path d="M4.44827586,13.896 L0.517241379,13.896 C0.240827586,13.896 0,13.6551724 0,13.3787586 C0,13.1023448 0.240827586,12.8615172 0.517241379,12.8615172 L4.44827586,12.8615172 C4.72468966,12.8615172 4.96551724,13.1023448 4.96551724,13.3787586 C4.96551724,13.6551724 4.72468966,13.896 4.44827586,13.896 L4.44827586,13.896 Z" sketch:type="MSShapeGroup"></path>
-					                <path d="M4.44827586,17.1028966 L0.517241379,17.1028966 C0.240827586,17.1028966 0,16.862069 0,16.5856552 C0,16.3092414 0.240827586,16.0684138 0.517241379,16.0684138 L4.44827586,16.0684138 C4.72468966,16.0684138 4.96551724,16.3092414 4.96551724,16.5856552 C4.96551724,16.862069 4.72468966,17.1028966 4.44827586,17.1028966 L4.44827586,17.1028966 Z" sketch:type="MSShapeGroup"></path>
+					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+					        <g transform="translate(-176.000000, -634.000000)" fill="#979797">
+					            <g id="nav-contacts" transform="translate(176.500000, 634.000000)">
+					                <path d="M19.5177931,23.5862069 L3.65462069,23.5862069 C2.79310345,23.5862069 2.06896552,22.862069 2.06896552,22.0005517 L2.06896552,18.8971034 C2.06896552,18.6206897 2.3097931,18.3798621 2.5862069,18.3798621 C2.86262069,18.3798621 3.10344828,18.6206897 3.10344828,18.8971034 L3.10344828,22.0005517 C3.10344828,22.3108966 3.34427586,22.5517241 3.65462069,22.5517241 L19.5161379,22.5517241 C19.8264828,22.5517241 20.0673103,22.3108966 20.0673103,22.0005517 L20.0673103,1.62124138 C20.0673103,1.31089655 19.8264828,1.07006897 19.5161379,1.07006897 L3.65462069,1.07006897 C3.34427586,1.07006897 3.10344828,1.31089655 3.10344828,1.62124138 L3.10344828,4.72468966 C3.10344828,5.00110345 2.86262069,5.24193103 2.5862069,5.24193103 C2.3097931,5.24193103 2.06896552,5.00110345 2.06896552,4.72468966 L2.06896552,1.62124138 C2.06896552,0.759724138 2.79310345,0.0355862069 3.65462069,0.0355862069 L19.5161379,0.0355862069 C20.3776552,0.0355862069 21.1017931,0.759724138 21.1017931,1.62124138 L21.1017931,22.0005517 C21.1034483,22.862069 20.3793103,23.5862069 19.5177931,23.5862069 L19.5177931,23.5862069 Z"></path>
+					                <path d="M11.5862069,13.0005517 C9.75806897,13.0005517 8.24193103,11.5183448 8.24193103,9.65627586 C8.24193103,7.7942069 9.72413793,6.312 11.5862069,6.312 C13.4143448,6.312 14.9304828,7.7942069 14.9304828,9.65627586 C14.9304828,11.5183448 13.4143448,13.0005517 11.5862069,13.0005517 L11.5862069,13.0005517 Z M11.5862069,7.37875862 C10.3108966,7.37875862 9.27641379,8.41324138 9.27641379,9.68855172 C9.27641379,10.9638621 10.3108966,11.9983448 11.5862069,11.9983448 C12.8615172,11.9983448 13.896,10.9638621 13.896,9.68855172 C13.896,8.41158621 12.8615172,7.37875862 11.5862069,7.37875862 L11.5862069,7.37875862 Z"></path>
+					                <path d="M16.4143448,16.5856552 L6.75806897,16.5856552 L6.75806897,16.0684138 C6.75806897,13.8264828 8.93048276,12.033931 11.5862069,12.033931 C14.241931,12.033931 16.4143448,13.862069 16.4143448,16.0684138 L16.4143448,16.5856552 Z M7.82813793,15.5511724 L15.3103448,15.5511724 C15,14.1368276 13.4482759,13.0684138 11.5522759,13.0684138 C9.72413793,13.0684138 8.13848276,14.1724138 7.82813793,15.5511724 L7.82813793,15.5511724 Z"></path>
+					                <path d="M4.44827586,7.5177931 L0.517241379,7.5177931 C0.240827586,7.5177931 0,7.27696552 0,7.00055172 C0,6.72413793 0.240827586,6.48331034 0.517241379,6.48331034 L4.44827586,6.48331034 C4.72468966,6.48331034 4.96551724,6.72413793 4.96551724,7.00055172 C4.96551724,7.27696552 4.72468966,7.5177931 4.44827586,7.5177931 L4.44827586,7.5177931 Z"></path>
+					                <path d="M4.44827586,10.7246897 L0.517241379,10.7246897 C0.240827586,10.7246897 0,10.4838621 0,10.2074483 C0,9.93103448 0.240827586,9.6902069 0.517241379,9.6902069 L4.44827586,9.6902069 C4.72468966,9.6902069 4.96551724,9.93103448 4.96551724,10.2074483 C4.96551724,10.4838621 4.72468966,10.7246897 4.44827586,10.7246897 L4.44827586,10.7246897 Z"></path>
+					                <path d="M4.44827586,13.896 L0.517241379,13.896 C0.240827586,13.896 0,13.6551724 0,13.3787586 C0,13.1023448 0.240827586,12.8615172 0.517241379,12.8615172 L4.44827586,12.8615172 C4.72468966,12.8615172 4.96551724,13.1023448 4.96551724,13.3787586 C4.96551724,13.6551724 4.72468966,13.896 4.44827586,13.896 L4.44827586,13.896 Z"></path>
+					                <path d="M4.44827586,17.1028966 L0.517241379,17.1028966 C0.240827586,17.1028966 0,16.862069 0,16.5856552 C0,16.3092414 0.240827586,16.0684138 0.517241379,16.0684138 L4.44827586,16.0684138 C4.72468966,16.0684138 4.96551724,16.3092414 4.96551724,16.5856552 C4.96551724,16.862069 4.72468966,17.1028966 4.44827586,17.1028966 L4.44827586,17.1028966 Z"></path>
 					            </g>
 					        </g>
 					    </g>
@@ -134,12 +131,12 @@
                 </a>
             </li>
             <li>
-                <a data-role="button" href="views/archive.html">
+                <a data-role="button" href="views/archive.html" data-click-on="down">
                 	<svg width="19px" height="27px" viewBox="0 0 19 27" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
 					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-					        <g sketch:type="MSArtboardGroup" transform="translate(-253.000000, -633.000000)" stroke="#979797">
-					            <g id="nav-places" sketch:type="MSLayerGroup" transform="translate(254.000000, 634.000000)">
-					                <path d="M8.07484096,12.1125 C5.89798291,12.1125 4.1304486,10.33125 4.1304486,8.1375 C4.1304486,5.94375 5.89798291,4.1625 8.07484096,4.1625 C10.251699,4.1625 12.0192333,5.94375 12.0192333,8.1375 C12.0192333,10.33125 10.251699,12.1125 8.07484096,12.1125 L8.07484096,12.1125 Z M8.07484096,0 C3.62809675,0 0,3.6375 0,8.1375 L0,8.4375 C0.0372112487,9.3 0.186056243,10.10625 0.465140608,10.875 C2.19546367,16.55625 8.07484096,24 8.07484096,24 C8.07484096,24 13.9542183,16.55625 15.6659357,10.85625 C15.9450201,10.0875 16.0938651,9.2625 16.1310763,8.41875 L16.1310763,8.11875 C16.1496819,3.6375 12.5215852,0 8.07484096,0 L8.07484096,0 Z" sketch:type="MSShapeGroup"></path>
+					        <g transform="translate(-253.000000, -633.000000)" stroke="#979797">
+					            <g id="nav-places" transform="translate(254.000000, 634.000000)">
+					                <path d="M8.07484096,12.1125 C5.89798291,12.1125 4.1304486,10.33125 4.1304486,8.1375 C4.1304486,5.94375 5.89798291,4.1625 8.07484096,4.1625 C10.251699,4.1625 12.0192333,5.94375 12.0192333,8.1375 C12.0192333,10.33125 10.251699,12.1125 8.07484096,12.1125 L8.07484096,12.1125 Z M8.07484096,0 C3.62809675,0 0,3.6375 0,8.1375 L0,8.4375 C0.0372112487,9.3 0.186056243,10.10625 0.465140608,10.875 C2.19546367,16.55625 8.07484096,24 8.07484096,24 C8.07484096,24 13.9542183,16.55625 15.6659357,10.85625 C15.9450201,10.0875 16.0938651,9.2625 16.1310763,8.41875 L16.1310763,8.11875 C16.1496819,3.6375 12.5215852,0 8.07484096,0 L8.07484096,0 Z"></path>
 					            </g>
 					        </g>
 					    </g>
@@ -147,11 +144,11 @@
                 </a>
             </li>
             <li>
-                <a data-role="button" href="views/gallery.html#gallery">
+                <a data-role="button" href="views/gallery.html#gallery" data-click-on="down">
                 	<svg width="24px" height="19px" viewBox="0 0 24 19" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
-					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-					        <g id="nav-gallery" sketch:type="MSArtboardGroup" transform="translate(-323.000000, -636.000000)" fill="#979797">
-					            <path d="M325.31504,634.21632 L325.31504,649.49632 L345.82128,649.49632 L345.82128,634.21632 L325.31504,634.21632 Z M345.01488,648.6912 L326.1176,648.6912 L326.1176,635.01856 L345.01488,635.01856 L345.01488,648.6912 Z M323.30384,631.80256 L341.79888,631.80256 L341.79888,633.4112 L342.6024,633.4112 L342.6024,631 L322.5,631 L322.5,646.28 L324.50864,646.28 L324.50864,645.47488 L323.30384,645.47488 L323.30384,631.80256 Z" sketch:type="MSShapeGroup" transform="translate(334.500000, 643.000000) scale(-1, -1) translate(-334.500000, -643.000000) "></path>
+					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+					        <g id="nav-gallery" transform="translate(-323.000000, -636.000000)" fill="#979797">
+					            <path d="M325.31504,634.21632 L325.31504,649.49632 L345.82128,649.49632 L345.82128,634.21632 L325.31504,634.21632 Z M345.01488,648.6912 L326.1176,648.6912 L326.1176,635.01856 L345.01488,635.01856 L345.01488,648.6912 Z M323.30384,631.80256 L341.79888,631.80256 L341.79888,633.4112 L342.6024,633.4112 L342.6024,631 L322.5,631 L322.5,646.28 L324.50864,646.28 L324.50864,645.47488 L323.30384,645.47488 L323.30384,631.80256 Z" transform="translate(334.500000, 643.000000) scale(-1, -1) translate(-334.500000, -643.000000) "></path>
 					        </g>
 					    </g>
 					</svg>
@@ -203,63 +200,6 @@
 
 </div>
    
-  <!-- deprecated drawer -->
-<div data-role="drawer" id="appDrawer" style="width: 200px; height: 100%;" data-title="Main Menu" data-swipe-to-open="false" data-show="onShowMainMenuDrawer" data-model="APP.models.presence.current" style="display:none;">
-    <!-- Menu -->
-<div class="menuBox">
-    <div class="profileTop">
-        <div class="profileImg">
-            <!-- User photo -->
-            <a data-role="button"  href="#profilePhotoEdit"><img id="profilePhoto" class="myPublicImg"  /></a>
-        </div>
-        <div> 
-			<div id="profileName"></div>
-            <div class="caption" id="profileLink"><a data-role="button" href="views/profile.html">View Profile</a></div>
-        </div>
-    </div>
-    <div class="clearfix"></div>
-	<div class="menuStatus">
-		<span id="statusCircle"><img width="18" src="images/status-available.svg"/></span>
-        <span class="menuSelectBox">
-            <select>
-			    <option value="true"> Available</option>
-			    <option value="false"> Busy </option>
-		    </select>
-        </span>
-	</div>
-    <div class="hidden">
-     <input id="menuCurrentMessage" class="clearable" type="text" style="font-size: 11px; width: 95%;" value="Personal message..."  data-bind="value: message"/>
-    </div>
-    <div class="clearfix"></div>
-    <div class="menuLinks">
-        <ul data-role="listview" class="menu">
-            <li><a href="#home"><img src="images/menu-home.svg" height="22" width="22" />Home</a>
-            </li>
-            <li><a href="views/channels.html"><img src="images/menu-chat.svg" height="30" width="30" />Chats</a>
-            </li>
-            <li><a href="views/contacts.html"><img src="images/menu-contact.svg" height="22" width="22" />Contacts</a>
-            </li>
-            <li><a href="views/archive.html"><img src="images/menu-archive.svg" height="22" width="22" />Archive</a></li>
-            <li><a href="views/gallery.html"><img src="images/menu-gallery.svg" height="22" width="22" />Gallery</a>
-            </li>
-            <li><a href="views/places.html"><img src="images/menu-places.svg" height="22" width="22" />Places</a>
-            </li>
-            <li><a href="#modalview-support" data-rel='modalview'><img src="images/menu-support.svg" height="22" width="22" />Support</a>
-            </li>
-        </ul>
-    </div>
-	<div style="padding-top: 1rem;  font-size: 16px;">
-		<div style="padding-bottom: 6px;">
-			<a data-role="button" id="menuSettings" href="views/settings.html">Settings</a>
-		</div>
-		<div>
-			<a data-role="button" id="menuSignOut" data-click="homeSignout"> Sign out</a>	
-		</div>
-	</div>
-</div>
-<!-- End Menu -->
-</div>
-    
 <!-- home - for signed in users -->
 <div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" style="display:none;" data-show="onShowHome">
 
@@ -270,7 +210,7 @@
 	    	<div class="notify-title">
 		    	<img src="images/notify-icon.svg" height="14" />
 		    		Notifications
-		    	<span class="right"><a class="btnClear-grey" data-role="button" data-rel="modalview" href="#testing">Clear</a></span>
+		    	<span class="right"><a class="btnClear-grey-sm" data-role="button" data-rel="modalview" href="#testing">Clear</a></span>
 	    	</div>
 	    	<div class="clearfix"></div>
 	    	<ul data-role="listview"  data-source="APP.models.home.notificationDS" data-template="notificationTemplate" id="notification-listview"></ul>
@@ -278,6 +218,7 @@
 	  </div>
 	  
    </div>
+   
 </div>
     
 <script type="text/x-kendo-template" id="notificationTemplate">
@@ -292,13 +233,13 @@
 	    		</div>
 	    		<div class="notify-content">
 	    			# if (action !== undefined && action !== 'none') {# 
-	    				<h4>
-	    					<a data-role="button" data-param="#:uuid#" href="\\#" data-click="#=action#" class="btnClear">#= title #</a>
-	    				</h4>
+	    				<h3>
+	    					<a data-role="button" data-param="#:uuid#" href="\\#" data-click="#=action#" class="btnClear-link">#= title #</a>
+	    				</h3>
 	    			#} else {# 
-						<h4>
-							<a data-role="button" data-param="#:uuid#" href="#=href#"  class="btnClear"> #= title # </a>
-						</h4>
+						<h3>
+							<a data-role="button" data-param="#:uuid#" href="#=href#"  class="btnClear-link"> #= title # </a>
+						</h3>
 					#}#
 	    			<p>#= description # </p>
 	    			<div class="notify-action">
@@ -336,17 +277,14 @@
                     <span id="forgotPassword" class="helper helper-right btnClear-grey" href="#modalview-recoverPassword" data-rel="modalview" data-role="button">Forgot password?</span>
                 </li>
         	</ul>
-            <a class="btnClear" data-click="signInValidate" id="modalview-login-button" type="button" data-role="button">Sign In</a>
+            <a class="btnSecondary" data-click="signInValidate" id="modalview-login-button" type="button" data-role="button">Sign In</a>
     	</form>
-        <div class="forgotBox">
-            <h3>
-                New to ghostgram?
-            </h3>
-            <a class="btnYellow btnSpan" data-role="button" href="#signup">Join ghostgrams</a>
-        </div>
+    </div>
+    <div class="footer" data-role="footer">
+    	<a class="btnPrimary btnSpan-btm" data-role="button" href="#signup">Join ghostgrams</a>
     </div>
 </div>
-
+   
 
 <div data-role="modalview" id="modalview-support" style="width: 90%; display: none;" class="appearance">
     <div data-role="header">
@@ -405,7 +343,7 @@
 	            </li>
 	        </ul>
 	    <div style="padding-top: 8px; text-align:center;">
-	        <a class="btnYellow btnSpan" data-click="verifyPhone" type="button" data-role="button" data-align="right">Verify</a>
+	        <a class="btnPrimary btnSpan" data-click="verifyPhone" type="button" data-role="button" data-align="right">Verify</a>
 	    </div>
    	</div>
 </div>
@@ -413,9 +351,8 @@
 <div data-role="view" id="signup" data-title="Sign Up" data-layout="main" style="display: none;" class="appearance" data-init="initSignUp">
    	<div data-role="header">
       <div data-role="navbar">
-        <a data-role="button" href="#newuserhome" data-align="left"><img src="images/nav-back.svg" />  </a>
+        <a data-role="button" href="#:back" data-align="left"><img src="images/nav-back.svg" />  </a>
         <span data-role="view-title"></span>
-        <!--<a  data-click="contactsPickContact" data-role="button" data-align="right">Import Me</a>-->
       </div>
 	</div>
 	<div class="banner-welcome">
@@ -450,7 +387,7 @@
         </ul>  
     </form> 
     <div data-role="footer">
-            <a class="btnSpan-btm btnYellow" data-click="validateCreateAccount" id="home-createAccount" type="button" data-role="button">Submit</a>
+            <a class="btnSpan-btm btnPrimary" data-click="validateCreateAccount" id="home-createAccount" type="button" data-role="button">Submit</a>
     </div>
 </div>
 	
@@ -463,12 +400,14 @@
 	        </a>
 	    </h2>
 	    <label>Email password recovery instructions to 
-	    	<input type="email" id="home-recoverPassword-email"  placeholder="Enter recovery email address"/>
+	    	<input type="email" id="home-recoverPassword-email"  placeholder="Email address"/>
 	    </label>
 	    <div class="modalview-button">
-	    	<a class="btnFull btnYellow" data-click="homeRecoverPassword" id="modalview-recoverPassword-button" type="button" data-role="button">Send</a>
+	    	
 	    </div>
-
+	</div>
+	<div data-role="footer">
+		<a class="btnFull btnPrimary" data-click="homeRecoverPassword" id="modalview-recoverPassword-button" type="button" data-role="button">Send</a>
 	</div>
 </div>
     
@@ -509,15 +448,16 @@
 			<a data-align="right" data-role="button" href="#photoEditor?source=gallery">Edit</a>
         </div>
     </div>
+
 	<div style="margin: 2px; height: 98%; width: auto; text-align: center; background: #27476e;">
-		<img id="photoViewImage" src="" style="width: 100%; height:auto; vertical-align: middle;"> </img>
+		<img id="photoViewImage" src="" style="width: 98%; height:auto; vertical-align: middle;"> </img>
 	</div>
 	 <div data-role="footer">
-			<div data-role="navbar">
-				<a data-align="left" data-role="button"  data-click="photoExport"><i class="ghostIconNavbar fa fa-share-square-o"></i> </a>
-			
-				<a data-align="right" data-role="button" data-click="photoDelete"><i class="ghostIconNavbar fa fa-trash-o"></i> </a>
-			</div>
+		<div data-role="navbar">
+			<a data-align="left" data-role="button"  data-click="photoExport"><i class="ghostIconNavbar fa fa-share-square-o"></i> </a>
+
+			<a data-align="right" data-role="button" data-click="photoDelete"><i class="ghostIconNavbar fa fa-trash-o"></i> </a>
+		</div>
 	</div>
 </div>
 
@@ -535,7 +475,7 @@
     </div>
     <span class="left"><a data-role="button" data-rel="modalview"  href="#modalview-photoTag"><img src="images/photo-tag.svg" /></a></span>
     <div data-role="footer">
-		<a class="btnSpan-btm btnYellow" id="photoEditSaveDiv" data-role="button" data-click="photoEditSave"> Save Photo </a>
+		<a class="btnSpan-btm btnPrimary" id="photoEditSaveDiv" data-role="button" data-click="photoEditSave"> Save Photo </a>
     </div>
 
 </div>
@@ -590,7 +530,7 @@
 				<div class="clearfix"></div>
         	</li>
         	<li><p class="caption right"><a data-role="button" class="btnClear-sm" href="views/profile.html">Edit Profile</a></p></li>
-        	<li><img src="images/ghost-sm.svg" class="ghost-sm-text" /> Update Status</li>
+        	<li><p><img src="images/ghost-sm.svg" class="ghost-sm-text" /> Update Status</p></li>
         	<li>
                 <label>
                    <input type="search" id="profilePhotoMessage" placeholder="What's going on..." data-bind="value: statusMessage"/>
@@ -612,7 +552,7 @@
         </ul>
     </form>
     <div data-role="footer">
-    	<a class="btnBlue btnFull-modal" data-click="closeModalViewProfileStatus" data-role="button">Done</a>
+    	<a class="btnSecondary btnFull-modal" data-click="closeModalViewProfileStatus" data-role="button">Done</a>
     </div>
 </div>
 
