@@ -190,6 +190,11 @@ form {
 	width: 100%;
 }
 
+.searchSelect {
+	.select;
+	width: 25%;
+}
+
 .select {
 	border-bottom: 1px solid @shade-200;
     width: 100%;
@@ -719,6 +724,11 @@ div.km-header a img{
     color: white;
     width: 100%;
     height: 100%;
+    -webkit-transition: all 0.75s;
+    -moz-transition: all 0.75s;
+    -ms-transition: all 0.75s;
+    -o-transition: all 0.75s;
+    transition: all 0.75s;
 }
 .km-material .km-navbar { 
     background-color: #fff;
@@ -726,6 +736,10 @@ div.km-header a img{
     box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.12);
     height: 56px;
     //border: transparent;
+}
+
+.km-scroll-container {
+	min-height: 100%;
 }
 
 .km-material .k-popup .km-button {
@@ -738,6 +752,11 @@ div.km-header a img{
 .km-view-title span {
     font-family: @defaultFont;
     font-weight: 400;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
 }
 .km-material .km-button {
     background: transparent;
@@ -758,7 +777,7 @@ div.km-header a img{
 
 .km-root .km-material .km-buttongroup > .km-state-active {
 	color: @primary-200;
-	border-color: @primary-200;
+	border-color: #fff;
 }
 
 /*
@@ -889,6 +908,16 @@ div.footerMenu.km-footer > ul > li > a:active {
     height: 14px;
 }
 /* Home status menu */
+.home-smallHeader {
+	height: 24px !important;
+	//background-color: @shade-300 !important;
+}
+
+.km-material .km-navbar.home-smallHeader .km-view-title {
+	padding: 0px !important;
+	font-size: 14px;
+}
+
 .home-header > div.km-header > div {
 	
 }
@@ -1004,6 +1033,9 @@ div.footerMenu.km-footer > ul > li > a:active {
 	width: 50px;
 	padding-top: 4px;
 	padding: 0px !important;
+	position: absolute;
+	left: 0px;
+	top: 0px;
 }
 
 .ghost-sm-text {
@@ -2623,9 +2655,9 @@ div.loginBox > form > div > ul > li {
 }
 
 #btnSearchDeviceContacts {
-	margin-top: 1rem;
+	margin: 0.5rem 1rem;
 	img {
-		vertical-align: text-top;
+		vertical-align: bottom;
 	}
 }
 
@@ -3116,8 +3148,7 @@ div.loginBox > form > div > ul > li {
 }
 
 #galleryZoomSelect {
-	background: @shade-300;
-	width: 100%;
+	background: rgba(0, 0, 0, 0.5);
 	border-bottom: 1px solid @shade-200;
 	li:nth-child(1){
 		position: absolute;
@@ -3137,7 +3168,52 @@ div.loginBox > form > div > ul > li {
 	//padding: 0.5rem 1rem;
 }
 
-// Gallery SVG
+/* Gallery styles */
+#galleryMenuSelect {
+	li.km-button {
+		width: 50%;
+		background-color: @shade-200;
+		padding: 0.5em 1em;
+		border-top: 0px !important;
+		border-bottom: 0px !important;
+	}
+	svg {
+		vertical-align: sub;
+		height: 22px;
+		margin-right: 4px;
+	}
+	#gallery-photos {
+		fill: @black;
+	}
+	#gallery-all {
+		stroke: @black;
+	}
+}
+#galleryPhotoDisplayOpts {
+	width: 50%;
+	border-radius: 3px;
+	margin-left: 25%;
+	position: absolute;
+	top: 300px;
+	z-index: 1;
+}
+
+
+#galleryMenuSelect.km-buttongroup > .km-state-active {
+		background-color: @primary-200;
+		color: #fff;
+		border-radius: 0px;
+		border-top: 0px !important;
+		border-bottom: 0px !important;
+	}
+.km-state-active #gallery-photos {
+	fill: #fff !important;
+}
+
+.km-state-active #gallery-all {
+	stroke: #fff !important;
+}
+
 #galleryZoomSelect > li > span > svg{
 	height: 18px;
 }
@@ -3158,6 +3234,11 @@ div.loginBox > form > div > ul > li {
 	fill: @secondary-100;
 }
 
+.topViewSearchBox {
+	width: 100%;
+	background-color: @shade-300;
+}
+
 .appendSearch {
 	background: #fff;
 	display: inline-block;
@@ -3166,6 +3247,7 @@ div.loginBox > form > div > ul > li {
 	margin-right: 5%;
 	border-bottom: 1px solid @shade-200;
 	margin-top: 0.25rem;
+	border-radius: 3px;
 	input {
 		width: auto;
 		float: left;
@@ -3178,11 +3260,31 @@ div.loginBox > form > div > ul > li {
 		float: left;
 		padding-top: 0.75em;
 		color: @shade-100;
-		padding-left: 0.5rem !important;
-		.font-size(11);
+		.font-size(12);
 		width: 20%;
 		text-align: center;
 	}
+	.searchIcon {
+		float: left;
+		padding-top: 0.75em;
+		color: @shade-100;
+		width: 12%;
+		text-align: center;
+		img {
+			height: 1rem;
+		}
+	}
+	.viewSearchBox {
+		width:88%;
+	}
+}
+
+.viewScroller {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	left: 0px;
+	top: 0px;
 }
 
 .km-material .km-buttongroup, .km-material .km-widget.km-navbar .km-buttongroup {
@@ -3192,6 +3294,8 @@ div.loginBox > form > div > ul > li {
 .km-material .km-buttongroup .km-button {
 	&:extend(.btnStyle);
 }
+
+/* Chat styles */
 
 .chat-message {
     margin: 8px 8px;

@@ -198,6 +198,10 @@ function gotoChannel(channelId) {
 function onInitChannels (e) {
     e.preventDefault();
     
+    // set search bar 
+    var scroller = e.view.scroller;
+	scroller.scrollTo(0,-44); 
+    
     // ToDo: Initialize list view
 	
      $("#channels-listview").kendoMobileListView({

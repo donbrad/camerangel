@@ -1,6 +1,7 @@
 function onInitGallery(e){
-   if (e !== undefined && e.preventDefault !== undefined)
+   if (e !== undefined && e.preventDefault !== undefined){
 		e.preventDefault();
+	}
     // ToDo: Initialize list view
     var itemWidth = $(window).width()/4;
 	APP.models.gallery.rotationAngle = 0;
@@ -18,6 +19,44 @@ function onInitGallery(e){
 		}
 		
 	});
+
+	var scroller = e.view.scroller;
+	scroller.scrollTo(0,-44);
+	/*
+	var currentPos = 0;
+	scroller.bind("scrollingDown");
+	scroller.bind("scrollingUp");
+	scroller.bind("scroll", function(){
+		console.log("currentPos: " + currentPos + " scrollTop: " + scroller.scrollTop);
+		if(currentPos > scroller.scrollTop && scroller.scrollTop > 0){
+			console.log("plus");
+			currentPos = scroller.scrollTop;
+			scroller.trigger("scrollingDown", resetNavUI());
+			//scroller.unbind("scrollingDown");
+		} else if (scroller.scrollTop > currentPos){
+			console.log("minus");
+			currentPos = scroller.scrollTop;
+			scroller.trigger("scrollingUp", shrinkNavUI());
+			//scroller.unbind("scrollingUp");
+		} else {
+			console.log("none");
+		}
+		console.log(currentPos);
+	});    
+	
+*/
+}
+
+function resetNavUI(e){
+	$(".km-navbar").removeClass("home-smallHeader");	
+	//$(".user-status, .user-settings").velocity("fadeIn", {duration: 150});
+	console.log("resetNavUI");
+}
+
+function shrinkNavUI() {
+	$(".km-navbar").addClass("home-smallHeader");	
+	$(".user-status, .user-settings").velocity("fadeOut", {duration: 150});
+	console.log("shrinkNavUI");
 }
 
 function galleryOptionsToggle (e) {
@@ -213,21 +252,36 @@ function onShowGallery(e) {
 
 	switch(APP.models.gallery.previewSize) {
 		case "33%" :
-			setButtonGroupIndex("#gallerySearchToolSelect", 0);
+			//setButtonGroupIndex("#gallerySearchToolSelect", 0);
 			break;
 
 		case "50%" :
-			setButtonGroupIndex("#gallerySearchToolSelect", 1);
+			//setButtonGroupIndex("#gallerySearchToolSelect", 1);
 			break;
 
 		case "100%" :
-			setButtonGroupIndex("#gallerySearchToolSelect", 2);
+			//setButtonGroupIndex("#gallerySearchToolSelect", 2);
 			break;
 	}
 
-
+	
 }
 
+
+function gallerySelectCategory(e){
+	 var index = this.current().index();
+	 switch(index) {
+	 case 0:
+	 	$("#galleryPhotoDisplayOpts").addClass("hidden");
+	 	$("#gallerySearchToolSelect").removeClass("hidden");
+	 	break;
+
+	 case 1:
+	 	$("#galleryPhotoDisplayOpts").removeClass("hidden");
+	 	$("#gallerySearchToolSelect").addClass("hidden");
+	 	break;
+	 }
+} 
 
 function galleryClick(e) {
 	if (e !== undefined && e.preventDefault !== undefined) {
