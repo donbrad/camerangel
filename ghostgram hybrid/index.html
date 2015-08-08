@@ -73,7 +73,7 @@
 				</div>
 			</a>
 			<span data-role="view-title"></span>
-				<a data-role="button" data-rel="actionsheet" href="#settingsAction" data-align="right" data-click-on="down">
+				<a data-role="button" data-rel="actionsheet" href="#settingsAction" data-align="right" data-click-on="down" class="user-settings">
                 <img class="nav-gear" src="images/nav-gear.svg"/>
             </a>
         </div>
@@ -85,6 +85,9 @@
 
 
     <div class="footerMenu" data-role="footer">
+    	<a class="actionBtn" data-role="button" href="#addChannel">
+    		<img src="images/nav-add-white.svg"/>
+    	</a>
         <ul class="list-inline menuNav">
             <li>
                 <a data-role="button" href="#home" data-click-on="down">
@@ -201,9 +204,14 @@
 </div>
    
 <!-- home - for signed in users -->
-<div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" style="display:none;" data-show="onShowHome">
-
-	<div data-role="content" class='view-content'>
+<div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" style="display:none;" data-show="onShowHome" data-init="onInitHome">
+	
+		<div class="topViewSearchBox">
+	 		<div class="appendSearch">
+				<span class="searchIcon"><img src="images/search.svg" /></span>
+				<input type="search" class="viewSearchBox" placeholder="Search" />
+			</div>
+		</div>
 		<div class="appBox">
 	    <!-- application views will be rendered here -->
 	    <div>
@@ -216,9 +224,6 @@
 	    	<ul data-role="listview"  data-source="APP.models.home.notificationDS" data-template="notificationTemplate" id="notification-listview"></ul>
 	   	</div>
 	  </div>
-	  
-   </div>
-   
 </div>
     
 <script type="text/x-kendo-template" id="notificationTemplate">

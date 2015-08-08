@@ -7,10 +7,7 @@ function homeBeforeShow () {
         // No current user -redirect to no user view
        APP.kendo.navigate('#newuserhome');
     }
-	
-	
-    
-}
+} 
 
 function dismissNotification (e) {
 	e.preventDefault();
@@ -76,9 +73,14 @@ function pruneNotifications() {
 
 }
 
-function onInitHome () {
+function onInitHome(e) {
+	if (e !== undefined && e.preventDefault !== undefined){
+		e.preventDefault();
+	}
+
 	
 }
+
 
 function initSignUp() {
 	// Simple phone mask - http://jsfiddle.net/mykisscool/VpNMA/

@@ -1,15 +1,15 @@
 
 <div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="APP.models.contacts" data-init="onInitContacts" data-show="onShowContacts" data-hide="onHideContacts" style="display: none;">
-
-	<div class="contactSearchBox">	
-		<img src="images/search.svg" width="18" />
-		<input id="contactSearchInput" type="search" placeholder="Search contacts" />
-		<div class="clearfix"></div>
-			<a class="hidden btnClear-sm" data-role="button" data-click="searchDeviceContacts" id="btnSearchDeviceContacts"> 
+	<div class="topViewSearchBox">
+	 	<div class="appendSearch">
+			<span class="searchIcon"><img src="images/search.svg" /></span>
+			<input type="search" class="viewSearchBox" placeholder="Search" id="contactSearchInput" />
+		</div>
+		<a class="hidden btnClear-sm" data-role="button" data-click="searchDeviceContacts" id="btnSearchDeviceContacts"> 
 				<img src="images/contacts.svg" /> 
 					Search device for "<span id="btnSearchDeviceName"></span>"
 			</a>
-    </div>
+	</div>
 
 
 	<div id="contactListDiv"  style="padding-bottom: 24px;">

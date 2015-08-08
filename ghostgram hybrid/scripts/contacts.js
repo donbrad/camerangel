@@ -388,8 +388,13 @@ function onDoneEditContact (e) {
 
 function onInitContacts(e) {
 
-	if (e.preventDefault !== undefined)
+	if (e.preventDefault !== undefined){
     	e.preventDefault();
+    }
+
+    // set search bar 
+    var scroller = e.view.scroller;
+	scroller.scrollTo(0,-44); 
 
 	APP.models.contacts.deviceQueryActive = false;
 	
@@ -479,6 +484,9 @@ function onShowContacts (e) {
 	APP.models.contacts.contactListDS.data(APP.models.contacts.contactsDS.data());
 	//APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
 	
+	// set action button
+	$("#contacts > div.footerMenu.km-footer > a").attr("href", "#contactImport");
+
 }
 
 function onHideContacts (e) {

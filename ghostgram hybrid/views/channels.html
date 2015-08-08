@@ -1,4 +1,10 @@
- <div data-role="view" id="channels" data-title="Chats" data-layout="main" data-model="APP.models.channels" data-init="onInitChannels" data-before-show="setActionBtnHeight">
+ <div data-role="view" id="channels" data-title="Chats" data-layout="main" data-model="APP.models.channels" data-init="onInitChannels" data-show="onShowChannels">
+     	<div class="topViewSearchBox">
+	 		<div class="appendSearch">
+				<span class="searchIcon"><img src="images/search.svg" /></span>
+				<input type="search" class="viewSearchBox" placeholder="Search"/>
+			</div>
+		</div>
      <div>
          <ul id="channels-listview"></ul>
      </div>
