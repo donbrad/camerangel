@@ -1,10 +1,5 @@
 <div data-role="view" id="archive" data-title="Archive" data-layout="main" data-stretch="true" data-init="window.archiveView.init">  
-	 <div data-role="header">
-		<div data-role="navbar">
-			<span data-role="view-title"></span>
-			<a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img src="images/menu-icon.svg"/></a>
-		</div>
-	</div>
+
 	<main>
 		<div id="search-archives">
 			<button data-role="button" data-click="archiveView.toggleSearch"><img height="18" src="images/sentinel-search.svg" /> </button>
@@ -44,7 +39,8 @@
 
 		<div id="archive-empty">Your archive is empty</div>
 		<div id="archive-search-empty">Nothing found</div>
-	<main>
+	</main>
+
 </div>
 
 <script type="text/x-kendo-template" id="archive-template">
@@ -81,7 +77,7 @@
 	# if (data.type === 'Photos') { # 
 		<div class="photo object">
 			<img src="#= data.object.url #" />
-			<p><strong>#= data.object.placeName #, #= data.object.address #</strong> <span>#= moment(data.object.date).fromNow() #<span></p>
+			<p><strong>#= data.object.placeName #, #= data.object.address #</strong> <span>#= moment(data.object.date).fromNow() #</span></p>
 		</div> 
 	# } #
 </script>

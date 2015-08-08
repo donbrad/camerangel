@@ -1,94 +1,105 @@
  <div data-role="view" data-title="Gallery" id="gallery" data-layout="main" data-model="APP.models.gallery" data-init="onInitGallery" data-show="onShowGallery">
-	
-	
-	 <div id="gallerySearchOptions" style="display: none;">
-		<div class="appendSearch">
-			<span id="galleryInputHelper">Search:</span>
-			<input type="search" id="gallerySearch"/>
+ 	<div class="topViewSearchBox">
+ 		<div class="appendSearch">
+			<span class="searchIcon"><img src="images/search.svg" /></span>
+			<input type="search" class="viewSearchBox" id="gallerySearch"  placeholder="Search all" />
 		</div>
-
-		<ul data-role="buttongroup" data-index="1" class="km-small" data-select="selectGallerySearchTool" id="gallerySearchToolSelect">
-			<li> <img height="18" src="images/sentinel-search.svg" /> </li>
+	</div>
+	<div class="gallerySearchOptions">
+		<ul data-role="buttongroup" data-index="0" class="km-small" data-select="selectGallerySearchTool" id="gallerySearchToolSelect">
+			<li> <img height="18" src="images/gallery-all.svg" /> </li>
 			<li> <img height="18" src="images/sentinel-contacts.svg" /> </li>
 			<li> <img height="18" src="images/sentinel-chats.svg" /> </li>
 			<li> <img height="18" src="images/sentinel-date.svg" /> </li>
 			<li> <img height="18" src="images/sentinel-places.svg" /> </li>
 		</ul>
 		
-		<div id="gallerySearchTags" style="width:95%; min-height: 18px; "></div>
+		<div id="gallerySearchTags"></div>
 		
 	</div>
-	<div style="padding-left: 3px; padding-right: 3px; color: blue200; vertical-align: middle;">
-		<a class="btnClear-grey" data-role="button" data-click="galleryOptionsToggle" id="galleryToggle"> 
-			<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
-  
-		    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-		        <g id="gallery-search" sketch:type="MSArtboardGroup" transform="translate(-15.000000, -76.000000)" fill="#8E8E93">
-		            <path d="M29.7696168,92.6157707 C28.2267928,93.7747565 26.3089843,94.4615385 24.2307692,94.4615385 C19.1327562,94.4615385 15,90.3287823 15,85.2307692 C15,80.1327562 19.1327562,76 24.2307692,76 C29.3287823,76 33.4615385,80.1327562 33.4615385,85.2307692 C33.4615385,87.3089843 32.7747565,89.2267928 31.6157707,90.7696168 L39,98.1538462 L37.1538462,100 L29.7696168,92.6157707 L29.7696168,92.6157707 Z M24.2307692,92.6153846 C28.3091797,92.6153846 31.6153846,89.3091797 31.6153846,85.2307692 C31.6153846,81.1523588 28.3091797,77.8461538 24.2307692,77.8461538 C20.1523588,77.8461538 16.8461538,81.1523588 16.8461538,85.2307692 C16.8461538,89.3091797 20.1523588,92.6153846 24.2307692,92.6153846 Z" sketch:type="MSShapeGroup"></path>
+	<ul data-role="buttongroup" data-index="0" id="galleryMenuSelect" data-select="gallerySelectCategory">
+		<li>
+			<svg width="21px" height="25px" viewBox="0 0 21 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+		    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+		        <g id="gallery-all" transform="translate(-328.000000, -634.000000)" stroke="#979797">
+		            <g transform="translate(329.000000, 635.000000)">
+		                <path d="M16.5697674,3 L18.1162791,3 C18.604093,3 19,3.18 19,3.68181818 L19,21.8636364 C19,22.3654545 18.604093,23 18.1162791,23 L0.88372093,23 C0.395906977,23 0,22.3654545 0,21.8636364 L0,3.68181818 C0,3.18 0.395906977,3 0.88372093,3 L7.06976744,3 C7.06976744,3 7.29069767,4.81818182 9.27906977,4.81818182 C11.2674419,4.81818182 11.4883721,3 11.4883721,3 L16.5697674,3 Z"></path>
+		                <path d="M0,2.93861559 L0.678571429,0.857422725 C0.678571429,0.316064432 1.08390476,0 1.58333333,0 L17.4166667,0 C17.9160952,0 18.3214286,0.316064432 18.3214286,0.857422725 L19,3"></path>
+		                <path d="M10,8 L10,16" stroke-linecap="round" sketch:type="MSShapeGroup"></path>
+		                <path d="M12,14.0811559 L10.0417255,16 L8,14" stroke-linecap="round"></path>
+		            </g>
 		        </g>
 		    </g>
 		</svg> 
-		</a>
-		<ul data-role="buttongroup" data-index="1" class="km-small" data-select="selectGalleryZoom" id="galleryZoomSelect">
-			<li><a class="btnClear-sm" data-role="button" data-click="galleryOptionsToggle">
-				<img src="images/select-dropdown.svg" /> Hide</a>
-			</li>
-			<li>
-				<svg width="37px" height="24px" viewBox="0 0 37 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
-				    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-				        <g id="gallery-grid-3" sketch:type="MSArtboardGroup" transform="translate(-109.000000, -76.000000)" fill="#979797">
-				            <g sketch:type="MSLayerGroup" transform="translate(109.000000, 76.000000)">
-				                <g sketch:type="MSShapeGroup">
-				                    <path d="M26.2730667,0.191466667 L36.7690667,0.191466667 L36.7690667,10.6874667 L26.2730667,10.6874667 L26.2730667,0.191466667 Z" ></path>
-				                    <path d="M26.2730667,13.3125333 L36.7690667,13.3125333 L36.7690667,23.8085333 L26.2730667,23.8085333 L26.2730667,13.3125333 Z" ></path>
-				                    <path d="M13.152,0.191466667 L23.648,0.191466667 L23.648,10.6874667 L13.152,10.6874667 L13.152,0.191466667 Z" ></path>
-				                    <path d="M13.152,13.3125333 L23.648,13.3125333 L23.648,23.8085333 L13.152,23.8085333 L13.152,13.3125333 Z" ></path>
-				                    <path d="M0.0314666667,0.191466667 L10.5274667,0.191466667 L10.5274667,10.6874667 L0.0314666667,10.6874667 L0.0314666667,0.191466667 Z" ></path>
-				                    <path d="M0.0314666667,13.3125333 L10.5274667,13.3125333 L10.5274667,23.8085333 L0.0314666667,23.8085333 L0.0314666667,13.3125333 Z"></path>
-				                </g>
-				            </g>
-				        </g>
-				    </g>
-				</svg>
-			</li>
-			<li>
-				<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
-				    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-				        <g id="gallery-grid-2" sketch:type="MSArtboardGroup" transform="translate(-180.000000, -76.000000)" fill="#979797">
-				            <g sketch:type="MSLayerGroup" transform="translate(109.000000, 76.000000)">
-				                <g transform="translate(71.000000, 0.000000)" sketch:type="MSShapeGroup">
-				                    <path d="M12.8,0 L23.296,0 L23.296,10.496 L12.8,10.496 L12.8,0 Z"></path>
-				                    <path d="M12.8,13.3333333 L23.296,13.3333333 L23.296,23.8293333 L12.8,23.8293333 L12.8,13.3333333 Z"></path>
-				                    <path d="M0,0 L10.496,0 L10.496,10.496 L0,10.496 L0,0 Z"></path>
-				                    <path d="M0,13.3333333 L10.496,13.3333333 L10.496,23.8293333 L0,23.8293333 L0,13.3333333 Z"></path>
-				                </g>
-				            </g>
-				        </g>
-				    </g>
-				</svg>
-			</li>
-			<li> 
-				<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
-				    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-				        <g id="gallery-grid-1" sketch:type="MSArtboardGroup" transform="translate(-242.000000, -76.000000)" fill="#979797">
-				            <g sketch:type="MSLayerGroup" transform="translate(109.000000, 76.000000)">
-				                <g transform="translate(133.000000, 0.000000)" sketch:type="MSShapeGroup">
-				                    <path d="M0,0 L24,0 L24,24 L0,24 L0,0 Z"></path>
-				                </g>
-				            </g>
-				        </g>
-				    </g>
-				</svg>
-			</li>
-		</ul>
-		
-
-	</div>
+			Archive
+		</li>
+		<li>
+			<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 144 144" enable-background="new 0 0 144 144" xml:space="preserve">
+			<path id="gallery-photos" fill="#A4A4A4" d="M126,70.2l-27-27l-36,36l-27-18l-18,27v27h108V70.2z M144,16.2H0v117h144V16.2z M135,25.2v99H9v-99H135"/>
+			</svg>
+			Photos
+		</li>
+	</ul>
+	
+		<div id="galleryPhotoDisplayOpts">
+			<ul data-role="buttongroup" data-index="0" class="km-small" data-select="selectGalleryZoom" id="galleryZoomSelect">
+				<li>
+					<svg width="37px" height="24px" viewBox="0 0 37 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+					        <g id="gallery-grid-3" sketch:type="MSArtboardGroup" transform="translate(-109.000000, -76.000000)" fill="#979797">
+					            <g sketch:type="MSLayerGroup" transform="translate(109.000000, 76.000000)">
+					                <g sketch:type="MSShapeGroup">
+					                    <path d="M26.2730667,0.191466667 L36.7690667,0.191466667 L36.7690667,10.6874667 L26.2730667,10.6874667 L26.2730667,0.191466667 Z" ></path>
+					                    <path d="M26.2730667,13.3125333 L36.7690667,13.3125333 L36.7690667,23.8085333 L26.2730667,23.8085333 L26.2730667,13.3125333 Z" ></path>
+					                    <path d="M13.152,0.191466667 L23.648,0.191466667 L23.648,10.6874667 L13.152,10.6874667 L13.152,0.191466667 Z" ></path>
+					                    <path d="M13.152,13.3125333 L23.648,13.3125333 L23.648,23.8085333 L13.152,23.8085333 L13.152,13.3125333 Z" ></path>
+					                    <path d="M0.0314666667,0.191466667 L10.5274667,0.191466667 L10.5274667,10.6874667 L0.0314666667,10.6874667 L0.0314666667,0.191466667 Z" ></path>
+					                    <path d="M0.0314666667,13.3125333 L10.5274667,13.3125333 L10.5274667,23.8085333 L0.0314666667,23.8085333 L0.0314666667,13.3125333 Z"></path>
+					                </g>
+					            </g>
+					        </g>
+					    </g>
+					</svg>
+				</li>
+				<li>
+					<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+					        <g id="gallery-grid-2" transform="translate(-180.000000, -76.000000)" fill="#979797">
+					            <g transform="translate(109.000000, 76.000000)">
+					                <g transform="translate(71.000000, 0.000000)">
+					                    <path d="M12.8,0 L23.296,0 L23.296,10.496 L12.8,10.496 L12.8,0 Z"></path>
+					                    <path d="M12.8,13.3333333 L23.296,13.3333333 L23.296,23.8293333 L12.8,23.8293333 L12.8,13.3333333 Z"></path>
+					                    <path d="M0,0 L10.496,0 L10.496,10.496 L0,10.496 L0,0 Z"></path>
+					                    <path d="M0,13.3333333 L10.496,13.3333333 L10.496,23.8293333 L0,23.8293333 L0,13.3333333 Z"></path>
+					                </g>
+					            </g>
+					        </g>
+					    </g>
+					</svg>
+				</li>
+				<li> 
+					<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+					        <g id="gallery-grid-1" sketch:type="MSArtboardGroup" transform="translate(-242.000000, -76.000000)" fill="#979797">
+					            <g transform="translate(109.000000, 76.000000)">
+					                <g transform="translate(133.000000, 0.000000)">
+					                    <path d="M0,0 L24,0 L24,24 L0,24 L0,0 Z"></path>
+					                </g>
+					            </g>
+					        </g>
+					    </g>
+					</svg>
+				</li>
+			</ul>
+		</div><!-- galleryPhoto -->
+	
 
      <div style="padding-top: 8px; padding-left: 4px; padding-right: 4px; padding-bottom: 48px; height: 100%;">
+     	<!-- Photos -->
          <ul id="gallery-listview" class="list-inline" data-role="listview" data-click="galleryClick" data-source="APP.models.gallery.photosDS" data-template="gallery-template"></ul>
-     </div>
+         <!-- Archive -->
 
+     </div>
 </div>
 
 <div data-role="drawer" id="galleryDrawer" style="width: 200px; height: 100%;" data-title="Gallery Options" data-position="right" data-views="['gallery']" data-swipe-to-open="false" style="display:none;" class="appearance">

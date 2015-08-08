@@ -68,6 +68,11 @@ function addChannel(e) {
 	}
 }
 
+function onShowChannels(){
+	// set action button
+	$("#channels > div.footerMenu.km-footer > a").attr("href", "#addChannel");
+    
+}
 
 function findChannelModel(channelId) {
 	 var dataSource = APP.models.channels.channelsDS;
@@ -198,6 +203,11 @@ function gotoChannel(channelId) {
 function onInitChannels (e) {
     e.preventDefault();
     
+    // set search bar 
+    var scroller = e.view.scroller;
+	scroller.scrollTo(0,-44);
+
+	
     // ToDo: Initialize list view
 	
      $("#channels-listview").kendoMobileListView({
