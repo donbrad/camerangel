@@ -484,6 +484,9 @@ function onShowContacts (e) {
 	APP.models.contacts.contactListDS.data(APP.models.contacts.contactsDS.data());
 	//APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
 	
+	// set action button
+	$("#contacts > div.footerMenu.km-footer > a").attr("href", "#contactImport");
+
 }
 
 function onHideContacts (e) {

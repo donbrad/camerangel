@@ -196,7 +196,6 @@ form {
 }
 
 .select {
-	border-bottom: 1px solid @shade-200;
     width: 100%;
     border-radius: 3px;
     overflow: hidden;
@@ -1960,15 +1959,19 @@ div.footerMenu.km-footer > ul > li > a {
 	margin: 0px;
 }
 
-.footerBtn-nav {
+.actionBtn {
 	height: 3rem;
 	width: 3rem;
-	.shadow;
+	.shadow !important;
 	border-radius: 1.5rem !important;
 	text-align: center;
 	position: fixed;
 	right: 1rem;
 	padding-top: 0.85rem !important;
+	background: @secondary-100 !important;
+	position: absolute;
+	right: 1rem;
+	bottom: 4rem;
 	p {
 		width: 60px;
 		position: absolute;
@@ -1981,6 +1984,13 @@ div.footerMenu.km-footer > ul > li > a {
 	a {
 		padding-top: 0.75rem;
 	}
+}
+
+/* Hide action btns on views */
+#home > div.footerMenu.km-footer > a,
+#archive > div.footerMenu.km-footer > a,
+#gallery > div.footerMenu.km-footer > a {
+	display: none;
 }
 
 .menuNav {
