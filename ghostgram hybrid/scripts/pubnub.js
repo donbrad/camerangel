@@ -11,7 +11,7 @@ function dataChannelRead (m) {
 			
 			//  { type: 'channelInvite',  channelId: <channelUUID>, owner: <ownerUUID>}
 		case 'channelInvite' : {
-			// Todo:  Does private channel exist?  If not create,  if so notify user of request
+			// Todo:  Does c channel exist?  If not create,  if so notify user of request
 		} break;
 			
 			//  { type: 'packageOffer',  channelId: <channelUUID>, owner: <ownerUUID>, packageId: <packageUUID>, private: true|false, type: 'text'|'pdf'|'image'|'video', title: <text>, message: <text>}
@@ -19,7 +19,7 @@ function dataChannelRead (m) {
 			
 		} break;
 			
-				//  { type: 'packageRequest',  channelId: <channelUUID>, owner: <ownerUUID>, packageId: <packageUUID>, private: true|false, message: <text>}
+		   //  { type: 'packageRequest',  channelId: <channelUUID>, owner: <ownerUUID>, packageId: <packageUUID>, private: true|false, message: <text>}
 		case 'packageRequest' : {
 			
 		} break;

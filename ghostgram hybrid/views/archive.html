@@ -1,30 +1,24 @@
 <div data-role="view" id="archive" data-title="Archive" data-layout="main" data-stretch="true" data-init="window.archiveView.init">  
-	 <div data-role="header">
-		<div data-role="navbar">
-			<span data-role="view-title"></span>
-		</div>
-	</div>
+
 	<main>
 		<div id="search-archives">
-			<button data-role="button" data-click="archiveView.toggleSearch">
-				<img height="18" src="images/sentinel-search.svg" /> 
-			</button>
+			<button data-role="button" data-click="archiveView.toggleSearch"><img height="18" src="images/sentinel-search.svg" /> </button>
 			<div>
 				<div class="filters">
 					<button class="contacts" data-role="button">
-						<img height="18" src="images/sentinel-contacts.svg" />
+						<img src="images/sentinel-contacts.svg" />
 					</button>
 					<button class="chats" data-role="button">
-						<img height="18" src="images/sentinel-chats.svg" />
+						<img src="images/sentinel-chats.svg" />
 					</button>
 					<button class="date" data-role="button">
-						<img height="18" src="images/sentinel-date.svg" />
+						<img src="images/sentinel-date.svg" />
 					</button>
 					<button class="places" data-role="button">
-						<img height="18" src="images/sentinel-places.svg" />
+						<img src="images/sentinel-places.svg" />
 					</button>
 					<button class="search" data-role="button">
-						<img height="18" src="images/sentinel-search.svg" />
+						<img src="images/sentinel-search.svg" />
 					</button>
 				</div>
 
@@ -45,7 +39,8 @@
 
 		<div id="archive-empty">Your archive is empty</div>
 		<div id="archive-search-empty">Nothing found</div>
-	<main>
+	</main>
+
 </div>
 
 <script type="text/x-kendo-template" id="archive-template">
@@ -56,14 +51,14 @@
 			<img src="images/ghost-default.svg" />
 		# } #
 		<button class="delete" data-role="button" data-click="archiveView.deleteDoc" data-id="#= data.id #"></button>
-		<h3>#= data.message.sender.name #</h3>
-		<p>#= moment(data.message.date).fromNow() # in <strong>#= data.message.channelName #</strong></p>
+		<h1>#= data.message.sender.name #</h1><br />
+		<h2>#= moment(data.message.date).fromNow() # in <strong>#= data.message.channelName #</strong></h2>
 	</header>
 	<div class="message">#= data.message.text #</div>
 	# if (data.type === 'Events') { # 
 		<div class="event object">
-			<h3>#= data.object.name #</h3>
-			<p>at <strong>#= data.object.placeName #</strong> #= data.object.address #</p>
+			<h1>#= data.object.name #</h1>
+			<h2>at <strong>#= data.object.placeName #</strong> #= data.object.address #</h2>
 			# if (moment().isBefore(data.object.start)) { #
 				<span>starts #= moment(data.object.start).fromNow() #</span>
 			# } else if (moment().isAfter(data.object.end)) { #
@@ -75,16 +70,14 @@
 	# } #
 	# if (data.type === 'Links') { # 
 		<div class="link object" data-url="#= data.object.url #">
-			<h3>#= data.object.title #</h3>
-			<p>#= data.object.url #</p>
+			<h1>#= data.object.title #</h1>
+			<h2>#= data.object.url #</h2>
 		</div>
 	# } #
 	# if (data.type === 'Photos') { # 
 		<div class="photo object">
 			<img src="#= data.object.url #" />
-			<p><strong>#= data.object.placeName #, #= data.object.address #</strong> 
-				<span>#= moment(data.object.date).fromNow() #<span>
-			</p>
+			<h2><strong>#= data.object.placeName #, #= data.object.address #</strong> <span>#= moment(data.object.date).fromNow() #</span></h2>
 		</div> 
 	# } #
 </script>

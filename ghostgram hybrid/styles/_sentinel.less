@@ -11,7 +11,7 @@
 			margin: .3rem .6rem 0 0;
 			border-radius: 1rem;
 
-			background-color: @grey200;
+			background-color: @shade-200;
 
 			img {
 				vertical-align: middle;
@@ -29,7 +29,7 @@
 				border-radius: 1rem;
 				margin: -.2rem 0 0 .6rem;
 
-				background-color: @greyBk;
+				background-color: @shade-300;
 				background-image: url("../images/close.svg");
 				background-position: 50% 50%;
 				background-repeat: no-repeat;
@@ -42,11 +42,29 @@
 		}
 	}
 
-	input[type="date"] {
+	.sentinel-date {
 		position: absolute;
 		z-index: 1;
 
 		display: none;
+		width: 100%;
+		border: 1px solid @shade-300;
+
+		background-color: white;
+
+		input {
+			width: 100%;
+
+			margin-bottom: .6rem;
+		}
+
+		button {
+			width: 31%;
+
+			&:nth-of-type(2) {
+				margin: 0 3.5%;
+			}
+		}
 	}
 
 	.filters {

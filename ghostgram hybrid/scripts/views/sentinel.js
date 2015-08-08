@@ -11,35 +11,40 @@ Sentinel.prototype = _.assign({
 	KEYWORDS_TO_CATEGORIES: {
 		in: 'chats',
 		at: 'places',
-		from: 'contacts'
+		from: 'contacts',
+
+		before: 'date',
+		since: 'date',
+		on: 'date'
 	},
 
 	filters: {},
 
+	$div: undefined,
+	$input: undefined,
+	$filters: undefined,
+	$tags: undefined,
+	$date: undefined,
+
 	initialize: function ($div) {
-		$div.addClass('sentinel');
 
-		var $input = $div.find('input');
-		var $filters = $div.find('.filters');
-		var $tags = $div.find('.tags');
+		this.$div = $div;
+		this.$div.addClass('sentinel');
 
-		$filters.on('click', '.km-button', function (e) {
+		this.$input = this.$div.find('input');
+		this.$filters = this.$div.find('.filters');
+		this.$tags = this.$div.find('.tags');
+
+		this.$filters.on('click', '.km-button', function (e) {
 			if ($(e.currentTarget).hasClass('date')) {
-				var $date = $('<input type="date" />')
-					.on('click', function (e) {
-						e.stopPropagation();
-					})
-					.appendTo($div)
-					.slideDown(200);
-				// Gotta defer or the original click event triggers this one
-				// as well
-				_.defer( function () {
-					$('body').one('click', function (e) {
-						$date.slideUp(200, function () {
-							$date.remove();
-						});
-					});
-				});
+				e.stopPropagation();
+
+				if (this.$date !== undefined) {
+					$('body').click();
+					return;
+				}
+
+				this.showDate(true);
 
 				return;
 			}
@@ -47,82 +52,50 @@ Sentinel.prototype = _.assign({
 			for (var keyword in this.KEYWORDS_TO_CATEGORIES) {
 				if ($(e.currentTarget).hasClass(this.KEYWORDS_TO_CATEGORIES[keyword])) {
 					window.semanticDSs.master.filter({ field: 'category', operator: 'eq', value: this.KEYWORDS_TO_CATEGORIES[keyword]});
-					$input.data('kendoAutoComplete').search();
+					this.$input.data('kendoAutoComplete').search();
 
 					break;
 				}
 			}
 		}.bind(this));
 
-		$tags.on('click', 'button', function (e) {
+		this.$tags.on('click', 'button', function (e) {
 			$(e.target).parent().fadeOut(100, function () {
 				$(e.target).parent().remove();
 				this.emitEvent('remove');
 
 				var category = $(e.target).parent().data('category');
-				$filters.find('.'+category).removeClass('pressed');
+				this.$filters.find('.'+category).removeClass('pressed');
 			}.bind(this));
 		}.bind(this));
 
-		$input.kendoAutoComplete({
+		this.$input.kendoAutoComplete({
 			separator: ' ',
 			filter: 'startswith',
 			dataSource: window.semanticDSs.master,
 			dataTextField: 'value',
 			select: function (e) {
-				var dataItem = e.sender.dataItem(e.item.index());
-
-				// Remove existing tag if there is one in the same category
-				$tags.find('li').each( function () {
-					if ($(this).data('category') === dataItem.category) {
-						$(this).remove();
-					}
-				});
-
-				$tags.append(
-					'<li data-category="'+dataItem.category+'">' +
-						'<img src="images/sentinel-'+dataItem.category.toLowerCase()+'.svg" />'+
-						e.item.text() +
-						'<button />' +
-					'</li>'
-				);
-
-				$filters
-					.find('.'+dataItem.category.toLowerCase())
-					.addClass('pressed');
-
-				this.emitEvent('add');
-
-				var words = $input.val().split(' ');
-				var keyword = words[words.length - 2];
-				var newValue;
-
-				if (this.KEYWORDS_TO_CATEGORIES[keyword] !== undefined) {
-					newValue = $input.val().split(keyword)[0];
-				} else {
-					newValue = $input.val().split(words[words.length - 1])[0];
-				}
-				// We deferred the input.on function below, so gotta defer
-				// this one as well, or this input.val will happen before
-				// the input.val below
-				_.defer( function () {
-					$input.val(newValue);
-				});
+				var category = e.sender.dataItem(e.item.index()).category;
+				this.addTag(category, e.item.text());
 			}.bind(this)
 		});
 
-		$input.on('keypress', function () {
+		this.$input.on('keypress', function () {
 			// Gotta defer to make sure the latest keystroke is in the $input.val()
 			_.defer( function () {
-				var inputVal = $input.val();
+				var inputVal = this.$input.val();
 				var split = inputVal.split(' ');
 				var keyword;
 				var matched = false;
 				for (keyword in this.KEYWORDS_TO_CATEGORIES) {
-					if (split[split.length-2] === keyword) {
-						window.semanticDSs.master.filter({ field: 'category', operator: 'eq', value: this.KEYWORDS_TO_CATEGORIES[keyword]});
-						matched = true;
+					if (split[split.length-2] !== keyword) {
+						continue;
 					}
+					if (this.KEYWORDS_TO_CATEGORIES[keyword] !== 'date') {
+						window.semanticDSs.master.filter({ field: 'category', operator: 'eq', value: this.KEYWORDS_TO_CATEGORIES[keyword]});
+
+					}
+					matched = true;
 				}
 				if (matched === false) {
 					window.semanticDSs.master.filter({});
@@ -131,6 +104,98 @@ Sentinel.prototype = _.assign({
 					$input.val(inputVal);
 				}
 			}.bind(this));
+		}.bind(this));
+	},
+
+	addTag: function (category, text) {
+		// Remove existing tag if there is one in the same category
+		this.$tags.find('li').each( function () {
+			if ($(this).data('category') === category) {
+				$(this).remove();
+			}
+		});
+
+		this.$tags.append(
+			'<li data-category="'+category+'">' +
+				'<img src="images/sentinel-'+category.toLowerCase()+'.svg" />'+
+				text +
+				'<button />' +
+			'</li>'
+		);
+
+		this.$filters
+			.find('.'+category.toLowerCase())
+			.addClass('pressed');
+
+		this.emitEvent('add');
+
+		var words = this.$input.val().split(' ');
+		var keyword = words[words.length - 2];
+		var newValue;
+
+		if (this.KEYWORDS_TO_CATEGORIES[keyword] !== undefined) {
+			newValue = this.$input.val().split(keyword)[0];
+		} else {
+			newValue = this.$input.val().split(words[words.length - 1])[0];
+		}
+		// We deferred the input.on function below, so gotta defer
+		// this one as well, or this input.val will happen before
+		// the input.val below
+		_.defer( function () {
+			this.$input.val(newValue);
+		}.bind(this));
+	},
+
+	showDate: function (showButtons) {
+		var dateHTML = '<form class="sentinel-date"><input type="date" required />';
+		if (showButtons) {
+			dateHTML += '<br /><button class="before">Before</button><button class="since">Since</button><button class="on">On</button>';
+		}
+		dateHTML += '</form>';
+
+		console.log(dateHTML);
+
+		this.$date = $(dateHTML)
+			.css({
+				top: this.$input.height() + 8
+			})
+			.on('click', function (e) {
+				e.stopPropagation();
+			})
+			.on('submit', function (e) {
+				e.preventDefault();
+				if (showButtons) {
+					var clickedButton = this.$date.find('button:focus').first();
+
+					if (clickedButton.hasClass('before')) {
+						this.addTag('date', 'before '+moment(this.$date.find('input').val()).format('MM-DD-YYYY'));
+					} else if (clickedButton.hasClass('since')) {
+						this.addTag('date', 'since '+moment(this.$date.find('input').val()).format('MM-DD-YYYY'));
+					// "On" button clicked, or they submitted with nothing clicked
+					} else {
+						this.addTag('date', 'on '+moment(this.$date.find('input').val()).format('MM-DD-YYYY'));
+					}
+				}
+
+				this.hideDate();
+			}.bind(this))
+			.insertAfter(this.$input)
+			.slideDown(200);
+		// Gotta defer or the original click event triggers this one
+		// as well
+		_.defer( function () {
+			$('body').one('click', this.hideDate.bind(this));
+		}.bind(this));
+	},
+
+	hideDate: function () {
+		if (this.$date === undefined) {
+			return;
+		}
+
+		this.$date.slideUp(200, function () {
+			this.$date.remove();
+			delete this.$date;
 		}.bind(this));
 	}
 }, EventEmitter.prototype);
