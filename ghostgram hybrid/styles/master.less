@@ -3143,27 +3143,15 @@ div.loginBox > form > div > ul > li {
 	width: 100%;	
 }
 
-#gallerySearchOptions {
+.gallerySearchOptions {
 	background: @shade-300;
 }
 
 #galleryZoomSelect {
-	background: rgba(0, 0, 0, 0.5);
+	background: @shade-300;
 	border-bottom: 1px solid @shade-200;
-	li:nth-child(1){
-		position: absolute;
-		left: 1rem;
-		list-style: none;
-		a > span > img {
-			-moz-transform: scaleY(-1);
-	        -o-transform: scaleY(-1);
-	        -webkit-transform: scaleY(-1);
-	        transform: scaleY(-1);
-	        vertical-align: middle;
-		}
-	}
 }
-
+ 
 #galleryZoomSelect li {
 	//padding: 0.5rem 1rem;
 }
@@ -3188,14 +3176,6 @@ div.loginBox > form > div > ul > li {
 	#gallery-all {
 		stroke: @black;
 	}
-}
-#galleryPhotoDisplayOpts {
-	width: 50%;
-	border-radius: 3px;
-	margin-left: 25%;
-	position: absolute;
-	top: 300px;
-	z-index: 1;
 }
 
 
