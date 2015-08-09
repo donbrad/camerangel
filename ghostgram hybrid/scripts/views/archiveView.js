@@ -4,6 +4,8 @@
 
 var archiveView = {
 
+	sentinel: undefined,
+
 	init: function () {
 		if (archive.dataSource.total() === 0 && 1) {
 			// chat
@@ -145,7 +147,12 @@ var archiveView = {
 		// Binding this manually because data-role="button" messes up the styles
 		$('#archive-list').on('click', '.object', archiveView.openObject);
 
-		var sentinel = new Sentinel($('#search-archives'));
+		// Gotta set on archiveView instead of this because kendo binds
+		// .init to the kendo view
+		archiveView.sentinel = new Sentinel($('#search-archives'));
+
+		archiveView.sentinel.addListener('add', archiveView.search);
+		archiveView.sentinel.addListener('remove', archiveView.search);
 
 		// HACK: Something's up with flex, so automatically calculating heights
 		var adjustListHeight = function () {
@@ -153,8 +160,8 @@ var archiveView = {
 			$('#archive-list').css('height', 'calc(100% - '+searchArchivesHeight+'px)');
 		};
 		adjustListHeight();
-		sentinel.addListener('add', adjustListHeight);
-		sentinel.addListener('remove', adjustListHeight);
+		archiveView.sentinel.addListener('add', adjustListHeight);
+		archiveView.sentinel.addListener('remove', adjustListHeight);
 	},
 
 	checkIfEmpty: function () {
@@ -173,12 +180,32 @@ var archiveView = {
 	},
 
 	search: function () {
-		if ($('#search-archives input').val() === '') {
+		var filters = [];
+
+		if (archiveView.sentinel.filters.contacts !== undefined) {
+			filters.push({ field: 'message.sender.id', operator: 'eq', 'value': archiveView.sentinel.filters.contacts });
+		}
+
+		if (archiveView.sentinel.filters.chats !== undefined) {
+			filters.push({ field: 'channelId', operator: 'eq', value: archiveView.sentinel.filters.chats });
+		}
+
+		if (archiveView.sentinel.filters.places !== undefined) {
+			filters.push({ field: 'message.placeId', operator: 'eq', value: archiveView.sentinel.filters.places });
+		}
+
+		if (archiveView.sentinel.filters.date !== undefined) {
+			filters.push({ field: 'message.date', operator: archiveView.sentinel.filters.date.operator, value: archiveView.sentinel.filters.date.value });
+		}
+
+		archive.search($('#search-archives input').val(), filters);
+
+		if ($('#search-archives input').val() === '' && filters.length === 0) {
 			archiveView.clearSearch();
 			return;
 		}
 
-		if (archive.search($('#search-archives input').val()) === false) {
+		if (archive.search($('#search-archives input').val(), filters) === false) {
 			// Show nothing found
 			$('#archive-search-empty').show();
 			$('#archive-list').hide();
