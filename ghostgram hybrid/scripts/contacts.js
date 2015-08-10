@@ -446,13 +446,16 @@ function onInitContacts(e) {
      $("#contacts-listview").kendoMobileListView({
         dataSource: APP.models.contacts.contactListDS,
         template: $("#contactsTemplate").html(),
-		headerTemplate: "${value}",
+		headerTemplate: $("#contactsHeaderTemplate").html(),
         fixedHeaders: true,
         click: function (e) {
             var contact = e.dataItem;
 
             updateCurrentContact(contact);
-			
+
+            
+
+			/*
 			if (contact.category === 'phone') {
                 if (APP.models.contacts.unifiedDeviceContact) {
                     // Have a unified device contact -- just to add contact
@@ -465,16 +468,69 @@ function onInitContacts(e) {
 			} else {		
 				// If we know the contacts uuid enable the full feature set
 				if (contact.contactUUID !== undefined && contact.contactUUID !== null){
-					$("#contactUserActions").data("kendoMobileActionSheet").open();
-					//APP.kendo.navigate("#ghostEmail"); 
+					//$("#contactUserActions").data("kendoMobileActionSheet").open();
+					contactActionEnabled();
 					//doEditContact(e);
 				} else {
-					$("#contactActions").data("kendoMobileActionSheet").open();
+					//$("#contactActions").data("kendoMobileActionSheet").open();
 				}
 			}
+			*/
              
         }
-     });
+     }).kendoTouch({
+    	filter: ".contactListBox",
+    	enableSwipe: true,
+    	swipe: function(e){
+    		var selection = e.sender.events.currentTarget;
+    		console.log(e.sender.events);
+    		
+    		if(e.direction === "left"){
+    			var otherOpenedLi = $(".contact-active");
+    			$(otherOpenedLi).velocity({translateX:"0"},{duration: "fast"}).removeClass("contact-active");
+    			$(selection).velocity({translateX:"-50%"},{duration: "fast"}).addClass("contact-active");		
+    			
+    		}
+    		if (e.direction === "right" && $(selection).hasClass("contact-active")){
+    			console.log(e);
+    			$(selection).velocity({translateX:"0"},{duration: "fast"}).removeClass("contact-active");
+    		}
+    		
+    	}, tap: function(e){
+    		console.log(e);
+    		contactActionEnabled(e);
+  
+    	}
+    });
+}
+
+function contactActionEnabled(e){
+	if (e.preventDefault !== undefined){
+    	e.preventDefault();
+    }
+	// Change action btn
+	$("#contacts > div.footerMenu.km-footer > a")
+		.velocity({rotateZ: "45deg"}, {duration: 300, easing: "spring"})
+		.removeClass("secondary-100")
+		.addClass("warning")
+		.removeAttr("href")
+		.on("click", function(e){
+			contactActionDisable(e);
+		});
+		
+}
+
+function contactActionDisable(e){
+	if (e.preventDefault !== undefined){
+    	e.preventDefault();
+    }
+	$("#contacts > div.footerMenu.km-footer > a")
+		.attr("href", "#contactImport")
+		.velocity({rotateZ: "0deg"}, {duration: 300, easing: "spring"})
+		.addClass("secondary-100")
+		.removeClass("warning")
+		.unbind("click");
+	console.log("disable run");
 }
  
 function onShowContacts (e) {

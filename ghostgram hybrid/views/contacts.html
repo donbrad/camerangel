@@ -5,33 +5,31 @@
 			<span class="searchIcon"><img src="images/search.svg" /></span>
 			<input type="search" class="viewSearchBox" placeholder="Search" id="contactSearchInput" />
 		</div>
+		
 		<a class="hidden btnClear-sm" data-role="button" data-click="searchDeviceContacts" id="btnSearchDeviceContacts"> 
-				<img src="images/contacts.svg" /> 
-					Search device for "<span id="btnSearchDeviceName"></span>"
-			</a>
+			<img src="images/contacts.svg" /> 
+			Search device for "<span id="btnSearchDeviceName"></span>"
+		</a>
 	</div>
 
+		<div id="contactListDiv"  style="padding-bottom: 24px;">
+	        <ul id="contacts-listview"></ul>
+			<!-- Only display if device permission is needed -->
+			<div id="deviceContactPermission" class="pad center hidden">
 
-	<div id="contactListDiv"  style="padding-bottom: 24px;">
-        <ul id="contacts-listview"></ul>
-		<!-- Only display if device permission is needed -->
-		<div id="deviceContactPermission" class="pad center hidden">
-
-			<a class="btnClear">
-				<img src="images/import.svg" height="16" />
-					Find contacts on device
-			</a>
-		</div>
-    </div>
+				<a class="btnClear">
+					<img src="images/import.svg" height="16" />
+						Find contacts on device
+				</a>
+			</div>
+	    </div>
     
     <ul data-role="actionsheet" id="contactActions" data-popup='{"direction": "left"}'>
-
 		<li><a data-action="inviteContact">Invite Contact</a></li>
 		<li><a  data-action="doEditContact">Edit Contact</a></li>
 		<li><a data-action="contactSendSMS">Send SMS</a></li>
-		 <li><a data-action="contactSendEmail">Send Email</a></li>
+		<li><a data-action="contactSendEmail">Send Email</a></li>
 		<li><a data-action="contactCallPhone">Phone Call</a></li>
-        
     </ul> 
     
       <ul data-role="actionsheet" id="contactUserActions" data-popup='{"direction": "left"}'>
@@ -247,9 +245,42 @@
 	</div>
 </div>
 
+<script type="text/x-kendo-template" id="contactsHeaderTemplate">
+	<div>
+		# if (data.value === 'phone') {#
+			Device
+		#} else if (data.value === 'new'){#
+			Invited
+		#} else {#
+			ghostgram
+		#}#
+	</div>
+</script>
+
 
 <script type="text/x-kendo-template" id="contactsTemplate">      
-    <div class="listBox">
+	<div>
+    	<div class="contact-options list-options">
+    		# if (data.contactUUID !== undefined && data.contactUUID !== null){#
+    			<a class="btnClear-grey" data-role="button" data-click="doEditContact">
+				    <img src="images/option-edit.svg" height="18" />
+				    <p class="chat-option-selection">Edit</p>
+			   	</a>
+    		#} else {#
+			   	<a class="btnClear-grey" data-role="button" data-click="inviteContact">
+			    	<img src="images/contact-invite.svg" height="12" />
+			    	<p class="chat-option-selection"> Resend Invite</p>
+		    	</a>
+			   	
+    		#}#
+    			<a class="btnClear-red" data-role="button" data-click="deleteContact">
+			    	<img src="images/trash.svg" height="18" />
+			    	<p class="chat-option-selection"> Delete</p>
+		    	</a>
+		    
+    	</div><!-- contact-options -->
+
+    <div class="contactListBox">
 	     <a class="contactListItem">
 			 
 			 #if (data.category !== 'phone') {#
@@ -291,14 +322,15 @@
 					
 				<div class="clearfix"></div> 
 			#} else {#
-				<div class="phoneContact">
-					<h4> #: data.name # </h4>
-				</div>
+				<h4 class="phoneContact">
+					#: data.name #
+				</h4>
 			#}#
 			 
 		 </div>
-	</a>
-</div><!-- listBox -->
+		</a>
+	</div><!-- listBox -->
+</div>
 </script>
 
 <script type="text/x-kendo-template" id="deviceContactsTemplate">

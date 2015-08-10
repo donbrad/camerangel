@@ -10,6 +10,7 @@
 @shade-400: #EFF1F2;
 @btnActiveBk: rgba(0,0,0,0.15);
 @black: #4A4A4A;
+@warning: #EA6262;
 
 
 /* variables */
@@ -79,6 +80,11 @@
 	padding-right: 1rem;
 	padding-top: 0px;
 	padding-bottom: 0px;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	background: #fff;
+	display: block;
 }
 
 .full {
@@ -249,11 +255,15 @@ form {
 }
 
 .secondary-100 {
-	background: @secondary-100;
+	background: @secondary-100 !important;
 }
 
 .secondary-200 {
-	background: @secondary-200;
+	background: @secondary-200 !important;
+}
+
+.warning {
+	background: @warning !important;
 }
 
 /* Text colors */
@@ -1578,6 +1588,10 @@ div.footerMenu.km-footer > ul > li > a:active {
 	border: none !important;
 }
 
+.archive-header-img {
+	vertical-align: bottom !important; 
+}
+
 /* Menu Styles */
 
 .menuBox a:link {
@@ -1811,27 +1825,28 @@ a:hover {
 	z-index: 0;
 	background-color: #fff;
 	width: 100%;
+	height: 4rem;
 	position: absolute;
 	top: 0px;
 	left: 0px;
 	display: block;
 	padding-left: 1rem;
     padding-right: 1rem;
-    padding-top: 0.25rem;
-    padding-bottom: 0.25rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
     box-shadow: 3px 0 3px -3px @shade-100;
     .font-size(14);
 }
 
 .chat-options {
 	width: 100%;
-	height: 100%;
+	height: 4rem;
 	background-color: @shade-300;
 	z-index:-1;
     display: inline-block;
-    padding-top: 0.25rem;
+    padding-top: 1rem;
     padding-bottom: 0.5rem;
-    margin-bottom: -0.25rem;
+    margin-bottom: -0.5rem;
 }
 
 .chat-option-ul li {
@@ -1968,7 +1983,6 @@ div.footerMenu.km-footer > ul > li > a {
 	position: fixed;
 	right: 1rem;
 	padding-top: 0.85rem !important;
-	background: @secondary-100 !important;
 	position: absolute;
 	right: 1rem;
 	bottom: 4rem;
@@ -1987,10 +2001,14 @@ div.footerMenu.km-footer > ul > li > a {
 }
 
 /* Hide action btns on views */
-#home > div.footerMenu.km-footer > a,
-#archive > div.footerMenu.km-footer > a,
-#gallery > div.footerMenu.km-footer > a {
+* > div.footerMenu.km-footer > a,
+#channel > div.footerMenu.km-footer > a {
 	display: none;
+}
+#channels > div.footerMenu.km-footer > a,
+#contacts > div.footerMenu.km-footer > a,
+#gallery > div.footerMenu.km-footer > a {
+	display: inline-block; 
 }
 
 .menuNav {
@@ -2677,6 +2695,8 @@ div.loginBox > form > div > ul > li {
 	li {
 		border-bottom: 1px solid @shade-200;
 		background: #fff;
+		width: 100%;
+		display: inline-block;
 	}
 }
 
@@ -2702,8 +2722,69 @@ div.loginBox > form > div > ul > li {
 	background: @shade-300;
 }
 
+.contactListBox {
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.5rem;
+	padding-bottom: 0.25rem;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	background: #fff;
+	display: inline-block;
+	height: 4rem;
+	box-shadow: 3px 0 3px -3px @shade-100;
+}
 
-//#contacts-listview > li > ul > li
+.contact-options {
+	width: 100%;
+	height: 70px;
+	background-color: @shade-300;
+	z-index:-1;
+    display: inline-block;
+    padding-top: 0.55rem;
+    margin-bottom: -0.25rem;
+    float: left;
+    height: 4rem;
+    text-align: right;
+}
+
+.contact-option-ul {
+	li {
+		background: transparent !important;
+		border: transparent !important;
+		text-align: right;
+		a {
+			padding: 0px !important;
+		}
+	}
+}
+
+.contactExpanded {
+	height: 7rem;
+}
+
+#contacts-listview > li > ul > li > div > div.contact-options.list-options > a.btnClear-grey.km-widget.km-button > span > p {
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+#contacts-listview {
+	z-index: 0;
+	position: absolute;
+	width: 100%;
+	li {
+	    border-bottom: 1px solid #E4E4E4;
+	    background: #fff;
+	    z-index:9999;
+	    padding-top: 0px;
+	    padding-bottom: 0px;
+	    display: inherit;
+	}
+	li:nth-child(2){
+		border-top: 1px solid #E4E4E4;
+	}
+}
 
 .listPhoto {
 	width: 20%;
@@ -3013,7 +3094,7 @@ div.loginBox > form > div > ul > li {
 	vertical-align: text-top;
 }
 
-.phoneContact h4 {
+.phoneContact {
 	margin-top: 0.5rem;
 	margin-bottom:0.5rem;
 	margin-left: 0px !important;

@@ -34,7 +34,7 @@
 		</div>
 
 		<div id="archive-list" data-role="scroller">
-			<ul data-role="listview" data-source="archive.dataSource" data-template="archive-template"></ul>
+			<ul data-role="listview" data-source="archive.dataSource" data-template="archive-template" data-header-template="header-template"></ul>
 		</div>
 
 		<div id="archive-empty">Your archive is empty</div>
@@ -42,6 +42,11 @@
 	</main>
 
 </div>
+<script type="text/x-kendo-template" id="header-template">
+    <div>
+    	<img class="archive-header-img" src="images/archive-#= value #.svg"> #: value #
+    </div>
+</script>
 
 <script type="text/x-kendo-template" id="archive-template">
 	<header>
@@ -51,8 +56,8 @@
 			<img src="images/ghost-default.svg" />
 		# } #
 		<button class="delete" data-role="button" data-click="archiveView.deleteDoc" data-id="#= data.id #"></button>
-		<h1>#= data.message.sender.name #</h1><br />
-		<h2>#= moment(data.message.date).fromNow() # in <strong>#= data.message.channelName #</strong></h2>
+		<h3>#= data.message.sender.name #</h3>
+		<p class="helper">#= moment(data.message.date).fromNow() # in <strong>#= data.message.channelName #</strong></p>
 	</header>
 	<div class="message">#= data.message.text #</div>
 	# if (data.type === 'Events') { # 
