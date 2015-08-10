@@ -1051,22 +1051,7 @@
 			uuid: uuid
 		});
 
-		// Subscribe to the data / notifications channel
-		//mobileNotify("Created data channel : " + uuid);
-		APP.pubnub.subscribe({
-			channel: uuid,
-			windowing: 50000,
-			message: dataChannelRead,
-			connect: function() {},
-			disconnect: function() {},
-			reconnect: function() {
-				mobileNotify("Data Channel Reconnected")
-			},
-			error: function() {
-				mobileNotify("Data Channel Network Error")
-			}
 
-		});
 
 		APP.pubnub.subscribe({
 			channel: 'ghostgramsapp129195720',
@@ -1083,19 +1068,9 @@
 
 		});
 
-		// Get any messages in the channel
-		APP.pubnub.history({
-			channel: uuid,
-			count: 100,
-			callback: function(messages) {
-				messages = messages[0];
-				messages = messages || [];
-				for (var i = 0; i < messages.length; i++) {
-					dataChannelRead(messages[i]);
-				}
 
-			}
-		});
+		// Initialize the user's data channel with the user's UUID...
+		userDataChannel.init(uuid);
 
 		//_app.importDeviceContacts();
 
@@ -1111,7 +1086,7 @@
 
 		// Provide basic functionality in the simulator and deployable simulator
 		if (window.navigator.simulator === true) {
-			APP.models.profile.version = "0.1.9.1";
+			APP.models.profile.version = "0.1.9.5";
 		} else {
 			cordova.getAppVersion(function(version) {
 				APP.models.profile.version = version;

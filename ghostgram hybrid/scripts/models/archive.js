@@ -244,6 +244,6 @@ var archive = {
 		return true;
 	}
 	*/
-}
+};
 
 archive.initialize();
