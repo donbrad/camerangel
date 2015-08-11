@@ -11,8 +11,27 @@
 			Search device for "<span id="btnSearchDeviceName"></span>"
 		</a>
 	</div>
-
 		<div id="contactListDiv"  style="padding-bottom: 24px;">
+			<div class="contact-connections">
+				<ul class="list-inline circleOptions">
+					<li>
+						<span>Private Chat</span>
+						<img class="connection-img" src="images/contact-privateChat.svg" />
+					</li>
+					<li>
+						<span>ghostMail</span>
+						<img class="connection-img" src="images/contact-ghostMail.svg" />
+					</li>
+					<li>
+						<span>SMS</span>
+						<img class="connection-img" src="images/contact-sms.svg" />
+					</li>
+					<li>
+						<span>Call</span>
+						<img class="connection-img" src="images/contact-call.svg" />
+					</li>
+				</ul>
+			</div>
 	        <ul id="contacts-listview"></ul>
 			<!-- Only display if device permission is needed -->
 			<div id="deviceContactPermission" class="pad center hidden">
@@ -314,13 +333,16 @@
 						</h4>
 					</div>
 
-					<p class="left caption">
+					<p class="left caption contact-status">
 					#if(data.phoneVerified !== true){#
 						Unverified •  
 					#}#	Busy @ home
 					</p>
-					
-				<div class="clearfix"></div> 
+					<div class="clearfix"></div>
+					<div class="contact-info">
+						<p class="caption contact-phone">#: data.phone #</p>
+						<p class="caption contact-email">#: data.email #</p>
+					</div>
 			#} else {#
 				<h4 class="phoneContact">
 					#: data.name #

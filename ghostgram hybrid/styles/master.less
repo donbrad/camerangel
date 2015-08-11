@@ -22,6 +22,7 @@
 /* Imports */
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Hind:300,400,500|PT+Sans:400,700);
 @import "mixins.less";
+@import "mixin-shadow";
 @import "_sentinel.less";
 
 /* elements */
@@ -30,6 +31,35 @@
 }
 .top-shadow {
 	box-shadow: 0px -2px 4px 0px rgba(0,0,0,0.12);
+}
+
+/* Shadow classes */
+.shadow-1 {
+	.shadowHelper(1) !important;
+}
+
+.shadow-2 {
+	.shadowHelper(2) !important;
+}
+
+.shadow-3 {
+	.shadowHelper(3) !important;
+}
+
+.shadow-4 {
+	.shadowHelper(4) !important;
+}
+
+.shadow-5 {
+	.shadowHelper(5) !important;
+}
+
+.blured {
+	-webkit-filter: blur(5px);
+    -moz-filter: blur(5px);
+    -o-filter: blur(5px);
+    -ms-filter: blur(5px);
+    filter: blur(5px);
 }
 
 .centerObject {
@@ -1989,8 +2019,9 @@ div.footerMenu.km-footer > ul > li > a {
 	p {
 		width: 60px;
 		position: absolute;
-		right: 4.5rem;
-		top: 1.25rem;
+		right: 0rem;
+		top: 1rem;
+		opacity:0;
 	}
 	img {
 		height:1.25rem;
@@ -2722,6 +2753,85 @@ div.loginBox > form > div > ul > li {
 	background: @shade-300;
 }
 
+.contact-connections {
+	position: absolute;
+	top: 0px;
+	padding-right: 1rem;
+	padding-top: 30%;
+	z-index: 1;
+	text-align: right;
+	width: 100%;
+	min-height: 100%;
+	display: none;
+	opacity: 0;
+	overflow: hidden;
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+40,000000+100&amp;0+40,0.4+100 */
+background: -moz-linear-gradient(-45deg,  rgba(255,255,255,0) 40%, rgba(0,0,0,0.4) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, right bottom, color-stop(40%,rgba(255,255,255,0)), color-stop(100%,rgba(0,0,0,0.4))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(-45deg,  rgba(255,255,255,0) 40%,rgba(0,0,0,0.4) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(-45deg,  rgba(255,255,255,0) 40%,rgba(0,0,0,0.4) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(-45deg,  rgba(255,255,255,0) 40%,rgba(0,0,0,0.4) 100%); /* IE10+ */
+background: linear-gradient(135deg,  rgba(255,255,255,0) 40%,rgba(0,0,0,0.4) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#66000000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+
+	li {
+		//margin: 0.75rem;
+		//width: 25%;
+		//float: left;
+		//position: absolute;
+	}
+	span {
+		.font-size(12);
+	}
+	
+}
+
+
+.circleOptions {
+	width: 16rem;
+	height: 16rem;
+	position: absolute;
+	bottom: 1rem;
+	right: -3rem;
+	border-radius: 50%;
+	li {
+		position: absolute;
+		right: 4rem;
+		bottom: 4rem;
+	}
+}
+
+#contacts > div.footerMenu.km-footer > div > ul > li > img {
+	vertical-align: middle;
+}
+.circleOptions li:nth-child(1){
+	transform: translate(-8em);
+}
+
+.circleOptions li:nth-child(2){
+	transform: rotate(30deg) translate(-8em) rotate(-30deg);
+}
+.circleOptions li:nth-child(3){
+	transform: rotate(60deg) translate(-8em) rotate(-60deg);
+}
+.circleOptions li:nth-child(4){
+	transform: rotate(90deg) translate(-9em) rotate(-90deg);
+}
+
+#contactListDiv > div.contact-connections > ul > li > p {
+	margin: 0px;
+}
+
+.connection-img {
+	//.shadowHelper(1);
+}
+
+#contactListDiv > div.contact-connections > ul > li > img {
+	vertical-align: middle;
+	margin-left: 0.5rem;
+}
+
 .contactListBox {
 	padding-left: 1rem;
 	padding-right: 1rem;
@@ -2734,6 +2844,7 @@ div.loginBox > form > div > ul > li {
 	display: inline-block;
 	height: 4rem;
 	box-shadow: 3px 0 3px -3px @shade-100;
+	width: 100%;
 }
 
 .contact-options {
@@ -2760,8 +2871,14 @@ div.loginBox > form > div > ul > li {
 	}
 }
 
-.contactExpanded {
+.activeContact {
 	height: 7rem;
+}
+
+.contact-info {
+	width: 80%;
+	margin-left: 20%;
+	opacity: 0;
 }
 
 #contacts-listview > li > ul > li > div > div.contact-options.list-options > a.btnClear-grey.km-widget.km-button > span > p {
@@ -2934,7 +3051,8 @@ div.loginBox > form > div > ul > li {
 	padding: 0.5rem 1rem;
 	background: #FFFFFF;
 	border: 1px solid rgba(228,228,228,0.30);
-	box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.12), 0px 2px 4px 0px rgba(0,0,0,0.12);
+	//box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.12), 0px 2px 4px 0px rgba(0,0,0,0.12);
+	.shadowHelper(1);
 	border-radius: 2px;
 }
 

@@ -497,9 +497,9 @@ function onInitContacts(e) {
     		}
     		
     	}, tap: function(e){
-    		console.log(e);
-    		contactActionEnabled(e);
-  
+    		//console.log(e);
+    		contactActionEnabled1(e);
+
     	}
     });
 }
@@ -508,29 +508,93 @@ function contactActionEnabled(e){
 	if (e.preventDefault !== undefined){
     	e.preventDefault();
     }
+    var selectionClass = "." + e.touch.currentTarget.className;
+    var selection = e.touch.currentTarget;
+    $(selection).addClass("activeContact");
+    console.log(selection);
+
+    // hide contact text
+    $(".activeContact > a > div.left.listName, .activeContact > a > p").velocity("fadeOut", {duration: 150 });
+
+    // show connection options
+}
+
+
+
+function contactActionEnabled1(e){
+	if (e.preventDefault !== undefined){
+    	e.preventDefault();
+    }
 	// Change action btn
 	$("#contacts > div.footerMenu.km-footer > a")
-		.velocity({rotateZ: "45deg"}, {duration: 300, easing: "spring"})
 		.removeClass("secondary-100")
 		.addClass("warning")
 		.removeAttr("href")
 		.on("click", function(e){
-			contactActionDisable(e);
+			contactActionDisable1(e);
 		});
+
+	$("#contacts > div.footerMenu.km-footer > a > .km-text > img")
+		.velocity({rotateZ: "45deg"}, {duration: 300, easing: "spring"});
+
+	$("#contacts > div.footerMenu.km-footer > a > span > p").velocity({
+		right: "3.5rem",
+		opacity: 1
+	}, {duration: 300, easing: "spring"});
+
+	var selection = e.touch.currentTarget;
+
+	// activate photo
+    $(selection).addClass("activeContact");
+    $('.activeContact > a > div.left.listPhoto > div > img.circle-img-md').addClass("shadow-3");
+
+    console.log(selection);
+
+    // expand contact list
+    var optionsBox = $(".activeContact").parents()[0].children[0];
+    $(optionsBox).velocity({height: "6rem"}, {duration:300}).addClass("contactExpanded");
+    console.log(optionsBox);
+
+    // show contact info
+   	$(".activeContact > a > p").velocity("fadeOut", {duration: 200});
+   	$(".activeContact > a > div.contact-info").velocity({"margin-top": "-1rem", opacity: 1}, {duration: 300, delay: 200});
+
+    // show formated phone
+    showFormatedPhone();
+
+	// show connection options 
+	$(".contact-connections").css("display","inline-block").velocity("fadeIn");
 		
 }
 
-function contactActionDisable(e){
+function showFormatedPhone(){
+	$('.contact-phone').text(function(i, text) {
+    	return text.replace(/\d(\d\d\d)(\d\d\d)(\d\d\d\d)/, '($1) $2-$3');
+	});
+}
+
+function contactActionDisable1(e){
 	if (e.preventDefault !== undefined){
     	e.preventDefault();
     }
+    // reset action btn
 	$("#contacts > div.footerMenu.km-footer > a")
 		.attr("href", "#contactImport")
-		.velocity({rotateZ: "0deg"}, {duration: 300, easing: "spring"})
 		.addClass("secondary-100")
 		.removeClass("warning")
 		.unbind("click");
 	console.log("disable run");
+
+	$("#contacts > div.footerMenu.km-footer > a > .km-text > img")
+		.velocity({rotateZ: "0deg"}, {duration: 300, easing: "spring"});
+
+	$("#contacts > div.footerMenu.km-footer > a > span > p").velocity({
+		right: "0",
+		opacity: 0
+	}, {duration: 300, easing: "spring"});
+
+	// hide connections
+	$(".contact-connections").css("display","inline-block").velocity("fadeOut");
 }
  
 function onShowContacts (e) {
