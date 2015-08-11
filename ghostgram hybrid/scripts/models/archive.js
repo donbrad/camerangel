@@ -74,7 +74,7 @@ var archive = {
 
 			type: model.type,
 			tags: model.tags
-		}
+		};
 
 		// Format the doc date into a string
 		var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -116,6 +116,33 @@ var archive = {
 		localStorage.setItem('archiveDS', JSON.stringify(dsLocalStorage));
 	},
 
+	search: function (query, filters) {
+
+		// Get lunr matches if there are any
+		if (query !== '') {
+			var lunrMatches = this.index.search(query);
+
+			if (lunrMatches.length === 0) {
+				return false;
+			} else {
+				filters.push({
+					logic: 'or',
+					// ids from lunr go in here (id = this, or id = that, where this and that are lunr matches)
+					filters: []
+				});
+
+				lunrMatches.forEach( function (lunrMatch) {
+					filters[filters.length-1].filters.push({ field: 'id', operator: 'eq', value: lunrMatch.ref });
+				});
+			}
+		}
+
+		this.dataSource.filter(filters);
+
+		return true;
+	}
+
+/*
 	search: function (query) {
 		// Start the dataSource filter
 		var filter = {
@@ -216,6 +243,7 @@ var archive = {
 
 		return true;
 	}
-}
+	*/
+};
 
 archive.initialize();

@@ -18,6 +18,12 @@ Sentinel.prototype = _.assign({
 		on: 'date'
 	},
 
+	/**
+	 * The category is the key and the value is the value :P, for example,
+	 * "place": 12345
+	 * where 12345 is the placeId
+	 * @type {Object}
+	 */
 	filters: {},
 
 	$div: undefined,
@@ -66,6 +72,7 @@ Sentinel.prototype = _.assign({
 
 				var category = $(e.target).parent().data('category');
 				this.$filters.find('.'+category).removeClass('pressed');
+				delete this.filters[category];
 			}.bind(this));
 		}.bind(this));
 
@@ -76,6 +83,8 @@ Sentinel.prototype = _.assign({
 			dataTextField: 'value',
 			select: function (e) {
 				var category = e.sender.dataItem(e.item.index()).category;
+
+				this.filters[category] = e.sender.dataItem(e.item.index()).value;
 				this.addTag(category, e.item.text());
 			}.bind(this)
 		});
@@ -88,20 +97,22 @@ Sentinel.prototype = _.assign({
 				var keyword;
 				var matched = false;
 				for (keyword in this.KEYWORDS_TO_CATEGORIES) {
-					if (split[split.length-2] !== keyword) {
-						continue;
-					}
-					if (this.KEYWORDS_TO_CATEGORIES[keyword] !== 'date') {
-						window.semanticDSs.master.filter({ field: 'category', operator: 'eq', value: this.KEYWORDS_TO_CATEGORIES[keyword]});
+					if (this.KEYWORDS_TO_CATEGORIES.hasOwnProperty(keyword)) {
+						if (split[split.length-2] !== keyword) {
+							continue;
+						}
+						if (this.KEYWORDS_TO_CATEGORIES[keyword] !== 'date') {
+							window.semanticDSs.master.filter({ field: 'category', operator: 'eq', value: this.KEYWORDS_TO_CATEGORIES[keyword]});
 
+						}
+						matched = true;
 					}
-					matched = true;
 				}
 				if (matched === false) {
 					window.semanticDSs.master.filter({});
 					// Fix a bug in kendo that repeats the last selected autocomplete value in the $input
 					// after switching datasources
-					$input.val(inputVal);
+					this.$input.val(inputVal);
 				}
 			}.bind(this));
 		}.bind(this));
@@ -138,6 +149,7 @@ Sentinel.prototype = _.assign({
 		} else {
 			newValue = this.$input.val().split(words[words.length - 1])[0];
 		}
+
 		// We deferred the input.on function below, so gotta defer
 		// this one as well, or this input.val will happen before
 		// the input.val below
@@ -149,11 +161,9 @@ Sentinel.prototype = _.assign({
 	showDate: function (showButtons) {
 		var dateHTML = '<form class="sentinel-date"><input type="date" required />';
 		if (showButtons) {
-			dateHTML += '<br /><button class="before">Before</button><button class="since">Since</button><button class="on">On</button>';
+			dateHTML += '<br /><button class="before">Before</button><button class="since">Since</button>';
 		}
 		dateHTML += '</form>';
-
-		console.log(dateHTML);
 
 		this.$date = $(dateHTML)
 			.css({
@@ -169,11 +179,10 @@ Sentinel.prototype = _.assign({
 
 					if (clickedButton.hasClass('before')) {
 						this.addTag('date', 'before '+moment(this.$date.find('input').val()).format('MM-DD-YYYY'));
+						this.filters.date = { operator: 'lt', value: this.$date.find('input').val() };
 					} else if (clickedButton.hasClass('since')) {
 						this.addTag('date', 'since '+moment(this.$date.find('input').val()).format('MM-DD-YYYY'));
-					// "On" button clicked, or they submitted with nothing clicked
-					} else {
-						this.addTag('date', 'on '+moment(this.$date.find('input').val()).format('MM-DD-YYYY'));
+						this.filters.date = { operator: 'lt', value: this.$date.find('input').val() };
 					}
 				}
 

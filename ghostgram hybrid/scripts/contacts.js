@@ -566,13 +566,13 @@ function contactActionEnabled1(e){
 
     // expand contact list
     var optionsBox = $(".activeContact").parents()[0].children[0];
-    $(optionsBox).velocity({height: "14rem"}, {duration:300}).addClass("contactExpanded");
+    $(optionsBox).velocity({height: "10rem"}, {duration:300}).addClass("contactExpanded");
     console.log(optionsBox);
 
 
 	// show contact info
    	$(".activeContact > a > p").velocity("fadeOut", {duration: 200});
-   	$(".activeContact > a > div.contact-info").velocity({"margin-top": "-1rem", opacity: 1}, {duration: 300, delay: 200});
+   	$("div.contactListBox.activeContact > div").velocity({"margin-top": "-1rem", opacity: 1}, {duration: 300, delay: 200});
 
     // show formated phone
     showFormatedPhone();		
