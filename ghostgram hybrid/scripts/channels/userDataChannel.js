@@ -37,6 +37,7 @@ var userDataChannel = {
             });
         }
 
+        this.history();
     },
 
     updateTimeStamp : function () {
@@ -45,24 +46,44 @@ var userDataChannel = {
     },
 
     history : function () {
-        this.lastAccess = new Date().getTime();
-        // Get any messages in the channel
-        APP.pubnub.history({
-            channel: this.channelId,
-            count: 100,
-            callback: function(messages) {
-                messages = messages[0];
-                messages = messages || [];
-                for (var i = 0; i < messages.length; i++) {
-                    this.channelRead(messages[i]);
-                }
 
-            }
-        });
+        if (this.lastAccess === 0) {
+            // Get any messages in the channel
+            APP.pubnub.history({
+                channel: this.channelId,
+                reverse: true,
+                callback: function(messages) {
+                    messages = messages[0];
+                    messages = messages || [];
+                    for (var i = 0; i < messages.length; i++) {
+                        this.channelRead(messages[i]);
+                    }
+
+                }
+            });
+        } else {
+            // Get any messages in the channel
+            APP.pubnub.history({
+                channel: this.channelId,
+                start: this.lastAccess,
+                reverse: true,
+                callback: function(messages) {
+                    messages = messages[0];
+                    messages = messages || [];
+                    for (var i = 0; i < messages.length; i++) {
+                        this.channelRead(messages[i]);
+                    }
+
+                }
+            });
+        }
+
+
+        this.updateTimeStamp();
     },
 
     channelRead : function (m) {
-        this.lastAccess = new Date().getTime();
+        this.updateTimeStamp();
 
         switch(m.type) {
 

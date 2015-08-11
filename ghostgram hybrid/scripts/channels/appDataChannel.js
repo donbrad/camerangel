@@ -35,6 +35,9 @@ var appDataChannel = {
             error: this.channelError
 
         });
+
+        // Load the appData message queue
+        this.history();
     },
 
     updateTimeStamp : function () {
@@ -43,19 +46,39 @@ var appDataChannel = {
     },
 
     history : function () {
-        // Get any messages in the channel
-        APP.pubnub.history({
-            channel: this.channelId,
-            count: 100,
-            callback: function(messages) {
-                messages = messages[0];
-                messages = messages || [];
-                for (var i = 0; i < messages.length; i++) {
-                    this.channelRead(messages[i]);
-                }
 
-            }
-        });
+        if (this.lastAccess === 0) {
+            // Get any messages in the channel
+            APP.pubnub.history({
+                channel: this.channelId,
+                reverse: true,
+                callback: function(messages) {
+                    messages = messages[0];
+                    messages = messages || [];
+                    for (var i = 0; i < messages.length; i++) {
+                        this.channelRead(messages[i]);
+                    }
+
+                }
+            });
+        } else {
+            // Get any messages in the channel
+            APP.pubnub.history({
+                channel: this.channelId,
+                start: this.lastAccess,
+                reverse: true,
+                callback: function(messages) {
+                    messages = messages[0];
+                    messages = messages || [];
+                    for (var i = 0; i < messages.length; i++) {
+                        this.channelRead(messages[i]);
+                    }
+
+                }
+            });
+        }
+
+
 
         this.updateTimeStamp();
     },
