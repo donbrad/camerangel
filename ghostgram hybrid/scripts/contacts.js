@@ -525,6 +525,7 @@ function contactActionEnabled1(e){
 	if (e.preventDefault !== undefined){
     	e.preventDefault();
     }
+    /*
 	// Change action btn
 	$("#contacts > div.footerMenu.km-footer > a")
 		.removeClass("secondary-100")
@@ -542,11 +543,9 @@ function contactActionEnabled1(e){
 		opacity: 1
 	}, {duration: 300, easing: "spring"});
 
-	var selection = e.touch.currentTarget;
+	
 
-	// activate photo
-    $(selection).addClass("activeContact");
-    $('.activeContact > a > div.left.listPhoto > div > img.circle-img-md').addClass("shadow-3");
+	
 
     console.log(selection);
 
@@ -555,16 +554,28 @@ function contactActionEnabled1(e){
     $(optionsBox).velocity({height: "6rem"}, {duration:300}).addClass("contactExpanded");
     console.log(optionsBox);
 
-    // show contact info
+	// show connection options 
+	$(".contact-connections").css("display","inline-block").velocity("fadeIn");
+	*/
+
+	var selection = e.touch.currentTarget;
+
+	// activate photo
+    $(selection).addClass("activeContact");
+    $('.activeContact > a > div.left.listPhoto > div > img.circle-img-md').addClass("shadow-3");
+
+    // expand contact list
+    var optionsBox = $(".activeContact").parents()[0].children[0];
+    $(optionsBox).velocity({height: "14rem"}, {duration:300}).addClass("contactExpanded");
+    console.log(optionsBox);
+
+
+	// show contact info
    	$(".activeContact > a > p").velocity("fadeOut", {duration: 200});
    	$(".activeContact > a > div.contact-info").velocity({"margin-top": "-1rem", opacity: 1}, {duration: 300, delay: 200});
 
     // show formated phone
-    showFormatedPhone();
-
-	// show connection options 
-	$(".contact-connections").css("display","inline-block").velocity("fadeIn");
-		
+    showFormatedPhone();		
 }
 
 function showFormatedPhone(){

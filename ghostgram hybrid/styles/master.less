@@ -2723,7 +2723,7 @@ div.loginBox > form > div > ul > li {
 #contacts-listview,
 #contactimport-listview {
 	padding-bottom: 3rem;
-	li {
+	> li {
 		border-bottom: 1px solid @shade-200;
 		background: #fff;
 		width: 100%;
@@ -2731,7 +2731,7 @@ div.loginBox > form > div > ul > li {
 	}
 }
 
-#contacts-listview li:nth-child(2){
+#contacts-listview > li:nth-child(2){
 	border-top: 1px solid @shade-200;
 	border-bottom: 1px solid @shade-200;
 }
@@ -2742,7 +2742,7 @@ div.loginBox > form > div > ul > li {
 }
 
 .contactListItem {
-	display: block;
+	//display: block;
 }
 
 .contactListItem:hover {
@@ -2872,7 +2872,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', e
 }
 
 .activeContact {
-	height: 7rem;
+	height: 14rem;
 }
 
 .contact-info {
