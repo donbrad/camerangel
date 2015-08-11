@@ -1051,23 +1051,8 @@
 			uuid: uuid
 		});
 
-
-
-		APP.pubnub.subscribe({
-			channel: 'ghostgramsapp129195720',
-			windowing: 50000,
-			message: appChannelRead,
-			connect: function() {},
-			disconnect: function() {},
-			reconnect: function() {
-				mobileNotify("App Channel Reconnected")
-			},
-			error: function() {
-				mobileNotify("App Channel Network Error")
-			}
-
-		});
-
+        // Initialize application data channel with gg's unique ID
+        appDataChannel.init();
 
 		// Initialize the user's data channel with the user's UUID...
 		userDataChannel.init(uuid);

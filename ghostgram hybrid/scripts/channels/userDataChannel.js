@@ -35,6 +35,7 @@ var userDataChannel = {
     },
 
     history : function () {
+        this.lastAccess = new Date().getTime();
         // Get any messages in the channel
         APP.pubnub.history({
             channel: this.channelId,
@@ -51,6 +52,8 @@ var userDataChannel = {
     },
 
     channelRead : function (m) {
+        this.lastAccess = new Date().getTime();
+
         switch(m.type) {
 
             //  { type: 'privateInvite',  channelId: <channelUUID>,  owner: <ownerUUID>, message: <text>, time: current time}
