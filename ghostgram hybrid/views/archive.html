@@ -34,7 +34,7 @@
 		</div>
 
 		<div id="archive-list" data-role="scroller">
-			<ul data-role="listview" data-source="archive.dataSource" data-template="archive-template"></ul>
+			<ul data-role="listview" data-source="archive.dataSource" data-template="archive-template" data-header-template="header-template"></ul>
 		</div>
 
 		<div id="archive-empty">Your archive is empty</div>
@@ -42,6 +42,11 @@
 	</main>
 
 </div>
+<script type="text/x-kendo-template" id="header-template">
+    <div>
+    	<img class="archive-header-img" src="images/archive-#= value #.svg"> #: value #
+    </div>
+</script>
 
 <script type="text/x-kendo-template" id="archive-template">
 	<header>
@@ -51,14 +56,14 @@
 			<img src="images/ghost-default.svg" />
 		# } #
 		<button class="delete" data-role="button" data-click="archiveView.deleteDoc" data-id="#= data.id #"></button>
-		<h1>#= data.message.sender.name #</h1><br />
-		<h2>#= moment(data.message.date).fromNow() # in <strong>#= data.message.channelName #</strong></h2>
+		<h3>#= data.message.sender.name #</h3><br />
+		<p>#= moment(data.message.date).fromNow() # in <strong>#= data.message.channelName #</strong></p>
 	</header>
 	<div class="message">#= data.message.text #</div>
 	# if (data.type === 'Events') { # 
 		<div class="event object">
-			<h1>#= data.object.name #</h1>
-			<h2>at <strong>#= data.object.placeName #</strong> #= data.object.address #</h2>
+			<h3>#= data.object.name #</h3>
+			<p>at <strong>#= data.object.placeName #</strong> #= data.object.address #</p>
 			# if (moment().isBefore(data.object.start)) { #
 				<span>starts #= moment(data.object.start).fromNow() #</span>
 			# } else if (moment().isAfter(data.object.end)) { #
@@ -70,14 +75,14 @@
 	# } #
 	# if (data.type === 'Links') { # 
 		<div class="link object" data-url="#= data.object.url #">
-			<h1>#= data.object.title #</h1>
-			<h2>#= data.object.url #</h2>
+			<h3>#= data.object.title #</h3>
+			<p>#= data.object.url #</p>
 		</div>
 	# } #
 	# if (data.type === 'Photos') { # 
 		<div class="photo object">
 			<img src="#= data.object.url #" />
-			<h2><strong>#= data.object.placeName #, #= data.object.address #</strong> <span>#= moment(data.object.date).fromNow() #</span></h2>
+			<p><strong>#= data.object.placeName #, #= data.object.address #</strong> <span>#= moment(data.object.date).fromNow() #</span></p>
 		</div> 
 	# } #
 </script>

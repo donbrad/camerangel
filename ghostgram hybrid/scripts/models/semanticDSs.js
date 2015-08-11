@@ -233,4 +233,4 @@ SemanticDSs.prototype = {
 			}
 		});
 	}
-}
+};

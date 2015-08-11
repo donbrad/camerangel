@@ -10,6 +10,7 @@
 @shade-400: #EFF1F2;
 @btnActiveBk: rgba(0,0,0,0.15);
 @black: #4A4A4A;
+@warning: #EA6262;
 
 
 /* variables */
@@ -21,6 +22,7 @@
 /* Imports */
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Hind:300,400,500|PT+Sans:400,700);
 @import "mixins.less";
+@import "mixin-shadow";
 @import "_sentinel.less";
 
 /* elements */
@@ -29,6 +31,35 @@
 }
 .top-shadow {
 	box-shadow: 0px -2px 4px 0px rgba(0,0,0,0.12);
+}
+
+/* Shadow classes */
+.shadow-1 {
+	.shadowHelper(1) !important;
+}
+
+.shadow-2 {
+	.shadowHelper(2) !important;
+}
+
+.shadow-3 {
+	.shadowHelper(3) !important;
+}
+
+.shadow-4 {
+	.shadowHelper(4) !important;
+}
+
+.shadow-5 {
+	.shadowHelper(5) !important;
+}
+
+.blured {
+	-webkit-filter: blur(5px);
+    -moz-filter: blur(5px);
+    -o-filter: blur(5px);
+    -ms-filter: blur(5px);
+    filter: blur(5px);
 }
 
 .centerObject {
@@ -79,6 +110,11 @@
 	padding-right: 1rem;
 	padding-top: 0px;
 	padding-bottom: 0px;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	background: #fff;
+	display: block;
 }
 
 .full {
@@ -249,11 +285,15 @@ form {
 }
 
 .secondary-100 {
-	background: @secondary-100;
+	background: @secondary-100 !important;
 }
 
 .secondary-200 {
-	background: @secondary-200;
+	background: @secondary-200 !important;
+}
+
+.warning {
+	background: @warning !important;
 }
 
 /* Text colors */
@@ -1578,6 +1618,10 @@ div.footerMenu.km-footer > ul > li > a:active {
 	border: none !important;
 }
 
+.archive-header-img {
+	vertical-align: bottom !important; 
+}
+
 /* Menu Styles */
 
 .menuBox a:link {
@@ -1811,27 +1855,28 @@ a:hover {
 	z-index: 0;
 	background-color: #fff;
 	width: 100%;
+	height: 4rem;
 	position: absolute;
 	top: 0px;
 	left: 0px;
 	display: block;
 	padding-left: 1rem;
     padding-right: 1rem;
-    padding-top: 0.25rem;
-    padding-bottom: 0.25rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
     box-shadow: 3px 0 3px -3px @shade-100;
     .font-size(14);
 }
 
 .chat-options {
 	width: 100%;
-	height: 100%;
+	height: 4rem;
 	background-color: @shade-300;
 	z-index:-1;
     display: inline-block;
-    padding-top: 0.25rem;
+    padding-top: 1rem;
     padding-bottom: 0.5rem;
-    margin-bottom: -0.25rem;
+    margin-bottom: -0.5rem;
 }
 
 .chat-option-ul li {
@@ -1968,15 +2013,15 @@ div.footerMenu.km-footer > ul > li > a {
 	position: fixed;
 	right: 1rem;
 	padding-top: 0.85rem !important;
-	background: @secondary-100 !important;
 	position: absolute;
 	right: 1rem;
 	bottom: 4rem;
 	p {
 		width: 60px;
 		position: absolute;
-		right: 4.5rem;
-		top: 1.25rem;
+		right: 0rem;
+		top: 1rem;
+		opacity:0;
 	}
 	img {
 		height:1.25rem;
@@ -1987,10 +2032,14 @@ div.footerMenu.km-footer > ul > li > a {
 }
 
 /* Hide action btns on views */
-#home > div.footerMenu.km-footer > a,
-#archive > div.footerMenu.km-footer > a,
-#gallery > div.footerMenu.km-footer > a {
+* > div.footerMenu.km-footer > a,
+#channel > div.footerMenu.km-footer > a {
 	display: none;
+}
+#channels > div.footerMenu.km-footer > a,
+#contacts > div.footerMenu.km-footer > a,
+#gallery > div.footerMenu.km-footer > a {
+	display: inline-block; 
 }
 
 .menuNav {
@@ -2674,13 +2723,15 @@ div.loginBox > form > div > ul > li {
 #contacts-listview,
 #contactimport-listview {
 	padding-bottom: 3rem;
-	li {
+	> li {
 		border-bottom: 1px solid @shade-200;
 		background: #fff;
+		width: 100%;
+		display: inline-block;
 	}
 }
 
-#contacts-listview li:nth-child(2){
+#contacts-listview > li:nth-child(2){
 	border-top: 1px solid @shade-200;
 	border-bottom: 1px solid @shade-200;
 }
@@ -2691,7 +2742,7 @@ div.loginBox > form > div > ul > li {
 }
 
 .contactListItem {
-	display: block;
+	//display: block;
 }
 
 .contactListItem:hover {
@@ -2702,8 +2753,160 @@ div.loginBox > form > div > ul > li {
 	background: @shade-300;
 }
 
+.contact-connections {
+	position: absolute;
+	top: 0px;
+	padding-right: 1rem;
+	padding-top: 30%;
+	z-index: 1;
+	text-align: right;
+	width: 100%;
+	min-height: 100%;
+	display: none;
+	opacity: 0;
+	overflow: hidden;
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+40,000000+100&amp;0+40,0.4+100 */
+background: -moz-linear-gradient(-45deg,  rgba(255,255,255,0) 40%, rgba(0,0,0,0.4) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, right bottom, color-stop(40%,rgba(255,255,255,0)), color-stop(100%,rgba(0,0,0,0.4))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(-45deg,  rgba(255,255,255,0) 40%,rgba(0,0,0,0.4) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(-45deg,  rgba(255,255,255,0) 40%,rgba(0,0,0,0.4) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(-45deg,  rgba(255,255,255,0) 40%,rgba(0,0,0,0.4) 100%); /* IE10+ */
+background: linear-gradient(135deg,  rgba(255,255,255,0) 40%,rgba(0,0,0,0.4) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#66000000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 
-//#contacts-listview > li > ul > li
+
+	li {
+		//margin: 0.75rem;
+		//width: 25%;
+		//float: left;
+		//position: absolute;
+	}
+	span {
+		.font-size(12);
+	}
+	
+}
+
+
+.circleOptions {
+	width: 16rem;
+	height: 16rem;
+	position: absolute;
+	bottom: 1rem;
+	right: -3rem;
+	border-radius: 50%;
+	li {
+		position: absolute;
+		right: 4rem;
+		bottom: 4rem;
+	}
+}
+
+#contacts > div.footerMenu.km-footer > div > ul > li > img {
+	vertical-align: middle;
+}
+.circleOptions li:nth-child(1){
+	transform: translate(-8em);
+}
+
+.circleOptions li:nth-child(2){
+	transform: rotate(30deg) translate(-8em) rotate(-30deg);
+}
+.circleOptions li:nth-child(3){
+	transform: rotate(60deg) translate(-8em) rotate(-60deg);
+}
+.circleOptions li:nth-child(4){
+	transform: rotate(90deg) translate(-9em) rotate(-90deg);
+}
+
+#contactListDiv > div.contact-connections > ul > li > p {
+	margin: 0px;
+}
+
+.connection-img {
+	//.shadowHelper(1);
+}
+
+#contactListDiv > div.contact-connections > ul > li > img {
+	vertical-align: middle;
+	margin-left: 0.5rem;
+}
+
+.contactListBox {
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.5rem;
+	padding-bottom: 0.25rem;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	background: #fff;
+	display: inline-block;
+	height: 4rem;
+	box-shadow: 3px 0 3px -3px @shade-100;
+	width: 100%;
+}
+
+.contact-options {
+	width: 100%;
+	height: 70px;
+	background-color: @shade-300;
+	z-index:-1;
+    display: inline-block;
+    padding-top: 0.55rem;
+    margin-bottom: -0.25rem;
+    float: left;
+    height: 4rem;
+    text-align: right;
+}
+
+.contact-option-ul {
+	li {
+		background: transparent !important;
+		border: transparent !important;
+		text-align: right;
+		a {
+			padding: 0px !important;
+		}
+	}
+}
+
+.activeContact {
+	height: 10rem;
+}
+
+.contact-info {
+	width: 80%;
+	margin-left: 20%;
+	opacity: 0;
+	padding-left: 1rem;
+}
+
+div.contactListBox.activeContact > div > div > ul {
+	margin: 0px;
+}
+
+#contacts-listview > li > ul > li > div > div.contact-options.list-options > a.btnClear-grey.km-widget.km-button > span > p {
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+#contacts-listview {
+	z-index: 0;
+	position: absolute;
+	width: 100%;
+	li {
+	    border-bottom: 1px solid #E4E4E4;
+	    background: #fff;
+	    z-index:9999;
+	    padding-top: 0px;
+	    padding-bottom: 0px;
+	    display: inherit;
+	}
+	li:nth-child(2){
+		border-top: 1px solid #E4E4E4;
+	}
+}
 
 .listPhoto {
 	width: 20%;
@@ -2853,7 +3056,8 @@ div.loginBox > form > div > ul > li {
 	padding: 0.5rem 1rem;
 	background: #FFFFFF;
 	border: 1px solid rgba(228,228,228,0.30);
-	box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.12), 0px 2px 4px 0px rgba(0,0,0,0.12);
+	//box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.12), 0px 2px 4px 0px rgba(0,0,0,0.12);
+	.shadowHelper(1);
 	border-radius: 2px;
 }
 
@@ -3013,7 +3217,7 @@ div.loginBox > form > div > ul > li {
 	vertical-align: text-top;
 }
 
-.phoneContact h4 {
+.phoneContact {
 	margin-top: 0.5rem;
 	margin-bottom:0.5rem;
 	margin-left: 0px !important;
