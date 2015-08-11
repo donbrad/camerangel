@@ -90,12 +90,13 @@ var userDataChannel = {
             //  { type: 'privateInvite',  channelId: <channelUUID>,  owner: <ownerUUID>, message: <text>, time: current time}
             case 'privateInvite' : {
 
-                // Todo:  Does private channel exist?  If not create,  if so notify user of request
+                this.processPrivateInvite(m.ownerId, m.channelId, m.message);
             } break;
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, owner: <ownerUUID>}
             case 'channelInvite' : {
-                // Todo:  Does c channel exist?  If not create,  if so notify user of request
+
+                this.processGroupInvite(m.ownerId, m.channelId, m.message);
             } break;
 
             //  { type: 'packageOffer',  channelId: <channelUUID>, owner: <ownerUUID>, packageId: <packageUUID>, private: true|false, type: 'text'|'pdf'|'image'|'video', title: <text>, message: <text>}
@@ -111,6 +112,72 @@ var userDataChannel = {
 
         }
     },
+
+    privateChannelInvite : function (contactUUID, channelUUID, message) {
+        var msg = {};
+
+        msg.type = 'privateInvite';
+        msg.ownerId = APP.models.profile.currentUser.get('userUUID');
+        msg.channelId = channelUUID;
+        msg.message  = message;
+        msg.time = new Date().getTime();
+
+
+        APP.pubnub.publish({
+            channel: contactUUID,
+            message: msg,
+            success: this.channelSuccess,
+            error: this.channelError
+        });
+    },
+
+    groupChannelInvite : function (contactUUID, channelUUID, message) {
+        var msg = {};
+
+        msg.type = 'groupInvite';
+        msg.owner = APP.models.profile.currentUser.get('userUUID');
+        msg.channel = channelUUID;
+        msg.message  = message;
+        msg.time = new Date().getTime();
+
+
+        APP.pubnub.publish({
+            channel: contactUUID,
+            message: msg,
+            success: this.channelSuccess,
+            error: this.channelError
+        });
+    },
+
+    processPrivateInvite: function (ownerId, channelId, message) {
+        var channel = findChannelModel(channelId);
+
+        if (channel === undefined) {
+            // No existing private channel need to create one
+            var contactModel = getContactModel(ownerId);
+            if (contactModel !== undefined) {
+                var contactAlias = contactModel.get('alias');
+                addPrivateChannel(ownerId, contactAlias, channelId);
+                mobileNotify("Created Private Chat with " + contactAlias);
+
+            } else {
+                mobileNotify("Null contact in processPrivateInvite!!");
+            }
+
+        }
+
+
+    },
+
+    processGroupInvite: function (ownerId, channelId, message) {
+        // Todo:  Does channel exist?  If not create,  if so notify user of request
+        var channel = findChannelModel(channelId);
+        if (channel === undefined) {
+            // Todo: create a channelMember object for this user
+        }
+
+    },
+
 
     channelSuccess : function (status) {
 

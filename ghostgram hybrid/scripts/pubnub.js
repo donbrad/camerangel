@@ -48,8 +48,8 @@ function privateChannelInvite(contactUUID, channelUUID, message) {
 }
 
 
-// Initial a privateChannel (Person2Person messaging)
-function privateChannelInititate (contactUUID) {
+// Initiate a privateChannel (Person2Person messaging)
+function privateChannelInitiate (contactUUID) {
 	// create a unique channel id;
 	pcUUID = uuid.v4();
 	
