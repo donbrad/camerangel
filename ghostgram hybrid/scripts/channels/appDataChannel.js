@@ -18,6 +18,11 @@ var appDataChannel = {
     init: function () {
         this.channelId = channelId;
 
+        var ts = localStorage.getItem('ggAppDataTimeStamp');
+
+        if (ts !== undefined)
+            this.lastAccess = ts;
+
         APP.pubnub.subscribe({
             channel: this.channelId,
             windowing: 50000,
@@ -30,6 +35,11 @@ var appDataChannel = {
             error: this.channelError
 
         });
+    },
+
+    updateTimeStamp : function () {
+        this.lastAccess = new Date().getTime();
+        localStorage.setItem('ggAppDataTimeStamp', this.lastAccess);
     },
 
     history : function () {
@@ -46,12 +56,13 @@ var appDataChannel = {
 
             }
         });
-        this.lastAccess = new Date().getTime();
+
+        this.updateTimeStamp();
     },
 
     channelRead : function (m) {
 
-        this.lastAccess = new Date().getTime();
+        this.updateTimeStamp();
 
         switch(m.type) {
             //  { type: 'newUser',  userId: <userUUID>,  phone: <phone>, email: <email>}

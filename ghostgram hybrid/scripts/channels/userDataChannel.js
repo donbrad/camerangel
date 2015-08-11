@@ -18,6 +18,11 @@ var userDataChannel = {
         if (channelId !== undefined) {
             this.channelId = channelId;
 
+            var ts = localStorage.getItem('ggUserDataTimeStamp');
+
+            if (ts !== undefined)
+                this.lastAccess = ts;
+            
             APP.pubnub.subscribe({
                 channel: this.channelId,
                 windowing: 50000,
@@ -32,6 +37,11 @@ var userDataChannel = {
             });
         }
 
+    },
+
+    updateTimeStamp : function () {
+        this.lastAccess = new Date().getTime();
+        localStorage.setItem('ggUserDataTimeStamp', this.lastAccess);
     },
 
     history : function () {
