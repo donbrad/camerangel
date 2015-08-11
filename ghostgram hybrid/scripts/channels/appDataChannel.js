@@ -16,7 +16,7 @@ var appDataChannel = {
     lastAccess: 0,   // last access time stamp
 
     init: function () {
-        this.channelId = channelId;
+        this.channelId = 'ghostgramsapp129195720';
 
         var ts = localStorage.getItem('ggAppDataTimeStamp');
 

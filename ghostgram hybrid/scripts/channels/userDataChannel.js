@@ -22,7 +22,7 @@ var userDataChannel = {
 
             if (ts !== undefined)
                 this.lastAccess = ts;
-            
+
             APP.pubnub.subscribe({
                 channel: this.channelId,
                 windowing: 50000,
