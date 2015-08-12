@@ -602,7 +602,7 @@
 				}
 			});
 
-			var ContactModel = Parse.Object.extend("contacts");
+			/*var ContactModel = Parse.Object.extend("contacts");
 			var ContactCollection = Parse.Collection.extend({
 				model: ContactModel
 			});
@@ -629,7 +629,10 @@
 				error: function(collection, error) {
 					handleParseError(error);
 				}
-			});
+			});*/
+
+            // fetch contactModels (objects) from parse.
+            contactModel.fetch();
 
 			var PhotoModel = Parse.Object.extend("photos");
 			var PhotoCollection = Parse.Collection.extend({
