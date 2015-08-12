@@ -85,39 +85,39 @@ function findChannelModel(channelId) {
 }
 
 
-function addPrivateChannel (contactUUID, contactAlias, channelUUID) {
-    var Channels = Parse.Object.extend("channels");
-    var channel = new Channels();
+/*function addPrivateChannel (contactUUID, contactAlias, channelUUID) {
+	var Channels = Parse.Object.extend("channels");
+	var channel = new Channels();
 	var publicKey = APP.models.profile.currentUser.get('publicKey');
-    var guid = uuid.v4();
-	
-    channel.set("name", contactAlias);
-    channel.set("isOwner", true);
+	var guid = uuid.v4();
+
+	channel.set("name", contactAlias);
+	channel.set("isOwner", true);
 	channel.set('isPrivate', true);
-    channel.set("media",  true);
-    channel.set("archive",  false);
-    channel.set("description", "Private: " + contactAlias);
-    channel.set("channelId", channelUUID);
+	channel.set("media",  true);
+	channel.set("archive",  false);
+	channel.set("description", "Private: " + contactAlias);
+	channel.set("channelId", channelUUID);
 	channel.set('userKey',  publicKey);
 	channel.set('contactKey', null);
-    channel.set("members", [APP.models.profile.currentUser.userUUID, contactUUID]);
-    
-    channel.setACL(APP.models.profile.parseACL);
-    channel.save(null, {
-      success: function(channel) {     
-          APP.models.channels.channelsDS.add(channel.attributes);
-          //closeModalViewAddChannel();
-          mobileNotify('Added private channel : ' + channel.get('name'));
-      },
-      error: function(channel, error) {
-        // Execute any logic that should take place if the save fails.
-        // error is a Parse.Error with an error code and message.
-        mobileNotify('Error creating channel: ' + error.message);
-        handleParseError(error);
-      }
-    });
- 
-}
+	channel.set("members", [APP.models.profile.currentUser.userUUID, contactUUID]);
+
+	channel.setACL(APP.models.profile.parseACL);
+	channel.save(null, {
+		success: function(channel) {
+			APP.models.channels.channelsDS.add(channel.attributes);
+			//closeModalViewAddChannel();
+			mobileNotify('Added private channel : ' + channel.get('name'));
+		},
+		error: function(channel, error) {
+			// Execute any logic that should take place if the save fails.
+			// error is a Parse.Error with an error code and message.
+			mobileNotify('Error creating channel: ' + error.message);
+			handleParseError(error);
+		}
+	});
+
+}*/
     
 function syncCurrentChannel(e) {
 	if (e.preventDefault !== undefined)

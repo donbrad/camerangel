@@ -1,7 +1,6 @@
 /**
  * Created by donbrad on 8/10/15.
  * appDataChannel - handles all communication app level communication
- * eg:
  *
  * !!! Must be included after pubnub and init must be called after pubnub is initialized
  */
