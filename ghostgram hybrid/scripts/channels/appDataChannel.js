@@ -26,11 +26,9 @@ var appDataChannel = {
             channel: this.channelId,
             windowing: 50000,
             message: this.channelRead,
-            connect: function() {},
-            disconnect: function() {},
-            reconnect: function() {
-                mobileNotify("App Channel Reconnected")
-            },
+            connect: this.channelConnect,
+            disconnect: this.channelDisconnect,
+            reconnect:this.channelReconnect,
             error: this.channelError
 
         });
@@ -169,6 +167,18 @@ var appDataChannel = {
             success: this.channelSuccess,
             error: this.channelError
         });
+    },
+
+    channelConnect: function () {
+
+    },
+
+    channelDisconnect: function () {
+        mobileNotify("App Data Channel Disconnected");
+    },
+
+    channelReconnect: function () {
+        mobileNotify("App Data Channel Reconnected");
     },
 
     channelSuccess : function (status) {

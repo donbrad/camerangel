@@ -19,7 +19,6 @@ var userDataChannel = {
             this.channelId = channelId;
 
             var ts = localStorage.getItem('ggUserDataTimeStamp');
-
             if (ts !== undefined)
                 this.lastAccess = ts;
 
@@ -27,11 +26,9 @@ var userDataChannel = {
                 channel: this.channelId,
                 windowing: 50000,
                 message: this.channelRead,
-                connect: function() {},
-                disconnect: function() {},
-                reconnect: function() {
-                    mobileNotify("Data Channel Reconnected")
-                },
+                connect: this.channelConnect,
+                disconnect:this.channelDisconnect,
+                reconnect: this.channelReconnect,
                 error: this.channelError
 
             });
@@ -89,13 +86,11 @@ var userDataChannel = {
 
             //  { type: 'privateInvite',  channelId: <channelUUID>,  owner: <ownerUUID>, message: <text>, time: current time}
             case 'privateInvite' : {
-
                 this.processPrivateInvite(m.ownerId, m.channelId, m.message);
             } break;
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, owner: <ownerUUID>}
             case 'channelInvite' : {
-
                 this.processGroupInvite(m.ownerId, m.channelId, m.message);
             } break;
 
@@ -131,12 +126,13 @@ var userDataChannel = {
         });
     },
 
-    groupChannelInvite : function (contactUUID, channelUUID, message) {
+    groupChannelInvite : function (contactUUID, channelUUID, channelName,  message) {
         var msg = {};
 
         msg.type = 'groupInvite';
-        msg.owner = APP.models.profile.currentUser.get('userUUID');
-        msg.channel = channelUUID;
+        msg.ownerId = APP.models.profile.currentUser.get('userUUID');
+        msg.channelId = channelUUID;
+        msg.channelName = channelName;
         msg.message  = message;
         msg.time = new Date().getTime();
 
@@ -179,12 +175,25 @@ var userDataChannel = {
     },
 
 
+
+    channelConnect: function () {
+
+    },
+
+    channelDisconnect: function () {
+        mobileNotify("Data Channel Disconnected");
+    },
+
+    channelReconnect: function () {
+        mobileNotify("Data Channel Reconnected");
+    },
+
     channelSuccess : function (status) {
 
     },
 
     channelError : function (error) {
-        mobileNotify('Channel Error : ' + error)
+        mobileNotify('Data Channel Error : ' + error)
     }
 };
 
