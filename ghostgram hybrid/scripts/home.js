@@ -597,8 +597,8 @@ function findContactMe(query) {
     var fields       = ["name", "displayName", "nickName" ,"phoneNumbers", "emails", "addresses", "photos"];
      
     navigator.contacts.find(fields, function(contacts){
-        
-        APP.models.contacts.deviceContactsDS.data([]);
+
+		contactModel.deviceContactsDS.data([]);
         var contactsCount = contacts.length;
         
         for (var i=0;  i<contactsCount; i++){
@@ -649,11 +649,11 @@ function findContactMe(query) {
 				returnValidPhoto(contacts[i].photos[0].value, function(validUrl) {
                 	contactItem.photo = validUrl;
 					if (contactItem.phoneNumbers.length > 0)
-            			APP.models.contacts.deviceContactsDS.add(contactItem);
+						contactModel.deviceContactsDS.add(contactItem);
 				});
             } else {
 				if (contactItem.phoneNumbers.length > 0)
-            			APP.models.contacts.deviceContactsDS.add(contactItem);
+					contactModel.deviceContactsDS.add(contactItem);
 			}
 			// Only add device contacts with phone numbers
 			

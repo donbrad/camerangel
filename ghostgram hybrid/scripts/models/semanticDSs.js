@@ -12,7 +12,7 @@ SemanticDSs.prototype = {
 
 	initialize: function () {
 
-		this.contacts = this.makeSemanticDataSource('Contacts', APP.models.contacts.contactsDS, {
+		this.contacts = this.makeSemanticDataSource('Contacts', contactModel.contactsDS, {
 			name: 'name',
 			alias: 'alias',
 			value: 'name'

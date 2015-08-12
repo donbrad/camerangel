@@ -261,7 +261,7 @@ function doShowEventInputs(e) {
 function onShowAddChannel (e) {
 	e.preventDefault();
 	APP.models.channel.potentialMembersDS.data([]);
-	APP.models.channel.potentialMembersDS.data(APP.models.contacts.contactsDS.data());
+	APP.models.channel.potentialMembersDS.data(contactModel.contactsDS.data());
 	APP.models.channel.membersDS.data([]);
 
 	$('.addChannelEvent').addClass('hidden');
@@ -443,7 +443,7 @@ function doShowChannelMembers (e) {
 
 
 	// Need to break observable link or contacts get deleted.
-	var contactArray = APP.models.contacts.contactsDS.data().toJSON();
+	var contactArray = contactModel.contactsDS.data().toJSON();
 
 	// create an easy reference to the potential members data source
 	var dataSource = APP.models.channel.potentialMembersDS;

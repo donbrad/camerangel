@@ -3,7 +3,7 @@ function syncCurrentContact(e) {
         e.preventDefault();
     }
     updateParseObject('contacts','uuid', contactModel.currentContact.uuid, e.field, this[e.field]);
-    APP.models.contacts.currentModel.set(e.field, this[e.field]);
+    contactModel.currentModel.set(e.field, this[e.field]);
 }
     
 function syncProfile (e) {
@@ -37,7 +37,7 @@ function inviteUser(e) {
 }
 
 function sendSecureEmail () {
-    var email = APP.models.contacts.currentContact.get('email');
+    var email = contactModel.currentContact.get('email');
 
     if (window.navigator.simulator === true){
         alert("Mail isn't supported in the emulator");
@@ -606,7 +606,7 @@ function searchDeviceContacts(e) {
             contactModel.contactListDS.data([]);
             contactModel.contactListDS.add(array[0]);
         } else {
-            APP.models.contacts.unifiedDeviceContact = false;
+            contactModel.unifiedDeviceContact = false;
             for (var i=0; i<array.length; i++) {
                 contactModel.contactListDS.add(array[i]);
             }
@@ -721,8 +721,8 @@ function unifyContacts(contacts) {
 
         contactModel.phoneArray.push(phone);
     }
-    contactModel.phoneDS.data(APP.models.contacts.phoneArray);
-    contactModel.currentDeviceContact.phoneNumbers = APP.models.contacts.phoneArray;
+    contactModel.phoneDS.data(contactModel.phoneArray);
+    contactModel.currentDeviceContact.phoneNumbers = contactModel.phoneArray;
 
 	contactModel.addressArray = [];
     for (a = 0; a<addresses.length; a++) {
@@ -742,10 +742,10 @@ function contactsFindContacts(query, callback) {
     }
  //   var query = $('#contactSearchQuery').val();
    
-	if (APP.models.contacts.deviceQueryActive) {
+	if (contactModel.deviceQueryActive) {
 		return;
 	} else {
-		APP.models.contacts.deviceQueryActive = true;
+        contactModel.deviceQueryActive = true;
 	}
 	
     var options      = new ContactFindOptions();
@@ -1010,7 +1010,7 @@ function sendGhostEmail(e) {
         e.preventDefault();
     }
     var content = $('#ghostEmailEditor').data("kendoEditor").value();
-    var contactKey = contactModel.currentContact.get('publicKey'), email = APP.models.contacts.currentContact.get('email');
+    var contactKey = contactModel.currentContact.get('publicKey'), email = contactModel.currentContact.get('email');
     if (contactKey === null) {
         mobileNotify("Invalid Public Key for " + contactModel.currentContact.get('name'));
         return;

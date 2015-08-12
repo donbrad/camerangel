@@ -537,7 +537,7 @@
 			APP.models.home.notificationDS.online(true);
 			APP.models.channels.channelsDS.online(true);
 			APP.models.gallery.photosDS.online(true);
-			APP.models.contacts.contactsDS.online(true);
+			contactModel.contactsDS.online(true);
 			APP.models.places.placesDS.online(true);
 
 			getNetworkState();
@@ -551,7 +551,7 @@
 			APP.models.home.notificationDS.online(false);
 			APP.models.channels.channelsDS.online(false);
 			APP.models.gallery.photosDS.online(false);
-			APP.models.contacts.contactsDS.online(false);
+			contactModel.contactsDS.online(false);
 			APP.models.places.placesDS.online(false);
 
 		},
@@ -725,7 +725,7 @@
 
 			navigator.contacts.find(fields, function(contacts) {
 
-					APP.models.contacts.deviceContactsDS.data([]);
+					contactModel.deviceContactsDS.data([]);
 					var contactsCount = contacts.length;
 
 					for (var i = 0; i < contactsCount; i++) {
@@ -777,11 +777,11 @@
 							returnValidPhoto(contacts[i].photos[0].value, function(validUrl) {
 								contactItem.photo = validUrl;
 								if (contactItem.phoneNumbers.length > 0)
-									APP.models.contacts.deviceContactsDS.add(contactItem);
+									contactModel.deviceContactsDS.add(contactItem);
 							});
 						} else {
 							if (contactItem.phoneNumbers.length > 0)
-								APP.models.contacts.deviceContactsDS.add(contactItem);
+								contactModel.deviceContactsDS.add(contactItem);
 						}
 						// Only add device contacts with phone numbers	
 					}

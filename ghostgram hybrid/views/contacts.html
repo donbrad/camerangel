@@ -1,5 +1,5 @@
 
-<div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="APP.models.contacts" data-init="onInitContacts" data-show="onShowContacts" data-hide="onHideContacts" style="display: none;">
+<div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="contactModel" data-init="onInitContacts" data-show="onShowContacts" data-hide="onHideContacts" style="display: none;">
 	<div class="topViewSearchBox">
 	 	<div class="appendSearch">
 			<span class="searchIcon"><img src="images/search.svg" /></span>
@@ -46,7 +46,7 @@
 </div>
 
 <!-- Import Contacts -->
-<div data-role="view" data-title="Import Contacts" id="contactImport" data-layout="main" data-model="APP.models.contacts" data-init="onInitContactImport" data-show="onShowContactImport" style="display: none;">
+<div data-role="view" data-title="Import Contacts" id="contactImport" data-layout="main" data-model="contactModel" data-init="onInitContactImport" data-show="onShowContactImport" style="display: none;">
     <div data-role="header">
         <div data-role="navbar">
            <a data-role="button"  data-align="left" href="#:back" ><img src="images/nav-back.svg" /></a>
@@ -66,7 +66,7 @@
 </div>
 
 <!-- Modal add contact -->
-<div data-role="modalview" data-model="APP.models.contacts" data-title="Add Contact" id="modalview-AddContact" data-open="doShowAddContact" class="appearance" style="width: 90%; min-height: 100%; display: none;">
+<div data-role="modalview" data-model="contactModel" data-title="Add Contact" id="modalview-AddContact" data-open="doShowAddContact" class="appearance" style="width: 90%; min-height: 100%; display: none;">
     <div class="inviteContactImg">
     	<div class="inviteTop hidden">
     		<img src="images/invite.svg" height="16" />
@@ -129,7 +129,7 @@
 </div>
 
 <!-- Edit Contacts -->
-<div data-role="view" data-model="APP.models.contacts.currentContact" data-title="Edit Contact" id="editContact" data-layout="main"  data-transition="slide" data-show="onShowEditContact" class="appearance" style="display: none;">
+<div data-role="view" data-model="contactModel.currentContact" data-title="Edit Contact" id="editContact" data-layout="main"  data-transition="slide" data-show="onShowEditContact" class="appearance" style="display: none;">
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -295,8 +295,6 @@
 					<h4> #: data.name # </h4>
 				</div>
 			#}#
-			 
-		 </div>
 	</a>
 </div><!-- listBox -->
 </script>
@@ -322,7 +320,7 @@
   </div>
 </script>
 
-<div data-role="view" data-title="Contact" id="contact" data-layout="main" data-model="APP.models.contacts" data-init="onInitContact">
+<div data-role="view" data-title="Contact" id="contact" data-layout="main" data-model="contactModel" data-init="onInitContact">
   <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
