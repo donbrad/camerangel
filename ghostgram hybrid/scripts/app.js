@@ -1103,11 +1103,12 @@
 		});
         */
 
-		$('.clearable').clearSearch();
+		//$('.clearable').clearSearch();
 
 		// Enable ghost caption
-		$('.wraption.img').wraption();
+		//$('.wraption.img').wraption();
 
+		autosize($('#ghostEmailEditor'));
 		/* $(".email-Autocomplete").emailautocomplete({
 		     domains: _emailDomainList //additional domains (optional)
 		 }); */
