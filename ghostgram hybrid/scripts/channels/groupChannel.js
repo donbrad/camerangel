@@ -251,4 +251,4 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
             });
         }
     };
-}
+};
