@@ -737,9 +737,6 @@ function unifyContacts(contacts) {
 }
     
 function contactsFindContacts(query, callback) {
-    if (e !== undefined && e.preventDefault !== undefined) {
-        e.preventDefault();
-    }
  //   var query = $('#contactSearchQuery').val();
    
 	if (contactModel.deviceQueryActive) {
