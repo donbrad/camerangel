@@ -100,9 +100,9 @@ var userModel = {
 
             userModel.parseACL = new Parse.ACL(userModel.parseUser);
             var uuid = userModel.currentUser.get('userUUID');
-           userModel.currentUser.bind('change', syncProfile);
+            userModel.currentUser.bind('change', syncProfile);
 
-            _app.fetchParseData();
+            userModel.fetchParseData();
 
         }
 
