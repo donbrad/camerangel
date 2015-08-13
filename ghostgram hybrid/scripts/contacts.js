@@ -77,8 +77,8 @@ function privateChat(e) {
 	}
 
     // Is there already a private chat provisioned for this user?
-    var privateChannel = channelModel.findPrivateChannel(contactUUID);
-    if (privateChannel === undefined) {
+
+    if (privateChannelId === undefined) {
         privateChannelId = uuid.v4();
         // Create a new private channel for this contact
         channelModel.addPrivateChannel(contactUUID, contactName, privateChannelId);
@@ -88,7 +88,7 @@ function privateChat(e) {
 
         // Jump to private chat
     } else {
-        privateChannelId = privateChannel.channelId;
+
         // Notify contact of private chat request
         userDataChannel.privateChannelInvite(contactUUID, privateChannelId, "Private Chat request from: " + userName);
         // Jump to private chat
