@@ -84,7 +84,7 @@ var contactModel = {
     },
 
     getContactModel: function (contactUUID) {
-        var dataSource = this.contactsDS;
+        var dataSource = contactModel.contactsDS;
         dataSource.filter( { field: "contactUUID", operator: "eq", value: contactUUID });
         var view = dataSource.view();
         var contact = view[0];
@@ -94,7 +94,7 @@ var contactModel = {
     },
 
     findContactByUUID : function(uuid) {
-        var dataSource = this.contactsDS;
+        var dataSource = contactModel.contactsDS;
         dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
         var view = dataSource.view();
         var contact = view[0];

@@ -79,7 +79,7 @@ var channelModel = {
         contact.privateChannelId = channelUUID;
         contact.publicKey = contactPublicKey;
 
-        
+
         channel.set("name", contactAlias);
         channel.set("isOwner", true);
         channel.set('isPrivate', true);
