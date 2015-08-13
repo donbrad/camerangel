@@ -50,6 +50,13 @@ var userModel = {
         model: ''
     },
 
+    updateLocalStorage: function () {
+        if (userModel.currentUser.get('rememberUsername')) {
+            localStorage.setItem('ggRememberUsername', true);
+            localStorage.setItem('ggUsername', userModel.currentUser.get('username'));
+        }
+    },
+
     initParse: function () {
         Parse.User.enableRevocableSession();
         userModel.parseUser = Parse.User.current();
@@ -65,7 +72,7 @@ var userModel = {
             if (userModel.username == undefined || userModel.username === '') {
                 window.localStorage.setItem('ggUsername', userModel.parseUser.get('username'));
             } else {
-                $('#home-signin-username').val(APP.models.profile.username);
+                $('#home-signin-username').val(userModel.username);
             }
 
         }
@@ -99,12 +106,34 @@ var userModel = {
             updateHeaderStatusImages();
 
             userModel.parseACL = new Parse.ACL(userModel.parseUser);
-            var uuid = userModel.currentUser.get('userUUID');
+
             userModel.currentUser.bind('change', syncProfile);
 
+            userModel.initPubNub();
             userModel.fetchParseData();
 
         }
+
+    },
+
+    initPubNub: function () {
+        var uuid = userModel.currentUser.get('userUUID');
+
+        APP.pubnub = PUBNUB.init({
+            publish_key: 'pub-c-d4fcc2b9-2c1c-4a38-9e2c-a11331c895be',
+            subscribe_key: 'sub-c-4624e1d4-dcad-11e4-adc7-0619f8945a4f',
+            secret_key: 'sec-c-NDFiNzlmNTUtNWEyNy00OGUzLWExZjYtNDc3ZTI2ZGRlOGMw',
+            ssl: true,
+            jsonp: true,
+            restore: true,
+            uuid: uuid
+        });
+
+        // Initialize application data channel with gg's unique ID
+        appDataChannel.init();
+
+        // Initialize the user's data channel with the user's UUID...
+        userDataChannel.init(uuid);
 
     },
 
@@ -199,7 +228,6 @@ var userModel = {
             }
         });
     }
-
 
 
 };

@@ -745,66 +745,7 @@
 			}
 
 		});
-
-
-/*
-		if (userModel.parseUser !== null) {
-			initialView = '#home';
-			userModel.currentUser.set('username', userModel.parseUser.get('username'));
-			userModel.currentUser.set('name', userModel.parseUser.get('name'));
-			userModel.currentUser.set('email', userModel.parseUser.get('email'));
-			userModel.currentUser.set('phone', userModel.parseUser.get('phone'));
-			userModel.currentUser.set('alias', userModel.parseUser.get('alias'));
-			userModel.currentUser.set('userUUID', userModel.parseUser.get('userUUID'));
-			userModel.currentUser.set('publicKey', userModel.parseUser.get('publicKey'));
-			userModel.currentUser.set('privateKey', userModel.parseUser.get('privateKey'));
-			userModel.currentUser.set('statusMessage', userModel.parseUser.get('statusMessage'));
-			userModel.currentUser.set('currentPlaceUUID', userModel.parseUser.get('currentPlaceUUID'));
-			userModel.currentUser.set('currentPlace', userModel.parseUser.get('currentPlace'));
-			userModel.currentUser.set('aliasPublic', userModel.parseUser.get('aliasPublic'));
-			userModel.currentUser.set('aliasPhoto', userModel.parseUser.get('aliasPhoto'));
-			userModel.currentUser.set('photo', userModel.parseUser.get('photo'));
-			userModel.currentUser.set('isAvailable', userModel.parseUser.get('isAvailable'));
-			userModel.currentUser.set('isVisible', userModel.parseUser.get('isVisible'));
-			userModel.currentUser.set('isRetina', userModel.parseUser.get('isRetina'));
-			userModel.currentUser.set('isWIFIOnly', userModel.parseUser.get('isWIFIOnly'));
-			userModel.currentUser.set('isPhotoStored', userModel.parseUser.get('isPhotoStored'));
-			userModel.currentUser.set('saveToPhotoAlbum', userModel.parseUser.get('saveToPhotoAlbum'));
-			userModel.currentUser.set('rememberUsername', userModel.parseUser.get('rememberUsername'));
-			userModel.currentUser.set('phoneVerified', userModel.parseUser.get('phoneVerified'));
-			userModel.currentUser.set('emailVerified', userModel.parseUser.get('emailVerified'));
-			userModel.currentUser.set('availImgUrl', 'images/status-away.svg');
-			updateHeaderStatusImages();
-			
-			APP.models.profile.parseACL = new Parse.ACL(userModel.parseUser);
-			var uuid = userModel.currentUser.get('userUUID');
-			userModel.currentUser.bind('change', syncProfile);
-
-			_app.fetchParseData();
-
-		}
-*/
-
-		if (userModel.currentUser.get('rememberUsername')) {
-			localStorage.setItem('ggRememberUsername', true);
-			localStorage.setItem('ggUsername', userModel.currentUser.get('username'));
-		}
-
-		APP.pubnub = PUBNUB.init({
-			publish_key: 'pub-c-d4fcc2b9-2c1c-4a38-9e2c-a11331c895be',
-			subscribe_key: 'sub-c-4624e1d4-dcad-11e4-adc7-0619f8945a4f',
-			secret_key: 'sec-c-NDFiNzlmNTUtNWEyNy00OGUzLWExZjYtNDc3ZTI2ZGRlOGMw',
-			ssl: true,
-			jsonp: true,
-			restore: true,
-			uuid: uuid
-		});
-
-        // Initialize application data channel with gg's unique ID
-        appDataChannel.init();
-
-		// Initialize the user's data channel with the user's UUID...
-		userDataChannel.init(uuid);
+		
 
 		contactModel.importDeviceContacts();
 
