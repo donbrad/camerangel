@@ -660,7 +660,7 @@
 		
 		Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
 
-		if (!userModel.state.introFetched) {
+		if (!deviceModel.state.introFetched) {
 
 			var NotificationModel = Parse.Object.extend("notifications");
 			var NotificationCollection = Parse.Collection.extend({
