@@ -660,7 +660,7 @@
 		
 		Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
 
-		if (!APP.state.introFetched) {
+		if (!userModel.state.introFetched) {
 
 			var NotificationModel = Parse.Object.extend("notifications");
 			var NotificationCollection = Parse.Collection.extend({
@@ -691,12 +691,12 @@
 			var userNotifications = window.localStorage.getItem('ggUserNotifications');
 
 			userNotifications = JSON.parse(userNotifications);
-			APP.state.userNotifications = [];
+			userModel.state.userNotifications = [];
 			if (userNotifications !== null && userNotifications.length > 0) {
 				for (var j = 0; j < userNotifications.length; j++) {
 					var notification = JSON.parse(userNotifications[j]);
 					APP.models.home.notificationDS.add(notification);
-					APP.state.userNotifications.push(notification);
+					userModel.userNotifications.push(notification);
 				}
 			}
 		}
