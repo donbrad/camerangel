@@ -151,7 +151,7 @@ var userDataChannel = {
 
         if (channel === undefined) {
             // No existing private channel need to create one
-            var contactModel = getContactModel(ownerId);
+            var contactModel = contactModel.getContactModel(ownerId);
             if (contactModel !== undefined) {
                 var contactAlias = contactModel.get('alias');
                 channelModel.addPrivateChannel(ownerId, ownerPublicKey, contactAlias, channelId);
