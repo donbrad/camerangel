@@ -58,7 +58,7 @@ var contactModel = {
 
                 }
                 if (models.length > 0) {
-                    APP.setAppState('hasContacts', true);
+                    deviceModel.setAppState('hasContacts', true);
                 }
                contactModel.contactsDS.data(models);
             },
@@ -111,5 +111,83 @@ var contactModel = {
         dataSource.filter([]);
 
         return(contact);
+    },
+
+    importDeviceContacts: function() {
+        var options = new ContactFindOptions();
+        options.filter = '';
+        options.multiple = true;
+        var fields = ["name", "displayName", "nickName", "phoneNumbers", "emails", "addresses", "photos"];
+
+        navigator.contacts.find(fields, function(contacts) {
+
+                contactModel.deviceContactsDS.data([]);
+                var contactsCount = contacts.length;
+
+                for (var i = 0; i < contactsCount; i++) {
+                    var contactItem = new Object();
+                    contactItem.type = "device";
+                    contactItem.name = contacts[i].name.formatted;
+                    contactItem.phoneNumbers = new Array();
+                    contactItem.category = 'phone';
+                    if (contacts[i].phoneNumbers !== null) {
+                        for (var j = 0; j < contacts[i].phoneNumbers.length; j++) {
+                            var phone = new Object();
+                            phone.name = contacts[i].phoneNumbers[j].type + " : " + contacts[i].phoneNumbers[j].value;
+                            phone.number = contacts[i].phoneNumbers[j].value;
+                            contactItem.phoneNumbers.push(phone);
+                        }
+                    }
+
+                    contactItem.emails = new Array();
+                    if (contacts[i].emails !== null) {
+                        for (var k = 0; k < contacts[i].emails.length; k++) {
+                            var email = new Object();
+                            email.name = contacts[i].emails[k].type + " : " + contacts[i].emails[k].value;
+                            email.address = contacts[i].emails[k].value;
+                            contactItem.emails.push(email);
+                        }
+                    }
+
+                    contactItem.addresses = new Array();
+                    if (contacts[i].addresses !== null) {
+                        for (var a = 0; a < contacts[i].addresses.length; a++) {
+                            var address = new Object();
+                            if (contacts[i].addresses[a].type === null) {
+                                address.type = 'Home';
+                            } else {
+                                address.type = contacts[i].addresses[a].type;
+                            }
+                            address.name = address.type + " : " + contacts[i].addresses[a].streetAddress + ', ' +
+                                contacts[i].addresses[a].locality;
+                            address.address = contacts[i].addresses[a].streetAddress;
+                            address.city = contacts[i].addresses[a].locality;
+                            address.state = contacts[i].addresses[a].region;
+                            address.zipcode = contacts[i].addresses[a].postalcode;
+                            address.fullAddress = address.address + " ," + address.city + ' , ' + address.state;
+                            contactItem.addresses.push(address);
+                        }
+                    }
+                    contactItem.photo = 'images/default-img.png';
+                    if (contacts[i].photos !== null) {
+                        returnValidPhoto(contacts[i].photos[0].value, function(validUrl) {
+                            contactItem.photo = validUrl;
+                            if (contactItem.phoneNumbers.length > 0)
+                                contactModel.deviceContactsDS.add(contactItem);
+                        });
+                    } else {
+                        if (contactItem.phoneNumbers.length > 0)
+                            contactModel.deviceContactsDS.add(contactItem);
+                    }
+                    // Only add device contacts with phone numbers
+                }
+
+
+
+            },
+            function(error) {
+                mobileNotify(error);
+            }, options);
+
     }
 };

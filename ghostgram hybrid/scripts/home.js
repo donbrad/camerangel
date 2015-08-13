@@ -21,7 +21,7 @@ function dismissNotification (e) {
 		}
 	}
 	
-	APP.setAppState('userNotifications', JSON.stringify(data));
+	deviceModel.setAppState('userNotifications', JSON.stringify(data));
 	deleteNotificationModel(uuid);
 	
 }
@@ -45,14 +45,14 @@ function deleteNotificationModel(uuid) {
 	// Does this notification exist?  if not, just return
 	if (notification === undefined)
 		return;
-	var data = APP.state.userNotifications;
+	var data = deviceModel.state.userNotifications;
 	for(var i = 0; i < data.length; i++) {
 		if(data[i].uuid == uuid) {
 			data.splice(i, 1);
 			break;
 		}
 	}
-	APP.setAppState('userNotifications', JSON.stringify(data));
+	deviceModel.setAppState('userNotifications', JSON.stringify(data));
 	dataSource.remove(notification);
 }
 
@@ -67,7 +67,7 @@ function savePhoto () {
 }
 
 function pruneNotifications() {
-	if 	( APP.state.phoneVerified) {
+	if 	( deviceModel.state.phoneVerified) {
 		deleteNotificationModel('verifyphone');
 	}
 

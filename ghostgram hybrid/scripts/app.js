@@ -57,7 +57,7 @@
 
 			profile: {
 				title: 'Profile',
-				parseUser: null,
+				/*parseUser: null,
 				tempDirectory: '',
 				appDirectory: '',
 				currentUser: new kendo.data.ObservableObject({
@@ -88,7 +88,7 @@
 					currentPlaceName: '',
 					currentPlaceUUID: ''
 				})
-
+*/
 			},
 
 			settings: {
@@ -413,11 +413,11 @@
 				});
 			}
 		},
-
+/*
 		setAppState: function(field, value) {
 			APP.state[field] = value;
 			_app.saveAppState();
-		},
+		},*/
 
 		updateGeoLocation: function(callback) {
 			APP.geoLocator.getCurrentPosition(function(position, error) {
@@ -435,7 +435,7 @@
 			});
 		},
 
-		state: {
+	/*	state: {
 			inPrivacyMode: false,
 			isVisible: true,
 			isAvailable: true,
@@ -448,7 +448,7 @@
 			hasChannels: false,
 			hasPlaces: false,
 			introFetched: false
-		}
+		}*/
 
 	};
 
@@ -516,6 +516,7 @@
 	};
 
 	_app = {
+/*
 		init: function() {
 
 		},
@@ -535,7 +536,7 @@
 
 			APP.models.home.invitesDS.online(true);
 			APP.models.home.notificationDS.online(true);
-			APP.models.channels.channelsDS.online(true);
+			channelModel.channelsDS.online(true);
 			APP.models.gallery.photosDS.online(true);
 			contactModel.contactsDS.online(true);
 			APP.models.places.placesDS.online(true);
@@ -549,13 +550,12 @@
 
 			APP.models.home.invitesDS.online(false);
 			APP.models.home.notificationDS.online(false);
-			APP.models.channels.channelsDS.online(false);
+			channelModel.channelsDS.online(false);
 			APP.models.gallery.photosDS.online(false);
 			contactModel.contactsDS.online(false);
 			APP.models.places.placesDS.online(false);
 
 		},
-
 
 
 		saveAppState: function() {
@@ -569,233 +569,15 @@
 			else
 				_app.saveAppState();
 		},
+*/
 
 		newNotification: function(type, title, date, description, actionTitle, action, href, dismissable) {
 			var notification = new APP.models.home.Notification(type, title, date, description, actionTitle, action, href, dismissable);
 			APP.models.home.notificationDS.add(notification);
 		},
 
-		fetchParseData: function() {
-			APP.models.places.placesDS.fetch();
-
-			/*var ChannelModel = Parse.Object.extend("channels");
-			var ChannelCollection = Parse.Collection.extend({
-				model: ChannelModel
-			});
-
-			var channels = new ChannelCollection();
-
-			channels.fetch({
-				success: function(collection) {
-					var models = new Array();
-					for (var i = 0; i < collection.models.length; i++) {
-						// Todo: check status of members
-						models.push(collection.models[i].attributes);
-					}
-					if (models.length > 0) {
-						APP.setAppState('hasChannels', true);
-					}
-					APP.models.channels.channelsDS.data(models);
-				},
-				error: function(collection, error) {
-					handleParseError(error);
-				}
-			});
-*/
-			channelModel.fetch();
-			
-			/*var ContactModel = Parse.Object.extend("contacts");
-			var ContactCollection = Parse.Collection.extend({
-				model: ContactModel
-			});
-
-			var contacts = new ContactCollection();
-
-			contacts.fetch({
-				success: function(collection) {
-					var models = [];
-					for (var i = 0; i < collection.models.length; i++) {
-						var model = collection.models[i];
-						// Load the contactPhoto data from parse and update the url
-						var contactPhoto = model.get("parsePhoto");
-						if (contactPhoto !== undefined && contactPhoto !== null)
-							model.set('photo', contactPhoto._url);
-						models.push(model.attributes);
-
-					}
-					if (models.length > 0) {
-						APP.setAppState('hasContacts', true);
-					}
-					APP.models.contacts.contactsDS.data(models);
-				},
-				error: function(collection, error) {
-					handleParseError(error);
-				}
-			});*/
-
-            // fetch contactModels (objects) from parse.
-            contactModel.fetch();
-
-			var PhotoModel = Parse.Object.extend("photos");
-			var PhotoCollection = Parse.Collection.extend({
-				model: PhotoModel
-			});
-
-			var photos = new PhotoCollection();
-
-			photos.fetch({
-				success: function(collection) {
-					var models = new Array();
-					for (var i = 0; i < collection.models.length; i++) {
-						models.push(collection.models[i].attributes);
-					}
-					if (models.length > 0) {
-						APP.setAppState('hasPhotos', true);
-					}
-					APP.models.gallery.photosDS.data(models);
-				},
-				error: function(collection, error) {
-					handleParseError(error);
-				}
-			});
-
-			var InviteModel = Parse.Object.extend("invites");
-			var InviteCollection = Parse.Collection.extend({
-				model: InviteModel
-			});
-
-			var invites = new InviteCollection();
-
-			invites.fetch({
-				success: function(collection) {
-					var models = new Array();
-					for (var i = 0; i < collection.models.length; i++) {
-						models.push(collection.models[i].attributes);
-					}
-
-					APP.models.home.invitesDS.data(models);
-				},
-				error: function(collection, error) {
-					handleParseError(error);
-				}
-			});
-
-			var p2pModel = Parse.Object.extend("p2pmap");
-			var p2pCollection = Parse.Collection.extend({
-				model: p2pModel
-			});
-
-			var p2pmap = new p2pCollection();
-
-			p2pmap.fetch({
-				success: function(collection) {
-					var models = new Array();
-					for (var i = 0; i < collection.models.length; i++) {
-						models.push(collection.models[i].attributes);
-					}
-				},
-				error: function(collection, error) {
-					handleParseError(error);
-				}
-			});
-
-			var channelMapModel = Parse.Object.extend("channelmap");
-			var channelMapCollection = Parse.Collection.extend({
-				model: channelMapModel
-			});
-
-			var channelMap = new channelMapCollection();
-
-			channelMap.fetch({
-				success: function(collection) {
-					var channels = new Array();
-					for (var i = 0; i < collection.models.length; i++) {
-						channels.push(collection.models[i].attributes);
-					}
-				},
-				error: function(collection, error) {
-					handleParseError(error);
-				}
-			});
-		},
-
-		importDeviceContacts: function() {
-			var options = new ContactFindOptions();
-			options.filter = '';
-			options.multiple = true;
-			var fields = ["name", "displayName", "nickName", "phoneNumbers", "emails", "addresses", "photos"];
-
-			navigator.contacts.find(fields, function(contacts) {
-
-					contactModel.deviceContactsDS.data([]);
-					var contactsCount = contacts.length;
-
-					for (var i = 0; i < contactsCount; i++) {
-						var contactItem = new Object();
-						contactItem.type = "device";
-						contactItem.name = contacts[i].name.formatted;
-						contactItem.phoneNumbers = new Array();
-						contactItem.category = 'phone';
-						if (contacts[i].phoneNumbers !== null) {
-							for (var j = 0; j < contacts[i].phoneNumbers.length; j++) {
-								var phone = new Object();
-								phone.name = contacts[i].phoneNumbers[j].type + " : " + contacts[i].phoneNumbers[j].value;
-								phone.number = contacts[i].phoneNumbers[j].value;
-								contactItem.phoneNumbers.push(phone);
-							}
-						}
-
-						contactItem.emails = new Array();
-						if (contacts[i].emails !== null) {
-							for (var k = 0; k < contacts[i].emails.length; k++) {
-								var email = new Object();
-								email.name = contacts[i].emails[k].type + " : " + contacts[i].emails[k].value;
-								email.address = contacts[i].emails[k].value;
-								contactItem.emails.push(email);
-							}
-						}
-
-						contactItem.addresses = new Array();
-						if (contacts[i].addresses !== null) {
-							for (var a = 0; a < contacts[i].addresses.length; a++) {
-								var address = new Object();
-								if (contacts[i].addresses[a].type === null) {
-									address.type = 'Home';
-								} else {
-									address.type = contacts[i].addresses[a].type;
-								}
-								address.name = address.type + " : " + contacts[i].addresses[a].streetAddress + ', ' +
-									contacts[i].addresses[a].locality;
-								address.address = contacts[i].addresses[a].streetAddress;
-								address.city = contacts[i].addresses[a].locality;
-								address.state = contacts[i].addresses[a].region;
-								address.zipcode = contacts[i].addresses[a].postalcode;
-								address.fullAddress = address.address + " ," + address.city + ' , ' + address.state;
-								contactItem.addresses.push(address);
-							}
-						}
-						contactItem.photo = 'images/default-img.png';
-						if (contacts[i].photos !== null) {
-							returnValidPhoto(contacts[i].photos[0].value, function(validUrl) {
-								contactItem.photo = validUrl;
-								if (contactItem.phoneNumbers.length > 0)
-									contactModel.deviceContactsDS.add(contactItem);
-							});
-						} else {
-							if (contactItem.phoneNumbers.length > 0)
-								contactModel.deviceContactsDS.add(contactItem);
-						}
-						// Only add device contacts with phone numbers	
-					}
 
 
-
-				},
-				function(error) {
-					mobileNotify(error);
-				}, options);
-
-		},
 
 		placesInit: function() {
 			_mapElem = $("#places-mapview");
@@ -825,54 +607,31 @@
 
 		onShowPlaces: _app.placesShow,
 		onInitPlaces: _app.placesInit,
-		onUserSignIn: _app.fetchParseData
 	});
 
 	// Add event listeners
-	document.addEventListener("pause", _app.onPause, false);
-	document.addEventListener("resume", _app.onResume, false);
+	document.addEventListener("pause", deviceModel.onPause, false);
+	document.addEventListener("resume", deviceModel.onResume, false);
 
 
-	document.addEventListener("online", _app.onOnline, false);
-	document.addEventListener("offline", _app.onOffline, false);
+	document.addEventListener("online", deviceModel.onOnline, false);
+	document.addEventListener("offline", deviceModel.onOffline, false);
 
 
 
 	// this function is called by Cordova when the application is loaded by the device
 	document.addEventListener('deviceready', function() {
-		var initialView = '#newuserhome';
-		_app.getAppState();
+
+		deviceModel.getAppState();
 
 		APP.geoLocator = new GeoLocator();
-		APP.location = new Object();
+		APP.location = {};
 
-		getNetworkState();
+		deviceModel.getNetworkState();
 
-		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
-			function(fileSystem) {
-				var url = fileSystem.root.nativeURL;
-				url = url.replace('file://', '');
-				APP.fileDirectory = url;
-				APP.models.profile.appDirectory = url;
-				//mobileNotify(APP.fileDirectory);
-			},
-			function(error) {
-				mobileNotify("Filesystem error : " + JSON.stringify(error));
-			});
+		deviceModel.init();
 
-		window.requestFileSystem(LocalFileSystem.TEMPORARY, 0,
-			function(fileSystem) {
-				var url = fileSystem.root.nativeURL;
-				url = url.replace('file://', '');
-				APP.tempDirectory = url;
-				APP.models.profile.tempDirectory = url;
-				//mobileNotify(APP.tempDirectory);
-			},
-			function(error) {
-				mobileNotify("Filesystem error : " + JSON.stringify(error));
-			});
-
-		/*		if (window.navigator.simulator === undefined) {
+			/*		if (window.navigator.simulator === undefined) {
 					APP.map = plugin.google.maps.Map.getMap($("#places-mapview"));
 					APP.mapReady = false;
 					 APP.map.on(plugin.google.maps.event.MAP_READY, function () {
@@ -919,10 +678,10 @@
 						collection.models[i].attributes.date = Date.parse(date);
 						userNotifications.push(JSON.stringify(collection.models[i].attributes));
 						APP.models.home.notificationDS.add(collection.models[i].attributes);
-						APP.setAppState('introFetched', true);
+						deviceModel.setAppState('introFetched', true);
 					}
 					window.localStorage.setItem('ggUserNotifications', JSON.stringify(userNotifications));
-					APP.state.userNotifications = userNotifications;
+					deviceModel.state.userNotifications = userNotifications;
 				},
 				error: function(collection, error) {
 					handleParseError(error);
@@ -942,24 +701,7 @@
 			}
 		}
 
-		Parse.User.enableRevocableSession();
-		APP.models.profile.parseUser = Parse.User.current();
-		APP.models.profile.udid = device.uuid;
-		APP.models.profile.platform = device.platform;
-		APP.models.profile.device = device.name;
-		APP.models.profile.model = device.model;
-		APP.models.profile.rememberUsername = localStorage.getItem('ggRememberUsername');
-
-		// If remembering Username, get it from localstorage and prefill signin.
-		if (APP.models.profile.rememberUsername) {
-			APP.models.profile.username = localStorage.getItem('ggUsername');
-			if (APP.models.profile.username == undefined || APP.models.profile.username === '') {
-				localStorage.setItem('ggUsername', APP.models.profile.parseUser.get('username'));
-			} else {
-				$('#home-signin-username').val(APP.models.profile.username);
-			}
-
-		}
+		userModel.initParse();
 
 		pruneNotifications();
 
@@ -1005,6 +747,7 @@
 		});
 
 
+/*
 		if (APP.models.profile.parseUser !== null) {
 			initialView = '#home';
 			APP.models.profile.currentUser.set('username', APP.models.profile.parseUser.get('username'));
@@ -1040,6 +783,7 @@
 			_app.fetchParseData();
 
 		}
+*/
 
 		if (APP.models.profile.currentUser.get('rememberUsername')) {
 			localStorage.setItem('ggRememberUsername', true);
@@ -1062,7 +806,7 @@
 		// Initialize the user's data channel with the user's UUID...
 		userDataChannel.init(uuid);
 
-		//_app.importDeviceContacts();
+		contactModel.importDeviceContacts();
 
 		APP.kendo = new kendo.mobile.Application(document.body, {
 
@@ -1071,7 +815,7 @@
 			skin: 'material',
 
 			// the application needs to know which view to load first
-			initial: initialView
+			initial: userModel.initialView
 		});
 
 		// Provide basic functionality in the simulator and deployable simulator
