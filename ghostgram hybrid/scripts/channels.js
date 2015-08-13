@@ -157,7 +157,7 @@ function onInitChannels (e) {
     // ToDo: Initialize list view
 	
      $("#channels-listview").kendoMobileListView({
-        dataSource: APP.models.channels.channelsDS,
+        dataSource: channelModel.channelsDS,
         template: $("#channels-listview-template").html(),
         click: function(e){
         	var selector = e.target[0].parentElement
