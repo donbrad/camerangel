@@ -68,7 +68,7 @@ function privateChat(e) {
         e.preventDefault();
     }
 	var contact = contactModel.currentContact;
-	var contactUUID = contact.contactUUID, contactName = contact.get('name');
+	var contactUUID = contact.contactUUID, contactName = contact.get('name'), contactPublicKey = contact.get('publicKey');
     var privateChannelId = contact.privateChannelId;
     var userName = APP.models.profile.currentUser.get('name');
 	if (contactUUID === undefined || contactUUID === null) {
@@ -81,7 +81,7 @@ function privateChat(e) {
     if (privateChannelId === undefined) {
         privateChannelId = uuid.v4();
         // Create a new private channel for this contact
-        channelModel.addPrivateChannel(contactUUID, contactName, privateChannelId);
+        channelModel.addPrivateChannel(contactUUID, contactPublicKey, contactName, privateChannelId);
 
         userDataChannel.privateChannelInvite(contactUUID, privateChannelId, "Private Chat request from: " + userName);
         mobileNotify("Requesting private chat with " + contactName);

@@ -77,7 +77,7 @@ var channelModel = {
         var contact = contactModel.getContactModel(contactUUID), contactKey = null;
 
         contact.privateChannelId = channelUUID;
-        contact.publicKey = contactPublicKey;
+        //contact.publicKey = contactPublicKey;
 
 
         channel.set("name", contactAlias);
