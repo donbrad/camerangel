@@ -56,7 +56,7 @@ function processPrivateInvite(contactUUID, message) {
 				var entry = results[0];
 				privateChannelId = entry.get('channel');
 				// Does this user have an existing privateChannel with this contact?
-				var channelModel = findChannelModel(privateChannelId);
+				var channelModel = channelModel.findChannelModel(privateChannelId);
 				
 				if (channelModel === undefined) {
 					// No existing private channel need to create one

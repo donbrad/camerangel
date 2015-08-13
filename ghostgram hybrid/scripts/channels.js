@@ -20,7 +20,7 @@ function onShowChannels(){
     
 }
 
-function findChannelModel(channelId) {
+/*function findChannelModel(channelId) {
 	 var dataSource = APP.models.channels.channelsDS;
     dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
     var view = dataSource.view();
@@ -28,7 +28,7 @@ function findChannelModel(channelId) {
 	dataSource.filter([]);
 	
 	return(channel);
-}
+}*/
 
 
 /*function addPrivateChannel (contactUUID, contactAlias, channelUUID) {

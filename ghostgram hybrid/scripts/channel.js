@@ -325,7 +325,7 @@ function togglePrivacyMode (e) {
 function onShowChannel(e) {
 	e.preventDefault();
 	var channelUUID = e.view.params.channel;
-	var thisChannelModel = findChannelModel(channelUUID);
+	var thisChannelModel = channelModel.findChannelModel(channelUUID);
 	var thisUser = userModel.currentUser;
 	var thisChannel = {};
 	var contactUUID = null;

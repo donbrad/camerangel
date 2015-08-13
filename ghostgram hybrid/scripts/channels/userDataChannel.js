@@ -147,12 +147,12 @@ var userDataChannel = {
     },
 
     processPrivateInvite: function (ownerId, ownerPublicKey, channelId, message) {
-        var channel = findChannelModel(channelId);
+        var channel = channelModel.findChannelModel(channelId);
 
         if (channel === undefined) {
             // No existing private channel need to create one
-            var contactModel = contactModel.getContactModel(ownerId);
-            if (contactModel !== undefined) {
+            var contact = contactModel.getContactModel(ownerId);
+            if (contact !== undefined) {
                 var contactAlias = contactModel.get('alias');
                 channelModel.addPrivateChannel(ownerId, ownerPublicKey, contactAlias, channelId);
                 mobileNotify("Created Private Chat with " + contactAlias);
@@ -168,7 +168,7 @@ var userDataChannel = {
 
     processGroupInvite: function (ownerId, channelId, message) {
         // Todo:  Does channel exist?  If not create,  if so notify user of request
-        var channel = findChannelModel(channelId);
+        var channel = channelModel.findChannelModel(channelId);
         if (channel === undefined) {
             // Todo: create a channelMember object for this user
         }
