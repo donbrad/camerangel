@@ -8,34 +8,15 @@ var channelModel = {
 
     _channelName : "channels",
     _channelMemberName : "channelMember",
-    currentChannel: {},
-    currentModel: {},
-    currentMessage: {},
-    messageLock: true,
-    potentialMembersDS: new kendo.data.DataSource({
-        group: 'category',
-        sort: {
-            field: "name",
-            dir: "asc"
-        },
-        schema: {
-            model: {
-                id: "uuid"
-            }
-        }
-    }),
-    membersDS: new kendo.data.DataSource({
+    currentChannel: new kendo.data.ObservableObject(),
+    channelsDS: new kendo.data.DataSource({
+        offlineStorage: "channels-offline",
         sort: {
             field: "name",
             dir: "asc"
         }
     }),
-    messagesDS: new kendo.data.DataSource({
-        sort: {
-            field: "date",
-            dir: "desc"
-        }
-    }),
+
 
 
     fetch : function () {
@@ -160,8 +141,8 @@ var channelModel = {
                 channelModel.channelsDS.add(channel.attributes);
                 mobileNotify('Added channel : ' + channel.get('name'));
 
-                channelModel.currentModel = findChannelModel(channelId);
-                channelModel.currentChannel = channelModel.currentModel;
+                APP.models.channel.currentModel = findChannelModel(channelId);
+                APP.models.channel.currentChannel = APP.models.channel.currentModel;
                 APP.kendo.navigate('#editChannel');
             },
             error: function(channel, error) {
