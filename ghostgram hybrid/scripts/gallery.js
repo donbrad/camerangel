@@ -296,7 +296,7 @@ function gallerySelectCategory(e){
 	 	$(".gallerySearchOptions").velocity("slideUp");
 	 	//$("#gallerySearchToolSelect").addClass("hidden");
 	 	$("#galleryPhotoDisplayOpts").velocity("slideDown");
-	 	$("#gallerySearch").attr("placeholder", "Seach");
+	 	$("#gallerySearch").attr("placeholder", "Search All");
 	 	$("#gallery-listview").removeClass("hidden");
 	 	break;
 	 }
