@@ -39,9 +39,9 @@ var channelModel = {
 
 
     fetch : function () {
-        var ChannelModel = Parse.Object.extend("channels");
+        var Channel = Parse.Object.extend("channels");
         var ChannelCollection = Parse.Collection.extend({
-            model: ChannelModel
+            model: Channel
         });
 
         var channels = new ChannelCollection();
