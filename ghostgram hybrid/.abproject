@@ -15,6 +15,7 @@
     "location",
     "bluetooth-central",
     "bluetooth-peripheral",
+    "fetch",
     "remote-notification"
   ],
   "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
