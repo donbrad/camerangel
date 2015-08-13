@@ -68,11 +68,11 @@ function privateChat(e) {
         e.preventDefault();
     }
 	var contact = contactModel.currentContact;
-	var contactUUID = contact.contactUUID, contactName = contact.get('name'), contactPublicKey = contact.get('publicKey');
+	var contactUUID = contact.contactUUID, contactName = contact.name, contactPublicKey = contact.publicKey;
     var privateChannelId = contact.privateChannelId;
     var userName = APP.models.profile.currentUser.get('name');
 	if (contactUUID === undefined || contactUUID === null) {
-		mobileNotify(contact.get('name') + "hasn't verified their contact info");
+		mobileNotify(contact.name + "hasn't verified their contact info");
 		return;
 	}
 
