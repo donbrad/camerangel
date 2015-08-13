@@ -86,7 +86,7 @@ var userDataChannel = {
 
             //  { type: 'privateInvite',  channelId: <channelUUID>,  owner: <ownerUUID>, message: <text>, time: current time}
             case 'privateInvite' : {
-                this.processPrivateInvite(m.ownerId, m.channelId, m.message);
+                this.processPrivateInvite(m.ownerId, m.ownerPublicKey,  m.channelId, m.message);
             } break;
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, owner: <ownerUUID>}
@@ -113,6 +113,7 @@ var userDataChannel = {
 
         msg.type = 'privateInvite';
         msg.ownerId = APP.models.profile.currentUser.get('userUUID');
+        msg.ownerPublicKey = APP.models.profile.currentUser.get('publicKey');
         msg.channelId = channelUUID;
         msg.message  = message;
         msg.time = new Date().getTime();
@@ -145,7 +146,7 @@ var userDataChannel = {
         });
     },
 
-    processPrivateInvite: function (ownerId, channelId, message) {
+    processPrivateInvite: function (ownerId, ownerPublicKey, channelId, message) {
         var channel = findChannelModel(channelId);
 
         if (channel === undefined) {
@@ -153,7 +154,7 @@ var userDataChannel = {
             var contactModel = getContactModel(ownerId);
             if (contactModel !== undefined) {
                 var contactAlias = contactModel.get('alias');
-                addPrivateChannel(ownerId, contactAlias, channelId);
+                channelModel.addPrivateChannel(ownerId, ownerPublicKey, contactAlias, channelId);
                 mobileNotify("Created Private Chat with " + contactAlias);
 
             } else {
