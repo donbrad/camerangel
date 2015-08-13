@@ -74,7 +74,7 @@ var channelModel = {
         var Channels = Parse.Object.extend(this._channelName);
         var channel = new Channels();
         var publicKey = APP.models.profile.currentUser.get('publicKey');
-        var contact = contactModel.findContactByUUID(contactUUID), contactKey = null;
+        var contact = contactModel.getContactModel(contactUUID), contactKey = null;
 
         contact.privateChannelId = channelUUID;
         contact.publicKey = contactPublicKey;
