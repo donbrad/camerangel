@@ -236,7 +236,7 @@ function finalizeEditChannel(e) {
 	var channelId = APP.models.channels.currentModel.channelId;
 	// It's a group channel so push this users UUID
 	
-	memberArray.push(APP.models.profile.currentUser.userUUID);
+	memberArray.push(userModel.currentUser.userUUID);
 	for (var i=0; i<members.length; i++) {
 		if(members[i].contactUUID !== null) {
 			memberArray.push(members[i].contactUUID);
@@ -504,7 +504,7 @@ function doShowChannelPresence (e) {
 	var members = currentChannelModel.members;
 	if (currentChannelModel.isPrivate) {
 		var privateContact = ''
-		if (members[0] === APP.models.profile.currentUser.userUUID) {
+		if (members[0] === userModel.currentUser.userUUID) {
 			privateContact = getContactModel(members[1]);
 		} else {
 			privateContact = getContactModel(members[0]);

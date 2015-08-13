@@ -30,7 +30,7 @@ function newP2PEntry(user, contact, channel, callback) {
 
 //check the p2p map 
 function processPrivateInvite(contactUUID, message) {
-	var userUUID = APP.models.profile.currentUser.get('userUUID'),
+	var userUUID = userModel.currentUser.get('userUUID'),
 		contact = contactModel.getContactModel(contactUUID),
 		privateChannelId = contact.privateChannelId;   // Is the already a private channel allocated for this contact
 
@@ -85,7 +85,7 @@ function processPrivateInvite(contactUUID, message) {
 
 // search the p2pmap for an existing mapping between user and contact
 function queryP2Pmap(contactUUID, userUUID, callBack) {
-	var user = APP.models.profile.currentUser.get('userUUID');
+	var user = userModel.currentUser.get('userUUID');
 	var contactQuery = new Parse.Query("p2pmap");
 	contactQuery.containsAll("members", [contactUUID]);
 

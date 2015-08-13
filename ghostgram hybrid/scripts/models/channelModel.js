@@ -80,7 +80,7 @@ var channelModel = {
     addPrivateChannel : function (contactUUID, contactPublicKey,  contactAlias, channelUUID) {
         var Channels = Parse.Object.extend(this._channelName);
         var channel = new Channels();
-        var publicKey = APP.models.profile.currentUser.get('publicKey');
+        var publicKey = userModel.currentUser.get('publicKey');
         var contact = contactModel.getContactModel(contactUUID), contactKey = null;
 
         contact.privateChannelId = channelUUID;
@@ -96,7 +96,7 @@ var channelModel = {
         channel.set("channelId", channelUUID);
         channel.set('userKey',  publicKey);
         channel.set('contactKey', contactPublicKey);
-        channel.set("members", [APP.models.profile.currentUser.userUUID, contactUUID]);
+        channel.set("members", [userModel.currentUser.userUUID, contactUUID]);
 
         channel.setACL(APP.models.profile.parseACL);
         channel.save(null, {
@@ -138,7 +138,7 @@ var channelModel = {
         channel.set("archive", true);
 
         channel.set("description", description);
-        channel.set("members", [APP.models.profile.currentUser.userUUID]);
+        channel.set("members", [userModel.currentUser.userUUID]);
         channel.set("invitedMembers", []);
         channel.set("channelId", channelId);
 
@@ -164,8 +164,8 @@ var channelModel = {
 
         channelMap.set("name", name);
         channelMap.set("channelId", channelId);
-        channelMap.set("channelOwner", APP.models.profile.currentUser.userUUID);
-        channelMap.set("members", [APP.models.profile.currentUser.userUUID]);
+        channelMap.set("channelOwner", userModel.currentUser.userUUID);
+        channelMap.set("members", [userModel.currentUser.userUUID]);
 
         channelMap.save(null, {
             success: function(channel) {

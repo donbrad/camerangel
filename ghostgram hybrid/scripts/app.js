@@ -748,46 +748,46 @@
 
 
 /*
-		if (APP.models.profile.parseUser !== null) {
+		if (userModel.parseUser !== null) {
 			initialView = '#home';
-			APP.models.profile.currentUser.set('username', APP.models.profile.parseUser.get('username'));
-			APP.models.profile.currentUser.set('name', APP.models.profile.parseUser.get('name'));
-			APP.models.profile.currentUser.set('email', APP.models.profile.parseUser.get('email'));
-			APP.models.profile.currentUser.set('phone', APP.models.profile.parseUser.get('phone'));
-			APP.models.profile.currentUser.set('alias', APP.models.profile.parseUser.get('alias'));
-			APP.models.profile.currentUser.set('userUUID', APP.models.profile.parseUser.get('userUUID'));
-			APP.models.profile.currentUser.set('publicKey', APP.models.profile.parseUser.get('publicKey'));
-			APP.models.profile.currentUser.set('privateKey', APP.models.profile.parseUser.get('privateKey'));
-			APP.models.profile.currentUser.set('statusMessage', APP.models.profile.parseUser.get('statusMessage'));
-			APP.models.profile.currentUser.set('currentPlaceUUID', APP.models.profile.parseUser.get('currentPlaceUUID'));
-			APP.models.profile.currentUser.set('currentPlace', APP.models.profile.parseUser.get('currentPlace'));
-			APP.models.profile.currentUser.set('aliasPublic', APP.models.profile.parseUser.get('aliasPublic'));
-			APP.models.profile.currentUser.set('aliasPhoto', APP.models.profile.parseUser.get('aliasPhoto'));
-			APP.models.profile.currentUser.set('photo', APP.models.profile.parseUser.get('photo'));
-			APP.models.profile.currentUser.set('isAvailable', APP.models.profile.parseUser.get('isAvailable'));
-			APP.models.profile.currentUser.set('isVisible', APP.models.profile.parseUser.get('isVisible'));
-			APP.models.profile.currentUser.set('isRetina', APP.models.profile.parseUser.get('isRetina'));
-			APP.models.profile.currentUser.set('isWIFIOnly', APP.models.profile.parseUser.get('isWIFIOnly'));
-			APP.models.profile.currentUser.set('isPhotoStored', APP.models.profile.parseUser.get('isPhotoStored'));
-			APP.models.profile.currentUser.set('saveToPhotoAlbum', APP.models.profile.parseUser.get('saveToPhotoAlbum'));
-			APP.models.profile.currentUser.set('rememberUsername', APP.models.profile.parseUser.get('rememberUsername'));
-			APP.models.profile.currentUser.set('phoneVerified', APP.models.profile.parseUser.get('phoneVerified'));
-			APP.models.profile.currentUser.set('emailVerified', APP.models.profile.parseUser.get('emailVerified'));
-			APP.models.profile.currentUser.set('availImgUrl', 'images/status-away.svg');
+			userModel.currentUser.set('username', userModel.parseUser.get('username'));
+			userModel.currentUser.set('name', userModel.parseUser.get('name'));
+			userModel.currentUser.set('email', userModel.parseUser.get('email'));
+			userModel.currentUser.set('phone', userModel.parseUser.get('phone'));
+			userModel.currentUser.set('alias', userModel.parseUser.get('alias'));
+			userModel.currentUser.set('userUUID', userModel.parseUser.get('userUUID'));
+			userModel.currentUser.set('publicKey', userModel.parseUser.get('publicKey'));
+			userModel.currentUser.set('privateKey', userModel.parseUser.get('privateKey'));
+			userModel.currentUser.set('statusMessage', userModel.parseUser.get('statusMessage'));
+			userModel.currentUser.set('currentPlaceUUID', userModel.parseUser.get('currentPlaceUUID'));
+			userModel.currentUser.set('currentPlace', userModel.parseUser.get('currentPlace'));
+			userModel.currentUser.set('aliasPublic', userModel.parseUser.get('aliasPublic'));
+			userModel.currentUser.set('aliasPhoto', userModel.parseUser.get('aliasPhoto'));
+			userModel.currentUser.set('photo', userModel.parseUser.get('photo'));
+			userModel.currentUser.set('isAvailable', userModel.parseUser.get('isAvailable'));
+			userModel.currentUser.set('isVisible', userModel.parseUser.get('isVisible'));
+			userModel.currentUser.set('isRetina', userModel.parseUser.get('isRetina'));
+			userModel.currentUser.set('isWIFIOnly', userModel.parseUser.get('isWIFIOnly'));
+			userModel.currentUser.set('isPhotoStored', userModel.parseUser.get('isPhotoStored'));
+			userModel.currentUser.set('saveToPhotoAlbum', userModel.parseUser.get('saveToPhotoAlbum'));
+			userModel.currentUser.set('rememberUsername', userModel.parseUser.get('rememberUsername'));
+			userModel.currentUser.set('phoneVerified', userModel.parseUser.get('phoneVerified'));
+			userModel.currentUser.set('emailVerified', userModel.parseUser.get('emailVerified'));
+			userModel.currentUser.set('availImgUrl', 'images/status-away.svg');
 			updateHeaderStatusImages();
 			
-			APP.models.profile.parseACL = new Parse.ACL(APP.models.profile.parseUser);
-			var uuid = APP.models.profile.currentUser.get('userUUID');
-			APP.models.profile.currentUser.bind('change', syncProfile);
+			APP.models.profile.parseACL = new Parse.ACL(userModel.parseUser);
+			var uuid = userModel.currentUser.get('userUUID');
+			userModel.currentUser.bind('change', syncProfile);
 
 			_app.fetchParseData();
 
 		}
 */
 
-		if (APP.models.profile.currentUser.get('rememberUsername')) {
+		if (userModel.currentUser.get('rememberUsername')) {
 			localStorage.setItem('ggRememberUsername', true);
-			localStorage.setItem('ggUsername', APP.models.profile.currentUser.get('username'));
+			localStorage.setItem('ggUsername', userModel.currentUser.get('username'));
 		}
 
 		APP.pubnub = PUBNUB.init({

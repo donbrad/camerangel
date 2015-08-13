@@ -1,6 +1,6 @@
 function homeBeforeShow () {
 
-    if (APP.models.profile.currentUser) {
+    if (userModel.currentUser) {
         // Have current user - redirect to user view
         APP.kendo.navigate('#home');
     } else {
@@ -154,11 +154,11 @@ function continueSignUp() {
 function onInitProfile(e) {
 	e.preventDefault();
     
-    if (APP.models.profile.currentUser.emailVerified){
+    if (userModel.currentUser.emailVerified){
         $("#verified-email").removeClass("hidden");
     }
     
-    if(APP.models.profile.currentUser.phoneVerified){
+    if(userModel.currentUser.phoneVerified){
         $("#verified-phone").removeClass("hidden");
     }
 
@@ -178,7 +178,7 @@ function onShowHome(e) {
 	e.preventDefault();
 
     // set verified ui for start screen 
-    if(APP.models.profile.currentUser.phoneVerified) {
+    if(userModel.currentUser.phoneVerified) {
     	$("#startPhoneVerified").addClass("hidden");
     }
     
@@ -195,7 +195,7 @@ function onShowHome(e) {
 
 function setUserStatusUI(e){
 	//Set available
-	var currentAvailable = APP.models.profile.currentUser.isAvailable;
+	var currentAvailable = userModel.currentUser.isAvailable;
     if (currentAvailable) {
     	$(".userStatus-icon").attr("src","images/status-available.svg");
     } else {
@@ -203,8 +203,8 @@ function setUserStatusUI(e){
     }
 
     //set private photo
-    var privatePhoto = APP.models.profile.currentUser.photo;
-    var publicPhoto = APP.models.profile.currentUser.aliasPhoto;
+    var privatePhoto = userModel.currentUser.photo;
+    var publicPhoto = userModel.currentUser.aliasPhoto;
 
     if(privatePhoto !== ""){
     	$(".userStatus-photo").attr("src", privatePhoto);
@@ -221,17 +221,17 @@ function homeSignout (e) {
 
     e.preventDefault();
     Parse.User.logOut();
-    APP.models.profile.parseUser = null;
-    APP.models.profile.currentUser.unbind('change', syncProfile);
-    APP.models.profile.currentUser.set('username', null);
-    APP.models.profile.currentUser.set('email', null);
-    APP.models.profile.currentUser.set('phone',null);
-    APP.models.profile.currentUser.set('alias', null);
-    APP.models.profile.currentUser.set('userUUID', null);
-	APP.models.profile.currentUser.set('rememberUsername', false);
-    APP.models.profile.currentUser.set('phoneVerified', false);
-    APP.models.profile.currentUser.set('emailVerified', false);
-    APP.models.profile.parseACL = '';
+    userModel.parseUser = null;
+    userModel.currentUser.unbind('change', syncProfile);
+    userModel.currentUser.set('username', null);
+    userModel.currentUser.set('email', null);
+    userModel.currentUser.set('phone',null);
+    userModel.currentUser.set('alias', null);
+    userModel.currentUser.set('userUUID', null);
+	userModel.currentUser.set('rememberUsername', false);
+    userModel.currentUser.set('phoneVerified', false);
+    userModel.currentUser.set('emailVerified', false);
+   userModel.parseACL = '';
     APP.kendo.navigate('#newuserhome');
 }
 
@@ -266,7 +266,7 @@ function homeSignin (e) {
             closeModalViewLogin();
             // Clear sign in form
             $("#home-signin-username, #home-signin-password").val("");
-            APP.models.profile.parseUser = user;
+            userModel.parseUser = user;
 			
 			
 			var publicKey = user.get('publicKey');
@@ -282,34 +282,34 @@ function homeSignin (e) {
 				user.save();
 			}
 			   
-            APP.models.profile.currentUser.set('username', APP.models.profile.parseUser.get('username'));
-			APP.models.profile.currentUser.set('name', APP.models.profile.parseUser.get('name'));
-            APP.models.profile.currentUser.set('email', APP.models.profile.parseUser.get('email'));
-            APP.models.profile.currentUser.set('phone', APP.models.profile.parseUser.get('phone'));
-            APP.models.profile.currentUser.set('alias', APP.models.profile.parseUser.get('alias'));
-            APP.models.profile.currentUser.set('aliasPhoto', APP.models.profile.parseUser.get('aliasPhoto'));
-			APP.models.profile.currentUser.set('statusMessage', APP.models.profile.parseUser.get('statusMessage'));
-			APP.models.profile.currentUser.set('isAvailable', APP.models.profile.parseUser.get('isAvailable'));
-			APP.models.profile.currentUser.set('isVisible', APP.models.profile.parseUser.get('isVisible'));
-			APP.models.profile.currentUser.set('isRetina', APP.models.profile.parseUser.get('isRetina'));
-			APP.models.profile.currentUser.set('isWIFIOnly', APP.models.profile.parseUser.get('isWIFIOnly'));
-			APP.models.profile.currentUser.set('isPhotoStored', APP.models.profile.parseUser.get('isPhotoStored'));
-			APP.models.profile.currentUser.set('saveToPhotoAlbum', APP.models.profile.parseUser.get('saveToPhotoAlbum'));
-			APP.models.profile.currentUser.set('currentPlace', APP.models.profile.parseUser.get('currentPlace'));
-			APP.models.profile.currentUser.set('currentPlaceUUID', APP.models.profile.parseUser.get('currentPlaceUUID'));
-			APP.models.profile.currentUser.set('photo', APP.models.profile.parseUser.get('photo'));
-			APP.models.profile.currentUser.set('aliasPublic', APP.models.profile.parseUser.get('aliasPublic'));
-            APP.models.profile.currentUser.set('userUUID', APP.models.profile.parseUser.get('userUUID'));
-			APP.models.profile.currentUser.set('rememberUsername', APP.models.profile.parseUser.get('rememberUsername'));
-			APP.models.profile.currentUser.set('publicKey', publicKey);
-			APP.models.profile.currentUser.set('privateKey', privateKey);
-			var phoneVerified = APP.models.profile.parseUser.get('phoneVerified');
-            APP.models.profile.currentUser.set('phoneVerified', phoneVerified);
+            userModel.currentUser.set('username', userModel.parseUser.get('username'));
+			userModel.currentUser.set('name', userModel.parseUser.get('name'));
+            userModel.currentUser.set('email', userModel.parseUser.get('email'));
+            userModel.currentUser.set('phone', userModel.parseUser.get('phone'));
+            userModel.currentUser.set('alias', userModel.parseUser.get('alias'));
+            userModel.currentUser.set('aliasPhoto', userModel.parseUser.get('aliasPhoto'));
+			userModel.currentUser.set('statusMessage', userModel.parseUser.get('statusMessage'));
+			userModel.currentUser.set('isAvailable', userModel.parseUser.get('isAvailable'));
+			userModel.currentUser.set('isVisible', userModel.parseUser.get('isVisible'));
+			userModel.currentUser.set('isRetina', userModel.parseUser.get('isRetina'));
+			userModel.currentUser.set('isWIFIOnly', userModel.parseUser.get('isWIFIOnly'));
+			userModel.currentUser.set('isPhotoStored', userModel.parseUser.get('isPhotoStored'));
+			userModel.currentUser.set('saveToPhotoAlbum', userModel.parseUser.get('saveToPhotoAlbum'));
+			userModel.currentUser.set('currentPlace', userModel.parseUser.get('currentPlace'));
+			userModel.currentUser.set('currentPlaceUUID', userModel.parseUser.get('currentPlaceUUID'));
+			userModel.currentUser.set('photo', userModel.parseUser.get('photo'));
+			userModel.currentUser.set('aliasPublic', userModel.parseUser.get('aliasPublic'));
+            userModel.currentUser.set('userUUID', userModel.parseUser.get('userUUID'));
+			userModel.currentUser.set('rememberUsername', userModel.parseUser.get('rememberUsername'));
+			userModel.currentUser.set('publicKey', publicKey);
+			userModel.currentUser.set('privateKey', privateKey);
+			var phoneVerified = userModel.parseUser.get('phoneVerified');
+            userModel.currentUser.set('phoneVerified', phoneVerified);
 
-			APP.models.profile.currentUser.set('availImgUrl', 'images/status-away.svg');
-			var isAvailable  = APP.models.profile.currentUser.get('isAvailable');
+			userModel.currentUser.set('availImgUrl', 'images/status-away.svg');
+			var isAvailable  = userModel.currentUser.get('isAvailable');
 			if (isAvailable) {
-				APP.models.profile.currentUser.set('availImgUrl', 'images/status-available.svg');
+				userModel.currentUser.set('availImgUrl', 'images/status-available.svg');
 			}
 
             if (phoneVerified) {
@@ -319,9 +319,9 @@ function homeSignin (e) {
 				  mobileNotify("Please verify your phone number");
               $("#modalview-verifyPhone").data("kendoMobileModalView").open();
 			}
-            APP.models.profile.currentUser.set('emailVerified', APP.models.profile.parseUser.get('emailVerified'));
-            APP.models.profile.parseACL = new Parse.ACL(APP.models.profile.parseUser);
-            APP.models.profile.currentUser.bind('change', syncProfile);
+            userModel.currentUser.set('emailVerified', userModel.parseUser.get('emailVerified'));
+           userModel.parseACL = new Parse.ACL(userModel.parseUser);
+            userModel.currentUser.bind('change', syncProfile);
             window.onUserSignIn();
             APP.kendo.navigate('#home');
         },
@@ -340,7 +340,7 @@ function closeModalViewVerifyPhone() {
 
 function sendVerificationCode ()
 {
-  var phone = APP.models.profile.currentUser.get('phone');
+  var phone = userModel.currentUser.get('phone');
    Parse.Cloud.run('sendPhoneVerificationCode', { phoneNumber:  phone}, {
 		success: function(result) {
 			mobileNotify('Your phone verification was sent');
@@ -419,27 +419,27 @@ function homeCreateAccount() {
 						success: function(user) {
 							// Hooray! Let them use the app now.
 						   closeModalViewSignup();
-							APP.models.profile.currentUser.set('username', user.get('username'));
-							APP.models.profile.currentUser.set('name', user.get('name'));
-							APP.models.profile.currentUser.set('email', user.get('email'));
-							APP.models.profile.currentUser.set('phone', user.get('phone'));
-							APP.models.profile.currentUser.set('alias', user.get('alias'));
-							APP.models.profile.currentUser.set('currentPlace', user.get('currentPlace'));
-							APP.models.profile.currentUser.set('currentPlaceUUID', user.get('currentPlaceUUID'));
-							APP.models.profile.currentUser.set('photo', user.get('photo'));
-							APP.models.profile.currentUser.set('isAvailable', user.get('isAvailable'));
-							APP.models.profile.currentUser.set('isVisible', user.get('isVisible'));
-							APP.models.profile.currentUser.set('isRetina', user.get('isRetina'));
-							APP.models.profile.currentUser.set('isWIFIOnly', user.get('isWIFIOnly'));
-							APP.models.profile.currentUser.set('isPhotoStored', user.get('isPhotoStored'));
-							APP.models.profile.currentUser.set('saveToPhotoAlbum', user.get('saveToPhotoAlbum'));
-							APP.models.profile.currentUser.set('aliasPhoto', user.get('aliasPhoto'));
-							APP.models.profile.currentUser.set('userUUID', user.get('userUUID'));
-							APP.models.profile.currentUser.set('phoneVerified', false);
-							APP.models.profile.currentUser.set('emailVerified',user.get('emailVerified'));
-							APP.models.profile.currentUser.set('publicKey',user.get('publicKey'));
-							APP.models.profile.currentUser.set('privateKey',user.get('privateKey'));
-							APP.models.profile.currentUser.bind('change', syncProfile);
+							userModel.currentUser.set('username', user.get('username'));
+							userModel.currentUser.set('name', user.get('name'));
+							userModel.currentUser.set('email', user.get('email'));
+							userModel.currentUser.set('phone', user.get('phone'));
+							userModel.currentUser.set('alias', user.get('alias'));
+							userModel.currentUser.set('currentPlace', user.get('currentPlace'));
+							userModel.currentUser.set('currentPlaceUUID', user.get('currentPlaceUUID'));
+							userModel.currentUser.set('photo', user.get('photo'));
+							userModel.currentUser.set('isAvailable', user.get('isAvailable'));
+							userModel.currentUser.set('isVisible', user.get('isVisible'));
+							userModel.currentUser.set('isRetina', user.get('isRetina'));
+							userModel.currentUser.set('isWIFIOnly', user.get('isWIFIOnly'));
+							userModel.currentUser.set('isPhotoStored', user.get('isPhotoStored'));
+							userModel.currentUser.set('saveToPhotoAlbum', user.get('saveToPhotoAlbum'));
+							userModel.currentUser.set('aliasPhoto', user.get('aliasPhoto'));
+							userModel.currentUser.set('userUUID', user.get('userUUID'));
+							userModel.currentUser.set('phoneVerified', false);
+							userModel.currentUser.set('emailVerified',user.get('emailVerified'));
+							userModel.currentUser.set('publicKey',user.get('publicKey'));
+							userModel.currentUser.set('privateKey',user.get('privateKey'));
+							userModel.currentUser.bind('change', syncProfile);
 							APP.models.profile.parseACL = new Parse.ACL(Parse.User.current());
 						   mobileNotify('Welcome to ghostgrams!');
 							if (window.navigator.simulator !== true) {
@@ -499,14 +499,14 @@ function requestBeta (e) {
     var userUUID = null, name = null, email = null, phone = null;
     mobileNotify("Preparing your beta request");
     
-    if (APP.models.profile.parseUser === null) { 
+    if (userModel.parseUser === null) {
         mobileNotify("You must be a user to join iPhone beta");
         return;
     } else {
-        userUUID = APP.models.profile.currentUser.get('userUUID');
-        name = APP.models.profile.currentUser.get('name');
-        email = APP.models.profile.currentUser.get('email');
-        phone = APP.models.profile.currentUser.get('phone');
+        userUUID = userModel.currentUser.get('userUUID');
+        name = userModel.currentUser.get('name');
+        email = userModel.currentUser.get('email');
+        phone = userModel.currentUser.get('phone');
     }
     
     var Beta = Parse.Object.extend('betarequest');
@@ -546,11 +546,11 @@ function sendSupportRequest(e) {
     var userUUID = null, name = null, email = null, phone = null;
     mobileNotify("Preparing your support request");
     
-   if (APP.models.profile.parseUser !== null) {
-        userUUID = APP.models.profile.currentUser.get('userUUID');
-        name = APP.models.profile.currentUser.get('name');
-        email = APP.models.profile.currentUser.get('email');
-        phone = APP.models.profile.currentUser.get('phone');
+   if (userModel.parseUser !== null) {
+        userUUID = userModel.currentUser.get('userUUID');
+        name = userModel.currentUser.get('name');
+        email = userModel.currentUser.get('email');
+        phone = userModel.currentUser.get('phone');
     }
     
     var Support = Parse.Object.extend('support');
@@ -669,7 +669,7 @@ function doUpdateStatusMessage(e) {
 	
 	var message = $('#profilePhotoMessage').val();
 	
-	APP.models.profile.currentUser.set('statusMessage', message);
+	userModel.currentUser.set('statusMessage', message);
 
 }
 
@@ -681,7 +681,7 @@ function initProfilePhotoEdit(e) {
 }
 
 function updateProfilePhototUrl(url) {
-	APP.models.profile.currentUser.set("photo", url);
+	userModel.currentUser.set("photo", url);
 	saveUserProfilePhoto(url);
 }
 
@@ -705,7 +705,7 @@ function onShowMainMenuDrawer(e) {
 	if (e.preventDefault !== undefined) {
 		e.preventDefault();
 	}
-	var profilePhoto = APP.models.profile.currentUser.get('photo');
+	var profilePhoto = userModel.currentUser.get('photo');
 
 	if (profilePhoto === undefined) {
 		profilePhoto = 'images/ghost-default.svg';
@@ -734,7 +734,7 @@ function homeRecoverPassword(e) {
 
 function syncPresence () {
 
-    var userId = APP.models.profile.currentUser.get('userUUID'), presence = '';
+    var userId = userModel.currentUser.get('userUUID'), presence = '';
 	// Todo - Update status UI (JE)
     findParseObject('presence', 'userId', userId, function (results) {
        if (results !== undefined && results.length > 0) {
@@ -866,12 +866,12 @@ function onShowProfileStatus(e){
 		e.preventDefault();
 	}
 
-	var alias = APP.models.profile.currentUser.alias;
-	var verified = APP.models.profile.currentUser.isVerified;
-	var name = APP.models.profile.currentUser.name;
+	var alias = userModel.currentUser.alias;
+	var verified = userModel.currentUser.isVerified;
+	var name = userModel.currentUser.name;
 	
-	var status = APP.models.profile.currentUser.statusMessage;
-	var available = APP.models.profile.currentUser.isAvailable;
+	var status = userModel.currentUser.statusMessage;
+	var available = userModel.currentUser.isAvailable;
 	var availableSwitch = $("#home-status-switch").data("kendoMobileSwitch");
 	// Set profile status
 	$("#profileStatusName").text(alias);
@@ -889,7 +889,7 @@ function onShowProfileStatus(e){
 function statusSwitch(e) {
 	var currentState = e.checked;
 	
-	APP.models.profile.currentUser.set("isAvailable", currentState);
+	userModel.currentUser.set("isAvailable", currentState);
 	updateHeaderStatusImages();
 }
 

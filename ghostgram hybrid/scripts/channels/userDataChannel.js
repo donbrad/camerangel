@@ -112,8 +112,8 @@ var userDataChannel = {
         var msg = {};
 
         msg.type = 'privateInvite';
-        msg.ownerId = APP.models.profile.currentUser.get('userUUID');
-        msg.ownerPublicKey = APP.models.profile.currentUser.get('publicKey');
+        msg.ownerId = userModel.currentUser.get('userUUID');
+        msg.ownerPublicKey = userModel.currentUser.get('publicKey');
         msg.channelId = channelUUID;
         msg.message  = message;
         msg.time = new Date().getTime();
@@ -131,7 +131,7 @@ var userDataChannel = {
         var msg = {};
 
         msg.type = 'groupInvite';
-        msg.ownerId = APP.models.profile.currentUser.get('userUUID');
+        msg.ownerId = userModel.currentUser.get('userUUID');
         msg.channelId = channelUUID;
         msg.channelName = channelName;
         msg.message  = message;

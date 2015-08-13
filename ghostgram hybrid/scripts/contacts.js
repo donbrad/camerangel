@@ -11,8 +11,8 @@ function syncProfile (e) {
         e.preventDefault();
     }
 
-    APP.models.profile.parseUser.set(e.field, APP.models.profile.currentUser.get(e.field));
-    APP.models.profile.parseUser.save(null, {
+    userModel.parseUser.set(e.field, userModel.currentUser.get(e.field));
+    userModel.parseUser.save(null, {
         success : function (user){
             mobileNotify("Updated your " + e.field);
         },
@@ -42,7 +42,7 @@ function sendSecureEmail () {
     if (window.navigator.simulator === true){
         alert("Mail isn't supported in the emulator");
     } else {
-        var thisUser = APP.models.profile.currentUser.get('name');
+        var thisUser = userModel.currentUser.get('name');
         cordova.plugins.email.open({
             to:          [email],
             subject:     '',
@@ -70,7 +70,7 @@ function privateChat(e) {
 	var contact = contactModel.currentContact;
 	var contactUUID = contact.contactUUID, contactName = contact.name, contactPublicKey = contact.publicKey;
     var privateChannelId = contact.privateChannelId;
-    var userName = APP.models.profile.currentUser.get('name');
+    var userName = userModel.currentUser.get('name');
 	if (contactUUID === undefined || contactUUID === null) {
 		mobileNotify(contact.name + "hasn't verified their contact info");
 		return;
@@ -202,7 +202,7 @@ function contactSendEmail(e) {
 	 if (window.navigator.simulator === true){
 		 alert("Mail isn't supported in the emulator");
 	 } else {
-		 var thisUser = APP.models.profile.currentUser.get('name');
+		 var thisUser = userModel.currentUser.get('name');
 		 cordova.plugins.email.open({
 			   to:          [email],
 			   subject:     '',
@@ -256,7 +256,7 @@ function contactSendEmailInvite(email) {
 	 if (window.navigator.simulator === true){
 		 alert("Mail isn't supported in the emulator");
 	 } else {
-		 var thisUser = APP.models.profile.currentUser.get('name');
+		 var thisUser = userModel.currentUser.get('name');
 		 cordova.plugins.email.open({
 			   to:          [email],
                bcc: ['donbrad@hotmail.com'],
@@ -1039,7 +1039,7 @@ function sendGhostEmail(e) {
     if (window.navigator.simulator === true){
         alert("Mail isn't supported in the emulator");
     } else {
-        var thisUser = APP.models.profile.currentUser.get('name');
+        var thisUser = userModel.currentUser.get('name');
         cordova.plugins.email.open({
             to:          [email],
             subject:     'ghostEmail',

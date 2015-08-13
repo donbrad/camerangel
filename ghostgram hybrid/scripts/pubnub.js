@@ -33,7 +33,7 @@ function privateChannelInvite(contactUUID, channelUUID, message) {
 	 var msg = new Object();
 
 	msg.type = 'privateInvite';
-	msg.owner = APP.models.profile.currentUser.get('userUUID');
+	msg.owner = userModel.currentUser.get('userUUID');
 	msg.channel = channelUUID;
 	msg.message  = message;
 	msg.time = new Date().getTime();
@@ -56,8 +56,8 @@ function privateChannelInitiate (contactUUID) {
 	App.pubnub.privateChannel = pcUUID;
 	var msg = new Object();
 	msg.type = 'privateinit';
-	msg.senderUUID = APP.models.profile.currentUser.get('uuid');
-	msg.senderName = APP.models.profile.currentUser.get('alias');
+	msg.senderUUID = userModel.currentUser.get('uuid');
+	msg.senderName = userModel.currentUser.get('alias');
 	msg.time = new Date().getTime();
 	msg.channelUUID = pcUUID;
 	APP.pubnub.publish({

@@ -326,7 +326,7 @@ function onShowChannel(e) {
 	e.preventDefault();
 	var channelUUID = e.view.params.channel;
 	var thisChannelModel = findChannelModel(channelUUID);
-	var thisUser = APP.models.profile.currentUser;
+	var thisUser = userModel.currentUser;
 	var thisChannel = {};
 	var contactUUID = null;
 	APP.models.channel.currentModel = thisChannelModel;

@@ -22,14 +22,14 @@ function toggleProfilePhoto(e) {
 
 // Globally update profile and status images in the application header
 function updateHeaderStatusImages (){
-	var isAvailable  = APP.models.profile.currentUser.get('isAvailable');
+	var isAvailable  = userModel.currentUser.get('isAvailable');
 	if (isAvailable) {
-		APP.models.profile.currentUser.set('availImgUrl', 'images/status-available.svg');
+		userModel.currentUser.set('availImgUrl', 'images/status-available.svg');
 	} else {
-		APP.models.profile.currentUser.set('availImgUrl', 'images/status-away.svg');
+		userModel.currentUser.set('availImgUrl', 'images/status-away.svg');
 	}
-	$('.home-status-img').attr('src',APP.models.profile.currentUser.get('availImgUrl'));
-	$('.home-profile-img').attr('src',APP.models.profile.currentUser.get('photo'));
+	$('.home-status-img').attr('src',userModel.currentUser.get('availImgUrl'));
+	$('.home-profile-img').attr('src',userModel.currentUser.get('photo'));
 }
 
 // Select new ghost icon
@@ -38,11 +38,11 @@ function whichGhost(e) {
         e.preventDefault();
     var selection = e.target[0].id;
     var selectionPath = "images/" + selection + ".svg";
-    var currentAlias = APP.models.profile.currentUser.aliasPhoto;
+    var currentAlias = userModel.currentUser.aliasPhoto;
 
     if (selection !== undefined){
         $(".myPublicImg").attr("src", selectionPath);
-        APP.models.profile.currentUser.set("aliasPhoto", selectionPath);
+        userModel.currentUser.set("aliasPhoto", selectionPath);
     }
     closeChooseGhost()
 }
@@ -94,7 +94,7 @@ function profilePhotoScaleSuccess (data) {
 }
 
 function saveUserProfilePhoto (url) {
-    var profileUrl = url, currentUser = APP.models.profile.currentUser,  uuid = currentUser.get('userUUID'), user = Parse.User.current();
+    var profileUrl = url, currentUser = userModel.currentUser,  uuid = currentUser.get('userUUID'), user = Parse.User.current();
 
 	mobileNotify('Syncing your Profile Photo....');
     getBase64FromImageUrl(profileUrl, function (fileData) {

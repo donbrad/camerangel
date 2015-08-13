@@ -99,7 +99,7 @@ function handleParseError(err) {
 	switch (err.code) {
 		case Parse.Error.INVALID_SESSION_TOKEN:
 			Parse.User.logOut();
-			APP.models.profile.currentUser = '';
+			userModel.currentUser = '';
 			APP.models.profile.username = '';
 			APP.models.profile.email = '';
 			APP.models.profile.phone = '';
@@ -233,7 +233,7 @@ function verifyPhone(e) {
 			if (result.verified) {
 				mobileNotify("Your phone number is verified.  Thank You!");
 				$("#modalview-verifyPhone").data("kendoMobileModalView").close();
-				var thisUser = APP.models.profile.currentUser;
+				var thisUser = userModel.currentUser;
 				appUserValdated(thisUser.userUUID, thisUser.phone, thisUser.email, thisUser.publicKey);
 			} else {
 				mobileNotify("Sorry, your verification number: ' + result.recieved + ' didn't match. ");
