@@ -57,13 +57,13 @@ var userModel = {
         userModel.device.platform = device.platform;
         userModel.device.device = device.name;
         userModel.device.model = device.model;
-       userModel.rememberUsername = localStorage.getItem('ggRememberUsername');
+        userModel.rememberUsername = window.localStorage.getItem('ggRememberUsername');
 
         // If remembering Username, get it from localstorage and prefill signin.
         if (userModel.rememberUsername) {
-           userModel.username = localStorage.getItem('ggUsername');
+           userModel.username = window.localStorage.getItem('ggUsername');
             if (userModel.username == undefined || userModel.username === '') {
-                localStorage.setItem('ggUsername', userModel.parseUser.get('username'));
+                window.localStorage.setItem('ggUsername', userModel.parseUser.get('username'));
             } else {
                 $('#home-signin-username').val(APP.models.profile.username);
             }
