@@ -36,11 +36,46 @@ function onInitChannel(e) {
             
         } */
      }).kendoTouch({
-            filter: ">li",
-         //   enableSwipe: true,
+            filter: "li",
+         	//enableSwipe: true,
             tap: tapChannel,
-           // swipe: swipeChannel,
-		 	hold: holdChannel
+           	//swipe: swipeChannel,
+		 	hold: holdChannel,
+		 	drag: function(e){
+		 		var currentX = e.touch.x.location;
+		 		var windowWidth = $(window).width();
+		 		var widthPerc = (windowWidth - currentX) / windowWidth;
+
+		 	
+		 		diffMovingChat(currentX);
+
+		 		//$(".message-slideOptions").css("opacity",widthPerc);
+		 		var accelWidthPerc = widthPerc * 2;
+		 		var percentWindow = currentX / windowWidth
+		 		if(percentWindow > 0.5){
+		 			$(".message-slideOptions .archive").css("opacity", accelWidthPerc);
+		 		}
+
+		 	},
+		 	dragstart: function(e){
+		 		console.log(e.touch.currentTarget);
+		 		var selection = e.touch.currentTarget;
+		 		var selectionListItem = $(selection)
+		 		//console.log(selectionListItem);
+		 		$(selection).addClass("selectedLI");
+		 		$(".selectedLI > div").first().addClass("movingChat");
+		 
+		 	},
+		 	dragend: function(e){
+		 		
+		 		var currentXPos = $(".movingChat").css("right").replace(/[^-\d\.]/g, '');;
+		 		console.log(currentXPos);
+		 		if (currentXPos > 100) {
+		 			$(".movingChat").velocity({translateX:"-100%"},{duration: "fast"});
+		 		} else {
+		 			$(".movingChat").velocity({right:"0"},{duration: 300, easing: "spring"});
+		 		}
+		 	}
         });
 	
 	$("#channelMembers-listview").kendoMobileListView({
@@ -55,14 +90,33 @@ function onInitChannel(e) {
  });
 }	
 
+function movingChat(currentX){
+	console.log(currentX);
+}
+
+function diffMovingChat(currentX){
+	var width = $(window).width() - 40;
+	var diffMove = width - currentX;
+	
+	console.log(diffMove);
+	if(diffMove > 0){
+		$(".movingChat, .message-slideOptions .archive").css("right", diffMove);
+	}
+
+}
+
+function endMovingChat(e){
+
+}
+
 function tapChannel(e) {
 	e.preventDefault();
 	var target = $(e.touch.initialTouch);
 	var dataSource = APP.models.channel.messagesDS;
 	var messageUID = $(e.touch.currentTarget).data("uid");
 	var message = dataSource.getByUid(messageUID);
-	$('.delete').css('display', 'none');
-	$('.archive').css('display', 'none');
+	//$('.delete').css('display', 'none');
+	//$('.archive').css('display', 'none');
 	
 	// Scale down the other photos in this chat...
 	$('.chat-message-photo').removeClass('chat-message-photo').addClass('chat-message-photo-small');
@@ -96,20 +150,36 @@ function swipeChannel (e) {
 	if (APP.models.channel.currentModel.privacyMode) {
 		$('#'+message.msgID).removeClass('privateMode');
 	}
-	if (e.direction === 'left') {
-		// display the delete button
-		var button = kendo.fx($(e.touch.currentTarget).find(".delete"));
-        $.when(button.expand().duration(200).play()).then(function () {
-			$.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(3000).play()).then(function () {
-				
-			$("#"+message.msgID).addClass('privateMode');
-		});
-		});
-	} else if (e.direction === 'right') {
-		// display the archive button
-		var button = kendo.fx($(e.touch.currentTarget).find(".archive"));
-        button.expand().duration(200).play();
-	}
+		var selection = e.sender.events.currentTarget;
+		var selectionListItem = $(selection).closest("div");
+		var selectionInnerDiv = $(selectionListItem);
+
+		console.log(selectionInnerDiv);
+
+    		if(e.direction === "left"){
+    			var otherOpenedLi = $(".message-active");
+    			$(otherOpenedLi).velocity({translateX:"0"},{duration: "fast"}).removeClass("message-active");
+
+    			if($(window).width() < 375){
+    				$(selectionInnerDiv).velocity({translateX:"-80%"},{duration: "fast"}).addClass("message-active");
+    			} else {
+    				$(selectionInnerDiv).velocity({translateX:"-70%"},{duration: "fast"}).addClass("message-active");
+    			}
+    			
+    			
+		} 
+		if (e.direction === 'right' && $(selection).hasClass("message-active") ) {
+			/*
+			// display the archive button
+			var button = kendo.fx($(e.touch.currentTarget).find(".archive"));
+	        button.expand().duration(200).play();
+	        */
+	        
+    		$(selection).velocity({translateX:"0"},{duration: "fast"}).removeClass("message-active");
+    		
+
+	        console.log("right");
+		}
 	
 }
 
@@ -323,6 +393,9 @@ function togglePrivacyMode (e) {
 	
 }
 function onShowChannel(e) {
+	// hide action btn
+	$("#channels > div.footerMenu.km-footer > a").css("display","none");
+
 	e.preventDefault();
 	var channelUUID = e.view.params.channel;
 	var thisChannelModel = findChannelModel(channelUUID);

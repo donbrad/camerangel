@@ -932,8 +932,8 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .helper-form {
     position: relative;
-    top: 35px;
-    z-index: 99;
+    top: 42px;
+    z-index: 99; 
     right: 10px;
 }
 .helper-verified {
@@ -1321,48 +1321,8 @@ div.footerMenu.km-footer > ul > li > a:active {
     padding-top: 6px;
     .font-size(12);
 }
-.chat-message {
-    margin: 8px 8px;
-    line-height: 16px;
-}
-.chat-message p {
-    margin: 0px 0px 4px;
-    .font-size(14);
-    height: 100%;
-}
-.chat-message h5 {
-    line-height: 1.5em;
-    opacity: 0.5;
-    color: #27476e;
-    margin: 0;
-    .font-size(12);
-    font-weight: 600;
-    display: none;
-}
+ 
 
-.chat-message-content {
-    margin-left: 44px;
-    height: 100%;
-}
-.chat-message-user-content {
-    margin-left: 72px;
-    height: 100%;
-    float: right;
-}
-.chat-message-text {
-    .font-size(14);
-    letter-spacing: 0.05em;
-}
-.chat-time {
-    text-align: center;
-    .font-size(12);
-    color: #979797;
-}
-.ghostMessageContact {
-    color: #27476e;
-    .font-size(14);
-    font-weight: 400;
-}
 .ghostMessageTime {
     float: right;
     color: #888888;
@@ -1590,26 +1550,24 @@ div.footerMenu.km-footer > ul > li > a:active {
     animation-name: fadeAndScaleOut;
     animation-timing-function: cubic-bezier(.71, .55, .62, 1.57);
 }
-#messages-listview .delete {
-    display: none;
-    position: absolute;
-    top: .35em;
-    right: .5em;
-    width: 60px;
-    background-color: #e0e0e0;
-    color: #27476e;
-}
-#messages-listview .archive {
-    display: none;
-    position: absolute;
-    top: .35em;
-    left: .5em;
-    width: 60px;
-    background-color: #e0e0e0;
-    color: #27476e;
-}
+
 #channel > div.km-content.km-widget.km-scroll-wrapper {
     background-color: #fff;
+}
+
+.message-slideOptions {
+	height:100%;
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	z-index: 0;
+	width: 100%;
+	//opacity: 0;
+	.archive, .delete {
+		opacity: 0;
+		position: absolute;
+		right: 0px;
+	}
 }
 
 #channel-addChannel-list li:first-child,
@@ -2032,11 +1990,9 @@ div.footerMenu.km-footer > ul > li > a {
 }
 
 /* Hide action btns on views */
-* > div.footerMenu.km-footer > a,
-#channel > div.footerMenu.km-footer > a {
+* > div.footerMenu.km-footer > a {
 	display: none;
 }
-#channels > div.footerMenu.km-footer > a,
 #contacts > div.footerMenu.km-footer > a,
 #gallery > div.footerMenu.km-footer > a {
 	display: inline-block; 
@@ -3492,8 +3448,10 @@ div.contactListBox.activeContact > div > div > ul {
 /* Chat styles */
 
 .chat-message {
-    margin: 8px 8px;
-    line-height: 16px;
+    line-height: 1.5;
+    width: 100%;
+	position: relative;
+	z-index: 1;
 }
 
 .chat-message p {
@@ -3540,6 +3498,23 @@ div.contactListBox.activeContact > div > div > ul {
     margin-left: 72px;
     height: 100%;
     float: right;
+    padding: 0.2em 0.35em;
+    border-radius: .25em;
+    color: #fff;
+    background: @primary-200 url("../images/chat-content-corner.svg") no-repeat 90% 50%;
+    margin-top: 0.2em;
+}
+
+.chat-message-user-content:after {
+	content: "";
+	display: block;
+	position: absolute;
+	right: 2px; 
+	width: 0;
+	border-width: 8px 8px 0;
+	border-style: solid;
+	border-color: @primary-200 transparent;
+	bottom: -4px;
 }
 
 .chat-message-text {
@@ -3551,6 +3526,12 @@ div.contactListBox.activeContact > div > div > ul {
     text-align: center;
     .font-size(12);
     color: #979797;
+}
+
+#channel > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
+	position: absolute;
+	width: 100%;
+	top: 0px;
 }
 
 /*!

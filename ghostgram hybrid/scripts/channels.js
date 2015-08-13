@@ -70,7 +70,7 @@ function addChannel(e) {
 
 function onShowChannels(){
 	// set action button
-	$("#channels > div.footerMenu.km-footer > a").attr("href", "#addChannel");
+	$("#channels > div.footerMenu.km-footer > a").attr("href", "#addChannel").css("display","inline-block");
     
 }
 

@@ -1,5 +1,5 @@
 <!-- profile view -->
-<div data-role="view" id="profile" data-title="Profile" data-layout="profileLayout" data-model="APP.models.profile.currentUser" class="appearance" data-init="onInitProfile" data-transition="slide:right">
+<div data-role="view" id="profile" data-title="Profile" data-layout="profileLayout" data-model="APP.models.profile.currentUser" class="appearance" data-init="onInitProfile" data-transition="slide:right" data-show="onProfileShow">
    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -61,7 +61,7 @@
                            Verified
                        </span>
                     </label>
-                    <p data-bind="text: phone"></p>
+                    <p class="phone" data-bind="text: phone"></p>
                  </li>
              </ul>
          </div>

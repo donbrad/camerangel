@@ -579,7 +579,7 @@ function contactActionEnabled1(e){
 }
 
 function showFormatedPhone(){
-	$('.contact-phone').text(function(i, text) {
+	$('.phone').text(function(i, text) {
     	return text.replace(/\d(\d\d\d)(\d\d\d)(\d\d\d\d)/, '($1) $2-$3');
 	});
 }

@@ -6,6 +6,11 @@ function closeChooseGhost() {
     $("#modalview-chooseGhost").data("kendoMobileModalView").close();
 }
 
+function onProfileShow(){
+	// format phone number
+	 showFormatedPhone();
+}
+
 function toggleProfilePhoto(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();

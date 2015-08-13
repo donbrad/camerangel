@@ -302,26 +302,40 @@
 		if (sender === APP.models.channel.currentContactUUID) { 
 			name =  APP.models.channel.currentContactModel.alias; 
 			photoUrl = APP.models.channel.currentContactModel.photo; 
-		}  
+		} 
+		if(formattedTime === "0 seconds"){
+			formattedTime = "Just now";
+		} else {
+			formattedTime = formattedTime + " ago"
+		}
+		console.log(data);
+		console.log(formattedTime);
 	#
-	 <div class="chat-time"> #:formattedTime# ago </div> 
+	 <div class="chat-time"> #:formattedTime# </div> 
 	# if(photoUrl !== '') { #
 		<img class="chat-message-profileImg" src="#:photoUrl#" alt="" width="36" height="36">
 		<div class="chat-message-content clearfix">
 		<h5>#=name#</h5>
 		<div class="chat-message-text">#= formattedContent #</div>
 
-		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# <div data-role="touch" data-hold="chatPhotoHold" data-tap="chatPhotoTap"> <img class="chat-message-photo-small" src="#:data.photo.thumb#" alt="" > </div> #}#
-	</div>
+		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# 
+			<div data-role="touch" data-hold="chatPhotoHold" data-tap="chatPhotoTap"> 
+				<img class="chat-message-photo-small" src="#:data.photo.thumb#" alt="" > 
+			</div>
+		#}#
 	 #} else {#
 	 	<div class="chat-message-user-content clearfix">
 		<div class="chat-message-text">#= formattedContent #</div>
-		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# <img class="chat-message-photo-small" src="#:data.photo.thumb#" alt="" > #}#
-	</div>
+			#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# 
+					<img class="chat-message-photo-small" src="#:data.photo.thumb#" alt="" > 
+			#}#
+		</div>
 	 #}#
-	<a href="\\#" data-role="button" class="delete" >Delete</a>
-	<a href="\\#" data-role="button" class="archive" >Archive</a>
 </div> 
+	<div class="message-slideOptions">
+		<span class="delete"><a data-role="button">Delete</a></span>
+		<span class="archive"><a data-role="button">Archive</a><span>
+	</div>
 </script>
 
 
