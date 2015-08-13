@@ -153,7 +153,7 @@ var userDataChannel = {
             // No existing private channel need to create one
             var contact = contactModel.getContactModel(ownerId);
             if (contact !== undefined) {
-                var contactAlias = contactModel.get('alias');
+                var contactAlias = contact.get('alias');
                 channelModel.addPrivateChannel(ownerId, ownerPublicKey, contactAlias, channelId);
                 mobileNotify("Created Private Chat with " + contactAlias);
 
