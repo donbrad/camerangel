@@ -745,7 +745,7 @@
 			}
 
 		});
-		
+
 
 		contactModel.importDeviceContacts();
 

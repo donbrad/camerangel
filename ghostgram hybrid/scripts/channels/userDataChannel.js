@@ -53,7 +53,7 @@ var userDataChannel = {
                     messages = messages[0];
                     messages = messages || [];
                     for (var i = 0; i < messages.length; i++) {
-                        this.channelRead(messages[i]);
+                        userDataChannel.channelRead(messages[i]);
                     }
 
                 }
@@ -68,7 +68,7 @@ var userDataChannel = {
                     messages = messages[0];
                     messages = messages || [];
                     for (var i = 0; i < messages.length; i++) {
-                        this.channelRead(messages[i]);
+                        userDataChannel.channelRead(messages[i]);
                     }
 
                 }
