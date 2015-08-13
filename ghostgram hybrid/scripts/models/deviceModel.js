@@ -99,7 +99,7 @@ var deviceModel = {
 
     getAppState: function() {
         var state = window.localStorage.getItem('ggAppState');
-        if (state !== undefined && state !== null)
+        if (state !== undefined && state !== null && state !== 'undefined')
             deviceModel.state = JSON.parse(state);
         else
             deviceModel.saveAppState();
