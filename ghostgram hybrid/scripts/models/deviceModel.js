@@ -94,7 +94,7 @@ var deviceModel = {
     },
 
     saveAppState: function() {
-        window.localStorage.setItem('ggAppState', JSON.stringify(userModel.state));
+        window.localStorage.setItem('ggAppState', JSON.stringify(deviceModel.state));
     },
 
     getAppState: function() {

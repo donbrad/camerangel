@@ -98,7 +98,7 @@ var channelModel = {
         channel.set('contactKey', contactPublicKey);
         channel.set("members", [userModel.currentUser.userUUID, contactUUID]);
 
-        channel.setACL(APP.models.profile.parseACL);
+        channel.setACL(userModel.parseACL);
         channel.save(null, {
             success: function(channel) {
                 channelModel.channelsDS.add(channel.attributes);
@@ -142,7 +142,7 @@ var channelModel = {
         channel.set("invitedMembers", []);
         channel.set("channelId", channelId);
 
-        channel.setACL(APP.models.profile.parseACL);
+        channel.setACL(userModel.parseACL);
         channel.save(null, {
             success: function(channel) {
                 // Execute any logic that should take place after the object is saved.
