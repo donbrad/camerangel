@@ -77,6 +77,10 @@ function privateChat(e) {
 	}
 
     // Is there already a private chat provisioned for this user?
+    var channel = channelModel.findPrivateChannel(contactUUID);
+    if (channel !== undefined) {
+        privateChannelId = channel.channelId;
+    }
 
     if (privateChannelId === undefined) {
         privateChannelId = uuid.v4();

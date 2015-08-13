@@ -58,14 +58,21 @@ var channelModel = {
 
     findPrivateChannel : function (contactUUID) {
         var dataSource =  channelModel.channelsDS;
-        dataSource.filter([
-            { field: "isPrivate", operator: "eq", value: true },
-            { field: "members", operator: "contains", value: contactUUID }
-            ]);
+        dataSource.filter({ field: "isPrivate", operator: "eq", value: true });
         var view = dataSource.view();
-        var channel = view[0];
-        dataSource.filter([]);
+        var channel = undefined;
+        for (var i=0; i< view.length; i++) {
+            var chan = view[i];
 
+            if (chan.members[0] === contactUUID || chan.members[1] === contactUUID) {
+                dataSource.filter([]);
+                channel = chan;
+                return(channel);
+            }
+        }
+
+
+        dataSource.filter([]);
         return(channel);
     },
 
