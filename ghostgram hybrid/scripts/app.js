@@ -231,7 +231,7 @@
 
 			contacts: {
 				title: 'Contacts',
-				contactsDS: new kendo.data.DataSource({
+				/*contactsDS: new kendo.data.DataSource({
 					offlineStorage: "contacts-offline",
 					sort: {
 						field: "name",
@@ -254,7 +254,7 @@
 				emailDS: new kendo.data.DataSource(),
 				addressDS: new kendo.data.DataSource(),
 				phoneArray: [],
-				emailArray: []
+				emailArray: []*/
 			},
 
 			sync: {
@@ -578,7 +578,7 @@
 		fetchParseData: function() {
 			APP.models.places.placesDS.fetch();
 
-			var ChannelModel = Parse.Object.extend("channels");
+			/*var ChannelModel = Parse.Object.extend("channels");
 			var ChannelCollection = Parse.Collection.extend({
 				model: ChannelModel
 			});
@@ -601,7 +601,9 @@
 					handleParseError(error);
 				}
 			});
-
+*/
+			channelModel.fetch();
+			
 			/*var ContactModel = Parse.Object.extend("contacts");
 			var ContactCollection = Parse.Collection.extend({
 				model: ContactModel

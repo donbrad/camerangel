@@ -6,8 +6,64 @@
 
 var channelModel = {
 
-    _channelName : "channel",
+    _channelName : "channels",
     _channelMemberName : "channelMember",
+    currentChannel: {},
+    currentModel: {},
+    currentMessage: {},
+    messageLock: true,
+    potentialMembersDS: new kendo.data.DataSource({
+        group: 'category',
+        sort: {
+            field: "name",
+            dir: "asc"
+        },
+        schema: {
+            model: {
+                id: "uuid"
+            }
+        }
+    }),
+    membersDS: new kendo.data.DataSource({
+        sort: {
+            field: "name",
+            dir: "asc"
+        }
+    }),
+    messagesDS: new kendo.data.DataSource({
+        sort: {
+            field: "date",
+            dir: "desc"
+        }
+    }),
+
+
+    fetch : function () {
+        var ChannelModel = Parse.Object.extend("channels");
+        var ChannelCollection = Parse.Collection.extend({
+            model: ChannelModel
+        });
+
+        var channels = new ChannelCollection();
+
+        channels.fetch({
+            success: function(collection) {
+                var models = new Array();
+                for (var i = 0; i < collection.models.length; i++) {
+                    // Todo: check status of members
+                    models.push(collection.models[i].attributes);
+                }
+                if (models.length > 0) {
+                    APP.setAppState('hasChannels', true);
+                }
+               channelModel.channelsDS.data(models);
+            },
+            error: function(collection, error) {
+                handleParseError(error);
+            }
+        });
+
+    },
 
 
     // Add a new private channel that this user created -- create a channel object
@@ -70,6 +126,69 @@ var channelModel = {
                 // Execute any logic that should take place if the save fails.
                 // error is a Parse.Error with an error code and message.
                 mobileNotify('Error creating channel: ' + error.message);
+                handleParseError(error);
+            }
+        });
+
+    },
+
+    addChannel : function (channelName, channelDescription) {
+        var Channels = Parse.Object.extend("channels");
+        var channel = new Channels();
+
+        var ChannelMap = Parse.Object.extend('channelmap');
+        var channelMap = new ChannelMap();
+
+        var name = channelName,
+            description = channelDescription,
+            channelId = uuid.v4();
+
+        channel.set("name", name );
+        channel.set("isOwner", true);
+        channel.set('isPrivate', false);
+        channel.set("media",   true);
+        channel.set("archive", true);
+
+        channel.set("description", description);
+        channel.set("members", [APP.models.profile.currentUser.userUUID]);
+        channel.set("invitedMembers", []);
+        channel.set("channelId", channelId);
+
+        channel.setACL(APP.models.profile.parseACL);
+        channel.save(null, {
+            success: function(channel) {
+                // Execute any logic that should take place after the object is saved.
+
+                APP.models.channels.channelsDS.add(channel.attributes);
+                mobileNotify('Added channel : ' + channel.get('name'));
+
+                APP.models.channels.currentModel = findChannelModel(channelId);
+                APP.models.channels.currentChannel = APP.models.channels.currentModel;
+                APP.kendo.navigate('#editChannel');
+            },
+            error: function(channel, error) {
+                // Execute any logic that should take place if the save fails.
+                // error is a Parse.Error with an error code and message.
+                mobileNotify('Error creating channel: ' + error.message);
+                handleParseError(error);
+            }
+        });
+
+        channelMap.set("name", name);
+        channelMap.set("channelId", channelId);
+        channelMap.set("channelOwner", APP.models.profile.currentUser.userUUID);
+        channelMap.set("members", [APP.models.profile.currentUser.userUUID]);
+
+        channelMap.save(null, {
+            success: function(channel) {
+                // Execute any logic that should take place after the object is saved.
+
+
+            },
+            error: function(channel, error) {
+                // Execute any logic that should take place if the save fails.
+                // error is a Parse.Error with an error code and message.
+                mobileNotify('Error creating channelMap: ' + error.message);
                 handleParseError(error);
             }
         });
