@@ -68,14 +68,33 @@ function privateChat(e) {
         e.preventDefault();
     }
 	var contact = contactModel.currentContact;
-	var contactUUID = contact.contactUUID;
-	
+	var contactUUID = contact.contactUUID, contactName = contact.get('name');
+    var privateChannelId = contact.privateChannelId;
+    var userName = APP.models.profile.currentUser.get('name');
 	if (contactUUID === undefined || contactUUID === null) {
 		mobileNotify(contact.get('name') + "hasn't verified their contact info");
 		return;
 	}
-	
-    processPrivateInvite(contactUUID, contactModel.currentUser.get('alias') + " requests a Private Channel");
+
+    // Is there already a private chat provisioned for this user?
+    var privateChannel = channelModel.findPrivateChannel(contactUUID);
+    if (privateChannel === undefined) {
+        privateChannelId = uuid.v4();
+        // Create a new private channel for this contact
+        channelModel.addPrivateChannel(contactUUID, contactName, privateChannelId);
+
+        userDataChannel.privateChannelInvite(contactUUID, privateChannelId, "Private Chat request from: " + userName);
+        mobileNotify("Requesting private chat with " + contactName);
+
+        // Jump to private chat
+    } else {
+        privateChannelId = privateChannel.channelId;
+        // Notify contact of private chat request
+        userDataChannel.privateChannelInvite(contactUUID, privateChannelId, "Private Chat request from: " + userName);
+        // Jump to private chat
+
+    }
+    //processPrivateInvite(contactUUID, contactModel.currentUser.get('alias') + " requests a Private Channel");
 }
 
 /*function getContactModel(contactUUID) {

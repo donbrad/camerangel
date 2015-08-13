@@ -31,7 +31,7 @@ function newP2PEntry(user, contact, channel, callback) {
 //check the p2p map 
 function processPrivateInvite(contactUUID, message) {
 	var userUUID = APP.models.profile.currentUser.get('userUUID'),
-		contact = getContactModel(contactUUID),
+		contact = contactModel.getContactModel(contactUUID),
 		privateChannelId = contact.privateChannelId;   // Is the already a private channel allocated for this contact
 
 	// No private channel in contact entry is there a p2p entry on parse?
@@ -44,7 +44,7 @@ function processPrivateInvite(contactUUID, message) {
 				newP2PEntry(userUUID, contactUUID, privateChannelId, function (result, error) {
 					  if (error === null) {
 						  // Create a channnel for this user
-						addPrivateChannel(contactUUID, contact.alias, privateChannelId);
+						channelModel.addPrivateChannel(contactUUID, contact.alias, privateChannelId);
 						  // Update the private channel for this contact
 						updateParseObject('contacts', 'uuid', contactUUID, 'privateChannelId', privateChannelId);
 					  } else {

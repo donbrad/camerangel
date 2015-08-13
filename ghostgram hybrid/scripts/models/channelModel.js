@@ -65,12 +65,37 @@ var channelModel = {
 
     },
 
+    findChannelModel: function (channelId) {
+        var dataSource =  channelModel.channelsDS;
+        dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
+        var view = dataSource.view();
+        var channel = view[0];
+        dataSource.filter([]);
+
+        return(channel);
+    },
+
+    findPrivateChannel : function (contactUUID) {
+        var dataSource =  channelModel.channelsDS;
+        dataSource.filter([
+            { field: "isPrivate", operator: "eq", value: true },
+            { field: "members", operator: "contains", value: contactUUID }
+            ]);
+        var view = dataSource.view();
+        var channel = view[0];
+        dataSource.filter([]);
+
+        return(channel);
+    },
 
     // Add a new private channel that this user created -- create a channel object
     addPrivateChannel : function (contactUUID, contactAlias, channelUUID) {
         var Channels = Parse.Object.extend(this._channelName);
         var channel = new Channels();
         var publicKey = APP.models.profile.currentUser.get('publicKey');
+        var contact = contactModel.findContactByUUID(contactUUID), contactKey = null;
+
+        contactKey = contact.get('publicKey');
 
         channel.set("name", contactAlias);
         channel.set("isOwner", true);
@@ -80,13 +105,13 @@ var channelModel = {
         channel.set("description", "Private: " + contactAlias);
         channel.set("channelId", channelUUID);
         channel.set('userKey',  publicKey);
-        channel.set('contactKey', null);
+        channel.set('contactKey', contactKey);
         channel.set("members", [APP.models.profile.currentUser.userUUID, contactUUID]);
 
         channel.setACL(APP.models.profile.parseACL);
         channel.save(null, {
             success: function(channel) {
-                APP.models.channels.channelsDS.add(channel.attributes);
+                channelModel.channelsDS.add(channel.attributes);
                 //closeModalViewAddChannel();
                 mobileNotify('Added private channel : ' + channel.get('name'));
             },
@@ -100,38 +125,11 @@ var channelModel = {
 
     },
 
-    addPrivateChannelMember : function (contactUUID, contactAlias, channelUUID) {
-        var Channels = Parse.Object.extend(this._channelMemberName);
-        var channel = new Channels();
-        var publicKey = APP.models.profile.currentUser.get('publicKey');
-
-        channel.set("name", contactAlias);
-        channel.set('isPrivate', true);
-        channel.set("media",  true);
-        channel.set("archive",  false);
-        channel.set("description", "Private: " + contactAlias);
-        channel.set("channelId", channelUUID);
-        channel.set('userKey',  publicKey);
-        channel.set('contactKey', null);
-        channel.set("members", [APP.models.profile.currentUser.userUUID, contactUUID]);
-
-        channel.setACL(APP.models.profile.parseACL);
-        channel.save(null, {
-            success: function(channel) {
-                APP.models.channels.channelsDS.add(channel.attributes);
-                //closeModalViewAddChannel();
-                mobileNotify('Added private channel : ' + channel.get('name'));
-            },
-            error: function(channel, error) {
-                // Execute any logic that should take place if the save fails.
-                // error is a Parse.Error with an error code and message.
-                mobileNotify('Error creating channel: ' + error.message);
-                handleParseError(error);
-            }
-        });
-
+    deletePrivateChannel : function (channelId, contactId ) {
+        //Todo: Need to delete the channel and remove publicKey and privateChannelId from this contact
     },
 
+    // Generic add group channel...
     addChannel : function (channelName, channelDescription) {
         var Channels = Parse.Object.extend("channels");
         var channel = new Channels();
@@ -159,11 +157,11 @@ var channelModel = {
             success: function(channel) {
                 // Execute any logic that should take place after the object is saved.
 
-                APP.models.channels.channelsDS.add(channel.attributes);
+                channelModel.channelsDS.add(channel.attributes);
                 mobileNotify('Added channel : ' + channel.get('name'));
 
-                APP.models.channels.currentModel = findChannelModel(channelId);
-                APP.models.channels.currentChannel = APP.models.channels.currentModel;
+                channelModel.currentModel = findChannelModel(channelId);
+                channelModel.currentChannel = channelModel.currentModel;
                 APP.kendo.navigate('#editChannel');
             },
             error: function(channel, error) {
