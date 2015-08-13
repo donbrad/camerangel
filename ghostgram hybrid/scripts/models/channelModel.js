@@ -35,7 +35,7 @@ var channelModel = {
                     models.push(collection.models[i].attributes);
                 }
                 if (models.length > 0) {
-                    APP.setAppState('hasChannels', true);
+                    deviceModel.setAppState('hasChannels', true);
                 }
                channelModel.channelsDS.data(models);
             },

@@ -131,7 +131,7 @@ var userModel = {
                     models.push(collection.models[i].attributes);
                 }
                 if (models.length > 0) {
-                    APP.setAppState('hasPhotos', true);
+                    deviceModel.setAppState('hasPhotos', true);
                 }
                 APP.models.gallery.photosDS.data(models);
             },
