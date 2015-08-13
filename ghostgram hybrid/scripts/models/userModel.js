@@ -69,6 +69,7 @@ var userModel = {
             }
 
         }
+
         if (userModel.parseUser !== null) {
             userModel.initialView = '#home';
             userModel.currentUser.set('username', userModel.parseUser.get('username'));
