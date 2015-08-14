@@ -8,6 +8,9 @@
 
 var deviceModel = {
 
+    fileDirectory: '',
+    tempDirectory: '',
+
     state:  new kendo.data.ObservableObject({
         inPrivacyMode: false,
         isVisible: true,
@@ -24,12 +27,10 @@ var deviceModel = {
         introFetched: false
     }),
 
-    fileDirectory: '',
-    tempDirectory: '',
+
 
     init: function() {
 
-        deviceModel.state.bind('change', deviceModel.changeHandler);
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
             function(fileSystem) {
                 var url = fileSystem.root.nativeURL;
@@ -53,6 +54,8 @@ var deviceModel = {
             function(error) {
                 mobileNotify("Filesystem error : " + JSON.stringify(error));
             });
+
+        deviceModel.state.bind('change', deviceModel.changeHandler);
     },
 
     changeHandler: function (e) {
