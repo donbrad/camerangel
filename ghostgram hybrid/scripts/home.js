@@ -13,7 +13,7 @@ function dismissNotification (e) {
 	e.preventDefault();
 	var uuid = e.sender.element[0].attributes['data-param'].value;
 	
-	var data = userModel.state.userNotifications;
+	var data = deviceModel.state.userNotifications;
 	for(var i = 0; i < data.length; i++) {
 		if(data[i].uuid == uuid) {
 			data.splice(i, 1);

@@ -691,7 +691,7 @@
 			var userNotifications = window.localStorage.getItem('ggUserNotifications');
 
 			userNotifications = JSON.parse(userNotifications);
-			userModel.state.userNotifications = [];
+			deviceModel.state.userNotifications = [];
 			if (userNotifications !== null && userNotifications.length > 0) {
 				for (var j = 0; j < userNotifications.length; j++) {
 					var notification = JSON.parse(userNotifications[j]);
