@@ -145,29 +145,9 @@ var userModel = {
         // fetch contact models (objects) from parse.
         contactModel.fetch();
 
-        var PhotoModel = Parse.Object.extend("photos");
-        var PhotoCollection = Parse.Collection.extend({
-            model: PhotoModel
-        });
+        photoModel.fetch();
 
-        var photos = new PhotoCollection();
-
-        photos.fetch({
-            success: function(collection) {
-                var models = new Array();
-                for (var i = 0; i < collection.models.length; i++) {
-                    models.push(collection.models[i].attributes);
-                }
-                deviceModel.setAppState('hasPhotos', true);
-                APP.models.gallery.photosDS.data(models);
-                deviceModel.isParseSyncComplete();
-            },
-            error: function(collection, error) {
-                handleParseError(error);
-            }
-        });
-
-        var InviteModel = Parse.Object.extend("invites");
+       /* var InviteModel = Parse.Object.extend("invites");
         var InviteCollection = Parse.Collection.extend({
             model: InviteModel
         });
@@ -188,24 +168,6 @@ var userModel = {
             }
         });
 
-        var p2pModel = Parse.Object.extend("p2pmap");
-        var p2pCollection = Parse.Collection.extend({
-            model: p2pModel
-        });
-
-        var p2pmap = new p2pCollection();
-
-        p2pmap.fetch({
-            success: function(collection) {
-                var models = new Array();
-                for (var i = 0; i < collection.models.length; i++) {
-                    models.push(collection.models[i].attributes);
-                }
-            },
-            error: function(collection, error) {
-                handleParseError(error);
-            }
-        });
 
         var channelMapModel = Parse.Object.extend("channelmap");
         var channelMapCollection = Parse.Collection.extend({
@@ -224,7 +186,7 @@ var userModel = {
             error: function(collection, error) {
                 handleParseError(error);
             }
-        });
+        }); */
     }
 
 

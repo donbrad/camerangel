@@ -4,10 +4,10 @@ function onInitGallery(e){
 	}
     // ToDo: Initialize list view
     var itemWidth = $(window).width()/4;
-	APP.models.gallery.rotationAngle = 0;
-	APP.models.gallery.optionsHidden = true;
-	APP.models.gallery.previewSize = "33%";
-	APP.models.gallery.optionsShown = true;
+	photoModel.rotationAngle = 0;
+	photoModel.optionsHidden = true;
+	photoModel.previewSize = "33%";
+	photoModel.optionsShown = true;
 
 
 	$("#gallerySearch").keyup(function() {
@@ -83,18 +83,18 @@ function galleryOptionsToggle (e) {
 	}
 	
 
-	if (APP.models.gallery.optionsShown) {
+	if (photoModel.optionsShown) {
 		$("#galleryToggle").velocity("fadeOut",{duration: 150});
 		$('.gallerySearchOptions').velocity("slideDown",{duration: 300});
 		$("#galleryZoomSelect > li:first-child").velocity("fadeIn", {duration: 300});
-		APP.models.gallery.optionsShown = false;
+		photoModel.optionsShown = false;
 		$("#gallerySearch").focus();
 	} else {
 		$('.gallerySearchOptions').velocity("slideUp",{duration: 300});
 		$("#galleryToggle").velocity("fadeIn",{delay: 150, duration: 150});
 		$("#galleryZoomSelect > li:first-child").velocity("fadeOut", {duration: 300});
 		//$('#gallerySearchOptions').removeClass('hidden');
-		APP.models.gallery.optionsShown = true;
+		photoModel.optionsShown = true;
 		
 	}
 	
@@ -138,17 +138,17 @@ function selectGalleryZoom(e) {
 	var index = this.current().index();
 	switch (index) {
 		case 0:
-			APP.models.gallery.previewSize = "33%";
+			photoModel.previewSize = "33%";
 			$("#gallery-listview li").css("width","33%");
 			$("#gallery-listview li").css("padding-bottom","33%");
 			break;
 		case 1:
-			APP.models.gallery.previewSize = "50%";
+			photoModel.previewSize = "50%";
 			$("#gallery-listview li").css("width","50%");
 			$("#gallery-listview li").css("padding-bottom","50%");
 			break;
 		case 2:
-			APP.models.gallery.previewSize = "100%";
+			photoModel.previewSize = "100%";
 			$("#gallery-listview li").css("width","100%");
 			$("#gallery-listview li").css("padding-bottom","100%");
 			break;
@@ -175,11 +175,11 @@ function photoEditSave(e) {
 	if (e !== undefined && e.preventDefault !== undefined)
 		e.preventDefault();
 	var urlToSave = $('#photoEditImage').attr('src');
-	if (APP.models.gallery.currentPhoto.source === 'chat') {
+	if (photoModel.currentPhoto.source === 'chat') {
 		// Save image to chat image preview
-	} else if (APP.models.gallery.currentPhoto.source === 'gallery') {
+	} else if (photoModel.currentPhoto.source === 'gallery') {
 		// Save image to gallery
-	} else if (APP.models.gallery.currentPhoto.source === 'profile') {
+	} else if (photoModel.currentPhoto.source === 'profile') {
 		// Save image to user profile
 		saveUserProfilePhoto(urlToSave);
 	}
@@ -190,8 +190,8 @@ function photoEditRotateLeft(e) {
 	if (e !== undefined && e.preventDefault !== undefined)
 		e.preventDefault();
 	//$('#photoEditImage').css('transform','rotate(' + -90 + 'deg)');'
-	APP.models.gallery.rotationAngle -= 90;
-	$('#photoEditImage').cropper('rotate', APP.models.gallery.rotationAngle);
+	photoModel.rotationAngle -= 90;
+	$('#photoEditImage').cropper('rotate', photoModel.rotationAngle);
 
 
 }
@@ -200,8 +200,8 @@ function photoEditRotateRight(e) {
 	if (e !== undefined && e.preventDefault !== undefined)
 		e.preventDefault();
 	//$('#photoEditImage').css('transform','rotate(' + 90 + 'deg)');
-	APP.models.gallery.rotationAngle += 90;
-	$('#photoEditImage').cropper('rotate', APP.models.gallery.rotationAngle);
+	photoModel.rotationAngle += 90;
+	$('#photoEditImage').cropper('rotate', photoModel.rotationAngle);
 
 }
 
@@ -223,7 +223,7 @@ function onShowPhotoEditor (e) {
 		return;
 	}
 
-	APP.models.gallery.currentPhoto.source = source;
+	photoModel.currentPhoto.source = source;
 
 
 	if (source === "gallery" || source === "chat") {
@@ -253,19 +253,19 @@ function onHidePhotoView(e) {
 function onShowGallery(e) {
 	e.preventDefault();
 	
-	APP.models.gallery.chatPhoto = false;
+	photoModel.chatPhoto = false;
 	if (e.view.params.action !== undefined && e.view.params.action === 'chat') {
-		APP.models.gallery.chatPhoto = true;
+		photoModel.chatPhoto = true;
 		mobileNotify("Please select an image to send...")
 	}
-	APP.models.gallery.rotationAngle = 0;
+	photoModel.rotationAngle = 0;
 	
 
-	$("#gallery-listview li").css("width",APP.models.gallery.previewSize);
-	$("#gallery-listview li").css("padding-bottom",APP.models.gallery.previewSize);
+	$("#gallery-listview li").css("width",photoModel.previewSize);
+	$("#gallery-listview li").css("padding-bottom",photoModel.previewSize);
 
 
-	switch(APP.models.gallery.previewSize) {
+	switch(photoModel.previewSize) {
 		case "33%" :
 			//setButtonGroupIndex("#gallerySearchToolSelect", 0);
 			break;
@@ -308,12 +308,12 @@ function galleryClick(e) {
 	}
 
 	var photoId = e.dataItem.id, photoUrl = e.dataItem.imageUrl;
-	APP.models.gallery.currentPhotoModel = getPhotoModel(photoId);
+	photoModel.currentPhotoModel = getPhotoModel(photoId);
 	$('#photoViewImage').attr('src', photoUrl);
 	$('#photoTagImage').attr('src', photoUrl);
 	$('#photoEditImage').attr('src', photoUrl);
 
-	if (APP.models.gallery.chatPhoto) {
+	if (photoModel.chatPhoto) {
 		showChatImagePreview(photoUrl);
 		APP.kendo.navigate('#:back');
 
@@ -325,7 +325,7 @@ function galleryClick(e) {
 
 
 function getPhotoModel(photoId) {
-	 var dataSource = APP.models.gallery.photosDS;
+	 var dataSource = photoModel.photosDS;
     dataSource.filter( { field: "photoId", operator: "eq", value: photoId });
     var view = dataSource.view();
     var photo = view[0];
@@ -336,19 +336,19 @@ function getPhotoModel(photoId) {
 
 function photoExport (e) {
 	e.preventDefault();
-	var photo = APP.models.gallery.currentPhotoModel;
+	var photo = photoModel.currentPhotoModel;
 	
 }
 
 function photoDelete (e) {
 	e.preventDefault();
-	var photo = APP.models.gallery.currentPhotoModel;
+	var photo = photoModel.currentPhotoModel;
 	// Todo:  Add confirmation prior to photo delete
 	
 	// Delete from local datasource
-	APP.models.gallery.photosDS.remove(APP.models.gallery.currentPhotoModel);
+	photoModel.photosDS.remove(photoModel.currentPhotoModel);
 	// Remove from isotope and then rerender the layout
-	//$('#gallery-grid').isotope( 'remove', APP.models.gallery.currentIsoModel ).isotope('layout');
+	//$('#gallery-grid').isotope( 'remove', photoModel.currentIsoModel ).isotope('layout');
 	// Delete from remote parse collection
 	deleteParseObject('photos', 'photoId', photo.photoId);
 	
@@ -363,7 +363,7 @@ function galleryZoomIn (e)  {
 		e.preventDefault();	
 	}
 
-	APP.models.gallery.smallPreview = false;
+	photoModel.smallPreview = false;
 	$("#gallery-listview li").css("width","50%");
 	$("#gallery-listview li").css("padding-bottom","50%");
 	//$("#galleryPicker-listview").data("kendoMobileListView").refresh();
@@ -375,7 +375,7 @@ function galleryZoomOut (e)  {
 		e.preventDefault();
 	}
 	
-	APP.models.gallery.smallPreview = true;
+	photoModel.smallPreview = true;
 	$("#gallery-listview li").css("width","33%");
 	$("#gallery-listview li").css("padding-bottom","33%");
 	//$("#galleryPicker-listview").data("kendoMobileListView").refresh();

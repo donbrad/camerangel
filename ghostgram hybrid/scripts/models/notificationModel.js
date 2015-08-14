@@ -86,7 +86,7 @@ var notificationModel = {
         return(contact);
     },
 
-    deleteNotificationModel: function (uuid) {
+    deleteNotification: function (uuid) {
         var dataSource = notificationModel.notificationDS;
         dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
         var view = dataSource.view();

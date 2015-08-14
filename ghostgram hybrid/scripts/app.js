@@ -518,7 +518,7 @@
 			APP.models.home.invitesDS.online(true);
 			APP.models.home.notificationDS.online(true);
 			channelModel.channelsDS.online(true);
-			APP.models.gallery.photosDS.online(true);
+			photoModel.photosDS.online(true);
 			contactModel.contactsDS.online(true);
 			APP.models.places.placesDS.online(true);
 
@@ -532,7 +532,7 @@
 			APP.models.home.invitesDS.online(false);
 			APP.models.home.notificationDS.online(false);
 			channelModel.channelsDS.online(false);
-			APP.models.gallery.photosDS.online(false);
+			photoModel.photosDS.online(false);
 			contactModel.contactsDS.online(false);
 			APP.models.places.placesDS.online(false);
 

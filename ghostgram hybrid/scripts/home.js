@@ -22,14 +22,14 @@ function dismissNotification (e) {
 	}
 	
 	deviceModel.setAppState('userNotifications', JSON.stringify(data));
-	notificationModel.deleteNotificationModel(uuid);
+	notificationModel.deleteNotification(uuid);
 	
 }
 
 
 
 function onBeforeOpenPhoto() {
-	$('#photoImage').attr('src', APP.models.gallery.currentPhoto.src);	
+	$('#photoImage').attr('src', photoModel.currentPhoto.src);
 }
 
 
@@ -40,7 +40,7 @@ function savePhoto () {
 
 function pruneNotifications() {
 	if 	( deviceModel.state.phoneVerified) {
-		notificationModel.deleteNotificationModel('verifyphone');
+		notificationModel.deleteNotification('verifyphone');
 	}
 
 }
@@ -286,7 +286,7 @@ function homeSignin (e) {
 
             if (phoneVerified) {
 				deviceModel.setAppState('phoneVerified', true);
-				deleteNotificationModel('phoneVerified');
+				notificationModel.deleteNotification('phoneVerified');
 			} else {
 				  mobileNotify("Please verify your phone number");
               $("#modalview-verifyPhone").data("kendoMobileModalView").open();
@@ -662,7 +662,7 @@ function doProfilePhotoEdit(e) {
 		e.preventDefault();
 	}
 
-	APP.models.gallery.currentPhoto.callBack = updateProfilePhototUrl;
+	photoModel.currentPhoto.callBack = updateProfilePhototUrl;
 }
 
 function saveProfilePhoto(e) {
@@ -776,7 +776,7 @@ function galleryPickerClick(e) {
 
 	var imageUrl = e.dataItem.imageUrl;
 
-	APP.models.gallery.currentPhoto.callBack(imageUrl);
+	photoModel.currentPhoto.callBack(imageUrl);
 }
 
 function modalGalleryZoomIn (e)  {

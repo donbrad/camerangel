@@ -27,9 +27,9 @@ function deviceCamera(resolution, quality, isChat, displayCallback) {
             // convert uuid into valid file name;
             var filename = photouuid.replace(/-/g,'');
 
-            APP.models.gallery.currentPhoto.photoId = photouuid;
-            APP.models.gallery.currentPhoto.filename = filename;
-            APP.models.gallery.currentPhoto.imageUrl = imageUrl;
+            photoModel.currentPhoto.photoId = photouuid;
+            photoModel.currentPhoto.filename = filename;
+            photoModel.currentPhoto.imageUrl = imageUrl;
 
             if (displayCallback !== undefined) {
                 displayCallback(imageData);
@@ -99,9 +99,9 @@ function deviceGallery(resolution, quality, isChat, displayCallback) {
             // convert uuid into valid file name;
             var filename = photouuid.replace(/-/g,'');
 
-            APP.models.gallery.currentPhoto.photoId = photouuid;
-            APP.models.gallery.currentPhoto.filename = filename;
-            APP.models.gallery.currentPhoto.imageUrl = imageUrl;
+            photoModel.currentPhoto.photoId = photouuid;
+            photoModel.currentPhoto.filename = filename;
+            photoModel.currentPhoto.imageUrl = imageUrl;
 
             if (displayCallback !== undefined) {
                 displayCallback(displayUrl);
@@ -165,28 +165,28 @@ function resizeSuccessProfile (data) {
 // IOS success function for chat photos -- calls resize again to generate thumbnails
 function resizeSuccessChat (data) {
 
-    var filename = "thumb_"+APP.models.gallery.currentPhoto.filename+'.jpg';
-    APP.models.gallery.currentPhoto.photoUrl = data.imageData;
+    var filename = "thumb_"+photoModel.currentPhoto.filename+'.jpg';
+    photoModel.currentPhoto.photoUrl = data.imageData;
 
     // Have the photo scaled, now generate the thumbnail from it
-    /*	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 140, 0, {
+    /*	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  photoModel.currentPhoto.imageUrl, 140, 0, {
      quality: 50, storeImage: 1, photoAlbum: 0, filename: filename });		*/
 
-    window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 256, 0, {
+    window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  photoModel.currentPhoto.imageUrl, 256, 0, {
         storeImage: false, pixelDensity: true, quality: 75 });
 }
 
 // Android success function for chat photos -- calls resize again to generate thumbnails
 function resizeSuccessAndroidChat (data) {
 
-    var filename = "thumb_"+APP.models.gallery.currentPhoto.filename+'.jpg';
-    APP.models.gallery.currentPhoto.photoUrl = data.imageData;
+    var filename = "thumb_"+photoModel.currentPhoto.filename+'.jpg';
+    photoModel.currentPhoto.photoUrl = data.imageData;
 
     // Have the photo scaled, now generate the thumbnail from it
-    /*	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 140, 0, {
+    /*	window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  photoModel.currentPhoto.imageUrl, 140, 0, {
      quality: 50, storeImage: 1, photoAlbum: 0, filename: filename });		*/
 
-    window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  APP.models.gallery.currentPhoto.imageUrl, 256, 0, {
+    window.imageResizer.resizeImage(resizeSuccessThumb, resizeFailure,  photoModel.currentPhoto.imageUrl, 256, 0, {
         imageDataType: ImageResizer.IMAGE_DATA_TYPE_BASE64, storeImage: false, pixelDensity: true, quality: 75 });
 }
 
@@ -206,22 +206,22 @@ function resizeSuccessThumb (data) {
     var photo = new Photos();
 
     photo.setACL(APP.models.profile.parseACL);
-    photo.set('photoId', APP.models.gallery.currentPhoto.photoId);
+    photo.set('photoId', photoModel.currentPhoto.photoId);
     photo.set('channelId', APP.models.channel.currentModel.channelId);
     var timeStamp = new Date().getTime();
     photo.set("timestamp", timeStamp);
     photo.set('geoPoint', new Parse.GeoPoint(APP.location.position.lat, APP.location.position.lng));
 
 
-    var parseFile = new Parse.File("thumbnail_"+APP.models.gallery.currentPhoto.filename + ".jpeg",{'base64': data.imageData}, "image/jpg");
+    var parseFile = new Parse.File("thumbnail_"+photoModel.currentPhoto.filename + ".jpeg",{'base64': data.imageData}, "image/jpg");
     parseFile.save().then(function() {
         photo.set("thumbnail", parseFile);
         photo.set("thumbnailUrl", parseFile._url);
-        APP.models.gallery.currentPhoto.thumbnailUrl = parseFile._url;
+        photoModel.currentPhoto.thumbnailUrl = parseFile._url;
         photo.save(null, {
             success: function(photo) {
                 // Execute any logic that should take place after the object is saved.
-                APP.models.gallery.parsePhoto = photo;
+                photoModel.parsePhoto = photo;
 
             },
             error: function(contact, error) {
@@ -234,17 +234,17 @@ function resizeSuccessThumb (data) {
 
 
 
-    var parseFile2 = new Parse.File("photo_"+APP.models.gallery.currentPhoto.filename + ".jpeg",{'base64': APP.models.gallery.currentPhoto.photoUrl},"image/jpg");
+    var parseFile2 = new Parse.File("photo_"+photoModel.currentPhoto.filename + ".jpeg",{'base64': photoModel.currentPhoto.photoUrl},"image/jpg");
     parseFile2.save().then(function() {
         photo.set("image", parseFile2);
         photo.set("imageUrl", parseFile2._url);
-        APP.models.gallery.currentPhoto.photoUrl = parseFile2._url;
+        photoModel.currentPhoto.photoUrl = parseFile2._url;
         photo.save(null, {
             success: function(photo) {
                 // Execute any logic that should take place after the object is saved.
                 mobileNotify('Photo added to ghostgrams gallery');
-                APP.models.gallery.photosDS.add(photo.attributes);
-                APP.models.gallery.parsePhoto = photo;
+                photoModel.photosDS.add(photo.attributes);
+                photoModel.parsePhoto = photo;
                 APP.models.channel.currentMessage.photo = {thumb: photo.get('thumbnailUrl'), photo: photo.get('imageUrl')};
 
             },

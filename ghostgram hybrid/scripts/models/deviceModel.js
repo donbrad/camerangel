@@ -85,7 +85,7 @@ var deviceModel = {
         APP.models.home.invitesDS.online(true);
         notificationModel.notificationDS.online(true);
         channelModel.channelsDS.online(true);
-        APP.models.gallery.photosDS.online(true);
+        photoModel.photosDS.online(true);
         contactModel.contactsDS.online(true);
         APP.models.places.placesDS.online(true);
 
@@ -99,7 +99,7 @@ var deviceModel = {
         APP.models.home.invitesDS.online(false);
         notificationModel.notificationDS.online(false);
         channelModel.channelsDS.online(false);
-        APP.models.gallery.photosDS.online(false);
+        photoModel.photosDS.online(false);
         contactModel.contactsDS.online(false);
         APP.models.places.placesDS.online(false);
 
