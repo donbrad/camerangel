@@ -109,7 +109,7 @@ var userModel = {
             userModel.parseACL = new Parse.ACL(userModel.parseUser);
 
             userModel.currentUser.bind('change', syncProfile);
-
+            deviceModel.state.bind('change', deviceModel.changeHandler);
             userModel.fetchParseData();
 
         }

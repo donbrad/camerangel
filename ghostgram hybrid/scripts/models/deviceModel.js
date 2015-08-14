@@ -55,13 +55,12 @@ var deviceModel = {
                 mobileNotify("Filesystem error : " + JSON.stringify(error));
             });
 
-        deviceModel.state.bind('change', deviceModel.changeHandler);
     },
 
     changeHandler: function (e) {
         if (e !== undefined && e.preventDefault !== undefined) {
             e.preventDefault();
-        };
+        }
 
         var channels = deviceModel.state.get('hasChannels'), contacts = deviceModel.state.get('hasContacts'),
             places = deviceModel.state.get('hasPlaces'), photos = deviceModel.state.get('hasPhotos');
