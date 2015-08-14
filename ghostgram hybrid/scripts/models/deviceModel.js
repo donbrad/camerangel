@@ -27,8 +27,6 @@ var deviceModel = {
         introFetched: false
     }),
 
-
-
     init: function() {
 
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
