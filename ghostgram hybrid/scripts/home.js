@@ -207,7 +207,8 @@ function homeSignout (e) {
 	userModel.currentUser.set('rememberUsername', false);
     userModel.currentUser.set('phoneVerified', false);
     userModel.currentUser.set('emailVerified', false);
-   userModel.parseACL = '';
+    userModel.parseACL = '';
+	deviceModel.resetDeviceState();
     APP.kendo.navigate('#newuserhome');
 }
 

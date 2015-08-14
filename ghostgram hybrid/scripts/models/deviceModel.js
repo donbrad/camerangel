@@ -11,6 +11,7 @@ var deviceModel = {
     fileDirectory: '',
     tempDirectory: '',
 
+
     state: {
         inPrivacyMode: false,
         isVisible: true,
@@ -25,8 +26,10 @@ var deviceModel = {
         hasPrivateChannels: false,
         hasPlaces: false,
         hasPhotos: false,
-        introFetched: false
+        introFetched: false,
+        pubnubInit: false
     },
+
 
     init: function() {
 
@@ -56,6 +59,24 @@ var deviceModel = {
 
     },
 
+    resetDeviceState: function ()  {
+        this.state.inPrivacyMode = false;
+        this.state.isVisible = true;
+        this.state.isAvailable = true;
+        this.state.rememberUsername = false;
+        this.state.isOnline = true;
+        this.state.inBackground= false;
+        this.state.userNotifications = [];
+        this.state.phoneVerified = false;
+        this.state.hasContacts = false;
+        this.state.hasChannels = false;
+        this.state.hasPrivateChannels = false;
+        this.state.hasPlaces = false;
+        this.state.hasPhotos = false;
+        this.state.introFetched =false;
+        this.state.pubnubInit = false;
+    },
+
     isParseSyncComplete: function () {
 
         var channels = deviceModel.state.hasChannels, privateChannels = deviceModel.state.hasPrivateChannels,
@@ -64,8 +85,12 @@ var deviceModel = {
         // Todo:  add places -- need to discuss with tucker
 
         if (channels && privateChannels && contacts && photos) {
-            mobileNotify("Parse Sync Complete");
-            userModel.initPubNub();
+
+            if (!deviceModel.state.pubnubInit) {
+                userModel.initPubNub();
+                deviceModel.setAppState('pubnubInit', true);
+            }
+
         }
     },
 
