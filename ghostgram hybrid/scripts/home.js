@@ -166,6 +166,9 @@ function onShowHome(e) {
 }
 
 function setUserStatusUI(e){
+	if (e !== undefined && e.preventDefault !== undefined)
+		e.preventDefault();
+
 	//Set available
 	var currentAvailable = userModel.currentUser.isAvailable;
     if (currentAvailable) {
@@ -190,8 +193,9 @@ function testingStatus(e) {
 }
 
 function homeSignout (e) {
-
-    e.preventDefault();
+	if (e !== undefined && e.preventDefault !== undefined)
+		e.preventDefault();
+   ;
     Parse.User.logOut();
     userModel.parseUser = null;
     userModel.currentUser.unbind('change', syncProfile);
@@ -225,7 +229,8 @@ function signInValidate(e){
 }
 	
 function homeSignin (e) {
-    
+	if (e !== undefined && e.preventDefault !== undefined)
+		e.preventDefault();
 
    var username = $('#home-signin-username').val(), password = $('#home-signin-password').val()
 
