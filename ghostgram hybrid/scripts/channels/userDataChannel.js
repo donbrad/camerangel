@@ -151,7 +151,7 @@ var userDataChannel = {
             privateChannel = channelModel.findPrivateChannel(ownerId);
         var contact = contactModel.getContactModel(ownerId);
 
-        mobileNotify("Private Chat from " + contact + '\n ' + message);
+        mobileNotify("Private Chat Request from " + contact + '\n ' + message);
 
 
         if (channel === undefined && privateChannel === undefined) {
