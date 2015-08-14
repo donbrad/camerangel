@@ -64,6 +64,7 @@ var deviceModel = {
         // Todo:  add places -- need to discuss with tucker
 
         if (channels && privateChannels && contacts && photos) {
+            mobileNotify("Parse Sync Complete");
             userModel.initPubNub();
         }
     },
