@@ -11,6 +11,7 @@ function p2pObject(user, contact, channel) {
 function newP2PEntry(user, contact, channel, callback) {
 	var P2PObject = Parse.Object.extend('p2pmap');
 	p2p = new P2PObject();
+	p2p.set('uuid', uuid.v4());
 	p2p.set('members', [user, contact]);
 	p2p.set('channel', channel);
 	p2p.save(null, {
