@@ -16,6 +16,9 @@ var channelModel = {
             dir: "asc"
         }
     }),
+    privateChannelsDS: new kendo.data.DataSource({
+        offlineStorage: "privatechannels-offline"
+    }),
 
 
 
@@ -42,6 +45,14 @@ var channelModel = {
             error: function(collection, error) {
                 handleParseError(error);
             }
+        });
+
+        getUserPrivateChannels(userModel.currentUser.get('uuid'), function (result) {
+            if (result.found) {
+                channelModel.privateChannelsDS.data(result.channels);
+            }
+            deviceModel.setAppState('hasPrivateChannels', true);
+            deviceModel.isParseSyncComplete();
         });
 
     },

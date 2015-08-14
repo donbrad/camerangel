@@ -147,11 +147,16 @@ var userDataChannel = {
     },
 
     processPrivateInvite: function (ownerId, ownerPublicKey, channelId, message) {
-        var channel = channelModel.findChannelModel(channelId);
+        var channel = channelModel.findChannelModel(channelId),
+            privateChannel = channelModel.findPrivateChannel(ownerId);
+        var contact = contactModel.getContactModel(ownerId);
 
-        if (channel === undefined) {
+        mobileNotify("Private Chat from " + contact + '\n ' + message);
+
+
+        if (channel === undefined && privateChannel === undefined) {
             // No existing private channel need to create one
-            var contact = contactModel.getContactModel(ownerId);
+
             if (contact !== undefined) {
                 var contactAlias = contact.get('alias');
                 channelModel.addPrivateChannel(ownerId, ownerPublicKey, contactAlias, channelId);
