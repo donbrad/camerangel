@@ -11,7 +11,8 @@
 @btnActiveBk: rgba(0,0,0,0.15);
 @black: #4A4A4A;
 @warning: #EA6262;
-
+@highlight: #9E788F;
+ 
 
 /* variables */
 @baseFontSize: 16;
@@ -1558,16 +1559,34 @@ div.footerMenu.km-footer > ul > li > a:active {
 .message-slideOptions {
 	height:100%;
 	position: absolute;
-	right: 0px;
+	right: 1rem;
 	top: 0px;
 	z-index: 0;
+	opacity: 0;
+}
+
+.chat-delete {
+	background: @warning;
+}
+
+.arrow-left {
+	width: 0; 
+	height: 0; 
+	border-top: 3px solid transparent;
+	border-bottom: 3px solid transparent; 
+	
+	border-right:3px solid blue; 
+}
+
+.arrow-line {
+	height: 2px;
 	width: 100%;
-	//opacity: 0;
-	.archive, .delete {
-		opacity: 0;
-		position: absolute;
-		right: 0px;
-	}
+	background: @shade-300;
+}
+
+div.message-slideOptions > span.archive > a > span > img {
+	vertical-align: middle;
+			height: 18px;
 }
 
 #channel-addChannel-list li:first-child,
@@ -3452,6 +3471,7 @@ div.contactListBox.activeContact > div > div > ul {
     width: 100%;
 	position: relative;
 	z-index: 1;
+	right: 1rem;
 }
 
 .chat-message p {
@@ -3491,7 +3511,6 @@ div.contactListBox.activeContact > div > div > ul {
 .chat-message-content {
     margin-left: 44px;
     height: 100%;
-
 }
 
 .chat-message-user-content {
@@ -3501,7 +3520,7 @@ div.contactListBox.activeContact > div > div > ul {
     padding: 0.2em 0.35em;
     border-radius: .25em;
     color: #fff;
-    background: @primary-200 url("../images/chat-content-corner.svg") no-repeat 90% 50%;
+    background: @primary-200;
     margin-top: 0.2em;
 }
 
@@ -3515,6 +3534,22 @@ div.contactListBox.activeContact > div > div > ul {
 	border-style: solid;
 	border-color: @primary-200 transparent;
 	bottom: -4px;
+}
+
+.movingChat > .chat-message-user-content:after {
+	display: none;
+}
+
+.movingChat > .chat-message-user-content {
+	.shadow-1;
+}
+
+.movingChat > .chat-message-user-content::after {
+	border-color: @highlight transparent;
+}
+
+.movingChat-delete > .chat-message-user-content::after {
+	border-color: @warning transparent;
 }
 
 .chat-message-text {

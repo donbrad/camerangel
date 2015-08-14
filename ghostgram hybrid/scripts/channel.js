@@ -41,41 +41,91 @@ function onInitChannel(e) {
             tap: tapChannel,
            	//swipe: swipeChannel,
 		 	hold: holdChannel,
+		 	dragstart: function(e){
+		 		
+		 		var selection = e.touch.currentTarget;
+		 		var selectionListItem = $(selection)
+		 		
+		 		// add moving classes
+		 		$(selection).addClass("selectedLI");
+		 		$(".selectedLI > div").first().addClass("movingChat");
+
+		 		// remove chat time
+		 		$(".movingChat > .chat-time").velocity({opacity: 0, translateY: "5%"}, {duration: 200});
+
+		 		$(".movingChat > .chat-message-user-content").velocity({scale: "1.01"}, {duration: 300});
+		 		
+		 	},
 		 	drag: function(e){
 		 		var currentX = e.touch.x.location;
 		 		var windowWidth = $(window).width();
-		 		var widthPerc = (windowWidth - currentX) / windowWidth;
+		 		var messageWidth = $(".movingChat > .chat-message-user-content").width();
+		 		var widthPerc = (messageWidth + currentX)  / (windowWidth + messageWidth);
 
-		 	
-		 		diffMovingChat(currentX);
+		 		// drag chat
+		 		diffMovingChat(widthPerc);
 
-		 		//$(".message-slideOptions").css("opacity",widthPerc);
+		 		
 		 		var accelWidthPerc = widthPerc * 2;
 		 		var percentWindow = currentX / windowWidth
-		 		if(percentWindow > 0.5){
-		 			$(".message-slideOptions .archive").css("opacity", accelWidthPerc);
+		 		
+		 		//
+		 		if(percentWindow < 0.75 && percentWindow > 0.20){
+		 			console.log(percentWindow);
+		 			$(".selectedLI > .message-slideOptions").css("opacity", widthPerc);
+		 			
+		 			// change color to highlighted
+			 		$(".movingChat > .chat-message-user-content").css("background-color", "#9E788F");
+		 		} else if(percentWindow <= 0.20){
+		 			// change color to delete
+			 		$(".movingChat > .chat-message-user-content").css("background-color", "#EA6262");
+		 		} else {
+		 			// change color to default
+			 		$(".movingChat > .chat-message-user-content").css("background-color", "#2D93FF");
+			 		
 		 		}
+		 		
+
+		 		
 
 		 	},
-		 	dragstart: function(e){
-		 		console.log(e.touch.currentTarget);
-		 		var selection = e.touch.currentTarget;
-		 		var selectionListItem = $(selection)
-		 		//console.log(selectionListItem);
-		 		$(selection).addClass("selectedLI");
-		 		$(".selectedLI > div").first().addClass("movingChat");
-		 
-		 	},
 		 	dragend: function(e){
+		 		// get current position
+		 		var currentX = e.touch.x.location;
+		 		var windowWidth = $(window).width();
+		 		var widthPerc = currentX  / windowWidth;
 		 		
-		 		var currentXPos = $(".movingChat").css("right").replace(/[^-\d\.]/g, '');;
-		 		console.log(currentXPos);
-		 		if (currentXPos > 100) {
-		 			$(".movingChat").velocity({translateX:"-100%"},{duration: "fast"});
-		 		} else {
-		 			$(".movingChat").velocity({right:"0"},{duration: 300, easing: "spring"});
+		 		
+		 		 //if drag is far enough, set action
+		 		if (widthPerc < 0.75) {
+					$(".movingChat").velocity({translateX:"-100%"},{duration: "fast"});
+		 			$(".message-slideOptions").velocity({translateX:"-200%"},{duration: "fast"});
+		 			
+		 			if (widthPerc < 0.2){
+		 				// delete message 
+		 				deleteMessage();
+		 			} else {
+		 				// archive message
+		 				archiveMessage();
+		 			}
+		 			
+				} else {
+		 			$(".movingChat").velocity({right:"1rem"},{duration: 600, easing: "spring"});
+		 			$(".selectedLI > .message-slideOptions").css("opacity", "0");
+		 			
+		 			// show chat time
+		 			$(".movingChat > .chat-time").velocity({opacity: 1, translateY: "0"}, {duration: 200});
+
+		 			// reset color and size
+		 			$(".movingChat > .chat-message-user-content").css("background", "#2D93FF");
+		 			$(".movingChat > .chat-message-user-content").velocity({scale: "1"}, {duration: 300});
 		 		}
+		 		// remove moving class
+		 		$(".selectedLI > div").removeClass("movingChat");
+		 		$("#messages-listview > .selectedLI").removeClass("selectedLI");
+		 		
 		 	}
+
         });
 	
 	$("#channelMembers-listview").kendoMobileListView({
@@ -90,24 +140,23 @@ function onInitChannel(e) {
  });
 }	
 
-function movingChat(currentX){
-	console.log(currentX);
-}
+function diffMovingChat(widthPerc){
 
-function diffMovingChat(currentX){
-	var width = $(window).width() - 40;
-	var diffMove = width - currentX;
-	
-	console.log(diffMove);
-	if(diffMove > 0){
-		$(".movingChat, .message-slideOptions .archive").css("right", diffMove);
+	if(widthPerc < 1){
+		var currentXPer = 100 - ((widthPerc * 100).toFixed());
+		$(".movingChat, .movingChat > .message-slideOptions .archive").css("right", currentXPer+"%");
 	}
 
 }
 
-function endMovingChat(e){
-
+function deleteMessage(e){
+	mobileNotify("message deleted");
 }
+
+function archiveMessage(e){
+	mobileNotify("message archived");
+}
+
 
 function tapChannel(e) {
 	e.preventDefault();

@@ -240,7 +240,7 @@
          
     </div>
 	 <div id="privacyStatus" class="hidden">Ghost Mode On</div>
-     <div class="appBox" style="padding-bottom: 24px;">
+     <div>
          <ul id="messages-listview"></ul>
      </div>
      
@@ -308,8 +308,7 @@
 		} else {
 			formattedTime = formattedTime + " ago"
 		}
-		console.log(data);
-		console.log(formattedTime);
+		
 	#
 	 <div class="chat-time"> #:formattedTime# </div> 
 	# if(photoUrl !== '') { #
@@ -333,8 +332,9 @@
 	 #}#
 </div> 
 	<div class="message-slideOptions">
-		<span class="delete"><a data-role="button">Delete</a></span>
-		<span class="archive"><a data-role="button">Archive</a><span>
+		<span class="delete">Delete</span>
+		<span class="archive"><img height="18px" src="images/nav-archive.svg" /> Archive
+		</span>
 	</div>
 </script>
 
