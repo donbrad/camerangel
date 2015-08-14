@@ -20,7 +20,7 @@ var appDataChannel = {
         var ts = localStorage.getItem('ggAppDataTimeStamp');
 
         if (ts !== undefined)
-            this.lastAccess = ts;
+            this.lastAccess = parseInt(ts);
 
         APP.pubnub.subscribe({
             channel: this.channelId,
