@@ -313,7 +313,7 @@ function homeSignin (e) {
 			}
 
             if (phoneVerified) {
-				APP.setAppState('phoneVerified', true);
+				deviceModel.setAppState('phoneVerified', true);
 				deleteNotificationModel('phoneVerified');
 			} else {
 				  mobileNotify("Please verify your phone number");
