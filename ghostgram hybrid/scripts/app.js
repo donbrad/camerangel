@@ -33,26 +33,7 @@
 						field: "date",
 						dir: "desc"
 					}
-				}),
-				notificationDS: new kendo.data.DataSource({
-					offlineStorage: "notifications-offline",
-					sort: {
-						field: "priority",
-						dir: "asc"
-					}
-				}),
-				Notification: function(type, title, date, description, actionTitle, action, href, dismissed, dismissable) {
-					this.type = type ? type : 'system',
-						this.title = title ? title : '',
-						this.actionTitle = actionTitle ? actionTitle : '',
-						this.action = action ? action : null,
-						this.href = href ? href : null,
-						this.description = description ? description : '',
-						this.date = date ? date : new Date().getTime(),
-						this.dismissed = dismissed ? dismissed : false,
-						this.dismissable = dismissable ? dismissable : false
-				}
-
+				})
 			},
 
 			profile: {
@@ -571,11 +552,6 @@
 		},
 */
 
-		newNotification: function(type, title, date, description, actionTitle, action, href, dismissable) {
-			var notification = new APP.models.home.Notification(type, title, date, description, actionTitle, action, href, dismissable);
-			APP.models.home.notificationDS.add(notification);
-		},
-
 
 
 
@@ -662,43 +638,10 @@
 
 		if (!deviceModel.state.introFetched) {
 
-			var NotificationModel = Parse.Object.extend("notifications");
-			var NotificationCollection = Parse.Collection.extend({
-				model: NotificationModel
-			});
+			notificationModel.parseFetch();
 
-			var notifications = new NotificationCollection();
-
-			notifications.fetch({
-				success: function(collection) {
-					var userNotifications = new Array();
-					for (var i = 0; i < collection.models.length; i++) {
-						// Todo: check status of members
-						var date = collection.models[i].updatedAt;
-						collection.models[i].attributes.date = Date.parse(date);
-						userNotifications.push(JSON.stringify(collection.models[i].attributes));
-						APP.models.home.notificationDS.add(collection.models[i].attributes);
-						deviceModel.setAppState('introFetched', true);
-					}
-					window.localStorage.setItem('ggUserNotifications', JSON.stringify(userNotifications));
-					deviceModel.state.userNotifications = userNotifications;
-				},
-				error: function(collection, error) {
-					handleParseError(error);
-				}
-			});
 		} else {
-			var userNotifications = window.localStorage.getItem('ggUserNotifications');
-
-			userNotifications = JSON.parse(userNotifications);
-			deviceModel.state.userNotifications = [];
-			if (userNotifications !== null && userNotifications.length > 0) {
-				for (var j = 0; j < userNotifications.length; j++) {
-					var notification = JSON.parse(userNotifications[j]);
-					APP.models.home.notificationDS.add(notification);
-					deviceModel.state.userNotifications.push(notification);
-				}
-			}
+			notificationModel.localStorageFetch();
 		}
 
 		userModel.initParse();

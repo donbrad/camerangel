@@ -79,7 +79,7 @@ var deviceModel = {
         // Take all data sources online
 
         APP.models.home.invitesDS.online(true);
-        APP.models.home.notificationDS.online(true);
+        notificationModel.notificationDS.online(true);
         channelModel.channelsDS.online(true);
         APP.models.gallery.photosDS.online(true);
         contactModel.contactsDS.online(true);
@@ -93,7 +93,7 @@ var deviceModel = {
         // Take all data sources offline
 
         APP.models.home.invitesDS.online(false);
-        APP.models.home.notificationDS.online(false);
+        notificationModel.notificationDS.online(false);
         channelModel.channelsDS.online(false);
         APP.models.gallery.photosDS.online(false);
         contactModel.contactsDS.online(false);

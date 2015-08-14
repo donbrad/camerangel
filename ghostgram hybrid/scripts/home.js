@@ -22,39 +22,11 @@ function dismissNotification (e) {
 	}
 	
 	deviceModel.setAppState('userNotifications', JSON.stringify(data));
-	deleteNotificationModel(uuid);
+	notificationModel.deleteNotificationModel(uuid);
 	
 }
 
-function findNotificationModel(uuid) {
-	 var dataSource = APP.models.home.notificationDS;
-    dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
-    var view = dataSource.view();
-    var contact = view[0];
-	dataSource.filter([]);
-	console.log(dataSource);
-	return(contact);
-}
 
-function deleteNotificationModel(uuid) {
-	 var dataSource = APP.models.home.notificationDS;
-    dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
-    var view = dataSource.view();
-    var notification = view[0];
-	dataSource.filter([]);
-	// Does this notification exist?  if not, just return
-	if (notification === undefined)
-		return;
-	var data = deviceModel.state.userNotifications;
-	for(var i = 0; i < data.length; i++) {
-		if(data[i].uuid == uuid) {
-			data.splice(i, 1);
-			break;
-		}
-	}
-	deviceModel.setAppState('userNotifications', JSON.stringify(data));
-	dataSource.remove(notification);
-}
 
 function onBeforeOpenPhoto() {
 	$('#photoImage').attr('src', APP.models.gallery.currentPhoto.src);	
@@ -68,7 +40,7 @@ function savePhoto () {
 
 function pruneNotifications() {
 	if 	( deviceModel.state.phoneVerified) {
-		deleteNotificationModel('verifyphone');
+		notificationModel.deleteNotificationModel('verifyphone');
 	}
 
 }
