@@ -38,7 +38,7 @@ var appDataChannel = {
     },
 
     updateTimeStamp : function () {
-        this.lastAccess = new Date().getTime();
+        this.lastAccess = new Date().getTime() * 10000000;
         localStorage.setItem('ggAppDataTimeStamp', this.lastAccess);
     },
 
@@ -74,9 +74,7 @@ var appDataChannel = {
                 }
             });
         }
-
-
-
+        
         this.updateTimeStamp();
     },
 

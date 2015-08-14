@@ -38,7 +38,7 @@ var userDataChannel = {
     },
 
     updateTimeStamp : function () {
-        this.lastAccess = new Date().getTime();
+        this.lastAccess = new Date().getTime() * 10000000;
         localStorage.setItem('ggUserDataTimeStamp', this.lastAccess);
     },
 
@@ -68,7 +68,8 @@ var userDataChannel = {
                     messages = messages[0];
                     messages = messages || [];
                     for (var i = 0; i < messages.length; i++) {
-                        userDataChannel.channelRead(messages[i]);
+                        if (messages[i].time >= userDataChannel.lastAccess)
+                            userDataChannel.channelRead(messages[i]);
                     }
 
                 }
