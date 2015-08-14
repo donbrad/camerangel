@@ -20,51 +20,6 @@ function onShowChannels(){
     
 }
 
-/*function findChannelModel(channelId) {
-	 var dataSource = APP.models.channels.channelsDS;
-    dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
-    var view = dataSource.view();
-    var channel = view[0];
-	dataSource.filter([]);
-	
-	return(channel);
-}*/
-
-
-/*function addPrivateChannel (contactUUID, contactAlias, channelUUID) {
-	var Channels = Parse.Object.extend("channels");
-	var channel = new Channels();
-	var publicKey = APP.models.profile.currentUser.get('publicKey');
-	var guid = uuid.v4();
-
-	channel.set("name", contactAlias);
-	channel.set("isOwner", true);
-	channel.set('isPrivate', true);
-	channel.set("media",  true);
-	channel.set("archive",  false);
-	channel.set("description", "Private: " + contactAlias);
-	channel.set("channelId", channelUUID);
-	channel.set('userKey',  publicKey);
-	channel.set('contactKey', null);
-	channel.set("members", [APP.models.profile.currentUser.userUUID, contactUUID]);
-
-	channel.setACL(APP.models.profile.parseACL);
-	channel.save(null, {
-		success: function(channel) {
-			APP.models.channels.channelsDS.add(channel.attributes);
-			//closeModalViewAddChannel();
-			mobileNotify('Added private channel : ' + channel.get('name'));
-		},
-		error: function(channel, error) {
-			// Execute any logic that should take place if the save fails.
-			// error is a Parse.Error with an error code and message.
-			mobileNotify('Error creating channel: ' + error.message);
-			handleParseError(error);
-		}
-	});
-
-}*/
-    
 function syncCurrentChannel(e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
@@ -159,8 +114,8 @@ function onInitChannels (e) {
      $("#channels-listview").kendoMobileListView({
         dataSource: channelModel.channelsDS,
         template: $("#channels-listview-template").html(),
-        click: function(e){
-        	var selector = e.target[0].parentElement
+        click: function(e) {
+        	var selector = e.target[0].parentElement;
         	if($(selector).hasClass("chat-mainBox") === true || e.target[0].className === "chat-mainBox"){
         		var channelUrl = "#channel?channel=" + e.dataItem.channelId;
         		APP.kendo.navigate(channelUrl);
