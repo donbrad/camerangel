@@ -11,14 +11,14 @@ var deviceModel = {
     fileDirectory: '',
     tempDirectory: '',
 
-    state:  new kendo.data.ObservableObject({
+    state: new kendo.data.ObservableObject({
         inPrivacyMode: false,
         isVisible: true,
         isAvailable: true,
         rememberUsername: false,
         isOnline: true,
         inBackground: false,
-        userNotifications: [],
+        userNotifications: '',
         phoneVerified: false,
         hasContacts: false,
         hasChannels: false,
