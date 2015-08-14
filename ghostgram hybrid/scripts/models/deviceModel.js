@@ -18,7 +18,7 @@ var deviceModel = {
         rememberUsername: false,
         isOnline: true,
         inBackground: false,
-        userNotifications: '',
+        userNotifications: [],
         phoneVerified: false,
         hasContacts: false,
         hasChannels: false,
