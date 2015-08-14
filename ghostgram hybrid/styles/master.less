@@ -10,7 +10,7 @@
 @shade-400: #EFF1F2;
 @btnActiveBk: rgba(0,0,0,0.15);
 @black: #4A4A4A;
-@warning: #EA6262;
+@warning: #e53935;
 @highlight: #9E788F;
  
 
@@ -1120,6 +1120,63 @@ div.footerMenu.km-footer > ul > li > a:active {
     right: 0px;
     padding: 14px 14px !important; 
 }
+
+.modal-top {
+	height: 10rem;
+	width: 100%;
+	background-color: #66BB6A;
+	text-align: center;
+	color: #fff;
+	padding-top: 3rem;
+	padding-bottom: 3rem;
+	> img {
+		height: 4rem;
+		vertical-align: middle;
+		margin-bottom:0.25rem;
+	}
+	svg {
+		width: 18px;
+	}
+	p {
+		.font-size(12);
+		color: #fff;
+	}
+}
+
+.modal-bottom {
+	padding: 0.5rem 1rem;
+	h1,h2,h3,h4,h5,p {
+		margin-left: 0px;
+		margin-right: 0px;
+	}
+	
+	a {
+		width: 100%;
+		border-top: 1px solid @shade-300 !important;
+		text-align: center;
+	}
+	.modal-helper {
+		margin-bottom: 0.5rem;
+	}
+}
+
+.modalAction-helper {
+	width: 100%;
+	text-align: center;
+	.font-size(11);
+	color: @shade-100;
+	line-height: 1;
+}
+
+.modal-close {
+	position: absolute;
+	top: 0.5rem;
+	right: 0.5rem;
+	span > img {
+		height: 1.25rem;
+	}
+}
+
 /* ghost selection modal */
 
 .ghostSelectionBox {
@@ -1560,9 +1617,23 @@ div.footerMenu.km-footer > ul > li > a:active {
 	height:100%;
 	position: absolute;
 	right: 1rem;
-	top: 0px;
+	top: 8px;
 	z-index: 0;
 	opacity: 0;
+	.font-size(12);
+	color: #fff;
+}
+
+.selectedLI {
+	background: #fff;
+}
+
+.selectedLI-archive { 
+	background: lighten(@highlight, 20%) !important;
+}
+
+.selectedLI-delete {
+	background: lighten(@warning, 20%) !important;
 }
 
 .chat-delete {
@@ -1984,7 +2055,7 @@ div.footerMenu.km-footer > ul > li > a {
 .actionBtn {
 	height: 3rem;
 	width: 3rem;
-	.shadow !important;
+	.shadow-1 !important;
 	border-radius: 1.5rem !important;
 	text-align: center;
 	position: fixed;
