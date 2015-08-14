@@ -7,6 +7,7 @@
 var userModel = {
 
     parseUser: null,
+    parseDataFetched: false,
     tempDirectory: '',
     appDirectory: '',
     parseACL : undefined,
@@ -109,7 +110,6 @@ var userModel = {
 
             userModel.currentUser.bind('change', syncProfile);
 
-            userModel.initPubNub();
             userModel.fetchParseData();
 
         }

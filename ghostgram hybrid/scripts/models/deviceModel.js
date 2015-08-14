@@ -8,7 +8,7 @@
 
 var deviceModel = {
 
-    state: {
+    state:  new kendo.data.ObservableObject({
         inPrivacyMode: false,
         isVisible: true,
         isAvailable: true,
@@ -20,12 +20,16 @@ var deviceModel = {
         hasContacts: false,
         hasChannels: false,
         hasPlaces: false,
+        hasPhotos: false,
         introFetched: false
-    },
+    }),
+
     fileDirectory: '',
     tempDirectory: '',
 
     init: function() {
+
+        deviceModel.state.bind('change', deviceModel.changeHandler);
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
             function(fileSystem) {
                 var url = fileSystem.root.nativeURL;
@@ -49,6 +53,19 @@ var deviceModel = {
             function(error) {
                 mobileNotify("Filesystem error : " + JSON.stringify(error));
             });
+    },
+
+    changeHandler: function (e) {
+        if (e !== undefined && e.preventDefault !== undefined) {
+            e.preventDefault();
+        };
+
+        var channels = deviceModel.state.get('hasChannels'), contacts = deviceModel.state.get('hasContacts'),
+            places = deviceModel.state.get('hasPlaces'), photos = deviceModel.state.get('hasPhotos');
+
+        if (channels && contacts && places && photos) {
+            userModel.initPubNub();
+        }
     },
 
     onPause: function() {
@@ -89,12 +106,14 @@ var deviceModel = {
 
 
     setAppState: function(field, value) {
-        deviceModel.state[field] = value;
+        //deviceModel.state[field] = value;
+        deviceModel.state.set(field,value);
         deviceModel.saveAppState();
     },
 
     saveAppState: function() {
-        window.localStorage.setItem('ggAppState', JSON.stringify(deviceModel.state));
+        //window.localStorage.setItem('ggAppState', JSON.stringify(deviceModel.state));
+        window.localStorage.setItem('ggAppState', JSON.stringify(deviceModel.state.toJSON()));
     },
 
     getAppState: function() {
