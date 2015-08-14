@@ -358,7 +358,7 @@ function onShowChannel(e) {
 			contactUUID = thisChannelModel.members[0];	
 
 		APP.models.channel.currentContactUUID = contactUUID;
-		var thisContact = getContactModel(contactUUID);
+		var thisContact = contactModel.getContactModel(contactUUID);
 		if (thisChannelModel.isPrivate) {
 			$('#channelImage').attr('src', thisContact.photo);
 		}
