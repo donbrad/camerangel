@@ -696,7 +696,7 @@
 				for (var j = 0; j < userNotifications.length; j++) {
 					var notification = JSON.parse(userNotifications[j]);
 					APP.models.home.notificationDS.add(notification);
-					userModel.userNotifications.push(notification);
+					deviceModel.state.userNotifications.push(notification);
 				}
 			}
 		}
