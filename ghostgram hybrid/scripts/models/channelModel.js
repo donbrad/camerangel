@@ -19,6 +19,10 @@ var channelModel = {
     privateChannelsDS: new kendo.data.DataSource({
         offlineStorage: "privatechannels-offline"
     }),
+    channelMapDS: new kendo.data.DataSource({
+        offlineStorage: "channelmap-offline"
+    }),
+
 
 
 
@@ -132,7 +136,7 @@ var channelModel = {
     },
 
     // Generic add group channel...
-    addChannel : function (channelName, channelDescription) {
+    addChannel : function (channelName, channelDescription, isOwner, channelUUID, ownerUUID, ownerName) {
         var Channels = Parse.Object.extend("channels");
         var channel = new Channels();
 
@@ -141,18 +145,33 @@ var channelModel = {
 
         var name = channelName,
             description = channelDescription,
-            channelId = uuid.v4();
+            channelId = channelUUID;
 
+        // If this is a member request, channelUUID will be passed in.
+        // If user is creating new channel, they own it so create new uuid
+        if (isOwner) {
+            channelId = uuid.v4();
+        }
+
+        // Generic fields for owner and members
         channel.set("name", name );
-        channel.set("isOwner", true);
         channel.set('isPrivate', false);
         channel.set("media",   true);
         channel.set("archive", true);
-
         channel.set("description", description);
-        channel.set("members", [userModel.currentUser.userUUID]);
-        channel.set("invitedMembers", []);
         channel.set("channelId", channelId);
+
+        // Channel owner can access and edit members...
+        if (isOwner) {
+            channel.set("isOwner", true);
+            channel.set("members", [userModel.currentUser.userUUID]);
+            channel.set("invitedMembers", []);
+        } else {
+            // Channel members have no access to members...
+            channel.set("isOwner", false);
+            channel.set("ownerId", ownerUUID);
+            channel.set("ownerName", ownerName);
+        }
 
         channel.setACL(userModel.parseACL);
         channel.save(null, {
@@ -174,25 +193,43 @@ var channelModel = {
             }
         });
 
-        channelMap.set("name", name);
-        channelMap.set("channelId", channelId);
-        channelMap.set("channelOwner", userModel.currentUser.userUUID);
-        channelMap.set("members", [userModel.currentUser.userUUID]);
+        if (isOwner) {
+            channelMap.set("name", name);
+            channelMap.set("channelId", channelId);
+            channelMap.set("channelOwner", userModel.currentUser.userUUID);
+            channelMap.set("members", [userModel.currentUser.userUUID]);
+            channelMap.set("clearBefore", new Date().getTime() * 10000000);
 
-        channelMap.save(null, {
-            success: function(channel) {
-                // Execute any logic that should take place after the object is saved.
+            channelMap.save(null, {
+                success: function(channel) {
+                    // Execute any logic that should take place after the object is saved.
 
 
-            },
-            error: function(channel, error) {
-                // Execute any logic that should take place if the save fails.
-                // error is a Parse.Error with an error code and message.
-                mobileNotify('Error creating channelMap: ' + error.message);
-                handleParseError(error);
-            }
-        });
+                },
+                error: function(channel, error) {
+                    // Execute any logic that should take place if the save fails.
+                    // error is a Parse.Error with an error code and message.
+                    mobileNotify('Error creating channelMap: ' + error.message);
+                    handleParseError(error);
+                }
+            });
+        }
 
+    },
+
+    deleteChannel : function (channelId) {
+        var dataSource = channelModel.channelsDS;
+        dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
+        var view = dataSource.view();
+        var channel = view[0];
+        dataSource.filter([]);
+        if (channel.isOwner) {
+            // If this user is the owner -- delete the channel map
+            deleteParseObject("channelmap", 'channelId', channelId);
+        }
+        dataSource.remove(channel);
+        deleteParseObject("channels", 'channelId', channelId);
+        mobileNotify("Removed channel : " + channel.get('name'));
     }
 
 };

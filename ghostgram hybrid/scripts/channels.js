@@ -7,7 +7,7 @@ function addChannel(e) {
 	    var name = $('#channels-addChannel-name').val(),
 	        description = $('#channels-addChannel-description').val();
 
-		channelModel.addChannel(name,description);
+		channelModel.addChannel(name, description, true);
 
 	} else {
 		mobileNotify("Chat name is required");
@@ -74,19 +74,9 @@ function archiveChannel(e) {
 function deleteChannel(e) {
 	e.preventDefault();
 	
-    var channelId = e.button[0].attributes["data-channel"].value;  
-    var dataSource = APP.models.channels.channelsDS;
-    dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
-    var view = dataSource.view();
-    var channel = view[0];
-	 dataSource.filter([]);
-	if (channel.isOwner) {
-		// If this user is the owner -- delete the channel map
-		deleteParseObject("channelmap", 'channelId', channelId);
-	}
-    dataSource.remove(channel); 
-    deleteParseObject("channels", 'channelId', channelId); 
-    mobileNotify("Removed channel : " + channel.get('name'));
+    var channelId = e.button[0].attributes["data-channel"].value;
+
+	channelModel.deleteChannel(channelId);
 
 }
     
