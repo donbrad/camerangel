@@ -159,10 +159,9 @@ var userModel = {
                 for (var i = 0; i < collection.models.length; i++) {
                     models.push(collection.models[i].attributes);
                 }
-                if (models.length > 0) {
-                    deviceModel.setAppState('hasPhotos', true);
-                }
+                deviceModel.setAppState('hasPhotos', true);
                 APP.models.gallery.photosDS.data(models);
+                deviceModel.isParseSyncComplete();
             },
             error: function(collection, error) {
                 handleParseError(error);

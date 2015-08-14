@@ -11,7 +11,7 @@ var deviceModel = {
     fileDirectory: '',
     tempDirectory: '',
 
-    state: new kendo.data.ObservableObject({
+    state: {
         inPrivacyMode: false,
         isVisible: true,
         isAvailable: true,
@@ -25,7 +25,7 @@ var deviceModel = {
         hasPlaces: false,
         hasPhotos: false,
         introFetched: false
-    }),
+    },
 
     init: function() {
 
@@ -55,15 +55,12 @@ var deviceModel = {
 
     },
 
-    changeHandler: function (e) {
-        if (e !== undefined && e.preventDefault !== undefined) {
-            e.preventDefault();
-        }
+    isParseSyncComplete: function () {
 
-        var channels = deviceModel.state.get('hasChannels'), contacts = deviceModel.state.get('hasContacts'),
-            places = deviceModel.state.get('hasPlaces'), photos = deviceModel.state.get('hasPhotos');
-
-        if (channels && contacts && places && photos) {
+        var channels = deviceModel.state.hasChannels, contacts = deviceModel.state.hasContacts,
+            places = deviceModel.state.hasPlaces, photos = deviceModel.state.hasPhotos;
+        // Todo:  add places -- need to discuss with tucker
+        if (channels && contacts && photos) {
             userModel.initPubNub();
         }
     },
@@ -106,14 +103,14 @@ var deviceModel = {
 
 
     setAppState: function(field, value) {
-        //deviceModel.state[field] = value;
-        deviceModel.state.set(field,value);
+        deviceModel.state[field] = value;
+       // deviceModel.state.set(field,value);
         deviceModel.saveAppState();
     },
 
     saveAppState: function() {
-        //window.localStorage.setItem('ggAppState', JSON.stringify(deviceModel.state));
-        window.localStorage.setItem('ggAppState', JSON.stringify(deviceModel.state.toJSON()));
+        window.localStorage.setItem('ggAppState', JSON.stringify(deviceModel.state));
+        //window.localStorage.setItem('ggAppState', JSON.stringify(deviceModel.state.toJSON()));
     },
 
     getAppState: function() {

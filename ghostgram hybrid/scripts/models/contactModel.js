@@ -57,10 +57,9 @@ var contactModel = {
                     models.push(model.attributes);
 
                 }
-                if (models.length > 0) {
-                    deviceModel.setAppState('hasContacts', true);
-                }
-               contactModel.contactsDS.data(models);
+                deviceModel.setAppState('hasContacts', true);
+                contactModel.contactsDS.data(models);
+                deviceModel.isParseSyncComplete();
             },
             error: function(collection, error) {
                 handleParseError(error);
