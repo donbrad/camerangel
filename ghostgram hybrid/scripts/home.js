@@ -292,9 +292,9 @@ function homeSignin (e) {
               $("#modalview-verifyPhone").data("kendoMobileModalView").open();
 			}
             userModel.currentUser.set('emailVerified', userModel.parseUser.get('emailVerified'));
-           userModel.parseACL = new Parse.ACL(userModel.parseUser);
+            userModel.parseACL = new Parse.ACL(userModel.parseUser);
             userModel.currentUser.bind('change', syncProfile);
-            window.onUserSignIn();
+            userModel.fetchParseData();
             APP.kendo.navigate('#home');
         },
         error: function(user, error) {
