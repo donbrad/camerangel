@@ -121,8 +121,8 @@ var channelModel = {
         channel.set("media",  true);
         channel.set("archive",  false);
         channel.set("unreadCount", 0);
-        channel.set("clearBefore", ggTime.currentPubNubTime());
-        channel.set("lastAccess", ggTime.currentPubNubTime());
+        channel.set("clearBefore", ggTime.currentTime());
+        channel.set("lastAccess", ggTime.currentTime());
         channel.set("description", "Private: " + contactAlias);
         channel.set("channelId", channelUUID);
         channel.set('userKey',  publicKey);
@@ -175,8 +175,8 @@ var channelModel = {
         channel.set("archive", true);
         channel.set("description", description);
         channel.set("unreadCount", 0);
-        channel.set("clearBefore", ggTime.currentPubNubTime());
-        channel.set("lastAccess", ggTime.currentPubNubTime());
+        channel.set("clearBefore", ggTime.currentTime());
+        channel.set("lastAccess", ggTime.currentTime());
         channel.set("channelId", channelId);
 
         // Channel owner can access and edit members...

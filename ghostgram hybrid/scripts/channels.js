@@ -221,7 +221,7 @@ function finalizeEditChannel(e) {
 function onInitEditChannel (e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
-	APP.models.channel.membersDS.data([]);
+	currrentChannelModel.membersDS.data([]);
 	$('#editChannelMemberList li').remove();
 }
 
@@ -229,7 +229,7 @@ function deleteMember (e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
 	var contactId = e.attributes['data-param'].value;
-	var thisMember = findContactByUUID(contactId);
+	var thisMember = contactModel.findContactByUUID(contactId);
 	currentChannelModel.potentialMembersDS.add(thisMember);
 	currentChannelModel.potentialMembersDS.sync();
 	currentChannelModel.membersDS.remove(thisMember);
