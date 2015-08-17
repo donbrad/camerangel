@@ -332,6 +332,28 @@ function reverseGeoCode(lat, lng) {
 
 }
 
+// utility to class to get time in normal and pubnub formats and convert between
+var ggTime = {
+
+	currentTime: function () {
+		return(new Date().getTime());
+	},
+	currentTimeInSeconds : function () {
+		return(new Date().getTime() / 1000);
+	},
+
+	currentPubNubTime: function () {
+		return(new Date().getTime() * 10000000);
+	},
+
+	toPubNubTime: function (timeIn) {
+		return (timeIn * 10000000);
+	},
+
+	fromPubNubTime : function (timeIn) {
+		return (timeIn / 10000000);
+	}
+};
 
 var _emailDomainList = [
 	/* Default domains included */

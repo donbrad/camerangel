@@ -38,7 +38,7 @@ var appDataChannel = {
     },
 
     updateTimeStamp : function () {
-        this.lastAccess = new Date().getTime() * 10000000;
+        this.lastAccess = ggTime.currentPubNubTime();
         localStorage.setItem('ggAppDataTimeStamp', this.lastAccess);
     },
 

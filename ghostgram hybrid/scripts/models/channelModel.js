@@ -61,6 +61,10 @@ var channelModel = {
 
     },
 
+    updateChannelsMessageCount : function () {
+        var channelArray = channelModel.channels.DS.data();
+    },
+
     findChannelModel: function (channelId) {
         var dataSource =  channelModel.channelsDS;
         dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
