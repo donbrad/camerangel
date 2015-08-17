@@ -12,26 +12,6 @@
 		</a>
 	</div>
 		<div id="contactListDiv"  style="padding-bottom: 24px;">
-			<div class="contact-connections">
-				<ul class="list-inline circleOptions">
-					<li>
-						<span>Private Chat</span>
-						<img class="connection-img" src="images/contact-privateChat.svg" />
-					</li>
-					<li>
-						<span>ghostMail</span>
-						<img class="connection-img" src="images/contact-ghostMail.svg" />
-					</li>
-					<li>
-						<span>SMS</span>
-						<img class="connection-img" src="images/contact-sms.svg" />
-					</li>
-					<li>
-						<span>Call</span>
-						<img class="connection-img" src="images/contact-call.svg" />
-					</li>
-				</ul>
-			</div>
 	        <ul id="contacts-listview"></ul>
 			<!-- Only display if device permission is needed -->
 			<div id="deviceContactPermission" class="pad center hidden">
@@ -60,6 +40,24 @@
 		<li><a data-action="contactCallPhone">Phone Call</a></li>
     
     </ul>
+</div>
+
+<!-- contact action -->
+<div data-role="modalview" id="modalview-contactActions" data-model="APP.models.contacts.currentContact" class="appearance" style="width: 90%; display: none;">
+	<div class="modal-top">
+		<a data-role="button" class="modal-close" data-click="closeContactActions"><img src="images/close.svg"/></a>
+		<img class="circle-img-lg" data-bind="attr: {src: photo}"/>
+		<h3 data-bind="text: name"></h3>
+		<p data-bind="text: alias"></p>
+	</div>
+	<div class="modal-bottom">
+		<ul class="list-inline" id="contactActionBtns" >
+			<li><a class="btnClear" data-role="button" data-click="privateChat">Private Chat</a></li>
+			<li><a class="btnClear" data-role="button" data-click="ghostEmail">ghostMail</a></li>
+			<li><a class="btnClear" data-role="button" data-click="contactCallPhone">Call</a></li>
+			<li><a class="btnClear" data-role="button" data-click="contactSendSMS">SMS</a></li>
+		</ul>
+	</div>
 </div>
 
 <!-- Import Contacts -->

@@ -10,8 +10,9 @@
 @shade-400: #EFF1F2;
 @btnActiveBk: rgba(0,0,0,0.15);
 @black: #4A4A4A;
-@warning: #EA6262;
-
+@warning: #e53935;
+@highlight: #9E788F;
+ 
 
 /* variables */
 @baseFontSize: 16;
@@ -932,8 +933,8 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .helper-form {
     position: relative;
-    top: 35px;
-    z-index: 99;
+    top: 42px;
+    z-index: 99; 
     right: 10px;
 }
 .helper-verified {
@@ -1119,6 +1120,62 @@ div.footerMenu.km-footer > ul > li > a:active {
     right: 0px;
     padding: 14px 14px !important; 
 }
+
+.modal-top {
+	height: 10rem;
+	width: 100%;
+	background-color: @shade-200;
+	text-align: center;
+	color: #fff;
+	padding-top: 2rem;
+	padding-bottom: 2rem;
+	> img {
+		height: 4rem;
+		vertical-align: middle;
+		margin-bottom:0.25rem;
+	}
+	svg {
+		width: 18px;
+	}
+	p {
+		.font-size(12);
+	}
+}
+
+.modal-bottom {
+	padding: 0.5rem 1rem;
+	h1,h2,h3,h4,h5,p {
+		margin-left: 0px;
+		margin-right: 0px;
+	}
+	
+	a {
+		width: 100%;
+		border-top: 1px solid @shade-300 !important;
+		text-align: center;
+	}
+	.modal-helper {
+		margin-bottom: 0.5rem;
+	}
+}
+
+.modalAction-helper {
+	width: 100%;
+	text-align: center;
+	.font-size(11);
+	color: @shade-100;
+	line-height: 1;
+}
+
+.modal-close {
+	position: absolute;
+	top: 0.5rem;
+	right: 0.5rem;
+	span > img {
+		height: 1.25rem;
+	}
+}
+
 /* ghost selection modal */
 
 .ghostSelectionBox {
@@ -1321,48 +1378,8 @@ div.footerMenu.km-footer > ul > li > a:active {
     padding-top: 6px;
     .font-size(12);
 }
-.chat-message {
-    margin: 8px 8px;
-    line-height: 16px;
-}
-.chat-message p {
-    margin: 0px 0px 4px;
-    .font-size(14);
-    height: 100%;
-}
-.chat-message h5 {
-    line-height: 1.5em;
-    opacity: 0.5;
-    color: #27476e;
-    margin: 0;
-    .font-size(12);
-    font-weight: 600;
-    display: none;
-}
+ 
 
-.chat-message-content {
-    margin-left: 44px;
-    height: 100%;
-}
-.chat-message-user-content {
-    margin-left: 72px;
-    height: 100%;
-    float: right;
-}
-.chat-message-text {
-    .font-size(14);
-    letter-spacing: 0.05em;
-}
-.chat-time {
-    text-align: center;
-    .font-size(12);
-    color: #979797;
-}
-.ghostMessageContact {
-    color: #27476e;
-    .font-size(14);
-    font-weight: 400;
-}
 .ghostMessageTime {
     float: right;
     color: #888888;
@@ -1590,26 +1607,65 @@ div.footerMenu.km-footer > ul > li > a:active {
     animation-name: fadeAndScaleOut;
     animation-timing-function: cubic-bezier(.71, .55, .62, 1.57);
 }
-#messages-listview .delete {
-    display: none;
-    position: absolute;
-    top: .35em;
-    right: .5em;
-    width: 60px;
-    background-color: #e0e0e0;
-    color: #27476e;
-}
-#messages-listview .archive {
-    display: none;
-    position: absolute;
-    top: .35em;
-    left: .5em;
-    width: 60px;
-    background-color: #e0e0e0;
-    color: #27476e;
-}
+
 #channel > div.km-content.km-widget.km-scroll-wrapper {
     background-color: #fff;
+}
+
+.message-slideOptions {
+	height:100%;
+	position: absolute;
+	right: 1rem;
+	top: 8px;
+	z-index: 0;
+	opacity: 0;
+	.font-size(12);
+	color: #fff;
+}
+
+.selectedLI {
+	background: #fff;
+}
+
+.selectedLI-archive { 
+	background: lighten(@highlight, 20%) !important;
+}
+
+.selectedLI-delete {
+	background: lighten(@warning, 20%) !important;
+}
+
+.chat-delete {
+	background: @warning;
+}
+
+#modalview-requestContent > div > div.km-scroll-container > div.modal-top {
+	padding-top: 3rem;
+	padding-bottom: 3rem;
+}
+
+#modalview-requestContent > div > div.km-scroll-container > div.modal-top > p {
+	color: #fff;
+}
+
+.arrow-left {
+	width: 0; 
+	height: 0; 
+	border-top: 3px solid transparent;
+	border-bottom: 3px solid transparent; 
+	
+	border-right:3px solid blue; 
+}
+
+.arrow-line {
+	height: 2px;
+	width: 100%;
+	background: @shade-300;
+}
+
+div.message-slideOptions > span.archive > a > span > img {
+	vertical-align: middle;
+			height: 18px;
 }
 
 #channel-addChannel-list li:first-child,
@@ -1909,6 +1965,10 @@ a:hover {
 	margin-left: 1.25rem;
 }
 
+#modalview-requestContent > div > div.km-scroll-container > div.modal-top {
+	background: #66BB6A;
+}
+
 #start-chat-img {
 	width: 18px;
 	vertical-align: baseline;
@@ -2007,7 +2067,7 @@ div.footerMenu.km-footer > ul > li > a {
 .actionBtn {
 	height: 3rem;
 	width: 3rem;
-	.shadow !important;
+	.shadow-1 !important;
 	border-radius: 1.5rem !important;
 	text-align: center;
 	position: fixed;
@@ -2032,11 +2092,9 @@ div.footerMenu.km-footer > ul > li > a {
 }
 
 /* Hide action btns on views */
-* > div.footerMenu.km-footer > a,
-#channel > div.footerMenu.km-footer > a {
+* > div.footerMenu.km-footer > a {
 	display: none;
 }
-#channels > div.footerMenu.km-footer > a,
 #contacts > div.footerMenu.km-footer > a,
 #gallery > div.footerMenu.km-footer > a {
 	display: inline-block; 
@@ -2745,12 +2803,26 @@ div.loginBox > form > div > ul > li {
 	//display: block;
 }
 
+#contactActionBtns {
+	width: 100%;
+}
+
 .contactListItem:hover {
 	color: @black;
+	text-align: left;
+}
+#contactActionBtns > li > a {
+	text-align: left;
+	padding: 0.5rem 0.25rem;
 }
 
 #contacts-listview > li > ul > li:active {
 	background: @shade-300;
+}
+
+#modalview-contactActions > div > div.km-scroll-container > div.modal-top {
+	color: #fff;
+	background-color: rgba(0,0,0,0.6);
 }
 
 .contact-connections {
@@ -2765,7 +2837,6 @@ div.loginBox > form > div > ul > li {
 	display: none;
 	opacity: 0;
 	overflow: hidden;
-	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+40,000000+100&amp;0+40,0.4+100 */
 background: -moz-linear-gradient(-45deg,  rgba(255,255,255,0) 40%, rgba(0,0,0,0.4) 100%); /* FF3.6+ */
 background: -webkit-gradient(linear, left top, right bottom, color-stop(40%,rgba(255,255,255,0)), color-stop(100%,rgba(0,0,0,0.4))); /* Chrome,Safari4+ */
 background: -webkit-linear-gradient(-45deg,  rgba(255,255,255,0) 40%,rgba(0,0,0,0.4) 100%); /* Chrome10+,Safari5.1+ */
@@ -3492,8 +3563,11 @@ div.contactListBox.activeContact > div > div > ul {
 /* Chat styles */
 
 .chat-message {
-    margin: 8px 8px;
-    line-height: 16px;
+    line-height: 1.5;
+    width: 100%;
+	position: relative;
+	z-index: 1;
+	right: 1rem;
 }
 
 .chat-message p {
@@ -3533,13 +3607,45 @@ div.contactListBox.activeContact > div > div > ul {
 .chat-message-content {
     margin-left: 44px;
     height: 100%;
-
 }
 
 .chat-message-user-content {
     margin-left: 72px;
     height: 100%;
     float: right;
+    padding: 0.2em 0.35em;
+    border-radius: .25em;
+    color: #fff;
+    background: @primary-200;
+    margin-top: 0.2em;
+}
+
+.chat-message-user-content:after {
+	content: "";
+	display: block;
+	position: absolute;
+	right: 2px; 
+	width: 0;
+	border-width: 8px 8px 0;
+	border-style: solid;
+	border-color: @primary-200 transparent;
+	bottom: -4px;
+}
+
+.movingChat > .chat-message-user-content:after {
+	display: none;
+}
+
+.movingChat > .chat-message-user-content {
+	.shadow-1;
+}
+
+.movingChat > .chat-message-user-content::after {
+	border-color: @highlight transparent;
+}
+
+.movingChat-delete > .chat-message-user-content::after {
+	border-color: @warning transparent;
 }
 
 .chat-message-text {
@@ -3551,6 +3657,12 @@ div.contactListBox.activeContact > div > div > ul {
     text-align: center;
     .font-size(12);
     color: #979797;
+}
+
+#channel > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
+	position: absolute;
+	width: 100%;
+	top: 0px;
 }
 
 /*!
