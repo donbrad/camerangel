@@ -82,14 +82,14 @@ function getNetworkState() {
 	switch (networkState) {
 		case Connection.ETHERNET:
 		case Connection.WIFI:
-			APP.setAppState('connection', "internet");
+			deviceModel.setAppState('connection', "internet");
 			mobileNotify("Online via Wifi");
 			break;
 		case Connection.CELL:
 		case Connection.CELL_2G:
 		case Connection.CELL_3G:
 		case Connection.CELL_4G:
-			APP.setAppState('connection', "cell");
+			deviceModel.setAppState('connection', "cell");
 			mobileNotify("Online via Cell");
 			break;
 	}
@@ -99,7 +99,7 @@ function handleParseError(err) {
 	switch (err.code) {
 		case Parse.Error.INVALID_SESSION_TOKEN:
 			Parse.User.logOut();
-			APP.models.profile.currentUser = '';
+			userModel.currentUser = '';
 			APP.models.profile.username = '';
 			APP.models.profile.email = '';
 			APP.models.profile.phone = '';
@@ -139,6 +139,30 @@ function mobileNotify(message) {
 		window.plugins.toast.showShortTop(message);
 	}
 
+}
+
+function getUserPrivateChannels(uuid, callBack) {
+	Parse.Cloud.run('getUserPrivateChannels', {
+		uuid: uuid
+	}, {
+		success: function(result, error) {
+			if (result.status === 'ok') {
+				callBack({
+					found: true,
+					channels: result.channels
+				});
+			} else {
+				callBack({
+					found: false,
+					channels: null
+				});
+			}
+
+		},
+		error: function(result, error) {
+			callBack(null, error)
+		}
+	});
 }
 
 function getUserPublicKey(uuid, callBack) {
@@ -233,7 +257,7 @@ function verifyPhone(e) {
 			if (result.verified) {
 				mobileNotify("Your phone number is verified.  Thank You!");
 				$("#modalview-verifyPhone").data("kendoMobileModalView").close();
-				var thisUser = APP.models.profile.currentUser;
+				var thisUser = userModel.currentUser;
 				appUserValdated(thisUser.userUUID, thisUser.phone, thisUser.email, thisUser.publicKey);
 			} else {
 				mobileNotify("Sorry, your verification number: ' + result.recieved + ' didn't match. ");

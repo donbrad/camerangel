@@ -6,16 +6,17 @@
   "DisplayName": "ghostgrams",
   "Author": "don bradford",
   "Description": "ghostgrams for iOS and Android (and maybe Win8)",
-  "BundleVersion": "0.1.9.3",
+  "BundleVersion": "0.1.9.4",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
-    "1",
-    "2"
+    "1"
   ],
   "iOSBackgroundMode": [
     "location",
     "bluetooth-central",
-    "bluetooth-peripheral"
+    "bluetooth-peripheral",
+    "fetch",
+    "remote-notification"
   ],
   "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
   "FrameworkVersion": "3.7.0",
@@ -58,7 +59,7 @@
     "Portrait"
   ],
   "AndroidHardwareAcceleration": "true",
-  "iOSStatusBarStyle": "Hidden",
+  "iOSStatusBarStyle": "BlackTranslucent",
   "Framework": "Cordova",
   "WP8TileTitle": "",
   "WP8Publisher": "",

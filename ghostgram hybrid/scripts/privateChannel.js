@@ -11,6 +11,7 @@ function p2pObject(user, contact, channel) {
 function newP2PEntry(user, contact, channel, callback) {
 	var P2PObject = Parse.Object.extend('p2pmap');
 	p2p = new P2PObject();
+	p2p.set('uuid', uuid.v4());
 	p2p.set('members', [user, contact]);
 	p2p.set('channel', channel);
 	p2p.save(null, {
@@ -30,8 +31,8 @@ function newP2PEntry(user, contact, channel, callback) {
 
 //check the p2p map 
 function processPrivateInvite(contactUUID, message) {
-	var userUUID = APP.models.profile.currentUser.get('userUUID'),
-		contact = getContactModel(contactUUID),
+	var userUUID = userModel.currentUser.get('userUUID'),
+		contact = contactModel.getContactModel(contactUUID),
 		privateChannelId = contact.privateChannelId;   // Is the already a private channel allocated for this contact
 
 	// No private channel in contact entry is there a p2p entry on parse?
@@ -44,7 +45,7 @@ function processPrivateInvite(contactUUID, message) {
 				newP2PEntry(userUUID, contactUUID, privateChannelId, function (result, error) {
 					  if (error === null) {
 						  // Create a channnel for this user
-						addPrivateChannel(contactUUID, contact.alias, privateChannelId);
+						channelModel.addPrivateChannel(contactUUID, contact.alias, privateChannelId);
 						  // Update the private channel for this contact
 						updateParseObject('contacts', 'uuid', contactUUID, 'privateChannelId', privateChannelId);
 					  } else {
@@ -56,7 +57,7 @@ function processPrivateInvite(contactUUID, message) {
 				var entry = results[0];
 				privateChannelId = entry.get('channel');
 				// Does this user have an existing privateChannel with this contact?
-				var channelModel = findChannelModel(privateChannelId);
+				var channelModel = channelModel.findChannelModel(privateChannelId);
 				
 				if (channelModel === undefined) {
 					// No existing private channel need to create one
@@ -85,7 +86,7 @@ function processPrivateInvite(contactUUID, message) {
 
 // search the p2pmap for an existing mapping between user and contact
 function queryP2Pmap(contactUUID, userUUID, callBack) {
-	var user = APP.models.profile.currentUser.get('userUUID');
+	var user = userModel.currentUser.get('userUUID');
 	var contactQuery = new Parse.Query("p2pmap");
 	contactQuery.containsAll("members", [contactUUID]);
 

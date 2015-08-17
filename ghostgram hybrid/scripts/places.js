@@ -114,7 +114,7 @@ function onInitPlaces(e) {
 		APP.models.places.placesDS.filter({
 			field: 'uuid',
 			operator: 'eq',
-			value: APP.models.profile.currentUser.currentPlaceUUID
+			value: userModel.currentUser.currentPlaceUUID
 		});
 
 		var view = APP.models.places.placesDS.view();
@@ -127,7 +127,7 @@ function onInitPlaces(e) {
 }
 
 function resetPlacesFilter() {
-	if (APP.models.profile.currentUser.currentPlaceUUID === undefined) {
+	if (userModel.currentUser.currentPlaceUUID === undefined) {
 		APP.models.places.placesDS.filter({});
 		return;
 	}
@@ -135,12 +135,12 @@ function resetPlacesFilter() {
 	APP.models.places.placesDS.filter({
 		field: 'uuid',
 		operator: 'neq',
-		value: APP.models.profile.currentUser.currentPlaceUUID
+		value: userModel.currentUser.currentPlaceUUID
 	});
 }
 
 function checkInTo(place) {
-	APP.models.profile.currentUser.currentPlaceUUID = place.uuid;
+	userModel.currentUser.currentPlaceUUID = place.uuid;
 
 	var templateText = $('#placesTemplate').text();
 	var template = kendo.template(templateText);
@@ -154,7 +154,7 @@ function checkInTo(place) {
 
 
 function checkOut() {
-	APP.models.profile.currentUser.currentPlaceUUID = '';
+	userModel.currentUser.currentPlaceUUID = '';
 
 	$('#current-place').hide();
 
@@ -238,7 +238,7 @@ function onHideEditPlace (e) {
 	APP.models.places.placesDS.filter({
 		field: 'uuid',
 		operator: 'eq',
-		value: APP.models.profile.currentUser.currentPlaceUUID
+		value: userModel.currentUser.currentPlaceUUID
 	});
 	var view = APP.models.places.placesDS.view();
 	if (view.length !== 0) {
@@ -252,7 +252,7 @@ function doDeletePlace (e) {
 		e.preventDefault();
 	}
 
-	if (APP.models.places.currentPlace.get('uuid') === APP.models.profile.currentUser.currentPlaceUUID) {
+	if (APP.models.places.currentPlace.get('uuid') === userModel.currentUser.currentPlaceUUID) {
 		checkOut();
 	}
 
@@ -282,7 +282,7 @@ function onShowPlaces(e) {
 			checkOut();
 			return;
 		}
-		if (locations[0].get('uuid') === APP.models.profile.currentUser.currentPlaceUUID) {
+		if (locations[0].get('uuid') === userModel.currentUser.currentPlaceUUID) {
 			return;
 		}
 		if (locations[0].get('autoCheckIn') !== true) {

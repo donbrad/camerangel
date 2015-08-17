@@ -17,12 +17,12 @@
     </script>
     <script src="bower_components/eventEmitter/EventEmitter.js"></script>
     <script src="bower_components/q/q.js"></script>
-	<script src="scripts/parse.js"></script>
-    <script src="https://cdn.pubnub.com/pubnub-3.7.12.js"></script>
+	<script src="scripts/libs/parse.js"></script>
+    <script src="https://cdn.pubnub.com/pubnub-3.7.14.js"></script>
     <script src="scripts/parseKendoDataSourceFactory.js"></script>
     <script src="scripts/appData.js"></script>
 	<script src="scripts/geo.js"></script>
-    <script src="scripts/guid.js"></script>
+    <script src="scripts/libs/guid.js"></script>
 	<script src="scripts/home.js"></script>
 	<script src="scripts/channels.js"></script>
 	<script src="scripts/channel.js"></script>
@@ -34,27 +34,33 @@
 	<script src="scripts/gallery.js"></script>
 	<script src="scripts/utils.js"></script>
 	<script src="scripts/pubnub.js"></script>
-	<script src="scripts/cryptico.js"></script>
-	<script src="scripts/secureChannel.js"></script>
-    <script src="scripts/smartcrop.js"></script>
-	<script src="scripts/groupChannel.js"></script>
+	<script src="scripts/libs/cryptico.js"></script>
+    <script src="scripts/libs/smartcrop.js"></script>
 	<script src="scripts/ux.js"></script>
-	<script src="scripts/lunr.js"></script>
-    <script src="scripts/jq.wraptions.js"></script>
+	<script src="scripts/libs/lunr.js"></script>
+    <script src="scripts/libs/jq.wraptions.js"></script>
     <script src="scripts/jquery.email-autocomplete.js"></script>
 	<script src='bower_components/autosize/dest/autosize.js'></script>
     <script src="bower_components/moment/moment.js"></script>
-	<script src="scripts/uuid.js"></script>
-    <script src="scripts/jquery-clearsearch.js"></script>
-    <script src="scripts/cropper.js"></script>
+	<script src="scripts/libs/uuid.js"></script>
+    <script src="scripts/libs/jquery-clearsearch.js"></script>
+    <script src="scripts/libs/cropper.js"></script>
     <script src="bower_components/velocity/velocity.js"></script>
     <script src="bower_components/lodash/lodash.js"></script>
     <script src="scripts/models/semanticDSs.js"></script>
     <script src="scripts/models/archive.js"></script>
+	<script src="scripts/models/channelModel.js"></script>
+	<script src="scripts/models/contactModel.js"></script>
+	<script src="scripts/models/deviceModel.js"></script>
+	<script src="scripts/models/notificationModel.js"></script>
+	<script src="scripts/models/photoModel.js"></script>
+	<script src="scripts/models/userModel.js"></script>
     <script src="scripts/views/sentinel.js"></script>
     <script src="scripts/views/archiveView.js"></script>
 	<script src="scripts/channels/appDataChannel.js"></script>
 	<script src="scripts/channels/userDataChannel.js"></script>
+	<script src="scripts/channels/groupChannel.js"></script>
+	<script src="scripts/channels/secureChannel.js"></script>
 	<script src="scripts/app.js"></script>
 
 </head>
@@ -224,7 +230,7 @@
 		    	<span class="right"><a class="btnClear-grey-sm" data-role="button" data-rel="modalview" href="#testing">Clear</a></span>
 	    	</div>
 	    	<div class="clearfix"></div>
-	    	<ul data-role="listview"  data-source="APP.models.home.notificationDS" data-template="notificationTemplate" id="notification-listview"></ul>
+	    	<ul data-role="listview"  data-source="notificationModel.notificationDS" data-template="notificationTemplate" id="notification-listview"></ul>
 	   	</div>
 	  </div>
 </div>
@@ -613,7 +619,7 @@
     </div>
 
     <div>
-        <ul id="galleryPicker-listview" class="list-inline" data-role="listview" data-click="galleryPickerClick" data-source="APP.models.gallery.photosDS" data-template="galleryPicker-template"></ul>
+        <ul id="galleryPicker-listview" class="list-inline" data-role="listview" data-click="galleryPickerClick" data-source="photoModel.photosDS" data-template="galleryPicker-template"></ul>
     </div>
 
 </div>

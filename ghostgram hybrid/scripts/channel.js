@@ -325,8 +325,8 @@ function togglePrivacyMode (e) {
 function onShowChannel(e) {
 	e.preventDefault();
 	var channelUUID = e.view.params.channel;
-	var thisChannelModel = findChannelModel(channelUUID);
-	var thisUser = APP.models.profile.currentUser;
+	var thisChannelModel = channelModel.findChannelModel(channelUUID);
+	var thisUser = userModel.currentUser;
 	var thisChannel = {};
 	var contactUUID = null;
 	APP.models.channel.currentModel = thisChannelModel;
@@ -358,7 +358,7 @@ function onShowChannel(e) {
 			contactUUID = thisChannelModel.members[0];	
 
 		APP.models.channel.currentContactUUID = contactUUID;
-		var thisContact = getContactModel(contactUUID);
+		var thisContact = contactModel.getContactModel(contactUUID);
 		if (thisChannelModel.isPrivate) {
 			$('#channelImage').attr('src', thisContact.photo);
 		}

@@ -1,4 +1,4 @@
- <div data-role="view" data-title="Gallery" id="gallery" data-layout="main" data-model="APP.models.gallery" data-init="onInitGallery" data-show="onShowGallery">
+ <div data-role="view" data-title="Gallery" id="gallery" data-layout="main" data-model="photoModel" data-init="onInitGallery" data-show="onShowGallery">
  	<div class="topViewSearchBox">
  		<div class="appendSearch">
 			<span class="searchIcon"><img src="images/search.svg" /></span>
@@ -96,7 +96,7 @@
 
      <div style="padding-top: 8px; padding-left: 4px; padding-right: 4px; padding-bottom: 48px; height: 100%;">
      	<!-- Photos -->
-         <ul id="gallery-listview" class="list-inline" data-role="listview" data-click="galleryClick" data-source="APP.models.gallery.photosDS" data-template="gallery-template"></ul>
+         <ul id="gallery-listview" class="list-inline" data-role="listview" data-click="galleryClick" data-source="photoModel.photosDS" data-template="gallery-template"></ul>
          <!-- Archive -->
 
      </div>

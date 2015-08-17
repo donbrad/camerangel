@@ -1,5 +1,5 @@
 
-<div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="APP.models.contacts" data-init="onInitContacts" data-show="onShowContacts" data-hide="onHideContacts" style="display: none;">
+<div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="contactModel" data-init="onInitContacts" data-show="onShowContacts" data-hide="onHideContacts" style="display: none;">
 	<div class="topViewSearchBox">
 	 	<div class="appendSearch">
 			<span class="searchIcon"><img src="images/search.svg" /></span>
@@ -63,7 +63,7 @@
 </div>
 
 <!-- Import Contacts -->
-<div data-role="view" data-title="Import Contacts" id="contactImport" data-layout="main" data-model="APP.models.contacts" data-init="onInitContactImport" data-show="onShowContactImport" style="display: none;">
+<div data-role="view" data-title="Import Contacts" id="contactImport" data-layout="main" data-model="contactModel" data-init="onInitContactImport" data-show="onShowContactImport" style="display: none;">
     <div data-role="header">
         <div data-role="navbar">
            <a data-role="button"  data-align="left" href="#:back" ><img src="images/nav-back.svg" /></a>
@@ -73,7 +73,7 @@
     </div>    
     <div  style="padding-bottom: 24px;">
        <div style="padding-bottom: 4px; padding-top: 4px;">
-         <input class="clearable" style="font-size: 16px; margin-left: 6px; width: 80%" id="contactSearchQuery" type="search"/> 
+         <input  style="font-size: 16px; margin-left: 6px; width: 80%" id="contactSearchQuery" type="search"/>
          <a data-role="button"  data-click="contactsFindContacts">  
          	<i class="ghostIconSmall fa fa-search"></i>
          </a>
@@ -83,7 +83,7 @@
 </div>
 
 <!-- Modal add contact -->
-<div data-role="modalview" data-model="APP.models.contacts" data-title="Add Contact" id="modalview-AddContact" data-open="doShowAddContact" class="appearance" style="width: 90%; min-height: 100%; display: none;">
+<div data-role="modalview" data-model="contactModel" data-title="Add Contact" id="modalview-AddContact" data-open="doShowAddContact" class="appearance" style="width: 90%; min-height: 100%; display: none;">
     <div class="inviteContactImg">
     	<div class="inviteTop hidden">
     		<img src="images/invite.svg" height="16" />
@@ -100,11 +100,11 @@
     		</div>
     		<div class="topHalfRight">
 				<div>
-					<input class="input-text-md clearable" id="addContactName" type="text" placeholder="Contact full name"/>
+					<input class="input-text-md " id="addContactName" type="search" placeholder="Contact full name"/>
 				</div>
 				<div>
     				<span class="caption">aka</span>
-                	<input class="input-text-sm clearable" id="addContactAlias" type="text" placeholder="Add a nickname"/>
+                	<input class="input-text-sm " id="addContactAlias" type="search" placeholder="Add a nickname"/>
     			</div>
     		</div>
     	</div>
@@ -146,7 +146,7 @@
 </div>
 
 <!-- Edit Contacts -->
-<div data-role="view" data-model="APP.models.contacts.currentContact" data-title="Edit Contact" id="editContact" data-layout="main"  data-transition="slide" data-show="onShowEditContact" class="appearance" style="display: none;">
+<div data-role="view" data-model="contactModel.currentContact" data-title="Edit Contact" id="editContact" data-layout="main"  data-transition="slide" data-show="onShowEditContact" class="appearance" style="display: none;">
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -352,12 +352,12 @@
 				<h4 class="phoneContact">
 					#: data.name #
 				</h4>
-			#}#
-			 
+			#}#			 
 		 </div>
 		</a>
 	</div><!-- listBox -->
 </div>
+
 </script>
 
 <script type="text/x-kendo-template" id="deviceContactsTemplate">
@@ -381,7 +381,7 @@
   </div>
 </script>
 
-<div data-role="view" data-title="Contact" id="contact" data-layout="main" data-model="APP.models.contacts" data-init="onInitContact">
+<div data-role="view" data-title="Contact" id="contact" data-layout="main" data-model="contactModel" data-init="onInitContact">
   <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -409,7 +409,7 @@
 
 	<div id="ghostEmailwrapper" style="width: 100%; height:100%;">
 		
-		<textarea id="ghostEmailEditor" contenteditable="true" class="editor" rows="20" cols="80" style="width:100%; min-height:320px; border: 1px solid #2e2e2e; padding: 4px; margin: 6px; color: #111111;">
+		<textarea id="ghostEmailEditor" contenteditable="true" class="editor" rows="80" cols="80" style="width:100%; min-height:380px; border: 1px solid #2e2e2e; padding: 4px; margin: 6px; color: #111111;">
 
 		</textarea>
 		

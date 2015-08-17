@@ -2,8 +2,8 @@ function syncCurrentContact(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
     }
-    updateParseObject('contacts','uuid', APP.models.contacts.currentContact.uuid, e.field, this[e.field]);  
-    APP.models.contacts.currentModel.set(e.field, this[e.field]);
+    updateParseObject('contacts','uuid', contactModel.currentContact.uuid, e.field, this[e.field]);
+    contactModel.currentModel.set(e.field, this[e.field]);
 }
     
 function syncProfile (e) {
@@ -11,8 +11,8 @@ function syncProfile (e) {
         e.preventDefault();
     }
 
-    APP.models.profile.parseUser.set(e.field, APP.models.profile.currentUser.get(e.field));
-    APP.models.profile.parseUser.save(null, {
+    userModel.parseUser.set(e.field, userModel.currentUser.get(e.field));
+    userModel.parseUser.save(null, {
         success : function (user){
             mobileNotify("Updated your " + e.field);
         },
@@ -37,12 +37,12 @@ function inviteUser(e) {
 }
 
 function sendSecureEmail () {
-    var email = APP.models.contacts.currentContact.get('email');
+    var email = contactModel.currentContact.get('email');
 
     if (window.navigator.simulator === true){
         alert("Mail isn't supported in the emulator");
     } else {
-        var thisUser = APP.models.profile.currentUser.get('name');
+        var thisUser = userModel.currentUser.get('name');
         cordova.plugins.email.open({
             to:          [email],
             subject:     '',
@@ -59,7 +59,7 @@ function secureEmail(e) {
         e.preventDefault();
     }
 
-    var email = APP.models.contacts.currentContact.get('email');
+    var email = contactModel.currentContact.get('email');
 
 }
 
@@ -67,18 +67,41 @@ function privateChat(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
     }
-	var contact = APP.models.contacts.currentContact;
-	var contactUUID = contact.contactUUID;
-	
+	var contact = contactModel.currentContact;
+	var contactUUID = contact.contactUUID, contactName = contact.name, contactPublicKey = contact.publicKey;
+    var privateChannelId = contact.privateChannelId;
+    var userName = userModel.currentUser.get('name');
 	if (contactUUID === undefined || contactUUID === null) {
-		mobileNotify(contact.get('name') + "hasn't verified their contact info");
+		mobileNotify(contact.name + "hasn't verified their contact info");
 		return;
 	}
-	
-    processPrivateInvite(contactUUID, APP.models.profile.currentUser.get('alias') + " requests a Private Channel");
+
+    // Is there already a private chat provisioned for this user?
+    var channel = channelModel.findPrivateChannel(contactUUID);
+    if (channel !== undefined) {
+        privateChannelId = channel.channelId;
+    }
+
+    if (privateChannelId === undefined) {
+        privateChannelId = uuid.v4();
+        // Create a new private channel for this contact
+        channelModel.addPrivateChannel(contactUUID, contactPublicKey, contactName, privateChannelId);
+
+        userDataChannel.privateChannelInvite(contactUUID, privateChannelId, "Private Chat request from: " + userName);
+        mobileNotify("Requesting private chat with " + contactName);
+
+        // Jump to private chat
+    } else {
+
+        // Notify contact of private chat request
+        userDataChannel.privateChannelInvite(contactUUID, privateChannelId, "Private Chat request from: " + userName);
+        // Jump to private chat
+
+    }
+    //processPrivateInvite(contactUUID, contactModel.currentUser.get('alias') + " requests a Private Channel");
 }
 
-function getContactModel(contactUUID) {
+/*function getContactModel(contactUUID) {
 	 var dataSource = APP.models.contacts.contactsDS;
     dataSource.filter( { field: "contactUUID", operator: "eq", value: contactUUID });
     var view = dataSource.view();
@@ -106,7 +129,7 @@ var dataSource = APP.models.contacts.contactsDS;
 	dataSource.filter([]);
 	
 	return(contact);	
-}
+}*/
 
 function doEditContact(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
@@ -122,16 +145,10 @@ function deleteContact(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
     }
-    var dataSource = APP.models.contacts.contactsDS;
-	var string = "Deleted contact: " + APP.models.contacts.currentContact.name + " ("+ APP.models.contacts.currentContact.alias + ")" ;
-	
-    dataSource.filter( { field: "uuid", operator: "eq", value: APP.models.contacts.currentContact.uuid });
-    var view = dataSource.view();
-    var contact = view[0];
-	 dataSource.filter([]);
-    dataSource.remove(contact);
 
-    deleteParseObject("contacts", 'uuid', APP.models.contacts.currentContact.get('uuid'));
+	var string = "Deleted contact: " + contactModel.currentContact.name + " ("+ contactModel.currentContact.alias + ")" ;
+	
+    contactModel.delete();
 	mobileNotify(string);
 	APP.kendo.navigate('#contacts');
     
@@ -180,12 +197,12 @@ function contactSendEmail(e) {
         e.preventDefault();
     }
 
-    var email = APP.models.contacts.currentContact.get('email');
+    var email = contactModel.currentContact.get('email');
 
 	 if (window.navigator.simulator === true){
 		 alert("Mail isn't supported in the emulator");
 	 } else {
-		 var thisUser = APP.models.profile.currentUser.get('name');
+		 var thisUser = userModel.currentUser.get('name');
 		 cordova.plugins.email.open({
 			   to:          [email],
 			   subject:     '',
@@ -203,7 +220,7 @@ function inviteContact(e) {
         e.preventDefault();
     }
 
-    var email = APP.models.contacts.currentContact.get('email');
+    var email = contactModel.currentContact.get('email');
 
     contactSendEmailInvite(email);
 }
@@ -239,7 +256,7 @@ function contactSendEmailInvite(email) {
 	 if (window.navigator.simulator === true){
 		 alert("Mail isn't supported in the emulator");
 	 } else {
-		 var thisUser = APP.models.profile.currentUser.get('name');
+		 var thisUser = userModel.currentUser.get('name');
 		 cordova.plugins.email.open({
 			   to:          [email],
                bcc: ['donbrad@hotmail.com'],
@@ -258,7 +275,7 @@ function contactCallPhone(e) {
         e.preventDefault();
     }
 
-     var number = APP.models.contacts.currentContact.get('phone');
+     var number = contactModel.currentContact.get('phone');
     phonedialer.dial(
         number,
         function(err) {
@@ -280,7 +297,7 @@ function contactSendSMS(e) {
         e.preventDefault();
     }
 
-    var number = APP.models.contacts.currentContact.get('phone');
+    var number = contactModel.currentContact.get('phone');
     var message = "";
 
 
@@ -307,23 +324,23 @@ function contactSendSMS(e) {
 function updateCurrentContact (contact) {
    
     // Wish observables set took an object -- need to set fields individually
-    APP.models.contacts.currentModel = contact;
-    APP.models.contacts.currentContact.unbind('change' , syncCurrentContact);
-    APP.models.contacts.currentContact.set('name', contact.name);
-    APP.models.contacts.currentContact.set('alias', contact.alias);
-    APP.models.contacts.currentContact.set('phone', contact.phone);
-    APP.models.contacts.currentContact.set('email', contact.email);
-    APP.models.contacts.currentContact.set('address', contact.address);
-    APP.models.contacts.currentContact.set('uuid', contact.uuid);
-	APP.models.contacts.currentContact.set('photo', contact.photo);
-	APP.models.contacts.currentContact.set('category', contact.category);
-	APP.models.contacts.currentContact.set('contactUUID', contact.contactUUID);
-	APP.models.contacts.currentContact.set('contactEmail', contact.contactEmail);
-    APP.models.contacts.currentContact.set('privateChannel', contact.privateChannel);
-	APP.models.contacts.currentContact.set('privateChannelId', contact.privateChannelId);
-	APP.models.contacts.currentContact.set('phoneVerified',contact.phoneVerified);
-	APP.models.contacts.currentContact.set('publicKey',contact.publicKey);
-    APP.models.contacts.currentContact.bind('change' , syncCurrentContact);
+    contactModel.currentModel = contact;
+    contactModel.currentContact.unbind('change' , syncCurrentContact);
+    contactModel.currentContact.set('name', contact.name);
+    contactModel.currentContact.set('alias', contact.alias);
+    contactModel.currentContact.set('phone', contact.phone);
+    contactModel.currentContact.set('email', contact.email);
+    contactModel.currentContact.set('address', contact.address);
+    contactModel.currentContact.set('uuid', contact.uuid);
+    contactModel.currentContact.set('photo', contact.photo);
+    contactModel.currentContact.set('category', contact.category);
+    contactModel.currentContact.set('contactUUID', contact.contactUUID);
+    contactModel.currentContact.set('contactEmail', contact.contactEmail);
+    contactModel.currentContact.set('privateChannel', contact.privateChannel);
+    contactModel.currentContact.set('privateChannelId', contact.privateChannelId);
+    contactModel.currentContact.set('phoneVerified',contact.phoneVerified);
+    contactModel.currentContact.set('publicKey',contact.publicKey);
+    contactModel.currentContact.bind('change' , syncCurrentContact);
    
    
 }
@@ -356,11 +373,11 @@ function onShowEditContact(e) {
 
 	$('#contactEditList').removeClass('hidden');
 	
-	syncContact(APP.models.contacts.currentContact);
+	syncContact(contactModel.currentContact);
 	// Todo - wire up verified status/read only fields
 	
-	var contactVerified = APP.models.contacts.currentContact.phoneVerified;
-	var contactEmail = APP.models.contacts.currentContact.email;
+	var contactVerified = contactModel.currentContact.phoneVerified;
+	var contactEmail = contactModel.currentContact.email;
 
 	if (contactVerified){
 		$("#edit-verified-phone").removeClass("hidden");
@@ -377,8 +394,8 @@ function onShowEditContact(e) {
 function onDoneEditContact (e) {
 	if (e.preventDefault !== undefined)
     	e.preventDefault();
-   
-	 APP.models.contacts.currentContact.unbind('change' , syncCurrentContact);
+
+    contactModel.currentContact.unbind('change' , syncCurrentContact);
 	APP.kendo.navigate("#contacts");
 
 	// reset UI
@@ -394,19 +411,19 @@ function onInitContacts(e) {
 
     // set search bar 
     var scroller = e.view.scroller;
-	scroller.scrollTo(0,-44); 
+	scroller.scrollTo(0,-44);
 
-	APP.models.contacts.deviceQueryActive = false;
+    contactModel.deviceQueryActive = false;
 	
-	var dataSource = APP.models.contacts.contactListDS;
+	var dataSource = contactModel.contactListDS;
 	
 	// Activate clearsearch and zero the filter when it's called
      $('#contactSearchInput').clearSearch({ 
 		 callback: function() { 
 			 dataSource.data([]);
-			 dataSource.data(APP.models.contacts.contactsDS.data());
-			 dataSource.filter([]);  
-			  APP.models.contacts.deviceContactsDS.data([]);
+			 dataSource.data(contactModel.contactsDS.data());
+			 dataSource.filter([]);
+             contactModel.deviceContactsDS.data([]);
 			 $('#btnSearchDeviceContacts').addClass('hidden');
 		 } 
 	 });
@@ -434,8 +451,8 @@ function onInitContacts(e) {
 			
 		 } else {
 			 dataSource.data([]);
-			 APP.models.contacts.deviceContactsDS.data([]);
-			 dataSource.data(APP.models.contacts.contactsDS.data());
+             contactModel.deviceContactsDS.data([]);
+			 dataSource.data(contactModel.contactsDS.data());
 			 dataSource.filter([]);
 			 
 			 $('#btnSearchDeviceContacts').addClass('hidden');
@@ -444,7 +461,7 @@ function onInitContacts(e) {
 	 });
 	
      $("#contacts-listview").kendoMobileListView({
-        dataSource: APP.models.contacts.contactListDS,
+        dataSource: contactModel.contactListDS,
         template: $("#contactsTemplate").html(),
 		headerTemplate: $("#contactsHeaderTemplate").html(),
         fixedHeaders: true,
@@ -457,7 +474,7 @@ function onInitContacts(e) {
 
 			/*
 			if (contact.category === 'phone') {
-                if (APP.models.contacts.unifiedDeviceContact) {
+                if (contactModel.unifiedDeviceContact) {
                     // Have a unified device contact -- just to add contact
                     launchAddContact({dataItem : contact});
                 } else {
@@ -611,8 +628,8 @@ function contactActionDisable1(e){
 function onShowContacts (e) {
 	if (e.preventDefault !== undefined)
     	e.preventDefault();
-    
-	APP.models.contacts.contactListDS.data(APP.models.contacts.contactsDS.data());
+
+    contactModel.contactListDS.data(contactModel.contactsDS.data());
 	//APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
 	
 	// set action button
@@ -628,49 +645,49 @@ function onHideContacts (e) {
 
 function launchAddContact(e) {
 
-    APP.models.contacts.currentDeviceContact = e.dataItem;
-    APP.models.contacts.emailArray = new Array();
+    contactModel.currentDeviceContact = e.dataItem;
+    contactModel.emailArray = new Array();
 
-    for (var i = 0; i<APP.models.contacts.currentDeviceContact.emails.length; i++) {
+    for (var i = 0; i<contactModel.currentDeviceContact.emails.length; i++) {
         var email = new Object();
-        email.name = APP.models.contacts.currentDeviceContact.emails[i].name;
-        email.address =  APP.models.contacts.currentDeviceContact.emails[i].address;
+        email.name = contactModel.currentDeviceContact.emails[i].name;
+        email.address =  contactModel.currentDeviceContact.emails[i].address;
 
-        APP.models.contacts.emailArray.push(email);
+        contactModel.emailArray.push(email);
 
     }
 
-    APP.models.contacts.phoneArray = new Array();
-    for (var j = 0; j<APP.models.contacts.currentDeviceContact.phoneNumbers.length; j++) {
+    contactModel.phoneArray = new Array();
+    for (var j = 0; j<contactModel.currentDeviceContact.phoneNumbers.length; j++) {
         var phone = new Object();
-        phone.name = APP.models.contacts.currentDeviceContact.phoneNumbers[j].name;
-        phone.number =  APP.models.contacts.currentDeviceContact.phoneNumbers[j].number;
+        phone.name = contactModel.currentDeviceContact.phoneNumbers[j].name;
+        phone.number =  AcontactModel.currentDeviceContact.phoneNumbers[j].number;
 
-        APP.models.contacts.phoneArray.push(phone);
+        contactModel.phoneArray.push(phone);
 
     }
 
-    APP.models.contacts.addressArray = new Array();
-    for (var a = 0; a<APP.models.contacts.currentDeviceContact.addresses.length; a++) {
+    contactModel.addressArray = new Array();
+    for (var a = 0; a<contactModel.currentDeviceContact.addresses.length; a++) {
         var address = new Object();
-        address.name = APP.models.contacts.currentDeviceContact.addresses[a].name;
-        address.address =  APP.models.contacts.currentDeviceContact.addresses[a].fullAddress;
+        address.name = contactModel.currentDeviceContact.addresses[a].name;
+        address.address =  contactModel.currentDeviceContact.addresses[a].fullAddress;
 
-        APP.models.contacts.addressArray.push(address);
+        contactModel.addressArray.push(address);
     }
 
 
 
-    APP.models.contacts.phoneDS.data( APP.models.contacts.phoneArray);
-    APP.models.contacts.emailDS.data( APP.models.contacts.emailArray);
-    APP.models.contacts.addressDS.data( APP.models.contacts.addressArray);
+    contactModel.phoneDS.data( contactModel.phoneArray);
+    contactModel.emailDS.data( contactModel.emailArray);
+    contactModel.addressDS.data( contactModel.addressArray);
 
 
   /*
     $("#addNicknameBtn").removeClass("hidden");
     $("#contactNicknameInput input").val("");*/
 
-    var data = APP.models.contacts.currentDeviceContact;
+    var data = contactModel.currentDeviceContact;
 
     // Set name
     var name = data.name;
@@ -705,7 +722,7 @@ function onInitContactImport (e) {
     }
 	
     $("#contactimport-listview").kendoMobileListView({
-            dataSource: APP.models.contacts.deviceContactsDS,
+            dataSource: contactModel.deviceContactsDS,
             template: $("#deviceContactsTemplate").html(),
 			headerTemplate: "${value}",
             fixedHeaders: true,
@@ -739,13 +756,13 @@ function searchDeviceContacts(e) {
         if (nameArray.length > 1) {
             mobileNotify("Unifying " + query + "'s data");
             unifyContacts(array);
-            APP.models.contacts.unifiedDeviceContact = true;
-            APP.models.contacts.contactListDS.data([]);
-            APP.models.contacts.contactListDS.add(array[0]);
+            contactModel.unifiedDeviceContact = true;
+            contactModel.contactListDS.data([]);
+            contactModel.contactListDS.add(array[0]);
         } else {
-            APP.models.contacts.unifiedDeviceContact = false;
+            contactModel.unifiedDeviceContact = false;
             for (var i=0; i<array.length; i++) {
-                APP.models.contacts.contactListDS.add(array[i]);
+                contactModel.contactListDS.add(array[i]);
             }
         }
 
@@ -768,10 +785,10 @@ function filterContactsByName(contacts, firstName, lastName) {
 function onDoneSyncContact (e) {
 	if (e.preventDefault !== undefined) {
 		e.preventDefault();
-	}	
-	APP.models.contacts.currentContact.set('phone', $( "#syncContactPhone option:selected" ).text() );
-	APP.models.contacts.currentContact.set('email', $( "#syncContactEmail option:selected" ).text() );
-	APP.models.contacts.currentContact.set('address', $( "#syncContactAddress option:selected" ).text() );
+	}
+    contactModel.currentContact.set('phone', $( "#syncContactPhone option:selected" ).text() );
+    contactModel.currentContact.set('email', $( "#syncContactEmail option:selected" ).text() );
+    contactModel.currentContact.set('address', $( "#syncContactAddress option:selected" ).text() );
 	
 	$('#syncEditList').velocity("fadeOut", {duration: 300});
 	$('#contactEditList, #editContact-deleteBtn').velocity("fadeIn", {duration: 300, delay: 300, display: "inline-block"});
@@ -785,7 +802,7 @@ function doSyncContact(e) {
 		e.preventDefault();
 	}
 	
-	var name = APP.models.contacts.currentContact.name;
+	var name = contactModel.currentContact.name;
 	syncContactWithDevice(name, function() {
 		$('#contactEditList, #editContact-deleteBtn').velocity("fadeOut", {duration: 300, delay: 1000});
 		$('#syncEditList').velocity("fadeIn", { duration: 300, delay: 1500});
@@ -839,50 +856,47 @@ function unifyContacts(contacts) {
     phones = Object.keys(phoneArray);
     addresses = Object.keys(addressArray);
 
-	 APP.models.contacts.emailArray = [];
+    contactModel.emailArray = [];
     for (e = 0; e<emails.length; e++) {
         var email = {};
         email.name = emailArray[emails[e]];
         email.address =  emails[e];
 
-        APP.models.contacts.emailArray.push(email);
+        contactModel.emailArray.push(email);
     }
-    APP.models.contacts.emailDS.data(APP.models.contacts.emailArray);
-    APP.models.contacts.currentDeviceContact.emails = APP.models.contacts.emailArray;
+    contactModel.emailDS.data(contactModel.emailArray);
+    contactModel.currentDeviceContact.emails = contactModel.emailArray;
 
-	APP.models.contacts.phoneArray = [];
+    contactModel.phoneArray = [];
     for (p = 0; p<phones.length; p++) {
         var phone = {};
         phone.name = phoneArray[phones[p]];
         phone.number =  phones[p];
 
-        APP.models.contacts.phoneArray.push(phone);
+        contactModel.phoneArray.push(phone);
     }
-    APP.models.contacts.phoneDS.data(APP.models.contacts.phoneArray);
-    APP.models.contacts.currentDeviceContact.phoneNumbers = APP.models.contacts.phoneArray;
+    contactModel.phoneDS.data(contactModel.phoneArray);
+    contactModel.currentDeviceContact.phoneNumbers = contactModel.phoneArray;
 
-	APP.models.contacts.addressArray = [];
+	contactModel.addressArray = [];
     for (a = 0; a<addresses.length; a++) {
         var address = {};
         address.name = addressArray[addresses[a]];
         address.address =  addresses[a];
 
-        APP.models.contacts.addressArray.push(address);
+        contactModel.addressArray.push(address);
     }
-    APP.models.contacts.addressDS.data(APP.models.contacts.addressArray);
-    APP.models.contacts.currentDeviceContact.addresses =  APP.models.contacts.addressArray;
+    contactModel.addressDS.data(contactModel.addressArray);
+    contactModel.currentDeviceContact.addresses =  contactModel.addressArray;
 }
     
 function contactsFindContacts(query, callback) {
-    if (e !== undefined && e.preventDefault !== undefined) {
-        e.preventDefault();
-    }
  //   var query = $('#contactSearchQuery').val();
    
-	if (APP.models.contacts.deviceQueryActive) {
+	if (contactModel.deviceQueryActive) {
 		return;
 	} else {
-		APP.models.contacts.deviceQueryActive = true;
+        contactModel.deviceQueryActive = true;
 	}
 	
     var options      = new ContactFindOptions();
@@ -891,9 +905,9 @@ function contactsFindContacts(query, callback) {
     var fields       = ["name", "displayName", "nickName" ,"phoneNumbers", "emails", "addresses", "photos"];
      
     navigator.contacts.find(fields, function(contacts) {
-        APP.models.contacts.deviceQueryActive = false;
+        contactModel.deviceQueryActive = false;
 		
-        APP.models.contacts.deviceContactsDS.data([]);
+        contactModel.deviceContactsDS.data([]);
         var contactsCount = contacts.length;
         
         for (var i=0;  i<contactsCount; i++) {
@@ -947,11 +961,11 @@ function contactsFindContacts(query, callback) {
             }
 
             if (contactItem.phoneNumbers.length > 0)
-                APP.models.contacts.deviceContactsDS.add(contactItem);
+                contactModel.deviceContactsDS.add(contactItem);
         }
 		
         if (callback !== undefined) {
-			callback(APP.models.contacts.deviceContactsDS.data());
+			callback(contactModel.deviceContactsDS.data());
 		} 
     },
 	function(error){
@@ -980,7 +994,7 @@ function doShowAddContact(e) {
     if (e !== undefined && e.preventDefault !== undefined)
         e.preventDefault();
 
-    var data = APP.models.contacts.currentDeviceContact;
+    var data = contactModel.currentDeviceContact;
 
     // Set name
     var name = data.name;
@@ -1004,7 +1018,7 @@ function contactsAddContact(e){
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
     }
-     var Contacts = Parse.Object.extend("contacts");
+    var Contacts = Parse.Object.extend("contacts");
     var contact = new Contacts();
     
     var name = $('#addContactName').val(),
@@ -1076,7 +1090,7 @@ function contactsAddContact(e){
 					  success: function(contact) {
 						// Execute any logic that should take place after the object is saved.
 						mobileNotify('Added contact : ' + contact.get('name'));
-						APP.models.contacts.contactsDS.add(contact.attributes);
+						contactModel.contactsDS.add(contact.attributes);
 						APP.kendo.navigate('#contacts');
 					  },
 					  error: function(contact, error) {
@@ -1147,16 +1161,16 @@ function sendGhostEmail(e) {
         e.preventDefault();
     }
     var content = $('#ghostEmailEditor').data("kendoEditor").value();
-    var contactKey = APP.models.contacts.currentContact.get('publicKey'), email = APP.models.contacts.currentContact.get('email');
+    var contactKey = contactModel.currentContact.get('publicKey'), email = contactModel.currentContact.get('email');
     if (contactKey === null) {
-        mobileNotify("Invalid Public Key for " + APP.models.contacts.currentContact.get('name'));
+        mobileNotify("Invalid Public Key for " + contactModel.currentContact.get('name'));
         return;
     }
     var encryptContent = cryptico.encrypt(content, contactKey);
     if (window.navigator.simulator === true){
         alert("Mail isn't supported in the emulator");
     } else {
-        var thisUser = APP.models.profile.currentUser.get('name');
+        var thisUser = userModel.currentUser.get('name');
         cordova.plugins.email.open({
             to:          [email],
             subject:     'ghostEmail',

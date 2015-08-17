@@ -4,65 +4,11 @@ function addChannel(e) {
 	// make sure chat has a name
 	if($("#channels-addChannel-name").val() !== ''){
 
-	    var Channels = Parse.Object.extend("channels");
-	    var channel = new Channels();
-		
-		var ChannelMap = Parse.Object.extend('channelmap');
-		var channelMap = new ChannelMap();
-	    
 	    var name = $('#channels-addChannel-name').val(),
-	        description = $('#channels-addChannel-description').val(), 
-	        channelId = uuid.v4();
-	        
-	    channel.set("name", name );
-	    channel.set("isOwner", true);
-		channel.set('isPrivate', false);
-	    channel.set("media",   true);
-	    channel.set("archive", true);
-	  
-	    channel.set("description", description);
-		channel.set("members", [APP.models.profile.currentUser.userUUID]);
-		channel.set("invitedMembers", []);
-	    channel.set("channelId", channelId);
-	    
-	    channel.setACL(APP.models.profile.parseACL);
-		channel.save(null, {
-	      success: function(channel) {
-	        // Execute any logic that should take place after the object is saved.
-	         
-	          APP.models.channels.channelsDS.add(channel.attributes);
-	          mobileNotify('Added channel : ' + channel.get('name'));
-			  
-			  APP.models.channels.currentModel = findChannelModel(channelId);
-			  APP.models.channels.currentChannel = APP.models.channels.currentModel;
-			  APP.kendo.navigate('#editChannel');
-	      },
-	      error: function(channel, error) {
-	        // Execute any logic that should take place if the save fails.
-	        // error is a Parse.Error with an error code and message.
-	        mobileNotify('Error creating channel: ' + error.message);
-	        handleParseError(error);
-	      }
-	    });
-		
-		channelMap.set("name", name);
-		channelMap.set("channelId", channelId);
-		channelMap.set("channelOwner", APP.models.profile.currentUser.userUUID);
-		channelMap.set("members", [APP.models.profile.currentUser.userUUID]);
-		
-		 channelMap.save(null, {
-	      success: function(channel) {
-	        // Execute any logic that should take place after the object is saved.
-	         
-	         
-	      },
-	      error: function(channel, error) {
-	        // Execute any logic that should take place if the save fails.
-	        // error is a Parse.Error with an error code and message.
-	        mobileNotify('Error creating channelMap: ' + error.message);
-	        handleParseError(error);
-	      }
-	    });	
+	        description = $('#channels-addChannel-description').val();
+
+		channelModel.addChannel(name, description, true);
+
 	} else {
 		mobileNotify("Chat name is required");
 	}
@@ -74,51 +20,6 @@ function onShowChannels(){
     
 }
 
-function findChannelModel(channelId) {
-	 var dataSource = APP.models.channels.channelsDS;
-    dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
-    var view = dataSource.view();
-    var channel = view[0];
-	dataSource.filter([]);
-	
-	return(channel);
-}
-
-
-function addPrivateChannel (contactUUID, contactAlias, channelUUID) {
-    var Channels = Parse.Object.extend("channels");
-    var channel = new Channels();
-	var publicKey = APP.models.profile.currentUser.get('publicKey');
-    var guid = uuid.v4();
-	
-    channel.set("name", contactAlias);
-    channel.set("isOwner", true);
-	channel.set('isPrivate', true);
-    channel.set("media",  true);
-    channel.set("archive",  false);
-    channel.set("description", "Private: " + contactAlias);
-    channel.set("channelId", channelUUID);
-	channel.set('userKey',  publicKey);
-	channel.set('contactKey', null);
-    channel.set("members", [APP.models.profile.currentUser.userUUID, contactUUID]);
-    
-    channel.setACL(APP.models.profile.parseACL);
-    channel.save(null, {
-      success: function(channel) {     
-          APP.models.channels.channelsDS.add(channel.attributes);
-          //closeModalViewAddChannel();
-          mobileNotify('Added private channel : ' + channel.get('name'));
-      },
-      error: function(channel, error) {
-        // Execute any logic that should take place if the save fails.
-        // error is a Parse.Error with an error code and message.
-        mobileNotify('Error creating channel: ' + error.message);
-        handleParseError(error);
-      }
-    });
- 
-}
-    
 function syncCurrentChannel(e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
@@ -173,19 +74,9 @@ function archiveChannel(e) {
 function deleteChannel(e) {
 	e.preventDefault();
 	
-    var channelId = e.button[0].attributes["data-channel"].value;  
-    var dataSource = APP.models.channels.channelsDS;
-    dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
-    var view = dataSource.view();
-    var channel = view[0];
-	 dataSource.filter([]);
-	if (channel.isOwner) {
-		// If this user is the owner -- delete the channel map
-		deleteParseObject("channelmap", 'channelId', channelId);
-	}
-    dataSource.remove(channel); 
-    deleteParseObject("channels", 'channelId', channelId); 
-    mobileNotify("Removed channel : " + channel.get('name'));
+    var channelId = e.button[0].attributes["data-channel"].value;
+
+	channelModel.deleteChannel(channelId);
 
 }
     
@@ -211,10 +102,10 @@ function onInitChannels (e) {
     // ToDo: Initialize list view
 	
      $("#channels-listview").kendoMobileListView({
-        dataSource: APP.models.channels.channelsDS,
+        dataSource: channelModel.channelsDS,
         template: $("#channels-listview-template").html(),
-        click: function(e){
-        	var selector = e.target[0].parentElement
+        click: function(e) {
+        	var selector = e.target[0].parentElement;
         	if($(selector).hasClass("chat-mainBox") === true || e.target[0].className === "chat-mainBox"){
         		var channelUrl = "#channel?channel=" + e.dataItem.channelId;
         		APP.kendo.navigate(channelUrl);
@@ -261,7 +152,7 @@ function doShowEventInputs(e) {
 function onShowAddChannel (e) {
 	e.preventDefault();
 	APP.models.channel.potentialMembersDS.data([]);
-	APP.models.channel.potentialMembersDS.data(APP.models.contacts.contactsDS.data());
+	APP.models.channel.potentialMembersDS.data(contactModel.contactsDS.data());
 	APP.models.channel.membersDS.data([]);
 
 	$('.addChannelEvent').addClass('hidden');
@@ -290,7 +181,7 @@ function finalizeEditChannel(e) {
 	var channelId = APP.models.channels.currentModel.channelId;
 	// It's a group channel so push this users UUID
 	
-	memberArray.push(APP.models.profile.currentUser.userUUID);
+	memberArray.push(userModel.currentUser.userUUID);
 	for (var i=0; i<members.length; i++) {
 		if(members[i].contactUUID !== null) {
 			memberArray.push(members[i].contactUUID);
@@ -443,7 +334,7 @@ function doShowChannelMembers (e) {
 
 
 	// Need to break observable link or contacts get deleted.
-	var contactArray = APP.models.contacts.contactsDS.data().toJSON();
+	var contactArray = contactModel.contactsDS.data().toJSON();
 
 	// create an easy reference to the potential members data source
 	var dataSource = APP.models.channel.potentialMembersDS;
@@ -558,7 +449,7 @@ function doShowChannelPresence (e) {
 	var members = currentChannelModel.members;
 	if (currentChannelModel.isPrivate) {
 		var privateContact = ''
-		if (members[0] === APP.models.profile.currentUser.userUUID) {
+		if (members[0] === userModel.currentUser.userUUID) {
 			privateContact = getContactModel(members[1]);
 		} else {
 			privateContact = getContactModel(members[0]);

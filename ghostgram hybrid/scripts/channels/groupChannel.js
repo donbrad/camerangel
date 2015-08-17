@@ -211,7 +211,7 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
 		getMessageHistory: function (callBack) {
 		   pubnub.history({
 				channel: channel,
-				limit: 64,
+				limit: 100,
 				callback: function (messages) {
 					var clearMessageArray = [];
 					messages = messages[0];
@@ -251,4 +251,4 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
             });
         }
     };
-}
+};

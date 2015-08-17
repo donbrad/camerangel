@@ -1,7 +1,6 @@
 /**
  * Created by donbrad on 8/10/15.
  * appDataChannel - handles all communication app level communication
- * eg:
  *
  * !!! Must be included after pubnub and init must be called after pubnub is initialized
  */
@@ -21,17 +20,15 @@ var appDataChannel = {
         var ts = localStorage.getItem('ggAppDataTimeStamp');
 
         if (ts !== undefined)
-            this.lastAccess = ts;
+            this.lastAccess = parseInt(ts);
 
         APP.pubnub.subscribe({
             channel: this.channelId,
             windowing: 50000,
             message: this.channelRead,
-            connect: function() {},
-            disconnect: function() {},
-            reconnect: function() {
-                mobileNotify("App Channel Reconnected")
-            },
+            connect: this.channelConnect,
+            disconnect: this.channelDisconnect,
+            reconnect:this.channelReconnect,
             error: this.channelError
 
         });
@@ -41,7 +38,7 @@ var appDataChannel = {
     },
 
     updateTimeStamp : function () {
-        this.lastAccess = new Date().getTime();
+        this.lastAccess = new Date().getTime() * 10000000;
         localStorage.setItem('ggAppDataTimeStamp', this.lastAccess);
     },
 
@@ -77,8 +74,6 @@ var appDataChannel = {
                 }
             });
         }
-
-
 
         this.updateTimeStamp();
     },
@@ -170,6 +165,18 @@ var appDataChannel = {
             success: this.channelSuccess,
             error: this.channelError
         });
+    },
+
+    channelConnect: function () {
+
+    },
+
+    channelDisconnect: function () {
+        mobileNotify("App Data Channel Disconnected");
+    },
+
+    channelReconnect: function () {
+        mobileNotify("App Data Channel Reconnected");
     },
 
     channelSuccess : function (status) {

@@ -1,5 +1,5 @@
 <!-- profile view -->
-<div data-role="view" id="profile" data-title="Profile" data-layout="profileLayout" data-model="APP.models.profile.currentUser" class="appearance" data-init="onInitProfile" data-transition="slide:right">
+<div data-role="view" id="profile" data-title="Profile" data-layout="profileLayout" data-model="userModel.currentUser" class="appearance" data-init="onInitProfile" data-transition="slide:right">
    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -16,7 +16,7 @@
              </div>
              <div class="clearfix"></div>
              <h4 id="profile-username" data-bind="text:currentUser.alias"></h4>
-             <div style="display: block-inline;">
+             <div style="display: inline-block;">
                  <span style="width: 50%; text-align: center;">
                     <div>
                    		<a data-role="button" data-rel="view" href="#profilePhotoEdit">
@@ -69,7 +69,7 @@
 </div>
 
 <!-- Profile Edit -->  
-<div data-role="view" id="profileEdit" data-title="Edit Profile" data-layout="profileLayout" data-model="APP.models.profile.currentUser" class="appearance" data-transition="slide:right">
+<div data-role="view" id="profileEdit" data-title="Edit Profile" data-layout="profileLayout" data-model="userModel.currentUser" class="appearance" data-transition="slide:right">
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>

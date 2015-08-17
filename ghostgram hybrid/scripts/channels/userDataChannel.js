@@ -19,19 +19,16 @@ var userDataChannel = {
             this.channelId = channelId;
 
             var ts = localStorage.getItem('ggUserDataTimeStamp');
-
             if (ts !== undefined)
-                this.lastAccess = ts;
+                this.lastAccess = parseInt(ts);
 
             APP.pubnub.subscribe({
                 channel: this.channelId,
                 windowing: 50000,
                 message: this.channelRead,
-                connect: function() {},
-                disconnect: function() {},
-                reconnect: function() {
-                    mobileNotify("Data Channel Reconnected")
-                },
+                connect: this.channelConnect,
+                disconnect:this.channelDisconnect,
+                reconnect: this.channelReconnect,
                 error: this.channelError
 
             });
@@ -41,7 +38,7 @@ var userDataChannel = {
     },
 
     updateTimeStamp : function () {
-        this.lastAccess = new Date().getTime();
+        this.lastAccess = new Date().getTime() * 10000000;
         localStorage.setItem('ggUserDataTimeStamp', this.lastAccess);
     },
 
@@ -56,7 +53,7 @@ var userDataChannel = {
                     messages = messages[0];
                     messages = messages || [];
                     for (var i = 0; i < messages.length; i++) {
-                        this.channelRead(messages[i]);
+                        userDataChannel.channelRead(messages[i]);
                     }
 
                 }
@@ -71,7 +68,8 @@ var userDataChannel = {
                     messages = messages[0];
                     messages = messages || [];
                     for (var i = 0; i < messages.length; i++) {
-                        this.channelRead(messages[i]);
+                        if (messages[i].time >= userDataChannel.lastAccess)
+                            userDataChannel.channelRead(messages[i]);
                     }
 
                 }
@@ -89,14 +87,21 @@ var userDataChannel = {
 
             //  { type: 'privateInvite',  channelId: <channelUUID>,  owner: <ownerUUID>, message: <text>, time: current time}
             case 'privateInvite' : {
+                this.processPrivateInvite(m.ownerId, m.ownerPublicKey,  m.channelId, m.message);
+            } break;
 
-                this.processPrivateInvite(m.ownerId, m.channelId, m.message);
+            case 'privateDelete' : {
+                this.processPrivateDelete(m.ownerId, m.ownerPublicKey,  m.channelId, m.message);
+            } break;
+
+            //  { type: 'channelInvite',  channelId: <channelUUID>, ownerID: <ownerUUID>,  ownerName: <text>, channelName: <text>, channelDescription: <text>}
+            case 'channelInvite' : {
+                this.processGroupInvite(m.ownerId, m.ownerName,  m.channelId, m.channelName, m.channelDescription,  m.message);
             } break;
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, owner: <ownerUUID>}
-            case 'channelInvite' : {
-
-                this.processGroupInvite(m.ownerId, m.channelId, m.message);
+            case 'channelDelete' : {
+                this.processGroupDelete(m.ownerId, m.channelId, m.message);
             } break;
 
             //  { type: 'packageOffer',  channelId: <channelUUID>, owner: <ownerUUID>, packageId: <packageUUID>, private: true|false, type: 'text'|'pdf'|'image'|'video', title: <text>, message: <text>}
@@ -117,7 +122,8 @@ var userDataChannel = {
         var msg = {};
 
         msg.type = 'privateInvite';
-        msg.ownerId = APP.models.profile.currentUser.get('userUUID');
+        msg.ownerId = userModel.currentUser.get('userUUID');
+        msg.ownerPublicKey = userModel.currentUser.get('publicKey');
         msg.channelId = channelUUID;
         msg.message  = message;
         msg.time = new Date().getTime();
@@ -131,12 +137,15 @@ var userDataChannel = {
         });
     },
 
-    groupChannelInvite : function (contactUUID, channelUUID, message) {
+    groupChannelInvite : function (contactUUID, channelUUID, channelName, channelDescription,  message) {
         var msg = {};
 
         msg.type = 'groupInvite';
-        msg.owner = APP.models.profile.currentUser.get('userUUID');
-        msg.channel = channelUUID;
+        msg.ownerId = userModel.currentUser.get('userUUID');
+        msg.ownerName = userModel.currentUser.get('name');
+        msg.channelId = channelUUID;
+        msg.channelName = channelName;
+        msg.channelDescription = channelDescription;
         msg.message  = message;
         msg.time = new Date().getTime();
 
@@ -149,15 +158,20 @@ var userDataChannel = {
         });
     },
 
-    processPrivateInvite: function (ownerId, channelId, message) {
-        var channel = findChannelModel(channelId);
+    processPrivateInvite: function (ownerId, ownerPublicKey, channelId, message) {
+        var channel = channelModel.findChannelModel(channelId),
+            privateChannel = channelModel.findPrivateChannel(ownerId);
+        var contact = contactModel.getContactModel(ownerId);
 
-        if (channel === undefined) {
+        mobileNotify("Private Chat Request from " + contact.get('name') + '\n ' + message);
+
+
+        if (channel === undefined && privateChannel === undefined) {
             // No existing private channel need to create one
-            var contactModel = getContactModel(ownerId);
-            if (contactModel !== undefined) {
-                var contactAlias = contactModel.get('alias');
-                addPrivateChannel(ownerId, contactAlias, channelId);
+
+            if (contact !== undefined) {
+                var contactAlias = contact.get('alias');
+                channelModel.addPrivateChannel(ownerId, ownerPublicKey, contactAlias, channelId);
                 mobileNotify("Created Private Chat with " + contactAlias);
 
             } else {
@@ -169,9 +183,29 @@ var userDataChannel = {
 
     },
 
-    processGroupInvite: function (ownerId, channelId, message) {
+    processPrivateDelete: function (ownerId, ownerPublicKey, channelId, message) {
+        var channel = channelModel.findChannelModel(channelId),
+            privateChannel = channelModel.findPrivateChannel(ownerId);
+        var contact = contactModel.getContactModel(ownerId);
+
+        mobileNotify("Private Chat Delete Request from " + contact.get('name'));
+
+    },
+
+    processGroupInvite: function (ownerId, ownerName, channelId, channelName, channelDescription, message) {
         // Todo:  Does channel exist?  If not create,  if so notify user of request
-        var channel = findChannelModel(channelId);
+        var channel = channelModel.findChannelModel(channelId);
+        if (channel === undefined) {
+            mobileNotify("Chat invite from  " + ownerName + ' " ' + channelName + '"');
+            // Todo: create a channelMember object for this user
+            channelModel.addChannel(channelName, channelDescription, false, channelId, ownderId, ownerName );
+        }
+
+    },
+
+    processGroupDelete: function (ownerId, channelId, message) {
+        // Todo:  Does channel exist?  If not do nothing,  if so delete the channel
+        var channel = channelModel.findChannelModel(channelId);
         if (channel === undefined) {
             // Todo: create a channelMember object for this user
         }
@@ -179,12 +213,24 @@ var userDataChannel = {
     },
 
 
+    channelConnect: function () {
+
+    },
+
+    channelDisconnect: function () {
+        mobileNotify("Data Channel Disconnected");
+    },
+
+    channelReconnect: function () {
+        mobileNotify("Data Channel Reconnected");
+    },
+
     channelSuccess : function (status) {
 
     },
 
     channelError : function (error) {
-        mobileNotify('Channel Error : ' + error)
+        mobileNotify('Data Channel Error : ' + error)
     }
 };
 
