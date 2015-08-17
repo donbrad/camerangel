@@ -199,8 +199,8 @@ var channelModel = {
                 channelModel.channelsDS.add(channel.attributes);
                 mobileNotify('Added channel : ' + channel.get('name'));
 
-                APP.models.channel.currentModel = channelModel.findChannelModel(channelId);
-                APP.models.channel.currentChannel = APP.models.channel.currentModel;
+                currentChannelModel.currentModel = channelModel.findChannelModel(channelId);
+                currentChannelModel.currentChannel = currentChannelModel.currentModel;
                 APP.kendo.navigate('#editChannel');
             },
             error: function(channel, error) {
