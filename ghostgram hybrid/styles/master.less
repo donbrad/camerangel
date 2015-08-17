@@ -1124,11 +1124,11 @@ div.footerMenu.km-footer > ul > li > a:active {
 .modal-top {
 	height: 10rem;
 	width: 100%;
-	background-color: #66BB6A;
+	background-color: @shade-200;
 	text-align: center;
 	color: #fff;
-	padding-top: 3rem;
-	padding-bottom: 3rem;
+	padding-top: 2rem;
+	padding-bottom: 2rem;
 	> img {
 		height: 4rem;
 		vertical-align: middle;
@@ -1139,7 +1139,6 @@ div.footerMenu.km-footer > ul > li > a:active {
 	}
 	p {
 		.font-size(12);
-		color: #fff;
 	}
 }
 
@@ -1640,6 +1639,15 @@ div.footerMenu.km-footer > ul > li > a:active {
 	background: @warning;
 }
 
+#modalview-requestContent > div > div.km-scroll-container > div.modal-top {
+	padding-top: 3rem;
+	padding-bottom: 3rem;
+}
+
+#modalview-requestContent > div > div.km-scroll-container > div.modal-top > p {
+	color: #fff;
+}
+
 .arrow-left {
 	width: 0; 
 	height: 0; 
@@ -1955,6 +1963,10 @@ a:hover {
 
 #channels-listview > li > div > a > div > img {
 	margin-left: 1.25rem;
+}
+
+#modalview-requestContent > div > div.km-scroll-container > div.modal-top {
+	background: #66BB6A;
 }
 
 #start-chat-img {
@@ -2791,12 +2803,26 @@ div.loginBox > form > div > ul > li {
 	//display: block;
 }
 
+#contactActionBtns {
+	width: 100%;
+}
+
 .contactListItem:hover {
 	color: @black;
+	text-align: left;
+}
+#contactActionBtns > li > a {
+	text-align: left;
+	padding: 0.5rem 0.25rem;
 }
 
 #contacts-listview > li > ul > li:active {
 	background: @shade-300;
+}
+
+#modalview-contactActions > div > div.km-scroll-container > div.modal-top {
+	color: #fff;
+	background-color: rgba(0,0,0,0.6);
 }
 
 .contact-connections {
@@ -2811,7 +2837,6 @@ div.loginBox > form > div > ul > li {
 	display: none;
 	opacity: 0;
 	overflow: hidden;
-	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+40,000000+100&amp;0+40,0.4+100 */
 background: -moz-linear-gradient(-45deg,  rgba(255,255,255,0) 40%, rgba(0,0,0,0.4) 100%); /* FF3.6+ */
 background: -webkit-gradient(linear, left top, right bottom, color-stop(40%,rgba(255,255,255,0)), color-stop(100%,rgba(0,0,0,0.4))); /* Chrome,Safari4+ */
 background: -webkit-linear-gradient(-45deg,  rgba(255,255,255,0) 40%,rgba(0,0,0,0.4) 100%); /* Chrome10+,Safari5.1+ */

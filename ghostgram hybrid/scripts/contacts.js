@@ -366,7 +366,7 @@ function onShowEditContact(e) {
 		$("#edit-verified-phone").removeClass("hidden");
 		$("#editContactPhone").prop("readonly", true);
 	}
-	// Use to have emailVerified?
+	// Todo - Use to have emailVerified?
 	if(contactEmail !== ''){
 		$("#edit-verified-email").removeClass("hidden");
 		$("#editContactEmail").prop("readonly", true);
@@ -452,10 +452,10 @@ function onInitContacts(e) {
             var contact = e.dataItem;
 
             updateCurrentContact(contact);
-
+            console.log(contact);
             
 
-			/*
+			
 			if (contact.category === 'phone') {
                 if (APP.models.contacts.unifiedDeviceContact) {
                     // Have a unified device contact -- just to add contact
@@ -467,15 +467,18 @@ function onInitContacts(e) {
 
 			} else {		
 				// If we know the contacts uuid enable the full feature set
+				
+				
+				
 				if (contact.contactUUID !== undefined && contact.contactUUID !== null){
-					//$("#contactUserActions").data("kendoMobileActionSheet").open();
-					contactActionEnabled();
-					//doEditContact(e);
+					$("#contactActionBtns > li:first-child").removeClass("hidden");
 				} else {
-					//$("#contactActions").data("kendoMobileActionSheet").open();
+					$("#contactActionBtns > li:first-child").addClass("hidden");
 				}
+
+				$("#modalview-contactActions").data("kendoMobileModalView").open();
 			}
-			*/
+			
              
         }
      }).kendoTouch({
@@ -483,7 +486,6 @@ function onInitContacts(e) {
     	enableSwipe: true,
     	swipe: function(e){
     		var selection = e.sender.events.currentTarget;
-    		console.log(e.sender.events);
     		
     		if(e.direction === "left"){
     			var otherOpenedLi = $(".contact-active");
@@ -496,116 +498,30 @@ function onInitContacts(e) {
     			$(selection).velocity({translateX:"0"},{duration: "fast"}).removeClass("contact-active");
     		}
     		
-    	}, tap: function(e){
-    		//console.log(e);
-    		contactActionEnabled1(e);
-
     	}
     });
 }
 
-function contactActionEnabled(e){
-	if (e.preventDefault !== undefined){
-    	e.preventDefault();
-    }
-    var selectionClass = "." + e.touch.currentTarget.className;
-    var selection = e.touch.currentTarget;
-    $(selection).addClass("activeContact");
-    console.log(selection);
-
-    // hide contact text
-    $(".activeContact > a > div.left.listName, .activeContact > a > p").velocity("fadeOut", {duration: 150 });
-
-    // show connection options
+function closeContactActions() {
+	$("#modalview-contactActions").data("kendoMobileModalView").close();
 }
 
+function onInitContactActions(e){
+	$("#modalview-contactActions").kendoTouch({
+		enableSwipe: true,
+		swipe: function(){
+			$("#modalview-contactActions").data("kendoMobileModalView").close();
+			console.log("yes");
+		}
+	});
 
-
-function contactActionEnabled1(e){
-	if (e.preventDefault !== undefined){
-    	e.preventDefault();
-    }
-    /*
-	// Change action btn
-	$("#contacts > div.footerMenu.km-footer > a")
-		.removeClass("secondary-100")
-		.addClass("warning")
-		.removeAttr("href")
-		.on("click", function(e){
-			contactActionDisable1(e);
-		});
-
-	$("#contacts > div.footerMenu.km-footer > a > .km-text > img")
-		.velocity({rotateZ: "45deg"}, {duration: 300, easing: "spring"});
-
-	$("#contacts > div.footerMenu.km-footer > a > span > p").velocity({
-		right: "3.5rem",
-		opacity: 1
-	}, {duration: 300, easing: "spring"});
-
-	
-
-	
-
-    console.log(selection);
-
-    // expand contact list
-    var optionsBox = $(".activeContact").parents()[0].children[0];
-    $(optionsBox).velocity({height: "6rem"}, {duration:300}).addClass("contactExpanded");
-    console.log(optionsBox);
-
-	// show connection options 
-	$(".contact-connections").css("display","inline-block").velocity("fadeIn");
-	*/
-
-	var selection = e.touch.currentTarget;
-
-	// activate photo
-    $(selection).addClass("activeContact");
-    $('.activeContact > a > div.left.listPhoto > div > img.circle-img-md').addClass("shadow-3");
-
-    // expand contact list
-    var optionsBox = $(".activeContact").parents()[0].children[0];
-    $(optionsBox).velocity({height: "10rem"}, {duration:300}).addClass("contactExpanded");
-    console.log(optionsBox);
-
-
-	// show contact info
-   	$(".activeContact > a > p").velocity("fadeOut", {duration: 200});
-   	$("div.contactListBox.activeContact > div").velocity({"margin-top": "-1rem", opacity: 1}, {duration: 300, delay: 200});
-
-    // show formated phone
-    showFormatedPhone();		
+	$("#contactProfileImg").attr("src", APP.models.contacts.currentContact.get("photo"));
 }
 
 function showFormatedPhone(){
 	$('.phone').text(function(i, text) {
     	return text.replace(/\d(\d\d\d)(\d\d\d)(\d\d\d\d)/, '($1) $2-$3');
 	});
-}
-
-function contactActionDisable1(e){
-	if (e.preventDefault !== undefined){
-    	e.preventDefault();
-    }
-    // reset action btn
-	$("#contacts > div.footerMenu.km-footer > a")
-		.attr("href", "#contactImport")
-		.addClass("secondary-100")
-		.removeClass("warning")
-		.unbind("click");
-	console.log("disable run");
-
-	$("#contacts > div.footerMenu.km-footer > a > .km-text > img")
-		.velocity({rotateZ: "0deg"}, {duration: 300, easing: "spring"});
-
-	$("#contacts > div.footerMenu.km-footer > a > span > p").velocity({
-		right: "0",
-		opacity: 0
-	}, {duration: 300, easing: "spring"});
-
-	// hide connections
-	$(".contact-connections").css("display","inline-block").velocity("fadeOut");
 }
  
 function onShowContacts (e) {
