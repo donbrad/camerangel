@@ -452,10 +452,7 @@ function onInitContacts(e) {
             var contact = e.dataItem;
 
             updateCurrentContact(contact);
-            console.log(contact);
             
-
-			
 			if (contact.category === 'phone') {
                 if (APP.models.contacts.unifiedDeviceContact) {
                     // Have a unified device contact -- just to add contact
@@ -468,17 +465,15 @@ function onInitContacts(e) {
 			} else {		
 				// If we know the contacts uuid enable the full feature set
 				
-				
+				$("#modalview-contactActions").data("kendoMobileModalView").open();
 				
 				if (contact.contactUUID !== undefined && contact.contactUUID !== null){
-					$("#contactActionBtns > li:first-child").removeClass("hidden");
+					$("#contactActionBtns > li:first-child").show();
 				} else {
-					$("#contactActionBtns > li:first-child").addClass("hidden");
+					$("#contactActionBtns > li:first-child").hide();
 				}
 
-				$("#modalview-contactActions").data("kendoMobileModalView").open();
 			}
-			
              
         }
      }).kendoTouch({
@@ -494,7 +489,6 @@ function onInitContacts(e) {
     			
     		}
     		if (e.direction === "right" && $(selection).hasClass("contact-active")){
-    			console.log(e);
     			$(selection).velocity({translateX:"0"},{duration: "fast"}).removeClass("contact-active");
     		}
     		
@@ -506,17 +500,6 @@ function closeContactActions() {
 	$("#modalview-contactActions").data("kendoMobileModalView").close();
 }
 
-function onInitContactActions(e){
-	$("#modalview-contactActions").kendoTouch({
-		enableSwipe: true,
-		swipe: function(){
-			$("#modalview-contactActions").data("kendoMobileModalView").close();
-			console.log("yes");
-		}
-	});
-
-	$("#contactProfileImg").attr("src", APP.models.contacts.currentContact.get("photo"));
-}
 
 function showFormatedPhone(){
 	$('.phone').text(function(i, text) {
