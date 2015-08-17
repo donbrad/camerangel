@@ -481,7 +481,6 @@ function onInitContacts(e) {
 
 			} else {		
 				// If we know the contacts uuid enable the full feature set
-				
 				$("#modalview-contactActions").data("kendoMobileModalView").open();
 				
 				if (contact.contactUUID !== undefined && contact.contactUUID !== null){
