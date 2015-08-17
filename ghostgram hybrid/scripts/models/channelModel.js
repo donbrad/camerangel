@@ -9,6 +9,8 @@ var channelModel = {
     _channelName : "channels",
     _channelMemberName : "channelMember",
     currentChannel: new kendo.data.ObservableObject(),
+    intervalTimer : undefined,
+    _messageCountRefresh : 3000000,   // Delta between message refresh calls (in milliseconds)
     channelsDS: new kendo.data.DataSource({
         offlineStorage: "channels-offline",
         sort: {
@@ -24,7 +26,9 @@ var channelModel = {
     }),
 
 
-
+    init :  function () {
+        channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
+    },
 
     fetch : function () {
         var Channel = Parse.Object.extend("channels");
@@ -62,7 +66,11 @@ var channelModel = {
     },
 
     updateChannelsMessageCount : function () {
-        var channelArray = channelModel.channels.DS.data();
+        var channelArray = channelModel.channelsDS.data();
+        for (var i=0; i<channelArray.length; i++) {
+            var channel = channelArray[i];
+
+        }
     },
 
     findChannelModel: function (channelId) {
@@ -112,6 +120,9 @@ var channelModel = {
         channel.set('isPrivate', true);
         channel.set("media",  true);
         channel.set("archive",  false);
+        channel.set("unreadCount", 0);
+        channel.set("clearBefore", ggTime.currentPubNubTime());
+        channel.set("lastAccess", ggTime.currentPubNubTime());
         channel.set("description", "Private: " + contactAlias);
         channel.set("channelId", channelUUID);
         channel.set('userKey',  publicKey);
@@ -163,6 +174,9 @@ var channelModel = {
         channel.set("media",   true);
         channel.set("archive", true);
         channel.set("description", description);
+        channel.set("unreadCount", 0);
+        channel.set("clearBefore", ggTime.currentPubNubTime());
+        channel.set("lastAccess", ggTime.currentPubNubTime());
         channel.set("channelId", channelId);
 
         // Channel owner can access and edit members...
@@ -202,7 +216,6 @@ var channelModel = {
             channelMap.set("channelId", channelId);
             channelMap.set("channelOwner", userModel.currentUser.userUUID);
             channelMap.set("members", [userModel.currentUser.userUUID]);
-            channelMap.set("clearBefore", new Date().getTime() * 10000000);
 
             channelMap.save(null, {
                 success: function(channel) {
