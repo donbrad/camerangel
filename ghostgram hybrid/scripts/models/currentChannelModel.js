@@ -44,7 +44,7 @@ var currentChannelModel = {
         var accessTime = ggTime.currentTime(), channelId = currentChannelModel.currentModel.get('channelId');
         updateParseObject('channels', 'channelId', channelId, 'lastAccess', accessTime);
 
-    }, currentChannelModel._debounceInterval),
+    }, this._debounceInterval),
 
     updateClearBefore: function () {
         var clearTime = ggTime.currentTime(), channelId = currentChannelModel.currentModel.get('channelId');
