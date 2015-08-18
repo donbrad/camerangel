@@ -468,8 +468,10 @@ function onInitContacts(e) {
     	swipe: function(e) {
             // Need to set current contact before exposing editing ux!
     		var selection = e.sender.events.currentTarget;
-            var contactId = $(e.touch.currentTarget).data("uuid");
-            var contact = contactModel.findContactByUUID(uuid);
+            var uid = $(e.touch.target).attr("data-uid");
+           /* var contactId = $(e.touch.currentTarget).data("uuid");
+            var contact = contactModel.findContactByUUID(uuid);*/
+            var contact = contactModel.contactListDS.getByUid(uid);
             updateCurrentContact(contact);
     		if(e.direction === "left"){
     			var otherOpenedLi = $(".contact-active");
