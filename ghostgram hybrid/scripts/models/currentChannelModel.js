@@ -6,10 +6,10 @@
 
 var currentChannelModel = {
     currentChannel: new kendo.data.ObservableObject(),
-    currentModel: {},
     currentMessage: {},
     membersAdded : [],
     membersDeleted: [],
+    privacyMode: false,
     messageLock: true,
     topOffset: 0,
     _debounceInterval: 5000,  // Only call every 5 seconds (counter in millisecs)
@@ -43,13 +43,13 @@ var currentChannelModel = {
 
     // Need to debounce this so we're not updating lastAccess on each message read.
     updateLastAccess: debounce(function () {
-        var accessTime = ggTime.currentTime(), channelId = currentChannelModel.currentModel.get('channelId');
+        var accessTime = ggTime.currentTime(), channelId = currentChannelModel.currentChannel.get('channelId');
         updateParseObject('channels', 'channelId', channelId, 'lastAccess', accessTime);
 
     }, this._debounceInterval),
 
     updateClearBefore: function () {
-        var clearTime = ggTime.currentTime(), channelId = currentChannelModel.currentModel.get('channelId');
+        var clearTime = ggTime.currentTime(), channelId = currentChannelModel.currentChannel.get('channelId');
         updateParseObject('channels', 'channelId', channelId, 'clearBefore', clearTime);
     }
 

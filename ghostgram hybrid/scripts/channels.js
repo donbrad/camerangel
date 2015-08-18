@@ -24,7 +24,7 @@ function syncCurrentChannel(e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
 	updateParseObject('channels','channelId', currentChannelModel.currentChannel.channelId, e.field, this[e.field]);
-	currentChannelModel.currentModel.set(e.field, this[e.field]);
+	currentChannelModel.currentChannel.set(e.field, this[e.field]);
 }
     
 function editChannel(e) {
@@ -38,9 +38,10 @@ function editChannel(e) {
     var view = dataSource.view();
     var channel = view[0];
     dataSource.filter([]);
-    
-    currentChannelModel.currentModel = channel;
+
 	currentChannelModel.currentChannel.unbind('change', syncCurrentChannel);
+    currentChannelModel.currentChannel = channel;
+
 	currentChannelModel.currentChannel.set('channelId', channel.channelId);
 	currentChannelModel.currentChannel.set('name', channel.name);
 	currentChannelModel.currentChannel.set('description', channel.description);
@@ -178,7 +179,7 @@ function finalizeEditChannel(e) {
 	
 	var memberArray = new Array(), invitedMemberArray = new Array(), invitedPhoneArray = new Array(), members = currentChannelModel.membersDS.data();
 	
-	var channelId = currentChannelModel.currentModel.channelId;
+	var channelId = currentChannelModel.currentChannel.channelId;
 	// It's a group channel so push this users UUID
 	
 	memberArray.push(userModel.currentUser.userUUID);
@@ -195,7 +196,7 @@ function finalizeEditChannel(e) {
 		}
 		
 	}
-	currentChannelModel.currentModel.members = memberArray;
+	currentChannelModel.currentChannel.members = memberArray;
 	currentChannelModel.currentChannel.unbind('change', syncCurrentChannel);
 
 	//Todo:  process membersAdded -- send invite messages
@@ -216,7 +217,7 @@ function finalizeEditChannel(e) {
 	$("#showEditDescriptionBtn").velocity("fadeIn");
 	$("#channels-editChannel-description").css("display","none").val("");
 
-	mobileNotify("Updating " + currentChannelModel.currentModel.name);
+	mobileNotify("Updating " + currentChannelModel.currentChannel.name);
 	
 	APP.kendo.navigate('#channels');
 
@@ -250,7 +251,7 @@ function onShowEditChannel (e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
 	
-	var currentChannel = currentChannelModel.currentModel;
+	var currentChannel = currentChannelModel.currentChannel;
 	var members = currentChannel.members, thisMember = {};
 	var membersArray = new Array();
 	
@@ -338,9 +339,7 @@ function onShowEditChannel (e) {
 function doShowChannelMembers (e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
-	
-	var currentChannel = currentChannelModel.currentChannel;
-	currentChannelModel.currentModel = currentChannel;
+
 	var members = currentChannelModel.members, invitedMembers = currentChannelModel.invitedMembers;
 
 
@@ -457,7 +456,7 @@ function doShowChannelPresence (e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
 		var currentChannel = APP.models.channels.currentChannel;
-	currentChannelModel.currentModel = currentChannel;
+	currentChannelModel.currentChannel = currentChannel;
 	currentChannelModel.membersDS.data([]);
 	var members = currentChannelModel.members;
 	if (currentChannelModel.isPrivate) {
