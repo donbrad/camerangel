@@ -119,7 +119,7 @@
 	    	#} else {#
 	    		<div class="chat-mainBox">
 	    	#}#
-	    		var formattedTime = timeSince(lastAccess);
+	    		#if (lastAccess === undefined) lastAccess = new Date().getTime(); var formattedTime = timeSince(lastAccess);#
 	    		<h4>
 	    		<span><img src="images/status-new.svg" class="list-status" /></span>
 	        		 #:name# 
