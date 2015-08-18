@@ -65,13 +65,25 @@ var channelModel = {
 
     },
 
-    updateChannelsMessageCount : function () {
+    updateChannelsMessageCount : debounce(function () {
         var channelArray = channelModel.channelsDS.data();
         for (var i=0; i<channelArray.length; i++) {
             var channel = channelArray[i];
 
+            APP.pubnub.history({
+                channel: channel.channelId,
+                start: channel.lastAccess,
+
+                callback: function(messages) {
+                    messages = messages[0];
+                    messages = messages || [];
+                    var len = messages.length;
+
+                }
+            });
+
         }
-    },
+    }, this._messageCountRefresh, true ),
 
     findChannelModel: function (channelId) {
         var dataSource =  channelModel.channelsDS;
