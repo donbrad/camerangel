@@ -119,11 +119,10 @@
 	    	#} else {#
 	    		<div class="chat-mainBox">
 	    	#}#
-	    		#if (lastAccess === undefined) {lastAccess = new Date().getTime();}#
 	    		<h4>
 	    		<span><img src="images/status-new.svg" class="list-status" /></span>
 	        		 #:name#
-	        		 # var formattedTime = timeSince(lastAccess);#
+	        		 # var formattedTime = "1 Day";#
 	        		<span class="chatActivityTime">#:formattedTime#</span>
 	    		</h4>
 	    		
