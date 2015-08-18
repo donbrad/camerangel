@@ -119,11 +119,11 @@
 	    	#} else {#
 	    		<div class="chat-mainBox">
 	    	#}#
-	    	
+	    		var formattedTime = timeSince(lastAccess);
 	    		<h4>
 	    		<span><img src="images/status-new.svg" class="list-status" /></span>
 	        		 #:name# 
-	        		<span class="chatActivityTime">1 hr ago</span>
+	        		<span class="chatActivityTime">#:formattedTime#</span>
 	    		</h4>
 	    		
 	    		# if(isPrivate && members.length <= 2){#
