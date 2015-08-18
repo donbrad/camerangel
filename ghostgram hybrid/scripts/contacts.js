@@ -3,7 +3,7 @@ function syncCurrentContact(e) {
         e.preventDefault();
     }
     updateParseObject('contacts','uuid', contactModel.currentContact.uuid, e.field, this[e.field]);
-    contactModel.currentModel.set(e.field, this[e.field]);
+    contactModel.currentContact.set(e.field, this[e.field]);
 }
     
 function syncProfile (e) {
@@ -294,8 +294,8 @@ function contactSendSMS(e) {
 function updateCurrentContact (contact) {
    
     // Wish observables set took an object -- need to set fields individually
-    contactModel.currentModel = contact;
     contactModel.currentContact.unbind('change' , syncCurrentContact);
+    contactModel.currentContact = contact;
     contactModel.currentContact.set('name', contact.name);
     contactModel.currentContact.set('alias', contact.alias);
     contactModel.currentContact.set('phone', contact.phone);
