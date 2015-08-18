@@ -346,7 +346,9 @@ function onChannelRead(message) {
 	}
 
 	currentChannelModel.messagesDS.add(message);
-	
+
+	currentChannelModel.updateLastAccess();
+
 	scrollToBottom();
 	
 	if (currentChannelModel.currentModel.privacyMode) {
@@ -418,8 +420,6 @@ function chatPhotoHold (e) {
 function chatPhotoTap(e) {
 
 }
-
-
 
 
 function messageSend(e) {

@@ -23,12 +23,12 @@ function onShowChannels(){
 function syncCurrentChannel(e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
-   updateParseObject('channels','channelId', currentChannelModel.currentChannel.channelId, e.field, this[e.field]);
+	updateParseObject('channels','channelId', currentChannelModel.currentChannel.channelId, e.field, this[e.field]);
 	currentChannelModel.currentModel.set(e.field, this[e.field]);
 }
     
 function editChannel(e) {
-	if (e.preventDefault !== undefined)
+	if (e!== undefined && e.preventDefault !== undefined)
 		e.preventDefault();
 
 	// Did a quick bind to the button, feel free to change 
@@ -197,7 +197,13 @@ function finalizeEditChannel(e) {
 	}
 	currentChannelModel.currentModel.members = memberArray;
 	currentChannelModel.currentChannel.unbind('change', syncCurrentChannel);
-	
+
+	//Todo:  process membersAdded -- send invite messages
+
+
+	//Todo: process membersDeleted -- send channel delete messages
+
+
 	updateParseObject('channels', 'channelId', channelId, 'members', memberArray);
 	updateParseObject('channels', 'channelId', channelId, 'invitedMembers', invitedMemberArray);
 	
@@ -230,6 +236,7 @@ function deleteMember (e) {
 		e.preventDefault();
 	var contactId = e.attributes['data-param'].value;
 	var thisMember = contactModel.findContactByUUID(contactId);
+	currentChannelModel.membersDeleted.push(thisMember);
 	currentChannelModel.potentialMembersDS.add(thisMember);
 	currentChannelModel.potentialMembersDS.sync();
 	currentChannelModel.membersDS.remove(thisMember);
@@ -249,9 +256,13 @@ function onShowEditChannel (e) {
 	
 	//Zero out current members as we're going rebuild ds and ux
 	currentChannelModel.membersDS.data([]);
+	currentChannelModel.membersAdded = [];
+	currentChannelModel.membersDeleted = [];
+
 	$('#editChannelMemberList').empty();
 
-	if (members.length > 0) {
+	// Only channel owner can see and edit members and invited members
+	if (members.length > 0 && currentChannelModel.isOwner) {
 
 		// Group channel members are referenced indirectly by uuid 
 		// channel can include invited users who havent signed up yet
@@ -287,7 +298,7 @@ function onShowEditChannel (e) {
 			}
 		}
 
-		if (currentChannelModel.isOwner && currentChannelModel.invitedMembers !== undefined) {
+		if (currentChannelModel.invitedMembers !== undefined) {
 			members = currentChannelModel.invitedMembers;
 			for (var j=0; j<members.length; j++) {
 				thisMember = contactModel.findContactByUUID(members[j]);
@@ -405,6 +416,7 @@ function doInitChannelMembers (e) {
                 placeholder: "Search contacts..."
             },
 		click: function (e) {
+			// Click to potential member list -- add this member to channel
 			var thisMember = e.dataItem;
 
 			currentChannelModel.membersDS.add(thisMember);
@@ -416,6 +428,7 @@ function doInitChannelMembers (e) {
 			}
 			currentChannelModel.membersDS.sync();
 
+			currentChannelModel.membersAdded(thisMember);
 			currentChannelModel.potentialMembersDS.remove(thisMember);
 			$(".addedChatMember").text("+ added " + thisMember.name).velocity("slideDown", { duration: 300, display: "block"}).velocity("slideUp", {delay: 1400, duration: 300, display: "none"});
 		}

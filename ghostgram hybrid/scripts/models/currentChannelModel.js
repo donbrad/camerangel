@@ -8,8 +8,12 @@ var currentChannelModel = {
     currentChannel: {},
     currentModel: {},
     currentMessage: {},
+    membersAdded : [],
+    membersDeleted: [],
     messageLock: true,
     topOffset: 0,
+    _debounceInterval: 5000,  // Only call every 5 seconds (counter in millisecs)
+
     potentialMembersDS: new kendo.data.DataSource({
         group: 'category',
         sort: {
@@ -34,6 +38,18 @@ var currentChannelModel = {
             dir: "desc"
         }
     }),
+
+    // Need to debounce this so we're not updating lastAccess on each message read.
+    updateLastAccess: debounce(function () {
+        var accessTime = ggTime.currentTime(), channelId = currentChannelModel.currentModel.get('channelId');
+        updateParseObject('channels', 'channelId', channelId, 'lastAccess', accessTime);
+
+    }, currentChannelModel._debounceInterval),
+
+    updateClearBefore: function () {
+        var clearTime = ggTime.currentTime(), channelId = currentChannelModel.currentModel.get('channelId');
+        updateParseObject('channels', 'channelId', channelId, 'clearBefore', clearTime);
+    }
 
 
 };
