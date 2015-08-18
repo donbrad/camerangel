@@ -297,63 +297,63 @@
 		    
     	</div><!-- contact-options -->
 
-    <div class="contactListBox">
-	     <a class="contactListItem">
-			 
-			 #if (data.category !== 'phone') {#
-			 	<div class="left listPhoto">
-				 	<div class="statusContactList">
-				 		  
-			 			#if (data.isAvailable !== undefined && data.isAvailable) { #
-			 				<img class="circle-img-md" src="#:data.photo#" />
-			 				<img width="16" src="images/status-available.svg" class="statusContactList-icon" />
-			 			# } 
-			 			else { #
-			 				<img class="circle-img-md" src="#:data.photo#" />
-			 				<img width="16" src="images/status-away.svg" class="statusContactList-icon" />
-			 			#}#
-			 		</div>
-			 	</div><!-- left -->
-					
-					<div class="left listName">
-						<h4>
-						#if(data.alias !== ''){#
-							#: data.alias #
-						#} else {#
-							#: data.name #
-						#}#
-						#if (data.phoneVerified){#
-								<img src="images/user-verified.svg" class="user-status-icon" />
-						#}#
-						# if(data.alias !== '' && data.name !== data.alias) {#
-							<span class="contacts-alias-sm">#: data.name #</span>
-						#}#
-						</h4>
-					</div>
+		<div class="contactListBox">
+			 <a class="contactListItem">
 
-					<p class="left caption contact-status">
-					#if(data.phoneVerified !== true){#
-						Unverified •  
-					#}#	Busy @ home
-					</p>
-					<div class="clearfix"></div>
-					<div class="contact-info">
-						<label>Contact via</label>
-						<ul data-role="listview" data-style="inset">
-							<li><a class="btnClear">Private Chat</a></li>
-							<li><a class="btnClear">ghostMail</a></li>
-							<li><a class="btnClear">Call</a></li>
-							<li><a class="btnClear">SMS</a></li>
-						</ul>
-					</div>
-			#} else {#
-				<h4 class="phoneContact">
-					#: data.name #
-				</h4>
-			#}#
-		</a>
-	</div><!-- listBox -->
-</div>
+				 #if (data.category !== 'phone') {#
+					<div class="left listPhoto">
+						<div class="statusContactList">
+
+							#if (data.isAvailable !== undefined && data.isAvailable) { #
+								<img class="circle-img-md" src="#:data.photo#" />
+								<img width="16" src="images/status-available.svg" class="statusContactList-icon" />
+							# }
+							else { #
+								<img class="circle-img-md" src="#:data.photo#" />
+								<img width="16" src="images/status-away.svg" class="statusContactList-icon" />
+							#}#
+						</div>
+					</div><!-- left -->
+
+						<div class="left listName">
+							<h4>
+							#if(data.alias !== ''){#
+								#: data.alias #
+							#} else {#
+								#: data.name #
+							#}#
+							#if (data.phoneVerified){#
+									<img src="images/user-verified.svg" class="user-status-icon" />
+							#}#
+							# if(data.alias !== '' && data.name !== data.alias) {#
+								<span class="contacts-alias-sm">#: data.name #</span>
+							#}#
+							</h4>
+						</div>
+
+						<p class="left caption contact-status">
+						#if(data.phoneVerified !== true){#
+							Unverified •
+						#}#	Busy @ home
+						</p>
+						<div class="clearfix"></div>
+						<div class="contact-info">
+							<label>Contact via</label>
+							<ul data-role="listview" data-style="inset">
+								<li><a class="btnClear">Private Chat</a></li>
+								<li><a class="btnClear">ghostMail</a></li>
+								<li><a class="btnClear">Call</a></li>
+								<li><a class="btnClear">SMS</a></li>
+							</ul>
+						</div>
+				#} else {#
+					<h4 class="phoneContact">
+						#: data.name #
+					</h4>
+				#}#
+			</a>
+		</div><!-- listBox -->
+	</div>
 
 </script>
 
