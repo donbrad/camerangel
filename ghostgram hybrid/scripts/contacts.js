@@ -101,36 +101,6 @@ function privateChat(e) {
     //processPrivateInvite(contactUUID, contactModel.currentUser.get('alias') + " requests a Private Channel");
 }
 
-/*function getContactModel(contactUUID) {
-	 var dataSource = APP.models.contacts.contactsDS;
-    dataSource.filter( { field: "contactUUID", operator: "eq", value: contactUUID });
-    var view = dataSource.view();
-    var contact = view[0];
-	dataSource.filter([]);
-	
-	return(contact);
-}
-
-function findContactByUUID(uuid) {
-var dataSource = APP.models.contacts.contactsDS;
-    dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
-    var view = dataSource.view();
-    var contact = view[0];
-	dataSource.filter([]);
-	
-	return(contact);	
-}
-
-function findContactByPhone(phone) {
-var dataSource = APP.models.contacts.contactsDS;
-    dataSource.filter( { field: "phone", operator: "eq", value: phone });
-    var view = dataSource.view();
-    var contact = view[0];
-	dataSource.filter([]);
-	
-	return(contact);	
-}*/
-
 function doEditContact(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
@@ -495,9 +465,12 @@ function onInitContacts(e) {
      }).kendoTouch({
     	filter: ".contactListBox",
     	enableSwipe: true,
-    	swipe: function(e){
+    	swipe: function(e) {
+            // Need to set current contact before exposing editing ux!
     		var selection = e.sender.events.currentTarget;
-    		
+            var contactId = $(e.touch.currentTarget).data("uuid");
+            var contact = contactModel.findContactByUUID(uuid);
+            updateCurrentContact(contact);
     		if(e.direction === "left"){
     			var otherOpenedLi = $(".contact-active");
     			$(otherOpenedLi).velocity({translateX:"0"},{duration: "fast"}).removeClass("contact-active");
