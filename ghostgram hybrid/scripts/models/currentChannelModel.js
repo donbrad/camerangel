@@ -5,7 +5,7 @@
 'use strict';
 
 var currentChannelModel = {
-    currentChannel: {},
+    currentChannel: new kendo.data.ObservableObject(),
     currentModel: {},
     currentMessage: {},
     membersAdded : [],
