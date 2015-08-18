@@ -463,7 +463,8 @@ function onInitContacts(e) {
              
         }
      }).kendoTouch({
-    	filter: ".contactListBox",
+    	//filter: ".contactListBox",
+         filter: ">li",
     	enableSwipe: true,
     	swipe: function(e) {
             // Need to set current contact before exposing editing ux!
