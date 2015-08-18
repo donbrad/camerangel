@@ -18,6 +18,14 @@ function onShowChannels(){
 	// set action button
 	$("#channels > div.footerMenu.km-footer > a").attr("href", "#addChannel").css("display","inline-block");
     
+	// set empty state
+    var chatList = $("#channels-listview > li").length;
+
+    if(chatList <= 0){
+    	$("#channels .emptyState").removeClass("hidden");
+    } else {
+    	$("#channels .emptyState").addClass("hidden");
+    }
 }
 
 function syncCurrentChannel(e) {
@@ -28,11 +36,12 @@ function syncCurrentChannel(e) {
 }
     
 function editChannel(e) {
-	if (e.preventDefault !== undefined)
+	if (e.preventDefault !== undefined) {
 		e.preventDefault();
-
+	}
 	// Did a quick bind to the button, feel free to change 
-   var channelId = e.button[0].attributes["data-channel"].value; 
+   var channelId = e.button[0].attributes["data-channel"].value;
+
    var dataSource = APP.models.channels.channelsDS;
     dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
     var view = dataSource.view();
@@ -56,7 +65,7 @@ function editChannel(e) {
     APP.models.channels.currentChannel.bind('change', syncCurrentChannel);
     
     APP.kendo.navigate('#editChannel');
-
+	
 }
     
 function eraseChannel(e) {

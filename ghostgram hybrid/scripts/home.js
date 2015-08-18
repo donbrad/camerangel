@@ -3,6 +3,7 @@ function homeBeforeShow () {
     if (userModel.currentUser) {
         // Have current user - redirect to user view
         APP.kendo.navigate('#home');
+
     } else {
         // No current user -redirect to no user view
        APP.kendo.navigate('#newuserhome');
@@ -162,6 +163,7 @@ function onShowHome(e) {
     //$(".user-status").velocity("fadeIn", {delay:1000});
         
     APP.models.presence.current.bind('change' , syncPresence);
+
 
 }
 

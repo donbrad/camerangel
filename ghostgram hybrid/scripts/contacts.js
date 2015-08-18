@@ -467,7 +467,7 @@ function onInitContacts(e) {
         fixedHeaders: true,
         click: function (e) {
             var contact = e.dataItem;
-
+            console.log(contact);
             updateCurrentContact(contact);
             
 			if (contact.category === 'phone') {
@@ -530,6 +530,15 @@ function onShowContacts (e) {
     contactModel.contactListDS.data(contactModel.contactsDS.data());
 	//APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
 	
+	// set empty state
+	var contactsList = $("#contacts-listview li").length;
+
+    if(contactsList <= 0){
+    	$("#contacts .emptyState").removeClass("hidden");
+    } else {
+    	$("#contacts .emptyState").addClass("hidden");
+    }
+
 	// set action button
 	$("#contacts > div.footerMenu.km-footer > a").attr("href", "#contactImport");
 

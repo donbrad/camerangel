@@ -294,6 +294,16 @@ function onShowPlaces(e) {
 		checkInTo(locations[0]);
 	});
 
+	// set empty state
+	var placesList = $("#places-listview li").length;
+	console.log(placesList);
+    
+    if(placesList <= 0){
+    	$("#places .emptyState").removeClass("hidden");
+    } else {
+    	$("#places .emptyState").addClass("hidden");
+    }
+
 }
 
 function parseAddress(address) {

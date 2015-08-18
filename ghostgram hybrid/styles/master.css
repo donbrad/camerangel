@@ -345,6 +345,18 @@ form p {
 .select select select:focus {
   outline: none;
 }
+.emptyState {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  padding-top: 45%;
+  opacity: 0.6;
+}
+.emptyState img {
+  width: 6rem;
+  margin-left: auto;
+  margin-right: auto;
+}
 .show {
   display: block !important;
 }
@@ -1024,7 +1036,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .helper-form {
   position: relative;
-  top: 42px;
+  top: 34px;
   z-index: 99;
   right: 10px;
 }
@@ -3317,8 +3329,11 @@ div.contactListBox.activeContact > div > div > ul {
 #galleryMenuSelect #gallery-all {
   stroke: #4a4a4a;
 }
-#galleryMenuSelect.km-buttongroup > .km-state-active {
+#galleryMenuSelect > li:nth-child(2).km-button.km-state-active {
   background-color: #2d93ff;
+}
+#galleryMenuSelect.km-buttongroup > .km-state-active {
+  background-color: #9e788f;
   color: #fff;
   border-radius: 0px;
   border-top: 0px !important;

@@ -251,6 +251,19 @@ form {
 	}
 }
 
+.emptyState {
+	position: absolute;
+	width: 100%;
+	text-align: center;
+	padding-top: 45%;
+	opacity: 0.6;
+	img {
+		width: 6rem;
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
 .show {
     display: block !important;
 }
@@ -933,7 +946,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .helper-form {
     position: relative;
-    top: 42px;
+    top: 34px;
     z-index: 99; 
     right: 10px;
 }
@@ -3463,9 +3476,11 @@ div.contactListBox.activeContact > div > div > ul {
 	}
 }
 
-
+#galleryMenuSelect > li:nth-child(2).km-button.km-state-active {
+	background-color: @primary-200;
+}
 #galleryMenuSelect.km-buttongroup > .km-state-active {
-		background-color: @primary-200;
+		background-color: @highlight;
 		color: #fff;
 		border-radius: 0px;
 		border-top: 0px !important;
