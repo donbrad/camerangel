@@ -228,7 +228,7 @@ function finalizeEditChannel(e) {
 function onInitEditChannel (e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
-	currrentChannelModel.membersDS.data([]);
+	currentChannelModel.membersDS.data([]);
 	$('#editChannelMemberList li').remove();
 }
 
