@@ -1,4 +1,6 @@
 function onInitGallery(e){
+	archiveView.init();
+
    if (e !== undefined && e.preventDefault !== undefined){
 		e.preventDefault();
 	}
