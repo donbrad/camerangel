@@ -17,15 +17,7 @@ function addChannel(e) {
 function onShowChannels(){
 	// set action button
 	$("#channels > div.footerMenu.km-footer > a").attr("href", "#addChannel").css("display","inline-block");
-    
-	// set empty state
-    var chatList = $("#channels-listview > li").length;
 
-    if(chatList <= 0){
-    	$("#channels .emptyState").removeClass("hidden");
-    } else {
-    	$("#channels .emptyState").addClass("hidden");
-    }
 }
 
 function syncCurrentChannel(e) {
@@ -119,6 +111,9 @@ function onInitChannels (e) {
         		var channelUrl = "#channel?channel=" + e.dataItem.channelId;
         		APP.kendo.navigate(channelUrl);
         	} 
+        },
+        dataBound: function(e){	
+        	checkEmptyUIState("#channels-listview", "#channelListDiv");
         }
     }).kendoTouch({
     	filter: "div",
@@ -146,7 +141,8 @@ function onInitChannels (e) {
     	}
     	
     });
-   
+    
+   	
 }
 
 function listViewClick(e){

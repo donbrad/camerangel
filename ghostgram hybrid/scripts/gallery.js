@@ -37,7 +37,6 @@ function onInitGallery(e){
 	// hide archive options
 	$(".gallerySearchOptions, #galleryPhotoDisplayOpts").css("display", "none");
 	
-	setEmptyState();
 
 	var scroller = e.view.scroller;
 	//scroller.scrollTo(0,-44);
@@ -64,17 +63,6 @@ function onInitGallery(e){
 	});    
 	
 */
-}
-
-function setEmptyState(){
-	// set empty state
-	var contactsList = $("#gallery-listview li").length;
-	
-    if(contactsList <= 0){
-    	$("#gallery .emptyState").removeClass("hidden");
-    } else {
-    	$("#gallery .emptyState").addClass("hidden");
-    }
 }
 
 function resetNavUI(e){
@@ -291,7 +279,8 @@ function onShowGallery(e) {
 			break;
 	}
 
-	
+	// Added until gallery/archive are fully merged
+	checkEmptyUIState("#archive-listview", "#archiveBox");
 }
 
 
@@ -303,6 +292,7 @@ function gallerySelectCategory(e){
 	 	$("#galleryPhotoDisplayOpts").velocity("slideUp");
 	 	$("#galleryBox").addClass("hidden");
 	 	$("#archiveBox").removeClass("hidden");
+	 	checkEmptyUIState("#archive-listview", "#archiveBox");
 	 	break;
 
 	 case 1:
@@ -312,6 +302,7 @@ function gallerySelectCategory(e){
 	 	$("#gallerySearch").attr("placeholder", "Search All");
 	 	$("#galleryBox").removeClass("hidden");
 	 	$("#archiveBox").addClass("hidden");
+	 	checkEmptyUIState("#gallery-listview", "#galleryBox");
 	 	break;
 	 }
 } 

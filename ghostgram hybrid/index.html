@@ -523,10 +523,9 @@
 <div data-role="modalview" id="modalview-profileStatus" style="width: 90%; display: none;" data-open="onShowProfileStatus" data-model="APP.models.profile.currentUser" class="appearance">
 	<form id="profilePhotoForm">
 
-        <ul data-role="listview" data-style="inset">
+        <ul data-role="listview">
         	<li>
         		<div class="left listPhoto">
-					
 						<div class="statusContactList">
 							<img class="circle-img-md home-profile-img" id="profileStatusPhoto" src="" />
 							<img width="16" src="images/status-away.svg" class="statusContactList-icon home-status-img" />
@@ -535,26 +534,29 @@
 				</div><!-- left -->
 				<div class="left listName profileTextBox">
 					<h3>
-						<span id="profileStatusName"></span>
+						<span class="primaryName"></span>
 						<img src="images/user-verified.svg" class="user-status-icon hidden" id="profileStatusVerified">
-						<span class="contacts-alias-sm" id="profileStatusAlias"></span>
+						<span class="secondName"></span>
 					</h3>
 				</div>
-				<div class="left caption profileTextBox"><p id="profileStatusMessage" data-bind="text: statusMessage"></p></div>
+				<div class="left caption profileTextBox">
+					<p id="profileStatusMessage" data-bind="text: statusMessage"></p></div>
 				<div class="clearfix"></div>
         	</li>
         	<li><p class="caption right"><a data-role="button" class="btnClear-sm" href="views/profile.html#profileEdit">Edit Profile</a></p></li>
         	<li><p><img src="images/ghost-sm.svg" class="ghost-sm-text" /> Update Status</p></li>
         	<li>
-                <label>
+                <div class="appendSearch">
                    <input type="search" id="profilePhotoMessage" placeholder="What's going on..." data-bind="value: statusMessage"/>
-                </label>
-            </li>
-            <li><img src="images/place-icon.svg" class="ghost-sm-text" /> Location </li>
-            <li>
-                <label class="ghost-sm-text">
-                    <input type="search" id="profileLocationName" placeholder="Your current location" data-bind="value: currentPlace"/>
-                </label>
+	                   <span>
+		                   	<a data-role="button" data-click="gpsLocateUpdate" id="gpsLocateUpdateBtn">
+		                   		<img src="images/icon-gps.svg" height="12px"/>
+		                   	</a>
+	                   </span>
+                </div>
+                <div class="userLocationUpdate" style="display: none">
+                    <input type="search" id="profileLocationName" placeholder="Your current location" data-bind="value: currentPlace" />
+                </div>
             </li>
         	<li>
         		<label> Available

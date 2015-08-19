@@ -93,22 +93,20 @@
 			</ul>
 		</div><!-- galleryPhoto -->
 	
-
-     <div style="padding-top: 8px; padding-left: 4px; padding-right: 4px; padding-bottom: 48px; height: 100%;">
      	<!-- Photos -->
      	<div id="galleryBox" class="hidden">
          	<ul id="gallery-listview" class="list-inline" data-role="listview" data-click="galleryClick" data-source="photoModel.photosDS" data-template="gallery-template"></ul>
-        	<div class="emptyState">
+        	<div class="emptyState hidden">
 	         	<img src="images/empty-gallery.svg" />
 	        </div>
         </div>
          <!-- Archive -->
         <div id="archiveBox">
-	        <div class="emptyState">
+        	<ul id="archive-list" data-source="archive.dataSource" data-template="archive-template" data-header-template="header-template"></ul>
+	        <div class="emptyState hidden">
 	         	<img src="images/empty-archive.svg" />
 	        </div>
         </div>
-     </div>
 </div>
 
 <div data-role="drawer" id="galleryDrawer" style="width: 200px; height: 100%;" data-title="Gallery Options" data-position="right" data-views="['gallery']" data-swipe-to-open="false" style="display:none;" class="appearance">

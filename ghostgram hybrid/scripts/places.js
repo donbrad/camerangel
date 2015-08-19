@@ -104,7 +104,8 @@ function onInitPlaces(e) {
 		click: function (e) {
 			$('#check-out').hide();
 			clickPlace(e);
-		}
+		},
+		dataBound: checkEmptyUIState("#places-listview", "#placeListDiv")
 	});
 
 	// Fake an event by binding
@@ -293,16 +294,6 @@ function onShowPlaces(e) {
 		checkOut();
 		checkInTo(locations[0]);
 	});
-
-	// set empty state
-	var placesList = $("#places-listview li").length;
-	console.log(placesList);
-    
-    if(placesList <= 0){
-    	$("#places .emptyState").removeClass("hidden");
-    } else {
-    	$("#places .emptyState").addClass("hidden");
-    }
 
 }
 

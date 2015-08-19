@@ -253,7 +253,7 @@ form {
 
 .emptyState {
 	position: absolute;
-	width: 100%;
+	width: 99%;
 	text-align: center;
 	padding-top: 45%;
 	opacity: 0.6;
@@ -329,6 +329,10 @@ form {
 
 .status {
 	height: 10px;
+}
+
+.primaryName, .secondName {
+	display: inline-block;
 }
 
 .verified-txt {
@@ -652,11 +656,15 @@ form {
 .btnFull-modal { 
 	.btnFull;
 	border-radius: 0px !important;
-	height: 2.25rem;
-	padding-top: 0.5rem !important;
+	height: 3rem;
+	padding-top: 1rem !important;
 	:hover {
 		background: transparent !important;
 	}
+}
+
+div.km-content.km-widget.km-scroll-wrapper {
+	padding-bottom: 1rem;
 }
 
 .input-text-sm {
@@ -789,6 +797,12 @@ div.km-header a img{
     box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.12);
     height: 56px;
     //border: transparent;
+}
+
+.km-material .km-switch-handle {
+	width: 1.5em;
+	height: 1.5em;
+	margin: -8px 0 0;
 }
 
 .km-scroll-container {
@@ -945,8 +959,8 @@ div.footerMenu.km-footer > ul > li > a:active {
     float: left;
 }
 .helper-form {
-    position: relative;
-    top: 34px;
+    position: absolute;
+    top: 40px;
     z-index: 99; 
     right: 10px;
 }
@@ -1023,6 +1037,20 @@ div.footerMenu.km-footer > ul > li > a:active {
 	.font-size(18);
 }
 
+#profilePhotoForm > div > ul > li:nth-child(4) > div > span {
+	padding-top: 0px;
+}
+
+#profilePhotoForm > div > ul > li:nth-child(4) > div > span > a {
+	padding-top: 0px;
+}
+
+#profileLocationName {
+	width: 90%;
+	margin-left: 5%;
+	margin-right: auto;
+}
+
 .home-status-img {
 	width: 18px !important;;
 	height: 18px !important;
@@ -1059,6 +1087,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	width: 190px;
+	display:inline-block;
 }
 
 #profilePhotoForm > div > ul > li:nth-child(1) {
@@ -1827,6 +1856,7 @@ a:hover {
 
 #profileStatusPhoto {
 	margin-right: 1rem;
+	.shadowHelper(1);
 }
 
 .km-material .km-list > li {
@@ -2994,7 +3024,7 @@ div.contactListBox.activeContact > div > div > ul {
 
 .listPhoto {
 	width: 20%;
-	height: 40px;
+	height: 100%;
 }
 
 .listName {
@@ -3092,8 +3122,9 @@ div.contactListBox.activeContact > div > div > ul {
 	border: none;
 }
 
-.contacts-alias-sm { 
-	.font-size(11);
+.contacts-alias-sm,
+.secondName { 
+	.font-size(12);
 	color: #979797;
 	vertical-align: middle;
 }
@@ -3528,11 +3559,11 @@ div.contactListBox.activeContact > div > div > ul {
 	border-bottom: 1px solid @shade-200;
 	margin-top: 0.25rem;
 	border-radius: 3px;
+	transition: all 0.5s ease-out;
 	input {
-		width: auto;
 		float: left;
 		border: none !important;
-		width: 80%;
+		width: 80% !important;
 		padding-left: 0px !important;
 		padding-right: 1rem !important;
 	}

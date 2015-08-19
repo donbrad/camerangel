@@ -164,7 +164,8 @@ function onShowHome(e) {
         
     APP.models.presence.current.bind('change' , syncPresence);
 
-
+    // Hide action button on home
+    $("div.footerMenu.km-footer > a").css("display", "none");
 }
 
 function setUserStatusUI(e){
@@ -854,8 +855,7 @@ function onShowProfileStatus(e){
 	var available = userModel.currentUser.isAvailable;
 	var availableSwitch = $("#home-status-switch").data("kendoMobileSwitch");
 	// Set profile status
-	$("#profileStatusName").text(alias);
-	$("#profileStatusAlias").text(name);
+	formatNameAlias();
 	
 	$("#profileStatusMessage").text(status);
 	if(verified){
@@ -875,4 +875,9 @@ function statusSwitch(e) {
 
 function closeThisModal(e){
 	console.log(e);
+}
+
+function gpsLocateUpdate(){
+	// Todo - Auto locate first if enabled, then manual input show
+	$(".userLocationUpdate").velocity("slideDown");
 }

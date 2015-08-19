@@ -491,6 +491,9 @@ function onInitContacts(e) {
 
 			}
              
+        },
+        dataBound: function(e){
+        	checkEmptyUIState("#contacts-listview", "#contactListDiv >");
         }
      }).kendoTouch({
     	filter: ".contactListBox",
@@ -510,6 +513,7 @@ function onInitContacts(e) {
     		
     	}
     });
+    
 }
 
 function closeContactActions() {
@@ -530,15 +534,7 @@ function onShowContacts (e) {
     contactModel.contactListDS.data(contactModel.contactsDS.data());
 	//APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
 	
-	// set empty state
-	var contactsList = $("#contacts-listview li").length;
-
-    if(contactsList <= 0){
-    	$("#contacts .emptyState").removeClass("hidden");
-    } else {
-    	$("#contacts .emptyState").addClass("hidden");
-    }
-
+	
 	// set action button
 	$("#contacts > div.footerMenu.km-footer > a").attr("href", "#contactImport");
 
@@ -568,7 +564,7 @@ function launchAddContact(e) {
     for (var j = 0; j<contactModel.currentDeviceContact.phoneNumbers.length; j++) {
         var phone = new Object();
         phone.name = contactModel.currentDeviceContact.phoneNumbers[j].name;
-        phone.number =  AcontactModel.currentDeviceContact.phoneNumbers[j].number;
+        phone.number = contactModel.currentDeviceContact.phoneNumbers[j].number;
 
         contactModel.phoneArray.push(phone);
 
