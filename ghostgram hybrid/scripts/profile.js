@@ -226,3 +226,17 @@ function doProfileGallery(e) {
 		e.preventDefault();
 	}
 }
+
+function onInitProfile(e) {
+	e.preventDefault();
+    
+    if (userModel.currentUser.emailVerified){
+        $("#verified-email").removeClass("hidden");
+    }
+    
+    if(userModel.currentUser.phoneVerified){
+        $("#verified-phone").removeClass("hidden");
+    }
+    
+    showFormatedPhone();
+}

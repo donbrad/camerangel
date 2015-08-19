@@ -104,7 +104,8 @@ function onInitPlaces(e) {
 		click: function (e) {
 			$('#check-out').hide();
 			clickPlace(e);
-		}
+		},
+		dataBound: checkEmptyUIState("#places-listview", "#placeListDiv")
 	});
 
 	// Fake an event by binding

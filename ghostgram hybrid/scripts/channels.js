@@ -17,7 +17,6 @@ function addChannel(e) {
 function onShowChannels(){
 	// set action button
 	$("#channels > div.footerMenu.km-footer > a").attr("href", "#addChannel").css("display","inline-block");
-    
 }
 
 function syncCurrentChannel(e) {
@@ -28,12 +27,14 @@ function syncCurrentChannel(e) {
 }
     
 function editChannel(e) {
-	if (e!== undefined && e.preventDefault !== undefined)
+	if (e!== undefined && e.preventDefault !== undefined){
 		e.preventDefault();
-
+	}
 	// Did a quick bind to the button, feel free to change 
+
    var channelId = e.button[0].attributes["data-channel"].value; 
    var dataSource = channelModel.channelsDS;
+
     dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
     var view = dataSource.view();
     var channel = view[0];
@@ -57,7 +58,7 @@ function editChannel(e) {
 	currentChannelModel.currentChannel.bind('change', syncCurrentChannel);
     
     APP.kendo.navigate('#editChannel');
-
+	
 }
     
 function eraseChannel(e) {
@@ -111,6 +112,9 @@ function onInitChannels (e) {
         		var channelUrl = "#channel?channel=" + e.dataItem.channelId;
         		APP.kendo.navigate(channelUrl);
         	} 
+        },
+        dataBound: function(e){	
+        	checkEmptyUIState("#channels-listview", "#channelListDiv");
         }
     }).kendoTouch({
     	filter: "div",
@@ -138,7 +142,8 @@ function onInitChannels (e) {
     	}
     	
     });
-   
+    
+   	
 }
 
 function listViewClick(e){
