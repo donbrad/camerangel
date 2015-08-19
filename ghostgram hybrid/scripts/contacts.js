@@ -105,23 +105,42 @@ function doEditContact(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
     }
-	
+    var contactId = e.button[0].attributes["data-contact"].value;
+    var contact = contactModel.findContactByUUID(contactId);
+
+    updateCurrentContact(contact);
     APP.kendo.navigate("#editContact");  
 }
 
 
 
-function deleteContact(e) {
+function doDeleteContact(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
     }
 
+    var contactId = e.button[0].attributes["data-contact"].value;
+    var contact = contactModel.findContactByUUID(contactId);
+
+    updateCurrentContact(contact);
+    
 	var string = "Deleted contact: " + contactModel.currentContact.name + " ("+ contactModel.currentContact.alias + ")" ;
 	
     contactModel.delete();
 	mobileNotify(string);
 	APP.kendo.navigate('#contacts');
     
+}
+
+function doInviteContact(e) {
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
+    var contactId = e.button[0].attributes["data-contact"].value;
+
+    var email = contactModel.currentContact.get('email');
+
+    contactSendEmailInvite(email);
 }
 
 function syncContact(model) {
@@ -185,15 +204,7 @@ function contactSendEmail(e) {
 	
 }
 
-function inviteContact(e) {
-    if (e !== undefined && e.preventDefault !== undefined) {
-        e.preventDefault();
-    }
 
-    var email = contactModel.currentContact.get('email');
-
-    contactSendEmailInvite(email);
-}
 
 function contactSendSMSInvite(phone) {
 
@@ -464,16 +475,11 @@ function onInitContacts(e) {
         }
      }).kendoTouch({
     	//filter: ".contactListBox",
-         filter: ">li",
+         filter: "div",
     	enableSwipe: true,
     	swipe: function(e) {
             // Need to set current contact before exposing editing ux!
     		var selection = e.sender.events.currentTarget;
-            var uid = $(e.touch.target).attr("data-uid");
-           /* var contactId = $(e.touch.currentTarget).data("uuid");
-            var contact = contactModel.findContactByUUID(uuid);*/
-            var contact = contactModel.contactListDS.getByUid(uid);
-            updateCurrentContact(contact);
     		if(e.direction === "left"){
     			var otherOpenedLi = $(".contact-active");
     			$(otherOpenedLi).velocity({translateX:"0"},{duration: "fast"}).removeClass("contact-active");
