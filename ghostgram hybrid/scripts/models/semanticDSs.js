@@ -24,7 +24,7 @@ SemanticDSs.prototype = {
 			value: 'address'
 		});
 
-		this.chats = this.makeSemanticDataSource('Chats', APP.models.channels.channelsDS, {
+		this.chats = this.makeSemanticDataSource('Chats', channelModel.channelsDS, {
 			name: 'name',
 			alias: 'alias',
 			value: 'name'
