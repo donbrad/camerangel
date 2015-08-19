@@ -1,112 +1,80 @@
- <div data-role="view" data-title="Gallery" id="gallery" data-layout="main" data-model="photoModel" data-init="onInitGallery" data-show="onShowGallery">
- 	<div class="topViewSearchBox">
- 		<div class="appendSearch">
-			<span class="searchIcon"><img src="images/search.svg" /></span>
+ <div data-role="view" data-title="Gallery" id="gallery" data-layout="main" data-model="APP.models.gallery" data-init="onInitGallery" data-show="onShowGallery" data-stretch="true">
+ 	<div>
+	 	<div id="search-archives">
 			<input type="search" class="viewSearchBox" id="gallerySearch"  placeholder="Search all" />
-		</div>
-	</div>
-	<div class="gallerySearchOptions">
-		<ul data-role="buttongroup" data-index="0" class="km-small" data-select="selectGallerySearchTool" id="gallerySearchToolSelect">
-			<li> <img height="18" src="images/gallery-all.svg" /> </li>
-			<li> <img height="18" src="images/sentinel-contacts.svg" /> </li>
-			<li> <img height="18" src="images/sentinel-chats.svg" /> </li>
-			<li> <img height="18" src="images/sentinel-date.svg" /> </li>
-			<li> <img height="18" src="images/sentinel-places.svg" /> </li>
-		</ul>
-		
-		<div id="gallerySearchTags"></div>
-		
-	</div>
-	<ul data-role="buttongroup" data-index="0" id="galleryMenuSelect" data-select="gallerySelectCategory">
-		<li>
-			<svg width="21px" height="25px" viewBox="0 0 21 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
-		    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-		        <g id="gallery-all" transform="translate(-328.000000, -634.000000)" stroke="#979797">
-		            <g transform="translate(329.000000, 635.000000)">
-		                <path d="M16.5697674,3 L18.1162791,3 C18.604093,3 19,3.18 19,3.68181818 L19,21.8636364 C19,22.3654545 18.604093,23 18.1162791,23 L0.88372093,23 C0.395906977,23 0,22.3654545 0,21.8636364 L0,3.68181818 C0,3.18 0.395906977,3 0.88372093,3 L7.06976744,3 C7.06976744,3 7.29069767,4.81818182 9.27906977,4.81818182 C11.2674419,4.81818182 11.4883721,3 11.4883721,3 L16.5697674,3 Z"></path>
-		                <path d="M0,2.93861559 L0.678571429,0.857422725 C0.678571429,0.316064432 1.08390476,0 1.58333333,0 L17.4166667,0 C17.9160952,0 18.3214286,0.316064432 18.3214286,0.857422725 L19,3"></path>
-		                <path d="M10,8 L10,16" stroke-linecap="round" sketch:type="MSShapeGroup"></path>
-		                <path d="M12,14.0811559 L10.0417255,16 L8,14" stroke-linecap="round"></path>
-		            </g>
-		        </g>
-		    </g>
-		</svg> 
-			Archive
-		</li>
-		<li>
-			<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 144 144" enable-background="new 0 0 144 144" xml:space="preserve">
-			<path id="gallery-photos" fill="#A4A4A4" d="M126,70.2l-27-27l-36,36l-27-18l-18,27v27h108V70.2z M144,16.2H0v117h144V16.2z M135,25.2v99H9v-99H135"/>
-			</svg>
-			Photos
-		</li>
-	</ul>
-	
-		<div id="galleryPhotoDisplayOpts">
-			<ul data-role="buttongroup" data-index="0" class="km-small" data-select="selectGalleryZoom" id="galleryZoomSelect">
+			<div class="gallerySearchOptions">
+				<div class="filters">
+					<button class="all" data-role="button">
+						<img src="images/gallery-all.svg" />
+					</button>
+					<button class="contacts" data-role="button">
+						<img src="images/sentinel-contacts.svg" />
+					</button>
+					<button class="chats" data-role="button">
+						<img src="images/sentinel-chats.svg" />
+					</button>
+					<button class="date" data-role="button">
+						<img src="images/sentinel-date.svg" />
+					</button>
+					<button class="places" data-role="button">
+						<img src="images/sentinel-places.svg" />
+					</button>
+				</div>
+				
+			</div>
+			<ul data-role="buttongroup" data-index="0" id="galleryMenuSelect" data-select="gallerySelectCategory">
 				<li>
-					<svg width="37px" height="24px" viewBox="0 0 37 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
-					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-					        <g id="gallery-grid-3" sketch:type="MSArtboardGroup" transform="translate(-109.000000, -76.000000)" fill="#979797">
-					            <g sketch:type="MSLayerGroup" transform="translate(109.000000, 76.000000)">
-					                <g sketch:type="MSShapeGroup">
-					                    <path d="M26.2730667,0.191466667 L36.7690667,0.191466667 L36.7690667,10.6874667 L26.2730667,10.6874667 L26.2730667,0.191466667 Z" ></path>
-					                    <path d="M26.2730667,13.3125333 L36.7690667,13.3125333 L36.7690667,23.8085333 L26.2730667,23.8085333 L26.2730667,13.3125333 Z" ></path>
-					                    <path d="M13.152,0.191466667 L23.648,0.191466667 L23.648,10.6874667 L13.152,10.6874667 L13.152,0.191466667 Z" ></path>
-					                    <path d="M13.152,13.3125333 L23.648,13.3125333 L23.648,23.8085333 L13.152,23.8085333 L13.152,13.3125333 Z" ></path>
-					                    <path d="M0.0314666667,0.191466667 L10.5274667,0.191466667 L10.5274667,10.6874667 L0.0314666667,10.6874667 L0.0314666667,0.191466667 Z" ></path>
-					                    <path d="M0.0314666667,13.3125333 L10.5274667,13.3125333 L10.5274667,23.8085333 L0.0314666667,23.8085333 L0.0314666667,13.3125333 Z"></path>
-					                </g>
-					            </g>
-					        </g>
-					    </g>
-					</svg>
+					<img src="images/gallery-all.svg" />
+					Archive
 				</li>
 				<li>
-					<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
-					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-					        <g id="gallery-grid-2" transform="translate(-180.000000, -76.000000)" fill="#979797">
-					            <g transform="translate(109.000000, 76.000000)">
-					                <g transform="translate(71.000000, 0.000000)">
-					                    <path d="M12.8,0 L23.296,0 L23.296,10.496 L12.8,10.496 L12.8,0 Z"></path>
-					                    <path d="M12.8,13.3333333 L23.296,13.3333333 L23.296,23.8293333 L12.8,23.8293333 L12.8,13.3333333 Z"></path>
-					                    <path d="M0,0 L10.496,0 L10.496,10.496 L0,10.496 L0,0 Z"></path>
-					                    <path d="M0,13.3333333 L10.496,13.3333333 L10.496,23.8293333 L0,23.8293333 L0,13.3333333 Z"></path>
-					                </g>
-					            </g>
-					        </g>
-					    </g>
-					</svg>
-				</li>
-				<li> 
-					<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
-					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-					        <g id="gallery-grid-1" sketch:type="MSArtboardGroup" transform="translate(-242.000000, -76.000000)" fill="#979797">
-					            <g transform="translate(109.000000, 76.000000)">
-					                <g transform="translate(133.000000, 0.000000)">
-					                    <path d="M0,0 L24,0 L24,24 L0,24 L0,0 Z"></path>
-					                </g>
-					            </g>
-					        </g>
-					    </g>
-					</svg>
+					<img src="images/gallery-photos.svg" />
+					Photos
 				</li>
 			</ul>
-		</div><!-- galleryPhoto -->
-	
-     	<!-- Photos -->
-     	<div id="galleryBox" class="hidden">
-         	<ul id="gallery-listview" class="list-inline" data-role="listview" data-click="galleryClick" data-source="photoModel.photosDS" data-template="gallery-template"></ul>
-        	<div class="emptyState hidden">
-	         	<img src="images/empty-gallery.svg" />
-	        </div>
-        </div>
-         <!-- Archive -->
-        <div id="archiveBox">
-        	<ul id="archive-list" data-source="archive.dataSource" data-template="archive-template" data-header-template="header-template"></ul>
-	        <div class="emptyState hidden">
-	         	<img src="images/empty-archive.svg" />
-	        </div>
-        </div>
+
+
+			<ul class="tags">
+				<!-- Test tags :) -->
+				<li><img src="images/sentinel-contacts.svg" />Don<button></button></li>
+				<li><img src="images/sentinel-chats.svg" />myplacez design<button></button></li>
+				<!-- -->
+			</ul>
+		</div>
+		
+			<div id="galleryPhotoDisplayOpts">
+				<ul data-role="buttongroup" data-index="0" class="km-small" data-select="selectGalleryZoom" id="galleryZoomSelect">
+					<li>
+						<img src="images/gallery-grid-3.svg" />
+					</li>
+					<li>
+						<img src="images/gallery-grid-2.svg" />
+					</li>
+					<li> 
+						<img src="images/gallery-grid-1.svg" />
+					</li>
+				</ul>
+			</div><!-- galleryPhoto -->
+		
+		<!--
+	     <div style="padding-top: 8px; padding-left: 4px; padding-right: 4px; padding-bottom: 48px; height: 100%;">
+
+	     </div>
+	    -->
+
+
+		<div id="archive-list" data-role="scroller">
+			
+			<ul data-role="listview" data-source="archive.dataSource" data-template="archive-template"></ul>
+
+			<!-- Photos -->
+			<ul id="gallery-listview" class="list-inline" data-role="listview" data-click="galleryClick" data-source="APP.models.gallery.photosDS" data-template="gallery-template"></ul>
+		</div>
+
+		<div id="archive-empty">Your archive is empty</div>
+		<div id="archive-search-empty">Nothing found</div>
+	</div>
+
 </div>
 
 <div data-role="drawer" id="galleryDrawer" style="width: 200px; height: 100%;" data-title="Gallery Options" data-position="right" data-views="['gallery']" data-swipe-to-open="false" style="display:none;" class="appearance">
@@ -168,3 +136,42 @@
          </div>
      </div>
  </script>
+
+<script type="text/x-kendo-template" id="archive-template">
+	<header>
+		# if (data.message.sender.image) { #
+			<img src="#= data.message.sender.image #" />
+		# } else { #
+			<img src="images/ghost-default.svg" />
+		# } #
+		<button class="delete" data-role="button" data-click="archiveView.deleteDoc" data-id="#= data.id #"></button>
+		<h3>#= data.message.sender.name #</h3><br />
+		<p>#= moment(data.message.date).fromNow() # in <strong>#= data.message.channelName #</strong></p>
+	</header>
+	<div class="message">#= data.message.text #</div>
+	# if (data.type === 'Events') { # 
+		<div class="event object">
+			<h3>#= data.object.name #</h3>
+			<p>at <strong>#= data.object.placeName #</strong> #= data.object.address #</p>
+			# if (moment().isBefore(data.object.start)) { #
+				<span>starts #= moment(data.object.start).fromNow() #</span>
+			# } else if (moment().isAfter(data.object.end)) { #
+				<span>ended #= moment(data.object.start).fromNow() #</span>
+			# } else { #
+				<span>happening now! #= moment(data.object.start).format('h:mma') # to #= moment(data.object.end).format('h:mma') #</span>
+			# } #
+		</div>
+	# } #
+	# if (data.type === 'Links') { # 
+		<div class="link object" data-url="#= data.object.url #">
+			<h3>#= data.object.title #</h3>
+			<p>#= data.object.url #</p>
+		</div>
+	# } #
+	# if (data.type === 'Photos') { # 
+		<div class="photo object">
+			<img src="#= data.object.url #" />
+			<p><strong>#= data.object.placeName #, #= data.object.address #</strong> <span>#= moment(data.object.date).fromNow() #</span></p>
+		</div> 
+	# } #
+</script>

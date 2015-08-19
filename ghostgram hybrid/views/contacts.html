@@ -281,18 +281,18 @@
 	<div>
     	<div class="contact-options list-options">
     		# if (data.contactUUID !== undefined && data.contactUUID !== null){#
-    			<a class="btnClear-grey" data-role="button" data-click="doEditContact">
+    			<a class="btnClear-grey" data-role="button" data-click="doEditContact" data-contact="#:uuid#">
 				    <img src="images/option-edit.svg" height="18" />
 				    <p class="chat-option-selection">Edit</p>
 			   	</a>
     		#} else {#
-			   	<a class="btnClear-grey" data-role="button" data-click="inviteContact">
+			   	<a class="btnClear-grey" data-role="button" data-click="doInviteContact" data-contact="#:uuid#">
 			    	<img src="images/contact-invite.svg" height="12" />
 			    	<p class="chat-option-selection"> Resend Invite</p>
 		    	</a>
 			   	
     		#}#
-    			<a class="btnClear-red" data-role="button" data-click="deleteContact">
+    			<a class="btnClear-red" data-role="button" data-click="doDeleteContact" data-contact="#:uuid#">
 			    	<img src="images/trash.svg" height="18" />
 			    	<p class="chat-option-selection"> Delete</p>
 		    	</a>
