@@ -33,9 +33,7 @@ var contactModel = {
     phoneArray: [],
     emailArray: [],
 
-    setCurrent : function (contact) {
 
-    },
 
     fetch : function () {
         var ContactModel = Parse.Object.extend("contacts");

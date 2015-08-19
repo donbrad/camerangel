@@ -153,8 +153,6 @@ function formatNameAlias(){
 
 	$(".primaryName").text(primaryName);
 	$(".secondName").text(secondName);
-
-	console.log(userModel.currentUser);
 }
 
 

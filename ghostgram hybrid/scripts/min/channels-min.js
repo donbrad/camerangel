@@ -587,3 +587,5 @@ function showEditDescription(){
 	$("#channels-editChannel-description").velocity("slideDown",{duration: 1500, easing: "spring", display: "block"});
 	$("#showEditDescriptionBtn").velocity("fadeOut");
 }
+
+

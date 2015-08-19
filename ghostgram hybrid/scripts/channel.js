@@ -1,9 +1,9 @@
 function onInitChannel(e) {
 	e.preventDefault();
 	
-	APP.models.channel.messagesDS.data([]);
-	APP.models.channel.membersDS.data([]);
-	APP.checkPubnub();
+	currentChannelModel.messagesDS.data([]);
+	currentChannelModel.membersDS.data([]);
+	//APP.checkPubnub();
 	
 	$("#messageSend").kendoTouch({
    
@@ -17,10 +17,10 @@ function onInitChannel(e) {
 	
 	var width = window.innerWidth - 68;
 	$('#messageTextArea').css("width", width+'px');
-	APP.models.channel.topOffset = APP.kendo.scroller().scrollTop;
+	currentChannelModel.topOffset = APP.kendo.scroller().scrollTop;
 	 autosize($('#messageTextArea'));
 	 $("#messages-listview").kendoMobileListView({
-        dataSource: APP.models.channel.messagesDS,
+        dataSource: currentChannelModel.messagesDS,
         template: $("#messagesTemplate").html() /*,
         click: function (e) {
             var message = e.dataItem;
@@ -137,11 +137,11 @@ function onInitChannel(e) {
         });
 	
 	$("#channelMembers-listview").kendoMobileListView({
-	dataSource: APP.models.channel.membersDS,
+	dataSource: currentChannelModel.membersDS,
 	template: $("#membersTemplate").html(),
 	click: function (e) {
 		var member = e.dataItem;
-		APP.models.channel.currentMember = member;
+		currentChannelModel.currentMember = member;
 		// display message actionsheet    
 		$("#memberActions").data("kendoMobileActionSheet").open();
 	}
@@ -202,7 +202,7 @@ function onInitAskRequest() {
 function tapChannel(e) {
 	e.preventDefault();
 	var target = $(e.touch.initialTouch);
-	var dataSource = APP.models.channel.messagesDS;
+	var dataSource = currentChannelModel.messagesDS;
 	var messageUID = $(e.touch.currentTarget).data("uid");
 	var message = dataSource.getByUid(messageUID);
 	//$('.delete').css('display', 'none');
@@ -222,7 +222,7 @@ function tapChannel(e) {
 		$('#modalPhotoView').kendoMobileModalView("open");
 	}
 	
-	if (APP.models.channel.currentModel.privacyMode) {
+	if (currentChannelModel.currentModel.privacyMode) {
 		$('#'+message.msgID).removeClass('privateMode');
 		$.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(3000).play()).then(function () {
 			$("#"+message.msgID).css("opacity", "1.0");
@@ -233,11 +233,11 @@ function tapChannel(e) {
 
 function swipeChannel (e) {
 	e.preventDefault();
-	var dataSource = APP.models.channel.messagesDS;
+	var dataSource = currentChannelModel.messagesDS;
 	var messageUID = $(e.touch.currentTarget).data("uid");
 	var message = dataSource.getByUid(messageUID);
 	
-	if (APP.models.channel.currentModel.privacyMode) {
+	if (currentChannelModel.currentModel.privacyMode) {
 		$('#'+message.msgID).removeClass('privateMode');
 	}
 		var selection = e.sender.events.currentTarget;
@@ -275,10 +275,10 @@ function swipeChannel (e) {
 
 function holdChannel (e) {
 	e.preventDefault();
-	var dataSource = APP.models.channel.messagesDS;
+	var dataSource = currentChannelModel.messagesDS;
 	var messageUID = $(e.touch.currentTarget).data("uid");
 	var message = dataSource.getByUid(messageUID);
-	if (APP.models.channel.currentModel.privacyMode) {
+	if (currentChannelModel.currentModel.privacyMode) {
 		$('#'+message.msgID).removeClass('privateMode');
 		$.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(3000).play()).then(function () {
 			$("#"+message.msgID).css("opacity", "1.0");
@@ -295,8 +295,8 @@ function scrollToBottom() {
 	var scrollerHeight =  APP.kendo.scroller().scrollHeight();
 	var viewportHeight =  APP.kendo.scroller().height();
 
-	if ((scrollerHeight + APP.models.channel.topOffset) > viewportHeight) {
-		var position = -1 * (scrollerHeight - viewportHeight - APP.models.channel.topOffset);
+	if ((scrollerHeight + currentChannelModel.topOffset) > viewportHeight) {
+		var position = -1 * (scrollerHeight - viewportHeight - currentChannelModel.topOffset);
 		 APP.kendo.scroller().animatedScrollTo(0, position);
 	}
 
@@ -329,7 +329,7 @@ function formatMessage(string) {
 }
 
 function onChannelPresence () {
-	var users = APP.models.channel.currentChannel.listUsers();
+	var users = currentChannelModel.currentChannel.listUsers();
 }
 
 function onChannelRead(message) {
@@ -344,12 +344,14 @@ function onChannelRead(message) {
 	if (message.fromHistory === undefined) {
 		message.fromHistory = false;
 	}
-	
-	APP.models.channel.messagesDS.add(message);	
-	
+
+	currentChannelModel.messagesDS.add(message);
+
+	currentChannelModel.updateLastAccess();
+
 	scrollToBottom();
 	
-	if (APP.models.channel.currentModel.privacyMode) {
+	if (currentChannelModel.currentModel.privacyMode) {
 		kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(9000).play();
 	}
 }
@@ -420,21 +422,19 @@ function chatPhotoTap(e) {
 }
 
 
-
-
 function messageSend(e) {
 	//e.preventDefault();
 	var text = $('#messageTextArea').val();
 	if (text.length === 0)
 		return;
 	var messageData = {geo: APP.location.position};
-	if (APP.models.channel.currentMessage.photo !== null) {
-		messageData.photo = APP.models.channel.currentMessage.photo;
+	if (currentChannelModel.currentMessage.photo !== null) {
+		messageData.photo = currentChannelModel.currentMessage.photo;
 	}
-	APP.models.channel.currentChannel.sendMessage(APP.models.channel.currentContactUUID, text, messageData, 86400);
+	currentChannelModel.currentChannel.sendMessage(currentChannelModel.currentContactUUID, text, messageData, 86400);
 	 hideChatImagePreview();
 	_initMessageTextArea();
-	APP.models.channel.currentMessage = {};
+	currentChannelModel.currentMessage = {};
 	
 }
 
@@ -461,16 +461,16 @@ function timeSince(date) {
 
 function onHideChannel(e) {
 	e.preventDefault();
-	if (APP.models.channel.currentChannel !== undefined) {
-		APP.models.channel.currentChannel.quit();   // Unsubscribe on current channel.
+	if (currentChannelModel.currentChannel !== undefined) {
+		currentChannelModel.currentChannel.quit();   // Unsubscribe on current channel.
 		mobileNotify("Closing current channel");
 	}		
 }
 
 function togglePrivacyMode (e) {
 	e.preventDefault();
-	APP.models.channel.currentModel.privacyMode = ! APP.models.channel.currentModel.privacyMode;
-	if (APP.models.channel.currentModel.privacyMode) {
+	currentChannelModel.currentModel.privacyMode = ! currentChannelModel.currentModel.privacyMode;
+	if (currentChannelModel.currentModel.privacyMode) {
 		$('#privacyMode').html('<img src="images/privacy-on.svg" />');
 		$( ".chat-message" ).addClass('privateMode').removeClass('publicMode');
         $("#privacyStatus").removeClass("hidden");
@@ -492,7 +492,7 @@ function onShowChannel(e) {
 	var thisUser = userModel.currentUser;
 	var thisChannel = {};
 	var contactUUID = null;
-	APP.models.channel.currentModel = thisChannelModel;
+	currentChannelModel.currentModel = thisChannelModel;
 	var name = thisChannelModel.name;
 	
 	// Hide the image preview div
@@ -502,7 +502,7 @@ function onShowChannel(e) {
 	if (name.length > 13) {
 		name = name.substring(0,13)+"...";
 	}
-	APP.models.channel.currentModel.privacyMode = false;
+	currentChannelModel.currentModel.privacyMode = false;
     // Privacy UI
 	$('#privacyMode').html('<img src="images/privacy-off.svg" />');
 	$("#privacyStatus").addClass("hidden");
@@ -510,7 +510,7 @@ function onShowChannel(e) {
 
 	if (thisChannelModel.isPrivate) {
 		$('#messagePresenceButton').hide();
-		APP.models.channel.currentModel.privacyMode = true;
+		currentChannelModel.currentModel.privacyMode = true;
         // Privacy UI 
 		$('#privacyMode').html('<img src="images/privacy-on.svg" />');
         $("#privacyStatus").removeClass("hidden");
@@ -518,15 +518,15 @@ function onShowChannel(e) {
 		if (thisChannelModel.members[0] === thisUser.userUUID)
 			contactUUID = thisChannelModel.members[1];
 		else 
-			contactUUID = thisChannelModel.members[0];	
+			contactUUID = thisChannelModel.members[0];
 
-		APP.models.channel.currentContactUUID = contactUUID;
+		currentChannelModel.currentContactUUID = contactUUID;
 		var thisContact = contactModel.getContactModel(contactUUID);
 		if (thisChannelModel.isPrivate) {
 			$('#channelImage').attr('src', thisContact.photo);
 		}
-		
-		APP.models.channel.currentContactModel = thisContact;
+
+		currentChannelModel.currentContactModel = thisContact;
 		var contactKey = thisContact.publicKey;
 		if (contactKey === undefined) {
 			getUserPublicKey(contactUUID, function (result, error) {
@@ -558,18 +558,18 @@ function onShowChannel(e) {
 				} else {
 					mobileNotify('No secure connect for ' + thisContact.alias + ' ' + thisContact.name);
 				}
-				APP.models.channel.currentChannel = thisChannel;
+				currentChannelModel.currentChannel = thisChannel;
 				
 				
 			});
 		} else {
-			APP.models.channel.currentModel = thisChannelModel;
+			currentChannelModel.currentModel = thisChannelModel;
 			thisChannel = new secureChannel(channelUUID, thisUser.userUUID, thisUser.alias, userKey, privateKey, contactUUID, contactKey);
 			thisChannel.onMessage(onChannelRead);
 			thisChannel.onPresence(onChannelPresence);
 			mobileNotify("Getting Previous Messages...");
 			thisChannel.getMessageHistory(function (messages) {
-				APP.models.channel.messagesDS.data([]);
+				currentChannelModel.messagesDS.data([]);
 				for (var i=0; i<messages.length; i++){
 							var message = messages[i];
 							var formattedContent = '';
@@ -579,13 +579,11 @@ function onShowChannel(e) {
 							message.formattedContent = formattedContent;
 						    message.fromHistory = true;
 						}
-	
-				APP.models.channel.messagesDS.data(messages);		
+
+				currentChannelModel.messagesDS.data(messages);
 				scrollToBottom();
 			});
-			APP.models.channel.currentChannel = thisChannel;
-			
-			
+			currentChannelModel.currentChannel = thisChannel;
 		}
 		
 		
@@ -607,10 +605,10 @@ function onShowChannel(e) {
 						message.formattedContent = formattedContent;
 					}
 
-			APP.models.channel.messagesDS.data(messages);		
+			currentChannelModel.messagesDS.data(messages);
 			scrollToBottom();
 		});
-		APP.models.channel.currentChannel = thisChannel;
+		currentChannelModel.currentChannel = thisChannel;
 	}
 }
 
@@ -629,8 +627,8 @@ function messageEraser (e) {
 
 function messageLockButton (e) {
 	e.preventDefault();
-	APP.models.channel.messageLock = !APP.models.channel.messageLock;
-	if (APP.models.channel.messageLock) {
+	currentChannelModel.messageLock = !currentChannelModel.messageLock;
+	if (currentChannelModel.messageLock) {
 		$('#messageLockButton').html('<i class="fa fa-lock"></i>');
 	} else {
 		$('#messageLockButton').html('<i class="fa fa-unlock"></i>');

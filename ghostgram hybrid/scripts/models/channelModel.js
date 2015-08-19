@@ -9,6 +9,8 @@ var channelModel = {
     _channelName : "channels",
     _channelMemberName : "channelMember",
     currentChannel: new kendo.data.ObservableObject(),
+    intervalTimer : undefined,
+    _messageCountRefresh : 3000000,   // Delta between message refresh calls (in milliseconds)
     channelsDS: new kendo.data.DataSource({
         offlineStorage: "channels-offline",
         sort: {
@@ -24,7 +26,9 @@ var channelModel = {
     }),
 
 
-
+    init :  function () {
+        channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
+    },
 
     fetch : function () {
         var Channel = Parse.Object.extend("channels");
@@ -61,9 +65,25 @@ var channelModel = {
 
     },
 
-    updateChannelsMessageCount : function () {
-        var channelArray = channelModel.channels.DS.data();
-    },
+    updateChannelsMessageCount : debounce(function () {
+        var channelArray = channelModel.channelsDS.data();
+        for (var i=0; i<channelArray.length; i++) {
+            var channel = channelArray[i];
+
+            APP.pubnub.history({
+                channel: channel.channelId,
+                start: channel.lastAccess,
+
+                callback: function(messages) {
+                    messages = messages[0];
+                    messages = messages || [];
+                    var len = messages.length;
+
+                }
+            });
+
+        }
+    }, this._messageCountRefresh, true ),
 
     findChannelModel: function (channelId) {
         var dataSource =  channelModel.channelsDS;
@@ -112,6 +132,9 @@ var channelModel = {
         channel.set('isPrivate', true);
         channel.set("media",  true);
         channel.set("archive",  false);
+        channel.set("unreadCount", 0);
+        channel.set("clearBefore", ggTime.currentTime());
+        channel.set("lastAccess", ggTime.currentTime());
         channel.set("description", "Private: " + contactAlias);
         channel.set("channelId", channelUUID);
         channel.set('userKey',  publicKey);
@@ -163,6 +186,9 @@ var channelModel = {
         channel.set("media",   true);
         channel.set("archive", true);
         channel.set("description", description);
+        channel.set("unreadCount", 0);
+        channel.set("clearBefore", ggTime.currentTime());
+        channel.set("lastAccess", ggTime.currentTime());
         channel.set("channelId", channelId);
 
         // Channel owner can access and edit members...
@@ -185,8 +211,8 @@ var channelModel = {
                 channelModel.channelsDS.add(channel.attributes);
                 mobileNotify('Added channel : ' + channel.get('name'));
 
-                APP.models.channel.currentModel = channelModel.findChannelModel(channelId);
-                APP.models.channel.currentChannel = APP.models.channel.currentModel;
+                currentChannelModel.currentModel = channelModel.findChannelModel(channelId);
+                currentChannelModel.currentChannel = currentChannelModel.currentModel;
                 APP.kendo.navigate('#editChannel');
             },
             error: function(channel, error) {
@@ -202,7 +228,6 @@ var channelModel = {
             channelMap.set("channelId", channelId);
             channelMap.set("channelOwner", userModel.currentUser.userUUID);
             channelMap.set("members", [userModel.currentUser.userUUID]);
-            channelMap.set("clearBefore", new Date().getTime() * 10000000);
 
             channelMap.save(null, {
                 success: function(channel) {

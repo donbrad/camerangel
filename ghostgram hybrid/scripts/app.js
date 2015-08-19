@@ -380,7 +380,8 @@
 		kendo: null,
 		pubnub: null,
 		map: null,
-		checkPubnub: function() {
+
+		/*checkPubnub: function() {
 			if (APP.pubnub === undefined || APP.pubnub === null) {
 
 				APP.pubnub = PUBNUB.init({
@@ -393,7 +394,7 @@
 					uuid: uuid
 				});
 			}
-		},
+		},*/
 /*
 		setAppState: function(field, value) {
 			APP.state[field] = value;
