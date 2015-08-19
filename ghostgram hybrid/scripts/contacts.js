@@ -306,7 +306,7 @@ function updateCurrentContact (contact) {
    
     // Wish observables set took an object -- need to set fields individually
     contactModel.currentContact.unbind('change' , syncCurrentContact);
-    contactModel.currentContact = contact;
+    //contactModel.currentContact = contact;
     contactModel.currentContact.set('name', contact.name);
     contactModel.currentContact.set('alias', contact.alias);
     contactModel.currentContact.set('phone', contact.phone);
@@ -474,8 +474,8 @@ function onInitContacts(e) {
              
         }
      }).kendoTouch({
-    	//filter: ".contactListBox",
-         filter: "div",
+    	filter: ".contactListBox",
+        // filter: "div",
     	enableSwipe: true,
     	swipe: function(e) {
             // Need to set current contact before exposing editing ux!
