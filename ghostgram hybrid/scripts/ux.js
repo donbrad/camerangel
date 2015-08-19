@@ -155,7 +155,20 @@ function formatNameAlias(){
 	$(".secondName").text(secondName);
 }
 
+function showFormatedPhone(){
+	if($(".phone").is("input")){
+		var inputVal = $(".phone").val();
+    	var formattedVal = inputVal.replace(/\d(\d\d\d)(\d\d\d)(\d\d\d\d)/, '($1) $2-$3');
+		
+		$(".phone").val(formattedVal);
+	
+	} else {
+		$('.phone').text(function(i, text) {
+    	return text.replace(/\d(\d\d\d)(\d\d\d)(\d\d\d\d)/, '($1) $2-$3');
+		});
+	}
 
+}
 
 
 

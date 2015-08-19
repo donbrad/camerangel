@@ -342,6 +342,7 @@ function onInitContact(e) {
 	if (e.preventDefault !== undefined) {
     	e.preventDefault();
 	}
+
 }
 
 function onShowEditContact(e) {
@@ -448,7 +449,7 @@ function onInitContacts(e) {
         fixedHeaders: true,
         click: function (e) {
             var contact = e.dataItem;
-            console.log(contact);
+   
             updateCurrentContact(contact);
             
 			if (contact.category === 'phone') {
@@ -502,12 +503,6 @@ function closeContactActions() {
 	$("#modalview-contactActions").data("kendoMobileModalView").close();
 }
 
-
-function showFormatedPhone(){
-	$('.phone').text(function(i, text) {
-    	return text.replace(/\d(\d\d\d)(\d\d\d)(\d\d\d\d)/, '($1) $2-$3');
-	});
-}
  
 function onShowContacts (e) {
 	if (e.preventDefault !== undefined)

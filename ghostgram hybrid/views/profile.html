@@ -9,64 +9,55 @@
             </a>
        </div>
     </div> 
-	 <div class="profileDiv">
-         <!-- Display Profile -->
-         <div class="profileTopBox" id="profileTopView">
-             <div class="caption hidden" style="float: left">
-                 Public View
-             </div>
-             <div class="clearfix"></div>
-             <h4 id="profile-username" data-bind="text:currentUser.alias"></h4>
-             <div style="display: inline-block;">
-                 <span style="width: 50%; text-align: center;">
-                    <div>
-                   		<a data-role="button" data-rel="view" href="#profilePhotoEdit">
-					   		<img id="privateTopImg" data-bind="attr: {src: photo}"/>
-						</a>
-                        <p>Profile Image</p>
-                    </div>
-                 </span>
-
-             </div>
+	 <div class="profileEdit" id="profileEditPhotos">
+       <div class="profileTopBox">
+           <div class="profileEditPrivate">
+               <div class="profilePrivateImg">
+                   <img src="images/default-private.svg" data-bind="attr: {src: photo}"/>
+               </div>
+               <div class="profilePrivateImgBtn">
+                   <label>Profile photo</label>
+                   <p class="caption">
+                       Your profile photo is visible <b>ONLY</b> to your contacts.
+                   </p>
+                   <a class="btnClear" data-role="button" href="#profilePhotoEdit" >Update Profile Photo</a>
+               </div>
+           </div>
          </div>
-         <div class="line"></div>
-         <!-- Display My Info -->
-         <div class="profileDisplay">
-             <h3>My Info 
-                 <div style="float:right">
-                     <a id="editProfile" href="#profileEdit" data-role="button" class="btnClear"> Edit Profile </a>
-                 </div>
-             </h3>
-             <ul data-role="listview" data-style="inset">
-                 <li>
-                     <label>Name (Your Full Name)</label>
-                     <p data-bind="text:name"></p>
-                 </li>
-                 <li>
-                     <label>Alias (How users see you)</label>
-                     <p data-bind="text:alias"></p>
-                 </li>
-                 <li>
-                     <label>Contact email 
-                         <span class="helper helper-verified hidden" id="verified-email">
-                         <img class="helper-verified-img" src="images/verified.svg" height="14" /> 
-                             Verified 
-                         </span>
-                      </label>
-                    <p data-bind="text: email"></p>
-                 </li>
-                 <li>
-                     <label>Mobile Phone 
-                       <span class="helper helper-verified hidden" id="verified-phone">
-                       <img class="helper-verified-img" src="images/verified.svg" height="14" /> 
-                           Verified
-                       </span>
+           <div class="line"></div>
+       </div>
+       <!-- Edit info -->
+       <div class="profileEditBtm">
+           <form style="clear:both;">
+            <h3>Edit Info
+            <a class="btnClear right" href="#modalview-changePassword" data-rel="modalview" id="profile-changePassword" data-role="button" >Change Password</a>
+            </h3> 
+            <ul data-role="listview" data-style="inset">
+                <li>
+                    <label>Name (Your First and Last Name)
+                        <input type="search" id="profile-name" data-bind="value: name" />
                     </label>
-                    <p class="phone" data-bind="text: phone"></p>
-                 </li>
-             </ul>
-         </div>
-    </div>
+                </li>
+                <li>
+                    <label>Alias (How other users see you)
+                    <input type="search" id="profile-alias" data-bind="value: alias" />
+                    </label>
+                </li>
+                 <li>
+                    <label>Contact email 
+                    <input type="email" id="profile-email" data-bind="value: email" />
+                    </label>
+                </li>
+               <li>
+                   <label>Mobile Phone 
+                       <span class="helper helper-right helper-form"><img src="images/lock.svg" /> Locked </span>
+                    <input type="tel" id="profile-phone" class="phone" data-bind="value: phone" readonly />
+                    </label>
+                </li>
+           </ul>
+               
+           </form>
+        </div>
 </div>
 
 <!-- Profile Edit -->  
@@ -194,28 +185,28 @@
    
 <!-- change password modal -->
 <div data-role="modalview" id="modalview-changePassword" style="width: 90%; display:none;" class="appearance">
-    <div class="modalTop">
-        <h3 style="height: 48px; vertical-align: middle;">Change Password
-            <span class="closeBox" style="float:right; ">
-                <a data-click="closeNewPass;" data-role="button"><img src="images/close.svg" /></a>
-            </span>
-        </h3>
+    <div class="modal-bottom">
+    <h4>Change Password
+    	<span style="float:right; ">
+        	<a data-click="closeNewPass;" data-role="button"><img src="images/close.svg" /></a>
+        </span>
+    </h4>
+	    <ul data-role="listview" data-style="inset">
+			<li>
+		    	<label>New Password
+		        	<input type="password" id="newPassword1" />
+		        </label>
+		    </li>
+		    <li>
+		    	<label>Confirm Password
+		       		<input type="password" id="newPassword2" />
+		        </label>
+		    </li>
+	    </ul>   
+	</div>
+    <div class="footer" data-role="footer">
+    	<a class="btnFull-modal btnSecondary" data-click="validNewPass" data-role="button">Update</a>
     </div>
-    <div class="line"></div>
-    <form id="changePassForm">
-       <ul data-role="listview" data-style="inset">
-        <li>
-            <label>New Password</label>
-            <input type="password" id="newPassword1" />
-        </li>
-        <li>
-            <label>Confirm Password</label>
-            <input type="password" id="newPassword2" />
-        </li>
-       </ul>
-      <a class="btnClear" data-click="validNewPass" data-role="button">Save</a>
-    </form>
-    
 </div>
     
     

@@ -120,20 +120,6 @@ function continueSignUp() {
 
 	$("#create-user-email, #create-user-name, #create-user-alias, #create-user-password").velocity("slideDown", { delay: 500, duration: 300 }, [ 250, 15 ]);
 	// ToDo - Add step form validation
-	
-
-}
-
-function onInitProfile(e) {
-	e.preventDefault();
-    
-    if (userModel.currentUser.emailVerified){
-        $("#verified-email").removeClass("hidden");
-    }
-    
-    if(userModel.currentUser.phoneVerified){
-        $("#verified-phone").removeClass("hidden");
-    }
 
 }
 

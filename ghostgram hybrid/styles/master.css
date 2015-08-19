@@ -67,6 +67,11 @@
 .sentinel .filters img {
   height: 1.4rem;
 }
+.sentinel input {
+  background-image: url('images/search.svg');
+  background-repeat: none;
+  background-size: fill;
+}
 /* elements */
 .shadow {
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);
@@ -1222,7 +1227,7 @@ div.footerMenu.km-footer > ul > li > a:active {
   position: absolute;
   top: 0px;
   right: 0px;
-  padding: 14px 14px !important;
+  padding: 1rem 1rem !important;
 }
 .modal-top {
   height: 10rem;
@@ -1655,9 +1660,6 @@ div.footerMenu.km-footer > ul > li > a:active {
   width: 60px;
   background-color: #27476e;
   color: #fff;
-}
-#profile-changePassword {
-  margin: 0px;
 }
 .km-material .km-view .km-navbar .km-button {
   padding: 0.25em 0.5em;
@@ -2478,9 +2480,6 @@ div.loginBox > form > div > ul > li {
 }
 .profileEditPublic {
   margin-bottom: 1rem;
-}
-#profile-changePassword {
-  margin-top: 1rem;
 }
 /* Create account */
 .profileGhostSelection {
