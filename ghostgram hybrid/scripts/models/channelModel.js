@@ -65,13 +65,25 @@ var channelModel = {
 
     },
 
-    updateChannelsMessageCount : function () {
+    updateChannelsMessageCount : debounce(function () {
         var channelArray = channelModel.channelsDS.data();
         for (var i=0; i<channelArray.length; i++) {
             var channel = channelArray[i];
 
+            APP.pubnub.history({
+                channel: channel.channelId,
+                start: channel.lastAccess,
+
+                callback: function(messages) {
+                    messages = messages[0];
+                    messages = messages || [];
+                    var len = messages.length;
+
+                }
+            });
+
         }
-    },
+    }, this._messageCountRefresh, true ),
 
     findChannelModel: function (channelId) {
         var dataSource =  channelModel.channelsDS;
@@ -199,8 +211,8 @@ var channelModel = {
                 channelModel.channelsDS.add(channel.attributes);
                 mobileNotify('Added channel : ' + channel.get('name'));
 
-                currentChannelModel.currentModel = channelModel.findChannelModel(channelId);
-                currentChannelModel.currentChannel = currentChannelModel.currentModel;
+                currentChannelModel.currentChannel = channelModel.findChannelModel(channelId);
+                currentChannelModel.currentChannel = currentChannelModel.currentChannel;
                 APP.kendo.navigate('#editChannel');
             },
             error: function(channel, error) {

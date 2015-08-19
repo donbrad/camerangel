@@ -119,11 +119,11 @@
 	    	#} else {#
 	    		<div class="chat-mainBox">
 	    	#}#
-	    	
 	    		<h4>
 	    		<span><img src="images/status-new.svg" class="list-status" /></span>
-	        		 #:name# 
-	        		<span class="chatActivityTime">1 hr ago</span>
+	        		 #:name#
+	        		 # var formattedTime = "1 Day";#
+	        		<span class="chatActivityTime">#:formattedTime#</span>
 	    		</h4>
 	    		
 	    		# if(isPrivate && members.length <= 2){#
@@ -221,7 +221,7 @@
 </div>
 
 <!-- Edit chat -->
-<div data-role="view" id="editChannel" data-model="APP.models.channels.currentChannel" style="display: none;" data-show="onShowEditChannel"  data-init="onInitEditChannel" class="appearance">
+<div data-role="view" id="editChannel" data-model="currentChannelModel.currentChannel" style="display: none;" data-show="onShowEditChannel"  data-init="onInitEditChannel" class="appearance">
     <div data-role="header">
         <div data-role="navbar">
             <span> Edit Chat </span>

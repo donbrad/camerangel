@@ -38,7 +38,6 @@
 		<li><a data-action="contactSendSMS">Send SMS</a></li>
 		<li><a data-action="contactSendEmail">Send Email</a></li>
 		<li><a data-action="contactCallPhone">Phone Call</a></li>
-    
     </ul>
 </div>
 
@@ -52,10 +51,10 @@
 	</div>
 	<div class="modal-bottom">
 		<ul class="list-inline" id="contactActionBtns" >
-			<li><a class="btnClear" data-role="button" data-click="privateChat">Private Chat</a></li>
-			<li><a class="btnClear" data-role="button" data-click="ghostEmail">ghostMail</a></li>
-			<li><a class="btnClear" data-role="button" data-click="contactCallPhone">Call</a></li>
-			<li><a class="btnClear" data-role="button" data-click="contactSendSMS">SMS</a></li>
+			<li><a class="btnClear" data-role="button" data-click="privateChat">ghostgram Private Chat</a></li>
+			<li><a class="btnClear" data-role="button" data-click="ghostEmail">ghostgram Rich Email</a></li>
+			<li><a class="btnClear" data-role="button" data-click="contactCallPhone">Phone Call</a></li>
+			<li><a class="btnClear" data-role="button" data-click="contactSendSMS">Send SMS</a></li>
 		</ul>
 	</div>
 </div>
@@ -279,82 +278,81 @@
 	<div>
     	<div class="contact-options list-options">
     		# if (data.contactUUID !== undefined && data.contactUUID !== null){#
-    			<a class="btnClear-grey" data-role="button" data-click="doEditContact">
+    			<a class="btnClear-grey" data-role="button" data-click="doEditContact" data-contact="#:uuid#">
 				    <img src="images/option-edit.svg" height="18" />
 				    <p class="chat-option-selection">Edit</p>
 			   	</a>
     		#} else {#
-			   	<a class="btnClear-grey" data-role="button" data-click="inviteContact">
+			   	<a class="btnClear-grey" data-role="button" data-click="doInviteContact" data-contact="#:uuid#">
 			    	<img src="images/contact-invite.svg" height="12" />
 			    	<p class="chat-option-selection"> Resend Invite</p>
 		    	</a>
 			   	
     		#}#
-    			<a class="btnClear-red" data-role="button" data-click="deleteContact">
+    			<a class="btnClear-red" data-role="button" data-click="doDeleteContact" data-contact="#:uuid#">
 			    	<img src="images/trash.svg" height="18" />
 			    	<p class="chat-option-selection"> Delete</p>
 		    	</a>
 		    
     	</div><!-- contact-options -->
 
-    <div class="contactListBox">
-	     <a class="contactListItem">
-			 
-			 #if (data.category !== 'phone') {#
-			 	<div class="left listPhoto">
-				 	<div class="statusContactList">
-				 		  
-			 			#if (data.isAvailable !== undefined && data.isAvailable) { #
-			 				<img class="circle-img-md" src="#:data.photo#" />
-			 				<img width="16" src="images/status-available.svg" class="statusContactList-icon" />
-			 			# } 
-			 			else { #
-			 				<img class="circle-img-md" src="#:data.photo#" />
-			 				<img width="16" src="images/status-away.svg" class="statusContactList-icon" />
-			 			#}#
-			 		</div>
-			 	</div><!-- left -->
-					
-					<div class="left listName">
-						<h4>
-						#if(data.alias !== ''){#
-							#: data.alias #
-						#} else {#
-							#: data.name #
-						#}#
-						#if (data.phoneVerified){#
-								<img src="images/user-verified.svg" class="user-status-icon" />
-						#}#
-						# if(data.alias !== '' && data.name !== data.alias) {#
-							<span class="contacts-alias-sm">#: data.name #</span>
-						#}#
-						</h4>
-					</div>
+		<div class="contactListBox">
+			 <a class="contactListItem">
 
-					<p class="left caption contact-status">
-					#if(data.phoneVerified !== true){#
-						Unverified •  
-					#}#	Busy @ home
-					</p>
-					<div class="clearfix"></div>
-					<div class="contact-info">
-						<label>Contact via</label>
-						<ul data-role="listview" data-style="inset">
-							<li><a class="btnClear">Private Chat</a></li>
-							<li><a class="btnClear">ghostMail</a></li>
-							<li><a class="btnClear">Call</a></li>
-							<li><a class="btnClear">SMS</a></li>
-						</ul>
-					</div>
-			#} else {#
-				<h4 class="phoneContact">
-					#: data.name #
-				</h4>
-			#}#			 
-		 </div>
-		</a>
-	</div><!-- listBox -->
-</div>
+				 #if (data.category !== 'phone') {#
+					<div class="left listPhoto">
+						<div class="statusContactList">
+
+							#if (data.isAvailable !== undefined && data.isAvailable) { #
+								<img class="circle-img-md" src="#:data.photo#" />
+								<img width="16" src="images/status-available.svg" class="statusContactList-icon" />
+							# }
+							else { #
+								<img class="circle-img-md" src="#:data.photo#" />
+								<img width="16" src="images/status-away.svg" class="statusContactList-icon" />
+							#}#
+						</div>
+					</div><!-- left -->
+
+						<div class="left listName">
+							<h4>
+							#if(data.alias !== ''){#
+								#: data.alias #
+							#} else {#
+								#: data.name #
+							#}#
+							#if (data.phoneVerified){#
+									<img src="images/user-verified.svg" class="user-status-icon" />
+							#}#
+							# if(data.alias !== '' && data.name !== data.alias) {#
+								<span class="contacts-alias-sm">#: data.name #</span>
+							#}#
+							</h4>
+						</div>
+
+						<p class="left caption contact-status">
+						#if(data.phoneVerified !== true){#
+							Unverified •
+						#}#	Busy @ home
+						</p>
+						<div class="clearfix"></div>
+						<div class="contact-info">
+							<label>Contact via</label>
+							<ul data-role="listview" data-style="inset">
+								<li><a class="btnClear">Private Chat</a></li>
+								<li><a class="btnClear">ghostMail</a></li>
+								<li><a class="btnClear">Call</a></li>
+								<li><a class="btnClear">SMS</a></li>
+							</ul>
+						</div>
+				#} else {#
+					<h4 class="phoneContact">
+						#: data.name #
+					</h4>
+				#}#
+			</a>
+		</div><!-- listBox -->
+	</div>
 
 </script>
 

@@ -3,7 +3,7 @@ function syncCurrentContact(e) {
         e.preventDefault();
     }
     updateParseObject('contacts','uuid', contactModel.currentContact.uuid, e.field, this[e.field]);
-    contactModel.currentModel.set(e.field, this[e.field]);
+    contactModel.currentContact.set(e.field, this[e.field]);
 }
     
 function syncProfile (e) {
@@ -101,57 +101,46 @@ function privateChat(e) {
     //processPrivateInvite(contactUUID, contactModel.currentUser.get('alias') + " requests a Private Channel");
 }
 
-/*function getContactModel(contactUUID) {
-	 var dataSource = APP.models.contacts.contactsDS;
-    dataSource.filter( { field: "contactUUID", operator: "eq", value: contactUUID });
-    var view = dataSource.view();
-    var contact = view[0];
-	dataSource.filter([]);
-	
-	return(contact);
-}
-
-function findContactByUUID(uuid) {
-var dataSource = APP.models.contacts.contactsDS;
-    dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
-    var view = dataSource.view();
-    var contact = view[0];
-	dataSource.filter([]);
-	
-	return(contact);	
-}
-
-function findContactByPhone(phone) {
-var dataSource = APP.models.contacts.contactsDS;
-    dataSource.filter( { field: "phone", operator: "eq", value: phone });
-    var view = dataSource.view();
-    var contact = view[0];
-	dataSource.filter([]);
-	
-	return(contact);	
-}*/
-
 function doEditContact(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
     }
-	
+    var contactId = e.button[0].attributes["data-contact"].value;
+    var contact = contactModel.findContactByUUID(contactId);
+
+    updateCurrentContact(contact);
     APP.kendo.navigate("#editContact");  
 }
 
 
 
-function deleteContact(e) {
+function doDeleteContact(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
     }
 
+    var contactId = e.button[0].attributes["data-contact"].value;
+    var contact = contactModel.findContactByUUID(contactId);
+
+    updateCurrentContact(contact);
+    
 	var string = "Deleted contact: " + contactModel.currentContact.name + " ("+ contactModel.currentContact.alias + ")" ;
 	
     contactModel.delete();
 	mobileNotify(string);
 	APP.kendo.navigate('#contacts');
     
+}
+
+function doInviteContact(e) {
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
+    var contactId = e.button[0].attributes["data-contact"].value;
+
+    var email = contactModel.currentContact.get('email');
+
+    contactSendEmailInvite(email);
 }
 
 function syncContact(model) {
@@ -215,15 +204,7 @@ function contactSendEmail(e) {
 	
 }
 
-function inviteContact(e) {
-    if (e !== undefined && e.preventDefault !== undefined) {
-        e.preventDefault();
-    }
 
-    var email = contactModel.currentContact.get('email');
-
-    contactSendEmailInvite(email);
-}
 
 function contactSendSMSInvite(phone) {
 
@@ -324,8 +305,8 @@ function contactSendSMS(e) {
 function updateCurrentContact (contact) {
    
     // Wish observables set took an object -- need to set fields individually
-    contactModel.currentModel = contact;
     contactModel.currentContact.unbind('change' , syncCurrentContact);
+    //contactModel.currentContact = contact;
     contactModel.currentContact.set('name', contact.name);
     contactModel.currentContact.set('alias', contact.alias);
     contactModel.currentContact.set('phone', contact.phone);
@@ -494,10 +475,11 @@ function onInitContacts(e) {
         }
      }).kendoTouch({
     	filter: ".contactListBox",
+        // filter: "div",
     	enableSwipe: true,
-    	swipe: function(e){
+    	swipe: function(e) {
+            // Need to set current contact before exposing editing ux!
     		var selection = e.sender.events.currentTarget;
-    		
     		if(e.direction === "left"){
     			var otherOpenedLi = $(".contact-active");
     			$(otherOpenedLi).velocity({translateX:"0"},{duration: "fast"}).removeClass("contact-active");

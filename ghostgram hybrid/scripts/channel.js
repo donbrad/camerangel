@@ -222,7 +222,7 @@ function tapChannel(e) {
 		$('#modalPhotoView').kendoMobileModalView("open");
 	}
 	
-	if (currentChannelModel.currentModel.privacyMode) {
+	if (currentChannelModel.privacyMode) {
 		$('#'+message.msgID).removeClass('privateMode');
 		$.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(3000).play()).then(function () {
 			$("#"+message.msgID).css("opacity", "1.0");
@@ -237,7 +237,7 @@ function swipeChannel (e) {
 	var messageUID = $(e.touch.currentTarget).data("uid");
 	var message = dataSource.getByUid(messageUID);
 	
-	if (currentChannelModel.currentModel.privacyMode) {
+	if (currentChannelModel.privacyMode) {
 		$('#'+message.msgID).removeClass('privateMode');
 	}
 		var selection = e.sender.events.currentTarget;
@@ -278,7 +278,7 @@ function holdChannel (e) {
 	var dataSource = currentChannelModel.messagesDS;
 	var messageUID = $(e.touch.currentTarget).data("uid");
 	var message = dataSource.getByUid(messageUID);
-	if (currentChannelModel.currentModel.privacyMode) {
+	if (currentChannelModel.privacyMode) {
 		$('#'+message.msgID).removeClass('privateMode');
 		$.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(3000).play()).then(function () {
 			$("#"+message.msgID).css("opacity", "1.0");
@@ -346,10 +346,12 @@ function onChannelRead(message) {
 	}
 
 	currentChannelModel.messagesDS.add(message);
-	
+
+	currentChannelModel.updateLastAccess();
+
 	scrollToBottom();
 	
-	if (currentChannelModel.currentModel.privacyMode) {
+	if (currentChannelModel.privacyMode) {
 		kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(9000).play();
 	}
 }
@@ -420,8 +422,6 @@ function chatPhotoTap(e) {
 }
 
 
-
-
 function messageSend(e) {
 	//e.preventDefault();
 	var text = $('#messageTextArea').val();
@@ -469,8 +469,8 @@ function onHideChannel(e) {
 
 function togglePrivacyMode (e) {
 	e.preventDefault();
-	currentChannelModel.currentModel.privacyMode = ! currentChannelModel.currentModel.privacyMode;
-	if (currentChannelModel.currentModel.privacyMode) {
+	currentChannelModel.privacyMode = ! currentChannelModel.privacyMode;
+	if (currentChannelModel.privacyMode) {
 		$('#privacyMode').html('<img src="images/privacy-on.svg" />');
 		$( ".chat-message" ).addClass('privateMode').removeClass('publicMode');
         $("#privacyStatus").removeClass("hidden");
@@ -492,7 +492,7 @@ function onShowChannel(e) {
 	var thisUser = userModel.currentUser;
 	var thisChannel = {};
 	var contactUUID = null;
-	currentChannelModel.currentModel = thisChannelModel;
+	currentChannelModel.currentChannel = thisChannelModel;
 	var name = thisChannelModel.name;
 	
 	// Hide the image preview div
@@ -502,7 +502,7 @@ function onShowChannel(e) {
 	if (name.length > 13) {
 		name = name.substring(0,13)+"...";
 	}
-	currentChannelModel.currentModel.privacyMode = false;
+	currentChannelModel.privacyMode = false;
     // Privacy UI
 	$('#privacyMode').html('<img src="images/privacy-off.svg" />');
 	$("#privacyStatus").addClass("hidden");
@@ -510,7 +510,7 @@ function onShowChannel(e) {
 
 	if (thisChannelModel.isPrivate) {
 		$('#messagePresenceButton').hide();
-		currentChannelModel.currentModel.privacyMode = true;
+		currentChannelModel.privacyMode = true;
         // Privacy UI 
 		$('#privacyMode').html('<img src="images/privacy-on.svg" />');
         $("#privacyStatus").removeClass("hidden");
@@ -563,7 +563,7 @@ function onShowChannel(e) {
 				
 			});
 		} else {
-			currentChannelModel.currentModel = thisChannelModel;
+			currentChannelModel.currentChannel = thisChannelModel;
 			thisChannel = new secureChannel(channelUUID, thisUser.userUUID, thisUser.alias, userKey, privateKey, contactUUID, contactKey);
 			thisChannel.onMessage(onChannelRead);
 			thisChannel.onPresence(onChannelPresence);

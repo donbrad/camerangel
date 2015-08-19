@@ -26,6 +26,7 @@ var contactModel = {
     }),
 
     currentDeviceContact: {},
+    unifiedDeviceContact: false,
     currentContact: new kendo.data.ObservableObject(),
     phoneDS: new kendo.data.DataSource(),
     emailDS: new kendo.data.DataSource(),
@@ -33,9 +34,7 @@ var contactModel = {
     phoneArray: [],
     emailArray: [],
 
-    setCurrent : function (contact) {
 
-    },
 
     fetch : function () {
         var ContactModel = Parse.Object.extend("contacts");
@@ -68,8 +67,8 @@ var contactModel = {
     },
 
     delete: function() {
-        var dataSource = this.contactsDS;
-        var uuid = this.currentContact.uuid;
+        var dataSource = contactModel.contactsDS;
+        var uuid = contactModel.currentContact.uuid;
 
         //var string = "Deleted contact: " + APP.models.contacts.currentContact.name + " ("+ APP.models.contacts.currentContact.alias + ")" ;
 
