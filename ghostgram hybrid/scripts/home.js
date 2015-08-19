@@ -874,3 +874,7 @@ function statusSwitch(e) {
 function closeThisModal(e){
 	console.log(e);
 }
+
+function dialogClose(e){
+	$("#modal-dialog").data("kendoMobileModalView").close();
+}

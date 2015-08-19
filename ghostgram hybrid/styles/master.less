@@ -646,6 +646,26 @@ form {
 	}
 }
 
+.twoBtn {
+	&:extend(.btnStyle);
+	width: 50%;
+	float: left;
+	height: 2.25rem;
+	padding-top: 0.5rem !important;
+}
+
+.footer-twoBtn .twoBtn:nth-child(1){
+	border-right: 1px solid @shade-200;
+}
+
+.modal-dialog {
+	padding: 0.5rem 1rem 1rem 1rem;
+	h3, p {
+		margin-left: 0px;
+		margin-right: 0px;
+	}
+}
+
 .input-text-sm {
 	.font-size(12);
 }
