@@ -204,11 +204,16 @@ function finalizeEditChannel(e) {
 	currentChannelModel.currentChannel.members = memberArray;
 	currentChannelModel.currentChannel.unbind('change', syncCurrentChannel);
 
-	//Todo:  process membersAdded -- send invite messages
+	//Send Invite messages to users added to channel
+	for (var ma=0; ma<currentChannelModel.membersAdded.length; ma++) {
+		userDataChannel.groupChannelInvite(currentChannelModel.membersAdded[ma], channelId, "You've been invited to " + currentChannelModel.currentChannel.name);
+	}
 
 
-	//Todo: process membersDeleted -- send channel delete messages
-
+	//Send Delete messages to users deleted from the channel
+	for (var md=0; md<currentChannelModel.membersDeleted.length; md++) {
+		userDataChannel.groupChannelDelete(currentChannelModel.membersDeleted[md], channelId, currentChannelModel.currentChannel.name + "has been deleted.");
+	}
 
 	updateParseObject('channels', 'channelId', channelId, 'members', memberArray);
 	updateParseObject('channels', 'channelId', channelId, 'invitedMembers', invitedMemberArray);
