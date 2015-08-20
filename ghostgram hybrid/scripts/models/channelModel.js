@@ -252,13 +252,30 @@ var channelModel = {
         var view = dataSource.view();
         var channel = view[0];
         dataSource.filter([]);
-        if (channel.isOwner) {
-            // If this user is the owner -- delete the channel map
-            deleteParseObject("channelmap", 'channelId', channelId);
+
+        if (channel !== undefined) {
+            dataSource.filter([]);
+            if (channel.isOwner) {
+                // If this user is the owner -- delete the channel map
+                deleteParseObject("channelmap", 'channelId', channelId);
+
+                if (channel.isPrivate) {
+                    // Owner is always first member of channel
+                    userDataChannel.privateChannelDelete(members[1],channelId, 'Chat "' + channel.name + 'has been deleted' );
+                } else {
+                    // Send delete channel messages to all members
+                    var members = channel.members;
+                    // Skip the first member as it's the owner
+                    for (var i = 1; i < channel.members.length; i++) {
+                        userDataChannel.groupChannelDelete(members[i],channelId, 'Chat "' + channel.name + 'has been deleted' );
+                    }
+                }
+
+            }
+            dataSource.remove(channel);
+            deleteParseObject("channels", 'channelId', channelId);
+            mobileNotify("Removed channel : " + channel.get('name'));
         }
-        dataSource.remove(channel);
-        deleteParseObject("channels", 'channelId', channelId);
-        mobileNotify("Removed channel : " + channel.get('name'));
     }
 
 };

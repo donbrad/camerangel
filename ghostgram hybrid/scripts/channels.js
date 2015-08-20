@@ -17,7 +17,6 @@ function addChannel(e) {
 function onShowChannels(){
 	// set action button
 	$("#channels > div.footerMenu.km-footer > a").attr("href", "#addChannel").css("display","inline-block");
-    
 }
 
 function syncCurrentChannel(e) {
@@ -28,12 +27,14 @@ function syncCurrentChannel(e) {
 }
     
 function editChannel(e) {
-	if (e!== undefined && e.preventDefault !== undefined)
+	if (e!== undefined && e.preventDefault !== undefined){
 		e.preventDefault();
-
+	}
 	// Did a quick bind to the button, feel free to change 
+
    var channelId = e.button[0].attributes["data-channel"].value; 
    var dataSource = channelModel.channelsDS;
+
     dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
     var view = dataSource.view();
     var channel = view[0];
@@ -57,7 +58,7 @@ function editChannel(e) {
 	currentChannelModel.currentChannel.bind('change', syncCurrentChannel);
     
     APP.kendo.navigate('#editChannel');
-
+	
 }
     
 function eraseChannel(e) {
@@ -111,6 +112,9 @@ function onInitChannels (e) {
         		var channelUrl = "#channel?channel=" + e.dataItem.channelId;
         		APP.kendo.navigate(channelUrl);
         	} 
+        },
+        dataBound: function(e){	
+        	checkEmptyUIState("#channels-listview", "#channelListDiv");
         }
     }).kendoTouch({
     	filter: "div",
@@ -138,7 +142,8 @@ function onInitChannels (e) {
     	}
     	
     });
-   
+    
+   	
 }
 
 function listViewClick(e){
@@ -199,11 +204,16 @@ function finalizeEditChannel(e) {
 	currentChannelModel.currentChannel.members = memberArray;
 	currentChannelModel.currentChannel.unbind('change', syncCurrentChannel);
 
-	//Todo:  process membersAdded -- send invite messages
+	//Send Invite messages to users added to channel
+	for (var ma=0; ma<currentChannelModel.membersAdded.length; ma++) {
+		userDataChannel.groupChannelInvite(currentChannelModel.membersAdded[ma], channelId, "You've been invited to " + currentChannelModel.currentChannel.name);
+	}
 
 
-	//Todo: process membersDeleted -- send channel delete messages
-
+	//Send Delete messages to users deleted from the channel
+	for (var md=0; md<currentChannelModel.membersDeleted.length; md++) {
+		userDataChannel.groupChannelDelete(currentChannelModel.membersDeleted[md], channelId, currentChannelModel.currentChannel.name + "has been deleted.");
+	}
 
 	updateParseObject('channels', 'channelId', channelId, 'members', memberArray);
 	updateParseObject('channels', 'channelId', channelId, 'invitedMembers', invitedMemberArray);
@@ -237,6 +247,7 @@ function deleteMember (e) {
 		e.preventDefault();
 	var contactId = e.attributes['data-param'].value;
 	var thisMember = contactModel.findContactByUUID(contactId);
+
 	currentChannelModel.membersDeleted.push(thisMember);
 	currentChannelModel.potentialMembersDS.add(thisMember);
 	currentChannelModel.potentialMembersDS.sync();
@@ -340,7 +351,7 @@ function doShowChannelMembers (e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
 
-	var members = currentChannelModel.members, invitedMembers = currentChannelModel.invitedMembers;
+	var members = currentChannelModel.currentChannel.members, invitedMembers = currentChannelModel.currentChannel.invitedMembers;
 
 
 	// Need to break observable link or contacts get deleted.
@@ -427,7 +438,7 @@ function doInitChannelMembers (e) {
 			}
 			currentChannelModel.membersDS.sync();
 
-			currentChannelModel.membersAdded(thisMember);
+			currentChannelModel.membersAdded.push(thisMember);
 			currentChannelModel.potentialMembersDS.remove(thisMember);
 			$(".addedChatMember").text("+ added " + thisMember.name).velocity("slideDown", { duration: 300, display: "block"}).velocity("slideUp", {delay: 1400, duration: 300, display: "none"});
 		}
@@ -458,7 +469,7 @@ function doShowChannelPresence (e) {
 		var currentChannel = APP.models.channels.currentChannel;
 	currentChannelModel.currentChannel = currentChannel;
 	currentChannelModel.membersDS.data([]);
-	var members = currentChannelModel.members;
+	var members = currentChannelModel.currentChannel.members;
 	if (currentChannelModel.isPrivate) {
 		var privateContact = '';
 		if (members[0] === userModel.currentUser.userUUID) {
