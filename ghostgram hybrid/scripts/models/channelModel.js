@@ -251,6 +251,8 @@ var channelModel = {
         dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
         var view = dataSource.view();
         var channel = view[0];
+        dataSource.filter([]);
+        
         if (channel !== undefined) {
             dataSource.filter([]);
             if (channel.isOwner) {
