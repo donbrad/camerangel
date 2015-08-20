@@ -257,6 +257,51 @@ function deleteMember (e) {
 	
 }
 
+function appendMemberToUXList (thisMember) {
+	// Display the right data for name
+	var name = thisMember.name;
+	var alias = thisMember.alias;
+	var mainName, smallName = null;
+	if (alias !== ''){
+		mainName = alias;
+		smallName = name;
+	} else {
+		mainName = name;
+		smallName = alias;
+	}
+	$("#editChannelMemberList").append('<li id="'+thisMember.uuid+
+		'">'+
+		'<div class="left"><img class="circle-img-md editChatImg" src="'+ thisMember.photo +'"/></div>' +
+		'<h4>'+ mainName + ' <img class="user-status-icon" src="images/user-verified.svg" />'+
+		'<span class="contacts-alias-sm"> '+ smallName +'</span>' +
+		'<span class="right">' +
+		'<a class="listTrash" data-param="' + thisMember.uuid +
+		'" data-role="button" class="clearBtn" data-click="deleteMember" onclick="deleteMember(this)" ><img src="images/trash.svg" /></a></span>' +
+		'</h4><p class="helper">Status</p>' +
+		'<div class="clearfix"></div></li>');
+}
+
+function appendInvitedMemberToUXList (thisMember) {
+	// Display the right data for name
+	var name = thisMember.name;
+	var alias = thisMember.alias;
+	var mainName, smallName = "";
+	if (alias !== '' && name === alias){
+		mainName = alias;
+	} else if (alias !== ''){
+		mainName = alias;
+		smallName = name;
+	} else {
+		mainName = name;
+		smallName = alias;
+	}
+	$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'">' +
+		'<div class="left"><img class="circle-img-md editChatImg" src="'+ thisMember.photo +'"/></div>' +
+		'<h4>'+ mainName +
+		'<span class="contacts-alias-sm"> '+ smallName +'</span>' +
+		'<a class="right listTrash" data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)"><img src="images/trash.svg" /></a>' +
+		'</h4><p class="helper">Unverified • Status</p><div class="clearfix"></div></li>');
+}
 
 function onShowEditChannel (e) {
 	if (e.preventDefault !== undefined)
@@ -285,28 +330,9 @@ function onShowEditChannel (e) {
 			// Current user will be undefined in contact list.
 			if (thisMember !== undefined) {
 				currentChannelModel.membersDS.add(thisMember);
-				
-				// Display the right data for name
-				var name = thisMember.name; 
-				var alias = thisMember.alias;
-				var mainName, smallName = null;
-				if (alias !== ''){
-					mainName = alias;
-					smallName = name;
-				} else {
-					mainName = name;
-					smallName = alias;
-				}
-				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+
-					'">'+
-					'<div class="left"><img class="circle-img-md editChatImg" src="'+ thisMember.photo +'"/></div>' + 
-					'<h4>'+ mainName + ' <img class="user-status-icon" src="images/user-verified.svg" />'+
-					'<span class="contacts-alias-sm"> '+ smallName +'</span>' +
-					'<span class="right">' +
-					'<a class="listTrash" data-param="' + thisMember.uuid +
-					'" data-role="button" class="clearBtn" data-click="deleteMember" onclick="deleteMember(this)" ><img src="images/trash.svg" /></a></span>' +
-					'</h4><p class="helper">Status</p>' + 
-					'<div class="clearfix"></div></li>');	
+
+				appendMemberToUXList(thisMember);
+
 			}
 		}
 
@@ -315,25 +341,8 @@ function onShowEditChannel (e) {
 			for (var j=0; j<members.length; j++) {
 				thisMember = contactModel.findContactByUUID(members[j]);
 				currentChannelModel.membersDS.add(thisMember);
-				// Display the right data for name
-				var name = thisMember.name; 
-				var alias = thisMember.alias;
-				var mainName, smallName = "";
-				if (alias !== '' && name === alias){
-					mainName = alias;
-				} else if (alias !== ''){
-					mainName = alias;
-					smallName = name;
-				} else {
-					mainName = name;
-					smallName = alias;
-				}
-				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'">' +
-					'<div class="left"><img class="circle-img-md editChatImg" src="'+ thisMember.photo +'"/></div>' +
-					'<h4>'+ mainName + 
-					'<span class="contacts-alias-sm"> '+ smallName +'</span>' +
-					'<a class="right listTrash" data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)"><img src="images/trash.svg" /></a>' +
-					'</h4><p class="helper">Unverified • Status</p><div class="clearfix"></div></li>');	
+
+				appendInvitedMemberToUXList (thisMember);
 			}
 		}	
 		
@@ -432,9 +441,11 @@ function doInitChannelMembers (e) {
 			currentChannelModel.membersDS.add(thisMember);
 			if (thisMember.contactUUID === null) {
 				currentChannelModel.currentChannel.invitedMembers.push(thisMember.uuid);
+				appendInvitedMemberToUXList (thisMember);
 
 			} else {
 				currentChannelModel.currentChannel.members.push(thisMember.contactUUID);
+				appendMemberToUXList (thisMember);
 			}
 			currentChannelModel.membersDS.sync();
 
