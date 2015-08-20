@@ -306,53 +306,54 @@ function appendInvitedMemberToUXList (thisMember) {
 function onShowEditChannel (e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
-	
-	var currentChannel = currentChannelModel.currentChannel;
-	var members = currentChannel.members, thisMember = {};
-	var membersArray = new Array();
-	
-	//Zero out current members as we're going rebuild ds and ux
-	currentChannelModel.membersDS.data([]);
-	currentChannelModel.membersAdded = [];
-	currentChannelModel.membersDeleted = [];
 
-	$('#editChannelMemberList').empty();
+	// channelMembers view calls this view with updateMembers=true to prevent initializing all the data
+	if (e.view.params.updateMembers === undefined) {
 
-	// Only channel owner can see and edit members and invited members
-	if (members.length > 0 && currentChannelModel.isOwner) {
+		var currentChannel = currentChannelModel.currentChannel;
+		var members = currentChannel.members, thisMember = {};
+		var membersArray = new Array();
 
-		// Group channel members are referenced indirectly by uuid 
-		// channel can include invited users who havent signed up yet
+		//Zero out current members as we're going rebuild ds and ux
+		currentChannelModel.membersDS.data([]);
+		currentChannelModel.membersAdded = [];
+		currentChannelModel.membersDeleted = [];
 
-		for (var i=0; i<members.length; i++) {
-			thisMember = contactModel.getContactModel(members[i]);
+		$('#editChannelMemberList').empty();
 
-			// Current user will be undefined in contact list.
-			if (thisMember !== undefined) {
-				currentChannelModel.membersDS.add(thisMember);
+		// Only channel owner can see and edit members and invited members
+		if (members.length > 0 && currentChannelModel.isOwner) {
 
-				appendMemberToUXList(thisMember);
+			// Group channel members are referenced indirectly by uuid
+			// channel can include invited users who havent signed up yet
 
+			for (var i = 0; i < members.length; i++) {
+				thisMember = contactModel.getContactModel(members[i]);
+
+				// Current user will be undefined in contact list.
+				if (thisMember !== undefined) {
+					currentChannelModel.membersDS.add(thisMember);
+					appendMemberToUXList(thisMember);
+				}
 			}
+
+			if (currentChannelModel.invitedMembers !== undefined) {
+				members = currentChannelModel.invitedMembers;
+				for (var j = 0; j < members.length; j++) {
+					thisMember = contactModel.findContactByUUID(members[j]);
+					currentChannelModel.membersDS.add(thisMember);
+					appendInvitedMemberToUXList(thisMember);
+				}
+			}
+
+		} else {
+			$(".addChatMembersBanner a").text("No one is invited. Tap to send invites");
+
 		}
 
-		if (currentChannelModel.invitedMembers !== undefined) {
-			members = currentChannelModel.invitedMembers;
-			for (var j=0; j<members.length; j++) {
-				thisMember = contactModel.findContactByUUID(members[j]);
-				currentChannelModel.membersDS.add(thisMember);
-
-				appendInvitedMemberToUXList (thisMember);
-			}
-		}	
-		
-	} else {
-		$(".addChatMembersBanner a").text("No one is invited. Tap to send invites");
-		
+		// hide trash cans
+		$(".listTrash, #listDone").css("display", "none");
 	}
-
-	// hide trash cans
-	$(".listTrash, #listDone").css("display", "none");
 		
 }
 
