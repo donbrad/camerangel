@@ -252,7 +252,7 @@ var channelModel = {
         var view = dataSource.view();
         var channel = view[0];
         dataSource.filter([]);
-        
+
         if (channel !== undefined) {
             dataSource.filter([]);
             if (channel.isOwner) {

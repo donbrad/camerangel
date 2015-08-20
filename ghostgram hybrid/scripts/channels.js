@@ -346,7 +346,7 @@ function doShowChannelMembers (e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
 
-	var members = currentChannelModel.members, invitedMembers = currentChannelModel.invitedMembers;
+	var members = currentChannelModel.currentChannel.members, invitedMembers = currentChannelModel.currentChannel.invitedMembers;
 
 
 	// Need to break observable link or contacts get deleted.
@@ -464,7 +464,7 @@ function doShowChannelPresence (e) {
 		var currentChannel = APP.models.channels.currentChannel;
 	currentChannelModel.currentChannel = currentChannel;
 	currentChannelModel.membersDS.data([]);
-	var members = currentChannelModel.members;
+	var members = currentChannelModel.currentChannel.members;
 	if (currentChannelModel.isPrivate) {
 		var privateContact = '';
 		if (members[0] === userModel.currentUser.userUUID) {
