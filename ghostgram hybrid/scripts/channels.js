@@ -353,6 +353,13 @@ function onShowEditChannel (e) {
 
 		// hide trash cans
 		$(".listTrash, #listDone").css("display", "none");
+	} else {
+		// channelMembers is returning to this view so update ux to reflect memberstate
+		if (currentChannelModel.currentChannel.members.length > 0) {
+			$(".addChatMembersBanner a").text("+ add new members");
+		} else {
+			$(".addChatMembersBanner a").text("No one is invited. Tap to send invites");
+		}
 	}
 		
 }
