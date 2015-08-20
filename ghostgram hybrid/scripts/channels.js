@@ -242,6 +242,7 @@ function deleteMember (e) {
 		e.preventDefault();
 	var contactId = e.attributes['data-param'].value;
 	var thisMember = contactModel.findContactByUUID(contactId);
+
 	currentChannelModel.membersDeleted.push(thisMember);
 	currentChannelModel.potentialMembersDS.add(thisMember);
 	currentChannelModel.potentialMembersDS.sync();
@@ -432,7 +433,7 @@ function doInitChannelMembers (e) {
 			}
 			currentChannelModel.membersDS.sync();
 
-			currentChannelModel.membersAdded(thisMember);
+			currentChannelModel.membersAdded.push(thisMember);
 			currentChannelModel.potentialMembersDS.remove(thisMember);
 			$(".addedChatMember").text("+ added " + thisMember.name).velocity("slideDown", { duration: 300, display: "block"}).velocity("slideUp", {delay: 1400, duration: 300, display: "none"});
 		}
