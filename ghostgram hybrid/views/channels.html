@@ -252,7 +252,7 @@
 				<a class="btnClear-sm" data-role="button" href="#channelMembers">+ add new members</a>
 			</div>
 			<div>
-				<ul class="list-inline" id="editChannelMemberList"></ul>
+				<ul class="list-inline" id="editmembers-listview"></ul>
 			</div>	
 		</div>
 	</div>	  
@@ -414,6 +414,32 @@
             
      </div>
 </script>
+
+ <script type="text/x-kendo-template" id="editMembersTemplate">
+	 <div>
+		 <div class="left">
+			 <img src="#: data.photo #" class="circle-img-md" />
+		 </div>
+		 <div class="left">
+
+			 #if (data.alias !== '' && data.name !== data.alias && data.phoneVerified){#
+			 <h4>
+				 #: data.alias #
+				 <img class="user-status-icon" src="images/user-verified.svg" />
+				 <span class="contacts-alias-sm">#: data.name #</span>
+			 </h4>
+			 #} else if(data.alias !== '' && data.name !== data.alias) {#
+			 <h4>
+				 #: data.alias #
+				 <span class="contacts-alias-sm">#: data.name #</span>
+			 </h4>
+			 #} else {#
+			 <h4>#: data.name #</h4>
+			 #}#
+		 </div>
+
+	 </div>
+ </script>
 
 <div data-role="drawer" id="channelPresence" style="width: 240px" data-swipe-to-open="false" data-position='right' data-init="doInitChannelPresence" data-show="doShowChannelPresence" data-views="['channel']">
     <div class="menuBox">

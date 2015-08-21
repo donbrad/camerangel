@@ -238,13 +238,25 @@ function finalizeEditChannel(e) {
 function onInitEditChannel (e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
+
 	currentChannelModel.membersDS.data([]);
-	$('#editChannelMemberList li').remove();
+
+	$("#editmembers-listview").kendoMobileListView({
+		dataSource: currrentChannelModel.membersDS,
+		template: $("#editMembersTemplate").html(),
+		//headerTemplate: $("#editMembersHeaderTemplate").html(),
+		///fixedHeaders: true,
+		click: function (e) {
+
+		}
+	});
+	//$('#editChannelMemberList li').remove();
 }
 
 function deleteMember (e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
+
 	var contactId = e.attributes['data-param'].value;
 	var thisMember = contactModel.findContactByUUID(contactId);
 
@@ -253,7 +265,7 @@ function deleteMember (e) {
 	currentChannelModel.potentialMembersDS.sync();
 	currentChannelModel.membersDS.remove(thisMember);
 	currentChannelModel.membersDS.sync();
-	$('#'+contactId).remove();
+//	$('#'+contactId).remove();
 	
 }
 
@@ -333,7 +345,7 @@ function onShowEditChannel (e) {
 				// Current user will be undefined in contact list.
 				if (thisMember !== undefined) {
 					currentChannelModel.membersDS.add(thisMember);
-					appendMemberToUXList(thisMember);
+					//appendMemberToUXList(thisMember);
 				}
 			}
 
@@ -342,7 +354,7 @@ function onShowEditChannel (e) {
 				for (var j = 0; j < members.length; j++) {
 					thisMember = contactModel.findContactByUUID(members[j]);
 					currentChannelModel.membersDS.add(thisMember);
-					appendInvitedMemberToUXList(thisMember);
+					//appendInvitedMemberToUXList(thisMember);
 				}
 			}
 
