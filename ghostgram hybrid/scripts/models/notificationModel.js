@@ -10,10 +10,12 @@
 
 var notificationModel = {
 
+    // Types of notifications...
     _unreadCount : 'unread',
     _newChat : 'newchat',
     _newPrivate : 'newprivate',
     _newMember : 'newMember',
+    _memberStatus : 'memberStatus',
     _deleteChat : 'deleteChat',
 
     notificationDS: new kendo.data.DataSource({
@@ -46,6 +48,11 @@ var notificationModel = {
     },
 
     addNewMemberNotification : function (contactId, contactName) {
+
+    },
+
+
+    memberStatusNotification : function (contactId, contactName) {
 
     },
 
