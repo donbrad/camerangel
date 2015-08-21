@@ -322,7 +322,7 @@ function onShowEditChannel (e) {
 		$('#editChannelMemberList').empty();
 
 		// Only channel owner can see and edit members and invited members
-		if (members.length > 0 && currentChannelModel.isOwner) {
+		if (members.length > 0 && currentChannel.isOwner) {
 
 			// Group channel members are referenced indirectly by uuid
 			// channel can include invited users who havent signed up yet
