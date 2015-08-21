@@ -210,7 +210,8 @@ var userDataChannel = {
             if (contact !== undefined) {
                 var contactAlias = contact.get('alias');
                 channelModel.addPrivateChannel(ownerId, ownerPublicKey, contactAlias, channelId);
-                mobileNotify("Created Private Chat with " + contactAlias);
+                notificationModel.addNewPrivateChatNotification(channelId, "Private: " + contactAlias);
+                //mobileNotify("Created Private Chat with " + contactAlias);
 
             } else {
                 mobileNotify("Null contact in processPrivateInvite!!");
@@ -227,7 +228,8 @@ var userDataChannel = {
 
         if (channel === undefined) {
 
-            mobileNotify("Private Chat Delete Request from " + contact.get('name'));
+           // mobileNotify("Private Chat Delete Request from " + contact.get('name'));
+            notificationModel.deletePrivateChatNotification(channelId,"Private Chat: " + contact.alias);
             channelModel.deleteChannel(channel);
         }
 
@@ -241,6 +243,7 @@ var userDataChannel = {
             mobileNotify("Chat invite from  " + ownerName + ' " ' + channelName + '"');
 
             channelModel.addChannel(channelName, channelDescription, false, channelId, ownerId, ownerName );
+            notificationModel.addNewChatNotification(channelId, channelName, channelDescription);
         }
 
     },

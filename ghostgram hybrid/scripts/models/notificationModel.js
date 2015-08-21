@@ -17,6 +17,7 @@ var notificationModel = {
     _newMember : 'newMember',
     _memberStatus : 'memberStatus',
     _deleteChat : 'deleteChat',
+    _deletePrivateChat : 'deleteprivate',
 
     notificationDS: new kendo.data.DataSource({
         offlineStorage: "notifications-offline",
@@ -74,6 +75,11 @@ var notificationModel = {
     deleteChatNotification : function (channelId, channelName) {
         this.newNotification(this._deleteChat, channelName, null, "Has been deleted.", null, null,
            null, true);
+    },
+
+    deletePrivateChatNotification : function (channelId, channelName) {
+        this.newNotification(this._deletePrivateChat, channelName, null, "Has been deleted.", null, null,
+            null, true);
     },
 
     parseFetch: function () {
