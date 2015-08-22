@@ -282,7 +282,7 @@ var editChannelView = {
             }
 
             // hide trash cans
-            $(".listTrash, #listDone").css("display", "none");
+            $(".listTrash, #editChannel-Done").css("display", "none");
         } else {
             // channelMembers is returning to this view so update ux to reflect memberstate
             if (currentChannelModel.currentChannel.members.length > 0) {
