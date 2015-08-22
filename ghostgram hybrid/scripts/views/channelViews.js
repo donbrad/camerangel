@@ -362,7 +362,7 @@ var editChannelView = {
         currentChannelModel.potentialMembersDS.sync();
         currentChannelModel.membersDS.remove(thisMember);
         currentChannelModel.membersDS.sync();
-//	$('#'+contactId).remove();
+        //	$('#'+contactId).remove();
     },
 
     showDoneButton: function () {

@@ -245,7 +245,7 @@
 				<img src="images/edit-chat.svg" /> Chat Members
 				<span class="right">
 					<a class="btnClear" data-role="button" data-click="editChannelView.clickEdit" id="editChannel-Trash">Edit</a>
-					<a class="btnClear" data-role="button" data-click="editChannelView.clickDone" id="editChannel-Done">Done</a>
+					<a class="btnClear hidden" data-role="button" data-click="editChannelView.clickDone" id="editChannel-Done">Done</a>
 				</span>
 			</div>
 			<div class="addChatMembersBanner">
@@ -422,18 +422,19 @@
 	 	</div>
 		 <div class="left">
 			 <img class="circle-img-md editChatImg" src="#: data.photo #"  />
-		 </div>
-		 <div class="left">
+
 			 #if (data.alias !== '' && data.name !== data.alias && data.phoneVerified){#
 			 <h4>
-				 #: data.alias #
-				 <img class="user-status-icon" src="images/user-verified.svg" />
-				 <span class="contacts-alias-sm">#: data.name #</span>
+				<div> #: data.alias #</div>
+				<div>
+					<img class="user-status-icon" src="images/user-verified.svg" />
+				 	<span class="contacts-alias-sm">#: data.name #</span>
+				</div>
 			 </h4>
 			 #} else if(data.alias !== '' && data.name !== data.alias) {#
 			 <h4>
-				 #: data.alias #
-				 <span class="contacts-alias-sm">#: data.name #</span>
+				<div>#: data.alias #</div>
+				 <div class="contacts-alias-sm">#: data.name #</div>
 			 </h4>
 			 #} else {#
 			 <h4>#: data.name #</h4>
