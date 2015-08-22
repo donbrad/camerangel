@@ -422,19 +422,18 @@
 	 	</div>
 		 <div class="left">
 			 <img class="circle-img-md editChatImg" src="#: data.photo #"  />
-
+		 </div>
+		 <div class="left">
 			 #if (data.alias !== '' && data.name !== data.alias && data.phoneVerified){#
 			 <h4>
-				<div> #: data.alias #</div>
-				<div>
-					<img class="user-status-icon" src="images/user-verified.svg" />
-				 	<span class="contacts-alias-sm">#: data.name #</span>
-				</div>
+				 #: data.alias #
+				 <img class="user-status-icon" src="images/user-verified.svg" />
+				 <span class="contacts-alias-sm">#: data.name #</span>
 			 </h4>
 			 #} else if(data.alias !== '' && data.name !== data.alias) {#
 			 <h4>
-				<div>#: data.alias #</div>
-				 <div class="contacts-alias-sm">#: data.name #</div>
+				 #: data.alias #
+				 <span class="contacts-alias-sm">#: data.name #</span>
 			 </h4>
 			 #} else {#
 			 <h4>#: data.name #</h4>
