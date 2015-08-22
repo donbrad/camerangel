@@ -8,7 +8,6 @@
 
 	// create an object to store the models for each view
 	window.APP = {
-		channelsView: channelsView,
 
 		models: {
 			home: {
