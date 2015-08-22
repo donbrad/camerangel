@@ -461,11 +461,11 @@ function doInitChannelMembers (e) {
 			currentChannelModel.membersDS.add(thisMember);
 			if (thisMember.contactUUID === null) {
 				currentChannelModel.currentChannel.invitedMembers.push(thisMember.uuid);
-				appendInvitedMemberToUXList (thisMember);
+				//appendInvitedMemberToUXList (thisMember);
 
 			} else {
 				currentChannelModel.currentChannel.members.push(thisMember.contactUUID);
-				appendMemberToUXList (thisMember);
+				//appendMemberToUXList (thisMember);
 			}
 			currentChannelModel.membersDS.sync();
 
