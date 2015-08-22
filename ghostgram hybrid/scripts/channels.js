@@ -242,7 +242,7 @@ function onInitEditChannel (e) {
 	currentChannelModel.membersDS.data([]);
 
 	$("#editmembers-listview").kendoMobileListView({
-		dataSource: currrentChannelModel.membersDS,
+		dataSource: currentChannelModel.membersDS,
 		template: $("#editMembersTemplate").html(),
 		//headerTemplate: $("#editMembersHeaderTemplate").html(),
 		///fixedHeaders: true,
@@ -400,6 +400,12 @@ function doShowChannelMembers (e) {
 	// Zero out member datasource so we can rebuild it
 	currentChannelModel.membersDS.data([]);
 
+	// Build members and potential members this based on current channel params
+	// members and potential members will be dynamically updated as members
+	// are added and deleted from the channel
+
+	//datasource is shortcut to potential members.  as members and invited members are added
+	// to channel members, they are deleted from potentialmembers
 	if (members.length > 0) {
 
 		for (var i=0; i<members.length; i++) {
