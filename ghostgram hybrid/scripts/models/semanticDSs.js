@@ -12,19 +12,19 @@ SemanticDSs.prototype = {
 
 	initialize: function () {
 
-		this.contacts = this.makeSemanticDataSource('Contacts', contactModel.contactsDS, {
+		this.contacts = this.makeSemanticDataSource('Contacts', contactModel.contactsDS.data(), {
 			name: 'name',
 			alias: 'alias',
 			value: 'name'
 		});
 
-		this.places = this.makeSemanticDataSource('Places', APP.models.places.placesDS, {
+		this.places = this.makeSemanticDataSource('Places', APP.models.places.placesDS.data(), {
 			name: 'name',
 			alias: 'alias',
 			value: 'address'
 		});
 
-		this.chats = this.makeSemanticDataSource('Chats', channelModel.channelsDS, {
+		this.chats = this.makeSemanticDataSource('Chats', channelModel.channelsDS.data(), {
 			name: 'name',
 			alias: 'alias',
 			value: 'name'
