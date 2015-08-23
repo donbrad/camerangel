@@ -58,7 +58,7 @@ function onInitGallery(e){
 	}
 	// hide archive options
 	$(".gallerySearchOptions, #galleryPhotoDisplayOpts").css("display", "none");
-	$("#gallery-listview").addClass("hidden");
+	
 
 	var scroller = e.view.scroller;
 	//scroller.scrollTo(0,-44);
@@ -301,7 +301,8 @@ function onShowGallery(e) {
 			break;
 	}
 
-	
+	// Added until gallery/archive are fully merged
+	checkEmptyUIState("#archive-listview", "#archiveBox");
 }
 
 
@@ -316,6 +317,9 @@ function gallerySelectCategory(e){
 	 	$('#search-archives').velocity({
 	 		minHeight: '8rem'
 	 	});
+	 	$("#galleryBox").addClass("hidden");
+	 	$("#archiveBox").removeClass("hidden");
+	 	checkEmptyUIState("#archive-listview", "#archiveBox");
 	 	break;
 
 	 case 1:
@@ -323,11 +327,15 @@ function gallerySelectCategory(e){
 	 	//$("#gallerySearchToolSelect").addClass("hidden");
 	 	$("#galleryPhotoDisplayOpts").velocity("slideDown");
 	 	$("#gallerySearch").attr("placeholder", "Search All");
+
 	 	$("#gallery-listview").removeClass("hidden");
 
 	 	$('#search-archives').velocity({
 	 		minHeight: '5rem'
 	 	});
+	 	$("#galleryBox").removeClass("hidden");
+	 	$("#archiveBox").addClass("hidden");
+	 	checkEmptyUIState("#gallery-listview", "#galleryBox");
 	 	break;
 	 }
 } 

@@ -109,6 +109,7 @@ function notificationVerifyPhone (e) {
 
 function closeModalViewProfileStatus() {
 	$("#modalview-profileStatus").data("kendoMobileModalView").close();
+	$(".userLocationUpdate").css("display", "none");
 }
 
 function closeStartModal() {
@@ -118,4 +119,56 @@ function closeStartModal() {
 function closeTestingBox(){
 	$("#testing").data("kendoMobileModalView").close();
 }
+
+
+// Check empty state for views
+function checkEmptyUIState(selection, view){
+	
+	var selectionList = $(selection + " > li").length;
+	
+    if(selectionList <= 0){
+    	$(view + " .emptyState").removeClass("hidden");
+    
+    } else {
+    	$(view + ".emptyState").addClass("hidden");
+    
+    }
+}
+
+function formatNameAlias(){
+	var name = userModel.currentUser.name;
+	var alias = userModel.currentUser.alias;
+
+	var primaryName, secondName;
+
+	if (alias !== "" && alias !== undefined && name !== "" && name !== undefined){
+		primaryName = alias;
+		secondName = name;
+	} else if(name !== "" && name !== undefined) {
+		primaryName = name;
+	}
+	else {
+		primaryName = alias;
+	}
+
+	$(".primaryName").text(primaryName);
+	$(".secondName").text(secondName);
+}
+
+function showFormatedPhone(){
+	if($(".phone").is("input")){
+		var inputVal = $(".phone").val();
+    	var formattedVal = inputVal.replace(/\d(\d\d\d)(\d\d\d)(\d\d\d\d)/, '($1) $2-$3');
+		
+		$(".phone").val(formattedVal);
+	
+	} else {
+		$('.phone').text(function(i, text) {
+    	return text.replace(/\d(\d\d\d)(\d\d\d)(\d\d\d\d)/, '($1) $2-$3');
+		});
+	}
+
+}
+
+
 

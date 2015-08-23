@@ -342,6 +342,7 @@ function onInitContact(e) {
 	if (e.preventDefault !== undefined) {
     	e.preventDefault();
 	}
+
 }
 
 function onShowEditContact(e) {
@@ -448,7 +449,7 @@ function onInitContacts(e) {
         fixedHeaders: true,
         click: function (e) {
             var contact = e.dataItem;
-
+   
             updateCurrentContact(contact);
             
 			if (contact.category === 'phone') {
@@ -472,6 +473,9 @@ function onInitContacts(e) {
 
 			}
              
+        },
+        dataBound: function(e){
+        	checkEmptyUIState("#contacts-listview", "#contactListDiv >");
         }
      }).kendoTouch({
     	filter: ".contactListBox",
@@ -492,18 +496,13 @@ function onInitContacts(e) {
     		
     	}
     });
+    
 }
 
 function closeContactActions() {
 	$("#modalview-contactActions").data("kendoMobileModalView").close();
 }
 
-
-function showFormatedPhone(){
-	$('.phone').text(function(i, text) {
-    	return text.replace(/\d(\d\d\d)(\d\d\d)(\d\d\d\d)/, '($1) $2-$3');
-	});
-}
  
 function onShowContacts (e) {
 	if (e.preventDefault !== undefined)
@@ -511,6 +510,7 @@ function onShowContacts (e) {
 
     contactModel.contactListDS.data(contactModel.contactsDS.data());
 	//APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
+	
 	
 	// set action button
 	$("#contacts > div.footerMenu.km-footer > a").attr("href", "#contactImport");
@@ -541,7 +541,7 @@ function launchAddContact(e) {
     for (var j = 0; j<contactModel.currentDeviceContact.phoneNumbers.length; j++) {
         var phone = new Object();
         phone.name = contactModel.currentDeviceContact.phoneNumbers[j].name;
-        phone.number =  AcontactModel.currentDeviceContact.phoneNumbers[j].number;
+        phone.number = contactModel.currentDeviceContact.phoneNumbers[j].number;
 
         contactModel.phoneArray.push(phone);
 

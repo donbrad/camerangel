@@ -24,7 +24,7 @@ SemanticDSs.prototype = {
 			value: 'address'
 		});
 
-		this.chats = this.makeSemanticDataSource('Chats', APP.models.channels.channelsDS, {
+		this.chats = this.makeSemanticDataSource('Chats', channelModel.channelsDS, {
 			name: 'name',
 			alias: 'alias',
 			value: 'name'
@@ -191,9 +191,12 @@ SemanticDSs.prototype = {
 				case 'itemchange':
 					dataSource.filter({ field: 'uuid', operator: 'eq', value: e.items[0].uuid });
 					var view = dataSource.view();
+					//Todo: tucker please review
+					/*
 					view[0].name = changedItem[map.name];
 					view[0].alias = changedItem[map.alias];
 					view[0].value = changedItem[map.value];
+					*/
 					dataSource.filter({});
 					break;
 			}
@@ -225,9 +228,12 @@ SemanticDSs.prototype = {
 						{ field: 'category', operator: 'eq', value: e.items[0].category }
 					]);
 					var view = this.master.view();
+					//Todo: tucker please review
+					/*
 					view[0].name = changedItem[map.name];
 					view[0].alias = changedItem[map.alias];
 					view[0].value = changedItem[map.value];
+					*/
 					dataSource.filter({});
 					break;
 			}

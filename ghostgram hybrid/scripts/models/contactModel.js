@@ -70,8 +70,6 @@ var contactModel = {
         var dataSource = contactModel.contactsDS;
         var uuid = contactModel.currentContact.uuid;
 
-        //var string = "Deleted contact: " + APP.models.contacts.currentContact.name + " ("+ APP.models.contacts.currentContact.alias + ")" ;
-
         dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
         var view = dataSource.view();
         var contact = view[0];
@@ -79,6 +77,8 @@ var contactModel = {
         dataSource.remove(contact);
 
         deleteParseObject("contacts", 'uuid', uuid);
+
+        //Todo:  delete PrivateChannel, if any for this user
     },
 
     getContactModel: function (contactUUID) {

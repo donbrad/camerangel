@@ -3,6 +3,7 @@ function homeBeforeShow () {
     if (userModel.currentUser) {
         // Have current user - redirect to user view
         APP.kendo.navigate('#home');
+
     } else {
         // No current user -redirect to no user view
        APP.kendo.navigate('#newuserhome');
@@ -119,20 +120,6 @@ function continueSignUp() {
 
 	$("#create-user-email, #create-user-name, #create-user-alias, #create-user-password").velocity("slideDown", { delay: 500, duration: 300 }, [ 250, 15 ]);
 	// ToDo - Add step form validation
-	
-
-}
-
-function onInitProfile(e) {
-	e.preventDefault();
-    
-    if (userModel.currentUser.emailVerified){
-        $("#verified-email").removeClass("hidden");
-    }
-    
-    if(userModel.currentUser.phoneVerified){
-        $("#verified-phone").removeClass("hidden");
-    }
 
 }
 
@@ -163,6 +150,8 @@ function onShowHome(e) {
         
     APP.models.presence.current.bind('change' , syncPresence);
 
+    // Hide action button on home
+    $("div.footerMenu.km-footer > a").css("display", "none");
 }
 
 function setUserStatusUI(e){
@@ -852,8 +841,7 @@ function onShowProfileStatus(e){
 	var available = userModel.currentUser.isAvailable;
 	var availableSwitch = $("#home-status-switch").data("kendoMobileSwitch");
 	// Set profile status
-	$("#profileStatusName").text(alias);
-	$("#profileStatusAlias").text(name);
+	formatNameAlias();
 	
 	$("#profileStatusMessage").text(status);
 	if(verified){
@@ -873,4 +861,15 @@ function statusSwitch(e) {
 
 function closeThisModal(e){
 	console.log(e);
+}
+
+
+function dialogClose(e){
+	$("#modal-OptionDialog").data("kendoMobileModalView").close();
+}
+
+function gpsLocateUpdate(){
+	// Todo - Auto locate first if enabled, then manual input show
+	$(".userLocationUpdate").velocity("slideDown");
+
 }

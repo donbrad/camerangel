@@ -350,6 +350,18 @@ form p {
 .select select select:focus {
   outline: none;
 }
+.emptyState {
+  position: absolute;
+  width: 99%;
+  text-align: center;
+  padding-top: 45%;
+  opacity: 0.6;
+}
+.emptyState img {
+  width: 6rem;
+  margin-left: auto;
+  margin-right: auto;
+}
 .show {
   display: block !important;
 }
@@ -403,6 +415,10 @@ form p {
 /* Elements */
 .status {
   height: 10px;
+}
+.primaryName,
+.secondName {
+  display: inline-block;
 }
 .verified-txt {
   color: #2d93ff;
@@ -487,6 +503,7 @@ form p {
 .btnClear-red,
 .btnFull,
 .btnFull-modal,
+.twoBtn,
 .km-material .km-buttongroup .km-button,
 .btnClear-grey-sm {
   text-decoration: none;
@@ -724,11 +741,31 @@ form p {
   color: #fff;
   text-align: center;
   border-radius: 0px !important;
-  height: 2.25rem;
-  padding-top: 0.5rem !important;
+  height: 3rem;
+  padding-top: 1rem !important;
 }
 .btnFull-modal :hover {
   background: transparent !important;
+}
+.twoBtn {
+  width: 50%;
+  float: left;
+  height: 2.25rem;
+  padding-top: 0.5rem !important;
+}
+.footer-twoBtn .twoBtn:nth-child(1) {
+  border-right: 1px solid #e0e0e0;
+}
+.modal-dialog {
+  padding: 0.5rem 1rem 1rem 1rem;
+}
+.modal-dialog h3,
+.modal-dialog p {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+div.km-content.km-widget.km-scroll-wrapper {
+  padding-bottom: 1rem;
 }
 .input-text-sm {
   font-size: 12px;
@@ -857,6 +894,11 @@ div.km-header a img {
   color: #979797;
   box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.12);
   height: 56px;
+}
+.km-material .km-switch-handle {
+  width: 1.5em;
+  height: 1.5em;
+  margin: -8px 0 0;
 }
 .km-scroll-container {
   min-height: 100%;
@@ -1028,8 +1070,8 @@ div.footerMenu.km-footer > ul > li > a:active {
   height: 12px;
 }
 .helper-form {
-  position: relative;
-  top: 42px;
+  position: absolute;
+  top: 40px;
   z-index: 99;
   right: 10px;
 }
@@ -1095,6 +1137,17 @@ div.footerMenu.km-footer > ul > li > a:active {
   font-size: 18px;
   font-size: 1.125rem;
 }
+#profilePhotoForm > div > ul > li:nth-child(4) > div > span {
+  padding-top: 0px;
+}
+#profilePhotoForm > div > ul > li:nth-child(4) > div > span > a {
+  padding-top: 0px;
+}
+#profileLocationName {
+  width: 90%;
+  margin-left: 5%;
+  margin-right: auto;
+}
 .home-status-img {
   width: 18px !important;
   height: 18px !important;
@@ -1127,6 +1180,7 @@ div.footerMenu.km-footer > ul > li > a:active {
   overflow: hidden;
   text-overflow: ellipsis;
   width: 190px;
+  display: inline-block;
 }
 #profilePhotoForm > div > ul > li:nth-child(1) {
   padding: 0px;
@@ -1191,7 +1245,7 @@ div.footerMenu.km-footer > ul > li > a:active {
   position: absolute;
   top: 0px;
   right: 0px;
-  padding: 14px 14px !important;
+  padding: 1rem 1rem !important;
 }
 .modal-top {
   height: 10rem;
@@ -1625,9 +1679,6 @@ div.footerMenu.km-footer > ul > li > a:active {
   background-color: #27476e;
   color: #fff;
 }
-#profile-changePassword {
-  margin: 0px;
-}
 .km-material .km-view .km-navbar .km-button {
   padding: 0.25em 0.5em;
 }
@@ -1881,6 +1932,7 @@ a:hover {
 }
 #profileStatusPhoto {
   margin-right: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 .km-material .km-list > li {
   background: transparent;
@@ -2447,9 +2499,6 @@ div.loginBox > form > div > ul > li {
 .profileEditPublic {
   margin-bottom: 1rem;
 }
-#profile-changePassword {
-  margin-top: 1rem;
-}
 /* Create account */
 .profileGhostSelection {
   padding: 0.5em;
@@ -2915,7 +2964,7 @@ div.contactListBox.activeContact > div > div > ul {
 }
 .listPhoto {
   width: 20%;
-  height: 40px;
+  height: 100%;
 }
 .listName {
   width: 80%;
@@ -3001,9 +3050,10 @@ div.contactListBox.activeContact > div > div > ul {
   padding: 1px 0px 1px 0.5rem;
   border: none;
 }
-.contacts-alias-sm {
-  font-size: 11px;
-  font-size: 0.6875rem;
+.contacts-alias-sm,
+.secondName {
+  font-size: 12px;
+  font-size: 0.75rem;
   color: #979797;
   vertical-align: middle;
 }
@@ -3329,8 +3379,11 @@ div.contactListBox.activeContact > div > div > ul {
 #galleryMenuSelect #gallery-all {
   stroke: #4a4a4a;
 }
-#galleryMenuSelect.km-buttongroup > .km-state-active {
+#galleryMenuSelect > li:nth-child(2).km-button.km-state-active {
   background-color: #2d93ff;
+}
+#galleryMenuSelect.km-buttongroup > .km-state-active {
+  background-color: #9e788f;
   color: #fff;
   border-radius: 0px;
   border-top: 0px !important;
@@ -3372,12 +3425,12 @@ div.contactListBox.activeContact > div > div > ul {
   border-bottom: 1px solid #e0e0e0;
   margin-top: 0.25rem;
   border-radius: 3px;
+  transition: all 0.5s ease-out;
 }
 .appendSearch input {
-  width: auto;
   float: left;
   border: none !important;
-  width: 80%;
+  width: 80% !important;
   padding-left: 0px !important;
   padding-right: 1rem !important;
 }
