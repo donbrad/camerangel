@@ -278,6 +278,13 @@ form {
 .loading-sm {
 	height: 24px;
 }
+
+.textClamp {
+	white-space: nowrap;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+}
+
 /* Colors */
 
 .blue-100 {
@@ -332,7 +339,7 @@ form {
 }
 
 .primaryName, .secondName {
-	display: inline-block;
+	//display: inline-block;
 }
 
 .verified-txt {
@@ -993,6 +1000,18 @@ div.footerMenu.km-footer > ul > li > a:active {
 	background-image: linear-gradient(-1deg, #F5F5F5 53%, #FFFFFF 100%);
 }
 
+.updateStatusLabel {
+	.font-size(14);
+}
+
+.statusCharacterCount {
+	position: absolute;
+	.font-size(12);
+	color: @shade-100;
+	bottom: 1em;
+	z-index: 1;
+	right: 1em;
+}
 
 .home-headerBtn {
 	padding: 0px;
@@ -1083,8 +1102,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 
 
 #profileStatusMessage {
-	white-space: nowrap;
-	overflow: hidden;
+	.font-size(13);
 	text-overflow: ellipsis;
 	width: 190px;
 	display:inline-block;
@@ -1092,6 +1110,10 @@ div.footerMenu.km-footer > ul > li > a:active {
 
 #profilePhotoForm > div > ul > li:nth-child(1) {
 	padding:0px;
+}
+
+#profilePhotoForm > div > ul > li:nth-child(2) {
+	padding: 0px;
 }
 
 .ghostModal {
@@ -1137,6 +1159,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 .profileTextBox {
 	position: relative;
 	left: 1rem;
+	width: 80%;
 }
 
 /* Modal styles */
@@ -1164,14 +1187,14 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 
 .modal-top {
-	height: 10rem;
+	height: 12rem;
 	width: 100%;
 	background-color: @shade-200;
 	text-align: center;
 	color: #fff;
 	padding-top: 2rem;
 	padding-bottom: 2rem;
-	> img {
+	div > img {
 		height: 4rem;
 		vertical-align: middle;
 		margin-bottom:0.25rem;
@@ -1181,6 +1204,16 @@ div.footerMenu.km-footer > ul > li > a:active {
 	}
 	p {
 		.font-size(12);
+	}
+	h3 {
+		line-height: 1;
+		white-space: nowrap;
+  		overflow: hidden;
+  		text-overflow: ellipsis;
+  		width:80%;
+  		margin-left: 10%;
+  		margin-right: 10%;
+  		text-align: center; 
 	}
 }
 
@@ -1497,11 +1530,12 @@ div.footerMenu.km-footer > ul > li > a:active {
     clear: both;
     position: relative;
     .font-size(14);
-    width: 95%;
+    width: 100%;
     margin-top: 0;
-    left: -18px;
     top: 0;
-    border: 1px solid #27476e;
+    resize: none;
+    outline: none;
+    padding: 0.5em 0.75em;
 }
 
 .km-root .km-wp .km-view.appearance .km-listview input {
@@ -1846,12 +1880,18 @@ a:hover {
 	top: 30px;
 	left: 32px;
 }
+
+.statusContactCard-icon {
+	position: absolute;
+	top: 73px;
+	left: 54%;
+}
+
 #menuSetting {
     margin-top: 40px;
 }
 
 #profileStatusPhoto {
-	margin-right: 1rem;
 	.shadowHelper(1);
 }
 
@@ -1927,6 +1967,21 @@ a:hover {
     margin-right: 0px;
     font-weight: 600;
 }
+
+.chatType {
+	margin-left: 1.5rem;
+}
+
+.chatNameDiv {
+	width: 80%;
+	float: left;
+}
+
+.chatStatusIcon {
+	float: left;
+	width: 1.5rem;
+}
+
 #channels-listview > li > div > h4 > a {
     text-decoration: none;
 }
@@ -2842,6 +2897,11 @@ div.loginBox > form > div > ul > li {
 	width: 100%;
 }
 
+#contactActionBtns > li > a > span > img {
+	vertical-align: middle;
+	margin-right: 0.5em;
+}
+
 .contactListItem:hover {
 	color: @black;
 	text-align: left;
@@ -2858,6 +2918,10 @@ div.loginBox > form > div > ul > li {
 #modalview-contactActions > div > div.km-scroll-container > div.modal-top {
 	color: #fff;
 	background-color: rgba(0,0,0,0.6);
+}
+
+#contactSecondName {
+	color: #fff;
 }
 
 .contact-connections {

@@ -35,7 +35,7 @@
 <div data-role="modalview" id="modalview-requestContent" style="width: 90%; display: none;" class="appearance" data-init="onInitAskRequest">
 	<div class="modal-top">
 	<a data-role="button" class="modal-close" data-click="closeAskRequest"><img src="images/close-white.svg"/></a>
-		<img src="images/icon-access.svg" />
+		<div><img src="images/icon-access.svg" /></div>
 		<p class="helper">
 			<svg width="14px" height="8px" viewBox="0 0 14 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
 			    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -123,20 +123,21 @@
 	    		<div class="chat-mainBox">
 	    	#}#
 	    		<h4>
-	    		<span><img src="images/status-new.svg" class="list-status" /></span>
-	        		 #:name#
+	    			<div class="chatStatusIcon"><img src="images/status-new.svg" class="list-status" /></div>
+	        		 <div class="textClamp chatNameDiv">#:name#</div>
 	        		 # var formattedTime = "1 Day";#
-	        		<span class="chatActivityTime">#:formattedTime#</span>
+	        		<div class="chatActivityTime left">#:formattedTime#</div>
 	    		</h4>
-	    		
-	    		# if(isPrivate && members.length <= 2){#
-	    			<img src="images/private-icon.svg" /> Private Chat
-	    		#} else if (false) {# // For place chats
-	    			<img src="images/place-icon.svg" id="chatList-place-icon" /> Place Chat
-	    		#} else {#
-	    			<img src="images/group-icon.svg" /> Group Chat
-	    		#}#
-
+	    		<div class="clearfix"></div>
+	    		<div class="chatType">
+		    		# if(isPrivate && members.length <= 2){#
+		    			<img src="images/private-icon.svg" /> Private Chat
+		    		#} else if (false) {# // For place chats
+		    			<img src="images/place-icon.svg" id="chatList-place-icon" /> Place Chat
+		    		#} else {#
+		    			<img src="images/group-icon.svg" /> Group Chat
+		    		#}#
+	    		</div>
 	 
 	    	</div><!-- chat-mainBox -->
     	</a>
@@ -236,7 +237,7 @@
 
 	<div>
 		 <form>
-			<input type="search" id="channels-editChannel-name" data-bind="value: name"  />
+			<input type="search" id="channels-editChannel-name" data-bind="value: name"  placeholder="Chat name"/>
 			<input type="search" id="channels-editChannel-description" data-bind="value: description" placeholder="Add optional description"/>
 			
 		</form> 

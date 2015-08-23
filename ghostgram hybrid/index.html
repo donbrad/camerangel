@@ -526,15 +526,15 @@
 
         <ul data-role="listview">
         	<li>
-        		<div class="left listPhoto">
+        		<div class="left">
 						<div class="statusContactList">
 							<img class="circle-img-md home-profile-img" id="profileStatusPhoto" src="" />
 							<img width="16" src="images/status-away.svg" class="statusContactList-icon home-status-img" />
 						 </div>
 					
 				</div><!-- left -->
-				<div class="left listName profileTextBox">
-					<h3>
+				<div class="left profileTextBox">
+					<h3 class="textClamp">
 						<span class="primaryName"></span>
 						<img src="images/user-verified.svg" class="user-status-icon hidden" id="profileStatusVerified">
 						<span class="secondName"></span>
@@ -545,21 +545,24 @@
 				<div class="clearfix"></div>
         	</li>
         	<li><p class="caption right"><a data-role="button" class="btnClear-sm" href="views/profile.html#profileEdit">Edit Profile</a></p></li>
-        	<li><p><img src="images/ghost-sm.svg" class="ghost-sm-text" /> Update Status</p></li>
         	<li>
-                <div class="appendSearch">
-                   <input type="search" id="profilePhotoMessage" placeholder="What's going on..." data-bind="value: statusMessage"/>
-	                   <span>
-		                   	<a data-role="button" data-click="gpsLocateUpdate" id="gpsLocateUpdateBtn">
-		                   		<img src="images/icon-gps.svg" height="12px"/>
-		                   	</a>
-	                   </span>
-                </div>
-                <div class="userLocationUpdate" style="display: none">
-                    <input type="search" id="profileLocationName" placeholder="Your current location" data-bind="value: currentPlace" />
-                </div>
+        		<div class="updateStatusLabel">
+        			<img src="images/ghost-sm.svg" class="ghost-sm-text" /> 
+        			Update Status 
+        		</div>
+        	</li>
+        	<li>
+                <textarea type="search" id="profileStatusUpdate" placeholder="What's going on..." data-bind="value: statusMessage"></textarea>
+                <div class="statusCharacterCount">
+        			<span class="statusCharCount"></span>
+        		</div>
             </li>
         	<li>
+        	 	<span>
+			    	<a data-role="button" data-click="gpsLocateUpdate" id="gpsLocateUpdateBtn">
+			        	<img src="images/icon-gps.svg" height="12px"/>
+			        </a>
+	        	</span>
         		<label> Available
 					<input type="checkbox" id="home-status-switch" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="statusSwitch"/>
 				</label>

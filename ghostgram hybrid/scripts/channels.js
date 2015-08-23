@@ -38,6 +38,7 @@ function editChannel(e) {
     dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
     var view = dataSource.view();
     var channel = view[0];
+    
     dataSource.filter([]);
 
 	currentChannelModel.currentChannel.unbind('change', syncCurrentChannel);
@@ -117,7 +118,7 @@ function onInitChannels (e) {
         	checkEmptyUIState("#channels-listview", "#channelListDiv");
         }
     }).kendoTouch({
-    	filter: "div",
+    	filter: ".chat-mainBox",
     	enableSwipe: true,
     	swipe: function(e){
     		var selection = e.sender.events.currentTarget;
@@ -137,7 +138,7 @@ function onInitChannels (e) {
     			
     		}
     		if (e.direction === "right" && $(selection).hasClass("chat-active")){
-    			$(selection).velocity({translateX:"0"},{duration: "fast"}).removeClass("chat-active");
+    			$(selection).velocity({translateX:"0"},{duration: 150}).removeClass("chat-active");
     		}
     	}
     	
@@ -146,9 +147,10 @@ function onInitChannels (e) {
    	
 }
 
-function listViewClick(e){
-    
+function cancelEditChat(e){
+
 }
+
 function doShowEventInputs(e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
@@ -335,7 +337,7 @@ function onShowEditChannel (e) {
 		$(".addChatMembersBanner a").text("No one is invited. Tap to send invites");
 		
 	}
-
+	
 	// hide trash cans
 	$(".listTrash, #listDone").css("display", "none");
 		

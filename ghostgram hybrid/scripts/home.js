@@ -634,7 +634,7 @@ function doUpdateStatusMessage(e) {
 		e.preventDefault();
 	}
 	
-	var message = $('#profilePhotoMessage').val();
+	var message = $('#profileStatusMessage').val();
 	
 	userModel.currentUser.set('statusMessage', message);
 
@@ -841,7 +841,7 @@ function onShowProfileStatus(e){
 	var available = userModel.currentUser.isAvailable;
 	var availableSwitch = $("#home-status-switch").data("kendoMobileSwitch");
 	// Set profile status
-	formatNameAlias();
+	formatNameAlias(name, alias, "#profilePhotoForm");
 	
 	$("#profileStatusMessage").text(status);
 	if(verified){
@@ -850,6 +850,9 @@ function onShowProfileStatus(e){
 	if(available){
 		availableSwitch.check(true);
 	}
+
+	// set status charcter count 
+	statusCharCount();
 }
 
 function statusSwitch(e) {
@@ -866,4 +869,30 @@ function closeThisModal(e){
 function gpsLocateUpdate(){
 	// Todo - Auto locate first if enabled, then manual input show
 	$(".userLocationUpdate").velocity("slideDown");
+}
+
+function statusCharCount(e) {
+	// set max length
+	var maxLength = 40
+	var updateAreaMax = $("#profileStatusUpdate").attr("maxlength", maxLength);
+	var currentLength;
+	
+	// set current status count 
+	$(".statusCharCount").text(maxLength);
+	$("#profileStatusUpdate").keyup(function(e){
+		var length = $(this).val().length;
+
+		currentLength = maxLength - length;
+		$(".statusCharCount").text(currentLength);
+
+		if(currentLength < 8){
+		$(".statusCharacterCount").css("color", "#EF5350");
+		} else {
+			$(".statusCharacterCount").css("color", "");
+		}	
+	});
+
+
+	
+
 }

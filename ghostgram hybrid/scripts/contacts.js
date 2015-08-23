@@ -449,7 +449,7 @@ function onInitContacts(e) {
         fixedHeaders: true,
         click: function (e) {
             var contact = e.dataItem;
-   
+
             updateCurrentContact(contact);
             
 			if (contact.category === 'phone') {
@@ -463,8 +463,8 @@ function onInitContacts(e) {
 
 			} else {		
 				// If we know the contacts uuid enable the full feature set
-				$("#modalview-contactActions").data("kendoMobileModalView").open();
 				
+				openContactActions();
 				if (contact.contactUUID !== undefined && contact.contactUUID !== null){
 					$("#contactActionBtns > li:first-child").show();
 				} else {
@@ -497,6 +497,22 @@ function onInitContacts(e) {
     	}
     });
     
+}
+
+function openContactActions(){
+	
+	var contactName = contactModel.currentContact.name;
+	var contactAlias = contactModel.currentContact.alias;
+	var contactVerified = contactModel.currentContact.phoneVerified;
+
+	formatNameAlias(contactName, contactAlias, "#modalview-contactActions");
+
+	if(contactVerified){
+		$("#currentContactVerified").removeClass("hidden");
+	} else {
+		$("#currentContactVerified").addClass("hidden");
+	}
+	$("#modalview-contactActions").data("kendoMobileModalView").open();
 }
 
 function closeContactActions() {

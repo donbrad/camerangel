@@ -135,24 +135,25 @@ function checkEmptyUIState(selection, view){
     }
 }
 
-function formatNameAlias(){
-	var name = userModel.currentUser.name;
-	var alias = userModel.currentUser.alias;
+function formatNameAlias(name, alias, view){
 
 	var primaryName, secondName;
 
 	if (alias !== "" && alias !== undefined && name !== "" && name !== undefined){
 		primaryName = alias;
 		secondName = name;
+	
 	} else if(name !== "" && name !== undefined) {
 		primaryName = name;
+		secondName = "";
 	}
+	
 	else {
 		primaryName = alias;
 	}
 
-	$(".primaryName").text(primaryName);
-	$(".secondName").text(secondName);
+	$(view + " .primaryName").text(primaryName);
+	$(view + " .secondName").text(secondName);
 }
 
 function showFormatedPhone(){

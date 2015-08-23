@@ -25,23 +25,6 @@
          		<img src="images/empty-contacts.svg" />
          	</div>
 	    </div>
-    
-    <ul data-role="actionsheet" id="contactActions" data-popup='{"direction": "left"}'>
-		<li><a data-action="inviteContact">Invite Contact</a></li>
-		<li><a  data-action="doEditContact">Edit Contact</a></li>
-		<li><a data-action="contactSendSMS">Send SMS</a></li>
-		<li><a data-action="contactSendEmail">Send Email</a></li>
-		<li><a data-action="contactCallPhone">Phone Call</a></li>
-    </ul> 
-    
-      <ul data-role="actionsheet" id="contactUserActions" data-popup='{"direction": "left"}'>
-        <li><a data-action="doEditContact">Edit Contact</a></li>
-        <li><a data-action="privateChat">Private Chat</a></li>
-		<li><a data-action="ghostEmail">Send Secure Email</a></li>
-		<li><a data-action="contactSendSMS">Send SMS</a></li>
-		<li><a data-action="contactSendEmail">Send Email</a></li>
-		<li><a data-action="contactCallPhone">Phone Call</a></li>
-    </ul>
 </div>
 
 <!-- contact action -->
@@ -49,15 +32,35 @@
 	<div class="modal-top">
 		<a data-role="button" class="modal-close" data-click="closeContactActions"><img src="images/close.svg"/></a>
 		<img class="circle-img-lg" data-bind="attr: {src: photo}"/>
-		<h3 data-bind="text: name"></h3>
-		<p data-bind="text: alias"></p>
+		<img width="16" src="images/status-away.svg" class="statusContactCard-icon">
+		<h3>
+			<span class="primaryName" id="contactPrimaryName"></span>
+			<span class="hidden" id="currentContactVerified"><img src="images/icon-verified-dark.svg" class="user-status-icon"></span>
+			<span class="secondName" id="contactSecondName"></span>
+		</h3>
+		<p><span class="contactStatusMessage">Out running at the park</span> @ <span class="contactLocation shade-100">Main St Park </span></p>
 	</div>
 	<div class="modal-bottom">
 		<ul class="list-inline" id="contactActionBtns" >
-			<li><a class="btnClear" data-role="button" data-click="privateChat">ghostgram Private Chat</a></li>
-			<li><a class="btnClear" data-role="button" data-click="ghostEmail">ghostgram Rich Email</a></li>
-			<li><a class="btnClear" data-role="button" data-click="contactCallPhone">Phone Call</a></li>
-			<li><a class="btnClear" data-role="button" data-click="contactSendSMS">Send SMS</a></li>
+			<li>
+				<a class="btnClear" data-role="button" data-click="privateChat">
+				<img src="images/icon-ghostgram.svg" /> Private Chat
+				</a>
+			</li>
+			<li>
+				<a class="btnClear" data-role="button" data-click="ghostEmail">
+				<img src="images/icon-ghostMail.svg" /> Rich Email</a>
+			</li>
+			<li>
+				<a class="btnClear" data-role="button" data-click="contactCallPhone">
+				<img src="images/icon-phone.svg" /> Phone Call
+				</a>
+			</li>
+			<li>
+				<a class="btnClear" data-role="button" data-click="contactSendSMS">
+				<img src="images/icon-sms.svg" /> Send SMS
+				</a>
+			</li>
 		</ul>
 	</div>
 </div>
@@ -318,7 +321,7 @@
 					</div><!-- left -->
 
 						<div class="left listName">
-							<h4>
+							<h4 class="textClamp">
 							#if(data.alias !== ''){#
 								#: data.alias #
 							#} else {#
@@ -334,9 +337,7 @@
 						</div>
 
 						<p class="left caption contact-status">
-						#if(data.phoneVerified !== true){#
-							Unverified •
-						#}#	Busy @ home
+						<img src="images/icon-locationPin.svg" /> Out doing stuff
 						</p>
 						<div class="clearfix"></div>
 						<div class="contact-info">
