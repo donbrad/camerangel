@@ -30,7 +30,7 @@ SemanticDSs.prototype = {
 			value: 'name'
 		});
 
-		if (this.contacts.total() === 0 && 1) {
+/*		if (this.contacts.total() === 0 && 1) {
 
 			this.contacts.add({
 				name: 'Don Bradford',
@@ -84,7 +84,7 @@ SemanticDSs.prototype = {
 			this.places.sync();
 			this.chats.sync();
 		}
-
+*/
 		this.master = new kendo.data.DataSource({
 			schema: {
 				model: {
