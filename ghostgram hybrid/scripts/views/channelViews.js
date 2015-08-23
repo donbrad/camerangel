@@ -85,7 +85,8 @@ var channelsView = {
         var channel = view[0];
         dataSource.filter([]);
 
-        currentChannelModel.currentChannel.unbind('change', syncCurrentChannel);
+        // Kendo Observable doesnt have unbind so bind to dummy change function
+        currentChannelModel.currentChannel.bind('change', function() {});
         currentChannelModel.currentChannel = channel;
 
         currentChannelModel.currentChannel.set('channelId', channel.channelId);
