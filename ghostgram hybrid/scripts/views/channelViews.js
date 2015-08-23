@@ -146,7 +146,12 @@ var addChannelView = {
            var name = $('#channels-addChannel-name').val(),
                description = $('#channels-addChannel-description').val();
 
-           channelModel.addChannel(name, description, true);
+           if (channelModel.findChannelByName(name)) {
+               mobileNotify()
+           } else {
+               channelModel.addChannel(name, description, true);
+           }
+
 
        } else {
            mobileNotify("Chat name is required");

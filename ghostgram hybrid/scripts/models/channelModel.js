@@ -95,6 +95,17 @@ var channelModel = {
         return(channel);
     },
 
+    findChannelByName: function (channelName) {
+        var dataSource =  channelModel.channelsDS;
+        dataSource.filter( { field: "name", operator: "eq", value: channelName });
+        var view = dataSource.view();
+        var channel = view[0];
+        dataSource.filter([]);
+
+        return(channel);
+    },
+
+
     findPrivateChannel : function (contactUUID) {
         var dataSource =  channelModel.channelsDS;
         dataSource.filter({ field: "isPrivate", operator: "eq", value: true });
