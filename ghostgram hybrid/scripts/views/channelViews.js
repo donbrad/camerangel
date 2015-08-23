@@ -147,7 +147,7 @@ var addChannelView = {
                description = $('#channels-addChannel-description').val();
 
            if (channelModel.findChannelByName(name)) {
-               mobileNotify()
+               mobileNotify('There is already a channel named : "' + name + '"');
            } else {
                channelModel.addChannel(name, description, true);
            }
