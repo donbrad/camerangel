@@ -1,5 +1,25 @@
+/* global archiveView */
+
+'use strict';
+
 function onInitGallery(e){
 	archiveView.init();
+
+	var adjustSentinelHeight = function () {
+		var combinedHeight = 0;
+		$('#search-archives').children().each( function () {
+			combinedHeight += $(this).height();
+		});
+
+		// Dunno what's up with needing these calculations
+		combinedHeight *= 2;
+		combinedHeight += 70;
+
+		$('#search-archives').height(combinedHeight+'px');
+	};
+
+	archiveView.sentinel.addListener('add', adjustSentinelHeight);
+	archiveView.sentinel.addListener('remove', adjustSentinelHeight);
 
    if (e !== undefined && e.preventDefault !== undefined){
 		e.preventDefault();
@@ -292,6 +312,10 @@ function gallerySelectCategory(e){
 	 	$(".gallerySearchOptions").velocity("slideDown");
 	 	$("#galleryPhotoDisplayOpts").velocity("slideUp");
 	 	$("#gallery-listview").addClass("hidden");
+
+	 	$('#search-archives').velocity({
+	 		minHeight: '8rem'
+	 	});
 	 	break;
 
 	 case 1:
@@ -300,6 +324,10 @@ function gallerySelectCategory(e){
 	 	$("#galleryPhotoDisplayOpts").velocity("slideDown");
 	 	$("#gallerySearch").attr("placeholder", "Search All");
 	 	$("#gallery-listview").removeClass("hidden");
+
+	 	$('#search-archives').velocity({
+	 		minHeight: '5rem'
+	 	});
 	 	break;
 	 }
 } 

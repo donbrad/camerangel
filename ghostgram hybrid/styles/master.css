@@ -67,6 +67,11 @@
 .sentinel .filters img {
   height: 1.4rem;
 }
+.sentinel input {
+  background-image: url('images/search.svg');
+  background-repeat: none;
+  background-size: fill;
+}
 /* elements */
 .shadow {
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);
@@ -2474,8 +2479,12 @@ div.loginBox > form > div > ul > li {
   margin: 0;
   color: black;
 }
+#gallery .km-content > div {
+  display: flex;
+  flex-direction: column;
+}
 #search-archives {
-  min-height: 2rem;
+  min-height: 8rem;
   padding: .5rem 0;
 }
 #search-archives .k-autocomplete {
@@ -2552,6 +2561,9 @@ div.loginBox > form > div > ul > li {
 }
 #archive-list .km-list li .object img {
   width: 100%;
+}
+#galleryPhotoDisplayOpts {
+  height: 11rem;
 }
 /* modalview-start */
 .startBox {

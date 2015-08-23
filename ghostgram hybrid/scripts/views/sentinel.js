@@ -68,11 +68,12 @@ Sentinel.prototype = _.assign({
 		this.$tags.on('click', 'button', function (e) {
 			$(e.target).parent().fadeOut(100, function () {
 				$(e.target).parent().remove();
-				this.emitEvent('remove');
 
 				var category = $(e.target).parent().data('category');
 				this.$filters.find('.'+category).removeClass('pressed');
 				delete this.filters[category];
+
+				this.emitEvent('remove');
 			}.bind(this));
 		}.bind(this));
 
@@ -84,7 +85,7 @@ Sentinel.prototype = _.assign({
 			select: function (e) {
 				var category = e.sender.dataItem(e.item.index()).category;
 
-				this.filters[category] = e.sender.dataItem(e.item.index()).value;
+				this.filters[category] = e.sender.dataItem(e.item.index()).id;
 				this.addTag(category, e.item.text());
 			}.bind(this)
 		});
@@ -138,8 +139,6 @@ Sentinel.prototype = _.assign({
 			.find('.'+category.toLowerCase())
 			.addClass('pressed');
 
-		this.emitEvent('add');
-
 		var words = this.$input.val().split(' ');
 		var keyword = words[words.length - 2];
 		var newValue;
@@ -155,6 +154,8 @@ Sentinel.prototype = _.assign({
 		// the input.val below
 		_.defer( function () {
 			this.$input.val(newValue);
+
+			this.emitEvent('add');
 		}.bind(this));
 	},
 
