@@ -394,7 +394,7 @@ var editChannelView = {
 
 var channelMembersView = {
 
-    doInit: function () {
+    doInit: function (e) {
         if (e.preventDefault !== undefined)
             e.preventDefault();
 
