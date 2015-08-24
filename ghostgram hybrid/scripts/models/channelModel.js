@@ -95,6 +95,17 @@ var channelModel = {
         return(channel);
     },
 
+    findChannelByName: function (channelName) {
+        var dataSource =  channelModel.channelsDS;
+        dataSource.filter( { field: "name", operator: "eq", value: channelName });
+        var view = dataSource.view();
+        var channel = view[0];
+        dataSource.filter([]);
+
+        return(channel);
+    },
+
+
     findPrivateChannel : function (contactUUID) {
         var dataSource =  channelModel.channelsDS;
         dataSource.filter({ field: "isPrivate", operator: "eq", value: true });
@@ -123,13 +134,11 @@ var channelModel = {
         var publicKey = userModel.currentUser.get('publicKey');
         var contact = contactModel.getContactModel(contactUUID), contactKey = null;
 
-        contact.privateChannelId = channelUUID;
-        //contact.publicKey = contactPublicKey;
-
-
         channel.set("name", contactAlias);
         channel.set("isOwner", true);
         channel.set('isPrivate', true);
+        channel.set('isPlace', false);
+        channel.set('isEvent', false);
         channel.set("media",  true);
         channel.set("archive",  false);
         channel.set("unreadCount", 0);
@@ -158,10 +167,6 @@ var channelModel = {
 
     },
 
-    deletePrivateChannel : function (channelId, contactId ) {
-        //Todo: Need to delete the channel and remove publicKey and privateChannelId from this contact
-    },
-
     // Generic add group channel...
     addChannel : function (channelName, channelDescription, isOwner, channelUUID, ownerUUID, ownerName) {
         var Channels = Parse.Object.extend("channels");
@@ -179,10 +184,11 @@ var channelModel = {
         if (isOwner) {
             channelId = uuid.v4();
         }
-
         // Generic fields for owner and members
         channel.set("name", name );
         channel.set('isPrivate', false);
+        channel.set('isPlace', false);
+        channel.set('isEvent', false);
         channel.set("media",   true);
         channel.set("archive", true);
         channel.set("description", description);

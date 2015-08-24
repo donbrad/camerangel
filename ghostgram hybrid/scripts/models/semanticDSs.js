@@ -12,25 +12,25 @@ SemanticDSs.prototype = {
 
 	initialize: function () {
 
-		this.contacts = this.makeSemanticDataSource('Contacts', contactModel.contactsDS, {
+		this.contacts = this.makeSemanticDataSource('Contacts', contactModel.contactsDS.data(), {
 			name: 'name',
 			alias: 'alias',
 			value: 'name'
 		});
 
-		this.places = this.makeSemanticDataSource('Places', APP.models.places.placesDS, {
+		this.places = this.makeSemanticDataSource('Places', APP.models.places.placesDS.data(), {
 			name: 'name',
 			alias: 'alias',
 			value: 'address'
 		});
 
-		this.chats = this.makeSemanticDataSource('Chats', channelModel.channelsDS, {
+		this.chats = this.makeSemanticDataSource('Chats', channelModel.channelsDS.data(), {
 			name: 'name',
 			alias: 'alias',
 			value: 'name'
 		});
 
-		if (this.contacts.total() === 0 && 1) {
+/*		if (this.contacts.total() === 0 && 1) {
 
 			this.contacts.add({
 				name: 'Don Bradford',
@@ -84,7 +84,7 @@ SemanticDSs.prototype = {
 			this.places.sync();
 			this.chats.sync();
 		}
-
+*/
 		this.master = new kendo.data.DataSource({
 			schema: {
 				model: {

@@ -75,6 +75,10 @@ var deviceModel = {
         this.state.hasPhotos = false;
         this.state.introFetched =false;
         this.state.pubnubInit = false;
+
+        // Reset App and User channel timestamps (should be rare on actual devices)
+        localStorage.setItem('ggUserDataTimeStamp', 0);
+        localStorage.setItem('ggAppDataTimeStamp', 0);
     },
 
     isParseSyncComplete: function () {
@@ -131,7 +135,6 @@ var deviceModel = {
         APP.models.places.placesDS.online(false);
 
     },
-
 
     setAppState: function(field, value) {
         deviceModel.state[field] = value;

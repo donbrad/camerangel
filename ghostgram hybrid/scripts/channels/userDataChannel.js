@@ -44,7 +44,7 @@ var userDataChannel = {
 
     history : function () {
 
-        if (this.lastAccess === 0) {
+        if (this.lastAccess === 0 || isNaN(this.lastAccess)) {
             // Get any messages in the channel
             APP.pubnub.history({
                 channel: this.channelId,
@@ -132,8 +132,8 @@ var userDataChannel = {
         APP.pubnub.publish({
             channel: contactUUID,
             message: msg,
-            success: this.channelSuccess,
-            error: this.channelError
+            success: userDataChannel.channelSuccess,
+            error: userDataChannel.channelError
         });
     },
 
@@ -151,8 +151,8 @@ var userDataChannel = {
         APP.pubnub.publish({
             channel: contactUUID,
             message: msg,
-            success: this.channelSuccess,
-            error: this.channelError
+            success: userDataChannel.channelSuccess,
+            error: userDataChannel.channelError
         });
     },
 
@@ -172,8 +172,8 @@ var userDataChannel = {
         APP.pubnub.publish({
             channel: contactUUID,
             message: msg,
-            success: this.channelSuccess,
-            error: this.channelError
+            success: userDataChannel.channelSuccess,
+            error: userDataChannel.channelError
         });
     },
 
@@ -191,8 +191,8 @@ var userDataChannel = {
         APP.pubnub.publish({
             channel: contactUUID,
             message: msg,
-            success: this.channelSuccess,
-            error: this.channelError
+            success: userDataChannel.channelSuccess,
+            error: userDataChannel.channelError
         });
     },
 
