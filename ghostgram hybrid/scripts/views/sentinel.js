@@ -55,6 +55,13 @@ Sentinel.prototype = _.assign({
 				return;
 			}
 
+			if ($(e.currentTarget).hasClass('all')) {
+				window.semanticDSs.master.filter({});
+				this.$input.data('kendoAutoComplete').search();
+
+				return;
+			}
+
 			for (var keyword in this.KEYWORDS_TO_CATEGORIES) {
 				if ($(e.currentTarget).hasClass(this.KEYWORDS_TO_CATEGORIES[keyword])) {
 					window.semanticDSs.master.filter({ field: 'category', operator: 'eq', value: this.KEYWORDS_TO_CATEGORIES[keyword]});
