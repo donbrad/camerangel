@@ -159,6 +159,41 @@ var contactsView = {
         dataSource.filter([]);
         $('#btnSearchDeviceContacts').addClass('hidden');
 
+    },
+
+    searchDeviceContacts: function (e) {
+        if (e !== undefined && e.preventDefault !== undefined) {
+            e.preventDefault();
+        }
+
+        var query = $('#contactSearchInput').val();
+
+        APP.kendo.navigate("#contactImport?query="+query);
+
+     /*   if (query.length > 2) {
+            contactsFindContacts(query, function (array) {
+
+                var name = query.toLowerCase(), nameArray = name.split(' ');
+
+                // Two names?
+                if (nameArray.length > 1) {
+                    mobileNotify("Unifying " + query + "'s data");
+                    unifyContacts(array);
+                    contactModel.unifiedDeviceContact = true;
+                    contactModel.contactListDS.data([]);
+                    contactModel.contactListDS.add(array[0]);
+                } else {
+                    contactModel.unifiedDeviceContact = false;
+                    for (var i = 0; i < array.length; i++) {
+                        contactModel.contactListDS.add(array[i]);
+                    }
+                }
+
+            });
+        } else {
+            mobileNotify("Please enter contacts first or last name. ")
+        }
+        */
     }
 
 };
@@ -186,6 +221,8 @@ var contactImportView = {
             e.preventDefault();
         }
         var query = e.view.params.query;
+
+
         //contactsFindContacts(query);
 
     }
