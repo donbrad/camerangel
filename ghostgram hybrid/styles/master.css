@@ -68,9 +68,9 @@
   height: 1.4rem;
 }
 .sentinel input {
-  background-image: url('images/search.svg');
-  background-repeat: none;
-  background-size: fill;
+  background-image: url('../images/search.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 /* elements */
 .shadow {
