@@ -132,8 +132,7 @@ var userDataChannel = {
         APP.pubnub.publish({
             channel: contactUUID,
             message: msg,
-            success: userDataChannel.channelSuccess,
-            error: userDataChannel.channelError
+            callback: userDataChannel.publishCallback
         });
     },
 
@@ -151,8 +150,7 @@ var userDataChannel = {
         APP.pubnub.publish({
             channel: contactUUID,
             message: msg,
-            success: userDataChannel.channelSuccess,
-            error: userDataChannel.channelError
+            callback: userDataChannel.publishCallback
         });
     },
 
@@ -173,8 +171,7 @@ var userDataChannel = {
         APP.pubnub.publish({
             channel: contactUUID,
             message: msg,
-            success: userDataChannel.channelSuccess,
-            error: userDataChannel.channelError
+            callback: userDataChannel.publishCallback
         });
     },
 
@@ -192,8 +189,7 @@ var userDataChannel = {
         APP.pubnub.publish({
             channel: contactUUID,
             message: msg,
-            success: userDataChannel.channelSuccess,
-            error: userDataChannel.channelError
+            callback: userDataChannel.publishCallback()
         });
     },
 
@@ -256,6 +252,15 @@ var userDataChannel = {
             // Todo: create a channelMember object for this user
             mobileNotify('Owner has deleted Chat: "' + channelId + '"');
             channelModel.deleteChannel(channel);
+        }
+
+    },
+
+    publishCallback : function (m) {
+        var status = m[0], message = m[1], time = m[2];
+
+        if (status !== 1) {
+            mobileNotify('Error publishing invite: ' + message);
         }
 
     },
