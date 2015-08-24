@@ -193,7 +193,7 @@ var channelModel = {
         } else {
             durationDays = parseInt(durationDays);
         }
-        
+
         if (durationDays < 1 || durationDays > 30) {
             durationDays = 30;
         }
@@ -234,7 +234,29 @@ var channelModel = {
 
                 currentChannelModel.currentChannel = channelModel.findChannelModel(channelId);
                 currentChannelModel.currentChannel = currentChannelModel.currentChannel;
-                APP.kendo.navigate('#editChannel');
+
+                if (isOwner) {
+                    channelMap.set("name", channel.get('name'));
+                    channelMap.set("channelId", channel.get('channelId'));
+                    channelMap.set("channelOwner", userModel.currentUser.userUUID);
+                    channelMap.set("members", [userModel.currentUser.userUUID]);
+
+                    channelMap.save(null, {
+                        success: function(channel) {
+                            // Execute any logic that should take place after the object is saved.
+
+
+                        },
+                        error: function(channel, error) {
+                            // Execute any logic that should take place if the save fails.
+                            // error is a Parse.Error with an error code and message.
+                            mobileNotify('Error creating channelMap: ' + error.message);
+                            handleParseError(error);
+                        }
+                    });
+                    APP.kendo.navigate('#editChannel');
+                }
+
             },
             error: function(channel, error) {
                 // Execute any logic that should take place if the save fails.
@@ -244,26 +266,7 @@ var channelModel = {
             }
         });
 
-        if (isOwner) {
-            channelMap.set("name", name);
-            channelMap.set("channelId", channelId);
-            channelMap.set("channelOwner", userModel.currentUser.userUUID);
-            channelMap.set("members", [userModel.currentUser.userUUID]);
 
-            channelMap.save(null, {
-                success: function(channel) {
-                    // Execute any logic that should take place after the object is saved.
-
-
-                },
-                error: function(channel, error) {
-                    // Execute any logic that should take place if the save fails.
-                    // error is a Parse.Error with an error code and message.
-                    mobileNotify('Error creating channelMap: ' + error.message);
-                    handleParseError(error);
-                }
-            });
-        }
 
     },
 
