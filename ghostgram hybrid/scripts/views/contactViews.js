@@ -226,8 +226,16 @@ var contactImportView = {
             $('#contactImportQuery').val(query);
             contactsFindContacts(query);
         }
+    },
 
-        //contactsFindContacts(query);
+    searchContacts: function (e) {
+        if (e !== undefined && e.preventDefault !== undefined) {
+            e.preventDefault();
+        }
+        var query = $('#contactImportQuery').val();
 
+        if (query.length > 2) {
+            contactsFindContacts(query);
+        }
     }
 };
