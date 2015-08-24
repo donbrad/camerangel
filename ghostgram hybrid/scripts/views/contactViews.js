@@ -222,6 +222,10 @@ var contactImportView = {
         }
         var query = e.view.params.query;
 
+        if (query !== undefined) {
+            $('#contactImportQuery').val(query);
+            contactsFindContacts(query);
+        }
 
         //contactsFindContacts(query);
 
