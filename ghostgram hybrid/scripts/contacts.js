@@ -69,21 +69,18 @@ function privateChat(e) {
     }
 	var contact = contactModel.currentContact;
 	var contactUUID = contact.contactUUID, contactName = contact.name, contactPublicKey = contact.publicKey;
-    var privateChannelId = contact.privateChannelId;
     var userName = userModel.currentUser.get('name');
 	if (contactUUID === undefined || contactUUID === null) {
 		mobileNotify(contact.name + "hasn't verified their contact info");
 		return;
 	}
 
-    // Is there already a private chat provisioned for this user?
+    // Is there already a private channel provisioned for this user?
     var channel = channelModel.findPrivateChannel(contactUUID);
-    if (channel !== undefined) {
-        privateChannelId = channel.channelId;
-    }
+    // No private channel yet -- need to create one
+    if (channel === undefined) {
 
-    if (privateChannelId === undefined) {
-        privateChannelId = uuid.v4();
+        var privateChannelId = uuid.v4();
         // Create a new private channel for this contact
         channelModel.addPrivateChannel(contactUUID, contactPublicKey, contactName, privateChannelId);
 
@@ -92,13 +89,16 @@ function privateChat(e) {
 
         // Jump to private chat
     } else {
+        // Yes -- have an existing private channel with this user
 
         // Notify contact of private chat request
-        userDataChannel.privateChannelInvite(contactUUID, privateChannelId, "Private Chat request from: " + userName);
+        userDataChannel.privateChannelInvite(contactUUID, channel.channelId, "Private Chat request from: " + userName);
+
         // Jump to private chat
+        APP.kendo.navigate("#channel?channelId=" + channel.channelId);
 
     }
-    //processPrivateInvite(contactUUID, contactModel.currentUser.get('alias') + " requests a Private Channel");
+
 }
 
 function doEditContact(e) {
