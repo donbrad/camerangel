@@ -27,7 +27,7 @@ var contactsView = {
 
         var dataSource = contactModel.contactListDS;
 
-        // Activate clearsearch and zero the filter when it's called
+       /* // Activate clearsearch and zero the filter when it's called
         $('#contactSearchInput').clearSearch({
             callback: function() {
                 dataSource.data([]);
@@ -36,7 +36,7 @@ var contactsView = {
                 contactModel.deviceContactsDS.data([]);
                 $('#btnSearchDeviceContacts').addClass('hidden');
             }
-        });
+        });*/
 
         // Filter current contacts and query device contacts on keyup
         // Todo: cache local contacts on first call and then just filter that list
@@ -60,13 +60,7 @@ var contactsView = {
                 $("#btnSearchDeviceName").text(query);
 
             } else {
-                dataSource.data([]);
-                contactModel.deviceContactsDS.data([]);
-                dataSource.data(contactModel.contactsDS.data());
-                dataSource.filter([]);
-
-                $('#btnSearchDeviceContacts').addClass('hidden');
-
+                contactsView.hideSearchUX();
             }
         });
 
@@ -125,6 +119,7 @@ var contactsView = {
             }
         });
 
+        $("#contactSearchInput" ).focusout(contactsView.updateSearchUX);
     },
 
     onShow : function (e) {
@@ -142,8 +137,28 @@ var contactsView = {
     onHide : function (e) {
         if (e.preventDefault !== undefined)
             e.preventDefault();
-    }
+    },
 
+    updateSearchUX: function (event) {
+        var query = $('#contactSearchInput').val();
+
+        if (query.length > 2) {
+            $("#btnSearchDeviceName").text(query);
+            $('#btnSearchDeviceContacts').removeClass('hidden');
+        } else {
+            contactsView.hideSearchUX();
+        }
+    },
+
+    hideSearchUX : function () {
+        var dataSource = contactModel.contactListDS;
+        dataSource.data([]);
+        contactModel.deviceContactsDS.data([]);
+        dataSource.data(contactModel.contactsDS.data());
+        dataSource.filter([]);
+        $('#btnSearchDeviceContacts').addClass('hidden');
+
+    }
 
 };
 
