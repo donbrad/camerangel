@@ -472,26 +472,29 @@ function searchDeviceContacts(e) {
     }
 
 	var query = $('#contactSearchInput').val();
-	
-	contactsFindContacts(query, function(array) {
+	if (query.length > 2) {
+        contactsFindContacts(query, function (array) {
 
-        var name = query.toLowerCase(), nameArray = name.split(' ');
+            var name = query.toLowerCase(), nameArray = name.split(' ');
 
-        // Two names?
-        if (nameArray.length > 1) {
-            mobileNotify("Unifying " + query + "'s data");
-            unifyContacts(array);
-            contactModel.unifiedDeviceContact = true;
-            contactModel.contactListDS.data([]);
-            contactModel.contactListDS.add(array[0]);
-        } else {
-            contactModel.unifiedDeviceContact = false;
-            for (var i=0; i<array.length; i++) {
-                contactModel.contactListDS.add(array[i]);
+            // Two names?
+            if (nameArray.length > 1) {
+                mobileNotify("Unifying " + query + "'s data");
+                unifyContacts(array);
+                contactModel.unifiedDeviceContact = true;
+                contactModel.contactListDS.data([]);
+                contactModel.contactListDS.add(array[0]);
+            } else {
+                contactModel.unifiedDeviceContact = false;
+                for (var i = 0; i < array.length; i++) {
+                    contactModel.contactListDS.add(array[i]);
+                }
             }
-        }
 
-	});
+        });
+    } else {
+        mobileNofify("Please enter contacts first or last name. ")
+    }
 }
 
 // Filter contacts - unify matching names
