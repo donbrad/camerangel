@@ -22,8 +22,6 @@ var channelsView = {
         scroller.scrollTo(0,-44);
 
 
-        // ToDo: Initialize list view
-
         $("#channels-listview").kendoMobileListView({
             dataSource: channelModel.channelsDS,
             template: $("#channels-listview-template").html(),
@@ -67,9 +65,19 @@ var channelsView = {
 
     },
 
+    checkEmpty : function () {
+        if (channelModel.channelsDS.total() > 0) {
+            $('#channel-listview .emptyState').addClass('hidden');
+        } else {
+            $('#channel-listview .emptyState').removeClass('hidden');
+        }
+    },
+
     onShow : function(){
         // set action button
         $("#channels > div.footerMenu.km-footer > a").attr("href", "#addChannel").css("display","inline-block");
+
+        this.checkEmpty();
     },
 
     editChannel : function (e) {
