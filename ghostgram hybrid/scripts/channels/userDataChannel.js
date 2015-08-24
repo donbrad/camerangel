@@ -96,7 +96,7 @@ var userDataChannel = {
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, ownerID: <ownerUUID>,  ownerName: <text>, channelName: <text>, channelDescription: <text>}
             case 'channelInvite' : {
-                this.processGroupInvite(m.ownerId, m.ownerName,  m.channelId, m.channelName, m.channelDescription,  m.message);
+                this.processGroupInvite(m.ownerId, m.ownerName,  m.channelId, m.channelName, m.channelDescription, m.durationDays,  m.message);
             } break;
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, owner: <ownerUUID>}
@@ -156,7 +156,7 @@ var userDataChannel = {
         });
     },
 
-    groupChannelInvite : function (contactUUID, channelUUID, channelName, channelDescription,  message) {
+    groupChannelInvite : function (contactUUID, channelUUID, channelName, channelDescription, durationDays,  message) {
         var msg = {};
 
         msg.type = 'groupInvite';
@@ -165,6 +165,7 @@ var userDataChannel = {
         msg.channelId = channelUUID;
         msg.channelName = channelName;
         msg.channelDescription = channelDescription;
+        msg.durationDays = durationDays;
         msg.message  = message;
         msg.time = new Date().getTime();
 
@@ -235,14 +236,14 @@ var userDataChannel = {
 
     },
 
-    processGroupInvite: function (ownerId, ownerName, channelId, channelName, channelDescription, message) {
+    processGroupInvite: function (ownerId, ownerName, channelId, channelName, channelDescription, durationDays, message) {
         // Todo:  Does channel exist?  If not create,  if so notify user of request
         var channel = channelModel.findChannelModel(channelId);
 
         if (channel === undefined) {
             mobileNotify("Chat invite from  " + ownerName + ' " ' + channelName + '"');
 
-            channelModel.addChannel(channelName, channelDescription, false, channelId, ownerId, ownerName );
+            channelModel.addChannel(channelName, channelDescription, false, durationDays,  channelId, ownerId, ownerName );
             notificationModel.addNewChatNotification(channelId, channelName, channelDescription);
         }
 

@@ -144,12 +144,13 @@ var addChannelView = {
        if ($("#channels-addChannel-name").val() !== '') {
 
            var name = $('#channels-addChannel-name').val(),
+               duration = $('#channels-addChannel-archive').val(),
                description = $('#channels-addChannel-description').val();
 
            if (channelModel.findChannelByName(name)) {
                mobileNotify('There is already a channel named : "' + name + '"');
            } else {
-               channelModel.addChannel(name, description, true);
+               channelModel.addChannel(name, description, true, duration);
            }
 
 

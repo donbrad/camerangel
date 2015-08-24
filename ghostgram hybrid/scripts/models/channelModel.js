@@ -133,17 +133,18 @@ var channelModel = {
         var channel = new Channels();
         var publicKey = userModel.currentUser.get('publicKey');
         var contact = contactModel.getContactModel(contactUUID), contactKey = null;
-
+        var addTime = ggTime.currentTime();
         channel.set("name", contactAlias);
         channel.set("isOwner", true);
         channel.set('isPrivate', true);
         channel.set('isPlace', false);
         channel.set('isEvent', false);
         channel.set("media",  true);
+        channel.set("durationDays", 1);
         channel.set("archive",  false);
         channel.set("unreadCount", 0);
-        channel.set("clearBefore", ggTime.currentTime());
-        channel.set("lastAccess", ggTime.currentTime());
+        channel.set("clearBefore", addTime);
+        channel.set("lastAccess", addTime);
         channel.set("description", "Private: " + contactAlias);
         channel.set("channelId", channelUUID);
         channel.set('userKey',  publicKey);
@@ -168,13 +169,14 @@ var channelModel = {
     },
 
     // Generic add group channel...
-    addChannel : function (channelName, channelDescription, isOwner, channelUUID, ownerUUID, ownerName) {
+    addChannel : function (channelName, channelDescription, isOwner, durationDays, channelUUID, ownerUUID, ownerName) {
         var Channels = Parse.Object.extend("channels");
         var channel = new Channels();
 
         var ChannelMap = Parse.Object.extend('channelmap');
         var channelMap = new ChannelMap();
 
+        var addTime = ggTime.currentTime();
         var name = channelName,
             description = channelDescription,
             channelId = channelUUID;
@@ -184,6 +186,15 @@ var channelModel = {
         if (isOwner) {
             channelId = uuid.v4();
         }
+
+        // Ensure we have a valid duration for this channel
+        if (durationDays === undefined) {
+            durationDays = 30;
+        }
+        if (durationDays < 1 || durationDays > 30) {
+            durationDays = 30;
+        }
+
         // Generic fields for owner and members
         channel.set("name", name );
         channel.set('isPrivate', false);
@@ -192,9 +203,10 @@ var channelModel = {
         channel.set("media",   true);
         channel.set("archive", true);
         channel.set("description", description);
+        channel.set("durationDays", durationDays);
         channel.set("unreadCount", 0);
-        channel.set("clearBefore", ggTime.currentTime());
-        channel.set("lastAccess", ggTime.currentTime());
+        channel.set("clearBefore", addTime);
+        channel.set("lastAccess", addTime);
         channel.set("channelId", channelId);
 
         // Channel owner can access and edit members...
