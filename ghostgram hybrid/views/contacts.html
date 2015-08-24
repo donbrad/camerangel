@@ -1,5 +1,5 @@
 
-<div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="contactModel" data-init="onInitContacts" data-show="onShowContacts" data-hide="onHideContacts" style="display: none;">
+<div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="contactModel" data-init="onInitContacts" data-show="onShowContacts" data-before-hide="onHideContacts">
 	<div class="topViewSearchBox">
 	 	<div class="appendSearch">
 			<span class="searchIcon"><img src="images/search.svg" /></span>
@@ -337,18 +337,9 @@
 						</div>
 
 						<p class="left caption contact-status">
-						<img src="images/icon-locationPin.svg" /> Out doing stuff
+						 Out doing stuff
 						</p>
 						<div class="clearfix"></div>
-						<div class="contact-info">
-							<label>Contact via</label>
-							<ul data-role="listview" data-style="inset">
-								<li><a class="btnClear">Private Chat</a></li>
-								<li><a class="btnClear">ghostMail</a></li>
-								<li><a class="btnClear">Call</a></li>
-								<li><a class="btnClear">SMS</a></li>
-							</ul>
-						</div>
 				#} else {#
 					<h4 class="phoneContact">
 						#: data.name #

@@ -295,6 +295,14 @@ function onShowPlaces(e) {
 		checkInTo(locations[0]);
 	});
 
+	// hide actionBtn   
+    $("div.footerMenu.km-footer > a").attr("href", "").css("display", "inline-block");
+
+}
+
+function onBeforeHidePlaces(e){
+	// hide actionBtn   
+    $("#places > div.footerMenu.km-footer > a").css("display", "none");
 }
 
 function parseAddress(address) {

@@ -441,7 +441,7 @@ function onInitContacts(e) {
 			  
 		 }
 	 });
-	
+
      $("#contacts-listview").kendoMobileListView({
         dataSource: contactModel.contactListDS,
         template: $("#contactsTemplate").html(),
@@ -529,7 +529,7 @@ function onShowContacts (e) {
 	
 	
 	// set action button
-	$("#contacts > div.footerMenu.km-footer > a").attr("href", "#contactImport");
+	$("#contacts > div.footerMenu.km-footer > a").attr("href", "#contactImport").css("display", "inline-block");
 
 }
 
@@ -537,6 +537,9 @@ function onHideContacts (e) {
 	if (e.preventDefault !== undefined)
     	e.preventDefault();
 	//APP.models.contacts.contactListDS.data(APP.models.contacts.contactsDS.data());
+
+	// hide action btn
+	$("#contacts > div.footerMenu.km-footer > a").css("display", "none");
 }
 
 function launchAddContact(e) {
