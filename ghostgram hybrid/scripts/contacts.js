@@ -318,7 +318,6 @@ function updateCurrentContact (contact) {
     contactModel.currentContact.set('contactUUID', contact.contactUUID);
     contactModel.currentContact.set('contactEmail', contact.contactEmail);
     contactModel.currentContact.set('privateChannel', contact.privateChannel);
-    contactModel.currentContact.set('privateChannelId', contact.privateChannelId);
     contactModel.currentContact.set('phoneVerified',contact.phoneVerified);
     contactModel.currentContact.set('publicKey',contact.publicKey);
     contactModel.currentContact.bind('change' , syncCurrentContact);

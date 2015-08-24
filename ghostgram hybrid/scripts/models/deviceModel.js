@@ -135,7 +135,7 @@ var deviceModel = {
         APP.models.places.placesDS.online(false);
 
     },
-    
+
     setAppState: function(field, value) {
         deviceModel.state[field] = value;
        // deviceModel.state.set(field,value);
