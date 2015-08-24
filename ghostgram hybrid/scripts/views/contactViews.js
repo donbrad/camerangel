@@ -119,7 +119,7 @@ var contactsView = {
             }
         });
 
-        $("#contactSearchInput" ).focusout(contactsView.updateSearchUX);
+        $("#contactSearchInput" ).change(contactsView.updateSearchUX);
     },
 
     onShow : function (e) {
