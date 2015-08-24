@@ -71,6 +71,7 @@ var channelsView = {
         // set action button
         $("#channels > div.footerMenu.km-footer > a").attr("href", "#addChannel").css("display","inline-block");
     },
+
     editChannel : function (e) {
         if (e!== undefined && e.preventDefault !== undefined){
             e.preventDefault();
@@ -329,7 +330,7 @@ var editChannelView = {
 
         //Send Invite messages to users added to channel
         for (var ma = 0; ma < currentChannelModel.membersAdded.length; ma++) {
-            userDataChannel.groupChannelInvite(currentChannelModel.membersAdded[ma].contactUUID, channelId, "You've been invited to " + currentChannelModel.currentChannel.name);
+            userDataChannel.groupChannelInvite(currentChannelModel.membersAdded[ma].contactUUID, channelId, currentChannelModel.currentChannel.name, "You've been invited to " + currentChannelModel.currentChannel.name);
         }
 
 
