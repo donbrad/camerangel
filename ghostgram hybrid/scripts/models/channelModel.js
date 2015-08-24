@@ -190,7 +190,10 @@ var channelModel = {
         // Ensure we have a valid duration for this channel
         if (durationDays === undefined) {
             durationDays = 30;
+        } else {
+            durationDays = parseInt(durationDays);
         }
+        
         if (durationDays < 1 || durationDays > 30) {
             durationDays = 30;
         }
