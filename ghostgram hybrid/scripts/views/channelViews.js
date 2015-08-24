@@ -157,6 +157,7 @@ var addChannelView = {
            mobileNotify("Chat name is required");
        }
    },
+
     showChatDescription : function (e){
         if (e !== undefined && e.preventDefault !== undefined)
             e.preventDefault();
@@ -327,13 +328,13 @@ var editChannelView = {
 
         //Send Invite messages to users added to channel
         for (var ma = 0; ma < currentChannelModel.membersAdded.length; ma++) {
-            userDataChannel.groupChannelInvite(currentChannelModel.membersAdded[ma], channelId, "You've been invited to " + currentChannelModel.currentChannel.name);
+            userDataChannel.groupChannelInvite(currentChannelModel.membersAdded[ma].contactUUID, channelId, "You've been invited to " + currentChannelModel.currentChannel.name);
         }
 
 
         //Send Delete messages to users deleted from the channel
         for (var md = 0; md < currentChannelModel.membersDeleted.length; md++) {
-            userDataChannel.groupChannelDelete(currentChannelModel.membersDeleted[md], channelId, currentChannelModel.currentChannel.name + "has been deleted.");
+            userDataChannel.groupChannelDelete(currentChannelModel.membersDeleted[md].contactUUID, channelId, currentChannelModel.currentChannel.name + "has been deleted.");
         }
 
         updateParseObject('channels', 'channelId', channelId, 'members', memberArray);
