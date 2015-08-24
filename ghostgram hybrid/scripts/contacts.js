@@ -493,7 +493,7 @@ function searchDeviceContacts(e) {
 
         });
     } else {
-        mobileNofify("Please enter contacts first or last name. ")
+        mobileNotify("Please enter contacts first or last name. ")
     }
 }
 

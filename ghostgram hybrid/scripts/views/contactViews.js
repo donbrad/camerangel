@@ -40,7 +40,7 @@ var contactsView = {
 
         // Filter current contacts and query device contacts on keyup
         // Todo: cache local contacts on first call and then just filter that list
-        $('#contactSearchInput').keyup(function() {
+        $('#contactSearchInput').on('input', function() {
             var query = this.value;
             if (query.length > 0) {
                 dataSource.filter( {"logic":"or",
@@ -119,7 +119,8 @@ var contactsView = {
             }
         });
 
-        $("#contactSearchInput" ).change(contactsView.updateSearchUX);
+        // Update search UX whenever search input content changes.
+       // $("#contactSearchInput" ).on('input', contactsView.updateSearchUX);
     },
 
     onShow : function (e) {
