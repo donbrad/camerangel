@@ -168,7 +168,7 @@ var contactsView = {
 
         var query = $('#contactSearchInput').val();
 
-        APP.kendo.navigate("#contactImport?query="+query);
+        APP.kendo.navigate("views/contacts.html#contactImport?query="+query);
 
      /*   if (query.length > 2) {
             contactsFindContacts(query, function (array) {
