@@ -132,8 +132,8 @@ var userDataChannel = {
         APP.pubnub.publish({
             channel: contactUUID,
             message: msg,
-            success: this.channelSuccess,
-            error: this.channelError
+            success: userDataChannel.channelSuccess,
+            error: userDataChannel.channelError
         });
     },
 
@@ -151,8 +151,8 @@ var userDataChannel = {
         APP.pubnub.publish({
             channel: contactUUID,
             message: msg,
-            success: this.channelSuccess,
-            error: this.channelError
+            success: userDataChannel.channelSuccess,
+            error: userDataChannel.channelError
         });
     },
 
@@ -172,8 +172,8 @@ var userDataChannel = {
         APP.pubnub.publish({
             channel: contactUUID,
             message: msg,
-            success: this.channelSuccess,
-            error: this.channelError
+            success: userDataChannel.channelSuccess,
+            error: userDataChannel.channelError
         });
     },
 
@@ -191,8 +191,8 @@ var userDataChannel = {
         APP.pubnub.publish({
             channel: contactUUID,
             message: msg,
-            success: this.channelSuccess,
-            error: this.channelError
+            success: userDataChannel.channelSuccess,
+            error: userDataChannel.channelError
         });
     },
 
