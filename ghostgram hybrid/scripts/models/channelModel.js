@@ -134,10 +134,6 @@ var channelModel = {
         var publicKey = userModel.currentUser.get('publicKey');
         var contact = contactModel.getContactModel(contactUUID), contactKey = null;
 
-        contact.privateChannelId = channelUUID;
-        //contact.publicKey = contactPublicKey;
-
-
         channel.set("name", contactAlias);
         channel.set("isOwner", true);
         channel.set('isPrivate', true);
@@ -171,10 +167,6 @@ var channelModel = {
 
     },
 
-    deletePrivateChannel : function (channelId, contactId ) {
-        //Todo: Need to delete the channel and remove publicKey and privateChannelId from this contact
-    },
-
     // Generic add group channel...
     addChannel : function (channelName, channelDescription, isOwner, channelUUID, ownerUUID, ownerName) {
         var Channels = Parse.Object.extend("channels");
@@ -192,7 +184,6 @@ var channelModel = {
         if (isOwner) {
             channelId = uuid.v4();
         }
-
         // Generic fields for owner and members
         channel.set("name", name );
         channel.set('isPrivate', false);
