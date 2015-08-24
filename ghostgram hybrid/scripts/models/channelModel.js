@@ -155,6 +155,7 @@ var channelModel = {
         channel.save(null, {
             success: function(channel) {
                 channelModel.channelsDS.add(channel.attributes);
+                channelModel.channelsDS.sync();
                 //closeModalViewAddChannel();
                 mobileNotify('Added private channel : ' + channel.get('name'));
             },
@@ -230,6 +231,7 @@ var channelModel = {
                 // Execute any logic that should take place after the object is saved.
 
                 channelModel.channelsDS.add(channel.attributes);
+                channelModel.channelsDS.sync();
                 mobileNotify('Added channel : ' + channel.get('name'));
 
                 currentChannelModel.currentChannel = channelModel.findChannelModel(channelId);
