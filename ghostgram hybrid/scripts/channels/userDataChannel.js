@@ -44,7 +44,7 @@ var userDataChannel = {
 
     history : function () {
 
-        if (this.lastAccess === 0) {
+        if (this.lastAccess === 0 || isNaN(this.lastAccess)) {
             // Get any messages in the channel
             APP.pubnub.history({
                 channel: this.channelId,

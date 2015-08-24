@@ -141,6 +141,8 @@ var channelModel = {
         channel.set("name", contactAlias);
         channel.set("isOwner", true);
         channel.set('isPrivate', true);
+        channel.set('isPlace', false);
+        channel.set('isEvent', false);
         channel.set("media",  true);
         channel.set("archive",  false);
         channel.set("unreadCount", 0);
@@ -194,6 +196,8 @@ var channelModel = {
         // Generic fields for owner and members
         channel.set("name", name );
         channel.set('isPrivate', false);
+        channel.set('isPlace', false);
+        channel.set('isEvent', false);
         channel.set("media",   true);
         channel.set("archive", true);
         channel.set("description", description);
