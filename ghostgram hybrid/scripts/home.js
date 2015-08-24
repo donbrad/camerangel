@@ -184,7 +184,7 @@ function testingStatus(e) {
 function homeSignout (e) {
 	if (e !== undefined && e.preventDefault !== undefined)
 		e.preventDefault();
-   ;
+
     Parse.User.logOut();
     userModel.parseUser = null;
     userModel.currentUser.unbind('change', syncProfile);
