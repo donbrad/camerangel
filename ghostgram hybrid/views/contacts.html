@@ -1,5 +1,5 @@
 
-<div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="contactModel" data-init="onInitContacts" data-show="onShowContacts" data-hide="onHideContacts" style="display: none;">
+<div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="contactModel" data-init="contactsView.onInit" data-show="contactsView.onShow" data-hide="contactsView.onHide" style="display: none;">
 	<div class="topViewSearchBox">
 	 	<div class="appendSearch">
 			<span class="searchIcon"><img src="images/search.svg" /></span>
@@ -63,7 +63,7 @@
 </div>
 
 <!-- Import Contacts -->
-<div data-role="view" data-title="Import Contacts" id="contactImport"  data-model="contactModel" data-init="onInitContactImport" data-show="onShowContactImport" style="display: none;">
+<div data-role="view" data-title="Import Contacts" id="contactImport"  data-model="contactModel" data-init="contactImportView.onInit" data-show="contactImportView.onShow" style="display: none;">
     <div data-role="header">
         <div data-role="navbar">
            <a data-role="button"  data-align="left" href="#:back" ><img src="images/nav-back.svg" /></a>
