@@ -77,7 +77,7 @@ var channelsView = {
         // set action button
         $("#channels > div.footerMenu.km-footer > a").attr("href", "#addChannel").css("display","inline-block");
 
-        this.checkEmpty();
+        channelsView.checkEmpty();
     },
 
     editChannel : function (e) {
