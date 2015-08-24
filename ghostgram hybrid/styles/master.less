@@ -670,8 +670,29 @@ form {
 	}
 }
 
+.twoBtn {
+	&:extend(.btnStyle);
+	width: 50%;
+	float: left;
+	height: 2.25rem;
+	padding-top: 0.5rem !important;
+}
+
+.footer-twoBtn .twoBtn:nth-child(1){
+	border-right: 1px solid @shade-200;
+}
+
+.modal-dialog {
+	padding: 0.5rem 1rem 1rem 1rem;
+	h3, p {
+		margin-left: 0px;
+		margin-right: 0px;
+	}
+}
+ 
 div.km-content.km-widget.km-scroll-wrapper {
 	padding-bottom: 1rem;
+
 }
 
 .input-text-sm {
@@ -2566,8 +2587,13 @@ div.loginBox > form > div > ul > li {
     color: black;
 }
 
+#gallery .km-content > div {
+    display: flex;
+    flex-direction: column;
+}
+
 #search-archives {
-    min-height: 2rem;
+    min-height: 8rem;
     padding: .5rem 0;
 
     .k-autocomplete {
@@ -2605,7 +2631,6 @@ div.loginBox > form > div > ul > li {
         }
     }
 }
-
 
 // Archive list
 
@@ -2670,6 +2695,10 @@ div.loginBox > form > div > ul > li {
         }
 
     }
+}
+
+#galleryPhotoDisplayOpts {
+    height: 11rem;
 }
 
 /* modalview-start */

@@ -1,18 +1,4 @@
-function addChannel(e) {
-	e.preventDefault();
-	
-	// make sure chat has a name
-	if($("#channels-addChannel-name").val() !== ''){
 
-	    var name = $('#channels-addChannel-name').val(),
-	        description = $('#channels-addChannel-description').val();
-
-		channelModel.addChannel(name, description, true);
-
-	} else {
-		mobileNotify("Chat name is required");
-	}
-}
 
 function onShowChannels(){
 	// set action button
@@ -33,41 +19,6 @@ function syncCurrentChannel(e) {
 	currentChannelModel.currentChannel.set(e.field, this[e.field]);
 }
     
-function editChannel(e) {
-	if (e!== undefined && e.preventDefault !== undefined){
-		e.preventDefault();
-	}
-	// Did a quick bind to the button, feel free to change 
-
-   var channelId = e.button[0].attributes["data-channel"].value; 
-   var dataSource = channelModel.channelsDS;
-
-    dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
-    var view = dataSource.view();
-    var channel = view[0];
-    
-    dataSource.filter([]);
-
-	currentChannelModel.currentChannel.unbind('change', syncCurrentChannel);
-    currentChannelModel.currentChannel = channel;
-
-	currentChannelModel.currentChannel.set('channelId', channel.channelId);
-	currentChannelModel.currentChannel.set('name', channel.name);
-	currentChannelModel.currentChannel.set('description', channel.description);
-	currentChannelModel.currentChannel.set('media', channel.media);
-	if (channel.invitedMembers === undefined) {
-		channel.invitedMembers = [];
-	}
-	currentChannelModel.currentChannel.set('invitedMembers', channel.invitedMembers);
-	currentChannelModel.currentChannel.set('members', channel.members);
-	currentChannelModel.currentChannel.set('isPrivate', channel.isPrivate);
-	currentChannelModel.currentChannel.set('isOwner', channel.isOwner);
-	currentChannelModel.currentChannel.set('archive', channel.archive);
-	currentChannelModel.currentChannel.bind('change', syncCurrentChannel);
-    
-    APP.kendo.navigate('#editChannel');
-	
-}
     
 function eraseChannel(e) {
 	e.preventDefault();
@@ -90,6 +41,7 @@ function deleteChannel(e) {
 
 }
     
+/*
 function onChannelsClick(e) {
 	e.preventDefault();
 	var channel = e.dataItem;	
@@ -97,9 +49,12 @@ function onChannelsClick(e) {
 	APP.kendo.navigate('#channel?channel='+channel.channelId);
 }
 
+
 function gotoChannel(channelId) {
 	APP.kendo.navigate('#channel?channel='+channelId);
 }
+*/
+
 
 function onInitChannels (e) {
     e.preventDefault();
@@ -158,6 +113,7 @@ function cancelEditChat(e){
 
 }
 
+
 function doShowEventInputs(e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
@@ -174,173 +130,21 @@ function onShowAddChannel (e) {
 
 	// hide channel description
 	$("#channels-addChannel-description").css("display","none");
-
-	$("#channels-addChannel-name").keyup(function(){
-		if($("#channels-addChannel-name").val !== ""){
-			$("#addChat-createBtn").velocity({opacity: 1}, {duration: 500, easing: "spring"});
-			$("#channels-addChannel-name").unbind();
-		}
-		$("#addChat-helper-1").velocity("fadeOut", {duration: 300});
-	});
-
-	$("#addChat-step2").css("opacity", 0);
-
-
-}
-
-function finalizeEditChannel(e) {
-	e.preventDefault();
-	
-	var memberArray = new Array(), invitedMemberArray = new Array(), invitedPhoneArray = new Array(), members = currentChannelModel.membersDS.data();
-	
-	var channelId = currentChannelModel.currentChannel.channelId;
-	// It's a group channel so push this users UUID
-	
-	memberArray.push(userModel.currentUser.userUUID);
-	for (var i=0; i<members.length; i++) {
-		if(members[i].contactUUID !== null) {
-			memberArray.push(members[i].contactUUID);
-		} else {
-			// No contactUUID so this user hasn't signed up yet - use the owners uuid for the contact
-			invitedMemberArray.push(members[i].uuid);
-			
-			// User isn't signed up yet, store their phone number in the channel map so we can autoprovision their channels
-			// when they do sign up
-			invitedPhoneArray.push(members[i].phone);
-		}
-		
-	}
-	currentChannelModel.currentChannel.members = memberArray;
-	currentChannelModel.currentChannel.unbind('change', syncCurrentChannel);
-
-	//Todo:  process membersAdded -- send invite messages
-
-
-	//Todo: process membersDeleted -- send channel delete messages
-
-
-	updateParseObject('channels', 'channelId', channelId, 'members', memberArray);
-	updateParseObject('channels', 'channelId', channelId, 'invitedMembers', invitedMemberArray);
-	
-	// Update the channelmap entry so members can update or create the channel
-	updateParseObject('channelmap', 'channelId', channelId, 'members', memberArray);
-	// Add new members phone numbers to the channel map
-	updateParseObject('channelmap', 'channelId', channelId, 'invitedMembers', invitedPhoneArray);
-
-	// Reset UI
-	$("#showEditDescriptionBtn").velocity("fadeIn");
-	$("#channels-editChannel-description").css("display","none").val("");
-
-	mobileNotify("Updating " + currentChannelModel.currentChannel.name);
-	
-	APP.kendo.navigate('#channels');
-
-	// Reset UI
-	$("#channels-addChannel-description, #channels-addChannel-name").val('');
-}
-
-function onInitEditChannel (e) {
-	if (e.preventDefault !== undefined)
-		e.preventDefault();
-	currentChannelModel.membersDS.data([]);
-	$('#editChannelMemberList li').remove();
-}
-
-function deleteMember (e) {
-	if (e.preventDefault !== undefined)
-		e.preventDefault();
-	var contactId = e.attributes['data-param'].value;
-	var thisMember = contactModel.findContactByUUID(contactId);
-	currentChannelModel.membersDeleted.push(thisMember);
-	currentChannelModel.potentialMembersDS.add(thisMember);
-	currentChannelModel.potentialMembersDS.sync();
-	currentChannelModel.membersDS.remove(thisMember);
-	currentChannelModel.membersDS.sync();
-	$('#'+contactId).remove();
-	
 }
 
 
-function onShowEditChannel (e) {
-	if (e.preventDefault !== undefined)
-		e.preventDefault();
-	
-	var currentChannel = currentChannelModel.currentChannel;
-	var members = currentChannel.members, thisMember = {};
-	var membersArray = new Array();
-	
-	//Zero out current members as we're going rebuild ds and ux
-	currentChannelModel.membersDS.data([]);
-	currentChannelModel.membersAdded = [];
-	currentChannelModel.membersDeleted = [];
+/*
 
-	$('#editChannelMemberList').empty();
-
-	// Only channel owner can see and edit members and invited members
-	if (members.length > 0 && currentChannelModel.isOwner) {
-
-		// Group channel members are referenced indirectly by uuid 
-		// channel can include invited users who havent signed up yet
-
-		for (var i=0; i<members.length; i++) {
-			thisMember = contactModel.getContactModel(members[i]);
-
-			// Current user will be undefined in contact list.
-			if (thisMember !== undefined) {
-				currentChannelModel.membersDS.add(thisMember);
-				
-				// Display the right data for name
-				var name = thisMember.name; 
-				var alias = thisMember.alias;
-				var mainName, smallName = null;
-				if (alias !== ''){
-					mainName = alias;
-					smallName = name;
-				} else {
-					mainName = name;
-					smallName = alias;
-				}
-				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+
-					'">'+
-					'<div class="left"><img class="circle-img-md editChatImg" src="'+ thisMember.photo +'"/></div>' + 
-					'<h4>'+ mainName + ' <img class="user-status-icon" src="images/user-verified.svg" />'+
-					'<span class="contacts-alias-sm"> '+ smallName +'</span>' +
-					'<span class="right">' +
-					'<a class="listTrash" data-param="' + thisMember.uuid +
-					'" data-role="button" class="clearBtn" data-click="deleteMember" onclick="deleteMember(this)" ><img src="images/trash.svg" /></a></span>' +
-					'</h4><p class="helper">Status</p>' + 
-					'<div class="clearfix"></div></li>');	
-			}
-		}
-
-		if (currentChannelModel.invitedMembers !== undefined) {
-			members = currentChannelModel.invitedMembers;
-			for (var j=0; j<members.length; j++) {
-				thisMember = contactModel.findContactByUUID(members[j]);
-				currentChannelModel.membersDS.add(thisMember);
-				// Display the right data for name
-				var name = thisMember.name; 
-				var alias = thisMember.alias;
-				var mainName, smallName = "";
-				if (alias !== '' && name === alias){
-					mainName = alias;
-				} else if (alias !== ''){
-					mainName = alias;
-					smallName = name;
-				} else {
-					mainName = name;
-					smallName = alias;
-				}
-				$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'">' +
-					'<div class="left"><img class="circle-img-md editChatImg" src="'+ thisMember.photo +'"/></div>' +
-					'<h4>'+ mainName + 
-					'<span class="contacts-alias-sm"> '+ smallName +'</span>' +
-					'<a class="right listTrash" data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)"><img src="images/trash.svg" /></a>' +
-					'</h4><p class="helper">Unverified • Status</p><div class="clearfix"></div></li>');	
-			}
-		}	
-		
+function appendMemberToUXList (thisMember) {
+	// Display the right data for name
+	var name = thisMember.name;
+	var alias = thisMember.alias;
+	var mainName, smallName = null;
+	if (alias !== ''){
+		mainName = alias;
+		smallName = name;
 	} else {
+<<<<<<< HEAD
 		$(".addChatMembersBanner a").text("No one is invited. Tap to send invites");
 		
 	}
@@ -392,62 +196,49 @@ function doShowChannelMembers (e) {
 
 		}
 		currentChannelModel.potentialMembersDS.sync();
+=======
+		mainName = name;
+		smallName = alias;
+>>>>>>> master
 	}
-
-	if (invitedMembers.length > 0) {
-		for (var j=0; j<invitedMembers.length; j++) {
-			var invitedMember = contactModel.findContactByUUID(invitedMembers[j]);
-			if (invitedMember !== undefined) {
-
-				currentChannelModel.membersDS.add(invitedMember);
-				dataSource.filter( { field: "uuid", operator: "eq", value: invitedMember.uuid});
-				var view1 = dataSource.view();
-				var contact1 = view1[0];
-				dataSource.filter([]);
-				dataSource.remove(contact1.items[0]); // new object layout for aggregate datasources
-			}
-
-
-		}
-
-	}
-	
+	$("#editChannelMemberList").append('<li id="'+thisMember.uuid+
+		'">'+
+		'<div class="left"><img class="circle-img-md editChatImg" src="'+ thisMember.photo +'"/></div>' +
+		'<h4>'+ mainName + ' <img class="user-status-icon" src="images/user-verified.svg" />'+
+		'<span class="contacts-alias-sm"> '+ smallName +'</span>' +
+		'<span class="right">' +
+		'<a class="listTrash" data-param="' + thisMember.uuid +
+		'" data-role="button" class="clearBtn" data-click="deleteMember" onclick="deleteMember(this)" ><img src="images/trash.svg" /></a></span>' +
+		'</h4><p class="helper">Status</p>' +
+		'<div class="clearfix"></div></li>');
 }
 
-function doInitChannelMembers (e) {
-	if (e.preventDefault !== undefined)
-		e.preventDefault();
-
-	currentChannelModel.potentialMembersDS.data([]);
-	$("#channelMembers-listview").kendoMobileListView({
-        dataSource: currentChannelModel.potentialMembersDS,
-        template: $("#memberTemplate").html(),
-		headerTemplate: "${value}",
-		filterable: {
-                field: "name",
-                operator: "startswith",
-                placeholder: "Search contacts..."
-            },
-		click: function (e) {
-			// Click to potential member list -- add this member to channel
-			var thisMember = e.dataItem;
-
-			currentChannelModel.membersDS.add(thisMember);
-			if (thisMember.contactUUID === null) {
-				currentChannelModel.currentChannel.invitedMembers.push(thisMember.uuid);
-
-			} else {
-				currentChannelModel.currentChannel.members.push(thisMember.contactUUID);
-			}
-			currentChannelModel.membersDS.sync();
-
-			currentChannelModel.membersAdded(thisMember);
-			currentChannelModel.potentialMembersDS.remove(thisMember);
-			$(".addedChatMember").text("+ added " + thisMember.name).velocity("slideDown", { duration: 300, display: "block"}).velocity("slideUp", {delay: 1400, duration: 300, display: "none"});
-		}
-		
-    });
+function appendInvitedMemberToUXList (thisMember) {
+	// Display the right data for name
+	var name = thisMember.name;
+	var alias = thisMember.alias;
+	var mainName, smallName = "";
+	if (alias !== '' && name === alias){
+		mainName = alias;
+	} else if (alias !== ''){
+		mainName = alias;
+		smallName = name;
+	} else {
+		mainName = name;
+		smallName = alias;
+	}
+	$("#editChannelMemberList").append('<li id="'+thisMember.uuid+'">' +
+		'<div class="left"><img class="circle-img-md editChatImg" src="'+ thisMember.photo +'"/></div>' +
+		'<h4>'+ mainName +
+		'<span class="contacts-alias-sm"> '+ smallName +'</span>' +
+		'<a class="right listTrash" data-param="' + thisMember.uuid + '" data-role="button" class="km-button" data-click="deleteMember" onclick="deleteMember(this)"><img src="images/trash.svg" /></a>' +
+		'</h4><p class="helper">Unverified • Status</p><div class="clearfix"></div></li>');
 }
+
+*/
+
+
+
 
 function doInitChannelPresence (e) {
 	if (e.preventDefault !== undefined){
@@ -472,7 +263,7 @@ function doShowChannelPresence (e) {
 		var currentChannel = APP.models.channels.currentChannel;
 	currentChannelModel.currentChannel = currentChannel;
 	currentChannelModel.membersDS.data([]);
-	var members = currentChannelModel.members;
+	var members = currentChannelModel.currentChannel.members;
 	if (currentChannelModel.isPrivate) {
 		var privateContact = '';
 		if (members[0] === userModel.currentUser.userUUID) {
@@ -490,50 +281,10 @@ function getMessageCount(callback) {
 
 }
 
-function showChatDescription(e){
-	$("#channels-addChannel-description").velocity("slideDown",{duration: 1500, easing: "spring", display: "block"});
-	$("#addChatDescription").velocity("fadeOut");
-}
-
-function resetAddChatUI(e){
-	$("#channels-addChannel-description").css("display","none");
-	$("#channels-addChannel-description, #channels-addChannel-name").val("");
-	$("#addChatDescription").velocity("fadeIn");
-	//$("#addChat-createBtn").velocity({opacity: 0});
-	
-		$("#channels-addChannel-name").keyup(function(){
-		if($("#channels-addChannel-name").val !== ""){
-			$("#addChat-createBtn").velocity({opacity: 1}, {duration: 500, easing: "spring"});
-			$("#channels-addChannel-name").unbind();
-		}
-	});
-	addChatStep1();
-	
-}
-function addChatStep1(e){
-	$("#chat-title-setup").velocity("slideUp", {duration: 300});
-	$("#addChat-step2").velocity("fadeOut", {duration: 200});
-	$("#addChat-step1").velocity("fadeIn", {duration: 200, delay:200});
-	//$("#addChat-createBtn").velocity("slideUp", {display: "none", duration: 300});
-}
 
 
-function addChatStep2(e) {
-	if($("#channels-addChannel-name").val() !== ""){
-		// Todo - need to add UI cleaners
-		var chatTitle = $("#channels-addChannel-name").val();
-		$("#chat-title-step1").empty().prepend("+ " + chatTitle);
-		$("#chat-title-setup").velocity("slideDown", {display: "block", duration: 500});
 
-		// fade out step 1
-		$("#addChat-step1, #addChat-helper1").velocity("fadeOut", {duration: 300});
 
-		$("#addChat-step2").velocity("fadeIn", {duration: 100, delay:300, display: "block"});
-	} else {
-		mobileNotify("Chat name is required");
-	}
-
-}
 
 function sendGhostChat(e) {
 	if (e !== undefined && e.preventDefault !== undefined) {
@@ -585,10 +336,7 @@ function toggleListTrash() {
 }
 
 function toggleListDone(){
-	$("#listDone").velocity("fadeOut", {duration: 100});
-	$(".addChatMembersBanner").velocity("slideDown", {duration: 100});
-	$(".listTrash").velocity("fadeOut", {duration: 100});
-	$("#listTrash").velocity("fadeIn", {delay: 100, duration: 100});
+
 }
 
 function showEditDescription(){

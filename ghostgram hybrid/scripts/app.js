@@ -8,21 +8,7 @@
 
 	// create an object to store the models for each view
 	window.APP = {
-		views: {
-			ghostEditor: {
-				title: "ghostEmail",
-				init: onInitGhostEmail,
-				show: onShowGhostEmail,
-				sendTitle: "Send",
-				sendAction: sendGhostEmail
-			},
-			gallery: {
-				title: "Gallery",
-				init: onInitGhostEmail,
-				show: onShowGhostEmail,
-				clickAction: sendGhostEmail
-			}
-		},
+
 		models: {
 			home: {
 				title: 'ghostgrams',

@@ -95,6 +95,17 @@ var channelModel = {
         return(channel);
     },
 
+    findChannelByName: function (channelName) {
+        var dataSource =  channelModel.channelsDS;
+        dataSource.filter( { field: "name", operator: "eq", value: channelName });
+        var view = dataSource.view();
+        var channel = view[0];
+        dataSource.filter([]);
+
+        return(channel);
+    },
+
+
     findPrivateChannel : function (contactUUID) {
         var dataSource =  channelModel.channelsDS;
         dataSource.filter({ field: "isPrivate", operator: "eq", value: true });
@@ -123,13 +134,11 @@ var channelModel = {
         var publicKey = userModel.currentUser.get('publicKey');
         var contact = contactModel.getContactModel(contactUUID), contactKey = null;
 
-        contact.privateChannelId = channelUUID;
-        //contact.publicKey = contactPublicKey;
-
-
         channel.set("name", contactAlias);
         channel.set("isOwner", true);
         channel.set('isPrivate', true);
+        channel.set('isPlace', false);
+        channel.set('isEvent', false);
         channel.set("media",  true);
         channel.set("archive",  false);
         channel.set("unreadCount", 0);
@@ -158,10 +167,6 @@ var channelModel = {
 
     },
 
-    deletePrivateChannel : function (channelId, contactId ) {
-        //Todo: Need to delete the channel and remove publicKey and privateChannelId from this contact
-    },
-
     // Generic add group channel...
     addChannel : function (channelName, channelDescription, isOwner, channelUUID, ownerUUID, ownerName) {
         var Channels = Parse.Object.extend("channels");
@@ -179,10 +184,11 @@ var channelModel = {
         if (isOwner) {
             channelId = uuid.v4();
         }
-
         // Generic fields for owner and members
         channel.set("name", name );
         channel.set('isPrivate', false);
+        channel.set('isPlace', false);
+        channel.set('isEvent', false);
         channel.set("media",   true);
         channel.set("archive", true);
         channel.set("description", description);
@@ -252,13 +258,30 @@ var channelModel = {
         var view = dataSource.view();
         var channel = view[0];
         dataSource.filter([]);
-        if (channel.isOwner) {
-            // If this user is the owner -- delete the channel map
-            deleteParseObject("channelmap", 'channelId', channelId);
+
+        if (channel !== undefined) {
+            dataSource.filter([]);
+            if (channel.isOwner) {
+                // If this user is the owner -- delete the channel map
+                deleteParseObject("channelmap", 'channelId', channelId);
+
+                if (channel.isPrivate) {
+                    // Owner is always first member of channel
+                    userDataChannel.privateChannelDelete(members[1],channelId, 'Chat "' + channel.name + 'has been deleted' );
+                } else {
+                    // Send delete channel messages to all members
+                    var members = channel.members;
+                    // Skip the first member as it's the owner
+                    for (var i = 1; i < channel.members.length; i++) {
+                        userDataChannel.groupChannelDelete(members[i],channelId, 'Chat "' + channel.name + 'has been deleted' );
+                    }
+                }
+
+            }
+            dataSource.remove(channel);
+            deleteParseObject("channels", 'channelId', channelId);
+            mobileNotify("Removed channel : " + channel.get('name'));
         }
-        dataSource.remove(channel);
-        deleteParseObject("channels", 'channelId', channelId);
-        mobileNotify("Removed channel : " + channel.get('name'));
     }
 
 };

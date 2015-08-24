@@ -504,6 +504,7 @@ form p {
 .btnClear-red,
 .btnFull,
 .btnFull-modal,
+.twoBtn,
 .km-material .km-buttongroup .km-button,
 .btnClear-grey-sm {
   text-decoration: none;
@@ -746,6 +747,23 @@ form p {
 }
 .btnFull-modal :hover {
   background: transparent !important;
+}
+.twoBtn {
+  width: 50%;
+  float: left;
+  height: 2.25rem;
+  padding-top: 0.5rem !important;
+}
+.footer-twoBtn .twoBtn:nth-child(1) {
+  border-right: 1px solid #e0e0e0;
+}
+.modal-dialog {
+  padding: 0.5rem 1rem 1rem 1rem;
+}
+.modal-dialog h3,
+.modal-dialog p {
+  margin-left: 0px;
+  margin-right: 0px;
 }
 div.km-content.km-widget.km-scroll-wrapper {
   padding-bottom: 1rem;
@@ -2554,8 +2572,12 @@ div.loginBox > form > div > ul > li {
   margin: 0;
   color: black;
 }
+#gallery .km-content > div {
+  display: flex;
+  flex-direction: column;
+}
 #search-archives {
-  min-height: 2rem;
+  min-height: 8rem;
   padding: .5rem 0;
 }
 #search-archives .k-autocomplete {
@@ -2632,6 +2654,9 @@ div.loginBox > form > div > ul > li {
 }
 #archive-list .km-list li .object img {
   width: 100%;
+}
+#galleryPhotoDisplayOpts {
+  height: 11rem;
 }
 /* modalview-start */
 .startBox {

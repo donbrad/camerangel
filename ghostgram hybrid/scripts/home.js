@@ -184,7 +184,7 @@ function testingStatus(e) {
 function homeSignout (e) {
 	if (e !== undefined && e.preventDefault !== undefined)
 		e.preventDefault();
-   ;
+
     Parse.User.logOut();
     userModel.parseUser = null;
     userModel.currentUser.unbind('change', syncProfile);
@@ -841,6 +841,7 @@ function onShowProfileStatus(e){
 	var available = userModel.currentUser.isAvailable;
 	var availableSwitch = $("#home-status-switch").data("kendoMobileSwitch");
 	// Set profile status
+
 	formatNameAlias(name, alias, "#profilePhotoForm");
 	
 	$("#profileStatusMessage").text(status);
@@ -896,3 +897,14 @@ function statusCharCount(e) {
 	
 
 }
+
+function dialogClose(e){
+	$("#modal-OptionDialog").data("kendoMobileModalView").close();
+}
+
+function gpsLocateUpdate(){
+	// Todo - Auto locate first if enabled, then manual input show
+	$(".userLocationUpdate").velocity("slideDown");
+
+}
+

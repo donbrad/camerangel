@@ -3,11 +3,21 @@
  *
  * notificationModel.js -- notification interface to parse, kendo and localstorage
  *
+ * Notification types: 'unread', 'newchat', 'newprivate', 'deletechat', 'newmember',
  */
 
 'use strict';
 
 var notificationModel = {
+
+    // Types of notifications...
+    _unreadCount : 'unread',
+    _newChat : 'newchat',
+    _newPrivate : 'newprivate',
+    _newMember : 'newMember',
+    _memberStatus : 'memberStatus',
+    _deleteChat : 'deleteChat',
+    _deletePrivateChat : 'deleteprivate',
 
     notificationDS: new kendo.data.DataSource({
         offlineStorage: "notifications-offline",
@@ -24,7 +34,7 @@ var notificationModel = {
             this.action = action ? action : null,
             this.href = href ? href : null,
             this.description = description ? description : '',
-            this.date = date ? date : new Date().getTime(),
+            this.date = date ? date : ggTime.currentTime(),
             this.dismissed = dismissed ? dismissed : false,
             this.dismissable = dismissable ? dismissable : false
     },
@@ -32,6 +42,44 @@ var notificationModel = {
     newNotification: function(type, title, date, description, actionTitle, action, href, dismissable) {
         var notification = new notificationModel.Notification(type, title, date, description, actionTitle, action, href, dismissable);
         notificationModel.notificationDS.add(notification);
+    },
+
+    addAppNotification : function () {
+
+    },
+
+    addNewMemberNotification : function (contactId, contactName) {
+
+    },
+
+
+    memberStatusNotification : function (contactId, contactName) {
+
+    },
+
+    addUnreadNotification : function (channelId, channelName, unreadCount) {
+        this.newNotification(this._unreadCount, channelName, null, unreadCount + "new messages.", 'Read Messages', null,
+        '#channel?channel='+channelId, true);
+    },
+
+    addNewChatNotification : function (channelId, channelName, channelDescription) {
+        this.newNotification(this._newChat, channelName, null, channelDescription, 'Goto Chat', null,
+            '#channel?channel='+channelId, true);
+    },
+
+    addNewPrivateChatNotification : function (channelId, channelName) {
+        this.newNotification(this._newPrivate, channelName, null, channelDescription, 'Goto Chat', null,
+            '#channel?channel='+channelId, true);
+    },
+
+    deleteChatNotification : function (channelId, channelName) {
+        this.newNotification(this._deleteChat, channelName, null, "Has been deleted.", null, null,
+           null, true);
+    },
+
+    deletePrivateChatNotification : function (channelId, channelName) {
+        this.newNotification(this._deletePrivateChat, channelName, null, "Has been deleted.", null, null,
+            null, true);
     },
 
     parseFetch: function () {

@@ -28,7 +28,7 @@ function newP2PEntry(user, contact, channel, callback) {
 		}
 	})
 }
-
+/*
 //check the p2p map 
 function processPrivateInvite(contactUUID, message) {
 	var userUUID = userModel.currentUser.get('userUUID'),
@@ -82,7 +82,7 @@ function processPrivateInvite(contactUUID, message) {
 	
 	
 }
-
+*/
 
 // search the p2pmap for an existing mapping between user and contact
 function queryP2Pmap(contactUUID, userUUID, callBack) {

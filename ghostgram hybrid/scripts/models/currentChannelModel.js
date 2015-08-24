@@ -43,13 +43,13 @@ var currentChannelModel = {
 
     // Need to debounce this so we're not updating lastAccess on each message read.
     updateLastAccess: debounce(function () {
-        var accessTime = ggTime.currentTime(), channelId = currentChannelModel.currentChannel.get('channelId');
+        var accessTime = ggTime.currentTime(), channelId = currentChannelModel.currentChannel.channelId;
         updateParseObject('channels', 'channelId', channelId, 'lastAccess', accessTime);
 
     }, this._debounceInterval),
 
     updateClearBefore: function () {
-        var clearTime = ggTime.currentTime(), channelId = currentChannelModel.currentChannel.get('channelId');
+        var clearTime = ggTime.currentTime(), channelId = currentChannelModel.currentChannel.channelId;
         updateParseObject('channels', 'channelId', channelId, 'clearBefore', clearTime);
     }
 

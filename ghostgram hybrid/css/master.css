@@ -68,9 +68,9 @@
   height: 1.4rem;
 }
 .sentinel input {
-  background-image: url('images/search.svg');
-  background-repeat: none;
-  background-size: fill;
+  background-image: url('../images/search.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 /* elements */
 .shadow {
@@ -375,6 +375,11 @@ form p {
 .loading-sm {
   height: 24px;
 }
+.textClamp {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 /* Colors */
 .blue-100 {
   background-color: #3caaee !important;
@@ -415,10 +420,6 @@ form p {
 /* Elements */
 .status {
   height: 10px;
-}
-.primaryName,
-.secondName {
-  display: inline-block;
 }
 .verified-txt {
   color: #2d93ff;
@@ -503,6 +504,7 @@ form p {
 .btnClear-red,
 .btnFull,
 .btnFull-modal,
+.twoBtn,
 .km-material .km-buttongroup .km-button,
 .btnClear-grey-sm {
   text-decoration: none;
@@ -745,6 +747,23 @@ form p {
 }
 .btnFull-modal :hover {
   background: transparent !important;
+}
+.twoBtn {
+  width: 50%;
+  float: left;
+  height: 2.25rem;
+  padding-top: 0.5rem !important;
+}
+.footer-twoBtn .twoBtn:nth-child(1) {
+  border-right: 1px solid #e0e0e0;
+}
+.modal-dialog {
+  padding: 0.5rem 1rem 1rem 1rem;
+}
+.modal-dialog h3,
+.modal-dialog p {
+  margin-left: 0px;
+  margin-right: 0px;
 }
 div.km-content.km-widget.km-scroll-wrapper {
   padding-bottom: 1rem;
@@ -1079,6 +1098,19 @@ div.footerMenu.km-footer > ul > li > a:active {
 .home-header > div.view-content.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
   background-image: linear-gradient(-1deg, #f5f5f5 53%, #ffffff 100%);
 }
+.updateStatusLabel {
+  font-size: 14px;
+  font-size: 0.875rem;
+}
+.statusCharacterCount {
+  position: absolute;
+  font-size: 12px;
+  font-size: 0.75rem;
+  color: #979797;
+  bottom: 1em;
+  z-index: 1;
+  right: 1em;
+}
 .home-headerBtn {
   padding: 0px;
   height: 58px !important;
@@ -1158,13 +1190,16 @@ div.footerMenu.km-footer > ul > li > a:active {
   left: 32px;
 }
 #profileStatusMessage {
-  white-space: nowrap;
-  overflow: hidden;
+  font-size: 13px;
+  font-size: 0.8125rem;
   text-overflow: ellipsis;
   width: 190px;
   display: inline-block;
 }
 #profilePhotoForm > div > ul > li:nth-child(1) {
+  padding: 0px;
+}
+#profilePhotoForm > div > ul > li:nth-child(2) {
   padding: 0px;
 }
 .ghostModal {
@@ -1206,6 +1241,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 .profileTextBox {
   position: relative;
   left: 1rem;
+  width: 80%;
 }
 /* Modal styles */
 .modalTop {
@@ -1230,7 +1266,7 @@ div.footerMenu.km-footer > ul > li > a:active {
   padding: 1rem 1rem !important;
 }
 .modal-top {
-  height: 10rem;
+  height: 12rem;
   width: 100%;
   background-color: #e0e0e0;
   text-align: center;
@@ -1238,7 +1274,7 @@ div.footerMenu.km-footer > ul > li > a:active {
   padding-top: 2rem;
   padding-bottom: 2rem;
 }
-.modal-top > img {
+.modal-top div > img {
   height: 4rem;
   vertical-align: middle;
   margin-bottom: 0.25rem;
@@ -1249,6 +1285,16 @@ div.footerMenu.km-footer > ul > li > a:active {
 .modal-top p {
   font-size: 12px;
   font-size: 0.75rem;
+}
+.modal-top h3 {
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+  text-align: center;
 }
 .modal-bottom {
   padding: 0.5rem 1rem;
@@ -1582,10 +1628,12 @@ div.footerMenu.km-footer > ul > li > a:active {
   position: relative;
   font-size: 14px;
   font-size: 0.875rem;
-  width: 95%;
+  width: 100%;
   margin-top: 0;
-  left: -18px;
   top: 0;
+  resize: none;
+  outline: none;
+  padding: 0.5em 0.75em;
 }
 .km-root .km-wp .km-view.appearance .km-listview input {
   color: #2e2e2e;
@@ -1908,11 +1956,15 @@ a:hover {
   top: 30px;
   left: 32px;
 }
+.statusContactCard-icon {
+  position: absolute;
+  top: 73px;
+  left: 54%;
+}
 #menuSetting {
   margin-top: 40px;
 }
 #profileStatusPhoto {
-  margin-right: 1rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 .km-material .km-list > li {
@@ -1977,6 +2029,17 @@ a:hover {
   margin-left: 0px;
   margin-right: 0px;
   font-weight: 600;
+}
+.chatType {
+  margin-left: 1.5rem;
+}
+.chatNameDiv {
+  width: 80%;
+  float: left;
+}
+.chatStatusIcon {
+  float: left;
+  width: 1.5rem;
 }
 #channels-listview > li > div > h4 > a {
   text-decoration: none;
@@ -2509,8 +2572,12 @@ div.loginBox > form > div > ul > li {
   margin: 0;
   color: black;
 }
+#gallery .km-content > div {
+  display: flex;
+  flex-direction: column;
+}
 #search-archives {
-  min-height: 2rem;
+  min-height: 8rem;
   padding: .5rem 0;
 }
 #search-archives .k-autocomplete {
@@ -2587,6 +2654,9 @@ div.loginBox > form > div > ul > li {
 }
 #archive-list .km-list li .object img {
   width: 100%;
+}
+#galleryPhotoDisplayOpts {
+  height: 11rem;
 }
 /* modalview-start */
 .startBox {
@@ -2789,6 +2859,10 @@ div.loginBox > form > div > ul > li {
 #contactActionBtns {
   width: 100%;
 }
+#contactActionBtns > li > a > span > img {
+  vertical-align: middle;
+  margin-right: 0.5em;
+}
 .contactListItem:hover {
   color: #4a4a4a;
   text-align: left;
@@ -2803,6 +2877,9 @@ div.loginBox > form > div > ul > li {
 #modalview-contactActions > div > div.km-scroll-container > div.modal-top {
   color: #fff;
   background-color: rgba(0, 0, 0, 0.6);
+}
+#contactSecondName {
+  color: #fff;
 }
 .contact-connections {
   position: absolute;

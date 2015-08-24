@@ -15,16 +15,16 @@ var archiveView = {
 					channelName: 'myplacez design',
 
 					sender: {
-						id: 'asdf',
+						id: '1',
 						name: 'Don Bradford',
 						image: 'http://files.parsetfss.com/b7762404-2bdf-4947-a141-9fdd3b9daf41/tfss-c1b74c69-deea-43a4-b36a-685f95b76f90-61ebcea2-9085-4a3d-99f2-58e7cfe04eb3.png'
 					},
 
-					placeId: 'asdf',
+					placeId: '1',
 					placeName: 'Home',
 					address: '221 Davis St., Greenfield, MA',
 
-					eventId: 'asdf',
+					eventId: '1',
 					eventName: 'Work at Don\'s',
 
 					text: 'Some chat about myplacez',
@@ -43,16 +43,16 @@ var archiveView = {
 					channelName: 'myplacez design',
 
 					sender: {
-						id: 'asdf',
+						id: '1',
 						name: 'Don Bradford',
 						image: 'http://files.parsetfss.com/b7762404-2bdf-4947-a141-9fdd3b9daf41/tfss-c1b74c69-deea-43a4-b36a-685f95b76f90-61ebcea2-9085-4a3d-99f2-58e7cfe04eb3.png'
 					},
 
-					placeId: 'asdf',
+					placeId: '1',
 					placeName: 'Home',
 					address: '221 Davis St., Greenfield, MA',
 
-					eventId: 'asdf',
+					eventId: '1',
 					eventName: 'Work at Don\'s',
 
 					text: 'Awesome concert next weekend!',
@@ -64,7 +64,7 @@ var archiveView = {
 				object: {
 					name: 'Margot and the Nukes',
 
-					placeId: 'asdf',
+					placeId: '2',
 					placeName: 'Iron Horse',
 					address: '24 Main St., Northampton, MA',
 					
@@ -80,16 +80,16 @@ var archiveView = {
 					channelName: 'ghostgram design',
 
 					sender: {
-						id: 'asdf',
+						id: '1',
 						name: 'Don Bradford',
 						image: 'http://files.parsetfss.com/b7762404-2bdf-4947-a141-9fdd3b9daf41/tfss-c1b74c69-deea-43a4-b36a-685f95b76f90-61ebcea2-9085-4a3d-99f2-58e7cfe04eb3.png'
 					},
 
-					placeId: 'asdf',
+					placeId: '1',
 					placeName: 'Home',
 					address: '221 Davis St., Greenfield, MA',
 
-					eventId: 'asdf',
+					eventId: '1',
 					eventName: 'Work at Don\'s',
 
 					text: 'Check out this refactoring thing',
@@ -111,16 +111,16 @@ var archiveView = {
 					channelName: 'ghostgram design',
 
 					sender: {
-						id: 'asdf',
-						name: 'Don Bradford',
-						image: 'http://files.parsetfss.com/b7762404-2bdf-4947-a141-9fdd3b9daf41/tfss-c1b74c69-deea-43a4-b36a-685f95b76f90-61ebcea2-9085-4a3d-99f2-58e7cfe04eb3.png'
+						id: '2',
+						name: 'Jordan Escoto',
+						image: 'https://pbs.twimg.com/profile_images/3365228794/6f017221480a3d8c4df6debf92240bb3_400x400.png'
 					},
 
-					placeId: 'asdf',
+					placeId: '1',
 					placeName: 'Home',
 					address: '221 Davis St., Greenfield, MA',
 
-					eventId: 'asdf',
+					eventId: '1',
 					eventName: 'Work at Don\'s',
 
 					text: 'Check out this place photo',
@@ -181,6 +181,9 @@ var archiveView = {
 
 	search: function () {
 		var filters = [];
+
+
+		console.log(archiveView.sentinel.filters);
 
 		if (archiveView.sentinel.filters.contacts !== undefined) {
 			filters.push({ field: 'message.sender.id', operator: 'eq', 'value': archiveView.sentinel.filters.contacts });

@@ -142,18 +142,18 @@ function formatNameAlias(name, alias, view){
 	if (alias !== "" && alias !== undefined && name !== "" && name !== undefined){
 		primaryName = alias;
 		secondName = name;
-	
+
 	} else if(name !== "" && name !== undefined) {
 		primaryName = name;
 		secondName = "";
 	}
-	
 	else {
 		primaryName = alias;
 	}
 
 	$(view + " .primaryName").text(primaryName);
 	$(view + " .secondName").text(secondName);
+
 }
 
 function showFormatedPhone(){

@@ -58,6 +58,7 @@
 	<script src="scripts/models/userModel.js"></script>
     <script src="scripts/views/sentinel.js"></script>
     <script src="scripts/views/archiveView.js"></script>
+	<script src="scripts/views/channelViews.js"></script>
 	<script src="scripts/channels/appDataChannel.js"></script>
 	<script src="scripts/channels/userDataChannel.js"></script>
 	<script src="scripts/channels/groupChannel.js"></script>
@@ -527,12 +528,14 @@
         <ul data-role="listview">
         	<li>
         		<div class="left">
+
 						<div class="statusContactList">
 							<img class="circle-img-md home-profile-img" id="profileStatusPhoto" src="" />
 							<img width="16" src="images/status-away.svg" class="statusContactList-icon home-status-img" />
 						 </div>
 					
 				</div><!-- left -->
+
 				<div class="left profileTextBox">
 					<h3 class="textClamp">
 						<span class="primaryName"></span>
@@ -716,6 +719,18 @@
 	    </a>
 	    <p>This feature is in the works!</p>
 	        <img id="testingImg" src="images/testing.svg" />
+	</div>
+</div>
+
+<!-- option dialog modal -->
+<div data-role="modalview" id="modal-OptionDialog" style="width: 80%; display:none;" class="appearance">
+	<div class="modal-dialog">
+	    <h3>Are you sure?</h3>
+	    <p>This item will be deleted.</p>
+	</div>
+	<div class="footer-twoBtn footer" data-role="footer">
+		<a class="twoBtn btnClear" data-role="button" data-click="dialogClose">Yes</a>
+		<a class="twoBtn btnClear" data-role="button" data-click="dialogClose">No</a>
 	</div>
 </div>
 

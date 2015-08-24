@@ -1,4 +1,6 @@
- <div data-role="view" id="channels" data-title="Chats" data-layout="main" data-model="channelModel" data-init="onInitChannels" data-show="onShowChannels" data-before-hide="onBeforeHideChannels">
+
+ <div data-role="view" id="channels" data-title="Chats" data-layout="main" data-model="channelModel" data-init="channelsView.onInit" data-show="channelsView.onShow">
+
      	<div class="topViewSearchBox">
 	 		<div class="appendSearch">
 				<span class="searchIcon"><img src="images/search.svg" /></span>
@@ -106,7 +108,7 @@
     				#}#
     				# if(isPrivate !== true && isOwner){#
     						<li>
-			    				<a class="btnClear-grey" data-role="button" id="chat-option-edit" data-click="editChannel" data-channel="#:channelId #">
+			    				<a class="btnClear-grey" data-role="button" id="chat-option-edit" data-click="channelsView.editChannel" data-channel="#:channelId #">
 				    				<img src="images/option-edit.svg" />
 				    				<p class="chat-option-selection">Edit</p>
 				    			</a>
@@ -145,11 +147,11 @@
 </script>
  
 
-<div data-role="view" data-title='Add Chat' id="addChannel" style="display: none;" data-init="onShowAddChannel" class="appearance" data-transition="overlay:up">
+<div data-role="view" data-title='Add Chat' id="addChannel" style="display: none;" data-init="addChannelView.onShow" class="appearance" data-transition="overlay:up">
    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" href="#:back" data-click="resetAddChatUI" data-align="right">
+            <a data-role="button" href="#:back" data-click="addChannelView.resetUI" data-align="right">
             	<img src="images/close.svg" />
             </a>
         </div>
@@ -157,7 +159,7 @@
     <div id="chat-title-setup">
     	<span id="chat-title-step1"></span>
     	<span class="right">
-    		<a id="editChatName" data-click="addChatStep1" data-role="button">edit</a>
+    		<a id="editChatName" data-click="addChannelView.addChatStep1" data-role="button">edit</a>
     	</span>
     </div>
      <form id="addChat-step1">
@@ -171,7 +173,7 @@
                 <input type="search" id="channels-addChannel-name" placeholder="What's the topic?" value="" required />
                 
                 <input type="search" style="display: none" id="channels-addChannel-description" value="" placeholder="Description"/>
-                <a class="btnClear-grey" data-role="button" data-click="showChatDescription" id="addChatDescription">Add description</a>
+                <a class="btnClear-grey" data-role="button" data-click="addChannelView.showChatDescription" id="addChatDescription">Add description</a>
             </li>
 			<li >
                <label>Save messages for
@@ -186,7 +188,7 @@
             </li>
             <li>
             	<p class="right">
-		        	<a id="addChat-createBtn" class="btnClear" data-click="addChannel" type="button" data-role="button">Next - Invite friends</a>
+		        	<a id="addChat-createBtn" class="btnClear" data-click="addChannelView.addChannel" type="button" data-role="button">Next - Invite friends</a>
 		        </p>
             </li>
             <li class="hidden">
@@ -194,7 +196,7 @@
             	<label>Optional
             		<div class="chatOption-event">
             			<img class="chatOptionImg" src="images/event.svg" />
-            			<a class="btnClear-grey" data-role="button" data-click="doShowEventInputs" id="addChatEvent">Add Event info</a>
+            			<a class="btnClear-grey" data-role="button" data-click="addChannelView.doShowEventInputs" id="addChatEvent">Add Event info</a>
             		</div>
 
             	</label>
@@ -225,7 +227,7 @@
 </div>
 
 <!-- Edit chat -->
-<div data-role="view" id="editChannel" data-model="currentChannelModel.currentChannel" style="display: none;" data-show="onShowEditChannel"  data-init="onInitEditChannel" class="appearance">
+<div data-role="view" id="editChannel" data-model="currentChannelModel.currentChannel" style="display: none;" data-show="editChannelView.onShow"  data-init="editChannelView.onInit" class="appearance">
     <div data-role="header">
         <div data-role="navbar">
             <span> Edit Chat </span>
@@ -245,24 +247,24 @@
 			<div class="pad">
 				<img src="images/edit-chat.svg" /> Chat Members
 				<span class="right">
-					<a class="btnClear" data-role="button" data-click="toggleListTrash;" id="listTrash">Edit</a>
-					<a class="btnClear" data-role="button" data-click="toggleListDone;" id="listDone">Done</a>
+					<a class="btnClear" data-role="button" data-click="editChannelView.clickEdit" id="editChannel-Trash">Edit</a>
+					<a class="btnClear" data-role="button" data-click="editChannelView.clickDone" id="editChannel-Done">Done</a>
 				</span>
 			</div>
 			<div class="addChatMembersBanner">
 				<a class="btnClear-sm" data-role="button" href="#channelMembers">+ add new members</a>
 			</div>
 			<div>
-				<ul class="list-inline" id="editChannelMemberList"></ul>
+				<ul class="list-inline" id="editmembers-listview"></ul>
 			</div>	
 		</div>
 	</div>	  
 	<div class="footerBk" data-role="footer">
-            <a class="btnSpan-btm btnPrimary" data-click="finalizeEditChannel" type="button" data-role="button">Save</a>
-    	</div>
+            <a class="btnSpan-btm btnPrimary" data-click="editChannelView.finalizeEdit" type="button" data-role="button">Save</a>
+	</div>
 </div>
 
-<div data-role="view" id="channel" data-layout="main" data-model="APP.models.channel" data-show="onShowChannel" data-init="onInitChannel" data-transition="slide">
+<div data-role="view" id="channel" data-layout="main" data-model="currentChannelModel" data-show="onShowChannel" data-init="onInitChannel" data-transition="slide">
      <div data-role="header">
         <div data-role="navbar" id="channelNavBar">
         	<a data-align="left" data-role="button" href="#:back"> 
@@ -376,18 +378,17 @@
 
 
 <!-- edit chat members -->
-<div data-role="view" id="channelMembers" data-layout="main" data-title="Invite" data-init="doInitChannelMembers" data-show="doShowChannelMembers" data-transition="overlay:up">
+<div data-role="view" id="channelMembers" data-layout="main" data-title="Invite" data-init="channelMembersView.doInit" data-show="channelMembersView.doShow" data-transition="overlay:up">
     <header data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
             <a data-role="button" data-align="right" href="views/contacts.html#contactImport">Import Contact</a>
-            <a data-role="button" data-align="left"><img src="images/nav-back.svg"/></a>
         </div>
     </header>
     <div class="addedChatMember" style="display: none"></div>
     <ul id="channelMembers-listview"></ul>
     <div class="footerBk" data-role="footer">
-            <a class="btnSpan-btm btnSecondary" type="button" data-role="backbutton">Done</a>
+            <a class="btnSpan-btm btnSecondary" type="button" data-role="button" href="#editChannel?updateMembers=true">Done</a>
     	</div>
 </div>
 
@@ -417,12 +418,34 @@
      </div>
 </script>
 
-<div data-role="drawer" id="channelPresence" style="width: 240px" data-swipe-to-open="false" data-position='right' data-init="doInitChannelPresence" data-show="doShowChannelPresence" data-views="['channel']">
-    <div class="menuBox">
-    	<ul id="channelPresence-listview"></ul>
-    </div>
-	
-    
-</div>
+ <script type="text/x-kendo-template" id="editMembersTemplate">
+	 <div>
+		 <div class="right">
+			<a class="listTrash" data-param="#:data.uuid#" data-role="button" class="clearBtn" data-click="deleteMember" onclick="editChannelView.deleteMember(this)" ><img src="images/trash.svg" /></a>
+	 	</div>
+		 <div class="left">
+			 <img class="circle-img-md editChatImg" src="#: data.photo #"  />
+		 </div>
+		 <div class="left">
+			 #if (data.alias !== '' && data.name !== data.alias && data.phoneVerified){#
+			 <h4>
+				 #: data.alias #
+				 <img class="user-status-icon" src="images/user-verified.svg" />
+				 <span class="contacts-alias-sm">#: data.name #</span>
+			 </h4>
+			 #} else if(data.alias !== '' && data.name !== data.alias) {#
+			 <h4>
+				 #: data.alias #
+				 <span class="contacts-alias-sm">#: data.name #</span>
+			 </h4>
+			 #} else {#
+			 <h4>#: data.name #</h4>
+			 #}#
+		 </div>
+
+	 </div>
+ </script>
+
+
 
 

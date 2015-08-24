@@ -1,5 +1,25 @@
+/* global archiveView */
+
+'use strict';
+
 function onInitGallery(e){
 	archiveView.init();
+
+	var adjustSentinelHeight = function () {
+		var combinedHeight = 0;
+		$('#search-archives').children().each( function () {
+			combinedHeight += $(this).height();
+		});
+
+		// Dunno what's up with needing these calculations
+		combinedHeight *= 2;
+		combinedHeight += 70;
+
+		$('#search-archives').height(combinedHeight+'px');
+	};
+
+	archiveView.sentinel.addListener('add', adjustSentinelHeight);
+	archiveView.sentinel.addListener('remove', adjustSentinelHeight);
 
    if (e !== undefined && e.preventDefault !== undefined){
 		e.preventDefault();
@@ -292,6 +312,11 @@ function gallerySelectCategory(e){
 	 case 0:
 	 	$(".gallerySearchOptions").velocity("slideDown");
 	 	$("#galleryPhotoDisplayOpts").velocity("slideUp");
+	 	$("#gallery-listview").addClass("hidden");
+
+	 	$('#search-archives').velocity({
+	 		minHeight: '8rem'
+	 	});
 	 	$("#galleryBox").addClass("hidden");
 	 	$("#archiveBox").removeClass("hidden");
 	 	checkEmptyUIState("#archive-listview", "#archiveBox");
@@ -302,6 +327,11 @@ function gallerySelectCategory(e){
 	 	//$("#gallerySearchToolSelect").addClass("hidden");
 	 	$("#galleryPhotoDisplayOpts").velocity("slideDown");
 	 	$("#gallerySearch").attr("placeholder", "Search All");
+	 	$("#gallery-listview").removeClass("hidden");
+
+	 	$('#search-archives').velocity({
+	 		minHeight: '5rem'
+	 	});
 	 	$("#galleryBox").removeClass("hidden");
 	 	$("#archiveBox").addClass("hidden");
 	 	checkEmptyUIState("#gallery-listview", "#galleryBox");
