@@ -80,7 +80,7 @@
 </div>
 
 <!-- Modal add contact -->
-<div data-role="modalview" data-model="contactModel" data-title="Add Contact" id="modalview-AddContact" data-open="doShowAddContact" data-init="doInitAddContact" class="appearance" style="width: 90%; min-height: 100%; display: none;">
+<div data-role="modalview" data-model="contactModel" data-title="Add Contact" id="modalview-AddContact" data-open="addContactView.doShow" data-init="addContactView.doInit" class="appearance" style="width: 90%; min-height: 100%; display: none;">
     <div class="inviteContactImg">
     	<div class="inviteTop hidden">
     		<img src="images/invite.svg" height="16" />
@@ -109,8 +109,12 @@
     	<ul data-role="listview" data-style="inset" class="inviteContactInfo">
     		<li>           
                 <label>Phone
-                    <input id="addContactPhone" >
-                    </input>
+                    <select id="addContactPhone" data-role="dropdownlist"
+                            data-text-field="number"
+                            data-value-field="number"
+                            data-bind="source: phoneDS"
+                            auto-bind="false">
+                    </select>
                 </label>
             </li>
             <li>
@@ -134,16 +138,16 @@
                 </label>
             </li>
     	</ul>
-    	<a class="btnPrimary btnSpan" data-role="button" data-click="contactsAddContact">Invite to ghostgrams</a>
+    	<a class="btnPrimary btnSpan" data-role="button" data-click="addContactView.addContact">Invite to ghostgrams</a>
     </div> 
 </div>
 
 <!-- Edit Contacts -->
-<div data-role="view" data-model="contactModel.currentContact" data-title="Edit Contact" id="editContact"  data-transition="slide" data-show="onShowEditContact" class="appearance" style="display: none;">
+<div data-role="view" data-model="contactModel.currentContact" data-title="Edit Contact" id="editContact"  data-transition="slide" data-show="editContactView.onShow" data-init="editContactView.onInit" class="appearance" style="display: none;">
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" data-click="onDoneEditContact" data-align="left" >Done</a>         
+            <a data-role="button" data-click="editContactView.onDone" data-align="left" >Done</a>
         </div>
     </div>
 
@@ -363,7 +367,7 @@
 	  		</span>
 	  	</h4>
 	  #} else {# 
-	  		<h4>#:data.name #
+		  <h4>#:data.name#
 	  		<span class="right">
 	  			<a class="btnClearLine">Add</a>
 	  		</span>

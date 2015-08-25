@@ -323,3 +323,174 @@ var contactImportView = {
         $("#modalview-AddContact").data("kendoMobileModalView").open();
     }
 };
+
+var addContactView = {
+    doInit: function (e) {
+        if (e !== undefined && e.preventDefault !== undefined)
+            e.preventDefault();
+    },
+
+    doShow : function (e) {
+        if (e !== undefined && e.preventDefault !== undefined)
+            e.preventDefault();
+
+        var data = contactModel.currentDeviceContact;
+
+        // Set name
+        var name = data.name;
+
+
+        $("#addContactName").val(name);
+
+
+        if (data.photo === null) {
+            $("#addContactPhoto").attr("src","images/ghostgramcontact.png");
+
+        } else {
+            returnValidPhoto(data.photo, function(validUrl) {
+                $("#addContactPhoto").attr("src",validUrl);
+            });
+        }
+    },
+
+    addContact : function (e) {
+        if (e !== undefined && e.preventDefault !== undefined) {
+            e.preventDefault();
+        }
+        var Contacts = Parse.Object.extend("contacts");
+        var contact = new Contacts();
+
+        var name = $('#addContactName').val(),
+            alias = $('#addContactAlias').val(),
+            phone = $('#addContactPhone').val(),
+            email = $('#addContactEmail').val(),
+            photo = $('#addContactPhoto').prop('src'),
+            address = $('#addContactAddress').val();
+        var guid = uuid.v4();
+
+        contact.setACL(userModel.parseACL);
+        contact.set("name", name );
+        contact.set("alias", alias);
+        contact.set("address", address);
+        contact.set("group", '');
+        contact.set('category', "new");
+        contact.set("priority", 0);
+        contact.set("privateChannel", null);
+        contact.set("uuid", guid);
+
+        //phone = phone.replace(/\+[0-9]{1-2}/,'');
+        phone = phone.replace(/\D+/g, "");
+        if (phone[0] !== '1')
+            phone = '1' + phone;
+
+        if (contactModel.findContactByPhone(phone) !== undefined) {
+            mobileNotify("Existing contact with this phone number");
+            $("#modalview-AddContact").data("kendoMobileModalView").close();
+            return;
+        }
+
+        contact.set("phone", phone);
+
+        // Close modal
+        $("#modalview-AddContact").data("kendoMobileModalView").close();
+
+        mobileNotify("Invite sent");
+
+        // Look up this contacts phone number in the gg directory
+        findUserByPhone(phone, function (result) {
+
+            if (result.found) {
+                contact.set("phoneVerified", result.user.phoneVerified);
+                // Does the contact have a verified email address
+                if (result.user.emailVerified) {
+                    // Yes - save the email address the contact verified
+                    contact.set("email", result.user.email);
+                } else {
+                    // No - just use the email address the our user selected
+                    contact.set("email", email);
+                }
+                contact.set('publicKey',  result.user.publicKey);
+                contact.set("contactUUID", result.user.userUUID);
+
+            } else {
+                contactSendEmailInvite(contact.get('email'));
+                contact.set("phoneVerified", false);
+                contact.set('publicKey',  null);
+                contact.set("contactUUID", null);
+            }
+
+
+            getBase64FromImageUrl(photo, function (fileData) {
+                var parseFile = new Parse.File(guid+".png", {base64 : fileData}, "image/png");
+                parseFile.save().then(function() {
+                    contact.set("parsePhoto", parseFile);
+                    contact.set("photo", parseFile._url);
+                    contact.save(null, {
+                        success: function(contact) {
+                            // Execute any logic that should take place after the object is saved.
+                            mobileNotify('Added contact : ' + contact.get('name'));
+                            contactModel.contactsDS.add(contact.attributes);
+                            APP.kendo.navigate('#contacts');
+                        },
+                        error: function(contact, error) {
+                            // Execute any logic that should take place if the save fails.
+                            // error is a Parse.Error with an error code and message.
+                            handleParseError(error);
+                        }
+                    });
+                }, function(error) {
+                    // The file either could not be read, or could not be saved to Parse.
+                    handleParseError(error);
+                });
+            });
+
+        });
+
+    }
+};
+
+var editContactView = {
+    doInit: function (e) {
+        if (e.preventDefault !== undefined){
+            e.preventDefault();
+        }
+
+    },
+    doShow: function (e) {
+        if (e.preventDefault !== undefined){
+            e.preventDefault();
+        }
+
+        $("#syncEditList").velocity("slideUp", {duration: 0});
+
+        $('#contactEditList').removeClass('hidden');
+
+        syncContact(contactModel.currentContact);
+        // Todo - wire up verified status/read only fields
+
+        var contactVerified = contactModel.currentContact.phoneVerified;
+        var contactEmail = contactModel.currentContact.email;
+
+        if (contactVerified){
+            $("#edit-verified-phone").removeClass("hidden");
+            $("#editContactPhone").prop("readonly", true);
+        }
+        // Todo - Use to have emailVerified?
+        if(contactEmail !== ''){
+            $("#edit-verified-email").removeClass("hidden");
+            $("#editContactEmail").prop("readonly", true);
+        }
+
+    },
+
+    onDone : function (e) {
+        if (e.preventDefault !== undefined)
+            e.preventDefault();
+
+        contactModel.currentContact.unbind('change' , syncCurrentContact);
+        APP.kendo.navigate("#contacts");
+
+        // reset UI
+        $("#contactEditList").velocity("fadeIn");
+    }
+};
