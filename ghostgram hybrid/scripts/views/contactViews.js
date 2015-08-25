@@ -244,69 +244,76 @@ var contactImportView = {
         if (e !== undefined && e.preventDefault !== undefined) {
             e.preventDefault();
         }
+
         contactModel.currentDeviceContact = e.dataItem;
-        contactModel.emailArray = [];
+        // User has picked a contact from the list --
+        // sync data from  any contacts with same name
+        syncContactWithDevice(e.dataItem.name, function () {
+        
+            contactModel.emailArray = [];
 
-        for (var i = 0; i<contactModel.currentDeviceContact.emails.length; i++) {
-            var email = {};
-            email.name = contactModel.currentDeviceContact.emails[i].name;
-            email.address =  contactModel.currentDeviceContact.emails[i].address;
+            for (var i = 0; i<contactModel.currentDeviceContact.emails.length; i++) {
+                var email = {};
+                email.name = contactModel.currentDeviceContact.emails[i].name;
+                email.address =  contactModel.currentDeviceContact.emails[i].address;
 
-            contactModel.emailArray.push(email);
+                contactModel.emailArray.push(email);
 
-        }
+            }
 
-        contactModel.phoneArray = [];
-        for (var j = 0; j<contactModel.currentDeviceContact.phoneNumbers.length; j++) {
-            var phone = {};
-            phone.name = contactModel.currentDeviceContact.phoneNumbers[j].name;
-            phone.number = contactModel.currentDeviceContact.phoneNumbers[j].number;
+            contactModel.phoneArray = [];
+            for (var j = 0; j<contactModel.currentDeviceContact.phoneNumbers.length; j++) {
+                var phone = {};
+                phone.name = contactModel.currentDeviceContact.phoneNumbers[j].name;
+                phone.number = contactModel.currentDeviceContact.phoneNumbers[j].number;
 
-            contactModel.phoneArray.push(phone);
+                contactModel.phoneArray.push(phone);
 
-        }
+            }
 
-        contactModel.addressArray = [];
-        for (var a = 0; a<contactModel.currentDeviceContact.addresses.length; a++) {
-            var address = {};
-            address.name = contactModel.currentDeviceContact.addresses[a].name;
-            address.address =  contactModel.currentDeviceContact.addresses[a].fullAddress;
+            contactModel.addressArray = [];
+            for (var a = 0; a<contactModel.currentDeviceContact.addresses.length; a++) {
+                var address = {};
+                address.name = contactModel.currentDeviceContact.addresses[a].name;
+                address.address =  contactModel.currentDeviceContact.addresses[a].fullAddress;
 
-            contactModel.addressArray.push(address);
-        }
+                contactModel.addressArray.push(address);
+            }
 
-        contactModel.phoneDS.data( contactModel.phoneArray);
-        contactModel.emailDS.data( contactModel.emailArray);
-        contactModel.addressDS.data( contactModel.addressArray);
+            contactModel.phoneDS.data( contactModel.phoneArray);
+            contactModel.emailDS.data( contactModel.emailArray);
+            contactModel.addressDS.data( contactModel.addressArray);
 
 
-        /*
-         $("#addNicknameBtn").removeClass("hidden");
-         $("#contactNicknameInput input").val("");*/
+            /*
+             $("#addNicknameBtn").removeClass("hidden");
+             $("#contactNicknameInput input").val("");*/
 
-        var data = contactModel.currentDeviceContact;
+            var data = contactModel.currentDeviceContact;
 
-        // Set name
-        var name = data.name;
-        $("#addContactName").val(name);
+            // Set name
+            var name = data.name;
+            $("#addContactName").val(name);
 
-        if (data.photo !== null) {
-            returnValidPhoto(data.photo, function(validUrl) {
-                $("#addContactPhoto").attr("src",validUrl);
-                contactImportView.launchAddContact();
-            });
-        }
+            if (data.photo !== null) {
+                returnValidPhoto(data.photo, function(validUrl) {
+                    $("#addContactPhoto").attr("src",validUrl);
+                    contactImportView.launchAddContact();
+                });
+            }
 
-        $( "#addContactPhone" ).change(function() {
-            var phone = $("#addContactPhone").val();
-            mobileNotify("Please wait - validating phone...");
-            isValidMobileNumber(phone, function(result){
-                if (result.status === 'ok') {
-                    if (result.valid === false) {
-                        mobileNotify(phone + 'is not a valid mobile number');
+            $( "#addContactPhone" ).change(function() {
+                var phone = $("#addContactPhone").val();
+                mobileNotify("Please wait - validating phone...");
+                isValidMobileNumber(phone, function(result){
+                    if (result.status === 'ok') {
+                        if (result.valid === false) {
+                            mobileNotify(phone + 'is not a valid mobile number');
+                        }
                     }
-                }
+                });
             });
+
         });
     },
 
