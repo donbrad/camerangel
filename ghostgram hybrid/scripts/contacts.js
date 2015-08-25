@@ -622,6 +622,15 @@ function doShowAddContact(e) {
 
     $("#addContactName").val(name);
 
+    $("#addContactPhone").kendoDropDownList({
+        dataTextField: "number",
+        dataValueField: "number",
+        dataSource: contactModel.phoneDS,
+        index: 0,
+        change: function (e) {
+
+        }
+    });
 
     if (data.photo === null) {
         $("#addContactPhoto").attr("src","images/ghostgramcontact.png");
