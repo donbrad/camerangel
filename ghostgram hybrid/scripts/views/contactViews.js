@@ -210,8 +210,7 @@ var contactImportView = {
             template: $("#deviceContactsTemplate").html(),
             headerTemplate: "${value}",
             fixedHeaders: true,
-            click: launchAddContact
-
+            click: contactImportView.processDeviceContact
 
         });
     },
@@ -276,8 +275,6 @@ var contactImportView = {
             contactModel.addressArray.push(address);
         }
 
-
-
         contactModel.phoneDS.data( contactModel.phoneArray);
         contactModel.emailDS.data( contactModel.emailArray);
         contactModel.addressDS.data( contactModel.addressArray);
@@ -292,7 +289,7 @@ var contactImportView = {
         // Set name
         var name = data.name;
         $("#addContactName").val(name);
-        
+
         if (data.photo !== null) {
             returnValidPhoto(data.photo, function(validUrl) {
                 $("#addContactPhoto").attr("src",validUrl);
