@@ -22,8 +22,6 @@ var channelsView = {
         scroller.scrollTo(0,-44);
 
 
-        // ToDo: Initialize list view
-
         $("#channels-listview").kendoMobileListView({
             dataSource: channelModel.channelsDS,
             template: $("#channels-listview-template").html(),
@@ -67,14 +65,26 @@ var channelsView = {
 
     },
 
+    checkEmpty : function () {
+        if (channelModel.channelsDS.total() > 0) {
+            $('#channel-listview .emptyState').addClass('hidden');
+        } else {
+            $('#channel-listview .emptyState').removeClass('hidden');
+        }
+    },
+
     onShow : function(){
         // set action button
         $("#channels > div.footerMenu.km-footer > a").attr("href", "#addChannel").css("display","inline-block");
+
+        channelsView.checkEmpty();
     },
+
     onBeforeHide: function(){
     	// set action button
 		$("#channels > div.footerMenu.km-footer > a").css("display","none");
     },
+
     editChannel : function (e) {
         if (e!== undefined && e.preventDefault !== undefined){
             e.preventDefault();
@@ -148,12 +158,13 @@ var addChannelView = {
        if ($("#channels-addChannel-name").val() !== '') {
 
            var name = $('#channels-addChannel-name').val(),
+               duration = $('#channels-addChannel-archive').val(),
                description = $('#channels-addChannel-description').val();
 
            if (channelModel.findChannelByName(name)) {
                mobileNotify('There is already a channel named : "' + name + '"');
            } else {
-               channelModel.addChannel(name, description, true);
+               channelModel.addChannel(name, description, true, duration);
            }
 
 
@@ -332,7 +343,7 @@ var editChannelView = {
 
         //Send Invite messages to users added to channel
         for (var ma = 0; ma < currentChannelModel.membersAdded.length; ma++) {
-            userDataChannel.groupChannelInvite(currentChannelModel.membersAdded[ma].contactUUID, channelId, "You've been invited to " + currentChannelModel.currentChannel.name);
+            userDataChannel.groupChannelInvite(currentChannelModel.membersAdded[ma].contactUUID, channelId, currentChannelModel.currentChannel.name, "You've been invited to " + currentChannelModel.currentChannel.name);
         }
 
 

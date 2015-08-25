@@ -384,6 +384,7 @@ function onDoneEditContact (e) {
 }
 
 
+<<<<<<< HEAD
 function onInitContacts(e) {
 
 	if (e.preventDefault !== undefined){
@@ -668,6 +669,8 @@ function searchDeviceContacts(e) {
 	});
 }
 
+=======
+>>>>>>> master
 // Filter contacts - unify matching names
 function filterContactsByName(contacts, firstName, lastName) {
 
@@ -718,7 +721,7 @@ function doSyncContact(e) {
 // Given a full contact name as a string, fetch matching device contacts and then build a unified list of:
 // phone numbers, emails and addresses -- and first photo found. 
 function syncContactWithDevice(name, callback) {
-	contactsFindContacts(name, function (contacts) {
+	deviceFindContacts(name, function (contacts) {
 		unifyContacts(contacts);
 		if (callback !== undefined) {
 			callback();
@@ -789,7 +792,7 @@ function unifyContacts(contacts) {
     contactModel.currentDeviceContact.addresses =  contactModel.addressArray;
 }
     
-function contactsFindContacts(query, callback) {
+function deviceFindContacts(query, callback) {
  //   var query = $('#contactSearchQuery').val();
    
 	if (contactModel.deviceQueryActive) {

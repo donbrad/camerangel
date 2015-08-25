@@ -1,12 +1,12 @@
+<div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="contactModel" data-init="contactsView.onInit" data-show="contactsView.onShow" data-hide="contactsView.onHide" style="display: none;">
 
-<div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="contactModel" data-init="onInitContacts" data-show="onShowContacts" data-before-hide="onHideContacts">
 	<div class="topViewSearchBox">
 	 	<div class="appendSearch">
 			<span class="searchIcon"><img src="images/search.svg" /></span>
-			<input type="search" class="viewSearchBox" placeholder="Search" id="contactSearchInput" />
+			<input type="search" placeholder="Search contacts..." id="contactSearchInput" />
 		</div>
 		
-		<a class="hidden btnClear-sm" data-role="button" data-click="searchDeviceContacts" id="btnSearchDeviceContacts"> 
+		<a class="hidden btnClear-sm" data-role="button" data-click="contactsView.searchDeviceContacts" id="btnSearchDeviceContacts">
 			<img src="images/contacts.svg" /> 
 			Search device for "<span id="btnSearchDeviceName"></span>"
 		</a>
@@ -66,20 +66,17 @@
 </div>
 
 <!-- Import Contacts -->
-<div data-role="view" data-title="Import Contacts" id="contactImport" data-layout="main" data-model="contactModel" data-init="onInitContactImport" data-show="onShowContactImport" style="display: none;">
+<div data-role="view" data-title="Import Contacts" id="contactImport"  data-model="contactModel" data-init="contactImportView.onInit" data-show="contactImportView.onShow" style="display: none;">
     <div data-role="header">
         <div data-role="navbar">
            <a data-role="button"  data-align="left" href="#:back" ><img src="images/nav-back.svg" /></a>
-
 			<span data-role="view-title"></span>
         </div>
     </div>    
     <div  style="padding-bottom: 24px;">
-       <div style="padding-bottom: 4px; padding-top: 4px;">
-         <input  style="font-size: 16px; margin-left: 6px; width: 80%" id="contactSearchQuery" type="search"/>
-         <a data-role="button"  data-click="contactsFindContacts">  
-         	<i class="ghostIconSmall fa fa-search"></i>
-         </a>
+       <div style="padding-bottom: 4px; padding-top: 4px; display: inline; vertical-align: middle;">
+         <input  style="font-size: 16px; margin-left: 6px; width: 85%" id="contactImportQuery" type="search" placeholder="Enter contact name..."/>
+         <a data-role="button"  data-click="contactImportView.searchContacts"><img style="margin-top: 6px;" height=22 src="images/search.svg" /></a>
         </div>
         <ul id="contactimport-listview"></ul>
     </div>    
@@ -149,7 +146,7 @@
 </div>
 
 <!-- Edit Contacts -->
-<div data-role="view" data-model="contactModel.currentContact" data-title="Edit Contact" id="editContact" data-layout="main"  data-transition="slide" data-show="onShowEditContact" class="appearance" style="display: none;">
+<div data-role="view" data-model="contactModel.currentContact" data-title="Edit Contact" id="editContact"  data-transition="slide" data-show="onShowEditContact" class="appearance" style="display: none;">
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>

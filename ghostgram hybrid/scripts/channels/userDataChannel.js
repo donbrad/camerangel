@@ -96,7 +96,7 @@ var userDataChannel = {
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, ownerID: <ownerUUID>,  ownerName: <text>, channelName: <text>, channelDescription: <text>}
             case 'channelInvite' : {
-                this.processGroupInvite(m.ownerId, m.ownerName,  m.channelId, m.channelName, m.channelDescription,  m.message);
+                this.processGroupInvite(m.ownerId, m.ownerName,  m.channelId, m.channelName, m.channelDescription, m.durationDays,  m.message);
             } break;
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, owner: <ownerUUID>}
@@ -132,8 +132,7 @@ var userDataChannel = {
         APP.pubnub.publish({
             channel: contactUUID,
             message: msg,
-            success: userDataChannel.channelSuccess,
-            error: userDataChannel.channelError
+            callback: userDataChannel.publishCallback
         });
     },
 
@@ -151,12 +150,11 @@ var userDataChannel = {
         APP.pubnub.publish({
             channel: contactUUID,
             message: msg,
-            success: userDataChannel.channelSuccess,
-            error: userDataChannel.channelError
+            callback: userDataChannel.publishCallback
         });
     },
 
-    groupChannelInvite : function (contactUUID, channelUUID, channelName, channelDescription,  message) {
+    groupChannelInvite : function (contactUUID, channelUUID, channelName, channelDescription, durationDays,  message) {
         var msg = {};
 
         msg.type = 'groupInvite';
@@ -165,6 +163,7 @@ var userDataChannel = {
         msg.channelId = channelUUID;
         msg.channelName = channelName;
         msg.channelDescription = channelDescription;
+        msg.durationDays = durationDays;
         msg.message  = message;
         msg.time = new Date().getTime();
 
@@ -172,8 +171,7 @@ var userDataChannel = {
         APP.pubnub.publish({
             channel: contactUUID,
             message: msg,
-            success: userDataChannel.channelSuccess,
-            error: userDataChannel.channelError
+            callback: userDataChannel.publishCallback
         });
     },
 
@@ -191,8 +189,7 @@ var userDataChannel = {
         APP.pubnub.publish({
             channel: contactUUID,
             message: msg,
-            success: userDataChannel.channelSuccess,
-            error: userDataChannel.channelError
+            callback: userDataChannel.publishCallback()
         });
     },
 
@@ -201,7 +198,7 @@ var userDataChannel = {
             privateChannel = channelModel.findPrivateChannel(ownerId);
         var contact = contactModel.getContactModel(ownerId);
 
-        mobileNotify("Private Chat Request from " + contact.get('name') + '\n ' + message);
+        //mobileNotify("Private Chat Request from " + contact.get('name') + '\n ' + message);
 
 
         if (channel === undefined && privateChannel === undefined) {
@@ -235,14 +232,14 @@ var userDataChannel = {
 
     },
 
-    processGroupInvite: function (ownerId, ownerName, channelId, channelName, channelDescription, message) {
+    processGroupInvite: function (ownerId, ownerName, channelId, channelName, channelDescription, durationDays, message) {
         // Todo:  Does channel exist?  If not create,  if so notify user of request
         var channel = channelModel.findChannelModel(channelId);
 
         if (channel === undefined) {
             mobileNotify("Chat invite from  " + ownerName + ' " ' + channelName + '"');
 
-            channelModel.addChannel(channelName, channelDescription, false, channelId, ownerId, ownerName );
+            channelModel.addChannel(channelName, channelDescription, false, durationDays,  channelId, ownerId, ownerName );
             notificationModel.addNewChatNotification(channelId, channelName, channelDescription);
         }
 
@@ -255,6 +252,15 @@ var userDataChannel = {
             // Todo: create a channelMember object for this user
             mobileNotify('Owner has deleted Chat: "' + channelId + '"');
             channelModel.deleteChannel(channel);
+        }
+
+    },
+
+    publishCallback : function (m) {
+        var status = m[0], message = m[1], time = m[2];
+
+        if (status !== 1) {
+            mobileNotify('Error publishing invite: ' + message);
         }
 
     },

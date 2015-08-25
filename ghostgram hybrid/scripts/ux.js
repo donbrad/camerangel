@@ -122,6 +122,8 @@ function closeTestingBox(){
 
 
 // Check empty state for views
+// Jordan - better to check status of datasource in view than to check for presense of li...
+// checkEmptyUIState(ds, view) ( var selectionList = ds.total()L
 function checkEmptyUIState(selection, view){
 	
 	var selectionList = $(selection + " > li").length;
