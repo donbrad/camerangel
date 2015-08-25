@@ -163,6 +163,16 @@ var userModel = {
         userModel.currentUser.set('privateKey', newPrivateKey);
     },
 
+    encryptBlob : function (blobIn) {
+        var key = userModel.parseUser.get('objectId');
+        return(GibberishAES.enc(blobIn, key));
+    },
+
+    decryptBlob : function (blobIn) {
+        var key = userModel.parseUser.get('objectId');
+        return(GibberishAES.dec(blobIn, key));
+    },
+
     updatePrivateKey : function () {
         var privateKey = userModel.parseUser.get('privateKey'), key = userModel.parseUser.get('objectId');
         if (privateKey.charAt(0) === "{") {
