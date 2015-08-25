@@ -206,46 +206,7 @@
 				</li>
 			</ul>
 			
-			<ul data-role="listview" data-style="inset" id="syncEditList">
-				<li>
-					<p> Device Info</p>
-				</li>
-				<li>           
-                <label>Phone <span class="input-count hidden" id="syncEditPhoneCount"></span>
-                    <select id="syncContactPhone" data-role="dropdownlist" 
-                            data-text-field="number" 
-                            data-value-field="number"
-                            data-bind="source: phoneDS"
-                            auto-bind="false">
-                    </select>
-                </label>
-				</li>
-				<li>
-					<label>Email Addresses
-						 <select id="syncContactEmail" data-role="dropdownlist"
-								data-text-field="address" 
-								data-value-field="address"
-								data-bind="source: emailDS"
-								auto-bind="false">
-						</select>
-					</label>
-				</li>
-				<li>
-					<label>Address List
-						 <select id="syncContactAddress" data-role="dropdownlist"
-								data-text-field="address" 
-								data-value-field="address"
-								data-bind="source: addressDS"
-								auto-bind="false">
-						</select>
-					</label>
-				</li>
-				<li>
-					<div style="text-align: center; padding-top: 6px; padding-bottom: 6px;">
-					<a data-role="button" class="btnSecondary btnSpan" id="editContact-syncCompleteBtn" data-click="onDoneSyncContact" style="display: none;"> Update Contact</a>
-					</div>
-				</li>
-    		</ul>
+
     		<div class="edit-contacts-options">
 				<a data-role="button" class="btnClear-grey" id="editContact-resyncBtn" data-click="doSyncContact">
 					<img src="images/contacts.svg" />  Sync Contact With Device
@@ -260,6 +221,52 @@
 				</a>
 	</div>
 </div>
+
+
+<div data-role="view" data-model="contactModel.currentContact" data-title="Edit Contact" id="deviceSyncContact"  class="appearance" style="display: none;">
+	<ul data-role="listview" data-style="inset" id="syncEditList">
+		<li>
+			<p> Device Info</p>
+		</li>
+		<li>
+			<label>Phone <span class="input-count hidden" id="syncEditPhoneCount"></span>
+				<select id="syncContactPhone" data-role="dropdownlist"
+						data-text-field="number"
+						data-value-field="number"
+						data-bind="source: phoneDS"
+						auto-bind="false">
+				</select>
+			</label>
+		</li>
+		<li>
+			<label>Email Addresses
+				<select id="syncContactEmail" data-role="dropdownlist"
+						data-text-field="address"
+						data-value-field="address"
+						data-bind="source: emailDS"
+						auto-bind="false">
+				</select>
+			</label>
+		</li>
+		<li>
+			<label>Address List
+				<select id="syncContactAddress" data-role="dropdownlist"
+						data-text-field="address"
+						data-value-field="address"
+						data-bind="source: addressDS"
+						auto-bind="false">
+				</select>
+			</label>
+		</li>
+		<li>
+			<div style="text-align: center; padding-top: 6px; padding-bottom: 6px;">
+				<a data-role="button" class="btnSecondary btnSpan" id="editContact-syncCompleteBtn" data-click="onDoneSyncContact" style="display: none;"> Update Contact</a>
+			</div>
+		</li>
+	</ul>
+</div>
+
+
 
 <script type="text/x-kendo-template" id="contactsHeaderTemplate">
 	<div>

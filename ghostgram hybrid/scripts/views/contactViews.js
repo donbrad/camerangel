@@ -465,7 +465,8 @@ var editContactView = {
 
         $('#contactEditList').removeClass('hidden');
 
-        syncContact(contactModel.currentContact);
+        contactModel.syncContactWithParse(contactModel.currentContact);
+
         // Todo - wire up verified status/read only fields
 
         var contactVerified = contactModel.currentContact.phoneVerified;
@@ -492,5 +493,13 @@ var editContactView = {
 
         // reset UI
         $("#contactEditList").velocity("fadeIn");
+    },
+
+    syncWithParse: function (e) {
+
+    },
+
+    syncWithDevice : function (e) {
+
     }
 };

@@ -354,7 +354,7 @@ function onShowEditContact(e) {
 
 	$('#contactEditList').removeClass('hidden');
 	
-	syncContact(contactModel.currentContact);
+	contactModel.syncContactWithParse(contactModel.currentContact);
 	// Todo - wire up verified status/read only fields
 	
 	var contactVerified = contactModel.currentContact.phoneVerified;
@@ -416,7 +416,7 @@ function onDoneSyncContact (e) {
 	$("#editContact-resyncBtn").velocity("fadeIn",{duration: 300}).html('<img src="images/contacts.svg" /> Sync Contact With Device');
 }
 
-function doSyncContact(e) {
+function doSyncContactWithDevice(e) {
 	if (e.preventDefault !== undefined) {
 		e.preventDefault();
 	}

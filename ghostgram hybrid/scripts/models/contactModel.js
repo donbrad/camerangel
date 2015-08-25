@@ -111,6 +111,48 @@ var contactModel = {
         return(contact);
     },
 
+    syncContactWithParse : function (model) {
+        if (model === undefined) {
+            model = contactModel.currentContact;
+        }
+        mobileNotify("Updating contact info from ghostgrams...");
+        var phone = model.get('phone');
+        findUserByPhone(phone, function (result) {
+            if (result.found) {
+                var uuid = model.get('uuid'), contactUUID = model.get('contactUUID'), publicKey = model.get('publicKey'),
+                    phoneVerified = model.get('phoneVerfied'),  emailVerified = model.get('emailVerfied'), parseEmailVerified = result.user.emailVerified ;
+
+                // Does the contact have a verified email address
+                if (result.user.emailVerified) {
+                    // Yes - save the email address the contact verified
+                    model.set("email", result.user.email);
+                }
+                model.set('publicKey',  result.user.publicKey);
+
+                model.set("contactUUID", result.user.userUUID);
+                if (contactUUID === undefined) {
+                    updateParseObject('contacts', 'uuid', uuid, 'contactUUID',  result.user.userUUID);
+                }
+
+                if (publicKey === undefined) {
+                    updateParseObject('contacts', 'uuid', uuid, 'publicKey',result.user.publicKey );
+                }
+                if (phoneVerified !== result.user.phoneVerified) {
+                    if (result.user.phoneVerified === undefined)
+                        result.user.phoneVerified = false;
+
+                    if (result.user.phoneVerified){
+                        model.set('category', "member");
+                    }
+                    model.set("phoneVerified", result.user.phoneVerified);
+                    updateParseObject('contacts', 'uuid', uuid, 'phoneVerified', result.user.phoneVerified );
+                }
+            }
+
+        });
+
+    },
+
     importDeviceContacts: function() {
         var options = new ContactFindOptions();
         options.filter = '';
