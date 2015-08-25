@@ -609,7 +609,23 @@ function deviceFindContacts(query, callback) {
     };
     img.src = url;
 }
-			
+
+
+function doInitAddContact (e) {
+    if (e !== undefined && e.preventDefault !== undefined)
+        e.preventDefault();
+
+    $("#addContactPhone").kendoDropDownList({
+        dataTextField: "number",
+        dataValueField: "number",
+        dataSource: contactModel.phoneDS,
+        index: 0,
+        change: function (e) {
+
+        }
+    });
+}
+
 function doShowAddContact(e) {
     if (e !== undefined && e.preventDefault !== undefined)
         e.preventDefault();
@@ -622,15 +638,6 @@ function doShowAddContact(e) {
 
     $("#addContactName").val(name);
 
-    $("#addContactPhone").kendoDropDownList({
-        dataTextField: "number",
-        dataValueField: "number",
-        dataSource: contactModel.phoneDS,
-        index: 0,
-        change: function (e) {
-
-        }
-    });
 
     if (data.photo === null) {
         $("#addContactPhoto").attr("src","images/ghostgramcontact.png");
