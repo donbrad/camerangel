@@ -388,86 +388,6 @@ function closeContactActions() {
 	$("#modalview-contactActions").data("kendoMobileModalView").close();
 }
 
-
-
-
-
-function launchAddContact(e) {
-
-    contactModel.currentDeviceContact = e.dataItem;
-    contactModel.emailArray = new Array();
-
-    for (var i = 0; i<contactModel.currentDeviceContact.emails.length; i++) {
-        var email = new Object();
-        email.name = contactModel.currentDeviceContact.emails[i].name;
-        email.address =  contactModel.currentDeviceContact.emails[i].address;
-
-        contactModel.emailArray.push(email);
-
-    }
-
-    contactModel.phoneArray = new Array();
-    for (var j = 0; j<contactModel.currentDeviceContact.phoneNumbers.length; j++) {
-        var phone = new Object();
-        phone.name = contactModel.currentDeviceContact.phoneNumbers[j].name;
-        phone.number = contactModel.currentDeviceContact.phoneNumbers[j].number;
-
-        contactModel.phoneArray.push(phone);
-
-    }
-
-    contactModel.addressArray = new Array();
-    for (var a = 0; a<contactModel.currentDeviceContact.addresses.length; a++) {
-        var address = new Object();
-        address.name = contactModel.currentDeviceContact.addresses[a].name;
-        address.address =  contactModel.currentDeviceContact.addresses[a].fullAddress;
-
-        contactModel.addressArray.push(address);
-    }
-
-
-
-    contactModel.phoneDS.data( contactModel.phoneArray);
-    contactModel.emailDS.data( contactModel.emailArray);
-    contactModel.addressDS.data( contactModel.addressArray);
-
-
-  /*
-    $("#addNicknameBtn").removeClass("hidden");
-    $("#contactNicknameInput input").val("");*/
-
-    var data = contactModel.currentDeviceContact;
-
-    // Set name
-    var name = data.name;
-    $("#addContactName").val(name);
-
-
-    if (data.photo !== null) {
-        returnValidPhoto(data.photo, function(validUrl) {
-            $("#addContactPhoto").attr("src",validUrl);
-        });
-    }
-
-    $( "#addContactPhone" ).change(function() {
-        var phone = $("#addContactPhone").val();
-
-        isValidMobileNumber(phone, function(result){
-           if (result.status === 'ok') {
-               if (result.valid === false) {
-                   mobileNotify(phone + 'is not a valid mobile number');
-               }
-           }
-        });
-    });
-
-    $("#modalview-AddContact").data("kendoMobileModalView").open();
-
-}
-
-
-
-
 // Filter contacts - unify matching names
 function filterContactsByName(contacts, firstName, lastName) {
 
@@ -518,7 +438,7 @@ function doSyncContact(e) {
 // Given a full contact name as a string, fetch matching device contacts and then build a unified list of:
 // phone numbers, emails and addresses -- and first photo found. 
 function syncContactWithDevice(name, callback) {
-	contactsFindContacts(name, function (contacts) {
+	deviceFindContacts(name, function (contacts) {
 		unifyContacts(contacts);
 		if (callback !== undefined) {
 			callback();
@@ -589,7 +509,7 @@ function unifyContacts(contacts) {
     contactModel.currentDeviceContact.addresses =  contactModel.addressArray;
 }
     
-function contactsFindContacts(query, callback) {
+function deviceFindContacts(query, callback) {
  //   var query = $('#contactSearchQuery').val();
    
 	if (contactModel.deviceQueryActive) {
