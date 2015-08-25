@@ -79,15 +79,19 @@ var userModel = {
         }
 
         if (userModel.parseUser !== null) {
+
+            userModel.updatePrivateKey();
+            userModel.decryptPrivateKey();
             userModel.initialView = '#home';
             userModel.currentUser.set('username', userModel.parseUser.get('username'));
+            userModel.currentUser.set('objectId', userModel.parseUser.get('objectId'));
             userModel.currentUser.set('name', userModel.parseUser.get('name'));
             userModel.currentUser.set('email', userModel.parseUser.get('email'));
             userModel.currentUser.set('phone', userModel.parseUser.get('phone'));
             userModel.currentUser.set('alias', userModel.parseUser.get('alias'));
             userModel.currentUser.set('userUUID', userModel.parseUser.get('userUUID'));
             userModel.currentUser.set('publicKey', userModel.parseUser.get('publicKey'));
-            userModel.currentUser.set('privateKey', userModel.parseUser.get('privateKey'));
+           // userModel.currentUser.set('privateKey', userModel.parseUser.get('privateKey'));
             userModel.currentUser.set('statusMessage', userModel.parseUser.get('statusMessage'));
             userModel.currentUser.set('currentPlaceUUID', userModel.parseUser.get('currentPlaceUUID'));
             userModel.currentUser.set('currentPlace', userModel.parseUser.get('currentPlace'));
@@ -130,6 +134,44 @@ var userModel = {
         }
     },
     */
+
+    // user is valid parse User object
+    generateNewPrivateKey : function (user) {
+        // Generate Keys for the user.
+        var RSAkey = cryptico.generateRSAKey(1024);
+        var publicKey = cryptico.publicKeyString(RSAkey);
+        var privateKey = cryptico.privateKeyString(RSAkey);
+        var userId = user.get('objectId');
+
+
+        userModel.currentUser.set('publicKey',publicKey);
+        userModel.currentUser.set('privateKey',privateKey);
+        user.set("publicKey", publicKey);
+        var newPrivateKey  = GibberishAES.enc(privateKey, userId);
+        user.set("privateKey", newPrivateKey);
+
+        user.save();
+
+    },
+
+    encryptPrivateKey : function (key) {
+
+    },
+
+    decryptPrivateKey : function () {
+        var privateKey = userModel.parseUser.get('privateKey'), key = userModel.parseUser.get('objectId');
+        var newPrivateKey  = GibberishAES.dec(privateKey, key);
+        userModel.currentUser.set('privateKey', newPrivateKey);
+    },
+
+    updatePrivateKey : function () {
+        var privateKey = userModel.parseUser.get('privateKey'), key = userModel.parseUser.get('objectId');
+        if (privateKey.charAt(0) === "{") {
+            var newPrivateKey  = GibberishAES.enc(privateKey, key);
+            userModel.parseUser.set('privateKey', newPrivateKey);
+            userModel.parseUser.save();
+        }
+    },
 
 
     initPubNub: function () {
@@ -204,7 +246,9 @@ var userModel = {
                 handleParseError(error);
             }
         }); */
-    }
+    },
+
+
 
 
 };

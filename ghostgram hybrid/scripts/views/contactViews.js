@@ -249,6 +249,7 @@ var contactImportView = {
         // User has picked a contact from the list --
         // sync data from  any contacts with same name
         mobileNotify("Unifying contact information for " + e.dataItem.name);
+
         syncContactWithDevice(e.dataItem.name, function () {
 
             contactModel.emailArray = [];

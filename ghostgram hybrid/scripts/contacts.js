@@ -438,7 +438,8 @@ function doSyncContact(e) {
 // Given a full contact name as a string, fetch matching device contacts and then build a unified list of:
 // phone numbers, emails and addresses -- and first photo found. 
 function syncContactWithDevice(name, callback) {
-	deviceFindContacts(name, function (contacts) {
+
+    deviceFindContacts(name, function (contacts) {
 		unifyContacts(contacts);
 		if (callback !== undefined) {
 			callback();
