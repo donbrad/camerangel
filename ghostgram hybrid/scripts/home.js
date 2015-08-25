@@ -406,7 +406,7 @@ function homeCreateAccount() {
 							//userModel.currentUser.set('publicKey',user.get('publicKey'));
 							//userModel.currentUser.set('privateKey',user.get('privateKey'));
 							userModel.currentUser.bind('change', syncProfile);
-							APP.models.profile.parseACL = new Parse.ACL(Parse.User.current());
+							userModel.parseACL = new Parse.ACL(Parse.User.current());
 						   mobileNotify('Welcome to ghostgrams!');
 							if (window.navigator.simulator !== true) {
 

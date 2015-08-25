@@ -649,7 +649,7 @@ function contactsAddContact(e){
         address = $('#addContactAddress').val();
         guid = uuid.v4();
 	
-		contact.setACL(APP.models.profile.parseACL);
+		contact.setACL(userModel.parseACL);
 		contact.set("name", name );
 		contact.set("alias", alias);
 		contact.set("address", address);

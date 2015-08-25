@@ -143,7 +143,6 @@ var userModel = {
         var privateKey = cryptico.privateKeyString(RSAkey);
         var userId = user.get('objectId');
 
-
         userModel.currentUser.set('publicKey',publicKey);
         userModel.currentUser.set('privateKey',privateKey);
         user.set("publicKey", publicKey);
