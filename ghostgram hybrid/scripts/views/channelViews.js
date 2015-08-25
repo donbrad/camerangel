@@ -38,7 +38,7 @@ var channelsView = {
                 checkEmptyUIState("#channels-listview", "#channelListDiv");
             }
         }).kendoTouch({
-            filter: "div",
+            filter: ".chat-mainBox",
             enableSwipe: true,
             swipe: function(e){
                 var selection = e.sender.events.currentTarget;
@@ -70,6 +70,10 @@ var channelsView = {
     onShow : function(){
         // set action button
         $("#channels > div.footerMenu.km-footer > a").attr("href", "#addChannel").css("display","inline-block");
+    },
+    onBeforeHide: function(){
+    	// set action button
+		$("#channels > div.footerMenu.km-footer > a").css("display","none");
     },
     editChannel : function (e) {
         if (e!== undefined && e.preventDefault !== undefined){
@@ -177,7 +181,7 @@ var addChannelView = {
                 $("#channels-addChannel-name").unbind();
             }
         });
-        this.addChatStep1();
+        addChannelView.addChatStep1();
 
     },
 

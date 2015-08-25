@@ -391,7 +391,7 @@ form p {
   background-color: #FFB74D !important;
 }
 .primary-100 {
-  background: #27476e;
+  background: #27476e !important;
 }
 .primary-200 {
   background: #2d93ff;
@@ -535,7 +535,7 @@ form p {
   -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   color: #fff !important;
-  background: #FFB74D !important;
+  background: #27476e !important;
   /*
     :hover {
     	background: #E5A545 !important;

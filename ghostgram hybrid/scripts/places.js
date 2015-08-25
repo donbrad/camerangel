@@ -272,9 +272,9 @@ function goToChat (e) {
 }
 
 function onShowPlaces(e) {
-	if (e.preventDefault !== undefined) {
-		e.preventDefault();
-	}
+	// hide actionBtn   
+    $("div.footerMenu.km-footer > a").attr("href", "#findplace").css("display", "inline-block");
+
 
 	navigator.geolocation.getCurrentPosition( function (position) {
 		var locations = matchLocationToUserPlace(position.coords.latitude, position.coords.longitude);
@@ -294,15 +294,12 @@ function onShowPlaces(e) {
 		checkOut();
 		checkInTo(locations[0]);
 	});
-
-	// hide actionBtn   
-    $("div.footerMenu.km-footer > a").attr("href", "").css("display", "inline-block");
-
 }
 
 function onBeforeHidePlaces(e){
 	// hide actionBtn   
     $("#places > div.footerMenu.km-footer > a").css("display", "none");
+
 }
 
 function parseAddress(address) {
@@ -559,10 +556,6 @@ function onPlaceChanged() {
 	$('#addPlaceName').val(place.name);
 	$("#modalview-addPlace").kendoMobileModalView("open");
 
-}
-
-function onShowFindPlace() {
-	
 }
 
 function onInitAddPlace(e) {
