@@ -488,7 +488,7 @@ var editContactView = {
 
         // Todo - wire up verified status/read only fields
 
-        editContactView.updateVerifiedUX(contactModel.currentContact.phoneVerified,contactModel.currentContact.emailVerified);
+        editContactView.updateVerifiedUX(contactModel.currentContact.phoneVerified,contactModel.currentContact.emailValidated);
 
     },
 
@@ -528,9 +528,9 @@ var editContactView = {
                         contact.phoneVerified = user.phoneVerified;
                         mobileNotify(contact.name + " has verified their phone.")
                     }
-                    if (contact.emailVerified !== user.emailVerified) {
+                    if (contact.emailValidated !== user.emailVerified) {
                         dirty = true;
-                        contact.emailVerified = user.emailVerified;
+                        contact.set('emailValidated',user.emailVerified);
                         mobileNotify(contact.name + " has verified their email.")
                     }
                     if (contact.publicKey !== user.publicKey) {

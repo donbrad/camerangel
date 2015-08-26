@@ -325,7 +325,7 @@ function updateCurrentContact (contact) {
     contactModel.currentContact.set('contactPhone', contact.contactPhone);
     contactModel.currentContact.set('privateChannel', contact.privateChannel);
     contactModel.currentContact.set('phoneVerified',contact.phoneVerified);
-    contactModel.currentContact.set('emailVerified',contact.emailVerified);
+    contactModel.currentContact.set('emailValidated',contact.emailValidated);
     contactModel.currentContact.set('publicKey',contact.publicKey);
     contactModel.currentContact.bind('change' , syncCurrentContact);
    
