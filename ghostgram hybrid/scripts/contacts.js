@@ -142,10 +142,19 @@ function doInviteContact(e) {
         e.preventDefault();
     }
     var contactId = e.button[0].attributes["data-contact"].value;
+    var contact = contactModel.findContactByUUID(contactId);
 
-    var email = contactModel.currentContact.get('email');
+    updateCurrentContact(contact);
+    var email = contactModel.currentContact.get('email'), inviteSent = contactModel.currentContact.get('inviteSent');
 
-    contactSendEmailInvite(email);
+    if (inviteSent === undefined || inviteSent === false) {
+        contactSendEmailInvite(email);
+        updateParseObject('contacts', 'uuid', uuid, 'inviteSent', true );
+        updateParseObject('contacts', 'uuid', uuid, 'lastInvite', ggTime.currentTime() );
+    } else {
+        mobileNotify(contactModel.currentContact.name + "has already been invited");
+    }
+
 }
 
 function syncContact(model) {
@@ -319,6 +328,8 @@ function updateCurrentContact (contact) {
     contactModel.currentContact.set('address', contact.address);
     contactModel.currentContact.set('uuid', contact.uuid);
     contactModel.currentContact.set('photo', contact.photo);
+    contactModel.currentContact.set('inviteSent', contact.inviteSent);
+    contactModel.currentContact.set('lastInvite', contact.lastInvite);
     contactModel.currentContact.set('category', contact.category);
     contactModel.currentContact.set('contactUUID', contact.contactUUID);
     contactModel.currentContact.set('contactEmail', contact.contactEmail);
