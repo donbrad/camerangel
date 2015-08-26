@@ -372,10 +372,10 @@
 
 <script type="text/x-kendo-template" id="memberTemplate">      
     <div>
-    	<div class="left">
+    	<div class="memberTempPhoto">
     	<img src="#: data.photo #" class="circle-img-md" />
     	</div>
-    	<div class="left">
+    	<div class="memberTempName">
     		
     		#if (data.alias !== '' && data.name !== data.alias && data.phoneVerified){#
     			<h4>
@@ -397,7 +397,7 @@
 </script>
 
  <script type="text/x-kendo-template" id="editMembersTemplate">
-	 <div class="editMemberBox">
+	 <div class="editMemberBox" data-id="#: data.uuid #">
 		 <div class="editMemberPhoto">
 			 <img class="circle-img-md editChatImg" src="#: data.photo #"  />
 		 </div>

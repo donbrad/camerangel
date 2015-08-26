@@ -1834,8 +1834,7 @@ div.message-slideOptions > span.archive > a > span > img {
   height: 18px;
 }
 #channel-addChannel-list li:first-child,
-#channels-editChannel-list li:first-child,
-* li:first-child {
+#channels-editChannel-list li:first-child {
   border: none !important;
 }
 .archive-header-img {
@@ -2237,6 +2236,9 @@ div.footerMenu.km-footer > ul > li > a {
 }
 .actionBtn a {
   padding-top: 0.75rem;
+}
+.actionBtn-text {
+  color: #979797;
 }
 /* Hide action btns on views */
 * > div.footerMenu.km-footer > a {
@@ -3347,7 +3349,10 @@ div.contactListBox.activeContact > div > div > ul {
 }
 #channelMembers-listview li {
   padding: 0.25rem 1rem 0.25rem 1rem;
-  border-bottom: 1px solid #e0e0e0;
+  background: #fff;
+}
+#channelMembers-listview > li > ul > li {
+  padding: 0 0.5rem;
 }
 #channelMembers-listview li:nth-child(2) {
   border-top: 1px solid #e0e0e0;
@@ -3355,7 +3360,16 @@ div.contactListBox.activeContact > div > div > ul {
 }
 #editmembers-listview li {
   padding: 0px;
-  background: #e0e0e0;
+}
+#editmembers-listview li:nth-child(1) {
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+}
+#channelMembers-listview > li > ul {
+  width: 100%;
+}
+#channelMembers-listview .km-group-container {
+  padding: 0px;
 }
 .editMemberName,
 .editMemberPhoto {
@@ -3394,6 +3408,17 @@ div.contactListBox.activeContact > div > div > ul {
 }
 .km-widget .km-filter-wrap:before {
   display: none;
+}
+.memberTempPhoto,
+.memberTempName {
+  float: left;
+}
+.memberTempName {
+  padding-top: 1rem;
+}
+.memberTempPhoto {
+  padding-top: 0.5rem;
+  padding-left: 1rem;
 }
 /* Don's development styles...*/
 #gallery-listview {

@@ -175,7 +175,7 @@ function showFormatedPhone(){
 
 
 function showActionBtnText(path){ 
-	$(path).velocity({opacity: 1, right: "3rem"}, {easing: "spring"});
+	$(path).velocity({opacity: 1, right: "3rem"}, {easing: "spring", delay: 500});
 }
 
 function hideActionBtnText(path){

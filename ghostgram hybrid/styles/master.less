@@ -845,6 +845,10 @@ div.km-header a img{
 	min-height: 100%;
 }
 
+.km-list:not(.km-virtual-list)>li:last-child {
+
+}
+
 .km-material .k-popup .km-button {
 	text-transform: none;
 }
@@ -1774,8 +1778,7 @@ div.message-slideOptions > span.archive > a > span > img {
 }
 
 #channel-addChannel-list li:first-child,
-#channels-editChannel-list li:first-child,
-* li:first-child {
+#channels-editChannel-list li:first-child {
 	border: none !important;
 }
 
@@ -2216,6 +2219,10 @@ div.footerMenu.km-footer > ul > li > a {
 	a {
 		padding-top: 0.75rem;
 	}
+}
+
+.actionBtn-text {
+	color: @shade-100;
 }
 
 /* Hide action btns on views */
@@ -3488,7 +3495,11 @@ div.contactListBox.activeContact > div > div > ul {
 
 #channelMembers-listview li {
 	padding: 0.25rem 1rem 0.25rem 1rem;
-	border-bottom: 1px solid @shade-200;
+	background: #fff;
+}
+
+#channelMembers-listview > li > ul > li {
+	padding: 0 0.5rem;
 }
 
 #channelMembers-listview li:nth-child(2) {
@@ -3498,7 +3509,19 @@ div.contactListBox.activeContact > div > div > ul {
 
 #editmembers-listview li {
 	padding: 0px;
-	background: @shade-200;
+}
+
+#editmembers-listview li:nth-child(1){
+	border-top: 1px solid @shade-200;
+	border-bottom: 1px solid @shade-200;
+}
+
+#channelMembers-listview > li > ul {
+	width: 100%;
+}
+
+#channelMembers-listview .km-group-container {
+	padding: 0px;
 }
 
 .editMemberName, .editMemberPhoto {
@@ -3543,6 +3566,19 @@ div.contactListBox.activeContact > div > div > ul {
 
 .km-widget .km-filter-wrap:before {
 	display: none;
+}
+
+.memberTempPhoto, .memberTempName {
+	float: left;
+}
+
+.memberTempName {
+	padding-top: 1rem;
+}
+
+.memberTempPhoto {
+	padding-top: 0.5rem;
+	padding-left: 1rem;
 }
 
 /* Don's development styles...*/
