@@ -189,6 +189,30 @@ function getUserPublicKey(uuid, callBack) {
 	});
 }
 
+function getUserContactInfo(uuid, callBack) {
+	Parse.Cloud.run('getUserContactData', {
+		uuid: uuid
+	}, {
+		success: function(result, error) {
+			if (result.status === 'ok') {
+				callBack({
+					found: true,
+					user: result.user.attributes
+				});
+			} else {
+				callBack({
+					found: false,
+					user: null
+				});
+			}
+
+		},
+		error: function(result, error) {
+			callBack(null, error)
+		}
+	});
+}
+
 function findUserByEmail(email, callBack) {
 	Parse.Cloud.run('findUserByEmail', {
 		email: email

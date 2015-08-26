@@ -95,10 +95,11 @@ var contactsView = {
 
                 }
 
-            },
+            }/*,
             dataBound: function(e){
                 checkEmptyUIState("#contacts-listview", "#contactListDiv >");
-            }
+            }*/
+
         }).kendoTouch({
             filter: ".contactListBox",
             // filter: "div",
@@ -197,7 +198,6 @@ var contactsView = {
     }
 
 };
-
 
 var contactImportView = {
     onInit: function (e) {
@@ -456,16 +456,22 @@ var editContactView = {
         }
 
     },
+
     doShow: function (e) {
         if (e.preventDefault !== undefined){
             e.preventDefault();
         }
+        var contact = contactModel.currentContact;
+        var contactId = e.view.params.contactId;
 
-        $("#syncEditList").velocity("slideUp", {duration: 0});
+        if (contactId !== undefined) {
+           // if there's contactId sent current contact to matching contact
+        }
 
-        $('#contactEditList').removeClass('hidden');
+        //   $("#syncEditList").velocity("slideUp", {duration: 0});
 
-        contactModel.syncContactWithParse(contactModel.currentContact);
+       // $('#contactEditList').removeClass('hidden');
+
 
         // Todo - wire up verified status/read only fields
 
@@ -496,7 +502,25 @@ var editContactView = {
     },
 
     syncWithParse: function (e) {
+        if (e.preventDefault !== undefined)
+            e.preventDefault();
+        mobileNotify("Getting lastest info for " + contactModel.currentContact.name);
+        var contact = contactModel.currentContact;
+        if (contact.contactUUID !== undefined) {
+            getUserContactInfo(contact.contactUUID, function (result) {
+                if (result.found) {
+                    var user = result.user;
+                }
 
+            });
+        } else {
+            findUserByPhone(contact.phone, function (result) {
+                if (result.found) {
+                    var user = result.user;
+                }
+
+            });
+        }
     },
 
     syncWithDevice : function (e) {

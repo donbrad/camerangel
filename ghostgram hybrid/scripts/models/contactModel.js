@@ -111,7 +111,12 @@ var contactModel = {
         return(contact);
     },
 
-    syncContactWithParse : function (model) {
+    syncMemberContact: function (e) {
+
+    },
+
+
+    syncInvitedContact : function (model) {
         if (model === undefined) {
             model = contactModel.currentContact;
         }
