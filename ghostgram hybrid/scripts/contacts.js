@@ -553,34 +553,43 @@ function deviceFindContacts(query, callback) {
         var contactsCount = contacts.length;
         
         for (var i=0;  i<contactsCount; i++) {
-            var contactItem = new Object();
+            var contactItem = {};
             contactItem.type = "device";
             contactItem.name = contacts[i].name.formatted;
             contactItem.phoneNumbers = new Array();
 			contactItem.category = 'phone';
             if (contacts[i].phoneNumbers !== null) {
                 for (var j=0; j<contacts[i].phoneNumbers.length; j++){
-                    var phone = new Object();
-                    phone.name = contacts[i].phoneNumbers[j].type + " : " + contacts[i].phoneNumbers[j].value ;
-                    phone.number = unformatPhoneNumber( contacts[i].phoneNumbers[j].value);
-                    contactItem.phoneNumbers.push(phone);
+                    var phone = {};
+                    var type = contacts[i].phoneNumbers[j].type;
+
+                    if (type === undefined || type === '') {
+                        type = 'phone';
+                    }
+
+                    // filter out the obvious non-mobile phone types...
+                    if (type !== 'home fax' && type !== 'work fax' && type !== 'pager') {
+                        phone.name = contacts[i].phoneNumbers[j].type + " : " + contacts[i].phoneNumbers[j].value ;
+                        phone.number = unformatPhoneNumber( contacts[i].phoneNumbers[j].value);
+                        contactItem.phoneNumbers.push(phone);
+                    }
+
                 }
             }
-            
-            contactItem.emails = new Array();
+            contactItem.emails = [];
             if (contacts[i].emails !== null) {
                  for (var k=0; k<contacts[i].emails.length; k++){
-                    var email = new Object();
+                    var email = {};
                     email.name = contacts[i].emails[k].type + " : " + contacts[i].emails[k].value;
                     email.address = contacts[i].emails[k].value;
                     contactItem.emails.push(email);
                 }
             }
             
-            contactItem.addresses = new Array();
+            contactItem.addresses = [];
               if (contacts[i].addresses !== null) {
                  for (var a=0; a<contacts[i].addresses.length; a++){
-                    var address = new Object();
+                    var address = {};
                     if (contacts[i].addresses[a].type === null) {
                          address.type = 'Home';
                     } else {
@@ -597,9 +606,11 @@ function deviceFindContacts(query, callback) {
                 }
             }
 
-            contactItem.photo = "images/default-img.png";
+
             if (contacts[i].photos !== null) {
 				contactItem.photo = contacts[i].photos[0].value;
+            } else {
+                contactItem.photo = null;
             }
 
             if (contactItem.phoneNumbers.length > 0)
