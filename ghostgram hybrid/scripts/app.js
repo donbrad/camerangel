@@ -676,7 +676,7 @@
 
 		});
 
-		// Uncomment to load all device contacts at initialization - major performance hit!!1
+		// Uncomment to load all device contacts at initialization - major performance hit!!
 		//contactModel.importDeviceContacts();
 
 		APP.kendo = new kendo.mobile.Application(document.body, {
