@@ -338,9 +338,8 @@
 						</div>
 
 						<p class="left caption contact-status">
-						#if(data.phoneVerified !== true){#
-							Unverified •
-						#}#	Busy @ home
+						# var message = 'No telling', location = 'Secret'; if(data.location !== undefined && data.location !== ""){location = data.location; } if (data.message !== undefined && data.message !== "") {message = data.message
+						}##:message# @ #:location#
 						</p>
 						<div class="clearfix"></div>
 						<div class="contact-info">
