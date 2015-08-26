@@ -373,6 +373,11 @@
 	  		</span>
 	  	</h4>
 	  #} else {#
+		  <div class="left listPhoto">
+			  	# var photoUrl = "image/ghost-gray.svg"; if (data.photo !== null) { photoUrl = data.photo;} #
+				  <img class="circle-img-md" src="#photoUrl#" />
+			  </div>
+		  </div><!-- left -->
 		  <div class="left listName">
 			  <h4>#:data.name#
 				  <span class="right">

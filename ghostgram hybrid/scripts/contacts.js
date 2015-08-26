@@ -464,7 +464,7 @@ function syncContactWithDevice(name, callback) {
     deviceFindContacts(name, function (contacts) {
 		unifyContacts(contacts);
 		if (callback !== undefined) {
-			callback();
+			callback(contacts);
 		}
 	});
 }

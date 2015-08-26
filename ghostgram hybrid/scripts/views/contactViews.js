@@ -213,6 +213,18 @@ var contactImportView = {
             click: contactImportView.processDeviceContact
 
         });
+
+        $("#addContactPhone").change(function() {
+            var phone = $("#addContactPhone").val();
+            mobileNotify("Please wait - validating phone...");
+            isValidMobileNumber(phone, function(result){
+                if (result.status === 'ok') {
+                    if (result.valid === false) {
+                        mobileNotify(phone + 'is not a valid mobile number');
+                    }
+                }
+            });
+        });
     },
 
     onShow: function (e) {
@@ -234,7 +246,9 @@ var contactImportView = {
         var query = $('#contactImportQuery').val();
 
         if (query.length > 2) {
-            deviceFindContacts(query);
+            deviceFindContacts(query, function(contacts) {
+
+            });
         }
     },
 
@@ -250,7 +264,7 @@ var contactImportView = {
         // sync data from  any contacts with same name
         mobileNotify("Unifying contact information for " + e.dataItem.name);
 
-        syncContactWithDevice(e.dataItem.name, function () {
+        syncContactWithDevice(e.dataItem.name, function (contacts) {
 
             contactModel.emailArray = [];
 
@@ -304,17 +318,7 @@ var contactImportView = {
                 });
             }
 
-            $( "#addContactPhone" ).change(function() {
-                var phone = $("#addContactPhone").val();
-                mobileNotify("Please wait - validating phone...");
-                isValidMobileNumber(phone, function(result){
-                    if (result.status === 'ok') {
-                        if (result.valid === false) {
-                            mobileNotify(phone + 'is not a valid mobile number');
-                        }
-                    }
-                });
-            });
+            contactModel.deviceContactsDS.data([contacts[0]]);
 
         });
     },
