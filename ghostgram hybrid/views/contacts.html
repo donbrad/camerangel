@@ -375,9 +375,10 @@
 	  #} else {#
 		  <div class="left listName">
 			  <h4>#:data.name#</h4>
-			  <p class="left caption contact-status">
-
-			  </p>
+			  <div class="left caption contact-status">
+				<div> # var phoneCount = data.phoneNumbers.length; # #:data.phoneNumbers[0]# (#:phoneCount# others) </div>
+				  <div> # var emailCount = data.emailAddresses.length; # #:data.emailAddresses[0]# (#:emailCount# others) </div>
+			  </div>
 		  </div>
 		  <div class="right">
 				<a class="btnClearLine">Add</a>
