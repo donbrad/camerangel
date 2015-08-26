@@ -535,14 +535,8 @@ var editContactView = {
                         contact.publicKey = user.publicKey;
                     }
 
-                    if (contact.alias !== user.alias) {
-                        dirty = true;
-                        contact.alias = user.alias;
-                        mobileNotify(contact.name + " has changed alias.")
-                    }
-
                     if (dirty) {
-                        
+
                     }
 
 
