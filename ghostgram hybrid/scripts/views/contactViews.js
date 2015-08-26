@@ -450,7 +450,7 @@ var addContactView = {
 };
 
 var editContactView = {
-    doInit: function (e) {
+    onInit: function (e) {
         if (e.preventDefault !== undefined){
             e.preventDefault();
         }
@@ -470,7 +470,7 @@ var editContactView = {
         }
     },
 
-    doShow: function (e) {
+    onShow: function (e) {
         if (e.preventDefault !== undefined){
             e.preventDefault();
         }
