@@ -88,7 +88,7 @@ var appDataChannel = {
             // New user joined service -- enables users to update contact info
             case 'newUser' : {
                 // Todo:  Scan contact list to see if this new user is a contact.   haven't seen userid so scan by phone.
-                var contact = findContactByPhone(m.phone);
+                var contact = contactsModel.findContactByPhone(m.phone);
                 if (contact !== undefined) {
                     contact.set('contactUUID', m.userId);
                     contact.set('contactEmail', m.email);
@@ -157,6 +157,7 @@ var appDataChannel = {
         msg.userUUID = userUUID;
         msg.phone = phone;
         msg.email = email;
+        msg.publicKey = publicKey;
         msg.time = new Date().getTime();
 
 

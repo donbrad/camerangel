@@ -221,7 +221,7 @@ function findUserByEmail(email, callBack) {
 			if (result.status === 'ok') {
 				callBack({
 					found: true,
-					user: result.user.attributes
+					user: JSON.parse(result.user)
 				});
 			} else {
 				callBack({
@@ -247,7 +247,7 @@ function findUserByPhone(phone, callBack) {
 			if (result.status === 'ok') {
 				callBack({
 					found: true,
-					user: result.user.attributes
+					user: JSON.parse(result.user)
 				});
 			} else {
 				callBack({
@@ -257,7 +257,7 @@ function findUserByPhone(phone, callBack) {
 
 		},
 		error: function(result, error) {
-			mobileNotify('Error Finding User by email  ' + error);
+			mobileNotify('Error Finding User by phone  ' + error);
 			callBack({
 				found: false
 			});
@@ -282,7 +282,7 @@ function verifyPhone(e) {
 				mobileNotify("Your phone number is verified.  Thank You!");
 				$("#modalview-verifyPhone").data("kendoMobileModalView").close();
 				var thisUser = userModel.currentUser;
-				appUserValdated(thisUser.userUUID, thisUser.phone, thisUser.email, thisUser.publicKey);
+				appUserValidated(thisUser.userUUID, thisUser.phone, thisUser.email, thisUser.publicKey);
 			} else {
 				mobileNotify("Sorry, your verification number: ' + result.recieved + ' didn't match. ");
 			}
