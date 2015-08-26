@@ -457,6 +457,19 @@ var editContactView = {
 
     },
 
+    updateVerifiedUX: function (phone, email) {
+
+        if (phone){
+            $("#edit-verified-phone").removeClass("hidden");
+            $("#editContactPhone").prop("readonly", true);
+        }
+
+        if(email){
+            $("#edit-verified-email").removeClass("hidden");
+            $("#editContactEmail").prop("readonly", true);
+        }
+    },
+
     doShow: function (e) {
         if (e.preventDefault !== undefined){
             e.preventDefault();
@@ -475,18 +488,7 @@ var editContactView = {
 
         // Todo - wire up verified status/read only fields
 
-        var contactVerified = contactModel.currentContact.phoneVerified;
-        var contactEmail = contactModel.currentContact.email;
-
-        if (contactVerified){
-            $("#edit-verified-phone").removeClass("hidden");
-            $("#editContactPhone").prop("readonly", true);
-        }
-        // Todo - Use to have emailVerified?
-        if(contactEmail !== ''){
-            $("#edit-verified-email").removeClass("hidden");
-            $("#editContactEmail").prop("readonly", true);
-        }
+        editContactView.updateVerifiedUX(contactModel.currentContact.phoneVerified,contactModel.currentContact.emailVerified);
 
     },
 
@@ -504,6 +506,7 @@ var editContactView = {
     syncWithParse: function (e) {
         if (e.preventDefault !== undefined)
             e.preventDefault();
+
         mobileNotify("Getting lastest info for " + contactModel.currentContact.name);
         var contact = contactModel.currentContact;
         if (contact.contactUUID !== undefined) {
@@ -535,10 +538,7 @@ var editContactView = {
                         contact.publicKey = user.publicKey;
                     }
 
-                    if (dirty) {
-
-                    }
-
+                    editContactView.updateVerifiedUX(contact.phoneVerified, contact.emailVerified);
 
                 }
 
