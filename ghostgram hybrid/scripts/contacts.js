@@ -317,6 +317,7 @@ function updateCurrentContact (contact) {
     contactModel.currentContact.set('category', contact.category);
     contactModel.currentContact.set('contactUUID', contact.contactUUID);
     contactModel.currentContact.set('contactEmail', contact.contactEmail);
+    contactModel.currentContact.set('contactPhone', contact.contactPhone);
     contactModel.currentContact.set('privateChannel', contact.privateChannel);
     contactModel.currentContact.set('phoneVerified',contact.phoneVerified);
     contactModel.currentContact.set('publicKey',contact.publicKey);

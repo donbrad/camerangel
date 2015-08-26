@@ -509,7 +509,43 @@ var editContactView = {
         if (contact.contactUUID !== undefined) {
             getUserContactInfo(contact.contactUUID, function (result) {
                 if (result.found) {
-                    var user = result.user;
+                    var user = result.user, dirty = false;
+                    if (contact.email !== user.email) {
+                        dirty = true;
+                        contact.email = user.email;
+                        mobileNotify(contact.name + " has changed their preferred email.")
+                    }
+                    if (contact.phone !== user.phone) {
+                        dirty = true;
+                        contact.phone = user.phone;
+                        mobileNotify(contact.name + " has changed their preferred phone.")
+                    }
+                    if (contact.phoneVerified !== user.phoneVerified) {
+                        dirty = true;
+                        contact.phoneVerified = user.phoneVerified;
+                        mobileNotify(contact.name + " has verified their phone.")
+                    }
+                    if (contact.emailVerified !== user.emailVerified) {
+                        dirty = true;
+                        contact.emailVerified = user.emailVerified;
+                        mobileNotify(contact.name + " has verified their email.")
+                    }
+                    if (contact.publicKey !== user.publicKey) {
+                        dirty = true;
+                        contact.publicKey = user.publicKey;
+                    }
+
+                    if (contact.alias !== user.alias) {
+                        dirty = true;
+                        contact.alias = user.alias;
+                        mobileNotify(contact.name + " has changed alias.")
+                    }
+
+                    if (dirty) {
+                        
+                    }
+
+
                 }
 
             });
