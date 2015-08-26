@@ -401,7 +401,7 @@ var addContactView = {
         mobileNotify("Invite sent");
 
         // Look up this contacts phone number in the gg directory
-        findUserByPhone(phone, function (result) {
+      findUserByPhone(phone, function (result) {
 
             if (result.found) {
                 contact.set("phoneVerified", result.user.phoneVerified);
@@ -417,7 +417,9 @@ var addContactView = {
                 contact.set("contactUUID", result.user.userUUID);
 
             } else {
-                contactSendEmailInvite(contact.get('email'));
+                // No - just use the email address the our user selected
+                contact.set("email", email);
+                contactSendEmailInvite(email);
                 contact.set("phoneVerified", false);
                 contact.set('publicKey',  null);
                 contact.set("contactUUID", null);
