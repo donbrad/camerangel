@@ -2,7 +2,12 @@ function syncCurrentContact(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
     }
-    updateParseObject('contacts','uuid', contactModel.currentContact.uuid, e.field, this[e.field]);
+
+    if (e.field !== 'emailVerified') {
+        // Parse throws an error if we try to update emailVerified it's a protected field...
+        updateParseObject('contacts','uuid', contactModel.currentContact.uuid, e.field, this[e.field]);
+    }
+
     contactModel.currentContact.set(e.field, this[e.field]);
 }
     
@@ -320,6 +325,7 @@ function updateCurrentContact (contact) {
     contactModel.currentContact.set('contactPhone', contact.contactPhone);
     contactModel.currentContact.set('privateChannel', contact.privateChannel);
     contactModel.currentContact.set('phoneVerified',contact.phoneVerified);
+    contactModel.currentContact.set('emailVerified',contact.emailVerified);
     contactModel.currentContact.set('publicKey',contact.publicKey);
     contactModel.currentContact.bind('change' , syncCurrentContact);
    
