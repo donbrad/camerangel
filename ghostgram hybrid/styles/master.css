@@ -242,9 +242,6 @@ label {
 input[readonly] {
   background-color: #e0e0e0 !important;
 }
-select {
-  border: 0px 0px 1px 0px solid #e0e0e0 !important;
-}
 form {
   padding: 1rem;
 }
@@ -267,7 +264,8 @@ form p {
 .select-sm select {
   padding: 5px 8px;
   width: 120%;
-  border: none;
+  color: #4a4a4a;
+  border: 1px solid #e0e0e0;
   box-shadow: none;
   background: transparent;
   background-image: none;
@@ -286,7 +284,8 @@ form p {
 .select-md select {
   padding: 5px 8px;
   width: 120%;
-  border: none;
+  color: #4a4a4a;
+  border: 1px solid #e0e0e0;
   box-shadow: none;
   background: transparent;
   background-image: none;
@@ -304,7 +303,8 @@ form p {
 .select-lg select {
   padding: 5px 8px;
   width: 120%;
-  border: none;
+  color: #4a4a4a;
+  border: 1px solid #e0e0e0;
   box-shadow: none;
   background: transparent;
   background-image: none;
@@ -323,7 +323,8 @@ form p {
 .searchSelect select {
   padding: 5px 8px;
   width: 120%;
-  border: none;
+  color: #4a4a4a;
+  border: 1px solid #e0e0e0;
   box-shadow: none;
   background: transparent;
   background-image: none;
@@ -341,7 +342,8 @@ form p {
 .select select {
   padding: 5px 8px;
   width: 120%;
-  border: none;
+  color: #4a4a4a;
+  border: 1px solid #e0e0e0;
   box-shadow: none;
   background: transparent;
   background-image: none;
