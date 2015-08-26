@@ -375,12 +375,37 @@
 	  #} else {#
 		  <div class="left listName">
 			  <h4>#:data.name#</h4>
-			  <div class="left caption contact-status">
-				<div> # var phoneCount = data.phoneNumbers.length;  # #:data.phoneNumbers[0].number# (#:phoneCount# Total) </div>
-				  <div> # var emailCount = data.emails.length; # #:data.emails[0].email# (#:emailCount# Total) </div>
-			  </div>
+			  <div class="left">
+			  <table>
+			   <tr>
+			   		<td style="width: 60px;">
+					Phone:
+					</td>
+					<td style="width: 280px;">
+					 # var phoneCount = data.phoneNumbers.length;  # #:data.phoneNumbers[0].number# (#:phoneCount# Total) 
+					</td>
+			   </tr>
+			    <tr>
+			   		<td style="width: 60px;">
+					Email:
+					</td>
+					<td style="width: 280px;">
+					 # var emailCount = data.emails.length; # #:data.emails[0].address# (#:emailCount# Total) 
+					</td>
+			   </tr>
+			    #if (data.addresses.length > 0) {#
+				 <tr>
+			   		<td style="width: 60px;">
+					Address:
+					</td>
+					<td style="width: 280px;">
+					# var addressCount = data.addresses.length; # #:data.addresses[0].name# (#:addressCount# Total)
+					</td>
+			   </tr>
+				 #}#
+			  </table>
 		  </div>
-		  <div class="right">
+		  <div class="right" style="vertical-align: middle; margin-right: 6px;">
 				<a class="btnClearLine">Add</a>
 		  </div>
 	  #}#  
