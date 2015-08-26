@@ -516,7 +516,7 @@ form {
     -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
     color: #ffffff !important;
-    background: @primary-200 !important;
+    background: @primary-100 !important;
     /*
     :hover {
     	background: @primary-100 !important;
@@ -615,7 +615,8 @@ form {
 .btnClear-grey {
 	&:extend(.btnStyle);
     background: transparent;
-    color: #979797 !important;
+    color: @shade-100 !important;
+    .font-size(14) !important;
     :active {
     	color: @primary-200 !important;
     	background: transparent !important;
@@ -832,6 +833,14 @@ div.km-header a img{
     box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.12);
     height: 56px;
     //border: transparent;
+}
+
+.km-material .km-switch-handle {
+	.shadow-1;
+}
+
+.km-listview .km-switch {
+	//left: 6rem;
 }
 
 .km-material .km-switch-handle {
@@ -1059,6 +1068,10 @@ div.footerMenu.km-footer > ul > li > a:active {
 	padding-bottom: 0px;
 }
 
+#profilePhotoForm > div > ul > li:nth-child(4) {
+	padding-bottom: 0px;
+}
+
 .homeStatus-name,
 .homeStatus-status {
 	color: #4A4A4A;
@@ -1150,6 +1163,10 @@ div.footerMenu.km-footer > ul > li > a:active {
 
 #profilePhotoForm > div > ul > li:nth-child(2) {
 	padding: 0px;
+}
+
+#gpsLocateUpdateBtn > span > img {
+	vertical-align: middle;
 }
 
 .ghostModal {

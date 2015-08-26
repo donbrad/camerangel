@@ -552,7 +552,6 @@
         	<li><p class="caption right"><a data-role="button" class="btnClear-sm" href="views/profile.html#profileEdit">Edit Profile</a></p></li>
         	<li>
         		<div class="updateStatusLabel">
-        			<img src="images/ghost-sm.svg" class="ghost-sm-text" /> 
         			Update Status 
         		</div>
         	</li>
@@ -562,12 +561,12 @@
         			<span class="statusCharCount"></span>
         		</div>
             </li>
+            <li>
+				<a class="btnClear-sm" data-role="button" data-click="gpsLocateUpdate" id="gpsLocateUpdateBtn">
+			        	<img src="images/icon-gps-selected.svg" height="12px"/> Check in here
+			    </a>
+        	</li>
         	<li>
-        	 	<span>
-			    	<a data-role="button" data-click="gpsLocateUpdate" id="gpsLocateUpdateBtn">
-			        	<img src="images/icon-gps.svg" height="12px"/>
-			        </a>
-	        	</span>
         		<label> Available
 					<input type="checkbox" id="home-status-switch" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="statusSwitch"/>
 				</label>

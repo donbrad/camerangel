@@ -111,10 +111,12 @@ function closeModalViewProfileStatus() {
 	$("#modalview-profileStatus").data("kendoMobileModalView").close();
 	$(".userLocationUpdate").css("display", "none");
 	var updatedStatus = $("#profileStatusUpdate").val();
-	// Save new status
-	userModel.currentUser.set("statusMessage", updatedStatus);
+	if(updatedStatus !== ""){
+		// Save new status
+		userModel.currentUser.set("statusMessage", updatedStatus);
+	}
 	// clear status box
-	$(updatedStatus).empty();
+	$("#profileStatusUpdate").val("");
 }
 
 function closeStartModal() {

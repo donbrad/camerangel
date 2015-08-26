@@ -863,7 +863,7 @@ function closeThisModal(e){
 }
 
 function gpsLocateUpdate(){
-	
+	console.log("what");
 }
 
 function statusCharCount(e) {
@@ -901,4 +901,6 @@ function gpsLocateUpdate(){
 	$(".userLocationUpdate").velocity("slideDown");
 
 }
+
+
 
