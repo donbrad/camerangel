@@ -282,7 +282,7 @@ function verifyPhone(e) {
 				mobileNotify("Your phone number is verified.  Thank You!");
 				$("#modalview-verifyPhone").data("kendoMobileModalView").close();
 				var thisUser = userModel.currentUser;
-				appUserValidated(thisUser.userUUID, thisUser.phone, thisUser.email, thisUser.publicKey);
+				appDataChannel.userValidatedMessage(thisUser.userUUID, thisUser.phone, thisUser.email, thisUser.publicKey);
 			} else {
 				mobileNotify("Sorry, your verification number: ' + result.recieved + ' didn't match. ");
 			}

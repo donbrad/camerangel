@@ -88,7 +88,7 @@ var appDataChannel = {
             // New user joined service -- enables users to update contact info
             case 'newUser' : {
                 // Todo:  Scan contact list to see if this new user is a contact.   haven't seen userid so scan by phone.
-                var contact = contactsModel.findContactByPhone(m.phone);
+                var contact = contactModel.findContactByPhone(m.phone);
                 if (contact !== undefined) {
                     contact.set('contactUUID', m.userId);
                     contact.set('contactEmail', m.email);
@@ -101,19 +101,21 @@ var appDataChannel = {
             // User has validated phone and email -- enables users to update contact info and get private key for P2P and Secure Package
             case 'userValidated' : {
                 // Todo: Scan contact list for useruuid and then by phone.
-                var contact = findContactModel(m.userId);
+                var contact = contactModel.getContactModel(m.userId);
                 if (contact === undefined) {
-                    contact = findContactByPhone(m.phone);
+                    contact = contactModel.findContactByPhone(m.phone);
                 }
                 if (contact === undefined) {
                     return;
                 }
                 contact.set('contactUUID', m.userId);
+                contact.set('contactPhone', m.phone);
                 contact.set('contactEmail', m.email);
                 contact.set('publicKey', m.publicKey);
 
                 updateParseObject('contacts', 'uuid', contact.uuid, 'contactUUID', m.userId);
                 updateParseObject('contacts', 'uuid', contact.uuid, 'contactEmail', m.email);
+                updateParseObject('contacts', 'uuid', contact.uuid, 'contactPhone', m.phone);
                 updateParseObject('contacts', 'uuid', contact.uuid, 'publicKey', m.publicKey);
             } break;
 
