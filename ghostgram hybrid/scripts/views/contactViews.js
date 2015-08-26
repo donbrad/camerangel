@@ -538,7 +538,7 @@ var editContactView = {
                         contact.publicKey = user.publicKey;
                     }
 
-                    editContactView.updateVerifiedUX(contact.phoneVerified, contact.emailVerified);
+                    editContactView.updateVerifiedUX(contact.phoneVerified, contact.emailValidated);
 
                 }
 
