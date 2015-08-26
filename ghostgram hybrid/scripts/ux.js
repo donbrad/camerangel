@@ -110,6 +110,11 @@ function notificationVerifyPhone (e) {
 function closeModalViewProfileStatus() {
 	$("#modalview-profileStatus").data("kendoMobileModalView").close();
 	$(".userLocationUpdate").css("display", "none");
+	var updatedStatus = $("#profileStatusUpdate").val();
+	// Save new status
+	userModel.currentUser.set("statusMessage", updatedStatus);
+	// clear status box
+	$(updatedStatus).empty();
 }
 
 function closeStartModal() {
