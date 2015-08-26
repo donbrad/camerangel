@@ -251,6 +251,66 @@ var editChannelView = {
             click: function (e) {
 
             }
+        }).kendoTouch({
+        	filter: "li",
+        	enableSwipe: false,
+        	dragstart: function(e){
+		 		var selection = e.touch.currentTarget;
+		 		var selectionListItem = $(selection);
+		 		
+		 		// add moving classes
+		 		$(selection).addClass("selectedLI");
+		 		$(".selectedLI > div").first().addClass("movingContact");
+
+		 		
+		 	},
+		 	drag: function(e){
+		 		var currentX = e.touch.x.location;
+		 		var windowWidth = $(window).width();
+		 		
+		 		var percentWindow = 1 - (currentX / windowWidth);
+		 		percentWindow = (percentWindow * 100).toFixed(0);
+
+		 		var fadePerc = (percentWindow * 4) / 100;
+		 		var trailingPerc = percentWindow - 20;
+		 		$(".selectedLI > .deleteMemberText").css("opacity", fadePerc+"%");
+		 		
+		 		console.log(percentWindow);
+		 		$(".movingContact").css("right", percentWindow+"%");
+		 		//
+		 		if(percentWindow > 25){
+		 			$(".selectedLI").css("background", "#E57373");
+		 			$(".selectedLI > .deleteMemberText").css("right", trailingPerc+"%");
+		 			console.log("yes");	
+		 		} else {
+		 			$(".selectedLI").css("background", "#fff");
+		 		}
+
+		 	},
+		 	dragend: function(e){
+		 		// get current position
+		 		var currentX = e.touch.x.location;
+		 		var windowWidth = $(window).width();
+		 		var widthPerc = currentX  / windowWidth;
+		 		
+		 		 //if drag is far enough, set action
+		 		if (widthPerc < 0.75) {
+					$(".movingContact").velocity({translateX:"-100%"},{duration: 600, easing: "spring"});
+					$(".selectedLI").velocity("slideUp", {duration: 600});
+
+		 			editChannelView.deleteMember;
+				} else {
+		 			$(".movingContact").velocity({right:"0"},{duration: 600, easing: "spring"});
+		
+		 		}
+
+		 		// remove moving class
+		 		$(".selectedLI > div").removeClass("movingContact");
+		 		$("#editmembers-listview > .selectedLI").removeClass("selectedLI");
+		 		
+		 	}
+
+
         });
         //$('#editChannelMemberList li').remove();
     },
@@ -313,6 +373,10 @@ var editChannelView = {
                 $(".addChatMembersBanner a").text("No one is invited. Tap to send invites");
             }
         }
+
+        // show action btn text
+        
+        showActionBtnText("#editChannel > div.footerBk.km-footer > a.actionBtn.secondary-100.km-widget.km-button > span > p");
 
     },
 

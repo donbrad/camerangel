@@ -1,18 +1,26 @@
 /* Colors */
 
-@primary-100: #27476E;
-@primary-200: #2D93FF;
+@primary-100: #2E93FD;
+@primary-200: #6CADF3;
+
 @secondary-100: #FFB74D;
 @secondary-200: #FADDB0;
+
+@black: #4A4A4A;
 @shade-100: #979797;
 @shade-200: #E0E0E0;
 @shade-300: #f5f5f5;
 @shade-400: #EFF1F2;
 @btnActiveBk: rgba(0,0,0,0.15);
-@black: #4A4A4A;
-@warning: #e53935;
-@highlight: #9E788F;
- 
+
+@warning-100: #E57373;
+@warning-200: #FFA9A9;
+
+@highlight-100: #9E788F;
+@highlight-200: #D4ABC4;
+
+@success-100: #009688;
+@success-200: #65BBB3;
 
 /* variables */
 @baseFontSize: 16;
@@ -314,7 +322,7 @@ form {
 }
 
 .warning {
-	background: @warning !important;
+	background: @warning-100 !important;
 }
 
 /* Text colors */
@@ -873,6 +881,10 @@ div.km-header a img{
 .km-root .km-material .km-buttongroup > .km-state-active {
 	color: @primary-200;
 	border-color: #fff;
+}
+
+.km-material .km-shim, .km-material .km-popup, .km-material .k-slider, .km-material .km-switch-on, .km-material .km-current-page, .km-material input:focus, .km-material select:focus, .km-material textarea:focus, .km-material input:checked, .km-material .km-touch-scrollbar, .km-material input[type=text]:not(.k-input):focus {
+	color: @primary-100;
 }
 
 /*
@@ -1721,15 +1733,15 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 
 .selectedLI-archive { 
-	background: lighten(@highlight, 20%) !important;
+	background: lighten(@highlight-100, 20%) !important;
 }
 
 .selectedLI-delete {
-	background: lighten(@warning, 20%) !important;
+	background: lighten(@warning-100, 20%) !important;
 }
 
 .chat-delete {
-	background: @warning;
+	background: @warning-100;
 }
 
 #modalview-requestContent > div > div.km-scroll-container > div.modal-top {
@@ -2213,6 +2225,10 @@ div.footerMenu.km-footer > ul > li > a {
 #contacts > div.footerMenu.km-footer > a,
 #gallery > div.footerMenu.km-footer > a {
 	display: inline-block; 
+}
+
+#editChannel > div.footerBk.km-footer > a.actionBtn.secondary-100.km-widget.km-button > span > p {
+	width: 100px;
 }
 
 .menuNav {
@@ -3465,6 +3481,11 @@ div.contactListBox.activeContact > div > div > ul {
 	color: #fff;
 }
 
+#channelMembers-listview,
+#editmembers-listview {
+	width: 100%;
+}
+
 #channelMembers-listview li {
 	padding: 0.25rem 1rem 0.25rem 1rem;
 	border-bottom: 1px solid @shade-200;
@@ -3473,6 +3494,43 @@ div.contactListBox.activeContact > div > div > ul {
 #channelMembers-listview li:nth-child(2) {
 	border-top: 1px solid @shade-200;
 	border-bottom: 1px solid @shade-200;
+}
+
+#editmembers-listview li {
+	padding: 0px;
+	background: @shade-200;
+}
+
+.editMemberName, .editMemberPhoto {
+	float: left;
+}
+
+.editMemberPhoto {
+	padding-top: 0.25rem;
+}
+
+.editMemberBox {
+	background: #fff;
+	display: flex;
+	width: 100%;
+	position: relative;
+	right: 0px;
+}
+
+.editMemberName {
+	padding-top: 0.75rem;
+}
+
+.deleteMemberText {
+	position: absolute;
+	color: #fff;
+	right: 0.5rem;
+	top: 1.25rem;
+	opacity: 1;
+}
+
+.movingContact {
+	.shadow-2;
 }
 
 #channelMembers > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div.km-listview-wrapper > form > div > input[type="search"] {
@@ -3596,7 +3654,7 @@ div.contactListBox.activeContact > div > div > ul {
 	background-color: @primary-200;
 }
 #galleryMenuSelect.km-buttongroup > .km-state-active {
-		background-color: @highlight;
+		background-color: @highlight-100;
 		color: #fff;
 		border-radius: 0px;
 		border-top: 0px !important;
@@ -3648,7 +3706,7 @@ div.contactListBox.activeContact > div > div > ul {
 	input {
 		float: left;
 		border: none !important;
-		width: 80% !important;
+		width: 80%;
 		padding-left: 0px !important;
 		padding-right: 1rem !important;
 	}
@@ -3772,11 +3830,11 @@ div.contactListBox.activeContact > div > div > ul {
 }
 
 .movingChat > .chat-message-user-content::after {
-	border-color: @highlight transparent;
+	border-color: @highlight-100 transparent;
 }
 
 .movingChat-delete > .chat-message-user-content::after {
-	border-color: @warning transparent;
+	border-color: @warning-100 transparent;
 }
 
 .chat-message-text {

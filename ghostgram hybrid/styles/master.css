@@ -391,10 +391,10 @@ form p {
   background-color: #FFB74D !important;
 }
 .primary-100 {
-  background: #27476e;
+  background: #2e93fd !important;
 }
 .primary-200 {
-  background: #2d93ff;
+  background: #6cadf3;
 }
 .secondary-100 {
   background: #ffb74d !important;
@@ -403,14 +403,14 @@ form p {
   background: #faddb0 !important;
 }
 .warning {
-  background: #e53935 !important;
+  background: #e57373 !important;
 }
 /* Text colors */
 .blue-100-txt {
-  color: #27476e;
+  color: #2e93fd;
 }
 .blue-200-txt {
-  color: #2d93ff;
+  color: #6cadf3;
 }
 /* Margins */
 .topHalf {
@@ -422,7 +422,7 @@ form p {
   height: 10px;
 }
 .verified-txt {
-  color: #2d93ff;
+  color: #6cadf3;
   font-size: 12px;
   font-size: 0.75rem;
   vertical-align: top;
@@ -535,7 +535,7 @@ form p {
   -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   color: #fff !important;
-  background: #FFB74D !important;
+  background: #2e93fd !important;
   /*
     :hover {
     	background: #E5A545 !important;
@@ -602,7 +602,7 @@ form p {
   -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   color: #ffffff !important;
-  background: #2d93ff !important;
+  background: #6cadf3 !important;
   /*
     :hover {
     	background: @primary-100 !important;
@@ -647,7 +647,7 @@ form p {
 }
 .btnClear-link {
   background: transparent;
-  color: #2d93ff !important;
+  color: #6cadf3 !important;
   padding: 0px !important;
   font-weight: 600 !important;
 }
@@ -662,7 +662,7 @@ form p {
 .btnClearLine {
   background: transparent;
   color: #2D93FF !important;
-  border: 1px solid #2d93ff;
+  border: 1px solid #6cadf3;
   border-radius: 2px;
 }
 .btnClearLine :active {
@@ -695,7 +695,7 @@ form p {
   color: #979797 !important;
 }
 .btnClear-grey :active {
-  color: #2d93ff !important;
+  color: #6cadf3 !important;
   background: transparent !important;
 }
 .btnClear-grey :disabled {
@@ -936,8 +936,21 @@ div.km-header a img {
   margin: 0px;
 }
 .km-root .km-material .km-buttongroup > .km-state-active {
-  color: #2d93ff;
+  color: #6cadf3;
   border-color: #fff;
+}
+.km-material .km-shim,
+.km-material .km-popup,
+.km-material .k-slider,
+.km-material .km-switch-on,
+.km-material .km-current-page,
+.km-material input:focus,
+.km-material select:focus,
+.km-material textarea:focus,
+.km-material input:checked,
+.km-material .km-touch-scrollbar,
+.km-material input[type=text]:not(.k-input):focus {
+  color: #2e93fd;
 }
 /*
 .km-view {
@@ -1146,7 +1159,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 #home > div.km-header > div > div.km-view-title > span {
   font-family: 'PT Sans Caption', sans-serif !important;
-  color: #2d93ff;
+  color: #6cadf3;
   font-weight: 600;
   font-size: 18px;
   font-size: 1.125rem;
@@ -1792,10 +1805,10 @@ div.footerMenu.km-footer > ul > li > a:active {
   background: #c9b3c0 !important;
 }
 .selectedLI-delete {
-  background: #f1928f !important;
+  background: #f5c9c9 !important;
 }
 .chat-delete {
-  background: #e53935;
+  background: #e57373;
 }
 #modalview-requestContent > div > div.km-scroll-container > div.modal-top {
   padding-top: 3rem;
@@ -2140,7 +2153,7 @@ a:hover {
 }
 #chat-title-setup {
   width: 100%;
-  background-color: #2d93ff;
+  background-color: #6cadf3;
   padding: 0.5rem;
   padding-left: 1rem;
   padding-right: 1rem;
@@ -2233,6 +2246,9 @@ div.footerMenu.km-footer > ul > li > a {
 #gallery > div.footerMenu.km-footer > a {
   display: inline-block;
 }
+#editChannel > div.footerBk.km-footer > a.actionBtn.secondary-100.km-widget.km-button > span > p {
+  width: 100px;
+}
 .menuNav {
   width: 100%;
   height: 2.5rem;
@@ -2250,23 +2266,23 @@ div.footerMenu.km-footer > ul > li > a > span > svg {
 }
 #home > div.footerMenu.km-footer > ul > li:nth-child(1) > a #nav-home,
 div.footerMenu.km-footer > ul > li:nth-child(1) > a.km-state-active #nav-home {
-  fill: #2d93ff;
+  fill: #6cadf3;
 }
 #channels > div.footerMenu.km-footer > ul > li:nth-child(2) > a #nav-chat,
 div.footerMenu.km-footer > ul > li:nth-child(2) > a.km-state-active #nav-chat {
-  fill: #2d93ff;
+  fill: #6cadf3;
 }
 #contacts > div.footerMenu.km-footer > ul > li:nth-child(3) > a #nav-contacts,
 div.footerMenu.km-footer > ul > li:nth-child(3) > a.km-state-active #nav-contacts {
-  fill: #2d93ff;
+  fill: #6cadf3;
 }
 #places > div.footerMenu.km-footer > ul > li:nth-child(4) > a #nav-places,
 div.footerMenu.km-footer > ul > li:nth-child(4) > a.km-state-active #nav-places {
-  stroke: #2d93ff;
+  stroke: #6cadf3;
 }
 #gallery > div.footerMenu.km-footer > ul > li:nth-child(5) > a #nav-gallery,
 div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery {
-  fill: #2d93ff;
+  fill: #6cadf3;
 }
 #status-profile-img {
   border-radius: 50%;
@@ -2802,7 +2818,7 @@ div.loginBox > form > div > ul > li {
 .km-material .km-switch-handle,
 .km-material .k-slider-selection,
 .km-material .km-switch-background {
-  color: #2d93ff;
+  color: #6cadf3;
 }
 #places-checkIn > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.confirmPlaceAddress > p:nth-child(1) > span > span > img {
   vertical-align: sub;
@@ -3220,7 +3236,7 @@ div.contactListBox.activeContact > div > div > ul {
 }
 /* sign up */
 .mobile-countryCode {
-  background-color: #2d93ff;
+  background-color: #6cadf3;
   color: #fff;
   font-size: 30px;
   font-size: 1.875rem;
@@ -3310,7 +3326,7 @@ div.contactListBox.activeContact > div > div > ul {
 }
 .addChatMembersBanner {
   width: 100%;
-  color: #2d93ff;
+  color: #6cadf3;
   padding: 0.5rem 1rem;
 }
 .editChatImg {
@@ -3318,12 +3334,16 @@ div.contactListBox.activeContact > div > div > ul {
   margin-right: 0.5rem;
 }
 .addedChatMember {
-  background: #2d93ff;
+  background: #6cadf3;
   width: 100%;
   padding-left: 1rem;
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
   color: #fff;
+}
+#channelMembers-listview,
+#editmembers-listview {
+  width: 100%;
 }
 #channelMembers-listview li {
   padding: 0.25rem 1rem 0.25rem 1rem;
@@ -3332,6 +3352,37 @@ div.contactListBox.activeContact > div > div > ul {
 #channelMembers-listview li:nth-child(2) {
   border-top: 1px solid #e0e0e0;
   border-bottom: 1px solid #e0e0e0;
+}
+#editmembers-listview li {
+  padding: 0px;
+  background: #e0e0e0;
+}
+.editMemberName,
+.editMemberPhoto {
+  float: left;
+}
+.editMemberPhoto {
+  padding-top: 0.25rem;
+}
+.editMemberBox {
+  background: #fff;
+  display: flex;
+  width: 100%;
+  position: relative;
+  right: 0px;
+}
+.editMemberName {
+  padding-top: 0.75rem;
+}
+.deleteMemberText {
+  position: absolute;
+  color: #fff;
+  right: 0.5rem;
+  top: 1.25rem;
+  opacity: 1;
+}
+.movingContact {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23) !important;
 }
 #channelMembers > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div.km-listview-wrapper > form > div > input[type="search"] {
   width: 100%;
@@ -3431,7 +3482,7 @@ div.contactListBox.activeContact > div > div > ul {
   stroke: #4a4a4a;
 }
 #galleryMenuSelect > li:nth-child(2).km-button.km-state-active {
-  background-color: #2d93ff;
+  background-color: #6cadf3;
 }
 #galleryMenuSelect.km-buttongroup > .km-state-active {
   background-color: #9e788f;
@@ -3481,7 +3532,7 @@ div.contactListBox.activeContact > div > div > ul {
 .appendSearch input {
   float: left;
   border: none !important;
-  width: 80% !important;
+  width: 80%;
   padding-left: 0px !important;
   padding-right: 1rem !important;
 }
@@ -3568,7 +3619,7 @@ div.contactListBox.activeContact > div > div > ul {
   padding: 0.2em 0.35em;
   border-radius: .25em;
   color: #fff;
-  background: #2d93ff;
+  background: #6cadf3;
   margin-top: 0.2em;
 }
 .chat-message-user-content:after {
@@ -3579,7 +3630,7 @@ div.contactListBox.activeContact > div > div > ul {
   width: 0;
   border-width: 8px 8px 0;
   border-style: solid;
-  border-color: #2d93ff transparent;
+  border-color: #6cadf3 transparent;
   bottom: -4px;
 }
 .movingChat > .chat-message-user-content:after {
@@ -3592,7 +3643,7 @@ div.contactListBox.activeContact > div > div > ul {
   border-color: #9e788f transparent;
 }
 .movingChat-delete > .chat-message-user-content::after {
-  border-color: #e53935 transparent;
+  border-color: #e57373 transparent;
 }
 .chat-message-text {
   font-size: 14px;

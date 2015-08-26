@@ -1,4 +1,4 @@
-<div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="contactModel" data-init="contactsView.onInit" data-show="contactsView.onShow" data-hide="contactsView.onHide" style="display: none;">
+<div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="contactModel" data-init="contactsView.onInit" data-show="contactsView.onShow" data-before-hide="contactsView.onBeforeHide" style="display: none;">
 
 	<div class="topViewSearchBox">
 	 	<div class="appendSearch">
@@ -69,15 +69,17 @@
 <div data-role="view" data-title="Import Contacts" id="contactImport"  data-model="contactModel" data-init="contactImportView.onInit" data-show="contactImportView.onShow" style="display: none;">
     <div data-role="header">
         <div data-role="navbar">
-           <a data-role="button"  data-align="left" href="#:back" ><img src="images/nav-back.svg" /></a>
+           <a data-role="button"  data-align="left" href="#:back" data-click="contactImportView.resetContactImport"><img src="images/nav-back.svg" /></a>
 			<span data-role="view-title"></span>
         </div>
-    </div>    
+    </div>
+    <div class="topViewSearchBox">
+	 		<div class="appendSearch">
+				<span class="searchIcon"><img src="images/search.svg" /></span>
+				<input type="search" id="contactImportQuery" class="viewSearchBox" placeholder="Search for contact"/>
+			</div>
+		</div>   
     <div  style="padding-bottom: 24px;">
-       <div style="padding-bottom: 4px; padding-top: 4px; display: inline; vertical-align: middle;">
-         <input  style="font-size: 16px; margin-left: 6px; width: 85%" id="contactImportQuery" type="search" placeholder="Enter contact name..."/>
-         <a data-role="button"  data-click="contactImportView.searchContacts"><img style="margin-top: 6px;" height=22 src="images/search.svg" /></a>
-        </div>
         <ul id="contactimport-listview"></ul>
     </div>    
 </div>
@@ -100,7 +102,7 @@
     		</div>
     		<div class="topHalfRight">
 				<div>
-					<input class="input-text-md " id="addContactName" type="search" placeholder="Contact full name"/>
+					<input class="input-text-md" id="addContactName" type="search" placeholder="Contact full name"/>
 				</div>
 				<div>
     				<span class="caption">aka</span>
@@ -112,37 +114,45 @@
     	<ul data-role="listview" data-style="inset" class="inviteContactInfo">
     		<li>           
                 <label>Phone
-                    <select id="addContactPhone" data-role="dropdownlist" 
-                            data-text-field="number" 
-                            data-value-field="number"
-                            data-bind="source: phoneDS"
-                            auto-bind="false">
-                    </select>
+                	<div class="select-lg">
+	                    <select id="addContactPhone" 
+	                            data-text-field="number" 
+	                            data-value-field="number"
+	                            data-bind="source: phoneDS"
+	                            auto-bind="false">
+	                    </select>
+	                </div>
                 </label>
             </li>
             <li>
                 <label>Email
-                     <select id="addContactEmail" data-role="dropdownlist"
-                            data-text-field="address" 
-                            data-value-field="address"
-                            data-bind="source: emailDS"
-                           	auto-bind="false">
-                    </select>
+                	<div class="select-lg">
+	                     <select id="addContactEmail" 
+	                            data-text-field="address" 
+	                            data-value-field="address"
+	                            data-bind="source: emailDS"
+	                           	auto-bind="false">
+	                    </select>
+	                </div>
                 </label>
             </li>
             <li>
                 <label>Address
-                     <select id="addContactAddress" data-role="dropdownlist"
-                            data-text-field="address" 
-                            data-value-field="address"
-                            data-bind="source: addressDS"
-                           	auto-bind="false">
-                    </select>
+                	<div class="select-lg">
+	                     <select id="addContactAddress"
+	                            data-text-field="address" 
+	                            data-value-field="address"
+	                            data-bind="source: addressDS"
+	                           	auto-bind="false">
+	                    </select>
+	                </div>
                 </label>
             </li>
     	</ul>
-    	<a class="btnPrimary btnSpan" data-role="button" data-click="contactsAddContact">Invite to ghostgrams</a>
     </div> 
+    <div class="footer" data-role="footer">
+    <a class="btnPrimary btnFull-modal" data-role="button" data-click="contactsAddContact">Invite to ghostgrams</a>
+    </div>
 </div>
 
 <!-- Edit Contacts -->

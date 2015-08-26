@@ -174,4 +174,11 @@ function showFormatedPhone(){
 }
 
 
+function showActionBtnText(path){ 
+	$(path).velocity({opacity: 1, right: "3rem"}, {easing: "spring"});
+}
+
+function hideActionBtnText(path){
+	$(path).velocity({opacity: 0, right: "0"});
+}
 

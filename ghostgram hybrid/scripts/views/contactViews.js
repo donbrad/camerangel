@@ -132,12 +132,11 @@ var contactsView = {
 
 
         // set action button
-        $("#contacts > div.footerMenu.km-footer > a").attr("href", "#contactImport");
+        $("#contacts > div.footerMenu.km-footer > a").attr("href", "#contactImport").css("display", "inline-block");
     },
 
-    onHide : function (e) {
-        if (e.preventDefault !== undefined)
-            e.preventDefault();
+    onBeforeHide: function(){
+    	$("#contacts > div.footerMenu.km-footer > a").css("display", "none");
     },
 
     updateSearchUX: function (event) {
@@ -213,6 +212,7 @@ var contactImportView = {
             click: contactImportView.processDeviceContact
 
         });
+
     },
 
     onShow: function (e) {
@@ -225,6 +225,7 @@ var contactImportView = {
             $('#contactImportQuery').val(query);
             deviceFindContacts(query);
         }
+
     },
 
     searchContacts: function (e) {
@@ -238,7 +239,10 @@ var contactImportView = {
         }
     },
 
+    resetContactImport: function(e){
+    	$("#contactImportQuery").val("");
 
+    },
 
     processDeviceContact: function (e) {
         if (e !== undefined && e.preventDefault !== undefined) {

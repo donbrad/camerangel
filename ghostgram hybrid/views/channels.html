@@ -212,7 +212,7 @@
     <div data-role="header">
         <div data-role="navbar">
             <span> Edit Chat </span>
-            <a data-role="button" href="#:back" data-align="left">
+            <a data-role="button" href="#channels" data-align="left">
             	<img src="images/nav-back.svg" />
             </a>
         </div>
@@ -227,13 +227,6 @@
 		<div>
 			<div class="pad">
 				<img src="images/edit-chat.svg" /> Chat Members
-				<span class="right">
-					<a class="btnClear" data-role="button" data-click="editChannelView.clickEdit" id="editChannel-Trash">Edit</a>
-					<a class="btnClear" data-role="button" data-click="editChannelView.clickDone" id="editChannel-Done">Done</a>
-				</span>
-			</div>
-			<div class="addChatMembersBanner">
-				<a class="btnClear-sm" data-role="button" href="#channelMembers">+ add new members</a>
 			</div>
 			<div>
 				<ul class="list-inline" id="editmembers-listview"></ul>
@@ -241,8 +234,8 @@
 		</div>
 	</div>	  
 	<div class="footerBk" data-role="footer">
-			<a class="actionBtn secondary-100" data-role="button" href="#addChannel">
-    		<p class="actionBtn-text">Cancel</p>
+			<a class="actionBtn secondary-100" data-role="button" href="#channelMembers">
+    		<p class="actionBtn-text">Add members</p>
     		<img src="images/nav-add-white.svg"/>
     	</a>
             <a class="btnSpan-btm btnPrimary" data-click="editChannelView.finalizeEdit" type="button" data-role="button">Save</a>
@@ -404,14 +397,11 @@
 </script>
 
  <script type="text/x-kendo-template" id="editMembersTemplate">
-	 <div>
-		 <div class="right">
-			<a class="listTrash" data-param="#:data.uuid#" data-role="button" class="clearBtn" data-click="deleteMember" onclick="editChannelView.deleteMember(this)" ><img src="images/trash.svg" /></a>
-	 	</div>
-		 <div class="left">
+	 <div class="editMemberBox">
+		 <div class="editMemberPhoto">
 			 <img class="circle-img-md editChatImg" src="#: data.photo #"  />
 		 </div>
-		 <div class="left">
+		 <div class="editMemberName">
 			 #if (data.alias !== '' && data.name !== data.alias && data.phoneVerified){#
 			 <h4>
 				 #: data.alias #
@@ -427,8 +417,10 @@
 			 <h4>#: data.name #</h4>
 			 #}#
 		 </div>
-
-	 </div>
+	</div>
+	<div class="deleteMemberText">
+     	<span>Delete</span>
+     </div>
  </script>
 
 

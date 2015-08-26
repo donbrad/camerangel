@@ -384,7 +384,6 @@ function onDoneEditContact (e) {
 }
 
 
-<<<<<<< HEAD
 function onInitContacts(e) {
 
 	if (e.preventDefault !== undefined){
@@ -669,8 +668,6 @@ function searchDeviceContacts(e) {
 	});
 }
 
-=======
->>>>>>> master
 // Filter contacts - unify matching names
 function filterContactsByName(contacts, firstName, lastName) {
 
