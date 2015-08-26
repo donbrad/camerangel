@@ -149,8 +149,10 @@ function doInviteContact(e) {
 
     if (inviteSent === undefined || inviteSent === false) {
         contactSendEmailInvite(email);
-        updateParseObject('contacts', 'uuid', uuid, 'inviteSent', true );
-        updateParseObject('contacts', 'uuid', uuid, 'lastInvite', ggTime.currentTime() );
+        contactModel.currentContact.set('inviteSent', true);
+        contactModel.currentContact.set('lastInvite', ggTime.currentTime());
+      //  updateParseObject('contacts', 'uuid', uuid, 'inviteSent', true );
+      //  updateParseObject('contacts', 'uuid', uuid, 'lastInvite', ggTime.currentTime() );
     } else {
         mobileNotify(contactModel.currentContact.name + "has already been invited");
     }
