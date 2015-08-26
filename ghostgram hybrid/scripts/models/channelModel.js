@@ -133,17 +133,18 @@ var channelModel = {
         var channel = new Channels();
         var publicKey = userModel.currentUser.get('publicKey');
         var contact = contactModel.getContactModel(contactUUID), contactKey = null;
-
+        var addTime = ggTime.currentTime();
         channel.set("name", contactAlias);
         channel.set("isOwner", true);
         channel.set('isPrivate', true);
         channel.set('isPlace', false);
         channel.set('isEvent', false);
         channel.set("media",  true);
+        channel.set("durationDays", 1);
         channel.set("archive",  false);
         channel.set("unreadCount", 0);
-        channel.set("clearBefore", ggTime.currentTime());
-        channel.set("lastAccess", ggTime.currentTime());
+        channel.set("clearBefore", addTime);
+        channel.set("lastAccess", addTime);
         channel.set("description", "Private: " + contactAlias);
         channel.set("channelId", channelUUID);
         channel.set('userKey',  publicKey);
@@ -154,6 +155,7 @@ var channelModel = {
         channel.save(null, {
             success: function(channel) {
                 channelModel.channelsDS.add(channel.attributes);
+                channelModel.channelsDS.sync();
                 //closeModalViewAddChannel();
                 mobileNotify('Added private channel : ' + channel.get('name'));
             },
@@ -168,13 +170,14 @@ var channelModel = {
     },
 
     // Generic add group channel...
-    addChannel : function (channelName, channelDescription, isOwner, channelUUID, ownerUUID, ownerName) {
+    addChannel : function (channelName, channelDescription, isOwner, durationDays, channelUUID, ownerUUID, ownerName) {
         var Channels = Parse.Object.extend("channels");
         var channel = new Channels();
 
         var ChannelMap = Parse.Object.extend('channelmap');
         var channelMap = new ChannelMap();
 
+        var addTime = ggTime.currentTime();
         var name = channelName,
             description = channelDescription,
             channelId = channelUUID;
@@ -184,6 +187,18 @@ var channelModel = {
         if (isOwner) {
             channelId = uuid.v4();
         }
+
+        // Ensure we have a valid duration for this channel
+        if (durationDays === undefined) {
+            durationDays = 30;
+        } else {
+            durationDays = parseInt(durationDays);
+        }
+
+        if (durationDays < 1 || durationDays > 30) {
+            durationDays = 30;
+        }
+
         // Generic fields for owner and members
         channel.set("name", name );
         channel.set('isPrivate', false);
@@ -192,9 +207,10 @@ var channelModel = {
         channel.set("media",   true);
         channel.set("archive", true);
         channel.set("description", description);
+        channel.set("durationDays", durationDays);
         channel.set("unreadCount", 0);
-        channel.set("clearBefore", ggTime.currentTime());
-        channel.set("lastAccess", ggTime.currentTime());
+        channel.set("clearBefore", addTime);
+        channel.set("lastAccess", addTime);
         channel.set("channelId", channelId);
 
         // Channel owner can access and edit members...
@@ -215,11 +231,34 @@ var channelModel = {
                 // Execute any logic that should take place after the object is saved.
 
                 channelModel.channelsDS.add(channel.attributes);
+                channelModel.channelsDS.sync();
                 mobileNotify('Added channel : ' + channel.get('name'));
 
                 currentChannelModel.currentChannel = channelModel.findChannelModel(channelId);
                 currentChannelModel.currentChannel = currentChannelModel.currentChannel;
-                APP.kendo.navigate('#editChannel');
+
+                if (isOwner) {
+                    channelMap.set("name", channel.get('name'));
+                    channelMap.set("channelId", channel.get('channelId'));
+                    channelMap.set("channelOwner", userModel.currentUser.userUUID);
+                    channelMap.set("members", [userModel.currentUser.userUUID]);
+
+                    channelMap.save(null, {
+                        success: function(channel) {
+                            // Execute any logic that should take place after the object is saved.
+
+
+                        },
+                        error: function(channel, error) {
+                            // Execute any logic that should take place if the save fails.
+                            // error is a Parse.Error with an error code and message.
+                            mobileNotify('Error creating channelMap: ' + error.message);
+                            handleParseError(error);
+                        }
+                    });
+                    APP.kendo.navigate('#editChannel');
+                }
+
             },
             error: function(channel, error) {
                 // Execute any logic that should take place if the save fails.
@@ -229,26 +268,7 @@ var channelModel = {
             }
         });
 
-        if (isOwner) {
-            channelMap.set("name", name);
-            channelMap.set("channelId", channelId);
-            channelMap.set("channelOwner", userModel.currentUser.userUUID);
-            channelMap.set("members", [userModel.currentUser.userUUID]);
 
-            channelMap.save(null, {
-                success: function(channel) {
-                    // Execute any logic that should take place after the object is saved.
-
-
-                },
-                error: function(channel, error) {
-                    // Execute any logic that should take place if the save fails.
-                    // error is a Parse.Error with an error code and message.
-                    mobileNotify('Error creating channelMap: ' + error.message);
-                    handleParseError(error);
-                }
-            });
-        }
 
     },
 

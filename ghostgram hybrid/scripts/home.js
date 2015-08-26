@@ -239,14 +239,9 @@ function homeSignin (e) {
 			var publicKey = user.get('publicKey');
 			var privateKey = user.get('privateKey');
 			if (publicKey === undefined || privateKey === undefined) {
-				var RSAkey = cryptico.generateRSAKey(1024);
-				publicKey = cryptico.publicKeyString(RSAkey);
-				privateKey = cryptico.privateKeyString(RSAkey);
-				
-				user.set('privateKey', privateKey);
-				user.set('publicKey', publicKey);
-				
-				user.save();
+				userModel.generateNewPrivateKey(user);
+			} else {
+				userModel.updatePrivateKey();
 			}
 			   
             userModel.currentUser.set('username', userModel.parseUser.get('username'));
@@ -269,10 +264,11 @@ function homeSignin (e) {
             userModel.currentUser.set('userUUID', userModel.parseUser.get('userUUID'));
 			userModel.currentUser.set('rememberUsername', userModel.parseUser.get('rememberUsername'));
 			userModel.currentUser.set('publicKey', publicKey);
-			userModel.currentUser.set('privateKey', privateKey);
+			userModel.decryptPrivateKey();
+	//		userModel.currentUser.set('privateKey', privateKey);
+
 			var phoneVerified = userModel.parseUser.get('phoneVerified');
             userModel.currentUser.set('phoneVerified', phoneVerified);
-
 			userModel.currentUser.set('availImgUrl', 'images/status-away.svg');
 			var isAvailable  = userModel.currentUser.get('isAvailable');
 			if (isAvailable) {
@@ -355,10 +351,7 @@ function homeCreateAccount() {
 						   mobileNotify("Your phone number matches existing user.");
 						   return;
 					   } else {
-				   // Generate Keys for the user.  
-					var RSAkey = cryptico.generateRSAKey(1024);
-					var publicKey = cryptico.publicKeyString(RSAkey);
-					var privateKey = cryptico.privateKeyString(RSAkey);
+
 
 
 					 //Phone number isn't a duplicate -- create user
@@ -375,12 +368,12 @@ function homeCreateAccount() {
 				    user.set('aliasPhoto', "images/ghost-default.svg");
 					user.set("isAvailable", true);	   
 					user.set("isVisible", true);
-				   user.set("availImgUrl", "images/status-available.svg");
+				    user.set("availImgUrl", "images/status-available.svg");
 					user.set("phoneVerified", false);
 					user.set("rememberUsername", false);
 					user.set("userUUID", userUUID);
-					user.set("publicKey", publicKey);
-					user.set("privateKey", privateKey);
+					//user.set("publicKey", publicKey);
+					//user.set("privateKey", privateKey);
 
 					user.signUp(null, {
 						success: function(user) {
@@ -404,11 +397,13 @@ function homeCreateAccount() {
 							userModel.currentUser.set('userUUID', user.get('userUUID'));
 							userModel.currentUser.set('phoneVerified', false);
 							userModel.currentUser.set('emailVerified',user.get('emailVerified'));
-							userModel.currentUser.set('publicKey',user.get('publicKey'));
-							userModel.currentUser.set('privateKey',user.get('privateKey'));
+							userModel.generateNewPrivateKey(user);
+
+							//userModel.currentUser.set('publicKey',user.get('publicKey'));
+							//userModel.currentUser.set('privateKey',user.get('privateKey'));
 							userModel.currentUser.bind('change', syncProfile);
-							APP.models.profile.parseACL = new Parse.ACL(Parse.User.current());
-						   mobileNotify('Welcome to ghostgrams!');
+							userModel.parseACL = new Parse.ACL(Parse.User.current());
+						    mobileNotify('Welcome to ghostgrams!');
 							if (window.navigator.simulator !== true) {
 
 								cordova.plugins.notification.local.add({
@@ -459,7 +454,7 @@ function homeCreateAccount() {
 function requestBeta (e) {
     e.preventDefault();
     if (APP.models.sync.requestActive) {
-        mobileNotify("Processing current request.")
+        mobileNotify("Processing current request.");
         return;
     }
     APP.models.sync.requestActive = true;
