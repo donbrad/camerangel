@@ -197,7 +197,7 @@ function getUserContactInfo(uuid, callBack) {
 			if (result.status === 'ok') {
 				callBack({
 					found: true,
-					user: result.user.attributes
+					user: JSON.parse(result.user)
 				});
 			} else {
 				callBack({
