@@ -2593,7 +2593,7 @@ div.loginBox > form > div > ul > li {
   flex-direction: column;
 }
 #search-archives {
-  min-height: 8rem;
+  min-height: 10rem;
   padding: .5rem 0;
 }
 #search-archives .k-autocomplete {

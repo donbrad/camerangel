@@ -205,7 +205,7 @@ function resizeSuccessThumb (data) {
     var Photos = Parse.Object.extend("photos");
     var photo = new Photos();
 
-    photo.setACL(APP.models.profile.parseACL);
+    photo.setACL(userModel.parseACL);
     photo.set('photoId', photoModel.currentPhoto.photoId);
     photo.set('channelId', APP.models.channel.currentModel.channelId);
     var timeStamp = new Date().getTime();

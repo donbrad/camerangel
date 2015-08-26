@@ -1,5 +1,5 @@
 function appNewUser(userUUID, phone, email) {
-		 var msg = new Object();
+	 var msg = {};
 
 	msg.type = 'newUser';
 	msg.userUUID = userUUID;
@@ -17,12 +17,13 @@ function appNewUser(userUUID, phone, email) {
 }
 
 function appUserValidated(userUUID, phone, email, publicKey) {
-		 var msg = new Object();
+	 var msg = {};
 
 	msg.type = 'userValidated';
 	msg.userUUID = userUUID;
 	msg.phone = phone;
 	msg.email = email;
+	msg.publicKey = publicKey;
 	msg.time = new Date().getTime();
 
 

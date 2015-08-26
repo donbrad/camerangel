@@ -95,10 +95,11 @@ var contactsView = {
 
                 }
 
-            },
+            }/*,
             dataBound: function(e){
                 checkEmptyUIState("#contacts-listview", "#contactListDiv >");
-            }
+            }*/
+
         }).kendoTouch({
             filter: ".contactListBox",
             // filter: "div",
@@ -197,7 +198,6 @@ var contactsView = {
 
 };
 
-
 var contactImportView = {
     onInit: function (e) {
         if (e !== undefined && e.preventDefault !== undefined) {
@@ -253,6 +253,7 @@ var contactImportView = {
         // User has picked a contact from the list --
         // sync data from  any contacts with same name
         mobileNotify("Unifying contact information for " + e.dataItem.name);
+
         syncContactWithDevice(e.dataItem.name, function () {
 
             contactModel.emailArray = [];
@@ -324,5 +325,239 @@ var contactImportView = {
 
     launchAddContact : function () {
         $("#modalview-AddContact").data("kendoMobileModalView").open();
+    }
+};
+
+var addContactView = {
+    doInit: function (e) {
+        if (e !== undefined && e.preventDefault !== undefined)
+            e.preventDefault();
+    },
+
+    doShow : function (e) {
+        if (e !== undefined && e.preventDefault !== undefined)
+            e.preventDefault();
+
+        var data = contactModel.currentDeviceContact;
+
+        // Set name
+        var name = data.name;
+
+
+        $("#addContactName").val(name);
+
+
+        if (data.photo === null) {
+            $("#addContactPhoto").attr("src","images/ghostgramcontact.png");
+
+        } else {
+            returnValidPhoto(data.photo, function(validUrl) {
+                $("#addContactPhoto").attr("src",validUrl);
+            });
+        }
+    },
+
+    addContact : function (e) {
+        if (e !== undefined && e.preventDefault !== undefined) {
+            e.preventDefault();
+        }
+        var Contacts = Parse.Object.extend("contacts");
+        var contact = new Contacts();
+
+        var name = $('#addContactName').val(),
+            alias = $('#addContactAlias').val(),
+            phone = $('#addContactPhone').val(),
+            email = $('#addContactEmail').val(),
+            photo = $('#addContactPhoto').prop('src'),
+            address = $('#addContactAddress').val();
+        var guid = uuid.v4();
+
+        contact.setACL(userModel.parseACL);
+        contact.set("name", name );
+        contact.set("alias", alias);
+        contact.set("address", address);
+        contact.set("group", '');
+        contact.set('category', "new");
+        contact.set("priority", 0);
+        contact.set("privateChannel", null);
+        contact.set("uuid", guid);
+
+        //phone = phone.replace(/\+[0-9]{1-2}/,'');
+        phone = phone.replace(/\D+/g, "");
+        if (phone[0] !== '1')
+            phone = '1' + phone;
+
+        if (contactModel.findContactByPhone(phone) !== undefined) {
+            mobileNotify("Existing contact with this phone number");
+            $("#modalview-AddContact").data("kendoMobileModalView").close();
+            return;
+        }
+
+        contact.set("phone", phone);
+
+        // Close modal
+        $("#modalview-AddContact").data("kendoMobileModalView").close();
+
+        mobileNotify("Invite sent");
+
+        // Look up this contacts phone number in the gg directory
+        findUserByPhone(phone, function (result) {
+
+            if (result.found) {
+                contact.set("phoneVerified", result.user.phoneVerified);
+                // Does the contact have a verified email address
+                if (result.user.emailVerified) {
+                    // Yes - save the email address the contact verified
+                    contact.set("email", result.user.email);
+                } else {
+                    // No - just use the email address the our user selected
+                    contact.set("email", email);
+                }
+                contact.set('publicKey',  result.user.publicKey);
+                contact.set("contactUUID", result.user.userUUID);
+
+            } else {
+                contactSendEmailInvite(contact.get('email'));
+                contact.set("phoneVerified", false);
+                contact.set('publicKey',  null);
+                contact.set("contactUUID", null);
+            }
+
+
+            getBase64FromImageUrl(photo, function (fileData) {
+                var parseFile = new Parse.File(guid+".png", {base64 : fileData}, "image/png");
+                parseFile.save().then(function() {
+                    contact.set("parsePhoto", parseFile);
+                    contact.set("photo", parseFile._url);
+                    contact.save(null, {
+                        success: function(contact) {
+                            // Execute any logic that should take place after the object is saved.
+                            mobileNotify('Added contact : ' + contact.get('name'));
+                            contactModel.contactsDS.add(contact.attributes);
+                            APP.kendo.navigate('#contacts');
+                        },
+                        error: function(contact, error) {
+                            // Execute any logic that should take place if the save fails.
+                            // error is a Parse.Error with an error code and message.
+                            handleParseError(error);
+                        }
+                    });
+                }, function(error) {
+                    // The file either could not be read, or could not be saved to Parse.
+                    handleParseError(error);
+                });
+            });
+
+        });
+
+    }
+};
+
+var editContactView = {
+    onInit: function (e) {
+        if (e.preventDefault !== undefined){
+            e.preventDefault();
+        }
+
+    },
+
+    updateVerifiedUX: function (phone, email) {
+
+        if (phone){
+            $("#edit-verified-phone").removeClass("hidden");
+            $("#editContactPhone").prop("readonly", true);
+        }
+
+        if(email){
+            $("#edit-verified-email").removeClass("hidden");
+            $("#editContactEmail").prop("readonly", true);
+        }
+    },
+
+    onShow: function (e) {
+        if (e.preventDefault !== undefined){
+            e.preventDefault();
+        }
+        var contact = contactModel.currentContact;
+        var contactId = e.view.params.contactId;
+
+        if (contactId !== undefined) {
+           // if there's contactId sent current contact to matching contact
+        }
+
+        //   $("#syncEditList").velocity("slideUp", {duration: 0});
+
+       // $('#contactEditList').removeClass('hidden');
+
+
+        // Todo - wire up verified status/read only fields
+
+        editContactView.updateVerifiedUX(contactModel.currentContact.phoneVerified,contactModel.currentContact.emailValidated);
+
+    },
+
+    onDone : function (e) {
+        if (e.preventDefault !== undefined)
+            e.preventDefault();
+
+        contactModel.currentContact.unbind('change' , syncCurrentContact);
+        APP.kendo.navigate("#contacts");
+
+        // reset UI
+        $("#contactEditList").velocity("fadeIn");
+    },
+
+    syncWithParse: function (e) {
+        if (e.preventDefault !== undefined)
+            e.preventDefault();
+
+        mobileNotify("Getting lastest info for " + contactModel.currentContact.name);
+        var contact = contactModel.currentContact;
+        if (contact.contactUUID !== undefined) {
+            getUserContactInfo(contact.contactUUID, function (result) {
+                if (result.found) {
+                    var user = result.user, dirty = false;
+                    if (contact.email !== user.email) {
+                        dirty = true;
+                        contact.email = user.email;
+                        mobileNotify(contact.name + " has changed their preferred email.")
+                    }
+                    if (contact.phone !== user.phone) {
+                        dirty = true;
+                        contact.phone = user.phone;
+                        mobileNotify(contact.name + " has changed their preferred phone.")
+                    }
+                    if (contact.phoneVerified !== user.phoneVerified) {
+                        dirty = true;
+                        contact.phoneVerified = user.phoneVerified;
+                        mobileNotify(contact.name + " has verified their phone.")
+                    }
+                    if (contact.emailValidated !== user.emailVerified) {
+                        dirty = true;
+                        contact.set('emailValidated',user.emailVerified);
+                        mobileNotify(contact.name + " has verified their email.")
+                    }
+                    if (contact.publicKey !== user.publicKey) {
+                        dirty = true;
+                        contact.publicKey = user.publicKey;
+                    }
+
+                    editContactView.updateVerifiedUX(contact.phoneVerified, contact.emailValidated);
+
+                }
+
+            });
+        } else {
+            findUserByPhone(contact.phone, function (result) {
+                if (result.found) {
+                    var user = result.user;
+                }
+
+            });
+        }
+    },
+
+    syncWithDevice : function (e) {
+
     }
 };

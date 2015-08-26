@@ -214,5 +214,12 @@ Sentinel.prototype = _.assign({
 			this.$date.remove();
 			delete this.$date;
 		}.bind(this));
+	},
+
+	clearFilters: function () {
+		this.$tags.empty();
+		this.$filters.children().removeClass('pressed');
+		this.filters = {};
 	}
+
 }, EventEmitter.prototype);

@@ -2,7 +2,12 @@ function syncCurrentContact(e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
     }
-    updateParseObject('contacts','uuid', contactModel.currentContact.uuid, e.field, this[e.field]);
+
+    if (e.field !== 'emailVerified') {
+        // Parse throws an error if we try to update emailVerified it's a protected field...
+        updateParseObject('contacts','uuid', contactModel.currentContact.uuid, e.field, this[e.field]);
+    }
+
     contactModel.currentContact.set(e.field, this[e.field]);
 }
     
@@ -137,10 +142,21 @@ function doInviteContact(e) {
         e.preventDefault();
     }
     var contactId = e.button[0].attributes["data-contact"].value;
+    var contact = contactModel.findContactByUUID(contactId);
 
-    var email = contactModel.currentContact.get('email');
+    updateCurrentContact(contact);
+    var email = contactModel.currentContact.get('email'), inviteSent = contactModel.currentContact.get('inviteSent');
 
-    contactSendEmailInvite(email);
+    if (inviteSent === undefined || inviteSent === false) {
+        contactSendEmailInvite(email);
+        contactModel.currentContact.set('inviteSent', true);
+        contactModel.currentContact.set('lastInvite', ggTime.currentTime());
+      //  updateParseObject('contacts', 'uuid', uuid, 'inviteSent', true );
+      //  updateParseObject('contacts', 'uuid', uuid, 'lastInvite', ggTime.currentTime() );
+    } else {
+        mobileNotify(contactModel.currentContact.name + "has already been invited");
+    }
+
 }
 
 function syncContact(model) {
@@ -314,11 +330,15 @@ function updateCurrentContact (contact) {
     contactModel.currentContact.set('address', contact.address);
     contactModel.currentContact.set('uuid', contact.uuid);
     contactModel.currentContact.set('photo', contact.photo);
+    contactModel.currentContact.set('inviteSent', contact.inviteSent);
+    contactModel.currentContact.set('lastInvite', contact.lastInvite);
     contactModel.currentContact.set('category', contact.category);
     contactModel.currentContact.set('contactUUID', contact.contactUUID);
     contactModel.currentContact.set('contactEmail', contact.contactEmail);
+    contactModel.currentContact.set('contactPhone', contact.contactPhone);
     contactModel.currentContact.set('privateChannel', contact.privateChannel);
     contactModel.currentContact.set('phoneVerified',contact.phoneVerified);
+    contactModel.currentContact.set('emailValidated',contact.emailValidated);
     contactModel.currentContact.set('publicKey',contact.publicKey);
     contactModel.currentContact.bind('change' , syncCurrentContact);
    
@@ -354,7 +374,7 @@ function onShowEditContact(e) {
 
 	$('#contactEditList').removeClass('hidden');
 	
-	syncContact(contactModel.currentContact);
+	contactModel.syncContactWithParse(contactModel.currentContact);
 	// Todo - wire up verified status/read only fields
 	
 	var contactVerified = contactModel.currentContact.phoneVerified;
@@ -696,7 +716,7 @@ function onDoneSyncContact (e) {
 	$("#editContact-resyncBtn").velocity("fadeIn",{duration: 300}).html('<img src="images/contacts.svg" /> Sync Contact With Device');
 }
 
-function doSyncContact(e) {
+function doSyncContactWithDevice(e) {
 	if (e.preventDefault !== undefined) {
 		e.preventDefault();
 	}
@@ -718,7 +738,8 @@ function doSyncContact(e) {
 // Given a full contact name as a string, fetch matching device contacts and then build a unified list of:
 // phone numbers, emails and addresses -- and first photo found. 
 function syncContactWithDevice(name, callback) {
-	deviceFindContacts(name, function (contacts) {
+
+    deviceFindContacts(name, function (contacts) {
 		unifyContacts(contacts);
 		if (callback !== undefined) {
 			callback();
@@ -888,125 +909,8 @@ function deviceFindContacts(query, callback) {
     };
     img.src = url;
 }
-			
-function doShowAddContact(e) {
-    if (e !== undefined && e.preventDefault !== undefined)
-        e.preventDefault();
-
-    var data = contactModel.currentDeviceContact;
-
-    // Set name
-    var name = data.name;
 
 
-    $("#addContactName").val(name);
-
-
-    if (data.photo === null) {
-        $("#addContactPhoto").attr("src","images/ghostgramcontact.png");
-
-    } else {
-        returnValidPhoto(data.photo, function(validUrl) {
-            $("#addContactPhoto").attr("src",validUrl);
-        });
-    }
-
-}
-
-function contactsAddContact(e){
-    if (e !== undefined && e.preventDefault !== undefined) {
-        e.preventDefault();
-    }
-    var Contacts = Parse.Object.extend("contacts");
-    var contact = new Contacts();
-    
-    var name = $('#addContactName').val(),
-        alias = $('#addContactAlias').val(),
-        phone = $('#addContactPhone').val(),
-        email = $('#addContactEmail').val(), 
-        photo = $('#addContactPhoto').prop('src'),
-        address = $('#addContactAddress').val();
-        guid = uuid.v4();
-	
-		contact.setACL(APP.models.profile.parseACL);
-		contact.set("name", name );
-		contact.set("alias", alias);
-		contact.set("address", address);
-		contact.set("group", '');
-	    contact.set('category', "new");
-		contact.set("priority", 0);
-		contact.set("privateChannel", null);
-		contact.set("uuid", guid);
-	
-    //phone = phone.replace(/\+[0-9]{1-2}/,'');
-    phone = phone.replace(/\D+/g, "");
-	if (phone[0] !== '1')
-		phone = '1' + phone;
-	
-	if (findContactByPhone(phone) !== undefined) {
-		mobileNotify("Existing contact with this phone number");
-		$("#modalview-AddContact").data("kendoMobileModalView").close();
-		return;
-	}
-	
-	contact.set("phone", phone);
-
-	// Close modal
-	$("#modalview-AddContact").data("kendoMobileModalView").close();
-
-	mobileNotify("Invite sent");
-
-	// Look up this contacts phone number in the gg directory
-	findUserByPhone(phone, function (result) {
-		
-		if (result.found) {	
-			contact.set("phoneVerified", result.user.phoneVerified);
-			// Does the contact have a verified email address
-			if (result.user.emailVerified) {
-				// Yes - save the email address the contact verified
-				contact.set("email", result.user.email);
-			} else {
-				// No - just use the email address the our user selected
-				contact.set("email", email);
-			}
-			contact.set('publicKey',  result.user.publicKey);
-			contact.set("contactUUID", result.user.userUUID);
-			
-		} else {
-            contactSendEmailInvite(contact.get('email'));
-			contact.set("phoneVerified", false);
-			contact.set('publicKey',  null);
-			contact.set("contactUUID", null);
-		}
-							
-
-		getBase64FromImageUrl(photo, function (fileData) {
-			var parseFile = new Parse.File(guid+".png", {base64 : fileData}, "image/png");
-			parseFile.save().then(function() {
-				contact.set("parsePhoto", parseFile);
-				contact.set("photo", parseFile._url);
-				 contact.save(null, {
-					  success: function(contact) {
-						// Execute any logic that should take place after the object is saved.
-						mobileNotify('Added contact : ' + contact.get('name'));
-						contactModel.contactsDS.add(contact.attributes);
-						APP.kendo.navigate('#contacts');
-					  },
-					  error: function(contact, error) {
-						// Execute any logic that should take place if the save fails.
-						// error is a Parse.Error with an error code and message.
-						  handleParseError(error);
-					  }
-					});
-				}, function(error) {
-				  // The file either could not be read, or could not be saved to Parse.
-						 handleParseError(error);
-				}); 
-			});    
-
-		});
-   
-}
     
 function contactsPickContact(e) {
     if (e !== undefined && e.preventDefault !== undefined) {

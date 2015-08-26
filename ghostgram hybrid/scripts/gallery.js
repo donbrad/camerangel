@@ -2,24 +2,40 @@
 
 'use strict';
 
-function onInitGallery(e){
-	archiveView.init();
+var getSentinelHeight = function () {
+	var gallerySelectIndex = $('#galleryMenuSelect').data('kendoMobileButtonGroup').current().index();
 
-	var adjustSentinelHeight = function () {
-		var combinedHeight = 0;
-		$('#search-archives').children().each( function () {
-			combinedHeight += $(this).height();
-		});
+	var combinedHeight = 0;
+	var currentHeight;
+	$('#search-archives').children().each( function () {
+		currentHeight = $(this).css('height');
+		$(this).css('height', 'auto');
 
+		combinedHeight += $(this).height();
+
+		$(this).css('height', currentHeight);
+	});
+
+	if (gallerySelectIndex === 0) {
 		// Dunno what's up with needing these calculations
 		combinedHeight *= 2;
 		combinedHeight += 70;
+	}
 
-		$('#search-archives').height(combinedHeight+'px');
+	return combinedHeight/16+'rem';
+};
+
+function onInitGallery(e){
+	archiveView.init();
+
+	var setSentinelHeight = function () {
+		$('#search-archives').height(getSentinelHeight());
 	};
-
-	archiveView.sentinel.addListener('add', adjustSentinelHeight);
-	archiveView.sentinel.addListener('remove', adjustSentinelHeight);
+/*
+	archiveView.sentinel.addListener('add', setSentinelHeight);
+	archiveView.sentinel.addListener('remove', setSentinelHeight);
+	setSentinelHeight();
+*/
 
    if (e !== undefined && e.preventDefault !== undefined){
 		e.preventDefault();
@@ -307,36 +323,29 @@ function onShowGallery(e) {
 
 
 function gallerySelectCategory(e){
-	 var index = this.current().index();
-	 switch(index) {
-	 case 0:
-	 	$(".gallerySearchOptions").velocity("slideDown");
-	 	$("#galleryPhotoDisplayOpts").velocity("slideUp");
-	 	$("#gallery-listview").addClass("hidden");
+	var index = this.current().index();
+	switch (index) {
+		case 0:
+			$(".gallerySearchOptions").velocity("slideDown");
+			$("#galleryPhotoDisplayOpts").velocity("slideUp");
 
-	 	$('#search-archives').velocity({
-	 		minHeight: '8rem'
-	 	});
-	 	$("#galleryBox").addClass("hidden");
-	 	$("#archiveBox").removeClass("hidden");
-	 	checkEmptyUIState("#archive-listview", "#archiveBox");
-	 	break;
+			$('#archive-listview').removeClass('hidden');
+			$("#gallery-listview").addClass('hidden');
 
-	 case 1:
-	 	$(".gallerySearchOptions").velocity("slideUp");
-	 	//$("#gallerySearchToolSelect").addClass("hidden");
-	 	$("#galleryPhotoDisplayOpts").velocity("slideDown");
-	 	$("#gallerySearch").attr("placeholder", "Search All");
-	 	$("#gallery-listview").removeClass("hidden");
+			break;
 
-	 	$('#search-archives').velocity({
-	 		minHeight: '5rem'
-	 	});
-	 	$("#galleryBox").removeClass("hidden");
-	 	$("#archiveBox").addClass("hidden");
-	 	checkEmptyUIState("#gallery-listview", "#galleryBox");
-	 	break;
-	 }
+		case 1:
+			$(".gallerySearchOptions").velocity("slideUp");
+			$("#galleryPhotoDisplayOpts").velocity("slideDown");
+
+			$('#archive-listview').addClass('hidden');
+			$("#gallery-listview").removeClass("hidden");
+			break;
+	}
+	$("#gallerySearch").attr("placeholder", "Search All");
+
+
+
 } 
 
 function galleryClick(e) {
