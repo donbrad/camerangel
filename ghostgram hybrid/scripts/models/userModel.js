@@ -31,7 +31,7 @@ var userModel = {
         macAddress: '',
         statusMessage: '',
         rememberUsername: false,
-        emailVerified: false,
+        emailValidated: false,
         phoneVerified: false,
         isVerified: false,
         isRetina: false,
@@ -40,7 +40,7 @@ var userModel = {
         isVisible: true,
         isAvailable: true,
         availImgUrl: 'images/status-available.svg',
-        currentPlaceName: '',
+        currentPlace: '',
         currentPlaceUUID: ''
     }),
 
@@ -112,28 +112,12 @@ var userModel = {
 
             userModel.parseACL = new Parse.ACL(userModel.parseUser);
 
-            userModel.currentUser.bind('change', syncProfile);
+            userModel.currentUser.bind('change', userModel.sync);
             userModel.fetchParseData();
 
         }
 
     },
-
-    /*checkPubnub: function() {
-        if (APP.pubnub === undefined || APP.pubnub === null) {
-
-            APP.pubnub = PUBNUB.init({
-                publish_key: 'pub-c-d4fcc2b9-2c1c-4a38-9e2c-a11331c895be',
-                subscribe_key: 'sub-c-4624e1d4-dcad-11e4-adc7-0619f8945a4f',
-                secret_key: 'sec-c-NDFiNzlmNTUtNWEyNy00OGUzLWExZjYtNDc3ZTI2ZGRlOGMw',
-                ssl: true,
-                jsonp: true,
-                restore: true,
-                uuid: uuid
-            });
-        }
-    },
-    */
 
     // user is valid parse User object
     generateNewPrivateKey : function (user) {
@@ -151,6 +135,23 @@ var userModel = {
 
         user.save();
 
+    },
+
+   sync: function (e) {
+        if (e !== undefined && e.preventDefault !== undefined) {
+            e.preventDefault();
+        }
+
+        userModel.parseUser.set(e.field, userModel.currentUser.get(e.field));
+        userModel.parseUser.save(null, {
+            success : function (user){
+                mobileNotify("Updated your " + e.field);
+            },
+            error: function (user, error){
+                mobileNotify("Profile save error: " + error);
+            }
+        });
+       userStatus.syncField(e.field);
     },
 
     encryptPrivateKey : function (key) {
@@ -215,6 +216,8 @@ var userModel = {
 
         photoModel.fetch();
 
+        userStatus.init();
+
        /* var InviteModel = Parse.Object.extend("invites");
         var InviteCollection = Parse.Collection.extend({
             model: InviteModel
@@ -260,4 +263,77 @@ var userModel = {
 
 
 
+};
+
+var userStatus = {
+    parseUserStatus: null,
+
+    init: function () {
+        var UserStatusModel = Parse.Object.extend("userStatus");
+        var query = new Parse.Query(UserStatusModel);
+        query.equalTo("userUUID", userModel.currentUser.userUUID);
+        query.find({
+            success: function(results) {
+                if (results.length > 0) {
+                    userStatus.parseUserStatus = results[0];
+                } else {
+                    userStatus.parseUserStatus = new UserStatusModel();
+                    userStatus.update();
+                }
+
+            },
+            error: function(error) {
+                mobileNotify("Parse User Status Error: " + error.code + " " + error.message);
+            }
+        });
+
+    },
+
+    syncField : function (field) {
+        switch(field) {
+            case 'userUUID':
+            case 'photo' :
+            case 'isAvailable' :
+            case 'isVisible' :
+            case 'statusMessage' :
+            case 'currentPlace' :
+            case 'currentPlaceUUID' :
+                userStatus.parseUserStatus.set(field, userModel.currentUser.get(field));
+                userStatus.parseUserStatus.set('lastUpdate', ggTime.currentTime());
+                userStatus.parseUserStatus.save(null, {
+                    success : function (user){
+                        mobileNotify("User status update: " + field);
+                    },
+                    error: function (user, error){
+                        mobileNotify("User Status update error: " + error);
+                    }
+                });
+        }
+    },
+
+    update : function () {
+        var status = userStatus.parseUserStatus;
+
+        status.set('userUUID', userModel.currentUser.userUUID);
+        status.set('photo', userModel.currentUser.photo);
+        status.set('isAvailable', userModel.currentUser.isAvailable);
+        status.set('isVisible', userModel.currentUser.isVisible);
+        status.set('statusMessage', userModel.currentUser.statusMessage);
+        status.set('currentPlace', userModel.currentUser.currentPlace);
+        status.set('currentPlaceUUID', userModel.currentUser.currentPlaceUUID);
+        status.set('lastUpdate', ggTime.currentTime());
+        status.save(null, {
+            success: function(status) {
+                // Execute any logic that should take place after the object is saved.
+
+            },
+            error: function(status, error) {
+                // Execute any logic that should take place if the save fails.
+                // error is a Parse.Error with an error code and message.
+                mobileNotify('Failed to create new object, with error code: ' + error.message);
+            }
+        });
+
+
+    }
 };

@@ -195,7 +195,7 @@ function homeSignout (e) {
 
     Parse.User.logOut();
     userModel.parseUser = null;
-    userModel.currentUser.unbind('change', syncProfile);
+    userModel.currentUser.unbind('change', userModel.sync);
     userModel.currentUser.set('username', null);
     userModel.currentUser.set('email', null);
     userModel.currentUser.set('phone',null);
@@ -292,7 +292,7 @@ function homeSignin (e) {
 			}
             userModel.currentUser.set('emailValidated', userModel.parseUser.get('emailVerified'));
             userModel.parseACL = new Parse.ACL(userModel.parseUser);
-            userModel.currentUser.bind('change', syncProfile);
+            userModel.currentUser.bind('change', userModel.sync);
             userModel.fetchParseData();
             APP.kendo.navigate('#home');
         },
@@ -409,7 +409,7 @@ function homeCreateAccount() {
 
 							//userModel.currentUser.set('publicKey',user.get('publicKey'));
 							//userModel.currentUser.set('privateKey',user.get('privateKey'));
-							userModel.currentUser.bind('change', syncProfile);
+							userModel.currentUser.bind('change', userModel.sync);
 							userModel.parseACL = new Parse.ACL(Parse.User.current());
 						    mobileNotify('Welcome to ghostgrams!');
 							if (window.navigator.simulator !== true) {
