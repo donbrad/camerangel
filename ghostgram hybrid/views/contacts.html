@@ -286,22 +286,20 @@
 <script type="text/x-kendo-template" id="contactsTemplate">      
 	<div>
     	<div class="contact-options list-options">
-    		# if (data.contactUUID !== undefined && data.contactUUID !== null){#
-    			<a class="btnClear-grey" data-role="button" data-click="doEditContact" data-contact="#:uuid#">
-				    <img src="images/option-edit.svg" height="18" />
-				    <p class="chat-option-selection">Edit</p>
-			   	</a>
-    		#} else {#
-			   	<a class="btnClear-grey" data-role="button" data-click="doInviteContact" data-contact="#:uuid#">
-			    	<img src="images/contact-invite.svg" height="12" />
-			    	<p class="chat-option-selection"> Resend Invite</p>
-		    	</a>
-			   	
-    		#}#
-    			<a class="btnClear-red" data-role="button" data-click="doDeleteContact" data-contact="#:uuid#">
-			    	<img src="images/trash.svg" height="18" />
-			    	<p class="chat-option-selection"> Delete</p>
-		    	</a>
+			# if (data.contactUUID === undefined || data.contactUUID === null){#
+			<a class="btnClear-grey" data-role="button" data-click="doInviteContact" data-contact="#:uuid#">
+				<img src="images/contact-invite.svg" height="12" />
+				<p class="chat-option-selection"> Resend Invite</p>
+			</a>
+			#}#
+			<a class="btnClear-grey" data-role="button" data-click="doEditContact" data-contact="#:uuid#">
+				<img src="images/option-edit.svg" height="18" />
+				<p class="chat-option-selection">Edit</p>
+			</a>
+			<a class="btnClear-red" data-role="button" data-click="doDeleteContact" data-contact="#:uuid#">
+				<img src="images/trash.svg" height="18" />
+				<p class="chat-option-selection"> Delete</p>
+			</a>
 		    
     	</div><!-- contact-options -->
 
@@ -340,9 +338,8 @@
 						</div>
 
 						<p class="left caption contact-status">
-						#if(data.phoneVerified !== true){#
-							Unverified •
-						#}#	Busy @ home
+						# var message = "", location = ""; if (data.message !== undefined && data.message !== "") {message = data.message;} if(data.location !== undefined && data.location !== ""){ if (message !== "") {location = " @ " + data.location;} else {location = data.location;}}#
+						#:message##:location#
 						</p>
 						<div class="clearfix"></div>
 						<div class="contact-info">
@@ -367,22 +364,56 @@
 
 <script type="text/x-kendo-template" id="deviceContactsTemplate">
   <div>
-	  <div>
-	  # if (data.name == '') {#
-	  	<!-- only for simulator -->
-	  	<h4>John Smith
-	  		<span class="right">
-	  			<a class="btnClearLine">Add</a>
-	  		</span>
-	  	</h4>
-	  #} else {# 
-		  <h4>#:data.name#
-	  		<span class="right">
-	  			<a class="btnClearLine">Add</a>
-	  		</span>
-	  	</h4>
-	  #}#  
-	  </div>
+	  <a class="contactListBox">
+		  <div class="contactListItem">
+
+		  <div class="left listPhoto">
+			  	# var photoUrl = "image/ghost-grey.svg"; if (data.photo !== null) { photoUrl = data.photo;} #
+				  <img class="circle-img-md" src="#:photoUrl#" />
+
+		  </div><!-- left -->
+		  <div class="left listName">
+			  <h4>#:data.name#
+				  <span class="right">
+					<a class="btnClearLine">Add</a>
+				</span>
+				</h4>
+			  <div style="margin-left: 10px;">
+				  <table>
+				   <tr>
+						<td style="width: 60px;">
+						Phone:
+						</td>
+						<td style="width: 280px;">
+						 # var phoneCount = data.phoneNumbers.length;  # #:data.phoneNumbers[0].number# (#:phoneCount# Total)
+						</td>
+				   </tr>
+					#if (data.emails.length > 0) {#
+					<tr>
+						<td style="width: 60px;">
+						Email:
+						</td>
+						<td style="width: 280px;">
+						 # var emailCount = data.emails.length; # #:data.emails[0].name# (#:emailCount# Total)
+						</td>
+				   </tr>
+				   #}#
+					#if (data.addresses.length > 0) {#
+					 <tr>
+						<td style="width: 60px;">
+						Address:
+						</td>
+						<td style="width: 280px;">
+						# var addressCount = data.addresses.length; # #:data.addresses[0].fullAddress# (#:addressCount# Total)
+						</td>
+					</tr>
+					 #}#
+				  </table>
+			  </div>
+		  </div>
+
+	  	</div>
+	  </a>
   </div>
 </script>
 
