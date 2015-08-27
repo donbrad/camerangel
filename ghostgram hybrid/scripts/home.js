@@ -210,8 +210,8 @@ function homeSignout (e) {
 }
 
 function doInitSignIn () {
-	if (APP.models.profile.rememberUsername && APP.models.profile.username !== '') {
-		$('#home-signin-username').val(APP.models.profile.username)
+	if (useModel.rememberUsername && userModel.username !== '') {
+		$('#home-signin-username').val(userModel.username)
 	}
 }
 
