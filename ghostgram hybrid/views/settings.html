@@ -42,7 +42,7 @@
 		  <ul data-role="listview" data-style="inset">
 				 <li>
 					<label>Device Id (udid) <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
-					<input type="text" id="profile-udid" data-bind="value: udid" readonly/>
+					<input type="text" id="profile-udid" data-bind="value: device.udid" readonly/>
 					</label>
 				</li>
 				</li>
@@ -58,12 +58,12 @@
 				</li>
 				<li>
 					<label> Application Directory <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
-					<input type="text" id="profile-version" data-bind="value: appDirectory" readonly/>
+					<input type="text" id="profile-appDirectory" data-bind="value: appDirectory" readonly/>
 					</label>
 				</li>
 				<li>
 					<label> Temporary Directory <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
-					<input type="text" id="profile-version" data-bind="value: tempDirectory" readonly/>
+					<input type="text" id="profile-tempDirectory" data-bind="value: tempDirectory" readonly/>
 					</label>
 				</li>
 			</ul>		

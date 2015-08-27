@@ -38,7 +38,7 @@ var deviceModel = {
                 var url = fileSystem.root.nativeURL;
                 url = url.replace('file://', '');
                 deviceModel.fileDirectory = url;
-                APP.models.profile.appDirectory = url;
+                userModel.appDirectory = url;
                 //mobileNotify(APP.fileDirectory);
             },
             function(error) {
@@ -50,7 +50,7 @@ var deviceModel = {
                 var url = fileSystem.root.nativeURL;
                 url = url.replace('file://', '');
                 deviceModel.tempDirectory = url;
-                APP.models.profile.tempDirectory = url;
+                userModel.tempDirectory = url;
                 //mobileNotify(APP.tempDirectory);
             },
             function(error) {
