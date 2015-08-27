@@ -60,21 +60,21 @@ var deviceModel = {
     },
 
     resetDeviceState: function ()  {
-        this.state.inPrivacyMode = false;
-        this.state.isVisible = true;
-        this.state.isAvailable = true;
-        this.state.rememberUsername = false;
-        this.state.isOnline = true;
-        this.state.inBackground= false;
-        this.state.userNotifications = [];
-        this.state.phoneVerified = false;
-        this.state.hasContacts = false;
-        this.state.hasChannels = false;
-        this.state.hasPrivateChannels = false;
-        this.state.hasPlaces = false;
-        this.state.hasPhotos = false;
-        this.state.introFetched =false;
-        this.state.pubnubInit = false;
+        deviceModel.state.inPrivacyMode = false;
+        deviceModel.state.isVisible = true;
+        deviceModel.state.isAvailable = true;
+        deviceModel.state.rememberUsername = false;
+        deviceModel.state.isOnline = true;
+        deviceModel.state.inBackground= false;
+        deviceModel.state.userNotifications = [];
+        deviceModel.state.phoneVerified = false;
+        deviceModel.state.hasContacts = false;
+        deviceModel.state.hasChannels = false;
+        deviceModel.state.hasPrivateChannels = false;
+        deviceModel.state.hasPlaces = false;
+        deviceModel.state.hasPhotos = false;
+        deviceModel.state.introFetched =false;
+        deviceModel.state.pubnubInit = false;
 
         // Reset App and User channel timestamps (should be rare on actual devices)
         localStorage.setItem('ggUserDataTimeStamp', 0);
