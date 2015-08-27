@@ -182,9 +182,6 @@ var archiveView = {
 	search: function () {
 		var filters = [];
 
-
-		console.log(archiveView.sentinel.filters);
-
 		if (archiveView.sentinel.filters.contacts !== undefined) {
 			filters.push({ field: 'message.sender.id', operator: 'eq', 'value': archiveView.sentinel.filters.contacts });
 		}

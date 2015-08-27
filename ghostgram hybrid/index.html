@@ -553,7 +553,7 @@
                 <div class="appendSearch">
                    <input type="search" id="profilePhotoMessage" placeholder="What's going on..." data-bind="value: statusMessage"/>
 	                   <span>
-		                   	<a data-role="button" data-click="gpsLocateUpdate" id="gpsLocateUpdateBtn">
+		                   	<a data-role="button" data-click="homeView.openLocateMeModal" id="gpsLocateUpdateBtn">
 		                   		<img src="images/icon-gps.svg" height="12px"/>
 		                   	</a>
 	                   </span>
@@ -572,6 +572,12 @@
     <div data-role="footer">
     	<a class="btnSecondary btnFull-modal" data-click="closeModalViewProfileStatus" data-role="button">Done</a>
     </div>
+</div>
+
+
+<div data-role="modalview" id="modalview-locate-me" style="width: 90%; display: none;" class="appearance">
+	<ul id="locate-me-list" data-role="listview">
+	</ul>
 </div>
 
 <!-- Photo tag modal -->
@@ -733,12 +739,15 @@
 
 
 <script type="text/x-kendo-tmpl" id="gallery-listview-template">
-<div>
-
-</div>
-
-
+<div></div>
 </script>
+
+ <script type="text/x-kendo-template" id="nearby-results-template">
+     <div style="min-height: 38px; border-radius: 9px; background-color: \\#fff; padding: 4px;">
+         <h4>#: data.name # </h4>
+         <p>#: data.vicinity # </p>
+     </div>
+ </script>
 	
 
 	</body>

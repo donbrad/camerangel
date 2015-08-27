@@ -1,3 +1,5 @@
+'use strict';
+
 function onInitPlaces(e) {
 	e.preventDefault();
 
