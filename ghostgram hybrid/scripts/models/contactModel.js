@@ -116,18 +116,23 @@ var contactModel = {
         return(contact);
     },
 
-    updateContactStatus : function () {
+    updateContactStatus : function (callback) {
         var contactUUID = contactModel.currentContact.contactUUID;
 
         mobileNotify("Updating contact status...");
-        contactModel.getContactStatusObject(contactUUID, function (contact) {
-            var current = contactModel.currentContact;
+        getUserContactInfo(contactUUID, function (result) {
+                if (result.found) {
+                    var contact = result.user;
+                    var current = contactModel.currentContact;
 
-            current.set('statusMessage', contact.statusMessage);
-            current.set('currentPlace', contact.currentPlace);
-            current.set('currentPlaceUUID', contact.currentPlaceUUID);
-            current.set('photo', contact.photo);
-            current.set('isAvailable', contact.isAvailable);
+                    current.set('statusMessage', contact.statusMessage);
+                    current.set('currentPlace', contact.currentPlace);
+                    current.set('currentPlaceUUID', contact.currentPlaceUUID);
+                    current.set('photo', contact.photo);
+                    current.set('isAvailable', contact.isAvailable);
+                }
+
+                callback();
 
         });
     },
