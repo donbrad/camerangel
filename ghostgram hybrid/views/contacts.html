@@ -1,5 +1,5 @@
+<div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="contactModel" data-init="contactsView.onInit" data-show="contactsView.onShow" data-before-hide="contactsView.onBeforeHide" style="display: none;">
 
-<div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="contactModel" data-init="contactsView.onInit" data-show="contactsView.onShow" data-hide="contactsView.onHide" style="display: none;">
 	<div class="topViewSearchBox">
 	 	<div class="appendSearch">
 			<span class="searchIcon"><img src="images/search.svg" /></span>
@@ -25,23 +25,6 @@
          		<img src="images/empty-contacts.svg" />
          	</div>
 	    </div>
-    
-    <ul data-role="actionsheet" id="contactActions" data-popup='{"direction": "left"}'>
-		<li><a data-action="inviteContact">Invite Contact</a></li>
-		<li><a  data-action="doEditContact">Edit Contact</a></li>
-		<li><a data-action="contactSendSMS">Send SMS</a></li>
-		<li><a data-action="contactSendEmail">Send Email</a></li>
-		<li><a data-action="contactCallPhone">Phone Call</a></li>
-    </ul> 
-    
-      <ul data-role="actionsheet" id="contactUserActions" data-popup='{"direction": "left"}'>
-        <li><a data-action="doEditContact">Edit Contact</a></li>
-        <li><a data-action="privateChat">Private Chat</a></li>
-		<li><a data-action="ghostEmail">Send Secure Email</a></li>
-		<li><a data-action="contactSendSMS">Send SMS</a></li>
-		<li><a data-action="contactSendEmail">Send Email</a></li>
-		<li><a data-action="contactCallPhone">Phone Call</a></li>
-    </ul>
 </div>
 
 <!-- contact action -->
@@ -49,15 +32,35 @@
 	<div class="modal-top">
 		<a data-role="button" class="modal-close" data-click="closeContactActions"><img src="images/close.svg"/></a>
 		<img class="circle-img-lg" data-bind="attr: {src: photo}"/>
-		<h3 data-bind="text: name"></h3>
-		<p data-bind="text: alias"></p>
+		<img width="16" src="images/status-away.svg" class="statusContactCard-icon">
+		<h3>
+			<span class="primaryName" id="contactPrimaryName"></span>
+			<span class="hidden" id="currentContactVerified"><img src="images/icon-verified-dark.svg" class="user-status-icon"></span>
+			<span class="secondName" id="contactSecondName"></span>
+		</h3>
+		<p><span class="contactStatusMessage">Out running at the park</span> @ <span class="contactLocation shade-100">Main St Park </span></p>
 	</div>
 	<div class="modal-bottom">
 		<ul class="list-inline" id="contactActionBtns" >
-			<li><a class="btnClear" data-role="button" data-click="privateChat"><img src="images/ghost-info.svg" />  Private Chat</a></li>
-			<li><a class="btnClear" data-role="button" data-click="ghostEmail"><img src="images/ghost-info.svg" />  Rich Email</a></li>
-			<li><a class="btnClear" data-role="button" data-click="contactCallPhone">Phone Call</a></li>
-			<li><a class="btnClear" data-role="button" data-click="contactSendSMS">Send SMS</a></li>
+			<li>
+				<a class="btnClear" data-role="button" data-click="privateChat">
+				<img src="images/icon-ghostgram.svg" /> Private Chat
+				</a>
+			</li>
+			<li>
+				<a class="btnClear" data-role="button" data-click="ghostEmail">
+				<img src="images/icon-ghostMail.svg" /> Rich Email</a>
+			</li>
+			<li>
+				<a class="btnClear" data-role="button" data-click="contactCallPhone">
+				<img src="images/icon-phone.svg" /> Phone Call
+				</a>
+			</li>
+			<li>
+				<a class="btnClear" data-role="button" data-click="contactSendSMS">
+				<img src="images/icon-sms.svg" /> Send SMS
+				</a>
+			</li>
 		</ul>
 	</div>
 </div>
@@ -66,22 +69,24 @@
 <div data-role="view" data-title="Import Contacts" id="contactImport"  data-model="contactModel" data-init="contactImportView.onInit" data-show="contactImportView.onShow" style="display: none;">
     <div data-role="header">
         <div data-role="navbar">
-           <a data-role="button"  data-align="left" href="#:back" ><img src="images/nav-back.svg" /></a>
+           <a data-role="button"  data-align="left" href="#:back" data-click="contactImportView.resetContactImport"><img src="images/nav-back.svg" /></a>
 			<span data-role="view-title"></span>
         </div>
-    </div>    
+    </div>
+    <div class="topViewSearchBox">
+	 		<div class="appendSearch">
+				<span class="searchIcon"><img src="images/search.svg" /></span>
+				<input type="search" id="contactImportQuery" class="viewSearchBox" placeholder="Search for contact"/>
+			</div>
+		</div>   
     <div  style="padding-bottom: 24px;">
-       <div style="padding-bottom: 4px; padding-top: 4px; display: inline; vertical-align: middle;">
-         <input  style="font-size: 16px; margin-left: 6px; width: 85%" id="contactImportQuery" type="search" placeholder="Enter contact name..."/>
-         <a data-role="button"  data-click="contactImportView.searchContacts"><img style="margin-top: 6px;" height=22 src="images/search.svg" /></a>
-        </div>
         <ul id="contactimport-listview"></ul>
     </div>    
 </div>
 
 <!-- Modal add contact -->
 <div data-role="modalview" data-model="contactModel" data-title="Add Contact" id="modalview-AddContact" data-open="addContactView.doShow" data-init="addContactView.doInit" class="appearance" style="width: 90%; min-height: 100%; display: none;">
-    <div class="inviteContactImg">
+    <div class="appBox">
     	<div class="inviteTop hidden">
     		<img src="images/invite.svg" height="16" />
     	</div>
@@ -97,7 +102,7 @@
     		</div>
     		<div class="topHalfRight">
 				<div>
-					<input class="input-text-md " id="addContactName" type="search" placeholder="Contact full name"/>
+					<input class="input-text-md" id="addContactName" type="search" placeholder="Contact full name"/>
 				</div>
 				<div>
     				<span class="caption">aka</span>
@@ -109,37 +114,45 @@
     	<ul data-role="listview" data-style="inset" class="inviteContactInfo">
     		<li>           
                 <label>Phone
-                    <select id="addContactPhone" data-role="dropdownlist"
-                            data-text-field="number"
-                            data-value-field="number"
-                            data-bind="source: phoneDS"
-                            auto-bind="false">
-                    </select>
+                	<div class="select-lg">
+	                    <select id="addContactPhone" 
+	                            data-text-field="number" 
+	                            data-value-field="number"
+	                            data-bind="source: phoneDS"
+	                            auto-bind="false">
+	                    </select>
+	                </div>
                 </label>
             </li>
             <li>
                 <label>Email
-                     <select id="addContactEmail" data-role="dropdownlist"
-                            data-text-field="address" 
-                            data-value-field="address"
-                            data-bind="source: emailDS"
-                           	auto-bind="false">
-                    </select>
+                	<div class="select-lg">
+	                     <select id="addContactEmail" 
+	                            data-text-field="address" 
+	                            data-value-field="address"
+	                            data-bind="source: emailDS"
+	                           	auto-bind="false">
+	                    </select>
+	                </div>
                 </label>
             </li>
             <li>
                 <label>Address
-                     <select id="addContactAddress" data-role="dropdownlist"
-                            data-text-field="address" 
-                            data-value-field="address"
-                            data-bind="source: addressDS"
-                           	auto-bind="false">
-                    </select>
+                	<div class="select-lg">
+	                     <select id="addContactAddress"
+	                            data-text-field="address" 
+	                            data-value-field="address"
+	                            data-bind="source: addressDS"
+	                           	auto-bind="false">
+	                    </select>
+	                </div>
                 </label>
             </li>
     	</ul>
-    	<a class="btnPrimary btnSpan" data-role="button" data-click="addContactView.addContact">Invite to ghostgrams</a>
-    </div> 
+	</div>
+	<div class="footer" data-role="footer">
+	    	<a class="btnPrimary btnFull-modal" data-role="button" data-click="addContactView.addContact">Invite to ghostgrams</a>
+	    </div>
 </div>
 
 <!-- Edit Contacts -->
@@ -322,7 +335,7 @@
 					</div><!-- left -->
 
 						<div class="left listName">
-							<h4>
+							<h4 class="textClamp">
 							#if(data.alias !== ''){#
 								#: data.alias #
 							#} else {#
@@ -338,19 +351,12 @@
 						</div>
 
 						<p class="left caption contact-status">
-						# var message = "", location = ""; if (data.message !== undefined && data.message !== "") {message = data.message;} if(data.location !== undefined && data.location !== ""){ if (message !== "") {location = " @ " + data.location;} else {location = data.location;}}#
-						#:message##:location#
+
+							# var message = "", location = ""; if (data.message !== undefined && data.message !== "") {message = data.message;} if(data.location !== undefined && data.location !== ""){ if (message !== "") {location = " @ " + data.location;} else {location = data.location;}}#
+							#:message##:location#
+
 						</p>
 						<div class="clearfix"></div>
-						<div class="contact-info">
-							<label>Contact via</label>
-							<ul data-role="listview" data-style="inset">
-								<li><a class="btnClear">Private Chat</a></li>
-								<li><a class="btnClear">ghostMail</a></li>
-								<li><a class="btnClear">Call</a></li>
-								<li><a class="btnClear">SMS</a></li>
-							</ul>
-						</div>
 				#} else {#
 					<h4 class="phoneContact">
 						#: data.name #

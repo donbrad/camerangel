@@ -1,6 +1,16 @@
 
 
+function onShowChannels(){
+	// set action button
+	$("#channels > div.footerMenu.km-footer > a").attr("href", "#addChannel").css("display","inline-block");
 
+}
+
+function onBeforeHideChannels(){
+	// set action button
+	$("#channels > div.footerMenu.km-footer > a").css("display","none");
+
+}
 
 function syncCurrentChannel(e) {
 	if (e.preventDefault !== undefined)
@@ -9,7 +19,6 @@ function syncCurrentChannel(e) {
 	currentChannelModel.currentChannel.set(e.field, this[e.field]);
 }
     
-
     
 function eraseChannel(e) {
 	e.preventDefault();
@@ -44,14 +53,84 @@ function onChannelsClick(e) {
 function gotoChannel(channelId) {
 	APP.kendo.navigate('#channel?channel='+channelId);
 }
-*
+*/
 
 
-function listViewClick(e){
+function onInitChannels (e) {
+    e.preventDefault();
     
+    // set search bar 
+    var scroller = e.view.scroller;
+	scroller.scrollTo(0,-44);
+
+	
+    // ToDo: Initialize list view
+	
+     $("#channels-listview").kendoMobileListView({
+        dataSource: channelModel.channelsDS,
+        template: $("#channels-listview-template").html(),
+        click: function(e) {
+        	var selector = e.target[0].parentElement;
+        	if($(selector).hasClass("chat-mainBox") === true || e.target[0].className === "chat-mainBox"){
+        		var channelUrl = "#channel?channel=" + e.dataItem.channelId;
+        		APP.kendo.navigate(channelUrl);
+        	} 
+        },
+        dataBound: function(e){	
+        	checkEmptyUIState("#channels-listview", "#channelListDiv");
+        }
+    }).kendoTouch({
+    	filter: ".chat-mainBox",
+    	enableSwipe: true,
+    	swipe: function(e){
+    		var selection = e.sender.events.currentTarget;
+
+    		if(e.direction === "left"){
+    			var otherOpenedLi = $(".chat-active");
+    			$(otherOpenedLi).velocity({translateX:"0"},{duration: "fast"}).removeClass("chat-active");
+
+    			if($(selection).hasClass("private") !== true && $(window).width() < 375){
+    				$(selection).velocity({translateX:"-80%"},{duration: "fast"}).addClass("chat-active");
+    			} else if ($(selection).hasClass("private")){
+    				$(selection).velocity({translateX:"-40%"},{duration: "fast"}).addClass("chat-active");
+    			} else {
+    				$(selection).velocity({translateX:"-70%"},{duration: "fast"}).addClass("chat-active");
+    			}
+    			
+    			
+    		}
+    		if (e.direction === "right" && $(selection).hasClass("chat-active")){
+    			$(selection).velocity({translateX:"0"},{duration: 150}).removeClass("chat-active");
+    		}
+    	}
+    	
+    });
+    
+   	
 }
 
-*/
+function cancelEditChat(e){
+
+}
+
+
+function doShowEventInputs(e) {
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
+	$('.addChannelEvent').removeClass('hidden');
+}
+
+function onShowAddChannel (e) {
+	e.preventDefault();
+	currentChannelModel.potentialMembersDS.data([]);
+	currentChannelModel.potentialMembersDS.data(contactModel.contactsDS.data());
+	currentChannelModel.membersDS.data([]);
+
+	$('.addChannelEvent').addClass('hidden');
+
+	// hide channel description
+	$("#channels-addChannel-description").css("display","none");
+}
 
 
 /*
@@ -65,8 +144,62 @@ function appendMemberToUXList (thisMember) {
 		mainName = alias;
 		smallName = name;
 	} else {
+<<<<<<< HEAD
+		$(".addChatMembersBanner a").text("No one is invited. Tap to send invites");
+		
+	}
+	
+	// hide trash cans
+	$(".listTrash, #listDone").css("display", "none");
+		
+}
+
+function doShowChannelMembers (e) {
+	if (e.preventDefault !== undefined)
+		e.preventDefault();
+
+	var members = currentChannelModel.members, invitedMembers = currentChannelModel.invitedMembers;
+
+
+	// Need to break observable link or contacts get deleted.
+	var contactArray = contactModel.contactsDS.data().toJSON();
+
+	// create an easy reference to the potential members data source
+	var dataSource = currentChannelModel.potentialMembersDS;
+
+	// Zero potential members data source so we can add all contacts
+	dataSource.data([]);
+
+	// Add current contacts to potential members data source
+	// we delete members from potential members as we add them to members data source
+	dataSource.data(contactArray);
+
+
+	// Zero out member datasource so we can rebuild it
+	currentChannelModel.membersDS.data([]);
+
+	if (members.length > 0) {
+
+		for (var i=0; i<members.length; i++) {
+			var thisMember = contactModel.getContactModel(members[i]);
+			if (thisMember === undefined)
+				thisMember = contactModel.findContactByUUID(members[i]);
+			if (thisMember !== undefined) {
+
+				currentChannelModel.membersDS.add(thisMember);
+				dataSource.filter( { field: "uuid", operator: "eq", value: thisMember.uuid});
+				var view = dataSource.view();
+				var contact = view[0];
+				dataSource.filter([]);
+				dataSource.remove(contact.items[0]);  // new object layout for aggregate datasources
+			}
+
+		}
+		currentChannelModel.potentialMembersDS.sync();
+=======
 		mainName = name;
 		smallName = alias;
+>>>>>>> master
 	}
 	$("#editChannelMemberList").append('<li id="'+thisMember.uuid+
 		'">'+

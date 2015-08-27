@@ -345,6 +345,7 @@ function gallerySelectCategory(e){
 	$("#gallerySearch").attr("placeholder", "Search All");
 
 
+
 } 
 
 function galleryClick(e) {

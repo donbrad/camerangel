@@ -36,7 +36,7 @@ var channelsView = {
                 checkEmptyUIState("#channels-listview", "#channelListDiv");
             }
         }).kendoTouch({
-            filter: "div",
+            filter: ".chat-mainBox",
             enableSwipe: true,
             swipe: function(e){
                 var selection = e.sender.events.currentTarget;
@@ -78,6 +78,11 @@ var channelsView = {
         $("#channels > div.footerMenu.km-footer > a").attr("href", "#addChannel").css("display","inline-block");
 
         channelsView.checkEmpty();
+    },
+
+    onBeforeHide: function(){
+    	// set action button
+		$("#channels > div.footerMenu.km-footer > a").css("display","none");
     },
 
     editChannel : function (e) {
@@ -187,7 +192,7 @@ var addChannelView = {
                 $("#channels-addChannel-name").unbind();
             }
         });
-        this.addChatStep1();
+        addChannelView.addChatStep1();
 
     },
 
@@ -244,8 +249,69 @@ var editChannelView = {
             //headerTemplate: $("#editMembersHeaderTemplate").html(),
             ///fixedHeaders: true,
             click: function (e) {
-
+            	
             }
+        }).kendoTouch({
+        	filter: "li",
+        	enableSwipe: false,
+        	dragstart: function(e){
+		 		var selection = e.touch.currentTarget;
+		 		var selectionListItem = $(selection);
+		 		
+		 		// add moving classes
+		 		$(selection).addClass("selectedLI");
+		 		$(".selectedLI > div").first().addClass("movingContact");
+
+		 		$(".selectedLI").css("background", "#E57373");
+		 		
+		 	},
+		 	drag: function(e){
+		 		var currentX = e.touch.x.location;
+		 		var windowWidth = $(window).width();
+		 		
+		 		var windowPerc = 1 - (currentX / windowWidth);
+		 		windowPerc = (windowPerc * 100).toFixed(0);
+
+		 		var fadePerc = (windowPerc * 4) / 100;
+		 		var trailingPerc = windowPerc - 20;
+
+		 		$(".selectedLI > .deleteMemberText").css("opacity", fadePerc+"%");
+		 		
+		 		$(".movingContact").css("right", windowPerc+"%");
+		 		//
+		 		if(windowPerc > 25){
+		 			$(".selectedLI > .deleteMemberText").css("right", trailingPerc+"%");
+		 		}
+
+		 	},
+		 	dragend: function(e){
+		 		// get current position
+		 		var currentX = e.touch.x.location;
+		 		var windowWidth = $(window).width();
+		 		var widthPerc = currentX  / windowWidth;
+		 		var contactId = $(".movingContact").attr("data-id");
+		 		
+		 		//if drag is far enough, set action
+		 		if (widthPerc < 0.75) {
+					$(".movingContact").velocity({translateX:"-100%"},{duration: 600, easing: "spring"});
+					$(".selectedLI").velocity("slideUp", {duration: 600});
+					
+
+					// Todo - need to revisit to fix errors
+		 			// editChannelView.deleteMember(contactId);
+				} else {
+		 			$(".movingContact").velocity({right:"0"},{duration: 600, easing: "spring"});
+		
+		 		}
+
+		 		$(".selectedLI").css("background", "#fff");
+		 		// remove moving class
+		 		$(".selectedLI > div").removeClass("movingContact");
+		 		$("#editmembers-listview > .selectedLI").removeClass("selectedLI");
+		 		
+		 	}
+
+
         });
         //$('#editChannelMemberList li').remove();
     },
@@ -298,8 +364,7 @@ var editChannelView = {
 
             }
 
-            // hide trash cans
-            $(".listTrash, #editChannel-Done").css("display", "none");
+            
         } else {
             // channelMembers is returning to this view so update ux to reflect memberstate
             if (currentChannelModel.currentChannel.members.length > 0) {
@@ -308,6 +373,10 @@ var editChannelView = {
                 $(".addChatMembersBanner a").text("No one is invited. Tap to send invites");
             }
         }
+
+        // show action btn text
+        
+        showActionBtnText("#editChannel > div.footerBk.km-footer > a.actionBtn.secondary-100.km-widget.km-button > span > p");
 
     },
 
@@ -341,12 +410,12 @@ var editChannelView = {
             userDataChannel.groupChannelInvite(currentChannelModel.membersAdded[ma].contactUUID, channelId, currentChannelModel.currentChannel.name, "You've been invited to " + currentChannelModel.currentChannel.name);
         }
 
-
+        
         //Send Delete messages to users deleted from the channel
         for (var md = 0; md < currentChannelModel.membersDeleted.length; md++) {
             userDataChannel.groupChannelDelete(currentChannelModel.membersDeleted[md].contactUUID, channelId, currentChannelModel.currentChannel.name + "has been deleted.");
         }
-
+		
         updateParseObject('channels', 'channelId', channelId, 'members', memberArray);
         updateParseObject('channels', 'channelId', channelId, 'invitedMembers', invitedMemberArray);
 
@@ -367,11 +436,8 @@ var editChannelView = {
         $("#channels-addChannel-description, #channels-addChannel-name").val('');
     },
 
-    deleteMember : function (e) {
-        if (e.preventDefault !== undefined)
-            e.preventDefault();
-
-        var contactId = e.attributes['data-param'].value;
+    deleteMember : function (contactId) {
+        
         var thisMember = contactModel.findContactByUUID(contactId);
 
         currentChannelModel.membersDeleted.push(thisMember);

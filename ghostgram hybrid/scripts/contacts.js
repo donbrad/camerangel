@@ -406,8 +406,288 @@ function onDoneEditContact (e) {
 }
 
 
+function onInitContacts(e) {
+
+	if (e.preventDefault !== undefined){
+    	e.preventDefault();
+    }
+
+    // set search bar 
+    var scroller = e.view.scroller;
+	scroller.scrollTo(0,-44);
+
+    contactModel.deviceQueryActive = false;
+	
+	var dataSource = contactModel.contactListDS;
+	
+	// Activate clearsearch and zero the filter when it's called
+     $('#contactSearchInput').clearSearch({ 
+		 callback: function() { 
+			 dataSource.data([]);
+			 dataSource.data(contactModel.contactsDS.data());
+			 dataSource.filter([]);
+             contactModel.deviceContactsDS.data([]);
+			 $('#btnSearchDeviceContacts').addClass('hidden');
+		 } 
+	 });
+	
+	// Filter current contacts and query device contacts on keyup
+	// Todo: cache local contacts on first call and then just filter that list
+	$('#contactSearchInput').keyup(function() {
+		 var query = this.value;
+		 if (query.length > 0) {
+			  dataSource.filter( {"logic":"or",
+                  "filters":[
+                      {
+                          "field":"name",
+                          "operator":"contains",
+                          "value":query},
+                      {
+                          "field":"alias",
+                          "operator":"contains",
+                          "value":query}
+                  ]});
+			  if (query.length > 2) {
+				  $('#btnSearchDeviceContacts').removeClass('hidden');
+			  }
+			  $("#btnSearchDeviceName").text(query);
+			
+		 } else {
+			 dataSource.data([]);
+             contactModel.deviceContactsDS.data([]);
+			 dataSource.data(contactModel.contactsDS.data());
+			 dataSource.filter([]);
+			 
+			 $('#btnSearchDeviceContacts').addClass('hidden');
+			  
+		 }
+	 });
+
+     $("#contacts-listview").kendoMobileListView({
+        dataSource: contactModel.contactListDS,
+        template: $("#contactsTemplate").html(),
+		headerTemplate: $("#contactsHeaderTemplate").html(),
+        fixedHeaders: true,
+        click: function (e) {
+            var contact = e.dataItem;
+   
+            updateCurrentContact(contact);
+            
+			if (contact.category === 'phone') {
+                if (contactModel.unifiedDeviceContact) {
+                    // Have a unified device contact -- just to add contact
+                    launchAddContact({dataItem : contact});
+                } else {
+                    // Still have multiple contacts
+                    APP.kendo.navigate('#contactImport?query=' + contact.name);
+                }
+
+			} else {		
+				// If we know the contacts uuid enable the full feature set
+				
+				openContactActions();
+				if (contact.contactUUID !== undefined && contact.contactUUID !== null){
+					$("#contactActionBtns > li:first-child").show();
+				} else {
+					$("#contactActionBtns > li:first-child").hide();
+				}
+
+			}
+             
+        },
+        dataBound: function(e){
+        	checkEmptyUIState("#contacts-listview", "#contactListDiv >");
+        }
+     }).kendoTouch({
+    	filter: ".contactListBox",
+        // filter: "div",
+    	enableSwipe: true,
+    	swipe: function(e) {
+            // Need to set current contact before exposing editing ux!
+    		var selection = e.sender.events.currentTarget;
+    		if(e.direction === "left"){
+    			var otherOpenedLi = $(".contact-active");
+    			$(otherOpenedLi).velocity({translateX:"0"},{duration: "fast"}).removeClass("contact-active");
+    			$(selection).velocity({translateX:"-50%"},{duration: "fast"}).addClass("contact-active");		
+    			
+    		}
+    		if (e.direction === "right" && $(selection).hasClass("contact-active")){
+    			$(selection).velocity({translateX:"0"},{duration: "fast"}).removeClass("contact-active");
+    		}
+    		
+    	}
+    });
+    
+}
+
+function openContactActions(){
+	
+	var contactName = contactModel.currentContact.name;
+	var contactAlias = contactModel.currentContact.alias;
+	var contactVerified = contactModel.currentContact.phoneVerified;
+
+	formatNameAlias(contactName, contactAlias, "#modalview-contactActions");
+
+	if(contactVerified){
+		$("#currentContactVerified").removeClass("hidden");
+	} else {
+		$("#currentContactVerified").addClass("hidden");
+	}
+	$("#modalview-contactActions").data("kendoMobileModalView").open();
+
+}
+
 function closeContactActions() {
 	$("#modalview-contactActions").data("kendoMobileModalView").close();
+}
+
+ 
+function onShowContacts (e) {
+	if (e.preventDefault !== undefined)
+    	e.preventDefault();
+
+    contactModel.contactListDS.data(contactModel.contactsDS.data());
+	//APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
+	
+	
+	// set action button
+	$("#contacts > div.footerMenu.km-footer > a").attr("href", "#contactImport").css("display", "inline-block");
+
+}
+
+function onHideContacts (e) {
+	if (e.preventDefault !== undefined)
+    	e.preventDefault();
+	//APP.models.contacts.contactListDS.data(APP.models.contacts.contactsDS.data());
+
+	// hide action btn
+	$("#contacts > div.footerMenu.km-footer > a").css("display", "none");
+}
+
+function launchAddContact(e) {
+
+    contactModel.currentDeviceContact = e.dataItem;
+    contactModel.emailArray = new Array();
+
+    for (var i = 0; i<contactModel.currentDeviceContact.emails.length; i++) {
+        var email = new Object();
+        email.name = contactModel.currentDeviceContact.emails[i].name;
+        email.address =  contactModel.currentDeviceContact.emails[i].address;
+
+        contactModel.emailArray.push(email);
+
+    }
+
+    contactModel.phoneArray = new Array();
+    for (var j = 0; j<contactModel.currentDeviceContact.phoneNumbers.length; j++) {
+        var phone = new Object();
+        phone.name = contactModel.currentDeviceContact.phoneNumbers[j].name;
+        phone.number = contactModel.currentDeviceContact.phoneNumbers[j].number;
+
+        contactModel.phoneArray.push(phone);
+
+    }
+
+    contactModel.addressArray = new Array();
+    for (var a = 0; a<contactModel.currentDeviceContact.addresses.length; a++) {
+        var address = new Object();
+        address.name = contactModel.currentDeviceContact.addresses[a].name;
+        address.address =  contactModel.currentDeviceContact.addresses[a].fullAddress;
+
+        contactModel.addressArray.push(address);
+    }
+
+
+
+    contactModel.phoneDS.data( contactModel.phoneArray);
+    contactModel.emailDS.data( contactModel.emailArray);
+    contactModel.addressDS.data( contactModel.addressArray);
+
+
+  /*
+    $("#addNicknameBtn").removeClass("hidden");
+    $("#contactNicknameInput input").val("");*/
+
+    var data = contactModel.currentDeviceContact;
+
+    // Set name
+    var name = data.name;
+    $("#addContactName").val(name);
+
+
+    if (data.photo !== null) {
+        returnValidPhoto(data.photo, function(validUrl) {
+            $("#addContactPhoto").attr("src",validUrl);
+        });
+    }
+
+    $( "#addContactPhone" ).change(function() {
+        var phone = $("#addContactPhone").val();
+
+        isValidMobileNumber(phone, function(result){
+           if (result.status === 'ok') {
+               if (result.valid === false) {
+                   mobileNotify(phone + 'is not a valid mobile number');
+               }
+           }
+        });
+    });
+
+    $("#modalview-AddContact").data("kendoMobileModalView").open();
+
+}
+
+function onInitContactImport (e) {
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
+	
+    $("#contactimport-listview").kendoMobileListView({
+            dataSource: contactModel.deviceContactsDS,
+            template: $("#deviceContactsTemplate").html(),
+			headerTemplate: "${value}",
+            fixedHeaders: true,
+            click: launchAddContact
+
+
+    });
+}
+
+function onShowContactImport (e) {
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
+	var query = e.view.params.query;
+	//contactsFindContacts(query);
+	
+}
+
+function searchDeviceContacts(e) {
+    if (e !== undefined && e.preventDefault !== undefined) {
+        e.preventDefault();
+    }
+
+	var query = $('#contactSearchInput').val();
+	
+	contactsFindContacts(query, function(array) {
+
+        var name = query.toLowerCase(), nameArray = name.split(' ');
+
+        // Two names?
+        if (nameArray.length > 1) {
+            mobileNotify("Unifying " + query + "'s data");
+            unifyContacts(array);
+            contactModel.unifiedDeviceContact = true;
+            contactModel.contactListDS.data([]);
+            contactModel.contactListDS.add(array[0]);
+        } else {
+            contactModel.unifiedDeviceContact = false;
+            for (var i=0; i<array.length; i++) {
+                contactModel.contactListDS.add(array[i]);
+            }
+        }
+
+	});
 }
 
 // Filter contacts - unify matching names
