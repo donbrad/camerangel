@@ -667,6 +667,7 @@ var contactActionView = {
         } else {
             $("#currentContactVerified").addClass("hidden");
         }
+
     }
 
 };
