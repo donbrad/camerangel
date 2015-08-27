@@ -213,6 +213,17 @@ var contactImportView = {
 
         });
 
+        $("#addContactPhone").change(function() {
+            var phone = $("#addContactPhone").val();
+            mobileNotify("Please wait - validating phone...");
+            isValidMobileNumber(phone, function(result){
+                if (result.status === 'ok') {
+                    if (result.valid === false) {
+                        mobileNotify(phone + 'is not a valid mobile number');
+                    }
+                }
+            });
+        });
     },
 
     onShow: function (e) {
@@ -235,7 +246,9 @@ var contactImportView = {
         var query = $('#contactImportQuery').val();
 
         if (query.length > 2) {
-            deviceFindContacts(query);
+            deviceFindContacts(query, function(contacts) {
+
+            });
         }
     },
 
@@ -254,7 +267,7 @@ var contactImportView = {
         // sync data from  any contacts with same name
         mobileNotify("Unifying contact information for " + e.dataItem.name);
 
-        syncContactWithDevice(e.dataItem.name, function () {
+        syncContactWithDevice(e.dataItem.name, function (contacts) {
 
             contactModel.emailArray = [];
 
@@ -308,17 +321,7 @@ var contactImportView = {
                 });
             }
 
-            $( "#addContactPhone" ).change(function() {
-                var phone = $("#addContactPhone").val();
-                mobileNotify("Please wait - validating phone...");
-                isValidMobileNumber(phone, function(result){
-                    if (result.status === 'ok') {
-                        if (result.valid === false) {
-                            mobileNotify(phone + 'is not a valid mobile number');
-                        }
-                    }
-                });
-            });
+            contactModel.deviceContactsDS.data([contacts[0]]);
 
         });
     },
@@ -401,7 +404,7 @@ var addContactView = {
         mobileNotify("Invite sent");
 
         // Look up this contacts phone number in the gg directory
-        findUserByPhone(phone, function (result) {
+      findUserByPhone(phone, function (result) {
 
             if (result.found) {
                 contact.set("phoneVerified", result.user.phoneVerified);
@@ -417,7 +420,9 @@ var addContactView = {
                 contact.set("contactUUID", result.user.userUUID);
 
             } else {
-                contactSendEmailInvite(contact.get('email'));
+                // No - just use the email address the our user selected
+                contact.set("email", email);
+                contactSendEmailInvite(email);
                 contact.set("phoneVerified", false);
                 contact.set('publicKey',  null);
                 contact.set("contactUUID", null);
