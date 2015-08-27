@@ -194,27 +194,36 @@ var userDataChannel = {
     },
 
     processPrivateInvite: function (ownerId, ownerPublicKey, channelId, message) {
-        var channel = channelModel.findChannelModel(channelId),
-            privateChannel = channelModel.findPrivateChannel(ownerId);
+        // Can be only one private channel per user -- need to lookup channel by ownerId
+        var privateChannel = channelModel.findPrivateChannel(ownerId);
+
+        // The private channel requester needs to be in the user's contact list...
         var contact = contactModel.getContactModel(ownerId);
 
         //mobileNotify("Private Chat Request from " + contact.get('name') + '\n ' + message);
 
 
-        if (channel === undefined && privateChannel === undefined) {
-            // No existing private channel need to create one
-
-            if (contact !== undefined) {
-                var contactAlias = contact.get('alias');
-                channelModel.addPrivateChannel(ownerId, ownerPublicKey, contactAlias, channelId);
-                notificationModel.addNewPrivateChatNotification(channelId, "Private: " + contactAlias);
-                //mobileNotify("Created Private Chat with " + contactAlias);
-
-            } else {
-                mobileNotify("Null contact in processPrivateInvite!!");
+        if (privateChannel !== undefined) {
+            // Theres already a private channel for this user -- need to delete it
+            if (privateChannel.channelId === channelId) {
+                // Invite is trying to create a channel with same channelId -- just ignore this request
+                return;
             }
-
+            deleteParseObject('channels', 'channelId', privateChannel.channelId);
         }
+
+
+        if (contact !== undefined) {
+            var contactAlias = contact.get('alias');
+            channelModel.addPrivateChannel(ownerId, ownerPublicKey, contactAlias, channelId);
+            notificationModel.addNewPrivateChatNotification(channelId, "Private: " + contactAlias);
+            //mobileNotify("Created Private Chat with " + contactAlias);
+
+        } else {
+            mobileNotify("Null contact in processPrivateInvite!!");
+        }
+
+
 
     },
 
