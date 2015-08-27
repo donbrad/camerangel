@@ -244,7 +244,7 @@
 			var formattedDate = dateTime.toDateString(); #
 		<div class="notify-box">
 	    		<div class="notify-info">
-	    			<span class="notify-helper">ghostgrams recommends</span>
+	    			<span class="notify-helper">#= type #</span>
 	    			<a class="right notify-close" data-role="button" data-role="button" href="\\#" data-param="#:uuid#" data-click="dismissNotification">
 	    				<img src="images/close.svg" />
 	    			</a>
@@ -256,7 +256,7 @@
 	    				</h3>
 	    			#} else {# 
 						<h3>
-							<a data-role="button" data-param="#:uuid#" href="#=href#"  class="btnClear-link"> #= title # </a>
+							<a data-role="button" data-param="#:uuid#" href="#=href#"  class="btnClear-link"> #=  actionTitle # </a>
 						</h3>
 					#}#
 	    			<p>#= description # </p>
