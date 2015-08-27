@@ -106,7 +106,7 @@ var userModel = {
             userModel.currentUser.set('saveToPhotoAlbum', userModel.parseUser.get('saveToPhotoAlbum'));
             userModel.currentUser.set('rememberUsername', userModel.parseUser.get('rememberUsername'));
             userModel.currentUser.set('phoneVerified', userModel.parseUser.get('phoneVerified'));
-            userModel.currentUser.set('emailVerified', userModel.parseUser.get('emailVerified'));
+            userModel.currentUser.set('emailValidated', userModel.parseUser.get('emailVerified'));
             userModel.currentUser.set('availImgUrl', 'images/status-away.svg');
             updateHeaderStatusImages();
 
