@@ -271,7 +271,7 @@ var userStatus = {
 
     init: function () {
         var UserStatusModel = Parse.Object.extend("userStatus");
-
+        userStatus.setACL();
         var query = new Parse.Query(UserStatusModel);
         query.equalTo("userUUID", userModel.currentUser.userUUID);
         query.find({
@@ -280,7 +280,6 @@ var userStatus = {
                     userStatus.parseUserStatus = results[0];
                 } else {
                     userStatus.parseUserStatus = new UserStatusModel();
-                    userStatus.setACL();
                     userStatus.parseUserStatus.setACL(userStatus.parseUserStatusACL);
                     userStatus.update();
                 }
@@ -297,6 +296,7 @@ var userStatus = {
     setACL : function () {
         var acl = new Parse.ACL();
         acl.setPublicReadAccess(true);
+        acl.setPublicWriteAccess(false);
         acl.setWriteAccess(Parse.User.current().id, true);
         userStatus.parseUserStatusACL = acl;
     },
