@@ -22,7 +22,12 @@ var contactModel = {
         }
     }),
     contactListDS: new kendo.data.DataSource({
-        group: 'category'
+        group: 'category',
+        sort: {
+            field: "name",
+            dir: "asc"
+        }
+
     }),
 
     currentDeviceContact: {},
