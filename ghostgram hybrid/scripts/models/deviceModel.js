@@ -32,31 +32,31 @@ var deviceModel = {
 
 
     init: function() {
+        if (window.navigator.simulator !== true) {
+            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
+                function (fileSystem) {
+                    var url = fileSystem.root.nativeURL;
+                    url = url.replace('file://', '');
+                    deviceModel.fileDirectory = url;
+                    userModel.appDirectory = url;
+                    //mobileNotify(APP.fileDirectory);
+                },
+                function (error) {
+                    mobileNotify("Filesystem error : " + JSON.stringify(error));
+                });
 
-        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
-            function(fileSystem) {
-                var url = fileSystem.root.nativeURL;
-                url = url.replace('file://', '');
-                deviceModel.fileDirectory = url;
-                userModel.appDirectory = url;
-                //mobileNotify(APP.fileDirectory);
-            },
-            function(error) {
-                mobileNotify("Filesystem error : " + JSON.stringify(error));
-            });
-
-        window.requestFileSystem(LocalFileSystem.TEMPORARY, 0,
-            function(fileSystem) {
-                var url = fileSystem.root.nativeURL;
-                url = url.replace('file://', '');
-                deviceModel.tempDirectory = url;
-                userModel.tempDirectory = url;
-                //mobileNotify(APP.tempDirectory);
-            },
-            function(error) {
-                mobileNotify("Filesystem error : " + JSON.stringify(error));
-            });
-
+            window.requestFileSystem(LocalFileSystem.TEMPORARY, 0,
+                function (fileSystem) {
+                    var url = fileSystem.root.nativeURL;
+                    url = url.replace('file://', '');
+                    deviceModel.tempDirectory = url;
+                    userModel.tempDirectory = url;
+                    //mobileNotify(APP.tempDirectory);
+                },
+                function (error) {
+                    mobileNotify("Filesystem error : " + JSON.stringify(error));
+                });
+        }
     },
 
     resetDeviceState: function ()  {
