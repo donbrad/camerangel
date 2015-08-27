@@ -116,6 +116,22 @@ var contactModel = {
         return(contact);
     },
 
+    updateContactStatus : function () {
+        var contactUUID = contactModel.currentContact.contactUUID;
+
+        mobileNotify("Updating contact status...");
+        contactModel.getContactStatusObject(contactUUID, function (contact) {
+            var current = contactModel.currentContact;
+
+            current.set('statusMessage', contact.statusMessage);
+            current.set('currentPlace', contact.currentPlace);
+            current.set('currentPlaceUUID', contact.currentPlaceUUID);
+            current.set('photo', contact.photo);
+            current.set('isAvailable', contact.isAvailable);
+
+        });
+    },
+
     getContactStatusObject : function(contactUUID, callback) {
         var UserStatusModel = Parse.Object.extend("userStatus");
         var query = new Parse.Query(UserStatusModel);
@@ -125,7 +141,14 @@ var contactModel = {
                 if (results.length > 0) {
                     callback( results[0]);
                 } else {
-                    callback(null);
+                    // No current userStatusObject
+                    getUserContactInfo(contactUUID, function(result) {
+                        if (result.found) {
+                            callback(result.user);
+                        } else {
+                            callback(null);
+                        }
+                    });
                 }
 
             },

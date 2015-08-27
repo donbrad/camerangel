@@ -335,6 +335,18 @@ var addContactView = {
     doInit: function (e) {
         if (e !== undefined && e.preventDefault !== undefined)
             e.preventDefault();
+
+        $( "#addContactPhone" ).change(function() {
+            var phone = $("#addContactPhone").val();
+
+            isValidMobileNumber(phone, function(result){
+                if (result.status === 'ok') {
+                    if (result.valid === false) {
+                        mobileNotify(phone + 'is not a valid mobile number');
+                    }
+                }
+            });
+        });
     },
 
     doShow : function (e) {
@@ -358,6 +370,62 @@ var addContactView = {
                 $("#addContactPhoto").attr("src",validUrl);
             });
         }
+        contactModel.emailArray = new Array();
+
+        for (var i = 0; i<contactModel.currentDeviceContact.emails.length; i++) {
+            var email = new Object();
+            email.name = contactModel.currentDeviceContact.emails[i].name;
+            email.address =  contactModel.currentDeviceContact.emails[i].address;
+
+            contactModel.emailArray.push(email);
+
+        }
+
+        contactModel.phoneArray = new Array();
+        for (var j = 0; j<contactModel.currentDeviceContact.phoneNumbers.length; j++) {
+            var phone = new Object();
+            phone.name = contactModel.currentDeviceContact.phoneNumbers[j].name;
+            phone.number = contactModel.currentDeviceContact.phoneNumbers[j].number;
+
+            contactModel.phoneArray.push(phone);
+
+        }
+
+        contactModel.addressArray = new Array();
+        for (var a = 0; a<contactModel.currentDeviceContact.addresses.length; a++) {
+            var address = new Object();
+            address.name = contactModel.currentDeviceContact.addresses[a].name;
+            address.address =  contactModel.currentDeviceContact.addresses[a].fullAddress;
+
+            contactModel.addressArray.push(address);
+        }
+
+
+
+        contactModel.phoneDS.data( contactModel.phoneArray);
+        contactModel.emailDS.data( contactModel.emailArray);
+        contactModel.addressDS.data( contactModel.addressArray);
+
+
+        /*
+         $("#addNicknameBtn").removeClass("hidden");
+         $("#contactNicknameInput input").val("");*/
+
+        var data = contactModel.currentDeviceContact;
+
+        // Set name
+        var name = data.name;
+        $("#addContactName").val(name);
+
+
+        if (data.photo !== null) {
+            returnValidPhoto(data.photo, function(validUrl) {
+                $("#addContactPhoto").attr("src",validUrl);
+            });
+        }
+
+
+
     },
 
     addContact : function (e) {
@@ -491,6 +559,8 @@ var editContactView = {
             contact = contactModel.findContactByUUID(contactId);
         }
 
+        contactModel.updateContactStatus();
+
         //   $("#syncEditList").velocity("slideUp", {duration: 0});
 
        // $('#contactEditList').removeClass('hidden');
@@ -575,7 +645,19 @@ var contactActionView = {
     },
 
     onShow: function (e) {
+        contactModel.updateContactStatus();
 
+        var contactName = contactModel.currentContact.name;
+        var contactAlias = contactModel.currentContact.alias;
+        var contactVerified = contactModel.currentContact.phoneVerified;
+
+        formatNameAlias(contactName, contactAlias, "#modalview-contactActions");
+
+        if(contactVerified){
+            $("#currentContactVerified").removeClass("hidden");
+        } else {
+            $("#currentContactVerified").addClass("hidden");
+        }
     }
 
 };
