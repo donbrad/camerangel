@@ -644,8 +644,10 @@ var contactActionView = {
 
     },
 
-    onShow: function (e) {
-        contactModel.updateContactStatus();
+    onOpen: function (e) {
+        contactModel.updateContactStatus(function() {
+            
+        });
 
         var contactName = contactModel.currentContact.name;
         var contactAlias = contactModel.currentContact.alias;
