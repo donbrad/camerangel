@@ -11,6 +11,7 @@
 var notificationModel = {
 
     // Types of notifications...
+    _intro: 'ghostgrams recommends',
     _unreadCount : 'Unread Messages',
     _newChat : 'New Chat',
     _newPrivate : 'New Private Chat',
