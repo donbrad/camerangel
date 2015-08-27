@@ -137,7 +137,7 @@ function onShowSignIn(e){
 	$("#home-signin-password").on("keyup", function(e){
 		if (e.keyCode === 13) {
 			signInValidate(e);
-		};
+		}
 	});
 }
 
@@ -290,7 +290,7 @@ function homeSignin (e) {
 				  mobileNotify("Please verify your phone number");
               $("#modalview-verifyPhone").data("kendoMobileModalView").open();
 			}
-            userModel.currentUser.set('emailVerified', userModel.parseUser.get('emailVerified'));
+            userModel.currentUser.set('emailValidated', userModel.parseUser.get('emailVerified'));
             userModel.parseACL = new Parse.ACL(userModel.parseUser);
             userModel.currentUser.bind('change', syncProfile);
             userModel.fetchParseData();
@@ -487,10 +487,10 @@ function requestBeta (e) {
     beta.set("name", name);
     beta.set("email",email );
     beta.set("phone", phone);
-    beta.set("udid", APP.models.profile.udid);
-    beta.set("device", APP.models.profile.device);
-    beta.set("model", APP.models.profile.model);
-    beta.set("platform", APP.models.profile.platform);
+    beta.set("udid", userModel.device.udid);
+    beta.set("device", userModel.device.device);
+    beta.set("model", userModel.device.model);
+    beta.set("platform", userModel.device.platform);
     
     beta.save(null, {
         success: function(support) {
@@ -531,10 +531,10 @@ function sendSupportRequest(e) {
     support.set("phone", phone);
     support.set("category", category);
     support.set("message", message);
-    support.set("udid", APP.models.profile.udid);
-    support.set("device", APP.models.profile.device);
-    support.set("model", APP.models.profile.model);
-    support.set("platform", APP.models.profile.platform);
+    support.set("udid", userModel.device.udid);
+    support.set("device", userModel.device.device);
+    support.set("model",userModel.device.model);
+    support.set("platform", userModel.device.platform);
     
     support.save(null, {
         success: function(support) {
