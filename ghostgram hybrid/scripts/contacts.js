@@ -11,6 +11,7 @@ function syncCurrentContact(e) {
     contactModel.currentContact.set(e.field, this[e.field]);
 }
     
+/*
 function syncProfile (e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
@@ -26,6 +27,7 @@ function syncProfile (e) {
         }
     });
 }
+*/
 
 function contactSearchActivate (e) {
     if (e !== undefined && e.preventDefault !== undefined) {

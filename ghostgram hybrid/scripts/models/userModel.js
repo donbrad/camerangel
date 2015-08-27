@@ -112,7 +112,7 @@ var userModel = {
 
             userModel.parseACL = new Parse.ACL(userModel.parseUser);
 
-            userModel.currentUser.bind('change', syncProfile);
+            userModel.currentUser.bind('change', userModel.sync);
             userModel.fetchParseData();
 
         }
@@ -135,6 +135,23 @@ var userModel = {
 
         user.save();
 
+    },
+
+   sync: function (e) {
+        if (e !== undefined && e.preventDefault !== undefined) {
+            e.preventDefault();
+        }
+
+        userModel.parseUser.set(e.field, userModel.currentUser.get(e.field));
+        userModel.parseUser.save(null, {
+            success : function (user){
+                mobileNotify("Updated your " + e.field);
+            },
+            error: function (user, error){
+                mobileNotify("Profile save error: " + error);
+            }
+        });
+       userStatus.syncField(e.field);
     },
 
     encryptPrivateKey : function (key) {
@@ -270,6 +287,28 @@ var userStatus = {
             }
         });
 
+    },
+
+    syncField : function (field) {
+        switch(field) {
+            case 'userUUID':
+            case 'photo' :
+            case 'isAvailable' :
+            case 'isVisible' :
+            case 'statusMessage' :
+            case 'currentPlace' :
+            case 'currentPlaceUUID' :
+                userStatus.parseUserStatus.set(field, userModel.currentUser.get(field));
+                userStatus.parseUserStatus.set('lastUpdate', ggTime.currentTime());
+                userStatus.parseUserStatus.save(null, {
+                    success : function (user){
+                        mobileNotify("User status update: " + field);
+                    },
+                    error: function (user, error){
+                        mobileNotify("User Status update error: " + error);
+                    }
+                });
+        }
     },
 
     update : function () {
