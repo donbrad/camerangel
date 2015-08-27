@@ -28,17 +28,17 @@
 </div>
 
 <!-- contact action -->
-<div data-role="modalview" id="modalview-contactActions" data-model="contactModel.currentContact" class="appearance" style="width: 90%; display: none;">
+<div data-role="modalview" id="modalview-contactActions" data-model="contactModel.currentContact" class="appearance" data-init="contactActionView.onInit" data-open="contactActionView.onShow" style="width: 90%; display: none;">
 	<div class="modal-top">
 		<a data-role="button" class="modal-close" data-click="closeContactActions"><img src="images/close.svg"/></a>
 		<img class="circle-img-lg" data-bind="attr: {src: photo}"/>
 		<img width="16" src="images/status-away.svg" class="statusContactCard-icon">
 		<h3>
-			<span class="primaryName" id="contactPrimaryName"></span>
+			<span class="primaryName" id="contactPrimaryName"  data-bind="text: name"></span>
 			<span class="hidden" id="currentContactVerified"><img src="images/icon-verified-dark.svg" class="user-status-icon"></span>
-			<span class="secondName" id="contactSecondName"></span>
+			<span class="secondName" id="contactSecondName" data-bind="text: name">></span>
 		</h3>
-		<p><span class="contactStatusMessage">Out running at the park</span> @ <span class="contactLocation shade-100">Main St Park </span></p>
+		<p><span class="contactStatusMessage" data-bind="text: statusMessage"></span> @ <span class="contactLocation shade-100" data-bind="text: currentPlace"> </span></p>
 	</div>
 	<div class="modal-bottom">
 		<ul class="list-inline" id="contactActionBtns" >
