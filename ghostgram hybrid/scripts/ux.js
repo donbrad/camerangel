@@ -110,6 +110,13 @@ function notificationVerifyPhone (e) {
 function closeModalViewProfileStatus() {
 	$("#modalview-profileStatus").data("kendoMobileModalView").close();
 	$(".userLocationUpdate").css("display", "none");
+	var updatedStatus = $("#profileStatusUpdate").val();
+	if(updatedStatus !== ""){
+		// Save new status
+		userModel.currentUser.set("statusMessage", updatedStatus);
+	}
+	// clear status box
+	$("#profileStatusUpdate").val("");
 }
 
 function closeStartModal() {
@@ -137,24 +144,25 @@ function checkEmptyUIState(selection, view){
     }
 }
 
-function formatNameAlias(){
-	var name = userModel.currentUser.name;
-	var alias = userModel.currentUser.alias;
+function formatNameAlias(name, alias, view){
 
 	var primaryName, secondName;
 
 	if (alias !== "" && alias !== undefined && name !== "" && name !== undefined){
 		primaryName = alias;
 		secondName = name;
+
 	} else if(name !== "" && name !== undefined) {
 		primaryName = name;
+		secondName = "";
 	}
 	else {
 		primaryName = alias;
 	}
 
-	$(".primaryName").text(primaryName);
-	$(".secondName").text(secondName);
+	$(view + " .primaryName").text(primaryName);
+	$(view + " .secondName").text(secondName);
+
 }
 
 function showFormatedPhone(){
@@ -173,4 +181,11 @@ function showFormatedPhone(){
 }
 
 
+function showActionBtnText(path){ 
+	$(path).velocity({opacity: 1, right: "3rem"}, {easing: "spring", delay: 500});
+}
+
+function hideActionBtnText(path){
+	$(path).velocity({opacity: 0, right: "0"});
+}
 
