@@ -487,7 +487,8 @@ var editContactView = {
         var contactId = e.view.params.contactId;
 
         if (contactId !== undefined) {
-           // if there's contactId sent current contact to matching contact
+           // if there's contactId set current contact to matching contact
+            contact = contactModel.findContactByUUID(contactId);
         }
 
         //   $("#syncEditList").velocity("slideUp", {duration: 0});
@@ -565,4 +566,16 @@ var editContactView = {
     syncWithDevice : function (e) {
 
     }
+};
+
+var contactActionView = {
+
+    onInit: function (e) {
+
+    },
+
+    onShow: function (e) {
+
+    }
+
 };
