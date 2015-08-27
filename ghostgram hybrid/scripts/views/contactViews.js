@@ -559,7 +559,10 @@ var editContactView = {
             contact = contactModel.findContactByUUID(contactId);
         }
 
-        contactModel.updateContactStatus();
+        //Show the status update div
+        contactModel.updateContactStatus(function() {
+            // Hide the status update div
+        });
 
         //   $("#syncEditList").velocity("slideUp", {duration: 0});
 
@@ -645,8 +648,12 @@ var contactActionView = {
     },
 
     onOpen: function (e) {
+
+        $('#contactActions-status').removeClass('hidden');
+        //Show the status update div
         contactModel.updateContactStatus(function() {
-            
+            //Hide the status update div
+            $('#contactActions-status').addClass('hidden');
         });
 
         var contactName = contactModel.currentContact.name;
