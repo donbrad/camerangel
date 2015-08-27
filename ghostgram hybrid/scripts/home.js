@@ -69,7 +69,7 @@ function initSignUp() {
 
 	.keydown(function (e) {
 		var key = e.charCode || e.keyCode || 0;
-		$phone = $(this);
+		var $phone = $(this);
 
 		// Auto-format- do not expose the mask as the user begins to type
 		if (key !== 8 && key !== 9) {
@@ -99,7 +99,7 @@ function initSignUp() {
 	})
 	
 	.bind('focus click', function () {
-		$phone = $(this);
+		var $phone = $(this);
 		
 		if ($phone.val().length === 0) {
 			$phone.val('(');
@@ -111,7 +111,7 @@ function initSignUp() {
 	})
 	
 	.blur(function () {
-		$phone = $(this);
+		var $phone = $(this);
 		
 		if ($phone.val() === '(') {
 			$phone.val('');
@@ -210,8 +210,8 @@ function homeSignout (e) {
 }
 
 function doInitSignIn () {
-	if (APP.models.profile.rememberUsername && APP.models.profile.username !== '') {
-		$('#home-signin-username').val(APP.models.profile.username)
+	if (useModel.rememberUsername && userModel.username !== '') {
+		$('#home-signin-username').val(userModel.username)
 	}
 }
 
@@ -404,7 +404,7 @@ function homeCreateAccount() {
 							userModel.currentUser.set('aliasPhoto', user.get('aliasPhoto'));
 							userModel.currentUser.set('userUUID', user.get('userUUID'));
 							userModel.currentUser.set('phoneVerified', false);
-							userModel.currentUser.set('emailVerified',user.get('emailVerified'));
+							userModel.currentUser.set('emailValidated',user.get('emailVerified'));
 							userModel.generateNewPrivateKey(user);
 
 							//userModel.currentUser.set('publicKey',user.get('publicKey'));
