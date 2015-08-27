@@ -45,9 +45,8 @@ var channelModel = {
                     // Todo: check status of members
                     models.push(collection.models[i].attributes);
                 }
-
-                deviceModel.setAppState('hasChannels', true);
                 channelModel.channelsDS.data(models);
+                deviceModel.setAppState('hasChannels', true);
                 deviceModel.isParseSyncComplete();
             },
             error: function(collection, error) {
