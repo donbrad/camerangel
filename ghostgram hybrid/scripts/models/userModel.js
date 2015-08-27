@@ -267,9 +267,11 @@ var userModel = {
 
 var userStatus = {
     parseUserStatus: null,
+    parseUserStatusACL : null,   // this ACL can be used to create public read objects that only the user can create, update and delete
 
     init: function () {
         var UserStatusModel = Parse.Object.extend("userStatus");
+
         var query = new Parse.Query(UserStatusModel);
         query.equalTo("userUUID", userModel.currentUser.userUUID);
         query.find({
@@ -278,6 +280,8 @@ var userStatus = {
                     userStatus.parseUserStatus = results[0];
                 } else {
                     userStatus.parseUserStatus = new UserStatusModel();
+                    userStatus.setACL();
+                    userStatus.parseUserStatus.setACL(userStatus.parseUserStatusACL);
                     userStatus.update();
                 }
 
@@ -287,6 +291,14 @@ var userStatus = {
             }
         });
 
+    },
+
+    // create a special ACL with public read and user only write access
+    setACL : function () {
+        var acl = new Parse.ACL();
+        acl.setPublicReadAccess(true);
+        acl.setWriteAccess(Parse.User.current().id, true);
+        userStatus.parseUserStatusACL = acl;
     },
 
     syncField : function (field) {
