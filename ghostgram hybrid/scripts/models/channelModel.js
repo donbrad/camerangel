@@ -144,7 +144,6 @@ var channelModel = {
         channel.set("lastAccess", addTime);
         channel.set("description", "Private: " + contactAlias);
         channel.set("channelId", channelUUID);
-        channel.set('userKey',  publicKey);
         channel.set('contactKey', contactPublicKey);
         channel.set("members", [userModel.currentUser.userUUID, contactUUID]);
         channelModel.channelsDS.add(channel.attributes);
@@ -226,7 +225,7 @@ var channelModel = {
         channelModel.channelsDS.sync();
         currentChannelModel.currentChannel = channelModel.findChannelModel(channelId);
         currentChannelModel.currentChannel = currentChannelModel.currentChannel;
-        
+
         channel.setACL(userModel.parseACL);
         channel.save(null, {
             success: function(channel) {
