@@ -72,8 +72,15 @@ var contactModel = {
     },
 
     delete: function() {
-        var dataSource = contactModel.contactsDS;
+
         var uuid = contactModel.currentContact.uuid;
+        this.deleteContact(uuid);
+
+    },
+
+    deleteContact : function (contactId) {
+        var dataSource = contactModel.contactsDS;
+        var uuid = contactId;
 
         dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
         var view = dataSource.view();
@@ -83,7 +90,19 @@ var contactModel = {
 
         deleteParseObject("contacts", 'uuid', uuid);
 
-        //Todo:  delete PrivateChannel, if any for this user
+        var localChannel = channelModel.findPrivateChannel(uuid);
+        if (localChannel !== undefined) {
+            channelModel.deleteChannel(localChannel);
+        }
+
+    },
+
+    deleteAllContacts : function () {
+        var contactsArray = this.contactsDS.data();
+
+        for  (var i=0; i<contactsArray.length; i++) {
+            this.deleteContact(contactsArray[i].uuid);
+        }
     },
 
     getContactModel: function (contactUUID) {
