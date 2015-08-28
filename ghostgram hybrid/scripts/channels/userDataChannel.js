@@ -214,7 +214,8 @@ var userDataChannel = {
                 return;
             }
             deleteFlag = true;
-            deleteParseObject('channels', 'channelId', privateChannel.channelId);
+            channelModel.deleteChannel(privateChannel.channelId, true);
+            //deleteParseObject('channels', 'channelId', privateChannel.channelId);
         }
 
 
