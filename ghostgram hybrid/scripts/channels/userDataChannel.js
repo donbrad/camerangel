@@ -193,9 +193,12 @@ var userDataChannel = {
         });
     },
 
+    // This could be an initial request or a follow up to delete current channel
+    // and create a new one -- effectively orphaning / deleting the data in the channel
     processPrivateInvite: function (ownerId, ownerPublicKey, channelId, message) {
         // Can be only one private channel per user -- need to lookup channel by ownerId
         var privateChannel = channelModel.findPrivateChannel(ownerId);
+        var deleteFlag = false;
 
         // The private channel requester needs to be in the user's contact list...
         var contact = contactModel.getContactModel(ownerId);
@@ -207,16 +210,24 @@ var userDataChannel = {
             // Theres already a private channel for this user -- need to delete it
             if (privateChannel.channelId === channelId) {
                 // Invite is trying to create a channel with same channelId -- just ignore this request
+                mobileNotify("Private Chat Request from " + contact.get('name'));
                 return;
             }
-            deleteParseObject('channels', 'channelId', privateChannel.channelId);
+            deleteFlag = true;
+            channelModel.deleteChannel(privateChannel.channelId, true);
+            //deleteParseObject('channels', 'channelId', privateChannel.channelId);
         }
 
 
         if (contact !== undefined) {
             var contactAlias = contact.get('alias');
             channelModel.addPrivateChannel(ownerId, ownerPublicKey, contactAlias, channelId);
-            notificationModel.addNewPrivateChatNotification(channelId, "Private: " + contactAlias);
+            if (deleteFlag) {
+                mobileNotify("Updated Private Chat with " + contactAlias);
+            } else {
+                notificationModel.addNewPrivateChatNotification(channelId, "Private: " + contactAlias);
+            }
+
             //mobileNotify("Created Private Chat with " + contactAlias);
 
         } else {
