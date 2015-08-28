@@ -130,8 +130,6 @@ var channelModel = {
 
         var Channels = Parse.Object.extend(this._channelName);
         var channel = new Channels();
-        var publicKey = userModel.currentUser.get('publicKey');
-        var contact = contactModel.getContactModel(contactUUID), contactKey = null;
         var addTime = ggTime.currentTime();
         channel.set("name", contactAlias);
         channel.set("isOwner", true);
@@ -149,12 +147,12 @@ var channelModel = {
         channel.set('userKey',  publicKey);
         channel.set('contactKey', contactPublicKey);
         channel.set("members", [userModel.currentUser.userUUID, contactUUID]);
+        channelModel.channelsDS.add(channel.attributes);
+        channelModel.channelsDS.sync();
 
         channel.setACL(userModel.parseACL);
         channel.save(null, {
             success: function(channel) {
-                channelModel.channelsDS.add(channel.attributes);
-                channelModel.channelsDS.sync();
                 //closeModalViewAddChannel();
                 mobileNotify('Added private channel : ' + channel.get('name'));
             },
@@ -224,17 +222,20 @@ var channelModel = {
             channel.set("ownerName", ownerName);
         }
 
+        channelModel.channelsDS.add(channel.attributes);
+        channelModel.channelsDS.sync();
+        currentChannelModel.currentChannel = channelModel.findChannelModel(channelId);
+        currentChannelModel.currentChannel = currentChannelModel.currentChannel;
+        
         channel.setACL(userModel.parseACL);
         channel.save(null, {
             success: function(channel) {
                 // Execute any logic that should take place after the object is saved.
 
-                channelModel.channelsDS.add(channel.attributes);
-                channelModel.channelsDS.sync();
+
                 mobileNotify('Added channel : ' + channel.get('name'));
 
-                currentChannelModel.currentChannel = channelModel.findChannelModel(channelId);
-                currentChannelModel.currentChannel = currentChannelModel.currentChannel;
+
 
                 if (isOwner) {
                     channelMap.set("name", channel.get('name'));

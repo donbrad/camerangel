@@ -233,7 +233,6 @@ var userDataChannel = {
         var contact = contactModel.getContactModel(ownerId);
 
         if (channel === undefined) {
-
            // mobileNotify("Private Chat Delete Request from " + contact.get('name'));
             notificationModel.deletePrivateChatNotification(channelId,"Private Chat: " + contact.alias);
             channelModel.deleteChannel(channel);
