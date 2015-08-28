@@ -210,8 +210,10 @@ var userDataChannel = {
             // Theres already a private channel for this user -- need to delete it
             if (privateChannel.channelId === channelId) {
                 // Invite is trying to create a channel with same channelId -- just ignore this request
+                mobileNotify("Private Chat Request from " + contact.get('name'));
                 return;
             }
+            deleteFlag = true;
             deleteParseObject('channels', 'channelId', privateChannel.channelId);
         }
 
