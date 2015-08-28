@@ -38,7 +38,11 @@
 			<span class="hidden" id="currentContactVerified"><img src="images/icon-verified-dark.svg" class="user-status-icon"></span>
 			<span class="secondName" id="contactSecondName" data-bind="text: alias">></span>
 		</h3>
-		<p><span class="contactStatusMessage" data-bind="text: statusMessage"></span> @ <span class="contactLocation shade-100" data-bind="text: currentPlace"> </span></p>
+		<p>
+			<span class="contactStatusMessage" data-bind="text: statusMessage"></span>
+		 	<span class="contactStatusAt">@</span> 
+		 	<span class="contactLocation" data-bind="text: currentPlace"></span>
+		</p>
 	</div>
 	<div id="contactActions-status" class="hidden">
 		<span>Updating contact status....</span>

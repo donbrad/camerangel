@@ -3061,7 +3061,6 @@ div.contactListBox.activeContact > div > div > ul {
   width: 100%;
 }
 #contacts-listview li {
-  border-bottom: 1px solid #E4E4E4;
   background: #fff;
   z-index: 9999;
   padding-top: 0px;

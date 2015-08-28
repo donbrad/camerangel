@@ -110,8 +110,12 @@ var contactsView = {
                 if(e.direction === "left"){
                     var otherOpenedLi = $(".contact-active");
                     $(otherOpenedLi).velocity({translateX:"0"},{duration: "fast"}).removeClass("contact-active");
-                    $(selection).velocity({translateX:"-50%"},{duration: "fast"}).addClass("contact-active");
-
+                    
+                    if($(selection).hasClass("private") !== true && $(window).width() < 375){
+                    	$(selection).velocity({translateX:"-65%"},{duration: "fast"}).addClass("contact-active");
+                    } else {
+                    	$(selection).velocity({translateX:"-55%"},{duration: "fast"}).addClass("contact-active");
+                    }
                 }
                 if (e.direction === "right" && $(selection).hasClass("contact-active")){
                     $(selection).velocity({translateX:"0"},{duration: "fast"}).removeClass("contact-active");
@@ -236,7 +240,7 @@ var contactImportView = {
         	}
         }).keyup(function(e){
         	if (e.keyCode === 13) {
-				contactImportView.searchContacts()
+				contactImportView.searchContacts();
 			}
         });
     },
@@ -658,11 +662,11 @@ var editContactView = {
 var contactActionView = {
 
     onInit: function (e) {
-
+    	
     },
 
     onOpen: function (e) {
-
+    	
         $('#contactActions-status').removeClass('hidden');
         //Show the status update div
         contactModel.updateContactStatus(function() {
@@ -681,7 +685,7 @@ var contactActionView = {
         } else {
             $("#currentContactVerified").addClass("hidden");
         }
-
+ 
     }
 
 };
