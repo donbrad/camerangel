@@ -303,6 +303,14 @@ var channelModel = {
             deleteParseObject("channels", 'channelId', channelId);
             //mobileNotify("Removed channel : " + channel.get('name'));
         }
+    },
+
+    deleteAllChannels : function () {
+        var channelArray = this.channelsDS.data();
+
+        for (var i=0; i<channelArray.length; i++) {
+            this.deleteChannel(channelArray.channelId);
+        }
     }
 
 };

@@ -119,6 +119,10 @@ var userModel = {
 
     },
 
+    deleteAccount: function () {
+
+    },
+
     // user is valid parse User object
     generateNewPrivateKey : function (user) {
         // Generate Keys for the user.

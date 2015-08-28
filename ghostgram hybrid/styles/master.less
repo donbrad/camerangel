@@ -363,6 +363,15 @@ form {
 	line-height: 2;
 }
 
+.badge {
+	border-radius: 4px;
+	background: @shade-200;
+	border-radius: 5px;
+	color: @black;
+	padding: 0.1em 0.25em;
+	.font-size(13);
+}
+
 .guest-txt {
 	.font-size(12);
 	color: #979797;
@@ -594,6 +603,16 @@ form {
 	}
 }
 
+.addBtn-sm {
+	border: 1px solid @primary-100;
+	border-radius: 3px;
+	color: @primary-100 !important;
+	.font-size(14);
+	padding: 0.2em 1em;
+	position: absolute;
+	right: 1rem;
+	top: 2rem;
+}
 
 .btnClearLine-grey-sm {
 	&:extend(.btnStyle);
@@ -1696,6 +1715,13 @@ div.footerMenu.km-footer > ul > li > a:active {
 .contactPhoto {
     width: 80px;
     height: auto;
+}
+
+.contactImportTable {
+	color: @shade-100;
+	.font-size(14);
+	margin-left: 1rem;
+	margin-right: 1rem;
 }
 
 .round {
@@ -3134,7 +3160,6 @@ div.contactListBox.activeContact > div > div > ul {
 	position: absolute;
 	width: 100%;
 	li {
-	    border-bottom: 1px solid #E4E4E4;
 	    background: #fff;
 	    z-index:9999;
 	    padding-top: 0px;
@@ -3782,6 +3807,20 @@ div.contactListBox.activeContact > div > div > ul {
 	}
 	.viewSearchBox {
 		width:88%;
+	}
+	.doubleAppendSearch {
+		width: 70%;
+	}
+	.enterSearch {
+		padding-top: 8px;
+		padding-bottom: 8px;
+		position: absolute;
+		width: 16%;
+		span {
+			padding-top: 0px;
+			color: @shade-200;
+			font-weight: 600;
+		}
 	}
 }
 

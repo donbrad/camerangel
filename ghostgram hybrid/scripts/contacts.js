@@ -77,7 +77,8 @@ function privateChat(e) {
 	var contact = contactModel.currentContact;
 	var contactUUID = contact.contactUUID, contactName = contact.name, contactPublicKey = contact.publicKey;
     var userName = userModel.currentUser.get('name');
-	if (contactUUID === undefined || contactUUID === null) {
+
+    if (contactUUID === undefined || contactUUID === null) {
 		mobileNotify(contact.name + "hasn't verified their contact info");
 		return;
 	}

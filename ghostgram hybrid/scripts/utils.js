@@ -166,6 +166,34 @@ function getUserPrivateChannels(uuid, callBack) {
 	});
 }
 
+function queryPrivateChannel(uuid, contactuuid, callBack) {
+	Parse.Cloud.run('queryPrivateChannel', {
+		uuid: uuid, contactuuid : contactuuid
+	}, {
+		success: function(result, error) {
+			if (result.status === 'ok' && result.count > 0) {
+				callBack({
+					found: true,
+					channels: result.channels,
+					count: result.count,
+					update: result.update
+				});
+			} else {
+				callBack({
+					found: false,
+					channels: null,
+					count: 0,
+					update: true
+				});
+			}
+
+		},
+		error: function(result, error) {
+			callBack(null, error)
+		}
+	});
+}
+
 function getUserPublicKey(uuid, callBack) {
 	Parse.Cloud.run('getUserPublicKey', {
 		uuid: uuid
