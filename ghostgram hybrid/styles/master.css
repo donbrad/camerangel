@@ -437,6 +437,15 @@ form p {
   vertical-align: top;
   line-height: 2;
 }
+.badge {
+  border-radius: 4px;
+  background: #e0e0e0;
+  border-radius: 5px;
+  color: #4a4a4a;
+  padding: 0.1em 0.25em;
+  font-size: 13px;
+  font-size: 0.8125rem;
+}
 .guest-txt {
   font-size: 12px;
   font-size: 0.75rem;
@@ -674,6 +683,17 @@ form p {
 .btnClearLine :disabled {
   color: #A4A4A4 !important;
   background: transparent !important;
+}
+.addBtn-sm {
+  border: 1px solid #2e93fd;
+  border-radius: 3px;
+  color: #2e93fd !important;
+  font-size: 14px;
+  font-size: 0.875rem;
+  padding: 0.2em 1em;
+  position: absolute;
+  right: 1rem;
+  top: 2rem;
 }
 .btnClearLine-grey-sm {
   background: transparent;
@@ -1762,6 +1782,13 @@ div.footerMenu.km-footer > ul > li > a:active {
 .contactPhoto {
   width: 80px;
   height: auto;
+}
+.contactImportTable {
+  color: #979797;
+  font-size: 14px;
+  font-size: 0.875rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 .round {
   display: block;
@@ -3595,6 +3622,20 @@ div.contactListBox.activeContact > div > div > ul {
 }
 .appendSearch .viewSearchBox {
   width: 88%;
+}
+.appendSearch .doubleAppendSearch {
+  width: 70%;
+}
+.appendSearch .enterSearch {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  position: absolute;
+  width: 16%;
+}
+.appendSearch .enterSearch span {
+  padding-top: 0px;
+  color: #e0e0e0;
+  font-weight: 600;
 }
 .viewScroller {
   width: 100%;

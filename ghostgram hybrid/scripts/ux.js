@@ -177,7 +177,21 @@ function showFormatedPhone(){
     	return text.replace(/\d(\d\d\d)(\d\d\d)(\d\d\d\d)/, '($1) $2-$3');
 		});
 	}
+}
 
+function showCleanEmail(email){
+	// Simple check to just display email. Could replace w/ better regex
+	if(email.indexOf(':') > -1){
+		var splitEmail = email.split(": ");
+		return splitEmail[1];
+	} else {
+		return email;
+	}
+
+}
+
+function showCleanPhone(phone){
+	return phone.replace(/\d(\d\d\d)(\d\d\d)(\d\d\d\d)/, '($1) $2-$3');
 }
 
 

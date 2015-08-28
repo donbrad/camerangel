@@ -213,6 +213,8 @@ var contactImportView = {
 
         });
 
+        
+
         $("#addContactPhone").change(function() {
             var phone = $("#addContactPhone").val();
             mobileNotify("Please wait - validating phone...");
@@ -223,6 +225,19 @@ var contactImportView = {
                     }
                 }
             });
+        });
+        
+        $("#contactImportQuery").change(function(e){
+        	var query = $('#contactImportQuery').val();
+        	if(query.length > 2){
+        		$(".enterSearch > span").css("color", "#2E93FD");
+        	} else {
+        		$(".enterSearch > span").css("color", "#E0E0E0");
+        	}
+        }).keyup(function(e){
+        	if (e.keyCode === 13) {
+				contactImportView.searchContacts()
+			}
         });
     },
 
@@ -236,7 +251,6 @@ var contactImportView = {
             $('#contactImportQuery').val(query);
             deviceFindContacts(query);
         }
-
     },
 
     searchContacts: function (e) {
