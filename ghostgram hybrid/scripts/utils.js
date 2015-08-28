@@ -59,17 +59,18 @@ function deleteParseObject(objectName, field, fieldValue) {
 	query.equalTo(field, fieldValue);
 	query.find({
 		success: function(results) {
-			results[0].destroy({
-				success: function(myObject) {
-					// The object was deleted from the Parse Cloud.
-				},
-				error: function(myObject, error) {
-					// The delete failed.
-					// error is a Parse.Error with an error code and message.
-					mobileNotify("Error: " + error.code + " " + error.message);
-				}
-			});
-
+			if (results.length > 0) {
+				results[0].destroy({
+					success: function(myObject) {
+						// The object was deleted from the Parse Cloud.
+					},
+					error: function(myObject, error) {
+						// The delete failed.
+						// error is a Parse.Error with an error code and message.
+						mobileNotify("Error: " + error.code + " " + error.message);
+					}
+				});
+			}
 		},
 		error: function(error) {
 			mobileNotify("Error: " + error.code + " " + error.message);
