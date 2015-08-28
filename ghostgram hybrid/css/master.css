@@ -437,6 +437,11 @@ form p {
   vertical-align: top;
   line-height: 2;
 }
+.badge {
+  border-radius: 4px;
+  background: #2e93fd;
+  border-radius: 5px;
+}
 .guest-txt {
   font-size: 12px;
   font-size: 0.75rem;
@@ -604,7 +609,7 @@ form p {
   -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   color: #ffffff !important;
-  background: #6cadf3 !important;
+  background: #2e93fd !important;
   /*
     :hover {
     	background: @primary-100 !important;
@@ -695,6 +700,8 @@ form p {
 .btnClear-grey-sm {
   background: transparent;
   color: #979797 !important;
+  font-size: 14px !important;
+  font-size: 0.875rem !important;
 }
 .btnClear-grey :active {
   color: #6cadf3 !important;
@@ -897,6 +904,9 @@ div.km-header a img {
   color: #979797;
   box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.12);
   height: 56px;
+}
+.km-material .km-switch-handle {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
 }
 .km-material .km-switch-handle {
   width: 1.5em;
@@ -1134,8 +1144,8 @@ div.footerMenu.km-footer > ul > li > a:active {
   padding-top: 0px;
   padding-bottom: 0px;
 }
-#profilePhotoForm > div > ul > li:nth-child(5) {
-  padding: 0px;
+#profilePhotoForm > div > ul > li:nth-child(4) {
+  padding-bottom: 0px;
 }
 .homeStatus-name,
 .homeStatus-status {
@@ -1219,6 +1229,9 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 #profilePhotoForm > div > ul > li:nth-child(2) {
   padding: 0px;
+}
+#gpsLocateUpdateBtn > span > img {
+  vertical-align: middle;
 }
 .ghostModal {
   height: auto;
