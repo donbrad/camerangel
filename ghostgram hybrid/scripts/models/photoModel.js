@@ -73,7 +73,7 @@ var photoModel = {
 
         return(photos);
     },
-    
+
     deletePhoto: function (photoId) {
         var photo = this.findPhotoById(photoId);
         // Delete from local datasource
