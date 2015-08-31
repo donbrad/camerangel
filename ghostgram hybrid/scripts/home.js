@@ -1,8 +1,52 @@
+/* global placesView, APP */
+
 'use strict';
 
 var homeView = {
 	openLocateMeModal: function () {
 		$('#modalview-locate-me').data('kendoMobileModalView').open();
+	
+		navigator.geolocation.getCurrentPosition( function (position) {
+			var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+			var places = APP.map.googlePlaces;
+
+			var locations = placesView.matchLocationToUserPlace(position.coords.latitude, position.coords.longitude);
+		
+			if (locations.length === 1) {
+				placesView.checkInTo(locations[0]);
+			}
+
+			places.nearbySearch({
+				location: latlng,
+				radius: 10,
+				types: ['establishment']
+			}, function (placesResults, placesStatus) {
+				if (placesStatus === google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
+					APP.map.geocoder.geocode({ '': latlng }, function () {
+						if (geoStatus !== google.maps.GeocoderStatus.OK) {
+							navigator.notification.alert('Something went wrong with the Google geocoding service.');
+							return;
+						}
+						if (geoResults.length === 0 || geoResults[0].types[0] !== 'street_address') {
+							navigator.notification.alert('We couldn\'t match your position to a street address.');
+							return;
+						}
+					});
+				} else if (placesStatus !== google.maps.places.PlacesServiceStatus.OK) {
+					navigator.notification.alert('Something went wrong with the Google Places service. '+placesStatus);
+					return;
+				}
+
+				var nearbyResults = new kendo.data.DataSource();
+				placesResults.forEach( function (placeResult) {
+					nearbyResults.add(placeResult);
+				});
+
+				$('#nearby-results-list').data('kendoMobileListView').setDataSource(nearbyResults);
+
+				// Show modal letting user select current place
+			});
+		});
 	}
 };
 

@@ -1,4 +1,34 @@
+/* global APP */
+
 'use strict';
+
+var placesView = {
+	matchLocationToUserPlace: function (lat, lng) {
+		var placesData = APP.models.places.placesDS.data();
+
+		var matchArray = [];
+		for (var i=0; i< placesData.length; i++){
+			if (inPlaceRadius(lat, lng, placesData[i].lat,placesData[i].lng, 50)){
+				matchArray.push(placesData[i]);
+			}
+		}
+
+		return(matchArray);
+	},
+
+	checkInTo: function (place) {
+		userModel.currentUser.currentPlaceUUID = place.uuid;
+
+		var templateText = $('#placesTemplate').text();
+		var template = kendo.template(templateText);
+
+		$('#current-place').show();
+		$('#current-place > div').html(template(place));
+
+		// Then filter out currently-checked-in-place
+		resetPlacesFilter();
+	}
+};
 
 function onInitPlaces(e) {
 	e.preventDefault();
@@ -46,7 +76,7 @@ function onInitPlaces(e) {
 				});
 
 				APP.models.places.placesDS.sync();
-				checkInTo(newPlace);
+				placesView.checkInTo(newPlace);
 
 				$('#nearby-results').data('kendoMobileModalView').close();
 			});
@@ -142,20 +172,6 @@ function resetPlacesFilter() {
 	});
 }
 
-function checkInTo(place) {
-	userModel.currentUser.currentPlaceUUID = place.uuid;
-
-	var templateText = $('#placesTemplate').text();
-	var template = kendo.template(templateText);
-
-	$('#current-place').show();
-	$('#current-place > div').html(template(place));
-
-	// Then filter out currently-checked-in-place
-	resetPlacesFilter();
-}
-
-
 function checkOut() {
 	userModel.currentUser.currentPlaceUUID = '';
 
@@ -245,7 +261,7 @@ function onHideEditPlace (e) {
 	});
 	var view = APP.models.places.placesDS.view();
 	if (view.length !== 0) {
-		checkInTo(view[0]);
+		placesView.checkInTo(view[0]);
 		resetPlacesFilter();
 	}
 }
@@ -279,7 +295,7 @@ function onShowPlaces(e) {
 	}
 
 	navigator.geolocation.getCurrentPosition( function (position) {
-		var locations = matchLocationToUserPlace(position.coords.latitude, position.coords.longitude);
+		var locations = placesView.matchLocationToUserPlace(position.coords.latitude, position.coords.longitude);
 		// If no matching places, or the matched place has auto-check-in disabled, return out
 		if (locations.length === 0) {
 			checkOut();
@@ -294,7 +310,7 @@ function onShowPlaces(e) {
 		}
 
 		checkOut();
-		checkInTo(locations[0]);
+		placesView.checkInTo(locations[0]);
 	});
 
 }
@@ -397,9 +413,9 @@ function onLocateMe(e) {
 		var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 		var places = APP.map.googlePlaces;
 
-		var locations = matchLocationToUserPlace(position.coords.latitude, position.coords.longitude);
+		var locations = placesView.matchLocationToUserPlace(position.coords.latitude, position.coords.longitude);
 		if (locations.length !== 0) {
-			checkInTo(locations[0]);
+			placesView.checkInTo(locations[0]);
 			return;
 		}
 
@@ -450,7 +466,7 @@ function onLocateMe(e) {
 
 							APP.models.places.placesDS.sync();
 
-							checkInTo(newPlace);
+							placesView.checkInTo(newPlace);
 						}
 					)
 					
@@ -481,18 +497,7 @@ function closeNearbyResults() {
 	$('#nearby-results').data('kendoMobileModalView').close();
 }
 
-function matchLocationToUserPlace  (lat, lng) {
-	var placesData = APP.models.places.placesDS.data();
 
-	var matchArray = [];
-	for (var i=0; i< placesData.length; i++){
-		if (inPlaceRadius(lat, lng, placesData[i].lat,placesData[i].lng, 50)){
-			matchArray.push(placesData[i]);
-		}
-	}
-
-	return(matchArray);
-}
 
 function placesGPSSearch (callback, radius) {
 
