@@ -19,16 +19,17 @@ function updateParseObject(objectName, idField, idFieldValue, newField, newField
 
 	query.find({
 		success: function(results) {
-			results[0].set(newField, newFieldValue);
-			results[0].save({
-				success: function(myObject) {
-					// The object was deleted from the Parse Cloud.
-				},
-				error: function(myObject, error) {
-					mobileNotify("Error: " + error.code + " " + error.message);
-				}
-			});
-
+			if (results.length > 0) {
+				results[0].set(newField, newFieldValue);
+				results[0].save({
+					success: function(myObject) {
+						// The object was deleted from the Parse Cloud.
+					},
+					error: function(myObject, error) {
+						mobileNotify("Error: " + error.code + " " + error.message);
+					}
+				});
+			}
 		},
 		error: function(error) {
 			mobileNotify("Error: " + error.code + " " + error.message);

@@ -207,7 +207,7 @@ function resizeSuccessThumb (data) {
 
     photo.setACL(userModel.parseACL);
     photo.set('photoId', photoModel.currentPhoto.photoId);
-    photo.set('channelId', APP.models.channel.currentModel.channelId);
+    photo.set('channelId', channelModel.currentChannel.channelId);
     var timeStamp = new Date().getTime();
     photo.set("timestamp", timeStamp);
     photo.set('geoPoint', new Parse.GeoPoint(APP.location.position.lat, APP.location.position.lng));
@@ -245,7 +245,7 @@ function resizeSuccessThumb (data) {
                 mobileNotify('Photo added to ghostgrams gallery');
                 photoModel.photosDS.add(photo.attributes);
                 photoModel.parsePhoto = photo;
-                APP.models.channel.currentMessage.photo = {thumb: photo.get('thumbnailUrl'), photo: photo.get('imageUrl')};
+               channelModel.currentMessage.photo = {thumb: photo.get('thumbnailUrl'), photo: photo.get('imageUrl')};
 
             },
             error: function(contact, error) {

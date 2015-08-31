@@ -15,6 +15,7 @@ function onBeforeHideChannels(){
 function syncCurrentChannel(e) {
 	if (e.preventDefault !== undefined)
 		e.preventDefault();
+
 	updateParseObject('channels','channelId', currentChannelModel.currentChannel.channelId, e.field, this[e.field]);
 	currentChannelModel.currentChannel.set(e.field, this[e.field]);
 }
