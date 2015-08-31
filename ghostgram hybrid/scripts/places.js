@@ -27,6 +27,30 @@ var placesView = {
 
 		// Then filter out currently-checked-in-place
 		resetPlacesFilter();
+	},
+
+	getAddressFromComponents: function (addressComponents) {
+		var address = {};
+
+		address.streetNumber = _.findWhere(addressComponents, { 'types': [ 'street_number' ] });
+		address.streetNumber = address.streetNumber === undefined ? '' : address.streetNumber.short_name;
+
+		address.street = _.findWhere(addressComponents, { 'types': [ 'route' ] });
+		address.street = address.street === undefined ? '' : address.street.short_name;
+
+		address.city = _.findWhere(addressComponents, { 'types': [ 'locality', 'political' ] });
+		address.city = address.city === undefined ? '' : address.city.short_name;
+
+		address.state = _.findWhere(addressComponents, { 'types': [ 'administrative_area_level_1', 'political' ] });
+		address.state = address.state === undefined ? '' : address.state.short_name;
+
+		address.zip = _.findWhere(addressComponents, { 'types': [ 'postal_code' ] });
+		address.zip = address.zip === undefined ? '' : address.zip.short_name;
+
+		address.country = _.findWhere(addressComponents, { 'types': [ 'country', 'political' ] });
+		address.country = address.country === undefined ? '' : address.country.short_name;
+
+		return address;
 	}
 };
 
@@ -49,7 +73,7 @@ function onInitPlaces(e) {
 					return;
 				}
 
-				var address = getAddressFromComponents(geoResults[0].address_components);
+				var address = placesView.getAddressFromComponents(geoResults[0].address_components);
 
 				var newPlace = APP.models.places.placesDS.add({
 					uuid: uuid.v4(),
@@ -378,29 +402,7 @@ function updateCurrentLocation (loc) {
 	}
 }
 
-function getAddressFromComponents(addressComponents) {
-	var address = {};
 
-	address.streetNumber = _.findWhere(addressComponents, { 'types': [ 'street_number' ] });
-	address.streetNumber = address.streetNumber === undefined ? '' : address.streetNumber.short_name;
-
-	address.street = _.findWhere(addressComponents, { 'types': [ 'route' ] });
-	address.street = address.street === undefined ? '' : address.street.short_name;
-
-	address.city = _.findWhere(addressComponents, { 'types': [ 'locality', 'political' ] });
-	address.city = address.city === undefined ? '' : address.city.short_name;
-
-	address.state = _.findWhere(addressComponents, { 'types': [ 'administrative_area_level_1', 'political' ] });
-	address.state = address.state === undefined ? '' : address.state.short_name;
-
-	address.zip = _.findWhere(addressComponents, { 'types': [ 'postal_code' ] });
-	address.zip = address.zip === undefined ? '' : address.zip.short_name;
-
-	address.country = _.findWhere(addressComponents, { 'types': [ 'country', 'political' ] });
-	address.country = address.country === undefined ? '' : address.country.short_name;
-
-	return address;
-}
 
 function onLocateMe(e) {
 	if (e.preventDefault !== undefined) {
@@ -444,7 +446,7 @@ function onLocateMe(e) {
 						'Do you want to check into street address '+geoResults[0].formatted_address+'?',
 						function () {
 
-							var address = getAddressFromComponents(geoResults[0].address_components);
+							var address = placesView.getAddressFromComponents(geoResults[0].address_components);
 
 							var newPlace = APP.models.places.placesDS.add({
 								uuid: uuid.v4(),

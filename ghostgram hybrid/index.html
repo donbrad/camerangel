@@ -582,8 +582,11 @@
 
 
 <div data-role="modalview" id="modalview-locate-me" style="width: 90%; display: none;" class="appearance">
-	<ul id="nearby-results-list" data-role="listview" data-template="nearby-results-template">
-	</ul>
+	<div data-role="content">
+		<ul id="nearby-results-list" data-role="listview" data-template="nearby-results-template">
+		</ul>
+	</div>
+	<a class="btnSecondary btnFull-modal" data-click="homeView.closeLocateMeModal" data-role="button">Cancel</a>
 </div>
 
 <!-- Photo tag modal -->
