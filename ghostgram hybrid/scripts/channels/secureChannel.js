@@ -125,6 +125,16 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
         presenceChange();
     };
 
+    var archiveMessage = function (msg) {
+        var msg = Parse.Object.extend('messages');
+
+        msg.set('timeStamp', msg.time);
+        msg.set('channelId', msg.channelId);
+        msg.set('messageBlob', userModel.encryptBlob(msg));
+        msg.save();
+        currentChannelModel.messagesDS.add(msg);
+    };
+
     // Delete a message from the `messages` object, after `TTL` seconds.
     // (If you *sent* the message, `username` is the username of the recipient.
     // If you *received* the message, `username` is the username of the sender.)
@@ -156,7 +166,7 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
                 var content = message;
 				var contentData = data;
                 var encryptMessage = '', encryptData = '';
-				var currentTime =  new Date().getTime()/1000;
+				var currentTime =  ggTime.currentTimeInSeconds();
                 encryptMessage = cryptico.encrypt(message, contactKey);
 			    if (data !== undefined && data !== null)
 					encryptData = cryptico.encrypt(JSON.stringify(data), contactKey);
@@ -195,7 +205,7 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
                                 messages[recipient].push(parsedMsg);
                             }
                             // add the message to the sentMessageDataSource
-                            APP.models.privateChannel.messagesSentDS.add(parsedMsg);
+                            archiveMessage(parsedMsg);
                             receiveMessage(parsedMsg);
                             //deleteMessage(recipient, msgID, ttl);
                         }

@@ -245,7 +245,7 @@ function resizeSuccessThumb (data) {
                 mobileNotify('Photo added to ghostgrams gallery');
                 photoModel.photosDS.add(photo.attributes);
                 photoModel.parsePhoto = photo;
-               channelModel.currentMessage.photo = {thumb: photo.get('thumbnailUrl'), photo: photo.get('imageUrl')};
+               currentChannelModel.currentMessage.photo = {thumb: photo.get('thumbnailUrl'), photo: photo.get('imageUrl')};
 
             },
             error: function(contact, error) {
