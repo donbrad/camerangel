@@ -22,7 +22,12 @@ var contactModel = {
         }
     }),
     contactListDS: new kendo.data.DataSource({
-        group: 'category'
+        group: 'category',
+        sort: {
+            field: "name",
+            dir: "asc"
+        }
+
     }),
 
     currentDeviceContact: {},
@@ -67,8 +72,15 @@ var contactModel = {
     },
 
     delete: function() {
-        var dataSource = contactModel.contactsDS;
+
         var uuid = contactModel.currentContact.uuid;
+        this.deleteContact(uuid);
+
+    },
+
+    deleteContact : function (contactId) {
+        var dataSource = contactModel.contactsDS;
+        var uuid = contactId;
 
         dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
         var view = dataSource.view();
@@ -78,7 +90,19 @@ var contactModel = {
 
         deleteParseObject("contacts", 'uuid', uuid);
 
-        //Todo:  delete PrivateChannel, if any for this user
+        var localChannel = channelModel.findPrivateChannel(uuid);
+        if (localChannel !== undefined) {
+            channelModel.deleteChannel(localChannel);
+        }
+
+    },
+
+    deleteAllContacts : function () {
+        var contactsArray = this.contactsDS.data();
+
+        for  (var i=0; i<contactsArray.length; i++) {
+            this.deleteContact(contactsArray[i].uuid);
+        }
     },
 
     getContactModel: function (contactUUID) {
@@ -109,6 +133,54 @@ var contactModel = {
         dataSource.filter([]);
 
         return(contact);
+    },
+
+    updateContactStatus : function (callback) {
+        var contactUUID = contactModel.currentContact.contactUUID;
+
+        mobileNotify("Updating contact status...");
+        getUserContactInfo(contactUUID, function (result) {
+                if (result.found) {
+                    var contact = result.user;
+                    var current = contactModel.currentContact;
+
+                    current.set('statusMessage', contact.statusMessage);
+                    current.set('currentPlace', contact.currentPlace);
+                    current.set('currentPlaceUUID', contact.currentPlaceUUID);
+                    current.set('photo', contact.photo);
+                    current.set('isAvailable', contact.isAvailable);
+                }
+
+                callback();
+
+        });
+    },
+
+    getContactStatusObject : function(contactUUID, callback) {
+        var UserStatusModel = Parse.Object.extend("userStatus");
+        var query = new Parse.Query(UserStatusModel);
+        query.equalTo("userUUID", contactUUID);
+        query.find({
+            success: function(results) {
+                if (results.length > 0) {
+                    callback( results[0]);
+                } else {
+                    // No current userStatusObject
+                    getUserContactInfo(contactUUID, function(result) {
+                        if (result.found) {
+                            callback(result.user);
+                        } else {
+                            callback(null);
+                        }
+                    });
+                }
+
+            },
+            error: function(error) {
+                mobileNotify("Get Contact Status Error: " + error.code + " " + error.message);
+                callback(null);
+            }
+        });
     },
 
     syncMemberContact: function (e) {

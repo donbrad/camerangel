@@ -110,8 +110,12 @@ var contactsView = {
                 if(e.direction === "left"){
                     var otherOpenedLi = $(".contact-active");
                     $(otherOpenedLi).velocity({translateX:"0"},{duration: "fast"}).removeClass("contact-active");
-                    $(selection).velocity({translateX:"-50%"},{duration: "fast"}).addClass("contact-active");
-
+                    
+                    if($(selection).hasClass("private") !== true && $(window).width() < 375){
+                    	$(selection).velocity({translateX:"-65%"},{duration: "fast"}).addClass("contact-active");
+                    } else {
+                    	$(selection).velocity({translateX:"-55%"},{duration: "fast"}).addClass("contact-active");
+                    }
                 }
                 if (e.direction === "right" && $(selection).hasClass("contact-active")){
                     $(selection).velocity({translateX:"0"},{duration: "fast"}).removeClass("contact-active");
@@ -133,12 +137,11 @@ var contactsView = {
 
 
         // set action button
-        $("#contacts > div.footerMenu.km-footer > a").attr("href", "#contactImport");
+        $("#contacts > div.footerMenu.km-footer > a").attr("href", "#contactImport").css("display", "inline-block");
     },
 
-    onHide : function (e) {
-        if (e.preventDefault !== undefined)
-            e.preventDefault();
+    onBeforeHide: function(){
+    	$("#contacts > div.footerMenu.km-footer > a").css("display", "none");
     },
 
     updateSearchUX: function (event) {
@@ -214,6 +217,8 @@ var contactImportView = {
 
         });
 
+        
+
         $("#addContactPhone").change(function() {
             var phone = $("#addContactPhone").val();
             mobileNotify("Please wait - validating phone...");
@@ -224,6 +229,19 @@ var contactImportView = {
                     }
                 }
             });
+        });
+        
+        $("#contactImportQuery").change(function(e){
+        	var query = $('#contactImportQuery').val();
+        	if(query.length > 2){
+        		$(".enterSearch > span").css("color", "#2E93FD");
+        	} else {
+        		$(".enterSearch > span").css("color", "#E0E0E0");
+        	}
+        }).keyup(function(e){
+        	if (e.keyCode === 13) {
+				contactImportView.searchContacts();
+			}
         });
     },
 
@@ -252,7 +270,10 @@ var contactImportView = {
         }
     },
 
+    resetContactImport: function(e){
+    	$("#contactImportQuery").val("");
 
+    },
 
     processDeviceContact: function (e) {
         if (e !== undefined && e.preventDefault !== undefined) {
@@ -332,6 +353,18 @@ var addContactView = {
     doInit: function (e) {
         if (e !== undefined && e.preventDefault !== undefined)
             e.preventDefault();
+
+        $( "#addContactPhone" ).change(function() {
+            var phone = $("#addContactPhone").val();
+
+            isValidMobileNumber(phone, function(result){
+                if (result.status === 'ok') {
+                    if (result.valid === false) {
+                        mobileNotify(phone + 'is not a valid mobile number');
+                    }
+                }
+            });
+        });
     },
 
     doShow : function (e) {
@@ -355,6 +388,62 @@ var addContactView = {
                 $("#addContactPhoto").attr("src",validUrl);
             });
         }
+        contactModel.emailArray = new Array();
+
+        for (var i = 0; i<contactModel.currentDeviceContact.emails.length; i++) {
+            var email = new Object();
+            email.name = contactModel.currentDeviceContact.emails[i].name;
+            email.address =  contactModel.currentDeviceContact.emails[i].address;
+
+            contactModel.emailArray.push(email);
+
+        }
+
+        contactModel.phoneArray = new Array();
+        for (var j = 0; j<contactModel.currentDeviceContact.phoneNumbers.length; j++) {
+            var phone = new Object();
+            phone.name = contactModel.currentDeviceContact.phoneNumbers[j].name;
+            phone.number = contactModel.currentDeviceContact.phoneNumbers[j].number;
+
+            contactModel.phoneArray.push(phone);
+
+        }
+
+        contactModel.addressArray = new Array();
+        for (var a = 0; a<contactModel.currentDeviceContact.addresses.length; a++) {
+            var address = new Object();
+            address.name = contactModel.currentDeviceContact.addresses[a].name;
+            address.address =  contactModel.currentDeviceContact.addresses[a].fullAddress;
+
+            contactModel.addressArray.push(address);
+        }
+
+
+
+        contactModel.phoneDS.data( contactModel.phoneArray);
+        contactModel.emailDS.data( contactModel.emailArray);
+        contactModel.addressDS.data( contactModel.addressArray);
+
+
+        /*
+         $("#addNicknameBtn").removeClass("hidden");
+         $("#contactNicknameInput input").val("");*/
+
+        var data = contactModel.currentDeviceContact;
+
+        // Set name
+        var name = data.name;
+        $("#addContactName").val(name);
+
+
+        if (data.photo !== null) {
+            returnValidPhoto(data.photo, function(validUrl) {
+                $("#addContactPhoto").attr("src",validUrl);
+            });
+        }
+
+
+
     },
 
     addContact : function (e) {
@@ -484,8 +573,14 @@ var editContactView = {
         var contactId = e.view.params.contactId;
 
         if (contactId !== undefined) {
-           // if there's contactId sent current contact to matching contact
+           // if there's contactId set current contact to matching contact
+            contact = contactModel.findContactByUUID(contactId);
         }
+
+        //Show the status update div
+        contactModel.updateContactStatus(function() {
+            // Hide the status update div
+        });
 
         //   $("#syncEditList").velocity("slideUp", {duration: 0});
 
@@ -562,4 +657,35 @@ var editContactView = {
     syncWithDevice : function (e) {
 
     }
+};
+
+var contactActionView = {
+
+    onInit: function (e) {
+    	
+    },
+
+    onOpen: function (e) {
+    	
+        $('#contactActions-status').removeClass('hidden');
+        //Show the status update div
+        contactModel.updateContactStatus(function() {
+            //Hide the status update div
+            $('#contactActions-status').addClass('hidden');
+        });
+
+        var contactName = contactModel.currentContact.name;
+        var contactAlias = contactModel.currentContact.alias;
+        var contactVerified = contactModel.currentContact.phoneVerified;
+
+        formatNameAlias(contactName, contactAlias, "#modalview-contactActions");
+
+        if(contactVerified){
+            $("#currentContactVerified").removeClass("hidden");
+        } else {
+            $("#currentContactVerified").addClass("hidden");
+        }
+ 
+    }
+
 };

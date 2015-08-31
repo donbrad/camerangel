@@ -19,16 +19,17 @@ function updateParseObject(objectName, idField, idFieldValue, newField, newField
 
 	query.find({
 		success: function(results) {
-			results[0].set(newField, newFieldValue);
-			results[0].save({
-				success: function(myObject) {
-					// The object was deleted from the Parse Cloud.
-				},
-				error: function(myObject, error) {
-					mobileNotify("Error: " + error.code + " " + error.message);
-				}
-			});
-
+			if (results.length > 0) {
+				results[0].set(newField, newFieldValue);
+				results[0].save({
+					success: function(myObject) {
+						// The object was deleted from the Parse Cloud.
+					},
+					error: function(myObject, error) {
+						mobileNotify("Error: " + error.code + " " + error.message);
+					}
+				});
+			}
 		},
 		error: function(error) {
 			mobileNotify("Error: " + error.code + " " + error.message);
@@ -59,17 +60,18 @@ function deleteParseObject(objectName, field, fieldValue) {
 	query.equalTo(field, fieldValue);
 	query.find({
 		success: function(results) {
-			results[0].destroy({
-				success: function(myObject) {
-					// The object was deleted from the Parse Cloud.
-				},
-				error: function(myObject, error) {
-					// The delete failed.
-					// error is a Parse.Error with an error code and message.
-					mobileNotify("Error: " + error.code + " " + error.message);
-				}
-			});
-
+			if (results.length > 0) {
+				results[0].destroy({
+					success: function(myObject) {
+						// The object was deleted from the Parse Cloud.
+					},
+					error: function(myObject, error) {
+						// The delete failed.
+						// error is a Parse.Error with an error code and message.
+						mobileNotify("Error: " + error.code + " " + error.message);
+					}
+				});
+			}
 		},
 		error: function(error) {
 			mobileNotify("Error: " + error.code + " " + error.message);
@@ -155,6 +157,34 @@ function getUserPrivateChannels(uuid, callBack) {
 				callBack({
 					found: false,
 					channels: null
+				});
+			}
+
+		},
+		error: function(result, error) {
+			callBack(null, error)
+		}
+	});
+}
+
+function queryPrivateChannel(uuid, contactuuid, callBack) {
+	Parse.Cloud.run('queryPrivateChannel', {
+		uuid: uuid, contactuuid : contactuuid
+	}, {
+		success: function(result, error) {
+			if (result.status === 'ok' && result.count > 0) {
+				callBack({
+					found: true,
+					channels: result.channels,
+					count: result.count,
+					update: result.update
+				});
+			} else {
+				callBack({
+					found: false,
+					channels: null,
+					count: 0,
+					update: true
 				});
 			}
 

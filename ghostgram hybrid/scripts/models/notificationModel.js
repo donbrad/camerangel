@@ -11,13 +11,14 @@
 var notificationModel = {
 
     // Types of notifications...
-    _unreadCount : 'unread',
-    _newChat : 'newchat',
-    _newPrivate : 'newprivate',
-    _newMember : 'newMember',
-    _memberStatus : 'memberStatus',
-    _deleteChat : 'deleteChat',
-    _deletePrivateChat : 'deleteprivate',
+    _intro: 'ghostgrams recommends',
+    _unreadCount : 'Unread Messages',
+    _newChat : 'New Chat',
+    _newPrivate : 'New Private Chat',
+    _newMember : 'New Member',
+    _memberStatus : 'New Member Status',
+    _deleteChat : 'Delete Chat',
+    _deletePrivateChat : 'Delete Private Chat',
 
     notificationDS: new kendo.data.DataSource({
         offlineStorage: "notifications-offline",
@@ -28,7 +29,7 @@ var notificationModel = {
     }),
 
     Notification: function(type, title, date, description, actionTitle, action, href, dismissed, dismissable) {
-        this.type = type ? type : 'system',
+            this.type = type ? type : 'system',
             this.title = title ? title : '',
             this.actionTitle = actionTitle ? actionTitle : '',
             this.action = action ? action : null,

@@ -45,9 +45,8 @@ var channelModel = {
                     // Todo: check status of members
                     models.push(collection.models[i].attributes);
                 }
-
-                deviceModel.setAppState('hasChannels', true);
                 channelModel.channelsDS.data(models);
+                deviceModel.setAppState('hasChannels', true);
                 deviceModel.isParseSyncComplete();
             },
             error: function(collection, error) {
@@ -131,8 +130,6 @@ var channelModel = {
 
         var Channels = Parse.Object.extend(this._channelName);
         var channel = new Channels();
-        var publicKey = userModel.currentUser.get('publicKey');
-        var contact = contactModel.getContactModel(contactUUID), contactKey = null;
         var addTime = ggTime.currentTime();
         channel.set("name", contactAlias);
         channel.set("isOwner", true);
@@ -147,15 +144,14 @@ var channelModel = {
         channel.set("lastAccess", addTime);
         channel.set("description", "Private: " + contactAlias);
         channel.set("channelId", channelUUID);
-        channel.set('userKey',  publicKey);
         channel.set('contactKey', contactPublicKey);
         channel.set("members", [userModel.currentUser.userUUID, contactUUID]);
+        channelModel.channelsDS.add(channel.attributes);
+        channelModel.channelsDS.sync();
 
         channel.setACL(userModel.parseACL);
         channel.save(null, {
             success: function(channel) {
-                channelModel.channelsDS.add(channel.attributes);
-                channelModel.channelsDS.sync();
                 //closeModalViewAddChannel();
                 mobileNotify('Added private channel : ' + channel.get('name'));
             },
@@ -225,17 +221,20 @@ var channelModel = {
             channel.set("ownerName", ownerName);
         }
 
+        channelModel.channelsDS.add(channel.attributes);
+        channelModel.channelsDS.sync();
+        currentChannelModel.currentChannel = channelModel.findChannelModel(channelId);
+        currentChannelModel.currentChannel = currentChannelModel.currentChannel;
+
         channel.setACL(userModel.parseACL);
         channel.save(null, {
             success: function(channel) {
                 // Execute any logic that should take place after the object is saved.
 
-                channelModel.channelsDS.add(channel.attributes);
-                channelModel.channelsDS.sync();
+
                 mobileNotify('Added channel : ' + channel.get('name'));
 
-                currentChannelModel.currentChannel = channelModel.findChannelModel(channelId);
-                currentChannelModel.currentChannel = currentChannelModel.currentChannel;
+
 
                 if (isOwner) {
                     channelMap.set("name", channel.get('name'));
@@ -272,7 +271,7 @@ var channelModel = {
 
     },
 
-    deleteChannel : function (channelId) {
+    deleteChannel : function (channelId, silent) {
         var dataSource = channelModel.channelsDS;
         dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
         var view = dataSource.view();
@@ -285,22 +284,32 @@ var channelModel = {
                 // If this user is the owner -- delete the channel map
                 deleteParseObject("channelmap", 'channelId', channelId);
 
-                if (channel.isPrivate) {
-                    // Owner is always first member of channel
-                    userDataChannel.privateChannelDelete(members[1],channelId, 'Chat "' + channel.name + 'has been deleted' );
-                } else {
-                    // Send delete channel messages to all members
-                    var members = channel.members;
-                    // Skip the first member as it's the owner
-                    for (var i = 1; i < channel.members.length; i++) {
-                        userDataChannel.groupChannelDelete(members[i],channelId, 'Chat "' + channel.name + 'has been deleted' );
+                if (silent === undefined || silent === false) {
+                    if (channel.isPrivate) {
+                        // Owner is always first member of channel
+                        userDataChannel.privateChannelDelete(members[1],channelId, 'Chat "' + channel.name + 'has been deleted' );
+                    } else {
+                        // Send delete channel messages to all members
+                        var members = channel.members;
+                        // Skip the first member as it's the owner
+                        for (var i = 1; i < channel.members.length; i++) {
+                            userDataChannel.groupChannelDelete(members[i],channelId, 'Chat "' + channel.name + 'has been deleted' );
+                        }
                     }
                 }
 
             }
             dataSource.remove(channel);
             deleteParseObject("channels", 'channelId', channelId);
-            mobileNotify("Removed channel : " + channel.get('name'));
+            //mobileNotify("Removed channel : " + channel.get('name'));
+        }
+    },
+
+    deleteAllChannels : function () {
+        var channelArray = this.channelsDS.data();
+
+        for (var i=0; i<channelArray.length; i++) {
+            this.deleteChannel(channelArray.channelId);
         }
     }
 

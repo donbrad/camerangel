@@ -110,6 +110,13 @@ function notificationVerifyPhone (e) {
 function closeModalViewProfileStatus() {
 	$("#modalview-profileStatus").data("kendoMobileModalView").close();
 	$(".userLocationUpdate").css("display", "none");
+	var updatedStatus = $("#profileStatusUpdate").val();
+	if(updatedStatus !== ""){
+		// Save new status
+		userModel.currentUser.set("statusMessage", updatedStatus);
+	}
+	// clear status box
+	$("#profileStatusUpdate").val("");
 }
 
 function closeStartModal() {
@@ -137,24 +144,25 @@ function checkEmptyUIState(selection, view){
     }
 }
 
-function formatNameAlias(){
-	var name = userModel.currentUser.name;
-	var alias = userModel.currentUser.alias;
+function formatNameAlias(name, alias, view){
 
 	var primaryName, secondName;
 
 	if (alias !== "" && alias !== undefined && name !== "" && name !== undefined){
 		primaryName = alias;
 		secondName = name;
+
 	} else if(name !== "" && name !== undefined) {
 		primaryName = name;
+		secondName = "";
 	}
 	else {
 		primaryName = alias;
 	}
 
-	$(".primaryName").text(primaryName);
-	$(".secondName").text(secondName);
+	$(view + " .primaryName").text(primaryName);
+	$(view + " .secondName").text(secondName);
+
 }
 
 function showFormatedPhone(){
@@ -169,8 +177,29 @@ function showFormatedPhone(){
     	return text.replace(/\d(\d\d\d)(\d\d\d)(\d\d\d\d)/, '($1) $2-$3');
 		});
 	}
+}
+
+function showCleanEmail(email){
+	// Simple check to just display email. Could replace w/ better regex
+	if(email.indexOf(':') > -1){
+		var splitEmail = email.split(": ");
+		return splitEmail[1];
+	} else {
+		return email;
+	}
 
 }
 
+function showCleanPhone(phone){
+	return phone.replace(/\d(\d\d\d)(\d\d\d)(\d\d\d\d)/, '($1) $2-$3');
+}
 
+
+function showActionBtnText(path){ 
+	$(path).velocity({opacity: 1, right: "3rem"}, {easing: "spring", delay: 500});
+}
+
+function hideActionBtnText(path){
+	$(path).velocity({opacity: 0, right: "0"});
+}
 

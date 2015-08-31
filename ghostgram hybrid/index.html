@@ -240,31 +240,31 @@
 </div>
     
 <script type="text/x-kendo-template" id="notificationTemplate">
-		# 	var dateTime= new Date(date);   
-			var formattedDate = dateTime.toDateString(); #
-		<div class="notify-box">
-	    		<div class="notify-info">
-	    			<span class="notify-helper">ghostgrams recommends</span>
-	    			<a class="right notify-close" data-role="button" data-role="button" href="\\#" data-param="#:uuid#" data-click="dismissNotification">
-	    				<img src="images/close.svg" />
-	    			</a>
-	    		</div>
-	    		<div class="notify-content">
-	    			# if (action !== undefined && action !== 'none') {# 
-	    				<h3>
-	    					<a data-role="button" data-param="#:uuid#" href="\\#" data-click="#=action#" class="btnClear-link">#= title #</a>
-	    				</h3>
-	    			#} else {# 
-						<h3>
-							<a data-role="button" data-param="#:uuid#" href="#=href#"  class="btnClear-link"> #= title # </a>
-						</h3>
-					#}#
-	    			<p>#= description # </p>
-	    			<div class="notify-action">
-	    			
-	    			</div>
-	    		</div>
-	    	</div><!-- notify-box -->     
+# 	var dateTime= new Date(date);
+	var formattedDate = dateTime.toDateString(); #
+	<div class="notify-box">
+		<div class="notify-info">
+			<span class="notify-helper">#= type #</span>
+			<a class="right notify-close" data-role="button" data-role="button" href="\\#" data-param="#:uuid#" data-click="dismissNotification">
+				<img src="images/close.svg" />
+			</a>
+		</div>
+		<div class="notify-content">
+			# if (action !== undefined && action !== 'none') {#
+				<h3>
+					<a data-role="button" data-param="#:uuid#" href="\\#" data-click="#=action#" class="btnClear-link">#= title #</a>
+				</h3>
+			#} else {#
+				<h3>
+					<a data-role="button" data-param="#:uuid#" href="#=href#"  class="btnClear-link"> #=  actionTitle # </a>
+				</h3>
+			#}#
+			<p style="font-size: 11px;">#= description # </p>
+			<div class="notify-action">
+
+			</div>
+		</div>
+	</div><!-- notify-box -->
 </script> 
     
 <!-- home - for new users -->
@@ -524,20 +524,22 @@
 	
 </div>
 
-<div data-role="modalview" id="modalview-profileStatus" style="width: 90%; display: none;" data-open="onShowProfileStatus" data-model="APP.models.profile.currentUser" class="appearance">
+<div data-role="modalview" id="modalview-profileStatus" style="width: 90%; display: none;" data-open="onShowProfileStatus" data-model="userModel.currentUser" class="appearance">
 	<form id="profilePhotoForm">
 
         <ul data-role="listview">
         	<li>
-        		<div class="left listPhoto">
+        		<div class="left">
+
 						<div class="statusContactList">
 							<img class="circle-img-md home-profile-img" id="profileStatusPhoto" src="" />
 							<img width="16" src="images/status-away.svg" class="statusContactList-icon home-status-img" />
 						 </div>
 					
 				</div><!-- left -->
-				<div class="left listName profileTextBox">
-					<h3>
+
+				<div class="left profileTextBox">
+					<h3 class="textClamp">
 						<span class="primaryName"></span>
 						<img src="images/user-verified.svg" class="user-status-icon hidden" id="profileStatusVerified">
 						<span class="secondName"></span>
@@ -548,20 +550,24 @@
 				<div class="clearfix"></div>
         	</li>
         	<li><p class="caption right"><a data-role="button" class="btnClear-sm" href="views/profile.html#profileEdit">Edit Profile</a></p></li>
-        	<li><p><img src="images/ghost-sm.svg" class="ghost-sm-text" /> Update Status</p></li>
         	<li>
-                <div class="appendSearch">
-                   <input type="search" id="profilePhotoMessage" placeholder="What's going on..." data-bind="value: statusMessage"/>
-	                   <span>
-		                   	<a data-role="button" data-click="homeView.openLocateMeModal" id="gpsLocateUpdateBtn">
-		                   		<img src="images/icon-gps.svg" height="12px"/>
-		                   	</a>
-	                   </span>
-                </div>
-                <div class="userLocationUpdate" style="display: none">
-                    <input type="search" id="profileLocationName" placeholder="Your current location" data-bind="value: currentPlace" />
-                </div>
+        		<div class="updateStatusLabel">
+        			Update Status 
+        		</div>
+        	</li>
+        	<li>
+                <textarea type="search" id="profileStatusUpdate" placeholder="What's going on..."></textarea>
+                <div class="statusCharacterCount">
+        			<span class="statusCharCount"></span>
+        		</div>
             </li>
+            <li>
+            	<div>
+					<a class="btnClear-sm" data-role="button" data-click="homeView.openLocateMeModal" id="gpsLocateUpdateBtn">
+				        	<img src="images/icon-gps-selected.svg" height="12px"/> Check in here
+				    </a>
+			    </div>
+        	</li>
         	<li>
         		<label> Available
 					<input type="checkbox" id="home-status-switch" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="statusSwitch"/>
