@@ -106,13 +106,11 @@ function onInitGallery(e){
 function resetNavUI(e){
 	$(".km-navbar").removeClass("home-smallHeader");	
 	//$(".user-status, .user-settings").velocity("fadeIn", {duration: 150});
-	console.log("resetNavUI");
 }
 
 function shrinkNavUI() {
 	$(".km-navbar").addClass("home-smallHeader");	
 	$(".user-status, .user-settings").velocity("fadeOut", {duration: 150});
-	console.log("shrinkNavUI");
 }
 
 function galleryOptionsToggle (e) {

@@ -130,6 +130,29 @@
 	width: 100%;
 }
 
+.chat-bubble {
+    height: 100%;
+    float: left;
+    padding: 0.2em 0.35em;
+    border-radius: .25em;
+    color: @black;
+    background: @shade-200;
+    margin: 0 0 0.5rem;
+    .font-size(14);
+}
+
+.chat-bubble:after {
+	content: "";
+	display: inline-block;
+	position: relative;
+	left: -90%; 
+	width: 0;
+	border-width: 8px 8px 0;
+	border-style: solid;
+	border-color: @shade-200 transparent;
+	bottom: -15px;
+}
+
 .contactBanner { 
 	width: 100%;
 	background-color: @shade-200;
@@ -997,6 +1020,11 @@ div.footerMenu.km-footer > ul > li > a:active {
 	    	height: 12px;
 	    }
 }
+.helper-sm {
+	.helper;
+	.font-size(12);
+}
+
 .helper-right {
 	.helper;
     float: right;
@@ -2626,9 +2654,10 @@ div.loginBox > form > div > ul > li {
     color: black;
 }
 
+
 #gallery .km-content > div {
-    display: flex;
-    flex-direction: column;
+    //display: -webkit-flex;
+	//display: flex;
 }
 
 #search-archives {
@@ -2636,7 +2665,7 @@ div.loginBox > form > div > ul > li {
     padding: .5rem 0;
 
     .k-autocomplete {
-        width: 100%;
+        //width: 100%;
         height: 1.7rem;
         border-color: @shade-200;
 
@@ -2671,8 +2700,83 @@ div.loginBox > form > div > ul > li {
     }
 }
 
-// Archive list
+#archive-list {
+	background: #fff;
+}
 
+#archive-list > div.km-scroll-container > div > ul > li > div > div > div {
+	padding: 0.2em 0;
+}
+
+.card {
+	width: 95%;
+	margin: 1rem auto 1rem auto;
+	background: #fff;
+	.shadowHelper(1);
+	border-radius: 3px;
+	.top {
+		background-color: #f5f5f5;
+		border-bottom: 1px solid @shade-200;
+		padding: 0.5rem;
+		border-radius: 3px 3px 0 0;
+		.senderProfileImg {
+			width: 20%;
+			float: left;
+			padding: 0.25rem 0.1rem;
+			img {
+				.shadow-1;
+			}
+		} 
+		.senderMessage {
+			width: 80%;
+			float: left;
+			.chat-time {
+				.font-size(11);
+			}
+			.chat-details {
+				float: left;
+				margin-left: 0px;
+				margin-right: 0px;
+				.font-size(12);
+			}
+		}
+	}
+	.photoTopDiv {
+		padding: 0px;
+		> img {
+			width: 100%;
+			border-radius: 3px 3px 0px 0px;
+		}
+	}
+	.bottom {
+		padding: 0.5rem 1rem;
+		border-radius: 0 0 3px 3px;
+		h4, p {
+			margin: 0px;
+		}
+		.cardAction {
+			margin-top: 0.5rem;
+			position: relative;
+			left: -0.5rem;
+		}
+	}
+}
+
+.photoSender {
+	padding: 0.25rem;
+	width: 95%;
+	height: 4rem;
+	position: absolute;
+	bottom: 7.25rem;
+	background-image: linear-gradient(-180deg, rgba(255,255,255,0.00) 0%, #000000 100%);
+}
+.senderProfileImg {
+	width: 20%;
+	float: left;
+}
+
+// Archive list
+/*
 #archive-list {
     height: 100%;
 }
@@ -2682,11 +2786,9 @@ div.loginBox > form > div > ul > li {
 }
 
 #archive-list .km-list li {
-    margin: 0 .4rem;
 
     header {
-        margin-bottom: .9rem;
-
+       
         img {
             // An actually legitimate use of float lol
             float: left;
@@ -2735,7 +2837,7 @@ div.loginBox > form > div > ul > li {
 
     }
 }
-
+*/
 #galleryPhotoDisplayOpts {
     height: 11rem;
 }

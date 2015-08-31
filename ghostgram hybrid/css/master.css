@@ -155,6 +155,27 @@
 .full {
   width: 100%;
 }
+.chat-bubble {
+  height: 100%;
+  float: left;
+  padding: 0.2em 0.35em;
+  border-radius: .25em;
+  color: #fff;
+  background: #979797;
+  margin: 1em 0 1rem;
+  margin-left: 1rem;
+}
+.chat-bubble:after {
+  content: "";
+  display: inline-block;
+  position: relative;
+  left: -90%;
+  width: 0;
+  border-width: 8px 8px 0;
+  border-style: solid;
+  border-color: #979797 transparent;
+  bottom: -15px;
+}
 .contactBanner {
   width: 100%;
   background-color: #e0e0e0;
@@ -604,7 +625,7 @@ form p {
   -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   color: #ffffff !important;
-  background: #6cadf3 !important;
+  background: #2e93fd !important;
   /*
     :hover {
     	background: @primary-100 !important;
@@ -695,6 +716,8 @@ form p {
 .btnClear-grey-sm {
   background: transparent;
   color: #979797 !important;
+  font-size: 14px !important;
+  font-size: 0.875rem !important;
 }
 .btnClear-grey :active {
   color: #6cadf3 !important;
@@ -899,6 +922,9 @@ div.km-header a img {
   height: 56px;
 }
 .km-material .km-switch-handle {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
+}
+.km-material .km-switch-handle {
   width: 1.5em;
   height: 1.5em;
   margin: -8px 0 0;
@@ -1066,6 +1092,14 @@ div.footerMenu.km-footer > ul > li > a:active {
 .helper img {
   height: 12px;
 }
+.helper-sm {
+  color: #979797;
+  font-size: 14px;
+  font-size: 0.875rem;
+}
+.helper-sm img {
+  height: 12px;
+}
 .helper-right {
   color: #979797;
   float: right;
@@ -1134,8 +1168,8 @@ div.footerMenu.km-footer > ul > li > a:active {
   padding-top: 0px;
   padding-bottom: 0px;
 }
-#profilePhotoForm > div > ul > li:nth-child(5) {
-  padding: 0px;
+#profilePhotoForm > div > ul > li:nth-child(4) {
+  padding-bottom: 0px;
 }
 .homeStatus-name,
 .homeStatus-status {
@@ -1219,6 +1253,9 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 #profilePhotoForm > div > ul > li:nth-child(2) {
   padding: 0px;
+}
+#gpsLocateUpdateBtn > span > img {
+  vertical-align: middle;
 }
 .ghostModal {
   height: auto;
@@ -2595,16 +2632,11 @@ div.loginBox > form > div > ul > li {
   margin: 0;
   color: black;
 }
-#gallery .km-content > div {
-  display: flex;
-  flex-direction: column;
-}
 #search-archives {
   min-height: 10rem;
   padding: .5rem 0;
 }
 #search-archives .k-autocomplete {
-  width: 100%;
   height: 1.7rem;
   border-color: #e0e0e0;
   background-color: white;
@@ -2629,55 +2661,68 @@ div.loginBox > form > div > ul > li {
 #search-archives > button:active {
   color: white;
 }
+/*
 #archive-list {
-  height: 100%;
+    height: 100%;
 }
+
 #archive-list .km-group-title {
-  font-size: 14px;
-  font-size: 0.875rem;
+    .font-size(14);
 }
+
 #archive-list .km-list li {
-  margin: 0 .4rem;
+
+    header {
+       
+        img {
+            // An actually legitimate use of float lol
+            float: left;
+            width: 32px;
+            margin-right: 1rem;
+            border-radius: 50%;
+        }
+
+        h1 {
+            display: inline-block;
+            line-height: 1;
+        }
+
+        h2 {
+            display: inline-block;
+            line-height: 1;
+        }
+
+        .delete {
+            float: right;
+            width: 10%;
+            vertical-align: top;
+        }
+    }
+
+    .message {
+        display: inline-block;
+        width: 70%;
+    }
+
+    // Smart objects
+    .object {
+        padding: .1rem .3rem;
+        border: 1px solid @shade-200;
+        margin-top: .9rem;
+        box-shadow: 0 5px 16px -10px rgba(0,0,0,0.50);
+        background-color: @shade-300;
+        h2 {
+            strong + span {
+                float: right;
+            }
+        }
+        img {
+            width: 100%;
+        }
+
+    }
 }
-#archive-list .km-list li header {
-  margin-bottom: .9rem;
-}
-#archive-list .km-list li header img {
-  float: left;
-  width: 32px;
-  margin-right: 1rem;
-  border-radius: 50%;
-}
-#archive-list .km-list li header h1 {
-  display: inline-block;
-  line-height: 1;
-}
-#archive-list .km-list li header h2 {
-  display: inline-block;
-  line-height: 1;
-}
-#archive-list .km-list li header .delete {
-  float: right;
-  width: 10%;
-  vertical-align: top;
-}
-#archive-list .km-list li .message {
-  display: inline-block;
-  width: 70%;
-}
-#archive-list .km-list li .object {
-  padding: .1rem .3rem;
-  border: 1px solid #e0e0e0;
-  margin-top: .9rem;
-  box-shadow: 0 5px 16px -10px rgba(0, 0, 0, 0.5);
-  background-color: #f5f5f5;
-}
-#archive-list .km-list li .object h2 strong + span {
-  float: right;
-}
-#archive-list .km-list li .object img {
-  width: 100%;
-}
+*/
 #galleryPhotoDisplayOpts {
   height: 11rem;
 }

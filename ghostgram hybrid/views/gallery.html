@@ -1,4 +1,4 @@
- <div data-role="view" data-title="Gallery" id="gallery" data-layout="main" data-model="APP.models.gallery" data-init="onInitGallery" data-show="onShowGallery" data-stretch="true">
+<div data-role="view" data-title="Gallery" id="gallery" data-layout="main" data-model="APP.models.gallery" data-init="onInitGallery" data-show="onShowGallery">
  	<div>
 	 	<div id="search-archives">
 			<input type="search" class="viewSearchBox" id="gallerySearch"  placeholder="Search all" />
@@ -57,7 +57,7 @@
 			</div><!-- galleryPhoto -->
 		
 		<div id="archive-list" data-role="scroller">
-			<ul data-role="listview" data-source="archive.dataSource" data-template="archive-template"></ul>
+			<ul data-role="listview" data-source="archive.dataSource" data-template="archive-template" data-header-template="archive-header-template"></ul>
 		</div>
 		<!-- Photos -->
 		<ul id="gallery-listview" class="list-inline" data-role="listview" data-click="galleryClick" data-source="APP.models.gallery.photosDS" data-template="gallery-template"></ul>
@@ -127,41 +127,86 @@
      </div>
  </script>
 
+<script type="text/x-kendo-template" id="archive-header-template">
+    <div>
+    	<img class="archive-header-img" src="images/archive-#= value #.svg"> #: value #
+    </div>
+</script>
+
 <script type="text/x-kendo-template" id="archive-template">
-	<header>
-		# if (data.message.sender.image) { #
-			<img src="#= data.message.sender.image #" />
-		# } else { #
-			<img src="images/ghost-default.svg" />
-		# } #
-		<button class="delete" data-role="button" data-click="archiveView.deleteDoc" data-id="#= data.id #"></button>
-		<h3>#= data.message.sender.name #</h3><br />
-		<p>#= moment(data.message.date).fromNow() # in <strong>#= data.message.channelName #</strong></p>
-	</header>
-	<div class="message">#= data.message.text #</div>
-	# if (data.type === 'Events') { # 
-		<div class="event object">
-			<h3>#= data.object.name #</h3>
-			<p>at <strong>#= data.object.placeName #</strong> #= data.object.address #</p>
-			# if (moment().isBefore(data.object.start)) { #
-				<span>starts #= moment(data.object.start).fromNow() #</span>
-			# } else if (moment().isAfter(data.object.end)) { #
-				<span>ended #= moment(data.object.start).fromNow() #</span>
-			# } else { #
-				<span>happening now! #= moment(data.object.start).format('h:mma') # to #= moment(data.object.end).format('h:mma') #</span>
+	<div class="card">
+		# if (data.type === "Photos"){#
+				<div class="photoTopDiv">
+					<div class="photoSender">
+						<div class="senderProfileImg">
+							<img src="#= data.message.sender.image #" class="circle-img-md" />
+						</div>
+						<div class="senderMessage">
+							<p class="chat-time"> #= moment(data.message.date).fromNow() #</p>
+							<div class="chat-bubble"> #= data.message.text # </div>
+						</div>
+					</div>
+					<img src="#= data.object.url #" />
+					
+				</div>
+				
+				<div class="clearfix"></div>
+		#} else {#
+			<div class="top">
+				<button class="delete right hidden" data-role="button" data-click="archiveView.deleteDoc" data-id="#= data.id #">X</button>
+				<div class="senderProfileImg">
+					<img src="#= data.message.sender.image #" class="circle-img-md" />
+				</div>
+				<div class="senderMessage">
+					<p class="chat-time"> #= moment(data.message.date).fromNow() #</p>
+					<div class="chat-bubble"> #= data.message.text # </div>
+					<p class="chat-details">Send in #: data.message.channelName #<a class="btnClear-grey-sm"></a></p>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		#}#
+		
+		<div class="bottom">
+			# if (data.type === 'Events') {# 
+				<div class="event object">
+					<h4>#= data.object.name #</h4>
+					<p>#= data.object.placeName #</p> 
+					<p>#= data.object.address #</p> 
+					
+					# if (data.object.start === data.object.end) { #
+						<p>#= moment(data.object.start).format("MMM Do YYYY") #</p>
+					#} else { #
+						<p>#= moment(data.object.start).format("MMM Do") # - #= moment(data.object.end).format("MMM Do YYYY") #</p>
+					#}#
+					<div class="cardAction">
+						<a class="btnClear">Action</a>
+					<div>
+
+				</div>
+			#}#
+			# if (data.type === 'Links') {# 
+				<div class="link object" data-url="#= data.object.url #">
+					<h4>#= data.object.title #</h4>
+					<p>#= data.object.url #</p>
+				</div>
+				<div class="cardAction">
+					<a class="btnClear">Action</a>
+				<div>
+			#}#
+			# if (data.type === 'Photos') {# 
+				<div class="photo object">
+					<p>#= data.object.placeName #</p> 
+					<p>#= data.object.address #</p>
+				</div> 
+				<div class="cardAction">
+					<a class="btnClear">Action</a>
+				<div>
 			# } #
+			# if (data.type === 'Chat') {#
+				<div class="cardAction">
+					<a class="btnClear">Action</a>
+				<div>
+			#}# 
 		</div>
-	# } #
-	# if (data.type === 'Links') { # 
-		<div class="link object" data-url="#= data.object.url #">
-			<h3>#= data.object.title #</h3>
-			<p>#= data.object.url #</p>
-		</div>
-	# } #
-	# if (data.type === 'Photos') { # 
-		<div class="photo object">
-			<img src="#= data.object.url #" />
-			<p><strong>#= data.object.placeName #, #= data.object.address #</strong> <span>#= moment(data.object.date).fromNow() #</span></p>
-		</div> 
-	# } #
+</div>
 </script>
