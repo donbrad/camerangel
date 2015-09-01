@@ -1,9 +1,9 @@
 // Setup
 // ---
-function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, contactUUID, contactKey) {
+function secureChannel( channelUUID, userUUID, alias, publicKey, privateKey, contactUUID, contactKey) {
     var channel = channelUUID;
     
-	var RSAkey = cryptico.privateKeyFromString(RSAkeyString);
+	var RSAkey = cryptico.privateKeyFromString(privateKey);
     // An object userUUID and publicKey. It will be given 
     // to other users.
 	
@@ -77,8 +77,8 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
                 users[msg.data.username] = msg.data.publicKey;
             } 
             // Otherwise, we have to call `here_now` to get the state of the new subscriber to the channel.
-            else { 
-                pubnub.here_now({
+            else {
+                APP.pubnub.here_now({
                     channel: channel,
                     state: true,
                     callback: herenowUpdate
@@ -93,11 +93,10 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
         } 
     };
 
-    // Connect to current instance of pubnub
-    var pubnub = APP.pubnub;
+
 
     // Subscribe to our PubNub channel.
-    pubnub.subscribe({
+    APP.pubnub.subscribe({
         channel: channel,
         windowing: 50000,
         restore: true,
@@ -167,8 +166,8 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
 				else
 					encryptData = null;
 
-                pubnub.uuid(function (msgID) {
-                    pubnub.publish({
+            APP.pubnub.uuid(function (msgID) {
+                APP.pubnub.publish({
                         channel: channel,
                         message: {
                             recipient: recipient,
@@ -238,7 +237,7 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
 
 		getMessageHistory: function (callBack) {
             var timeStamp = ggTime.toPubNubTime((ggTime.currentTime() - 86000));
-		   pubnub.history({
+            APP.pubnub.history({
 				channel: channel,
 				end: timeStamp,
 				callback: function (messages) {
@@ -286,7 +285,7 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
         // Quits secureChannel. Other users will no longer be able to retrieve your
         // public key or send messages to you.
         quit: function () {
-            pubnub.unsubscribe({
+            APP.pubnub.unsubscribe({
                 channel: channel
             });
         }

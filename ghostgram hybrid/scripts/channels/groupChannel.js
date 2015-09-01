@@ -60,15 +60,15 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
     // times out of Babel. After updating our `users` object, it calls
     // `presenceChange()`.
     var presenceHandler = function (msg) {
-        // A user has joined Babel, so we add them to our users object.
+        // A user has joined , so we add them to our users object.
         if (msg.action === "join" || msg.action === "state-change") {
             // If the presence message contains data aka *state*, add this to our users object. 
             if ("data" in msg) { 
                 users[msg.data.username] = msg.data;
             } 
             // Otherwise, we have to call `here_now` to get the state of the new subscriber to the channel.
-            else { 
-                pubnub.here_now({
+            else {
+                APP.pubnub.here_now({
                     channel: channel,
                     state: true,
                     callback: herenowUpdate
@@ -85,11 +85,9 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
 
     // Starting up PubNub
     // ---
-    // Initialize PubNub.
-    var pubnub = APP.pubnub;
 
     // Subscribe to our PubNub channel.
-    pubnub.subscribe({
+    APP.pubnub.subscribe({
         channel: channel,
         windowing: 50000,
         restore: true,
@@ -148,8 +146,8 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
                 var content = message;
 				var currentTime =  new Date().getTime()/1000;
 
-                pubnub.uuid(function (msgID) {
-                    pubnub.publish({
+            APP.pubnub.uuid(function (msgID) {
+                APP.pubnub.publish({
                         channel: channel,
                         message: {
                             recipient: recipient,
@@ -209,7 +207,7 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
 		
 		// Get any messages that are in the channel
 		getMessageHistory: function (callBack) {
-		   pubnub.history({
+            APP.pubnub.history({
 				channel: channel,
 				limit: 100,
 				callback: function (messages) {
@@ -243,10 +241,10 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
 			});
 		},
 
-        // Quits secureChannel. Other users will no longer be able to retrieve your
+        // Quits groupChannel. Other users will no longer be able to retrieve your
         // public key or send messages to you.
         quit: function () {
-            pubnub.unsubscribe({
+            APP.pubnub.unsubscribe({
                 channel: channel
             });
         }

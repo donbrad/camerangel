@@ -54,6 +54,7 @@ var currentChannelModel = {
         msg.set('timeStamp', time);
         msg.set('channelId', currentChannelModel.currentChannel.channelId);
         msg.set('messageBlob', userModel.encryptBlob(blob));
+        // Save the encrypted message blob to parse.
         msg.save(null, {
             success: function(results) {
 
