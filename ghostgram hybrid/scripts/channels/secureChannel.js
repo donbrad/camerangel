@@ -126,13 +126,7 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
     };
 
     var archiveMessage = function (msg) {
-        var msg = Parse.Object.extend('messages');
-
-        msg.set('timeStamp', msg.time);
-        msg.set('channelId', msg.channelId);
-        msg.set('messageBlob', userModel.encryptBlob(msg));
-        msg.save();
-        currentChannelModel.messagesDS.add(msg);
+        currentChannelModel.archiveMessage(msg.time, msg);
     };
 
     // Delete a message from the `messages` object, after `TTL` seconds.

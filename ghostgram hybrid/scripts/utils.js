@@ -32,7 +32,7 @@ function updateParseObject(objectName, idField, idFieldValue, newField, newField
 			}
 		},
 		error: function(error) {
-			mobileNotify("Error: " + error.code + " " + error.message);
+			handleParseError(error);
 		}
 	});
 }
@@ -68,13 +68,13 @@ function deleteParseObject(objectName, field, fieldValue) {
 					error: function(myObject, error) {
 						// The delete failed.
 						// error is a Parse.Error with an error code and message.
-						mobileNotify("Error: " + error.code + " " + error.message);
+						handleParseError(error);
 					}
 				});
 			}
 		},
 		error: function(error) {
-			mobileNotify("Error: " + error.code + " " + error.message);
+			handleParseError(error);
 		}
 	});
 }

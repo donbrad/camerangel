@@ -13,6 +13,9 @@ var currentChannelModel = {
     messageLock: true,
     topOffset: 0,
     _debounceInterval: 5000,  // Only call every 5 seconds (counter in millisecs)
+    _lastDay : 86400,
+    _lastWeek : 604800,
+    _lastMonth : 2592000,
 
     potentialMembersDS: new kendo.data.DataSource({
         group: 'category',
@@ -41,6 +44,28 @@ var currentChannelModel = {
         }
     }),
 
+    archiveMessage : function(time, blob) {
+        var msg = Parse.Object.extend('messages');
+
+        msg.set('messageId', uuid.v4());
+        msg.set('timeStamp', time);
+        msg.set('channelId', currentChannelModel.currentChannel.channelId);
+        msg.set('messageBlob', userModel.encryptBlob(msg));
+        msg.save(null, {
+            success: function(results) {
+
+            },
+            error: function(error) {
+                handleParseError(error);
+            }
+        });
+        currentChannelModel.messagesDS.add(msg);
+    },
+
+    getArchivedMessages : function (time, callback) {
+
+    },
+
     // Need to debounce this so we're not updating lastAccess on each message read.
     updateLastAccess: debounce(function () {
         var accessTime = ggTime.currentTime(), channelId = currentChannelModel.currentChannel.channelId;
@@ -52,6 +77,7 @@ var currentChannelModel = {
         var clearTime = ggTime.currentTime(), channelId = currentChannelModel.currentChannel.channelId;
         updateParseObject('channels', 'channelId', channelId, 'clearBefore', clearTime);
     }
+
 
 
 };
