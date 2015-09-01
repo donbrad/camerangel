@@ -62,9 +62,10 @@ var currentChannelModel = {
     },
 
     closeChannel : function () {
-        if (currentChannelModel.handler !== null && currentChannelModel.handler.openChannel !== undefined) {
+        if (currentChannelModel.handler !== null && currentChannelModel.handler.closeChannel !== undefined) {
             currentChannelModel.handler.closeChannel();
         }
+        currentChannelModel.hander = null;
     },
 
     //

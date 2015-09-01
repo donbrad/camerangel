@@ -600,7 +600,7 @@ var channelView = {
         $("#messageSend").kendoTouch({
 
             tap: function(e) {
-                messageSend();
+                channelView.messageSend();
             },
             hold: function(e) {
                 $("#sendMessageActions").data("kendoMobileActionSheet").open();
@@ -630,9 +630,10 @@ var channelView = {
         }).kendoTouch({
             filter: "li",
             //enableSwipe: true,
-            tap: tapChannel,
+            tap: channelView.tapChannel,
             //swipe: swipeChannel,
-            hold: holdChannel,
+            hold: channelView.holdChannel,
+
             dragstart: function(e){
 
                 var selection = e.touch.currentTarget;
@@ -648,6 +649,7 @@ var channelView = {
                 $(".movingChat > .chat-message-user-content").velocity({scale: "1.01"}, {duration: 300});
 
             },
+
             drag: function(e){
                 var currentX = e.touch.x.location;
                 var windowWidth = $(window).width();
@@ -880,6 +882,13 @@ var channelView = {
 
     },
 
+    onHide : function (e) {
+        e.preventDefault();
+        if (currentChannelModel.currentChannel !== undefined) {
+            currentChannelModel.handler.closeChannel();  
+
+        }
+    },
 
     archiveMessage : function (e){
         if (e !== undefined && e.preventDefault !== undefined) {
@@ -985,7 +994,95 @@ var channelView = {
             APP.kendo.scroller().animatedScrollTo(0, position);
         }
 
-    }
+    },
 
+    tapChannel : function (e) {
+        e.preventDefault();
+        var target = $(e.touch.initialTouch);
+        var dataSource = currentChannelModel.messagesDS;
+        var messageUID = $(e.touch.currentTarget).data("uid");
+        var message = dataSource.getByUid(messageUID);
+        //$('.delete').css('display', 'none');
+        //$('.archive').css('display', 'none');
+
+        // Scale down the other photos in this chat...
+        $('.chat-message-photo').removeClass('chat-message-photo').addClass('chat-message-photo-small');
+
+        // If the photo is minimized and the user just clicked in the message zoom the photo in place
+        $('#'+message.msgID + ' .chat-message-photo-small').removeClass('chat-message-photo-small').addClass('chat-message-photo');
+
+        // User actually clicked on the photo so show the open the photo viewer
+        if (target[0].className === 'chat-message-photo' || target[0].className === 'chat-message-photo-small') {
+            var photoUrl = message.data.photo.photo;
+            $('#modalPhotoViewImage').attr('src', photoUrl);
+
+            $('#modalPhotoView').kendoMobileModalView("open");
+        }
+
+        if (currentChannelModel.privacyMode) {
+            $('#'+message.msgID).removeClass('privateMode');
+            $.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(3000).play()).then(function () {
+                $("#"+message.msgID).css("opacity", "1.0");
+                $("#"+message.msgID).addClass('privateMode');
+            });
+        }
+    },
+
+    swipeChannel : function (e) {
+        e.preventDefault();
+        var dataSource = currentChannelModel.messagesDS;
+        var messageUID = $(e.touch.currentTarget).data("uid");
+        var message = dataSource.getByUid(messageUID);
+
+        if (currentChannelModel.privacyMode) {
+            $('#'+message.msgID).removeClass('privateMode');
+        }
+        var selection = e.sender.events.currentTarget;
+        var selectionListItem = $(selection).closest("div");
+        var selectionInnerDiv = $(selectionListItem);
+
+        console.log(selectionInnerDiv);
+
+        if(e.direction === "left"){
+            var otherOpenedLi = $(".message-active");
+            $(otherOpenedLi).velocity({translateX:"0"},{duration: "fast"}).removeClass("message-active");
+
+            if($(window).width() < 375){
+                $(selectionInnerDiv).velocity({translateX:"-80%"},{duration: "fast"}).addClass("message-active");
+            } else {
+                $(selectionInnerDiv).velocity({translateX:"-70%"},{duration: "fast"}).addClass("message-active");
+            }
+
+
+        }
+        if (e.direction === 'right' && $(selection).hasClass("message-active") ) {
+            /*
+             // display the archive button
+             var button = kendo.fx($(e.touch.currentTarget).find(".archive"));
+             button.expand().duration(200).play();
+             */
+
+            $(selection).velocity({translateX:"0"},{duration: "fast"}).removeClass("message-active");
+
+
+            console.log("right");
+        }
+
+    },
+
+    holdChannel : function (e) {
+        e.preventDefault();
+        var dataSource = currentChannelModel.messagesDS;
+        var messageUID = $(e.touch.currentTarget).data("uid");
+        var message = dataSource.getByUid(messageUID);
+        if (currentChannelModel.privacyMode) {
+            $('#'+message.msgID).removeClass('privateMode');
+            $.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(3000).play()).then(function () {
+                $("#"+message.msgID).css("opacity", "1.0");
+                $("#"+message.msgID).addClass('privateMode');
+            });
+        }
+        $("#messageActions").data("kendoMobileActionSheet").open();
+    }
 
 };
