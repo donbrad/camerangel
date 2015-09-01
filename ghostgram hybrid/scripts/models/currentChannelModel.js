@@ -45,7 +45,8 @@ var currentChannelModel = {
     }),
 
     archiveMessage : function(time, blob) {
-        var msg = Parse.Object.extend('messages');
+        var Message = Parse.Object.extend('messages');
+        var msg = new Message();
 
         msg.set('messageId', uuid.v4());
         msg.set('timeStamp', time);
@@ -63,6 +64,7 @@ var currentChannelModel = {
     },
 
     getArchivedMessages : function (time, callback) {
+        // Messages from parse
 
     },
 
