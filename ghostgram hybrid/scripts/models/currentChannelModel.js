@@ -44,6 +44,7 @@ var currentChannelModel = {
         }
     }),
 
+    //
     archiveMessage : function(time, blob) {
         var Message = Parse.Object.extend('messages');
         var msg = new Message();
@@ -60,7 +61,9 @@ var currentChannelModel = {
                 handleParseError(error);
             }
         });
-       channelModel.messagesDS.add(msg);
+
+       // Local messages are stored in the clear and must be converted to/from encrypted format on parse...
+       channelModel.messagesDS.add(JSON.parse(blob));
     },
 
     getArchivedMessages : function () {
