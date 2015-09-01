@@ -18,6 +18,15 @@ var channelModel = {
             dir: "asc"
         }
     }),
+
+    messagesDS: new kendo.data.DataSource({
+        offlineStorage: "messages-offline",
+        sort: {
+            field: "timeStamp",
+            dir: "desc"
+        }
+    }),
+
     privateChannelsDS: new kendo.data.DataSource({
         offlineStorage: "privatechannels-offline"
     }),
@@ -47,6 +56,37 @@ var channelModel = {
                 }
                 channelModel.channelsDS.data(models);
                 deviceModel.setAppState('hasChannels', true);
+                deviceModel.isParseSyncComplete();
+            },
+            error: function(collection, error) {
+                handleParseError(error);
+            }
+        });
+
+        var Message = Parse.Object.extend("messages");
+        var MessageCollection = Parse.Collection.extend({
+            model: Message
+        });
+
+        var messages = new MessageCollection();
+
+        messages.fetch({
+            success: function(message) {
+                var models = new Array();
+                for (var i = 0; i < collection.models.length; i++) {
+
+                    var model = collection.models[i], ts = model.get('timeStamp');
+                    var deleteTime = ggTime.currentTime() - 86000;
+                    if (ts <= deleteTime) {
+                            model.destroy();
+                    } else {
+                        models.push(userModel.decryptBlob(model.get('messageBlob')));
+                    }
+
+
+                }
+                channelModel.messagesDS.data(models);
+                deviceModel.setAppState('hasMessages', true);
                 deviceModel.isParseSyncComplete();
             },
             error: function(collection, error) {

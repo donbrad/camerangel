@@ -95,7 +95,7 @@ function privateChat(e) {
             userDataChannel.privateChannelInvite(contactUUID, channel.channelId, "Private Chat request from: " + userName);
 
             // Jump to private chat
-            APP.kendo.navigate("#channel?channelId=" + channel.channelId);
+            APP.kendo.navigate("#channel?channel=" + channel.channelId);
         } else if (result.update === true || result.count === 1) {
 
             // The other user has a private channel for user but user doesn't have a private channel yet

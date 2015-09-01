@@ -38,10 +38,7 @@ var currentChannelModel = {
     }),
 
     messagesDS: new kendo.data.DataSource({
-        sort: {
-            field: "date",
-            dir: "desc"
-        }
+
     }),
 
     archiveMessage : function(time, blob) {

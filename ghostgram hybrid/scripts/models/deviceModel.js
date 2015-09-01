@@ -70,6 +70,7 @@ var deviceModel = {
         deviceModel.state.phoneVerified = false;
         deviceModel.state.hasContacts = false;
         deviceModel.state.hasChannels = false;
+        deviceModel.state.hasMessages = false;
         deviceModel.state.hasPrivateChannels = false;
         deviceModel.state.hasPlaces = false;
         deviceModel.state.hasPhotos = false;
@@ -84,11 +85,11 @@ var deviceModel = {
     isParseSyncComplete: function () {
 
         var channels = deviceModel.state.hasChannels, privateChannels = deviceModel.state.hasPrivateChannels,
-            contacts = deviceModel.state.hasContacts,
+            contacts = deviceModel.state.hasContacts, messages = deviceModel.state.hasMessages,
             places = deviceModel.state.hasPlaces, photos = deviceModel.state.hasPhotos;
         // Todo:  add places -- need to discuss with tucker
 
-        if (channels && privateChannels && contacts && photos) {
+        if (channels && privateChannels && contacts && photos && messages) {
 
             if (!deviceModel.state.pubnubInit) {
                 userModel.initPubNub();
