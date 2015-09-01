@@ -329,7 +329,7 @@ function formatMessage(string) {
 }
 
 function onChannelPresence () {
-	var users = currentChannelModel.currentChannel.listUsers();
+	var users = currentChannelModel.handler.listUsers();
 }
 
 function onChannelRead(message) {
@@ -431,7 +431,7 @@ function messageSend(e) {
 	if (currentChannelModel.currentMessage.photo !== null) {
 		messageData.photo = currentChannelModel.currentMessage.photo;
 	}
-	currentChannelModel.currentChannel.sendMessage(currentChannelModel.currentContactUUID, text, messageData, 86400);
+	currentChannelModel.handler.sendMessage(currentChannelModel.currentContactUUID, text, messageData, 86400);
 	 hideChatImagePreview();
 	_initMessageTextArea();
 	currentChannelModel.currentMessage = {};
@@ -462,7 +462,7 @@ function timeSince(date) {
 function onHideChannel(e) {
 	e.preventDefault();
 	if (currentChannelModel.currentChannel !== undefined) {
-		currentChannelModel.currentChannel.quit();   // Unsubscribe on current channel.
+		currentChannelModel.handler.quit();   // Unsubscribe on current channel.
 		mobileNotify("Closing current channel");
 	}		
 }
@@ -561,7 +561,7 @@ function onShowChannel(e) {
 				} else {
 					mobileNotify('No secure connect for ' + thisContact.alias + ' ' + thisContact.name);
 				}
-				currentChannelModel.currentChannel = thisChannel;
+				currentChannelModel.handler = thisChannel;
 				
 				
 			});
@@ -586,7 +586,7 @@ function onShowChannel(e) {
 				currentChannelModel.messagesDS.data(messages);
 				scrollToBottom();
 			});
-			currentChannelModel.currentChannel = thisChannel;
+			currentChannelModel.handler = thisChannel;
 		}
 		
 		
@@ -611,7 +611,7 @@ function onShowChannel(e) {
 			currentChannelModel.messagesDS.data(messages);
 			scrollToBottom();
 		});
-		currentChannelModel.currentChannel = thisChannel;
+		currentChannelModel.handler = thisChannel;
 	}
 }
 

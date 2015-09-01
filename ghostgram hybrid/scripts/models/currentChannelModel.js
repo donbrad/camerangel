@@ -6,6 +6,7 @@
 
 var currentChannelModel = {
     currentChannel: new kendo.data.ObservableObject(),
+    handler : {},  // Handler functions for this channel
     currentMessage: {},
     membersAdded : [],
     membersDeleted: [],
