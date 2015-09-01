@@ -95,16 +95,7 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, privateKey, con
 
 
 
-    // Subscribe to our PubNub channel.
-    APP.pubnub.subscribe({
-        channel: channel,
-        windowing: 50000,
-        restore: true,
-        callback: messageHandler,
-        presence: presenceHandler,
-        // Set our state to our user object, which contains our username and public key.
-        state: thisUser
-    });
+
 
 
  
@@ -282,11 +273,26 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, privateKey, con
         myKey: function () {
             return RSAkey;
         },
-        // Quits secureChannel. Other users will no longer be able to retrieve your
-        // public key or send messages to you.
-        quit: function () {
+
+        // Quits groupChannel. Other users will no longer be able to retrieve your
+        closeChannel: function () {
             APP.pubnub.unsubscribe({
                 channel: channel
+            });
+        },
+        // Starting up PubNub
+        // ---
+
+        openChannel : function () {
+            // Subscribe to our PubNub channel.
+            APP.pubnub.subscribe({
+                channel: channel,
+                windowing: 50000,
+                restore: true,
+                callback: messageHandler,
+                presence: presenceHandler,
+                // Set our state to our user object, which contains our username and public key.
+                state: thisUser
             });
         }
     };

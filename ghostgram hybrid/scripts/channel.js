@@ -538,6 +538,7 @@ function onShowChannel(e) {
 					thisChannel = new secureChannel(channelUUID, thisUser.userUUID, thisUser.alias, userKey, privateKey, contactUUID, contactKey);
 					thisChannel.onMessage(onChannelRead);
 					thisChannel.onPresence(onChannelPresence);
+					currentChannelModel.openChannel(thisChannel);
 					mobileNotify("Getting Previous Messages...");
 					var sentMessages = channelModel.getChannelArchive(currentChannelModel.currentChannel.channelId);
 					thisChannel.getMessageHistory(function (messages) {
@@ -562,7 +563,7 @@ function onShowChannel(e) {
 				} else {
 					mobileNotify('No secure connect for ' + thisContact.alias + ' ' + thisContact.name);
 				}
-				currentChannelModel.handler = thisChannel;
+
 				
 				
 			});
@@ -572,6 +573,7 @@ function onShowChannel(e) {
 			thisChannel.onMessage(onChannelRead);
 			thisChannel.onPresence(onChannelPresence);
 			mobileNotify("Getting Previous Messages...");
+			currentChannelModel.openChannel(thisChannel);
 			var sentMessages = channelModel.getChannelArchive(currentChannelModel.currentChannel.channelId);
 			thisChannel.getMessageHistory(function (messages) {
 				currentChannelModel.messagesDS.data([]);
@@ -589,7 +591,7 @@ function onShowChannel(e) {
 				currentChannelModel.messagesDS.pushCreate(sentMessages);
 				scrollToBottom();
 			});
-			currentChannelModel.handler = thisChannel;
+
 		}
 		
 		
@@ -614,7 +616,7 @@ function onShowChannel(e) {
 			currentChannelModel.messagesDS.data(messages);
 			scrollToBottom();
 		});
-		currentChannelModel.handler = thisChannel;
+		currentChannelModel.openChannel(thisChannel);
 	}
 }
 
