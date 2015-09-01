@@ -538,8 +538,9 @@ function onShowChannel(e) {
 					thisChannel.onMessage(onChannelRead);
 					thisChannel.onPresence(onChannelPresence);
 					mobileNotify("Getting Previous Messages...");
+					var sentMessages = channelModel.getChannelArchive(currentChannelModel.currentChannel.channelId);
 					thisChannel.getMessageHistory(function (messages) {
-						APP.models.channel.messagesDS.data([]);
+						currentChannelModel.messagesDS.data([]);
 						
 						for (var i=0; i<messages.length; i++){		
 							var message = messages[i];
@@ -552,7 +553,9 @@ function onShowChannel(e) {
 							message.fromHistory = true;
 						}
 	
-						APP.models.channel.messagesDS.data(messages);	
+						currentChannelModel.messagesDS.data(messages);
+						currentChannelModel.messagesDS.pushCreate(sentMessages);
+
 						scrollToBottom();
 					});
 				} else {

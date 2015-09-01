@@ -30,6 +30,7 @@ var channelModel = {
     privateChannelsDS: new kendo.data.DataSource({
         offlineStorage: "privatechannels-offline"
     }),
+
     channelMapDS: new kendo.data.DataSource({
         offlineStorage: "channelmap-offline"
     }),
@@ -38,6 +39,31 @@ var channelModel = {
     init :  function () {
         channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
     },
+
+    // Get messages archive for current channel (past 24 hours)
+    // This is only called by secure channel as sender messages are encrypted with recipients public key
+    getChannelArchive : function (channel) {
+        var dataSource =  channelModel.messagesDS;
+        var timeStamp = ggTime.currentTime() - 86000;
+        dataSource.filter(
+            [
+                {"logic":"and",
+                    "filters":[
+                        {
+                            "field":"channelId",
+                            "operator":"eq",
+                            "value":channel},
+                        {
+                            "field":"time",
+                            "operator":"gt",
+                            "value":timeStamp}
+                    ]}
+            ]);
+        var view = dataSource.view();
+        dataSource.filter([]);
+        return(view);
+    },
+
 
     fetch : function () {
         var Channel = Parse.Object.extend("channels");

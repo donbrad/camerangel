@@ -126,7 +126,7 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
     };
 
     var archiveMessage = function (msg) {
-        currentChannelModel.archiveMessage(msg.time, msg);
+        currentChannelModel.archiveMessage(msg.time, JSON.stringify(msg));
     };
 
     // Delete a message from the `messages` object, after `TTL` seconds.
@@ -234,11 +234,13 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
             return messages;
         },
 		
-		// Get any messages that are in the channel
+		// Get any messages that are in the channel from the past 24 hours
+
 		getMessageHistory: function (callBack) {
+            var timeStamp = ggTime.toPubNubTime((ggTime.currentTime() - 86000));
 		   pubnub.history({
 				channel: channel,
-				limit: 64,
+				end: timeStamp,
 				callback: function (messages) {
 					var clearMessageArray = [];
 					messages = messages[0];

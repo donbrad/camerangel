@@ -38,7 +38,10 @@ var currentChannelModel = {
     }),
 
     messagesDS: new kendo.data.DataSource({
-
+        sort: {
+            field: "time",
+            dir: "des"
+        }
     }),
 
     archiveMessage : function(time, blob) {
@@ -48,7 +51,7 @@ var currentChannelModel = {
         msg.set('messageId', uuid.v4());
         msg.set('timeStamp', time);
         msg.set('channelId', currentChannelModel.currentChannel.channelId);
-        msg.set('messageBlob', userModel.encryptBlob(msg));
+        msg.set('messageBlob', userModel.encryptBlob(blob));
         msg.save(null, {
             success: function(results) {
 
@@ -57,10 +60,10 @@ var currentChannelModel = {
                 handleParseError(error);
             }
         });
-        currentChannelModel.messagesDS.add(msg);
+       channelModel.messagesDS.add(msg);
     },
 
-    getArchivedMessages : function (time, callback) {
+    getArchivedMessages : function () {
         // Messages from parse
 
     },
