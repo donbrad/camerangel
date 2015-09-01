@@ -97,7 +97,7 @@ var channelModel = {
         var messages = new MessageCollection();
 
         messages.fetch({
-            success: function(message) {
+            success: function(collection) {
                 var models = new Array();
                 for (var i = 0; i < collection.models.length; i++) {
 
