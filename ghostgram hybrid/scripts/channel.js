@@ -483,10 +483,11 @@ function togglePrivacyMode (e) {
 	
 }
 function onShowChannel(e) {
+	e.preventDefault();
 	// hide action btn
 	$("#channels > div.footerMenu.km-footer > a").css("display","none");
 
-	e.preventDefault();
+
 	var channelUUID = e.view.params.channel;
 	var thisChannelModel = channelModel.findChannelModel(channelUUID);
 	var thisUser = userModel.currentUser;
@@ -571,6 +572,7 @@ function onShowChannel(e) {
 			thisChannel.onMessage(onChannelRead);
 			thisChannel.onPresence(onChannelPresence);
 			mobileNotify("Getting Previous Messages...");
+			var sentMessages = channelModel.getChannelArchive(currentChannelModel.currentChannel.channelId);
 			thisChannel.getMessageHistory(function (messages) {
 				currentChannelModel.messagesDS.data([]);
 				for (var i=0; i<messages.length; i++){
@@ -584,6 +586,7 @@ function onShowChannel(e) {
 						}
 
 				currentChannelModel.messagesDS.data(messages);
+				currentChannelModel.messagesDS.pushCreate(sentMessages);
 				scrollToBottom();
 			});
 			currentChannelModel.handler = thisChannel;
