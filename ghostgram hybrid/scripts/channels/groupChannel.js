@@ -83,22 +83,6 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
         } 
     };
 
-    // Starting up PubNub
-    // ---
-
-    // Subscribe to our PubNub channel.
-    APP.pubnub.subscribe({
-        channel: channel,
-        windowing: 50000,
-        restore: true,
-        callback: messageHandler,
-        presence: presenceHandler,
-        // Set our state to our user object, which contains our username and public key.
-        state: thisUser
-    });
-
-
- 
 
     // secureChannel Private Methods
     // ---
@@ -242,11 +226,26 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
 		},
 
         // Quits groupChannel. Other users will no longer be able to retrieve your
-        // public key or send messages to you.
-        quit: function () {
+        closeChannel: function () {
             APP.pubnub.unsubscribe({
                 channel: channel
             });
+         },
+        // Starting up PubNub
+        // ---
+
+        openChannel : function () {
+            // Subscribe to our PubNub channel.
+            APP.pubnub.subscribe({
+                channel: channel,
+                windowing: 50000,
+                restore: true,
+                callback: messageHandler,
+                presence: presenceHandler,
+                // Set our state to our user object, which contains our username and public key.
+                state: thisUser
+            });
         }
+
     };
-};
+}

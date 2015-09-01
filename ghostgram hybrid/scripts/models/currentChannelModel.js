@@ -5,9 +5,10 @@
 'use strict';
 
 var currentChannelModel = {
-    currentChannel: new kendo.data.ObservableObject(),
-    handler : {},  // Handler functions for this channel
+    currentChannel: new kendo.data.ObservableObject(),  // data for current channel
+    handler : null,  // Handler functions for the current channel
     currentMessage: {},
+    channelId : null,
     membersAdded : [],
     membersDeleted: [],
     privacyMode: false,
@@ -44,6 +45,27 @@ var currentChannelModel = {
             dir: "des"
         }
     }),
+
+
+    openChannel : function (handler) {
+
+        // if there's a current channel active -- close it
+        currentChannelModel.closeChannel();
+        if (handler !== undefined) {
+            currentChannelModel.handler = handler;
+            if (currentChannelModel.handler !== null && currentChannelModel.handler.openChannel !== undefined) {
+                currentChannelModel.handler.openChannel();
+            }
+        }
+
+
+    },
+
+    closeChannel : function () {
+        if (currentChannelModel.handler !== null && currentChannelModel.handler.openChannel !== undefined) {
+            currentChannelModel.handler.closeChannel();
+        }
+    },
 
     //
     archiveMessage : function(time, blob) {
