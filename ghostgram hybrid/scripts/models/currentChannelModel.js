@@ -13,7 +13,7 @@ var currentChannelModel = {
     membersDeleted: [],
     privacyMode: false,
     messageLock: true,
-    topOffset: 0,
+
     _debounceInterval: 5000,  // Only call every 5 seconds (counter in millisecs)
     _lastDay : 86400,
     _lastWeek : 604800,
