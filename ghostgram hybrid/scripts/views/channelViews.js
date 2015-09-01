@@ -885,7 +885,7 @@ var channelView = {
     onHide : function (e) {
         e.preventDefault();
         if (currentChannelModel.currentChannel !== undefined) {
-            currentChannelModel.handler.closeChannel();  
+            currentChannelModel.handler.closeChannel();
 
         }
     },
@@ -926,7 +926,7 @@ var channelView = {
 
         currentChannelModel.updateLastAccess();
 
-        scrollToBottom();
+        channelView.scrollToBottom();
 
         if (currentChannelModel.privacyMode) {
             kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(9000).play();
