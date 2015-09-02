@@ -917,7 +917,7 @@ var channelView = {
                 contactInfoArray[contact.uuid] = contact;
                 // this is our user.
             } else {
-                var thisContact = contactModel.findContactByUUID(contactArray[i]);
+                var thisContact = contactModel.getContactModel(contactArray[i]);
                 if (thisContact === undefined) {
                     mobileNotify("buildContactArray - undefined contact!!!");
                     return(contactInfoArray);
