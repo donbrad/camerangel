@@ -748,26 +748,25 @@ var channelView = {
         });
     },
 
+
+
     onShow : function (e) {
       _preventDefault(e);
       // hide action btn
       $("#channels > div.footerMenu.km-footer > a").css("display","none");
 
       var channelUUID = e.view.params.channel;
-      var thisChannelModel = channelModel.findChannelModel(channelUUID);
+
       var thisUser = userModel.currentUser;
-      var thisChannel = {};
+      var thisChannel =  currentChannelModel.setCurrentChannel(channelUUID);
       var contactUUID = null;
-      currentChannelModel.currentChannel = thisChannelModel;
-      var name = thisChannelModel.name;
+      var name = channelView.formatName(thisChannel.name);
 
       // Hide the image preview div
       channelView.hideChatImagePreview();
       APP.updateGeoLocation();
 
-      if (name.length > 13) {
-          name = name.substring(0,13)+"...";
-      }
+
       currentChannelModel.privacyMode = false;
 
         channelView.buildContactArray();
@@ -780,93 +779,62 @@ var channelView = {
       $("#privacyStatus").addClass("hidden");
       $("#channelNavBar").data('kendoMobileNavBar').title(name);
 
-      if (thisChannelModel.isPrivate) {
+      if (thisChannel.isPrivate) {
+
+          // *** Private Channel ***
+          var contactKey = thisChannel.contactKey;
+          if (contactKey === undefined) {
+              mobileNotify("No public key for " + thisContact.name);
+              return;
+          }
+
           $('#messagePresenceButton').hide();
           currentChannelModel.privacyMode = true;
           // Privacy UI
           $('#privacyMode').html('<img src="images/privacy-on.svg" />');
           $("#privacyStatus").removeClass("hidden");
           var userKey = thisUser.publicKey, privateKey = thisUser.privateKey;
-          if (thisChannelModel.members[0] === thisUser.userUUID)
-              contactUUID = thisChannelModel.members[1];
+          if (thisChannel.members[0] === thisUser.userUUID)
+              contactUUID = thisChannel.members[1];
           else
-              contactUUID = thisChannelModel.members[0];
+              contactUUID = thisChannel.members[0];
 
           currentChannelModel.currentContactUUID = contactUUID;
           var thisContact = contactModel.getContactModel(contactUUID);
-          if (thisChannelModel.isPrivate) {
+          if (thisChannel.isPrivate) {
               $('#channelImage').attr('src', thisContact.photo);
+          } else {
+              $('#channelImage').attr('src', '');
           }
 
           currentChannelModel.currentContactModel = thisContact;
-          var contactKey = thisContact.publicKey;
-          if (contactKey === undefined) {
-              getUserPublicKey(contactUUID, function (result, error) {
-                  if (result.found) {
-                      contactKey = result.publicKey;
-                      thisContact.publicKey = contactKey;
-                      updateParseObject('contacts', 'contactUUID', contactUUID, 'publicKey', contactKey);
-                      thisChannel = new secureChannel(channelUUID, thisUser.userUUID, thisUser.alias, userKey, privateKey, contactUUID, contactKey);
-                      thisChannel.onMessage(channelView.onChannelRead);
-                      thisChannel.onPresence(channelView.onChannelPresence);
-                      currentChannelModel.openChannel(thisChannel);
-                      mobileNotify("Getting Previous Messages...");
-                      var sentMessages = channelModel.getChannelArchive(currentChannelModel.currentChannel.channelId);
-                      thisChannel.getMessageHistory(function (messages) {
-                          currentChannelModel.messagesDS.data([]);
 
-                          for (var i=0; i<messages.length; i++){
-                              var message = messages[i];
-                              var formattedContent = '';
-                              if (message.content !== null) {
-                                  formattedContent = formatMessage(message.content);
-                              }
-                              message.formattedContent = formattedContent;
-                              // this is a private channel to activate the message timer
-                              message.fromHistory = true;
-                          }
-
-                          currentChannelModel.messagesDS.data(messages);
-                          currentChannelModel.messagesDS.pushCreate(sentMessages);
-
-                          channelView.scrollToBottom();
-                      });
-                  } else {
-                      mobileNotify('No secure connect for ' + thisContact.alias + ' ' + thisContact.name);
+          thisChannel = new secureChannel(channelUUID, thisUser.userUUID, thisUser.alias, userKey, privateKey, contactUUID, contactKey);
+          thisChannel.onMessage(channelView.onChannelRead);
+          thisChannel.onPresence(channelView.onChannelPresence);
+          mobileNotify("Getting Previous Messages...");
+          currentChannelModel.openChannel(thisChannel);
+          var sentMessages = channelModel.getChannelArchive(currentChannelModel.currentChannel.channelId);
+          thisChannel.getMessageHistory(function (messages) {
+              currentChannelModel.messagesDS.data([]);
+              for (var i=0; i<messages.length; i++){
+                  var message = messages[i];
+                  var formattedContent = '';
+                  if (message.content !== null) {
+                      formattedContent = formatMessage(message.content);
                   }
+                  message.formattedContent = formattedContent;
+                  message.fromHistory = true;
+              }
 
-
-
-              });
-          } else {
-              currentChannelModel.currentChannel = thisChannelModel;
-              thisChannel = new secureChannel(channelUUID, thisUser.userUUID, thisUser.alias, userKey, privateKey, contactUUID, contactKey);
-              thisChannel.onMessage(channelView.onChannelRead);
-              thisChannel.onPresence(channelView.onChannelPresence);
-              mobileNotify("Getting Previous Messages...");
-              currentChannelModel.openChannel(thisChannel);
-              var sentMessages = channelModel.getChannelArchive(currentChannelModel.currentChannel.channelId);
-              thisChannel.getMessageHistory(function (messages) {
-                  currentChannelModel.messagesDS.data([]);
-                  for (var i=0; i<messages.length; i++){
-                      var message = messages[i];
-                      var formattedContent = '';
-                      if (message.content !== null) {
-                          formattedContent = formatMessage(message.content);
-                      }
-                      message.formattedContent = formattedContent;
-                      message.fromHistory = true;
-                  }
-
-                  currentChannelModel.messagesDS.data(messages);
-                  currentChannelModel.messagesDS.pushCreate(sentMessages);
-                  channelView.scrollToBottom();
-              });
-
-          }
-
+              currentChannelModel.messagesDS.data(messages);
+              currentChannelModel.messagesDS.pushCreate(sentMessages);
+              channelView.scrollToBottom();
+          });
 
       } else {
+
+          //*** Group Channel ***
           $('#messagePresenceButton').show();
           // Provision a group channel
           thisChannel = new groupChannel(channelUUID, thisUser.userUUID, thisUser.alias, userKey);
@@ -918,6 +886,9 @@ var channelView = {
 
     },
 
+    formatName : function (name) {
+
+    },
 
     archiveMessage : function (e) {
         _preventDefault(e);

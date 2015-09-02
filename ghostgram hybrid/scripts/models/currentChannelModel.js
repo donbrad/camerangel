@@ -47,6 +47,21 @@ var currentChannelModel = {
     }),
 
 
+    setCurrentChannel : function (channelId) {
+        if (channelId === undefined || channelId === null) {
+            mobileNotify("CurrentChat :  Invalid Chat Id!!");
+            return;
+        }
+
+        var channel = channelModel.findChannelModel(channelId);
+        if (channel !== undefined) {
+            currentChannelModel.currentChannel = channel;
+            currentChannelModel.channelId = channelId;
+         }
+        return(channel);
+
+    },
+
     openChannel : function (handler) {
 
         // if there's a current channel active -- close it
