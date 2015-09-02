@@ -588,6 +588,7 @@ var channelMembersView = {
 
 var channelView = {
     topOffset: 0,
+    messageLock: false,
 
     onInit: function (e) {
 
@@ -1041,7 +1042,7 @@ var channelView = {
         var selectionListItem = $(selection).closest("div");
         var selectionInnerDiv = $(selectionListItem);
 
-        console.log(selectionInnerDiv);
+        //console.log(selectionInnerDiv);
 
         if(e.direction === "left"){
             var otherOpenedLi = $(".message-active");
@@ -1065,7 +1066,7 @@ var channelView = {
             $(selection).velocity({translateX:"0"},{duration: "fast"}).removeClass("message-active");
 
 
-            console.log("right");
+            //console.log("right");
         }
 
     },
@@ -1083,6 +1084,69 @@ var channelView = {
             });
         }
         $("#messageActions").data("kendoMobileActionSheet").open();
+    },
+
+    messageEraser: function (e) {
+        _preventDefault(e);
+        channelView._initMessageTextArea();
+    },
+
+    messageLockButton : function (e) {
+        e.preventDefault();
+        channelView.messageLock = !channelView.messageLock;
+        if (channelView.messageLock) {
+            $('#messageLockButton').html('<i class="fa fa-lock"></i>');
+        } else {
+            $('#messageLockButton').html('<i class="fa fa-unlock"></i>');
+        }
+    },
+
+    messageCamera : function (e) {
+       _preventDefault(e);
+        deviceCamera(
+            1600, // max resolution in pixels
+            75,  // quality: 1-99.
+            true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+            showChatImagePreview  // Optional preview callback
+        );
+    },
+
+    messagePhoto : function (e) {
+        _preventDefault(e);
+        // Call the device gallery function to get a photo and get it scaled to gg resolution
+        //todo: need to parameterize these...
+        deviceGallery(
+            1600, // max resolution in pixels
+            75,  // quality: 1-99.
+            true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+            showChatImagePreview  // Optional preview callback
+        );
+    },
+
+     messageGallery : function (e) {
+        _preventDefault(e);
+
+        APP.kendo.navigate("views/gallery.html#gallery?action=chat");
+
+    },
+
+    messageAudio : function(e) {
+        _preventDefault(e);
+        navigator.device.capture.captureAudio(
+            function (mediaFiles) {
+                var mediaUrl = mediaFiles[0].fullPath;
+            },
+            function(error) {
+                mobileNotify("Audio capture error " + JSON.stringify(error));
+            },
+            {limit:1, duration: 5}
+        );
+    },
+
+    messageLocation : function (e) {
+        _preventDefault(e);
     }
+
+
 
 };

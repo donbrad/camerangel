@@ -271,16 +271,16 @@
 		 <div class="messageCompose">
 			<textarea id="messageTextArea" rows="1" autofocus="true" wrap="soft" spellcheck="true" placeholder="Message..."></textarea>
 			 <div class="right">
-				 <a data-role="button" id="messageSend">Send</a>
+				 <a data-role="button"  id="messageSend">Send</a>
 			 </div>
              <div class="messageMediaBar">
              	<ul>
-                    <li><a data-role="button" data-click="messageCamera"><img src="images/chat-camera.svg" height="24"></a></li>
+                    <li><a data-role="button" data-click="channelView.messageCamera"><img src="images/chat-camera.svg" height="24"></a></li>
                     <li><a data-role="button" data-rel="actionsheet" href="#galleryActions"><img src="images/chat-photo.svg" height="24"></a></li>
-                    <li><a data-role="button" data-click="messageAudio"><img src="images/chat-sound.svg" height="24"></a></li>
-                    <li class="hidden"><a data-role="button" data-click="messageLocation"><img src="images/chat-places.svg" height="24"></a></li>
+                    <li><a data-role="button" data-click="channelView.messageAudio"><img src="images/chat-sound.svg" height="24"></a></li>
+                    <li class="hidden"><a data-role="button" data-click="channelView.messageLocation"><img src="images/chat-places.svg" height="24"></a></li>
                     <li><a data-role="button" data-rel="actionsheet" href="#newMessageActions"><img src="images/chat-smart.svg" height="24"></a></li>
-                    <li><a data-role="button" data-click="togglePrivacyMode" id="privacyMode"><img src="images/privacy-off.svg" height="24"/></a></li>
+                    <li><a data-role="button" data-click="channelView.togglePrivacyMode" id="privacyMode"><img src="images/privacy-off.svg" height="24"/></a></li>
                  </ul>
              </div>
 		  </div>
@@ -301,7 +301,7 @@
 	  <ul data-role="actionsheet" id="messageActions" data-popup='{"direction": "left"}'>
 		<li><a data-action="archiveMessage"><i class="fa fa-archive"> </i> Archive Message</a></li>
 		<li><a data-action="smartScanMessage"><i class="fa fa-magic"> </i> Smart Scan Message</a></li>
-        <li><a data-action="messageEraser"><i class="fa fa-eraser"> </i> Erase Message</a></li>
+        <li><a data-action="channelView.messageEraser"><i class="fa fa-eraser"> </i> Erase Message</a></li>
     </ul>
     
 </div>
