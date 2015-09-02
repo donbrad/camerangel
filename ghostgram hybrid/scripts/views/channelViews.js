@@ -590,7 +590,7 @@ var channelView = {
     topOffset: 0,
     messageLock: false,
     thisUser : null,
-    contactArray : [],
+    contactData : [],
     currentContactId: null,
     currentContact: null,
     intervalId : null,
@@ -772,10 +772,6 @@ var channelView = {
 
       currentChannelModel.privacyMode = false;
 
-        channelView.buildContactArray();
-        if (channelView.intervalId === null) {
-            channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 3600000);
-        }
 
       // Privacy UI
       $('#privacyMode').html('<img src="images/privacy-off.svg" />');
@@ -807,9 +803,9 @@ var channelView = {
           if (thisContact === undefined) {
               mobileNotify("ChannelView : Undefined contact for " + contactUUID);
               return;
-
           }
           channelView.currentContact = thisContact;
+          channelView.contactData = channelView.buildContactArray(thisChannel.members);
           //Todo: remove currentContactModel
           currentChannelModel.currentContactModel = thisContact;
           if (thisChannel.isPrivate) {
@@ -838,6 +834,11 @@ var channelView = {
 
               currentChannelModel.messagesDS.data(messages);
               currentChannelModel.messagesDS.pushCreate(sentMessages);
+
+              if (channelView.intervalId === null) {
+                  channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 3600000);
+              }
+
               channelView.scrollToBottom();
           });
 
@@ -849,6 +850,7 @@ var channelView = {
           thisChannelHandler = new groupChannel(channelUUID, thisUser.userUUID, thisUser.alias, userKey);
           thisChannelHandler.onMessage(channelView.onChannelRead);
           thisChannelHandler.onPresence(channelView.onChannelPresence);
+          channelView.contactData = channelView.buildContactArray(thisChannel.members);
           mobileNotify("Getting Previous Messages...");
           thisChannel.getMessageHistory(function (messages) {
               APP.models.channel.messagesDS.data([]);
@@ -883,11 +885,39 @@ var channelView = {
 
     },
 
-    buildContactArray : function () {
-        var contactArray = currentChannelModel.membersDS.data();
+    buildContactArray : function (contactArray) {
+       if (contactArray === undefined || contactArray.length === 0) {
+           return ([]);
+       }
+        var contactInfoArray = [], userId = userModel.currentUser.userUUID;
         for (var i=0; i< contactArray.length; i++) {
-            var contact = contactArray[i];
+            var contact = new Object();
+            if (contactArray[i] === userId) {
+                contact.isContact = false;
+                contact.uuid = contactArray[i];
+                contact.alias = userModel.currentUser.alias;
+                contact.photoUrl = userModel.currentUser.photo;
+                contact.publicKey = userModel.currentUser.publicKey;
+                contact.isPresent = true;
+                contactInfoArray[contact.uuid] = contact;
+                // this is our user.
+            } else {
+                var thisContact = contactModel.findContactByUUID(contactArray[i]);
+                if (thisContact === undefined) {
+                    mobileNotify("buildContactArray - undefined contact!!!");
+                    return(contactInfoArray);
+                }
+                contact.isContact = true;
+                contact.uuid = contactArray[i];
+                contact.alias = thisContact.alias;
+                contact.photoUrl = thisContact.photo;
+                contact.publicKey = thisContact.publicKey;
+                contact.isPresent = false;
+                contactInfoArray[contact.uuid] = contact;
+            }
         }
+
+        return (contactInfoArray)
     },
 
     getUserType: function (uuid) {
