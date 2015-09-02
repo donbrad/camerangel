@@ -591,7 +591,8 @@ var channelView = {
     messageLock: false,
     thisUser : null,
     contactArray : [],
-    intervalID : window.setInterval(channelView.updateMessageTimeStamps, 3600000),
+    intervalId : null,
+
 
     onInit: function (e) {
 
@@ -770,6 +771,10 @@ var channelView = {
       currentChannelModel.privacyMode = false;
 
         channelView.buildContactArray();
+        if (channelView.intervalId === null) {
+            channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 3600000);
+        }
+
       // Privacy UI
       $('#privacyMode').html('<img src="images/privacy-off.svg" />');
       $("#privacyStatus").addClass("hidden");
@@ -893,6 +898,12 @@ var channelView = {
             currentChannelModel.handler.closeChannel();
 
         }
+
+        if (channelView.intervalId !== null) {
+            clearInterval(channelView.intervalId);
+            channelView = null;
+        }
+
     },
 
     buildContactArray : function () {
