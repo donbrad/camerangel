@@ -761,6 +761,10 @@ var channelView = {
 
       var thisUser = userModel.currentUser;
       var thisChannel =  currentChannelModel.setCurrentChannel(channelUUID);
+        if (thisChannel === undefined) {
+            mobileNotify("ChatView -- chat doesn't exist : " + channelUUID);
+            return;
+        }
       var contactUUID = null;
         var thisChannelHandler = null;
       var name = channelView.formatName(thisChannel.name);
@@ -883,6 +887,17 @@ var channelView = {
             channelView = null;
         }
 
+    },
+
+    getContactData : function (uuid) {
+        var data = channelView.contactData[uuid];
+
+        if (data === undefined) {
+            mobileNotify("ChatView - no contact : " + uuid);
+            return(null);
+        }
+
+        return(data);
     },
 
     buildContactArray : function (contactArray) {

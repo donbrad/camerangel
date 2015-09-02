@@ -307,21 +307,21 @@
 </div>
 
 <script type="text/x-kendo-tmpl" id="messagesTemplate">
-	# var history='';  
+	# var history='', contactData = channelView.getContactData(data.sender);;
 		if (currentChannelModel.privacyMode) {
 			if (fromHistory !== undefined && fromHistory === true ) {
 				history = "privateMode"; }
-		}#
+	}#
 	<div id=#:msgID# class="chat-message #=history# clearfix">
 	#
 		var name = "Me"; 
-		var photoUrl = ''; 
-		if (sender === currentChannelModel.currentContactUUID) {
-			name =  currentChannelModel.currentContactModel.alias;
-			photoUrl = currentChannelModel.currentContactModel.photo;
-		} 
-
-		
+		var photoUrl = '';
+		sender = contactData.uuid;
+		name = contactData.alias;
+		photoUrl = contactData.photoUrl;
+		if (contactData.isContact) {
+			//This is a received message from a contact.  if false, it's a message sent by our user...
+		}
 	#
 	 <div class="chat-time"> #:data.formattedTime# </div>
 	# if(photoUrl !== '') { #
