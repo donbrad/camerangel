@@ -589,6 +589,9 @@ var channelMembersView = {
 var channelView = {
     topOffset: 0,
     messageLock: false,
+    thisUser : null,
+    contactArray : [],
+    intervalID : window.setInterval(channelView.updateMessageTimeStamps, 3600000),
 
     onInit: function (e) {
 
@@ -745,10 +748,9 @@ var channelView = {
     },
 
     onShow : function (e) {
-      e.preventDefault();
+      _preventDefault(e);
       // hide action btn
       $("#channels > div.footerMenu.km-footer > a").css("display","none");
-
 
       var channelUUID = e.view.params.channel;
       var thisChannelModel = channelModel.findChannelModel(channelUUID);
@@ -766,6 +768,8 @@ var channelView = {
           name = name.substring(0,13)+"...";
       }
       currentChannelModel.privacyMode = false;
+
+        channelView.buildContactArray();
       // Privacy UI
       $('#privacyMode').html('<img src="images/privacy-off.svg" />');
       $("#privacyStatus").addClass("hidden");
@@ -891,10 +895,22 @@ var channelView = {
         }
     },
 
-    archiveMessage : function (e){
-        if (e !== undefined && e.preventDefault !== undefined) {
-            e.preventDefault();
+    buildContactArray : function () {
+        var contactArray = currentChannelModel.membersDS.data();
+        for (var i=0; i< contactArray.length; i++) {
+            var contact = contactArray[i];
         }
+    },
+
+    getUserType: function (uuid) {
+        var userType = { isContact: true, alias : '', profileUrl: ''};
+
+    },
+
+
+    archiveMessage : function (e) {
+        _preventDefault(e);
+
         // close out li
         $(".selectedLI").velocity("slideUp", {delay: 150});
 
@@ -909,6 +925,8 @@ var channelView = {
     onChannelPresence : function () {
         var users = currentChannelModel.handler.listUsers();
     },
+
+
 
     onChannelRead : function (message) {
 
@@ -996,6 +1014,24 @@ var channelView = {
         }
 
     },
+
+    updateMessageTimeStamps : function () {
+        var dataSource = currentChannelModel.messagesDS, length = dataSource.total();
+        var formattedTime = '';
+
+        for (var i=0; i<length; i++) {
+            var msg = dataSource.at(i);
+            formattedTime = timeSince(msg.time);
+            if(formattedTime === "0 seconds"){
+                formattedTime = "Just now";
+            } else {
+                formattedTime = formattedTime + " ago"
+            }
+            msg.set('formattedTime', formattedTime);
+        }
+
+    },
+
 
     tapChannel : function (e) {
         e.preventDefault();
@@ -1152,7 +1188,7 @@ var channelView = {
         _preventDefault(e);
         mobileNotify("Chat location isn't wired up yet");
     },
-    
+
 
     messageCalendar : function (e) {
         _preventDefault(e);
