@@ -591,6 +591,8 @@ var channelView = {
     messageLock: false,
     thisUser : null,
     contactArray : [],
+    currentContactId: null,
+    currentContact: null,
     intervalId : null,
 
 
@@ -760,6 +762,7 @@ var channelView = {
       var thisUser = userModel.currentUser;
       var thisChannel =  currentChannelModel.setCurrentChannel(channelUUID);
       var contactUUID = null;
+        var thisChannelHandler = null;
       var name = channelView.formatName(thisChannel.name);
 
       // Hide the image preview div
@@ -799,22 +802,28 @@ var channelView = {
           else
               contactUUID = thisChannel.members[0];
 
-          currentChannelModel.currentContactUUID = contactUUID;
+          channelView.currentContactId = contactUUID;
           var thisContact = contactModel.getContactModel(contactUUID);
+          if (thisContact === undefined) {
+              mobileNotify("ChannelView : Undefined contact for " + contactUUID);
+              return;
+
+          }
+          channelView.currentContact = thisContact;
+          //Todo: remove currentContactModel
+          currentChannelModel.currentContactModel = thisContact;
           if (thisChannel.isPrivate) {
               $('#channelImage').attr('src', thisContact.photo);
           } else {
               $('#channelImage').attr('src', '');
           }
 
-          currentChannelModel.currentContactModel = thisContact;
-
-          thisChannel = new secureChannel(channelUUID, thisUser.userUUID, thisUser.alias, userKey, privateKey, contactUUID, contactKey);
-          thisChannel.onMessage(channelView.onChannelRead);
-          thisChannel.onPresence(channelView.onChannelPresence);
+          thisChannelHandler = new secureChannel(channelUUID, thisUser.userUUID, thisUser.alias, userKey, privateKey, contactUUID, contactKey);
+          thisChannelHandler.onMessage(channelView.onChannelRead);
+          thisChannelHandler.onPresence(channelView.onChannelPresence);
           mobileNotify("Getting Previous Messages...");
-          currentChannelModel.openChannel(thisChannel);
-          var sentMessages = channelModel.getChannelArchive(currentChannelModel.currentChannel.channelId);
+          currentChannelModel.openChannel(thisChannelHandler);
+          var sentMessages = channelModel.getChannelArchive(thisChannel.channelId);
           thisChannel.getMessageHistory(function (messages) {
               currentChannelModel.messagesDS.data([]);
               for (var i=0; i<messages.length; i++){
@@ -837,9 +846,9 @@ var channelView = {
           //*** Group Channel ***
           $('#messagePresenceButton').show();
           // Provision a group channel
-          thisChannel = new groupChannel(channelUUID, thisUser.userUUID, thisUser.alias, userKey);
-          thisChannel.onMessage(channelView.onChannelRead);
-          thisChannel.onPresence(channelView.onChannelPresence);
+          thisChannelHandler = new groupChannel(channelUUID, thisUser.userUUID, thisUser.alias, userKey);
+          thisChannelHandler.onMessage(channelView.onChannelRead);
+          thisChannelHandler.onPresence(channelView.onChannelPresence);
           mobileNotify("Getting Previous Messages...");
           thisChannel.getMessageHistory(function (messages) {
               APP.models.channel.messagesDS.data([]);
@@ -855,7 +864,7 @@ var channelView = {
               currentChannelModel.messagesDS.data(messages);
               channelView.scrollToBottom();
           });
-          currentChannelModel.openChannel(thisChannel);
+          currentChannelModel.openChannel(thisChannelHandler);
       }
 
     },
