@@ -896,7 +896,11 @@ var channelView = {
     },
 
     formatName : function (name) {
-
+        if (name.length < 16) {
+            return(name);
+        } else {
+            return(name.substring(0,13) + "...");
+        }
     },
 
     archiveMessage : function (e) {
