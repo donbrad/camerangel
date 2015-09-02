@@ -857,7 +857,7 @@ var channelView = {
           channelView.contactData = channelView.buildContactArray(thisChannel.members);
           mobileNotify("Getting Previous Messages...");
           thisChannelHandler.getMessageHistory(function (messages) {
-              APP.models.channel.messagesDS.data([]);
+              currentChannelModel.messagesDS.data([]);
               for (var i=0; i<messages.length; i++){
                   var message = messages[i];
                   var formattedContent = '';
