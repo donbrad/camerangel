@@ -824,7 +824,7 @@ var channelView = {
           mobileNotify("Getting Previous Messages...");
           currentChannelModel.openChannel(thisChannelHandler);
           var sentMessages = channelModel.getChannelArchive(thisChannel.channelId);
-          thisChannel.getMessageHistory(function (messages) {
+          thisChannelHandler.getMessageHistory(function (messages) {
               currentChannelModel.messagesDS.data([]);
               for (var i=0; i<messages.length; i++){
                   var message = messages[i];
@@ -856,7 +856,7 @@ var channelView = {
           thisChannelHandler.onPresence(channelView.onChannelPresence);
           channelView.contactData = channelView.buildContactArray(thisChannel.members);
           mobileNotify("Getting Previous Messages...");
-          thisChannel.getMessageHistory(function (messages) {
+          thisChannelHandler.getMessageHistory(function (messages) {
               APP.models.channel.messagesDS.data([]);
               for (var i=0; i<messages.length; i++){
                   var message = messages[i];
