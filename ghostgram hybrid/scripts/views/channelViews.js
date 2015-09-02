@@ -1143,9 +1143,38 @@ var channelView = {
         );
     },
 
+    smartScanMessage: function (e) {
+        _preventDefault(e);
+        mobileNotify("Smart Scan isn't wired up yet");
+    },
+
     messageLocation : function (e) {
         _preventDefault(e);
+        mobileNotify("Chat location isn't wired up yet");
+    },
+    
+
+    messageCalendar : function (e) {
+        _preventDefault(e);
+        mobileNotify("Chat Calendar isn't wired up yet");
+    },
+
+    messageEvent : function (e) {
+        _preventDefault(e);
+        mobileNotify("Chat Event isn't wired up yet");
+    },
+
+
+    messageMusic : function (e) {
+        _preventDefault(e);
+        mobileNotify("Chat Music isn't wired up yet");
+    },
+
+    messageMovie : function (e) {
+        _preventDefault(e);
+        mobileNotify("Chat Movie isn't wired up yet");
     }
+
 
 
 
