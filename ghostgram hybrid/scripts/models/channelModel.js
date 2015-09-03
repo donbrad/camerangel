@@ -108,7 +108,8 @@ var channelModel = {
                     } else {
                         var blob = userModel.decryptBlob(model.get('messageBlob'));
                         var msg = JSON.parse(blob);
-                        msg.set("fromHistory", true);
+                        //msg.set("fromHistory", true);
+                        msg.fromHistory = true;
                         models.push(msg);
                     }
 
