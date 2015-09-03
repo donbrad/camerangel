@@ -228,7 +228,7 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, privateKey, con
 		// Get any messages that are in the channel from the past 24 hours
 
 		getMessageHistory: function (callBack) {
-            var timeStamp = ggTime.toPubNubTime((ggTime.currentTime() - 86000));
+            var timeStamp = ggTime.toPubNubTime((ggTime.lastDay()));
             APP.pubnub.history({
 				channel: channel,
 				end: timeStamp,
