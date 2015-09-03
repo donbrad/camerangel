@@ -106,7 +106,8 @@ var channelModel = {
                     if (ts <= deleteTime) {
                        //     model.destroy();
                     } else {
-                        var msg = userModel.decryptBlob(model.get('messageBlob'));
+                        var blob = userModel.decryptBlob(model.get('messageBlob'));
+                        var msg = JSON.parse(blob);
                         msg.set("fromHistory", true);
                         models.push(msg);
                     }
