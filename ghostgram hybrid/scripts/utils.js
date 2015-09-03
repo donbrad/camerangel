@@ -416,9 +416,11 @@ var ggTime = {
 		return(this.currentTime() - this._day);
 
 	},
+
 	lastWeek : function () {
 		return(this.currentTime() - this._week);
 	},
+
 	lastMonth : function () {
 		return(this.currentTime() - this._month);
 	}
