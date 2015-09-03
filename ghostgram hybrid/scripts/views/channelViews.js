@@ -594,6 +594,12 @@ var channelView = {
     currentContactId: null,
     currentContact: null,
     intervalId : null,
+    messagesDS: new kendo.data.DataSource({
+        sort: {
+            field: "timeStamp",
+            dir: "desc"
+        }
+    }),
     _timeStampUpdateInterval: 1000 * 60 * 5, // update every 5 minutes...
 
 
@@ -601,7 +607,7 @@ var channelView = {
 
         e.preventDefault();
 
-        currentChannelModel.messagesDS.data([]);
+        channelView.messagesDS.data([]);
         currentChannelModel.membersDS.data([]);
         //APP.checkPubnub();
 
@@ -620,7 +626,7 @@ var channelView = {
         currentChannelModel.topOffset = APP.kendo.scroller().scrollTop;
         autosize($('#messageTextArea'));
         $("#messages-listview").kendoMobileListView({
-            dataSource: currentChannelModel.messagesDS,
+            dataSource: channelView.messagesDS,
             template: $("#messagesTemplate").html() /*,
              click: function (e) {
              var message = e.dataItem;
@@ -826,7 +832,7 @@ var channelView = {
           currentChannelModel.openChannel(thisChannelHandler);
           var sentMessages = channelModel.getChannelArchive(thisChannel.channelId);
           thisChannelHandler.getMessageHistory(function (messages) {
-              currentChannelModel.messagesDS.data([]);
+              channelView.messagesDS.data([]);
               for (var i=0; i<messages.length; i++){
                   var message = messages[i];
                   var formattedContent = '';
@@ -837,8 +843,8 @@ var channelView = {
                   message.fromHistory = true;
               }
 
-              currentChannelModel.messagesDS.data(messages);
-              currentChannelModel.messagesDS.pushCreate(sentMessages);
+              channelView.messagesDS.data(messages);
+              channelView.messagesDS.pushCreate(sentMessages);
               channelView.updateMessageTimeStamps();
 
               if (channelView.intervalId === null) {
@@ -859,7 +865,7 @@ var channelView = {
           channelView.contactData = channelView.buildContactArray(thisChannel.members);
           mobileNotify("Getting Previous Messages...");
           thisChannelHandler.getMessageHistory(function (messages) {
-              currentChannelModel.messagesDS.data([]);
+              channelView.messagesDS.data([]);
               for (var i=0; i<messages.length; i++){
                   var message = messages[i];
                   var formattedContent = '';
@@ -869,7 +875,7 @@ var channelView = {
                   message.formattedContent = formattedContent;
               }
 
-              currentChannelModel.messagesDS.data(messages);
+              channelView.messagesDS.data(messages);
               channelView.updateMessageTimeStamps();
 
               if (channelView.intervalId === null) {
