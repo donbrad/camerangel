@@ -389,6 +389,10 @@ function reverseGeoCode(lat, lng) {
 // utility to class to get time in normal and pubnub formats and convert between
 var ggTime = {
 
+	_day : 60 * 60 * 24 * 1000,
+	_week: 60 * 60 * 24 * 7 * 1000,
+	_month: 60 * 60 * 24 * 30 * 1000,
+
 	currentTime: function () {
 		return(new Date().getTime());
 	},
@@ -406,6 +410,17 @@ var ggTime = {
 
 	fromPubNubTime : function (timeIn) {
 		return (timeIn / 10000000);
+	},
+
+	lastDay : function () {
+		return(this.currentTime() - this._day);
+
+	},
+	lastWeek : function () {
+		return(this.currentTime() - this._week);
+	},
+	lastMonth : function () {
+		return(this.currentTime() - this._month);
 	}
 };
 
