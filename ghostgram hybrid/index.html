@@ -563,6 +563,10 @@
             </li>
             <li>
             	<div>
+            		<div id="checked-in-place">
+            			<span></span>
+            			<button data-role="button" data-click="homeView.checkOutOfPlace">X</button>
+            		</div>
 					<a class="btnClear-sm" data-role="button" data-click="homeView.openLocateMeModal" id="gpsLocateUpdateBtn">
 				        	<img src="images/icon-gps-selected.svg" height="12px"/> Check in here
 				    </a>
@@ -583,7 +587,7 @@
 
 <div data-role="modalview" id="modalview-locate-me" style="width: 90%; display: none;" class="appearance">
 	<div data-role="content">
-		<ul id="nearby-results-list" data-role="listview" data-template="nearby-results-template">
+		<ul id="nearby-results-list" data-role="listview" data-template="nearby-results-template" data-click="homeView.checkInToPlace">
 		</ul>
 	</div>
 	<a class="btnSecondary btnFull-modal" data-click="homeView.closeLocateMeModal" data-role="button">Cancel</a>
@@ -752,7 +756,7 @@
 </script>
 
  <script type="text/x-kendo-template" id="nearby-results-template">
-     <div style="min-height: 38px; border-radius: 9px; background-color: \\#fff; padding: 4px;">
+     <div style="min-height: 38px; border-radius: 9px; background-color: \\#fff; padding: 4px;" data-item="#: JSON.stringify(data) #">
          <h4>#: data.name # </h4>
          <p>#: data.vicinity # </p>
      </div>

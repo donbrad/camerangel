@@ -1,4 +1,4 @@
-/* global placesView, APP */
+/* global placesView, APP, userModel */
 
 'use strict';
 
@@ -77,6 +77,24 @@ var homeView = {
 
 	closeLocateMeModal: function () {
 		$('#modalview-locate-me').data('kendoMobileModalView').close();
+	},
+
+	checkInToPlace: function (e) {
+		var item = e.item.children('div').first().data('item');
+		
+		$('#checked-in-place > span').html(item.name);
+		$('#checked-in-place').show(200);
+		$('#modalview-locate-me').data('kendoMobileModalView').close();
+
+		userModel.currentUser.set('currentPlace', item.name);
+		userModel.currentUser.set('currentPlaceUUID', item.uuid);
+	},
+
+	checkOutOfPlace: function () {
+		$('#checked-in-place').hide(200);
+
+		userModel.currentUser.set('currentPlace', '');
+		userModel.currentUser.set('currentPlaceUUID', '');
 	}
 };
 
@@ -133,7 +151,10 @@ function onInitHome(e) {
 		e.preventDefault();
 	}
 
-	
+	if (userModel.currentUser.currentPlace !== '') {
+		$('#checked-in-place > span').html(userModel.currentUser.currentPlace);
+		$('#checked-in-place').show();
+	}
 }
 
 

@@ -4040,3 +4040,6 @@ div.contactListBox.activeContact > div > div > ul {
 #nearby-results-list {
   min-height: 300px;
 }
+#checked-in-place {
+  display: none;
+}
