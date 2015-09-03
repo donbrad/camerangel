@@ -1,7 +1,8 @@
 function togglePrivate (e) {
-    e.preventDefault();
-    var privateMode = !APP.models.home.privateMode;
-    APP.models.home.privateMode = privateMode;
+    _preventDefault(e);
+
+    var privateMode = !currentChannelModel.privacyMode;
+    currentChannelModel.privacyModee = privateMode;
     if (privateMode) {
         $('.privateModeButton').text('Private');
         $('.user-content').removeClass('publicMode');
@@ -203,3 +204,16 @@ function hideActionBtnText(path){
 	$(path).velocity({opacity: 0, right: "0"});
 }
 
+
+function AutoGrowTextArea(textField)
+{
+    if (textField.clientHeight < textField.scrollHeight)
+    {
+        textField.style.height = textField.scrollHeight + "px";
+        if (textField.clientHeight < textField.scrollHeight)
+        {
+            textField.style.height =
+                (textField.scrollHeight * 2 - textField.clientHeight) + "px";
+        }
+    }
+}

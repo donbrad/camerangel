@@ -1,9 +1,9 @@
 // Setup
 // ---
-function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, contactUUID, contactKey) {
+function secureChannel( channelUUID, userUUID, alias, publicKey, privateKey, contactUUID, contactKey) {
     var channel = channelUUID;
     
-	var RSAkey = cryptico.privateKeyFromString(RSAkeyString);
+	var RSAkey = cryptico.privateKeyFromString(privateKey);
     // An object userUUID and publicKey. It will be given 
     // to other users.
 	
@@ -77,8 +77,8 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
                 users[msg.data.username] = msg.data.publicKey;
             } 
             // Otherwise, we have to call `here_now` to get the state of the new subscriber to the channel.
-            else { 
-                pubnub.here_now({
+            else {
+                APP.pubnub.here_now({
                     channel: channel,
                     state: true,
                     callback: herenowUpdate
@@ -93,19 +93,9 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
         } 
     };
 
-    // Connect to current instance of pubnub
-    var pubnub = APP.pubnub;
 
-    // Subscribe to our PubNub channel.
-    pubnub.subscribe({
-        channel: channel,
-        windowing: 50000,
-        restore: true,
-        callback: messageHandler,
-        presence: presenceHandler,
-        // Set our state to our user object, which contains our username and public key.
-        state: thisUser
-    });
+
+
 
 
  
@@ -126,13 +116,7 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
     };
 
     var archiveMessage = function (msg) {
-        var msg = Parse.Object.extend('messages');
-
-        msg.set('timeStamp', msg.time);
-        msg.set('channelId', msg.channelId);
-        msg.set('messageBlob', userModel.encryptBlob(msg));
-        msg.save();
-        currentChannelModel.messagesDS.add(msg);
+        currentChannelModel.archiveMessage(msg.time, JSON.stringify(msg));
     };
 
     // Delete a message from the `messages` object, after `TTL` seconds.
@@ -173,8 +157,8 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
 				else
 					encryptData = null;
 
-                pubnub.uuid(function (msgID) {
-                    pubnub.publish({
+            APP.pubnub.uuid(function (msgID) {
+                APP.pubnub.publish({
                         channel: channel,
                         message: {
                             recipient: recipient,
@@ -240,11 +224,13 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
             return messages;
         },
 		
-		// Get any messages that are in the channel
+		// Get any messages that are in the channel from the past 24 hours
+
 		getMessageHistory: function (callBack) {
-		   pubnub.history({
+            var timeStamp = ggTime.toPubNubTime((ggTime.currentTime() - 86000));
+            APP.pubnub.history({
 				channel: channel,
-				limit: 64,
+				end: timeStamp,
 				callback: function (messages) {
 					var clearMessageArray = [];
 					messages = messages[0];
@@ -287,11 +273,26 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
         myKey: function () {
             return RSAkey;
         },
-        // Quits secureChannel. Other users will no longer be able to retrieve your
-        // public key or send messages to you.
-        quit: function () {
-            pubnub.unsubscribe({
+
+        // Quits groupChannel. Other users will no longer be able to retrieve your
+        closeChannel: function () {
+            APP.pubnub.unsubscribe({
                 channel: channel
+            });
+        },
+        // Starting up PubNub
+        // ---
+
+        openChannel : function () {
+            // Subscribe to our PubNub channel.
+            APP.pubnub.subscribe({
+                channel: channel,
+                windowing: 50000,
+                restore: true,
+                callback: messageHandler,
+                presence: presenceHandler,
+                // Set our state to our user object, which contains our username and public key.
+                state: thisUser
             });
         }
     };

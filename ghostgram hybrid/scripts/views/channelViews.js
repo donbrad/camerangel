@@ -585,3 +585,681 @@ var channelMembersView = {
 
 
 };
+
+var channelView = {
+    topOffset: 0,
+    messageLock: false,
+    thisUser : null,
+    contactData : [],
+    currentContactId: null,
+    currentContact: null,
+    intervalId : null,
+
+
+    onInit: function (e) {
+
+        e.preventDefault();
+
+        currentChannelModel.messagesDS.data([]);
+        currentChannelModel.membersDS.data([]);
+        //APP.checkPubnub();
+
+        $("#messageSend").kendoTouch({
+
+            tap: function(e) {
+                channelView.messageSend();
+            },
+            hold: function(e) {
+                $("#sendMessageActions").data("kendoMobileActionSheet").open();
+            }
+        });
+
+        var width = window.innerWidth - 68;
+        $('#messageTextArea').css("width", width+'px');
+        currentChannelModel.topOffset = APP.kendo.scroller().scrollTop;
+        autosize($('#messageTextArea'));
+        $("#messages-listview").kendoMobileListView({
+            dataSource: currentChannelModel.messagesDS,
+            template: $("#messagesTemplate").html() /*,
+             click: function (e) {
+             var message = e.dataItem;
+
+             APP.models.channel.currentMessage = message;
+             if (APP.models.channel.currentModel.isPrivate) {
+             $('#'+message.msgID).removeClass('privateMode');
+             kendo.fx($("#"+message.msgID)).fade("out").endValue(0.1).duration(6000).play();
+             } else {
+             // display message actionsheet for group messages
+             $("#messageActions").data("kendoMobileActionSheet").open();
+             }
+
+             } */
+        }).kendoTouch({
+            filter: "li",
+            //enableSwipe: true,
+            tap: channelView.tapChannel,
+            //swipe: swipeChannel,
+            hold: channelView.holdChannel,
+
+            dragstart: function(e){
+
+                var selection = e.touch.currentTarget;
+                var selectionListItem = $(selection)
+
+                // add moving classes
+                $(selection).addClass("selectedLI");
+                $(".selectedLI > div").first().addClass("movingChat");
+
+                // remove chat time
+                $(".movingChat > .chat-time").velocity({opacity: 0, translateY: "5%"}, {duration: 200});
+
+                $(".movingChat > .chat-message-user-content").velocity({scale: "1.01"}, {duration: 300});
+
+            },
+
+            drag: function(e){
+                var currentX = e.touch.x.location;
+                var windowWidth = $(window).width();
+                var messageWidth = $(".movingChat > .chat-message-user-content").width();
+                var widthPerc = (messageWidth + currentX)  / (windowWidth + messageWidth);
+
+                // drag chat
+                diffMovingChat(widthPerc);
+
+
+                var accelWidthPerc = widthPerc * 2;
+                var percentWindow = currentX / windowWidth
+
+                //
+                if(percentWindow < 0.75 && percentWindow > 0.35){
+
+                    $(".selectedLI > .message-slideOptions").css("opacity", accelWidthPerc);
+                    $(".selectedLI").removeClass("selectedLI-delete").addClass("selectedLI-archive");
+                    // change color to highlighted
+                    $(".movingChat > .chat-message-user-content").css("background-color", "#9E788F");
+                    $(".selectedLI > .message-slideOptions > .archive").css("display", "inline-block");
+                    $(".selectedLI > .message-slideOptions > .delete").css("display", "none");
+                } else if(percentWindow <= 0.35){
+                    // change color to delete
+                    $(".selectedLI").addClass("selectedLI-delete").removeClass("selectedLI-archive");
+                    $(".movingChat > .chat-message-user-content").css("background-color", "#EA6262");
+                    $(".selectedLI > .message-slideOptions > .delete").css("display", "inline-block");
+                    $(".selectedLI > .message-slideOptions > .archive").css("display", "none");
+
+                } else {
+                    // change color to default
+                    $(".movingChat > .chat-message-user-content").css("background-color", "#2D93FF");
+                    $(".selectedLI > .message-slideOptions > .delete .archive").css("display", "none");
+                    $(".selectedLI").removeClass("selectedLI-delete, selectedLI-archive");
+                }
+
+
+
+
+            },
+
+            dragend: function(e){
+                // get current position
+                var currentX = e.touch.x.location;
+                var windowWidth = $(window).width();
+                var widthPerc = currentX  / windowWidth;
+
+
+                //if drag is far enough, set action
+                if (widthPerc < 0.75) {
+                    $(".movingChat").velocity({translateX:"-100%", opacity: 0},{duration: "fast"});
+                    $(".selectedLI > .message-slideOptions").velocity({right:"100%"},{duration: "fast"});
+
+                    if (widthPerc < 0.35){
+                        // delete message
+                        deleteMessage();
+                    } else {
+                        // archive message
+                        archiveMessage();
+                    }
+
+                } else {
+                    $(".movingChat").velocity({right:"1rem"},{duration: 600, easing: "spring"});
+                    $(".selectedLI > .message-slideOptions").css("opacity", "0");
+
+                    // show chat time
+                    $(".movingChat > .chat-time").velocity({opacity: 1, translateY: "0"}, {duration: 200});
+
+                    // reset color and size
+                    $(".movingChat > .chat-message-user-content").css("background", "#2D93FF");
+                    $(".movingChat > .chat-message-user-content").velocity({scale: "1"}, {duration: 300});
+                }
+
+                // remove moving class
+                $(".selectedLI > div").removeClass("movingChat");
+                $("#messages-listview > .selectedLI").removeClass("selectedLI");
+
+            }
+
+        });
+
+        $("#channelMembers-listview").kendoMobileListView({
+            dataSource: currentChannelModel.membersDS,
+            template: $("#membersTemplate").html(),
+            click: function (e) {
+                var member = e.dataItem;
+                currentChannelModel.currentMember = member;
+                // display message actionsheet
+                $("#memberActions").data("kendoMobileActionSheet").open();
+            }
+        });
+    },
+
+
+
+    onShow : function (e) {
+      _preventDefault(e);
+      // hide action btn
+      $("#channels > div.footerMenu.km-footer > a").css("display","none");
+
+      var channelUUID = e.view.params.channel;
+
+      var thisUser = userModel.currentUser;
+      var thisChannel =  currentChannelModel.setCurrentChannel(channelUUID);
+        if (thisChannel === undefined) {
+            mobileNotify("ChatView -- chat doesn't exist : " + channelUUID);
+            return;
+        }
+      var contactUUID = null;
+        var thisChannelHandler = null;
+      var name = channelView.formatName(thisChannel.name);
+
+      // Hide the image preview div
+      channelView.hideChatImagePreview();
+      APP.updateGeoLocation();
+
+
+      currentChannelModel.privacyMode = false;
+
+
+      // Privacy UI
+      $('#privacyMode').html('<img src="images/privacy-off.svg" />');
+      $("#privacyStatus").addClass("hidden");
+      $("#channelNavBar").data('kendoMobileNavBar').title(name);
+
+      if (thisChannel.isPrivate) {
+
+          // *** Private Channel ***
+          var contactKey = thisChannel.contactKey;
+          if (contactKey === undefined) {
+              mobileNotify("No public key for " + thisContact.name);
+              return;
+          }
+
+          $('#messagePresenceButton').hide();
+          currentChannelModel.privacyMode = true;
+          // Privacy UI
+          $('#privacyMode').html('<img src="images/privacy-on.svg" />');
+          $("#privacyStatus").removeClass("hidden");
+          var userKey = thisUser.publicKey, privateKey = thisUser.privateKey;
+          if (thisChannel.members[0] === thisUser.userUUID)
+              contactUUID = thisChannel.members[1];
+          else
+              contactUUID = thisChannel.members[0];
+
+          channelView.currentContactId = contactUUID;
+          var thisContact = contactModel.getContactModel(contactUUID);
+          if (thisContact === undefined) {
+              mobileNotify("ChannelView : Undefined contact for " + contactUUID);
+              return;
+          }
+          channelView.currentContact = thisContact;
+          channelView.contactData = channelView.buildContactArray(thisChannel.members);
+          //Todo: remove currentContactModel
+          currentChannelModel.currentContactModel = thisContact;
+          if (thisChannel.isPrivate) {
+              $('#channelImage').attr('src', thisContact.photo);
+          } else {
+              $('#channelImage').attr('src', '');
+          }
+
+          thisChannelHandler = new secureChannel(channelUUID, thisUser.userUUID, thisUser.alias, userKey, privateKey, contactUUID, contactKey);
+          thisChannelHandler.onMessage(channelView.onChannelRead);
+          thisChannelHandler.onPresence(channelView.onChannelPresence);
+          mobileNotify("Getting Previous Messages...");
+          currentChannelModel.openChannel(thisChannelHandler);
+          var sentMessages = channelModel.getChannelArchive(thisChannel.channelId);
+          thisChannelHandler.getMessageHistory(function (messages) {
+              currentChannelModel.messagesDS.data([]);
+              for (var i=0; i<messages.length; i++){
+                  var message = messages[i];
+                  var formattedContent = '';
+                  if (message.content !== null) {
+                      formattedContent = formatMessage(message.content);
+                  }
+                  message.formattedContent = formattedContent;
+                  message.fromHistory = true;
+              }
+
+              currentChannelModel.messagesDS.data(messages);
+              currentChannelModel.messagesDS.pushCreate(sentMessages);
+              channelView.updateMessageTimeStamps();
+
+              if (channelView.intervalId === null) {
+                  channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 60 * 5000);
+              }
+
+              channelView.scrollToBottom();
+          });
+
+      } else {
+
+          //*** Group Channel ***
+          $('#messagePresenceButton').show();
+          // Provision a group channel
+          thisChannelHandler = new groupChannel(channelUUID, thisUser.userUUID, thisUser.alias, userKey);
+          thisChannelHandler.onMessage(channelView.onChannelRead);
+          thisChannelHandler.onPresence(channelView.onChannelPresence);
+          channelView.contactData = channelView.buildContactArray(thisChannel.members);
+          mobileNotify("Getting Previous Messages...");
+          thisChannelHandler.getMessageHistory(function (messages) {
+              currentChannelModel.messagesDS.data([]);
+              for (var i=0; i<messages.length; i++){
+                  var message = messages[i];
+                  var formattedContent = '';
+                  if (message.content !== null) {
+                      formattedContent = formatMessage(message.content);
+                  }
+                  message.formattedContent = formattedContent;
+              }
+
+              currentChannelModel.messagesDS.data(messages);
+              channelView.updateMessageTimeStamps();
+
+              if (channelView.intervalId === null) {
+                  channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 60 * 5000);
+              }
+              channelView.scrollToBottom();
+          });
+          currentChannelModel.openChannel(thisChannelHandler);
+      }
+
+    },
+
+    onHide : function (e) {
+        e.preventDefault();
+        if (currentChannelModel.currentChannel !== undefined) {
+            currentChannelModel.handler.closeChannel();
+
+        }
+
+        if (channelView.intervalId !== null) {
+            clearInterval(channelView.intervalId);
+            channelView = null;
+        }
+
+    },
+
+    getContactData : function (uuid) {
+        var data = channelView.contactData[uuid];
+
+        if (data === undefined) {
+            mobileNotify("ChatView - no contact : " + uuid);
+            return(null);
+        }
+
+        return(data);
+    },
+
+    buildContactArray : function (contactArray) {
+       if (contactArray === undefined || contactArray.length === 0) {
+           return ([]);
+       }
+        var contactInfoArray = [], userId = userModel.currentUser.userUUID;
+        for (var i=0; i< contactArray.length; i++) {
+            var contact = new Object();
+            if (contactArray[i] === userId) {
+                contact.isContact = false;
+                contact.uuid = contactArray[i];
+                contact.alias = userModel.currentUser.alias;
+                contact.name = userModel.currentUser.name;
+                contact.photoUrl = userModel.currentUser.photo;
+                contact.publicKey = userModel.currentUser.publicKey;
+                contact.isPresent = true;
+                contactInfoArray[contact.uuid] = contact;
+                // this is our user.
+            } else {
+                var thisContact = contactModel.getContactModel(contactArray[i]);
+                if (thisContact === undefined) {
+                    mobileNotify("buildContactArray - undefined contact!!!");
+                    return(contactInfoArray);
+                }
+                contact.isContact = true;
+                contact.uuid = contactArray[i];
+                contact.alias = thisContact.alias;
+                contact.name = thisContact.name;
+                contact.photoUrl = thisContact.photo;
+                contact.publicKey = thisContact.publicKey;
+                contact.isPresent = false;
+                contactInfoArray[contact.uuid] = contact;
+            }
+        }
+
+        return (contactInfoArray)
+    },
+
+    getUserType: function (uuid) {
+        var userType = { isContact: true, alias : '', profileUrl: ''};
+
+    },
+
+    formatName : function (name) {
+        if (name.length < 16) {
+            return(name);
+        } else {
+            return(name.substring(0,13) + "...");
+        }
+    },
+
+    archiveMessage : function (e) {
+        _preventDefault(e);
+
+        // close out li
+        $(".selectedLI").velocity("slideUp", {delay: 150});
+
+        //mobileNotify("message archived");
+
+        // ToDo - wire up archive
+
+        // ToDo - wire up requests
+        $("#modalview-requestContent").data("kendoMobileModalView").open();
+    },
+
+    onChannelPresence : function () {
+        var users = currentChannelModel.handler.listUsers();
+    },
+
+
+
+    onChannelRead : function (message) {
+
+        if (message.content !== null) {
+            message.formattedContent = formatMessage(message.content);
+        } else {
+            message.formattedContent = '';
+        }
+
+        // Ensure that new messages get the timer
+        if (message.fromHistory === undefined) {
+            message.fromHistory = false;
+        }
+
+        currentChannelModel.messagesDS.add(message);
+
+        currentChannelModel.updateLastAccess();
+
+        channelView.scrollToBottom();
+
+        if (currentChannelModel.privacyMode) {
+            kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(9000).play();
+        }
+    },
+
+    messageSend : function (e) {
+        _preventDefault(e);
+
+        var text = $('#messageTextArea').val();
+        if (text.length === 0)
+            return;
+        var messageData = {geo: APP.location.position};
+        if (currentChannelModel.currentMessage.photo !== null) {
+            messageData.photo = currentChannelModel.currentMessage.photo;
+        }
+        currentChannelModel.handler.sendMessage(channelView.currentContactId, text, messageData, 86400);
+        channelView.hideChatImagePreview();
+        channelView._initMessageTextArea();
+        currentChannelModel.currentMessage = {};
+
+    },
+
+     _initMessageTextArea : function () {
+
+        $('#messageTextArea').val('');
+        autosize.update($('#messageTextArea'));
+    },
+
+    showChatImagePreview: function (displayUrl) {
+        $('#chatImage').attr('src', displayUrl);
+        $('#chatImagePreview').show();
+    },
+
+    hideChatImagePreview : function () {
+        $('#chatImagePreview').hide();
+        $('#chatImage').attr('src', null);
+    },
+
+    togglePrivacyMode :function (e) {
+        _preventDefault(e);
+        currentChannelModel.privacyMode = ! currentChannelModel.privacyMode;
+        if (currentChannelModel.privacyMode) {
+            $('#privacyMode').html('<img src="images/privacy-on.svg" />');
+            $( ".chat-message" ).addClass('privateMode').removeClass('publicMode');
+            $("#privacyStatus").removeClass("hidden");
+            kendo.fx($("#privacyStatus")).expand("vertical").play();
+        } else {
+            $('#privacyMode').html('<img src="images/privacy-off.svg" />');
+            $( ".chat-message" ).removeClass('privateMode').addClass('publicMode');
+            $("#privacyStatus").addClass("hidden");
+        }
+
+    },
+
+    scrollToBottom : function () {
+    // topOffset set when the view loads like the following
+        var scroller = APP.kendo.scroller;
+
+        var scrollerHeight =  APP.kendo.scroller().scrollHeight();
+        var viewportHeight =  APP.kendo.scroller().height();
+
+        if ((scrollerHeight + currentChannelModel.topOffset) > viewportHeight) {
+            var position = -1 * (scrollerHeight - viewportHeight - currentChannelModel.topOffset);
+            APP.kendo.scroller().animatedScrollTo(0, position);
+        }
+
+    },
+
+    updateMessageTimeStamps : function () {
+        var dataSource = currentChannelModel.messagesDS, length = dataSource.total();
+        var formattedTime = '';
+
+        for (var i=0; i<length; i++) {
+            var msg = dataSource.at(i);
+            formattedTime = timeSince(msg.time);
+            if(formattedTime === "0 seconds"){
+                formattedTime = "Just now";
+            } else {
+                formattedTime = formattedTime + " ago"
+            }
+            msg.set('formattedTime', formattedTime);
+        }
+
+    },
+
+
+    tapChannel : function (e) {
+        e.preventDefault();
+        var target = $(e.touch.initialTouch);
+        var dataSource = currentChannelModel.messagesDS;
+        var messageUID = $(e.touch.currentTarget).data("uid");
+        var message = dataSource.getByUid(messageUID);
+        //$('.delete').css('display', 'none');
+        //$('.archive').css('display', 'none');
+
+        // Scale down the other photos in this chat...
+        $('.chat-message-photo').removeClass('chat-message-photo').addClass('chat-message-photo-small');
+
+        // If the photo is minimized and the user just clicked in the message zoom the photo in place
+        $('#'+message.msgID + ' .chat-message-photo-small').removeClass('chat-message-photo-small').addClass('chat-message-photo');
+
+        // User actually clicked on the photo so show the open the photo viewer
+        if (target[0].className === 'chat-message-photo' || target[0].className === 'chat-message-photo-small') {
+            var photoUrl = message.data.photo.photo;
+            $('#modalPhotoViewImage').attr('src', photoUrl);
+
+            $('#modalPhotoView').kendoMobileModalView("open");
+        }
+
+        if (currentChannelModel.privacyMode) {
+            $('#'+message.msgID).removeClass('privateMode');
+            $.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(3000).play()).then(function () {
+                $("#"+message.msgID).css("opacity", "1.0");
+                $("#"+message.msgID).addClass('privateMode');
+            });
+        }
+    },
+
+    swipeChannel : function (e) {
+        e.preventDefault();
+        var dataSource = currentChannelModel.messagesDS;
+        var messageUID = $(e.touch.currentTarget).data("uid");
+        var message = dataSource.getByUid(messageUID);
+
+        if (currentChannelModel.privacyMode) {
+            $('#'+message.msgID).removeClass('privateMode');
+        }
+        var selection = e.sender.events.currentTarget;
+        var selectionListItem = $(selection).closest("div");
+        var selectionInnerDiv = $(selectionListItem);
+
+        //console.log(selectionInnerDiv);
+
+        if(e.direction === "left"){
+            var otherOpenedLi = $(".message-active");
+            $(otherOpenedLi).velocity({translateX:"0"},{duration: "fast"}).removeClass("message-active");
+
+            if($(window).width() < 375){
+                $(selectionInnerDiv).velocity({translateX:"-80%"},{duration: "fast"}).addClass("message-active");
+            } else {
+                $(selectionInnerDiv).velocity({translateX:"-70%"},{duration: "fast"}).addClass("message-active");
+            }
+
+
+        }
+        if (e.direction === 'right' && $(selection).hasClass("message-active") ) {
+            /*
+             // display the archive button
+             var button = kendo.fx($(e.touch.currentTarget).find(".archive"));
+             button.expand().duration(200).play();
+             */
+
+            $(selection).velocity({translateX:"0"},{duration: "fast"}).removeClass("message-active");
+
+
+            //console.log("right");
+        }
+
+    },
+
+    holdChannel : function (e) {
+        e.preventDefault();
+        var dataSource = currentChannelModel.messagesDS;
+        var messageUID = $(e.touch.currentTarget).data("uid");
+        var message = dataSource.getByUid(messageUID);
+        if (currentChannelModel.privacyMode) {
+            $('#'+message.msgID).removeClass('privateMode');
+            $.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(3000).play()).then(function () {
+                $("#"+message.msgID).css("opacity", "1.0");
+                $("#"+message.msgID).addClass('privateMode');
+            });
+        }
+        $("#messageActions").data("kendoMobileActionSheet").open();
+    },
+
+    messageEraser: function (e) {
+        _preventDefault(e);
+        channelView._initMessageTextArea();
+    },
+
+    messageLockButton : function (e) {
+        e.preventDefault();
+        channelView.messageLock = !channelView.messageLock;
+        if (channelView.messageLock) {
+            $('#messageLockButton').html('<i class="fa fa-lock"></i>');
+        } else {
+            $('#messageLockButton').html('<i class="fa fa-unlock"></i>');
+        }
+    },
+
+    messageCamera : function (e) {
+       _preventDefault(e);
+        deviceCamera(
+            1600, // max resolution in pixels
+            75,  // quality: 1-99.
+            true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+            showChatImagePreview  // Optional preview callback
+        );
+    },
+
+    messagePhoto : function (e) {
+        _preventDefault(e);
+        // Call the device gallery function to get a photo and get it scaled to gg resolution
+        //todo: need to parameterize these...
+        deviceGallery(
+            1600, // max resolution in pixels
+            75,  // quality: 1-99.
+            true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+            showChatImagePreview  // Optional preview callback
+        );
+    },
+
+     messageGallery : function (e) {
+        _preventDefault(e);
+
+        APP.kendo.navigate("views/gallery.html#gallery?action=chat");
+
+    },
+
+    messageAudio : function(e) {
+        _preventDefault(e);
+        navigator.device.capture.captureAudio(
+            function (mediaFiles) {
+                var mediaUrl = mediaFiles[0].fullPath;
+            },
+            function(error) {
+                mobileNotify("Audio capture error " + JSON.stringify(error));
+            },
+            {limit:1, duration: 5}
+        );
+    },
+
+    smartScanMessage: function (e) {
+        _preventDefault(e);
+        mobileNotify("Smart Scan isn't wired up yet");
+    },
+
+    messageLocation : function (e) {
+        _preventDefault(e);
+        mobileNotify("Chat location isn't wired up yet");
+    },
+
+
+    messageCalendar : function (e) {
+        _preventDefault(e);
+        mobileNotify("Chat Calendar isn't wired up yet");
+    },
+
+    messageEvent : function (e) {
+        _preventDefault(e);
+        mobileNotify("Chat Event isn't wired up yet");
+    },
+
+
+    messageMusic : function (e) {
+        _preventDefault(e);
+        mobileNotify("Chat Music isn't wired up yet");
+    },
+
+    messageMovie : function (e) {
+        _preventDefault(e);
+        mobileNotify("Chat Movie isn't wired up yet");
+    }
+
+
+
+
+};

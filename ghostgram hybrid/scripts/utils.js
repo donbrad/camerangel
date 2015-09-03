@@ -32,7 +32,7 @@ function updateParseObject(objectName, idField, idFieldValue, newField, newField
 			}
 		},
 		error: function(error) {
-			mobileNotify("Error: " + error.code + " " + error.message);
+			handleParseError(error);
 		}
 	});
 }
@@ -68,13 +68,13 @@ function deleteParseObject(objectName, field, fieldValue) {
 					error: function(myObject, error) {
 						// The delete failed.
 						// error is a Parse.Error with an error code and message.
-						mobileNotify("Error: " + error.code + " " + error.message);
+						handleParseError(error);
 					}
 				});
 			}
 		},
 		error: function(error) {
-			mobileNotify("Error: " + error.code + " " + error.message);
+			handleParseError(error);
 		}
 	});
 }
@@ -389,6 +389,10 @@ function reverseGeoCode(lat, lng) {
 // utility to class to get time in normal and pubnub formats and convert between
 var ggTime = {
 
+	_day : 60 * 60 * 24 * 1000,
+	_week: 60 * 60 * 24 * 7 * 1000,
+	_month: 60 * 60 * 24 * 30 * 1000,
+
 	currentTime: function () {
 		return(new Date().getTime());
 	},
@@ -406,8 +410,49 @@ var ggTime = {
 
 	fromPubNubTime : function (timeIn) {
 		return (timeIn / 10000000);
+	},
+
+	lastDay : function () {
+		return(this.currentTime() - this._day);
+
+	},
+
+	lastWeek : function () {
+		return(this.currentTime() - this._week);
+	},
+
+	lastMonth : function () {
+		return(this.currentTime() - this._month);
 	}
 };
+
+function _preventDefault(e) {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+}
+
+function timeSince(date) {
+	var seconds = Math.floor(((new Date().getTime()/1000) - date)),
+		interval = Math.floor(seconds / 31536000);
+
+	if (interval > 1) return interval + " years";
+
+	interval = Math.floor(seconds / 2592000);
+	if (interval > 1) return interval + " months";
+
+	interval = Math.floor(seconds / 86400);
+	if (interval >= 1) return interval + " days";
+
+	interval = Math.floor(seconds / 3600);
+	if (interval >= 1) return interval + " hours";
+
+	interval = Math.floor(seconds / 60);
+	if (interval > 1) return interval + " minutes";
+
+	return Math.floor(seconds) + " seconds";
+}
+
 
 // Returns a function, that, as long as it continues to be invoked, will not
 // be triggered. The function will be called after it stops being called for

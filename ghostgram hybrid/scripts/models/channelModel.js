@@ -18,9 +18,19 @@ var channelModel = {
             dir: "asc"
         }
     }),
+
+    messagesDS: new kendo.data.DataSource({
+        offlineStorage: "messages-offline",
+        sort: {
+            field: "timeStamp",
+            dir: "desc"
+        }
+    }),
+
     privateChannelsDS: new kendo.data.DataSource({
         offlineStorage: "privatechannels-offline"
     }),
+
     channelMapDS: new kendo.data.DataSource({
         offlineStorage: "channelmap-offline"
     }),
@@ -29,6 +39,31 @@ var channelModel = {
     init :  function () {
         channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
     },
+
+    // Get messages archive for current channel (past 24 hours)
+    // This is only called by secure channel as sender messages are encrypted with recipients public key
+    getChannelArchive : function (channel) {
+        var dataSource =  channelModel.messagesDS;
+        var timeStamp = ggTime.currentTime() - 86000;
+        dataSource.filter(
+            [
+                {"logic":"and",
+                    "filters":[
+                        {
+                            "field":"channelId",
+                            "operator":"eq",
+                            "value":channel},
+                        {
+                            "field":"time",
+                            "operator":"gt",
+                            "value":timeStamp}
+                    ]}
+            ]);
+        var view = dataSource.view();
+        dataSource.filter([]);
+        return(view);
+    },
+
 
     fetch : function () {
         var Channel = Parse.Object.extend("channels");
@@ -47,6 +82,37 @@ var channelModel = {
                 }
                 channelModel.channelsDS.data(models);
                 deviceModel.setAppState('hasChannels', true);
+                deviceModel.isParseSyncComplete();
+            },
+            error: function(collection, error) {
+                handleParseError(error);
+            }
+        });
+
+        var Message = Parse.Object.extend("messages");
+        var MessageCollection = Parse.Collection.extend({
+            model: Message
+        });
+
+        var messages = new MessageCollection();
+
+        messages.fetch({
+            success: function(collection) {
+                var models = new Array();
+                for (var i = 0; i < collection.models.length; i++) {
+
+                    var model = collection.models[i], ts = model.get('timeStamp');
+                    var deleteTime = ggTime.currentTime() - 86000;
+                    if (ts <= deleteTime) {
+                            model.destroy();
+                    } else {
+                        models.push(userModel.decryptBlob(model.get('messageBlob')));
+                    }
+
+
+                }
+                channelModel.messagesDS.data(models);
+                deviceModel.setAppState('hasMessages', true);
                 deviceModel.isParseSyncComplete();
             },
             error: function(collection, error) {
