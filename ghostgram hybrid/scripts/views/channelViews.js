@@ -838,9 +838,10 @@ var channelView = {
 
               currentChannelModel.messagesDS.data(messages);
               currentChannelModel.messagesDS.pushCreate(sentMessages);
+              channelView.updateMessageTimeStamps();
 
               if (channelView.intervalId === null) {
-                  channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 3600000);
+                  channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 60 * 5000);
               }
 
               channelView.scrollToBottom();
@@ -868,6 +869,11 @@ var channelView = {
               }
 
               currentChannelModel.messagesDS.data(messages);
+              channelView.updateMessageTimeStamps();
+
+              if (channelView.intervalId === null) {
+                  channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 60 * 5000);
+              }
               channelView.scrollToBottom();
           });
           currentChannelModel.openChannel(thisChannelHandler);
