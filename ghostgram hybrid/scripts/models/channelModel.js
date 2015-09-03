@@ -44,7 +44,7 @@ var channelModel = {
     // This is only called by secure channel as sender messages are encrypted with recipients public key
     getChannelArchive : function (channel) {
         var dataSource =  channelModel.messagesDS;
-        var timeStamp = ggTime.currentTime() - 86000;
+        var timeStamp = ggTime.lastDay();
         dataSource.filter(
             [
                 {"logic":"and",
@@ -102,9 +102,9 @@ var channelModel = {
                 for (var i = 0; i < collection.models.length; i++) {
 
                     var model = collection.models[i], ts = model.get('timeStamp');
-                    var deleteTime = ggTime.currentTime() - 86000;
+                    var deleteTime = ggTime.lastDay();
                     if (ts <= deleteTime) {
-                            model.destroy();
+                       //     model.destroy();
                     } else {
                         models.push(userModel.decryptBlob(model.get('messageBlob')));
                     }

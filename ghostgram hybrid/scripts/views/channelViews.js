@@ -594,6 +594,7 @@ var channelView = {
     currentContactId: null,
     currentContact: null,
     intervalId : null,
+    _timeStampUpdateInterval: 1000 * 60 * 5, // update every 5 minutes...
 
 
     onInit: function (e) {
