@@ -178,6 +178,7 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, privateKey, con
 								data: contentData,
                                 TTL: ttl,
 								time: currentTime,
+                                formattedTime: 'Now',
                                 sender: userUUID,
 								fromHistory: false,
                                 recipient: recipient

@@ -147,6 +147,7 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
                                 content: content,
                                 TTL: ttl,
 								time: currentTime,
+                                formattedTime: 'Now',
                                 sender: userUUID,
                                 recipient: recipient
                             };
