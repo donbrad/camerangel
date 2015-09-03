@@ -307,11 +307,20 @@
 </div>
 
 <script type="text/x-kendo-tmpl" id="messagesTemplate">
-	# var history='', contactData = channelView.getContactData(sender);
-		if (currentChannelModel.privacyMode) {
-			if (fromHistory !== undefined && fromHistory === true ) {
-				history = "privateMode"; }
-	}#
+	# var history='', contactData = channelView.getContactData(sender), formattedTime = 'Just now';
+	if (currentChannelModel.privacyMode) {
+		if (fromHistory !== undefined && fromHistory === true ) {
+			history = "privateMode"; }
+	}
+	if (time !== undefined && time !== null) {
+		formattedTime = timeSince(time);
+		if(formattedTime === "0 seconds"){
+			formattedTime = "Just now";
+		} else {
+			formattedTime = formattedTime + " ago"
+		}
+	}
+	#
 	<div id=#:msgID# class="chat-message #=history# clearfix">
 	#
 		var name = "Me"; 
@@ -323,7 +332,7 @@
 			//This is a received message from a contact.  if false, it's a message sent by our user...
 		}
 	#
-	 <div class="chat-time"> #:data.formattedTime# </div>
+	 <div class="chat-time"> #:formattedTime# </div>
 	# if(photoUrl !== '') { #
 		<img class="chat-message-profileImg" src="#:photoUrl#" alt="" width="36" height="36">
 		<div class="chat-message-content clearfix">

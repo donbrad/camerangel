@@ -40,7 +40,6 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
                 data: msg.data,
                 TTL: msg.ttl,
 				time: msg.time,
-                formattedTime: timeSince(msg.time),
                 sender: msg.sender,
                 recipient: msg.recipient
             };
@@ -149,7 +148,6 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
                                 data: data,
                                 TTL: ttl,
 								time: currentTime,
-                                formattedTime: 'Now',
                                 sender: userUUID,
                                 recipient: recipient
                             };
@@ -193,31 +191,11 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
 				channel: channel,
 				limit: 100,
 				callback: function (messages) {
-					var clearMessageArray = [];
 					messages = messages[0];
 					messages = messages || [];
 					
-					for(var i = 0; i < messages.length; i++) {
-						var msg = messages[i];
-						var content = '';
-						if (msg.recipient === userUUID)  {
-							// Just process messages from other user
-							 var parsedMsg = {
-								msgID: msg.msgID,
-								content: content,
-								TTL: msg.ttl,
-								time: msg.time,
-                                 formattedTime: timeSince(msg.time),
-								sender: msg.sender,
-								recipient: msg.recipient
-							};
-
-							clearMessageArray.push(parsedMsg);
-						}
-					}
-					
 					if(callBack)
-						callBack(clearMessageArray);
+						callBack(messages);
 				}
 
 			});
