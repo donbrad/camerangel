@@ -128,7 +128,7 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
                 ttl = 86400;  // 24 hours
            // if (recipient in users) {
                 var content = message;
-				var currentTime =  new Date().getTime()/1000;
+				var currentTime =  ggTime.currentTime();
 
             APP.pubnub.uuid(function (msgID) {
                 APP.pubnub.publish({

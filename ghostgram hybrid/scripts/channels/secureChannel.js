@@ -150,7 +150,7 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, privateKey, con
                 var content = message;
 				var contentData = data;
                 var encryptMessage = '', encryptData = '';
-				var currentTime =  ggTime.currentTimeInSeconds();
+				var currentTime =  ggTime.currentTime();
                 encryptMessage = cryptico.encrypt(message, contactKey);
 			    if (data !== undefined && data !== null)
 					encryptData = cryptico.encrypt(JSON.stringify(data), contactKey);
