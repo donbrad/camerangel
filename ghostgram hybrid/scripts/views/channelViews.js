@@ -988,6 +988,7 @@ var channelView = {
         // Ensure that new messages get the timer
         if (message.fromHistory === undefined) {
             message.fromHistory = false;
+            message.formattedTime = 'Now';
         }
 
         currentChannelModel.messagesDS.add(message);

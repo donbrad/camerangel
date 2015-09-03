@@ -433,7 +433,7 @@ function _preventDefault(e) {
 }
 
 function timeSince(date) {
-	var seconds = Math.floor(((new Date().getTime()/1000) - date)),
+	var seconds = Math.floor((ggTime.currentTime() - date)),
 		interval = Math.floor(seconds / 31536000);
 
 	if (interval > 1) return interval + " years";

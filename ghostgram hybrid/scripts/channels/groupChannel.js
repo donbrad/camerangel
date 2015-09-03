@@ -36,10 +36,11 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
         if (msg.recipient === userUUID) {
             var parsedMsg = {
                 msgID: msg.msgID,
-                content: content,
+                content: msg.content,
+                data: msg.data,
                 TTL: msg.ttl,
 				time: msg.time,
-				deltaTime: msg.time,
+                formattedTime: timeSince(msg.time),
                 sender: msg.sender,
                 recipient: msg.recipient
             };
@@ -123,7 +124,7 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
         // Sends `message` to `recipient`. After `ttl` seconds, the message
         // will self-destruct, and neither you or the recipient will be able 
         // to retrieve the message from your `messages` object.
-        sendMessage: function (recipient, message, ttl) {
+        sendMessage: function (recipient, message, data, ttl) {
             if (ttl === undefined || ttl < 60)
                 ttl = 86400;  // 24 hours
            // if (recipient in users) {
@@ -138,6 +139,7 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
                             msgID: msgID,
                             sender: userUUID,
                             content: message,
+                            data: data,
 							time: currentTime,
                             ttl: ttl
                         },
@@ -210,7 +212,7 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
 								content: content,
 								TTL: msg.ttl,
 								time: msg.time,
-								deltaTime: msg.time,
+                                 formattedTime: timeSince(msg.time),
 								sender: msg.sender,
 								recipient: msg.recipient
 							};
