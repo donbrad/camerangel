@@ -16,7 +16,7 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, privateKey, con
     // A mapping of all currently connected users' usernames userUUID's to their public keys.
     var users = new Array();
 	users[userUUID] = publicKey;     
-    
+
 
     // `receiveMessage` and `presenceChange` are called when a message 
     // intended for the user is received and when someone connects to 
@@ -168,7 +168,7 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, privateKey, con
                             ttl: ttl
                         },
                         callback: function () {
-                            parsedMsg = {
+                            var parsedMsg = {
                                 channelId: channelUUID,
                                 msgID: msgID,
                                 content: content,
@@ -182,7 +182,7 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, privateKey, con
                             };
 
                             // add the message to the sentMessageDataSource
-                            this.archiveMessage(parsedMsg);
+                            archiveMessage(parsedMsg);
                             receiveMessage(parsedMsg);
                             //deleteMessage(recipient, msgID, ttl);
                         }

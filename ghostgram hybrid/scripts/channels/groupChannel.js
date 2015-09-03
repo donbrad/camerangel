@@ -127,9 +127,8 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
         sendMessage: function (recipient, message, data, ttl) {
             if (ttl === undefined || ttl < 60)
                 ttl = 86400;  // 24 hours
-           // if (recipient in users) {
-                var content = message;
-				var currentTime =  ggTime.currentTime();
+
+            var currentTime =  ggTime.currentTime();
 
             APP.pubnub.uuid(function (msgID) {
                 APP.pubnub.publish({
@@ -144,20 +143,16 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
                             ttl: ttl
                         },
                         callback: function () {
-                            parsedMsg = {
+                           var parsedMsg = {
                                 msgID: msgID,
-                                content: content,
+                                content: message,
+                                data: data,
                                 TTL: ttl,
 								time: currentTime,
                                 formattedTime: 'Now',
                                 sender: userUUID,
                                 recipient: recipient
                             };
-                            if (messages[recipient] === undefined) {
-                                messages[recipient] = [parsedMsg];
-                            } else {
-                                messages[recipient].push(parsedMsg);
-                            }
                             receiveMessage(parsedMsg);
                             deleteMessage(recipient, msgID, ttl);
                         }
