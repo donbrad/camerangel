@@ -38,6 +38,8 @@ var channelModel = {
 
     init :  function () {
         channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
+        channelModel.messagesDS.online(false);
+        channelModel.messagesDS.sync();   // Load offline data
     },
 
     // Get messages archive for current channel (past 24 hours)
@@ -55,7 +57,7 @@ var channelModel = {
                             "value":channel},
                         {
                             "field":"time",
-                            "operator":"gt",
+                            "operator":"gte",
                             "value":timeStamp}
                     ]}
             ]);
@@ -65,6 +67,10 @@ var channelModel = {
     },
 
     archiveMessage : function(time, blob) {
+
+        channelModel.messagesDS.add(JSON.parse(blob));
+
+        /*
         var Message = Parse.Object.extend('messages');
         var msg = new Message();
 
@@ -84,6 +90,7 @@ var channelModel = {
 
         // Local messages are stored in the clear and must be converted to/from encrypted format on parse...
         channelModel.messagesDS.add(JSON.parse(blob));
+        */
     },
 
     fetch : function () {
@@ -110,6 +117,10 @@ var channelModel = {
             }
         });
 
+        //Todo: load offline messages.
+        deviceModel.setAppState('hasMessages', true);
+        deviceModel.isParseSyncComplete();
+        /*
         var Message = Parse.Object.extend("messages");
         var MessageCollection = Parse.Collection.extend({
             model: Message
@@ -144,6 +155,7 @@ var channelModel = {
                 handleParseError(error);
             }
         });
+        */
 
         getUserPrivateChannels(userModel.currentUser.get('uuid'), function (result) {
             if (result.found) {
