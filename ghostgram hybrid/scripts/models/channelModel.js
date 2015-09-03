@@ -64,6 +64,27 @@ var channelModel = {
         return(view);
     },
 
+    archiveMessage : function(time, blob) {
+        var Message = Parse.Object.extend('messages');
+        var msg = new Message();
+
+        msg.set('messageId', uuid.v4());
+        msg.set('timeStamp', time);
+        msg.set('channelId', currentChannelModel.currentChannel.channelId);
+        msg.set('messageBlob', userModel.encryptBlob(blob));
+        // Save the encrypted message blob to parse.
+        msg.save(null, {
+            success: function(results) {
+
+            },
+            error: function(error) {
+                handleParseError(error);
+            }
+        });
+
+        // Local messages are stored in the clear and must be converted to/from encrypted format on parse...
+        channelModel.messagesDS.add(JSON.parse(blob));
+    },
 
     fetch : function () {
         var Channel = Parse.Object.extend("channels");

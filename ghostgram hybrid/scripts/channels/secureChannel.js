@@ -17,9 +17,6 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, privateKey, con
     var users = new Array();
 	users[userUUID] = publicKey;     
     
-    // A mapping of usernames and the messages they've sent.
-    // (Messages you've sent are mapped by the the username of the reciever)
-    var messages = {};
 
     // `receiveMessage` and `presenceChange` are called when a message 
     // intended for the user is received and when someone connects to 
@@ -116,7 +113,7 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, privateKey, con
     };
 
     var archiveMessage = function (msg) {
-        currentChannelModel.archiveMessage(msg.time, JSON.stringify(msg));
+        channelModel.archiveMessage(msg.time, JSON.stringify(msg));
     };
 
     // Delete a message from the `messages` object, after `TTL` seconds.
@@ -184,13 +181,8 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, privateKey, con
                                 recipient: recipient
                             };
 
-                            if (messages[recipient] === undefined) {
-                                messages[recipient] = [parsedMsg];
-                            } else {
-                                messages[recipient].push(parsedMsg);
-                            }
                             // add the message to the sentMessageDataSource
-                            archiveMessage(parsedMsg);
+                            this.archiveMessage(parsedMsg);
                             receiveMessage(parsedMsg);
                             //deleteMessage(recipient, msgID, ttl);
                         }
@@ -217,12 +209,6 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, privateKey, con
         // Returns a mapping of all usernames and their respective public keys.
         listUsers: function () {
             return users;
-        },
-		
-        // Returns a mapping of usernames and the messages they've sent.
-        // (Messages you've sent are mapped by the the username of the reciever)
-        returnMessages: function () {
-            return messages;
         },
 		
 		// Get any messages that are in the channel from the past 24 hours
