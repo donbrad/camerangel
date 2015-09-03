@@ -69,6 +69,7 @@ var channelModel = {
     archiveMessage : function(time, blob) {
 
         channelModel.messagesDS.add(JSON.parse(blob));
+        channelModel.messagesDS.sync(); // Force write to local storage
 
         /*
         var Message = Parse.Object.extend('messages');
