@@ -10,6 +10,7 @@ var channelModel = {
     _channelMemberName : "channelMember",
     currentChannel: new kendo.data.ObservableObject(),
     intervalTimer : undefined,
+    _sentMessages : "sentMessages",
     _messageCountRefresh : 3000000,   // Delta between message count  calls (in milliseconds)
     channelsDS: new kendo.data.DataSource({
         offlineStorage: "channels-offline",
@@ -24,6 +25,58 @@ var channelModel = {
         sort: {
             field: "timeStamp",
             dir: "desc"
+        },
+        schema: {
+            model: {
+                id: "msgID",
+                fields: {
+                    msgID: {type: "string", editable: false},
+                    content: {type: "string"},
+                    data: {type: "string"},
+                    TTL: {type: "number"},
+                    time: {type: "number"},
+                    sender: {type: "string"},
+                    recipient: {type: "string"}
+                }
+            }
+        },
+        transport: {
+            create: function(options){
+                var localData = JSON.parse(localStorage[this._sentMessages]);
+
+                localData.push(options.data);
+                localStorage[this._sentMessages] = JSON.stringify(localData);
+                options.success(options.data);
+            },
+
+            read: function(options){
+                var localData = JSON.parse(localStorage[this._sentMessages]);
+                options.success(localData);
+            },
+
+            update: function(options){
+                var localData = JSON.parse(localStorage[this._sentMessages]);
+
+                for(var i=0; i<localData.length; i++){
+                    if(localData[i].msgID == options.data.msgID){
+                        localData[i].Value = options.data.Value;
+                    }
+                }
+                localStorage[this._sentMessages] = JSON.stringify(localData);
+                options.success(options.data);
+            },
+
+            destroy: function(options){
+                var localData = JSON.parse(localStorage[this._sentMessages]);
+                for(var i=0; i<localData.length; i++){
+                    if(localData[i].msgID === options.data.msgID){
+                        localData.splice(i,1);
+                        break;
+                    }
+                }
+                localStorage[this._sentMessages] = JSON.stringify(localData);
+                options.success(localData);
+            }
         }
     }),
 
