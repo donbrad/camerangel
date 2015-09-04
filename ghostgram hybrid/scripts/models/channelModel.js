@@ -20,7 +20,7 @@ var channelModel = {
     }),
 
     sentMessagesDS: new kendo.data.DataSource({ // This is store for private messages sent by this user
-        offlineStorage: "messages-offline",
+        offlineStorage: "sentMessages-offline",
         sort: {
             field: "timeStamp",
             dir: "desc"
