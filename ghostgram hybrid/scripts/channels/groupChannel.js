@@ -14,9 +14,6 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
     var users = new Array();
 	users[userUUID] = thisUser;     
     
-    // A mapping of usernames and the messages they've sent.
-    // (Messages you've sent are mapped by the the username of the reciever)
-    var messages = {};
 
     // `receiveMessage` and `presenceChange` are called when a message 
     // intended for the user is received and when someone connects to 
@@ -36,6 +33,7 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
         if (msg.recipient === userUUID) {
             var parsedMsg = {
                 msgID: msg.msgID,
+                channelId: channelUUID,
                 content: msg.content,
                 data: msg.data,
                 TTL: msg.ttl,
@@ -44,11 +42,6 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
                 recipient: msg.recipient
             };
 
-            if (messages[msg.sender] === undefined) {
-                messages[msg.sender] = [parsedMsg];
-            } else {
-                messages[msg.sender].push(parsedMsg);
-            }
             receiveMessage(parsedMsg);
             deleteMessage(msg.sender, msg.msgID, msg.ttl);
         }
@@ -144,6 +137,7 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
                         callback: function () {
                            var parsedMsg = {
                                 msgID: msgID,
+                               channelId: channelUUID,
                                 content: message,
                                 data: data,
                                 TTL: ttl,

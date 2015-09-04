@@ -31,6 +31,7 @@ var channelModel = {
                 id: "msgID",
                 fields: {
                     msgID: {type: "string", editable: false},
+                    channelId: {type: "string"},
                     content: {type: "string"},
                     data: {type: "string"},
                     TTL: {type: "number"},
