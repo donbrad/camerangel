@@ -911,6 +911,7 @@ var channelView = {
             channelView = null;
         }
 
+        APP.kendo.navigate('#:back');
     },
 
     getContactData : function (uuid) {
