@@ -603,6 +603,12 @@ var channelView = {
             dir: "desc"
         }
     }),
+    membersPresentDS : new kendo.data.DataSource({  // this is the list of members present in this chat
+        sort: {
+            field: "name",
+            dir: "asc"
+        }
+    }),
 
     _timeStampUpdateInterval: 1000 * 60 * 5, // update every 5 minutes...
 
@@ -612,6 +618,7 @@ var channelView = {
         e.preventDefault();
 
         channelView.messagesDS.data([]);
+        channelView.membersPresentDS.data([]);
 
         currentChannelModel.membersDS.data([]);
         //APP.checkPubnub();
@@ -784,7 +791,6 @@ var channelView = {
       // Hide the image preview div
       channelView.hideChatImagePreview();
       APP.updateGeoLocation();
-
 
       channelView.privacyMode = false;
 
