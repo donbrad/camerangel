@@ -10,7 +10,7 @@ var channelModel = {
     _channelMemberName : "channelMember",
     currentChannel: new kendo.data.ObservableObject(),
     intervalTimer : undefined,
-    _messageCountRefresh : 3000000,   // Delta between message refresh calls (in milliseconds)
+    _messageCountRefresh : 3000000,   // Delta between message count  calls (in milliseconds)
     channelsDS: new kendo.data.DataSource({
         offlineStorage: "channels-offline",
         sort: {
@@ -19,7 +19,7 @@ var channelModel = {
         }
     }),
 
-    messagesDS: new kendo.data.DataSource({
+    sentMessagesDS: new kendo.data.DataSource({ // This is store for private messages sent by this user
         offlineStorage: "messages-offline",
         sort: {
             field: "timeStamp",
@@ -38,14 +38,14 @@ var channelModel = {
 
     init :  function () {
         channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
-        channelModel.messagesDS.online(false);
-        channelModel.messagesDS.sync();   // Load offline data
+        channelModel.sentMessagesDS.online(false);
+        channelModel.sentMessagesDS.sync();   // Load offline data
     },
 
     // Get messages archive for current channel (past 24 hours)
     // This is only called by secure channel as sender messages are encrypted with recipients public key
     getChannelArchive : function (channel) {
-        var dataSource =  channelModel.messagesDS;
+        var dataSource =  channelModel.sentMessagesDS;
         var timeStamp = ggTime.lastDay();
         dataSource.filter(
             [
@@ -68,8 +68,8 @@ var channelModel = {
 
     archiveMessage : function(time, blob) {
 
-        channelModel.messagesDS.add(JSON.parse(blob));
-        channelModel.messagesDS.sync(); // Force write to local storage
+        channelModel.sentMessagesDS.add(JSON.parse(blob));
+        channelModel.sentMessagesDS.sync(); // Force write to local storage
 
         /*
         var Message = Parse.Object.extend('messages');
@@ -157,7 +157,10 @@ var channelModel = {
             }
         });
         */
+        deviceModel.setAppState('hasPrivateChannels', true);
+        deviceModel.isParseSyncComplete();
 
+        /*
         getUserPrivateChannels(userModel.currentUser.get('uuid'), function (result) {
             if (result.found) {
                 channelModel.privateChannelsDS.data(result.channels);
@@ -165,7 +168,7 @@ var channelModel = {
             deviceModel.setAppState('hasPrivateChannels', true);
             deviceModel.isParseSyncComplete();
         });
-
+        */
     },
 
     updateChannelsMessageCount : debounce(function () {
