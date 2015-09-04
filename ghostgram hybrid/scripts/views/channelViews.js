@@ -900,7 +900,7 @@ var channelView = {
     },
 
     onHide : function (e) {
-        e.preventDefault();
+       
         if (currentChannelModel.currentChannel !== undefined) {
             currentChannelModel.handler.closeChannel();
 
@@ -911,7 +911,6 @@ var channelView = {
             channelView = null;
         }
 
-        APP.kendo.navigate('#:back');
     },
 
     getContactData : function (uuid) {
