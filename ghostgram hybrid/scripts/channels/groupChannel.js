@@ -13,7 +13,7 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
     // A mapping of all currently connected users' usernames userUUID's to their public keys.
     var users = new Array();
 	users[userUUID] = thisUser;     
-    
+
 
     // `receiveMessage` and `presenceChange` are called when a message 
     // intended for the user is received and when someone connects to 

@@ -94,7 +94,7 @@ var channelModel = {
         channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
         // If sentMessage local storage doesn't exit - create it
         if (localStorage[this._sentMessages] === undefined)
-            localStorage[this._sentMessages] = [];
+            localStorage[this._sentMessages] = JSON.stringify([]);
     },
 
     // Get messages archive for current channel (past 24 hours)
