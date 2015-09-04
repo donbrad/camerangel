@@ -100,7 +100,7 @@ function privateChat(e) {
 
             // The other user has a private channel for user but user doesn't have a private channel yet
             if (channel === undefined) {
-                channelModel.addPrivateChannel(contactUUID, contactPublicKey, contactName, results.channels[0]);
+                channelModel.addPrivateChannel(contactUUID, contactPublicKey, contactName, result.channels[0]);
             } else {
                 userDataChannel.privateChannelInvite(contactUUID, channel.channelId, "Private Chat request from: " + userName);
                 mobileNotify("Requesting private chat with " + contactName);

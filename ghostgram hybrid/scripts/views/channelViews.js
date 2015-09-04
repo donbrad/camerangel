@@ -900,7 +900,7 @@ var channelView = {
     },
 
     onHide : function (e) {
-       
+
         if (currentChannelModel.currentChannel !== undefined) {
             currentChannelModel.handler.closeChannel();
 
