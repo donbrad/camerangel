@@ -370,18 +370,17 @@ var channelModel = {
             channel.set('isPrivate', isPrivate);
             channel.set('placeUUID', placeId);
             channel.set('placeName', placeName);
-            if (channelName === '') {
-                channelName =  placeName;
+            if (name === '') {
+                name =  placeName;
             }
-            if (channelDescription === '') {
-                channelDescription = "Place : " + placeName;
+            if (description === '') {
+                description = "Place : " + placeName;
             }
         }
 
         // Generic fields for owner and members
         channel.set("name", name );
-
-
+        
         channel.set('isEvent', false);
         channel.set("media",   true);
         channel.set("archive", true);
