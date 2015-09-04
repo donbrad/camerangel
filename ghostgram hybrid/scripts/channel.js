@@ -3,8 +3,8 @@
 function diffMovingChat(widthPerc){
 
 	if(widthPerc < 1){
-		var currentXPer = 100 - ((widthPerc * 100).toFixed());
-		$(".movingChat, .selectedLI > .message-slideOptions").css("right", currentXPer+"%");
+		var currentXPer = ((widthPerc * 100).toFixed());
+		$(".movingChat, .selectedLI > .message-slideOptions").css("left", currentXPer+"%");
 	}
 
 }

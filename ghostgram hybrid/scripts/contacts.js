@@ -485,7 +485,7 @@ function onInitContacts(e) {
         fixedHeaders: true,
         click: function (e) {
             var contact = e.dataItem;
-   
+   			
             updateCurrentContact(contact);
             
 			if (contact.category === 'phone') {

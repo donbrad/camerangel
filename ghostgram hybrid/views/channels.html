@@ -321,32 +321,38 @@
 		photoUrl = contactData.photoUrl;
 		if (contactData.isContact) {
 			//This is a received message from a contact.  if false, it's a message sent by our user...
+			
 		}
 	#
-	 <div class="chat-time"> #:data.formattedTime# </div>
+	<div class="chat-sender-details">
+		<span class="chat-sender">#: name #</span>
+		<span class="chat-time">#: data.formattedTime #</span>
+		<div class="clearfix"></div>
+		# console.log(contactData) #
+	</div>
 	# if(photoUrl !== '') { #
-		<img class="chat-message-profileImg" src="#:photoUrl#" alt="" width="36" height="36">
-		<div class="chat-message-content clearfix">
-		<h5>#=name#</h5>
-		<div class="chat-message-text">#= formattedContent #</div>
+		<div class="chat-message-user-img">
+			<img class="chat-message-profileImg circle-img-md" src="images/ghost-blue.svg" alt="" />
+		</div>
+		<div class="chat-message-user-content clearfix">
+			<div class="chat-message-text">#= formattedContent #</div>
 
-		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# 
-			<div data-role="touch" data-hold="chatPhotoHold" data-tap="chatPhotoTap"> 
-				<img class="chat-message-photo-small" src="#:data.photo.thumb#" alt="" > 
-			</div>
-		#}#
-	 #} else {#
-	 	<div class="chat-message-user-content clearfix">
-		<div class="chat-message-text">#= formattedContent #</div>
 			#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# 
+				<div data-role="touch" data-hold="chatPhotoHold" data-tap="chatPhotoTap"> 
 					<img class="chat-message-photo-small" src="#:data.photo.thumb#" alt="" > 
+				</div>
 			#}#
+	 #} else {#
+		 	<div class="chat-message-user-content clearfix">
+			<div class="chat-message-text">#= formattedContent #</div>
+				# if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# 
+						<img class="chat-message-photo-small" src="#:data.photo.thumb#" alt="" > 
+				#}#
 		</div>
 	 #}#
 </div> 
 	<div class="message-slideOptions">
-		<span class="delete" style="display: none">Delete</span>
-		<span class="archive"> Archive </span>
+		<span class="archive" style="display: none"> Archive </span>
 	</div>
 </script>
 

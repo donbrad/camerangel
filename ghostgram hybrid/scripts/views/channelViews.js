@@ -620,20 +620,7 @@ var channelView = {
         autosize($('#messageTextArea'));
         $("#messages-listview").kendoMobileListView({
             dataSource: currentChannelModel.messagesDS,
-            template: $("#messagesTemplate").html() /*,
-             click: function (e) {
-             var message = e.dataItem;
-
-             APP.models.channel.currentMessage = message;
-             if (APP.models.channel.currentModel.isPrivate) {
-             $('#'+message.msgID).removeClass('privateMode');
-             kendo.fx($("#"+message.msgID)).fade("out").endValue(0.1).duration(6000).play();
-             } else {
-             // display message actionsheet for group messages
-             $("#messageActions").data("kendoMobileActionSheet").open();
-             }
-
-             } */
+            template: $("#messagesTemplate").html()
         }).kendoTouch({
             filter: "li",
             //enableSwipe: true,
@@ -647,11 +634,11 @@ var channelView = {
                 var selectionListItem = $(selection)
 
                 // add moving classes
-                $(selection).addClass("selectedLI");
+                $(selection).velocity("fadeIn").addClass("selectedLI");
                 $(".selectedLI > div").first().addClass("movingChat");
 
                 // remove chat time
-                $(".movingChat > .chat-time").velocity({opacity: 0, translateY: "5%"}, {duration: 200});
+                $(".movingChat > .chat-sender-details").velocity({opacity: 0, translateY: "5%"}, {duration: 200});
 
                 $(".movingChat > .chat-message-user-content").velocity({scale: "1.01"}, {duration: 300});
 
@@ -659,43 +646,31 @@ var channelView = {
 
             drag: function(e){
                 var currentX = e.touch.x.location;
+                
                 var windowWidth = $(window).width();
                 var messageWidth = $(".movingChat > .chat-message-user-content").width();
                 var widthPerc = (messageWidth + currentX)  / (windowWidth + messageWidth);
 
-                // drag chat
-                diffMovingChat(widthPerc);
+                if(e.touch.x.delta > 0){
+                	// drag chat
+	                diffMovingChat(widthPerc);
 
-
-                var accelWidthPerc = widthPerc * 2;
-                var percentWindow = currentX / windowWidth
-
-                //
-                if(percentWindow < 0.75 && percentWindow > 0.35){
-
-                    $(".selectedLI > .message-slideOptions").css("opacity", accelWidthPerc);
-                    $(".selectedLI").removeClass("selectedLI-delete").addClass("selectedLI-archive");
-                    // change color to highlighted
-                    $(".movingChat > .chat-message-user-content").css("background-color", "#9E788F");
-                    $(".selectedLI > .message-slideOptions > .archive").css("display", "inline-block");
-                    $(".selectedLI > .message-slideOptions > .delete").css("display", "none");
-                } else if(percentWindow <= 0.35){
-                    // change color to delete
-                    $(".selectedLI").addClass("selectedLI-delete").removeClass("selectedLI-archive");
-                    $(".movingChat > .chat-message-user-content").css("background-color", "#EA6262");
-                    $(".selectedLI > .message-slideOptions > .delete").css("display", "inline-block");
-                    $(".selectedLI > .message-slideOptions > .archive").css("display", "none");
-
-                } else {
-                    // change color to default
-                    $(".movingChat > .chat-message-user-content").css("background-color", "#2D93FF");
-                    $(".selectedLI > .message-slideOptions > .delete .archive").css("display", "none");
-                    $(".selectedLI").removeClass("selectedLI-delete, selectedLI-archive");
-                }
-
-
-
-
+	                var accelWidthPerc = (widthPerc * 2).toFixed(2);
+	                var percentWindow = (currentX / windowWidth).toFixed(2);
+	                
+	                if(percentWindow > 0.25){
+	                	
+	                    // change color to highlighted
+	                    $(".movingChat > .chat-message-user-content").css("background-color", "#9E788F");
+	                    $(".selectedLI > .message-slideOptions > .archive").css("display", "inline-block");
+	                    
+	                } else {
+	                    // change color to default
+	                    $(".movingChat > .chat-message-user-content").css("background-color", "#2D93FF");
+	                    $(".selectedLI > .message-slideOptions > .delete .archive").css("display", "none");
+	                    $(".selectedLI").removeClass("selectedLI-delete, selectedLI-archive");
+	                }
+	            }
             },
 
             dragend: function(e){
@@ -704,29 +679,23 @@ var channelView = {
                 var windowWidth = $(window).width();
                 var widthPerc = currentX  / windowWidth;
 
-
                 //if drag is far enough, set action
-                if (widthPerc < 0.75) {
-                    $(".movingChat").velocity({translateX:"-100%", opacity: 0},{duration: "fast"});
-                    $(".selectedLI > .message-slideOptions").velocity({right:"100%"},{duration: "fast"});
+                if (widthPerc > 0.50) {
+                    $(".movingChat").velocity({translateX:"100%", opacity: 0},{duration: "fast"});
+                    $(".selectedLI > .message-slideOptions").velocity({left:"100%"},{duration: "fast"});
 
-                    if (widthPerc < 0.35){
-                        // delete message
-                        deleteMessage();
-                    } else {
-                        // archive message
-                        archiveMessage();
-                    }
+                    // archive message
+                    archiveMessage();
 
                 } else {
-                    $(".movingChat").velocity({right:"1rem"},{duration: 600, easing: "spring"});
+                    $(".movingChat").velocity({left:"0"},{duration: 600, easing: "spring"});
                     $(".selectedLI > .message-slideOptions").css("opacity", "0");
 
                     // show chat time
-                    $(".movingChat > .chat-time").velocity({opacity: 1, translateY: "0"}, {duration: 200});
+                    $(".movingChat > .chat-sender-details").velocity({opacity: 1, translateY: "0"}, {duration: 200});
 
                     // reset color and size
-                    $(".movingChat > .chat-message-user-content").css("background", "#2D93FF");
+                    $(".movingChat > .chat-message-user-content").css("background", "#6CADF3");
                     $(".movingChat > .chat-message-user-content").velocity({scale: "1"}, {duration: 300});
                 }
 
@@ -737,7 +706,8 @@ var channelView = {
             }
 
         });
-
+  	
+  		
         $("#channelMembers-listview").kendoMobileListView({
             dataSource: currentChannelModel.membersDS,
             template: $("#membersTemplate").html(),
@@ -749,8 +719,6 @@ var channelView = {
             }
         });
     },
-
-
 
     onShow : function (e) {
       _preventDefault(e);
@@ -1089,7 +1057,7 @@ var channelView = {
         var message = dataSource.getByUid(messageUID);
         //$('.delete').css('display', 'none');
         //$('.archive').css('display', 'none');
-
+        
         // Scale down the other photos in this chat...
         $('.chat-message-photo').removeClass('chat-message-photo').addClass('chat-message-photo-small');
 
@@ -1097,11 +1065,15 @@ var channelView = {
         $('#'+message.msgID + ' .chat-message-photo-small').removeClass('chat-message-photo-small').addClass('chat-message-photo');
 
         // User actually clicked on the photo so show the open the photo viewer
-        if (target[0].className === 'chat-message-photo' || target[0].className === 'chat-message-photo-small') {
-            var photoUrl = message.data.photo.photo;
-            $('#modalPhotoViewImage').attr('src', photoUrl);
+        if ($(target).hasClass('chat-message-profileImg') || target[0].className === 'chat-message-photo-small') {
+        	var sender = message.sender;
+        	var contactInfo = channelView.getContactData(sender);
+        	
+        	var results = channelView.getContactModel(sender);
+        	
+            //$('#modalPhotoViewImage').attr('src', photoUrl);
 
-            $('#modalPhotoView').kendoMobileModalView("open");
+            //$('#modalview-contactActions').data('kendoMobileModalView').open();
         }
 
         if (currentChannelModel.privacyMode) {

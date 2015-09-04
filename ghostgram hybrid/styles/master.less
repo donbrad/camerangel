@@ -400,26 +400,26 @@ form {
 
 .circle-img-sm {
 	.circle-img;
-	width: 30px;
-	height: 30px;
+	width: 2rem;
+	height: 2rem;
 }
 
 .circle-img-md {
 	.circle-img;
-	width: 48px;
-	height: 48px;
+	width: 3rem;
+	height: 3rem;
 }
 
 .circle-img-lg {
 	.circle-img;
-	width: 60px;
-	height: 60px;
+	width: 4rem;
+	height: 4rem;
 }
 
 .circle-img-xl {
 	.circle-img;
-	width: 120px;
-	height: 120px;
+	width: 6rem;
+	height: 6rem;
 }
 
 .greyBtn {
@@ -1766,7 +1766,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 .message-slideOptions {
 	height:100%;
 	position: absolute;
-	right: 1rem;
+	left: 1rem;
 	top: 8px;
 	z-index: 0;
 	opacity: 0;
@@ -1775,7 +1775,8 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 
 .selectedLI {
-	background: #fff;
+	opacity: 0;
+	background: lighten(@highlight-100, 20%) !important;
 }
 
 .selectedLI-archive { 
@@ -2008,14 +2009,11 @@ a:hover {
 	position: absolute;
 	width: 100%;
 	li {
-    border-bottom: 1px solid #E4E4E4;
-    background: #fff;
-    z-index:9999;
-    padding-top: 0px;
-    padding-bottom: 0px;
-	}
-	li:nth-child(2){
-		border-top: 1px solid #E4E4E4;
+	    border-bottom: 1px solid #E4E4E4;
+	    background: #fff;
+	    z-index:9999;
+	    padding-top: 0px;
+	    padding-bottom: 0px;
 	}
 }
 
@@ -3842,12 +3840,17 @@ div.contactListBox.activeContact > div > div > ul {
 
 /* Chat styles */
 
+#messages-listview li {
+	width: 100%;
+	padding-right: 1rem !important;
+	padding-left: 1rem !important;
+}
+
 .chat-message {
     line-height: 1.5;
     width: 100%;
 	position: relative;
 	z-index: 1;
-	right: 1rem;
 }
 
 .chat-message p {
@@ -3890,9 +3893,8 @@ div.contactListBox.activeContact > div > div > ul {
 }
 
 .chat-message-user-content {
-    margin-left: 72px;
     height: 100%;
-    float: right;
+    float: left;
     padding: 0.2em 0.35em;
     border-radius: .25em;
     color: #fff;
@@ -3904,12 +3906,10 @@ div.contactListBox.activeContact > div > div > ul {
 	content: "";
 	display: block;
 	position: absolute;
-	right: 2px; 
 	width: 0;
 	border-width: 8px 8px 0;
 	border-style: solid;
 	border-color: @primary-200 transparent;
-	bottom: -4px;
 }
 
 .movingChat > .chat-message-user-content:after {
@@ -3930,19 +3930,39 @@ div.contactListBox.activeContact > div > div > ul {
 
 .chat-message-text {
     .font-size(14);
-    letter-spacing: 0.05em;
+    letter-spacing: 1px;
+}
+
+.chat-sender-details {
+	.font-size(11);
+	color: @shade-100;
+	padding-left: 22%;
+}
+
+.chat-sender {
+	float: left;
 }
 
 .chat-time {
-    text-align: center;
-    .font-size(12);
-    color: #979797;
+    float: right;
+    .font-size(11);
 }
 
 #channel > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
 	position: absolute;
 	width: 100%;
 	top: 0px;
+}
+
+.chat-message-user-img {
+	width: 20%;
+	float: left;
+}
+
+.chat-message-user-content {
+	max-width: 78%;
+	margin-left: 2%;
+	float: left;
 }
 
 /*!

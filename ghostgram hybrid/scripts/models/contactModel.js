@@ -106,7 +106,7 @@ var contactModel = {
     },
 
     getContactModel: function (contactUUID) {
-        var dataSource = contactModel.contactsDS;
+        var dataSource = contactModel.contactsDS; 
         dataSource.filter( { field: "contactUUID", operator: "eq", value: contactUUID });
         var view = dataSource.view();
         var contact = view[0];
