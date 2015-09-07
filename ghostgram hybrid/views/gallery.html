@@ -1,8 +1,22 @@
 <div data-role="view" data-title="Gallery" id="gallery" data-layout="main" data-model="APP.models.gallery" data-init="onInitGallery" data-show="onShowGallery">
  	<div>
+ 		<div class="topViewSearchBox">
+	 		<div class="appendSearch">
+				<span class="searchIcon"><img src="images/search.svg" /></span>
+				<input id="gallerySearch" type="search" class="viewSearchBox" placeholder="Search" />
+			</div>
+		</div>
 	 	<div id="search-archives">
-			<input type="search" class="viewSearchBox" id="gallerySearch"  placeholder="Search all" />
-			<div class="gallerySearchOptions">
+		 	<ul data-role="buttongroup" data-index="0" id="galleryMenuSelect" data-select="gallerySelectCategory">
+				<li>
+					Archive
+				</li>
+				<li>
+					Photos
+				</li>
+			</ul>
+		</div>
+			<div class="gallerySearchOptions hidden">
 				<div class="filters">
 					<button class="all" data-role="button">
 						<img src="images/gallery-all.svg" />
@@ -20,28 +34,23 @@
 						<img src="images/sentinel-places.svg" />
 					</button>
 				</div>
-				
 			</div>
-			<ul data-role="buttongroup" data-index="0" id="galleryMenuSelect" data-select="gallerySelectCategory">
-				<li>
-					<img src="images/gallery-all.svg" />
-					Archive
-				</li>
-				<li>
-					<img src="images/gallery-photos.svg" />
-					Photos
-				</li>
-			</ul>
-
-
-			<ul class="tags">
-				<!-- Test tags :)
-				<li><img src="images/sentinel-contacts.svg" />Don<button></button></li>
-				<li><img src="images/sentinel-chats.svg" />myplacez design<button></button></li>
-				-->
-			</ul>
-		</div>
-		
+			<div class="resultsBar">
+				<span class="left"><span id="resultCount"></span> Results</span>
+				<span class="right">
+					<a class="btnClear" data-role="button" data-rel="modalview" href="#modalview-archive-date" id="toggleFilterBtn">
+						<img src="images/icon-filter.svg" /> Filter
+					</a>
+				</span>
+				
+				<div class="clearfix"></div>
+				<ul class="list-inline tags">
+					<!--
+					<li><img src="images/sentinel-contacts.svg" />Don<button></button></li>
+					<li><img src="images/sentinel-chats.svg" />myplacez design<button></button></li>
+					-->
+				</ul>
+			</div>
 			<div id="galleryPhotoDisplayOpts">
 				<ul data-role="buttongroup" data-index="0" class="km-small" data-select="selectGalleryZoom" id="galleryZoomSelect">
 					<li>
@@ -95,7 +104,27 @@
 	</form>
 </div>
 
-
+<div data-role="modalview" id="modalview-archive-date" style="width: 90%; display: none;" class="appearance" data-init="archiveView.onInitDateSelect">
+	<div class="calendarBox">
+		<h3>Select date to search</h3>
+		<p><img src="images/icon-shortcut.svg" /></p>
+	    	<ul id="select-easy-dates">
+	            <li>
+	                Last 7 days
+	            </li>
+	            <li>
+	                Last 30 days
+	            </li>
+	            <li>
+	                Last 90 days
+	            </li>
+	        </ul>
+		<input id="datepicker" value="10/10/2011" style="width: 100%" />
+	</div>
+	<div data-role="footer" class="footer">
+		<a class="btnFull-modal" data-role="button" data-click="archiveView.closeArchiveDate">Done</a>
+	</div>
+</div>
 
 
 <div data-role="modalview" id="modalview-gallery-addPhoto" style="width: 90%; display: none;" class="appearance">
@@ -113,6 +142,29 @@
         </div>
     </div>
 </div>
+
+
+
+<script id="archive-dateOption-template" type="text/x-kendo-template">
+    <img src="images/icon-filter.svg"> Filter
+</script>
+
+<script id="calendar-footer-template" type="text/x-kendo-template">
+    Today - #: kendo.toString(data, "d") #
+</script>
+
+<script id="archive-filter-template" type="text/x-kendo-template">
+	<span>#: data.name #</span>
+	#: console.log(data) #
+</script>
+
+<script type="text/x-kendo-template" id="tags-template">
+	<div class="">
+		<span class="left">#: data.name # </span>
+		<span class="right"><a class="btnClear-red"><img src="images/trash.svg"></a></span>
+	</div>
+</script>
+
 
  <!-- galleryPicker template -->
  <script type="text/x-kendo-template" id="gallery-template">
@@ -160,7 +212,7 @@
 				<div class="senderMessage">
 					<p class="chat-time"> #= moment(data.message.date).fromNow() #</p>
 					<div class="chat-bubble"> #= data.message.text # </div>
-					<p class="chat-details">Send in #: data.message.channelName #<a class="btnClear-grey-sm"></a></p>
+					<p class="chat-details">From #: data.message.channelName #<a class="btnClear-grey-sm"></a></p>
 				</div>
 				<div class="clearfix"></div>
 			</div>

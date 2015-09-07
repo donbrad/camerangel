@@ -133,7 +133,7 @@ var archiveView = {
 					url: 'http://www.craterlakenational.com/image/crater_lake_large1.jpg',
 
 					placeName: 'Crater Lake National Park',
-					address: 'OR',
+					address: 'Klamath County, OR',
 
 					date: new Date()
 				}
@@ -154,7 +154,7 @@ var archiveView = {
 		archiveView.sentinel.addListener('add', archiveView.search);
 		archiveView.sentinel.addListener('remove', archiveView.search);
 
-		// HACK: Something's up with flex, so automatically calculating heights
+		/* HACK: Something's up with flex, so automatically calculating heights
 		var adjustListHeight = function () {
 			var searchArchivesHeight = $('#search-archives').height()+20;
 			$('#archive-list').css('height', 'calc(100% - '+searchArchivesHeight+'px)');
@@ -162,6 +162,26 @@ var archiveView = {
 		adjustListHeight();
 		archiveView.sentinel.addListener('add', adjustListHeight);
 		archiveView.sentinel.addListener('remove', adjustListHeight);
+		*/
+	},
+
+	onInitDateSelect: function(){
+		console.log("on init");
+		$("#datepicker").kendoDatePicker();
+			
+		
+
+		$("#select-easy-dates").kendoMobileButtonGroup({
+            select: function(e) {
+                console.log("selected index:" + e.index);
+            },
+            index: 0
+        });
+
+	},
+
+	closeArchiveDate: function(){
+		$("#modalview-archive-date").data("kendoMobileModalView").close();
 	},
 
 	checkIfEmpty: function () {
@@ -210,6 +230,8 @@ var archiveView = {
 			$('#archive-search-empty').show();
 			$('#archive-list').hide();
 		}
+		var returnCount = archive.dataSource.total();
+		$("#resultCount").text(returnCount);
 	},
 
 	clearSearch: function () {

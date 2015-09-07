@@ -60,14 +60,10 @@ function onInitGallery(e){
 	if (window.navigator.simulator === false) {
 		$("#gallerySearch").on("focus", function(){
 			$(".gallerySearchOptions").velocity("slideDown", {duration: 300});
-			//$("#gallerySearch").unbind("focus");
-			console.log("focus");
 		});
 
 		$("#gallerySearch").on("blur", function(){
 			$(".gallerySearchOptions").velocity("slideUp", {duration: 300});
-			//$("#gallerySearch").unbind("blur");
-			console.log("blur");
 		});
 	} else {
 		$(".gallerySearchOptions").velocity("slideDown", {duration: 300});

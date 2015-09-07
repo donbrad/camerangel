@@ -925,6 +925,17 @@ div.km-header a img {
 .km-material .km-switch-handle {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
 }
+.k-header,
+.k-grid-header-wrap,
+.k-grid .k-grouping-header,
+.k-grid-header,
+.k-pager-wrap,
+.k-pager-wrap .k-textbox,
+.k-pager-wrap .k-link,
+.k-grouping-header .k-group-indicator,
+.k-gantt-toolbar .k-state-default {
+  border-color: #fff;
+}
 .km-material .km-switch-handle {
   width: 1.5em;
   height: 1.5em;
@@ -2062,9 +2073,6 @@ a:hover {
   padding-top: 0px;
   padding-bottom: 0px;
 }
-#channels-listview li:nth-child(2) {
-  border-top: 1px solid #E4E4E4;
-}
 #addChannelBtn {
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);
   position: fixed;
@@ -2633,10 +2641,6 @@ div.loginBox > form > div > ul > li {
   margin: 0;
   color: black;
 }
-#search-archives {
-  min-height: 10rem;
-  padding: .5rem 0;
-}
 #search-archives .k-autocomplete {
   height: 1.7rem;
   border-color: #e0e0e0;
@@ -2664,6 +2668,7 @@ div.loginBox > form > div > ul > li {
 }
 #archive-list {
   background: #fff;
+  width: 100%;
 }
 #archive-list > div.km-scroll-container > div > ul > li > div > div > div {
   padding: 0.2em 0;
@@ -2798,8 +2803,8 @@ div.loginBox > form > div > ul > li {
     }
 }
 */
-#galleryPhotoDisplayOpts {
-  height: 11rem;
+#calendarSelect {
+  width: 100%;
 }
 /* modalview-start */
 .startBox {
@@ -3606,17 +3611,19 @@ div.contactListBox.activeContact > div > div > ul {
   width: 100%;
 }
 .gallerySearchOptions {
-  background: #f5f5f5;
+  background: #e0e0e0;
+}
+.gallerySearchOptions .filters {
+  text-align: center;
 }
 #galleryZoomSelect {
-  background: #f5f5f5;
+  background: #e0e0e0;
   border-bottom: 1px solid #e0e0e0;
 }
 /* Gallery styles */
 #galleryMenuSelect li.km-button {
   width: 50%;
-  background-color: #e0e0e0;
-  padding: 0.5em 1em;
+  background-color: #f5f5f5;
   border-top: 0px !important;
   border-bottom: 0px !important;
 }
@@ -3631,12 +3638,9 @@ div.contactListBox.activeContact > div > div > ul {
 #galleryMenuSelect #gallery-all {
   stroke: #4a4a4a;
 }
-#galleryMenuSelect > li:nth-child(2).km-button.km-state-active {
-  background-color: #6cadf3;
-}
 #galleryMenuSelect.km-buttongroup > .km-state-active {
-  background-color: #9e788f;
-  color: #fff;
+  background-color: #f5f5f5;
+  color: #2e93fd;
   border-radius: 0px;
   border-top: 0px !important;
   border-bottom: 0px !important;
@@ -3664,6 +3668,123 @@ div.contactListBox.activeContact > div > div > ul {
 #galleryZoomSelect > li.km-button.km-state-active > span > svg #gallery-grid-3 {
   fill: #ffb74d;
 }
+#gallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.gallerySearchOptions > div > button > span > img {
+  height: 1.25rem;
+}
+.resultsBar {
+  padding: 0.25rem 1rem;
+  background: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  height: 2.5rem;
+  font-size: 14px;
+  font-size: 0.875rem;
+}
+.resultsBar .tags img {
+  height: 18px;
+}
+.resultsBar #filterResultsDropdown {
+  width: 150px;
+}
+.resultsBar #toggleFilterBtn img {
+  height: 0.875em;
+}
+#gallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.resultsBar > span.right > span > span > span.k-input > img {
+  vertical-align: sub;
+}
+#select-easy-dates {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+#select-easy-dates > li.km-button > span {
+  font-size: 14px;
+  font-size: 0.875rem;
+}
+.k-block,
+.k-header,
+.k-grid-header,
+.k-toolbar,
+.k-grouping-header,
+.k-pager-wrap,
+.k-button,
+.k-draghandle,
+.k-treemap-tile,
+html .km-pane-wrapper .k-header {
+  background-color: #fff;
+}
+.km-material input,
+.km-material select,
+.km-material textarea,
+.km-material .k-dropdown .k-input,
+.km-material input[type=password],
+.km-material input[type=search],
+.km-material input[type=number],
+.km-material input[type=tel],
+.km-material input[type=url],
+.km-material input[type=email],
+.km-material input[type=text]:not(.k-input),
+.km-root .km-material textarea {
+  color: #4a4a4a;
+  padding: 0px;
+}
+.km-material input[type=password],
+.km-material input[type=search],
+.km-material input[type=number],
+.km-material input[type=tel],
+.km-material input[type=url],
+.km-material input[type=email],
+.km-material input[type=month],
+.km-material input[type=color],
+.km-material input[type=week],
+.km-material input[type=date],
+.km-material input[type=time],
+.km-material input[type=datetime],
+.km-material input[type=datetime-local],
+.km-material input[type=text]:not(.k-input),
+.km-material select:not([multiple]),
+.km-material .k-dropdown,
+.km-material textarea {
+  padding: 0px;
+}
+.k-autocomplete,
+.k-combobox,
+.k-datepicker,
+.k-timepicker,
+.k-datetimepicker,
+.k-colorpicker,
+.k-numerictextbox,
+.k-dropdown,
+.k-selectbox,
+.k-textbox,
+.k-toolbar .k-split-button {
+  width: 100%;
+}
+#gallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.resultsBar > span.right > span > span {
+  background: #fff;
+}
+#gallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.resultsBar > span.right > span > span {
+  border: none;
+}
+#calendarSelect > div.k-header {
+  background: #2e93fd;
+}
+#calendarSelect > div.k-footer > a {
+  background: #2e93fd;
+}
+#calendarSelect_cell_selected {
+  background: #e0e0e0;
+  color: #4a4a4a;
+  border: #e0e0e0 !important;
+  box-shadow: none;
+}
+#calendarSelect_cell_selected > a {
+  color: #4a4a4a;
+}
+#calendarSelect_cell_selected {
+  border: none;
+}
+.k-state-hover:hover {
+  background: #979797;
+}
 .topViewSearchBox {
   width: 100%;
   background-color: #f5f5f5;
@@ -3685,6 +3806,7 @@ div.contactListBox.activeContact > div > div > ul {
   width: 80%;
   padding-left: 0px !important;
   padding-right: 1rem !important;
+  padding-top: 0.25rem !important;
 }
 .appendSearch span {
   float: left;
