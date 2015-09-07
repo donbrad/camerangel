@@ -586,21 +586,40 @@ var channelMembersView = {
 
 };
 
+// ChannelView -- Chat View
+
 var channelView = {
     topOffset: 0,
     messageLock: false,
     thisUser : null,
     contactData : [],
     currentContactId: null,
+    privacyMode: false,  // Privacy mode - obscure messages after timeout
     currentContact: null,
     intervalId : null,
+    messagesDS: new kendo.data.DataSource({  // this is the list view data source for chat messages
+        sort: {
+            field: "timeStamp",
+            dir: "desc"
+        }
+    }),
+    membersPresentDS : new kendo.data.DataSource({  // this is the list of members present in this chat
+        sort: {
+            field: "name",
+            dir: "asc"
+        }
+    }),
+
+    _timeStampUpdateInterval: 1000 * 60 * 5, // update every 5 minutes...
 
 
     onInit: function (e) {
 
         e.preventDefault();
 
-        currentChannelModel.messagesDS.data([]);
+        channelView.messagesDS.data([]);
+        channelView.membersPresentDS.data([]);
+
         currentChannelModel.membersDS.data([]);
         //APP.checkPubnub();
 
@@ -622,6 +641,7 @@ var channelView = {
         $("#messages-listview").kendoMobileListView({
             dataSource: currentChannelModel.messagesDS,
             template: $("#messagesTemplate").html()
+
         }).kendoTouch({
             filter: "li",
             enableSwipe: true,
@@ -666,8 +686,7 @@ var channelView = {
       channelView.hideChatImagePreview();
       APP.updateGeoLocation();
 
-
-      currentChannelModel.privacyMode = false;
+      channelView.privacyMode = false;
 
 
       // Privacy UI
@@ -685,7 +704,7 @@ var channelView = {
           }
 
           $('#messagePresenceButton').hide();
-          currentChannelModel.privacyMode = true;
+          channelView.privacyMode = true;
           // Privacy UI
           $('#privacyMode').html('<img src="images/privacy-on.svg" />');
           $("#privacyStatus").removeClass("hidden");
@@ -718,7 +737,7 @@ var channelView = {
           currentChannelModel.openChannel(thisChannelHandler);
           var sentMessages = channelModel.getChannelArchive(thisChannel.channelId);
           thisChannelHandler.getMessageHistory(function (messages) {
-              currentChannelModel.messagesDS.data([]);
+              channelView.messagesDS.data([]);
               for (var i=0; i<messages.length; i++){
                   var message = messages[i];
                   var formattedContent = '';
@@ -729,8 +748,8 @@ var channelView = {
                   message.fromHistory = true;
               }
 
-              currentChannelModel.messagesDS.data(messages);
-              currentChannelModel.messagesDS.pushCreate(sentMessages);
+              channelView.messagesDS.data(messages);
+              channelView.messagesDS.pushCreate(sentMessages);
               channelView.updateMessageTimeStamps();
 
               if (channelView.intervalId === null) {
@@ -751,7 +770,7 @@ var channelView = {
           channelView.contactData = channelView.buildContactArray(thisChannel.members);
           mobileNotify("Getting Previous Messages...");
           thisChannelHandler.getMessageHistory(function (messages) {
-              currentChannelModel.messagesDS.data([]);
+              channelView.messagesDS.data([]);
               for (var i=0; i<messages.length; i++){
                   var message = messages[i];
                   var formattedContent = '';
@@ -761,7 +780,7 @@ var channelView = {
                   message.formattedContent = formattedContent;
               }
 
-              currentChannelModel.messagesDS.data(messages);
+              channelView.messagesDS.data(messages);
               channelView.updateMessageTimeStamps();
 
               if (channelView.intervalId === null) {
@@ -775,7 +794,7 @@ var channelView = {
     },
 
     onHide : function (e) {
-        e.preventDefault();
+
         if (currentChannelModel.currentChannel !== undefined) {
             currentChannelModel.handler.closeChannel();
 
@@ -882,13 +901,13 @@ var channelView = {
             message.fromHistory = false;
         }
 
-        currentChannelModel.messagesDS.add(message);
+        channelView.messagesDS.add(message);
 
         currentChannelModel.updateLastAccess();
 
         channelView.scrollToBottom();
 
-        if (currentChannelModel.privacyMode) {
+        if (channelView.privacyMode) {
             kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(9000).play();
         }
     },
@@ -899,7 +918,9 @@ var channelView = {
         var text = $('#messageTextArea').val();
         if (text.length === 0)
             return;
+
         var messageData = {geo: APP.location.position};
+
         if (currentChannelModel.currentMessage.photo !== null) {
             messageData.photo = currentChannelModel.currentMessage.photo;
         }
@@ -928,8 +949,8 @@ var channelView = {
 
     togglePrivacyMode :function (e) {
         _preventDefault(e);
-        currentChannelModel.privacyMode = ! currentChannelModel.privacyMode;
-        if (currentChannelModel.privacyMode) {
+        channelView.privacyMode = ! channelView.privacyMode;
+        if (channelView.privacyMode) {
             $('#privacyMode').html('<img src="images/privacy-on.svg" />');
             $( ".chat-message" ).addClass('privateMode').removeClass('publicMode');
             $("#privacyStatus").removeClass("hidden");
@@ -949,15 +970,15 @@ var channelView = {
         var scrollerHeight =  APP.kendo.scroller().scrollHeight();
         var viewportHeight =  APP.kendo.scroller().height();
 
-        if ((scrollerHeight + currentChannelModel.topOffset) > viewportHeight) {
-            var position = -1 * (scrollerHeight - viewportHeight - currentChannelModel.topOffset);
+        if ((scrollerHeight + channelView.topOffset) > viewportHeight) {
+            var position = -1 * (scrollerHeight - viewportHeight - channelView.topOffset);
             APP.kendo.scroller().animatedScrollTo(0, position);
         }
 
     },
 
     updateMessageTimeStamps : function () {
-        var dataSource = currentChannelModel.messagesDS, length = dataSource.total();
+        var dataSource = channelView.messagesDS, length = dataSource.total();
         var formattedTime = '';
 
         for (var i=0; i<length; i++) {
@@ -978,7 +999,7 @@ var channelView = {
         e.preventDefault();
         
         var target = $(e.touch.initialTouch);
-        var dataSource = currentChannelModel.messagesDS;
+        var dataSource = channelView.messagesDS;
         var messageUID = $(e.touch.currentTarget).data("uid");
         var message = dataSource.getByUid(messageUID);
         //$('.delete').css('display', 'none');
@@ -999,8 +1020,9 @@ var channelView = {
             $('#modalPhotoViewImage').attr('src', contactInfo.photoUrl);
             $("#modalPhotoView").data("kendoMobileModalView").open();
         }
-		
-        if (currentChannelModel.privacyMode) {
+
+
+        if (channelView.privacyMode) {
             $('#'+message.msgID).removeClass('privateMode');
             $.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(3000).play()).then(function () {
                 $("#"+message.msgID).css("opacity", "1.0");
@@ -1011,9 +1033,13 @@ var channelView = {
 
     swipeChannel : function (e) {
         e.preventDefault();
-        var dataSource = currentChannelModel.messagesDS;
+        var dataSource = channelView.messagesDS;
         var messageUID = $(e.touch.currentTarget).data("uid");
         var message = dataSource.getByUid(messageUID);
+
+        if (channelView.privacyMode) {
+            $('#'+message.msgID).removeClass('privateMode');
+        }
 
         var selection = e.sender.events.currentTarget;
         var selectionListItem = $(selection).closest("div");
@@ -1045,10 +1071,10 @@ var channelView = {
 
     holdChannel : function (e) {
         e.preventDefault();
-        var dataSource = currentChannelModel.messagesDS;
+        var dataSource = channelView.messagesDS;
         var messageUID = $(e.touch.currentTarget).data("uid");
         var message = dataSource.getByUid(messageUID);
-        if (currentChannelModel.privacyMode) {
+        if (channelView.privacyMode) {
             $('#'+message.msgID).removeClass('privateMode');
             $.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(3000).play()).then(function () {
                 $("#"+message.msgID).css("opacity", "1.0");

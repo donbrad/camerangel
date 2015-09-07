@@ -13,10 +13,7 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
     // A mapping of all currently connected users' usernames userUUID's to their public keys.
     var users = new Array();
 	users[userUUID] = thisUser;     
-    
-    // A mapping of usernames and the messages they've sent.
-    // (Messages you've sent are mapped by the the username of the reciever)
-    var messages = {};
+
 
     // `receiveMessage` and `presenceChange` are called when a message 
     // intended for the user is received and when someone connects to 
@@ -36,19 +33,15 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
         if (msg.recipient === userUUID) {
             var parsedMsg = {
                 msgID: msg.msgID,
-                content: content,
+                channelId: channelUUID,
+                content: msg.content,
+                data: msg.data,
                 TTL: msg.ttl,
 				time: msg.time,
-				deltaTime: msg.time,
                 sender: msg.sender,
                 recipient: msg.recipient
             };
 
-            if (messages[msg.sender] === undefined) {
-                messages[msg.sender] = [parsedMsg];
-            } else {
-                messages[msg.sender].push(parsedMsg);
-            }
             receiveMessage(parsedMsg);
             deleteMessage(msg.sender, msg.msgID, msg.ttl);
         }
@@ -123,12 +116,11 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
         // Sends `message` to `recipient`. After `ttl` seconds, the message
         // will self-destruct, and neither you or the recipient will be able 
         // to retrieve the message from your `messages` object.
-        sendMessage: function (recipient, message, ttl) {
+        sendMessage: function (recipient, message, data, ttl) {
             if (ttl === undefined || ttl < 60)
                 ttl = 86400;  // 24 hours
-           // if (recipient in users) {
-                var content = message;
-				var currentTime =  new Date().getTime()/1000;
+
+            var currentTime =  ggTime.currentTime();
 
             APP.pubnub.uuid(function (msgID) {
                 APP.pubnub.publish({
@@ -138,23 +130,21 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
                             msgID: msgID,
                             sender: userUUID,
                             content: message,
+                            data: data,
 							time: currentTime,
                             ttl: ttl
                         },
                         callback: function () {
-                            parsedMsg = {
+                           var parsedMsg = {
                                 msgID: msgID,
-                                content: content,
+                               channelId: channelUUID,
+                                content: message,
+                                data: data,
                                 TTL: ttl,
 								time: currentTime,
                                 sender: userUUID,
                                 recipient: recipient
                             };
-                            if (messages[recipient] === undefined) {
-                                messages[recipient] = [parsedMsg];
-                            } else {
-                                messages[recipient].push(parsedMsg);
-                            }
                             receiveMessage(parsedMsg);
                             deleteMessage(recipient, msgID, ttl);
                         }
@@ -195,31 +185,11 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
 				channel: channel,
 				limit: 100,
 				callback: function (messages) {
-					var clearMessageArray = [];
 					messages = messages[0];
 					messages = messages || [];
 					
-					for(var i = 0; i < messages.length; i++) {
-						var msg = messages[i];
-						var content = '';
-						if (msg.recipient === userUUID)  {
-							// Just process messages from other user
-							 var parsedMsg = {
-								msgID: msg.msgID,
-								content: content,
-								TTL: msg.ttl,
-								time: msg.time,
-								deltaTime: msg.time,
-								sender: msg.sender,
-								recipient: msg.recipient
-							};
-
-							clearMessageArray.push(parsedMsg);
-						}
-					}
-					
 					if(callBack)
-						callBack(clearMessageArray);
+						callBack(messages);
 				}
 
 			});

@@ -89,7 +89,16 @@ function privateChat(e) {
     //Are both user and contact channels provisioned
     queryPrivateChannel(userModel.currentUser.userUUID, contactUUID, function (result) {
 
-        if (result.update === false && result.count === 2) {
+        if (result.found === false) {  // No private channel exists
+            // Need to create the channel and notify the contact
+            var privateChannelId = uuid.v4();
+            // Create a new private channel for this contact
+            channelModel.addPrivateChannel(contactUUID, contactPublicKey, contactName, privateChannelId);
+
+            userDataChannel.privateChannelInvite(contactUUID, privateChannelId, "Private Chat request from: " + userName);
+            mobileNotify("Requesting private chat with " + contactName);
+
+        } else if (result.update === false && result.count === 2) {
             // Each user has an existing channel with the same channel id
             // Notify contact of private chat request
             userDataChannel.privateChannelInvite(contactUUID, channel.channelId, "Private Chat request from: " + userName);
@@ -100,20 +109,12 @@ function privateChat(e) {
 
             // The other user has a private channel for user but user doesn't have a private channel yet
             if (channel === undefined) {
-                channelModel.addPrivateChannel(contactUUID, contactPublicKey, contactName, results.channels[0]);
+                channelModel.addPrivateChannel(contactUUID, contactPublicKey, contactName, result.channels[0]);
             } else {
                 userDataChannel.privateChannelInvite(contactUUID, channel.channelId, "Private Chat request from: " + userName);
                 mobileNotify("Requesting private chat with " + contactName);
             }
 
-        } else if (result.count === 0) {
-            // Need to create the channel and notify the contact
-            var privateChannelId = uuid.v4();
-            // Create a new private channel for this contact
-            channelModel.addPrivateChannel(contactUUID, contactPublicKey, contactName, privateChannelId);
-
-            userDataChannel.privateChannelInvite(contactUUID, privateChannelId, "Private Chat request from: " + userName);
-            mobileNotify("Requesting private chat with " + contactName);
         }
 
     });

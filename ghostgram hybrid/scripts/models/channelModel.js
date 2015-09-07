@@ -10,7 +10,8 @@ var channelModel = {
     _channelMemberName : "channelMember",
     currentChannel: new kendo.data.ObservableObject(),
     intervalTimer : undefined,
-    _messageCountRefresh : 3000000,   // Delta between message refresh calls (in milliseconds)
+    _sentMessages : "sentMessages",
+    _messageCountRefresh : 3000000,   // Delta between message count  calls (in milliseconds)
     channelsDS: new kendo.data.DataSource({
         offlineStorage: "channels-offline",
         sort: {
@@ -19,11 +20,64 @@ var channelModel = {
         }
     }),
 
-    messagesDS: new kendo.data.DataSource({
-        offlineStorage: "messages-offline",
+    sentMessagesDS: new kendo.data.DataSource({ // This is store for private messages sent by this user
+        offlineStorage: "sentMessages-offline",
         sort: {
             field: "timeStamp",
             dir: "desc"
+        },
+        schema: {
+            model: {
+                id: "msgID",
+                fields: {
+                    msgID: {type: "string", editable: false},
+                    channelId: {type: "string"},
+                    content: {type: "string"},
+                    data: {type: "string"},
+                    TTL: {type: "number"},
+                    time: {type: "number"},
+                    sender: {type: "string"},
+                    recipient: {type: "string"}
+                }
+            }
+        },
+        transport: {
+            create: function(options){
+                var localData = JSON.parse(localStorage[this._sentMessages]);
+
+                localData.push(options.data);
+                localStorage[this._sentMessages] = JSON.stringify(localData);
+                options.success(options.data);
+            },
+
+            read: function(options){
+                var localData = JSON.parse(localStorage[this._sentMessages]);
+                options.success(localData);
+            },
+
+            update: function(options){
+                var localData = JSON.parse(localStorage[this._sentMessages]);
+
+                for(var i=0; i<localData.length; i++){
+                    if(localData[i].msgID == options.data.msgID){
+                        localData[i].Value = options.data.Value;
+                    }
+                }
+                localStorage[this._sentMessages] = JSON.stringify(localData);
+                options.success(options.data);
+            },
+
+            destroy: function(options){
+                var localData = JSON.parse(localStorage[this._sentMessages]);
+                for(var i=0; i<localData.length; i++){
+                    if(localData[i].msgID === options.data.msgID){
+                        localData.splice(i,1);
+                        break;
+                    }
+                }
+                localStorage[this._sentMessages] = JSON.stringify(localData);
+                options.success(localData);
+            }
         }
     }),
 
@@ -38,13 +92,16 @@ var channelModel = {
 
     init :  function () {
         channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
+        // If sentMessage local storage doesn't exit - create it
+        if (localStorage[this._sentMessages] === undefined)
+            localStorage[this._sentMessages] = JSON.stringify([]);
     },
 
     // Get messages archive for current channel (past 24 hours)
     // This is only called by secure channel as sender messages are encrypted with recipients public key
     getChannelArchive : function (channel) {
-        var dataSource =  channelModel.messagesDS;
-        var timeStamp = ggTime.currentTime() - 86000;
+        var dataSource =  channelModel.sentMessagesDS;
+        var timeStamp = ggTime.lastDay();
         dataSource.filter(
             [
                 {"logic":"and",
@@ -55,7 +112,7 @@ var channelModel = {
                             "value":channel},
                         {
                             "field":"time",
-                            "operator":"gt",
+                            "operator":"gte",
                             "value":timeStamp}
                     ]}
             ]);
@@ -64,6 +121,33 @@ var channelModel = {
         return(view);
     },
 
+    archiveMessage : function(time, blob) {
+
+        channelModel.sentMessagesDS.add(JSON.parse(blob));
+        channelModel.sentMessagesDS.sync(); // Force write to local storage
+
+        /*
+        var Message = Parse.Object.extend('messages');
+        var msg = new Message();
+
+        msg.set('messageId', uuid.v4());
+        msg.set('timeStamp', time);
+        msg.set('channelId', currentChannelModel.currentChannel.channelId);
+        msg.set('messageBlob', userModel.encryptBlob(blob));
+        // Save the encrypted message blob to parse.
+        msg.save(null, {
+            success: function(results) {
+
+            },
+            error: function(error) {
+                handleParseError(error);
+            }
+        });
+
+        // Local messages are stored in the clear and must be converted to/from encrypted format on parse...
+        channelModel.messagesDS.add(JSON.parse(blob));
+        */
+    },
 
     fetch : function () {
         var Channel = Parse.Object.extend("channels");
@@ -89,6 +173,10 @@ var channelModel = {
             }
         });
 
+        //Todo: load offline messages.
+        deviceModel.setAppState('hasMessages', true);
+        deviceModel.isParseSyncComplete();
+        /*
         var Message = Parse.Object.extend("messages");
         var MessageCollection = Parse.Collection.extend({
             model: Message
@@ -102,11 +190,15 @@ var channelModel = {
                 for (var i = 0; i < collection.models.length; i++) {
 
                     var model = collection.models[i], ts = model.get('timeStamp');
-                    var deleteTime = ggTime.currentTime() - 86000;
+                    var deleteTime = ggTime.lastDay();
                     if (ts <= deleteTime) {
-                            model.destroy();
+                       //     model.destroy();
                     } else {
-                        models.push(userModel.decryptBlob(model.get('messageBlob')));
+                        var blob = userModel.decryptBlob(model.get('messageBlob'));
+                        var msg = JSON.parse(blob);
+                        //msg.set("fromHistory", true);
+                        msg.fromHistory = true;
+                        models.push(msg);
                     }
 
 
@@ -119,7 +211,11 @@ var channelModel = {
                 handleParseError(error);
             }
         });
+        */
+        deviceModel.setAppState('hasPrivateChannels', true);
+        deviceModel.isParseSyncComplete();
 
+        /*
         getUserPrivateChannels(userModel.currentUser.get('uuid'), function (result) {
             if (result.found) {
                 channelModel.privateChannelsDS.data(result.channels);
@@ -127,7 +223,7 @@ var channelModel = {
             deviceModel.setAppState('hasPrivateChannels', true);
             deviceModel.isParseSyncComplete();
         });
-
+        */
     },
 
     updateChannelsMessageCount : debounce(function () {
@@ -232,7 +328,7 @@ var channelModel = {
     },
 
     // Generic add group channel...
-    addChannel : function (channelName, channelDescription, isOwner, durationDays, channelUUID, ownerUUID, ownerName) {
+    addChannel : function (channelName, channelDescription, isOwner, durationDays, channelUUID, ownerUUID, ownerName, placeId, placeName, isPrivate) {
         var Channels = Parse.Object.extend("channels");
         var channel = new Channels();
 
@@ -256,15 +352,35 @@ var channelModel = {
         } else {
             durationDays = parseInt(durationDays);
         }
-
+        channel.set('isPlace', false);
+        channel.set('isPrivate', false);
         if (durationDays < 1 || durationDays > 30) {
             durationDays = 30;
         }
 
+        if (isPrivate === undefined)
+            isPrivate = true;
+
+        channel.set('isPlace', false);
+        channel.set('isPrivate', true);
+
+        // If there's a placeId passed in, need to create a place channel / chat
+        if (placeId !== undefined) {
+            channel.set('isPlace', true);
+            channel.set('isPrivate', isPrivate);
+            channel.set('placeUUID', placeId);
+            channel.set('placeName', placeName);
+            if (name === '') {
+                name =  placeName;
+            }
+            if (description === '') {
+                description = "Place : " + placeName;
+            }
+        }
+
         // Generic fields for owner and members
         channel.set("name", name );
-        channel.set('isPrivate', false);
-        channel.set('isPlace', false);
+        
         channel.set('isEvent', false);
         channel.set("media",   true);
         channel.set("archive", true);

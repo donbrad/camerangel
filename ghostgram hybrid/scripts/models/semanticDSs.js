@@ -237,6 +237,6 @@ SemanticDSs.prototype = {
 					dataSource.filter({});
 					break;
 			}
-		});
+		}.bind(this));
 	}
 };

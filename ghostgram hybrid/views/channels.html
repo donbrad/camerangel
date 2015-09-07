@@ -242,7 +242,7 @@
 	</div>
 </div>
 
-<div data-role="view" id="channel" data-layout="main" data-model="currentChannelModel" data-show="channelView.onShow" data-init="channelView.onInit"  data-before-hide="channelView.onHide" data-transition="slide">
+<div data-role="view" id="channel" data-layout="main" data-model="currentChannelModel" data-show="channelView.onShow" data-init="channelView.onInit"  data-hide="channelView.onHide" data-transition="slide">
      <div data-role="header">
         <div data-role="navbar" id="channelNavBar">
         	<a data-align="left" data-role="button" href="#:back" data-click="channelView.back2Channel"> 
@@ -307,7 +307,24 @@
 </div>
 
 <script type="text/x-kendo-tmpl" id="messagesTemplate">
-	#	var history='', contactData = channelView.getContactData(sender);
+
+	# var history='', contactData = channelView.getContactData(sender), formattedTime = 'Just now';
+	if (currentChannelModel.privacyMode) {
+		if (fromHistory !== undefined && fromHistory === true ) {
+			history = "privateMode"; }
+	}
+	if (time !== undefined && time !== null) {
+		formattedTime = timeSince(time);
+		if(formattedTime === "0 seconds"){
+			formattedTime = "Just now";
+		} else {
+			formattedTime = formattedTime + " ago"
+		}
+	}
+	#
+	<div id=#:msgID# class="chat-message #=history# clearfix">
+	#
+
 		var name = "Me"; 
 		var photoUrl = '';
 		sender = contactData.uuid;

@@ -16,10 +16,7 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, privateKey, con
     // A mapping of all currently connected users' usernames userUUID's to their public keys.
     var users = new Array();
 	users[userUUID] = publicKey;     
-    
-    // A mapping of usernames and the messages they've sent.
-    // (Messages you've sent are mapped by the the username of the reciever)
-    var messages = {};
+
 
     // `receiveMessage` and `presenceChange` are called when a message 
     // intended for the user is received and when someone connects to 
@@ -46,6 +43,7 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, privateKey, con
 				
             var parsedMsg = {
                 msgID: msg.msgID,
+                channelId: channelUUID,
                 content: content,
 				data: data,
                 TTL: msg.ttl,
@@ -116,7 +114,7 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, privateKey, con
     };
 
     var archiveMessage = function (msg) {
-        currentChannelModel.archiveMessage(msg.time, JSON.stringify(msg));
+        channelModel.archiveMessage(msg.time, JSON.stringify(msg));
     };
 
     // Delete a message from the `messages` object, after `TTL` seconds.
@@ -150,7 +148,7 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, privateKey, con
                 var content = message;
 				var contentData = data;
                 var encryptMessage = '', encryptData = '';
-				var currentTime =  ggTime.currentTimeInSeconds();
+				var currentTime =  ggTime.currentTime();
                 encryptMessage = cryptico.encrypt(message, contactKey);
 			    if (data !== undefined && data !== null)
 					encryptData = cryptico.encrypt(JSON.stringify(data), contactKey);
@@ -171,9 +169,9 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, privateKey, con
                             ttl: ttl
                         },
                         callback: function () {
-                            parsedMsg = {
-                                channelId: channelUUID,
+                            var parsedMsg = {
                                 msgID: msgID,
+                                channelId: channelUUID,
                                 content: content,
 								data: contentData,
                                 TTL: ttl,
@@ -183,11 +181,6 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, privateKey, con
                                 recipient: recipient
                             };
 
-                            if (messages[recipient] === undefined) {
-                                messages[recipient] = [parsedMsg];
-                            } else {
-                                messages[recipient].push(parsedMsg);
-                            }
                             // add the message to the sentMessageDataSource
                             archiveMessage(parsedMsg);
                             receiveMessage(parsedMsg);
@@ -218,16 +211,10 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, privateKey, con
             return users;
         },
 		
-        // Returns a mapping of usernames and the messages they've sent.
-        // (Messages you've sent are mapped by the the username of the reciever)
-        returnMessages: function () {
-            return messages;
-        },
-		
 		// Get any messages that are in the channel from the past 24 hours
 
 		getMessageHistory: function (callBack) {
-            var timeStamp = ggTime.toPubNubTime((ggTime.currentTime() - 86000));
+            var timeStamp = ggTime.toPubNubTime((ggTime.lastDay()));
             APP.pubnub.history({
 				channel: channel,
 				end: timeStamp,
