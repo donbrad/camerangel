@@ -1,7 +1,8 @@
 function togglePrivate (e) {
-    e.preventDefault();
-    var privateMode = !APP.models.home.privateMode;
-    APP.models.home.privateMode = privateMode;
+    _preventDefault(e);
+
+    var privateMode = !currentChannelModel.privacyMode;
+    currentChannelModel.privacyModee = privateMode;
     if (privateMode) {
         $('.privateModeButton').text('Private');
         $('.user-content').removeClass('publicMode');
@@ -165,6 +166,23 @@ function formatNameAlias(name, alias, view){
 
 }
 
+
+function returnUXPrimaryName(name, alias){
+	var primaryName;
+
+	if (alias !== "" && alias !== undefined && name !== "" && name !== undefined){
+		primaryName = alias;
+		
+	} else if(name !== "" && name !== undefined) {
+		primaryName = name;
+	}
+	else {
+		primaryName = alias;
+	}
+
+	return primaryName;
+}
+
 function showFormatedPhone(){
 	if($(".phone").is("input")){
 		var inputVal = $(".phone").val();
@@ -177,7 +195,21 @@ function showFormatedPhone(){
     	return text.replace(/\d(\d\d\d)(\d\d\d)(\d\d\d\d)/, '($1) $2-$3');
 		});
 	}
+}
 
+function showCleanEmail(email){
+	// Simple check to just display email. Could replace w/ better regex
+	if(email.indexOf(':') > -1){
+		var splitEmail = email.split(": ");
+		return splitEmail[1];
+	} else {
+		return email;
+	}
+
+}
+
+function showCleanPhone(phone){
+	return phone.replace(/\d(\d\d\d)(\d\d\d)(\d\d\d\d)/, '($1) $2-$3');
 }
 
 
@@ -189,3 +221,16 @@ function hideActionBtnText(path){
 	$(path).velocity({opacity: 0, right: "0"});
 }
 
+
+function AutoGrowTextArea(textField)
+{
+    if (textField.clientHeight < textField.scrollHeight)
+    {
+        textField.style.height = textField.scrollHeight + "px";
+        if (textField.clientHeight < textField.scrollHeight)
+        {
+            textField.style.height =
+                (textField.scrollHeight * 2 - textField.clientHeight) + "px";
+        }
+    }
+}

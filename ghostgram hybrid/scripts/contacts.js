@@ -11,6 +11,7 @@ function syncCurrentContact(e) {
     contactModel.currentContact.set(e.field, this[e.field]);
 }
     
+/*
 function syncProfile (e) {
     if (e !== undefined && e.preventDefault !== undefined) {
         e.preventDefault();
@@ -26,6 +27,7 @@ function syncProfile (e) {
         }
     });
 }
+*/
 
 function contactSearchActivate (e) {
     if (e !== undefined && e.preventDefault !== undefined) {
@@ -75,34 +77,48 @@ function privateChat(e) {
 	var contact = contactModel.currentContact;
 	var contactUUID = contact.contactUUID, contactName = contact.name, contactPublicKey = contact.publicKey;
     var userName = userModel.currentUser.get('name');
-	if (contactUUID === undefined || contactUUID === null) {
+
+    // Is there already a private channel provisioned for this user?
+    var channel = channelModel.findPrivateChannel(contactUUID);
+
+    if (contactUUID === undefined || contactUUID === null) {
 		mobileNotify(contact.name + "hasn't verified their contact info");
 		return;
 	}
 
-    // Is there already a private channel provisioned for this user?
-    var channel = channelModel.findPrivateChannel(contactUUID);
-    // No private channel yet -- need to create one
-    if (channel === undefined) {
+    //Are both user and contact channels provisioned
+    queryPrivateChannel(userModel.currentUser.userUUID, contactUUID, function (result) {
 
-        var privateChannelId = uuid.v4();
-        // Create a new private channel for this contact
-        channelModel.addPrivateChannel(contactUUID, contactPublicKey, contactName, privateChannelId);
+        if (result.found === false) {  // No private channel exists
+            // Need to create the channel and notify the contact
+            var privateChannelId = uuid.v4();
+            // Create a new private channel for this contact
+            channelModel.addPrivateChannel(contactUUID, contactPublicKey, contactName, privateChannelId);
 
-        userDataChannel.privateChannelInvite(contactUUID, privateChannelId, "Private Chat request from: " + userName);
-        mobileNotify("Requesting private chat with " + contactName);
+            userDataChannel.privateChannelInvite(contactUUID, privateChannelId, "Private Chat request from: " + userName);
+            mobileNotify("Requesting private chat with " + contactName);
 
-        // Jump to private chat
-    } else {
-        // Yes -- have an existing private channel with this user
+        } else if (result.update === false && result.count === 2) {
+            // Each user has an existing channel with the same channel id
+            // Notify contact of private chat request
+            userDataChannel.privateChannelInvite(contactUUID, channel.channelId, "Private Chat request from: " + userName);
 
-        // Notify contact of private chat request
-        userDataChannel.privateChannelInvite(contactUUID, channel.channelId, "Private Chat request from: " + userName);
+            // Jump to private chat
+            APP.kendo.navigate("#channel?channel=" + channel.channelId);
+        } else if (result.update === true || result.count === 1) {
 
-        // Jump to private chat
-        APP.kendo.navigate("#channel?channelId=" + channel.channelId);
+            // The other user has a private channel for user but user doesn't have a private channel yet
+            if (channel === undefined) {
+                channelModel.addPrivateChannel(contactUUID, contactPublicKey, contactName, result.channels[0]);
+            } else {
+                userDataChannel.privateChannelInvite(contactUUID, channel.channelId, "Private Chat request from: " + userName);
+                mobileNotify("Requesting private chat with " + contactName);
+            }
 
-    }
+        }
+
+    });
+
 
 }
 
@@ -470,7 +486,7 @@ function onInitContacts(e) {
         fixedHeaders: true,
         click: function (e) {
             var contact = e.dataItem;
-   
+   			
             updateCurrentContact(contact);
             
 			if (contact.category === 'phone') {
@@ -521,20 +537,8 @@ function onInitContacts(e) {
 }
 
 function openContactActions(){
-	
-	var contactName = contactModel.currentContact.name;
-	var contactAlias = contactModel.currentContact.alias;
-	var contactVerified = contactModel.currentContact.phoneVerified;
 
-	formatNameAlias(contactName, contactAlias, "#modalview-contactActions");
-
-	if(contactVerified){
-		$("#currentContactVerified").removeClass("hidden");
-	} else {
-		$("#currentContactVerified").addClass("hidden");
-	}
 	$("#modalview-contactActions").data("kendoMobileModalView").open();
-
 }
 
 function closeContactActions() {
@@ -565,73 +569,10 @@ function onHideContacts (e) {
 }
 
 function launchAddContact(e) {
+    if (e !== undefined && e.preventDefault !== undefined)
+        e.preventDefault();
 
     contactModel.currentDeviceContact = e.dataItem;
-    contactModel.emailArray = new Array();
-
-    for (var i = 0; i<contactModel.currentDeviceContact.emails.length; i++) {
-        var email = new Object();
-        email.name = contactModel.currentDeviceContact.emails[i].name;
-        email.address =  contactModel.currentDeviceContact.emails[i].address;
-
-        contactModel.emailArray.push(email);
-
-    }
-
-    contactModel.phoneArray = new Array();
-    for (var j = 0; j<contactModel.currentDeviceContact.phoneNumbers.length; j++) {
-        var phone = new Object();
-        phone.name = contactModel.currentDeviceContact.phoneNumbers[j].name;
-        phone.number = contactModel.currentDeviceContact.phoneNumbers[j].number;
-
-        contactModel.phoneArray.push(phone);
-
-    }
-
-    contactModel.addressArray = new Array();
-    for (var a = 0; a<contactModel.currentDeviceContact.addresses.length; a++) {
-        var address = new Object();
-        address.name = contactModel.currentDeviceContact.addresses[a].name;
-        address.address =  contactModel.currentDeviceContact.addresses[a].fullAddress;
-
-        contactModel.addressArray.push(address);
-    }
-
-
-
-    contactModel.phoneDS.data( contactModel.phoneArray);
-    contactModel.emailDS.data( contactModel.emailArray);
-    contactModel.addressDS.data( contactModel.addressArray);
-
-
-  /*
-    $("#addNicknameBtn").removeClass("hidden");
-    $("#contactNicknameInput input").val("");*/
-
-    var data = contactModel.currentDeviceContact;
-
-    // Set name
-    var name = data.name;
-    $("#addContactName").val(name);
-
-
-    if (data.photo !== null) {
-        returnValidPhoto(data.photo, function(validUrl) {
-            $("#addContactPhoto").attr("src",validUrl);
-        });
-    }
-
-    $( "#addContactPhone" ).change(function() {
-        var phone = $("#addContactPhone").val();
-
-        isValidMobileNumber(phone, function(result){
-           if (result.status === 'ok') {
-               if (result.valid === false) {
-                   mobileNotify(phone + 'is not a valid mobile number');
-               }
-           }
-        });
-    });
 
     $("#modalview-AddContact").data("kendoMobileModalView").open();
 

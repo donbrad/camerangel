@@ -459,6 +459,15 @@ form p {
   vertical-align: top;
   line-height: 2;
 }
+.badge {
+  border-radius: 4px;
+  background: #e0e0e0;
+  border-radius: 5px;
+  color: #4a4a4a;
+  padding: 0.1em 0.25em;
+  font-size: 13px;
+  font-size: 0.8125rem;
+}
 .guest-txt {
   font-size: 12px;
   font-size: 0.75rem;
@@ -487,29 +496,29 @@ form p {
   border-radius: 50%;
   border: 1px solid #F2EFF0;
   line-height: 1.5;
-  width: 30px;
-  height: 30px;
+  width: 2rem;
+  height: 2rem;
 }
 .circle-img-md {
   border-radius: 50%;
   border: 1px solid #F2EFF0;
   line-height: 1.5;
-  width: 48px;
-  height: 48px;
+  width: 3rem;
+  height: 3rem;
 }
 .circle-img-lg {
   border-radius: 50%;
   border: 1px solid #F2EFF0;
   line-height: 1.5;
-  width: 60px;
-  height: 60px;
+  width: 4rem;
+  height: 4rem;
 }
 .circle-img-xl {
   border-radius: 50%;
   border: 1px solid #F2EFF0;
   line-height: 1.5;
-  width: 120px;
-  height: 120px;
+  width: 6rem;
+  height: 6rem;
 }
 .greyBtn {
   color: #A4A4A4 !important;
@@ -696,6 +705,17 @@ form p {
 .btnClearLine :disabled {
   color: #A4A4A4 !important;
   background: transparent !important;
+}
+.addBtn-sm {
+  border: 1px solid #2e93fd;
+  border-radius: 3px;
+  color: #2e93fd !important;
+  font-size: 14px;
+  font-size: 0.875rem;
+  padding: 0.2em 1em;
+  position: absolute;
+  right: 1rem;
+  top: 2rem;
 }
 .btnClearLine-grey-sm {
   background: transparent;
@@ -1283,6 +1303,14 @@ div.footerMenu.km-footer > ul > li > a:active {
   top: 0;
   left: 0;
 }
+.fullPhotoModal {
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .user-status {
   height: 50px;
   width: 50px;
@@ -1804,6 +1832,13 @@ div.footerMenu.km-footer > ul > li > a:active {
   width: 80px;
   height: auto;
 }
+.contactImportTable {
+  color: #979797;
+  font-size: 14px;
+  font-size: 0.875rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
 .round {
   display: block;
   width: 55px;
@@ -1844,7 +1879,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 .message-slideOptions {
   height: 100%;
   position: absolute;
-  right: 1rem;
+  left: 1rem;
   top: 8px;
   z-index: 0;
   opacity: 0;
@@ -1853,7 +1888,8 @@ div.footerMenu.km-footer > ul > li > a:active {
   color: #fff;
 }
 .selectedLI {
-  background: #fff;
+  opacity: 0;
+  background: #c9b3c0 !important;
 }
 .selectedLI-archive {
   background: #c9b3c0 !important;
@@ -2341,8 +2377,8 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   border-radius: 50%;
   border: 1px solid #F2EFF0;
   line-height: 1.5;
-  width: 48px;
-  height: 48px;
+  width: 3rem;
+  height: 3rem;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);
   float: left;
   margin-right: 0.5rem;
@@ -2439,7 +2475,6 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   border: none;
   padding-bottom: 0px;
   line-height: 1.5;
-  margin-bottom: 0.5rem;
 }
 #messageSend {
   font-weight: 600;
@@ -2448,12 +2483,13 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   padding: 0px;
   padding-top: 3px;
   position: absolute;
-  bottom: 48px;
+  bottom: 45px;
   right: 8px;
 }
 .messageCompose {
-  padding: 8px;
+  padding: 0.5rem;
   padding-bottom: 0px;
+  padding-top: 0.25rem;
 }
 .messageMediaBar ul {
   padding: 0px;
@@ -3151,7 +3187,6 @@ div.contactListBox.activeContact > div > div > ul {
   width: 100%;
 }
 #contacts-listview li {
-  border-bottom: 1px solid #E4E4E4;
   background: #fff;
   z-index: 9999;
   padding-top: 0px;
@@ -3830,6 +3865,20 @@ html .km-pane-wrapper .k-header {
 .appendSearch .viewSearchBox {
   width: 88%;
 }
+.appendSearch .doubleAppendSearch {
+  width: 70%;
+}
+.appendSearch .enterSearch {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  position: absolute;
+  width: 16%;
+}
+.appendSearch .enterSearch span {
+  padding-top: 0px;
+  color: #e0e0e0;
+  font-weight: 600;
+}
 .viewScroller {
   width: 100%;
   height: 100%;
@@ -3842,12 +3891,16 @@ html .km-pane-wrapper .k-header {
   border: inherit;
 }
 /* Chat styles */
+#messages-listview li {
+  width: 100%;
+  padding-right: 1rem !important;
+  padding-left: 1rem !important;
+}
 .chat-message {
   line-height: 1.5;
   width: 100%;
   position: relative;
   z-index: 1;
-  right: 1rem;
 }
 .chat-message p {
   margin: 0px 0px 4px;
@@ -3871,39 +3924,94 @@ html .km-pane-wrapper .k-header {
   border: 1px solid #F2EFF0;
 }
 .chat-message-photo {
-  width: 80%;
+  width: 100%;
   height: auto;
-  border: 1px solid #27476e;
+  padding: 0.25rem;
+  background: #fff;
 }
-.chat-message-photo-small {
-  width: 20%;
-  height: auto;
-  border: 1px solid #27476e;
+.chat-photo-box,
+.chat-photo-box-zoom {
+  margin-left: 13%;
+  margin-top: 0.5rem;
+}
+@media only screen and (max-width: 320px) {
+  .chat-photo-box,
+  .chat-photo-box-zoom {
+    margin-left: 15%;
+  }
+}
+.chat-photo-box {
+  border: 1px solid #e0e0e0;
+  width: 40%;
+  float: left;
+}
+.chat-photo-box-zoom {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
+  float: right;
+  width: 88%;
+}
+@media only screen and (max-width: 320px) {
+  .chat-photo-box-zoom {
+    width: 85%;
+  }
 }
 .chat-message-content {
-  margin-left: 44px;
-  height: 100%;
+  max-width: 88%;
 }
-.chat-message-user-content {
-  margin-left: 72px;
+@media only screen and (max-width: 320px) {
+  .chat-message-content {
+    max-width: 85%;
+  }
+}
+.chat-message-sender {
   height: 100%;
-  float: right;
+  float: left;
   padding: 0.2em 0.35em;
   border-radius: .25em;
   color: #fff;
   background: #6cadf3;
   margin-top: 0.2em;
 }
-.chat-message-user-content:after {
+.chat-message-sender:after {
   content: "";
   display: block;
   position: absolute;
-  right: 2px;
   width: 0;
-  border-width: 8px 8px 0;
-  border-style: solid;
-  border-color: #6cadf3 transparent;
-  bottom: -4px;
+  border-top: 0.4rem solid transparent;
+  border-bottom: 0.4rem solid transparent;
+  border-right: 0.3rem solid #6cadf3;
+  top: 1.5rem;
+  left: 11%;
+}
+@media only screen and (max-width: 320px) {
+  .chat-message-sender:after {
+    left: 13.5%;
+  }
+}
+.chat-message-receiver {
+  height: 100%;
+  float: left;
+  padding: 0.2em 0.35em;
+  border-radius: .25em;
+  color: #4a4a4a;
+  background: #e8e8e8;
+  margin-top: 0.2em;
+}
+.chat-message-receiver:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 0;
+  border-top: 0.4rem solid transparent;
+  border-bottom: 0.4rem solid transparent;
+  border-right: 0.3rem solid #e8e8e8;
+  top: 1.5rem;
+  left: 11%;
+}
+@media only screen and (max-width: 320px) {
+  .chat-message-receiver:after {
+    left: 13.5%;
+  }
 }
 .movingChat > .chat-message-user-content:after {
   display: none;
@@ -3920,18 +4028,46 @@ html .km-pane-wrapper .k-header {
 .chat-message-text {
   font-size: 14px;
   font-size: 0.875rem;
-  letter-spacing: 0.05em;
+  line-height: 1.4;
+}
+.chat-details {
+  font-size: 11px;
+  font-size: 0.6875rem;
+  color: #979797;
+  padding-left: 14%;
+}
+@media only screen and (max-width: 320px) {
+  .chat-details {
+    padding-left: 17%;
+  }
+}
+.chat-sender {
+  float: left;
 }
 .chat-time {
-  text-align: center;
-  font-size: 12px;
-  font-size: 0.75rem;
-  color: #979797;
+  float: right;
+  font-size: 11px;
+  font-size: 0.6875rem;
+  color: #d3d3d3;
 }
 #channel > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
   position: absolute;
   width: 100%;
   top: 0px;
+}
+.chat-message-user-img {
+  width: 12%;
+  float: left;
+}
+@media only screen and (max-width: 320px) {
+  .chat-message-user-img {
+    width: 15%;
+  }
+}
+.chat-message-user-content {
+  max-width: 83%;
+  margin-left: 2%;
+  float: left;
 }
 /*!
  * Cropper v0.10.0
@@ -4229,4 +4365,11 @@ html .km-pane-wrapper .k-header {
   border: 5px solid #000;
   border-left-color: transparent;
   border-top-color: transparent;
+}
+/** Home, Places Modal **/
+#nearby-results-list {
+  min-height: 300px;
+}
+#checked-in-place {
+  display: none;
 }

@@ -385,12 +385,7 @@ function photoDelete (e) {
 	var photo = photoModel.currentPhotoModel;
 	// Todo:  Add confirmation prior to photo delete
 	
-	// Delete from local datasource
-	photoModel.photosDS.remove(photoModel.currentPhotoModel);
-	// Remove from isotope and then rerender the layout
-	//$('#gallery-grid').isotope( 'remove', photoModel.currentIsoModel ).isotope('layout');
-	// Delete from remote parse collection
-	deleteParseObject('photos', 'photoId', photo.photoId);
+
 	
 	mobileNotify("Deleted current photo");
 	

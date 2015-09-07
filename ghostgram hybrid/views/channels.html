@@ -242,10 +242,10 @@
 	</div>
 </div>
 
-<div data-role="view" id="channel" data-layout="main" data-model="currentChannelModel" data-show="onShowChannel" data-init="onInitChannel" data-transition="slide">
+<div data-role="view" id="channel" data-layout="main" data-model="currentChannelModel" data-show="channelView.onShow" data-init="channelView.onInit"  data-hide="channelView.onHide" data-transition="slide">
      <div data-role="header">
         <div data-role="navbar" id="channelNavBar">
-        	<a data-align="left" data-role="button" href="#:back"> 
+        	<a data-align="left" data-role="button" href="#:back" data-click="channelView.back2Channel"> 
             	<img src="images/nav-back.svg" />
             </a>
             <img src="" id="channelImage" height="32" style="vertical-align: middle; border-radius: 50%"/>
@@ -271,86 +271,112 @@
 		 <div class="messageCompose">
 			<textarea id="messageTextArea" rows="1" autofocus="true" wrap="soft" spellcheck="true" placeholder="Message..."></textarea>
 			 <div class="right">
-				 <a data-role="button" id="messageSend">Send</a>
+				 <a data-role="button"  id="messageSend">Send</a>
 			 </div>
              <div class="messageMediaBar">
              	<ul>
-                    <li><a data-role="button" data-click="messageCamera"><img src="images/chat-camera.svg" height="24"></a></li>
+                    <li><a data-role="button" data-click="channelView.messageCamera"><img src="images/chat-camera.svg" height="24"></a></li>
                     <li><a data-role="button" data-rel="actionsheet" href="#galleryActions"><img src="images/chat-photo.svg" height="24"></a></li>
-                    <li><a data-role="button" data-click="messageAudio"><img src="images/chat-sound.svg" height="24"></a></li>
-                    <li class="hidden"><a data-role="button" data-click="messageLocation"><img src="images/chat-places.svg" height="24"></a></li>
+                    <li><a data-role="button" data-click="channelView.messageAudio"><img src="images/chat-sound.svg" height="24"></a></li>
+                    <li class="hidden"><a data-role="button" data-click="channelView.messageLocation"><img src="images/chat-places.svg" height="24"></a></li>
                     <li><a data-role="button" data-rel="actionsheet" href="#newMessageActions"><img src="images/chat-smart.svg" height="24"></a></li>
-                    <li><a data-role="button" data-click="togglePrivacyMode" id="privacyMode"><img src="images/privacy-off.svg" height="24"/></a></li>
+                    <li><a data-role="button" data-click="channelView.togglePrivacyMode" id="privacyMode"><img src="images/privacy-off.svg" height="24"/></a></li>
                  </ul>
              </div>
 		  </div>
 	 </div>
 	 
     <ul data-role="actionsheet" id="newMessageActions" data-popup='{"direction": "left"}'>
-		<li><a data-action="messageCalendar"><i class="fa fa-calendar"> </i> Add Calendar</a></li>
-		<li><a data-action="messageMovie"><i class="fa fa-film"> </i> Add Movie</a></li>
-		<li><a data-action="messageEvent"><i class="fa fa-ticket"> </i> Add Event</a></li>
-		<li><a data-action="messageMusic"><i class="fa fa-music"> </i> Add Music</a></li>
+		<li><a data-action="channelView.messageCalendar"><i class="fa fa-calendar"> </i> Add Calendar</a></li>
+		<li><a data-action="channelView.messageMovie"><i class="fa fa-film"> </i> Add Movie</a></li>
+		<li><a data-action="channelView.messageEvent"><i class="fa fa-ticket"> </i> Add Event</a></li>
+		<li><a data-action="channelView.messageMusic"><i class="fa fa-music"> </i> Add Music</a></li>
     </ul>
 	 
 	<ul data-role="actionsheet" id="galleryActions" data-popup='{"direction": "left"}'>
-	    <li><a data-action="messagePhoto"><i class="fa fa-phone"> </i> Phone Gallery</a></li>
-        <li><a data-action="messageGallery"><i class="fa fa-th-large"> </i> ghostgrams Gallery</a></li>
+	    <li><a data-action="channelView.messagePhoto"><i class="fa fa-phone"> </i> Phone Gallery</a></li>
+        <li><a data-action="channelView.messageGallery"><i class="fa fa-th-large"> </i> ghostgrams Gallery</a></li>
      </ul>
 
 	  <ul data-role="actionsheet" id="messageActions" data-popup='{"direction": "left"}'>
-		<li><a data-action="archiveMessage"><i class="fa fa-archive"> </i> Archive Message</a></li>
-		<li><a data-action="smartScanMessage"><i class="fa fa-magic"> </i> Smart Scan Message</a></li>
-        <li><a data-action="messageEraser"><i class="fa fa-eraser"> </i> Erase Message</a></li>
+		<li><a data-action="channelView.archiveMessage"><i class="fa fa-archive"> </i> Archive Message</a></li>
+		<li><a data-action="channelView.smartScanMessage"><i class="fa fa-magic"> </i> Smart Scan Message</a></li>
+        <li><a data-action="channelView.messageEraser"><i class="fa fa-eraser"> </i> Erase Message</a></li>
     </ul>
     
 </div>
 
 <script type="text/x-kendo-tmpl" id="messagesTemplate">
-	# var history='';  
-		if (APP.models.channel.currentModel.privacyMode) { 
-			if (fromHistory !== undefined && fromHistory === true ) {
-				history = "privateMode"; }
-		}#
-	<div id=#:msgID# class="chat-message #=history# clearfix">
-	# 	var formattedTime = timeSince(time); 
-		var name = "Me"; 
-		var photoUrl = ''; 
-		if (sender === APP.models.channel.currentContactUUID) { 
-			name =  APP.models.channel.currentContactModel.alias; 
-			photoUrl = APP.models.channel.currentContactModel.photo; 
-		} 
+
+	# var history='', contactData = channelView.getContactData(sender), formattedTime = 'Just now';
+	if (currentChannelModel.privacyMode) {
+		if (fromHistory !== undefined && fromHistory === true ) {
+			history = "privateMode"; }
+	}
+	if (time !== undefined && time !== null) {
+		formattedTime = timeSince(time);
 		if(formattedTime === "0 seconds"){
 			formattedTime = "Just now";
 		} else {
 			formattedTime = formattedTime + " ago"
 		}
-		
+	}
 	#
-	 <div class="chat-time"> #:formattedTime# </div> 
-	# if(photoUrl !== '') { #
-		<img class="chat-message-profileImg" src="#:photoUrl#" alt="" width="36" height="36">
-		<div class="chat-message-content clearfix">
-		<h5>#=name#</h5>
-		<div class="chat-message-text">#= formattedContent #</div>
+	<div id=#:msgID# class="chat-message #=history# clearfix">
+	#
 
-		#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# 
-			<div data-role="touch" data-hold="chatPhotoHold" data-tap="chatPhotoTap"> 
-				<img class="chat-message-photo-small" src="#:data.photo.thumb#" alt="" > 
-			</div>
-		#}#
-	 #} else {#
-	 	<div class="chat-message-user-content clearfix">
-		<div class="chat-message-text">#= formattedContent #</div>
-			#if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {# 
-					<img class="chat-message-photo-small" src="#:data.photo.thumb#" alt="" > 
+		var name = "Me"; 
+		var photoUrl = '';
+		sender = contactData.uuid;
+		name = contactData.name;
+		var alias = contactData.alias;
+		photoUrl = contactData.photoUrl;
+		var displayName = returnUXPrimaryName(name, alias);
+	#
+	
+	# if (currentChannelModel.privacyMode) {
+			if (fromHistory !== undefined && fromHistory === true ) {
+				history = "privateMode"; }
+	}#
+	<div id=#:msgID# class="chat-message #=history# clearfix">
+		<div class="chat-details">
+			# if(contactData.isContact){#
+				<span class="chat-sender">#: displayName #</span>
+			#} else {#
+				<span class="chat-sender">Me</span>
+			#}#
+			<span class="chat-time">#= data.formattedTime # </span>
+			<div class="clearfix"></div>
+		</div>
+		<div class="chat-message-user-img">
+			# if(photoUrl !== '') {#
+				<img class="chat-message-profileImg circle-img-sm" src="#: photoUrl #" alt="" />
+			#} else {#
+				<img class="chat-message-profileImg circle-img-sm" src="images/ghost-blue.svg" alt="" />
 			#}#
 		</div>
-	 #}#
-</div> 
-	<div class="message-slideOptions">
-		<span class="delete" style="display: none">Delete</span>
-		<span class="archive"> Archive </span>
+
+		# if (contactData.isContact) {#
+			//This is a received message from a contact.  if false, it's a message sent by our user...
+			
+			<div class="chat-message-receiver chat-message-content  clearfix">
+				<div class="chat-message-text">#= formattedContent #</div>
+			</div>
+		#} else {#
+	
+			<div class="chat-message-sender chat-message-content">
+				<div class="chat-message-text">
+					#= formattedContent #
+				</div>
+			</div>
+		#}#
+		# if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {#
+			<div class="clearfix"></div>
+				<div class="chat-photo-box">
+					<img class="chat-message-photo" src="#:data.photo.thumb #" alt="" >
+				</div>
+		#}#
+			<div class="clearfix"></div>
 	</div>
 </script>
 

@@ -33,7 +33,6 @@
     <script src="scripts/profile.js"></script>
 	<script src="scripts/gallery.js"></script>
 	<script src="scripts/utils.js"></script>
-	<script src="scripts/pubnub.js"></script>
 	<script src="scripts/libs/cryptico.js"></script>
 	<script src="scripts/libs/gibberish-aes.js"></script>
     <script src="scripts/libs/smartcrop.js"></script>
@@ -46,6 +45,9 @@
 	<script src="scripts/libs/uuid.js"></script>
     <script src="scripts/libs/jquery-clearsearch.js"></script>
     <script src="scripts/libs/cropper.js"></script>
+	<script src="scripts/libs/base64-string.js"></script>
+	<script src="scripts/libs/lz-string.js"></script>
+	<script src="scripts/libs/cropper.js"></script>
     <script src="bower_components/velocity/velocity.js"></script>
     <script src="bower_components/lodash/lodash.js"></script>
     <script src="scripts/models/semanticDSs.js"></script>
@@ -240,31 +242,31 @@
 </div>
     
 <script type="text/x-kendo-template" id="notificationTemplate">
-		# 	var dateTime= new Date(date);   
-			var formattedDate = dateTime.toDateString(); #
-		<div class="notify-box">
-	    		<div class="notify-info">
-	    			<span class="notify-helper">ghostgrams recommends</span>
-	    			<a class="right notify-close" data-role="button" data-role="button" href="\\#" data-param="#:uuid#" data-click="dismissNotification">
-	    				<img src="images/close.svg" />
-	    			</a>
-	    		</div>
-	    		<div class="notify-content">
-	    			# if (action !== undefined && action !== 'none') {# 
-	    				<h3>
-	    					<a data-role="button" data-param="#:uuid#" href="\\#" data-click="#=action#" class="btnClear-link">#= title #</a>
-	    				</h3>
-	    			#} else {# 
-						<h3>
-							<a data-role="button" data-param="#:uuid#" href="#=href#"  class="btnClear-link"> #= title # </a>
-						</h3>
-					#}#
-	    			<p>#= description # </p>
-	    			<div class="notify-action">
-	    			
-	    			</div>
-	    		</div>
-	    	</div><!-- notify-box -->     
+# 	var dateTime= new Date(date);
+	var formattedDate = dateTime.toDateString(); #
+	<div class="notify-box">
+		<div class="notify-info">
+			<span class="notify-helper">#= type #</span>
+			<a class="right notify-close" data-role="button" data-role="button" href="\\#" data-param="#:uuid#" data-click="dismissNotification">
+				<img src="images/close.svg" />
+			</a>
+		</div>
+		<div class="notify-content">
+			# if (action !== undefined && action !== 'none') {#
+				<h3>
+					<a data-role="button" data-param="#:uuid#" href="\\#" data-click="#=action#" class="btnClear-link">#= title #</a>
+				</h3>
+			#} else {#
+				<h3>
+					<a data-role="button" data-param="#:uuid#" href="#=href#"  class="btnClear-link"> #=  actionTitle # </a>
+				</h3>
+			#}#
+			<p style="font-size: 11px;">#= description # </p>
+			<div class="notify-action">
+
+			</div>
+		</div>
+	</div><!-- notify-box -->
 </script> 
     
 <!-- home - for new users -->
@@ -446,15 +448,13 @@
      </div>
 </div>
 	
-<div data-role="modalview" id="modalPhotoView" data-zoom="true" data-elastic="true" style="width: 100%; height:100%; display: none;" class="ghostFullModal">
+<div data-role="modalview" id="modalPhotoView" data-zoom="true" data-stretch="true" style="width: 100%; height:100%; display: none;" class="ghostFullModal">
     
-	<div style="margin: 2px; height: 98%; width: auto; text-align: center; background: #27476e;">
+	<div class="fullPhotoModal">
 		<img id="modalPhotoViewImage" src="" style="width: 100%; height:auto; vertical-align: middle;"> </img>
 	</div>
 	<div data-role="footer">
-        <div data-role="navbar">
-            <a data-align="right" data-role="button" data-click="closeModalPhotoView">Close</a>
-        </div>
+    	<a class="btnFull-modal btnClear" data-role="button" data-click="closeModalPhotoView">Close</a>
     </div>
 </div>	
 
@@ -470,7 +470,7 @@
 	<div style="margin: 2px; height: 98%; width: auto; text-align: center; background: #27476e;">
 		<img id="photoViewImage" src="" style="width: 98%; height:auto; vertical-align: middle;"> </img>
 	</div>
-	 <div data-role="footer">
+	 <div class="footer" data-role="footer">
 		<div data-role="navbar">
 			<a data-align="left" data-role="button"  data-click="photoExport"><i class="ghostIconNavbar fa fa-share-square-o"></i> </a>
 
@@ -563,6 +563,10 @@
             </li>
             <li>
             	<div>
+            		<div id="checked-in-place">
+            			<span></span>
+            			<button data-role="button" data-click="homeView.checkOutOfPlace">X</button>
+            		</div>
 					<a class="btnClear-sm" data-role="button" data-click="homeView.openLocateMeModal" id="gpsLocateUpdateBtn">
 				        	<img src="images/icon-gps-selected.svg" height="12px"/> Check in here
 				    </a>
@@ -582,8 +586,11 @@
 
 
 <div data-role="modalview" id="modalview-locate-me" style="width: 90%; display: none;" class="appearance">
-	<ul id="locate-me-list" data-role="listview">
-	</ul>
+	<div data-role="content">
+		<ul id="nearby-results-list" data-role="listview" data-template="nearby-results-template" data-click="homeView.checkInToPlace">
+		</ul>
+	</div>
+	<a class="btnSecondary btnFull-modal" data-click="homeView.closeLocateMeModal" data-role="button">Cancel</a>
 </div>
 
 <!-- Photo tag modal -->
@@ -749,7 +756,7 @@
 </script>
 
  <script type="text/x-kendo-template" id="nearby-results-template">
-     <div style="min-height: 38px; border-radius: 9px; background-color: \\#fff; padding: 4px;">
+     <div style="min-height: 38px; border-radius: 9px; background-color: \\#fff; padding: 4px;" data-item="#: JSON.stringify(data) #">
          <h4>#: data.name # </h4>
          <p>#: data.vicinity # </p>
      </div>

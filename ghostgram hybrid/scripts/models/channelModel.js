@@ -10,7 +10,8 @@ var channelModel = {
     _channelMemberName : "channelMember",
     currentChannel: new kendo.data.ObservableObject(),
     intervalTimer : undefined,
-    _messageCountRefresh : 3000000,   // Delta between message refresh calls (in milliseconds)
+    _sentMessages : "sentMessages",
+    _messageCountRefresh : 3000000,   // Delta between message count  calls (in milliseconds)
     channelsDS: new kendo.data.DataSource({
         offlineStorage: "channels-offline",
         sort: {
@@ -18,9 +19,72 @@ var channelModel = {
             dir: "asc"
         }
     }),
+
+    sentMessagesDS: new kendo.data.DataSource({ // This is store for private messages sent by this user
+        offlineStorage: "sentMessages-offline",
+        sort: {
+            field: "timeStamp",
+            dir: "desc"
+        },
+        schema: {
+            model: {
+                id: "msgID",
+                fields: {
+                    msgID: {type: "string", editable: false},
+                    channelId: {type: "string"},
+                    content: {type: "string"},
+                    data: {type: "string"},
+                    TTL: {type: "number"},
+                    time: {type: "number"},
+                    sender: {type: "string"},
+                    recipient: {type: "string"}
+                }
+            }
+        },
+        transport: {
+            create: function(options){
+                var localData = JSON.parse(localStorage[this._sentMessages]);
+
+                localData.push(options.data);
+                localStorage[this._sentMessages] = JSON.stringify(localData);
+                options.success(options.data);
+            },
+
+            read: function(options){
+                var localData = JSON.parse(localStorage[this._sentMessages]);
+                options.success(localData);
+            },
+
+            update: function(options){
+                var localData = JSON.parse(localStorage[this._sentMessages]);
+
+                for(var i=0; i<localData.length; i++){
+                    if(localData[i].msgID == options.data.msgID){
+                        localData[i].Value = options.data.Value;
+                    }
+                }
+                localStorage[this._sentMessages] = JSON.stringify(localData);
+                options.success(options.data);
+            },
+
+            destroy: function(options){
+                var localData = JSON.parse(localStorage[this._sentMessages]);
+                for(var i=0; i<localData.length; i++){
+                    if(localData[i].msgID === options.data.msgID){
+                        localData.splice(i,1);
+                        break;
+                    }
+                }
+                localStorage[this._sentMessages] = JSON.stringify(localData);
+                options.success(localData);
+            }
+        }
+    }),
+
     privateChannelsDS: new kendo.data.DataSource({
         offlineStorage: "privatechannels-offline"
     }),
+
     channelMapDS: new kendo.data.DataSource({
         offlineStorage: "channelmap-offline"
     }),
@@ -28,6 +92,61 @@ var channelModel = {
 
     init :  function () {
         channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
+        // If sentMessage local storage doesn't exit - create it
+        if (localStorage[this._sentMessages] === undefined)
+            localStorage[this._sentMessages] = JSON.stringify([]);
+    },
+
+    // Get messages archive for current channel (past 24 hours)
+    // This is only called by secure channel as sender messages are encrypted with recipients public key
+    getChannelArchive : function (channel) {
+        var dataSource =  channelModel.sentMessagesDS;
+        var timeStamp = ggTime.lastDay();
+        dataSource.filter(
+            [
+                {"logic":"and",
+                    "filters":[
+                        {
+                            "field":"channelId",
+                            "operator":"eq",
+                            "value":channel},
+                        {
+                            "field":"time",
+                            "operator":"gte",
+                            "value":timeStamp}
+                    ]}
+            ]);
+        var view = dataSource.view();
+        dataSource.filter([]);
+        return(view);
+    },
+
+    archiveMessage : function(time, blob) {
+
+        channelModel.sentMessagesDS.add(JSON.parse(blob));
+        channelModel.sentMessagesDS.sync(); // Force write to local storage
+
+        /*
+        var Message = Parse.Object.extend('messages');
+        var msg = new Message();
+
+        msg.set('messageId', uuid.v4());
+        msg.set('timeStamp', time);
+        msg.set('channelId', currentChannelModel.currentChannel.channelId);
+        msg.set('messageBlob', userModel.encryptBlob(blob));
+        // Save the encrypted message blob to parse.
+        msg.save(null, {
+            success: function(results) {
+
+            },
+            error: function(error) {
+                handleParseError(error);
+            }
+        });
+
+        // Local messages are stored in the clear and must be converted to/from encrypted format on parse...
+        channelModel.messagesDS.add(JSON.parse(blob));
+        */
     },
 
     fetch : function () {
@@ -45,9 +164,8 @@ var channelModel = {
                     // Todo: check status of members
                     models.push(collection.models[i].attributes);
                 }
-
-                deviceModel.setAppState('hasChannels', true);
                 channelModel.channelsDS.data(models);
+                deviceModel.setAppState('hasChannels', true);
                 deviceModel.isParseSyncComplete();
             },
             error: function(collection, error) {
@@ -55,6 +173,49 @@ var channelModel = {
             }
         });
 
+        //Todo: load offline messages.
+        deviceModel.setAppState('hasMessages', true);
+        deviceModel.isParseSyncComplete();
+        /*
+        var Message = Parse.Object.extend("messages");
+        var MessageCollection = Parse.Collection.extend({
+            model: Message
+        });
+
+        var messages = new MessageCollection();
+
+        messages.fetch({
+            success: function(collection) {
+                var models = new Array();
+                for (var i = 0; i < collection.models.length; i++) {
+
+                    var model = collection.models[i], ts = model.get('timeStamp');
+                    var deleteTime = ggTime.lastDay();
+                    if (ts <= deleteTime) {
+                       //     model.destroy();
+                    } else {
+                        var blob = userModel.decryptBlob(model.get('messageBlob'));
+                        var msg = JSON.parse(blob);
+                        //msg.set("fromHistory", true);
+                        msg.fromHistory = true;
+                        models.push(msg);
+                    }
+
+
+                }
+                channelModel.messagesDS.data(models);
+                deviceModel.setAppState('hasMessages', true);
+                deviceModel.isParseSyncComplete();
+            },
+            error: function(collection, error) {
+                handleParseError(error);
+            }
+        });
+        */
+        deviceModel.setAppState('hasPrivateChannels', true);
+        deviceModel.isParseSyncComplete();
+
+        /*
         getUserPrivateChannels(userModel.currentUser.get('uuid'), function (result) {
             if (result.found) {
                 channelModel.privateChannelsDS.data(result.channels);
@@ -62,7 +223,7 @@ var channelModel = {
             deviceModel.setAppState('hasPrivateChannels', true);
             deviceModel.isParseSyncComplete();
         });
-
+        */
     },
 
     updateChannelsMessageCount : debounce(function () {
@@ -131,8 +292,6 @@ var channelModel = {
 
         var Channels = Parse.Object.extend(this._channelName);
         var channel = new Channels();
-        var publicKey = userModel.currentUser.get('publicKey');
-        var contact = contactModel.getContactModel(contactUUID), contactKey = null;
         var addTime = ggTime.currentTime();
         channel.set("name", contactAlias);
         channel.set("isOwner", true);
@@ -147,15 +306,14 @@ var channelModel = {
         channel.set("lastAccess", addTime);
         channel.set("description", "Private: " + contactAlias);
         channel.set("channelId", channelUUID);
-        channel.set('userKey',  publicKey);
         channel.set('contactKey', contactPublicKey);
         channel.set("members", [userModel.currentUser.userUUID, contactUUID]);
+        channelModel.channelsDS.add(channel.attributes);
+        channelModel.channelsDS.sync();
 
         channel.setACL(userModel.parseACL);
         channel.save(null, {
             success: function(channel) {
-                channelModel.channelsDS.add(channel.attributes);
-                channelModel.channelsDS.sync();
                 //closeModalViewAddChannel();
                 mobileNotify('Added private channel : ' + channel.get('name'));
             },
@@ -170,7 +328,7 @@ var channelModel = {
     },
 
     // Generic add group channel...
-    addChannel : function (channelName, channelDescription, isOwner, durationDays, channelUUID, ownerUUID, ownerName) {
+    addChannel : function (channelName, channelDescription, isOwner, durationDays, channelUUID, ownerUUID, ownerName, placeId, placeName, isPrivate) {
         var Channels = Parse.Object.extend("channels");
         var channel = new Channels();
 
@@ -194,15 +352,35 @@ var channelModel = {
         } else {
             durationDays = parseInt(durationDays);
         }
-
+        channel.set('isPlace', false);
+        channel.set('isPrivate', false);
         if (durationDays < 1 || durationDays > 30) {
             durationDays = 30;
         }
 
+        if (isPrivate === undefined)
+            isPrivate = true;
+
+        channel.set('isPlace', false);
+        channel.set('isPrivate', true);
+
+        // If there's a placeId passed in, need to create a place channel / chat
+        if (placeId !== undefined) {
+            channel.set('isPlace', true);
+            channel.set('isPrivate', isPrivate);
+            channel.set('placeUUID', placeId);
+            channel.set('placeName', placeName);
+            if (name === '') {
+                name =  placeName;
+            }
+            if (description === '') {
+                description = "Place : " + placeName;
+            }
+        }
+
         // Generic fields for owner and members
         channel.set("name", name );
-        channel.set('isPrivate', false);
-        channel.set('isPlace', false);
+        
         channel.set('isEvent', false);
         channel.set("media",   true);
         channel.set("archive", true);
@@ -225,17 +403,20 @@ var channelModel = {
             channel.set("ownerName", ownerName);
         }
 
+        channelModel.channelsDS.add(channel.attributes);
+        channelModel.channelsDS.sync();
+        currentChannelModel.currentChannel = channelModel.findChannelModel(channelId);
+        currentChannelModel.currentChannel = currentChannelModel.currentChannel;
+
         channel.setACL(userModel.parseACL);
         channel.save(null, {
             success: function(channel) {
                 // Execute any logic that should take place after the object is saved.
 
-                channelModel.channelsDS.add(channel.attributes);
-                channelModel.channelsDS.sync();
+
                 mobileNotify('Added channel : ' + channel.get('name'));
 
-                currentChannelModel.currentChannel = channelModel.findChannelModel(channelId);
-                currentChannelModel.currentChannel = currentChannelModel.currentChannel;
+
 
                 if (isOwner) {
                     channelMap.set("name", channel.get('name'));
@@ -272,7 +453,7 @@ var channelModel = {
 
     },
 
-    deleteChannel : function (channelId) {
+    deleteChannel : function (channelId, silent) {
         var dataSource = channelModel.channelsDS;
         dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
         var view = dataSource.view();
@@ -285,22 +466,32 @@ var channelModel = {
                 // If this user is the owner -- delete the channel map
                 deleteParseObject("channelmap", 'channelId', channelId);
 
-                if (channel.isPrivate) {
-                    // Owner is always first member of channel
-                    userDataChannel.privateChannelDelete(members[1],channelId, 'Chat "' + channel.name + 'has been deleted' );
-                } else {
-                    // Send delete channel messages to all members
-                    var members = channel.members;
-                    // Skip the first member as it's the owner
-                    for (var i = 1; i < channel.members.length; i++) {
-                        userDataChannel.groupChannelDelete(members[i],channelId, 'Chat "' + channel.name + 'has been deleted' );
+                if (silent === undefined || silent === false) {
+                    if (channel.isPrivate) {
+                        // Owner is always first member of channel
+                        userDataChannel.privateChannelDelete(members[1],channelId, 'Chat "' + channel.name + 'has been deleted' );
+                    } else {
+                        // Send delete channel messages to all members
+                        var members = channel.members;
+                        // Skip the first member as it's the owner
+                        for (var i = 1; i < channel.members.length; i++) {
+                            userDataChannel.groupChannelDelete(members[i],channelId, 'Chat "' + channel.name + 'has been deleted' );
+                        }
                     }
                 }
 
             }
             dataSource.remove(channel);
             deleteParseObject("channels", 'channelId', channelId);
-            mobileNotify("Removed channel : " + channel.get('name'));
+            //mobileNotify("Removed channel : " + channel.get('name'));
+        }
+    },
+
+    deleteAllChannels : function () {
+        var channelArray = this.channelsDS.data();
+
+        for (var i=0; i<channelArray.length; i++) {
+            this.deleteChannel(channelArray.channelId);
         }
     }
 

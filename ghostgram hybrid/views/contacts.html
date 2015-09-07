@@ -28,17 +28,24 @@
 </div>
 
 <!-- contact action -->
-<div data-role="modalview" id="modalview-contactActions" data-model="contactModel.currentContact" class="appearance" style="width: 90%; display: none;">
+<div data-role="modalview" id="modalview-contactActions" data-model="contactModel.currentContact"  data-init="contactActionView.onInit" data-before-open="contactActionView.onOpen" style="width: 90%; display: none;">
 	<div class="modal-top">
 		<a data-role="button" class="modal-close" data-click="closeContactActions"><img src="images/close.svg"/></a>
 		<img class="circle-img-lg" data-bind="attr: {src: photo}"/>
 		<img width="16" src="images/status-away.svg" class="statusContactCard-icon">
 		<h3>
-			<span class="primaryName" id="contactPrimaryName"></span>
+			<span class="primaryName" id="contactPrimaryName"  data-bind="text: name"></span>
 			<span class="hidden" id="currentContactVerified"><img src="images/icon-verified-dark.svg" class="user-status-icon"></span>
-			<span class="secondName" id="contactSecondName"></span>
+			<span class="secondName" id="contactSecondName" data-bind="text: alias">></span>
 		</h3>
-		<p><span class="contactStatusMessage">Out running at the park</span> @ <span class="contactLocation shade-100">Main St Park </span></p>
+		<p>
+			<span class="contactStatusMessage" data-bind="text: statusMessage"></span>
+		 	<span class="contactStatusAt">@</span> 
+		 	<span class="contactLocation" data-bind="text: currentPlace"></span>
+		</p>
+	</div>
+	<div id="contactActions-status" class="hidden">
+		<span>Updating contact status....</span>
 	</div>
 	<div class="modal-bottom">
 		<ul class="list-inline" id="contactActionBtns" >
@@ -369,58 +376,55 @@
 </script>
 
 <script type="text/x-kendo-template" id="deviceContactsTemplate">
-  <div>
-	  <a class="contactListBox">
-		  <div class="contactListItem">
-
-		  <div class="left listPhoto">
-			  	# var photoUrl = "image/ghost-grey.svg"; if (data.photo !== null) { photoUrl = data.photo;} #
-				  <img class="circle-img-md" src="#:photoUrl#" />
-
-		  </div><!-- left -->
-		  <div class="left listName">
-			  <h4>#:data.name#
-				  <span class="right">
-					<a class="btnClearLine">Add</a>
-				</span>
-				</h4>
-			  <div style="margin-left: 10px;">
-				  <table>
-				   <tr>
-						<td style="width: 60px;">
-						Phone:
-						</td>
-						<td style="width: 280px;">
-						 # var phoneCount = data.phoneNumbers.length;  # #:data.phoneNumbers[0].number# (#:phoneCount# Total)
-						</td>
-				   </tr>
-					#if (data.emails.length > 0) {#
-					<tr>
-						<td style="width: 60px;">
-						Email:
-						</td>
-						<td style="width: 280px;">
-						 # var emailCount = data.emails.length; # #:data.emails[0].name# (#:emailCount# Total)
-						</td>
-				   </tr>
-				   #}#
-					#if (data.addresses.length > 0) {#
+  			<div> 
+				  <h3>#:data.name#
+			  		<span class="right">
+			  			<a class="addBtn-sm">Add</a>
+			  		</span>
+			  	</h3>
+			  <table class="contactImportTable">
+			  	#if (data.emails.length > 0) {#
+			  	<tr>
+				  	<td>
+				  		# var email = data.emails[0].name; #
+				  		# var cleanEmail = showCleanEmail(email) #
+				  		<span class="contactEmail">#: cleanEmail #</span>
+				  		
+				  			# var emailCount = (data.emails.length); 
+				  			if (emailCount > 1){# 
+				  				<span class="badge">+#:emailCount - 1 #</span>
+				  			#}#
+				  			
+				  		
+				  	</td>
+			  	</tr>
+			  	#}#
+			  	<tr>
+			  		<td>
+			  			<span class="contactPhone">
+			  				# var phone = data.phoneNumbers[0].number; 
+			  				var cleanPhone = showCleanPhone(phone) #
+			  				#: cleanPhone # 
+			  			</span>
+			  				# var phoneCount = (data.phoneNumbers.length); 
+			  			 	if (phoneCount > 1){#
+			  			 		<span class="badge">+#:phoneCount - 1#</span>
+			  			 	#}#
+			  		</td>
+			  	</tr>
+			  	#if (data.addresses.length > 0) {#
 					 <tr>
-						<td style="width: 60px;">
-						Address:
-						</td>
-						<td style="width: 280px;">
-						# var addressCount = data.addresses.length; # #:data.addresses[0].fullAddress# (#:addressCount# Total)
+						<td>
+						# var addressCount = data.addresses.length; # 
+						<span class="contactAddress">#:data.addresses[0].fullAddress#</span>
+						#if (addressCount > 1){#
+							<span class="badge">+#:addressCount - 1 #</span>
+						#}#
 						</td>
 					</tr>
 					 #}#
-				  </table>
-			  </div>
-		  </div>
-
-	  	</div>
-	  </a>
-  </div>
+			  </table>   	 
+  		</div>
 </script>
 
 <div data-role="view" data-title="Contact" id="contact" data-layout="main" data-model="contactModel" data-init="onInitContact">

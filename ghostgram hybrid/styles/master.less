@@ -28,6 +28,8 @@
 @secondaryFont: 'Open Sans', sans-serif;
 @displayFont: 'Hind', sans-serif;
 
+@mobile: ~"only screen and (max-width: 320px)";
+
 /* Imports */
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Hind:300,400,500|PT+Sans:400,700);
 @import "mixins.less";
@@ -386,6 +388,15 @@ form {
 	line-height: 2;
 }
 
+.badge {
+	border-radius: 4px;
+	background: @shade-200;
+	border-radius: 5px;
+	color: @black;
+	padding: 0.1em 0.25em;
+	.font-size(13);
+}
+
 .guest-txt {
 	.font-size(12);
 	color: #979797;
@@ -414,26 +425,26 @@ form {
 
 .circle-img-sm {
 	.circle-img;
-	width: 30px;
-	height: 30px;
+	width: 2rem;
+	height: 2rem;
 }
 
 .circle-img-md {
 	.circle-img;
-	width: 48px;
-	height: 48px;
+	width: 3rem;
+	height: 3rem;
 }
 
 .circle-img-lg {
 	.circle-img;
-	width: 60px;
-	height: 60px;
+	width: 4rem;
+	height: 4rem;
 }
 
 .circle-img-xl {
 	.circle-img;
-	width: 120px;
-	height: 120px;
+	width: 6rem;
+	height: 6rem;
 }
 
 .greyBtn {
@@ -617,6 +628,16 @@ form {
 	}
 }
 
+.addBtn-sm {
+	border: 1px solid @primary-100;
+	border-radius: 3px;
+	color: @primary-100 !important;
+	.font-size(14);
+	padding: 0.2em 1em;
+	position: absolute;
+	right: 1rem;
+	top: 2rem;
+}
 
 .btnClearLine-grey-sm {
 	&:extend(.btnStyle);
@@ -1216,7 +1237,16 @@ div.footerMenu.km-footer > ul > li > a:active {
 	width: 100% !important;
 	position: fixed !important;
 	top: 0;
-	left: 0;    
+	left: 0;
+}
+
+.fullPhotoModal {
+	height: 100%;
+	width: 100%;
+	background: rgba(0, 0, 0, 0.85);
+	display: flex;
+  	align-items: center;
+  	justify-content: center;
 }
 
 .user-status {
@@ -1732,6 +1762,13 @@ div.footerMenu.km-footer > ul > li > a:active {
     height: auto;
 }
 
+.contactImportTable {
+	color: @shade-100;
+	.font-size(14);
+	margin-left: 1rem;
+	margin-right: 1rem;
+}
+
 .round {
     display: block;
     width: 55px;
@@ -1774,7 +1811,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 .message-slideOptions {
 	height:100%;
 	position: absolute;
-	right: 1rem;
+	left: 1rem;
 	top: 8px;
 	z-index: 0;
 	opacity: 0;
@@ -1783,7 +1820,8 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 
 .selectedLI {
-	background: #fff;
+	opacity: 0;
+	background: lighten(@highlight-100, 20%) !important;
 }
 
 .selectedLI-archive { 
@@ -2016,11 +2054,11 @@ a:hover {
 	position: absolute;
 	width: 100%;
 	li {
-    border-bottom: 1px solid #E4E4E4;
-    background: #fff;
-    z-index:9999;
-    padding-top: 0px;
-    padding-bottom: 0px;
+	    border-bottom: 1px solid #E4E4E4;
+	    background: #fff;
+	    z-index:9999;
+	    padding-top: 0px;
+	    padding-bottom: 0px;
 	}
 }
 
@@ -2441,7 +2479,6 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
     border: none;
     padding-bottom: 0px;
     line-height: 1.5;
-    margin-bottom: 0.5rem;
 }
 #messageSend {
     font-weight: 600;
@@ -2450,12 +2487,13 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
     padding: 0px;
     padding-top: 3px;
     position: absolute;
-	bottom: 48px;
+	bottom: 45px;
 	right: 8px;
 }
 .messageCompose {
-    padding: 8px;
+    padding: 0.5rem;
     padding-bottom: 0px;
+    padding-top: 0.25rem;
 }
 .messageMediaBar ul {
     padding: 0px;
@@ -3242,7 +3280,6 @@ div.contactListBox.activeContact > div > div > ul {
 	position: absolute;
 	width: 100%;
 	li {
-	    border-bottom: 1px solid #E4E4E4;
 	    background: #fff;
 	    z-index:9999;
 	    padding-top: 0px;
@@ -3982,6 +4019,20 @@ div.contactListBox.activeContact > div > div > ul {
 	.viewSearchBox {
 		width:88%;
 	}
+	.doubleAppendSearch {
+		width: 70%;
+	}
+	.enterSearch {
+		padding-top: 8px;
+		padding-bottom: 8px;
+		position: absolute;
+		width: 16%;
+		span {
+			padding-top: 0px;
+			color: @shade-200;
+			font-weight: 600;
+		}
+	}
 }
 
 .viewScroller {
@@ -4002,12 +4053,17 @@ div.contactListBox.activeContact > div > div > ul {
 
 /* Chat styles */
 
+#messages-listview li {
+	width: 100%;
+	padding-right: 1rem !important;
+	padding-left: 1rem !important;
+}
+
 .chat-message {
     line-height: 1.5;
     width: 100%;
 	position: relative;
 	z-index: 1;
-	right: 1rem;
 }
 
 .chat-message p {
@@ -4033,26 +4089,48 @@ div.contactListBox.activeContact > div > div > ul {
 }
 
 .chat-message-photo {
-    width: 80%;
+    width: 100%;
     height: auto;
-	border: 1px solid #27476e;
+	padding: 0.25rem;
+	background: #fff;
 }
 
-.chat-message-photo-small {
-    width: 20%;
-    height: auto;
-	border: 1px solid #27476e;
+.chat-photo-box,
+.chat-photo-box-zoom {
+	margin-left: 13%;
+	margin-top: 0.5rem;
+	@media @mobile {
+		margin-left: 15%;
+	}
 }
+
+.chat-photo-box {
+	border: 1px solid @shade-200;
+	width: 40%;
+	float: left;
+}
+
+.chat-photo-box-zoom {
+	.shadow-1;
+	float: right;
+	width: 88%;
+	@media @mobile {
+		width: 85%;
+	}
+}
+
+
 
 .chat-message-content {
-    margin-left: 44px;
-    height: 100%;
+    max-width: 88%;
+    @media @mobile {
+    	max-width: 85%;
+    } 
 }
 
-.chat-message-user-content {
-    margin-left: 72px;
+.chat-message-sender {
     height: 100%;
-    float: right;
+    float: left;
     padding: 0.2em 0.35em;
     border-radius: .25em;
     color: #fff;
@@ -4060,16 +4138,44 @@ div.contactListBox.activeContact > div > div > ul {
     margin-top: 0.2em;
 }
 
-.chat-message-user-content:after {
+.chat-message-sender:after {
 	content: "";
 	display: block;
 	position: absolute;
-	right: 2px; 
 	width: 0;
-	border-width: 8px 8px 0;
-	border-style: solid;
-	border-color: @primary-200 transparent;
-	bottom: -4px;
+	border-top: 0.4rem solid transparent;
+	border-bottom: 0.4rem solid transparent;
+	border-right: 0.3rem solid @primary-200;
+	top: 1.5rem;
+	left: 11%;
+	@media @mobile {
+		left: 13.5%;
+	}
+}
+
+.chat-message-receiver {
+    height: 100%;
+    float: left;
+    padding: 0.2em 0.35em;
+    border-radius: .25em;
+    color: @black;
+    background: darken(@shade-300, 5%);
+    margin-top: 0.2em;
+}
+
+.chat-message-receiver:after {
+	content: "";
+	display: block;
+	position: absolute;
+	width: 0;
+	border-top: 0.4rem solid transparent;
+	border-bottom: 0.4rem solid transparent;
+	border-right: 0.3rem solid darken(@shade-300, 5%);
+	top: 1.5rem;
+	left: 11%;
+	@media @mobile {
+		left: 13.5%;
+	}
 }
 
 .movingChat > .chat-message-user-content:after {
@@ -4090,19 +4196,46 @@ div.contactListBox.activeContact > div > div > ul {
 
 .chat-message-text {
     .font-size(14);
-    letter-spacing: 0.05em;
+    line-height: 1.4;
+}
+
+.chat-details {
+	.font-size(11);
+	color: @shade-100;
+	padding-left: 14%;
+	@media @mobile {
+		padding-left: 17%;
+	}
+}
+
+.chat-sender {
+	float: left;
 }
 
 .chat-time {
-    text-align: center;
-    .font-size(12);
-    color: #979797;
+    float: right;
+    .font-size(11);
+    color: darken(@shade-200, 5%);
 }
 
 #channel > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
 	position: absolute;
 	width: 100%;
 	top: 0px;
+}
+
+.chat-message-user-img {
+	width: 12%;
+	float: left;
+	@media @mobile {
+		width: 15%;
+	}
+}
+
+.chat-message-user-content {
+	max-width: 83%;
+	margin-left: 2%;
+	float: left;
 }
 
 /*!
@@ -4433,3 +4566,12 @@ div.contactListBox.activeContact > div > div > ul {
     border-top-color: transparent;
 }
 
+/** Home, Places Modal **/
+
+#nearby-results-list {
+    min-height: 300px;
+}
+
+#checked-in-place {
+    display: none;
+}

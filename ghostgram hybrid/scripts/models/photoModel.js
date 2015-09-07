@@ -42,6 +42,57 @@ var photoModel = {
                 handleParseError(error);
             }
         });
+    },
+
+    findPhotoById: function (photoId) {
+        var dataSource = photoModel.photosDS;
+        dataSource.filter( { field: "photoId", operator: "eq", value: photoId });
+        var view = dataSource.view();
+        var photo = view[0];
+        dataSource.filter([]);
+
+        return(photo);
+    },
+
+    findPhotosByChannel : function (channelId) {
+        var dataSource = photoModel.photosDS;
+        dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
+        var view = dataSource.view();
+        var photos = view;
+        dataSource.filter([]);
+
+        return(photos);
+    },
+
+    findPhotosBySender: function (senderId) {
+        var dataSource = photoModel.photosDS;
+        dataSource.filter( { field: "senderUUID", operator: "eq", value: senderId });
+        var view = dataSource.view();
+        var photos = view;
+        dataSource.filter([]);
+
+        return(photos);
+    },
+
+    deletePhoto: function (photoId) {
+        var photo = this.findPhotoById(photoId);
+        // Delete from local datasource
+        if (photo === undefined || photo === null) {
+            mobileNotify("deletePhoto - can't find photo!")
+        }
+        photoModel.photosDS.remove(photo);
+        // Remove from isotope and then rerender the layout
+        //$('#gallery-grid').isotope( 'remove', photoModel.currentIsoModel ).isotope('layout');
+        // Delete from remote parse collection
+        deleteParseObject('photos', 'photoId', photo.photoId);
+    },
+
+    deleteAllPhotos : function () {
+        var photoArray = photoModel.photosDS.data();
+
+        for (var i=0; i<photoArray.length; i++) {
+            this.deletePhoto(photoArray[i].photoId);
+        }
     }
 
 };

@@ -19,19 +19,20 @@ function updateParseObject(objectName, idField, idFieldValue, newField, newField
 
 	query.find({
 		success: function(results) {
-			results[0].set(newField, newFieldValue);
-			results[0].save({
-				success: function(myObject) {
-					// The object was deleted from the Parse Cloud.
-				},
-				error: function(myObject, error) {
-					mobileNotify("Error: " + error.code + " " + error.message);
-				}
-			});
-
+			if (results.length > 0) {
+				results[0].set(newField, newFieldValue);
+				results[0].save({
+					success: function(myObject) {
+						// The object was deleted from the Parse Cloud.
+					},
+					error: function(myObject, error) {
+						mobileNotify("Error: " + error.code + " " + error.message);
+					}
+				});
+			}
 		},
 		error: function(error) {
-			mobileNotify("Error: " + error.code + " " + error.message);
+			handleParseError(error);
 		}
 	});
 }
@@ -59,20 +60,21 @@ function deleteParseObject(objectName, field, fieldValue) {
 	query.equalTo(field, fieldValue);
 	query.find({
 		success: function(results) {
-			results[0].destroy({
-				success: function(myObject) {
-					// The object was deleted from the Parse Cloud.
-				},
-				error: function(myObject, error) {
-					// The delete failed.
-					// error is a Parse.Error with an error code and message.
-					mobileNotify("Error: " + error.code + " " + error.message);
-				}
-			});
-
+			if (results.length > 0) {
+				results[0].destroy({
+					success: function(myObject) {
+						// The object was deleted from the Parse Cloud.
+					},
+					error: function(myObject, error) {
+						// The delete failed.
+						// error is a Parse.Error with an error code and message.
+						handleParseError(error);
+					}
+				});
+			}
 		},
 		error: function(error) {
-			mobileNotify("Error: " + error.code + " " + error.message);
+			handleParseError(error);
 		}
 	});
 }
@@ -155,6 +157,34 @@ function getUserPrivateChannels(uuid, callBack) {
 				callBack({
 					found: false,
 					channels: null
+				});
+			}
+
+		},
+		error: function(result, error) {
+			callBack(null, error)
+		}
+	});
+}
+
+function queryPrivateChannel(uuid, contactuuid, callBack) {
+	Parse.Cloud.run('queryPrivateChannel', {
+		uuid: uuid, contactuuid : contactuuid
+	}, {
+		success: function(result, error) {
+			if (result.status === 'ok' && result.count > 0) {
+				callBack({
+					found: true,
+					channels: result.channels,
+					count: result.count,
+					update: result.update
+				});
+			} else {
+				callBack({
+					found: false,
+					channels: null,
+					count: 0,
+					update: true
 				});
 			}
 
@@ -359,6 +389,10 @@ function reverseGeoCode(lat, lng) {
 // utility to class to get time in normal and pubnub formats and convert between
 var ggTime = {
 
+	_day : 60 * 60 * 24 * 1000,
+	_week: 60 * 60 * 24 * 7 * 1000,
+	_month: 60 * 60 * 24 * 30 * 1000,
+
 	currentTime: function () {
 		return(new Date().getTime());
 	},
@@ -376,8 +410,49 @@ var ggTime = {
 
 	fromPubNubTime : function (timeIn) {
 		return (timeIn / 10000000);
+	},
+
+	lastDay : function () {
+		return(this.currentTime() - this._day);
+
+	},
+
+	lastWeek : function () {
+		return(this.currentTime() - this._week);
+	},
+
+	lastMonth : function () {
+		return(this.currentTime() - this._month);
 	}
 };
+
+function _preventDefault(e) {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+}
+
+function timeSince(date) {
+	var seconds = Math.floor((ggTime.currentTime() - date)/1000),
+		interval = Math.floor(seconds / 31536000);
+
+	if (interval > 1) return interval + " years";
+
+	interval = Math.floor(seconds / 2592000);
+	if (interval > 1) return interval + " months";
+
+	interval = Math.floor(seconds / 86400);
+	if (interval >= 1) return interval + " days";
+
+	interval = Math.floor(seconds / 3600);
+	if (interval >= 1) return interval + " hours";
+
+	interval = Math.floor(seconds / 60);
+	if (interval > 1) return interval + " minutes";
+
+	return Math.floor(seconds) + " seconds";
+}
+
 
 // Returns a function, that, as long as it continues to be invoked, will not
 // be triggered. The function will be called after it stops being called for

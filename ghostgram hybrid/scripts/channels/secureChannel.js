@@ -1,9 +1,9 @@
 // Setup
 // ---
-function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, contactUUID, contactKey) {
+function secureChannel( channelUUID, userUUID, alias, publicKey, privateKey, contactUUID, contactKey) {
     var channel = channelUUID;
     
-	var RSAkey = cryptico.privateKeyFromString(RSAkeyString);
+	var RSAkey = cryptico.privateKeyFromString(privateKey);
     // An object userUUID and publicKey. It will be given 
     // to other users.
 	
@@ -16,10 +16,7 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
     // A mapping of all currently connected users' usernames userUUID's to their public keys.
     var users = new Array();
 	users[userUUID] = publicKey;     
-    
-    // A mapping of usernames and the messages they've sent.
-    // (Messages you've sent are mapped by the the username of the reciever)
-    var messages = {};
+
 
     // `receiveMessage` and `presenceChange` are called when a message 
     // intended for the user is received and when someone connects to 
@@ -46,6 +43,7 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
 				
             var parsedMsg = {
                 msgID: msg.msgID,
+                channelId: channelUUID,
                 content: content,
 				data: data,
                 TTL: msg.ttl,
@@ -77,8 +75,8 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
                 users[msg.data.username] = msg.data.publicKey;
             } 
             // Otherwise, we have to call `here_now` to get the state of the new subscriber to the channel.
-            else { 
-                pubnub.here_now({
+            else {
+                APP.pubnub.here_now({
                     channel: channel,
                     state: true,
                     callback: herenowUpdate
@@ -93,19 +91,9 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
         } 
     };
 
-    // Connect to current instance of pubnub
-    var pubnub = APP.pubnub;
 
-    // Subscribe to our PubNub channel.
-    pubnub.subscribe({
-        channel: channel,
-        windowing: 50000,
-        restore: true,
-        callback: messageHandler,
-        presence: presenceHandler,
-        // Set our state to our user object, which contains our username and public key.
-        state: thisUser
-    });
+
+
 
 
  
@@ -123,6 +111,10 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
             }
         }
         presenceChange();
+    };
+
+    var archiveMessage = function (msg) {
+        channelModel.archiveMessage(msg.time, JSON.stringify(msg));
     };
 
     // Delete a message from the `messages` object, after `TTL` seconds.
@@ -156,15 +148,15 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
                 var content = message;
 				var contentData = data;
                 var encryptMessage = '', encryptData = '';
-				var currentTime =  new Date().getTime()/1000;
+				var currentTime =  ggTime.currentTime();
                 encryptMessage = cryptico.encrypt(message, contactKey);
 			    if (data !== undefined && data !== null)
 					encryptData = cryptico.encrypt(JSON.stringify(data), contactKey);
 				else
 					encryptData = null;
 
-                pubnub.uuid(function (msgID) {
-                    pubnub.publish({
+            APP.pubnub.uuid(function (msgID) {
+                APP.pubnub.publish({
                         channel: channel,
                         message: {
                             recipient: recipient,
@@ -177,9 +169,9 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
                             ttl: ttl
                         },
                         callback: function () {
-                            parsedMsg = {
-                                channelId: channelUUID,
+                            var parsedMsg = {
                                 msgID: msgID,
+                                channelId: channelUUID,
                                 content: content,
 								data: contentData,
                                 TTL: ttl,
@@ -189,13 +181,8 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
                                 recipient: recipient
                             };
 
-                            if (messages[recipient] === undefined) {
-                                messages[recipient] = [parsedMsg];
-                            } else {
-                                messages[recipient].push(parsedMsg);
-                            }
                             // add the message to the sentMessageDataSource
-                            APP.models.privateChannel.messagesSentDS.add(parsedMsg);
+                            archiveMessage(parsedMsg);
                             receiveMessage(parsedMsg);
                             //deleteMessage(recipient, msgID, ttl);
                         }
@@ -224,17 +211,13 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
             return users;
         },
 		
-        // Returns a mapping of usernames and the messages they've sent.
-        // (Messages you've sent are mapped by the the username of the reciever)
-        returnMessages: function () {
-            return messages;
-        },
-		
-		// Get any messages that are in the channel
+		// Get any messages that are in the channel from the past 24 hours
+
 		getMessageHistory: function (callBack) {
-		   pubnub.history({
+            var timeStamp = ggTime.toPubNubTime((ggTime.lastDay()));
+            APP.pubnub.history({
 				channel: channel,
-				limit: 64,
+				end: timeStamp,
 				callback: function (messages) {
 					var clearMessageArray = [];
 					messages = messages[0];
@@ -277,11 +260,26 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, RSAkeyString, c
         myKey: function () {
             return RSAkey;
         },
-        // Quits secureChannel. Other users will no longer be able to retrieve your
-        // public key or send messages to you.
-        quit: function () {
-            pubnub.unsubscribe({
+
+        // Quits groupChannel. Other users will no longer be able to retrieve your
+        closeChannel: function () {
+            APP.pubnub.unsubscribe({
                 channel: channel
+            });
+        },
+        // Starting up PubNub
+        // ---
+
+        openChannel : function () {
+            // Subscribe to our PubNub channel.
+            APP.pubnub.subscribe({
+                channel: channel,
+                windowing: 50000,
+                restore: true,
+                callback: messageHandler,
+                presence: presenceHandler,
+                // Set our state to our user object, which contains our username and public key.
+                state: thisUser
             });
         }
     };

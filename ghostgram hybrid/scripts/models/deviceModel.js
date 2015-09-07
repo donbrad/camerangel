@@ -32,49 +32,50 @@ var deviceModel = {
 
 
     init: function() {
+        if (window.navigator.simulator !== true) {
+            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
+                function (fileSystem) {
+                    var url = fileSystem.root.nativeURL;
+                    url = url.replace('file://', '');
+                    deviceModel.fileDirectory = url;
+                    userModel.appDirectory = url;
+                    //mobileNotify(APP.fileDirectory);
+                },
+                function (error) {
+                    mobileNotify("Filesystem error : " + JSON.stringify(error));
+                });
 
-        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
-            function(fileSystem) {
-                var url = fileSystem.root.nativeURL;
-                url = url.replace('file://', '');
-                deviceModel.fileDirectory = url;
-                APP.models.profile.appDirectory = url;
-                //mobileNotify(APP.fileDirectory);
-            },
-            function(error) {
-                mobileNotify("Filesystem error : " + JSON.stringify(error));
-            });
-
-        window.requestFileSystem(LocalFileSystem.TEMPORARY, 0,
-            function(fileSystem) {
-                var url = fileSystem.root.nativeURL;
-                url = url.replace('file://', '');
-                deviceModel.tempDirectory = url;
-                APP.models.profile.tempDirectory = url;
-                //mobileNotify(APP.tempDirectory);
-            },
-            function(error) {
-                mobileNotify("Filesystem error : " + JSON.stringify(error));
-            });
-
+            window.requestFileSystem(LocalFileSystem.TEMPORARY, 0,
+                function (fileSystem) {
+                    var url = fileSystem.root.nativeURL;
+                    url = url.replace('file://', '');
+                    deviceModel.tempDirectory = url;
+                    userModel.tempDirectory = url;
+                    //mobileNotify(APP.tempDirectory);
+                },
+                function (error) {
+                    mobileNotify("Filesystem error : " + JSON.stringify(error));
+                });
+        }
     },
 
     resetDeviceState: function ()  {
-        this.state.inPrivacyMode = false;
-        this.state.isVisible = true;
-        this.state.isAvailable = true;
-        this.state.rememberUsername = false;
-        this.state.isOnline = true;
-        this.state.inBackground= false;
-        this.state.userNotifications = [];
-        this.state.phoneVerified = false;
-        this.state.hasContacts = false;
-        this.state.hasChannels = false;
-        this.state.hasPrivateChannels = false;
-        this.state.hasPlaces = false;
-        this.state.hasPhotos = false;
-        this.state.introFetched =false;
-        this.state.pubnubInit = false;
+        deviceModel.state.inPrivacyMode = false;
+        deviceModel.state.isVisible = true;
+        deviceModel.state.isAvailable = true;
+        deviceModel.state.rememberUsername = false;
+        deviceModel.state.isOnline = true;
+        deviceModel.state.inBackground= false;
+        deviceModel.state.userNotifications = [];
+        deviceModel.state.phoneVerified = false;
+        deviceModel.state.hasContacts = false;
+        deviceModel.state.hasChannels = false;
+        deviceModel.state.hasMessages = false;
+        deviceModel.state.hasPrivateChannels = false;
+        deviceModel.state.hasPlaces = false;
+        deviceModel.state.hasPhotos = false;
+        deviceModel.state.introFetched =false;
+        deviceModel.state.pubnubInit = false;
 
         // Reset App and User channel timestamps (should be rare on actual devices)
         localStorage.setItem('ggUserDataTimeStamp', 0);
@@ -84,11 +85,11 @@ var deviceModel = {
     isParseSyncComplete: function () {
 
         var channels = deviceModel.state.hasChannels, privateChannels = deviceModel.state.hasPrivateChannels,
-            contacts = deviceModel.state.hasContacts,
+            contacts = deviceModel.state.hasContacts, messages = deviceModel.state.hasMessages,
             places = deviceModel.state.hasPlaces, photos = deviceModel.state.hasPhotos;
         // Todo:  add places -- need to discuss with tucker
 
-        if (channels && privateChannels && contacts && photos) {
+        if (channels && privateChannels && contacts && photos && messages) {
 
             if (!deviceModel.state.pubnubInit) {
                 userModel.initPubNub();
