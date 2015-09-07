@@ -33,7 +33,8 @@ var channelsView = {
                 }
             },
             dataBound: function(e){
-                checkEmptyUIState("#channels-listview", "#channelListDiv");
+                //console.log(e);
+                checkEmptyUIState(channelModel.channelsDS, "#channelListDiv");
             }
         }).kendoTouch({
             filter: ".chat-mainBox",

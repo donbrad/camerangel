@@ -129,19 +129,13 @@ function closeTestingBox(){
 }
 
 
-// Check empty state for views
-// Jordan - better to check status of datasource in view than to check for presense of li...
-// checkEmptyUIState(ds, view) ( var selectionList = ds.total()L
-function checkEmptyUIState(selection, view){
-	
-	var selectionList = $(selection + " > li").length;
-	
-    if(selectionList <= 0){
+// Updated - Check empty state for views
+function checkEmptyUIState(ds, view){
+	var selectionList = ds.total();
+    if(ds <= 0){
     	$(view + " .emptyState").removeClass("hidden");
-    
     } else {
     	$(view + ".emptyState").addClass("hidden");
-    
     }
 }
 

@@ -311,8 +311,6 @@ function onShowGallery(e) {
 			break;
 	}
 
-	// Added until gallery/archive are fully merged
-	checkEmptyUIState("#archive-listview", "#archiveBox");
 }
 
 
