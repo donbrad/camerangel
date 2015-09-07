@@ -166,6 +166,23 @@ function formatNameAlias(name, alias, view){
 
 }
 
+
+function returnUXPrimaryName(name, alias){
+	var primaryName;
+
+	if (alias !== "" && alias !== undefined && name !== "" && name !== undefined){
+		primaryName = alias;
+		
+	} else if(name !== "" && name !== undefined) {
+		primaryName = name;
+	}
+	else {
+		primaryName = alias;
+	}
+
+	return primaryName;
+}
+
 function showFormatedPhone(){
 	if($(".phone").is("input")){
 		var inputVal = $(".phone").val();

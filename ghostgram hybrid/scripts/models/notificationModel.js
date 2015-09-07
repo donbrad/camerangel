@@ -131,7 +131,6 @@ var notificationModel = {
         var view = dataSource.view();
         var contact = view[0];
         dataSource.filter([]);
-        console.log(dataSource);
         return(contact);
     },
 
@@ -147,7 +146,7 @@ var notificationModel = {
         var data = deviceModel.state.userNotifications;
         for(var i = 0; i < data.length; i++) {
             if(data[i].uuid == uuid) {
-                data.splice(i, 1);
+                data.splice(i, 1); 
                 break;
             }
         }

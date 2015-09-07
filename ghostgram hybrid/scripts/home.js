@@ -281,7 +281,7 @@ function setUserStatusUI(e){
 }
 
 function testingStatus(e) {
-	console.log("testing");
+	
 }
 
 function homeSignout (e) {
@@ -962,7 +962,7 @@ function statusSwitch(e) {
 }
 
 function closeThisModal(e){
-	console.log(e);
+	
 }
 
 function gpsLocateUpdate(){

@@ -618,93 +618,18 @@ var channelView = {
         $('#messageTextArea').css("width", width+'px');
         currentChannelModel.topOffset = APP.kendo.scroller().scrollTop;
         autosize($('#messageTextArea'));
+        
         $("#messages-listview").kendoMobileListView({
             dataSource: currentChannelModel.messagesDS,
             template: $("#messagesTemplate").html()
         }).kendoTouch({
             filter: "li",
-            //enableSwipe: true,
+            enableSwipe: true,
             tap: channelView.tapChannel,
-            //swipe: swipeChannel,
-            hold: channelView.holdChannel,
-
-            dragstart: function(e){
-
-                var selection = e.touch.currentTarget;
-                var selectionListItem = $(selection)
-
-                // add moving classes
-                $(selection).velocity("fadeIn").addClass("selectedLI");
-                $(".selectedLI > div").first().addClass("movingChat");
-
-                // remove chat time
-                $(".movingChat > .chat-sender-details").velocity({opacity: 0, translateY: "5%"}, {duration: 200});
-
-                $(".movingChat > .chat-message-user-content").velocity({scale: "1.01"}, {duration: 300});
-
+            swipe: function(e){
+            	
             },
-
-            drag: function(e){
-                var currentX = e.touch.x.location;
-                
-                var windowWidth = $(window).width();
-                var messageWidth = $(".movingChat > .chat-message-user-content").width();
-                var widthPerc = (messageWidth + currentX)  / (windowWidth + messageWidth);
-
-                if(e.touch.x.delta > 0){
-                	// drag chat
-	                diffMovingChat(widthPerc);
-
-	                var accelWidthPerc = (widthPerc * 2).toFixed(2);
-	                var percentWindow = (currentX / windowWidth).toFixed(2);
-	                
-	                if(percentWindow > 0.25){
-	                	
-	                    // change color to highlighted
-	                    $(".movingChat > .chat-message-user-content").css("background-color", "#9E788F");
-	                    $(".selectedLI > .message-slideOptions > .archive").css("display", "inline-block");
-	                    
-	                } else {
-	                    // change color to default
-	                    $(".movingChat > .chat-message-user-content").css("background-color", "#2D93FF");
-	                    $(".selectedLI > .message-slideOptions > .delete .archive").css("display", "none");
-	                    $(".selectedLI").removeClass("selectedLI-delete, selectedLI-archive");
-	                }
-	            }
-            },
-
-            dragend: function(e){
-                // get current position
-                var currentX = e.touch.x.location;
-                var windowWidth = $(window).width();
-                var widthPerc = currentX  / windowWidth;
-
-                //if drag is far enough, set action
-                if (widthPerc > 0.50) {
-                    $(".movingChat").velocity({translateX:"100%", opacity: 0},{duration: "fast"});
-                    $(".selectedLI > .message-slideOptions").velocity({left:"100%"},{duration: "fast"});
-
-                    // archive message
-                    archiveMessage();
-
-                } else {
-                    $(".movingChat").velocity({left:"0"},{duration: 600, easing: "spring"});
-                    $(".selectedLI > .message-slideOptions").css("opacity", "0");
-
-                    // show chat time
-                    $(".movingChat > .chat-sender-details").velocity({opacity: 1, translateY: "0"}, {duration: 200});
-
-                    // reset color and size
-                    $(".movingChat > .chat-message-user-content").css("background", "#6CADF3");
-                    $(".movingChat > .chat-message-user-content").velocity({scale: "1"}, {duration: 300});
-                }
-
-                // remove moving class
-                $(".selectedLI > div").removeClass("movingChat");
-                $("#messages-listview > .selectedLI").removeClass("selectedLI");
-
-            }
-
+            hold: channelView.holdChannel
         });
   	
   		
@@ -1051,6 +976,7 @@ var channelView = {
 
     tapChannel : function (e) {
         e.preventDefault();
+        
         var target = $(e.touch.initialTouch);
         var dataSource = currentChannelModel.messagesDS;
         var messageUID = $(e.touch.currentTarget).data("uid");
@@ -1059,23 +985,21 @@ var channelView = {
         //$('.archive').css('display', 'none');
         
         // Scale down the other photos in this chat...
-        $('.chat-message-photo').removeClass('chat-message-photo').addClass('chat-message-photo-small');
+        $('.chat-photo-box-zoom').removeClass('chat-photo-box-zoom').addClass("chat-photo-box");
 
         // If the photo is minimized and the user just clicked in the message zoom the photo in place
-        $('#'+message.msgID + ' .chat-message-photo-small').removeClass('chat-message-photo-small').addClass('chat-message-photo');
-
+        $('#'+message.msgID + ' .chat-photo-box').removeClass('chat-photo-box').addClass('chat-photo-box-zoom');
+        
         // User actually clicked on the photo so show the open the photo viewer
-        if ($(target).hasClass('chat-message-profileImg') || target[0].className === 'chat-message-photo-small') {
+        if ($(target).hasClass('chat-message-profileImg')) {
         	var sender = message.sender;
         	var contactInfo = channelView.getContactData(sender);
         	
-        	var results = channelView.getContactModel(sender);
-        	
-            //$('#modalPhotoViewImage').attr('src', photoUrl);
-
-            //$('#modalview-contactActions').data('kendoMobileModalView').open();
+        	// Open user img full screen
+            $('#modalPhotoViewImage').attr('src', contactInfo.photoUrl);
+            $("#modalPhotoView").data("kendoMobileModalView").open();
         }
-
+		
         if (currentChannelModel.privacyMode) {
             $('#'+message.msgID).removeClass('privateMode');
             $.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(3000).play()).then(function () {
@@ -1091,14 +1015,13 @@ var channelView = {
         var messageUID = $(e.touch.currentTarget).data("uid");
         var message = dataSource.getByUid(messageUID);
 
-        if (currentChannelModel.privacyMode) {
-            $('#'+message.msgID).removeClass('privateMode');
-        }
         var selection = e.sender.events.currentTarget;
         var selectionListItem = $(selection).closest("div");
         var selectionInnerDiv = $(selectionListItem);
 
-        //console.log(selectionInnerDiv);
+        if (currentChannelModel.privacyMode) {
+            $('#'+message.msgID).removeClass('privateMode');
+        }
 
         if(e.direction === "left"){
             var otherOpenedLi = $(".message-active");
@@ -1113,16 +1036,9 @@ var channelView = {
 
         }
         if (e.direction === 'right' && $(selection).hasClass("message-active") ) {
-            /*
-             // display the archive button
-             var button = kendo.fx($(e.touch.currentTarget).find(".archive"));
-             button.expand().duration(200).play();
-             */
+ 
 
             $(selection).velocity({translateX:"0"},{duration: "fast"}).removeClass("message-active");
-
-
-            //console.log("right");
         }
 
     },
@@ -1163,7 +1079,7 @@ var channelView = {
             1600, // max resolution in pixels
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
-            showChatImagePreview  // Optional preview callback
+            channelView.showChatImagePreview  // Optional preview callback
         );
     },
 
@@ -1175,7 +1091,7 @@ var channelView = {
             1600, // max resolution in pixels
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
-            showChatImagePreview  // Optional preview callback
+            channelView.showChatImagePreview  // Optional preview callback
         );
     },
 
@@ -1229,6 +1145,9 @@ var channelView = {
     messageMovie : function (e) {
         _preventDefault(e);
         mobileNotify("Chat Movie isn't wired up yet");
+    },
+    back2Channel: function(e){
+    	APP.kendo.navigate('#channel');
     }
 
 

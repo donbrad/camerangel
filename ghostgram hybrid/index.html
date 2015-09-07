@@ -445,15 +445,13 @@
      </div>
 </div>
 	
-<div data-role="modalview" id="modalPhotoView" data-zoom="true" data-elastic="true" style="width: 100%; height:100%; display: none;" class="ghostFullModal">
+<div data-role="modalview" id="modalPhotoView" data-zoom="true" data-stretch="true" style="width: 100%; height:100%; display: none;" class="ghostFullModal">
     
-	<div style="margin: 2px; height: 98%; width: auto; text-align: center; background: #27476e;">
+	<div class="fullPhotoModal">
 		<img id="modalPhotoViewImage" src="" style="width: 100%; height:auto; vertical-align: middle;"> </img>
 	</div>
 	<div data-role="footer">
-        <div data-role="navbar">
-            <a data-align="right" data-role="button" data-click="closeModalPhotoView">Close</a>
-        </div>
+    	<a class="btnFull-modal btnClear" data-role="button" data-click="closeModalPhotoView">Close</a>
     </div>
 </div>	
 
@@ -469,7 +467,7 @@
 	<div style="margin: 2px; height: 98%; width: auto; text-align: center; background: #27476e;">
 		<img id="photoViewImage" src="" style="width: 98%; height:auto; vertical-align: middle;"> </img>
 	</div>
-	 <div data-role="footer">
+	 <div class="footer" data-role="footer">
 		<div data-role="navbar">
 			<a data-align="left" data-role="button"  data-click="photoExport"><i class="ghostIconNavbar fa fa-share-square-o"></i> </a>
 

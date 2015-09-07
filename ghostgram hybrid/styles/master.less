@@ -28,6 +28,8 @@
 @secondaryFont: 'Open Sans', sans-serif;
 @displayFont: 'Hind', sans-serif;
 
+@mobile: ~"only screen and (max-width: 320px)";
+
 /* Imports */
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Hind:300,400,500|PT+Sans:400,700);
 @import "mixins.less";
@@ -1201,7 +1203,16 @@ div.footerMenu.km-footer > ul > li > a:active {
 	width: 100% !important;
 	position: fixed !important;
 	top: 0;
-	left: 0;    
+	left: 0;
+}
+
+.fullPhotoModal {
+	height: 100%;
+	width: 100%;
+	background: rgba(0, 0, 0, 0.85);
+	display: flex;
+  	align-items: center;
+  	justify-content: center;
 }
 
 .user-status {
@@ -2434,7 +2445,6 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
     border: none;
     padding-bottom: 0px;
     line-height: 1.5;
-    margin-bottom: 0.5rem;
 }
 #messageSend {
     font-weight: 600;
@@ -2443,12 +2453,13 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
     padding: 0px;
     padding-top: 3px;
     position: absolute;
-	bottom: 48px;
+	bottom: 45px;
 	right: 8px;
 }
 .messageCompose {
-    padding: 8px;
+    padding: 0.5rem;
     padding-bottom: 0px;
+    padding-top: 0.25rem;
 }
 .messageMediaBar ul {
     padding: 0px;
@@ -3876,23 +3887,46 @@ div.contactListBox.activeContact > div > div > ul {
 }
 
 .chat-message-photo {
-    width: 80%;
+    width: 100%;
     height: auto;
-	border: 1px solid #27476e;
+	padding: 0.25rem;
+	background: #fff;
 }
 
-.chat-message-photo-small {
-    width: 20%;
-    height: auto;
-	border: 1px solid #27476e;
+.chat-photo-box,
+.chat-photo-box-zoom {
+	margin-left: 13%;
+	margin-top: 0.5rem;
+	@media @mobile {
+		margin-left: 15%;
+	}
 }
+
+.chat-photo-box {
+	border: 1px solid @shade-200;
+	width: 40%;
+	float: left;
+}
+
+.chat-photo-box-zoom {
+	.shadow-1;
+	float: right;
+	width: 88%;
+	@media @mobile {
+		width: 85%;
+	}
+}
+
+
 
 .chat-message-content {
-    margin-left: 44px;
-    height: 100%;
+    max-width: 88%;
+    @media @mobile {
+    	max-width: 85%;
+    } 
 }
 
-.chat-message-user-content {
+.chat-message-sender {
     height: 100%;
     float: left;
     padding: 0.2em 0.35em;
@@ -3902,14 +3936,44 @@ div.contactListBox.activeContact > div > div > ul {
     margin-top: 0.2em;
 }
 
-.chat-message-user-content:after {
+.chat-message-sender:after {
 	content: "";
 	display: block;
 	position: absolute;
 	width: 0;
-	border-width: 8px 8px 0;
-	border-style: solid;
-	border-color: @primary-200 transparent;
+	border-top: 0.4rem solid transparent;
+	border-bottom: 0.4rem solid transparent;
+	border-right: 0.3rem solid @primary-200;
+	top: 1.5rem;
+	left: 11%;
+	@media @mobile {
+		left: 13.5%;
+	}
+}
+
+.chat-message-receiver {
+    height: 100%;
+    float: left;
+    padding: 0.2em 0.35em;
+    border-radius: .25em;
+    color: @black;
+    background: darken(@shade-300, 5%);
+    margin-top: 0.2em;
+}
+
+.chat-message-receiver:after {
+	content: "";
+	display: block;
+	position: absolute;
+	width: 0;
+	border-top: 0.4rem solid transparent;
+	border-bottom: 0.4rem solid transparent;
+	border-right: 0.3rem solid darken(@shade-300, 5%);
+	top: 1.5rem;
+	left: 11%;
+	@media @mobile {
+		left: 13.5%;
+	}
 }
 
 .movingChat > .chat-message-user-content:after {
@@ -3930,13 +3994,16 @@ div.contactListBox.activeContact > div > div > ul {
 
 .chat-message-text {
     .font-size(14);
-    letter-spacing: 1px;
+    line-height: 1.4;
 }
 
-.chat-sender-details {
+.chat-details {
 	.font-size(11);
 	color: @shade-100;
-	padding-left: 22%;
+	padding-left: 14%;
+	@media @mobile {
+		padding-left: 17%;
+	}
 }
 
 .chat-sender {
@@ -3946,6 +4013,7 @@ div.contactListBox.activeContact > div > div > ul {
 .chat-time {
     float: right;
     .font-size(11);
+    color: darken(@shade-200, 5%);
 }
 
 #channel > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
@@ -3955,12 +4023,15 @@ div.contactListBox.activeContact > div > div > ul {
 }
 
 .chat-message-user-img {
-	width: 20%;
+	width: 12%;
 	float: left;
+	@media @mobile {
+		width: 15%;
+	}
 }
 
 .chat-message-user-content {
-	max-width: 78%;
+	max-width: 83%;
 	margin-left: 2%;
 	float: left;
 }
