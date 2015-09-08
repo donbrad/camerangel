@@ -606,6 +606,7 @@ var channelView = {
     privacyMode: false,  // Privacy mode - obscure messages after timeout
     currentContact: null,
     intervalId : null,
+    sendMessageHandler : null,
     messagesDS: new kendo.data.DataSource({  // this is the list view data source for chat messages
         sort: {
             field: "timeStamp",
@@ -744,6 +745,9 @@ var channelView = {
           thisChannelHandler.onPresence(channelView.onChannelPresence);
           mobileNotify("Getting Previous Messages...");
           currentChannelModel.openChannel(thisChannelHandler);*/
+
+          channelView.sendMessageHandler = privateChannel.sendMessage;
+
           var sentMessages = channelModel.getChannelArchive(thisChannel.channelId);
           privateChannel.getMessageHistory(function (messages) {
               channelView.messagesDS.data([]);
