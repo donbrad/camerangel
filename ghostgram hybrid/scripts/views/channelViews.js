@@ -1180,11 +1180,12 @@ var channelView = {
     messageMovie : function (e) {
         _preventDefault(e);
         mobileNotify("Chat Movie isn't wired up yet");
-    },
-    back2Channel: function(e){
-    	APP.kendo.navigate('#channel');
-    }
+    }/*,
 
+    back2Channel: function(e){
+    	APP.kendo.navigate('#channel');  Can't call #channel without a channelID!!! Jordan please add TODO don on any code changes or skype me
+    }
+*/
 
 
 
