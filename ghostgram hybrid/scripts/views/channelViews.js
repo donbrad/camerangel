@@ -40,7 +40,7 @@ var channelsView = {
             enableSwipe: true,
             tap: function (e) {
                 //var selector = e.target[0].parentElement;
-                var selection = e.sender.events.currentTarget;
+                var selector = e.sender.events.currentTarget;
                 if($(selector).hasClass("chat-mainBox") === true || e.target[0].className === "chat-mainBox"){
                     var channelUrl = "#channel?channel=" + e.dataItem.channelId;
                     APP.kendo.navigate(channelUrl);
