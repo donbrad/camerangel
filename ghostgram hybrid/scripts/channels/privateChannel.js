@@ -166,7 +166,7 @@ var privateChannel = {
 
         APP.pubnub.uuid(function (msgID) {
             APP.pubnub.publish({
-                channel: channel,
+                channel: privateChannel.channelId,
                 message: {
                     recipient: recipient,
                     msgID: msgID,
