@@ -24,13 +24,14 @@ var privateChannel = {
         });
     },
 
-    open : function (channelUUID, userUUID, alias, publicKey, privateKey, contactUUID, contactKey) {
+    open : function (channelUUID, userUUID, alias, name,  publicKey, privateKey, contactUUID, contactKey) {
         privateChannel.RSAkey = cryptico.privateKeyFromString(privateKey);
 
 
         privateChannel.userId = userUUID;
         privateChannel.thisUser = {
             alias: alias,
+            name: name,
             username: userUUID,
             publicKey: publicKey
         };
@@ -48,8 +49,8 @@ var privateChannel = {
             channel: privateChannel.channelId,
             windowing: 50000,
             restore: true,
-            callback: messageHandler,
-            presence: presenceHandler,
+            callback: privateChannel.receiveHandler,
+            presence: privateChannel.presenceHandler,
             // Set our state to our user object, which contains our username and public key.
             state: privateChannel.thisUser
         });

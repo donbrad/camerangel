@@ -717,7 +717,7 @@ var channelView = {
           // Privacy UI
           $('#privacyMode').html('<img src="images/privacy-on.svg" />');
           $("#privacyStatus").removeClass("hidden");
-          var userKey = thisUser.publicKey, privateKey = thisUser.privateKey;
+          var userKey = thisUser.publicKey, privateKey = thisUser.privateKey, name = thisUser.name;
           if (thisChannel.members[0] === thisUser.userUUID)
               contactUUID = thisChannel.members[1];
           else
@@ -739,7 +739,7 @@ var channelView = {
               $('#channelImage').attr('src', '');
           }
 
-          privateChannel.open(channelUUID, thisUser.userUUID, thisUser.alias, userKey, privateKey, contactUUID, contactKey);
+          privateChannel.open(channelUUID, thisUser.userUUID, thisUser.alias, name, userKey, privateKey, contactUUID, contactKey);
         /*  thisChannelHandler.onMessage(channelView.onChannelRead);
           thisChannelHandler.onPresence(channelView.onChannelPresence);
           mobileNotify("Getting Previous Messages...");
