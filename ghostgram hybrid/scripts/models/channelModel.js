@@ -93,7 +93,7 @@ var channelModel = {
 
     loadLocal : function () {
         var localArray = localStorage[channelModel._sentMessages];
-        if (localArray === undefined || localArray === null) {
+        if (localArray === undefined || localArray === null || localArray === '') {
             return ([]);
         }
 
