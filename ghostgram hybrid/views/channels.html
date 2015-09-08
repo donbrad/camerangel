@@ -55,32 +55,32 @@
     			<ul class="chat-option-ul">
     				# if (isPrivate){#
     					<li>
-		    				<a class="btnClear-red" data-channel="#:channelId #" data-role="button" id="chat-option-delete" data-click="deleteChannel">
+		    				<a class="btnClear-red" data-channel="#:channelId #" data-role="button"  data-click="deleteChannel">
 		    					<img src="images/trash.svg" />
 		    					<p class="chat-option-selection"> Delete</p>
 		    				</a>
 	    				</li>
 	    				<li>
-		    				<a class="btnClear-grey" data-role="button" id="chat-option-clear" data-click="eraseChannel">
+		    				<a class="btnClear-grey" data-role="button" data-channel="#:channelId #" data-click="eraseChannel">
 			    				<img src="images/option-clear.svg" id="chat-option-clearBtn"/>
 			    				<p class="chat-option-selection">Clear</p>
 			    			</a>
 	    				</li>
     				#} else {#
     					<li>
-		    				<a class="btnClear-red" data-role="button" id="chat-option-delete" data-click="deleteChannel" data-channel="#:channelId #">
+		    				<a class="btnClear-red" data-role="button" data-channel="#:channelId #"data-click="deleteChannel" data-channel="#:channelId #">
 		    					<img src="images/trash.svg" />
 		    					<p class="chat-option-selection"> Delete</p>
 		    				</a>
 	    				</li>
 	    				<li>
-		    				<a class="btnClear-grey" data-role="button" id="chat-option-clear" data-click="eraseChannel">
+		    				<a class="btnClear-grey" data-role="button" data-channel="#:channelId #" data-click="eraseChannel">
 			    				<img src="images/option-clear.svg" id="chat-option-clearBtn"/>
 			    				<p class="chat-option-selection">Clear</p>
 			    			</a>
 	    				</li>
 	    				<li>
-		    				<a class="btnClear-grey" data-role="button" id="chat-option-archive" data-click="archiveChannel">
+		    				<a class="btnClear-grey" data-role="button" data-channel="#:channelId #" data-click="archiveChannel">
 			    				<img src="images/option-archive.svg" />
 			    				<p class="chat-option-selection">Archive</p>
 			    			</a>
@@ -89,7 +89,7 @@
     				#}#
     				# if(isPrivate !== true && isOwner){#
     						<li>
-			    				<a class="btnClear-grey" data-role="button" id="chat-option-edit" data-click="channelsView.editChannel" data-channel="#:channelId #">
+			    				<a class="btnClear-grey" data-role="button" data-click="channelsView.editChannel" data-channel="#:channelId #">
 				    				<img src="images/option-edit.svg" />
 				    				<p class="chat-option-selection">Edit</p>
 				    			</a>
@@ -99,7 +99,7 @@
     			</ul>
     		</div>
     	</div><!-- chat-options -->
-    	<a class="chat-mainBoxLink">
+    	<a class="chat-mainBoxLink" id="#:channelId#">
 	    	#if (isPrivate){#
 	    		<div class="chat-mainBox private">
 	    	#} else {#
