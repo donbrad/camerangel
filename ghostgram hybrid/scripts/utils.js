@@ -227,7 +227,7 @@ function getUserContactInfo(uuid, callBack) {
 			if (result.status === 'ok') {
 				callBack({
 					found: true,
-					user: JSON.parse(result.user)
+					user: result.user
 				});
 			} else {
 				callBack({
@@ -251,7 +251,7 @@ function findUserByEmail(email, callBack) {
 			if (result.status === 'ok') {
 				callBack({
 					found: true,
-					user: JSON.parse(result.user)
+					user: result.user
 				});
 			} else {
 				callBack({

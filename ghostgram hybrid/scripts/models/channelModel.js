@@ -380,7 +380,7 @@ var channelModel = {
 
         // Generic fields for owner and members
         channel.set("name", name );
-        
+
         channel.set('isEvent', false);
         channel.set("media",   true);
         channel.set("archive", true);
