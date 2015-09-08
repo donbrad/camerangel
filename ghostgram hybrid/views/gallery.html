@@ -155,7 +155,6 @@
 
 <script id="archive-filter-template" type="text/x-kendo-template">
 	<span>#: data.name #</span>
-	#: console.log(data) #
 </script>
 
 <script type="text/x-kendo-template" id="tags-template">
@@ -187,78 +186,61 @@
 
 <script type="text/x-kendo-template" id="archive-template">
 	<div class="card">
-		# if (data.type === "Photos"){#
-				<div class="photoTopDiv">
-					<div class="photoSender">
-						<div class="senderProfileImg">
-							<img src="#= data.message.sender.image #" class="circle-img-md" />
-						</div>
-						<div class="senderMessage">
-							<p class="chat-time"> #= moment(data.message.date).fromNow() #</p>
-							<div class="chat-bubble"> #= data.message.text # </div>
-						</div>
-					</div>
-					<img src="#= data.object.url #" />
-					
-				</div>
-				
-				<div class="clearfix"></div>
-		#} else {#
-			<div class="top">
-				<button class="delete right hidden" data-role="button" data-click="archiveView.deleteDoc" data-id="#= data.id #">X</button>
-				<div class="senderProfileImg">
-					<img src="#= data.message.sender.image #" class="circle-img-md" />
-				</div>
-				<div class="senderMessage">
-					<p class="chat-time"> #= moment(data.message.date).fromNow() #</p>
-					<div class="chat-bubble"> #= data.message.text # </div>
-					<p class="chat-details">From #: data.message.channelName #<a class="btnClear-grey-sm"></a></p>
-				</div>
-				<div class="clearfix"></div>
-			</div>
-		#}#
-		
-		<div class="bottom">
-			# if (data.type === 'Events') {# 
-				<div class="event object">
-					<h4>#= data.object.name #</h4>
-					<p>#= data.object.placeName #</p> 
-					<p>#= data.object.address #</p> 
-					
-					# if (data.object.start === data.object.end) { #
-						<p>#= moment(data.object.start).format("MMM Do YYYY") #</p>
-					#} else { #
-						<p>#= moment(data.object.start).format("MMM Do") # - #= moment(data.object.end).format("MMM Do YYYY") #</p>
-					#}#
-					<div class="cardAction">
-						<a class="btnClear">Action</a>
-					<div>
+		#
+			var singleDayTime = moment(data.object.start).format("MMM Do, YYYY");
+			var multiStartTime = moment(data.object.start).format("MMM Do - ");
+			var multiEndTime = moment(data.object.end).format("Do, YYYY");
+			var multiDayTime = multiStartTime + multiEndTime;
+		#
+			<p class="helper cardInfoBar"><img src="images/icon-#=data.type#.svg" /> 
+				#= data.message.sender.name # posted in #= data.message.channelName #
+			</p>
 
-				</div>
+		# if (data.type === "Events"){#
+			<h4> #: data.object.name # </h4>
+			<p>#: data.object.placeName #</p><p>#: data.object.address #</p>
+			# if(data.object.start === data.object.end && data.object.start !== "") {#
+				<p>#: singleDayTime # </p>
+			#} else {#
+				<p>#: multiDayTime # </p>
 			#}#
-			# if (data.type === 'Links') {# 
-				<div class="link object" data-url="#= data.object.url #">
-					<h4>#= data.object.title #</h4>
-					<p>#= data.object.url #</p>
-				</div>
-				<div class="cardAction">
-					<a class="btnClear">Action</a>
-				<div>
-			#}#
-			# if (data.type === 'Photos') {# 
-				<div class="photo object">
-					<p>#= data.object.placeName #</p> 
-					<p>#= data.object.address #</p>
-				</div> 
-				<div class="cardAction">
-					<a class="btnClear">Action</a>
-				<div>
-			# } #
-			# if (data.type === 'Chat') {#
-				<div class="cardAction">
-					<a class="btnClear">Action</a>
-				<div>
-			#}# 
+			
+		#}#
+		# if(data.type === "Links") {#
+			<h4>#: data.object.title #</h4>
+			<p>#: data.object.url #</p>
+
+		#}#
+		# if(data.type === "Photos") {#
+			<div class="photoPreview">
+				<img src="#= data.object.url #" />
+			</div>
+			<div class="photoInfo">
+				<h4>#: data.object.placeName #</h4>
+				<p>#: data.object.address #</p>
+			</div>
+			<div class="clearfix"></div>
+		#}#
+		# if(data.type === "Chat") {#
+			<p>#: data.message.text #</p>
+		#}#
+		<div class="bottom">
+			<div class="cardAction">
+				<a class="btnClear">View</a>
+				<a class="btnClear">Share</a>
+			<div>
 		</div>
-</div>
+	</div>
 </script>
+
+
+
+
+
+
+
+
+
+
+
+

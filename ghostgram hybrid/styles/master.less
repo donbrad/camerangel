@@ -2740,7 +2740,6 @@ div.loginBox > form > div > ul > li {
 }
 
 #archive-list {
-	background: #fff;
 	width: 100%;
 }
 
@@ -2750,10 +2749,11 @@ div.loginBox > form > div > ul > li {
 
 .card {
 	width: 95%;
-	margin: 1rem auto 1rem auto;
+	margin: 0px auto 0px auto;
 	background: #fff;
 	.shadowHelper(1);
-	border-radius: 3px;
+	border-radius: 2px;
+	padding-top: 0.5rem;
 	.top {
 		background-color: #f5f5f5;
 		border-bottom: 1px solid @shade-200;
@@ -2795,11 +2795,24 @@ div.loginBox > form > div > ul > li {
 			margin: 0px;
 		}
 		.cardAction {
-			margin-top: 0.5rem;
 			position: relative;
 			left: -0.5rem;
 		}
 	}
+}
+
+.photoPreview {
+	width: 25%;
+	height: auto;
+	float: left;
+	> img {
+		width: 100%;
+	}
+}
+
+.photoInfo {
+	float: left;
+	width: 75%;
 }
 
 .photoSender {
@@ -2813,6 +2826,14 @@ div.loginBox > form > div > ul > li {
 .senderProfileImg {
 	width: 20%;
 	float: left;
+}
+
+#archive-list > div.km-scroll-container > div > ul > li.km-group-container {
+	border-color: transparent;
+}
+
+.cardInfoBar {
+	.font-size(12);
 }
 
 // Archive list
