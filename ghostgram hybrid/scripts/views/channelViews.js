@@ -927,20 +927,26 @@ var channelView = {
 
     messageSend : function (e) {
         _preventDefault(e);
+        var validMessage = false;
 
         var text = $('#messageTextArea').val();
-        if (text.length === 0)
-            return;
+        if (text.length > 0) {
+            validMessage = true;
+        }
 
         var messageData = {geo: APP.location.position};
 
-        if (currentChannelModel.currentMessage.photo !== null) {
+        if (currentChannelModel.currentMessage.photo !== undefined && currentChannelModel.currentMessage.photo !== null) {
+            validMessage = true;
             messageData.photo = currentChannelModel.currentMessage.photo;
         }
-        channelView.sendMessageHandler(channelView.currentContactId, text, messageData, 86400);
-        channelView.hideChatImagePreview();
-        channelView._initMessageTextArea();
-        currentChannelModel.currentMessage = {};
+
+        if (validMessage === true ) {
+            channelView.sendMessageHandler(channelView.currentContactId, text, messageData, 86400);
+            channelView.hideChatImagePreview();
+            channelView._initMessageTextArea();
+            currentChannelModel.currentMessage = {};
+        }
 
     },
 
