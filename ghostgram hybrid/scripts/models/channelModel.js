@@ -51,12 +51,13 @@ var channelModel = {
             },
 
             read: function(options){
-                var localData = JSON.parse(localStorage[channelModel._sentMessages]);
+
+                var localData = channelModel.loadLocal();
                 options.success(localData);
             },
 
             update: function(options){
-                var localData = JSON.parse(localStorage[channelModel._sentMessages]);
+                var localData = channelModel.loadLocal();
 
                 for(var i=0; i<localData.length; i++){
                     if(localData[i].msgID == options.data.msgID){
@@ -68,7 +69,7 @@ var channelModel = {
             },
 
             destroy: function(options){
-                var localData = JSON.parse(localStorage[channelModel._sentMessages]);
+                var localData = channelModel.loadLocal();
                 for(var i=0; i<localData.length; i++){
                     if(localData[i].msgID === options.data.msgID){
                         localData.splice(i,1);
@@ -89,6 +90,15 @@ var channelModel = {
         offlineStorage: "channelmap-offline"
     }),
 
+
+    loadLocal : function () {
+        var localArray = localStorage[channelModel._sentMessages];
+        if (localArray === undefined || localArray === null) {
+            return ([]);
+        }
+
+        return ( JSON.parse(localArray));
+    },
 
     init :  function () {
         channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
