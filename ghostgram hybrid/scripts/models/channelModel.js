@@ -43,39 +43,39 @@ var channelModel = {
         },
         transport: {
             create: function(options){
-                var localData = JSON.parse(localStorage[this._sentMessages]);
+                var localData = JSON.parse(localStorage[channelModel._sentMessages]);
 
                 localData.push(options.data);
-                localStorage[this._sentMessages] = JSON.stringify(localData);
+                localStorage[channelModel._sentMessages] = JSON.stringify(localData);
                 options.success(options.data);
             },
 
             read: function(options){
-                var localData = JSON.parse(localStorage[this._sentMessages]);
+                var localData = JSON.parse(localStorage[channelModel._sentMessages]);
                 options.success(localData);
             },
 
             update: function(options){
-                var localData = JSON.parse(localStorage[this._sentMessages]);
+                var localData = JSON.parse(localStorage[channelModel._sentMessages]);
 
                 for(var i=0; i<localData.length; i++){
                     if(localData[i].msgID == options.data.msgID){
                         localData[i].Value = options.data.Value;
                     }
                 }
-                localStorage[this._sentMessages] = JSON.stringify(localData);
+                localStorage[channelModel._sentMessages] = JSON.stringify(localData);
                 options.success(options.data);
             },
 
             destroy: function(options){
-                var localData = JSON.parse(localStorage[this._sentMessages]);
+                var localData = JSON.parse(localStorage[channelModel._sentMessages]);
                 for(var i=0; i<localData.length; i++){
                     if(localData[i].msgID === options.data.msgID){
                         localData.splice(i,1);
                         break;
                     }
                 }
-                localStorage[this._sentMessages] = JSON.stringify(localData);
+                localStorage[channelModel._sentMessages] = JSON.stringify(localData);
                 options.success(localData);
             }
         }
