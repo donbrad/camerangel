@@ -25,7 +25,7 @@ var channelModel = {
         sort: {
             field: "timeStamp",
             dir: "desc"
-        },
+        }/*,
         schema: {
             model: {
                 id: "msgID",
@@ -79,7 +79,7 @@ var channelModel = {
                 localStorage[channelModel._sentMessages] = JSON.stringify(localData);
                 options.success(localData);
             }
-        }
+        }*/
     }),
 
     privateChannelsDS: new kendo.data.DataSource({
@@ -103,8 +103,8 @@ var channelModel = {
     init :  function () {
         channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
         // If sentMessage local storage doesn't exit - create it
-        if (localStorage[this._sentMessages] === undefined)
-            localStorage[this._sentMessages] = JSON.stringify([]);
+     /*   if (localStorage[this._sentMessages] === undefined)
+            localStorage[this._sentMessages] = JSON.stringify([]);*/
     },
 
     // Get messages archive for current channel (past 24 hours)
