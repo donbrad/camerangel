@@ -57,7 +57,8 @@ var privateChannel = {
     },
 
     archiveMessage : function (msg) {
-        channelModel.archiveMessage(msg.time, JSON.stringify(msg));
+        channelModel.sentMessagesDS.add(msg);
+        channelModel.sentMessagesDS.sync();
     },
 
     receiveHandler : function (msg) {
