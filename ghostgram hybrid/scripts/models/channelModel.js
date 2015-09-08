@@ -22,6 +22,7 @@ var channelModel = {
 
     sentMessagesDS: new kendo.data.DataSource({ // This is store for private messages sent by this user
         offlineStorage: "sentMessages-offline",
+        online : false,
         sort: {
             field: "timeStamp",
             dir: "desc"
@@ -102,6 +103,8 @@ var channelModel = {
 
     init :  function () {
         channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
+        channelModel.sentMessagesDS.online(false);
+        channelModel.sentMessagesDS.sync();
         // If sentMessage local storage doesn't exit - create it
      /*   if (localStorage[this._sentMessages] === undefined)
             localStorage[this._sentMessages] = JSON.stringify([]);*/
