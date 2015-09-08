@@ -42,7 +42,8 @@ var channelsView = {
                 //var selector = e.target[0].parentElement;
                 var selector = $(e.sender.events.currentTarget);
                 if(selector.hasClass("chat-mainBox") === true || e.target[0].className === "chat-mainBox"){
-                    var channelUrl = "#channel?channel=" + e.dataItem.channelId;
+                    var channelId = selector.context.parentElement.id;
+                    var channelUrl = "#channel?channel=" + channelId;
                     APP.kendo.navigate(channelUrl);
                 }
             },
