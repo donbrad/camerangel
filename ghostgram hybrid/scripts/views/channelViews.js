@@ -649,7 +649,7 @@ var channelView = {
         autosize($('#messageTextArea'));
         
         $("#messages-listview").kendoMobileListView({
-            dataSource: currentChannelModel.messagesDS,
+            dataSource: channelView.messagesDS,
             template: $("#messagesTemplate").html()
 
         }).kendoTouch({
