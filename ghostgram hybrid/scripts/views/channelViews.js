@@ -38,6 +38,13 @@ var channelsView = {
         }).kendoTouch({
             filter: ".chat-mainBox",
             enableSwipe: true,
+            tap: function (e) {
+                var selector = e.target[0].parentElement;
+                if($(selector).hasClass("chat-mainBox") === true || e.target[0].className === "chat-mainBox"){
+                    var channelUrl = "#channel?channel=" + e.dataItem.channelId;
+                    APP.kendo.navigate(channelUrl);
+                }
+            },
             swipe: function(e){
                 var selection = e.sender.events.currentTarget;
 
