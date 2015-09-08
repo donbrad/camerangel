@@ -739,13 +739,13 @@ var channelView = {
               $('#channelImage').attr('src', '');
           }
 
-          thisChannelHandler = new secureChannel(channelUUID, thisUser.userUUID, thisUser.alias, userKey, privateKey, contactUUID, contactKey);
-          thisChannelHandler.onMessage(channelView.onChannelRead);
+          privateChannel.open(channelUUID, thisUser.userUUID, thisUser.alias, userKey, privateKey, contactUUID, contactKey);
+        /*  thisChannelHandler.onMessage(channelView.onChannelRead);
           thisChannelHandler.onPresence(channelView.onChannelPresence);
           mobileNotify("Getting Previous Messages...");
-          currentChannelModel.openChannel(thisChannelHandler);
+          currentChannelModel.openChannel(thisChannelHandler);*/
           var sentMessages = channelModel.getChannelArchive(thisChannel.channelId);
-          thisChannelHandler.getMessageHistory(function (messages) {
+          privateChannel.getMessageHistory(function (messages) {
               channelView.messagesDS.data([]);
               for (var i=0; i<messages.length; i++){
                   var message = messages[i];
