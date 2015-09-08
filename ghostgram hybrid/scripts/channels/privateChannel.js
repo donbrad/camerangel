@@ -141,13 +141,13 @@ var privateChannel = {
     },
 
     hereNowHandler : function (msg) {
-        privateChannel.users[userUUID] = privateChannel.thisUser;
+        privateChannel.users[privateChannel.userId] = privateChannel.thisUser;
         for (var i = 0; i < msg.uuids.length; i++) {
             if ("state" in msg.uuids[i]) {
                 privateChannel.users[msg.uuids[i].state.username] = msg.uuids[i].state;
             }
         }
-        presenceChange();
+        privateChannel.presenceChange();
     },
 
     sendMessage: function (recipient, message, data, ttl) {
