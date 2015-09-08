@@ -25,7 +25,7 @@ var privateChannel = {
     },
 
     open : function (channelUUID, userUUID, alias, name,  publicKey, privateKey, contactUUID, contactKey) {
-        privateChannel.RSAkey = cryptico.privateKeyFromString(privateKey);
+        privateChannel.RSAKey = cryptico.privateKeyFromString(privateKey);
 
 
         privateChannel.userId = userUUID;
@@ -63,9 +63,9 @@ var privateChannel = {
     receiveHandler : function (msg) {
         if (msg.recipient === privateChannel.userId) {
             var data = null;
-            var content = cryptico.decrypt(msg.content.cipher, privateChannel.RSAkey).plaintext;
+            var content = cryptico.decrypt(msg.content.cipher, privateChannel.RSAKey).plaintext;
             if (msg.data !== undefined && msg.data !== null) {
-                data = cryptico.decrypt(msg.data.cipher, privateChannel.RSAkey).plaintext;
+                data = cryptico.decrypt(msg.data.cipher, privateChannel.RSAKey).plaintext;
                 data = JSON.parse(data);
             }
 
@@ -131,7 +131,7 @@ var privateChannel = {
         }
         // A user has left or timed out of ghostgrams so we remove them from our users object.
         else if (msg.action === "timeout" || msg.action === "leave") {
-            delete users[msg.uuid];
+            delete privateChannel.users[msg.uuid];
             privateChannel.presenceChange();
         }
     },
@@ -214,11 +214,11 @@ var privateChannel = {
                     var msg = messages[i];
                     var content = '';
                     if (msg.recipient === privateChannel.userId)  {
-                        // Just process messages from other user
+                        // Just process messages from other user -- sent to this user (recipient)
                         var data = null;
-                        var content = cryptico.decrypt(msg.content.cipher, privateChannel.RSAkey).plaintext;
+                        var content = cryptico.decrypt(msg.content.cipher, privateChannel.RSAKey).plaintext;
                         if (msg.data !== undefined && msg.data !== null) {
-                            data = cryptico.decrypt(msg.data.cipher, privateChannel.RSAkey).plaintext;
+                            data = cryptico.decrypt(msg.data.cipher, privateChannel.RSAKey).plaintext;
                             data = JSON.parse(data);
                         }
                         var parsedMsg = {
