@@ -937,7 +937,7 @@ var channelView = {
         if (currentChannelModel.currentMessage.photo !== null) {
             messageData.photo = currentChannelModel.currentMessage.photo;
         }
-        currentChannelModel.handler.sendMessage(channelView.currentContactId, text, messageData, 86400);
+        channelView.sendMessageHandler(channelView.currentContactId, text, messageData, 86400);
         channelView.hideChatImagePreview();
         channelView._initMessageTextArea();
         currentChannelModel.currentMessage = {};
