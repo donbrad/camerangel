@@ -808,12 +808,12 @@ var channelView = {
 
     onHide : function (e) {
 
-        if (currentChannelModel.currentChannel !== undefined) {
+        if (currentChannelModel.currentChannel !== undefined && currentChannelModel.currentChannel !== null) {
             currentChannelModel.handler.closeChannel();
 
         }
 
-        if (channelView.intervalId !== null) {
+        if (channelView.intervalId !== undefined && channelView.intervalId !== null) {
             clearInterval(channelView.intervalId);
             channelView = null;
         }
