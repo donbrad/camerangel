@@ -891,11 +891,19 @@ var channelView = {
         //mobileNotify("message archived");
 
         // ToDo - wire up archive
+        if (message === null) {
+            mobileNotify("No active message!!!");
+           // askRequestModal.close();
+        }
 
+        var contact = contactModel.getContactModel(message.sender);
+
+        var contactName = contact.name + " (" + contact.alias + ")";
+        $('#askRequest-contactName').text(contactName);
 
         // ToDo - wire up requests
-        APP.kendo.navigate("#modalview-requestContent");
-        //$("#modalview-requestContent").data("kendoMobileModalView").open();
+        //APP.kendo.navigate("#modalview-requestContent");
+        $("#modalview-requestContent").data("kendoMobileModalView").open();
     },
 
     onChannelPresence : function () {
