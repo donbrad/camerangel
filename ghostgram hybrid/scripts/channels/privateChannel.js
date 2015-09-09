@@ -60,20 +60,27 @@ var privateChannel = {
     // archive the message in the private channel with this user's public key and send to user.
     // this provides a secure roamable private sent folder without localstorage and parse...
     archiveMessage : function (msg) {
+        var archiveMsg = {};
+        archiveMsg.msgID = msg.msgID;
+        archiveMsg.time = msg.time;
+        archiveMsg.TTL = msg.TTL;
+        archiveMsg.sender = msg.sender;
+        archiveMsg.recipient = privateChannel.userId;
         var encryptMessage = '', encryptData = '';
         var currentTime =  msg.time;  // use the current message time (time sent by this user)
         encryptMessage = cryptico.encrypt(msg.content, privateChannel.publicKey);
-        msg.content = encryptMessage;
+        archiveMsg.content = encryptMessage;
         if (msg.data !== undefined && msg.data !== null)
             encryptData = cryptico.encrypt(JSON.stringify(msg.data), privateChannel.publicKey);
         else
             encryptData = null;
-        msg.data = encryptData;
-        msg.recipient = privateChannel.userId;
+        archiveMsg.data = encryptData;
+
+
 
         APP.pubnub.publish({
             channel: privateChannel.channelId,
-            message: msg,
+            message: archiveMsg,
             error: function (error) {
                 mobileNotify("Archive message error : " + error);
             }
