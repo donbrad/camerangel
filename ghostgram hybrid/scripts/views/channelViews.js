@@ -676,35 +676,36 @@ var channelView = {
     },
 
     onShow : function (e) {
-      _preventDefault(e);
-      // hide action btn
-      $("#channels > div.footerMenu.km-footer > a").css("display","none");
+        _preventDefault(e);
+        // hide action btn
+        $("#channels > div.footerMenu.km-footer > a").css("display","none");
 
-      var channelUUID = e.view.params.channel;
+        var channelUUID = e.view.params.channel;
 
-      var thisUser = userModel.currentUser;
-      var thisChannel =  currentChannelModel.setCurrentChannel(channelUUID);
+        var thisUser = userModel.currentUser;
+        var thisChannel =  currentChannelModel.setCurrentChannel(channelUUID);
         if (thisChannel === undefined) {
             mobileNotify("ChatView -- chat doesn't exist : " + channelUUID);
             return;
         }
-      var contactUUID = null;
-      var thisChannelHandler = null;
-      var name = channelView.formatName(thisChannel.name);
+        var contactUUID = null;
+        var thisChannelHandler = null;
+        channelView.activeMessage = null;
+        var name = channelView.formatName(thisChannel.name);
 
-      // Hide the image preview div
-      channelView.hideChatImagePreview();
-      APP.updateGeoLocation();
+        // Hide the image preview div
+        channelView.hideChatImagePreview();
+        APP.updateGeoLocation();
 
-      channelView.privacyMode = false;
+        channelView.privacyMode = false;
 
 
-      // Privacy UI
-      $('#privacyMode').html('<img src="images/privacy-off.svg" />');
-      $("#privacyStatus").addClass("hidden");
-      $("#channelNavBar").data('kendoMobileNavBar').title(name);
+        // Privacy UI
+        $('#privacyMode').html('<img src="images/privacy-off.svg" />');
+        $("#privacyStatus").addClass("hidden");
+        $("#channelNavBar").data('kendoMobileNavBar').title(name);
 
-      if (thisChannel.isPrivate) {
+        if (thisChannel.isPrivate) {
 
           // *** Private Channel ***
           var contactKey = thisChannel.contactKey;
@@ -772,7 +773,7 @@ var channelView = {
               channelView.scrollToBottom();
           });
 
-      } else {
+        } else {
 
           //*** Group Channel ***
           $('#messagePresenceButton').show();
@@ -802,7 +803,7 @@ var channelView = {
               channelView.scrollToBottom();
           });
 
-      }
+        }
 
     },
 
@@ -891,8 +892,10 @@ var channelView = {
 
         // ToDo - wire up archive
 
+
         // ToDo - wire up requests
-        $("#modalview-requestContent").data("kendoMobileModalView").open();
+        APP.kendo.navigate("#modalview-requestContent");
+        //$("#modalview-requestContent").data("kendoMobileModalView").open();
     },
 
     onChannelPresence : function () {
