@@ -762,7 +762,7 @@ var channelView = {
               }
 
               channelView.messagesDS.data(messages);
-            
+
               //channelView.updateMessageTimeStamps();
 
               /*if (channelView.intervalId === null) {
