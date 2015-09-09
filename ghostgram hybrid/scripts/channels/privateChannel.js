@@ -209,10 +209,11 @@ var privateChannel = {
     },
 
     getMessageHistory: function (callBack) {
-        var timeStamp = ggTime.toPubNubTime((ggTime.lastDay()));
+        var timeStamp = ggTime.lastDay();
+
         APP.pubnub.history({
             channel: privateChannel.channelId,
-            end: timeStamp,
+            end: timeStamp * 10000,
             callback: function (messages) {
                 var clearMessageArray = [];
                 messages = messages[0];
