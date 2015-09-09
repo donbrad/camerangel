@@ -114,7 +114,10 @@ var privateChannel = {
             // If the presence message contains data aka *state*, add this to our users object.
             if ("data" in msg) {
                 privateChannel.users[msg.data.username] = msg.data;
-                mobileNotify(msg.data.name + "is here");
+                if (msg.data.username === privateChannel.contactId) {
+                    mobileNotify(privateChannel.users[msg.uuid].name + " has joined...");
+                }
+
             }
             // Otherwise, we have to call `here_now` to get the state of the new subscriber to the channel.
             else {
@@ -128,13 +131,20 @@ var privateChannel = {
         }
         // A user has left or timed out of ghostgrams so we remove them from our users object.
         else if (msg.action === "timeout" || msg.action === "leave") {
-            mobileNotify(privateChannel.users[msg.uuid].name + "has left ...");
+            mobileNotify(privateChannel.users[msg.uuid].name + " has left ...");
             delete privateChannel.users[msg.uuid];
             privateChannel.presenceChange();
         }
     },
 
-    presenceChange: function () {
+    presenceChange: function (userId, isPresent) {
+        if (userId === privateChannel.contactId) {
+            if (isPresent) {
+                if (privateChannel.users[userId] === undefined) {
+
+                }
+            }
+        }
 
     },
 

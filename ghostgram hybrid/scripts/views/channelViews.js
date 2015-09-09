@@ -657,9 +657,7 @@ var channelView = {
             filter: "li",
             enableSwipe: true,
             tap: channelView.tapChannel,
-            swipe: function(e){
-            	
-            },
+            swipe: channelView.swipeChannel,
             hold: channelView.holdChannel
         });
   	
@@ -901,7 +899,9 @@ var channelView = {
 
     },
 
+    setPresence: function (userId, isPresent) {
 
+    },
 
     onChannelRead : function (message) {
 
