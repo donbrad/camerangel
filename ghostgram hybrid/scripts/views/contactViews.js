@@ -71,7 +71,7 @@ var contactsView = {
             fixedHeaders: true,
             click: function (e) {
                 var contact = e.dataItem;
-
+                
                 updateCurrentContact(contact);
 
                 if (contact.category === 'phone') {
@@ -335,11 +335,14 @@ var contactImportView = {
             if (data.photo !== null) {
                 returnValidPhoto(data.photo, function(validUrl) {
                     $("#addContactPhoto").attr("src",validUrl);
-                    contactImportView.launchAddContact();
                 });
-            }
+            } 
 
+            // Select the contact
             contactModel.deviceContactsDS.data([contacts[0]]);
+
+            // Open add contact view
+            contactImportView.launchAddContact();
 
         });
     },
