@@ -341,7 +341,7 @@ var channelModel = {
     },
 
     // Generic add group channel...
-    addChannel : function (channelName, channelDescription, isOwner, durationDays, channelUUID, ownerUUID, ownerName, placeId, placeName, isPrivate) {
+    addChannel : function (channelName, channelDescription, isOwner, durationDays, channelUUID, ownerUUID, ownerName, placeId, placeName, isPrivatePlace) {
         var Channels = Parse.Object.extend("channels");
         var channel = new Channels();
 
@@ -359,6 +359,7 @@ var channelModel = {
             channelId = uuid.v4();
         }
 
+
         // Ensure we have a valid duration for this channel
         if (durationDays === undefined) {
             durationDays = 30;
@@ -371,16 +372,16 @@ var channelModel = {
             durationDays = 30;
         }
 
-        if (isPrivate === undefined)
-            isPrivate = true;
+        if (isPrivatePlace === undefined)
+            isPrivatePlace = true;
 
         channel.set('isPlace', false);
-        channel.set('isPrivate', true);
+        channel.set('isPrivate', false);
 
         // If there's a placeId passed in, need to create a place channel / chat
         if (placeId !== undefined) {
             channel.set('isPlace', true);
-            channel.set('isPrivate', isPrivate);
+            channel.set('isPrivatePlace', isPrivatePlace);
             channel.set('placeUUID', placeId);
             channel.set('placeName', placeName);
             if (name === '') {
