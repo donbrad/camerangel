@@ -68,6 +68,7 @@ var privateChannel = {
             encryptData = cryptico.encrypt(JSON.stringify(msg.data), privateChannel.publicKey);
         else
             encryptData = null;
+        msg.data = encryptData;
         msg.recipient = privateChannel.userId;
 
         APP.pubnub.publish({
