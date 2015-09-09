@@ -80,12 +80,7 @@ var privateChannel = {
                 sender: msg.sender,
                 recipient: msg.recipient
             };
-
-            if (messages[msg.sender] === undefined) {
-                messages[msg.sender] = [parsedMsg];
-            } else {
-                messages[msg.sender].push(parsedMsg);
-            }
+            
             privateChannel.receiveMessage(parsedMsg);
            // deleteMessage(msg.sender, msg.msgID, msg.ttl);
         }
