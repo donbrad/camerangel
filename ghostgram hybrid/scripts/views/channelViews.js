@@ -748,7 +748,7 @@ var channelView = {
 
           channelView.sendMessageHandler = privateChannel.sendMessage;
 
-          var sentMessages = channelModel.getChannelArchive(thisChannel.channelId);
+
           privateChannel.getMessageHistory(function (messages) {
               channelView.messagesDS.data([]);
               for (var i=0; i<messages.length; i++){
@@ -762,7 +762,7 @@ var channelView = {
               }
 
               channelView.messagesDS.data(messages);
-              channelView.messagesDS.pushCreate(sentMessages);
+            
               //channelView.updateMessageTimeStamps();
 
               /*if (channelView.intervalId === null) {
