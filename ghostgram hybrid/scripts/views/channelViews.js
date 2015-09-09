@@ -889,6 +889,7 @@ var channelView = {
         $(".selectedLI").velocity("slideUp", {delay: 150});
 
         //mobileNotify("message archived");
+        var message = channelView.activeMessage;
 
         // ToDo - wire up archive
         if (message === null) {
