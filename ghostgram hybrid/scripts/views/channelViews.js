@@ -824,7 +824,7 @@ var channelView = {
         var data = channelView.contactData[uuid];
 
         if (data === undefined) {
-            mobileNotify("ChatView - no contact : " + uuid);
+            mobileNotify("ChatView getContactData - no contact : " + uuid);
             return(null);
         }
 
