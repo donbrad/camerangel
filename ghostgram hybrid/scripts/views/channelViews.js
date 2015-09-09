@@ -764,9 +764,9 @@ var channelView = {
               channelView.messagesDS.pushCreate(sentMessages);
               channelView.updateMessageTimeStamps();
 
-              if (channelView.intervalId === null) {
+              /*if (channelView.intervalId === null) {
                   channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 60 * 5000);
-              }
+              }*/
 
               channelView.scrollToBottom();
           });
@@ -795,9 +795,9 @@ var channelView = {
               channelView.messagesDS.data(messages);
               channelView.updateMessageTimeStamps();
 
-              if (channelView.intervalId === null) {
+             /* if (channelView.intervalId === null) {
                   channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 60 * 5000);
-              }
+              }*/
               channelView.scrollToBottom();
           });
           currentChannelModel.openChannel(thisChannelHandler);
@@ -915,6 +915,8 @@ var channelView = {
         if (message.fromHistory === undefined) {
             message.fromHistory = false;
         }
+
+        $("#messages-listview").data("kendoMobileListView").refresh();
 
         channelView.messagesDS.add(message);
 
