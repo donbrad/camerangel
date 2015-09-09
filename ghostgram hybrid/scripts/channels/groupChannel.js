@@ -1,3 +1,193 @@
+/**
+ * Created by donbrad on 9/8/15.
+ * groupChannel.js
+ */
+
+'use strict';
+
+var groupChannel = {
+    thisUser : {},
+    users: [],
+    channelId : '',
+    userId : '',
+    userName : '',
+    userAlias : '',
+
+    close: function () {
+        APP.pubnub.unsubscribe({
+            channel: groupChannel.channelId
+        });
+    },
+    
+    open : function (channelId, userId, name, alias) {
+        groupChannel.channelId = channelId;
+        groupChannel.thisUser.username = userId;
+        groupChannel.thisUser.name = name;
+        groupChannel.thisUser.alias = alias;
+        groupChannel.users = new Array();
+
+        groupChannel.users[userId] = groupChannel.thisUser;
+
+        // Subscribe to our PubNub channel.
+        APP.pubnub.subscribe({
+            channel: groupChannel.channelId,
+            windowing: 5000,
+            restore: true,
+            callback: groupChannel.receiveHandler,
+            presence: groupChannel.presenceHandler,
+            // Set our state to our user object, which contains our username and public key.
+            state: groupChannel.thisUser
+        });
+    },
+    
+    receiveHandler : function (msg) {
+       
+        groupChannel.receiveMessage(msg);
+  
+    },
+
+    receiveMessage : function (message) {
+        
+        if (message.content !== null) {
+            message.formattedContent = formatMessage(message.content);
+        } else {
+            message.formattedContent = '';
+        }
+
+        // Ensure that new messages get the timer
+        if (message.fromHistory === undefined) {
+            message.fromHistory = false;
+        }
+
+        channelView.messagesDS.add(message);
+
+        currentChannelModel.updateLastAccess();
+
+        channelView.scrollToBottom();
+
+        if (channelView.privacyMode) {
+            kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(9000).play();
+        }
+    },
+
+    presenceHandler : function (msg) {
+        
+        if (msg.action === "join" || msg.action === "state-change") {
+            // If the presence message contains data aka *state*, add this to our users object.
+            if ("data" in msg) {
+                groupChannel.users[msg.data.username] = msg.data;
+                if (msg.data.username !== groupChannel.thisUser.userId) {
+                    mobileNotify(groupChannel.users[msg.uuid].name + " has joined...");
+                    groupChannel.presenceChange(msg.uuid, true);
+                }
+
+            }
+            // Otherwise, we have to call `here_now` to get the state of the new subscriber to the channel.
+            else {
+                APP.pubnub.here_now({
+                    channel: groupChannel.channelId,
+                    state: true,
+                    callback: groupChannel.hereNowHandler
+                });
+            }
+           
+        }
+        // A user has left or timed out of ghostgrams so we remove them from our users object.
+        else if (msg.action === "timeout" || msg.action === "leave") {
+            mobileNotify(groupChannel.users[msg.uuid].name + " has left ...");
+            delete groupChannel.users[msg.uuid];
+            groupChannel.presenceChange(msg.uuid, false);
+        }
+    },
+
+    presenceChange: function (userId, isPresent) {
+        
+
+    },
+
+    hereNowHandler : function (msg) {
+        groupChannel.users[groupChannel.userId] = groupChannel.thisUser;
+        for (var i = 0; i < msg.uuids.length; i++) {
+            if ("state" in msg.uuids[i]) {
+                groupChannel.users[msg.uuids[i].state.username] = msg.uuids[i].state;
+            }
+        }
+        groupChannel.presenceChange();
+    },
+
+    sendMessage: function (recipient, message, data, ttl) {
+        if (ttl === undefined || ttl < 60)
+            ttl = 86400;  // 24 hours
+
+
+        var currentTime =  ggTime.currentTime();
+
+
+        APP.pubnub.uuid(function (msgID) {
+            APP.pubnub.publish({
+                channel: groupChannel.channelId,
+                message: {
+                    msgID: msgID,
+                    sender: groupChannel.userId,
+                    content: message,  // publish the encryptedMessage
+                    data: data,        // publish the encryptedData.
+                    time: currentTime,
+                    fromHistory: false,
+                    ttl: ttl
+                },
+                callback: function () {
+                    var parsedMsg = {
+                        msgID: msgID,
+                        channelId: groupChannel.channelId,
+                        content: message,
+                        data: data,
+                        ttl: ttl,
+                        time: currentTime,
+                        sender: groupChannel.userId,
+                        fromHistory: false
+
+                    };
+
+                    groupChannel.receiveMessage(parsedMsg);
+
+                }
+            });
+        });
+
+    },
+
+    getMessageHistory: function (callBack) {
+        var timeStamp = ggTime.lastWeek();
+
+        APP.pubnub.history({
+            channel: groupChannel.channelId,
+            end: timeStamp * 10000,
+            error: function (error) {
+
+            },
+            callback: function (messages) {
+                var clearMessageArray = [];
+                messages = messages[0];
+                messages = messages || [];
+
+                if(callBack)
+                    callBack(messages);
+            }
+
+        });
+    }
+
+};
+
+
+
+
+
+
+
+
+/*
+
 
 function groupChannel( channelUUID, userUUID, alias, publicKey) {
     var channel = channelUUID;
@@ -6,7 +196,7 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
     var thisUser = {
 		alias: alias,
         username: userUUID,
-        publicKey: publicKey
+        name: name
     };
 
     // A mapping of all currently connected users' usernames userUUID's to their public keys.
@@ -218,3 +408,4 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
 
     };
 }
+*/

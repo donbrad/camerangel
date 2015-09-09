@@ -762,7 +762,7 @@ var channelView = {
 
               channelView.messagesDS.data(messages);
               channelView.messagesDS.pushCreate(sentMessages);
-              channelView.updateMessageTimeStamps();
+              //channelView.updateMessageTimeStamps();
 
               /*if (channelView.intervalId === null) {
                   channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 60 * 5000);
@@ -776,12 +776,12 @@ var channelView = {
           //*** Group Channel ***
           $('#messagePresenceButton').show();
           // Provision a group channel
-          thisChannelHandler = new groupChannel(channelUUID, thisUser.userUUID, thisUser.alias, userKey);
-          thisChannelHandler.onMessage(channelView.onChannelRead);
-          thisChannelHandler.onPresence(channelView.onChannelPresence);
+
+          groupChannel.open(channelUUID, thisUser.userUUID, thisUser.name, thisUser.alias);
+          channelView.sendMessageHandler = groupChannel.sendMessage;
           channelView.contactData = channelView.buildContactArray(thisChannel.members);
           mobileNotify("Getting Previous Messages...");
-          thisChannelHandler.getMessageHistory(function (messages) {
+          groupChannel.getMessageHistory(function (messages) {
               channelView.messagesDS.data([]);
               for (var i=0; i<messages.length; i++){
                   var message = messages[i];
@@ -793,14 +793,14 @@ var channelView = {
               }
 
               channelView.messagesDS.data(messages);
-              channelView.updateMessageTimeStamps();
+              //channelView.updateMessageTimeStamps();
 
              /* if (channelView.intervalId === null) {
                   channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 60 * 5000);
               }*/
               channelView.scrollToBottom();
           });
-          currentChannelModel.openChannel(thisChannelHandler);
+
       }
 
     },
