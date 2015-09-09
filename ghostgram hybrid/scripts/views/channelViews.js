@@ -657,7 +657,7 @@ var channelView = {
             filter: "li",
             enableSwipe: true,
             tap: channelView.tapChannel,
-            swipe: channelView.swipeChannel,
+            /*swipe: channelView.swipeChannel,*/
             hold: channelView.holdChannel
         });
   	
