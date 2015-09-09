@@ -47,7 +47,7 @@ var privateChannel = {
         // Subscribe to our PubNub channel.
         APP.pubnub.subscribe({
             channel: privateChannel.channelId,
-            windowing: 50000,
+            windowing: 5000,
             restore: true,
             callback: privateChannel.receiveHandler,
             presence: privateChannel.presenceHandler,
