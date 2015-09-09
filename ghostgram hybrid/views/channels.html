@@ -108,8 +108,8 @@
 	    		<h4>
 	    			<div class="chatStatusIcon"><img src="images/status-new.svg" class="list-status" /></div>
 	        		 <div class="textClamp chatNameDiv">#:name#</div>
-	        		 # var formattedTime = "1 Day";#
-	        		<div class="chatActivityTime left">#:durationDays# days</div>
+	        		 # var formattedTime = "Day"; if (durationDays > 1) { formattedTime = "Days"; }#
+	        		<div class="chatActivityTime left">#:durationDays# #:formattedTime#</div>
 	    		</h4>
 	    		<div class="clearfix"></div>
 	    		<div class="chatType">
