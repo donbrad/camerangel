@@ -364,7 +364,7 @@
 			</div>
 		#} else {#
 			<div class="chat-message-sender chat-message-content">
-				
+
 				<div class="chat-message-text">
 					#= formattedContent #
 				</div>
@@ -422,32 +422,32 @@
      </div>
 </script>
 
- <script type="text/x-kendo-template" id="editMembersTemplate">
-	 <div class="editMemberBox" data-id="#: data.uuid #">
-		 <div class="editMemberPhoto">
-			 <img class="circle-img-md editChatImg" src="#: data.photo #"  />
-		 </div>
-		 <div class="editMemberName">
-			 #if (data.alias !== '' && data.name !== data.alias && data.phoneVerified){#
-			 <h4>
-				 #: data.alias #
-				 <img class="user-status-icon" src="images/user-verified.svg" />
-				 <span class="contacts-alias-sm">#: data.name #</span>
-			 </h4>
-			 #} else if(data.alias !== '' && data.name !== data.alias) {#
-			 <h4>
-				 #: data.alias #
-				 <span class="contacts-alias-sm">#: data.name #</span>
-			 </h4>
-			 #} else {#
-			 <h4>#: data.name #</h4>
-			 #}#
-		 </div>
+<script type="text/x-kendo-template" id="editMembersTemplate">
+ <div class="editMemberBox" data-id="#: data.uuid #">
+	 <div class="editMemberPhoto">
+		 <img class="circle-img-md editChatImg" src="#: data.photo #"  />
+	 </div>
+	 <div class="editMemberName">
+		 #if (data.alias !== '' && data.name !== data.alias && data.phoneVerified){#
+		 <h4>
+			 #: data.alias #
+			 <img class="user-status-icon" src="images/user-verified.svg" />
+			 <span class="contacts-alias-sm">#: data.name #</span>
+		 </h4>
+		 #} else if(data.alias !== '' && data.name !== data.alias) {#
+		 <h4>
+			 #: data.alias #
+			 <span class="contacts-alias-sm">#: data.name #</span>
+		 </h4>
+		 #} else {#
+		 <h4>#: data.name #</h4>
+		 #}#
+	 </div>
 	</div>
 	<div class="deleteMemberText">
-     	<span>Delete</span>
-     </div>
- </script>
+		<span>Delete</span>
+	</div>
+</script>
 
 
 

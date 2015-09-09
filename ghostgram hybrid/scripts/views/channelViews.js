@@ -613,6 +613,7 @@ var channelView = {
             dir: "desc"
         }
     }),
+
     membersPresentDS : new kendo.data.DataSource({  // this is the list of members present in this chat
         sort: {
             field: "name",
@@ -897,6 +898,7 @@ var channelView = {
 
     onChannelPresence : function () {
         var users = currentChannelModel.handler.listUsers();
+
     },
 
 
@@ -927,7 +929,7 @@ var channelView = {
 
     messageSend : function (e) {
         _preventDefault(e);
-        var validMessage = false;
+        var validMessage = false; // If message is valid, send is enabled
 
         var text = $('#messageTextArea').val();
         if (text.length > 0) {
