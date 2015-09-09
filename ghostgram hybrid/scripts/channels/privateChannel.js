@@ -80,7 +80,7 @@ var privateChannel = {
                 sender: msg.sender,
                 recipient: msg.recipient
             };
-            
+
             privateChannel.receiveMessage(parsedMsg);
            // deleteMessage(msg.sender, msg.msgID, msg.ttl);
         }
