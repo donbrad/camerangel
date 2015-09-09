@@ -413,16 +413,16 @@ var ggTime = {
 	},
 
 	lastDay : function () {
-		return(this.currentTime() - ggTime._day);
+		return(ggTime.currentTime() - ggTime._day);
 
 	},
 
 	lastWeek : function () {
-		return(this.currentTime() - ggTime._week);
+		return(ggTime.currentTime() - ggTime._week);
 	},
 
 	lastMonth : function () {
-		return(this.currentTime() - ggTime._month);
+		return(ggTime.currentTime() - ggTime._month);
 	}
 };
 
