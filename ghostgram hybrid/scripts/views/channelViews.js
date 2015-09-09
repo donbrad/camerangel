@@ -1201,3 +1201,27 @@ var channelView = {
 
 
 };
+
+var askRequestModal = {
+    close: function () {
+        $("#modalview-requestContent").data("kendoMobileModalView").close();
+    },
+
+   onSend: function () {
+        askRequestModal.close();
+        // Todo - wire sending request
+    },
+
+    onInit: function () {
+        $("#modalview-requestContent").kendoTouch({
+            enableSwipe: true,
+            swipe: function(e){
+                $("#modalview-requestContent").data("kendoMobileModalView").close();
+            }
+        });
+    },
+
+    onOpen: function () {
+
+    }
+};

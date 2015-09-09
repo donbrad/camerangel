@@ -15,7 +15,7 @@
      </div>
 </div>
 
-<div data-role="modalview" id="modalview-requestContent" style="width: 90%; display: none;" class="appearance" data-init="onInitAskRequest">
+<div data-role="modalview" id="modalview-requestContent" style="width: 90%; display: none;" class="appearance" data-init="askRequestModal.onInit" data-open="askRequestModal.onOpen">
 	<div class="modal-top">
 	<a data-role="button" class="modal-close" data-click="closeAskRequest"><img src="images/close-white.svg"/></a>
 		<div><img src="images/icon-access.svg" /></div>
@@ -34,12 +34,12 @@
 			        </g>
 			    </g>
 			</svg>
-		 John Smith </p>
+		 <span id="askRequest-contactName">  </span></p>
 	</div>
 	<div class="modal-bottom">
 		<h4>Locked content</h4>
 		<p class="modal-helper">Ask for permission to save.</p>
-		<a class="btnClear" data-role="button" data-click="sendAskRequest">Send request</a>
+		<a class="btnClear" data-role="button" data-click="askRequestModal.onSend">Send request</a>
 		<div class="modalAction-helper">
 			<span> or swipe to dismiss </span>
 		</div>

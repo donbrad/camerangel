@@ -38,6 +38,10 @@ function onInitAskRequest() {
 	});
 }
 
+function onOpenAskRequest () {
+
+}
+
 
 
 
