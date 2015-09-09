@@ -605,6 +605,7 @@ var channelView = {
     currentContactId: null,
     privacyMode: false,  // Privacy mode - obscure messages after timeout
     currentContact: null,
+    activeMessage: null,
     intervalId : null,
     sendMessageHandler : null,
     messagesDS: new kendo.data.DataSource({  // this is the list view data source for chat messages
@@ -688,7 +689,7 @@ var channelView = {
             return;
         }
       var contactUUID = null;
-        var thisChannelHandler = null;
+      var thisChannelHandler = null;
       var name = channelView.formatName(thisChannel.name);
 
       // Hide the image preview div
@@ -1094,6 +1095,8 @@ var channelView = {
         var dataSource = channelView.messagesDS;
         var messageUID = $(e.touch.currentTarget).data("uid");
         var message = dataSource.getByUid(messageUID);
+        channelView.activeMessage = message;
+
         if (channelView.privacyMode) {
             $('#'+message.msgID).removeClass('privateMode');
             $.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(3000).play()).then(function () {
