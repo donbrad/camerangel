@@ -1041,7 +1041,7 @@ var channelView = {
             $('#modalPhotoViewImage').attr('src', photoUrl);
             $("#modalPhotoView").data("kendoMobileModalView").open();
         }
-        
+
         if (channelView.privacyMode) {
             $('#'+message.msgID).removeClass('privateMode');
             $.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(3000).play()).then(function () {
