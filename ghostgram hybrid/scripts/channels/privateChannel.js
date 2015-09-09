@@ -214,6 +214,9 @@ var privateChannel = {
         APP.pubnub.history({
             channel: privateChannel.channelId,
             end: timeStamp * 10000,
+            error: function (error) {
+
+            },
             callback: function (messages) {
                 var clearMessageArray = [];
                 messages = messages[0];

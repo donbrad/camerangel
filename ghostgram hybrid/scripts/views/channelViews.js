@@ -609,7 +609,7 @@ var channelView = {
     sendMessageHandler : null,
     messagesDS: new kendo.data.DataSource({  // this is the list view data source for chat messages
         sort: {
-            field: "timeStamp",
+            field: "time",
             dir: "desc"
         }
     }),
