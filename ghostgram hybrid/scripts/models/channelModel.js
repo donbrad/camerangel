@@ -22,10 +22,11 @@ var channelModel = {
 
     sentMessagesDS: new kendo.data.DataSource({ // This is store for private messages sent by this user
         offlineStorage: "sentMessages-offline",
+        online : false,
         sort: {
             field: "timeStamp",
             dir: "desc"
-        },
+        }/*,
         schema: {
             model: {
                 id: "msgID",
@@ -43,42 +44,43 @@ var channelModel = {
         },
         transport: {
             create: function(options){
-                var localData = JSON.parse(localStorage[this._sentMessages]);
+                var localData = JSON.parse(localStorage[channelModel._sentMessages]);
 
                 localData.push(options.data);
-                localStorage[this._sentMessages] = JSON.stringify(localData);
+                localStorage[channelModel._sentMessages] = JSON.stringify(localData);
                 options.success(options.data);
             },
 
             read: function(options){
-                var localData = JSON.parse(localStorage[this._sentMessages]);
+
+                var localData = channelModel.loadLocal();
                 options.success(localData);
             },
 
             update: function(options){
-                var localData = JSON.parse(localStorage[this._sentMessages]);
+                var localData = channelModel.loadLocal();
 
                 for(var i=0; i<localData.length; i++){
                     if(localData[i].msgID == options.data.msgID){
                         localData[i].Value = options.data.Value;
                     }
                 }
-                localStorage[this._sentMessages] = JSON.stringify(localData);
+                localStorage[channelModel._sentMessages] = JSON.stringify(localData);
                 options.success(options.data);
             },
 
             destroy: function(options){
-                var localData = JSON.parse(localStorage[this._sentMessages]);
+                var localData = channelModel.loadLocal();
                 for(var i=0; i<localData.length; i++){
                     if(localData[i].msgID === options.data.msgID){
                         localData.splice(i,1);
                         break;
                     }
                 }
-                localStorage[this._sentMessages] = JSON.stringify(localData);
+                localStorage[channelModel._sentMessages] = JSON.stringify(localData);
                 options.success(localData);
             }
-        }
+        }*/
     }),
 
     privateChannelsDS: new kendo.data.DataSource({
@@ -90,11 +92,22 @@ var channelModel = {
     }),
 
 
+    loadLocal : function () {
+        var localArray = localStorage[channelModel._sentMessages];
+        if (localArray === undefined || localArray === null || localArray === '') {
+            return ([]);
+        }
+
+        return ( JSON.parse(localArray));
+    },
+
     init :  function () {
         channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
+        channelModel.sentMessagesDS.online(false);
+        channelModel.sentMessagesDS.sync();
         // If sentMessage local storage doesn't exit - create it
-        if (localStorage[this._sentMessages] === undefined)
-            localStorage[this._sentMessages] = JSON.stringify([]);
+     /*   if (localStorage[this._sentMessages] === undefined)
+            localStorage[this._sentMessages] = JSON.stringify([]);*/
     },
 
     // Get messages archive for current channel (past 24 hours)
@@ -380,7 +393,7 @@ var channelModel = {
 
         // Generic fields for owner and members
         channel.set("name", name );
-        
+
         channel.set('isEvent', false);
         channel.set("media",   true);
         channel.set("archive", true);

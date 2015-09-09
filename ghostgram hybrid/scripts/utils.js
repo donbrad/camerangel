@@ -227,7 +227,7 @@ function getUserContactInfo(uuid, callBack) {
 			if (result.status === 'ok') {
 				callBack({
 					found: true,
-					user: JSON.parse(result.user)
+					user: result.user
 				});
 			} else {
 				callBack({
@@ -251,7 +251,7 @@ function findUserByEmail(email, callBack) {
 			if (result.status === 'ok') {
 				callBack({
 					found: true,
-					user: JSON.parse(result.user)
+					user: result.user
 				});
 			} else {
 				callBack({
@@ -413,16 +413,16 @@ var ggTime = {
 	},
 
 	lastDay : function () {
-		return(this.currentTime() - this._day);
+		return(ggTime.currentTime() - ggTime._day);
 
 	},
 
 	lastWeek : function () {
-		return(this.currentTime() - this._week);
+		return(ggTime.currentTime() - ggTime._week);
 	},
 
 	lastMonth : function () {
-		return(this.currentTime() - this._month);
+		return(ggTime.currentTime() - ggTime._month);
 	}
 };
 

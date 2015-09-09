@@ -1,5 +1,4 @@
-// Setup
-// ---
+
 function groupChannel( channelUUID, userUUID, alias, publicKey) {
     var channel = channelUUID;
     
