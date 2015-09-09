@@ -1216,15 +1216,27 @@ var askRequestModal = {
     },
 
     onInit: function () {
+
         $("#modalview-requestContent").kendoTouch({
             enableSwipe: true,
-            swipe: function(e){
+            swipe: function(e) {
+                e.preventDefault();
                 $("#modalview-requestContent").data("kendoMobileModalView").close();
             }
         });
     },
 
     onOpen: function () {
+        var message = channelView.activeMessage;
 
+        if (message === null) {
+            mobileNotify("No active message!!!");
+            askRequestModal.close();
+        }
+
+        var contact = contactModel.getContactModel(message.sender);
+
+        var contactName = contact.name + " (" + contact.alias + ")";
+        $('#askRequest-contactName').text(contactName);
     }
 };
