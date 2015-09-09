@@ -29,6 +29,7 @@ var privateChannel = {
 
 
         privateChannel.userId = userUUID;
+        privateChannel.publicKey = publicKey;
         privateChannel.thisUser = {
             alias: alias,
             name: name,
@@ -56,9 +57,28 @@ var privateChannel = {
         });
     },
 
+    // archive the message in the private channel with this user's public key and send to user.
+    // this provides a secure roamable private sent folder without localstorage and parse...
     archiveMessage : function (msg) {
-        channelModel.sentMessagesDS.add(msg);
-        channelModel.sentMessagesDS.sync();
+        var encryptMessage = '', encryptData = '';
+        var currentTime =  msg.time;  // use the current message time (time sent by this user)
+        encryptMessage = cryptico.encrypt(msg.content, privateChannel.publicKey);
+        msg.content = encryptMessage;
+        if (msg.data !== undefined && msg.data !== null)
+            encryptData = cryptico.encrypt(JSON.stringify(msg.data), privateChannel.publicKey);
+        else
+            encryptData = null;
+        msg.recipient = privateChannel.userId;
+
+        APP.pubnub.publish({
+            channel: privateChannel.channelId,
+            message: msg,
+            error: function (error) {
+                mobileNotify("Archive message error : " + error);
+            }
+        });
+        /*channelModel.sentMessagesDS.add(msg);
+        channelModel.sentMessagesDS.sync();*/
     },
 
     receiveHandler : function (msg) {
@@ -198,9 +218,11 @@ var privateChannel = {
                         recipient: recipient
                     };
 
-                    // add the message to the sentMessageDataSource
-                    privateChannel.archiveMessage(parsedMsg);
+
                     privateChannel.receiveMessage(parsedMsg);
+
+                    // archive message in the current channel
+                    privateChannel.archiveMessage(parsedMsg);
                     //deleteMessage(recipient, msgID, ttl);
                 }
             });
@@ -226,7 +248,7 @@ var privateChannel = {
                     var msg = messages[i];
                     var content = '';
                     if (msg.recipient === privateChannel.userId)  {
-                        // Just process messages from other user -- sent to this user (recipient)
+                        // Process all messages (private send messages are also stored with users public key!!!
                         var data = null;
                         var content = cryptico.decrypt(msg.content.cipher, privateChannel.RSAKey).plaintext;
                         if (msg.data !== undefined && msg.data !== null) {
