@@ -1035,16 +1035,13 @@ var channelView = {
         $('#'+message.msgID + ' .chat-photo-box').removeClass('chat-photo-box').addClass('chat-photo-box-zoom');
         
         // User actually clicked on the photo so show the open the photo viewer
-        if ($(target).hasClass('chat-photo-box') || $(target).hasClass('chat-photo-box-zoom')) {
-        	var sender = message.sender;
-        	var contactInfo = channelView.getContactData(sender);
-        	
-        	// Open user img full screen
-            $('#modalPhotoViewImage').attr('src', contactInfo.photoUrl);
+        if (target.hasClass('chat-message-photo')) {
+        	// Open this img full screen
+            var photoUrl = message.data.photo.photo;
+            $('#modalPhotoViewImage').attr('src', photoUrl);
             $("#modalPhotoView").data("kendoMobileModalView").open();
         }
-
-
+        
         if (channelView.privacyMode) {
             $('#'+message.msgID).removeClass('privateMode');
             $.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(3000).play()).then(function () {
