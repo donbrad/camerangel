@@ -1035,7 +1035,7 @@ var channelView = {
         $('#'+message.msgID + ' .chat-photo-box').removeClass('chat-photo-box').addClass('chat-photo-box-zoom');
         
         // User actually clicked on the photo so show the open the photo viewer
-        if ($(target).hasClass('chat-message-profileImg')) {
+        if ($(target).hasClass('chat-photo-box') || $(target).hasClass('chat-photo-box-zoom')) {
         	var sender = message.sender;
         	var contactInfo = channelView.getContactData(sender);
         	
