@@ -21,6 +21,7 @@ var groupChannel = {
     
     open : function (channelId, userId, name, alias) {
         groupChannel.channelId = channelId;
+        groupChannel.userId = userId;
         groupChannel.thisUser.username = userId;
         groupChannel.thisUser.name = name;
         groupChannel.thisUser.alias = alias;
@@ -65,9 +66,6 @@ var groupChannel = {
 
         channelView.scrollToBottom();
 
-        if (channelView.privacyMode) {
-            kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(9000).play();
-        }
     },
 
     presenceHandler : function (msg) {
@@ -129,8 +127,8 @@ var groupChannel = {
                 message: {
                     msgID: msgID,
                     sender: groupChannel.userId,
-                    content: message,  // publish the encryptedMessage
-                    data: data,        // publish the encryptedData.
+                    content: message,
+                    data: data,       
                     time: currentTime,
                     fromHistory: false,
                     ttl: ttl
