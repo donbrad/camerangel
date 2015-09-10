@@ -6,7 +6,7 @@
   "DisplayName": "ghostgrams",
   "Author": "don bradford",
   "Description": "ghostgrams for iOS and Android (and maybe Win8)",
-  "BundleVersion": "0.1.9.6",
+  "BundleVersion": "0.1.9.7",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1"
@@ -82,6 +82,7 @@
   "CorePlugins": [
     "ch.ti8m.documenthandler@0.2.2",
     "com.estimote.sdk@1.1.0",
+    "com.ionic.keyboard@1.0.4",
     "com.oauthio.plugins.oauthio@0.2.5",
     "com.synconset.imagepicker@1.0.7",
     "com.telerik.plugins.nativepagetransitions@0.4.1",
