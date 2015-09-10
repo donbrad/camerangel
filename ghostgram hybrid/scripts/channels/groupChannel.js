@@ -128,7 +128,7 @@ var groupChannel = {
                     msgID: msgID,
                     sender: groupChannel.userId,
                     content: message,
-                    data: data,       
+                    data: data,
                     time: currentTime,
                     fromHistory: false,
                     ttl: ttl
