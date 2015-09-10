@@ -76,8 +76,6 @@ var privateChannel = {
             encryptData = null;
         archiveMsg.data = encryptData;
 
-
-
         APP.pubnub.publish({
             channel: privateChannel.channelId,
             message: archiveMsg,
@@ -85,8 +83,7 @@ var privateChannel = {
                 mobileNotify("Archive message error : " + error);
             }
         });
-        /*channelModel.sentMessagesDS.add(msg);
-        channelModel.sentMessagesDS.sync();*/
+
     },
 
     receiveHandler : function (msg) {

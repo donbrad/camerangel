@@ -24,18 +24,17 @@ var channelsView = {
 
         $("#channels-listview").kendoMobileListView({
             dataSource: channelModel.channelsDS,
-            template: $("#channels-listview-template").html(),
+            template: $("#channels-listview-template").html()
             /*click: function(e) {
                 var selector = e.target[0].parentElement;
                 if($(selector).hasClass("chat-mainBox") === true || e.target[0].className === "chat-mainBox"){
                     var channelUrl = "#channel?channel=" + e.dataItem.channelId;
                     APP.kendo.navigate(channelUrl);
                 }
-            },*/
+            },
             dataBound: function(e){
-                //console.log(e);
                 checkEmptyUIState(channelModel.channelsDS, "#channelListDiv");
-            }
+            }*/
         }).kendoTouch({
             filter: ".chat-mainBox",
             enableSwipe: true,
@@ -87,7 +86,7 @@ var channelsView = {
         // set action button
         $("#channels > div.footerMenu.km-footer > a").attr("href", "#addChannel").css("display","inline-block");
 
-        channelsView.checkEmpty();
+        //channelsView.checkEmpty();
     },
 
     onBeforeHide: function(){
@@ -606,6 +605,7 @@ var channelView = {
     currentContactId: null,
     privacyMode: false,  // Privacy mode - obscure messages after timeout
     currentContact: null,
+    activeMessage: null,
     intervalId : null,
     sendMessageHandler : null,
     messagesDS: new kendo.data.DataSource({  // this is the list view data source for chat messages
@@ -676,35 +676,36 @@ var channelView = {
     },
 
     onShow : function (e) {
-      _preventDefault(e);
-      // hide action btn
-      $("#channels > div.footerMenu.km-footer > a").css("display","none");
+        _preventDefault(e);
+        // hide action btn
+        $("#channels > div.footerMenu.km-footer > a").css("display","none");
 
-      var channelUUID = e.view.params.channel;
+        var channelUUID = e.view.params.channel;
 
-      var thisUser = userModel.currentUser;
-      var thisChannel =  currentChannelModel.setCurrentChannel(channelUUID);
+        var thisUser = userModel.currentUser;
+        var thisChannel =  currentChannelModel.setCurrentChannel(channelUUID);
         if (thisChannel === undefined) {
             mobileNotify("ChatView -- chat doesn't exist : " + channelUUID);
             return;
         }
-      var contactUUID = null;
+        var contactUUID = null;
         var thisChannelHandler = null;
-      var name = channelView.formatName(thisChannel.name);
+        channelView.activeMessage = null;
+        var name = channelView.formatName(thisChannel.name);
 
-      // Hide the image preview div
-      channelView.hideChatImagePreview();
-      APP.updateGeoLocation();
+        // Hide the image preview div
+        channelView.hideChatImagePreview();
+        APP.updateGeoLocation();
 
-      channelView.privacyMode = false;
+        channelView.privacyMode = false;
 
 
-      // Privacy UI
-      $('#privacyMode').html('<img src="images/privacy-off.svg" />');
-      $("#privacyStatus").addClass("hidden");
-      $("#channelNavBar").data('kendoMobileNavBar').title(name);
+        // Privacy UI
+        $('#privacyMode').html('<img src="images/privacy-off.svg" />');
+        $("#privacyStatus").addClass("hidden");
+        $("#channelNavBar").data('kendoMobileNavBar').title(name);
 
-      if (thisChannel.isPrivate) {
+        if (thisChannel.isPrivate) {
 
           // *** Private Channel ***
           var contactKey = thisChannel.contactKey;
@@ -748,7 +749,7 @@ var channelView = {
 
           channelView.sendMessageHandler = privateChannel.sendMessage;
 
-          var sentMessages = channelModel.getChannelArchive(thisChannel.channelId);
+
           privateChannel.getMessageHistory(function (messages) {
               channelView.messagesDS.data([]);
               for (var i=0; i<messages.length; i++){
@@ -762,8 +763,8 @@ var channelView = {
               }
 
               channelView.messagesDS.data(messages);
-              channelView.messagesDS.pushCreate(sentMessages);
-              channelView.updateMessageTimeStamps();
+
+              //channelView.updateMessageTimeStamps();
 
               /*if (channelView.intervalId === null) {
                   channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 60 * 5000);
@@ -772,17 +773,17 @@ var channelView = {
               channelView.scrollToBottom();
           });
 
-      } else {
+        } else {
 
           //*** Group Channel ***
           $('#messagePresenceButton').show();
           // Provision a group channel
-          thisChannelHandler = new groupChannel(channelUUID, thisUser.userUUID, thisUser.alias, userKey);
-          thisChannelHandler.onMessage(channelView.onChannelRead);
-          thisChannelHandler.onPresence(channelView.onChannelPresence);
+
+          groupChannel.open(channelUUID, thisUser.userUUID, thisUser.name, thisUser.alias);
+          channelView.sendMessageHandler = groupChannel.sendMessage;
           channelView.contactData = channelView.buildContactArray(thisChannel.members);
           mobileNotify("Getting Previous Messages...");
-          thisChannelHandler.getMessageHistory(function (messages) {
+          groupChannel.getMessageHistory(function (messages) {
               channelView.messagesDS.data([]);
               for (var i=0; i<messages.length; i++){
                   var message = messages[i];
@@ -794,15 +795,15 @@ var channelView = {
               }
 
               channelView.messagesDS.data(messages);
-              channelView.updateMessageTimeStamps();
+              //channelView.updateMessageTimeStamps();
 
              /* if (channelView.intervalId === null) {
                   channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 60 * 5000);
               }*/
               channelView.scrollToBottom();
           });
-          currentChannelModel.openChannel(thisChannelHandler);
-      }
+
+        }
 
     },
 
@@ -888,10 +889,21 @@ var channelView = {
         $(".selectedLI").velocity("slideUp", {delay: 150});
 
         //mobileNotify("message archived");
+        var message = channelView.activeMessage;
 
         // ToDo - wire up archive
+        if (message === null) {
+            mobileNotify("No active message!!!");
+           // askRequestModal.close();
+        }
+
+        var contact = contactModel.getContactModel(message.sender);
+
+        var contactName = contact.name + " (" + contact.alias + ")";
+        $('#askRequest-contactName').text(contactName);
 
         // ToDo - wire up requests
+        //APP.kendo.navigate("#modalview-requestContent");
         $("#modalview-requestContent").data("kendoMobileModalView").open();
     },
 
@@ -1095,6 +1107,8 @@ var channelView = {
         var dataSource = channelView.messagesDS;
         var messageUID = $(e.touch.currentTarget).data("uid");
         var message = dataSource.getByUid(messageUID);
+        channelView.activeMessage = message;
+
         if (channelView.privacyMode) {
             $('#'+message.msgID).removeClass('privateMode');
             $.when(kendo.fx($("#"+message.msgID)).fade("out").endValue(0.3).duration(3000).play()).then(function () {
@@ -1201,4 +1215,41 @@ var channelView = {
 
 
 
+};
+
+
+var askRequestModal = {
+    close: function () {
+        $("#modalview-requestContent").data("kendoMobileModalView").close();
+    },
+
+   onSend: function () {
+        askRequestModal.close();
+        // Todo - wire sending request
+    },
+
+    onInit: function () {
+
+        $("#modalview-requestContent").kendoTouch({
+            enableSwipe: true,
+            swipe: function(e) {
+                e.preventDefault();
+                $("#modalview-requestContent").data("kendoMobileModalView").close();
+            }
+        });
+    },
+
+    onOpen: function () {
+        var message = channelView.activeMessage;
+
+        if (message === null) {
+            mobileNotify("No active message!!!");
+            askRequestModal.close();
+        }
+
+        var contact = contactModel.getContactModel(message.sender);
+
+        var contactName = contact.name + " (" + contact.alias + ")";
+        $('#askRequest-contactName').text(contactName);
+    }
 };

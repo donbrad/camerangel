@@ -20,69 +20,6 @@ var channelModel = {
         }
     }),
 
-    sentMessagesDS: new kendo.data.DataSource({ // This is store for private messages sent by this user
-        offlineStorage: "sentMessages-offline",
-        online : false,
-        sort: {
-            field: "timeStamp",
-            dir: "desc"
-        }/*,
-        schema: {
-            model: {
-                id: "msgID",
-                fields: {
-                    msgID: {type: "string", editable: false},
-                    channelId: {type: "string"},
-                    content: {type: "string"},
-                    data: {type: "string"},
-                    TTL: {type: "number"},
-                    time: {type: "number"},
-                    sender: {type: "string"},
-                    recipient: {type: "string"}
-                }
-            }
-        },
-        transport: {
-            create: function(options){
-                var localData = JSON.parse(localStorage[channelModel._sentMessages]);
-
-                localData.push(options.data);
-                localStorage[channelModel._sentMessages] = JSON.stringify(localData);
-                options.success(options.data);
-            },
-
-            read: function(options){
-
-                var localData = channelModel.loadLocal();
-                options.success(localData);
-            },
-
-            update: function(options){
-                var localData = channelModel.loadLocal();
-
-                for(var i=0; i<localData.length; i++){
-                    if(localData[i].msgID == options.data.msgID){
-                        localData[i].Value = options.data.Value;
-                    }
-                }
-                localStorage[channelModel._sentMessages] = JSON.stringify(localData);
-                options.success(options.data);
-            },
-
-            destroy: function(options){
-                var localData = channelModel.loadLocal();
-                for(var i=0; i<localData.length; i++){
-                    if(localData[i].msgID === options.data.msgID){
-                        localData.splice(i,1);
-                        break;
-                    }
-                }
-                localStorage[channelModel._sentMessages] = JSON.stringify(localData);
-                options.success(localData);
-            }
-        }*/
-    }),
-
     privateChannelsDS: new kendo.data.DataSource({
         offlineStorage: "privatechannels-offline"
     }),
@@ -102,65 +39,12 @@ var channelModel = {
     },
 
     init :  function () {
-        channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
-        channelModel.sentMessagesDS.online(false);
-        channelModel.sentMessagesDS.sync();
-        // If sentMessage local storage doesn't exit - create it
-     /*   if (localStorage[this._sentMessages] === undefined)
-            localStorage[this._sentMessages] = JSON.stringify([]);*/
+        /*channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
+       */
+
     },
 
-    // Get messages archive for current channel (past 24 hours)
-    // This is only called by secure channel as sender messages are encrypted with recipients public key
-    getChannelArchive : function (channel) {
-        var dataSource =  channelModel.sentMessagesDS;
-        var timeStamp = ggTime.lastDay();
-        dataSource.filter(
-            [
-                {"logic":"and",
-                    "filters":[
-                        {
-                            "field":"channelId",
-                            "operator":"eq",
-                            "value":channel},
-                        {
-                            "field":"time",
-                            "operator":"gte",
-                            "value":timeStamp}
-                    ]}
-            ]);
-        var view = dataSource.view();
-        dataSource.filter([]);
-        return(view);
-    },
 
-    archiveMessage : function(time, blob) {
-
-        channelModel.sentMessagesDS.add(JSON.parse(blob));
-        channelModel.sentMessagesDS.sync(); // Force write to local storage
-
-        /*
-        var Message = Parse.Object.extend('messages');
-        var msg = new Message();
-
-        msg.set('messageId', uuid.v4());
-        msg.set('timeStamp', time);
-        msg.set('channelId', currentChannelModel.currentChannel.channelId);
-        msg.set('messageBlob', userModel.encryptBlob(blob));
-        // Save the encrypted message blob to parse.
-        msg.save(null, {
-            success: function(results) {
-
-            },
-            error: function(error) {
-                handleParseError(error);
-            }
-        });
-
-        // Local messages are stored in the clear and must be converted to/from encrypted format on parse...
-        channelModel.messagesDS.add(JSON.parse(blob));
-        */
-    },
 
     fetch : function () {
         var Channel = Parse.Object.extend("channels");
@@ -341,7 +225,7 @@ var channelModel = {
     },
 
     // Generic add group channel...
-    addChannel : function (channelName, channelDescription, isOwner, durationDays, channelUUID, ownerUUID, ownerName, placeId, placeName, isPrivate) {
+    addChannel : function (channelName, channelDescription, isOwner, durationDays, channelUUID, ownerUUID, ownerName, placeId, placeName, isPrivatePlace) {
         var Channels = Parse.Object.extend("channels");
         var channel = new Channels();
 
@@ -359,6 +243,7 @@ var channelModel = {
             channelId = uuid.v4();
         }
 
+
         // Ensure we have a valid duration for this channel
         if (durationDays === undefined) {
             durationDays = 30;
@@ -371,16 +256,16 @@ var channelModel = {
             durationDays = 30;
         }
 
-        if (isPrivate === undefined)
-            isPrivate = true;
+        if (isPrivatePlace === undefined)
+            isPrivatePlace = true;
 
         channel.set('isPlace', false);
-        channel.set('isPrivate', true);
+        channel.set('isPrivate', false);
 
         // If there's a placeId passed in, need to create a place channel / chat
         if (placeId !== undefined) {
             channel.set('isPlace', true);
-            channel.set('isPrivate', isPrivate);
+            channel.set('isPrivatePlace', isPrivatePlace);
             channel.set('placeUUID', placeId);
             channel.set('placeName', placeName);
             if (name === '') {

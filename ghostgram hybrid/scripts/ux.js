@@ -129,6 +129,7 @@ function closeTestingBox(){
 }
 
 
+
 // Updated - Check empty state for views
 function checkEmptyUIState(ds, view){
 	var selectionList = ds.total();

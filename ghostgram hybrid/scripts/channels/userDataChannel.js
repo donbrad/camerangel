@@ -132,7 +132,8 @@ var userDataChannel = {
         APP.pubnub.publish({
             channel: contactUUID,
             message: msg,
-            callback: userDataChannel.publishCallback
+            callback: userDataChannel.publishCallback,
+            error: userDataChannel.errorCallback
         });
     },
 
@@ -150,7 +151,8 @@ var userDataChannel = {
         APP.pubnub.publish({
             channel: contactUUID,
             message: msg,
-            callback: userDataChannel.publishCallback
+            callback: userDataChannel.publishCallback,
+            error: userDataChannel.errorCallback
         });
     },
 
@@ -171,7 +173,8 @@ var userDataChannel = {
         APP.pubnub.publish({
             channel: contactUUID,
             message: msg,
-            callback: userDataChannel.publishCallback
+            callback: userDataChannel.publishCallback,
+            error: userDataChannel.errorCallback,
         });
     },
 
@@ -189,7 +192,9 @@ var userDataChannel = {
         APP.pubnub.publish({
             channel: contactUUID,
             message: msg,
-            callback: userDataChannel.publishCallback()
+            callback: userDataChannel.publishCallback,
+            error: userDataChannel.errorCallback
+
         });
     },
 
@@ -276,12 +281,19 @@ var userDataChannel = {
     },
 
     publishCallback : function (m) {
+        if (m === undefined)
+            return;
+
         var status = m[0], message = m[1], time = m[2];
 
         if (status !== 1) {
             mobileNotify('Error publishing invite: ' + message);
         }
 
+    },
+
+    errorCallback : function (error) {
+        mobileNotify('UserDataChannel Error : ' + error);
     },
 
     channelConnect: function () {
