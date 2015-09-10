@@ -1,4 +1,4 @@
- <div data-role="view" data-title="Gallery" id="gallery" data-layout="main" data-model="APP.models.gallery" data-init="onInitGallery" data-show="onShowGallery" data-stretch="true">
+ <div data-role="view" data-title="Gallery" id="gallery" data-layout="main" data-model="photoModel" data-init="galleryView.OnInit" data-show="galleryView.onShow" data-stretch="true">
  	<div>
 	 	<div id="search-archives">
 			<input type="search" class="viewSearchBox" id="gallerySearch"  placeholder="Search all" />
@@ -22,7 +22,7 @@
 				</div>
 				
 			</div>
-			<ul data-role="buttongroup" data-index="0" id="galleryMenuSelect" data-select="gallerySelectCategory">
+			<ul data-role="buttongroup" data-index="0" id="galleryMenuSelect" data-select="galleryView.selectCategory">
 				<li>
 					<img src="images/gallery-all.svg" />
 					Archive
@@ -43,7 +43,7 @@
 		</div>
 		
 			<div id="galleryPhotoDisplayOpts">
-				<ul data-role="buttongroup" data-index="0" class="km-small" data-select="selectGalleryZoom" id="galleryZoomSelect">
+				<ul data-role="buttongroup" data-index="0" class="km-small" data-select="galleryView.selectZoom" id="galleryZoomSelect">
 					<li>
 						<img src="images/gallery-grid-3.svg" />
 					</li>
@@ -60,7 +60,7 @@
 			<ul data-role="listview" data-source="archive.dataSource" data-template="archive-template"></ul>
 		</div>
 		<!-- Photos -->
-		<ul id="gallery-listview" class="list-inline" data-role="listview" data-click="galleryClick" data-source="APP.models.gallery.photosDS" data-template="gallery-template"></ul>
+		<ul id="gallery-listview" class="list-inline" data-role="listview" data-click="galleryView.galleryClick" data-source="photoModel.photosDS" data-template="gallery-template"></ul>
 		<div id="archive-empty">Your archive is empty</div>
 		<div id="archive-search-empty">Nothing found</div>
 	</div>
