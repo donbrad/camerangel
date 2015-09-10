@@ -134,7 +134,7 @@ var groupChannel = {
                     ttl: ttl
                 },
                 callback: function () {
-                    var parsedMsg = {
+                   /* var parsedMsg = {
                         msgID: msgID,
                         channelId: groupChannel.channelId,
                         content: message,
@@ -147,7 +147,7 @@ var groupChannel = {
                     };
 
                     groupChannel.receiveMessage(parsedMsg);
-
+*/
                 }
             });
         });
