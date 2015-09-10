@@ -24,17 +24,17 @@ var channelsView = {
 
         $("#channels-listview").kendoMobileListView({
             dataSource: channelModel.channelsDS,
-            template: $("#channels-listview-template").html(),
+            template: $("#channels-listview-template").html()
             /*click: function(e) {
                 var selector = e.target[0].parentElement;
                 if($(selector).hasClass("chat-mainBox") === true || e.target[0].className === "chat-mainBox"){
                     var channelUrl = "#channel?channel=" + e.dataItem.channelId;
                     APP.kendo.navigate(channelUrl);
                 }
-            },*/
+            },
             dataBound: function(e){
                 checkEmptyUIState("#channels-listview", "#channelListDiv");
-            }
+            }*/
         }).kendoTouch({
             filter: ".chat-mainBox",
             enableSwipe: true,
@@ -86,7 +86,7 @@ var channelsView = {
         // set action button
         $("#channels > div.footerMenu.km-footer > a").attr("href", "#addChannel").css("display","inline-block");
 
-        channelsView.checkEmpty();
+        //channelsView.checkEmpty();
     },
 
     onBeforeHide: function(){
