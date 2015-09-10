@@ -71,42 +71,26 @@ function onInitGallery(e){
 	// hide archive options
 	$(".gallerySearchOptions, #galleryPhotoDisplayOpts").css("display", "none");
 	
-
+	/* Testing dynamic header
 	var scroller = e.view.scroller;
 	//scroller.scrollTo(0,-44);
-	/*
-	var currentPos = 0;
-	scroller.bind("scrollingDown");
-	scroller.bind("scrollingUp");
-	scroller.bind("scroll", function(){
-		console.log("currentPos: " + currentPos + " scrollTop: " + scroller.scrollTop);
-		if(currentPos > scroller.scrollTop && scroller.scrollTop > 0){
-			console.log("plus");
-			currentPos = scroller.scrollTop;
-			scroller.trigger("scrollingDown", resetNavUI());
-			//scroller.unbind("scrollingDown");
-		} else if (scroller.scrollTop > currentPos){
-			console.log("minus");
-			currentPos = scroller.scrollTop;
-			scroller.trigger("scrollingUp", shrinkNavUI());
-			//scroller.unbind("scrollingUp");
-		} else {
-			console.log("none");
-		}
-		console.log(currentPos);
-	});    
 	
-*/
-}
+	scroller.bind("scroll", function(){
+		
+		var scrollPos = scroller.scrollTop;
+		var newHeight = 56 - scrollPos;
+		console.log(scrollPos);
+		if (scrollPos > 56){
+			$("#gallery > div.km-header > div.km-widget.km-navbar").addClass("home-smallHeader");
+			$("#gallery > div.km-header > .helperInfoBar").removeClass("hidden");
+		} else {
+			$("#gallery > div.km-header > div.km-widget.km-navbar").removeClass("home-smallHeader");
+			$("#gallery > div.km-header > .helperInfoBar").addClass("hidden");
+		}
+	}); 
+	*/  
+	
 
-function resetNavUI(e){
-	$(".km-navbar").removeClass("home-smallHeader");	
-	//$(".user-status, .user-settings").velocity("fadeIn", {duration: 150});
-}
-
-function shrinkNavUI() {
-	$(".km-navbar").addClass("home-smallHeader");	
-	$(".user-status, .user-settings").velocity("fadeOut", {duration: 150});
 }
 
 function galleryOptionsToggle (e) {
@@ -292,7 +276,8 @@ function onShowGallery(e) {
 	}
 	photoModel.rotationAngle = 0;
 	
-
+	$("#gallery > div.footerMenu.km-footer > a > span > img").attr("src", "images/gallery-list.svg");
+	
 	$("#gallery-listview li").css("width",photoModel.previewSize);
 	$("#gallery-listview li").css("padding-bottom",photoModel.previewSize);
 
@@ -312,31 +297,42 @@ function onShowGallery(e) {
 	}
 
 }
-
+// Set action button for gallery
+function galleryActionView(e){
+	e.preventDefault();
+	if(photoModel.previewSize === "33%") {
+		$("#gallery > div.footerMenu.km-footer > a > span > img").attr("src", "images/gallery-grid.svg");
+		$("#gallery actionBtn-text")
+		photoModel.previewSize = "100%";
+	} else {
+		$("#gallery > div.footerMenu.km-footer > a > span > img").attr("src", "images/gallery-list.svg");
+		photoModel.previewSize = "33%";
+	}
+}
 
 function gallerySelectCategory(e){
 	var index = this.current().index();
 	switch (index) {
 		case 0:
-			$(".gallerySearchOptions").velocity("slideDown");
-			$("#galleryPhotoDisplayOpts").velocity("slideUp");
-
 			$('#archive-listview').removeClass('hidden');
 			$("#gallery-listview").addClass('hidden');
+			// Hide photo view options
+			$("#photoViewOpts").addClass('hidden');
 
+			$("#gallery > div.footerMenu.km-footer > a").css("display", "none");
 			break;
 
 		case 1:
-			$(".gallerySearchOptions").velocity("slideUp");
-			$("#galleryPhotoDisplayOpts").velocity("slideDown");
-
 			$('#archive-listview').addClass('hidden');
 			$("#gallery-listview").removeClass("hidden");
+
+			$("#photoViewOpts").removeClass("hidden");
+
+			$("#gallery > div.footerMenu.km-footer > a").removeAttr("href").css("display", "inline-block").on("click", function(e){
+				galleryActionView(e);
+			});
 			break;
 	}
-	$("#gallerySearch").attr("placeholder", "Search All");
-
-
 
 } 
 

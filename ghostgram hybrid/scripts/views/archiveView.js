@@ -140,12 +140,15 @@ var archiveView = {
 			});
 		}
 
-		archiveView.checkIfEmpty();
+		var returnCount = archive.dataSource.total();
+		$("#resultCount").text(returnCount);
+
+		//archiveView.checkIfEmpty();
 
 		$('#search-archives input').clearSearch({ callback: archiveView.clearSearch });
 
 		// Binding this manually because data-role="button" messes up the styles
-		$('#archive-list').on('click', '.object', archiveView.openObject);
+		$('.cardAction > a').on('click', archiveView.openObject);
 
 		// Gotta set on archiveView instead of this because kendo binds
 		// .init to the kendo view
@@ -178,10 +181,15 @@ var archiveView = {
             index: 0
         });
 
+        $("#multiselect").kendoMultiSelect();
+
+	},
+	openArchiveFilter: function(){
+		$("#modalview-archive-filter").data("kendoMobileModalView").open();
 	},
 
-	closeArchiveDate: function(){
-		$("#modalview-archive-date").data("kendoMobileModalView").close();
+	closeArchiveFilter: function(){
+		$("#modalview-archive-filter").data("kendoMobileModalView").close();
 	},
 
 	checkIfEmpty: function () {
