@@ -1217,6 +1217,7 @@ var channelView = {
 
 };
 
+
 var askRequestModal = {
     close: function () {
         $("#modalview-requestContent").data("kendoMobileModalView").close();
