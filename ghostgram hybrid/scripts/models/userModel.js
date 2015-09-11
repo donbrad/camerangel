@@ -277,7 +277,7 @@ var userModel = {
         if (hash === undefined) {
             hash = "01234567890ABCDE";
         } else {
-            hash = hash.replace('-','');  //strip the dashes...
+            hash = hash.replace(/-/g,'');  //strip the dashes...
         }
 
         jdenticon.update("#homeProfileIdenticon", hash);
