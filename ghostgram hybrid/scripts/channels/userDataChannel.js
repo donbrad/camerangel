@@ -48,7 +48,6 @@ var userDataChannel = {
             // Get any messages in the channel
             APP.pubnub.history({
                 channel: this.channelId,
-                reverse: true,
                 callback: function(messages) {
                     messages = messages[0];
                     messages = messages || [];
@@ -62,8 +61,7 @@ var userDataChannel = {
             // Get any messages in the channel
             APP.pubnub.history({
                 channel: this.channelId,
-                start: this.lastAccess,
-                reverse: true,
+                end: this.lastAccess,
                 callback: function(messages) {
                     messages = messages[0];
                     messages = messages || [];
@@ -85,14 +83,14 @@ var userDataChannel = {
 
         switch(m.type) {
 
-            //  { type: 'privateInvite',  channelId: <channelUUID>,  owner: <ownerUUID>, message: <text>, time: current time}
+          /*  //  { type: 'privateInvite',  channelId: <channelUUID>,  owner: <ownerUUID>, message: <text>, time: current time}
             case 'privateInvite' : {
                 this.processPrivateInvite(m.ownerId, m.ownerPublicKey,  m.channelId, m.message);
             } break;
 
             case 'privateDelete' : {
                 this.processPrivateDelete(m.ownerId, m.channelId, m.message);
-            } break;
+            } break;*/
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, ownerID: <ownerUUID>,  ownerName: <text>, channelName: <text>, channelDescription: <text>}
             case 'channelInvite' : {
@@ -111,6 +109,10 @@ var userDataChannel = {
 
             //  { type: 'packageRequest',  channelId: <channelUUID>, owner: <ownerUUID>, packageId: <packageUUID>, private: true|false, message: <text>}
             case 'packageRequest' : {
+
+            } break;
+
+            case 'privateMessage' : {
 
             } break;
 
