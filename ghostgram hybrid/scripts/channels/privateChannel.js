@@ -66,6 +66,7 @@ var privateChannel = {
         archiveMsg.TTL = msg.TTL;
         archiveMsg.sender = msg.sender;
         archiveMsg.recipient = privateChannel.userId;
+        archiveMsg.actualRecipient = msg.recipient;  // since we're echoing back to sender, need to store recipient.
         var encryptMessage = '', encryptData = '';
         var currentTime =  msg.time;  // use the current message time (time sent by this user)
         encryptMessage = cryptico.encrypt(msg.content, privateChannel.publicKey);
@@ -224,7 +225,7 @@ var privateChannel = {
                     };
 
 
-                    privateChannel.receiveMessage(parsedMsg);
+                   // privateChannel.receiveMessage(parsedMsg);
 
                     // archive message in the current channel
                     privateChannel.archiveMessage(parsedMsg);

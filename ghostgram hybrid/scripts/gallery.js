@@ -157,7 +157,7 @@ function photoDelete (e) {
 	e.preventDefault();
 	var photo = photoModel.currentPhotoModel;
 	// Todo:  Add confirmation prior to photo delete
-	
+
 	mobileNotify("Deleted current photo");
 	
 	// Navigate to previous page as the photo is gone...
