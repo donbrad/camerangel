@@ -17,6 +17,7 @@ function deviceCamera(resolution, quality, isChat, displayCallback) {
     }
     var pictureSource = navigator.camera.PictureSourceType;   // picture source
     var destinationType = navigator.camera.DestinationType; // sets the format of returned value
+
     navigator.camera.getPicture(
         function (imageData) {
             var photouuid = uuid.v4();

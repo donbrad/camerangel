@@ -23,156 +23,8 @@ var getSentinelHeight = function () {
 	}
 
 	return combinedHeight/16+'rem';
-};
-
-function onInitGallery(e){
-	archiveView.init();
-
-	var setSentinelHeight = function () {
-		$('#search-archives').height(getSentinelHeight());
-	};
-/*
-	archiveView.sentinel.addListener('add', setSentinelHeight);
-	archiveView.sentinel.addListener('remove', setSentinelHeight);
-	setSentinelHeight();
-*/
-
-   if (e !== undefined && e.preventDefault !== undefined){
-		e.preventDefault();
-	}
-    // ToDo: Initialize list view
-    var itemWidth = $(window).width()/4;
-	photoModel.rotationAngle = 0;
-	photoModel.optionsHidden = true;
-	photoModel.previewSize = "33%";
-	photoModel.optionsShown = true;
-
-
-	$("#gallerySearch").keyup(function() {
-  		var query = $("#gallerySearch").val();
-		if (query.length > 0) {
-			
-		}
-		
-	});
-
-	// Kendo web bug is firing infinitely
-	if (window.navigator.simulator === false) {
-		$("#gallerySearch").on("focus", function(){
-			$(".gallerySearchOptions").velocity("slideDown", {duration: 300});
-		});
-
-		$("#gallerySearch").on("blur", function(){
-			$(".gallerySearchOptions").velocity("slideUp", {duration: 300});
-		});
-	} else {
-		$(".gallerySearchOptions").velocity("slideDown", {duration: 300});
-	}
-	// hide archive options
-	$(".gallerySearchOptions, #galleryPhotoDisplayOpts").css("display", "none");
-	
-	/* Testing dynamic header
-	var scroller = e.view.scroller;
-	//scroller.scrollTo(0,-44);
-	
-	scroller.bind("scroll", function(){
-		
-		var scrollPos = scroller.scrollTop;
-		var newHeight = 56 - scrollPos;
-		console.log(scrollPos);
-		if (scrollPos > 56){
-			$("#gallery > div.km-header > div.km-widget.km-navbar").addClass("home-smallHeader");
-			$("#gallery > div.km-header > .helperInfoBar").removeClass("hidden");
-		} else {
-			$("#gallery > div.km-header > div.km-widget.km-navbar").removeClass("home-smallHeader");
-			$("#gallery > div.km-header > .helperInfoBar").addClass("hidden");
-		}
-	}); 
-	*/  
-	
-
 }
 
-function galleryOptionsToggle (e) {
-	if (e !== undefined && e.preventDefault !== undefined){
-		e.preventDefault();
-	}
-	
-
-	if (photoModel.optionsShown) {
-		$("#galleryToggle").velocity("fadeOut",{duration: 150});
-		$('.gallerySearchOptions').velocity("slideDown",{duration: 300});
-		$("#galleryZoomSelect > li:first-child").velocity("fadeIn", {duration: 300});
-		photoModel.optionsShown = false;
-		$("#gallerySearch").focus();
-	} else {
-		$('.gallerySearchOptions').velocity("slideUp",{duration: 300});
-		$("#galleryToggle").velocity("fadeIn",{delay: 150, duration: 150});
-		$("#galleryZoomSelect > li:first-child").velocity("fadeOut", {duration: 300});
-		//$('#gallerySearchOptions').removeClass('hidden');
-		photoModel.optionsShown = true;
-		
-	}
-	
-}
-
-
-function selectGallerySearchTool(e) {
-	if (e !== undefined && e.preventDefault !== undefined)
-		e.preventDefault();
-	var index = this.current().index();
-	
-	switch (index) {
-			
-		case 0: // Search
-			$("#gallerySearch").attr("placeholder", "Search all");
-			break;
-			
-		case 1: // Contacts
-			$("#gallerySearch").attr("placeholder", "Search contacts");
-			break;
-			
-		case 2: // Chats
-			$("#gallerySearch").attr("placeholder", "Search chats");
-			break;
-			
-		case 3: // Calendar
-			$("#gallerySearch").attr("placeholder", "Search dates");
-			break;
-			
-		case 4: // Places
-			$("#gallerySearch").attr("placeholder", "Search places");
-			break;
-	}
-	
-}
-
-function selectGalleryZoom(e) {
-		if (e !== undefined && e.preventDefault !== undefined)
-		e.preventDefault();
-
-	var index = this.current().index();
-	switch (index) {
-		case 0:
-			photoModel.previewSize = "33%";
-			$("#gallery-listview li").css("width","33%");
-			$("#gallery-listview li").css("padding-bottom","33%");
-			break;
-		case 1:
-			photoModel.previewSize = "50%";
-			$("#gallery-listview li").css("width","50%");
-			$("#gallery-listview li").css("padding-bottom","50%");
-			break;
-		case 2:
-			photoModel.previewSize = "100%";
-			$("#gallery-listview li").css("width","100%");
-			$("#gallery-listview li").css("padding-bottom","100%");
-			break;
-			
-	}
-	
-	
-}
 
 function photoEditCrop(e) {
 	if (e !== undefined && e.preventDefault !== undefined)
@@ -341,20 +193,6 @@ function galleryClick(e) {
 		e.preventDefault();
 	}
 
-	var photoId = e.dataItem.id, photoUrl = e.dataItem.imageUrl;
-	photoModel.currentPhotoModel = getPhotoModel(photoId);
-	$('#photoViewImage').attr('src', photoUrl);
-	$('#photoTagImage').attr('src', photoUrl);
-	$('#photoEditImage').attr('src', photoUrl);
-
-	if (photoModel.chatPhoto) {
-		showChatImagePreview(photoUrl);
-		APP.kendo.navigate('#:back');
-
-	} else {
-		APP.kendo.navigate('#photoView');
-	}
-
 }
 
 
@@ -378,9 +216,7 @@ function photoDelete (e) {
 	e.preventDefault();
 	var photo = photoModel.currentPhotoModel;
 	// Todo:  Add confirmation prior to photo delete
-	
 
-	
 	mobileNotify("Deleted current photo");
 	
 	// Navigate to previous page as the photo is gone...

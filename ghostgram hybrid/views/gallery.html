@@ -1,13 +1,11 @@
-<div data-role="view" data-title="Gallery" id="gallery" data-layout="main" data-model="APP.models.gallery" data-init="onInitGallery" data-show="onShowGallery">
+<div data-role="view" data-title="Gallery" id="gallery" data-layout="main" data-model="photoModel" data-init="galleryView.OnInit" data-show="galleryView.onShow" data-stretch="true">
  	<div>
  		<div class="topViewSearchBox">
 	 		<div class="appendSearch">
 				<span class="searchIcon"><img src="images/search.svg" /></span>
 				<input id="mainSearch" type="search" class="viewSearchBox" placeholder="Search" />
 			</div>
-		</div>
-	 	<div>
-		 	<ul data-role="buttongroup" data-index="0" id="galleryMenuSelect" data-select="gallerySelectCategory">
+			<ul data-role="buttongroup" data-index="0" id="galleryMenuSelect" data-select="galleryView.selectCategory">
 				<li>
 					Archive
 				</li>
@@ -31,6 +29,18 @@
 					<li><img src="images/sentinel-contacts.svg" />Don<button></button></li>
 					<li><img src="images/sentinel-chats.svg" />myplacez design<button></button></li>
 					-->
+		
+			<div id="galleryPhotoDisplayOpts">
+				<ul data-role="buttongroup" data-index="0" class="km-small" data-select="galleryView.selectZoom" id="galleryZoomSelect">
+					<li>
+						<img src="images/gallery-grid-3.svg" />
+					</li>
+					<li>
+						<img src="images/gallery-grid-2.svg" />
+					</li>
+					<li> 
+						<img src="images/gallery-grid-1.svg" />
+					</li>
 				</ul>
 			</div>
 			
@@ -39,7 +49,7 @@
 			<ul data-role="listview" data-source="archive.dataSource" data-template="archive-template" data-header-template="archive-header-template"></ul>
 		</div>
 		<!-- Photos -->
-		<ul id="gallery-listview" class="list-inline" data-role="listview" data-click="galleryClick" data-source="APP.models.gallery.photosDS" data-template="gallery-template"></ul>
+		<ul id="gallery-listview" class="list-inline" data-role="listview" data-click="galleryView.galleryClick" data-source="photoModel.photosDS" data-template="gallery-template"></ul>
 		<div id="archive-empty">Your archive is empty</div>
 		<div id="archive-search-empty">Nothing found</div>
 	</div>
@@ -190,15 +200,3 @@
 	</div>
 	# console.log(data); #
 </script>
-
-
-
-
-
-
-
-
-
-
-
-

@@ -66,6 +66,7 @@ var privateChannel = {
         archiveMsg.TTL = msg.TTL;
         archiveMsg.sender = msg.sender;
         archiveMsg.recipient = privateChannel.userId;
+        archiveMsg.actualRecipient = msg.recipient;  // since we're echoing back to sender, need to store recipient.
         var encryptMessage = '', encryptData = '';
         var currentTime =  msg.time;  // use the current message time (time sent by this user)
         encryptMessage = cryptico.encrypt(msg.content, privateChannel.publicKey);
@@ -103,6 +104,7 @@ var privateChannel = {
                 TTL: msg.ttl,
                 time: msg.time,
                 sender: msg.sender,
+                actualRecipient: msg.actualRecipient,
                 recipient: msg.recipient
             };
 
@@ -123,7 +125,10 @@ var privateChannel = {
             message.fromHistory = false;
         }
 
-        channelView.messagesDS.add(message);
+        // ignore echoed sender copies in read message
+        // -- we add the message to the chat datasource at time of send
+        if (message.actualRecipient === undefined)
+            channelView.messagesDS.add(message);
 
         currentChannelModel.updateLastAccess();
 
@@ -223,7 +228,7 @@ var privateChannel = {
                         recipient: recipient
                     };
 
-
+                    // echo the message
                     privateChannel.receiveMessage(parsedMsg);
 
                     // archive message in the current channel
