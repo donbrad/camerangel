@@ -104,6 +104,7 @@ var privateChannel = {
                 TTL: msg.ttl,
                 time: msg.time,
                 sender: msg.sender,
+                actualRecipient: msg.actualRecipient,
                 recipient: msg.recipient
             };
 
