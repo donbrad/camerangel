@@ -365,6 +365,7 @@ function homeSignin (e) {
 			userModel.currentUser.set('photo', userModel.parseUser.get('photo'));
 			userModel.currentUser.set('aliasPublic', userModel.parseUser.get('aliasPublic'));
             userModel.currentUser.set('userUUID', userModel.parseUser.get('userUUID'));
+			userModel.currentUser.set('useIdenticon', userModel.parseUser.get('useIdenticon'));
 			userModel.currentUser.set('rememberUsername', userModel.parseUser.get('rememberUsername'));
 			userModel.currentUser.set('publicKey', publicKey);
 			userModel.decryptPrivateKey();
@@ -473,6 +474,7 @@ function homeCreateAccount() {
 					user.set("isVisible", true);
 				    user.set("availImgUrl", "images/status-available.svg");
 					user.set("phoneVerified", false);
+				    user.set("useIdenticon", true);
 					user.set("rememberUsername", false);
 					user.set("userUUID", userUUID);
 					//user.set("publicKey", publicKey);
@@ -499,6 +501,7 @@ function homeCreateAccount() {
 							userModel.currentUser.set('aliasPhoto', user.get('aliasPhoto'));
 							userModel.currentUser.set('userUUID', user.get('userUUID'));
 							userModel.currentUser.set('phoneVerified', false);
+							userModel.currentUser.set('useIdenticon',user.get('useIdenticon'));
 							userModel.currentUser.set('emailValidated',user.get('emailVerified'));
 							userModel.generateNewPrivateKey(user);
 

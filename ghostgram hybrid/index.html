@@ -47,6 +47,7 @@
 	<script src="scripts/libs/base64-string.js"></script>
 	<script src="scripts/libs/lz-string.js"></script>
 	<script src="scripts/libs/cropper.js"></script>
+	<script src="scripts/libs/jdenticon-1.3.0.js"></script>
     <script src="bower_components/velocity/velocity.js"></script>
     <script src="bower_components/lodash/lodash.js"></script>
     <script src="scripts/models/semanticDSs.js"></script>
@@ -80,7 +81,8 @@
 						<span class="home-status">
 							<img class="home-status-img" src="images/status-away.svg"/>
 						</span>
-						<img class="circle-img-home home-profile-img" />
+						<img class="circle-img-home home-profile-img" id="homeProfileImg"/>
+						<svg class="circle-img-home home-profile-img hidden" id="homeProfileIdenticon"/> </svg>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -533,6 +535,7 @@
 
 						<div class="statusContactList">
 							<img class="circle-img-md home-profile-img" id="profileStatusPhoto" src="" />
+							<svg class="circle-img-md home-profile-img hidden" id="profileStatusIdenticon"></svg>
 							<img width="16" src="images/status-away.svg" class="statusContactList-icon home-status-img" />
 						 </div>
 					

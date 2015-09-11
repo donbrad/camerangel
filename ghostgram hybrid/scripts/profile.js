@@ -26,7 +26,7 @@ function toggleProfilePhoto(e) {
 }
 
 // Globally update profile and status images in the application header
-function updateHeaderStatusImages (){
+function updateHeaderStatusImages () {
 	var isAvailable  = userModel.currentUser.get('isAvailable');
 	if (isAvailable) {
 		userModel.currentUser.set('availImgUrl', 'images/status-available.svg');
@@ -34,7 +34,14 @@ function updateHeaderStatusImages (){
 		userModel.currentUser.set('availImgUrl', 'images/status-away.svg');
 	}
 	$('.home-status-img').attr('src',userModel.currentUser.get('availImgUrl'));
+
 	$('.home-profile-img').attr('src',userModel.currentUser.get('photo'));
+    // If there's no
+    if (userModel.currentUser.get('parsePhoto') === undefined  || userModel.currentUser.get('useIdenticon') === true) {
+        userModel.enableIdenticon();
+    } else {
+        userModel.disableIdenticon();
+    }
 }
 
 // Select new ghost icon
