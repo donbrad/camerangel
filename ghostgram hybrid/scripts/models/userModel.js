@@ -273,9 +273,9 @@ var userModel = {
         $('#profileStatusPhoto').addClass('hidden');
         $('#profileStatusIdenticon').removeClass('hidden');
 
-        var hash = userModel.currentUser.userId;
+        var hash = userModel.currentUser.userUUID;
         if (hash === undefined) {
-            hash = 'ghostgram guest';
+            hash = "01234567890ABCDE";
         }
 
         jdenticon.update("#homeProfileIdenticon", hash);
