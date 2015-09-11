@@ -286,6 +286,7 @@ var userModel = {
     },
 
     disableIdenticon : function () {
+        
         $('#homeProfileImg').removeClass('hidden');
         $('#homeProfileIdenticon').addClass('hidden');
 

@@ -36,8 +36,12 @@ function updateHeaderStatusImages () {
 	$('.home-status-img').attr('src',userModel.currentUser.get('availImgUrl'));
 
 	$('.home-profile-img').attr('src',userModel.currentUser.get('photo'));
-    // If there's no
-    if (userModel.currentUser.get('parsePhoto') === undefined  || userModel.currentUser.get('useIdenticon') === true) {
+    var useIdenticon = userModel.currentUser.get('useIdenticon');
+    if (useIdenticon === undefined)
+        userIdenticon = true;
+
+
+    if (useIdenticon === true) {
         userModel.enableIdenticon();
     } else {
         userModel.disableIdenticon();
