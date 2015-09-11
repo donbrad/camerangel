@@ -266,7 +266,30 @@ var userModel = {
         }); */
     },
 
+    enableIdenticon : function () {
+        $('#homeProfileImg').addClass('hidden');
+        $('#homeProfileIdenticon').removeClass('hidden');
 
+        $('#profileStatusPhoto').addClass('hidden');
+        $('#profileStatusIdenticon').removeClass('hidden');
+
+        var hash = userModel.currentUser.userId;
+        if (hash === undefined) {
+            hash = 'ghostgram guest';
+        }
+
+        jdenticon.update("#homeProfileIdenticon", hash);
+
+        jdenticon.update("#profileStatusIdenticon", hash);
+    },
+
+    disableIdenticon : function () {
+        $('#homeProfileImg').removeClass('hidden');
+        $('#homeProfileIdenticon').addClass('hidden');
+
+        $('#profileStatusPhoto').removeClass('hidden');
+        $('#profileStatusIdenticon').addClass('hidden');
+    }
 
 
 };
@@ -353,30 +376,7 @@ var userStatus = {
         });
 
 
-    },
-
-    enableIdenticon : function () {
-        $('#homeProfileImg').addClass('hidden');
-        $('#homeProfileIdenticon').removeClass('hidden');
-
-        $('#profileStatusPhoto').addClass('hidden');
-        $('#profileStatusIdenticon').removeClass('hidden');
-
-        var hash = userModel.currentUser.userId;
-        if (hash === undefined) {
-            hash = 'ghostgram guest';
-        }
-
-        jdenticon.update("#homeProfileIdenticon", hash);
-
-        jdenticon.update("#profileStatusIdenticon", hash);
-    },
-
-    disableIdenticon : function () {
-        $('#homeProfileImg').removeClass('hidden');
-        $('#homeProfileIdenticon').addClass('hidden');
-
-        $('#profileStatusPhoto').removeClass('hidden');
-        $('#profileStatusIdenticon').addClass('hidden');
     }
+
+
 };
