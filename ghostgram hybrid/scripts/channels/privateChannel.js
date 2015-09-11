@@ -124,7 +124,10 @@ var privateChannel = {
             message.fromHistory = false;
         }
 
-        channelView.messagesDS.add(message);
+        // ignore echoed sender copies in read message
+        // -- we add the message to the chat datasource at time of send
+        if (message.actualRecipient === undefined)
+            channelView.messagesDS.add(message);
 
         currentChannelModel.updateLastAccess();
 
@@ -224,8 +227,8 @@ var privateChannel = {
                         recipient: recipient
                     };
 
-
-                   // privateChannel.receiveMessage(parsedMsg);
+                    // echo the message
+                    privateChannel.receiveMessage(parsedMsg);
 
                     // archive message in the current channel
                     privateChannel.archiveMessage(parsedMsg);
