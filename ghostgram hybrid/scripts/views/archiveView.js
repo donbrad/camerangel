@@ -169,14 +169,13 @@ var archiveView = {
 	},
 
 	onInitDateSelect: function(){
-		console.log("on init");
 		$("#datepicker").kendoDatePicker();
 			
 		
 
 		$("#select-easy-dates").kendoMobileButtonGroup({
             select: function(e) {
-                console.log("selected index:" + e.index);
+                //console.log("selected index:" + e.index);
             },
             index: 0
         });

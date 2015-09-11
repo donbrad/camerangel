@@ -712,6 +712,9 @@
 				);*/
 
 			});
+
+			// hiding the accessory bar
+			cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 		}
 		
 		APP.emailAvailable = false;
@@ -731,9 +734,6 @@
 		 }); */
 
 		window.semanticDSs = new SemanticDSs();
-
-		// hiding the accessory bar
-		//cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 
 	}, false);
 

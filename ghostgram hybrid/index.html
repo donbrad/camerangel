@@ -463,16 +463,18 @@
 <div data-role="view" id="photoView" data-zoom="true" data-style="width: 100%; height:100%; display: none;">
     <div data-role="header">
         <div data-role="navbar">
-           <a data-role="button"  data-align="left" href="#:back" ><img src="images/nav-back.svg" /></a>
+        	<a data-role="button"  data-align="left" href="#:back">
+           		<img src="images/nav-back.svg" />
+        	</a>
             <span>Photo Viewer</span>
 			<a data-align="right" data-role="button" href="#photoEditor?source=gallery">Edit</a>
         </div>
     </div>
 
-	<div style="margin: 2px; height: 98%; width: auto; text-align: center; background: #27476e;">
-		<img id="photoViewImage" src="" style="width: 98%; height:auto; vertical-align: middle;"> </img>
+	<div class="fullPhotoModal" style="text-align: center;">
+		<img id="photoViewImage" src="" style="width: 98%; height:auto; vertical-align: middle;" />
 	</div>
-	 <div class="footer" data-role="footer">
+	 <div class="footer hidden" data-role="footer">
 		<div data-role="navbar">
 			<a data-align="left" data-role="button"  data-click="photoExport"><i class="ghostIconNavbar fa fa-share-square-o"></i> </a>
 

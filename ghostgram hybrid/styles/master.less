@@ -1257,6 +1257,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 	height: 100%;
 	width: 100%;
 	background: rgba(0, 0, 0, 0.85);
+	display: -webkit-flex; 
 	display: flex;
   	align-items: center;
   	justify-content: center;
@@ -3787,6 +3788,7 @@ div.contactListBox.activeContact > div > div > ul {
 
 #gallery-listview {
     line-height: 0 !important;
+    padding-top: 0.25rem;
     /* need to work on better responsive
    -webkit-column-count: 2;
    -webkit-column-gap:   1px;
@@ -3866,9 +3868,9 @@ div.contactListBox.activeContact > div > div > ul {
 
 /* Gallery styles */
 #galleryMenuSelect {
+	.shadowHelper(1);
 	li.km-button {
 		width: 50%;
-		background-color: @shade-200;
 		color: @black;
 		border-top: 0px !important;
 		border-bottom: 0px !important;
@@ -3886,7 +3888,7 @@ div.contactListBox.activeContact > div > div > ul {
 	}
 }
 #galleryMenuSelect.km-buttongroup > .km-state-active {
-		background-color: @primary-100;
+		background-color: @primary-200;
 		color: #fff;
 		border-radius: 0px;
 		border-top: 0px !important;
@@ -3894,6 +3896,10 @@ div.contactListBox.activeContact > div > div > ul {
 	}
 .km-state-active #gallery-photos {
 	fill: #fff !important;
+}
+
+#archive-listview > div.km-scroll-container > div > ul > li:nth-child(1) {
+	padding-top: 0.5rem;
 }
 
 .km-state-active #gallery-all {

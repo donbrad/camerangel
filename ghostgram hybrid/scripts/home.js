@@ -389,6 +389,10 @@ function homeSignin (e) {
             userModel.parseACL = new Parse.ACL(userModel.parseUser);
             userModel.currentUser.bind('change', userModel.sync);
             userModel.fetchParseData();
+
+            // hide keyboard
+            cordova.plugins.Keyboard.close();
+
             APP.kendo.navigate('#home');
         },
         error: function(user, error) {
