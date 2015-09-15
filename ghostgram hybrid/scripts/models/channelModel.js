@@ -172,7 +172,7 @@ var channelModel = {
         for (var i=0; i< view.length; i++) {
             var chan = view[i];
 
-            if (chan.members[0] === contactUUID || chan.members[1] === contactUUID) {
+            if (chan.contactUUID === contactUUID) {
                 dataSource.filter([]);
                 channel = chan;
                 return(channel);
@@ -185,12 +185,12 @@ var channelModel = {
     },
 
     // Add a new private channel that this user created -- create a channel object
-    addPrivateChannel : function (contactUUID, contactPublicKey,  contactAlias, channelUUID) {
+    addPrivateChannel : function (contactUUID, contactPublicKey,  contactName) {
 
         var Channels = Parse.Object.extend(this._channelName);
         var channel = new Channels();
         var addTime = ggTime.currentTime();
-        channel.set("name", contactAlias);
+        channel.set("name", contactName);
         channel.set("isOwner", true);
         channel.set('isPrivate', true);
         channel.set('isPlace', false);
@@ -202,7 +202,8 @@ var channelModel = {
         channel.set("clearBefore", addTime);
         channel.set("lastAccess", addTime);
         channel.set("description", "Private: " + contactAlias);
-        channel.set("channelId", channelUUID);
+        channel.set("channelId", contactUUID);
+        channel.set("contactUUID", contactUUID);
         channel.set('contactKey', contactPublicKey);
         channel.set("members", [userModel.currentUser.userUUID, contactUUID]);
         channelModel.channelsDS.add(channel.attributes);

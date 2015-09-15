@@ -135,7 +135,7 @@ var privateChannel = {
         channelView.scrollToBottom();
 
         if (channelView.privacyMode) {
-            kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(9000).play();
+            kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(6000).play();
         }
     },
 
@@ -204,7 +204,7 @@ var privateChannel = {
 
         APP.pubnub.uuid(function (msgID) {
             APP.pubnub.publish({
-                channel: privateChannel.channelId,
+                channel: privateChannel.contactId,
                 message: {
                     recipient: recipient,
                     msgID: msgID,

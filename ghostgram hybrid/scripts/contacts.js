@@ -70,23 +70,32 @@ function secureEmail(e) {
 
 }
 
+// *** Private Chat
+//  if there's an existing channel, just redirect there
+//  if not create a new private channel and then direct
 function privateChat(e) {
-    if (e !== undefined && e.preventDefault !== undefined) {
-        e.preventDefault();
-    }
+    _preventDefault(e);
+
 	var contact = contactModel.currentContact;
 	var contactUUID = contact.contactUUID, contactName = contact.name, contactPublicKey = contact.publicKey;
     var userName = userModel.currentUser.get('name');
 
-    // Is there already a private channel provisioned for this user?
-    var channel = channelModel.findPrivateChannel(contactUUID);
-
     if (contactUUID === undefined || contactUUID === null) {
-		mobileNotify(contact.name + "hasn't verified their contact info");
-		return;
-	}
+        mobileNotify(contact.name + "hasn't verified their contact info");
+        return;
+    }
+    // Is there already a private channel provisioned for this user?
+    var channel = channelModel.findPrivateChannel(contactUUID),
+        channelId = channel.channelId;
 
-    //Are both user and contact channels provisioned
+   if (channel !== undefined) {
+
+       APP.kendo.navigate("#channel?channel="+channelId);
+   } else {
+        channelModel.addPrivateChannel(contactUUID,contactPublicKey, contactName);
+   }
+
+    /*//Are both user and contact channels provisioned
     queryPrivateChannel(userModel.currentUser.userUUID, contactUUID, function (result) {
 
         if (result.found === false) {  // No private channel exists
@@ -118,7 +127,7 @@ function privateChat(e) {
         }
 
     });
-
+*/
 
 }
 

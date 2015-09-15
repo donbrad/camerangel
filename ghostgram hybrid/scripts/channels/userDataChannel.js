@@ -113,14 +113,14 @@ var userDataChannel = {
             } break;
 
             case 'privateMessage' : {
-
+                privateChannel.receiveHandler(m);
             } break;
 
 
         }
     },
 
-    privateChannelInvite : function (contactUUID, channelUUID, message) {
+  /*  privateChannelInvite : function (contactUUID, channelUUID, message) {
         var msg = {};
 
         msg.type = 'privateInvite';
@@ -157,7 +157,7 @@ var userDataChannel = {
             error: userDataChannel.errorCallback
         });
     },
-
+*/
     groupChannelInvite : function (contactUUID, channelUUID, channelName, channelDescription, durationDays,  message) {
         var msg = {};
 
@@ -200,7 +200,7 @@ var userDataChannel = {
         });
     },
 
-    // This could be an initial request or a follow up to delete current channel
+   /* // This could be an initial request or a follow up to delete current channel
     // and create a new one -- effectively orphaning / deleting the data in the channel
     processPrivateInvite: function (ownerId, ownerPublicKey, channelId, message) {
         // Can be only one private channel per user -- need to lookup channel by ownerId
@@ -258,7 +258,7 @@ var userDataChannel = {
 
     },
 
-    processGroupInvite: function (ownerId, ownerName, channelId, channelName, channelDescription, durationDays, message) {
+*/    processGroupInvite: function (ownerId, ownerName, channelId, channelName, channelDescription, durationDays, message) {
         // Todo:  Does channel exist?  If not create,  if so notify user of request
         var channel = channelModel.findChannelModel(channelId);
 
