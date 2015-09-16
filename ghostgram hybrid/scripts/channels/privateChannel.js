@@ -20,12 +20,13 @@ var privateChannel = {
 
 
     close: function () {
-        APP.pubnub.unsubscribe({
+
+ /*       APP.pubnub.unsubscribe({
             channel: privateChannel.channelId
         });
-    },
+*/    },
 
-    open : function (channelUUID, userUUID, alias, name,  publicKey, privateKey, contactUUID, contactKey) {
+    open : function (channelUUID, userUUID, alias, name,  publicKey, privateKey, contactUUID, contactKey, contactName) {
         privateChannel.RSAKey = cryptico.privateKeyFromString(privateKey);
 
 
@@ -40,23 +41,25 @@ var privateChannel = {
 
         privateChannel.contactId = contactUUID;
         privateChannel.contactKey = contactKey;
+        privateChannel.contactName = contactName;
+
 
         // A mapping of all currently connected users' usernames userUUID's to their public keys and aliases
         privateChannel.users = new Array();
         privateChannel.users[userUUID] = privateChannel.thisUser;
         privateChannel.channelId = channelUUID;
 
-        // Subscribe to our PubNub channel.
+    /*    // Subscribe to our PubNub channel.
         APP.pubnub.subscribe({
             channel: privateChannel.channelId,
             windowing: 5000,
             restore: true,
             callback: privateChannel.receiveHandler,
-            presence: privateChannel.presenceHandler,
+           presence: privateChannel.presenceHandler,
             // Set our state to our user object, which contains our username and public key.
             state: privateChannel.thisUser
         });
-    },
+*/    },
 
     // archive the message in the private channel with this user's public key and send to user.
     // this provides a secure roamable private sent folder without localstorage and parse...
@@ -132,7 +135,7 @@ var privateChannel = {
         if (message.actualRecipient === undefined)
             channelView.messagesDS.add(message);
 
-        currentChannelModel.updateLastAccess();
+        //currentChannelModel.updateLastAccess();
 
         channelView.scrollToBottom();
 
@@ -141,6 +144,7 @@ var privateChannel = {
         }
     },
 
+/*
     presenceHandler : function (msg) {
         if (msg.action === "join" || msg.action === "state-change") {
             // If the presence message contains data aka *state*, add this to our users object.
@@ -190,6 +194,7 @@ var privateChannel = {
         }
         privateChannel.presenceChange();
     },
+*/
 
     sendMessage: function (recipient, message, data, ttl) {
         if (ttl === undefined || ttl < 60)
