@@ -710,7 +710,7 @@ var channelView = {
           // *** Private Channel ***
           var contactKey = thisChannel.contactKey;
           if (contactKey === undefined) {
-              mobileNotify("No public key for " + thisContact.name);
+              mobileNotify("No public key for " + thisChannel.name);
               return;
           }
 

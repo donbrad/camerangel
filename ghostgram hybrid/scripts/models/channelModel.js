@@ -122,7 +122,7 @@ var channelModel = {
 
     updateChannelsMessageCount : debounce(function () {
         var channelArray = channelModel.channelsDS.data();
-        console.log ("updateChannelsMessageCount");
+
         for (var i=0; i<channelArray.length; i++) {
             var channel = channelArray[i];
 
@@ -138,7 +138,7 @@ var channelModel = {
                         messages = messages[0];
                         messages = messages || [];
                         var len = messages.length;
-                        console.log ("Getting unread for " + channel.name + " : " + len);
+
                     }
                 });
             }
