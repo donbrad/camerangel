@@ -26,11 +26,11 @@ var userDataChannel = {
             APP.pubnub.subscribe({
                 channel: userDataChannel.channelId,
                 windowing: 5000,
-                message: this.channelRead,
-                connect: this.channelConnect,
-                disconnect:this.channelDisconnect,
-                reconnect: this.channelReconnect,
-                error: this.channelError
+                message: userDataChannel.channelRead,
+                connect: userDataChannel.channelConnect,
+                disconnect:userDataChannel.channelDisconnect,
+                reconnect: userDataChannel.channelReconnect,
+                error: userDataChannel.channelError
 
             });
         }
@@ -40,7 +40,7 @@ var userDataChannel = {
 
     updateTimeStamp : function () {
         userDataChannel.lastAccess = ggTime.currentTime();
-        localStorage.setItem('ggUserDataTimeStamp', this.lastAccess);
+        localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);
     },
 
     history : function () {
