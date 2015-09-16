@@ -45,6 +45,7 @@ var userDataChannel = {
 
     history : function () {
 
+        var channelList = [], channelKeys = [];
         var timeStamp = ggTime.lastDay();
 
         if (userDataChannel.lastAccess === 0 || isNaN(userDataChannel.lastAccess)) {
@@ -56,19 +57,25 @@ var userDataChannel = {
         // Get any messages in the channel
         APP.pubnub.history({
             channel: userDataChannel.channelId,
-            end: userDataChannel.lastAccess,
+            end: timeStamp,
             callback: function(messages) {
                 messages = messages[0];
                 messages = messages || [];
                 for (var i = 0; i < messages.length; i++) {
                     if (messages[i].type === 'privateMessage') {
                         // Add the last 24 hours worth of messages to the private channel archive
+                        if (messages[i].sender !== userModel.currentUser.userUUID) {
+                            // if the sender isn't this user, update the channel list
+                            channelList[messages[i].sender] = true;
+                        }
                         channelModel.privateChannelsDS.add(messages[i]);
                     } else  if (messages[i].time >= userDataChannel.lastAccess) {
                         userDataChannel.channelRead(messages[i]);
                     }
                 }
 
+                channelKeys = Object.keys(channelList);
+                channelModel.updatePrivateChannels(channelKeys);
             }
         });
 

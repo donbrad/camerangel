@@ -92,7 +92,8 @@ function privateChat(e) {
        var  channelId = channel.channelId;
        APP.kendo.navigate("#channel?channel="+channelId);
    } else {
-        channelModel.addPrivateChannel(contactUUID,contactPublicKey, contactName);
+       channelModel.addPrivateChannel(contactUUID,contactPublicKey, contactName);
+       APP.kendo.navigate("#channel?channel="+channelId);
    }
 
     /*//Are both user and contact channels provisioned

@@ -184,6 +184,25 @@ var channelModel = {
         return(channel);
     },
 
+    // update current private channels based on channelList passed
+    updatePrivateChannels : function (channelList) {
+        if (channelList === undefined || channelList.length === 0) {
+            return;
+        }
+
+        for (var i=0; i<channelList.length; i++) {
+            if (channelModel.findPrivateChannel(channelList[i]) === undefined) {
+                // private channel doesn't exist
+                var contact = contactModel.findContactByUUID(channelList[i]);
+                if (contact !== undefined) {
+                    channelModel.addChannel(contact.contactUUID, contact.publicKey, contact.name);
+                }
+            }
+        }
+
+    },
+
+
     // Add a new private channel that this user created -- create a channel object
     addPrivateChannel : function (contactUUID, contactPublicKey,  contactName) {
 
