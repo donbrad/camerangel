@@ -741,7 +741,7 @@ var channelView = {
               $('#channelImage').attr('src', '');
           }
 
-          privateChannel.open(channelUUID, thisUser.userUUID, thisUser.alias, name, userKey, privateKey, contactUUID, contactKey);
+          privateChannel.open(channelUUID, thisUser.userUUID, thisUser.alias, name, userKey, privateKey, contactUUID, contactKey, thisContact.name);
         /*  thisChannelHandler.onMessage(channelView.onChannelRead);
           thisChannelHandler.onPresence(channelView.onChannelPresence);
           mobileNotify("Getting Previous Messages...");
