@@ -39,9 +39,7 @@ var channelModel = {
     },
 
     init :  function () {
-        /*channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
-       */
-
+        channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
     },
 
 
@@ -135,7 +133,7 @@ var channelModel = {
 
                 APP.pubnub.history({
                     channel: channel.channelId,
-                    start: channel.lastAccess,
+                    end: ggTime.toPubNubTime(channel.lastAccess),
 
                     callback: function(messages) {
                         messages = messages[0];
