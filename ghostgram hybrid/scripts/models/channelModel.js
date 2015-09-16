@@ -11,7 +11,7 @@ var channelModel = {
     currentChannel: new kendo.data.ObservableObject(),
     intervalTimer : undefined,
     _sentMessages : "sentMessages",
-    _messageCountRefresh : 3000000,   // Delta between message count  calls (in milliseconds)
+    _messageCountRefresh : 300000,   // Delta between message count  calls (in milliseconds)
     channelsDS: new kendo.data.DataSource({
         offlineStorage: "channels-offline",
         sort: {
@@ -31,7 +31,10 @@ var channelModel = {
 
 
     init :  function () {
-        channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
+        // Start the updateMessageCount async after 5 seconds...
+        setTimeout(function(){
+            channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
+        },5000);
     },
 
 
