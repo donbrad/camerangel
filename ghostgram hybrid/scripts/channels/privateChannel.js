@@ -297,7 +297,7 @@ var privateChannel = {
                     msgID: msg.msgID,
                     content: content,
                     data: data,
-                    TTL: msg.ttl,
+                    ttl: msg.ttl,
                     time: msg.time,
                     sender: msg.sender,
                     fromHistory: true,

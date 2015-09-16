@@ -85,9 +85,9 @@ var currentChannelModel = {
 
     //
 
-    getArchivedMessages : function () {
+    zeroUnreadCount : function () {
         // Messages from parse
-
+        updateParseObject('channels', 'channelId', channelId, 'unreadCount', 0);
     },
 
     // Need to debounce this so we're not updating lastAccess on each message read.

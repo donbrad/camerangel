@@ -36,7 +36,8 @@ var channelModel = {
     init :  function () {
         // Start the updateMessageCount async after 5 seconds...
         setTimeout(function(){
-            channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
+           // channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
+            channelModel.updateChannelsMessageCount();
         },5000);
     },
 
@@ -119,14 +120,25 @@ var channelModel = {
         */
     },
 
+    updateUnreadCount: function (channelId, count) {
+        var channel = channelModel.findChannelModel(channelId);
+        channel.unreadCount = count;
+        updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
+    },
+
+    incrementUnreadCount: function (channelId, count) {
+        var channel = channelModel.findChannelModel(channelId);
+        channel.unreadCount = channel.unreadCount + count;
+        updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
+    },
+
     updateChannelsMessageCount : debounce(function () {
         var channelArray = channelModel.channelsDS.data();
 
         for (var i=0; i<channelArray.length; i++) {
             var channel = channelArray[i];
 
-
-            // Only ping non-private (group)channels
+            // Only ping non-private (group)channels -- userDataChannels handles private channels
             if (channel.isPrivate === false) {
 
                 APP.pubnub.history({
@@ -137,6 +149,7 @@ var channelModel = {
                         messages = messages[0];
                         messages = messages || [];
                         var len = messages.length;
+                        channelModel.incrementUnreadCount(channel.channelId, len);
 
                     }
                 });

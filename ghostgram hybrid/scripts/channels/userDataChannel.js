@@ -69,7 +69,7 @@ var userDataChannel = {
                         // Add the last 24 hours worth of messages to the private channel archive
                         if (messages[i].sender !== userModel.currentUser.userUUID) {
                             // if the sender isn't this user, update the channel list
-                            channelList[messages[i].sender] = true;
+                            channelList[messages[i].sender] = channelList[messages[i].sender]++;
                         }
 
                         channelModel.privateMessagesDS.add(messages[i]);

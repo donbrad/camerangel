@@ -699,6 +699,7 @@ var channelView = {
 
         channelView.privacyMode = false;
 
+        channelModel.updateUnreadCount(channelUUID, 0);
 
         // Privacy UI
         $('#privacyMode').html('<img src="images/privacy-off.svg" />');
