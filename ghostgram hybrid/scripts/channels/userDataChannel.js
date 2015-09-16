@@ -58,6 +58,7 @@ var userDataChannel = {
         APP.pubnub.history({
             channel: userDataChannel.channelId,
             end: timeStamp,
+            error: userDataChannel.error,
             callback: function(messages) {
                 messages = messages[0];
                 messages = messages || [];
