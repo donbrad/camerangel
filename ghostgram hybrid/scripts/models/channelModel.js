@@ -24,14 +24,10 @@ var channelModel = {
         offlineStorage: "privatechannels-offline"
     }),
 
-    privateMessagessDS: new kendo.data.DataSource({
+    privateMessagesDS: new kendo.data.DataSource({
         offlineStorage: "privatemessages-offline"
     }),
-
-    channelMapDS: new kendo.data.DataSource({
-        offlineStorage: "channelmap-offline"
-    }),
-
+    
 
 
     init :  function () {

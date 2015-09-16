@@ -134,7 +134,7 @@ var privateChannel = {
 
         // ignore echoed sender copies in read message
         // -- we add the message to the chat datasource at time of send
-        if (message.actualRecipient === undefined)
+       // if (message.actualRecipient === undefined)
             channelView.messagesDS.add(message);
 
         //currentChannelModel.updateLastAccess();
@@ -238,7 +238,7 @@ var privateChannel = {
                         data: contentData,
                         time: currentTime,
                         fromHistory: false,
-                        TTL: ttl
+                        ttl: ttl
 
                     };
 
