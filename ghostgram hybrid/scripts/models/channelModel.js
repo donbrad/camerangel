@@ -29,14 +29,6 @@ var channelModel = {
     }),
 
 
-    loadLocal : function () {
-        var localArray = localStorage[channelModel._sentMessages];
-        if (localArray === undefined || localArray === null || localArray === '') {
-            return ([]);
-        }
-
-        return ( JSON.parse(localArray));
-    },
 
     init :  function () {
         channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);

@@ -63,7 +63,8 @@ var userDataChannel = {
                 messages = messages[0];
                 messages = messages || [];
                 for (var i = 0; i < messages.length; i++) {
-                    if (messages[i].type === 'privateMessage') {
+                    // Todo: don - remove undefined test for alpha.
+                    if (messages[i].type === undefined || messages[i].type === 'privateMessage') {
                         // Add the last 24 hours worth of messages to the private channel archive
                         if (messages[i].sender !== userModel.currentUser.userUUID) {
                             // if the sender isn't this user, update the channel list

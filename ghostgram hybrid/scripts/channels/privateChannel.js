@@ -93,6 +93,7 @@ var privateChannel = {
     },
 
     receiveHandler : function (msg) {
+
         if (msg.recipient === privateChannel.userId) {
             var data = null;
             var content = cryptico.decrypt(msg.content.cipher, privateChannel.RSAKey).plaintext;
