@@ -241,7 +241,50 @@ var privateChannel = {
     },
 
     getMessageHistory: function (callBack) {
-        var timeStamp = ggTime.lastDay();
+
+        var dataSource = channelModel.privateChannelsDS;
+
+
+        dataSource.filter(  {"logic":"or",
+            "filters":[
+                { field: "sender", operator: "eq", value: privateChannel.contactId },
+                { field: "actualRecipient", operator: "eq", value: privateChannel.contactId }
+            ]});
+        var view = dataSource.view();
+        var messages = view;
+        var clearMessageArray = [];
+        dataSource.filter([]);
+        for(var i = 0; i < messages.length; i++) {
+            var msg = messages[i];
+            var content = '';
+            var parsedMsg;
+
+            // Process
+            var data = null;
+            var content = cryptico.decrypt(msg.content.cipher, privateChannel.RSAKey).plaintext;
+            if (msg.data !== undefined && msg.data !== null) {
+                data = cryptico.decrypt(msg.data.cipher, privateChannel.RSAKey).plaintext;
+                data = JSON.parse(data);
+            }
+            parsedMsg = {
+                msgID: msg.msgID,
+                content: content,
+                data: data,
+                TTL: msg.ttl,
+                time: msg.time,
+                sender: msg.sender,
+                fromHistory: true,
+                recipient: msg.recipient
+            };
+
+            clearMessageArray.push(parsedMsg);
+
+        }
+
+        if(callBack)
+            callBack(clearMessageArray);
+
+ /*       var timeStamp = ggTime.lastDay();
 
         APP.pubnub.history({
             channel: privateChannel.channelId,
@@ -285,5 +328,5 @@ var privateChannel = {
             }
 
         });
-    }
+*/    }
 };

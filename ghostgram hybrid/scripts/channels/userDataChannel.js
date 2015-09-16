@@ -13,6 +13,7 @@ var userDataChannel = {
 
     channelId: '',   // channelId is users uuid
     lastAccess: 0,   // last access time stamp
+    timeStamp: 0,
 
     init: function (channelId) {
         if (channelId !== undefined) {
@@ -24,7 +25,7 @@ var userDataChannel = {
 
             APP.pubnub.subscribe({
                 channel: this.channelId,
-                windowing: 50000,
+                windowing: 5000,
                 message: this.channelRead,
                 connect: this.channelConnect,
                 disconnect:this.channelDisconnect,
@@ -34,52 +35,49 @@ var userDataChannel = {
             });
         }
 
-        this.history();
+        userDataChannel.history();
     },
 
     updateTimeStamp : function () {
-        this.lastAccess = ggTime.currentPubNubTime();
+        userDataChannel.lastAccess = ggTime.currentTime();
         localStorage.setItem('ggUserDataTimeStamp', this.lastAccess);
     },
 
     history : function () {
 
-        if (this.lastAccess === 0 || isNaN(this.lastAccess)) {
-            // Get any messages in the channel
-            APP.pubnub.history({
-                channel: this.channelId,
-                callback: function(messages) {
-                    messages = messages[0];
-                    messages = messages || [];
-                    for (var i = 0; i < messages.length; i++) {
-                        userDataChannel.channelRead(messages[i]);
-                    }
+        var timeStamp = ggTime.lastDay();
 
-                }
-            });
+        if (userDataChannel.lastAccess === 0 || isNaN(userDataChannel.lastAccess)) {
+            timeStamp = ggTime.toPubNubTime(timeStamp);
         } else {
-            // Get any messages in the channel
-            APP.pubnub.history({
-                channel: this.channelId,
-                end: this.lastAccess,
-                callback: function(messages) {
-                    messages = messages[0];
-                    messages = messages || [];
-                    for (var i = 0; i < messages.length; i++) {
-                        if (messages[i].time >= userDataChannel.lastAccess)
-                            userDataChannel.channelRead(messages[i]);
-                    }
-
-                }
-            });
+            timeStamp = ggTime.toPubNubTime(userDataChannel.lastAccess - 86400);
         }
 
+        // Get any messages in the channel
+        APP.pubnub.history({
+            channel: userDataChannel.channelId,
+            end: userDataChannel.lastAccess,
+            callback: function(messages) {
+                messages = messages[0];
+                messages = messages || [];
+                for (var i = 0; i < messages.length; i++) {
+                    if (messages[i].type === 'privateMessage') {
+                        // Add the last 24 hours worth of messages to the private channel archive
+                        channelModel.privateChannelsDS.add(messages[i]);
+                    } else  if (messages[i].time >= userDataChannel.lastAccess) {
+                        userDataChannel.channelRead(messages[i]);
+                    }
+                }
 
-        this.updateTimeStamp();
+            }
+        });
+
+
+        userDataChannel.updateTimeStamp();
     },
 
     channelRead : function (m) {
-        this.updateTimeStamp();
+        userDataChannel.updateTimeStamp();
 
         switch(m.type) {
 
@@ -94,12 +92,12 @@ var userDataChannel = {
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, ownerID: <ownerUUID>,  ownerName: <text>, channelName: <text>, channelDescription: <text>}
             case 'channelInvite' : {
-                this.processGroupInvite(m.ownerId, m.ownerName,  m.channelId, m.channelName, m.channelDescription, m.durationDays,  m.message);
+                userDataChannel.processGroupInvite(m.ownerId, m.ownerName,  m.channelId, m.channelName, m.channelDescription, m.durationDays,  m.message);
             } break;
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, owner: <ownerUUID>}
             case 'channelDelete' : {
-                this.processGroupDelete(m.ownerId, m.channelId, m.message);
+                userDataChannel.processGroupDelete(m.ownerId, m.channelId, m.message);
             } break;
 
             //  { type: 'packageOffer',  channelId: <channelUUID>, owner: <ownerUUID>, packageId: <packageUUID>, private: true|false, type: 'text'|'pdf'|'image'|'video', title: <text>, message: <text>}
@@ -113,7 +111,14 @@ var userDataChannel = {
             } break;
 
             case 'privateMessage' : {
-                privateChannel.receiveHandler(m);
+                //Add the message to the privateChannel data source.
+                channelModel.privateChannelsDS.add(m);
+                // Is this private channel active?
+                if (currentChannelModel.channelId == m.sender) {
+                    //Its the active channel, receive the message
+                    privateChannel.receiveHandler(m);
+                }
+
             } break;
 
 
