@@ -401,15 +401,15 @@ var ggTime = {
 	},
 
 	currentPubNubTime: function () {
-		return(new Date().getTime() * 10000);
+		return(new Date().getTime() * 100000);
 	},
 
 	toPubNubTime: function (timeIn) {
-		return (timeIn * 10000);
+		return (timeIn * 100000);
 	},
 
 	fromPubNubTime : function (timeIn) {
-		return (timeIn / 10000);
+		return (timeIn / 100000);
 	},
 
 	lastDay : function () {
