@@ -220,7 +220,7 @@ var channelModel = {
         channel.set("unreadCount", 0);
         channel.set("clearBefore", addTime);
         channel.set("lastAccess", addTime);
-        channel.set("description", "Private: " + contactAlias);
+        channel.set("description", "Private: " + contactName);
         channel.set("channelId", contactUUID);
         channel.set("contactUUID", contactUUID);
         channel.set('contactKey', contactPublicKey);
