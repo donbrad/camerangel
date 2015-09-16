@@ -132,7 +132,7 @@ var channelModel = {
 
             // Only ping non-private (group)channels
             if (channel.isPrivate === false) {
-                console.log ("Getting unread for " + channel.name);
+
                 APP.pubnub.history({
                     channel: channel.channelId,
                     start: channel.lastAccess,
@@ -141,7 +141,7 @@ var channelModel = {
                         messages = messages[0];
                         messages = messages || [];
                         var len = messages.length;
-
+                        console.log ("Getting unread for " + channel.name + " : " + len);
                     }
                 });
             }
