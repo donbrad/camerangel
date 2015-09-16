@@ -12,6 +12,7 @@ var channelModel = {
     intervalTimer : undefined,
     _sentMessages : "sentMessages",
     _messageCountRefresh : 300000,   // Delta between message count  calls (in milliseconds)
+
     channelsDS: new kendo.data.DataSource({
         offlineStorage: "channels-offline",
         sort: {
@@ -20,10 +21,12 @@ var channelModel = {
         }
     }),
 
+    // List of all active private channels (those with messages)
     privateChannelsDS: new kendo.data.DataSource({
         offlineStorage: "privatechannels-offline"
     }),
 
+    // All active private messages (including archived messages)
     privateMessagesDS: new kendo.data.DataSource({
         offlineStorage: "privatemessages-offline"
     }),

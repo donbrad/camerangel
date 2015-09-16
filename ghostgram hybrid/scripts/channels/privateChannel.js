@@ -74,8 +74,11 @@ var privateChannel = {
         archiveMsg.actualRecipient = msg.recipient;  // since we're echoing back to sender, need to store recipient.
         var encryptMessage = '', encryptData = '';
         var currentTime =  msg.time;  // use the current message time (time sent by this user)
+
+        // encrypt the message with this users public key
         encryptMessage = cryptico.encrypt(msg.content, privateChannel.publicKey);
         archiveMsg.content = encryptMessage;
+        
         if (msg.data !== undefined && msg.data !== null)
             encryptData = cryptico.encrypt(JSON.stringify(msg.data), privateChannel.publicKey);
         else
@@ -278,7 +281,11 @@ var privateChannel = {
             var content = cryptico.decrypt(msg.content.cipher, privateChannel.RSAKey).plaintext;
             if (msg.data !== undefined && msg.data !== null) {
                 data = cryptico.decrypt(msg.data.cipher, privateChannel.RSAKey).plaintext;
-                data = JSON.parse(data);
+                if (data === undefined) {
+                    data = null;
+                } else {
+                    data = JSON.parse(data);
+                }
             }
             parsedMsg = {
                 msgID: msg.msgID,
