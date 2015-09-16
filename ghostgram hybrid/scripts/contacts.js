@@ -85,11 +85,11 @@ function privateChat(e) {
         return;
     }
     // Is there already a private channel provisioned for this user?
-    var channel = channelModel.findPrivateChannel(contactUUID),
-        channelId = channel.channelId;
+    var channel = channelModel.findPrivateChannel(contactUUID)
+
 
    if (channel !== undefined) {
-
+       var  channelId = channel.channelId;
        APP.kendo.navigate("#channel?channel="+channelId);
    } else {
         channelModel.addPrivateChannel(contactUUID,contactPublicKey, contactName);
