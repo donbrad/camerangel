@@ -82,8 +82,9 @@ var privateChannel = {
             encryptData = null;
         archiveMsg.data = encryptData;
 
+        // Archive the message in this users data channel
         APP.pubnub.publish({
-            channel: privateChannel.channelId,
+            channel: userDataChannel.channelId,
             message: archiveMsg,
             error: function (error) {
                 mobileNotify("Archive message error : " + error);
@@ -103,6 +104,7 @@ var privateChannel = {
             }
 
             var parsedMsg = {
+                type: 'privateMessage',
                 msgID: msg.msgID,
                 channelId: privateChannel.channelId,
                 content: content,
@@ -110,7 +112,6 @@ var privateChannel = {
                 TTL: msg.ttl,
                 time: msg.time,
                 sender: msg.sender,
-                actualRecipient: msg.actualRecipient,
                 recipient: msg.recipient
             };
 
