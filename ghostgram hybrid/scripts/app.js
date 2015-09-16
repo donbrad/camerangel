@@ -22,42 +22,6 @@
 				})
 			},
 
-			profile: {
-				title: 'Profile',
-				/*parseUser: null,
-				tempDirectory: '',
-				appDirectory: '',
-				currentUser: new kendo.data.ObservableObject({
-					username: '',
-					userUUID: '',
-					email: '',
-					phone: '',
-					alias: '',
-					aliasPhoto: '',
-					photo: '',
-					publicAlias: '',
-					publicAliasPhoto: '',
-					privateKey: '',
-					publicKey: '',
-					udid: '',
-					macAddress: '',
-					statusMessage: '',
-					rememberUsername: false,
-					emailVerified: false,
-					phoneVerified: false,
-					isVerified: false,
-					isRetina: false,
-					isWIFIOnly: false,
-					isPhotoStored: false,
-					isVisible: true,
-					isAvailable: true,
-					availImgUrl: 'images/status-available.svg',
-					currentPlaceName: '',
-					currentPlaceUUID: ''
-				})
-*/
-			},
-
 			settings: {
 				title: 'Settings',
 				privacyModeEnabled: true,
@@ -81,78 +45,6 @@
 
 			},
 
-			channels: {
-				title: 'Channels',
-				pubnub: '',
-				currentChannel: new kendo.data.ObservableObject(),
-				channelsDS: new kendo.data.DataSource({
-						offlineStorage: "channels-offline",
-						sort: {
-							field: "name",
-							dir: "asc"
-						}
-					})
-
-			},
-
-			channel: {
-				title: 'Channel',
-				currentChannel: {},
-				currentModel: {},
-				currentMessage: {},
-				messageLock: true,
-				potentialMembersDS: new kendo.data.DataSource({
-					group: 'category',
-					sort: {
-						field: "name",
-						dir: "asc"
-					},
-					schema: {
-						model: {
-							id: "uuid"
-						}
-					}
-				}),
-				membersDS: new kendo.data.DataSource({
-					sort: {
-						field: "name",
-						dir: "asc"
-					}
-				}),
-				messagesDS: new kendo.data.DataSource({
-					sort: {
-						field: "date",
-						dir: "desc"
-					}
-				})
-			},
-
-			privateChannel: {
-				title: 'Private Channel',
-				privateChannelsDS: new kendo.data.DataSource({
-					sort: {
-						field: "date",
-						dir: "desc"
-					}
-				}),
-				currentPrivateChannel: {},
-				messagesDS: new kendo.data.DataSource({
-					sort: {
-						field: "date",
-						dir: "desc"
-					}
-				}),
-				messagesSentDS: new kendo.data.DataSource({
-					offlineStorage: "privateSent-offline",
-					sort: {
-						field: "date",
-						dir: "desc"
-					}
-				}),
-				channelUUID: null,
-				contactUUID: null,
-				contactAlias: null
-			},
 
 			placeChannel: {
 				title: 'Place Chat',
@@ -175,15 +67,6 @@
 
 			},
 
-			dataChannel: {
-				title: 'Data Channel',
-				messages: new kendo.data.DataSource({
-					sort: {
-						field: "date",
-						dir: "desc"
-					}
-				})
-			},
 
 			gallery: {
 				title: 'gallery',
@@ -196,33 +79,7 @@
 
 			},
 
-			contacts: {
-				title: 'Contacts',
-				/*contactsDS: new kendo.data.DataSource({
-					offlineStorage: "contacts-offline",
-					sort: {
-						field: "name",
-						dir: "asc"
-					}
-				}),
-				deviceContactsDS: new kendo.data.DataSource({
-					sort: {
-						field: "name",
-						dir: "asc"
-					}
-				}),
-				contactListDS: new kendo.data.DataSource({
-					group: 'category'
-				}),
 
-				currentDeviceContact: {},
-				currentContact: new kendo.data.ObservableObject(),
-				phoneDS: new kendo.data.DataSource(),
-				emailDS: new kendo.data.DataSource(),
-				addressDS: new kendo.data.DataSource(),
-				phoneArray: [],
-				emailArray: []*/
-			},
 
 			sync: {
 				operation: '',

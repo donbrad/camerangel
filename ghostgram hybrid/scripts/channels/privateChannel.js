@@ -78,7 +78,7 @@ var privateChannel = {
         // encrypt the message with this users public key
         encryptMessage = cryptico.encrypt(msg.content, privateChannel.publicKey);
         archiveMsg.content = encryptMessage;
-        
+
         if (msg.data !== undefined && msg.data !== null)
             encryptData = cryptico.encrypt(JSON.stringify(msg.data), privateChannel.publicKey);
         else
@@ -259,7 +259,7 @@ var privateChannel = {
 
     getMessageHistory: function (callBack) {
 
-        var dataSource = channelModel.privateChannelsDS;
+        var dataSource = channelModel.privateMessagesDS;
 
 
         dataSource.filter(  {"logic":"or",
@@ -267,6 +267,7 @@ var privateChannel = {
                 { field: "sender", operator: "eq", value: privateChannel.contactId },
                 { field: "actualRecipient", operator: "eq", value: privateChannel.contactId }
             ]});
+
         var view = dataSource.view();
         var messages = view;
         var clearMessageArray = [];
@@ -279,6 +280,9 @@ var privateChannel = {
             // Process
             var data = null;
             var content = cryptico.decrypt(msg.content.cipher, privateChannel.RSAKey).plaintext;
+            if (content === undefined) {
+                content = null;
+            }
             if (msg.data !== undefined && msg.data !== null) {
                 data = cryptico.decrypt(msg.data.cipher, privateChannel.RSAKey).plaintext;
                 if (data === undefined) {
