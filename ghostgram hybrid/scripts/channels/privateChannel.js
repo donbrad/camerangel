@@ -62,6 +62,7 @@ var privateChannel = {
     // this provides a secure roamable private sent folder without localstorage and parse...
     archiveMessage : function (msg) {
         var archiveMsg = {};
+        archiveMsg.type = 'privateMessage';
         archiveMsg.msgID = msg.msgID;
         archiveMsg.time = msg.time;
         archiveMsg.TTL = msg.TTL;
@@ -208,9 +209,11 @@ var privateChannel = {
             APP.pubnub.publish({
                 channel: privateChannel.contactId,
                 message: {
+                    type: 'privateMessage',
                     recipient: recipient,
-                    msgID: msgID,
                     sender: privateChannel.userId,
+                    msgID: msgID,
+                    channelId: privateChannel.channelId,
                     content: encryptMessage,  // publish the encryptedMessage
                     data: encryptData,        // publish the encryptedData.
                     time: currentTime,
@@ -219,15 +222,17 @@ var privateChannel = {
                 },
                 callback: function () {
                     var parsedMsg = {
+                        type: 'privateMessage',
+                        recipient: recipient,
+                        sender: privateChannel.userId,
                         msgID: msgID,
                         channelId: privateChannel.channelId,
                         content: content,
                         data: contentData,
-                        TTL: ttl,
                         time: currentTime,
-                        sender: privateChannel.userId,
                         fromHistory: false,
-                        recipient: recipient
+                        TTL: ttl
+
                     };
 
                     // echo the message
