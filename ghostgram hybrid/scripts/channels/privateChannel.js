@@ -162,7 +162,7 @@ var privateChannel = {
         }
         // A user has left or timed out of ghostgrams so we remove them from our users object.
         else if (msg.action === "timeout" || msg.action === "leave") {
-            if (message.uuid === privateChannel.contactId)
+            if (msg.uuid === privateChannel.contactId)
                 mobileNotify(privateChannel.contactName + " has left ...");
             //delete privateChannel.users[msg.uuid];
             privateChannel.presenceChange();

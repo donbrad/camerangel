@@ -17,14 +17,14 @@ var userDataChannel = {
 
     init: function (channelId) {
         if (channelId !== undefined) {
-            this.channelId = channelId;
+            userDataChannel.channelId = channelId;
 
             var ts = localStorage.getItem('ggUserDataTimeStamp');
             if (ts !== undefined)
                 this.lastAccess = parseInt(ts);
 
             APP.pubnub.subscribe({
-                channel: this.channelId,
+                channel: userDataChannel.channelId,
                 windowing: 5000,
                 message: this.channelRead,
                 connect: this.channelConnect,
