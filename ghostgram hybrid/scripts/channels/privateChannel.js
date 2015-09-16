@@ -291,18 +291,22 @@ var privateChannel = {
                     data = JSON.parse(data);
                 }
             }
-            parsedMsg = {
-                msgID: msg.msgID,
-                content: content,
-                data: data,
-                TTL: msg.ttl,
-                time: msg.time,
-                sender: msg.sender,
-                fromHistory: true,
-                recipient: msg.recipient
-            };
 
-            clearMessageArray.push(parsedMsg);
+            if (content !== null) {
+                parsedMsg = {
+                    msgID: msg.msgID,
+                    content: content,
+                    data: data,
+                    TTL: msg.ttl,
+                    time: msg.time,
+                    sender: msg.sender,
+                    fromHistory: true,
+                    recipient: msg.recipient
+                };
+
+                clearMessageArray.push(parsedMsg);
+            }
+
 
         }
 
