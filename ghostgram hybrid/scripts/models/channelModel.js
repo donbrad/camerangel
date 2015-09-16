@@ -122,14 +122,39 @@ var channelModel = {
 
     updateUnreadCount: function (channelId, count) {
         var channel = channelModel.findChannelModel(channelId);
-        channel.unreadCount = count;
-        updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
+        if (channel === undefined) {
+            mobileNotify('incrementUnreadCount: unknown channel ' + channelId);
+        } else {
+            channel.unreadCount = count;
+            updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
+        }
     },
 
     incrementUnreadCount: function (channelId, count) {
         var channel = channelModel.findChannelModel(channelId);
-        channel.unreadCount = channel.unreadCount + count;
-        updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
+        if (channel === undefined) {
+            mobileNotify('incrementUnreadCount: unknown channel ' + channelId);
+        } else {
+            channel.unreadCount = channel.unreadCount + count;
+            updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
+        }
+
+    },
+
+    // If the channel exists, increment the message count, if not create the channel and then increment
+    incrementPrivateMessageCount: function (channelId, count) {
+        var channel = channelModel.findChannelModel(channelId);
+        if (channel === undefined) {
+           var contact = contactModel.findContactByUUID(channelId);
+            if (contact !== undefined && contact.contactUUID !== undefined) {
+                channelModel.addPrivateChannel(contact.contactUUID, contact.publicKey, contact.name);
+            } else {
+                mobileNotify("incrementPrivateMessageCount : unknown contact " + channelId);
+            }
+        } else {
+            channel.unreadCount = channel.unreadCount + count;
+            updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
+        }
     },
 
     updateChannelsMessageCount : debounce(function () {
