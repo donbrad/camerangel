@@ -127,6 +127,7 @@ var channelModel = {
         } else {
             channel.unreadCount = count;
             updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
+            if (count > 0)
             notificationModel.addUnreadNotification(channelId, channel.name, count);
         }
     },
@@ -175,9 +176,7 @@ var channelModel = {
                         messages = messages[0];
                         messages = messages || [];
                         var len = messages.length;
-                        channelModel.updateUnreadCount(channel.channelId, len);
-
-
+                        
                     }
                 });
             }
