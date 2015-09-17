@@ -90,6 +90,7 @@ var contactModel = {
 
         deleteParseObject("contacts", 'uuid', uuid);
 
+        // If there's a private channel for this contact, need to delete it.
         var localChannel = channelModel.findPrivateChannel(uuid);
         if (localChannel !== undefined) {
             channelModel.deleteChannel(localChannel);

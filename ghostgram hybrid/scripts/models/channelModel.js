@@ -430,13 +430,10 @@ var channelModel = {
             dataSource.filter([]);
             if (channel.isOwner) {
                 // If this user is the owner -- delete the channel map
-                deleteParseObject("channelmap", 'channelId', channelId);
+               // deleteParseObject("channelmap", 'channelId', channelId);
 
                 if (silent === undefined || silent === false) {
-                    if (channel.isPrivate) {
-                        // Owner is always first member of channel
-                        userDataChannel.privateChannelDelete(members[1],channelId, 'Chat "' + channel.name + 'has been deleted' );
-                    } else {
+                    if (channel.isPrivate  === false) {
                         // Send delete channel messages to all members
                         var members = channel.members;
                         // Skip the first member as it's the owner
