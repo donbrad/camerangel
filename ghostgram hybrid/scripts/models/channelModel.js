@@ -183,7 +183,7 @@ var channelModel = {
 
 
         }
-    }, channelModel._messageCountRefresh, true ),
+    }, this._messageCountRefresh, true ),
 
     findChannelModel: function (channelId) {
         var dataSource =  channelModel.channelsDS;
