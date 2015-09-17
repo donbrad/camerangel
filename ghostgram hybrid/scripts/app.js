@@ -451,6 +451,7 @@
 
 		deviceModel.init();
 
+
 			/*		if (window.navigator.simulator === undefined) {
 					APP.map = plugin.google.maps.Map.getMap($("#places-mapview"));
 					APP.mapReady = false;
@@ -569,6 +570,9 @@
 				);*/
 
 			});
+
+			// hiding the accessory bar
+			cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 		}
 		
 		APP.emailAvailable = false;

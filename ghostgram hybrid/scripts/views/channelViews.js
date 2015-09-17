@@ -33,7 +33,7 @@ var channelsView = {
                 }
             },
             dataBound: function(e){
-                checkEmptyUIState("#channels-listview", "#channelListDiv");
+                checkEmptyUIState(channelModel.channelsDS, "#channelListDiv");
             }*/
         }).kendoTouch({
             filter: ".chat-mainBox",
@@ -384,9 +384,8 @@ var editChannelView = {
         }
 
         // show action btn text
-        
-        showActionBtnText("#editChannel > div.footerBk.km-footer > a.actionBtn.secondary-100.km-widget.km-button > span > p");
-
+        var $editChannelP = $("#editChannel > div.footerBk.km-footer > a.actionBtn.secondary-100.km-widget.km-button > span > p")
+        showActionBtnText($editChannelP, "3rem");
     },
 
     finalizeEdit : function (e) {

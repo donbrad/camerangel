@@ -129,19 +129,14 @@ function closeTestingBox(){
 }
 
 
-// Check empty state for views
-// Todo: Jordan - better to check status of datasource in view than to check for presense of li...
-// checkEmptyUIState(ds, view) ( var selectionList = ds.total()
-function checkEmptyUIState(selection, view){
-	
-	var selectionList = $(selection + " > li").length;
-	
-    if(selectionList <= 0){
+
+// Updated - Check empty state for views
+function checkEmptyUIState(ds, view){
+	var selectionList = ds.total();
+    if(ds <= 0){
     	$(view + " .emptyState").removeClass("hidden");
-    
     } else {
     	$(view + ".emptyState").addClass("hidden");
-    
     }
 }
 
@@ -213,8 +208,8 @@ function showCleanPhone(phone){
 }
 
 
-function showActionBtnText(path){ 
-	$(path).velocity({opacity: 1, right: "3rem"}, {easing: "spring", delay: 500});
+function showActionBtnText($path, fromRight){ 
+	$path.velocity({opacity: 1, right: fromRight}, {easing: "spring", delay: 500});
 }
 
 function hideActionBtnText(path){
@@ -234,6 +229,7 @@ function AutoGrowTextArea(textField)
         }
     }
 }
+
 
 
 function createInitialsIcon(name, selector) {
@@ -269,3 +265,4 @@ function createInitialsIcon(name, selector) {
     context.fillStyle = "#FFF";
     context.fillText(initials, canvasCssWidth / 2, canvasCssHeight / 1.5);
 }
+

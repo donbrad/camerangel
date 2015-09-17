@@ -155,6 +155,36 @@
 .full {
   width: 100%;
 }
+.helperInfoBar {
+  width: 100%;
+  height: 2rem;
+  background: #f5f5f5;
+  color: #4a4a4a;
+  text-align: center;
+  padding: 0.25rem;
+}
+.chat-bubble {
+  height: 100%;
+  float: left;
+  padding: 0.2em 0.35em;
+  border-radius: .25em;
+  color: #4a4a4a;
+  background: #e0e0e0;
+  margin: 0 0 0.5rem;
+  font-size: 14px;
+  font-size: 0.875rem;
+}
+.chat-bubble:after {
+  content: "";
+  display: inline-block;
+  position: relative;
+  left: -90%;
+  width: 0;
+  border-width: 8px 8px 0;
+  border-style: solid;
+  border-color: #e0e0e0 transparent;
+  bottom: -15px;
+}
 .contactBanner {
   width: 100%;
   background-color: #e0e0e0;
@@ -226,8 +256,8 @@ input,
 .standard-input {
   width: 100%;
   border: 0px;
-  font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 16px;
+  font-size: 1rem;
   border-bottom: 1px solid #e0e0e0;
   padding: .5em .7em;
   -webkit-appearance: none;
@@ -439,8 +469,12 @@ form p {
 }
 .badge {
   border-radius: 4px;
-  background: #2e93fd;
+  background: #e0e0e0;
   border-radius: 5px;
+  color: #4a4a4a;
+  padding: 0.1em 0.25em;
+  font-size: 13px;
+  font-size: 0.8125rem;
 }
 .guest-txt {
   font-size: 12px;
@@ -461,6 +495,11 @@ form p {
   margin: 0;
   list-style: none;
 }
+.list-unstyled {
+  list-style: none;
+  padding: 0.25rem 1rem;
+  margin: 0;
+}
 .circle-img {
   border-radius: 50%;
   border: 1px solid #F2EFF0;
@@ -470,29 +509,29 @@ form p {
   border-radius: 50%;
   border: 1px solid #F2EFF0;
   line-height: 1.5;
-  width: 30px;
-  height: 30px;
+  width: 2rem;
+  height: 2rem;
 }
 .circle-img-md {
   border-radius: 50%;
   border: 1px solid #F2EFF0;
   line-height: 1.5;
-  width: 48px;
-  height: 48px;
+  width: 3rem;
+  height: 3rem;
 }
 .circle-img-lg {
   border-radius: 50%;
   border: 1px solid #F2EFF0;
   line-height: 1.5;
-  width: 60px;
-  height: 60px;
+  width: 4rem;
+  height: 4rem;
 }
 .circle-img-xl {
   border-radius: 50%;
   border: 1px solid #F2EFF0;
   line-height: 1.5;
-  width: 120px;
-  height: 120px;
+  width: 6rem;
+  height: 6rem;
 }
 .greyBtn {
   color: #A4A4A4 !important;
@@ -679,6 +718,17 @@ form p {
 .btnClearLine :disabled {
   color: #A4A4A4 !important;
   background: transparent !important;
+}
+.addBtn-sm {
+  border: 1px solid #2e93fd;
+  border-radius: 3px;
+  color: #2e93fd !important;
+  font-size: 14px;
+  font-size: 0.875rem;
+  padding: 0.2em 1em;
+  position: absolute;
+  right: 1rem;
+  top: 2rem;
 }
 .btnClearLine-grey-sm {
   background: transparent;
@@ -908,6 +958,17 @@ div.km-header a img {
 .km-material .km-switch-handle {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
 }
+.k-header,
+.k-grid-header-wrap,
+.k-grid .k-grouping-header,
+.k-grid-header,
+.k-pager-wrap,
+.k-pager-wrap .k-textbox,
+.k-pager-wrap .k-link,
+.k-grouping-header .k-group-indicator,
+.k-gantt-toolbar .k-state-default {
+  border-color: #fff;
+}
 .km-material .km-switch-handle {
   width: 1.5em;
   height: 1.5em;
@@ -1076,6 +1137,14 @@ div.footerMenu.km-footer > ul > li > a:active {
 .helper img {
   height: 12px;
 }
+.helper-sm {
+  color: #979797;
+  font-size: 12px;
+  font-size: 0.75rem;
+}
+.helper-sm img {
+  height: 12px;
+}
 .helper-right {
   color: #979797;
   float: right;
@@ -1115,6 +1184,10 @@ div.footerMenu.km-footer > ul > li > a:active {
 /* Home status menu */
 .home-smallHeader {
   height: 24px !important;
+}
+.home-smallHeader .user-status,
+.home-smallHeader .user-settings {
+  display: none;
 }
 .km-material .km-navbar.home-smallHeader .km-view-title {
   padding: 0px !important;
@@ -1246,6 +1319,17 @@ div.footerMenu.km-footer > ul > li > a:active {
   position: fixed !important;
   top: 0;
   left: 0;
+}
+.fullPhotoModal {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#modalPhotoView > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
+  background: #000;
 }
 .user-status {
   height: 50px;
@@ -1768,6 +1852,13 @@ div.footerMenu.km-footer > ul > li > a:active {
   width: 80px;
   height: auto;
 }
+.contactImportTable {
+  color: #979797;
+  font-size: 14px;
+  font-size: 0.875rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
 .round {
   display: block;
   width: 55px;
@@ -1808,7 +1899,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 .message-slideOptions {
   height: 100%;
   position: absolute;
-  right: 1rem;
+  left: 1rem;
   top: 8px;
   z-index: 0;
   opacity: 0;
@@ -1817,7 +1908,8 @@ div.footerMenu.km-footer > ul > li > a:active {
   color: #fff;
 }
 .selectedLI {
-  background: #fff;
+  opacity: 0;
+  background: #c9b3c0 !important;
 }
 .selectedLI-archive {
   background: #c9b3c0 !important;
@@ -2037,9 +2129,6 @@ a:hover {
   padding-top: 0px;
   padding-bottom: 0px;
 }
-#channels-listview li:nth-child(2) {
-  border-top: 1px solid #E4E4E4;
-}
 #addChannelBtn {
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);
   position: fixed;
@@ -2258,6 +2347,10 @@ div.footerMenu.km-footer > ul > li > a {
 .actionBtn-text {
   color: #979797;
 }
+.actionBtn-text-light {
+  color: #fff !important;
+  text-shadow: 1px 1px 2px #000 !important;
+}
 /* Hide action btns on views */
 * > div.footerMenu.km-footer > a {
   display: none;
@@ -2308,8 +2401,8 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   border-radius: 50%;
   border: 1px solid #F2EFF0;
   line-height: 1.5;
-  width: 48px;
-  height: 48px;
+  width: 3rem;
+  height: 3rem;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);
   float: left;
   margin-right: 0.5rem;
@@ -2406,7 +2499,6 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   border: none;
   padding-bottom: 0px;
   line-height: 1.5;
-  margin-bottom: 0.5rem;
 }
 #messageSend {
   font-weight: 600;
@@ -2415,12 +2507,13 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   padding: 0px;
   padding-top: 3px;
   position: absolute;
-  bottom: 48px;
+  bottom: 45px;
   right: 8px;
 }
 .messageCompose {
-  padding: 8px;
+  padding: 0.5rem;
   padding-bottom: 0px;
+  padding-top: 0.25rem;
 }
 .messageMediaBar ul {
   padding: 0px;
@@ -2608,16 +2701,7 @@ div.loginBox > form > div > ul > li {
   margin: 0;
   color: black;
 }
-#gallery .km-content > div {
-  display: flex;
-  flex-direction: column;
-}
-#search-archives {
-  min-height: 10rem;
-  padding: .5rem 0;
-}
 #search-archives .k-autocomplete {
-  width: 100%;
   height: 1.7rem;
   border-color: #e0e0e0;
   background-color: white;
@@ -2643,56 +2727,177 @@ div.loginBox > form > div > ul > li {
   color: white;
 }
 #archive-list {
-  height: 100%;
-}
-#archive-list .km-group-title {
-  font-size: 14px;
-  font-size: 0.875rem;
-}
-#archive-list .km-list li {
-  margin: 0 .4rem;
-}
-#archive-list .km-list li header {
-  margin-bottom: .9rem;
-}
-#archive-list .km-list li header img {
-  float: left;
-  width: 32px;
-  margin-right: 1rem;
-  border-radius: 50%;
-}
-#archive-list .km-list li header h1 {
-  display: inline-block;
-  line-height: 1;
-}
-#archive-list .km-list li header h2 {
-  display: inline-block;
-  line-height: 1;
-}
-#archive-list .km-list li header .delete {
-  float: right;
-  width: 10%;
-  vertical-align: top;
-}
-#archive-list .km-list li .message {
-  display: inline-block;
-  width: 70%;
-}
-#archive-list .km-list li .object {
-  padding: .1rem .3rem;
-  border: 1px solid #e0e0e0;
-  margin-top: .9rem;
-  box-shadow: 0 5px 16px -10px rgba(0, 0, 0, 0.5);
-  background-color: #f5f5f5;
-}
-#archive-list .km-list li .object h2 strong + span {
-  float: right;
-}
-#archive-list .km-list li .object img {
   width: 100%;
 }
+.filterInputBox input {
+  padding: 0.5rem !important;
+}
+#archive-list > div.km-scroll-container > div > ul > li > div > div > div {
+  padding: 0.2em 0;
+}
+.card {
+  width: 95%;
+  margin: 0px auto 0px auto;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  border-radius: 2px;
+  padding-top: 0.5rem;
+}
+.card .top {
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 0.5rem;
+  border-radius: 3px 3px 0 0;
+}
+.card .top .senderProfileImg {
+  width: 20%;
+  float: left;
+  padding: 0.25rem 0.1rem;
+}
+.card .top .senderProfileImg img {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
+}
+.card .top .senderMessage {
+  width: 80%;
+  float: left;
+}
+.card .top .senderMessage .chat-time {
+  font-size: 11px;
+  font-size: 0.6875rem;
+}
+.card .top .senderMessage .chat-details {
+  float: left;
+  margin-left: 0px;
+  margin-right: 0px;
+  font-size: 12px;
+  font-size: 0.75rem;
+}
+.card .photoTopDiv {
+  padding: 0px;
+}
+.card .photoTopDiv > img {
+  width: 100%;
+  border-radius: 3px 3px 0px 0px;
+}
+.card .bottom {
+  padding: 0.5rem 1rem;
+  border-radius: 0 0 3px 3px;
+}
+.card .bottom h4,
+.card .bottom p {
+  margin: 0px;
+}
+.card .bottom .cardAction {
+  position: relative;
+  left: -0.5rem;
+}
+.card .chat p {
+  font-size: 16px;
+  font-size: 1rem;
+}
+.photoPreview {
+  width: 25%;
+  height: auto;
+  float: left;
+}
+.photoPreview > img {
+  width: 100%;
+}
+.photoInfo {
+  float: left;
+  width: 75%;
+}
+.photoSender {
+  padding: 0.25rem;
+  width: 95%;
+  height: 4rem;
+  position: absolute;
+  bottom: 7.25rem;
+  background-image: linear-gradient(-180deg, rgba(255, 255, 255, 0) 0%, #000000 100%);
+}
+.senderProfileImg {
+  width: 20%;
+  float: left;
+}
+#archive-listview > div.km-scroll-container > div > ul > li {
+  border-color: transparent;
+}
+#archive-list > div.km-scroll-container > div > ul > li.km-group-container {
+  border-color: transparent;
+}
+.cardInfoBar {
+  font-size: 12px;
+  font-size: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+/*
+#archive-list {
+    height: 100%;
+}
+
+#archive-list .km-group-title {
+    .font-size(14);
+}
+
+#archive-list .km-list li {
+
+    header {
+       
+        img {
+            // An actually legitimate use of float lol
+            float: left;
+            width: 32px;
+            margin-right: 1rem;
+            border-radius: 50%;
+        }
+
+        h1 {
+            display: inline-block;
+            line-height: 1;
+        }
+
+        h2 {
+            display: inline-block;
+            line-height: 1;
+        }
+
+        .delete {
+            float: right;
+            width: 10%;
+            vertical-align: top;
+        }
+    }
+
+    .message {
+        display: inline-block;
+        width: 70%;
+    }
+
+    // Smart objects
+    .object {
+        padding: .1rem .3rem;
+        border: 1px solid @shade-200;
+        margin-top: .9rem;
+        box-shadow: 0 5px 16px -10px rgba(0,0,0,0.50);
+        background-color: @shade-300;
+        h2 {
+            strong + span {
+                float: right;
+            }
+        }
+        img {
+            width: 100%;
+        }
+
+    }
+}
+*/
 #galleryPhotoDisplayOpts {
-  height: 11rem;
+  float: left;
+  width: 40%;
+}
+#calendarSelect {
+  width: 100%;
 }
 /* modalview-start */
 .startBox {
@@ -3039,7 +3244,6 @@ div.contactListBox.activeContact > div > div > ul {
   width: 100%;
 }
 #contacts-listview li {
-  border-bottom: 1px solid #E4E4E4;
   background: #fff;
   z-index: 9999;
   padding-top: 0px;
@@ -3441,6 +3645,7 @@ div.contactListBox.activeContact > div > div > ul {
 /* Don's development styles...*/
 #gallery-listview {
   line-height: 0 !important;
+  padding-top: 0.25rem;
   /* need to work on better responsive
    -webkit-column-count: 2;
    -webkit-column-gap:   1px;
@@ -3499,17 +3704,18 @@ div.contactListBox.activeContact > div > div > ul {
   width: 100%;
 }
 .gallerySearchOptions {
-  background: #f5f5f5;
+  background: #e0e0e0;
 }
-#galleryZoomSelect {
-  background: #f5f5f5;
-  border-bottom: 1px solid #e0e0e0;
+.gallerySearchOptions .filters {
+  text-align: center;
 }
 /* Gallery styles */
+#galleryMenuSelect {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
 #galleryMenuSelect li.km-button {
   width: 50%;
-  background-color: #e0e0e0;
-  padding: 0.5em 1em;
+  color: #4a4a4a;
   border-top: 0px !important;
   border-bottom: 0px !important;
 }
@@ -3524,11 +3730,8 @@ div.contactListBox.activeContact > div > div > ul {
 #galleryMenuSelect #gallery-all {
   stroke: #4a4a4a;
 }
-#galleryMenuSelect > li:nth-child(2).km-button.km-state-active {
-  background-color: #6cadf3;
-}
 #galleryMenuSelect.km-buttongroup > .km-state-active {
-  background-color: #9e788f;
+  background-color: #6cadf3;
   color: #fff;
   border-radius: 0px;
   border-top: 0px !important;
@@ -3536,6 +3739,9 @@ div.contactListBox.activeContact > div > div > ul {
 }
 .km-state-active #gallery-photos {
   fill: #fff !important;
+}
+#archive-listview > div.km-scroll-container > div > ul > li:nth-child(1) {
+  padding-top: 0.5rem;
 }
 .km-state-active #gallery-all {
   stroke: #fff !important;
@@ -3552,10 +3758,151 @@ div.contactListBox.activeContact > div > div > ul {
 #galleryToggle svg {
   height: 18px;
 }
-#galleryZoomSelect > li.km-button.km-state-active > span > svg #gallery-grid-1,
+.km-group-container #galleryZoomSelect > li.km-button.km-state-active > span > svg #gallery-grid-1,
 #galleryZoomSelect > li.km-button.km-state-active > span > svg #gallery-grid-2,
 #galleryZoomSelect > li.km-button.km-state-active > span > svg #gallery-grid-3 {
   fill: #ffb74d;
+}
+#gallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.gallerySearchOptions > div > button > span > img {
+  height: 1.25rem;
+}
+.resultsBar {
+  padding: 0rem 1rem;
+  background: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 14px;
+  font-size: 0.875rem;
+}
+.resultsBar .results {
+  width: 20%;
+  padding-top: 0.25rem;
+  float: left;
+}
+.resultsBar .tags img {
+  height: 18px;
+}
+.resultsBar #filterResultsDropdown {
+  width: 150px;
+}
+.resultsBar #toggleFilterBtn img {
+  height: 0.875em;
+}
+.resultsBar #photoViewOpts {
+  width: 55%;
+  text-align: center;
+  float: left;
+}
+@media only screen and (max-width: 320px) {
+  .resultsBar #photoViewOpts {
+    width: 50%;
+  }
+}
+.resultsBar .filter {
+  width: 22%;
+  float: right;
+  text-align: right;
+}
+@media only screen and (max-width: 320px) {
+  .resultsBar .filter {
+    width: 30%;
+  }
+}
+#gallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.resultsBar > span.right > span > span > span.k-input > img {
+  vertical-align: sub;
+}
+#select-easy-dates {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+#select-easy-dates > li.km-button > span {
+  font-size: 14px;
+  font-size: 0.875rem;
+}
+.k-block,
+.k-header,
+.k-grid-header,
+.k-toolbar,
+.k-grouping-header,
+.k-pager-wrap,
+.k-button,
+.k-draghandle,
+.k-treemap-tile,
+html .km-pane-wrapper .k-header {
+  background-color: #fff;
+}
+.km-material input,
+.km-material select,
+.km-material textarea,
+.km-material .k-dropdown .k-input,
+.km-material input[type=password],
+.km-material input[type=search],
+.km-material input[type=number],
+.km-material input[type=tel],
+.km-material input[type=url],
+.km-material input[type=email],
+.km-material input[type=text]:not(.k-input),
+.km-root .km-material textarea {
+  color: #4a4a4a;
+  padding: 0px;
+}
+.km-material input[type=password],
+.km-material input[type=search],
+.km-material input[type=number],
+.km-material input[type=tel],
+.km-material input[type=url],
+.km-material input[type=email],
+.km-material input[type=month],
+.km-material input[type=color],
+.km-material input[type=week],
+.km-material input[type=date],
+.km-material input[type=time],
+.km-material input[type=datetime],
+.km-material input[type=datetime-local],
+.km-material input[type=text]:not(.k-input),
+.km-material select:not([multiple]),
+.km-material .k-dropdown,
+.km-material textarea {
+  padding: 0px;
+}
+.k-autocomplete,
+.k-combobox,
+.k-datepicker,
+.k-timepicker,
+.k-datetimepicker,
+.k-colorpicker,
+.k-numerictextbox,
+.k-dropdown,
+.k-selectbox,
+.k-textbox,
+.k-toolbar .k-split-button {
+  width: 100%;
+}
+#gallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.resultsBar > span.right > span > span {
+  background: #fff;
+}
+#gallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.resultsBar > span.right > span > span {
+  border: none;
+}
+#calendarSelect > div.k-header {
+  background: #2e93fd;
+}
+#calendarSelect > div.k-footer > a {
+  background: #2e93fd;
+}
+#calendarSelect_cell_selected {
+  background: #e0e0e0;
+  color: #4a4a4a;
+  border: #e0e0e0 !important;
+  box-shadow: none;
+}
+#calendarSelect_cell_selected > a {
+  color: #4a4a4a;
+}
+#calendarSelect_cell_selected {
+  border: none;
+}
+.k-state-hover:hover {
+  background: #979797;
 }
 .topViewSearchBox {
   width: 100%;
@@ -3578,6 +3925,7 @@ div.contactListBox.activeContact > div > div > ul {
   width: 80%;
   padding-left: 0px !important;
   padding-right: 1rem !important;
+  padding-top: 0.25rem !important;
 }
 .appendSearch span {
   float: left;
@@ -3601,6 +3949,20 @@ div.contactListBox.activeContact > div > div > ul {
 .appendSearch .viewSearchBox {
   width: 88%;
 }
+.appendSearch .doubleAppendSearch {
+  width: 70%;
+}
+.appendSearch .enterSearch {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  position: absolute;
+  width: 16%;
+}
+.appendSearch .enterSearch span {
+  padding-top: 0px;
+  color: #e0e0e0;
+  font-weight: 600;
+}
 .viewScroller {
   width: 100%;
   height: 100%;
@@ -3613,12 +3975,16 @@ div.contactListBox.activeContact > div > div > ul {
   border: inherit;
 }
 /* Chat styles */
+#messages-listview li {
+  width: 100%;
+  padding-right: 1rem !important;
+  padding-left: 1rem !important;
+}
 .chat-message {
   line-height: 1.5;
   width: 100%;
   position: relative;
   z-index: 1;
-  right: 1rem;
 }
 .chat-message p {
   margin: 0px 0px 4px;
@@ -3642,39 +4008,94 @@ div.contactListBox.activeContact > div > div > ul {
   border: 1px solid #F2EFF0;
 }
 .chat-message-photo {
-  width: 80%;
+  width: 100%;
   height: auto;
-  border: 1px solid #27476e;
+  padding: 0.25rem;
+  background: #fff;
 }
-.chat-message-photo-small {
-  width: 20%;
-  height: auto;
-  border: 1px solid #27476e;
+.chat-photo-box,
+.chat-photo-box-zoom {
+  margin-left: 13%;
+  margin-top: 0.5rem;
+}
+@media only screen and (max-width: 320px) {
+  .chat-photo-box,
+  .chat-photo-box-zoom {
+    margin-left: 15%;
+  }
+}
+.chat-photo-box {
+  border: 1px solid #e0e0e0;
+  width: 40%;
+  float: left;
+}
+.chat-photo-box-zoom {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
+  float: right;
+  width: 88%;
+}
+@media only screen and (max-width: 320px) {
+  .chat-photo-box-zoom {
+    width: 85%;
+  }
 }
 .chat-message-content {
-  margin-left: 44px;
-  height: 100%;
+  max-width: 88%;
 }
-.chat-message-user-content {
-  margin-left: 72px;
+@media only screen and (max-width: 320px) {
+  .chat-message-content {
+    max-width: 85%;
+  }
+}
+.chat-message-sender {
   height: 100%;
-  float: right;
+  float: left;
   padding: 0.2em 0.35em;
   border-radius: .25em;
   color: #fff;
   background: #6cadf3;
   margin-top: 0.2em;
 }
-.chat-message-user-content:after {
+.chat-message-sender:after {
   content: "";
   display: block;
   position: absolute;
-  right: 2px;
   width: 0;
-  border-width: 8px 8px 0;
-  border-style: solid;
-  border-color: #6cadf3 transparent;
-  bottom: -4px;
+  border-top: 0.4rem solid transparent;
+  border-bottom: 0.4rem solid transparent;
+  border-right: 0.3rem solid #6cadf3;
+  top: 1.5rem;
+  left: 11%;
+}
+@media only screen and (max-width: 320px) {
+  .chat-message-sender:after {
+    left: 13.5%;
+  }
+}
+.chat-message-receiver {
+  height: 100%;
+  float: left;
+  padding: 0.2em 0.35em;
+  border-radius: .25em;
+  color: #4a4a4a;
+  background: #e8e8e8;
+  margin-top: 0.2em;
+}
+.chat-message-receiver:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 0;
+  border-top: 0.4rem solid transparent;
+  border-bottom: 0.4rem solid transparent;
+  border-right: 0.3rem solid #e8e8e8;
+  top: 1.5rem;
+  left: 11%;
+}
+@media only screen and (max-width: 320px) {
+  .chat-message-receiver:after {
+    left: 13.5%;
+  }
 }
 .movingChat > .chat-message-user-content:after {
   display: none;
@@ -3691,18 +4112,46 @@ div.contactListBox.activeContact > div > div > ul {
 .chat-message-text {
   font-size: 14px;
   font-size: 0.875rem;
-  letter-spacing: 0.05em;
+  line-height: 1.4;
+}
+.chat-details {
+  font-size: 11px;
+  font-size: 0.6875rem;
+  color: #979797;
+  padding-left: 14%;
+}
+@media only screen and (max-width: 320px) {
+  .chat-details {
+    padding-left: 17%;
+  }
+}
+.chat-sender {
+  float: left;
 }
 .chat-time {
-  text-align: center;
-  font-size: 12px;
-  font-size: 0.75rem;
-  color: #979797;
+  float: right;
+  font-size: 11px;
+  font-size: 0.6875rem;
+  color: #d3d3d3;
 }
 #channel > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
   position: absolute;
   width: 100%;
   top: 0px;
+}
+.chat-message-user-img {
+  width: 12%;
+  float: left;
+}
+@media only screen and (max-width: 320px) {
+  .chat-message-user-img {
+    width: 15%;
+  }
+}
+.chat-message-user-content {
+  max-width: 83%;
+  margin-left: 2%;
+  float: left;
 }
 /*!
  * Cropper v0.10.0
@@ -4000,4 +4449,11 @@ div.contactListBox.activeContact > div > div > ul {
   border: 5px solid #000;
   border-left-color: transparent;
   border-top-color: transparent;
+}
+/** Home, Places Modal **/
+#nearby-results-list {
+  min-height: 300px;
+}
+#checked-in-place {
+  display: none;
 }

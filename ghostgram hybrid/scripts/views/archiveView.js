@@ -7,6 +7,7 @@ var archiveView = {
 	sentinel: undefined,
 
 	init: function () {
+
 		if (archive.dataSource.total() === 0 && 1) {
 			// chat
 			archive.add({
@@ -133,19 +134,19 @@ var archiveView = {
 					url: 'http://www.craterlakenational.com/image/crater_lake_large1.jpg',
 
 					placeName: 'Crater Lake National Park',
-					address: 'OR',
+					address: 'Klamath County, OR',
 
 					date: new Date()
 				}
 			});
 		}
 
-		archiveView.checkIfEmpty();
+		//archiveView.checkIfEmpty();
 
 		$('#search-archives input').clearSearch({ callback: archiveView.clearSearch });
 
 		// Binding this manually because data-role="button" messes up the styles
-		$('#archive-list').on('click', '.object', archiveView.openObject);
+		$('.cardAction > a').on('click', archiveView.openObject);
 
 		// Gotta set on archiveView instead of this because kendo binds
 		// .init to the kendo view
@@ -154,7 +155,7 @@ var archiveView = {
 		archiveView.sentinel.addListener('add', archiveView.search);
 		archiveView.sentinel.addListener('remove', archiveView.search);
 
-		// HACK: Something's up with flex, so automatically calculating heights
+		/* HACK: Something's up with flex, so automatically calculating heights
 		var adjustListHeight = function () {
 			var searchArchivesHeight = $('#search-archives').height()+20;
 			$('#archive-list').css('height', 'calc(100% - '+searchArchivesHeight+'px)');
@@ -162,6 +163,43 @@ var archiveView = {
 		adjustListHeight();
 		archiveView.sentinel.addListener('add', adjustListHeight);
 		archiveView.sentinel.addListener('remove', adjustListHeight);
+		*/
+	},
+
+	onInitDateSelect: function(){
+        
+         $("#dateSelect").kendoCalendar({
+         	change: function() {
+            	var value = this.value();
+            	// TODO - wire user selected date
+        	}
+         });
+
+         $("#select-period").kendoMobileButtonGroup({
+            select: function(e) {
+            	var index = this.current().index();
+                switch(index){
+                	case 0:
+	                	// Before
+	                	break;
+	                case 1:
+	                	// On
+	                	break;
+	                case 2:
+	                	// After
+	                	break;
+                }
+            },
+            index: 0
+        });
+
+	},
+	openArchiveFilter: function(){
+		$("#modalview-archive-filter").data("kendoMobileModalView").open();
+	},
+
+	closeArchiveFilter: function(){
+		$("#modalview-archive-filter").data("kendoMobileModalView").close();
 	},
 
 	checkIfEmpty: function () {
@@ -170,7 +208,6 @@ var archiveView = {
 			archive.dataSource.filter({});
 			if (archive.dataSource.total() === 0) {
 				$('#archive-empty').show();
-				$('#archive main > *:not(#archive-empty)').hide();
 			}
 		}
 	},
@@ -210,6 +247,18 @@ var archiveView = {
 			$('#archive-search-empty').show();
 			$('#archive-list').hide();
 		}
+		
+		// Update the query results count
+		var resultCount = 1 //filters.total();
+		$("#resultCount").text(returnCount);
+
+		// Show the results bar if results are found
+		if(resultsCount > 0){
+			$(".resultsBar").velocity("slideDown");
+		} else {
+			$(".resultsBar").velocity("slideUp");
+		}
+		
 	},
 
 	clearSearch: function () {
@@ -231,5 +280,111 @@ var archiveView = {
 		if ($object.hasClass('link')) {
 			window.open($object.data('url'), '_system');
 		}
+	},
+	archiveClick: function(e){
+		var selector = e.target.context;
+		var selectorParent = e.target.context.parentElement;
+		var $selectorUrl = $(selector).attr("src");
+		// if photo card show full screen img
+		if ($(selectorParent).hasClass("photoPreview") && $selectorUrl !== ""){
+			$("#modalPhotoViewImage").attr("src", $selectorUrl);
+			$("#modalPhotoView").data("kendoMobileModalView").open();
+		}
+	},
+	archiveShare: function(){
+		$("#testing").data("kendoMobileModalView").open();
+		// todo - Wire up share
+	},
+
+	viewOpen: function(){
+		$("#testing").data("kendoMobileModalView").open();
+		// todo - wire up view options (map, web page, etc)
+	},
+
+	onFilterInit: function(){
+		// TODO - replace tag ds
+		var sampleTags = new kendo.data.DataSource({
+		    data: [
+		        { type: "chat", tag: "Don", id: 1 },
+		        { type: "event", tag: "coachella", id: 2 },
+		        { type: "photo", tag: "Grand Canyon", id: 3 },
+		        { type: "link", tag: "google.com", id: 4 },
+		        { type: "date", tag: "before Jan 19, 2015", id: 5 },
+		        { type: "contact", tag: "John Smith", id: 6 },
+		    ]
+		});
+		$(".tagList").kendoMobileListView({
+			dataSource: sampleTags,
+			template: $("#tag-template").html(),
+			click: function(e){
+				var selector = e.dataItem;
+				var selectedLI = e.item[0];
+
+				if($(selectedLI).hasClass("deletedLITag")){
+					// if tag is toggled for delete remove delete
+					$(selectedLI).removeClass("deletedLITag");
+						
+				} else {
+					// highlight for delete
+					$(selectedLI).addClass("deletedLITag");
+				}
+
+				// Show delete btn
+				if($(".tagList > li").hasClass("deletedLITag")){
+					$("#deleteTagBtn").removeClass("hidden");
+				} else {
+					$("#deleteTagBtn").addClass("hidden");
+				}
+				
+				
+			}
+		});
+
+	},
+
+	filterChange: function(e){
+		
+		var selector = e.sender.element[0].id;
+		var switcher = $("#"+selector).data("kendoMobileSwitch");
+
+		// if filter is active show tag add input
+		if(switcher.check()){
+			$("."+selector+"-add").velocity("slideDown");
+		} else {
+			$("."+selector+"-add").velocity("slideUp");
+		}
+		
+	},
+
+	clearAllTags: function(e){
+    	// Todo wire clear user query tags
+    },
+
+	saveFilters: function(e){
+		// if user has deleted tags pending, alert them
+
+		if($(".tagList > li").hasClass("deletedLITag")){
+			$("#modal-OptionDialog").data("kendoMobileModalView").open();
+		} else {
+			// Todo - save filters
+			APP.kendo.navigate('#:back');
+
+			// Todo - Update filter count
+			$("#filterCount").text("");
+		}
+
+		
+	},
+	openFilterDate: function(e){
+		// TODO - wire up calendar 
+		$("#modalview-dateFilter").data("kendoMobileModalView").open();
+	},
+	closeModalDateSelect: function(e){
+		$("#modalview-dateFilter").data("kendoMobileModalView").close();
+	},
+	addFilter: function(e){
+		// Todo - add to filter 
+		var type = e.target[0].dataset["type"];
+
 	}
 };

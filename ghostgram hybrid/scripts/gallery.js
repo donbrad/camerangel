@@ -23,23 +23,7 @@ var getSentinelHeight = function () {
 	}
 
 	return combinedHeight/16+'rem';
-};
-
-
-
-function resetNavUI(e){
-	$(".km-navbar").removeClass("home-smallHeader");	
-	//$(".user-status, .user-settings").velocity("fadeIn", {duration: 150});
-	console.log("resetNavUI");
 }
-
-function shrinkNavUI() {
-	$(".km-navbar").addClass("home-smallHeader");	
-	$(".user-status, .user-settings").velocity("fadeOut", {duration: 150});
-	//console.log("shrinkNavUI");
-}
-
-
 
 
 function photoEditCrop(e) {
@@ -134,7 +118,82 @@ function onHidePhotoView(e) {
 }
 
 
+function onShowGallery(e) {
+	e.preventDefault();
+	
+	photoModel.chatPhoto = false;
+	if (e.view.params.action !== undefined && e.view.params.action === 'chat') {
+		photoModel.chatPhoto = true;
+		mobileNotify("Please select an image to send...")
+	}
+	photoModel.rotationAngle = 0;
+	
+	$("#gallery > div.footerMenu.km-footer > a > span > img").attr("src", "images/gallery-list.svg");
+	
+	$("#gallery-listview li").css("width",photoModel.previewSize);
+	$("#gallery-listview li").css("padding-bottom",photoModel.previewSize);
 
+
+	switch(photoModel.previewSize) {
+		case "33%" :
+			//setButtonGroupIndex("#gallerySearchToolSelect", 0);
+			break;
+
+		case "50%" :
+			//setButtonGroupIndex("#gallerySearchToolSelect", 1);
+			break;
+
+		case "100%" :
+			//setButtonGroupIndex("#gallerySearchToolSelect", 2);
+			break;
+	}
+
+}
+// Set action button for gallery
+function galleryActionView(e){
+	e.preventDefault();
+	if(photoModel.previewSize === "33%") {
+		$("#gallery > div.footerMenu.km-footer > a > span > img").attr("src", "images/gallery-grid.svg");
+		$("#gallery actionBtn-text")
+		photoModel.previewSize = "100%";
+	} else {
+		$("#gallery > div.footerMenu.km-footer > a > span > img").attr("src", "images/gallery-list.svg");
+		photoModel.previewSize = "33%";
+	}
+}
+
+function gallerySelectCategory(e){
+	var index = this.current().index();
+	switch (index) {
+		case 0:
+			$('#archive-listview').removeClass('hidden');
+			$("#gallery-listview").addClass('hidden');
+			// Hide photo view options
+			$("#photoViewOpts").addClass('hidden');
+
+			$("#gallery > div.footerMenu.km-footer > a").css("display", "none");
+			break;
+
+		case 1:
+			$('#archive-listview').addClass('hidden');
+			$("#gallery-listview").removeClass("hidden");
+
+			$("#photoViewOpts").removeClass("hidden");
+
+			$("#gallery > div.footerMenu.km-footer > a").removeAttr("href").css("display", "inline-block").on("click", function(e){
+				galleryActionView(e);
+			});
+			break;
+	}
+
+} 
+
+function galleryClick(e) {
+	if (e !== undefined && e.preventDefault !== undefined) {
+		e.preventDefault();
+	}
+
+}
 
 
 function getPhotoModel(photoId) {

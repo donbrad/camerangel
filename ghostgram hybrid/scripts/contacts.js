@@ -522,7 +522,7 @@ function onInitContacts(e) {
              
         },
         dataBound: function(e){
-        	checkEmptyUIState("#contacts-listview", "#contactListDiv >");
+        	checkEmptyUIState(contactModel.contactListDS, "#contactListDiv >");
         }
      }).kendoTouch({
     	filter: ".contactListBox",

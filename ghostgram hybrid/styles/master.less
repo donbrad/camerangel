@@ -132,6 +132,38 @@
 	width: 100%;
 }
 
+.helperInfoBar {
+	width: 100%;
+	height: 2rem;
+	background: @shade-300;
+	color: @black;
+	text-align: center;
+	padding: 0.25rem;
+}
+
+.chat-bubble {
+    height: 100%;
+    float: left;
+    padding: 0.2em 0.35em;
+    border-radius: .25em;
+    color: @black;
+    background: @shade-200;
+    margin: 0 0 0.5rem;
+    .font-size(14);
+}
+
+.chat-bubble:after {
+	content: "";
+	display: inline-block;
+	position: relative;
+	left: -90%; 
+	width: 0;
+	border-width: 8px 8px 0;
+	border-style: solid;
+	border-color: @shade-200 transparent;
+	bottom: -15px;
+}
+
 .contactBanner { 
 	width: 100%;
 	background-color: @shade-200;
@@ -193,7 +225,7 @@ p {
 input {
     width: 100%;
     border: 0px;
-    .font-size(14);
+    .font-size(16);
     border-bottom: 1px solid #e0e0e0;
     padding: .5em .7em;
     -webkit-appearance: none;
@@ -385,6 +417,11 @@ form {
 	height: 1rem;
 }
 
+.icon {
+	height: 1.3rem;
+	vertical-align: middle;
+}
+
 .line {
     border: 1px solid rgba(0, 0, 0, 0.12);
 }
@@ -394,6 +431,13 @@ form {
     margin: 0;
     list-style: none;
 }
+
+.list-unstyled {
+	list-style: none;
+	padding: 0.25rem 1rem;
+    margin: 0;
+}
+
 .circle-img {
     border-radius: 50%;
     border: 1px solid #F2EFF0;
@@ -527,7 +571,7 @@ form {
     -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
     color: #ffffff !important;
-    background: @primary-100 !important;
+    background: @secondary-100 !important;
     /*
     :hover {
     	background: @primary-100 !important;
@@ -860,6 +904,115 @@ div.km-header a img{
 	.shadow-1;
 }
 
+.k-header, .k-grid-header-wrap, .k-grid .k-grouping-header, .k-grid-header, .k-pager-wrap, .k-pager-wrap .k-textbox, .k-pager-wrap .k-link, .k-grouping-header .k-group-indicator, .k-gantt-toolbar .k-state-default {
+	border-color: #fff;
+}
+
+.k-checkbox-label:hover:after, .k-checkbox:checked+.k-checkbox-label:hover:after,
+.k-checkbox:checked+.k-checkbox-label:after,
+.k-checkbox:focus+.k-checkbox-label:after, .k-radio:focus+.k-radio-label:before {
+	border-color: @primary-200;
+	color: @primary-200;
+	border-radius: 3px;
+}
+
+#filterGallery .card {
+	margin-top: 0.5rem;
+	border: 1px solid @shade-300;
+}
+
+.filterList {
+	padding: 0.5rem 1rem;
+	> li > label {
+		.font-size(16);
+		img {
+			height: 1em;
+			vertical-align: middle;
+		}
+	}
+}
+
+.filterList li:nth-child(even){
+	padding: 0px !important;
+}
+
+.currentFilterTags {
+	padding: 0.5rem 1rem;
+	p {
+		margin-left: 0px;
+		margin-right: 0px;
+	}
+}
+
+.tagList li {
+	float: left;
+	margin-right: 0.5rem;
+}
+
+.tag {
+	background-color: @highlight-200;
+	border-radius: 3px;
+	.shadowHelper(1);
+	display: inline-block;
+	padding: 0.25rem 0.5rem;
+	.tag-category {
+		width: 2em;
+		float: left;
+		text-align: center;
+		img {
+			margin-top: 0.25rem;
+			height: 1em;
+			vertical-align: middle;
+		}
+	}
+	.tag-text {
+		padding: 0.25rem;
+		float: left;
+		color: #fff;
+		.font-size(14);
+	}
+	.deleteTag {
+		float: left;
+		img {
+			margin-top: 0.25rem;
+			height: 1em;
+			vertical-align: middle;
+		}
+	}
+}
+
+.filterAdd {
+	width: 100%;
+	display: inline-block;
+	input {
+		width: 60% !important;
+		left: 0px;
+		height: 2rem;
+		-webkit-appearance: none;
+		apperance: none;
+	}
+	a {
+		left: 65%;
+		//float: right;
+	}
+}
+
+.deletedLITag > .tag { 
+	background-color: #E57373 !important;
+}
+
+#filterGallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div.card > div > ul > li.km-widget.km-button {
+	text-align: left;
+}
+
+#filterGallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div.card > div > ul > li > label > span {
+	margin-right: 0.5rem;
+}
+
+.k-checkbox-label:before {
+	border-radius: 3px;
+}
+
 .km-listview .km-switch {
 	//left: 6rem;
 }
@@ -911,9 +1064,13 @@ div.km-header a img{
     margin: 0px;
 }
 
+.km-material .km-list input[type=password], .km-material .km-list input[type=search], .km-material .km-list input[type=number], .km-material .km-list input[type=tel], .km-material .km-list input[type=url], .km-material .km-list input[type=email], .km-material .km-list input[type=month], .km-material .km-list input[type=color], .km-material .km-list input[type=week], .km-material .km-list input[type=date], .km-material .km-list input[type=time], .km-material .km-list input[type=datetime], .km-material .km-list input[type=datetime-local], .km-material .km-list input[type=text]:not(.k-input), .km-material .km-list select:not([multiple]), .km-material .km-list .k-dropdown-wrap, .km-material .km-list textarea {
+	
+}
+
 .km-root .km-material .km-buttongroup > .km-state-active {
 	color: @primary-200;
-	border-color: #fff;
+	border-color: @primary-200;
 }
 
 .km-material .km-shim, .km-material .km-popup, .km-material .k-slider, .km-material .km-switch-on, .km-material .km-current-page, .km-material input:focus, .km-material select:focus, .km-material textarea:focus, .km-material input:checked, .km-material .km-touch-scrollbar, .km-material input[type=text]:not(.k-input):focus {
@@ -952,7 +1109,7 @@ div.km-header a img{
 }
 
 .km-root * {
-	-webkit-tap-highlight-color: @btnActiveBk;
+	//-webkit-tap-highlight-color: @btnActiveBk;
 } 
 
 .km-material input[type=password], .km-material input[type=search], .km-material input[type=number], .km-material input[type=tel], .km-material input[type=url], .km-material input[type=email], .km-material input[type=text]:not(.k-input), .km-root .km-material textarea {
@@ -1018,6 +1175,11 @@ div.footerMenu.km-footer > ul > li > a:active {
 	    	height: 12px;
 	    }
 }
+.helper-sm {
+	.helper;
+	.font-size(12);
+}
+
 .helper-right {
 	.helper;
     float: right;
@@ -1051,6 +1213,10 @@ div.footerMenu.km-footer > ul > li > a:active {
 .home-smallHeader {
 	height: 24px !important;
 	//background-color: @shade-300 !important;
+	.user-status,
+	.user-settings {
+		display: none;
+	}
 }
 
 .km-material .km-navbar.home-smallHeader .km-view-title {
@@ -1207,12 +1373,16 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 
 .fullPhotoModal {
-	height: 100%;
 	width: 100%;
 	background: rgba(0, 0, 0, 0.85);
+	display: -webkit-flex; 
 	display: flex;
   	align-items: center;
   	justify-content: center;
+}
+
+#modalPhotoView > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
+	background: #000;
 }
 
 .user-status {
@@ -1714,7 +1884,7 @@ div.footerMenu.km-footer > ul > li > a:active {
     border-radius: 3px;
 }
 .km-material .km-view .km-content .km-button.km-state-active {
-    background-color: rgba(0,0,0,0.05);
+    background-color: @shade-300;
     border-radius: 3px;
 }
 .km-material .km-view .km-content .km-list > li .km-switch .km-switch-container .km-switch-handle .km-switch-label-on {
@@ -1839,6 +2009,8 @@ div.message-slideOptions > span.archive > a > span > img {
 .archive-header-img {
 	vertical-align: bottom !important; 
 }
+
+
 
 /* Menu Styles */
 
@@ -2276,6 +2448,11 @@ div.footerMenu.km-footer > ul > li > a {
 	color: @shade-100;
 }
 
+.actionBtn-text-light {
+	color: #fff !important;
+	text-shadow: 1px 1px 2px #000 !important;
+}
+
 /* Hide action btns on views */
 * > div.footerMenu.km-footer > a {
 	display: none;
@@ -2661,17 +2838,16 @@ div.loginBox > form > div > ul > li {
     color: black;
 }
 
+
 #gallery .km-content > div {
-    display: flex;
-    flex-direction: column;
+    //display: -webkit-flex;
+	//display: flex;
 }
 
 #search-archives {
-    min-height: 10rem;
-    padding: .5rem 0;
 
     .k-autocomplete {
-        width: 100%;
+        //width: 100%;
         height: 1.7rem;
         border-color: @shade-200;
 
@@ -2706,8 +2882,117 @@ div.loginBox > form > div > ul > li {
     }
 }
 
-// Archive list
+#archive-list {
+	width: 100%;
+}
 
+.filterInputBox {
+	input {
+		padding: 0.5rem !important;
+	}
+}
+
+#archive-list > div.km-scroll-container > div > ul > li > div > div > div {
+	padding: 0.2em 0;
+}
+
+.card {
+	width: 95%;
+	margin: 0px auto 0px auto;
+	background: #fff;
+	.shadowHelper(1);
+	border-radius: 2px;
+	padding-top: 0.5rem;
+	.top {
+		background-color: #f5f5f5;
+		border-bottom: 1px solid @shade-200;
+		padding: 0.5rem;
+		border-radius: 3px 3px 0 0;
+		.senderProfileImg {
+			width: 20%;
+			float: left;
+			padding: 0.25rem 0.1rem;
+			img {
+				.shadow-1;
+			}
+		} 
+		.senderMessage {
+			width: 80%;
+			float: left;
+			.chat-time {
+				.font-size(11);
+			}
+			.chat-details {
+				float: left;
+				margin-left: 0px;
+				margin-right: 0px;
+				.font-size(12);
+			}
+		}
+	}
+	.photoTopDiv {
+		padding: 0px;
+		> img {
+			width: 100%;
+			border-radius: 3px 3px 0px 0px;
+		}
+	}
+	.bottom {
+		padding: 0.5rem 1rem;
+		border-radius: 0 0 3px 3px;
+		h4, p {
+			margin: 0px;
+		}
+		.cardAction {
+			position: relative;
+			left: -0.5rem;
+		}
+	}
+	.chat p {
+		.font-size(16);
+	}
+}
+
+.photoPreview {
+	width: 25%;
+	height: auto;
+	float: left;
+	> img {
+		width: 100%;
+	}
+}
+
+.photoInfo {
+	float: left;
+	width: 75%;
+}
+
+.photoSender {
+	padding: 0.25rem;
+	width: 95%;
+	height: 4rem;
+	position: absolute;
+	bottom: 7.25rem;
+	background-image: linear-gradient(-180deg, rgba(255,255,255,0.00) 0%, #000000 100%);
+}
+.senderProfileImg {
+	width: 20%;
+	float: left;
+}
+#archive-listview > div.km-scroll-container > div > ul > li {
+	border-color: transparent;
+}
+#archive-list > div.km-scroll-container > div > ul > li.km-group-container {
+	border-color: transparent;
+}
+
+.cardInfoBar {
+	.font-size(12);
+	margin-bottom: 0.25rem;
+}
+
+// Archive list
+/*
 #archive-list {
     height: 100%;
 }
@@ -2717,11 +3002,9 @@ div.loginBox > form > div > ul > li {
 }
 
 #archive-list .km-list li {
-    margin: 0 .4rem;
 
     header {
-        margin-bottom: .9rem;
-
+       
         img {
             // An actually legitimate use of float lol
             float: left;
@@ -2770,9 +3053,14 @@ div.loginBox > form > div > ul > li {
 
     }
 }
-
+*/
 #galleryPhotoDisplayOpts {
-    height: 11rem;
+    float: left;
+    width: 40%;
+}
+
+#calendarSelect {
+	width: 100%;
 }
 
 /* modalview-start */
@@ -3635,6 +3923,7 @@ div.contactListBox.activeContact > div > div > ul {
 
 #gallery-listview {
     line-height: 0 !important;
+    padding-top: 0.25rem;
     /* need to work on better responsive
    -webkit-column-count: 2;
    -webkit-column-gap:   1px;
@@ -3702,12 +3991,10 @@ div.contactListBox.activeContact > div > div > ul {
 }
 
 .gallerySearchOptions {
-	background: @shade-300;
-}
-
-#galleryZoomSelect {
-	background: @shade-300;
-	border-bottom: 1px solid @shade-200;
+	background: @shade-200;
+	.filters {
+		text-align: center;
+	}
 }
  
 #galleryZoomSelect li {
@@ -3716,10 +4003,10 @@ div.contactListBox.activeContact > div > div > ul {
 
 /* Gallery styles */
 #galleryMenuSelect {
+	.shadowHelper(1);
 	li.km-button {
 		width: 50%;
-		background-color: @shade-200;
-		padding: 0.5em 1em;
+		color: @black;
 		border-top: 0px !important;
 		border-bottom: 0px !important;
 	}
@@ -3735,12 +4022,8 @@ div.contactListBox.activeContact > div > div > ul {
 		stroke: @black;
 	}
 }
-
-#galleryMenuSelect > li:nth-child(2).km-button.km-state-active {
-	background-color: @primary-200;
-}
 #galleryMenuSelect.km-buttongroup > .km-state-active {
-		background-color: @highlight-100;
+		background-color: @primary-200;
 		color: #fff;
 		border-radius: 0px;
 		border-top: 0px !important;
@@ -3748,6 +4031,10 @@ div.contactListBox.activeContact > div > div > ul {
 	}
 .km-state-active #gallery-photos {
 	fill: #fff !important;
+}
+
+#archive-listview > div.km-scroll-container > div > ul > li:nth-child(1) {
+	padding-top: 0.5rem;
 }
 
 .km-state-active #gallery-all {
@@ -3768,12 +4055,128 @@ div.contactListBox.activeContact > div > div > ul {
 	}
 }
 
+.km-group-container
+
 #galleryZoomSelect > li.km-button.km-state-active > span > svg #gallery-grid-1,
 #galleryZoomSelect > li.km-button.km-state-active > span > svg #gallery-grid-2,
 #galleryZoomSelect > li.km-button.km-state-active > span > svg #gallery-grid-3 {
 	fill: @secondary-100;
 }
 
+#gallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.gallerySearchOptions > div > button > span > img {
+	height: 1.25rem;
+}
+
+.resultsBar {
+	padding: 0rem 1rem;
+	background: #fff;
+	border-bottom: 1px solid @shade-200;
+	.font-size(14);
+	.results {
+		width: 30%;
+		padding-top: 0.25rem;
+		float: left;
+	}
+	.tags {
+		img {
+			height: 18px;
+		}
+	}
+	#filterResultsDropdown {
+		width: 150px;
+	}
+	#toggleFilterBtn {
+		img {
+			height: 0.875em;
+		}
+	}
+	.filter {
+		width: 70%;
+		float: right;
+		text-align: right;
+		@media @mobile {
+			width: 30%;
+		}
+	}
+}
+
+#gallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.resultsBar > span.right > span > span > span.k-input > img {
+	vertical-align: sub;
+}
+
+#select-easy-dates {
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+}
+
+#select-easy-dates > li.km-button > span {
+	.font-size(14);
+}
+
+.k-block, .k-header, .k-grid-header, .k-toolbar, .k-grouping-header, .k-pager-wrap, .k-button, .k-draghandle, .k-treemap-tile, html .km-pane-wrapper .k-header {
+	background-color: #fff;
+}
+
+.km-material input, .km-material select, .km-material textarea, .km-material .k-dropdown .k-input, .km-material input[type=password], .km-material input[type=search], .km-material input[type=number], .km-material input[type=tel], .km-material input[type=url], .km-material input[type=email], .km-material input[type=text]:not(.k-input), .km-root .km-material textarea {
+	color: @black;
+	padding: 0px;
+}
+
+.km-material input[type=password], .km-material input[type=search], .km-material input[type=number], .km-material input[type=tel], .km-material input[type=url], .km-material input[type=email], .km-material input[type=month], .km-material input[type=color], .km-material input[type=week], .km-material input[type=date], .km-material input[type=time], .km-material input[type=datetime], .km-material input[type=datetime-local], .km-material input[type=text]:not(.k-input), .km-material select:not([multiple]), .km-material .k-dropdown, .km-material textarea {
+	padding: 0px;
+}
+
+.k-autocomplete, .k-combobox, .k-datepicker, .k-timepicker, .k-datetimepicker, .k-colorpicker, .k-numerictextbox, .k-dropdown, .k-selectbox, .k-textbox, .k-toolbar .k-split-button {
+	width: 100%;
+}
+
+#gallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.resultsBar > span.right > span > span {
+	background: #fff;
+}
+
+#gallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.resultsBar > span.right > span > span {
+	border: none;
+}
+
+// Calendar 
+
+#modalview-dateFilter {
+	h3 {
+		margin-top: 0.5rem;
+	}
+}
+
+#dateSelect {
+	width: 100%;
+}
+
+#dateSelect > div.k-header {
+	background: @primary-100;
+}
+
+#dateSelect > div.k-footer > a {
+	background: @primary-100;
+} 
+
+#dateSelect_cell_selected {
+	background: @shade-200;
+	color: @black;
+	border: @shade-200 !important;
+	box-shadow: none;
+	> a {
+		color: @black;
+	}
+}
+
+#dateSelect_cell_selected {
+	border: none;
+}
+
+.k-state-hover:hover {
+	background: @shade-100;
+}
+
+//
 .topViewSearchBox {
 	width: 100%;
 	background-color: @shade-300;
@@ -3795,6 +4198,7 @@ div.contactListBox.activeContact > div > div > ul {
 		width: 80%;
 		padding-left: 0px !important;
 		padding-right: 1rem !important;
+		padding-top: 0.25rem !important;
 	}
 	span {
 		float: left;
