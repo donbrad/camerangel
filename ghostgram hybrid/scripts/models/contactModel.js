@@ -139,7 +139,7 @@ var contactModel = {
     updateContactStatus : function (callback) {
         var contactUUID = contactModel.currentContact.contactUUID, phone = contactModel.currentContact.phone;
 
-        mobileNotify("Updating contact status...");
+        mobileNotify("Updating " + contactModel.currentContact.name + "'s status...");
         // Look up contact by contact's actual userID --
 
         if (contactUUID === undefined || contactUUID === null) {
