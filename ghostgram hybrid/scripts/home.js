@@ -454,7 +454,10 @@ function homeSignin (e) {
             userModel.fetchParseData();
 
             // hide keyboard
-            cordova.plugins.Keyboard.close();
+			if (window.navigator.simulator === false) {
+				cordova.plugins.Keyboard.close();
+			}
+
 
             APP.kendo.navigate('#home');
         },
