@@ -54,30 +54,62 @@
     	<ul class="filterList" data-role="listview">
 			<li>
               	<label for="filter-contact">
-              		<input type="checkbox" id="filter-contact" class="filter-contact" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="archiveView.filterChange"/>
+              		<input type="checkbox" id="filter-contact" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="archiveView.filterChange"/>
               		<img src="images/nav-contacts.svg" /> Contacts
               	</label>
 			</li>
 			<li>
+				<div class="filterAdd filter-contact-add" style="display: none">
+					<input type="text" placeholder="Add contact name" />
+					<a class="btnClear" data-role="button" data-type="contact" data-click="archiveView.addFilter">Add</a>
+				</div>
+				<div class="clearfix"></div>
+			</li>
+			<li>
               	<label for="filter-link">
-              		<input type="checkbox" id="filter-link" class="filter-link" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="archiveView.filterChange"/>
+              		<input type="checkbox" id="filter-link" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="archiveView.filterChange"/>
               		<img src="images/icon-Links.svg" /> Links
               	</label>
 			</li>
 			<li>
+				<div class="filterAdd filter-link-add" style="display: none">
+					<input type="text" placeholder="Add website" />
+					<a class="btnClear" data-role="button" data-type="link" data-click="archiveView.addFilter">Add</a>
+				</div>
+				<div class="clearfix"></div>
+			</li>
+			<li>
               	<label for="filter-chat">
-              		<input type="checkbox" id="filter-chat" class="filter-chat" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="archiveView.filterChange"/>
+              		<input type="checkbox" id="filter-chat" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="archiveView.filterChange"/>
               		<img src="images/icon-Chat.svg" /> Chats
               	</label>
 			</li>
 			<li>
+				<div class="filterAdd filter-chat-add" style="display: none">
+					<input type="text" placeholder="Add chat name" />
+					<a class="btnClear" data-role="button" data-type="chat" data-click="archiveView.addFilter">Add</a>
+				</div>
+				<div class="clearfix"></div>
+			</li>
+			<li>
               	<label for="filter-place">
-              		<input type="checkbox" id="filter-place" class="filter-place" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="archiveView.filterChange"/>
+              		<input type="checkbox" id="filter-place" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="archiveView.filterChange"/>
               		<img src="images/icon-Events.svg" /> Events
               	</label>
 			</li>
-			
-				<a data-role="button" data-click="archiveView.openFilterDate"><img src="images/icon-date.svg" height="18"/> Select Date </a>
+			<li>
+				<div class="filterAdd filter-place-add" style="display: none">
+					<input type="text" placeholder="Add event" />
+					<a class="btnClear" data-role="button" data-type="event" data-click="archiveView.addFilter">Add</a>
+				</div>
+				<div class="clearfix"></div>
+			</li>
+			<li data-role="button" data-click="archiveView.openFilterDate">
+				<div>
+					<img src="images/icon-date.svg" height="18"/> Select Date 
+				</div>
+			</li>
+				
 			
 		</ul>
 	</div>
@@ -94,6 +126,32 @@
 		<a class="btnSpan-btm btnPrimary" data-role="button" data-click="archiveView.saveFilters"> Save </a>
     </div>
 
+</div>
+
+<div id="modalview-dateFilter" data-role="modalview" style="width: 90%; display: none;" class="appearance" data-init="archiveView.onInitDateSelect">
+	<h3>Select date
+		<a class="right closeBox" data-role="button" data-click="archiveView.closeModalDateSelect">
+			<img src="images/close.svg"/>
+		</a>
+	</h3>
+	<div class="helper">
+		<ul id="select-period">
+            <li>
+                Before
+            </li>
+            <li>
+                On
+            </li>
+            <li>
+                After
+            </li>
+        </ul>
+	</div>
+	<div id="dateSelect"></div>
+	
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnClear" data-role="button" data-click="archiveView.closeModalDateSelect">Add</a>
+	</div>
 </div>
 
 <script id="tag-template" type="text/x-kendo-template">

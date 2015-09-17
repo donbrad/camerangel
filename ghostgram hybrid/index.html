@@ -473,11 +473,14 @@
 	<div class="fullPhotoModal" style="text-align: center;">
 		<img id="photoViewImage" src="" style="width: 98%; height:auto; vertical-align: middle;" />
 	</div>
-	 <div class="footer hidden" data-role="footer">
+	 <div class="footer" data-role="footer">
 		<div data-role="navbar">
-			<a data-align="left" data-role="button"  data-click="photoExport"><i class="ghostIconNavbar fa fa-share-square-o"></i> </a>
-
-			<a data-align="right" data-role="button" data-click="photoDelete"><i class="ghostIconNavbar fa fa-trash-o"></i> </a>
+			<a data-align="left" class="btnClear" data-role="button" data-click="photoExport">
+				<img class="icon" src="images/icon-share.svg" /> 
+			</a>
+			<a data-align="right" class="btnClear-red" data-role="button" data-click="photoDelete">
+				<img class="icon" src="images/trash.svg" />
+			</a>
 		</div>
 	</div>
 </div>

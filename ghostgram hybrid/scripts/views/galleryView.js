@@ -45,6 +45,10 @@ var galleryView = {
 
         });
 
+
+
+
+
         var scroller = e.view.scroller;
         //scroller.scrollTo(0,-44);
         /* Testing dynamic header 
@@ -84,9 +88,7 @@ var galleryView = {
       	
         $actionBtn.removeAttr("href").on("click", function(e){
 				galleryView.galleryActionView(e);
-				if(photoModel.previewSize === "33%"){
-					scroller.scrollTo(0, -74);
-				}
+			
 			});
         
 
@@ -141,7 +143,7 @@ var galleryView = {
     galleryActionView: function(e){
     	_preventDefault(e);
     	var $actionBtnP = $("#gallery > div.footerMenu.km-footer > a > span > p");
-
+    	
 		if(photoModel.previewSize === "33%") {
 			$("#gallery > div.footerMenu.km-footer > a > span > img").attr("src", "images/gallery-grid.svg");
 			$actionBtnP.text("Grid view");
@@ -151,6 +153,7 @@ var galleryView = {
 			$("#gallery > div.footerMenu.km-footer > a > span > img").attr("src", "images/gallery-list.svg");
 			$actionBtnP.text("List view");
 			photoModel.previewSize = "33%";
+			
 		}
 		$("#gallery-listview li").css("width",photoModel.previewSize);
         $("#gallery-listview li").css("padding-bottom",photoModel.previewSize);

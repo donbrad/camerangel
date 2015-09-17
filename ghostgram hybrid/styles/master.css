@@ -486,6 +486,10 @@ form p {
 .user-status-icon {
   height: 1rem;
 }
+.icon {
+  height: 1.3rem;
+  vertical-align: middle;
+}
 .line {
   border: 1px solid rgba(0, 0, 0, 0.12);
 }
@@ -648,7 +652,7 @@ form p {
   -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   color: #ffffff !important;
-  background: #2e93fd !important;
+  background: #ffb74d !important;
   /*
     :hover {
     	background: @primary-100 !important;
@@ -993,6 +997,9 @@ div.km-header a img {
   height: 1em;
   vertical-align: middle;
 }
+.filterList li:nth-child(even) {
+  padding: 0px !important;
+}
 .currentFilterTags {
   padding: 0.5rem 1rem;
 }
@@ -1036,8 +1043,25 @@ div.km-header a img {
   height: 1em;
   vertical-align: middle;
 }
+.filterAdd {
+  width: 100%;
+  display: inline-block;
+}
+.filterAdd input {
+  width: 60% !important;
+  left: 0px;
+  height: 2rem;
+  -webkit-appearance: none;
+  apperance: none;
+}
+.filterAdd a {
+  left: 65%;
+}
 .deletedLITag > .tag {
   background-color: #E57373 !important;
+}
+#filterGallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div.card > div > ul > li.km-widget.km-button {
+  text-align: left;
 }
 #filterGallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div.card > div > ul > li > label > span {
   margin-right: 0.5rem;
@@ -1127,9 +1151,6 @@ div.km-header a img {
   font-size: 18px;
   font-size: 1.125rem;
   padding: 0.8rem;
-}
-.km-root * {
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.15);
 }
 .km-material input[type=password],
 .km-material input[type=search],
@@ -3949,22 +3970,28 @@ html .km-pane-wrapper .k-header {
 #gallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.resultsBar > span.right > span > span {
   border: none;
 }
-#calendarSelect > div.k-header {
+#modalview-dateFilter h3 {
+  margin-top: 0.5rem;
+}
+#dateSelect {
+  width: 100%;
+}
+#dateSelect > div.k-header {
   background: #2e93fd;
 }
-#calendarSelect > div.k-footer > a {
+#dateSelect > div.k-footer > a {
   background: #2e93fd;
 }
-#calendarSelect_cell_selected {
+#dateSelect_cell_selected {
   background: #e0e0e0;
   color: #4a4a4a;
   border: #e0e0e0 !important;
   box-shadow: none;
 }
-#calendarSelect_cell_selected > a {
+#dateSelect_cell_selected > a {
   color: #4a4a4a;
 }
-#calendarSelect_cell_selected {
+#dateSelect_cell_selected {
   border: none;
 }
 .k-state-hover:hover {

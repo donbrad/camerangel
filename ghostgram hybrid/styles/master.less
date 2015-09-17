@@ -417,6 +417,11 @@ form {
 	height: 1rem;
 }
 
+.icon {
+	height: 1.3rem;
+	vertical-align: middle;
+}
+
 .line {
     border: 1px solid rgba(0, 0, 0, 0.12);
 }
@@ -566,7 +571,7 @@ form {
     -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
     color: #ffffff !important;
-    background: @primary-100 !important;
+    background: @secondary-100 !important;
     /*
     :hover {
     	background: @primary-100 !important;
@@ -927,6 +932,10 @@ div.km-header a img{
 	}
 }
 
+.filterList li:nth-child(even){
+	padding: 0px !important;
+}
+
 .currentFilterTags {
 	padding: 0.5rem 1rem;
 	p {
@@ -972,8 +981,28 @@ div.km-header a img{
 	}
 }
 
+.filterAdd {
+	width: 100%;
+	display: inline-block;
+	input {
+		width: 60% !important;
+		left: 0px;
+		height: 2rem;
+		-webkit-appearance: none;
+		apperance: none;
+	}
+	a {
+		left: 65%;
+		//float: right;
+	}
+}
+
 .deletedLITag > .tag { 
 	background-color: #E57373 !important;
+}
+
+#filterGallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div.card > div > ul > li.km-widget.km-button {
+	text-align: left;
 }
 
 #filterGallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div.card > div > ul > li > label > span {
@@ -1035,6 +1064,10 @@ div.km-header a img{
     margin: 0px;
 }
 
+.km-material .km-list input[type=password], .km-material .km-list input[type=search], .km-material .km-list input[type=number], .km-material .km-list input[type=tel], .km-material .km-list input[type=url], .km-material .km-list input[type=email], .km-material .km-list input[type=month], .km-material .km-list input[type=color], .km-material .km-list input[type=week], .km-material .km-list input[type=date], .km-material .km-list input[type=time], .km-material .km-list input[type=datetime], .km-material .km-list input[type=datetime-local], .km-material .km-list input[type=text]:not(.k-input), .km-material .km-list select:not([multiple]), .km-material .km-list .k-dropdown-wrap, .km-material .km-list textarea {
+	
+}
+
 .km-root .km-material .km-buttongroup > .km-state-active {
 	color: @primary-200;
 	border-color: @primary-200;
@@ -1076,7 +1109,7 @@ div.km-header a img{
 }
 
 .km-root * {
-	-webkit-tap-highlight-color: @btnActiveBk;
+	//-webkit-tap-highlight-color: @btnActiveBk;
 } 
 
 .km-material input[type=password], .km-material input[type=search], .km-material input[type=number], .km-material input[type=tel], .km-material input[type=url], .km-material input[type=email], .km-material input[type=text]:not(.k-input), .km-root .km-material textarea {
@@ -4107,15 +4140,25 @@ div.contactListBox.activeContact > div > div > ul {
 
 // Calendar 
 
-#calendarSelect > div.k-header {
+#modalview-dateFilter {
+	h3 {
+		margin-top: 0.5rem;
+	}
+}
+
+#dateSelect {
+	width: 100%;
+}
+
+#dateSelect > div.k-header {
 	background: @primary-100;
 }
 
-#calendarSelect > div.k-footer > a {
+#dateSelect > div.k-footer > a {
 	background: @primary-100;
 } 
 
-#calendarSelect_cell_selected {
+#dateSelect_cell_selected {
 	background: @shade-200;
 	color: @black;
 	border: @shade-200 !important;
@@ -4125,7 +4168,7 @@ div.contactListBox.activeContact > div > div > ul {
 	}
 }
 
-#calendarSelect_cell_selected {
+#dateSelect_cell_selected {
 	border: none;
 }
 

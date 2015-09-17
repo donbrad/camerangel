@@ -141,9 +141,6 @@ var archiveView = {
 			});
 		}
 
-		var returnCount = archive.dataSource.total();
-		$("#resultCount").text(returnCount);
-
 		//archiveView.checkIfEmpty();
 
 		$('#search-archives input').clearSearch({ callback: archiveView.clearSearch });
@@ -170,21 +167,31 @@ var archiveView = {
 	},
 
 	onInitDateSelect: function(){
-		/*$("#datepicker").kendoDatePicker();
-			
-		
+        
+         $("#dateSelect").kendoCalendar({
+         	change: function() {
+            	var value = this.value();
+            	// TODO - wire user selected date
+        	}
+         });
 
-		$("#select-easy-dates").kendoMobileButtonGroup({
+         $("#select-period").kendoMobileButtonGroup({
             select: function(e) {
-                //console.log("selected index:" + e.index);
+            	var index = this.current().index();
+                switch(index){
+                	case 0:
+	                	// Before
+	                	break;
+	                case 1:
+	                	// On
+	                	break;
+	                case 2:
+	                	// After
+	                	break;
+                }
             },
             index: 0
         });
-
-        $("#multiselect").kendoMultiSelect();
-        */
-
-        //$(".filterList li .appendSearch").velocity("slideUp");
 
 	},
 	openArchiveFilter: function(){
@@ -302,7 +309,7 @@ var archiveView = {
 		        { type: "event", tag: "coachella", id: 2 },
 		        { type: "photo", tag: "Grand Canyon", id: 3 },
 		        { type: "link", tag: "google.com", id: 4 },
-		        { type: "date", tag: "Jan 19, 2015", id: 5 },
+		        { type: "date", tag: "before Jan 19, 2015", id: 5 },
 		        { type: "contact", tag: "John Smith", id: 6 },
 		    ]
 		});
@@ -336,7 +343,16 @@ var archiveView = {
 	},
 
 	filterChange: function(e){
+		
+		var selector = e.sender.element[0].id;
+		var switcher = $("#"+selector).data("kendoMobileSwitch");
 
+		// if filter is active show tag add input
+		if(switcher.check()){
+			$("."+selector+"-add").velocity("slideDown");
+		} else {
+			$("."+selector+"-add").velocity("slideUp");
+		}
 		
 	},
 
@@ -345,18 +361,30 @@ var archiveView = {
     },
 
 	saveFilters: function(e){
-		// if user has deleted tags pending alert them
+		// if user has deleted tags pending, alert them
 
 		if($(".tagList > li").hasClass("deletedLITag")){
-			$("#modal-OptionDialog").data("kendoMobileModalView").open();x
+			$("#modal-OptionDialog").data("kendoMobileModalView").open();
 		} else {
+			// Todo - save filters
 			APP.kendo.navigate('#:back');
+
+			// Todo - Update filter count
+			$("#filterCount").text("");
 		}
 
 		
 	},
 	openFilterDate: function(e){
 		// TODO - wire up calendar 
-		
+		$("#modalview-dateFilter").data("kendoMobileModalView").open();
+	},
+	closeModalDateSelect: function(e){
+		$("#modalview-dateFilter").data("kendoMobileModalView").close();
+	},
+	addFilter: function(e){
+		// Todo - add to filter 
+		var type = e.target[0].dataset["type"];
+
 	}
 };
