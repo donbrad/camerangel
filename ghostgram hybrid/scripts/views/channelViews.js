@@ -698,6 +698,7 @@ var channelView = {
 
         channelView.privacyMode = false;
 
+        channelModel.updateUnreadCount(channelUUID, 0);
 
         // Privacy UI
         $('#privacyMode').html('<img src="images/privacy-off.svg" />');
@@ -709,7 +710,7 @@ var channelView = {
           // *** Private Channel ***
           var contactKey = thisChannel.contactKey;
           if (contactKey === undefined) {
-              mobileNotify("No public key for " + thisContact.name);
+              mobileNotify("No public key for " + thisChannel.name);
               return;
           }
 
@@ -719,10 +720,9 @@ var channelView = {
           $('#privacyMode').html('<img src="images/privacy-on.svg" />');
           $("#privacyStatus").removeClass("hidden");
           var userKey = thisUser.publicKey, privateKey = thisUser.privateKey, name = thisUser.name;
-          if (thisChannel.members[0] === thisUser.userUUID)
-              contactUUID = thisChannel.members[1];
-          else
-              contactUUID = thisChannel.members[0];
+
+          contactUUID = thisChannel.contactUUID;
+
 
           channelView.currentContactId = contactUUID;
           var thisContact = contactModel.getContactModel(contactUUID);
@@ -740,17 +740,17 @@ var channelView = {
               $('#channelImage').attr('src', '');
           }
 
-          privateChannel.open(channelUUID, thisUser.userUUID, thisUser.alias, name, userKey, privateKey, contactUUID, contactKey);
+          privateChannel.open(channelUUID, thisUser.userUUID, thisUser.alias, name, userKey, privateKey, contactUUID, contactKey, thisContact.name);
         /*  thisChannelHandler.onMessage(channelView.onChannelRead);
           thisChannelHandler.onPresence(channelView.onChannelPresence);
           mobileNotify("Getting Previous Messages...");
           currentChannelModel.openChannel(thisChannelHandler);*/
+        channelView.messagesDS.data([]);
 
-          channelView.sendMessageHandler = privateChannel.sendMessage;
+        channelView.sendMessageHandler = privateChannel.sendMessage;
 
 
           privateChannel.getMessageHistory(function (messages) {
-              channelView.messagesDS.data([]);
               for (var i=0; i<messages.length; i++){
                   var message = messages[i];
                   var formattedContent = '';

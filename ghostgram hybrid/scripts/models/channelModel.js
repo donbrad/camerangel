@@ -11,7 +11,8 @@ var channelModel = {
     currentChannel: new kendo.data.ObservableObject(),
     intervalTimer : undefined,
     _sentMessages : "sentMessages",
-    _messageCountRefresh : 3000000,   // Delta between message count  calls (in milliseconds)
+    _messageCountRefresh : 300000,   // Delta between message count  calls (in milliseconds)
+
     channelsDS: new kendo.data.DataSource({
         offlineStorage: "channels-offline",
         sort: {
@@ -20,28 +21,24 @@ var channelModel = {
         }
     }),
 
+    // List of all active private channels (those with messages)
     privateChannelsDS: new kendo.data.DataSource({
         offlineStorage: "privatechannels-offline"
     }),
 
-    channelMapDS: new kendo.data.DataSource({
-        offlineStorage: "channelmap-offline"
+    // All active private messages (including archived messages)
+    privateMessagesDS: new kendo.data.DataSource({
+        offlineStorage: "privatemessages-offline"
     }),
+    
 
-
-    loadLocal : function () {
-        var localArray = localStorage[channelModel._sentMessages];
-        if (localArray === undefined || localArray === null || localArray === '') {
-            return ([]);
-        }
-
-        return ( JSON.parse(localArray));
-    },
 
     init :  function () {
-        /*channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
-       */
-
+        // Start the updateMessageCount async after 5 seconds...
+        setTimeout(function(){
+           // channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
+            channelModel.updateChannelsMessageCount();
+        },5000);
     },
 
 
@@ -123,22 +120,68 @@ var channelModel = {
         */
     },
 
+    updateUnreadCount: function (channelId, count) {
+        var channel = channelModel.findChannelModel(channelId);
+        if (channel === undefined) {
+            mobileNotify('incrementUnreadCount: unknown channel ' + channelId);
+        } else {
+            channel.unreadCount = count;
+            updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
+            notificationModel.addUnreadNotification(channelId, channel.name, count);
+        }
+    },
+
+    incrementUnreadCount: function (channelId, count) {
+        var channel = channelModel.findChannelModel(channelId);
+        if (channel === undefined) {
+            mobileNotify('incrementUnreadCount: unknown channel ' + channelId);
+        } else {
+            channel.unreadCount = channel.unreadCount + count;
+            updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
+        }
+
+    },
+
+    // If the channel exists, increment the message count, if not create the channel and then increment
+    incrementPrivateMessageCount: function (channelId, count) {
+        var channel = channelModel.findChannelModel(channelId);
+        if (channel === undefined) {
+           var contact = contactModel.findContactByUUID(channelId);
+            if (contact !== undefined && contact.contactUUID !== undefined) {
+                channelModel.addPrivateChannel(contact.contactUUID, contact.publicKey, contact.name);
+            } else {
+                mobileNotify("incrementPrivateMessageCount : unknown contact " + channelId);
+            }
+        } else {
+            channel.unreadCount = channel.unreadCount + count;
+            updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
+        }
+    },
+
     updateChannelsMessageCount : debounce(function () {
         var channelArray = channelModel.channelsDS.data();
+
         for (var i=0; i<channelArray.length; i++) {
             var channel = channelArray[i];
 
-            APP.pubnub.history({
-                channel: channel.channelId,
-                start: channel.lastAccess,
+            // Only ping non-private (group)channels -- userDataChannels handles private channels
+            if (channel.isPrivate === false) {
 
-                callback: function(messages) {
-                    messages = messages[0];
-                    messages = messages || [];
-                    var len = messages.length;
+                APP.pubnub.history({
+                    channel: channel.channelId,
+                    end: ggTime.toPubNubTime(channel.lastAccess),
 
-                }
-            });
+                    callback: function(messages) {
+                        messages = messages[0];
+                        messages = messages || [];
+                        var len = messages.length;
+                        channelModel.updateUnreadCount(channel.channelId, len);
+
+
+                    }
+                });
+            }
+
 
         }
     }, this._messageCountRefresh, true ),
@@ -172,7 +215,7 @@ var channelModel = {
         for (var i=0; i< view.length; i++) {
             var chan = view[i];
 
-            if (chan.members[0] === contactUUID || chan.members[1] === contactUUID) {
+            if (chan.contactUUID === contactUUID) {
                 dataSource.filter([]);
                 channel = chan;
                 return(channel);
@@ -184,13 +227,36 @@ var channelModel = {
         return(channel);
     },
 
+    // update current private channels based on channelList passed
+    updatePrivateChannels : function (channelKeys, channelList) {
+        if (channelList === undefined || channelList.length === 0) {
+            return;
+        }
+
+        for (var i=0; i<channelKeys.length; i++) {
+            var channel = channelModel.findPrivateChannel(channelKeys[i]);
+            if (channel === undefined) {
+                // private channel doesn't exist
+                var contact = contactModel.findContactByUUID(channelKeys[i]);
+                if (contact !== undefined) {
+                    channelModel.addChannel(contact.contactUUID, contact.publicKey, contact.name);
+                }
+            } else {
+                if (channelList [i] !== 0)
+                    notificationModel.addUnreadNotification(channel.channelId, channel.name, channelList[i])
+            }
+        }
+
+    },
+
+
     // Add a new private channel that this user created -- create a channel object
-    addPrivateChannel : function (contactUUID, contactPublicKey,  contactAlias, channelUUID) {
+    addPrivateChannel : function (contactUUID, contactPublicKey,  contactName) {
 
         var Channels = Parse.Object.extend(this._channelName);
         var channel = new Channels();
         var addTime = ggTime.currentTime();
-        channel.set("name", contactAlias);
+        channel.set("name", contactName);
         channel.set("isOwner", true);
         channel.set('isPrivate', true);
         channel.set('isPlace', false);
@@ -201,8 +267,9 @@ var channelModel = {
         channel.set("unreadCount", 0);
         channel.set("clearBefore", addTime);
         channel.set("lastAccess", addTime);
-        channel.set("description", "Private: " + contactAlias);
-        channel.set("channelId", channelUUID);
+        channel.set("description", "Private: " + contactName);
+        channel.set("channelId", contactUUID);
+        channel.set("contactUUID", contactUUID);
         channel.set('contactKey', contactPublicKey);
         channel.set("members", [userModel.currentUser.userUUID, contactUUID]);
         channelModel.channelsDS.add(channel.attributes);

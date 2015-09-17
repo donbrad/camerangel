@@ -39,6 +39,7 @@ var userModel = {
         isPhotoStored: false,
         isVisible: true,
         isAvailable: true,
+        useIdenticon: true,
         availImgUrl: 'images/status-available.svg',
         currentPlace: '',
         currentPlaceUUID: ''
@@ -107,6 +108,7 @@ var userModel = {
             userModel.currentUser.set('rememberUsername', userModel.parseUser.get('rememberUsername'));
             userModel.currentUser.set('phoneVerified', userModel.parseUser.get('phoneVerified'));
             userModel.currentUser.set('emailValidated', userModel.parseUser.get('emailVerified'));
+            userModel.currentUser.set('useIdenticon', userModel.parseUser.get('useIdenticon'));
             userModel.currentUser.set('availImgUrl', 'images/status-away.svg');
             updateHeaderStatusImages();
 
@@ -264,7 +266,33 @@ var userModel = {
         }); */
     },
 
+    enableIdenticon : function () {
+        $('#homeProfileImg').addClass('hidden');
+        $('#homeProfileIdenticon').removeClass('hidden');
 
+        $('#profileStatusPhoto').addClass('hidden');
+        $('#profileStatusIdenticon').removeClass('hidden');
+
+        var hash = userModel.currentUser.userUUID;
+        if (hash === undefined) {
+            hash = "01234567890ABCDE";
+        } else {
+            hash = hash.replace(/-/g,'');  //strip the dashes...
+        }
+
+        jdenticon.update("#homeProfileIdenticon", hash);
+
+        jdenticon.update("#profileStatusIdenticon", hash);
+    },
+
+    disableIdenticon : function () {
+
+        $('#homeProfileImg').removeClass('hidden');
+        $('#homeProfileIdenticon').addClass('hidden');
+
+        $('#profileStatusPhoto').removeClass('hidden');
+        $('#profileStatusIdenticon').addClass('hidden');
+    }
 
 
 };
@@ -352,4 +380,6 @@ var userStatus = {
 
 
     }
+
+
 };

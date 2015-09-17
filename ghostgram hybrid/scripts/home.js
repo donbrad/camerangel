@@ -5,17 +5,17 @@
 var homeView = {
 	openLocateMeModal: function () {
 		$('#modalview-locate-me').data('kendoMobileModalView').open();
-	
+
 		navigator.geolocation.getCurrentPosition( function (position) {
 			var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 			var places = APP.map.googlePlaces;
 			var nearbyResults = new kendo.data.DataSource();
 
-			var locations = placesView.matchLocationToUserPlace(position.coords.latitude, position.coords.longitude);
+			var userPlaces = placesView.matchLocationToUserPlace(position.coords.latitude, position.coords.longitude);
 
-			if (locations.length > 0) {
-				placesView.checkInTo(locations[0]);
-			}
+			userPlaces.forEach( function (userPlace ) {
+				nearbyResults.add(userPlace);
+			});
 
 			places.nearbySearch({
 				location: latlng,
@@ -65,7 +65,41 @@ var homeView = {
 				}
 
 				placesResults.forEach( function (placeResult) {
-					nearbyResults.add(placeResult);
+					var alreadyAUserPlace = false;
+					userPlaces.forEach( function (userPlace) {
+						if (userPlace.googleId === placeResult.place_id) {
+							alreadyAUserPlace = true;
+							return;
+						}
+					});
+
+					nearbyResults.add({
+						uuid: '',
+						category: 'Street Address',   // valid categories are: Place and Location
+						placeId: '',
+						name: placeResult.name,
+						venueName: placeResult.name,
+						streetNumber: '',
+						street: '',
+						city: '',
+						state: '',
+						zip: '',
+						country: '',
+						googleId: placeResult.place_id,
+						factualId: '',
+						lat: placeResult.geometry.location.G,
+						lng: placeResult.geometry.location.K,
+						publicName: '',
+						alias: '',
+						isVisible: true,
+						isPrivate: true,
+						autoCheckIn: false,
+						vicinity: placeResult.vicinity
+					});
+
+					if (alreadyAUserPlace === false) {
+						nearbyResults.add(placeResult);
+					}
 				});
 
 				$('#nearby-results-list').data('kendoMobileListView').setDataSource(nearbyResults);
@@ -81,13 +115,41 @@ var homeView = {
 
 	checkInToPlace: function (e) {
 		var item = e.item.children('div').first().data('item');
-		
-		$('#checked-in-place > span').html(item.name);
-		$('#checked-in-place').show(200);
-		$('#modalview-locate-me').data('kendoMobileModalView').close();
 
-		userModel.currentUser.set('currentPlace', item.name);
-		userModel.currentUser.set('currentPlaceUUID', item.uuid);
+		var finishCheckingIn = function (item) {
+			$('#checked-in-place > span').html(item.name);
+			$('#checked-in-place').show(200);
+			$('#modalview-locate-me').data('kendoMobileModalView').close();
+
+			APP.models.places.placesDS.add(item);
+
+			userModel.currentUser.set('currentPlace', item.name);
+			userModel.currentUser.set('currentPlaceUUID', item.uuid);
+		};
+
+		// If the item has a uuid it means we've already added it,
+		// or it's a street address so we don't have to find the
+		// address.
+		if (item.uuid !== '') {
+			finishCheckingIn(item);
+			return;
+		}
+
+		var latlng = new google.maps.LatLng(item.lat, item.lng);
+
+		// Otherwise it's a new place from Google so we find the address
+		APP.map.geocoder.geocode({ 'latLng': latlng }, function (geoResults, geoStatus) {
+			if (geoStatus !== google.maps.GeocoderStatus.OK) {
+				navigator.notification.alert('Something went wrong with the Google geocoding service.');
+				return;
+			}
+			if (geoResults.length === 0 || geoResults[0].types[0] !== 'street_address') {
+				navigator.notification.alert('We couldn\'t match your position to a street address.');
+				return;
+			}
+
+			var address = placesView.getAddressFromComponents(geoResults[0].address_components);
+		});
 	},
 
 	checkOutOfPlace: function () {
@@ -365,6 +427,7 @@ function homeSignin (e) {
 			userModel.currentUser.set('photo', userModel.parseUser.get('photo'));
 			userModel.currentUser.set('aliasPublic', userModel.parseUser.get('aliasPublic'));
             userModel.currentUser.set('userUUID', userModel.parseUser.get('userUUID'));
+			userModel.currentUser.set('useIdenticon', userModel.parseUser.get('useIdenticon'));
 			userModel.currentUser.set('rememberUsername', userModel.parseUser.get('rememberUsername'));
 			userModel.currentUser.set('publicKey', publicKey);
 			userModel.decryptPrivateKey();
@@ -477,6 +540,7 @@ function homeCreateAccount() {
 					user.set("isVisible", true);
 				    user.set("availImgUrl", "images/status-available.svg");
 					user.set("phoneVerified", false);
+				    user.set("useIdenticon", true);
 					user.set("rememberUsername", false);
 					user.set("userUUID", userUUID);
 					//user.set("publicKey", publicKey);
@@ -503,6 +567,7 @@ function homeCreateAccount() {
 							userModel.currentUser.set('aliasPhoto', user.get('aliasPhoto'));
 							userModel.currentUser.set('userUUID', user.get('userUUID'));
 							userModel.currentUser.set('phoneVerified', false);
+							userModel.currentUser.set('useIdenticon',user.get('useIdenticon'));
 							userModel.currentUser.set('emailValidated',user.get('emailVerified'));
 							userModel.generateNewPrivateKey(user);
 

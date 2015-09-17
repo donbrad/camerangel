@@ -13,95 +13,103 @@ var userDataChannel = {
 
     channelId: '',   // channelId is users uuid
     lastAccess: 0,   // last access time stamp
+    timeStamp: 0,
 
     init: function (channelId) {
         if (channelId !== undefined) {
-            this.channelId = channelId;
+            userDataChannel.channelId = channelId;
 
             var ts = localStorage.getItem('ggUserDataTimeStamp');
             if (ts !== undefined)
                 this.lastAccess = parseInt(ts);
 
             APP.pubnub.subscribe({
-                channel: this.channelId,
-                windowing: 50000,
-                message: this.channelRead,
-                connect: this.channelConnect,
-                disconnect:this.channelDisconnect,
-                reconnect: this.channelReconnect,
-                error: this.channelError
+                channel: userDataChannel.channelId,
+                windowing: 5000,
+                message: userDataChannel.channelRead,
+                connect: userDataChannel.channelConnect,
+                disconnect:userDataChannel.channelDisconnect,
+                reconnect: userDataChannel.channelReconnect,
+                error: userDataChannel.channelError
 
             });
         }
 
-        this.history();
+        userDataChannel.history();
     },
 
     updateTimeStamp : function () {
-        this.lastAccess = ggTime.currentPubNubTime();
-        localStorage.setItem('ggUserDataTimeStamp', this.lastAccess);
+        userDataChannel.lastAccess = ggTime.currentTime();
+        localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);
     },
 
     history : function () {
 
-        if (this.lastAccess === 0 || isNaN(this.lastAccess)) {
-            // Get any messages in the channel
-            APP.pubnub.history({
-                channel: this.channelId,
-                reverse: true,
-                callback: function(messages) {
-                    messages = messages[0];
-                    messages = messages || [];
-                    for (var i = 0; i < messages.length; i++) {
+        var channelList = [], channelKeys = [];
+        var timeStamp = ggTime.toPubNubTime(ggTime.lastDay());
+
+ /*       if (userDataChannel.lastAccess === 0 || isNaN(userDataChannel.lastAccess)) {
+            timeStamp = ggTime.toPubNubTime(timeStamp);
+       } else {
+            timeStamp = ggTime.toPubNubTime(userDataChannel.lastAccess - 86400);
+        }
+*/
+        // Get any messages in the channel
+        APP.pubnub.history({
+            channel: userDataChannel.channelId,
+            end: timeStamp,
+            error: userDataChannel.error,
+            callback: function(messages) {
+                messages = messages[0];
+                messages = messages || [];
+                for (var i = 0; i < messages.length; i++) {
+
+                    if ( messages[i].type === 'privateMessage') {
+
+                        // Add the last 24 hours worth of messages to the private channel archive
+                        if (messages[i].sender !== userModel.currentUser.userUUID) {
+                            // if the sender isn't this user, update the channel list
+                            channelList[messages[i].sender] = channelList[messages[i].sender]++;
+                        }
+
+                        channelModel.privateMessagesDS.add(messages[i]);
+
+                    } else  if (messages[i].time >= userDataChannel.lastAccess) {
                         userDataChannel.channelRead(messages[i]);
                     }
-
                 }
-            });
-        } else {
-            // Get any messages in the channel
-            APP.pubnub.history({
-                channel: this.channelId,
-                start: this.lastAccess,
-                reverse: true,
-                callback: function(messages) {
-                    messages = messages[0];
-                    messages = messages || [];
-                    for (var i = 0; i < messages.length; i++) {
-                        if (messages[i].time >= userDataChannel.lastAccess)
-                            userDataChannel.channelRead(messages[i]);
-                    }
 
-                }
-            });
-        }
+                channelKeys = Object.keys(channelList);
+                channelModel.updatePrivateChannels(channelKeys, channelList);
+            }
+        });
 
 
-        this.updateTimeStamp();
+        userDataChannel.updateTimeStamp();
     },
 
     channelRead : function (m) {
-        this.updateTimeStamp();
+        userDataChannel.updateTimeStamp();
 
         switch(m.type) {
 
-            //  { type: 'privateInvite',  channelId: <channelUUID>,  owner: <ownerUUID>, message: <text>, time: current time}
+          /*  //  { type: 'privateInvite',  channelId: <channelUUID>,  owner: <ownerUUID>, message: <text>, time: current time}
             case 'privateInvite' : {
                 this.processPrivateInvite(m.ownerId, m.ownerPublicKey,  m.channelId, m.message);
             } break;
 
             case 'privateDelete' : {
                 this.processPrivateDelete(m.ownerId, m.channelId, m.message);
-            } break;
+            } break;*/
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, ownerID: <ownerUUID>,  ownerName: <text>, channelName: <text>, channelDescription: <text>}
             case 'channelInvite' : {
-                this.processGroupInvite(m.ownerId, m.ownerName,  m.channelId, m.channelName, m.channelDescription, m.durationDays,  m.message);
+                userDataChannel.processGroupInvite(m.ownerId, m.ownerName,  m.channelId, m.channelName, m.channelDescription, m.durationDays,  m.message);
             } break;
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, owner: <ownerUUID>}
             case 'channelDelete' : {
-                this.processGroupDelete(m.ownerId, m.channelId, m.message);
+                userDataChannel.processGroupDelete(m.ownerId, m.channelId, m.message);
             } break;
 
             //  { type: 'packageOffer',  channelId: <channelUUID>, owner: <ownerUUID>, packageId: <packageUUID>, private: true|false, type: 'text'|'pdf'|'image'|'video', title: <text>, message: <text>}
@@ -114,11 +122,22 @@ var userDataChannel = {
 
             } break;
 
+            case 'privateMessage' : {
+                //Add the message to the privateChannel data source.
+                channelModel.privateMessagesDS.add(m);
+                // Is this private channel active?
+                if (currentChannelModel.channelId == m.sender) {
+                    //Its the active channel, receive the message
+                    privateChannel.receiveHandler(m);
+                }
+
+            } break;
+
 
         }
     },
 
-    privateChannelInvite : function (contactUUID, channelUUID, message) {
+  /*  privateChannelInvite : function (contactUUID, channelUUID, message) {
         var msg = {};
 
         msg.type = 'privateInvite';
@@ -155,7 +174,7 @@ var userDataChannel = {
             error: userDataChannel.errorCallback
         });
     },
-
+*/
     groupChannelInvite : function (contactUUID, channelUUID, channelName, channelDescription, durationDays,  message) {
         var msg = {};
 
@@ -198,7 +217,7 @@ var userDataChannel = {
         });
     },
 
-    // This could be an initial request or a follow up to delete current channel
+   /* // This could be an initial request or a follow up to delete current channel
     // and create a new one -- effectively orphaning / deleting the data in the channel
     processPrivateInvite: function (ownerId, ownerPublicKey, channelId, message) {
         // Can be only one private channel per user -- need to lookup channel by ownerId
@@ -256,7 +275,7 @@ var userDataChannel = {
 
     },
 
-    processGroupInvite: function (ownerId, ownerName, channelId, channelName, channelDescription, durationDays, message) {
+*/    processGroupInvite: function (ownerId, ownerName, channelId, channelName, channelDescription, durationDays, message) {
         // Todo:  Does channel exist?  If not create,  if so notify user of request
         var channel = channelModel.findChannelModel(channelId);
 

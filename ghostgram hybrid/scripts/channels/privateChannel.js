@@ -15,16 +15,18 @@ var privateChannel = {
     RSAKey: '',
     contactId : '',
     contactKey: '',
+    contactName : '',
 
 
 
     close: function () {
-        APP.pubnub.unsubscribe({
+
+ /*       APP.pubnub.unsubscribe({
             channel: privateChannel.channelId
         });
-    },
+*/    },
 
-    open : function (channelUUID, userUUID, alias, name,  publicKey, privateKey, contactUUID, contactKey) {
+    open : function (channelUUID, userUUID, alias, name,  publicKey, privateKey, contactUUID, contactKey, contactName) {
         privateChannel.RSAKey = cryptico.privateKeyFromString(privateKey);
 
 
@@ -39,46 +41,53 @@ var privateChannel = {
 
         privateChannel.contactId = contactUUID;
         privateChannel.contactKey = contactKey;
+        privateChannel.contactName = contactName;
+
 
         // A mapping of all currently connected users' usernames userUUID's to their public keys and aliases
         privateChannel.users = new Array();
         privateChannel.users[userUUID] = privateChannel.thisUser;
         privateChannel.channelId = channelUUID;
 
-        // Subscribe to our PubNub channel.
+    /*    // Subscribe to our PubNub channel.
         APP.pubnub.subscribe({
             channel: privateChannel.channelId,
             windowing: 5000,
             restore: true,
             callback: privateChannel.receiveHandler,
-            presence: privateChannel.presenceHandler,
+           presence: privateChannel.presenceHandler,
             // Set our state to our user object, which contains our username and public key.
             state: privateChannel.thisUser
         });
-    },
+*/    },
 
     // archive the message in the private channel with this user's public key and send to user.
     // this provides a secure roamable private sent folder without localstorage and parse...
     archiveMessage : function (msg) {
         var archiveMsg = {};
+        archiveMsg.type = 'privateMessage';
         archiveMsg.msgID = msg.msgID;
         archiveMsg.time = msg.time;
-        archiveMsg.TTL = msg.TTL;
+        archiveMsg.ttl = msg.ttl;
         archiveMsg.sender = msg.sender;
         archiveMsg.recipient = privateChannel.userId;
         archiveMsg.actualRecipient = msg.recipient;  // since we're echoing back to sender, need to store recipient.
         var encryptMessage = '', encryptData = '';
         var currentTime =  msg.time;  // use the current message time (time sent by this user)
+
+        // encrypt the message with this users public key
         encryptMessage = cryptico.encrypt(msg.content, privateChannel.publicKey);
         archiveMsg.content = encryptMessage;
+
         if (msg.data !== undefined && msg.data !== null)
             encryptData = cryptico.encrypt(JSON.stringify(msg.data), privateChannel.publicKey);
         else
             encryptData = null;
         archiveMsg.data = encryptData;
 
+        // Archive the message in this users data channel
         APP.pubnub.publish({
-            channel: privateChannel.channelId,
+            channel: userDataChannel.channelId,
             message: archiveMsg,
             error: function (error) {
                 mobileNotify("Archive message error : " + error);
@@ -88,6 +97,7 @@ var privateChannel = {
     },
 
     receiveHandler : function (msg) {
+
         if (msg.recipient === privateChannel.userId) {
             var data = null;
             var content = cryptico.decrypt(msg.content.cipher, privateChannel.RSAKey).plaintext;
@@ -97,6 +107,7 @@ var privateChannel = {
             }
 
             var parsedMsg = {
+                type: 'privateMessage',
                 msgID: msg.msgID,
                 channelId: privateChannel.channelId,
                 content: content,
@@ -104,7 +115,6 @@ var privateChannel = {
                 TTL: msg.ttl,
                 time: msg.time,
                 sender: msg.sender,
-                actualRecipient: msg.actualRecipient,
                 recipient: msg.recipient
             };
 
@@ -127,18 +137,19 @@ var privateChannel = {
 
         // ignore echoed sender copies in read message
         // -- we add the message to the chat datasource at time of send
-        if (message.actualRecipient === undefined)
+       // if (message.actualRecipient === undefined)
             channelView.messagesDS.add(message);
 
-        currentChannelModel.updateLastAccess();
+        //currentChannelModel.updateLastAccess();
 
         channelView.scrollToBottom();
 
         if (channelView.privacyMode) {
-            kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(9000).play();
+            kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(6000).play();
         }
     },
 
+/*
     presenceHandler : function (msg) {
         if (msg.action === "join" || msg.action === "state-change") {
             // If the presence message contains data aka *state*, add this to our users object.
@@ -161,8 +172,9 @@ var privateChannel = {
         }
         // A user has left or timed out of ghostgrams so we remove them from our users object.
         else if (msg.action === "timeout" || msg.action === "leave") {
-            mobileNotify(privateChannel.users[msg.uuid].name + " has left ...");
-            delete privateChannel.users[msg.uuid];
+            if (msg.uuid === privateChannel.contactId)
+                mobileNotify(privateChannel.contactName + " has left ...");
+            //delete privateChannel.users[msg.uuid];
             privateChannel.presenceChange();
         }
     },
@@ -187,6 +199,7 @@ var privateChannel = {
         }
         privateChannel.presenceChange();
     },
+*/
 
     sendMessage: function (recipient, message, data, ttl) {
         if (ttl === undefined || ttl < 60)
@@ -204,11 +217,13 @@ var privateChannel = {
 
         APP.pubnub.uuid(function (msgID) {
             APP.pubnub.publish({
-                channel: privateChannel.channelId,
+                channel: privateChannel.contactId,
                 message: {
+                    type: 'privateMessage',
                     recipient: recipient,
-                    msgID: msgID,
                     sender: privateChannel.userId,
+                    msgID: msgID,
+                    channelId: privateChannel.channelId,
                     content: encryptMessage,  // publish the encryptedMessage
                     data: encryptData,        // publish the encryptedData.
                     time: currentTime,
@@ -217,15 +232,17 @@ var privateChannel = {
                 },
                 callback: function () {
                     var parsedMsg = {
+                        type: 'privateMessage',
+                        recipient: recipient,
+                        sender: privateChannel.userId,
                         msgID: msgID,
                         channelId: privateChannel.channelId,
                         content: content,
                         data: contentData,
-                        TTL: ttl,
                         time: currentTime,
-                        sender: privateChannel.userId,
                         fromHistory: false,
-                        recipient: recipient
+                        ttl: ttl
+
                     };
 
                     // echo the message
@@ -241,7 +258,62 @@ var privateChannel = {
     },
 
     getMessageHistory: function (callBack) {
-        var timeStamp = ggTime.lastDay();
+
+        var dataSource = channelModel.privateMessagesDS;
+
+
+        dataSource.filter(  {"logic":"or",
+            "filters":[
+                { field: "sender", operator: "eq", value: privateChannel.contactId },
+                { field: "actualRecipient", operator: "eq", value: privateChannel.contactId }
+            ]});
+
+        var view = dataSource.view();
+        var messages = view;
+        var clearMessageArray = [];
+        dataSource.filter([]);
+        for(var i = 0; i < messages.length; i++) {
+            var msg = messages[i];
+            var content = '';
+            var parsedMsg;
+
+            // Process
+            var data = null;
+            var content = cryptico.decrypt(msg.content.cipher, privateChannel.RSAKey).plaintext;
+            if (content === undefined) {
+                content = null;
+            }
+            if (msg.data !== undefined && msg.data !== null) {
+                data = cryptico.decrypt(msg.data.cipher, privateChannel.RSAKey).plaintext;
+                if (data === undefined) {
+                    data = null;
+                } else {
+                    data = JSON.parse(data);
+                }
+            }
+
+            if (content !== null) {
+                parsedMsg = {
+                    msgID: msg.msgID,
+                    content: content,
+                    data: data,
+                    ttl: msg.ttl,
+                    time: msg.time,
+                    sender: msg.sender,
+                    fromHistory: true,
+                    recipient: msg.recipient
+                };
+
+                clearMessageArray.push(parsedMsg);
+            }
+
+
+        }
+
+        if(callBack)
+            callBack(clearMessageArray);
+
+ /*       var timeStamp = ggTime.lastDay();
 
         APP.pubnub.history({
             channel: privateChannel.channelId,
@@ -285,5 +357,5 @@ var privateChannel = {
             }
 
         });
-    }
+*/    }
 };
