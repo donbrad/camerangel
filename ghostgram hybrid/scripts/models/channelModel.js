@@ -243,7 +243,7 @@ var channelModel = {
                 }
             } else {
                 if (channelList [i] !== 0)
-                    notificationModel.addUnreadNotification(channel.channelId, channel.name, channelList[i])
+                    notificationModel.addUnreadNotification(channel.channelId, 'Private: ' + channel.name, channelList[i])
             }
         }
 
