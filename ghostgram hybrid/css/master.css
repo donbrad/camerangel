@@ -155,6 +155,14 @@
 .full {
   width: 100%;
 }
+.helperInfoBar {
+  width: 100%;
+  height: 2rem;
+  background: #f5f5f5;
+  color: #4a4a4a;
+  text-align: center;
+  padding: 0.25rem;
+}
 .chat-bubble {
   height: 100%;
   float: left;
@@ -248,8 +256,8 @@ input,
 .standard-input {
   width: 100%;
   border: 0px;
-  font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 16px;
+  font-size: 1rem;
   border-bottom: 1px solid #e0e0e0;
   padding: .5em .7em;
   -webkit-appearance: none;
@@ -486,6 +494,11 @@ form p {
   padding: 0;
   margin: 0;
   list-style: none;
+}
+.list-unstyled {
+  list-style: none;
+  padding: 0.25rem 1rem;
+  margin: 0;
 }
 .circle-img {
   border-radius: 50%;
@@ -1172,6 +1185,10 @@ div.footerMenu.km-footer > ul > li > a:active {
 .home-smallHeader {
   height: 24px !important;
 }
+.home-smallHeader .user-status,
+.home-smallHeader .user-settings {
+  display: none;
+}
 .km-material .km-navbar.home-smallHeader .km-view-title {
   padding: 0px !important;
   font-size: 14px;
@@ -1304,12 +1321,15 @@ div.footerMenu.km-footer > ul > li > a:active {
   left: 0;
 }
 .fullPhotoModal {
-  height: 100%;
   width: 100%;
   background: rgba(0, 0, 0, 0.85);
+  display: -webkit-flex;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+#modalPhotoView > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
+  background: #000;
 }
 .user-status {
   height: 50px;
@@ -2327,6 +2347,10 @@ div.footerMenu.km-footer > ul > li > a {
 .actionBtn-text {
   color: #979797;
 }
+.actionBtn-text-light {
+  color: #fff !important;
+  text-shadow: 1px 1px 2px #000 !important;
+}
 /* Hide action btns on views */
 * > div.footerMenu.km-footer > a {
   display: none;
@@ -2705,6 +2729,9 @@ div.loginBox > form > div > ul > li {
 #archive-list {
   width: 100%;
 }
+.filterInputBox input {
+  padding: 0.5rem !important;
+}
 #archive-list > div.km-scroll-container > div > ul > li > div > div > div {
   padding: 0.2em 0;
 }
@@ -2764,6 +2791,10 @@ div.loginBox > form > div > ul > li {
   position: relative;
   left: -0.5rem;
 }
+.card .chat p {
+  font-size: 16px;
+  font-size: 1rem;
+}
 .photoPreview {
   width: 25%;
   height: auto;
@@ -2788,12 +2819,16 @@ div.loginBox > form > div > ul > li {
   width: 20%;
   float: left;
 }
+#archive-listview > div.km-scroll-container > div > ul > li {
+  border-color: transparent;
+}
 #archive-list > div.km-scroll-container > div > ul > li.km-group-container {
   border-color: transparent;
 }
 .cardInfoBar {
   font-size: 12px;
   font-size: 0.75rem;
+  margin-bottom: 0.25rem;
 }
 /*
 #archive-list {
@@ -2857,6 +2892,10 @@ div.loginBox > form > div > ul > li {
     }
 }
 */
+#galleryPhotoDisplayOpts {
+  float: left;
+  width: 40%;
+}
 #calendarSelect {
   width: 100%;
 }
@@ -3606,6 +3645,7 @@ div.contactListBox.activeContact > div > div > ul {
 /* Don's development styles...*/
 #gallery-listview {
   line-height: 0 !important;
+  padding-top: 0.25rem;
   /* need to work on better responsive
    -webkit-column-count: 2;
    -webkit-column-gap:   1px;
@@ -3669,14 +3709,13 @@ div.contactListBox.activeContact > div > div > ul {
 .gallerySearchOptions .filters {
   text-align: center;
 }
-#galleryZoomSelect {
-  background: #e0e0e0;
-  border-bottom: 1px solid #e0e0e0;
-}
 /* Gallery styles */
+#galleryMenuSelect {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
 #galleryMenuSelect li.km-button {
-  width: 33.33%;
-  background-color: #f5f5f5;
+  width: 50%;
+  color: #4a4a4a;
   border-top: 0px !important;
   border-bottom: 0px !important;
 }
@@ -3692,14 +3731,17 @@ div.contactListBox.activeContact > div > div > ul {
   stroke: #4a4a4a;
 }
 #galleryMenuSelect.km-buttongroup > .km-state-active {
-  background-color: #f5f5f5;
-  color: #2e93fd;
+  background-color: #6cadf3;
+  color: #fff;
   border-radius: 0px;
   border-top: 0px !important;
   border-bottom: 0px !important;
 }
 .km-state-active #gallery-photos {
   fill: #fff !important;
+}
+#archive-listview > div.km-scroll-container > div > ul > li:nth-child(1) {
+  padding-top: 0.5rem;
 }
 .km-state-active #gallery-all {
   stroke: #fff !important;
@@ -3716,7 +3758,7 @@ div.contactListBox.activeContact > div > div > ul {
 #galleryToggle svg {
   height: 18px;
 }
-#galleryZoomSelect > li.km-button.km-state-active > span > svg #gallery-grid-1,
+.km-group-container #galleryZoomSelect > li.km-button.km-state-active > span > svg #gallery-grid-1,
 #galleryZoomSelect > li.km-button.km-state-active > span > svg #gallery-grid-2,
 #galleryZoomSelect > li.km-button.km-state-active > span > svg #gallery-grid-3 {
   fill: #ffb74d;
@@ -3725,12 +3767,16 @@ div.contactListBox.activeContact > div > div > ul {
   height: 1.25rem;
 }
 .resultsBar {
-  padding: 0.25rem 1rem;
+  padding: 0rem 1rem;
   background: #fff;
   border-bottom: 1px solid #e0e0e0;
-  height: 2.5rem;
   font-size: 14px;
   font-size: 0.875rem;
+}
+.resultsBar .results {
+  width: 20%;
+  padding-top: 0.25rem;
+  float: left;
 }
 .resultsBar .tags img {
   height: 18px;
@@ -3740,6 +3786,26 @@ div.contactListBox.activeContact > div > div > ul {
 }
 .resultsBar #toggleFilterBtn img {
   height: 0.875em;
+}
+.resultsBar #photoViewOpts {
+  width: 55%;
+  text-align: center;
+  float: left;
+}
+@media only screen and (max-width: 320px) {
+  .resultsBar #photoViewOpts {
+    width: 50%;
+  }
+}
+.resultsBar .filter {
+  width: 22%;
+  float: right;
+  text-align: right;
+}
+@media only screen and (max-width: 320px) {
+  .resultsBar .filter {
+    width: 30%;
+  }
 }
 #gallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.resultsBar > span.right > span > span > span.k-input > img {
   vertical-align: sub;

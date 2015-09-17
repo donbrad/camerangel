@@ -208,8 +208,8 @@ function showCleanPhone(phone){
 }
 
 
-function showActionBtnText(path){ 
-	$(path).velocity({opacity: 1, right: "3rem"}, {easing: "spring", delay: 500});
+function showActionBtnText($path, fromRight){ 
+	$path.velocity({opacity: 1, right: fromRight}, {easing: "spring", delay: 500});
 }
 
 function hideActionBtnText(path){

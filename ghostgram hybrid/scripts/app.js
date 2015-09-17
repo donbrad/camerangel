@@ -594,6 +594,7 @@
 
 		deviceModel.init();
 
+
 			/*		if (window.navigator.simulator === undefined) {
 					APP.map = plugin.google.maps.Map.getMap($("#places-mapview"));
 					APP.mapReady = false;

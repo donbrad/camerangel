@@ -79,10 +79,16 @@ var galleryView = {
         // Set action btn
         var $actionBtn = $("#gallery > div.footerMenu.km-footer > a");
         var $actionBtnImg = $("#gallery > div.footerMenu.km-footer > a > span > img");
+        var $actionBtnP = $("#gallery > div.footerMenu.km-footer > a > span > p");
+        var scroller = e.view.scroller;
+      	
         $actionBtn.removeAttr("href").on("click", function(e){
 				galleryView.galleryActionView(e);
+				if(photoModel.previewSize === "33%"){
+					scroller.scrollTo(0, -74);
+				}
 			});
-        $actionBtnImg.attr("src", "images/gallery-list.svg");
+        
 
         // Set img size for gallery
         $("#gallery-listview li").css("width",photoModel.previewSize);
@@ -90,8 +96,32 @@ var galleryView = {
 
         // if gallery photos are open, display actionBtn
         var galleryMenuIndex = $("#galleryMenuSelect").data("kendoMobileButtonGroup").current().index();
-        if(galleryMenuIndex === 1){
+        if(galleryMenuIndex === 0){
         	$actionBtn.css("display", "inline-block");
+        } 
+
+        if(photoModel.previewSize === "33%"){
+        	$actionBtnP.text("List view");
+        	$actionBtnImg.attr("src", "images/gallery-list.svg");
+        } else {
+        	$actionBtnP.text("Grid view");
+        	$actionBtnImg.attr("src", "images/gallery-grid.svg");
+        }
+        
+        $actionBtnP.addClass("actionBtn-text-light");
+        showActionBtnText($actionBtnP, "3.5rem");
+
+        // set filter count
+        var filterCount = 0;
+        $("#filterCount").text(filterCount);
+
+        if(filterCount > 1){
+        	$("#filterText").text("Filters");
+        } else if(filterCount === 0) {
+        	$("#filterCount").text("");
+        	$("#filterText").text("Filter");
+        } else {
+        	$("#filterText").text("Filter");
         }
         
     },
@@ -99,21 +129,27 @@ var galleryView = {
     onHide: function(e){
     	var $actionBtn = $("#gallery > div.footerMenu.km-footer > a");
         var $actionBtnImg = $("div.footerMenu.km-footer > a > span > img");
-        
+        var $actionBtnP = $("div.footerMenu.km-footer > a > span > p");
+
         $actionBtn.css("display", "none");
         $actionBtnImg.attr("src", "images/nav-add-white.svg");
+
+        $actionBtnP.removeClass("actionBtn-text-light").text("");
 
     },
 
     galleryActionView: function(e){
     	_preventDefault(e);
+    	var $actionBtnP = $("#gallery > div.footerMenu.km-footer > a > span > p");
 
 		if(photoModel.previewSize === "33%") {
 			$("#gallery > div.footerMenu.km-footer > a > span > img").attr("src", "images/gallery-grid.svg");
-			showActionBtnText()
+			$actionBtnP.text("Grid view");
+			
 			photoModel.previewSize = "100%";
 		} else {
 			$("#gallery > div.footerMenu.km-footer > a > span > img").attr("src", "images/gallery-list.svg");
+			$actionBtnP.text("List view");
 			photoModel.previewSize = "33%";
 		}
 		$("#gallery-listview li").css("width",photoModel.previewSize);
@@ -126,15 +162,15 @@ var galleryView = {
         var index = this.current().index();
         switch (index) {
             case 0:
-            	$actionBtn.css("display", "none");
-                $('#archive-listview').removeClass('hidden');
-                $("#gallery-listview").addClass('hidden');
+            	$actionBtn.css("display", "inline-block");
+                $('#archive-listview').addClass('hidden');
+                $("#gallery-listview").removeClass("hidden");
                 break;
 
             case 1:
-           		$actionBtn.css("display", "inline-block");
-                $('#archive-listview').addClass('hidden');
-                $("#gallery-listview").removeClass("hidden");
+                $actionBtn.css("display", "none");
+                $('#archive-listview').removeClass('hidden');
+                $("#gallery-listview").addClass('hidden');
                 break;
         }
         $("#gallerySearch").attr("placeholder", "Search All");

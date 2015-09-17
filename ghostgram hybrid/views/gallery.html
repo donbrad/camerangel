@@ -7,33 +7,28 @@
 			</div>
 			<ul data-role="buttongroup" data-index="0" id="galleryMenuSelect" data-select="galleryView.selectCategory">
 				<li>
-					Archive
+					Photos
 				</li>
 				<li>
-					Photos
+					Archive
 				</li>
 			</ul>
 		</div>
-			<div class="resultsBar" style="display: none">
+			<div class="resultsBar">
 				<div class="results"><span id="resultCount"></span> Results</div>
 				
 				<div class="filter">
-					<a class="btnClear" data-role="button" data-rel="modalview" href="#modalview-archive-filter" id="toggleFilterBtn">
-						<img src="images/icon-filter.svg" /> Filter
+					<a class="btnClear" data-role="button" href="#filterGallery" id="toggleFilterBtn">
+						<img src="images/icon-filter-link.svg" />
+						<span id="filterCount"></span> 
+						<span id="filterText"> Filter </span>
 					</a>
 				</div>
 				
 				<div class="clearfix"></div>
-				<ul class="list-inline tags hidden">
-					<!--
-					<li><img src="images/sentinel-contacts.svg" />Don<button></button></li>
-					<li><img src="images/sentinel-chats.svg" />myplacez design<button></button></li>
-					-->
-				</ul>
 			</div>
-		
-		<div id="archive-listview" data-role="scroller">
-			<ul data-role="listview" data-source="archive.dataSource" data-template="archive-template" data-header-template="archive-header-template"></ul>
+		<div id="archive-listview" class="hidden" data-role="scroller">
+			<ul data-role="listview" data-source="archive.dataSource" data-template="archive-template" data-header-template="archive-header-template" data-click="archiveView.archiveClick"></ul>
 		</div>
 		<!-- Photos -->
 		<ul id="gallery-listview" class="list-inline" data-role="listview" data-click="galleryView.galleryClick" data-source="photoModel.photosDS" data-template="gallery-template"></ul>
@@ -44,55 +39,73 @@
 
 </div>
 
-<div data-role="drawer" id="galleryDrawer" style="width: 200px; height: 100%;" data-title="Gallery Options" data-position="right" data-views="['gallery']" data-swipe-to-open="false" style="display:none;" class="appearance">
- <div data-role="header">
+<div data-role="view" data-title="Filter" id="filterGallery" data-layout="main" data-transition="overlay:up" data-init="archiveView.onFilterInit">
+	<div data-role="header">
         <div data-role="navbar">
-            <span>Gallery Settings</span>
-        </div>
+            <span data-role="view-title"></span>
+            <a data-role="button" href="#:back" data-align="right">
+                Cancel
+            </a>
+       </div>
     </div>
-	<form style="clear:both; border-radius: 25px;">
-	<ul data-role="listview" data-style="inset">
-		<li>
-			<label> Date
-			   <select id="galleryDateSelect">
-				   <option value="newest">Newest</option>
-				   <option value="oldest">Oldest</option>
-			  </select>
-		  </label>
-		</li>
-		<li>
-			<label> Chats
-			   <select id="galleryChatSelect">
-				   <option value="all">All</option>
-			  </select>
-		  </label>
-		</li>
-		
-	 </ul>
-	</form>
+    
+    <div class="card">
+    <p class="helper">Filter types</p>
+    	<ul class="filterList" data-role="listview">
+			<li>
+              	<label for="filter-contact">
+              		<input type="checkbox" id="filter-contact" class="filter-contact" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="archiveView.filterChange"/>
+              		<img src="images/nav-contacts.svg" /> Contacts
+              	</label>
+			</li>
+			<li>
+              	<label for="filter-link">
+              		<input type="checkbox" id="filter-link" class="filter-link" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="archiveView.filterChange"/>
+              		<img src="images/icon-Links.svg" /> Links
+              	</label>
+			</li>
+			<li>
+              	<label for="filter-chat">
+              		<input type="checkbox" id="filter-chat" class="filter-chat" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="archiveView.filterChange"/>
+              		<img src="images/icon-Chat.svg" /> Chats
+              	</label>
+			</li>
+			<li>
+              	<label for="filter-place">
+              		<input type="checkbox" id="filter-place" class="filter-place" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="archiveView.filterChange"/>
+              		<img src="images/icon-Events.svg" /> Events
+              	</label>
+			</li>
+			
+				<a data-role="button" data-click="archiveView.openFilterDate"><img src="images/icon-date.svg" height="18"/> Select Date </a>
+			
+		</ul>
+	</div>
+	<div class="currentFilterTags">
+    	<p>
+    		Current Filters
+    		<a class="btnClear-red hidden right" data-role="button" data-click="archiveView.deleteTags" id="deleteTagBtn">Delete</a>
+    		<a class="btnClear-grey right" data-role="button" data-click="archiveView.clearAllTags">Clear all</a>
+    		
+    	</p>
+    	<ul class="tagList list-inline" data-role="listview" data-template="tag-template"></ul>
+    </div>
+    <div data-role="footer">
+		<a class="btnSpan-btm btnPrimary" data-role="button" data-click="archiveView.saveFilters"> Save </a>
+    </div>
+
 </div>
 
-<div data-role="modalview" id="modalview-archive-filter" style="width: 90%; display: none;" class="appearance" data-init="archiveView.onInitDateSelect">
-	<div class="calendarBox">
-		<h3>Create a filter</h3>
-		<p><img src="images/icon-shortcut.svg" /></p>
-	    	<ul id="select-easy-dates">
-	            <li>
-	                Last 7 days
-	            </li>
-	            <li>
-	                Last 30 days
-	            </li>
-	            <li>
-	                Last 90 days
-	            </li>
-	        </ul>
-		<input id="datepicker" value="10/10/2011" style="width: 100%" />
+<script id="tag-template" type="text/x-kendo-template">
+	<div class="tag">
+		<div class="tag-category">
+	    	<img src="images/icon-#=type#-light.svg" />
+	   	</div>
+	    <div class="tag-text">
+	    	#: tag #
+	    </div>
 	</div>
-	<div data-role="footer" class="footer">
-		<a class="btnFull-modal" data-role="button" data-click="archiveView.closeArchiveFilter">Done</a>
-	</div>
-</div>
+</script>
 
 <script id="archive-dateOption-template" type="text/x-kendo-template">
     <img src="images/icon-filter.svg"> Filter
@@ -181,10 +194,11 @@
 		#}#
 		<div class="bottom">
 			<div class="cardAction">
-				<a class="btnClear link">View</a>
-				<a class="btnClear">Share</a>
+				#if(data.type !== "Chat"){#
+					<a class="btnClear link" data-role="button" data-click="archiveView.viewOpen">View</a>
+				#}#
+					<a class="btnClear" data-role="button" data-click="archiveView.archiveShare">Share</a>
 			<div>
 		</div>
 	</div>
-	# console.log(data); #
 </script>
