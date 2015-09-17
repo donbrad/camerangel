@@ -183,7 +183,7 @@ var channelModel = {
 
 
         }
-    }, this._messageCountRefresh, true ),
+    }, channelModel._messageCountRefresh, true ),
 
     findChannelModel: function (channelId) {
         var dataSource =  channelModel.channelsDS;
@@ -254,7 +254,7 @@ var channelModel = {
     // Add a new private channel that this user created -- create a channel object
     addPrivateChannel : function (contactUUID, contactPublicKey,  contactName) {
 
-        var Channels = Parse.Object.extend(this._channelName);
+        var Channels = Parse.Object.extend(channelModel._channelName);
         var channel = new Channels();
         var addTime = ggTime.currentTime();
         channel.set("name", contactName);
@@ -451,10 +451,10 @@ var channelModel = {
     },
 
     deleteAllChannels : function () {
-        var channelArray = this.channelsDS.data();
+        var channelArray = channelModel.channelsDS.data();
 
         for (var i=0; i<channelArray.length; i++) {
-            this.deleteChannel(channelArray.channelId);
+            channelModel.deleteChannel(channelArray.channelId);
         }
     }
 

@@ -140,6 +140,7 @@ var contactModel = {
         var contactUUID = contactModel.currentContact.contactUUID;
 
         mobileNotify("Updating contact status...");
+        // Look up contact by contact's actual userID --
         getUserContactInfo(contactUUID, function (result) {
                 if (result.found) {
                     var contact = result.user;
@@ -150,9 +151,13 @@ var contactModel = {
                     current.set('currentPlaceUUID', contact.currentPlaceUUID);
                     current.set('photo', contact.photo);
                     current.set('isAvailable', contact.isAvailable);
+                    callback();
+                    return;
+                } else {
+                    // Not contact for this user Id
                 }
 
-                callback();
+
 
         });
     },
