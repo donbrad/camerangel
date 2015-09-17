@@ -242,7 +242,8 @@ var channelModel = {
                     channelModel.addChannel(contact.contactUUID, contact.publicKey, contact.name);
                 }
             } else {
-                notificationModel.addUnreadNotification(channel.channelId, channel.name, channelList[i])
+                if (channelList [i] !== 0)
+                    notificationModel.addUnreadNotification(channel.channelId, channel.name, channelList[i])
             }
         }
 
