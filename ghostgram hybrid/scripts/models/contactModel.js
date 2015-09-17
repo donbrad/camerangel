@@ -166,27 +166,30 @@ var contactModel = {
                 return;
 
             });
+        } else {
+
+            getUserContactInfo(contactUUID, function (result) {
+                if (result.found) {
+                    var contact = result.user;
+                    var current = contactModel.currentContact;
+
+                    current.set('statusMessage', contact.statusMessage);
+                    current.set('currentPlace', contact.currentPlace);
+                    current.set('currentPlaceUUID', contact.currentPlaceUUID);
+                    current.set('phoneVerified', contact.phoneVerified);
+                    current.set('contactEmail', contact.email);
+                    current.set('emailValidated', contact.emailVerified);
+                    current.set('photo', contact.photo);
+                    current.set('isAvailable', contact.isAvailable);
+                    current.set('publicKey', contact.publicKey);
+
+
+                }
+                callback();
+            });
         }
 
-        getUserContactInfo(contactUUID, function (result) {
-            if (result.found) {
-                var contact = result.user;
-                var current = contactModel.currentContact;
 
-                current.set('statusMessage', contact.statusMessage);
-                current.set('currentPlace', contact.currentPlace);
-                current.set('currentPlaceUUID', contact.currentPlaceUUID);
-                current.set('phoneVerified', contact.phoneVerified);
-                current.set('contactEmail', contact.email);
-                current.set('emailValidated', contact.emailVerified);
-                current.set('photo', contact.photo);
-                current.set('isAvailable', contact.isAvailable);
-                current.set('publicKey', contact.publicKey);
-
-
-            }
-            callback();
-        });
     },
 
     getContactStatusObject : function(contactUUID, callback) {
