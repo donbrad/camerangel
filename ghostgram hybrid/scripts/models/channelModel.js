@@ -127,6 +127,7 @@ var channelModel = {
         } else {
             channel.unreadCount = count;
             updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
+            notificationModel.addUnreadNotification(channelId, channel.name, count);
         }
     },
 
@@ -174,7 +175,8 @@ var channelModel = {
                         messages = messages[0];
                         messages = messages || [];
                         var len = messages.length;
-                        channelModel.incrementUnreadCount(channel.channelId, len);
+                        channelModel.updateUnreadCount(channel.channelId, len);
+
 
                     }
                 });
@@ -226,18 +228,21 @@ var channelModel = {
     },
 
     // update current private channels based on channelList passed
-    updatePrivateChannels : function (channelList) {
+    updatePrivateChannels : function (channelKeys, channelList) {
         if (channelList === undefined || channelList.length === 0) {
             return;
         }
 
-        for (var i=0; i<channelList.length; i++) {
-            if (channelModel.findPrivateChannel(channelList[i]) === undefined) {
+        for (var i=0; i<channelKeys.length; i++) {
+            var channel = channelModel.findPrivateChannel(channelKeys[i]);
+            if (channel === undefined) {
                 // private channel doesn't exist
-                var contact = contactModel.findContactByUUID(channelList[i]);
+                var contact = contactModel.findContactByUUID(channelKeys[i]);
                 if (contact !== undefined) {
                     channelModel.addChannel(contact.contactUUID, contact.publicKey, contact.name);
                 }
+            } else {
+                notificationModel.addUnreadNotification(channel.channelId, channel.name, channelList[i])
             }
         }
 

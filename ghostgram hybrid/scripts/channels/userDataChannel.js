@@ -80,7 +80,7 @@ var userDataChannel = {
                 }
 
                 channelKeys = Object.keys(channelList);
-                channelModel.updatePrivateChannels(channelKeys);
+                channelModel.updatePrivateChannels(channelKeys, channelList);
             }
         });
 
