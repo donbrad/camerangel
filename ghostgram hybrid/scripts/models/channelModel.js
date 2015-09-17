@@ -176,7 +176,7 @@ var channelModel = {
                         messages = messages[0];
                         messages = messages || [];
                         var len = messages.length;
-                        
+
                     }
                 });
             }
