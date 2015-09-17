@@ -10,6 +10,7 @@ var deviceModel = {
 
     fileDirectory: '',
     tempDirectory: '',
+    appVersion: '',
 
 
     state: {

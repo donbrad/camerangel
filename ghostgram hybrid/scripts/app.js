@@ -548,10 +548,10 @@
 
 		// Provide basic functionality in the simulator and deployable simulator
 		if (window.navigator.simulator === true) {
-			APP.models.profile.version = "0.1.9.5";
+			deviceModel.appVersion = "0.1.9.8";
 		} else {
 			cordova.getAppVersion(function(version) {
-				APP.models.profile.version = version;
+				deviceModel.appVersion = version;
 			});
 
 			cordova.plugins.notification.local.ontrigger = function(id, state, json) {
