@@ -234,16 +234,18 @@ var channelModel = {
         }
 
         for (var i=0; i<channelKeys.length; i++) {
-            var channel = channelModel.findPrivateChannel(channelKeys[i]);
+            var channel = channelModel.findPrivateChannel(channelKeys[i]),
+                count = channelList[i];
             if (channel === undefined) {
                 // private channel doesn't exist
                 var contact = contactModel.findContactByUUID(channelKeys[i]);
                 if (contact !== undefined) {
                     channelModel.addChannel(contact.contactUUID, contact.publicKey, contact.name);
                 }
-            } else {
-                if (channelList [i] !== 0)
-                    notificationModel.addUnreadNotification(channel.channelId, 'Private: ' + channel.name, channelList[i])
+            }
+
+            if (count !== 0) {
+                notificationModel.addUnreadNotification(channel.channelId, 'Private: ' + channel.name, channelList[i])
             }
         }
 
