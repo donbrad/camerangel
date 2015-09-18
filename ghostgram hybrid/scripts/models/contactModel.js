@@ -90,6 +90,7 @@ var contactModel = {
 
         deleteParseObject("contacts", 'uuid', uuid);
 
+        // If there's a private channel for this contact, need to delete it.
         var localChannel = channelModel.findPrivateChannel(uuid);
         if (localChannel !== undefined) {
             channelModel.deleteChannel(localChannel);
@@ -136,10 +137,14 @@ var contactModel = {
     },
 
     updateContactStatus : function (callback) {
-        var contactUUID = contactModel.currentContact.contactUUID;
+        var contactUUID = contactModel.currentContact.contactUUID, phone = contactModel.currentContact.phone;
 
-        mobileNotify("Updating contact status...");
-        getUserContactInfo(contactUUID, function (result) {
+        mobileNotify("Updating " + contactModel.currentContact.name + "'s status...");
+        // Look up contact by contact's actual userID --
+
+        if (contactUUID === undefined || contactUUID === null) {
+
+            findUserByPhone(phone, function (result) {
                 if (result.found) {
                     var contact = result.user;
                     var current = contactModel.currentContact;
@@ -147,13 +152,44 @@ var contactModel = {
                     current.set('statusMessage', contact.statusMessage);
                     current.set('currentPlace', contact.currentPlace);
                     current.set('currentPlaceUUID', contact.currentPlaceUUID);
+                    current.set('contactUUID', contact.userUUID);
+                    current.set('contactPhone', contact.phone);
+                    current.set('phoneVerified', contact.phoneVerified);
+                    current.set('contactEmail', contact.email);
+                    current.set('emailValidated', contact.emailVerified);
                     current.set('photo', contact.photo);
                     current.set('isAvailable', contact.isAvailable);
+                    current.set('publicKey', contact.publicKey);
                 }
 
                 callback();
+                return;
 
-        });
+            });
+        } else {
+
+            getUserContactInfo(contactUUID, function (result) {
+                if (result.found) {
+                    var contact = result.user;
+                    var current = contactModel.currentContact;
+
+                    current.set('statusMessage', contact.statusMessage);
+                    current.set('currentPlace', contact.currentPlace);
+                    current.set('currentPlaceUUID', contact.currentPlaceUUID);
+                    current.set('phoneVerified', contact.phoneVerified);
+                    current.set('contactEmail', contact.email);
+                    current.set('emailValidated', contact.emailVerified);
+                    current.set('photo', contact.photo);
+                    current.set('isAvailable', contact.isAvailable);
+                    current.set('publicKey', contact.publicKey);
+
+
+                }
+                callback();
+            });
+        }
+
+
     },
 
     getContactStatusObject : function(contactUUID, callback) {

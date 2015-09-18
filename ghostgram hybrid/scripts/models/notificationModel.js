@@ -29,6 +29,7 @@ var notificationModel = {
     }),
 
     Notification: function(type, title, date, description, actionTitle, action, href, dismissed, dismissable) {
+            this.uuid = new uuid.v4();
             this.type = type ? type : 'system',
             this.title = title ? title : '',
             this.actionTitle = actionTitle ? actionTitle : '',
@@ -59,7 +60,7 @@ var notificationModel = {
     },
 
     addUnreadNotification : function (channelId, channelName, unreadCount) {
-        this.newNotification(this._unreadCount, channelName, null, unreadCount + "new messages.", 'Read Messages', null,
+        this.newNotification(this._unreadCount, channelName, null, unreadCount + " new messages.", 'Read Messages', null,
         '#channel?channel='+channelId, true);
     },
 
