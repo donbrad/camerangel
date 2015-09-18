@@ -721,7 +721,7 @@ var channelView = {
           $("#privacyStatus").removeClass("hidden");
           var userKey = thisUser.publicKey, privateKey = thisUser.privateKey, name = thisUser.name;
 
-          contactUUID = thisChannel.contactUUID;
+          contactUUID = thisChannel.channelId;
 
 
           channelView.currentContactId = contactUUID;
