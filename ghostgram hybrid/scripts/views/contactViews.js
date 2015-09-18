@@ -579,7 +579,7 @@ var editContactView = {
            // if there's contactId set current contact to matching contact
             contact = contactModel.findContactByUUID(contactId);
             if (contact !== undefined) {
-                contactModel.currentContact = contact;
+                updateCurrentContact(contact);
             } else {
                 mobileNotify("EditContact : invalid contactId " + contactId);
 

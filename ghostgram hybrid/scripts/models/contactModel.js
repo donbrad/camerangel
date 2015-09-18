@@ -155,6 +155,9 @@ var contactModel = {
                     current.set('contactUUID', contact.userUUID);
                     current.set('contactPhone', contact.phone);
                     current.set('phoneVerified', contact.phoneVerified);
+                    if (contact.phoneVerified) {
+                        current.set('category', 'member');
+                    }
                     current.set('contactEmail', contact.email);
                     current.set('emailValidated', contact.emailVerified);
                     current.set('photo', contact.photo);
@@ -177,6 +180,9 @@ var contactModel = {
                     current.set('currentPlace', contact.currentPlace);
                     current.set('currentPlaceUUID', contact.currentPlaceUUID);
                     current.set('phoneVerified', contact.phoneVerified);
+                    if (contact.phoneVerified) {
+                        current.set('category', 'member');
+                    }
                     current.set('contactEmail', contact.email);
                     current.set('emailValidated', contact.emailVerified);
                     current.set('photo', contact.photo);
