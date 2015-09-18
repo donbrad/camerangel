@@ -517,7 +517,7 @@
 				}
 				APP.map = new Object();
 				APP.map.geocoder = new google.maps.Geocoder();
-				APP.map.mapOptions = new Object();
+				APP.map.mapOptions = {};
 				APP.map.mapOptions.center = {
 					lat: position.coords.latitude,
 					lng: position.coords.longitude

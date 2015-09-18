@@ -3,6 +3,7 @@
 'use strict';
 
 var homeView = {
+
 	openLocateMeModal: function () {
 		$('#modalview-locate-me').data('kendoMobileModalView').open();
 
