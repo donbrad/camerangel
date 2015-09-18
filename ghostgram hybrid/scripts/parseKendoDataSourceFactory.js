@@ -45,6 +45,7 @@ parseKendoDataSourceFactory.make = function (parseObjectName, schema, createLoca
 		schema: {
 			model: schema
 		},
+
 		transport: {
 			create: function(options) {
 
@@ -53,7 +54,7 @@ parseKendoDataSourceFactory.make = function (parseObjectName, schema, createLoca
 					return;
 				}
 
-				console.log('create', options.data, 'on', parseObjectName);
+				//console.log('create', options.data, 'on', parseObjectName);
 
 				var ParseObject = Parse.Object.extend(parseObjectName);
 				var parseObject = new ParseObject();
@@ -90,7 +91,7 @@ parseKendoDataSourceFactory.make = function (parseObjectName, schema, createLoca
 					return;
 				}
 
-				console.log('read', parseObjectName);
+				//console.log('read', parseObjectName);
 
 				var ParseObject = Parse.Object.extend(parseObjectName);
 				var query = new Parse.Query(ParseObject);
@@ -115,7 +116,7 @@ parseKendoDataSourceFactory.make = function (parseObjectName, schema, createLoca
 					return;
 				}
 
-				console.log('update', options.data, 'on', parseObjectName);
+				//console.log('update', options.data, 'on', parseObjectName);
 
 				var ParseObject = Parse.Object.extend(parseObjectName);
 				var query = new Parse.Query(ParseObject);
@@ -146,7 +147,7 @@ parseKendoDataSourceFactory.make = function (parseObjectName, schema, createLoca
 					return;
 				}
 
-				console.log('destroy', options.data, 'on', parseObjectName);
+				//console.log('destroy', options.data, 'on', parseObjectName);
 
 				var ParseObject = Parse.Object.extend(parseObjectName);
 				var query = new Parse.Query(ParseObject);

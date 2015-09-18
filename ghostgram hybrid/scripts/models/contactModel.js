@@ -353,3 +353,4 @@ var contactModel = {
 
     }
 };
+

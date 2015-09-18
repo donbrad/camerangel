@@ -496,17 +496,32 @@ var addContactView = {
       findUserByPhone(phone, function (result) {
 
             if (result.found) {
-                contact.set("phoneVerified", result.user.phoneVerified);
+                var contact = result.user;
+                contact.set("phoneVerified", contact.phoneVerified);
                 // Does the contact have a verified email address
-                if (result.user.emailVerified) {
+                if (contact.emailVerified) {
                     // Yes - save the email address the contact verified
-                    contact.set("email", result.user.email);
+                    contact.set("email", contact.email);
+                    contact.set("emailValidated", true);
                 } else {
                     // No - just use the email address the our user selected
                     contact.set("email", email);
+                    contact.set("emailValidated", false);
                 }
-                contact.set('publicKey',  result.user.publicKey);
-                contact.set("contactUUID", result.user.userUUID);
+                current.set('statusMessage', contact.statusMessage);
+                current.set('currentPlace', contact.currentPlace);
+                current.set('currentPlaceUUID', contact.currentPlaceUUID);
+                current.set('contactUUID', contact.userUUID);
+                current.set('contactPhone', contact.phone);
+                current.set('phoneVerified', contact.phoneVerified);
+                if (contact.phoneVerified) {
+                    current.set('category', 'member');
+                }
+                current.set('contactEmail', contact.email);
+                current.set('emailValidated', contact.emailVerified);
+                current.set('photo', contact.photo);
+                current.set('isAvailable', contact.isAvailable);
+                current.set('publicKey', contact.publicKey);
 
             } else {
                 // No - just use the email address the our user selected
