@@ -694,7 +694,9 @@ var channelView = {
 
         // Hide the image preview div
         channelView.hideChatImagePreview();
-        APP.updateGeoLocation();
+
+       // Todo: don - optimize geolocator calls -- shouldn't call on every chat show
+       // APP.updateGeoLocation();
 
         channelView.privacyMode = false;
 
