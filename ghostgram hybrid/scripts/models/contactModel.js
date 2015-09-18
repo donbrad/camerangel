@@ -175,7 +175,7 @@ var contactModel = {
                 if (result.found) {
                     var contact = result.user;
                     var current = contactModel.currentContact;
-
+                    current.set('contactUUID', contact.userUUID);
                     current.set('statusMessage', contact.statusMessage);
                     current.set('currentPlace', contact.currentPlace);
                     current.set('currentPlaceUUID', contact.currentPlaceUUID);
@@ -183,6 +183,7 @@ var contactModel = {
                     if (contact.phoneVerified) {
                         current.set('category', 'member');
                     }
+                    current.set('contactPhone', contact.phone);
                     current.set('contactEmail', contact.email);
                     current.set('emailValidated', contact.emailVerified);
                     current.set('photo', contact.photo);
