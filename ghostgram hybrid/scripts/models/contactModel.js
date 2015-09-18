@@ -15,12 +15,14 @@ var contactModel = {
             dir: "asc"
         }
     }),
+
     deviceContactsDS: new kendo.data.DataSource({
         sort: {
             field: "name",
             dir: "asc"
         }
     }),
+
     contactListDS: new kendo.data.DataSource({
         group: 'category',
         sort: {
