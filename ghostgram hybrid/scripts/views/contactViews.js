@@ -585,9 +585,11 @@ var editContactView = {
 
             }
 
+        } else {
+            updateCurrentContact(contact);
         }
-        
-        updateCurrentContact(contact);
+
+
 
         //Show the status update div
         contactModel.updateContactStatus(function() {
