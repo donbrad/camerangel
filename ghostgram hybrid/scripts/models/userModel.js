@@ -267,7 +267,7 @@ var userModel = {
     },
 
     enableIdenticon : function () {
-        $('#homeProfileImg').addClass('hidden');
+        $('.homeProfileImg').addClass('hidden');
         $('#homeProfileIdenticon').removeClass('hidden');
 
         $('#profileStatusPhoto').addClass('hidden');
@@ -287,10 +287,9 @@ var userModel = {
 
     disableIdenticon : function () {
 
-        $('#homeProfileImg').removeClass('hidden');
+        $('.homeProfileImg').removeClass('hidden');
         $('#homeProfileIdenticon').addClass('hidden');
 
-        $('#profileStatusPhoto').removeClass('hidden');
         $('#profileStatusIdenticon').addClass('hidden');
     }
 

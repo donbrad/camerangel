@@ -436,21 +436,21 @@ function timeSince(date) {
 	var seconds = Math.floor((ggTime.currentTime() - date)/1000),
 		interval = Math.floor(seconds / 31536000);
 
-	if (interval > 1) return interval + " years";
+	if (interval > 1) return interval + "yr";
 
 	interval = Math.floor(seconds / 2592000);
-	if (interval > 1) return interval + " months";
+	if (interval > 1) return interval + "m";
 
 	interval = Math.floor(seconds / 86400);
-	if (interval >= 1) return interval + " days";
+	if (interval >= 1) return interval + "d";
 
 	interval = Math.floor(seconds / 3600);
-	if (interval >= 1) return interval + " hours";
+	if (interval >= 1) return interval + "hr";
 
 	interval = Math.floor(seconds / 60);
-	if (interval > 1) return interval + " minutes";
+	if (interval >= 1) return interval + " min";
 
-	return Math.floor(seconds) + " seconds";
+	return Math.floor(seconds) + "s";
 }
 
 
