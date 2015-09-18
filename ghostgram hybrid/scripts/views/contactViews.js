@@ -471,7 +471,7 @@ var addContactView = {
         contact.set("group", '');
         contact.set('category', "new");
         contact.set("priority", 0);
-        contact.set("privateChannel", null);
+        contact.set("isFavorite", false);
         contact.set("uuid", guid);
 
         //phone = phone.replace(/\+[0-9]{1-2}/,'');
@@ -675,7 +675,34 @@ var editContactView = {
         } else {
             findUserByPhone(contact.phone, function (result) {
                 if (result.found) {
-                    var user = result.user;
+                    var user = result.user, dirty = false;
+                    if (contact.email !== user.email) {
+                        dirty = true;
+                        contact.email = user.email;
+                        mobileNotify(contact.name + " has changed their preferred email.")
+                    }
+                    if (contact.phone !== user.phone) {
+                        dirty = true;
+                        contact.phone = user.phone;
+                        mobileNotify(contact.name + " has changed their preferred phone.")
+                    }
+                    if (contact.phoneVerified !== user.phoneVerified) {
+                        dirty = true;
+                        contact.phoneVerified = user.phoneVerified;
+                        mobileNotify(contact.name + " has verified their phone.")
+                    }
+                    if (contact.emailValidated !== user.emailVerified) {
+                        dirty = true;
+                        contact.set('emailValidated',user.emailVerified);
+                        mobileNotify(contact.name + " has verified their email.")
+                    }
+                    if (contact.publicKey !== user.publicKey) {
+                        dirty = true;
+                        contact.publicKey = user.publicKey;
+                    }
+
+                    editContactView.updateVerifiedUX(contact.phoneVerified, contact.emailValidated);
+
                 }
 
             });
