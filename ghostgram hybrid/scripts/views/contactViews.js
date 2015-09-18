@@ -578,10 +578,18 @@ var editContactView = {
         if (contactId !== undefined) {
            // if there's contactId set current contact to matching contact
             contact = contactModel.findContactByUUID(contactId);
+            if (contact !== undefined) {
+                contactModel.currentContact = contact;
+            } else {
+                mobileNotify("EditContact : invalid contactId " + contactId);
+
+            }
+
         }
 
         //Show the status update div
         contactModel.updateContactStatus(function() {
+            editContactView.updateVerifiedUX(contactModel.currentContact.phoneVerified,contactModel.currentContact.emailValidated);
             // Hide the status update div
         });
 
@@ -590,9 +598,7 @@ var editContactView = {
        // $('#contactEditList').removeClass('hidden');
 
 
-        // Todo - wire up verified status/read only fields
 
-        editContactView.updateVerifiedUX(contactModel.currentContact.phoneVerified,contactModel.currentContact.emailValidated);
 
     },
 

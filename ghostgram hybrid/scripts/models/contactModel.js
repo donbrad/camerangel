@@ -139,7 +139,7 @@ var contactModel = {
     updateContactStatus : function (callback) {
         var contactUUID = contactModel.currentContact.contactUUID, phone = contactModel.currentContact.phone;
 
-        mobileNotify("Updating contact status...");
+        mobileNotify("Updating " + contactModel.currentContact.name + "'s status...");
         // Look up contact by contact's actual userID --
 
         if (contactUUID === undefined || contactUUID === null) {
@@ -160,16 +160,15 @@ var contactModel = {
                     current.set('photo', contact.photo);
                     current.set('isAvailable', contact.isAvailable);
                     current.set('publicKey', contact.publicKey);
-                    callback();
-                    return;
                 }
 
-
+                callback();
+                return;
 
             });
-        }
+        } else {
 
-        getUserContactInfo(contactUUID, function (result) {
+            getUserContactInfo(contactUUID, function (result) {
                 if (result.found) {
                     var contact = result.user;
                     var current = contactModel.currentContact;
@@ -183,10 +182,14 @@ var contactModel = {
                     current.set('photo', contact.photo);
                     current.set('isAvailable', contact.isAvailable);
                     current.set('publicKey', contact.publicKey);
-                    callback();
+
 
                 }
-        });
+                callback();
+            });
+        }
+
+
     },
 
     getContactStatusObject : function(contactUUID, callback) {

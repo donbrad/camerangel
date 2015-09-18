@@ -453,8 +453,9 @@ function homeSignin (e) {
             userModel.currentUser.bind('change', userModel.sync);
             userModel.fetchParseData();
 
-            // hide keyboard
 			if (window.navigator.simulator === false) {
+
+				// hide keyboard
 				cordova.plugins.Keyboard.close();
 			}
 

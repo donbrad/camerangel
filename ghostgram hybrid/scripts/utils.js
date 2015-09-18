@@ -277,7 +277,7 @@ function findUserByPhone(phone, callBack) {
 			if (result.status === 'ok') {
 				callBack({
 					found: true,
-					user: JSON.parse(result.user)
+					user: result.user
 				});
 			} else {
 				callBack({
