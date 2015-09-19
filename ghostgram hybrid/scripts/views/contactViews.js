@@ -615,6 +615,7 @@ var editContactView = {
             }
 
         } else {
+            contact = contactModel.findContactByUUID(contact.uuid);
             updateCurrentContact(contact);
         }
 
