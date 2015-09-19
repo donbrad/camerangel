@@ -72,7 +72,12 @@ var contactsView = {
             fixedHeaders: true,
             click: function (e) {
                 var contact = e.dataItem;
-                
+
+                contact = contactModel.findContactByUUID(contact.uuid);
+                if (contact === undefined) {
+                    mobileNotify('Contact List: no matching Contact in ContactsDS');
+                    return;
+                }
                 updateCurrentContact(contact);
 
                 if (contact.category === 'phone') {
