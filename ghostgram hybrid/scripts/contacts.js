@@ -556,7 +556,7 @@ function closeContactActions() {
 }
 
  
-function onShowContacts (e) {
+/*function onShowContacts (e) {
 	if (e.preventDefault !== undefined)
     	e.preventDefault();
 
@@ -576,7 +576,7 @@ function onHideContacts (e) {
 
 	// hide action btn
 	$("#contacts > div.footerMenu.km-footer > a").css("display", "none");
-}
+}*/
 
 function launchAddContact(e) {
     if (e !== undefined && e.preventDefault !== undefined)

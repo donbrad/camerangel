@@ -14,6 +14,7 @@
  */
 
 var contactsView = {
+
     onInit : function (e) {
         if (e.preventDefault !== undefined){
             e.preventDefault();
@@ -138,6 +139,10 @@ var contactsView = {
 
         // set action button
         $("#contacts > div.footerMenu.km-footer > a").attr("href", "#contactImport").css("display", "inline-block");
+    },
+
+    updateContactListDS : function () {
+        contactModel.contactListDS.data(contactModel.contactsDS.data());
     },
 
     onBeforeHide: function(){
@@ -626,6 +631,7 @@ var editContactView = {
             e.preventDefault();
 
         contactModel.currentContact.unbind('change' , syncCurrentContact);
+        contactModel.updateContactListDS();
         APP.kendo.navigate("#contacts");
 
         // reset UI
