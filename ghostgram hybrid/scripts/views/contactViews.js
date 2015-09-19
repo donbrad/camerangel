@@ -631,7 +631,7 @@ var editContactView = {
             e.preventDefault();
 
         contactModel.currentContact.unbind('change' , syncCurrentContact);
-        contactModel.updateContactListDS();
+        contactsView.updateContactListDS();
         APP.kendo.navigate("#contacts");
 
         // reset UI
