@@ -568,10 +568,9 @@ var addContactView = {
 };
 
 var editContactView = {
+
     onInit: function (e) {
-        if (e.preventDefault !== undefined){
-            e.preventDefault();
-        }
+       _preventDefault(e);
 
     },
 
@@ -590,9 +589,8 @@ var editContactView = {
 
     onShow: function (e) {
 
-        if (e.preventDefault !== undefined){
-            e.preventDefault();
-        }
+       _preventDefault(e);
+
         var contact = contactModel.currentContact;
         var contactId = e.view.params.contactId;
 
@@ -614,7 +612,7 @@ var editContactView = {
 
         //Show the status update div
         contactModel.updateContactStatus(function() {
-            editContactView.updateVerifiedUX(contactModel.currentContact.phoneVerified,contactModel.currentContact.emailValidated);
+            editContactView.updateVerifiedUX(contactModel.currentContact.phoneVerified, contactModel.currentContact.emailValidated);
             // Hide the status update div
         });
 

@@ -1,7 +1,5 @@
 function syncCurrentContact(e) {
-    if (e !== undefined && e.preventDefault !== undefined) {
-        e.preventDefault();
-    }
+   _preventDefault(e);
 
     if (e.field !== 'emailVerified') {
         // Parse throws an error if we try to update emailVerified it's a protected field...
@@ -434,16 +432,20 @@ function onDoneEditContact (e) {
 
 function onInitContacts(e) {
 
-	if (e.preventDefault !== undefined){
-    	e.preventDefault();
-    }
+	_preventDefault(e);
 
     // set search bar 
     var scroller = e.view.scroller;
 	scroller.scrollTo(0,-44);
 
     contactModel.deviceQueryActive = false;
-	
+
+   contactModel.contactsDS.bind("change", function (e) {
+       var data = this.data();
+       var ds = contactModel.contactListDS;
+
+   });
+
 	var dataSource = contactModel.contactListDS;
 	
 	// Activate clearsearch and zero the filter when it's called
@@ -496,7 +498,15 @@ function onInitContacts(e) {
         fixedHeaders: true,
         click: function (e) {
             var contact = e.dataItem;
-   			
+
+            // Find the correct model in the contactDS -- which is the master
+            contact = contactModel.findContactByUUID(contact.uuid);
+
+            if (contact === undefined || contact === null) {
+                mobileNotify('Contact List : undefined contact!');
+                return;
+            }
+
             updateCurrentContact(contact);
             
 			if (contact.category === 'phone') {
