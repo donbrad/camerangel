@@ -16,15 +16,20 @@
 var contactsView = {
 
     onInit : function (e) {
-        if (e.preventDefault !== undefined){
-            e.preventDefault();
-        }
+        _preventDefault(e);
 
         // set search bar
         var scroller = e.view.scroller;
         scroller.scrollTo(0,-44);
 
         contactModel.deviceQueryActive = false;
+
+        contactModel.contactsDS.bind("change", function (e){
+            var data = this.data();
+            var ds = contactModel.contactListDS;
+            
+        });
+
 
         var dataSource = contactModel.contactListDS;
 
