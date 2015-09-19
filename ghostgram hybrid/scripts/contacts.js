@@ -1,4 +1,5 @@
 function syncCurrentContact(e) {
+
    _preventDefault(e);
 
     if (e.field !== 'emailVerified') {
@@ -6,7 +7,7 @@ function syncCurrentContact(e) {
         updateParseObject('contacts','uuid', contactModel.currentContact.uuid, e.field, this[e.field]);
     }
 
-    contactModel.currentContact.set(e.field, this[e.field]);
+   // contactModel.currentContact.set(e.field, this[e.field]);
 }
     
 /*
