@@ -589,6 +589,7 @@ var editContactView = {
     },
 
     onShow: function (e) {
+
         if (e.preventDefault !== undefined){
             e.preventDefault();
         }
@@ -727,7 +728,8 @@ var contactActionView = {
     },
 
     onOpen: function (e) {
-    	
+        var contactId = e.view.params.contact;
+
         $('#contactActions-status').removeClass('hidden');
         //Show the status update div
         contactModel.updateContactStatus(function() {
