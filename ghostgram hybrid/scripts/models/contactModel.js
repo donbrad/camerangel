@@ -10,6 +10,7 @@ var contactModel = {
 
     contactsDS: new kendo.data.DataSource({
         offlineStorage: "contacts-offline",
+        group: 'category',
         sort: {
             field: "name",
             dir: "asc"

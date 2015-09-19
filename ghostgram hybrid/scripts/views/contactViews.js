@@ -27,7 +27,7 @@ var contactsView = {
         contactModel.contactsDS.bind("change", function (e){
             var data = this.data();
             var ds = contactModel.contactListDS;
-            
+
         });
 
 
@@ -636,8 +636,7 @@ var editContactView = {
     },
 
     onDone : function (e) {
-        if (e.preventDefault !== undefined)
-            e.preventDefault();
+       _preventDefault(e);
 
         contactModel.currentContact.unbind('change' , syncCurrentContact);
         contactsView.updateContactListDS();
@@ -648,8 +647,7 @@ var editContactView = {
     },
 
     syncWithParse: function (e) {
-        if (e.preventDefault !== undefined)
-            e.preventDefault();
+        _preventDefault(e);
 
         mobileNotify("Getting lastest info for " + contactModel.currentContact.name);
         var contact = contactModel.currentContact;
