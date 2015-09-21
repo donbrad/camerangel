@@ -170,6 +170,7 @@ function doInviteContact(e) {
     var contact = contactModel.findContactByUUID(contactId);
 
     updateCurrentContact(contact);
+
     var email = contactModel.currentContact.get('email'), inviteSent = contactModel.currentContact.get('inviteSent');
 
     if (inviteSent === undefined || inviteSent === false) {
@@ -347,8 +348,9 @@ function updateCurrentContact (contact) {
    
     // Wish observables set took an object -- need to set fields individually
     contactModel.currentContact.unbind('change' , syncCurrentContact);
-    //contactModel.currentContact = contact;
-    contactModel.currentContact.set('name', contact.name);
+    contactModel.currentContact = contact;
+
+   /* contactModel.currentContact.set('name', contact.name);
     contactModel.currentContact.set('alias', contact.alias);
     contactModel.currentContact.set('phone', contact.phone);
     contactModel.currentContact.set('email', contact.email);
@@ -366,7 +368,9 @@ function updateCurrentContact (contact) {
     contactModel.currentContact.set('privateChannel', contact.privateChannel);
     contactModel.currentContact.set('phoneVerified',contact.phoneVerified);
     contactModel.currentContact.set('emailValidated',contact.emailValidated);
-    contactModel.currentContact.set('publicKey',contact.publicKey);
+    contactModel.currentContact.set('publicKey',contact.publicKey);*/
+
+
     contactModel.currentContact.bind('change' , syncCurrentContact);
    
    
