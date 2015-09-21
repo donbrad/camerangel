@@ -20,7 +20,7 @@ parseKendoDataSourceFactory.makeDataArrayFromParseArray = function(results) {
  * Makes a local-only kendo DataSource
  */
 
-parseKendoDataSourceFactory.makeLocal = function (parseObjectName, schema) {
+parseKendoDataSourceFactory.makeLocal = function (parseObjectName, schema, sortBy, groupField) {
 	var dataSource = new kendo.data.DataSource({
 		offlineStorage: parseObjectName,
 		schema: {
@@ -28,6 +28,13 @@ parseKendoDataSourceFactory.makeLocal = function (parseObjectName, schema) {
 		}
 	});
 
+	if (groupField !== undefined && groupField !== null) {
+		dataSource.group({ field: groupField });
+	}
+
+	if (sortBy !== undefined && sortBy !== null) {
+		dataSource.sort(sortBy);
+	}
 	dataSource.initialized = true;
 
 	return dataSource;
@@ -35,9 +42,9 @@ parseKendoDataSourceFactory.makeLocal = function (parseObjectName, schema) {
 	dataSource.trigger('init');
 };
 
-parseKendoDataSourceFactory.make = function (parseObjectName, schema, createLocalOnly) {
+parseKendoDataSourceFactory.make = function (parseObjectName, schema, createLocalOnly, sortBy, groupField) {
 	if(createLocalOnly === true) {
-		return parseKendoDataSourceFactory.makeLocal(parseObjectName, schema);
+		return parseKendoDataSourceFactory.makeLocal(parseObjectName, schema, sortBy, groupField);
 	}
 
 	var dataSource = new kendo.data.DataSource({
@@ -175,6 +182,15 @@ parseKendoDataSourceFactory.make = function (parseObjectName, schema, createLoca
 			}
 		}
 	});
+
+	if (groupField !== undefined && groupField !== null) {
+		dataSource.group({ field: groupField });
+	}
+
+	if (sortBy !== undefined && sortBy !== null) {
+		dataSource.sort(sortBy);
+	}
+
 
 	dataSource.online(navigator.onLine);
 
