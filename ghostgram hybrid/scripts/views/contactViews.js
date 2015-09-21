@@ -784,6 +784,25 @@ var contactActionView = {
     openModal : function (contactId) {
 
         contactActionView.setContact(contactId);
+        $('#contactActions-status').removeClass('hidden');
+        //Show the status update div
+
+        contactModel.updateContactStatus(contactActionView._activeContactId, function() {
+            //Hide the status update div
+            $('#contactActions-status').addClass('hidden');
+        });
+
+        var contactName = contactActionView._activeContact.name;
+        var contactAlias = contactActionView._activeContact.alias;
+        var contactVerified = contactActionView._activeContact.phoneVerified;
+
+        formatNameAlias(contactName, contactAlias, "#modalview-contactActions");
+
+        if(contactVerified){
+            $("#currentContactVerified").removeClass("hidden");
+        } else {
+            $("#currentContactVerified").addClass("hidden");
+        }
         $("#modalview-contactActions").data("kendoMobileModalView").open();
     },
 
