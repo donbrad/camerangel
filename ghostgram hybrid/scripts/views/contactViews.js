@@ -153,16 +153,8 @@ var contactsView = {
 
     // All update the ContactListDS item with current changes
     updateContactListDS : function () {
-        var uuid = contactModel.currentContact.uuid;
-        var dataSource= contactModel.contactListDS;
-
-        dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
-        var view = dataSource.view();
-        var contact = view[0];
-        dataSource.filter([]);
-
-        contact = contactModel.currentContact;
-        //contactModel.contactListDS.data(contactModel.contactsDS.data());
+        contactModel.contactListDS.data([]);
+        contactModel.contactListDS.data(contactModel.contactsDS.data());
     },
 
     onBeforeHide: function(){

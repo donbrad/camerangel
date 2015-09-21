@@ -440,21 +440,13 @@ function onInitContacts(e) {
 	scroller.scrollTo(0,-44);
 
     contactModel.deviceQueryActive = false;
-
-   contactModel.contactsDS.bind("change", function (e) {
-       var data = this.data();
-       var ds = contactModel.contactListDS;
-
-   });
-
-	var dataSource = contactModel.contactListDS;
 	
 	// Activate clearsearch and zero the filter when it's called
      $('#contactSearchInput').clearSearch({ 
-		 callback: function() { 
-			 dataSource.data([]);
-			 dataSource.data(contactModel.contactsDS.data());
-			 dataSource.filter([]);
+		 callback: function() {
+             contactModel.contactListDS.data([]);
+             contactModel.contactListDS.data(contactModel.contactsDS.data());
+             contactModel.contactListDS.filter([]);
              contactModel.deviceContactsDS.data([]);
 			 $('#btnSearchDeviceContacts').addClass('hidden');
 		 } 
@@ -465,7 +457,7 @@ function onInitContacts(e) {
 	$('#contactSearchInput').keyup(function() {
 		 var query = this.value;
 		 if (query.length > 0) {
-			  dataSource.filter( {"logic":"or",
+             contactModel.contactListDS.filter( {"logic":"or",
                   "filters":[
                       {
                           "field":"name",
@@ -482,10 +474,10 @@ function onInitContacts(e) {
 			  $("#btnSearchDeviceName").text(query);
 			
 		 } else {
-			 dataSource.data([]);
+             contactModel.contactListDS.data([]);
              contactModel.deviceContactsDS.data([]);
-			 dataSource.data(contactModel.contactsDS.data());
-			 dataSource.filter([]);
+             contactModel.contactListDS.data(contactModel.contactsDS.data());
+             contactModel.contactListDS.filter([]);
 			 
 			 $('#btnSearchDeviceContacts').addClass('hidden');
 			  
