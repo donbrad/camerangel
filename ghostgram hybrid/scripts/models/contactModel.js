@@ -8,13 +8,151 @@
 
 var contactModel = {
 
-    contactsDS: new kendo.data.DataSource({
+   /* contactsDS: new kendo.data.DataSource({
         offlineStorage: "contacts-offline",
         sort: {
             field: "name",
             dir: "asc"
         }
-    }),
+    }),*/
+
+    contactsDS: parseKendoDataSourceFactory.make('contacts',
+        {
+            id: 'id',
+            fields: {
+                uuid: {
+                    editable: false,
+                    nullable: false
+                },
+                category: {
+                    editable: true,
+                    nullable: false,
+                    defaultValue: 'new'
+                },
+                address: {
+                    editable: true,
+                    nullable: true
+                },
+                name: {
+                    editable: true,
+                    nullable: false
+                },
+                alias: {
+                    editable: true,
+                    nullable: true
+                },
+                email: {
+                    editable: true,
+                    nullable: false
+                },
+                phone: {
+                    editable: true,
+                    nullable: false
+                },
+                location: {
+                    editable: true,
+                    nullable: true
+                },
+                photo: {
+                    editable: true,
+                    nullable: true
+                },
+                parsePhoto: {
+                    editable: true,
+                    nullable: true
+                },
+                message: {
+                    editable: true,
+                    nullable: true
+                },
+                contactEmail: {
+                    editable: true,
+                    nullable: true
+                },
+                contactPhone: {
+                    editable: true,
+                    nullable: true
+                },
+                contactUUID: {
+                    editable: true,
+                    nullable: true
+                },
+                publicKey: {
+                    editable: true,
+                    nullable: true
+                },
+                group: {
+                    editable: true,
+                    nullable: true
+                },
+                statusMessage: {
+                    editable: true,
+                    nullable: true
+                },
+                currentPlace: {
+                    editable: true,
+                    nullable: true
+                },
+                currentPlaceUUID: {
+                    editable: true,
+                    nullable: true
+                },
+                lastInvite: {
+                    editable: true,
+                    type: 'number'
+                },
+                lastStatusFetch: {
+                    editable: true,
+                    type: 'number'
+                },
+                priority: {
+                    editable: true,
+                    type: 'number',
+                    default: 0
+                },
+                phoneVerified: {
+                    editable: true,
+                    type: 'boolean',
+                    default: false
+                },
+                emailValidated: {
+                    editable: true,
+                    type: 'boolean',
+                    default: false
+                },
+                isAvailable: {
+                    editable: true,
+                    type: 'boolean'
+                },
+                isVisible: {
+                    editable: true,
+                    type: 'boolean',
+                    default: true
+                },
+                inviteSent: {
+                    editable: true,
+                    type: 'boolean',
+                    default: false
+                },
+                isBlocked: {
+                    editable: true,
+                    type: 'boolean',
+                    default: false
+                },
+                isFavorite: {
+                    editable: true,
+                    type: 'boolean',
+                    default: false
+                }
+
+            }
+        },
+        { // SortBy
+            field: "name",
+            dir: "asc"
+        },
+        undefined // No grouping
+    ),
 
     deviceContactsDS: new kendo.data.DataSource({
         sort: {
