@@ -151,7 +151,7 @@ var contactModel = {
             field: "name",
             dir: "asc"
         },
-        category // group by category: new, member, invited
+        'category' // group by category: new, member, invited
     ),
 
     deviceContactsDS: new kendo.data.DataSource({
