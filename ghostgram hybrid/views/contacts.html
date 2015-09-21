@@ -28,9 +28,9 @@
 </div>
 
 <!-- contact action -->
-<div data-role="modalview" id="modalview-contactActions" data-model="contactModel.currentContact"  data-init="contactActionView.onInit" data-before-open="contactActionView.onOpen" style="width: 90%; display: none;">
+<div data-role="modalview" id="modalview-contactActions" data-model="contactActionView.activeContact"  data-init="contactActionView.onInit" data-before-open="contactActionView.onOpen" style="width: 90%; display: none;">
 	<div class="modal-top">
-		<a data-role="button" class="modal-close" data-click="closeContactActions"><img src="images/close.svg"/></a>
+		<a data-role="button" class="modal-close" data-click="contactActionView.close"><img src="images/close.svg"/></a>
 		<img class="circle-img-lg" data-bind="attr: {src: photo}"/>
 		<img width="16" src="images/status-away.svg" class="statusContactCard-icon">
 		<h3>

@@ -96,8 +96,9 @@ var contactsView = {
 
                 } else {
                     // If we know the contacts uuid enable the full feature set
-                    $("#modalview-contactActions").data("kendoMobileModalView").open();
+                   // $("#modalview-contactActions").data("kendoMobileModalView").open();
 
+                    contactActionView.openModal(contact.uuid);
                     if (contact.contactUUID !== undefined && contact.contactUUID !== null){
                         $("#contactActionBtns > li:first-child").show();
                     } else {
@@ -773,10 +774,21 @@ var editContactView = {
 };
 
 var contactActionView = {
+    _activeContactId : null,
     _activeContact : null,
 
     onInit: function (e) {
     	
+    },
+
+    openModal : function (contactId) {
+
+        contactActionView.setContact(contactId);
+        $("#modalview-contactActions").data("kendoMobileModalView").open();
+    },
+
+    closeModal : function () {
+        $("#modalview-contactActions").data("kendoMobileModalView").open();
     },
 
     onOpen: function (e) {
@@ -784,14 +796,15 @@ var contactActionView = {
 
         $('#contactActions-status').removeClass('hidden');
         //Show the status update div
-        contactModel.updateContactStatus(function() {
+
+        contactModel.updateContactStatus(contactActionView._activeContactId, function() {
             //Hide the status update div
             $('#contactActions-status').addClass('hidden');
         });
 
-        var contactName = contactModel.currentContact.name;
-        var contactAlias = contactModel.currentContact.alias;
-        var contactVerified = contactModel.currentContact.phoneVerified;
+        var contactName = contactActionView._activeContact.name;
+        var contactAlias = contactActionView._activeContact.alias;
+        var contactVerified = contactActionView._activeContact.phoneVerified;
 
         formatNameAlias(contactName, contactAlias, "#modalview-contactActions");
 
@@ -804,7 +817,7 @@ var contactActionView = {
     },
 
     setContact : function (contactId) {
-
+        contactActionView._activeContactId = contactId;
         contactActionView._activeContact = contactModel.findContactByUUID(contactId);
     }
 
