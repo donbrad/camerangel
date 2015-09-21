@@ -788,7 +788,7 @@ var contactActionView = {
     },
 
     closeModal : function () {
-        $("#modalview-contactActions").data("kendoMobileModalView").open();
+        $("#modalview-contactActions").data("kendoMobileModalView").close();
     },
 
     onOpen: function (e) {
