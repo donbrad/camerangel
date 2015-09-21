@@ -347,7 +347,7 @@ function contactSendSMS(e) {
 function updateCurrentContact (contact) {
    
     // Wish observables set took an object -- need to set fields individually
-    contactModel.currentContact.unbind('change' , syncCurrentContact);
+  //  contactModel.currentContact.unbind('change' , syncCurrentContact);
     contactModel.currentContact = contact;
 
    /* contactModel.currentContact.set('name', contact.name);
@@ -371,7 +371,7 @@ function updateCurrentContact (contact) {
     contactModel.currentContact.set('publicKey',contact.publicKey);*/
 
 
-    contactModel.currentContact.bind('change' , syncCurrentContact);
+//    contactModel.currentContact.bind('change' , syncCurrentContact);
    
    
 }
