@@ -119,7 +119,7 @@ var deviceModel = {
         notificationModel.notificationDS.online(true);
         channelModel.channelsDS.online(true);
         photoModel.photosDS.online(true);
-        contactModel.contactsDS.online(true);
+       // contactModel.contactsDS.online(true);
         APP.models.places.placesDS.online(true);
 
         deviceModel.getNetworkState();
@@ -133,7 +133,7 @@ var deviceModel = {
         notificationModel.notificationDS.online(false);
         channelModel.channelsDS.online(false);
         photoModel.photosDS.online(false);
-        contactModel.contactsDS.online(false);
+        //contactModel.contactsDS.online(false);
         APP.models.places.placesDS.online(false);
 
     },
