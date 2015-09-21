@@ -131,59 +131,7 @@ function privateChat(e) {
 
 }
 
-function doEditContact(e) {
-    if (e !== undefined && e.preventDefault !== undefined) {
-        e.preventDefault();
-    }
-    var contactId = e.button[0].attributes["data-contact"].value;
-    var contact = contactModel.findContactByUUID(contactId);
 
-    updateCurrentContact(contact);
-    APP.kendo.navigate("#editContact");  
-}
-
-
-
-function doDeleteContact(e) {
-    if (e !== undefined && e.preventDefault !== undefined) {
-        e.preventDefault();
-    }
-
-    var contactId = e.button[0].attributes["data-contact"].value;
-    var contact = contactModel.findContactByUUID(contactId);
-
-    updateCurrentContact(contact);
-    
-	var string = "Deleted contact: " + contactModel.currentContact.name + " ("+ contactModel.currentContact.alias + ")" ;
-	
-    contactModel.delete();
-	mobileNotify(string);
-	APP.kendo.navigate('#contacts');
-    
-}
-
-function doInviteContact(e) {
-    if (e !== undefined && e.preventDefault !== undefined) {
-        e.preventDefault();
-    }
-    var contactId = e.button[0].attributes["data-contact"].value;
-    var contact = contactModel.findContactByUUID(contactId);
-
-    updateCurrentContact(contact);
-
-    var email = contactModel.currentContact.get('email'), inviteSent = contactModel.currentContact.get('inviteSent');
-
-    if (inviteSent === undefined || inviteSent === false) {
-        contactSendEmailInvite(email);
-        contactModel.currentContact.set('inviteSent', true);
-        contactModel.currentContact.set('lastInvite', ggTime.currentTime());
-      //  updateParseObject('contacts', 'uuid', uuid, 'inviteSent', true );
-      //  updateParseObject('contacts', 'uuid', uuid, 'lastInvite', ggTime.currentTime() );
-    } else {
-        mobileNotify(contactModel.currentContact.name + "has already been invited");
-    }
-
-}
 
 function syncContact(model) {
 	var phone = model.get('phone');

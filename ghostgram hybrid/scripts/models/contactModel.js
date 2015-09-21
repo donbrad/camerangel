@@ -280,18 +280,21 @@ var contactModel = {
         return(contact);
     },
 
-    updateContactStatus : function (callback) {
-        var contactUUID = contactModel.currentContact.contactUUID, phone = contactModel.currentContact.phone;
+    updateContactStatus : function (contactId, callback) {
+        var contactUUID = contactId, thisContact = contactModel.findContactByPhone(contactId);
 
-        mobileNotify("Updating " + contactModel.currentContact.name + "'s status...");
+
+         var phone  = thisContact.phone;
+
+        mobileNotify("Updating " + thisContact.name + "'s status...");
         // Look up contact by contact's actual userID --
 
-        if (contactUUID === undefined || contactUUID === null) {
+        if (contact === undefined) {
 
             findUserByPhone(phone, function (result) {
                 if (result.found) {
                     var contact = result.user;
-                    var current = contactModel.currentContact;
+                    var current = thisContact;
 
                     current.set('statusMessage', contact.statusMessage);
                     current.set('currentPlace', contact.currentPlace);
@@ -318,7 +321,7 @@ var contactModel = {
             getUserContactInfo(contactUUID, function (result) {
                 if (result.found) {
                     var contact = result.user;
-                    var current = contactModel.currentContact;
+                    var current = thisContact;
                     current.set('contactUUID', contact.userUUID);
                     current.set('statusMessage', contact.statusMessage);
                     current.set('currentPlace', contact.currentPlace);

@@ -215,8 +215,50 @@ var contactsView = {
             mobileNotify("Please enter contacts first or last name. ")
         }
         */
-    }
+    },
 
+
+    doEditContact: function (e) {
+        _preventDefault(e);
+        var contactId = e.button[0].attributes["data-contact"].value;
+
+        APP.kendo.navigate("#editContact?contact=" + contactId);
+    },
+
+
+
+    doDeleteContact : function (e) {
+        _preventDefault(e);
+
+        var contactId = e.button[0].attributes["data-contact"].value;
+        contactModel.deleteContact(contactId);
+
+        var string = "Deleted contact: " + contactModel.currentContact.name + " ("+ contactModel.currentContact.alias + ")" ;
+        mobileNotify(string);
+        APP.kendo.navigate('#contacts');
+
+    },
+
+     doInviteContact : function (e) {
+        _preventDefault(e);
+
+        var contactId = e.button[0].attributes["data-contact"].value;
+        var contact = contactModel.findContactByUUID(contactId);
+
+
+        var email = contact.email, inviteSent = contact.inviteSent;
+
+        if (inviteSent === undefined || inviteSent === false) {
+            contactSendEmailInvite(email);
+            contactModel.currentContact.set('inviteSent', true);
+            contactModel.currentContact.set('lastInvite', ggTime.currentTime());
+            //  updateParseObject('contacts', 'uuid', uuid, 'inviteSent', true );
+            //  updateParseObject('contacts', 'uuid', uuid, 'lastInvite', ggTime.currentTime() );
+        } else {
+            mobileNotify(contact.name + "has already been invited");
+        }
+
+    }
 };
 
 var contactImportView = {
@@ -581,6 +623,8 @@ var addContactView = {
 
 var editContactView = {
 
+    activeContact: null,
+
     onInit: function (e) {
        _preventDefault(e);
 
@@ -599,33 +643,32 @@ var editContactView = {
         }
     },
 
+    setActiveContact : function (contact) {
+        if (contact !== undefined) {
+            editContactView.activeContact = contact;
+        }
+    },
+
+
     onShow: function (e) {
 
        _preventDefault(e);
 
-        var contact = contactModel.currentContact;
-        var contactId = e.view.params.contactId;
 
-        if (contactId !== undefined) {
-           // if there's contactId set current contact to matching contact
-            contact = contactModel.findContactByUUID(contactId);
-            if (contact !== undefined) {
-                updateCurrentContact(contact);
-            } else {
-                mobileNotify("EditContact : invalid contactId " + contactId);
+        var contactId = e.view.params.contact, contact = null;
 
-            }
 
+        contact = contactModel.findContactByUUID(contactId);
+        if (contact !== undefined) {
+           editContactView.setActiveContact(contact);
         } else {
-            contact = contactModel.findContactByUUID(contact.uuid);
-            updateCurrentContact(contact);
+            mobileNotify("EditContact : invalid contactId " + contactId);
         }
 
 
-
         //Show the status update div
-        contactModel.updateContactStatus(function() {
-            editContactView.updateVerifiedUX(contactModel.currentContact.phoneVerified, contactModel.currentContact.emailValidated);
+        contactModel.updateContactStatus(contactId, function() {
+            editContactView.updateVerifiedUX(contact.phoneVerified, contact.emailValidated);
             // Hide the status update div
         });
 
@@ -641,10 +684,9 @@ var editContactView = {
     onDone : function (e) {
        _preventDefault(e);
 
-        contactModel.currentContact.unbind('change' , syncCurrentContact);
+       // contactModel.currentContact.unbind('change' , syncCurrentContact);
         contactsView.updateContactListDS();
         APP.kendo.navigate("#contacts");
-
         // reset UI
         $("#contactEditList").velocity("fadeIn");
     },
@@ -731,6 +773,7 @@ var editContactView = {
 };
 
 var contactActionView = {
+    _activeContact : null,
 
     onInit: function (e) {
     	
@@ -758,6 +801,11 @@ var contactActionView = {
             $("#currentContactVerified").addClass("hidden");
         }
  
+    },
+
+    setContact : function (contactId) {
+
+        contactActionView._activeContact = contactModel.findContactByUUID(contactId);
     }
 
 };
