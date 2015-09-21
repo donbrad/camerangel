@@ -37,7 +37,7 @@ var contactModel = {
 
     currentDeviceContact: {},
     unifiedDeviceContact: false,
-    currentContact: new kendo.data.ObservableObject(),
+    currentContact: null,
     phoneDS: new kendo.data.DataSource(),
     emailDS: new kendo.data.DataSource(),
     addressDS: new kendo.data.DataSource(),
