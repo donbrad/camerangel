@@ -50,6 +50,10 @@ var contactModel = {
             {
                 id: 'objectId',
                 fields: {
+                    objectId: {
+                        editable: false,
+                        nullable: false
+                    },
                     uuid: {
                         editable: false,
                         nullable: false
