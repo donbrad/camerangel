@@ -285,7 +285,7 @@ var contactModel = {
         var thisContact = contactModel.findContactByUUID(contactId);
 
         // If there's no contactUUID, need to lookup user by phone.
-        if (thisContact.contactUUID === undefined) {
+        if (thisContact.contactUUID === undefined || thisContact.contactUUID === null) {
             var phone  = thisContact.phone;
             findUserByPhone(phone, function (result) {
                 if (result.found) {
