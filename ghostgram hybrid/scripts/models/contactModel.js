@@ -307,7 +307,7 @@ var contactModel = {
                     current.set('photo', contact.photo);
                     current.set('isAvailable', contact.isAvailable);
                     current.set('publicKey', contact.publicKey);
-                    contactModel.contactsDS.sync();
+
 
                     callback(current);
 
@@ -337,8 +337,7 @@ var contactModel = {
                     current.set('photo', contact.photo);
                     current.set('isAvailable', contact.isAvailable);
                     current.set('publicKey', contact.publicKey);
-
-                    contactModel.contactsDS.sync();
+                    
                     callback(current);
                 } else {
                     // No user data -- just return the current contact model
