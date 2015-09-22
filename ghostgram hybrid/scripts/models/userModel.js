@@ -215,10 +215,10 @@ var userModel = {
        // APP.models.places.placesDS.fetch();
 
         // fetch channel (chat) models (objects) from parse.
-      //  channelModel.fetch();
+       channelModel.fetch();
 
         // fetch contact models (objects) from parse.
-        contactModel.fetch();
+        //contactModel.fetch();
 
         photoModel.fetch();
 
