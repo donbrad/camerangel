@@ -14,7 +14,7 @@ var channelModel = {
     _messageCountRefresh : 300000,   // Delta between message count  calls (in milliseconds)
 
     channelsDS: new kendo.data.DataSource({
-        offlineStorage: "channels-offline",
+        offlineStorage: "channels",
         sort: {
             field: "name",
             dir: "asc"
@@ -59,6 +59,7 @@ var channelModel = {
                     models.push(collection.models[i].attributes);
                 }
                 channelModel.channelsDS.data(models);
+                channelModel.syncParseChannels();
                 deviceModel.setAppState('hasChannels', true);
                 deviceModel.isParseSyncComplete();
             },
@@ -70,7 +71,7 @@ var channelModel = {
         //Todo: load offline messages.
         deviceModel.setAppState('hasMessages', true);
         deviceModel.isParseSyncComplete();
-       
+
         deviceModel.setAppState('hasPrivateChannels', true);
         deviceModel.isParseSyncComplete();
 
@@ -141,6 +142,23 @@ var channelModel = {
 
         }
     }, this._messageCountRefresh, true ),
+
+
+    syncParseChannels : function () {
+       if (userModel.currentUser.phoneVerified)  {
+           var uuid = userModel.currentUser.userUUID;
+
+           getUserChannels(uuid, function (result) {
+               if (result.found) {
+                   var channels = result.channels;
+
+                   for (var i=0; i< channels.length; i++) {
+                       
+                   }
+               }
+           });
+       }
+    },
 
     findChannelModel: function (channelId) {
         var dataSource =  channelModel.channelsDS;
@@ -387,8 +405,7 @@ var channelModel = {
             dataSource.filter([]);
             if (channel.isOwner) {
                 // If this user is the owner -- delete the channel map
-               // deleteParseObject("channelmap", 'channelId', channelId);
-
+               // deleteParseObject("channelmap", 'channelId', channelId)
                 if (silent === undefined || silent === false) {
                     if (channel.isPrivate  === false) {
                         // Send delete channel messages to all members
