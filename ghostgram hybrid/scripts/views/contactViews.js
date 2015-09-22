@@ -646,7 +646,7 @@ var editContactView = {
 
     setActiveContact : function (contact) {
         if (contact !== undefined) {
-
+            editContactView._activeContact.unbind('change' , editContactView.syncActiveContact);
             editContactView._activeContact.set("uuid", contact.uuid);
             editContactView._activeContact.set("name", contact.name);
             editContactView._activeContact.set("alias", contact.alias);
@@ -654,6 +654,7 @@ var editContactView = {
             editContactView._activeContact.set("email", contact.email);
             editContactView._activeContact.set("photo", contact.photo);
             editContactView._activeContact.set("address", contact.address);
+            editContactView._activeContact.bind('change' , editContactView.syncActiveContact);
         }
     },
 
@@ -671,6 +672,17 @@ var editContactView = {
 
     },
 
+    syncActiveContact: function (e) {
+
+        _preventDefault(e);
+
+        if (e.field !== 'emailVerified') {
+            // Parse throws an error if we try to update emailVerified it's a protected field...
+            updateParseObject('contacts','uuid', editContactView._activeContact.uuid, e.field, this[e.field]);
+        }
+
+
+    },
 
     onShow: function (e) {
 
