@@ -66,6 +66,12 @@ parseKendoDataSourceFactory.make = function (parseObjectName, schema, createLoca
 				var ParseObject = Parse.Object.extend(parseObjectName);
 				var parseObject = new ParseObject();
 
+				// More gods and more acls...
+				if(options.data.ACL !== undefined) {
+					delete options.data.ACL;
+				}
+
+				// Per parse there's a transaction cost for creating a new ACL for every object...
 				parseObject.setACL(userModel.parseACL);
 
 				parseObject.save(options.data, {
@@ -76,9 +82,9 @@ parseKendoDataSourceFactory.make = function (parseObjectName, schema, createLoca
 						// 
 						// Let's just remove that...
 						
-						/*if(newParseObject.attributes.ACL !== undefined) {
+						if(newParseObject.attributes.ACL !== undefined) {
 							delete newParseObject.attributes.ACL;
-						}*/
+						}
 
 						var newObject = newParseObject.attributes;
 						newObject.id = newParseObject.id;
