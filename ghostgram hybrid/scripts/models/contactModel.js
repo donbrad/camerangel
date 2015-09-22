@@ -48,7 +48,7 @@ var contactModel = {
     init : function () {
         contactModel.contactsDS = parseKendoDataSourceFactory.make('contacts',
             {
-                id: 'id',
+                id: 'objectId',
                 fields: {
                     uuid: {
                         editable: false,

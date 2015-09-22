@@ -88,7 +88,7 @@ var deviceModel = {
         var channels = deviceModel.state.hasChannels, photos = deviceModel.state.hasPhotos;
         // Todo:  add places -- need to discuss with tucker
 
-        if (channels  && photos) {
+        if (channels && photos) {
 
             if (!deviceModel.state.pubnubInit) {
                 userModel.initPubNub();
