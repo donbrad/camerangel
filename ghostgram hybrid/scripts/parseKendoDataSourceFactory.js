@@ -66,7 +66,7 @@ parseKendoDataSourceFactory.make = function (parseObjectName, schema, createLoca
 				var ParseObject = Parse.Object.extend(parseObjectName);
 				var parseObject = new ParseObject();
 
-				parseObject.setACL(new Parse.ACL(Parse.User.current()));
+				parseObject.setACL(userModel.parseACL);
 
 				parseObject.save(options.data, {
 					success: function(newParseObject) {
@@ -76,9 +76,9 @@ parseKendoDataSourceFactory.make = function (parseObjectName, schema, createLoca
 						// 
 						// Let's just remove that...
 						
-						if(newParseObject.attributes.ACL !== undefined) {
+						/*if(newParseObject.attributes.ACL !== undefined) {
 							delete newParseObject.attributes.ACL;
-						}
+						}*/
 
 						var newObject = newParseObject.attributes;
 						newObject.id = newParseObject.id;
