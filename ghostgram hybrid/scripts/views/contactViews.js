@@ -668,7 +668,7 @@ var editContactView = {
         contact.set("photo", editContactView._activeContact.photo);
         contact.set("address", editContactView._activeContact.address);
 
-        //contactModel.contactsDS.sync();
+        contactModel.contactsDS.sync();
 
     },
 
