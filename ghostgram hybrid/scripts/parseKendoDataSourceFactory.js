@@ -10,7 +10,7 @@ parseKendoDataSourceFactory.makeDataArrayFromParseArray = function(results) {
 	results.forEach(function(parseObject) {
 		delete parseObject.attributes.ACL;
 		var newObject = parseObject.attributes;
-		newObject.id = parseObject.id;
+		newObject.objectId = parseObject.id;  // Set the parseObject id as objectId in kendo Object
 		dataArray.push(newObject);
 	});
 	return dataArray;
