@@ -107,14 +107,15 @@ var contactsView = {
             swipe: function(e) {
                 // Need to set current contact before exposing editing ux!
                 var selection = e.sender.events.currentTarget;
+                
                 if(e.direction === "left"){
                     var otherOpenedLi = $(".contact-active");
                     $(otherOpenedLi).velocity({translateX:"0"},{duration: "fast"}).removeClass("contact-active");
                     
-                    if($(selection).hasClass("private") !== true && $(window).width() < 375){
-                    	$(selection).velocity({translateX:"-65%"},{duration: "fast"}).addClass("contact-active");
+                    if($(selection).hasClass("member") && $(window).width() < 375){
+                    	$(selection).velocity({translateX:"-40%"},{duration: "fast"}).addClass("contact-active");
                     } else {
-                    	$(selection).velocity({translateX:"-55%"},{duration: "fast"}).addClass("contact-active");
+                    	$(selection).velocity({translateX:"-65%"},{duration: "fast"}).addClass("contact-active");
                     }
                 }
                 if (e.direction === "right" && $(selection).hasClass("contact-active")){
