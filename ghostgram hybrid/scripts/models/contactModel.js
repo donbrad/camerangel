@@ -177,6 +177,7 @@ var contactModel = {
 
                 }
             },
+            false,
             { // SortBy
                 field: "name",
                 dir: "asc"
