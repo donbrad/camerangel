@@ -199,10 +199,10 @@ var contactModel = {
                 var models = [];
                 for (var i = 0; i < collection.models.length; i++) {
                     var model = collection.models[i];
-                    // Load the contactPhoto data from parse and update the url
+                   /* // Load the contactPhoto data from parse and update the url
                     var contactPhoto = model.get("parsePhoto");
                     if (contactPhoto !== undefined && contactPhoto !== null)
-                        model.set('photo', contactPhoto._url);
+                        model.set('photo', contactPhoto._url);*/
                     models.push(model.attributes);
 
                 }
