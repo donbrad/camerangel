@@ -624,7 +624,7 @@ var addContactView = {
 
 var editContactView = {
 
-    activeContact: null,
+    _activeContact : new kendo.data.ObservableObject(),
 
     onInit: function (e) {
        _preventDefault(e);
@@ -646,15 +646,24 @@ var editContactView = {
 
     setActiveContact : function (contact) {
         if (contact !== undefined) {
-            editContactView.activeContact = contact;
+
+            editContactView._activeContact.set("uuid", contact.uuid);
+            editContactView._activeContact.set("name", contact.name);
+            editContactView._activeContact.set("alias", contact.alias);
+            editContactView._activeContact.set("phone", contact.phone);
+            editContactView._activeContact.set("photo", contact.photo);
+            editContactView._activeContact.set("address", contact.address);
         }
+    },
+
+    updateContact : function () {
+
     },
 
 
     onShow: function (e) {
 
        _preventDefault(e);
-
 
         var contactId = e.view.params.contact, contact = null;
 
@@ -668,7 +677,8 @@ var editContactView = {
 
 
         //Show the status update div
-        contactModel.updateContactStatus(contactId, function() {
+        contactModel.updateContactStatus(contactId, function(contact) {
+            editContactView.setActiveContact(contact);
             editContactView.updateVerifiedUX(contact.phoneVerified, contact.emailValidated);
             // Hide the status update div
         });

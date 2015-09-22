@@ -163,7 +163,7 @@
 </div>
 
 <!-- Edit Contacts -->
-<div data-role="view" data-model="editContactView.activeContact" data-title="Edit Contact" id="editContact"  data-transition="slide" data-show="editContactView.onShow" data-init="editContactView.onInit" class="appearance" style="display: none;">
+<div data-role="view" data-model="editContactView._activeContact" data-title="Edit Contact" id="editContact"  data-transition="slide" data-show="editContactView.onShow" data-init="editContactView.onInit" class="appearance" style="display: none;">
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -228,9 +228,9 @@
 			
 
     		<div class="edit-contacts-options">
-				<a data-role="button" class="btnClear-grey" id="editContact-resyncBtn" data-click="editContactView.syncWithParse">
+				<!--<a data-role="button" class="btnClear-grey" id="editContact-resyncBtn" data-click="editContactView.syncWithParse">
 					<img src="images/ghost-sm.svg" />  Refresh Contact
-				</a>
+				</a>-->
 				<a data-role="button" class="btnClear-grey" id="editContact-resyncDeviceBtn" data-click="editContactView.syncWithDevice">
 					<img src="images/contacts.svg" />  Sync Contact with Device
 				</a>
@@ -240,7 +240,7 @@
 	<div class="footerBk" data-role="footer">
 		<a data-role="button" class="btnClear-red btnSpan-btm" id="editContact-deleteBtn" data-click="deleteContact">
 					<img src="images/trash.svg" />  Delete Contact
-				</a>
+		</a>
 	</div>
 </div>
 
