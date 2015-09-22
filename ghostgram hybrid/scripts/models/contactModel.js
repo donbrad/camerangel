@@ -90,7 +90,7 @@ var contactModel = {
                     parsePhoto: {
                         editable: true,
                         nullable: true,
-                        type: 'object'
+                        type: 'File'
                     },
                     message: {
                         editable: true,
