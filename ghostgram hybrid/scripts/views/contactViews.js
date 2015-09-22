@@ -646,7 +646,7 @@ var editContactView = {
 
     setActiveContact : function (contact) {
         if (contact !== undefined) {
-            editContactView._activeContact.unbind('change' , editContactView.syncActiveContact);
+           // editContactView._activeContact.unbind('change' , editContactView.syncActiveContact);
             editContactView._activeContact.set("uuid", contact.uuid);
             editContactView._activeContact.set("name", contact.name);
             editContactView._activeContact.set("alias", contact.alias);
@@ -654,7 +654,7 @@ var editContactView = {
             editContactView._activeContact.set("email", contact.email);
             editContactView._activeContact.set("photo", contact.photo);
             editContactView._activeContact.set("address", contact.address);
-            editContactView._activeContact.bind('change' , editContactView.syncActiveContact);
+          //  editContactView._activeContact.bind('change' , editContactView.syncActiveContact);
         }
     },
 
