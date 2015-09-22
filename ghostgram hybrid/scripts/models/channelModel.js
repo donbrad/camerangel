@@ -70,54 +70,11 @@ var channelModel = {
         //Todo: load offline messages.
         deviceModel.setAppState('hasMessages', true);
         deviceModel.isParseSyncComplete();
-        /*
-        var Message = Parse.Object.extend("messages");
-        var MessageCollection = Parse.Collection.extend({
-            model: Message
-        });
-
-        var messages = new MessageCollection();
-
-        messages.fetch({
-            success: function(collection) {
-                var models = new Array();
-                for (var i = 0; i < collection.models.length; i++) {
-
-                    var model = collection.models[i], ts = model.get('timeStamp');
-                    var deleteTime = ggTime.lastDay();
-                    if (ts <= deleteTime) {
-                       //     model.destroy();
-                    } else {
-                        var blob = userModel.decryptBlob(model.get('messageBlob'));
-                        var msg = JSON.parse(blob);
-                        //msg.set("fromHistory", true);
-                        msg.fromHistory = true;
-                        models.push(msg);
-                    }
-
-
-                }
-                channelModel.messagesDS.data(models);
-                deviceModel.setAppState('hasMessages', true);
-                deviceModel.isParseSyncComplete();
-            },
-            error: function(collection, error) {
-                handleParseError(error);
-            }
-        });
-        */
+       
         deviceModel.setAppState('hasPrivateChannels', true);
         deviceModel.isParseSyncComplete();
 
-        /*
-        getUserPrivateChannels(userModel.currentUser.get('uuid'), function (result) {
-            if (result.found) {
-                channelModel.privateChannelsDS.data(result.channels);
-            }
-            deviceModel.setAppState('hasPrivateChannels', true);
-            deviceModel.isParseSyncComplete();
-        });
-        */
+
     },
 
     updateUnreadCount: function (channelId, count) {
