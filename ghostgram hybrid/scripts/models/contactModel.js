@@ -182,7 +182,7 @@ var contactModel = {
                 field: "name",
                 dir: "asc"
             },
-            'category' // group by category: new, member, invited
+            undefined // group by category: new, member, invited
             )
     },
 
