@@ -28,24 +28,24 @@
 </div>
 
 <!-- contact action -->
-<div data-role="modalview" id="modalview-contactActions" data-model="contactModel.currentContact"  data-init="contactActionView.onInit" data-before-open="contactActionView.onOpen" style="width: 90%; display: none;">
+<div data-role="modalview" id="modalview-contactActions" data-model="contactModel.currentContact"  data-init="contactActionView.onInit" data-open="contactActionView.onOpen" style="width: 90%; display: none;">
 	<div class="modal-top">
 		<a data-role="button" class="modal-close" data-click="closeContactActions"><img src="images/close.svg"/></a>
-		<img class="circle-img-lg" data-bind="attr: {src: photo}"/>
-		<img width="16" src="images/status-away.svg" class="statusContactCard-icon">
+		<img class="circle-img-lg" id="contactProfileImg"/>
+		<img width="20" src="images/status-away.svg" id="contactAvailable" class="statusContactCard-icon">
 		<h3>
 			<span class="primaryName" id="contactPrimaryName"  data-bind="text: name"></span>
 			<span class="hidden" id="currentContactVerified"><img src="images/icon-verified-dark.svg" class="user-status-icon"></span>
-			<span class="secondName" id="contactSecondName" data-bind="text: alias">></span>
+			<span class="secondName" id="contactSecondName" data-bind="text: alias"></span>
 		</h3>
 		<p>
 			<span class="contactStatusMessage" data-bind="text: statusMessage"></span>
-		 	<span class="contactStatusAt">@</span> 
+		 	<span class="contactStatusAt hidden">@</span> 
 		 	<span class="contactLocation" data-bind="text: currentPlace"></span>
 		</p>
 	</div>
 	<div id="contactActions-status" class="hidden">
-		<span>Updating contact status....</span>
+		<span class="helper"><img class="loading-icon" src="images/loading.svg" /> Updating contact status....</span>
 	</div>
 	<div class="modal-bottom">
 		<ul class="list-inline" id="contactActionBtns" >
@@ -322,8 +322,12 @@
 			</a>
 		    
     	</div><!-- contact-options -->
-
-		<div class="contactListBox">
+    	# if(data.category === 'member') {#
+    		<div class="contactListBox member">
+    	#}else {#
+    		<div class="contactListBox">
+    	#}#
+		
 			 <a class="contactListItem">
 
 				 #if (data.category !== 'phone') {#
@@ -359,9 +363,8 @@
 
 						<p class="left caption contact-status">
 
-							# var message = "", location = ""; if (data.message !== undefined && data.message !== "") {message = data.message;} if(data.location !== undefined && data.location !== ""){ if (message !== "") {location = " @ " + data.location;} else {location = data.location;}}#
-							#:message##:location#
-
+							# var message = "", location = ""; if (data.statusMessage !== undefined && data.statusMessage !== "") {message = data.statusMessage;} if(data.location !== undefined && data.location !== ""){ if (message !== "") {location = " @ " + data.location;} else {location = data.location;}}#
+							<span class="contactStatusMessage">#:message##:location#</span>
 						</p>
 						<div class="clearfix"></div>
 				#} else {#
@@ -455,9 +458,9 @@
 
 	<div id="ghostEmailwrapper" style="width: 100%; height:100%;">
 		
-		<textarea id="ghostEmailEditor" contenteditable="true" class="editor" rows="80" cols="80" style="width:100%; min-height:380px; border: 1px solid #2e2e2e; padding: 4px; margin: 6px; color: #111111;">
+		<div id="ghostEmailEditor" contenteditable="true" class="editor" rows="80" cols="80" >
 
-		</textarea>
+		</div>
 		
 	</div>
 

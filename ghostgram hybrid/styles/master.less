@@ -422,6 +422,11 @@ form {
 	vertical-align: middle;
 }
 
+.loading-icon {
+	height: 1rem;
+	vertical-align: middle;
+}
+
 .line {
     border: 1px solid rgba(0, 0, 0, 0.12);
 }
@@ -1373,7 +1378,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 
 .fullPhotoModal {
-	width: 100%;
+	min-width: 100%;
 	background: rgba(0, 0, 0, 0.85);
 	display: -webkit-flex; 
 	display: flex;
@@ -2147,6 +2152,10 @@ a:hover {
 	position: absolute;
 	top: 73px;
 	left: 54%;
+}
+
+.contactStatusMessage {
+	font-style: italic;
 }
 
 #menuSetting {
@@ -3320,6 +3329,10 @@ div.loginBox > form > div > ul > li {
 	color: #fff;
 }
 
+#contactActions-status {
+	text-align: center;
+}
+
 .contact-connections {
 	position: absolute;
 	top: 0px;
@@ -4124,11 +4137,10 @@ div.contactListBox.activeContact > div > div > ul {
 
 .km-material input, .km-material select, .km-material textarea, .km-material .k-dropdown .k-input, .km-material input[type=password], .km-material input[type=search], .km-material input[type=number], .km-material input[type=tel], .km-material input[type=url], .km-material input[type=email], .km-material input[type=text]:not(.k-input), .km-root .km-material textarea {
 	color: @black;
-	padding: 0px;
 }
 
 .km-material input[type=password], .km-material input[type=search], .km-material input[type=number], .km-material input[type=tel], .km-material input[type=url], .km-material input[type=email], .km-material input[type=month], .km-material input[type=color], .km-material input[type=week], .km-material input[type=date], .km-material input[type=time], .km-material input[type=datetime], .km-material input[type=datetime-local], .km-material input[type=text]:not(.k-input), .km-material select:not([multiple]), .km-material .k-dropdown, .km-material textarea {
-	padding: 0px;
+	
 }
 
 .k-autocomplete, .k-combobox, .k-datepicker, .k-timepicker, .k-datetimepicker, .k-colorpicker, .k-numerictextbox, .k-dropdown, .k-selectbox, .k-textbox, .k-toolbar .k-split-button {
@@ -4264,6 +4276,7 @@ div.contactListBox.activeContact > div > div > ul {
 	width: 100%;
 	padding-right: 1rem !important;
 	padding-left: 1rem !important;
+
 }
 
 .chat-message {

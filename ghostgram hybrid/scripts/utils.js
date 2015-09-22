@@ -448,7 +448,7 @@ function timeSince(date) {
 	if (interval >= 1) return interval + "hr";
 
 	interval = Math.floor(seconds / 60);
-	if (interval >= 1) return interval + " min";
+	if (interval >= 1) return interval + "min";
 
 	return Math.floor(seconds) + "s";
 }
