@@ -821,6 +821,13 @@ var contactActionView = {
 
     setContact : function (contactId) {
         contactActionView._activeContactId = contactId;
+        contactActionView._activeContact.set('name', '');
+        contactActionView._activeContact.set('alias', '');
+        contactActionView._activeContact.set('photo', '');
+        contactActionView._activeContact.set('statusMessage', '');
+        contactActionView._activeContact.set('currentPlace', '');
+        contactActionView._activeContact.set('isAvailable', false);
+        $("#currentContactVerified").addClass("hidden");
     }
 
 };
