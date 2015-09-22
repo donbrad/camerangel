@@ -788,6 +788,11 @@ var contactActionView = {
         //Show the status update div
 
         contactModel.updateContactStatus(contactId, function(contact) {
+
+            if (contact === undefined) {
+                // This is a new contact.
+                contact = contactModel.findContactByUUID(contactId);
+            }
             //Hide the status update div
             $('#contactActions-status').addClass('hidden');
             var contactName = contact.name;
@@ -820,6 +825,7 @@ var contactActionView = {
 
 
     setContact : function (contactId) {
+
         contactActionView._activeContactId = contactId;
         contactActionView._activeContact.set('name', '');
         contactActionView._activeContact.set('alias', '');
