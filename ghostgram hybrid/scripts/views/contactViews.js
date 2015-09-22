@@ -775,7 +775,7 @@ var editContactView = {
 
 var contactActionView = {
     _activeContactId : null,
-    _activeContact : null,
+    _activeContact : new kendo.data.ObservableObject(),
 
     onInit: function (e) {
     	
@@ -787,22 +787,31 @@ var contactActionView = {
         $('#contactActions-status').removeClass('hidden');
         //Show the status update div
 
-        contactModel.updateContactStatus(contactActionView._activeContactId, function() {
+        contactModel.updateContactStatus(contactActionView._activeContactId, function(contact) {
             //Hide the status update div
             $('#contactActions-status').addClass('hidden');
+            var contactName = contact.name;
+            var contactAlias = contact.alias;
+            var contactVerified = contact.phoneVerified;
+
+            formatNameAlias(contactName, contactAlias, "#modalview-contactActions");
+
+            contactActionView._activeContact.set('name', contactName);
+            contactActionView._activeContact.set('alias', contactAlias);
+            contactActionView._activeContact.set('photo', contact.photo);
+            contactActionView._activeContact.set('statusMessage', contact.statusMessage);
+            contactActionView._activeContact.set('currentPlace', contact.currentPlace);
+            contactActionView._activeContact.set('isAvailable', contact.isAvailable);
+            if(contactVerified){
+                $("#currentContactVerified").removeClass("hidden");
+            } else {
+                $("#currentContactVerified").addClass("hidden");
+            }
+
         });
 
-        var contactName = contactActionView._activeContact.name;
-        var contactAlias = contactActionView._activeContact.alias;
-        var contactVerified = contactActionView._activeContact.phoneVerified;
 
-        formatNameAlias(contactName, contactAlias, "#modalview-contactActions");
 
-        if(contactVerified){
-            $("#currentContactVerified").removeClass("hidden");
-        } else {
-            $("#currentContactVerified").addClass("hidden");
-        }
         $("#modalview-contactActions").data("kendoMobileModalView").open();
     },
 
@@ -810,34 +819,10 @@ var contactActionView = {
         $("#modalview-contactActions").data("kendoMobileModalView").close();
     },
 
-    onOpen: function (e) {
-        var contactId = e.view.params.contact;
 
-        $('#contactActions-status').removeClass('hidden');
-        //Show the status update div
-
-        contactModel.updateContactStatus(contactActionView._activeContactId, function() {
-            //Hide the status update div
-            $('#contactActions-status').addClass('hidden');
-        });
-
-        var contactName = contactActionView._activeContact.name;
-        var contactAlias = contactActionView._activeContact.alias;
-        var contactVerified = contactActionView._activeContact.phoneVerified;
-
-        formatNameAlias(contactName, contactAlias, "#modalview-contactActions");
-
-        if(contactVerified){
-            $("#currentContactVerified").removeClass("hidden");
-        } else {
-            $("#currentContactVerified").addClass("hidden");
-        }
- 
-    },
 
     setContact : function (contactId) {
         contactActionView._activeContactId = contactId;
-        contactActionView._activeContact = contactModel.findContactByUUID(contactId);
     }
 
 };

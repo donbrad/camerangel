@@ -311,7 +311,7 @@ var contactModel = {
                     current.set('publicKey', contact.publicKey);
                 }
 
-                callback();
+                callback(current);
                 return;
 
             });
@@ -338,7 +338,7 @@ var contactModel = {
 
 
                 }
-                callback();
+                callback(current);
             });
         }
 
