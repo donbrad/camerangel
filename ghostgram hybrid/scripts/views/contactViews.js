@@ -657,6 +657,13 @@ var editContactView = {
     },
 
     updateContact : function () {
+        var contact = contactModel.findContactByUUID(editContactView._activeContact.uuid);
+
+        contact.set("name", editContactView._activeContact.name);
+        contact.set("alias", editContactView._activeContact.alias);
+        contact.set("phone", editContactView._activeContact.phone);
+        contact.set("photo", editContactView._activeContact.photo);
+        contact.set("address", editContactView._activeContact.address);
 
     },
 
