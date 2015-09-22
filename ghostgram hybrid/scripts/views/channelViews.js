@@ -427,10 +427,10 @@ var editChannelView = {
         updateParseObject('channels', 'channelId', channelId, 'members', memberArray);
         updateParseObject('channels', 'channelId', channelId, 'invitedMembers', invitedMemberArray);
 
-        // Update the channelmap entry so members can update or create the channel
+       /* // Update the channelmap entry so members can update or create the channel
         updateParseObject('channelmap', 'channelId', channelId, 'members', memberArray);
         // Add new members phone numbers to the channel map
-        updateParseObject('channelmap', 'channelId', channelId, 'invitedMembers', invitedPhoneArray);
+        updateParseObject('channelmap', 'channelId', channelId, 'invitedMembers', invitedPhoneArray);*/
 
         // Reset UI
         $("#showEditDescriptionBtn").velocity("fadeIn");

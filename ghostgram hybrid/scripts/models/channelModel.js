@@ -297,8 +297,8 @@ var channelModel = {
         var Channels = Parse.Object.extend("channels");
         var channel = new Channels();
 
-        var ChannelMap = Parse.Object.extend('channelmap');
-        var channelMap = new ChannelMap();
+       /* var ChannelMap = Parse.Object.extend('channelmap');
+        var channelMap = new ChannelMap();*/
 
         var addTime = ggTime.currentTime();
         var name = channelName,
@@ -384,7 +384,7 @@ var channelModel = {
 
 
 
-                if (isOwner) {
+                /*if (isOwner) {
                     channelMap.set("name", channel.get('name'));
                     channelMap.set("channelId", channel.get('channelId'));
                     channelMap.set("channelOwner", userModel.currentUser.userUUID);
@@ -402,9 +402,9 @@ var channelModel = {
                             mobileNotify('Error creating channelMap: ' + error.message);
                             handleParseError(error);
                         }
-                    });
+                    });*/
                     APP.kendo.navigate('#editChannel');
-                }
+               /* }*/
 
             },
             error: function(channel, error) {
