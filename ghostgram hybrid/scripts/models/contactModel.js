@@ -281,15 +281,13 @@ var contactModel = {
     },
 
     updateContactStatus : function (contactId, callback) {
+        // Get this contacts record...
         var thisContact = contactModel.findContactByUUID(contactId);
 
-        var phone  = thisContact.phone;
 
-        mobileNotify("Updating contact status...");
-        // Look up contact by contact's actual userID --
-
-        if (thisContact === undefined) {
-
+        // If there's no contactUUID, need to lookup user by phone.
+        if (thisContact.contactUUID === undefined) {
+            var phone  = thisContact.phone;
             findUserByPhone(phone, function (result) {
                 if (result.found) {
                     var contact = result.user;
@@ -317,7 +315,7 @@ var contactModel = {
             });
         } else {
 
-            getUserContactInfo(contactId, function (result) {
+            getUserContactInfo(thisContact.contactUUID, function (result) {
                 if (result.found) {
                     var contact = result.user;
                     var current = thisContact;
