@@ -787,7 +787,7 @@ var contactActionView = {
         $('#contactActions-status').removeClass('hidden');
         //Show the status update div
 
-        contactModel.updateContactStatus(contactActionView._activeContactId, function(contact) {
+        contactModel.updateContactStatus(contactId, function(contact) {
             //Hide the status update div
             $('#contactActions-status').addClass('hidden');
             var contactName = contact.name;
@@ -809,8 +809,6 @@ var contactActionView = {
             }
 
         });
-
-
 
         $("#modalview-contactActions").data("kendoMobileModalView").open();
     },
