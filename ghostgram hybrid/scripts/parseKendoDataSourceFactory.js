@@ -20,7 +20,7 @@ parseKendoDataSourceFactory.makeDataArrayFromParseArray = function(results) {
  * Makes a local-only kendo DataSource
  */
 
-parseKendoDataSourceFactory.makeLocal = function (parseObjectName, schema) {
+parseKendoDataSourceFactory.makeLocal = function (parseObjectName, schema, sortBy, groupField) {
 	var dataSource = new kendo.data.DataSource({
 		offlineStorage: parseObjectName,
 		schema: {
@@ -28,6 +28,13 @@ parseKendoDataSourceFactory.makeLocal = function (parseObjectName, schema) {
 		}
 	});
 
+	if (groupField !== undefined && groupField !== null) {
+		dataSource.group({ field: groupField });
+	}
+
+	if (sortBy !== undefined && sortBy !== null) {
+		dataSource.sort(sortBy);
+	}
 	dataSource.initialized = true;
 
 	return dataSource;
@@ -35,9 +42,9 @@ parseKendoDataSourceFactory.makeLocal = function (parseObjectName, schema) {
 	dataSource.trigger('init');
 };
 
-parseKendoDataSourceFactory.make = function (parseObjectName, schema, createLocalOnly) {
+parseKendoDataSourceFactory.make = function (parseObjectName, schema, createLocalOnly, sortBy, groupField) {
 	if(createLocalOnly === true) {
-		return parseKendoDataSourceFactory.makeLocal(parseObjectName, schema);
+		return parseKendoDataSourceFactory.makeLocal(parseObjectName, schema, sortBy, groupField);
 	}
 
 	var dataSource = new kendo.data.DataSource({
@@ -45,6 +52,7 @@ parseKendoDataSourceFactory.make = function (parseObjectName, schema, createLoca
 		schema: {
 			model: schema
 		},
+
 		transport: {
 			create: function(options) {
 
@@ -53,12 +61,18 @@ parseKendoDataSourceFactory.make = function (parseObjectName, schema, createLoca
 					return;
 				}
 
-				console.log('create', options.data, 'on', parseObjectName);
+				//console.log('create', options.data, 'on', parseObjectName);
 
 				var ParseObject = Parse.Object.extend(parseObjectName);
 				var parseObject = new ParseObject();
 
-				parseObject.setACL(new Parse.ACL(Parse.User.current()));
+				// More gods and more acls...
+				if(options.data.ACL !== undefined) {
+					delete options.data.ACL;
+				}
+
+				// Per parse there's a transaction cost for creating a new ACL for every object...
+				parseObject.setACL(userModel.parseACL);
 
 				parseObject.save(options.data, {
 					success: function(newParseObject) {
@@ -90,7 +104,7 @@ parseKendoDataSourceFactory.make = function (parseObjectName, schema, createLoca
 					return;
 				}
 
-				console.log('read', parseObjectName);
+				//console.log('read', parseObjectName);
 
 				var ParseObject = Parse.Object.extend(parseObjectName);
 				var query = new Parse.Query(ParseObject);
@@ -115,7 +129,7 @@ parseKendoDataSourceFactory.make = function (parseObjectName, schema, createLoca
 					return;
 				}
 
-				console.log('update', options.data, 'on', parseObjectName);
+				//console.log('update', options.data, 'on', parseObjectName);
 
 				var ParseObject = Parse.Object.extend(parseObjectName);
 				var query = new Parse.Query(ParseObject);
@@ -146,7 +160,7 @@ parseKendoDataSourceFactory.make = function (parseObjectName, schema, createLoca
 					return;
 				}
 
-				console.log('destroy', options.data, 'on', parseObjectName);
+				//console.log('destroy', options.data, 'on', parseObjectName);
 
 				var ParseObject = Parse.Object.extend(parseObjectName);
 				var query = new Parse.Query(ParseObject);
@@ -174,6 +188,15 @@ parseKendoDataSourceFactory.make = function (parseObjectName, schema, createLoca
 			}
 		}
 	});
+
+	if (groupField !== undefined && groupField !== null) {
+		dataSource.group({ field: groupField });
+	}
+
+	if (sortBy !== undefined && sortBy !== null) {
+		dataSource.sort(sortBy);
+	}
+
 
 	dataSource.online(navigator.onLine);
 

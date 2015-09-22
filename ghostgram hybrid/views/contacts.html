@@ -28,17 +28,19 @@
 </div>
 
 <!-- contact action -->
-<div data-role="modalview" id="modalview-contactActions" data-model="contactModel.currentContact"  data-init="contactActionView.onInit" data-open="contactActionView.onOpen" style="width: 90%; display: none;">
+<div data-role="modalview" id="modalview-contactActions" data-model="contactActionView._activeContact"  style="width: 90%; display: none;">
 	<div class="modal-top">
-		<a data-role="button" class="modal-close" data-click="closeContactActions"><img src="images/close.svg"/></a>
-		<img class="circle-img-lg" id="contactProfileImg"/>
-		<img width="20" src="images/status-away.svg" id="contactAvailable" class="statusContactCard-icon">
-		<h3>
-			<span class="primaryName" id="contactPrimaryName"  data-bind="text: name"></span>
-			<span class="hidden" id="currentContactVerified"><img src="images/icon-verified-dark.svg" class="user-status-icon"></span>
-			<span class="secondName" id="contactSecondName" data-bind="text: alias"></span>
+		<a data-role="button" class="modal-close" data-click="contactActionView.closeModal"><img src="images/close.svg"/></a>
+		<img class="circle-img-lg hasMotion" id="contactProfileImg"/>
+		<img width="20" src="images/status-away.svg" class="statusContactCard-icon hasMotion">
+		<h3 class="preMotionUp">
+			<span class="primaryName" id="contactPrimaryName"></span>
+			<span class="hidden" id="currentContactVerified">
+				<img src="images/icon-verified-dark.svg" class="user-status-icon">
+			</span>
+			<span class="secondName" id="contactSecondName"></span>
 		</h3>
-		<p>
+		<p class="preMotionUp">
 			<span class="contactStatusMessage" data-bind="text: statusMessage"></span>
 		 	<span class="contactStatusAt hidden">@</span> 
 		 	<span class="contactLocation" data-bind="text: currentPlace"></span>
@@ -48,7 +50,7 @@
 		<span class="helper"><img class="loading-icon" src="images/loading.svg" /> Updating contact status....</span>
 	</div>
 	<div class="modal-bottom">
-		<ul class="list-inline" id="contactActionBtns" >
+		<ul class="list-inline hasMotion" id="contactActionBtns" >
 			<li>
 				<a class="btnClear" data-role="button" data-click="privateChat">
 				<img src="images/icon-ghostgram.svg" /> Private Chat
@@ -163,7 +165,7 @@
 </div>
 
 <!-- Edit Contacts -->
-<div data-role="view" data-model="contactModel.currentContact" data-title="Edit Contact" id="editContact"  data-transition="slide" data-show="editContactView.onShow" data-init="editContactView.onInit" class="appearance" style="display: none;">
+<div data-role="view" data-model="editContactView._activeContact" data-title="Edit Contact" id="editContact"  data-transition="slide" data-show="editContactView.onShow" data-init="editContactView.onInit" class="appearance" style="display: none;">
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -228,19 +230,22 @@
 			
 
     		<div class="edit-contacts-options">
-				<a data-role="button" class="btnClear-grey" id="editContact-resyncBtn" data-click="editContactView.syncWithParse">
+				<!--<a data-role="button" class="btnClear-grey" id="editContact-resyncBtn" data-click="editContactView.syncWithParse">
 					<img src="images/ghost-sm.svg" />  Refresh Contact
-				</a>
+				</a>-->
 				<a data-role="button" class="btnClear-grey" id="editContact-resyncDeviceBtn" data-click="editContactView.syncWithDevice">
 					<img src="images/contacts.svg" />  Sync Contact with Device
+				</a>
+				<a data-role="button" class="btnClear-red " id="editContact-deleteBtn" data-click="deleteContact">
+					<img src="images/trash.svg" />  Delete Contact
 				</a>
 			</div>
 		</form>
 	</div>
 	<div class="footerBk" data-role="footer">
-		<a data-role="button" class="btnClear-red btnSpan-btm" id="editContact-deleteBtn" data-click="deleteContact">
-					<img src="images/trash.svg" />  Delete Contact
-				</a>
+		<a data-role="button" class="btnClear-blue btnSpan-btm" id="editContact-saveBtn" data-click="editContactView.updateContact">
+			<img src="images/testing.svg" />  Update Contact
+		</a>
 	</div>
 </div>
 
@@ -307,16 +312,16 @@
 	<div>
     	<div class="contact-options list-options">
 			# if (data.contactUUID === undefined || data.contactUUID === null){#
-			<a class="btnClear-grey" data-role="button" data-click="doInviteContact" data-contact="#:uuid#">
+			<a class="btnClear-grey" data-role="button" data-click="contactsView.doInviteContact" data-contact="#:uuid#">
 				<img src="images/contact-invite.svg" height="12" />
 				<p class="chat-option-selection"> Resend Invite</p>
 			</a>
 			#}#
-			<a class="btnClear-grey" data-role="button" data-click="doEditContact" data-contact="#:uuid#">
+			<a class="btnClear-grey" data-role="button" data-click="contactsView.doEditContact" data-contact="#:uuid#">
 				<img src="images/option-edit.svg" height="18" />
 				<p class="chat-option-selection">Edit</p>
 			</a>
-			<a class="btnClear-red" data-role="button" data-click="doDeleteContact" data-contact="#:uuid#">
+			<a class="btnClear-red" data-role="button" data-click="contactsView.doDeleteContact" data-contact="#:uuid#">
 				<img src="images/trash.svg" height="18" />
 				<p class="chat-option-selection"> Delete</p>
 			</a>

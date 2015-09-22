@@ -694,7 +694,9 @@ var channelView = {
 
         // Hide the image preview div
         channelView.hideChatImagePreview();
-        APP.updateGeoLocation();
+
+       // Todo: don - optimize geolocator calls -- shouldn't call on every chat show
+       // APP.updateGeoLocation();
 
         channelView.privacyMode = false;
 
@@ -721,7 +723,7 @@ var channelView = {
           $("#privacyStatus").removeClass("hidden");
           var userKey = thisUser.publicKey, privateKey = thisUser.privateKey, name = thisUser.name;
 
-          contactUUID = thisChannel.contactUUID;
+          contactUUID = thisChannel.channelId;
 
 
           channelView.currentContactId = contactUUID;

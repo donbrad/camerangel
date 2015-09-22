@@ -481,6 +481,8 @@
 		
 		Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
 
+		contactModel.init();
+
 		if (!deviceModel.state.introFetched) {
 
 			notificationModel.parseFetch();
@@ -517,7 +519,7 @@
 				}
 				APP.map = new Object();
 				APP.map.geocoder = new google.maps.Geocoder();
-				APP.map.mapOptions = new Object();
+				APP.map.mapOptions = {};
 				APP.map.mapOptions.center = {
 					lat: position.coords.latitude,
 					lng: position.coords.longitude

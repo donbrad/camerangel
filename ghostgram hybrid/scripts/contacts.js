@@ -1,14 +1,13 @@
 function syncCurrentContact(e) {
-    if (e !== undefined && e.preventDefault !== undefined) {
-        e.preventDefault();
-    }
+
+   _preventDefault(e);
 
     if (e.field !== 'emailVerified') {
         // Parse throws an error if we try to update emailVerified it's a protected field...
         updateParseObject('contacts','uuid', contactModel.currentContact.uuid, e.field, this[e.field]);
     }
 
-    contactModel.currentContact.set(e.field, this[e.field]);
+   // contactModel.currentContact.set(e.field, this[e.field]);
 }
     
 /*
@@ -132,58 +131,7 @@ function privateChat(e) {
 
 }
 
-function doEditContact(e) {
-    if (e !== undefined && e.preventDefault !== undefined) {
-        e.preventDefault();
-    }
-    var contactId = e.button[0].attributes["data-contact"].value;
-    var contact = contactModel.findContactByUUID(contactId);
 
-    updateCurrentContact(contact);
-    APP.kendo.navigate("#editContact");  
-}
-
-
-
-function doDeleteContact(e) {
-    if (e !== undefined && e.preventDefault !== undefined) {
-        e.preventDefault();
-    }
-
-    var contactId = e.button[0].attributes["data-contact"].value;
-    var contact = contactModel.findContactByUUID(contactId);
-
-    updateCurrentContact(contact);
-    
-	var string = "Deleted contact: " + contactModel.currentContact.name + " ("+ contactModel.currentContact.alias + ")" ;
-	
-    contactModel.delete();
-	mobileNotify(string);
-	APP.kendo.navigate('#contacts');
-    
-}
-
-function doInviteContact(e) {
-    if (e !== undefined && e.preventDefault !== undefined) {
-        e.preventDefault();
-    }
-    var contactId = e.button[0].attributes["data-contact"].value;
-    var contact = contactModel.findContactByUUID(contactId);
-
-    updateCurrentContact(contact);
-    var email = contactModel.currentContact.get('email'), inviteSent = contactModel.currentContact.get('inviteSent');
-
-    if (inviteSent === undefined || inviteSent === false) {
-        contactSendEmailInvite(email);
-        contactModel.currentContact.set('inviteSent', true);
-        contactModel.currentContact.set('lastInvite', ggTime.currentTime());
-      //  updateParseObject('contacts', 'uuid', uuid, 'inviteSent', true );
-      //  updateParseObject('contacts', 'uuid', uuid, 'lastInvite', ggTime.currentTime() );
-    } else {
-        mobileNotify(contactModel.currentContact.name + "has already been invited");
-    }
-
-}
 
 function syncContact(model) {
 	var phone = model.get('phone');
@@ -347,9 +295,10 @@ function contactSendSMS(e) {
 function updateCurrentContact (contact) {
    
     // Wish observables set took an object -- need to set fields individually
-    contactModel.currentContact.unbind('change' , syncCurrentContact);
-    //contactModel.currentContact = contact;
-    contactModel.currentContact.set('name', contact.name);
+  //  contactModel.currentContact.unbind('change' , syncCurrentContact);
+    contactModel.currentContact = contact;
+
+   /* contactModel.currentContact.set('name', contact.name);
     contactModel.currentContact.set('alias', contact.alias);
     contactModel.currentContact.set('phone', contact.phone);
     contactModel.currentContact.set('email', contact.email);
@@ -367,8 +316,10 @@ function updateCurrentContact (contact) {
     contactModel.currentContact.set('privateChannel', contact.privateChannel);
     contactModel.currentContact.set('phoneVerified',contact.phoneVerified);
     contactModel.currentContact.set('emailValidated',contact.emailValidated);
-    contactModel.currentContact.set('publicKey',contact.publicKey);
-    contactModel.currentContact.bind('change' , syncCurrentContact);
+    contactModel.currentContact.set('publicKey',contact.publicKey);*/
+
+
+//    contactModel.currentContact.bind('change' , syncCurrentContact);
    
    
 }
@@ -434,9 +385,7 @@ function onDoneEditContact (e) {
 
 function onInitContacts(e) {
 
-	if (e.preventDefault !== undefined){
-    	e.preventDefault();
-    }
+	_preventDefault(e);
 
     // set search bar 
     var scroller = e.view.scroller;
@@ -444,14 +393,12 @@ function onInitContacts(e) {
 
     contactModel.deviceQueryActive = false;
 	
-	var dataSource = contactModel.contactListDS;
-	
 	// Activate clearsearch and zero the filter when it's called
      $('#contactSearchInput').clearSearch({ 
-		 callback: function() { 
-			 dataSource.data([]);
-			 dataSource.data(contactModel.contactsDS.data());
-			 dataSource.filter([]);
+		 callback: function() {
+             contactModel.contactListDS.data([]);
+             contactModel.contactListDS.data(contactModel.contactsDS.data());
+             contactModel.contactListDS.filter([]);
              contactModel.deviceContactsDS.data([]);
 			 $('#btnSearchDeviceContacts').addClass('hidden');
 		 } 
@@ -462,7 +409,7 @@ function onInitContacts(e) {
 	$('#contactSearchInput').keyup(function() {
 		 var query = this.value;
 		 if (query.length > 0) {
-			  dataSource.filter( {"logic":"or",
+             contactModel.contactListDS.filter( {"logic":"or",
                   "filters":[
                       {
                           "field":"name",
@@ -479,10 +426,10 @@ function onInitContacts(e) {
 			  $("#btnSearchDeviceName").text(query);
 			
 		 } else {
-			 dataSource.data([]);
+             contactModel.contactListDS.data([]);
              contactModel.deviceContactsDS.data([]);
-			 dataSource.data(contactModel.contactsDS.data());
-			 dataSource.filter([]);
+             contactModel.contactListDS.data(contactModel.contactsDS.data());
+             contactModel.contactListDS.filter([]);
 			 
 			 $('#btnSearchDeviceContacts').addClass('hidden');
 			  
@@ -496,7 +443,15 @@ function onInitContacts(e) {
         fixedHeaders: true,
         click: function (e) {
             var contact = e.dataItem;
-   			
+
+            // Find the correct model in the contactDS -- which is the master
+            contact = contactModel.findContactByUUID(contact.uuid);
+
+            if (contact === undefined || contact === null) {
+                mobileNotify('Contact List : undefined contact!');
+                return;
+            }
+
             updateCurrentContact(contact);
             
 			if (contact.category === 'phone') {
@@ -556,7 +511,7 @@ function closeContactActions() {
 }
 
  
-function onShowContacts (e) {
+/*function onShowContacts (e) {
 	if (e.preventDefault !== undefined)
     	e.preventDefault();
 
@@ -576,7 +531,7 @@ function onHideContacts (e) {
 
 	// hide action btn
 	$("#contacts > div.footerMenu.km-footer > a").css("display", "none");
-}
+}*/
 
 function launchAddContact(e) {
     if (e !== undefined && e.preventDefault !== undefined)

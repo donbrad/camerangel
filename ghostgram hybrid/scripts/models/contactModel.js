@@ -8,19 +8,24 @@
 
 var contactModel = {
 
-    contactsDS: new kendo.data.DataSource({
+   /* contactsDS: new kendo.data.DataSource({
         offlineStorage: "contacts-offline",
         sort: {
             field: "name",
             dir: "asc"
         }
-    }),
+    }),*/
+
+    contactsDS : null,
+
+
     deviceContactsDS: new kendo.data.DataSource({
         sort: {
             field: "name",
             dir: "asc"
         }
     }),
+
     contactListDS: new kendo.data.DataSource({
         group: 'category',
         sort: {
@@ -32,7 +37,7 @@ var contactModel = {
 
     currentDeviceContact: {},
     unifiedDeviceContact: false,
-    currentContact: new kendo.data.ObservableObject(),
+    currentContact: null,
     phoneDS: new kendo.data.DataSource(),
     emailDS: new kendo.data.DataSource(),
     addressDS: new kendo.data.DataSource(),
@@ -40,6 +45,146 @@ var contactModel = {
     emailArray: [],
 
 
+    init : function () {
+        contactModel.contactsDS = parseKendoDataSourceFactory.make('contacts',
+            {
+                id: 'id',
+                fields: {
+                    uuid: {
+                        editable: false,
+                        nullable: false
+                    },
+                    category: {
+                        editable: true,
+                        nullable: false,
+                        defaultValue: 'new'
+                    },
+                    address: {
+                        editable: true,
+                        nullable: true
+                    },
+                    name: {
+                        editable: true,
+                        nullable: false
+                    },
+                    alias: {
+                        editable: true,
+                        nullable: true
+                    },
+                    email: {
+                        editable: true,
+                        nullable: false
+                    },
+                    phone: {
+                        editable: true,
+                        nullable: false
+                    },
+                    location: {
+                        editable: true,
+                        nullable: true
+                    },
+                    photo: {
+                        editable: true,
+                        nullable: true
+                    },
+                    parsePhoto: {
+                        editable: true,
+                        nullable: true
+                    },
+                    message: {
+                        editable: true,
+                        nullable: true
+                    },
+                    contactEmail: {
+                        editable: true,
+                        nullable: true
+                    },
+                    contactPhone: {
+                        editable: true,
+                        nullable: true
+                    },
+                    contactUUID: {
+                        editable: true,
+                        nullable: true
+                    },
+                    publicKey: {
+                        editable: true,
+                        nullable: true
+                    },
+                    group: {
+                        editable: true,
+                        nullable: true
+                    },
+                    statusMessage: {
+                        editable: true,
+                        nullable: true
+                    },
+                    currentPlace: {
+                        editable: true,
+                        nullable: true
+                    },
+                    currentPlaceUUID: {
+                        editable: true,
+                        nullable: true
+                    },
+                    lastInvite: {
+                        editable: true,
+                        type: 'number'
+                    },
+                    lastStatusFetch: {
+                        editable: true,
+                        type: 'number'
+                    },
+                    priority: {
+                        editable: true,
+                        type: 'number',
+                        default: 0
+                    },
+                    phoneVerified: {
+                        editable: true,
+                        type: 'boolean',
+                        default: false
+                    },
+                    emailValidated: {
+                        editable: true,
+                        type: 'boolean',
+                        default: false
+                    },
+                    isAvailable: {
+                        editable: true,
+                        type: 'boolean'
+                    },
+                    isVisible: {
+                        editable: true,
+                        type: 'boolean',
+                        default: true
+                    },
+                    inviteSent: {
+                        editable: true,
+                        type: 'boolean',
+                        default: false
+                    },
+                    isBlocked: {
+                        editable: true,
+                        type: 'boolean',
+                        default: false
+                    },
+                    isFavorite: {
+                        editable: true,
+                        type: 'boolean',
+                        default: false
+                    }
+
+                }
+            },
+            false,
+            { // SortBy
+                field: "name",
+                dir: "asc"
+            },
+            undefined // group by category: new, member, invited
+            )
+    },
 
     fetch : function () {
         var ContactModel = Parse.Object.extend("contacts");
@@ -54,10 +199,10 @@ var contactModel = {
                 var models = [];
                 for (var i = 0; i < collection.models.length; i++) {
                     var model = collection.models[i];
-                    // Load the contactPhoto data from parse and update the url
+                   /* // Load the contactPhoto data from parse and update the url
                     var contactPhoto = model.get("parsePhoto");
                     if (contactPhoto !== undefined && contactPhoto !== null)
-                        model.set('photo', contactPhoto._url);
+                        model.set('photo', contactPhoto._url);*/
                     models.push(model.attributes);
 
                 }
@@ -136,18 +281,17 @@ var contactModel = {
         return(contact);
     },
 
-    updateContactStatus : function (callback) {
-        var contactUUID = contactModel.currentContact.contactUUID, phone = contactModel.currentContact.phone;
+    updateContactStatus : function (contactId, callback) {
+        // Get this contacts record...
+        var thisContact = contactModel.findContactByUUID(contactId);
 
-        mobileNotify("Updating " + contactModel.currentContact.name + "'s status...");
-        // Look up contact by contact's actual userID --
-
-        if (contactUUID === undefined || contactUUID === null) {
-
+        // If there's no contactUUID, need to lookup user by phone.
+        if (thisContact.contactUUID === undefined || thisContact.contactUUID === null) {
+            var phone  = thisContact.phone;
             findUserByPhone(phone, function (result) {
                 if (result.found) {
                     var contact = result.user;
-                    var current = contactModel.currentContact;
+                    var current = thisContact;
 
                     current.set('statusMessage', contact.statusMessage);
                     current.set('currentPlace', contact.currentPlace);
@@ -163,19 +307,23 @@ var contactModel = {
                     current.set('photo', contact.photo);
                     current.set('isAvailable', contact.isAvailable);
                     current.set('publicKey', contact.publicKey);
-                }
 
-                callback();
-                return;
+
+                    callback(current);
+
+                } else {
+                    // No user data -- just return the current contact model
+                    callback(thisContact);
+                }
 
             });
         } else {
 
-            getUserContactInfo(contactUUID, function (result) {
+            getUserContactInfo(thisContact.contactUUID, function (result) {
                 if (result.found) {
                     var contact = result.user;
-                    var current = contactModel.currentContact;
-
+                    var current = thisContact;
+                    current.set('contactUUID', contact.userUUID);
                     current.set('statusMessage', contact.statusMessage);
                     current.set('currentPlace', contact.currentPlace);
                     current.set('currentPlaceUUID', contact.currentPlaceUUID);
@@ -183,15 +331,19 @@ var contactModel = {
                     if (contact.phoneVerified) {
                         current.set('category', 'member');
                     }
+                    current.set('contactPhone', contact.phone);
                     current.set('contactEmail', contact.email);
                     current.set('emailValidated', contact.emailVerified);
                     current.set('photo', contact.photo);
                     current.set('isAvailable', contact.isAvailable);
                     current.set('publicKey', contact.publicKey);
 
-
+                    callback(current);
+                } else {
+                    // No user data -- just return the current contact model
+                    callback(thisContact);
                 }
-                callback();
+
             });
         }
 
@@ -350,3 +502,4 @@ var contactModel = {
 
     }
 };
+
