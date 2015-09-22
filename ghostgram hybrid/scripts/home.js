@@ -199,7 +199,7 @@ function onBeforeOpenPhoto() {
 
 function savePhoto () {
 	mobileNotify("Added tags");
-	closeModalViewPhotoTag();
+	ux.closeModalViewPhotoTag();
 }
 
 function pruneNotifications() {
@@ -396,7 +396,7 @@ function homeSignin (e) {
    Parse.User.logIn(username,password , {
         success: function(user) {
         // Do stuff after successful login.
-            closeModalViewLogin();
+            ux.closeModalViewLogin();
             // Clear sign in form
             $("#home-signin-username, #home-signin-password").val("");
             userModel.parseUser = user;
@@ -708,7 +708,7 @@ function sendSupportRequest(e) {
     support.save(null, {
         success: function(support) {
             mobileNotify("You support request was sent. Thank you!");
-            closeModalViewSupport();
+            ux.closeModalViewSupport();
             APP.models.sync.requestActive = false;
         },
         error: function(support, error) {
@@ -861,7 +861,7 @@ function homeRecoverPassword(e) {
 	Parse.User.requestPasswordReset(emailAddress, {
 		success: function() {
 			mobileNotify("Sent password recovery to " + emailAddress);
-			closeModalViewRecoverPassword();
+			ux.closeModalViewRecoverPassword();
 		},
 		error: function(error) {
 			// Show the error message somewhere
@@ -1014,7 +1014,7 @@ function onShowProfileStatus(e){
 	var availableSwitch = $("#home-status-switch").data("kendoMobileSwitch");
 	// Set profile status
 
-	formatNameAlias(name, alias, "#profilePhotoForm");
+	ux.formatNameAlias(name, alias, "#profilePhotoForm");
 	
 	$("#profileStatusMessage").text(status);
 	if(verified){

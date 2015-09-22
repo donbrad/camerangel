@@ -337,8 +337,8 @@
     </form> 
     <div data-role="footer">
         <div data-role="navbar">
-            <a data-click="closeModalViewSupport;" data-role="button" data-align="left">Cancel</a>
-            <a data-click="sendSupportRequest"  type="button" data-role="button" data-align="right">Send</a>
+            <a data-click="ux.closeModalViewSupport" data-role="button" data-align="left">Cancel</a>
+            <a data-click="ux.sendSupportRequest"  type="button" data-role="button" data-align="right">Send</a>
         </div>
     </div>
 </div>
@@ -347,7 +347,7 @@
     <div class="modalview-content">
 	    <h3>
 	    	Verify Number
-	    	<a class="right closeBox" data-click="closeModalViewVerifyPhone" data-role="button">
+	    	<a class="right closeBox" data-click="ux.closeModalViewVerifyPhone" data-role="button">
 	    		<img src="images/close.svg" />
 	    	</a>
 	    </h3>
@@ -413,7 +413,7 @@
 <div data-role="modalview" id="modalview-recoverPassword"  style="width: 90%; display:none;" class="appearance">
 	<div class="modalview-content">
 	    <h2>Password Recovery
-	        <a class="closeBox" data-click="closeModalViewRecoverPassword" data-role="button" style="float: right;">
+	        <a class="closeBox" data-click="ux.closeModalViewRecoverPassword" data-role="button" style="float: right;">
 	            <img src="images/close.svg" />
 	        </a>
 	    </h2>
@@ -451,7 +451,7 @@
 			<img id="modalPhotoViewImage" src="" />
 	</div>
 	<div data-role="footer">
-    	<a class="btnFull-modal btnClear" data-role="button" data-click="closeModalPhotoView">Close</a>
+    	<a class="btnFull-modal btnClear" data-role="button" data-click="ux.closeModalPhotoView">Close</a>
     </div>
 </div>	
 
@@ -526,7 +526,7 @@
 	
 </div>
 
-<div data-role="modalview" id="modalview-profileStatus" style="width: 90%; display: none;" data-open="onShowProfileStatus" data-model="userModel.currentUser" class="appearance">
+<div data-role="modalview" id="modalview-profileStatus" style="width: 90%; display: none;" data-open="onShowProfileStatus" data-model="userModel.currentUser" class="appearance" data-close="ux.closeModal" data-open="ux.openModal">
 	<form id="profilePhotoForm">
 
         <ul data-role="listview">
@@ -583,7 +583,7 @@
         </ul>
     </form>
     <div data-role="footer">
-    	<a class="btnSecondary btnFull-modal" data-click="closeModalViewProfileStatus" data-role="button">Done</a>
+    	<a class="btnSecondary btnFull-modal" data-click="ux.closeModalViewProfileStatus" data-role="button">Done</a>
     </div>
 </div>
 
@@ -601,7 +601,7 @@
     <div data-role="header">
         <div data-role="navbar">
             <span>Tag Photo</span>
-                <a data-click="closeModalViewPhotoTag" data-role="button" data-align="left">Cancel</a>
+                <a data-click="ux.closeModalViewPhotoTag" data-role="button" data-align="left">Cancel</a>
                 <a data-click="savePhoto"  type="button" data-role="button" data-align="right">Save</a>
 		</div>
 	</div>
@@ -634,7 +634,7 @@
     <div data-role="header">
         <div data-role="navbar">
             <span>Gallery Picker</span>
-            <a data-click="closeModalViewGalleryPicker" data-role="button" data-align="left">Done</a>
+            <a data-click="ux.closeModalViewGalleryPicker" data-role="button" data-align="left">Done</a>
         </div>
 	</div>
 		
@@ -663,7 +663,7 @@
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" data-click="closeModalGhostChat" data-align="left" >Close</a>
+            <a data-role="button" data-click="ux.closeModalGhostChat" data-align="left" >Close</a>
             <a data-role="button" data-click="sendGhostChat" data-align="right" ></i>Send</a>
         </div>
     </div>
@@ -682,7 +682,7 @@
 <div data-role="modalview" id="modalview-start" style="width: 90%; display:none;" class="appearance">
 	<div class="startBox">
 			<h2>Let's Get Started
-				<a class="right closeBox" data-role="button" data-click="closeStartModal">
+				<a class="right closeBox" data-role="button" data-click="ux.closeStartModal">
 					<img src="images/close.svg"/>
 				</a>
 			</h2>
@@ -705,7 +705,7 @@
 						<img src="images/start-chat.svg" height="26"/>
 					</div>
 					<div class="startLine-text">
-						<a class="btnClear" href="#testing" data-role="button" data-rel="modalview" data-click="closeStartModal">Create a chat</a>
+						<a class="btnClear" href="#testing" data-role="button" data-rel="modalview" data-click="ux.closeStartModal">Create a chat</a>
 						<p>Chat with a group or set up a private secure chat with a friend. </p>
 					</div>
 				</div>
@@ -714,7 +714,7 @@
 						<img src="images/start-invite.svg" height="30"/>
 					</div>
 					<div class="startLine-text">
-						<a class="btnClear" href="#testing" data-role="button" data-rel="modalview" data-click="closeStartModal">Invite your friends</a>
+						<a class="btnClear" href="#testing" data-role="button" data-rel="modalview" data-click="ux.closeStartModal">Invite your friends</a>
 						<p>Share photo and personal details securely with friends and family.</p>
 					</div> 
 				</div>
@@ -723,7 +723,7 @@
 						<img src="images/start-place.svg" height="30"/>
 					</div>
 					<div class="startLine-text">
-						<a class="btnClear" href="#testing" data-role="button" data-rel="modalview" data-click="closeStartModal">Join a place chat</a>
+						<a class="btnClear" href="#testing" data-role="button" data-rel="modalview" data-click="ux.closeStartModal">Join a place chat</a>
 						<p>See what’s happening at your favorite places.</p>
 					</div>
 				</div> 
@@ -733,7 +733,7 @@
 <!-- Testing modal -->
 <div data-role="modalview" id="testing" style="width: 90%; display:none;" class="appearance">
 	<div class="modalview-content">
-	    <a class="closeBox right" data-click="closeTestingBox" data-role="button">
+	    <a class="closeBox right" data-click="ux.closeTestingBox" data-role="button">
 	    	<img src="images/close.svg" />
 	    </a>
 	    <p>This feature is in the works!</p>

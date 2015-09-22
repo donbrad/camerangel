@@ -109,7 +109,7 @@ var contactsView = {
 
             },
             dataBound: function(e){
-                checkEmptyUIState(contactModel.contactListDS, "#contactListDiv >");
+                ux.checkEmptyUIState(contactModel.contactListDS, "#contactListDiv >");
             }
 
         }).kendoTouch({
@@ -822,7 +822,6 @@ var contactActionView = {
             var contactVerified = contact.phoneVerified;
             var contactIsAvailable = contact.isAvailable;
            
-            console.log(contact);
             contactActionView._activeContact.set('name', contactName);
             contactActionView._activeContact.set('alias', contactAlias);
             contactActionView._activeContact.set('photo', contact.photo);
@@ -831,7 +830,7 @@ var contactActionView = {
             contactActionView._activeContact.set('isAvailable', contact.isAvailable);
 
             // Set name/alias layout
-            formatNameAlias(contactName, contactAlias, "#modalview-contactActions");
+            ux.formatNameAlias(contactName, contactAlias, "#modalview-contactActions");
 
             // set verified status
             if(contactVerified){
@@ -843,20 +842,26 @@ var contactActionView = {
             if(contactIsAvailable){
             	$(".statusContactCard-icon").attr("src", "images/status-available.svg");
             }
-
+            // set profile img
             $("#contactProfileImg").attr("src", contact.photo);
 
         });
-
+		
         $("#modalview-contactActions").data("kendoMobileModalView").open();
 
+        $("#contactProfileImg").velocity("fadeIn", {duration: 300, display: "inline-block"});
+        $("#contactStatusImg").velocity("fadeIn", {duration: 300, display: "inline-block"});
         
+        $("#modalview-contactActions .modal-top h3").velocity({translateY: "20%", opacity: 1}, {delay: 300, duration: 500, display: "inline-block"});
+        $("#modalview-contactActions .modal-top p").velocity({translateY: "20%", opacity: 1}, {delay: 600, duration: 500, display: "inline-block"});
+        $("#modalview-contactActions .modal-bottom .hasMotion").velocity("fadeIn", {duration: 500, delay: 700});
     },
+
 
     closeModal : function () {
         $("#modalview-contactActions").data("kendoMobileModalView").close();
 
-        $("#modalview-contactActions .preMotionUp").css("display", "none").velocity({translateY: "0%"});
+        $("#modalview-contactActions .preMotionUp, #modalview-contactActions .hasMotion").css("display", "none").velocity({translateY: "0%"});
     },
 
 

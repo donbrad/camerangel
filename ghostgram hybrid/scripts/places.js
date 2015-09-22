@@ -685,3 +685,7 @@ function doBeforePlaceCheckIn(e){
 function onCheckInPlace(e) {
 	
 }
+
+function onInitMap(){
+
+}

@@ -111,7 +111,7 @@ var galleryView = {
         }
         
         $actionBtnP.addClass("actionBtn-text-light");
-        showActionBtnText($actionBtnP, "3.5rem");
+        ux.showActionBtnText($actionBtnP, "3.5rem");
 
         // set filter count
         var filterCount = 0;

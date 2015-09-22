@@ -31,8 +31,8 @@
 <div data-role="modalview" id="modalview-contactActions" data-model="contactActionView._activeContact"  style="width: 90%; display: none;">
 	<div class="modal-top">
 		<a data-role="button" class="modal-close" data-click="contactActionView.closeModal"><img src="images/close.svg"/></a>
-		<img class="circle-img-lg hasMotion" id="contactProfileImg"/>
-		<img width="20" src="images/status-away.svg" class="statusContactCard-icon hasMotion">
+			<img class="circle-img-lg" id="contactProfileImg"/>
+			<img width="20" src="images/status-away.svg" class="statusContactCard-icon" id="contactStatusImg"/>
 		<h3 class="preMotionUp">
 			<span class="primaryName" id="contactPrimaryName"></span>
 			<span class="hidden" id="currentContactVerified">
@@ -395,7 +395,7 @@
 			  	<tr>
 				  	<td>
 				  		# var email = data.emails[0].name; #
-				  		# var cleanEmail = showCleanEmail(email) #
+				  		# var cleanEmail = ux.showCleanEmail(email) #
 				  		<span class="contactEmail">#: cleanEmail #</span>
 				  		
 				  			# var emailCount = (data.emails.length); 
@@ -411,7 +411,7 @@
 			  		<td>
 			  			<span class="contactPhone">
 			  				# var phone = data.phoneNumbers[0].number; 
-			  				var cleanPhone = showCleanPhone(phone) #
+			  				var cleanPhone = ux.showCleanPhone(phone) #
 			  				#: cleanPhone # 
 			  			</span>
 			  				# var phoneCount = (data.phoneNumbers.length); 
