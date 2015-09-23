@@ -39,7 +39,7 @@ function updateHeaderStatusImages () {
 
     var useIdenticon = userModel.currentUser.get('useIdenticon');
     if (useIdenticon === undefined)
-        userIdenticon = true;
+        useIdenticon = true;
 
     if (useIdenticon === true) {
         $('.home-profile-img').attr('src',userModel.identiconUrl);
