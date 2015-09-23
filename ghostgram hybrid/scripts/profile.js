@@ -37,7 +37,7 @@ function updateHeaderStatusImages () {
 
 	$('.home-profile-img').attr('src',userModel.currentUser.get('photo'));
 
-    var useIdenticon = userModel.currentUser.get('useIdenticon');
+  /*  var useIdenticon = userModel.currentUser.get('useIdenticon');
     if (useIdenticon === undefined)
         userIdenticon = true;
 
@@ -46,7 +46,7 @@ function updateHeaderStatusImages () {
         userModel.enableIdenticon();
     } else {
         userModel.disableIdenticon();
-    }
+    }*/
 }
 
 // Select new ghost icon
