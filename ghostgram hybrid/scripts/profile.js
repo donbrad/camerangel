@@ -35,17 +35,18 @@ function updateHeaderStatusImages () {
 	}
 	$('.home-status-img').attr('src',userModel.currentUser.get('availImgUrl'));
 
-	$('.home-profile-img').attr('src',userModel.currentUser.get('photo'));
+
 
     var useIdenticon = userModel.currentUser.get('useIdenticon');
     if (useIdenticon === undefined)
-        userIdenticon = true;
-
+        useIdenticon = true;
 
     if (useIdenticon === true) {
-        userModel.enableIdenticon();
+        $('.home-profile-img').attr('src',userModel.identiconUrl);
+      //  userModel.enableIdenticon();
     } else {
-        userModel.disableIdenticon();
+        $('.home-profile-img').attr('src',userModel.currentUser.get('photo'));
+      //  userModel.disableIdenticon();
     }
 }
 

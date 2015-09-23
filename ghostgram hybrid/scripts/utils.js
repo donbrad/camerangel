@@ -143,9 +143,35 @@ function mobileNotify(message) {
 
 }
 
-function getUserPrivateChannels(uuid, callBack) {
-	Parse.Cloud.run('getUserPrivateChannels', {
+
+
+function getUserChannels(uuid, callBack) {
+	Parse.Cloud.run('getUserChannels', {
 		uuid: uuid
+	}, {
+		success: function(result, error) {
+			if (result.status === 'ok') {
+				callBack({
+					found: true,
+					channels: result.channels
+				});
+			} else {
+				callBack({
+					found: false,
+					channels: null
+				});
+			}
+
+		},
+		error: function(result, error) {
+			callBack(null, error)
+		}
+	});
+}
+
+function getNewUserChannels(phone, callBack) {
+	Parse.Cloud.run('getNewUserChannels', {
+		phone: phone
 	}, {
 		success: function(result, error) {
 			if (result.status === 'ok') {

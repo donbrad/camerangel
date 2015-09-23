@@ -85,18 +85,16 @@ var deviceModel = {
 
     isParseSyncComplete: function () {
 
-        var channels = deviceModel.state.hasChannels, privateChannels = deviceModel.state.hasPrivateChannels,
-            contacts = deviceModel.state.hasContacts, messages = deviceModel.state.hasMessages,
-            places = deviceModel.state.hasPlaces, photos = deviceModel.state.hasPhotos;
+        var channels = deviceModel.state.hasChannels, photos = deviceModel.state.hasPhotos, contacts = deviceModel.state.hasContacts ;
         // Todo:  add places -- need to discuss with tucker
 
-        if (channels && privateChannels && contacts && photos && messages) {
+        if (channels && photos) {
 
             if (!deviceModel.state.pubnubInit) {
                 userModel.initPubNub();
                 deviceModel.setAppState('pubnubInit', true);
                // channelModel.updateChannelsMessageCount();
-                channelModel.init();
+                //channelModel.init();
             }
 
         }

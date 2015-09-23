@@ -213,7 +213,7 @@ var ux = {
 	    context.fillText(initials, canvasCssWidth / 2, canvasCssHeight / 1.5);
 	},
 
-	// These functions below are not referenced 
+	// These functions below are not referenced in the app
 
 	closeModalViewEditChannel: function(e) {
 		_preventDefault(e);

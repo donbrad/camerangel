@@ -8,16 +8,15 @@
 
 var contactModel = {
 
-   /* contactsDS: new kendo.data.DataSource({
-        offlineStorage: "contacts-offline",
+   contactsDS: new kendo.data.DataSource({
+        offlineStorage: "contacts",
         sort: {
             field: "name",
             dir: "asc"
         }
-    }),*/
+    }),
 
-    contactsDS : null,
-
+   /* contactsDS : null,*/
 
     deviceContactsDS: new kendo.data.DataSource({
         sort: {
@@ -46,8 +45,8 @@ var contactModel = {
 
 
     init : function () {
-        contactModel.contactsDS = parseKendoDataSourceFactory.make('contacts',
-            {
+        /*  contactModel.contactsDS = parseKendoDataSourceFactory.make('contacts',
+          {
                 id: 'id',
                 fields: {
                     uuid: {
@@ -88,8 +87,9 @@ var contactModel = {
                         nullable: true
                     },
                     parsePhoto: {
-                        editable: true,
-                        nullable: true
+                        editable: false,
+                        nullable: true,
+                        type: 'Parse.File'
                     },
                     message: {
                         editable: true,
@@ -183,7 +183,7 @@ var contactModel = {
                 dir: "asc"
             },
             undefined // group by category: new, member, invited
-            )
+            )*/
     },
 
     fetch : function () {
@@ -199,10 +199,13 @@ var contactModel = {
                 var models = [];
                 for (var i = 0; i < collection.models.length; i++) {
                     var model = collection.models[i];
-                   /* // Load the contactPhoto data from parse and update the url
-                    var contactPhoto = model.get("parsePhoto");
-                    if (contactPhoto !== undefined && contactPhoto !== null)
-                        model.set('photo', contactPhoto._url);*/
+                   // Set the photo to identicon if it doesn't exist
+                    var contactPhoto = model.get("photo");
+                    if (contactPhoto !== undefined && contactPhoto !== null) {
+                        var url = contactModel.createIdenticon(model.get('uuid'));
+                        model.set('photo', url);
+                    }
+
                     models.push(model.attributes);
 
                 }
@@ -214,6 +217,15 @@ var contactModel = {
                 handleParseError(error);
             }
         });
+    },
+
+    createIdenticon: function (hash) {
+        var url;
+        hash = hash.replace(/-/g,'');
+        jdenticon.update("#identiconCanvas", hash);
+        var canvas = document.getElementById("identiconCanvas");
+        url = canvas.toDataURL('image/png');
+        return(url);
     },
 
     delete: function() {

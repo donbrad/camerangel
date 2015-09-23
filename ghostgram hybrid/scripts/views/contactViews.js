@@ -511,9 +511,8 @@ var addContactView = {
     },
 
     addContact : function (e) {
-        if (e !== undefined && e.preventDefault !== undefined) {
-            e.preventDefault();
-        }
+        _preventDefault(e);
+
         var Contacts = Parse.Object.extend("contacts");
         var contact = new Contacts();
 
@@ -557,32 +556,31 @@ var addContactView = {
       findUserByPhone(phone, function (result) {
 
             if (result.found) {
-                var contact = result.user;
-                contact.set("phoneVerified", contact.phoneVerified);
+                var thisContact = result.user;
+                contact.set("phoneVerified", thisContact.phoneVerified);
                 // Does the contact have a verified email address
-                if (contact.emailVerified) {
+                if (thisContact.emailVerified) {
                     // Yes - save the email address the contact verified
-                    contact.set("email", contact.email);
+                    contact.set("email", thisContact.email);
                     contact.set("emailValidated", true);
                 } else {
                     // No - just use the email address the our user selected
                     contact.set("email", email);
                     contact.set("emailValidated", false);
                 }
-                current.set('statusMessage', contact.statusMessage);
-                current.set('currentPlace', contact.currentPlace);
-                current.set('currentPlaceUUID', contact.currentPlaceUUID);
-                current.set('contactUUID', contact.userUUID);
-                current.set('contactPhone', contact.phone);
-                current.set('phoneVerified', contact.phoneVerified);
-                if (contact.phoneVerified) {
-                    current.set('category', 'member');
+                contact.set('statusMessage', thisContact.statusMessage);
+                contact.set('currentPlace', thisContact.currentPlace);
+                contact.set('currentPlaceUUID', thisContact.currentPlaceUUID);
+                contact.set('contactUUID', thisContact.userUUID);
+                contact.set('contactPhone', thisContact.phone);
+                contact.set('phoneVerified', thisContact.phoneVerified);
+                if (thisContact.phoneVerified) {
+                    contact.set('category', 'member');
                 }
-                current.set('contactEmail', contact.email);
-                current.set('emailValidated', contact.emailVerified);
-                current.set('photo', contact.photo);
-                current.set('isAvailable', contact.isAvailable);
-                current.set('publicKey', contact.publicKey);
+                contact.set('contactEmail', thisContact.email);
+                contact.set('photo', null);
+                contact.set('isAvailable', thisContact.isAvailable);
+                contact.set('publicKey', thisContact.publicKey);
 
             } else {
                 // No - just use the email address the our user selected
@@ -593,8 +591,24 @@ var addContactView = {
                 contact.set("contactUUID", null);
             }
 
+          contact.save(null, {
+              success: function(contact) {
+                  // Execute any logic that should take place after the object is saved.
+                  mobileNotify('Added contact : ' + contact.get('name'));
+                  //var photo = contact.get('photo');
+                  var url = contactModel.createIdenticon(guid);
+                  contact.attributes.photo = url;
+                  contactModel.contactsDS.add(contact.attributes);
+                  APP.kendo.navigate('#contacts');
+              },
+              error: function(contact, error) {
+                  // Execute any logic that should take place if the save fails.
+                  // error is a Parse.Error with an error code and message.
+                  handleParseError(error);
+              }
+          });
 
-            getBase64FromImageUrl(photo, function (fileData) {
+            /*getBase64FromImageUrl(photo, function (fileData) {
                 var parseFile = new Parse.File(guid+".png", {base64 : fileData}, "image/png");
                 parseFile.save().then(function() {
                     contact.set("parsePhoto", parseFile);
@@ -616,7 +630,7 @@ var addContactView = {
                     // The file either could not be read, or could not be saved to Parse.
                     handleParseError(error);
                 });
-            });
+            });*/
 
         });
 
@@ -647,7 +661,7 @@ var editContactView = {
 
     setActiveContact : function (contact) {
         if (contact !== undefined) {
-
+           // editContactView._activeContact.unbind('change' , editContactView.syncActiveContact);
             editContactView._activeContact.set("uuid", contact.uuid);
             editContactView._activeContact.set("name", contact.name);
             editContactView._activeContact.set("alias", contact.alias);
@@ -655,6 +669,7 @@ var editContactView = {
             editContactView._activeContact.set("email", contact.email);
             editContactView._activeContact.set("photo", contact.photo);
             editContactView._activeContact.set("address", contact.address);
+          //  editContactView._activeContact.bind('change' , editContactView.syncActiveContact);
         }
     },
 
@@ -668,10 +683,27 @@ var editContactView = {
         contact.set("photo", editContactView._activeContact.photo);
         contact.set("address", editContactView._activeContact.address);
 
-        //contactModel.contactsDS.sync();
+        updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"name", editContactView._activeContact.name);
+        updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"alias", editContactView._activeContact.alias);
+        updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"phone", editContactView._activeContact.phone);
+        updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"email", editContactView._activeContact.email);
+        updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"photo", editContactView._activeContact.photo);
+        updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"address", editContactView._activeContact.address);
 
+        editContactView.onDone();
     },
 
+    syncActiveContact: function (e) {
+
+        _preventDefault(e);
+
+        if (e.field !== 'emailVerified') {
+            // Parse throws an error if we try to update emailVerified it's a protected field...
+            updateParseObject('contacts','uuid', editContactView._activeContact.uuid, e.field, this[e.field]);
+        }
+
+
+    },
 
     onShow: function (e) {
 
@@ -806,7 +838,7 @@ var contactActionView = {
     openModal : function (contactId) {
 
         contactActionView.setContact(contactId);
-        //$('#contactActions-status').removeClass('hidden');
+
         //Show the status update div
 
         contactModel.updateContactStatus(contactId, function(contact) {
@@ -815,8 +847,6 @@ var contactActionView = {
                 // This is a new contact.
                 contact = contactModel.findContactByUUID(contactId);
             }
-            //Hide the status update div
-            $('#contactActions-status').addClass('hidden');
             var contactName = contact.name;
             var contactAlias = contact.alias;
             var contactVerified = contact.phoneVerified;

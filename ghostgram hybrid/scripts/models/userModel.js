@@ -12,6 +12,7 @@ var userModel = {
     appDirectory: '',
     parseACL : undefined,
     userName : '',
+    identiconUrl : null,
     rememberUserName : false,
     initialView : '#newuserhome',
 
@@ -112,6 +113,7 @@ var userModel = {
             userModel.currentUser.set('availImgUrl', 'images/status-away.svg');
             updateHeaderStatusImages();
 
+            userModel.createIdenticon(userModel.parseUser.get('userUUID'));
             userModel.parseACL = new Parse.ACL(userModel.parseUser);
 
             userModel.currentUser.bind('change', userModel.sync);
@@ -123,6 +125,13 @@ var userModel = {
 
     deleteAccount: function () {
 
+    },
+
+    createIdenticon: function (hash) {
+        hash = hash.replace(/-/g,'');
+        jdenticon.update("#identiconCanvas", hash);
+        var canvas = document.getElementById("identiconCanvas");
+        userModel.identiconUrl = canvas.toDataURL('image/png');
     },
 
     // user is valid parse User object
@@ -215,7 +224,7 @@ var userModel = {
        // APP.models.places.placesDS.fetch();
 
         // fetch channel (chat) models (objects) from parse.
-      //  channelModel.fetch();
+       channelModel.fetch();
 
         // fetch contact models (objects) from parse.
         contactModel.fetch();
