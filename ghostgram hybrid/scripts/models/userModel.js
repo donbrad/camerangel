@@ -128,6 +128,7 @@ var userModel = {
     },
 
     createIdenticon: function (hash) {
+        hash = hash.replace(/-/g,'');
         jdenticon.update("#identiconCanvas", hash);
         var canvas = document.getElementById("identiconCanvas");
         userModel.identiconUrl = canvas.toDataURL('image/png');
