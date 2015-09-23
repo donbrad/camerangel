@@ -85,7 +85,7 @@ var deviceModel = {
 
     isParseSyncComplete: function () {
 
-        var channels = deviceModel.state.hasChannels, photos = deviceModel.state.hasPhotos;
+        var channels = deviceModel.state.hasChannels, photos = deviceModel.state.hasPhotos, contacts = deviceModel.state.hasContacts ;
         // Todo:  add places -- need to discuss with tucker
 
         if (channels && photos) {
@@ -94,7 +94,7 @@ var deviceModel = {
                 userModel.initPubNub();
                 deviceModel.setAppState('pubnubInit', true);
                // channelModel.updateChannelsMessageCount();
-                channelModel.init();
+                //channelModel.init();
             }
 
         }

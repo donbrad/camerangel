@@ -8,16 +8,15 @@
 
 var contactModel = {
 
-   /* contactsDS: new kendo.data.DataSource({
-        offlineStorage: "contacts-offline",
+   contactsDS: new kendo.data.DataSource({
+        offlineStorage: "contacts",
         sort: {
             field: "name",
             dir: "asc"
         }
-    }),*/
+    }),
 
-    contactsDS : null,
-
+   /* contactsDS : null,*/
 
     deviceContactsDS: new kendo.data.DataSource({
         sort: {
@@ -46,8 +45,8 @@ var contactModel = {
 
 
     init : function () {
-        contactModel.contactsDS = parseKendoDataSourceFactory.make('contacts',
-            {
+        /*  contactModel.contactsDS = parseKendoDataSourceFactory.make('contacts',
+          {
                 id: 'id',
                 fields: {
                     uuid: {
@@ -184,7 +183,7 @@ var contactModel = {
                 dir: "asc"
             },
             undefined // group by category: new, member, invited
-            )
+            )*/
     },
 
     fetch : function () {
