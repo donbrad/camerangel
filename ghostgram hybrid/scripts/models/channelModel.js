@@ -227,7 +227,7 @@ var channelModel = {
                 // private channel doesn't exist
                 var contact = contactModel.findContactByUUID(channelKeys[i]);
                 if (contact !== undefined) {
-                    channelModel.addChannel(contact.contactUUID, contact.publicKey, contact.name);
+                    channelModel.addPrivateChannel(contact.contactUUID, contact.publicKey, contact.name);
                 }
             }
 
