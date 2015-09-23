@@ -199,10 +199,12 @@ var contactModel = {
                 var models = [];
                 for (var i = 0; i < collection.models.length; i++) {
                     var model = collection.models[i];
-                   /* // Load the contactPhoto data from parse and update the url
-                    var contactPhoto = model.get("parsePhoto");
-                    if (contactPhoto !== undefined && contactPhoto !== null)
-                        model.set('photo', contactPhoto._url);*/
+                   // Set the photo to identicon if it doesn't exist
+                    var contactPhoto = model.get("photo");
+                    if (contactPhoto !== undefined && contactPhoto !== null) {
+                        var url = contactModel.createIdenticon(model.get('uuid'));
+                        model.set('photo', url);
+                    }
 
                     models.push(model.attributes);
 
@@ -215,6 +217,15 @@ var contactModel = {
                 handleParseError(error);
             }
         });
+    },
+
+    createIdenticon: function (hash) {
+        var url;
+        hash = hash.replace(/-/g,'');
+        jdenticon.update("#identiconCanvas", hash);
+        var canvas = document.getElementById("identiconCanvas");
+        url = canvas.toDataURL('image/png');
+        return(url);
     },
 
     delete: function() {
