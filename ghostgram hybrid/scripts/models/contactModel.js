@@ -205,9 +205,7 @@ var contactModel = {
                         var url = contactModel.createIdenticon(model.get('uuid'));
                         model.set('photo', url);
                     }
-
                     models.push(model.attributes);
-
                 }
                 deviceModel.setAppState('hasContacts', true);
                 contactModel.contactsDS.data(models);
@@ -293,6 +291,7 @@ var contactModel = {
         return(contact);
     },
 
+    // Get a full contact status update, including phone and email.
     updateContactStatus : function (contactId, callback) {
         // Get this contacts record...
         var thisContact = contactModel.findContactByUUID(contactId);
@@ -316,7 +315,7 @@ var contactModel = {
                     }
                     current.set('contactEmail', contact.email);
                     current.set('emailValidated', contact.emailVerified);
-                    current.set('photo', contact.photo);
+                    current.set('contactPhoto', contact.photo);
                     current.set('isAvailable', contact.isAvailable);
                     current.set('publicKey', contact.publicKey);
 
@@ -346,7 +345,7 @@ var contactModel = {
                     current.set('contactPhone', contact.phone);
                     current.set('contactEmail', contact.email);
                     current.set('emailValidated', contact.emailVerified);
-                    current.set('photo', contact.photo);
+                    current.set('contactPhoto', contact.photo);
                     current.set('isAvailable', contact.isAvailable);
                     current.set('publicKey', contact.publicKey);
 

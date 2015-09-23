@@ -578,6 +578,7 @@ var addContactView = {
                 }
                 contact.set('contactEmail', thisContact.email);
                 contact.set('photo', null);
+                contact.set('contactPhoto', thisContact.photo);
                 contact.set('isAvailable', thisContact.isAvailable);
                 contact.set('publicKey', thisContact.publicKey);
 
