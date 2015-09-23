@@ -203,6 +203,7 @@ var contactModel = {
                     var contactPhoto = model.get("parsePhoto");
                     if (contactPhoto !== undefined && contactPhoto !== null)
                         model.set('photo', contactPhoto._url);*/
+
                     models.push(model.attributes);
 
                 }

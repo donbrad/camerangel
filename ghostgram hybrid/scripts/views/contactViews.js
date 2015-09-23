@@ -668,8 +668,13 @@ var editContactView = {
         contact.set("photo", editContactView._activeContact.photo);
         contact.set("address", editContactView._activeContact.address);
 
-        contactModel.contactsDS.sync();
-
+        updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,editContactView._activeContact.name);
+        updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,editContactView._activeContact.alias);
+        updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,editContactView._activeContact.phone);
+        updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,editContactView._activeContact.email);
+        updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid, editContactView._activeContact.photo);
+        updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,editContactView._activeContact.address);
+        
     },
 
     syncActiveContact: function (e) {
