@@ -433,7 +433,7 @@ function homeSignin (e) {
 			userModel.currentUser.set('publicKey', publicKey);
 			userModel.decryptPrivateKey();
 	//		userModel.currentUser.set('privateKey', privateKey);
-
+			userModel.createIdenticon(userModel.parseUser.get('userUUID'));
 			var phoneVerified = userModel.parseUser.get('phoneVerified');
             userModel.currentUser.set('phoneVerified', phoneVerified);
 			userModel.currentUser.set('availImgUrl', 'images/status-away.svg');
@@ -576,6 +576,7 @@ function homeCreateAccount() {
 							userModel.currentUser.set('emailValidated',user.get('emailVerified'));
 							userModel.generateNewPrivateKey(user);
 
+							userModel.createIdenticon(userUUID);
 							//userModel.currentUser.set('publicKey',user.get('publicKey'));
 							//userModel.currentUser.set('privateKey',user.get('privateKey'));
 							userModel.currentUser.bind('change', userModel.sync);

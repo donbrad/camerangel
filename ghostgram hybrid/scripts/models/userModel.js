@@ -12,6 +12,7 @@ var userModel = {
     appDirectory: '',
     parseACL : undefined,
     userName : '',
+    identiconUrl : null,
     rememberUserName : false,
     initialView : '#newuserhome',
 
@@ -112,6 +113,7 @@ var userModel = {
             userModel.currentUser.set('availImgUrl', 'images/status-away.svg');
             updateHeaderStatusImages();
 
+            userModel.createIdenticon(userModel.parseUser.get('userUUID'));
             userModel.parseACL = new Parse.ACL(userModel.parseUser);
 
             userModel.currentUser.bind('change', userModel.sync);
@@ -123,6 +125,12 @@ var userModel = {
 
     deleteAccount: function () {
 
+    },
+
+    createIdenticon: function (hash) {
+        jdenticon.update("#identiconCanvas", hash);
+        var canvas = document.getElementById("identiconCanvas");
+        userModel.identiconUrl = canvas.toDataURL('image/png');
     },
 
     // user is valid parse User object
