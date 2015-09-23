@@ -199,7 +199,7 @@ var contactModel = {
                 var models = [];
                 for (var i = 0; i < collection.models.length; i++) {
                     var model = collection.models[i];
-                   // Set the photo to identicon 
+                   // Set the photo to identicon
                     var url = contactModel.createIdenticon(model.get('uuid'));
                     model.set('photo', url);
 
