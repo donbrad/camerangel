@@ -837,7 +837,7 @@ var contactActionView = {
     openModal : function (contactId) {
 
         contactActionView.setContact(contactId);
-        $('#contactActions-status').removeClass('hidden');
+
         //Show the status update div
 
         contactModel.updateContactStatus(contactId, function(contact) {
@@ -846,8 +846,6 @@ var contactActionView = {
                 // This is a new contact.
                 contact = contactModel.findContactByUUID(contactId);
             }
-            //Hide the status update div
-            $('#contactActions-status').addClass('hidden');
             var contactName = contact.name;
             var contactAlias = contact.alias;
             var contactVerified = contact.phoneVerified;
