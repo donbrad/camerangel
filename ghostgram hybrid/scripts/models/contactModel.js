@@ -199,12 +199,10 @@ var contactModel = {
                 var models = [];
                 for (var i = 0; i < collection.models.length; i++) {
                     var model = collection.models[i];
-                   // Set the photo to identicon if it doesn't exist
-                    var contactPhoto = model.get("photo");
-                    if (contactPhoto !== undefined && contactPhoto !== null) {
-                        var url = contactModel.createIdenticon(model.get('uuid'));
-                        model.set('photo', url);
-                    }
+                   // Set the photo to identicon 
+                    var url = contactModel.createIdenticon(model.get('uuid'));
+                    model.set('photo', url);
+
                     models.push(model.attributes);
                 }
                 deviceModel.setAppState('hasContacts', true);
