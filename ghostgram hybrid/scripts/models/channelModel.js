@@ -154,16 +154,18 @@ var channelModel = {
 
                    for (var i=0; i< channels.length; i++) {
                         var channel = channels[i].attributes;
+                        // Need to ignore this users private channel in other users accounts
+                        if (channel.channelId !== uuid) {
+                            if (channelModel.findChannelModel(channel.channelId) === undefined) {
+                                if (channel.isPrivate) {
+                                    channelModel.addPrivateChannel(channel.channelId, channel.contactKey, channel.name);
+                                } else {
+                                    if (!channel.isOwner) {
+                                        // Only create member channels
+                                        channelModel.addChannel(channel.name, channel.description, false, channel.durationDays,
+                                            channel.channelId, '', '');
 
-                        if (channelModel.findChannelModel(channel.channelId) === undefined) {
-                            if (channel.isPrivate) {
-                                channelModel.addPrivateChannel(channel.channelId, channel.contactKey, channel.name);
-                            } else {
-                                if (!channel.isOwner) {
-                                    // Only create member channels
-                                    channelModel.addChannel(channel.name, channel.description, false, channel.durationDays,
-                                        channel.channelId, '', '');
-
+                                    }
                                 }
                             }
                         }
