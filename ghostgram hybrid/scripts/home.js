@@ -28,11 +28,11 @@ var homeView = {
 				if (placesStatus === google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
 					APP.map.geocoder.geocode({ 'latLng': latlng }, function (geoResults, geoStatus) {
 						if (geoStatus !== google.maps.GeocoderStatus.OK) {
-							navigator.notification.alert('Something went wrong with the Google geocoding service.');
+							mobileNotify('Something went wrong with the Google geocoding service.');
 							return;
 						}
 						if (geoResults.length === 0 || geoResults[0].types[0] !== 'street_address') {
-							navigator.notification.alert('We couldn\'t match your position to a street address.');
+							mobileNotify('We couldn\'t match your position to a street address.');
 							return;
 						}
 
@@ -63,7 +63,7 @@ var homeView = {
 						});
 					});
 				} else if (placesStatus !== google.maps.places.PlacesServiceStatus.OK) {
-					navigator.notification.alert('Something went wrong with the Google Places service. '+placesStatus);
+					mobileNotify('Something went wrong with the Google Places service. '+placesStatus);
 					return;
 				}
 
