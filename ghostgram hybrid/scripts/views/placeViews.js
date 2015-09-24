@@ -190,6 +190,7 @@ var findPlacesView = {
 
     onDone : function (e) {
         _preventDefault(e);
+        
         APP.kendo.navigate("#places");
     }
 };
