@@ -60,6 +60,7 @@ function onInitPlaces(e) {
 
 	APP.models.places.locatorActive = false;
 
+
 	$('#nearby-results-list').kendoMobileListView({
 		template: $("#nearby-results-template").html(),
 		click: function (e) {
@@ -315,8 +316,9 @@ function goToChat (e) {
 }
 
 function onShowPlaces(e) {
+
 	// hide actionBtn   
-    $("div.footerMenu.km-footer > a").attr("href", "#findplace").css("display", "inline-block");
+    $("div.footerMenu.km-footer > a").attr("href", "#findPlace").css("display", "inline-block");
 
 
 	navigator.geolocation.getCurrentPosition( function (position) {
@@ -634,6 +636,7 @@ function getDistanceInKm  (lat1, lon1, lat2, lon2) {
 function deg2rad (deg) {
 	return deg * (Math.PI/180);
 }
+
 // Are two points within a specific distance
 function inPlaceRadius (lat1, lng1, lat2, lng2, radius) {
 
