@@ -34,6 +34,8 @@ var homeView = {
 		$("#photoViewImage").removeClass("photoView-landscape photoView-portrait photoView-square").css("width", "");
 	},
 
+	_radius: 30, // 30 meters or approx 100 ft
+
 	openLocateMeModal: function () {
 		$('#modalview-locate-me').data('kendoMobileModalView').open();
 
@@ -50,17 +52,17 @@ var homeView = {
 
 			places.nearbySearch({
 				location: latlng,
-				radius: 10,
+				radius: homeView._radius,
 				types: ['establishment']
 			}, function (placesResults, placesStatus) {
 				if (placesStatus === google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
 					APP.map.geocoder.geocode({ 'latLng': latlng }, function (geoResults, geoStatus) {
 						if (geoStatus !== google.maps.GeocoderStatus.OK) {
-							navigator.notification.alert('Something went wrong with the Google geocoding service.');
+							mobileNotify('Something went wrong with the Google geocoding service.');
 							return;
 						}
 						if (geoResults.length === 0 || geoResults[0].types[0] !== 'street_address') {
-							navigator.notification.alert('We couldn\'t match your position to a street address.');
+							mobileNotify('We couldn\'t match your position to a street address.');
 							return;
 						}
 
@@ -91,7 +93,7 @@ var homeView = {
 						});
 					});
 				} else if (placesStatus !== google.maps.places.PlacesServiceStatus.OK) {
-					navigator.notification.alert('Something went wrong with the Google Places service. '+placesStatus);
+					mobileNotify('Something went wrong with the Google Places service. '+placesStatus);
 					return;
 				}
 

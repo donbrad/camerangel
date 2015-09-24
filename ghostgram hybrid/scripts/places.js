@@ -3,6 +3,7 @@
 'use strict';
 
 var placesView = {
+
 	matchLocationToUserPlace: function (lat, lng) {
 		var placesData = APP.models.places.placesDS.data();
 
@@ -314,8 +315,10 @@ function goToChat (e) {
 }
 
 function onShowPlaces(e) {
-	// hide actionBtn   
-    $("div.footerMenu.km-footer > a").attr("href", "#findplace").css("display", "inline-block");
+
+
+	// update actionBtn
+    $("#places > div.footerMenu.km-footer > a").attr("href", "#findPlace").css("display", "inline-block");
 
 
 	navigator.geolocation.getCurrentPosition( function (position) {
@@ -340,7 +343,7 @@ function onShowPlaces(e) {
 
 function onBeforeHidePlaces(e){
 	// hide actionBtn   
-    $("#places > div.footerMenu.km-footer > a").css("display", "none");
+    //$("#places > div.footerMenu.km-footer > a").css("display", "none");
 
 }
 
@@ -616,48 +619,6 @@ function addPlaceAdd(e) {
 
 }
 
-function getDistanceInKm  (lat1, lon1, lat2, lon2) {
-	var R = 6371; // Radius of the earth in km
-	var dLat = this.deg2rad(lat2-lat1);  // deg2rad below
-	var dLon = this.deg2rad(lon2-lon1);
-	var a =
-			Math.sin(dLat/2) * Math.sin(dLat/2) +
-			Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
-			Math.sin(dLon/2) * Math.sin(dLon/2)
-		;
-	var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-	var d = R * c; // Distance in km
-	return d;
-}
-
-function deg2rad (deg) {
-	return deg * (Math.PI/180);
-}
-// Are two points within a specific distance
-function inPlaceRadius (lat1, lng1, lat2, lng2, radius) {
-
-	if (radius === undefined || radius < 10) {
-		radius = 30;
-	}
-
-	if (typeof lat1 === 'string') {
-		lat1 = Number(lat1);
-		lng1 = Number(lng1);
-	}
-
-	if (typeof lat2 === 'string') {
-		lat2 = Number(lat2);
-		lng2 = Number(lng2);
-	}
-
-	var distance = getDistanceInKm(lat1, lng1, lat2, lng2) * 1000;
-
-	if (distance <= radius) {
-		return true;
-	} else {
-		return false;
-	}
-}
 
 function onShowFindPlace() {
 	

@@ -222,27 +222,9 @@
 		},
 		kendo: null,
 		pubnub: null,
-		map: null,
+		map: {},
 
 		/*checkPubnub: function() {
-			if (APP.pubnub === undefined || APP.pubnub === null) {
-
-				APP.pubnub = PUBNUB.init({
-					publish_key: 'pub-c-d4fcc2b9-2c1c-4a38-9e2c-a11331c895be',
-					subscribe_key: 'sub-c-4624e1d4-dcad-11e4-adc7-0619f8945a4f',
-					secret_key: 'sec-c-NDFiNzlmNTUtNWEyNy00OGUzLWExZjYtNDc3ZTI2ZGRlOGMw',
-					ssl: true,
-					jsonp: true,
-					restore: true,
-					uuid: uuid
-				});
-			}
-		},*/
-/*
-		setAppState: function(field, value) {
-			APP.state[field] = value;
-			_app.saveAppState();
-		},*/
 
 		updateGeoLocation: function(callback) {
 			APP.geoLocator.getCurrentPosition(function(position, error) {
@@ -508,7 +490,7 @@
 					window.localStorage.setItem('ggLastPosition', JSON.stringify(APP.location.position));
 
 					// See if the new position matches an existing place
-					var places = matchLocationToUserPlace(APP.location.position.lat, APP.location.position.lng);
+					var places = placesView.matchLocationToUserPlace(APP.location.position.lat, APP.location.position.lng);
 					if (places.length === 0) {
 						// No matching places -- get a list of places that match the coord and prompt user to select one
 					} else if (places.length === 1) {
@@ -517,7 +499,6 @@
 						// Multiple place matches for this coord, prompt the user to select one.
 					}
 				}
-				APP.map = new Object();
 				APP.map.geocoder = new google.maps.Geocoder();
 				APP.map.mapOptions = {};
 				APP.map.mapOptions.center = {
