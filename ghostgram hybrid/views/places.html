@@ -1,8 +1,8 @@
- <div data-role="view" data-title="Places" id="places" data-layout="main" data-model="APP.models.places" data-show="onShowPlaces" data-init="onInitPlaces" data-before-hide="onBeforeHidePlaces">
+ <div data-role="view" data-title="Places" id="places" data-layout="main" data-model="placesModel" data-show="placesView.onShow" data-init="placesView.onInit" >
 
     <div class="mapInfo">
          <div class="placesSearchBox">
-             <input class="clearable" style="width: 85%;" id= "placeSearchQuery" type="text" placeholder="Search my places..."/>
+             <input class="clearable" style="width: 85%;" id= "placeSearchQuery" type="search" placeholder="Search my places..."/>
              <a data-role="button"  data-click="goPlaceSearchQuery">
                  <i class="ghostIconSmall fa fa-search"></i>
              </a>
