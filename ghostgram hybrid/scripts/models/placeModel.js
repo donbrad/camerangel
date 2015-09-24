@@ -17,10 +17,10 @@ var placesModel = {
                 editable: false,
                 nullable: false
             },
-            category: {  // Place or CheckIn
+            category: {  // Venue or Location
                 editable: true,
                 nullable: false,
-                defaultValue: 'Place'
+                defaultValue: 'Location'
             },
             placeChatId: {
                 editable: false,
@@ -39,15 +39,6 @@ var placesModel = {
             address: {  // Composite field for display - built from streetNumber, street, city, state and zip
                 editable: false,
                 nullable: false,
-                defaultValue: ''
-            },
-            streetNumber: {
-                editable: true,
-                nullable: false,
-                defaultValue: ''
-            },
-            street: {
-                editable: false,
                 defaultValue: ''
             },
             city: {
@@ -81,6 +72,11 @@ var placesModel = {
             lng: {
                 editable: false,
                 type: 'number'
+            },
+            statusMessage: {  // Name from googlePlaces or factual
+                editable: true,
+                nullable: true,
+                defaultValue: ''
             },
             isAvailable: {  // Is the user avaiable or busy here?  Sets default value, user can override
                 editable: true,

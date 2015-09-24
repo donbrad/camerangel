@@ -69,6 +69,8 @@ var placesView = {
 var findPlacesView = {
     _returnView : 'places',
     _returnModeal : null,
+    _lat : null,
+    _lng : null,
 
     placesDS :  new kendo.data.DataSource({
         sort: {
@@ -100,12 +102,21 @@ var findPlacesView = {
 
         $("#findPlaces > div.footerMenu.km-footer > a").removeAttr('href').css("display", "none");
 
+        var lat = findPlacesView._lat, lng = findPlacesView._lng;
+
         if (e.view.params !== undefined) {
-            var lat = e.view.params.lat, lng = e.view.params.lng;
-            findPlacesView._returnView = e.view.params.returnview;
-            findPlacesView._returnModal = e.view.params.returnmodal;
-        } else {
-            // Todo: don - call geolocation to get coordinates
+            if (e.view.params.lat !== undefined) {
+                lat = e.view.params.lat;
+                lng = e.view.params.lng;
+                findPlacesView._lat = lat;
+                findPlacesView._lng = lng;
+            }
+
+            if (e.view.params.returnview !== undefined)
+                findPlacesView._returnView = e.view.params.returnview;
+
+            if (e.view.params.returnmodal !== undefined)
+                findPlacesView._returnModal = e.view.params.returnmodal;
         }
         findPlacesView.updatePlaces(lat,lng);
     },
@@ -223,11 +234,20 @@ var addPlaceView = {
 
     onShow : function (e) {
         _preventDefault(e);
+
         if (e.view.params !== undefined) {
-            var geo = e.view.params.geo;
-            addPlaceView.setActivePlace(JSON.parse(geo));
-            addPlaceView._returnView = e.view.params.returnview;
-            addPlaceView._returnModal = e.view.params.returnmodal;
+
+            if (e.view.params.geo !== undefined) {
+                var geo = e.view.params.geo;
+                addPlaceView.setActivePlace(JSON.parse(geo));
+            }
+
+            if (e.view.params.returnview !== undefined)
+                addPlaceView._returnView = e.view.params.returnview;
+
+            if (e.view.params.returnmodal !== undefined)
+                addPlaceView._returnModal = e.view.params.returnmodal;
+
         }
     },
 
@@ -283,6 +303,7 @@ var addPlaceView = {
  */
 var editPlaceView = {
 
+    _activePlaceId : null,
     _activePlace : new kendo.data.ObservableObject(),
     _returnView : 'places',
     _returnModal : undefined,
@@ -294,11 +315,19 @@ var editPlaceView = {
 
     onShow : function (e) {
         _preventDefault(e);
-        var placeId = null;
+
         if (e.view.params !== undefined) {
-            placeId = e.view.params.place;
-            editPlaceView._returnView = e.view.params.returnview;
-            editPlaceView._returnModal = e.view.params.returnmodal;
+            if (e.view.params.place !== undefined) {
+                editPlaceView.setActivePlace(e.view.params.place);
+            }
+
+            if (e.view.params.returnview !== undefined)
+                editPlaceView._returnView = e.view.params.returnview;
+
+            if (e.view.params.returnmodal !== undefined)
+                editPlaceView._returnModal = e.view.params.returnmodal;
+
+
         }
     },
 
@@ -314,9 +343,9 @@ var editPlaceView = {
         APP.kendo.navigate(returnUrl);
 
     },
-    
-    setActivePlace : function (place) {
-        editPlaceView._activePlace = place;
+
+    setActivePlace : function (placeId) {
+        editPlaceView._activePlaceId = placeId;
     }
 
 };

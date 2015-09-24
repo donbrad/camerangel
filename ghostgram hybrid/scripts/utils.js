@@ -186,7 +186,20 @@ function mobileNotify(message) {
 
 }
 
+// if new value is defined, return it, otherwise return original
+function _smartSet(original, newValue) {
+	if (newValue !== undefined)
+		return(newValue);
 
+	return(original);
+}
+
+function _smartSetNull(original, newValue) {
+	if (newValue !== undefined && newValue !== null)
+		return(newValue);
+
+	return(original);
+}
 
 function getUserChannels(uuid, callBack) {
 	Parse.Cloud.run('getUserChannels', {
