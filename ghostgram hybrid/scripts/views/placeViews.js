@@ -5,7 +5,9 @@
 
 'use strict';
 
-
+/*
+ * placesView
+ */
 var placesView = {
 
     placeListDS: new kendo.data.DataSource({
@@ -33,13 +35,43 @@ var placesView = {
         _preventDefault(e);
 
         // update actionBtn
-        $("#places > div.footerMenu.km-footer > a").attr("href", "#findPlace").css("display", "inline-block");
+        $("#places > div.footerMenu.km-footer > a").css("display", "none");
 
 
         navigator.geolocation.getCurrentPosition( function (position) {
-            var locations = placesModel.matchLocation(position.coords.latitude, position.coords.longitude);
+            var places = placesModel.matchLocation(position.coords.latitude, position.coords.longitude);
+            if (places.length === 0) {
+                mobileNotify("No places match your current location");
+                var findPlaceUrl = "#findPlace?lat="+ position.coords.latitude + "&lng=" +  position.coords.longitude;
+                // No current places match the current location
+                $("#places > div.footerMenu.km-footer > a").attr("href", findPlaceUrl).css("display", "inline-block");
+            } else {
+                // set placesView.placeListDS to results
+            }
 
         });
     }
 
+};
+
+/*
+ * findPlacesView
+ */
+var findPlacesView = {
+    onInit : function (e) {
+        _preventDefault(e);
+    },
+
+    onShow : function (e) {
+        _preventDefault(e);
+        if (e.view.params !== undefined) {
+            var lat = e.view.params.lat, lng = e.view.params.lng;
+        }
+
+    },
+
+    onDone : function (e) {
+        _preventDefault(e);
+        APP.kendo.navigate("#places");
+    }
 };

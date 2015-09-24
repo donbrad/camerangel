@@ -41,7 +41,7 @@
 </div>
 
 <!-- Locate Modal-->
-<div data-role="modalview" style="width: 50%; display: none;" data-title="Locating" id="modalview-places-locate"  data-model="APP.models.places">
+<div data-role="modalview" style="width: 50%; display: none;" data-title="Locating" id="modalview-places-locate"  >
 		<div class="locatingBox">
 			<h4 class="helper">
 				<img src="images/loading.svg" class="loading-sm"/> Locating...
@@ -91,8 +91,13 @@
 
 
 <!-- Find Place -->
- <div data-role="view" data-title="Find Place" id="findPlace" data-layout="main" data-model="APP.models.places" data-show="onShowFindPlace" data-init="onInitFindPlace" >
-
+ <div data-role="view" data-title="Find Place" id="findPlace" data-layout="main"  data-show="findPlacesView.onShow" data-init="findPlacesView.onInit" >
+     <div data-role="header">
+         <div data-role="navbar">
+             <span data-role="view-title"></span>
+             <a data-role="button" data-click="findPlacesView.onDone" data-align="left" >Done</a>
+         </div>
+     </div>
 	    <div class="appBox">
 		    <div style="padding-bottom: 4px; padding-top: 4px;">
 	        	<input style="font-size: 16px; margin-left: 6px; width: 90%;" id="findPlaceSearchQuery" class="clearable" type="search"/>
