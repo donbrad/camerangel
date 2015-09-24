@@ -114,6 +114,10 @@ var placesModel = {
         }
 
         return(matchArray);
+    },
+
+    addPlace : function (place) {
+
     }
 
 

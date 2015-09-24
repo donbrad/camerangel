@@ -44,7 +44,7 @@ var placesView = {
 
             if (places.length === 0) {
                 mobileNotify("No places match your current location");
-                var findPlaceUrl = "#findPlace?lat="+ lat + "&lng=" +  lng;
+                var findPlaceUrl = "#findPlace?lat="+ lat + "&lng=" +  lng +"&returnview=places";
                 // No current places match the current location
                 $("#places > div.footerMenu.km-footer > a").attr("href", findPlaceUrl).css("display", "inline-block");
             } else {
@@ -67,6 +67,8 @@ var placesView = {
  * findPlacesView
  */
 var findPlacesView = {
+    _returnView : 'places',
+    _returnModeal : null,
 
     placesDS :  new kendo.data.DataSource({
         sort: {
@@ -83,7 +85,13 @@ var findPlacesView = {
             template: $("#findPlacesTemplate").html(),
             fixedHeaders: true,
             click: function (e) {
-                var place = e.dataItem;
+                var geo = e.dataItem;
+                var geoStr = JSON.stringify(geo);
+
+                var navStr = "#addPlace?geo="+geoStr+"&returnview=findPlace";
+
+                APP.kendo.navigate(navStr);
+
             }});
     },
 
@@ -94,6 +102,8 @@ var findPlacesView = {
 
         if (e.view.params !== undefined) {
             var lat = e.view.params.lat, lng = e.view.params.lng;
+            findPlacesView._returnView = e.view.params.returnview;
+            findPlacesView._returnModal = e.view.params.returnmodal;
         } else {
             // Todo: don - call geolocation to get coordinates
         }
@@ -158,6 +168,7 @@ var findPlacesView = {
                     category: 'Location',   // valid categories are: Place and Location
                     name: address.streetNumber+' '+address.street,
                     type: 'Street Address',
+                    googleId: null,
                     lat: lat,
                     lng: lng,
                     vicinity: address.city+', '+address.state
@@ -190,16 +201,122 @@ var findPlacesView = {
 
     onDone : function (e) {
         _preventDefault(e);
+        var navUrl = '#' + findPlacesView._returnView;
 
-        APP.kendo.navigate("#places");
+        APP.kendo.navigate(navUrl);
     }
 };
 
+
+/*
+ * addPlaceView
+ */
+var addPlaceView = {
+
+    _activeGeo : {},
+    _activePlace : new kendo.data.ObservableObject(),
+    _returnView : 'places',
+
+    onInit : function (e) {
+        _preventDefault(e);
+    },
+
+    onShow : function (e) {
+        _preventDefault(e);
+        if (e.view.params !== undefined) {
+            var geo = e.view.params.geo;
+            addPlaceView.setActivePlace(JSON.parse(geo));
+            addPlaceView._returnView = e.view.params.returnview;
+            addPlaceView._returnModal = e.view.params.returnmodal;
+        }
+    },
+
+    onHide : function (e) {
+        //_preventDefault(e);  Cant use here -- prevents navigation
+    },
+
+    onDone: function (e) {
+        _preventDefault(e);
+
+        var returnUrl = '#'+ addPlaceView._returnView;
+
+        APP.kendo.navigate(returnUrl);
+
+    },
+
+    setActivePlace : function (geoPlace) {
+        addPlaceView._activeGeo = geoPlace;
+
+        if (geoPlace.category = "Location") {
+            addPlaceView._activePlace.set('category',"Location");
+            addPlaceView._activePlace.set('name', '');
+            addPlaceView._activePlace.set('alias', '');
+            addPlaceView._activePlace.set('type', geoPlace.type);
+            addPlaceView._activePlace.set('googleId', '');
+            addPlaceView._activePlace.set('address', geoPlace.name +  ' ' + geoPlace.vicinity);
+            addPlaceView._activePlace.set('lat', geoPlace.lat);
+            addPlaceView._activePlace.set('lng', geoPlace.lng);
+
+        } else {
+            addPlaceView._activePlace.set('category',"Venue");
+            addPlaceView._activePlace.set('name', geoPlace.name);
+            addPlaceView._activePlace.set('alias', '');
+            addPlaceView._activePlace.set('type', geoPlace.type);
+            addPlaceView._activePlace.set('googleId', geoPlace.googleId);
+            addPlaceView._activePlace.set('address', geoPlace.vicinity);
+            addPlaceView._activePlace.set('lat', geoPlace.lat);
+            addPlaceView._activePlace.set('lng', geoPlace.lng);
+        }
+
+
+    },
+
+    addPlace : function (e) {
+        _preventDefault(e);
+
+    }
+
+};
 
 /*
  * editPlaceView
  */
 var editPlaceView = {
 
+    _activePlace : new kendo.data.ObservableObject(),
+    _returnView : 'places',
+    _returnModal : undefined,
+
+
+    onInit : function (e) {
+        _preventDefault(e);
+    },
+
+    onShow : function (e) {
+        _preventDefault(e);
+        var placeId = null;
+        if (e.view.params !== undefined) {
+            placeId = e.view.params.place;
+            editPlaceView._returnView = e.view.params.returnview;
+            editPlaceView._returnModal = e.view.params.returnmodal;
+        }
+    },
+
+    onHide : function (e) {
+        //_preventDefault(e);  Cant use here -- prevents navigation
+    },
+
+    onDone: function (e) {
+        _preventDefault(e);
+
+        var returnUrl = '#'+ editPlaceView._returnView;
+
+        APP.kendo.navigate(returnUrl);
+
+    },
+    
+    setActivePlace : function (place) {
+        editPlaceView._activePlace = place;
+    }
 
 };
