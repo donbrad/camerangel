@@ -1,4 +1,4 @@
- <div data-role="view" data-title="Places" id="places" data-layout="main" data-model="placesModel" data-show="placesView.onShow" data-init="placesView.onInit" >
+ <div data-role="view" data-title="Places" id="places" data-layout="main" data-model="placesModel" data-show="placesView.onShow" data-init="placesView.onInit" data-before-hide="placesView.onHide">
 
     <div class="mapInfo">
          <div class="placesSearchBox">
@@ -91,7 +91,7 @@
 
 
 <!-- Find Place -->
- <div data-role="view" data-title="Find Place" id="findPlace" data-layout="main"  data-show="findPlacesView.onShow" data-init="findPlacesView.onInit" >
+ <div data-role="view" data-title="Find Place" id="findPlace" data-layout="main"  data-show="findPlacesView.onShow" data-init="findPlacesView.onInit" data-before-hide="findPlacesView.onHide">
      <div data-role="header">
          <div data-role="navbar">
              <span data-role="view-title"></span>

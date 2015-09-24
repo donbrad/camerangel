@@ -52,6 +52,13 @@ var placesView = {
             }
 
         });
+    },
+
+    onHide: function (e) {
+        _preventDefault(e);
+
+        // update actionBtn
+        $("#places > div.footerMenu.km-footer > a").removeAttr('href').css("display", "none");
     }
 
 };
@@ -82,12 +89,20 @@ var findPlacesView = {
 
     onShow : function (e) {
         _preventDefault(e);
+
+        $("#findPlaces > div.footerMenu.km-footer > a").css("display", "none");
+
         if (e.view.params !== undefined) {
             var lat = e.view.params.lat, lng = e.view.params.lng;
         } else {
             // Todo: don - call geolocation to get coordinates
         }
         findPlacesView.updatePlaces(lat,lng);
+    },
+
+    onHide: function (e) {
+        _preventDefault(e);
+
     },
 
     getAddressFromComponents: function (addressComponents) {
