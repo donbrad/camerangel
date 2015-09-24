@@ -1418,7 +1418,6 @@ div.footerMenu.km-footer > ul > li > a:active {
   left: 0;
 }
 .fullPhotoModal {
-  width: 100%;
   background: rgba(0, 0, 0, 0.85);
 }
 .photoMax,
@@ -1472,6 +1471,7 @@ div.footerMenu.km-footer > ul > li > a:active {
   top: 50%;
   left: 50%;
   z-index: 0;
+  display: block;
 }
 #modalPhotoView > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container,
 #photoView > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {

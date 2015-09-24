@@ -3,10 +3,13 @@
 'use strict';
 
 var homeView = {
+	_radius: 30, // 30 meters or approx 100 ft
+
 	centerPhoto: function(height, width){
+
 		var marginTop = (height / 2);
 		var marginLeft = (width / 2);
-		
+
 		$("#photoViewImage").css("margin-top", "-"+marginTop+"px");
 		$("#photoViewImage").css("margin-left", "-"+marginLeft+"px");
 
@@ -31,10 +34,8 @@ var homeView = {
 	},
 
 	onHidePhotoView: function(){
-		$("#photoViewImage").removeClass("photoView-landscape photoView-portrait photoView-square").css("width", "");
+		$("#photoViewImage").removeClass("photoView-landscape photoView-portrait photoView-square");
 	},
-
-	_radius: 30, // 30 meters or approx 100 ft
 
 	openLocateMeModal: function () {
 		$('#modalview-locate-me').data('kendoMobileModalView').open();
