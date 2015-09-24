@@ -55,7 +55,7 @@ var placesView = {
     },
 
     onHide: function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
 
         // update actionBtn
         $("#places > div.footerMenu.km-footer > a").removeAttr('href').css("display", "none");
@@ -101,7 +101,7 @@ var findPlacesView = {
     },
 
     onHide: function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
 
     },
 
