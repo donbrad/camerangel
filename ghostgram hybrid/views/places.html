@@ -1,4 +1,4 @@
- <div data-role="view" data-title="Places" id="places" data-layout="main" data-model="placesModel" data-show="placesView.onShow" data-init="placesView.onInit" >
+ <div data-role="view" data-title="Places" id="places" data-layout="main" data-model="placesModel" data-show="placesView.onShow" data-init="placesView.onInit" data-before-hide="placesView.onHide">
 
     <div class="mapInfo">
          <div class="placesSearchBox">
@@ -91,7 +91,7 @@
 
 
 <!-- Find Place -->
- <div data-role="view" data-title="Find Place" id="findPlace" data-layout="main"  data-show="findPlacesView.onShow" data-init="findPlacesView.onInit" >
+ <div data-role="view" data-title="Find Place" id="findPlace" data-layout="main"  data-show="findPlacesView.onShow" data-init="findPlacesView.onInit" data-before-hide="findPlacesView.onHide">
      <div data-role="header">
          <div data-role="navbar">
              <span data-role="view-title"></span>
@@ -131,23 +131,33 @@
  </div>
 
 
-<div data-role="view" id="addPlace" class="appearance" data-before-open="onShowAddPlace">
+<div data-role="view" id="addPlace" data-title="Add Place" data-layout="main" data-model="addPlaceView._activePlace" class="appearance" data-init="addPlaceView.onInit" data-show="addPlaceView.onShow">
     <div data-role="header">
         <div data-role="navbar">
-            <span>Add New Place</span>
+            <span data-role="view-title"></span>
+            <a data-role="button" data-click="addPlaceView.onDone" data-align="left" >Done</a>
         </div>
     </div>
  	<form style="clear: both;">
         <ul data-role="listview" data-style="inset" >
             <li>
                 <label> Name
-                    <input type="text" id="addPlaceName" required />
+                    <input type="text" data-bind="value: name" required />
                 </label>
             </li>
-
+            <li>
+                <label> Alias
+                    <input type="text" data-bind="value: alias" required />
+                </label>
+            </li>
             <li>
                 <label> Address
-                    <input type="text" id="addPlaceAddress" required/>
+                    <input type="text"  data-bind="value: address" required/>
+                </label>
+            </li>
+            <li>
+                <label> Place Type
+                    <input type="text"  data-bind="value: type" required/>
                 </label>
             </li>
              <li>
@@ -174,7 +184,7 @@
    
     <div data-role="footer">
         <div data-role="navbar">
-            <a data-click="addPlaceAdd" type="button" data-role="button" data-align="right">Add Place</a>
+            <a data-click="addPlaceView.addPlace" type="button" data-role="button" >Add Place</a>
         </div>
     </div>
 </div>
