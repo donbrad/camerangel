@@ -221,13 +221,16 @@ var channelModel = {
         if (channelList === undefined || channelList.length === 0) {
             return;
         }
+        var uuid = userModel.currentUser.userUUID;
 
         for (var i=0; i<channelKeys.length; i++) {
-            var channel = channelModel.findPrivateChannel(channelKeys[i]),
+            var key = channelKeys[i];
+
+            var channel = channelModel.findPrivateChannel(key),
                 count = channelList[i];
             if (channel === undefined) {
                 // private channel doesn't exist
-                var contact = contactModel.findContactByUUID(channelKeys[i]);
+                var contact = contactModel.findContactByUUID(key);
                 if (contact !== undefined) {
                     channelModel.addPrivateChannel(contact.contactUUID, contact.publicKey, contact.name);
                 }

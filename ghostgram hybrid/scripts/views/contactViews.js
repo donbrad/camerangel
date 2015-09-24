@@ -579,6 +579,7 @@ var addContactView = {
                 }
                 contact.set('contactEmail', thisContact.email);
                 contact.set('photo', null);
+                contact.set('contactPhoto', thisContact.photo);
                 contact.set('isAvailable', thisContact.isAvailable);
                 contact.set('publicKey', thisContact.publicKey);
 
@@ -854,7 +855,12 @@ var contactActionView = {
            
             contactActionView._activeContact.set('name', contactName);
             contactActionView._activeContact.set('alias', contactAlias);
-            contactActionView._activeContact.set('photo', contact.photo);
+            if (contact.contactPhoto !== undefined && contact.contactPhoto !== null) {
+                contactActionView._activeContact.set('photo', contact.contactPhoto);
+            } else {
+                contactActionView._activeContact.set('photo', contact.photo);
+            }
+
             contactActionView._activeContact.set('statusMessage', contact.statusMessage);
             contactActionView._activeContact.set('currentPlace', contact.currentPlace);
             contactActionView._activeContact.set('isAvailable', contact.isAvailable);
