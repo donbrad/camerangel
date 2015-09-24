@@ -65,14 +65,15 @@ var findPlacesView = {
         sort: {
             field: "name",
             dir: "asc"
-        }
+        },
+        group: 'category'
     }),
 
     onInit : function (e) {
         _preventDefault(e);
         $("#findplace-listview").kendoMobileListView({
             dataSource: findPlacesView.placesDS,
-            template: $("#placesTemplate").html(),
+            template: $("#findPlacesTemplate").html(),
             fixedHeaders: true,
             click: function (e) {
                 var place = e.dataItem;
@@ -116,26 +117,11 @@ var findPlacesView = {
                     var address = placesView.getAddressFromComponents(geoResults[0].address_components);
 
                     ds.add({
-                        uuid: uuid.v4(),
                         category: 'Location',   // valid categories are: Place and Location
-                        placeId: '',
                         name: address.streetNumber+' '+address.street,
-                        venueName: '',
-                        streetNumber: address.streetNumber,
-                        street: address.street,
-                        city: address.city,
-                        state: address.state,
-                        zip: address.zip,
-                        country: address.country,
-                        googleId: '',
-                        factualId: '',
+                        type: 'Street Address',
                         lat: position.coords.latitude,
                         lng: position.coords.longitude,
-                        publicName: '',
-                        alias: '',
-                        isVisible: true,
-                        isPrivate: true,
-                        autoCheckIn: false,
                         vicinity: address.city+', '+address.state
                     });
                 });
@@ -148,26 +134,12 @@ var findPlacesView = {
 
 
                 ds.add({
-                    uuid: '',
                     category: 'Place',   // valid categories are: Place and Location
-                    placeId: '',
                     name: placeResult.name,
-                    venueName: placeResult.name,
-                    streetNumber: '',
-                    street: '',
-                    city: '',
-                    state: '',
-                    zip: '',
-                    country: '',
+                    type: placeResult.types[0],
                     googleId: placeResult.place_id,
-                    factualId: '',
                     lat: placeResult.geometry.location.G,
                     lng: placeResult.geometry.location.K,
-                    publicName: '',
-                    alias: '',
-                    isVisible: true,
-                    isPrivate: true,
-                    autoCheckIn: false,
                     vicinity: placeResult.vicinity
                 });
 
