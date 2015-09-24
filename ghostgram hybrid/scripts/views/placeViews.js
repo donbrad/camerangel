@@ -143,8 +143,8 @@ var findPlacesView = {
                     category: 'Location',   // valid categories are: Place and Location
                     name: address.streetNumber+' '+address.street,
                     type: 'Street Address',
-                    lat: geoResults[0].geometry.location.H,
-                    lng: geoResults[0].geometry.location.L,
+                    lat: lat,
+                    lng: lng,
                     vicinity: address.city+', '+address.state
                 });
             });
