@@ -3,6 +3,7 @@
 'use strict';
 
 var placesView = {
+
 	matchLocationToUserPlace: function (lat, lng) {
 		var placesData = APP.models.places.placesDS.data();
 

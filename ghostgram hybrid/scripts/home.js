@@ -4,6 +4,8 @@
 
 var homeView = {
 
+	_radius: 30, // 30 meters or approx 100 ft
+
 	openLocateMeModal: function () {
 		$('#modalview-locate-me').data('kendoMobileModalView').open();
 
@@ -20,7 +22,7 @@ var homeView = {
 
 			places.nearbySearch({
 				location: latlng,
-				radius: 10,
+				radius: homeView._radius,
 				types: ['establishment']
 			}, function (placesResults, placesStatus) {
 				if (placesStatus === google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
