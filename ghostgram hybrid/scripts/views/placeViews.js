@@ -35,7 +35,7 @@ var placesView = {
         _preventDefault(e);
 
         // update actionBtn
-        $("#places > div.footerMenu.km-footer > a").css("display", "none");
+        $("#places > div.footerMenu.km-footer > a").removeAttr('href').css("display", "none");
 
 
         navigator.geolocation.getCurrentPosition( function (position) {
@@ -90,7 +90,7 @@ var findPlacesView = {
     onShow : function (e) {
         _preventDefault(e);
 
-        $("#findPlaces > div.footerMenu.km-footer > a").css("display", "none");
+        $("#findPlaces > div.footerMenu.km-footer > a").removeAttr('href').css("display", "none");
 
         if (e.view.params !== undefined) {
             var lat = e.view.params.lat, lng = e.view.params.lng;
@@ -190,7 +190,7 @@ var findPlacesView = {
 
     onDone : function (e) {
         _preventDefault(e);
-        
+
         APP.kendo.navigate("#places");
     }
 };
