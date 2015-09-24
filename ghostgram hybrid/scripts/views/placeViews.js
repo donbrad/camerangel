@@ -103,30 +103,29 @@ var findPlacesView = {
             radius: homeView._radius,
             types: ['establishment']
         }, function (placesResults, placesStatus) {
-            if (placesStatus === google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
-                APP.map.geocoder.geocode({ 'latLng': latlng }, function (geoResults, geoStatus) {
-                    if (geoStatus !== google.maps.GeocoderStatus.OK) {
-                        mobileNotify('Something went wrong with the Google geocoding service.');
-                        return;
-                    }
-                    if (geoResults.length === 0 || geoResults[0].types[0] !== 'street_address') {
-                        mobileNotify('We couldn\'t match your position to a street address.');
-                        return;
-                    }
+            APP.map.geocoder.geocode({ 'latLng': latlng }, function (geoResults, geoStatus) {
+                if (geoStatus !== google.maps.GeocoderStatus.OK) {
+                    mobileNotify('Google geocoding service error!');
+                    return;
+                }
+                if (geoResults.length === 0 || geoResults[0].types[0] !== 'street_address') {
+                    mobileNotify('We couldn\'t match your position to a street address.');
+                    return;
+                }
 
-                    var address = placesView.getAddressFromComponents(geoResults[0].address_components);
+                var address = placesView.getAddressFromComponents(geoResults[0].address_components);
 
-                    ds.add({
-                        category: 'Location',   // valid categories are: Place and Location
-                        name: address.streetNumber+' '+address.street,
-                        type: 'Street Address',
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude,
-                        vicinity: address.city+', '+address.state
-                    });
+                ds.add({
+                    category: 'Location',   // valid categories are: Place and Location
+                    name: address.streetNumber+' '+address.street,
+                    type: 'Street Address',
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                    vicinity: address.city+', '+address.state
                 });
-            } else if (placesStatus !== google.maps.places.PlacesServiceStatus.OK) {
-                mobileNotify('Google Places error: '+placesStatus);
+            });
+            if (placesStatus !== google.maps.places.PlacesServiceStatus.OK) {
+                mobileNotify('Google Places error: '+ placesStatus);
                 return;
             }
 
