@@ -344,7 +344,7 @@ function onShowPlaces(e) {
 
 function onBeforeHidePlaces(e){
 	// hide actionBtn   
-    $("#places > div.footerMenu.km-footer > a").css("display", "none");
+    //$("#places > div.footerMenu.km-footer > a").css("display", "none");
 
 }
 
