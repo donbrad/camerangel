@@ -90,6 +90,30 @@ var findPlacesView = {
         findPlacesView.updatePlaces(lat,lng);
     },
 
+    getAddressFromComponents: function (addressComponents) {
+        var address = {};
+
+        address.streetNumber = _.findWhere(addressComponents, { 'types': [ 'street_number' ] });
+        address.streetNumber = address.streetNumber === undefined ? '' : address.streetNumber.short_name;
+
+        address.street = _.findWhere(addressComponents, { 'types': [ 'route' ] });
+        address.street = address.street === undefined ? '' : address.street.short_name;
+
+        address.city = _.findWhere(addressComponents, { 'types': [ 'locality', 'political' ] });
+        address.city = address.city === undefined ? '' : address.city.short_name;
+
+        address.state = _.findWhere(addressComponents, { 'types': [ 'administrative_area_level_1', 'political' ] });
+        address.state = address.state === undefined ? '' : address.state.short_name;
+
+        address.zip = _.findWhere(addressComponents, { 'types': [ 'postal_code' ] });
+        address.zip = address.zip === undefined ? '' : address.zip.short_name;
+
+        address.country = _.findWhere(addressComponents, { 'types': [ 'country', 'political' ] });
+        address.country = address.country === undefined ? '' : address.country.short_name;
+
+        return address;
+    },
+
     updatePlaces : function (lat, lng) {
         var latlng = new google.maps.LatLng(lat, lng);
         var places = APP.map.googlePlaces;
@@ -113,7 +137,7 @@ var findPlacesView = {
                     return;
                 }
 
-                var address = placesView.getAddressFromComponents(geoResults[0].address_components);
+                var address = findPlacesView.getAddressFromComponents(geoResults[0].address_components);
 
                 ds.add({
                     category: 'Location',   // valid categories are: Place and Location
