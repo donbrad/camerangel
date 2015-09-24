@@ -317,8 +317,9 @@ function goToChat (e) {
 
 function onShowPlaces(e) {
 
-	// hide actionBtn   
-    $("div.footerMenu.km-footer > a").attr("href", "#findPlace").css("display", "inline-block");
+
+	// update actionBtn
+    $("#places > div.footerMenu.km-footer > a").attr("href", "#findPlace").css("display", "inline-block");
 
 
 	navigator.geolocation.getCurrentPosition( function (position) {
