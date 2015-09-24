@@ -38,8 +38,8 @@ var placesView = {
         $("#places > div.footerMenu.km-footer > a").removeAttr('href').css("display", "none");
 
 
-        navigator.geolocation.getCurrentPosition( function (position) {
-            var lat = position.coords.latitude.toFixed(6), lng = position.coords.longitude.toFixed(6);
+       mapModel.getCurrentPosition( function (lat,lng) {
+
             var places = placesModel.matchLocation(lat, lng);
 
             if (places.length === 0) {
@@ -124,6 +124,10 @@ var findPlacesView = {
     onHide: function (e) {
        // _preventDefault(e);
 
+    },
+
+    getTypesFromComponents : function (types) {
+       var typeStr = '';
     },
 
     getAddressFromComponents: function (addressComponents) {
