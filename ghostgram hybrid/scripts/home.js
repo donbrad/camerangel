@@ -5,38 +5,6 @@
 var homeView = {
 	_radius: 30, // 30 meters or approx 100 ft
 
-	centerPhoto: function(height, width){
-
-		var marginTop = (height / 2);
-		var marginLeft = (width / 2);
-
-		$("#photoViewImage").css("margin-top", "-"+marginTop+"px");
-		$("#photoViewImage").css("margin-left", "-"+marginLeft+"px");
-
-	},
-
-	onShowPhotoView: function(){
-		
-		var photoWidth = $('#photoViewImage').width();
-		var photoHeight = $('#photoViewImage').height();
-		
-		var photoRatio = (photoWidth/photoHeight);
-		
-		// if photo is landscape
-		if (photoRatio > 1){
-			$("#photoViewImage").addClass("photoView-landscape");
-		} else if (photoRatio === 1){
-			$("#photoViewImage").addClass("photoView-square");
-		} else {
-			$("#photoViewImage").addClass("photoView-portrait");
-		}
-		homeView.centerPhoto(photoHeight, photoWidth);
-	},
-
-	onHidePhotoView: function(){
-		$("#photoViewImage").removeClass("photoView-landscape photoView-portrait photoView-square");
-	},
-
 	openLocateMeModal: function () {
 		$('#modalview-locate-me').data('kendoMobileModalView').open();
 
@@ -191,6 +159,11 @@ var homeView = {
 
 		userModel.currentUser.set('currentPlace', '');
 		userModel.currentUser.set('currentPlaceUUID', '');
+	},
+
+	savePhoto: function(){
+		mobileNotify("Added tags");
+		ux.closeModalViewPhotoTag();
 	}
 };
 
@@ -227,12 +200,6 @@ function dismissNotification (e) {
 
 function onBeforeOpenPhoto() {
 	$('#photoImage').attr('src', photoModel.currentPhoto.src);
-}
-
-
-function savePhoto () {
-	mobileNotify("Added tags");
-	ux.closeModalViewPhotoTag();
 }
 
 function pruneNotifications() {

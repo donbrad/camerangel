@@ -184,6 +184,7 @@ var galleryView = {
 
         var photoId = e.dataItem.id, photoUrl = e.dataItem.imageUrl;
         photoModel.currentPhotoModel = photoModel.findPhotoById(photoId);
+
         $('#photoViewImage').attr('src', photoUrl);
         $('#photoTagImage').attr('src', photoUrl);
         $('#photoEditImage').attr('src', photoUrl);

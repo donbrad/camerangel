@@ -521,7 +521,7 @@ function timeSince(date) {
 	if (interval > 1) return interval + "yr";
 
 	interval = Math.floor(seconds / 2592000);
-	if (interval > 1) return interval + "m";
+	if (interval > 1) return interval + "mth";
 
 	interval = Math.floor(seconds / 86400);
 	if (interval >= 1) return interval + "d";
@@ -530,7 +530,7 @@ function timeSince(date) {
 	if (interval >= 1) return interval + "hr";
 
 	interval = Math.floor(seconds / 60);
-	if (interval >= 1) return interval + "min";
+	if (interval >= 1) return interval + "m";
 
 	return Math.floor(seconds) + "s";
 }

@@ -519,11 +519,15 @@ form p {
   border-radius: 50%;
   border: 1px solid #F2EFF0;
   line-height: 1.5;
+  vertical-align: middle;
+  background: #fff;
 }
 .circle-img-sm {
   border-radius: 50%;
   border: 1px solid #F2EFF0;
   line-height: 1.5;
+  vertical-align: middle;
+  background: #fff;
   width: 2rem;
   height: 2rem;
 }
@@ -531,6 +535,8 @@ form p {
   border-radius: 50%;
   border: 1px solid #F2EFF0;
   line-height: 1.5;
+  vertical-align: middle;
+  background: #fff;
   width: 3rem;
   height: 3rem;
 }
@@ -538,6 +544,8 @@ form p {
   border-radius: 50%;
   border: 1px solid #F2EFF0;
   line-height: 1.5;
+  vertical-align: middle;
+  background: #fff;
   width: 4rem;
   height: 4rem;
 }
@@ -545,6 +553,8 @@ form p {
   border-radius: 50%;
   border: 1px solid #F2EFF0;
   line-height: 1.5;
+  vertical-align: middle;
+  background: #fff;
   width: 6rem;
   height: 6rem;
 }
@@ -1379,6 +1389,8 @@ div.footerMenu.km-footer > ul > li > a:active {
   border-radius: 50%;
   border: 1px solid #F2EFF0;
   line-height: 1.5;
+  vertical-align: middle;
+  background: #fff;
   width: 40px;
   height: 40px !important;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);
@@ -1459,16 +1471,25 @@ div.footerMenu.km-footer > ul > li > a:active {
 .photoViewNav,
 .photoViewNavTop,
 .photoViewNavBtm {
-  color: #fff;
+  color: #fff !important;
   padding: 0.5rem;
   position: absolute;
   width: 100%;
   z-index: 99;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.2) !important;
 }
 .photoViewNavTop {
   top: 0px;
   left: 0px;
+  text-align: center;
+}
+#photoViewText {
+  vertical-align: middle;
+  font-size: 16px;
+  font-size: 1rem;
+  background-color: #979797;
+  padding: 0.15rem 0.25rem;
+  border-radius: 3px;
 }
 .photoViewNavBtm {
   bottom: 0px;
@@ -1479,10 +1500,11 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 #photoViewImage {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  z-index: 0;
-  display: block;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 #modalPhotoView > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container,
 #photoView > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
@@ -2561,6 +2583,8 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   border-radius: 50%;
   border: 1px solid #F2EFF0;
   line-height: 1.5;
+  vertical-align: middle;
+  background: #fff;
   width: 3rem;
   height: 3rem;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);

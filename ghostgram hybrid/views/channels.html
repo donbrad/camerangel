@@ -251,7 +251,7 @@
         	<a data-align="left" data-role="button" href="#:back" id="channel-back-button">
             	<img src="images/nav-back.svg" />
             </a>
-            <img src="" id="channelImage" height="32" style="vertical-align: middle; border-radius: 50%"/>
+            <img src="" id="channelImage" height="32" class="circle-img"/>
             <span data-role="view-title"></span>
             <a data-align="right" data-role="button" id="messagePresenceButton" data-rel="drawer" href="#channelPresence"> 
             	<img src="images/group-icon.svg" />
@@ -358,7 +358,7 @@
 		name = contactData.name;
 		var alias = contactData.alias;
 		photoUrl = contactData.photoUrl;
-		var displayName = returnUXPrimaryName(name, alias);
+		var displayName = ux.returnUXPrimaryName(name, alias);
 	#
 	
 	# if (currentChannelModel.privacyMode) {

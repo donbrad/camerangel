@@ -449,7 +449,7 @@
      </div>
 </div>
 	
-<div data-role="modalview" id="modalPhotoView" data-zoom="true"  style="width: 100%; height:100%; display: none;" class="ghostFullModal">
+<div data-role="modalview" id="modalPhotoView" style="width: 100%; height:100%; display: none;" class="ghostFullModal">
 	<div class="fullPhotoModal">
 			<img id="modalPhotoViewImage" src="" />
 	</div>
@@ -458,19 +458,19 @@
     </div>
 </div>	
 
-<div data-role="view" id="photoView" class="fullPhotoModal" data-zoom="true" data-style="width: 100%; height: 100%; display: none;" data-show="homeView.onShowPhotoView">
-	<div class="photoViewBox">
-		<div class="photoViewNavTop">
-			<a data-role="button" class="left" href="#:back" data-click="homeView.onHidePhotoView">
+<div data-role="view" id="photoView" class="fullPhotoModal" data-zoom="true" data-style="width: 100%; height: 100%; display: none;" >
+	<div class="photoViewNavTop" data-role="header">
+			<a data-role="button" class="left" href="#:back">
            		<img src="images/nav-back-light.svg" />
         	</a>
+        	<span id="photoViewText">Photo title</span>
             <a class="right" data-role="button" href="#photoEditor?source=gallery">Edit</a>
             <div class="clearfix"></div>
         </div>
+	<div class="photoViewBox">
 		<img id="photoViewImage" src="" />
-
 	</div>
-	<div class="photoViewNavBtm">
+	<div class="photoViewNavBtm" data-role="footer">
 		<a class="btnClear left" data-role="button" data-click="photoExport">
 			<img class="icon" src="images/icon-share-light.svg" /> 
 		</a>
@@ -596,15 +596,14 @@
 </div>
 
 <!-- Photo tag modal -->
-<div data-role="modalview" id="modalview-photoTag" style="width: 100%; display: none;"  class="appearance ghostModal">
+<div data-role="modalview" id="modalview-photoTag" style="width: 90%; display: none;"  class="appearance">
     <div data-role="header">
         <div data-role="navbar">
             <span>Tag Photo</span>
-                <a data-click="ux.closeModalViewPhotoTag" data-role="button" data-align="left">Cancel</a>
-                <a data-click="savePhoto"  type="button" data-role="button" data-align="right">Save</a>
+            <a data-click="ux.closeModalViewPhotoTag" data-role="button" data-align="left">Cancel</a>
+            <a data-click="homeView.savePhoto"  type="button" data-role="button" data-align="right">Save</a>
 		</div>
 	</div>
-	
      <form id="photoForm">
         <ul data-role="listview" data-style="inset">
             <li>
@@ -617,7 +616,6 @@
                     <input type="search" id="photoTags" placeholder="People, event, location..." />
                 </label>
 			</li>
-            
         </ul>
     </form> 
 </div>

@@ -676,8 +676,9 @@ var channelView = {
 
     onShow : function (e) {
         _preventDefault(e);
+        
         // hide action btn
-        $("#channels > div.footerMenu.km-footer > a").css("display","none");
+        ux.showActionBtn(false, "#channel");
 
         var channelUUID = e.view.params.channel;
 
@@ -1052,8 +1053,8 @@ var channelView = {
         if (target.hasClass('chat-message-photo')) {
         	// Open this img full screen
             var photoUrl = message.data.photo.photo;
-            $('#modalPhotoViewImage').attr('src', photoUrl);
-            $("#modalPhotoView").data("kendoMobileModalView").open();
+            $('#photoViewImage').attr('src', photoUrl);
+            $("#photoView").data("kendoMobileModalView").open();
         }
 
         if (channelView.privacyMode) {

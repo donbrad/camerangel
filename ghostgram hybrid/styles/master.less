@@ -456,6 +456,8 @@ form {
     border-radius: 50%;
     border: 1px solid #F2EFF0;
     line-height: 1.5;
+    vertical-align: middle;
+    background: #fff;
 }
 
 .circle-img-sm {
@@ -1421,18 +1423,27 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 
 .photoViewNav {
-	color: #fff;
+	color: #fff !important;
 	padding: 0.5rem;
 	position: absolute;
 	width: 100%;
 	z-index: 99;
-	background: rgba(0, 0, 0, 0.2);
+	background: rgba(0, 0, 0, 0.2) !important;
 }
 
 .photoViewNavTop {
 	&:extend(.photoViewNav);
 	top: 0px;
 	left: 0px;
+	text-align: center;
+}
+
+#photoViewText {
+	vertical-align: middle;
+	.font-size(16);
+	background-color: @shade-100;
+	padding: 0.15rem 0.25rem;
+	border-radius: 3px;
 }
 
 .photoViewNavBtm {
@@ -1448,10 +1459,15 @@ div.footerMenu.km-footer > ul > li > a:active {
 #photoViewImage {
 	&:extend(.photoMax);
 	position: absolute;
-   	top: 50%;
-   	left: 50%;
-   	z-index: 0;
-   	display: block;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+#photoViewName {
+	//text-align: center;
 }
 
 #modalPhotoView > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container,
