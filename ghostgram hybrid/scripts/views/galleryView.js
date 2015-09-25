@@ -145,12 +145,12 @@ var galleryView = {
     	var $actionBtnP = $("#gallery > div.footerMenu.km-footer > a > span > p");
     	
 		if(photoModel.previewSize === "33%") {
-			$("#gallery > div.footerMenu.km-footer > a > span > img").attr("src", "images/gallery-grid.svg");
+			ux.changeActionBtnImg("#gallery", "gallery-grid");
 			$actionBtnP.text("Grid view");
 			
 			photoModel.previewSize = "100%";
 		} else {
-			$("#gallery > div.footerMenu.km-footer > a > span > img").attr("src", "images/gallery-list.svg");
+			ux.changeActionBtnImg("#gallery", "gallery-list");
 			$actionBtnP.text("List view");
 			photoModel.previewSize = "33%";
 			
@@ -161,17 +161,16 @@ var galleryView = {
 
     selectCategory : function (e){
         _preventDefault(e);
-        var $actionBtn = $("#gallery > div.footerMenu.km-footer > a");
         var index = this.current().index();
         switch (index) {
             case 0:
-            	$actionBtn.css("display", "inline-block");
+            	ux.showActionBtn(true, "#gallery");
                 $('#archive-listview').addClass('hidden');
                 $("#gallery-listview").removeClass("hidden");
                 break;
 
             case 1:
-                $actionBtn.css("display", "none");
+                ux.showActionBtn(false, "#gallery");
                 $('#archive-listview').removeClass('hidden');
                 $("#gallery-listview").addClass('hidden');
                 break;

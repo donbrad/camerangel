@@ -24,17 +24,10 @@ var channelsView = {
 
         $("#channels-listview").kendoMobileListView({
             dataSource: channelModel.channelsDS,
-            template: $("#channels-listview-template").html()
-            /*click: function(e) {
-                var selector = e.target[0].parentElement;
-                if($(selector).hasClass("chat-mainBox") === true || e.target[0].className === "chat-mainBox"){
-                    var channelUrl = "#channel?channel=" + e.dataItem.channelId;
-                    APP.kendo.navigate(channelUrl);
-                }
-            },
+            template: $("#channels-listview-template").html(),
             dataBound: function(e){
-                checkEmptyUIState(channelModel.channelsDS, "#channelListDiv");
-            }*/
+                ux.checkEmptyUIState(channelModel.channelsDS, "#channelListDiv");
+            }
         }).kendoTouch({
             filter: ".chat-mainBox",
             enableSwipe: true,
@@ -84,14 +77,13 @@ var channelsView = {
 
     onShow : function(){
         // set action button
-        $("#channels > div.footerMenu.km-footer > a").attr("href", "#addChannel").css("display","inline-block");
-
-        //channelsView.checkEmpty();
+        ux.showActionBtn(true, "#channels", "#addChannel")
+        ux.checkEmptyUIState(channelModel.channelsDS, "#channels");
     },
 
     onBeforeHide: function(){
     	// set action button
-		$("#channels > div.footerMenu.km-footer > a").css("display","none");
+		ux.showActionBtn(false, "#channels")
     },
 
     editChannel : function (e) {
@@ -1208,14 +1200,7 @@ var channelView = {
     messageMovie : function (e) {
         _preventDefault(e);
         mobileNotify("Chat Movie isn't wired up yet");
-    }/*,
-
-    back2Channel: function(e){
-    	APP.kendo.navigate('#channel');  Can't call #channel without a channelID!!! Jordan please add TODO don on any code changes or skype me
     }
-*/
-
-
 
 };
 

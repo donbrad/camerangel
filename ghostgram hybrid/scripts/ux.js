@@ -52,6 +52,25 @@ var ux = {
 	    }
 	},
 
+	hideKeyboard: function(){
+		if (window.navigator.simulator === false) {
+			// hide keyboard
+			cordova.plugins.Keyboard.close();
+		}
+	},
+
+	showActionBtn: function(show, view, href){
+		if (show){
+			$(view + " > div.footerMenu.km-footer > a").css("display","inline-block").attr("href", href);
+		} else {
+			$(view + " > div.footerMenu.km-footer > a").css("display","none").removeAttr("href");
+		}
+	},
+
+	changeActionBtnImg: function(view, img){
+		$(view + " > div.footerMenu.km-footer > a > span > img").attr("src", "images/" +img+".svg");
+	},
+
 	closeModalPhotoView: function(e) {
 		_preventDefault(e);
      	$('#modalPhotoView').kendoMobileModalView("close");

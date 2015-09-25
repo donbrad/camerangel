@@ -317,7 +317,7 @@ function onShowHome(e) {
     APP.models.presence.current.bind('change' , syncPresence);
 
     // Hide action button on home
-    $("div.footerMenu.km-footer > a").css("display", "none");
+    ux.showActionBtn(false, "#home");
 }
 
 function setUserStatusUI(e){
@@ -454,11 +454,8 @@ function homeSignin (e) {
             userModel.currentUser.bind('change', userModel.sync);
             userModel.fetchParseData();
 
-			if (window.navigator.simulator === false) {
-
-				// hide keyboard
-				cordova.plugins.Keyboard.close();
-			}
+            // hide keyboard
+			ux.hideKeyboard();
 
 
             APP.kendo.navigate('#home');

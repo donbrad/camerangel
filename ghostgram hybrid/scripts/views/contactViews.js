@@ -148,9 +148,8 @@ var contactsView = {
         contactModel.contactListDS.data(contactModel.contactsDS.data());
         //APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
 
-
         // set action button
-        $("#contacts > div.footerMenu.km-footer > a").attr("href", "#contactImport").css("display", "inline-block");
+    	ux.showActionBtn(true, "#contacts", "#contactImport");
     },
 
     // All update the ContactListDS item with current changes
@@ -160,7 +159,7 @@ var contactsView = {
     },
 
     onBeforeHide: function(){
-    	$("#contacts > div.footerMenu.km-footer > a").css("display", "none");
+    	ux.showActionBtn(false, "#contacts");
     },
 
     updateSearchUX: function (event) {

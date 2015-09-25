@@ -35,7 +35,8 @@ var placesView = {
         _preventDefault(e);
 
         // update actionBtn
-        $("#places > div.footerMenu.km-footer > a").removeAttr('href').css("display", "none");
+        ux.showActionBtn(false, "#places");
+        //$("#places > div.footerMenu.km-footer > a").removeAttr('href').css("display", "none");
 
 
         navigator.geolocation.getCurrentPosition( function (position) {
@@ -46,7 +47,7 @@ var placesView = {
                 mobileNotify("No places match your current location");
                 var findPlaceUrl = "#findPlace?lat="+ lat + "&lng=" +  lng +"&returnview=places";
                 // No current places match the current location
-                $("#places > div.footerMenu.km-footer > a").attr("href", findPlaceUrl).css("display", "inline-block");
+            	ux.showActionBtn(true, "#places", findPlaceUrl);
             } else {
                 // set placesView.placeListDS to results
             }
@@ -58,7 +59,7 @@ var placesView = {
         //_preventDefault(e);
 
         // update actionBtn
-        $("#places > div.footerMenu.km-footer > a").removeAttr('href').css("display", "none");
+        ux.showActionBtn(false, "#places");
     }
 
 };
@@ -99,8 +100,6 @@ var findPlacesView = {
 
     onShow : function (e) {
         _preventDefault(e);
-
-        $("#findPlaces > div.footerMenu.km-footer > a").removeAttr('href').css("display", "none");
 
         var lat = findPlacesView._lat, lng = findPlacesView._lng;
 
