@@ -41,7 +41,7 @@ var mapModel = {
             if (lat !== 0 && lng !== 0) {
                 window.localStorage.setItem('ggLastPosition', JSON.stringify({lat: lat, lng: lng}));
                 mapModel.lastPosition.lat = lat;
-                mapModel.lastPostion.lng = lng;
+                mapModel.lastPosition.lng = lng;
 
                 mapModel.reverseGeoCode(lat, lng, function (results,error) {
                     if (results !== null) {

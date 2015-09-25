@@ -425,7 +425,7 @@
 	document.addEventListener('deviceready', function() {
 
 		deviceModel.getAppState();
-		
+
 		deviceModel.getNetworkState();
 
 		deviceModel.init();
