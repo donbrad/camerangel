@@ -13,14 +13,21 @@ var mapModel = {
     gpsOptions : {enableHighAccuracy : true, timeout: 5000, maximumAge: 10000},
     lastPosition: {},
 
-    geocoder : new google.maps.Geocoder(),
+    geocoder : null,
     mapOptions : {zoom: 12,  mapTypeId : google.maps.MapTypeId.ROADMAP},
-    googleMap : new google.maps.Map(document.getElementById('map-mapdiv'), this.mapOptions),
-    googlePlaces : new google.maps.places.PlacesService(this.googleMap),
+    googleMap : null,
+    googlePlaces : null,
 
 
     init: function () {
+
+
+        mapModel.geocoder =  new google.maps.Geocoder();
+        mapModel.googleMap = new google.maps.Map(document.getElementById('map-mapdiv'), mapModel.mapOptions);
+        mapModel.googlePlaces = new google.maps.places.PlacesService(mapModel.googleMap);
+
         var location = window.localStorage.getItem('ggLastPosition');
+
         if (location !== undefined && location !== null) {
             mapModel.lastPosition = JSON.parse(location);
         } else {
@@ -29,6 +36,7 @@ var mapModel = {
                 lng: 0
             };
         }
+
         mapModel.getCurrentPosition(function(lat,lng) {
             if (lat !== 0 && lng !== 0) {
                 window.localStorage.setItem('ggLastPosition', JSON.stringify({lat: lat, lng: lng}));
