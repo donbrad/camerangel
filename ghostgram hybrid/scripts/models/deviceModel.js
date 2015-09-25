@@ -11,6 +11,7 @@ var deviceModel = {
     fileDirectory: '',
     tempDirectory: '',
     appVersion: '',
+    deviceIsReady: false,
 
 
     state: {
@@ -33,6 +34,8 @@ var deviceModel = {
 
 
     init: function() {
+        deviceModel.deviceIsReady = true;
+
         if (window.navigator.simulator !== true) {
             window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
                 function (fileSystem) {
@@ -58,6 +61,7 @@ var deviceModel = {
                     mobileNotify("Filesystem error : " + JSON.stringify(error));
                 });
         }
+        mapModel.init();
     },
 
     resetDeviceState: function ()  {
