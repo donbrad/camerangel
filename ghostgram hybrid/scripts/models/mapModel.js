@@ -89,15 +89,12 @@ var mapModel = {
     getCurrentPosition : function (callback) {
 
         var options = mapModel.gpsOptions;
-        navigator.geolocation.getCurrentPosition( function (position, error, options ) {
-            if (error.code !== 0) {
-               mobileNotify("GPS error" + error.message)
-                callback(0, 0);
-            } else {
-                var lat = position.coords.latitude.toFixed(6), lng = position.coords.longitude.toFixed(6);
-                callback(lat,lng);
-            }
-
-        });
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var lat = position.coords.latitude.toFixed(6), lng = position.coords.longitude.toFixed(6);
+            callback(lat, lng);
+        }, function (error) {
+            mobileNotify("GPS error" + error.message);
+            callback(0, 0);
+        }, options);
     }
 };
