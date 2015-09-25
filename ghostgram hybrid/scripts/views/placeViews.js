@@ -167,7 +167,7 @@ var findPlacesView = {
             radius: homeView._radius,
             types: ['establishment']
         }, function (placesResults, placesStatus) {
-            APP.map.geocoder.geocode({ 'latLng': latlng }, function (geoResults, geoStatus) {
+           mapModel.geocoder.geocode({ 'latLng': latlng }, function (geoResults, geoStatus) {
                 if (geoStatus !== google.maps.GeocoderStatus.OK) {
                     mobileNotify('Google geocoding service error!');
                     return;
