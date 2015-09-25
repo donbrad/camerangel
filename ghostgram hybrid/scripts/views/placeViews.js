@@ -156,7 +156,7 @@ var findPlacesView = {
 
     updatePlaces : function (lat, lng) {
         var latlng = new google.maps.LatLng(lat, lng);
-        var places = APP.map.googlePlaces;
+        var places = mapModel.googlePlaces;
         var ds = findPlacesView.placesDS;
 
         // empty current data
