@@ -48,15 +48,7 @@ var mapModel = {
 
                     }
                 });
-                // See if the new position matches an existing place
-                var places = placesView.matchLocationToUserPlace(lat, lng);
-                if (places.length === 0) {
-                    // No matching places -- get a list of places that match the coord and prompt user to select one
-                } else if (places.length === 1) {
-                    // Just 1 matching place so prompt the user to check in there
-                } else {
-                    // Multiple place matches for this coord, prompt the user to select one.
-                }
+
             }
         })
 
