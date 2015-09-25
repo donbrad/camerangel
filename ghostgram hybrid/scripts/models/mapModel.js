@@ -2,6 +2,7 @@
  * Created by donbrad on 9/24/15.
  * mapModel.js
  */
+'use strict';
 
 var mapModel = {
 

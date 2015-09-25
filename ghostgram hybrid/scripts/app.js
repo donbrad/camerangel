@@ -540,7 +540,7 @@
 		});
         */
 
-		
+
 
 		autosize($('#ghostEmailEditor'));
 		/* $(".email-Autocomplete").emailautocomplete({
