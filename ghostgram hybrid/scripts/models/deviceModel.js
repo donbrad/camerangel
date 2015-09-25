@@ -61,7 +61,7 @@ var deviceModel = {
                     mobileNotify("Filesystem error : " + JSON.stringify(error));
                 });
         }
-        mapModel.init();
+
     },
 
     resetDeviceState: function ()  {

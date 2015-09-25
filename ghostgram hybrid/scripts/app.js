@@ -457,9 +457,11 @@
 
 		userModel.initParse();
 
+		mapModel.init();
+
 		pruneNotifications();
 
-		APP.geoLocator.getCurrentPosition(function(position, error) {
+		/*APP.geoLocator.getCurrentPosition(function(position, error) {
 			if (error === null) {
 				APP.location.position = {
 					lat: position.coords.latitude,
@@ -490,7 +492,7 @@
 			}
 
 		});
-
+*/
 		// Uncomment to load all device contacts at initialization - major performance hit!!
 		//contactModel.importDeviceContacts();
 
@@ -538,10 +540,7 @@
 		});
         */
 
-		//$('.clearable').clearSearch();
-
-		// Enable ghost caption
-		//$('.wraption.img').wraption();
+		
 
 		autosize($('#ghostEmailEditor'));
 		/* $(".email-Autocomplete").emailautocomplete({
