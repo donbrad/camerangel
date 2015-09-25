@@ -425,10 +425,7 @@
 	document.addEventListener('deviceready', function() {
 
 		deviceModel.getAppState();
-
-		APP.geoLocator = new GeoLocator();
-		APP.location = {};
-
+		
 		deviceModel.getNetworkState();
 
 		deviceModel.init();
