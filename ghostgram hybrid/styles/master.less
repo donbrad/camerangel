@@ -4300,7 +4300,6 @@ div.contactListBox.activeContact > div > div > ul {
 		width: 80%;
 		padding-left: 0px !important;
 		padding-right: 1rem !important;
-		padding-top: 0.25rem !important;
 	}
 	span {
 		float: left;
@@ -4312,7 +4311,7 @@ div.contactListBox.activeContact > div > div > ul {
 	}
 	.searchIcon {
 		float: left;
-		padding-top: 0.75em;
+		padding-top: 1em;
 		color: @shade-100;
 		width: 12%;
 		text-align: center;
@@ -4329,8 +4328,7 @@ div.contactListBox.activeContact > div > div > ul {
 	.enterSearch {
 		padding-top: 8px;
 		padding-bottom: 8px;
-		position: absolute;
-		width: 16%;
+		width: 18%;
 		span {
 			padding-top: 0px;
 			color: @shade-200;
@@ -4353,6 +4351,10 @@ div.contactListBox.activeContact > div > div > ul {
 
 .km-material .km-buttongroup .km-button {
 	&:extend(.btnStyle);
+}
+
+.km-material input:focus {
+	color: @black;
 }
 
 /* Chat styles */
