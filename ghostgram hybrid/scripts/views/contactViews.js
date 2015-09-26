@@ -18,9 +18,12 @@ var contactsView = {
     onInit : function (e) {
         _preventDefault(e);
 
-        // set search bar
-        var scroller = e.view.scroller;
-        scroller.scrollTo(0,-44);
+
+        $('#contactsSearchQuery').clearSearch({
+	        callback: function() {
+	        	// todo - wire search
+	        }
+	    });
 
         contactModel.deviceQueryActive = false;
 
@@ -109,7 +112,7 @@ var contactsView = {
 
             },
             dataBound: function(e){
-                checkEmptyUIState(contactModel.contactListDS, "#contactListDiv >");
+                ux.checkEmptyUIState(contactModel.contactListDS, "#contactListDiv >");
             }
 
         }).kendoTouch({
@@ -119,14 +122,15 @@ var contactsView = {
             swipe: function(e) {
                 // Need to set current contact before exposing editing ux!
                 var selection = e.sender.events.currentTarget;
+                
                 if(e.direction === "left"){
                     var otherOpenedLi = $(".contact-active");
                     $(otherOpenedLi).velocity({translateX:"0"},{duration: "fast"}).removeClass("contact-active");
                     
-                    if($(selection).hasClass("private") !== true && $(window).width() < 375){
-                    	$(selection).velocity({translateX:"-65%"},{duration: "fast"}).addClass("contact-active");
+                    if($(selection).hasClass("member") && $(window).width() < 375){
+                    	$(selection).velocity({translateX:"-40%"},{duration: "fast"}).addClass("contact-active");
                     } else {
-                    	$(selection).velocity({translateX:"-55%"},{duration: "fast"}).addClass("contact-active");
+                    	$(selection).velocity({translateX:"-65%"},{duration: "fast"}).addClass("contact-active");
                     }
                 }
                 if (e.direction === "right" && $(selection).hasClass("contact-active")){
@@ -147,9 +151,11 @@ var contactsView = {
         contactModel.contactListDS.data(contactModel.contactsDS.data());
         //APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
 
+        // set search bar
+        ux.scrollUpSearch(e);
 
         // set action button
-        $("#contacts > div.footerMenu.km-footer > a").attr("href", "#contactImport").css("display", "inline-block");
+    	ux.showActionBtn(true, "#contacts", "#contactImport");
     },
 
     // All update the ContactListDS item with current changes
@@ -159,7 +165,7 @@ var contactsView = {
     },
 
     onBeforeHide: function(){
-    	$("#contacts > div.footerMenu.km-footer > a").css("display", "none");
+    	ux.showActionBtn(false, "#contacts");
     },
 
     updateSearchUX: function (event) {
@@ -842,7 +848,7 @@ var contactActionView = {
         //Show the status update div
 
         contactModel.updateContactStatus(contactId, function(contact) {
-
+         
             if (contact === undefined) {
                 // This is a new contact.
                 contact = contactModel.findContactByUUID(contactId);
@@ -850,9 +856,8 @@ var contactActionView = {
             var contactName = contact.name;
             var contactAlias = contact.alias;
             var contactVerified = contact.phoneVerified;
-
-            formatNameAlias(contactName, contactAlias, "#modalview-contactActions");
-
+            var contactIsAvailable = contact.isAvailable;
+           
             contactActionView._activeContact.set('name', contactName);
             contactActionView._activeContact.set('alias', contactAlias);
             if (contact.contactPhoto !== undefined && contact.contactPhoto !== null) {
@@ -864,19 +869,40 @@ var contactActionView = {
             contactActionView._activeContact.set('statusMessage', contact.statusMessage);
             contactActionView._activeContact.set('currentPlace', contact.currentPlace);
             contactActionView._activeContact.set('isAvailable', contact.isAvailable);
+
+            // Set name/alias layout
+            ux.formatNameAlias(contactName, contactAlias, "#modalview-contactActions");
+
+            // set verified status
             if(contactVerified){
                 $("#currentContactVerified").removeClass("hidden");
             } else {
                 $("#currentContactVerified").addClass("hidden");
             }
+            // set available 
+            if(contactIsAvailable){
+            	$(".statusContactCard-icon").attr("src", "images/status-available.svg");
+            }
+            // set profile img
+            $("#contactProfileImg").attr("src", contact.photo);
 
         });
-
+		
         $("#modalview-contactActions").data("kendoMobileModalView").open();
+
+        $("#contactProfileImg").velocity("fadeIn", {duration: 300, display: "inline-block"});
+        $("#contactStatusImg").velocity("fadeIn", {duration: 300, display: "inline-block"});
+        
+        $("#modalview-contactActions .modal-top h3").velocity({translateY: "20%", opacity: 1}, {delay: 300, duration: 500, display: "inline-block"});
+        $("#modalview-contactActions .modal-top p").velocity({translateY: "20%", opacity: 1}, {delay: 600, duration: 500, display: "inline-block"});
+        $("#modalview-contactActions .modal-bottom .hasMotion").velocity("fadeIn", {duration: 500, delay: 700});
     },
+
 
     closeModal : function () {
         $("#modalview-contactActions").data("kendoMobileModalView").close();
+
+        $("#modalview-contactActions .preMotionUp, #modalview-contactActions .hasMotion").css("display", "none").velocity({translateY: "0%"});
     },
 
 

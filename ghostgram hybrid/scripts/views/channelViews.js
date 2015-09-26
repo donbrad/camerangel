@@ -17,24 +17,18 @@ var channelsView = {
     onInit : function (e) {
         e.preventDefault();
 
-        // set search bar
-        var scroller = e.view.scroller;
-        scroller.scrollTo(0,-44);
-
+        $('#channelsSearchQuery').clearSearch({
+	        callback: function() {
+	        	// todo - wire search
+	        }
+	    });
 
         $("#channels-listview").kendoMobileListView({
             dataSource: channelModel.channelsDS,
-            template: $("#channels-listview-template").html()
-            /*click: function(e) {
-                var selector = e.target[0].parentElement;
-                if($(selector).hasClass("chat-mainBox") === true || e.target[0].className === "chat-mainBox"){
-                    var channelUrl = "#channel?channel=" + e.dataItem.channelId;
-                    APP.kendo.navigate(channelUrl);
-                }
-            },
+            template: $("#channels-listview-template").html(),
             dataBound: function(e){
-                checkEmptyUIState(channelModel.channelsDS, "#channelListDiv");
-            }*/
+                ux.checkEmptyUIState(channelModel.channelsDS, "#channelListDiv");
+            }
         }).kendoTouch({
             filter: ".chat-mainBox",
             enableSwipe: true,
@@ -74,24 +68,17 @@ var channelsView = {
 
     },
 
-    checkEmpty : function () {
-        if (channelModel.channelsDS.total() > 0) {
-            $('#channel-listview .emptyState').addClass('hidden');
-        } else {
-            $('#channel-listview .emptyState').removeClass('hidden');
-        }
-    },
-
-    onShow : function(){
+    onShow : function(e){
+    	//scroll up search 
+    	ux.scrollUpSearch(e);
         // set action button
-        $("#channels > div.footerMenu.km-footer > a").attr("href", "#addChannel").css("display","inline-block");
-
-        //channelsView.checkEmpty();
+        ux.showActionBtn(true, "#channels", "#addChannel")
+        ux.checkEmptyUIState(channelModel.channelsDS, "#channels");
     },
 
     onBeforeHide: function(){
     	// set action button
-		$("#channels > div.footerMenu.km-footer > a").css("display","none");
+		ux.showActionBtn(false, "#channels")
     },
 
     editChannel : function (e) {
@@ -676,8 +663,9 @@ var channelView = {
 
     onShow : function (e) {
         _preventDefault(e);
+        
         // hide action btn
-        $("#channels > div.footerMenu.km-footer > a").css("display","none");
+        ux.showActionBtn(false, "#channel");
 
         var channelUUID = e.view.params.channel;
 
@@ -736,11 +724,9 @@ var channelView = {
           channelView.contactData = channelView.buildContactArray(thisChannel.members);
           //Todo: remove currentContactModel
           currentChannelModel.currentContactModel = thisContact;
-          if (thisChannel.isPrivate) {
-              $('#channelImage').attr('src', thisContact.photo);
-          } else {
-              $('#channelImage').attr('src', '');
-          }
+          
+          // Show contact img in header
+          $('#channelImage').attr('src', thisContact.photo).removeClass("hidden");
 
           privateChannel.open(channelUUID, thisUser.userUUID, thisUser.alias, name, userKey, privateKey, contactUUID, contactKey, thisContact.name);
         /*  thisChannelHandler.onMessage(channelView.onChannelRead);
@@ -779,6 +765,9 @@ var channelView = {
           //*** Group Channel ***
           $('#messagePresenceButton').show();
           // Provision a group channel
+
+          // clear header img
+          $('#channelImage').attr('src', '').addClass("hidden");
 
           groupChannel.open(channelUUID, thisUser.userUUID, thisUser.name, thisUser.alias);
           channelView.sendMessageHandler = groupChannel.sendMessage;
@@ -1052,8 +1041,8 @@ var channelView = {
         if (target.hasClass('chat-message-photo')) {
         	// Open this img full screen
             var photoUrl = message.data.photo.photo;
-            $('#modalPhotoViewImage').attr('src', photoUrl);
-            $("#modalPhotoView").data("kendoMobileModalView").open();
+            $('#photoViewImage').attr('src', photoUrl);
+            $("#photoView").data("kendoMobileModalView").open();
         }
 
         if (channelView.privacyMode) {
@@ -1207,14 +1196,7 @@ var channelView = {
     messageMovie : function (e) {
         _preventDefault(e);
         mobileNotify("Chat Movie isn't wired up yet");
-    }/*,
-
-    back2Channel: function(e){
-    	APP.kendo.navigate('#channel');  Can't call #channel without a channelID!!! Jordan please add TODO don on any code changes or skype me
     }
-*/
-
-
 
 };
 

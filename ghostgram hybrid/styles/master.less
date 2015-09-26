@@ -80,6 +80,15 @@
   margin-top: 50%; 
 }
 
+.hasMotion {
+	display: none;
+	opacity: 0;
+}
+ 
+.preMotionUp {
+	display: none;
+}
+
 .pad {
 	padding: 1rem;
 }
@@ -109,7 +118,7 @@
 }
 
 .appBox {
-	.pad;
+	padding: 0.5rem 1rem;
 	h1, h2, h3, h4, h5, p {
 		margin-left: 0px;
 		margin-right: 0px;
@@ -422,6 +431,11 @@ form {
 	vertical-align: middle;
 }
 
+.loading-icon {
+	height: 1rem;
+	vertical-align: middle;
+}
+
 .line {
     border: 1px solid rgba(0, 0, 0, 0.12);
 }
@@ -442,6 +456,8 @@ form {
     border-radius: 50%;
     border: 1px solid #F2EFF0;
     line-height: 1.5;
+    vertical-align: middle;
+    background: #fff;
 }
 
 .circle-img-sm {
@@ -1407,18 +1423,27 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 
 .photoViewNav {
-	color: #fff;
+	color: #fff !important;
 	padding: 0.5rem;
 	position: absolute;
 	width: 100%;
 	z-index: 99;
-	background: rgba(0, 0, 0, 0.2);
+	background: rgba(0, 0, 0, 0.2) !important;
 }
 
 .photoViewNavTop {
 	&:extend(.photoViewNav);
 	top: 0px;
 	left: 0px;
+	text-align: center;
+}
+
+#photoViewText {
+	vertical-align: middle;
+	.font-size(16);
+	background-color: @shade-100;
+	padding: 0.15rem 0.25rem;
+	border-radius: 3px;
 }
 
 .photoViewNavBtm {
@@ -1434,10 +1459,15 @@ div.footerMenu.km-footer > ul > li > a:active {
 #photoViewImage {
 	&:extend(.photoMax);
 	position: absolute;
-   	top: 50%;
-   	left: 50%;
-   	z-index: 0;
-   	display: block;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+#photoViewName {
+	//text-align: center;
 }
 
 #modalPhotoView > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container,
@@ -2209,6 +2239,10 @@ a:hover {
 	left: 54%;
 }
 
+.contactStatusMessage {
+	font-style: italic;
+}
+
 #menuSetting {
     margin-top: 40px;
 }
@@ -2749,14 +2783,17 @@ div.chat-message-user-content.clearfix > p {
     vertical-align: middle;
     margin: 0px !important;
 }
+
+#newuserhome > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent {
+	background: url(../images/pattern-bk.png) no-repeat center center fixed; 
+  	-webkit-background-size: cover;
+  	-moz-background-size: cover;
+  	-o-background-size: cover;
+  	background-size: cover;
+}
+
 .newuserBox {
-    width: 100%;
-    background-color: #27476E;
-    height: 150px;
-    position: relative;
-    top: 0px;
-    color: #fff;
-    .shadow;
+    
     h1 {
     	margin-bottom: 0px;
     	padding-top: 1rem;
@@ -2767,14 +2804,16 @@ div.chat-message-user-content.clearfix > p {
 }
 #newuser-ghost {
     position: absolute;
-    right: 0px;
-    top: 20px;
+    left: 1rem;
+    top: 7.5%;
+    margin-bottom: 3rem;
 }
 
 .loginBox {
-    position: relative;
-    top: 0px;
+    position: absolute;
+    top: 30%;
     margin-top: 1rem;
+    left: 2.5%;
 }
 div.loginBox > form > div > ul {
     margin: 0px;
@@ -3373,6 +3412,10 @@ div.loginBox > form > div > ul > li {
 
 #contactSecondName {
 	color: #fff;
+}
+
+#contactActions-status {
+	text-align: center;
 }
 
 .contact-connections {
@@ -4179,11 +4222,10 @@ div.contactListBox.activeContact > div > div > ul {
 
 .km-material input, .km-material select, .km-material textarea, .km-material .k-dropdown .k-input, .km-material input[type=password], .km-material input[type=search], .km-material input[type=number], .km-material input[type=tel], .km-material input[type=url], .km-material input[type=email], .km-material input[type=text]:not(.k-input), .km-root .km-material textarea {
 	color: @black;
-	padding: 0px;
 }
 
 .km-material input[type=password], .km-material input[type=search], .km-material input[type=number], .km-material input[type=tel], .km-material input[type=url], .km-material input[type=email], .km-material input[type=month], .km-material input[type=color], .km-material input[type=week], .km-material input[type=date], .km-material input[type=time], .km-material input[type=datetime], .km-material input[type=datetime-local], .km-material input[type=text]:not(.k-input), .km-material select:not([multiple]), .km-material .k-dropdown, .km-material textarea {
-	padding: 0px;
+	
 }
 
 .k-autocomplete, .k-combobox, .k-datepicker, .k-timepicker, .k-datetimepicker, .k-colorpicker, .k-numerictextbox, .k-dropdown, .k-selectbox, .k-textbox, .k-toolbar .k-split-button {
@@ -4258,7 +4300,6 @@ div.contactListBox.activeContact > div > div > ul {
 		width: 80%;
 		padding-left: 0px !important;
 		padding-right: 1rem !important;
-		padding-top: 0.25rem !important;
 	}
 	span {
 		float: left;
@@ -4270,7 +4311,7 @@ div.contactListBox.activeContact > div > div > ul {
 	}
 	.searchIcon {
 		float: left;
-		padding-top: 0.75em;
+		padding-top: 1em;
 		color: @shade-100;
 		width: 12%;
 		text-align: center;
@@ -4287,8 +4328,7 @@ div.contactListBox.activeContact > div > div > ul {
 	.enterSearch {
 		padding-top: 8px;
 		padding-bottom: 8px;
-		position: absolute;
-		width: 16%;
+		width: 18%;
 		span {
 			padding-top: 0px;
 			color: @shade-200;
@@ -4313,12 +4353,17 @@ div.contactListBox.activeContact > div > div > ul {
 	&:extend(.btnStyle);
 }
 
+.km-material input:focus {
+	color: @black;
+}
+
 /* Chat styles */
 
 #messages-listview li {
 	width: 100%;
 	padding-right: 1rem !important;
 	padding-left: 1rem !important;
+
 }
 
 .chat-message {

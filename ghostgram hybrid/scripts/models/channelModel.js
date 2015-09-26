@@ -272,7 +272,7 @@ var channelModel = {
         channel.setACL(userModel.parseACL);
         channel.save(null, {
             success: function(channel) {
-                //closeModalViewAddChannel();
+                //ux.closeModalViewAddChannel();
                 mobileNotify('Added private channel : ' + channel.get('name'));
             },
             error: function(channel, error) {

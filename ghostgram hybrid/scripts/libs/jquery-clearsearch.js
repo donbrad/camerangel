@@ -37,20 +37,17 @@
 (function($) {
     $.fn.clearSearch = function(options) {
         var settings = $.extend({
-            'clearClass' : 'clear_input',
+            'clearClass' : 'btnClear-grey',
             'focusAfterClear' : true,
-            'linkText' : '&times;'
+            'linkText' : 'clear'
         }, options);
         return this.each(function() {
             var $this = $(this), btn,
-                divClass = settings.clearClass + '_div';
+                divClass = settings.clearClass;
 
-            if (!$this.parent().hasClass(divClass)) {
-                $this.wrap('<div style="position: relative;" class="'
-                    + divClass + '">' + $this.html() + '</div>');
-                $this.after('<a style="position: absolute; cursor: pointer; color: #2e2e2e;" class="'
-                    + settings.clearClass + '">' + settings.linkText + '</a>');
-            }
+                $this.after('<span class="enterSearch"><a class="'
+                    + settings.clearClass + '">' + settings.linkText + '</a></span>');
+   
             btn = $this.next();
 
             function clearField() {
@@ -70,7 +67,7 @@
                 } else {
                     btn.hide();
                 }
-                update();
+                //update();
             }
 
             function hasText() {

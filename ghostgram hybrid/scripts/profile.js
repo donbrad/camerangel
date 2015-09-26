@@ -8,7 +8,7 @@ function closeChooseGhost() {
 
 function onProfileShow(){
 	// format phone number
-	 showFormatedPhone();
+	 ux.showFormatedPhone();
 }
 
 function toggleProfilePhoto(e) {
@@ -251,5 +251,5 @@ function onInitProfile(e) {
         $("#verified-phone").removeClass("hidden");
     }
     
-    showFormatedPhone();
+    ux.showFormatedPhone();
 }

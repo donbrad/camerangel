@@ -5,38 +5,6 @@
 var homeView = {
 	_radius: 30, // 30 meters or approx 100 ft
 
-	centerPhoto: function(height, width){
-
-		var marginTop = (height / 2);
-		var marginLeft = (width / 2);
-
-		$("#photoViewImage").css("margin-top", "-"+marginTop+"px");
-		$("#photoViewImage").css("margin-left", "-"+marginLeft+"px");
-
-	},
-
-	onShowPhotoView: function(){
-		
-		var photoWidth = $('#photoViewImage').width();
-		var photoHeight = $('#photoViewImage').height();
-		
-		var photoRatio = (photoWidth/photoHeight);
-		
-		// if photo is landscape
-		if (photoRatio > 1){
-			$("#photoViewImage").addClass("photoView-landscape");
-		} else if (photoRatio === 1){
-			$("#photoViewImage").addClass("photoView-square");
-		} else {
-			$("#photoViewImage").addClass("photoView-portrait");
-		}
-		homeView.centerPhoto(photoHeight, photoWidth);
-	},
-
-	onHidePhotoView: function(){
-		$("#photoViewImage").removeClass("photoView-landscape photoView-portrait photoView-square");
-	},
-
 	openLocateMeModal: function () {
 		$('#modalview-locate-me').data('kendoMobileModalView').open();
 
@@ -191,6 +159,27 @@ var homeView = {
 
 		userModel.currentUser.set('currentPlace', '');
 		userModel.currentUser.set('currentPlaceUUID', '');
+	},
+
+	savePhoto: function(){
+		mobileNotify("Added tags");
+		ux.closeModalViewPhotoTag();
+	},
+
+	onInitHome: function(e) {
+		_preventDefault(e);
+
+
+		if (userModel.currentUser.currentPlace !== '') {
+			$('#checked-in-place > span').html(userModel.currentUser.currentPlace);
+			$('#checked-in-place').show();
+		}
+
+		 $('#homeSearchQuery').clearSearch({
+	        callback: function() {
+	        	// todo - wire search
+	        }
+	    });
 	}
 };
 
@@ -229,30 +218,12 @@ function onBeforeOpenPhoto() {
 	$('#photoImage').attr('src', photoModel.currentPhoto.src);
 }
 
-
-function savePhoto () {
-	mobileNotify("Added tags");
-	closeModalViewPhotoTag();
-}
-
 function pruneNotifications() {
 	if 	( deviceModel.state.phoneVerified) {
 		notificationModel.deleteNotification('verifyphone');
 	}
 
 }
-
-function onInitHome(e) {
-	if (e !== undefined && e.preventDefault !== undefined){
-		e.preventDefault();
-	}
-
-	if (userModel.currentUser.currentPlace !== '') {
-		$('#checked-in-place > span').html(userModel.currentUser.currentPlace);
-		$('#checked-in-place').show();
-	}
-}
-
 
 function initSignUp() {
 	// Simple phone mask - http://jsfiddle.net/mykisscool/VpNMA/
@@ -333,7 +304,10 @@ function onShowSignIn(e){
 }
 
 function onShowHome(e) {
-	e.preventDefault();
+	_preventDefault(e);
+
+	// set search bar
+    ux.scrollUpSearch(e);
 
     // set verified ui for start screen 
     if(userModel.currentUser.phoneVerified) {
@@ -350,7 +324,7 @@ function onShowHome(e) {
     APP.models.presence.current.bind('change' , syncPresence);
 
     // Hide action button on home
-    $("div.footerMenu.km-footer > a").css("display", "none");
+    ux.showActionBtn(false, "#home");
 }
 
 function setUserStatusUI(e){
@@ -429,7 +403,7 @@ function homeSignin (e) {
    Parse.User.logIn(username,password , {
         success: function(user) {
         // Do stuff after successful login.
-            closeModalViewLogin();
+            ux.closeModalViewLogin();
             // Clear sign in form
             $("#home-signin-username, #home-signin-password").val("");
             userModel.parseUser = user;
@@ -487,11 +461,8 @@ function homeSignin (e) {
             userModel.currentUser.bind('change', userModel.sync);
             userModel.fetchParseData();
 
-			if (window.navigator.simulator === false) {
-
-				// hide keyboard
-				cordova.plugins.Keyboard.close();
-			}
+            // hide keyboard
+			ux.hideKeyboard();
 
 
             APP.kendo.navigate('#home');
@@ -742,7 +713,7 @@ function sendSupportRequest(e) {
     support.save(null, {
         success: function(support) {
             mobileNotify("You support request was sent. Thank you!");
-            closeModalViewSupport();
+            ux.closeModalViewSupport();
             APP.models.sync.requestActive = false;
         },
         error: function(support, error) {
@@ -895,7 +866,7 @@ function homeRecoverPassword(e) {
 	Parse.User.requestPasswordReset(emailAddress, {
 		success: function() {
 			mobileNotify("Sent password recovery to " + emailAddress);
-			closeModalViewRecoverPassword();
+			ux.closeModalViewRecoverPassword();
 		},
 		error: function(error) {
 			// Show the error message somewhere
@@ -1048,7 +1019,7 @@ function onShowProfileStatus(e){
 	var availableSwitch = $("#home-status-switch").data("kendoMobileSwitch");
 	// Set profile status
 
-	formatNameAlias(name, alias, "#profilePhotoForm");
+	ux.formatNameAlias(name, alias, "#profilePhotoForm");
 	
 	$("#profileStatusMessage").text(status);
 	if(verified){
