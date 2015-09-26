@@ -71,6 +71,11 @@ var ux = {
 		$(view + " > div.footerMenu.km-footer > a > span > img").attr("src", "images/" +img+".svg");
 	},
 
+	scrollUpSearch: function(e){
+		var scroller = e.view.scroller;
+    	scroller.scrollTo(0,-51);
+	},
+
 	closeModalPhotoView: function(e) {
 		_preventDefault(e);
      	$('#modalPhotoView').kendoMobileModalView("close");

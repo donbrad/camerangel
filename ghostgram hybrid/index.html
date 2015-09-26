@@ -225,12 +225,12 @@
 </div>
    
 <!-- home - for signed in users -->
-<div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" style="display:none;" data-show="onShowHome" data-init="onInitHome">
+<div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" style="display:none;" data-show="onShowHome" data-init="homeView.onInitHome">
 	
 		<div class="topViewSearchBox">
 	 		<div class="appendSearch">
 				<span class="searchIcon"><img src="images/search.svg" /></span>
-				<input type="search" class="viewSearchBox" placeholder="Search" />
+				<input class="doubleAppendSearch clearable" placeholder="Search" id="homeSearchQuery" />
 			</div>
 		</div>
 		<div class="appBox">

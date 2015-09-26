@@ -126,6 +126,12 @@ var galleryView = {
         	$("#filterText").text("Filter");
         }
         
+        $('#gallerySearchQuery').clearSearch({
+	        callback: function() {
+	        	// todo - wire search
+	        }
+	    });
+
     },
 
     onHide: function(e){

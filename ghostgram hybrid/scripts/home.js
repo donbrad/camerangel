@@ -164,6 +164,22 @@ var homeView = {
 	savePhoto: function(){
 		mobileNotify("Added tags");
 		ux.closeModalViewPhotoTag();
+	},
+
+	onInitHome: function(e) {
+		_preventDefault(e);
+
+
+		if (userModel.currentUser.currentPlace !== '') {
+			$('#checked-in-place > span').html(userModel.currentUser.currentPlace);
+			$('#checked-in-place').show();
+		}
+
+		 $('#homeSearchQuery').clearSearch({
+	        callback: function() {
+	        	// todo - wire search
+	        }
+	    });
 	}
 };
 
@@ -208,18 +224,6 @@ function pruneNotifications() {
 	}
 
 }
-
-function onInitHome(e) {
-	if (e !== undefined && e.preventDefault !== undefined){
-		e.preventDefault();
-	}
-
-	if (userModel.currentUser.currentPlace !== '') {
-		$('#checked-in-place > span').html(userModel.currentUser.currentPlace);
-		$('#checked-in-place').show();
-	}
-}
-
 
 function initSignUp() {
 	// Simple phone mask - http://jsfiddle.net/mykisscool/VpNMA/
@@ -300,7 +304,10 @@ function onShowSignIn(e){
 }
 
 function onShowHome(e) {
-	e.preventDefault();
+	_preventDefault(e);
+
+	// set search bar
+    ux.scrollUpSearch(e);
 
     // set verified ui for start screen 
     if(userModel.currentUser.phoneVerified) {

@@ -17,10 +17,11 @@ var channelsView = {
     onInit : function (e) {
         e.preventDefault();
 
-        // set search bar
-        var scroller = e.view.scroller;
-        scroller.scrollTo(0,-44);
-
+        $('#channelsSearchQuery').clearSearch({
+	        callback: function() {
+	        	// todo - wire search
+	        }
+	    });
 
         $("#channels-listview").kendoMobileListView({
             dataSource: channelModel.channelsDS,
@@ -67,15 +68,9 @@ var channelsView = {
 
     },
 
-    checkEmpty : function () {
-        if (channelModel.channelsDS.total() > 0) {
-            $('#channel-listview .emptyState').addClass('hidden');
-        } else {
-            $('#channel-listview .emptyState').removeClass('hidden');
-        }
-    },
-
-    onShow : function(){
+    onShow : function(e){
+    	//scroll up search 
+    	ux.scrollUpSearch(e);
         // set action button
         ux.showActionBtn(true, "#channels", "#addChannel")
         ux.checkEmptyUIState(channelModel.channelsDS, "#channels");
@@ -729,11 +724,9 @@ var channelView = {
           channelView.contactData = channelView.buildContactArray(thisChannel.members);
           //Todo: remove currentContactModel
           currentChannelModel.currentContactModel = thisContact;
-          if (thisChannel.isPrivate) {
-              $('#channelImage').attr('src', thisContact.photo);
-          } else {
-              $('#channelImage').attr('src', '');
-          }
+          
+          // Show contact img in header
+          $('#channelImage').attr('src', thisContact.photo).removeClass("hidden");
 
           privateChannel.open(channelUUID, thisUser.userUUID, thisUser.alias, name, userKey, privateKey, contactUUID, contactKey, thisContact.name);
         /*  thisChannelHandler.onMessage(channelView.onChannelRead);
@@ -772,6 +765,9 @@ var channelView = {
           //*** Group Channel ***
           $('#messagePresenceButton').show();
           // Provision a group channel
+
+          // clear header img
+          $('#channelImage').attr('src', '').addClass("hidden");
 
           groupChannel.open(channelUUID, thisUser.userUUID, thisUser.name, thisUser.alias);
           channelView.sendMessageHandler = groupChannel.sendMessage;

@@ -18,9 +18,12 @@ var contactsView = {
     onInit : function (e) {
         _preventDefault(e);
 
-        // set search bar
-        var scroller = e.view.scroller;
-        scroller.scrollTo(0,-44);
+
+        $('#contactsSearchQuery').clearSearch({
+	        callback: function() {
+	        	// todo - wire search
+	        }
+	    });
 
         contactModel.deviceQueryActive = false;
 
@@ -147,6 +150,9 @@ var contactsView = {
 
         contactModel.contactListDS.data(contactModel.contactsDS.data());
         //APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
+
+        // set search bar
+        ux.scrollUpSearch(e);
 
         // set action button
     	ux.showActionBtn(true, "#contacts", "#contactImport");

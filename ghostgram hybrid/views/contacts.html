@@ -1,10 +1,10 @@
 <div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="contactModel" data-init="contactsView.onInit" data-show="contactsView.onShow" data-before-hide="contactsView.onBeforeHide" style="display: none;">
 
 	<div class="topViewSearchBox">
-	 	<div class="appendSearch">
-			<span class="searchIcon"><img src="images/search.svg" /></span>
-			<input type="search" placeholder="Search contacts..." id="contactSearchInput" />
-		</div>
+	 		<div class="appendSearch">
+				<span class="searchIcon"><img src="images/search.svg" /></span>
+				<input class="doubleAppendSearch clearable" placeholder="Search" id="contactsSearchQuery" />
+			</div>
 		
 		<a class="hidden btnClear-sm" data-role="button" data-click="contactsView.searchDeviceContacts" id="btnSearchDeviceContacts">
 			<img src="images/contacts.svg" /> 

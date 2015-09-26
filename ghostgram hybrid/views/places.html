@@ -1,13 +1,12 @@
  <div data-role="view" data-title="Places" id="places" data-layout="main" data-model="placesModel" data-show="placesView.onShow" data-init="placesView.onInit" data-before-hide="placesView.onHide">
 
     <div class="mapInfo">
-         <div class="placesSearchBox">
-             <input class="clearable" style="width: 85%;" id= "placeSearchQuery" type="search" placeholder="Search my places..."/>
-             <a data-role="button"  data-click="goPlaceSearchQuery">
-                 <i class="ghostIconSmall fa fa-search"></i>
-             </a>
-         </div>
-
+    	<div class="topViewSearchBox">
+	 		<div class="appendSearch">
+				<span class="searchIcon"><img src="images/search.svg" /></span>
+				<input class="doubleAppendSearch clearable" placeholder="Search my places" id="placeSearchQuery" />
+			</div>
+		</div>
          <div id="current-place">
             <h1>Checked-in to:</h1>
             <div></div>
