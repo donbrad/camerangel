@@ -426,31 +426,10 @@
 
 		deviceModel.getAppState();
 
-		APP.geoLocator = new GeoLocator();
-		APP.location = {};
-
 		deviceModel.getNetworkState();
 
 		deviceModel.init();
 
-
-			/*		if (window.navigator.simulator === undefined) {
-					APP.map = plugin.google.maps.Map.getMap($("#places-mapview"));
-					APP.mapReady = false;
-					 APP.map.on(plugin.google.maps.event.MAP_READY, function () {
-						 APP.mapReady = true;	 	 
-					 });
-				}
-		*/
-		var location = window.localStorage.getItem('ggLastPosition');
-		if (location !== undefined && location !== null) {
-			APP.location.lastPosition = JSON.parse(location);
-		} else {
-			APP.location.lastPosition = {
-				lat: 0,
-				lng: 0
-			};
-		}
 
 		// hide the splash screen as soon as the app is ready. otherwise
 
@@ -475,9 +454,11 @@
 
 		userModel.initParse();
 
+		mapModel.init();
+
 		pruneNotifications();
 
-		APP.geoLocator.getCurrentPosition(function(position, error) {
+		/*APP.geoLocator.getCurrentPosition(function(position, error) {
 			if (error === null) {
 				APP.location.position = {
 					lat: position.coords.latitude,
@@ -499,24 +480,16 @@
 						// Multiple place matches for this coord, prompt the user to select one.
 					}
 				}
-				APP.map.geocoder = new google.maps.Geocoder();
-				APP.map.mapOptions = {};
-				APP.map.mapOptions.center = {
-					lat: position.coords.latitude,
-					lng: position.coords.longitude
-				};
-				APP.map.mapOptions.zoom = 14;
-				APP.map.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
-				APP.map.googleMap = new google.maps.Map(document.getElementById('map-mapdiv'), APP.map.mapOptions);
-				APP.map.googlePlaces = new google.maps.places.PlacesService(APP.map.googleMap);
+
+
 				reverseGeoCode(position.coords.latitude, position.coords.longitude);
-				//mobileNotify("Located you at " + position.coords.latitude + " , " + position.coords.longitude);
+				mobileNotify("Located you at " + position.coords.latitude + " , " + position.coords.longitude);
 			} else {
 				mobileNotify("GeoLocator error : " + error);
 			}
 
 		});
-
+*/
 		// Uncomment to load all device contacts at initialization - major performance hit!!
 		//contactModel.importDeviceContacts();
 
@@ -564,10 +537,7 @@
 		});
         */
 
-		//$('.clearable').clearSearch();
 
-		// Enable ghost caption
-		//$('.wraption.img').wraption();
 
 		autosize($('#ghostEmailEditor'));
 		/* $(".email-Autocomplete").emailautocomplete({

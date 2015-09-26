@@ -39,8 +39,8 @@ var placesView = {
         //$("#places > div.footerMenu.km-footer > a").removeAttr('href').css("display", "none");
 
 
-        navigator.geolocation.getCurrentPosition( function (position) {
-            var lat = position.coords.latitude.toFixed(6), lng = position.coords.longitude.toFixed(6);
+       mapModel.getCurrentPosition( function (lat,lng) {
+
             var places = placesModel.matchLocation(lat, lng);
 
             if (places.length === 0) {
@@ -125,6 +125,10 @@ var findPlacesView = {
 
     },
 
+    getTypesFromComponents : function (types) {
+       var typeStr = '';
+    },
+
     getAddressFromComponents: function (addressComponents) {
         var address = {};
 
@@ -151,7 +155,7 @@ var findPlacesView = {
 
     updatePlaces : function (lat, lng) {
         var latlng = new google.maps.LatLng(lat, lng);
-        var places = APP.map.googlePlaces;
+        var places = mapModel.googlePlaces;
         var ds = findPlacesView.placesDS;
 
         // empty current data
@@ -162,7 +166,7 @@ var findPlacesView = {
             radius: homeView._radius,
             types: ['establishment']
         }, function (placesResults, placesStatus) {
-            APP.map.geocoder.geocode({ 'latLng': latlng }, function (geoResults, geoStatus) {
+           mapModel.geocoder.geocode({ 'latLng': latlng }, function (geoResults, geoStatus) {
                 if (geoStatus !== google.maps.GeocoderStatus.OK) {
                     mobileNotify('Google geocoding service error!');
                     return;
