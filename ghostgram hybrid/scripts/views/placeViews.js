@@ -291,7 +291,6 @@ var addPlaceView = {
             addPlaceView._activePlace.set('lng', geoPlace.lng);
         }
 
-
     },
 
     addPlace : function (e) {

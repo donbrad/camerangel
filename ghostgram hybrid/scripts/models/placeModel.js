@@ -10,6 +10,9 @@ var placesModel = {
 
     locatorActive : false,
     _radius : 30,
+    currentPlaceId: null,
+    currentPlace: {},
+
     placesDS: parseKendoDataSourceFactory.make('places', {
         id: 'id',
         fields: {
@@ -78,7 +81,7 @@ var placesModel = {
                 nullable: true,
                 defaultValue: ''
             },
-            isAvailable: {  // Is the user avaiable or busy here?  Sets default value, user can override
+            isAvailable: {  // Is the user available or busy here?  Sets default value, user can override
                 editable: true,
                 nullable: false,
                 type: 'boolean',
