@@ -127,7 +127,19 @@ var findPlacesView = {
     },
 
     getTypesFromComponents : function (types) {
-       var typeStr = '';
+       var typeString = '';
+
+        for (var i=0; i<types; i++) {
+            if (types[i] !== 'point_of_interest' && types[i] !== 'establishment' && types[i] !== 'food') {
+                var typeStr = types[i].replace(/_/g,' ');
+                var typeStr = typeStr.charAt(0).toUpperCase() + typeStr.substring(1);
+                typeString += typeStr + " ,";
+
+            }
+        }
+        typeString = typeString.substring(0, typeString.length - 1);
+
+        return(typeString);
     },
 
     getAddressFromComponents: function (addressComponents) {
@@ -184,6 +196,8 @@ var findPlacesView = {
                     name: address.streetNumber+' '+address.street,
                     type: 'Street Address',
                     googleId: null,
+                    icon: null,
+                    reference: null,
                     lat: lat,
                     lng: lng,
                     vicinity: address.city+', '+address.state
@@ -200,10 +214,12 @@ var findPlacesView = {
                 ds.add({
                     category: 'Place',   // valid categories are: Place and Location
                     name: placeResult.name,
-                    type: placeResult.types[0],
+                    type: findPlacesView.getTypesFromComponents(placeResult.types),
                     googleId: placeResult.place_id,
-                    lat: placeResult.geometry.location.G,
-                    lng: placeResult.geometry.location.K,
+                    icon: placeResult.icon,
+                    reference: placeResult.reference,
+                    lat: placeResult.geometry.location.H,
+                    lng: placeResult.geometry.location.L,
                     vicinity: placeResult.vicinity
                 });
 
