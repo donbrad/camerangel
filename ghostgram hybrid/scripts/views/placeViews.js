@@ -89,7 +89,8 @@ var findPlacesView = {
             fixedHeaders: true,
             click: function (e) {
                 var geo = e.dataItem;
-                var geoStr = JSON.stringify(geo);
+
+                var geoStr = LZString.compress(JSON.stringify(geo));
 
                 var navStr = "#addPlace?geo="+geoStr+"&returnview=findPlace";
 
@@ -241,7 +242,8 @@ var addPlaceView = {
         if (e.view.params !== undefined) {
 
             if (e.view.params.geo !== undefined) {
-                var geo = e.view.params.geo;
+                var geo = LZString.decompress(e.view.params.geo);
+                var geoObj = JSON.parse(geo);
                 addPlaceView.setActivePlace(JSON.parse(geo));
             }
 
