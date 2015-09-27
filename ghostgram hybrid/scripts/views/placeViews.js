@@ -244,7 +244,7 @@ var addPlaceView = {
             if (e.view.params.geo !== undefined) {
                 var geo = LZString.decompress(e.view.params.geo);
                 var geoObj = JSON.parse(geo);
-                addPlaceView.setActivePlace(JSON.parse(geo));
+                addPlaceView.setActivePlace(geoObj);
             }
 
             if (e.view.params.returnview !== undefined)
