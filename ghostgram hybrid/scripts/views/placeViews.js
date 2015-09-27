@@ -270,9 +270,13 @@ var addPlaceView = {
     setActivePlace : function (geoPlace) {
         addPlaceView._activeGeo = geoPlace;
 
+        addPlaceView._activePlace.set('isAvailable',"true");
+        addPlaceView._activePlace.set('isPrivate',"true");
+
         if (geoPlace.category = "Location") {
             addPlaceView._activePlace.set('category',"Location");
             addPlaceView._activePlace.set('name', '');
+            addPlaceView._activePlace.set('venueName', '');
             addPlaceView._activePlace.set('alias', '');
             addPlaceView._activePlace.set('type', geoPlace.type);
             addPlaceView._activePlace.set('googleId', '');
@@ -283,6 +287,7 @@ var addPlaceView = {
         } else {
             addPlaceView._activePlace.set('category',"Venue");
             addPlaceView._activePlace.set('name', geoPlace.name);
+            addPlaceView._activePlace.set('venueName', geoPlace.name);
             addPlaceView._activePlace.set('alias', '');
             addPlaceView._activePlace.set('type', geoPlace.type);
             addPlaceView._activePlace.set('googleId', geoPlace.googleId);
@@ -296,6 +301,12 @@ var addPlaceView = {
     addPlace : function (e) {
         _preventDefault(e);
 
+        var place =  addPlaceView._activePlace;
+        var guid = uuid.v4();
+
+        place.set('uuid', guid);
+
+        placesModel.placesDS.add(place);
     }
 
 };
