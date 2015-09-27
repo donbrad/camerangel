@@ -129,7 +129,7 @@ var findPlacesView = {
     getTypesFromComponents : function (types) {
        var typeString = '';
 
-        for (var i=0; i<types; i++) {
+        for (var i=0; i<types.length; i++) {
             if (types[i] !== 'point_of_interest' && types[i] !== 'establishment' && types[i] !== 'food') {
                 var typeStr = types[i].replace(/_/g,' ');
                 var typeStr = typeStr.charAt(0).toUpperCase() + typeStr.substring(1);
