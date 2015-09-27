@@ -7,6 +7,14 @@ function setButtonGroupIndex(buttonSelector, index) {
 	}
 }
 
+String.prototype.smartTruncate =
+	function(n,useWordBoundary){
+		var toLong = this.length>n,
+			s_ = toLong ? this.substr(0,n-1) : this;
+		s_ = useWordBoundary && toLong ? s_.substr(0,s_.lastIndexOf(' ')) : s_;
+		return  toLong ? s_ + '&hellip;' : s_;
+	};
+
 function updateParseObject(objectName, idField, idFieldValue, newField, newFieldValue) {
 	var object = Parse.Object.extend(objectName);
 	var query = new Parse.Query(object);

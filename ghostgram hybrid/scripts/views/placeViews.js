@@ -133,13 +133,22 @@ var findPlacesView = {
             if (types[i] !== 'point_of_interest' && types[i] !== 'establishment' && types[i] !== 'food') {
                 var typeStr = types[i].replace(/_/g,' ');
                 var typeStr = typeStr.charAt(0).toUpperCase() + typeStr.substring(1);
-                typeString += typeStr + " ,";
+                typeString += typeStr + ", ";
 
             }
         }
-        typeString = typeString.substring(0, typeString.length - 1);
+
+        if (typeString.length > 3) {
+            typeString = typeString.substring(0, typeString.length - 2);
+        } else {
+            typeString = "Establishment";
+        }
 
         return(typeString);
+    },
+
+    truncatePlaceName : function (name) {
+
     },
 
     getAddressFromComponents: function (addressComponents) {
@@ -213,7 +222,7 @@ var findPlacesView = {
 
                 ds.add({
                     category: 'Place',   // valid categories are: Place and Location
-                    name: placeResult.name,
+                    name: placeResult.name.smartTruncate(24, true),
                     type: findPlacesView.getTypesFromComponents(placeResult.types),
                     googleId: placeResult.place_id,
                     icon: placeResult.icon,
