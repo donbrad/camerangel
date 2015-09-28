@@ -89,6 +89,7 @@ var findPlacesView = {
     _returnModeal : null,
     _lat : null,
     _lng : null,
+    _currentLocation: {},
 
     placesDS :  new kendo.data.DataSource({
         sort: {
@@ -221,17 +222,26 @@ var findPlacesView = {
 
                 var address = findPlacesView.getAddressFromComponents(geoResults[0].address_components);
 
-                ds.add({
+                var location = {
                     category: 'Location',   // valid categories are: Place and Location
                     name: address.streetNumber+' '+address.street,
                     type: 'Street Address',
                     googleId: null,
                     icon: null,
                     reference: null,
+                    address: address.streetNumber+' '+address.street,
+                    city:  address.city,
+                    state: address.state,
+                    country: address.country,
                     lat: lat,
                     lng: lng,
                     vicinity: address.city+', '+address.state
-                });
+                };
+
+               findPlacesView._currentLocation = location;
+
+                ds.add(location);
+
             });
             if (placesStatus !== google.maps.places.PlacesServiceStatus.OK) {
                 mobileNotify('Google Places error: '+ placesStatus);
@@ -240,13 +250,17 @@ var findPlacesView = {
 
             placesResults.forEach( function (placeResult) {
 
-
+                var address = findPlacesView._currentLocation;
                 ds.add({
                     category: 'Place',   // valid categories are: Place and Location
                     name: placeResult.name.smartTruncate(24, true),
                     type: findPlacesView.getTypesFromComponents(placeResult.types),
                     googleId: placeResult.place_id,
                     icon: placeResult.icon,
+                    address: address.streetNumber+' '+address.street,
+                    city:  address.city,
+                    state: address.state,
+                    country: address.country,
                     reference: placeResult.reference,
                     lat: placeResult.geometry.location.H,
                     lng: placeResult.geometry.location.L,
@@ -328,6 +342,8 @@ var addPlaceView = {
             addPlaceView._activePlace.set('alias', '');
             addPlaceView._activePlace.set('type', geoPlace.type);
             addPlaceView._activePlace.set('googleId', '');
+            addPlaceView._activePlace.set('icon', '');
+            addPlaceView._activePlace.set('reference', '');
             addPlaceView._activePlace.set('address', geoPlace.name +  ' ' + geoPlace.vicinity);
             addPlaceView._activePlace.set('lat', geoPlace.lat);
             addPlaceView._activePlace.set('lng', geoPlace.lng);
@@ -335,8 +351,11 @@ var addPlaceView = {
         } else {
             addPlaceView._activePlace.set('category',"Venue");
             addPlaceView._activePlace.set('name', geoPlace.name);
+            addPlaceView._activePlace.set('venueName', geoPlace.name);
             addPlaceView._activePlace.set('alias', '');
             addPlaceView._activePlace.set('type', geoPlace.type);
+            addPlaceView._activePlace.set('icon', geoPlace.icon);
+            addPlaceView._activePlace.set('reference', geoPlace.reference);
             addPlaceView._activePlace.set('googleId', geoPlace.googleId);
             addPlaceView._activePlace.set('address', geoPlace.vicinity);
             addPlaceView._activePlace.set('lat', geoPlace.lat);
@@ -349,15 +368,25 @@ var addPlaceView = {
     addPlace : function (e) {
         _preventDefault(e);
 
+        var newPlace = placesModel.newPlace();
         var place =  addPlaceView._activePlace;
         var guid = uuid.v4();
 
-        place.set('uuid', guid);
+        newPlace.set('uuid', guid);
+        newPlace.set('category', place.category);
+        newPlace.set('name', place.name);
+        newPlace.set('venueName', place.venueName);
+        newPlace.set('alias', place.alias);
+        newPlace.set('googleId', place.googleId);
+        newPlace.set('address', place.address);
+        newPlace.set('lat', place.lat);
+        newPlace.set('lng', place.lng);
+        newPlace.set('type', place.type);
 
-        place.set('isAvailable', place.isAvailable === "true");
-        place.set('isPrivate', place.isPrivate === "true");
+        newPlace.set('isAvailable', place.isAvailable === "true");
+        newPlace.set('isPrivate', place.isPrivate === "true");
 
-        placesModel.placesDS.add(place);
+        placesModel.placesDS.add(newPlace);
 
         placesModel.placesDS.sync();
     }
