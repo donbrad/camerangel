@@ -46,17 +46,17 @@ var placesModel = {
             city: {
 
                 defaultValue: '',
-                nullable: false,
+                nullable: false
             },
             state: {
 
                 defaultValue: 'CA',
-                nullable: false,
+                nullable: false
             },
             zipcode: {
 
                 defaultValue: '',
-                nullable: false,
+                nullable: false
             },
             country: {
 
