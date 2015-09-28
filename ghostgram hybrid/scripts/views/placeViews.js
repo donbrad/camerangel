@@ -30,6 +30,33 @@ var placesView = {
             }
         });
 
+        // Filter current places and query google places on keyup
+        $('#placeSearchQuery').keyup(function() {
+            var query = this.value;
+            if (query.length > 0) {
+               placesView.placeListDS.filter(  {"logic":"or",
+                    "filters":[
+                        {
+                            "field":"address",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"name",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"alias",
+                            "operator":"contains",
+                            "value":query}
+                    ]});
+
+            } else {
+
+                placesView.placeListDS.data(placesModel.placesDS.data());
+                placesView.placeListDS.filter([]);
+            }
+        });
+
         $("#places-listview").kendoMobileListView({
             dataSource: placesView.placeListDS,
             template: $("#placesTemplate").html(),
