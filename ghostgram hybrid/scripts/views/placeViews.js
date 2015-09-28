@@ -226,7 +226,7 @@ var findPlacesView = {
 
                 ds.add({
                     category: 'Place',   // valid categories are: Place and Location
-                    name: placeResult.name,
+                    name: placeResult.name.smartTruncate(24, true),
                     type: placeResult.types[0],
                     googleId: placeResult.place_id,
                     icon: placeResult.icon,
