@@ -17,63 +17,64 @@ var placesModel = {
         id: 'id',
         fields: {
             uuid: {
-                editable: false,
+
                 nullable: false
             },
             category: {  // Venue or Location
-                editable: true,
+
                 nullable: false,
                 defaultValue: 'Location'
             },
             placeChatId: {
-                editable: false,
+
                 defaultValue: ''
             },
             name: {   // Name chosen by the user
-                editable: true,
+
                 nullable: false,
                 defaultValue: ''
             },
             venueName: {  // Name from googlePlaces or factual
-                editable: false,
                 nullable: true,
                 defaultValue: ''
             },
             address: {  // Composite field for display - built from streetNumber, street, city, state and zip
-                editable: false,
+
                 nullable: false,
                 defaultValue: ''
             },
             city: {
-                editable: false,
-                defaultValue: ''
+
+                defaultValue: '',
+                nullable: false,
             },
             state: {
-                editable: false,
-                defaultValue: ''
+
+                defaultValue: 'CA',
+                nullable: false,
             },
             zip: {
-                editable: false,
-                defaultValue: ''
+
+                defaultValue: '',
+                nullable: false,
             },
             country: {
-                editable: false,
-                defaultValue: ''
+
+                defaultValue: 'US'
             },
             googleId: {   // googleid - from googlePlaces
-                editable: false,
+
                 defaultValue: ''
             },
             factualId: {  // factualId -- optional if place exists in factual
-                editable: false,
+
                 defaultValue: ''
             },
             lat: {
-                editable: false,
                 type: 'number'
             },
             lng: {
-                editable: false,
+
                 type: 'number'
             },
             statusMessage: {  // Name from googlePlaces or factual
