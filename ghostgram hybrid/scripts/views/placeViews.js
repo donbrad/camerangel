@@ -60,7 +60,6 @@ var placesView = {
         $("#places-listview").kendoMobileListView({
             dataSource: placesView.placeListDS,
             template: $("#placesTemplate").html(),
-            fixedHeaders: true,
             click: function (e) {
                 var geo = e.dataItem;
 
