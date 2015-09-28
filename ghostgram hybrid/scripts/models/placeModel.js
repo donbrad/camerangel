@@ -110,7 +110,7 @@ var placesModel = {
             undefined,
             undefined
         );
-        placesModel.placesDS.sync();
+        placesModel.placesDS.fetch();
     },
 
     matchLocation: function (lat, lng) {
