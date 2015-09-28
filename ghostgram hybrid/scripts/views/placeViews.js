@@ -358,9 +358,9 @@ var addPlaceView = {
 
         if (geoPlace.category === "Location") {
             addPlaceView._activePlace.set('category',"Location");
-            addPlaceView._activePlace.set('name', '');
+            addPlaceView._activePlace.set('name', geoPlace.name);
             addPlaceView._activePlace.set('venueName', '');
-            addPlaceView._activePlace.set('alias', '');
+            addPlaceView._activePlace.set('alias', geoPlace.alias);
             addPlaceView._activePlace.set('type', geoPlace.type);
             addPlaceView._activePlace.set('googleId', '');
             addPlaceView._activePlace.set('icon', '');
@@ -372,8 +372,8 @@ var addPlaceView = {
         } else {
             addPlaceView._activePlace.set('category',"Venue");
             addPlaceView._activePlace.set('name', geoPlace.name);
-            addPlaceView._activePlace.set('venueName', geoPlace.name);
-            addPlaceView._activePlace.set('alias', '');
+            addPlaceView._activePlace.set('venueName', geoPlace.venueName);
+            addPlaceView._activePlace.set('alias', geoPlace.alias);
             addPlaceView._activePlace.set('type', geoPlace.type);
             addPlaceView._activePlace.set('icon', geoPlace.icon);
             addPlaceView._activePlace.set('reference', geoPlace.reference);
