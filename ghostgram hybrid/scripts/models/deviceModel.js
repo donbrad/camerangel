@@ -122,7 +122,7 @@ var deviceModel = {
         channelModel.channelsDS.online(true);
         photoModel.photosDS.online(true);
        // contactModel.contactsDS.online(true);
-        placesModel.placesDS.online(true);
+       // placesModel.placesDS.online(true);
 
         deviceModel.getNetworkState();
     },
@@ -136,7 +136,7 @@ var deviceModel = {
         channelModel.channelsDS.online(false);
         photoModel.photosDS.online(false);
         //contactModel.contactsDS.online(false);
-        placesModel.placesDS.online(false);
+       // placesModel.placesDS.online(false);
 
     },
 

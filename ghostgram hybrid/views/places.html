@@ -189,38 +189,40 @@
 </div>
 
 
-<div data-role="view" id="editPlace" class="appearance" data-show="onShowEditPlace" data-hide="onHideEditPlace">
-     <div data-role="header">
-         <div data-role="navbar">
-             <a data-role="backbutton" id="buttonEditPlace" data-align="left">Back</a>
-             <span>Edit Place</span>
-         </div>
-     </div>
+<div data-role="view" id="editPlace" data-title="Edit Place" data-model="editPlaceView._activePlace" class="appearance" data-layout="main" data-init="editPlaceView.onInit" data-show="editPlaceView.onShow" data-hide="editPlaceView.onHide">
+    <div data-role="header">
+        <div data-role="navbar">
+            <span data-role="view-title"></span>
+            <a data-role="button" data-click="editPlaceView.onDone" data-align="left" >Done</a>
+        </div>
+    </div>
 
      <form style="clear: both;">
          <ul data-role="listview" data-style="inset" >
              <li>
                  <label> Name </label>
-                 <input type="text" id="editPlaceName" required />
+                 <input type="text" data-bind="value: name" required />
              </li>
-
+             <li>
+                 <label> Alias </label>
+                 <input type="text" data-bind="value: alias" required />
+             </li>
              <li>
                  <label> Address </label>
-                 <input type="text" id="editPlaceAddress" required /><span id="restOfAddress"></span>
+                 <input type="text" data-bind="value: address" required /></input>
              </li>
              <li>
-                 <label> Available for call/chat ?</label>
-                 <input type="checkbox" id="editPlaceIsAvailable" data-role="switch" />
+                 <label> Private Place ? </label>
+                 <input type="checkbox" data-bind="checked : isPrivate" data-role="switch" />
              </li>
-
              <li>
-                 <label> Visible to Others Here  </label>
-                 <input type="checkbox" id="editPlaceIsVisible" data-role="switch" />
+                 <label> Are you available here ?</label>
+                 <input type="checkbox" data-bind="checked : isAvailable" data-role="switch" />
              </li>
 
              <li>
                  <label> Automatically Check In </label>
-                 <input type="checkbox" id="editPlaceAuto" data-role="switch" />
+                 <input type="checkbox" data-bind="checked : autoCheckIn" data-role="switch" />
              </li>
 
          </ul>

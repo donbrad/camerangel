@@ -136,8 +136,29 @@ var placesModel = {
         return(matchArray);
     },
 
-    addPlace : function (place) {
+    getPlaceModel : function (placeId) {
 
+        var dataSource = placesModel.placesDS;
+        dataSource.filter( { field: "uuid", operator: "eq", value: placeId });
+        var view = dataSource.view();
+        var place = view[0];
+        dataSource.filter([]);
+
+        return(place);
+
+    },
+
+    deletePlace : function (placeId) {
+        var dataSource = placesModel.placesDS;
+        var uuid = placeId;
+
+        dataSource.filter({field: "uuid", operator: "eq", value: uuid});
+        var view = dataSource.view();
+        var place = view[0];
+        dataSource.filter([]);
+        dataSource.remove(place);
+
+        dataSource.sync();
     }
 
 

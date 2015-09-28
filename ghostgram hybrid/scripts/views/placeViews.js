@@ -494,6 +494,8 @@ var editPlaceView = {
 
     setActivePlace : function (placeId) {
         editPlaceView._activePlaceId = placeId;
+
+        editPlaceView._activePlace = placesModel.getPlaceModel(placeId);
     }
 
 };
