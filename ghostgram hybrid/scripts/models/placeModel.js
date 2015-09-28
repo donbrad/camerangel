@@ -53,7 +53,7 @@ var placesModel = {
                 defaultValue: 'CA',
                 nullable: false,
             },
-            zip: {
+            zipcode: {
 
                 defaultValue: '',
                 nullable: false,
