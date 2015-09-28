@@ -349,39 +349,35 @@ var addPlaceView = {
     setActivePlace : function (geoPlace) {
         addPlaceView._activeGeo = geoPlace;
 
+        addPlaceView._activePlace.set('name', geoPlace.name);
+        addPlaceView._activePlace.set('alias', geoPlace.alias);
+        addPlaceView._activePlace.set('venueName', geoPlace.venueName);
         addPlaceView._activePlace.set('isAvailable',"true");
         addPlaceView._activePlace.set('isPrivate',"true");
+        addPlaceView._activePlace.set('address',geoPlace.address);
         addPlaceView._activePlace.set('city',geoPlace.city);
         addPlaceView._activePlace.set('state',geoPlace.state);
         addPlaceView._activePlace.set('country',geoPlace.country);
         addPlaceView._activePlace.set('zipcode',geoPlace.zipcode);
+        addPlaceView._activePlace.set('type', geoPlace.type);
+
+        addPlaceView._activePlace.set('lat', geoPlace.lat);
+        addPlaceView._activePlace.set('lng', geoPlace.lng);
 
 
         if (geoPlace.category === "Location") {
+            // A location / street address
             addPlaceView._activePlace.set('category',"Location");
-            addPlaceView._activePlace.set('name', geoPlace.name);
-            addPlaceView._activePlace.set('venueName', '');
-            addPlaceView._activePlace.set('alias', geoPlace.alias);
-            addPlaceView._activePlace.set('type', geoPlace.type);
             addPlaceView._activePlace.set('googleId', '');
             addPlaceView._activePlace.set('icon', '');
             addPlaceView._activePlace.set('reference', '');
-            addPlaceView._activePlace.set('address', geoPlace.name +  ' ' + geoPlace.vicinity);
-            addPlaceView._activePlace.set('lat', geoPlace.lat);
-            addPlaceView._activePlace.set('lng', geoPlace.lng);
 
         } else {
+            // A googlePlaces venue
             addPlaceView._activePlace.set('category',"Venue");
-            addPlaceView._activePlace.set('name', geoPlace.name);
-            addPlaceView._activePlace.set('venueName', geoPlace.venueName);
-            addPlaceView._activePlace.set('alias', geoPlace.alias);
-            addPlaceView._activePlace.set('type', geoPlace.type);
             addPlaceView._activePlace.set('icon', geoPlace.icon);
             addPlaceView._activePlace.set('reference', geoPlace.reference);
             addPlaceView._activePlace.set('googleId', geoPlace.googleId);
-            addPlaceView._activePlace.set('address', geoPlace.vicinity);
-            addPlaceView._activePlace.set('lat', geoPlace.lat);
-            addPlaceView._activePlace.set('lng', geoPlace.lng);
         }
 
 
@@ -416,7 +412,7 @@ var addPlaceView = {
 
         placesModel.placesDS.sync();
 
-        mobileNotify(place.name + " added...");
+        mobileNotify(place.name + " added to your Places...");
 
         addPlaceView.onDone();
     }
