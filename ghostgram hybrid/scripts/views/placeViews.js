@@ -129,6 +129,10 @@ var findPlacesView = {
     getTypesFromComponents : function (types) {
        var typeString = '';
 
+        if (type === undefined || types.length === 0) {
+            return  "Establishment";
+        }
+
         for (var i=0; i<types.length; i++) {
             if (types[i] !== 'point_of_interest' && types[i] !== 'establishment' && types[i] !== 'food') {
                 var typeStr = types[i].replace(/_/g,' ');
@@ -222,8 +226,8 @@ var findPlacesView = {
 
                 ds.add({
                     category: 'Place',   // valid categories are: Place and Location
-                    name: placeResult.name.smartTruncate(24, true),
-                    type: findPlacesView.getTypesFromComponents(placeResult.types),
+                    name: placeResult.name,
+                    type: placeResult.types[0],
                     googleId: placeResult.place_id,
                     icon: placeResult.icon,
                     reference: placeResult.reference,
@@ -314,7 +318,6 @@ var addPlaceView = {
         } else {
             addPlaceView._activePlace.set('category',"Venue");
             addPlaceView._activePlace.set('name', geoPlace.name);
-            addPlaceView._activePlace.set('venueName', geoPlace.name);
             addPlaceView._activePlace.set('alias', '');
             addPlaceView._activePlace.set('type', geoPlace.type);
             addPlaceView._activePlace.set('googleId', geoPlace.googleId);
@@ -322,6 +325,7 @@ var addPlaceView = {
             addPlaceView._activePlace.set('lat', geoPlace.lat);
             addPlaceView._activePlace.set('lng', geoPlace.lng);
         }
+
 
     },
 
