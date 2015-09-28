@@ -29,6 +29,21 @@ var placesView = {
                 placesView.placeListDS.filter([]);
             }
         });
+
+        $("#places-listview").kendoMobileListView({
+            dataSource: placesView.placeListDS,
+            template: $("#placesTemplate").html(),
+            fixedHeaders: true,
+            click: function (e) {
+                var geo = e.dataItem;
+
+                var geoStr = LZString.compressToEncodedURIComponent(JSON.stringify(geo));
+
+                var navStr = "#editPlace?place="+geoStr+"&returnview=places";
+
+                APP.kendo.navigate(navStr);
+
+            }});
     },
 
     onShow: function (e) {
@@ -38,6 +53,7 @@ var placesView = {
         ux.showActionBtn(false, "#places");
         //$("#places > div.footerMenu.km-footer > a").removeAttr('href').css("display", "none");
 
+        placesView.placeListDS.data(placesModel.placesDS.data());
 
        mapModel.getCurrentPosition( function (lat,lng) {
 
@@ -49,6 +65,7 @@ var placesView = {
                 // No current places match the current location
             	ux.showActionBtn(true, "#places", findPlaceUrl);
             } else {
+
                 // set placesView.placeListDS to results
             }
 
