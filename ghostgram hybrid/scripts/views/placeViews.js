@@ -123,6 +123,7 @@ var findPlacesView = {
         var ds = findPlacesView.placesDS;
 
         var lat = findPlacesView._lat, lng = findPlacesView._lng;
+        var latlng = new google.maps.LatLng(lat, lng);
 
         if (e.view.params !== undefined) {
             if (e.view.params.lat !== undefined) {
@@ -176,6 +177,7 @@ var findPlacesView = {
             ds.add(location);
 
         });
+        
         findPlacesView.updatePlaces(lat,lng);
     },
 
