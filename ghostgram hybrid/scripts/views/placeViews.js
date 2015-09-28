@@ -304,7 +304,7 @@ var addPlaceView = {
         addPlaceView._activePlace.set('isAvailable',"true");
         addPlaceView._activePlace.set('isPrivate',"true");
 
-        if (geoPlace.category = "Location") {
+        if (geoPlace.category === "Location") {
             addPlaceView._activePlace.set('category',"Location");
             addPlaceView._activePlace.set('name', '');
             addPlaceView._activePlace.set('venueName', '');
