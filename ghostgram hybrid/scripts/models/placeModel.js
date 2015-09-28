@@ -100,7 +100,12 @@ var placesModel = {
                 defaultValue: true
             }
         }
-    }),
+
+    },
+        false,
+        undefined,
+        undefined
+    ),
 
     matchLocation: function (lat, lng) {
         var placesData = placesModel.placesDS.data();
