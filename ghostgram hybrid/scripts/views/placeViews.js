@@ -338,6 +338,8 @@ var addPlaceView = {
         place.set('uuid', guid);
 
         placesModel.placesDS.add(place);
+
+        placesModel.placesDS.sync();
     }
 
 };
