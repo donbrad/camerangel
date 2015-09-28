@@ -107,6 +107,10 @@ var placesModel = {
         undefined
     ),
 
+    init : function () {
+        placesModel.placesDS.sync();
+    },
+
     matchLocation: function (lat, lng) {
         var placesData = placesModel.placesDS.data();
 
