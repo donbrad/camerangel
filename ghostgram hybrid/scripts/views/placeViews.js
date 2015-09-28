@@ -129,7 +129,7 @@ var findPlacesView = {
     getTypesFromComponents : function (types) {
        var typeString = '';
 
-        if (type === undefined || types.length === 0) {
+        if (types === undefined || types.length === 0) {
             return  "Establishment";
         }
 
