@@ -165,9 +165,12 @@ var findPlacesView = {
                 googleId: null,
                 icon: null,
                 reference: null,
+                streetNumber: address.streetNumber,
+                street: address.street,
                 address: address.streetNumber+' '+address.street,
                 city:  address.city,
                 state: address.state,
+                zipcode: address.zip,
                 country: address.country,
                 lat: lat,
                 lng: lng,
@@ -270,9 +273,10 @@ var findPlacesView = {
                     type: findPlacesView.getTypesFromComponents(placeResult.types),
                     googleId: placeResult.place_id,
                     icon: placeResult.icon,
-                    address: address.streetNumber+' '+address.street,
+                    address: address.address,
                     city:  address.city,
                     state: address.state,
+                    zipcode: address.zip,
                     country: address.country,
                     reference: placeResult.reference,
                     lat: placeResult.geometry.location.H,
@@ -347,6 +351,10 @@ var addPlaceView = {
 
         addPlaceView._activePlace.set('isAvailable',"true");
         addPlaceView._activePlace.set('isPrivate',"true");
+        addPlaceView._activePlace.set('city',geoPlace.city);
+        addPlaceView._activePlace.set('state',geoPlace.state);
+        addPlaceView._activePlace.set('country',geoPlace.country);
+
 
         if (geoPlace.category === "Location") {
             addPlaceView._activePlace.set('category',"Location");
@@ -395,6 +403,10 @@ var addPlaceView = {
         newPlace.set('lat', place.lat);
         newPlace.set('lng', place.lng);
         newPlace.set('type', place.type);
+        newPlace.set('city', place.city);
+        newPlace.set('state', place.state);
+        newPlace.set('country', place.country);
+        newPlace.set('zipcode', place.zipcode);
 
         newPlace.set('isAvailable', place.isAvailable === "true");
         newPlace.set('isPrivate', place.isPrivate === "true");
