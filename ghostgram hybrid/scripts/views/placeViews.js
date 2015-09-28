@@ -337,6 +337,9 @@ var addPlaceView = {
 
         place.set('uuid', guid);
 
+        place.set('isAvailable', place.isAvailable === "true");
+        place.set('isPrivate', place.isPrivate === "true");
+
         placesModel.placesDS.add(place);
 
         placesModel.placesDS.sync();
