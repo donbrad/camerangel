@@ -205,44 +205,48 @@ var findPlacesView = {
         // empty current data
         ds.data([]);
 
+        // Geocode the current location
+        mapModel.geocoder.geocode({ 'latLng': latlng }, function (geoResults, geoStatus) {
+            if (geoStatus !== google.maps.GeocoderStatus.OK) {
+                mobileNotify('Google geocoding service error!');
+                return;
+            }
+            if (geoResults.length === 0 || geoResults[0].types[0] !== 'street_address') {
+                mobileNotify('We couldn\'t match your position to a street address.');
+                return;
+            }
+
+            var address = findPlacesView.getAddressFromComponents(geoResults[0].address_components);
+
+            var location = {
+                category: 'Location',   // valid categories are: Place and Location
+                name: address.streetNumber+' '+address.street,
+                type: 'Street Address',
+                googleId: null,
+                icon: null,
+                reference: null,
+                address: address.streetNumber+' '+address.street,
+                city:  address.city,
+                state: address.state,
+                country: address.country,
+                lat: lat,
+                lng: lng,
+                vicinity: address.city+', '+address.state
+            };
+
+            findPlacesView._currentLocation = location;
+
+            ds.add(location);
+
+        });
+
+        // Search nearby places
         places.nearbySearch({
             location: latlng,
             radius: homeView._radius,
             types: ['establishment']
         }, function (placesResults, placesStatus) {
-           mapModel.geocoder.geocode({ 'latLng': latlng }, function (geoResults, geoStatus) {
-                if (geoStatus !== google.maps.GeocoderStatus.OK) {
-                    mobileNotify('Google geocoding service error!');
-                    return;
-                }
-                if (geoResults.length === 0 || geoResults[0].types[0] !== 'street_address') {
-                    mobileNotify('We couldn\'t match your position to a street address.');
-                    return;
-                }
 
-                var address = findPlacesView.getAddressFromComponents(geoResults[0].address_components);
-
-                var location = {
-                    category: 'Location',   // valid categories are: Place and Location
-                    name: address.streetNumber+' '+address.street,
-                    type: 'Street Address',
-                    googleId: null,
-                    icon: null,
-                    reference: null,
-                    address: address.streetNumber+' '+address.street,
-                    city:  address.city,
-                    state: address.state,
-                    country: address.country,
-                    lat: lat,
-                    lng: lng,
-                    vicinity: address.city+', '+address.state
-                };
-
-               findPlacesView._currentLocation = location;
-
-                ds.add(location);
-
-            });
             if (placesStatus !== google.maps.places.PlacesServiceStatus.OK) {
                 mobileNotify('Google Places error: '+ placesStatus);
                 return;
