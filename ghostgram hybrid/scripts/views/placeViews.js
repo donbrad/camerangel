@@ -354,6 +354,7 @@ var addPlaceView = {
         addPlaceView._activePlace.set('city',geoPlace.city);
         addPlaceView._activePlace.set('state',geoPlace.state);
         addPlaceView._activePlace.set('country',geoPlace.country);
+        addPlaceView._activePlace.set('zipcode',geoPlace.zipcode);
 
 
         if (geoPlace.category === "Location") {
@@ -414,7 +415,12 @@ var addPlaceView = {
         placesModel.placesDS.add(newPlace);
 
         placesModel.placesDS.sync();
+
+        mobileNotify(place.name + " added...");
+
+        addPlaceView.onDone();
     }
+
 
 };
 
