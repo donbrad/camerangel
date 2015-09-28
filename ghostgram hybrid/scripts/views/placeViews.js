@@ -89,7 +89,8 @@ var findPlacesView = {
             fixedHeaders: true,
             click: function (e) {
                 var geo = e.dataItem;
-                var geoStr = JSON.stringify(geo);
+
+                var geoStr = LZString.compress(JSON.stringify(geo));
 
                 var navStr = "#addPlace?geo="+geoStr+"&returnview=findPlace";
 
@@ -126,7 +127,28 @@ var findPlacesView = {
     },
 
     getTypesFromComponents : function (types) {
-       var typeStr = '';
+       var typeString = '';
+
+        for (var i=0; i<types.length; i++) {
+            if (types[i] !== 'point_of_interest' && types[i] !== 'establishment' && types[i] !== 'food') {
+                var typeStr = types[i].replace(/_/g,' ');
+                var typeStr = typeStr.charAt(0).toUpperCase() + typeStr.substring(1);
+                typeString += typeStr + ", ";
+
+            }
+        }
+
+        if (typeString.length > 3) {
+            typeString = typeString.substring(0, typeString.length - 2);
+        } else {
+            typeString = "Establishment";
+        }
+
+        return(typeString);
+    },
+
+    truncatePlaceName : function (name) {
+
     },
 
     getAddressFromComponents: function (addressComponents) {
@@ -183,6 +205,8 @@ var findPlacesView = {
                     name: address.streetNumber+' '+address.street,
                     type: 'Street Address',
                     googleId: null,
+                    icon: null,
+                    reference: null,
                     lat: lat,
                     lng: lng,
                     vicinity: address.city+', '+address.state
@@ -198,11 +222,13 @@ var findPlacesView = {
 
                 ds.add({
                     category: 'Place',   // valid categories are: Place and Location
-                    name: placeResult.name,
-                    type: placeResult.types[0],
+                    name: placeResult.name.smartTruncate(24, true),
+                    type: findPlacesView.getTypesFromComponents(placeResult.types),
                     googleId: placeResult.place_id,
-                    lat: placeResult.geometry.location.G,
-                    lng: placeResult.geometry.location.K,
+                    icon: placeResult.icon,
+                    reference: placeResult.reference,
+                    lat: placeResult.geometry.location.H,
+                    lng: placeResult.geometry.location.L,
                     vicinity: placeResult.vicinity
                 });
 
@@ -241,8 +267,9 @@ var addPlaceView = {
         if (e.view.params !== undefined) {
 
             if (e.view.params.geo !== undefined) {
-                var geo = e.view.params.geo;
-                addPlaceView.setActivePlace(JSON.parse(geo));
+                var geo = LZString.decompress(e.view.params.geo);
+                var geoObj = JSON.parse(geo);
+                addPlaceView.setActivePlace(geoObj);
             }
 
             if (e.view.params.returnview !== undefined)
@@ -270,9 +297,13 @@ var addPlaceView = {
     setActivePlace : function (geoPlace) {
         addPlaceView._activeGeo = geoPlace;
 
+        addPlaceView._activePlace.set('isAvailable',"true");
+        addPlaceView._activePlace.set('isPrivate',"true");
+
         if (geoPlace.category = "Location") {
             addPlaceView._activePlace.set('category',"Location");
             addPlaceView._activePlace.set('name', '');
+            addPlaceView._activePlace.set('venueName', '');
             addPlaceView._activePlace.set('alias', '');
             addPlaceView._activePlace.set('type', geoPlace.type);
             addPlaceView._activePlace.set('googleId', '');
@@ -283,6 +314,7 @@ var addPlaceView = {
         } else {
             addPlaceView._activePlace.set('category',"Venue");
             addPlaceView._activePlace.set('name', geoPlace.name);
+            addPlaceView._activePlace.set('venueName', geoPlace.name);
             addPlaceView._activePlace.set('alias', '');
             addPlaceView._activePlace.set('type', geoPlace.type);
             addPlaceView._activePlace.set('googleId', geoPlace.googleId);
@@ -291,12 +323,17 @@ var addPlaceView = {
             addPlaceView._activePlace.set('lng', geoPlace.lng);
         }
 
-
     },
 
     addPlace : function (e) {
         _preventDefault(e);
 
+        var place =  addPlaceView._activePlace;
+        var guid = uuid.v4();
+
+        place.set('uuid', guid);
+
+        placesModel.placesDS.add(place);
     }
 
 };
