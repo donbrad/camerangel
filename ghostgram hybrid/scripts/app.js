@@ -457,7 +457,7 @@
 		mapModel.init();
 
 		placesModel.init();
-		
+
 		pruneNotifications();
 
 		/*APP.geoLocator.getCurrentPosition(function(position, error) {
