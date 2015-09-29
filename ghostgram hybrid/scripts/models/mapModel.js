@@ -40,7 +40,7 @@ var mapModel = {
         }
 
         mapModel.getCurrentAddress();
-        
+
         /*mapModel.getCurrentPosition(function(lat,lng) {
 
             if (lat !== 0 && lng !== 0) {
@@ -94,7 +94,7 @@ var mapModel = {
         address.state = address.state === undefined ? '' : address.state.short_name;
 
         address.zipcode = _.findWhere(addressComponents, { 'types': [ 'postal_code' ] });
-        address.zipcode = address.zipcode === undefined ? '' : address.zip.short_name;
+        address.zipcode = address.zipcode === undefined ? '' : address.zipcode.short_name;
 
         address.country = _.findWhere(addressComponents, { 'types': [ 'country', 'political' ] });
         address.country = address.country === undefined ? '' : address.country.short_name;
