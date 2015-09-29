@@ -13,6 +13,7 @@
 var userStatusView = {
     _activeStatus : new kendo.data.ObservableObject(),
     _returnView : null,
+    _modalId : "#modalview-profileStatus",
 
     // Main entry point for userstatus modal
     openModal : function (returnurl) {
@@ -22,15 +23,15 @@ var userStatusView = {
         } else {
             userStatusView._returnView = APP.kendo.view.id();
         }
-        $("#modalview-profileStatus").data("kendoMobileModalView").open();
+        $(userStatusView._modalId).data("kendoMobileModalView").open();
 
     },
-
+    // close and redirect for user status
     closeModal : function () {
 
       // if there's a return URL, need to close the modal and then redirect to original view
 
-        $("#modalview-profileStatus").data("kendoMobileModalView").close();
+        $(userStatusView._modalId).data("kendoMobileModalView").close();
        /* $(".userLocationUpdate").css("display", "none");
         var updatedStatus = $("#profileStatusUpdate").val();
         if(updatedStatus !== ""){
