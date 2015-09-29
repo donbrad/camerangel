@@ -65,6 +65,10 @@ var placesModel = {
 
                 defaultValue: ''
             },
+            hasPlaceChat: {
+               type: 'boolean',
+                default: false
+            },
             factualId: {  // factualId -- optional if place exists in factual
 
                 defaultValue: ''
