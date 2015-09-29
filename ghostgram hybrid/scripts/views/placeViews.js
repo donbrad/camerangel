@@ -466,7 +466,7 @@ var editPlaceView = {
 
         if (e.view.params !== undefined) {
             if (e.view.params.place !== undefined) {
-                var placeId = LZString.compressToEncodedURIComponent(e.view.params.place);
+                var placeId = LZString.decompressFromEncodedURIComponent(e.view.params.place);
                 editPlaceView.setActivePlace(placeId);
             }
 
