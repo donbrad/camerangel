@@ -67,7 +67,12 @@ var placesView = {
 
                 APP.kendo.navigate(navStr);
 
-            }});
+            },
+            dataBound: function(e){
+                ux.checkEmptyUIState(findPlacesView.placesDS, "#placeListDiv >");
+            }
+
+        });
     },
 
     onShow: function (e) {
@@ -126,21 +131,18 @@ var findPlacesView = {
     onInit : function (e) {
         _preventDefault(e);
         $("#findplace-listview").kendoMobileListView({
-            dataSource: findPlacesView.placesDS,
-            template: $("#findPlacesTemplate").html(),
-            fixedHeaders: true,
-            click: function (e) {
-                var geo = e.dataItem;
+                dataSource: findPlacesView.placesDS,
+                template: $("#findPlacesTemplate").html(),
+                fixedHeaders: true,
+                click: function (e) {
+                    var geo = e.dataItem;
 
-                var geoStr = LZString.compressToEncodedURIComponent(JSON.stringify(geo));
+                    var geoStr = LZString.compressToEncodedURIComponent(JSON.stringify(geo));
 
-                var navStr = "#addPlace?geo="+geoStr+"&returnview=findPlace";
+                    var navStr = "#addPlace?geo=" + geoStr + "&returnview=findPlace";
 
-                APP.kendo.navigate(navStr);
+                    APP.kendo.navigate(navStr);
 
-            },
-                dataBound: function(e){
-                    ux.checkEmptyUIState(findPlacesView.placesDS, "#placeListDiv >");
                 }
             }
         );
