@@ -39,7 +39,23 @@ var mapModel = {
             };
         }
 
-        mapModel.getCurrentAddress();
+        mapModel.getCurrentAddress(function (address){
+           var places = placesModel.matchLocation(mapModel.lat, mapModel.lng);
+            if (places.length === 0) {
+                //No matching places so just return
+                return;
+            }
+
+            if (places.length === 1) {
+                // Just one matching place
+                userModel.currentUser.currentPlaceUUID = places[0].uuid;
+                userModel.currentUser.currentPlace = places[0].name;
+                mobileNotify("Located you at " +  userModel.currentUser.currentPlace);
+
+            } else {
+                // Todo: don - Need to display multiple matching places for user to choose
+            }
+        });
 
         /*mapModel.getCurrentPosition(function(lat,lng) {
 
