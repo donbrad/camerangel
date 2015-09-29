@@ -15,21 +15,21 @@ var appDataChannel = {
     lastAccess: 0,   // last access time stamp
 
     init: function () {
-        this.channelId = 'ghostgramsapp129195720';
+        appDataChannel.channelId = 'ghostgramsapp129195720';
 
         var ts = localStorage.getItem('ggAppDataTimeStamp');
 
         if (ts !== undefined)
-            this.lastAccess = parseInt(ts);
+            appDataChannel.lastAccess = parseInt(ts);
 
         APP.pubnub.subscribe({
-            channel: this.channelId,
+            channel: appDataChannel.channelId,
             windowing: 50000,
-            message: this.channelRead,
-            connect: this.channelConnect,
-            disconnect: this.channelDisconnect,
-            reconnect:this.channelReconnect,
-            error: this.channelError
+            message: appDataChannel.channelRead,
+            connect: appDataChannel.channelConnect,
+            disconnect: appDataChannel.channelDisconnect,
+            reconnect:appDataChannel.channelReconnect,
+            error: appDataChannel.channelError
 
         });
 
@@ -39,22 +39,22 @@ var appDataChannel = {
     },
 
     updateTimeStamp : function () {
-        this.lastAccess = ggTime.currentPubNubTime();
-        localStorage.setItem('ggAppDataTimeStamp', this.lastAccess);
+        appDataChannel.lastAccess = ggTime.currentPubNubTime();
+        localStorage.setItem('ggAppDataTimeStamp', appDataChannel.lastAccess);
     },
 
     history : function () {
 
-        if (this.lastAccess === 0 || isNaN(this.lastAccess)) {
+        if (appDataChannel.lastAccess === 0 || isNaN(appDataChannel.lastAccess)) {
             // Get any messages in the channel
             APP.pubnub.history({
-                channel: this.channelId,
+                channel: appDataChannel.channelId,
                 reverse: true,
                 callback: function(messages) {
                     messages = messages[0];
                     messages = messages || [];
                     for (var i = 0; i < messages.length; i++) {
-                        this.channelRead(messages[i]);
+                        appDataChannel.channelRead(messages[i]);
                     }
 
                 }
@@ -62,26 +62,26 @@ var appDataChannel = {
         } else {
             // Get any messages in the channel
             APP.pubnub.history({
-                channel: this.channelId,
-                start: this.lastAccess,
+                channel: appDataChannel.channelId,
+                start: appDataChannel.lastAccess,
                 reverse: true,
                 callback: function(messages) {
                     messages = messages[0];
                     messages = messages || [];
                     for (var i = 0; i < messages.length; i++) {
-                        this.channelRead(messages[i]);
+                        appDataChannel.channelRead(messages[i]);
                     }
 
                 }
             });
         }
 
-        this.updateTimeStamp();
+        appDataChannel.updateTimeStamp();
     },
 
     channelRead : function (m) {
 
-        this.updateTimeStamp();
+        appDataChannel.updateTimeStamp();
 
         switch(m.type) {
             //  { type: 'newUser',  userId: <userUUID>,  phone: <phone>, email: <email>}
@@ -145,10 +145,10 @@ var appDataChannel = {
 
 
         APP.pubnub.publish({
-            channel: this.channelId,
+            channel: appDataChannel.channelId,
             message: msg,
-            success: this.channelSuccess,
-            error: this.channelError
+            success: appDataChannel.channelSuccess,
+            error: appDataChannel.channelError
         });
     },
 
@@ -164,10 +164,10 @@ var appDataChannel = {
 
 
         APP.pubnub.publish({
-            channel: this.channelId,
+            channel: appDataChannel.channelId,
             message: msg,
-            success: this.channelSuccess,
-            error: this.channelError
+            success: appDataChannel.channelSuccess,
+            error: appDataChannel.channelError
         });
     },
 
