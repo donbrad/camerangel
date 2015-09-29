@@ -63,7 +63,7 @@ var placesView = {
             click: function (e) {
                 var place = e.dataItem;
 
-                var navStr = "#editPlace?place="+place.uuid+"&returnview=places";
+                var navStr = "#editPlace?place="+LZString.compressToEncodedURIComponent(place.uuid)+"&returnview=places";
 
                 APP.kendo.navigate(navStr);
 
@@ -273,7 +273,7 @@ var findPlacesView = {
         var latlng = new google.maps.LatLng(lat, lng);
         var places = mapModel.googlePlaces;
         var ds = findPlacesView.placesDS;
-        
+
         // Search nearby places
         places.nearbySearch({
             location: latlng,
@@ -466,7 +466,8 @@ var editPlaceView = {
 
         if (e.view.params !== undefined) {
             if (e.view.params.place !== undefined) {
-                editPlaceView.setActivePlace(e.view.params.place);
+                var placeId = LZString.compressToEncodedURIComponent(e.view.params.place);
+                editPlaceView.setActivePlace(placeId);
             }
 
             if (e.view.params.returnview !== undefined)
