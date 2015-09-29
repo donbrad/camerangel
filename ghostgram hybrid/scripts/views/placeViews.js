@@ -342,6 +342,8 @@ var addPlaceView = {
     onShow : function (e) {
         _preventDefault(e);
 
+        $('#addPlaceCreateChat').attr('checked', false);
+
         if (e.view.params !== undefined) {
 
             if (e.view.params.geo !== undefined) {
@@ -415,6 +417,8 @@ var addPlaceView = {
         var newPlace = placesModel.newPlace();
         var place =  addPlaceView._activePlace;
         var guid = uuid.v4();
+
+        var createChatFlag = $('#addPlaceCreateChat').is('checked');
 
         newPlace.set('uuid', guid);
         newPlace.set('category', place.category);
