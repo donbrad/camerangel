@@ -138,7 +138,12 @@ var findPlacesView = {
 
                 APP.kendo.navigate(navStr);
 
-            }});
+            },
+                dataBound: function(e){
+                    ux.checkEmptyUIState(findPlacesView.placesDS, "#placeListDiv >");
+                }
+            }
+        );
     },
 
     onShow : function (e) {
