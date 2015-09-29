@@ -28,6 +28,8 @@ var mapModel = {
         mapModel.googleMap = new google.maps.Map(document.getElementById('map-mapdiv'), mapModel.mapOptions);
         mapModel.googlePlaces = new google.maps.places.PlacesService(mapModel.googleMap);
 
+        mapModel.lastPingSeconds = ggTime.currentTimeInSeconds() - 11;
+        
         var location = window.localStorage.getItem('ggLastPosition');
 
         if (location !== undefined && location !== null) {
