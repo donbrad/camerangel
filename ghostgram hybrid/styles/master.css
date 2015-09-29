@@ -497,6 +497,10 @@ form p {
   height: 1.3rem;
   vertical-align: middle;
 }
+.icon-sm {
+  height: 1em;
+  vertical-align: text-bottom;
+}
 .loading-icon {
   height: 1rem;
   vertical-align: middle;
@@ -1319,13 +1323,14 @@ div.footerMenu.km-footer > ul > li > a:active {
   font-size: 0.875rem;
 }
 .statusCharacterCount {
-  position: absolute;
+  position: relative;
   font-size: 12px;
   font-size: 0.75rem;
   color: #979797;
-  bottom: 1em;
+  top: -3em;
   z-index: 1;
-  right: 1em;
+  right: -93%;
+  display: inline-block;
 }
 .home-headerBtn {
   padding: 0px;
@@ -1385,6 +1390,25 @@ div.footerMenu.km-footer > ul > li > a:active {
   width: 18px !important;
   height: 18px !important;
 }
+.home-status-card-img {
+  position: absolute;
+  top: 73px;
+  left: 54%;
+}
+#profileStatusList {
+  position: relative;
+  top: -1rem;
+  width: 100%;
+}
+#profileStatusList li a {
+  text-align: left;
+}
+#profileStatusUpdate {
+  width: 100%;
+  font-size: 14px;
+  font-size: 0.875rem;
+  resize: none;
+}
 .circle-img-home {
   border-radius: 50%;
   border: 1px solid #F2EFF0;
@@ -1411,11 +1435,12 @@ div.footerMenu.km-footer > ul > li > a:active {
   left: 32px;
 }
 #profileStatusMessage {
-  font-size: 13px;
-  font-size: 0.8125rem;
+  font-size: 16px;
+  font-size: 1rem;
   text-overflow: ellipsis;
   width: 190px;
   display: inline-block;
+  font-style: italic;
 }
 #profilePhotoForm > div > ul > li:nth-child(1) {
   padding: 0px;
@@ -1562,7 +1587,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 .modal-top {
   height: 12rem;
   width: 100%;
-  background-color: #e0e0e0;
+  background-color: rgba(0, 0, 0, 0.6);
   text-align: center;
   color: #fff;
   padding-top: 2rem;
@@ -4087,7 +4112,7 @@ html .km-pane-wrapper .k-header {
   border: none !important;
   width: 80%;
   padding-left: 0px !important;
-  padding-right: 1rem !important;
+  padding-right: 1rem;
 }
 .appendSearch span {
   float: left;
@@ -4112,12 +4137,13 @@ html .km-pane-wrapper .k-header {
   width: 88%;
 }
 .appendSearch .doubleAppendSearch {
-  width: 70%;
+  width: 75%;
+  padding-right: 0px !important;
 }
 .appendSearch .enterSearch {
   padding-top: 8px;
   padding-bottom: 8px;
-  width: 18%;
+  width: 13%;
 }
 .appendSearch .enterSearch span {
   padding-top: 0px;

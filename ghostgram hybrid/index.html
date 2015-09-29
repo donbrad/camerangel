@@ -82,7 +82,7 @@
 				<div class="user-status">
 					<div class="left">
 						<span class="home-status">
-							<img class="home-status-img" src="images/status-away.svg"/>
+							<img class="home-status-img userAvailable" src="images/status-away.svg"/>
 						</span>
 						<img class="circle-img-home home-profile-img" id="homeProfileImg"/>
 						<svg width="40" height="40" class="circle-img-home hidden" id="homeProfileIdenticon"/> </svg>
@@ -183,9 +183,6 @@
     </div>
 	
 	<ul data-role="actionsheet" id="settingsAction" data-popup='{"direction": "left"}'>
-	  	<li>
-	  		<a data-role="button" data-click="go2Archive">View Archive</a>
-	  	</li>
 		<li>
 	  		<a data-role="button" data-click="go2Profile">View profile</a>
 	  	</li>
@@ -323,7 +320,7 @@
                     <select id="supportCategory">
                         <option value="installation">Installation</option>
                         <option value="login">Sign In or Sign Up</option>
-                         <option value="verification">Verification</option>
+                        <option value="verification">Verification</option>
                         <option value="ios">iPhone iOS</option>
                         <option value="android">Android Phones</option>
                         <option value="bug">Software Bug</option>
@@ -526,64 +523,46 @@
 	
 </div>
 
-<div data-role="modalview" id="modalview-profileStatus" style="width: 90%; display: none;" data-open="onShowProfileStatus" data-model="userModel.currentUser" class="appearance" data-close="ux.closeModal" data-open="ux.openModal">
-	<form id="profilePhotoForm">
+<div data-role="modalview" id="modalview-profileStatus" style="width: 90%; display: none;" data-open="homeView.onShowProfileStatus" data-model="userModel.currentUser" class="appearance">
+	<div class="modal-top">
+		<a data-role="button" class="modal-close" data-click="homeView.closeStatusModal">
+			<img src="images/close.svg"/>
+		</a>
+		<img class="circle-img-lg home-profile-img"/>
+		<svg width="40" height="40" class="circle-img-md hidden" id="profileStatusIdenticon"></svg>
+		<img width="20" src="images/status-away.svg" class="userAvailable home-status-card-img" />
 
-        <ul data-role="listview">
-        	<li>
-        		<div class="left">
-
-						<div class="statusContactList">
-							<img class="circle-img-md home-profile-img" src="" />
-							<svg width="40" height="40" class="circle-img-md hidden" id="profileStatusIdenticon"></svg>
-							<img width="16" src="images/status-away.svg" class="statusContactList-icon home-status-img" />
-						 </div>
-					
-				</div><!-- left -->
-
-				<div class="left profileTextBox">
-					<h3 class="textClamp">
-						<span class="primaryName"></span>
-						<img src="images/user-verified.svg" class="user-status-icon hidden" id="profileStatusVerified">
-						<span class="secondName"></span>
-					</h3>
-				</div>
-				<div class="left caption profileTextBox">
-					<p id="profileStatusMessage" data-bind="text: statusMessage"></p></div>
-				<div class="clearfix"></div>
-        	</li>
-        	<li><p class="caption right"><a data-role="button" class="btnClear-sm" href="views/profile.html#profileEdit">Edit Profile</a></p></li>
-        	<li>
-        		<div class="updateStatusLabel">
-        			Update Status 
-        		</div>
-        	</li>
-        	<li>
-                <textarea type="search" id="profileStatusUpdate" placeholder="What's going on..."></textarea>
-                <div class="statusCharacterCount">
-        			<span class="statusCharCount"></span>
-        		</div>
-            </li>
-            <li>
-            	<div>
-            		<div id="checked-in-place">
-            			<span></span>
-            			<button data-role="button" data-click="homeView.checkOutOfPlace">X</button>
-            		</div>
-					<a class="btnClear-sm" data-role="button" data-click="homeView.openLocateMeModal" id="gpsLocateUpdateBtn">
-				        	<img src="images/icon-gps-selected.svg" height="12px"/> Check in here
-				    </a>
-			    </div>
-        	</li>
-        	<li>
-        		<label> Available
-					<input type="checkbox" id="home-status-switch" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="statusSwitch"/>
-				</label>
-        	</li>
-        </ul>
-    </form>
-    <div data-role="footer">
-    	<a class="btnSecondary btnFull-modal" data-click="ux.closeModalViewProfileStatus" data-role="button">Done</a>
+		<h3>
+			<span class="primaryName"></span>
+			<span class="hidden" id="profileStatusVerified">
+				<img src="images/icon-verified-dark.svg" class="user-status-icon" />
+			</span>
+			<span class="secondName"></span>
+		</h3>
+		<p id="profileStatusMessage" data-bind="text: statusMessage"></p>
+	</div>
+	<div class="modal-bottom">
+		<label for="profileStatusUpdate">Update Status</label>
+		<textarea id="profileStatusUpdate" placeholder="What's going on..."></textarea>
+              <div class="statusCharacterCount">
+        		<span class="statusCharCount"></span>
+        	</div>
+		<ul class="list-inline" id="profileStatusList">
+			<li>
+				<a data-role="button" data-click="homeView.changeAvailable">
+				<img src="" height="16" class="userAvailableRev icon-sm" /> 
+					Change to 
+					<span id="currentAvailableTxt">available</span> 
+				</a>
+			</li>
+			<li>
+				<a class="btnClear" data-role="button" data-click="">
+				<img src="images/icon-gps-selected.svg" class="icon-sm" /> Check in</a>
+			</li>
+		</ul>
+	</div>
+    <div class="footer" data-role="footer">
+    	<a class="btnClear btnFull-modal" data-click="homeView.closeModalViewProfileStatus" data-role="button">Done</a>
     </div>
 </div>
 

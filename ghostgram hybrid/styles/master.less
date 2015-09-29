@@ -431,6 +431,11 @@ form {
 	vertical-align: middle;
 }
 
+.icon-sm {
+	height: 1em;
+	vertical-align: text-bottom;
+}
+
 .loading-icon {
 	height: 1rem;
 	vertical-align: middle;
@@ -1253,12 +1258,13 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 
 .statusCharacterCount {
-	position: absolute;
+	position: relative;
 	.font-size(12);
-	color: @shade-100;
-	bottom: 1em;
+	color: #979797;
+	top: -3em;
 	z-index: 1;
-	right: 1em;
+	right: -93%;
+	display: inline-block;
 }
 
 .home-headerBtn {
@@ -1327,6 +1333,27 @@ div.footerMenu.km-footer > ul > li > a:active {
 	height: 18px !important;
 }
 
+.home-status-card-img {
+	position: absolute;
+	top: 73px;
+	left: 54%;
+}
+
+#profileStatusList {
+	position: relative;
+	top: -1rem;
+	width: 100%;
+	li a {
+	text-align: left;
+	}
+}
+
+#profileStatusUpdate {
+	width: 100%; 
+	.font-size(14);
+	resize: none;
+}
+
 .circle-img-home {
 	.circle-img;
 	width: 40px;
@@ -1354,10 +1381,11 @@ div.footerMenu.km-footer > ul > li > a:active {
 
 
 #profileStatusMessage {
-	.font-size(13);
+	.font-size(16);
 	text-overflow: ellipsis;
 	width: 190px;
 	display:inline-block;
+	font-style: italic;
 }
 
 #profilePhotoForm > div > ul > li:nth-child(1) {
@@ -1532,7 +1560,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 .modal-top {
 	height: 12rem;
 	width: 100%;
-	background-color: @shade-200;
+	background-color: rgba(0, 0, 0, 0.6);
 	text-align: center;
 	color: #fff;
 	padding-top: 2rem;
@@ -4299,7 +4327,7 @@ div.contactListBox.activeContact > div > div > ul {
 		border: none !important;
 		width: 80%;
 		padding-left: 0px !important;
-		padding-right: 1rem !important;
+		padding-right: 1rem;
 	}
 	span {
 		float: left;
@@ -4323,12 +4351,13 @@ div.contactListBox.activeContact > div > div > ul {
 		width:88%;
 	}
 	.doubleAppendSearch {
-		width: 70%;
+		width: 75%;
+		padding-right: 0px !important;
 	}
 	.enterSearch {
 		padding-top: 8px;
 		padding-bottom: 8px;
-		width: 18%;
+		width: 13%;
 		span {
 			padding-top: 0px;
 			color: @shade-200;

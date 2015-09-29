@@ -25,31 +25,6 @@ function toggleProfilePhoto(e) {
     }
 }
 
-// Globally update profile and status images in the application header
-function updateHeaderStatusImages () {
-	var isAvailable  = userModel.currentUser.get('isAvailable');
-	if (isAvailable) {
-		userModel.currentUser.set('availImgUrl', 'images/status-available.svg');
-	} else {
-		userModel.currentUser.set('availImgUrl', 'images/status-away.svg');
-	}
-	$('.home-status-img').attr('src',userModel.currentUser.get('availImgUrl'));
-
-
-
-    var useIdenticon = userModel.currentUser.get('useIdenticon');
-    if (useIdenticon === undefined)
-        useIdenticon = true;
-
-    if (useIdenticon === true) {
-        $('.home-profile-img').attr('src',userModel.identiconUrl);
-      //  userModel.enableIdenticon();
-    } else {
-        $('.home-profile-img').attr('src',userModel.currentUser.get('photo'));
-      //  userModel.disableIdenticon();
-    }
-}
-
 // Select new ghost icon
 function whichGhost(e) {
     if (e.preventDefault !== undefined)

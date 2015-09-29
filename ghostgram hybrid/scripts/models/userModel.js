@@ -111,7 +111,7 @@ var userModel = {
             userModel.currentUser.set('emailValidated', userModel.parseUser.get('emailVerified'));
             userModel.currentUser.set('useIdenticon', userModel.parseUser.get('useIdenticon'));
             userModel.currentUser.set('availImgUrl', 'images/status-away.svg');
-            updateHeaderStatusImages();
+            ux.updateHeaderStatusImages();
 
             userModel.createIdenticon(userModel.parseUser.get('userUUID'));
             userModel.parseACL = new Parse.ACL(userModel.parseUser);

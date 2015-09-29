@@ -76,6 +76,42 @@ var ux = {
     	scroller.scrollTo(0,-51);
 	},
 
+	toggleIsAvailable: function(){
+		var currentState = userModel.currentUser.isAvailable;
+		if(currentState){
+			userModel.currentUser.set('isAvailable', false);
+		} else {
+			userModel.currentUser.set('isAvailable', true);
+		}
+		ux.updateHeaderStatusImages();
+
+	},
+
+	// Globally update profile and status images in the application header
+	updateHeaderStatusImages: function() {
+		var isAvailable  = userModel.currentUser.get('isAvailable');
+		if (isAvailable) {
+			userModel.currentUser.set('availImgUrl', 'images/status-available.svg');
+		} else {
+			userModel.currentUser.set('availImgUrl', 'images/status-away.svg');
+		}
+		$('.userAvailable').attr('src',userModel.currentUser.get('availImgUrl'));
+
+
+
+	    var useIdenticon = userModel.currentUser.get('useIdenticon');
+	    if (useIdenticon === undefined)
+	        useIdenticon = true;
+
+	    if (useIdenticon === true) {
+	        $('.home-profile-img').attr('src',userModel.identiconUrl);
+	      //  userModel.enableIdenticon();
+	    } else {
+	        $('.home-profile-img').attr('src',userModel.currentUser.get('photo'));
+	      //  userModel.disableIdenticon();
+	    }
+	},
+
 	closeModalPhotoView: function(e) {
 		_preventDefault(e);
      	$('#modalPhotoView').kendoMobileModalView("close");
@@ -121,27 +157,12 @@ var ux = {
     	$("#modalview-channels-addChannel").kendoMobileModalView("close");
 	},
 
-		
-
 	closeModalViewAddPlace: function(e) {
 		_preventDefault(e);
     	$("#modalview-addPlace").kendoMobileModalView("close");
+    	$(".hasFade").removeClass("hasFade");
 	},
 
-
-	closeModalViewProfileStatus: function(e) {
-		_preventDefault(e);
-
-		$("#modalview-profileStatus").data("kendoMobileModalView").close();
-		$(".userLocationUpdate").css("display", "none");
-		var updatedStatus = $("#profileStatusUpdate").val();
-		if(updatedStatus !== ""){
-			// Save new status
-			userModel.currentUser.set("statusMessage", updatedStatus);
-		}
-		// clear status box
-		$("#profileStatusUpdate").val("");
-	},
 
 	closeStartModal: function(e) {
 		_preventDefault(e);
