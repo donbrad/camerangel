@@ -23,6 +23,11 @@ var userStatusView = {
         } else {
             userStatusView._returnView = APP.kendo.view.id();
         }
+
+        var status = userStatusView._activeStatus, user = userModel.currentUser;
+
+        status.set('statusMessage', user.statusMessage);
+
         $(userStatusView._modalId).data("kendoMobileModalView").open();
 
     },
@@ -47,6 +52,14 @@ var userStatusView = {
             userStatusView._returnView = null
 
         }
+    },
+
+    checkIn : function (e) {
+        _preventDefault(e);
+    },
+
+    checkOut : function (e) {
+        _preventDefault(e);
     },
 
     // Kendo open
