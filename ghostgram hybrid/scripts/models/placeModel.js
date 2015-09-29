@@ -35,7 +35,7 @@ var placesModel = {
                 defaultValue: ''
             },
             venueName: {  // Name from googlePlaces or factual
-                nullable: true,
+                nullable: false,
                 defaultValue: ''
             },
             address: {  // Composite field for display - built from streetNumber, street, city, state and zip
@@ -54,7 +54,6 @@ var placesModel = {
                 nullable: false
             },
             zipcode: {
-
                 defaultValue: '',
                 nullable: false
             },

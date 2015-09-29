@@ -496,7 +496,18 @@ var editPlaceView = {
     setActivePlace : function (placeId) {
         editPlaceView._activePlaceId = placeId;
 
-        editPlaceView._activePlace = placesModel.getPlaceModel(placeId);
+        var placeObj = placesModel.getPlaceModel(placeId);
+
+
+        editPlaceView._activePlace.set('name', placeObj.name);
+        editPlaceView._activePlace.set('alias', placeObj.alias);
+        editPlaceView._activePlace.set('address', placeObj.address);
+        editPlaceView._activePlace.set('city', placeObj.city);
+        editPlaceView._activePlace.set('state', placeObj.state);
+        editPlaceView._activePlace.set('zipcode', placeObj.zipcode);
+        editPlaceView._activePlace.set('isPrivate', placeObj.isPrivate);
+        editPlaceView._activePlace.set('isAvailable', placeObj.isAvailable);
+
     }
 
 };
