@@ -61,11 +61,9 @@ var placesView = {
             dataSource: placesView.placeListDS,
             template: $("#placesTemplate").html(),
             click: function (e) {
-                var geo = e.dataItem;
+                var place = e.dataItem;
 
-                var geoStr = LZString.compressToEncodedURIComponent(JSON.stringify(geo));
-
-                var navStr = "#editPlace?place="+geoStr+"&returnview=places";
+                var navStr = "#editPlace?place="+place.uuid+"&returnview=places";
 
                 APP.kendo.navigate(navStr);
 
@@ -302,7 +300,7 @@ var findPlacesView = {
                     address: address.address,
                     city:  address.city,
                     state: address.state,
-                    zipcode: address.zip,
+                    zipcode: address.zipcode,
                     country: address.country,
                     reference: placeResult.reference,
                     lat: placeResult.geometry.location.H,
