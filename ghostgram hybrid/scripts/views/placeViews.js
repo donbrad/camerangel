@@ -273,9 +273,7 @@ var findPlacesView = {
         var latlng = new google.maps.LatLng(lat, lng);
         var places = mapModel.googlePlaces;
         var ds = findPlacesView.placesDS;
-
-
-
+        
         // Search nearby places
         places.nearbySearch({
             location: latlng,
