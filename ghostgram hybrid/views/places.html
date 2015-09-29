@@ -152,7 +152,7 @@
             <li>
                 <label> Address
                     <input type="text"  data-bind="value: address" required/>
-                    <div style="padding-left: 10px; font-size: 12px;">
+                    <div style="padding-left: 8px; font-size: 12px;">
                         <span data-bind="html: city"></span>, <span data-bind="html: state"></span> &nbsp; <span data-bind="html: zipcode"></span>
                     </div>
                 </label>
@@ -207,7 +207,7 @@
              <li>
                  <label> Address </label>
                  <input type="text" data-bind="value: address" required /></input>
-                 <div style="padding-left: 10px; font-size: 12px;">
+                 <div style="padding-left: 8px; font-size: 12px;">
                      <span data-bind="html: city"></span>, <span data-bind="html: state"></span> &nbsp; <span data-bind="html: zipcode"></span>
                  </div>
              </li>
@@ -232,26 +232,20 @@
 
  <script type="text/x-kendo-template" id="placesTemplate">
      <div style="min-height: 38px; border-radius: 9px; background-color: \\#fff; padding: 4px;">
-         # if (data.category === 'Place') { #
-	         <h4>#: data.name # (#=data.alias#)</h4>
-	         <p>#: data.address #, #: data.city #, #: data.state # </p>
-	         <p class="helper">
-			   <span class="left">
-			 # if (isPrivate=== true) { #
-			 	<img src="images/place-private.svg" /> Private
-			 # } else { # 
-			 	<img src="images/place-public.svg" /> Public
-             # }#
-			   </span>
-	         </p>
-	         <div class="clearfix"> </div>
+
+         <h4>#: data.name # (#:data.alias#)</h4>
+         <p>#:data.address#, #:data.city#, #:data.state#    #:data.zipcode#</p>
+         <p class="helper">
+           <span class="left">
+         # if (data.isPrivate=== true) { #
+            <img src="images/place-private.svg" /> Private
          # } else { #
-            # if (data.name === '' || data.name === undefined) { #
-                <div class="ghostText">#: data.address #, #: data.city #, #: data.state #</div>
-            # } else { #
-                <div class="ghostText">#: data.name # </div>
-            # } #
-         # } #
+            <img src="images/place-public.svg" /> Public
+         # }#
+           </span>
+         </p>
+         <div class="clearfix"> </div>
+
      </div>
  </script>
 
