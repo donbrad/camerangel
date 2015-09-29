@@ -19,6 +19,8 @@ var userStatusView = {
         //if returnurl is undefined, need to look for data-return
         if (returnurl !== undefined) {
             userStatusView._returnView = returnurl;
+        } else {
+            userStatusView._returnView = APP.kendo.view.id();
         }
         $("#modalview-profileStatus").data("kendoMobileModalView").open();
 
@@ -39,7 +41,8 @@ var userStatusView = {
         $("#profileStatusUpdate").val("");*/
 
         if (userStatusView._returnView !== null) {
-            APP.kendo.navigate('#'+userStatusView._returnView);
+            if (APP.kendo.view.id() !== userStatusView._returnView)
+                APP.kendo.navigate('#' + userStatusView._returnView);
             userStatusView._returnView = null
 
         }
