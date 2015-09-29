@@ -134,7 +134,7 @@
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" data-click="addPlaceView.onDone" data-align="left" >Done</a>
+            <a data-role="button" data-click="addPlaceView.onDone" data-align="left">Done</a>
         </div>
     </div>
  	<form style="clear: both;">
@@ -161,30 +161,29 @@
             </li>
              <li>
                 <label> Private Place
-                    <select data-bind="value: isPrivate">
-                        <option value="true">Yes - Only show to My Contacts</option>
-                        <option value="false">No - Show to all ghostgram Users</option>
-                    </select>
+                	<div class="select-lg">
+	                    <select data-bind="value: isPrivate">
+	                        <option value="true">Yes - Only show to My Contacts</option>
+	                        <option value="false">No - Show to all ghostgram Users</option>
+	                    </select>
+	                </div>
                 </label>
             </li>
             <li>
                 <label> Available
-                    <select data-bind="value: isAvailable">
-                        <option value="true">Yes - I'm available here</option>
-                        <option value="false">No - I'm busy here</option>
-                    </select>
+                	<div class="select-lg">
+	                    <select data-bind="value: isAvailable">
+	                        <option value="true">Yes - I'm available here</option>
+	                        <option value="false">No - I'm busy here</option>
+	                    </select>
+	                </div>
                 </label>
             </li>
-
-              
         </ul>
     </form>
 
-   
     <div data-role="footer">
-        <div data-role="navbar">
-            <a data-click="addPlaceView.addPlace" type="button" data-role="button" >Add Place</a>
-        </div>
+    	<a class="btnClear btnFull-modal" data-click="addPlaceView.addPlace" data-role="button">Add Place</a>
     </div>
 </div>
 

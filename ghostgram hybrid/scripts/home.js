@@ -127,7 +127,8 @@ var homeView = {
 		
 		var status = userModel.currentUser.statusMessage;
 		var available = userModel.currentUser.isAvailable;
-
+		var location = userModel.currentUser.currentPlace;
+		
 		ux.formatNameAlias(name, alias, "#modalview-profileStatus");
 
 		// Set profile status
@@ -147,6 +148,12 @@ var homeView = {
 			$(".userAvailable").attr("src", "images/status-away.svg");
 			$(".userAvailableRev").attr("src", "images/status-available.svg");
 			$("#currentAvailableTxt").text("available");
+		}
+
+		// set location
+		if(location !== undefined){
+			$("#profileLocation").removeClass("hidden");
+			// todo - wire location
 		}
 
 		// set status charcter count 

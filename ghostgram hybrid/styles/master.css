@@ -1434,6 +1434,9 @@ div.footerMenu.km-footer > ul > li > a:active {
   position: absolute;
   left: 32px;
 }
+#profileLocation {
+  color: #6cadf3 !important;
+}
 #profileStatusMessage {
   font-size: 16px;
   font-size: 1rem;
