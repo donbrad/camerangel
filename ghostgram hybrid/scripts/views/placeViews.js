@@ -433,6 +433,7 @@ var addPlaceView = {
 
         newPlace.set('isAvailable', place.isAvailable === "true");
         newPlace.set('isPrivate', place.isPrivate === "true");
+        newPlace.set('hasPlaceChat', place.hasPlaceChat === "true");
 
         placesModel.placesDS.add(newPlace);
 
