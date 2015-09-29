@@ -29,7 +29,7 @@ var mapModel = {
         mapModel.googlePlaces = new google.maps.places.PlacesService(mapModel.googleMap);
 
         mapModel.lastPingSeconds = ggTime.currentTimeInSeconds() - 11;
-        
+
         var location = window.localStorage.getItem('ggLastPosition');
 
         if (location !== undefined && location !== null) {
