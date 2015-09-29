@@ -12,68 +12,72 @@ var placesModel = {
     _radius : 30,
     currentPlaceId: null,
     currentPlace: {},
-
-    placesDS: parseKendoDataSourceFactory.make('places', {
+    placesArray : [],
+    placeModel : kendo.data.Model.define({
         id: 'id',
         fields: {
             uuid: {
-                editable: false,
+
                 nullable: false
             },
             category: {  // Venue or Location
-                editable: true,
+
                 nullable: false,
                 defaultValue: 'Location'
             },
             placeChatId: {
-                editable: false,
+
                 defaultValue: ''
             },
             name: {   // Name chosen by the user
-                editable: true,
+
                 nullable: false,
                 defaultValue: ''
             },
             venueName: {  // Name from googlePlaces or factual
-                editable: false,
-                nullable: true,
+                nullable: false,
                 defaultValue: ''
             },
             address: {  // Composite field for display - built from streetNumber, street, city, state and zip
-                editable: false,
+
                 nullable: false,
                 defaultValue: ''
             },
             city: {
-                editable: false,
-                defaultValue: ''
+
+                defaultValue: '',
+                nullable: false
             },
             state: {
-                editable: false,
-                defaultValue: ''
+
+                defaultValue: 'CA',
+                nullable: false
             },
-            zip: {
-                editable: false,
-                defaultValue: ''
+            zipcode: {
+                defaultValue: '',
+                nullable: false
             },
             country: {
-                editable: false,
-                defaultValue: ''
+
+                defaultValue: 'US'
             },
             googleId: {   // googleid - from googlePlaces
-                editable: false,
+
                 defaultValue: ''
             },
+            hasPlaceChat: {
+               type: 'boolean',
+                default: false
+            },
             factualId: {  // factualId -- optional if place exists in factual
-                editable: false,
+
                 defaultValue: ''
             },
             lat: {
-                editable: false,
                 type: 'number'
             },
             lng: {
-                editable: false,
+
                 type: 'number'
             },
             statusMessage: {  // Name from googlePlaces or factual
@@ -100,7 +104,27 @@ var placesModel = {
                 defaultValue: true
             }
         }
-    }),
+
+    } ),
+
+    placesDS : null,
+
+
+    newPlace : function () {
+        return(new placesModel.placeModel);
+    },
+
+    init : function () {
+        placesModel.placesDS =  parseKendoDataSourceFactory.make('places', placesModel.placeModel ,
+            false,
+            undefined,
+            undefined
+        );
+
+        placesModel.placesDS.fetch(function () {
+            placesModel.placesArray  = placesModel.placesDS.data();
+        });
+    },
 
     matchLocation: function (lat, lng) {
         var placesData = placesModel.placesDS.data();
@@ -115,8 +139,29 @@ var placesModel = {
         return(matchArray);
     },
 
-    addPlace : function (place) {
+    getPlaceModel : function (placeId) {
 
+        var dataSource = placesModel.placesDS;
+        dataSource.filter( { field: "uuid", operator: "eq", value: placeId });
+        var view = dataSource.view();
+        var place = view[0];
+        dataSource.filter([]);
+
+        return(place);
+
+    },
+
+    deletePlace : function (placeId) {
+        var dataSource = placesModel.placesDS;
+        var uuid = placeId;
+
+        dataSource.filter({field: "uuid", operator: "eq", value: uuid});
+        var view = dataSource.view();
+        var place = view[0];
+        dataSource.filter([]);
+        dataSource.remove(place);
+
+        dataSource.sync();
     }
 
 

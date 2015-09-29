@@ -29,6 +29,49 @@ var placesView = {
                 placesView.placeListDS.filter([]);
             }
         });
+
+        // Filter current places and query google places on keyup
+        $('#placeSearchQuery').keyup(function() {
+            var query = this.value;
+            if (query.length > 0) {
+               placesView.placeListDS.filter(  {"logic":"or",
+                    "filters":[
+                        {
+                            "field":"address",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"name",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"alias",
+                            "operator":"contains",
+                            "value":query}
+                    ]});
+
+            } else {
+
+                placesView.placeListDS.data(placesModel.placesDS.data());
+                placesView.placeListDS.filter([]);
+            }
+        });
+
+        $("#places-listview").kendoMobileListView({
+            dataSource: placesView.placeListDS,
+            template: $("#placesTemplate").html(),
+            click: function (e) {
+                var place = e.dataItem;
+                console.log(place);
+                var navStr = "#editPlace?place="+LZString.compressToEncodedURIComponent(place.uuid)+"&returnview=places";
+
+                APP.kendo.navigate(navStr);
+
+            },
+            dataBound: function(e){
+                ux.checkEmptyUIState(placesView.placeListDS, "#placeListDiv >");
+            }
+        });
     },
 
     onShow: function (e) {
@@ -38,8 +81,9 @@ var placesView = {
         ux.showActionBtn(false, "#places");
         //$("#places > div.footerMenu.km-footer > a").removeAttr('href').css("display", "none");
 
+        placesView.placeListDS.data(placesModel.placesDS.data());
 
-       mapModel.getCurrentPosition( function (lat,lng) {
+       	mapModel.getCurrentPosition( function (lat,lng) {
 
             var places = placesModel.matchLocation(lat, lng);
 
@@ -49,6 +93,7 @@ var placesView = {
                 // No current places match the current location
             	ux.showActionBtn(true, "#places", findPlaceUrl);
             } else {
+
                 // set placesView.placeListDS to results
             }
 
@@ -72,6 +117,7 @@ var findPlacesView = {
     _returnModeal : null,
     _lat : null,
     _lng : null,
+    _currentLocation: {},
 
     placesDS :  new kendo.data.DataSource({
         sort: {
@@ -90,7 +136,7 @@ var findPlacesView = {
             click: function (e) {
                 var geo = e.dataItem;
 
-                var geoStr = LZString.compress(JSON.stringify(geo));
+                var geoStr = LZString.compressToEncodedURIComponent(JSON.stringify(geo));
 
                 var navStr = "#addPlace?geo="+geoStr+"&returnview=findPlace";
 
@@ -102,7 +148,10 @@ var findPlacesView = {
     onShow : function (e) {
         _preventDefault(e);
 
+        var ds = findPlacesView.placesDS;
+
         var lat = findPlacesView._lat, lng = findPlacesView._lng;
+
 
         if (e.view.params !== undefined) {
             if (e.view.params.lat !== undefined) {
@@ -118,7 +167,52 @@ var findPlacesView = {
             if (e.view.params.returnmodal !== undefined)
                 findPlacesView._returnModal = e.view.params.returnmodal;
         }
-        findPlacesView.updatePlaces(lat,lng);
+
+        var latlng = new google.maps.LatLng(lat, lng);
+        // empty current data
+        ds.data([]);
+
+
+        // Geocode the current location
+        mapModel.geocoder.geocode({ 'latLng': latlng }, function (geoResults, geoStatus) {
+            if (geoStatus !== google.maps.GeocoderStatus.OK) {
+                mobileNotify('Google geocoding service error!');
+                return;
+            }
+            if (geoResults.length === 0 || geoResults[0].types[0] !== 'street_address') {
+                mobileNotify('We couldn\'t match your position to a street address.');
+                return;
+            }
+
+            var address = findPlacesView.getAddressFromComponents(geoResults[0].address_components);
+
+            var location = {
+                category: 'Location',   // valid categories are: Place and Location
+                name: address.streetNumber+' '+address.street,
+                type: 'Street Address',
+                googleId: null,
+                icon: null,
+                reference: null,
+                streetNumber: address.streetNumber,
+                street: address.street,
+                address: address.streetNumber+' '+address.street,
+                city:  address.city,
+                state: address.state,
+                zipcode: address.zip,
+                country: address.country,
+                lat: lat,
+                lng: lng,
+                vicinity: address.city+', '+address.state
+            };
+
+            findPlacesView._currentLocation = location;
+
+            ds.add(location);
+
+            findPlacesView.updatePlaces(lat,lng);
+        });
+
+
     },
 
     onHide: function (e) {
@@ -128,6 +222,10 @@ var findPlacesView = {
 
     getTypesFromComponents : function (types) {
        var typeString = '';
+
+        if (types === undefined || types.length === 0) {
+            return  "Establishment";
+        }
 
         for (var i=0; i<types.length; i++) {
             if (types[i] !== 'point_of_interest' && types[i] !== 'establishment' && types[i] !== 'food') {
@@ -180,38 +278,13 @@ var findPlacesView = {
         var places = mapModel.googlePlaces;
         var ds = findPlacesView.placesDS;
 
-        // empty current data
-        ds.data([]);
-
+        // Search nearby places
         places.nearbySearch({
             location: latlng,
             radius: homeView._radius,
             types: ['establishment']
         }, function (placesResults, placesStatus) {
-           mapModel.geocoder.geocode({ 'latLng': latlng }, function (geoResults, geoStatus) {
-                if (geoStatus !== google.maps.GeocoderStatus.OK) {
-                    mobileNotify('Google geocoding service error!');
-                    return;
-                }
-                if (geoResults.length === 0 || geoResults[0].types[0] !== 'street_address') {
-                    mobileNotify('We couldn\'t match your position to a street address.');
-                    return;
-                }
 
-                var address = findPlacesView.getAddressFromComponents(geoResults[0].address_components);
-
-                ds.add({
-                    category: 'Location',   // valid categories are: Place and Location
-                    name: address.streetNumber+' '+address.street,
-                    type: 'Street Address',
-                    googleId: null,
-                    icon: null,
-                    reference: null,
-                    lat: lat,
-                    lng: lng,
-                    vicinity: address.city+', '+address.state
-                });
-            });
             if (placesStatus !== google.maps.places.PlacesServiceStatus.OK) {
                 mobileNotify('Google Places error: '+ placesStatus);
                 return;
@@ -219,13 +292,18 @@ var findPlacesView = {
 
             placesResults.forEach( function (placeResult) {
 
-
+                var address = findPlacesView._currentLocation;
                 ds.add({
                     category: 'Place',   // valid categories are: Place and Location
                     name: placeResult.name.smartTruncate(24, true),
                     type: findPlacesView.getTypesFromComponents(placeResult.types),
                     googleId: placeResult.place_id,
                     icon: placeResult.icon,
+                    address: address.address,
+                    city:  address.city,
+                    state: address.state,
+                    zipcode: address.zipcode,
+                    country: address.country,
                     reference: placeResult.reference,
                     lat: placeResult.geometry.location.H,
                     lng: placeResult.geometry.location.L,
@@ -264,10 +342,12 @@ var addPlaceView = {
     onShow : function (e) {
         _preventDefault(e);
 
+        $('#addPlaceCreateChat').attr('checked', false);
+
         if (e.view.params !== undefined) {
 
             if (e.view.params.geo !== undefined) {
-                var geo = LZString.decompress(e.view.params.geo);
+                var geo = LZString.decompressFromEncodedURIComponent(e.view.params.geo);
                 var geoObj = JSON.parse(geo);
                 addPlaceView.setActivePlace(geoObj);
             }
@@ -297,44 +377,77 @@ var addPlaceView = {
     setActivePlace : function (geoPlace) {
         addPlaceView._activeGeo = geoPlace;
 
+        addPlaceView._activePlace.set('name', geoPlace.name);
+        addPlaceView._activePlace.set('alias', geoPlace.alias);
+        addPlaceView._activePlace.set('venueName', geoPlace.venueName);
         addPlaceView._activePlace.set('isAvailable',"true");
         addPlaceView._activePlace.set('isPrivate',"true");
+        addPlaceView._activePlace.set('address',geoPlace.address);
+        addPlaceView._activePlace.set('city',geoPlace.city);
+        addPlaceView._activePlace.set('state',geoPlace.state);
+        addPlaceView._activePlace.set('country',geoPlace.country);
+        addPlaceView._activePlace.set('zipcode',geoPlace.zipcode);
+        addPlaceView._activePlace.set('type', geoPlace.type);
 
-        if (geoPlace.category = "Location") {
+        addPlaceView._activePlace.set('lat', geoPlace.lat);
+        addPlaceView._activePlace.set('lng', geoPlace.lng);
+
+
+        if (geoPlace.category === "Location") {
+            // A location / street address
             addPlaceView._activePlace.set('category',"Location");
-            addPlaceView._activePlace.set('name', '');
-            addPlaceView._activePlace.set('venueName', '');
-            addPlaceView._activePlace.set('alias', '');
-            addPlaceView._activePlace.set('type', geoPlace.type);
             addPlaceView._activePlace.set('googleId', '');
-            addPlaceView._activePlace.set('address', geoPlace.name +  ' ' + geoPlace.vicinity);
-            addPlaceView._activePlace.set('lat', geoPlace.lat);
-            addPlaceView._activePlace.set('lng', geoPlace.lng);
+            addPlaceView._activePlace.set('icon', '');
+            addPlaceView._activePlace.set('reference', '');
 
         } else {
+            // A googlePlaces venue
             addPlaceView._activePlace.set('category',"Venue");
-            addPlaceView._activePlace.set('name', geoPlace.name);
-            addPlaceView._activePlace.set('venueName', geoPlace.name);
-            addPlaceView._activePlace.set('alias', '');
-            addPlaceView._activePlace.set('type', geoPlace.type);
+            addPlaceView._activePlace.set('icon', geoPlace.icon);
+            addPlaceView._activePlace.set('reference', geoPlace.reference);
             addPlaceView._activePlace.set('googleId', geoPlace.googleId);
-            addPlaceView._activePlace.set('address', geoPlace.vicinity);
-            addPlaceView._activePlace.set('lat', geoPlace.lat);
-            addPlaceView._activePlace.set('lng', geoPlace.lng);
         }
+
 
     },
 
     addPlace : function (e) {
         _preventDefault(e);
 
+        var newPlace = placesModel.newPlace();
         var place =  addPlaceView._activePlace;
         var guid = uuid.v4();
 
-        place.set('uuid', guid);
+        var createChatFlag = $('#addPlaceCreateChat').is('checked');
 
-        placesModel.placesDS.add(place);
+        newPlace.set('uuid', guid);
+        newPlace.set('category', place.category);
+        newPlace.set('name', place.name);
+        newPlace.set('venueName', place.venueName);
+        newPlace.set('alias', place.alias);
+        newPlace.set('googleId', place.googleId);
+        newPlace.set('address', place.address);
+        newPlace.set('lat', place.lat);
+        newPlace.set('lng', place.lng);
+        newPlace.set('type', place.type);
+        newPlace.set('city', place.city);
+        newPlace.set('state', place.state);
+        newPlace.set('country', place.country);
+        newPlace.set('zipcode', place.zipcode);
+
+        newPlace.set('isAvailable', place.isAvailable === "true");
+        newPlace.set('isPrivate', place.isPrivate === "true");
+        newPlace.set('hasPlaceChat', place.hasPlaceChat === "true");
+
+        placesModel.placesDS.add(newPlace);
+
+        placesModel.placesDS.sync();
+
+        mobileNotify(place.name + " added to your Places...");
+
+        addPlaceView.onDone();
     }
+
 
 };
 
@@ -358,7 +471,8 @@ var editPlaceView = {
 
         if (e.view.params !== undefined) {
             if (e.view.params.place !== undefined) {
-                editPlaceView.setActivePlace(e.view.params.place);
+                var placeId = LZString.decompressFromEncodedURIComponent(e.view.params.place);
+                editPlaceView.setActivePlace(placeId);
             }
 
             if (e.view.params.returnview !== undefined)
@@ -386,6 +500,19 @@ var editPlaceView = {
 
     setActivePlace : function (placeId) {
         editPlaceView._activePlaceId = placeId;
+
+        var placeObj = placesModel.getPlaceModel(placeId);
+
+
+        editPlaceView._activePlace.set('name', placeObj.name);
+        editPlaceView._activePlace.set('alias', placeObj.alias);
+        editPlaceView._activePlace.set('address', placeObj.address);
+        editPlaceView._activePlace.set('city', placeObj.city);
+        editPlaceView._activePlace.set('state', placeObj.state);
+        editPlaceView._activePlace.set('zipcode', placeObj.zipcode);
+        editPlaceView._activePlace.set('isPrivate', placeObj.isPrivate);
+        editPlaceView._activePlace.set('isAvailable', placeObj.isAvailable);
+
     }
 
 };

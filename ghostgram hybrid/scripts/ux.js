@@ -48,7 +48,7 @@ var ux = {
 	    if(ds <= 0){
 	    	$(view + " .emptyState").removeClass("hidden");
 	    } else {
-	    	$(view + ".emptyState").addClass("hidden");
+	    	$(view + " .emptyState").addClass("hidden");
 	    }
 	},
 

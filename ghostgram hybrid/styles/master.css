@@ -4650,3 +4650,8 @@ html .km-pane-wrapper .k-header {
 #checked-in-place {
   display: none;
 }
+/** Place **/
+#places-listview li {
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #e0e0e0;
+}

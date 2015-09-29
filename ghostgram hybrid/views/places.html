@@ -7,25 +7,27 @@
 				<input class="doubleAppendSearch clearable" placeholder="Search my places" id="placeSearchQuery" />
 			</div>
 		</div>
-         <div id="current-place">
-            <h1>Checked-in to:</h1>
-            <div></div>
-         </div>
-        <div id="placeListDiv">
-         	<ul id="places-listview"></ul>
-	         <div class="emptyState">
-	         	<img src="images/empty-places.svg" />
-	         </div>
-	    </div>
-     </div>
+        <div id="current-place">
+           <h1>Checked-in to:</h1>
+           <div></div>
+        </div>
+        
+	        <div id="placeListDiv">
+	         	<ul id="places-listview"></ul>
+		         <div class="emptyState hidden">
+		         	<img src="images/empty-places.svg" />
+		         </div>
+		    </div>
+	   
+    </div>
 
-     <ul data-role="actionsheet" id="placesActions" data-popup='{"direction": "left"}'>
-         <li id="check-out"><a data-action="checkOut">Check Out</a></li>
-         <li id="go-to-chat"><a data-action="goToChat">Go To Chat</a></li>
-         <li><a data-action="doEditPlace">Edit Place</a></li>
-         <li><a data-action="doDeletePlace">Delete Place</a></li>
-     </ul>
- </div>
+    <ul data-role="actionsheet" id="placesActions" data-popup='{"direction": "left"}'>
+        <li id="check-out"><a data-action="checkOut">Check Out</a></li>
+        <li id="go-to-chat"><a data-action="goToChat">Go To Chat</a></li>
+        <li><a data-action="doEditPlace">Edit Place</a></li>
+        <li><a data-action="doDeletePlace">Delete Place</a></li>
+    </ul>
+</div>
 
 <!-- Nearby Results -->
 <div data-role="modalview" data-tile="Nearby Results" id="nearby-results" style="height:90%; width:90%;">
@@ -159,25 +161,17 @@
                     <input type="text"  data-bind="value: type" required/>
                 </label>
             </li>
-             <li>
-                <label> Private Place
-                	<div class="select-lg">
-	                    <select data-bind="value: isPrivate">
-	                        <option value="true">Yes - Only show to My Contacts</option>
-	                        <option value="false">No - Show to all ghostgram Users</option>
-	                    </select>
-	                </div>
-                </label>
+            <li>
+                <label> Private Place ? </label>
+                <input type="checkbox" data-bind="checked : isPrivate" data-role="switch" />
             </li>
             <li>
-                <label> Available
-                	<div class="select-lg">
-	                    <select data-bind="value: isAvailable">
-	                        <option value="true">Yes - I'm available here</option>
-	                        <option value="false">No - I'm busy here</option>
-	                    </select>
-	                </div>
-                </label>
+                <label> Are you available here ?</label>
+                <input type="checkbox" data-bind="checked : isAvailable" data-role="switch" />
+            </li>
+            <li>
+                <label> Has a chat?</label>
+                <input type="checkbox" id="addPlaceCreateChat" data-bind="checked: hasPlaceChat" data-role="switch" />
             </li>
         </ul>
     </form>
@@ -188,38 +182,43 @@
 </div>
 
 
-<div data-role="view" id="editPlace" class="appearance" data-show="onShowEditPlace" data-hide="onHideEditPlace">
-     <div data-role="header">
-         <div data-role="navbar">
-             <a data-role="backbutton" id="buttonEditPlace" data-align="left">Back</a>
-             <span>Edit Place</span>
-         </div>
-     </div>
+<div data-role="view" id="editPlace" data-title="Edit Place" data-model="editPlaceView._activePlace" class="appearance" data-layout="main" data-init="editPlaceView.onInit" data-show="editPlaceView.onShow" data-hide="editPlaceView.onHide">
+    <div data-role="header">
+        <div data-role="navbar">
+            <span data-role="view-title"></span>
+            <a data-role="button" data-click="editPlaceView.onDone" data-align="left" >Done</a>
+        </div>
+    </div>
 
      <form style="clear: both;">
          <ul data-role="listview" data-style="inset" >
              <li>
                  <label> Name </label>
-                 <input type="text" id="editPlaceName" required />
+                 <input type="text" data-bind="value: name" required />
              </li>
-
+             <li>
+                 <label> Alias </label>
+                 <input type="text" data-bind="value: alias" required />
+             </li>
              <li>
                  <label> Address </label>
-                 <input type="text" id="editPlaceAddress" required /><span id="restOfAddress"></span>
+                 <input type="text" data-bind="value: address" required /></input>
+                 <div style="padding-left: 14px; font-size: 11px;">
+                     <span data-bind="html: city"></span>, <span data-bind="html: state"></span> &nbsp; <span data-bind="html: zipcode"></span>
+                 </div>
              </li>
              <li>
-                 <label> Available for call/chat ?</label>
-                 <input type="checkbox" id="editPlaceIsAvailable" data-role="switch" />
+                 <label> Private Place ? </label>
+                 <input type="checkbox" data-bind="checked : isPrivate" data-role="switch" />
              </li>
-
              <li>
-                 <label> Visible to Others Here  </label>
-                 <input type="checkbox" id="editPlaceIsVisible" data-role="switch" />
+                 <label> Are you available here ?</label>
+                 <input type="checkbox" data-bind="checked : isAvailable" data-role="switch" />
              </li>
 
              <li>
                  <label> Automatically Check In </label>
-                 <input type="checkbox" id="editPlaceAuto" data-role="switch" />
+                 <input type="checkbox" data-bind="checked : autoCheckIn" data-role="switch" />
              </li>
 
          </ul>
@@ -228,27 +227,28 @@
 
 
  <script type="text/x-kendo-template" id="placesTemplate">
-     <div style="min-height: 38px; border-radius: 9px; background-color: \\#fff; padding: 4px;">
-         # if (data.category === 'Place') { #
-	         <h4>#: data.name # </h4>
-	         <p>#: data.streetNumber # #: data.street #, #: data.city #, #: data.state # </p>
-	         <p class="helper">
-			   <span class="left">
-			 # if (isVisible === true) { #
-			 	<img src="images/place-public.svg" /> Public
-			 # } else { # 
-			 	<img src="images/place-private.svg" /> Secret
-             # }#
-			   </span>
-	         </p>
-	         <div class="clearfix"> </div>
-         # } else { #
-            # if (data.name === '' || data.name === undefined) { #
-                <div class="ghostText">#: data.streetNumber # #: data.street #, #: data.city #, #: data.state #</div>
-            # } else { #
-                <div class="ghostText">#: data.name # </div>
-            # } #
-         # } #
+     <div>
+         # console.log(data); #
+         # if (data.category === 'Place') {#
+	        <h4>#: data.name # (#: data.alias #)</h4>
+	        <p>#: data.address #, #: data.city #, #: data.state # </p>
+	        <p class="helper">
+				<span class="left">
+					# if (isPrivate=== true) { #
+				 		<img src="images/place-private.svg" /> Private
+					#} else { # 
+				 		<img src="images/place-public.svg" /> Public
+	            	#}#
+				</span>
+	        </p>
+	        <div class="clearfix"></div>
+         #} else {#
+         	# if (data.name === '' || data.name === undefined) { #
+                <div class="ghostText">#: data.address #, #: data.city #, #: data.state #</div>
+            #} else {#
+                <h3> #: data.name #</h3>
+            #}#
+         #}#
      </div>
  </script>
 
@@ -265,6 +265,6 @@
 
  <script type="text/x-kendo-template" id="geoPlacesTemplate">
      <div>
-         <div class="ghostText">#: data.name # </div>
+         <div>#: data.name # </div>
      </div>
  </script>
