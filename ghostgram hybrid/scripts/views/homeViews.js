@@ -14,6 +14,21 @@ var userStatusView = {
     _activeStatus : new kendo.data.ObservableObject(),
     _returnView : null,
     _modalId : "#modalview-profileStatus",
+    _placesDS : new kendo.data.DataSource({
+        sort: {
+            field: "name",
+            dir: "asc"
+        },
+        schema : {
+            model : {
+                id: id,
+                fields : {
+                    placeuuid: {type: "string"},
+                    name: {type: "string"}
+                }
+            }
+        }
+    }),
 
     // Main entry point for userstatus modal
     openModal : function (returnurl) {
@@ -23,6 +38,9 @@ var userStatusView = {
         } else {
             userStatusView._returnView = APP.kendo.view.id();
         }
+        userStatusView._placesDS.data([]);
+        userStatusView._placesDS.add({placeuuid: null, name: "New Place"});
+
 
         var status = userStatusView._activeStatus, user = userModel.currentUser;
         userStatusView._activeStatus.unbind('change' , userStatusView.syncUserStatus);

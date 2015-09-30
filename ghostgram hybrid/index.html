@@ -569,8 +569,8 @@
             			<button data-role="button" data-click="userStatusView.checkOut">X</button>
             		</div>
 					<div>
-						<select id="userStatusLocationSelect">
-							<option value="New">New Place</option>
+						<select id="userStatusLocationSelect" data-bind="source: userStatusView._placesDS" data-text-field="name" data-value-field="placeuuid">>
+
 						</select>
 						<a class="btnClear-sm" data-role="button" data-click="userStatusView.checkIn" id="gpsLocateUpdateBtn">
 							<img src="images/icon-gps-selected.svg" height="12px"/> Check In
