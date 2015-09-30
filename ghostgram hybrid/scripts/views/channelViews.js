@@ -941,7 +941,12 @@ var channelView = {
             validMessage = true;
         }
 
-        var messageData = {geo: APP.location.position};
+        // Add current location information to message
+        var messageData = {address: mapModel.currentAddress};
+
+        if (userModel.currentUser.currentPlaceUUID !== null) {
+            messageData.place = {name: userModel.currentUser.currentPlace, uuid: userModel.currentUser.currentPlaceUUID};
+        }
 
         if (currentChannelModel.currentMessage.photo !== undefined && currentChannelModel.currentMessage.photo !== null) {
             validMessage = true;
