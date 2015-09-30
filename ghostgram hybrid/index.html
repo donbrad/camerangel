@@ -527,7 +527,7 @@
 	
 </div>
 
-<div data-role="modalview" id="modalview-profileStatus" style="width: 90%; display: none;"  data-model="userStatusView._activeStatus"  data-close="userStatusView.onClose" data-open="userStatusView.onOpen">
+<div data-role="modalview" id="modalview-profileStatus" style="width: 90%; display: none;"  data-model="userStatusView"  data-close="userStatusView.onClose" data-open="userStatusView.onOpen">
 	<form id="profilePhotoForm">
 
         <ul data-role="listview">
@@ -547,7 +547,7 @@
 					</h3>
 				</div>
 				<div class="left caption profileTextBox">
-					<p id="profileStatusMessage" data-bind="text: statusMessage"></p></div>
+					<p id="profileStatusMessage" data-bind="text: _activeStatus.statusMessage"></p></div>
 				<div class="clearfix"></div>
         	</li>
         	<li><p class="caption right"><a data-role="button" class="btnClear-sm" href="views/profile.html#profileEdit">Edit Profile</a></p></li>
@@ -569,7 +569,7 @@
             			<button data-role="button" data-click="userStatusView.checkOut">X</button>
             		</div>
 					<div>
-						<select id="userStatusLocationSelect" data-bind="source: userStatusView._placesDS" data-text-field="name" data-value-field="placeuuid">>
+						<select id="userStatusLocationSelect" data-bind="source: _placesDS" data-text-field="name" data-value-field="placeuuid">>
 
 						</select>
 						<a class="btnClear-sm" data-role="button" data-click="userStatusView.checkIn" id="gpsLocateUpdateBtn">
@@ -580,7 +580,7 @@
         	</li>
         	<li>
         		<label> Available
-					<input type="checkbox" id="home-status-switch" data-off-label="No" data-on-label="Yes" data-role="switch" data-bind="checked : isAvailable" data-change="statusSwitch"/>
+					<input type="checkbox" id="home-status-switch" data-off-label="No" data-on-label="Yes" data-role="switch" data-bind="checked : _activeStatus.isAvailable" data-change="statusSwitch"/>
 				</label>
         	</li>
         </ul>
