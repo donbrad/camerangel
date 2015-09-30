@@ -27,6 +27,11 @@ var userStatusView = {
         var status = userStatusView._activeStatus, user = userModel.currentUser;
         userStatusView._activeStatus.unbind('change' , userStatusView.syncUserStatus);
         status.set('statusMessage', user.statusMessage);
+        if (userModel.isCheckedIn) {
+            status.set('checkedInPlace', userModel.checkedInPlace);
+        } else {
+            status.set('checkedInPlace','');
+        }
         status.set('currentPlace', user.currentPlace);
         status.set('isAvailable', user.isAvailable);
         userStatusView._activeStatus.bind('change' , userStatusView.syncUserStatus);
