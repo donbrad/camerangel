@@ -22,6 +22,7 @@ var userModel = {
 
     currentUser: new kendo.data.ObservableObject({
         username: '',
+        name: '',
         userUUID: '',
         email: '',
         phone: '',

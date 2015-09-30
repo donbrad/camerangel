@@ -43,6 +43,10 @@ var userStatusView = {
 
 
         var status = userStatusView._activeStatus, user = userModel.currentUser;
+
+        // Set name/alias layout
+        ux.formatNameAlias(user.name, user.alias, "#modalview-profileStatus");
+
         userStatusView._activeStatus.unbind('change' , userStatusView.syncUserStatus);
         status.set('statusMessage', user.statusMessage);
         if (userModel.isCheckedIn) {
