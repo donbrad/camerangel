@@ -31,13 +31,12 @@ var userStatusView = {
     }),
 
     // Main entry point for userstatus modal
-    openModal : function (returnurl) {
-        //if returnurl is undefined, need to look for data-return
-        if (returnurl !== undefined) {
-            userStatusView._returnView = returnurl;
-        } else {
-            userStatusView._returnView = APP.kendo.view().id;
-        }
+    openModal : function (e) {
+        _preventDefault(e);
+        
+        //Cache the current view
+        userStatusView._returnView = APP.kendo.view().id;
+
         userStatusView._placesDS.data([]);
         userStatusView._placesDS.add({placeuuid: null, name: "New Place"});
 
