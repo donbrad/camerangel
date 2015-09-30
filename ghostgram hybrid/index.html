@@ -547,7 +547,8 @@
 					</h3>
 				</div>
 				<div class="left caption profileTextBox">
-					<p id="profileStatusMessage" data-bind="text: _activeStatus.statusMessage"></p></div>
+					<span id="profileStatusMessage" data-bind="text: _activeStatus.statusMessage"></span>
+				</div>
 				<div class="clearfix"></div>
         	</li>
         	<li><p class="caption right"><a data-role="button" class="btnClear-sm" href="views/profile.html#profileEdit">Edit Profile</a></p></li>
@@ -572,14 +573,15 @@
 			</li>
 			<li>
 
-				<div>
-					<select id="userStatusLocationSelect" data-bind="source: _placesDS" data-text-field="name" data-value-field="placeuuid">
+				<div class="select-md">
+					<select  id="userStatusLocationSelect" data-bind="source: _placesDS" data-text-field="name" data-value-field="placeuuid">
 
 					</select>
-					<a class="btnClear-sm" data-role="button" data-click="userStatusView.checkIn" id="gpsLocateUpdateBtn">
-						<img src="images/icon-gps-selected.svg" height="12px"/> Check In
-					</a>
 				</div>
+				<a class="btnClear-sm" data-role="button" data-click="userStatusView.checkIn" id="gpsLocateUpdateBtn">
+					<img src="images/icon-gps-selected.svg" height="12px"/> Check In
+				</a>
+
 
         	</li>
         	<li>
