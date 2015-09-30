@@ -27,6 +27,7 @@ var userStatusView = {
         var status = userStatusView._activeStatus, user = userModel.currentUser;
 
         status.set('statusMessage', user.statusMessage);
+        status.set('currentPlace', user.currentPlace);
 
         $(userStatusView._modalId).data("kendoMobileModalView").open();
 

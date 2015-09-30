@@ -10,9 +10,7 @@ var placesModel = {
 
     locatorActive : false,
     _radius : 30,
-    currentPlaceId: null,
-    currentPlace: {},
-    isCheckedIn: false,
+
     placesArray : [],
     placeModel : kendo.data.Model.define({
         id: 'id',

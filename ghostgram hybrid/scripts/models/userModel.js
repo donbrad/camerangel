@@ -15,6 +15,10 @@ var userModel = {
     identiconUrl : null,
     rememberUserName : false,
     initialView : '#newuserhome',
+    // Current place that user has checked in to.  Can
+    checkedInPlace: {},
+    checkedInPlaceId: null,
+    isCheckedIn: false,
 
     currentUser: new kendo.data.ObservableObject({
         username: '',
@@ -198,6 +202,22 @@ var userModel = {
         }
     },
 
+    checkIn : function (placeId) {
+        var place = placesModel.getPlaceModel(placeId);
+
+        userModel.checkedInPlace = place;
+        userModel.checkedInPlaceId = placeId;
+        userModel.currentUser.currentPlace = place.name;
+        userModel.currentUser.currentPlaceId = place.uuid;
+        userModel.isCheckedIn = true;
+        userStatus.update();
+    },
+
+    checkOut : function () {
+        userModel.isCheckedIn = false;
+        userModel.checkedInPlace = {};
+        userModel.checkedInPlaceId = null;
+    },
 
     initPubNub: function () {
         var uuid = userModel.currentUser.get('userUUID');
