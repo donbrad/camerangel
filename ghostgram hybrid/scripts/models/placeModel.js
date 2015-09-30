@@ -163,6 +163,7 @@ var placesModel = {
             return false;
         }
     },
+
     getPlaceModel : function (placeId) {
 
         var dataSource = placesModel.placesDS;

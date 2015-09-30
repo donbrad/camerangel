@@ -25,10 +25,11 @@ var userStatusView = {
         }
 
         var status = userStatusView._activeStatus, user = userModel.currentUser;
-
+        userStatusView._activeStatus.unbind('change' , userStatusView.syncUserStatus);
         status.set('statusMessage', user.statusMessage);
         status.set('currentPlace', user.currentPlace);
-
+        status.set('isAvailable', user.isAvailable);
+        userStatusView._activeStatus.bind('change' , userStatusView.syncUserStatus);
         $(userStatusView._modalId).data("kendoMobileModalView").open();
 
     },
@@ -61,6 +62,14 @@ var userStatusView = {
 
     checkOut : function (e) {
         _preventDefault(e);
+    },
+
+    syncUserStatus: function (e) {
+        _preventDefault(e);
+
+        userModel.currentUser.set(e.field, this[e.field]);
+        updateParseObject('userStatus','userUUID', userModel.currentUser.uuid, e.field, this[e.field]);
+
     },
 
     // Kendo open
