@@ -21,7 +21,7 @@ var userStatusView = {
         },
         schema : {
             model : {
-                id: id,
+                id: 'id',
                 fields : {
                     placeuuid: {type: "string"},
                     name: {type: "string"}
