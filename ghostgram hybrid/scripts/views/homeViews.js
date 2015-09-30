@@ -36,7 +36,7 @@ var userStatusView = {
         if (returnurl !== undefined) {
             userStatusView._returnView = returnurl;
         } else {
-            userStatusView._returnView = APP.kendo.view.id();
+            userStatusView._returnView = APP.kendo.view().id;
         }
         userStatusView._placesDS.data([]);
         userStatusView._placesDS.add({placeuuid: null, name: "New Place"});
@@ -77,7 +77,7 @@ var userStatusView = {
         $("#profileStatusUpdate").val("");*/
 
         if (userStatusView._returnView !== null) {
-            if (APP.kendo.view.id() !== userStatusView._returnView)
+            if (APP.kendo.view().id !== userStatusView._returnView)
                 APP.kendo.navigate('#' + userStatusView._returnView);
             userStatusView._returnView = null
 
