@@ -47,6 +47,8 @@ var userStatusView = {
         ux.formatNameAlias(user.name, user.alias, "#modalview-profileStatus");
 
         userStatusView._activeStatus.unbind('change' , userStatusView.syncUserStatus);
+        $('#profileStatusMessage').attr('text',user.statusMessage );
+        
         status.set('statusMessage', user.statusMessage);
         if (userModel.isCheckedIn) {
             status.set('checkedInPlace', userModel.checkedInPlace);
