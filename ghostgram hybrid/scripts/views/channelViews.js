@@ -942,7 +942,7 @@ var channelView = {
         }
 
         // Add current location information to message
-        var messageData = {address: mapModel.currentAddress};
+        var messageData = {geo: {lat: mapModel.lat, lng: mapModel.lng} , address: mapModel.currentAddress};
 
         if (userModel.currentUser.currentPlaceUUID !== null) {
             messageData.place = {name: userModel.currentUser.currentPlace, uuid: userModel.currentUser.currentPlaceUUID};
