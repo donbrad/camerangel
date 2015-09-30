@@ -33,7 +33,7 @@ var userStatusView = {
     // Main entry point for userstatus modal
     openModal : function (e) {
         _preventDefault(e);
-        
+
         //Cache the current view
         userStatusView._returnView = APP.kendo.view().id;
 
@@ -55,7 +55,6 @@ var userStatusView = {
         }
         status.set('currentPlace', user.currentPlace);
         status.set('isAvailable', user.isAvailable);
-        status.set('isAvailable', user.statusMessage);
         userStatusView._activeStatus.bind('change' , userStatusView.syncUserStatus);
         $(userStatusView._modalId).data("kendoMobileModalView").open();
 
