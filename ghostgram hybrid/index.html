@@ -568,15 +568,19 @@
             			<span data-bind="text: checkedInPlace"></span>
             			<button data-role="button" data-click="userStatusView.checkOut">X</button>
             		</div>
-					<div>
-						<select id="userStatusLocationSelect" data-bind="source: _placesDS" data-text-field="name" data-value-field="placeuuid">
-
-						</select>
-						<a class="btnClear-sm" data-role="button" data-click="userStatusView.checkIn" id="gpsLocateUpdateBtn">
-							<img src="images/icon-gps-selected.svg" height="12px"/> Check In
-						</a>
 					</div>
-			    </div>
+			</li>
+			<li>
+
+				<div>
+					<select id="userStatusLocationSelect" data-bind="source: _placesDS" data-text-field="name" data-value-field="placeuuid">
+
+					</select>
+					<a class="btnClear-sm" data-role="button" data-click="userStatusView.checkIn" id="gpsLocateUpdateBtn">
+						<img src="images/icon-gps-selected.svg" height="12px"/> Check In
+					</a>
+				</div>
+
         	</li>
         	<li>
         		<label> Available
