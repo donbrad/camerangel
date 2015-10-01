@@ -14,6 +14,7 @@ var userStatusView = {
     _activeStatus : new kendo.data.ObservableObject(),
     _returnView : null,
     _modalId : "#modalview-profileStatus",
+    _checkInPlaceId : null,
     _placesDS : new kendo.data.DataSource({
         sort: {
             field: "name",
@@ -90,10 +91,21 @@ var userStatusView = {
 
     checkIn : function (e) {
         _preventDefault(e);
+
+        if (userStatusView._checkInPlaceId !== null) {
+            userModel.checkIn(userStatusView._checkInPlaceId);
+            mobileNotify("You're checked in to " + userModel.checkedInPlace.name);
+        } else {
+            mobileNotify("No place to check in to...");
+        }
+
     },
 
     checkOut : function (e) {
         _preventDefault(e);
+
+        userModel.checkOut();
+        $('#profileStatusCheckInPlace').text('');
     },
 
     syncUserStatus: function (e) {
