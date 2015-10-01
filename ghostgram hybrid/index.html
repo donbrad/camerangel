@@ -66,6 +66,7 @@
 	<script src="scripts/views/channelViews.js"></script>
 	<script src="scripts/views/contactViews.js"></script>
 	<script src="scripts/views/galleryView.js"></script>
+	<script src="scripts/views/homeViews.js"></script>
 	<script src="scripts/views/placeViews.js"></script>
 	<script src="scripts/channels/appDataChannel.js"></script>
 	<script src="scripts/channels/userDataChannel.js"></script>
@@ -78,7 +79,7 @@
 <div data-role="layout" data-id="main" style="display:none;" >
     <div data-role="header">
         <div data-role="navbar">
-			<a data-role="button" data-rel="modalview" href="#modalview-profileStatus" data-align="left" class="home-headerBtn" data-click-on="down">
+			<a data-role="button" data-click="userStatusView.openModal" data-align="left" class="home-headerBtn" data-click-on="down">
 				<div class="user-status">
 					<div class="left">
 						<span class="home-status">
@@ -523,7 +524,8 @@
 	
 </div>
 
-<div data-role="modalview" id="modalview-profileStatus" style="width: 90%; display: none;" data-open="homeView.onShowProfileStatus" data-model="userModel.currentUser" class="appearance">
+
+<div data-role="modalview" id="modalview-profileStatus" style="width: 90%; display: none;" data-model="userStatusView"  data-init="userStatusView.onInit" data-open="userStatusView.onOpen">
 	<div class="modal-top">
 		<a data-role="button" class="modal-close" data-click="homeView.closeStatusModal">
 			<img src="images/close.svg"/>
@@ -539,7 +541,7 @@
 			</span>
 			<span class="secondName"></span>
 		</h3>
-		<p id="profileStatusMessage" data-bind="text: statusMessage"></p>
+		<p id="profileStatusMessage"></p>
 		<p><a class="btnClear hidden" data-role="button" id="profileLocation">@ Main Street Park</a></p>
 	</div>
 	<div class="modal-bottom">
@@ -557,16 +559,29 @@
 				</a>
 			</li>
 			<li>
-				<a class="btnClear" data-role="button" data-click="">
-				<img src="images/icon-gps-selected.svg" class="icon-sm" /> Check in</a>
+            	<div>
+            		<div id="checked-in-place">
+            			<span style="width: 90%;" id="profileStatusCheckInPlace" data-bind="text: checkedInPlace"></span>
+            			<button data-role="button" data-click="userStatusView.checkOut">Check Out</button>
+            		</div>
+				</div>
 			</li>
+			<li>
+				<div class="select-md">
+					<select  id="userStatusLocationSelect" >
+
+					</select>
+				</div>
+				<a class="btnClear-sm" data-role="button" data-click="userStatusView.checkIn" id="gpsLocateUpdateBtn">
+					<img src="images/icon-gps-selected.svg" height="12px"/> Check In
+				</a>
+        	</li>
 		</ul>
 	</div>
     <div class="footer" data-role="footer">
     	<a class="btnClear btnFull-modal" data-click="homeView.closeModalViewProfileStatus" data-role="button">Done</a>
     </div>
 </div>
-
 
 <div data-role="modalview" id="modalview-locate-me" style="width: 90%; display: none;" class="appearance">
 	<div data-role="content">

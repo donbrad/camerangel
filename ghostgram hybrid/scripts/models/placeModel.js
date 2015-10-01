@@ -10,8 +10,7 @@ var placesModel = {
 
     locatorActive : false,
     _radius : 30,
-    currentPlaceId: null,
-    currentPlace: {},
+
     placesArray : [],
     placeModel : kendo.data.Model.define({
         id: 'id',
@@ -131,12 +130,38 @@ var placesModel = {
 
         var matchArray = [];
         for (var i=0; i< placesData.length; i++){
-            if (inPlaceRadius(lat, lng, placesData[i].lat,placesData[i].lng, placesModel._radius)){
+            if (placesModel.inRadius(lat, lng, placesData[i].lat,placesData[i].lng, placesModel._radius)){
                 matchArray.push(placesData[i]);
             }
         }
 
         return(matchArray);
+    },
+
+    // Are two points within a specific distance
+    inRadius : function (lat1, lng1, lat2, lng2, radius) {
+
+        if (radius === undefined || radius < 10) {
+            radius = 30;
+        }
+
+        if (typeof lat1 === 'string') {
+            lat1 = Number(lat1);
+            lng1 = Number(lng1);
+        }
+
+        if (typeof lat2 === 'string') {
+            lat2 = Number(lat2);
+            lng2 = Number(lng2);
+        }
+
+        var distance = getDistanceInMeters(lat1, lng1, lat2, lng2);
+
+        if (distance <= radius) {
+            return true;
+        } else {
+            return false;
+        }
     },
 
     getPlaceModel : function (placeId) {
