@@ -163,7 +163,6 @@ var userStatusView = {
                 } else {
                     $(".statusCharacterCount").css("color", "#979797");  //Had to hack this -- was setting color to background
                 }
-               
 
             } else {
                 // Exceeds max characters, slice the extra and dont update that count
