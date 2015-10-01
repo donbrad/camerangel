@@ -19,15 +19,6 @@ var userStatusView = {
         sort: {
             field: "name",
             dir: "asc"
-        },
-        schema : {
-            model : {
-                id: 'id',
-                fields : {
-                    placeuuid: {type: "string"},
-                    name: {type: "string"}
-                }
-            }
         }
     }),
 
@@ -50,7 +41,7 @@ var userStatusView = {
 
         // Zero the status character count
         $( "#statusCharCount").text('0');
-        $( "#profileStatusUpdate").text('');
+        $( "#profileStatusUpdate").val('');
         // Setup syncing for automatic update
         userStatusView._activeStatus.unbind('change' , userStatusView.syncUserStatus);
             status.set('statusMessage', user.statusMessage);
@@ -151,21 +142,22 @@ var userStatusView = {
 
         // Update the status message when the text area loses focus
         $('#profileStatusMessage').focusout(function () {
+            var updateText = $('#profileStatusUpdate').text();
             // Set the text in the ux
-            $('#profileStatusMessage').text($('#profileStatusMessage').text());
+            $('#profileStatusMessage').val();
 
-            userStatusView._activeStatus.set('statusMessage', $('#profileStatusMessage').text() );
+            userStatusView._activeStatus.set('statusMessage', $('#profileStatusUpdate').text() );
         });
 
         // Add key handler for character count
         $( "#profileStatusUpdate" ).keyup(function() {
-            var status =  $( "#profileStatusUpdate").text(), len = status.length;
+            var status =  $( "#profileStatusUpdate").val(), len = status.length;
             if (len <= 40) {
                 // Update the character count if its less than our max
                 $( "#statusCharCount").text(len);
             } else {
                 // Exceeds max characters, slice the extra and dont update that count
-                $( "#profileStatusUpdate").text(status.slice(0, 39));
+                $( "#profileStatusUpdate").val(status.slice(0, 39));
 
                 // Todo: jordan - do we need additional ux for the user ?
 
