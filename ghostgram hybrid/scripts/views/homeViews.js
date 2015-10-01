@@ -62,6 +62,16 @@ var userStatusView = {
         status.set('isAvailable', user.isAvailable);
         userStatusView._activeStatus.bind('change' , userStatusView.syncUserStatus);
 
+        // if there's a current checked in place -- select it in the list
+        if (userStatusView._checkInPlaceId !== null) {
+           // Is the current place in the list of candidate places?
+
+            // Yes - select it
+
+            // No - Select the first place in the list...
+            //Todo: don - wire this up
+        }
+
         $(userStatusView._modalId).data("kendoMobileModalView").open();
 
     },
@@ -104,6 +114,7 @@ var userStatusView = {
     checkOut : function (e) {
         _preventDefault(e);
 
+        userStatusView._checkInPlaceId = null;
         userModel.checkOut();
         $('#profileStatusCheckInPlace').text('');
     },
@@ -125,7 +136,16 @@ var userStatusView = {
             autoBind: false,
             dataTextField: "placeuuid",
             dataValueField: "name",
-            dataSource: userStatusView._placesDS
+            dataSource: userStatusView._placesDS,
+            change: function(e) {
+                var value = this.value();
+                if (value === null) {
+                    //User wants to create a new place to check in to...
+                } else {
+                    // Set the current place target this elements
+                    userStatusView._checkInPlaceId = value;
+                }
+            }
         });
 
         // Update the status message when the text area loses focus
