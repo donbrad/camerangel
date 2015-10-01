@@ -49,7 +49,7 @@ var userStatusView = {
         $('#profileStatusMessage').text(user.statusMessage);
 
         // Zero the status character count
-        $( "#statusCharCount").text(len);
+        $( "#statusCharCount").text('0');
         $( "#profileStatusUpdate").text('');
         // Setup syncing for automatic update
         userStatusView._activeStatus.unbind('change' , userStatusView.syncUserStatus);
