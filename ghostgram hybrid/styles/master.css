@@ -1405,8 +1405,8 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 #profileStatusUpdate {
   width: 100%;
-  font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 16px;
+  font-size: 1rem;
   resize: none;
 }
 .circle-img-home {
@@ -1434,7 +1434,7 @@ div.footerMenu.km-footer > ul > li > a:active {
   position: absolute;
   left: 32px;
 }
-#profileLocation {
+.profileLocation {
   color: #6cadf3 !important;
 }
 #profileStatusMessage {
@@ -2291,7 +2291,18 @@ a:hover {
   left: 54%;
 }
 .contactStatusMessage {
+  font-size: 16px;
+  font-size: 1rem;
   font-style: italic;
+}
+.contactStatusMessage-sm {
+  font-size: 14px;
+  font-size: 0.875rem;
+  font-style: italic;
+}
+#contactProfileImg,
+#contactStatusImg {
+  opacity: 0;
 }
 #menuSetting {
   margin-top: 40px;
@@ -4651,7 +4662,12 @@ html .km-pane-wrapper .k-header {
   display: none;
 }
 /** Place **/
-#places-listview li {
-  padding: 0.5rem 1rem;
+#places-listview,
+#findplace-listview {
+  width: 100%;
+}
+#places-listview li,
+#findplace-listview li {
   border-bottom: 1px solid #e0e0e0;
+  background: #fff;
 }

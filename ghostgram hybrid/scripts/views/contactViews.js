@@ -890,8 +890,8 @@ var contactActionView = {
 		
         $("#modalview-contactActions").data("kendoMobileModalView").open();
 
-        $("#contactProfileImg").velocity("fadeIn", {duration: 300, display: "inline-block"});
-        $("#contactStatusImg").velocity("fadeIn", {duration: 300, display: "inline-block"});
+        $("#contactProfileImg").velocity("fadeIn", {delay: 150, duration: 300, display: "inline-block"});
+        $("#contactStatusImg").velocity("fadeIn", {delay: 150, duration: 300, display: "inline-block"});
         
         $("#modalview-contactActions .modal-top h3").velocity({translateY: "20%", opacity: 1}, {delay: 300, duration: 500, display: "inline-block"});
         $("#modalview-contactActions .modal-top p").velocity({translateY: "20%", opacity: 1}, {delay: 600, duration: 500, display: "inline-block"});
@@ -899,10 +899,11 @@ var contactActionView = {
     },
 
 
-    closeModal : function () {
+    closeModal : function(){
         $("#modalview-contactActions").data("kendoMobileModalView").close();
 
-        $("#modalview-contactActions .preMotionUp, #modalview-contactActions .hasMotion").css("display", "none").velocity({translateY: "0%"});
+        $("#modalview-contactActions .preMotionUp, #modalview-contactActions .hasMotion").css("display", "none").velocity("fadeOut", {opacity: 0, translateY: "0%"});
+    	$("#contactProfileImg, #contactStatusImg").css("opacity", 0);
     },
 
 

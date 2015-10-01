@@ -1350,7 +1350,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 
 #profileStatusUpdate {
 	width: 100%; 
-	.font-size(14);
+	.font-size(16);
 	resize: none;
 }
 
@@ -1378,7 +1378,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 	left: 32px;
 }
 
-#profileLocation {
+.profileLocation {
 	color: @primary-200 !important;
 }
 
@@ -2270,7 +2270,18 @@ a:hover {
 }
 
 .contactStatusMessage {
+	.font-size(16);
 	font-style: italic;
+}
+
+.contactStatusMessage-sm {
+	.font-size(14);
+	font-style: italic;
+}
+
+#contactProfileImg, 
+#contactStatusImg {
+	opacity: 0;
 }
 
 #menuSetting {
@@ -4915,9 +4926,11 @@ div.contactListBox.activeContact > div > div > ul {
 }
 
 /** Place **/
-#places-listview {
+#places-listview,
+#findplace-listview {
+	width: 100%;
 	li {
-		padding: 0.5rem 1rem;
 		border-bottom: 1px solid @shade-200;
+		background: #fff;
 	}
 }
