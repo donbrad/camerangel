@@ -107,6 +107,15 @@ var userStatusView = {
     // Important to put all jquery and other event handlers here so created only once...
     onInit : function (e) {
         _preventDefault(e);
+
+        // Wire up the select since html wiring doesn't seem to be working
+        $('#userStatusLocationSelect').kendoDropDownList({
+            autoBind: false,
+            dataTextField: "placeuuid",
+            dataValueField: "name",
+            dataSource: userStatusView._placesDS
+        });
+
         // Update the status message when the text area loses focus
         $('#profileStatusMessage').focusout(function () {
             userStatusView._activeStatus.set('statusMessage', $('#profileStatusMessage').text() );
