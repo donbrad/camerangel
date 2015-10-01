@@ -1050,7 +1050,7 @@ function gpsLocateUpdate(){
 
 function statusCharCount(e) {
 	// set max length
-	var maxLength = 40
+	var maxLength = 40;
 	var updateAreaMax = $("#profileStatusUpdate").attr("maxlength", maxLength);
 	var currentLength;
 	

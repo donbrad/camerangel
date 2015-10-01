@@ -15,6 +15,7 @@ var userStatusView = {
     _returnView : null,
     _modalId : "#modalview-profileStatus",
     _checkInPlaceId : null,
+    _profileStatusMax: 40,
     _placesDS : new kendo.data.DataSource({
         sort: {
             field: "name",
@@ -40,7 +41,7 @@ var userStatusView = {
         $('#profileStatusMessage').text(user.statusMessage);
 
         // Zero the status character count
-        $( "#statusCharCount").text('0');
+        $( "#profileStatusCount").text(userStatusView._profileStatusMax);
         $( "#profileStatusUpdate").val('');
         // Setup syncing for automatic update
         userStatusView._activeStatus.unbind('change' , userStatusView.syncUserStatus);
@@ -141,27 +142,33 @@ var userStatusView = {
         });
 
         // Update the status message when the text area loses focus
-        $('#profileStatusMessage').focusout(function () {
+        $('#profileStatusUpdate').focusout(function () {
             var updateText = $('#profileStatusUpdate').text();
             // Set the text in the ux
-            $('#profileStatusMessage').val();
+            $('#profileStatusMessage').val(updateText);
 
-            userStatusView._activeStatus.set('statusMessage', $('#profileStatusUpdate').text() );
+            userStatusView._activeStatus.set('statusMessage', updateText );
         });
 
         // Add key handler for character count
         $( "#profileStatusUpdate" ).keyup(function() {
-            var status =  $( "#profileStatusUpdate").val(), len = status.length;
-            if (len <= 40) {
-                // Update the character count if its less than our max
-                $( "#statusCharCount").text(len);
+
+            var status =  $( "#profileStatusUpdate").val(), length = status.length;
+            if (length <= userStatusView._profileStatusMax) {
+                var currentLength = userStatusView._profileStatusMax - length;
+                $("#profileStatusCount").text(currentLength);
+
+                if(currentLength < 8){
+                    $(".statusCharacterCount").css("color", "#EF5350");
+                } else {
+                    $(".statusCharacterCount").css("color", "#979797");  //Had to hack this -- was setting color to background
+                }
+               
+
             } else {
                 // Exceeds max characters, slice the extra and dont update that count
                 $( "#profileStatusUpdate").val(status.slice(0, 39));
-
-                // Todo: jordan - do we need additional ux for the user ?
-
-            }
+           }
 
 
         });
