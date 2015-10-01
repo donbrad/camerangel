@@ -155,14 +155,19 @@ var userStatusView = {
 
             userStatusView._activeStatus.set('statusMessage', $('#profileStatusMessage').text() );
         });
+        
         // Add key handler for character count
         $( "#profileStatusUpdate" ).keyup(function() {
             var status =  $( "#profileStatusUpdate").text(), len = status.length;
             if (len <= 40) {
-                $( "#profileStatusUpdate").text(len);
+                // Update the character count if its less than our max
+                $( "#statusCharCount").text(len);
             } else {
+                // Exceeds max characters, slice the extra and dont update that count
                 $( "#profileStatusUpdate").text(status.slice(0, 39));
-                
+
+                // Todo: jordan - do we need additional ux for the user ?
+
             }
 
 
