@@ -150,7 +150,22 @@ var userStatusView = {
 
         // Update the status message when the text area loses focus
         $('#profileStatusMessage').focusout(function () {
+            // Set the text in the ux
+            $('#profileStatusMessage').text($('#profileStatusMessage').text());
+
             userStatusView._activeStatus.set('statusMessage', $('#profileStatusMessage').text() );
+        });
+        // Add key handler for character count
+        $( "#profileStatusUpdate" ).keyup(function() {
+            var status =  $( "#profileStatusUpdate").text(), len = status.length;
+            if (len <= 40) {
+                $( "#profileStatusUpdate").text(len);
+            } else {
+                $( "#profileStatusUpdate").text(status.slice(0, 39));
+                
+            }
+
+
         });
     },
 
