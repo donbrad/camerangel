@@ -48,8 +48,9 @@ var userStatusView = {
         ux.formatNameAlias(user.name, user.alias, "#modalview-profileStatus");
         $('#profileStatusMessage').text(user.statusMessage);
 
-
-
+        // Zero the status character count
+        $( "#statusCharCount").text(len);
+        $( "#profileStatusUpdate").text('');
         // Setup syncing for automatic update
         userStatusView._activeStatus.unbind('change' , userStatusView.syncUserStatus);
             status.set('statusMessage', user.statusMessage);
@@ -155,7 +156,7 @@ var userStatusView = {
 
             userStatusView._activeStatus.set('statusMessage', $('#profileStatusMessage').text() );
         });
-        
+
         // Add key handler for character count
         $( "#profileStatusUpdate" ).keyup(function() {
             var status =  $( "#profileStatusUpdate").text(), len = status.length;
