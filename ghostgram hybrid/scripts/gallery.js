@@ -154,7 +154,7 @@ function galleryActionView(e){
 	e.preventDefault();
 	if(photoModel.previewSize === "33%") {
 		$("#gallery > div.footerMenu.km-footer > a > span > img").attr("src", "images/gallery-grid.svg");
-		$("#gallery actionBtn-text")
+		//$("#gallery actionBtn-text")  Todo: Jordan- what is this fragment supposed to do?
 		photoModel.previewSize = "100%";
 	} else {
 		$("#gallery > div.footerMenu.km-footer > a > span > img").attr("src", "images/gallery-list.svg");
@@ -216,6 +216,8 @@ function photoDelete (e) {
 	e.preventDefault();
 	var photo = photoModel.currentPhotoModel;
 	// Todo:  Add confirmation prior to photo delete
+
+	photoModel.deletePhoto(photo.photoId);
 
 	mobileNotify("Deleted current photo");
 	

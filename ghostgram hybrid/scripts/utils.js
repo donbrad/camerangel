@@ -15,6 +15,19 @@ String.prototype.smartTruncate =
 		return  toLong ? s_ + '...' : s_;
 	};
 
+
+function _socialShare (message, subject, url, file) {
+
+	window.plugins.socialsharing.share(
+		message,
+		subject,
+		file,
+		url,
+		function(result) {console.log('result: ' + result)},
+		function(error) {mobileNotify('Social Sharing Error : ' + error);}
+	);
+}
+
 function updateParseObject(objectName, idField, idFieldValue, newField, newFieldValue) {
 	var object = Parse.Object.extend(objectName);
 	var query = new Parse.Query(object);
