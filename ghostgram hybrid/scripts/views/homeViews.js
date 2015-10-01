@@ -45,11 +45,13 @@ var userStatusView = {
 
         // Set name/alias layout
         ux.formatNameAlias(user.name, user.alias, "#modalview-profileStatus");
+        $('#profileStatusMessage').text(user.statusMessage);
 
+
+
+        // Setup syncing for automatic update
         userStatusView._activeStatus.unbind('change' , userStatusView.syncUserStatus);
-        $('#profileStatusMessage').attr('text',user.statusMessage );
-
-        status.set('statusMessage', user.statusMessage);
+            status.set('statusMessage', user.statusMessage);
         if (userModel.isCheckedIn) {
             status.set('checkedInPlace', userModel.checkedInPlace);
         } else {
@@ -58,9 +60,11 @@ var userStatusView = {
         status.set('currentPlace', user.currentPlace);
         status.set('isAvailable', user.isAvailable);
         userStatusView._activeStatus.bind('change' , userStatusView.syncUserStatus);
+
         $(userStatusView._modalId).data("kendoMobileModalView").open();
 
     },
+
     // close and redirect for user status
     closeModal : function () {
 
@@ -100,6 +104,15 @@ var userStatusView = {
 
     },
 
+    // Important to put all jquery and other event handlers here so created only once...
+    onInit : function (e) {
+        _preventDefault(e);
+        // Update the status message when the text area loses focus
+        $('#profileStatusMessage').focusout(function () {
+            userStatusView._activeStatus.set('statusMessage', $('#profileStatusMessage').text() );
+        });
+    },
+
     // Kendo open
     onOpen: function (e) {
         _preventDefault(e);
@@ -107,6 +120,7 @@ var userStatusView = {
 
     // Kendo close
     onClose: function (e) {
-        _preventDefault(e);
+      //  _preventDefault(e);   calling on close prevents kendos normal modal handling
+
     }
 };
