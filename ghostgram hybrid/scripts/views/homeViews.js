@@ -48,7 +48,7 @@ var userStatusView = {
 
         userStatusView._activeStatus.unbind('change' , userStatusView.syncUserStatus);
         $('#profileStatusMessage').attr('text',user.statusMessage );
-        
+
         status.set('statusMessage', user.statusMessage);
         if (userModel.isCheckedIn) {
             status.set('checkedInPlace', userModel.checkedInPlace);
