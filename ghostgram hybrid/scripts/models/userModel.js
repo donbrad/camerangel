@@ -158,9 +158,7 @@ var userModel = {
     },
 
    sync: function (e) {
-        if (e !== undefined && e.preventDefault !== undefined) {
-            e.preventDefault();
-        }
+      _preventDefault(e);
 
         userModel.parseUser.set(e.field, userModel.currentUser.get(e.field));
         userModel.parseUser.save(null, {

@@ -75,19 +75,22 @@ var userStatusView = {
       // if there's a return URL, need to close the modal and then redirect to original view
 
         $(userStatusView._modalId).data("kendoMobileModalView").close();
-       /* $(".userLocationUpdate").css("display", "none");
+       /* $(".userLocationUpdate").css("display", "none");*/
+
         var updatedStatus = $("#profileStatusUpdate").val();
-        if(updatedStatus !== ""){
+        if(updatedStatus !== "") {
             // Save new status
             userModel.currentUser.set("statusMessage", updatedStatus);
+            updateParseObject('userStatus','userUUID', userModel.currentUser.uuid, "statusMessage", updatedStatus);
         }
         // clear status box
-        $("#profileStatusUpdate").val("");*/
+        $("#profileStatusUpdate").val("");
 
         if (userStatusView._returnView !== null) {
             if (APP.kendo.view().id !== userStatusView._returnView)
                 APP.kendo.navigate('#' + userStatusView._returnView);
-            userStatusView._returnView = null
+
+            userStatusView._returnView = null;
 
         }
     },
@@ -142,7 +145,7 @@ var userStatusView = {
         });
 
         // Update the status message when the text area loses focus
-        $('#profileStatusUpdate').focusout(function () {
+        $('#profileStatusUpdate').blur(function () {
             var updateText = $('#profileStatusUpdate').text();
             // Set the text in the ux
             $('#profileStatusMessage').val(updateText);
