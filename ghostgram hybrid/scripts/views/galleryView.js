@@ -233,3 +233,24 @@ var galleryView = {
 
     }
 };
+
+
+var photoView = {
+
+    onInit: function (e) {
+        _preventDefault(e);
+
+    },
+
+    onShow : function (e) {
+        _preventDefault(e);
+
+    },
+
+    onHide: function (e) {
+
+    }
+
+
+
+};
