@@ -984,7 +984,17 @@ div.km-header a img {
   box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.12);
   height: 56px;
 }
-.km-material .km-switch-handle {
+.k-dropdown-wrap.k-state-default {
+  background-color: #fff;
+  border-color: #fff;
+}
+#profileStatusList > li:nth-child(3) > span > span {
+  background: #fff !important;
+}
+#profileStatusList > li:nth-child(3) > div > span > span > * {
+  background-color: #fff !important;
+}
+#profileStatusList > li:nth-child(3) > div > span > span > span.k-input .km-material .km-switch-handle {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
 }
 .k-header,

@@ -39,7 +39,7 @@
         var settings = $.extend({
             'clearClass' : 'btnClear-grey',
             'focusAfterClear' : true,
-            'linkText' : 'clear'
+            'linkText' : '<img class="icon-sm" src="images/close.svg" />'
         }, options);
         return this.each(function() {
             var $this = $(this), btn,

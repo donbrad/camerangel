@@ -137,7 +137,7 @@
   text-align: left;
 }
 .appBox {
-  padding: 1rem;
+  padding: 0.5rem 1rem;
 }
 .appBox h1,
 .appBox h2,
@@ -497,6 +497,10 @@ form p {
   height: 1.3rem;
   vertical-align: middle;
 }
+.icon-sm {
+  height: 1em;
+  vertical-align: text-bottom;
+}
 .loading-icon {
   height: 1rem;
   vertical-align: middle;
@@ -519,11 +523,15 @@ form p {
   border-radius: 50%;
   border: 1px solid #F2EFF0;
   line-height: 1.5;
+  vertical-align: middle;
+  background: #fff;
 }
 .circle-img-sm {
   border-radius: 50%;
   border: 1px solid #F2EFF0;
   line-height: 1.5;
+  vertical-align: middle;
+  background: #fff;
   width: 2rem;
   height: 2rem;
 }
@@ -531,6 +539,8 @@ form p {
   border-radius: 50%;
   border: 1px solid #F2EFF0;
   line-height: 1.5;
+  vertical-align: middle;
+  background: #fff;
   width: 3rem;
   height: 3rem;
 }
@@ -538,6 +548,8 @@ form p {
   border-radius: 50%;
   border: 1px solid #F2EFF0;
   line-height: 1.5;
+  vertical-align: middle;
+  background: #fff;
   width: 4rem;
   height: 4rem;
 }
@@ -545,6 +557,8 @@ form p {
   border-radius: 50%;
   border: 1px solid #F2EFF0;
   line-height: 1.5;
+  vertical-align: middle;
+  background: #fff;
   width: 6rem;
   height: 6rem;
 }
@@ -970,6 +984,13 @@ div.km-header a img {
   box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.12);
   height: 56px;
 }
+.k-dropdown-wrap.k-state-default {
+  background-color: #fff;
+  border-color: #fff;
+}
+#profileStatusList > li:nth-child(3) > span > span {
+  background: #fff !important;
+}
 .km-material .km-switch-handle {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
 }
@@ -1309,13 +1330,14 @@ div.footerMenu.km-footer > ul > li > a:active {
   font-size: 0.875rem;
 }
 .statusCharacterCount {
-  position: absolute;
+  position: relative;
   font-size: 12px;
   font-size: 0.75rem;
   color: #979797;
-  bottom: 1em;
+  top: -3em;
   z-index: 1;
-  right: 1em;
+  right: -93%;
+  display: inline-block;
 }
 .home-headerBtn {
   padding: 0px;
@@ -1375,10 +1397,31 @@ div.footerMenu.km-footer > ul > li > a:active {
   width: 18px !important;
   height: 18px !important;
 }
+.home-status-card-img {
+  position: absolute;
+  top: 73px;
+  left: 54%;
+}
+#profileStatusList {
+  position: relative;
+  top: -1rem;
+  width: 100%;
+}
+#profileStatusList li a {
+  text-align: left;
+}
+#profileStatusUpdate {
+  width: 100%;
+  font-size: 16px;
+  font-size: 1rem;
+  resize: none;
+}
 .circle-img-home {
   border-radius: 50%;
   border: 1px solid #F2EFF0;
   line-height: 1.5;
+  vertical-align: middle;
+  background: #fff;
   width: 40px;
   height: 40px !important;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);
@@ -1398,12 +1441,16 @@ div.footerMenu.km-footer > ul > li > a:active {
   position: absolute;
   left: 32px;
 }
+.profileLocation {
+  color: #6cadf3 !important;
+}
 #profileStatusMessage {
-  font-size: 13px;
-  font-size: 0.8125rem;
+  font-size: 16px;
+  font-size: 1rem;
   text-overflow: ellipsis;
   width: 190px;
   display: inline-block;
+  font-style: italic;
 }
 #profilePhotoForm > div > ul > li:nth-child(1) {
   padding: 0px;
@@ -1459,16 +1506,25 @@ div.footerMenu.km-footer > ul > li > a:active {
 .photoViewNav,
 .photoViewNavTop,
 .photoViewNavBtm {
-  color: #fff;
+  color: #fff !important;
   padding: 0.5rem;
   position: absolute;
   width: 100%;
   z-index: 99;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.2) !important;
 }
 .photoViewNavTop {
   top: 0px;
   left: 0px;
+  text-align: center;
+}
+#photoViewText {
+  vertical-align: middle;
+  font-size: 16px;
+  font-size: 1rem;
+  background-color: #979797;
+  padding: 0.15rem 0.25rem;
+  border-radius: 3px;
 }
 .photoViewNavBtm {
   bottom: 0px;
@@ -1479,10 +1535,11 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 #photoViewImage {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  z-index: 0;
-  display: block;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 #modalPhotoView > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container,
 #photoView > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
@@ -1540,7 +1597,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 .modal-top {
   height: 12rem;
   width: 100%;
-  background-color: #e0e0e0;
+  background-color: rgba(0, 0, 0, 0.6);
   text-align: center;
   color: #fff;
   padding-top: 2rem;
@@ -2241,7 +2298,18 @@ a:hover {
   left: 54%;
 }
 .contactStatusMessage {
+  font-size: 16px;
+  font-size: 1rem;
   font-style: italic;
+}
+.contactStatusMessage-sm {
+  font-size: 14px;
+  font-size: 0.875rem;
+  font-style: italic;
+}
+#contactProfileImg,
+#contactStatusImg {
+  opacity: 0;
 }
 #menuSetting {
   margin-top: 40px;
@@ -2561,6 +2629,8 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   border-radius: 50%;
   border: 1px solid #F2EFF0;
   line-height: 1.5;
+  vertical-align: middle;
+  background: #fff;
   width: 3rem;
   height: 3rem;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);
@@ -4063,8 +4133,7 @@ html .km-pane-wrapper .k-header {
   border: none !important;
   width: 80%;
   padding-left: 0px !important;
-  padding-right: 1rem !important;
-  padding-top: 0.25rem !important;
+  padding-right: 1rem;
 }
 .appendSearch span {
   float: left;
@@ -4077,7 +4146,7 @@ html .km-pane-wrapper .k-header {
 }
 .appendSearch .searchIcon {
   float: left;
-  padding-top: 0.75em;
+  padding-top: 1em;
   color: #979797;
   width: 12%;
   text-align: center;
@@ -4089,13 +4158,13 @@ html .km-pane-wrapper .k-header {
   width: 88%;
 }
 .appendSearch .doubleAppendSearch {
-  width: 70%;
+  width: 75%;
+  padding-right: 0px !important;
 }
 .appendSearch .enterSearch {
   padding-top: 8px;
   padding-bottom: 8px;
-  position: absolute;
-  width: 16%;
+  width: 13%;
 }
 .appendSearch .enterSearch span {
   padding-top: 0px;
@@ -4112,6 +4181,9 @@ html .km-pane-wrapper .k-header {
 .km-material .km-buttongroup,
 .km-material .km-widget.km-navbar .km-buttongroup {
   border: inherit;
+}
+.km-material input:focus {
+  color: #4a4a4a;
 }
 /* Chat styles */
 #messages-listview li {
@@ -4595,4 +4667,14 @@ html .km-pane-wrapper .k-header {
 }
 #checked-in-place {
   display: none;
+}
+/** Place **/
+#places-listview,
+#findplace-listview {
+  width: 100%;
+}
+#places-listview li,
+#findplace-listview li {
+  border-bottom: 1px solid #e0e0e0;
+  background: #fff;
 }

@@ -559,27 +559,23 @@
 				</a>
 			</li>
 			<li>
-            	<div>
-            		<div id="checked-in-place">
-            			<span style="width: 90%;" id="profileStatusCheckInPlace" data-bind="text: checkedInPlace"></span>
-            			<button data-role="button" data-click="userStatusView.checkOut">Check Out</button>
-            		</div>
+            	<div id="checked-in-place">
+					<p class="helper-sm" id="profileStatusCheckInPlace"></p>
+					<button class="btnClear" data-role="button" data-click="userStatusView.checkOut">Check Out</button>
 				</div>
 			</li>
 			<li>
-				<div class="select-md">
-					<select  id="userStatusLocationSelect" >
-
-					</select>
-				</div>
-				<a class="btnClear-sm" data-role="button" data-click="userStatusView.checkIn" id="gpsLocateUpdateBtn">
+				<a class="btnClear" data-role="button" data-click="userStatusView.checkIn" id="gpsLocateUpdateBtn">
 					<img src="images/icon-gps-selected.svg" height="12px"/> Check In
 				</a>
+					<div class="select-lg" id="userStatusLocationBox">
+						<select id="userStatusLocationSelect"></select>
+					</div>
         	</li>
 		</ul>
 	</div>
     <div class="footer" data-role="footer">
-    	<a class="btnClear btnFull-modal" data-click="homeView.closeModalViewProfileStatus" data-role="button">Done</a>
+    	<a class="btnClear btnFull-modal" data-click="userStatusView.closeModal" data-role="button">Done</a>
     </div>
 </div>
 
