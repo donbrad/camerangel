@@ -460,7 +460,7 @@
     </div>
 </div>	
 
-<div data-role="view" id="photoView" class="fullPhotoModal" data-zoom="true" data-style="width: 100%; height: 100%; display: none;" data-init="photoView.onInit" data-show="photoView.onShow">
+<div data-role="view" id="photoView" class="fullPhotoModal" data-zoom="true" data-style="width: 100%; height: 100%; display: none;" data-model="photoView._activePhoto" data-init="photoView.onInit" data-show="photoView.onShow">
 	<div class="photoViewNavTop" data-role="header">
 			<a data-role="button" class="left" href="#:back">
            		<img src="images/nav-back-light.svg" />
@@ -470,7 +470,7 @@
             <div class="clearfix"></div>
         </div>
 	<div class="photoViewBox">
-		<img id="photoViewImage" src="" />
+		<img id="photoViewImage" data-bind="attr: { src: imageUrl}" />
 	</div>
 	<div class="photoViewNavBtm" data-role="footer">
 		<a class="btnClear left" data-role="button" data-click="photoExport">
@@ -483,12 +483,12 @@
 </div>
 
 
-<div data-role="view" id="photoEditor" style="width: 100%; height:100%; display: none;"  data-show="onShowPhotoEditor"  data-hide="onHidePhotoEditor">	
+<div data-role="view" id="photoEditor" style="width: 100%; height:100%; display: none;"  data-show="photoEditor.onShow"  data-hide="photoEditor.onHide" data-init="photoEditor.onInit">
 		<a data-role="button"  data-align="left" href="#:back" ><img src="images/close.svg" /></a>
     	<div style="text-align: center; padding-top: 1rem; background: #a4a4a4a; ">
-        <a  data-role="button"  data-click="photoEditRotateLeft"><img src="images/photo-left.svg" /> </a>
-        <a  data-role="button"  data-click="photoEditRotateRight"> <img src="images/photo-right.svg" /></a>
-        <a  data-role="button" data-click="photoEditCrop"> <img class="photo-options" src="images/photo-crop.svg" /> </a>
+        <a  data-role="button"  data-click="photoEditor.rotateLeft"><img src="images/photo-left.svg" /> </a>
+        <a  data-role="button"  data-click="photoEditor.rotateRight"> <img src="images/photo-right.svg" /></a>
+        <a  data-role="button" data-click="photoEditor.crop"> <img class="photo-options" src="images/photo-crop.svg" /> </a>
     </div>
 	
     <div style="margin: 4px; height:60%;">
@@ -496,7 +496,7 @@
     </div>
     <span class="left"><a data-role="button" data-rel="modalview"  href="#modalview-photoTag"><img src="images/photo-tag.svg" /></a></span>
     <div data-role="footer">
-		<a class="btnSpan-btm btnPrimary" id="photoEditSaveDiv" data-role="button" data-click="photoEditSave"> Save Photo </a>
+		<a class="btnSpan-btm btnPrimary" id="photoEditSaveDiv" data-role="button" data-click="photoEditor.savePhoto"> Save Photo </a>
     </div>
 
 </div>
