@@ -94,6 +94,8 @@ var placesView = {
                 var findPlaceUrl = "#findPlace?lat="+ lat + "&lng=" +  lng +"&returnview=places";
                 // No current places match the current location
             	ux.showActionBtn(true, "#places", findPlaceUrl);
+
+            	ux.showActionBtnText("#places", "3.5rem", "Check in");
             } else {
 
                 // set placesView.placeListDS to results
@@ -107,6 +109,7 @@ var placesView = {
 
         // update actionBtn
         ux.showActionBtn(false, "#places");
+        ux.hideActionBtnText("#places");
     }
 
 };

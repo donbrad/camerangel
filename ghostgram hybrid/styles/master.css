@@ -3817,7 +3817,8 @@ div.contactListBox.activeContact > div > div > ul {
   border-bottom: 1px solid #e0e0e0;
 }
 #editmembers-listview li {
-  padding: 0px;
+  padding: 0.25rem;
+  background: #fff;
 }
 #editmembers-listview li:nth-child(1) {
   border-top: 1px solid #e0e0e0;
@@ -3850,7 +3851,7 @@ div.contactListBox.activeContact > div > div > ul {
   position: absolute;
   color: #fff;
   right: 0.5rem;
-  top: 1.25rem;
+  top: 0.75rem;
   opacity: 1;
 }
 .movingContact {

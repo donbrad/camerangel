@@ -204,12 +204,12 @@ var ux = {
 		return phone.replace(/\d(\d\d\d)(\d\d\d)(\d\d\d\d)/, '($1) $2-$3');
 	},
 
-	showActionBtnText:function($path, fromRight){ 
-		$path.velocity({opacity: 1, right: fromRight}, {easing: "spring", delay: 500});
+	showActionBtnText:function(path, fromRight, text){
+		$(path + " > div.footerMenu.km-footer > a > span > p").text(text).velocity({opacity: 1, right: fromRight}, {easing: "spring", delay: 500});
 	},
 
 	hideActionBtnText: function(path){
-		$(path).velocity({opacity: 0, right: "0"});
+		$(path + " > div.footerMenu.km-footer > a > span > p").text("").velocity({opacity: 0, right: "0"});
 	},
 
 	AutoGrowTextArea: function(textField){
