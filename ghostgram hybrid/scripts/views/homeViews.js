@@ -58,7 +58,6 @@ var userStatusView = {
         // if there's a current checked in place -- select it in the list
         if (userStatusView._checkInPlaceId !== null) {
            // Is the current place in the list of candidate places?
-
             // Yes - select it
 
             // No - Select the first place in the list...
