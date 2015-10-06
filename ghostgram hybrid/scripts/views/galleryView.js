@@ -327,7 +327,7 @@ var photoView = {
 
         var urlParam =  LZString.compressToEncodedURIComponent(photoView._activePhotoId);
 
-        APP.kendo.navigate("#photoEditor?source=gallery?photo="+urlParam);
+        APP.kendo.navigate("#photoEditor?source=gallery&photo="+urlParam);
     }
 
 
