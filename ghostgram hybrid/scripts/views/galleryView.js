@@ -336,6 +336,8 @@ var photoEditor = {
             photoEditor._activePhotoUrl =  photoEditor._activePhoto.imageUrl;
         }
 
+        $('#photoViewImage').attr('src', photoEditor._activePhoto.imageUrl);
+        
         // Reset rotation angle on each show...
         photoEditor._rotationAngle = 0;
     },
