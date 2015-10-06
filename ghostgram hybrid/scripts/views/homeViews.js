@@ -250,17 +250,21 @@ var modalView = {
     },
 
     okClick: function () {
+        modalView.close();
+        modalView.init();
         if (modalView.okAction !== null) {
             modalView.okAction();
         }
-        modalView.close();
+
     },
 
     cancelClick: function () {
+        modalView.close();
+        modalView.init();
         if (modalView.cancelAction !== null) {
             modalView.cancelAction();
         }
-        modalView.close();
+
     }
 
 
