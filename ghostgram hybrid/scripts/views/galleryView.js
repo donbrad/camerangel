@@ -323,11 +323,12 @@ var photoView = {
 
     sharePhoto: function (e)  {
         _preventDefault(e);
-        
-        if(window.navigator.simulator === false){
-            _sociaShare(null, null, photoView._activePhotoUrl, null);
+
+        if (window.navigator.simulator === true) {
+            mobileNotify("Export and Sharing only on device...");
+
         } else {
-            mobileNotify("Export and Sharing only on device...")
+            _sociaShare(null, null, photoView._activePhotoUrl, null);
         }
     },
 
