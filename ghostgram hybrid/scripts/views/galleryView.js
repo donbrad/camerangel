@@ -313,7 +313,7 @@ var photoView = {
     deletePhoto: function (e) {
         _preventDefault(e);
 
-        modalView.open("Delete this photo", "Click <strong> Delete </strong> to remove this photo",
+        modalView.open("Delete this photo", "Click Delete to remove this photo or Keep to cancel delete ",
         "Delete", function() {
                 photoModel.deletePhoto(photoView._activePhotoId);
                 mobileNotify("Deleted the current photo");
