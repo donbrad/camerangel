@@ -313,14 +313,14 @@ var photoView = {
     deletePhoto: function (e) {
         _preventDefault(e);
 
-        modalView.open("Delete this photo", "Delete the current photo from your phone and your ghostgrams's account",
+        modalView.open("Delete this photo", "Click <strong> Delete </strong> to remove this photo",
         "Delete", function() {
                 photoModel.deletePhoto(photoView._activePhotoId);
                 mobileNotify("Deleted the current photo");
                 // Navigate to previous page as the photo is gone...
                 APP.kendo.navigate('#:back');
             },
-        "Cancel", function() {
+        "Keep", function() {
                 mobileNotify("Delete cancelled.");
             }
         );
