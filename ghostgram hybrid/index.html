@@ -466,17 +466,17 @@
            		<img src="images/nav-back-light.svg" />
         	</a>
         	<span id="photoViewText">Photo title</span>
-            <a class="right" data-role="button" href="#photoEditor?source=gallery">Edit</a>
+            <a class="right" data-role="button" data-click="photoView.editPhoto">Edit</a>
             <div class="clearfix"></div>
         </div>
 	<div class="photoViewBox">
 		<img id="photoViewImage" src="" />
 	</div>
 	<div class="photoViewNavBtm" data-role="footer">
-		<a class="btnClear left" data-role="button" data-click="photoExport">
+		<a class="btnClear left" data-role="button" data-click="photoView.sharePhoto">
 			<img class="icon" src="images/icon-share-light.svg" /> 
 		</a>
-		<a class="btnClear-red right" data-role="button" data-click="photoDelete"> 
+		<a class="btnClear-red right" data-role="button" data-click="photoView.deletePhoto">
 			<img class="icon" src="images/trash.svg" />
 		</a>
 	</div>

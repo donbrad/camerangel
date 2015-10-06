@@ -304,8 +304,31 @@ var photoView = {
 
     onHide: function (e) {
 
-    }
+    },
 
+    deletePhoto: function (e) {
+        _preventDefault(e);
+
+        photoModel.deletePhoto(photoView._activePhotoId);
+
+        mobileNotify("Deleted current photo");
+
+        // Navigate to previous page as the photo is gone...
+        APP.kendo.navigate('#:back');
+    },
+
+    sharePhoto: function (e)  {
+        _preventDefault(e);
+        mobileNotify("Work in progress...");
+    },
+
+    editPhoto: function (e) {
+        _preventDefault(e);
+
+        var urlParam =  LZString.compressToEncodedURIComponent(photoView._activePhotoId);
+
+        APP.kendo.navigate("#photoEditor?source=gallery?photo="+urlParam);
+    }
 
 
 };
@@ -337,7 +360,7 @@ var photoEditor = {
         }
 
         $('#photoViewImage').attr('src', photoEditor._activePhoto.imageUrl);
-        
+
         // Reset rotation angle on each show...
         photoEditor._rotationAngle = 0;
     },
