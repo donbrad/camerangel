@@ -217,7 +217,8 @@ var galleryView = {
             APP.kendo.navigate('#:back');
 
         } else {
-            APP.kendo.navigate('#photoView?photo='+photoId);
+            var photoParam = LZString.compressToEncodedURIComponent(photoId);
+            APP.kendo.navigate('#photoView?photo='+photoParam);
         }
     },
 
@@ -287,7 +288,7 @@ var photoView = {
         _preventDefault(e);
 
         if (e.view.params.photo !== undefined) {
-            photoView._activePhotoId = e.view.params.photo;
+            photoView._activePhotoId = LZString.decompressFromEncodedURIComponent(e.view.params.photo);
         } else {
             // If there's no parameter in call just default to the current selected gallery photo
             photoView._activePhotoId = galleryView._currentPhotoId;
@@ -326,9 +327,14 @@ var photoEditor = {
         _preventDefault(e);
 
         photoEditor._source = e.view.params.source;
-        photoEditor._activePhotoId = e.view.params.photo;
-        photoEditor._activePhoto = photoModel.findPhotoById(photoEditor._activePhotoId);
-        photoEditor._activePhotoUrl =  photoEditor._activePhoto.imageUrl;
+        if (photoEditor._source === 'profile') {
+            // Photo isn't created yet -- just have the url
+            photoEditor._activePhotoUrl = LZString.decompressFromEncodedURIComponent(e.view.params.url);
+        } else {
+            photoEditor._activePhotoId = LZString.decompressFromEncodedURIComponent(e.view.params.photo);
+            photoEditor._activePhoto = photoModel.findPhotoById(photoEditor._activePhotoId);
+            photoEditor._activePhotoUrl =  photoEditor._activePhoto.imageUrl;
+        }
 
         // Reset rotation angle on each show...
         photoEditor._rotationAngle = 0;
