@@ -206,10 +206,10 @@ var modalView = {
 
        $('#modalTitle').html(title);
         if (description !== null) {
-            $('#modalDescription').html(title);
+            $('#modalDescription').html(description);
         }
-        $('#modalTitle').html(title);
-        $('#modalOk').html(title);
+
+        $('#modalOk').html(ok);
 
 
         if (okAction !== null) {
@@ -220,7 +220,7 @@ var modalView = {
             modalView.cancelAction = cancelAction;
         }
         if (cancel !== null) {
-            $('#modalCancel').html(title);
+            $('#modalCancel').html(cancel);
         }
 
         $('#modalCancel').removeClass('hidden');
@@ -231,10 +231,10 @@ var modalView = {
     openInfo : function (title, description, ok, okAction) {
         $('#modalTitle').html(title);
         if (description !== null) {
-            $('#modalDescription').html(title);
+            $('#modalDescription').html(description);
         }
-        $('#modalTitle').html(title);
-        $('#modalOk').html(title);
+
+        $('#modalOk').html(ok);
 
 
         if (okAction !== null) {
