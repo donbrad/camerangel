@@ -323,8 +323,7 @@ var photoView = {
 
     sharePhoto: function (e)  {
         _preventDefault(e);
-        mobileNotify("Work in progress...");
-
+        
         if(window.navigator.simulator === false){
             _sociaShare(null, null, photoView._activePhotoUrl, null);
         } else {
