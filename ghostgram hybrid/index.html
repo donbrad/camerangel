@@ -749,14 +749,14 @@
 </div>
 
 <!-- option dialog modal -->
-<div data-role="modalview" id="modal-OptionDialog" style="width: 80%; display:none;" class="appearance">
+<div data-role="modalview" id="modal-dialog" style="width: 80%; display:none;" class="appearance">
 	<div class="modal-dialog">
-	    <h3>Are you sure?</h3>
-	    <p>This item will be deleted.</p>
+	    <h3 id="modalTitle">Are you sure?</h3>
+	    <p id="modalDescription">This item will be deleted.</p>
 	</div>
 	<div class="footer-twoBtn footer" data-role="footer">
-		<a class="twoBtn btnClear" data-role="button" data-click="dialogClose" id="option1Btn">Yes</a>
-		<a class="twoBtn btnClear" data-role="button" data-click="dialogClose" id="option2Btn">No</a>
+		<a class="twoBtn btnClear" data-role="button" data-click="modalview.okClick" id="modalOk">Yes</a>
+		<a class="twoBtn btnClear" data-role="button" data-click="modalView.cancelClick" id="modalCancel">No</a>
 	</div>
 </div>
 

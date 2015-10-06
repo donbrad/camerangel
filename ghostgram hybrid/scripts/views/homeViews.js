@@ -186,3 +186,82 @@ var userStatusView = {
 
     }
 };
+
+/*
+ * Generic parameterized modal dialog
+ */
+var modalView = {
+    okAction: null,
+    cancelAction: null,
+
+    init: function() {
+        modalView.okAction = null;
+        modalView.cancelAction = null;
+        $('#modalCancel').addClass('hidden');
+
+    },
+
+    // Open the standard Ok/Cancel dialog
+    open: function (title, description, ok, okAction, cancel, cancelAction) {
+
+       $('#modalTitle').html(title);
+        if (description !== null) {
+            $('#modalDescription').html(title);
+        }
+        $('#modalTitle').html(title);
+        $('#modalOk').html(title);
+
+
+        if (okAction !== null) {
+            modalView.okAction = okAction;
+        }
+
+        if (cancelAction !== null) {
+            modalView.cancelAction = cancelAction;
+        }
+        if (cancel !== null) {
+            $('#modalCancel').html(title);
+        }
+
+        $('#modalCancel').removeClass('hidden');
+        $('#modal-dialog').data('kendoMobileModalView').open();
+    },
+
+    // Open an info dialog -- just OK no cancel button or ux.
+    openInfo : function (title, description, ok, okAction) {
+        $('#modalTitle').html(title);
+        if (description !== null) {
+            $('#modalDescription').html(title);
+        }
+        $('#modalTitle').html(title);
+        $('#modalOk').html(title);
+
+
+        if (okAction !== null) {
+            modalView.okAction = okAction;
+        }
+
+        $('#modalCancel').addClass('hidden');
+        $('#modal-dialog').data('kendoMobileModalView').open();
+    },
+
+    close : function () {
+        $('#modal-dialog').data('kendoMobileModalView').close();
+    },
+
+    okClick: function () {
+        if (modalView.okAction !== null) {
+            modalView.okAction();
+        }
+        modalView.close();
+    },
+
+    cancelClick: function () {
+        if (modalView.cancelAction !== null) {
+            modalView.cancelAction();
+        }
+        modalView.close();
+    }
+
+
+};
