@@ -87,10 +87,10 @@ var galleryView = {
 
 
         if (e.view.params.mode !== undefined && e.view.params.mode === 'picker') {
-            galleryView._pickerMode = false;
+            galleryView._pickerMode = true;
             mobileNotify("Please select an image to send...")
         } else {
-            galleryView._pickerMode = true;
+            galleryView._pickerMode = false;
         }
 
         if (e.view.params.returnview !== undefined) {
