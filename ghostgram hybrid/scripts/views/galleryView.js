@@ -306,6 +306,10 @@ var photoView = {
 
     },
 
+    setImageUrl : function (url) {
+        $('#photoViewImage').attr('src', url);
+    },
+
     deletePhoto: function (e) {
         _preventDefault(e);
 
@@ -359,10 +363,14 @@ var photoEditor = {
             photoEditor._activePhotoUrl =  photoEditor._activePhoto.imageUrl;
         }
 
-        $('#photoViewImage').attr('src', photoEditor._activePhoto.imageUrl);
+       photoEditor.setImageUrl(photoEditor._activePhoto.imageUrl);
 
         // Reset rotation angle on each show...
         photoEditor._rotationAngle = 0;
+    },
+
+    setImageUrl : function (url) {
+        $('#photoEditImage').attr('src', url);
     },
 
     onHide: function (e) {
