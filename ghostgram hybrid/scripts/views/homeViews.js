@@ -33,6 +33,7 @@ var userStatusView = {
         userStatusView._placesDS.data([]);
         userStatusView._placesDS.add({placeuuid: null, name: "New Place"});
 
+        mobileNotify("Checking your current location...");
         mapModel.getCurrentPosition( function (lat,lng) {
 
             var places = placesModel.matchLocation(lat, lng);
