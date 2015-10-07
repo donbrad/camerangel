@@ -18,7 +18,7 @@ String.prototype.smartTruncate =
 
 function _socialShare (message, subject, url, file) {
 
-	window.plugins.socialsharing.share(
+	window.plugins.socialsharing.share (
 		message,
 		subject,
 		file,
@@ -26,6 +26,31 @@ function _socialShare (message, subject, url, file) {
 		function(result) {console.log('result: ' + result)},
 		function(error) {mobileNotify('Social Sharing Error : ' + error);}
 	);
+}
+
+function _createBitlyUrl (url, callBack) {
+
+	var username = "donbrad"; // bit.ly username
+	var apiKey = "0086e4b7d58a7f949a4393ad2a5ab7b1a437accf";
+
+	$.ajax({
+		url: 'https://api-ssl.bitly.com/v3/shorten?login=' + username + '&apiKey=' + apiKey + '&format=json&longUrl=' + encodeURIComponent(url),
+		// dataType:"jsonp",
+		//  contentType: 'application/json',
+		success: function(result) {
+			if (result.status_code === 200) {
+				if (callBack !== undefined) {
+					callBack(result.data.url);
+				}
+			} else if (result.status_code === 500) {
+				mobileNotify("Bitly: Invalid Long Url");
+			} else {
+				mobileNotify("Bitly: Error = " + result.status_code);
+			}
+
+
+		}
+	});
 }
 
 function updateParseObject(objectName, idField, idFieldValue, newField, newFieldValue) {
