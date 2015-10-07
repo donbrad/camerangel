@@ -17,6 +17,11 @@ function deviceCamera(resolution, quality, isChat, displayCallback) {
     }
     var pictureSource = navigator.camera.PictureSourceType;   // picture source
     var destinationType = navigator.camera.DestinationType; // sets the format of returned value
+    var saveToAlbum = userModel.currentUser.get('saveToPhotoAlbum');
+
+    if (saveToAlbum === undefined) {
+        saveToAlbum = false;
+    }
 
     navigator.camera.getPicture(
         function (imageData) {
@@ -51,6 +56,8 @@ function deviceCamera(resolution, quality, isChat, displayCallback) {
             mobileNotify("Device Camera error " + error);
         }, {
             correctOrientation: true,
+            allEdit: true,
+            saveToPhotoAlbum: saveToAlbum,
             targetWidth: resolution,
             destinationType: destinationType.FILE_URL
         }

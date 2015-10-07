@@ -18,14 +18,18 @@ String.prototype.smartTruncate =
 
 function _socialShare (message, subject, url, file) {
 
-	window.plugins.socialsharing.share (
-		message,
-		subject,
-		file,
-		url,
-		function(result) {console.log('result: ' + result)},
-		function(error) {mobileNotify('Social Sharing Error : ' + error);}
-	);
+	_createBitlyUrl(url, function (bitUrl) {
+		window.plugins.socialsharing.share (
+			message,
+			subject,
+			file,
+			bitUrl,
+			function(result) {console.log('result: ' + result)},
+			function(error) {mobileNotify('Social Sharing Error : ' + error);}
+		);
+	});
+
+
 }
 
 function _createBitlyUrl (url, callBack) {
