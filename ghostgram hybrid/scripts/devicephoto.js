@@ -215,18 +215,21 @@ function resizeSuccessThumb (data) {
 
     photo.setACL(userModel.parseACL);
     photo.set('photoId', photoModel.currentPhoto.photoId);
-    photo.set('channelId', channelModel.currentChannel.channelId);
-    photo.set('channelName', channelModel.currentChannel.name);
+    photo.set('channelId', channelModel.currentChannel.get('channelId'));
+    photo.set('channelName', channelModel.currentChannel.get('name'));
 
     var timeStamp = new Date().getTime();
     photo.set("timestamp", timeStamp);
+    var timeStr = moment().format('MMMM Do YYYY, h:mm'); // October 7th 2015, 10:26 am
+    photo.set("dateString", timeStr);
+    
     photo.set('lat', mapModel.lat);
     photo.set('lng', mapModel.lng);
     photo.set('geoPoint', new Parse.GeoPoint(mapModel.lat, mapModel.lng));
 
     if (mapModel.currentAddress.city !== undefined) {
         var addressStr = mapModel.currentAddress.city + ', ' + mapModel.currentAddress.state + '  ' + mapModel.currentAddress.zipcode;
-        photo.set('address', addressStr);
+        photo.set('addressString', addressStr);
     }
 
     // Todo: don -- need to add current place save
