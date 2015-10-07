@@ -9,7 +9,13 @@ var mapModel = {
     lat: null,
     lng: null,
     latlng : null,
-    currentAddress : {},
+
+    currentAddress : {},   // Current physical address - location
+    currentPlace: null,       // currentPlace Object - null if none
+    currentPlaceId: null,     // currentplace UUID - null if none
+
+    isCheckedIn: false,         // true if user is checked in at current place
+
     gpsOptions : {enableHighAccuracy : true, timeout: 5000, maximumAge: 10000},
     lastPosition: {},
     lastPingSeconds : null,
@@ -99,6 +105,16 @@ var mapModel = {
 
     },
 
+    setCurrentPlace : function (placeId, isCheckedIn) {
+        mapModel.currentPlaceId = placeId;
+        mapModel.currentPlace = placeModel.getPlaceModel(placeId);
+
+        if (isCheckedIn !== undefined) {
+            mapModel.isCheckedIn = isCheckedIn;
+        }
+
+    },
+
     _updateAddress : function (addressComponents) {
         var address = {};
 
@@ -142,7 +158,7 @@ var mapModel = {
     },
 
     _updatePosition : function (lat, lng) {
-        mapModel.lat = lat; mapModel.lng = lng
+        mapModel.lat = lat; mapModel.lng = lng;
         mapModel.latlng = new google.maps.LatLng(lat, lng);
         window.localStorage.setItem('ggLastPosition', JSON.stringify({lat: lat, lng: lng}));
         mapModel.lastPosition.lat = lat;

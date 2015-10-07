@@ -215,14 +215,14 @@ function resizeSuccessThumb (data) {
 
     photo.setACL(userModel.parseACL);
     photo.set('photoId', photoModel.currentPhoto.photoId);
-    photo.set('channelId', channelModel.currentChannel.get('channelId'));
-    photo.set('channelName', channelModel.currentChannel.get('name'));
+    photo.set('channelId', currentChannelModel.currentChannel.get('channelId'));
+    photo.set('channelName', currentChannelModel.currentChannel.get('name'));
 
     var timeStamp = new Date().getTime();
     photo.set("timestamp", timeStamp);
     var timeStr = moment().format('MMMM Do YYYY, h:mm'); // October 7th 2015, 10:26 am
     photo.set("dateString", timeStr);
-    
+
     photo.set('lat', mapModel.lat);
     photo.set('lng', mapModel.lng);
     photo.set('geoPoint', new Parse.GeoPoint(mapModel.lat, mapModel.lng));
