@@ -172,6 +172,7 @@ var findPlacesView = {
         }
 
         var latlng = new google.maps.LatLng(lat, lng);
+
         // empty current data
         ds.data([]);
 

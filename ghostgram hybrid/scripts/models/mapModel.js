@@ -19,7 +19,7 @@ var mapModel = {
     gpsOptions : {enableHighAccuracy : true, timeout: 5000, maximumAge: 10000},
     lastPosition: {},
     lastPingSeconds : null,
-    _pingInterval: 10, //Ping debounce interval in seconds.  app will only get position after _pingInterval seconds
+    _pingInterval: 30, //Ping debounce interval in seconds.  app will only get position after _pingInterval seconds
 
     geocoder : null,
     mapOptions : {zoom: 14,  mapTypeId : google.maps.MapTypeId.ROADMAP},

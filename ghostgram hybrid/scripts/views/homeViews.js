@@ -33,6 +33,23 @@ var userStatusView = {
         userStatusView._placesDS.data([]);
         userStatusView._placesDS.add({placeuuid: null, name: "New Place"});
 
+        mapModel.getCurrentPosition( function (lat,lng) {
+
+            var places = placesModel.matchLocation(lat, lng);
+
+            if (places.length === 0) {
+                mobileNotify("No places match your current location");
+
+
+                var findPlaceUrl = "#findPlace?lat="+ lat + "&lng=" +  lng +"&returnview=" + '#'+userStatusView._returnView +'&returnModal=userStatus';
+                // No current places match the current location
+                //ux.showActionBtn(true, "#places", findPlaceUrl);
+            } else {
+
+                // set placesView.placeListDS to results
+            }
+
+        });
 
         var status = userStatusView._activeStatus, user = userModel.currentUser;
 
