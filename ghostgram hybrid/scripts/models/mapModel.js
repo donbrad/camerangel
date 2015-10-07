@@ -16,7 +16,7 @@ var mapModel = {
     _pingInterval: 10, //Ping debounce interval in seconds.  app will only get position after _pingInterval seconds
 
     geocoder : null,
-    mapOptions : {zoom: 12,  mapTypeId : google.maps.MapTypeId.ROADMAP},
+    mapOptions : {zoom: 14,  mapTypeId : google.maps.MapTypeId.ROADMAP},
     googleMap : null,
     googlePlaces : null,
 
@@ -34,6 +34,8 @@ var mapModel = {
 
         if (location !== undefined && location !== null) {
             mapModel.lastPosition = JSON.parse(location);
+            mapModel.lat = mapModel.lastPosition.lat;
+            mapModel.lng = mapModel.lastPosition.lng;
         } else {
             mapModel.lastPosition = {
                 lat: 0,
@@ -77,7 +79,8 @@ var mapModel = {
     setLatLng : function (lat, lng) {
         mapModel.lat = lat;
         mapModel.lng = lng;
-
+        mapModel.lastPosition.lat = lat;
+        mapModel.lastPosition.lng = lng;
         mapModel.latlng = new google.maps.LatLng(lat, lng);
     },
 
@@ -139,7 +142,8 @@ var mapModel = {
     },
 
     _updatePosition : function (lat, lng) {
-        mapModel.lat = lat; mapModel.lng = lng;
+        mapModel.lat = lat; mapModel.lng = lng
+        mapModel.latlng = new google.maps.LatLng(lat, lng);
         window.localStorage.setItem('ggLastPosition', JSON.stringify({lat: lat, lng: lng}));
         mapModel.lastPosition.lat = lat;
         mapModel.lastPosition.lng = lng;

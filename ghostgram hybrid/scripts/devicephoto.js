@@ -216,9 +216,20 @@ function resizeSuccessThumb (data) {
     photo.setACL(userModel.parseACL);
     photo.set('photoId', photoModel.currentPhoto.photoId);
     photo.set('channelId', channelModel.currentChannel.channelId);
+    photo.set('channelName', channelModel.currentChannel.name);
+
     var timeStamp = new Date().getTime();
     photo.set("timestamp", timeStamp);
-    photo.set('geoPoint', new Parse.GeoPoint(APP.location.position.lat, APP.location.position.lng));
+    photo.set('lat', mapModel.lat);
+    photo.set('lng', mapModel.lng);
+    photo.set('geoPoint', new Parse.GeoPoint(mapModel.lat, mapModel.lng));
+
+    if (mapModel.currentAddress.city !== undefined) {
+        var addressStr = mapModel.currentAddress.city + ', ' + mapModel.currentAddress.state + '  ' + mapModel.currentAddress.zipcode;
+        photo.set('address', addressStr);
+    }
+
+    // Todo: don -- need to add current place save
 
 
     var parseFile = new Parse.File("thumbnail_"+photoModel.currentPhoto.filename + ".jpeg",{'base64': data.imageData}, "image/jpg");
