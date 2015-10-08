@@ -129,6 +129,10 @@ var placesModel = {
 
     matchLocation: function (lat, lng) {
 
+        if (!placesModel.placesFetched) {
+            return([]);
+        }
+
         var placesData = placesModel.placesDS.data();
 
         var matchArray = [];

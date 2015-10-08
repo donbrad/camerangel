@@ -610,10 +610,17 @@ var checkInView = {
 
     },
 
+    locateAndOpenModal : function (e) {
+        _preventDefault(e);
+
+    },
+
     openModal : function (placeArray, callBack) {
         if (placeArray.length > 0) {
             checkInView.placesDS.data(placeArray);
         }
+
+
         $("#modalview-checkin").data("kendoMobileModalView").open();
     },
 

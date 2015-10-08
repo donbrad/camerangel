@@ -567,21 +567,14 @@
             	<div>
             		<div id="checked-in-place">
             			<span style="width: 90%;" id="profileStatusCheckInPlace" data-bind="text: checkedInPlace"></span>
-            			<button data-role="button" data-click="userStatusView.checkOut">Check Out</button>
+            			<a class="btnClear-sm" data-role="button" data-click="userStatusView.checkOut">Check Out</a>
             		</div>
 					</div>
 			</li>
-			<li>
-
-				<div class="select-md">
-					<select  id="userStatusLocationSelect" >
-
-					</select>
-				</div>
-				<a class="btnClear-sm" data-role="button" data-click="userStatusView.checkIn" id="gpsLocateUpdateBtn">
+			<li id="profileCheckInLi">
+				<a class="btnClear-sm" data-role="button" data-click="checkInView.locateAndOpenModal" id="gpsLocateUpdateBtn">
 					<img src="images/icon-gps-selected.svg" height="12px"/> Check In
 				</a>
-
 
         	</li>
         	<li>

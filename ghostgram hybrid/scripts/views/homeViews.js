@@ -14,14 +14,7 @@ var userStatusView = {
     _activeStatus : new kendo.data.ObservableObject(),
     _returnView : null,
     _modalId : "#modalview-profileStatus",
-    _checkInPlaceId : null,
     _profileStatusMax: 40,
-    _placesDS : new kendo.data.DataSource({
-        sort: {
-            field: "name",
-            dir: "asc"
-        }
-    }),
 
     // Main entry point for userstatus modal
     openModal : function (e) {
@@ -30,11 +23,18 @@ var userStatusView = {
         //Cache the current view
         userStatusView._returnView = APP.kendo.view().id;
 
-        userStatusView._placesDS.data([]);
-        userStatusView._placesDS.add({placeuuid: null, name: "New Place"});
+        mobileNotify("Updating your location...");
 
-        mobileNotify("Checking your current location...");
-        mapModel.getCurrentPosition( function (lat,lng) {
+        mapModel.getCurrentAddress(function (isNew, address) {
+            // Is this a new location
+            if (isNew) {
+                $('#profileCheckInLi').removeClass('hidden');
+            } else {
+                $('#profileCheckInLi').addClass('hidden');
+            }
+        });
+
+       /* mapModel.getCurrentPosition( function (lat,lng) {
 
             var places = placesModel.matchLocation(lat, lng);
 
@@ -50,7 +50,7 @@ var userStatusView = {
                 // set placesView.placeListDS to results
             }
 
-        });
+        });*/
 
         var status = userStatusView._activeStatus, user = userModel.currentUser;
 
@@ -115,9 +115,11 @@ var userStatusView = {
     checkIn : function (e) {
         _preventDefault(e);
 
-        if (userStatusView._checkInPlaceId !== null) {
-            userModel.checkIn(userStatusView._checkInPlaceId);
-            mobileNotify("You're checked in to " + userModel.checkedInPlace.name);
+        if (mapModel.currentPlaceId !== null) {
+
+            userModel.checkIn(mapModel.currentPlaceId);
+            mapModel.checkIn(mapModel.currentPlaceId);
+            mobileNotify("You're checked in!");
         } else {
             mobileNotify("No place to check in to...");
         }
@@ -127,8 +129,10 @@ var userStatusView = {
     checkOut : function (e) {
         _preventDefault(e);
 
+        $('#profileCheckInLi').removeClass('hidden');
         userStatusView._checkInPlaceId = null;
         userModel.checkOut();
+        mapModel.checkOut();
         $('#profileStatusCheckInPlace').text('');
     },
 
