@@ -60,31 +60,60 @@ var placesView = {
         $("#places-listview").kendoMobileListView({
             dataSource: placesView.placeListDS,
             template: $("#placesTemplate").html(),
-            click: function (e) {
-                var place = e.dataItem;
-                console.log(place);
-                var navStr = "#editPlace?place="+LZString.compressToEncodedURIComponent(place.uuid)+"&returnview=places";
-
-                APP.kendo.navigate(navStr);
-
-            },
             dataBound: function(e){
                 ux.checkEmptyUIState(findPlacesView.placesDS, "#placeListDiv >");
             }
+        }).kendoTouch({
+        	filter: ".list-box",
+        	enableSwipe: true,
+        	tap: function(e){
+        		
+        	},
+        	swipe: function(e) {
+                // 
+                var selection = e.sender.events.currentTarget;
+                
+                if(e.direction === "left"){
+                    var otherOpenedLi = $(".place-active");
+                    $(otherOpenedLi).velocity({translateX:"0"},{duration: "fast"}).removeClass("place-active");
+                    
+                    if($(window).width() < 375){
+                    	$(selection).velocity({translateX:"-50%"},{duration: "fast"}).addClass("place-active");
+                    } else {
+                    	$(selection).velocity({translateX:"-40%"},{duration: "fast"}).addClass("place-active");
+                    }
+                }
+                if (e.direction === "right" && $(selection).hasClass("place-active")){
+                    $(selection).velocity({translateX:"0"},{duration: "fast"}).removeClass("place-active");
+                }
 
-
+            }
         });
+    },
+
+    editPlaceBtn: function(e){
+    	var place = e.button[0].dataset["id"];
+    	var navStr = "#editPlace?place="+LZString.compressToEncodedURIComponent(place)+"&returnview=places";
+
+        APP.kendo.navigate(navStr);
+    },
+
+    deletePlaceBtn: function(e){
+    	// Todo Don - wire delete place
     },
 
     onShow: function (e) {
         _preventDefault(e);
-
+        
         // update actionBtn
+        ux.changeActionBtnImg("#places", "icon-gps-light");
         ux.showActionBtn(false, "#places");
-        //$("#places > div.footerMenu.km-footer > a").removeAttr('href').css("display", "none");
 
         placesView.placeListDS.data(placesModel.placesDS.data());
 
+        ux.scrollUpSearch(e);
+
+        // get current position
        	mapModel.getCurrentPosition( function (lat,lng) {
 
             var places = placesModel.matchLocation(lat, lng);
@@ -94,10 +123,12 @@ var placesView = {
                 var findPlaceUrl = "#findPlace?lat="+ lat + "&lng=" +  lng +"&returnview=places";
                 // No current places match the current location
             	ux.showActionBtn(true, "#places", findPlaceUrl);
-
+            	$("#current-place").addClass("hidden").velocity("slideUp");
             	ux.showActionBtnText("#places", "3.5rem", "Check in");
             } else {
-
+            	var currentPlace = userModel.currentUser.currentPlace
+            	$("#current-place-name").text(currentPlace);
+            	$("#current-place").removeClass("hidden").velocity("slideDown");
                 // set placesView.placeListDS to results
             }
 
@@ -110,6 +141,7 @@ var placesView = {
         // update actionBtn
         ux.showActionBtn(false, "#places");
         ux.hideActionBtnText("#places");
+        ux.changeActionBtnImg("#places", "nav-add-white");
     }
 
 };
@@ -137,6 +169,7 @@ var findPlacesView = {
         $("#findplace-listview").kendoMobileListView({
                 dataSource: findPlacesView.placesDS,
                 template: $("#findPlacesTemplate").html(),
+                headerTemplate: $("#findPlacesHeaderTemplate").html(),
                 fixedHeaders: true,
                 click: function (e) {
                     var geo = e.dataItem;
@@ -471,6 +504,8 @@ var editPlaceView = {
 
     onInit : function (e) {
         _preventDefault(e);
+
+        $("#placeTypeBtns").data("kendoMobileButtonGroup");
     },
 
     onShow : function (e) {
@@ -492,6 +527,16 @@ var editPlaceView = {
         }
     },
 
+    update: function(){
+    	var placeName = $("#placeNameEdit").val();
+    	var placeAlias = $("#placeAliasEdit").val();
+    	var placeAddressEdit = $("#placeAddressEdit").val();
+
+    	// todo - Update any data changes
+
+    	editPlaceView.onDone();
+    },
+
     onHide : function (e) {
         //_preventDefault(e);  Cant use here -- prevents navigation
     },
@@ -503,6 +548,29 @@ var editPlaceView = {
 
         APP.kendo.navigate(returnUrl);
 
+    },
+
+    placeTypeSelect: function(e){
+    	var index = this.current().index();
+    	
+    	// if private
+    	if(index === 0){
+    		$("#privatePlaceHelper").removeClass("hidden");
+    		$("#publicPlaceHelper").addClass("hidden");
+    		
+    		$("#placeTypePrivateImg").attr("src", "images/place-private-active.svg");
+    		$("#placeTypePublicImg").attr("src", "images/place-public.svg");
+
+    		$("#placeAutoCheckin").velocity("fadeOut");
+    	} else {
+    		$("#publicPlaceHelper").removeClass("hidden");
+    		$("#privatePlaceHelper").addClass("hidden");
+    		
+    		$("#placeTypePrivateImg").attr("src", "images/place-private.svg");
+    		$("#placeTypePublicImg").attr("src", "images/place-public-active.svg");
+
+    		$("#placeAutoCheckin").velocity("fadeIn");
+    	}
     },
 
     setActivePlace : function (placeId) {

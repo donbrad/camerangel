@@ -6,22 +6,22 @@ var ux = {
 	// Display the right name combo - for template use returnUXPrimaryName
 	formatNameAlias: function(name, alias, view){
 
-	var primaryName, secondName;
+		var primaryName, secondName;
 
-	if (alias !== "" && alias !== undefined && name !== "" && name !== undefined){
-		primaryName = alias;
-		secondName = name;
+		if (alias !== "" && alias !== undefined && name !== "" && name !== undefined){
+			primaryName = alias;
+			secondName = name;
 
-	} else if(name !== "" && name !== undefined) {
-		primaryName = name;
-		secondName = "";
-	}
-	else {
-		primaryName = alias;
-	}
+		} else if(name !== "" && name !== undefined) {
+			primaryName = name;
+			secondName = "";
+		}
+		else {
+			primaryName = alias;
+		}
 
-	$(view + " .primaryName").text(primaryName);
-	$(view + " .secondName").text(secondName);
+		$(view + " .primaryName").text(primaryName);
+		$(view + " .secondName").text(secondName);
 
 	},
 
@@ -40,6 +40,32 @@ var ux = {
 		}
 
 		return primaryName;
+	},
+
+	addressPrimaryName: function(name, alias, address){
+		var preCheckName = name; 
+		var preCheckAlias = alias; 
+		var preCheckAddress = address;
+
+		var nameVerified, aliasVerified, addressVerified = false;
+		var nameCombo = [];
+
+		// check name 
+		if(preCheckName !== "" && preCheckName !== undefined ){
+			nameVerified = true;
+			nameCombo.push(preCheckName);
+		} 
+		// check alias
+		if(preCheckAlias !== "" && preCheckAlias !== undefined){
+			aliasVerified = true;
+			nameCombo.unshift(preCheckAlias);
+		} 
+
+		if (!nameVerified && !aliasVerified){
+			nameCombo.push(preCheckAddress);
+		}
+ 		
+		return nameCombo;
 	},
 
 	// display empty view graphic if no results

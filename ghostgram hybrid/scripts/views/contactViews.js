@@ -128,7 +128,11 @@ var contactsView = {
                     $(otherOpenedLi).velocity({translateX:"0"},{duration: "fast"}).removeClass("contact-active");
                     
                     if($(selection).hasClass("member") && $(window).width() < 375){
+                    	$(selection).velocity({translateX:"-50%"},{duration: "fast"}).addClass("contact-active");
+                    } else if ($(selection).hasClass("member"))  {
                     	$(selection).velocity({translateX:"-40%"},{duration: "fast"}).addClass("contact-active");
+                    } else if($(window).width() < 375) {
+        				$(selection).velocity({translateX:"-80%"},{duration: "fast"}).addClass("contact-active");
                     } else {
                     	$(selection).velocity({translateX:"-65%"},{duration: "fast"}).addClass("contact-active");
                     }

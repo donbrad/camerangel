@@ -235,7 +235,7 @@ h3 {
 h4 {
   font-size: 16px;
   font-size: 1rem;
-  font-weight: 400;
+  font-weight: 600;
   font-family: 'Open Sans', sans-serif !important;
 }
 h5 {
@@ -280,7 +280,7 @@ input[readonly] {
   background-color: #e0e0e0 !important;
 }
 form {
-  padding: 1rem;
+  padding: 0.25rem 1rem;
 }
 form h1,
 form h2,
@@ -735,10 +735,10 @@ form p {
   background: transparent !important;
 }
 .btnClearLine {
-  background: transparent;
+  background: #fff !important;
   color: #2D93FF !important;
-  border: 1px solid #6cadf3;
   border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
 }
 .btnClearLine :active {
   color: #3A779D !important;
@@ -3193,15 +3193,6 @@ div.loginBox > form > div > ul > li {
   width: 91%;
   float: left;
 }
-#current-place {
-  display: none;
-  margin: 0 1.6rem;
-  border-bottom: 1px solid #e0e0e0;
-}
-#current-place h1 {
-  padding: 0;
-  margin: 1rem 0 .4rem;
-}
 #place-checkInImg {
   vertical-align: bottom;
   height: 18px;
@@ -3450,6 +3441,30 @@ div.loginBox > form > div > ul > li {
   height: 4rem;
   text-align: right;
 }
+.list-box {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background: #fff;
+  display: inline-block;
+  box-shadow: 3px 0 3px -3px #979797;
+  width: 100%;
+}
+.list-options {
+  width: 100%;
+  height: 80px;
+  background-color: #f5f5f5;
+  z-index: -1;
+  display: inline-block;
+  float: left;
+  text-align: right;
+  padding-top: 1rem;
+}
+#places-listview li {
+  padding: 0px;
+}
 .contact-option-ul li {
   background: transparent !important;
   border: transparent !important;
@@ -3583,6 +3598,7 @@ div.contactListBox.activeContact > div > div > ul {
   font-size: 0.75rem;
   color: #979797;
   vertical-align: middle;
+  font-weight: 400 !important;
 }
 /* Contact sync */
 #syncEditList {
@@ -3763,7 +3779,8 @@ div.contactListBox.activeContact > div > div > ul {
   margin-bottom: 0.5rem;
   margin-left: 0px !important;
 }
-#channels-editChannel-name {
+#channels-editChannel-name,
+#placeNameEdit {
   font-size: 24px !important;
   font-size: 1.5rem !important;
 }
@@ -4681,4 +4698,64 @@ html .km-pane-wrapper .k-header {
 #findplace-listview li {
   border-bottom: 1px solid #e0e0e0;
   background: #fff;
+}
+#placeTypeBtns {
+  text-align: left;
+}
+#placeTypeBtns li {
+  background: #fff;
+  border-radius: 3px;
+  padding: 0.5rem 1rem;
+  border: 1px solid #f5f5f5;
+}
+#placeTypeBtns li.km-state-active {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+#placeTypeBtns li:nth-child(1) {
+  margin-right: 0.5rem;
+}
+#placeTypeBtns li:nth-child(2) {
+  margin-left: 0.5rem;
+}
+.placeTypeInfo {
+  padding: 0.5rem 0;
+}
+.icon-info {
+  height: 1rem;
+  vertical-align: sub;
+}
+.placeIconImgBtn {
+  height: 2rem;
+}
+#findPlace > div.footerMenu.km-footer {
+  display: none;
+}
+#findplace-listview li h4,
+#places-listview li h4 {
+  color: #2e93fd;
+}
+#current-place-name {
+  padding-top: 0.2rem;
+  margin-left: 0.5rem !important;
+  font-size: 16px;
+  font-size: 1rem;
+}
+.whiteBtn {
+  color: #fff !important;
+}
+#current-place {
+  background: #6cadf3;
+  padding: 0.25rem 1rem;
+  color: #fff;
+}
+.icon-btn {
+  height: 1rem;
+  vertical-align: text-top;
+}
+#checkoutBtn {
+  font-size: 14px;
+  font-size: 0.875rem;
+}
+#editPlace > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > form > div.km-listview-wrapper > ul {
+  margin: 0px;
 }
