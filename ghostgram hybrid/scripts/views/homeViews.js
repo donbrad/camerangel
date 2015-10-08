@@ -120,6 +120,7 @@ var userStatusView = {
             userModel.checkIn(mapModel.currentPlaceId);
             mapModel.checkIn(mapModel.currentPlaceId);
             mobileNotify("You're checked in!");
+            $('#profileCheckOutLi').removeClass('hidden');
         } else {
             mobileNotify("No place to check in to...");
         }
@@ -130,6 +131,7 @@ var userStatusView = {
         _preventDefault(e);
 
         $('#profileCheckInLi').removeClass('hidden');
+        $('#profileCheckOutLi').addClass('hidden');
         userStatusView._checkInPlaceId = null;
         userModel.checkOut();
         mapModel.checkOut();
