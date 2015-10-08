@@ -12,6 +12,7 @@ var placesModel = {
     _radius : 150,
 
     placesArray : [],
+    placesFetched : false,
     placeModel : kendo.data.Model.define({
         id: 'id',
         fields: {
@@ -121,11 +122,13 @@ var placesModel = {
         );
 
         placesModel.placesDS.fetch(function () {
+            placesModel.placesFetched = true;
             placesModel.placesArray  = placesModel.placesDS.data();
         });
     },
 
     matchLocation: function (lat, lng) {
+
         var placesData = placesModel.placesDS.data();
 
         var matchArray = [];

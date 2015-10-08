@@ -103,12 +103,15 @@ var mapModel = {
             if (mapModel.isNewLocation(lat,lng)) {
                 // User is at a new location
 
-                var placeArray = placesModel.matchLocation(lat,lng);
+                if (placesModel.placesFetched) {
+                    // Don't try to determine current location if places aren't loaded yet
+                    var placeArray = placesModel.matchLocation(lat,lng);
 
-                if (placeArray.length === 0) {
-                    // No existing places
-                } else {
-                    checkInView.openModal(placeArray);
+                    if (placeArray.length === 0) {
+                        // No existing places
+                    } else {
+                        checkInView.openModal(placeArray);
+                    }
                 }
 
                 mapModel.reverseGeoCode(lat, lng, function (results, error) {
