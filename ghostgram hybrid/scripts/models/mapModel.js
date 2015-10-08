@@ -102,18 +102,6 @@ var mapModel = {
         mapModel.getCurrentPosition (function(lat, lng) {
             if (mapModel.isNewLocation(lat,lng)) {
                 // User is at a new location
-
-                if (placesModel.placesFetched) {
-                    // Don't try to determine current location if places aren't loaded yet
-                    var placeArray = placesModel.matchLocation(lat,lng);
-
-                    if (placeArray.length === 0) {
-                        // No existing places
-                    } else {
-                        checkInView.openModal(placeArray);
-                    }
-                }
-
                 mapModel.reverseGeoCode(lat, lng, function (results, error) {
                     if (results !== null) {
                         var address = mapModel._updateAddress(results[0].address_components);
@@ -129,7 +117,7 @@ var mapModel = {
 
     setCurrentPlace : function (placeId, isCheckedIn) {
         mapModel.currentPlaceId = placeId;
-        mapModel.currentPlace = placeModel.getPlaceModel(placeId);
+        mapModel.currentPlace = placesModel.getPlaceModel(placeId);
 
         if (isCheckedIn !== undefined) {
             mapModel.isCheckedIn = isCheckedIn;
