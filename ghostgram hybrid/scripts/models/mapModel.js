@@ -9,14 +9,21 @@ var mapModel = {
     lat: null,
     lng: null,
     latlng : null,
-    currentAddress : {},
+
+    currentAddress : {},   // Current physical address - location
+    currentPlace: null,       // currentPlace Object - null if none
+    currentPlaceId: null,     // currentplace UUID - null if none
+
+    isCheckedIn: false,         // true if user is checked in at current place
+    wasPrompted: false,         // has the user been prompted to check in here
+
     gpsOptions : {enableHighAccuracy : true, timeout: 5000, maximumAge: 10000},
     lastPosition: {},
     lastPingSeconds : null,
-    _pingInterval: 10, //Ping debounce interval in seconds.  app will only get position after _pingInterval seconds
+    _pingInterval: 30, //Ping debounce interval in seconds.  app will only get position after _pingInterval seconds
 
     geocoder : null,
-    mapOptions : {zoom: 12,  mapTypeId : google.maps.MapTypeId.ROADMAP},
+    mapOptions : {zoom: 14,  mapTypeId : google.maps.MapTypeId.ROADMAP},
     googleMap : null,
     googlePlaces : null,
 
@@ -34,6 +41,8 @@ var mapModel = {
 
         if (location !== undefined && location !== null) {
             mapModel.lastPosition = JSON.parse(location);
+            mapModel.lat = mapModel.lastPosition.lat;
+            mapModel.lng = mapModel.lastPosition.lng;
         } else {
             mapModel.lastPosition = {
                 lat: 0,
@@ -77,22 +86,54 @@ var mapModel = {
     setLatLng : function (lat, lng) {
         mapModel.lat = lat;
         mapModel.lng = lng;
-
+        mapModel.lastPosition.lat = lat;
+        mapModel.lastPosition.lng = lng;
         mapModel.latlng = new google.maps.LatLng(lat, lng);
+    },
+
+    isNewLocation : function (lat, lng) {
+
+       return(placesModel.inRadius(lat, lng, mapModel.lat, mapModel.lng, 150));
+
     },
 
     getCurrentAddress : function (callback) {
 
         mapModel.getCurrentPosition (function(lat, lng) {
-            mapModel.reverseGeoCode(lat, lng, function (results, error) {
-                if (results !== null) {
-                    var address = mapModel._updateAddress(results[0].address_components);
-                    if (callback !== undefined)
-                            callback(address);
+            if (mapModel.isNewLocation(lat,lng)) {
+                // User is at a new location
+
+                if (placesModel.placesFetched) {
+                    // Don't try to determine current location if places aren't loaded yet
+                    var placeArray = placesModel.matchLocation(lat,lng);
+
+                    if (placeArray.length === 0) {
+                        // No existing places
+                    } else {
+                        checkInView.openModal(placeArray);
+                    }
                 }
-            });
+
+                mapModel.reverseGeoCode(lat, lng, function (results, error) {
+                    if (results !== null) {
+                        var address = mapModel._updateAddress(results[0].address_components);
+                        if (callback !== undefined)
+                            callback(address);
+                    }
+                });
+            }
         });
 
+
+    },
+
+    setCurrentPlace : function (placeId, isCheckedIn) {
+        mapModel.currentPlaceId = placeId;
+        mapModel.currentPlace = placeModel.getPlaceModel(placeId);
+
+        if (isCheckedIn !== undefined) {
+            mapModel.isCheckedIn = isCheckedIn;
+        }
 
     },
 
@@ -140,6 +181,7 @@ var mapModel = {
 
     _updatePosition : function (lat, lng) {
         mapModel.lat = lat; mapModel.lng = lng;
+        mapModel.latlng = new google.maps.LatLng(lat, lng);
         window.localStorage.setItem('ggLastPosition', JSON.stringify({lat: lat, lng: lng}));
         mapModel.lastPosition.lat = lat;
         mapModel.lastPosition.lng = lng;

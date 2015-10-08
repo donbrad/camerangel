@@ -209,6 +209,7 @@ var findPlacesView = {
         }
 
         var latlng = new google.maps.LatLng(lat, lng);
+
         // empty current data
         ds.data([]);
 
@@ -587,6 +588,117 @@ var editPlaceView = {
         editPlaceView._activePlace.set('zipcode', placeObj.zipcode);
         editPlaceView._activePlace.set('isPrivate', placeObj.isPrivate);
         editPlaceView._activePlace.set('isAvailable', placeObj.isAvailable);
+
+    }
+
+};
+
+/*
+ * placeView
+ */
+var placeView = {
+    _activePlace : null,
+    _activePlaceId : null,
+    _lat: null,
+    _lng: null,
+    _returnView : 'places',
+
+    onInit : function (e) {
+        _preventDefault(e);
+    },
+
+    onShow : function (e) {
+        _preventDefault(e);
+
+        if (e.view.params !== undefined) {
+            if (e.view.params.place !== undefined) {
+                var placeId = LZString.decompressFromEncodedURIComponent(e.view.params.place);
+                editPlaceView.setActivePlace(placeId);
+            } else {
+                // No active place --
+                placeView._activePlace = null;
+                placeView._activePlaceId = null;
+            }
+
+            if (e.view.params.lat !== undefined) {
+                placeView._lat = e.view.params.lat;
+                placeView._lng = e.view.params.lng;
+            }
+
+            if (e.view.params.returnview !== undefined)
+                editPlaceView._returnView = e.view.params.returnview;
+
+
+
+
+        }
+    },
+
+    onHide : function (e) {
+        //_preventDefault(e);  Cant use here -- prevents navigation
+    },
+
+    onDone: function (e) {
+        _preventDefault(e);
+
+        var returnUrl = '#'+ placeView._returnView;
+
+        APP.kendo.navigate(returnUrl);
+
+    },
+
+    setActivePlace : function (placeId) {
+        placeView._activePlaceId = placeId;
+
+        placeView._activePlace = placesModel.getPlaceModel(placeId);
+    }
+};
+
+/*
+ * checkInView
+ */
+var checkInView = {
+    _returnView : 'places',
+    _returnModal : null,
+    placesDS :  new kendo.data.DataSource({
+        sort: {
+            field: "name",
+            dir: "asc"
+        },
+        group: 'category'
+    }),
+
+    onInit : function (e) {
+        _preventDefault(e);
+        $("#checkin-listview").kendoMobileListView({
+            dataSource: placesView.placeListDS,
+            template: $("#placesTemplate").html(),
+            click: function (e) {
+                var place = e.dataItem;
+
+
+            }
+        });
+
+    },
+
+    openModal : function (placeArray, callBack) {
+        if (placeArray.length > 0) {
+            checkInView.placesDS.data(placeArray);
+        }
+        $("#modalview-checkin").data("kendoMobileModalView").open();
+    },
+
+    closeModal : function () {
+        $("#modalview-checkin").data("kendoMobileModalView").close();
+    },
+
+    onDone: function (e) {
+        _preventDefault(e);
+
+        var returnUrl = '#'+ checkInView._returnView;
+
+        APP.kendo.navigate(returnUrl);
 
     }
 

@@ -33,6 +33,24 @@ var userStatusView = {
         userStatusView._placesDS.data([]);
         userStatusView._placesDS.add({placeuuid: null, name: "New Place"});
 
+        mobileNotify("Checking your current location...");
+        mapModel.getCurrentPosition( function (lat,lng) {
+
+            var places = placesModel.matchLocation(lat, lng);
+
+            if (places.length === 0) {
+                mobileNotify("No places match your current location");
+
+
+                var findPlaceUrl = "#findPlace?lat="+ lat + "&lng=" +  lng +"&returnview=" + '#'+userStatusView._returnView +'&returnModal=userStatus';
+                // No current places match the current location
+                //ux.showActionBtn(true, "#places", findPlaceUrl);
+            } else {
+
+                // set placesView.placeListDS to results
+            }
+
+        });
 
         var status = userStatusView._activeStatus, user = userModel.currentUser;
         
@@ -73,7 +91,6 @@ var userStatusView = {
         if (userStatusView._checkInPlaceId !== null) {
 
            // Is the current place in the list of candidate places?
-
             // Yes - select it
 
             // No - Select the first place in the list...
@@ -204,4 +221,87 @@ var userStatusView = {
       //  _preventDefault(e);   calling on close prevents kendos normal modal handling
 
     }
+};
+
+/*
+ * Generic parameterized modal dialog
+ */
+var modalView = {
+    okAction: null,
+    cancelAction: null,
+
+    init: function() {
+        modalView.okAction = null;
+        modalView.cancelAction = null;
+        $('#modalCancel').addClass('hidden');
+
+    },
+
+    // Open the standard Ok/Cancel dialog
+    open: function (title, description, ok, okAction, cancel, cancelAction) {
+
+       $('#modalTitle').html(title);
+        if (description !== null) {
+            $('#modalDescription').html(description);
+        }
+
+        $('#modalOk').html(ok);
+
+
+        if (okAction !== null) {
+            modalView.okAction = okAction;
+        }
+
+        if (cancelAction !== null) {
+            modalView.cancelAction = cancelAction;
+        }
+        if (cancel !== null) {
+            $('#modalCancel').html(cancel);
+        }
+
+        $('#modalCancel').removeClass('hidden');
+        $('#modal-dialog').data('kendoMobileModalView').open();
+    },
+
+    // Open an info dialog -- just OK no cancel button or ux.
+    openInfo : function (title, description, ok, okAction) {
+        $('#modalTitle').html(title);
+        if (description !== null) {
+            $('#modalDescription').html(description);
+        }
+
+        $('#modalOk').html(ok);
+
+
+        if (okAction !== null) {
+            modalView.okAction = okAction;
+        }
+
+        $('#modalCancel').addClass('hidden');
+        $('#modal-dialog').data('kendoMobileModalView').open();
+    },
+
+    close : function () {
+        $('#modal-dialog').data('kendoMobileModalView').close();
+    },
+
+    okClick: function () {
+        modalView.close();
+
+        if (modalView.okAction !== null) {
+            modalView.okAction();
+        }
+        modalView.init();
+    },
+
+    cancelClick: function () {
+        modalView.close();
+
+        if (modalView.cancelAction !== null) {
+            modalView.cancelAction();
+        }
+        modalView.init();
+    }
+
+
 };

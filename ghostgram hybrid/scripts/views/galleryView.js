@@ -13,6 +13,12 @@
  */
 
 var galleryView = {
+    _returnView : null,
+    _mode: 'gallery',  // two modes: gallery or picker (photo picker)
+    _pickerMode: false,  // simple flag if in photo picker mode
+    _currentPhoto: {},
+    _currentPhotoId: null,
+    _currentPhotoUrl: null,
 
     onInit : function (e) {
         _preventDefault(e);
@@ -47,7 +53,12 @@ var galleryView = {
 
 
 
-
+        // Action functions should be in onInit...
+        $('#gallerySearchQuery').clearSearch({
+            callback: function() {
+                // todo - wire search
+            }
+        });
 
         var scroller = e.view.scroller;
         //scroller.scrollTo(0,-44);
@@ -71,13 +82,21 @@ var galleryView = {
     },
 
     onShow : function (e) {
+
         _preventDefault(e);
 
-        photoModel.chatPhoto = false;
-        if (e.view.params.action !== undefined && e.view.params.action === 'chat') {
-            photoModel.chatPhoto = true;
+
+        if (e.view.params.mode !== undefined && e.view.params.mode === 'picker') {
+            galleryView._pickerMode = true;
             mobileNotify("Please select an image to send...")
+        } else {
+            galleryView._pickerMode = false;
         }
+
+        if (e.view.params.returnview !== undefined) {
+            galleryView._returnView = e.view.params.returnview;
+        }
+
         photoModel.rotationAngle = 0;
         
         // Set action btn
@@ -125,12 +144,7 @@ var galleryView = {
         } else {
         	$("#filterText").text("Filter");
         }
-        
-        $('#gallerySearchQuery').clearSearch({
-	        callback: function() {
-	        	// todo - wire search
-	        }
-	    });
+
 
     },
 
@@ -187,20 +201,45 @@ var galleryView = {
     galleryClick : function (e) {
         _preventDefault(e);
 
-        var photoId = e.dataItem.id, photoUrl = e.dataItem.imageUrl;
-        photoModel.currentPhotoModel = photoModel.findPhotoById(photoId);
+        var photoId = e.dataItem.photoId, photoUrl = e.dataItem.imageUrl;
+
+        galleryView._currentPhotoUrl = photoUrl;
+        galleryView._currentPhotoId = photoId;
+
+       galleryView._currentPhoto = photoModel.findPhotoById(photoId);
 
         $('#photoViewImage').attr('src', photoUrl);
         $('#photoTagImage').attr('src', photoUrl);
-        $('#photoEditImage').attr('src', photoUrl);
+ //       $('#photoEditImage').attr('src', photoUrl);
 
-        if (photoModel.chatPhoto) {
+        if (galleryView._pickerMode) {
             channelView.showChatImagePreview(photoUrl);
             APP.kendo.navigate('#:back');
 
         } else {
-            APP.kendo.navigate('#photoView');
+            var photoParam = LZString.compressToEncodedURIComponent(photoId);
+            APP.kendo.navigate('#photoView?photo='+photoParam);
         }
+    },
+
+    deletePhoto: function (e) {
+        _preventDefault(e);
+
+        photoModel.deletePhoto(galleryView._currentPhotoId);
+
+        mobileNotify("Deleted current photo");
+
+        // Navigate to previous page as the photo is gone...
+        APP.kendo.navigate('#:back');
+    },
+
+    sharePhoto: function (e)  {
+        _preventDefault(e);
+
+    },
+
+    editPhoto: function (e) {
+        _preventDefault(e);
     },
 
     selectSearchTool : function (e) {
@@ -232,4 +271,164 @@ var galleryView = {
         }
 
     }
+};
+
+
+var photoView = {
+    _activePhoto: {},
+    _activePhotoId: null,
+    _activePhotoUrl: null,
+
+    onInit: function (e) {
+        _preventDefault(e);
+
+    },
+
+    onShow : function (e) {
+        _preventDefault(e);
+
+        if (e.view.params.photo !== undefined) {
+            photoView._activePhotoId = LZString.decompressFromEncodedURIComponent(e.view.params.photo);
+        } else {
+            // If there's no parameter in call just default to the current selected gallery photo
+            photoView._activePhotoId = galleryView._currentPhotoId;
+        }
+
+        if (photoView._activePhotoId !== null) {
+            photoView._activePhoto = photoModel.findPhotoById(photoView._activePhotoId);
+            photoView._activePhotoUrl = photoView._activePhoto.imageUrl;
+        }
+
+
+    },
+
+    onHide: function (e) {
+
+    },
+
+    setImageUrl : function (url) {
+        $('#photoViewImage').attr('src', url);
+    },
+
+    deletePhoto: function (e) {
+        _preventDefault(e);
+
+        modalView.open("Delete this photo", "Click Delete to remove this photo or Keep to cancel delete ",
+        "Delete", function() {
+                photoModel.deletePhoto(photoView._activePhotoId);
+                mobileNotify("Deleted the current photo");
+                // Navigate to previous page as the photo is gone...
+                APP.kendo.navigate('#:back');
+            },
+        "Keep", function() {
+                mobileNotify("Delete cancelled.");
+            }
+        );
+
+
+    },
+
+    sharePhoto: function (e)  {
+        _preventDefault(e);
+
+        if (window.navigator.simulator === true) {
+            mobileNotify("Export and Sharing only on device...");
+
+        } else {
+            _socialShare(null, null, photoView._activePhotoUrl, null);
+        }
+    },
+
+    editPhoto: function (e) {
+        _preventDefault(e);
+
+        var urlParam =  LZString.compressToEncodedURIComponent(photoView._activePhotoId);
+
+        APP.kendo.navigate("#photoEditor?source=gallery&photo="+urlParam);
+    }
+
+
+};
+
+
+var photoEditor = {
+    _activePhoto: {},
+    _activePhotoId: null,
+    _activePhotoUrl: null,
+    _rotationAngle : 0,
+    _source: null,
+
+    onInit: function (e) {
+        _preventDefault(e);
+
+    },
+
+    onShow : function (e) {
+        _preventDefault(e);
+
+        photoEditor._source = e.view.params.source;
+        if (photoEditor._source === 'profile') {
+            // Photo isn't created yet -- just have the url
+            photoEditor._activePhotoUrl = LZString.decompressFromEncodedURIComponent(e.view.params.url);
+        } else {
+            photoEditor._activePhotoId = LZString.decompressFromEncodedURIComponent(e.view.params.photo);
+            photoEditor._activePhoto = photoModel.findPhotoById(photoEditor._activePhotoId);
+            photoEditor._activePhotoUrl =  photoEditor._activePhoto.imageUrl;
+        }
+
+       photoEditor.setImageUrl(photoEditor._activePhoto.imageUrl);
+
+        // Reset rotation angle on each show...
+        photoEditor._rotationAngle = 0;
+    },
+
+    setImageUrl : function (url) {
+        $('#photoEditImage').attr('src', url);
+    },
+
+    onHide: function (e) {
+        $('#photoEditImage').cropper('destroy');
+    },
+
+    crop: function (e) {
+        _preventDefault(e);
+
+        var $image = $('#photoEditImage');
+        var cropCanvas = $image.cropper('getCroppedCanvas');
+        var cropUrl = cropCanvas.toDataURL("image/jpeg");
+
+        $image.cropper('replace', cropUrl);
+        $('#photoEditImage').attr('src', cropUrl);
+        $('#photoEditSaveDiv').removeClass('hidden');
+    },
+
+    rotateLeft : function (e) {
+        _preventDefault(e);
+        photoEditor._rotationAngle -= 90;
+        $('#photoEditImage').cropper('rotate', photoEditor._rotationAngle);
+
+    },
+
+    rotateRight: function (e) {
+        _preventDefault(e);
+        photoEditor._rotationAngle += 90;
+        $('#photoEditImage').cropper('rotate', photoEditor._rotationAngle);
+    },
+
+    savePhoto : function (e) {
+        _preventDefault(e);
+        var urlToSave = $('#photoEditImage').attr('src');
+
+        if ( photoEditor._source === 'chat') {
+            channelView.showChatImagePreview(urlToSave);
+            // Save image to chat image preview
+        } else if ( photoEditor._source === 'gallery') {
+            // Save image to gallery
+        } else if  (photoEditor._source === 'profile') {
+            // Save image to user profile
+            saveUserProfilePhoto(urlToSave);
+        }
+    }
+
+
 };

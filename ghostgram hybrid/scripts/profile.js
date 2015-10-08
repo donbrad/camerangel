@@ -171,7 +171,10 @@ function updateProfilePhoto (e) {
             }
             //var scaledImageUrl = "data:image/jpg;base64," + imageData;
             $('#photoEditImage').attr('src', displayUrl);
-            APP.kendo.navigate('#photoEditor?source=profile')
+            var urlParam = LZString.compressToEncodedURIComponent(displayUrl);
+
+            // Don't have photo object so just pass the url.
+            APP.kendo.navigate('#photoEditor?source=profile&url='+urlParam);
         },
         function (error) {
             mobileNotify("Camera error " + error);

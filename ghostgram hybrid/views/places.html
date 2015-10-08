@@ -65,18 +65,22 @@
 
 
 
- <div data-role="modalview" id="modalview-checkIn" style="width: 90%; display: none;" class="appearance" data-before-open="onShowCheckIn">
+ <div data-role="modalview" id="modalview-checkIn" style="width: 90%; display: none;" class="appearance" data-init="checkInView.onInit">
+
      <div data-role="header">
          <div data-role="navbar">
              <span>Check In</span>
          </div>
      </div>
 
+     <div>
+         <ul id="checkin-listview"></ul>
+     </div>
 
      <div data-role="footer">
          <div data-role="navbar">
-             <a data-click="closeModalViewCheckIn" data-role="button" type="button" data-align="left">Cancel</a>
-             <a data-click="doCheckIn" type="button" data-role="button" data-align="right">Check In</a>
+             <a data-click="checkInView.closeModal" data-role="button" type="button" data-align="left">Cancel</a>
+             <a data-click="checkInView.checkIn" type="button" data-role="button" data-align="right">Check In</a>
          </div>
      </div>
 

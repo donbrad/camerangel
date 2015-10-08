@@ -17,6 +17,11 @@ function deviceCamera(resolution, quality, isChat, displayCallback) {
     }
     var pictureSource = navigator.camera.PictureSourceType;   // picture source
     var destinationType = navigator.camera.DestinationType; // sets the format of returned value
+    var saveToAlbum = userModel.currentUser.get('saveToPhotoAlbum');
+
+    if (saveToAlbum === undefined) {
+        saveToAlbum = false;
+    }
 
     navigator.camera.getPicture(
         function (imageData) {
@@ -51,6 +56,8 @@ function deviceCamera(resolution, quality, isChat, displayCallback) {
             mobileNotify("Device Camera error " + error);
         }, {
             correctOrientation: true,
+            allEdit: true,
+            saveToPhotoAlbum: saveToAlbum,
             targetWidth: resolution,
             destinationType: destinationType.FILE_URL
         }
@@ -208,10 +215,24 @@ function resizeSuccessThumb (data) {
 
     photo.setACL(userModel.parseACL);
     photo.set('photoId', photoModel.currentPhoto.photoId);
-    photo.set('channelId', channelModel.currentChannel.channelId);
+    photo.set('channelId', currentChannelModel.currentChannel.get('channelId'));
+    photo.set('channelName', currentChannelModel.currentChannel.get('name'));
+
     var timeStamp = new Date().getTime();
     photo.set("timestamp", timeStamp);
-    photo.set('geoPoint', new Parse.GeoPoint(APP.location.position.lat, APP.location.position.lng));
+    var timeStr = moment().format('MMMM Do YYYY, h:mm'); // October 7th 2015, 10:26 am
+    photo.set("dateString", timeStr);
+
+    photo.set('lat', mapModel.lat);
+    photo.set('lng', mapModel.lng);
+    photo.set('geoPoint', new Parse.GeoPoint(mapModel.lat, mapModel.lng));
+
+    if (mapModel.currentAddress.city !== undefined) {
+        var addressStr = mapModel.currentAddress.city + ', ' + mapModel.currentAddress.state + '  ' + mapModel.currentAddress.zipcode;
+        photo.set('addressString', addressStr);
+    }
+
+    // Todo: don -- need to add current place save
 
 
     var parseFile = new Parse.File("thumbnail_"+photoModel.currentPhoto.filename + ".jpeg",{'base64': data.imageData}, "image/jpg");

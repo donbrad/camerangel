@@ -457,35 +457,35 @@
     </div>
 </div>	
 
-<div data-role="view" id="photoView" class="fullPhotoModal" data-zoom="true" data-style="width: 100%; height: 100%; display: none;" >
+<div data-role="view" id="photoView" class="fullPhotoModal" data-zoom="true" data-style="width: 100%; height: 100%; display: none;" data-model="photoView._activePhoto" data-init="photoView.onInit" data-show="photoView.onShow">
 	<div class="photoViewNavTop" data-role="header">
 			<a data-role="button" class="left" href="#:back">
            		<img src="images/nav-back-light.svg" />
         	</a>
         	<span id="photoViewText">Photo title</span>
-            <a class="right" data-role="button" href="#photoEditor?source=gallery">Edit</a>
+            <a class="right" data-role="button" data-click="photoView.editPhoto">Edit</a>
             <div class="clearfix"></div>
         </div>
 	<div class="photoViewBox">
 		<img id="photoViewImage" src="" />
 	</div>
 	<div class="photoViewNavBtm" data-role="footer">
-		<a class="btnClear left" data-role="button" data-click="photoExport">
+		<a class="btnClear left" data-role="button" data-click="photoView.sharePhoto">
 			<img class="icon" src="images/icon-share-light.svg" /> 
 		</a>
-		<a class="btnClear-red right" data-role="button" data-click="photoDelete"> 
+		<a class="btnClear-red right" data-role="button" data-click="photoView.deletePhoto">
 			<img class="icon" src="images/trash.svg" />
 		</a>
 	</div>
 </div>
 
 
-<div data-role="view" id="photoEditor" style="width: 100%; height:100%; display: none;"  data-show="onShowPhotoEditor"  data-hide="onHidePhotoEditor">	
+<div data-role="view" id="photoEditor" style="width: 100%; height:100%; display: none;"  data-show="photoEditor.onShow"  data-hide="photoEditor.onHide" data-init="photoEditor.onInit">
 		<a data-role="button"  data-align="left" href="#:back" ><img src="images/close.svg" /></a>
     	<div style="text-align: center; padding-top: 1rem; background: #a4a4a4a; ">
-        <a  data-role="button"  data-click="photoEditRotateLeft"><img src="images/photo-left.svg" /> </a>
-        <a  data-role="button"  data-click="photoEditRotateRight"> <img src="images/photo-right.svg" /></a>
-        <a  data-role="button" data-click="photoEditCrop"> <img class="photo-options" src="images/photo-crop.svg" /> </a>
+        <a  data-role="button"  data-click="photoEditor.rotateLeft"><img src="images/photo-left.svg" /> </a>
+        <a  data-role="button"  data-click="photoEditor.rotateRight"> <img src="images/photo-right.svg" /></a>
+        <a  data-role="button" data-click="photoEditor.crop"> <img class="photo-options" src="images/photo-crop.svg" /> </a>
     </div>
 	
     <div style="margin: 4px; height:60%;">
@@ -493,7 +493,7 @@
     </div>
     <span class="left"><a data-role="button" data-rel="modalview"  href="#modalview-photoTag"><img src="images/photo-tag.svg" /></a></span>
     <div data-role="footer">
-		<a class="btnSpan-btm btnPrimary" id="photoEditSaveDiv" data-role="button" data-click="photoEditSave"> Save Photo </a>
+		<a class="btnSpan-btm btnPrimary" id="photoEditSaveDiv" data-role="button" data-click="photoEditor.savePhoto"> Save Photo </a>
     </div>
 
 </div>
@@ -731,14 +731,14 @@
 </div>
 
 <!-- option dialog modal -->
-<div data-role="modalview" id="modal-OptionDialog" style="width: 80%; display:none;" class="appearance">
+<div data-role="modalview" id="modal-dialog" style="width: 80%; display:none;" class="appearance">
 	<div class="modal-dialog">
-	    <h3>Are you sure?</h3>
-	    <p>This item will be deleted.</p>
+	    <h3 id="modalTitle">Are you sure?</h3>
+	    <p id="modalDescription">This item will be deleted.</p>
 	</div>
 	<div class="footer-twoBtn footer" data-role="footer">
-		<a class="twoBtn btnClear" data-role="button" data-click="dialogClose" id="option1Btn">Yes</a>
-		<a class="twoBtn btnClear" data-role="button" data-click="dialogClose" id="option2Btn">No</a>
+		<a class="twoBtn btnClear" data-role="button" data-click="modalView.okClick" id="modalOk">Yes</a>
+		<a class="twoBtn btnClear" data-role="button" data-click="modalView.cancelClick" id="modalCancel">No</a>
 	</div>
 </div>
 
