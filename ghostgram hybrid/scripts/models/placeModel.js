@@ -9,7 +9,7 @@
 var placesModel = {
 
     locatorActive : false,
-    _radius : 30,
+    _radius : 150,
 
     placesArray : [],
     placeModel : kendo.data.Model.define({

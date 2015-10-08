@@ -574,9 +574,60 @@ var placeView = {
         APP.kendo.navigate(returnUrl);
 
     },
+
     setActivePlace : function (placeId) {
         placeView._activePlaceId = placeId;
 
         placeView._activePlace = placesModel.getPlaceModel(placeId);
     }
+};
+
+/*
+ * checkInView
+ */
+var checkInView = {
+    _returnView : 'places',
+    _returnModal : null,
+    placesDS :  new kendo.data.DataSource({
+        sort: {
+            field: "name",
+            dir: "asc"
+        },
+        group: 'category'
+    }),
+
+    onInit : function (e) {
+        _preventDefault(e);
+        $("#checkin-listview").kendoMobileListView({
+            dataSource: placesView.placeListDS,
+            template: $("#placesTemplate").html(),
+            click: function (e) {
+                var place = e.dataItem;
+
+
+            }
+        });
+
+    },
+
+    openModal : function (placeArray, callBack) {
+        if (placeArray.length > 0) {
+            checkInView.placesDS.data(placeArray);
+        }
+        $("#modalview-checkin").data("kendoMobileModalView").open();
+    },
+
+    closeModal : function () {
+        $("#modalview-checkin").data("kendoMobileModalView").close();
+    },
+
+    onDone: function (e) {
+        _preventDefault(e);
+
+        var returnUrl = '#'+ checkInView._returnView;
+
+        APP.kendo.navigate(returnUrl);
+
+    }
+
 };

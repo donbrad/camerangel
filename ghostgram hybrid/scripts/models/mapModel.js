@@ -15,6 +15,7 @@ var mapModel = {
     currentPlaceId: null,     // currentplace UUID - null if none
 
     isCheckedIn: false,         // true if user is checked in at current place
+    wasPrompted: false,         // has the user been prompted to check in here
 
     gpsOptions : {enableHighAccuracy : true, timeout: 5000, maximumAge: 10000},
     lastPosition: {},
@@ -90,16 +91,34 @@ var mapModel = {
         mapModel.latlng = new google.maps.LatLng(lat, lng);
     },
 
+    isNewLocation : function (lat, lng) {
+
+       return(placesModel.inRadius(lat, lng, mapModel.lat, mapModel.lng, 150));
+
+    },
+
     getCurrentAddress : function (callback) {
 
         mapModel.getCurrentPosition (function(lat, lng) {
-            mapModel.reverseGeoCode(lat, lng, function (results, error) {
-                if (results !== null) {
-                    var address = mapModel._updateAddress(results[0].address_components);
-                    if (callback !== undefined)
-                            callback(address);
+            if (mapModel.isNewLocation(lat,lng)) {
+                // User is at a new location
+
+                var placeArray = placesModel.matchLocation(lat,lng);
+
+                if (placeArray.length === 0) {
+                    // No existing places
+                } else {
+                    checkInView.openModal(placeArray);
                 }
-            });
+
+                mapModel.reverseGeoCode(lat, lng, function (results, error) {
+                    if (results !== null) {
+                        var address = mapModel._updateAddress(results[0].address_components);
+                        if (callback !== undefined)
+                            callback(address);
+                    }
+                });
+            }
         });
 
 
