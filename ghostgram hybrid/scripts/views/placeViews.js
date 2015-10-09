@@ -601,10 +601,12 @@ var checkInView = {
     onInit : function (e) {
         _preventDefault(e);
         $("#checkin-listview").kendoMobileListView({
-            dataSource: placesView.placeListDS,
+            dataSource: checkInView.placesDS,
             template: $("#placesTemplate").html(),
             click: function (e) {
-                var place = e.dataItem;
+                var place = e.dataItem, placeId = place.uuid;
+                mapModel.checkIn(placeId);
+                userModel.checkIn(placeId);
 
 
             }
