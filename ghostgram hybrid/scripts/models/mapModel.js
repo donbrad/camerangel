@@ -14,6 +14,8 @@ var mapModel = {
     currentPlace: null,       // currentPlace Object - null if none
     currentPlaceId: null,     // currentplace UUID - null if none
 
+    matchedPlaces: null,   // places that match the current lat/lng
+
     isCheckedIn: false,         // true if user is checked in at current place
     newLocationDetected: false,         // has the user been prompted to check in here
     wasPrompted: false,         // has the user been prompted to check in here
@@ -99,6 +101,19 @@ var mapModel = {
 
             return(false);
 
+        }
+    },
+
+    matchPlaces : function (callback) {
+        var placeArray = placesModel.matchLocation(mapModel.lat, mapModel.lng);
+        if (placeArray.length === 0) {
+            mapModel.matchedPlaces = null;
+        } else {
+            mapModel.matchedPlaces = placeArray;
+        }
+
+        if (callback !== undefined) {
+            callback(placeArray);
         }
     },
 
