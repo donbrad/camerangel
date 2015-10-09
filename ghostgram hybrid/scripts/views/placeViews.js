@@ -617,7 +617,7 @@ var checkInView = {
 
         checkInView._returnView = APP.kendo.view().id;
 
-        mapModel.mapOptions(function (placeArray) {
+        mapModel.matchPlaces(function (placeArray) {
             checkInView.openModal(placeArray, checkInView.onDone);
         });
 
