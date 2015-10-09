@@ -10,11 +10,12 @@ var mapModel = {
     lng: null,
     latlng : null,
 
-    currentAddress : {},   // Current physical address - location
+    currentAddress : null,   // Current physical address - location
     currentPlace: null,       // currentPlace Object - null if none
     currentPlaceId: null,     // currentplace UUID - null if none
 
     isCheckedIn: false,         // true if user is checked in at current place
+    newLocationDetected: false,         // has the user been prompted to check in here
     wasPrompted: false,         // has the user been prompted to check in here
 
     gpsOptions : {enableHighAccuracy : true, timeout: 5000, maximumAge: 10000},
@@ -50,36 +51,15 @@ var mapModel = {
             };
         }
 
-        mapModel.getCurrentAddress(function (address){
-           var places = placesModel.matchLocation(mapModel.lat, mapModel.lng);
-            if (places.length === 0) {
-                //No matching places so just return
-                return;
-            }
+        mapModel.getCurrentAddress(function (isNew, address){
 
-            if (places.length === 1) {
-                // Just one matching place
-                userModel.currentUser.currentPlaceUUID = places[0].uuid;
-                userModel.currentUser.currentPlace = places[0].name;
-                mobileNotify("Located you at " +  userModel.currentUser.currentPlace);
+            if (isNew) {
+                mapModel.wasPrompted = false;
+                mapModel.newLocationDetected = true;
+           }
 
-            } else {
-                // Todo: don - Need to display multiple matching places for user to choose
-            }
         });
 
-        /*mapModel.getCurrentPosition(function(lat,lng) {
-
-            if (lat !== 0 && lng !== 0) {
-
-                mapModel.reverseGeoCode(lat, lng, function (results,error) {
-                    if (results !== null) {
-
-                    }
-                });
-
-            }
-        })*/
 
     },
 
@@ -97,30 +77,45 @@ var mapModel = {
 
     },
 
+    checkOut : function () {
+        mapModel.wasPrompted = false;
+        mapModel.isCheckedIn = false;
+    },
+
+    checkIn : function (placeId) {
+
+        mapModel.setCurrentPlace(placeId, true);
+        mapModel.wasPrompted = true;
+        mapModel.isCheckedIn = true;
+    },
+
+    isCurrentPlace: function () {
+        if (mapModel.currentPlace !== null) {
+            var deltaLat = Math.abs(mapModel.currentPlace.lat - mapModel.lat), deltaLng = Math.abs(mapModel.currentPlace.lng - mapModel.lng);
+
+            if (deltaLat > placesModel._radius || deltaLng > placesModel._radius) {
+                return(true);
+            }
+
+            return(false);
+
+        }
+    },
+
     getCurrentAddress : function (callback) {
 
         mapModel.getCurrentPosition (function(lat, lng) {
             if (mapModel.isNewLocation(lat,lng)) {
                 // User is at a new location
-
-                if (placesModel.placesFetched) {
-                    // Don't try to determine current location if places aren't loaded yet
-                    var placeArray = placesModel.matchLocation(lat,lng);
-
-                    if (placeArray.length === 0) {
-                        // No existing places
-                    } else {
-                        checkInView.openModal(placeArray);
-                    }
-                }
-
                 mapModel.reverseGeoCode(lat, lng, function (results, error) {
                     if (results !== null) {
                         var address = mapModel._updateAddress(results[0].address_components);
                         if (callback !== undefined)
-                            callback(address);
+                            callback(true, address);
                     }
                 });
+            } else {
+                callback(false, null);
             }
         });
 
@@ -129,7 +124,7 @@ var mapModel = {
 
     setCurrentPlace : function (placeId, isCheckedIn) {
         mapModel.currentPlaceId = placeId;
-        mapModel.currentPlace = placeModel.getPlaceModel(placeId);
+        mapModel.currentPlace = placesModel.getPlaceModel(placeId);
 
         if (isCheckedIn !== undefined) {
             mapModel.isCheckedIn = isCheckedIn;
