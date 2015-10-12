@@ -305,7 +305,7 @@ var findPlacesView = {
         }, function (placesResults, placesStatus) {
 
             if (placesStatus !== google.maps.places.PlacesServiceStatus.OK) {
-                mobileNotify('Google Places error: '+ placesStatus);
+                //mobileNotify('Google Places error: '+ placesStatus);
                 return;
             }
 
