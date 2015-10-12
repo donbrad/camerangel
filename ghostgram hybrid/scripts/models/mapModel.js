@@ -119,7 +119,7 @@ var mapModel = {
 
 
     computePlaceDistance : function() {
-        var placeArray = placesModel.data();
+        var placeArray = placesModel.placesDS.data();
 
         for (var i=0; i<placeArray.length; i++) {
             var distance = getDistanceInMeters(mapModel.lat, mapModel.lng, placeArray[i].lat, placeArray[i].lng);
