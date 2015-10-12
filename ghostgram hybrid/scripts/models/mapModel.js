@@ -23,7 +23,7 @@ var mapModel = {
     gpsOptions : {enableHighAccuracy : true, timeout: 5000, maximumAge: 10000},
     lastPosition: {},
     lastPingSeconds : null,
-    _pingInterval: 30, //Ping debounce interval in seconds.  app will only get position after _pingInterval seconds
+    _pingInterval: 5, //Ping debounce interval in seconds.  app will only get position after _pingInterval seconds
 
     geocoder : null,
     mapOptions : {zoom: 14,  mapTypeId : google.maps.MapTypeId.ROADMAP},
@@ -114,6 +114,25 @@ var mapModel = {
 
         if (callback !== undefined) {
             callback(placeArray);
+        }
+    },
+
+
+    computePlaceDistance : function() {
+        var placeArray = placesModel.placesDS.data();
+
+        for (var i=0; i<placeArray.length; i++) {
+            var distance = getDistanceInMeters(mapModel.lat, mapModel.lng, placeArray[i].lat, placeArray[i].lng);
+            var placeModel = placesModel.getPlaceModel(placeArray[i].uuid);
+            placeModel.set('distance', distance);
+        }
+
+    },
+
+    computePlaceArrayDistance : function (placeArray) {
+        for (var i=0; i<placeArray.length; i++) {
+            var distance = getDistanceInMeters(mapModel.lat, mapModel.lng, placeArray[i].lat, placeArray[i].lng);
+            placeArray[i].distance = distance;
         }
     },
 

@@ -12,7 +12,7 @@ var placesView = {
 
     placeListDS: new kendo.data.DataSource({
         sort: {
-            field: "name",
+            field: "distance",
             dir: "asc"
         }
     }),
@@ -111,12 +111,14 @@ var placesView = {
         ux.changeActionBtnImg("#places", "icon-gps-light");
         ux.showActionBtn(false, "#places");
 
-        placesView.placeListDS.data(placesModel.placesDS.data());
+
 
         ux.scrollUpSearch(e);
 
+
         // get current position
        	mapModel.getCurrentPosition( function (lat,lng) {
+
 
             var places = placesModel.matchLocation(lat, lng);
             
@@ -130,8 +132,21 @@ var placesView = {
             } else {
        			var currentPlace = places[0];
 
-            	$("#current-place-name").text(currentPlace.name);
-            	$("#current-place").removeClass("hidden").velocity("slideDown");
+
+            	//$("#current-place-name").text(currentPlace.name);
+            	//$("#current-place").removeClass("hidden").velocity("slideDown");
+
+                for (var i=0; i<places.length; i++) {
+                    var found = false;
+                    if (mapModel.currentPlaceId === places[i].uuid) {
+                        found = true;
+                    }
+                }
+
+                if (!found) {
+                    mobileNotify("Are you at a new Place?");
+                }
+
                 // set placesView.placeListDS to results
                 
             }
@@ -538,6 +553,7 @@ var addPlaceView = {
 var editPlaceView = {
 
     _activePlaceId : null,
+    _activePlaceModel : null,
     _activePlace : new kendo.data.ObservableObject(),
     _returnView : 'places',
     _returnModal : undefined,
@@ -601,6 +617,15 @@ var editPlaceView = {
     onDone: function (e) {
         _preventDefault(e);
 
+        var model = editPlaceView._activePlaceModel, newModel = editPlaceView._activePlace;
+
+        model.set('name', newModel.name);
+        model.set('alias', newModel.alias);
+        model.set('address', newModel.address);
+        model.set('isPrivate', newModel.isPrivate);
+        model.set('isAvailable', newModel.isAvailable);
+
+        mobileNotify("Updated " + newModel.name);
         var returnUrl = '#'+ editPlaceView._returnView;
 
         APP.kendo.navigate(returnUrl);
@@ -612,6 +637,7 @@ var editPlaceView = {
 
         var placeObj = placesModel.getPlaceModel(placeId);
 
+        editPlaceView._activePlaceModel = placeObj;
 
         editPlaceView._activePlace.set('name', placeObj.name);
         editPlaceView._activePlace.set('alias', placeObj.alias);
@@ -695,7 +721,7 @@ var checkInView = {
 
     placesDS :  new kendo.data.DataSource({
         sort: {
-            field: "name",
+            field: "distance",
             dir: "asc"
         },
         group: 'category'
@@ -705,7 +731,7 @@ var checkInView = {
         _preventDefault(e);
         $("#checkin-listview").kendoMobileListView({
             dataSource: checkInView.placesDS,
-            template: $("#placesTemplate").html(),
+            template: $("#checkinPlacesTemplate").html(),
             click: function (e) {
                 var place = e.dataItem, placeId = place.uuid;
                 mapModel.checkIn(placeId);
@@ -723,6 +749,8 @@ var checkInView = {
         checkInView._returnView = APP.kendo.view().id;
 
         mapModel.matchPlaces(function (placeArray) {
+            // Just compute the distance of matches
+            mapModel.computePlaceArrayDistance(placeArray);
             checkInView.openModal(placeArray, checkInView.onDone);
         });
 

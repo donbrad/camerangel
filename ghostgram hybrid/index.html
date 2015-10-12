@@ -781,3 +781,22 @@
 
 	</body>
 </html>
+
+<script type="text/x-kendo-template" id="checkinPlacesTemplate">
+	<div style="min-height: 38px; border-radius: 9px; background-color: \\#fff; padding: 4px;">
+
+		<h4>#: data.name # (#:data.alias#)</h4>
+		<p>#:data.address#, #:data.city#, #:data.state#    #:data.zipcode#</p>
+		<p class="helper">
+           <span class="left">
+         # if (data.isPrivate=== true) { #
+            <img src="images/place-private.svg" /> Private
+         # } else { #
+            <img src="images/place-public.svg" /> Public
+         # }#
+           </span>
+		</p>
+		<div class="clearfix"> </div>
+
+	</div>
+</script>
