@@ -126,10 +126,12 @@ var placesView = {
             	$("#current-place").addClass("hidden").velocity("slideUp");
             	ux.showActionBtnText("#places", "3.5rem", "Check in");
             } else {
+            	/*
             	var currentPlace = userModel.currentUser.currentPlace
             	$("#current-place-name").text(currentPlace);
             	$("#current-place").removeClass("hidden").velocity("slideDown");
                 // set placesView.placeListDS to results
+                */
             }
 
         });
@@ -660,6 +662,8 @@ var placeView = {
 var checkInView = {
     _returnView : 'places',
     _returnModal : null,
+    _callback: null,
+
     placesDS :  new kendo.data.DataSource({
         sort: {
             field: "name",
@@ -671,10 +675,12 @@ var checkInView = {
     onInit : function (e) {
         _preventDefault(e);
         $("#checkin-listview").kendoMobileListView({
-            dataSource: placesView.placeListDS,
+            dataSource: checkInView.placesDS,
             template: $("#placesTemplate").html(),
             click: function (e) {
-                var place = e.dataItem;
+                var place = e.dataItem, placeId = place.uuid;
+                mapModel.checkIn(placeId);
+                userModel.checkIn(placeId);
 
 
             }
@@ -685,9 +691,21 @@ var checkInView = {
     locateAndOpenModal : function (e) {
         _preventDefault(e);
 
+        checkInView._returnView = APP.kendo.view().id;
+
+        mapModel.matchPlaces(function (placeArray) {
+            checkInView.openModal(placeArray, checkInView.onDone);
+        });
+
+
     },
 
-    openModal : function (placeArray, callBack) {
+    openModal : function (placeArray, callback) {
+
+        if (callback !== undefined && callback !== null) {
+            checkInView.callback = callback;
+        }
+
         if (placeArray.length > 0) {
             checkInView.placesDS.data(placeArray);
         }
@@ -698,6 +716,9 @@ var checkInView = {
 
     closeModal : function () {
         $("#modalview-checkin").data("kendoMobileModalView").close();
+        if (checkInView.callback !== null) {
+            checkInView.callback();
+        }
     },
 
     onDone: function (e) {
