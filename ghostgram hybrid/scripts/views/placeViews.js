@@ -476,6 +476,7 @@ var addPlaceView = {
 var editPlaceView = {
 
     _activePlaceId : null,
+    _activePlaceModel : null,
     _activePlace : new kendo.data.ObservableObject(),
     _returnView : 'places',
     _returnModal : undefined,
@@ -511,6 +512,15 @@ var editPlaceView = {
     onDone: function (e) {
         _preventDefault(e);
 
+        var model = editPlaceView._activePlaceModel, newModel = editPlaceView._activePlace;
+
+        model.set('name', newModel.name);
+        model.set('alias', newModel.alias);
+        model.set('address', newModel.address);
+        model.set('isPrivate', newModel.isPrivate);
+        model.set('isAvailable', newModel.isAvailable);
+
+        mobileNotify("Updated " + newModel.name);
         var returnUrl = '#'+ editPlaceView._returnView;
 
         APP.kendo.navigate(returnUrl);
@@ -522,6 +532,7 @@ var editPlaceView = {
 
         var placeObj = placesModel.getPlaceModel(placeId);
 
+        editPlaceView._activePlaceModel = placeObj;
 
         editPlaceView._activePlace.set('name', placeObj.name);
         editPlaceView._activePlace.set('alias', placeObj.alias);
