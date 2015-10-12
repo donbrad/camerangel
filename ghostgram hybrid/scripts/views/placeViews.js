@@ -602,7 +602,7 @@ var checkInView = {
         _preventDefault(e);
         $("#checkin-listview").kendoMobileListView({
             dataSource: checkInView.placesDS,
-            template: $("#placesTemplate").html(),
+            template: $("#checkinPlacesTemplate").html(),
             click: function (e) {
                 var place = e.dataItem, placeId = place.uuid;
                 mapModel.checkIn(placeId);
