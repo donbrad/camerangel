@@ -865,8 +865,8 @@ div.km-content.km-widget.km-scroll-wrapper {
   font-size: 1rem;
 }
 .input-text-lg {
-  font-size: 20px;
-  font-size: 1.25rem;
+  font-size: 20px !important;
+  font-size: 1.25rem !important;
 }
 #nav-ghost {
   position: relative;
@@ -2176,12 +2176,21 @@ div.message-slideOptions > span.archive > a > span > img {
 a:hover {
   color: #3CAAEE;
 }
+#findplace-listview > li > ul > li > a:hover,
+#contacts-listview > li > ul > li > div > a:hover,
+#places-listview > li > div > a:hover,
 #channels-listview > li > div > a:hover > div {
   color: #4a4a4a;
 }
+#findplace-listview > li > ul > li > div > a:active,
+#contacts-listview > li > ul > li > div > a:active,
+#places-listview > li > div > a:active,
 #channels-listview > li > div > a:active > div {
   background-color: #f5f5f5;
   color: #4a4a4a;
+}
+.findPlaceListItem {
+  display: block;
 }
 .menuBox a:visited {
   color: #fff;
@@ -3320,6 +3329,9 @@ div.loginBox > form > div > ul > li {
 #contacts-listview > li > div > div:nth-child(1) > div:nth-child(3) > h4 {
   margin-left: 0px;
   margin-right: 0px;
+}
+.contactListItem {
+  display: block;
 }
 #contactActionBtns {
   width: 100%;
@@ -4694,28 +4706,39 @@ html .km-pane-wrapper .k-header {
 #findplace-listview {
   width: 100%;
 }
+#places-listview li:not(.km-group-container),
+#findplace-listview li:not(.km-group-container) {
+  border-top: 1px solid #e0e0e0 !important;
+}
 #places-listview li,
 #findplace-listview li {
-  border-bottom: 1px solid #e0e0e0;
   background: #fff;
 }
-#placeTypeBtns {
+#placeTypeBtns,
+#addplace-typeBtns {
   text-align: left;
 }
-#placeTypeBtns li {
+#placeTypeBtns li,
+#addplace-typeBtns li {
   background: #fff;
   border-radius: 3px;
   padding: 0.5rem 1rem;
   border: 1px solid #f5f5f5;
 }
-#placeTypeBtns li.km-state-active {
+#placeTypeBtns li.km-state-active,
+#addplace-typeBtns li.km-state-active {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
-#placeTypeBtns li:nth-child(1) {
+#placeTypeBtns li:nth-child(1),
+#addplace-typeBtns li:nth-child(1) {
   margin-right: 0.5rem;
 }
-#placeTypeBtns li:nth-child(2) {
+#placeTypeBtns li:nth-child(2),
+#addplace-typeBtns li:nth-child(2) {
   margin-left: 0.5rem;
+}
+.placeTypeHelpers {
+  margin-top: 0.5rem;
 }
 .placeTypeInfo {
   padding: 0.5rem 0;

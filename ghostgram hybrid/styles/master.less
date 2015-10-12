@@ -797,7 +797,7 @@ div.km-content.km-widget.km-scroll-wrapper {
 	.font-size(16);
 }
 .input-text-lg {
-	.font-size(20);
+	.font-size(20) !important;
 }
 
 #nav-ghost {
@@ -2161,13 +2161,23 @@ a:hover {
     color: #3CAAEE;
 }
 
+#findplace-listview > li > ul > li > a:hover,
+#contacts-listview > li > ul > li > div > a:hover,
+#places-listview > li > div > a:hover,
 #channels-listview > li > div > a:hover > div {
 	color: @black;
 }
 
+#findplace-listview > li > ul > li > div > a:active,
+#contacts-listview > li > ul > li > div > a:active,
+#places-listview > li > div > a:active,
 #channels-listview > li > div > a:active > div {
 	background-color: @shade-300;
 	color: @black;
+}
+
+.findPlaceListItem {
+	display: block;
 }
 
 .menuBox a:visited {
@@ -3429,7 +3439,7 @@ div.loginBox > form > div > ul > li {
 }
 
 .contactListItem {
-	//display: block;
+	display: block;
 }
 
 #contactActionBtns {
@@ -4971,13 +4981,20 @@ div.contactListBox.activeContact > div > div > ul {
 #places-listview,
 #findplace-listview {
 	width: 100%;
+	li:not(.km-group-container) {
+		border-top: 1px solid @shade-200 !important;
+	}
 	li {
-		border-bottom: 1px solid @shade-200;
 		background: #fff;
 	}
 }
 
-#placeTypeBtns {
+.km-material .km-group-container {
+	//border: transparent;
+}
+
+#placeTypeBtns,
+#addplace-typeBtns {
 	text-align: left;
 	li {
 		background: #fff;
@@ -4996,7 +5013,9 @@ div.contactListBox.activeContact > div > div > ul {
 	}
 }
 
-
+.placeTypeHelpers {
+	margin-top: 0.5rem;
+}
 
 .placeTypeInfo {
 	padding: 0.5rem 0;

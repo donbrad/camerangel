@@ -67,7 +67,9 @@ var placesView = {
         	filter: ".list-box",
         	enableSwipe: true,
         	tap: function(e){
-        		
+        		var selection = e.touch.target[0].dataset["id"];
+
+        		// Todo - wire to place view 
         	},
         	swipe: function(e) {
                 // 
@@ -117,7 +119,7 @@ var placesView = {
        	mapModel.getCurrentPosition( function (lat,lng) {
 
             var places = placesModel.matchLocation(lat, lng);
-
+            
             if (places.length === 0) {
                 mobileNotify("No places match your current location");
                 var findPlaceUrl = "#findPlace?lat="+ lat + "&lng=" +  lng +"&returnview=places";
@@ -126,12 +128,12 @@ var placesView = {
             	$("#current-place").addClass("hidden").velocity("slideUp");
             	ux.showActionBtnText("#places", "3.5rem", "Check in");
             } else {
-            	/*
-            	var currentPlace = userModel.currentUser.currentPlace
-            	$("#current-place-name").text(currentPlace);
+       			var currentPlace = places[0];
+
+            	$("#current-place-name").text(currentPlace.name);
             	$("#current-place").removeClass("hidden").velocity("slideDown");
                 // set placesView.placeListDS to results
-                */
+                
             }
 
         });
@@ -203,11 +205,13 @@ var findPlacesView = {
                 findPlacesView._lng = lng;
             }
 
-            if (e.view.params.returnview !== undefined)
+            if (e.view.params.returnview !== undefined){
                 findPlacesView._returnView = e.view.params.returnview;
+            }
 
-            if (e.view.params.returnmodal !== undefined)
+            if (e.view.params.returnmodal !== undefined){
                 findPlacesView._returnModal = e.view.params.returnmodal;
+            }
         }
 
         var latlng = new google.maps.LatLng(lat, lng);
@@ -380,6 +384,10 @@ var addPlaceView = {
 
     onInit : function (e) {
         _preventDefault(e);
+
+        $("#addplace-typeBtns").data("kendoMobileButtonGroup");
+
+
     },
 
     onShow : function (e) {
@@ -395,12 +403,13 @@ var addPlaceView = {
                 addPlaceView.setActivePlace(geoObj);
             }
 
-            if (e.view.params.returnview !== undefined)
+            if (e.view.params.returnview !== undefined){
                 addPlaceView._returnView = e.view.params.returnview;
+        	}
 
-            if (e.view.params.returnmodal !== undefined)
+            if (e.view.params.returnmodal !== undefined){
                 addPlaceView._returnModal = e.view.params.returnmodal;
-
+            }
         }
     },
 
@@ -415,6 +424,29 @@ var addPlaceView = {
 
         APP.kendo.navigate(returnUrl);
 
+    },
+
+    placeTypeSelect: function(e){
+    	var index = this.current().index();
+    	
+    	// if private
+    	if(index === 0){
+    		$("#addPlace-privateHelper").removeClass("hidden");
+    		$("#addPlace-publicHelper").addClass("hidden");
+    		
+    		$("#placeTypePrivateImg").attr("src", "images/place-private-active.svg");
+    		$("#placeTypePublicImg").attr("src", "images/place-public.svg");
+
+    		$("#placeAutoCheckin").velocity("fadeOut");
+    	} else {
+    		$("#addPlace-publicHelper").removeClass("hidden");
+    		$("#addPlace-privateHelper").addClass("hidden");
+    		
+    		$("#placeTypePrivateImg").attr("src", "images/place-private.svg");
+    		$("#placeTypePublicImg").attr("src", "images/place-public-active.svg");
+
+    		$("#placeAutoCheckin").velocity("fadeIn");
+    	}
     },
 
     setActivePlace : function (geoPlace) {
@@ -457,40 +489,46 @@ var addPlaceView = {
     addPlace : function (e) {
         _preventDefault(e);
 
-        var newPlace = placesModel.newPlace();
-        var place =  addPlaceView._activePlace;
-        var guid = uuid.v4();
+        var form = $("#addPlace-form").kendoValidator().data("kendoValidator");
+        // TODO Don - Check for place duplicates
 
-        var createChatFlag = $('#addPlaceCreateChat').is('checked');
+        // validate form
+	    if (form.validate()) {
 
-        newPlace.set('uuid', guid);
-        newPlace.set('category', place.category);
-        newPlace.set('name', place.name);
-        newPlace.set('venueName', place.venueName);
-        newPlace.set('alias', place.alias);
-        newPlace.set('googleId', place.googleId);
-        newPlace.set('address', place.address);
-        newPlace.set('lat', place.lat);
-        newPlace.set('lng', place.lng);
-        newPlace.set('type', place.type);
-        newPlace.set('city', place.city);
-        newPlace.set('state', place.state);
-        newPlace.set('country', place.country);
-        newPlace.set('zipcode', place.zipcode);
+	        var newPlace = placesModel.newPlace();
+	        var place =  addPlaceView._activePlace;
+	        var guid = uuid.v4();
 
-        newPlace.set('isAvailable', place.isAvailable === "true");
-        newPlace.set('isPrivate', place.isPrivate === "true");
-        newPlace.set('hasPlaceChat', place.hasPlaceChat === "true");
+	        var createChatFlag = $('#addPlaceCreateChat').is('checked');
 
-        placesModel.placesDS.add(newPlace);
+	        newPlace.set('uuid', guid);
+	        newPlace.set('category', place.category);
+	        newPlace.set('name', place.name);
+	        newPlace.set('venueName', place.venueName);
+	        newPlace.set('alias', place.alias);
+	        newPlace.set('googleId', place.googleId);
+	        newPlace.set('address', place.address);
+	        newPlace.set('lat', place.lat);
+	        newPlace.set('lng', place.lng);
+	        newPlace.set('type', place.type);
+	        newPlace.set('city', place.city);
+	        newPlace.set('state', place.state);
+	        newPlace.set('country', place.country);
+	        newPlace.set('zipcode', place.zipcode);
 
-        placesModel.placesDS.sync();
+	        newPlace.set('isAvailable', place.isAvailable === "true");
+	        newPlace.set('isPrivate', place.isPrivate === "true");
+	        newPlace.set('hasPlaceChat', place.hasPlaceChat === "true");
 
-        mobileNotify(place.name + " added to your Places...");
+	        placesModel.placesDS.add(newPlace);
 
-        addPlaceView.onDone();
+	        placesModel.placesDS.sync();
+
+	        mobileNotify(place.name + " added to your Places...");
+
+	        addPlaceView.onDone();
+    	}
     }
-
 
 };
 
@@ -508,7 +546,7 @@ var editPlaceView = {
     onInit : function (e) {
         _preventDefault(e);
 
-        $("#placeTypeBtns").data("kendoMobileButtonGroup");
+        
     },
 
     onShow : function (e) {
@@ -523,21 +561,37 @@ var editPlaceView = {
             if (e.view.params.returnview !== undefined)
                 editPlaceView._returnView = e.view.params.returnview;
 
-            if (e.view.params.returnmodal !== undefined)
+            if (e.view.params.returnmodal !== undefined){
                 editPlaceView._returnModal = e.view.params.returnmodal;
+        	}
 
+        }
 
+        // Show place type
+        var activePlace = editPlaceView._activePlace;
+        if(activePlace.isPrivate){
+        	$("#publicPlaceHelper").addClass("hidden");
+        	$("#privatePlaceHelper").removeClass("hidden");
+        } else {
+        
+        	$("#publicPlaceHelper").removeClass("hidden");
+        	$("#privatePlaceHelper").addClass("hidden");
         }
     },
 
     update: function(){
-    	var placeName = $("#placeNameEdit").val();
-    	var placeAlias = $("#placeAliasEdit").val();
-    	var placeAddressEdit = $("#placeAddressEdit").val();
+    	var placeName = $("#placeEdit-name").val();
+    	var placeAlias = $("#placeEdit-alias").val();
+    	var placeAddress = $("#placeEdit-address").val();
 
     	// todo - Update any data changes
+    	
+    	var form = $("#placeEdit-form").kendoValidator().data("kendoValidator");
 
-    	editPlaceView.onDone();
+	    if (form.validate()) {
+	        editPlaceView.onDone();
+	    }
+
     },
 
     onHide : function (e) {
@@ -551,29 +605,6 @@ var editPlaceView = {
 
         APP.kendo.navigate(returnUrl);
 
-    },
-
-    placeTypeSelect: function(e){
-    	var index = this.current().index();
-    	
-    	// if private
-    	if(index === 0){
-    		$("#privatePlaceHelper").removeClass("hidden");
-    		$("#publicPlaceHelper").addClass("hidden");
-    		
-    		$("#placeTypePrivateImg").attr("src", "images/place-private-active.svg");
-    		$("#placeTypePublicImg").attr("src", "images/place-public.svg");
-
-    		$("#placeAutoCheckin").velocity("fadeOut");
-    	} else {
-    		$("#publicPlaceHelper").removeClass("hidden");
-    		$("#privatePlaceHelper").addClass("hidden");
-    		
-    		$("#placeTypePrivateImg").attr("src", "images/place-private.svg");
-    		$("#placeTypePublicImg").attr("src", "images/place-public-active.svg");
-
-    		$("#placeAutoCheckin").velocity("fadeIn");
-    	}
     },
 
     setActivePlace : function (placeId) {
@@ -627,11 +658,9 @@ var placeView = {
                 placeView._lng = e.view.params.lng;
             }
 
-            if (e.view.params.returnview !== undefined)
+            if (e.view.params.returnview !== undefined){
                 editPlaceView._returnView = e.view.params.returnview;
-
-
-
+            }
 
         }
     },

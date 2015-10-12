@@ -328,14 +328,12 @@
 		    
     	</div><!-- contact-options -->
     	# if(data.category === 'member') {#
-    		<div class="contactListBox member">
+    		<a class="contactListBox member">
     	#}else {#
-    		<div class="contactListBox">
+    		<a class="contactListBox">
     	#}#
-		
-			 <a class="contactListItem">
-
-				 #if (data.category !== 'phone') {#
+	
+			#if (data.category !== 'phone') {#
 					<div class="left listPhoto">
 						<div class="statusContactList">
 
@@ -377,8 +375,7 @@
 						#: data.name #
 					</h4>
 				#}#
-			</a>
-		</div><!-- listBox -->
+		</a><!-- listBox -->
 	</div>
 
 </script>
