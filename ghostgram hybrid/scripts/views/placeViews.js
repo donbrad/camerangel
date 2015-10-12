@@ -521,6 +521,9 @@ var editPlaceView = {
         model.set('isAvailable', newModel.isAvailable);
 
         mobileNotify("Updated " + newModel.name);
+
+        placesModel.placesDS.sync();
+        
         var returnUrl = '#'+ editPlaceView._returnView;
 
         APP.kendo.navigate(returnUrl);
