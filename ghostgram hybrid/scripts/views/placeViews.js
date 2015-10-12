@@ -12,7 +12,7 @@ var placesView = {
 
     placeListDS: new kendo.data.DataSource({
         sort: {
-            field: "name",
+            field: "distance",
             dir: "asc"
         }
     }),
@@ -82,9 +82,14 @@ var placesView = {
         ux.showActionBtn(false, "#places");
         //$("#places > div.footerMenu.km-footer > a").removeAttr('href').css("display", "none");
 
-        placesView.placeListDS.data(placesModel.placesDS.data());
+
 
        mapModel.getCurrentPosition( function (lat,lng) {
+
+           //Compute distance for all places based on current locaiton
+           mapModel.computePlaceDistance();
+           placesView.placeListDS.data(placesModel.placesDS.data());
+
 
             var places = placesModel.matchLocation(lat, lng);
 
@@ -95,6 +100,16 @@ var placesView = {
             	ux.showActionBtn(true, "#places", findPlaceUrl);
             } else {
 
+                for (var i=0; i<places.length; i++) {
+                    var found = false;
+                    if (mapModel.currentPlaceId === places[i].uuid) {
+                        found = true;
+                    }
+                }
+
+                if (!found) {
+                    mobileNotify("Are you at a new Place?");
+                }
                 // set placesView.placeListDS to results
             }
 
@@ -592,7 +607,7 @@ var checkInView = {
 
     placesDS :  new kendo.data.DataSource({
         sort: {
-            field: "name",
+            field: "distance",
             dir: "asc"
         },
         group: 'category'
@@ -620,6 +635,8 @@ var checkInView = {
         checkInView._returnView = APP.kendo.view().id;
 
         mapModel.matchPlaces(function (placeArray) {
+            // Just compute the distance of matches
+            mapModel.computePlaceArrayDistance(placeArray);
             checkInView.openModal(placeArray, checkInView.onDone);
         });
 

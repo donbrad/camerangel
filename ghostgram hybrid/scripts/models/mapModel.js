@@ -117,6 +117,25 @@ var mapModel = {
         }
     },
 
+
+    computePlaceDistance : function() {
+        var placeArray = placesModel.data();
+
+        for (var i=0; i<placeArray.length; i++) {
+            var distance = getDistanceInMeters(mapModel.lat, mapModel.lng, placeArray[i].lat, placeArray[i].lng);
+            var placeModel = placesModel.getPlaceModel(placeArray[i].uuid);
+            placeModel.set('distance', distance);
+        }
+
+    },
+
+    computePlaceArrayDistance : function (placeArray) {
+        for (var i=0; i<placeArray.length; i++) {
+            var distance = getDistanceInMeters(mapModel.lat, mapModel.lng, placeArray[i].lat, placeArray[i].lng);
+            placeArray[i].distance = distance;
+        }
+    },
+
     getCurrentAddress : function (callback) {
 
         mapModel.getCurrentPosition (function(lat, lng) {
