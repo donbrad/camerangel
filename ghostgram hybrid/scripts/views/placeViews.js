@@ -523,7 +523,7 @@ var editPlaceView = {
         mobileNotify("Updated " + newModel.name);
 
         placesModel.placesDS.sync();
-        
+
         var returnUrl = '#'+ editPlaceView._returnView;
 
         APP.kendo.navigate(returnUrl);
@@ -636,7 +636,8 @@ var checkInView = {
                 var place = e.dataItem, placeId = place.uuid;
                 mapModel.checkIn(placeId);
                 userModel.checkIn(placeId);
-
+                userStatus.update();
+                mobileNotify("You're checked in to " + place.name);
 
             }
         });
