@@ -45,6 +45,18 @@ var placesView = {
                             "operator":"contains",
                             "value":query},
                         {
+                            "field":"city",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"state",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"zipcode",
+                            "operator":"contains",
+                            "value":query},
+                        {
                             "field":"alias",
                             "operator":"contains",
                             "value":query}
