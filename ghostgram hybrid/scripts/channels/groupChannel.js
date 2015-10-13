@@ -32,7 +32,7 @@ var groupChannel = {
         // Subscribe to our PubNub channel.
         APP.pubnub.subscribe({
             channel: groupChannel.channelId,
-            windowing: 5000,
+            windowing: 1000,
             restore: true,
             callback: groupChannel.receiveHandler,
             presence: groupChannel.presenceHandler,

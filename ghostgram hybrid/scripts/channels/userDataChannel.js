@@ -25,7 +25,7 @@ var userDataChannel = {
 
             APP.pubnub.subscribe({
                 channel: userDataChannel.channelId,
-                windowing: 5000,
+                windowing: 500,
                 message: userDataChannel.channelRead,
                 connect: userDataChannel.channelConnect,
                 disconnect:userDataChannel.channelDisconnect,
