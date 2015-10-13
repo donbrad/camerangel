@@ -118,13 +118,32 @@ var placesView = {
 
     onShow: function (e) {
         _preventDefault(e);
+
+        ux.scrollUpSearch(e);
+        // Always display the add places button so users can create a new place (even if others exist)
         
         // update actionBtn
         ux.changeActionBtnImg("#places", "icon-gps-light");
-        ux.showActionBtn(false, "#places");
+        ux.showActionBtnText("#places", "3.5rem", "Check in");
+
+        var findPlaceUrl = "#findPlace?lat="+ mapModel.lat + "&lng=" +  mapModel.lng +"&returnview=places";
+        ux.showActionBtn(true, "#places", findPlaceUrl);
+        //$("#places > div.footerMenu.km-footer > a").removeAttr('href').css("display", "none");
 
 
-        ux.scrollUpSearch(e);
+        mapModel.getCurrentAddress(function (isNew, address) {
+            // Is this a new location
+            if (isNew) {
+                mapModel.computePlaceDistance();
+               // modalView.openInfo("New Location","Are you somewhere new? Create a new Place!", "OK", null);
+            }
+            
+            placesView.placeListDS.data(placesModel.placesDS.data());
+        });
+
+       /*mapModel.getCurrentPosition( function (lat,lng) {
+
+        
 
         
         // get current position
@@ -147,8 +166,7 @@ var placesView = {
                 mobileNotify("No places match your current location");
                 var findPlaceUrl = "#findPlace?lat="+ lat + "&lng=" +  lng +"&returnview=places";
                 // No current places match the current location
-            	ux.showActionBtn(true, "#places", findPlaceUrl);
-            	ux.showActionBtnText("#places", "3.5rem", "Check in");
+                
             } else {
 
                 for (var i=0; i<places.length; i++) {
@@ -165,7 +183,7 @@ var placesView = {
                 // set placesView.placeListDS to results
             }
 
-        });
+        });*/
     },
 
     onHide: function (e) {

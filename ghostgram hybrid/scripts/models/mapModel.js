@@ -223,7 +223,7 @@ var mapModel = {
             mapModel.lastPingSeconds = ggTime.currentTimeInSeconds();
             var options = mapModel.gpsOptions;
             navigator.geolocation.getCurrentPosition(function (position) {
-                // Mask lat / lng to 6 digits to standardize comparision results
+                // Mask lat / lng to 6 digits to standardize comparison results
                 var lat = position.coords.latitude.toFixed(6), lng = position.coords.longitude.toFixed(6);
                 mapModel._updatePosition(lat, lng);
 

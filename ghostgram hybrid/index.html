@@ -584,12 +584,13 @@
     </div>
 </div>
 
-<div data-role="modalview" id="modalview-checkin" style="width: 90%; display: none;" class="appearance" data-init="checkInView.onInit">
-	<div data-role="header">
-		<div data-role="navbar">
-			<span>Check In</span>
-		</div>
-	</div>
+<div data-role="modalview" id="modalview-checkin" style="width: 90%; height:90%; display: none;" class="appearance" data-init="checkInView.onInit">
+	<h3>
+		Check In
+		<a class="right closeBox" data-click="checkInView.closeModal" data-role="button">
+			<img src="images/close.svg" />
+		</a>
+	</h3>
 
 	<p>Please choose one of Places from the list below.   Or click Add Place to create a new one.</p>
 	<div>
@@ -598,7 +599,6 @@
 
 	<div data-role="footer">
 		<div data-role="navbar">
-			<a data-click="checkInView.closeModal" data-role="button" type="button" data-align="left">Cancel</a>
 			<a data-click="checkInView.addPlace" type="button" data-role="button" data-align="right">Add Place</a>
 		</div>
 	</div>

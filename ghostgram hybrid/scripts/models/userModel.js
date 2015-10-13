@@ -163,7 +163,7 @@ var userModel = {
         userModel.parseUser.set(e.field, userModel.currentUser.get(e.field));
         userModel.parseUser.save(null, {
             success : function (user){
-                mobileNotify("Updated your " + e.field);
+                //mobileNotify("Updated your " + e.field);
             },
             error: function (user, error){
                 mobileNotify("Profile save error: " + error);

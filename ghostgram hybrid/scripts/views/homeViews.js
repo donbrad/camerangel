@@ -99,7 +99,7 @@ var userStatusView = {
         //Cache the current view
         userStatusView._returnView = APP.kendo.view().id;
 
-        mobileNotify("Updating your location...");
+       // mobileNotify("Updating your location...");
 
         mapModel.getCurrentAddress(function (isNew, address) {
             // Is this a new location
