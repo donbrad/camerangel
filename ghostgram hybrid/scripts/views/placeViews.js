@@ -91,7 +91,9 @@ var placesView = {
         _preventDefault(e);
 
         // Always display the add places button so users can create a new place (even if others exist)
-        ux.showActionBtn(true, "#places");
+
+        var findPlaceUrl = "#findPlace?lat="+ mapModel.lat + "&lng=" +  mapModel.lng +"&returnview=places";
+        ux.showActionBtn(true, "#places", findPlaceUrl);
         //$("#places > div.footerMenu.km-footer > a").removeAttr('href').css("display", "none");
 
         mapModel.getCurrentAddress(function (isNew, address) {
