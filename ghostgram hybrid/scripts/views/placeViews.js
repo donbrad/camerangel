@@ -79,9 +79,11 @@ var placesView = {
         	filter: ".list-box",
         	enableSwipe: true,
         	tap: function(e){
-        		var selection = e.touch.target[0].dataset["id"];
+        		var place = e.touch.target[0].dataset["id"];
+                var placeId = LZString.compressToEncodedURIComponent(place.uuid);
 
-        		// Todo - wire to place view 
+                APP.kendo.navigate("#placeView?place="+placeId+"&returnview=places");
+                
         	},
         	swipe: function(e) {
                 // 
