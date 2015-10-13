@@ -80,7 +80,7 @@ var placesView = {
         	enableSwipe: true,
         	tap: function(e){
         		var place = e.touch.target[0].dataset["id"];
-                var placeId = LZString.compressToEncodedURIComponent(place.uuid);
+                var placeId = LZString.compressToEncodedURIComponent(place);
 
                 APP.kendo.navigate("#placeView?place="+placeId+"&returnview=places");
 
