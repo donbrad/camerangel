@@ -16,49 +16,14 @@ var userStatusView = {
     _modalId : "#modalview-profileStatus",
     _profileStatusMax: 40,
 
-    // Main entry point for userstatus modal
-    openModal : function (e) {
-        _preventDefault(e);
-
-        //Cache the current view
-        userStatusView._returnView = APP.kendo.view().id;
-
-        mobileNotify("Updating your location...");
-
-        mapModel.getCurrentAddress(function (isNew, address) {
-            // Is this a new location
-            if (isNew) {
-                $('#profileCheckInLi').removeClass('hidden');
-            } else {
-                $('#profileCheckInLi').addClass('hidden');
-            }
-        });
-
-       /* mapModel.getCurrentPosition( function (lat,lng) {
-
-            var places = placesModel.matchLocation(lat, lng);
-
-            if (places.length === 0) {
-                mobileNotify("No places match your current location");
-
-
-                var findPlaceUrl = "#findPlace?lat="+ lat + "&lng=" +  lng +"&returnview=" + '#'+userStatusView._returnView +'&returnModal=userStatus';
-                // No current places match the current location
-                //ux.showActionBtn(true, "#places", findPlaceUrl);
-            } else {
-
-                // set placesView.placeListDS to results
-            }
-
-        });*/
-
+    _update : function () {
         var status = userStatusView._activeStatus, user = userModel.currentUser;
         
        	/// setting up user
 
         // Set name/alias layout
         ux.formatNameAlias(user.name, user.alias, "#modalview-profileStatus");
-        $('#profileStatusMessage').text(user.statusMessage);
+        $('#profileStatusMessage').text(user.get('statusMessage'));
 
         // Zero the status character count
         $("#profileStatusUpdate").val('');
@@ -82,6 +47,13 @@ var userStatusView = {
 		/// Setting up status
 
         status.set('statusMessage', user.statusMessage);
+
+        if (userModel.isCheckedIn) {
+            status.set('checkedInPlace', userModel.checkedInPlace);
+        } else {
+            status.set('checkedInPlace','');
+        }
+
         status.set('currentPlace', user.currentPlace);
         status.set('isAvailable', user.isAvailable);
         userStatusView._activeStatus.bind('change' , userStatusView.syncUserStatus);
@@ -90,9 +62,13 @@ var userStatusView = {
         
         // if there's a current checked in place -- select it in the list
         if (userStatusView._checkInPlaceId !== null) {
+
         	$("#profileCheckOutLi").removeClass("hidden");
         	$("#checkOut-text").text(user.currentPlace);
            	// Is the current place in the list of candidate places?
+
+            // Is the current place in the list of candidate places?
+
             // Yes - select it
 
             // No - Select the first place in the list...
@@ -107,6 +83,34 @@ var userStatusView = {
         }
 		
 
+
+        if (mapModel.currentPlaceId !== null) {
+            $('#profileCheckOutLi').removeClass('hidden');
+        } else {
+            //$('#profileCheckInLi').removeClass('hidden');
+            $('#profileCheckOutLi').addClass('hidden');
+        }
+    },
+
+    // Main entry point for userstatus modal
+    openModal : function (e) {
+        _preventDefault(e);
+
+        //Cache the current view
+        userStatusView._returnView = APP.kendo.view().id;
+
+        mobileNotify("Updating your location...");
+
+        mapModel.getCurrentAddress(function (isNew, address) {
+            // Is this a new location
+            if (isNew) {
+                $('#profileCheckInLi').removeClass('hidden');
+            } else {
+                $('#profileCheckInLi').addClass('hidden');
+            }
+        });
+
+        userStatusView._update();
 
         $(userStatusView._modalId).data("kendoMobileModalView").open();
 

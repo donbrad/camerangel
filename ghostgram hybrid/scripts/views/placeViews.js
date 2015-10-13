@@ -45,6 +45,18 @@ var placesView = {
                             "operator":"contains",
                             "value":query},
                         {
+                            "field":"city",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"state",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"zipcode",
+                            "operator":"contains",
+                            "value":query},
+                        {
                             "field":"alias",
                             "operator":"contains",
                             "value":query}
@@ -111,16 +123,23 @@ var placesView = {
         ux.changeActionBtnImg("#places", "icon-gps-light");
         ux.showActionBtn(false, "#places");
 
+
         ux.scrollUpSearch(e);
 
         
         // get current position
        	 mapModel.getCurrentPosition( function (lat,lng) {
 
+
            //Compute distance for all places based on current locaiton
            mapModel.computePlaceDistance();
            placesView.placeListDS.data(placesModel.placesDS.data());
            
+
+           //Compute distance for all places based on current locaiton
+           mapModel.computePlaceDistance();
+           placesView.placeListDS.data(placesModel.placesDS.data());
+
 
             var places = placesModel.matchLocation(lat, lng);
 
@@ -136,8 +155,7 @@ var placesView = {
                     var found = false;
                     if (mapModel.currentPlaceId === places[i].uuid) {
                         found = true;
-                        //$("#current-place-name").text(places[i].name);
-        				//$("#current-place").removeClass("hidden").velocity("slideDown");
+
                     }
                 }
 
@@ -738,6 +756,9 @@ var checkInView = {
                 userStatus.update();
                 mobileNotify("You're checked in to " + place.name);
 
+                checkInView.closeModal();
+
+
             }
         });
 
@@ -773,10 +794,16 @@ var checkInView = {
 
     closeModal : function () {
         $("#modalview-checkin").data("kendoMobileModalView").close();
+        userStatusView._update();
         if (checkInView.callback !== null) {
             checkInView.callback();
         }
     },
+
+    addPlace: function (e) {
+
+    },
+
 
     onDone: function (e) {
         _preventDefault(e);
