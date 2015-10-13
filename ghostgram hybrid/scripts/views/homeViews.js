@@ -16,6 +16,39 @@ var userStatusView = {
     _modalId : "#modalview-profileStatus",
     _profileStatusMax: 40,
 
+    _update : function () {
+        var status = userStatusView._activeStatus, user = userModel.currentUser;
+
+        // Set name/alias layout
+        ux.formatNameAlias(user.name, user.alias, "#modalview-profileStatus");
+        $('#profileStatusMessage').text(user.statusMessage);
+
+        // Zero the status character count
+        $( "#profileStatusCount").text(userStatusView._profileStatusMax);
+        $( "#profileStatusUpdate").val('');
+        // Setup syncing for automatic update
+        userStatusView._activeStatus.unbind('change' , userStatusView.syncUserStatus);
+        status.set('statusMessage', user.statusMessage);
+        if (userModel.isCheckedIn) {
+            status.set('checkedInPlace', userModel.checkedInPlace);
+        } else {
+            status.set('checkedInPlace','');
+        }
+        status.set('currentPlace', user.currentPlace);
+        status.set('isAvailable', user.isAvailable);
+        userStatusView._activeStatus.bind('change' , userStatusView.syncUserStatus);
+
+        // if there's a current checked in place -- select it in the list
+        if (userStatusView._checkInPlaceId !== null) {
+            // Is the current place in the list of candidate places?
+            // Yes - select it
+
+            // No - Select the first place in the list...
+            //Todo: don - wire this up
+        }
+
+    },
+
     // Main entry point for userstatus modal
     openModal : function (e) {
         _preventDefault(e);
@@ -34,53 +67,7 @@ var userStatusView = {
             }
         });
 
-       /* mapModel.getCurrentPosition( function (lat,lng) {
-
-            var places = placesModel.matchLocation(lat, lng);
-
-            if (places.length === 0) {
-                mobileNotify("No places match your current location");
-
-
-                var findPlaceUrl = "#findPlace?lat="+ lat + "&lng=" +  lng +"&returnview=" + '#'+userStatusView._returnView +'&returnModal=userStatus';
-                // No current places match the current location
-                //ux.showActionBtn(true, "#places", findPlaceUrl);
-            } else {
-
-                // set placesView.placeListDS to results
-            }
-
-        });*/
-
-        var status = userStatusView._activeStatus, user = userModel.currentUser;
-
-        // Set name/alias layout
-        ux.formatNameAlias(user.name, user.alias, "#modalview-profileStatus");
-        $('#profileStatusMessage').text(user.statusMessage);
-
-        // Zero the status character count
-        $( "#profileStatusCount").text(userStatusView._profileStatusMax);
-        $( "#profileStatusUpdate").val('');
-        // Setup syncing for automatic update
-        userStatusView._activeStatus.unbind('change' , userStatusView.syncUserStatus);
-            status.set('statusMessage', user.statusMessage);
-        if (userModel.isCheckedIn) {
-            status.set('checkedInPlace', userModel.checkedInPlace);
-        } else {
-            status.set('checkedInPlace','');
-        }
-        status.set('currentPlace', user.currentPlace);
-        status.set('isAvailable', user.isAvailable);
-        userStatusView._activeStatus.bind('change' , userStatusView.syncUserStatus);
-
-        // if there's a current checked in place -- select it in the list
-        if (userStatusView._checkInPlaceId !== null) {
-           // Is the current place in the list of candidate places?
-            // Yes - select it
-
-            // No - Select the first place in the list...
-            //Todo: don - wire this up
-        }
+        userStatusView._update();
 
         $(userStatusView._modalId).data("kendoMobileModalView").open();
 

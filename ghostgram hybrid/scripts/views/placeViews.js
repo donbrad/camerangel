@@ -675,6 +675,7 @@ var checkInView = {
 
     closeModal : function () {
         $("#modalview-checkin").data("kendoMobileModalView").close();
+        userStatusView._update();
         if (checkInView.callback !== null) {
             checkInView.callback();
         }
@@ -684,7 +685,7 @@ var checkInView = {
 
     },
 
-    
+
     onDone: function (e) {
         _preventDefault(e);
 

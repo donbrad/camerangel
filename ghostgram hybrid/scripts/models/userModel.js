@@ -206,8 +206,9 @@ var userModel = {
 
         userModel.checkedInPlace = place;
         userModel.checkedInPlaceId = placeId;
-        userModel.currentUser.currentPlace = place.name;
-        userModel.currentUser.currentPlaceId = place.uuid;
+        userModel.currentUser.set('currentPlace',place.name);
+        userModel.currentUser.set('currentPlaceId', place.uuid);
+        userModel.currentUser.set('isCheckedIn', true);
         userModel.isCheckedIn = true;
         userStatus.update();
     },
@@ -216,6 +217,7 @@ var userModel = {
         userModel.isCheckedIn = false;
         userModel.checkedInPlace = {};
         userModel.checkedInPlaceId = null;
+        userModel.currentUser.set('isCheckedIn', false);
     },
 
     initPubNub: function () {
