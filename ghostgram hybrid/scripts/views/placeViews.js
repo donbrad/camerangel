@@ -693,7 +693,7 @@ var editPlaceView = {
  * placeView
  */
 var placeView = {
-    _activePlace : null,
+    _activePlace :  new kendo.data.ObservableObject(),
     _activePlaceId : null,
     _lat: null,
     _lng: null,
@@ -754,7 +754,17 @@ var placeView = {
     setActivePlace : function (placeId) {
         placeView._activePlaceId = placeId;
 
-        placeView._activePlace = placesModel.getPlaceModel(placeId);
+        var placeObj = placesModel.getPlaceModel(placeId);
+
+        placeView._activePlace.set('name', placeObj.name);
+        placeView._activePlace.set('alias', placeObj.alias);
+        placeView._activePlace.set('address', placeObj.address);
+        placeView._activePlace.set('city', placeObj.city);
+        placeView._activePlace.set('state', placeObj.state);
+        placeView._activePlace.set('zipcode', placeObj.zipcode);
+        placeView._activePlace.set('isPrivate', placeObj.isPrivate);
+        placeView._activePlace.set('isAvailable', placeObj.isAvailable);
+
     }
 };
 
