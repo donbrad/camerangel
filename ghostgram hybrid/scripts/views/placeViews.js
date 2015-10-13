@@ -709,7 +709,7 @@ var placeView = {
         if (e.view.params !== undefined) {
             if (e.view.params.place !== undefined) {
                 var placeId = LZString.decompressFromEncodedURIComponent(e.view.params.place);
-                editPlaceView.setActivePlace(placeId);
+                placeView.setActivePlace(placeId);
             } else {
                 // No active place --
                 placeView._activePlace = null;
