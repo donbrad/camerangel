@@ -115,6 +115,53 @@ var homeView = {
 		$('#modalview-locate-me').data('kendoMobileModalView').close();
 	},
 
+	onShowProfileStatus: function(e){
+
+		if (e !== undefined && e.preventDefault !== undefined) {
+			e.preventDefault();
+		}
+
+		var alias = userModel.currentUser.alias;
+		var verified = userModel.currentUser.phoneVerified;
+		var name = userModel.currentUser.name;
+		
+		var status = userModel.currentUser.statusMessage;
+		var available = userModel.currentUser.isAvailable;
+		var location = userModel.currentUser.currentPlace;
+		
+		ux.formatNameAlias(name, alias, "#modalview-profileStatus");
+
+		// Set profile status
+		$("#profileStatusMessage").text(status);
+		
+		// Set verified
+		if(verified){
+			$("#profileStatusVerified").removeClass("hidden");
+		}
+		// Set available
+		if(available){
+			$(".userAvailable").attr("src", "images/status-available.svg");
+			$(".userAvailableRev").attr("src", "images/status-away.svg");
+			$("#currentAvailableTxt").text("busy");
+
+		} else {
+			$(".userAvailable").attr("src", "images/status-away.svg");
+			$(".userAvailableRev").attr("src", "images/status-available.svg");
+			$("#currentAvailableTxt").text("available");
+		}
+
+		// set location
+		if(location !== undefined){
+			$("#profileLocation").removeClass("hidden");
+			// todo - wire location
+		}
+
+		// set status charcter count 
+		statusCharCount();
+
+		
+	},
+
 	checkInToPlace: function (e) {
 		var item = e.item.children('div').first().data('item');
 
@@ -180,6 +227,38 @@ var homeView = {
 	        	// todo - wire search
 	        }
 	    });
+	},
+
+	closeStatusModal: function(){
+		$("#modalview-profileStatus").data("kendoMobileModalView").close();
+	},
+
+	changeAvailable: function(){
+		var currentAvailable = userModel.currentUser.get('isAvailable');
+		
+		if(currentAvailable){
+			$(".userAvailableRev").attr("src", "images/status-available.svg");
+			$("#currentAvailableTxt").text("available");
+		} else {
+			$(".userAvailableRev").attr("src", "images/status-away.svg");
+			$("#currentAvailableTxt").text("busy");
+		}
+		ux.toggleIsAvailable();
+	},
+
+	closeModalViewProfileStatus: function(e){
+		_preventDefault(e);
+
+		$("#modalview-profileStatus").data("kendoMobileModalView").close();
+		$(".userLocationUpdate").css("display", "none");
+		var updatedStatus = $("#profileStatusUpdate").val();
+		
+		if(updatedStatus !== ""){
+			// Save new status
+			userModel.currentUser.set("statusMessage", updatedStatus);
+		}
+		// clear status box
+		$("#profileStatusUpdate").val("");
 	}
 };
 
@@ -315,11 +394,7 @@ function onShowHome(e) {
     }
     
     // Set user availibility 
-    updateHeaderStatusImages();
-
-    // Show status
-    //$("#logo-header").velocity("fadeOut", {delay: 1000, duration: 500});
-    //$(".user-status").velocity("fadeIn", {delay:1000});
+    ux.updateHeaderStatusImages();
         
     APP.models.presence.current.bind('change' , syncPresence);
 
@@ -1002,46 +1077,6 @@ function go2Support(e){
 	e.preventDefault;
 	$("#settingsAction").data("kendoMobileActionSheet").close();
 	$("#modalview-support").data("kendoMobileModalView").open();
-}
-
-function onShowProfileStatus(e){
-
-	if (e !== undefined && e.preventDefault !== undefined) {
-		e.preventDefault();
-	}
-
-	var alias = userModel.currentUser.alias;
-	var verified = userModel.currentUser.isVerified;
-	var name = userModel.currentUser.name;
-	
-	var status = userModel.currentUser.statusMessage;
-	var available = userModel.currentUser.isAvailable;
-	var availableSwitch = $("#home-status-switch").data("kendoMobileSwitch");
-	// Set profile status
-
-	ux.formatNameAlias(name, alias, "#profilePhotoForm");
-	
-	$("#profileStatusMessage").text(status);
-	if(verified){
-		$("#profileStatusVerified").removeClass("hidden");
-	}
-	if(available){
-		availableSwitch.check(true);
-	}
-
-	// set status charcter count 
-	statusCharCount();
-}
-
-function statusSwitch(e) {
-	var currentState = e.checked;
-	
-	userModel.currentUser.set("isAvailable", currentState);
-	updateHeaderStatusImages();
-}
-
-function closeThisModal(e){
-	
 }
 
 function gpsLocateUpdate(){

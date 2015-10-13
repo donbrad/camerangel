@@ -6,22 +6,22 @@ var ux = {
 	// Display the right name combo - for template use returnUXPrimaryName
 	formatNameAlias: function(name, alias, view){
 
-	var primaryName, secondName;
+		var primaryName, secondName;
 
-	if (alias !== "" && alias !== undefined && name !== "" && name !== undefined){
-		primaryName = alias;
-		secondName = name;
+		if (alias !== "" && alias !== undefined && name !== "" && name !== undefined){
+			primaryName = alias;
+			secondName = name;
 
-	} else if(name !== "" && name !== undefined) {
-		primaryName = name;
-		secondName = "";
-	}
-	else {
-		primaryName = alias;
-	}
+		} else if(name !== "" && name !== undefined) {
+			primaryName = name;
+			secondName = "";
+		}
+		else {
+			primaryName = alias;
+		}
 
-	$(view + " .primaryName").text(primaryName);
-	$(view + " .secondName").text(secondName);
+		$(view + " .primaryName").text(primaryName);
+		$(view + " .secondName").text(secondName);
 
 	},
 
@@ -42,13 +42,39 @@ var ux = {
 		return primaryName;
 	},
 
+	addressPrimaryName: function(name, alias, address){
+		var preCheckName = name; 
+		var preCheckAlias = alias; 
+		var preCheckAddress = address;
+
+		var nameVerified, aliasVerified, addressVerified = false;
+		var nameCombo = [];
+
+		// check name 
+		if(preCheckName !== "" && preCheckName !== undefined ){
+			nameVerified = true;
+			nameCombo.push(preCheckName);
+		} 
+		// check alias
+		if(preCheckAlias !== "" && preCheckAlias !== undefined){
+			aliasVerified = true;
+			nameCombo.unshift(preCheckAlias);
+		} 
+
+		if (!nameVerified && !aliasVerified){
+			nameCombo.push(preCheckAddress);
+		}
+ 		
+		return nameCombo;
+	},
+
 	// display empty view graphic if no results
 	checkEmptyUIState: function(ds, view){
 		var selectionList = ds.total();
 	    if(ds <= 0){
 	    	$(view + " .emptyState").removeClass("hidden");
 	    } else {
-	    	$(view + ".emptyState").addClass("hidden");
+	    	$(view + " .emptyState").addClass("hidden");
 	    }
 	},
 
@@ -74,6 +100,42 @@ var ux = {
 	scrollUpSearch: function(e){
 		var scroller = e.view.scroller;
     	scroller.scrollTo(0,-51);
+	},
+
+	toggleIsAvailable: function(){
+		var currentState = userModel.currentUser.isAvailable;
+		if(currentState){
+			userModel.currentUser.set('isAvailable', false);
+		} else {
+			userModel.currentUser.set('isAvailable', true);
+		}
+		ux.updateHeaderStatusImages();
+
+	},
+
+	// Globally update profile and status images in the application header
+	updateHeaderStatusImages: function() {
+		var isAvailable  = userModel.currentUser.get('isAvailable');
+		if (isAvailable) {
+			userModel.currentUser.set('availImgUrl', 'images/status-available.svg');
+		} else {
+			userModel.currentUser.set('availImgUrl', 'images/status-away.svg');
+		}
+		$('.userAvailable').attr('src',userModel.currentUser.get('availImgUrl'));
+
+
+
+	    var useIdenticon = userModel.currentUser.get('useIdenticon');
+	    if (useIdenticon === undefined)
+	        useIdenticon = true;
+
+	    if (useIdenticon === true) {
+	        $('.home-profile-img').attr('src',userModel.identiconUrl);
+	      //  userModel.enableIdenticon();
+	    } else {
+	        $('.home-profile-img').attr('src',userModel.currentUser.get('photo'));
+	      //  userModel.disableIdenticon();
+	    }
 	},
 
 	closeModalPhotoView: function(e) {
@@ -121,27 +183,12 @@ var ux = {
     	$("#modalview-channels-addChannel").kendoMobileModalView("close");
 	},
 
-		
-
 	closeModalViewAddPlace: function(e) {
 		_preventDefault(e);
     	$("#modalview-addPlace").kendoMobileModalView("close");
+    	$(".hasFade").removeClass("hasFade");
 	},
 
-
-	closeModalViewProfileStatus: function(e) {
-		_preventDefault(e);
-
-		$("#modalview-profileStatus").data("kendoMobileModalView").close();
-		$(".userLocationUpdate").css("display", "none");
-		var updatedStatus = $("#profileStatusUpdate").val();
-		if(updatedStatus !== ""){
-			// Save new status
-			userModel.currentUser.set("statusMessage", updatedStatus);
-		}
-		// clear status box
-		$("#profileStatusUpdate").val("");
-	},
 
 	closeStartModal: function(e) {
 		_preventDefault(e);
@@ -183,12 +230,12 @@ var ux = {
 		return phone.replace(/\d(\d\d\d)(\d\d\d)(\d\d\d\d)/, '($1) $2-$3');
 	},
 
-	showActionBtnText:function($path, fromRight){ 
-		$path.velocity({opacity: 1, right: fromRight}, {easing: "spring", delay: 500});
+	showActionBtnText:function(path, fromRight, text){
+		$(path + " > div.footerMenu.km-footer > a > span > p").text(text).velocity({opacity: 1, right: fromRight}, {easing: "spring", delay: 500});
 	},
 
 	hideActionBtnText: function(path){
-		$(path).velocity({opacity: 0, right: "0"});
+		$(path + " > div.footerMenu.km-footer > a > span > p").text("").velocity({opacity: 0, right: "0"});
 	},
 
 	AutoGrowTextArea: function(textField){

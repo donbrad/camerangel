@@ -32,13 +32,13 @@
 	<div class="modal-top">
 		<a data-role="button" class="modal-close" data-click="contactActionView.closeModal"><img src="images/close.svg"/></a>
 
-			<img class="circle-img-lg" id="contactProfileImg"/>
+			<img class="circle-img-lg" id="contactProfileImg" />
 			<img width="20" src="images/status-away.svg" class="statusContactCard-icon" id="contactStatusImg"/>
 		<h3 class="preMotionUp">
 
 			<span class="primaryName" id="contactPrimaryName"></span>
 			<span class="hidden" id="currentContactVerified">
-				<img src="images/icon-verified-dark.svg" class="user-status-icon">
+				<img src="images/icon-verified-dark.svg" class="user-status-icon" />
 			</span>
 			<span class="secondName" id="contactSecondName"></span>
 		</h3>
@@ -310,7 +310,7 @@
 
 <script type="text/x-kendo-template" id="contactsTemplate">      
 	<div>
-    	<div class="contact-options list-options">
+    	<div class="contact-options">
 			# if (data.contactUUID === undefined || data.contactUUID === null){#
 			<a class="btnClear-grey" data-role="button" data-click="contactsView.doInviteContact" data-contact="#:uuid#">
 				<img src="images/contact-invite.svg" height="12" />
@@ -328,14 +328,12 @@
 		    
     	</div><!-- contact-options -->
     	# if(data.category === 'member') {#
-    		<div class="contactListBox member">
+    		<a class="contactListBox member">
     	#}else {#
-    		<div class="contactListBox">
+    		<a class="contactListBox">
     	#}#
-		
-			 <a class="contactListItem">
-
-				 #if (data.category !== 'phone') {#
+	
+			#if (data.category !== 'phone') {#
 					<div class="left listPhoto">
 						<div class="statusContactList">
 
@@ -369,7 +367,7 @@
 						<p class="left caption contact-status">
 
 							# var message = "", location = ""; if (data.statusMessage !== undefined && data.statusMessage !== "") {message = data.statusMessage;} if(data.location !== undefined && data.location !== ""){ if (message !== "") {location = " @ " + data.location;} else {location = data.location;}}#
-							<span class="contactStatusMessage">#:message##:location#</span>
+							<span class="contactStatusMessage-sm">#:message#</span>
 						</p>
 						<div class="clearfix"></div>
 				#} else {#
@@ -377,8 +375,7 @@
 						#: data.name #
 					</h4>
 				#}#
-			</a>
-		</div><!-- listBox -->
+		</a><!-- listBox -->
 	</div>
 
 </script>

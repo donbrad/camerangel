@@ -241,73 +241,7 @@ var editChannelView = {
 
         $("#editmembers-listview").kendoMobileListView({
             dataSource: currentChannelModel.membersDS,
-            template: $("#editMembersTemplate").html(),
-            //headerTemplate: $("#editMembersHeaderTemplate").html(),
-            ///fixedHeaders: true,
-            click: function (e) {
-            	
-            }
-        }).kendoTouch({
-        	filter: "li",
-        	enableSwipe: false,
-        	dragstart: function(e){
-		 		var selection = e.touch.currentTarget;
-		 		var selectionListItem = $(selection);
-		 		
-		 		// add moving classes
-		 		$(selection).addClass("selectedLI");
-		 		$(".selectedLI > div").first().addClass("movingContact");
-
-		 		$(".selectedLI").css("background", "#E57373");
-		 		
-		 	},
-		 	drag: function(e){
-		 		var currentX = e.touch.x.location;
-		 		var windowWidth = $(window).width();
-		 		
-		 		var windowPerc = 1 - (currentX / windowWidth);
-		 		windowPerc = (windowPerc * 100).toFixed(0);
-
-		 		var fadePerc = (windowPerc * 4) / 100;
-		 		var trailingPerc = windowPerc - 20;
-
-		 		$(".selectedLI > .deleteMemberText").css("opacity", fadePerc+"%");
-		 		
-		 		$(".movingContact").css("right", windowPerc+"%");
-		 		//
-		 		if(windowPerc > 25){
-		 			$(".selectedLI > .deleteMemberText").css("right", trailingPerc+"%");
-		 		}
-
-		 	},
-		 	dragend: function(e){
-		 		// get current position
-		 		var currentX = e.touch.x.location;
-		 		var windowWidth = $(window).width();
-		 		var widthPerc = currentX  / windowWidth;
-		 		var contactId = $(".movingContact").attr("data-id");
-		 		
-		 		//if drag is far enough, set action
-		 		if (widthPerc < 0.75) {
-					$(".movingContact").velocity({translateX:"-100%"},{duration: 600, easing: "spring"});
-					$(".selectedLI").velocity("slideUp", {duration: 600});
-					
-
-					// Todo - need to revisit to fix errors
-		 			// editChannelView.deleteMember(contactId);
-				} else {
-		 			$(".movingContact").velocity({right:"0"},{duration: 600, easing: "spring"});
-		
-		 		}
-
-		 		$(".selectedLI").css("background", "#fff");
-		 		// remove moving class
-		 		$(".selectedLI > div").removeClass("movingContact");
-		 		$("#editmembers-listview > .selectedLI").removeClass("selectedLI");
-		 		
-		 	}
-
-
+            template: $("#editMembersTemplate").html()
         });
         //$('#editChannelMemberList li').remove();
     },
@@ -372,7 +306,7 @@ var editChannelView = {
 
         // show action btn text
         var $editChannelP = $("#editChannel > div.footerBk.km-footer > a.actionBtn.secondary-100.km-widget.km-button > span > p")
-        showActionBtnText($editChannelP, "3rem");
+        $editChannelP.velocity({opacity: 1, right: "3rem"}, {easing: "spring", delay: 500});
     },
 
     finalizeEdit : function (e) {
@@ -431,6 +365,11 @@ var editChannelView = {
         $("#channels-addChannel-description, #channels-addChannel-name").val('');
     },
 
+    deleteMemberBtn: function(e){
+    	var selectorId = e.target[0].dataset["id"];
+    	editChannelView.deleteMember(selectorId);
+    },
+
     deleteMember : function (contactId) {
         
         var thisMember = contactModel.findContactByUUID(contactId);
@@ -441,6 +380,8 @@ var editChannelView = {
         currentChannelModel.membersDS.remove(thisMember);
         currentChannelModel.membersDS.sync();
         //	$('#'+contactId).remove();
+        mobileNotify("Deleted " + thisMember.name);
+        
     },
 
     showDoneButton: function () {
