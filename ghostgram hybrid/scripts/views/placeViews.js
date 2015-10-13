@@ -79,9 +79,11 @@ var placesView = {
         	filter: ".list-box",
         	enableSwipe: true,
         	tap: function(e){
-        		var selection = e.touch.target[0].dataset["id"];
+        		var place = e.touch.target[0].dataset["id"];
+                var placeId = LZString.compressToEncodedURIComponent(place);
 
-        		// Todo - wire to place view 
+                APP.kendo.navigate("#placeView?place="+placeId+"&returnview=places");
+
         	},
         	swipe: function(e) {
                 // 
@@ -691,7 +693,7 @@ var editPlaceView = {
  * placeView
  */
 var placeView = {
-    _activePlace : null,
+    _activePlace :  new kendo.data.ObservableObject(),
     _activePlaceId : null,
     _lat: null,
     _lng: null,
@@ -707,7 +709,7 @@ var placeView = {
         if (e.view.params !== undefined) {
             if (e.view.params.place !== undefined) {
                 var placeId = LZString.decompressFromEncodedURIComponent(e.view.params.place);
-                editPlaceView.setActivePlace(placeId);
+                placeView.setActivePlace(placeId);
             } else {
                 // No active place --
                 placeView._activePlace = null;
@@ -723,6 +725,16 @@ var placeView = {
                 editPlaceView._returnView = e.view.params.returnview;
             }
 
+
+        }
+
+        // Toggle display of private/public icons -- todo: jordan might have other ideas...
+        if (placeView._activePlace.isPrivate) {
+            $('#publicPlaceView').addClass('hidden');
+            $('#privatePlaceView').removeClass('hidden');
+        } else {
+            $('#privatePlaceView').addClass('hidden');
+            $('#publicPlaceView').removeClass('hidden');
         }
     },
 
@@ -742,7 +754,17 @@ var placeView = {
     setActivePlace : function (placeId) {
         placeView._activePlaceId = placeId;
 
-        placeView._activePlace = placesModel.getPlaceModel(placeId);
+        var placeObj = placesModel.getPlaceModel(placeId);
+
+        placeView._activePlace.set('name', placeObj.name);
+        placeView._activePlace.set('alias', placeObj.alias);
+        placeView._activePlace.set('address', placeObj.address);
+        placeView._activePlace.set('city', placeObj.city);
+        placeView._activePlace.set('state', placeObj.state);
+        placeView._activePlace.set('zipcode', placeObj.zipcode);
+        placeView._activePlace.set('isPrivate', placeObj.isPrivate);
+        placeView._activePlace.set('isAvailable', placeObj.isAvailable);
+
     }
 };
 
