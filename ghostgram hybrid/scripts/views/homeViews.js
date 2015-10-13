@@ -47,6 +47,12 @@ var userStatusView = {
             //Todo: don - wire this up
         }
 
+        if (mapModel.currentPlaceId !== null) {
+            $('#profileCheckOutLi').removeClass('hidden');
+        } else {
+            //$('#profileCheckInLi').removeClass('hidden');
+            $('#profileCheckOutLi').addClass('hidden');
+        }
     },
 
     // Main entry point for userstatus modal
