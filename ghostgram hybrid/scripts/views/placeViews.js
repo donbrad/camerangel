@@ -83,7 +83,7 @@ var placesView = {
                 var placeId = LZString.compressToEncodedURIComponent(place.uuid);
 
                 APP.kendo.navigate("#placeView?place="+placeId+"&returnview=places");
-                
+
         	},
         	swipe: function(e) {
                 // 
