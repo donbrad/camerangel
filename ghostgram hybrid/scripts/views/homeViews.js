@@ -86,11 +86,13 @@ var userStatusView = {
         status.set('isAvailable', user.isAvailable);
         userStatusView._activeStatus.bind('change' , userStatusView.syncUserStatus);
 
-
+        
+        
         // if there's a current checked in place -- select it in the list
         if (userStatusView._checkInPlaceId !== null) {
-
-           // Is the current place in the list of candidate places?
+        	$("#profileCheckOutLi").removeClass("hidden");
+        	$("#checkOut-text").text(user.currentPlace);
+           	// Is the current place in the list of candidate places?
             // Yes - select it
 
             // No - Select the first place in the list...
@@ -103,6 +105,8 @@ var userStatusView = {
         	$("#userStatusLocationBox").addClass("hidden");
 
         }
+		
+
 
         $(userStatusView._modalId).data("kendoMobileModalView").open();
 
@@ -144,7 +148,10 @@ var userStatusView = {
             userModel.checkIn(mapModel.currentPlaceId);
             mapModel.checkIn(mapModel.currentPlaceId);
             mobileNotify("You're checked in!");
-            $('#profileCheckOutLi').removeClass('hidden');
+            $('#profileCheckOutLi').velocity("slideDown", {begin: function(element){
+            	$(element).removeClass("hidden");
+            }
+        });
         } else {
             mobileNotify("No place to check in to...");
         }
@@ -155,7 +162,10 @@ var userStatusView = {
         _preventDefault(e);
 
         $('#profileCheckInLi').removeClass('hidden');
-        $('#profileCheckOutLi').addClass('hidden');
+        $('#profileCheckOutLi').velocity("slideUp", {complete: function(element){
+        	$(element).addClass("hidden");
+        	}
+    	});
         userStatusView._checkInPlaceId = null;
         userModel.checkOut();
         mapModel.checkOut();

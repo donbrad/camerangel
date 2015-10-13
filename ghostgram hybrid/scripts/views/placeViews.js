@@ -111,44 +111,39 @@ var placesView = {
         ux.changeActionBtnImg("#places", "icon-gps-light");
         ux.showActionBtn(false, "#places");
 
-
-
         ux.scrollUpSearch(e);
 
-
+        
         // get current position
-       	mapModel.getCurrentPosition( function (lat,lng) {
+       	 mapModel.getCurrentPosition( function (lat,lng) {
 
+           //Compute distance for all places based on current locaiton
+           mapModel.computePlaceDistance();
+           placesView.placeListDS.data(placesModel.placesDS.data());
+           
 
             var places = placesModel.matchLocation(lat, lng);
-            
+
             if (places.length === 0) {
                 mobileNotify("No places match your current location");
                 var findPlaceUrl = "#findPlace?lat="+ lat + "&lng=" +  lng +"&returnview=places";
                 // No current places match the current location
             	ux.showActionBtn(true, "#places", findPlaceUrl);
-            	$("#current-place").addClass("hidden").velocity("slideUp");
-            	ux.showActionBtnText("#places", "3.5rem", "Check in");
             } else {
-       			var currentPlace = places[0];
-
-
-            	//$("#current-place-name").text(currentPlace.name);
-            	//$("#current-place").removeClass("hidden").velocity("slideDown");
 
                 for (var i=0; i<places.length; i++) {
                     var found = false;
                     if (mapModel.currentPlaceId === places[i].uuid) {
                         found = true;
+                        //$("#current-place-name").text(places[i].name);
+        				//$("#current-place").removeClass("hidden").velocity("slideDown");
                     }
                 }
 
                 if (!found) {
                     mobileNotify("Are you at a new Place?");
                 }
-
                 // set placesView.placeListDS to results
-                
             }
 
         });
@@ -348,7 +343,7 @@ var findPlacesView = {
         }, function (placesResults, placesStatus) {
 
             if (placesStatus !== google.maps.places.PlacesServiceStatus.OK) {
-                mobileNotify('Google Places error: '+ placesStatus);
+                //mobileNotify('Google Places error: '+ placesStatus);
                 return;
             }
 
@@ -626,6 +621,9 @@ var editPlaceView = {
         model.set('isAvailable', newModel.isAvailable);
 
         mobileNotify("Updated " + newModel.name);
+
+        placesModel.placesDS.sync();
+
         var returnUrl = '#'+ editPlaceView._returnView;
 
         APP.kendo.navigate(returnUrl);
@@ -736,7 +734,8 @@ var checkInView = {
                 var place = e.dataItem, placeId = place.uuid;
                 mapModel.checkIn(placeId);
                 userModel.checkIn(placeId);
-
+                userStatus.update();
+                mobileNotify("You're checked in to " + place.name);
 
             }
         });

@@ -541,7 +541,11 @@
 			<span class="secondName"></span>
 		</h3>
 		<p id="profileStatusMessage"></p>
-		<p><a class="btnClear hidden" data-role="button" id="profileLocation">@ Main Street Park</a></p>
+		<p>
+			<a class="btnClear" data-role="button" id="profileLocation">
+				<span data-bind="text: checkedInPlace"></span>
+			</a>
+		</p>
 	</div>
 	<div class="modal-bottom">
 		<p class="caption right">
@@ -563,17 +567,15 @@
             <li id="profileCheckOutLi">
             	<div>
             		<div id="checked-in-place">
-            			<span style="width: 90%;" id="profileStatusCheckInPlace" data-bind="text: checkedInPlace"></span>
-            			<a class="btnClear-sm" data-role="button" data-click="userStatusView.checkOut">Check Out</a>
+            			
+            			<a class="btnClear-grey" data-role="button" data-click="userStatusView.checkOut"><img src="images/icon-checkout.svg" class="icon-sm" /> Leave <span id="checkOut-text"></span></a>
             		</div>
 				</div>
 			</li>
 			<li id="profileCheckInLi">
-				<a class="btnClear-sm" data-role="button" data-click="checkInView.locateAndOpenModal">
-					Check In
+				<a class="btnClear" data-role="button" data-click="checkInView.locateAndOpenModal">
+					<img src="images/icon-checkin-active.svg" class="icon-sm" /> Check In
 				</a>
-				<img src="images/icon-gps-selected.svg" height="12px"/>
-
         	</li>
 		</ul>
 	</div>
