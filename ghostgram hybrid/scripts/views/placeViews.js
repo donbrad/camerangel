@@ -725,6 +725,16 @@ var placeView = {
                 editPlaceView._returnView = e.view.params.returnview;
             }
 
+
+        }
+
+        // Toggle display of private/public icons -- todo: jordan might have other ideas...
+        if (placeView._activePlace.isPrivate) {
+            $('#publicPlaceView').addClass('hidden');
+            $('#privatePlaceView').removeClass('hidden');
+        } else {
+            $('#privatePlaceView').addClass('hidden');
+            $('#publicPlaceView').removeClass('hidden');
         }
     },
 

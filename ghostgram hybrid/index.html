@@ -587,9 +587,42 @@
 <div data-role="view" id="placeView" data-title="Place View" data-model="placeView._activePlace" class="appearance" data-layout="main" data-init="placeView.onInit" data-show="placeView.onShow" data-hide="placeView.onHide" data-transition="slide:up">
 	<div data-role="header">
 		<div data-role="navbar">
+			<a data-role="button"  data-align="left" data-click="placeView.onDone"><img src="images/nav-back.svg" /></a>
 			<span data-role="view-title"></span>
 		</div>
 	</div>
+	<form style="clear: both;" id="placeView-form">
+		<ul data-role="listview" data-style="inset" >
+			<li class="nameInput">
+				<label> Name </label>
+				<input type="text" class="input-text-lg" data-bind="value: name" name="Name"   readonly />
+			</li>
+			<li>
+				<label> Alias </label>
+				<input type="text" data-bind="value: alias" name="Alias"  readonly/>
+			</li>
+			<li>
+				<label> Address </label>
+				<input type="text" id="placeEdit-address" name="Address" data-bind="value: address" readonly />
+				<div style="padding-left: 8px; font-size: 12px;">
+					<span data-bind="html: city"></span>,
+					<span data-bind="html: state"></span>
+					<span data-bind="html: zipcode"></span>
+				</div>
+			</li>
+			<li>
+				<label>Place Type</label>
+				<div id="publicPlaceView" class="hidden">
+					<p><img src="images/place-public.svg" class="icon-btn" /> Public Place</p>
+					<p class="helper-sm">Public places are visible to all users. Great for restaurants and events!</p>
+				</div>
+				<div id="privatePlaceView" class="hidden">
+					<p><img src="images/place-private.svg" class="icon-btn" /> Private Place</p>
+					<p class="helper-sm">Private places are shared only with your contacts. Recommended for private residences and othe important places.</p>
+				</div>
+			</li>
+		</ul>
+	</form>
 </div>
 
 <div data-role="modalview" id="modalview-checkin" style="width: 90%; height:90%; display: none;" class="appearance" data-init="checkInView.onInit">
