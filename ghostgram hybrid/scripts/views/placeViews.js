@@ -99,10 +99,10 @@ var placesView = {
         mapModel.getCurrentAddress(function (isNew, address) {
             // Is this a new location
             if (isNew) {
-                modalView.openInfo("New Location","Are you somewhere new? Create a new Place!", "OK", null);
+                mapModel.computePlaceDistance();
+               // modalView.openInfo("New Location","Are you somewhere new? Create a new Place!", "OK", null);
             }
-
-            mapModel.computePlaceDistance();
+            
             placesView.placeListDS.data(placesModel.placesDS.data());
         });
 
