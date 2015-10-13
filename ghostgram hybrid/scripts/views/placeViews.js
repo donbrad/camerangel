@@ -90,13 +90,21 @@ var placesView = {
     onShow: function (e) {
         _preventDefault(e);
 
-        // update actionBtn
-        ux.showActionBtn(false, "#places");
+        // Always display the add places button so users can create a new place (even if others exist)
+        ux.showActionBtn(true, "#places");
         //$("#places > div.footerMenu.km-footer > a").removeAttr('href').css("display", "none");
 
+        mapModel.getCurrentAddress(function (isNew, address) {
+            // Is this a new location
+            if (isNew) {
+                modalView.openInfo("New Location","Are you somewhere new? Create a new Place!", "OK", null);
+            }
 
+            mapModel.computePlaceDistance();
+            placesView.placeListDS.data(placesModel.placesDS.data());
+        });
 
-       mapModel.getCurrentPosition( function (lat,lng) {
+       /*mapModel.getCurrentPosition( function (lat,lng) {
 
            //Compute distance for all places based on current locaiton
            mapModel.computePlaceDistance();
@@ -109,7 +117,7 @@ var placesView = {
                 mobileNotify("No places match your current location");
                 var findPlaceUrl = "#findPlace?lat="+ lat + "&lng=" +  lng +"&returnview=places";
                 // No current places match the current location
-            	ux.showActionBtn(true, "#places", findPlaceUrl);
+            	//ux.showActionBtn(true, "#places", findPlaceUrl);
             } else {
 
                 for (var i=0; i<places.length; i++) {
@@ -125,7 +133,7 @@ var placesView = {
                 // set placesView.placeListDS to results
             }
 
-        });
+        });*/
     },
 
     onHide: function (e) {
