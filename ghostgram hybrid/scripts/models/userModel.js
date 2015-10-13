@@ -16,7 +16,7 @@ var userModel = {
     rememberUserName : false,
     initialView : '#newuserhome',
     // Current place that user has checked in to.  Can
-    checkedInPlace: {},
+    checkedInPlace: "",
     checkedInPlaceId: null,
     isCheckedIn: false,
 
@@ -204,7 +204,7 @@ var userModel = {
     checkIn : function (placeId) {
         var place = placesModel.getPlaceModel(placeId);
 
-        userModel.checkedInPlace = place;
+        userModel.checkedInPlace = place.name;
         userModel.checkedInPlaceId = placeId;
         userModel.currentUser.set('currentPlace',place.name);
         userModel.currentUser.set('currentPlaceId', place.uuid);
@@ -215,7 +215,7 @@ var userModel = {
 
     checkOut : function () {
         userModel.isCheckedIn = false;
-        userModel.checkedInPlace = {};
+        userModel.checkedInPlace = "";
         userModel.checkedInPlaceId = null;
         userModel.currentUser.set('isCheckedIn', false);
     },
@@ -368,6 +368,7 @@ var userStatus = {
             case 'photo' :
             case 'isAvailable' :
             case 'isVisible' :
+            case 'isCheckedIn' :
             case 'statusMessage' :
             case 'currentPlace' :
             case 'currentPlaceUUID' :

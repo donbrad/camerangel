@@ -21,7 +21,7 @@ var userStatusView = {
 
         // Set name/alias layout
         ux.formatNameAlias(user.name, user.alias, "#modalview-profileStatus");
-        $('#profileStatusMessage').text(user.statusMessage);
+        $('#profileStatusMessage').text(user.get('statusMessage'));
 
         // Zero the status character count
         $( "#profileStatusCount").text(userStatusView._profileStatusMax);
