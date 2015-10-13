@@ -638,6 +638,7 @@ var checkInView = {
                 userModel.checkIn(placeId);
                 userStatus.update();
                 mobileNotify("You're checked in to " + place.name);
+                checkInView.closeModal();
 
             }
         });
@@ -679,6 +680,11 @@ var checkInView = {
         }
     },
 
+    addPlace: function (e) {
+
+    },
+
+    
     onDone: function (e) {
         _preventDefault(e);
 
