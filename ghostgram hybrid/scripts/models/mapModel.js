@@ -210,8 +210,7 @@ var mapModel = {
     },
 
     _updatePosition : function (lat, lng) {
-
-        lat = parseInt(lat); lng=parseInt(lng);
+        
         mapModel.lat = lat; mapModel.lng = lng;
         mapModel.latlng = new google.maps.LatLng(lat, lng);
         window.localStorage.setItem('ggLastPosition', JSON.stringify({lat: lat, lng: lng}));
