@@ -20,7 +20,7 @@ function _socialShare (message, subject, url, file) {
 
 
 	if (url !== null) {
-		var encodedurl = encodeURIComponent(url);
+		var encodedurl = url.replace(/-/g, '%2D');
 
 		_createBitlyUrl(encodedurl, function (bitUrl) {
 			window.plugins.socialsharing.share (
