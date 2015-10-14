@@ -230,7 +230,7 @@ function resizeSuccessThumb (data) {
     photo.set('lng', mapModel.lng);
     photo.set('geoPoint', new Parse.GeoPoint(mapModel.lat, mapModel.lng));
 
-    if (mapModel.currentAddress.city !== undefined) {
+    if (mapModel.currentAddress !== null && mapModel.currentAddress.city !== undefined) {
         var addressStr = mapModel.currentAddress.city + ', ' + mapModel.currentAddress.state + '  ' + mapModel.currentAddress.zipcode;
         photo.set('addressString', addressStr);
     }
