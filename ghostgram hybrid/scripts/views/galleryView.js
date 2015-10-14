@@ -474,7 +474,7 @@ var modalGalleryView = {
         _preventDefault(e);
 
         var photoId = e.dataItem.photoId, photoUrl = e.dataItem.imageUrl, thumbUrl = e.dataItem.thumbnailUrl;
-     
+
         currentChannelModel.currentMessage.photo = {thumb: thumbUrl, photo: photoUrl};
         if (modalGalleryView._callback !== null) {
             modalGalleryView._callback(photoUrl);
