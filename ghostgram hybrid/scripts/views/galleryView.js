@@ -476,7 +476,7 @@ var modalGalleryView = {
         var photoId = e.dataItem.photoId, photoUrl = e.dataItem.imageUrl;
 
         if (modalGalleryView._callback !== null) {
-            callback(photoUrl);
+            modalGalleryView._callback(photoUrl);
             modalGalleryView.closeModal();
         }
        /* galleryView._currentPhotoUrl = photoUrl;
