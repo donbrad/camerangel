@@ -20,7 +20,7 @@ function _socialShare (message, subject, url, file) {
 
 	var encodedurl = encodeURIComponent(url);
 
-	_createBitlyUrl(url, function (bitUrl) {
+	_createBitlyUrl(encodedurl, function (bitUrl) {
 		window.plugins.socialsharing.share (
 			message,
 			subject,
