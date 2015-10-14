@@ -436,6 +436,16 @@ var photoEditor = {
 
 
 var modalPhotoView = {
+    _photoUrl : null,
+
+    openModal : function (url) {
+        modalPhotoView._photoUrl = url;
+        $("#modalPhotoView").data("kendoMobileModalView").open();
+    },
+
+    closeModal : function () {
+        $("#modalPhotoView").data("kendoMobileModalView").close();
+    },
 
    sharePhoto: function (e) {
        _preventDefault(e);
@@ -443,7 +453,8 @@ var modalPhotoView = {
            mobileNotify("Export and Sharing only on device...");
 
        } else {
-           _socialShare(null, null, $('#modalPhotoViewImage').attr('src'), null);
+           var url = $('#modalPhotoViewImage').attr('src');
+           _socialShare(null, null, url , null);
        }
    }
 };

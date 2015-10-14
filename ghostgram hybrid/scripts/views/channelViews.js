@@ -988,7 +988,7 @@ var channelView = {
         	// Open this img full screen
             var photoUrl = message.data.photo.photo;
             $('#modalPhotoViewImage').attr('src', photoUrl);
-            $("#modalPhotoView").data("kendoMobileModalView").open();
+            modalPhotoView.openModal(photoUrl);
         }
 
         if (channelView.privacyMode) {
