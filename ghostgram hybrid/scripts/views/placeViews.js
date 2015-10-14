@@ -723,7 +723,7 @@ var placeView = {
             }
 
             if (e.view.params.returnview !== undefined){
-                editPlaceView._returnView = e.view.params.returnview;
+                placeView._returnView = e.view.params.returnview;
             }
 
         }
