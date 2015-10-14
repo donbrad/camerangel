@@ -988,7 +988,7 @@ var channelView = {
         	// Open this img full screen
             var photoUrl = message.data.photo.photo;
             $('#photoViewImage').attr('src', photoUrl);
-            $("#photoView").data("kendoMobileModalView").open();
+            $("#modalPhotoView").data("kendoMobileModalView").open();
         }
 
         if (channelView.privacyMode) {
@@ -1095,7 +1095,7 @@ var channelView = {
      messageGallery : function (e) {
         _preventDefault(e);
 
-        APP.kendo.navigate("views/gallery.html#gallery?action=chat");
+        APP.kendo.navigate("views/gallery.html#gallery?mode=picker");
 
     },
 
