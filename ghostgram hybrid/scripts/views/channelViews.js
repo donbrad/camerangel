@@ -1083,7 +1083,6 @@ var channelView = {
     messagePhoto : function (e) {
         _preventDefault(e);
         // Call the device gallery function to get a photo and get it scaled to gg resolution
-        //todo: need to parameterize these...
         deviceGallery(
             1600, // max resolution in pixels
             75,  // quality: 1-99.
