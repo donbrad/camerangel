@@ -987,8 +987,8 @@ var channelView = {
         if (target.hasClass('chat-message-photo')) {
         	// Open this img full screen
             var photoUrl = message.data.photo.photo;
-            $('#photoViewImage').attr('src', photoUrl);
-            $("#photoView").data("kendoMobileModalView").open();
+            $('#modalPhotoViewImage').attr('src', photoUrl);
+            modalPhotoView.openModal(photoUrl);
         }
 
         if (channelView.privacyMode) {
@@ -1083,7 +1083,6 @@ var channelView = {
     messagePhoto : function (e) {
         _preventDefault(e);
         // Call the device gallery function to get a photo and get it scaled to gg resolution
-        //todo: need to parameterize these...
         deviceGallery(
             1600, // max resolution in pixels
             75,  // quality: 1-99.
@@ -1095,7 +1094,8 @@ var channelView = {
      messageGallery : function (e) {
         _preventDefault(e);
 
-        APP.kendo.navigate("views/gallery.html#gallery?action=chat");
+         modalGalleryView.openModal(channelView.showChatImagePreview);
+      //  APP.kendo.navigate("views/gallery.html#gallery?mode=picker");
 
     },
 

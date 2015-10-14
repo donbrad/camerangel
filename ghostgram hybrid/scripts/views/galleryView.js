@@ -19,6 +19,7 @@ var galleryView = {
     _currentPhoto: {},
     _currentPhotoId: null,
     _currentPhotoUrl: null,
+    _previewSize: "33%",
 
     onInit : function (e) {
         _preventDefault(e);
@@ -39,7 +40,7 @@ var galleryView = {
         var itemWidth = $(window).width()/4;
         photoModel.rotationAngle = 0;
         photoModel.optionsHidden = true;
-        photoModel.previewSize = "33%";
+
         photoModel.optionsShown = true;
 
 
@@ -121,7 +122,7 @@ var galleryView = {
         	$actionBtn.css("display", "inline-block");
         } 
 
-        if(photoModel.previewSize === "33%"){
+        if(galleryView._previewSize === "33%"){
         	$actionBtnP.text("List view");
         	$actionBtnImg.attr("src", "images/gallery-list.svg");
         } else {
@@ -164,19 +165,19 @@ var galleryView = {
     	_preventDefault(e);
     	var $actionBtnP = $("#gallery > div.footerMenu.km-footer > a > span > p");
     	
-		if(photoModel.previewSize === "33%") {
+		if(galleryView._previewSize === "33%") {
 			ux.changeActionBtnImg("#gallery", "gallery-grid");
 			$actionBtnP.text("Grid view");
-			
-			photoModel.previewSize = "100%";
+
+            galleryView._previewSize = "100%";
 		} else {
 			ux.changeActionBtnImg("#gallery", "gallery-list");
 			$actionBtnP.text("List view");
-			photoModel.previewSize = "33%";
+            galleryView._previewSize = "33%";
 			
 		}
-		$("#gallery-listview li").css("width",photoModel.previewSize);
-        $("#gallery-listview li").css("padding-bottom",photoModel.previewSize);
+		$("#gallery-listview li").css("width",galleryView._previewSize);
+        $("#gallery-listview li").css("padding-bottom",galleryView._previewSize);
     },
 
     selectCategory : function (e){
@@ -430,5 +431,83 @@ var photoEditor = {
         }
     }
 
+
+};
+
+
+var modalPhotoView = {
+    _photoUrl : null,
+
+    openModal : function (url) {
+        modalPhotoView._photoUrl = url;
+        $("#modalPhotoView").data("kendoMobileModalView").open();
+    },
+
+    closeModal : function () {
+        $("#modalPhotoView").data("kendoMobileModalView").close();
+    },
+
+   sharePhoto: function (e) {
+       _preventDefault(e);
+       if (window.navigator.simulator === true) {
+           mobileNotify("Export and Sharing only on device...");
+
+       } else {
+           var url = $('#modalPhotoViewImage').attr('src');
+           _socialShare(null, null, url , null);
+       }
+   }
+};
+
+
+var modalGalleryView = {
+
+    _callback: null,
+
+    openModal: function (callback) {
+
+        if (callback !== undefined) {
+            modalGalleryView._callback = callback;
+        }
+
+        $("#modalgallery-listview li").css("width","100%");
+        $("#modalgallery-listview li").css("padding-bottom","100%");
+        $("#modalGalleryView").data("kendoMobileModalView").open();
+
+    },
+
+    closeModal: function (e) {
+        _preventDefault(e);
+        $("#modalGalleryView").data("kendoMobileModalView").close();
+    },
+
+    galleryClick : function (e) {
+        _preventDefault(e);
+
+        var photoId = e.dataItem.photoId, photoUrl = e.dataItem.imageUrl, thumbUrl = e.dataItem.thumbnailUrl;
+
+        currentChannelModel.currentMessage.photo = {thumb: thumbUrl, photo: photoUrl};
+        if (modalGalleryView._callback !== null) {
+            modalGalleryView._callback(photoUrl);
+            modalGalleryView.closeModal();
+        }
+       /* galleryView._currentPhotoUrl = photoUrl;
+        galleryView._currentPhotoId = photoId;
+
+        galleryView._currentPhoto = photoModel.findPhotoById(photoId);
+
+        $('#photoViewImage').attr('src', photoUrl);
+        $('#photoTagImage').attr('src', photoUrl);
+        //       $('#photoEditImage').attr('src', photoUrl);
+
+        if (galleryView._pickerMode) {
+            channelView.showChatImagePreview(photoUrl);
+            APP.kendo.navigate('#:back');
+
+        } else {
+            var photoParam = LZString.compressToEncodedURIComponent(photoId);
+            APP.kendo.navigate('#photoView?photo='+photoParam);
+        }*/
+    }
 
 };

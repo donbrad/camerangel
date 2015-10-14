@@ -236,5 +236,13 @@ var mapModel = {
             callback(mapModel.lat, mapModel.lng);
         }
 
+    },
+
+    setMapCenter : function (lat, lng) {
+        if (lat === undefined || lng === undefined) {
+            lat = mapModel.lat;
+            lng = mapModel.lng;
+        }
+        mapModel.googleMap.setCenter({lat : lat, lng: lng});
     }
 };

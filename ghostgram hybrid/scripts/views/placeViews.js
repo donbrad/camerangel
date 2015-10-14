@@ -695,6 +695,7 @@ var editPlaceView = {
 var placeView = {
     _activePlace :  new kendo.data.ObservableObject(),
     _activePlaceId : null,
+    _activePlaceModel : null,
     _lat: null,
     _lng: null,
     _returnView : 'places',
@@ -722,9 +723,8 @@ var placeView = {
             }
 
             if (e.view.params.returnview !== undefined){
-                editPlaceView._returnView = e.view.params.returnview;
+                placeView._returnView = e.view.params.returnview;
             }
-
 
         }
 
@@ -736,6 +736,8 @@ var placeView = {
             $('#privatePlaceView').addClass('hidden');
             $('#publicPlaceView').removeClass('hidden');
         }
+
+        mapModel.setMapCenter(placeView._activePlaceModel.lat, placeView._activePlaceModel.lng);
     },
 
     onHide : function (e) {
@@ -756,6 +758,7 @@ var placeView = {
 
         var placeObj = placesModel.getPlaceModel(placeId);
 
+        placeView._activePlaceModel = placeObj;
         placeView._activePlace.set('name', placeObj.name);
         placeView._activePlace.set('alias', placeObj.alias);
         placeView._activePlace.set('address', placeObj.address);
