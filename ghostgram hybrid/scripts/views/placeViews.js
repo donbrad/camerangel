@@ -251,8 +251,8 @@ var findPlacesView = {
             if (e.view.params.lat !== undefined) {
                 lat = e.view.params.lat;
                 lng = e.view.params.lng;
-                findPlacesView._lat = lat;
-                findPlacesView._lng = lng;
+                findPlacesView._lat = parseFloat(lat);
+                findPlacesView._lng = parseFloat(lng);
             }
 
             if (e.view.params.returnview !== undefined){
