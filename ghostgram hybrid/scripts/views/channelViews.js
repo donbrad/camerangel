@@ -987,7 +987,7 @@ var channelView = {
         if (target.hasClass('chat-message-photo')) {
         	// Open this img full screen
             var photoUrl = message.data.photo.photo;
-            $('#photoViewImage').attr('src', photoUrl);
+            $('#modalPhotoViewImage').attr('src', photoUrl);
             $("#modalPhotoView").data("kendoMobileModalView").open();
         }
 
