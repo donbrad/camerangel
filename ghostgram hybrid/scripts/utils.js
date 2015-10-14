@@ -18,6 +18,8 @@ String.prototype.smartTruncate =
 
 function _socialShare (message, subject, url, file) {
 
+	url = encodeURI(url);
+	
 	_createBitlyUrl(url, function (bitUrl) {
 		window.plugins.socialsharing.share (
 			message,
