@@ -336,7 +336,10 @@ var photoView = {
             mobileNotify("Export and Sharing only on device...");
 
         } else {
-            _socialShare(null, null, photoView._activePhotoUrl, null);
+
+           // _socialShare(null, null, photoView._activePhotoUrl, null);
+
+            _socialShare(null, null,  null, photoView._activePhoto.image);
         }
     },
 
