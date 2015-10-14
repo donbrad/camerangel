@@ -1095,7 +1095,7 @@ var channelView = {
      messageGallery : function (e) {
         _preventDefault(e);
 
-         modalGalleryView.openModal();
+         modalGalleryView.openModal(channelView.showChatImagePreview);
       //  APP.kendo.navigate("views/gallery.html#gallery?mode=picker");
 
     },

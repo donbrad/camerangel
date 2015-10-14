@@ -451,10 +451,16 @@ var modalPhotoView = {
 
 var modalGalleryView = {
 
-    openModal: function (e) {
-        _preventDefault(e);
-        $("#modalgallery-listview li").css("width","33%");
-        $("#modalgallery-listview li").css("padding-bottom","33%");
+    _callback: null,
+
+    openModal: function (callback) {
+
+        if (callback !== undefined) {
+            modalGalleryView._callback = callback;
+        }
+
+        $("#modalgallery-listview li").css("width","100%");
+        $("#modalgallery-listview li").css("padding-bottom","100%");
         $("#modalGalleryView").data("kendoMobileModalView").open();
 
     },
@@ -469,6 +475,10 @@ var modalGalleryView = {
 
         var photoId = e.dataItem.photoId, photoUrl = e.dataItem.imageUrl;
 
+        if (modalGalleryView._callback !== null) {
+            callback(photoUrl);
+            modalGalleryView.closeModal();
+        }
        /* galleryView._currentPhotoUrl = photoUrl;
         galleryView._currentPhotoId = photoId;
 
