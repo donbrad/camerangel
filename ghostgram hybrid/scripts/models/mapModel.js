@@ -66,6 +66,7 @@ var mapModel = {
     },
 
     setLatLng : function (lat, lng) {
+
         mapModel.lat = lat;
         mapModel.lng = lng;
         mapModel.lastPosition.lat = lat;
@@ -209,6 +210,8 @@ var mapModel = {
     },
 
     _updatePosition : function (lat, lng) {
+
+        lat = parseInt(lat); lng=parseInt(lng);
         mapModel.lat = lat; mapModel.lng = lng;
         mapModel.latlng = new google.maps.LatLng(lat, lng);
         window.localStorage.setItem('ggLastPosition', JSON.stringify({lat: lat, lng: lng}));
@@ -225,7 +228,7 @@ var mapModel = {
             navigator.geolocation.getCurrentPosition(function (position) {
                 // Mask lat / lng to 6 digits to standardize comparison results
                 var lat = position.coords.latitude.toFixed(6), lng = position.coords.longitude.toFixed(6);
-                mapModel._updatePosition(lat, lng);
+                mapModel._updatePosition(parseFloat(lat), parseFloat(lng));
 
                 callback(lat, lng);
             }, function (error) {
