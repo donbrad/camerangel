@@ -1095,7 +1095,8 @@ var channelView = {
      messageGallery : function (e) {
         _preventDefault(e);
 
-        APP.kendo.navigate("views/gallery.html#gallery?mode=picker");
+         modalGalleryView.openModal();
+      //  APP.kendo.navigate("views/gallery.html#gallery?mode=picker");
 
     },
 
