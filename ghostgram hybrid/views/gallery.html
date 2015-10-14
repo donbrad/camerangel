@@ -189,9 +189,7 @@
  <script type="text/x-kendo-template" id="gallery-template">
      <div>
          <div class="galleryImgBox">
-			 #if (phoneUrl !== undefined && phoneUrl !== '') { #
-			 <img class="galleryImg" src="#=phoneUrl#" />
-			# } else if (imageUrl !== undefined && imageUrl !== '') { #
+			# if (imageUrl !== undefined && imageUrl !== '') { #
              <img class="galleryImg" src="#=imageUrl#" />
 			 # } else { #
 			 <img class="galleryImg" src="#=thumbnailUrl#" />
