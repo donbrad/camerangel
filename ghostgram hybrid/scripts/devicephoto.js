@@ -217,7 +217,7 @@ function resizeSuccessThumb (data) {
 
     photo.setACL(userModel.parseACL);
     photo.set('photoId', photoModel.currentPhoto.photoId);
-    photo.set('phoneUrl', photoModel.currentPhoto.phoneUrl);
+    photo.set('deviceUrl', photoModel.currentPhoto.phoneUrl);
     photo.set('channelId', currentChannelModel.currentChannel.get('channelId'));
     photo.set('channelName', currentChannelModel.currentChannel.get('name'));
 
@@ -228,7 +228,7 @@ function resizeSuccessThumb (data) {
 
     photo.set('lat', mapModel.lat);
     photo.set('lng', mapModel.lng);
-    photo.set('geoPoint', new Parse.GeoPoint(mapModel.lat, mapModel.lng));
+    photo.set('geoPoint', new Parse.GeoPoint(parseFloat(mapModel.lat), parseFloat(mapModel.lng)));
 
     if (mapModel.currentAddress !== null && mapModel.currentAddress.city !== undefined) {
         var addressStr = mapModel.currentAddress.city + ', ' + mapModel.currentAddress.state + '  ' + mapModel.currentAddress.zipcode;
