@@ -115,7 +115,8 @@ var placesView = {
     },
 
     deletePlaceBtn: function(e){
-    	// Todo Don - wire delete place
+        var placeId = e.button[0].dataset["id"];
+    	placesModel.deletePlace(placeId);
     },
 
     onShow: function (e) {
