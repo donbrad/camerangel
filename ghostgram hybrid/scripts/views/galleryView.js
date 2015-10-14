@@ -432,3 +432,17 @@ var photoEditor = {
 
 
 };
+
+
+var modalPhotoView = {
+
+   sharePhoto: function (e) {
+       _preventDefault(e);
+       if (window.navigator.simulator === true) {
+           mobileNotify("Export and Sharing only on device...");
+
+       } else {
+           _socialShare(null, null, $('#modalPhotoViewImage').attr('src'), null);
+       }
+   }
+};
