@@ -226,8 +226,8 @@ var mapModel = {
             var options = mapModel.gpsOptions;
             navigator.geolocation.getCurrentPosition(function (position) {
                 // Mask lat / lng to 6 digits to standardize comparison results
-                var lat = position.coords.latitude.toFixed(6), lng = position.coords.longitude.toFixed(6);
-                mapModel._updatePosition(parseFloat(lat), parseFloat(lng));
+                var lat = parseFloat(position.coords.latitude.toFixed(6)), lng = parseFloat(position.coords.longitude.toFixed(6));
+                mapModel._updatePosition(lat, lng);
 
                 callback(lat, lng);
             }, function (error) {
