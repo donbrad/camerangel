@@ -316,8 +316,6 @@ var ghostEditView = {
                 "bold",
                 "italic",
                 "underline",
-                "fontSize",
-                "fontName",
                 "justifyLeft",
                 "justifyCenter",
                 "justifyRight",
@@ -356,7 +354,9 @@ var ghostEditView = {
         }
 
         if (ghostEditView._callback  !== null) {
-            ghostEditView._callback();
+            // Convert the string passed back to a function
+            var callBack = new Function(ghostEditView._callback);
+           callBack();
         }
     },
 
