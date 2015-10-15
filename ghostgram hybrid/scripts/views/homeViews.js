@@ -325,7 +325,6 @@ var ghostEditView = {
             tools: [
                 "bold",
                 "italic",
-                "underline",
                 "justifyLeft",
                 "justifyCenter",
                 "justifyRight",
