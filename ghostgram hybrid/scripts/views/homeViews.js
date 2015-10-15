@@ -373,7 +373,7 @@ var ghostEditView = {
                 isHtml:      true
             }, function (msg) {
                 mobileNotify("Email sent to " + thisUser);
-                ghostEditView.closeModal(e);
+                ghostEditView.closeModal();
                 // navigator.notification.alert(JSON.stringify(msg), null, 'EmailComposer callback', 'Close');
             });
         }
