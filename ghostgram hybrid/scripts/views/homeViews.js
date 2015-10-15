@@ -331,13 +331,15 @@ var ghostEditView = {
                 "insertUnorderedList",
                 "insertOrderedList",
                 "indent",
-                "outdent"
+                "outdent",
+                "insertImage"
             ]
         });
     },
 
     onShow : function (e) {
         _preventDefault(e);
+
         $('#ghostEmailEditor').data("kendoEditor").value("");
     },
 
@@ -362,6 +364,7 @@ var ghostEditView = {
                 isHtml:      true
             }, function (msg) {
                 mobileNotify("Email sent to " + thisUser);
+
                 // navigator.notification.alert(JSON.stringify(msg), null, 'EmailComposer callback', 'Close');
             });
         }
