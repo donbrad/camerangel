@@ -803,6 +803,29 @@
 			</div>
 		</div>
 </div>
+
+
+<div data-role="modalview"  id="ghostEditModal" data-init="ghostEditView.onInit" data-show="ghostEditView.onShow" >
+	<div class="modalview-content">
+		<a class="closeBox left" data-click="ghostEditView.closeModal" data-role="button">
+			<img src="images/close.svg" />
+		</a>
+
+		<a class="btnClear right" data-role="button" data-click="ghostEditView.sendGhostEmail"  ></i>Send</a>
+
+	</div>
+
+	<div id="ghostEmailwrapper" style="width: 100%; height:100%;">
+
+		<textarea id="ghostEmailEditor" contenteditable="true" class="editor" rows="80" cols="80" >
+
+
+		</textarea>
+
+	</div>
+
+</div>
+
 <!-- Testing modal -->
 <div data-role="modalview" id="testing" style="width: 90%; display:none;" class="appearance">
 	<div class="modalview-content">

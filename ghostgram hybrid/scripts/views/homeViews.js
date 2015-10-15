@@ -318,9 +318,12 @@ var modalView = {
 
 
 var ghostEditView = {
+    _callback : null,
+
     onInit: function (e) {
 
         _preventDefault(e);
+
         $("#ghostEmailEditor").kendoEditor({
             tools: [
                 "bold",
@@ -335,6 +338,25 @@ var ghostEditView = {
                 "outdent"
             ]
         });
+    },
+
+    openModal : function(callback) {
+        _preventDefault(e);
+
+        if (callback !== undefined) {
+            ghostEditView._callback = callback;
+        } else {
+            ghostEditView._callback = null;
+        }
+        $('#ghostEmailEditor').data("kendoEditor").value("");
+        $('#ghostEditModal').data('kendoMobileModalView').open();
+    },
+
+    closeModal : function (e) {
+        $('#ghostEditModal').data('kendoMobileModalView').close();
+        if (ghostEditView._callback  !== null) {
+            ghostEditView._callback();
+        }
     },
 
     onShow : function (e) {
@@ -364,7 +386,7 @@ var ghostEditView = {
                 isHtml:      true
             }, function (msg) {
                 mobileNotify("Email sent to " + thisUser);
-
+                ghostEditView.closeModal(e);
                 // navigator.notification.alert(JSON.stringify(msg), null, 'EmailComposer callback', 'Close');
             });
         }

@@ -926,6 +926,12 @@ var contactActionView = {
     },
 
 
+    ghostEmail : function () {
+        _preventDefault(e);
+        ghostEditView.openModal(function () {
+
+        });
+    },
 
     setContact : function (contactId) {
 

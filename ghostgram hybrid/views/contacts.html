@@ -56,8 +56,8 @@
 				</a>
 			</li>
 			<li>
-				<a class="btnClear" data-role="button" data-click="ghostEmail">
-				<img src="images/icon-ghostMail.svg" /> Rich Email</a>
+				<a class="btnClear" data-role="button" data-click="contactActionView.ghostEmail">
+				<img src="images/icon-ghostMail.svg" />  ghostgrams Email</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="contactCallPhone">
@@ -450,22 +450,3 @@
 </div>
 
 
-<div data-role="view" data-title="ghostEmail" id="ghostEmail" data-layout="main" data-init="ghostEditView.onInit" data-show="ghostEditView.onShow" >
-	<div data-role="header">
-		<div data-role="navbar">
-			<span data-role="view-title"></span>
-			<a data-role="button"  data-align="left" href="#:back" ><img src="images/nav-back.svg" /></a>
-			<a data-role="button" data-click="ghostEditView.sendGhostEmail" data-align="right" ></i>Send</a>
-		</div>
-	</div>
-
-	<div id="ghostEmailwrapper" style="width: 100%; height:100%;">
-		
-		<textarea id="ghostEmailEditor" contenteditable="true" class="editor" rows="80" cols="80" >
-
-
-		</textarea>
-		
-	</div>
-
-</div>

@@ -843,10 +843,10 @@ function contactsPickContact(e) {
 }
 
 function ghostEmail(e) {
-    if (e !== undefined && e.preventDefault !== undefined) {
-        e.preventDefault();
-    }
-    APP.kendo.navigate("#ghostEmail");
+    _preventDefault(e);
+    ghostEditView.openModal(function () {
+
+    });
 }
 
 function onInitGhostEmail(e) {
