@@ -144,7 +144,7 @@ var contactsView = {
     onShow : function (e) {
        _preventDefault(e);
 
-        contactModel.contactListDS.data(contactModel.contactsDS.data());
+       // contactModel.contactListDS.data(contactModel.contactsDS.data());
         //APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
 
         contactModel.updateContactListStatus();

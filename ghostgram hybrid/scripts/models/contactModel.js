@@ -221,6 +221,11 @@ var contactModel = {
                 }
                 deviceModel.setAppState('hasContacts', true);
                 contactModel.contactsDS.data(models);
+
+                // Update contactlistDs and get latest status for contacts
+                contactModel.contactListDS.data(models);
+                contactModel.updateContactListStatus();
+                
                 deviceModel.isParseSyncComplete();
             },
             error: function(collection, error) {
@@ -298,7 +303,7 @@ var contactModel = {
         var dataSource = contactModel.contactListDS;
         dataSource.filter( { field: "contactUUID", operator: "eq", value: contactUUID });
         var view = dataSource.view();
-        var contact = view[0];
+        var contact = view[0].items[0];
         dataSource.filter([]);
 
         return(contact);
@@ -308,7 +313,7 @@ var contactModel = {
         var dataSource = contactModel.contactListDS;
         dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
         var view = dataSource.view();
-        var contact = view[0];
+        var contact = view[0].items[0];
         dataSource.filter([]);
 
         return(contact);
