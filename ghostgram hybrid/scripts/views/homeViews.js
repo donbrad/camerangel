@@ -61,19 +61,13 @@ var userStatusView = {
         
         
         // if there's a current checked in place -- select it in the list
-        if (userStatusView._checkInPlaceId !== null) {
+        if (userModel.checkedInPlaceId !== null && userModel.isCheckedIn) {
 
         	$("#profileCheckOutLi").removeClass("hidden");
-        	$("#checkOut-text").text(user.currentPlace);
-           	// Is the current place in the list of candidate places?
+        	$("#checkOut-text").text(userModel.currentPlace);
 
-            // Is the current place in the list of candidate places?
-
-            // Yes - select it
-
-            // No - Select the first place in the list...
-            //Todo: don - wire this up
         } else {
+            $('#profileCheckOutLi').addClass('hidden');
         	// hide checkout if not checked in
         	$("#checked-in-place").addClass("hidden");
 
@@ -81,15 +75,7 @@ var userStatusView = {
         	$("#userStatusLocationBox").addClass("hidden");
 
         }
-		
 
-
-        if (mapModel.currentPlaceId !== null) {
-            $('#profileCheckOutLi').removeClass('hidden');
-        } else {
-            //$('#profileCheckInLi').removeClass('hidden');
-            $('#profileCheckOutLi').addClass('hidden');
-        }
     },
 
     // Main entry point for userstatus modal
@@ -110,11 +96,11 @@ var userStatusView = {
 
         mapModel.getCurrentAddress(function (isNew, address) {
             // Is this a new location
-            if (isNew) {
+           /* if (isNew) {
                 $('#profileCheckInLi').removeClass('hidden');
             } else {
                 $('#profileCheckInLi').addClass('hidden');
-            }
+            }*/
         });
 
         userStatusView._update();
@@ -179,7 +165,6 @@ var userStatusView = {
         	$(element).addClass("hidden");
         	}
     	});
-        userStatusView._checkInPlaceId = null;
         userModel.checkOut();
         mapModel.checkOut();
         $('#profileStatusCheckInPlace').text('');
