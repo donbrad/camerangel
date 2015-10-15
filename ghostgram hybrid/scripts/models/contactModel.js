@@ -391,7 +391,7 @@ var contactModel = {
 
         for (var i=0; i<length; i++) {
             var contactId = array[i].contactUUID;
-            if (contactId !== undefined) {
+            if (contactId !== undefined && contactId !== null) {
                 contactModel.getContactStatusObject(contactId, function(user){
                     var userId = user.userUUID;
                     var contact = contactModel.getContactModel(userId);
