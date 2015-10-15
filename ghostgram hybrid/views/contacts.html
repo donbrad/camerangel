@@ -367,7 +367,10 @@
 						<p class="left caption contact-status">
 
 							# var message = "", location = ""; if (data.statusMessage !== undefined && data.statusMessage !== "") {message = data.statusMessage;} if (data.currentPlace !== undefined && data.currentPlace !== ""){ if (message !== "") {message += " @ " + data.currentPlace;} else {message = " @ " + data.currentPlace;}}#
-							<span class="contactStatusMessage-sm">#:message#</span>
+							<span class="contactStatusMessage-sm">#:data.statusMessage#</span>
+						</p>
+						<p class="left caption contact-status">
+							<span class="contactStatusMessage-sm">@ #:data.currentPlace#</span>
 						</p>
 						<div class="clearfix"></div>
 				#} else {#
