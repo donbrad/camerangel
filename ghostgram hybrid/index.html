@@ -551,10 +551,10 @@
 			</span>
 			<span class="secondName"></span>
 		</h3>
-		<p id="profileStatusMessage" data-bind="html: statusMessage"></p>
+		<p id="profileStatusMessage" data-bind="text: statusMessage"></p>
 		<p>
 			<a class="btnClear" data-role="button" id="profileLocation">
-				<span data-bind="text: checkedInPlace"></span>
+				<span data-bind="text: currentPlace"></span>
 			</a>
 		</p>
 	</div>
@@ -578,7 +578,7 @@
             <li id="profileCheckOutLi">
             	<div>
             		<div id="checked-in-place">
-            			<a class="btnClear-grey" data-role="button" data-click="userStatusView.checkOut"><img src="images/icon-checkout.svg" class="icon-sm" /> Leave <span id="checkOut-text" data-bind="html: currentPlace"></span></a>
+            			<a class="btnClear-grey" data-role="button" data-click="userStatusView.checkOut"><img src="images/icon-checkout.svg" class="icon-sm" /> Leave <span id="checkOut-text" data-bind="text: currentPlace"></span></a>
             		</div>
 				</div>
 			</li>
