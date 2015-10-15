@@ -308,7 +308,7 @@ var ghostEditView = {
     onInit: function (e) {
 
         _preventDefault(e);
-        
+
         mobileNotify("Initialized GhostEdit!");
         $("#ghostEmailEditor").kendoEditor({
             tools: [
