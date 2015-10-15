@@ -324,7 +324,10 @@ var ghostEditView = {
                 "insertOrderedList",
                 "indent",
                 "outdent",
-                "createTable"
+                "createTable",
+                "formatting",
+                "cleanFormatting",
+                "fontSize"
             ]
         });
     },
