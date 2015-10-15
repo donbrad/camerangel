@@ -27,9 +27,11 @@ var contactsView = {
 
         contactModel.deviceQueryActive = false;
 
-        contactModel.contactsDS.bind("change", function (e){
+        contactModel.contactsDS.bind("change", function (e) {
             var data = this.data();
             var ds = contactModel.contactListDS;
+
+            ds.data(data);
 
         });
 
