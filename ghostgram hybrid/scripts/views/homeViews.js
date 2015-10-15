@@ -308,7 +308,8 @@ var ghostEditView = {
     onInit: function (e) {
 
         _preventDefault(e);
-
+        
+        mobileNotify("Initialized GhostEdit!");
         $("#ghostEmailEditor").kendoEditor({
             tools: [
                 "bold",
@@ -334,6 +335,8 @@ var ghostEditView = {
         }
         $('#ghostEmailEditor').data("kendoEditor").value("");
         $('#ghostEditModal').data('kendoMobileModalView').open();
+        $('#ghostEmailEditor').data("kendoEditor").focus();
+
     },
 
     closeModal : function (e) {
