@@ -325,14 +325,14 @@ var ghostEditView = {
             tools: [
                 "bold",
                 "italic",
+                "underline",
                 "justifyLeft",
                 "justifyCenter",
                 "justifyRight",
                 "insertUnorderedList",
                 "insertOrderedList",
                 "indent",
-                "outdent",
-                "insertImage"
+                "outdent"
             ]
         });
     },
