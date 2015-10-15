@@ -319,10 +319,12 @@ var ghostEditView = {
                 "justifyLeft",
                 "justifyCenter",
                 "justifyRight",
+                "justifyFull",
                 "insertUnorderedList",
                 "insertOrderedList",
                 "indent",
-                "outdent"
+                "outdent",
+                "createTable"
             ]
         });
     },
