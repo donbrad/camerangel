@@ -49,6 +49,16 @@ var contactModel = {
     init : function () {
 
         contactModel.contactListDS.online(false);
+
+        // Reflect any core contact changes to contactList
+        contactModel.contactsDS.bind("change", function (e) {
+            var data = this.data();
+            var ds = contactModel.contactListDS;
+
+
+
+        });
+        
         /*  contactModel.contactsDS = parseKendoDataSourceFactory.make('contacts',
           {
                 id: 'id',

@@ -27,15 +27,6 @@ var contactsView = {
 
         contactModel.deviceQueryActive = false;
 
-        contactModel.contactsDS.bind("change", function (e) {
-            var data = this.data();
-            var ds = contactModel.contactListDS;
-
-            ds.data(data);
-
-        });
-
-
         var dataSource = contactModel.contactListDS;
 
        /* // Activate clearsearch and zero the filter when it's called
