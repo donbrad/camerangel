@@ -276,8 +276,8 @@ var findPlacesView = {
                 mobileNotify('Google geocoding service error!');
                 return;
             }
-            if (geoResults.length === 0 || geoResults[0].types[0] !== 'street_address') {
-                mobileNotify('We couldn\'t match your position to a street address.');
+            if (geoResults.length === 0 ) {
+                mobileNotify('We couldn\'t match your position to an address.');
                 return;
             }
 

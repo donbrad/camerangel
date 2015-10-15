@@ -101,6 +101,13 @@ var userStatusView = {
 
        // mobileNotify("Updating your location...");
 
+        if (userModel.isCheckedIn && userModel.checkedInPlaceId !== null) {
+            // hide location if the user is not checked in
+            $("#profileLocation, #checked-in-place").removeClass("hidden");
+        } else {
+            $("#profileLocation, #checked-in-place").addClass("hidden");
+        }
+
         mapModel.getCurrentAddress(function (isNew, address) {
             // Is this a new location
             if (isNew) {
@@ -140,8 +147,10 @@ var userStatusView = {
 
         }
 
-        // hide location
-        $("#profileLocation, #checked-in-place").addClass("hidden");
+        if (!userModel.isCheckedIn && userModel.checkedInPlaceId === null) {
+            // hide location if the user is not checked in
+            $("#profileLocation, #checked-in-place").addClass("hidden");
+        }
     },
 
     checkIn : function (e) {
