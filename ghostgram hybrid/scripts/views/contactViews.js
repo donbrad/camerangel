@@ -926,7 +926,7 @@ var contactActionView = {
     },
 
 
-    ghostEmail : function () {
+    ghostEmail : function (e) {
         _preventDefault(e);
         ghostEditView.openModal(function () {
 
