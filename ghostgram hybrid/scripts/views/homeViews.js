@@ -354,7 +354,7 @@ var ghostEditView = {
     closeModal : function (e) {
 
         _preventDefault(e);
-        
+
         $('#ghostEditModal').data('kendoMobileModalView').close();
         if (ghostEditView._callback  !== null) {
             ghostEditView._callback();
