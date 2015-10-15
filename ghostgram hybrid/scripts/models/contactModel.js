@@ -37,6 +37,7 @@ var contactModel = {
     currentDeviceContact: {},
     unifiedDeviceContact: false,
     currentContact: null,
+    lastSyncTime : ggTime.currentTimeInSeconds(),
     phoneDS: new kendo.data.DataSource(),
     emailDS: new kendo.data.DataSource(),
     addressDS: new kendo.data.DataSource(),
@@ -387,6 +388,15 @@ var contactModel = {
     },
 
     updateContactListStatus : function () {
+        var time = ggTime.currentTimeInSeconds();
+
+        // Only sync contacts every 15 minutes
+        if (time < contactModel.lastSyncTime + 900) {
+            return;
+        }
+
+        contactModel.lastSyncTime = time;
+        
         var index = 0, length = contactModel.contactsDS.total(), array = contactModel.contactsDS.data();
 
         for (var i=0; i<length; i++) {
