@@ -805,24 +805,27 @@
 </div>
 
 
-<div data-role="modalview"  id="ghostEditModal" data-init="ghostEditView.onInit" style="width:100%; height: 100%; display: none;" >
-	<div class="modalview-content">
+<div data-role="modalview"  id="ghostEditModal" data-init="ghostEditView.onInit" style="width:100%; height: 90%; display: none;" >
+	<div class="modal-top">
 		<a class="closeBox left" data-click="ghostEditView.closeModal" data-role="button">
 			<img src="images/close.svg" />
 		</a>
-		<a class="btnClear right" data-role="button" data-click="ghostEditView.sendGhostEmail"  >Send</a>
-
 	</div>
 
-	<div id="ghostEmailwrapper" style="width: 100%; height:100%;">
+	<div class="modal-bottom">
+		<div id="ghostEmailwrapper" style="width: 100%; height:100%; color: black !important;">
 
-		<textarea id="ghostEmailEditor" contenteditable="true" class="editor" rows="100" cols="120" >
+			<textarea id="ghostEmailEditor" contenteditable="true" class="editor" rows="100" cols="120" >
 
 
-		</textarea>
+			</textarea>
 
+		</div>
 	</div>
 
+	<div class="footer" data-role="footer">
+		<a class="btnClear btnFull-modal" data-click="ghostEditView.sendGhostEmail" data-role="button">Send</a>
+	</div>
 </div>
 
 <!-- Testing modal -->
