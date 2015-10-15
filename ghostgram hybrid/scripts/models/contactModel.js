@@ -225,7 +225,7 @@ var contactModel = {
                 // Update contactlistDs and get latest status for contacts
                 contactModel.contactListDS.data(models);
                 contactModel.updateContactListStatus();
-                
+
                 deviceModel.isParseSyncComplete();
             },
             error: function(collection, error) {

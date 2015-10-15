@@ -315,3 +315,57 @@ var modalView = {
 
 
 };
+
+
+var ghostEditView = {
+    onInit: function (e) {
+
+        _preventDefault(e);
+        $("#ghostEmailEditor").kendoEditor({
+            tools: [
+                "bold",
+                "italic",
+                "underline",
+                "justifyLeft",
+                "justifyCenter",
+                "justifyRight",
+                "insertUnorderedList",
+                "insertOrderedList",
+                "indent",
+                "outdent"
+            ]
+        });
+    },
+
+    onShow : function (e) {
+        _preventDefault(e);
+        $('#ghostEmailEditor').data("kendoEditor").value("");
+    },
+
+    sendGhostEmail : function (e) {
+        _preventDefault(e);
+
+        var content = $('#ghostEmailEditor').data("kendoEditor").value();
+        var contactKey = contactModel.currentContact.get('publicKey'), email = contactModel.currentContact.get('email');
+        if (contactKey === null) {
+            mobileNotify("Invalid Public Key for " + contactModel.currentContact.get('name'));
+            return;
+        }
+        var encryptContent = cryptico.encrypt(content, contactKey);
+        if (window.navigator.simulator === true){
+            alert("Mail isn't supported in the emulator");
+        } else {
+            var thisUser = userModel.currentUser.get('name');
+            cordova.plugins.email.open({
+                to:          [email],
+                subject:     'ghostEmail',
+                body:        '<h2>ghostEmail From ' + thisUser + '</h2> <p> !!Test - clear text included !!</p><p>'+ content +'</p> <p>'+ encryptContent.cipher + '</p>',
+                isHtml:      true
+            }, function (msg) {
+                mobileNotify("Email sent to " + thisUser);
+                // navigator.notification.alert(JSON.stringify(msg), null, 'EmailComposer callback', 'Close');
+            });
+        }
+
+    }
+};

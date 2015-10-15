@@ -450,12 +450,12 @@
 </div>
 
 
-<div data-role="view" data-title="ghostEmail" id="ghostEmail" data-layout="main" data-init="onInitGhostEmail" data-show="onShowGhostEmail" >
+<div data-role="view" data-title="ghostEmail" id="ghostEmail" data-layout="main" data-init="ghostEditView.onInit" data-show="ghostEditView.onShow" >
 	<div data-role="header">
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
 			<a data-role="button"  data-align="left" href="#:back" ><img src="images/nav-back.svg" /></a>
-			<a data-role="button" data-click="sendGhostEmail" data-align="right" ></i>Send</a>
+			<a data-role="button" data-click="ghostEditView.sendGhostEmail" data-align="right" ></i>Send</a>
 		</div>
 	</div>
 
