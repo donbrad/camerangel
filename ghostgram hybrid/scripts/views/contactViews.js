@@ -876,7 +876,6 @@ var contactActionView = {
             var contactName = contact.name;
             var contactAlias = contact.alias;
             var contactVerified = contact.phoneVerified;
-            var contactIsAvailable = contact.isAvailable;
            
             contactActionView._activeContact.set('name', contactName);
             contactActionView._activeContact.set('alias', contactAlias);

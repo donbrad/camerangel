@@ -535,7 +535,7 @@
 	
 </div>
 
-<div data-role="modalview" id="modalview-profileStatus" style="width: 90%; display: none;" data-model="userStatusView"  data-init="userStatusView.onInit" data-open="userStatusView.onOpen">
+<div data-role="modalview" id="modalview-profileStatus" style="width: 90%; display: none;" data-model="userStatusView._activeContact"  data-init="userStatusView.onInit" data-open="userStatusView.onOpen">
 	<div class="modal-top">
 		<a data-role="button" class="modal-close" data-click="homeView.closeStatusModal">
 			<img src="images/close.svg"/>
@@ -551,7 +551,7 @@
 			</span>
 			<span class="secondName"></span>
 		</h3>
-		<p id="profileStatusMessage"></p>
+		<p id="profileStatusMessage" data-bind="html: statusMessage"></p>
 		<p>
 			<a class="btnClear" data-role="button" id="profileLocation">
 				<span data-bind="text: checkedInPlace"></span>
@@ -578,8 +578,7 @@
             <li id="profileCheckOutLi">
             	<div>
             		<div id="checked-in-place">
-            			
-            			<a class="btnClear-grey" data-role="button" data-click="userStatusView.checkOut"><img src="images/icon-checkout.svg" class="icon-sm" /> Leave <span id="checkOut-text"></span></a>
+            			<a class="btnClear-grey" data-role="button" data-click="userStatusView.checkOut"><img src="images/icon-checkout.svg" class="icon-sm" /> Leave <span id="checkOut-text" data-bind="html: currentPlace"></span></a>
             		</div>
 				</div>
 			</li>
