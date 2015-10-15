@@ -804,24 +804,20 @@
 </div>
 
 
-<div data-role="modalview"  id="ghostEditModal" data-init="ghostEditView.onInit" style="width:100%; height: 90%; display: none;" >
+<div data-role="view" data-title="ghostgram Editor" id="ghostEditor" data-init="ghostEditView.onInit" data-show="ghostEditView.onShow" style="width:100%; height: 100%; display: none;" >
 	<div data-role="header">
-		<a class="modal-close" data-click="ghostEditView.closeModal" data-role="button">
-			<img src="images/close.svg" />
-		</a>
+		<div data-role="navbar">
+			<span data-role="view-title"></span>
+			<a data-role="button" data-click="ghostEditView.onDone" data-align="left" ><img src="images/close.svg" /></a>
+			<a data-role="button" data-click="ghostEditView.sendGhostEmail" data-align="right" >Send</a>
+		</div>
 	</div>
-
 
 	<div id="ghostEmailwrapper" style="width: 100%; height:100%;">
-		<form>
 		<textarea id="ghostEmailEditor" contenteditable="true" rows="120" cols="80" autofocus></textarea>
-		</form>
 	</div>
 
 
-	<div class="footer" data-role="footer">
-		<a class="btnClear btnFull-modal" data-click="ghostEditView.sendGhostEmail" data-role="button">Send</a>
-	</div>
 </div>
 
 <!-- Testing modal -->

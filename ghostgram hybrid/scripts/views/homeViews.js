@@ -304,11 +304,12 @@ var modalView = {
 
 var ghostEditView = {
     _callback : null,
+    _returnview : null,
 
     onInit: function (e) {
 
         _preventDefault(e);
-
+        autosize($('#ghostEmailEditor'));
         mobileNotify("Initialized GhostEdit!");
         $("#ghostEmailEditor").kendoEditor({
             tools: [
@@ -324,6 +325,32 @@ var ghostEditView = {
                 "outdent"
             ]
         });
+    },
+
+    onShow : function (e) {
+        _preventDefault(e);
+        if (e.view.params.callback !== undefined) {
+            ghostEditView._callback = e.view.params.callback;
+        } else {
+            ghostEditView._callback = null;
+        }
+
+        if (e.view.params.returnview !== undefined) {
+            ghostEditView._returnview = e.view.params.returnview;
+        } else {
+            ghostEditView._returnview = null;
+        }
+
+        autosize.update($('#ghostEmailEditor'));
+        $('#ghostEmailEditor').data("kendoEditor").value("");
+        $('#ghostEmailEditor').data("kendoEditor").focus()
+    },
+
+    onDone : function (e) {
+        _preventDefault(e);
+        if (ghostEditView._callback  !== null) {
+            ghostEditView._callback();
+        }
     },
 
     openModal : function(callback) {
@@ -370,7 +397,7 @@ var ghostEditView = {
                 isHtml:      true
             }, function (msg) {
                 mobileNotify("Email sent to " + thisUser);
-                ghostEditView.closeModal();
+                ghostEditView.onDone();
                 // navigator.notification.alert(JSON.stringify(msg), null, 'EmailComposer callback', 'Close');
             });
         }

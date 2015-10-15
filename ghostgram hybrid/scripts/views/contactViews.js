@@ -924,17 +924,19 @@ var contactActionView = {
     	$("#contactProfileImg, #contactStatusImg").css("opacity", 0);
     },
 
+    restoreModal : function () {
+        contactActionView.openModal(contactActionView._activeContactId);
+    },
 
     ghostEmail : function (e) {
         _preventDefault(e);
+        var viewId = APP.kendo.view().id;
 
         //Close contactAction to display ghostEdit
         contactActionView.closeModal();
-        ghostEditView.openModal(function () {
-            //Reopen contactAction
-            contactActionView.openModal(contactActionView._activeContactId);
 
-        });
+        APP.kendo.navigate("#ghostEditor?returnview="+viewId+"&callback=contactActionView.restoreModal");
+
     },
 
     setContact : function (contactId) {
