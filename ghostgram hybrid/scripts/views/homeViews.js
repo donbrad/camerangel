@@ -349,12 +349,6 @@ var ghostEditView = {
         }
     },
 
-    onShow : function (e) {
-        _preventDefault(e);
-
-        $('#ghostEmailEditor').data("kendoEditor").value("");
-    },
-
     sendGhostEmail : function (e) {
         _preventDefault(e);
 

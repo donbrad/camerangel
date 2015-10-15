@@ -541,7 +541,7 @@
 
 
 
-		autosize($('#ghostEmailEditor'));
+		//autosize($('#ghostEmailEditor'));
 		/* $(".email-Autocomplete").emailautocomplete({
 		     domains: _emailDomainList //additional domains (optional)
 		 }); */
