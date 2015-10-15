@@ -341,7 +341,6 @@ var ghostEditView = {
     },
 
     openModal : function(callback) {
-        _preventDefault(e);
 
         if (callback !== undefined) {
             ghostEditView._callback = callback;
@@ -353,6 +352,9 @@ var ghostEditView = {
     },
 
     closeModal : function (e) {
+
+        _preventDefault(e);
+        
         $('#ghostEditModal').data('kendoMobileModalView').close();
         if (ghostEditView._callback  !== null) {
             ghostEditView._callback();
