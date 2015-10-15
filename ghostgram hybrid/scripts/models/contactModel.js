@@ -393,12 +393,12 @@ var contactModel = {
             var contactId = array[i].contactUUID;
             if (contactId !== undefined && contactId !== null) {
                 contactModel.getContactStatusObject(contactId, function(user){
-                    var userId = user.userUUID;
+                    var userId = user.get('userUUID');
                     var contact = contactModel.getContactModel(userId);
-                    contact.set('statusMessage', user.statusMessage);
-                    contact.set('currentPlace', user.currentPlace);
-                    contact.set('currentPlaceUUID', user.currentPlaceUUID);
-                    contact.set('isAvailable', user.isAvailable);
+                    contact.set('statusMessage', user.get('statusMessage'));
+                    contact.set('currentPlace', user.get('currentPlace'));
+                    contact.set('currentPlaceUUID', user.get('currentPlaceUUID'));
+                    contact.set('isAvailable', user.get('isAvailable'));
 
                 });
             }
