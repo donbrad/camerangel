@@ -155,7 +155,7 @@ var contactsView = {
         //APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
 
         contactModel.updateContactListStatus();
-        
+
         // set search bar
         ux.scrollUpSearch(e);
 
