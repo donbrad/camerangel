@@ -2,8 +2,7 @@
   "name": "ghostgrams",
   "version": "0.9.1",
   "dependencies": {
-    "autosize": "~3.0.4",
-    "jquery-autosize": "~3.0.4",
+    "jquery-autosize": "~3.0.13",
     "jquery-cloudinary": "~1.0.24",
     "jqueryui": "~1.11.4",
     "jquery-masonry": "~3.3.0",

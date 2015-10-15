@@ -1,11 +1,30 @@
+const set = (typeof Set === "function") ? new Set() : (function () {
+	const list = [];
+
+	return {
+		has(key) {
+			return Boolean(list.indexOf(key) > -1);
+		},
+		add(key) {
+			list.push(key);
+		},
+		delete(key) {
+			list.splice(list.indexOf(key), 1);
+		},
+	}
+})();
+
 function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
-	if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || ta.hasAttribute('data-autosize-on')) return;
+	if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || set.has(ta)) return;
 
 	let heightOffset = null;
-	let overflowY = 'hidden';
+	let overflowY = null;
+	let clientWidth = ta.clientWidth;
 
 	function init() {
 		const style = window.getComputedStyle(ta, null);
+
+		overflowY = style.overflowY;
 
 		if (style.resize === 'vertical') {
 			ta.style.resize = 'none';
@@ -18,7 +37,11 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 		} else {
 			heightOffset = parseFloat(style.borderTopWidth)+parseFloat(style.borderBottomWidth);
 		}
-
+		// Fix when a textarea is not on document body and heightOffset is Not a Number
+		if (isNaN(heightOffset)) {
+			heightOffset = 0;
+		}
+	
 		update();
 	}
 
@@ -42,12 +65,11 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 			ta.style.overflowY = value;
 		}
 
-		update();
+		resize();
 	}
 
-	function update() {
-		const startHeight = ta.style.height;
-		const htmlTop = document.documentElement.scrollTop;
+	function resize() {
+		const htmlTop = window.pageYOffset;
 		const bodyTop = document.body.scrollTop;
 		const originalHeight = ta.style.height;
 
@@ -63,21 +85,28 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 
 		ta.style.height = endHeight+'px';
 
+		// used to check if an update is actually necessary on window.resize
+		clientWidth = ta.clientWidth;
+
 		// prevents scroll-position jumping
 		document.documentElement.scrollTop = htmlTop;
 		document.body.scrollTop = bodyTop;
+	}
+
+	function update() {
+		const startHeight = ta.style.height;
+
+		resize();
 
 		const style = window.getComputedStyle(ta, null);
 
 		if (style.height !== ta.style.height) {
 			if (overflowY !== 'visible') {
 				changeOverflow('visible');
-				return;
 			}
 		} else {
 			if (overflowY !== 'hidden') {
 				changeOverflow('hidden');
-				return;
 			}
 		}
 
@@ -88,12 +117,18 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 		}
 	}
 
+	const pageResize = () => {
+		if (ta.clientWidth !== clientWidth) {
+			update();
+		}
+	};
+
 	const destroy = style => {
-		window.removeEventListener('resize', update);
+		window.removeEventListener('resize', pageResize);
 		ta.removeEventListener('input', update);
 		ta.removeEventListener('keyup', update);
-		ta.removeAttribute('data-autosize-on');
 		ta.removeEventListener('autosize:destroy', destroy);
+		set.delete(ta);
 
 		Object.keys(style).forEach(key => {
 			ta.style[key] = style[key];
@@ -115,14 +150,11 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 		ta.addEventListener('keyup', update);
 	}
 
-	window.addEventListener('resize', update);
+	window.addEventListener('resize', pageResize);
 	ta.addEventListener('input', update);
 	ta.addEventListener('autosize:update', update);
-	ta.setAttribute('data-autosize-on', true);
-	
-	if (setOverflowY) {
-		ta.style.overflowY = 'hidden';
-	}
+	set.add(ta);
+
 	if (setOverflowX) {
 		ta.style.overflowX = 'hidden';
 		ta.style.wordWrap = 'break-word';
@@ -147,8 +179,8 @@ function update(ta) {
 
 let autosize = null;
 
-// Do nothing in IE8 or lower
-if (typeof window.getComputedStyle !== 'function') {
+// Do nothing in Node.js environment and IE8 (or lower)
+if (typeof window === 'undefined' || typeof window.getComputedStyle !== 'function') {
 	autosize = el => el;
 	autosize.destroy = el => el;
 	autosize.update = el => el;
