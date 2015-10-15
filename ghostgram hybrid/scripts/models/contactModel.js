@@ -37,7 +37,7 @@ var contactModel = {
     currentDeviceContact: {},
     unifiedDeviceContact: false,
     currentContact: null,
-    lastSyncTime : ggTime.currentTimeInSeconds(),
+    lastSyncTime : ggTime.currentTimeInSeconds() - 900,
     phoneDS: new kendo.data.DataSource(),
     emailDS: new kendo.data.DataSource(),
     addressDS: new kendo.data.DataSource(),
@@ -396,7 +396,7 @@ var contactModel = {
         }
 
         contactModel.lastSyncTime = time;
-        
+
         var index = 0, length = contactModel.contactsDS.total(), array = contactModel.contactsDS.data();
 
         for (var i=0; i<length; i++) {
