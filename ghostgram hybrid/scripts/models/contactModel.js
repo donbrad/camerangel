@@ -386,6 +386,26 @@ var contactModel = {
         });
     },
 
+    updateContactListStatus : function () {
+        var index = 0, length = contactModel.contactsDS.total(), array = contactModel.contactsDS.data();
+
+        for (var i=0; i<length; i++) {
+            var contactId = array[i].contactUUID;
+            if (contactId !== undefined) {
+                contactModel.getContactStatusObject(contactId, function(user){
+                    var userId = user.userUUID;
+                    var contact = contactModel.getContactModel(userId);
+                    contact.set('statusMessage', user.statusMessage);
+                    contact.set('currentPlace', user.currentPlace);
+                    contact.set('currentPlaceUUID', user.currentPlaceUUID);
+                    contact.set('isAvailable', user.isAvailable);
+
+                });
+            }
+        }
+    },
+
+
     syncMemberContact: function (e) {
 
     },
