@@ -58,7 +58,7 @@ var contactModel = {
 
 
         });
-        
+
         /*  contactModel.contactsDS = parseKendoDataSourceFactory.make('contacts',
           {
                 id: 'id',
@@ -295,7 +295,7 @@ var contactModel = {
     },
 
     findContactList : function (contactUUID) {
-        var dataSource = contactModel.contactsListDS;
+        var dataSource = contactModel.contactListDS;
         dataSource.filter( { field: "contactUUID", operator: "eq", value: contactUUID });
         var view = dataSource.view();
         var contact = view[0];
@@ -305,7 +305,7 @@ var contactModel = {
     },
 
     findContactListUUID : function ( uuid) {
-        var dataSource = contactModel.contactsDS;
+        var dataSource = contactModel.contactListDS;
         dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
         var view = dataSource.view();
         var contact = view[0];
