@@ -49,14 +49,14 @@ var userStatusView = {
         status.set('statusMessage', user.statusMessage);
 
         if (user.isCheckedIn) {
-            status.set('checkedInPlace', user.currentPlace);
+            status.set('currentPlace', user.currentPlace);
         } else {
-            status.set('checkedInPlace','');
+            status.set('currentPlace','');
         }
 
-        status.set('currentPlace', user.currentPlace);
+
         status.set('isAvailable', user.isAvailable);
-        userStatusView._activeStatus.bind('change' , userStatusView.syncUserStatus);
+
 
         
         
@@ -178,24 +178,9 @@ var userStatusView = {
     onInit : function (e) {
         _preventDefault(e);
 
-        // Wire up the select since html wiring doesn't seem to be working
-        $('#userStatusLocationSelect').kendoDropDownList({
-            autoBind: false,
-            dataTextField: "placeuuid",
-            dataValueField: "name",
-            dataSource: userStatusView._placesDS,
-            change: function(e) {
-                var value = this.value();
-                if (value === null) {
-                    //User wants to create a new place to check in to...
-                } else {
-                    // Set the current place target this elements
-                    userStatusView._checkInPlaceId = value;
-                }
-            }
-        });
-
         userStatusView.statusCharCount(e);
+
+        userStatusView._activeStatus.bind('change' , userStatusView.syncUserStatus);
     },
 
     statusCharCount: function(e) {
