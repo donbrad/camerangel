@@ -355,10 +355,9 @@ var ghostEditView = {
             APP.kendo.navigate('#'+ghostEditView._returnview);
         }
 
-        if (ghostEditView._callback  !== null) {
-            // Convert the string passed back to a function
-            var callBack = new Function(ghostEditView._callback);
-           callBack();
+        if (ghostEditView._callback  === 'contactaction') {
+
+            contactActionView.restoreModal();
         }
     },
 

@@ -935,7 +935,7 @@ var contactActionView = {
         //Close contactAction to display ghostEdit
         contactActionView.closeModal();
 
-        APP.kendo.navigate("#ghostEditor?returnview="+viewId+"&callback=contactActionView.restoreModal");
+        APP.kendo.navigate("#ghostEditor?returnview="+viewId+"&callback=contactaction");
 
     },
 
