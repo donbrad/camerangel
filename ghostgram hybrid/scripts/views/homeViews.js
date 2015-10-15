@@ -310,7 +310,7 @@ var ghostEditView = {
 
         _preventDefault(e);
         autosize($('#ghostEmailEditor'));
-        mobileNotify("Initialized GhostEdit!");
+
         $("#ghostEmailEditor").kendoEditor({
             tools: [
                 "bold",
