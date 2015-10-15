@@ -469,13 +469,16 @@ function signInValidate(e){
 function homeSignin (e) {
 	if (e !== undefined && e.preventDefault !== undefined)
 		e.preventDefault();
-
-   var username = $('#home-signin-username').val(), password = $('#home-signin-password').val()
+	
+	// hide keyboard
+	ux.hideKeyboard();
+   	
+   	var username = $('#home-signin-username').val(), password = $('#home-signin-password').val()
 
     mobileNotify("Signing you in to ghostgrams....");
 
 
-   Parse.User.logIn(username,password , {
+   	Parse.User.logIn(username,password , {
         success: function(user) {
         // Do stuff after successful login.
             ux.closeModalViewLogin();
@@ -535,10 +538,6 @@ function homeSignin (e) {
             userModel.parseACL = new Parse.ACL(userModel.parseUser);
             userModel.currentUser.bind('change', userModel.sync);
             userModel.fetchParseData();
-
-            // hide keyboard
-			ux.hideKeyboard();
-
 
             APP.kendo.navigate('#home');
         },

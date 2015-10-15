@@ -573,6 +573,7 @@ form p {
 .btnSecondary,
 .btnClear,
 .btnClear-sm,
+.btnClear-light-sm,
 .btnClearLine,
 .btnClearLine-grey-sm,
 .btnClear-grey,
@@ -720,6 +721,20 @@ form p {
   color: #A4A4A4 !important;
   background: transparent !important;
 }
+.btnClear-light-sm {
+  background: transparent;
+  color: #6cadf3 !important;
+  font-size: 12px !important;
+  font-size: 0.75rem !important;
+}
+.btnClear-light-sm :active {
+  color: #3A779D !important;
+  background: transparent !important;
+}
+.btnClear-light-sm :disabled {
+  color: #A4A4A4 !important;
+  background: transparent !important;
+}
 .btnClear-link {
   background: transparent;
   color: #6cadf3 !important;
@@ -747,6 +762,10 @@ form p {
 .btnClearLine :disabled {
   color: #A4A4A4 !important;
   background: transparent !important;
+}
+.glass {
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.15) !important;
 }
 .addBtn-sm {
   border: 1px solid #2e93fd;
@@ -2376,6 +2395,22 @@ a:hover {
 .footerAction {
   position: absolute;
   z-index: 2;
+}
+#chatImage {
+  max-width: 100%;
+  max-height: 100px;
+  text-align: center;
+  vertical-align: middle;
+}
+#modalPhotoViewImage {
+  max-width: 100%;
+  max-height: 100%;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 .chat-option-ul li {
   background: transparent !important;
@@ -4271,11 +4306,9 @@ html .km-pane-wrapper .k-header {
 .chat-photo-box {
   border: 1px solid #e0e0e0;
   width: 40%;
-  float: left;
 }
 .chat-photo-box-zoom {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
-  float: right;
   width: 88%;
 }
 @media only screen and (max-width: 320px) {

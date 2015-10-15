@@ -562,16 +562,6 @@ var channelView = {
         currentChannelModel.membersDS.data([]);
         //APP.checkPubnub();
 
-        $("#messageSend").kendoTouch({
-
-            tap: function(e) {
-                channelView.messageSend();
-            },
-            hold: function(e) {
-                $("#sendMessageActions").data("kendoMobileActionSheet").open();
-            }
-        });
-
         var width = window.innerWidth - 68;
         $('#messageTextArea').css("width", width+'px');
         currentChannelModel.topOffset = APP.kendo.scroller().scrollTop;

@@ -29,6 +29,7 @@ var galleryView = {
         var setSentinelHeight = function () {
             $('#search-archives').height(getSentinelHeight());
         };
+
         /*
          archiveView.sentinel.addListener('add', setSentinelHeight);
          archiveView.sentinel.addListener('remove', setSentinelHeight);
@@ -328,7 +329,7 @@ var photoView = {
 
 
     },
-
+ 
     sharePhoto: function (e)  {
         _preventDefault(e);
 
@@ -419,7 +420,9 @@ var photoEditor = {
     savePhoto : function (e) {
         _preventDefault(e);
         var urlToSave = $('#photoEditImage').attr('src');
+        // TODO Don - wire photo save
 
+        /*
         if ( photoEditor._source === 'chat') {
             channelView.showChatImagePreview(urlToSave);
             // Save image to chat image preview
@@ -429,6 +432,7 @@ var photoEditor = {
             // Save image to user profile
             saveUserProfilePhoto(urlToSave);
         }
+        */
     }
 
 
@@ -508,6 +512,10 @@ var modalGalleryView = {
             var photoParam = LZString.compressToEncodedURIComponent(photoId);
             APP.kendo.navigate('#photoView?photo='+photoParam);
         }*/
+    },
+
+    galleryHold: function(e){
+    	console.log("hold");
     }
 
 };

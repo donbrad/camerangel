@@ -270,12 +270,12 @@
 			 <form id="chatImageForm" style="display:none;">
 				  <input type="search" id="chatImageInput" />
 			 </form>
-			<img id="chatImage" src="" style="max-width: 100%; max-height: 100%; text-align: center; vertical-align: middle;" />
+			<img id="chatImage" src="" />
 		 </div>
 		 <div class="messageCompose">
 			<textarea id="messageTextArea" rows="1" autofocus="true" wrap="soft" spellcheck="true" placeholder="Message..."></textarea>
 			 <div class="right">
-				 <a data-role="button"  id="messageSend">Send</a>
+				 <a data-role="button" id="messageSend" data-click="channelView.messageSend">Send</a>
 			 </div>
              <div class="messageMediaBar">
              	<ul>
@@ -384,22 +384,21 @@
 				<img class="chat-message-profileImg circle-img-sm" src="images/ghost-blue.svg" alt="" />
 			#}#
 		</div>
-
-		# if (contactData.isContact) {#
-			<div class="chat-message-receiver chat-message-content  clearfix">
-
-				<div class="chat-message-text">#= formattedContent #</div>
-			</div>
-		#} else {#
-			<div class="chat-message-sender chat-message-content">
-
-				<div class="chat-message-text">
-					#= formattedContent #
+		# if (formattedContent !== "") {#		
+			# if (contactData.isContact ) {#
+				<div class="chat-message-receiver chat-message-content  clearfix">
+					<div class="chat-message-text">#= formattedContent #</div>
 				</div>
-			</div>
+			#} else {#
+				<div class="chat-message-sender chat-message-content">
+					<div class="chat-message-text">
+						#= formattedContent #
+					</div>
+				</div>
+			#}#
+			<div class="clearfix"></div>
 		#}#
 		# if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {#
-			<div class="clearfix"></div>
 				<div class="chat-photo-box">
 					<img class="chat-message-photo" src="#:data.photo.thumb #" alt="" >
 				</div>

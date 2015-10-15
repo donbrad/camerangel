@@ -83,6 +83,7 @@ var ux = {
 			// hide keyboard
 			cordova.plugins.Keyboard.close();
 		}
+	
 	},
 
 	showActionBtn: function(show, view, href){

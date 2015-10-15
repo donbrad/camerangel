@@ -639,6 +639,21 @@ form {
 	}
 }
 
+.btnClear-light-sm { 
+	&:extend(.btnStyle);
+	background: transparent;
+    color: @primary-200 !important;
+    .font-size(12) !important;
+    :active {
+    	color: #3A779D !important;
+    	background: transparent !important;
+    }
+    :disabled {
+    	color: #A4A4A4 !important;
+    	background: transparent !important;
+	}
+}
+
 .btnClear-link {
 	background: transparent;
     color: @primary-200 !important;
@@ -669,6 +684,11 @@ form {
     	color: #A4A4A4 !important;
     	background: transparent !important;
 	}
+}
+
+.glass {
+	color: #fff !important;
+	background: rgba(255,255,255,0.15) !important;
 }
 
 .addBtn-sm {
@@ -2373,6 +2393,23 @@ a:hover {
 	z-index: 2;
 }
 
+#chatImage {
+	max-width: 100%; 
+	max-height: 100px; 
+	text-align: center; 
+	vertical-align: middle;
+}
+
+#modalPhotoViewImage {
+	max-width: 100%;
+	max-height: 100%;
+	position: absolute;
+	margin: auto;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
 
 .chat-option-ul {
 	li {
@@ -4508,12 +4545,10 @@ div.contactListBox.activeContact > div > div > ul {
 .chat-photo-box {
 	border: 1px solid @shade-200;
 	width: 40%;
-	float: left;
 }
 
 .chat-photo-box-zoom {
 	.shadow-1;
-	float: right;
 	width: 88%;
 	@media @mobile {
 		width: 85%;
