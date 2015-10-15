@@ -48,8 +48,8 @@ var userStatusView = {
 
         status.set('statusMessage', user.statusMessage);
 
-        if (userModel.isCheckedIn) {
-            status.set('checkedInPlace', userModel.checkedInPlace);
+        if (user.isCheckedIn) {
+            status.set('checkedInPlace', user.currentPlace);
         } else {
             status.set('checkedInPlace','');
         }
@@ -61,7 +61,7 @@ var userStatusView = {
         
         
         // if there's a current checked in place -- select it in the list
-        if (userModel.checkedInPlaceId !== null && userModel.isCheckedIn) {
+        if (user.currentPlaceUUID !== null && user.isCheckedIn) {
 
         	$("#profileCheckOutLi").removeClass("hidden");
         	$("#checkOut-text").text(userModel.currentPlace);
@@ -87,7 +87,7 @@ var userStatusView = {
 
        // mobileNotify("Updating your location...");
 
-        if (userModel.isCheckedIn && userModel.checkedInPlaceId !== null) {
+        if (userModel.currentUser.isCheckedIn && userModel.currentUser.currentPlaceUUID !== null) {
             // hide location if the user is not checked in
             $("#profileLocation, #checked-in-place").removeClass("hidden");
         } else {
@@ -133,10 +133,6 @@ var userStatusView = {
 
         }
 
-        if (!userModel.isCheckedIn && userModel.checkedInPlaceId === null) {
-            // hide location if the user is not checked in
-            $("#profileLocation, #checked-in-place").addClass("hidden");
-        }
     },
 
     checkIn : function (e) {

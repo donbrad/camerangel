@@ -15,10 +15,6 @@ var userModel = {
     identiconUrl : null,
     rememberUserName : false,
     initialView : '#newuserhome',
-    // Current place that user has checked in to.  Can
-    checkedInPlace: "",
-    checkedInPlaceId: null,
-    isCheckedIn: false,
 
     currentUser: new kendo.data.ObservableObject({
         username: '',
@@ -48,7 +44,8 @@ var userModel = {
         useIdenticon: true,
         availImgUrl: 'images/status-available.svg',
         currentPlace: '',
-        currentPlaceUUID: ''
+        currentPlaceUUID: '',
+        isCheckedIn: false
     }),
 
     device : {
@@ -106,6 +103,7 @@ var userModel = {
             userModel.currentUser.set('aliasPhoto', userModel.parseUser.get('aliasPhoto'));
             userModel.currentUser.set('photo', userModel.parseUser.get('photo'));
             userModel.currentUser.set('isAvailable', userModel.parseUser.get('isAvailable'));
+            userModel.currentUser.set('isCheckedIn', userModel.parseUser.get('isCheckedIn'));
             userModel.currentUser.set('isVisible', userModel.parseUser.get('isVisible'));
             userModel.currentUser.set('isRetina', userModel.parseUser.get('isRetina'));
             userModel.currentUser.set('isWIFIOnly', userModel.parseUser.get('isWIFIOnly'));
@@ -204,19 +202,14 @@ var userModel = {
     checkIn : function (placeId) {
         var place = placesModel.getPlaceModel(placeId);
 
-        userModel.checkedInPlace = place.name;
-        userModel.checkedInPlaceId = placeId;
         userModel.currentUser.set('currentPlace',place.name);
         userModel.currentUser.set('currentPlaceId', place.uuid);
         userModel.currentUser.set('isCheckedIn', true);
-        userModel.isCheckedIn = true;
+
         userStatus.update();
     },
 
     checkOut : function () {
-        userModel.isCheckedIn = false;
-        userModel.checkedInPlace = "";
-        userModel.checkedInPlaceId = null;
         userModel.currentUser.set('isCheckedIn', false);
     },
 
@@ -395,6 +388,7 @@ var userStatus = {
         status.set('statusMessage', userModel.currentUser.statusMessage);
         status.set('currentPlace', userModel.currentUser.currentPlace);
         status.set('currentPlaceUUID', userModel.currentUser.currentPlaceUUID);
+        status.set('isCheckedIn', userModel.currentUser.isCheckedIn);
         status.set('lastUpdate', ggTime.currentTime());
         status.save(null, {
             success: function(status) {
