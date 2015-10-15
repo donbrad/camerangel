@@ -928,7 +928,12 @@ var contactActionView = {
 
     ghostEmail : function (e) {
         _preventDefault(e);
+
+        //Close contactAction to display ghostEdit
+        contactActionView.closeModal();
         ghostEditView.openModal(function () {
+            //Reopen contactAction
+            contactActionView.openModal(contactActionView._activeContactId);
 
         });
     },
