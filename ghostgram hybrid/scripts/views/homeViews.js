@@ -350,6 +350,11 @@ var ghostEditView = {
 
     onDone : function (e) {
         _preventDefault(e);
+
+        if (ghostEditView._returnview !== null) {
+            APP.kendo.navigate('#'+ghostEditView._returnview);
+        }
+
         if (ghostEditView._callback  !== null) {
             ghostEditView._callback();
         }
