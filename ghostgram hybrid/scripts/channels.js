@@ -182,7 +182,7 @@ function doShowChannelMembers (e) {
 	if (members.length > 0) {
 
 		for (var i=0; i<members.length; i++) {
-			var thisMember = contactModel.getContactModel(members[i]);
+			var thisMember = contactModel.findContact(members[i]);
 			if (thisMember === undefined)
 				thisMember = contactModel.findContactByUUID(members[i]);
 			if (thisMember !== undefined) {
@@ -268,9 +268,9 @@ function doShowChannelPresence (e) {
 	if (currentChannelModel.isPrivate) {
 		var privateContact = '';
 		if (members[0] === userModel.currentUser.userUUID) {
-			privateContact = contactModel.getContactModel(members[1]);
+			privateContact = contactModel.findContact(members[1]);
 		} else {
-			privateContact = contactModel.getContactModel(members[0]);
+			privateContact = contactModel.findContact(members[0]);
 		}
 		currentChannelModel.membersDS.add(privateContact);
 	} 

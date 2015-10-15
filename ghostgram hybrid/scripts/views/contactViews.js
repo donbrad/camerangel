@@ -540,12 +540,14 @@ var addContactView = {
         contact.set("name", name );
         contact.set("alias", alias);
         contact.set("address", address);
-        contact.set("group", '');
+        contact.set("group", null);
         contact.set('category', "new");
         contact.set("priority", 0);
         contact.set("isFavorite", false);
         contact.set("uuid", guid);
-
+        contact.set('contactUUID', null);
+        contact.set('contactPhone', null);
+        contact.set('contactEmail', null);
         //phone = phone.replace(/\+[0-9]{1-2}/,'');
         phone = phone.replace(/\D+/g, "");
         if (phone[0] !== '1')
@@ -580,9 +582,6 @@ var addContactView = {
                     contact.set("email", email);
                     contact.set("emailValidated", false);
                 }
-                contact.set('statusMessage', thisContact.statusMessage);
-                contact.set('currentPlace', thisContact.currentPlace);
-                contact.set('currentPlaceUUID', thisContact.currentPlaceUUID);
                 contact.set('contactUUID', thisContact.userUUID);
                 contact.set('contactPhone', thisContact.phone);
                 contact.set('phoneVerified', thisContact.phoneVerified);
@@ -592,7 +591,6 @@ var addContactView = {
                 contact.set('contactEmail', thisContact.email);
                 contact.set('photo', null);
                 contact.set('contactPhoto', thisContact.photo);
-                contact.set('isAvailable', thisContact.isAvailable);
                 contact.set('publicKey', thisContact.publicKey);
 
             } else {
@@ -734,7 +732,7 @@ var editContactView = {
 
 
         //Show the status update div
-        contactModel.updateContactStatus(contactId, function(contact) {
+        contactModel.updateContactDetails(contactId, function(contact) {
             editContactView.setActiveContact(contact);
             editContactView.updateVerifiedUX(contact.phoneVerified, contact.emailValidated);
             // Hide the status update div
@@ -850,11 +848,35 @@ var contactActionView = {
 
     openModal : function (contactId) {
 
+        var thisContact = contactModel.findContactByUUID(contactId);
         contactActionView.setContact(contactId);
 
-        //Show the status update div
+        $(".statusContactCard-icon").attr("src", "images/status-away.svg");
 
-        contactModel.updateContactStatus(contactId, function(contact) {
+        //Show the status update div
+        if (thisContact.contactUUID !== undefined && thisContact.contactUUID !== null) {
+            contactModel.getContactStatusObject(thisContact.contactUUID, function (user) {
+                var contactIsAvailable = user.get('isAvailable');
+                contactActionView._activeContact.set('statusMessage', user.get('statusMessage'));
+                contactActionView._activeContact.set('currentPlace', user.get('currentPlace'));
+                contactActionView._activeContact.set('currentPlaceUUID', user.get('currentPlaceUUID'));
+                contactActionView._activeContact.set('isAvailable', contactIsAvailable);
+                // set available
+                if(contactIsAvailable){
+                    $(".statusContactCard-icon").attr("src", "images/status-available.svg");
+                }
+
+                // Update the contactList object too
+                var contactList = contactModel.findContactList(thisContact.contactUUID);
+                contactList.set('statusMessage', user.get('statusMessage'));
+                contactList.set('currentPlace', user.get('currentPlace'));
+                contactList.set('currentPlaceUUID', user.get('currentPlaceUUID'));
+                contactList.set('isAvailable', contactIsAvailable);
+
+            });
+        }
+
+        contactModel.updateContactDetails(contactId, function(contact) {
          
             if (contact === undefined) {
                 // This is a new contact.
@@ -873,9 +895,10 @@ var contactActionView = {
                 contactActionView._activeContact.set('photo', contact.photo);
             }
 
-            contactActionView._activeContact.set('statusMessage', contact.statusMessage);
+       /*     contactActionView._activeContact.set('statusMessage', contact.statusMessage);
             contactActionView._activeContact.set('currentPlace', contact.currentPlace);
-            contactActionView._activeContact.set('isAvailable', contact.isAvailable);
+            contactActionView._activeContact.set('currentPlaceUUID', contact.currentPlaceUUID);
+            contactActionView._activeContact.set('isAvailable', contact.isAvailable);*/
 
             // Set name/alias layout
             ux.formatNameAlias(contactName, contactAlias, "#modalview-contactActions");
@@ -886,15 +909,13 @@ var contactActionView = {
             } else {
                 $("#currentContactVerified").addClass("hidden");
             }
-            // set available 
-            if(contactIsAvailable){
-            	$(".statusContactCard-icon").attr("src", "images/status-available.svg");
-            }
+
             // set profile img
             $("#contactProfileImg").attr("src", contact.photo);
 
         });
-		
+
+
         $("#modalview-contactActions").data("kendoMobileModalView").open();
 
         $("#contactProfileImg").velocity("fadeIn", {delay: 150, duration: 300, display: "inline-block"});
