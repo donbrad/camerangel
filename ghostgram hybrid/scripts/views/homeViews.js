@@ -356,7 +356,7 @@ var ghostEditView = {
 
         autosize.update($('#ghostEmailEditor'));
         $('#ghostEmailEditor').data("kendoEditor").value("");
-        $('#ghostEmailEditor').data("kendoEditor").focus()
+        $('#ghostEmailEditor').data("kendoEditor").focus();
     },
 
     onDone : function (e) {
