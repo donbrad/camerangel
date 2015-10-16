@@ -331,7 +331,7 @@ var ghostEditView = {
                     exec: function (e) {
                         e.preventDefault();
                         modalGalleryView.openModal(function(imageUrl){
-                            $('#ghostEmailEditor').data("kendoEditor").paste('<img src="'+imageUrl+'"/>', {split: true});
+                            $('#ghostEmailEditor').data("kendoEditor").paste('<div style="max-width: 50%; max-height: 50%;" <img src="'+imageUrl+'"/></div>', {split: true});
                         });
                     }
 
