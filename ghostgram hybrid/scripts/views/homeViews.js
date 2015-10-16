@@ -332,7 +332,7 @@ var ghostEditView = {
                     name: "photo",
                     exec: function (e) {
                         modalGalleryView.openModal(function(imageUrl){
-
+                            $('#ghostEmailEditor').data("kendoEditor").paste('<img src="'+imageUrl+'"/>', {split: true});
                         });
                     }
 
