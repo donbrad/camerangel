@@ -327,7 +327,16 @@ var ghostEditView = {
                 "createTable",
                 "formatting",
                 "cleanFormatting",
-                "fontSize"
+                "fontSize",
+                {
+                    name: "photo",
+                    exec: function (e) {
+                        modalGalleryView.openModal(function(imageUrl){
+
+                        });
+                    }
+
+                }
             ]
         });
     },
