@@ -319,17 +319,15 @@ var ghostEditView = {
                 "justifyLeft",
                 "justifyCenter",
                 "justifyRight",
-                "justifyFull",
                 "insertUnorderedList",
                 "insertOrderedList",
                 "indent",
                 "outdent",
                 "createTable",
                 "formatting",
-                "cleanFormatting",
                 "fontSize",
                 {
-                    name: "photo",
+                    name: "insertImage",
                     exec: function (e) {
                         modalGalleryView.openModal(function(imageUrl){
                             $('#ghostEmailEditor').data("kendoEditor").paste('<img src="'+imageUrl+'"/>', {split: true});
