@@ -627,8 +627,6 @@ var channelView = {
        // Todo: don - optimize geolocator calls -- shouldn't call on every chat show
        // APP.updateGeoLocation();
 
-        channelView.privacyMode = false;
-
         channelModel.updateUnreadCount(channelUUID, 0);
 
         // Privacy UI
@@ -646,10 +644,12 @@ var channelView = {
           }
 
           $('#messagePresenceButton').hide();
-          channelView.privacyMode = true;
+
+            //default private mode off for now. Todo: don and jordan fix privacy mode
+          channelView.privacyMode = false;
           // Privacy UI
-          $('#privacyMode').html('<img src="images/privacy-on.svg" />');
-          $("#privacyStatus").removeClass("hidden");
+          $('#privacyMode').html('<img src="images/privacy-off.svg" />');
+          $("#privacyStatus").addClass("hidden");
           var userKey = thisUser.publicKey, privateKey = thisUser.privateKey, name = thisUser.name;
 
           contactUUID = thisChannel.channelId;

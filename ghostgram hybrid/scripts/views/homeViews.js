@@ -64,7 +64,7 @@ var userStatusView = {
         if (user.currentPlaceUUID !== null && user.isCheckedIn) {
 
         	$("#profileCheckOutLi").removeClass("hidden");
-        	$("#checkOut-text").text(userModel.currentPlace);
+        	$("#checkOut-text").text(user.currentPlace);
 
         } else {
             $('#profileCheckOutLi').addClass('hidden');
