@@ -329,6 +329,7 @@ var ghostEditView = {
                 {
                     name: "insertImage",
                     exec: function (e) {
+                        e.preventDefault();
                         modalGalleryView.openModal(function(imageUrl){
                             $('#ghostEmailEditor').data("kendoEditor").paste('<img src="'+imageUrl+'"/>', {split: true});
                         });
