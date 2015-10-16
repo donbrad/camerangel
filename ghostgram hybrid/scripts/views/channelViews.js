@@ -629,9 +629,12 @@ var channelView = {
 
         channelModel.updateUnreadCount(channelUUID, 0);
 
+        //default private mode off for now. Todo: don and jordan fix privacy mode
+        channelView.privacyMode = false;
         // Privacy UI
         $('#privacyMode').html('<img src="images/privacy-off.svg" />');
         $("#privacyStatus").addClass("hidden");
+
         $("#channelNavBar").data('kendoMobileNavBar').title(name);
 
         if (thisChannel.isPrivate) {
@@ -645,11 +648,7 @@ var channelView = {
 
           $('#messagePresenceButton').hide();
 
-            //default private mode off for now. Todo: don and jordan fix privacy mode
-          channelView.privacyMode = false;
-          // Privacy UI
-          $('#privacyMode').html('<img src="images/privacy-off.svg" />');
-          $("#privacyStatus").addClass("hidden");
+
           var userKey = thisUser.publicKey, privateKey = thisUser.privateKey, name = thisUser.name;
 
           contactUUID = thisChannel.channelId;
