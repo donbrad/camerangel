@@ -115,7 +115,8 @@ var placesView = {
     },
 
     deletePlaceBtn: function(e){
-    	// Todo Don - wire delete place
+        var placeId = e.button[0].dataset["id"];
+    	placesModel.deletePlace(placeId);
     },
 
     onShow: function (e) {
@@ -248,8 +249,8 @@ var findPlacesView = {
 
         if (e.view.params !== undefined) {
             if (e.view.params.lat !== undefined) {
-                lat = e.view.params.lat;
-                lng = e.view.params.lng;
+                lat = parseFloat(e.view.params.lat);
+                lng = parseFloat(e.view.params.lng);
                 findPlacesView._lat = lat;
                 findPlacesView._lng = lng;
             }
@@ -275,8 +276,8 @@ var findPlacesView = {
                 mobileNotify('Google geocoding service error!');
                 return;
             }
-            if (geoResults.length === 0 || geoResults[0].types[0] !== 'street_address') {
-                mobileNotify('We couldn\'t match your position to a street address.');
+            if (geoResults.length === 0 ) {
+                mobileNotify('We couldn\'t match your position to an address.');
                 return;
             }
 

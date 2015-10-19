@@ -225,7 +225,7 @@ var userDataChannel = {
         var deleteFlag = false;
 
         // The private channel requester needs to be in the user's contact list...
-        var contact = contactModel.getContactModel(ownerId);
+        var contact = contactModel.findContact(ownerId);
 
         //mobileNotify("Private Chat Request from " + contact.get('name') + '\n ' + message);
 
@@ -265,7 +265,7 @@ var userDataChannel = {
     processPrivateDelete: function (ownerId, channelId, memberId,  message) {
         var channel = channelModel.findChannelModel(channelId),
             privateChannel = channelModel.findPrivateChannel(ownerId);
-        var contact = contactModel.getContactModel(ownerId);
+        var contact = contactModel.findContact(ownerId);
 
         if (channel === undefined) {
            // mobileNotify("Private Chat Delete Request from " + contact.get('name'));

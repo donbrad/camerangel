@@ -36,6 +36,7 @@ function deviceCamera(resolution, quality, isChat, displayCallback) {
             photoModel.currentPhoto.photoId = photouuid;
             photoModel.currentPhoto.filename = filename;
             photoModel.currentPhoto.imageUrl = imageUrl;
+            photoModel.currentPhoto.phoneUrl = imageUrl;
 
             if (displayCallback !== undefined) {
                 displayCallback(imageData);
@@ -53,7 +54,7 @@ function deviceCamera(resolution, quality, isChat, displayCallback) {
 
         },
         function (error) {
-            mobileNotify("Device Camera error " + error);
+            mobileNotify("Camera error " + error);
         }, {
             correctOrientation: true,
             allEdit: true,
@@ -110,6 +111,7 @@ function deviceGallery(resolution, quality, isChat, displayCallback) {
             photoModel.currentPhoto.photoId = photouuid;
             photoModel.currentPhoto.filename = filename;
             photoModel.currentPhoto.imageUrl = imageUrl;
+            photoModel.currentPhoto.phoneUrl = imageUrl;
 
             if (displayCallback !== undefined) {
                 displayCallback(displayUrl);
@@ -206,7 +208,7 @@ function resizeFailure (error) {
 
 function resizeSuccessThumb (data) {
 
-    var imageUrl = APP.tempDirectory+data.filename;
+    var imageUrl = deviceModel.fileDirectory+data.filename;
 
 
     // Todo: add additional processing to create ParsePhoto and photoOffer
@@ -215,6 +217,7 @@ function resizeSuccessThumb (data) {
 
     photo.setACL(userModel.parseACL);
     photo.set('photoId', photoModel.currentPhoto.photoId);
+    photo.set('deviceUrl', photoModel.currentPhoto.phoneUrl);
     photo.set('channelId', currentChannelModel.currentChannel.get('channelId'));
     photo.set('channelName', currentChannelModel.currentChannel.get('name'));
 
@@ -225,14 +228,17 @@ function resizeSuccessThumb (data) {
 
     photo.set('lat', mapModel.lat);
     photo.set('lng', mapModel.lng);
-    photo.set('geoPoint', new Parse.GeoPoint(mapModel.lat, mapModel.lng));
+    photo.set('geoPoint', new Parse.GeoPoint(parseFloat(mapModel.lat), parseFloat(mapModel.lng)));
 
-    if (mapModel.currentAddress.city !== undefined) {
+    if (mapModel.currentAddress !== null && mapModel.currentAddress.city !== undefined) {
         var addressStr = mapModel.currentAddress.city + ', ' + mapModel.currentAddress.state + '  ' + mapModel.currentAddress.zipcode;
         photo.set('addressString', addressStr);
     }
 
-    // Todo: don -- need to add current place save
+    if (userModel.currentUser.currentPlaceUUID !== null) {
+        photo.set('placeId', userModel.currentUser.currentPlaceUUID);
+        photo.set('placeString', userModel.currentUser.currentPlace);
+    }
 
 
     var parseFile = new Parse.File("thumbnail_"+photoModel.currentPhoto.filename + ".jpeg",{'base64': data.imageData}, "image/jpg");
@@ -267,7 +273,7 @@ function resizeSuccessThumb (data) {
                 mobileNotify('Photo added to ghostgrams gallery');
                 photoModel.photosDS.add(photo.attributes);
                 photoModel.parsePhoto = photo;
-               currentChannelModel.currentMessage.photo = {thumb: photo.get('thumbnailUrl'), photo: photo.get('imageUrl')};
+               currentChannelModel.currentMessage.photo = {thumb: photo.get('thumbnailUrl'), photo: photo.get('imageUrl'), phone: photo.get('phoneUrl')};
 
             },
             error: function(contact, error) {

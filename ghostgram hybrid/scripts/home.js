@@ -502,7 +502,8 @@ function homeSignin (e) {
             userModel.currentUser.set('alias', userModel.parseUser.get('alias'));
             userModel.currentUser.set('aliasPhoto', userModel.parseUser.get('aliasPhoto'));
 			userModel.currentUser.set('statusMessage', userModel.parseUser.get('statusMessage'));
-			userModel.currentUser.set('isAvailable', userModel.parseUser.get('isAvailable'));
+			userModel.currentUser.set('isAvailable', userModel.parseUser.get('isAvailable'))
+			userModel.currentUser.set('isCheckedIn', userModel.parseUser.get('isCheckedIn'));
 			userModel.currentUser.set('isVisible', userModel.parseUser.get('isVisible'));
 			userModel.currentUser.set('isRetina', userModel.parseUser.get('isRetina'));
 			userModel.currentUser.set('isWIFIOnly', userModel.parseUser.get('isWIFIOnly'));
@@ -621,6 +622,7 @@ function homeCreateAccount() {
 				    user.set('aliasPhoto', "images/ghost-default.svg");
 					user.set("isAvailable", true);	   
 					user.set("isVisible", true);
+				    user.set("isCheckedIn", false);
 				    user.set("availImgUrl", "images/status-available.svg");
 					user.set("phoneVerified", false);
 				    user.set("useIdenticon", true);

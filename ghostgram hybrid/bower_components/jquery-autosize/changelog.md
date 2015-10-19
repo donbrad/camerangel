@@ -1,5 +1,33 @@
 ## Changelog
 
+##### v.3.0.13 - 2015-09-26
+* Fixed scroll-bar jumpiness in iOS. Merged #261, fixes #207.
+* Fixed reflowing of initial text in Chrome and Safari.
+
+##### v.3.0.12 - 2015-09-14
+* Merged changes were discarded when building new dist files.  Merged #255, Fixes #257 for real this time.
+
+##### v.3.0.11 - 2015-09-14
+* Fixed regression from 3.0.10 that caused an error with ES5 browsers.  Merged #255, Fixes #257.
+
+##### v.3.0.10 - 2015-09-10
+* Removed data attribute as a way of tracking which elements autosize has been assigned to. fixes #254, fixes #200.
+
+##### v.3.0.9 - 2015-09-02
+* Fixed issue with assigning autosize to detached nodes. Merged #253, Fixes #234.
+
+##### v.3.0.8 - 2015-06-29
+* Fixed the `autosize:resized` event not being triggered when the overflow changes. Fixes #244.
+
+##### v.3.0.7 - 2015-06-29
+* Fixed jumpy behavior in Windows 8.1 mobile. Fixes #239.
+
+##### v.3.0.6 - 2015-05-19
+* Renamed 'dest' folder to 'dist' to follow common conventions.
+
+##### v.3.0.5 - 2015-05-18
+* Do nothing in Node.js environment.
+
 ##### v.3.0.4 - 2015-05-05
 * Added options object for indicating if the script should set the overflowX and overflowY.  The default behavior lets the script control the overflows, which will normalize the appearance between browsers.  Fixes #220.
 

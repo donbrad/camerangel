@@ -101,7 +101,7 @@ var appDataChannel = {
             // User has validated phone and email -- enables users to update contact info and get private key for P2P and Secure Package
             case 'userValidated' : {
                 // Todo: Scan contact list for useruuid and then by phone.
-                var contact = contactModel.getContactModel(m.userId);
+                var contact = contactModel.findContact(m.userId);
                 if (contact === undefined) {
                     contact = contactModel.findContactByPhone(m.phone);
                 }

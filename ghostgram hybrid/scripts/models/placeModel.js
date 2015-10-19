@@ -9,7 +9,7 @@
 var placesModel = {
 
     locatorActive : false,
-    _radius : 150,
+    _radius : 300,
 
     placesArray : [],
     placesFetched : false,

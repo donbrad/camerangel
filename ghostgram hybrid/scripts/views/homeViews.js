@@ -48,32 +48,26 @@ var userStatusView = {
 
         status.set('statusMessage', user.statusMessage);
 
-        if (userModel.isCheckedIn) {
-            status.set('checkedInPlace', userModel.checkedInPlace);
+        if (user.isCheckedIn) {
+            status.set('currentPlace', user.currentPlace);
         } else {
-            status.set('checkedInPlace','');
+            status.set('currentPlace','');
         }
 
-        status.set('currentPlace', user.currentPlace);
+
         status.set('isAvailable', user.isAvailable);
-        userStatusView._activeStatus.bind('change' , userStatusView.syncUserStatus);
+
 
         
         
         // if there's a current checked in place -- select it in the list
-        if (userStatusView._checkInPlaceId !== null) {
+        if (user.currentPlaceUUID !== null && user.isCheckedIn) {
 
         	$("#profileCheckOutLi").removeClass("hidden");
         	$("#checkOut-text").text(user.currentPlace);
-           	// Is the current place in the list of candidate places?
 
-            // Is the current place in the list of candidate places?
-
-            // Yes - select it
-
-            // No - Select the first place in the list...
-            //Todo: don - wire this up
         } else {
+            $('#profileCheckOutLi').addClass('hidden');
         	// hide checkout if not checked in
         	$("#checked-in-place").addClass("hidden");
 
@@ -81,15 +75,7 @@ var userStatusView = {
         	$("#userStatusLocationBox").addClass("hidden");
 
         }
-		
 
-
-        if (mapModel.currentPlaceId !== null) {
-            $('#profileCheckOutLi').removeClass('hidden');
-        } else {
-            //$('#profileCheckInLi').removeClass('hidden');
-            $('#profileCheckOutLi').addClass('hidden');
-        }
     },
 
     // Main entry point for userstatus modal
@@ -101,13 +87,20 @@ var userStatusView = {
 
        // mobileNotify("Updating your location...");
 
+        if (userModel.currentUser.isCheckedIn && userModel.currentUser.currentPlaceUUID !== null) {
+            // hide location if the user is not checked in
+            $("#profileLocation, #checked-in-place").removeClass("hidden");
+        } else {
+            $("#profileLocation, #checked-in-place").addClass("hidden");
+        }
+
         mapModel.getCurrentAddress(function (isNew, address) {
             // Is this a new location
-            if (isNew) {
+           /* if (isNew) {
                 $('#profileCheckInLi').removeClass('hidden');
             } else {
                 $('#profileCheckInLi').addClass('hidden');
-            }
+            }*/
         });
 
         userStatusView._update();
@@ -140,8 +133,6 @@ var userStatusView = {
 
         }
 
-        // hide location
-        $("#profileLocation, #checked-in-place").addClass("hidden");
     },
 
     checkIn : function (e) {
@@ -170,7 +161,6 @@ var userStatusView = {
         	$(element).addClass("hidden");
         	}
     	});
-        userStatusView._checkInPlaceId = null;
         userModel.checkOut();
         mapModel.checkOut();
         $('#profileStatusCheckInPlace').text('');
@@ -188,24 +178,9 @@ var userStatusView = {
     onInit : function (e) {
         _preventDefault(e);
 
-        // Wire up the select since html wiring doesn't seem to be working
-        $('#userStatusLocationSelect').kendoDropDownList({
-            autoBind: false,
-            dataTextField: "placeuuid",
-            dataValueField: "name",
-            dataSource: userStatusView._placesDS,
-            change: function(e) {
-                var value = this.value();
-                if (value === null) {
-                    //User wants to create a new place to check in to...
-                } else {
-                    // Set the current place target this elements
-                    userStatusView._checkInPlaceId = value;
-                }
-            }
-        });
-
         userStatusView.statusCharCount(e);
+
+        userStatusView._activeStatus.bind('change' , userStatusView.syncUserStatus);
     },
 
     statusCharCount: function(e) {
@@ -324,4 +299,127 @@ var modalView = {
     }
 
 
+};
+
+
+var ghostEditView = {
+    _callback : null,
+    _returnview : null,
+
+    onInit: function (e) {
+
+        _preventDefault(e);
+        autosize($('#ghostEmailEditor'));
+
+        $("#ghostEmailEditor").kendoEditor({
+            tools: [
+                "bold",
+                "italic",
+                "underline",
+                "justifyLeft",
+                "justifyCenter",
+                "justifyRight",
+                "insertUnorderedList",
+                "insertOrderedList",
+                "indent",
+                "outdent",
+                "createTable",
+                "formatting",
+                "fontSize",
+                {
+                    name: "insertImage",
+                    exec: function (e) {
+                        e.preventDefault();
+                        modalGalleryView.openModal(function(imageUrl){
+                            $('#ghostEmailEditor').data("kendoEditor").paste('<div style="max-width: 50%; max-height: 50%;>" <img src="'+imageUrl+'"/></div>', {split: true});
+                        });
+                    }
+
+                }
+            ]
+        });
+    },
+
+    onShow : function (e) {
+        _preventDefault(e);
+        if (e.view.params.callback !== undefined) {
+            ghostEditView._callback = e.view.params.callback;
+        } else {
+            ghostEditView._callback = null;
+        }
+
+        if (e.view.params.returnview !== undefined) {
+            ghostEditView._returnview = e.view.params.returnview;
+        } else {
+            ghostEditView._returnview = null;
+        }
+
+        autosize.update($('#ghostEmailEditor'));
+        $('#ghostEmailEditor').data("kendoEditor").value("");
+        $('#ghostEmailEditor').data("kendoEditor").focus();
+    },
+
+    onDone : function (e) {
+        _preventDefault(e);
+
+        if (ghostEditView._returnview !== null) {
+            APP.kendo.navigate('#'+ghostEditView._returnview);
+        }
+
+        if (ghostEditView._callback  === 'contactaction') {
+
+            contactActionView.restoreModal();
+        }
+    },
+
+    openModal : function(callback) {
+
+        if (callback !== undefined) {
+            ghostEditView._callback = callback;
+        } else {
+            ghostEditView._callback = null;
+        }
+        $('#ghostEmailEditor').data("kendoEditor").value("");
+        $('#ghostEditModal').data('kendoMobileModalView').open();
+        $('#ghostEmailEditor').data("kendoEditor").focus();
+
+    },
+
+    closeModal : function (e) {
+
+        _preventDefault(e);
+
+        $('#ghostEditModal').data('kendoMobileModalView').close();
+        if (ghostEditView._callback  !== null) {
+            ghostEditView._callback();
+        }
+    },
+
+    sendGhostEmail : function (e) {
+        _preventDefault(e);
+
+        var content = $('#ghostEmailEditor').data("kendoEditor").value();
+        var contactKey = contactModel.currentContact.get('publicKey'), email = contactModel.currentContact.get('email');
+        if (contactKey === null) {
+            mobileNotify("Invalid Public Key for " + contactModel.currentContact.get('name'));
+            return;
+        }
+        var encryptContent = cryptico.encrypt(content, contactKey);
+        if (window.navigator.simulator === true){
+            alert("Mail isn't supported in the emulator");
+        } else {
+            var thisUser = userModel.currentUser.get('name');
+            cordova.plugins.email.open({
+                to:          [email],
+                subject:     'ghostEmail',
+                body:        '<h2>ghostEmail From ' + thisUser + '</h2> <p> !!Test - clear text included !!</p><p>'+ content +'</p> <p>'+ encryptContent.cipher + '</p>',
+                isHtml:      true
+            }, function (msg) {
+                mobileNotify("Email sent to " + thisUser);
+                ghostEditView.onDone();
+                // navigator.notification.alert(JSON.stringify(msg), null, 'EmailComposer callback', 'Close');
+            });
+        }
+
+    }
 };

@@ -271,7 +271,7 @@ var editChannelView = {
                 // channel can include invited users who havent signed up yet
 
                 for (var i = 0; i < members.length; i++) {
-                    thisMember = contactModel.getContactModel(members[i]);
+                    thisMember = contactModel.findContact(members[i]);
 
                     // Current user will be undefined in contact list.
                     if (thisMember !== undefined) {
@@ -482,7 +482,7 @@ var channelMembersView = {
         if (members.length > 0) {
 
             for (var i=0; i<members.length; i++) {
-                var thisMember = contactModel.getContactModel(members[i]);
+                var thisMember = contactModel.findContact(members[i]);
                 if (thisMember === undefined)
                     thisMember = contactModel.findContactByUUID(members[i]);
                 if (thisMember !== undefined) {
@@ -617,13 +617,14 @@ var channelView = {
        // Todo: don - optimize geolocator calls -- shouldn't call on every chat show
        // APP.updateGeoLocation();
 
-        channelView.privacyMode = false;
-
         channelModel.updateUnreadCount(channelUUID, 0);
 
+        //default private mode off for now. Todo: don and jordan fix privacy mode
+        channelView.privacyMode = false;
         // Privacy UI
         $('#privacyMode').html('<img src="images/privacy-off.svg" />');
         $("#privacyStatus").addClass("hidden");
+
         $("#channelNavBar").data('kendoMobileNavBar').title(name);
 
         if (thisChannel.isPrivate) {
@@ -636,17 +637,15 @@ var channelView = {
           }
 
           $('#messagePresenceButton').hide();
-          channelView.privacyMode = true;
-          // Privacy UI
-          $('#privacyMode').html('<img src="images/privacy-on.svg" />');
-          $("#privacyStatus").removeClass("hidden");
+
+
           var userKey = thisUser.publicKey, privateKey = thisUser.privateKey, name = thisUser.name;
 
           contactUUID = thisChannel.channelId;
 
 
           channelView.currentContactId = contactUUID;
-          var thisContact = contactModel.getContactModel(contactUUID);
+          var thisContact = contactModel.findContact(contactUUID);
           if (thisContact === undefined) {
               mobileNotify("ChannelView : Undefined contact for " + contactUUID);
               return;
@@ -771,7 +770,7 @@ var channelView = {
                 contactInfoArray[contact.uuid] = contact;
                 // this is our user.
             } else {
-                var thisContact = contactModel.getContactModel(contactArray[i]);
+                var thisContact = contactModel.findContact(contactArray[i]);
                 if (thisContact === undefined) {
                     mobileNotify("buildContactArray - undefined contact!!!");
                     return(contactInfoArray);
@@ -818,7 +817,7 @@ var channelView = {
            // askRequestModal.close();
         }
 
-        var contact = contactModel.getContactModel(message.sender);
+        var contact = contactModel.findContact(message.sender);
 
         var contactName = contact.name + " (" + contact.alias + ")";
         $('#askRequest-contactName').text(contactName);
@@ -1166,7 +1165,7 @@ var askRequestModal = {
             askRequestModal.close();
         }
 
-        var contact = contactModel.getContactModel(message.sender);
+        var contact = contactModel.findContact(message.sender);
 
         var contactName = contact.name + " (" + contact.alias + ")";
         $('#askRequest-contactName').text(contactName);

@@ -16,7 +16,6 @@ var contactModel = {
         }
     }),
 
-   /* contactsDS : null,*/
 
     deviceContactsDS: new kendo.data.DataSource({
         sort: {
@@ -25,7 +24,9 @@ var contactModel = {
         }
     }),
 
+    // Contact data plus contact status
     contactListDS: new kendo.data.DataSource({
+        offlineStorage: "contactlist",
         group: 'category',
         sort: {
             field: "name",
@@ -37,6 +38,7 @@ var contactModel = {
     currentDeviceContact: {},
     unifiedDeviceContact: false,
     currentContact: null,
+    lastSyncTime : ggTime.currentTimeInSeconds() - 900,
     phoneDS: new kendo.data.DataSource(),
     emailDS: new kendo.data.DataSource(),
     addressDS: new kendo.data.DataSource(),
@@ -45,6 +47,18 @@ var contactModel = {
 
 
     init : function () {
+
+        contactModel.contactListDS.online(false);
+
+        // Reflect any core contact changes to contactList
+        contactModel.contactsDS.bind("change", function (e) {
+            var data = this.data();
+            var ds = contactModel.contactListDS;
+
+
+
+        });
+
         /*  contactModel.contactsDS = parseKendoDataSourceFactory.make('contacts',
           {
                 id: 'id',
@@ -207,6 +221,11 @@ var contactModel = {
                 }
                 deviceModel.setAppState('hasContacts', true);
                 contactModel.contactsDS.data(models);
+
+                // Update contactlistDs and get latest status for contacts
+                contactModel.contactListDS.data(models);
+                contactModel.updateContactListStatus();
+
                 deviceModel.isParseSyncComplete();
             },
             error: function(collection, error) {
@@ -259,7 +278,7 @@ var contactModel = {
         }
     },
 
-    getContactModel: function (contactUUID) {
+    findContact: function (contactUUID) {
         var dataSource = contactModel.contactsDS; 
         dataSource.filter( { field: "contactUUID", operator: "eq", value: contactUUID });
         var view = dataSource.view();
@@ -268,6 +287,7 @@ var contactModel = {
 
         return(contact);
     },
+
 
     findContactByUUID : function(uuid) {
         var dataSource = contactModel.contactsDS;
@@ -278,6 +298,27 @@ var contactModel = {
 
         return(contact);
     },
+
+    findContactList : function (contactUUID) {
+        var dataSource = contactModel.contactListDS;
+        dataSource.filter( { field: "contactUUID", operator: "eq", value: contactUUID });
+        var view = dataSource.view();
+        var contact = view[0].items[0];
+        dataSource.filter([]);
+
+        return(contact);
+    },
+
+    findContactListUUID : function ( uuid) {
+        var dataSource = contactModel.contactListDS;
+        dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
+        var view = dataSource.view();
+        var contact = view[0].items[0];
+        dataSource.filter([]);
+
+        return(contact);
+    },
+
 
     findContactByPhone: function (phone) {
         var dataSource = this.contactsDS;
@@ -290,7 +331,7 @@ var contactModel = {
     },
 
     // Get a full contact status update, including phone and email.
-    updateContactStatus : function (contactId, callback) {
+    updateContactDetails : function (contactId, callback) {
         // Get this contacts record...
         var thisContact = contactModel.findContactByUUID(contactId);
 
@@ -302,9 +343,6 @@ var contactModel = {
                     var contact = result.user;
                     var current = thisContact;
 
-                    current.set('statusMessage', contact.statusMessage);
-                    current.set('currentPlace', contact.currentPlace);
-                    current.set('currentPlaceUUID', contact.currentPlaceUUID);
                     current.set('contactUUID', contact.userUUID);
                     current.set('contactPhone', contact.phone);
                     current.set('phoneVerified', contact.phoneVerified);
@@ -333,9 +371,6 @@ var contactModel = {
                     var contact = result.user;
                     var current = thisContact;
                     current.set('contactUUID', contact.userUUID);
-                    current.set('statusMessage', contact.statusMessage);
-                    current.set('currentPlace', contact.currentPlace);
-                    current.set('currentPlaceUUID', contact.currentPlaceUUID);
                     current.set('phoneVerified', contact.phoneVerified);
                     if (contact.phoneVerified) {
                         current.set('category', 'member');
@@ -344,7 +379,6 @@ var contactModel = {
                     current.set('contactEmail', contact.email);
                     current.set('emailValidated', contact.emailVerified);
                     current.set('contactPhoto', contact.photo);
-                    current.set('isAvailable', contact.isAvailable);
                     current.set('publicKey', contact.publicKey);
 
                     callback(current);
@@ -385,6 +419,35 @@ var contactModel = {
             }
         });
     },
+
+    updateContactListStatus : function () {
+        var time = ggTime.currentTimeInSeconds();
+
+        // Only sync contacts every 15 minutes
+        if (time < contactModel.lastSyncTime + 900) {
+            return;
+        }
+
+        contactModel.lastSyncTime = time;
+
+        var index = 0, length = contactModel.contactsDS.total(), array = contactModel.contactsDS.data();
+
+        for (var i=0; i<length; i++) {
+            var contactId = array[i].contactUUID;
+            if (contactId !== undefined && contactId !== null) {
+                contactModel.getContactStatusObject(contactId, function(user){
+                    var userId = user.get('userUUID');
+                    var contact = contactModel.findContactList(userId);
+                    contact.set('statusMessage', user.get('statusMessage'));
+                    contact.set('currentPlace', user.get('currentPlace'));
+                    contact.set('currentPlaceUUID', user.get('currentPlaceUUID'));
+                    contact.set('isAvailable', user.get('isAvailable'));
+
+                });
+            }
+        }
+    },
+
 
     syncMemberContact: function (e) {
 
