@@ -598,7 +598,7 @@ var channelView = {
         });
   	
   		
-        $("#channelMembers-listview").kendoMobileListView({
+        /*$("#channelMembers-listview").kendoMobileListView({
             dataSource: currentChannelModel.membersDS,
             template: $("#membersTemplate").html(),
             click: function (e) {
@@ -607,7 +607,7 @@ var channelView = {
                 // display message actionsheet
                 $("#memberActions").data("kendoMobileActionSheet").open();
             }
-        });
+        });*/
     },
 
     onShow : function (e) {

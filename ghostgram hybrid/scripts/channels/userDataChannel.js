@@ -103,12 +103,12 @@ var userDataChannel = {
             } break;*/
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, ownerID: <ownerUUID>,  ownerName: <text>, channelName: <text>, channelDescription: <text>}
-            case 'channelInvite' : {
+            case 'groupInvite' : {
                 userDataChannel.processGroupInvite(m.ownerId, m.ownerName,  m.channelId, m.channelName, m.channelDescription, m.durationDays,  m.message);
             } break;
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, owner: <ownerUUID>}
-            case 'channelDelete' : {
+            case 'groupDelete' : {
                 userDataChannel.processGroupDelete(m.ownerId, m.channelId, m.message);
             } break;
 
