@@ -1196,7 +1196,22 @@ var channelPresence = {
     _channelModel : null,
 
     onInit: function (e) {
+        currentChannelModel.membersPresentDS.data([]);
+        $("#channelPresence-listview").kendoMobileListView({
+            dataSource: currentChannelModel.membersPresentDS,
+            template: $("#memberTemplate").html(),
+            filterable: {
+                field: "name",
+                operator: "startswith",
+                placeholder: "Search Members..."
+            },
+            click: function (e) {
+                // Click to potential member list -- add this member to channel
+                var thisMember = e.dataItem;
 
+            }
+
+        });
     },
 
     onShow: function (e) {
