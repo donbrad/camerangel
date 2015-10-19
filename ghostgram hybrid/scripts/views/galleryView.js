@@ -202,13 +202,13 @@ var galleryView = {
 
     galleryClick : function (e) {
         _preventDefault(e);
-
+        
         var photoId = e.dataItem.photoId, photoUrl = e.dataItem.imageUrl;
-
+        
         galleryView._currentPhotoUrl = photoUrl;
         galleryView._currentPhotoId = photoId;
 
-       galleryView._currentPhoto = photoModel.findPhotoById(photoId);
+       	galleryView._currentPhoto = photoModel.findPhotoById(photoId);
 
         $('#photoViewImage').attr('src', photoUrl);
         $('#photoTagImage').attr('src', photoUrl);
@@ -300,7 +300,6 @@ var photoView = {
             photoView._activePhoto = photoModel.findPhotoById(photoView._activePhotoId);
             photoView._activePhotoUrl = photoView._activePhoto.imageUrl;
         }
-
 
     },
 
@@ -420,7 +419,12 @@ var photoEditor = {
     savePhoto : function (e) {
         _preventDefault(e);
         var urlToSave = $('#photoEditImage').attr('src');
+
         // TODO Don - wire photo save
+
+        mobileNotify("Photo updated");
+        // in the meantime 
+        APP.kendo.navigate('#:back');
 
         /*
         if ( photoEditor._source === 'chat') {
@@ -441,6 +445,15 @@ var photoEditor = {
 
 var modalPhotoView = {
     _photoUrl : null,
+    
+    onInit: function(e){
+    	$(".photoViewBox").kendoTouch({
+    		filter: "img",
+    		tap: function(e){
+
+    		}
+    	});
+    },
 
     openModal : function (url) {
         modalPhotoView._photoUrl = url;
@@ -512,10 +525,6 @@ var modalGalleryView = {
             var photoParam = LZString.compressToEncodedURIComponent(photoId);
             APP.kendo.navigate('#photoView?photo='+photoParam);
         }*/
-    },
-
-    galleryHold: function(e){
-    	console.log("hold");
     }
 
 };

@@ -727,8 +727,14 @@ var placeView = {
             }
 
         }
+        var name = placeView._activePlace.name;
+        var alias = placeView._activePlace.alias;
+        var place = placeView._activePlace.isPrivate;
+        var address = placeView._activePlace.address;
 
-        // Toggle display of private/public icons -- todo: jordan might have other ideas...
+        ux.formatNameAlias(name, alias, "#placeView");
+
+        // Toggle display of private/public icons 
         if (placeView._activePlace.isPrivate) {
             $('#publicPlaceView').addClass('hidden');
             $('#privatePlaceView').removeClass('hidden');
@@ -768,6 +774,10 @@ var placeView = {
         placeView._activePlace.set('isPrivate', placeObj.isPrivate);
         placeView._activePlace.set('isAvailable', placeObj.isAvailable);
 
+    },
+
+    openPlaceMap: function(e){
+    	APP.kendo.navigate("#map");
     }
 };
 

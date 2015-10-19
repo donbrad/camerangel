@@ -624,6 +624,20 @@ form {
 	}
 }
 
+.btnClear-light {
+	&:extend(.btnStyle);
+    background: transparent;
+    color: #fff !important;
+    font-weight: 400;
+    :active {
+    	color: #3A779D !important;
+	}
+	:disabled {
+    	color: #A4A4A4 !important;
+    	background: transparent !important;
+	}
+}
+
 .btnClear-sm {
 	&:extend(.btnStyle);
 	background: transparent;
@@ -687,8 +701,8 @@ form {
 }
 
 .glass {
-	color: #fff !important;
-	background: rgba(255,255,255,0.15) !important;
+	//color: #fff !important;
+	background: #242424 !important;
 }
 
 .addBtn-sm {
@@ -1496,14 +1510,19 @@ div.footerMenu.km-footer > ul > li > a:active {
 	position: absolute;
 	width: 100%;
 	z-index: 99;
-	background: rgba(0, 0, 0, 0.2) !important;
+	background: rgba(0, 0, 0, 0.0) !important;
 }
 
-.photoViewNavTop {
+.photoViewNavTop,
+.smallHeader {
 	&:extend(.photoViewNav);
 	top: 0px;
 	left: 0px;
 	text-align: center;
+}
+
+.smallHeader {
+	color: #fff !important;
 }
 
 #photoViewText {
@@ -1514,17 +1533,32 @@ div.footerMenu.km-footer > ul > li > a:active {
 	border-radius: 3px;
 }
 
-.photoViewNavBtm {
-	&:extend(.photoViewNav);
-	bottom: 0px;
-	left: 0px;
+.photoTitleBox {
+	position: absolute;
+	bottom: 3rem;
+	left: 0rem;
+	text-align: left;
+	color: #fff;
+	width: 100%;
+	height: 5rem;
+	padding: 0.5rem 0 0.5rem;
+	border-top: 1px solid rgba(255, 255, 255, 0.2);
+	background: -moz-linear-gradient(top,  rgba(0,0,0,0.3) 0%, rgba(0,0,0,1) 99%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.3)), color-stop(99%,rgba(0,0,0,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(0,0,0,0.3) 0%,rgba(0,0,0,1) 99%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(0,0,0,0.3) 0%,rgba(0,0,0,1) 99%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(0,0,0,0.3) 0%,rgba(0,0,0,1) 99%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(0,0,0,0.3) 0%,rgba(0,0,0,1) 99%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4d000000', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
 }
 
-#photoView > div.km-content.km-widget.km-scroll-wrapper {
+#photoView > div.km-content.km-widget.km-scroll-wrapper,
+#modalPhotoView > div.km-content.km-widget.km-scroll-wrapper {
 	padding-bottom: 0px;
 }
 
-#photoViewImage {
+#photoViewImage,
+.centerPhoto {
 	&:extend(.photoMax);
 	position: absolute;
     margin: auto;
@@ -3979,17 +4013,10 @@ div.contactListBox.activeContact > div > div > ul {
 
 /* photo editor */
 #photoEditor > div.km-content.km-widget.km-scroll-wrapper {
-	background: #4A4A4A;
+	background: rgba(0,0,0,0.85);
 }
 
-#photoEditImage {
-	max-height: 100%;
-	max-width: 100%;
-}
 
-.photo-options {
-	vertical-align: bottom;
-}
 
 /* Contacts */
 .contactImg {
@@ -5012,6 +5039,43 @@ div.contactListBox.activeContact > div > div > ul {
     display: none;
 }
 
+.map-placeLayer, 
+#map-mapdiv {
+	width: 100%;
+	height: 150px;
+}
+
+.map-placeLayer {
+	background: url("../images/layer-map.png") center center fixed;
+	-webkit-background-size: contain;
+  	-moz-background-size: contain;
+  	-o-background-size: contain;
+  	background-size: contain;
+}
+
+.placeCardTop {
+	margin: 0.5rem 0 0.5rem;
+}
+
+.placeContent {
+	position: relative;
+	top: 3.5rem;
+}
+
+#placeListOpt {
+	margin-top: 0.5rem;
+	width: 100%;
+	li {
+		width: 50%;
+		float: left;
+		padding: 0 0.25rem;
+		text-align: center;
+	}
+	li:nth-child(2) {
+		border-left: 1px solid @shade-200;
+	}
+}
+
 /** Place **/
 #places-listview,
 #findplace-listview {
@@ -5088,6 +5152,22 @@ div.contactListBox.activeContact > div > div > ul {
 	background: @primary-200;
 	padding: 0.25rem 1rem;
 	color: #fff;
+}
+
+.placeCard {
+	//width: 100%;
+	.shadowHelper(1);
+	background: #fff;
+	border-radius: 3px;
+	width: 90%;
+	margin-left: 5%;
+	margin-right: 5%;
+	position: absolute;
+	top: 4rem;
+}
+
+#placeView > div.footerMenu.km-footer {
+	display: none;
 }
 
 .icon-btn {
