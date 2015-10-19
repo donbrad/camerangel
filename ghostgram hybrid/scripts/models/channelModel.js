@@ -144,7 +144,7 @@ var channelModel = {
     }, this._messageCountRefresh, true ),
 
 
-    syncParseChannels : function () {
+    syncParseChannels : function (callback) {
        if (userModel.currentUser.phoneVerified)  {
            var uuid = userModel.currentUser.userUUID;
 
@@ -170,6 +170,9 @@ var channelModel = {
                             }
                         }
                    }
+               }
+               if (callback !== undefined) {
+                   callback();
                }
            });
        }
