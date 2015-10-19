@@ -19,12 +19,13 @@ var groupChannel = {
         });
     },
     
-    open : function (channelId, userId, name, alias) {
+    open : function (channelId, userId, name, alias, phoneNumber) {
         groupChannel.channelId = channelId;
         groupChannel.userId = userId;
         groupChannel.thisUser.username = userId;
         groupChannel.thisUser.name = name;
         groupChannel.thisUser.alias = alias;
+        groupChannel.thisUser.phone = phoneNumber;  // Use this to look up new members (don't have userId therefore no contactUUID)
         groupChannel.users = new Array();
 
         groupChannel.users[userId] = groupChannel.thisUser;
@@ -99,7 +100,7 @@ var groupChannel = {
     },
 
     presenceChange: function (userId, isPresent) {
-        
+        channelView.setPresence(userId, isPresent);
 
     },
 

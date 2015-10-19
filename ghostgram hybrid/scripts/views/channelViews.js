@@ -384,6 +384,14 @@ var editChannelView = {
         
     },
 
+    memberEnter : function (contactUUID) {
+
+    },
+
+    memberLeave : function (contactUUID) {
+
+    },
+
     showDoneButton: function () {
 
     },
@@ -709,10 +717,10 @@ var channelView = {
           // clear header img
           $('#channelImage').attr('src', '').addClass("hidden");
 
-          groupChannel.open(channelUUID, thisUser.userUUID, thisUser.name, thisUser.alias);
+          groupChannel.open(channelUUID, thisUser.userUUID, thisUser.name, thisUser.alias, thisUser.phone);
           channelView.sendMessageHandler = groupChannel.sendMessage;
           channelView.contactData = channelView.buildContactArray(thisChannel.members);
-          mobileNotify("Getting Previous Messages...");
+          mobileNotify("Loading Messages...");
           groupChannel.getMessageHistory(function (messages) {
               channelView.messagesDS.data([]);
               for (var i=0; i<messages.length; i++){
@@ -1187,12 +1195,15 @@ var channelPresence = {
     _channelId : null,
     _channelModel : null,
 
+    onInit: function (e) {
+
+    },
 
     onShow: function (e) {
 
         var channelTitle = currentChannelModel.currentChannel.get('name');
 
-        $('#channelPresenceTitle').text(channelTitle + ' Members');
+       // $('#channelPresenceTitle').text(channelTitle + ' Members');
 
        // $("#channelPresence").data("kendoMobileDrawer").show();
     },
