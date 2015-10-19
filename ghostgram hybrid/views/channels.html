@@ -408,8 +408,16 @@
 	</div>
 </script>
 
- <div data-role="drawer" id="channelPresence" >
+ <div data-role="drawer" id="channelPresence"  data-show="channelPresence.onShow">
+	 <div data-role="header">
+		 <div data-role="navbar">
+			 <a data-align="left" data-role="button" href="#:back" data-click="channelPresence.onDone">
+				 <img src="images/nav-back.svg" />
+			 </a>
+			 <span id="channelPresenceTitle"></span>
+		 </div>
 
+	 </div>
 	 <ul id="channelPresence-listview" ></ul>
  </div>
 

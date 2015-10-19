@@ -39,6 +39,13 @@ var currentChannelModel = {
         }
     }),
 
+    membersPresentDS: new kendo.data.DataSource({
+        sort: {
+            field: "name",
+            dir: "asc"
+        }
+    }),
+
     messagesDS: new kendo.data.DataSource({
         sort: {
             field: "time",

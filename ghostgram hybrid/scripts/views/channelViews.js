@@ -1181,3 +1181,27 @@ var askRequestModal = {
         $('#askRequest-contactName').text(contactName);
     }
 };
+
+
+var channelPresence = {
+    _channelId : null,
+    _channelModel : null,
+
+
+    onShow: function (e) {
+
+        var channelTitle = currentChannelModel.currentChannel.get('name');
+
+        $('#channelPresenceTitle').text(channelTitle + ' Members');
+
+       // $("#channelPresence").data("kendoMobileDrawer").show();
+    },
+
+    onDone: function (e) {
+        $("#channelPresence").data("kendoMobileDrawer").hide();
+    },
+
+    onClose : function (e) {
+
+    }
+};
