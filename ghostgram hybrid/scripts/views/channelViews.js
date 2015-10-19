@@ -882,17 +882,18 @@ var channelView = {
         $('#occupancyCount').text(occupancyCount + 1);
 
         channelView.membersPresentDS.data([]);
-        
+
         for (var i=0; i<members.length; i++) {
             var userId = members.username;
 
-            var member = channelView.findChatMember(userId);
-            if (member === undefined || member === null) {
-                channelView.setPresence(userId, true);
+            if (userId !== userModel.currentUser.userUUID) {
+                var member = channelView.findChatMember(userId);
+                if (member === undefined || member === null) {
+                    channelView.setPresence(userId, true);
+                }
             }
 
         }
-
 
     },
 

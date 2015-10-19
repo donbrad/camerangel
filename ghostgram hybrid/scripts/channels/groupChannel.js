@@ -75,7 +75,8 @@ var groupChannel = {
             // If the presence message contains data aka *state*, add this to our users object.
             if ("data" in msg) {
                 groupChannel.users[msg.data.username] = msg.data;
-                if (msg.data.username !== groupChannel.thisUser.userId) {
+                // Only update presence if it's not THIS user...
+                if (msg.data.username !== groupChannel.thisUser.username) {
                     mobileNotify(groupChannel.users[msg.uuid].name + " has joined...");
                     groupChannel.presenceChange(msg.uuid, msg.state.phone, true);
                 }
