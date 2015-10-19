@@ -77,7 +77,7 @@ var groupChannel = {
                 groupChannel.users[msg.data.username] = msg.data;
                 if (msg.data.username !== groupChannel.thisUser.userId) {
                     mobileNotify(groupChannel.users[msg.uuid].name + " has joined...");
-                    groupChannel.presenceChange(msg.uuid, true);
+                    groupChannel.presenceChange(msg.uuid, msg.state.phone, true);
                 }
 
             }
@@ -95,13 +95,12 @@ var groupChannel = {
         else if (msg.action === "timeout" || msg.action === "leave") {
             mobileNotify(groupChannel.users[msg.uuid].name + " has left ...");
             delete groupChannel.users[msg.uuid];
-            groupChannel.presenceChange(msg.uuid, false);
+            groupChannel.presenceChange(msg.uuid, msg.state.phone, false);
         }
     },
 
-    presenceChange: function (userId, isPresent) {
-        channelView.setPresence(userId, isPresent);
-
+    presenceChange: function (userId, phone,  isPresent) {
+        channelView.setPresence(userId, phone, isPresent);
     },
 
     hereNowHandler : function (msg) {
@@ -111,7 +110,7 @@ var groupChannel = {
                 groupChannel.users[msg.uuids[i].state.username] = msg.uuids[i].state;
             }
         }
-        groupChannel.presenceChange();
+        channelView.updatePresence(groupChannel.users, msg.occupancy);
     },
 
     sendMessage: function (recipient, message, data, ttl) {

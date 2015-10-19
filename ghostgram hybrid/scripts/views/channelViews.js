@@ -845,12 +845,54 @@ var channelView = {
         $("#modalview-requestContent").data("kendoMobileModalView").open();
     },
 
+    findChatMember: function (contactUUID) {
+        var dataSource = channelView.membersPresentDS;
+        dataSource.filter( { field: "contactUUID", operator: "eq", value: contactUUID });
+        var view = dataSource.view();
+        var contact = view[0];
+        dataSource.filter([]);
+
+        return(contact);
+    },
+
     onChannelPresence : function () {
         var users = currentChannelModel.handler.listUsers();
 
     },
 
     setPresence: function (userId, isPresent) {
+        var contact = contactModel.findContact(userId);
+        var member = channelView.findChatMember(userId);
+
+        if (isPresent ) {
+            // this user is now present
+            if (member === undefined)   // If they're not already in the presence list then add them
+                channelView.membersPresentDS.add(contact);
+
+        } else {
+            // this user has left the chat
+            if (member !== undefined)
+                channelView.membersPresentDS.remove(contact);
+
+        }
+    },
+
+    updatePresence : function (members, occupancyCount) {
+
+        $('#occupancyCount').text(occupancyCount + 1);
+
+        channelView.membersPresentDS.data([]);
+        
+        for (var i=0; i<members.length; i++) {
+            var userId = members.username;
+
+            var member = channelView.findChatMember(userId);
+            if (member === undefined || member === null) {
+                channelView.setPresence(userId, true);
+            }
+
+        }
+
 
     },
 
