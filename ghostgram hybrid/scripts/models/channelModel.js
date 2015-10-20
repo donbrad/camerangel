@@ -186,6 +186,7 @@ var channelModel = {
        }
     },
 
+    // Update channel membership (for non-owner members) on local phone and parse
     updateChannelMembers : function (channelId, members) {
         var channel = channelModel.findChannelModel(channelId);
 
@@ -195,6 +196,22 @@ var channelModel = {
         }
 
     },
+
+    // confirm that all members of the channel are in contact list.
+    confirmChannelMembers : function (members) {
+        if (members === undefined || members.length === 0) {
+            return;
+        }
+
+        for (var i=0; i<members.length; i++) {
+            var contact = contactModel.inContactList(members[i]);
+
+            if (contact === undefined) {
+
+            }
+        }
+    },
+
 
 
     findChannelModel: function (channelId) {

@@ -44,6 +44,7 @@ var contactModel = {
     addressDS: new kendo.data.DataSource(),
     phoneArray: [],
     emailArray: [],
+    contactList: [],
 
 
     init : function () {
@@ -52,10 +53,9 @@ var contactModel = {
 
         // Reflect any core contact changes to contactList
         contactModel.contactsDS.bind("change", function (e) {
-            var data = this.data();
-            var ds = contactModel.contactListDS;
 
-
+            // Rebuild the contactList cache when the underlying list changes: add, delete, update...
+            contactModel.buildContactList();
 
         });
 
@@ -228,6 +228,8 @@ var contactModel = {
                 contactModel.contactListDS.data(models);
                 contactModel.updateContactListStatus();
 
+                contactModel.buildContactList();
+
                 deviceModel.isParseSyncComplete();
             },
             error: function(collection, error) {
@@ -235,6 +237,31 @@ var contactModel = {
             }
         });
     },
+
+
+    // Build an identity list for contacts indexed by contactUUID
+    buildContactList : function () {
+        var array = contactModel.contactListDS.data();
+
+        for (var i=0; i<array.length; i++) {
+            var contact = array[i];
+            if (contact.contactUUID !== undefined && contact.contactUUID !== null) {
+                contactModel.contactList[contact.contactUUID] = {
+                    contactId: contact.contactUUID,
+                    name: contact.name,
+                    alias: contact.alias,
+                    photo: contact.photo
+                };
+            }
+
+        }
+
+    },
+
+    inContactList : function (contactUUID) {
+        return(contactModel.contactList[contactUUID]);
+    },
+
 
     createIdenticon: function (hash) {
         var url;
