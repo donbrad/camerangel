@@ -208,6 +208,8 @@ var channelModel = {
 
             if (contact === undefined) {
 
+                currentChannelModel.createChatContact(members[i]);
+
             }
         }
     },

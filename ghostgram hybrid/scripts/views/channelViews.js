@@ -679,7 +679,7 @@ var channelView = {
               return;
           }
           channelView.currentContact = thisContact;
-          channelView.contactData = channelView.buildContactArray(thisChannel.members);
+          //channelView.contactData = channelView.buildContactArray(thisChannel.members);
           //Todo: remove currentContactModel
           currentChannelModel.currentContactModel = thisContact;
           
@@ -729,7 +729,7 @@ var channelView = {
 
           groupChannel.open(channelUUID, thisUser.userUUID, thisUser.name, thisUser.alias, thisUser.phone);
           channelView.sendMessageHandler = groupChannel.sendMessage;
-          channelView.contactData = channelView.buildContactArray(thisChannel.members);
+         // channelView.contactData = channelView.buildContactArray(thisChannel.members);
           mobileNotify("Loading Messages...");
           groupChannel.getMessageHistory(function (messages) {
               channelView.messagesDS.data([]);
@@ -777,18 +777,38 @@ var channelView = {
 
     // Quick access to contact data for display.
     getContactData : function (uuid) {
-        var data = channelView.contactData[uuid];
+        var contact = {isContact: true};
+        //var data = channelView.contactData[uuid];
+
+       if (uuid === userModel.currentUser.userUUID) {
+           contact.isContact = false;
+           contact.uuid = userModel.currentUser.userUUID;
+           contact.alias = userModel.currentUser.alias;
+           contact.name = userModel.currentUser.name;
+           contact.photoUrl = userModel.currentUser.photo;
+           contact.publicKey = userModel.currentUser.publicKey;
+           contact.isPresent = true;
+
+           return (contact);
+       }
+            // this is our user.
+        var data = contactModel.inContactList(uuid);
 
         if (data === undefined) {
             mobileNotify("ChatView getContactData - no contact : " + uuid);
             return(null);
         }
 
+        contact.uuid = data.userUUID;
+        contact.alias = data.alias;
+        contact.name = data.name;
+        contact.photoUrl = data.photo;
+
         return(data);
     },
 
 
-    // Create an array of channel/chat members.  Needs to be all members as this is used for message display.
+  /*  // Create an array of channel/chat members.  Needs to be all members as this is used for message display.
     buildContactArray : function (contactArray) {
        if (contactArray === undefined || contactArray.length === 0) {
            return ([]);
@@ -826,7 +846,7 @@ var channelView = {
         }
 
         return (contactInfoArray)
-    },
+    },*/
 
     getUserType: function (uuid) {
         var userType = { isContact: true, alias : '', profileUrl: ''};
