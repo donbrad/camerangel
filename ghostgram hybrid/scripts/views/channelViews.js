@@ -567,10 +567,8 @@ var channelView = {
 
         e.preventDefault();
 
-        channelView.messagesDS.data([]);
-        channelView.membersPresentDS.data([]);
+        channelView.initDataSources();
 
-        currentChannelModel.membersDS.data([]);
         //APP.checkPubnub();
 
         $("#messageSend").kendoTouch({
@@ -613,6 +611,13 @@ var channelView = {
         });*/
     },
 
+    // Initialize the channel specific view data sources.
+    initDataSources : function () {
+        channelView.messagesDS.data([]);
+        channelView.membersPresentDS.data([]);
+        currentChannelModel.membersDS.data([]);
+    },
+
     onShow : function (e) {
         _preventDefault(e);
         
@@ -622,6 +627,9 @@ var channelView = {
         var channelUUID = e.view.params.channel;
 
         var thisUser = userModel.currentUser;
+
+        channelView.initDataSources();
+
         var thisChannel =  currentChannelModel.setCurrentChannel(channelUUID);
         if (thisChannel === undefined) {
             mobileNotify("ChatView -- chat doesn't exist : " + channelUUID);
