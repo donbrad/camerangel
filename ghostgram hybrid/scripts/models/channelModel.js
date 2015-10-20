@@ -6,6 +6,7 @@
 
 var channelModel = {
 
+    _version: 1,
     _channelName : "channels",
     _channelMemberName : "channelMember",
     currentChannel: new kendo.data.ObservableObject(),
@@ -56,6 +57,11 @@ var channelModel = {
                 var models = new Array();
                 for (var i = 0; i < collection.models.length; i++) {
                     // Todo: check status of members
+                    if (collection.models[i].attributes.isOwner) {
+                        if (collection.models[i].attributes.ownerId === undefined) {
+                            collection.models[i].attributes.ownerId = userModel.currentUser.userUUID;
+                        }
+                    }
                     models.push(collection.models[i].attributes);
                 }
                 channelModel.channelsDS.data(models);
@@ -157,15 +163,14 @@ var channelModel = {
                         // Need to ignore this users private channel in other users accounts
                         if (channel.channelId !== uuid) {
                             if (channelModel.findChannelModel(channel.channelId) === undefined) {
+
                                 if (channel.isPrivate) {
                                     channelModel.addPrivateChannel(channel.channelId, channel.contactKey, channel.name);
                                 } else {
-                                    if (!channel.isOwner) {
-                                        // Only create member channels
-                                        channelModel.addChannel(channel.name, channel.description, false, channel.durationDays,
-                                            channel.channelId, '', '');
 
-                                    }
+                                    channelModel.addChannel(channel.name, channel.description, false, channel.durationDays,
+                                        channel.channelId, '', '');
+
                                 }
                             }
                         }
@@ -253,6 +258,7 @@ var channelModel = {
         var Channels = Parse.Object.extend(channelModel._channelName);
         var channel = new Channels();
         var addTime = ggTime.currentTime();
+        channel.set("version", channelModel._version);
         channel.set("name", contactName);
         channel.set("isOwner", true);
         channel.set('isPrivate', true);
@@ -314,8 +320,7 @@ var channelModel = {
         } else {
             durationDays = parseInt(durationDays);
         }
-        channel.set('isPlace', false);
-        channel.set('isPrivate', false);
+
         if (durationDays < 1 || durationDays > 30) {
             durationDays = 30;
         }
@@ -323,8 +328,10 @@ var channelModel = {
         if (isPrivatePlace === undefined)
             isPrivatePlace = true;
 
+        channel.set('version', channelModel._version);
         channel.set('isPlace', false);
         channel.set('isPrivate', false);
+
 
         // If there's a placeId passed in, need to create a place channel / chat
         if (placeId !== undefined) {
@@ -353,22 +360,22 @@ var channelModel = {
         channel.set("lastAccess", addTime);
         channel.set("channelId", channelId);
 
+        channel.set("ownerId", ownerUUID);
+        channel.set("ownerName", ownerName);
         // Channel owner can access and edit members...
         if (isOwner) {
             channel.set("isOwner", true);
-            channel.set("members", [userModel.currentUser.userUUID]);
+            channel.set("members", [ownerUUID]);
             channel.set("invitedMembers", []);
         } else {
             // Channel members have no access to members...
             channel.set("isOwner", false);
-            channel.set("ownerId", ownerUUID);
-            channel.set("ownerName", ownerName);
+
         }
 
         channelModel.channelsDS.add(channel.attributes);
         channelModel.channelsDS.sync();
         currentChannelModel.currentChannel = channelModel.findChannelModel(channelId);
-        currentChannelModel.currentChannel = currentChannelModel.currentChannel;
 
         channel.setACL(userModel.parseACL);
         channel.save(null, {
@@ -377,30 +384,8 @@ var channelModel = {
 
 
                 mobileNotify('Added channel : ' + channel.get('name'));
+                APP.kendo.navigate('#editChannel');
 
-
-
-                /*if (isOwner) {
-                    channelMap.set("name", channel.get('name'));
-                    channelMap.set("channelId", channel.get('channelId'));
-                    channelMap.set("channelOwner", userModel.currentUser.userUUID);
-                    channelMap.set("members", [userModel.currentUser.userUUID]);
-
-                    channelMap.save(null, {
-                        success: function(channel) {
-                            // Execute any logic that should take place after the object is saved.
-
-
-                        },
-                        error: function(channel, error) {
-                            // Execute any logic that should take place if the save fails.
-                            // error is a Parse.Error with an error code and message.
-                            mobileNotify('Error creating channelMap: ' + error.message);
-                            handleParseError(error);
-                        }
-                    });*/
-                    APP.kendo.navigate('#editChannel');
-               /* }*/
 
             },
             error: function(channel, error) {
@@ -410,9 +395,6 @@ var channelModel = {
                 handleParseError(error);
             }
         });
-
-
-
     },
 
     deleteChannel : function (channelId, silent) {

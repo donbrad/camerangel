@@ -161,7 +161,7 @@ var addChannelView = {
                description = $('#channels-addChannel-description').val();
 
            if (channelModel.findChannelByName(name)) {
-               mobileNotify('There is already a channel named : "' + name + '"');
+               mobileNotify('There is already a chat named : "' + name + '"');
            } else {
                channelModel.addChannel(name, description, true, duration);
            }
@@ -339,7 +339,7 @@ var editChannelView = {
 
         //Send Invite messages to users added to channel
         for (var ma = 0; ma < currentChannelModel.membersAdded.length; ma++) {
-            userDataChannel.groupChannelInvite(currentChannelModel.membersAdded[ma].contactUUID, channelId, currentChannelModel.currentChannel.name, "You've been invited to " + currentChannelModel.currentChannel.name);
+            userDataChannel.groupChannelInvite(currentChannelModel.membersAdded[ma].contactUUID, channelId,  currentChannelModel.currentChannel.name, "You've been invited to " + currentChannelModel.currentChannel.name);
         }
 
         
