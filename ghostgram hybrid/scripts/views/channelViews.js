@@ -774,6 +774,7 @@ var channelView = {
 
     },
 
+    // Quick access to contact data for display.
     getContactData : function (uuid) {
         var data = channelView.contactData[uuid];
 
@@ -785,6 +786,8 @@ var channelView = {
         return(data);
     },
 
+
+    // Create an array of channel/chat members.  Needs to be all members as this is used for message display.
     buildContactArray : function (contactArray) {
        if (contactArray === undefined || contactArray.length === 0) {
            return ([]);
