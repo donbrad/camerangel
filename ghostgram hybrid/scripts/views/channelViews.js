@@ -541,6 +541,7 @@ var channelView = {
     thisUser : null,
     contactData : [],
     currentContactId: null,
+    isPrivateChat: false,
     privacyMode: false,  // Privacy mode - obscure messages after timeout
     currentContact: null,
     activeMessage: null,
@@ -639,6 +640,7 @@ var channelView = {
         var thisChannelHandler = null;
         channelView.activeMessage = null;
         var name = channelView.formatName(thisChannel.name);
+        channelView.isPrivateChat = thisChannel.isPrivate;
 
         // Hide the image preview div
         channelView.hideChatImagePreview();
@@ -654,13 +656,12 @@ var channelView = {
         $("#channelNavBar").data('kendoMobileNavBar').title(name);
 
         if (thisChannel.isPrivate) {
-
-          // *** Private Channel ***
-          var contactKey = thisChannel.contactKey;
-          if (contactKey === undefined) {
+            // *** Private Channel ***
+            var contactKey = thisChannel.contactKey;
+            if (contactKey === undefined) {
               mobileNotify("No public key for " + thisChannel.name);
               return;
-          }
+            }
 
           $('#messagePresenceButton').hide();
 
@@ -755,11 +756,17 @@ var channelView = {
 
     onHide : function (e) {
 
-        if (currentChannelModel.currentChannel !== undefined && currentChannelModel.handler !== null) {
+        // If this isn't a privateChat the close the channel (unsubscribe)
+        // All private chat messages go through userdatachannel which is always subscribed
+        if (!channelView.isPrivateChat) {
+            groupChannel.close();
+        }
+
+        /*if (currentChannelModel.currentChannel !== undefined && currentChannelModel.handler !== null) {
             currentChannelModel.handler.closeChannel();
 
         }
-
+*/
         if (channelView.intervalId !== undefined && channelView.intervalId !== null) {
             clearInterval(channelView.intervalId);
             channelView = null;
