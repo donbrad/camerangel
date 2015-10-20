@@ -29,7 +29,7 @@ var channelModel = {
 
     // All active private messages (including archived messages)
     privateMessagesDS: new kendo.data.DataSource({
-        offlineStorage: "privatemessages-offline"
+        //offlineStorage: "privatemessages-offline"
     }),
     
 
@@ -39,7 +39,7 @@ var channelModel = {
         setTimeout(function(){
            // channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
             channelModel.updateChannelsMessageCount();
-        },5000);
+        }, 5000);
     },
 
 
