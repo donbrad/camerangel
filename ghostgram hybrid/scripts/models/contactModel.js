@@ -434,7 +434,7 @@ var contactModel = {
 
         if (length === 0)
             return;
-        
+
         for (var i=0; i<length; i++) {
             var contactId = array[i].contactUUID;
             if (contactId !== undefined && contactId !== null) {

@@ -57,15 +57,19 @@ var currentChannelModel = {
     setCurrentChannel : function (channelId) {
         if (channelId === undefined || channelId === null) {
             mobileNotify("CurrentChat :  Invalid Chat Id!!");
-            return;
+            return (null);
         }
 
         var channel = channelModel.findChannelModel(channelId);
         if (channel !== undefined) {
             currentChannelModel.currentChannel = channel;
             currentChannelModel.channelId = channelId;
-         }
-        return(channel);
+            return(channel);
+         } else {
+            mobileNotify("CurrentChat :  Couldn't find Chat!!");
+            return(null);
+        }
+
 
     },
 
