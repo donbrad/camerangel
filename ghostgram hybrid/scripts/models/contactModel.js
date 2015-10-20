@@ -432,17 +432,21 @@ var contactModel = {
 
         var index = 0, length = contactModel.contactsDS.total(), array = contactModel.contactsDS.data();
 
+        if (length === 0)
+            return;
+        
         for (var i=0; i<length; i++) {
             var contactId = array[i].contactUUID;
             if (contactId !== undefined && contactId !== null) {
-                contactModel.getContactStatusObject(contactId, function(user){
-                    var userId = user.get('userUUID');
-                    var contact = contactModel.findContactList(userId);
-                    contact.set('statusMessage', user.get('statusMessage'));
-                    contact.set('currentPlace', user.get('currentPlace'));
-                    contact.set('currentPlaceUUID', user.get('currentPlaceUUID'));
-                    contact.set('isAvailable', user.get('isAvailable'));
-
+                contactModel.getContactStatusObject(contactId, function(user) {
+                    if (user !== undefined && user !== null) {
+                        var userId = user.get('userUUID');
+                        var contact = contactModel.findContactList(userId);
+                        contact.set('statusMessage', user.get('statusMessage'));
+                        contact.set('currentPlace', user.get('currentPlace'));
+                        contact.set('currentPlaceUUID', user.get('currentPlaceUUID'));
+                        contact.set('isAvailable', user.get('isAvailable'));
+                    }
                 });
             }
         }
