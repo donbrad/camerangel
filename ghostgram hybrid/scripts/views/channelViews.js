@@ -635,9 +635,6 @@ var channelView = {
         // Hide the image preview div
         channelView.hideChatImagePreview();
 
-       // Todo: don - optimize geolocator calls -- shouldn't call on every chat show
-       // APP.updateGeoLocation();
-
         channelModel.updateUnreadCount(channelUUID, 0);
 
         //default private mode off for now. Todo: don and jordan fix privacy mode
@@ -778,11 +775,13 @@ var channelView = {
            return ([]);
        }
         var contactInfoArray = [], userId = userModel.currentUser.userUUID;
+
         for (var i=0; i< contactArray.length; i++) {
             var contact = new Object();
+
             if (contactArray[i] === userId) {
                 contact.isContact = false;
-                contact.uuid = contactArray[i];
+                contact.uuid = userId;
                 contact.alias = userModel.currentUser.alias;
                 contact.name = userModel.currentUser.name;
                 contact.photoUrl = userModel.currentUser.photo;
