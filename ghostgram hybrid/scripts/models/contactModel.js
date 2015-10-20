@@ -200,6 +200,8 @@ var contactModel = {
             )*/
     },
 
+
+
     fetch : function () {
         var ContactModel = Parse.Object.extend("contacts");
         var ContactCollection = Parse.Collection.extend({

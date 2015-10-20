@@ -513,6 +513,40 @@ var addContactView = {
 
     },
 
+    addChatContact : function (guid, name, alias) {
+        var Contacts = Parse.Object.extend("contacts");
+        var contact = new Contacts();
+
+
+        contact.setACL(userModel.parseACL);
+        contact.set("name", name );
+        contact.set("alias", alias);
+        contact.set('category', "chat");
+        contact.set("address", address);
+        contact.set("group", null);
+        contact.set("priority", 0);
+        contact.set("isFavorite", false);
+        contact.set("uuid", guid);
+        contact.set('contactUUID', null);
+        contact.set('contactPhone', null);
+        contact.set('contactEmail', null);
+
+        contact.save(null, {
+            success: function(contact) {
+                // Execute any logic that should take place after the object is saved.;
+                //var photo = contact.get('photo');
+                var url = contactModel.createIdenticon(guid);
+                contact.attributes.photo = url;
+                contactModel.contactsDS.add(contact.attributes);
+            },
+            error: function(contact, error) {
+                // Execute any logic that should take place if the save fails.
+                // error is a Parse.Error with an error code and message.
+                handleParseError(error);
+            }
+        });
+    },
+
     addContact : function (e) {
         _preventDefault(e);
 

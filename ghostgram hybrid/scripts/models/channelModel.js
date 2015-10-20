@@ -162,7 +162,8 @@ var channelModel = {
                         var channel = channels[i].attributes;
                         // Need to ignore this users private channel in other users accounts
                         if (channel.channelId !== uuid) {
-                            if (channelModel.findChannelModel(channel.channelId) === undefined) {
+                            var channelObj = channelModel.findChannelModel(channel.channelId);
+                            if ( channelObj=== undefined) {
 
                                 if (channel.isPrivate) {
                                     channelModel.addPrivateChannel(channel.channelId, channel.contactKey, channel.name);
@@ -173,7 +174,9 @@ var channelModel = {
 
                                 }
                             }
+                            channelModel.updateChannelMembers(channel.channelId, channel.members);
                         }
+
                    }
                }
                if (callback !== undefined) {
@@ -182,6 +185,17 @@ var channelModel = {
            });
        }
     },
+
+    updateChannelMembers : function (channelId, members) {
+        var channel = channelModel.findChannelModel(channelId);
+
+        if (channel !== null) {
+            channel.set('members', members);
+            updateParseObject('channels', 'channelId', channelId, 'members', members );
+        }
+
+    },
+
 
     findChannelModel: function (channelId) {
         var dataSource =  channelModel.channelsDS;

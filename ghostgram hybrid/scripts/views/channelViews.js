@@ -636,7 +636,7 @@ var channelView = {
             mobileNotify("ChatView -- chat doesn't exist : " + channelUUID);
             return;
         }
-        
+
         var contactUUID = null;
         var thisChannelHandler = null;
         channelView.activeMessage = null;

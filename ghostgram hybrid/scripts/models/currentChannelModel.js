@@ -11,6 +11,7 @@ var currentChannelModel = {
     channelId : null,
     membersAdded : [],
     membersDeleted: [],
+    memberList: [],
     privacyMode: false,
     messageLock: true,
 
@@ -54,22 +55,115 @@ var currentChannelModel = {
     }),
 
 
+    initDataSources : function () {
+        currentChannelModel.memberList = [];
+        currentChannelModel.membersPresentDS.data([]);
+        currentChannelModel.messagesDS.data([]);
+    },
+
     setCurrentChannel : function (channelId) {
         if (channelId === undefined || channelId === null) {
             mobileNotify("CurrentChat :  Invalid Chat Id!!");
             return (null);
         }
 
+        currentChannelModel.initDataSources();
+
         var channel = channelModel.findChannelModel(channelId);
         if (channel !== undefined) {
             currentChannelModel.currentChannel = channel;
             currentChannelModel.channelId = channelId;
+            if (channel.isOwner) {
+                currentChannelModel.syncChannelMembers(function (members) {
+                    currentChannelModel.currentChannel.set('members', members);
+                });
+            }
             return(channel);
          } else {
             mobileNotify("CurrentChat :  Couldn't find Chat!!");
             return(null);
         }
 
+
+    },
+
+    syncChannelMembers : function (callback) {
+
+        getChannelMembers(currentChannelModel.channelId, function (result) {
+            var members = [];
+            if (result.found) {
+                members = result.channel.members;
+            }
+
+            if (callback !== undefined) {
+                callback(members);
+            }
+
+        });
+
+    },
+
+
+    createChatContact : function (userId) {
+
+        getUserContactInfo(userId, function (result) {
+            if (result.found) {
+                var guid = uuid.v4();
+                var contact = {};
+                contact.isContact = true;
+                contact.uuid = guid;
+                contact.alias = result.user.alias;
+                contact.name = result.user.name;
+                var url = contactModel.createIdenticon(guid);
+                contact.photo = url;
+                contact.publicKey = null;
+
+                currentChannelModel.memberList[guid] = contact;
+                addContactView.addChatContact(guid, contact.name, contact.alias);
+            }
+
+        })
+
+    },
+
+    // Build a member list for this channel
+    buildMemberList : function (callback) {
+
+        var contactArray = currentChannelModel.currentChannel.get('members');
+
+        var contactInfoArray = currentChannelModel.memberList, userId = userModel.currentUser.userUUID;
+
+        for (var i=0; i< contactArray.length; i++) {
+            var contact = {};
+
+            if (contactArray[i] === userId) {
+                contact.isContact = false;
+                contact.uuid = userId;
+                contact.alias = userModel.currentUser.alias;
+                contact.name = userModel.currentUser.name;
+                contact.photoUrl = userModel.currentUser.photo;
+                contact.publicKey = userModel.currentUser.publicKey;
+                contact.isPresent = true;
+                contactInfoArray[contact.uuid] = contact;
+                // this is our user.
+            } else {
+                var thisContact = contactModel.findContact(contactArray[i]);
+                if (thisContact === undefined) {
+                    currentChannelModel.createChatContact(contactArray[i]);
+                } else {
+                    contact.isContact = true;
+                    contact.uuid = contactArray[i];
+                    contact.alias = thisContact.alias;
+                    contact.name = thisContact.name;
+                    contact.photoUrl = thisContact.photo;
+                    contact.publicKey = thisContact.publicKey;
+                    contact.isPresent = false;
+                    contactInfoArray[contact.uuid] = contact;
+                }
+            }
+        }
+
+        return (contactInfoArray)
 
     },
 

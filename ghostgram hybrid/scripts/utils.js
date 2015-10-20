@@ -288,6 +288,29 @@ function _smartSetNull(original, newValue) {
 	return(original);
 }
 
+function getChannelMembers(channelId, callBack) {
+	Parse.Cloud.run('getUserChannels', {
+		channelId: channelId
+	}, {
+		success: function(result, error) {
+			if (result.status === 'ok') {
+				callBack({
+					found: true,
+					channel: result
+				});
+			} else {
+				callBack({
+					found: false,
+					channel: null
+				});
+			}
+
+		},
+		error: function(result, error) {
+			callBack(null, error)
+		}
+	});
+}
 function getUserChannels(uuid, callBack) {
 	Parse.Cloud.run('getUserChannels', {
 		uuid: uuid
