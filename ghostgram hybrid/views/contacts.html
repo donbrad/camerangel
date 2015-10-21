@@ -333,7 +333,7 @@
     		<a class="contactListBox">
     	#}#
 	
-			#if (data.category !== 'phone') {#
+			#if (data.category !== 'phone' && data.category !== 'chat') {#
 					<div class="left listPhoto">
 						<div class="statusContactList">
 
@@ -373,7 +373,7 @@
 						<div class="clearfix"></div>
 				#} else {#
 					<h4 class="phoneContact">
-						#: data.name #
+						#: data.name #   # if (data.alias !== undefined && data.alias !== null) {# (#:data.alias#) #}#
 					</h4>
 				#}#
 		</a><!-- listBox -->
