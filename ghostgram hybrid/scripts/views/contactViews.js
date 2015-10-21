@@ -42,7 +42,7 @@ var contactsView = {
 
         // Filter current contacts and query device contacts on keyup
         // Todo: cache local contacts on first call and then just filter that list
-        $('#contactSearchInput').on('input', function() {
+        $('#contactSearchQuery').on('input', function() {
             var query = this.value;
             if (query.length > 0) {
                 dataSource.filter( {"logic":"or",
@@ -53,6 +53,10 @@ var contactsView = {
                             "value":query},
                         {
                             "field":"alias",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"group",
                             "operator":"contains",
                             "value":query}
                     ]});
@@ -558,6 +562,7 @@ var addContactView = {
             phone = $('#addContactPhone').val(),
             email = $('#addContactEmail').val(),
             photo = $('#addContactPhoto').prop('src'),
+            group =  $('#addContactGroup').val(),
             address = $('#addContactAddress').val();
         var guid = uuid.v4();
 
@@ -565,7 +570,7 @@ var addContactView = {
         contact.set("name", name );
         contact.set("alias", alias);
         contact.set("address", address);
-        contact.set("group", null);
+        contact.set("group", group);
         contact.set('category', "new");
         contact.set("priority", 0);
         contact.set("isFavorite", false);
@@ -703,6 +708,7 @@ var editContactView = {
             editContactView._activeContact.set("alias", contact.alias);
             editContactView._activeContact.set("phone", contact.phone);
             editContactView._activeContact.set("email", contact.email);
+            editContactView._activeContact.set("group", contact.group);
             editContactView._activeContact.set("photo", contact.photo);
             editContactView._activeContact.set("address", contact.address);
           //  editContactView._activeContact.bind('change' , editContactView.syncActiveContact);
@@ -717,6 +723,7 @@ var editContactView = {
         contact.set("phone", editContactView._activeContact.phone);
         contact.set("email", editContactView._activeContact.email);
         contact.set("photo", editContactView._activeContact.photo);
+        contact.set("group", editContactView._activeContact.group);
         contact.set("address", editContactView._activeContact.address);
 
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"name", editContactView._activeContact.name);
@@ -724,6 +731,7 @@ var editContactView = {
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"phone", editContactView._activeContact.phone);
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"email", editContactView._activeContact.email);
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"photo", editContactView._activeContact.photo);
+        updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"group", editContactView._activeContact.group);
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"address", editContactView._activeContact.address);
 
         editContactView.onDone();
