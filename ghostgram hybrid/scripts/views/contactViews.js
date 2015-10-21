@@ -45,7 +45,7 @@ var contactsView = {
         $('#contactSearchQuery').on('input', function() {
             var query = this.value;
             if (query.length > 0) {
-                dataSource.filter( {"logic":"or",
+                contactModel.contactListDS.filter( {"logic":"or",
                     "filters":[
                         {
                             "field":"name",
@@ -66,6 +66,7 @@ var contactsView = {
                 $("#btnSearchDeviceName").text(query);
 
             } else {
+                contactModel.contactListDS.filter([]);
                 contactsView.hideSearchUX();
             }
         });
