@@ -443,7 +443,7 @@ var addPlaceView = {
     onShow : function (e) {
         _preventDefault(e);
 
-        $('#addPlaceCreateChat').attr('checked', false);
+        //$('#addPlaceCreateChat').attr('checked', false);
 
         if (e.view.params !== undefined) {
 
@@ -779,6 +779,14 @@ var placeView = {
 
     openPlaceMap: function(e){
     	APP.kendo.navigate("#map");
+    },
+
+    takePhoto: function(e){
+    	// TODO Don - wire camera feature
+    },
+
+    openChat: function(e){
+    	// TODO Don - wire chat feature
     }
 };
 

@@ -1478,11 +1478,14 @@ div.footerMenu.km-footer > ul > li > a:active {
 .profileLocation {
   color: #6CADF3 !important;
 }
+#contacts-listview > li > ul > li > div > a > p {
+  margin-right: 0px !important;
+}
 #profileStatusMessage {
-  font-size: 16px;
-  font-size: 1rem;
+  font-size: 14px;
+  font-size: 0.875rem;
   text-overflow: ellipsis;
-  width: 190px;
+  width: 85%;
   display: inline-block;
   font-style: italic;
 }
@@ -1567,7 +1570,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .photoTitleBox {
   position: absolute;
-  bottom: 3rem;
+  bottom: 3.5rem;
   left: 0rem;
   text-align: left;
   color: #fff;
@@ -1686,6 +1689,7 @@ div.footerMenu.km-footer > ul > li > a:active {
   margin-left: 10%;
   margin-right: 10%;
   text-align: center;
+  margin-top: 0.5rem;
 }
 .modal-bottom {
   padding: 0.5rem 1rem;
@@ -2369,14 +2373,16 @@ a:hover {
   left: 54%;
 }
 .contactStatusMessage {
-  font-size: 16px;
-  font-size: 1rem;
+  font-size: 13px;
+  font-size: 0.8125rem;
   font-style: italic;
 }
 .contactStatusMessage-sm {
-  font-size: 14px;
-  font-size: 0.875rem;
-  font-style: italic;
+  font-size: 12px;
+  font-size: 0.75rem;
+}
+.contactStatus-location {
+  color: #979797;
 }
 #contactProfileImg,
 #contactStatusImg {
@@ -2782,7 +2788,7 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   background: #979797 !important;
 }
 #ghostEmailwrapper > table > tbody > tr:nth-child(1) > td > ul > li > a.k-tool.k-state-selected {
-  background: #6cadf3 !important;
+  background: #6CADF3 !important;
 }
 .recipientInfo,
 .recipientPhoto {
@@ -3518,7 +3524,7 @@ div.loginBox > form > div > ul > li {
   top: 0px;
   background: #fff;
   display: inline-block;
-  height: 4rem;
+  height: 5rem;
   box-shadow: 3px 0 3px -3px #979797;
   width: 100%;
 }
@@ -3528,10 +3534,10 @@ div.loginBox > form > div > ul > li {
   background-color: #f5f5f5;
   z-index: -1;
   display: inline-block;
-  padding-top: 0.55rem;
+  padding-top: 1rem;
   margin-bottom: -0.25rem;
   float: left;
-  height: 4rem;
+  height: 5rem;
   text-align: right;
 }
 .list-box {
@@ -3603,6 +3609,9 @@ div.contactListBox.activeContact > div > div > ul {
 }
 .listName {
   width: 80%;
+}
+.contact-status {
+  width: 70%;
 }
 #contacts-listview > li > div > div:nth-child(1) > p {
   margin-left: 0px;
@@ -4791,6 +4800,9 @@ html .km-pane-wrapper .k-header {
 .placeContent {
   position: relative;
   top: 3.5rem;
+}
+.placeContentBox {
+  padding: 0.5rem 1rem;
 }
 #placeListOpt {
   margin-top: 0.5rem;

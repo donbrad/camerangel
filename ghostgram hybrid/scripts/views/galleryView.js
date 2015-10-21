@@ -53,8 +53,6 @@ var galleryView = {
 
         });
 
-
-
         // Action functions should be in onInit...
         $('#gallerySearchQuery').clearSearch({
             callback: function() {

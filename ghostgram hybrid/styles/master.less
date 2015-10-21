@@ -1434,10 +1434,15 @@ div.footerMenu.km-footer > ul > li > a:active {
 	color: @primary-200 !important;
 }
 
+#contacts-listview > li > ul > li > div > a > p {
+	margin-right: 0px !important;
+}
+
+
 #profileStatusMessage {
-	.font-size(16);
+	.font-size(14);
 	text-overflow: ellipsis;
-	width: 190px;
+	width: 85%;
 	display:inline-block;
 	font-style: italic;
 }
@@ -1535,7 +1540,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 
 .photoTitleBox {
 	position: absolute;
-	bottom: 3rem;
+	bottom: 3.5rem;
 	left: 0rem;
 	text-align: left;
 	color: #fff;
@@ -1658,7 +1663,8 @@ div.footerMenu.km-footer > ul > li > a:active {
   		width:80%;
   		margin-left: 10%;
   		margin-right: 10%;
-  		text-align: center; 
+  		text-align: center;
+  		margin-top: 0.5rem;
 	}
 }
 
@@ -2352,13 +2358,17 @@ a:hover {
 }
 
 .contactStatusMessage {
-	.font-size(16);
+	.font-size(13);
 	font-style: italic;
 }
 
 .contactStatusMessage-sm {
-	.font-size(14);
-	font-style: italic;
+	.font-size(12);
+	//font-style: italic;
+}
+
+.contactStatus-location {
+	color: @shade-100;
 }
 
 #contactProfileImg, 
@@ -3645,7 +3655,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', e
 	top: 0px;
 	background: #fff;
 	display: inline-block;
-	height: 4rem;
+	height: 5rem;
 	box-shadow: 3px 0 3px -3px @shade-100;
 	width: 100%;
 }
@@ -3656,10 +3666,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', e
 	background-color: @shade-300;
 	z-index:-1;
     display: inline-block;
-    padding-top: 0.55rem;
+    padding-top: 1rem;
     margin-bottom: -0.25rem;
     float: left;
-    height: 4rem;
+    height: 5rem;
     text-align: right;
 }
 
@@ -3748,6 +3758,10 @@ div.contactListBox.activeContact > div > div > ul {
 
 .listName {
 	width: 80%;
+}
+
+.contact-status {
+	width: 70%;
 }
 
 #contacts-listview > li > div > div:nth-child(1) > p {
@@ -5069,6 +5083,10 @@ div.contactListBox.activeContact > div > div > ul {
 .placeContent {
 	position: relative;
 	top: 3.5rem;
+}
+
+.placeContentBox {
+	padding: 0.5rem 1rem;
 }
 
 #placeListOpt {
