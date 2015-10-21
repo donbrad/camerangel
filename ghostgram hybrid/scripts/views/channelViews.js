@@ -791,7 +791,7 @@ var channelView = {
 
            return (contact);
        }
-            // this is our user.
+        
         var data = contactModel.inContactList(uuid);
 
         if (data === undefined) {
