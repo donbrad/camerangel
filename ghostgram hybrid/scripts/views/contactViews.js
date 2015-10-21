@@ -18,12 +18,12 @@ var contactsView = {
     onInit : function (e) {
         _preventDefault(e);
 
-
+/*
         $('#contactsSearchQuery').clearSearch({
 	        callback: function() {
 	        	// todo - wire search
 	        }
-	    });
+	    });*/
 
         contactModel.deviceQueryActive = false;
 
@@ -40,9 +40,7 @@ var contactsView = {
             }
         });*/
 
-        // Filter current contacts and query device contacts on keyup
-        // Todo: cache local contacts on first call and then just filter that list
-        $('#contactSearchQuery').on('keyup', function() {
+        $('#contactsSearchQuery').on('keyup', function() {
             var query = this.value;
             if (query.length > 0) {
                 contactModel.contactListDS.filter( {"logic":"or",
