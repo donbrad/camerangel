@@ -185,6 +185,12 @@ html, .km-root {
 	font-size: 16px;
 }
 
+html {
+	height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: @defaultFont;
     line-height: 1.5;
@@ -1675,7 +1681,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 		margin-right: 0px;
 	}
 	
-	a {
+	a:not(.modal-close) {
 		width: 100%;
 		border-top: 1px solid @shade-300 !important;
 		text-align: center;
@@ -3393,6 +3399,10 @@ div.loginBox > form > div > ul > li {
 	height: 18px;
 }
 
+#modalview-checkin > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div:nth-child(2) {
+	background: #fff;
+}
+
 
 #place-checkIn-circle {
 	height: 4rem;
@@ -5062,10 +5072,17 @@ div.contactListBox.activeContact > div > div > ul {
     display: none;
 }
 
-.map-placeLayer, 
-#map-mapdiv {
+.map-placeLayer {
 	width: 100%;
 	height: 150px;
+}
+
+#map-mapdiv {
+	position: absolute;
+	top: -55px;
+	left: 0;
+	width: 100%; 
+	height: 100vh;
 }
 
 .map-placeLayer {
@@ -5105,7 +5122,8 @@ div.contactListBox.activeContact > div > div > ul {
 
 /** Place **/
 #places-listview,
-#findplace-listview {
+#findplace-listview,
+#checkin-listview {
 	width: 100%;
 	li:not(.km-group-container) {
 		border-top: 1px solid @shade-200 !important;
@@ -5156,7 +5174,8 @@ div.contactListBox.activeContact > div > div > ul {
 	height: 2rem;
 }
 
-#findPlace > div.footerMenu.km-footer {
+#findPlace > div.footerMenu.km-footer,
+#map > div.footerMenu.km-footer {
 	display: none;
 }
 

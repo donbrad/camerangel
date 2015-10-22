@@ -431,14 +431,13 @@
 	</div>
 </div>
     
-<div data-role="view" data-title="Map" id="map" data-layout="main" data-model="APP.models.places"  data-show="onShowMap" data-init="onInitMap" >
+<div data-role="view" data-title="Map" id="map" data-layout="main" data-model="APP.models.places"  data-show="onShowMap" data-init="onInitMap" data-transition="fade">
    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
             <a data-role="button" data-align="left" href="#:back">
-            	<img src="images/menu-icon.svg"/>
+            	<img src="images/nav-back.svg"/>
             </a>
-           <a data-align="left" data-role="button" data-rel="modalview" href="#modalview-places-addPlace"> <i class="ghostIconNavbar fa fa-plus"></i> </a>
         </div>
     </div>
      <div class="user-content">
@@ -654,14 +653,17 @@
 </div>
 
 <div data-role="modalview" id="modalview-checkin" style="width: 90%; height:90%; display: none;" class="appearance" data-init="checkInView.onInit">
-	<h3>
-		Check In
-		<a class="right closeBox" data-click="checkInView.closeModal" data-role="button">
-			<img src="images/close.svg" />
-		</a>
-	</h3>
+	
+	<div class="modal-bottom">
+		<h3>
+			Check In
+			<a class="modal-close" data-click="checkInView.closeModal" data-role="button">
+				<img src="images/close.svg" />
+			</a>
+		</h3>
 
-	<p>Please choose one of Places from the list below.   Or click Add Place to create a new one.</p>
+		<p>Please choose one of Places from the list below. Or click Add Place to create a new one.</p>
+	</div>
 	<div>
 		<ul id="checkin-listview"></ul>
 	</div>
@@ -880,21 +882,44 @@
 </html>
 
 <script type="text/x-kendo-template" id="checkinPlacesTemplate">
-	<div style="min-height: 38px; border-radius: 9px; background-color: \\#fff; padding: 4px;">
+	# var addressOnly = false; alias = data.alias; name = data.name; #
 
-		<h4>#: data.name # (#:data.alias#)</h4>
-		<p>#:data.address#, #:data.city#, #:data.state#    #:data.zipcode#</p>
-		<p class="helper">
+	<div>
+		
+     	<div>
+     	# if(data.category === 'Location'){#
+     		# if(data.alias !== "" && data.alias !== undefined){#
+     			<h4 class="textClamp">#:data.alias#
+     			<span class="helper-sm">#:data.name#</span>
+     			</h4>
+     		#} else {#
+     			<h4 class="textClamp">#:data.address#</h4>
+     			# addressOnly = true #
+     			<p>#:data.city#, #:data.state# #:data.zipcode#</p>
+     		#}#
+     		
+     	#} else {#
+     		<h4 class="textClamp">#: data.name # 
+     		# if (data.alias !== "" && data.alias !== undefined){#
+     			<span class="helper-sm">#:data.alias#</span>
+     		#}#
+     		</h4>
+     	#}#
+     	# if(addressOnly !== true){#
+     		<p>#:data.address#, #:data.city#, #:data.state# #:data.zipcode#</p>
+     	#}#
+         
+         <p class="helper">
            <span class="left">
-         # if (data.isPrivate=== true) { #
+         # if (data.isPrivate === true) { #
             <img src="images/place-private.svg" /> Private
          # } else { #
             <img src="images/place-public.svg" /> Public
          # }#
            </span>
-		</p>
-		<div class="clearfix"> </div>
-
+         </p>
+         <div class="clearfix"> </div>
+       </div>
 	</div>
 </script>
 

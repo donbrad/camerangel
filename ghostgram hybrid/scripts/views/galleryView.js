@@ -382,6 +382,8 @@ var photoEditor = {
 
         // Reset rotation angle on each show...
         photoEditor._rotationAngle = 0;
+
+        // TODO Don - add photo tags and photo info
     },
 
     setImageUrl : function (url) {

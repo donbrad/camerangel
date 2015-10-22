@@ -204,6 +204,11 @@ html,
 .km-root {
   font-size: 16px;
 }
+html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 body {
   font-family: 'PT Sans', sans-serif;
   line-height: 1.5;
@@ -1703,7 +1708,7 @@ div.footerMenu.km-footer > ul > li > a:active {
   margin-left: 0px;
   margin-right: 0px;
 }
-.modal-bottom a {
+.modal-bottom a:not(.modal-close) {
   width: 100%;
   border-top: 1px solid #f5f5f5 !important;
   text-align: center;
@@ -3293,6 +3298,9 @@ div.loginBox > form > div > ul > li {
   vertical-align: bottom;
   height: 18px;
 }
+#modalview-checkin > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div:nth-child(2) {
+  background: #fff;
+}
 #place-checkIn-circle {
   height: 4rem;
   width: 4rem;
@@ -4782,10 +4790,16 @@ html .km-pane-wrapper .k-header {
 #checked-in-place {
   display: none;
 }
-.map-placeLayer,
-#map-mapdiv {
+.map-placeLayer {
   width: 100%;
   height: 150px;
+}
+#map-mapdiv {
+  position: absolute;
+  top: -55px;
+  left: 0;
+  width: 100%;
+  height: 100vh;
 }
 .map-placeLayer {
   background: url("../images/layer-map.png") center center fixed;
@@ -4819,15 +4833,18 @@ html .km-pane-wrapper .k-header {
 }
 /** Place **/
 #places-listview,
-#findplace-listview {
+#findplace-listview,
+#checkin-listview {
   width: 100%;
 }
 #places-listview li:not(.km-group-container),
-#findplace-listview li:not(.km-group-container) {
+#findplace-listview li:not(.km-group-container),
+#checkin-listview li:not(.km-group-container) {
   border-top: 1px solid #E0E0E0 !important;
 }
 #places-listview li,
-#findplace-listview li {
+#findplace-listview li,
+#checkin-listview li {
   background: #fff;
 }
 #placeTypeBtns,
@@ -4866,7 +4883,8 @@ html .km-pane-wrapper .k-header {
 .placeIconImgBtn {
   height: 2rem;
 }
-#findPlace > div.footerMenu.km-footer {
+#findPlace > div.footerMenu.km-footer,
+#map > div.footerMenu.km-footer {
   display: none;
 }
 #findplace-listview li h4,

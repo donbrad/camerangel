@@ -778,6 +778,7 @@ var placeView = {
     },
 
     openPlaceMap: function(e){
+    	// TODO Don - wire map and marker 
     	APP.kendo.navigate("#map");
     },
 
@@ -849,7 +850,6 @@ var checkInView = {
         if (placeArray.length > 0) {
             checkInView.placesDS.data(placeArray);
         }
-
 
         $("#modalview-checkin").data("kendoMobileModalView").open();
     },
