@@ -554,13 +554,6 @@ var channelView = {
         }
     }),
 
-    membersPresentDS : new kendo.data.DataSource({  // this is the list of members present in this chat
-        sort: {
-            field: "name",
-            dir: "asc"
-        }
-    }),
-
     _timeStampUpdateInterval: 1000 * 60 * 5, // update every 5 minutes...
     _channel : null,
     _channelId : null,
@@ -607,8 +600,7 @@ var channelView = {
     // Initialize the channel specific view data sources.
     initDataSources : function () {
         channelView.messagesDS.data([]);
-        channelView.membersPresentDS.data([]);
-        currentChannelModel.membersDS.data([]);
+
     },
 
     onShow : function (e) {
@@ -891,7 +883,7 @@ var channelView = {
     },
 
     findChatMember: function (contactUUID) {
-        var dataSource = channelView.membersPresentDS;
+        var dataSource = currentChannelModel.membersDS;
         dataSource.filter( { field: "contactUUID", operator: "eq", value: contactUUID });
         var view = dataSource.view();
         var contact = view[0];
@@ -907,28 +899,16 @@ var channelView = {
 
     setPresence: function (userId, isPresent) {
         var contact = contactModel.findContact(userId);
-        var member = channelView.findChatMember(userId);
+        var member = currentChannelModel.memberList[userId];
 
-        if (isPresent ) {
-            // this user is now present
-            if (member === undefined)   // If they're not already in the presence list then add them
-                channelView.membersPresentDS.add(contact);
-
-        } else {
-            // this user has left the chat
-            if (member !== undefined)
-                channelView.membersPresentDS.remove(contact);
-
-        }
+        contact.isPresent = isPresent;
     },
 
     updatePresence : function (members, occupancyCount) {
 
         $('#occupancyCount').text(occupancyCount + 1);
 
-        channelView.membersPresentDS.data([]);
-
-        for (var i=0; i<members.length; i++) {
+      /*  for (var i=0; i<members.length; i++) {
             var userId = members.username;
 
             if (userId !== userModel.currentUser.userUUID) {
@@ -938,7 +918,7 @@ var channelView = {
                 }
             }
 
-        }
+        }*/
 
     },
 
@@ -1284,9 +1264,8 @@ var channelPresence = {
     _channelModel : null,
 
     onInit: function (e) {
-        currentChannelModel.membersPresentDS.data([]);
         $("#channelPresence-listview").kendoMobileListView({
-            dataSource: currentChannelModel.membersPresentDS,
+            dataSource: currentChannelModel.membersDS,
             template: $("#memberTemplate").html(),
             filterable: {
                 field: "name",

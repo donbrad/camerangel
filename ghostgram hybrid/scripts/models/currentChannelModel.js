@@ -40,12 +40,6 @@ var currentChannelModel = {
         }
     }),
 
-    membersPresentDS: new kendo.data.DataSource({
-        sort: {
-            field: "name",
-            dir: "asc"
-        }
-    }),
 
     messagesDS: new kendo.data.DataSource({
         sort: {
@@ -57,7 +51,6 @@ var currentChannelModel = {
 
     initDataSources : function () {
         currentChannelModel.memberList = [];
-        currentChannelModel.membersPresentDS.data([]);
         currentChannelModel.messagesDS.data([]);
     },
 
@@ -73,18 +66,24 @@ var currentChannelModel = {
         if (channel !== undefined) {
             currentChannelModel.currentChannel = channel;
             currentChannelModel.channelId = channelId;
-            if (channel.isOwner) {
+
+            currentChannelModel.buildMemberList(function (array) {
+                currentChannelModel.membersDS.data(array);
+            });
+
+            if (!channel.isOwner) {
                 currentChannelModel.syncChannelMembers(function (members) {
                     currentChannelModel.currentChannel.set('members', members);
+                    currentChannelModel.buildMemberList(function (array) {
+                        currentChannelModel.membersDS.data(array);
+                    });
                 });
             }
             return(channel);
          } else {
             mobileNotify("CurrentChat :  Couldn't find Chat!!");
-            return(null);
+            return (null);
         }
-
-
     },
 
     syncChannelMembers : function (callback) {

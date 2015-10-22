@@ -639,10 +639,9 @@ var addContactView = {
                   mobileNotify('Added contact : ' + contact.get('name'));
                   //var photo = contact.get('photo');
                   var url = contactModel.createIdenticon(guid);
+                  contact.attributes.identicon = url;
                   if ( contact.attributes.photo !== null || contact.attributes.photo !== '') {
                     contact.attributes.photo = url;
-                  } else {
-                      contact.attributes.identicon = url;
                   }
 
                   contactModel.contactsDS.add(contact.attributes);
