@@ -128,7 +128,7 @@ var userDataChannel = {
                 //Add the message to the privateChannel data source.
                 channelModel.privateMessagesDS.add(m);
                 // Is this private channel active?
-                if (channelView._channelId == m.channelId) {
+                if (channelView._channelId == m.sender) {
                     //Its the active channel, receive the message
                     privateChannel.receiveHandler(m);
                 }
