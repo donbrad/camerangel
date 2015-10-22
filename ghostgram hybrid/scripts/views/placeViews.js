@@ -443,7 +443,7 @@ var addPlaceView = {
     onShow : function (e) {
         _preventDefault(e);
 
-        $('#addPlaceCreateChat').attr('checked', false);
+        //$('#addPlaceCreateChat').attr('checked', false);
 
         if (e.view.params !== undefined) {
 
@@ -728,8 +728,14 @@ var placeView = {
             }
 
         }
+        var name = placeView._activePlace.name;
+        var alias = placeView._activePlace.alias;
+        var place = placeView._activePlace.isPrivate;
+        var address = placeView._activePlace.address;
 
-        // Toggle display of private/public icons -- todo: jordan might have other ideas...
+        ux.formatNameAlias(name, alias, "#placeView");
+
+        // Toggle display of private/public icons 
         if (placeView._activePlace.isPrivate) {
             $('#publicPlaceView').addClass('hidden');
             $('#privatePlaceView').removeClass('hidden');
@@ -769,6 +775,19 @@ var placeView = {
         placeView._activePlace.set('isPrivate', placeObj.isPrivate);
         placeView._activePlace.set('isAvailable', placeObj.isAvailable);
 
+    },
+
+    openPlaceMap: function(e){
+    	// TODO Don - wire map and marker 
+    	APP.kendo.navigate("#map");
+    },
+
+    takePhoto: function(e){
+    	// TODO Don - wire camera feature
+    },
+
+    openChat: function(e){
+    	// TODO Don - wire chat feature
     }
 };
 
@@ -831,7 +850,6 @@ var checkInView = {
         if (placeArray.length > 0) {
             checkInView.placesDS.data(placeArray);
         }
-
 
         $("#modalview-checkin").data("kendoMobileModalView").open();
     },

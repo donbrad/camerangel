@@ -94,6 +94,8 @@ var userStatusView = {
             $("#profileLocation, #checked-in-place").addClass("hidden");
         }
 
+        $(".statusCharacterCount").css("color", "#979797");
+
         mapModel.getCurrentAddress(function (isNew, address) {
             // Is this a new location
            /* if (isNew) {

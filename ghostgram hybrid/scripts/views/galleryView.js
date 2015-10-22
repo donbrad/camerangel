@@ -29,6 +29,7 @@ var galleryView = {
         var setSentinelHeight = function () {
             $('#search-archives').height(getSentinelHeight());
         };
+
         /*
          archiveView.sentinel.addListener('add', setSentinelHeight);
          archiveView.sentinel.addListener('remove', setSentinelHeight);
@@ -51,8 +52,6 @@ var galleryView = {
             }
 
         });
-
-
 
         // Action functions should be in onInit...
         $('#gallerySearchQuery').clearSearch({
@@ -201,13 +200,13 @@ var galleryView = {
 
     galleryClick : function (e) {
         _preventDefault(e);
-
+        
         var photoId = e.dataItem.photoId, photoUrl = e.dataItem.imageUrl;
-
+        
         galleryView._currentPhotoUrl = photoUrl;
         galleryView._currentPhotoId = photoId;
 
-       galleryView._currentPhoto = photoModel.findPhotoById(photoId);
+       	galleryView._currentPhoto = photoModel.findPhotoById(photoId);
 
         $('#photoViewImage').attr('src', photoUrl);
         $('#photoTagImage').attr('src', photoUrl);
@@ -300,7 +299,6 @@ var photoView = {
             photoView._activePhotoUrl = photoView._activePhoto.imageUrl;
         }
 
-
     },
 
     onHide: function (e) {
@@ -328,7 +326,7 @@ var photoView = {
 
 
     },
-
+ 
     sharePhoto: function (e)  {
         _preventDefault(e);
 
@@ -384,6 +382,8 @@ var photoEditor = {
 
         // Reset rotation angle on each show...
         photoEditor._rotationAngle = 0;
+
+        // TODO Don - add photo tags and photo info
     },
 
     setImageUrl : function (url) {
@@ -423,6 +423,13 @@ var photoEditor = {
         _preventDefault(e);
         var urlToSave = $('#photoEditImage').attr('src');
 
+        // TODO Don - wire photo save
+
+        mobileNotify("Photo updated");
+        // in the meantime 
+        APP.kendo.navigate('#:back');
+
+        /*
         if ( photoEditor._source === 'chat') {
             channelView.showChatImagePreview(urlToSave);
             // Save image to chat image preview
@@ -432,6 +439,7 @@ var photoEditor = {
             // Save image to user profile
             saveUserProfilePhoto(urlToSave);
         }
+        */
     }
 
 
@@ -440,6 +448,15 @@ var photoEditor = {
 
 var modalPhotoView = {
     _photoUrl : null,
+    
+    onInit: function(e){
+    	$(".photoViewBox").kendoTouch({
+    		filter: "img",
+    		tap: function(e){
+
+    		}
+    	});
+    },
 
     openModal : function (url) {
         modalPhotoView._photoUrl = url;

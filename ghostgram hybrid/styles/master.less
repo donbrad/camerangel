@@ -185,6 +185,12 @@ html, .km-root {
 	font-size: 16px;
 }
 
+html {
+	height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: @defaultFont;
     line-height: 1.5;
@@ -624,11 +630,40 @@ form {
 	}
 }
 
+.btnClear-light {
+	&:extend(.btnStyle);
+    background: transparent;
+    color: #fff !important;
+    font-weight: 400;
+    :active {
+    	color: #3A779D !important;
+	}
+	:disabled {
+    	color: #A4A4A4 !important;
+    	background: transparent !important;
+	}
+}
+
 .btnClear-sm {
 	&:extend(.btnStyle);
 	background: transparent;
     color: #2D93FF !important;
     .font-size(13) !important;
+    :active {
+    	color: #3A779D !important;
+    	background: transparent !important;
+    }
+    :disabled {
+    	color: #A4A4A4 !important;
+    	background: transparent !important;
+	}
+}
+
+.btnClear-light-sm { 
+	&:extend(.btnStyle);
+	background: transparent;
+    color: @primary-200 !important;
+    .font-size(12) !important;
     :active {
     	color: #3A779D !important;
     	background: transparent !important;
@@ -669,6 +704,11 @@ form {
     	color: #A4A4A4 !important;
     	background: transparent !important;
 	}
+}
+
+.glass {
+	//color: #fff !important;
+	background: #242424 !important;
 }
 
 .addBtn-sm {
@@ -1400,10 +1440,15 @@ div.footerMenu.km-footer > ul > li > a:active {
 	color: @primary-200 !important;
 }
 
+#contacts-listview > li > ul > li > div > a > p {
+	margin-right: 0px !important;
+}
+
+
 #profileStatusMessage {
-	.font-size(16);
+	.font-size(14);
 	text-overflow: ellipsis;
-	width: 190px;
+	width: 85%;
 	display:inline-block;
 	font-style: italic;
 }
@@ -1476,14 +1521,19 @@ div.footerMenu.km-footer > ul > li > a:active {
 	position: absolute;
 	width: 100%;
 	z-index: 99;
-	background: rgba(0, 0, 0, 0.2) !important;
+	background: rgba(0, 0, 0, 0.0) !important;
 }
 
-.photoViewNavTop {
+.photoViewNavTop,
+.smallHeader {
 	&:extend(.photoViewNav);
 	top: 0px;
 	left: 0px;
 	text-align: center;
+}
+
+.smallHeader {
+	color: #fff !important;
 }
 
 #photoViewText {
@@ -1494,17 +1544,32 @@ div.footerMenu.km-footer > ul > li > a:active {
 	border-radius: 3px;
 }
 
-.photoViewNavBtm {
-	&:extend(.photoViewNav);
-	bottom: 0px;
-	left: 0px;
+.photoTitleBox {
+	position: absolute;
+	bottom: 3.5rem;
+	left: 0rem;
+	text-align: left;
+	color: #fff;
+	width: 100%;
+	height: 5rem;
+	padding: 0.5rem 0 0.5rem;
+	border-top: 1px solid rgba(255, 255, 255, 0.2);
+	background: -moz-linear-gradient(top,  rgba(0,0,0,0.3) 0%, rgba(0,0,0,1) 99%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.3)), color-stop(99%,rgba(0,0,0,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(0,0,0,0.3) 0%,rgba(0,0,0,1) 99%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(0,0,0,0.3) 0%,rgba(0,0,0,1) 99%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(0,0,0,0.3) 0%,rgba(0,0,0,1) 99%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(0,0,0,0.3) 0%,rgba(0,0,0,1) 99%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4d000000', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
 }
 
-#photoView > div.km-content.km-widget.km-scroll-wrapper {
+#photoView > div.km-content.km-widget.km-scroll-wrapper,
+#modalPhotoView > div.km-content.km-widget.km-scroll-wrapper {
 	padding-bottom: 0px;
 }
 
-#photoViewImage {
+#photoViewImage,
+.centerPhoto {
 	&:extend(.photoMax);
 	position: absolute;
     margin: auto;
@@ -1604,7 +1669,8 @@ div.footerMenu.km-footer > ul > li > a:active {
   		width:80%;
   		margin-left: 10%;
   		margin-right: 10%;
-  		text-align: center; 
+  		text-align: center;
+  		margin-top: 0.5rem;
 	}
 }
 
@@ -1615,7 +1681,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 		margin-right: 0px;
 	}
 	
-	a {
+	a:not(.modal-close) {
 		width: 100%;
 		border-top: 1px solid @shade-300 !important;
 		text-align: center;
@@ -2298,13 +2364,17 @@ a:hover {
 }
 
 .contactStatusMessage {
-	.font-size(16);
+	.font-size(13);
 	font-style: italic;
 }
 
 .contactStatusMessage-sm {
-	.font-size(14);
-	font-style: italic;
+	.font-size(12);
+	//font-style: italic;
+}
+
+.contactStatus-location {
+	color: @shade-100;
 }
 
 #contactProfileImg, 
@@ -2373,6 +2443,23 @@ a:hover {
 	z-index: 2;
 }
 
+#chatImage {
+	max-width: 100%; 
+	max-height: 100px; 
+	text-align: center; 
+	vertical-align: middle;
+}
+
+#modalPhotoViewImage {
+	max-width: 100%;
+	max-height: 100%;
+	position: absolute;
+	margin: auto;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
 
 .chat-option-ul {
 	li {
@@ -3312,6 +3399,10 @@ div.loginBox > form > div > ul > li {
 	height: 18px;
 }
 
+#modalview-checkin > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div:nth-child(2) {
+	background: #fff;
+}
+
 
 #place-checkIn-circle {
 	height: 4rem;
@@ -3574,7 +3665,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', e
 	top: 0px;
 	background: #fff;
 	display: inline-block;
-	height: 4rem;
+	height: 5rem;
 	box-shadow: 3px 0 3px -3px @shade-100;
 	width: 100%;
 }
@@ -3585,10 +3676,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', e
 	background-color: @shade-300;
 	z-index:-1;
     display: inline-block;
-    padding-top: 0.55rem;
+    padding-top: 1rem;
     margin-bottom: -0.25rem;
     float: left;
-    height: 4rem;
+    height: 5rem;
     text-align: right;
 }
 
@@ -3677,6 +3768,10 @@ div.contactListBox.activeContact > div > div > ul {
 
 .listName {
 	width: 80%;
+}
+
+.contact-status {
+	width: 70%;
 }
 
 #contacts-listview > li > div > div:nth-child(1) > p {
@@ -3951,17 +4046,10 @@ div.contactListBox.activeContact > div > div > ul {
 
 /* photo editor */
 #photoEditor > div.km-content.km-widget.km-scroll-wrapper {
-	background: #4A4A4A;
+	background: rgba(0,0,0,0.85);
 }
 
-#photoEditImage {
-	max-height: 100%;
-	max-width: 100%;
-}
 
-.photo-options {
-	vertical-align: bottom;
-}
 
 /* Contacts */
 .contactImg {
@@ -4517,12 +4605,10 @@ div.contactListBox.activeContact > div > div > ul {
 .chat-photo-box {
 	border: 1px solid @shade-200;
 	width: 40%;
-	float: left;
 }
 
 .chat-photo-box-zoom {
 	.shadow-1;
-	float: right;
 	width: 88%;
 	@media @mobile {
 		width: 85%;
@@ -4986,9 +5072,58 @@ div.contactListBox.activeContact > div > div > ul {
     display: none;
 }
 
+.map-placeLayer {
+	width: 100%;
+	height: 150px;
+}
+
+#map-mapdiv {
+	position: absolute;
+	top: -55px;
+	left: 0;
+	width: 100%; 
+	height: 100vh;
+}
+
+.map-placeLayer {
+	background: url("../images/layer-map.png") center center fixed;
+	-webkit-background-size: contain;
+  	-moz-background-size: contain;
+  	-o-background-size: contain;
+  	background-size: contain;
+}
+
+.placeCardTop {
+	margin: 0.5rem 0 0.5rem;
+}
+
+.placeContent {
+	position: relative;
+	top: 3.5rem;
+}
+
+.placeContentBox {
+	padding: 0.5rem 1rem;
+}
+
+#placeListOpt {
+	margin-top: 0.5rem;
+	width: 100%;
+	li {
+		width: 50%;
+		float: left;
+		padding: 0 0.25rem;
+		text-align: center;
+	}
+	li:nth-child(2) {
+		border-left: 1px solid @shade-200;
+	}
+}
+
 /** Place **/
 #places-listview,
-#findplace-listview {
+#findplace-listview,
+#checkin-listview {
 	width: 100%;
 	li:not(.km-group-container) {
 		border-top: 1px solid @shade-200 !important;
@@ -5039,7 +5174,8 @@ div.contactListBox.activeContact > div > div > ul {
 	height: 2rem;
 }
 
-#findPlace > div.footerMenu.km-footer {
+#findPlace > div.footerMenu.km-footer,
+#map > div.footerMenu.km-footer {
 	display: none;
 }
 
@@ -5062,6 +5198,22 @@ div.contactListBox.activeContact > div > div > ul {
 	background: @primary-200;
 	padding: 0.25rem 1rem;
 	color: #fff;
+}
+
+.placeCard {
+	//width: 100%;
+	.shadowHelper(1);
+	background: #fff;
+	border-radius: 3px;
+	width: 90%;
+	margin-left: 5%;
+	margin-right: 5%;
+	position: absolute;
+	top: 4rem;
+}
+
+#placeView > div.footerMenu.km-footer {
+	display: none;
 }
 
 .icon-btn {
