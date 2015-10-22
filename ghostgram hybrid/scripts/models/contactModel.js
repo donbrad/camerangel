@@ -431,6 +431,9 @@ var contactModel = {
                 if (results.length > 0) {
                     callback( results[0]);
                 } else {
+                    callback(null);
+                }
+                /*else {
                     // No current userStatusObject
                     getUserContactInfo(contactUUID, function(result) {
                         if (result.found) {
@@ -439,7 +442,7 @@ var contactModel = {
                             callback(null);
                         }
                     });
-                }
+                }*/
 
             },
             error: function(error) {

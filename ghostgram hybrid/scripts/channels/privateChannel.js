@@ -143,57 +143,6 @@ var privateChannel = {
         }
     },
 
-/*
-    presenceHandler : function (msg) {
-        if (msg.action === "join" || msg.action === "state-change") {
-            // If the presence message contains data aka *state*, add this to our users object.
-            if ("data" in msg) {
-                privateChannel.users[msg.data.username] = msg.data;
-                if (msg.data.username === privateChannel.contactId) {
-                    mobileNotify(privateChannel.users[msg.uuid].name + " has joined...");
-                }
-
-            }
-            // Otherwise, we have to call `here_now` to get the state of the new subscriber to the channel.
-            else {
-                APP.pubnub.here_now({
-                    channel: privateChannel.channelId,
-                    state: true,
-                    callback: privateChannel.hereNowHandler
-                });
-            }
-            privateChannel.presenceChange();
-        }
-        // A user has left or timed out of ghostgrams so we remove them from our users object.
-        else if (msg.action === "timeout" || msg.action === "leave") {
-            if (msg.uuid === privateChannel.contactId)
-                mobileNotify(privateChannel.contactName + " has left ...");
-            //delete privateChannel.users[msg.uuid];
-            privateChannel.presenceChange();
-        }
-    },
-
-    presenceChange: function (userId, isPresent) {
-        if (userId === privateChannel.contactId) {
-            if (isPresent) {
-                if (privateChannel.users[userId] === undefined) {
-
-                }
-            }
-        }
-
-    },
-
-    hereNowHandler : function (msg) {
-        privateChannel.users[privateChannel.userId] = privateChannel.thisUser;
-        for (var i = 0; i < msg.uuids.length; i++) {
-            if ("state" in msg.uuids[i]) {
-                privateChannel.users[msg.uuids[i].state.username] = msg.uuids[i].state;
-            }
-        }
-        privateChannel.presenceChange();
-    },
-*/
 
     sendMessage: function (recipient, message, data, ttl) {
         if (ttl === undefined || ttl < 60)
