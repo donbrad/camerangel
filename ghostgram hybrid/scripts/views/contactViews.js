@@ -18,16 +18,11 @@ var contactsView = {
     onInit : function (e) {
         _preventDefault(e);
 
-/*
-        $('#contactsSearchQuery').clearSearch({
-	        callback: function() {
-	        	// todo - wire search
-	        }
-	    });*/
+
 
         contactModel.deviceQueryActive = false;
 
-        var dataSource = contactModel.contactListDS;
+
 
        /* // Activate clearsearch and zero the filter when it's called
         $('#contactSearchInput').clearSearch({
@@ -715,7 +710,7 @@ var editContactView = {
             editContactView._activeContact.set("email", contact.email);
             editContactView._activeContact.set("group", contact.group);
             editContactView._activeContact.set("photo", contact.photo);
-            editContactView._activeContact.set("address", contact.address);
+            editContactView._activeContact.set("address", contact.address);;
           //  editContactView._activeContact.bind('change' , editContactView.syncActiveContact);
         }
     },
@@ -789,7 +784,7 @@ var editContactView = {
        _preventDefault(e);
 
        // contactModel.currentContact.unbind('change' , syncCurrentContact);
-        contactsView.updateContactListDS();
+       // contactsView.updateContactListDS();
         APP.kendo.navigate("#contacts");
         // reset UI
         $("#contactEditList").velocity("fadeIn");

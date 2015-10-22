@@ -246,7 +246,9 @@ var contactModel = {
 
     // Build an identity list for contacts indexed by contactUUID
     buildContactList : function () {
-        var array = contactModel.contactListDS.data();
+        var array = contactModel.contactsDS.data();
+
+        contactModel.contactList = [];
 
         for (var i=0; i<array.length; i++) {
             var contact = array[i];
