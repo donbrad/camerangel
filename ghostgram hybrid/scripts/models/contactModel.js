@@ -217,6 +217,12 @@ var contactModel = {
                     var model = collection.models[i];
                    // Set the photo to identicon
                     var url = contactModel.createIdenticon(model.get('uuid'));
+
+                    if ( model.attributes.photo !== null || model.attributes.photo !== '') {
+                        model.attributes.photo = url;
+                    } else {
+                        model.attributes.identicon = url;
+                    }
                     model.set('photo', url);
 
                     models.push(model.attributes);
