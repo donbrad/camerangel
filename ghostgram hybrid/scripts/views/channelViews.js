@@ -730,7 +730,9 @@ var channelView = {
           groupChannel.open(channelUUID, thisUser.userUUID, thisUser.name, thisUser.alias, thisUser.phone);
           channelView.sendMessageHandler = groupChannel.sendMessage;
          // channelView.contactData = channelView.buildContactArray(thisChannel.members);
-          mobileNotify("Loading Messages...");
+
+            mobileNotify("Loading Messages...");
+
           groupChannel.getMessageHistory(function (messages) {
               channelView.messagesDS.data([]);
               for (var i=0; i<messages.length; i++){

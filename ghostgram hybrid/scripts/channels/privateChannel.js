@@ -49,17 +49,7 @@ var privateChannel = {
         privateChannel.users[userUUID] = privateChannel.thisUser;
         privateChannel.channelId = channelUUID;
 
-    /*    // Subscribe to our PubNub channel.
-        APP.pubnub.subscribe({
-            channel: privateChannel.channelId,
-            windowing: 5000,
-            restore: true,
-            callback: privateChannel.receiveHandler,
-           presence: privateChannel.presenceHandler,
-            // Set our state to our user object, which contains our username and public key.
-            state: privateChannel.thisUser
-        });
-*/    },
+    },
 
     // archive the message in the private channel with this user's public key and send to user.
     // this provides a secure roamable private sent folder without localstorage and parse...
@@ -261,7 +251,6 @@ var privateChannel = {
 
         var dataSource = channelModel.privateMessagesDS;
 
-
         dataSource.filter(  {"logic":"or",
             "filters":[
                 { field: "sender", operator: "eq", value: privateChannel.contactId },
@@ -307,55 +296,10 @@ var privateChannel = {
                 clearMessageArray.push(parsedMsg);
             }
 
-
         }
 
         if(callBack)
             callBack(clearMessageArray);
 
- /*       var timeStamp = ggTime.lastDay();
-
-        APP.pubnub.history({
-            channel: privateChannel.channelId,
-            end: timeStamp * 10000,
-            error: function (error) {
-
-            },
-            callback: function (messages) {
-                var clearMessageArray = [];
-                messages = messages[0];
-                messages = messages || [];
-
-                for(var i = 0; i < messages.length; i++) {
-                    var msg = messages[i];
-                    var content = '';
-                    if (msg.recipient === privateChannel.userId)  {
-                        // Process all messages (private send messages are also stored with users public key!!!
-                        var data = null;
-                        var content = cryptico.decrypt(msg.content.cipher, privateChannel.RSAKey).plaintext;
-                        if (msg.data !== undefined && msg.data !== null) {
-                            data = cryptico.decrypt(msg.data.cipher, privateChannel.RSAKey).plaintext;
-                            data = JSON.parse(data);
-                        }
-                        var parsedMsg = {
-                            msgID: msg.msgID,
-                            content: content,
-                            data: data,
-                            TTL: msg.ttl,
-                            time: msg.time,
-                            sender: msg.sender,
-                            fromHistory: true,
-                            recipient: msg.recipient
-                        };
-
-                        clearMessageArray.push(parsedMsg);
-                    }
-                }
-
-                if(callBack)
-                    callBack(clearMessageArray);
-            }
-
-        });
-*/    }
+     }
 };

@@ -29,7 +29,7 @@ var channelModel = {
 
     // All active private messages (including archived messages)
     privateMessagesDS: new kendo.data.DataSource({
-        //offlineStorage: "privatemessages-offline"
+        offlineStorage: "privatemessages-offline"
     }),
     
 
@@ -62,6 +62,7 @@ var channelModel = {
                             collection.models[i].attributes.ownerId = userModel.currentUser.userUUID;
                         }
                     }
+
                     models.push(collection.models[i].attributes);
                 }
                 channelModel.channelsDS.data(models);
