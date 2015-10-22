@@ -226,9 +226,12 @@ var contactModel = {
 
                 // Update contactlistDs and get latest status for contacts
                 contactModel.contactListDS.data(models);
-                contactModel.updateContactListStatus();
 
                 contactModel.buildContactList();
+
+                contactModel.updateContactListStatus();
+
+
 
                 deviceModel.isParseSyncComplete();
             },
@@ -247,9 +250,11 @@ var contactModel = {
             var contact = array[i];
             if (contact.contactUUID !== undefined && contact.contactUUID !== null) {
                 contactModel.contactList[contact.contactUUID] = {
+                    uuid: contact.uuid,
                     contactId: contact.contactUUID,
                     name: contact.name,
                     alias: contact.alias,
+                    phone: contact.phone,
                     photo: contact.photo
                 };
             }
