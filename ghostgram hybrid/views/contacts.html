@@ -3,7 +3,7 @@
 	<div class="topViewSearchBox">
 	 		<div class="appendSearch">
 				<span class="searchIcon"><img src="images/search.svg" /></span>
-				<input class="doubleAppendSearch clearable" placeholder="Search" id="contactsSearchQuery" />
+				<input class="doubleAppendSearch"  type="search" placeholder="Search Contacts..." id="contactsSearchQuery" />
 			</div>
 		
 		<a class="hidden btnClear-sm" data-role="button" data-click="contactsView.searchDeviceContacts" id="btnSearchDeviceContacts">
@@ -60,7 +60,7 @@
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="contactActionView.ghostEmail">
-				<img src="images/icon-ghostMail.svg" />  ghostgrams Email</a>
+				<img src="images/icon-ghostMail.svg" /> email ghostgram</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="contactCallPhone">
@@ -119,6 +119,9 @@
     				<span class="caption">aka</span>
                 	<input class="input-text-sm " id="addContactAlias" type="search" placeholder="Add a nickname"/>
     			</div>
+				<div>
+					<input class="input-text-md" id="addContactGroup" type="search" placeholder="Add Group (optional)"/>
+				</div>
     		</div>
     	</div>
     	<div class="clearfix"></div>
@@ -188,10 +191,15 @@
 					<div>
 						<span class="caption">aka</span>
 						<span>
-							<input style="width: 75%;" type="text" placeholder="Add a nickname" id="editContactAlias" data-bind="value: alias"/>
+							<input style="width: 75%;" type="search" placeholder="Add a nickname" id="editContactAlias" data-bind="value: alias"/>
 						</span>
 					</div>
-	    			
+	    			<div>
+						<span class="caption">Group</span>
+						<span>
+							<input style="width: 75%;" type="search" placeholder="Add a Group" id="editContactGroup" data-bind="value: group"/>
+						</span>
+					</div>
 	    		</div>
 	    	</div>
 	    	<div class="clearfix"></div>
@@ -336,7 +344,7 @@
     		<a class="contactListBox">
     	#}#
 	
-			#if (data.category !== 'phone') {#
+			#if (data.category !== 'phone' && data.category !== 'chat') {#
 					<div class="left listPhoto">
 						<div class="statusContactList">
 
@@ -387,7 +395,7 @@
 						<div class="clearfix"></div>
 				#} else {#
 					<h4 class="phoneContact">
-						#: data.name #
+						#: data.name #   # if (data.alias !== undefined && data.alias !== null) {# (#:data.alias#) #}#
 					</h4>
 				#}#
 		</a><!-- listBox -->

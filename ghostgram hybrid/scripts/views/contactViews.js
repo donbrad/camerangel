@@ -18,12 +18,12 @@ var contactsView = {
     onInit : function (e) {
         _preventDefault(e);
 
-
+/*
         $('#contactsSearchQuery').clearSearch({
 	        callback: function() {
 	        	// todo - wire search
 	        }
-	    });
+	    });*/
 
         contactModel.deviceQueryActive = false;
 
@@ -40,12 +40,10 @@ var contactsView = {
             }
         });*/
 
-        // Filter current contacts and query device contacts on keyup
-        // Todo: cache local contacts on first call and then just filter that list
-        $('#contactSearchInput').on('input', function() {
+        $('#contactsSearchQuery').on('input', function() {
             var query = this.value;
             if (query.length > 0) {
-                dataSource.filter( {"logic":"or",
+                contactModel.contactListDS.filter( {"logic":"or",
                     "filters":[
                         {
                             "field":"name",
@@ -54,14 +52,20 @@ var contactsView = {
                         {
                             "field":"alias",
                             "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"group",
+                            "operator":"contains",
                             "value":query}
                     ]});
                 if (query.length > 2) {
                     $('#btnSearchDeviceContacts').removeClass('hidden');
                 }
+
                 $("#btnSearchDeviceName").text(query);
 
             } else {
+                contactModel.contactListDS.filter([]);
                 contactsView.hideSearchUX();
             }
         });
@@ -178,11 +182,12 @@ var contactsView = {
     },
 
     hideSearchUX : function () {
-        var dataSource = contactModel.contactListDS;
+      /*  var dataSource = contactModel.contactListDS;
         dataSource.data([]);
         contactModel.deviceContactsDS.data([]);
         dataSource.data(contactModel.contactsDS.data());
-        dataSource.filter([]);
+        dataSource.filter([]);*/
+        contactModel.deviceContactsDS.data([]);
         $('#btnSearchDeviceContacts').addClass('hidden');
 
     },
@@ -513,6 +518,40 @@ var addContactView = {
 
     },
 
+    addChatContact : function (guid, name, alias) {
+        var Contacts = Parse.Object.extend("contacts");
+        var contact = new Contacts();
+
+
+        contact.setACL(userModel.parseACL);
+        contact.set("name", name );
+        contact.set("alias", alias);
+        contact.set('category', "chat");
+        contact.set("address", address);
+        contact.set("group", null);
+        contact.set("priority", 0);
+        contact.set("isFavorite", false);
+        contact.set("uuid", guid);
+        contact.set('contactUUID', null);
+        contact.set('contactPhone', null);
+        contact.set('contactEmail', null);
+
+        contact.save(null, {
+            success: function(contact) {
+                // Execute any logic that should take place after the object is saved.;
+                //var photo = contact.get('photo');
+                var url = contactModel.createIdenticon(guid);
+                contact.attributes.photo = url;
+                contactModel.contactsDS.add(contact.attributes);
+            },
+            error: function(contact, error) {
+                // Execute any logic that should take place if the save fails.
+                // error is a Parse.Error with an error code and message.
+                handleParseError(error);
+            }
+        });
+    },
+
     addContact : function (e) {
         _preventDefault(e);
 
@@ -524,6 +563,7 @@ var addContactView = {
             phone = $('#addContactPhone').val(),
             email = $('#addContactEmail').val(),
             photo = $('#addContactPhoto').prop('src'),
+            group =  $('#addContactGroup').val(),
             address = $('#addContactAddress').val();
         var guid = uuid.v4();
 
@@ -531,7 +571,7 @@ var addContactView = {
         contact.set("name", name );
         contact.set("alias", alias);
         contact.set("address", address);
-        contact.set("group", null);
+        contact.set("group", group);
         contact.set('category', "new");
         contact.set("priority", 0);
         contact.set("isFavorite", false);
@@ -669,6 +709,7 @@ var editContactView = {
             editContactView._activeContact.set("alias", contact.alias);
             editContactView._activeContact.set("phone", contact.phone);
             editContactView._activeContact.set("email", contact.email);
+            editContactView._activeContact.set("group", contact.group);
             editContactView._activeContact.set("photo", contact.photo);
             editContactView._activeContact.set("address", contact.address);
           //  editContactView._activeContact.bind('change' , editContactView.syncActiveContact);
@@ -683,6 +724,7 @@ var editContactView = {
         contact.set("phone", editContactView._activeContact.phone);
         contact.set("email", editContactView._activeContact.email);
         contact.set("photo", editContactView._activeContact.photo);
+        contact.set("group", editContactView._activeContact.group);
         contact.set("address", editContactView._activeContact.address);
 
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"name", editContactView._activeContact.name);
@@ -690,6 +732,7 @@ var editContactView = {
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"phone", editContactView._activeContact.phone);
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"email", editContactView._activeContact.email);
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"photo", editContactView._activeContact.photo);
+        updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"group", editContactView._activeContact.group);
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"address", editContactView._activeContact.address);
 
         editContactView.onDone();

@@ -44,6 +44,7 @@ var contactModel = {
     addressDS: new kendo.data.DataSource(),
     phoneArray: [],
     emailArray: [],
+    contactList: [],
 
 
     init : function () {
@@ -52,10 +53,9 @@ var contactModel = {
 
         // Reflect any core contact changes to contactList
         contactModel.contactsDS.bind("change", function (e) {
-            var data = this.data();
-            var ds = contactModel.contactListDS;
 
-
+            // Rebuild the contactList cache when the underlying list changes: add, delete, update...
+            contactModel.buildContactList();
 
         });
 
@@ -200,6 +200,8 @@ var contactModel = {
             )*/
     },
 
+
+
     fetch : function () {
         var ContactModel = Parse.Object.extend("contacts");
         var ContactCollection = Parse.Collection.extend({
@@ -224,7 +226,12 @@ var contactModel = {
 
                 // Update contactlistDs and get latest status for contacts
                 contactModel.contactListDS.data(models);
+
+                contactModel.buildContactList();
+
                 contactModel.updateContactListStatus();
+
+
 
                 deviceModel.isParseSyncComplete();
             },
@@ -233,6 +240,33 @@ var contactModel = {
             }
         });
     },
+
+
+    // Build an identity list for contacts indexed by contactUUID
+    buildContactList : function () {
+        var array = contactModel.contactListDS.data();
+
+        for (var i=0; i<array.length; i++) {
+            var contact = array[i];
+            if (contact.contactUUID !== undefined && contact.contactUUID !== null) {
+                contactModel.contactList[contact.contactUUID] = {
+                    uuid: contact.uuid,
+                    contactId: contact.contactUUID,
+                    name: contact.name,
+                    alias: contact.alias,
+                    phone: contact.phone,
+                    photo: contact.photo
+                };
+            }
+
+        }
+
+    },
+
+    inContactList : function (contactUUID) {
+        return(contactModel.contactList[contactUUID]);
+    },
+
 
     createIdenticon: function (hash) {
         var url;
@@ -402,6 +436,9 @@ var contactModel = {
                 if (results.length > 0) {
                     callback( results[0]);
                 } else {
+                    callback(null);
+                }
+                /*else {
                     // No current userStatusObject
                     getUserContactInfo(contactUUID, function(result) {
                         if (result.found) {
@@ -410,7 +447,7 @@ var contactModel = {
                             callback(null);
                         }
                     });
-                }
+                }*/
 
             },
             error: function(error) {
@@ -432,17 +469,21 @@ var contactModel = {
 
         var index = 0, length = contactModel.contactsDS.total(), array = contactModel.contactsDS.data();
 
+        if (length === 0)
+            return;
+
         for (var i=0; i<length; i++) {
             var contactId = array[i].contactUUID;
             if (contactId !== undefined && contactId !== null) {
-                contactModel.getContactStatusObject(contactId, function(user){
-                    var userId = user.get('userUUID');
-                    var contact = contactModel.findContactList(userId);
-                    contact.set('statusMessage', user.get('statusMessage'));
-                    contact.set('currentPlace', user.get('currentPlace'));
-                    contact.set('currentPlaceUUID', user.get('currentPlaceUUID'));
-                    contact.set('isAvailable', user.get('isAvailable'));
-
+                contactModel.getContactStatusObject(contactId, function(user) {
+                    if (user !== undefined && user !== null) {
+                        var userId = user.get('userUUID');
+                        var contact = contactModel.findContactList(userId);
+                        contact.set('statusMessage', user.get('statusMessage'));
+                        contact.set('currentPlace', user.get('currentPlace'));
+                        contact.set('currentPlaceUUID', user.get('currentPlaceUUID'));
+                        contact.set('isAvailable', user.get('isAvailable'));
+                    }
                 });
             }
         }

@@ -16,6 +16,7 @@ var userDataChannel = {
     timeStamp: 0,
 
     init: function (channelId) {
+
         if (channelId !== undefined) {
             userDataChannel.channelId = channelId;
 
@@ -64,6 +65,8 @@ var userDataChannel = {
                 messages = messages || [];
                 for (var i = 0; i < messages.length; i++) {
 
+                    var lastAccess = ggTime.toPubNubTime(userDataChannel.lastAccess);
+
                     if ( messages[i].type === 'privateMessage') {
 
                         // Add the last 24 hours worth of messages to the private channel archive
@@ -74,18 +77,17 @@ var userDataChannel = {
 
                         channelModel.privateMessagesDS.add(messages[i]);
 
-                    } else  if (messages[i].time >= userDataChannel.lastAccess) {
+                    } else  if (messages[i].time >= lastAccess) {
                         userDataChannel.channelRead(messages[i]);
                     }
                 }
-
+                userDataChannel.updateTimeStamp();
                 channelKeys = Object.keys(channelList);
                 channelModel.updatePrivateChannels(channelKeys, channelList);
             }
         });
 
 
-        userDataChannel.updateTimeStamp();
     },
 
     channelRead : function (m) {
@@ -103,12 +105,12 @@ var userDataChannel = {
             } break;*/
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, ownerID: <ownerUUID>,  ownerName: <text>, channelName: <text>, channelDescription: <text>}
-            case 'channelInvite' : {
+            case 'groupInvite' : {
                 userDataChannel.processGroupInvite(m.ownerId, m.ownerName,  m.channelId, m.channelName, m.channelDescription, m.durationDays,  m.message);
             } break;
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, owner: <ownerUUID>}
-            case 'channelDelete' : {
+            case 'groupDelete' : {
                 userDataChannel.processGroupDelete(m.ownerId, m.channelId, m.message);
             } break;
 
@@ -126,7 +128,7 @@ var userDataChannel = {
                 //Add the message to the privateChannel data source.
                 channelModel.privateMessagesDS.add(m);
                 // Is this private channel active?
-                if (currentChannelModel.channelId == m.sender) {
+                if (channelView._channelId == m.sender) {
                     //Its the active channel, receive the message
                     privateChannel.receiveHandler(m);
                 }

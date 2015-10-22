@@ -49,17 +49,7 @@ var privateChannel = {
         privateChannel.users[userUUID] = privateChannel.thisUser;
         privateChannel.channelId = channelUUID;
 
-    /*    // Subscribe to our PubNub channel.
-        APP.pubnub.subscribe({
-            channel: privateChannel.channelId,
-            windowing: 5000,
-            restore: true,
-            callback: privateChannel.receiveHandler,
-           presence: privateChannel.presenceHandler,
-            // Set our state to our user object, which contains our username and public key.
-            state: privateChannel.thisUser
-        });
-*/    },
+    },
 
     // archive the message in the private channel with this user's public key and send to user.
     // this provides a secure roamable private sent folder without localstorage and parse...
@@ -138,6 +128,10 @@ var privateChannel = {
         // ignore echoed sender copies in read message
         // -- we add the message to the chat datasource at time of send
        // if (message.actualRecipient === undefined)
+        channelModel.privateMessagesDS.add(message);
+
+        // If this message is for the current channel, then display immediately
+        if (message.channelId === channelView._channelId)
             channelView.messagesDS.add(message);
 
         //currentChannelModel.updateLastAccess();
@@ -149,57 +143,6 @@ var privateChannel = {
         }
     },
 
-/*
-    presenceHandler : function (msg) {
-        if (msg.action === "join" || msg.action === "state-change") {
-            // If the presence message contains data aka *state*, add this to our users object.
-            if ("data" in msg) {
-                privateChannel.users[msg.data.username] = msg.data;
-                if (msg.data.username === privateChannel.contactId) {
-                    mobileNotify(privateChannel.users[msg.uuid].name + " has joined...");
-                }
-
-            }
-            // Otherwise, we have to call `here_now` to get the state of the new subscriber to the channel.
-            else {
-                APP.pubnub.here_now({
-                    channel: privateChannel.channelId,
-                    state: true,
-                    callback: privateChannel.hereNowHandler
-                });
-            }
-            privateChannel.presenceChange();
-        }
-        // A user has left or timed out of ghostgrams so we remove them from our users object.
-        else if (msg.action === "timeout" || msg.action === "leave") {
-            if (msg.uuid === privateChannel.contactId)
-                mobileNotify(privateChannel.contactName + " has left ...");
-            //delete privateChannel.users[msg.uuid];
-            privateChannel.presenceChange();
-        }
-    },
-
-    presenceChange: function (userId, isPresent) {
-        if (userId === privateChannel.contactId) {
-            if (isPresent) {
-                if (privateChannel.users[userId] === undefined) {
-
-                }
-            }
-        }
-
-    },
-
-    hereNowHandler : function (msg) {
-        privateChannel.users[privateChannel.userId] = privateChannel.thisUser;
-        for (var i = 0; i < msg.uuids.length; i++) {
-            if ("state" in msg.uuids[i]) {
-                privateChannel.users[msg.uuids[i].state.username] = msg.uuids[i].state;
-            }
-        }
-        privateChannel.presenceChange();
-    },
-*/
 
     sendMessage: function (recipient, message, data, ttl) {
         if (ttl === undefined || ttl < 60)
@@ -261,7 +204,6 @@ var privateChannel = {
 
         var dataSource = channelModel.privateMessagesDS;
 
-
         dataSource.filter(  {"logic":"or",
             "filters":[
                 { field: "sender", operator: "eq", value: privateChannel.contactId },
@@ -307,55 +249,10 @@ var privateChannel = {
                 clearMessageArray.push(parsedMsg);
             }
 
-
         }
 
         if(callBack)
             callBack(clearMessageArray);
 
- /*       var timeStamp = ggTime.lastDay();
-
-        APP.pubnub.history({
-            channel: privateChannel.channelId,
-            end: timeStamp * 10000,
-            error: function (error) {
-
-            },
-            callback: function (messages) {
-                var clearMessageArray = [];
-                messages = messages[0];
-                messages = messages || [];
-
-                for(var i = 0; i < messages.length; i++) {
-                    var msg = messages[i];
-                    var content = '';
-                    if (msg.recipient === privateChannel.userId)  {
-                        // Process all messages (private send messages are also stored with users public key!!!
-                        var data = null;
-                        var content = cryptico.decrypt(msg.content.cipher, privateChannel.RSAKey).plaintext;
-                        if (msg.data !== undefined && msg.data !== null) {
-                            data = cryptico.decrypt(msg.data.cipher, privateChannel.RSAKey).plaintext;
-                            data = JSON.parse(data);
-                        }
-                        var parsedMsg = {
-                            msgID: msg.msgID,
-                            content: content,
-                            data: data,
-                            TTL: msg.ttl,
-                            time: msg.time,
-                            sender: msg.sender,
-                            fromHistory: true,
-                            recipient: msg.recipient
-                        };
-
-                        clearMessageArray.push(parsedMsg);
-                    }
-                }
-
-                if(callBack)
-                    callBack(clearMessageArray);
-            }
-
-        });
-*/    }
+     }
 };

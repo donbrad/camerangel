@@ -407,8 +407,16 @@
 	</div>
 </script>
 
- <div data-role="drawer" id="channelPresence" >
+ <div data-role="drawer" id="channelPresence"  data-position="right" data-show="channelPresence.onShow" data-swipe-to-open-views='["channel"]' data-views='["channel"]' >
+	 <div data-role="header">
+		 <div data-role="navbar">
+			 <a data-align="left" data-role="button" data-click="channelPresence.onDone">
+				 <img src="images/close.svg" />
+			 </a>
+			 <span>Members Present</span> (<span id="occupancyCount">1</span>)
+		 </div>
 
+	 </div>
 	 <ul id="channelPresence-listview" ></ul>
  </div>
 

@@ -19,12 +19,13 @@ var groupChannel = {
         });
     },
     
-    open : function (channelId, userId, name, alias) {
+    open : function (channelId, userId, name, alias, phoneNumber) {
         groupChannel.channelId = channelId;
         groupChannel.userId = userId;
         groupChannel.thisUser.username = userId;
         groupChannel.thisUser.name = name;
         groupChannel.thisUser.alias = alias;
+        groupChannel.thisUser.phone = phoneNumber;  // Use this to look up new members (don't have userId therefore no contactUUID)
         groupChannel.users = new Array();
 
         groupChannel.users[userId] = groupChannel.thisUser;
@@ -74,9 +75,10 @@ var groupChannel = {
             // If the presence message contains data aka *state*, add this to our users object.
             if ("data" in msg) {
                 groupChannel.users[msg.data.username] = msg.data;
-                if (msg.data.username !== groupChannel.thisUser.userId) {
+                // Only update presence if it's not THIS user...
+                if (msg.data.username !== groupChannel.thisUser.username) {
                     mobileNotify(groupChannel.users[msg.uuid].name + " has joined...");
-                    groupChannel.presenceChange(msg.uuid, true);
+                    groupChannel.presenceChange(msg.uuid, msg.state.phone, true);
                 }
 
             }
@@ -94,13 +96,12 @@ var groupChannel = {
         else if (msg.action === "timeout" || msg.action === "leave") {
             mobileNotify(groupChannel.users[msg.uuid].name + " has left ...");
             delete groupChannel.users[msg.uuid];
-            groupChannel.presenceChange(msg.uuid, false);
+            groupChannel.presenceChange(msg.uuid, msg.state.phone, false);
         }
     },
 
-    presenceChange: function (userId, isPresent) {
-        
-
+    presenceChange: function (userId, phone,  isPresent) {
+        channelView.setPresence(userId, phone, isPresent);
     },
 
     hereNowHandler : function (msg) {
@@ -110,7 +111,7 @@ var groupChannel = {
                 groupChannel.users[msg.uuids[i].state.username] = msg.uuids[i].state;
             }
         }
-        groupChannel.presenceChange();
+        channelView.updatePresence(groupChannel.users, msg.occupancy);
     },
 
     sendMessage: function (recipient, message, data, ttl) {
