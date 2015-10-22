@@ -40,7 +40,7 @@ var contactsView = {
             }
         });*/
 
-        $('#contactsSearchQuery').on('keyup', function() {
+        $('#contactsSearchQuery').on('input', function() {
             var query = this.value;
             if (query.length > 0) {
                 contactModel.contactListDS.filter( {"logic":"or",
@@ -61,6 +61,7 @@ var contactsView = {
                 if (query.length > 2) {
                     $('#btnSearchDeviceContacts').removeClass('hidden');
                 }
+
                 $("#btnSearchDeviceName").text(query);
 
             } else {
@@ -181,11 +182,12 @@ var contactsView = {
     },
 
     hideSearchUX : function () {
-        var dataSource = contactModel.contactListDS;
+      /*  var dataSource = contactModel.contactListDS;
         dataSource.data([]);
         contactModel.deviceContactsDS.data([]);
         dataSource.data(contactModel.contactsDS.data());
-        dataSource.filter([]);
+        dataSource.filter([]);*/
+        contactModel.deviceContactsDS.data([]);
         $('#btnSearchDeviceContacts').addClass('hidden');
 
     },
