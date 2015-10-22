@@ -562,6 +562,8 @@ var channelView = {
     }),
 
     _timeStampUpdateInterval: 1000 * 60 * 5, // update every 5 minutes...
+    _channel : null,
+    _channelId : null,
 
 
     onInit: function (e) {
@@ -627,6 +629,8 @@ var channelView = {
 
         var channelUUID = e.view.params.channel;
 
+        channelView._channelId = channelUUID;
+
         var thisUser = userModel.currentUser;
 
         channelView.initDataSources();
@@ -636,6 +640,8 @@ var channelView = {
             mobileNotify("ChatView -- chat doesn't exist : " + channelUUID);
             return;
         }
+
+        channelView._channel = thisChannel;
 
         var contactUUID = null;
         var thisChannelHandler = null;
@@ -687,36 +693,39 @@ var channelView = {
           $('#channelImage').attr('src', thisContact.photo).removeClass("hidden");
 
           privateChannel.open(channelUUID, thisUser.userUUID, thisUser.alias, name, userKey, privateKey, contactUUID, contactKey, thisContact.name);
-        /*  thisChannelHandler.onMessage(channelView.onChannelRead);
-          thisChannelHandler.onPresence(channelView.onChannelPresence);
-          mobileNotify("Getting Previous Messages...");
-          currentChannelModel.openChannel(thisChannelHandler);*/
-        channelView.messagesDS.data([]);
+            /*  thisChannelHandler.onMessage(channelView.onChannelRead);
+              thisChannelHandler.onPresence(channelView.onChannelPresence);
+              mobileNotify("Getting Previous Messages...");
+              currentChannelModel.openChannel(thisChannelHandler);*/
+            channelView.messagesDS.data([]);
 
-        channelView.sendMessageHandler = privateChannel.sendMessage;
+            channelView.sendMessageHandler = privateChannel.sendMessage;
 
+            if (thisChannel.messagesArray == undefined) {
+                privateChannel.getMessageHistory(function (messages) {
+                    for (var i=0; i<messages.length; i++){
+                        var message = messages[i];
+                        var formattedContent = '';
+                        if (message.content !== null) {
+                            formattedContent = formatMessage(message.content);
+                        }
+                        message.formattedContent = formattedContent;
+                        message.fromHistory = true;
+                    }
 
-          privateChannel.getMessageHistory(function (messages) {
-              for (var i=0; i<messages.length; i++){
-                  var message = messages[i];
-                  var formattedContent = '';
-                  if (message.content !== null) {
-                      formattedContent = formatMessage(message.content);
-                  }
-                  message.formattedContent = formattedContent;
-                  message.fromHistory = true;
-              }
+                    thisChannel.messagesArray = messages;
+                    channelView.messagesDS.data(messages);
 
-              channelView.messagesDS.data(messages);
+                    //channelView.updateMessageTimeStamps();
 
-              //channelView.updateMessageTimeStamps();
+                    /*if (channelView.intervalId === null) {
+                     channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 60 * 5000);
+                     }*/
 
-              /*if (channelView.intervalId === null) {
-                  channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 60 * 5000);
-              }*/
+                    channelView.scrollToBottom();
+                });
+            }
 
-              channelView.scrollToBottom();
-          });
 
         } else {
 
