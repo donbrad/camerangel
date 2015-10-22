@@ -11,7 +11,7 @@
 			Search device for "<span id="btnSearchDeviceName"></span>"
 		</a>
 	</div>
-		<div id="contactListDiv"  style="padding-bottom: 24px;">
+		<div id="contactListDiv" style="padding-bottom: 24px;">
 	        <ul id="contacts-listview"></ul>
 			<!-- Only display if device permission is needed -->
 			<div id="deviceContactPermission" class="pad center hidden">
@@ -44,8 +44,11 @@
 		</h3>
 		<p class="preMotionUp">
 			<span class="contactStatusMessage" data-bind="text: statusMessage"></span>
-		 	</br>
-		 	<span class="contactLocation" data-bind="text: currentPlace"></span>
+
+		</p>
+		<p class="preMotionUp">
+			<a data-role="button" id="contactCurrentPlace" class="btnClear-light-sm"></a>
+
 		</p>
 	</div>
 	<div class="modal-bottom">
@@ -337,7 +340,7 @@
     	</div><!-- contact-options -->
     	# if(data.category === 'member') {#
     		<a class="contactListBox member">
-    	#}else {#
+    	#} else {#
     		<a class="contactListBox">
     	#}#
 	
@@ -371,13 +374,24 @@
 							#}#
 							</h4>
 						</div>
-
-						<p class="left caption contact-status">
-
-							# var message = "", location = ""; if (data.statusMessage !== undefined && data.statusMessage !== "") {message = data.statusMessage;} if (data.currentPlace !== undefined && data.currentPlace !== ""){ if (message !== "") {message += " @ " + data.currentPlace;} else {message = " @ " + data.currentPlace;}}#
-							<span class="contactStatusMessage-sm">#:message#</span>
-						</p>
-
+						<div class="left contact-status">
+							<p class="left contactStatusMessage-sm">
+							# var message = "", location = ""; 
+								if (data.statusMessage !== undefined && data.statusMessage !== "") {
+									message = data.statusMessage;
+								}#
+								#if(data.category !== 'member'){#
+									Invite sent
+								#}#
+							
+								#:message# 
+								# if (data.currentPlace !== undefined && data.currentPlace !== ""){#
+									<span class="contactStatus-location">
+										@#:data.currentPlace#
+									</span>
+								#}#
+							</p>	
+						</div>
 						<div class="clearfix"></div>
 				#} else {#
 					<h4 class="phoneContact">

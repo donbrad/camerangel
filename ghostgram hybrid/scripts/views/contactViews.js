@@ -924,6 +924,10 @@ var contactActionView = {
             var contactName = contact.name;
             var contactAlias = contact.alias;
             var contactVerified = contact.phoneVerified;
+
+            var contactIsAvailable = contact.isAvailable;
+            var contactPlace = contact.currentPlace;
+
            
             contactActionView._activeContact.set('name', contactName);
             contactActionView._activeContact.set('alias', contactAlias);
@@ -950,6 +954,12 @@ var contactActionView = {
 
             // set profile img
             $("#contactProfileImg").attr("src", contact.photo);
+            
+            // set current place
+            if(contactPlace !== "" && contactPlace !== undefined){
+            	$("#contactCurrentPlace").text("@" + contactPlace);
+            }
+            
 
         });
 
@@ -959,14 +969,17 @@ var contactActionView = {
         $("#contactProfileImg").velocity("fadeIn", {delay: 150, duration: 300, display: "inline-block"});
         $("#contactStatusImg").velocity("fadeIn", {delay: 150, duration: 300, display: "inline-block"});
         
-        $("#modalview-contactActions .modal-top h3").velocity({translateY: "20%", opacity: 1}, {delay: 300, duration: 500, display: "inline-block"});
-        $("#modalview-contactActions .modal-top p").velocity({translateY: "20%", opacity: 1}, {delay: 600, duration: 500, display: "inline-block"});
+        $("#modalview-contactActions .modal-top h3").velocity({translateY: "20%", opacity: 1}, {delay: 300, duration: 500, display: "block"});
+        $("#modalview-contactActions .modal-top p").velocity({translateY: "20%", opacity: 1}, {delay: 600, duration: 500, display: "block"});
         $("#modalview-contactActions .modal-bottom .hasMotion").velocity("fadeIn", {duration: 500, delay: 700});
     },
 
 
     closeModal : function(){
         $("#modalview-contactActions").data("kendoMobileModalView").close();
+
+        // Clear place
+        $("#contactCurrentPlace").text("");
 
         $("#modalview-contactActions .preMotionUp, #modalview-contactActions .hasMotion").css("display", "none").velocity("fadeOut", {opacity: 0, translateY: "0%"});
     	$("#contactProfileImg, #contactStatusImg").css("opacity", 0);
