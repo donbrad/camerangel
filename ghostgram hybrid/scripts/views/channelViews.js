@@ -1279,7 +1279,8 @@ var channelPresence = {
             click: function (e) {
                 // Click to potential member list -- add this member to channel
                 var thisMember = e.dataItem;
-                contactActionView.openModal(thisMember.uuid);
+                if (thisMember !== undefined && thisMember.contactId !== null)
+                    contactActionView.openModal(thisMember.contactId);
 
             }
 

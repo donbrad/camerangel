@@ -151,6 +151,7 @@ var currentChannelModel = {
             if (contactArray[i] === userId) {
                 contact.isContact = false;
                 contact.uuid = userId;
+                contact.contactId = null;
                 contact.alias = userModel.currentUser.alias;
                 contact.name = userModel.currentUser.name;
                 contact.photo = userModel.currentUser.photo;
@@ -165,6 +166,7 @@ var currentChannelModel = {
                 } else {
                     contact.isContact = true;
                     contact.uuid = contactArray[i];
+                    contact.contactId = thisContact.uuid;
                     contact.alias = thisContact.alias;
                     contact.name = thisContact.name;
                     contact.photo = thisContact.photo;
