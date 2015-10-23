@@ -456,13 +456,13 @@
 </script>
 
  <script type="text/x-kendo-template" id="chatMemberTemplate">
-	 <div>
+	 <div style="clear: both;">
 		 <div class="memberTempPhoto">
 			 <img src="#: data.photo #" class="circle-img-md" />
 		 </div>
 		 <div class="memberTempName">
 			 <h4>#: data.name #</h4>
-			  <p># var status = "here"; if (!data.isPresent) {status = "gone";}# #: status #</p>
+			  <span style="float: right;"># var status = "Here"; if (!data.isPresent) {status = "Gone";}# #: status #</span>
 		 </div>
 
 	 </div>
