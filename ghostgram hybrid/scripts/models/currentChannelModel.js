@@ -141,9 +141,10 @@ var currentChannelModel = {
     // Build a member list for this channel
     buildMemberList : function () {
 
+        currentChannelModel.memberList = [];
         var contactArray = currentChannelModel.currentChannel.get('members');
 
-        var contactInfoArray = currentChannelModel.memberList, userId = userModel.currentUser.userUUID;
+        var userId = userModel.currentUser.userUUID;
 
         for (var i=0; i< contactArray.length; i++) {
             var contact = {};
@@ -157,7 +158,7 @@ var currentChannelModel = {
                 contact.photo = userModel.currentUser.photo;
                 contact.publicKey = userModel.currentUser.publicKey;
                 contact.isPresent = true;
-                contactInfoArray[contact.uuid] = contact;
+                currentChannelModel.memberList[contact.uuid] = contact;
                 // this is our user.
             } else {
                 var thisContact = contactModel.findContact(contactArray[i]);
@@ -172,14 +173,11 @@ var currentChannelModel = {
                     contact.photo = thisContact.photo;
                     contact.publicKey = thisContact.publicKey;
                     contact.isPresent = false;
-                    contactInfoArray[contact.uuid] = contact;
+                    currentChannelModel.memberList[contact.uuid] = contact;
                     currentChannelModel.membersDS.add(contact);
                 }
             }
         }
-
-        return (contactInfoArray)
-
     },
 
     openChannel : function (handler) {

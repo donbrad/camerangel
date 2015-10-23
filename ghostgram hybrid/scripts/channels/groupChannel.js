@@ -101,7 +101,7 @@ var groupChannel = {
     },
 
     presenceChange: function (userId, phone,  isPresent) {
-        channelView.setPresence(userId, phone, isPresent);
+        channelView.setPresence(userId, isPresent);
     },
 
     hereNowHandler : function (msg) {
