@@ -171,7 +171,7 @@ var currentChannelModel = {
                     contact.publicKey = thisContact.publicKey;
                     contact.isPresent = false;
                     contactInfoArray[contact.uuid] = contact;
-                    currentContactModel.membersDS.add(contact);
+                    currentChannelModel.membersDS.add(contact);
                 }
             }
         }
