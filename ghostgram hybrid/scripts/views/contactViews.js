@@ -889,23 +889,24 @@ var contactActionView = {
         //Show the status update div
         if (thisContact.contactUUID !== undefined && thisContact.contactUUID !== null) {
             contactModel.getContactStatusObject(thisContact.contactUUID, function (user) {
-                var contactIsAvailable = user.get('isAvailable');
-                contactActionView._activeContact.set('statusMessage', user.get('statusMessage'));
-                contactActionView._activeContact.set('currentPlace', user.get('currentPlace'));
-                contactActionView._activeContact.set('currentPlaceUUID', user.get('currentPlaceUUID'));
-                contactActionView._activeContact.set('isAvailable', contactIsAvailable);
-                // set available
-                if(contactIsAvailable){
-                    $(".statusContactCard-icon").attr("src", "images/status-available.svg");
+                if (user !== null) {
+                    var contactIsAvailable = user.get('isAvailable');
+                    contactActionView._activeContact.set('statusMessage', user.get('statusMessage'));
+                    contactActionView._activeContact.set('currentPlace', user.get('currentPlace'));
+                    contactActionView._activeContact.set('currentPlaceUUID', user.get('currentPlaceUUID'));
+                    contactActionView._activeContact.set('isAvailable', contactIsAvailable);
+                    // set available
+                    if(contactIsAvailable){
+                        $(".statusContactCard-icon").attr("src", "images/status-available.svg");
+                    }
+
+                    // Update the contactList object too
+                    var contactList = contactModel.findContactList(thisContact.contactUUID);
+                    contactList.set('statusMessage', user.get('statusMessage'));
+                    contactList.set('currentPlace', user.get('currentPlace'));
+                    contactList.set('currentPlaceUUID', user.get('currentPlaceUUID'));
+                    contactList.set('isAvailable', contactIsAvailable);
                 }
-
-                // Update the contactList object too
-                var contactList = contactModel.findContactList(thisContact.contactUUID);
-                contactList.set('statusMessage', user.get('statusMessage'));
-                contactList.set('currentPlace', user.get('currentPlace'));
-                contactList.set('currentPlaceUUID', user.get('currentPlaceUUID'));
-                contactList.set('isAvailable', contactIsAvailable);
-
             });
         }
 
