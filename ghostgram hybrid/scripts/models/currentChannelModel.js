@@ -72,6 +72,7 @@ var currentChannelModel = {
 
             if (!channel.isOwner) {
                 currentChannelModel.syncChannelMembers(function (members) {
+                    mobileNotify("Synced Member List...");
                     currentChannelModel.currentChannel.set('members', members);
                     currentChannelModel.buildMemberList();
                 });
@@ -143,6 +144,9 @@ var currentChannelModel = {
 
         currentChannelModel.memberList = [];
         var contactArray = currentChannelModel.currentChannel.get('members');
+
+        if (contactArray === undefined || contactArray === null)
+            return;
 
         var userId = userModel.currentUser.userUUID;
 
