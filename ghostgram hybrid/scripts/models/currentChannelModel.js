@@ -85,13 +85,13 @@ var currentChannelModel = {
 
 
     buildMembersDS: function () {
-        var members = currentChannelModel.memberList, length = Object.keys(members).length;
+        var members = currentChannelModel.currentChannel.get('members'), length = members.length;
 
         currentChannelModel.membersDS.data([]);
 
         for (var i=0; i< length; i++) {
-            if (members[i].contactUUID !== userModel.currentUser.userUUID) {
-                currentChannelModel.membersDS.add(members[i]);
+            if (members[i] !== userModel.currentUser.userUUID) {
+                currentChannelModel.membersDS.add(currentChannelModel.memberList[members[i]]);
             }
         }
 
