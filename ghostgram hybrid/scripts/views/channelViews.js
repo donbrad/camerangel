@@ -196,10 +196,13 @@ var addChannelView = {
     },
 
     addChatStep1: function(e){
+
+        // This chat (channel name) is unique for this user
         $("#chat-title-setup").velocity("slideUp", {duration: 300});
         $("#addChat-step2").velocity("fadeOut", {duration: 200});
-        $("#addChat-step1").velocity("fadeIn", {duration: 200, delay:200});
+        $("#addChat-step1").velocity("fadeIn", {duration: 200, delay: 200});
         //$("#addChat-createBtn").velocity("slideUp", {display: "none", duration: 300});
+    
     },
 
 
