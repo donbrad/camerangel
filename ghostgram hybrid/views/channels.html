@@ -407,7 +407,7 @@
 			 <a data-align="left" data-role="button" data-click="channelPresence.onDone">
 				 <img src="images/close.svg" />
 			 </a>
-			 <span>Members Present</span> (<span id="occupancyCount">1</span>)
+			 <span>Members</span> (<span id="occupancyCount">1</span>)
 		 </div>
 
 	 </div>
@@ -461,14 +461,8 @@
 			 <img src="#: data.photo #" class="circle-img-md" />
 		 </div>
 		 <div class="memberTempName">
-			#if(data.alias !== '' && data.name !== data.alias) {#
-			 <h4>
-				 #: data.alias #
-				 <span class="contacts-alias-sm">#: data.name #</span>
-			 </h4>
-			 #} else {#
 			 <h4>#: data.name #</h4>
-			 #}#
+			  <p># var status = "here"; if (!data.isPresent) {status = "gone";}# #: status #</p>
 		 </div>
 
 	 </div>
