@@ -202,7 +202,7 @@ var addChannelView = {
         $("#addChat-step2").velocity("fadeOut", {duration: 200});
         $("#addChat-step1").velocity("fadeIn", {duration: 200, delay: 200});
         //$("#addChat-createBtn").velocity("slideUp", {display: "none", duration: 300});
-    
+
     },
 
 

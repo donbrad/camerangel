@@ -522,7 +522,7 @@ var addContactView = {
         contact.set("name", name );
         contact.set("alias", alias);
         contact.set('category', "chat");
-        contact.set("address", address);
+        contact.set("address", null);
         contact.set("group", null);
         contact.set("priority", 0);
         contact.set("isFavorite", false);
