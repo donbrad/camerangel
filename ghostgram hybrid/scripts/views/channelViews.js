@@ -1285,7 +1285,9 @@ var channelPresence = {
 
     onShow: function (e) {
 
-        var channelTitle = currentChannelModel.currentChannel.get('name');
+        currentChannelModel.buildMembersDS();
+        
+       /// var channelTitle = currentChannelModel.currentChannel.get('name');
 
        // $('#channelPresenceTitle').text(channelTitle + ' Members');
 
