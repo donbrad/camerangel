@@ -1267,6 +1267,7 @@ var channelPresence = {
         $("#channelPresence-listview").kendoMobileListView({
             dataSource: currentChannelModel.membersDS,
             template: $("#chatMemberTemplate").html(),
+            autobind: false,
            /* filterable: {
                 field: "name",
                 operator: "startswith",

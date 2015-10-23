@@ -82,12 +82,6 @@
 			    				<p class="chat-option-selection">Clear</p>
 			    			</a>
 	    				</li>
-	    				<li>
-		    				<a class="btnClear-grey" data-role="button" data-channel="#:channelId #" data-click="archiveChannel">
-			    				<img src="images/icon-memories.svg" />
-			    				<p class="chat-option-selection">Save to Memories</p>
-			    			</a>
-	    				</li>
 	    				
     				#}#
     				# if(isPrivate !== true && isOwner){#
@@ -407,7 +401,7 @@
 	</div>
 </script>
 
- <div data-role="drawer" id="channelPresence"  data-position="right" data-show="channelPresence.onShow" data-swipe-to-open-views='["channel"]' data-views='["channel"]' style="width: 40%;">
+ <div data-role="drawer" id="channelPresence"  data-position="right" data-init="channelPresence.onInit" data-show="channelPresence.onShow" data-swipe-to-open-views='["channel"]' data-views='["channel"]' style="width: 60%;">
 	 <div data-role="header">
 		 <div data-role="navbar">
 			 <a data-align="left" data-role="button" data-click="channelPresence.onDone">
@@ -461,8 +455,8 @@
      </div>
 </script>
 
- <script type="text/x-kendo-template" id="chatMemberTemplate">
-	 <div style="width: 40%;">
+ <div type="text/x-kendo-template" id="chatMemberTemplate">
+	 <div>
 		 <div class="memberTempPhoto">
 			 <img src="#: data.photo #" class="circle-img-md" />
 		 </div>
@@ -485,9 +479,9 @@
 		 </div>
 
 	 </div>
- </script>
 <script type="text/x-kendo-template" id="editMembersTemplate">
- <div class="editMemberBox" data-id="#: data.uuid #">
+
+<div class="editMemberBox" data-id="#: data.uuid #">
 	 <div class="editMemberPhoto">
 		 <img class="circle-img-md editChatImg" src="#: data.photo #"  />
 	 </div>
@@ -507,14 +501,13 @@
 		 <h4>#: data.name #</h4>
 		 #}#
 	 </div>
-	</div>
+
 	<div class="deleteMemberText">
-		
 			<a class="btnClear-red deleteChannelMember" data-role="button" data-id="#: data.uuid#" data-click="editChannelView.deleteMemberBtn">
 				<img src="images/trash.svg" class="icon" />
 			</a>
-		
 	</div>
+</div>
 </script>
 
 
