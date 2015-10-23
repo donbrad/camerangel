@@ -908,7 +908,7 @@ var channelView = {
 
         $('#occupancyCount').text(occupancyCount + 1);
 
-      /*  for (var i=0; i<members.length; i++) {
+        for (var i=0; i<members.length; i++) {
             var userId = members.username;
 
             if (userId !== userModel.currentUser.userUUID) {
@@ -918,7 +918,7 @@ var channelView = {
                 }
             }
 
-        }*/
+        }
 
     },
 
@@ -1266,12 +1266,12 @@ var channelPresence = {
     onInit: function (e) {
         $("#channelPresence-listview").kendoMobileListView({
             dataSource: currentChannelModel.membersDS,
-            template: $("#memberTemplate").html(),
-            filterable: {
+            template: $("#chatMemberTemplate").html(),
+           /* filterable: {
                 field: "name",
                 operator: "startswith",
                 placeholder: "Search Members..."
-            },
+            },*/
             click: function (e) {
                 // Click to potential member list -- add this member to channel
                 var thisMember = e.dataItem;

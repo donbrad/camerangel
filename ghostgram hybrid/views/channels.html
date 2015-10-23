@@ -407,7 +407,7 @@
 	</div>
 </script>
 
- <div data-role="drawer" id="channelPresence"  data-position="right" data-show="channelPresence.onShow" data-swipe-to-open-views='["channel"]' data-views='["channel"]' >
+ <div data-role="drawer" id="channelPresence"  data-position="right" data-show="channelPresence.onShow" data-swipe-to-open-views='["channel"]' data-views='["channel"]' style="width: 40%;">
 	 <div data-role="header">
 		 <div data-role="navbar">
 			 <a data-align="left" data-role="button" data-click="channelPresence.onDone">
@@ -461,6 +461,31 @@
      </div>
 </script>
 
+ <script type="text/x-kendo-template" id="chatMemberTemplate">
+	 <div style="width: 40%;">
+		 <div class="memberTempPhoto">
+			 <img src="#: data.photo #" class="circle-img-md" />
+		 </div>
+		 <div class="memberTempName">
+
+			 #if (data.alias !== '' && data.name !== data.alias && data.phoneVerified){#
+			 <h4>
+				 #: data.alias #
+				 <img class="user-status-icon" src="images/user-verified.svg" />
+				 <span class="contacts-alias-sm">#: data.name #</span>
+			 </h4>
+			 #} else if(data.alias !== '' && data.name !== data.alias) {#
+			 <h4>
+				 #: data.alias #
+				 <span class="contacts-alias-sm">#: data.name #</span>
+			 </h4>
+			 #} else {#
+			 <h4>#: data.name #</h4>
+			 #}#
+		 </div>
+
+	 </div>
+ </script>
 <script type="text/x-kendo-template" id="editMembersTemplate">
  <div class="editMemberBox" data-id="#: data.uuid #">
 	 <div class="editMemberPhoto">
