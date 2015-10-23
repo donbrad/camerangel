@@ -462,13 +462,7 @@
 		 </div>
 		 <div class="memberTempName">
 
-			 #if (data.alias !== '' && data.name !== data.alias && data.phoneVerified){#
-			 <h4>
-				 #: data.alias #
-				 <img class="user-status-icon" src="images/user-verified.svg" />
-				 <span class="contacts-alias-sm">#: data.name #</span>
-			 </h4>
-			 #} else if(data.alias !== '' && data.name !== data.alias) {#
+			#if(data.alias !== '' && data.name !== data.alias) {#
 			 <h4>
 				 #: data.alias #
 				 <span class="contacts-alias-sm">#: data.name #</span>
