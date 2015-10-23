@@ -196,10 +196,13 @@ var addChannelView = {
     },
 
     addChatStep1: function(e){
+
+        // This chat (channel name) is unique for this user
         $("#chat-title-setup").velocity("slideUp", {duration: 300});
         $("#addChat-step2").velocity("fadeOut", {duration: 200});
-        $("#addChat-step1").velocity("fadeIn", {duration: 200, delay:200});
+        $("#addChat-step1").velocity("fadeIn", {duration: 200, delay: 200});
         //$("#addChat-createBtn").velocity("slideUp", {display: "none", duration: 300});
+
     },
 
 
@@ -908,7 +911,7 @@ var channelView = {
 
         $('#occupancyCount').text(occupancyCount + 1);
 
-      /*  for (var i=0; i<members.length; i++) {
+        for (var i=0; i<members.length; i++) {
             var userId = members.username;
 
             if (userId !== userModel.currentUser.userUUID) {
@@ -918,7 +921,7 @@ var channelView = {
                 }
             }
 
-        }*/
+        }
 
     },
 
@@ -1266,16 +1269,18 @@ var channelPresence = {
     onInit: function (e) {
         $("#channelPresence-listview").kendoMobileListView({
             dataSource: currentChannelModel.membersDS,
-            template: $("#memberTemplate").html(),
-            filterable: {
+            template: $("#chatMemberTemplate").html(),
+            autobind: false,
+           /* filterable: {
                 field: "name",
                 operator: "startswith",
                 placeholder: "Search Members..."
-            },
+            },*/
             click: function (e) {
                 // Click to potential member list -- add this member to channel
                 var thisMember = e.dataItem;
-                contactActionView.openModal(thisMember.uuid);
+                if (thisMember !== undefined && thisMember.contactId !== null)
+                    contactActionView.openModal(thisMember.contactId);
 
             }
 
@@ -1284,7 +1289,9 @@ var channelPresence = {
 
     onShow: function (e) {
 
-        var channelTitle = currentChannelModel.currentChannel.get('name');
+        currentChannelModel.buildMembersDS();
+
+       /// var channelTitle = currentChannelModel.currentChannel.get('name');
 
        // $('#channelPresenceTitle').text(channelTitle + ' Members');
 

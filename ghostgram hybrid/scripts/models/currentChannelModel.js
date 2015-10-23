@@ -52,6 +52,7 @@ var currentChannelModel = {
     initDataSources : function () {
         currentChannelModel.memberList = [];
         currentChannelModel.messagesDS.data([]);
+        currentChannelModel.membersDS.data([]);
     },
 
     setCurrentChannel : function (channelId) {
@@ -67,16 +68,12 @@ var currentChannelModel = {
             currentChannelModel.currentChannel = channel;
             currentChannelModel.channelId = channelId;
 
-            currentChannelModel.buildMemberList(function (array) {
-                currentChannelModel.membersDS.data(array);
-            });
+            currentChannelModel.buildMemberList();
 
             if (!channel.isOwner) {
                 currentChannelModel.syncChannelMembers(function (members) {
                     currentChannelModel.currentChannel.set('members', members);
-                    currentChannelModel.buildMemberList(function (array) {
-                        currentChannelModel.membersDS.data(array);
-                    });
+                    currentChannelModel.buildMemberList();
                 });
             }
             return(channel);
@@ -84,6 +81,20 @@ var currentChannelModel = {
             mobileNotify("CurrentChat :  Couldn't find Chat!!");
             return (null);
         }
+    },
+
+
+    buildMembersDS: function () {
+        var members = currentChannelModel.currentChannel.get('members'), length = members.length;
+
+        currentChannelModel.membersDS.data([]);
+
+        for (var i=0; i< length; i++) {
+            if (members[i] !== userModel.currentUser.userUUID) {
+                currentChannelModel.membersDS.add(currentChannelModel.memberList[members[i]]);
+            }
+        }
+
     },
 
     syncChannelMembers : function (callback) {
@@ -118,7 +129,9 @@ var currentChannelModel = {
                 contact.publicKey = null;
 
                 currentChannelModel.memberList[guid] = contact;
+                currentChannelModel.membersDS.add(contact);
                 addContactView.addChatContact(guid, contact.name, contact.alias);
+                mobileNotify("Created New Contact for: " + contact.name);
             }
 
         })
@@ -126,7 +139,7 @@ var currentChannelModel = {
     },
 
     // Build a member list for this channel
-    buildMemberList : function (callback) {
+    buildMemberList : function () {
 
         var contactArray = currentChannelModel.currentChannel.get('members');
 
@@ -138,9 +151,10 @@ var currentChannelModel = {
             if (contactArray[i] === userId) {
                 contact.isContact = false;
                 contact.uuid = userId;
+                contact.contactId = null;
                 contact.alias = userModel.currentUser.alias;
                 contact.name = userModel.currentUser.name;
-                contact.photoUrl = userModel.currentUser.photo;
+                contact.photo = userModel.currentUser.photo;
                 contact.publicKey = userModel.currentUser.publicKey;
                 contact.isPresent = true;
                 contactInfoArray[contact.uuid] = contact;
@@ -152,12 +166,14 @@ var currentChannelModel = {
                 } else {
                     contact.isContact = true;
                     contact.uuid = contactArray[i];
+                    contact.contactId = thisContact.uuid;
                     contact.alias = thisContact.alias;
                     contact.name = thisContact.name;
-                    contact.photoUrl = thisContact.photo;
+                    contact.photo = thisContact.photo;
                     contact.publicKey = thisContact.publicKey;
                     contact.isPresent = false;
                     contactInfoArray[contact.uuid] = contact;
+                    currentChannelModel.membersDS.add(contact);
                 }
             }
         }
