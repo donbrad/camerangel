@@ -52,6 +52,7 @@ var currentChannelModel = {
     initDataSources : function () {
         currentChannelModel.memberList = [];
         currentChannelModel.messagesDS.data([]);
+        currentChannelModel.membersDS.data([]);
     },
 
     setCurrentChannel : function (channelId) {
@@ -84,8 +85,11 @@ var currentChannelModel = {
 
 
     buildMembersDS: function () {
-        var members = currentChannelModel.memberList;
-        for (var i=0; i< members.length; i++) {
+        var members = currentChannelModel.memberList, length = Object.keys(members).length;
+
+        currentChannelModel.membersDS.data([]);
+
+        for (var i=0; i< length; i++) {
             if (members[i].contactUUID !== userModel.currentUser.userUUID) {
                 currentChannelModel.membersDS.add(members[i]);
             }
@@ -125,6 +129,7 @@ var currentChannelModel = {
                 contact.publicKey = null;
 
                 currentChannelModel.memberList[guid] = contact;
+                currentChannelModel.membersDS.add(contact);
                 addContactView.addChatContact(guid, contact.name, contact.alias);
                 mobileNotify("Created New Contact for: " + contact.name);
             }
@@ -166,6 +171,7 @@ var currentChannelModel = {
                     contact.publicKey = thisContact.publicKey;
                     contact.isPresent = false;
                     contactInfoArray[contact.uuid] = contact;
+                    currentContactModel.membersDS.add(contact);
                 }
             }
         }
