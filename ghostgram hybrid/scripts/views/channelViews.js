@@ -901,10 +901,14 @@ var channelView = {
     },
 
     setPresence: function (userId, isPresent) {
-        var contact = contactModel.findContact(userId);
-        var member = currentChannelModel.memberList[userId];
+        // Don't set presence for the current user -- they already know they're in the channel
+        if (userId === userModel.currentUser.userUUID) {
+            return;
+        }
 
-        contact.isPresent = isPresent;
+        //var member = currentChannelModel.memberList[userId];
+       // contact.isPresent = isPresent;
+        currentChannelModel.setMemberPresence(userId, isPresent);
     },
 
     updatePresence : function (members, occupancyCount) {

@@ -180,6 +180,18 @@ var currentChannelModel = {
         }
     },
 
+    setMemberPresence : function (memberId, isPresent) {
+
+        var dataSource = currentChannelModel.membersDS;
+        dataSource.filter( { field: "uuid", operator: "eq", value: memberId });
+        var view = dataSource.view();
+        var contact = view[0].items[0];
+        dataSource.filter([]);
+
+        contact.set('isPresent', isPresent);
+
+    },
+
     openChannel : function (handler) {
 
         // if there's a current channel active -- close it
