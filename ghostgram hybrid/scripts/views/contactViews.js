@@ -903,6 +903,7 @@ var contactActionView = {
         var thisContact = contactModel.findContactByUUID(contactId);
         contactActionView.setContact(contactId);
 
+        contactActionView.refreshUX(thisContact);
         $(".statusContactCard-icon").attr("src", "images/status-away.svg");
 
         //Show the status update div
@@ -974,7 +975,7 @@ var contactActionView = {
             // set profile img
             $("#contactProfileImg").attr("src", contact.photo);
 
-
+            contactActionView.refreshUX(contact);
             
 
         });

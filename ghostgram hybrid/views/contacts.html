@@ -265,9 +265,11 @@
 			Invited
 		#} else if (data.value === 'member') {#
 			Member
-		#} else {#
+		#} else if (data.value === 'unknown') {#
 			New Chat Member
-		#}#
+		#} else if (data.value === 'zapped') {#
+			Blocked User
+		#}
 	</div>
 </script>
 
@@ -334,16 +336,20 @@
 								if (data.statusMessage !== undefined && data.statusMessage !== "") {
 									message = data.statusMessage;
 								}#
-								#if (data.category === 'new') {#
-									Invite sent
-								#} else if (data.category === 'unknown') {#
-									New Contact - click to Connect!
-								#}#
+
 								#:message# 
 								# if (data.currentPlace !== undefined && data.currentPlace !== ""){#
 									<span class="contactStatus-location">
 										@#:data.currentPlace#
 									</span>
+								#}#
+
+								#if (data.category === 'new') {#
+								Invite sent
+								#} else if (data.category === 'unknown') {#
+								New Contact - click to Connect!
+								#} else if (data.cateogy === 'zapped') {#
+								Blocked User - click to Unblock
 								#}#
 							</p>	
 						</div>
