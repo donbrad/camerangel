@@ -97,12 +97,14 @@ var notificationModel = {
         query.find({
             success: function(collection) {
                 var userNotifications = [];
-                for (var i = 0; i < collection.models.length; i++) {
+                for (var i = 0; i < collection.length; i++) {
+                    var object = collection[i];
                     // Todo: check status of members
-                    var date = collection.models[i].updatedAt;
-                    collection.models[i].attributes.date = Date.parse(date);
-                    userNotifications.push(JSON.stringify(collection.models[i].attributes));
-                    notificationModel.notificationDS.add(collection.models[i].attributes);
+                    var date = object.get('updatedAt');
+                    object.set('date',Date.parse(date));
+                    var data = object.attributes;
+                    userNotifications.push(JSON.stringify(data));
+                    notificationModel.notificationDS.add(data);
                     deviceModel.setAppState('introFetched', true);
                 }
                 window.localStorage.setItem('ggUserNotifications', JSON.stringify(userNotifications));
