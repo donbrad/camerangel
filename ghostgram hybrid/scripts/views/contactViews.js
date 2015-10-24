@@ -530,6 +530,7 @@ var addContactView = {
         contact.set('contactUUID', null);
         contact.set('contactPhone', null);
         contact.set('contactEmail', null);
+        contact.set('ownerUUID', userModel.currentUser.userUUID);
 
         contact.save(null, {
             success: function(contact) {
@@ -574,6 +575,7 @@ var addContactView = {
         contact.set('contactUUID', null);
         contact.set('contactPhone', null);
         contact.set('contactEmail', null);
+        contact.set('ownerUUID', userModel.currentUser.userUUID);
         //phone = phone.replace(/\+[0-9]{1-2}/,'');
         phone = phone.replace(/\D+/g, "");
         if (phone[0] !== '1')

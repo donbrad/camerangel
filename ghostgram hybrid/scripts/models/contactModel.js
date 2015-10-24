@@ -223,6 +223,10 @@ var contactModel = {
                         model.set('photo', url);
                     }
 
+                    if (model.get('ownerUUID') === undefined) {
+                        model.set('ownerUUID', userModel.currentUser.userUUID);
+                    }
+                    
                     models.push(model.attributes);
                 }
                 deviceModel.setAppState('hasContacts', true);
