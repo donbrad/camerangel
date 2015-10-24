@@ -482,7 +482,7 @@ var channelModel = {
                         var members = channel.members;
                         // Skip the first member as it's the owner
                         for (var i = 1; i < channel.members.length; i++) {
-                            userDataChannel.groupChannelDelete(members[i],channelId, 'Chat "' + channel.name + 'has been deleted' );
+                            appDataChannel.groupChannelDelete(members[i],channelId, 'Chat "' + channel.name + 'has been deleted' );
                         }
                     }
                 }
