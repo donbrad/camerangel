@@ -374,7 +374,7 @@ var contactModel = {
         return(contact);
     },
 
-    // Get a full contact status update, including phone and email.
+    // Get a full contact details update, including phone and email.
     updateContactDetails : function (contactId, callback) {
         // Get this contacts record...
         var thisContact = contactModel.findContactByUUID(contactId);
@@ -388,12 +388,12 @@ var contactModel = {
                     var current = thisContact;
 
                     current.set('contactUUID', contact.userUUID);
-                    current.set('contactPhone', contact.phone);
+                    current.set('contactPhone', null);
                     current.set('phoneVerified', contact.phoneVerified);
                     if (contact.phoneVerified) {
                         current.set('category', 'member');
                     }
-                    current.set('contactEmail', contact.email);
+                    current.set('contactEmail', null);
                     current.set('emailValidated', contact.emailVerified);
                     current.set('contactPhoto', contact.photo);
                     current.set('isAvailable', contact.isAvailable);

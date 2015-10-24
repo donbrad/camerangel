@@ -628,6 +628,8 @@ var addContactView = {
                 contact.set("phoneVerified", false);
                 contact.set('publicKey',  null);
                 contact.set("contactUUID", null);
+                contact.set("contactPhone", null);
+                contact.set("contactEmail", null);
             }
 
           contact.save(null, {
