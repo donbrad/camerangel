@@ -239,7 +239,7 @@ var contactModel = {
 
                 deviceModel.isParseSyncComplete();
             },
-            error: function(collection, error) {
+            error: function(error) {
                 handleParseError(error);
             }
         });

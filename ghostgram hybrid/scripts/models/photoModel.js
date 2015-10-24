@@ -35,7 +35,7 @@ var photoModel = {
                 photoModel.photosDS.data(models);
                 deviceModel.isParseSyncComplete();
             },
-            error: function(collection, error) {
+            error: function(error) {
                 handleParseError(error);
             }
         });

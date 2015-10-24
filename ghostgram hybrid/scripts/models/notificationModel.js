@@ -110,7 +110,7 @@ var notificationModel = {
                 window.localStorage.setItem('ggUserNotifications', JSON.stringify(userNotifications));
                 deviceModel.state.userNotifications = userNotifications;
             },
-            error: function(collection, error) {
+            error: function(error) {
                 handleParseError(error);
             }
         });

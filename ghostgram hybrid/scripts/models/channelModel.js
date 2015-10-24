@@ -68,7 +68,7 @@ var channelModel = {
                 deviceModel.setAppState('hasChannels', true);
                 deviceModel.isParseSyncComplete();
             },
-            error: function(collection, error) {
+            error: function(error) {
                 handleParseError(error);
             }
         });
