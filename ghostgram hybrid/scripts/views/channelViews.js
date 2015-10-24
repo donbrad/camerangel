@@ -350,6 +350,10 @@ var editChannelView = {
         for (var md = 0; md < currentChannelModel.membersDeleted.length; md++) {
             userDataChannel.groupChannelDelete(currentChannelModel.membersDeleted[md].contactUUID, channelId, currentChannelModel.currentChannel.name + "has been deleted.");
         }
+
+        for (var m=0; m< memberArray.length; m++) {
+
+        }
 		
         updateParseObject('channels', 'channelId', channelId, 'members', memberArray);
         updateParseObject('channels', 'channelId', channelId, 'invitedMembers', invitedMemberArray);

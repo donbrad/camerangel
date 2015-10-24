@@ -106,12 +106,16 @@ var userDataChannel = {
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, ownerID: <ownerUUID>,  ownerName: <text>, channelName: <text>, channelDescription: <text>}
             case 'groupInvite' : {
-                userDataChannel.processGroupInvite(m.ownerId, m.ownerName,  m.channelId, m.channelName, m.channelDescription, m.durationDays,  m.message);
+                userDataChannel.processGroupInvite( m.ownerName,  m.channelId, m.channelName);
             } break;
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, owner: <ownerUUID>}
             case 'groupDelete' : {
-                userDataChannel.processGroupDelete(m.ownerId, m.channelId, m.message);
+                userDataChannel.processGroupDelete(m.ownerName, m.channelId, m.channelName);
+            } break;
+
+            case 'groupUpdate' : {
+                userDataChannel.processGroupUpdate(m.ownerName, m.channelId, m.channelName);
             } break;
 
             //  { type: 'packageOffer',  channelId: <channelUUID>, owner: <ownerUUID>, packageId: <packageUUID>, private: true|false, type: 'text'|'pdf'|'image'|'video', title: <text>, message: <text>}
@@ -139,44 +143,7 @@ var userDataChannel = {
         }
     },
 
-  /*  privateChannelInvite : function (contactUUID, channelUUID, message) {
-        var msg = {};
 
-        msg.type = 'privateInvite';
-        msg.ownerId = userModel.currentUser.get('userUUID');
-        msg.ownerPublicKey = userModel.currentUser.get('publicKey');
-        msg.channelId = channelUUID;
-        msg.message  = message;
-        msg.time = new Date().getTime();
-
-
-        APP.pubnub.publish({
-            channel: contactUUID,
-            message: msg,
-            callback: userDataChannel.publishCallback,
-            error: userDataChannel.errorCallback
-        });
-    },
-
-    privateChannelDelete : function (contactUUID, channelUUID, message) {
-        var msg = {};
-
-        msg.type = 'privateDelete';
-        msg.ownerId = userModel.currentUser.get('userUUID');
-        msg.ownerPublicKey = userModel.currentUser.get('publicKey');
-        msg.channelId = channelUUID;
-        msg.message  = message;
-        msg.time = new Date().getTime();
-
-
-        APP.pubnub.publish({
-            channel: contactUUID,
-            message: msg,
-            callback: userDataChannel.publishCallback,
-            error: userDataChannel.errorCallback
-        });
-    },
-*/
     groupChannelInvite : function (contactUUID, channelUUID, channelName, channelDescription, durationDays,  message) {
         var msg = {};
 
@@ -199,13 +166,14 @@ var userDataChannel = {
         });
     },
 
-    groupChannelDelete : function (contactUUID, channelUUID, message) {
+    groupChannelDelete : function (contactUUID, channelUUID, channelName, message) {
         var msg = {};
 
         msg.type = 'groupDelete';
         msg.ownerId = userModel.currentUser.get('userUUID');
         msg.ownerName = userModel.currentUser.get('name');
         msg.channelId = channelUUID;
+        msg.channelName = channelName;
         msg.message  = message;
         msg.time = new Date().getTime();
 
@@ -219,65 +187,86 @@ var userDataChannel = {
         });
     },
 
-   /* // This could be an initial request or a follow up to delete current channel
-    // and create a new one -- effectively orphaning / deleting the data in the channel
-    processPrivateInvite: function (ownerId, ownerPublicKey, channelId, message) {
-        // Can be only one private channel per user -- need to lookup channel by ownerId
-        var privateChannel = channelModel.findPrivateChannel(ownerId);
-        var deleteFlag = false;
+    groupChannelUpdate : function (contactUUID, channelUUID, channelName, message) {
+        var msg = {};
 
-        // The private channel requester needs to be in the user's contact list...
-        var contact = contactModel.findContact(ownerId);
-
-        //mobileNotify("Private Chat Request from " + contact.get('name') + '\n ' + message);
-
-
-        if (privateChannel !== undefined) {
-            // Theres already a private channel for this user -- need to delete it
-            if (privateChannel.channelId === channelId) {
-                // Invite is trying to create a channel with same channelId -- just ignore this request
-                mobileNotify("Private Chat Request from " + contact.get('name'));
-                return;
-            }
-            deleteFlag = true;
-            channelModel.deleteChannel(privateChannel.channelId, true);
-            //deleteParseObject('channels', 'channelId', privateChannel.channelId);
-        }
+        msg.type = 'groupUpdate';
+        msg.ownerId = userModel.currentUser.get('userUUID');
+        msg.ownerName = userModel.currentUser.get('name');
+        msg.channelId = channelUUID;
+        msg.channelName = channelName;
+        msg.message  = message;
+        msg.time = new Date().getTime();
 
 
-        if (contact !== undefined) {
-            var contactAlias = contact.get('alias');
-            channelModel.addPrivateChannel(ownerId, ownerPublicKey, contactAlias, channelId);
-            if (deleteFlag) {
-                mobileNotify("Updated Private Chat with " + contactAlias);
-            } else {
-                notificationModel.addNewPrivateChatNotification(channelId, "Private: " + contactAlias);
-            }
+        APP.pubnub.publish({
+            channel: contactUUID,
+            message: msg,
+            callback: userDataChannel.publishCallback,
+            error: userDataChannel.errorCallback
 
-            //mobileNotify("Created Private Chat with " + contactAlias);
-
-        } else {
-            mobileNotify("Null contact in processPrivateInvite!!");
-        }
-
-
-
+        });
     },
 
-    processPrivateDelete: function (ownerId, channelId, memberId,  message) {
-        var channel = channelModel.findChannelModel(channelId),
-            privateChannel = channelModel.findPrivateChannel(ownerId);
-        var contact = contactModel.findContact(ownerId);
+    /* // This could be an initial request or a follow up to delete current channel
+     // and create a new one -- effectively orphaning / deleting the data in the channel
+     processPrivateInvite: function (ownerId, ownerPublicKey, channelId, message) {
+         // Can be only one private channel per user -- need to lookup channel by ownerId
+         var privateChannel = channelModel.findPrivateChannel(ownerId);
+         var deleteFlag = false;
 
-        if (channel === undefined) {
-           // mobileNotify("Private Chat Delete Request from " + contact.get('name'));
-            notificationModel.deletePrivateChatNotification(channelId,"Private Chat: " + contact.alias);
-            channelModel.deleteChannel(channel);
-        }
+         // The private channel requester needs to be in the user's contact list...
+         var contact = contactModel.findContact(ownerId);
 
-    },
+         //mobileNotify("Private Chat Request from " + contact.get('name') + '\n ' + message);
 
-*/    processGroupInvite: function (ownerId, ownerName, channelId, channelName, channelDescription, durationDays, message) {
+
+         if (privateChannel !== undefined) {
+             // Theres already a private channel for this user -- need to delete it
+             if (privateChannel.channelId === channelId) {
+                 // Invite is trying to create a channel with same channelId -- just ignore this request
+                 mobileNotify("Private Chat Request from " + contact.get('name'));
+                 return;
+             }
+             deleteFlag = true;
+             channelModel.deleteChannel(privateChannel.channelId, true);
+             //deleteParseObject('channels', 'channelId', privateChannel.channelId);
+         }
+
+
+         if (contact !== undefined) {
+             var contactAlias = contact.get('alias');
+             channelModel.addPrivateChannel(ownerId, ownerPublicKey, contactAlias, channelId);
+             if (deleteFlag) {
+                 mobileNotify("Updated Private Chat with " + contactAlias);
+             } else {
+                 notificationModel.addNewPrivateChatNotification(channelId, "Private: " + contactAlias);
+             }
+
+             //mobileNotify("Created Private Chat with " + contactAlias);
+
+         } else {
+             mobileNotify("Null contact in processPrivateInvite!!");
+         }
+
+
+
+     },
+
+     processPrivateDelete: function (ownerId, channelId, memberId,  message) {
+         var channel = channelModel.findChannelModel(channelId),
+             privateChannel = channelModel.findPrivateChannel(ownerId);
+         var contact = contactModel.findContact(ownerId);
+
+         if (channel === undefined) {
+            // mobileNotify("Private Chat Delete Request from " + contact.get('name'));
+             notificationModel.deletePrivateChatNotification(channelId,"Private Chat: " + contact.alias);
+             channelModel.deleteChannel(channel);
+         }
+
+     },
+
+ */    processGroupInvite: function (ownerName, channelId, channelName, channelDescription, durationDays, message) {
         // Todo:  Does channel exist?  If not create,  if so notify user of request
         var channel = channelModel.findChannelModel(channelId);
 
@@ -293,16 +282,26 @@ var userDataChannel = {
 
     },
 
-    processGroupDelete: function (ownerId, channelId, memberId, message) {
+    processGroupDelete: function (ownerName, channelId, channelName) {
         // Todo:  Does channel exist?  If not do nothing,  if so delete the channel
         var channel = channelModel.findChannelModel(channelId);
         if (channel === undefined) {
             // Todo: create a channelMember object for this user
-            mobileNotify('Owner has deleted Chat: "' + channelId + '"');
+            mobileNotify('Owner has deleted Chat: "' + channelName + '"');
             channelModel.deleteChannel(channel);
         }
 
     },
+
+    processGroupUpdate: function (ownerName, channelId, channelName) {
+
+        var channel = channelModel.findChannelModel(channelId);
+        if (channel !== undefined) {
+
+        }
+
+    },
+
 
     publishCallback : function (m) {
         if (m === undefined)

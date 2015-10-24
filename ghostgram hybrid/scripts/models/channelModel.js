@@ -152,7 +152,9 @@ var channelModel = {
 
 
     syncParseChannels : function (callback) {
-       if (userModel.currentUser.phoneVerified)  {
+        // Only sync channels for users with atleast email or phone validated
+
+       if (userModel.currentUser.phoneVerified || userModel.currentUser.emailValidated)  {
            var uuid = userModel.currentUser.userUUID;
 
            getUserChannels(uuid, function (result) {
@@ -187,12 +189,31 @@ var channelModel = {
        }
     },
 
-    // Update channel membership (for non-owner members) on local phone and parse
+    // Update members and other channel Member data for this channel
+    updateChannel : function (channelId) {
+
+        getChannelMembers(channelId,  function (result) {
+            if (result.found) {
+                var channel = channelModel.findChannelModel(channelId);
+                var channelUpdate = result.channel;
+
+                channel.set("members", channelUpdate.members);
+                channelModel.confirmChannelMembers(channelUpdate.members);
+                channel.set("name", channelUpdate.name);
+                channel.set("description", channelUpdate.description);
+
+            }
+        });
+
+    },
+
+    // Update channel membership (for non-owner members)
     updateChannelMembers : function (channelId, members) {
         var channel = channelModel.findChannelModel(channelId);
 
         if (channel !== null) {
             channel.set('members', members);
+            channelModel.confirmChannelMembers(members);
             updateParseObject('channels', 'channelId', channelId, 'members', members );
         }
 
@@ -404,6 +425,7 @@ var channelModel = {
         } else {
             // Channel members have no access to members...
             channel.set("isOwner", false);
+            channel.set("members", [ownerUUID]);
 
         }
 
