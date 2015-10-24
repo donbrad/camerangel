@@ -86,13 +86,14 @@ var notificationModel = {
 
     parseFetch: function () {
         var NotificationModel = Parse.Object.extend("notifications");
-        var NotificationCollection = Parse.Collection.extend({
+     /*   var NotificationCollection = Parse.Collection.extend({
             model: NotificationModel
         });
 
         var notifications = new NotificationCollection();
 
-        notifications.fetch({
+        notifications.fetch({*/
+        NotificationModel.fetchAll([],{
             success: function(collection) {
                 var userNotifications = [];
                 for (var i = 0; i < collection.models.length; i++) {
