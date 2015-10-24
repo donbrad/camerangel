@@ -223,13 +223,15 @@ var channelModel = {
             return;
         }
 
+        var userId = userModel.currentUser.userUUID;
         for (var i=0; i<members.length; i++) {
-            var contact = contactModel.inContactList(members[i]);
+            if (members[i] !== userId) {
+                var contact = contactModel.inContactList(members[i]);
+                if (contact === undefined) {
 
-            if (contact === undefined) {
+                    currentChannelModel.createChatContact(members[i]);
 
-                currentChannelModel.createChatContact(members[i]);
-
+                }
             }
         }
     },
