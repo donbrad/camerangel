@@ -46,24 +46,24 @@ var channelModel = {
 
     fetch : function () {
         var Channel = Parse.Object.extend("channels");
-        var ChannelCollection = Parse.Collection.extend({
-            model: Channel
-        });
+       var query = new Parse.Query(Channel);
 
-        var channels = new ChannelCollection();
-
-        channels.fetch({
+        query.find({
             success: function(collection) {
                 var models = new Array();
-                for (var i = 0; i < collection.models.length; i++) {
+                for (var i = 0; i < collection.length; i++) {
+                    var object = collection[i];
+                    var data = object.attributes;
                     // Todo: check status of members
-                    if (collection.models[i].attributes.isOwner) {
-                        if (collection.models[i].attributes.ownerId === undefined) {
-                            collection.models[i].attributes.ownerId = userModel.currentUser.userUUID;
+                    if (data.isOwner) {
+                        if (data.ownerId === undefined) {
+                            data.ownerId = userModel.currentUser.userUUID;
+                            object.set('ownerId', data.ownerId);
+                            object.save();
                         }
                     }
 
-                    models.push(collection.models[i].attributes);
+                    models.push(data);
                 }
                 channelModel.channelsDS.data(models);
                 channelModel.syncParseChannels();

@@ -204,17 +204,13 @@ var contactModel = {
 
     fetch : function () {
         var ContactModel = Parse.Object.extend("contacts");
-        var ContactCollection = Parse.Collection.extend({
-            model: ContactModel
-        });
+        var query = new Parse.Query(ContactModel);
 
-        var contacts = new ContactCollection();
-
-        contacts.fetch({
+        query.find({
             success: function(collection) {
                 var models = [];
-                for (var i = 0; i < collection.models.length; i++) {
-                    var model = collection.models[i];
+                for (var i = 0; i < collection.length; i++) {
+                    var model = collection[i];
                    // Set the photo to identicon
                     var url = contactModel.createIdenticon(model.get('uuid'));
 

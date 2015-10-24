@@ -23,17 +23,13 @@ var photoModel = {
 
     fetch: function () {
         var PhotoModel = Parse.Object.extend("photos");
-        var PhotoCollection = Parse.Collection.extend({
-            model: PhotoModel
-        });
+        var query = new Parse.Query(PhotoModel);
 
-        var photos = new PhotoCollection();
-
-        photos.fetch({
+        query.find({
             success: function(collection) {
                 var models = [];
-                for (var i = 0; i < collection.models.length; i++) {
-                    models.push(collection.models[i].attributes);
+                for (var i = 0; i < collection.length; i++) {
+                    models.push(collection[i].attributes);
                 }
                 deviceModel.setAppState('hasPhotos', true);
                 photoModel.photosDS.data(models);
