@@ -223,10 +223,12 @@ var contactModel = {
                         model.set('photo', url);
                     }
 
+                    //Push to the ownerUUID to legacy contacts...
                     if (model.get('ownerUUID') === undefined) {
                         model.set('ownerUUID', userModel.currentUser.userUUID);
+                        model.save();
                     }
-                    
+
                     models.push(model.attributes);
                 }
                 deviceModel.setAppState('hasContacts', true);
