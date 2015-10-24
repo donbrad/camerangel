@@ -86,6 +86,7 @@ var notificationModel = {
 
     parseFetch: function () {
         var NotificationModel = Parse.Object.extend("notifications");
+        var query = new Parse.Query(NotificationModel);
      /*   var NotificationCollection = Parse.Collection.extend({
             model: NotificationModel
         });
@@ -93,7 +94,7 @@ var notificationModel = {
         var notifications = new NotificationCollection();
 
         notifications.fetch({*/
-        Parse.Object.fetchAll([NotificationModel],{
+        query.find({
             success: function(collection) {
                 var userNotifications = [];
                 for (var i = 0; i < collection.models.length; i++) {
