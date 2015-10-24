@@ -370,6 +370,26 @@ var contactModel = {
         return(contact);
     },
 
+    requestConnect : function (contactId) {
+
+    },
+
+    acceptConnect : function (contactId) {
+
+    },
+
+    declineConnect : function (contactId) {
+
+    },
+
+    blockContact : function (contactId) {
+
+    },
+
+    unblockContact : function (contactId) {
+
+    },
+    
     // Get a full contact details update, including phone and email.
     updateContactDetails : function (contactId, callback) {
         // Get this contacts record...
