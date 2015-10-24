@@ -289,7 +289,7 @@ function _smartSetNull(original, newValue) {
 }
 
 function getChannelMembers(channelId, callBack) {
-	Parse.Cloud.run('getUserChannels', {
+	Parse.Cloud.run('getChannelMembers', {
 		channelId: channelId
 	}, {
 		success: function(result, error) {
