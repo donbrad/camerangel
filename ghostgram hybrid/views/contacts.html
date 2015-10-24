@@ -263,8 +263,10 @@
 			Device
 		#} else if (data.value === 'new'){#
 			Invited
-		#} else {#
+		#} else if (data.value === 'member') {#
 			Member
+		#} else {#
+			New Chat Member
 		#}#
 	</div>
 </script>
@@ -295,7 +297,7 @@
     		<a class="contactListBox">
     	#}#
 	
-			#if (data.category !== 'phone' && data.category !== 'chat') {#
+			#if (data.category !== 'phone') {#
 					<div class="left listPhoto">
 						<div class="statusContactList">
 
@@ -325,16 +327,18 @@
 							#}#
 							</h4>
 						</div>
+						# if (data.category === 'member') {#
 						<div class="left contact-status">
 							<p class="left contactStatusMessage-sm">
 							# var message = "", location = ""; 
 								if (data.statusMessage !== undefined && data.statusMessage !== "") {
 									message = data.statusMessage;
 								}#
-								#if(data.category !== 'member'){#
+								#if(data.category === 'new'){#
 									Invite sent
+								#} else if data.category === 'unknown' {#
+									New Contact - click to Connect!
 								#}#
-							
 								#:message# 
 								# if (data.currentPlace !== undefined && data.currentPlace !== ""){#
 									<span class="contactStatus-location">
@@ -343,6 +347,7 @@
 								#}#
 							</p>	
 						</div>
+						# } #
 						<div class="clearfix"></div>
 				#} else {#
 					<h4 class="phoneContact">

@@ -521,7 +521,7 @@ var addContactView = {
         contact.setACL(userModel.parseACL);
         contact.set("name", name );
         contact.set("alias", alias);
-        contact.set('category', "chat");
+        contact.set('category', "unknown");
         contact.set("address", null);
         contact.set("group", null);
         contact.set("priority", 0);
