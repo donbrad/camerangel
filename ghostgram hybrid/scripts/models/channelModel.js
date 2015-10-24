@@ -65,7 +65,6 @@ var channelModel = {
                     models.push(object.attributes);
                 }
                 channelModel.channelsDS.data(models);
-                channelModel.syncParseChannels();
                 deviceModel.setAppState('hasChannels', true);
                 deviceModel.isParseSyncComplete();
             },
@@ -172,11 +171,11 @@ var channelModel = {
                                 } else {
 
                                     channelModel.addChannel(channel.name, channel.description, false, channel.durationDays,
-                                        channel.channelId, '', '');
-
+                                        channel.channelId, channel.ownerUUID, null, null,false);
+                                    channelModel.updateChannelMembers(channel.channelId, channel.members);
                                 }
                             }
-                            channelModel.updateChannelMembers(channel.channelId, channel.members);
+
                         }
 
                    }
@@ -388,7 +387,7 @@ var channelModel = {
 
 
         // If there's a placeId passed in, need to create a place channel / chat
-        if (placeId !== undefined) {
+        if (placeId !== undefined && placeId !== null) {
             channel.set('isPlace', true);
             channel.set('isPrivatePlace', isPrivatePlace);
             channel.set('placeUUID', placeId);
@@ -415,6 +414,17 @@ var channelModel = {
         channel.set("channelId", channelId);
 
         channel.set("ownerId", ownerUUID);
+        if (ownerName === undefined || ownerName === null) {
+            if (ownerID === userModel.currentUser.userUUID) {
+                ownerName = userModel.currentUser.userUUID;
+            } else {
+                var contact = contactModel.findContactModel(ownerUUID);
+                if (contact !== undefined) {
+                    ownerName = contact.name;
+                }
+            }
+
+        }
         channel.set("ownerName", ownerName);
         // Channel owner can access and edit members...
         if (isOwner) {

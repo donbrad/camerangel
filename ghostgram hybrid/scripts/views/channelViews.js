@@ -69,9 +69,8 @@ var channelsView = {
     },
 
     onShow : function(e) {
-        channelModel.syncParseChannels(function () {
-            ux.checkEmptyUIState(channelModel.channelsDS, "#channels");
-        });
+
+        ux.checkEmptyUIState(channelModel.channelsDS, "#channels");
     	//scroll up search 
     	ux.scrollUpSearch(e);
         // set action button
