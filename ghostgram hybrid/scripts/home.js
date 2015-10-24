@@ -429,23 +429,29 @@ function testingStatus(e) {
 	
 }
 
+function _signOut() {
+	Parse.User.logOut();
+	userModel.parseUser = null;
+	userModel.currentUser.unbind('change', userModel.sync);
+	userModel.currentUser.set('username', null);
+	userModel.currentUser.set('email', null);
+	userModel.currentUser.set('phone',null);
+	userModel.currentUser.set('alias', null);
+	userModel.currentUser.set('userUUID', null);
+	userModel.currentUser.set('rememberUsername', false);
+	userModel.currentUser.set('phoneVerified', false);
+	userModel.currentUser.set('emailVerified', false);
+	userModel.parseACL = '';
+	deviceModel.resetDeviceState();
+}
+
+
 function homeSignout (e) {
 	if (e !== undefined && e.preventDefault !== undefined)
 		e.preventDefault();
 
-    Parse.User.logOut();
-    userModel.parseUser = null;
-    userModel.currentUser.unbind('change', userModel.sync);
-    userModel.currentUser.set('username', null);
-    userModel.currentUser.set('email', null);
-    userModel.currentUser.set('phone',null);
-    userModel.currentUser.set('alias', null);
-    userModel.currentUser.set('userUUID', null);
-	userModel.currentUser.set('rememberUsername', false);
-    userModel.currentUser.set('phoneVerified', false);
-    userModel.currentUser.set('emailVerified', false);
-    userModel.parseACL = '';
-	deviceModel.resetDeviceState();
+	_signOut();
+
     APP.kendo.navigate('#newuserhome');
 }
 

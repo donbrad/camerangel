@@ -173,13 +173,8 @@ function getNetworkState() {
 function handleParseError(err) {
 	switch (err.code) {
 		case Parse.Error.INVALID_SESSION_TOKEN:
-			Parse.User.logOut();
-			userModel.currentUser = '';
-			APP.models.profile.username = '';
-			APP.models.profile.email = '';
-			APP.models.profile.phone = '';
-			APP.models.profile.alias = '';
-			APP.models.profile.userUUID = '';
+			mobileNotify("Security Check: Please Sign In");
+			_signOut();
 			APP.kendo.navigate('#newuserhome');
 			break;
 	}
