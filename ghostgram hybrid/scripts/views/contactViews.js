@@ -887,9 +887,11 @@ var contactActionView = {
         if (contact.category === 'unknown') {
             $("#contactActionBtns").addClass('hidden');
             $("#contactActionConnect").removeClass('hidden');
+            $("#contactActionRequest").addClass('hidden');
         } else {
             $("#contactActionBtns").removeClass('hidden');
             $("#contactActionConnect").addClass('hidden');
+            $("#contactActionRequest").addClass('hidden');
             if (contact.category === 'member'){
                 $("#contactActionBtns > li:first-child").show();
             } else {
@@ -900,6 +902,7 @@ var contactActionView = {
 
     openModal : function (contactId) {
 
+        $("#contactActionBtns").removeClass('hidden');
         var thisContact = contactModel.findContactByUUID(contactId);
         contactActionView.setContact(contactId);
 

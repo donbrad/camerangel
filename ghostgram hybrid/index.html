@@ -841,7 +841,7 @@
 </div>
 
 <!-- contact action -->
-<div data-role="modalview" id="modalview-contactActions" data-model="contactActionView._activeContact"  style="width: 90%; display: none;">
+<div data-role="modalview" id="modalview-contactActions" data-model="contactActionView._activeContact"  style="width: 90%; min-height:280px; display: none;">
 	<div class="modal-top">
 		<a data-role="button" class="modal-close" data-click="contactActionView.closeModal"><img src="images/close.svg"/></a>
 
@@ -886,25 +886,29 @@
 				</a>
 			</li>
 		</ul>
-		<ul class="list-inline hasMotion" id="contactActionConnect" >
-			<li >
-				<a class="btnClear" data-role="button" data-click="contactRequestConnect" >
-					<img src="images/contact-invite.svg" /> Connect
-				</a>
-			</li>
-		</ul>
-		<ul class="list-inline hasMotion" id="contactActionAccept" >
-			<li >
-				<a class="btnClear" data-role="button" data-click="contactRequestAccept" >
-					<img src="images/icon-contact.svg" /> Accept Connection
-				</a>
-			</li>
-			<li >
-				<a class="btnClear" data-role="button" data-click="contactRequestDecline" >
-					<img src="images/decline-icon.svg" /> Decline Connection
-				</a>
-			</li>
-		</ul>
+		<div id="contactActionConnect">
+			<ul class="list-inline hasMotion"  >
+				<li >
+					<a class="btnClear" data-role="button" data-click="contactRequestConnect" >
+						<img src="images/contact-invite.svg" /> Connect
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div id="contactActionAccept">
+			<ul class="list-inline hasMotion"  >
+				<li >
+					<a class="btnClear" data-role="button" data-click="contactRequestAccept" >
+						<img src="images/icon-contact.svg" /> Accept Connection
+					</a>
+				</li>
+				<li >
+					<a class="btnClear" data-role="button" data-click="contactRequestDecline" >
+						<img src="images/decline-icon.svg" /> Decline Connection
+					</a>
+				</li>
+			</ul>
+		</div>
 	</div>
 </div>
 
