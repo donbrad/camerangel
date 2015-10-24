@@ -883,6 +883,21 @@ var contactActionView = {
     	
     },
 
+    refreshUX : function (contact) {
+        if (contact.category === 'unknown') {
+            $("#contactActionBtns").addClass('hidden');
+            $("#contactActionConnect").removeClass('hidden');
+        } else {
+            $("#contactActionBtns").removeClass('hidden');
+            $("#contactActionConnect").addClass('hidden');
+            if (contact.category === 'member'){
+                $("#contactActionBtns > li:first-child").show();
+            } else {
+                $("#contactActionBtns > li:first-child").hide();
+            }
+        }
+    },
+
     openModal : function (contactId) {
 
         var thisContact = contactModel.findContactByUUID(contactId);
@@ -907,9 +922,15 @@ var contactActionView = {
                     // Update the contactList object too
                     var contactList = contactModel.findContactList(thisContact.contactUUID);
                     contactList.set('statusMessage', user.get('statusMessage'));
-                    contactList.set('currentPlace', user.get('currentPlace'));
+                    var contactPlace = user.get('currentPlace');
+                    contactList.set('currentPlace', contactPlace);
                     contactList.set('currentPlaceUUID', user.get('currentPlaceUUID'));
                     contactList.set('isAvailable', contactIsAvailable);
+
+                    // set current place
+                    if(contactPlace !== "" && contactPlace !== undefined){
+                        $("#contactCurrentPlace").text("@" + contactPlace);
+                    }
                 }
             });
         }
@@ -925,15 +946,14 @@ var contactActionView = {
             var contactVerified = contact.phoneVerified;
 
             var contactIsAvailable = contact.isAvailable;
-            var contactPlace = contact.currentPlace;
 
            
             contactActionView._activeContact.set('name', contactName);
             contactActionView._activeContact.set('alias', contactAlias);
-            if (contact.contactPhoto !== undefined && contact.contactPhoto !== null) {
-                contactActionView._activeContact.set('photo', contact.contactPhoto);
-            } else {
+            if (contact.photo !== undefined && contact.photo !== null) {
                 contactActionView._activeContact.set('photo', contact.photo);
+            } else {
+                contactActionView._activeContact.set('photo', contact.identicon);
             }
 
        /*     contactActionView._activeContact.set('statusMessage', contact.statusMessage);
@@ -953,14 +973,13 @@ var contactActionView = {
 
             // set profile img
             $("#contactProfileImg").attr("src", contact.photo);
-            
-            // set current place
-            if(contactPlace !== "" && contactPlace !== undefined){
-            	$("#contactCurrentPlace").text("@" + contactPlace);
-            }
+
+
             
 
         });
+
+
 
 
         $("#modalview-contactActions").data("kendoMobileModalView").open();
