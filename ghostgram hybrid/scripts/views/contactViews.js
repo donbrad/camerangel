@@ -884,14 +884,15 @@ var contactActionView = {
     },
 
     refreshUX : function (contact) {
+
         if (contact.category === 'unknown') {
             $("#contactActionBtns").addClass('hidden');
             $("#contactActionConnect").removeClass('hidden');
-            $("#contactActionRequest").addClass('hidden');
+            $("#contactActionAccept").addClass('hidden');
         } else {
             $("#contactActionBtns").removeClass('hidden');
             $("#contactActionConnect").addClass('hidden');
-            $("#contactActionRequest").addClass('hidden');
+            $("#contactActionAccept").addClass('hidden');
             if (contact.category === 'member'){
                 $("#contactActionBtns > li:first-child").show();
             } else {
@@ -904,7 +905,7 @@ var contactActionView = {
 
         $("#contactActionBtns").removeClass('hidden');
         var thisContact = contactModel.findContactByUUID(contactId);
-        contactActionView.setContact(contactId);
+        contactActionView.setContact(thisContact);
 
         contactActionView.refreshUX(thisContact);
         $(".statusContactCard-icon").attr("src", "images/status-away.svg");
@@ -1022,16 +1023,26 @@ var contactActionView = {
 
     },
 
-    setContact : function (contactId) {
+    setContact : function (thisContact) {
 
-        contactActionView._activeContactId = contactId;
-        contactActionView._activeContact.set('name', '');
-        contactActionView._activeContact.set('alias', '');
-        contactActionView._activeContact.set('photo', '');
-        contactActionView._activeContact.set('statusMessage', '');
-        contactActionView._activeContact.set('currentPlace', '');
-        contactActionView._activeContact.set('isAvailable', false);
-        $("#currentContactVerified").addClass("hidden");
+        contactActionView._activeContactId = thisContact.uuid;
+        contactActionView._activeContact.set('name', thisContact.name);
+        contactActionView._activeContact.set('alias', thisContact.alias);
+        contactActionView._activeContact.set('photo', thisContact.photo);
+        contactActionView._activeContact.set('statusMessage', thisContact.statusMessage);
+        contactActionView._activeContact.set('currentPlace',thisContact.currentPlace);
+        contactActionView._activeContact.set('isAvailable', thisContact.isAvailable);
+        // set available
+        if(thisContact.isAvailable){
+            $(".statusContactCard-icon").attr("src", "images/status-available.svg");
+        }
+
+        if (thisContact.phoneVerified) {
+            $("#currentContactVerified").removeClass("hidden");
+        } else {
+            $("#currentContactVerified").addClass("hidden");
+        }
+
     }
 
 };
