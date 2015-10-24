@@ -46,7 +46,7 @@ var channelModel = {
 
     fetch : function () {
         var Channel = Parse.Object.extend("channels");
-       var query = new Parse.Query(Channel);
+        var query = new Parse.Query(Channel);
 
         query.find({
             success: function(collection) {
@@ -57,13 +57,12 @@ var channelModel = {
                     // Todo: check status of members
                     if (data.isOwner) {
                         if (data.ownerId === undefined) {
-                            data.ownerId = userModel.currentUser.userUUID;
-                            object.set('ownerId', data.ownerId);
+                            object.set('ownerId', userModel.currentUser.userUUID);
                             object.save();
                         }
                     }
 
-                    models.push(data);
+                    models.push(object.attributes);
                 }
                 channelModel.channelsDS.data(models);
                 channelModel.syncParseChannels();
