@@ -327,16 +327,16 @@
 							#}#
 							</h4>
 						</div>
-						# if (data.category === 'member') {#
+
 						<div class="left contact-status">
 							<p class="left contactStatusMessage-sm">
 							# var message = "", location = ""; 
 								if (data.statusMessage !== undefined && data.statusMessage !== "") {
 									message = data.statusMessage;
 								}#
-								#if(data.category === 'new'){#
+								#if (data.category === 'new') {#
 									Invite sent
-								#} else if data.category === 'unknown' {#
+								#} else if (data.category === 'unknown') {#
 									New Contact - click to Connect!
 								#}#
 								#:message# 
@@ -347,7 +347,7 @@
 								#}#
 							</p>	
 						</div>
-						# } #
+
 						<div class="clearfix"></div>
 				#} else {#
 					<h4 class="phoneContact">
