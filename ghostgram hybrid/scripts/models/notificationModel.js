@@ -93,7 +93,7 @@ var notificationModel = {
         var notifications = new NotificationCollection();
 
         notifications.fetch({*/
-        NotificationModel.fetchAll([],{
+        Parse.Object.fetchAll([NotificationModel],{
             success: function(collection) {
                 var userNotifications = [];
                 for (var i = 0; i < collection.models.length; i++) {
