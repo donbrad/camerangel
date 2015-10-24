@@ -537,7 +537,7 @@ var addContactView = {
                 // Execute any logic that should take place after the object is saved.;
                 //var photo = contact.get('photo');
                 var url = contactModel.createIdenticon(guid);
-                contact.attributes.photo = url;
+                contact.set('photo',url);
                 contactModel.contactsDS.add(contact.attributes);
             },
             error: function(contact, error) {
@@ -638,9 +638,9 @@ var addContactView = {
                   mobileNotify('Added contact : ' + contact.get('name'));
                   //var photo = contact.get('photo');
                   var url = contactModel.createIdenticon(guid);
-                  contact.attributes.identicon = url;
+                  contact.set('identicon',url);
                   if ( contact.attributes.photo !== null || contact.attributes.photo !== '') {
-                    contact.attributes.photo = url;
+                    contact.set('photo',url);;
                   }
 
                   contactModel.contactsDS.add(contact.attributes);
