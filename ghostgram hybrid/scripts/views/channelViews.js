@@ -799,13 +799,13 @@ var channelView = {
             contact.alias = 'unknown';
             contact.name = 'Unknown User';
             contact.photoUrl = 'images/ghost-blue.svg';
+        } else {
+            contact.uuid = data.userUUID;
+            contact.alias = data.alias;
+            contact.name = data.name;
+            contact.photoUrl = data.photo;
         }
-
-        contact.uuid = data.userUUID;
-        contact.alias = data.alias;
-        contact.name = data.name;
-        contact.photoUrl = data.photo;
-
+        
         return(contact);
     },
 
