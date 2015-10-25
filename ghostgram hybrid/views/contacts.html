@@ -27,55 +27,6 @@
 	    </div>
 </div>
 
-<!-- contact action -->
-<div data-role="modalview" id="modalview-contactActions" data-model="contactActionView._activeContact"  style="width: 90%; display: none;">
-	<div class="modal-top">
-		<a data-role="button" class="modal-close" data-click="contactActionView.closeModal"><img src="images/close.svg"/></a>
-
-			<img class="circle-img-lg" id="contactProfileImg" />
-			<img width="20" src="images/status-away.svg" class="statusContactCard-icon" id="contactStatusImg"/>
-		<h3 class="preMotionUp">
-
-			<span class="primaryName" id="contactPrimaryName"></span>
-			<span class="hidden" id="currentContactVerified">
-				<img src="images/icon-verified-dark.svg" class="user-status-icon" />
-			</span>
-			<span class="secondName" id="contactSecondName"></span>
-		</h3>
-		<p class="preMotionUp">
-			<span class="contactStatusMessage" data-bind="text: statusMessage"></span>
-
-		</p>
-		<p class="preMotionUp">
-			<a data-role="button" id="contactCurrentPlace" class="btnClear-light-sm"></a>
-
-		</p>
-	</div>
-	<div class="modal-bottom">
-		<ul class="list-inline hasMotion" id="contactActionBtns" >
-			<li>
-				<a class="btnClear" data-role="button" data-click="privateChat">
-				<img src="images/icon-ghostgram.svg" /> Private Chat
-				</a>
-			</li>
-			<li>
-				<a class="btnClear" data-role="button" data-click="contactActionView.ghostEmail">
-				<img src="images/icon-ghostMail.svg" /> email ghostgram</a>
-			</li>
-			<li>
-				<a class="btnClear" data-role="button" data-click="contactCallPhone">
-				<img src="images/icon-phone.svg" /> Phone Call
-				</a>
-			</li>
-			<li>
-				<a class="btnClear" data-role="button" data-click="contactSendSMS">
-				<img src="images/icon-sms.svg" /> Send SMS
-				</a>
-			</li>
-		</ul>
-	</div>
-</div>
-
 <!-- Import Contacts -->
 <div data-role="view" data-title="Import Contacts" id="contactImport"  data-model="contactModel" data-init="contactImportView.onInit" data-show="contactImportView.onShow" style="display: none;">
     <div data-role="header">
@@ -312,8 +263,12 @@
 			Device
 		#} else if (data.value === 'new'){#
 			Invited
-		#} else {#
+		#} else if (data.value === 'member') {#
 			Member
+		#} else if (data.value === 'unknown') {#
+			New Chat Member
+		#} else if (data.value === 'zapped') {#
+			Blocked User
 		#}#
 	</div>
 </script>
@@ -344,7 +299,7 @@
     		<a class="contactListBox">
     	#}#
 	
-			#if (data.category !== 'phone' && data.category !== 'chat') {#
+			#if (data.category !== 'phone') {#
 					<div class="left listPhoto">
 						<div class="statusContactList">
 
@@ -374,24 +329,31 @@
 							#}#
 							</h4>
 						</div>
+
 						<div class="left contact-status">
 							<p class="left contactStatusMessage-sm">
 							# var message = "", location = ""; 
 								if (data.statusMessage !== undefined && data.statusMessage !== "") {
 									message = data.statusMessage;
 								}#
-								#if(data.category !== 'member'){#
-									Invite sent
-								#}#
-							
+
 								#:message# 
 								# if (data.currentPlace !== undefined && data.currentPlace !== ""){#
 									<span class="contactStatus-location">
 										@#:data.currentPlace#
 									</span>
 								#}#
+
+								#if (data.category === 'new') {#
+								Invite sent
+								#} else if (data.category === 'unknown') {#
+								New Contact - click to Connect!
+								#} else if (data.cateogy === 'zapped') {#
+								Blocked User - click to Unblock
+								#}#
 							</p>	
 						</div>
+
 						<div class="clearfix"></div>
 				#} else {#
 					<h4 class="phoneContact">

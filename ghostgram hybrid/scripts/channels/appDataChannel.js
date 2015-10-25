@@ -1,6 +1,6 @@
 /**
  * Created by donbrad on 8/10/15.
- * appDataChannel - handles all communication app level communication
+ * appDataChannel - handles all notifications and updates
  *
  * !!! Must be included after pubnub and init must be called after pubnub is initialized
  */
@@ -11,11 +11,16 @@
 var appDataChannel = {
 
 
-    channelId: 'ghostgramsapp129195720',   // current app channel
+    channelId: '',   // current app channel
     lastAccess: 0,   // last access time stamp
 
     init: function () {
-        appDataChannel.channelId = 'ghostgramsapp129195720';
+
+        // Generate a unique channel name for the app data channel that is recognizable to related userDataChannel
+        // replacing - with _ should achive this...
+        var channel = userModel.currentUser.userUUID.replace(/-/g,'_');
+
+        appDataChannel.channelId = channel;
 
         var ts = localStorage.getItem('ggAppDataTimeStamp');
 
@@ -24,7 +29,7 @@ var appDataChannel = {
 
         APP.pubnub.subscribe({
             channel: appDataChannel.channelId,
-            windowing: 50000,
+            windowing: 500,
             message: appDataChannel.channelRead,
             connect: appDataChannel.channelConnect,
             disconnect: appDataChannel.channelDisconnect,
@@ -34,7 +39,7 @@ var appDataChannel = {
         });
 
         // Load the appData message queue
-        this.history();
+        appDataChannel.history();
         channelModel.updateChannelsMessageCount();
     },
 
@@ -43,38 +48,28 @@ var appDataChannel = {
         localStorage.setItem('ggAppDataTimeStamp', appDataChannel.lastAccess);
     },
 
+    getContactAppChannel : function (channelId) {
+        return(channelId.replace(/-/g,'_'));
+    },
+
     history : function () {
+        // Just look back 7 days -- can expand or shorten this window.
 
-        if (appDataChannel.lastAccess === 0 || isNaN(appDataChannel.lastAccess)) {
-            // Get any messages in the channel
-            APP.pubnub.history({
-                channel: appDataChannel.channelId,
-                reverse: true,
-                callback: function(messages) {
-                    messages = messages[0];
-                    messages = messages || [];
-                    for (var i = 0; i < messages.length; i++) {
-                        appDataChannel.channelRead(messages[i]);
-                    }
-
+        var timeStamp = ggTime.toPubNubTime(ggTime.lastWeek());
+        // Get any messages in the channel
+        APP.pubnub.history({
+            channel: appDataChannel.channelId,
+            start: appDataChannel.lastAccess,
+            reverse: true,
+            callback: function(messages) {
+                messages = messages[0];
+                messages = messages || [];
+                for (var i = 0; i < messages.length; i++) {
+                    appDataChannel.channelRead(messages[i]);
                 }
-            });
-        } else {
-            // Get any messages in the channel
-            APP.pubnub.history({
-                channel: appDataChannel.channelId,
-                start: appDataChannel.lastAccess,
-                reverse: true,
-                callback: function(messages) {
-                    messages = messages[0];
-                    messages = messages || [];
-                    for (var i = 0; i < messages.length; i++) {
-                        appDataChannel.channelRead(messages[i]);
-                    }
 
-                }
-            });
-        }
+            }
+        });
 
         appDataChannel.updateTimeStamp();
     },
@@ -119,7 +114,29 @@ var appDataChannel = {
                 updateParseObject('contacts', 'uuid', contact.uuid, 'publicKey', m.publicKey);
             } break;
 
+            //  { type: 'channelInvite',  channelId: <channelUUID>, ownerID: <ownerUUID>,  ownerName: <text>, channelName: <text>, channelDescription: <text>}
+            case 'groupInvite' : {
+                userDataChannel.processGroupInvite( m.ownerName,  m.channelId, m.channelName);
+            } break;
 
+            //  { type: 'channelInvite',  channelId: <channelUUID>, owner: <ownerUUID>}
+            case 'groupDelete' : {
+                userDataChannel.processGroupDelete(m.ownerName, m.channelId, m.channelName);
+            } break;
+
+            case 'groupUpdate' : {
+                userDataChannel.processGroupUpdate(m.ownerName, m.channelId, m.channelName);
+            } break;
+
+            //  { type: 'packageOffer',  channelId: <channelUUID>, owner: <ownerUUID>, packageId: <packageUUID>, private: true|false, type: 'text'|'pdf'|'image'|'video', title: <text>, message: <text>}
+            case 'packageOffer' : {
+
+            } break;
+
+            //  { type: 'packageRequest',  channelId: <channelUUID>, owner: <ownerUUID>, packageId: <packageUUID>, private: true|false, message: <text>}
+            case 'packageRequest' : {
+
+            } break;
             //  { type: 'userBlock',  userID: <userUUID>,  phone: <phone>, email: <email>}
             case 'userBlock' : {
                 // Todo:  user has violated terms of service or is spamming.  notify all contacts
@@ -169,6 +186,173 @@ var appDataChannel = {
             success: appDataChannel.channelSuccess,
             error: appDataChannel.channelError
         });
+    },
+
+
+    groupChannelInvite : function (contactUUID, channelUUID, channelName, channelDescription, durationDays,  message) {
+        var msg = {};
+
+        msg.type = 'groupInvite';
+        msg.ownerId = userModel.currentUser.get('userUUID');
+        msg.ownerName = userModel.currentUser.get('name');
+        msg.channelId = channelUUID;
+        msg.channelName = channelName;
+        msg.channelDescription = channelDescription;
+        msg.durationDays = durationDays;
+        msg.message  = message;
+        msg.time = new Date().getTime();
+
+        var channel = appDataChannel.getContactAppChannel(contactUUID);
+
+        APP.pubnub.publish({
+            channel: channel,
+            message: msg,
+            callback: userDataChannel.publishCallback,
+            error: userDataChannel.errorCallback,
+        });
+    },
+
+    groupChannelDelete : function (contactUUID, channelUUID, channelName, message) {
+        var msg = {};
+
+        msg.type = 'groupDelete';
+        msg.ownerId = userModel.currentUser.get('userUUID');
+        msg.ownerName = userModel.currentUser.get('name');
+        msg.channelId = channelUUID;
+        msg.channelName = channelName;
+        msg.message  = message;
+        msg.time = new Date().getTime();
+
+        var channel = appDataChannel.getContactAppChannel(contactUUID);
+
+
+
+        APP.pubnub.publish({
+            channel: channel,
+            message: msg,
+            callback: userDataChannel.publishCallback,
+            error: userDataChannel.errorCallback
+
+        });
+    },
+
+    groupChannelUpdate : function (contactUUID, channelUUID, channelName, message) {
+        var msg = {};
+
+        msg.type = 'groupUpdate';
+        msg.ownerId = userModel.currentUser.get('userUUID');
+        msg.ownerName = userModel.currentUser.get('name');
+        msg.channelId = channelUUID;
+        msg.channelName = channelName;
+        msg.message  = message;
+        msg.time = new Date().getTime();
+
+        var channel = appDataChannel.getContactAppChannel(contactUUID);
+
+
+        APP.pubnub.publish({
+            channel: channel,
+            message: msg,
+            callback: userDataChannel.publishCallback,
+            error: userDataChannel.errorCallback
+
+        });
+    },
+
+    /* // This could be an initial request or a follow up to delete current channel
+     // and create a new one -- effectively orphaning / deleting the data in the channel
+     processPrivateInvite: function (ownerId, ownerPublicKey, channelId, message) {
+     // Can be only one private channel per user -- need to lookup channel by ownerId
+     var privateChannel = channelModel.findPrivateChannel(ownerId);
+     var deleteFlag = false;
+
+     // The private channel requester needs to be in the user's contact list...
+     var contact = contactModel.findContact(ownerId);
+
+     //mobileNotify("Private Chat Request from " + contact.get('name') + '\n ' + message);
+
+
+     if (privateChannel !== undefined) {
+     // Theres already a private channel for this user -- need to delete it
+     if (privateChannel.channelId === channelId) {
+     // Invite is trying to create a channel with same channelId -- just ignore this request
+     mobileNotify("Private Chat Request from " + contact.get('name'));
+     return;
+     }
+     deleteFlag = true;
+     channelModel.deleteChannel(privateChannel.channelId, true);
+     //deleteParseObject('channels', 'channelId', privateChannel.channelId);
+     }
+
+
+     if (contact !== undefined) {
+     var contactAlias = contact.get('alias');
+     channelModel.addPrivateChannel(ownerId, ownerPublicKey, contactAlias, channelId);
+     if (deleteFlag) {
+     mobileNotify("Updated Private Chat with " + contactAlias);
+     } else {
+     notificationModel.addNewPrivateChatNotification(channelId, "Private: " + contactAlias);
+     }
+
+     //mobileNotify("Created Private Chat with " + contactAlias);
+
+     } else {
+     mobileNotify("Null contact in processPrivateInvite!!");
+     }
+
+
+
+     },
+
+     processPrivateDelete: function (ownerId, channelId, memberId,  message) {
+     var channel = channelModel.findChannelModel(channelId),
+     privateChannel = channelModel.findPrivateChannel(ownerId);
+     var contact = contactModel.findContact(ownerId);
+
+     if (channel === undefined) {
+     // mobileNotify("Private Chat Delete Request from " + contact.get('name'));
+     notificationModel.deletePrivateChatNotification(channelId,"Private Chat: " + contact.alias);
+     channelModel.deleteChannel(channel);
+     }
+
+     },
+
+     */
+
+    processGroupInvite: function (ownerName, channelId, channelName, channelDescription, durationDays, message) {
+        // Todo:  Does channel exist?  If not create,  if so notify user of request
+        var channel = channelModel.findChannelModel(channelId);
+
+        if (channel === undefined) {
+            mobileNotify("Chat invite from  " + ownerName + ' " ' + channelName + '"');
+            notificationModel.addNewChatNotification(channelId, channelName, channelDescription);
+        }
+
+        // Per discussion with ray -- sync all parse channels to have only entry point to sync member channels
+        channelModel.syncParseChannels();
+
+
+
+    },
+
+    processGroupDelete: function (ownerName, channelId, channelName) {
+        // Todo:  Does channel exist?  If not do nothing,  if so delete the channel
+        var channel = channelModel.findChannelModel(channelId);
+        if (channel === undefined) {
+            // Todo: create a channelMember object for this user
+            mobileNotify('Owner has deleted Chat: "' + channelName + '"');
+            channelModel.deleteChannel(channel);
+        }
+
+    },
+
+    processGroupUpdate: function (ownerName, channelId, channelName) {
+
+        var channel = channelModel.findChannelModel(channelId);
+        if (channel !== undefined) {
+
+        }
+
     },
 
     channelConnect: function () {

@@ -69,9 +69,8 @@ var channelsView = {
     },
 
     onShow : function(e) {
-        channelModel.syncParseChannels(function () {
-            ux.checkEmptyUIState(channelModel.channelsDS, "#channels");
-        });
+
+        ux.checkEmptyUIState(channelModel.channelsDS, "#channels");
     	//scroll up search 
     	ux.scrollUpSearch(e);
         // set action button
@@ -196,10 +195,13 @@ var addChannelView = {
     },
 
     addChatStep1: function(e){
+
+        // This chat (channel name) is unique for this user
         $("#chat-title-setup").velocity("slideUp", {duration: 300});
         $("#addChat-step2").velocity("fadeOut", {duration: 200});
-        $("#addChat-step1").velocity("fadeIn", {duration: 200, delay:200});
+        $("#addChat-step1").velocity("fadeIn", {duration: 200, delay: 200});
         //$("#addChat-createBtn").velocity("slideUp", {display: "none", duration: 300});
+
     },
 
 
@@ -339,13 +341,17 @@ var editChannelView = {
 
         //Send Invite messages to users added to channel
         for (var ma = 0; ma < currentChannelModel.membersAdded.length; ma++) {
-            userDataChannel.groupChannelInvite(currentChannelModel.membersAdded[ma].contactUUID, channelId,  currentChannelModel.currentChannel.name, "You've been invited to " + currentChannelModel.currentChannel.name);
+            appDataChannel.groupChannelInvite(currentChannelModel.membersAdded[ma].contactUUID, channelId,  currentChannelModel.currentChannel.name, "You've been invited to " + currentChannelModel.currentChannel.name);
         }
 
         
         //Send Delete messages to users deleted from the channel
         for (var md = 0; md < currentChannelModel.membersDeleted.length; md++) {
-            userDataChannel.groupChannelDelete(currentChannelModel.membersDeleted[md].contactUUID, channelId, currentChannelModel.currentChannel.name + "has been deleted.");
+            appDataChannel.groupChannelDelete(currentChannelModel.membersDeleted[md].contactUUID, channelId, currentChannelModel.currentChannel.name + "has been deleted.");
+        }
+
+        for (var m=0; m< memberArray.length; m++) {
+            //Todo: don -- add channel update messages for other users.
         }
 		
         updateParseObject('channels', 'channelId', channelId, 'members', memberArray);
@@ -554,13 +560,6 @@ var channelView = {
         }
     }),
 
-    membersPresentDS : new kendo.data.DataSource({  // this is the list of members present in this chat
-        sort: {
-            field: "name",
-            dir: "asc"
-        }
-    }),
-
     _timeStampUpdateInterval: 1000 * 60 * 5, // update every 5 minutes...
     _channel : null,
     _channelId : null,
@@ -607,8 +606,7 @@ var channelView = {
     // Initialize the channel specific view data sources.
     initDataSources : function () {
         channelView.messagesDS.data([]);
-        channelView.membersPresentDS.data([]);
-        currentChannelModel.membersDS.data([]);
+
     },
 
     onShow : function (e) {
@@ -801,13 +799,13 @@ var channelView = {
             contact.alias = 'unknown';
             contact.name = 'Unknown User';
             contact.photoUrl = 'images/ghost-blue.svg';
+        } else {
+            contact.uuid = data.userUUID;
+            contact.alias = data.alias;
+            contact.name = data.name;
+            contact.photoUrl = data.photo;
         }
-
-        contact.uuid = data.userUUID;
-        contact.alias = data.alias;
-        contact.name = data.name;
-        contact.photoUrl = data.photo;
-
+        
         return(contact);
     },
 
@@ -891,7 +889,7 @@ var channelView = {
     },
 
     findChatMember: function (contactUUID) {
-        var dataSource = channelView.membersPresentDS;
+        var dataSource = currentChannelModel.membersDS;
         dataSource.filter( { field: "contactUUID", operator: "eq", value: contactUUID });
         var view = dataSource.view();
         var contact = view[0];
@@ -906,27 +904,19 @@ var channelView = {
     },
 
     setPresence: function (userId, isPresent) {
-        var contact = contactModel.findContact(userId);
-        var member = channelView.findChatMember(userId);
-
-        if (isPresent ) {
-            // this user is now present
-            if (member === undefined)   // If they're not already in the presence list then add them
-                channelView.membersPresentDS.add(contact);
-
-        } else {
-            // this user has left the chat
-            if (member !== undefined)
-                channelView.membersPresentDS.remove(contact);
-
+        // Don't set presence for the current user -- they already know they're in the channel
+        if (userId === userModel.currentUser.userUUID) {
+            return;
         }
+
+        //var member = currentChannelModel.memberList[userId];
+       // contact.isPresent = isPresent;
+        currentChannelModel.setMemberPresence(userId, isPresent);
     },
 
     updatePresence : function (members, occupancyCount) {
 
         $('#occupancyCount').text(occupancyCount + 1);
-
-        channelView.membersPresentDS.data([]);
 
         for (var i=0; i<members.length; i++) {
             var userId = members.username;
@@ -1284,19 +1274,20 @@ var channelPresence = {
     _channelModel : null,
 
     onInit: function (e) {
-        currentChannelModel.membersPresentDS.data([]);
         $("#channelPresence-listview").kendoMobileListView({
-            dataSource: currentChannelModel.membersPresentDS,
-            template: $("#memberTemplate").html(),
-            filterable: {
+            dataSource: currentChannelModel.membersDS,
+            template: $("#chatMemberTemplate").html(),
+            autobind: false,
+           /* filterable: {
                 field: "name",
                 operator: "startswith",
                 placeholder: "Search Members..."
-            },
+            },*/
             click: function (e) {
                 // Click to potential member list -- add this member to channel
                 var thisMember = e.dataItem;
-                contactActionView.openModal(thisMember.uuid);
+                if (thisMember !== undefined && thisMember.contactId !== null)
+                    contactActionView.openModal(thisMember.contactId);
 
             }
 
@@ -1305,7 +1296,9 @@ var channelPresence = {
 
     onShow: function (e) {
 
-        var channelTitle = currentChannelModel.currentChannel.get('name');
+        currentChannelModel.buildMembersDS();
+
+       /// var channelTitle = currentChannelModel.currentChannel.get('name');
 
        // $('#channelPresenceTitle').text(channelTitle + ' Members');
 

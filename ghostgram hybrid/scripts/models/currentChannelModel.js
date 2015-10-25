@@ -40,12 +40,6 @@ var currentChannelModel = {
         }
     }),
 
-    membersPresentDS: new kendo.data.DataSource({
-        sort: {
-            field: "name",
-            dir: "asc"
-        }
-    }),
 
     messagesDS: new kendo.data.DataSource({
         sort: {
@@ -57,8 +51,8 @@ var currentChannelModel = {
 
     initDataSources : function () {
         currentChannelModel.memberList = [];
-        currentChannelModel.membersPresentDS.data([]);
         currentChannelModel.messagesDS.data([]);
+        currentChannelModel.membersDS.data([]);
     },
 
     setCurrentChannel : function (channelId) {
@@ -73,17 +67,34 @@ var currentChannelModel = {
         if (channel !== undefined) {
             currentChannelModel.currentChannel = channel;
             currentChannelModel.channelId = channelId;
-            if (channel.isOwner) {
+
+            currentChannelModel.buildMemberList();
+
+            if (!channel.isOwner) {
                 currentChannelModel.syncChannelMembers(function (members) {
+                    mobileNotify("Synced Member List...");
                     currentChannelModel.currentChannel.set('members', members);
+                    currentChannelModel.buildMemberList();
                 });
             }
             return(channel);
          } else {
             mobileNotify("CurrentChat :  Couldn't find Chat!!");
-            return(null);
+            return (null);
         }
+    },
 
+
+    buildMembersDS: function () {
+        var members = currentChannelModel.currentChannel.get('members'), length = members.length;
+
+        currentChannelModel.membersDS.data([]);
+
+        for (var i=0; i< length; i++) {
+            if (members[i] !== userModel.currentUser.userUUID) {
+                currentChannelModel.membersDS.add(currentChannelModel.memberList[members[i]]);
+            }
+        }
 
     },
 
@@ -119,7 +130,9 @@ var currentChannelModel = {
                 contact.publicKey = null;
 
                 currentChannelModel.memberList[guid] = contact;
+                currentChannelModel.membersDS.add(contact);
                 addContactView.addChatContact(guid, contact.name, contact.alias);
+                mobileNotify("Created New Contact for: " + contact.name);
             }
 
         })
@@ -127,11 +140,15 @@ var currentChannelModel = {
     },
 
     // Build a member list for this channel
-    buildMemberList : function (callback) {
+    buildMemberList : function () {
 
+        currentChannelModel.memberList = [];
         var contactArray = currentChannelModel.currentChannel.get('members');
 
-        var contactInfoArray = currentChannelModel.memberList, userId = userModel.currentUser.userUUID;
+        if (contactArray === undefined || contactArray === null)
+            return;
+
+        var userId = userModel.currentUser.userUUID;
 
         for (var i=0; i< contactArray.length; i++) {
             var contact = {};
@@ -139,12 +156,13 @@ var currentChannelModel = {
             if (contactArray[i] === userId) {
                 contact.isContact = false;
                 contact.uuid = userId;
+                contact.contactId = null;
                 contact.alias = userModel.currentUser.alias;
                 contact.name = userModel.currentUser.name;
-                contact.photoUrl = userModel.currentUser.photo;
+                contact.photo = userModel.currentUser.photo;
                 contact.publicKey = userModel.currentUser.publicKey;
                 contact.isPresent = true;
-                contactInfoArray[contact.uuid] = contact;
+                currentChannelModel.memberList[contact.uuid] = contact;
                 // this is our user.
             } else {
                 var thisContact = contactModel.findContact(contactArray[i]);
@@ -153,17 +171,28 @@ var currentChannelModel = {
                 } else {
                     contact.isContact = true;
                     contact.uuid = contactArray[i];
+                    contact.contactId = thisContact.uuid;
                     contact.alias = thisContact.alias;
                     contact.name = thisContact.name;
-                    contact.photoUrl = thisContact.photo;
+                    contact.photo = thisContact.photo;
                     contact.publicKey = thisContact.publicKey;
                     contact.isPresent = false;
-                    contactInfoArray[contact.uuid] = contact;
+                    currentChannelModel.memberList[contact.uuid] = contact;
+                    currentChannelModel.membersDS.add(contact);
                 }
             }
         }
+    },
 
-        return (contactInfoArray)
+    setMemberPresence : function (memberId, isPresent) {
+
+        var dataSource = currentChannelModel.membersDS;
+        dataSource.filter( { field: "uuid", operator: "eq", value: memberId });
+        var view = dataSource.view();
+        var contact = view[0].items[0];
+        dataSource.filter([]);
+
+        contact.set('isPresent', isPresent);
 
     },
 

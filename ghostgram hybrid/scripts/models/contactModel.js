@@ -204,20 +204,26 @@ var contactModel = {
 
     fetch : function () {
         var ContactModel = Parse.Object.extend("contacts");
-        var ContactCollection = Parse.Collection.extend({
-            model: ContactModel
-        });
+        var query = new Parse.Query(ContactModel);
 
-        var contacts = new ContactCollection();
-
-        contacts.fetch({
+        query.find({
             success: function(collection) {
                 var models = [];
-                for (var i = 0; i < collection.models.length; i++) {
-                    var model = collection.models[i];
+                for (var i = 0; i < collection.length; i++) {
+                    var model = collection[i];
                    // Set the photo to identicon
                     var url = contactModel.createIdenticon(model.get('uuid'));
-                    model.set('photo', url);
+
+                    model.set('identicon', url);
+                    if ( model.attributes.photo !== null || model.attributes.photo !== '') {
+                        model.set('photo', url);
+                    }
+
+                    //Push to the ownerUUID to legacy contacts...
+                    if (model.get('ownerUUID') === undefined) {
+                        model.set('ownerUUID', userModel.currentUser.userUUID);
+                        model.save();
+                    }
 
                     models.push(model.attributes);
                 }
@@ -231,11 +237,9 @@ var contactModel = {
 
                 contactModel.updateContactListStatus();
 
-
-
                 deviceModel.isParseSyncComplete();
             },
-            error: function(collection, error) {
+            error: function(error) {
                 handleParseError(error);
             }
         });
@@ -244,7 +248,9 @@ var contactModel = {
 
     // Build an identity list for contacts indexed by contactUUID
     buildContactList : function () {
-        var array = contactModel.contactListDS.data();
+        var array = contactModel.contactsDS.data();
+
+        contactModel.contactList = [];
 
         for (var i=0; i<array.length; i++) {
             var contact = array[i];
@@ -364,7 +370,27 @@ var contactModel = {
         return(contact);
     },
 
-    // Get a full contact status update, including phone and email.
+    requestConnect : function (contactId) {
+
+    },
+
+    acceptConnect : function (contactId) {
+
+    },
+
+    declineConnect : function (contactId) {
+
+    },
+
+    blockContact : function (contactId) {
+
+    },
+
+    unblockContact : function (contactId) {
+
+    },
+
+    // Get a full contact details update, including phone and email.
     updateContactDetails : function (contactId, callback) {
         // Get this contacts record...
         var thisContact = contactModel.findContactByUUID(contactId);
@@ -378,12 +404,12 @@ var contactModel = {
                     var current = thisContact;
 
                     current.set('contactUUID', contact.userUUID);
-                    current.set('contactPhone', contact.phone);
+                    current.set('contactPhone', null);
                     current.set('phoneVerified', contact.phoneVerified);
                     if (contact.phoneVerified) {
                         current.set('category', 'member');
                     }
-                    current.set('contactEmail', contact.email);
+                    current.set('contactEmail', null);
                     current.set('emailValidated', contact.emailVerified);
                     current.set('contactPhoto', contact.photo);
                     current.set('isAvailable', contact.isAvailable);

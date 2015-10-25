@@ -46,31 +46,29 @@ var channelModel = {
 
     fetch : function () {
         var Channel = Parse.Object.extend("channels");
-        var ChannelCollection = Parse.Collection.extend({
-            model: Channel
-        });
+        var query = new Parse.Query(Channel);
 
-        var channels = new ChannelCollection();
-
-        channels.fetch({
+        query.find({
             success: function(collection) {
                 var models = new Array();
-                for (var i = 0; i < collection.models.length; i++) {
+                for (var i = 0; i < collection.length; i++) {
+                    var object = collection[i];
+                    var data = object.attributes;
                     // Todo: check status of members
-                    if (collection.models[i].attributes.isOwner) {
-                        if (collection.models[i].attributes.ownerId === undefined) {
-                            collection.models[i].attributes.ownerId = userModel.currentUser.userUUID;
+                    if (data.isOwner) {
+                        if (data.ownerId === undefined) {
+                            object.set('ownerId', userModel.currentUser.userUUID);
+                            object.save();
                         }
                     }
 
-                    models.push(collection.models[i].attributes);
+                    models.push(object.attributes);
                 }
                 channelModel.channelsDS.data(models);
-                channelModel.syncParseChannels();
                 deviceModel.setAppState('hasChannels', true);
                 deviceModel.isParseSyncComplete();
             },
-            error: function(collection, error) {
+            error: function(error) {
                 handleParseError(error);
             }
         });
@@ -152,7 +150,9 @@ var channelModel = {
 
 
     syncParseChannels : function (callback) {
-       if (userModel.currentUser.phoneVerified)  {
+        // Only sync channels for users with atleast email or phone validated
+
+       if (userModel.currentUser.phoneVerified || userModel.currentUser.emailValidated)  {
            var uuid = userModel.currentUser.userUUID;
 
            getUserChannels(uuid, function (result) {
@@ -171,11 +171,11 @@ var channelModel = {
                                 } else {
 
                                     channelModel.addChannel(channel.name, channel.description, false, channel.durationDays,
-                                        channel.channelId, '', '');
-
+                                        channel.channelId, channel.ownerUUID, null, null,false);
+                                    channelModel.updateChannelMembers(channel.channelId, channel.members);
                                 }
                             }
-                            channelModel.updateChannelMembers(channel.channelId, channel.members);
+
                         }
 
                    }
@@ -187,12 +187,31 @@ var channelModel = {
        }
     },
 
-    // Update channel membership (for non-owner members) on local phone and parse
+    // Update members and other channel Member data for this channel
+    updateChannel : function (channelId) {
+
+        getChannelMembers(channelId,  function (result) {
+            if (result.found) {
+                var channel = channelModel.findChannelModel(channelId);
+                var channelUpdate = result.channel;
+
+                channel.set("members", channelUpdate.members);
+                channelModel.confirmChannelMembers(channelUpdate.members);
+                channel.set("name", channelUpdate.name);
+                channel.set("description", channelUpdate.description);
+
+            }
+        });
+
+    },
+
+    // Update channel membership (for non-owner members)
     updateChannelMembers : function (channelId, members) {
         var channel = channelModel.findChannelModel(channelId);
 
         if (channel !== null) {
             channel.set('members', members);
+            channelModel.confirmChannelMembers(members);
             updateParseObject('channels', 'channelId', channelId, 'members', members );
         }
 
@@ -204,13 +223,15 @@ var channelModel = {
             return;
         }
 
+        var userId = userModel.currentUser.userUUID;
         for (var i=0; i<members.length; i++) {
-            var contact = contactModel.inContactList(members[i]);
+            if (members[i] !== userId) {
+                var contact = contactModel.inContactList(members[i]);
+                if (contact === undefined) {
 
-            if (contact === undefined) {
+                    currentChannelModel.createChatContact(members[i]);
 
-                currentChannelModel.createChatContact(members[i]);
-
+                }
             }
         }
     },
@@ -368,7 +389,7 @@ var channelModel = {
 
 
         // If there's a placeId passed in, need to create a place channel / chat
-        if (placeId !== undefined) {
+        if (placeId !== undefined && placeId !== null) {
             channel.set('isPlace', true);
             channel.set('isPrivatePlace', isPrivatePlace);
             channel.set('placeUUID', placeId);
@@ -395,6 +416,17 @@ var channelModel = {
         channel.set("channelId", channelId);
 
         channel.set("ownerId", ownerUUID);
+        if (ownerName === undefined || ownerName === null) {
+            if (ownerID === userModel.currentUser.userUUID) {
+                ownerName = userModel.currentUser.userUUID;
+            } else {
+                var contact = contactModel.findContactModel(ownerUUID);
+                if (contact !== undefined) {
+                    ownerName = contact.name;
+                }
+            }
+
+        }
         channel.set("ownerName", ownerName);
         // Channel owner can access and edit members...
         if (isOwner) {
@@ -404,6 +436,7 @@ var channelModel = {
         } else {
             // Channel members have no access to members...
             channel.set("isOwner", false);
+            channel.set("members", [ownerUUID]);
 
         }
 
@@ -449,7 +482,7 @@ var channelModel = {
                         var members = channel.members;
                         // Skip the first member as it's the owner
                         for (var i = 1; i < channel.members.length; i++) {
-                            userDataChannel.groupChannelDelete(members[i],channelId, 'Chat "' + channel.name + 'has been deleted' );
+                            appDataChannel.groupChannelDelete(members[i],channelId, 'Chat "' + channel.name + 'has been deleted' );
                         }
                     }
                 }

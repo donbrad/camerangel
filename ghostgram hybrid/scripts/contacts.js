@@ -467,11 +467,12 @@ function onInitContacts(e) {
 				// If we know the contacts uuid enable the full feature set
 				
 				openContactActions();
-				if (contact.contactUUID !== undefined && contact.contactUUID !== null){
+                // Moving this code to contactActions view.
+				/*if (contact.contactUUID !== undefined && contact.contactUUID !== null){
 					$("#contactActionBtns > li:first-child").show();
 				} else {
 					$("#contactActionBtns > li:first-child").hide();
-				}
+				}*/
 
 			}
              

@@ -96,12 +96,12 @@ var groupChannel = {
         else if (msg.action === "timeout" || msg.action === "leave") {
             mobileNotify(groupChannel.users[msg.uuid].name + " has left ...");
             delete groupChannel.users[msg.uuid];
-            groupChannel.presenceChange(msg.uuid, msg.state.phone, false);
+            groupChannel.presenceChange(msg.uuid, "18885551212", false);
         }
     },
 
     presenceChange: function (userId, phone,  isPresent) {
-        channelView.setPresence(userId, phone, isPresent);
+        channelView.setPresence(userId, isPresent);
     },
 
     hereNowHandler : function (msg) {

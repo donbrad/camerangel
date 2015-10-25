@@ -840,6 +840,84 @@
 
 </div>
 
+<!-- contact action -->
+<div data-role="modalview" id="modalview-contactActions" data-model="contactActionView._activeContact"  style="width: 90%; min-height:280px; display: none;">
+	<div class="modal-top">
+		<a data-role="button" class="modal-close" data-click="contactActionView.closeModal"><img src="images/close.svg"/></a>
+
+		<img class="circle-img-lg" id="contactProfileImg" />
+		<img width="20" src="images/status-away.svg" class="statusContactCard-icon" id="contactStatusImg"/>
+		<h3 class="preMotionUp">
+
+			<span class="primaryName" id="contactPrimaryName"></span>
+			<span class="hidden" id="currentContactVerified">
+				<img src="images/icon-verified-dark.svg" class="user-status-icon" />
+			</span>
+			<span class="secondName" id="contactSecondName"></span>
+		</h3>
+		<p class="preMotionUp">
+			<span class="contactStatusMessage" data-bind="text: statusMessage"></span>
+
+		</p>
+		<p class="preMotionUp">
+			<a data-role="button" id="contactCurrentPlace" class="btnClear-light-sm"></a>
+
+		</p>
+	</div>
+	<div class="modal-bottom">
+		<ul class="list-inline hasMotion" id="contactActionBtns" >
+			<li>
+				<a class="btnClear" data-role="button" data-click="privateChat" >
+					<img src="images/icon-ghostgram.svg" /> Private Chat
+				</a>
+			</li>
+			<li>
+				<a class="btnClear" data-role="button" data-click="contactActionView.ghostEmail">
+					<img src="images/icon-ghostMail.svg" /> email ghostgram</a>
+			</li>
+			<li>
+				<a class="btnClear" data-role="button" data-click="contactCallPhone">
+					<img src="images/icon-phone.svg" /> Phone Call
+				</a>
+			</li>
+			<li>
+				<a class="btnClear" data-role="button" data-click="contactSendSMS">
+					<img src="images/icon-sms.svg" /> Send SMS
+				</a>
+			</li>
+		</ul>
+		<div id="contactActionConnect">
+			<p> <strong><span data-bind="text: name "></span> </strong> is a potential new contact.  Someone you know has invited both of you to a ghostgrams chat, so you may have already chatted. Once you connect, you'll see each others status and be able to have private chats.</p>
+			<ul class="list-inline hasMotion"  >
+				<li >
+					<a class="btnClear" data-role="button" data-click="contactRequestConnect" >
+						<img src="images/contact-invite.svg" /> Ask to Connect
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div id="contactActionAccept">
+			<p> <strong><span data-bind="text: name "></span></strong> has asked to connect with you.  If you <strong> Accept</strong> you will both have each other as contacts and chat privately.
+				If you <strong>Decline</strong>, they will be blocked from connecting with you.  You'll still see them in the Chats that you share but won't be able chat privately.
+			</p>
+
+			<ul class="list-inline hasMotion"  >
+				<li >
+					<a class="btnClear" data-role="button" data-click="contactRequestAccept" >
+						<img src="images/icon-contact.svg" /> Accept Connection
+					</a>
+				</li>
+				<li >
+					<a class="btnClear" data-role="button" data-click="contactRequestDecline" >
+						<img src="images/decline-icon.svg" /> Decline Connection
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+
 <!-- Testing modal -->
 <div data-role="modalview" id="testing" style="width: 90%; display:none;" class="appearance">
 	<div class="modalview-content">

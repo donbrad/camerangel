@@ -18,16 +18,11 @@ var contactsView = {
     onInit : function (e) {
         _preventDefault(e);
 
-/*
-        $('#contactsSearchQuery').clearSearch({
-	        callback: function() {
-	        	// todo - wire search
-	        }
-	    });*/
+
 
         contactModel.deviceQueryActive = false;
 
-        var dataSource = contactModel.contactListDS;
+
 
        /* // Activate clearsearch and zero the filter when it's called
         $('#contactSearchInput').clearSearch({
@@ -526,8 +521,8 @@ var addContactView = {
         contact.setACL(userModel.parseACL);
         contact.set("name", name );
         contact.set("alias", alias);
-        contact.set('category', "chat");
-        contact.set("address", address);
+        contact.set('category', "unknown");
+        contact.set("address", null);
         contact.set("group", null);
         contact.set("priority", 0);
         contact.set("isFavorite", false);
@@ -535,13 +530,14 @@ var addContactView = {
         contact.set('contactUUID', null);
         contact.set('contactPhone', null);
         contact.set('contactEmail', null);
+        contact.set('ownerUUID', userModel.currentUser.userUUID);
 
         contact.save(null, {
             success: function(contact) {
                 // Execute any logic that should take place after the object is saved.;
                 //var photo = contact.get('photo');
                 var url = contactModel.createIdenticon(guid);
-                contact.attributes.photo = url;
+                contact.set('photo',url);
                 contactModel.contactsDS.add(contact.attributes);
             },
             error: function(contact, error) {
@@ -579,6 +575,7 @@ var addContactView = {
         contact.set('contactUUID', null);
         contact.set('contactPhone', null);
         contact.set('contactEmail', null);
+        contact.set('ownerUUID', userModel.currentUser.userUUID);
         //phone = phone.replace(/\+[0-9]{1-2}/,'');
         phone = phone.replace(/\D+/g, "");
         if (phone[0] !== '1')
@@ -631,6 +628,8 @@ var addContactView = {
                 contact.set("phoneVerified", false);
                 contact.set('publicKey',  null);
                 contact.set("contactUUID", null);
+                contact.set("contactPhone", null);
+                contact.set("contactEmail", null);
             }
 
           contact.save(null, {
@@ -639,7 +638,11 @@ var addContactView = {
                   mobileNotify('Added contact : ' + contact.get('name'));
                   //var photo = contact.get('photo');
                   var url = contactModel.createIdenticon(guid);
-                  contact.attributes.photo = url;
+                  contact.set('identicon',url);
+                  if ( contact.attributes.photo !== null || contact.attributes.photo !== '') {
+                    contact.set('photo',url);;
+                  }
+
                   contactModel.contactsDS.add(contact.attributes);
                   APP.kendo.navigate('#contacts');
               },
@@ -711,7 +714,7 @@ var editContactView = {
             editContactView._activeContact.set("email", contact.email);
             editContactView._activeContact.set("group", contact.group);
             editContactView._activeContact.set("photo", contact.photo);
-            editContactView._activeContact.set("address", contact.address);
+            editContactView._activeContact.set("address", contact.address);;
           //  editContactView._activeContact.bind('change' , editContactView.syncActiveContact);
         }
     },
@@ -785,7 +788,7 @@ var editContactView = {
        _preventDefault(e);
 
        // contactModel.currentContact.unbind('change' , syncCurrentContact);
-        contactsView.updateContactListDS();
+       // contactsView.updateContactListDS();
         APP.kendo.navigate("#contacts");
         // reset UI
         $("#contactEditList").velocity("fadeIn");
@@ -880,33 +883,60 @@ var contactActionView = {
     	
     },
 
+    refreshUX : function (contact) {
+
+        if (contact.category === 'unknown') {
+            $("#contactActionBtns").addClass('hidden');
+            $("#contactActionConnect").removeClass('hidden');
+            $("#contactActionAccept").addClass('hidden');
+        } else {
+            $("#contactActionBtns").removeClass('hidden');
+            $("#contactActionConnect").addClass('hidden');
+            $("#contactActionAccept").addClass('hidden');
+            if (contact.category === 'member'){
+                $("#contactActionBtns > li:first-child").show();
+            } else {
+                $("#contactActionBtns > li:first-child").hide();
+            }
+        }
+    },
+
     openModal : function (contactId) {
 
+        $("#contactActionBtns").removeClass('hidden');
         var thisContact = contactModel.findContactByUUID(contactId);
-        contactActionView.setContact(contactId);
+        contactActionView.setContact(thisContact);
 
+        contactActionView.refreshUX(thisContact);
         $(".statusContactCard-icon").attr("src", "images/status-away.svg");
 
         //Show the status update div
         if (thisContact.contactUUID !== undefined && thisContact.contactUUID !== null) {
             contactModel.getContactStatusObject(thisContact.contactUUID, function (user) {
-                var contactIsAvailable = user.get('isAvailable');
-                contactActionView._activeContact.set('statusMessage', user.get('statusMessage'));
-                contactActionView._activeContact.set('currentPlace', user.get('currentPlace'));
-                contactActionView._activeContact.set('currentPlaceUUID', user.get('currentPlaceUUID'));
-                contactActionView._activeContact.set('isAvailable', contactIsAvailable);
-                // set available
-                if(contactIsAvailable){
-                    $(".statusContactCard-icon").attr("src", "images/status-available.svg");
+                if (user !== null) {
+                    var contactIsAvailable = user.get('isAvailable');
+                    contactActionView._activeContact.set('statusMessage', user.get('statusMessage'));
+                    contactActionView._activeContact.set('currentPlace', user.get('currentPlace'));
+                    contactActionView._activeContact.set('currentPlaceUUID', user.get('currentPlaceUUID'));
+                    contactActionView._activeContact.set('isAvailable', contactIsAvailable);
+                    // set available
+                    if(contactIsAvailable){
+                        $(".statusContactCard-icon").attr("src", "images/status-available.svg");
+                    }
+
+                    // Update the contactList object too
+                    var contactList = contactModel.findContactList(thisContact.contactUUID);
+                    contactList.set('statusMessage', user.get('statusMessage'));
+                    var contactPlace = user.get('currentPlace');
+                    contactList.set('currentPlace', contactPlace);
+                    contactList.set('currentPlaceUUID', user.get('currentPlaceUUID'));
+                    contactList.set('isAvailable', contactIsAvailable);
+
+                    // set current place
+                    if(contactPlace !== "" && contactPlace !== undefined){
+                        $("#contactCurrentPlace").text("@" + contactPlace);
+                    }
                 }
-
-                // Update the contactList object too
-                var contactList = contactModel.findContactList(thisContact.contactUUID);
-                contactList.set('statusMessage', user.get('statusMessage'));
-                contactList.set('currentPlace', user.get('currentPlace'));
-                contactList.set('currentPlaceUUID', user.get('currentPlaceUUID'));
-                contactList.set('isAvailable', contactIsAvailable);
-
             });
         }
 
@@ -921,15 +951,14 @@ var contactActionView = {
             var contactVerified = contact.phoneVerified;
 
             var contactIsAvailable = contact.isAvailable;
-            var contactPlace = contact.currentPlace;
 
            
             contactActionView._activeContact.set('name', contactName);
             contactActionView._activeContact.set('alias', contactAlias);
-            if (contact.contactPhoto !== undefined && contact.contactPhoto !== null) {
-                contactActionView._activeContact.set('photo', contact.contactPhoto);
-            } else {
+            if (contact.photo !== undefined && contact.photo !== null) {
                 contactActionView._activeContact.set('photo', contact.photo);
+            } else {
+                contactActionView._activeContact.set('photo', contact.identicon);
             }
 
        /*     contactActionView._activeContact.set('statusMessage', contact.statusMessage);
@@ -949,14 +978,13 @@ var contactActionView = {
 
             // set profile img
             $("#contactProfileImg").attr("src", contact.photo);
-            
-            // set current place
-            if(contactPlace !== "" && contactPlace !== undefined){
-            	$("#contactCurrentPlace").text("@" + contactPlace);
-            }
+
+            contactActionView.refreshUX(contact);
             
 
         });
+
+
 
 
         $("#modalview-contactActions").data("kendoMobileModalView").open();
@@ -995,16 +1023,26 @@ var contactActionView = {
 
     },
 
-    setContact : function (contactId) {
+    setContact : function (thisContact) {
 
-        contactActionView._activeContactId = contactId;
-        contactActionView._activeContact.set('name', '');
-        contactActionView._activeContact.set('alias', '');
-        contactActionView._activeContact.set('photo', '');
-        contactActionView._activeContact.set('statusMessage', '');
-        contactActionView._activeContact.set('currentPlace', '');
-        contactActionView._activeContact.set('isAvailable', false);
-        $("#currentContactVerified").addClass("hidden");
+        contactActionView._activeContactId = thisContact.uuid;
+        contactActionView._activeContact.set('name', thisContact.name);
+        contactActionView._activeContact.set('alias', thisContact.alias);
+        contactActionView._activeContact.set('photo', thisContact.photo);
+        contactActionView._activeContact.set('statusMessage', thisContact.statusMessage);
+        contactActionView._activeContact.set('currentPlace',thisContact.currentPlace);
+        contactActionView._activeContact.set('isAvailable', thisContact.isAvailable);
+        // set available
+        if(thisContact.isAvailable){
+            $(".statusContactCard-icon").attr("src", "images/status-available.svg");
+        }
+
+        if (thisContact.phoneVerified) {
+            $("#currentContactVerified").removeClass("hidden");
+        } else {
+            $("#currentContactVerified").addClass("hidden");
+        }
+
     }
 
 };
