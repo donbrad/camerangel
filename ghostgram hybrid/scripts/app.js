@@ -445,13 +445,13 @@
 
 		contactModel.init();
 
-		if (!deviceModel.state.introFetched) {
+	/*	if (!deviceModel.state.introFetched) {
 
 			notificationModel.parseFetch();
 
-		} else {
+		} else {*/
 			notificationModel.localStorageFetch();
-		}
+		/*}*/
 
 		userModel.initParse();
 
@@ -461,38 +461,6 @@
 
 		pruneNotifications();
 
-		/*APP.geoLocator.getCurrentPosition(function(position, error) {
-			if (error === null) {
-				APP.location.position = {
-					lat: position.coords.latitude,
-					lng: position.coords.longitude
-				};
-
-				// If last known position doesn't equal current position -- need to update and map to location.
-				if (APP.location.lastPosition.lat !== APP.location.position.lat || APP.location.lastPosition.lng !== APP.location.position.lng) {
-					// Update the last position
-					window.localStorage.setItem('ggLastPosition', JSON.stringify(APP.location.position));
-
-					// See if the new position matches an existing place
-					var places = placesView.matchLocationToUserPlace(APP.location.position.lat, APP.location.position.lng);
-					if (places.length === 0) {
-						// No matching places -- get a list of places that match the coord and prompt user to select one
-					} else if (places.length === 1) {
-						// Just 1 matching place so prompt the user to check in there
-					} else {
-						// Multiple place matches for this coord, prompt the user to select one.
-					}
-				}
-
-
-				reverseGeoCode(position.coords.latitude, position.coords.longitude);
-				mobileNotify("Located you at " + position.coords.latitude + " , " + position.coords.longitude);
-			} else {
-				mobileNotify("GeoLocator error : " + error);
-			}
-
-		});
-*/
 		// Uncomment to load all device contacts at initialization - major performance hit!!
 		//contactModel.importDeviceContacts();
 
@@ -510,7 +478,7 @@
 		if (window.navigator.simulator === true) {
 			deviceModel.appVersion = "0.1.9.8";
 		} else {
-			cordova.getAppVersion(function(version) {
+			cordova.getAppVersion.getVersionNumber(function(version) {
 				deviceModel.appVersion = version;
 			});
 
