@@ -65,7 +65,6 @@ var userModel = {
     initParse: function () {
        if (! Parse.Session.isCurrentSessionRevocable()) {
            mobileNotify("Please Login on this device");
-           homeSignout();
        }
 
         userModel.parseUser = Parse.User.current();
