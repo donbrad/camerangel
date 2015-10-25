@@ -63,7 +63,11 @@ var userModel = {
     },
 
     initParse: function () {
-        Parse.User.enableRevocableSession();
+       if (! Parse.Session.isCurrentSessionRevocable()) {
+           mobileNotify("Please Login on this device");
+           homeSignout();
+       }
+
         userModel.parseUser = Parse.User.current();
         userModel.device.udid = device.uuid;
         userModel.device.platform = device.platform;

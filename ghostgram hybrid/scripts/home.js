@@ -447,8 +447,7 @@ function _signOut() {
 
 
 function homeSignout (e) {
-	if (e !== undefined && e.preventDefault !== undefined)
-		e.preventDefault();
+	_preventDefault(e);
 
 	_signOut();
 
