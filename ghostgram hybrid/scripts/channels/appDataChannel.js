@@ -71,7 +71,6 @@ var appDataChannel = {
             }
         });
 
-
         appDataChannel.updateTimeStamp();
     },
 
