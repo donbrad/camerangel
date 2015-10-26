@@ -538,7 +538,7 @@ function homeSignin (e) {
 				notificationModel.deleteNotification('phoneVerified');
 			} else {
 				  mobileNotify("Please verify your phone number");
-              $("#modalview-verifyPhone").data("kendoMobileModalView").open();
+                 $("#modalview-verifyPhone").data("kendoMobileModalView").open();
 			}
             userModel.currentUser.set('emailValidated', userModel.parseUser.get('emailVerified'));
             userModel.parseACL = new Parse.ACL(userModel.parseUser);

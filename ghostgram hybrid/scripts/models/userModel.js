@@ -195,6 +195,10 @@ var userModel = {
 
     updatePrivateKey : function () {
         var privateKey = userModel.parseUser.get('privateKey'), key = userModel.parseUser.get('objectId');
+        if (privateKey === undefined || key === undefined) {
+            return;
+        }
+        
         if (privateKey.charAt(0) === "{") {
             var newPrivateKey  = GibberishAES.enc(privateKey, key);
             userModel.parseUser.set('privateKey', newPrivateKey);
