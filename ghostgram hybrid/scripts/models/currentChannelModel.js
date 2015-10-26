@@ -130,7 +130,7 @@ var currentChannelModel = {
                 contact.photo = url;
                 contact.publicKey = null;
 
-                currentChannelModel.memberList[guid] = contact;
+                currentChannelModel.memberList[contact.uuid] = contact;
                 currentChannelModel.membersDS.add(contact);
                 addContactView.addChatContact(guid, contact.name, contact.alias, contact.uuid);
                 mobileNotify("Created New Contact for: " + contact.name);
