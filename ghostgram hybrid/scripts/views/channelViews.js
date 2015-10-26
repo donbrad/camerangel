@@ -805,7 +805,7 @@ var channelView = {
             contact.name = data.name;
             contact.photoUrl = data.photo;
         }
-        
+
         return(contact);
     },
 
