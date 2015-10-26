@@ -246,6 +246,8 @@ var userModel = {
         // fetch contact models (objects) from parse.
         contactModel.fetch();
 
+        placesModel.fetch();
+
         photoModel.fetch();
 
         userStatus.init();

@@ -81,9 +81,9 @@ parseKendoDataSourceFactory.make = function (parseObjectName, schema, createLoca
 						// 
 						// Let's just remove that...
 						
-						if(newParseObject.attributes.ACL !== undefined) {
+						/*if(newParseObject.attributes.ACL !== undefined) {
 							delete newParseObject.attributes.ACL;
-						}
+						}*/
 
 						var newObject = newParseObject.attributes;
 						newObject.id = newParseObject.id;
