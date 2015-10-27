@@ -538,48 +538,55 @@ var addPlaceView = {
 
     addPlace : function (e) {
         _preventDefault(e);
+        var Place = Parse.Object.extend("places");
+        var placeParse = new Place();
 
-        var form = $("#addPlace-form").kendoValidator().data("kendoValidator");
-        // TODO Don - Check for place duplicates
 
-        // validate form
-	    if (form.validate()) {
+        // TODO Don - Check for place duplicates - Jordan - won't use kendo validator.
 
-	        var newPlace = placesModel.newPlace();
-	        var place =  addPlaceView._activePlace;
-	        var guid = uuid.v4();
+        var newPlace = placesModel.newPlace();
+        var place = addPlaceView._activePlace;
+        var guid = uuid.v4();
 
-	        var createChatFlag = $('#addPlaceCreateChat').is('checked');
+        var createChatFlag = $('#addPlaceCreateChat').is('checked');
 
-	        newPlace.set('uuid', guid);
-	        newPlace.set('category', place.category);
-	        newPlace.set('name', place.name);
-	        newPlace.set('venueName', place.venueName);
-	        newPlace.set('alias', place.alias);
-	        newPlace.set('googleId', place.googleId);
-	        newPlace.set('address', place.address);
-	        newPlace.set('lat', place.lat);
-	        newPlace.set('lng', place.lng);
-	        newPlace.set('type', place.type);
-	        newPlace.set('city', place.city);
-	        newPlace.set('state', place.state);
-	        newPlace.set('country', place.country);
-	        newPlace.set('zipcode', place.zipcode);
+        placeParse.set('uuid', guid);
+        placeParse.set('category', place.category);
+        placeParse.set('name', place.name);
+        placeParse.set('venueName', place.venueName);
+        placeParse.set('alias', place.alias);
+        placeParse.set('googleId', place.googleId);
+        placeParse.set('address', place.address);
+        placeParse.set('lat', place.lat);
+        placeParse.set('lng', place.lng);
+        placeParse.set('type', place.type);
+        placeParse.set('city', place.city);
+        placeParse.set('state', place.state);
+        placeParse.set('country', place.country);
+        placeParse.set('zipcode', place.zipcode);
 
-	        newPlace.set('isAvailable', place.isAvailable === "true");
-	        newPlace.set('isPrivate', place.isPrivate === "true");
-	        newPlace.set('hasPlaceChat', place.hasPlaceChat === "true");
+        placeParse.set('isAvailable', place.isAvailable === "true");
+        placeParse.set('isPrivate', place.isPrivate === "true");
+        placeParse.set('hasPlaceChat', createChatFlag);
 
-	        placesModel.placesDS.add(newPlace);
+        placeParse.save(null, {
+            success: function(place) {
+                // Execute any logic that should take place after the object is saved.
 
-	        placesModel.placesDS.sync();
+                placesModel.placesDS.add(place.attributes);
+                mobileNotify(place.name + " added to your Places...");
 
-	        mobileNotify(place.name + " added to your Places...");
+                addPlaceView.onDone();
 
-	        addPlaceView.onDone();
-    	}
+            },
+            error: function(place, error) {
+                // Execute any logic that should take place if the save fails.
+                // error is a Parse.Error with an error code and message.
+                handleParseError(error);
+            }
+        });
+
     }
-
 };
 
 /*
@@ -630,29 +637,35 @@ var editPlaceView = {
         }
     },
 
-    update: function(){
+    /*update: function(){
     	var placeName = $("#placeEdit-name").val();
     	var placeAlias = $("#placeEdit-alias").val();
     	var placeAddress = $("#placeEdit-address").val();
 
-    	// todo - Update any data changes
-    	
-    	var form = $("#placeEdit-form").kendoValidator().data("kendoValidator");
 
-	    if (form.validate()) {
-	        editPlaceView.onDone();
-	    }
 
-    },
+        editPlaceView.onDone();
+
+
+    },*/
 
     onHide : function (e) {
         //_preventDefault(e);  Cant use here -- prevents navigation
     },
 
+    isUniqueName : function () {
+        var place = placesModel.findPlaceByName()
+
+    },
+
     onDone: function (e) {
         _preventDefault(e);
 
+
         var model = editPlaceView._activePlaceModel, newModel = editPlaceView._activePlace;
+
+
+        editPlaceView._activeContact.unbind('change' , editContactView.validatePlace);
 
         model.set('name', newModel.name);
         model.set('alias', newModel.alias);
@@ -662,12 +675,21 @@ var editPlaceView = {
 
         mobileNotify("Updated " + newModel.name);
 
-        placesModel.placesDS.sync();
 
         var returnUrl = '#'+ editPlaceView._returnView;
 
         APP.kendo.navigate(returnUrl);
 
+    },
+
+    validatePlace: function (e) {
+        _preventDefault(e);
+
+        _preventDefault(e);
+
+        if (e.field === 'name') {
+           
+        }
     },
 
     setActivePlace : function (placeId) {
@@ -677,6 +699,7 @@ var editPlaceView = {
 
         editPlaceView._activePlaceModel = placeObj;
 
+        editPlaceView._activeContact.bind('change' , editContactView.validatePlace);
         editPlaceView._activePlace.set('name', placeObj.name);
         editPlaceView._activePlace.set('alias', placeObj.alias);
         editPlaceView._activePlace.set('address', placeObj.address);
@@ -685,6 +708,7 @@ var editPlaceView = {
         editPlaceView._activePlace.set('zipcode', placeObj.zipcode);
         editPlaceView._activePlace.set('isPrivate', placeObj.isPrivate);
         editPlaceView._activePlace.set('isAvailable', placeObj.isAvailable);
+        editPlaceView._activeContact.unbind('change' , editContactView.validatePlace);
 
     }
 

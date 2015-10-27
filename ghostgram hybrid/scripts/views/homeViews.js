@@ -399,12 +399,12 @@ var ghostEditView = {
         _preventDefault(e);
 
         var content = $('#ghostEmailEditor').data("kendoEditor").value();
-        var contactKey = contactModel.currentContact.get('publicKey'), email = contactModel.currentContact.get('email');
+       /* var contactKey = contactModel.currentContact.get('publicKey'), email = contactModel.currentContact.get('email');
         if (contactKey === null) {
             mobileNotify("Invalid Public Key for " + contactModel.currentContact.get('name'));
             return;
         }
-        var encryptContent = cryptico.encrypt(content, contactKey);
+        var encryptContent = cryptico.encrypt(content, contactKey);*/
         if (window.navigator.simulator === true){
             alert("Mail isn't supported in the emulator");
         } else {

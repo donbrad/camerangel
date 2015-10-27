@@ -123,6 +123,7 @@ var placesModel = {
     fetch : function () {
         var PlaceModel = Parse.Object.extend("places");
         var query = new Parse.Query(PlaceModel);
+        query.limit(256);
 
         query.find({
             success: function(collection) {
@@ -204,6 +205,18 @@ var placesModel = {
 
         var dataSource = placesModel.placesDS;
         dataSource.filter( { field: "uuid", operator: "eq", value: placeId });
+        var view = dataSource.view();
+        var place = view[0];
+        dataSource.filter([]);
+
+        return(place);
+
+    },
+
+    findPlaceByName : function (name) {
+
+        var dataSource = placesModel.placesDS;
+        dataSource.filter( { field: "name", operator: "eq", value: name });
         var view = dataSource.view();
         var place = view[0];
         dataSource.filter([]);
