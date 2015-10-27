@@ -711,7 +711,7 @@ var editPlaceView = {
 
         editPlaceView._activePlaceModel = placeObj;
 
-        editPlaceView._activeContact.bind('change' , editContactView.validatePlace);
+        editPlaceView._activePlace.unbind('change' , editContactView.validatePlace);
         editPlaceView._activePlace.set('placeId', placeId);
         editPlaceView._activePlace.set('name', placeObj.name);
         editPlaceView._activePlace.set('alias', placeObj.alias);
@@ -721,7 +721,7 @@ var editPlaceView = {
         editPlaceView._activePlace.set('zipcode', placeObj.zipcode);
         editPlaceView._activePlace.set('isPrivate', placeObj.isPrivate);
         editPlaceView._activePlace.set('isAvailable', placeObj.isAvailable);
-        editPlaceView._activeContact.unbind('change' , editContactView.validatePlace);
+        editPlaceView._activeContact.bind('change' , editContactView.validatePlace);
 
     }
 
