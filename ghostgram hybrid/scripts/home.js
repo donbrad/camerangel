@@ -611,8 +611,6 @@ function homeCreateAccount() {
 						   return;
 					   } else {
 
-
-
 					 //Phone number isn't a duplicate -- create user
 					user.set("username", username);
 					user.set("password", password);
@@ -623,8 +621,8 @@ function homeCreateAccount() {
 					user.set("aliasPublic", "ghostgram user");
 					user.set("currentPlace", "");
 				    user.set("currentPlaceUUID", "");
-				    user.set('photo', "images/ghost-default.svg");
-				    user.set('aliasPhoto', "images/ghost-default.svg");
+				    user.set('photo', null);
+				    user.set('aliasPhoto', null);
 					user.set("isAvailable", true);	   
 					user.set("isVisible", true);
 				    user.set("isCheckedIn", false);
@@ -676,6 +674,7 @@ function homeCreateAccount() {
 								  date : new Date(new Date().getTime() + 120 * 1000)
 								});
 							}
+
 							 Parse.Cloud.run('sendPhoneVerificationCode', { phoneNumber: phone }, {
 								  success: function (result) {
 									  mobileNotify('Please verify your phone');
