@@ -1,4 +1,4 @@
-<div data-role="view" data-title="Settings" data-layout="main" data-model="userModel" class="appearance">
+<div data-role="view" data-title="Settings" data-layout="main" data-model="userModel" class="appearance" data-init="homeView.settingsOnInit">
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -6,12 +6,22 @@
             	<img class="menuIcon" src="images/close.svg"/>
             </a>
         </div>
-    </div> 
-		<h3>
-			Photos
-		</h3>
-		<form style="border-radius: 25px;">
+    </div>
+    <form>
 		  <ul data-role="listview" data-style="inset">
+		  		<li>
+		  			<h3>Display</h3>
+		  		</li>
+		  		<li>
+		  			<label>Increase Chat Font Size</label>
+						
+		  		</li>
+		  		<br />
+		  		<li>
+		  			<h3>
+						Photos
+					</h3>
+		  		</li>
 				 <li>
 					<label>Use Retina Photos
 						<input type="checkbox" id="settingsRetinaPhoto" data-role="switch" data-bind="checked: currentUser.isRetina"/>
@@ -32,41 +42,37 @@
 					  <input type="checkbox" id="settingsSaveToAlbum" data-role="switch"  data-bind="checked: currentUser.savePhotoToAlbum"/>
 				  </label>
 			  </li>
-			</ul>		
-		</form>
-
-		<h3>
-			Development
-		</h3>
-	   	<form style="border-radius: 25px;">
-		  <ul data-role="listview" data-style="inset">
-				 <li>
-					<label>Device Id (udid) <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
+			<li>
+				<h3>
+					Development
+				</h3>
+			</li>
+		
+			<li>
+				<label>Device Id (udid) <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
 					<input type="text" id="profile-udid" data-bind="value: device.udid" readonly/>
-					</label>
-				</li>
-				</li>
-				  <li>
-					<label>User Id (UUID) <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
+				</label>
+			</li>
+			<li>
+				<label>User Id (UUID) <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
 					<input type="text" id="profile-uuid" data-bind="value: currentUser.userUUID" readonly/>
-					</label>
-				</li>
-			   <li>
-					<label>App Version <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
+				</label>
+			</li>
+			<li>
+				<label>App Version <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
 					<input type="text" id="profile-version" data-bind="value: deviceModel.appVersion" readonly/>
-					</label>
-				</li>
-				<li>
-					<label> Application Directory <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
+				</label>
+			</li>
+			<li>
+				<label> Application Directory <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
 					<input type="text" id="profile-appDirectory" data-bind="value: appDirectory" readonly/>
-					</label>
-				</li>
-				<li>
-					<label> Temporary Directory <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
+				</label>
+			</li>
+			<li>
+				<label> Temporary Directory <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
 					<input type="text" id="profile-tempDirectory" data-bind="value: tempDirectory" readonly/>
-					</label>
-				</li>
-			</ul>		
+				</label>
+			</li>	
 		</form>
 </div>
 

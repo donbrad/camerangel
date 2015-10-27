@@ -48,12 +48,24 @@ var channelsView = {
                     var otherOpenedLi = $(".chat-active");
                     $(otherOpenedLi).velocity({translateX:"0"},{duration: "fast"}).removeClass("chat-active");
 
-                    if($(selection).hasClass("private") !== true && $(window).width() < 375){
-                        $(selection).velocity({translateX:"-80%"},{duration: "fast"}).addClass("chat-active");
+                    // if smaller screen and private chat
+                    if($(selection).hasClass("private") && $(window).width() < 375){
+                        $(selection).velocity({translateX:"-45%"},{duration: "fast"}).addClass("chat-active");
+                    // if smaller screen and owner
+                    } else if ($(window).width() < 375 && $(selection).hasClass("owner")){
+						$(selection).velocity({translateX:"-60%"},{duration: "fast"}).addClass("chat-active");
+					// other small screen 
+					} else if ($(window).width() < 375){
+						$(selection).velocity({translateX:"-45%"},{duration: "fast"}).addClass("chat-active");
+                    // if larger screen and private chat
                     } else if ($(selection).hasClass("private")){
                         $(selection).velocity({translateX:"-40%"},{duration: "fast"}).addClass("chat-active");
+                    // if larger screen and owner
+                	} else if($(selection).hasClass("owner")){
+                		$(selection).velocity({translateX:"-50%"},{duration: "fast"}).addClass("chat-active");
+                    // if larger screen
                     } else {
-                        $(selection).velocity({translateX:"-70%"},{duration: "fast"}).addClass("chat-active");
+                        $(selection).velocity({translateX:"-40%"},{duration: "fast"}).addClass("chat-active");
                     }
 
 

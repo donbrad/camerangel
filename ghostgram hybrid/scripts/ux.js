@@ -100,7 +100,14 @@ var ux = {
 
 	scrollUpSearch: function(e){
 		var scroller = e.view.scroller;
-    	scroller.scrollTo(0,-51);
+    	scroller.scrollTo(0,-47);
+	},
+
+	returnUserFontSize: function(){
+		var user = "userLgFontSize"
+		if(true){
+			return user;
+		}
 	},
 
 	toggleIsAvailable: function(){

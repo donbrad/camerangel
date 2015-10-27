@@ -259,6 +259,18 @@ var homeView = {
 		}
 		// clear status box
 		$("#profileStatusUpdate").val("");
+	},
+
+	settingsOnInit: function(e){
+		
+	},
+
+	settingBigFont: function(e){
+		// TODO DON - save big font setting 
+	},
+
+	settingRegFont: function(e){
+		// TODO DON - save big font setting
 	}
 };
 

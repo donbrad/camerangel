@@ -99,6 +99,8 @@
     	<a class="chat-mainBoxLink" id="#:channelId#" data-channel="#:channelId#">
 	    	#if (isPrivate){#
 	    		<div class="chat-mainBox private">
+	    	#} else if (isOwner){#
+	    		<div class="chat-mainBox owner">
 	    	#} else {#
 	    		<div class="chat-mainBox">
 	    	#}#
@@ -113,12 +115,12 @@
 		    		# if(isPrivate && members.length <= 2){#
 		    			<img src="images/private-icon.svg" /> Private Chat
 		    		#} else if (false) {# // For place chats
-		    			<img src="images/place-icon.svg" id="chatList-place-icon" /> Place Chat
+		    			<img src="images/place-icon.svg" id="chatList-place-icon" class="icon-sm" /> Place Chat
 		    		#} else {#
-		    			<img src="images/group-icon.svg" /> Group Chat
+		    			<img src="images/group-icon.svg" class="icon-sm" /> Group Chat
 		    		#}#
 	    		</div>
-	 
+	 			# console.log(data) #
 	    	</div><!-- chat-mainBox -->
     	</a>
    </div>
@@ -354,6 +356,7 @@
 		var alias = contactData.alias;
 		photoUrl = contactData.photoUrl;
 		var displayName = ux.returnUXPrimaryName(name, alias);
+		var messageClass = "chat-message-text";
 	#
 	
 	# if (currentChannelModel.privacyMode) {
@@ -381,11 +384,11 @@
 		# if (formattedContent !== "") {#		
 			# if (contactData.isContact ) {#
 				<div class="chat-message-receiver chat-message-content  clearfix">
-					<div class="chat-message-text">#= formattedContent #</div>
+					<div class="#= messageClass #">#= formattedContent #</div>
 				</div>
 			#} else {#
 				<div class="chat-message-sender chat-message-content">
-					<div class="chat-message-text">
+					<div class="#= messageClass #">
 						#= formattedContent #
 					</div>
 				</div>
