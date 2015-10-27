@@ -266,11 +266,17 @@ var homeView = {
 	},
 
 	settingBigFont: function(e){
-		// TODO DON - save big font setting 
+		// TODO DON - save big font setting
+
+		// Show sample size
+		$("#sampleChatSize").removeClass("chat-message-text").addClass("userLgFontSize"); 
 	},
 
 	settingRegFont: function(e){
 		// TODO DON - save big font setting
+
+		// Show sample size
+		$("#sampleChatSize").removeClass("userLgFontSize").addClass("chat-message-text");
 	}
 };
 

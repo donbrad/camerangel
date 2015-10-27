@@ -1,4 +1,4 @@
-<div data-role="view" data-title="Settings" data-layout="main" data-model="userModel" class="appearance" data-init="homeView.settingsOnInit">
+<div data-role="view" id="settings" data-title="Settings" data-layout="main" data-model="userModel" class="appearance" data-init="homeView.settingsOnInit">
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -14,7 +14,19 @@
 		  		</li>
 		  		<li>
 		  			<label>Increase Chat Font Size</label>
-						
+					<a class="btnClear right" data-role="button" data-click="homeView.settingRegFont">
+						<img src="images/icon-font-sm.svg" class="icon" />
+					</a>
+					<a class="btnClear right" data-role="button" data-click="homeView.settingBigFont">
+						<img src="images/icon-font-lg.svg" class="icon" />
+					</a>	
+		  		</li>
+		  		<li>
+		  			<div class="chat-message-sender">
+			  			<div class="" id="sampleChatSize">
+			  				Sample chat text size
+			  			</div>
+			  		</div>
 		  		</li>
 		  		<br />
 		  		<li>
