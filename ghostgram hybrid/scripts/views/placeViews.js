@@ -653,15 +653,27 @@ var editPlaceView = {
         //_preventDefault(e);  Cant use here -- prevents navigation
     },
 
-    isUniqueName : function () {
-        var place = placesModel.findPlaceByName()
+    isUniquePlaceName : function () {
+        var place = placesModel.findPlaceByName(editPlaceView._activePlace.name);
+
+       // Is there already
+        if (place === undefined)
+            return true;
+
+        if (place.placeId !== editPlaceView._activePlace.placeId) {
+            mobileNotify("You already have a place named " + editPlaceView._activePlace.name);
+            return false;
+        }
 
     },
 
     onDone: function (e) {
         _preventDefault(e);
 
-
+        if (!editPlaceView.isUniquePlaceName()) {
+            return;
+        }
+        
         var model = editPlaceView._activePlaceModel, newModel = editPlaceView._activePlace;
 
 
@@ -700,6 +712,7 @@ var editPlaceView = {
         editPlaceView._activePlaceModel = placeObj;
 
         editPlaceView._activeContact.bind('change' , editContactView.validatePlace);
+        editPlaceView._activePlace.set('placeId', placeId);
         editPlaceView._activePlace.set('name', placeObj.name);
         editPlaceView._activePlace.set('alias', placeObj.alias);
         editPlaceView._activePlace.set('address', placeObj.address);
