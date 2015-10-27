@@ -673,7 +673,7 @@ var editPlaceView = {
         if (!editPlaceView.isUniquePlaceName()) {
             return;
         }
-        
+
         var model = editPlaceView._activePlaceModel, newModel = editPlaceView._activePlace;
 
 

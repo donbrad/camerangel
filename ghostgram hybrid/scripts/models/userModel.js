@@ -178,6 +178,10 @@ var userModel = {
     },
 
     decryptPrivateKey : function () {
+        if (privateKey === undefined || key === undefined) {
+            return;
+        }
+        
         var privateKey = userModel.parseUser.get('privateKey'), key = userModel.parseUser.get('objectId');
         var newPrivateKey  = GibberishAES.dec(privateKey, key);
         userModel.currentUser.set('privateKey', newPrivateKey);
