@@ -322,11 +322,9 @@ var ghostEditView = {
                 "justifyCenter",
                 "justifyRight",
                 "insertUnorderedList",
-                "insertOrderedList",
                 "indent",
                 "outdent",
                 "createTable",
-                "formatting",
                 "fontSize",
                 {
                     name: "insertImage",
@@ -401,20 +399,20 @@ var ghostEditView = {
         _preventDefault(e);
 
         var content = $('#ghostEmailEditor').data("kendoEditor").value();
-        var contactKey = contactModel.currentContact.get('publicKey'), email = contactModel.currentContact.get('email');
+       /* var contactKey = contactModel.currentContact.get('publicKey'), email = contactModel.currentContact.get('email');
         if (contactKey === null) {
             mobileNotify("Invalid Public Key for " + contactModel.currentContact.get('name'));
             return;
         }
-        var encryptContent = cryptico.encrypt(content, contactKey);
+        var encryptContent = cryptico.encrypt(content, contactKey);*/
         if (window.navigator.simulator === true){
             alert("Mail isn't supported in the emulator");
         } else {
             var thisUser = userModel.currentUser.get('name');
             cordova.plugins.email.open({
                 to:          [email],
-                subject:     'ghostEmail',
-                body:        '<h2>ghostEmail From ' + thisUser + '</h2> <p> !!Test - clear text included !!</p><p>'+ content +'</p> <p>'+ encryptContent.cipher + '</p>',
+                subject:     'ghostgram from ' + thisUser,
+                body:        content,
                 isHtml:      true
             }, function (msg) {
                 mobileNotify("Email sent to " + thisUser);

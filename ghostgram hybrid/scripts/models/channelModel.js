@@ -417,8 +417,8 @@ var channelModel = {
 
         channel.set("ownerId", ownerUUID);
         if (ownerName === undefined || ownerName === null) {
-            if (ownerID === userModel.currentUser.userUUID) {
-                ownerName = userModel.currentUser.userUUID;
+            if (userUUID === userModel.currentUser.userUUID) {
+                ownerName = userModel.currentUser.name;
             } else {
                 var contact = contactModel.findContactModel(ownerUUID);
                 if (contact !== undefined) {

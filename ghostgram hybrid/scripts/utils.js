@@ -291,7 +291,7 @@ function getChannelMembers(channelId, callBack) {
 			if (result.status === 'ok') {
 				callBack({
 					found: true,
-					channel: result
+					channel: result.channel[0].attributes
 				});
 			} else {
 				callBack({

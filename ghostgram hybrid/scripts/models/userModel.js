@@ -63,7 +63,10 @@ var userModel = {
     },
 
     initParse: function () {
-        Parse.User.enableRevocableSession();
+       if (! Parse.Session.isCurrentSessionRevocable()) {
+           mobileNotify("Please Login on this device");
+       }
+
         userModel.parseUser = Parse.User.current();
         userModel.device.udid = device.uuid;
         userModel.device.platform = device.platform;
@@ -175,6 +178,10 @@ var userModel = {
     },
 
     decryptPrivateKey : function () {
+        if (privateKey === undefined || key === undefined) {
+            return;
+        }
+
         var privateKey = userModel.parseUser.get('privateKey'), key = userModel.parseUser.get('objectId');
         var newPrivateKey  = GibberishAES.dec(privateKey, key);
         userModel.currentUser.set('privateKey', newPrivateKey);
@@ -192,6 +199,10 @@ var userModel = {
 
     updatePrivateKey : function () {
         var privateKey = userModel.parseUser.get('privateKey'), key = userModel.parseUser.get('objectId');
+        if (privateKey === undefined || key === undefined) {
+            return;
+        }
+
         if (privateKey.charAt(0) === "{") {
             var newPrivateKey  = GibberishAES.enc(privateKey, key);
             userModel.parseUser.set('privateKey', newPrivateKey);
@@ -242,6 +253,8 @@ var userModel = {
 
         // fetch contact models (objects) from parse.
         contactModel.fetch();
+
+        placesModel.fetch();
 
         photoModel.fetch();
 

@@ -8,10 +8,14 @@ var parseKendoDataSourceFactory = {};
 parseKendoDataSourceFactory.makeDataArrayFromParseArray = function(results) {
 	var dataArray = [];
 	results.forEach(function(parseObject) {
-		delete parseObject.attributes.ACL;
+	//	delete parseObject.attributes.ACL;
 		var newObject = parseObject.attributes;
-		newObject.id = parseObject.id;
-		dataArray.push(newObject);
+		// Todo: don remove after bug fix
+		if (Object.keys(newObject).length > 5) {
+			newObject.id = parseObject.id;
+			dataArray.push(newObject);
+		}
+
 	});
 	return dataArray;
 };
@@ -66,11 +70,6 @@ parseKendoDataSourceFactory.make = function (parseObjectName, schema, createLoca
 				var ParseObject = Parse.Object.extend(parseObjectName);
 				var parseObject = new ParseObject();
 
-				// More gods and more acls...
-				if(options.data.ACL !== undefined) {
-					delete options.data.ACL;
-				}
-
 				// Per parse there's a transaction cost for creating a new ACL for every object...
 				parseObject.setACL(userModel.parseACL);
 
@@ -82,9 +81,9 @@ parseKendoDataSourceFactory.make = function (parseObjectName, schema, createLoca
 						// 
 						// Let's just remove that...
 						
-						if(newParseObject.attributes.ACL !== undefined) {
+						/*if(newParseObject.attributes.ACL !== undefined) {
 							delete newParseObject.attributes.ACL;
-						}
+						}*/
 
 						var newObject = newParseObject.attributes;
 						newObject.id = newParseObject.id;
@@ -108,6 +107,7 @@ parseKendoDataSourceFactory.make = function (parseObjectName, schema, createLoca
 
 				var ParseObject = Parse.Object.extend(parseObjectName);
 				var query = new Parse.Query(ParseObject);
+				query.limit(1000);  // Parse limits results to 1000.  need to check Object count and requery if necessary
 				query.find({
 					success: function(results) {
 						options.success(parseKendoDataSourceFactory.makeDataArrayFromParseArray(results));

@@ -107,15 +107,45 @@ var placesModel = {
 
     } ),
 
-    placesDS : null,
+    placesDS: new kendo.data.DataSource({
+        offlineStorage: "places",
+        sort: {
+            field: "name",
+            dir: "asc"
+        }
+    }),
 
 
     newPlace : function () {
         return(new placesModel.placeModel);
     },
 
+    fetch : function () {
+        var PlaceModel = Parse.Object.extend("places");
+        var query = new Parse.Query(PlaceModel);
+        query.limit(256);
+
+        query.find({
+            success: function(collection) {
+                var models = [];
+                for (var i = 0; i < collection.length; i++) {
+                    var model = collection[i];
+                    models.push(model.attributes);
+                }
+                deviceModel.setAppState('hasPlaces', true);
+                placesModel.placesDS.data(models);
+
+
+                deviceModel.isParseSyncComplete();
+            },
+            error: function(error) {
+                handleParseError(error);
+            }
+        });
+    },
+
     init : function () {
-        placesModel.placesDS =  parseKendoDataSourceFactory.make('places', placesModel.placeModel ,
+   /*     placesModel.placesDS =  parseKendoDataSourceFactory.make('places', placesModel.placeModel ,
             false,
             undefined,
             undefined
@@ -125,7 +155,7 @@ var placesModel = {
             placesModel.placesFetched = true;
             placesModel.placesArray  = placesModel.placesDS.data();
         });
-    },
+*/    },
 
     matchLocation: function (lat, lng) {
 
@@ -175,6 +205,18 @@ var placesModel = {
 
         var dataSource = placesModel.placesDS;
         dataSource.filter( { field: "uuid", operator: "eq", value: placeId });
+        var view = dataSource.view();
+        var place = view[0];
+        dataSource.filter([]);
+
+        return(place);
+
+    },
+
+    findPlaceByName : function (name) {
+
+        var dataSource = placesModel.placesDS;
+        dataSource.filter( { field: "name", operator: "eq", value: name });
         var view = dataSource.view();
         var place = view[0];
         dataSource.filter([]);

@@ -459,8 +459,7 @@ function _signOut() {
 
 
 function homeSignout (e) {
-	if (e !== undefined && e.preventDefault !== undefined)
-		e.preventDefault();
+	_preventDefault(e);
 
 	_signOut();
 
@@ -551,7 +550,7 @@ function homeSignin (e) {
 				notificationModel.deleteNotification('phoneVerified');
 			} else {
 				  mobileNotify("Please verify your phone number");
-              $("#modalview-verifyPhone").data("kendoMobileModalView").open();
+                 $("#modalview-verifyPhone").data("kendoMobileModalView").open();
 			}
             userModel.currentUser.set('emailValidated', userModel.parseUser.get('emailVerified'));
             userModel.parseACL = new Parse.ACL(userModel.parseUser);
@@ -624,8 +623,6 @@ function homeCreateAccount() {
 						   return;
 					   } else {
 
-
-
 					 //Phone number isn't a duplicate -- create user
 					user.set("username", username);
 					user.set("password", password);
@@ -636,8 +633,8 @@ function homeCreateAccount() {
 					user.set("aliasPublic", "ghostgram user");
 					user.set("currentPlace", "");
 				    user.set("currentPlaceUUID", "");
-				    user.set('photo', "images/ghost-default.svg");
-				    user.set('aliasPhoto', "images/ghost-default.svg");
+				    user.set('photo', null);
+				    user.set('aliasPhoto', null);
 					user.set("isAvailable", true);	   
 					user.set("isVisible", true);
 				    user.set("isCheckedIn", false);
@@ -652,7 +649,6 @@ function homeCreateAccount() {
 					user.signUp(null, {
 						success: function(user) {
 							// Hooray! Let them use the app now.
-						   closeModalViewSignup();
 							userModel.currentUser.set('username', user.get('username'));
 							userModel.currentUser.set('name', user.get('name'));
 							userModel.currentUser.set('email', user.get('email'));
@@ -690,6 +686,7 @@ function homeCreateAccount() {
 								  date : new Date(new Date().getTime() + 120 * 1000)
 								});
 							}
+
 							 Parse.Cloud.run('sendPhoneVerificationCode', { phoneNumber: phone }, {
 								  success: function (result) {
 									  mobileNotify('Please verify your phone');
