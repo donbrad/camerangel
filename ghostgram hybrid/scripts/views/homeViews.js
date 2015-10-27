@@ -322,11 +322,9 @@ var ghostEditView = {
                 "justifyCenter",
                 "justifyRight",
                 "insertUnorderedList",
-                "insertOrderedList",
                 "indent",
                 "outdent",
                 "createTable",
-                "formatting",
                 "fontSize",
                 {
                     name: "insertImage",
@@ -413,8 +411,8 @@ var ghostEditView = {
             var thisUser = userModel.currentUser.get('name');
             cordova.plugins.email.open({
                 to:          [email],
-                subject:     'ghostEmail',
-                body:        '<h2>ghostEmail From ' + thisUser + '</h2> <p> !!Test - clear text included !!</p><p>'+ content +'</p> <p>'+ encryptContent.cipher + '</p>',
+                subject:     'ghostgram from ' + thisUser,
+                body:        content,
                 isHtml:      true
             }, function (msg) {
                 mobileNotify("Email sent to " + thisUser);

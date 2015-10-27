@@ -639,7 +639,6 @@ function homeCreateAccount() {
 					user.signUp(null, {
 						success: function(user) {
 							// Hooray! Let them use the app now.
-						   closeModalViewSignup();
 							userModel.currentUser.set('username', user.get('username'));
 							userModel.currentUser.set('name', user.get('name'));
 							userModel.currentUser.set('email', user.get('email'));
