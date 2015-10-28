@@ -479,6 +479,7 @@
 			deviceModel.appVersion = "0.2.0.4";
 		} else {
 			cordova.getAppVersion.getVersionNumber(function(version) {
+				mobileNotify("ghostgrams version: " + version);
 				deviceModel.appVersion = version;
 			});
 
