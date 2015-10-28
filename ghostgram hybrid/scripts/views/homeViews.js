@@ -399,8 +399,8 @@ var ghostEditView = {
         _preventDefault(e);
 
         var content = $('#ghostEmailEditor').data("kendoEditor").value();
-       /* var contactKey = contactModel.currentContact.get('publicKey'), email = contactModel.currentContact.get('email');
-        if (contactKey === null) {
+        var contactKey = contactModel.currentContact.get('publicKey'), email = contactModel.currentContact.get('email');
+       /* if (contactKey === null) {
             mobileNotify("Invalid Public Key for " + contactModel.currentContact.get('name'));
             return;
         }
