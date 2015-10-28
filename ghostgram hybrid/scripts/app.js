@@ -478,7 +478,6 @@
 		if (window.navigator.simulator === true) {
 			deviceModel.appVersion = "0.2.0.4";
 		} else {
-
 			cordova.getAppVersion.getVersionCode(function(version) {
 				mobileNotify("ghostgrams version: " + version);
 				deviceModel.appVersion = version;
@@ -507,7 +506,6 @@
 				 );*/
 
 			});
-
 
 			cordova.plugins.notification.local.ontrigger = function(id, state, json) {
 				var message = 'ID: ' + id + (json == '' ? '' : '\nData: ' + json);
