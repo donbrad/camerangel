@@ -488,7 +488,6 @@
 
 				cordova.plugins.notification.local.registerPermission(function (granted) {
 
-
 					cordova.plugins.notification.local.schedule({
 						id         : 1,
 						title      : 'Welcome Back!',
