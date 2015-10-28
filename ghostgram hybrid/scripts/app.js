@@ -481,7 +481,7 @@
 			cordova.getAppVersion.getVersionNumber(function(version) {
 				deviceModel.appVersion = version;
 			});
-			
+
 			cordova.plugins.notification.local.hasPermission(function(granted) {
 				if (!granted)
 					mobileNotify('Local notifications Disabled !!!');
@@ -501,7 +501,7 @@
 
 
 			// hiding the accessory bar
-			cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+			//cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 		}
 		
 		APP.emailAvailable = false;
