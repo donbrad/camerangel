@@ -539,6 +539,7 @@ var addContactView = {
                 var url = contactModel.createIdenticon(guid);
                 contact.set('photo',url);
                 contactModel.contactsDS.add(contact.attributes);
+                contactModel.contactListDS.add(contact.attributes);
             },
             error: function(contact, error) {
                 // Execute any logic that should take place if the save fails.
