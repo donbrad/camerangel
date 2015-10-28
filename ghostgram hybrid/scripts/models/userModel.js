@@ -91,9 +91,9 @@ var userModel = {
         if (userModel.parseUser !== null) {
 
             userModel.generateUserKey();
-            if (userModel.parseUser.get("_version") === undefined) {
+            if (userModel.parseUser.get("version") === undefined) {
                 userModel.generateNewPrivateKey(userModel.parseUser);
-                userModel.parseUser.set("_version", 1);
+                userModel.parseUser.set("version", 1);
                 userModel.parseUser.save();
             }
 
