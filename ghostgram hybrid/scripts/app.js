@@ -484,13 +484,15 @@
 				deviceModel.appVersion = version;
 			});
 
-			cordova.plugins.notification.local.registerPermission(function (granted) {
-				mobileNotify('Local notifications enabled :-)');
-			});
 
 			cordova.plugins.notification.local.hasPermission(function(granted) {
-				if (!granted)
-					mobileNotify('Local notifications Disabled !!!');
+
+				cordova.plugins.notification.local.registerPermission(function (granted) {
+					if (granted)
+						mobileNotify('Local notifications enabled');
+				});
+
+
 				/*cordova.plugins.notification.local.cancelAll(
 				 function() {
 				 MobileNotify("Local notifications cleared");
