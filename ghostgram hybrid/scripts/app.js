@@ -488,8 +488,16 @@
 			cordova.plugins.notification.local.hasPermission(function(granted) {
 
 				cordova.plugins.notification.local.registerPermission(function (granted) {
-					if (granted)
-						mobileNotify('Local notifications enabled');
+
+
+					cordova.plugins.notification.local.schedule({
+						id         : 1,
+						title      : 'Welcome Back!',
+						text       : 'ghostgrams missed you...',
+						sound      : null,
+						autoClear  : true,
+						at         : new Date(new Date().getTime() + 100)
+					});
 				});
 
 
