@@ -479,7 +479,7 @@
 			deviceModel.appVersion = "0.2.0.4";
 		} else {
 
-			cordova.getAppVersion.getVersionNumber(function(version) {
+			cordova.getAppVersion.getVersionCode(function(version) {
 				mobileNotify("ghostgrams version: " + version);
 				deviceModel.appVersion = version;
 			});
@@ -487,7 +487,7 @@
 			cordova.plugins.notification.local.registerPermission(function (granted) {
 				mobileNotify('Local notifications enabled :-)');
 			});
-			
+
 			cordova.plugins.notification.local.hasPermission(function(granted) {
 				if (!granted)
 					mobileNotify('Local notifications Disabled !!!');
