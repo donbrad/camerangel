@@ -6,6 +6,7 @@
 
 var userModel = {
 
+    _version: 1,
     parseUser: null,
     parseDataFetched: false,
     tempDirectory: '',
@@ -18,6 +19,7 @@ var userModel = {
     initialView : '#newuserhome',
 
     currentUser: new kendo.data.ObservableObject({
+        _version: 1,
         username: '',
         name: '',
         userUUID: '',
@@ -92,6 +94,9 @@ var userModel = {
             userModel.updatePrivateKey();
             userModel.decryptPrivateKey();
             userModel.initialView = '#home';
+            if (userModel.parseUser.get("_version") === undefined) {
+                userModel.generateNewPrivateKey(userModel.parseUser);
+            }
             userModel.currentUser.set('username', userModel.parseUser.get('username'));
             userModel.currentUser.set('objectId', userModel.parseUser.get('objectId'));
             userModel.currentUser.set('name', userModel.parseUser.get('name'));

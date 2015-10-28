@@ -8,6 +8,8 @@
 
 var contactModel = {
 
+
+
    contactsDS: new kendo.data.DataSource({
         offlineStorage: "contacts",
         sort: {
@@ -35,6 +37,7 @@ var contactModel = {
 
     }),
 
+    _version: 1,
     currentDeviceContact: {},
     unifiedDeviceContact: false,
     currentContact: null,
@@ -205,7 +208,8 @@ var contactModel = {
     fetch : function () {
         var ContactModel = Parse.Object.extend("contacts");
         var query = new Parse.Query(ContactModel);
-
+        query.limit(256);
+        
         query.find({
             success: function(collection) {
                 var models = [];
