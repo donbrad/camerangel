@@ -91,14 +91,16 @@ var userModel = {
         if (userModel.parseUser !== null) {
 
             userModel.generateUserKey();
-            userModel.updatePrivateKey();
-            userModel.decryptPrivateKey();
-            userModel.initialView = '#home';
             if (userModel.parseUser.get("_version") === undefined) {
                 userModel.generateNewPrivateKey(userModel.parseUser);
                 userModel.parseUser.set("_version", 1);
                 userModel.parseUser.save();
             }
+
+            userModel.updatePrivateKey();
+            userModel.decryptPrivateKey();
+            userModel.initialView = '#home';
+
             userModel.currentUser.set('username', userModel.parseUser.get('username'));
             userModel.currentUser.set('objectId', userModel.parseUser.get('objectId'));
             userModel.currentUser.set('name', userModel.parseUser.get('name'));
@@ -194,10 +196,7 @@ var userModel = {
     },
 
     decryptPrivateKey : function () {
-        if (privateKey === undefined || key === undefined) {
-            return;
-        }
-
+        
         var privateKey = userModel.parseUser.get('privateKey');
         var newPrivateKey  = GibberishAES.dec(privateKey, userModel.key);
         userModel.currentUser.set('privateKey', newPrivateKey);
