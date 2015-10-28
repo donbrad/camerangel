@@ -685,6 +685,12 @@ var editPlaceView = {
         model.set('isPrivate', newModel.isPrivate);
         model.set('isAvailable', newModel.isAvailable);
 
+        updateParseObject('places', 'uuid', newModel.uuid, "name", newModel.name);
+        updateParseObject('places', 'uuid', newModel.uuid,'alias', newModel.alias);
+        updateParseObject('places', 'uuid', newModel.uuid,'address', newModel.address);
+        updateParseObject('places', 'uuid', newModel.uuid, 'isPrivate', newModel.isPrivate);
+        updateParseObject('places', 'uuid', newModel.uuid,'isAvailable', newModel.isAvailable);
+
         mobileNotify("Updated " + newModel.name);
 
 
@@ -713,6 +719,7 @@ var editPlaceView = {
 
         editPlaceView._activePlace.unbind('change' , editContactView.validatePlace);
         editPlaceView._activePlace.set('placeId', placeId);
+        editPlaceView._activePlace.set('uuid', placeObj.uuid);
         editPlaceView._activePlace.set('name', placeObj.name);
         editPlaceView._activePlace.set('alias', placeObj.alias);
         editPlaceView._activePlace.set('address', placeObj.address);
