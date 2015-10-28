@@ -347,6 +347,8 @@ var contactModel = {
         var dataSource = contactModel.contactListDS;
         dataSource.filter( { field: "contactUUID", operator: "eq", value: contactUUID });
         var view = dataSource.view();
+        if (view.length === 0 || view[0].items.length === 0)
+            return(undefined);
         var contact = view[0].items[0];
         dataSource.filter([]);
 
@@ -357,6 +359,8 @@ var contactModel = {
         var dataSource = contactModel.contactListDS;
         dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
         var view = dataSource.view();
+        if (view.length === 0 || view[0].items.length === 0)
+            return(undefined);
         var contact = view[0].items[0];
         dataSource.filter([]);
 
