@@ -490,8 +490,9 @@ function homeSignin (e) {
             // Clear sign in form
             $("#home-signin-username, #home-signin-password").val("");
             userModel.parseUser = user;
-			
-			
+
+			userModel.generateUserKey();
+
 			var publicKey = user.get('publicKey');
 			var privateKey = user.get('privateKey');
 			if (publicKey === undefined || privateKey === undefined) {
@@ -636,6 +637,9 @@ function homeCreateAccount() {
 
 					user.signUp(null, {
 						success: function(user) {
+
+							userModel.parseUser = user;
+							userModel.generateUserKey();
 							// Hooray! Let them use the app now.
 							userModel.currentUser.set('username', user.get('username'));
 							userModel.currentUser.set('name', user.get('name'));
