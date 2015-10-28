@@ -157,12 +157,11 @@ var userModel = {
         var RSAkey = cryptico.generateRSAKey(1024);
         var publicKey = cryptico.publicKeyString(RSAkey);
         var privateKey = cryptico.privateKeyString(RSAkey);
-        var userId = user.get('objectId');
 
         userModel.currentUser.set('publicKey',publicKey);
         userModel.currentUser.set('privateKey',privateKey);
         user.set("publicKey", publicKey);
-        var newPrivateKey  = GibberishAES.enc(privateKey, userId);
+        var newPrivateKey  = GibberishAES.enc(privateKey, userModel.key);
         user.set("privateKey", newPrivateKey);
 
         user.save();
@@ -196,7 +195,7 @@ var userModel = {
     },
 
     decryptPrivateKey : function () {
-        
+
         var privateKey = userModel.parseUser.get('privateKey');
         var newPrivateKey  = GibberishAES.dec(privateKey, userModel.key);
         userModel.currentUser.set('privateKey', newPrivateKey);
