@@ -6,6 +6,7 @@
 
 var userModel = {
 
+    _version: 1,
     parseUser: null,
     parseDataFetched: false,
     tempDirectory: '',
@@ -14,9 +15,11 @@ var userModel = {
     userName : '',
     identiconUrl : null,
     rememberUserName : false,
+    key : null,
     initialView : '#newuserhome',
 
     currentUser: new kendo.data.ObservableObject({
+        _version: 1,
         username: '',
         name: '',
         userUUID: '',
@@ -87,9 +90,17 @@ var userModel = {
 
         if (userModel.parseUser !== null) {
 
+            userModel.generateUserKey();
+            if (userModel.parseUser.get("version") === undefined) {
+                userModel.generateNewPrivateKey(userModel.parseUser);
+                userModel.parseUser.set("version", 1);
+                userModel.parseUser.save();
+            }
+
             userModel.updatePrivateKey();
             userModel.decryptPrivateKey();
             userModel.initialView = '#home';
+
             userModel.currentUser.set('username', userModel.parseUser.get('username'));
             userModel.currentUser.set('objectId', userModel.parseUser.get('objectId'));
             userModel.currentUser.set('name', userModel.parseUser.get('name'));
@@ -146,12 +157,11 @@ var userModel = {
         var RSAkey = cryptico.generateRSAKey(1024);
         var publicKey = cryptico.publicKeyString(RSAkey);
         var privateKey = cryptico.privateKeyString(RSAkey);
-        var userId = user.get('objectId');
 
         userModel.currentUser.set('publicKey',publicKey);
         userModel.currentUser.set('privateKey',privateKey);
         user.set("publicKey", publicKey);
-        var newPrivateKey  = GibberishAES.enc(privateKey, userId);
+        var newPrivateKey  = GibberishAES.enc(privateKey, userModel.key);
         user.set("privateKey", newPrivateKey);
 
         user.save();
@@ -177,34 +187,36 @@ var userModel = {
 
     },
 
-    decryptPrivateKey : function () {
-        if (privateKey === undefined || key === undefined) {
-            return;
-        }
+    generateUserKey : function () {
+        var rawKey = userModel.parseUser.get('userUUID');
 
-        var privateKey = userModel.parseUser.get('privateKey'), key = userModel.parseUser.get('objectId');
-        var newPrivateKey  = GibberishAES.dec(privateKey, key);
+         userModel.key = rawKey.replace(/-/g,'');
+
+    },
+
+    decryptPrivateKey : function () {
+
+        var privateKey = userModel.parseUser.get('privateKey');
+        var newPrivateKey  = GibberishAES.dec(privateKey, userModel.key);
         userModel.currentUser.set('privateKey', newPrivateKey);
     },
 
     encryptBlob : function (blobIn) {
-        var key = userModel.parseUser.get('objectId');
-        return(GibberishAES.enc(blobIn, key));
+        return(GibberishAES.enc(blobIn, userModel.key));
     },
 
     decryptBlob : function (blobIn) {
-        var key = userModel.parseUser.get('objectId');
-        return(GibberishAES.dec(blobIn, key));
+        return(GibberishAES.dec(blobIn, userModel.key));
     },
 
     updatePrivateKey : function () {
-        var privateKey = userModel.parseUser.get('privateKey'), key = userModel.parseUser.get('objectId');
-        if (privateKey === undefined || key === undefined) {
+        var privateKey = userModel.parseUser.get('privateKey');
+        if (privateKey === undefined ){
             return;
         }
 
         if (privateKey.charAt(0) === "{") {
-            var newPrivateKey  = GibberishAES.enc(privateKey, key);
+            var newPrivateKey  = GibberishAES.enc(privateKey, userModel.key);
             userModel.parseUser.set('privateKey', newPrivateKey);
             userModel.parseUser.save();
         }

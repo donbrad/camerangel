@@ -508,8 +508,9 @@ function homeSignin (e) {
             // Clear sign in form
             $("#home-signin-username, #home-signin-password").val("");
             userModel.parseUser = user;
-			
-			
+
+			userModel.generateUserKey();
+
 			var publicKey = user.get('publicKey');
 			var privateKey = user.get('privateKey');
 			if (publicKey === undefined || privateKey === undefined) {
@@ -654,6 +655,9 @@ function homeCreateAccount() {
 
 					user.signUp(null, {
 						success: function(user) {
+
+							userModel.parseUser = user;
+							userModel.generateUserKey();
 							// Hooray! Let them use the app now.
 							userModel.currentUser.set('username', user.get('username'));
 							userModel.currentUser.set('name', user.get('name'));
@@ -775,50 +779,6 @@ function requestBeta (e) {
     })
 }
     
-function sendSupportRequest(e) {
-    e.preventDefault();
-    if (APP.models.sync.requestActive){
-        mobileNotify("Processing current support request.")
-        return;
-    }
-        
-    APP.models.sync.requestActive = true;
-    var category = $('#supportCategory').val(), message =  $('#supportMessage').val();
-    var userUUID = null, name = null, email = null, phone = null;
-    mobileNotify("Preparing your support request");
-    
-   if (userModel.parseUser !== null) {
-        userUUID = userModel.currentUser.get('userUUID');
-        name = userModel.currentUser.get('name');
-        email = userModel.currentUser.get('email');
-        phone = userModel.currentUser.get('phone');
-    }
-    
-    var Support = Parse.Object.extend('support');
-    var support = new Support();
-    support.set("userUUID", userUUID);
-    support.set("name", name);
-    support.set("email",email );
-    support.set("phone", phone);
-    support.set("category", category);
-    support.set("message", message);
-    support.set("udid", userModel.device.udid);
-    support.set("device", userModel.device.device);
-    support.set("model",userModel.device.model);
-    support.set("platform", userModel.device.platform);
-    
-    support.save(null, {
-        success: function(support) {
-            mobileNotify("You support request was sent. Thank you!");
-            ux.closeModalViewSupport();
-            APP.models.sync.requestActive = false;
-        },
-        error: function(support, error) {
-            mobileNotify("Error sending your support request: " + error);
-            APP.models.sync.requestActive = false;
-        }
-    })
-}
 
 function importMe(e) {
 	e.preventDefault();

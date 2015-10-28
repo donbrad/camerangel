@@ -476,10 +476,36 @@
 
 		// Provide basic functionality in the simulator and deployable simulator
 		if (window.navigator.simulator === true) {
-			deviceModel.appVersion = "0.1.9.8";
+			deviceModel.appVersion = "0.2.0.4";
 		} else {
-			cordova.getAppVersion.getVersionNumber(function(version) {
+			cordova.getAppVersion.getVersionCode(function(version) {
+				mobileNotify("ghostgrams version: " + version);
 				deviceModel.appVersion = version;
+			});
+
+
+			cordova.plugins.notification.local.hasPermission(function(granted) {
+
+				cordova.plugins.notification.local.registerPermission(function (granted) {
+
+
+					cordova.plugins.notification.local.schedule({
+						id         : 1,
+						title      : 'Welcome Back!',
+						text       : 'ghostgrams missed you...',
+						sound      : null,
+						autoClear  : true,
+						at         : new Date(new Date().getTime() + 100)
+					});
+				});
+
+
+				/*cordova.plugins.notification.local.cancelAll(
+				 function() {
+				 MobileNotify("Local notifications cleared");
+				 }
+				 );*/
+
 			});
 
 			cordova.plugins.notification.local.ontrigger = function(id, state, json) {
@@ -487,19 +513,9 @@
 				navigator.notification.alert(message, null, 'Notification received while the app was in the foreground', 'Close');
 			};
 
-			cordova.plugins.notification.local.hasPermission(function(granted) {
-				if (!granted)
-					mobileNotify('Local notifications Disabled !!!');
-				/*cordova.plugins.notification.local.cancelAll(
-				  function() {
-					MobileNotify("Local notifications cleared");
-				  }
-				);*/
-
-			});
 
 			// hiding the accessory bar
-			cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+			//cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 		}
 		
 		APP.emailAvailable = false;
