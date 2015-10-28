@@ -209,7 +209,7 @@ var contactModel = {
         var ContactModel = Parse.Object.extend("contacts");
         var query = new Parse.Query(ContactModel);
         query.limit(256);
-        
+
         query.find({
             success: function(collection) {
                 var models = [];

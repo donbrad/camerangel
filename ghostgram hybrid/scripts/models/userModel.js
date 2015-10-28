@@ -96,6 +96,8 @@ var userModel = {
             userModel.initialView = '#home';
             if (userModel.parseUser.get("_version") === undefined) {
                 userModel.generateNewPrivateKey(userModel.parseUser);
+                userModel.parseUser.set("_version", 1);
+                userModel.parseUser.save();
             }
             userModel.currentUser.set('username', userModel.parseUser.get('username'));
             userModel.currentUser.set('objectId', userModel.parseUser.get('objectId'));
