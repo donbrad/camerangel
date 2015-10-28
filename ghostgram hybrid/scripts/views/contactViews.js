@@ -513,7 +513,7 @@ var addContactView = {
 
     },
 
-    addChatContact : function (guid, name, alias) {
+    addChatContact : function (guid, name, alias, contactUUID) {
         var Contacts = Parse.Object.extend("contacts");
         var contact = new Contacts();
 
@@ -527,7 +527,7 @@ var addContactView = {
         contact.set("priority", 0);
         contact.set("isFavorite", false);
         contact.set("uuid", guid);
-        contact.set('contactUUID', null);
+        contact.set('contactUUID', contactUUID);
         contact.set('contactPhone', null);
         contact.set('contactEmail', null);
         contact.set('ownerUUID', userModel.currentUser.userUUID);

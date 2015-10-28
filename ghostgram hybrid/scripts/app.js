@@ -408,7 +408,7 @@
 	$.extend(window, {
 
 		onShowPlaces: _app.placesShow,
-		onInitPlaces: _app.placesInit,
+		onInitPlaces: _app.placesInit
 	});
 
 	// Add event listeners
