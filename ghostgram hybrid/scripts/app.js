@@ -408,7 +408,7 @@
 	$.extend(window, {
 
 		onShowPlaces: _app.placesShow,
-		onInitPlaces: _app.placesInit,
+		onInitPlaces: _app.placesInit
 	});
 
 	// Add event listeners
@@ -487,7 +487,6 @@
 			cordova.plugins.notification.local.hasPermission(function(granted) {
 
 				cordova.plugins.notification.local.registerPermission(function (granted) {
-
 
 					cordova.plugins.notification.local.schedule({
 						id         : 1,

@@ -564,6 +564,7 @@ var channelView = {
     currentContact: null,
     activeMessage: null,
     intervalId : null,
+    ghostgramActive : false,
     sendMessageHandler : null,
     messagesDS: new kendo.data.DataSource({  // this is the list view data source for chat messages
         sort: {
@@ -601,7 +602,23 @@ var channelView = {
             /*swipe: channelView.swipeChannel,*/
             hold: channelView.holdChannel
         });
-  	
+
+        $("#messageTextArea").kendoEditor({
+            resizable: {
+                content: true,
+                min: 32
+            },
+            tools: [
+                "bold",
+                "italic",
+                "underline",
+                "insertUnorderedList",
+                "indent",
+                "outdent"
+            ]
+        });
+        $(".k-editor-toolbar").hide();
+
   		
         /*$("#channelMembers-listview").kendoMobileListView({
             dataSource: currentChannelModel.membersDS,
@@ -946,11 +963,13 @@ var channelView = {
 
     onChannelRead : function (message) {
 
-        if (message.content !== null) {
-            message.formattedContent = formatMessage(message.content);
+       /* if (message.content !== null) {
+            message.formattedContent = message.content;
         } else {
             message.formattedContent = '';
         }
+*/
+        message.formattedContent = message.content;
 
         // Ensure that new messages get the timer
         if (message.fromHistory === undefined) {
@@ -970,17 +989,30 @@ var channelView = {
         }
     },
 
+    ghostgram: function (e) {
+        _preventDefault(e);
+        channelView.ghostgramActive = true;
+        $(".k-editor-toolbar").show();
+
+    },
+
     messageSend : function (e) {
         _preventDefault(e);
         var validMessage = false; // If message is valid, send is enabled
 
-        var text = $('#messageTextArea').val();
+        //var text = $('#messageTextArea').val();
+        var text = $('#messageTextArea').data("kendoEditor").value();
         if (text.length > 0) {
             validMessage = true;
         }
 
+
         // Add current location information to message
         var messageData = {geo: {lat: mapModel.lat, lng: mapModel.lng} , address: mapModel.currentAddress};
+
+        if (channelView.ghostgramActive) {
+            messageData.html = text;
+        }
 
         if (userModel.currentUser.currentPlaceUUID !== null) {
             messageData.place = {name: userModel.currentUser.currentPlace, uuid: userModel.currentUser.currentPlaceUUID};
@@ -1002,8 +1034,16 @@ var channelView = {
 
      _initMessageTextArea : function () {
 
-        $('#messageTextArea').val('');
+         $('#messageTextArea').val('')
+         $('#messageTextArea').data("kendoEditor").value('');
+         $('#messageTextArea').data("kendoEditor").update();
         autosize.update($('#messageTextArea'));
+
+         if (channelView.ghostgramActive) {
+             channelView.ghostgramActive = false;
+             $(".k-editor-toolbar").hide();
+         }
+
     },
 
     showChatImagePreview: function (displayUrl) {

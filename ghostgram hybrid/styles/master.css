@@ -2780,6 +2780,8 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   font-size: 1em;
   color: #4A4A4A !important;
 }
+
+
 #ghostEmailwrapper > table > tbody > tr:nth-child(1) > td > ul > li > a {
   background: #979797 !important;
 }
@@ -2819,11 +2821,20 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 /* Chat styles */
 #messageTextArea {
   font-size: 1em;
+  color: #4a4a4a !important;
   resize: none;
   border: none;
   padding-bottom: 0px;
   line-height: 1.5;
 }
+
+#messageTextArea > table > tbody > tr:nth-child(1) > td > ul > li > a {
+  background: #979797 !important;
+}
+#messageTextArea > table > tbody > tr:nth-child(1) > td > ul > li > a.k-tool.k-state-selected {
+  background: #6cadf3 !important;
+}
+
 #messageSend {
   font-weight: 600;
   color: #2D93FF;
