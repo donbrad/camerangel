@@ -1026,8 +1026,8 @@ var channelView = {
      _initMessageTextArea : function () {
 
       //   $('#messageTextArea').val('')
-         $('#messageTextArea').attr("rows",1);
-         $('#messageTextArea').attr("height",24);
+         $('#messageTextArea').attr("rows","1");
+         $('#messageTextArea').attr("height","24px");
          $('#messageTextArea').data("kendoEditor").value('');
          $('#messageTextArea').data("kendoEditor").update();
 
