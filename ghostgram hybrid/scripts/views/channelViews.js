@@ -1018,13 +1018,14 @@ var channelView = {
 
      _initMessageTextArea : function () {
 
-        $('#messageTextArea').val('');
+         $('#messageTextArea').val('')
+         $('#messageTextArea').data("kendoEditor").value('');
+         $('#messageTextArea').data("kendoEditor").update();
         autosize.update($('#messageTextArea'));
 
          if (channelView.ghostgramActive) {
              channelView.ghostgramActive = false;
              $(".k-editor-toolbar").hide();
-             $('#messageTextArea').data("kendoEditor").update();
          }
 
     },
