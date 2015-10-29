@@ -592,6 +592,10 @@ var channelView = {
         });
 
         $("#messageTextArea").kendoEditor({
+            resizable: {
+                content: true,
+                min: 32
+            },
             tools: [
                 "bold",
                 "italic",
