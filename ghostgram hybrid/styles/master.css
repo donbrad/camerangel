@@ -440,7 +440,7 @@ form p {
   background: #2E93FD !important;
 }
 .primary-200 {
-  background: #6CADF3;
+  background: #6CADF3 !important;
 }
 .secondary-100 {
   background: #FFB74D !important;
@@ -2523,10 +2523,26 @@ a:hover {
 #chat-option-clearBtn {
   width: 24px;
 }
+#occupancyCount {
+  color: #fff;
+}
 .list-status {
   vertical-align: baseline;
   margin-right: 0.25rem;
   margin-left: 0.25rem;
+}
+#channelPresence > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
+  background: #323642;
+}
+.memberTempName {
+  color: #fff;
+}
+#channelPresence > div.km-header > div > div.km-view-title {
+  background: #323642;
+  color: #fff;
+}
+#channelPresence-listview > li {
+  border-bottom: 1px solid #979797;
 }
 #channels-listview > li > div > a > div > img {
   margin-left: 1.25rem;
@@ -3380,7 +3396,7 @@ div.loginBox > form > div > ul > li {
 }
 #contacts-listview,
 #contactimport-listview {
-  padding-bottom: 3rem;
+  padding-bottom: 5rem;
 }
 #contacts-listview > li,
 #contactimport-listview > li {
@@ -3666,7 +3682,6 @@ div.contactListBox.activeContact > div > div > ul {
   background-color: #E0E0E0;
   color: #979797;
   font-weight: 400;
-  padding: 1px 0px 1px 0.5rem;
   border: none;
 }
 .contacts-alias-sm,
@@ -3968,6 +3983,7 @@ div.contactListBox.activeContact > div > div > ul {
 #gallery-listview {
   line-height: 0 !important;
   padding-top: 0.25rem;
+  padding-bottom: 5em;
   /* need to work on better responsive
    -webkit-column-count: 2;
    -webkit-column-gap:   1px;
@@ -4062,6 +4078,9 @@ div.contactListBox.activeContact > div > div > ul {
 }
 #settingChatSize > li.km-button.km-state-active {
   border-radius: 3px;
+}
+#settings > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > form > div > ul > li:nth-child(3) > div:after {
+  display: none !important;
 }
 .km-state-active #gallery-photos {
   fill: #fff !important;
@@ -4809,6 +4828,7 @@ html .km-pane-wrapper .k-header {
 #findplace-listview,
 #checkin-listview {
   width: 100%;
+  margin-bottom: 5em;
 }
 #places-listview li:not(.km-group-container),
 #findplace-listview li:not(.km-group-container),

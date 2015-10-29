@@ -22,6 +22,8 @@
 @success-100: #009688;
 @success-200: #65BBB3;
 
+@darkBk: #323642;
+
 /* variables */
 @baseFontSize: 16;
 @defaultFont: 'PT Sans', sans-serif;
@@ -364,7 +366,7 @@ form {
 }
 
 .primary-200 {
-	background: @primary-200;
+	background: @primary-200 !important;
 }
 
 .secondary-100 {
@@ -2577,10 +2579,31 @@ a:hover {
 	width: 24px;
 }
 
+#occupancyCount {
+	color: #fff;
+}
+
 .list-status {
 	vertical-align: baseline;
 	margin-right: 0.25rem;
 	margin-left: 0.25rem;
+}
+
+#channelPresence > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
+	background: @darkBk;
+}
+
+.memberTempName {
+	color: #fff;
+}
+
+#channelPresence > div.km-header > div > div.km-view-title {
+	background: @darkBk;
+	color: #fff;
+}
+
+#channelPresence-listview > li {
+	border-bottom: 1px solid @shade-100;
 }
 
 #channels-listview > li > div > a > div > img {
@@ -3538,7 +3561,7 @@ div.loginBox > form > div > ul > li {
 
 #contacts-listview,
 #contactimport-listview {
-	padding-bottom: 3rem;
+	padding-bottom: 5rem;
 	> li {
 		border-bottom: 1px solid @shade-200;
 		background: #fff;
@@ -3877,7 +3900,6 @@ div.contactListBox.activeContact > div > div > ul {
 	color: @shade-100;
 	//.font-size(11);
 	font-weight: 400;
-	padding: 1px 0px 1px 0.5rem; 
 	border: none;
 }
 
@@ -4233,6 +4255,7 @@ div.contactListBox.activeContact > div > div > ul {
 #gallery-listview {
     line-height: 0 !important;
     padding-top: 0.25rem;
+    padding-bottom: 5em;
     /* need to work on better responsive
    -webkit-column-count: 2;
    -webkit-column-gap:   1px;
@@ -4342,6 +4365,10 @@ div.contactListBox.activeContact > div > div > ul {
 
 #settingChatSize > li.km-button.km-state-active {
 	border-radius: 3px;
+}
+
+#settings > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > form > div > ul > li:nth-child(3) > div:after {
+	display: none !important;
 }
 
 .km-state-active #gallery-photos {
@@ -5157,6 +5184,7 @@ div.contactListBox.activeContact > div > div > ul {
 #findplace-listview,
 #checkin-listview {
 	width: 100%;
+	margin-bottom: 5em;
 	li:not(.km-group-container) {
 		border-top: 1px solid @shade-200 !important;
 	}
