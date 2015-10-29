@@ -996,7 +996,7 @@ var channelView = {
         if (channelView.ghostgramActive) {
             messageData.html = text;
         }
-        
+
         if (userModel.currentUser.currentPlaceUUID !== null) {
             messageData.place = {name: userModel.currentUser.currentPlace, uuid: userModel.currentUser.currentPlaceUUID};
         }
@@ -1019,9 +1019,11 @@ var channelView = {
 
         $('#messageTextArea').val('');
         autosize.update($('#messageTextArea'));
+
          if (channelView.ghostgramActive) {
              channelView.ghostgramActive = false;
              $(".k-editor-toolbar").hide();
+             $('#messageTextArea').data("kendoEditor").update();
          }
 
     },
