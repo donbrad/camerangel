@@ -590,7 +590,19 @@ var channelView = {
             /*swipe: channelView.swipeChannel,*/
             hold: channelView.holdChannel
         });
-  	
+
+        $("#messageTextArea").kendoEditor({
+            tools: [
+                "bold",
+                "italic",
+                "underline",
+                "insertUnorderedList",
+                "indent",
+                "outdent"
+            ]
+        });
+        $(".k-editor-toolbar").hide();
+
   		
         /*$("#channelMembers-listview").kendoMobileListView({
             dataSource: currentChannelModel.membersDS,
@@ -935,12 +947,14 @@ var channelView = {
 
     onChannelRead : function (message) {
 
-        if (message.content !== null) {
-            message.formattedContent = formatMessage(message.content);
+       /* if (message.content !== null) {
+            message.formattedContent = message.content;
         } else {
             message.formattedContent = '';
         }
-
+*/
+        message.formattedContent = message.content;
+        
         // Ensure that new messages get the timer
         if (message.fromHistory === undefined) {
             message.fromHistory = false;
@@ -962,31 +976,8 @@ var channelView = {
     ghostgram: function (e) {
         _preventDefault(e);
         channelView.ghostgramActive = true;
+        $(".k-editor-toolbar").show();
 
-        $("#messageTextArea").kendoEditor({
-            tools: [
-                "bold",
-                "italic",
-                "underline",
-                "insertUnorderedList",
-                "indent",
-                "outdent",
-                {
-                    name: "fontSize",
-                    items: [
-                        {text: 'Tiny', value: "8px"},
-                        {text: 'Small', value: "10px"},
-                        {text: 'Medium', value: "12px"},
-                        {text: 'Medium Plus', value: "14px"},
-                        {text: 'Large', value: "16px"},
-                        {text: 'Larger', value: "20px"},
-                        {text: 'Largest', value: "28px"}
-                    ]
-
-                },
-                "foreColor"
-            ]
-        });
     },
 
     messageSend : function (e) {
@@ -998,6 +989,9 @@ var channelView = {
             validMessage = true;
         }
 
+        if (channelView.ghostgramActive) {
+            messageData.html = text;
+        }
         // Add current location information to message
         var messageData = {geo: {lat: mapModel.lat, lng: mapModel.lng} , address: mapModel.currentAddress};
 
@@ -1025,7 +1019,7 @@ var channelView = {
         autosize.update($('#messageTextArea'));
          if (channelView.ghostgramActive) {
              channelView.ghostgramActive = false;
-             $("#messageTextArea").data("kendoEditor").destroy();
+             $(".k-editor-toolbar").hide();
          }
 
     },
