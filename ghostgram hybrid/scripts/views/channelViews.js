@@ -984,7 +984,8 @@ var channelView = {
         _preventDefault(e);
         var validMessage = false; // If message is valid, send is enabled
 
-        var text = $('#messageTextArea').val();
+        //var text = $('#messageTextArea').val();
+        var text = $('#messageTextArea').data("kendoEditor").value();
         if (text.length > 0) {
             validMessage = true;
         }
