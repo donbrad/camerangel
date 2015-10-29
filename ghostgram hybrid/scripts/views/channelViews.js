@@ -979,8 +979,11 @@ var channelView = {
 
     ghostgram: function (e) {
         _preventDefault(e);
-        channelView.ghostgramActive = true;
-        $(".k-editor-toolbar").show();
+        channelView.ghostgramActive = !channelView.ghostgramActive;
+        if (channelView.ghostgramActive)
+            $(".k-editor-toolbar").show();
+        else
+            $(".k-editor-toolbar").hide();
 
     },
 
