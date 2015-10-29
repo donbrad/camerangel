@@ -552,6 +552,7 @@ var channelView = {
     currentContact: null,
     activeMessage: null,
     intervalId : null,
+    ghostgramActive : false,
     sendMessageHandler : null,
     messagesDS: new kendo.data.DataSource({  // this is the list view data source for chat messages
         sort: {
@@ -958,6 +959,36 @@ var channelView = {
         }
     },
 
+    ghostgram: function (e) {
+        _preventDefault(e);
+        channelView.ghostgramActive = true;
+
+        $("#messageTextArea").kendoEditor({
+            tools: [
+                "bold",
+                "italic",
+                "underline",
+                "insertUnorderedList",
+                "indent",
+                "outdent",
+                {
+                    name: "fontSize",
+                    items: [
+                        {text: 'Tiny', value: "8px"},
+                        {text: 'Small', value: "10px"},
+                        {text: 'Medium', value: "12px"},
+                        {text: 'Medium Plus', value: "14px"},
+                        {text: 'Large', value: "16px"},
+                        {text: 'Larger', value: "20px"},
+                        {text: 'Largest', value: "28px"}
+                    ]
+
+                },
+                "foreColor"
+            ]
+        });
+    },
+
     messageSend : function (e) {
         _preventDefault(e);
         var validMessage = false; // If message is valid, send is enabled
@@ -992,6 +1023,11 @@ var channelView = {
 
         $('#messageTextArea').val('');
         autosize.update($('#messageTextArea'));
+         if (channelView.ghostgramActive) {
+             channelView.ghostgramActive = false;
+             $("#messageTextArea").data("kendoEditor").destroy();
+         }
+
     },
 
     showChatImagePreview: function (displayUrl) {
