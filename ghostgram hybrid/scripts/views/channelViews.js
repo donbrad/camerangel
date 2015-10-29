@@ -594,7 +594,7 @@ var channelView = {
         $("#messageTextArea").kendoEditor({
             resizable: {
                 content: true,
-                min: 32
+                min: 24
             },
             tools: [
                 "bold",
@@ -1022,9 +1022,12 @@ var channelView = {
 
      _initMessageTextArea : function () {
 
-         $('#messageTextArea').val('')
+      //   $('#messageTextArea').val('')
+         $('#messageTextArea').attr("rows",1);
+         $('#messageTextArea').attr("height",24);
          $('#messageTextArea').data("kendoEditor").value('');
          $('#messageTextArea').data("kendoEditor").update();
+
         autosize.update($('#messageTextArea'));
 
          if (channelView.ghostgramActive) {
