@@ -954,7 +954,7 @@ var channelView = {
         }
 */
         message.formattedContent = message.content;
-        
+
         // Ensure that new messages get the timer
         if (message.fromHistory === undefined) {
             message.fromHistory = false;

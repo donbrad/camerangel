@@ -2789,6 +2789,8 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   font-size: 1rem;
   color: #4a4a4a !important;
 }
+
+
 #ghostEmailwrapper > table > tbody > tr:nth-child(1) > td > ul > li > a {
   background: #979797 !important;
 }
@@ -2827,8 +2829,9 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 }
 /* Chat styles */
 #messageTextArea {
-  font-size: 14px;
-  font-size: 0.875rem;
+  color: #4a4a4a !important;
+  font-size: 16px;
+  font-size: 1rem;
   resize: none;
   border: none;
   padding-bottom: 0px;
