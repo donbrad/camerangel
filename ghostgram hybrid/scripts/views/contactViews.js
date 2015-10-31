@@ -192,7 +192,7 @@ var contactsView = {
             e.preventDefault();
         }
 
-        var query = $('#contactSearchQuery').val();
+        var query = $('#contactsSearchQuery').val();
 
         APP.kendo.navigate("#contactImport?query="+query);
 
