@@ -166,7 +166,7 @@ var contactsView = {
     },
 
     updateSearchUX: function (event) {
-        var query = $('#contactSearchInput').val();
+        var query = $('#contactSearchQuery').val();
 
         if (query.length > 2) {
             $("#btnSearchDeviceName").text(query);
@@ -192,7 +192,7 @@ var contactsView = {
             e.preventDefault();
         }
 
-        var query = $('#contactSearchInput').val();
+        var query = $('#contactSearchQuery').val();
 
         APP.kendo.navigate("#contactImport?query="+query);
 
