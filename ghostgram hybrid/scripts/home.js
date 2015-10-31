@@ -493,6 +493,12 @@ function homeSignin (e) {
 
 			userModel.generateUserKey();
 
+			// Check version -- ensure all users are version 1 with new public/private keys
+			if (userModel.parseUser.get("version") === undefined) {
+				userModel.generateNewPrivateKey(userModel.parseUser);
+				userModel.parseUser.set("version", 1);
+				userModel.parseUser.save();
+			}
 			var publicKey = user.get('publicKey');
 			var privateKey = user.get('privateKey');
 			if (publicKey === undefined || privateKey === undefined) {
