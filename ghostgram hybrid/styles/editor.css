@@ -1,0 +1,9 @@
+body {
+  font-size: 1em;
+}
+table.k-editor .k-content {
+  resize: vertical;
+}
+.k-editor .k-editor-toolbar-wrap {
+  display: none;
+}

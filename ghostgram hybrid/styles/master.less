@@ -447,7 +447,11 @@ form {
 
 .icon-sm {
 	height: 1em;
-	vertical-align: text-bottom;
+	vertical-align: middle;
+}
+
+.icon-bar {
+	height: 1em;
 }
 
 .loading-icon {
@@ -986,6 +990,13 @@ div.km-header a img{
 .km-material .km-switch-handle {
 	.shadow-1;
 }
+
+.k-block, .k-widget, .k-input, .k-textbox, .k-group, .k-content, .k-header, .k-filter-row>th, .k-editable-area, .k-separator, .k-colorpicker .k-i-arrow-s, .k-textbox>input, .k-autocomplete, .k-dropdown-wrap, .k-toolbar, .k-group-footer td, .k-grid-footer, .k-footer-template td, .k-state-default, .k-state-default .k-select, .k-state-disabled, .k-grid-header, .k-grid-header-wrap, .k-grid-header-locked, .k-grid-footer-locked, .k-grid-content-locked, .k-grid td, .k-grid td.k-state-selected, .k-grid-footer-wrap, .k-pager-wrap, .k-pager-wrap .k-link, .k-pager-refresh, .k-grouping-header, .k-grouping-header .k-group-indicator, .k-panelbar>.k-item>.k-link, .k-panel>.k-item>.k-link, .k-panelbar .k-panel, .k-panelbar .k-content, .k-treemap-tile, .k-calendar th, .k-slider-track, .k-splitbar, .k-dropzone-active, .k-tiles, .k-toolbar, .k-tooltip, .k-button-group .k-tool, .k-upload-files {
+	border: none;
+	border-bottom: 1px solid @shade-200;
+}
+
+
 
 .k-header, .k-grid-header-wrap, .k-grid .k-grouping-header, .k-grid-header, .k-pager-wrap, .k-pager-wrap .k-textbox, .k-pager-wrap .k-link, .k-grouping-header .k-group-indicator, .k-gantt-toolbar .k-state-default {
 	border-color: #fff;
@@ -1963,12 +1974,12 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .km-root .appearance .km-listview label {
     color: #212121;
-    .font-size(14);
+    font-size: 0.875em;
     width: 100%;
 }
 .km-wp .appearance .km-listview label {
     color: #212121;
-    .font-size(14);
+    font-size: 0.875em;
 }
 .km-root .km-pane .km-view.appearance .km-listview input {
     position: relative;
@@ -1987,7 +1998,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 
 .km-root .km-pane .km-view.appearance .km-listview select {
     position: relative;
-    .font-size(14);
+    font-size: 1em;
     width: 100%;
     right: 0;
     margin-top: 0;
@@ -2927,13 +2938,10 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 
 #messageSend {
     font-weight: 600;
-    color: #2D93FF;
+    //color: #2D93FF;
     margin-top: 0px;
     padding: 0px;
     padding-top: 3px;
-    position: absolute;
-	bottom: 45px;
-	right: 8px;
 }
 .messageCompose {
     padding: 0.5rem;
@@ -2974,6 +2982,37 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
     .font-size(12);
 }
 
+.lineArrow {
+    width:70%;
+    height: 1px;
+    background: @shade-200;
+}
+
+.btnBar {
+	height: 2em;
+	width: 2em;
+}
+
+.k-editor .k-editable-area {
+	height: 2em;
+}
+
+.activeTool {
+	border-radius: 2em !important;
+	height: 2em !important;
+	width: 2em !important;
+	background: @shade-200 !important;
+}
+
+#chat-editorBtn {
+
+	.km-badge {
+		background: @highlight-200;
+		display: none;
+	}
+}
+
+
 /*
 #privacyMode {
     border-left: 2px solid #e0e0e0;
@@ -3000,7 +3039,7 @@ div.chat-message-user-content.clearfix > p {
   	background-size: cover;
 }
 
-.newuserBox {
+.newuserBox { 
     
     h1 {
     	margin-bottom: 0px;
@@ -3226,13 +3265,19 @@ div.loginBox > form > div > ul > li {
 			width: 80%;
 			float: left;
 			.chat-time {
-				.font-size(12);
+				.font-size(16);
+				@media @mobile {
+					.font-size(14);
+				}
 			}
 			.chat-details {
 				float: left;
 				margin-left: 0px;
 				margin-right: 0px;
-				.font-size(12);
+				.font-size(16);
+				@media @mobile {
+					.font-size(14);
+				}
 			}
 		}
 	}
@@ -4459,6 +4504,10 @@ div.contactListBox.activeContact > div > div > ul {
 	background-color: #fff;
 }
 
+.km-badge, .km-detail {
+	font-size: 0.7em !important;
+}
+
 .km-material input, .km-material select, .km-material textarea, .km-material .k-dropdown .k-input, .km-material input[type=password], .km-material input[type=search], .km-material input[type=number], .km-material input[type=tel], .km-material input[type=url], .km-material input[type=email], .km-material input[type=text]:not(.k-input), .km-root .km-material textarea {
 	color: @black;
 }
@@ -4743,27 +4792,30 @@ div.contactListBox.activeContact > div > div > ul {
 }
 
 .chat-message-text {
-    font-size: 1em;
+    font-size: 1.2em;
     line-height: 1.4;
-}
-
-@media @mobile {
-	.chat-message-text {
-    	font-size: 1em;
+    @media @mobile {
+		.chat-message-text {
+    		font-size: 1em;
+		}
 	}
 }
 
+
+
 .chat-details {
-	.font-size(12);
+	.font-size(14);
 	color: @shade-100;
 	padding-left: 14%;
 	@media @mobile {
+		.font-size(12);
 		padding-left: 17%;
 	}
 }
 
 .chat-sender {
 	float: left;
+	letter-spacing: 0.3px; 
 }
 
 .chat-time {

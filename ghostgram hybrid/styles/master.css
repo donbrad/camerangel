@@ -506,7 +506,10 @@ form p {
 }
 .icon-sm {
   height: 1em;
-  vertical-align: text-bottom;
+  vertical-align: middle;
+}
+.icon-bar {
+  height: 1em;
 }
 .loading-icon {
   height: 1rem;
@@ -1017,6 +1020,57 @@ div.km-header a img {
 }
 #profileStatusList > li:nth-child(3) > div > span > span > span.k-input .km-material .km-switch-handle {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
+}
+.k-block,
+.k-widget,
+.k-input,
+.k-textbox,
+.k-group,
+.k-content,
+.k-header,
+.k-filter-row > th,
+.k-editable-area,
+.k-separator,
+.k-colorpicker .k-i-arrow-s,
+.k-textbox > input,
+.k-autocomplete,
+.k-dropdown-wrap,
+.k-toolbar,
+.k-group-footer td,
+.k-grid-footer,
+.k-footer-template td,
+.k-state-default,
+.k-state-default .k-select,
+.k-state-disabled,
+.k-grid-header,
+.k-grid-header-wrap,
+.k-grid-header-locked,
+.k-grid-footer-locked,
+.k-grid-content-locked,
+.k-grid td,
+.k-grid td.k-state-selected,
+.k-grid-footer-wrap,
+.k-pager-wrap,
+.k-pager-wrap .k-link,
+.k-pager-refresh,
+.k-grouping-header,
+.k-grouping-header .k-group-indicator,
+.k-panelbar > .k-item > .k-link,
+.k-panel > .k-item > .k-link,
+.k-panelbar .k-panel,
+.k-panelbar .k-content,
+.k-treemap-tile,
+.k-calendar th,
+.k-slider-track,
+.k-splitbar,
+.k-dropzone-active,
+.k-tiles,
+.k-toolbar,
+.k-tooltip,
+.k-button-group .k-tool,
+.k-upload-files {
+  border: none;
+  border-bottom: 1px solid #E0E0E0;
 }
 .k-header,
 .k-grid-header-wrap,
@@ -1967,13 +2021,11 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .km-root .appearance .km-listview label {
   color: #212121;
-  font-size: 14px;
   font-size: 0.875em;
   width: 100%;
 }
 .km-wp .appearance .km-listview label {
   color: #212121;
-  font-size: 14px;
   font-size: 0.875em;
 }
 .km-root .km-pane .km-view.appearance .km-listview input {
@@ -1991,8 +2043,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .km-root .km-pane .km-view.appearance .km-listview select {
   position: relative;
-  font-size: 14px;
-  font-size: 0.875em;
+  font-size: 1em;
   width: 100%;
   right: 0;
   margin-top: 0;
@@ -2780,8 +2831,6 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   font-size: 1em;
   color: #4A4A4A !important;
 }
-
-
 #ghostEmailwrapper > table > tbody > tr:nth-child(1) > td > ul > li > a {
   background: #979797 !important;
 }
@@ -2821,29 +2870,16 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 /* Chat styles */
 #messageTextArea {
   font-size: 1em;
-  color: #4a4a4a !important;
   resize: none;
   border: none;
   padding-bottom: 0px;
   line-height: 1.5;
 }
-
-#messageTextArea > table > tbody > tr:nth-child(1) > td > ul > li > a {
-  background: #979797 !important;
-}
-#messageTextArea > table > tbody > tr:nth-child(1) > td > ul > li > a.k-tool.k-state-selected {
-  background: #6cadf3 !important;
-}
-
 #messageSend {
   font-weight: 600;
-  color: #2D93FF;
   margin-top: 0px;
   padding: 0px;
   padding-top: 3px;
-  position: absolute;
-  bottom: 45px;
-  right: 8px;
 }
 .messageCompose {
   padding: 0.5rem;
@@ -2884,6 +2920,28 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   padding-left: 1rem;
   font-size: 12px;
   font-size: 0.75em;
+}
+.lineArrow {
+  width: 70%;
+  height: 1px;
+  background: #E0E0E0;
+}
+.btnBar {
+  height: 2em;
+  width: 2em;
+}
+.k-editor .k-editable-area {
+  height: 2em;
+}
+.activeTool {
+  border-radius: 2em !important;
+  height: 2em !important;
+  width: 2em !important;
+  background: #E0E0E0 !important;
+}
+#chat-editorBtn .km-badge {
+  background: #D4ABC4;
+  display: none;
 }
 /*
 #privacyMode {
@@ -3097,15 +3155,27 @@ div.loginBox > form > div > ul > li {
   float: left;
 }
 .card .top .senderMessage .chat-time {
-  font-size: 12px;
-  font-size: 0.75em;
+  font-size: 16px;
+  font-size: 1em;
+}
+@media only screen and (max-width: 320px) {
+  .card .top .senderMessage .chat-time {
+    font-size: 14px;
+    font-size: 0.875em;
+  }
 }
 .card .top .senderMessage .chat-details {
   float: left;
   margin-left: 0px;
   margin-right: 0px;
-  font-size: 12px;
-  font-size: 0.75em;
+  font-size: 16px;
+  font-size: 1em;
+}
+@media only screen and (max-width: 320px) {
+  .card .top .senderMessage .chat-details {
+    font-size: 14px;
+    font-size: 0.875em;
+  }
 }
 .card .photoTopDiv {
   padding: 0px;
@@ -4176,6 +4246,10 @@ div.contactListBox.activeContact > div > div > ul {
 html .km-pane-wrapper .k-header {
   background-color: #fff;
 }
+.km-badge,
+.km-detail {
+  font-size: 0.7em !important;
+}
 .km-material input,
 .km-material select,
 .km-material textarea,
@@ -4445,27 +4519,30 @@ html .km-pane-wrapper .k-header {
   border-color: #E57373 transparent;
 }
 .chat-message-text {
-  font-size: 1em;
+  font-size: 1.2em;
   line-height: 1.4;
 }
 @media only screen and (max-width: 320px) {
-  .chat-message-text {
+  .chat-message-text .chat-message-text {
     font-size: 1em;
   }
 }
 .chat-details {
-  font-size: 12px;
-  font-size: 0.75em;
+  font-size: 14px;
+  font-size: 0.875em;
   color: #979797;
   padding-left: 14%;
 }
 @media only screen and (max-width: 320px) {
   .chat-details {
+    font-size: 12px;
+    font-size: 0.75em;
     padding-left: 17%;
   }
 }
 .chat-sender {
   float: left;
+  letter-spacing: 0.3px;
 }
 .chat-time {
   float: right;

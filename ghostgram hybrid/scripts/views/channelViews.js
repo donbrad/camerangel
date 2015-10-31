@@ -586,10 +586,10 @@ var channelView = {
 
         //APP.checkPubnub();
 
-        var width = window.innerWidth - 68;
-        $('#messageTextArea').css("width", width+'px');
+       // var width = window.innerWidth - 68;
+        //$('#messageTextArea').css("width", width+'px');
         currentChannelModel.topOffset = APP.kendo.scroller().scrollTop;
-        autosize($('#messageTextArea'));
+       	autosize($('#messageTextArea'));
         
         $("#messages-listview").kendoMobileListView({
             dataSource: channelView.messagesDS,
@@ -604,9 +604,10 @@ var channelView = {
         });
 
         $("#messageTextArea").kendoEditor({
+        	stylesheets:["../styles/editor.css"],
             resizable: {
                 content: true,
-                min: 32
+                min: 24
             },
             tools: [
                 "bold",
@@ -631,6 +632,36 @@ var channelView = {
             }
         });*/
     },
+
+    toggleTool: function(e){
+    	var tool = e.button[0].dataset['tool'];
+    	var editor = $("#messageTextArea").data("kendoEditor");
+    	editor.exec(tool);
+   	
+    	// If a togglable tool, reflect state
+    	if (tool !== 'indent' && tool !== 'outdent'){
+    		
+    		var toolState = editor.state(tool);
+    		var $currentBtn = $(e.target[0]);
+    		var $currentBtnImg = $currentBtn.closest("img");
+    		var toolCount = $("#chat-editorBtn").kendoMobileButton("badge");
+    		toolCount = parseInt(toolCount);
+    	
+    		if(toolState){
+    			$currentBtn.addClass("activeTool");
+    			toolCount = toolCount + 1;
+    		} else {
+    			$currentBtn.removeClass("activeTool");
+    			toolCount = toolCount - 1;
+    		}
+    	
+    		$("#chat-editorBtn").kendoMobileButton({badge: toolCount});
+    	} 
+
+    	
+    	
+    },
+
 
     // Initialize the channel specific view data sources.
     initDataSources : function () {
@@ -742,6 +773,8 @@ var channelView = {
                     channelView.scrollToBottom();
                 });
             }
+
+
 
 
         } else {
@@ -991,9 +1024,28 @@ var channelView = {
 
     ghostgram: function (e) {
         _preventDefault(e);
-        channelView.ghostgramActive = true;
-        $(".k-editor-toolbar").show();
+        channelView.ghostgramActive = !channelView.ghostgramActive;
+        if (channelView.ghostgramActive){
+            //$(".k-editor-toolbar").show();
+        	$("#chat-editorBtnImg").attr("src","images/icon-editor-active.svg");
+        	// Hide badge
+        	$("#chat-editorBtn > span.km-badge").hide();
+        	$("#editorOptionBar").velocity("slideDown");
+        } else {
+            //$(".k-editor-toolbar").hide();
+        	$("#chat-editorBtnImg").attr("src","images/icon-editor.svg");
+        	// Show badge
+        	$("#chat-editorBtn > span.km-badge").show();
+        	$("#editorOptionBar").velocity("slideUp");
+        	var toolCount = $("#chat-editorBtn").kendoMobileButton("badge");
+        	parseInt(toolCount);
 
+        	if (toolCount > 0){
+    			$("#chat-editorBtn > span.km-badge").show();
+    		} else {
+    			$("#chat-editorBtn > span.km-badge").hide();
+    		}
+        }
     },
 
     messageSend : function (e) {
@@ -1034,15 +1086,18 @@ var channelView = {
 
      _initMessageTextArea : function () {
 
-         $('#messageTextArea').val('')
+      //   $('#messageTextArea').val('')
+         $('#messageTextArea').attr("rows",1);
+         $('#messageTextArea').attr("height",24);
          $('#messageTextArea').data("kendoEditor").value('');
          $('#messageTextArea').data("kendoEditor").update();
+
         autosize.update($('#messageTextArea'));
 
-         if (channelView.ghostgramActive) {
+        if (channelView.ghostgramActive) {
              channelView.ghostgramActive = false;
              $(".k-editor-toolbar").hide();
-         }
+        }
 
     },
 
@@ -1344,6 +1399,8 @@ var channelPresence = {
             }
 
         });
+
+
     },
 
     onShow: function (e) {
