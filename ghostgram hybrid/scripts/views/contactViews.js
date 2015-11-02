@@ -154,6 +154,7 @@ var contactsView = {
 
         // set action button
     	ux.showActionBtn(true, "#contacts", "#contactImport");
+    	ux.showActionBtnText("#contacts", "3em", "New Contact");
     },
 
     // All update the ContactListDS item with current changes

@@ -1769,8 +1769,8 @@ div.footerMenu.km-footer > ul > li > a:active {
     background-size: cover;
 }
 .publicMode {
-    filter: opacity(1.0);
-    -webkit-filter: opacity(1.0);
+    filter: blur(0px) opacity(1.0);
+    -webkit-filter: blur(0px) opacity(1.0);
 }
 .privateMode {
     filter: blur(5px) opacity(0.2);
@@ -2098,6 +2098,10 @@ div.footerMenu.km-footer > ul > li > a:active {
 	padding: 0.25em 0.5em;
 }
 
+.k-popup.k-group {
+	border-color: transparent !important;
+}
+
 .km-material .km-view .km-navbar .km-button:active {
 	background-color: @btnActiveBk;
 	color: @black;
@@ -2135,6 +2139,18 @@ div.footerMenu.km-footer > ul > li > a:active {
 	.font-size(14);
 	margin-left: 1rem;
 	margin-right: 1rem;
+}
+
+.contact-group {
+	font-size: 0.75em;
+	color: @shade-100;
+	background: @shade-300;
+	border-radius: 3px;
+	padding: 0.1em 0.5em;
+}
+
+#contacts-listview > li > ul > li > div > a > div.left.listName > h4 {
+	margin-right: 0px;
 }
 
 .round {
@@ -2733,7 +2749,7 @@ div.footerMenu.km-footer > ul > li > a {
 	right: 1rem;
 	bottom: 4rem;
 	p {
-		width: 85px;
+		width: 100px;
 		position: absolute;
 		right: 0rem;
 		top: 1rem;

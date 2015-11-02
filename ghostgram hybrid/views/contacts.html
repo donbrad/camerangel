@@ -275,6 +275,15 @@
 
 
 <script type="text/x-kendo-template" id="contactsTemplate">      
+	# console.log(data) #
+
+	#
+		var name = data.name;
+		var alias = data.alias;
+		var group = data.group;
+		var primaryName = ux.returnUXPrimaryName(name, alias);
+		var secondaryName = ux.returnAliasName(name, alias);
+	#
 	<div>
     	<div class="contact-options">
 			# if (data.contactUUID === undefined || data.contactUUID === null){#
@@ -316,17 +325,16 @@
 
 						<div class="left listName">
 							<h4 class="textClamp">
-							#if(data.alias !== ''){#
-								#: data.alias #
-							#} else {#
-								#: data.name #
-							#}#
+							#= primaryName #
 							#if (data.phoneVerified){#
 									<img src="images/user-verified.svg" class="user-status-icon" />
 							#}#
-							# if(data.alias !== '' && data.name !== data.alias) {#
-								<span class="contacts-alias-sm">#: data.name #</span>
+							<span class="contacts-alias-sm">#= secondaryName  #</span>
+							
+							#if(data.group !== "" && data.group !== null){#
+								<span class="right contact-group">#: data.group #</span>
 							#}#
+							
 							</h4>
 						</div>
 

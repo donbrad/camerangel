@@ -86,7 +86,8 @@ var channelsView = {
     	//scroll up search 
     	ux.scrollUpSearch(e);
         // set action button
-        ux.showActionBtn(true, "#channels", "#addChannel")
+        ux.showActionBtn(true, "#channels", "#addChannel");
+        ux.showActionBtnText("#channels", "3em", "New Chat");
         ux.checkEmptyUIState(channelModel.channelsDS, "#channels");
     },
 

@@ -42,6 +42,21 @@ var ux = {
 		return primaryName;
 	},
 
+	returnAliasName: function(alias, group){
+		var secondaryName;
+
+		// If alias and group are present
+		if(alias !== "" && alias !== undefined && group !== "" & group !== null){
+			secondaryName = group;
+		// if 
+		} else if(alias !== "" && alias !== undefined){
+			secondaryName = alias;
+		} else {
+			secondaryName = ""
+		}
+		return secondaryName;
+	},	
+
 	addressPrimaryName: function(name, alias, address){
 		var preCheckName = name; 
 		var preCheckAlias = alias; 
@@ -239,7 +254,10 @@ var ux = {
 	},
 
 	showActionBtnText:function(path, fromRight, text){
-		$(path + " > div.footerMenu.km-footer > a > span > p").text(text).velocity({opacity: 1, right: fromRight}, {easing: "spring", delay: 500});
+		$(path + " > div.footerMenu.km-footer > a > span > p").text(text).css({
+			right: fromRight,
+			opacity: 1
+		});
 	},
 
 	hideActionBtnText: function(path){

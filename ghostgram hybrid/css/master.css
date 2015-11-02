@@ -506,7 +506,10 @@ form p {
 }
 .icon-sm {
   height: 1em;
-  vertical-align: text-bottom;
+  vertical-align: middle;
+}
+.icon-bar {
+  height: 1em;
 }
 .loading-icon {
   height: 1rem;
@@ -1066,7 +1069,8 @@ div.km-header a img {
 .k-tooltip,
 .k-button-group .k-tool,
 .k-upload-files {
-  border-color: transparent !important;
+  border: none;
+  border-bottom: 1px solid #E0E0E0;
 }
 .k-header,
 .k-grid-header-wrap,
@@ -1796,8 +1800,8 @@ div.footerMenu.km-footer > ul > li > a:active {
   background-size: cover;
 }
 .publicMode {
-  filter: opacity(1);
-  -webkit-filter: opacity(1);
+  filter: blur(0px) opacity(1);
+  -webkit-filter: blur(0px) opacity(1);
 }
 .privateMode {
   filter: blur(5px) opacity(0.2);
@@ -2017,13 +2021,11 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .km-root .appearance .km-listview label {
   color: #212121;
-  font-size: 14px;
   font-size: 0.875em;
   width: 100%;
 }
 .km-wp .appearance .km-listview label {
   color: #212121;
-  font-size: 14px;
   font-size: 0.875em;
 }
 .km-root .km-pane .km-view.appearance .km-listview input {
@@ -2041,8 +2043,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .km-root .km-pane .km-view.appearance .km-listview select {
   position: relative;
-  font-size: 14px;
-  font-size: 0.875em;
+  font-size: 1em;
   width: 100%;
   right: 0;
   margin-top: 0;
@@ -2137,6 +2138,9 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .km-material .km-view .km-navbar .km-button {
   padding: 0.25em 0.5em;
+}
+.k-popup.k-group {
+  border-color: transparent !important;
 }
 .km-material .km-view .km-navbar .km-button:active {
   background-color: rgba(0, 0, 0, 0.15);
@@ -2699,7 +2703,7 @@ div.footerMenu.km-footer > ul > li > a {
   bottom: 4rem;
 }
 .actionBtn p {
-  width: 85px;
+  width: 100px;
   position: absolute;
   right: 0rem;
   top: 1rem;
@@ -2876,13 +2880,9 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 }
 #messageSend {
   font-weight: 600;
-  color: #2D93FF;
   margin-top: 0px;
   padding: 0px;
   padding-top: 3px;
-  position: absolute;
-  bottom: 45px;
-  right: 8px;
 }
 .messageCompose {
   padding: 0.5rem;
@@ -2923,6 +2923,28 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   padding-left: 1rem;
   font-size: 12px;
   font-size: 0.75em;
+}
+.lineArrow {
+  width: 70%;
+  height: 1px;
+  background: #E0E0E0;
+}
+.btnBar {
+  height: 2em;
+  width: 2em;
+}
+.k-editor .k-editable-area {
+  height: 2em;
+}
+.activeTool {
+  border-radius: 2em !important;
+  height: 2em !important;
+  width: 2em !important;
+  background: #E0E0E0 !important;
+}
+#chat-editorBtn .km-badge {
+  background: #D4ABC4;
+  display: none;
 }
 /*
 #privacyMode {
@@ -3136,15 +3158,27 @@ div.loginBox > form > div > ul > li {
   float: left;
 }
 .card .top .senderMessage .chat-time {
-  font-size: 12px;
-  font-size: 0.75em;
+  font-size: 16px;
+  font-size: 1em;
+}
+@media only screen and (max-width: 320px) {
+  .card .top .senderMessage .chat-time {
+    font-size: 14px;
+    font-size: 0.875em;
+  }
 }
 .card .top .senderMessage .chat-details {
   float: left;
   margin-left: 0px;
   margin-right: 0px;
-  font-size: 12px;
-  font-size: 0.75em;
+  font-size: 16px;
+  font-size: 1em;
+}
+@media only screen and (max-width: 320px) {
+  .card .top .senderMessage .chat-details {
+    font-size: 14px;
+    font-size: 0.875em;
+  }
 }
 .card .photoTopDiv {
   padding: 0px;
@@ -4215,6 +4249,10 @@ div.contactListBox.activeContact > div > div > ul {
 html .km-pane-wrapper .k-header {
   background-color: #fff;
 }
+.km-badge,
+.km-detail {
+  font-size: 0.7em !important;
+}
 .km-material input,
 .km-material select,
 .km-material textarea,
@@ -4484,22 +4522,24 @@ html .km-pane-wrapper .k-header {
   border-color: #E57373 transparent;
 }
 .chat-message-text {
-  font-size: 1em;
+  font-size: 1.2em;
   line-height: 1.4;
 }
 @media only screen and (max-width: 320px) {
-  .chat-message-text {
+  .chat-message-text .chat-message-text {
     font-size: 1em;
   }
 }
 .chat-details {
-  font-size: 12px;
-  font-size: 0.75em;
+  font-size: 14px;
+  font-size: 0.875em;
   color: #979797;
   padding-left: 14%;
 }
 @media only screen and (max-width: 320px) {
   .chat-details {
+    font-size: 12px;
+    font-size: 0.75em;
     padding-left: 17%;
   }
 }
