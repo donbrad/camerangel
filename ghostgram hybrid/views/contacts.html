@@ -137,7 +137,7 @@
 	    		</div>
 	    		<div class="contactImg">
 	    			<label for="editContactName">
-	    				<input class="input-text-md" type="text" id="editContactName" data-bind="value: name"/>
+	    				<input class="input-text-lg" type="text" id="editContactName" data-bind="value: name"/>
 	    			</label>
 					<div>
 						<span class="caption">aka</span>
@@ -195,7 +195,7 @@
 					<img src="images/ghost-sm.svg" />  Refresh Contact
 				</a>-->
 				<a data-role="button" class="btnClear-grey" id="editContact-resyncDeviceBtn" data-click="editContactView.syncWithDevice">
-					<img src="images/contacts.svg" />  Sync Contact with Device
+					<img src="images/icon-sync.svg" class="icon-sm" />  Sync Contact with Device
 				</a>
 				<a data-role="button" class="btnClear-red " id="editContact-deleteBtn" data-click="deleteContact">
 					<img src="images/trash.svg" />  Delete Contact
@@ -204,8 +204,7 @@
 		</form>
 	</div>
 	<div class="footerBk" data-role="footer">
-		<a data-role="button" class="btnClear-blue btnSpan-btm" id="editContact-saveBtn" data-click="editContactView.updateContact">
-			<img src="images/contacts.svg" />  Update Contact
+		<a data-role="button" class="btnPrimary btnSpan-btm" id="editContact-saveBtn" data-click="editContactView.updateContact">Update Contact
 		</a>
 
 	</div>
@@ -275,6 +274,13 @@
 
 
 <script type="text/x-kendo-template" id="contactsTemplate">      
+	#
+		var name = data.name;
+		var alias = data.alias;
+		var group = data.group;
+		var primaryName = ux.returnUXPrimaryName(name, alias);
+		var secondaryName = ux.returnAliasName(name, alias);
+	#
 	<div>
     	<div class="contact-options">
 			# if (data.contactUUID === undefined || data.contactUUID === null){#
@@ -316,17 +322,16 @@
 
 						<div class="left listName">
 							<h4 class="textClamp">
-							#if(data.alias !== ''){#
-								#: data.alias #
-							#} else {#
-								#: data.name #
-							#}#
+							#= primaryName #
 							#if (data.phoneVerified){#
 									<img src="images/user-verified.svg" class="user-status-icon" />
 							#}#
-							# if(data.alias !== '' && data.name !== data.alias) {#
-								<span class="contacts-alias-sm">#: data.name #</span>
+							<span class="contacts-alias-sm hidden">#= secondaryName  #</span>
+							
+							#if(data.group !== "" && data.group !== null){#
+								<span class="contact-group">#: data.group #</span>
 							#}#
+							
 							</h4>
 						</div>
 

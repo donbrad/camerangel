@@ -117,6 +117,7 @@ var placesView = {
     deletePlaceBtn: function(e){
         var placeId = e.button[0].dataset["id"];
     	placesModel.deletePlace(placeId);
+    	// TODO DON - wire delete place
     },
 
     onShow: function (e) {
@@ -194,7 +195,7 @@ var placesView = {
 
         // update actionBtn
         ux.showActionBtn(false, "#places");
-        ux.hideActionBtnText("#places");
+        //ux.hideActionBtnText("#places");
         ux.changeActionBtnImg("#places", "nav-add-white");
     }
 

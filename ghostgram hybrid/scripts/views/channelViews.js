@@ -48,12 +48,24 @@ var channelsView = {
                     var otherOpenedLi = $(".chat-active");
                     $(otherOpenedLi).velocity({translateX:"0"},{duration: "fast"}).removeClass("chat-active");
 
-                    if($(selection).hasClass("private") !== true && $(window).width() < 375){
-                        $(selection).velocity({translateX:"-80%"},{duration: "fast"}).addClass("chat-active");
+                    // if smaller screen and private chat
+                    if($(selection).hasClass("private") && $(window).width() < 375){
+                        $(selection).velocity({translateX:"-45%"},{duration: "fast"}).addClass("chat-active");
+                    // if smaller screen and owner
+                    } else if ($(window).width() < 375 && $(selection).hasClass("owner")){
+						$(selection).velocity({translateX:"-60%"},{duration: "fast"}).addClass("chat-active");
+					// other small screen 
+					} else if ($(window).width() < 375){
+						$(selection).velocity({translateX:"-45%"},{duration: "fast"}).addClass("chat-active");
+                    // if larger screen and private chat
                     } else if ($(selection).hasClass("private")){
                         $(selection).velocity({translateX:"-40%"},{duration: "fast"}).addClass("chat-active");
+                    // if larger screen and owner
+                	} else if($(selection).hasClass("owner")){
+                		$(selection).velocity({translateX:"-50%"},{duration: "fast"}).addClass("chat-active");
+                    // if larger screen
                     } else {
-                        $(selection).velocity({translateX:"-70%"},{duration: "fast"}).addClass("chat-active");
+                        $(selection).velocity({translateX:"-40%"},{duration: "fast"}).addClass("chat-active");
                     }
 
 
@@ -74,7 +86,8 @@ var channelsView = {
     	//scroll up search 
     	ux.scrollUpSearch(e);
         // set action button
-        ux.showActionBtn(true, "#channels", "#addChannel")
+        ux.showActionBtn(true, "#channels", "#addChannel");
+        ux.showActionBtnText("#channels", "3em", "New Chat");
         ux.checkEmptyUIState(channelModel.channelsDS, "#channels");
     },
 
@@ -574,10 +587,10 @@ var channelView = {
 
         //APP.checkPubnub();
 
-        var width = window.innerWidth - 68;
-        $('#messageTextArea').css("width", width+'px');
+       // var width = window.innerWidth - 68;
+        //$('#messageTextArea').css("width", width+'px');
         currentChannelModel.topOffset = APP.kendo.scroller().scrollTop;
-       // autosize($('#messageTextArea'));
+       	autosize($('#messageTextArea'));
         
         $("#messages-listview").kendoMobileListView({
             dataSource: channelView.messagesDS,
@@ -592,6 +605,7 @@ var channelView = {
         });
 
         $("#messageTextArea").kendoEditor({
+        	stylesheets:["../styles/editor.css"],
             resizable: {
                 content: true,
                 min: 24
@@ -619,6 +633,36 @@ var channelView = {
             }
         });*/
     },
+
+    toggleTool: function(e){
+    	var tool = e.button[0].dataset['tool'];
+    	var editor = $("#messageTextArea").data("kendoEditor");
+    	editor.exec(tool);
+   	
+    	// If a togglable tool, reflect state
+    	if (tool !== 'indent' && tool !== 'outdent'){
+    		
+    		var toolState = editor.state(tool);
+    		var $currentBtn = $(e.target[0]);
+    		var $currentBtnImg = $currentBtn.closest("img");
+    		var toolCount = $("#chat-editorBtn").kendoMobileButton("badge");
+    		toolCount = parseInt(toolCount);
+    	
+    		if(toolState){
+    			$currentBtn.addClass("activeTool");
+    			toolCount = toolCount + 1;
+    		} else {
+    			$currentBtn.removeClass("activeTool");
+    			toolCount = toolCount - 1;
+    		}
+    	
+    		$("#chat-editorBtn").kendoMobileButton({badge: toolCount});
+    	} 
+
+    	
+    	
+    },
+
 
     // Initialize the channel specific view data sources.
     initDataSources : function () {
@@ -721,6 +765,8 @@ var channelView = {
                     channelView.scrollToBottom();
                 });
             }
+
+
 
 
         } else {
@@ -962,11 +1008,27 @@ var channelView = {
     ghostgram: function (e) {
         _preventDefault(e);
         channelView.ghostgramActive = !channelView.ghostgramActive;
-        if (channelView.ghostgramActive)
-            $(".k-editor-toolbar").show();
-        else
-            $(".k-editor-toolbar").hide();
+        if (channelView.ghostgramActive){
+            //$(".k-editor-toolbar").show();
+        	$("#chat-editorBtnImg").attr("src","images/icon-editor-active.svg");
+        	// Hide badge
+        	$("#chat-editorBtn > span.km-badge").hide();
+        	$("#editorOptionBar").velocity("slideDown");
+        } else {
+            //$(".k-editor-toolbar").hide();
+        	$("#chat-editorBtnImg").attr("src","images/icon-editor.svg");
+        	// Show badge
+        	$("#chat-editorBtn > span.km-badge").show();
+        	$("#editorOptionBar").velocity("slideUp");
+        	var toolCount = $("#chat-editorBtn").kendoMobileButton("badge");
+        	parseInt(toolCount);
 
+        	if (toolCount > 0){
+    			$("#chat-editorBtn > span.km-badge").show();
+    		} else {
+    			$("#chat-editorBtn > span.km-badge").hide();
+    		}
+        }
     },
 
     messageSend : function (e) {
@@ -1015,10 +1077,10 @@ var channelView = {
 
         autosize.update($('#messageTextArea'));
 
-         if (channelView.ghostgramActive) {
+        if (channelView.ghostgramActive) {
              channelView.ghostgramActive = false;
              $(".k-editor-toolbar").hide();
-         }
+        }
 
     },
 
@@ -1320,6 +1382,8 @@ var channelPresence = {
             }
 
         });
+
+
     },
 
     onShow: function (e) {

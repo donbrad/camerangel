@@ -1,0 +1,6 @@
+body {
+  font-size: 1em;
+}
+table.k-editor .k-content {
+  resize: vertical;
+}

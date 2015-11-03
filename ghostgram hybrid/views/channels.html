@@ -99,6 +99,8 @@
     	<a class="chat-mainBoxLink" id="#:channelId#" data-channel="#:channelId#">
 	    	#if (isPrivate){#
 	    		<div class="chat-mainBox private">
+	    	#} else if (isOwner){#
+	    		<div class="chat-mainBox owner">
 	    	#} else {#
 	    		<div class="chat-mainBox">
 	    	#}#
@@ -113,12 +115,11 @@
 		    		# if(isPrivate && members.length <= 2){#
 		    			<img src="images/private-icon.svg" /> Private Chat
 		    		#} else if (false) {# // For place chats
-		    			<img src="images/place-icon.svg" id="chatList-place-icon" /> Place Chat
+		    			<img src="images/place-icon.svg" id="chatList-place-icon" class="icon-sm" /> Place Chat
 		    		#} else {#
-		    			<img src="images/group-icon.svg" /> Group Chat
+		    			<img src="images/group-icon.svg" class="icon-sm" /> Group Chat
 		    		#}#
 	    		</div>
-	 
 	    	</div><!-- chat-mainBox -->
     	</a>
    </div>
@@ -255,7 +256,7 @@
          
     </div>
 	 <div id="privacyStatus" class="hidden">Ghost Mode On</div>
-     <div>
+     <div id="privacyScreen">
          <ul id="messages-listview"></ul>
      </div>
      
@@ -268,9 +269,41 @@
 		 </div>
 		 <div class="messageCompose">
 			<textarea id="messageTextArea" rows="1" autofocus="true" wrap="soft" spellcheck="true" placeholder="Message..."></textarea>
-			 <div class="right">
-				 <a data-role="button" id="messageSend" data-click="channelView.messageSend">Send</a>
-			 </div>
+			<div class="messageMediaBar" id="editorOptionBar" style="display: none">
+				<ul>
+					<li>
+						<a class="btnBar" data-role="button" data-click="channelView.toggleTool" data-tool="bold">
+							<img src="images/icon-bold.svg" class="icon-bar" />
+						</a>
+					</li>
+					<li>
+						<a class="btnBar" data-role="button" data-click="channelView.toggleTool" data-tool="italic">
+							<img src="images/icon-italic.svg" class="icon-bar" />
+						</a>
+					</li>
+					<li>
+						<a class="btnBar" data-role="button" data-click="channelView.toggleTool" data-tool="underline">
+						<img src="images/icon-underline.svg" class="icon-bar" />
+						</a>
+					</li>
+					<li>
+						<a class="btnBar" data-role="button" data-click="channelView.toggleTool" data-tool="insertUnorderedList">
+							<img src="images/icon-list.svg" class="icon-bar" />
+						</a>
+					</li>
+					<li>
+						<a class="btnBar" data-role="button" data-click="channelView.toggleTool" data-tool="indent">
+						<img src="images/icon-indent.svg" class="icon-bar" />
+						</a>
+					</li>
+					<li>
+						<a class="btnBar" data-role="button" data-click="channelView.toggleTool" data-tool="outdent">
+						<img src="images/icon-outdent.svg" class="icon-bar" />
+						</a>
+					</li>
+				</ul>
+			<div class="lineArrow"></div>
+			</div>
              <div class="messageMediaBar">
              	<ul>
                     <li>
@@ -289,8 +322,8 @@
                     	</a>
                     </li>
 					<li >
-						<a data-role="button" data-click="channelView.ghostgram">
-							<img src="images/option-edit.svg" height="24">
+						<a data-role="button" data-badge="0" data-click="channelView.ghostgram" id="chat-editorBtn">
+							<img src="images/icon-editor.svg" height="20" id="chat-editorBtnImg"/>
 						</a>
 					</li>
                     <li class="hidden">
@@ -303,10 +336,13 @@
                     		<img src="images/chat-smart.svg" height="24">
                     	</a>
                     </li>
-                    <li>
+                    <li class="hidden">
                     	<a data-role="button" data-click="channelView.togglePrivacyMode" id="privacyMode">
                     		<img src="images/privacy-off.svg" height="24"/>
                     	</a>
+                    </li>
+                    <li class="right">
+                    	<a data-role="button" class="btnClear" id="messageSend" data-click="channelView.messageSend">Send</a>
                     </li>
                  </ul>
              </div>
@@ -359,6 +395,7 @@
 		var alias = contactData.alias;
 		photoUrl = contactData.photoUrl;
 		var displayName = ux.returnUXPrimaryName(name, alias);
+		var messageClass = "chat-message-text";
 	#
 	
 	# if (currentChannelModel.privacyMode) {
@@ -386,11 +423,11 @@
 		# if (content !== "") {#
 			# if (contactData.isContact ) {#
 				<div class="chat-message-receiver chat-message-content  clearfix">
-					<div class="chat-message-text">#= content #</div>
+					<div class="#= messageClass #">#= content #</div>
 				</div>
 			#} else {#
 				<div class="chat-message-sender chat-message-content">
-					<div class="chat-message-text">
+					<div class="#= messageClass #">
 						#= content #
 					</div>
 				</div>
@@ -406,13 +443,13 @@
 	</div>
 </script>
 
- <div data-role="drawer" id="channelPresence"  data-position="right" data-init="channelPresence.onInit" data-show="channelPresence.onShow" data-swipe-to-open-views='["channel"]' data-views='["channel"]' style="width: 80%;">
+ <div data-role="drawer" id="channelPresence"  data-position="right" data-init="channelPresence.onInit" data-show="channelPresence.onShow" data-swipeToOpen="false" data-views='["channel"]' style="width: 80%;">
 	 <div data-role="header">
 		 <div data-role="navbar">
 			 <a data-align="left" data-role="button" data-click="channelPresence.onDone">
 				 <img src="images/close.svg" />
 			 </a>
-			 <span>Members</span> (<span id="occupancyCount">1</span>)
+			 <span>Members</span> <span class="badge primary-200" id="occupancyCount">1</span>
 		 </div>
 
 	 </div>
@@ -461,15 +498,17 @@
 </script>
 
  <script type="text/x-kendo-template" id="chatMemberTemplate">
-	 <div style="clear: both;">
+	 # if(!data.isPresent){#
+	 	<div class="gone">
+	 #}else {#
+	 	<div style="clear: both;">
+	 #}#
 		 <div class="memberTempPhoto">
 			 <img src="#: data.photo #" class="circle-img-md" />
 		 </div>
 		 <div class="memberTempName">
 			 <h4>#: data.name #</h4>
-			  <div style="float: right;"># var status = "Here"; if (!data.isPresent) {status = "Gone";}# #: status #</div>
 		 </div>
-
 	 </div>
 </script>
 
