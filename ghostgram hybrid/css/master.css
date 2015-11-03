@@ -12,7 +12,7 @@
   padding: 0 .6rem;
   margin: .3rem .6rem 0 0;
   border-radius: 1rem;
-  background-color: #e0e0e0;
+  background-color: #E0E0E0;
 }
 .sentinel .tags li img {
   vertical-align: middle;
@@ -73,6 +73,9 @@
   background-size: contain;
 }
 /* elements */
+.userLgFontSize {
+  font-size: 1.25em !important;
+}
 .shadow {
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);
 }
@@ -131,7 +134,7 @@
   text-align: right;
 }
 .whiteBk {
-  background-image: linear-gradient(-1deg, #f5f5f5 53%, #ffffff 100%);
+  background-image: linear-gradient(-1deg, #F5F5F5 53%, #FFFFFF 100%);
 }
 .left-txt {
   text-align: left;
@@ -166,7 +169,7 @@
   width: 100%;
   height: 2rem;
   background: #f5f5f5;
-  color: #4a4a4a;
+  color: #4A4A4A;
   text-align: center;
   padding: 0.25rem;
 }
@@ -175,11 +178,11 @@
   float: left;
   padding: 0.2em 0.35em;
   border-radius: .25em;
-  color: #4a4a4a;
-  background: #e0e0e0;
+  color: #4A4A4A;
+  background: #E0E0E0;
   margin: 0 0 0.5rem;
   font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 0.875em;
 }
 .chat-bubble:after {
   content: "";
@@ -189,20 +192,25 @@
   width: 0;
   border-width: 8px 8px 0;
   border-style: solid;
-  border-color: #e0e0e0 transparent;
+  border-color: #E0E0E0 transparent;
   bottom: -15px;
 }
 .contactBanner {
   width: 100%;
-  background-color: #e0e0e0;
+  background-color: #E0E0E0;
   padding: 2px 1rem;
   color: #979797;
   font-size: 12px;
-  font-size: 0.75rem;
+  font-size: 0.75em;
 }
 html,
 .km-root {
   font-size: 16px;
+}
+html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 body {
   font-family: 'PT Sans', sans-serif;
@@ -213,28 +221,28 @@ body {
 }
 h1 {
   font-size: 34px;
-  font-size: 2.125rem;
+  font-size: 2.125em;
   /* 34px */
   font-family: 'Hind', sans-serif !important;
   font-weight: 300;
 }
 h2 {
   font-size: 24px;
-  font-size: 1.5rem;
+  font-size: 1.5em;
   /* 24px */
   font-weight: 300;
   font-family: 'Hind', sans-serif !important;
 }
 h3 {
   font-size: 20px;
-  font-size: 1.25rem;
+  font-size: 1.25em;
   /* 20px */
   font-weight: 300;
   font-family: 'Hind', sans-serif !important;
 }
 h4 {
-  font-size: 16px;
-  font-size: 1rem;
+  font-size: 18px;
+  font-size: 1.125em;
   font-weight: 600;
   font-family: 'Open Sans', sans-serif !important;
 }
@@ -251,30 +259,29 @@ p {
   line-height: 1.5;
 }
 .caption {
-  font-size: 13px;
-  font-size: 0.8125rem;
+  font-size: 16px;
+  font-size: 1em;
   color: #979797;
 }
 p {
-  font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 1em;
 }
 input,
 .standard-input {
   width: 100%;
   border: 0px;
   font-size: 16px;
-  font-size: 1rem;
+  font-size: 1em;
   border-bottom: 1px solid #e0e0e0;
   padding: .5em .7em;
   -webkit-appearance: none;
   -webkit-border-radius: 3px;
   border-radius: 3px !important;
-  color: #4a4a4a;
+  color: #4A4A4A;
 }
 label {
-  font-size: 12px;
-  font-size: 0.75rem;
+  font-size: 14px;
+  font-size: 0.875em;
 }
 input[readonly] {
   background-color: #e0e0e0 !important;
@@ -295,14 +302,14 @@ form p {
   width: 100%;
   border-radius: 3px;
   overflow: hidden;
-  background: #ffffff url("../images/select-dropdown.svg") no-repeat 95% 50%;
+  background: #fff url("../images/select-dropdown.svg") no-repeat 95% 50%;
   width: 25%;
 }
 .select-sm select {
   padding: 5px 8px;
   width: 120%;
-  color: #4a4a4a;
-  border: 1px solid #e0e0e0;
+  color: #4A4A4A;
+  border: 1px solid #E0E0E0;
   box-shadow: none;
   background: transparent;
   background-image: none;
@@ -315,14 +322,14 @@ form p {
   width: 100%;
   border-radius: 3px;
   overflow: hidden;
-  background: #ffffff url("../images/select-dropdown.svg") no-repeat 95% 50%;
+  background: #fff url("../images/select-dropdown.svg") no-repeat 95% 50%;
   width: 50%;
 }
 .select-md select {
   padding: 5px 8px;
   width: 120%;
-  color: #4a4a4a;
-  border: 1px solid #e0e0e0;
+  color: #4A4A4A;
+  border: 1px solid #E0E0E0;
   box-shadow: none;
   background: transparent;
   background-image: none;
@@ -334,14 +341,14 @@ form p {
 .select-lg {
   border-radius: 3px;
   overflow: hidden;
-  background: #ffffff url("../images/select-dropdown.svg") no-repeat 95% 50%;
+  background: #fff url("../images/select-dropdown.svg") no-repeat 95% 50%;
   width: 100%;
 }
 .select-lg select {
   padding: 5px 8px;
   width: 120%;
-  color: #4a4a4a;
-  border: 1px solid #e0e0e0;
+  color: #4A4A4A;
+  border: 1px solid #E0E0E0;
   box-shadow: none;
   background: transparent;
   background-image: none;
@@ -354,14 +361,14 @@ form p {
   width: 100%;
   border-radius: 3px;
   overflow: hidden;
-  background: #ffffff url("../images/select-dropdown.svg") no-repeat 95% 50%;
+  background: #fff url("../images/select-dropdown.svg") no-repeat 95% 50%;
   width: 25%;
 }
 .searchSelect select {
   padding: 5px 8px;
   width: 120%;
-  color: #4a4a4a;
-  border: 1px solid #e0e0e0;
+  color: #4A4A4A;
+  border: 1px solid #E0E0E0;
   box-shadow: none;
   background: transparent;
   background-image: none;
@@ -374,13 +381,13 @@ form p {
   width: 100%;
   border-radius: 3px;
   overflow: hidden;
-  background: #ffffff url("../images/select-dropdown.svg") no-repeat 95% 50%;
+  background: #fff url("../images/select-dropdown.svg") no-repeat 95% 50%;
 }
 .select select {
   padding: 5px 8px;
   width: 120%;
-  color: #4a4a4a;
-  border: 1px solid #e0e0e0;
+  color: #4A4A4A;
+  border: 1px solid #E0E0E0;
   box-shadow: none;
   background: transparent;
   background-image: none;
@@ -430,62 +437,62 @@ form p {
   background-color: #FFB74D !important;
 }
 .primary-100 {
-  background: #2e93fd !important;
+  background: #2E93FD !important;
 }
 .primary-200 {
-  background: #6cadf3;
+  background: #6CADF3 !important;
 }
 .secondary-100 {
-  background: #ffb74d !important;
+  background: #FFB74D !important;
 }
 .secondary-200 {
-  background: #faddb0 !important;
+  background: #FADDB0 !important;
 }
 .warning {
-  background: #e57373 !important;
+  background: #E57373 !important;
 }
 /* Text colors */
 .blue-100-txt {
-  color: #2e93fd;
+  color: #2E93FD;
 }
 .blue-200-txt {
-  color: #6cadf3;
+  color: #6CADF3;
 }
 /* Margins */
 .topHalf {
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
+  margin-top: 1.5em;
+  margin-bottom: 1em;
 }
 /* Elements */
 .status {
   height: 10px;
 }
 .verified-txt {
-  color: #6cadf3;
+  color: #6CADF3;
   font-size: 12px;
-  font-size: 0.75rem;
+  font-size: 0.75em;
   vertical-align: top;
   line-height: 2;
 }
 .unverified-txt {
-  color: #ffb74d;
+  color: #FFB74D;
   font-size: 12px;
-  font-size: 0.75rem;
+  font-size: 0.75em;
   vertical-align: top;
   line-height: 2;
 }
 .badge {
   border-radius: 4px;
-  background: #e0e0e0;
+  background: #E0E0E0;
   border-radius: 5px;
-  color: #4a4a4a;
+  color: #4A4A4A;
   padding: 0.1em 0.25em;
   font-size: 13px;
-  font-size: 0.8125rem;
+  font-size: 0.8125em;
 }
 .guest-txt {
   font-size: 12px;
-  font-size: 0.75rem;
+  font-size: 0.75em;
   color: #979797;
   vertical-align: top;
   line-height: 2;
@@ -499,7 +506,10 @@ form p {
 }
 .icon-sm {
   height: 1em;
-  vertical-align: text-bottom;
+  vertical-align: middle;
+}
+.icon-bar {
+  height: 1em;
 }
 .loading-icon {
   height: 1rem;
@@ -572,7 +582,9 @@ form p {
 .btnBlack-sm,
 .btnSecondary,
 .btnClear,
+.btnClear-light,
 .btnClear-sm,
+.btnClear-light-sm,
 .btnClearLine,
 .btnClearLine-grey-sm,
 .btnClear-grey,
@@ -584,7 +596,7 @@ form p {
 .btnClear-grey-sm {
   text-decoration: none;
   font-size: 16px;
-  font-size: 1rem;
+  font-size: 1em;
   font-weight: 400;
   padding: 0.25em 0.5em;
   margin: 0px;
@@ -593,7 +605,7 @@ form p {
 .km-material .km-button {
   text-decoration: none;
   font-size: 16px;
-  font-size: 1rem;
+  font-size: 1em;
   font-weight: 400;
   padding: 0.25em 0.5em;
   margin: 0px;
@@ -610,7 +622,7 @@ form p {
   -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   color: #fff !important;
-  background: #2e93fd !important;
+  background: #2E93FD !important;
   /*
     :hover {
     	background: #E5A545 !important;
@@ -656,7 +668,7 @@ form p {
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   color: #ffffff;
   font-size: 10px !important;
-  font-size: 0.625rem !important;
+  font-size: 0.625em !important;
   background: #424242 !important;
 }
 .btnBlack-sm :hover {
@@ -677,7 +689,7 @@ form p {
   -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   color: #ffffff !important;
-  background: #ffb74d !important;
+  background: #FFB74D !important;
   /*
     :hover {
     	background: @primary-100 !important;
@@ -706,11 +718,21 @@ form p {
   color: #A4A4A4 !important;
   background: transparent !important;
 }
+.btnClear-light {
+  background: transparent;
+  color: #fff !important;
+  font-weight: 400;
+}
+.btnClear-light :active {
+  color: #3A779D !important;
+}
+.btnClear-light :disabled {
+  color: #A4A4A4 !important;
+  background: transparent !important;
+}
 .btnClear-sm {
   background: transparent;
   color: #2D93FF !important;
-  font-size: 13px !important;
-  font-size: 0.8125rem !important;
 }
 .btnClear-sm :active {
   color: #3A779D !important;
@@ -720,9 +742,21 @@ form p {
   color: #A4A4A4 !important;
   background: transparent !important;
 }
+.btnClear-light-sm {
+  background: transparent;
+  color: #6CADF3 !important;
+}
+.btnClear-light-sm :active {
+  color: #3A779D !important;
+  background: transparent !important;
+}
+.btnClear-light-sm :disabled {
+  color: #A4A4A4 !important;
+  background: transparent !important;
+}
 .btnClear-link {
   background: transparent;
-  color: #6cadf3 !important;
+  color: #6CADF3 !important;
   padding: 0px !important;
   font-weight: 600 !important;
 }
@@ -748,12 +782,13 @@ form p {
   color: #A4A4A4 !important;
   background: transparent !important;
 }
+.glass {
+  background: #242424 !important;
+}
 .addBtn-sm {
-  border: 1px solid #2e93fd;
+  border: 1px solid #2E93FD;
   border-radius: 3px;
-  color: #2e93fd !important;
-  font-size: 14px;
-  font-size: 0.875rem;
+  color: #2E93FD !important;
   padding: 0.2em 1em;
   position: absolute;
   right: 1rem;
@@ -762,37 +797,29 @@ form p {
 .btnClearLine-grey-sm {
   background: transparent;
   color: #979797 !important;
-  font-size: 12px !important;
-  font-size: 0.75rem !important;
-  border: 1px solid #e0e0e0 !important;
+  border: 1px solid #E0E0E0 !important;
   border-radius: 3px !important;
 }
 .btnClearLine-grey-sm :active {
-  color: #e0e0e0 !important;
+  color: #E0E0E0 !important;
   background: transparent !important;
 }
 .btnClearLine-grey-sm :disabled {
-  color: #e0e0e0 !important;
+  color: #E0E0E0 !important;
   background: transparent !important;
 }
 .btnClear-grey,
 .btnClear-grey-sm {
   background: transparent;
   color: #979797 !important;
-  font-size: 14px !important;
-  font-size: 0.875rem !important;
 }
 .btnClear-grey :active {
-  color: #6cadf3 !important;
+  color: #6CADF3 !important;
   background: transparent !important;
 }
 .btnClear-grey :disabled {
   color: #A4A4A4 !important;
   background: transparent !important;
-}
-.btnClear-grey-sm {
-  font-size: 13px !important;
-  font-size: 0.8125rem !important;
 }
 .btnClear-red {
   background: transparent;
@@ -843,7 +870,7 @@ form p {
   padding-top: 0.5rem !important;
 }
 .footer-twoBtn .twoBtn:nth-child(1) {
-  border-right: 1px solid #e0e0e0;
+  border-right: 1px solid #E0E0E0;
 }
 .modal-dialog {
   padding: 0.5rem 1rem 1rem 1rem;
@@ -857,16 +884,13 @@ div.km-content.km-widget.km-scroll-wrapper {
   padding-bottom: 1rem;
 }
 .input-text-sm {
-  font-size: 12px;
-  font-size: 0.75rem;
+  font-size: 0.875em;
 }
 .input-text-md {
-  font-size: 16px;
-  font-size: 1rem;
+  font-size: 1.25em;
 }
 .input-text-lg {
-  font-size: 20px !important;
-  font-size: 1.25rem !important;
+  font-size: 1.5em;
 }
 #nav-ghost {
   position: relative;
@@ -900,7 +924,7 @@ div.km-content.km-widget.km-scroll-wrapper {
   border-radius: 8px;
   text-align: center;
   font-size: 16px;
-  font-size: 1rem;
+  font-size: 1em;
   padding: 0.5rem 1rem;
   color: #fff;
   position: absolute;
@@ -931,7 +955,7 @@ div.km-content.km-widget.km-scroll-wrapper {
   background: #EA6262;
   border-radius: 2px;
   font-size: 12px;
-  font-size: 0.75rem;
+  font-size: 0.75em;
   padding: 1px;
   padding-left: 2px;
   padding-right: 2px;
@@ -965,7 +989,7 @@ div.km-header a img {
 .km-content,
 .km-navbar {
   font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 0.875em;
   background: #f5f5f5;
   background: cover;
   background-size: 100% 100%;
@@ -997,6 +1021,57 @@ div.km-header a img {
 #profileStatusList > li:nth-child(3) > div > span > span > span.k-input .km-material .km-switch-handle {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
 }
+.k-block,
+.k-widget,
+.k-input,
+.k-textbox,
+.k-group,
+.k-content,
+.k-header,
+.k-filter-row > th,
+.k-editable-area,
+.k-separator,
+.k-colorpicker .k-i-arrow-s,
+.k-textbox > input,
+.k-autocomplete,
+.k-dropdown-wrap,
+.k-toolbar,
+.k-group-footer td,
+.k-grid-footer,
+.k-footer-template td,
+.k-state-default,
+.k-state-default .k-select,
+.k-state-disabled,
+.k-grid-header,
+.k-grid-header-wrap,
+.k-grid-header-locked,
+.k-grid-footer-locked,
+.k-grid-content-locked,
+.k-grid td,
+.k-grid td.k-state-selected,
+.k-grid-footer-wrap,
+.k-pager-wrap,
+.k-pager-wrap .k-link,
+.k-pager-refresh,
+.k-grouping-header,
+.k-grouping-header .k-group-indicator,
+.k-panelbar > .k-item > .k-link,
+.k-panel > .k-item > .k-link,
+.k-panelbar .k-panel,
+.k-panelbar .k-content,
+.k-treemap-tile,
+.k-calendar th,
+.k-slider-track,
+.k-splitbar,
+.k-dropzone-active,
+.k-tiles,
+.k-toolbar,
+.k-tooltip,
+.k-button-group .k-tool,
+.k-upload-files {
+  border: none;
+  border-bottom: 1px solid #E0E0E0;
+}
 .k-header,
 .k-grid-header-wrap,
 .k-grid .k-grouping-header,
@@ -1013,8 +1088,8 @@ div.km-header a img {
 .k-checkbox:checked + .k-checkbox-label:after,
 .k-checkbox:focus + .k-checkbox-label:after,
 .k-radio:focus + .k-radio-label:before {
-  border-color: #6cadf3;
-  color: #6cadf3;
+  border-color: #6CADF3;
+  color: #6CADF3;
   border-radius: 3px;
 }
 #filterGallery .card {
@@ -1026,7 +1101,7 @@ div.km-header a img {
 }
 .filterList > li > label {
   font-size: 16px;
-  font-size: 1rem;
+  font-size: 1em;
 }
 .filterList > li > label img {
   height: 1em;
@@ -1047,7 +1122,7 @@ div.km-header a img {
   margin-right: 0.5rem;
 }
 .tag {
-  background-color: #d4abc4;
+  background-color: #D4ABC4;
   border-radius: 3px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   display: inline-block;
@@ -1068,7 +1143,7 @@ div.km-header a img {
   float: left;
   color: #fff;
   font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 0.875em;
 }
 .tag .deleteTag {
   float: left;
@@ -1132,7 +1207,7 @@ div.km-header a img {
   border-color: transparent;
 }
 .km-material .km-content {
-  background-image: linear-gradient(-1deg, #f5f5f5 60%, #ffffff 100%);
+  background-image: linear-gradient(-1deg, #F5F5F5 60%, #FFFFFF 100%);
 }
 .km-modalview {
   border: 1px solid #979797;
@@ -1144,8 +1219,8 @@ div.km-header a img {
   margin: 0px;
 }
 .km-root .km-material .km-buttongroup > .km-state-active {
-  color: #6cadf3;
-  border-color: #6cadf3;
+  color: #6CADF3;
+  border-color: #6CADF3;
 }
 .km-material .km-shim,
 .km-material .km-popup,
@@ -1158,7 +1233,7 @@ div.km-header a img {
 .km-material input:checked,
 .km-material .km-touch-scrollbar,
 .km-material input[type=text]:not(.k-input):focus {
-  color: #2e93fd;
+  color: #2E93FD;
 }
 /*
 .km-view {
@@ -1183,8 +1258,7 @@ div.km-header a img {
 }
 .km-material .km-navbar .km-view-title {
   line-height: 1.5;
-  font-size: 18px;
-  font-size: 1.125rem;
+  font-size: 1.5em;
   padding: 0.8rem;
 }
 .km-material input[type=password],
@@ -1244,7 +1318,7 @@ div.km-header a img {
 .km-material input[type=url]:focus,
 .km-material input[type=email]:focus,
 .km-material input[type=text]:not(.k-input):focus {
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #E0E0E0;
 }
 .km-material .km-buttongroup .km-button {
   padding: 0.25em 0.5em;
@@ -1271,8 +1345,6 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .helper-sm {
   color: #979797;
-  font-size: 12px;
-  font-size: 0.75rem;
 }
 .helper-sm img {
   height: 12px;
@@ -1305,13 +1377,18 @@ div.footerMenu.km-footer > ul > li > a:active {
 .helper-verified {
   color: #43A047 !important;
   vertical-align: baseline;
-  font-size: 11px;
-  font-size: 0.6875rem;
 }
 .helper-verified-img {
   margin-right: -3px;
   padding-top: 3px;
   height: 14px;
+}
+/* Settings */
+#body > div.appearance.km-widget.km-view > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > form:nth-child(1) > div.settingDisplay > ul {
+  text-align: left;
+}
+#body > div.appearance.km-widget.km-view > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > form:nth-child(1) > div.settingDisplay > ul > label {
+  margin-right: 1em;
 }
 /* Home status menu */
 .home-smallHeader {
@@ -1326,16 +1403,14 @@ div.footerMenu.km-footer > ul > li > a:active {
   font-size: 14px;
 }
 .home-header > div.view-content.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
-  background-image: linear-gradient(-1deg, #f5f5f5 53%, #ffffff 100%);
+  background-image: linear-gradient(-1deg, #F5F5F5 53%, #FFFFFF 100%);
 }
 .updateStatusLabel {
   font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 0.875em;
 }
 .statusCharacterCount {
   position: relative;
-  font-size: 12px;
-  font-size: 0.75rem;
   color: #979797;
   top: -3em;
   z-index: 1;
@@ -1359,12 +1434,12 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .homeStatus-name {
   font-size: 16px !important;
-  font-size: 1rem !important;
+  font-size: 1em !important;
 }
 .homeStatus-status {
   text-align: left;
   font-size: 11px !important;
-  font-size: 0.6875rem !important;
+  font-size: 0.6875em !important;
   color: #979797;
 }
 #home div.km-header > div > div.km-view-title {
@@ -1374,16 +1449,16 @@ div.footerMenu.km-footer > ul > li > a:active {
   margin-top: 0.75rem !important;
   margin-bottom: 0.5rem !important;
   font-size: 20px;
-  font-size: 1.25rem;
+  font-size: 1.25em;
   line-height: 1.5 !important;
   padding: 0px;
 }
 #home > div.km-header > div > div.km-view-title > span {
   font-family: 'PT Sans Caption', sans-serif !important;
-  color: #6cadf3;
+  color: #6CADF3;
   font-weight: 600;
   font-size: 18px;
-  font-size: 1.125rem;
+  font-size: 1.125em;
 }
 #profilePhotoForm > div > ul > li:nth-child(4) > div > span {
   padding-top: 0px;
@@ -1416,7 +1491,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 #profileStatusUpdate {
   width: 100%;
   font-size: 16px;
-  font-size: 1rem;
+  font-size: 1em;
   resize: none;
 }
 .circle-img-home {
@@ -1445,13 +1520,14 @@ div.footerMenu.km-footer > ul > li > a:active {
   left: 32px;
 }
 .profileLocation {
-  color: #6cadf3 !important;
+  color: #6CADF3 !important;
+}
+#contacts-listview > li > ul > li > div > a > p {
+  margin-right: 0px !important;
 }
 #profileStatusMessage {
-  font-size: 16px;
-  font-size: 1rem;
   text-overflow: ellipsis;
-  width: 190px;
+  width: 85%;
   display: inline-block;
   font-style: italic;
 }
@@ -1485,7 +1561,8 @@ div.footerMenu.km-footer > ul > li > a:active {
 .photoView-landscape,
 .photoView-portrait,
 .photoView-square,
-#photoViewImage {
+#photoViewImage,
+.centerPhoto {
   max-width: 100%;
   max-height: 100%;
 }
@@ -1508,35 +1585,62 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .photoViewNav,
 .photoViewNavTop,
-.photoViewNavBtm {
+.smallHeader {
   color: #fff !important;
   padding: 0.5rem;
   position: absolute;
   width: 100%;
   z-index: 99;
-  background: rgba(0, 0, 0, 0.2) !important;
+  background: rgba(0, 0, 0, 0) !important;
 }
-.photoViewNavTop {
+.photoViewNavTop,
+.smallHeader {
   top: 0px;
   left: 0px;
   text-align: center;
 }
+.smallHeader {
+  color: #fff !important;
+}
 #photoViewText {
   vertical-align: middle;
   font-size: 16px;
-  font-size: 1rem;
+  font-size: 1em;
   background-color: #979797;
   padding: 0.15rem 0.25rem;
   border-radius: 3px;
 }
-.photoViewNavBtm {
-  bottom: 0px;
-  left: 0px;
+.photoTitleBox {
+  position: absolute;
+  bottom: 3.5rem;
+  left: 0rem;
+  text-align: left;
+  color: #fff;
+  width: 100%;
+  height: 5rem;
+  padding: 0.5rem 0 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  background: -moz-linear-gradient(top, rgba(0, 0, 0, 0.3) 0%, #000000 99%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0.3)), color-stop(99%, #000000));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.3) 0%, #000000 99%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, rgba(0, 0, 0, 0.3) 0%, #000000 99%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, rgba(0, 0, 0, 0.3) 0%, #000000 99%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, #000000 99%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4d000000', endColorstr='#000000', GradientType=0);
+  /* IE6-9 */
 }
-#photoView > div.km-content.km-widget.km-scroll-wrapper {
+#photoView > div.km-content.km-widget.km-scroll-wrapper,
+#modalPhotoView > div.km-content.km-widget.km-scroll-wrapper {
   padding-bottom: 0px;
 }
-#photoViewImage {
+#photoViewImage,
+.centerPhoto {
   position: absolute;
   margin: auto;
   top: 0;
@@ -1563,7 +1667,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 .km-material .km-switch-label-on,
 .km-material .km-switch-label-off {
   font-size: 12px;
-  font-size: 0.75rem;
+  font-size: 0.75em;
   width: auto;
   line-height: 2;
 }
@@ -1614,10 +1718,6 @@ div.footerMenu.km-footer > ul > li > a:active {
 .modal-top svg {
   width: 18px;
 }
-.modal-top p {
-  font-size: 12px;
-  font-size: 0.75rem;
-}
 .modal-top h3 {
   line-height: 1;
   white-space: nowrap;
@@ -1627,6 +1727,7 @@ div.footerMenu.km-footer > ul > li > a:active {
   margin-left: 10%;
   margin-right: 10%;
   text-align: center;
+  margin-top: 0.5rem;
 }
 .modal-bottom {
   padding: 0.5rem 1rem;
@@ -1640,7 +1741,7 @@ div.footerMenu.km-footer > ul > li > a:active {
   margin-left: 0px;
   margin-right: 0px;
 }
-.modal-bottom a {
+.modal-bottom a:not(.modal-close) {
   width: 100%;
   border-top: 1px solid #f5f5f5 !important;
   text-align: center;
@@ -1652,7 +1753,7 @@ div.footerMenu.km-footer > ul > li > a:active {
   width: 100%;
   text-align: center;
   font-size: 11px;
-  font-size: 0.6875rem;
+  font-size: 0.6875em;
   color: #979797;
   line-height: 1;
 }
@@ -1699,8 +1800,8 @@ div.footerMenu.km-footer > ul > li > a:active {
   background-size: cover;
 }
 .publicMode {
-  filter: opacity(1);
-  -webkit-filter: opacity(1);
+  filter: blur(0px) opacity(1);
+  -webkit-filter: blur(0px) opacity(1);
 }
 .privateMode {
   filter: blur(5px) opacity(0.2);
@@ -1715,7 +1816,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 .ghostButton {
   background: #27476e;
   font-size: 16px;
-  font-size: 1rem;
+  font-size: 1em;
   font-weight: 700;
 }
 .ghostShadow {
@@ -1725,7 +1826,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 .ghostIcon {
   color: #27476e;
   font-size: 20px;
-  font-size: 1.25rem;
+  font-size: 1.25em;
   font-weight: 500;
   padding-right: 3px;
   padding-left: 3px;
@@ -1733,41 +1834,41 @@ div.footerMenu.km-footer > ul > li > a:active {
 .ghostIconSmall {
   color: #27476e;
   font-size: 16px;
-  font-size: 1rem;
+  font-size: 1em;
   font-weight: 500;
 }
 .ghostIconNavbar {
   font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 0.875em;
   font-weight: 400;
 }
 .ghostText {
   color: #27476e;
   font-size: 16px;
-  font-size: 1rem;
+  font-size: 1em;
   font-weight: 400;
 }
 .ghostTextLarge {
   color: #27476e;
   font-size: 18px;
-  font-size: 1.125rem;
+  font-size: 1.125em;
   font-weight: 500;
 }
 .ghostTiny {
   color: #27476e;
   font-size: 12px;
-  font-size: 0.75rem;
+  font-size: 0.75em;
   font-weight: 400;
 }
 .ghostLabel {
   color: #27476e;
   font-size: 12px;
-  font-size: 0.75rem;
+  font-size: 0.75em;
 }
 .ghostData {
   color: #2e2e2e;
   font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 0.875em;
 }
 .ghostMemberUl {
   list-style-type: none;
@@ -1789,7 +1890,7 @@ div.footerMenu.km-footer > ul > li > a:active {
   display: inline-block;
   margin-top: 5px;
   font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 0.875em;
   color: #2e2e2e;
   vertical-align: bottom;
 }
@@ -1803,26 +1904,26 @@ div.footerMenu.km-footer > ul > li > a:active {
   background-color: #27476e;
   text-shadow: rgba(64, 64, 64, 0.9) 0px 3px 3px;
   font-size: 18px;
-  font-size: 1.125rem;
+  font-size: 1.125em;
   font-weight: 700;
 }
 .ghostTitle {
   color: #979797;
   font-size: 18px;
-  font-size: 1.125rem;
+  font-size: 1.125em;
   font-weight: 700;
 }
 .ghostDescription {
   color: #27476e;
   font-size: 13px;
-  font-size: 0.8125rem;
+  font-size: 0.8125em;
   font-weight: 400;
 }
 .ghostMessage {
   background-color: transparent;
   color: #2e2e2e;
   font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 0.875em;
 }
 .clearfix {
   *zoom: 1;
@@ -1851,7 +1952,7 @@ div.footerMenu.km-footer > ul > li > a:active {
   color: #27476e;
   margin: 0;
   font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 0.875em;
   font-weight: 600;
 }
 .notification-message img {
@@ -1877,13 +1978,13 @@ div.footerMenu.km-footer > ul > li > a:active {
   opacity: 0.7;
   padding-top: 6px;
   font-size: 12px;
-  font-size: 0.75rem;
+  font-size: 0.75em;
 }
 .ghostMessageTime {
   float: right;
   color: #888888;
   font-size: 12px;
-  font-size: 0.75rem;
+  font-size: 0.75em;
   font-weight: 400;
 }
 .ghostContent {
@@ -1907,7 +2008,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .ghostCollapsible {
   font-size: 16px;
-  font-size: 1rem;
+  font-size: 1em;
   background-color: #e0e0e0;
   color: #27476e;
 }
@@ -1916,37 +2017,33 @@ div.footerMenu.km-footer > ul > li > a:active {
   color: #d2d2d2;
   padding: 12px;
   font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 0.875em;
 }
 .km-root .appearance .km-listview label {
   color: #212121;
-  font-size: 12px;
-  font-size: 0.75rem;
+  font-size: 0.875em;
   width: 100%;
 }
 .km-wp .appearance .km-listview label {
   color: #212121;
-  font-size: 12px;
-  font-size: 0.75rem;
+  font-size: 0.875em;
 }
 .km-root .km-pane .km-view.appearance .km-listview input {
   position: relative;
-  font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 1.125em !important;
   width: 100%;
   right: 0;
   margin-top: 0;
   top: 0;
   background: #fff;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #E0E0E0;
 }
 .km-root .km-pane .km-view.appearance .km-listview .select input[type="select"] {
   border-bottom: transparent;
 }
 .km-root .km-pane .km-view.appearance .km-listview select {
   position: relative;
-  font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 1em;
   width: 100%;
   right: 0;
   margin-top: 0;
@@ -1958,8 +2055,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 .km-root .km-pane .km-view.appearance .km-listview textarea {
   clear: both;
   position: relative;
-  font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 1em;
   width: 100%;
   margin-top: 0;
   top: 0;
@@ -1969,10 +2065,10 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .km-root .km-wp .km-view.appearance .km-listview input {
   color: #2e2e2e;
-  font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 16px;
+  font-size: 1em;
   margin-top: .2em;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #E0E0E0;
 }
 /*
 .km-root .km-wp .km-view.appearance .km-listview select
@@ -2043,9 +2139,15 @@ div.footerMenu.km-footer > ul > li > a:active {
 .km-material .km-view .km-navbar .km-button {
   padding: 0.25em 0.5em;
 }
+.k-popup.k-group {
+  border-color: transparent !important;
+}
 .km-material .km-view .km-navbar .km-button:active {
   background-color: rgba(0, 0, 0, 0.15);
-  color: #4a4a4a;
+  color: #4A4A4A;
+}
+.km-material .km-list {
+  font-size: 1em;
 }
 .km-material .km-view .km-content .km-list .km-state-active .km-listview-link {
   background-color: rgba(0, 0, 0, 0.05);
@@ -2072,7 +2174,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 .contactImportTable {
   color: #979797;
   font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 0.875em;
   margin-left: 1rem;
   margin-right: 1rem;
 }
@@ -2121,7 +2223,7 @@ div.footerMenu.km-footer > ul > li > a:active {
   z-index: 0;
   opacity: 0;
   font-size: 12px;
-  font-size: 0.75rem;
+  font-size: 0.75em;
   color: #fff;
 }
 .selectedLI {
@@ -2135,7 +2237,7 @@ div.footerMenu.km-footer > ul > li > a:active {
   background: #f5c9c9 !important;
 }
 .chat-delete {
-  background: #e57373;
+  background: #E57373;
 }
 #modalview-requestContent > div > div.km-scroll-container > div.modal-top {
   padding-top: 3rem;
@@ -2180,14 +2282,14 @@ a:hover {
 #contacts-listview > li > ul > li > div > a:hover,
 #places-listview > li > div > a:hover,
 #channels-listview > li > div > a:hover > div {
-  color: #4a4a4a;
+  color: #4A4A4A;
 }
 #findplace-listview > li > ul > li > div > a:active,
 #contacts-listview > li > ul > li > div > a:active,
 #places-listview > li > div > a:active,
 #channels-listview > li > div > a:active > div {
   background-color: #f5f5f5;
-  color: #4a4a4a;
+  color: #4A4A4A;
 }
 .findPlaceListItem {
   display: block;
@@ -2238,7 +2340,7 @@ a:hover {
   margin: 0px;
   float: left;
   font-size: 16px;
-  font-size: 1rem;
+  font-size: 1em;
 }
 #profileLink {
   position: absolute;
@@ -2258,7 +2360,7 @@ a:hover {
 }
 .menu li {
   font-size: 16px;
-  font-size: 1rem;
+  font-size: 1em;
   background-color: #323642;
   line-height: 1.5;
   font-weight: 300;
@@ -2310,14 +2412,13 @@ a:hover {
   left: 54%;
 }
 .contactStatusMessage {
-  font-size: 16px;
-  font-size: 1rem;
   font-style: italic;
 }
 .contactStatusMessage-sm {
-  font-size: 14px;
-  font-size: 0.875rem;
-  font-style: italic;
+  margin-right: 0px !important;
+}
+.contactStatus-location {
+  color: #979797;
 }
 #contactProfileImg,
 #contactStatusImg {
@@ -2333,6 +2434,9 @@ a:hover {
   background: transparent;
   box-shadow: none;
   border: transparent;
+}
+.km-material .km-list {
+  font-size: none;
 }
 #profileEdit > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > div.profileEditBtm > form > div > ul > li:nth-child(1),
 .km-material .km-listinset > li:last-child,
@@ -2361,6 +2465,7 @@ a:hover {
   z-index: 0;
   position: absolute;
   width: 100%;
+  margin-bottom: 5em;
 }
 #channels-listview li {
   border-bottom: 1px solid #E4E4E4;
@@ -2382,6 +2487,16 @@ a:hover {
   max-height: 100px;
   text-align: center;
   vertical-align: middle;
+}
+#modalPhotoViewImage {
+  max-width: 100%;
+  max-height: 100%;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 .chat-option-ul li {
   background: transparent !important;
@@ -2413,7 +2528,7 @@ a:hover {
   float: right;
   color: #979797;
   font-size: 13px;
-  font-size: 0.8125rem;
+  font-size: 0.8125em;
   line-height: 1.9;
   font-weight: 400;
   font-family: 'Hind', sans-serif;
@@ -2438,8 +2553,6 @@ a:hover {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   box-shadow: 3px 0 3px -3px #979797;
-  font-size: 14px;
-  font-size: 0.875rem;
 }
 .chat-options {
   width: 100%;
@@ -2461,17 +2574,29 @@ a:hover {
 .chat-option-ul li a img {
   height: 16px;
 }
-.chat-option-selection {
-  font-size: 11px;
-  font-size: 0.6875rem;
-}
 #chat-option-clearBtn {
   width: 24px;
+}
+#occupancyCount {
+  color: #fff;
 }
 .list-status {
   vertical-align: baseline;
   margin-right: 0.25rem;
   margin-left: 0.25rem;
+}
+#channelPresence > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
+  background: #323642;
+}
+.memberTempName {
+  color: #fff;
+}
+#channelPresence > div.km-header > div > div.km-view-title {
+  background: #323642;
+  color: #fff;
+}
+#channelPresence-listview > li {
+  border-bottom: 1px solid #979797;
 }
 #channels-listview > li > div > a > div > img {
   margin-left: 1.25rem;
@@ -2485,7 +2610,7 @@ a:hover {
 }
 #channels-addChannel-name {
   font-size: 24px !important;
-  font-size: 1.5rem !important;
+  font-size: 1.5em !important;
 }
 #addChat-step1 {
   padding-bottom: 5.5rem;
@@ -2498,25 +2623,25 @@ a:hover {
 .helperBox p {
   margin-left: 0px;
   font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 0.875em;
 }
 .helperBox p img {
   vertical-align: bottom;
 }
 #chat-title-setup {
   width: 100%;
-  background-color: #6cadf3;
+  background-color: #6CADF3;
   padding: 0.5rem;
   padding-left: 1rem;
   padding-right: 1rem;
   font-size: 20px;
-  font-size: 1.25rem;
+  font-size: 1.25em;
   color: #fff;
   display: none;
 }
 #editChatName {
   font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 0.875em;
   position: absolute;
   top: 0px;
   right: 0px;
@@ -2550,7 +2675,7 @@ a:hover {
 }
 .footerMenu {
   background: #fff;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid #E0E0E0;
 }
 .footerBk {
   background: #fff;
@@ -2578,7 +2703,7 @@ div.footerMenu.km-footer > ul > li > a {
   bottom: 4rem;
 }
 .actionBtn p {
-  width: 60px;
+  width: 100px;
   position: absolute;
   right: 0rem;
   top: 1rem;
@@ -2625,23 +2750,23 @@ div.footerMenu.km-footer > ul > li > a > span > svg {
 }
 #home > div.footerMenu.km-footer > ul > li:nth-child(1) > a #nav-home,
 div.footerMenu.km-footer > ul > li:nth-child(1) > a.km-state-active #nav-home {
-  fill: #6cadf3;
+  fill: #6CADF3;
 }
 #channels > div.footerMenu.km-footer > ul > li:nth-child(2) > a #nav-chat,
 div.footerMenu.km-footer > ul > li:nth-child(2) > a.km-state-active #nav-chat {
-  fill: #6cadf3;
+  fill: #6CADF3;
 }
 #contacts > div.footerMenu.km-footer > ul > li:nth-child(3) > a #nav-contacts,
 div.footerMenu.km-footer > ul > li:nth-child(3) > a.km-state-active #nav-contacts {
-  fill: #6cadf3;
+  fill: #6CADF3;
 }
 #places > div.footerMenu.km-footer > ul > li:nth-child(4) > a #nav-places,
 div.footerMenu.km-footer > ul > li:nth-child(4) > a.km-state-active #nav-places {
-  stroke: #6cadf3;
+  stroke: #6CADF3;
 }
 #gallery > div.footerMenu.km-footer > ul > li:nth-child(5) > a #nav-gallery,
 div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery {
-  fill: #6cadf3;
+  fill: #6CADF3;
 }
 #status-profile-img {
   border-radius: 50%;
@@ -2662,11 +2787,11 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   vertical-align: middle;
 }
 .statusSelect {
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #E0E0E0;
   width: 120px;
   border-radius: 3px;
   overflow: hidden;
-  background: #ffffff url("../images/select-dropdown.svg") no-repeat 90% 50%;
+  background: #fff url("../images/select-dropdown.svg") no-repeat 90% 50%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -2689,7 +2814,7 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   position: absolute;
   bottom: 100%;
   margin-top: -60px;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid #E0E0E0;
 }
 #chatList-place-icon {
   height: 14px;
@@ -2706,8 +2831,14 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 #ghostEmailEditor {
   line-height: 1.5;
   font-size: 16px;
-  font-size: 1rem;
-  color: #4a4a4a !important;
+  font-size: 1em;
+  color: #4A4A4A !important;
+}
+#ghostEmailwrapper > table > tbody > tr:nth-child(1) > td > ul > li > a {
+  background: #979797 !important;
+}
+#ghostEmailwrapper > table > tbody > tr:nth-child(1) > td > ul > li > a.k-tool.k-state-selected {
+  background: #6CADF3 !important;
 }
 .recipientInfo,
 .recipientPhoto {
@@ -2726,7 +2857,7 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 .k-state-active:hover,
 .k-active-filter,
 .k-tabstrip .k-state-active {
-  color: #4a4a4a !important;
+  color: #4A4A4A !important;
 }
 #body > div.k-widget.k-window.k-window-titleless.k-editor-widget {
   visibility: hidden;
@@ -2741,8 +2872,7 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 }
 /* Chat styles */
 #messageTextArea {
-  font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 1em;
   resize: none;
   border: none;
   padding-bottom: 0px;
@@ -2750,13 +2880,9 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 }
 #messageSend {
   font-weight: 600;
-  color: #2D93FF;
   margin-top: 0px;
   padding: 0px;
   padding-top: 3px;
-  position: absolute;
-  bottom: 45px;
-  right: 8px;
 }
 .messageCompose {
   padding: 0.5rem;
@@ -2786,7 +2912,7 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   border: none;
   padding: 6px;
   font-size: 16px;
-  font-size: 1rem;
+  font-size: 1em;
 }
 #privacyStatus {
   width: 100%;
@@ -2796,7 +2922,29 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   padding-bottom: 2px;
   padding-left: 1rem;
   font-size: 12px;
-  font-size: 0.75rem;
+  font-size: 0.75em;
+}
+.lineArrow {
+  width: 70%;
+  height: 1px;
+  background: #E0E0E0;
+}
+.btnBar {
+  height: 2em;
+  width: 2em;
+}
+.k-editor .k-editable-area {
+  height: 2em;
+}
+.activeTool {
+  border-radius: 2em !important;
+  height: 2em !important;
+  width: 2em !important;
+  background: #E0E0E0 !important;
+}
+#chat-editorBtn .km-badge {
+  background: #D4ABC4;
+  display: none;
 }
 /*
 #privacyMode {
@@ -2864,7 +3012,7 @@ div.loginBox > form > div > ul > li {
 }
 #forgotPassword {
   font-size: 12px !important;
-  font-size: 0.75rem !important;
+  font-size: 0.75em !important;
 }
 .forgotBox {
   padding: 1rem;
@@ -2936,7 +3084,7 @@ div.loginBox > form > div > ul > li {
   width: 100%;
   margin: auto;
   font-size: 16px;
-  font-size: 1rem;
+  font-size: 1em;
   text-align: center;
 }
 #archive main {
@@ -2951,7 +3099,7 @@ div.loginBox > form > div > ul > li {
 }
 #search-archives .k-autocomplete {
   height: 1.7rem;
-  border-color: #e0e0e0;
+  border-color: #E0E0E0;
   background-color: white;
 }
 #search-archives .clear_input_div {
@@ -2960,7 +3108,7 @@ div.loginBox > form > div > ul > li {
 #search-archives input {
   width: 100%;
   box-sizing: border-box;
-  font-size: 1rem;
+  font-size: 1em;
 }
 #search-archives > button {
   position: absolute;
@@ -2993,7 +3141,7 @@ div.loginBox > form > div > ul > li {
 }
 .card .top {
   background-color: #f5f5f5;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #E0E0E0;
   padding: 0.5rem;
   border-radius: 3px 3px 0 0;
 }
@@ -3010,15 +3158,27 @@ div.loginBox > form > div > ul > li {
   float: left;
 }
 .card .top .senderMessage .chat-time {
-  font-size: 11px;
-  font-size: 0.6875rem;
+  font-size: 16px;
+  font-size: 1em;
+}
+@media only screen and (max-width: 320px) {
+  .card .top .senderMessage .chat-time {
+    font-size: 14px;
+    font-size: 0.875em;
+  }
 }
 .card .top .senderMessage .chat-details {
   float: left;
   margin-left: 0px;
   margin-right: 0px;
-  font-size: 12px;
-  font-size: 0.75rem;
+  font-size: 16px;
+  font-size: 1em;
+}
+@media only screen and (max-width: 320px) {
+  .card .top .senderMessage .chat-details {
+    font-size: 14px;
+    font-size: 0.875em;
+  }
 }
 .card .photoTopDiv {
   padding: 0px;
@@ -3041,7 +3201,7 @@ div.loginBox > form > div > ul > li {
 }
 .card .chat p {
   font-size: 16px;
-  font-size: 1rem;
+  font-size: 1em;
 }
 .photoPreview {
   width: 25%;
@@ -3074,8 +3234,6 @@ div.loginBox > form > div > ul > li {
   border-color: transparent;
 }
 .cardInfoBar {
-  font-size: 12px;
-  font-size: 0.75rem;
   margin-bottom: 0.25rem;
 }
 /*
@@ -3212,6 +3370,9 @@ div.loginBox > form > div > ul > li {
   vertical-align: bottom;
   height: 18px;
 }
+#modalview-checkin > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div:nth-child(2) {
+  background: #fff;
+}
 #place-checkIn-circle {
   height: 4rem;
   width: 4rem;
@@ -3264,7 +3425,7 @@ div.loginBox > form > div > ul > li {
 .confirmPlaceAddress #autoCheckInText {
   vertical-align: super;
   font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 0.875em;
   margin-left: 0.5rem;
 }
 .mapInfo {
@@ -3282,7 +3443,7 @@ div.loginBox > form > div > ul > li {
 .km-material .km-switch-handle,
 .km-material .k-slider-selection,
 .km-material .km-switch-background {
-  color: #6cadf3;
+  color: #6CADF3;
 }
 #places-checkIn > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.confirmPlaceAddress > p:nth-child(1) > span > span > img {
   vertical-align: sub;
@@ -3319,18 +3480,18 @@ div.loginBox > form > div > ul > li {
 }
 #contacts-listview,
 #contactimport-listview {
-  padding-bottom: 3rem;
+  padding-bottom: 5rem;
 }
 #contacts-listview > li,
 #contactimport-listview > li {
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #E0E0E0;
   background: #fff;
   width: 100%;
   display: inline-block;
 }
 #contacts-listview > li:nth-child(2) {
-  border-top: 1px solid #e0e0e0;
-  border-bottom: 1px solid #e0e0e0;
+  border-top: 1px solid #E0E0E0;
+  border-bottom: 1px solid #E0E0E0;
 }
 #contacts-listview > li > div > div:nth-child(1) > div:nth-child(3) > h4 {
   margin-left: 0px;
@@ -3347,7 +3508,7 @@ div.loginBox > form > div > ul > li {
   margin-right: 0.5em;
 }
 .contactListItem:hover {
-  color: #4a4a4a;
+  color: #4A4A4A;
   text-align: left;
 }
 #contactActionBtns > li > a {
@@ -3396,7 +3557,7 @@ div.loginBox > form > div > ul > li {
 }
 .contact-connections span {
   font-size: 12px;
-  font-size: 0.75rem;
+  font-size: 0.75em;
 }
 .circleOptions {
   width: 16rem;
@@ -3443,7 +3604,7 @@ div.loginBox > form > div > ul > li {
   top: 0px;
   background: #fff;
   display: inline-block;
-  height: 4rem;
+  height: 5rem;
   box-shadow: 3px 0 3px -3px #979797;
   width: 100%;
 }
@@ -3453,15 +3614,14 @@ div.loginBox > form > div > ul > li {
   background-color: #f5f5f5;
   z-index: -1;
   display: inline-block;
-  padding-top: 0.55rem;
-  margin-bottom: -0.25rem;
+  padding-top: 1rem;
   float: left;
-  height: 4rem;
+  height: 5rem;
   text-align: right;
 }
 .list-box {
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
   position: absolute;
   left: 0px;
   top: 0px;
@@ -3518,15 +3678,16 @@ div.contactListBox.activeContact > div > div > ul {
   padding-top: 0px;
   padding-bottom: 0px;
   display: inherit;
-}
-#contacts-listview li:nth-child(2) {
-  border-top: 1px solid #E4E4E4;
+  border-bottom: 1px solid #E0E0E0;
 }
 .listPhoto {
   width: 20%;
   height: 100%;
 }
 .listName {
+  width: 80%;
+}
+.contact-status {
   width: 80%;
 }
 #contacts-listview > li > div > div:nth-child(1) > p {
@@ -3602,20 +3763,17 @@ div.contactListBox.activeContact > div > div > ul {
   float: left;
 }
 #contacts-listview > li > div {
-  background-color: #e0e0e0;
+  background-color: #E0E0E0;
   color: #979797;
-  font-size: 11px;
-  font-size: 0.6875rem;
   font-weight: 400;
-  padding: 1px 0px 1px 0.5rem;
   border: none;
 }
 .contacts-alias-sm,
 .secondName {
   font-size: 12px;
-  font-size: 0.75rem;
+  font-size: 0.75em;
   color: #979797;
-  vertical-align: middle;
+  vertical-align: initial;
   font-weight: 400 !important;
 }
 /* Contact sync */
@@ -3624,7 +3782,7 @@ div.contactListBox.activeContact > div > div > ul {
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);
   border-radius: 4px;
   padding: 1rem;
-  background: #eff1f2;
+  background: #EFF1F2;
 }
 .input-count {
   color: #fff;
@@ -3634,7 +3792,7 @@ div.contactListBox.activeContact > div > div > ul {
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
   font-size: 11px;
-  font-size: 0.6875rem;
+  font-size: 0.6875em;
 }
 #editContact-resyncBtn img {
   vertical-align: bottom;
@@ -3662,8 +3820,6 @@ div.contactListBox.activeContact > div > div > ul {
   margin-bottom: 0.5rem;
 }
 .notify-helper {
-  font-size: 12px;
-  font-size: 0.75rem;
   color: #979797;
 }
 .notify-content h4,
@@ -3687,8 +3843,8 @@ div.contactListBox.activeContact > div > div > ul {
   margin-left: 1rem;
 }
 .notify-content-text {
-  background: #eff1f2;
-  border: 1px solid #e0e0e0;
+  background: #EFF1F2;
+  border: 1px solid #E0E0E0;
   border-radius: 2px;
   padding: 0.5rem;
   margin-top: 0.5rem;
@@ -3700,7 +3856,7 @@ div.contactListBox.activeContact > div > div > ul {
 }
 .notify-content-name {
   font-size: 12px;
-  font-size: 0.75rem;
+  font-size: 0.75em;
   font-weight: 600;
 }
 .notify-content-preview-img {
@@ -3730,10 +3886,10 @@ div.contactListBox.activeContact > div > div > ul {
 }
 /* sign up */
 .mobile-countryCode {
-  background-color: #6cadf3;
+  background-color: #6CADF3;
   color: #fff;
   font-size: 30px;
-  font-size: 1.875rem;
+  font-size: 1.875em;
   padding: 0.5rem 1rem;
   float: left;
   position: absolute;
@@ -3743,7 +3899,7 @@ div.contactListBox.activeContact > div > div > ul {
 .mobile-input {
   float: left;
   font-size: 30px !important;
-  font-size: 1.875rem !important;
+  font-size: 1.875em !important;
   width: 80% !important;
   margin-left: 20%;
 }
@@ -3751,7 +3907,7 @@ div.contactListBox.activeContact > div > div > ul {
   width: 80%;
   margin-left: 20%;
   font-size: 11px;
-  font-size: 0.6875rem;
+  font-size: 0.6875em;
 }
 #formCreateAccount > div > ul > li,
 #formCreateAccount > div > ul {
@@ -3766,14 +3922,7 @@ div.contactListBox.activeContact > div > div > ul {
 }
 /* photo editor */
 #photoEditor > div.km-content.km-widget.km-scroll-wrapper {
-  background: #4A4A4A;
-}
-#photoEditImage {
-  max-height: 100%;
-  max-width: 100%;
-}
-.photo-options {
-  vertical-align: bottom;
+  background: rgba(0, 0, 0, 0.85);
 }
 /* Contacts */
 .contactImg {
@@ -3800,11 +3949,11 @@ div.contactListBox.activeContact > div > div > ul {
 #channels-editChannel-name,
 #placeNameEdit {
   font-size: 24px !important;
-  font-size: 1.5rem !important;
+  font-size: 1.5em !important;
 }
 .aliasName {
   font-size: 11px !important;
-  font-size: 0.6875rem !important;
+  font-size: 0.6875em !important;
   color: #979797;
   text-align: right;
 }
@@ -3816,12 +3965,12 @@ div.contactListBox.activeContact > div > div > ul {
 #editChannelMemberList li {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid #E0E0E0;
   background-color: #fff;
 }
 .addChatMembersBanner {
   width: 100%;
-  color: #6cadf3;
+  color: #6CADF3;
   padding: 0.5rem 1rem;
 }
 .editChatImg {
@@ -3829,7 +3978,7 @@ div.contactListBox.activeContact > div > div > ul {
   margin-right: 0.5rem;
 }
 .addedChatMember {
-  background: #6cadf3;
+  background: #6CADF3;
   width: 100%;
   padding-left: 1rem;
   padding-top: 0.25rem;
@@ -3848,16 +3997,16 @@ div.contactListBox.activeContact > div > div > ul {
   padding: 0 0.5rem;
 }
 #channelMembers-listview li:nth-child(2) {
-  border-top: 1px solid #e0e0e0;
-  border-bottom: 1px solid #e0e0e0;
+  border-top: 1px solid #E0E0E0;
+  border-bottom: 1px solid #E0E0E0;
 }
 #editmembers-listview li {
   padding: 0.25rem;
   background: #fff;
 }
 #editmembers-listview li:nth-child(1) {
-  border-top: 1px solid #e0e0e0;
-  border-bottom: 1px solid #e0e0e0;
+  border-top: 1px solid #E0E0E0;
+  border-bottom: 1px solid #E0E0E0;
 }
 #channelMembers-listview > li > ul {
   width: 100%;
@@ -3896,7 +4045,7 @@ div.contactListBox.activeContact > div > div > ul {
   width: 100%;
   border: 0px;
   font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 0.875em;
   border-bottom: 1px solid #e0e0e0;
   padding: .5em .7em;
 }
@@ -3918,6 +4067,7 @@ div.contactListBox.activeContact > div > div > ul {
 #gallery-listview {
   line-height: 0 !important;
   padding-top: 0.25rem;
+  padding-bottom: 5em;
   /* need to work on better responsive
    -webkit-column-count: 2;
    -webkit-column-gap:   1px;
@@ -3976,7 +4126,7 @@ div.contactListBox.activeContact > div > div > ul {
   width: 100%;
 }
 .gallerySearchOptions {
-  background: #e0e0e0;
+  background: #E0E0E0;
 }
 .gallerySearchOptions .filters {
   text-align: center;
@@ -3987,7 +4137,7 @@ div.contactListBox.activeContact > div > div > ul {
 }
 #galleryMenuSelect li.km-button {
   width: 50%;
-  color: #4a4a4a;
+  color: #4A4A4A;
   border-top: 0px !important;
   border-bottom: 0px !important;
 }
@@ -3997,17 +4147,24 @@ div.contactListBox.activeContact > div > div > ul {
   margin-right: 4px;
 }
 #galleryMenuSelect #gallery-photos {
-  fill: #4a4a4a;
+  fill: #4A4A4A;
 }
 #galleryMenuSelect #gallery-all {
-  stroke: #4a4a4a;
+  stroke: #4A4A4A;
 }
-#galleryMenuSelect.km-buttongroup > .km-state-active {
-  background-color: #6cadf3;
-  color: #fff;
+#galleryMenuSelect.km-buttongroup > .km-state-active,
+#settingChatSize > li.km-button.km-state-active {
+  background-color: #6CADF3;
+  color: #fff !important;
   border-radius: 0px;
   border-top: 0px !important;
   border-bottom: 0px !important;
+}
+#settingChatSize > li.km-button.km-state-active {
+  border-radius: 3px;
+}
+#settings > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > form > div > ul > li:nth-child(3) > div:after {
+  display: none !important;
 }
 .km-state-active #gallery-photos {
   fill: #fff !important;
@@ -4033,7 +4190,7 @@ div.contactListBox.activeContact > div > div > ul {
 .km-group-container #galleryZoomSelect > li.km-button.km-state-active > span > svg #gallery-grid-1,
 #galleryZoomSelect > li.km-button.km-state-active > span > svg #gallery-grid-2,
 #galleryZoomSelect > li.km-button.km-state-active > span > svg #gallery-grid-3 {
-  fill: #ffb74d;
+  fill: #FFB74D;
 }
 #gallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.gallerySearchOptions > div > button > span > img {
   height: 1.25rem;
@@ -4041,9 +4198,9 @@ div.contactListBox.activeContact > div > div > ul {
 .resultsBar {
   padding: 0rem 1rem;
   background: #fff;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #E0E0E0;
   font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 0.875em;
 }
 .resultsBar .results {
   width: 30%;
@@ -4078,7 +4235,7 @@ div.contactListBox.activeContact > div > div > ul {
 }
 #select-easy-dates > li.km-button > span {
   font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 0.875em;
 }
 .k-block,
 .k-header,
@@ -4092,6 +4249,10 @@ div.contactListBox.activeContact > div > div > ul {
 html .km-pane-wrapper .k-header {
   background-color: #fff;
 }
+.km-badge,
+.km-detail {
+  font-size: 0.7em !important;
+}
 .km-material input,
 .km-material select,
 .km-material textarea,
@@ -4104,7 +4265,7 @@ html .km-pane-wrapper .k-header {
 .km-material input[type=email],
 .km-material input[type=text]:not(.k-input),
 .km-root .km-material textarea {
-  color: #4a4a4a;
+  color: #4A4A4A;
 }
 .k-autocomplete,
 .k-combobox,
@@ -4132,19 +4293,19 @@ html .km-pane-wrapper .k-header {
   width: 100%;
 }
 #dateSelect > div.k-header {
-  background: #2e93fd;
+  background: #2E93FD;
 }
 #dateSelect > div.k-footer > a {
-  background: #2e93fd;
+  background: #2E93FD;
 }
 #dateSelect_cell_selected {
-  background: #e0e0e0;
-  color: #4a4a4a;
-  border: #e0e0e0 !important;
+  background: #E0E0E0;
+  color: #4A4A4A;
+  border: #E0E0E0 !important;
   box-shadow: none;
 }
 #dateSelect_cell_selected > a {
-  color: #4a4a4a;
+  color: #4A4A4A;
 }
 #dateSelect_cell_selected {
   border: none;
@@ -4162,7 +4323,7 @@ html .km-pane-wrapper .k-header {
   width: 90%;
   margin-left: 5%;
   margin-right: 5%;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #E0E0E0;
   margin-top: 0.25rem;
   border-radius: 3px;
   transition: all 0.5s ease-out;
@@ -4179,7 +4340,7 @@ html .km-pane-wrapper .k-header {
   padding-top: 0.75em;
   color: #979797;
   font-size: 12px;
-  font-size: 0.75rem;
+  font-size: 0.75em;
   width: 20%;
   text-align: center;
 }
@@ -4207,7 +4368,7 @@ html .km-pane-wrapper .k-header {
 }
 .appendSearch .enterSearch span {
   padding-top: 0px;
-  color: #e0e0e0;
+  color: #E0E0E0;
   font-weight: 600;
 }
 .viewScroller {
@@ -4222,13 +4383,16 @@ html .km-pane-wrapper .k-header {
   border: inherit;
 }
 .km-material input:focus {
-  color: #4a4a4a;
+  color: #4A4A4A;
 }
 /* Chat styles */
 #messages-listview li {
   width: 100%;
   padding-right: 1rem !important;
   padding-left: 1rem !important;
+}
+#messages-listview li:last-child {
+  margin-bottom: 2em;
 }
 .chat-message {
   line-height: 1.5;
@@ -4239,7 +4403,7 @@ html .km-pane-wrapper .k-header {
 .chat-message p {
   margin: 0px 0px 4px;
   font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 0.875em;
   height: 100%;
 }
 .chat-message h5 {
@@ -4248,7 +4412,7 @@ html .km-pane-wrapper .k-header {
   color: #27476e;
   margin: 0;
   font-size: 12px;
-  font-size: 0.75rem;
+  font-size: 0.75em;
   font-weight: 600;
   display: none;
 }
@@ -4275,13 +4439,11 @@ html .km-pane-wrapper .k-header {
   }
 }
 .chat-photo-box {
-  border: 1px solid #e0e0e0;
+  border: 1px solid #E0E0E0;
   width: 40%;
-  float: left;
 }
 .chat-photo-box-zoom {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
-  float: right;
   width: 88%;
 }
 @media only screen and (max-width: 320px) {
@@ -4303,7 +4465,7 @@ html .km-pane-wrapper .k-header {
   padding: 0.2em 0.35em;
   border-radius: .25em;
   color: #fff;
-  background: #6cadf3;
+  background: #6CADF3;
   margin-top: 0.2em;
 }
 .chat-message-sender:after {
@@ -4313,7 +4475,7 @@ html .km-pane-wrapper .k-header {
   width: 0;
   border-top: 0.4rem solid transparent;
   border-bottom: 0.4rem solid transparent;
-  border-right: 0.3rem solid #6cadf3;
+  border-right: 0.3rem solid #6CADF3;
   top: 1.5rem;
   left: 11%;
 }
@@ -4327,7 +4489,7 @@ html .km-pane-wrapper .k-header {
   float: left;
   padding: 0.2em 0.35em;
   border-radius: .25em;
-  color: #4a4a4a;
+  color: #4A4A4A;
   background: #e8e8e8;
   margin-top: 0.2em;
 }
@@ -4354,35 +4516,39 @@ html .km-pane-wrapper .k-header {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
 }
 .movingChat > .chat-message-user-content::after {
-  border-color: #9e788f transparent;
+  border-color: #9E788F transparent;
 }
 .movingChat-delete > .chat-message-user-content::after {
-  border-color: #e57373 transparent;
+  border-color: #E57373 transparent;
 }
 .chat-message-text {
-  font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 1.2em;
   line-height: 1.4;
 }
+@media only screen and (max-width: 320px) {
+  .chat-message-text .chat-message-text {
+    font-size: 1em;
+  }
+}
 .chat-details {
-  font-size: 11px;
-  font-size: 0.6875rem;
+  font-size: 14px;
+  font-size: 0.875em;
   color: #979797;
   padding-left: 14%;
 }
 @media only screen and (max-width: 320px) {
   .chat-details {
+    font-size: 12px;
+    font-size: 0.75em;
     padding-left: 17%;
   }
 }
 .chat-sender {
   float: left;
+  letter-spacing: 0.3px;
 }
 .chat-time {
   float: right;
-  font-size: 11px;
-  font-size: 0.6875rem;
-  color: #d3d3d3;
 }
 #channel > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
   position: absolute;
@@ -4707,17 +4873,62 @@ html .km-pane-wrapper .k-header {
 #checked-in-place {
   display: none;
 }
-/** Place **/
-#places-listview,
-#findplace-listview {
+.map-placeLayer {
+  width: 100%;
+  height: 150px;
+}
+#map-mapdiv {
+  position: absolute;
+  top: -55px;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+}
+.map-placeLayer {
+  background: url("../images/layer-map.png") center center fixed;
+  -webkit-background-size: contain;
+  -moz-background-size: contain;
+  -o-background-size: contain;
+  background-size: contain;
+}
+.placeCardTop {
+  margin: 0.5rem 0 0.5rem;
+}
+.placeContent {
+  position: relative;
+  top: 3.5rem;
+}
+.placeContentBox {
+  padding: 0.5rem 1rem;
+}
+#placeListOpt {
+  margin-top: 0.5rem;
   width: 100%;
 }
+#placeListOpt li {
+  width: 50%;
+  float: left;
+  padding: 0 0.25rem;
+  text-align: center;
+}
+#placeListOpt li:nth-child(2) {
+  border-left: 1px solid #E0E0E0;
+}
+/** Place **/
+#places-listview,
+#findplace-listview,
+#checkin-listview {
+  width: 100%;
+  margin-bottom: 5em;
+}
 #places-listview li:not(.km-group-container),
-#findplace-listview li:not(.km-group-container) {
-  border-top: 1px solid #e0e0e0 !important;
+#findplace-listview li:not(.km-group-container),
+#checkin-listview li:not(.km-group-container) {
+  border-top: 1px solid #E0E0E0 !important;
 }
 #places-listview li,
-#findplace-listview li {
+#findplace-listview li,
+#checkin-listview li {
   background: #fff;
 }
 #placeTypeBtns,
@@ -4756,26 +4967,40 @@ html .km-pane-wrapper .k-header {
 .placeIconImgBtn {
   height: 2rem;
 }
-#findPlace > div.footerMenu.km-footer {
+#findPlace > div.footerMenu.km-footer,
+#map > div.footerMenu.km-footer {
   display: none;
 }
 #findplace-listview li h4,
 #places-listview li h4 {
-  color: #2e93fd;
+  color: #2E93FD;
 }
 #current-place-name {
   padding-top: 0.2rem;
   margin-left: 0.5rem !important;
   font-size: 16px;
-  font-size: 1rem;
+  font-size: 1em;
 }
 .whiteBtn {
   color: #fff !important;
 }
 #current-place {
-  background: #6cadf3;
+  background: #6CADF3;
   padding: 0.25rem 1rem;
   color: #fff;
+}
+.placeCard {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  background: #fff;
+  border-radius: 3px;
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
+  position: absolute;
+  top: 4rem;
+}
+#placeView > div.footerMenu.km-footer {
+  display: none;
 }
 .icon-btn {
   height: 1rem;
@@ -4783,7 +5008,7 @@ html .km-pane-wrapper .k-header {
 }
 #checkoutBtn {
   font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 0.875em;
 }
 #editPlace > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > form > div.km-listview-wrapper > ul {
   margin: 0px;

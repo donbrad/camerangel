@@ -241,7 +241,10 @@
 		    	<span class="right"><a class="btnClear-grey-sm" data-role="button" data-rel="modalview" href="#testing">Clear</a></span>
 	    	</div>
 	    	<div class="clearfix"></div>
-	    	<ul data-role="listview"  data-source="notificationModel.notificationDS" data-template="notificationTemplate" id="notification-listview"></ul>
+	    	<ul id="notification-listview"></ul>
+	    	<div class="emptyState hidden">
+         		<img src="images/empty-home.svg" />
+         	</div>
 	   	</div>
 	  </div>
 	<div class="hidden"> <canvas id="identiconCanvas" width="256" height="256"></canvas></div>
@@ -259,15 +262,15 @@
 		</div>
 		<div class="notify-content">
 			# if (action !== undefined && action !== 'none') {#
-				<h3>
+				<h4>
 					<a data-role="button" data-param="#:uuid#" href="\\#" data-click="#=action#" class="btnClear-link">#= title #</a>
-				</h3>
+				</h4>
 			#} else {#
-				<h3>
+				<h4>
 					<a data-role="button" data-param="#:uuid#" href="#=href#"  class="btnClear-link"> #=  actionTitle # </a>
-				</h3>
+				</h4>
 			#}#
-			<p style="font-size: 11px;">#= description # </p>
+			<p>#= description # </p>
 			<div class="notify-action">
 
 			</div>
@@ -825,20 +828,20 @@
 </div>
 
 <!-- contact action -->
-<div data-role="modalview" id="modalview-contactActions" data-model="contactActionView._activeContact"  style="width: 90%; min-height:280px; display: none;">
+<div data-role="modalview" id="modalview-contactActions" data-model="contactActionView._activeContact"  style="width: 90%; height:65%; display: none;">
 	<div class="modal-top">
 		<a data-role="button" class="modal-close" data-click="contactActionView.closeModal"><img src="images/close.svg"/></a>
 
 		<img class="circle-img-lg" id="contactProfileImg" />
 		<img width="20" src="images/status-away.svg" class="statusContactCard-icon" id="contactStatusImg"/>
-		<h3 class="preMotionUp">
+		<h3 class="preMotionUp textClamp">
 
 			<span class="primaryName" id="contactPrimaryName"></span>
 			<span class="hidden" id="currentContactVerified">
 				<img src="images/icon-verified-dark.svg" class="user-status-icon" />
 			</span>
-			<span class="secondName" id="contactSecondName"></span>
 		</h3>
+		<span class="group-contactCard" id="currentContactGroup"></span>
 		<p class="preMotionUp">
 			<span class="contactStatusMessage" data-bind="text: statusMessage"></span>
 

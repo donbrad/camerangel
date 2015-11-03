@@ -42,6 +42,21 @@ var ux = {
 		return primaryName;
 	},
 
+	returnAliasName: function(alias, group){
+		var secondaryName;
+
+		// If alias and group are present
+		if(alias !== "" && alias !== undefined && group !== "" & group !== null){
+			secondaryName = alias;
+		// if 
+		} else if(alias !== "" && alias !== undefined){
+			secondaryName = group;
+		} else {
+			secondaryName = ""
+		}
+		return secondaryName;
+	},	
+
 	addressPrimaryName: function(name, alias, address){
 		var preCheckName = name; 
 		var preCheckAlias = alias; 
@@ -100,7 +115,14 @@ var ux = {
 
 	scrollUpSearch: function(e){
 		var scroller = e.view.scroller;
-    	scroller.scrollTo(0,-51);
+    	scroller.scrollTo(0,-47);
+	},
+
+	returnUserFontSize: function(){
+		var user = "userLgFontSize"
+		if(true){
+			return user;
+		}
 	},
 
 	toggleIsAvailable: function(){
@@ -232,7 +254,10 @@ var ux = {
 	},
 
 	showActionBtnText:function(path, fromRight, text){
-		$(path + " > div.footerMenu.km-footer > a > span > p").text(text).velocity({opacity: 1, right: fromRight}, {easing: "spring", delay: 500});
+		$(path + " > div.footerMenu.km-footer > a > span > p").text(text).css({
+			right: fromRight,
+			opacity: 1
+		});
 	},
 
 	hideActionBtnText: function(path){

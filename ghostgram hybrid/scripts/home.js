@@ -227,6 +227,14 @@ var homeView = {
 	        	// todo - wire search
 	        }
 	    });
+
+		$("#notification-listview").kendoMobileListView({
+			dataSource: notificationModel.notificationDS,
+			template: $("#notificationTemplate").html(),
+			dataBound: function(e) {
+				ux.checkEmptyUIState(notificationModel.notificationDS, "#home");
+			}
+		})
 	},
 
 	closeStatusModal: function(){
@@ -259,6 +267,24 @@ var homeView = {
 		}
 		// clear status box
 		$("#profileStatusUpdate").val("");
+	},
+
+	settingsOnInit: function(e){
+		
+	},
+
+	settingBigFont: function(e){
+		// TODO DON - save big font setting
+
+		// Show sample size
+		$("#sampleChatSize").removeClass("chat-message-text").addClass("userLgFontSize"); 
+	},
+
+	settingRegFont: function(e){
+		// TODO DON - save big font setting
+
+		// Show sample size
+		$("#sampleChatSize").removeClass("userLgFontSize").addClass("chat-message-text");
 	}
 };
 

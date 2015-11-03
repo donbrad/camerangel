@@ -124,9 +124,9 @@ var contactsView = {
                     } else if ($(selection).hasClass("member"))  {
                     	$(selection).velocity({translateX:"-40%"},{duration: "fast"}).addClass("contact-active");
                     } else if($(window).width() < 375) {
-        				$(selection).velocity({translateX:"-80%"},{duration: "fast"}).addClass("contact-active");
+        				$(selection).velocity({translateX:"-85%"},{duration: "fast"}).addClass("contact-active");
                     } else {
-                    	$(selection).velocity({translateX:"-65%"},{duration: "fast"}).addClass("contact-active");
+                    	$(selection).velocity({translateX:"-75%"},{duration: "fast"}).addClass("contact-active");
                     }
                 }
                 if (e.direction === "right" && $(selection).hasClass("contact-active")){
@@ -135,6 +135,7 @@ var contactsView = {
 
             }
         });
+
 
         // Update search UX whenever search input content changes.
        // $("#contactSearchInput" ).on('input', contactsView.updateSearchUX);
@@ -153,6 +154,7 @@ var contactsView = {
 
         // set action button
     	ux.showActionBtn(true, "#contacts", "#contactImport");
+    	ux.showActionBtnText("#contacts", "3em", "New Contact");
     },
 
     // All update the ContactListDS item with current changes
@@ -239,6 +241,9 @@ var contactsView = {
         contactModel.deleteContact(contactId);
 
         var string = "Deleted contact: " + contactModel.currentContact.name + " ("+ contactModel.currentContact.alias + ")" ;
+        
+        // TODO DON - Wire delete for 'New Chat Members'
+
         mobileNotify(string);
         APP.kendo.navigate('#contacts');
 
@@ -739,6 +744,7 @@ var editContactView = {
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"group", editContactView._activeContact.group);
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"address", editContactView._activeContact.address);
 
+        //$("#contacts-listview").data("kendoMobileListView").refresh();
         editContactView.onDone();
     },
 
@@ -947,12 +953,20 @@ var contactActionView = {
                 // This is a new contact.
                 contact = contactModel.findContactByUUID(contactId);
             }
+            console.log(contact);
             var contactName = contact.name;
             var contactAlias = contact.alias;
             var contactVerified = contact.phoneVerified;
+            var contactGroup = contact.group;
 
             var contactIsAvailable = contact.isAvailable;
 
+            // Add group name
+            if(contactGroup !== '' && contactGroup !== null){
+            	$("#currentContactGroup").removeClass("hidden").text(contactGroup);
+            } else {
+            	$("#currentContactGroup").addClass("hidden").text("");
+            }
            
             contactActionView._activeContact.set('name', contactName);
             contactActionView._activeContact.set('alias', contactAlias);
