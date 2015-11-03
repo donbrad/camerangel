@@ -74,7 +74,12 @@
 }
 /* elements */
 .userLgFontSize {
-  font-size: 1.25em !important;
+  font-size: 1.4em !important;
+}
+@media only screen and (max-width: 320px) {
+  .userLgFontSize {
+    font-size: 1.4em !important;
+  }
 }
 .shadow {
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);
@@ -2609,7 +2614,10 @@ a:hover {
   color: #fff;
 }
 #channelPresence-listview > li {
-  border-bottom: 1px solid #979797;
+  border-top: 1px solid #979797;
+}
+#channelPresence-listview > li .gone {
+  opacity: 0.4;
 }
 #channels-listview > li > div > a > div > img {
   margin-left: 1.25rem;
@@ -2733,7 +2741,7 @@ div.footerMenu.km-footer > ul > li > a {
 }
 .actionBtn-text-light {
   color: #fff !important;
-  text-shadow: 1px 1px 2px #000 !important;
+  text-shadow: 1px 1px 2px #979797 !important;
 }
 /* Hide action btns on views */
 * > div.footerMenu.km-footer > a {

@@ -40,7 +40,10 @@
 
 /* elements */
 .userLgFontSize {
-	font-size: 1.25em !important;
+	font-size: 1.4em !important;
+	@media @mobile {
+		font-size: 1.4em !important;
+	}
 }
 
 .shadow {
@@ -2637,7 +2640,10 @@ a:hover {
 }
 
 #channelPresence-listview > li {
-	border-bottom: 1px solid @shade-100;
+	border-top: 1px solid @shade-100;
+	.gone {
+		opacity: 0.4;
+	}
 }
 
 #channels-listview > li > div > a > div > img {
@@ -2776,7 +2782,7 @@ div.footerMenu.km-footer > ul > li > a {
 
 .actionBtn-text-light {
 	color: #fff !important;
-	text-shadow: 1px 1px 2px #000 !important;
+	text-shadow: 1px 1px 2px @shade-100 !important;
 }
 
 /* Hide action btns on views */
