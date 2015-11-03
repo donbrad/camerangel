@@ -2184,6 +2184,9 @@ div.footerMenu.km-footer > ul > li > a:active {
   background: #f5f5f5;
   border-radius: 3px;
   padding: 0.1em 0.5em;
+  float: right;
+  position: absolute;
+  right: 1em;
 }
 #contacts-listview > li > ul > li > div > a > div.left.listName > h4 {
   margin-right: 0px;

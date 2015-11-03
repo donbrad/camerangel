@@ -275,8 +275,6 @@
 
 
 <script type="text/x-kendo-template" id="contactsTemplate">      
-	# console.log(data) #
-
 	#
 		var name = data.name;
 		var alias = data.alias;
@@ -329,10 +327,10 @@
 							#if (data.phoneVerified){#
 									<img src="images/user-verified.svg" class="user-status-icon" />
 							#}#
-							<span class="contacts-alias-sm">#= secondaryName  #</span>
+							<span class="contacts-alias-sm hidden">#= secondaryName  #</span>
 							
 							#if(data.group !== "" && data.group !== null){#
-								<span class="right contact-group">#: data.group #</span>
+								<span class="contact-group">#: data.group #</span>
 							#}#
 							
 							</h4>

@@ -417,7 +417,7 @@ var channelModel = {
 
         channel.set("ownerId", ownerUUID);
         if (ownerName === undefined || ownerName === null) {
-            if (userUUID === userModel.currentUser.userUUID) {
+            if (ownerUUID === userModel.currentUser.userUUID) {
                 ownerName = userModel.currentUser.name;
             } else {
                 var contact = contactModel.findContactModel(ownerUUID);
@@ -448,8 +448,6 @@ var channelModel = {
         channel.save(null, {
             success: function(channel) {
                 // Execute any logic that should take place after the object is saved.
-
-
                 mobileNotify('Added channel : ' + channel.get('name'));
                 APP.kendo.navigate('#editChannel');
 

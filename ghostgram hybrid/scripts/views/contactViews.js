@@ -168,7 +168,7 @@ var contactsView = {
     },
 
     updateSearchUX: function (event) {
-        var query = $('#contactSearchInput').val();
+        var query = $('#contactSearchQuery').val();
 
         if (query.length > 2) {
             $("#btnSearchDeviceName").text(query);
@@ -194,7 +194,7 @@ var contactsView = {
             e.preventDefault();
         }
 
-        var query = $('#contactSearchInput').val();
+        var query = $('#contactsSearchQuery').val();
 
         APP.kendo.navigate("#contactImport?query="+query);
 
@@ -741,6 +741,7 @@ var editContactView = {
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"group", editContactView._activeContact.group);
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"address", editContactView._activeContact.address);
 
+        //$("#contacts-listview").data("kendoMobileListView").refresh();
         editContactView.onDone();
     },
 

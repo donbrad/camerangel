@@ -752,15 +752,6 @@ var channelView = {
 
             if (thisChannel.messagesArray == undefined) {
                 privateChannel.getMessageHistory(function (messages) {
-                    for (var i=0; i<messages.length; i++){
-                        var message = messages[i];
-                        var formattedContent = '';
-                        if (message.content !== null) {
-                            formattedContent = formatMessage(message.content);
-                        }
-                        message.formattedContent = formattedContent;
-                        message.fromHistory = true;
-                    }
 
                     thisChannel.messagesArray = messages;
                     channelView.messagesDS.data(messages);
@@ -795,15 +786,6 @@ var channelView = {
 
           groupChannel.getMessageHistory(function (messages) {
               channelView.messagesDS.data([]);
-              for (var i=0; i<messages.length; i++){
-                  var message = messages[i];
-                  var formattedContent = '';
-                  if (message.content !== null) {
-                      formattedContent = formatMessage(message.content);
-                  }
-                  message.formattedContent = formattedContent;
-              }
-
               channelView.messagesDS.data(messages);
               //channelView.updateMessageTimeStamps();
 
@@ -1088,8 +1070,8 @@ var channelView = {
      _initMessageTextArea : function () {
 
       //   $('#messageTextArea').val('')
-         $('#messageTextArea').attr("rows",1);
-         $('#messageTextArea').attr("height",24);
+         $('#messageTextArea').attr("rows","1");
+         $('#messageTextArea').attr("height","24px");
          $('#messageTextArea').data("kendoEditor").value('');
          $('#messageTextArea').data("kendoEditor").update();
 

@@ -47,10 +47,10 @@ var ux = {
 
 		// If alias and group are present
 		if(alias !== "" && alias !== undefined && group !== "" & group !== null){
-			secondaryName = group;
+			secondaryName = alias;
 		// if 
 		} else if(alias !== "" && alias !== undefined){
-			secondaryName = alias;
+			secondaryName = group;
 		} else {
 			secondaryName = ""
 		}

@@ -420,15 +420,15 @@
 				<img class="chat-message-profileImg circle-img-sm" src="images/ghost-blue.svg" alt="" />
 			#}#
 		</div>
-		# if (formattedContent !== "") {#		
+		# if (content !== "") {#
 			# if (contactData.isContact ) {#
 				<div class="chat-message-receiver chat-message-content  clearfix">
-					<div class="#= messageClass #">#= formattedContent #</div>
+					<div class="#= messageClass #">#= content #</div>
 				</div>
 			#} else {#
 				<div class="chat-message-sender chat-message-content">
 					<div class="#= messageClass #">
-						#= formattedContent #
+						#= content #
 					</div>
 				</div>
 			#}#
@@ -443,7 +443,7 @@
 	</div>
 </script>
 
- <div data-role="drawer" id="channelPresence"  data-position="right" data-init="channelPresence.onInit" data-show="channelPresence.onShow" data-swipe-to-open-views='["channel"]' data-views='["channel"]' style="width: 80%;">
+ <div data-role="drawer" id="channelPresence"  data-position="right" data-init="channelPresence.onInit" data-show="channelPresence.onShow" data-swipeToOpen="false" data-views='["channel"]' style="width: 80%;">
 	 <div data-role="header">
 		 <div data-role="navbar">
 			 <a data-align="left" data-role="button" data-click="channelPresence.onDone">
@@ -506,7 +506,6 @@
 			 <h4>#: data.name #</h4>
 			  <div style="float: right;"># var status = "Here"; if (!data.isPresent) {status = "Gone";}# #: status #</div>
 		 </div>
-
 	 </div>
 </script>
 

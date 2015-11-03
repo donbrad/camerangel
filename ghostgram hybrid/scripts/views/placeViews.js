@@ -550,7 +550,7 @@ var addPlaceView = {
         var guid = uuid.v4();
 
         var createChatFlag = $('#addPlaceCreateChat').is('checked');
-
+        placeParse.setACL(userModel.parseACL);
         placeParse.set('uuid', guid);
         placeParse.set('category', place.category);
         placeParse.set('name', place.name);

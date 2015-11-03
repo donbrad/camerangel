@@ -49,12 +49,6 @@ var groupChannel = {
     },
 
     receiveMessage : function (message) {
-        
-        if (message.content !== null) {
-            message.formattedContent = formatMessage(message.content);
-        } else {
-            message.formattedContent = '';
-        }
 
         // Ensure that new messages get the timer
         if (message.fromHistory === undefined) {
