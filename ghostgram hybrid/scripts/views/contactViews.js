@@ -241,6 +241,9 @@ var contactsView = {
         contactModel.deleteContact(contactId);
 
         var string = "Deleted contact: " + contactModel.currentContact.name + " ("+ contactModel.currentContact.alias + ")" ;
+        
+        // TODO DON - Wire delete for 'New Chat Members'
+
         mobileNotify(string);
         APP.kendo.navigate('#contacts');
 
@@ -950,12 +953,20 @@ var contactActionView = {
                 // This is a new contact.
                 contact = contactModel.findContactByUUID(contactId);
             }
+            console.log(contact);
             var contactName = contact.name;
             var contactAlias = contact.alias;
             var contactVerified = contact.phoneVerified;
+            var contactGroup = contact.group;
 
             var contactIsAvailable = contact.isAvailable;
 
+            // Add group name
+            if(contactGroup !== '' && contactGroup !== null){
+            	$("#currentContactGroup").removeClass("hidden").text(contactGroup);
+            } else {
+            	$("#currentContactGroup").addClass("hidden").text("");
+            }
            
             contactActionView._activeContact.set('name', contactName);
             contactActionView._activeContact.set('alias', contactAlias);

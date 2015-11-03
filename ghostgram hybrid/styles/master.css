@@ -2183,6 +2183,13 @@ div.footerMenu.km-footer > ul > li > a:active {
   margin-left: 1rem;
   margin-right: 1rem;
 }
+.group-contactCard {
+  font-size: 0.75em;
+  color: #fff;
+  background: #979797;
+  border-radius: 3px;
+  padding: 0.1em 0.5em;
+}
 .contact-group {
   font-size: 0.75em;
   color: #979797;
