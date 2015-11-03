@@ -119,7 +119,7 @@ var mapModel = {
     },
 
 
-    computePlaceDistance : function() {
+    computePlaceDSDistance : function() {
         var placeArray = placesModel.placesDS.data();
 
         for (var i=0; i<placeArray.length; i++) {
@@ -130,10 +130,22 @@ var mapModel = {
 
     },
 
+    computePlaceDistance: function (placeUUID) {
+
+        var placeModel = placesModel.getPlaceModel(placeUUID);
+        if (placeModel !== undefined)
+            placeModel.set('distance', distance);
+    },
+
     computePlaceArrayDistance : function (placeArray) {
+        var distance = 0;
         for (var i=0; i<placeArray.length; i++) {
-            var distance = getDistanceInMeters(mapModel.lat, mapModel.lng, placeArray[i].lat, placeArray[i].lng);
+            if (mapModel.lat !== null && mapModel.lng !== null) {
+                distance = getDistanceInMeters(mapModel.lat, mapModel.lng, placeArray[i].lat, placeArray[i].lng);
+
+            }
             placeArray[i].distance = distance;
+
         }
     },
 

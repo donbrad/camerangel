@@ -9,7 +9,7 @@
 var placesModel = {
 
     locatorActive : false,
-    _radius : 300,
+    _radius : 500,
 
     placesArray : [],
     placesFetched : false,
@@ -110,7 +110,7 @@ var placesModel = {
     placesDS: new kendo.data.DataSource({
         offlineStorage: "places",
         sort: {
-            field: "name",
+            field: "distance",
             dir: "asc"
         }
     }),
@@ -123,7 +123,7 @@ var placesModel = {
     fetch : function () {
         var PlaceModel = Parse.Object.extend("places");
         var query = new Parse.Query(PlaceModel);
-        query.limit(256);
+        query.limit(512);
 
         query.find({
             success: function(collection) {
@@ -132,10 +132,11 @@ var placesModel = {
                     var model = collection[i];
                     models.push(model.attributes);
                 }
-                deviceModel.setAppState('hasPlaces', true);
+
                 placesModel.placesDS.data(models);
+                mapModel.computePlaceDSDistance();
 
-
+                deviceModel.setAppState('hasPlaces', true);
                 deviceModel.isParseSyncComplete();
             },
             error: function(error) {

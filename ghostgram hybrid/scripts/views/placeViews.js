@@ -73,7 +73,7 @@ var placesView = {
             dataSource: placesView.placeListDS,
             template: $("#placesTemplate").html(),
             dataBound: function(e){
-                ux.checkEmptyUIState(findPlacesView.placesDS, "#placeListDiv >");
+                ux.checkEmptyUIState(placesView.placeListDS, "#placeListDiv >");
             }
         }).kendoTouch({
         	filter: ".list-box",
@@ -128,7 +128,7 @@ var placesView = {
         
         // update actionBtn
         ux.changeActionBtnImg("#places", "icon-gps-light");
-        ux.showActionBtnText("#places", "3em", "Check in");
+        ux.showActionBtnText("#places", "3.5rem", "Add Place");
 
         var findPlaceUrl = "#findPlace?lat="+ mapModel.lat + "&lng=" +  mapModel.lng +"&returnview=places";
         ux.showActionBtn(true, "#places", findPlaceUrl);
@@ -138,10 +138,10 @@ var placesView = {
         mapModel.getCurrentAddress(function (isNew, address) {
             // Is this a new location
             if (isNew) {
-                mapModel.computePlaceDistance();
+                mapModel.computePlaceDSDistance();
                // modalView.openInfo("New Location","Are you somewhere new? Create a new Place!", "OK", null);
             }
-            
+
             placesView.placeListDS.data(placesModel.placesDS.data());
         });
 
@@ -207,8 +207,7 @@ var placesView = {
 var findPlacesView = {
     _returnView : 'places',
     _returnModeal : null,
-    _lat : null,
-    _lng : null,
+    _radius: 1000,   // set a larger radius for find places
     _currentLocation: {},
 
     placesDS :  new kendo.data.DataSource({
@@ -252,8 +251,10 @@ var findPlacesView = {
             if (e.view.params.lat !== undefined) {
                 lat = parseFloat(e.view.params.lat);
                 lng = parseFloat(e.view.params.lng);
-                findPlacesView._lat = lat;
-                findPlacesView._lng = lng;
+
+            } else {
+                lat = mapModel.lat;
+                lng = mapModel.lng;
             }
 
             if (e.view.params.returnview !== undefined){
@@ -379,7 +380,7 @@ var findPlacesView = {
         // Search nearby places
         places.nearbySearch({
             location: latlng,
-            radius: homeView._radius,
+            radius: findPlacesView._radius,
             types: ['establishment']
         }, function (placesResults, placesStatus) {
 
@@ -863,10 +864,7 @@ var checkInView = {
                 userModel.checkIn(placeId);
                 userStatus.update();
                 mobileNotify("You're checked in to " + place.name);
-
                 checkInView.closeModal();
-
-
             }
         });
 
