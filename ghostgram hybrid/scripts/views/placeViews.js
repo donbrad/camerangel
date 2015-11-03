@@ -206,7 +206,7 @@ var placesView = {
 var findPlacesView = {
     _returnView : 'places',
     _returnModeal : null,
-    _radius: 1000,   // set a larger radius for find places
+    _radius: 500,   // set a larger radius for find places
     _currentLocation: {},
 
     placesDS :  new kendo.data.DataSource({
@@ -403,8 +403,10 @@ var findPlacesView = {
                     zipcode: address.zipcode,
                     country: address.country,
                     reference: placeResult.reference,
-                    lat: placeResult.geometry.location.H,
-                    lng: placeResult.geometry.location.L,
+                    //lat: placeResult.geometry.location.H,
+                    //lng: placeResult.geometry.location.L,
+                    lat: placeResult.geometry.lat(),
+                    lng: placeResult.geometry.lng(),
                     vicinity: placeResult.vicinity
                 });
 
