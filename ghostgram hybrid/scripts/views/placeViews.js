@@ -127,7 +127,7 @@ var placesView = {
         
         // update actionBtn
         ux.changeActionBtnImg("#places", "icon-gps-light");
-        ux.showActionBtnText("#places", "3.5rem", "Check in");
+        ux.showActionBtnText("#places", "3.5rem", "Add Place");
 
         var findPlaceUrl = "#findPlace?lat="+ mapModel.lat + "&lng=" +  mapModel.lng +"&returnview=places";
         ux.showActionBtn(true, "#places", findPlaceUrl);
