@@ -476,11 +476,14 @@
 
 		// Provide basic functionality in the simulator and deployable simulator
 		if (window.navigator.simulator === true) {
-			deviceModel.appVersion = "0.2.0.4";
+			deviceModel.appVersion = "emulator: 0.2.0.4";
+			userModel.currentUser.set('appVersion', deviceModel.appVersion);
 		} else {
 			cordova.getAppVersion.getVersionCode(function(version) {
-				mobileNotify("ghostgrams version: " + version);
 				deviceModel.appVersion = version;
+				userModel.currentUser.set('appVersion', version);
+				mobileNotify("ghostgrams version: " + deviceModel.appVersion);
+
 			});
 
 
