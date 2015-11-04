@@ -406,8 +406,8 @@ var findPlacesView = {
                     reference: placeResult.reference,
                     //lat: placeResult.geometry.location.H,
                     //lng: placeResult.geometry.location.L,
-                    lat: placeResult.geometry.lat(),
-                    lng: placeResult.geometry.lng(),
+                    lat: placeResult.geometry.location.lat(),
+                    lng: placeResult.geometry.location.lng(),
                     vicinity: placeResult.vicinity
                 });
 
