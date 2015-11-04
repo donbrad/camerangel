@@ -206,7 +206,7 @@ var placesView = {
  */
 var findPlacesView = {
     _returnView : 'places',
-    _returnModeal : null,
+    _returnModal : null,
     _radius: 500,   // set a larger radius for find places
     _currentLocation: {},
 
@@ -231,11 +231,13 @@ var findPlacesView = {
                     delete geo._events;
                     delete geo.parent;
                     delete geo.__proto__;
-                    
-                    var geoStr = LZString.compressToEncodedURIComponent(JSON.stringify(geo));
+
+                    addPlaceView.setActivePlace(geo);
+                 /*   var geoStr = LZString.compressToEncodedURIComponent(JSON.stringify(geo));
 
                     var navStr = '#addPlace?geo="' + geoStr + '"&returnview=findPlace';
-
+*/
+                    var navStr = '#addPlace?returnview='+findPlacesView._returnView;
                     APP.kendo.navigate(navStr);
 
                 }
