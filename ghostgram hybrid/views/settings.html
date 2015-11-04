@@ -51,7 +51,7 @@
 			  </li>
 			  <li>
 				  <label> Save to Phone Photo Album
-					  <input type="checkbox" id="settingsSaveToAlbum" data-role="switch"  data-bind="checked: currentUser.savePhotoToAlbum"/>
+					  <input type="checkbox" id="settingsSaveToAlbum" data-role="switch"  data-bind="checked: currentUser.saveToPhotoAlbum"/>
 				  </label>
 			  </li>
 			<li>
@@ -72,7 +72,7 @@
 			</li>
 			<li>
 				<label>App Version <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
-					<input type="text" id="profile-version" data-bind="value: deviceModel.appVersion" readonly/>
+					<input type="text" id="profile-version" data-bind="value: currentUser.appVersion" readonly/>
 				</label>
 			</li>
 			<li>

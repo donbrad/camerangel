@@ -206,8 +206,8 @@ var placesView = {
  */
 var findPlacesView = {
     _returnView : 'places',
-    _returnModeal : null,
-    _radius: 1000,   // set a larger radius for find places
+    _returnModal : null,
+    _radius: 500,   // set a larger radius for find places
     _currentLocation: {},
 
     placesDS :  new kendo.data.DataSource({
@@ -228,9 +228,15 @@ var findPlacesView = {
                 click: function (e) {
                     var geo = e.dataItem;
 
+                    delete geo._events;
+                    delete geo.parent;
+                    delete geo.__proto__;
+
+                    addPlaceView.setActivePlace(geo);
                     var geoStr = LZString.compressToEncodedURIComponent(JSON.stringify(geo));
 
-                    var navStr = "#addPlace?geo=" + geoStr + "&returnview=findPlace";
+                    var navStr = 'places.html#addPlace?geo="' + geoStr + '"&returnview=findPlace';
+
 
                     APP.kendo.navigate(navStr);
 
@@ -278,6 +284,7 @@ var findPlacesView = {
                 mobileNotify('Google geocoding service error!');
                 return;
             }
+
             if (geoResults.length === 0 ) {
                 mobileNotify('We couldn\'t match your position to an address.');
                 return;
@@ -404,8 +411,10 @@ var findPlacesView = {
                     zipcode: address.zipcode,
                     country: address.country,
                     reference: placeResult.reference,
-                    lat: placeResult.geometry.location.H,
-                    lng: placeResult.geometry.location.L,
+                    //lat: placeResult.geometry.location.H,
+                    //lng: placeResult.geometry.location.L,
+                    lat: placeResult.geometry.location.lat(),
+                    lng: placeResult.geometry.location.lng(),
                     vicinity: placeResult.vicinity
                 });
 
@@ -474,9 +483,20 @@ var addPlaceView = {
 
         var returnUrl = '#'+ addPlaceView._returnView;
 
+        // unbind the activePlace change handler...
+        addPlaceView._activePlace.unbind('change',addPlaceView.onSync);
+
         APP.kendo.navigate(returnUrl);
 
     },
+
+    onSync : function (e) {
+        if (e.field === 'name') {
+            // check for duplicate name and prompt user
+
+        }
+    },
+
 
     placeTypeSelect: function(e){
     	var index = this.current().index();
@@ -504,7 +524,8 @@ var addPlaceView = {
     setActivePlace : function (geoPlace) {
         addPlaceView._activeGeo = geoPlace;
 
-        addPlaceView._activePlace.set('name', geoPlace.name);
+        addPlaceView._activePlace.unbind('change',addPlaceView.onSync);
+
         addPlaceView._activePlace.set('alias', geoPlace.alias);
         addPlaceView._activePlace.set('venueName', geoPlace.venueName);
         addPlaceView._activePlace.set('isAvailable',"true");
@@ -535,6 +556,8 @@ var addPlaceView = {
             addPlaceView._activePlace.set('googleId', geoPlace.googleId);
         }
 
+        addPlaceView._activePlace.bind('change',addPlaceView.onSync);
+        addPlaceView._activePlace.set('name', geoPlace.name);
 
     },
 

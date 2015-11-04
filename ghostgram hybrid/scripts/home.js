@@ -540,7 +540,7 @@ function homeSignin (e) {
             userModel.currentUser.set('alias', userModel.parseUser.get('alias'));
             userModel.currentUser.set('aliasPhoto', userModel.parseUser.get('aliasPhoto'));
 			userModel.currentUser.set('statusMessage', userModel.parseUser.get('statusMessage'));
-			userModel.currentUser.set('isAvailable', userModel.parseUser.get('isAvailable'))
+			userModel.currentUser.set('isAvailable', userModel.parseUser.get('isAvailable'));
 			userModel.currentUser.set('isCheckedIn', userModel.parseUser.get('isCheckedIn'));
 			userModel.currentUser.set('isVisible', userModel.parseUser.get('isVisible'));
 			userModel.currentUser.set('isRetina', userModel.parseUser.get('isRetina'));
@@ -553,6 +553,7 @@ function homeSignin (e) {
 			userModel.currentUser.set('aliasPublic', userModel.parseUser.get('aliasPublic'));
             userModel.currentUser.set('userUUID', userModel.parseUser.get('userUUID'));
 			userModel.currentUser.set('useIdenticon', userModel.parseUser.get('useIdenticon'));
+			userModel.currentUser.set('useLargeView', userModel.parseUser.get('useLargeView'));
 			userModel.currentUser.set('rememberUsername', userModel.parseUser.get('rememberUsername'));
 			userModel.currentUser.set('publicKey', publicKey);
 			userModel.decryptPrivateKey();
@@ -662,6 +663,7 @@ function homeCreateAccount() {
 				    user.set("availImgUrl", "images/status-available.svg");
 					user.set("phoneVerified", false);
 				    user.set("useIdenticon", true);
+					   user.set("useLargeView", false);
 					user.set("rememberUsername", false);
 					user.set("userUUID", userUUID);
 					//user.set("publicKey", publicKey);
@@ -690,6 +692,7 @@ function homeCreateAccount() {
 							userModel.currentUser.set('aliasPhoto', user.get('aliasPhoto'));
 							userModel.currentUser.set('userUUID', user.get('userUUID'));
 							userModel.currentUser.set('phoneVerified', false);
+							userModel.currentUser.set('useLargeView', false);
 							userModel.currentUser.set('useIdenticon',user.get('useIdenticon'));
 							userModel.currentUser.set('emailValidated',user.get('emailVerified'));
 							userModel.generateNewPrivateKey(user);
