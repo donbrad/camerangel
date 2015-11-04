@@ -228,6 +228,10 @@ var findPlacesView = {
                 click: function (e) {
                     var geo = e.dataItem;
 
+                    delete geo._events;
+                    delete geo.parent;
+                    delete geo.__proto__;
+                    
                     var geoStr = LZString.compressToEncodedURIComponent(JSON.stringify(geo));
 
                     var navStr = '#addPlace?geo="' + geoStr + '"&returnview=findPlace';
