@@ -278,6 +278,14 @@ var contactModel = {
     },
 
 
+    totalContacts : function () {
+        if (contactModel.contactsDS !== undefined) {
+            return(contactModel.contactsDS.total());
+        } else {
+            return(0);
+        }
+    },
+
     createIdenticon: function (hash) {
         var url;
         hash = hash.replace(/-/g,'');
