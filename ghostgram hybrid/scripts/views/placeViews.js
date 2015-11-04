@@ -482,9 +482,20 @@ var addPlaceView = {
 
         var returnUrl = '#'+ addPlaceView._returnView;
 
+        // unbind the activePlace change handler...
+        addPlaceView._activePlace.unbind('change',addPlaceView.onSync);
+
         APP.kendo.navigate(returnUrl);
 
     },
+
+    onSync : function (e) {
+        if (e.field === 'name') {
+            // check for duplicate name and prompt user
+
+        }
+    },
+
 
     placeTypeSelect: function(e){
     	var index = this.current().index();
@@ -512,7 +523,8 @@ var addPlaceView = {
     setActivePlace : function (geoPlace) {
         addPlaceView._activeGeo = geoPlace;
 
-        addPlaceView._activePlace.set('name', geoPlace.name);
+        addPlaceView._activePlace.unbind('change',addPlaceView.onSync);
+
         addPlaceView._activePlace.set('alias', geoPlace.alias);
         addPlaceView._activePlace.set('venueName', geoPlace.venueName);
         addPlaceView._activePlace.set('isAvailable',"true");
@@ -543,6 +555,8 @@ var addPlaceView = {
             addPlaceView._activePlace.set('googleId', geoPlace.googleId);
         }
 
+        addPlaceView._activePlace.bind('change',addPlaceView.onSync);
+        addPlaceView._activePlace.set('name', geoPlace.name);
 
     },
 
