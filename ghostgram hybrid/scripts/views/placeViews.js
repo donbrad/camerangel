@@ -230,7 +230,7 @@ var findPlacesView = {
 
                     var geoStr = LZString.compressToEncodedURIComponent(JSON.stringify(geo));
 
-                    var navStr = "#addPlace?geo=" + geoStr + "&returnview=findPlace";
+                    var navStr = '#addPlace?geo="' + geoStr + '"&returnview=findPlace';
 
                     APP.kendo.navigate(navStr);
 
