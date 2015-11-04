@@ -233,11 +233,11 @@ var findPlacesView = {
                     delete geo.__proto__;
 
                     addPlaceView.setActivePlace(geo);
-                 /*   var geoStr = LZString.compressToEncodedURIComponent(JSON.stringify(geo));
+                    var geoStr = LZString.compressToEncodedURIComponent(JSON.stringify(geo));
 
-                    var navStr = '#addPlace?geo="' + geoStr + '"&returnview=findPlace';
-*/
-                    var navStr = '#addPlace?returnview='+findPlacesView._returnView;
+                    var navStr = 'places.html#addPlace?geo="' + geoStr + '"&returnview=findPlace';
+
+
                     APP.kendo.navigate(navStr);
 
                 }
@@ -284,6 +284,7 @@ var findPlacesView = {
                 mobileNotify('Google geocoding service error!');
                 return;
             }
+
             if (geoResults.length === 0 ) {
                 mobileNotify('We couldn\'t match your position to an address.');
                 return;
