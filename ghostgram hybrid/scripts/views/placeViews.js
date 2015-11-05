@@ -235,10 +235,10 @@ var findPlacesView = {
                     addPlaceView.setActivePlace(geo);
                     var geoStr = LZString.compressToEncodedURIComponent(JSON.stringify(geo));
 
-                    //var navStr = "#addPlace?geo=" + geoStr + "&returnview=findPlace";
+                    var navStr = "addPlace?geo=" + geoStr + "&returnview=findPlace";
 
-                    var navStr = "#addPlace?returnview=" + findPlacesView._returnView;
-                    APP.kendo.navigate(navStr);
+                    //var navStr = "addPlace?returnview=" + findPlacesView._returnView;
+                    APP.kendo.navigate('#'+navStr);
 
                 }
             }
