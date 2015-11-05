@@ -271,6 +271,10 @@ var contactsView = {
     }
 };
 
+/*
+ * Contact Import View
+ */
+
 var contactImportView = {
     onInit: function (e) {
         if (e !== undefined && e.preventDefault !== undefined) {
@@ -420,6 +424,10 @@ var contactImportView = {
         $("#modalview-AddContact").data("kendoMobileModalView").open();
     }
 };
+
+/*
+ * Add Contact
+ */
 
 var addContactView = {
     doInit: function (e) {
@@ -692,6 +700,10 @@ var addContactView = {
     }
 };
 
+/*
+ * Edit Contact
+ */
+
 var editContactView = {
 
     _activeContact : new kendo.data.ObservableObject(),
@@ -724,13 +736,15 @@ var editContactView = {
             editContactView._activeContact.set("email", contact.email);
             editContactView._activeContact.set("group", contact.group);
             editContactView._activeContact.set("photo", contact.photo);
-            editContactView._activeContact.set("address", contact.address);;
+            editContactView._activeContact.set("address", contact.address);
+            editContactView._activeContact.set("publicKey", contact.publicKey);
           //  editContactView._activeContact.bind('change' , editContactView.syncActiveContact);
         }
     },
 
     updateContact : function () {
         var contact = contactModel.findContactByUUID(editContactView._activeContact.uuid);
+        var contactList = contactModel.findContactListUUID(editContactView._activeContact.uuid);
 
         contact.set("name", editContactView._activeContact.name);
         contact.set("alias", editContactView._activeContact.alias);
@@ -739,6 +753,16 @@ var editContactView = {
         contact.set("photo", editContactView._activeContact.photo);
         contact.set("group", editContactView._activeContact.group);
         contact.set("address", editContactView._activeContact.address);
+        contact.set("publicKey", editContactView._activeContact.publicKey);
+
+        contactList.set("name", editContactView._activeContact.name);
+        contactList.set("alias", editContactView._activeContact.alias);
+        contactList.set("phone", editContactView._activeContact.phone);
+        contactList.set("email", editContactView._activeContact.email);
+        contactList.set("photo", editContactView._activeContact.photo);
+        contactList.set("group", editContactView._activeContact.group);
+        contactList.set("address", editContactView._activeContact.address);
+        contactList.set("publicKey", editContactView._activeContact.publicKey);
 
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"name", editContactView._activeContact.name);
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"alias", editContactView._activeContact.alias);
@@ -747,7 +771,7 @@ var editContactView = {
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"photo", editContactView._activeContact.photo);
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"group", editContactView._activeContact.group);
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"address", editContactView._activeContact.address);
-
+        updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"publicKey", editContactView._activeContact.publicKey);
         //$("#contacts-listview").data("kendoMobileListView").refresh();
         editContactView.onDone();
     },
@@ -783,6 +807,8 @@ var editContactView = {
         contactModel.updateContactDetails(contactId, function(contact) {
             editContactView.setActiveContact(contact);
             editContactView.updateVerifiedUX(contact.phoneVerified, contact.emailValidated);
+
+            editContactView.updateContact();
             // Hide the status update div
         });
 
@@ -817,26 +843,27 @@ var editContactView = {
                     if (contact.email !== user.email) {
                         dirty = true;
                         contact.email = user.email;
-                        mobileNotify(contact.name + " has changed their preferred email.")
+                        mobileNotify(contact.name + " has changed their preferred email.");
                     }
                     if (contact.phone !== user.phone) {
                         dirty = true;
                         contact.phone = user.phone;
-                        mobileNotify(contact.name + " has changed their preferred phone.")
+                        mobileNotify(contact.name + " has changed their preferred phone.");
                     }
                     if (contact.phoneVerified !== user.phoneVerified) {
                         dirty = true;
                         contact.phoneVerified = user.phoneVerified;
-                        mobileNotify(contact.name + " has verified their phone.")
+                        mobileNotify(contact.name + " has verified their phone.");
                     }
                     if (contact.emailValidated !== user.emailVerified) {
                         dirty = true;
                         contact.set('emailValidated',user.emailVerified);
-                        mobileNotify(contact.name + " has verified their email.")
+                        mobileNotify(contact.name + " has verified their email.");
                     }
                     if (contact.publicKey !== user.publicKey) {
                         dirty = true;
                         contact.publicKey = user.publicKey;
+                        mobileNotify(contact.name + " has changed their public key.");
                     }
 
                     editContactView.updateVerifiedUX(contact.phoneVerified, contact.emailValidated);
@@ -851,26 +878,27 @@ var editContactView = {
                     if (contact.email !== user.email) {
                         dirty = true;
                         contact.email = user.email;
-                        mobileNotify(contact.name + " has changed their preferred email.")
+                        mobileNotify(contact.name + " has changed their preferred email.");
                     }
                     if (contact.phone !== user.phone) {
                         dirty = true;
                         contact.phone = user.phone;
-                        mobileNotify(contact.name + " has changed their preferred phone.")
+                        mobileNotify(contact.name + " has changed their preferred phone.");
                     }
                     if (contact.phoneVerified !== user.phoneVerified) {
                         dirty = true;
                         contact.phoneVerified = user.phoneVerified;
-                        mobileNotify(contact.name + " has verified their phone.")
+                        mobileNotify(contact.name + " has verified their phone.");
                     }
                     if (contact.emailValidated !== user.emailVerified) {
                         dirty = true;
                         contact.set('emailValidated',user.emailVerified);
-                        mobileNotify(contact.name + " has verified their email.")
+                        mobileNotify(contact.name + " has verified their email.");
                     }
                     if (contact.publicKey !== user.publicKey) {
                         dirty = true;
                         contact.publicKey = user.publicKey;
+                        mobileNotify(contact.name + " has changed their public key.");
                     }
 
                     editContactView.updateVerifiedUX(contact.phoneVerified, contact.emailValidated);
