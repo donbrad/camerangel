@@ -274,7 +274,7 @@ var homeView = {
 	},
 
 	settingBigFont: function(e) {
-		
+
 		userModel.currentUser.set("useLargeView",true );
 		// Show sample size
 		$("#sampleChatSize").removeClass("chat-message-text").addClass("userLgFontSize"); 
@@ -580,6 +580,16 @@ function homeSignin (e) {
             userModel.fetchParseData();
 
             APP.kendo.navigate('#home');
+			if (window.navigator.simulator !== true) {
+
+				cordova.plugins.notification.local.add({
+					id         : 'userWelcome',
+					title      : 'Welcome back!',
+					message    : 'ghostgrams missed you...',
+					autoCancel : true,
+					date : new Date(new Date().getTime() + 120)
+				});
+			}
         },
         error: function(user, error) {
         // The login failed. Check error to see why.
@@ -710,7 +720,7 @@ function homeCreateAccount() {
 								  title      : 'Welcome to ghostgrams',
 								  message    : 'You have a secure connection to your family, friends and favorite places',
 								  autoCancel : true,
-								  date : new Date(new Date().getTime() + 120 * 1000)
+								  date : new Date(new Date().getTime() + 120)
 								});
 							}
 
