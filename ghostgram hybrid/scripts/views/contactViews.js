@@ -738,6 +738,7 @@ var editContactView = {
             editContactView._activeContact.set("group", contact.group);
             editContactView._activeContact.set("photo", contact.photo);
             editContactView._activeContact.set("address", contact.address);
+            editContactView._activeContact.set("category", contact.category);
             editContactView._activeContact.set("publicKey", contact.publicKey);
           //  editContactView._activeContact.bind('change' , editContactView.syncActiveContact);
         }
@@ -754,6 +755,7 @@ var editContactView = {
         contact.set("photo", editContactView._activeContact.photo);
         contact.set("group", editContactView._activeContact.group);
         contact.set("address", editContactView._activeContact.address);
+        contact.set("category", editContactView._activeContact.category);
         contact.set("publicKey", editContactView._activeContact.publicKey);
 
         contactList.set("name", editContactView._activeContact.name);
@@ -763,6 +765,7 @@ var editContactView = {
         contactList.set("photo", editContactView._activeContact.photo);
         contactList.set("group", editContactView._activeContact.group);
         contactList.set("address", editContactView._activeContact.address);
+        contactList.set("category", editContactView._activeContact.category);
         contactList.set("publicKey", editContactView._activeContact.publicKey);
 
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"name", editContactView._activeContact.name);
@@ -772,6 +775,7 @@ var editContactView = {
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"photo", editContactView._activeContact.photo);
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"group", editContactView._activeContact.group);
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"address", editContactView._activeContact.address);
+        updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"category", editContactView._activeContact.category);
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"publicKey", editContactView._activeContact.publicKey);
         //$("#contacts-listview").data("kendoMobileListView").refresh();
 

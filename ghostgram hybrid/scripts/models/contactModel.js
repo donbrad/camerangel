@@ -208,7 +208,7 @@ var contactModel = {
     fetch : function () {
         var ContactModel = Parse.Object.extend("contacts");
         var query = new Parse.Query(ContactModel);
-        query.limit(256);
+        query.limit(512);
 
         query.find({
             success: function(collection) {
