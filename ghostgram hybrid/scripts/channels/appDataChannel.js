@@ -317,13 +317,13 @@ var appDataChannel = {
 
      */
 
-    processGroupInvite: function (ownerName, channelId, channelName, channelDescription, durationDays, message) {
+    processGroupInvite: function (ownerName, channelId, channelName) {
         // Todo:  Does channel exist?  If not create,  if so notify user of request
         var channel = channelModel.findChannelModel(channelId);
 
         if (channel === undefined) {
             mobileNotify("Chat invite from  " + ownerName + ' " ' + channelName + '"');
-            notificationModel.addNewChatNotification(channelId, channelName, channelDescription);
+            //notificationModel.addNewChatNotification(channelId, channelName, "new channel...");
         }
 
         // Per discussion with ray -- sync all parse channels to have only entry point to sync member channels
