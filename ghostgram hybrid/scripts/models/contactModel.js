@@ -531,9 +531,13 @@ var contactModel = {
         }
     },
 
+    // Process all invited contacts to see if they've become members
+    updateInvitedContacts: function (e) {
+        _preventDefault(e);
+    },
 
     syncMemberContact: function (e) {
-
+        _preventDefault(e);
     },
 
 
