@@ -1051,8 +1051,6 @@ var contactActionView = {
         });
 
 
-
-
         $("#modalview-contactActions").data("kendoMobileModalView").open();
 
         $("#contactProfileImg").velocity("fadeIn", {delay: 150, duration: 300, display: "inline-block"});
