@@ -615,7 +615,7 @@ var channelView = {
         });
 
         $("#messageTextArea").kendoEditor({
-        	stylesheets:["../styles/editor.css"],
+        	stylesheets:["styles/editor.css"],
             resizable: {
                 content: true,
                 min: 24
