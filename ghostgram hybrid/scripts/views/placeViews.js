@@ -109,7 +109,7 @@ var placesView = {
 
     editPlaceBtn: function(e){
     	var place = e.button[0].dataset["id"];
-    	var navStr = "#editPlace?place="+LZString.compressToEncodedURIComponent(place)+"&returnview=places";
+    	var navStr = "views/places.html#editPlace?place="+LZString.compressToEncodedURIComponent(place)+"&returnview=places";
 
         APP.kendo.navigate(navStr);
     },
