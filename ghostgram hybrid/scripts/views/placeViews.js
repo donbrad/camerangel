@@ -753,7 +753,7 @@ var editPlaceView = {
         editPlaceView._activePlace.set('zipcode', placeObj.zipcode);
         editPlaceView._activePlace.set('isPrivate', placeObj.isPrivate);
         editPlaceView._activePlace.set('isAvailable', placeObj.isAvailable);
-        editPlaceView._activeContact.bind('change' , editContactView.validatePlace);
+        editPlaceView._activePlace.bind('change' , editContactView.validatePlace);
 
     }
 
