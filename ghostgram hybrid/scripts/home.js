@@ -273,16 +273,16 @@ var homeView = {
 		
 	},
 
-	settingBigFont: function(e){
-		// TODO DON - save big font setting
-
+	settingBigFont: function(e) {
+		
+		userModel.currentUser.set("useLargeView",true );
 		// Show sample size
 		$("#sampleChatSize").removeClass("chat-message-text").addClass("userLgFontSize"); 
 	},
 
-	settingRegFont: function(e){
-		// TODO DON - save big font setting
+	settingRegFont: function(e) {
 
+		userModel.currentUser.set("useLargeView",false );
 		// Show sample size
 		$("#sampleChatSize").removeClass("userLgFontSize").addClass("chat-message-text");
 	}
