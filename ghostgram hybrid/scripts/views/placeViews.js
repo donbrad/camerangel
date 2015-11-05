@@ -1011,7 +1011,7 @@ var mapView = {
     displayActivePlace : function () {
         var point = new google.maps.LatLng(mapView._lat, mapView._lng);
         // Center the map.
-        mapModel.googleMap.setCenter(point);
+        
         mapModel.googleMap.setZoom(mapView._zoom);
 
         // Set a default label in case we're called with just a lat & lng.
@@ -1026,6 +1026,10 @@ var mapView = {
             label: label,
             map: mapModel.googleMap
         });
+
+        // resize the map to fit the view
+       	google.maps.event.trigger(mapModel.googleMap, "resize");
+       	mapModel.googleMap.setCenter(point);
     },
 
     setActivePlace : function (placeId) {

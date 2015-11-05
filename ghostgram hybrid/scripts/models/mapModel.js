@@ -33,9 +33,6 @@ var mapModel = {
 
     init: function () {
 
-
-
-
         mapModel.lastPingSeconds = ggTime.currentTimeInSeconds() - 11;
 
         var location = window.localStorage.getItem('ggLastPosition');
@@ -65,7 +62,6 @@ var mapModel = {
            }
 
         });
-
 
     },
 
@@ -262,5 +258,6 @@ var mapModel = {
             lng = mapModel.lng;
         }
         mapModel.googleMap.setCenter({lat : lat, lng: lng});
+
     }
 };

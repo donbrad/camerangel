@@ -13,7 +13,7 @@
     <script src="kendo/js/jquery.min.js"></script>
     <script src="kendo/js/kendo.all.min.js"></script>
 	<script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-XdXhoF08ubebxTjTh9jf0Ra4xFV1Jwo&sensor=true&libraries=places">
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-XdXhoF08ubebxTjTh9jf0Ra4xFV1Jwo&libraries=places">
     </script>
     <script src="bower_components/eventEmitter/EventEmitter.js"></script>
     <script src="bower_components/q/q.js"></script>
@@ -434,7 +434,7 @@
 	</div>
 </div>
     
-<div data-role="view" data-title="Map" id="mapView" data-layout="main"  data-show="mapView.onShow" data-init="mapView.onInit" data-transition="fade">
+<div data-role="view" data-title="Map" id="mapView" data-layout="main"  data-show="mapView.onShow" data-init="mapView.onInit" data-transition="fade" data-stretch="true">
    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
@@ -443,8 +443,8 @@
             </a>
         </div>
     </div>
-     <div class="user-content" style="height:100%;">
-          <div id="map-mapdiv"></div>
+     <div>
+          <div id="map-mapdiv" style="width:100%;"></div>
      </div>
 </div>
 	
