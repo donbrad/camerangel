@@ -237,7 +237,7 @@ var findPlacesView = {
 
                     //var navStr = "addPlace?geo=" + geoStr + "&returnview=findPlace";
 
-                    var navStr = "addPlace?returnview=" + findPlacesView._returnView;
+                    var navStr = "addPlaceView?returnview=" + findPlacesView._returnView;
                     APP.kendo.navigate('#'+navStr);
 
                 }
