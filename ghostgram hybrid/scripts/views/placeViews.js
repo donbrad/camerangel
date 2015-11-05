@@ -109,7 +109,7 @@ var placesView = {
 
     editPlaceBtn: function(e){
     	var place = e.button[0].dataset["id"];
-    	var navStr = "views/places.html#editPlace?place="+LZString.compressToEncodedURIComponent(place)+"&returnview=places";
+    	var navStr = "#editPlace?place="+LZString.compressToEncodedURIComponent(place)+"&returnview=places";
 
         APP.kendo.navigate(navStr);
     },
@@ -237,8 +237,8 @@ var findPlacesView = {
 
                     //var navStr = "addPlace?geo=" + geoStr + "&returnview=findPlace";
 
-                    var navStr = "addPlaceView?returnview=" + findPlacesView._returnView;
-                    APP.kendo.navigate('#'+navStr);
+                    var navStr = "#addPlace?returnview=" + findPlacesView._returnView;
+                    APP.kendo.navigate(navStr);
 
                 }
             }
