@@ -703,7 +703,7 @@ function homeCreateAccount() {
 							userModel.currentUser.bind('change', userModel.sync);
 							userModel.parseACL = new Parse.ACL(Parse.User.current());
 						    mobileNotify('Welcome to ghostgrams!');
-							if (window.navigator.simulator !== true) {
+							/*if (window.navigator.simulator !== true) {
 
 								cordova.plugins.notification.local.add({
 								  id         : 'userWelcome',
@@ -712,7 +712,7 @@ function homeCreateAccount() {
 								  autoCancel : true,
 								  date : new Date(new Date().getTime() + 120)
 								});
-							}
+							}*/
 
 							 Parse.Cloud.run('sendPhoneVerificationCode', { phoneNumber: phone }, {
 								  success: function (result) {
