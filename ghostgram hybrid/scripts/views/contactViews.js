@@ -433,6 +433,9 @@ var addContactView = {
                 if (result.status === 'ok') {
                     if (result.valid === false) {
                         mobileNotify(phone + 'is not a valid mobile number');
+                        $('#addContacViewAddButton').addClass('hidden');
+                    } else {
+                        $('#addContacViewAddButton').removeClass('hidden');
                     }
                 }
             });
@@ -440,9 +443,10 @@ var addContactView = {
     },
 
     doShow : function (e) {
-        if (e !== undefined && e.preventDefault !== undefined)
-            e.preventDefault();
+       _preventDefault(e);
 
+        // Hide the Add Contact Button until the mobile number is validated...
+        $('#addContacViewAddButton').addClass('hidden');
         var data = contactModel.currentDeviceContact;
 
         // Set name
