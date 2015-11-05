@@ -685,7 +685,8 @@ var editPlaceView = {
         if (place === undefined)
             return true;
 
-        if (place.placeId !== editPlaceView._activePlace.placeId) {
+        // Make sure the matching place isn't the one we're currently editing...
+        if (place.uuid !== editPlaceView._activePlace.placeId) {
             mobileNotify("You already have a place named " + editPlaceView._activePlace.name);
             return false;
         }
