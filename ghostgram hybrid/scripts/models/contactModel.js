@@ -420,15 +420,14 @@ var contactModel = {
                     var current = thisContact;
 
                     current.set('contactUUID', contact.userUUID);
-                    current.set('contactPhone', null);
+                    current.set('contactPhone', contact.phone);
                     current.set('phoneVerified', contact.phoneVerified);
                     if (contact.phoneVerified) {
                         current.set('category', 'member');
                     }
-                    current.set('contactEmail', null);
+                    current.set('contactEmail', contact.email);
                     current.set('emailValidated', contact.emailVerified);
                     current.set('contactPhoto', contact.photo);
-                    current.set('isAvailable', contact.isAvailable);
                     current.set('publicKey', contact.publicKey);
 
 

@@ -739,7 +739,12 @@ var editContactView = {
             editContactView._activeContact.set("photo", contact.photo);
             editContactView._activeContact.set("address", contact.address);
             editContactView._activeContact.set("category", contact.category);
-            editContactView._activeContact.set("publicKey", contact.publicKey);
+            if (contact.contactUUID !== undefined) {
+                editContactView._activeContact.set("contactUUID", contact.contactUUID);
+                editContactView._activeContact.set("contactPhone", contact.contactPhone);
+                editContactView._activeContact.set("contactEmail", contact.contactEmail);
+                editContactView._activeContact.set("publicKey", contact.publicKey);
+            }
           //  editContactView._activeContact.bind('change' , editContactView.syncActiveContact);
         }
     },
