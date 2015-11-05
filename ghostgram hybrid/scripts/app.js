@@ -486,7 +486,6 @@
 
 			});
 
-
 			cordova.plugins.notification.local.hasPermission(function(granted) {
 
 				cordova.plugins.notification.local.registerPermission(function (granted) {
