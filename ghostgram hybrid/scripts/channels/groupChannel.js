@@ -72,7 +72,8 @@ var groupChannel = {
                 // Only update presence if it's not THIS user...
                 if (msg.data.username !== groupChannel.thisUser.username) {
                     mobileNotify(groupChannel.users[msg.uuid].name + " has joined...");
-                    groupChannel.presenceChange(msg.uuid, msg.state.phone, true);
+
+                    groupChannel.presenceChange(msg.uuid,  true);
                 }
 
             }
@@ -90,11 +91,11 @@ var groupChannel = {
         else if (msg.action === "timeout" || msg.action === "leave") {
             mobileNotify(groupChannel.users[msg.uuid].name + " has left ...");
             delete groupChannel.users[msg.uuid];
-            groupChannel.presenceChange(msg.uuid, "18885551212", false);
+            groupChannel.presenceChange(msg.uuid, false);
         }
     },
 
-    presenceChange: function (userId, phone,  isPresent) {
+    presenceChange: function (userId, isPresent) {
         channelView.setPresence(userId, isPresent);
     },
 
