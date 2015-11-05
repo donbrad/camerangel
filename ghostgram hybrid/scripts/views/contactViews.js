@@ -1007,7 +1007,7 @@ var contactActionView = {
         $("#contactProfileImg").velocity("fadeIn", {delay: 150, duration: 300, display: "inline-block"});
         $("#contactStatusImg").velocity("fadeIn", {delay: 150, duration: 300, display: "inline-block"});
         
-        $("#modalview-contactActions .modal-top h3").velocity({translateY: "20%", opacity: 1}, {delay: 300, duration: 500, display: "block"});
+        $("#modalview-contactActions .modal-top h2").velocity({translateY: "20%", opacity: 1}, {delay: 300, duration: 500, display: "block"});
         $("#modalview-contactActions .modal-top p").velocity({translateY: "20%", opacity: 1}, {delay: 600, duration: 500, display: "block"});
         $("#modalview-contactActions .modal-bottom .hasMotion").velocity("fadeIn", {duration: 500, delay: 700});
     },

@@ -275,16 +275,19 @@ var homeView = {
 
 	settingBigFont: function(e){
 		// TODO DON - save big font setting
-
+		
+		userModel.currentUser.set("useLargeView", true);
 		// Show sample size
-		$("#sampleChatSize").removeClass("chat-message-text").addClass("userLgFontSize"); 
+		$("#sampleChatSize").removeClass("chat-message-text").addClass("userLgFontSize").text("Bigger Font Size"); 
+		//$("*").css("font-size", "+=0.5");
 	},
 
 	settingRegFont: function(e){
 		// TODO DON - save big font setting
-
+		userModel.currentUser.set("useLargeView", false);
 		// Show sample size
-		$("#sampleChatSize").removeClass("userLgFontSize").addClass("chat-message-text");
+		$("#sampleChatSize").removeClass("userLgFontSize").addClass("chat-message-text").text("Regular Font Size");
+		//$("*").css("font-size", "-=0.5");
 	}
 };
 

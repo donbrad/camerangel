@@ -397,6 +397,9 @@
 		var displayName = ux.returnUXPrimaryName(name, alias);
 		var messageClass = "chat-message-text";
 	#
+	# if(userModel.currentUser.useLargeView){#
+		# var messageClass = "userLgFontSize chat-message-text"; #
+	#}#
 	
 	# if (currentChannelModel.privacyMode) {
 			if (fromHistory !== undefined && fromHistory === true ) {
