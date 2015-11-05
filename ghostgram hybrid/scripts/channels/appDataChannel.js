@@ -116,16 +116,16 @@ var appDataChannel = {
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, ownerID: <ownerUUID>,  ownerName: <text>, channelName: <text>, channelDescription: <text>}
             case 'groupInvite' : {
-                userDataChannel.processGroupInvite( m.ownerName,  m.channelId, m.channelName);
+                appDataChannel.processGroupInvite( m.ownerName,  m.channelId, m.channelName);
             } break;
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, owner: <ownerUUID>}
             case 'groupDelete' : {
-                userDataChannel.processGroupDelete(m.ownerName, m.channelId, m.channelName);
+                appDataChannel.processGroupDelete(m.ownerName, m.channelId, m.channelName);
             } break;
 
             case 'groupUpdate' : {
-                userDataChannel.processGroupUpdate(m.ownerName, m.channelId, m.channelName);
+                appDataChannel.processGroupUpdate(m.ownerName, m.channelId, m.channelName);
             } break;
 
             //  { type: 'packageOffer',  channelId: <channelUUID>, owner: <ownerUUID>, packageId: <packageUUID>, private: true|false, type: 'text'|'pdf'|'image'|'video', title: <text>, message: <text>}
@@ -207,8 +207,8 @@ var appDataChannel = {
         APP.pubnub.publish({
             channel: channel,
             message: msg,
-            callback: userDataChannel.publishCallback,
-            error: userDataChannel.errorCallback,
+            callback: appDataChannel.publishCallback,
+            error: appDataChannel.errorCallback,
         });
     },
 
@@ -225,13 +225,11 @@ var appDataChannel = {
 
         var channel = appDataChannel.getContactAppChannel(contactUUID);
 
-
-
         APP.pubnub.publish({
             channel: channel,
             message: msg,
-            callback: userDataChannel.publishCallback,
-            error: userDataChannel.errorCallback
+            callback: appDataChannel.publishCallback,
+            error: appDataChannel.errorCallback
 
         });
     },
@@ -253,8 +251,8 @@ var appDataChannel = {
         APP.pubnub.publish({
             channel: channel,
             message: msg,
-            callback: userDataChannel.publishCallback,
-            error: userDataChannel.errorCallback
+            callback: appDataChannel.publishCallback,
+            error: appDataChannel.errorCallback
 
         });
     },
@@ -355,6 +353,23 @@ var appDataChannel = {
 
     },
 
+
+    publishCallback : function (m) {
+        if (m === undefined)
+            return;
+
+        var status = m[0], message = m[1], time = m[2];
+
+        if (status !== 1) {
+            mobileNotify('appDataChannel: Error publishing invite: ' + message);
+        }
+
+    },
+
+    errorCallback : function (error) {
+        mobileNotify('appDataChannel Error : ' + error);
+    },
+
     channelConnect: function () {
 
     },
@@ -372,6 +387,6 @@ var appDataChannel = {
     },
 
     channelError : function (error) {
-        mobileNotify('App Channel Error : ' + error)
+        mobileNotify('appDataChannel Error : ' + error)
     }
 };
