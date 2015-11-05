@@ -580,16 +580,6 @@ function homeSignin (e) {
             userModel.fetchParseData();
 
             APP.kendo.navigate('#home');
-			if (window.navigator.simulator !== true) {
-
-				cordova.plugins.notification.local.add({
-					id         : 'userWelcome',
-					title      : 'Welcome back!',
-					message    : 'ghostgrams missed you...',
-					autoCancel : true,
-					date : new Date(new Date().getTime() + 120)
-				});
-			}
         },
         error: function(user, error) {
         // The login failed. Check error to see why.
