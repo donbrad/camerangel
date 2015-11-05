@@ -703,8 +703,8 @@ var editPlaceView = {
 
         var model = editPlaceView._activePlaceModel, newModel = editPlaceView._activePlace;
 
-
-        editPlaceView._activeContact.unbind('change' , editContactView.validatePlace);
+        // Unbind the handler...
+        editPlaceView._activePlace.unbind('change' , editContactView.validatePlace);
 
         model.set('name', newModel.name);
         model.set('alias', newModel.alias);
@@ -837,6 +837,7 @@ var placeView = {
         var placeObj = placesModel.getPlaceModel(placeId);
 
         placeView._activePlaceModel = placeObj;
+        placeView._activePlace.set('placeId', placeId);
         placeView._activePlace.set('name', placeObj.name);
         placeView._activePlace.set('alias', placeObj.alias);
         placeView._activePlace.set('address', placeObj.address);
@@ -849,8 +850,8 @@ var placeView = {
     },
 
     openPlaceMap: function(e){
-    	// TODO Don - wire map and marker 
-    	APP.kendo.navigate("#map");
+        var placeId = LZString.compressToEncodedURIComponent(placeView._activePlaceId);
+    	APP.kendo.navigate("#mapView?place=" + placeId );
     },
 
     takePhoto: function(e){
@@ -944,4 +945,120 @@ var checkInView = {
 
     }
 
+};
+
+
+/*
+ * mapView
+ *
+ */
+
+var mapView = {
+    _activePlace :  new kendo.data.ObservableObject(),
+    _activePlaceId : null,
+    _activePlaceModel : null,
+    _lat: null,
+    _lng: null,
+    _marker: null,
+    _zoom: 14,  // Default zoom for the map.
+    _returnView : '#:back',   // Default return is just calling view
+
+    onInit: function (e) {
+        _preventDefault(e);
+    },
+
+    onShow: function (e) {
+        _preventDefault(e);
+        var valid = false;
+
+        if (e.view.params !== undefined) {
+            if (e.view.params.place !== undefined) {
+                var placeId = LZString.decompressFromEncodedURIComponent(e.view.params.place);
+                mapView.setActivePlace(placeId);
+                valid = true;
+            } else {
+                // No active place --
+                mapView._activePlace = null;
+                mapView._activePlaceModel = null;
+                mapView._activePlaceId = null;
+            }
+
+            if (e.view.params.lat !== undefined) {
+
+                if (valid) {
+                    mobileNotify("mapView: Showing Place and ignoring lat & lng");
+                } else {
+                    mapView._lat = e.view.params.lat;
+                    mapView._lng = e.view.params.lng;
+                    valid = true;
+                }
+            }
+
+            if (e.view.params.returnview !== undefined){
+                mapView._returnView = e.view.params.returnview;
+            }
+
+            if (!valid) {
+                mobileNotify("mapView : No place or location to map!");
+                mapView.onDone();
+            }
+
+            mapView.displayActivePlace();
+
+        }
+    },
+
+    displayActivePlace : function () {
+        var point = new google.maps.LatLng(mapView._lat, mapView._lng);
+        // Center the map.
+        mapModel.googleMap.setCenter(point);
+        mapModel.googleMap.setZoom(mapView._zoom);
+
+        // Set a default label in case we're called with just a lat & lng.
+        var label = "Current Place";
+
+        // If there's a valid currentPlace, use the name as the marker label
+        if (mapView._activePlaceModel !== null) {
+            label = mapView._activePlaceModel.name;
+        }
+        mapView._marker = new google.maps.Marker({
+            position: point,
+            label: label,
+            map: mapModel.googleMap
+        });
+    },
+
+    setActivePlace : function (placeId) {
+        mapView._activePlaceId = placeId;
+
+        var placeObj = placesModel.getPlaceModel(placeId);
+
+        mapView._activePlaceModel = placeObj;
+
+        mapView._lat = placeObj.lat;
+        mapView._lng = placeObj.lng;
+
+        // Todo: cull this list based on what we show in ux...
+        mapView._activePlace.set('lat', placeObj.lat);
+        mapView._activePlace.set('lng', placeObj.lng);
+        mapView._activePlace.set('placeId', placeId);
+        mapView._activePlace.set('name', placeObj.name);
+        mapView._activePlace.set('alias', placeObj.alias);
+        mapView._activePlace.set('address', placeObj.address);
+        mapView._activePlace.set('city', placeObj.city);
+        mapView._activePlace.set('state', placeObj.state);
+        mapView._activePlace.set('zipcode', placeObj.zipcode);
+        mapView._activePlace.set('isPrivate', placeObj.isPrivate);
+        mapView._activePlace.set('isAvailable', placeObj.isAvailable);
+
+    },
+
+    onDone: function (e) {
+        _preventDefault(e);
+
+        var returnUrl = '#'+ mapView._returnView;
+
+        APP.kendo.navigate(returnUrl);
+
+    }
 };
