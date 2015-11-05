@@ -691,6 +691,7 @@ var editPlaceView = {
             return false;
         }
 
+        return true;
     },
 
     onDone: function (e) {
