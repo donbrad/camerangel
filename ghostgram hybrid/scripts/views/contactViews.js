@@ -662,6 +662,7 @@ var addContactView = {
                   }
 
                   contactModel.contactsDS.add(contact.attributes);
+                  contactModel.contactListDS.add(contact.attributes);
                   APP.kendo.navigate('#contacts');
               },
               error: function(contact, error) {
@@ -773,7 +774,7 @@ var editContactView = {
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"address", editContactView._activeContact.address);
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"publicKey", editContactView._activeContact.publicKey);
         //$("#contacts-listview").data("kendoMobileListView").refresh();
-        editContactView.onDone();
+
     },
 
     syncActiveContact: function (e) {
@@ -821,11 +822,21 @@ var editContactView = {
 
     },
 
+    updateDone: function (e) {
+        _preventDefault(e);
+
+        // Update any user changes
+        editContactView.updateContact();
+
+        // Close and navigate back
+        editContactView.onDone();
+
+    },
+
     onDone : function (e) {
-       _preventDefault(e);
+        _preventDefault(e);
 
        // contactModel.currentContact.unbind('change' , syncCurrentContact);
-       // contactsView.updateContactListDS();
         APP.kendo.navigate("#contacts");
         // reset UI
         $("#contactEditList").velocity("fadeIn");
