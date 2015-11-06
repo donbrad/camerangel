@@ -290,15 +290,15 @@ var contactImportView = {
 
         });
 
-        
-
         $("#addContactPhone").change(function() {
             var phone = $("#addContactPhone").val();
             mobileNotify("Please wait - validating phone...");
             isValidMobileNumber(phone, function(result){
                 if (result.status === 'ok') {
                     if (result.valid === false) {
-                        mobileNotify(phone + 'is not a valid mobile number');
+                        mobileNotify("Sorry, " + phone + 'is not a  mobile number!');
+                    } else {
+                        mobileNotify("Success!! " + phone + 'is a mobile number');
                     }
                 }
             });
@@ -352,6 +352,7 @@ var contactImportView = {
     },
 
     resetContactImport: function(e){
+        $(".enterSearch > span").css("color", "#E0E0E0");
     	$("#contactImportQuery").val("");
 
     },
