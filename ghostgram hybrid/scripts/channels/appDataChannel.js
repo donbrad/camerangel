@@ -323,13 +323,9 @@ var appDataChannel = {
 
         if (channel === undefined) {
             mobileNotify("Chat invite from  " + ownerName + ' " ' + channelName + '"');
+            channelModel.addMemberChannel(channelId, channelName);
             //notificationModel.addNewChatNotification(channelId, channelName, "new channel...");
         }
-
-        // Per discussion with ray -- sync all parse channels to have only entry point to sync member channels
-        //channelModel.syncParseChannels();
-
-
 
     },
 

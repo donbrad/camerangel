@@ -190,9 +190,12 @@ var channelModel = {
     // Update members and other channel Member data for this channel
     updateChannel : function (channelId) {
 
-        getChannelMembers(channelId,  function (result) {
+        getChannelDetails(channelId,  function (result) {
             if (result.found) {
                 var channel = channelModel.findChannelModel(channelId);
+                if (channel === undefined) {
+                    mobileNotify('channelModel.updateChannel - channel unknown" ' + channelId);
+                }
                 var channelUpdate = result.channel;
 
                 channel.set("members", channelUpdate.members);
@@ -350,10 +353,30 @@ var channelModel = {
     },
 
     // Add group channel for members...
-    addMemberChannel : function (channelId, channelName, channelDescription, ownerId, ownerName ) {
-        var Channels = Parse.Object.extend("channels");
-        var channel = new Channels();
-        var addTime = ggTime.currentTime();
+    // Get's the current owner details from parse and then creates a local channel for this user
+    addMemberChannel : function (channelId, channelName) {
+        if (channelName === undefined || channelName === null) {
+
+        }
+        mobileNotify("Getting details for channel :" + channelName);
+       getChannelDetails(channelId, function (result) {
+            if (result.found) {
+                var newChannel = result.channel;
+                channelModel.addChannel(
+                    newChannel.name,
+                    newChannel.description,
+                    false,
+                    newChannel.durationDays,
+                    newChannel.channelId,
+                    newChannel.ownerId,
+                    newChannel.ownerName,
+                    newChannel.placeId,
+                    newChannel.placeName,
+                    newChannel.isPrivatePlace
+                );
+
+            }
+        });
 
 
 
@@ -361,7 +384,7 @@ var channelModel = {
 
 
     // Add group channel for owner...
-    addChannel : function (channelName, channelDescription, isOwner, durationDays, channelUUID, ownerUUID, ownerName, placeId, placeName, isPrivatePlace) {
+    addChannel : function (channelName, channelDescription, isOwner, durationDays, channelUUID, ownerUUID, ownerName, placeId, placeName, isPrivatePlace, members) {
         var Channels = Parse.Object.extend("channels");
         var channel = new Channels();
 
@@ -447,22 +470,27 @@ var channelModel = {
         } else {
             // Channel members have no access to members...
             channel.set("isOwner", false);
-            channel.set("members", [ownerUUID]);
+            if (members === undefined || members.length === 0) {
+                mobileNotify("addChannel - no members for member channel!!");
+                members = [];
+            }
+            channel.set("members", members);
 
         }
 
         channelModel.channelsDS.add(channel.attributes);
         channelModel.channelsDS.sync();
-        currentChannelModel.currentChannel = channelModel.findChannelModel(channelId);
+        //currentChannelModel.currentChannel = channelModel.findChannelModel(channelId);
 
         channel.setACL(userModel.parseACL);
         channel.save(null, {
             success: function(channel) {
                 // Execute any logic that should take place after the object is saved.
                 mobileNotify('Added channel : ' + channel.get('name'));
-                APP.kendo.navigate('#editChannel');
-
-
+                if (isOwner) {
+                    // If this is an owner channel, jump to create to add members...
+                    APP.kendo.navigate('#editChannel?channel=' + channelId);
+                }
             },
             error: function(channel, error) {
                 // Execute any logic that should take place if the save fails.

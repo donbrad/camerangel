@@ -18,10 +18,7 @@ var contactsView = {
     onInit : function (e) {
         _preventDefault(e);
 
-
-
         contactModel.deviceQueryActive = false;
-
 
 
        /* // Activate clearsearch and zero the filter when it's called

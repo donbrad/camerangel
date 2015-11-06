@@ -100,7 +100,7 @@ var currentChannelModel = {
 
     syncChannelMembers : function (callback) {
 
-        getChannelMembers(currentChannelModel.channelId, function (result) {
+        getChannelDetails(currentChannelModel.channelId, function (result) {
             var members = [];
             if (result.found) {
                 members = result.channel.members;
