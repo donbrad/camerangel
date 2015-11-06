@@ -329,9 +329,9 @@ var editChannelView = {
                 for (var i = 0; i < members.length; i++) {
                     thisMember = contactModel.findContact(members[i]);
 
-                    // Current user will be undefined in contact list.
                     if (thisMember !== undefined) {
                         editChannelView.membersDS.add(thisMember);
+                        editChannelView.potentialMembersDS.remove(thisMember);
                         //appendMemberToUXList(thisMember);
                     }
                 }
@@ -340,6 +340,7 @@ var editChannelView = {
                     for (var j = 0; j < invitedMembers.length; j++) {
                         thisMember = contactModel.findContactByUUID(invitedMembers[j]);
                         editChannelView.membersDS.add(thisMember);
+                        editChannelView.potentialMembersDS.remove(thisMember);
                         //appendInvitedMemberToUXList(thisMember);
                     }
                 }
@@ -523,7 +524,6 @@ var channelMembersView = {
                     //appendMemberToUXList (thisMember);
                 }
                 editChannelView.membersDS.sync();
-
                 editChannelView.membersAdded.push(thisMember);
                 editChannelView.potentialMembersDS.remove(thisMember);
                 $(".addedChatMember").text("+ added " + thisMember.name).velocity("slideDown", { duration: 300, display: "block"}).velocity("slideUp", {delay: 1400, duration: 300, display: "none"});
