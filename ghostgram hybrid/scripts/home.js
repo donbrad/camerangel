@@ -277,17 +277,20 @@ var homeView = {
 		// TODO DON - save big font setting
 		
 		userModel.currentUser.set("useLargeView", true);
+
 		// Show sample size
 		$("#sampleChatSize").removeClass("chat-message-text").addClass("userLgFontSize").text("Bigger Font Size"); 
-		//$("*").css("font-size", "+=0.5");
+		
 	},
+
 
 	settingRegFont: function(e){
 		// TODO DON - save big font setting
 		userModel.currentUser.set("useLargeView", false);
+
 		// Show sample size
 		$("#sampleChatSize").removeClass("userLgFontSize").addClass("chat-message-text").text("Regular Font Size");
-		//$("*").css("font-size", "-=0.5");
+		
 	}
 };
 
@@ -666,7 +669,7 @@ function homeCreateAccount() {
 				    user.set("availImgUrl", "images/status-available.svg");
 					user.set("phoneVerified", false);
 				    user.set("useIdenticon", true);
-					   user.set("useLargeView", false);
+				    user.set("useLargeView", false);
 					user.set("rememberUsername", false);
 					user.set("userUUID", userUUID);
 					//user.set("publicKey", publicKey);
@@ -706,16 +709,16 @@ function homeCreateAccount() {
 							userModel.currentUser.bind('change', userModel.sync);
 							userModel.parseACL = new Parse.ACL(Parse.User.current());
 						    mobileNotify('Welcome to ghostgrams!');
-							if (window.navigator.simulator !== true) {
+							/*if (window.navigator.simulator !== true) {
 
 								cordova.plugins.notification.local.add({
 								  id         : 'userWelcome',
 								  title      : 'Welcome to ghostgrams',
 								  message    : 'You have a secure connection to your family, friends and favorite places',
 								  autoCancel : true,
-								  date : new Date(new Date().getTime() + 120 * 1000)
+								  date : new Date(new Date().getTime() + 120)
 								});
-							}
+							}*/
 
 							 Parse.Cloud.run('sendPhoneVerificationCode', { phoneNumber: phone }, {
 								  success: function (result) {

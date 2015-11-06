@@ -420,7 +420,7 @@ var channelModel = {
             if (ownerUUID === userModel.currentUser.userUUID) {
                 ownerName = userModel.currentUser.name;
             } else {
-                var contact = contactModel.findContactModel(ownerUUID);
+                var contact = contactModel.findContact(ownerUUID);
                 if (contact !== undefined) {
                     ownerName = contact.name;
                 }

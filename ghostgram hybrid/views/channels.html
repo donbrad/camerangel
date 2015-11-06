@@ -135,74 +135,79 @@
             </a>
         </div>
     </div>
-    <div id="chat-title-setup">
-    	<span id="chat-title-step1"></span>
-    	<span class="right">
-    		<a id="editChatName" data-click="addChannelView.addChatStep1" data-role="button">edit</a>
-    	</span>
-    </div>
-     <form id="addChat-step1">
-     	<h3>
-     		<img src="images/flag.svg" id="start-chat-img"/> Create a New Chat
-     	</h3>
-     	<p>Chat with friends and family around shared interests.</p>
-		
-        <ul data-role="listview" data-style="inset" id="channel-addChannel-list">
-            <li>         	
-                <input type="search" id="channels-addChannel-name" placeholder="What's the topic?" value="" required />
-                
-                <input type="search" style="display: none" id="channels-addChannel-description" value="" placeholder="Description"/>
-                <a class="btnClear-grey" data-role="button" data-click="addChannelView.showChatDescription" id="addChatDescription">Add description</a>
-            </li>
-			<li >
-               <label>Save messages for
-               	<div class="select-md">
-                    <select id="channels-addChannel-archive">
-                        <option value="1">1 Day</option>
-                        <option value="7">7 Days</option>
-						<option value="30">30 Days</option>
-                    </select>
-                </div>
-                </label>
-            </li>
-            <li>
-            	<p class="right">
-		        	<a id="addChat-createBtn" class="btnClear" data-click="addChannelView.addChannel" type="button" data-role="button">Next - Invite friends</a>
-		        </p>
-            </li>
-            <li class="hidden">
-            	<div class="line"></div>
-            	<label>Optional
-            		<div class="chatOption-event">
-            			<img class="chatOptionImg" src="images/event.svg" />
-            			<a class="btnClear-grey" data-role="button" data-click="addChannelView.doShowEventInputs" id="addChatEvent">Add Event info</a>
-            		</div>
+	<div id="addChatNoContacts" class="hidden">
+		<p class="helper"><img src="images/help.svg" /> Chat members must be existing contacts. You don't have any ghostgrams contacts yet. </p>
+		<a class="btnClear" data-role="button" href="views/contacts.html#contacts">Go to ghostgram contacts</a>
+	</div>
+	<div id="addChatHasContacts">
+		<div id="chat-title-setup">
+			<span id="chat-title-step1"></span>
+			<span class="right">
+				<a id="editChatName" data-click="addChannelView.addChatStep1" data-role="button">edit</a>
+			</span>
+		</div>
+		 <form id="addChat-step1">
+			<h3>
+				<img src="images/flag.svg" id="start-chat-img"/> Create a New Chat
+			</h3>
+			<p>Chat with friends and family around shared interests.</p>
 
-            	</label>
-            </li>
-			<li>
-				<label class="addChannelEvent hidden">Place (Location for event)
-					<div class="select">
-						<select id="channels-addChannel-place">
-							<option value="0">None - Virtual Event</option>
+			<ul data-role="listview" data-style="inset" id="channel-addChannel-list">
+				<li>
+					<input type="search" id="channels-addChannel-name" placeholder="What's the topic?" value="" required />
+
+					<input type="search" style="display: none" id="channels-addChannel-description" value="" placeholder="Description"/>
+					<a class="btnClear-grey" data-role="button" data-click="addChannelView.showChatDescription" id="addChatDescription">Add description</a>
+				</li>
+				<li >
+				   <label>Save messages for
+					<div class="select-md">
+						<select id="channels-addChannel-archive">
+							<option value="1">1 Day</option>
+							<option value="7">7 Days</option>
+							<option value="30">30 Days</option>
 						</select>
 					</div>
-				</label>
-				<label class="addChannelEvent hidden">Date (Date of the event)
-					<input type="date" id="channels-addChannel-eventDate"  />
-				</label>
-			</li>
-        </ul>		  
-    </form>
-   
-	
-	<div class="footerBk" data-role="footer" id="addChat-helper-1">
- 		<div class="helperBox" id="addChat-helper1" >
-			<p class="helper"><img src="images/help.svg" /> Looking for 1-on-1 private chat?</p>
-			<a class="btnClear" data-role="button" href="views/contacts.html">Go to ghostgram contacts</a>
-		</div>	
+					</label>
+				</li>
+				<li>
+					<p class="right">
+						<a id="addChat-createBtn" class="btnClear" data-click="addChannelView.addChannel" type="button" data-role="button">Next - Invite friends</a>
+					</p>
+				</li>
+				<li class="hidden">
+					<div class="line"></div>
+					<label>Optional
+						<div class="chatOption-event">
+							<img class="chatOptionImg" src="images/event.svg" />
+							<a class="btnClear-grey" data-role="button" data-click="addChannelView.doShowEventInputs" id="addChatEvent">Add Event info</a>
+						</div>
+
+					</label>
+				</li>
+				<li>
+					<label class="addChannelEvent hidden">Place (Location for event)
+						<div class="select">
+							<select id="channels-addChannel-place">
+								<option value="0">None - Virtual Event</option>
+							</select>
+						</div>
+					</label>
+					<label class="addChannelEvent hidden">Date (Date of the event)
+						<input type="date" id="channels-addChannel-eventDate"  />
+					</label>
+				</li>
+			</ul>
+		</form>
+
+
+		<div class="footerBk" data-role="footer" id="addChat-helper-1">
+			<div class="helperBox" id="addChat-helper1" >
+				<p class="helper"><img src="images/help.svg" /> Looking for 1-on-1 private chat?</p>
+				<a class="btnClear" data-role="button" href="views/contacts.html#contacts">Go to ghostgram contacts</a>
+			</div>
+		</div>
 	</div>
- 
 </div>
 
 <!-- Edit chat -->

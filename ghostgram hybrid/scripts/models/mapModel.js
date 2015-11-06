@@ -26,17 +26,12 @@ var mapModel = {
     _pingInterval: 5, //Ping debounce interval in seconds.  app will only get position after _pingInterval seconds
 
     geocoder : null,
-    mapOptions : {zoom: 14,  mapTypeId : google.maps.MapTypeId.ROADMAP},
+    mapOptions : {zoom: 14,  mapTypeId : google.maps.MapTypeId.ROADMAP, center: { lat: 42.1347293 , lng: -91.1362623}},
     googleMap : null,
     googlePlaces : null,
 
 
     init: function () {
-
-
-        mapModel.geocoder =  new google.maps.Geocoder();
-        mapModel.googleMap = new google.maps.Map(document.getElementById('map-mapdiv'), mapModel.mapOptions);
-        mapModel.googlePlaces = new google.maps.places.PlacesService(mapModel.googleMap);
 
         mapModel.lastPingSeconds = ggTime.currentTimeInSeconds() - 11;
 
@@ -48,11 +43,17 @@ var mapModel = {
             mapModel.lng = mapModel.lastPosition.lng;
         } else {
             mapModel.lastPosition = {
-                lat: 0,
-                lng: 0
+                lat: 42.1347293,
+                lng: -91.1362623
             };
         }
 
+        mapModel.mapOptions.center.lat =  mapModel.lat;
+        mapModel.mapOptions.center.lng =  mapModel.lng;
+
+        mapModel.geocoder =  new google.maps.Geocoder();
+        mapModel.googleMap = new google.maps.Map(document.getElementById('map-mapdiv'), mapModel.mapOptions);
+        mapModel.googlePlaces = new google.maps.places.PlacesService(mapModel.googleMap);
         mapModel.getCurrentAddress(function (isNew, address){
 
             if (isNew) {
@@ -61,7 +62,6 @@ var mapModel = {
            }
 
         });
-
 
     },
 
@@ -258,5 +258,6 @@ var mapModel = {
             lng = mapModel.lng;
         }
         mapModel.googleMap.setCenter({lat : lat, lng: lng});
+
     }
 };

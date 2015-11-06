@@ -196,6 +196,11 @@ var userModel = {
 
     decryptPrivateKey : function () {
 
+        if (userModel.key === null) {
+            mobileNotify("Generating User Key...");
+            userModel.generateUserKey();
+        }
+
         var privateKey = userModel.parseUser.get('privateKey');
         var newPrivateKey  = GibberishAES.dec(privateKey, userModel.key);
         userModel.currentUser.set('privateKey', newPrivateKey);

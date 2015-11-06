@@ -143,7 +143,13 @@ var addChannelView = {
         currentChannelModel.potentialMembersDS.data([]);
         currentChannelModel.potentialMembersDS.data(contactModel.contactsDS.data());
         currentChannelModel.membersDS.data([]);
-
+         if (contactModel.totalContacts() === 0) {
+             $("#addChatNoContacts").removeClass('hidden');
+             $("#addChatHasContacts").addClass('hidden');
+         } else {
+             $("#addChatNoContacts").addClass('hidden');
+             $("#addChatHasContacts").removeClass('hidden');
+         }
         $('.addChannelEvent').addClass('hidden');
 
         // hide channel description
@@ -443,8 +449,7 @@ var editChannelView = {
 var channelMembersView = {
 
     doInit: function (e) {
-        if (e.preventDefault !== undefined)
-            e.preventDefault();
+      _preventDefault(e);
 
         currentChannelModel.potentialMembersDS.data([]);
         $("#channelMembers-listview").kendoMobileListView({
@@ -480,8 +485,13 @@ var channelMembersView = {
     },
 
     doShow: function (e) {
-        if (e.preventDefault !== undefined)
-            e.preventDefault();
+        _preventDefault(e);
+
+        if (contactModel.totalContacts() === 0) {
+            // Todo:  Jordan -- need a better solution to creating groups (may hide add group until user has contacts...)
+            mobileNotify("You don\'t have any contacts yet.  Please add contacts first...");
+            APP.kendo.navigate("contacts.html#contacts");
+        }
 
         var members = currentChannelModel.currentChannel.members, invitedMembers = currentChannelModel.currentChannel.invitedMembers;
 
@@ -605,7 +615,7 @@ var channelView = {
         });
 
         $("#messageTextArea").kendoEditor({
-        	stylesheets:["../styles/editor.css"],
+        	stylesheets:["styles/editor.css"],
             resizable: {
                 content: true,
                 min: 24

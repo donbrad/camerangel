@@ -208,7 +208,7 @@ var contactModel = {
     fetch : function () {
         var ContactModel = Parse.Object.extend("contacts");
         var query = new Parse.Query(ContactModel);
-        query.limit(256);
+        query.limit(512);
 
         query.find({
             success: function(collection) {
@@ -277,6 +277,14 @@ var contactModel = {
         return(contactModel.contactList[contactUUID]);
     },
 
+
+    totalContacts : function () {
+        if (contactModel.contactsDS !== undefined) {
+            return(contactModel.contactsDS.total());
+        } else {
+            return(0);
+        }
+    },
 
     createIdenticon: function (hash) {
         var url;
@@ -412,15 +420,14 @@ var contactModel = {
                     var current = thisContact;
 
                     current.set('contactUUID', contact.userUUID);
-                    current.set('contactPhone', null);
+                    current.set('contactPhone', contact.phone);
                     current.set('phoneVerified', contact.phoneVerified);
                     if (contact.phoneVerified) {
                         current.set('category', 'member');
                     }
-                    current.set('contactEmail', null);
+                    current.set('contactEmail', contact.email);
                     current.set('emailValidated', contact.emailVerified);
                     current.set('contactPhoto', contact.photo);
-                    current.set('isAvailable', contact.isAvailable);
                     current.set('publicKey', contact.publicKey);
 
 
@@ -523,9 +530,13 @@ var contactModel = {
         }
     },
 
+    // Process all invited contacts to see if they've become members
+    updateInvitedContacts: function (e) {
+        _preventDefault(e);
+    },
 
     syncMemberContact: function (e) {
-
+        _preventDefault(e);
     },
 
 

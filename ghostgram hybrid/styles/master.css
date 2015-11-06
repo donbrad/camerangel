@@ -5004,7 +5004,7 @@ html .km-pane-wrapper .k-header {
   height: 2rem;
 }
 #findPlace > div.footerMenu.km-footer,
-#map > div.footerMenu.km-footer {
+#mapView > div.footerMenu.km-footer {
   display: none;
 }
 #findplace-listview li h4,
