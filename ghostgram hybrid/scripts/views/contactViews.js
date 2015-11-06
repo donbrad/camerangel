@@ -307,11 +307,11 @@ var contactImportView = {
         $("#contactImportQuery").on('input', function(e) {
             var timer = 0, delay = 800;  //delay is .8 secs
         	var query = $('#contactImportQuery').val();
-        	// Change the text color to t
-            if(query.length > 2){
+        	// Change the text color...
+            if(query.length > 2) {
         		$(".enterSearch > span").css("color", "#2E93FD");
                 window.clearTimeout(timer);
-                timer = windoe.setTimeout(function () {
+                timer = window.setTimeout(function () {
                     contactImportView.searchContacts();
                 }, delay);
         	} else {
