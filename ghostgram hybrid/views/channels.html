@@ -273,6 +273,7 @@
 			<img id="chatImage" src="" />
 		 </div>
 		 <div class="messageCompose">
+		 	<span class="helper" id="ghostgramMode" style="display: none">ghostgram editor</span>
 			<textarea id="messageTextArea" rows="1" autofocus="true" wrap="soft" spellcheck="true" placeholder="Message..."></textarea>
 			<div class="messageMediaBar" id="editorOptionBar" style="display: none">
 				<ul>
@@ -402,6 +403,9 @@
 		var displayName = ux.returnUXPrimaryName(name, alias);
 		var messageClass = "chat-message-text";
 	#
+	# if(userModel.currentUser.useLargeView){#
+		# var messageClass = "userLgFontSize chat-message-text"; #
+	#}#
 	
 	# if (currentChannelModel.privacyMode) {
 			if (fromHistory !== undefined && fromHistory === true ) {

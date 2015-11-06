@@ -1707,13 +1707,13 @@ div.footerMenu.km-footer > ul > li > a:active {
   padding: 1rem 1rem !important;
 }
 .modal-top {
-  height: 12rem;
+  height: 13rem;
   width: 100%;
   background-color: rgba(0, 0, 0, 0.6);
   text-align: center;
   color: #fff;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
 }
 .modal-top div > img {
   height: 4rem;
@@ -1723,7 +1723,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 .modal-top svg {
   width: 18px;
 }
-.modal-top h3 {
+.modal-top h2 {
   line-height: 1;
   white-space: nowrap;
   overflow: hidden;
@@ -1733,6 +1733,8 @@ div.footerMenu.km-footer > ul > li > a:active {
   margin-right: 10%;
   text-align: center;
   margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.5em !important;
 }
 .modal-bottom {
   padding: 0.5rem 1rem;
@@ -2184,7 +2186,7 @@ div.footerMenu.km-footer > ul > li > a:active {
   margin-right: 1rem;
 }
 .group-contactCard {
-  font-size: 0.75em;
+  font-size: 0.875em;
   color: #fff;
   background: #979797;
   border-radius: 3px;
@@ -2303,7 +2305,7 @@ div.message-slideOptions > span.archive > a > span > img {
 a:hover {
   color: #3CAAEE;
 }
-#findplace-listview > li > ul > li > a:hover,
+#findplace-listview > li > ul > li > div > a:hover,
 #contacts-listview > li > ul > li > div > a:hover,
 #places-listview > li > div > a:hover,
 #channels-listview > li > div > a:hover > div {
@@ -2318,6 +2320,7 @@ a:hover {
 }
 .findPlaceListItem {
   display: block;
+  padding: 0.5rem 1rem;
 }
 .menuBox a:visited {
   color: #fff;
@@ -2962,7 +2965,12 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   width: 2em;
 }
 .k-editor .k-editable-area {
-  height: 2em;
+  height: 3em;
+}
+#ghostgramMode {
+  font-size: 0.75em;
+  position: relative;
+  top: -5px;
 }
 .activeTool {
   border-radius: 2em !important;
@@ -5002,6 +5010,10 @@ html .km-pane-wrapper .k-header {
 #findplace-listview li h4,
 #places-listview li h4 {
   color: #2E93FD;
+}
+#findplace-listview li {
+  padding-top: 0px;
+  padding-bottom: 0px;
 }
 #current-place-name {
   padding-top: 0.2rem;

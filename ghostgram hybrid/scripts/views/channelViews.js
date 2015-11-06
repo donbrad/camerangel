@@ -1022,14 +1022,28 @@ var channelView = {
             //$(".k-editor-toolbar").show();
         	$("#chat-editorBtnImg").attr("src","images/icon-editor-active.svg");
         	// Hide badge
-        	$("#chat-editorBtn > span.km-badge").hide();
+        	//$("#chat-editorBtn > span.km-badge").hide();
+        	
+
+        	// open up editor
+        	$(".k-editor .k-editable-area").velocity({height: "10em"}, {duration: 300});
         	$("#editorOptionBar").velocity("slideDown");
+
+        	$("#ghostgramMode").velocity("fadeIn", {delay: 300});
+
         } else {
             //$(".k-editor-toolbar").hide();
         	$("#chat-editorBtnImg").attr("src","images/icon-editor.svg");
+        	
+        	$("#ghostgramMode").velocity("fadeOut");
+
+        	// min editor
+        	$(".k-editor .k-editable-area").velocity({height: "3em"}, {duration: 300});
+
         	// Show badge
-        	$("#chat-editorBtn > span.km-badge").show();
+        	//$("#chat-editorBtn > span.km-badge").show();
         	$("#editorOptionBar").velocity("slideUp");
+        	/*
         	var toolCount = $("#chat-editorBtn").kendoMobileButton("badge");
         	parseInt(toolCount);
 
@@ -1038,6 +1052,7 @@ var channelView = {
     		} else {
     			$("#chat-editorBtn > span.km-badge").hide();
     		}
+    		*/
         }
     },
 

@@ -1670,13 +1670,13 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 
 .modal-top {
-	height: 12rem;
+	height: 13rem;
 	width: 100%;
 	background-color: rgba(0, 0, 0, 0.6);
 	text-align: center;
 	color: #fff;
-	padding-top: 2rem;
-	padding-bottom: 2rem;
+	padding-top: 1.5rem;
+	padding-bottom: 1.5rem;
 	div > img {
 		height: 4rem;
 		vertical-align: middle;
@@ -1688,7 +1688,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 	p {
 		//.font-size(12);
 	}
-	h3 {
+	h2 {
 		line-height: 1;
 		white-space: nowrap;
   		overflow: hidden;
@@ -1698,6 +1698,8 @@ div.footerMenu.km-footer > ul > li > a:active {
   		margin-right: 10%;
   		text-align: center;
   		margin-top: 0.5rem;
+  		margin-bottom: 0.5rem;
+  		font-size: 1.5em !important;
 	}
 }
 
@@ -2149,7 +2151,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 
 .group-contactCard {
-	font-size: 0.75em;
+	font-size: 0.875em;
 	color: #fff;
 	background: @shade-100;
 	border-radius: 3px;
@@ -2287,8 +2289,7 @@ div.message-slideOptions > span.archive > a > span > img {
 a:hover {
     color: #3CAAEE;
 }
-
-#findplace-listview > li > ul > li > a:hover,
+#findplace-listview > li > ul > li > div > a:hover,
 #contacts-listview > li > ul > li > div > a:hover,
 #places-listview > li > div > a:hover,
 #channels-listview > li > div > a:hover > div {
@@ -2305,6 +2306,7 @@ a:hover {
 
 .findPlaceListItem {
 	display: block;
+	padding: 0.5rem 1rem;
 }
 
 .menuBox a:visited {
@@ -3030,7 +3032,13 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 }
 
 .k-editor .k-editable-area {
-	height: 2em;
+	height: 3em;
+}
+
+#ghostgramMode {
+	font-size: 0.75em;
+	position: relative;
+	top: -5px;
 }
 
 .activeTool {
@@ -5330,6 +5338,11 @@ div.contactListBox.activeContact > div > div > ul {
 #findplace-listview li h4,
 #places-listview li h4 {
 	color: @primary-100;
+}
+
+#findplace-listview li {
+	padding-top: 0px;
+	padding-bottom: 0px;
 }
 
 #current-place-name {

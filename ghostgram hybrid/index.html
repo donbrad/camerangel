@@ -836,15 +836,18 @@
 
 		<img class="circle-img-lg" id="contactProfileImg" />
 		<img width="20" src="images/status-away.svg" class="statusContactCard-icon" id="contactStatusImg"/>
-		<h3 class="preMotionUp textClamp">
+		<h2 class="preMotionUp textClamp">
 
 			<span class="primaryName" id="contactPrimaryName"></span>
 			<span class="hidden" id="currentContactVerified">
 				<img src="images/icon-verified-dark.svg" class="user-status-icon" />
 			</span>
-		</h3>
-		<span class="group-contactCard" id="currentContactGroup"></span>
+		</h2>
+		
 		<p class="preMotionUp">
+			<div id="currentGroup">
+				<span class="group-contactCard" id="currentContactGroup"></span><br/>
+			</div>
 			<span class="contactStatusMessage" data-bind="text: statusMessage"></span>
 
 		</p>
