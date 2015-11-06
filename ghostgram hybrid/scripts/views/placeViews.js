@@ -600,7 +600,7 @@ var addPlaceView = {
                 // Execute any logic that should take place after the object is saved.
 
                 placesModel.placesDS.add(place.attributes);
-                mobileNotify(place.name + " added to your Places...");
+                mobileNotify(place.get('name') + " added to your Places...");
 
                 addPlaceView.onDone();
 

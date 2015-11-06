@@ -277,9 +277,9 @@ var contactsView = {
 
 var contactImportView = {
     onInit: function (e) {
-        if (e !== undefined && e.preventDefault !== undefined) {
-            e.preventDefault();
-        }
+        _preventDefault(e);
+
+        $(".enterSearch > span").css("color", "#E0E0E0");
 
         $("#contactimport-listview").kendoMobileListView({
             dataSource: contactModel.deviceContactsDS,
@@ -305,14 +305,22 @@ var contactImportView = {
         });
         
         $("#contactImportQuery").on('input', function(e) {
+            var timer = 0, delay = 800;  //delay is .8 secs
         	var query = $('#contactImportQuery').val();
-        	if(query.length > 2){
+        	// Change the text color to t
+            if(query.length > 2){
         		$(".enterSearch > span").css("color", "#2E93FD");
+                window.clearTimeout(timer);
+                timer = windoe.setTimeout(function () {
+                    contactImportView.searchContacts();
+                }, delay);
         	} else {
+
         		$(".enterSearch > span").css("color", "#E0E0E0");
         	}
         }).keyup(function(e){
         	if (e.keyCode === 13) {
+                $(".enterSearch > span").css("color", "#2E93FD");
 				contactImportView.searchContacts();
 			}
         });
