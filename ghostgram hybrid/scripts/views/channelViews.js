@@ -373,7 +373,7 @@ var editChannelView = {
     },
 
     finalizeEdit : function (e) {
-        e.preventDefault();
+        e.preventDefault(e);
 
         var memberArray = new Array(), invitedMemberArray = new Array(), invitedPhoneArray = new Array(), members = editChannelView.membersDS.data();
 
@@ -444,6 +444,7 @@ var editChannelView = {
     },
 
     deleteMemberBtn: function(e){
+        _preventDefault(e);
     	var selectorId = e.target[0].dataset["id"];
     	editChannelView.deleteMember(selectorId);
     },
@@ -467,14 +468,17 @@ var editChannelView = {
 
     },
 
-    clickEdit: function () {
+    clickEdit: function (e) {
+        _preventDefault(e);
+
         $(".listTrash").velocity("fadeIn", {duration: 100});
         $("#editChannel-Trash").velocity("fadeOut", {duration: 100});
         $("#editChannel-Done").velocity("fadeIn", {delay: 100, duration: 100});
         $(".addChatMembersBanner").velocity("slideUp", {duration: 100});
     },
 
-    clickDone : function () {
+    clickDone : function (e) {
+        _preventDefault(e);
         $("#editChannel-Done").velocity("fadeOut", {duration: 100});
         $(".addChatMembersBanner").velocity("slideDown", {duration: 100});
         $(".listTrash").velocity("fadeOut", {duration: 100});
