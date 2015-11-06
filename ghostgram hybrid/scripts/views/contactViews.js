@@ -953,7 +953,7 @@ var contactActionView = {
                 // This is a new contact.
                 contact = contactModel.findContactByUUID(contactId);
             }
-            console.log(contact);
+            
             var contactName = contact.name;
             var contactAlias = contact.alias;
             var contactVerified = contact.phoneVerified;
@@ -963,9 +963,11 @@ var contactActionView = {
 
             // Add group name
             if(contactGroup !== '' && contactGroup !== null){
-            	$("#currentContactGroup").removeClass("hidden").text(contactGroup);
+            	$("#currentGroup").removeClass("hidden");
+            	$("#currentContactGroup").text(contactGroup);
             } else {
-            	$("#currentContactGroup").addClass("hidden").text("");
+            	$("#currentGroup").addClass("hidden");
+            	$("#currentContactGroup").text("");
             }
            
             contactActionView._activeContact.set('name', contactName);
