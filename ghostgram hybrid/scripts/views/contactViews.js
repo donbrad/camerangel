@@ -304,7 +304,7 @@ var contactImportView = {
             });
         });
         
-        $("#contactImportQuery").change(function(e){
+        $("#contactImportQuery").on('input', function(e) {
         	var query = $('#contactImportQuery').val();
         	if(query.length > 2){
         		$(".enterSearch > span").css("color", "#2E93FD");

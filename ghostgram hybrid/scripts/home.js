@@ -663,7 +663,7 @@ function homeCreateAccount() {
 				    user.set("availImgUrl", "images/status-available.svg");
 					user.set("phoneVerified", false);
 				    user.set("useIdenticon", true);
-					   user.set("useLargeView", false);
+				    user.set("useLargeView", false);
 					user.set("rememberUsername", false);
 					user.set("userUUID", userUUID);
 					//user.set("publicKey", publicKey);

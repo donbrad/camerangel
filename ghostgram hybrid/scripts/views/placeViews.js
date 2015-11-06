@@ -577,7 +577,8 @@ var addPlaceView = {
         placeParse.setACL(userModel.parseACL);
         placeParse.set('uuid', guid);
         placeParse.set('category', place.category);
-        placeParse.set('name', place.name);
+        var name =  place.name.toString();
+        placeParse.set('name', name);
         placeParse.set('venueName', place.venueName);
         placeParse.set('alias', place.alias);
         placeParse.set('googleId', place.googleId);
