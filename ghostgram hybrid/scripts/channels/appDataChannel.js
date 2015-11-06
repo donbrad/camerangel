@@ -327,7 +327,7 @@ var appDataChannel = {
         }
 
         // Per discussion with ray -- sync all parse channels to have only entry point to sync member channels
-        channelModel.syncParseChannels();
+        //channelModel.syncParseChannels();
 
 
 
@@ -337,7 +337,6 @@ var appDataChannel = {
         // Todo:  Does channel exist?  If not do nothing,  if so delete the channel
         var channel = channelModel.findChannelModel(channelId);
         if (channel === undefined) {
-            // Todo: create a channelMember object for this user
             mobileNotify('Owner has deleted Chat: "' + channelName + '"');
             channelModel.deleteChannel(channel);
         }

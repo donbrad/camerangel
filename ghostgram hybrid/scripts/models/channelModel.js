@@ -349,7 +349,18 @@ var channelModel = {
 
     },
 
-    // Generic add group channel...
+    // Add group channel for members...
+    addMemberChannel : function (channelId, channelName, channelDescription, ownerId, ownerName ) {
+        var Channels = Parse.Object.extend("channels");
+        var channel = new Channels();
+        var addTime = ggTime.currentTime();
+
+
+
+    },
+
+
+    // Add group channel for owner...
     addChannel : function (channelName, channelDescription, isOwner, durationDays, channelUUID, ownerUUID, ownerName, placeId, placeName, isPrivatePlace) {
         var Channels = Parse.Object.extend("channels");
         var channel = new Channels();
