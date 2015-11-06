@@ -307,7 +307,7 @@ var editChannelView = {
             var channel = channelModel.findChannelModel(editChannelView.activeChannelId);
             editChannelView.setActiveChannel(channel);
 
-            var members = editChannelView._activeChannel.members, thisMember = {};
+            var members = editChannelView._activeChannel.members,  invitedMembers = editChannelView._activeChannel.invitedMembers, thisMember = {};
             var membersArray = [];
 
             // All contacts are potential members
@@ -335,10 +335,9 @@ var editChannelView = {
                     }
                 }
 
-                if (editChannelView.invitedMembers !== undefined) {
-                    members = editChannelView.invitedMembers;
-                    for (var j = 0; j < members.length; j++) {
-                        thisMember = contactModel.findContactByUUID(members[j]);
+                if (invitedMembers !== undefined && invitedMembers.length > 0) {
+                    for (var j = 0; j < invitedMembers.length; j++) {
+                        thisMember = contactModel.findContactByUUID(invitedMembers[j]);
                         editChannelView.membersDS.add(thisMember);
                         //appendInvitedMemberToUXList(thisMember);
                     }
@@ -376,7 +375,7 @@ var editChannelView = {
     finalizeEdit : function (e) {
         e.preventDefault();
 
-        var memberArray = new Array(), invitedMemberArray = new Array(), invitedPhoneArray = new Array(), members = currentChannelModel.membersDS.data();
+        var memberArray = new Array(), invitedMemberArray = new Array(), invitedPhoneArray = new Array(), members = editChannelView.membersDS.data();
 
         var channelId = editChannelView.activeChannelId;
         // It's a group channel so push this users UUID
@@ -395,7 +394,7 @@ var editChannelView = {
             }
 
         }
-        editChannelView.members = memberArray;
+        editChannelView._activeChannel.members = memberArray;
 
         //Send Invite messages to users added to channel
         for (var ma = 0; ma < editChannelView.membersAdded.length; ma++) {
@@ -412,11 +411,18 @@ var editChannelView = {
             //Todo: don -- add channel update messages for other users.
         }
 
+
+        // Update the kendo object
         var channelObj = channelModel.findChannelModel(editChannelView._activeChannelId);
 
+        channelObj.set('name', editChannelView._activeChannel.name);
+        channelObj.set('description', editChannelView._activeChannel.description);
         channelObj.set('members', memberArray);
         channelObj.set('inviteMembers', invitedMemberArray);
-		
+
+        //Update the parse object
+        updateParseObject('channels', 'channelId', channelId, 'name',  editChannelView._activeChannel.name);
+        updateParseObject('channels', 'channelId', channelId, 'description',  editChannelView._activeChannel.description);
         updateParseObject('channels', 'channelId', channelId, 'members', memberArray);
         updateParseObject('channels', 'channelId', channelId, 'invitedMembers', invitedMemberArray);
 
@@ -504,11 +510,11 @@ var channelMembersView = {
 
                 editChannelView.membersDS.add(thisMember);
                 if (thisMember.contactUUID === null) {
-                    editChannelView.invitedMembers.push(thisMember.uuid);
+                    editChannelView._activeChannel.invitedMembers.push(thisMember.uuid);
                     //appendInvitedMemberToUXList (thisMember);
 
                 } else {
-                    editChannelView.members.push(thisMember.contactUUID);
+                    editChannelView._activeChannel.members.push(thisMember.contactUUID);
                     //appendMemberToUXList (thisMember);
                 }
                 editChannelView.membersDS.sync();
@@ -527,9 +533,9 @@ var channelMembersView = {
         if (contactModel.totalContacts() === 0) {
             // Todo:  Jordan -- need a better solution to creating groups (may hide add group until user has contacts...)
             mobileNotify("You don\'t have any contacts yet.  Please add contacts first...");
-            APP.kendo.navigate("contacts.html#contacts");
+            APP.kendo.navigate("#contacts");
         }
-
+/*
         var members = editChannelView._activeChannel.members, invitedMembers = editChannelView._activeChannel.invitedMembers;
 
 
@@ -592,7 +598,7 @@ var channelMembersView = {
 
             }
 
-        }
+        }*/
 
     }
 
