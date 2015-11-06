@@ -797,6 +797,7 @@
 	</div>
 </script>
 
+
 <div data-role="view" id="addPlace" data-title="Add Place" data-layout="main" data-model="addPlaceView._activePlace" class="appearance" data-init="addPlaceView.onInit" data-show="addPlaceView.onShow">
 	<div data-role="header">
 		<div data-role="navbar">
@@ -902,6 +903,19 @@
 	</div>
 </div>
 
+<div data-role="view" data-title="Map" id="mapView" data-layout="main"  data-show="mapView.onShow" data-init="mapView.onInit" data-transition="fade" data-stretch="true">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span data-role="view-title"></span>
+			<a data-role="button" data-align="left" href="#:back">
+				<img src="images/nav-back.svg"/>
+			</a>
+		</div>
+	</div>
+	<div>
+		<div id="map-mapdiv" style="width:100%;"></div>
+	</div>
+</div>
 
 <script type="text/x-kendo-template" id="placesTemplate">
 	# var addressOnly = false; alias = data.alias; name = data.name; #
