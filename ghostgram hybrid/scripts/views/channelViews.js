@@ -310,8 +310,9 @@ var editChannelView = {
             var members = editChannelView._activeChannel.members,  invitedMembers = editChannelView._activeChannel.invitedMembers, thisMember = {};
             var membersArray = [];
 
-            // All contacts are potential members
-            editChannelView.potentialMembersDS.data(contactModel.contactsDS.data());
+            // All (member and new) contacts are potential members  - need to ignore unknown and deleted
+            var potentialMembers = contactModel.getPotentialMemberList();
+            editChannelView.potentialMembersDS.data(potentialMembers);
 
             //Zero out current members as we're going rebuild ds and ux
             editChannelView.membersDS.data([]);
