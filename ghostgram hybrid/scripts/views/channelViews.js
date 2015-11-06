@@ -81,6 +81,7 @@ var channelsView = {
     },
 
     onShow : function(e) {
+        _preventDefault(e);
 
         ux.checkEmptyUIState(channelModel.channelsDS, "#channels");
     	//scroll up search 
@@ -298,60 +299,61 @@ var editChannelView = {
     onShow : function (e) {
        _preventDefault(e);
 
+        //Simplifying the logic here. If there's a channel passed, load the new channel data,
+        //If there's no channel id assume, it's a return from the new add members view and just use the cached data
+
         if (e.view.params.channel !== undefined) {
             editChannelView.activeChannelId = e.view.params.channel;
             var channel = channelModel.findChannelModel(editChannelView.activeChannelId);
-            if (channel === undefined) {
-                mobileNotify("editChannel:  can't find channel " + editChannelView.activeChannelId);
-                APP.kendo.navigate("#:back");
+            editChannelView.setActiveChannel(channel);
+
+            var members = editChannelView._activeChannel.members, thisMember = {};
+            var membersArray = [];
+
+            // All contacts are potential members
+            editChannelView.potentialMembersDS.data(contactModel.contactsDS.data());
+
+            //Zero out current members as we're going rebuild ds and ux
+            editChannelView.membersDS.data([]);
+            editChannelView.membersAdded = [];
+            editChannelView.membersDeleted = [];
+
+            $('#editChannelMemberList').empty();
+
+            // Only channel owner can see and edit members and invited members
+            if (members.length > 0 ) {
+                // Group channel members are referenced indirectly by uuid
+                // channel can include invited users who havent signed up yet
+
+                for (var i = 0; i < members.length; i++) {
+                    thisMember = contactModel.findContact(members[i]);
+
+                    // Current user will be undefined in contact list.
+                    if (thisMember !== undefined) {
+                        editChannelView.membersDS.add(thisMember);
+                        //appendMemberToUXList(thisMember);
+                    }
+                }
+
+                if (editChannelView.invitedMembers !== undefined) {
+                    members = editChannelView.invitedMembers;
+                    for (var j = 0; j < members.length; j++) {
+                        thisMember = contactModel.findContactByUUID(members[j]);
+                        editChannelView.membersDS.add(thisMember);
+                        //appendInvitedMemberToUXList(thisMember);
+                    }
+                }
+
 
             }
-            editChannelView.setActiveChannel(channel);
         }
 
-        var members = editChannelView._activeChannel.members, thisMember = {};
-        var membersArray = [];
 
-        // All contacts are potential members
-        editChannelView.potentialMembersDS.data(contactModel.contactsDS.data());
 
-        //Zero out current members as we're going rebuild ds and ux
-        editChannelView.membersDS.data([]);
-        editChannelView.membersAdded = [];
-        editChannelView.membersDeleted = [];
-
-        $('#editChannelMemberList').empty();
-
-        // Only channel owner can see and edit members and invited members
-        if (members.length > 0 ) {
-            // Group channel members are referenced indirectly by uuid
-            // channel can include invited users who havent signed up yet
-
-            for (var i = 0; i < members.length; i++) {
-                thisMember = contactModel.findContact(members[i]);
-
-                // Current user will be undefined in contact list.
-                if (thisMember !== undefined) {
-                    editChannelView.membersDS.add(thisMember);
-                    //appendMemberToUXList(thisMember);
-                }
-            }
-
-            if (editChannelView.invitedMembers !== undefined) {
-                members = editChannelView.invitedMembers;
-                for (var j = 0; j < members.length; j++) {
-                    thisMember = contactModel.findContactByUUID(members[j]);
-                    editChannelView.membersDS.add(thisMember);
-                    //appendInvitedMemberToUXList(thisMember);
-                }
-            }
-
-            // channelMembers is returning to this view so update ux to reflect memberstate
-            if (editChannelView._activeChannel.members.length > 0) {
-                $(".addChatMembersBanner a").text("+ add new members");
-            } else {
-                $(".addChatMembersBanner a").text("No one is invited. Tap to add members");
-            }
+        if (editChannelView._activeChannel.members.length > 0) {
+            $(".addChatMembersBanner a").text("+ add new members");
+        } else {
+            $(".addChatMembersBanner a").text("No one is invited. Tap to add members");
         }
 
         // show action btn text
@@ -362,6 +364,12 @@ var editChannelView = {
     setActiveChannel : function (channel) {
         editChannelView._activeChannel.set('name', channel.name);
         editChannelView._activeChannel.set('description', channel.description);
+        if (channel.members === undefined)
+            channel.members = [];
+        editChannelView._activeChannel.set('members', channel.members);
+        if (channel.invitedMembers === undefined)
+            channel.invitedMembers = [];
+        editChannelView._activeChannel.set('invitedMembers', channel.invitedMembers);
 
     },
 
@@ -387,23 +395,27 @@ var editChannelView = {
             }
 
         }
-        currentChannelModel.currentChannel.members = memberArray;
-        currentChannelModel.currentChannel.unbind('change', syncCurrentChannel);
+        editChannelView.members = memberArray;
 
         //Send Invite messages to users added to channel
-        for (var ma = 0; ma < currentChannelModel.membersAdded.length; ma++) {
-            appDataChannel.groupChannelInvite(currentChannelModel.membersAdded[ma].contactUUID, channelId,  currentChannelModel.currentChannel.name, "You've been invited to " + currentChannelModel.currentChannel.name);
+        for (var ma = 0; ma < editChannelView.membersAdded.length; ma++) {
+            appDataChannel.groupChannelInvite(editChannelView.membersAdded[ma].contactUUID, channelId,  editChannelView.currentChannel.name, "You've been invited to " + currentChannelModel.currentChannel.name);
         }
 
         
         //Send Delete messages to users deleted from the channel
-        for (var md = 0; md < currentChannelModel.membersDeleted.length; md++) {
-            appDataChannel.groupChannelDelete(currentChannelModel.membersDeleted[md].contactUUID, channelId, currentChannelModel.currentChannel.name + "has been deleted.");
+        for (var md = 0; md < editChannelView.membersDeleted.length; md++) {
+            appDataChannel.groupChannelDelete(editChannelView.membersDeleted[md].contactUUID, channelId, editChannelView.currentChannel.name + "has been deleted.");
         }
 
         for (var m=0; m< memberArray.length; m++) {
             //Todo: don -- add channel update messages for other users.
         }
+
+        var channelObj = channelModel.findChannelModel(editChannelView._activeChannelId);
+
+        channelObj.set('members', memberArray);
+        channelObj.set('inviteMembers', invitedMemberArray);
 		
         updateParseObject('channels', 'channelId', channelId, 'members', memberArray);
         updateParseObject('channels', 'channelId', channelId, 'invitedMembers', invitedMemberArray);
@@ -417,7 +429,7 @@ var editChannelView = {
         $("#showEditDescriptionBtn").velocity("fadeIn");
     //    $("#channels-editChannel-description").css("display", "none").val("");
 
-        mobileNotify("Updating " + currentChannelModel.currentChannel.name);
+        mobileNotify("Updating " + editChannelView._activeChannel.name);
 
         APP.kendo.navigate('#channels');
 
@@ -476,9 +488,9 @@ var channelMembersView = {
     doInit: function (e) {
       _preventDefault(e);
 
-        currentChannelModel.potentialMembersDS.data([]);
+
         $("#channelMembers-listview").kendoMobileListView({
-            dataSource: currentChannelModel.potentialMembersDS,
+            dataSource: editChannelView.potentialMembersDS,
             template: $("#memberTemplate").html(),
             headerTemplate: "${value}",
             filterable: {
@@ -490,19 +502,19 @@ var channelMembersView = {
                 // Click to potential member list -- add this member to channel
                 var thisMember = e.dataItem;
 
-                currentChannelModel.membersDS.add(thisMember);
+                editChannelView.membersDS.add(thisMember);
                 if (thisMember.contactUUID === null) {
-                    currentChannelModel.currentChannel.invitedMembers.push(thisMember.uuid);
+                    editChannelView.invitedMembers.push(thisMember.uuid);
                     //appendInvitedMemberToUXList (thisMember);
 
                 } else {
-                    currentChannelModel.currentChannel.members.push(thisMember.contactUUID);
+                    editChannelView.members.push(thisMember.contactUUID);
                     //appendMemberToUXList (thisMember);
                 }
-                currentChannelModel.membersDS.sync();
+                editChannelView.membersDS.sync();
 
-                currentChannelModel.membersAdded.push(thisMember);
-                currentChannelModel.potentialMembersDS.remove(thisMember);
+                editChannelView.membersAdded.push(thisMember);
+                editChannelView.potentialMembersDS.remove(thisMember);
                 $(".addedChatMember").text("+ added " + thisMember.name).velocity("slideDown", { duration: 300, display: "block"}).velocity("slideUp", {delay: 1400, duration: 300, display: "none"});
             }
 
@@ -518,14 +530,14 @@ var channelMembersView = {
             APP.kendo.navigate("contacts.html#contacts");
         }
 
-        var members = currentChannelModel.currentChannel.members, invitedMembers = currentChannelModel.currentChannel.invitedMembers;
+        var members = editChannelView._activeChannel.members, invitedMembers = editChannelView._activeChannel.invitedMembers;
 
 
         // Need to break observable link or contacts get deleted.
         var contactArray = contactModel.contactsDS.data().toJSON();
 
         // create an easy reference to the potential members data source
-        var dataSource = currentChannelModel.potentialMembersDS;
+        var dataSource = editChannelView.potentialMembersDS;
 
         // Zero potential members data source so we can add all contacts
         dataSource.data([]);
@@ -536,7 +548,7 @@ var channelMembersView = {
 
 
         // Zero out member datasource so we can rebuild it
-        currentChannelModel.membersDS.data([]);
+        editChannelView.membersDS.data([]);
 
         // Build members and potential members this based on current channel params
         // members and potential members will be dynamically updated as members
@@ -552,7 +564,7 @@ var channelMembersView = {
                     thisMember = contactModel.findContactByUUID(members[i]);
                 if (thisMember !== undefined) {
 
-                    currentChannelModel.membersDS.add(thisMember);
+                    editChannelView.membersDS.add(thisMember);
                     dataSource.filter( { field: "uuid", operator: "eq", value: thisMember.uuid});
                     var view = dataSource.view();
                     var contact = view[0];
@@ -561,7 +573,7 @@ var channelMembersView = {
                 }
 
             }
-            currentChannelModel.potentialMembersDS.sync();
+           editChannelView.potentialMembersDS.sync();
         }
 
         if (invitedMembers.length > 0) {
@@ -569,7 +581,7 @@ var channelMembersView = {
                 var invitedMember = contactModel.findContactByUUID(invitedMembers[j]);
                 if (invitedMember !== undefined) {
 
-                    currentChannelModel.membersDS.add(invitedMember);
+                    editChannelView.membersDS.add(invitedMember);
                     dataSource.filter( { field: "uuid", operator: "eq", value: invitedMember.uuid});
                     var view1 = dataSource.view();
                     var contact1 = view1[0];
@@ -624,7 +636,7 @@ var channelView = {
 
        // var width = window.innerWidth - 68;
         //$('#messageTextArea').css("width", width+'px');
-        currentChannelModel.topOffset = APP.kendo.scroller().scrollTop;
+        channelView.topOffset = APP.kendo.scroller().scrollTop;
        	autosize($('#messageTextArea'));
         
         $("#messages-listview").kendoMobileListView({
