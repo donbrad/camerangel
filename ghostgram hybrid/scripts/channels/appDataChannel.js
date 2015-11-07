@@ -343,7 +343,8 @@ var appDataChannel = {
 
         var channel = channelModel.findChannelModel(channelId);
         if (channel !== undefined) {
-
+            mobileNotify('Owner has updated Chat: "' + channelName + '"');
+            channelModel.updateChannel(channel);
         }
 
     },
