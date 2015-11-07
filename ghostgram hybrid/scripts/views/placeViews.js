@@ -944,7 +944,7 @@ var checkInView = {
         _preventDefault(e);
 
         if (checkInView._callback !== undefined && checkInView._callback !== null) {
-            checkInView._callBack();
+            checkInView._callback();
         }
 
        /* var returnUrl = '#'+ checkInView._returnView;
