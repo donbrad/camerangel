@@ -264,15 +264,10 @@ var editChannelView = {
     membersDeleted: [],
 
     potentialMembersDS: new kendo.data.DataSource({
-        group: 'category',
+        //group: 'category',
         sort: {
             field: "name",
             dir: "asc"
-        },
-        schema: {
-            model: {
-                id: "uuid"
-            }
         }
     }),
 
@@ -504,7 +499,7 @@ var channelMembersView = {
         $("#channelMembers-listview").kendoMobileListView({
             dataSource: editChannelView.potentialMembersDS,
             template: $("#memberTemplate").html(),
-            headerTemplate: "${value}",
+         //   headerTemplate: "${value}",
             filterable: {
                 field: "name",
                 operator: "startswith",
