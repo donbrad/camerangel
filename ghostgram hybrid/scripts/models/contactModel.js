@@ -440,7 +440,7 @@ var contactModel = {
                     }
                     current.set('phoneVerified', contact.phoneVerified);
                     if (contact.phoneVerified) {
-                        if (contact.category !== 'member'){
+                        if (current.category !== 'member'){
                             current.set('category', 'member');
                             current.set('memberUpdate', true);
                         }
@@ -484,7 +484,7 @@ var contactModel = {
                     }
                     current.set('phoneVerified', contact.phoneVerified);
                     if (contact.phoneVerified) {
-                        if (contact.category !== 'member'){
+                        if (current.category !== 'member'){
                             current.set('category', 'member');
                             current.set('memberUpdate', true);
                         }
