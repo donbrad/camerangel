@@ -395,17 +395,18 @@ var editChannelView = {
 
         //Send Invite messages to users added to channel
         for (var ma = 0; ma < editChannelView.membersAdded.length; ma++) {
-            appDataChannel.groupChannelInvite(editChannelView.membersAdded[ma].contactUUID, channelId,  editChannelView.currentChannel.name, "You've been invited to " + currentChannelModel.currentChannel.name);
+            appDataChannel.groupChannelInvite(editChannelView.membersAdded[ma].contactUUID, channelId,  editChannelView._activeChannel.name, "You've been invited to " + editChannelView._activeChannel.name);
         }
 
         
         //Send Delete messages to users deleted from the channel
         for (var md = 0; md < editChannelView.membersDeleted.length; md++) {
-            appDataChannel.groupChannelDelete(editChannelView.membersDeleted[md].contactUUID, channelId, editChannelView.currentChannel.name + "has been deleted.");
+            appDataChannel.groupChannelDelete(editChannelView.membersDeleted[md].contactUUID, channelId, editChannelView._activeChannel.name + "has been deleted.");
         }
 
         for (var m=0; m< memberArray.length; m++) {
             //Todo: don -- add channel update messages for other users.
+            appDataChannel.groupChannelUpdate(editChannelView.members[m].contactUUID, channelId,  editChannelView._activeChannel.name, editChannelView._activeChannel.name + " has been updated...");
         }
 
 
