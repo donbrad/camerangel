@@ -868,7 +868,7 @@ var placeView = {
  * checkInView
  */
 var checkInView = {
-    _returnView : 'places',
+
     _returnModal : null,
     _callback: null,
 
@@ -897,11 +897,14 @@ var checkInView = {
 
     },
 
-    locateAndOpenModal : function (e) {
-        _preventDefault(e);
+    locateAndOpenModal : function (callBack) {
 
         checkInView._returnView = APP.kendo.view().id;
-
+        if (callBack !== undefined && callBack !== null) {
+            checkInView._callback = callBack;
+        } else {
+            checkInView._callback = null;
+        }
         mapModel.matchPlaces(function (placeArray) {
             // Just compute the distance of matches
             mapModel.computePlaceArrayDistance(placeArray);
@@ -940,9 +943,13 @@ var checkInView = {
     onDone: function (e) {
         _preventDefault(e);
 
-        var returnUrl = '#'+ checkInView._returnView;
+        if (checkInView._callback !== undefined && checkInView._callback !== null) {
+            checkInView._callBack();
+        }
 
-        APP.kendo.navigate(returnUrl);
+       /* var returnUrl = '#'+ checkInView._returnView;
+
+        APP.kendo.navigate(returnUrl);*/
 
     }
 

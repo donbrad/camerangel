@@ -133,6 +133,16 @@ var userStatusView = {
 
     },
 
+    openCheckIn : function (e) {
+        _preventDefault(e);
+
+        userStatusView.closeModal();
+
+        checkInView.locateAndOpenModal(function () {
+            userStatusView.openModal();
+        })
+    },
+
     checkIn : function (e) {
         _preventDefault(e);
 
