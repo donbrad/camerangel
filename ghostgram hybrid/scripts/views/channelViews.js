@@ -310,8 +310,10 @@ var editChannelView = {
         //If there's no channel id assume, it's a return from the new add members view and just use the cached data
 
         if (e.view.params.channel !== undefined) {
-            editChannelView.activeChannelId = e.view.params.channel;
-            var channel = channelModel.findChannelModel(editChannelView.activeChannelId);
+
+            editChannelView._activeChannelId = e.view.params.channel;
+
+            var channel = channelModel.findChannelModel(editChannelView._activeChannelId);
             editChannelView.setActiveChannel(channel);
 
             var members = editChannelView._activeChannel.members,  invitedMembers = editChannelView._activeChannel.invitedMembers, thisMember = {};
@@ -386,7 +388,7 @@ var editChannelView = {
 
         var memberArray = [], invitedMemberArray = [], invitedPhoneArray = [], inviteArray = [],members = editChannelView.membersDS.data();
 
-        var channelId = editChannelView.activeChannelId;
+        var channelId = editChannelView._activeChannelId;
         // It's a group channel so push this users UUID
 
         memberArray.push(userModel.currentUser.userUUID);
@@ -430,7 +432,7 @@ var editChannelView = {
 
 
         // Update the kendo object
-        var channelObj = channelModel.findChannelModel(editChannelView._activeChannelId);
+        var channelObj = channelModel.findChannelModel(channelId);
 
         channelObj.set('name', editChannelView._activeChannel.name);
         channelObj.set('description', editChannelView._activeChannel.description);
