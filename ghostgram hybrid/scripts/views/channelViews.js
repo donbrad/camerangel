@@ -139,6 +139,18 @@ var channelsView = {
  */
 
 var addChannelView = {
+    // Todo: jordan - refractored the login in onShow into onInit for all handlers.  They should only be installed once in onInit
+    onInit : function (e) {
+        _preventDefault(e);
+        $("#channels-addChannel-name").keyup(function(){
+            if($("#channels-addChannel-name").val !== ""){
+                $("#addChat-createBtn").velocity({opacity: 1}, {duration: 500, easing: "spring"});
+                $("#channels-addChannel-name").unbind();
+            }
+            $("#addChat-helper-1").velocity("fadeOut", {duration: 300});
+        });
+    },
+
      onShow: function (e) {
        _preventDefault(e);
        /* currentChannelModel.potentialMembersDS.data([]);
@@ -156,17 +168,17 @@ var addChannelView = {
         // hide channel description
         $("#channels-addChannel-description").css("display","none");
 
-        $("#channels-addChannel-name").keyup(function(){
-            if($("#channels-addChannel-name").val !== ""){
-                $("#addChat-createBtn").velocity({opacity: 1}, {duration: 500, easing: "spring"});
-                $("#channels-addChannel-name").unbind();
-            }
-            $("#addChat-helper-1").velocity("fadeOut", {duration: 300});
-        });
+
 
         $("#addChat-step2").css("opacity", 0);
 
 
+    },
+
+    // onHide is the ideal point to reset ux (unless you want to do first in onShow...
+    onHide : function (e) {
+        _preventDefault(e);
+        addChannelView.resetUI();
     },
 
    addChannel : function (e) {

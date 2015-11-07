@@ -126,11 +126,12 @@
 </script>
  
 
-<div data-role="view" data-title='Add Chat' id="addChannel" style="display: none;" data-init="addChannelView.onShow" class="appearance" data-transition="overlay:up">
+<div data-role="view" data-title='Add Chat' id="addChannel" style="display: none;" data-init="addChannelView.onInit" data-show="addChannelView.onShow" data-hide="addChannelView.onHide"
+	 class="appearance" data-transition="overlay:up">
    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" href="#:back" data-click="addChannelView.resetUI" data-align="right">
+            <a data-role="backbutton"  type="button" data-align="right">
             	<img src="images/close.svg" />
             </a>
         </div>
