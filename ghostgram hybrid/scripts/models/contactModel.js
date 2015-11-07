@@ -433,10 +433,9 @@ var contactModel = {
                     var current = thisContact;
 
                     current.set('contactUUID', contact.userUUID);
-                    current.set('phone', contact.phone);
-                    current.set('contactPhone', contact.contactPhone);
 
-                    if (contact.phone !== contact.contactPhone) {
+                    current.set('contactPhone', contact.phone);
+                    if (current.phone !== contact.phone) {
                         current.set('phoneUpdate', true);
                     }
                     current.set('phoneVerified', contact.phoneVerified);
@@ -446,14 +445,19 @@ var contactModel = {
                             current.set('memberUpdate', true);
                         }
                     }
-                    current.set('email', contact.email);
-                    current.set('contactEmail', contact.contactEmail);
-                    if(contact.email !== contact.contactEmail) {
+                    current.set('contactEmail', contact.email);
+                    if(current.email !== contact.email) {
                         current.set('emailUpdate', true);
                     }
+
                     current.set('emailValidated', contact.emailVerified);
                     current.set('contactPhoto', contact.photo);
-                    current.set('address', contact.address);
+                    current.set('contactAddress', contact.address);
+                    if(current.address !== contact.address) {
+                        current.set('addressUpdate', true);
+                    }
+
+
                     current.set('publicKey', contact.publicKey);
 
 
@@ -465,6 +469,7 @@ var contactModel = {
                 }
 
             });
+
         } else {
 
             getUserContactInfo(thisContact.contactUUID, function (result) {
@@ -472,11 +477,9 @@ var contactModel = {
                     var contact = result.user;
                     var current = thisContact;
                     current.set('contactUUID', contact.userUUID);
-                    current.set('contactUUID', contact.userUUID);
-                    current.set('phone', contact.phone);
-                    current.set('contactPhone', contact.contactPhone);
 
-                    if (contact.phone !== contact.contactPhone) {
+                    current.set('contactPhone', contact.phone);
+                    if (current.phone !== contact.phone) {
                         current.set('phoneUpdate', true);
                     }
                     current.set('phoneVerified', contact.phoneVerified);
@@ -485,16 +488,21 @@ var contactModel = {
                             current.set('category', 'member');
                             current.set('memberUpdate', true);
                         }
-
                     }
-                    current.set('email', contact.email);
-                    current.set('contactEmail', contact.contactEmail);
-                    if(contact.email !== contact.contactEmail) {
+
+                    current.set('contactEmail', contact.email);
+                    if(current.email !== contact.email) {
                         current.set('emailUpdate', true);
                     }
                     current.set('emailValidated', contact.emailVerified);
+
                     current.set('contactPhoto', contact.photo);
-                    current.set('address', contact.address);
+
+                    current.set('contactAddress', contact.address);
+                    if(current.address !== contact.address) {
+                        current.set('addressUpdate', true);
+                    }
+
                     current.set('publicKey', contact.publicKey);
 
                     callback(current);

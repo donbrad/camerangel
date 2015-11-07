@@ -712,9 +712,12 @@ var addContactView = {
  */
 
 var editContactView = {
+
+    // User status flags for potential use in UX.  if true, the contact has updated information
+    addressUpdate: false,
     phoneUpdate: false,
     emailUpdate: false,
-    addressUpdate: false,
+    memberUpdate: false,
     publicKeyUpdate : false,
 
     _activeContact : new kendo.data.ObservableObject(),
@@ -754,20 +757,24 @@ var editContactView = {
                 editContactView._activeContact.set("contactUUID", contact.contactUUID);
                 editContactView._activeContact.set("contactPhone", contact.contactPhone);
                 editContactView._activeContact.set("contactEmail", contact.contactEmail);
+                editContactView._activeContact.set("contactAddress", contact.contactAddress);
                 editContactView._activeContact.set("publicKey", contact.publicKey);
 
             }
             if (contact.memberUpdate !== undefined) {
+                editContactView.memberUpdate = true;
                 mobileNotify(contact.alias + '( ' + contact.name + ') is now a member!');
             }
 
             if (contact.phoneUpdate !== undefined) {
+                editContactView.phoneUpdate = true;
                 mobileNotify(contact.alias + '( ' + contact.name + ') has updated their phone number!');
                 editContactView._activeContact.set("phone", contact.contactPhone);
 
             }
 
             if (contact.emailUpdate !== undefined) {
+                editContactView.emailUpdate = true;
                 mobileNotify(contact.alias + '( ' + contact.name + ') has updated their email address!');
                 editContactView._activeContact.set("email", contact.contactEmail);
 
@@ -790,6 +797,7 @@ var editContactView = {
             contact.set("contactUUID", editContactView._activeContact.contactUUID);
             contact.set("contactEmail", editContactView._activeContact.contactEmail);
             contact.set("contactPhone", editContactView._activeContact.contactPhone);
+            contact.set("contactAddress", editContactView._activeContact.contactAddress);
             contact.set("publicKey", editContactView._activeContact.publicKey);
         }
 
@@ -810,6 +818,7 @@ var editContactView = {
             contactList.set("contactUUID", editContactView._activeContact.contactUUID);
             contactList.set("contactEmail", editContactView._activeContact.contactEmail);
             contactList.set("contactPhone", editContactView._activeContact.contactPhone);
+            contactList.set("contactAddress", editContactView._activeContact.contactAddress);
             contactList.set("publicKey", editContactView._activeContact.publicKey);
         }
 
@@ -822,10 +831,12 @@ var editContactView = {
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"group", editContactView._activeContact.group);
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"address", editContactView._activeContact.address);
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"category", editContactView._activeContact.category);
+
         if (editContactView._activeContact.contactUUID !== undefined && editContactView._activeContact.contactUUID !== null) {
             updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid, "contactUUID", editContactView._activeContact.contactUUID);
             updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid, "contactPhone", editContactView._activeContact.contactPhone);
             updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid, "contactEmail", editContactView._activeContact.contactEmail);
+            updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid, "contactAddress", editContactView._activeContact.contactAddress);
             updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid, "publicKey", editContactView._activeContact.publicKey);
         }
         //$("#contacts-listview").data("kendoMobileListView").refresh();
