@@ -384,7 +384,7 @@ var editChannelView = {
     finalizeEdit : function (e) {
         e.preventDefault(e);
 
-        var memberArray = new Array(), invitedMemberArray = new Array(), invitedPhoneArray = new Array(), members = editChannelView.membersDS.data();
+        var memberArray = [], invitedMemberArray = [], invitedPhoneArray = [], members = editChannelView.membersDS.data();
 
         var channelId = editChannelView.activeChannelId;
         // It's a group channel so push this users UUID
@@ -405,6 +405,8 @@ var editChannelView = {
         }
         editChannelView._activeChannel.members = memberArray;
 
+
+
         //Send Invite messages to users added to channel
         for (var ma = 0; ma < editChannelView.membersAdded.length; ma++) {
             appDataChannel.groupChannelInvite(editChannelView.membersAdded[ma].contactUUID, channelId,  editChannelView._activeChannel.name, "You've been invited to " + editChannelView._activeChannel.name);
@@ -417,9 +419,13 @@ var editChannelView = {
         }
 
         for (var m=0; m< memberArray.length; m++) {
-            //Todo: don -- add channel update messages for other users.
-            appDataChannel.groupChannelUpdate(editChannelView.members[m].contactUUID, channelId,  editChannelView._activeChannel.name, editChannelView._activeChannel.name + " has been updated...");
+
+            // Only send updates to current members (new members got an invite above)
+            if (memberArray[m] !== userModel.currentUser.userUUID && $.inArray(memberArray[m],editChannelView.membersAdded) == -1) {
+                appDataChannel.groupChannelUpdate(memberArray[m], channelId,  editChannelView._activeChannel.name, editChannelView._activeChannel.name + " has been updated...");
+            }
         }
+
 
 
         // Update the kendo object
