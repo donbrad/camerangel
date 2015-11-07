@@ -348,7 +348,7 @@ var contactImportView = {
         }
     },
 
-    resetContactImport: function(e){
+    onHide: function(e){
         $(".enterSearch > span").css("color", "#E0E0E0");
     	$("#contactImportQuery").val("");
 
