@@ -330,6 +330,19 @@ var contactModel = {
         }
     },
 
+    getPotentialMemberList : function () {
+        var dataSource = contactModel.contactsDS;
+        dataSource.filter( { "logic" : "or",
+            filters : [
+                {field: "category", operator: "eq", value: 'member' },
+                {field: "category", operator: "eq", value: 'new' }
+        ]});
+
+        var view = dataSource.view();
+        return(view);
+        dataSource.filter([]);
+    },
+
     findContact: function (contactUUID) {
         var dataSource = contactModel.contactsDS; 
         dataSource.filter( { field: "contactUUID", operator: "eq", value: contactUUID });

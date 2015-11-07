@@ -67,3 +67,55 @@
 	</div>
 </div>
 
+</div>
+
+ <div data-role="view" id="placeView" data-title="Place View" data-model="placeView._activePlace" class="appearance" data-layout="main" data-init="placeView.onInit" data-show="placeView.onShow" data-hide="placeView.onHide" data-transition="fade">
+	 <div class="smallHeader" data-role="header">
+		 <a data-role="button" class="left" data-click="placeView.onDone">
+			 <img src="images/nav-back-light.svg" />
+		 </a>
+		 <a data-role="button" class="right btnClear-light" data-click="placeView.openPlaceMap">
+			 View on map
+		 </a>
+	 </div>
+	 <div class="map-placeLayer"></div>
+
+	 <div class="placeCard">
+		 <div class="placeCardTop">
+			 <h4 class="textClamp"><span class="primaryName"></span> <span class="secondName"></span></h4>
+			 <p data-bind="text: address"></p>
+			 <p id="publicPlaceView">
+				<span class="helper-sm">
+					<img src="images/place-public.svg" /> Public Place
+				</span>
+			 </p>
+			 <p id="privatePlaceView">
+				<span class="helper-sm">
+					<img src="images/place-private.svg" /> Private Place
+				</span>
+			 </p>
+		 </div>
+		 <div class="line"></div>
+		 <ul class="list-inline" id="placeListOpt">
+			 <li>
+				 <a class="btnClear-sm" data-role="button" data-click="placeView.openChat">
+					 <img src="images/icon-chat-active.svg" class="icon-btn" /> Start a Chat </a>
+			 </li>
+			 <li>
+				 <a class="btnClear-sm" data-role="button" data-click="placeView.takePhoto">
+					 <img src="images/icon-camera-active.svg" class="icon-btn" /> Snap a Photo
+				 </a>
+			 </li>
+		 </ul>
+	 </div>
+	 <div class="placeContent">
+		 <p class="helper"><img src="images/icon-memories.svg" class="icon" /> No Memories here yet </p>
+		 <p class="hidden"><img src="images/icon-memories.svg" class="icon" /> Memories</p>
+
+		 <div class="placeContentBox">
+			 <!-- Place content here-->
+		 </div>
+	 </div>
+ </div>
+
+

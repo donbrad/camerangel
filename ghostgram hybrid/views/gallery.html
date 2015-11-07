@@ -152,6 +152,73 @@
 	</div>
 </div>
 
+<div data-role="modalview" id="modalPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal" data-init="modalPhotoView.onInit">
+	<div class="photoViewBox">
+		<img id="modalPhotoViewImage" src="" />
+		<div class="photoTitleBox">
+			<div class="photoTitleText">
+				<h3><span>Photo Title</span>
+					<a class="btnClear-sm hidden" data-role="button" data-rel="modalview" href="#modalview-photoTag">Edit</a>
+				</h3>
+				<p><img src="images/icon-tag-light.svg" class="icon-sm" /> photo tags</p>
+			</div>
+			<a class="actionBtn primary-100" data-role="button" data-click="modalPhotoView.sharePhoto">
+				<img src="images/icon-share-light.svg"/>
+			</a>
+		</div>
+
+	</div>
+	<div class="footer" data-role="footer">
+		<a class="btnSpan-btm btnClear glass" data-role="button" data-click="modalPhotoView.closeModal">Close</a>
+	</div>
+</div>
+
+<div data-role="modalview" id="modalGalleryView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal">
+	<ul id="modalgallery-listview" class="list-inline" data-role="listview" data-click="modalGalleryView.galleryClick" data-source="photoModel.photosDS" data-template="modalGalleryTemplate"></ul>
+	<div data-role="footer">
+		<a class="btnClear btnFull" data-role="button" data-click="modalGalleryView.closeModal">Close</a>
+	</div>
+</div>
+
+
+<div data-role="view" id="photoView" class="fullPhotoModal" data-zoom="true" style="width: 100%; height: 100%; display: none;" data-model="photoView._activePhoto" data-init="photoView.onInit" data-show="photoView.onShow" data-transition="fade">
+	<div class="photoViewBox">
+		<img id="photoViewImage" src="" />
+		<div class="photoTitleBox">
+			<h3><span>Photo Title</span>
+				<a class="btnClear-sm" data-role="button" data-rel="modalview" href="#modalview-photoTag">Edit</a>
+			</h3>
+			<p><img src="images/icon-tag-light.svg" class="icon-sm" /> photo tags</p>
+			<a class="actionBtn primary-100" data-role="button" data-click="photoView.sharePhoto">
+				<img src="images/icon-share-light.svg"/>
+			</a>
+		</div>
+	</div>
+	<div class="footer" data-role="footer">
+		<a class="btnSpan-btm btnClear glass" data-role="button" href="#:back">Close</a>
+	</div>
+</div>
+
+
+<div data-role="view" id="photoEditor" style="width: 100%; height:100%; display: none;"  data-show="photoEditor.onShow"  data-hide="photoEditor.onHide" data-init="photoEditor.onInit" data-transition="slide:left">
+	<div class="photoViewNavTop" data-role="header">
+		<a data-role="button"  data-click="photoEditor.rotateLeft"><img src="images/photo-left.svg" /> </a>
+		<a data-role="button"  data-click="photoEditor.rotateRight"> <img src="images/photo-right.svg" /></a>
+		<a data-role="button" data-click="photoEditor.crop"> <img class="photo-options" src="images/photo-crop.svg" /> </a>
+		<a data-role="button" data-rel="modalview"  href="#modalview-photoTag"><img src="images/photo-tag.svg" /></a>
+	</div>
+
+
+	<div class="photoViewBox">
+		<img class="centerPhoto" id="photoEditImage" src="images/photo-default.svg" />
+	</div>
+
+	<div data-role="footer">
+		<a class="btnSpan-btm btnPrimary" id="photoEditSaveDiv" data-role="button" data-click="photoEditor.savePhoto"> Save </a>
+	</div>
+
+</div>
+
 <script id="tag-template" type="text/x-kendo-template">
 	<div class="tag">
 		<div class="tag-category">
@@ -258,3 +325,4 @@
 		</div>
 	</div>
 </script>
+

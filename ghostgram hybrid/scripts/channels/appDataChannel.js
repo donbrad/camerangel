@@ -323,13 +323,9 @@ var appDataChannel = {
 
         if (channel === undefined) {
             mobileNotify("Chat invite from  " + ownerName + ' " ' + channelName + '"');
+            channelModel.addMemberChannel(channelId, channelName);
             //notificationModel.addNewChatNotification(channelId, channelName, "new channel...");
         }
-
-        // Per discussion with ray -- sync all parse channels to have only entry point to sync member channels
-        channelModel.syncParseChannels();
-
-
 
     },
 
@@ -337,7 +333,6 @@ var appDataChannel = {
         // Todo:  Does channel exist?  If not do nothing,  if so delete the channel
         var channel = channelModel.findChannelModel(channelId);
         if (channel === undefined) {
-            // Todo: create a channelMember object for this user
             mobileNotify('Owner has deleted Chat: "' + channelName + '"');
             channelModel.deleteChannel(channel);
         }
@@ -348,7 +343,8 @@ var appDataChannel = {
 
         var channel = channelModel.findChannelModel(channelId);
         if (channel !== undefined) {
-
+            mobileNotify('Owner has updated Chat: "' + channelName + '"');
+            channelModel.updateChannel(channel);
         }
 
     },
