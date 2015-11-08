@@ -1013,13 +1013,16 @@
 				#}#
 
 				<p class="helper">
-           <span class="left">
-         # if (data.isPrivate === true) { #
-            <img src="images/place-private.svg" /> Private
-         # } else { #
-            <img src="images/place-public.svg" /> Public
-         # }#
-           </span>
+				   <span class="left">
+				 # if (data.isPrivate === true) { #
+					<img src="images/place-private.svg" /> Private
+				 # } else { #
+					<img src="images/place-public.svg" /> Public
+				 # }#
+				   </span>
+					 <span class="right">
+						 #: data.distance # mi
+					 </span>
 				</p>
 				<div class="clearfix"> </div>
 			</div>
