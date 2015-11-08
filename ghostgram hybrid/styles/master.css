@@ -889,13 +889,13 @@ div.km-content.km-widget.km-scroll-wrapper {
   padding-bottom: 1rem;
 }
 .input-text-sm {
-  font-size: 0.875em;
+  font-size: 0.875em !important;
 }
 .input-text-md {
-  font-size: 1.25em;
+  font-size: 1.25em !important;
 }
 .input-text-lg {
-  font-size: 1.5em;
+  font-size: 1.5em !important;
 }
 #nav-ghost {
   position: relative;
@@ -2037,7 +2037,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .km-root .km-pane .km-view.appearance .km-listview input {
   position: relative;
-  font-size: 1.125em !important;
+  font-size: 1.125em ;
   width: 100%;
   right: 0;
   margin-top: 0;
@@ -2305,7 +2305,9 @@ div.message-slideOptions > span.archive > a > span > img {
 a:hover {
   color: #3CAAEE;
 }
-#findplace-listview > li > ul > li > div > a:hover,
+#findplace-listview > li > ul > li > div > a:hover > div > p,
+#findplace-listview > li > ul > li > a:hover > div > p,
+#findplace-listview > li > ul > li > a:hover,
 #contacts-listview > li > ul > li > div > a:hover,
 #places-listview > li > div > a:hover,
 #channels-listview > li > div > a:hover > div {
@@ -2320,7 +2322,7 @@ a:hover {
 }
 .findPlaceListItem {
   display: block;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0px;
 }
 .menuBox a:visited {
   color: #fff;

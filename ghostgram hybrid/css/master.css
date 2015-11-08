@@ -74,7 +74,12 @@
 }
 /* elements */
 .userLgFontSize {
-  font-size: 1.25em !important;
+  font-size: 1.4em !important;
+}
+@media only screen and (max-width: 320px) {
+  .userLgFontSize {
+    font-size: 1.4em !important;
+  }
 }
 .shadow {
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);
@@ -1702,13 +1707,13 @@ div.footerMenu.km-footer > ul > li > a:active {
   padding: 1rem 1rem !important;
 }
 .modal-top {
-  height: 12rem;
+  height: 13rem;
   width: 100%;
   background-color: rgba(0, 0, 0, 0.6);
   text-align: center;
   color: #fff;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
 }
 .modal-top div > img {
   height: 4rem;
@@ -1718,7 +1723,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 .modal-top svg {
   width: 18px;
 }
-.modal-top h3 {
+.modal-top h2 {
   line-height: 1;
   white-space: nowrap;
   overflow: hidden;
@@ -1728,6 +1733,8 @@ div.footerMenu.km-footer > ul > li > a:active {
   margin-right: 10%;
   text-align: center;
   margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.5em !important;
 }
 .modal-bottom {
   padding: 0.5rem 1rem;
@@ -2178,6 +2185,26 @@ div.footerMenu.km-footer > ul > li > a:active {
   margin-left: 1rem;
   margin-right: 1rem;
 }
+.group-contactCard {
+  font-size: 0.875em;
+  color: #fff;
+  background: #979797;
+  border-radius: 3px;
+  padding: 0.1em 0.5em;
+}
+.contact-group {
+  font-size: 0.75em;
+  color: #979797;
+  background: #f5f5f5;
+  border-radius: 3px;
+  padding: 0.1em 0.5em;
+  float: right;
+  position: absolute;
+  right: 1em;
+}
+#contacts-listview > li > ul > li > div > a > div.left.listName > h4 {
+  margin-right: 0px;
+}
 .round {
   display: block;
   width: 55px;
@@ -2278,6 +2305,7 @@ div.message-slideOptions > span.archive > a > span > img {
 a:hover {
   color: #3CAAEE;
 }
+#findplace-listview > li > ul > li > a:hover > div > p,
 #findplace-listview > li > ul > li > a:hover,
 #contacts-listview > li > ul > li > div > a:hover,
 #places-listview > li > div > a:hover,
@@ -2293,6 +2321,7 @@ a:hover {
 }
 .findPlaceListItem {
   display: block;
+  padding: 0.5rem 0px;
 }
 .menuBox a:visited {
   color: #fff;
@@ -2596,7 +2625,10 @@ a:hover {
   color: #fff;
 }
 #channelPresence-listview > li {
-  border-bottom: 1px solid #979797;
+  border-top: 1px solid #979797;
+}
+#channelPresence-listview > li .gone {
+  opacity: 0.4;
 }
 #channels-listview > li > div > a > div > img {
   margin-left: 1.25rem;
@@ -2720,7 +2752,7 @@ div.footerMenu.km-footer > ul > li > a {
 }
 .actionBtn-text-light {
   color: #fff !important;
-  text-shadow: 1px 1px 2px #000 !important;
+  text-shadow: 1px 1px 2px #979797 !important;
 }
 /* Hide action btns on views */
 * > div.footerMenu.km-footer > a {
@@ -2934,7 +2966,12 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   width: 2em;
 }
 .k-editor .k-editable-area {
-  height: 2em;
+  height: 3em;
+}
+#ghostgramMode {
+  font-size: 0.75em;
+  position: relative;
+  top: -5px;
 }
 .activeTool {
   border-radius: 2em !important;
@@ -4968,12 +5005,16 @@ html .km-pane-wrapper .k-header {
   height: 2rem;
 }
 #findPlace > div.footerMenu.km-footer,
-#map > div.footerMenu.km-footer {
+#mapView > div.footerMenu.km-footer {
   display: none;
 }
 #findplace-listview li h4,
 #places-listview li h4 {
   color: #2E93FD;
+}
+#findplace-listview li {
+  padding-top: 0px;
+  padding-bottom: 0px;
 }
 #current-place-name {
   padding-top: 0.2rem;

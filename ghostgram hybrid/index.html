@@ -73,11 +73,14 @@
 	<script src="scripts/app.js"></script>
 
 	<!-- Factored view files -- we include here as a workaround to kendo navigate issues -->
-	<link rel="import" href="views/channels.html">
+
+	<link rel="import" href="views/archive.html">
 	<link rel="import" href="views/contacts.html">
+	<link rel="import" href="views/channels.html">
 	<link rel="import" href="views/gallery.html">
 	<link rel="import" href="views/places.html">
 	<link rel="import" href="views/profile.html">
+	<link rel="import" href="views/settings.html">
 
 </head>
 <body id="body">
@@ -439,221 +442,11 @@
 	</div>
 </div>
     
-<div data-role="view" data-title="Map" id="mapView" data-layout="main"  data-show="mapView.onShow" data-init="mapView.onInit" data-transition="fade" data-stretch="true">
-   <div data-role="header">
-        <div data-role="navbar">
-            <span data-role="view-title"></span>
-            <a data-role="button" data-align="left" href="#:back">
-            	<img src="images/nav-back.svg"/>
-            </a>
-        </div>
-    </div>
-     <div>
-          <div id="map-mapdiv" style="width:100%;"></div>
-     </div>
-</div>
+
 	
-<div data-role="modalview" id="modalPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal" data-init="modalPhotoView.onInit">
-	<div class="photoViewBox">
-		<img id="modalPhotoViewImage" src="" />
-		<div class="photoTitleBox">
-			<div class="photoTitleText">
-				<h3><span>Photo Title</span> 
-				<a class="btnClear-sm hidden" data-role="button" data-rel="modalview" href="#modalview-photoTag">Edit</a>
-				</h3>
-				<p><img src="images/icon-tag-light.svg" class="icon-sm" /> photo tags</p>
-			</div>
-			<a class="actionBtn primary-100" data-role="button" data-click="modalPhotoView.sharePhoto">
-    			<img src="images/icon-share-light.svg"/>
-    		</a>
-		</div>
-		
-	</div>
-	<div class="footer" data-role="footer">
-		<a class="btnSpan-btm btnClear glass" data-role="button" data-click="modalPhotoView.closeModal">Close</a>
-	</div>
-</div>
-
-<div data-role="modalview" id="modalGalleryView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal">
-	<ul id="modalgallery-listview" class="list-inline" data-role="listview" data-click="modalGalleryView.galleryClick" data-source="photoModel.photosDS" data-template="modalGalleryTemplate"></ul>
-	<div data-role="footer">
-		<a class="btnClear btnFull" data-role="button" data-click="modalGalleryView.closeModal">Close</a>
-	</div>
-</div>
 
 
-<div data-role="view" id="photoView" class="fullPhotoModal" data-zoom="true" style="width: 100%; height: 100%; display: none;" data-model="photoView._activePhoto" data-init="photoView.onInit" data-show="photoView.onShow" data-transition="fade">
-	<div class="photoViewBox">
-		<img id="photoViewImage" src="" />
-		<div class="photoTitleBox">
-			<h3><span>Photo Title</span> 
-				<a class="btnClear-sm" data-role="button" data-rel="modalview" href="#modalview-photoTag">Edit</a>
-			</h3>
-			<p><img src="images/icon-tag-light.svg" class="icon-sm" /> photo tags</p>
-			<a class="actionBtn primary-100" data-role="button" data-click="photoView.sharePhoto">
-    			<img src="images/icon-share-light.svg"/>
-    		</a>
-		</div>
-	</div>
-	<div class="footer" data-role="footer">
-		<a class="btnSpan-btm btnClear glass" data-role="button" href="#:back">Close</a>
-	</div>
-</div>
 
-
-<div data-role="view" id="photoEditor" style="width: 100%; height:100%; display: none;"  data-show="photoEditor.onShow"  data-hide="photoEditor.onHide" data-init="photoEditor.onInit" data-transition="slide:left">
-		<div class="photoViewNavTop" data-role="header">
-			<a data-role="button"  data-click="photoEditor.rotateLeft"><img src="images/photo-left.svg" /> </a>
-        	<a data-role="button"  data-click="photoEditor.rotateRight"> <img src="images/photo-right.svg" /></a>
-        	<a data-role="button" data-click="photoEditor.crop"> <img class="photo-options" src="images/photo-crop.svg" /> </a>
-        	<a data-role="button" data-rel="modalview"  href="#modalview-photoTag"><img src="images/photo-tag.svg" /></a>
-    	</div>
-    	
-	
-    <div class="photoViewBox">
-        <img class="centerPhoto" id="photoEditImage" src="images/photo-default.svg" />
-    </div>
-    
-    <div data-role="footer">
-		<a class="btnSpan-btm btnPrimary" id="photoEditSaveDiv" data-role="button" data-click="photoEditor.savePhoto"> Save </a>
-    </div>
-
-</div>
-
-<div data-role="view" id="profilePhotoEdit" data-show="doProfilePhotoEdit" data-init="initProfilePhotoEdit" style="display: none;" data-model="userModel.currentUser" class="appearance">
-    <div data-role="header">
-        <div data-role="navbar">
-            <a data-role="button"  data-align="left" href="#:back" ><img src="images/nav-back.svg" /></a>
-            <span>Profile Photo</span>
-            <a data-click="doUpdateStatusMessage"  type="button" data-role="button" data-align="right">Update</a>
-		</div>
-	</div>
-
-    <div style="text-align: center; padding-top: 6px;" id="profilePhotoImportDiv">
-        <div style="display: inline-block;">
-			<a type="button" data-role="button" data-click="doProfileCamera" class="btnClearLine-grey-sm">Camera</a>
-			<a type="button" data-role="button" data-click="doProfilePhotos" class="btnClearLine-grey-sm">Photos</a>
-			<a type="button" data-role="button" data-rel="modalview" href="#modalview-galleryPicker" class="btnClearLine-grey-sm">Gallery</a>
-		 </div>
-    </div>
-
-	<div style="margin:8px; height: 50%; width: auto; text-align: center">
-		<div class="wraption-wrap">
-			<img id="profilePhotoImage" class="wraption" data-bind="attr: {src: photo}" style="max-height: 100%; max-width:100%; vertical-align: middle;">
-			<span class="wraption-caption"data-bind="html: statusMessage" ></span>
-		</div>
-	</div>
-	
-</div>
-
-<div data-role="modalview" id="modalview-profileStatus" style="width: 90%; display: none;" data-model="userStatusView._activeStatus"  data-init="userStatusView.onInit" data-open="userStatusView.onOpen">
-	<div class="modal-top">
-		<a data-role="button" class="modal-close" data-click="homeView.closeStatusModal">
-			<img src="images/close.svg"/>
-		</a>
-		<img class="circle-img-lg home-profile-img"/>
-		<svg width="40" height="40" class="circle-img-md hidden" id="profileStatusIdenticon"></svg>
-		<img width="20" src="images/status-away.svg" class="userAvailable home-status-card-img" />
-
-		<h3>
-			<span class="primaryName"></span>
-			<span class="hidden" id="profileStatusVerified">
-				<img src="images/icon-verified-dark.svg" class="user-status-icon" />
-			</span>
-			<span class="secondName"></span>
-		</h3>
-		<p id="profileStatusMessage" data-bind="text: statusMessage"></p>
-		<p id="profileLocation">
-			<a class="btnClear-light-sm" data-role="button">
-				<span>@</span>
-				<span data-bind="text: currentPlace"></span>
-			</a>
-		</p>
-	</div>
-	<div class="modal-bottom">
-		<p class="caption right">
-			<a data-role="button" class="btnClear-sm" href="views/profile.html#profileEdit">Edit Profile</a>
-		</p>
-		<label for="profileStatusUpdate">Update Status</label>
-		<textarea id="profileStatusUpdate" maxlength="40" placeholder="What's going on..."></textarea>
-            <div class="statusCharacterCount">
-        		<span class="statusCharCount"></span>
-        	</div>
-		<ul class="list-inline" id="profileStatusList">
-			<li>
-				<a data-role="button" data-click="homeView.changeAvailable">
-					<img src="" height="16" class="userAvailableRev icon-sm" /> 
-					Change to 
-					<span id="currentAvailableTxt">available</span> 
-				</a>
-			</li>
-            <li id="profileCheckOutLi">
-            	<div>
-            		<div id="checked-in-place">
-            			<a class="btnClear-grey" data-role="button" data-click="userStatusView.checkOut"><img src="images/icon-checkout.svg" class="icon-sm" /> Leave <span id="checkOut-text" data-bind="text: currentPlace"></span></a>
-            		</div>
-				</div>
-			</li>
-			<li id="profileCheckInLi">
-				<a class="btnClear" data-role="button" data-click="checkInView.locateAndOpenModal">
-					<img src="images/icon-checkin-active.svg" class="icon-sm" /> Check In
-				</a>
-        	</li>
-		</ul>
-	</div>
-    <div class="footer" data-role="footer">
-    	<a class="btnClear btnFull-modal" data-click="userStatusView.closeModal" data-role="button">Done</a>
-    </div>
-</div>
-
-<div data-role="view" id="placeView" data-title="Place View" data-model="placeView._activePlace" class="appearance" data-layout="main" data-init="placeView.onInit" data-show="placeView.onShow" data-hide="placeView.onHide" data-transition="fade">
-	<div class="smallHeader" data-role="header">
-		<a data-role="button" class="left" data-click="placeView.onDone">
-			<img src="images/nav-back-light.svg" />
-		</a>
-		<a data-role="button" class="right btnClear-light" data-click="placeView.openPlaceMap">
-			View on map
-		</a>
-	</div>
-	<div class="map-placeLayer"></div>
-	
-	<div class="placeCard">
-		<div class="placeCardTop">
-			<h4 class="textClamp"><span class="primaryName"></span> <span class="secondName"></span></h4>
-			<p data-bind="text: address"></p>
-			<p id="publicPlaceView">
-				<span class="helper-sm">
-					<img src="images/place-public.svg" /> Public Place
-				</span>
-			</p>
-			<p id="privatePlaceView">
-				<span class="helper-sm">
-					<img src="images/place-private.svg" /> Private Place
-				</span>
-			</p>
-		</div>
-		<div class="line"></div>
-		<ul class="list-inline" id="placeListOpt">
-			<li>
-				<a class="btnClear-sm" data-role="button" data-click="placeView.openChat"> 
-					<img src="images/icon-chat-active.svg" class="icon-btn" /> Start a Chat </a>
-			</li>
-			<li>
-				<a class="btnClear-sm" data-role="button" data-click="placeView.takePhoto"> 
-					<img src="images/icon-camera-active.svg" class="icon-btn" /> Snap a Photo 
-				</a>
-			</li>
-		</ul>
-	</div>
-	<div class="placeContent">
-		<p class="helper"><img src="images/icon-memories.svg" class="icon" /> No Memories here yet </p>
-		<p class="hidden"><img src="images/icon-memories.svg" class="icon" /> Memories</p>
-		
-		<div class="placeContentBox">
-			<!-- Place content here-->
-		</div>
-	</div>
-</div>
 
 <div data-role="modalview" id="modalview-checkin" style="width: 90%; height:auto; display: none;" class="appearance" data-init="checkInView.onInit">
 	
@@ -909,6 +702,65 @@
 	</div>
 </div>
 
+<div data-role="modalview" id="modalview-profileStatus" style="width: 90%; display: none;" data-model="userStatusView._activeStatus"  data-init="userStatusView.onInit" data-open="userStatusView.onOpen">
+	<div class="modal-top">
+		<a data-role="button" class="modal-close" data-click="homeView.closeStatusModal">
+			<img src="images/close.svg"/>
+		</a>
+		<img class="circle-img-lg home-profile-img"/>
+		<svg width="40" height="40" class="circle-img-md hidden" id="profileStatusIdenticon"></svg>
+		<img width="20" src="images/status-away.svg" class="userAvailable home-status-card-img" />
+
+		<h3>
+			<span class="primaryName"></span>
+			<span class="hidden" id="profileStatusVerified">
+				<img src="images/icon-verified-dark.svg" class="user-status-icon" />
+			</span>
+			<span class="secondName"></span>
+		</h3>
+		<p id="profileStatusMessage" data-bind="text: statusMessage"></p>
+		<p id="profileLocation">
+			<a class="btnClear-light-sm" data-role="button">
+				<span>@</span>
+				<span data-bind="text: currentPlace"></span>
+			</a>
+		</p>
+	</div>
+	<div class="modal-bottom">
+		<p class="caption right">
+			<a data-role="button" class="btnClear-sm" href="views/profile.html#profileEdit">Edit Profile</a>
+		</p>
+		<label for="profileStatusUpdate">Update Status</label>
+		<textarea id="profileStatusUpdate" maxlength="40" placeholder="What's going on..."></textarea>
+		<div class="statusCharacterCount">
+			<span class="statusCharCount"></span>
+		</div>
+		<ul class="list-inline" id="profileStatusList">
+			<li>
+				<a data-role="button" data-click="homeView.changeAvailable">
+					<img src="" height="16" class="userAvailableRev icon-sm" />
+					Change to
+					<span id="currentAvailableTxt">available</span>
+				</a>
+			</li>
+			<li id="profileCheckOutLi">
+				<div>
+					<div id="checked-in-place">
+						<a class="btnClear-grey" data-role="button" data-click="userStatusView.checkOut"><img src="images/icon-checkout.svg" class="icon-sm" /> Leave <span id="checkOut-text" data-bind="text: currentPlace"></span></a>
+					</div>
+				</div>
+			</li>
+			<li id="profileCheckInLi">
+				<a class="btnClear" data-role="button" data-click="checkInView.locateAndOpenModal">
+					<img src="images/icon-checkin-active.svg" class="icon-sm" /> Check In
+				</a>
+			</li>
+		</ul>
+	</div>
+	<div class="footer" data-role="footer">
+		<a class="btnClear btnFull-modal" data-click="userStatusView.closeModal" data-role="button">Done</a>
+	</div>
+</div>
 
 <!-- Testing modal -->
 <div data-role="modalview" id="testing" style="width: 90%; display:none;" class="appearance">
@@ -1003,6 +855,7 @@
 		</div>
 	</div>
 </script>
+
 
 <div data-role="view" id="addPlace" data-title="Add Place" data-layout="main" data-model="addPlaceView._activePlace" class="appearance" data-init="addPlaceView.onInit" data-show="addPlaceView.onShow">
 	<div data-role="header">
@@ -1109,6 +962,19 @@
 	</div>
 </div>
 
+<div data-role="view" data-title="Map" id="mapView" data-layout="main"  data-show="mapView.onShow" data-init="mapView.onInit" data-transition="fade" data-stretch="true">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span data-role="view-title"></span>
+			<a data-role="button" data-align="left" href="#:back">
+				<img src="images/nav-back.svg"/>
+			</a>
+		</div>
+	</div>
+	<div>
+		<div id="map-mapdiv" style="width:100%;"></div>
+	</div>
+</div>
 
 <script type="text/x-kendo-template" id="placesTemplate">
 	# var addressOnly = false; alias = data.alias; name = data.name; #
@@ -1163,14 +1029,16 @@
 </script>
 
 <script type="text/x-kendo-template" id="findPlacesTemplate">
-	<a class="findPlaceListItem">
-		<div>
-			<h4 class="textClamp"> #: data.name # </h4>
-			<p class="textClamp"> #: data.vicinity # </p>
-			<p class="textClamp helper"><i>#: data.type # </i></p>
-			<div class="clearfix"> </div>
-		</div>
-	</a>
+	<div>
+		<a class="findPlaceListItem">
+			<div>
+				<h4 class="textClamp"> #: data.name # </h4>
+				<p class="textClamp"> #: data.vicinity # </p>
+				<p class="textClamp helper"><i>#: data.type # </i></p>
+				<div class="clearfix"> </div>
+			</div>
+		</a>
+	</div>
 </script>
 
 <script type="text/x-kendo-template" id="findPlacesHeaderTemplate">

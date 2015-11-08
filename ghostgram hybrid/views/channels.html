@@ -211,7 +211,7 @@
 </div>
 
 <!-- Edit chat -->
-<div data-role="view" id="editChannel" data-model="currentChannelModel.currentChannel" style="display: none;" data-show="editChannelView.onShow"  data-init="editChannelView.onInit" class="appearance">
+<div data-role="view" id="editChannel" data-model="editChannelView._activeChannel" style="display: none;" data-show="editChannelView.onShow"  data-init="editChannelView.onInit" class="appearance">
     <div data-role="header">
         <div data-role="navbar">
             <span> Edit Chat </span>
@@ -470,7 +470,7 @@
     <header data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" data-align="right" href="views/contacts.html#contactImport">Import Contact</a>
+            <!--<a data-role="button" data-align="right" href="#contactImport">Import Contact</a>-->
         </div>
     </header>
     <div class="addedChatMember" style="display: none"></div>

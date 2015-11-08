@@ -283,8 +283,8 @@ function _smartSetNull(original, newValue) {
 	return(original);
 }
 
-function getChannelMembers(channelId, callBack) {
-	Parse.Cloud.run('getChannelMembers', {
+function getChannelDetails(channelId, callBack) {
+	Parse.Cloud.run('getChannelDetails', {
 		channelId: channelId
 	}, {
 		success: function(result, error) {
