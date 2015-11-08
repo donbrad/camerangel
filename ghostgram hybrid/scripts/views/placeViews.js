@@ -212,7 +212,7 @@ var findPlacesView = {
 
     placesDS :  new kendo.data.DataSource({
         sort: {
-            field: "name",
+            field: "distance",
             dir: "asc"
         },
         group: 'category'
@@ -436,9 +436,10 @@ var findPlacesView = {
             placesResults.forEach( function (placeResult) {
 
                 var address = findPlacesView._currentLocation;
+                var distance = getDistanceInKm(lat, lng, placeResult.geometry.location.lat(), placeResult.geometry.location.lng()) * 0.62137;
                 ds.add({
                     category: 'Place',   // valid categories are: Place and Location
-                    name: placeResult.name.smartTruncate(42, true),
+                    name: placeResult.name.smartTruncate(38, true),
                     type: findPlacesView.getTypesFromComponents(placeResult.types),
                     googleId: placeResult.place_id,
                     icon: placeResult.icon,
@@ -453,7 +454,7 @@ var findPlacesView = {
                     lat: placeResult.geometry.location.lat(),
                     lng: placeResult.geometry.location.lng(),
                     vicinity: placeResult.vicinity,
-                    distance: getDistanceInKm(lat, lng, placeResult.geometry.location.lat(), placeResult.geometry.location.lng()) * 0.62137
+                    distance: distance.toFixed(2)
                 });
 
             });
