@@ -220,6 +220,42 @@ var findPlacesView = {
 
     onInit : function (e) {
         _preventDefault(e);
+
+        // Activate clearsearch and zero the filter when it's called
+        $('#findPlaceSearchQuery').clearSearch({
+            callback: function() {
+                //findPlacesView.placesDS.data(placesModel.placesDS.data());
+                findPlacesView.placesDS.filter([]);
+            }
+        });
+
+        // Filter current places and query google places on keyup
+        $('#findPlaceSearchQuery').keyup(function() {
+            var query = this.value;
+            if (query.length > 0) {
+                findPlacesView.placesDS.filter(  {"logic":"or",
+                    "filters":[
+                        {
+                            "field":"vicinity",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"name",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"type",
+                            "operator":"contains",
+                            "value":query}
+                    ]});
+
+            } else {
+
+               // placesView.placeListDS.data(placesModel.placesDS.data());
+                findPlacesView.placesDS.filter([]);
+            }
+        });
+
         $("#findplace-listview").kendoMobileListView({
                 dataSource: findPlacesView.placesDS,
                 template: $("#findPlacesTemplate").html(),
