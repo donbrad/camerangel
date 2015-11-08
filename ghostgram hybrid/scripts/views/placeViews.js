@@ -436,7 +436,7 @@ var findPlacesView = {
             placesResults.forEach( function (placeResult) {
 
                 var address = findPlacesView._currentLocation;
-                var distance = getDistanceInKm(lat, lng, placeResult.geometry.location.lat(), placeResult.geometry.location.lng()) * 0.62137;
+                var distance = getDistanceInMiles(lat, lng, placeResult.geometry.location.lat(), placeResult.geometry.location.lng());
                 ds.add({
                     category: 'Place',   // valid categories are: Place and Location
                     name: placeResult.name.smartTruncate(38, true),
