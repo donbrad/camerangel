@@ -344,7 +344,8 @@ var findPlacesView = {
                 country: address.country,
                 lat: lat,
                 lng: lng,
-                vicinity: address.city+', '+address.state
+                vicinity: address.city+', '+address.state,
+                distance: 0
             };
 
             findPlacesView._currentLocation = location;
@@ -451,7 +452,8 @@ var findPlacesView = {
                     //lng: placeResult.geometry.location.L,
                     lat: placeResult.geometry.location.lat(),
                     lng: placeResult.geometry.location.lng(),
-                    vicinity: placeResult.vicinity
+                    vicinity: placeResult.vicinity,
+                    distance: getDistanceInKm(lat, lng, placeResult.geometry.location.lat(), placeResult.geometry.location.lng()) * 0.62137
                 });
 
             });

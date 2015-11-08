@@ -133,8 +133,11 @@ var mapModel = {
     computePlaceDistance: function (placeUUID) {
 
         var placeModel = placesModel.getPlaceModel(placeUUID);
-        if (placeModel !== undefined)
+        if (placeModel !== undefined) {
+            var distance = getDistanceInMeters(mapModel.lat, mapModel.lng, placeModel.lat, placeModel.lng);
             placeModel.set('distance', distance);
+        }
+
     },
 
     computePlaceArrayDistance : function (placeArray) {
