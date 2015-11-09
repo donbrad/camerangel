@@ -606,15 +606,8 @@ var addPlaceView = {
     addPlace : function (e) {
         _preventDefault(e);
 
-
-
-
-
         var Place = Parse.Object.extend("places");
         var placeParse = new Place();
-
-
-        // TODO Don - Check for place duplicates - Jordan - won't use kendo validator.
 
         var newPlace = placesModel.newPlace();
         var place = addPlaceView._activePlace;
