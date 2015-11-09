@@ -580,6 +580,8 @@ var addPlaceView = {
         addPlaceView._activePlace.set('lng', geoPlace.lng);
 
 
+
+
         if (geoPlace.category === "Location") {
             // A location / street address
             addPlaceView._activePlace.set('category',"Location");
@@ -637,6 +639,11 @@ var addPlaceView = {
         placeParse.save(null, {
             success: function(place) {
                 // Execute any logic that should take place after the object is saved.
+
+                var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, place.get('lat'), place.get('lng'));
+
+                // update the distance value for the local object...
+                place.attributes.distance = distance.toFixed(2);
 
                 placesModel.placesDS.add(place.attributes);
                 mobileNotify(place.get('name') + " added to your Places...");
