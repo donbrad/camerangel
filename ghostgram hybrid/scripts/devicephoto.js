@@ -161,14 +161,19 @@ function resizeSuccessProfile (data) {
     var imageData = data.imageData, displayUrl = imageData;
 
     if (device.platform === 'iOS') {
-        imageUrl = imageData.replace('file://', '');
+        displayUrl = imageData.replace('file://', '');
 
     } else {
         displayUrl = "data:image/jpg;base64," + imageData;
     }
-    //var scaledImageUrl = "data:image/jpg;base64," + imageData;
-    $('#photoEditImage').attr('src', displayUrl);
 
+    //var scaledImageUrl = "data:image/jpg;base64," + imageData;
+   // $('#photoEditImage').attr('src', displayUrl);
+
+
+    //Set the profile photo editor instance variable (its an image with data and too large for url...)
+    editProfilePhotoView.setPhotoUrl(displayUrl);
+    APP.kendo.navigate("#profilePhotoEdit");
 
 }
 

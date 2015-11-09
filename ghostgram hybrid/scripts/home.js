@@ -914,7 +914,7 @@ function doProfilePhotoEdit(e) {
 		e.preventDefault();
 	}
 
-	photoModel.currentPhoto.callBack = updateProfilePhototUrl;
+	photoModel.currentPhoto.callBack = updateProfilePhotoUrl;
 }
 
 function saveProfilePhoto(e) {
