@@ -606,12 +606,9 @@ var addPlaceView = {
     addPlace : function (e) {
         _preventDefault(e);
 
-        var place = placesModel.findPlaceByName(addPlaceView._activePlace.name);
 
-        if (place.uuid !== addPlaceView._activePlace.uuid) {
-            mobileNotify(addPlaceView._activePlace.name + "is already one of your Places!");
-            return;
-        }
+
+
 
         var Place = Parse.Object.extend("places");
         var placeParse = new Place();
@@ -621,6 +618,13 @@ var addPlaceView = {
 
         var newPlace = placesModel.newPlace();
         var place = addPlaceView._activePlace;
+
+        // Check that the place name is unique (in this users place's)
+        var placeObj = placesModel.findPlaceByName(place.name);
+        if (placeObj.uuid !== addPlaceView._activePlace.uuid) {
+            mobileNotify(addPlaceView._activePlace.name + "is already one of your Places!");
+            return;
+        }
         var guid = uuid.v4();
 
         var createChatFlag = $('#addPlaceCreateChat').is('checked');
