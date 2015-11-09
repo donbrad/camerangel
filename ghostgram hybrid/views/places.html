@@ -45,7 +45,7 @@
 
 
 <!-- Find Place -->
- <div data-role="view" data-title="Find Place" id="findPlace" data-layout="main"  data-show="findPlacesView.onShow" data-init="findPlacesView.onInit" data-before-hide="findPlacesView.onHide" data-transition="slide:up">
+ <div data-role="view" data-title="New Places Nearby" id="findPlace" data-layout="main"  data-show="findPlacesView.onShow" data-init="findPlacesView.onInit" data-before-hide="findPlacesView.onHide" data-transition="slide:up">
      <div data-role="header">
          <div data-role="navbar">
              <span data-role="view-title"></span>
@@ -53,13 +53,13 @@
              	<img src="images/nav-back.svg" />
              </a>
          </div>
-     </div>
+	 </div>
 
 
-    <div class="topViewSearchBox">
-	 		<div class="appendSearch">
+	<div class="topViewSearchBox">
+			<div class="appendSearch">
 				<span class="searchIcon"><img src="images/search.svg" /></span>
-				<input class="doubleAppendSearch clearable" placeholder="Search Places" id="findPlaceSearchQuery" />
+				<input class="doubleAppendSearch clearable"  placeholder="Match places with ..." id="findPlaceSearchQuery" />
 			</div>
 	</div>
 	<div>
@@ -67,7 +67,6 @@
 	</div>
 </div>
 
-</div>
 
  <div data-role="view" id="placeView" data-title="Place View" data-model="placeView._activePlace" class="appearance" data-layout="main" data-init="placeView.onInit" data-show="placeView.onShow" data-hide="placeView.onHide" data-transition="fade">
 	 <div class="smallHeader" data-role="header">

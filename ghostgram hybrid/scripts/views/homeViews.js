@@ -54,12 +54,8 @@ var userStatusView = {
             status.set('currentPlace','');
         }
 
-
         status.set('isAvailable', user.isAvailable);
 
-
-        
-        
         // if there's a current checked in place -- select it in the list
         if (user.currentPlaceUUID !== null && user.isCheckedIn) {
 
@@ -135,6 +131,16 @@ var userStatusView = {
 
         }
 
+    },
+
+    openCheckIn : function (e) {
+        _preventDefault(e);
+
+        userStatusView.closeModal();
+
+        checkInView.locateAndOpenModal(function () {
+            userStatusView.openModal();
+        })
     },
 
     checkIn : function (e) {

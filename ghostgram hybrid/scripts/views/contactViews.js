@@ -348,7 +348,7 @@ var contactImportView = {
         }
     },
 
-    resetContactImport: function(e){
+    onHide: function(e){
         $(".enterSearch > span").css("color", "#E0E0E0");
     	$("#contactImportQuery").val("");
 
@@ -713,6 +713,13 @@ var addContactView = {
 
 var editContactView = {
 
+    // User status flags for potential use in UX.  if true, the contact has updated information
+    addressUpdate: false,
+    phoneUpdate: false,
+    emailUpdate: false,
+    memberUpdate: false,
+    publicKeyUpdate : false,
+
     _activeContact : new kendo.data.ObservableObject(),
 
     onInit: function (e) {
@@ -733,6 +740,7 @@ var editContactView = {
         }
     },
 
+    // Set active contact object and process any updates (with user notification)
     setActiveContact : function (contact) {
         if (contact !== undefined) {
            // editContactView._activeContact.unbind('change' , editContactView.syncActiveContact);
@@ -749,8 +757,29 @@ var editContactView = {
                 editContactView._activeContact.set("contactUUID", contact.contactUUID);
                 editContactView._activeContact.set("contactPhone", contact.contactPhone);
                 editContactView._activeContact.set("contactEmail", contact.contactEmail);
+                editContactView._activeContact.set("contactAddress", contact.contactAddress);
                 editContactView._activeContact.set("publicKey", contact.publicKey);
+
             }
+            if (contact.memberUpdate !== undefined) {
+                editContactView.memberUpdate = true;
+                mobileNotify(contact.alias + '( ' + contact.name + ') is now a member!');
+            }
+
+            if (contact.phoneUpdate !== undefined) {
+                editContactView.phoneUpdate = true;
+                mobileNotify(contact.alias + '( ' + contact.name + ') has updated their phone number!');
+                editContactView._activeContact.set("phone", contact.contactPhone);
+
+            }
+
+            if (contact.emailUpdate !== undefined) {
+                editContactView.emailUpdate = true;
+                mobileNotify(contact.alias + '( ' + contact.name + ') has updated their email address!');
+                editContactView._activeContact.set("email", contact.contactEmail);
+
+            }
+
           //  editContactView._activeContact.bind('change' , editContactView.syncActiveContact);
         }
     },
@@ -764,10 +793,18 @@ var editContactView = {
         contact.set("phone", editContactView._activeContact.phone);
         contact.set("email", editContactView._activeContact.email);
         contact.set("photo", editContactView._activeContact.photo);
+        if (editContactView._activeContact.contactUUID !== undefined && editContactView._activeContact.contactUUID !== null) {
+            contact.set("contactUUID", editContactView._activeContact.contactUUID);
+            contact.set("contactEmail", editContactView._activeContact.contactEmail);
+            contact.set("contactPhone", editContactView._activeContact.contactPhone);
+            contact.set("contactAddress", editContactView._activeContact.contactAddress);
+            contact.set("publicKey", editContactView._activeContact.publicKey);
+        }
+
         contact.set("group", editContactView._activeContact.group);
         contact.set("address", editContactView._activeContact.address);
         contact.set("category", editContactView._activeContact.category);
-        contact.set("publicKey", editContactView._activeContact.publicKey);
+
 
         contactList.set("name", editContactView._activeContact.name);
         contactList.set("alias", editContactView._activeContact.alias);
@@ -777,7 +814,14 @@ var editContactView = {
         contactList.set("group", editContactView._activeContact.group);
         contactList.set("address", editContactView._activeContact.address);
         contactList.set("category", editContactView._activeContact.category);
-        contactList.set("publicKey", editContactView._activeContact.publicKey);
+        if (editContactView._activeContact.contactUUID !== undefined && editContactView._activeContact.contactUUID !== null) {
+            contactList.set("contactUUID", editContactView._activeContact.contactUUID);
+            contactList.set("contactEmail", editContactView._activeContact.contactEmail);
+            contactList.set("contactPhone", editContactView._activeContact.contactPhone);
+            contactList.set("contactAddress", editContactView._activeContact.contactAddress);
+            contactList.set("publicKey", editContactView._activeContact.publicKey);
+        }
+
 
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"name", editContactView._activeContact.name);
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"alias", editContactView._activeContact.alias);
@@ -787,7 +831,14 @@ var editContactView = {
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"group", editContactView._activeContact.group);
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"address", editContactView._activeContact.address);
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"category", editContactView._activeContact.category);
-        updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"publicKey", editContactView._activeContact.publicKey);
+
+        if (editContactView._activeContact.contactUUID !== undefined && editContactView._activeContact.contactUUID !== null) {
+            updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid, "contactUUID", editContactView._activeContact.contactUUID);
+            updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid, "contactPhone", editContactView._activeContact.contactPhone);
+            updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid, "contactEmail", editContactView._activeContact.contactEmail);
+            updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid, "contactAddress", editContactView._activeContact.contactAddress);
+            updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid, "publicKey", editContactView._activeContact.publicKey);
+        }
         //$("#contacts-listview").data("kendoMobileListView").refresh();
 
     },
@@ -861,7 +912,7 @@ var editContactView = {
         _preventDefault(e);
 
         mobileNotify("Getting lastest info for " + contactModel.currentContact.name);
-        var contact = contactModel.currentContact;
+        var contact = editContactView._activeContact;
         if (contact.contactUUID !== undefined) {
             getUserContactInfo(contact.contactUUID, function (result) {
                 if (result.found) {

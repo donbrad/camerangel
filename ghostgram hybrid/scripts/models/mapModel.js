@@ -123,9 +123,9 @@ var mapModel = {
         var placeArray = placesModel.placesDS.data();
 
         for (var i=0; i<placeArray.length; i++) {
-            var distance = getDistanceInMeters(mapModel.lat, mapModel.lng, placeArray[i].lat, placeArray[i].lng);
+            var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, placeArray[i].lat, placeArray[i].lng);
             var placeModel = placesModel.getPlaceModel(placeArray[i].uuid);
-            placeModel.set('distance', distance);
+            placeModel.set('distance', distance.toFixed(2));
         }
 
     },
@@ -133,18 +133,22 @@ var mapModel = {
     computePlaceDistance: function (placeUUID) {
 
         var placeModel = placesModel.getPlaceModel(placeUUID);
-        if (placeModel !== undefined)
-            placeModel.set('distance', distance);
+        if (placeModel !== undefined) {
+            // computer and store distance in miles
+            var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, placeModel.lat, placeModel.lng);
+            placeModel.set('distance', distance.toFixed(2));
+        }
+
     },
 
     computePlaceArrayDistance : function (placeArray) {
         var distance = 0;
         for (var i=0; i<placeArray.length; i++) {
             if (mapModel.lat !== null && mapModel.lng !== null) {
-                distance = getDistanceInMeters(mapModel.lat, mapModel.lng, placeArray[i].lat, placeArray[i].lng);
+                distance = getDistanceInMiles(mapModel.lat, mapModel.lng, placeArray[i].lat, placeArray[i].lng);
 
             }
-            placeArray[i].distance = distance;
+            placeArray[i].distance = distance.toFixed(2);
 
         }
     },

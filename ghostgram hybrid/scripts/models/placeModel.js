@@ -214,6 +214,17 @@ var placesModel = {
 
     },
 
+    isUniquePlaceName : function (name) {
+        var placeObj = placesModel.findPlaceByName(name);
+
+        // If placeObj exists -- the name is not unique
+        if (placeObj !== undefined) {
+            return (false);
+        }
+
+        return(true);
+    },
+
     findPlaceByName : function (name) {
 
         var dataSource = placesModel.placesDS;
@@ -234,9 +245,11 @@ var placesModel = {
         var view = dataSource.view();
         var place = view[0];
         dataSource.filter([]);
+
+        // Delete the parse object directly
+        deleteParseObject('places', "uuid", uuid);
         dataSource.remove(place);
 
-        dataSource.sync();
     }
 
 

@@ -180,6 +180,11 @@ function handleParseError(err) {
 	}
 }
 
+function getDistanceInMiles(lat1, lon1, lat2, lon2) {
+
+	return(getDistanceInKm  (lat1, lon1, lat2, lon2) * 0.62137);
+}
+
 function getDistanceInKm  (lat1, lon1, lat2, lon2) {
 	var R = 6371; // Radius of the earth in km
 	var dLat = this.deg2rad(lat2-lat1);  // deg2rad below

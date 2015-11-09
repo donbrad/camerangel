@@ -448,7 +448,7 @@
 
 
 
-<div data-role="modalview" id="modalview-checkin" style="width: 90%; height:auto; display: none;" class="appearance" data-init="checkInView.onInit">
+<div data-role="modalview" id="modalview-checkin" style="width: 90%; height:auto; display: none; z-index: 100;" class="appearance" data-init="checkInView.onInit">
 	
 	<div class="modal-bottom">
 		<h3>
@@ -751,7 +751,7 @@
 				</div>
 			</li>
 			<li id="profileCheckInLi">
-				<a class="btnClear" data-role="button" data-click="checkInView.locateAndOpenModal">
+				<a class="btnClear" data-role="button" data-click="userStatusView.openCheckIn">
 					<img src="images/icon-checkin-active.svg" class="icon-sm" /> Check In
 				</a>
 			</li>
@@ -761,7 +761,6 @@
 		<a class="btnClear btnFull-modal" data-click="userStatusView.closeModal" data-role="button">Done</a>
 	</div>
 </div>
-
 <!-- Testing modal -->
 <div data-role="modalview" id="testing" style="width: 90%; display:none;" class="appearance">
 	<div class="modalview-content">
@@ -1014,13 +1013,17 @@
 				#}#
 
 				<p class="helper">
-           <span class="left">
-         # if (data.isPrivate === true) { #
-            <img src="images/place-private.svg" /> Private
-         # } else { #
-            <img src="images/place-public.svg" /> Public
-         # }#
-           </span>
+				   <span class="left">
+				 # if (data.isPrivate === true) { #
+					<img src="images/place-private.svg" /> Private
+				 # } else { #
+					<img src="images/place-public.svg" /> Public
+				 # }#
+				   </span>
+					 <span class="right">
+						 # var fixedDistance = 0;  if (data.distance !== undefined) {fixedDistance = data.distance; } #
+						 #: fixedDistance # mi
+					 </span>
 				</p>
 				<div class="clearfix"> </div>
 			</div>
@@ -1029,23 +1032,23 @@
 </script>
 
 <script type="text/x-kendo-template" id="findPlacesTemplate">
-	<div>
-		<a class="findPlaceListItem">
-			<div>
-				<h4 class="textClamp"> #: data.name # </h4>
-				<p class="textClamp"> #: data.vicinity # </p>
-				<p class="textClamp helper"><i>#: data.type # </i></p>
-				<div class="clearfix"> </div>
-			</div>
-		</a>
-	</div>
+<div>
+	<a class="findPlaceListItem">
+		<div>
+			<h4 class="textClamp"> #: data.name #  (#: data.distance # mi)</h4>
+			<p class="textClamp"> #: data.vicinity # </p>
+			<p class="textClamp helper"><i>#: data.type # </i></p>
+			<div class="clearfix"> </div>
+		</div>
+	</a>
+</div>
 </script>
 
 <script type="text/x-kendo-template" id="findPlacesHeaderTemplate">
 	# if(value === "Location"){#
 	Address
 	#} else {#
-	Near Me
+	Nearby Venues
 	#}#
 </script>
 

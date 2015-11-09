@@ -212,7 +212,7 @@ var findPlacesView = {
 
     placesDS :  new kendo.data.DataSource({
         sort: {
-            field: "name",
+            field: "distance",
             dir: "asc"
         },
         group: 'category'
@@ -220,6 +220,42 @@ var findPlacesView = {
 
     onInit : function (e) {
         _preventDefault(e);
+
+        // Activate clearsearch and zero the filter when it's called
+        $('#findPlaceSearchQuery').clearSearch({
+            callback: function() {
+                //findPlacesView.placesDS.data(placesModel.placesDS.data());
+                findPlacesView.placesDS.filter([]);
+            }
+        });
+
+        // Filter current places and query google places on keyup
+        $('#findPlaceSearchQuery').keyup(function() {
+            var query = this.value;
+            if (query.length > 0) {
+                findPlacesView.placesDS.filter(  {"logic":"or",
+                    "filters":[
+                        {
+                            "field":"vicinity",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"name",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"type",
+                            "operator":"contains",
+                            "value":query}
+                    ]});
+
+            } else {
+
+               // placesView.placeListDS.data(placesModel.placesDS.data());
+                findPlacesView.placesDS.filter([]);
+            }
+        });
+
         $("#findplace-listview").kendoMobileListView({
                 dataSource: findPlacesView.placesDS,
                 template: $("#findPlacesTemplate").html(),
@@ -308,7 +344,8 @@ var findPlacesView = {
                 country: address.country,
                 lat: lat,
                 lng: lng,
-                vicinity: address.city+', '+address.state
+                vicinity: address.city+', '+address.state,
+                distance: 0
             };
 
             findPlacesView._currentLocation = location;
@@ -399,9 +436,10 @@ var findPlacesView = {
             placesResults.forEach( function (placeResult) {
 
                 var address = findPlacesView._currentLocation;
+                var distance = getDistanceInMiles(lat, lng, placeResult.geometry.location.lat(), placeResult.geometry.location.lng());
                 ds.add({
                     category: 'Place',   // valid categories are: Place and Location
-                    name: placeResult.name.smartTruncate(24, true),
+                    name: placeResult.name.smartTruncate(38, true).toString(),
                     type: findPlacesView.getTypesFromComponents(placeResult.types),
                     googleId: placeResult.place_id,
                     icon: placeResult.icon,
@@ -415,7 +453,8 @@ var findPlacesView = {
                     //lng: placeResult.geometry.location.L,
                     lat: placeResult.geometry.location.lat(),
                     lng: placeResult.geometry.location.lng(),
-                    vicinity: placeResult.vicinity
+                    vicinity: placeResult.vicinity,
+                    distance: distance.toFixed(2)
                 });
 
             });
@@ -494,6 +533,7 @@ var addPlaceView = {
         if (e.field === 'name') {
             // check for duplicate name and prompt user
 
+
         }
     },
 
@@ -541,6 +581,8 @@ var addPlaceView = {
         addPlaceView._activePlace.set('lng', geoPlace.lng);
 
 
+
+
         if (geoPlace.category === "Location") {
             // A location / street address
             addPlaceView._activePlace.set('category',"Location");
@@ -563,14 +605,21 @@ var addPlaceView = {
 
     addPlace : function (e) {
         _preventDefault(e);
+
         var Place = Parse.Object.extend("places");
         var placeParse = new Place();
 
-
-        // TODO Don - Check for place duplicates - Jordan - won't use kendo validator.
-
         var newPlace = placesModel.newPlace();
         var place = addPlaceView._activePlace;
+
+        // Check that the place name is unique (in this users place's)
+        place.name = place.name.toString();
+
+        if (!placesModel.isUniquePlaceName(place.name)) {
+            mobileNotify(addPlaceView._activePlace.name + "is already one of your Places!");
+            return;
+        }
+
         var guid = uuid.v4();
 
         var createChatFlag = $('#addPlaceCreateChat').is('checked');
@@ -598,6 +647,11 @@ var addPlaceView = {
         placeParse.save(null, {
             success: function(place) {
                 // Execute any logic that should take place after the object is saved.
+
+                var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, place.get('lat'), place.get('lng'));
+
+                // update the distance value for the local object...
+                place.set('distance',distance.toFixed(2));
 
                 placesModel.placesDS.add(place.attributes);
                 mobileNotify(place.get('name') + " added to your Places...");
@@ -868,7 +922,7 @@ var placeView = {
  * checkInView
  */
 var checkInView = {
-    _returnView : 'places',
+
     _returnModal : null,
     _callback: null,
 
@@ -897,11 +951,14 @@ var checkInView = {
 
     },
 
-    locateAndOpenModal : function (e) {
-        _preventDefault(e);
+    locateAndOpenModal : function (callBack) {
 
         checkInView._returnView = APP.kendo.view().id;
-
+        if (callBack !== undefined && callBack !== null) {
+            checkInView._callback = callBack;
+        } else {
+            checkInView._callback = null;
+        }
         mapModel.matchPlaces(function (placeArray) {
             // Just compute the distance of matches
             mapModel.computePlaceArrayDistance(placeArray);
@@ -940,9 +997,13 @@ var checkInView = {
     onDone: function (e) {
         _preventDefault(e);
 
-        var returnUrl = '#'+ checkInView._returnView;
+        if (checkInView._callback !== undefined && checkInView._callback !== null) {
+            checkInView._callback();
+        }
 
-        APP.kendo.navigate(returnUrl);
+       /* var returnUrl = '#'+ checkInView._returnView;
+
+        APP.kendo.navigate(returnUrl);*/
 
     }
 

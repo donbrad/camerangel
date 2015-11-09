@@ -139,6 +139,18 @@ var channelsView = {
  */
 
 var addChannelView = {
+    // Todo: jordan - refractored the login in onShow into onInit for all handlers.  They should only be installed once in onInit
+    onInit : function (e) {
+        _preventDefault(e);
+        $("#channels-addChannel-name").keyup(function(){
+            if($("#channels-addChannel-name").val !== ""){
+                $("#addChat-createBtn").velocity({opacity: 1}, {duration: 500, easing: "spring"});
+                $("#channels-addChannel-name").unbind();
+            }
+            $("#addChat-helper-1").velocity("fadeOut", {duration: 300});
+        });
+    },
+
      onShow: function (e) {
        _preventDefault(e);
        /* currentChannelModel.potentialMembersDS.data([]);
@@ -156,17 +168,17 @@ var addChannelView = {
         // hide channel description
         $("#channels-addChannel-description").css("display","none");
 
-        $("#channels-addChannel-name").keyup(function(){
-            if($("#channels-addChannel-name").val !== ""){
-                $("#addChat-createBtn").velocity({opacity: 1}, {duration: 500, easing: "spring"});
-                $("#channels-addChannel-name").unbind();
-            }
-            $("#addChat-helper-1").velocity("fadeOut", {duration: 300});
-        });
+
 
         $("#addChat-step2").css("opacity", 0);
 
 
+    },
+
+    // onHide is the ideal point to reset ux (unless you want to do first in onShow...
+    onHide : function (e) {
+        _preventDefault(e);
+        addChannelView.resetUI();
     },
 
    addChannel : function (e) {
@@ -298,8 +310,10 @@ var editChannelView = {
         //If there's no channel id assume, it's a return from the new add members view and just use the cached data
 
         if (e.view.params.channel !== undefined) {
-            editChannelView.activeChannelId = e.view.params.channel;
-            var channel = channelModel.findChannelModel(editChannelView.activeChannelId);
+
+            editChannelView._activeChannelId = e.view.params.channel;
+
+            var channel = channelModel.findChannelModel(editChannelView._activeChannelId);
             editChannelView.setActiveChannel(channel);
 
             var members = editChannelView._activeChannel.members,  invitedMembers = editChannelView._activeChannel.invitedMembers, thisMember = {};
@@ -372,9 +386,9 @@ var editChannelView = {
     finalizeEdit : function (e) {
         e.preventDefault(e);
 
-        var memberArray = new Array(), invitedMemberArray = new Array(), invitedPhoneArray = new Array(), members = editChannelView.membersDS.data();
+        var memberArray = [], invitedMemberArray = [], invitedPhoneArray = [], inviteArray = [],members = editChannelView.membersDS.data();
 
-        var channelId = editChannelView.activeChannelId;
+        var channelId = editChannelView._activeChannelId;
         // It's a group channel so push this users UUID
 
         memberArray.push(userModel.currentUser.userUUID);
@@ -393,8 +407,11 @@ var editChannelView = {
         }
         editChannelView._activeChannel.members = memberArray;
 
+
+
         //Send Invite messages to users added to channel
         for (var ma = 0; ma < editChannelView.membersAdded.length; ma++) {
+            inviteArray.push(editChannelView.membersAdded[ma].contactUUID);
             appDataChannel.groupChannelInvite(editChannelView.membersAdded[ma].contactUUID, channelId,  editChannelView._activeChannel.name, "You've been invited to " + editChannelView._activeChannel.name);
         }
 
@@ -405,13 +422,17 @@ var editChannelView = {
         }
 
         for (var m=0; m< memberArray.length; m++) {
-            //Todo: don -- add channel update messages for other users.
-            appDataChannel.groupChannelUpdate(editChannelView.members[m].contactUUID, channelId,  editChannelView._activeChannel.name, editChannelView._activeChannel.name + " has been updated...");
+
+            // Only send updates to current members (new members got an invite above)
+            if (memberArray[m] !== userModel.currentUser.userUUID && ($.inArray(memberArray[m],inviteArray) == -1) ) {
+                appDataChannel.groupChannelUpdate(memberArray[m], channelId,  editChannelView._activeChannel.name, editChannelView._activeChannel.name + " has been updated...");
+            }
         }
 
 
+
         // Update the kendo object
-        var channelObj = channelModel.findChannelModel(editChannelView._activeChannelId);
+        var channelObj = channelModel.findChannelModel(channelId);
 
         channelObj.set('name', editChannelView._activeChannel.name);
         channelObj.set('description', editChannelView._activeChannel.description);

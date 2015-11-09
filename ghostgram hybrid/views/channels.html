@@ -126,18 +126,19 @@
 </script>
  
 
-<div data-role="view" data-title='Add Chat' id="addChannel" style="display: none;" data-init="addChannelView.onShow" class="appearance" data-transition="overlay:up">
+<div data-role="view" data-title='Add Chat' id="addChannel" style="display: none;" data-init="addChannelView.onInit" data-show="addChannelView.onShow" data-hide="addChannelView.onHide"
+	 class="appearance" data-transition="overlay:up">
    <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" href="#:back" data-click="addChannelView.resetUI" data-align="right">
+            <a data-role="button" href="#:back" data-align="right">
             	<img src="images/close.svg" />
             </a>
         </div>
     </div>
 	<div id="addChatNoContacts" class="hidden">
 		<p class="helper"><img src="images/help.svg" /> Chat members must be existing contacts. You don't have any ghostgrams contacts yet. </p>
-		<a class="btnClear" data-role="button" href="views/contacts.html#contacts">Go to ghostgram contacts</a>
+		<a class="btnClear" data-role="button" href="#contacts">Go to ghostgram contacts</a>
 	</div>
 	<div id="addChatHasContacts">
 		<div id="chat-title-setup">
@@ -165,7 +166,7 @@
 						<select id="channels-addChannel-archive">
 							<option value="1">1 Day</option>
 							<option value="7">7 Days</option>
-							<option value="30">30 Days</option>
+							<option value="30" selected>30 Days</option>
 						</select>
 					</div>
 					</label>
