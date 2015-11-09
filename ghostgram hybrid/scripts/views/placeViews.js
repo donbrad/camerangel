@@ -439,7 +439,7 @@ var findPlacesView = {
                 var distance = getDistanceInMiles(lat, lng, placeResult.geometry.location.lat(), placeResult.geometry.location.lng());
                 ds.add({
                     category: 'Place',   // valid categories are: Place and Location
-                    name: placeResult.name.smartTruncate(38, true),
+                    name: placeResult.name.smartTruncate(38, true).toString(),
                     type: findPlacesView.getTypesFromComponents(placeResult.types),
                     googleId: placeResult.place_id,
                     icon: placeResult.icon,
@@ -613,6 +613,7 @@ var addPlaceView = {
         var place = addPlaceView._activePlace;
 
         // Check that the place name is unique (in this users place's)
+        place.name = place.name.toString();
         var placeObj = placesModel.findPlaceByName(place.name);
         if (placeObj.uuid !== addPlaceView._activePlace.uuid) {
             mobileNotify(addPlaceView._activePlace.name + "is already one of your Places!");
