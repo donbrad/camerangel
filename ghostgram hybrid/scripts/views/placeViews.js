@@ -533,6 +533,7 @@ var addPlaceView = {
         if (e.field === 'name') {
             // check for duplicate name and prompt user
 
+
         }
     },
 
@@ -604,6 +605,14 @@ var addPlaceView = {
 
     addPlace : function (e) {
         _preventDefault(e);
+
+        var place = placesModel.findPlaceByName(addPlaceView._activePlace.name);
+
+        if (place.uuid !== addPlaceView._activePlace.uuid) {
+            mobileNotify(addPlaceView._activePlace.name + "is already one of your Places!");
+            return;
+        }
+
         var Place = Parse.Object.extend("places");
         var placeParse = new Place();
 
