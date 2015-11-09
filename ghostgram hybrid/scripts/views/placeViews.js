@@ -651,7 +651,7 @@ var addPlaceView = {
                 var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, place.get('lat'), place.get('lng'));
 
                 // update the distance value for the local object...
-                place.attributes.distance = distance.toFixed(2);
+                place.set('distance',distance.toFixed(2));
 
                 placesModel.placesDS.add(place.attributes);
                 mobileNotify(place.get('name') + " added to your Places...");
