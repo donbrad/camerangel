@@ -306,18 +306,18 @@ var contactImportView = {
         	var query = $('#contactImportQuery').val();
         	// Change the text color...
             if(query.length > 2) {
-        		$(".enterSearch > span").css("color", "#2E93FD");
+        		$(".enterSearch").css("color", "#2E93FD");
                 window.clearTimeout(timer);
                 timer = window.setTimeout(function () {
                     contactImportView.searchContacts();
                 }, delay);
         	} else {
 
-        		$(".enterSearch > span").css("color", "#E0E0E0");
+        		$(".enterSearch").css("color", "#E0E0E0");
         	}
         }).keyup(function(e){
         	if (e.keyCode === 13) {
-                $(".enterSearch > span").css("color", "#2E93FD");
+                $(".enterSearch").css("color", "#2E93FD");
 				contactImportView.searchContacts();
 			}
         });

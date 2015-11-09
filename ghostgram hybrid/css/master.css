@@ -889,13 +889,13 @@ div.km-content.km-widget.km-scroll-wrapper {
   padding-bottom: 1rem;
 }
 .input-text-sm {
-  font-size: 0.875em;
+  font-size: 0.875em !important;
 }
 .input-text-md {
-  font-size: 1.25em;
+  font-size: 1.25em !important;
 }
 .input-text-lg {
-  font-size: 1.5em;
+  font-size: 1.5em !important;
 }
 #nav-ghost {
   position: relative;
@@ -2037,7 +2037,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .km-root .km-pane .km-view.appearance .km-listview input {
   position: relative;
-  font-size: 1.125em !important;
+  font-size: 1.125em;
   width: 100%;
   right: 0;
   margin-top: 0;
@@ -2305,6 +2305,7 @@ div.message-slideOptions > span.archive > a > span > img {
 a:hover {
   color: #3CAAEE;
 }
+#findplace-listview > li > ul > li > div > a:hover > div > p,
 #findplace-listview > li > ul > li > a:hover > div > p,
 #findplace-listview > li > ul > li > a:hover,
 #contacts-listview > li > ul > li > div > a:hover,
@@ -4383,7 +4384,7 @@ html .km-pane-wrapper .k-header {
 }
 .appendSearch .searchIcon {
   float: left;
-  padding-top: 1em;
+  padding-top: 0.75em;
   color: #979797;
   width: 12%;
   text-align: center;
