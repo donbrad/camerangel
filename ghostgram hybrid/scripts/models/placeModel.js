@@ -215,7 +215,7 @@ var placesModel = {
     },
 
     isUniquePlaceName : function (name) {
-        var placeObj = placesModel.findPlaceByName(place.name);
+        var placeObj = placesModel.findPlaceByName(name);
 
         // If placeObj exists -- the name is not unique
         if (placeObj !== undefined) {
