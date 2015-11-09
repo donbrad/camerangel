@@ -214,6 +214,17 @@ var placesModel = {
 
     },
 
+    isUniquePlaceName : function (name) {
+        var placeObj = placesModel.findPlaceByName(place.name);
+
+        // If placeObj exists -- the name is not unique
+        if (placeObj !== undefined) {
+            return (false);
+        }
+
+        return(true);
+    },
+
     findPlaceByName : function (name) {
 
         var dataSource = placesModel.placesDS;

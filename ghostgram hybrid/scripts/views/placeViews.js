@@ -614,11 +614,12 @@ var addPlaceView = {
 
         // Check that the place name is unique (in this users place's)
         place.name = place.name.toString();
-        var placeObj = placesModel.findPlaceByName(place.name);
-        if (placeObj.uuid !== addPlaceView._activePlace.uuid) {
+
+        if (!placesModel.isUniquePlaceName(place.name)) {
             mobileNotify(addPlaceView._activePlace.name + "is already one of your Places!");
             return;
         }
+
         var guid = uuid.v4();
 
         var createChatFlag = $('#addPlaceCreateChat').is('checked');
