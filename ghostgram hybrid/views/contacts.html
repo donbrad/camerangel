@@ -302,11 +302,12 @@
     	</div><!-- contact-options -->
     	# if(data.category === 'member') {#
     		<a class="contactListBox member">
-    	#} else {#
+    	#} else if(data.category === 'new'){#
     		<a class="contactListBox">
+    	#} else {#
+    		<a class="contactListBox noSlide">
     	#}#
-	
-			#if (data.category !== 'phone') {#
+			#if (data.category === 'member') {#
 					<div class="left listPhoto">
 						<div class="statusContactList">
 
@@ -344,27 +345,55 @@
 								}#
 
 								#:message# 
-								# if (data.currentPlace !== undefined && data.currentPlace !== ""){#
-									<span class="contactStatus-location">
-										@#:data.currentPlace#
-									</span>
-								#}#
 
-								#if (data.category === 'new') {#
-								Invite sent
-								#} else if (data.category === 'unknown') {#
-								New Contact - click to Connect!
-								#} else if (data.cateogy === 'zapped') {#
-								Blocked User - click to Unblock
+								# if (data.cateogy === 'zapped') {#
+								Blocked User - Tap to Unblock
 								#}#
-							</p>	
+							</p>
+							<br/>
+							# if (data.currentPlace !== undefined && data.currentPlace !== ""){#
+									<p class="contactStatus-location left">
+										@#:data.currentPlace#
+									</p>
+								#}#
 						</div>
 
 						<div class="clearfix"></div>
+				#} else if(data.category === 'new'){#
+					<div class="left listPhoto">
+						<div class="statusContactList">
+							<img class="circle-img-md" src="#:data.photo#" />	
+						</div>
+					</div><!-- left -->
+					<div class="left listName">
+							<h4 class="textClamp">
+							#= primaryName #
+							<span class="contacts-alias-sm">#= secondaryName  #</span>
+							</h4>
+						</div>
+						<div class="left contact-status">
+							<p class="left contactStatusMessage-sm">Invite Sent</p>
+						</div>
 				#} else {#
-					<h4 class="phoneContact">
-						#: data.name #   # if (data.alias !== undefined && data.alias !== null) {# (#:data.alias#) #}#
-					</h4>
+					<div class="left listPhoto">
+						<div class="statusContactList">
+							<img class="circle-img-md" src="#:data.photo#" />	
+						</div>
+					</div><!-- left -->
+					<div class="left listName">
+							<h4 class="textClamp">
+								#: data.name # 
+								#if (data.phoneVerified){#
+									<img src="images/user-verified.svg" class="user-status-icon" />
+								#}#
+								<span class="contacts-alias-sm">#: data.alias #</span>
+							</h4>
+						</div>
+						<div class="left contact-status">
+							<p class="left contactStatusMessage-sm">
+							New Contact - Tap to Connect!
+							</p>
+						</div>
 				#}#
 		</a><!-- listBox -->
 	</div>

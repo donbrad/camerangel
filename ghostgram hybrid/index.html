@@ -730,7 +730,7 @@
 		<p class="caption right">
 			<a data-role="button" class="btnClear-sm" href="views/profile.html#profileEdit">Edit Profile</a>
 		</p>
-		<label for="profileStatusUpdate">Update Status</label>
+		<label for="profileStatusUpdate">Quick Status</label>
 		<textarea id="profileStatusUpdate" maxlength="40" placeholder="What's going on..."></textarea>
 		<div class="statusCharacterCount">
 			<span class="statusCharCount"></span>
@@ -1020,7 +1020,7 @@
 					<img src="images/place-public.svg" /> Public
 				 # }#
 				   </span>
-					 <span class="right">
+					 <span class="distPlace">
 						 # var fixedDistance = 0;  if (data.distance !== undefined) {fixedDistance = data.distance; } #
 						 #: fixedDistance # mi
 					 </span>
@@ -1032,12 +1032,19 @@
 </script>
 
 <script type="text/x-kendo-template" id="findPlacesTemplate">
+# 	var types = data.type 
+	var subType = type.split(',')
+#
 <div>
 	<a class="findPlaceListItem">
 		<div>
-			<h4 class="textClamp"> #: data.name #  (#: data.distance # mi)</h4>
+			<h4 class="textClamp"> #: data.name #  </h4>
 			<p class="textClamp"> #: data.vicinity # </p>
-			<p class="textClamp helper"><i>#: data.type # </i></p>
+			<p class="textClamp helper">
+				# console.log(data.type) #
+				<span><i>#= subType[0] # </i> </span>
+				<span class="distPlace">#: data.distance # mi</span>
+			</p>
 			<div class="clearfix"> </div>
 		</div>
 	</a>

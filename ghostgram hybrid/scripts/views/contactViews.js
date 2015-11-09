@@ -112,7 +112,7 @@ var contactsView = {
                 // Need to set current contact before exposing editing ux!
                 var selection = e.sender.events.currentTarget;
                 
-                if(e.direction === "left"){
+                if(e.direction === "left" && !$(selection).hasClass("noSlide")){
                     var otherOpenedLi = $(".contact-active");
                     $(otherOpenedLi).velocity({translateX:"0"},{duration: "fast"}).removeClass("contact-active");
                     

@@ -2324,6 +2324,11 @@ a:hover {
   display: block;
   padding: 0.5rem 0px;
 }
+.distPlace {
+  color: #979797;
+  font-size: 0.75em;
+  float: right;
+}
 .menuBox a:visited {
   color: #fff;
 }
