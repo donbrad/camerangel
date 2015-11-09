@@ -549,6 +549,7 @@ var addContactView = {
         contact.set("group", null);
         contact.set("priority", 0);
         contact.set("isFavorite", false);
+        contact.set("isBlocked", false);
         contact.set("uuid", guid);
         contact.set('contactUUID', contactUUID);
         contact.set('contactPhone', null);
@@ -561,6 +562,12 @@ var addContactView = {
                 //var photo = contact.get('photo');
                 var url = contactModel.createIdenticon(guid);
                 contact.set('photo',url);
+                // Don't set actual phone and email for this contact until connected...
+                contact.set('contactPhone', contact.phone);
+                contact.set('phoneVerified', contact.phoneVerified);
+                contact.set('contactEmail', contact.email);
+                contact.set('emailVerified', contact.emailVerified);
+
                 contactModel.contactsDS.add(contact.attributes);
                 contactModel.contactListDS.add(contact.attributes);
             },
@@ -595,6 +602,7 @@ var addContactView = {
         contact.set('category', "new");
         contact.set("priority", 0);
         contact.set("isFavorite", false);
+        contact.set("isBlocked", false);
         contact.set("uuid", guid);
         contact.set('contactUUID', null);
         contact.set('contactPhone', null);
@@ -638,6 +646,7 @@ var addContactView = {
                 contact.set('contactPhone', thisContact.phone);
                 contact.set('phoneVerified', thisContact.phoneVerified);
                 if (thisContact.phoneVerified) {
+                    contact.set('phone', thisContact.phone);
                     contact.set('category', 'member');
                 }
                 contact.set('contactEmail', thisContact.email);
@@ -748,9 +757,17 @@ var editContactView = {
             editContactView._activeContact.set("name", contact.name);
             editContactView._activeContact.set("alias", contact.alias);
             editContactView._activeContact.set("phone", contact.phone);
+            editContactView._activeContact.set("phoneVerified", contact.phoneVerified);
             editContactView._activeContact.set("email", contact.email);
+            editContactView._activeContact.set("emailVerified", contact.emailValidated);  // emailVerified is a reserved term on Parse...
             editContactView._activeContact.set("group", contact.group);
+            editContactView._activeContact.set("isFavorite", contact.isFavorite);
+            editContactView._activeContact.set("isBlocked", contact.isBlocked);
             editContactView._activeContact.set("photo", contact.photo);
+            editContactView._activeContact.set("inviteSent", contact.inviteSent);
+            editContactView._activeContact.set("connectSent", contact.connectSent);
+            editContactView._activeContact.set("connectReceived", contact.connectReceived);
+
             editContactView._activeContact.set("address", contact.address);
             editContactView._activeContact.set("category", contact.category);
             if (contact.contactUUID !== undefined) {
@@ -793,6 +810,8 @@ var editContactView = {
         contact.set("phone", editContactView._activeContact.phone);
         contact.set("email", editContactView._activeContact.email);
         contact.set("photo", editContactView._activeContact.photo);
+        contact.set("isFavorite", editContactView._activeContact.isFavorite);
+        contact.set("isBlocked", editContactView._activeContact.isBlocked);
         if (editContactView._activeContact.contactUUID !== undefined && editContactView._activeContact.contactUUID !== null) {
             contact.set("contactUUID", editContactView._activeContact.contactUUID);
             contact.set("contactEmail", editContactView._activeContact.contactEmail);
@@ -812,6 +831,8 @@ var editContactView = {
         contactList.set("email", editContactView._activeContact.email);
         contactList.set("photo", editContactView._activeContact.photo);
         contactList.set("group", editContactView._activeContact.group);
+        contactList.set("isFavorite", editContactView._activeContact.isFavorite);
+        contactList.set("isBlocked", editContactView._activeContact.isBlocked);
         contactList.set("address", editContactView._activeContact.address);
         contactList.set("category", editContactView._activeContact.category);
         if (editContactView._activeContact.contactUUID !== undefined && editContactView._activeContact.contactUUID !== null) {
@@ -829,6 +850,8 @@ var editContactView = {
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"email", editContactView._activeContact.email);
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"photo", editContactView._activeContact.photo);
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"group", editContactView._activeContact.group);
+        updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"isFavorite", editContactView._activeContact.isFavorite);
+        updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"isBlocked", editContactView._activeContact.isBlocked);
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"address", editContactView._activeContact.address);
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"category", editContactView._activeContact.category);
 
