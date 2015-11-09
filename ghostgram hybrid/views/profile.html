@@ -213,15 +213,16 @@
     <div data-role="header">
         <div data-role="navbar">
             <a data-role="button"  data-align="left" href="#:back" ><img src="images/nav-back.svg" /></a>
-            <span>Update Profile Photo</span>
+            <span>Change Profile Photo</span>
             <a data-click="onDone"  type="button" data-role="button" data-align="right">Update</a>
         </div>
     </div>
 
     <div style="text-align: center; padding-top: 6px;" id="profilePhotoImportDiv">
+        <p> Choose a photo from your phone's gallery or ghostgram Memories.  Or take a new one with your phone's camera!</p>
         <div style="display: inline-block;">
-            <a type="button" data-role="button" data-click="editProfilePhotoView.doCamera" class="btnClearLine-grey-sm">Camera</a>
-            <a type="button" data-role="button" data-click="editProfilePhotoView.doPhotoGallery" class="btnClearLine-grey-sm">Photos</a>
+            <a type="button" data-role="button" data-click="editProfilePhotoView.doCamera" class="btnClearLine-grey-sm">Phone Camera</a>
+            <a type="button" data-role="button" data-click="editProfilePhotoView.doPhotoGallery" class="btnClearLine-grey-sm">Phone Photos</a>
             <a type="button" data-role="button" data-rel="modalview" href="#modalview-galleryPicker" class="btnClearLine-grey-sm">Memories</a>
         </div>
     </div>
