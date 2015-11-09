@@ -245,9 +245,11 @@ var placesModel = {
         var view = dataSource.view();
         var place = view[0];
         dataSource.filter([]);
+
+        // Delete the parse object directly
+        deleteParseObject('places', "uuid", uuid);
         dataSource.remove(place);
 
-        dataSource.sync();
     }
 
 
