@@ -415,12 +415,12 @@ var ux = {
 		var emailBody="status: Idea\n" + "supportId = " + guid + "\nemail = " + email + "\nMessage\n" + message;
 		var mailto_link = 'mailto:'+toAddr+'?subject='+emailSubject+'&body='+emailBody;
 
-	/*	if (window.navigator.simulator === true){
+		if (window.navigator.simulator === true){
 			var win = window.open(mailto_link, 'emailWindow');
 			if (win && win.open && !win.closed)
 				win.close();
 		} else {
-*/
+
 			cordova.plugins.email.open({
 				to:          [toAddr],
 				subject:     category,
@@ -431,7 +431,7 @@ var ux = {
 				mobileNotify("Email sent to ghostgrams support");
 
 			});
-		/*}*/
+		}
 	    
 	    support.save(null, {
 	        success: function(support) {
