@@ -412,7 +412,7 @@ var ux = {
 	    support.set("platform", userModel.device.platform);
 
 		var toAddr = "gg-startup@tickets.assembla.com",  emailSubject = category;
-		var emailBody="status: Idea</br>" + "supportId = " + guid + "</br>email = " + email + "</br>Message<hr></br>" + message;
+		var emailBody="status: Idea/r/n" + "supportId = " + guid + "/r/nemail = " + email + "/r/nMessage/r/n" + message;
 		var mailto_link = 'mailto:'+toAddr+'?subject='+emailSubject+'&body='+emailBody;
 
 		if (window.navigator.simulator === true){
@@ -425,7 +425,7 @@ var ux = {
 				to:          [toAddr],
 				subject:     category,
 				body:        emailBody,
-				isHtml:      true
+				isHtml:      false
 			}, function (msg) {
 
 				mobileNotify("Email sent to ghostgrams support");
