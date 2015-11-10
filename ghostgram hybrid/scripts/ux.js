@@ -372,36 +372,66 @@ var ux = {
 	},
 
 	sendSupportRequest: function(e) {
-	    e.preventDefault();
+
+	    _preventDefault(e);
+
+
+
 	    if (APP.models.sync.requestActive){
-	        mobileNotify("Processing current support request.")
+	        mobileNotify("Processing current support request.");
 	        return;
 	    }
 	        
 	    APP.models.sync.requestActive = true;
 	    var category = $('#supportCategory').val(), message =  $('#supportMessage').val();
-	    var userUUID = null, name = null, email = null, phone = null;
-	    mobileNotify("Preparing your support request");
-	    
+	    var userUUID = null, name = null, email = null, phone = null, version = null;
+
+
 	   if (userModel.parseUser !== null) {
 	        userUUID = userModel.currentUser.get('userUUID');
 	        name = userModel.currentUser.get('name');
 	        email = userModel.currentUser.get('email');
 	        phone = userModel.currentUser.get('phone');
+		   	version = userModel.currentUser.get('appVersion');
 	    }
 	    
 	    var Support = Parse.Object.extend('support');
 	    var support = new Support();
+		var guid = uuid.v4();
+		support.set("supportId", guid);
 	    support.set("userUUID", userUUID);
 	    support.set("name", name);
 	    support.set("email",email );
 	    support.set("phone", phone);
 	    support.set("category", category);
 	    support.set("message", message);
+		support.set("version", version);
 	    support.set("udid", userModel.device.udid);
 	    support.set("device", userModel.device.device);
 	    support.set("model",userModel.device.model);
 	    support.set("platform", userModel.device.platform);
+
+		var toAddr = "gg-startup@tickets.assembla.com",  emailSubject = category;
+		var emailBody="status: Idea</br>" + "supportId = " + guid + "</br>email = " + email + "</br>Message<hr></br>" + message;
+		var mailto_link = 'mailto:'+toAddr+'?subject='+emailSubject+'&body='+emailBody;
+
+		if (window.navigator.simulator === true){
+			var win = window.open(mailto_link, 'emailWindow');
+			if (win && win.open && !win.closed)
+				win.close();
+		} else {
+
+			cordova.plugins.email.open({
+				to:          [toAddr],
+				subject:     category,
+				body:        emailBody,
+				isHtml:      true
+			}, function (msg) {
+
+				mobileNotify("Email sent to ghostgrams support");
+
+			});
+		}
 	    
 	    support.save(null, {
 	        success: function(support) {
