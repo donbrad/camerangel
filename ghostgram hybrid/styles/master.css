@@ -4362,6 +4362,10 @@ html .km-pane-wrapper .k-header {
   background-color: #f5f5f5;
   display: none;
 }
+.tempSearchBox {
+  width: 100%;
+  background-color: #f5f5f5;
+}
 .appendSearch {
   background: #fff;
   display: inline-block;
