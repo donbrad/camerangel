@@ -78,7 +78,7 @@ var photoModel = {
     upgradePhoto : function (photo) {
         // current trigger is no version field -- later we'll compare numbers
         if (photo.version === undefined) {
-            photo.version = photoModel._version;
+           // photo.version = photoModel._version;
             updateParseObject('photos', "photoId", photo.photoId, "version", photoModel._version);
 
             if (photo.senderUUID === undefined) {
