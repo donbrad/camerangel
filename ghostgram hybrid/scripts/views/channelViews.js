@@ -1359,7 +1359,12 @@ var channelView = {
      messageGallery : function (e) {
         _preventDefault(e);
 
-         modalGalleryView.openModal(channelView.showChatImagePreview);
+         galleryPicker.openModal(function (photo) {
+             var url = photo.photoUrl;
+             if (photo.thumbnailUrl !== undefined)
+                url = photo.thumbnailUrl;
+             channelView.showChatImagePreview(url);
+         });
       //  APP.kendo.navigate("views/gallery.html#gallery?mode=picker");
 
     },
