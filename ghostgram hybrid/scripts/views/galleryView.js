@@ -534,8 +534,8 @@ var modalGalleryView = {
 
 
 var galleryPicker = {
+    _photo: null,
     _photoId : null,
-    _imageUrl: null,
     _callback : null,
 
     onInit : function (e) {
@@ -553,10 +553,10 @@ var galleryPicker = {
 
     onGalleryClick : function (e) {
         var photo = e.dataItem;
-        galleryPicker._imageUrl = photo.imageUrl;
+        galleryPicker.photo = photo;
 
         if (galleryPicker.callback !== null) {
-            callback(photo);
+            galleryPicker.callback(photo);
         }
     },
 
@@ -568,7 +568,6 @@ var galleryPicker = {
     },
 
     closeModal : function ()  {
-        _preventDefault(e);
         $("#modalview-galleryPicker").kendoMobileModalView("close");
     },
 
