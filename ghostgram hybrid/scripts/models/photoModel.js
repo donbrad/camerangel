@@ -79,7 +79,6 @@ var photoModel = {
         // current trigger is no version field -- later we'll compare numbers
         if (photo.version === undefined) {
            // photo.version = photoModel._version;
-            updateParseObject('photos', "photoId", photo.photoId, "version", photoModel._version);
 
             if (photo.senderUUID === undefined) {
                 photo.senderUUID = null;
@@ -113,7 +112,21 @@ var photoModel = {
                 updateParseObject('photos', "photoId", photo.photoId, "eventName",  null);
             }
 
-            if (photo.addresString === undefined) {
+            if (photo.address === undefined) {
+
+                photo.address = null;
+
+                updateParseObject('photos', "photoId", photo.photoId, "address",  null);
+            }
+
+            if (photo.deviceUrl === undefined) {
+
+                photo.deviceUrl = null;
+
+                updateParseObject('photos', "photoId", photo.photoId, "deviceUrl",  null);
+            }
+
+            if (photo.addressString === undefined) {
 
                 photo.addressString = null;
 
@@ -150,6 +163,9 @@ var photoModel = {
 
                 updateParseObject('photos', "photoId", photo.photoId, "tags",  []);
             }
+
+            updateParseObject('photos', "photoId", photo.photoId, "version", photoModel._version);
+
         }
 
 
