@@ -429,3 +429,74 @@ var ghostEditView = {
 
     }
 };
+
+/*
+ * Profile Photo Capture / Edit
+ * parameterized for user profile and contact profile
+ */
+
+var editProfilePhotoView = {
+    _callback : null,
+    _photoUrl: null,
+    _isUserProfile : true,
+    _contactId : null,
+
+    onInit : function (e) {
+        _preventDefault(e);
+
+    },
+
+    onShow : function (e) {
+        _preventDefault(e);
+
+    },
+
+    onDone : function (e) {
+
+    },
+
+    setCallback : function (callback) {
+        if (callback !== undefined) {
+            editProfilePhotoView._callback = callback;
+        }
+    },
+
+    setPhotoUrl : function (url) {
+        editProfilePhotoView._photoUrl = url;
+        $("#profilePhotoImage").attr('src', url);
+    },
+
+    doCamera : function (e) {
+      _preventDefault(e);
+
+        deviceCamera(
+            1200, // max resolution in pixels
+            75,  // quality: 1-99.
+            false,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+           editProfilePhotoView.setPhotoUrl  // Optional preview callback
+        )
+    },
+
+    doPhotoGallery : function(e) {
+        _preventDefault(e);
+
+        deviceGallery(
+            1200, // max resolution in pixels
+            75,  // quality: 1-99.
+            false,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+            editProfilePhotoView.setPhotoUrl  // Optional preview callback
+        );
+    },
+
+    doMemories : function (e) {
+       _preventDefault(e);
+        galleryPicker.openModal(function (photo) {
+
+        });
+    },
+
+    updateUserPhotoUrl : function (e) {
+        _preventDefault(e);
+        userModel.currentUser.set("photo", editProfilePhotoView._photoUrl);
+    }
+};

@@ -209,28 +209,26 @@
     </div>
 </div>
 
-<div data-role="view" id="profilePhotoEdit" data-show="doProfilePhotoEdit" data-init="initProfilePhotoEdit" style="display: none;" data-model="userModel.currentUser" class="appearance">
+<div data-role="view" id="profilePhotoEdit" data-show="editProfilePhotoView.onShow" data-init="editProfilePhotoView.onInit" style="display: none;"  class="appearance">
     <div data-role="header">
         <div data-role="navbar">
             <a data-role="button"  data-align="left" href="#:back" ><img src="images/nav-back.svg" /></a>
-            <span>Profile Photo</span>
-            <a data-click="doUpdateStatusMessage"  type="button" data-role="button" data-align="right">Update</a>
+            <span>Change Profile Photo</span>
+            <a data-click="onDone"  type="button" data-role="button" data-align="right">Update</a>
         </div>
     </div>
 
     <div style="text-align: center; padding-top: 6px;" id="profilePhotoImportDiv">
+        <p> Choose a photo from your phone's gallery or ghostgram Memories.  Or take a new one with your phone's camera!</p>
         <div style="display: inline-block;">
-            <a type="button" data-role="button" data-click="doProfileCamera" class="btnClearLine-grey-sm">Camera</a>
-            <a type="button" data-role="button" data-click="doProfilePhotos" class="btnClearLine-grey-sm">Photos</a>
-            <a type="button" data-role="button" data-rel="modalview" href="#modalview-galleryPicker" class="btnClearLine-grey-sm">Gallery</a>
+            <a type="button" data-role="button" data-click="editProfilePhotoView.doCamera" class="btnClearLine-grey-sm">Phone Camera</a>
+            <a type="button" data-role="button" data-click="editProfilePhotoView.doPhotoGallery" class="btnClearLine-grey-sm">Phone Photos</a>
+            <a type="button" data-role="button" data-click="editProfilePhotoView.doMemories" class="btnClearLine-grey-sm">Memories</a>
         </div>
     </div>
 
     <div style="margin:8px; height: 50%; width: auto; text-align: center">
-        <div class="wraption-wrap">
-            <img id="profilePhotoImage" class="wraption" data-bind="attr: {src: photo}" style="max-height: 100%; max-width:100%; vertical-align: middle;">
-            <span class="wraption-caption"data-bind="html: statusMessage" ></span>
-        </div>
+        <img id="profilePhotoImage" class="wraption"  style="max-height: 100%; max-width:100%; vertical-align: middle;">
     </div>
 
 </div>

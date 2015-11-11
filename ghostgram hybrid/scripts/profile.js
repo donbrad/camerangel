@@ -182,7 +182,7 @@ function updateProfilePhoto (e) {
     );
 }
 
-function profilePhotoComplete () {
+/*function profilePhotoComplete () {
 
 }
 
@@ -216,7 +216,7 @@ function doProfileGallery(e) {
 	if (e.preventDefault !== undefined) {
 		e.preventDefault();
 	}
-}
+}*/
 
 function onInitProfile(e) {
 	e.preventDefault();
