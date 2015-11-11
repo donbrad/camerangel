@@ -482,37 +482,6 @@
 	<a class="btnSecondary btnFull-modal" data-click="homeView.closeLocateMeModal" data-role="button">Cancel</a>
 </div>
 
-<!-- Photo tag modal -->
-<div data-role="modalview" id="modalview-photoTag" style="width: 90%; display: none;"  class="appearance">
-    <div data-role="header">
-        <div data-role="navbar">
-            <span>Tag Photo</span>
-            <a data-click="ux.closeModalViewPhotoTag" data-role="button"  class="btnClear-grey" data-align="left">Cancel</a>
-            
-		</div>
-	</div>
-     <form id="photoForm">
-        <ul data-role="listview" data-style="inset">
-            <li>
-                <label>Title
-                    <input type="search" id="photoTitle" />
-                </label>
-            </li>
-            <li>
-            	<label>Description</label>
-                    <textarea type="text" id="photoDesc" col="80" row="2"></textarea>
-            </li>
-			<li>
-                <label>Tags
-                    <textarea type="text" id="photoTags" col="80" row="2" placeholder="People, event, location..."></textarea>
-                </label>
-			</li>
-        </ul>
-    </form>
-    <div class="footer" data-role="footer">
-    	<a class="btnFull-modal btnPrimary" data-role="button" data-click="homeView.savePhoto">Save</a>
-    </div>
-</div>
 
 <style>
 #galleryPicker-listview .li {

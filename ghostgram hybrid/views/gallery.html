@@ -148,15 +148,48 @@
 	</div>
 </div>
 
-<div data-role="modalview" id="modalPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal" data-init="modalPhotoView.onInit">
+<!-- Photo tag modal -->
+<div data-role="modalview" id="modalview-photoTag" style="width: 90%; display: none;"  data-model="modalPhotoTag._activePhoto" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Tag Photo</span>
+			<a data-click="modalPhotoTag.closeModal" data-role="button"  class="btnClear-grey" data-align="left">Cancel</a>
+
+		</div>
+	</div>
+	<form id="photoForm">
+		<ul data-role="listview" data-style="inset">
+			<li>
+				<label>Title
+					<input type="search" data-bind="value: title"/>
+				</label>
+			</li>
+			<li>
+				<label>Description</label>
+				<textarea  data-bind="text: description" type="text"  col="80" row="2"></textarea>
+
+			</li>
+			<li>
+				<label>Tags
+					<textarea data-bind="text: tagsString" type="text"  col="80" row="2" placeholder="People, event, location..."></textarea>
+				</label>
+			</li>
+		</ul>
+	</form>
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnPrimary" data-role="button" data-click="modalPhotoTag.onDone">Save</a>
+	</div>
+</div>
+
+<div data-role="modalview" id="modalPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal" data-model="modalPhotoView._activePhoto" data-init="modalPhotoView.onInit">
 	<div class="photoViewBox">
 		<img id="modalPhotoViewImage" src="" />
 		<div class="photoTitleBox">
 			<div class="photoTitleText">
-				<h3><span>Photo Title</span>
-					<a class="btnClear-sm hidden" data-role="button" data-rel="modalview" href="#modalview-photoTag">Edit</a>
+				<h3><span id="modalPhotoViewTitle">Photo Title</span>
+					<a class="btnClear-sm hidden" data-role="button" data-click="modalPhotoView.openTagEditor">Edit</a>
 				</h3>
-				<p><img src="images/icon-tag-light.svg" class="icon-sm" /> photo tags</p>
+				<p><img src="images/icon-tag-light.svg" class="icon-sm" /> <span id="modalPhotoViewTags">photo tags</span></p>
 			</div>
 			<a class="actionBtn primary-100" data-role="button" data-click="modalPhotoView.sharePhoto">
 				<img src="images/icon-share-light.svg"/>

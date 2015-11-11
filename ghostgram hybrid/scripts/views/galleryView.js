@@ -454,10 +454,48 @@ var photoEditor = {
 
 };
 
+var modalPhotoTag = {
+    _activePhoto: null,
+
+    openModal : function (photo) {
+        modalPhotoTag._activePhoto = photo;
+        $("#modalview-photoTag").data("kendoMobileModalView").open();
+    },
+
+    closeModal : function () {
+        $("#modalview-photoTag").data("kendoMobileModalView").close();
+    },
+
+    onDone : function(e) {
+        _preventDefault(e);
+        // Update data source and parse...
+
+        var photoObj = photoModel.findPhotoById(modalPhotoTag._activePhoto.photoId);
+
+        if (photoObj !== undefined) {
+            photoObj.title = modalPhotoTag._activePhoto.title;
+            photoObj.description = modalPhotoTag._activePhoto.description;
+            photoObj.tagsString = modalPhotoTag._activePhoto.tagsString;
+            photoObj.tags = photoObj.tagsString.split(',');
+
+            updateParseObject('photos', "photoId", modalPhotoTag._activePhoto.photoId, "title", photoObj.title);
+            updateParseObject('photos', "photoId", modalPhotoTag._activePhoto.photoId, "description", photoObj.description);
+            updateParseObject('photos', "photoId", modalPhotoTag._activePhoto.photoId, "tags", photoObj.tags);
+            updateParseObject('photos', "photoId", modalPhotoTag._activePhoto.photoId, "tagsString", photoObj.tagsString);
+
+        } else {
+            mobileNotify("Can't find photo model!!");
+        }
+        modalPhotoTag.closeModal();
+    }
+
+};
 
 var modalPhotoView = {
+    _photo: null,
     _photoUrl : null,
-    
+    _activePhoto : new kendo.data.ObservableObject(),
+
     onInit: function(e){
     	$(".photoViewBox").kendoTouch({
     		filter: "img",
@@ -467,13 +505,46 @@ var modalPhotoView = {
     	});
     },
 
-    openModal : function (url) {
+    openModal : function (photo) {
+        modalPhotoView._photo = photo;
         modalPhotoView._photoUrl = url;
+        modalPhotoView._activePhoto.set('photoId', photo.photoId);
+        modalPhotoView._activePhoto.set('title', photo.title);
+        modalPhotoView._activePhoto.set('description', photo.description);
+        modalPhotoView._activePhoto.set('tags', photo.tags);
+        modalPhotoView._activePhoto.set('tagsString', photo.tagsString);
+        var tagString = '';
+
+        if (photo.tags !== undefined && photo.tags.length > 0) {
+            for (var i=0; i++; i< photo.tags.length) {
+                tagString += photo.tags[i] + ', ';
+            }
+
+            // Remove the trailing comma and space...
+            tagString.substring(0,tagString.length - 2);
+
+            modalPhotoView._activePhoto.set('tagsString', tagString);
+        }
+
+        if (photo.title !== undefined && photo.title !== null)
+            $("#modalPhotoViewTitle").text(photo.title);
+
+
         $("#modalPhotoView").data("kendoMobileModalView").open();
     },
 
     closeModal : function () {
         $("#modalPhotoView").data("kendoMobileModalView").close();
+    },
+
+    openTagEditor : function (e) {
+        _preventDefault(e);
+        modalPhotoTag.openModal(modalPhotoView._activePhoto);
+    },
+
+    deletePhoto : function (e) {
+        _preventDefault(e);
+
     },
 
    sharePhoto: function (e) {

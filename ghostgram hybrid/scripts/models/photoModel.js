@@ -165,8 +165,10 @@ var photoModel = {
             if (photo.tags === undefined) {
 
                 photo.tags = [];
+                photo.tagsString = null;
 
                 updateParseObject('photos', "photoId", photo.photoId, "tags",  []);
+                updateParseObject('photos', "photoId", photo.photoId, "tagsString",  null);
             }
 
             updateParseObject('photos', "photoId", photo.photoId, "version", photoModel._version);
@@ -198,6 +200,7 @@ var photoModel = {
         photo.set('eventId', null);
         photo.set('eventName', null);
         photo.set('tags', []);
+        photo.set('tagsString', null);
         photo.set('placeId', null);
         photo.set('placeName', null);
 

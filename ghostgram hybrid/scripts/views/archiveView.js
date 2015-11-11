@@ -281,6 +281,7 @@ var archiveView = {
 			window.open($object.data('url'), '_system');
 		}
 	},
+
 	archiveClick: function(e){
 		var selector = e.target.context;
 		var selectorParent = e.target.context.parentElement;
