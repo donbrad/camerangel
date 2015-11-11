@@ -1,16 +1,8 @@
 <div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="contactModel" data-init="contactsView.onInit" data-show="contactsView.onShow" data-before-hide="contactsView.onBeforeHide" style="display: none;">
-
-	<div class="topViewSearchBox">
-	 		<div class="appendSearch">
-				<span class="searchIcon"><img src="images/search.svg" /></span>
-				<input class="doubleAppendSearch"  type="search" placeholder="Search Contacts..." id="contactsSearchQuery" />
-			</div>
-		
-		<a class="hidden btnClear-sm" data-role="button" data-click="contactsView.searchDeviceContacts" id="btnSearchDeviceContacts">
+		<a class="hidden btnClear" data-role="button" data-click="contactsView.searchDeviceContacts" id="btnSearchDeviceContacts">
 			<img src="images/contacts.svg" /> 
 			Search device for "<span id="btnSearchDeviceName"></span>"
 		</a>
-	</div>
 		<div id="contactListDiv" style="padding-bottom: 24px;">
 	        <ul id="contacts-listview"></ul>
 			<!-- Only display if device permission is needed -->
@@ -28,20 +20,19 @@
 </div>
 
 <!-- Import Contacts -->
-<div data-role="view" data-title="Import Contacts" id="contactImport"  data-model="contactModel"
-	 data-init="contactImportView.onInit" data-show="contactImportView.onShow" data-hide="contactImportView.onHide" style="display: none;">
+<div data-role="view" data-title="Import Contacts" id="contactImport"  data-model="contactModel" data-init="contactImportView.onInit" data-show="contactImportView.onShow" data-hide="contactImportView.onHide" style="display: none;">
     <div data-role="header">
         <div data-role="navbar">
            <a data-role="button"  data-align="left" href="#:back" ><img src="images/nav-back.svg" /></a>
 			<span data-role="view-title"></span>
         </div>
     </div>
-    <div class="topViewSearchBox">
+    <div class="tempSearchBox">
 	 		<div class="appendSearch">
 				<span class="searchIcon"><img src="images/search.svg" /></span>
-				<input type="search" id="contactImportQuery" class="viewSearchBox" placeholder="Enter name and pause..."/>
+				<input type="search" id="contactImportQuery" class="viewSearchBox" placeholder="Search device contacts..."/>
 			</div>
-		</div>   
+	</div>   
     <div  style="padding-bottom: 24px;">
         <ul id="contactimport-listview"></ul>
     </div>    
@@ -302,11 +293,12 @@
     	</div><!-- contact-options -->
     	# if(data.category === 'member') {#
     		<a class="contactListBox member">
-    	#} else {#
+    	#} else if(data.category === 'new'){#
     		<a class="contactListBox">
+    	#} else {#
+    		<a class="contactListBox noSlide">
     	#}#
-	
-			#if (data.category !== 'phone') {#
+			#if (data.category === 'member') {#
 					<div class="left listPhoto">
 						<div class="statusContactList">
 
@@ -336,7 +328,7 @@
 							</h4>
 						</div>
 
-						<div class="left contact-status">
+						<div class="left contact-status textClamp">
 							<p class="left contactStatusMessage-sm">
 							# var message = "", location = ""; 
 								if (data.statusMessage !== undefined && data.statusMessage !== "") {
@@ -344,27 +336,55 @@
 								}#
 
 								#:message# 
-								# if (data.currentPlace !== undefined && data.currentPlace !== ""){#
-									<span class="contactStatus-location">
-										@#:data.currentPlace#
-									</span>
-								#}#
 
-								#if (data.category === 'new') {#
-								Invite sent
-								#} else if (data.category === 'unknown') {#
-								New Contact - click to Connect!
-								#} else if (data.cateogy === 'zapped') {#
-								Blocked User - click to Unblock
+								# if (data.cateogy === 'zapped') {#
+								Blocked User - Tap to Unblock
 								#}#
-							</p>	
+							</p>
+							<br/>
+							# if (data.currentPlace !== undefined && data.currentPlace !== ""){#
+									<p class="contactStatus-location left">
+										@#:data.currentPlace#
+									</p>
+								#}#
 						</div>
 
 						<div class="clearfix"></div>
+				#} else if(data.category === 'new'){#
+					<div class="left listPhoto">
+						<div class="statusContactList">
+							<img class="circle-img-md" src="#:data.photo#" />	
+						</div>
+					</div><!-- left -->
+					<div class="left listName">
+							<h4 class="textClamp">
+							#= primaryName #
+							<span class="contacts-alias-sm">#= secondaryName  #</span>
+							</h4>
+						</div>
+						<div class="left contact-status">
+							<p class="left contactStatusMessage-sm">Invite Sent</p>
+						</div>
 				#} else {#
-					<h4 class="phoneContact">
-						#: data.name #   # if (data.alias !== undefined && data.alias !== null) {# (#:data.alias#) #}#
-					</h4>
+					<div class="left listPhoto">
+						<div class="statusContactList">
+							<img class="circle-img-md" src="#:data.photo#" />	
+						</div>
+					</div><!-- left -->
+					<div class="left listName">
+							<h4 class="textClamp">
+								#: data.name # 
+								#if (data.phoneVerified){#
+									<img src="images/user-verified.svg" class="user-status-icon" />
+								#}#
+								<span class="contacts-alias-sm">#: data.alias #</span>
+							</h4>
+						</div>
+						<div class="left contact-status">
+							<p class="left contactStatusMessage-sm">
+							New Contact - Tap to Connect!
+							</p>
+						</div>
 				#}#
 		</a><!-- listBox -->
 	</div>
@@ -374,9 +394,6 @@
 <script type="text/x-kendo-template" id="deviceContactsTemplate">
   			<div> 
 				  <h3>#:data.name#
-			  		<span class="right">
-			  			<a class="addBtn-sm">Add</a>
-			  		</span>
 			  	</h3>
 			  <table class="contactImportTable">
 			  	#if (data.emails.length > 0) {#

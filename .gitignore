@@ -6,6 +6,7 @@ ghostgram hybrid/styles/main.css
 ghostgram hybrid/styles/mixins.css
 ghostgram hybrid/App_Resources/Android/drawable-nodpi/splashscreen.9.png
 ghostgram hybrid/scripts/min/
+ghostgram hybrid/css/*
 
 lesswatch.bat
 lesswatch - Shortcut.lnk

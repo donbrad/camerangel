@@ -100,13 +100,19 @@
 				</div>
 			</a>
 			<span data-role="view-title"></span>
-				<a data-role="button" data-rel="actionsheet" href="#settingsAction" data-align="right" data-click-on="down" class="user-settings">
-                <img class="nav-gear" src="images/nav-gear.svg"/>
-            </a>
+				<a data-role="button" data-rel="actionsheet" href="#settingsAction" data-align="right" data-click-on="down" class="user-settings homeToggleSetting" id="nav-settings">
+                	<img class="nav-gear" src="images/nav-gear.svg"/>
+            	</a>
+            	<a data-role="button" data-align="right" class="user-settings homeToggleSearch" data-click="ux.toggleSearch" id="nav-search">
+                	<img class="nav-search" src="images/icon-search.svg"/>
+            	</a>
         </div>
-        <div class="helperInfoBar hidden">
-        	<a class="btnClear" data-role="button"></a>
-        </div>
+        <div class="topViewSearchBox gg_mainSearchBox" data-visible="false">
+	 		<div class="appendSearch">
+				<span class="searchIcon"><img src="images/search.svg" /></span>
+				<input type="text" class="doubleAppendSearch gg_mainSearchInput" placeholder="" />
+			</div>
+		</div>
     </div>
     <div data-role="content" class='view-content' >
     	<!-- application views will be rendered here -->
@@ -232,28 +238,23 @@
 </div>
    
 <!-- home - for signed in users -->
-<div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" style="display:none;" data-show="onShowHome" data-init="homeView.onInitHome">
-	
-		<div class="topViewSearchBox">
-	 		<div class="appendSearch">
-				<span class="searchIcon"><img src="images/search.svg" /></span>
-				<input class="doubleAppendSearch clearable" placeholder="Search" id="homeSearchQuery" />
-			</div>
-		</div>
+<div data-role="view" data-title="ghostgrams" id="home" data-layout="main" data-model="APP.models.home" style="display:none;" data-show="onShowHome" data-init="homeView.onInitHome" data-hide="homeView.onHideHome">
 		<div class="appBox">
-	    <!-- application views will be rendered here -->
-	    <div>
-	    	<div class="notify-title">
-		    	<img src="images/notify-icon.svg" height="14" />
-		    		Notifications
-		    	<span class="right"><a class="btnClear-grey-sm" data-role="button" data-rel="modalview" href="#testing">Clear</a></span>
-	    	</div>
-	    	<div class="clearfix"></div>
-	    	<ul id="notification-listview"></ul>
-	    	<div class="emptyState hidden">
-         		<img src="images/empty-home.svg" />
-         	</div>
-	   	</div>
+		    <!-- application views will be rendered here -->
+		    <div>
+		    	<div class="notify-title">
+			    	<img src="images/notify-icon.svg" height="14" />
+			    		Notifications
+			    	<span class="right">
+			    		<a class="btnClear-grey-sm" data-role="button" data-rel="modalview" href="#testing">Clear</a>
+			    	</span>
+		    	</div>
+		    	<div class="clearfix"></div>
+		    	<ul id="notification-listview"></ul>
+		    	<div class="emptyState hidden">
+	         		<img src="images/empty-home.svg" />
+	         	</div>
+		   	</div>
 	  </div>
 	<div class="hidden"> <canvas id="identiconCanvas" width="256" height="256"></canvas></div>
 </div>
@@ -538,7 +539,7 @@
             <a data-click="galleryPicker.closeModal" data-role="button" data-align="left">Done</a>
         </div>
 	</div>
-	<div class="topViewSearchBox">
+	<div class="tempSearchBox">
 		<div class="appendSearch">
 			<span class="searchIcon"><img src="images/search.svg" /></span>
 			<input class="doubleAppendSearch clearable" placeholder="Search photo memories..." id="galleryPickerSearch" />
@@ -746,8 +747,8 @@
 		<p class="caption right">
 			<a data-role="button" class="btnClear-sm" href="views/profile.html#profileEdit">Edit Profile</a>
 		</p>
-		<label for="profileStatusUpdate">Update Status</label>
-		<textarea id="profileStatusUpdate" maxlength="40" placeholder="What's going on..."></textarea>
+		<label for="profileStatusUpdate">Quick Status</label>
+		<textarea id="profileStatusUpdate" maxlength="35" placeholder="What's going on..."></textarea>
 		<div class="statusCharacterCount">
 			<span class="statusCharCount"></span>
 		</div>
@@ -1036,7 +1037,7 @@
 					<img src="images/place-public.svg" /> Public
 				 # }#
 				   </span>
-					 <span class="right">
+					 <span class="distPlace">
 						 # var fixedDistance = 0;  if (data.distance !== undefined) {fixedDistance = data.distance; } #
 						 #: fixedDistance # mi
 					 </span>
@@ -1048,14 +1049,22 @@
 </script>
 
 <script type="text/x-kendo-template" id="findPlacesTemplate">
+# 	var types = data.type 
+	var subType = type.split(',')
+#
+<div>
 	<a class="findPlaceListItem">
 		<div>
-			<h4 class="textClamp"> #: data.name #  (#: data.distance # mi)</h4>
+			<h4 class="textClamp"> #: data.name #  </h4>
 			<p class="textClamp"> #: data.vicinity # </p>
-			<p class="textClamp helper"><i>#: data.type # </i></p>
+			<p class="textClamp helper">
+				<span><i>#= subType[0] # </i> </span>
+				<span class="distPlace">#: data.distance # mi</span>
+			</p>
 			<div class="clearfix"> </div>
 		</div>
 	</a>
+</div>
 </script>
 
 <script type="text/x-kendo-template" id="findPlacesHeaderTemplate">

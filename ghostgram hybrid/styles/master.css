@@ -889,13 +889,13 @@ div.km-content.km-widget.km-scroll-wrapper {
   padding-bottom: 1rem;
 }
 .input-text-sm {
-  font-size: 0.875em;
+  font-size: 0.875em !important;
 }
 .input-text-md {
-  font-size: 1.25em;
+  font-size: 1.25em !important;
 }
 .input-text-lg {
-  font-size: 1.5em;
+  font-size: 1.5em !important;
 }
 #nav-ghost {
   position: relative;
@@ -1238,7 +1238,7 @@ div.km-header a img {
 .km-material input:checked,
 .km-material .km-touch-scrollbar,
 .km-material input[type=text]:not(.k-input):focus {
-  color: #2E93FD;
+  color: #4A4A4A !important;
 }
 /*
 .km-view {
@@ -1417,10 +1417,11 @@ div.footerMenu.km-footer > ul > li > a:active {
 .statusCharacterCount {
   position: relative;
   color: #979797;
-  top: -3em;
+  top: -2.5em;
   z-index: 1;
-  right: -93%;
+  right: -91%;
   display: inline-block;
+  font-size: 0.85em;
 }
 .home-headerBtn {
   padding: 0px;
@@ -1516,6 +1517,10 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .nav-gear {
   height: 24px !important;
+  vertical-align: middle;
+}
+.nav-search {
+  height: 20px !important;
   vertical-align: middle;
 }
 .home-status {
@@ -2037,7 +2042,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .km-root .km-pane .km-view.appearance .km-listview input {
   position: relative;
-  font-size: 1.125em !important;
+  font-size: 1.125em;
   width: 100%;
   right: 0;
   margin-top: 0;
@@ -2305,7 +2310,9 @@ div.message-slideOptions > span.archive > a > span > img {
 a:hover {
   color: #3CAAEE;
 }
-#findplace-listview > li > ul > li > div > a:hover,
+#findplace-listview > li > ul > li > div > a:hover > div > p,
+#findplace-listview > li > ul > li > a:hover > div > p,
+#findplace-listview > li > ul > li > a:hover,
 #contacts-listview > li > ul > li > div > a:hover,
 #places-listview > li > div > a:hover,
 #channels-listview > li > div > a:hover > div {
@@ -2320,7 +2327,11 @@ a:hover {
 }
 .findPlaceListItem {
   display: block;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0px;
+}
+.distPlace {
+  color: #979797;
+  float: right;
 }
 .menuBox a:visited {
   color: #fff;
@@ -2436,7 +2447,7 @@ a:hover {
 }
 .statusContactCard-icon {
   position: absolute;
-  top: 73px;
+  top: 70px;
   left: 54%;
 }
 .contactStatusMessage {
@@ -3464,9 +3475,6 @@ div.loginBox > form > div > ul > li {
   font-size: 0.875em;
   margin-left: 0.5rem;
 }
-.mapInfo {
-  box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.12);
-}
 .circleBtn-text {
   color: #979797;
 }
@@ -3509,7 +3517,7 @@ div.loginBox > form > div > ul > li {
   float: left;
 }
 #btnSearchDeviceContacts {
-  margin: 0.5rem 1rem;
+  margin: 0.5rem;
 }
 #btnSearchDeviceContacts img {
   vertical-align: bottom;
@@ -4352,6 +4360,11 @@ html .km-pane-wrapper .k-header {
 .topViewSearchBox {
   width: 100%;
   background-color: #f5f5f5;
+  display: none;
+}
+.tempSearchBox {
+  width: 100%;
+  background-color: #f5f5f5;
 }
 .appendSearch {
   background: #fff;
@@ -4382,7 +4395,7 @@ html .km-pane-wrapper .k-header {
 }
 .appendSearch .searchIcon {
   float: left;
-  padding-top: 1em;
+  padding-top: 0.75em;
   color: #979797;
   width: 12%;
   text-align: center;
@@ -4438,8 +4451,6 @@ html .km-pane-wrapper .k-header {
 }
 .chat-message p {
   margin: 0px 0px 4px;
-  font-size: 14px;
-  font-size: 0.875em;
   height: 100%;
 }
 .chat-message h5 {
@@ -4960,7 +4971,7 @@ html .km-pane-wrapper .k-header {
 #places-listview li:not(.km-group-container),
 #findplace-listview li:not(.km-group-container),
 #checkin-listview li:not(.km-group-container) {
-  border-top: 1px solid #E0E0E0 !important;
+  border-bottom: 1px solid #E0E0E0 !important;
 }
 #places-listview li,
 #findplace-listview li,

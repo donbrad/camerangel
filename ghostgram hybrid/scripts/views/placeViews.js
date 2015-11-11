@@ -22,52 +22,7 @@ var placesView = {
 
         placesModel.locatorActive = false;
 
-        // Activate clearsearch and zero the filter when it's called
-        $('#placeSearchQuery').clearSearch({
-            callback: function() {
-                placesView.placeListDS.data(placesModel.placesDS.data());
-                placesView.placeListDS.filter([]);
-            }
-        });
-
-        // Filter current places and query google places on keyup
-        $('#placeSearchQuery').keyup(function() {
-            var query = this.value;
-            if (query.length > 0) {
-               placesView.placeListDS.filter(  {"logic":"or",
-                    "filters":[
-                        {
-                            "field":"address",
-                            "operator":"contains",
-                            "value":query},
-                        {
-                            "field":"name",
-                            "operator":"contains",
-                            "value":query},
-                        {
-                            "field":"city",
-                            "operator":"contains",
-                            "value":query},
-                        {
-                            "field":"state",
-                            "operator":"contains",
-                            "value":query},
-                        {
-                            "field":"zipcode",
-                            "operator":"contains",
-                            "value":query},
-                        {
-                            "field":"alias",
-                            "operator":"contains",
-                            "value":query}
-                    ]});
-
-            } else {
-
-                placesView.placeListDS.data(placesModel.placesDS.data());
-                placesView.placeListDS.filter([]);
-            }
-        });
+        
 
         $("#places-listview").kendoMobileListView({
             dataSource: placesView.placeListDS,
@@ -107,6 +62,58 @@ var placesView = {
         });
     },
 
+    searchBind: function(){
+    	// Set placeholder
+    	$('.gg_mainSearchInput').attr('placeholder', 'Search places...');
+
+    	
+
+        // Filter current places and query google places on keyup
+        $('.gg_mainSearchInput').on('input', function() {
+            var query = this.value;
+            if (query.length > 0) {
+               placesView.placeListDS.filter(  {"logic":"or",
+                    "filters":[
+                        {
+                            "field":"address",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"name",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"city",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"state",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"zipcode",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"alias",
+                            "operator":"contains",
+                            "value":query}
+                    ]});
+
+            } else {
+
+                placesView.placeListDS.data(placesModel.placesDS.data());
+                placesView.placeListDS.filter([]);
+            }
+        // Activate clearsearch and zero the filter when it's called
+        }).clearSearch({
+            callback: function() {
+                placesView.placeListDS.data(placesModel.placesDS.data());
+                placesView.placeListDS.filter([]);
+            }
+        });
+    },
+
     editPlaceBtn: function(e){
     	var place = e.button[0].dataset["id"];
     	var navStr = "#editPlace?place="+LZString.compressToEncodedURIComponent(place)+"&returnview=places";
@@ -123,7 +130,6 @@ var placesView = {
     onShow: function (e) {
         _preventDefault(e);
 
-        ux.scrollUpSearch(e);
         // Always display the add places button so users can create a new place (even if others exist)
         
         // update actionBtn
@@ -144,50 +150,9 @@ var placesView = {
 
             placesView.placeListDS.data(placesModel.placesDS.data());
         });
-
-       /*mapModel.getCurrentPosition( function (lat,lng) {
-
         
-
-        
-        // get current position
-       	 mapModel.getCurrentPosition( function (lat,lng) {
-
-
-           //Compute distance for all places based on current locaiton
-           mapModel.computePlaceDistance();
-           placesView.placeListDS.data(placesModel.placesDS.data());
-           
-
-           //Compute distance for all places based on current locaiton
-           mapModel.computePlaceDistance();
-           placesView.placeListDS.data(placesModel.placesDS.data());
-
-
-            var places = placesModel.matchLocation(lat, lng);
-
-            if (places.length === 0) {
-                mobileNotify("No places match your current location");
-                var findPlaceUrl = "#findPlace?lat="+ lat + "&lng=" +  lng +"&returnview=places";
-                // No current places match the current location
-                
-            } else {
-
-                for (var i=0; i<places.length; i++) {
-                    var found = false;
-                    if (mapModel.currentPlaceId === places[i].uuid) {
-                        found = true;
-
-                    }
-                }
-
-                if (!found) {
-                    mobileNotify("Are you at a new Place?");
-                }
-                // set placesView.placeListDS to results
-            }
-
-        });*/
+        // Binding channel search
+       	placesView.searchBind();
     },
 
     onHide: function (e) {
@@ -197,6 +162,8 @@ var placesView = {
         ux.showActionBtn(false, "#places");
         //ux.hideActionBtnText("#places");
         ux.changeActionBtnImg("#places", "nav-add-white");
+
+        ux.resetSearch();
     }
 
 };
