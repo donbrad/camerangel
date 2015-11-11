@@ -112,6 +112,11 @@ var photoModel = {
                 updateParseObject('photos', "photoId", photo.photoId, "eventName",  null);
             }
 
+            if (photo.deviceUrl === undefined) {
+                photo.deviceUrl = null;
+                updateParseObject('photos', "photoId", photo.photoId, "deviceUrl",  null);
+            }
+
             if (photo.address === undefined) {
 
                 photo.address = null;
@@ -134,7 +139,7 @@ var photoModel = {
             }
 
             if (photo.dateString === undefined) {
-                var timeStamp = photo.timeStamp;
+                var timeStamp = parseInt(photo.timeStamp);
                 var timeStr = moment.unix(timeStamp).format('MMMM Do YYYY, h:mm'); // October 7th 2015, 10:26 am
 
                 photo.dateString = timeStr;
