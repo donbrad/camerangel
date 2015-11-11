@@ -82,11 +82,11 @@ var photoModel = {
             updateParseObject('photos', "photoId", photo.photoId, "version", photoModel._version);
 
             if (photo.senderUUID === undefined) {
-                photo.senderUUID = userModel.currentUser.userUUID;
-                photo.senderName = userModel.currentUser.name;;
+                photo.senderUUID = null;
+                photo.senderName = null;
 
-                updateParseObject('photos', "photoId", photo.photoId, "senderUUID",  userModel.currentUser.userUUID);
-                updateParseObject('photos', "photoId", photo.photoId, "senderName",  userModel.currentUser.name);
+                updateParseObject('photos', "photoId", photo.photoId, "senderUUID",  null);
+                updateParseObject('photos', "photoId", photo.photoId, "senderName",  null);
             }
 
             if (photo.channelId === undefined) {
