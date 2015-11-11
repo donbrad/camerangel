@@ -555,6 +555,7 @@ var galleryPicker = {
         var photo = e.dataItem;
         galleryPicker.photo = photo;
 
+        gallerPicker.closeModal();
         if (galleryPicker._callback !== null) {
             galleryPicker._callback(photo);
         }
