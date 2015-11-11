@@ -82,32 +82,32 @@ var photoModel = {
             updateParseObject('photos', "photoId", photo.photoId, "version", photoModel._version);
 
             if (photo.senderUUID === undefined) {
-                photo.set('senderUUID', userModel.currentUser.userUUID);
-                photo.set('senderName', userModel.currentUser.name);
+                photo.senderUUID = userModel.currentUser.userUUID;
+                photo.senderName = userModel.currentUser.name;;
 
                 updateParseObject('photos', "photoId", photo.photoId, "senderUUID",  userModel.currentUser.userUUID);
                 updateParseObject('photos', "photoId", photo.photoId, "senderName",  userModel.currentUser.name);
             }
 
             if (photo.channelId === undefined) {
-                photo.set('channelId', null);
-                photo.set('channelName', null);
+                photo.channelId = null;
+                photo.channelName = null;
 
                 updateParseObject('photos', "photoId", photo.photoId, "channelId",  null);
                 updateParseObject('photos', "photoId", photo.photoId, "channelName",  null);
             }
 
             if (photo.placeId === undefined) {
-                photo.set('placeId', null);
-                photo.set('placeName', null);
+                photo.placeId = null;
+                photo.placeName= null;
 
                 updateParseObject('photos', "photoId", photo.photoId, "placeId",  null);
                 updateParseObject('photos', "photoId", photo.photoId, "placeName",  null);
             }
 
             if (photo.eventId === undefined) {
-                photo.set('eventId', null);
-                photo.set('eventName', null);
+                photo.eventId = null;
+                photo.eventName= null;
 
                 updateParseObject('photos', "photoId", photo.photoId, "eventId",  null);
                 updateParseObject('photos', "photoId", photo.photoId, "eventName",  null);
@@ -115,7 +115,7 @@ var photoModel = {
 
             if (photo.addresString === undefined) {
 
-                photo.set('addressString', null);
+                photo.addressString = null;
 
                 updateParseObject('photos', "photoId", photo.photoId, "addressString",  null);
             }
@@ -124,7 +124,7 @@ var photoModel = {
                 var timeStamp = photo.timeStamp;
                 var timeStr = moment.unix(timeStamp).format('MMMM Do YYYY, h:mm'); // October 7th 2015, 10:26 am
 
-                photo.set('dateString', timeStr);
+                photo.dateString = timeStr;
 
                 updateParseObject('photos', "photoId", photo.photoId, "dateString",  timeStr);
             }
@@ -132,21 +132,21 @@ var photoModel = {
 
             if (photo.title === undefined) {
 
-                photo.set('title', null);
+                photo.title = null;
 
                 updateParseObject('photos', "photoId", photo.photoId, "title",  null);
             }
 
             if (photo.description === undefined) {
 
-                photo.set('description', null);
+                photo.description = null;
 
                 updateParseObject('photos', "photoId", photo.photoId, "description",  null);
             }
 
             if (photo.tags === undefined) {
 
-                photo.set('tags', []);
+                photo.tags = [];
 
                 updateParseObject('photos', "photoId", photo.photoId, "tags",  []);
             }
