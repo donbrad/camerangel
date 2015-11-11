@@ -620,7 +620,6 @@ var addContactView = {
         }
 
         contact.set("phone", phone);
-
         // Close modal
         $("#modalview-AddContact").data("kendoMobileModalView").close();
 

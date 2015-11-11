@@ -488,8 +488,11 @@ var editProfilePhotoView = {
         );
     },
 
-    doGallery : function (e) {
+    doMemories : function (e) {
        _preventDefault(e);
+        galleryPicker.openModal(function (photo) {
+
+        });
     },
 
     updateUserPhotoUrl : function (e) {

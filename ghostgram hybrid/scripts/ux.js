@@ -191,10 +191,6 @@ var ux = {
     	$("#modalview-signup").kendoMobileModalView("close");
 	},
 
-	closeModalViewGalleryPicker: function(e) {
-		_preventDefault(e);
-    	$("#modalview-galleryPicker").kendoMobileModalView("close");
-	},
 
 	closeModalViewRecoverPassword: function(e) {
 		_preventDefault(e);

@@ -531,3 +531,55 @@ var modalGalleryView = {
     }
 
 };
+
+
+var galleryPicker = {
+    _photoId : null,
+    _imageUrl: null,
+    _callback : null,
+
+    onInit : function (e) {
+        _preventDefault(e);
+    },
+
+
+    onOpen : function (e) {
+        _preventDefault(e);
+    },
+
+    onClose : function (e) {
+        _preventDefault(e);
+    },
+
+    onGalleryClick : function (e) {
+        var photo = e.dataItem;
+        galleryPicker._imageUrl = photo.imageUrl;
+
+        if (galleryPicker.callback !== null) {
+            callback(photo);
+        }
+    },
+
+    openModal : function (callback)  {
+        if (callback !== undefined) {
+            galleryPicker._callback = callback;
+        }
+        $("#modalview-galleryPicker").kendoMobileModalView("open");
+    },
+
+    closeModal : function ()  {
+        _preventDefault(e);
+        $("#modalview-galleryPicker").kendoMobileModalView("close");
+    },
+
+    setListView : function (e) {
+        $("#galleryPicker-listview li").css("width","100%");
+        $("#galleryPicker-listview li").css("padding-bottom","100%");
+    },
+
+    setGridView : function (e) {
+        $("#galleryPicker-listview li").css("width","33%");
+        $("#galleryPicker-listview li").css("padding-bottom","33%");
+    }
+
+};

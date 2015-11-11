@@ -531,22 +531,21 @@
 
 
 <!-- Gallery Picker -- pick an image from the ghostgrams Gallery -->
-<div data-role="modalview" id="modalview-galleryPicker" style="width: 100%; height:100%; display: none;"  class="appearance" data-init="onGalleryPickerInit">
+<div data-role="modalview" id="modalview-galleryPicker" style="width: 100%; height:100%; display: none;"  class="appearance" data-init="galleryPicker.onInit">
     <div data-role="header">
         <div data-role="navbar">
             <span>Gallery Picker</span>
-            <a data-click="ux.closeModalViewGalleryPicker" data-role="button" data-align="left">Done</a>
+            <a data-click="galleryPicker.closeModal" data-role="button" data-align="left">Done</a>
         </div>
 	</div>
 		
-	<div style="padding-top: 4px; padding-bottom: 6px; padding-left: 6px; background: #e2e2e2; ">
-        <a  data-role="button" class="btnBlack-sm"  data-click="modalGalleryZoomIn"> <i class="fa fa-search-plus"></i> </a>
-        <a  data-role="button" class="btnBlack-sm"  data-click="modalGalleryZoomOut"> <i class="fa fa-search-minus"></i> </a>
-        <select  id="galleryPickerSearch" multiple="multiple" style="width:75%; padding-top: 2px;"> </select>
+	<div style="padding-top: 4px; padding-bottom: 6px; padding-left: 6px; text-align: center;">
+        <a  data-role="button" class="btnClearLine-grey-sm"  data-click="galleryPicker.setListView">List View</a>
+        <a  data-role="button" class="btnClearLine-grey-sm"  data-click="galleryPicker.setGridView">Grid View </a>
     </div>
 
     <div>
-        <ul id="galleryPicker-listview" class="list-inline" data-role="listview" data-click="galleryPickerClick" data-source="photoModel.photosDS" data-template="galleryPicker-template"></ul>
+        <ul id="galleryPicker-listview" class="list-inline" data-role="listview" data-click="galleryPicker.onGalleryClick" data-source="photoModel.photosDS" data-template="galleryPicker-template"></ul>
     </div>
 
 </div>
