@@ -102,7 +102,7 @@ var notificationModel = {
                     // Todo: check status of members
                     var date = object.get('updatedAt');
                     object.set('date',Date.parse(date));
-                    var data = object.attributes;
+                    var data = object.toJSON();
                     userNotifications.push(JSON.stringify(data));
                     notificationModel.notificationDS.add(data);
                     deviceModel.setAppState('introFetched', true);

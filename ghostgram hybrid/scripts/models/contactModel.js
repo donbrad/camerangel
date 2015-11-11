@@ -229,7 +229,8 @@ var contactModel = {
                         model.save();
                     }
 
-                    models.push(model.attributes);
+                    var data = model.toJSON();
+                    models.push(data);
                 }
                 deviceModel.setAppState('hasContacts', true);
                 contactModel.contactsDS.data(models);

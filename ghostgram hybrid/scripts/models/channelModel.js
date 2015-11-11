@@ -53,7 +53,7 @@ var channelModel = {
                 var models = new Array();
                 for (var i = 0; i < collection.length; i++) {
                     var object = collection[i];
-                    var data = object.attributes;
+
                     // Todo: check status of members
                     if (data.isOwner) {
                         if (data.ownerId === undefined) {
@@ -62,7 +62,8 @@ var channelModel = {
                         }
                     }
 
-                    models.push(object.attributes);
+                    var data = object.toJSON();
+                    models.push(data);
                 }
                 channelModel.channelsDS.data(models);
                 deviceModel.setAppState('hasChannels', true);

@@ -129,8 +129,8 @@ var placesModel = {
             success: function(collection) {
                 var models = [];
                 for (var i = 0; i < collection.length; i++) {
-                    var model = collection[i];
-                    models.push(model.attributes);
+                    var model = collection[i].toJSON();
+                    models.push(model);
                 }
 
                 placesModel.placesDS.data(models);
