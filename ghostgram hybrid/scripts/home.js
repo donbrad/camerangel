@@ -237,6 +237,11 @@ var homeView = {
 		})
 	},
 
+	onHideHome: function(){
+		$(".homeToggleSetting").addClass("hidden");
+		$(".homeToggleSearch").removeClass("hidden");
+	},
+
 	closeStatusModal: function(){
 		$("#modalview-profileStatus").data("kendoMobileModalView").close();
 	},
@@ -417,8 +422,9 @@ function onShowSignIn(e){
 function onShowHome(e) {
 	_preventDefault(e);
 
-	// set search bar
-    ux.scrollUpSearch(e);
+	// hide search button and show gear
+	$(".homeToggleSetting").removeClass("hidden");
+	$(".homeToggleSearch").addClass("hidden");
 
     // set verified ui for start screen 
     if(userModel.currentUser.phoneVerified) {

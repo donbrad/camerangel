@@ -1,16 +1,8 @@
 <div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="contactModel" data-init="contactsView.onInit" data-show="contactsView.onShow" data-before-hide="contactsView.onBeforeHide" style="display: none;">
-
-	<div class="topViewSearchBox">
-	 		<div class="appendSearch">
-				<span class="searchIcon"><img src="images/search.svg" /></span>
-				<input class="doubleAppendSearch"  type="search" placeholder="Search Contacts..." id="contactsSearchQuery" />
-			</div>
-		
-		<a class="hidden btnClear-sm" data-role="button" data-click="contactsView.searchDeviceContacts" id="btnSearchDeviceContacts">
+		<a class="hidden btnClear" data-role="button" data-click="contactsView.searchDeviceContacts" id="btnSearchDeviceContacts">
 			<img src="images/contacts.svg" /> 
 			Search device for "<span id="btnSearchDeviceName"></span>"
 		</a>
-	</div>
 		<div id="contactListDiv" style="padding-bottom: 24px;">
 	        <ul id="contacts-listview"></ul>
 			<!-- Only display if device permission is needed -->
@@ -39,7 +31,7 @@
     <div class="topViewSearchBox">
 	 		<div class="appendSearch">
 				<span class="searchIcon"><img src="images/search.svg" /></span>
-				<input type="search" id="contactImportQuery" class="viewSearchBox" placeholder="Enter name and pause..."/>
+				<input type="search" id="contactImportQuery" class="viewSearchBox" placeholder="Search device contacts..."/>
 			</div>
 		</div>   
     <div  style="padding-bottom: 24px;">
@@ -337,7 +329,7 @@
 							</h4>
 						</div>
 
-						<div class="left contact-status">
+						<div class="left contact-status textClamp">
 							<p class="left contactStatusMessage-sm">
 							# var message = "", location = ""; 
 								if (data.statusMessage !== undefined && data.statusMessage !== "") {
@@ -403,9 +395,6 @@
 <script type="text/x-kendo-template" id="deviceContactsTemplate">
   			<div> 
 				  <h3>#:data.name#
-			  		<span class="right">
-			  			<a class="addBtn-sm">Add</a>
-			  		</span>
 			  	</h3>
 			  <table class="contactImportTable">
 			  	#if (data.emails.length > 0) {#

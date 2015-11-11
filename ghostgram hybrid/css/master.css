@@ -1238,7 +1238,7 @@ div.km-header a img {
 .km-material input:checked,
 .km-material .km-touch-scrollbar,
 .km-material input[type=text]:not(.k-input):focus {
-  color: #2E93FD;
+  color: #4A4A4A !important;
 }
 /*
 .km-view {
@@ -1417,10 +1417,11 @@ div.footerMenu.km-footer > ul > li > a:active {
 .statusCharacterCount {
   position: relative;
   color: #979797;
-  top: -3em;
+  top: -2.5em;
   z-index: 1;
-  right: -93%;
+  right: -91%;
   display: inline-block;
+  font-size: 0.85em;
 }
 .home-headerBtn {
   padding: 0px;
@@ -1516,6 +1517,10 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .nav-gear {
   height: 24px !important;
+  vertical-align: middle;
+}
+.nav-search {
+  height: 20px !important;
   vertical-align: middle;
 }
 .home-status {
@@ -2326,7 +2331,6 @@ a:hover {
 }
 .distPlace {
   color: #979797;
-  font-size: 0.75em;
   float: right;
 }
 .menuBox a:visited {
@@ -2443,7 +2447,7 @@ a:hover {
 }
 .statusContactCard-icon {
   position: absolute;
-  top: 73px;
+  top: 70px;
   left: 54%;
 }
 .contactStatusMessage {
@@ -3516,7 +3520,7 @@ div.loginBox > form > div > ul > li {
   float: left;
 }
 #btnSearchDeviceContacts {
-  margin: 0.5rem 1rem;
+  margin: 0.5rem;
 }
 #btnSearchDeviceContacts img {
   vertical-align: bottom;
@@ -4359,6 +4363,7 @@ html .km-pane-wrapper .k-header {
 .topViewSearchBox {
   width: 100%;
   background-color: #f5f5f5;
+  display: none;
 }
 .appendSearch {
   background: #fff;
@@ -4965,7 +4970,7 @@ html .km-pane-wrapper .k-header {
 #places-listview li:not(.km-group-container),
 #findplace-listview li:not(.km-group-container),
 #checkin-listview li:not(.km-group-container) {
-  border-top: 1px solid #E0E0E0 !important;
+  border-bottom: 1px solid #E0E0E0 !important;
 }
 #places-listview li,
 #findplace-listview li,

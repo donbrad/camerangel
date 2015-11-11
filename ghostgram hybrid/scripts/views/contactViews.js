@@ -16,7 +16,7 @@
 var contactsView = {
 
     onInit : function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
 
         contactModel.deviceQueryActive = false;
 
@@ -32,35 +32,7 @@ var contactsView = {
             }
         });*/
 
-        $('#contactsSearchQuery').on('input', function() {
-            var query = this.value;
-            if (query.length > 0) {
-                contactModel.contactListDS.filter( {"logic":"or",
-                    "filters":[
-                        {
-                            "field":"name",
-                            "operator":"contains",
-                            "value":query},
-                        {
-                            "field":"alias",
-                            "operator":"contains",
-                            "value":query},
-                        {
-                            "field":"group",
-                            "operator":"contains",
-                            "value":query}
-                    ]});
-                if (query.length > 2) {
-                    $('#btnSearchDeviceContacts').removeClass('hidden');
-                }
-
-                $("#btnSearchDeviceName").text(query);
-
-            } else {
-                contactModel.contactListDS.filter([]);
-                contactsView.hideSearchUX();
-            }
-        });
+        
 
         $("#contacts-listview").kendoMobileListView({
             dataSource: contactModel.contactListDS,
@@ -138,6 +110,50 @@ var contactsView = {
        // $("#contactSearchInput" ).on('input', contactsView.updateSearchUX);
     },
 
+    searchBind: function(){
+    	$('.gg_mainSearchInput').attr("placeholder", "Search contacts...");
+    	
+    	$('.gg_mainSearchInput').on('input', function() {
+        	
+            var query = this.value;
+            if (query.length > 0) {
+                contactModel.contactListDS.filter( {"logic":"or",
+                    "filters":[
+                        {
+                            "field":"name",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"alias",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"group",
+                            "operator":"contains",
+                            "value":query}
+                    ]});
+                if (query.length > 2) {
+                    $('#btnSearchDeviceContacts').removeClass('hidden');
+                }
+
+                $("#btnSearchDeviceName").text(query);
+
+            } else {
+                contactModel.contactListDS.filter([]);
+                contactsView.hideSearchUX();
+            }
+        }).clearSearch({
+            callback: function() {
+                contactModel.contactListDS.data(contactModel.contactListDS.data());
+                contactModel.contactListDS.filter([]);
+
+                // hide find on device btn
+                $('#btnSearchDeviceContacts').addClass('hidden');
+                $('#btnSearchDeviceName').val('')
+            }
+        });
+    },
+
     onShow : function (e) {
        _preventDefault(e);
 
@@ -152,6 +168,8 @@ var contactsView = {
         // set action button
     	ux.showActionBtn(true, "#contacts", "#contactImport");
     	ux.showActionBtnText("#contacts", "3em", "New Contact");
+    	// Bind contact search
+    	contactsView.searchBind();
     },
 
     // All update the ContactListDS item with current changes
@@ -162,6 +180,8 @@ var contactsView = {
 
     onBeforeHide: function(){
     	ux.showActionBtn(false, "#contacts");
+    	$("#btnSearchDeviceContacts").addClass("hidden");
+    	ux.resetSearch();
     },
 
     updateSearchUX: function (event) {
