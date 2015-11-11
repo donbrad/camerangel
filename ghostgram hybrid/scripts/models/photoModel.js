@@ -31,8 +31,7 @@ var photoModel = {
                 mobileNotify("Fetching and upgrading photos ...");
                 var models = [];
                 for (var i = 0; i < collection.length; i++) {
-                    var photo = collection[i].attributes;
-                    delete photo.__proto__;
+                    var photo = collection[i].toJSON();
                     photoModel.upgradePhoto(photo);
                     models.push(photo);
                 }
