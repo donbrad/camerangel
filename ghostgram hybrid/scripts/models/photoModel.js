@@ -32,6 +32,7 @@ var photoModel = {
                 var models = [];
                 for (var i = 0; i < collection.length; i++) {
                     var photo = collection[i].attributes;
+                    delete photo.__proto__;
                     photoModel.upgradePhoto(photo);
                     models.push(photo);
                 }
