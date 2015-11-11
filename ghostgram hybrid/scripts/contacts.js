@@ -554,9 +554,7 @@ function onInitContactImport (e) {
             template: $("#deviceContactsTemplate").html(),
 			headerTemplate: "${value}",
             fixedHeaders: true,
-            click: launchAddContact
-
-
+            click: launchAddContact,
     });
 }
 

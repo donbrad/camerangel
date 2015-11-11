@@ -115,7 +115,7 @@ var ux = {
 
 	scrollUpSearch: function(e){
 		var scroller = e.view.scroller;
-    	scroller.scrollTo(0,-47);
+    	scroller.scrollTo(0,0);
 	},
 
 	returnUserFontSize: function(){
@@ -450,6 +450,45 @@ var ux = {
 	closeModalViewAddPhoto: function(e) {
 		_preventDefault(e);
     	$("#modalview-gallery-addPhoto").kendoMobileModalView("close");
+	},
+
+	toggleSearch: function(e){
+		var toggleVisible = $(".gg_mainSearchBox").data("visible");
+		
+		if(toggleVisible === true){
+			// 
+			$(".gg_mainSearchBox")
+				.velocity("slideUp", {
+					duration: 300
+					})
+				.data("visible", false);
+		// Todo - add clearing onput on hide
+
+		} else {
+			$(".gg_mainSearchBox")
+				.velocity("slideDown", {
+					duration: 300
+				})
+				.data("visible", true);
+
+		}
+		
+	},
+
+	setSearchPlaceholder: function(placeholder){
+		$(".gg_mainSearchInput").attr({
+			"placeholder": placeholder
+		});
+	},
+
+	resetSearch: function(){
+		$(".gg_mainSearchInput").attr({
+			"placeholder": ""
+		});
+
+		$(".gg_mainSearchBox").css("display", "none").data("visible", false);
+
+		$(".gg_mainSearchInput").unbind();
 	}
 
 };

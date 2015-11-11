@@ -45,20 +45,7 @@ var galleryView = {
         photoModel.optionsShown = true;
 
 
-        $("#gallerySearch").keyup(function() {
-            var query = $("#gallerySearch").val();
-            if (query.length > 0) {
-
-            }
-
-        });
-
-        // Action functions should be in onInit...
-        $('#gallerySearchQuery').clearSearch({
-            callback: function() {
-                // todo - wire search
-            }
-        });
+        
 
         var scroller = e.view.scroller;
         //scroller.scrollTo(0,-44);
@@ -81,6 +68,23 @@ var galleryView = {
 
     },
 
+    searchBind: function(){
+    	$('.gg_mainSearchInput').attr('placeholder', 'Search memories...');
+
+    	$(".gg_mainSearchInput").on('input', function() {
+            var query = $(this).val();
+            if (query.length > 0) {
+
+            }
+
+        }).clearSearch({
+            callback: function() {
+                // todo - wire search
+            }
+        });
+
+    },
+
     onShow : function (e) {
 
         _preventDefault(e);
@@ -96,6 +100,9 @@ var galleryView = {
         if (e.view.params.returnview !== undefined) {
             galleryView._returnView = e.view.params.returnview;
         }
+
+        // set search 
+        galleryView.searchBind();
 
         photoModel.rotationAngle = 0;
         
@@ -158,6 +165,8 @@ var galleryView = {
 
         $actionBtnP.removeClass("actionBtn-text-light").text("");
 
+        // reset search
+        ux.resetSearch();
     },
 
     galleryActionView: function(e){

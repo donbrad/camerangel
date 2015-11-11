@@ -14,7 +14,7 @@ var userStatusView = {
     _activeStatus : new kendo.data.ObservableObject(),
     _returnView : null,
     _modalId : "#modalview-profileStatus",
-    _profileStatusMax: 40,
+    _profileStatusMax: 35,
 
     _update : function () {
         var status = userStatusView._activeStatus, user = userModel.currentUser;
