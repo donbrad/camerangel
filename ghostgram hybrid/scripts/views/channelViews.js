@@ -1360,7 +1360,7 @@ var channelView = {
         _preventDefault(e);
 
          galleryPicker.openModal(function (photo) {
-             var url = photo.photoUrl;
+             var url = photo.imageUrl;
              if (photo.thumbnailUrl !== undefined)
                 url = photo.thumbnailUrl;
              channelView.showChatImagePreview(url);
