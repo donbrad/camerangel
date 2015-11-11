@@ -55,8 +55,8 @@ var channelModel = {
                     var object = collection[i];
 
                     // Todo: check status of members
-                    if (data.isOwner) {
-                        if (data.ownerId === undefined) {
+                    if (object.get('isOwner')) {
+                        if (object.get('ownerId') === undefined) {
                             object.set('ownerId', userModel.currentUser.userUUID);
                             object.save();
                         }
