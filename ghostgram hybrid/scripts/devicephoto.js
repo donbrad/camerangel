@@ -215,8 +215,9 @@ function resizeSuccessThumb (data) {
 
     var imageUrl = deviceModel.fileDirectory+data.filename;
 
+    photoModel.addDevicePhoto(data);
 
-    // Todo: add additional processing to create ParsePhoto and photoOffer
+   /* // Todo: add additional processing to create ParsePhoto and photoOffer
     var Photos = Parse.Object.extend("photos");
     var photo = new Photos();
 
@@ -275,7 +276,7 @@ function resizeSuccessThumb (data) {
         photo.save(null, {
             success: function(photo) {
                 // Execute any logic that should take place after the object is saved.
-                mobileNotify('Photo added to ghostgrams gallery');
+                mobileNotify('Photo added to Mer gallery');
                 photoModel.photosDS.add(photo.attributes);
                 photoModel.parsePhoto = photo;
                currentChannelModel.currentMessage.photo = {thumb: photo.get('thumbnailUrl'), photo: photo.get('imageUrl'), phone: photo.get('phoneUrl')};
@@ -288,5 +289,5 @@ function resizeSuccessThumb (data) {
             }
         });
     });
-
+*/
 }
