@@ -555,8 +555,8 @@ var galleryPicker = {
         var photo = e.dataItem;
         galleryPicker.photo = photo;
 
-        if (galleryPicker.callback !== null) {
-            galleryPicker.callback(photo);
+        if (galleryPicker._callback !== null) {
+            galleryPicker._callback(photo);
         }
     },
 
