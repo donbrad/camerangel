@@ -163,8 +163,7 @@ var contactsView = {
 
         contactModel.updateContactListStatus();
 
-        // set search bar
-        ux.scrollUpSearch(e);
+        $('#contacts .gg_mainSearchInput').val('');
 
         // set action button
     	ux.showActionBtn(true, "#contacts", "#contactImport");
