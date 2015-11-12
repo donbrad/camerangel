@@ -2627,8 +2627,11 @@ a:hover {
 #channelPresence > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
   background: #323642;
 }
-.memberTempName {
+#channelPresence-listview > li > div > div.memberTempName > h4 {
   color: #fff;
+}
+.memberTempName {
+  color: #4A4A4A;
 }
 #channelPresence > div.km-header > div > div.km-view-title {
   background: #323642;
@@ -4074,6 +4077,7 @@ div.contactListBox.activeContact > div > div > ul {
 }
 .editMemberName {
   padding-top: 0.75rem;
+  padding-right: 1.5em;
 }
 .deleteMemberText {
   position: absolute;
