@@ -457,7 +457,7 @@ function onInitContacts(e) {
 			if (contact.category === 'phone') {
                 if (contactModel.unifiedDeviceContact) {
                     // Have a unified device contact -- just to add contact
-                    launchAddContact({dataItem : contact});
+                   addContactView.openModal(contact);
                 } else {
                     // Still have multiple contacts
                     APP.kendo.navigate('#contactImport?query=' + contact.name);

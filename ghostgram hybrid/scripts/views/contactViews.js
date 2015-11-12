@@ -47,12 +47,13 @@ var contactsView = {
                     mobileNotify('Contact List: no matching Contact in ContactsDS');
                     return;
                 }
+
                 updateCurrentContact(contact);
 
                 if (contact.category === 'phone') {
                     if (contactModel.unifiedDeviceContact) {
                         // Have a unified device contact -- just to add contact
-                        contactsView.launchAddContact({dataItem : contact});
+                       addContactView.openModal(contact);
                     } else {
                         // Still have multiple contacts
                         APP.kendo.navigate('#contactImport?query=' + contact.name);
@@ -291,6 +292,7 @@ var contactsView = {
  */
 
 var contactImportView = {
+
     onInit: function (e) {
         _preventDefault(e);
 
@@ -356,9 +358,8 @@ var contactImportView = {
     },
 
     searchContacts: function (e) {
-        if (e !== undefined && e.preventDefault !== undefined) {
-            e.preventDefault();
-        }
+       _preventDefault(e);
+
         var query = $('#contactImportQuery').val();
 
         if (query.length > 2) {
@@ -375,9 +376,7 @@ var contactImportView = {
     },
 
     processDeviceContact: function (e) {
-        if (e !== undefined && e.preventDefault !== undefined) {
-            e.preventDefault();
-        }
+        _preventDefault();
 
         contactModel.currentDeviceContact = e.dataItem;
         // User has picked a contact from the list --
@@ -444,10 +443,6 @@ var contactImportView = {
             contactImportView.launchAddContact();
 
         });
-    },
-
-    launchAddContact : function () {
-        $("#modalview-AddContact").data("kendoMobileModalView").open();
     }
 };
 
@@ -456,9 +451,9 @@ var contactImportView = {
  */
 
 var addContactView = {
+
     doInit: function (e) {
-        if (e !== undefined && e.preventDefault !== undefined)
-            e.preventDefault();
+        _preventDefault(e);
 
         $( "#addContactPhone" ).change(function() {
             var phone = $("#addContactPhone").val();
@@ -476,12 +471,12 @@ var addContactView = {
         });
     },
 
-    doShow : function (e) {
-       _preventDefault(e);
+    openModal : function (contact) {
+
 
         // Hide the Add Contact Button until the mobile number is validated...
         $('#addContacViewAddButton').addClass('hidden');
-        var data = contactModel.currentDeviceContact;
+        var data = contact;
 
         // Set name
         var name = data.name;
@@ -528,8 +523,6 @@ var addContactView = {
             contactModel.addressArray.push(address);
         }
 
-
-
         contactModel.phoneDS.data( contactModel.phoneArray);
         contactModel.emailDS.data( contactModel.emailArray);
         contactModel.addressDS.data( contactModel.addressArray);
@@ -552,8 +545,12 @@ var addContactView = {
             });
         }
 
+        $("#modalview-AddContact").data("kendoMobileModalView").open();
 
+    },
 
+    closeModal : function () {
+        $("#modalview-AddContact").data("kendoMobileModalView").close();
     },
 
     addChatContact : function (guid, name, alias, contactUUID) {
@@ -590,6 +587,7 @@ var addContactView = {
 
                 contactModel.contactsDS.add(contact.attributes);
                 contactModel.contactListDS.add(contact.attributes);
+                addContactView.closeModal();
             },
             error: function(contact, error) {
                 // Execute any logic that should take place if the save fails.
@@ -635,13 +633,13 @@ var addContactView = {
 
         if (contactModel.findContactByPhone(phone) !== undefined) {
             mobileNotify("Existing contact with this phone number");
-            $("#modalview-AddContact").data("kendoMobileModalView").close();
+            addContactView.closeModal();
             return;
         }
 
         contact.set("phone", phone);
         // Close modal
-        $("#modalview-AddContact").data("kendoMobileModalView").close();
+        addContactView.closeModal();
 
         mobileNotify("Invite sent");
 
@@ -692,11 +690,12 @@ var addContactView = {
                   var url = contactModel.createIdenticon(guid);
                   contact.set('identicon',url);
                   if ( contact.attributes.photo !== null || contact.attributes.photo !== '') {
-                    contact.set('photo',url);;
+                    contact.set('photo',url);
                   }
 
                   contactModel.contactsDS.add(contact.attributes);
                   contactModel.contactListDS.add(contact.attributes);
+                  addContactView.closeModal();
                   APP.kendo.navigate('#contacts');
               },
               error: function(contact, error) {
