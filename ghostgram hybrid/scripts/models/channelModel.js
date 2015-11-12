@@ -398,9 +398,11 @@ var channelModel = {
             channelId = channelUUID;
 
         // If this is a member request, channelUUID will be passed in.
-        // If user is creating new channel, they own it so create new uuid
+        // If user is creating new channel, they own it so create new uuid and update ownerUUID and ownerName 
         if (isOwner) {
             channelId = uuid.v4();
+            ownerUUID = userModel.currentUser.userUUID;
+            ownerName = userModel.currentUser.name;
         }
 
 
