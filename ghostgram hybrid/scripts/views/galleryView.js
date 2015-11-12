@@ -620,6 +620,40 @@ var galleryPicker = {
 
     onInit : function (e) {
         _preventDefault(e);
+
+        $('#galleryPickerSearch').on('input', function() {
+            var query = this.value;
+            if (query.length > 0) {
+                photoModel.photosDS.filter( {"logic":"or",
+                    "filters":[
+                        {
+                            "field":"title",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"description",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"tagsString",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"dateString",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"addressString",
+                            "operator":"contains",
+                            "value":query}
+                    ]});
+
+
+            } else {
+                photoModel.photosDS.filter([]);
+
+            }
+        });
     },
 
 
@@ -649,6 +683,8 @@ var galleryPicker = {
     },
 
     closeModal : function ()  {
+        // Reset the photo filter...
+        photoModel.photosDS.filter([]);
         $("#modalview-galleryPicker").kendoMobileModalView("close");
     },
 
