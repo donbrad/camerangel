@@ -52,7 +52,7 @@ var contactsView = {
                 if (contact.category === 'phone') {
                     if (contactModel.unifiedDeviceContact) {
                         // Have a unified device contact -- just to add contact
-                        launchAddContact({dataItem : contact});
+                        contactsView.launchAddContact({dataItem : contact});
                     } else {
                         // Still have multiple contacts
                         APP.kendo.navigate('#contactImport?query=' + contact.name);
@@ -185,7 +185,7 @@ var contactsView = {
     },
 
     updateSearchUX: function (event) {
-        var query = $('#contactSearchQuery').val();
+        var query = $('.gg_mainSearchInput').val();
 
         if (query.length > 2) {
             $("#btnSearchDeviceName").text(query);
@@ -207,9 +207,7 @@ var contactsView = {
     },
 
     searchDeviceContacts: function (e) {
-        if (e !== undefined && e.preventDefault !== undefined) {
-            e.preventDefault();
-        }
+       _preventDefault(e);
 
         var query = $('#contactsSearchQuery').val();
 
