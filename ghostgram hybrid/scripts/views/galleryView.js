@@ -210,9 +210,11 @@ var galleryView = {
     galleryClick : function (e) {
         _preventDefault(e);
         
-        var photoId = e.dataItem.photoId, photoUrl = e.dataItem.imageUrl;
-        
-        galleryView._currentPhotoUrl = photoUrl;
+        var photo = e.dataItem, photoId = e.dataItem.photoId, photoUrl = e.dataItem.imageUrl;
+
+        modalPhotoView.openModal(photo);
+
+        /*galleryView._currentPhotoUrl = photoUrl;
         galleryView._currentPhotoId = photoId;
 
        	galleryView._currentPhoto = photoModel.findPhotoById(photoId);
@@ -228,7 +230,7 @@ var galleryView = {
         } else {
             var photoParam = LZString.compressToEncodedURIComponent(photoId);
             APP.kendo.navigate('#photoView?photo='+photoParam);
-        }
+        }*/
     },
 
     deletePhoto: function (e) {
@@ -515,7 +517,7 @@ var modalPhotoView = {
         modalPhotoView._activePhoto.set('tagsString', photo.tagsString);
         var tagString = '';
 
-        if (photo.tags !== undefined && photo.tags.length > 0) {
+       /* if (photo.tags !== undefined && photo.tags.length > 0) {
             for (var i=0; i++; i< photo.tags.length) {
                 tagString += photo.tags[i] + ', ';
             }
@@ -524,7 +526,7 @@ var modalPhotoView = {
             tagString.substring(0,tagString.length - 2);
 
             modalPhotoView._activePhoto.set('tagsString', tagString);
-        }
+        }*/
 
         if (photo.title !== undefined && photo.title !== null)
             $("#modalPhotoViewTitle").text(photo.title);
