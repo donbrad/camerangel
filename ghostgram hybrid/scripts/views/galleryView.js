@@ -509,7 +509,7 @@ var modalPhotoView = {
 
     openModal : function (photo) {
         modalPhotoView._photo = photo;
-        modalPhotoView._photoUrl = url;
+        modalPhotoView._photoUrl = photo.imageUrl;
         modalPhotoView._activePhoto.set('photoId', photo.photoId);
         modalPhotoView._activePhoto.set('title', photo.title);
         modalPhotoView._activePhoto.set('description', photo.description);
