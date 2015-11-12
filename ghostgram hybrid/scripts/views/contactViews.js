@@ -210,7 +210,7 @@ var contactsView = {
     searchDeviceContacts: function (e) {
        _preventDefault(e);
 
-        var query = $('#contactsSearchQuery').val();
+        var query = $('.gg_mailSearchInput').val();
 
         APP.kendo.navigate("#contactImport?query="+query);
 
