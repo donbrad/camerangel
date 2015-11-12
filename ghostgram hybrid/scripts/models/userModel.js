@@ -66,10 +66,10 @@ var userModel = {
     },
 
     initParse: function () {
-       if (! Parse.Session.isCurrentSessionRevocable()) {
+      /* if (! Parse.Session.isCurrentSessionRevocable()) {
            mobileNotify("Please Login on this device");
 
-       }
+       }*/
 
         userModel.parseUser = Parse.User.current();
         userModel.device.udid = device.uuid;
