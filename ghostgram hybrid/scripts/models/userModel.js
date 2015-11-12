@@ -68,6 +68,7 @@ var userModel = {
     initParse: function () {
        if (! Parse.Session.isCurrentSessionRevocable()) {
            mobileNotify("Please Login on this device");
+
        }
 
         userModel.parseUser = Parse.User.current();
@@ -171,7 +172,8 @@ var userModel = {
    sync: function (e) {
       _preventDefault(e);
 
-        userModel.parseUser.set(e.field, userModel.currentUser.get(e.field));
+       var fieldValue = userModel.currentUser.get(e.field);
+        userModel.parseUser.set(e.field, fieldValue);
         userModel.parseUser.save(null, {
             success : function (user){
                 //mobileNotify("Updated your " + e.field);
