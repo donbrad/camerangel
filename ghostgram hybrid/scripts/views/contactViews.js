@@ -342,12 +342,14 @@ var contactImportView = {
     },
 
     onShow: function (e) {
-        if (e !== undefined && e.preventDefault !== undefined) {
-            e.preventDefault();
-        }
-        var query = e.view.params.query;
+       _preventDefault(e);
+        var query = null;
 
-        if (query !== undefined) {
+        if (e.view.params !== undefined) {
+            query = e.view.params.query;
+        }
+
+        if (query !== null) {
             $('#contactImportQuery').val(query);
             deviceFindContacts(query);
         }
