@@ -66,10 +66,10 @@ var userModel = {
     },
 
     initParse: function () {
-       /*if (! Parse.Session.isCurrentSessionRevocable()) {
+       if (! Parse.Session.isCurrentSessionRevocable()) {
            mobileNotify("Please Login on this device");
 
-       }*/
+       }
 
 
         userModel.parseUser = Parse.User.current();
@@ -96,7 +96,7 @@ var userModel = {
             // Need to force parse to actually fetch the data from the service.  Parse creates a local cache of user data that gets saved on login / create
             // account while all user.set / saves are pushed to the cloud...
             mobileNotify("Syncing user data...");
-            Parse.User.current().fetch().then(function (user) {
+            Parse.User.currentAsync().then(function (user) {
 
 
                 userModel.generateUserKey();
