@@ -1190,6 +1190,55 @@ var contactActionView = {
 
     },
 
+    callPhone : function (e) {
+        _preventDefault(e);
+
+        if (window.navigator.simulator === true){
+            mobileNotify("Phone Calls are't supported in the emulator");
+            return;
+        }
+
+        var number = contactModel.currentContact.get('phone');
+        window.plugins.CallNumber.callNumber(
+            function(err) {
+                if (err == "empty")
+                    navigator.notification.alert("Invalid phone number", null, 'ghostgrams dailer', 'Close');
+                else
+                    navigator.notification.alert("Error: " + err , null, 'ghostgrams dailer', 'Close');
+            },
+            function(success) {
+                mobileNotify("Dialing " + number);
+            },
+            number
+        );
+    },
+
+    sendSMS : function (e) {
+        _preventDefault(e);
+
+        var number = contactModel.currentContact.get('phone');
+        var message = "";
+
+        //CONFIGURATION
+        var options = {
+            android: {
+                intent: 'INTENT'  // send SMS with the native android SMS messaging
+                //intent: '' // send SMS without openning any other app
+            }
+        };
+
+        var success = function () { mobileNotify('Message sent successfully'); };
+        var error = function (e) { mobileNotify('Message Failed:' + e); };
+
+        if (window.navigator.simulator === true){
+            //running in the simulator
+            alert('Simulating SMS to ' + number + ' message: ' + message);
+        } else {
+            sms.send(number, message, options, success, error);
+        }
+    },
+
+
     setContact : function (thisContact) {
 
         contactActionView._activeContactId = thisContact.uuid;
