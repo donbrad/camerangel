@@ -1200,14 +1200,12 @@ var contactActionView = {
 
         var number = contactModel.currentContact.get('phone');
         window.plugins.CallNumber.callNumber(
-            function(err) {
-                if (err == "empty")
-                    navigator.notification.alert("Invalid phone number", null, 'ghostgrams dailer', 'Close');
-                else
-                    navigator.notification.alert("Error: " + err , null, 'ghostgrams dailer', 'Close');
-            },
+
             function(success) {
                 mobileNotify("Dialing " + number);
+            },
+            function(err) {
+                mobileNotify("Dailer error: " + err);
             },
             number
         );
