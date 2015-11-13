@@ -66,12 +66,9 @@ var galleryView = {
 		}); 
 		*/
 
-    },
+        $('#gallery .gg_mainSearchInput').attr('placeholder', 'Search memories...');
 
-    searchBind: function(){
-    	$('.gg_mainSearchInput').attr('placeholder', 'Search memories...');
-
-    	$(".gg_mainSearchInput").on('input', function() {
+        $("#gallery .gg_mainSearchInput").on('input', function() {
             var query = $(this).val();
             if (query.length > 0) {
 
@@ -82,8 +79,9 @@ var galleryView = {
                 // todo - wire search
             }
         });
-
     },
+
+
 
     onShow : function (e) {
 
@@ -100,9 +98,6 @@ var galleryView = {
         if (e.view.params.returnview !== undefined) {
             galleryView._returnView = e.view.params.returnview;
         }
-
-        // set search 
-        galleryView.searchBind();
 
         photoModel.rotationAngle = 0;
         
@@ -165,8 +160,6 @@ var galleryView = {
 
         $actionBtnP.removeClass("actionBtn-text-light").text("");
 
-        // reset search
-        ux.resetSearch();
     },
 
     galleryActionView: function(e){

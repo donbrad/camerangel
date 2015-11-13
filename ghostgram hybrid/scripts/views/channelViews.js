@@ -71,6 +71,17 @@ var channelsView = {
 
         });
 
+        $('#channels .gg_mainSearchInput').attr("placeholder", "Search chats...");
+
+        $('#channels .gg_mainSearchInput').on('input', function(e){
+
+            // Todo Don - wire search
+
+        }).clearSearch({
+            callback: function() {
+
+            }
+        });
 
     },
 
@@ -84,11 +95,7 @@ var channelsView = {
         ux.showActionBtnText("#channels", "3em", "New Chat");
         ux.checkEmptyUIState(channelModel.channelsDS, "#channels");
 
-        // set search
-      
 
-        // Binding channel search
-       channelsView.searchBind();
 	        	
     },
 
@@ -96,22 +103,9 @@ var channelsView = {
     	// set action button
 		ux.showActionBtn(false, "#channels");
 
-		ux.resetSearch();
     },
 
-    searchBind: function(){
-    	$('.gg_mainSearchInput').attr("placeholder", "Search chats...");
-    	
-    	$('.gg_mainSearchInput').on('input', function(e){
-    	 	
-        	// Todo Don - wire search
-        	
-        }).clearSearch({
-            callback: function() {
-                
-            }
-        });
-    },
+
 
     editChannel : function (e) {
         if (e!== undefined && e.preventDefault !== undefined){

@@ -60,19 +60,17 @@ var placesView = {
 
             }
         });
-    },
 
-    searchBind: function(){
-    	// Set placeholder
-    	$('.gg_mainSearchInput').attr('placeholder', 'Search places...');
+        // Set placeholder
+        $('#places .gg_mainSearchInput').attr('placeholder', 'Search places...');
 
-    	
+
 
         // Filter current places and query google places on keyup
-        $('.gg_mainSearchInput').on('input', function() {
+        $('#places .gg_mainSearchInput').on('input', function() {
             var query = this.value;
             if (query.length > 0) {
-               placesView.placeListDS.filter(  {"logic":"or",
+                placesView.placeListDS.filter(  {"logic":"or",
                     "filters":[
                         {
                             "field":"address",
@@ -105,7 +103,7 @@ var placesView = {
                 placesView.placeListDS.data(placesModel.placesDS.data());
                 placesView.placeListDS.filter([]);
             }
-        // Activate clearsearch and zero the filter when it's called
+            // Activate clearsearch and zero the filter when it's called
         }).clearSearch({
             callback: function() {
                 placesView.placeListDS.data(placesModel.placesDS.data());
@@ -113,6 +111,8 @@ var placesView = {
             }
         });
     },
+
+
 
     editPlaceBtn: function(e){
     	var place = e.button[0].dataset["id"];
@@ -151,8 +151,7 @@ var placesView = {
             placesView.placeListDS.data(placesModel.placesDS.data());
         });
         
-        // Binding channel search
-       	placesView.searchBind();
+
     },
 
     onHide: function (e) {
@@ -163,7 +162,6 @@ var placesView = {
         //ux.hideActionBtnText("#places");
         ux.changeActionBtnImg("#places", "nav-add-white");
 
-        ux.resetSearch();
     }
 
 };

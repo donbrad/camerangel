@@ -193,7 +193,7 @@ var contactsView = {
     },
 
     updateSearchUX: function (event) {
-        var query = $('.gg_mainSearchInput').val();
+        var query = $('#contacts .gg_mainSearchInput').val();
 
         if (query.length > 2) {
             $("#btnSearchDeviceName").text(query);
