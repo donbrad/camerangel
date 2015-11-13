@@ -521,7 +521,7 @@ var newUserView = {
     },
 
     checkUserName : function () {
-        var email = $("#home-signin-password").val();
+        var email = $("#home-signin-username").val();
         if (email.length > 0) {
             newUserView.setLoginMode();
         } else {
