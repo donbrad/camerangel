@@ -288,7 +288,7 @@
 </script> 
     
 <!-- home - for new users -->
- <div data-role="view" data-title="ghostgrams" id="newuserhome" data-layout="newuser" data-model="APP.models.home" class="appearance" style="display:none;" data-show="onShowSignIn" data-transition="fade">
+ <div data-role="view" data-title="ghostgrams" id="newuserhome" data-layout="newuser" class="appearance" style="display:none;" data-init="newUserView.onInit" data-show="newUserView.onShow" data-transition="fade">
  	<div class="newuserBox">
         <img id="newuser-ghost" src="images/introImg.svg">
     </div>
@@ -309,11 +309,10 @@
                    	<span id="forgotPassword" class="helper helper-right btnClear-grey" href="#modalview-recoverPassword" data-rel="modalview" data-role="button">Forgot password?</span>
                	</li>
         	</ul>
-            <a class="btnSecondary" data-click="signInValidate" id="modalview-login-button" type="button" data-role="button">Sign In</a>
     	</form>
     </div>
     <div class="footer" data-role="footer" id="newuserhome-footer">
-    	<a class="btnPrimary btnSpan-btm" data-role="button" href="#signup">Join ghostgrams</a>
+    	<a class="btnPrimary btnSpan-btm" data-role="button" id="newuserhomeActionBtn" data-click="newUserView.onClick">Join ghostgrams</a>
     </div>
 </div>
    
