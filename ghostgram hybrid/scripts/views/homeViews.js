@@ -511,14 +511,7 @@ var newUserView = {
         _preventDefault(e);
 
         $("#home-signin-username").on("input", function(e) {
-            var email = $("#home-signin-password").val();
-            if (email.length === 0) {
-                newUserView.setCreateMode();
-            } else {
-                newUserView.setLoginMode();
-            }
-
-
+            newUserView.checkUserName();
         });
 
         $("#home-signin-password").on("input", function(e){
@@ -529,15 +522,23 @@ var newUserView = {
 
     },
 
+    checkUserName : function () {
+        var email = $("#home-signin-password").val();
+        if (email.length > 0) {
+            newUserView.setLoginMode();
+        } else {
+            newUserView.setCreateMode();
+        }
+    },
+
     onShow : function (e) {
         _preventDefault(e);
-
-        // Initial state is create mode...
-        newUserView.setCreateMode();
-
+        
         if (userModel.rememberUsername && userModel.username !== '') {
             $('#home-signin-username').val(userModel.username)
         }
+
+       newUserView.checkUserName();
     },
 
     onClick : function (e) {
@@ -548,9 +549,15 @@ var newUserView = {
         }
     },
 
+    onClear : function (e) {
+        $('#home-signin-username').val('');
+        $('#home-signin-password').val('');
+        newUserView.setCreateMode();
+    },
+
     setCreateMode : function () {
         $("#newuserhomeActionBtn").text(newUserView._actionCreate);
-        newUserView.clickCreate = true;
+        newUserView._clickCreate = true;
     },
 
     setLoginMode : function () {
