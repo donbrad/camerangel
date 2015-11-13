@@ -140,6 +140,11 @@ var userModel = {
                 ux.updateHeaderStatusImages();
 
                 userModel.createIdenticon(user.get('userUUID'));
+
+                var photo = user.get('photo');
+                if (photo === undefined || photo === null) {
+                    userModel.currentUser.photo =  userModel.identiconUrl;
+                }
                 userModel.parseACL = new Parse.ACL(userModel.parseUser);
 
                 userModel.currentUser.bind('change', userModel.sync);

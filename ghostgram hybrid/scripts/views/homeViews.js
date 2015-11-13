@@ -632,6 +632,12 @@ var newUserView = {
                 userModel.decryptPrivateKey();
                 //		userModel.currentUser.set('privateKey', privateKey);
                 userModel.createIdenticon(userModel.parseUser.get('userUUID'));
+
+                var photo = userModel.parseUser.get('photo');
+                if (photo === undefined || photo === null) {
+                    userModel.currentUser.photo =  userModel.identiconUrl;
+                }
+
                 var phoneVerified = userModel.parseUser.get('phoneVerified');
                 userModel.currentUser.set('phoneVerified', phoneVerified);
                 userModel.currentUser.set('availImgUrl', 'images/status-away.svg');
@@ -744,6 +750,12 @@ var newUserView = {
                                         userModel.generateNewPrivateKey(user);
 
                                         userModel.createIdenticon(userUUID);
+
+                                        var photo = user.get('photo');
+                                        if (photo === undefined || photo === null) {
+                                            userModel.currentUser.photo = userModel.identiconUrl;
+                                        }
+
                                         //userModel.currentUser.set('publicKey',user.get('publicKey'));
                                         //userModel.currentUser.set('privateKey',user.get('privateKey'));
                                         userModel.currentUser.bind('change', userModel.sync);
