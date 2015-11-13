@@ -410,7 +410,19 @@ function continueSignUp() {
 }
 
 function onShowSignIn(e){
+
 	e.preventDefault();
+	$("#newuserhome-footer").removeClass('hidden');
+
+	$("#home-signin-password").on("input", function(e) {
+		var email = $("#home-signin-password").val();
+
+		if (email.length === 0) {
+			$("#newuserhome-footer").removeClass('hidden');
+		} else {
+			$("#newuserhome-footer").addClass('hidden');
+		}
+	});
 
 	$("#home-signin-password").on("keyup", function(e){
 		if (e.keyCode === 13) {
