@@ -414,7 +414,7 @@ function onShowSignIn(e){
 	e.preventDefault();
 	$("#newuserhome-footer").removeClass('hidden');
 
-	$("#home-signin-password").on("input", function(e) {
+	$("#home-signin-username").on("input", function(e) {
 		var email = $("#home-signin-password").val();
 
 		if (email.length === 0) {
