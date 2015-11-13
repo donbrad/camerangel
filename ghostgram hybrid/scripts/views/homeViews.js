@@ -515,9 +515,7 @@ var newUserView = {
         });
 
         $("#home-signin-password").on("input", function(e){
-            if (e.keyCode === 13) {
-               newUserView.validate();
-            }
+
         });
 
     },
@@ -533,7 +531,7 @@ var newUserView = {
 
     onShow : function (e) {
         _preventDefault(e);
-        
+
         if (userModel.rememberUsername && userModel.username !== '') {
             $('#home-signin-username').val(userModel.username)
         }
@@ -542,6 +540,7 @@ var newUserView = {
     },
 
     onClick : function (e) {
+
         if (newUserView._clickCreate) {
             newUserView.doCreateAccount();
         } else {
@@ -562,7 +561,7 @@ var newUserView = {
 
     setLoginMode : function () {
         $("#newuserhomeActionBtn").text(newUserView._actionLogin);
-        newUserView.clickCreate = false;
+        newUserView._clickCreate = false;
     },
 
     validate : function () {
