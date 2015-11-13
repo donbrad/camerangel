@@ -97,6 +97,16 @@
 	    	#} else {#
 	    		<div class="chat-mainBox">
 	    	#}#
+	    	#
+	    	if (lastAccess !== undefined && lastAccess !== null) {
+				var accessTime = timeSince(lastAccess);
+				if(accessTime === "0s"){
+					accessTime = "Just now";
+				} else {
+					accessTime = accessTime + " ago";
+				}
+			}
+	    	#
 	    		<h4>
 	    			<div class="chatStatusIcon"><img src="images/status-new.svg" class="list-status" /></div>
 	        		 <div class="textClamp chatNameDiv">#:name#</div>
@@ -113,6 +123,7 @@
 		    			<img src="images/group-icon.svg" class="icon-sm" /> Group Chat
 		    		#}#
 	    		</div>
+	    		<div class="chatActivityTime left"> #:accessTime# </div>
 	    	</div><!-- chat-mainBox -->
     	</a>
    </div>
