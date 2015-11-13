@@ -189,7 +189,6 @@ var contactsView = {
         //Clear the filter to show all the contacts
         contactModel.contactListDS.filter([]);
 
-
         contactsView.hideSearchUX();
     },
 
