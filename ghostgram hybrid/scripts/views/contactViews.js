@@ -160,13 +160,14 @@ var contactsView = {
 
         contactModel.updateContactListStatus();
 
-        $('#contacts .gg_mainSearchInput').val('');
+        // Reset the filters and ux state on show.
+        contactsView.clearSearchFilter();
 
         // set action button
     	ux.showActionBtn(true, "#contacts", "#contactImport");
     	ux.showActionBtnText("#contacts", "3em", "New Contact");
     	// Bind contact search
-    	contactsView.searchBind();
+
     },
 
     // All update the ContactListDS item with current changes
@@ -178,7 +179,18 @@ var contactsView = {
     onBeforeHide: function(){
     	ux.showActionBtn(false, "#contacts");
     	$("#btnSearchDeviceContacts").addClass("hidden");
-    	
+
+    },
+
+    // Clear the search box and reset the filter
+    clearSearchFilter: function () {
+        $('#contacts .gg_mainSearchInput').val('');
+
+        //Clear the filter to show all the contacts
+        contactModel.contactListDS.filter([]);
+
+
+        contactsView.hideSearchUX();
     },
 
     updateSearchUX: function (event) {
@@ -367,7 +379,7 @@ var contactImportView = {
 
     onHide: function(e){
         $(".enterSearch > span").css("color", "#E0E0E0");
-    	$("#contactImportQuery").val("");
+    	contactsView.clearSearchFilter();
 
     },
 
@@ -436,7 +448,7 @@ var contactImportView = {
             contactModel.deviceContactsDS.data([contacts[0]]);
 
             // Open add contact view
-            contactImportView.launchAddContact();
+            contactImportView.openModal(data);
 
         });
     }
