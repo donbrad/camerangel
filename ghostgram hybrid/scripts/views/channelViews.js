@@ -13,6 +13,7 @@
  */
 
 var channelsView = {
+    _viewInitialized : false,
 
     onInit : function (e) {
         e.preventDefault();
@@ -71,23 +72,47 @@ var channelsView = {
 
         });
 
-        $('#channels .gg_mainSearchInput').attr("placeholder", "Search chats...");
 
-        $('#channels .gg_mainSearchInput').on('input', function(e){
-
-            // Todo Don - wire search
-
-        }).clearSearch({
-            callback: function() {
-
-            }
-        });
 
     },
 
     onShow : function(e) {
         _preventDefault(e);
 
+        if (!channelView._viewInitialized) {
+            channelView._viewInitialized = true;
+            $('#channels .gg_mainSearchInput').attr("placeholder", "Search chats...");
+
+            $('#channels .gg_mainSearchInput').on('input', function (e) {
+                var query = this.value;
+                if (query.length > 0) {
+                    channelModel.channelsDS.filter({
+                        "logic": "or",
+                        "filters": [
+                            {
+                                "field": "name",
+                                "operator": "contains",
+                                "value": query
+                            },
+                            {
+                                "field": "description",
+                                "operator": "contains",
+                                "value": query
+                            }
+                        ]
+                    });
+
+                } else {
+                    channelModel.channelsDS.filter([]);
+
+                }
+            }).clearSearch({
+                callback: function () {
+
+                    channelModel.channelsDS.filter([]);
+                }
+            });
+        }
         ux.checkEmptyUIState(channelModel.channelsDS, "#channels");
     	
         // set action button

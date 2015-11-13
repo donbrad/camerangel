@@ -146,7 +146,7 @@ var contactsView = {
 
                     // hide find on device btn
                     $('#btnSearchDeviceContacts').addClass('hidden');
-                    $('#btnSearchDeviceName').val('')
+                    $('#btnSearchDeviceName').val('');
                 }
             });
         }

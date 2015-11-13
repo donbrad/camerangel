@@ -9,6 +9,7 @@
  * placesView
  */
 var placesView = {
+    _viewInitialized : false,
 
     placeListDS: new kendo.data.DataSource({
         sort: {
@@ -61,55 +62,7 @@ var placesView = {
             }
         });
 
-        // Set placeholder
-        $('#places .gg_mainSearchInput').attr('placeholder', 'Search places...');
 
-
-
-        // Filter current places and query google places on keyup
-        $('#places .gg_mainSearchInput').on('input', function() {
-            var query = this.value;
-            if (query.length > 0) {
-                placesView.placeListDS.filter(  {"logic":"or",
-                    "filters":[
-                        {
-                            "field":"address",
-                            "operator":"contains",
-                            "value":query},
-                        {
-                            "field":"name",
-                            "operator":"contains",
-                            "value":query},
-                        {
-                            "field":"city",
-                            "operator":"contains",
-                            "value":query},
-                        {
-                            "field":"state",
-                            "operator":"contains",
-                            "value":query},
-                        {
-                            "field":"zipcode",
-                            "operator":"contains",
-                            "value":query},
-                        {
-                            "field":"alias",
-                            "operator":"contains",
-                            "value":query}
-                    ]});
-
-            } else {
-
-                placesView.placeListDS.data(placesModel.placesDS.data());
-                placesView.placeListDS.filter([]);
-            }
-            // Activate clearsearch and zero the filter when it's called
-        }).clearSearch({
-            callback: function() {
-                placesView.placeListDS.data(placesModel.placesDS.data());
-                placesView.placeListDS.filter([]);
-            }
-        });
     },
 
 
@@ -124,11 +77,64 @@ var placesView = {
     deletePlaceBtn: function(e){
         var placeId = e.button[0].dataset["id"];
     	placesModel.deletePlace(placeId);
-    	// TODO DON - wire delete place
+
     },
 
     onShow: function (e) {
         _preventDefault(e);
+
+        if (!placesView._viewInitialized) {
+            placesView._viewInitialized = true;
+            // Set placeholder
+            $('#places .gg_mainSearchInput').attr('placeholder', 'Search places...');
+
+
+
+            // Filter current places and query google places on keyup
+            $('#places .gg_mainSearchInput').on('input', function() {
+                var query = this.value;
+                if (query.length > 0) {
+                    placesView.placeListDS.filter(  {"logic":"or",
+                        "filters":[
+                            {
+                                "field":"address",
+                                "operator":"contains",
+                                "value":query},
+                            {
+                                "field":"name",
+                                "operator":"contains",
+                                "value":query},
+                            {
+                                "field":"city",
+                                "operator":"contains",
+                                "value":query},
+                            {
+                                "field":"state",
+                                "operator":"contains",
+                                "value":query},
+                            {
+                                "field":"zipcode",
+                                "operator":"contains",
+                                "value":query},
+                            {
+                                "field":"alias",
+                                "operator":"contains",
+                                "value":query}
+                        ]});
+
+                } else {
+
+                    placesView.placeListDS.data(placesModel.placesDS.data());
+                    placesView.placeListDS.filter([]);
+                }
+                // Activate clearsearch and zero the filter when it's called
+            }).clearSearch({
+                callback: function() {
+                    placesView.placeListDS.data(placesModel.placesDS.data());
+                    placesView.placeListDS.filter([]);
+                }
+            });
+        }
 
         // Always display the add places button so users can create a new place (even if others exist)
         

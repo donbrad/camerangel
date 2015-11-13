@@ -20,6 +20,7 @@ var galleryView = {
     _currentPhotoId: null,
     _currentPhotoUrl: null,
     _previewSize: "33%",
+    _viewInitialized : false,
 
     onInit : function (e) {
         _preventDefault(e);
@@ -66,19 +67,7 @@ var galleryView = {
 		}); 
 		*/
 
-        $('#gallery .gg_mainSearchInput').attr('placeholder', 'Search memories...');
 
-        $("#gallery .gg_mainSearchInput").on('input', function() {
-            var query = $(this).val();
-            if (query.length > 0) {
-
-            }
-
-        }).clearSearch({
-            callback: function() {
-                // todo - wire search
-            }
-        });
     },
 
 
@@ -87,6 +76,22 @@ var galleryView = {
 
         _preventDefault(e);
 
+        if (!galleryView._viewInitialized) {
+            galleryView._viewInitialized = true;
+            $('#gallery .gg_mainSearchInput').attr('placeholder', 'Search memories...');
+
+            $("#gallery .gg_mainSearchInput").on('input', function() {
+                var query = $(this).val();
+                if (query.length > 0) {
+
+                }
+
+            }).clearSearch({
+                callback: function() {
+                    // todo - wire search
+                }
+            });
+        }
 
         if (e.view.params.mode !== undefined && e.view.params.mode === 'picker') {
             galleryView._pickerMode = true;
