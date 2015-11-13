@@ -106,16 +106,10 @@ var contactsView = {
             }
         });
 
+        $('#contacts .gg_mainSearchInput').attr("placeholder", "Search contacts...");
 
-        // Update search UX whenever search input content changes.
-       // $("#contactSearchInput" ).on('input', contactsView.updateSearchUX);
-    },
+        $('#contacts .gg_mainSearchInput').on('input', function() {
 
-    searchBind: function(){
-    	$('.gg_mainSearchInput').attr("placeholder", "Search contacts...");
-    	
-    	$('.gg_mainSearchInput').on('input', function() {
-        	
             var query = this.value;
             if (query.length > 0) {
                 contactModel.contactListDS.filter( {"logic":"or",
@@ -153,6 +147,9 @@ var contactsView = {
                 $('#btnSearchDeviceName').val('')
             }
         });
+
+        // Update search UX whenever search input content changes.
+       // $("#contactSearchInput" ).on('input', contactsView.updateSearchUX);
     },
 
     onShow : function (e) {
@@ -181,7 +178,7 @@ var contactsView = {
     onBeforeHide: function(){
     	ux.showActionBtn(false, "#contacts");
     	$("#btnSearchDeviceContacts").addClass("hidden");
-    	ux.resetSearch();
+    	
     },
 
     updateSearchUX: function (event) {
