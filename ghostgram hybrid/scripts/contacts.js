@@ -225,7 +225,7 @@ function contactSendSMSInvite(phone) {
 function contactSendEmailInvite(email) {
 
 	 if (window.navigator.simulator === true){
-		 alert("Mail isn't supported in the emulator");
+		 mobileNotify("Mail isn't supported in the emulator");
 	 } else {
 		 var thisUser = userModel.currentUser.get('name');
 		 cordova.plugins.email.open({
@@ -242,13 +242,15 @@ function contactSendEmailInvite(email) {
 }
 function contactCallPhone(e) {
 
-    if (e !== undefined && e.preventDefault !== undefined) {
-        e.preventDefault();
+   _preventDefault(e);
+
+    if (window.navigator.simulator === true){
+        mobileNotify("Phone Calls are't supported in the emulator");
+        return;
     }
 
      var number = contactModel.currentContact.get('phone');
-    phonedialer.dial(
-        number,
+     window.plugins.CallNumber.callNumber(
         function(err) {
             if (err == "empty")
                 navigator.notification.alert("Invalid phone number", null, 'ghostgrams dailer', 'Close');
@@ -257,7 +259,8 @@ function contactCallPhone(e) {
         },
         function(success) {
             mobileNotify("Dialing " + number);
-        }
+        },
+        number
     );
 
 }
