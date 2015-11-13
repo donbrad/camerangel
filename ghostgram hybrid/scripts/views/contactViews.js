@@ -15,24 +15,15 @@
 
 var contactsView = {
 
+    _viewInitialized : false,
+
     onInit : function (e) {
-        //_preventDefault(e);
+        _preventDefault(e);
 
         contactModel.deviceQueryActive = false;
 
 
-       /* // Activate clearsearch and zero the filter when it's called
-        $('#contactSearchInput').clearSearch({
-            callback: function() {
-                dataSource.data([]);
-                dataSource.data(contactModel.contactsDS.data());
-                dataSource.filter([]);
-                contactModel.deviceContactsDS.data([]);
-                $('#btnSearchDeviceContacts').addClass('hidden');
-            }
-        });*/
 
-        
 
         $("#contacts-listview").kendoMobileListView({
             dataSource: contactModel.contactListDS,
@@ -106,47 +97,7 @@ var contactsView = {
             }
         });
 
-        $('#contacts .gg_mainSearchInput').attr("placeholder", "Search contacts...");
 
-        $('#contacts .gg_mainSearchInput').on('input', function() {
-
-            var query = this.value;
-            if (query.length > 0) {
-                contactModel.contactListDS.filter( {"logic":"or",
-                    "filters":[
-                        {
-                            "field":"name",
-                            "operator":"contains",
-                            "value":query},
-                        {
-                            "field":"alias",
-                            "operator":"contains",
-                            "value":query},
-                        {
-                            "field":"group",
-                            "operator":"contains",
-                            "value":query}
-                    ]});
-                if (query.length > 2) {
-                    $('#btnSearchDeviceContacts').removeClass('hidden');
-                }
-
-                $("#btnSearchDeviceName").text(query);
-
-            } else {
-                contactModel.contactListDS.filter([]);
-                contactsView.hideSearchUX();
-            }
-        }).clearSearch({
-            callback: function() {
-                contactModel.contactListDS.data(contactModel.contactListDS.data());
-                contactModel.contactListDS.filter([]);
-
-                // hide find on device btn
-                $('#btnSearchDeviceContacts').addClass('hidden');
-                $('#btnSearchDeviceName').val('')
-            }
-        });
 
         // Update search UX whenever search input content changes.
        // $("#contactSearchInput" ).on('input', contactsView.updateSearchUX);
@@ -155,6 +106,50 @@ var contactsView = {
     onShow : function (e) {
        _preventDefault(e);
 
+        if (!contactsView._viewInitialized) {
+            contactsView._viewInitialized = true;
+            $("#contacts .gg_mainSearchInput").attr("placeholder", "Search contacts...");
+
+            $("#contacts .gg_mainSearchInput").on('input', function() {
+
+                var query = this.value;
+                if (query.length > 0) {
+                    contactModel.contactListDS.filter( {"logic":"or",
+                        "filters":[
+                            {
+                                "field":"name",
+                                "operator":"contains",
+                                "value":query},
+                            {
+                                "field":"alias",
+                                "operator":"contains",
+                                "value":query},
+                            {
+                                "field":"group",
+                                "operator":"contains",
+                                "value":query}
+                        ]});
+                    if (query.length > 2) {
+                        $('#btnSearchDeviceContacts').removeClass('hidden');
+                    }
+
+                    $("#btnSearchDeviceName").text(query);
+
+                } else {
+                    contactModel.contactListDS.filter([]);
+                    contactsView.hideSearchUX();
+                }
+            }).clearSearch({
+                callback: function() {
+                    contactModel.contactListDS.data(contactModel.contactListDS.data());
+                    contactModel.contactListDS.filter([]);
+
+                    // hide find on device btn
+                    $('#btnSearchDeviceContacts').addClass('hidden');
+                    $('#btnSearchDeviceName').val('')
+                }
+            });
+        }
        // contactModel.contactListDS.data(contactModel.contactsDS.data());
         //APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
 
