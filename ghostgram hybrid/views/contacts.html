@@ -1,4 +1,4 @@
-<div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="contactModel" data-init="contactsView.onInit" data-show="contactsView.onShow" data-before-hide="contactsView.onBeforeHide" style="display: none;">
+<div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="contactModel" data-init="contactsView.onInit" data-show="contactsView.onShow" data-hide="contactsView.onHide" style="display: none;">
 		<a class="hidden btnClear" data-role="button" data-click="contactsView.searchDeviceContacts" id="btnSearchDeviceContacts">
 			<img src="images/contacts.svg" /> 
 			Search device for "<span id="btnSearchDeviceName"></span>"
@@ -24,17 +24,20 @@
 	 data-init="contactImportView.onInit" data-show="contactImportView.onShow" data-hide="contactImportView.onHide" style="display: none;">
     <div data-role="header">
         <div data-role="navbar">
-           <a data-role="button"  data-align="left" href="#:back" ><img src="images/nav-back.svg" /></a>
+           <a data-role="button" data-align="left" href="#:back"><img src="images/nav-back.svg" /></a>
 			<span data-role="view-title"></span>
+			<a data-role="button" data-align="right" class="user-settings homeToggleSearch" data-click="ux.toggleSearch" id="nav-search">
+                	<img class="nav-search" src="images/icon-search.svg"/>
+            	</a>
         </div>
-    </div>
-    <div class="topViewSearchBox">
+        <div class="topViewSearchBox gg_mainSearchBox" data-visible="false">
 	 		<div class="appendSearch">
 				<span class="searchIcon"><img src="images/search.svg" /></span>
-				<input type="search" id="contactImportQuery" class="viewSearchBox" placeholder="Search device contacts..."/>
+				<input type="text" class="doubleAppendSearch gg_mainSearchInput" placeholder="" />
 			</div>
-		</div>   
-    <div  style="padding-bottom: 24px;">
+		</div>
+    </div>
+    <div style="padding-bottom: 24px;">
         <ul id="contactimport-listview"></ul>
     </div>    
 </div>
@@ -330,7 +333,7 @@
 						</div>
 
 						<div class="left contact-status textClamp">
-							<p class="left contactStatusMessage-sm">
+							<p class="contactStatusMessage-sm">
 							# var message = "", location = ""; 
 								if (data.statusMessage !== undefined && data.statusMessage !== "") {
 									message = data.statusMessage;
@@ -342,9 +345,9 @@
 								Blocked User - Tap to Unblock
 								#}#
 							</p>
-							<br/>
+							
 							# if (data.currentPlace !== undefined && data.currentPlace !== ""){#
-									<p class="contactStatus-location left">
+									<p class="contactStatus-location">
 										@#:data.currentPlace#
 									</p>
 								#}#

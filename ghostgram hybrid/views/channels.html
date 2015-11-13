@@ -461,12 +461,7 @@
 
 <!-- edit chat members -->
 <div data-role="view" id="channelMembers" data-layout="main" data-title="Invite" data-init="channelMembersView.doInit" data-show="channelMembersView.doShow" data-transition="overlay:up">
-    <header data-role="header">
-        <div data-role="navbar">
-            <span data-role="view-title"></span>
-            <!--<a data-role="button" data-align="right" href="#contactImport">Import Contact</a>-->
-        </div>
-    </header>
+    
     <div class="addedChatMember" style="display: none"></div>
     <ul id="channelMembers-listview"></ul>
     <div class="footerBk" data-role="footer">
@@ -476,10 +471,10 @@
 
 <script type="text/x-kendo-template" id="memberTemplate">      
 <div>
-	<div class="memberTempPhoto">
+	<div class="memberTempPhoto left">
 	<img src="#: data.photo #" class="circle-img-md" />
 	</div>
-	<div class="memberTempName">
+	<div class="memberTempName left">
 
 		#if (data.alias !== '' && data.name !== data.alias && data.phoneVerified){#
 			<h4 class="textClamp">
