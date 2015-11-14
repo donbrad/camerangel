@@ -494,6 +494,10 @@ var modalPhotoTag = {
 var modalPhotoView = {
     _photo: null,
     _photoUrl : null,
+    _dummyTitle : 'Title',
+    _dummyDescription : 'Description',
+    _dummyTagsString : 'Tags...',
+
     _activePhoto : new kendo.data.ObservableObject(),
 
     onInit: function(e){
@@ -509,14 +513,25 @@ var modalPhotoView = {
         modalPhotoView._photo = photo;
         modalPhotoView._photoUrl = photo.imageUrl;
         modalPhotoView._activePhoto.set('photoId', photo.photoId);
+        if (photo.title === null) {
+            photo.title = modalPhotoView._dummyTitle;
+        }
         modalPhotoView._activePhoto.set('title', photo.title);
         modalPhotoView._activePhoto.set('imageUrl', photo.imageUrl);
+        if (photo.description === null) {
+            photo.description = modalPhotoView._dummyDescription;
+        }
         modalPhotoView._activePhoto.set('description', photo.description);
         modalPhotoView._activePhoto.set('tags', photo.tags);
+        if (photo.tagsString === null) {
+            photo.tagsString = modalPhotoView._dummyTagsString;
+        }
         modalPhotoView._activePhoto.set('tagsString', photo.tagsString);
-        var tagString = '';
 
-       /* if (photo.tags !== undefined && photo.tags.length > 0) {
+
+        /*    var tagString = '';
+
+       if (photo.tags !== undefined && photo.tags.length > 0) {
             for (var i=0; i++; i< photo.tags.length) {
                 tagString += photo.tags[i] + ', ';
             }
