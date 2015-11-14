@@ -466,6 +466,11 @@ var modalPhotoTag = {
         $("#modalview-photoTag").data("kendoMobileModalView").close();
     },
 
+    onCancel: function (e) {
+        modalPhotoTag.closeModal();
+        modalPhotoView.openModal( modalPhotoTag._activePhoto);
+    },
+
     onDone : function(e) {
         _preventDefault(e);
         // Update data source and parse...
