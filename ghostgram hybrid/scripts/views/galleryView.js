@@ -487,6 +487,7 @@ var modalPhotoTag = {
             mobileNotify("Can't find photo model!!");
         }
         modalPhotoTag.closeModal();
+        modalPhotoView.openModal( modalPhotoTag._activePhoto)
     }
 
 };
@@ -510,6 +511,7 @@ var modalPhotoView = {
     },
 
     openModal : function (photo) {
+
         modalPhotoView._photo = photo;
         modalPhotoView._photoUrl = photo.imageUrl;
         modalPhotoView._activePhoto.set('photoId', photo.photoId);
@@ -552,6 +554,7 @@ var modalPhotoView = {
 
     openTagEditor : function (e) {
         _preventDefault(e);
+        modalPhotoView.closeModal();
         modalPhotoTag.openModal(modalPhotoView._activePhoto);
     },
 
