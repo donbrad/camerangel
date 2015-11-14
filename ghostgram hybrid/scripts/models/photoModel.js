@@ -9,6 +9,7 @@
 'use strict';
 
 var photoModel = {
+    _version : 1,
     currentPhoto: {},
     previewSize: "33%",
     optionsShown: false,
@@ -27,9 +28,12 @@ var photoModel = {
 
         query.find({
             success: function(collection) {
+                mobileNotify("Fetching and upgrading photos ...");
                 var models = [];
                 for (var i = 0; i < collection.length; i++) {
-                    models.push(collection[i].attributes);
+                    var photo = collection[i].toJSON();
+                    photoModel.upgradePhoto(photo);
+                    models.push(photo);
                 }
                 deviceModel.setAppState('hasPhotos', true);
                 photoModel.photosDS.data(models);
@@ -70,6 +74,207 @@ var photoModel = {
 
         return(photos);
     },
+
+    upgradePhoto : function (photo) {
+        // current trigger is no version field -- later we'll compare numbers
+        if (photo.version === undefined) {
+           // photo.version = photoModel._version;
+
+            if (photo.senderUUID === undefined) {
+                photo.senderUUID = null;
+                photo.senderName = null;
+
+                updateParseObject('photos', "photoId", photo.photoId, "senderUUID",  null);
+                updateParseObject('photos', "photoId", photo.photoId, "senderName",  null);
+            }
+
+            if (photo.channelId === undefined) {
+                photo.channelId = null;
+                photo.channelName = null;
+
+                updateParseObject('photos', "photoId", photo.photoId, "channelId",  null);
+                updateParseObject('photos', "photoId", photo.photoId, "channelName",  null);
+            }
+
+            if (photo.placeId === undefined) {
+                photo.placeId = null;
+                photo.placeName= null;
+
+                updateParseObject('photos', "photoId", photo.photoId, "placeId",  null);
+                updateParseObject('photos', "photoId", photo.photoId, "placeName",  null);
+            }
+
+            if (photo.eventId === undefined) {
+                photo.eventId = null;
+                photo.eventName= null;
+
+                updateParseObject('photos', "photoId", photo.photoId, "eventId",  null);
+                updateParseObject('photos', "photoId", photo.photoId, "eventName",  null);
+            }
+
+            if (photo.deviceUrl === undefined) {
+                photo.deviceUrl = null;
+                updateParseObject('photos', "photoId", photo.photoId, "deviceUrl",  null);
+            }
+
+            if (photo.address === undefined) {
+
+                photo.address = null;
+
+                updateParseObject('photos', "photoId", photo.photoId, "address",  null);
+            }
+
+            if (photo.deviceUrl === undefined) {
+
+                photo.deviceUrl = null;
+
+                updateParseObject('photos', "photoId", photo.photoId, "deviceUrl",  null);
+            }
+
+            if (photo.addressString === undefined) {
+
+                photo.addressString = null;
+
+                updateParseObject('photos', "photoId", photo.photoId, "addressString",  null);
+            }
+
+            if (photo.dateString === undefined) {
+                var timeStamp = parseInt(photo.timeStamp);
+                var timeStr = moment.unix(timeStamp).format('MMMM Do YYYY, h:mm'); // October 7th 2015, 10:26 am
+
+                photo.dateString = timeStr;
+
+                updateParseObject('photos', "photoId", photo.photoId, "dateString",  timeStr);
+            }
+
+
+            if (photo.title === undefined) {
+
+                photo.title = null;
+
+                updateParseObject('photos', "photoId", photo.photoId, "title",  null);
+            }
+
+            if (photo.description === undefined) {
+
+                photo.description = null;
+
+                updateParseObject('photos', "photoId", photo.photoId, "description",  null);
+            }
+
+            if (photo.tags === undefined) {
+
+                photo.tags = [];
+                photo.tagsString = null;
+
+                updateParseObject('photos', "photoId", photo.photoId, "tags",  []);
+                updateParseObject('photos', "photoId", photo.photoId, "tagsString",  null);
+            }
+
+            updateParseObject('photos', "photoId", photo.photoId, "version", photoModel._version);
+
+        }
+
+
+    },
+
+    addChatPhoto : function (photo) {
+
+    },
+
+    addDevicePhoto: function (data) {
+
+        // Todo: add additional processing to create Parse photoOffer
+        var Photos = Parse.Object.extend("photos");
+        var photo = new Photos();
+
+        photo.setACL(userModel.parseACL);
+        photo.set('version', photoModel._version);
+
+        photo.set('photoId', photoModel.currentPhoto.photoId);
+        photo.set('deviceUrl', photoModel.currentPhoto.phoneUrl);
+        photo.set('title', null);
+        photo.set('description', null);
+        photo.set('senderUUID', userModel.currentUser.userUUID);
+        photo.set('senderName', userModel.currentUser.name);
+        photo.set('eventId', null);
+        photo.set('eventName', null);
+        photo.set('tags', []);
+        photo.set('tagsString', null);
+        photo.set('placeId', null);
+        photo.set('placeName', null);
+
+        var channelId = (currentChannelModel.currentChannel.get('channelId') === undefined) ? null : currentChannelModel.currentChannel.get('channelId');
+
+        var channelName = (currentChannelModel.currentChannel.get('name') === undefined) ? null : currentChannelModel.currentChannel.get('name');
+        photo.set('channelId', channelId);
+        photo.set('channelName', channelName);
+
+        var timeStamp = new Date().getTime();
+        photo.set("timestamp", timeStamp);
+        var timeStr = moment().format('MMMM Do YYYY, h:mm'); // October 7th 2015, 10:26 am
+        photo.set("dateString", timeStr);
+
+        photo.set('lat', mapModel.lat);
+        photo.set('lng', mapModel.lng);
+        photo.set('geoPoint', new Parse.GeoPoint(parseFloat(mapModel.lat), parseFloat(mapModel.lng)));
+
+        if (mapModel.currentAddress !== null && mapModel.currentAddress.city !== undefined) {
+            var addressStr = mapModel.currentAddress.city + ', ' + mapModel.currentAddress.state + '  ' + mapModel.currentAddress.zipcode;
+            photo.set('addressString', addressStr);
+        }
+
+        if (userModel.currentUser.currentPlaceUUID !== null) {
+            photo.set('placeId', userModel.currentUser.currentPlaceUUID);
+            photo.set('placeString', userModel.currentUser.currentPlace);
+        }
+
+
+        var parseFile = new Parse.File("thumbnail_"+photoModel.currentPhoto.filename + ".jpeg",{'base64': data.imageData}, "image/jpg");
+        parseFile.save().then(function() {
+            photo.set("thumbnail", parseFile);
+            photo.set("thumbnailUrl", parseFile._url);
+            photoModel.currentPhoto.thumbnailUrl = parseFile._url;
+            photo.save(null, {
+                success: function(photo) {
+                    // Execute any logic that should take place after the object is saved.
+                    photoModel.parsePhoto = photo;
+
+                },
+                error: function(contact, error) {
+                    // Execute any logic that should take place if the save fails.
+                    // error is a Parse.Error with an error code and message.
+                    handleParseError(error);
+                }
+            });
+        });
+
+
+
+        var parseFile2 = new Parse.File("photo_"+photoModel.currentPhoto.filename + ".jpeg",{'base64': photoModel.currentPhoto.photoUrl},"image/jpg");
+        parseFile2.save().then(function() {
+            photo.set("image", parseFile2);
+            photo.set("imageUrl", parseFile2._url);
+            photoModel.currentPhoto.photoUrl = parseFile2._url;
+            photo.save(null, {
+                success: function(photo) {
+                    // Execute any logic that should take place after the object is saved.
+                    mobileNotify('Photo added to ghostgrams gallery');
+                    photoModel.photosDS.add(photo.attributes);
+                    photoModel.parsePhoto = photo;
+                    currentChannelModel.currentMessage.photo = {thumb: photo.get('thumbnailUrl'), photo: photo.get('imageUrl'), phone: photo.get('phoneUrl')};
+
+                },
+                error: function(contact, error) {
+                    // Execute any logic that should take place if the save fails.
+                    // error is a Parse.Error with an error code and message.
+                    handleParseError(error);
+                }
+            });
+        });
+
+    },
+
 
     deletePhoto: function (photoId) {
         var photo = this.findPhotoById(photoId);

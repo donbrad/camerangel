@@ -15,24 +15,15 @@
 
 var contactsView = {
 
+    _viewInitialized : false,
+
     onInit : function (e) {
-        //_preventDefault(e);
+        _preventDefault(e);
 
         contactModel.deviceQueryActive = false;
 
 
-       /* // Activate clearsearch and zero the filter when it's called
-        $('#contactSearchInput').clearSearch({
-            callback: function() {
-                dataSource.data([]);
-                dataSource.data(contactModel.contactsDS.data());
-                dataSource.filter([]);
-                contactModel.deviceContactsDS.data([]);
-                $('#btnSearchDeviceContacts').addClass('hidden');
-            }
-        });*/
 
-        
 
         $("#contacts-listview").kendoMobileListView({
             dataSource: contactModel.contactListDS,
@@ -47,12 +38,13 @@ var contactsView = {
                     mobileNotify('Contact List: no matching Contact in ContactsDS');
                     return;
                 }
+
                 updateCurrentContact(contact);
 
                 if (contact.category === 'phone') {
                     if (contactModel.unifiedDeviceContact) {
                         // Have a unified device contact -- just to add contact
-                        launchAddContact({dataItem : contact});
+                       addContactView.openModal(contact);
                     } else {
                         // Still have multiple contacts
                         APP.kendo.navigate('#contactImport?query=' + contact.name);
@@ -106,70 +98,71 @@ var contactsView = {
         });
 
 
+
         // Update search UX whenever search input content changes.
        // $("#contactSearchInput" ).on('input', contactsView.updateSearchUX);
-    },
-
-    searchBind: function(){
-    	$('.gg_mainSearchInput').attr("placeholder", "Search contacts...");
-    	
-    	$('.gg_mainSearchInput').on('input', function() {
-        	
-            var query = this.value;
-            if (query.length > 0) {
-                contactModel.contactListDS.filter( {"logic":"or",
-                    "filters":[
-                        {
-                            "field":"name",
-                            "operator":"contains",
-                            "value":query},
-                        {
-                            "field":"alias",
-                            "operator":"contains",
-                            "value":query},
-                        {
-                            "field":"group",
-                            "operator":"contains",
-                            "value":query}
-                    ]});
-                if (query.length > 2) {
-                    $('#btnSearchDeviceContacts').removeClass('hidden');
-                }
-
-                $("#btnSearchDeviceName").text(query);
-
-            } else {
-                contactModel.contactListDS.filter([]);
-                contactsView.hideSearchUX();
-            }
-        }).clearSearch({
-            callback: function() {
-                contactModel.contactListDS.data(contactModel.contactListDS.data());
-                contactModel.contactListDS.filter([]);
-
-                // hide find on device btn
-                $('#btnSearchDeviceContacts').addClass('hidden');
-                $('#btnSearchDeviceName').val('')
-            }
-        });
     },
 
     onShow : function (e) {
        _preventDefault(e);
 
+        if (!contactsView._viewInitialized) {
+            contactsView._viewInitialized = true;
+            $("#contacts .gg_mainSearchInput").attr("placeholder", "Search contacts...");
+
+            $("#contacts .gg_mainSearchInput").on('input', function() {
+
+                var query = this.value;
+                if (query.length > 0) {
+                    contactModel.contactListDS.filter( {"logic":"or",
+                        "filters":[
+                            {
+                                "field":"name",
+                                "operator":"contains",
+                                "value":query},
+                            {
+                                "field":"alias",
+                                "operator":"contains",
+                                "value":query},
+                            {
+                                "field":"group",
+                                "operator":"contains",
+                                "value":query}
+                        ]});
+                    if (query.length > 2) {
+                        $('#btnSearchDeviceContacts').removeClass('hidden');
+                    }
+
+                    $("#btnSearchDeviceName").text(query);
+
+                } else {
+                    contactModel.contactListDS.filter([]);
+                    contactsView.hideSearchUX();
+                }
+            }).clearSearch({
+                callback: function() {
+                    contactModel.contactListDS.data(contactModel.contactListDS.data());
+                    contactModel.contactListDS.filter([]);
+
+                    // hide find on device btn
+                    $('#btnSearchDeviceContacts').addClass('hidden');
+                    $('#btnSearchDeviceName').val('');
+                }
+            });
+        }
        // contactModel.contactListDS.data(contactModel.contactsDS.data());
         //APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
 
         contactModel.updateContactListStatus();
 
-        // set search bar
-        ux.scrollUpSearch(e);
+        // Reset the filters and ux state on show.
+        contactsView.clearSearchFilter();
 
         // set action button
     	ux.showActionBtn(true, "#contacts", "#contactImport");
     	ux.showActionBtnText("#contacts", "3em", "New Contact");
     	// Bind contact search
-    	contactsView.searchBind();
+
     },
 
     // All update the ContactListDS item with current changes
@@ -181,11 +174,21 @@ var contactsView = {
     onBeforeHide: function(){
     	ux.showActionBtn(false, "#contacts");
     	$("#btnSearchDeviceContacts").addClass("hidden");
-    	ux.resetSearch();
+
+    },
+
+    // Clear the search box and reset the filter
+    clearSearchFilter: function () {
+        $('#contacts .gg_mainSearchInput').val('');
+
+        //Clear the filter to show all the contacts
+        contactModel.contactListDS.filter([]);
+
+        contactsView.hideSearchUX();
     },
 
     updateSearchUX: function (event) {
-        var query = $('#contactSearchQuery').val();
+        var query = $('#contacts .gg_mainSearchInput').val();
 
         if (query.length > 2) {
             $("#btnSearchDeviceName").text(query);
@@ -207,11 +210,9 @@ var contactsView = {
     },
 
     searchDeviceContacts: function (e) {
-        if (e !== undefined && e.preventDefault !== undefined) {
-            e.preventDefault();
-        }
+       _preventDefault(e);
 
-        var query = $('#contactsSearchQuery').val();
+        var query = $('#contacts .gg_mainSearchInput').val();
 
         APP.kendo.navigate("#contactImport?query="+query);
 
@@ -293,6 +294,7 @@ var contactsView = {
  */
 
 var contactImportView = {
+
     onInit: function (e) {
         _preventDefault(e);
 
@@ -344,21 +346,22 @@ var contactImportView = {
     },
 
     onShow: function (e) {
-        if (e !== undefined && e.preventDefault !== undefined) {
-            e.preventDefault();
-        }
-        var query = e.view.params.query;
+       _preventDefault(e);
+        var query = null;
 
-        if (query !== undefined) {
+        if (e.view.params !== undefined) {
+            query = e.view.params.query;
+        }
+
+        if (query !== null) {
             $('#contactImportQuery').val(query);
             deviceFindContacts(query);
         }
     },
 
     searchContacts: function (e) {
-        if (e !== undefined && e.preventDefault !== undefined) {
-            e.preventDefault();
-        }
+       _preventDefault(e);
+
         var query = $('#contactImportQuery').val();
 
         if (query.length > 2) {
@@ -370,14 +373,12 @@ var contactImportView = {
 
     onHide: function(e){
         $(".enterSearch > span").css("color", "#E0E0E0");
-    	$("#contactImportQuery").val("");
+    	contactsView.clearSearchFilter();
 
     },
 
     processDeviceContact: function (e) {
-        if (e !== undefined && e.preventDefault !== undefined) {
-            e.preventDefault();
-        }
+        _preventDefault();
 
         contactModel.currentDeviceContact = e.dataItem;
         // User has picked a contact from the list --
@@ -441,13 +442,9 @@ var contactImportView = {
             contactModel.deviceContactsDS.data([contacts[0]]);
 
             // Open add contact view
-            contactImportView.launchAddContact();
+            contactImportView.openModal(data);
 
         });
-    },
-
-    launchAddContact : function () {
-        $("#modalview-AddContact").data("kendoMobileModalView").open();
     }
 };
 
@@ -456,9 +453,9 @@ var contactImportView = {
  */
 
 var addContactView = {
+
     doInit: function (e) {
-        if (e !== undefined && e.preventDefault !== undefined)
-            e.preventDefault();
+        _preventDefault(e);
 
         $( "#addContactPhone" ).change(function() {
             var phone = $("#addContactPhone").val();
@@ -476,12 +473,12 @@ var addContactView = {
         });
     },
 
-    doShow : function (e) {
-       _preventDefault(e);
+    openModal : function (contact) {
+
 
         // Hide the Add Contact Button until the mobile number is validated...
         $('#addContacViewAddButton').addClass('hidden');
-        var data = contactModel.currentDeviceContact;
+        var data = contact;
 
         // Set name
         var name = data.name;
@@ -528,8 +525,6 @@ var addContactView = {
             contactModel.addressArray.push(address);
         }
 
-
-
         contactModel.phoneDS.data( contactModel.phoneArray);
         contactModel.emailDS.data( contactModel.emailArray);
         contactModel.addressDS.data( contactModel.addressArray);
@@ -552,8 +547,12 @@ var addContactView = {
             });
         }
 
+        $("#modalview-AddContact").data("kendoMobileModalView").open();
 
+    },
 
+    closeModal : function () {
+        $("#modalview-AddContact").data("kendoMobileModalView").close();
     },
 
     addChatContact : function (guid, name, alias, contactUUID) {
@@ -590,6 +589,7 @@ var addContactView = {
 
                 contactModel.contactsDS.add(contact.attributes);
                 contactModel.contactListDS.add(contact.attributes);
+                addContactView.closeModal();
             },
             error: function(contact, error) {
                 // Execute any logic that should take place if the save fails.
@@ -635,13 +635,13 @@ var addContactView = {
 
         if (contactModel.findContactByPhone(phone) !== undefined) {
             mobileNotify("Existing contact with this phone number");
-            $("#modalview-AddContact").data("kendoMobileModalView").close();
+            addContactView.closeModal();
             return;
         }
 
         contact.set("phone", phone);
         // Close modal
-        $("#modalview-AddContact").data("kendoMobileModalView").close();
+        addContactView.closeModal();
 
         mobileNotify("Invite sent");
 
@@ -692,11 +692,12 @@ var addContactView = {
                   var url = contactModel.createIdenticon(guid);
                   contact.set('identicon',url);
                   if ( contact.attributes.photo !== null || contact.attributes.photo !== '') {
-                    contact.set('photo',url);;
+                    contact.set('photo',url);
                   }
 
                   contactModel.contactsDS.add(contact.attributes);
                   contactModel.contactListDS.add(contact.attributes);
+                  addContactView.closeModal();
                   APP.kendo.navigate('#contacts');
               },
               error: function(contact, error) {
@@ -1188,6 +1189,53 @@ var contactActionView = {
         APP.kendo.navigate("#ghostEditor?returnview="+viewId+"&callback=contactaction");
 
     },
+
+    callPhone : function (e) {
+        _preventDefault(e);
+
+        if (window.navigator.simulator === true){
+            mobileNotify("Phone Calls are't supported in the emulator");
+            return;
+        }
+
+        var number = contactModel.currentContact.get('phone');
+        window.plugins.CallNumber.callNumber(
+
+            function(success) {
+                mobileNotify("Dialing " + number);
+            },
+            function(err) {
+                mobileNotify("Dailer error: " + err);
+            },
+            number
+        );
+    },
+
+    sendSMS : function (e) {
+        _preventDefault(e);
+
+        var number = contactModel.currentContact.get('phone');
+        var message = "";
+
+        //CONFIGURATION
+        var options = {
+            android: {
+                intent: 'INTENT'  // send SMS with the native android SMS messaging
+                //intent: '' // send SMS without openning any other app
+            }
+        };
+
+        var success = function () { mobileNotify('Message sent successfully'); };
+        var error = function (e) { mobileNotify('Message Failed:' + e); };
+
+        if (window.navigator.simulator === true){
+            //running in the simulator
+            alert('Simulating SMS to ' + number + ' message: ' + message);
+        } else {
+            sms.send(number, message, options, success, error);
+        }
+    },
+
 
     setContact : function (thisContact) {
 

@@ -66,9 +66,11 @@ var userModel = {
     },
 
     initParse: function () {
-       if (! Parse.Session.isCurrentSessionRevocable()) {
+      /* if (! Parse.Session.isCurrentSessionRevocable()) {
            mobileNotify("Please Login on this device");
-       }
+
+       }*/
+
 
         userModel.parseUser = Parse.User.current();
         userModel.device.udid = device.uuid;
@@ -88,54 +90,66 @@ var userModel = {
 
         }
 
-        if (userModel.parseUser !== null) {
+        if (userModel.parseUser === null) {
+            mobileNotify("Please login to ghostgrams");
+        } else {
+            // Need to force parse to actually fetch the data from the service.  Parse creates a local cache of user data that gets saved on login / create
+            // account while all user.set / saves are pushed to the cloud...
+            mobileNotify("Syncing user data...");
+            Parse.User.currentAsync().then(function (user) {
 
-            userModel.generateUserKey();
-            if (userModel.parseUser.get("version") === undefined) {
-                userModel.generateNewPrivateKey(userModel.parseUser);
-                userModel.parseUser.set("version", 1);
-                userModel.parseUser.save();
-            }
 
-            userModel.updatePrivateKey();
-            userModel.decryptPrivateKey();
-            userModel.initialView = '#home';
+                userModel.generateUserKey();
+                if (user.get("version") === undefined) {
+                    userModel.generateNewPrivateKey(userModel.parseUser);
+                    userModel.parseUser.set("version", 1);
+                    userModel.parseUser.save();
+                }
 
-            userModel.currentUser.set('username', userModel.parseUser.get('username'));
-            userModel.currentUser.set('objectId', userModel.parseUser.get('objectId'));
-            userModel.currentUser.set('name', userModel.parseUser.get('name'));
-            userModel.currentUser.set('email', userModel.parseUser.get('email'));
-            userModel.currentUser.set('phone', userModel.parseUser.get('phone'));
-            userModel.currentUser.set('alias', userModel.parseUser.get('alias'));
-            userModel.currentUser.set('userUUID', userModel.parseUser.get('userUUID'));
-            userModel.currentUser.set('publicKey', userModel.parseUser.get('publicKey'));
-           // userModel.currentUser.set('privateKey', userModel.parseUser.get('privateKey'));
-            userModel.currentUser.set('statusMessage', userModel.parseUser.get('statusMessage'));
-            userModel.currentUser.set('currentPlaceUUID', userModel.parseUser.get('currentPlaceUUID'));
-            userModel.currentUser.set('currentPlace', userModel.parseUser.get('currentPlace'));
-            userModel.currentUser.set('aliasPublic', userModel.parseUser.get('aliasPublic'));
-            userModel.currentUser.set('aliasPhoto', userModel.parseUser.get('aliasPhoto'));
-            userModel.currentUser.set('photo', userModel.parseUser.get('photo'));
-            userModel.currentUser.set('isAvailable', userModel.parseUser.get('isAvailable'));
-            userModel.currentUser.set('isCheckedIn', userModel.parseUser.get('isCheckedIn'));
-            userModel.currentUser.set('isVisible', userModel.parseUser.get('isVisible'));
-            userModel.currentUser.set('isRetina', userModel.parseUser.get('isRetina'));
-            userModel.currentUser.set('isWIFIOnly', userModel.parseUser.get('isWIFIOnly'));
-            userModel.currentUser.set('isPhotoStored', userModel.parseUser.get('isPhotoStored'));
-            userModel.currentUser.set('saveToPhotoAlbum', userModel.parseUser.get('saveToPhotoAlbum'));
-            userModel.currentUser.set('rememberUsername', userModel.parseUser.get('rememberUsername'));
-            userModel.currentUser.set('phoneVerified', userModel.parseUser.get('phoneVerified'));
-            userModel.currentUser.set('emailValidated', userModel.parseUser.get('emailVerified'));
-            userModel.currentUser.set('useIdenticon', userModel.parseUser.get('useIdenticon'));
-            userModel.currentUser.set('availImgUrl', 'images/status-away.svg');
-            ux.updateHeaderStatusImages();
+                userModel.updatePrivateKey();
+                userModel.decryptPrivateKey();
+                userModel.initialView = '#home';
 
-            userModel.createIdenticon(userModel.parseUser.get('userUUID'));
-            userModel.parseACL = new Parse.ACL(userModel.parseUser);
+                userModel.currentUser.set('username', user.get('username'));
+                userModel.currentUser.set('objectId', user.get('objectId'));
+                userModel.currentUser.set('name', user.get('name'));
+                userModel.currentUser.set('email', user.get('email'));
+                userModel.currentUser.set('phone', user.get('phone'));
+                userModel.currentUser.set('alias', user.get('alias'));
+                userModel.currentUser.set('userUUID', user.get('userUUID'));
+                userModel.currentUser.set('publicKey', user.get('publicKey'));
+                // userModel.currentUser.set('privateKey', userModel.parseUser.get('privateKey'));
+                userModel.currentUser.set('statusMessage', user.get('statusMessage'));
+                userModel.currentUser.set('currentPlaceUUID', user.get('currentPlaceUUID'));
+                userModel.currentUser.set('currentPlace', user.get('currentPlace'));
+                userModel.currentUser.set('aliasPublic', user.get('aliasPublic'));
+                userModel.currentUser.set('aliasPhoto', user.get('aliasPhoto'));
+                userModel.currentUser.set('photo', user.get('photo'));
+                userModel.currentUser.set('isAvailable', user.get('isAvailable'));
+                userModel.currentUser.set('isCheckedIn', user.get('isCheckedIn'));
+                userModel.currentUser.set('isVisible', user.get('isVisible'));
+                userModel.currentUser.set('isRetina', user.get('isRetina'));
+                userModel.currentUser.set('isWIFIOnly', user.get('isWIFIOnly'));
+                userModel.currentUser.set('isPhotoStored', user.get('isPhotoStored'));
+                userModel.currentUser.set('saveToPhotoAlbum',user.get('saveToPhotoAlbum'));
+                userModel.currentUser.set('rememberUsername', user.get('rememberUsername'));
+                userModel.currentUser.set('phoneVerified', user.get('phoneVerified'));
+                userModel.currentUser.set('emailValidated', user.get('emailVerified'));
+                userModel.currentUser.set('useIdenticon', user.get('useIdenticon'));
+                userModel.currentUser.set('availImgUrl', 'images/status-away.svg');
+                ux.updateHeaderStatusImages();
 
-            userModel.currentUser.bind('change', userModel.sync);
-            userModel.fetchParseData();
+                userModel.createIdenticon(user.get('userUUID'));
 
+                var photo = user.get('photo');
+                if (photo === undefined || photo === null) {
+                    userModel.currentUser.photo =  userModel.identiconUrl;
+                }
+                userModel.parseACL = new Parse.ACL(userModel.parseUser);
+
+                userModel.currentUser.bind('change', userModel.sync);
+                userModel.fetchParseData();
+            });
         }
 
     },
@@ -171,7 +185,8 @@ var userModel = {
    sync: function (e) {
       _preventDefault(e);
 
-        userModel.parseUser.set(e.field, userModel.currentUser.get(e.field));
+       var fieldValue = userModel.currentUser.get(e.field);
+        userModel.parseUser.set(e.field, fieldValue);
         userModel.parseUser.save(null, {
             success : function (user){
                 //mobileNotify("Updated your " + e.field);

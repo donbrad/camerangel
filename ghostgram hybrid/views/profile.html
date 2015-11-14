@@ -1,5 +1,5 @@
 <!-- profile view -->
-<div data-role="view" id="profile" data-title="Profile" data-layout="profileLayout" data-model="userModel.currentUser" class="appearance" data-init="onInitProfile" data-transition="slide:right" data-show="onProfileShow">
+<div data-role="view" id="profile" data-title="Profile" data-layout="profileLayout" data-model="userModel.currentUser" class="appearance" data-init="profileView.onInit" data-transition="slide:right" data-show="profileView.onShow">
 
    <div data-role="header">
         <div data-role="navbar">
@@ -61,15 +61,16 @@
 </div>
 
 <!-- Profile Edit -->  
-<div data-role="view" id="profileEdit" data-title="Edit Profile" data-layout="profileLayout" data-model="userModel.currentUser" class="appearance" data-transition="slide:right">
+<div data-role="view" id="profileEdit" data-title="Edit Profile" data-layout="profileLayout" data-model="profileEditView._activeProfile"
+     data-init="profileEditView.onInit"  data-show="profileEditView.onShow" class="appearance" data-transition="slide:right">
     <div data-role="header">
         <div data-role="navbar">
             <span data-role="view-title"></span>
-            <a data-role="button" href="#profile" data-align="left"><img src="images/nav-back.svg"/></a>
-           <a data-role="button" href="#profile" data-click="saveEditProfile" data-align="right">Save</a> 
+            <a data-role="button" href="#:back" data-align="left"><img src="images/nav-back.svg"/></a>
+           <a data-role="button"  data-click="profileEditView.doSave" data-align="right">Save</a>
        </div>
     </div>    
-       <div class="profileEdit" id="profileEditPhotos">
+       <div class="profileEdit" >
        <div class="profileTopBox">
            <div class="profileEditPrivate">
                <div class="profilePrivateImg">
@@ -93,17 +94,17 @@
             <ul data-role="listview" data-style="inset">
                 <li>
                     <label>Name (Your First and Last Name)
-                        <input type="search" id="profile-name" data-bind="value: name" />
+                        <input type="search" data-bind="value: name" />
                     </label>
                 </li>
                 <li>
                     <label>Alias (How other users see you)
-                    <input type="search" id="profile-alias" data-bind="value: alias" />
+                    <input type="search" data-bind="value: alias" />
                     </label>
                 </li>
                  <li>
                     <label>Contact email 
-                    <input type="email" id="profile-email" data-bind="value: email" />
+                    <input type="email"  data-bind="value: email" />
                     </label>
                 </li>
                <li>

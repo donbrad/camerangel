@@ -17,8 +17,8 @@ var channelModel = {
     channelsDS: new kendo.data.DataSource({
         offlineStorage: "channels",
         sort: {
-            field: "name",
-            dir: "asc"
+            field: "lastAccess",
+            dir: "desc"
         }
     }),
 
@@ -53,16 +53,37 @@ var channelModel = {
                 var models = new Array();
                 for (var i = 0; i < collection.length; i++) {
                     var object = collection[i];
-                    var data = object.attributes;
-                    // Todo: check status of members
-                    if (data.isOwner) {
-                        if (data.ownerId === undefined) {
+
+                    if (object.get('category') === undefined) {
+                        if (object.get('isPrivate') === true) {
+                            object.set('category', "Private");
+                        } else {
+                            object.set('category', "Group");
+                        }
+
+                        if (object.get('isPlace') === true) {
+                            object.set('category', "Place");
+                        }
+                        if (object.get('isEvent') === true) {
+                            object.set('category', "Event");
+                        }
+                        object.save();
+                    }
+
+                    if (object.get('isOwner')) {
+                        if (object.get('ownerId') === undefined) {
                             object.set('ownerId', userModel.currentUser.userUUID);
+                            object.save();
+                        }
+
+                        if (object.get('ownerName') === undefined) {
+                            object.set('ownerName', userModel.currentUser.name);
                             object.save();
                         }
                     }
 
-                    models.push(object.attributes);
+                    var data = object.toJSON();
+                    models.push(data);
                 }
                 channelModel.channelsDS.data(models);
                 deviceModel.setAppState('hasChannels', true);
@@ -321,6 +342,7 @@ var channelModel = {
         channel.set("isOwner", true);
         channel.set('isPrivate', true);
         channel.set('isPlace', false);
+        channel.set('category', 'Private');
         channel.set('isEvent', false);
         channel.set("media",  true);
         channel.set("durationDays", 1);
@@ -397,9 +419,11 @@ var channelModel = {
             channelId = channelUUID;
 
         // If this is a member request, channelUUID will be passed in.
-        // If user is creating new channel, they own it so create new uuid
+        // If user is creating new channel, they own it so create new uuid and update ownerUUID and ownerName
         if (isOwner) {
             channelId = uuid.v4();
+            ownerUUID = userModel.currentUser.userUUID;
+            ownerName = userModel.currentUser.name;
         }
 
 
@@ -419,6 +443,7 @@ var channelModel = {
 
         channel.set('version', channelModel._version);
         channel.set('isPlace', false);
+        channel.set ('category', 'Group');
         channel.set('isPrivate', false);
 
 
@@ -428,6 +453,7 @@ var channelModel = {
             channel.set('isPrivatePlace', isPrivatePlace);
             channel.set('placeUUID', placeId);
             channel.set('placeName', placeName);
+            channel.set('category', 'Place');
             if (name === '') {
                 name =  placeName;
             }

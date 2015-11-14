@@ -488,7 +488,7 @@ var ux = {
 
 		$(".gg_mainSearchBox").css("display", "none").data("visible", false);
 
-		$(".gg_mainSearchInput").unbind();
+		$(".gg_mainSearchInput").off();
 	}
 
 };

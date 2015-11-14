@@ -20,6 +20,7 @@ var galleryView = {
     _currentPhotoId: null,
     _currentPhotoUrl: null,
     _previewSize: "33%",
+    _viewInitialized : false,
 
     onInit : function (e) {
         _preventDefault(e);
@@ -66,29 +67,31 @@ var galleryView = {
 		}); 
 		*/
 
-    },
-
-    searchBind: function(){
-    	$('.gg_mainSearchInput').attr('placeholder', 'Search memories...');
-
-    	$(".gg_mainSearchInput").on('input', function() {
-            var query = $(this).val();
-            if (query.length > 0) {
-
-            }
-
-        }).clearSearch({
-            callback: function() {
-                // todo - wire search
-            }
-        });
 
     },
+
+
 
     onShow : function (e) {
 
         _preventDefault(e);
 
+        if (!galleryView._viewInitialized) {
+            galleryView._viewInitialized = true;
+            $('#gallery .gg_mainSearchInput').attr('placeholder', 'Search memories...');
+
+            $("#gallery .gg_mainSearchInput").on('input', function() {
+                var query = $(this).val();
+                if (query.length > 0) {
+
+                }
+
+            }).clearSearch({
+                callback: function() {
+                    // todo - wire search
+                }
+            });
+        }
 
         if (e.view.params.mode !== undefined && e.view.params.mode === 'picker') {
             galleryView._pickerMode = true;
@@ -100,9 +103,6 @@ var galleryView = {
         if (e.view.params.returnview !== undefined) {
             galleryView._returnView = e.view.params.returnview;
         }
-
-        // set search 
-        galleryView.searchBind();
 
         photoModel.rotationAngle = 0;
         
@@ -165,8 +165,6 @@ var galleryView = {
 
         $actionBtnP.removeClass("actionBtn-text-light").text("");
 
-        // reset search
-        ux.resetSearch();
     },
 
     galleryActionView: function(e){
@@ -210,9 +208,11 @@ var galleryView = {
     galleryClick : function (e) {
         _preventDefault(e);
         
-        var photoId = e.dataItem.photoId, photoUrl = e.dataItem.imageUrl;
-        
-        galleryView._currentPhotoUrl = photoUrl;
+        var photo = e.dataItem, photoId = e.dataItem.photoId, photoUrl = e.dataItem.imageUrl;
+
+        modalPhotoView.openModal(photo);
+
+        /*galleryView._currentPhotoUrl = photoUrl;
         galleryView._currentPhotoId = photoId;
 
        	galleryView._currentPhoto = photoModel.findPhotoById(photoId);
@@ -228,7 +228,7 @@ var galleryView = {
         } else {
             var photoParam = LZString.compressToEncodedURIComponent(photoId);
             APP.kendo.navigate('#photoView?photo='+photoParam);
-        }
+        }*/
     },
 
     deletePhoto: function (e) {
@@ -454,10 +454,48 @@ var photoEditor = {
 
 };
 
+var modalPhotoTag = {
+    _activePhoto: null,
+
+    openModal : function (photo) {
+        modalPhotoTag._activePhoto = photo;
+        $("#modalview-photoTag").data("kendoMobileModalView").open();
+    },
+
+    closeModal : function () {
+        $("#modalview-photoTag").data("kendoMobileModalView").close();
+    },
+
+    onDone : function(e) {
+        _preventDefault(e);
+        // Update data source and parse...
+
+        var photoObj = photoModel.findPhotoById(modalPhotoTag._activePhoto.photoId);
+
+        if (photoObj !== undefined) {
+            photoObj.title = modalPhotoTag._activePhoto.title;
+            photoObj.description = modalPhotoTag._activePhoto.description;
+            photoObj.tagsString = modalPhotoTag._activePhoto.tagsString;
+            photoObj.tags = photoObj.tagsString.split(',');
+
+            updateParseObject('photos', "photoId", modalPhotoTag._activePhoto.photoId, "title", photoObj.title);
+            updateParseObject('photos', "photoId", modalPhotoTag._activePhoto.photoId, "description", photoObj.description);
+            updateParseObject('photos', "photoId", modalPhotoTag._activePhoto.photoId, "tags", photoObj.tags);
+            updateParseObject('photos', "photoId", modalPhotoTag._activePhoto.photoId, "tagsString", photoObj.tagsString);
+
+        } else {
+            mobileNotify("Can't find photo model!!");
+        }
+        modalPhotoTag.closeModal();
+    }
+
+};
 
 var modalPhotoView = {
+    _photo: null,
     _photoUrl : null,
-    
+    _activePhoto : new kendo.data.ObservableObject(),
+
     onInit: function(e){
     	$(".photoViewBox").kendoTouch({
     		filter: "img",
@@ -467,13 +505,46 @@ var modalPhotoView = {
     	});
     },
 
-    openModal : function (url) {
-        modalPhotoView._photoUrl = url;
+    openModal : function (photo) {
+        modalPhotoView._photo = photo;
+        modalPhotoView._photoUrl = photo.imageUrl;
+        modalPhotoView._activePhoto.set('photoId', photo.photoId);
+        modalPhotoView._activePhoto.set('title', photo.title);
+        modalPhotoView._activePhoto.set('description', photo.description);
+        modalPhotoView._activePhoto.set('tags', photo.tags);
+        modalPhotoView._activePhoto.set('tagsString', photo.tagsString);
+        var tagString = '';
+
+       /* if (photo.tags !== undefined && photo.tags.length > 0) {
+            for (var i=0; i++; i< photo.tags.length) {
+                tagString += photo.tags[i] + ', ';
+            }
+
+            // Remove the trailing comma and space...
+            tagString.substring(0,tagString.length - 2);
+
+            modalPhotoView._activePhoto.set('tagsString', tagString);
+        }*/
+
+        if (photo.title !== undefined && photo.title !== null)
+            $("#modalPhotoViewTitle").text(photo.title);
+
+
         $("#modalPhotoView").data("kendoMobileModalView").open();
     },
 
     closeModal : function () {
         $("#modalPhotoView").data("kendoMobileModalView").close();
+    },
+
+    openTagEditor : function (e) {
+        _preventDefault(e);
+        modalPhotoTag.openModal(modalPhotoView._activePhoto);
+    },
+
+    deletePhoto : function (e) {
+        _preventDefault(e);
+
     },
 
    sharePhoto: function (e) {
@@ -549,6 +620,40 @@ var galleryPicker = {
 
     onInit : function (e) {
         _preventDefault(e);
+
+        $('#galleryPickerSearch').on('input', function() {
+            var query = this.value;
+            if (query.length > 0) {
+                photoModel.photosDS.filter( {"logic":"or",
+                    "filters":[
+                        {
+                            "field":"title",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"description",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"tagsString",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"dateString",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"addressString",
+                            "operator":"contains",
+                            "value":query}
+                    ]});
+
+
+            } else {
+                photoModel.photosDS.filter([]);
+
+            }
+        });
     },
 
 
@@ -578,6 +683,8 @@ var galleryPicker = {
     },
 
     closeModal : function ()  {
+        // Reset the photo filter...
+        photoModel.photosDS.filter([]);
         $("#modalview-galleryPicker").kendoMobileModalView("close");
     },
 

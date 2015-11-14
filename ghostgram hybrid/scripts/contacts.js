@@ -225,7 +225,7 @@ function contactSendSMSInvite(phone) {
 function contactSendEmailInvite(email) {
 
 	 if (window.navigator.simulator === true){
-		 alert("Mail isn't supported in the emulator");
+		 mobileNotify("Mail isn't supported in the emulator");
 	 } else {
 		 var thisUser = userModel.currentUser.get('name');
 		 cordova.plugins.email.open({
@@ -242,22 +242,25 @@ function contactSendEmailInvite(email) {
 }
 function contactCallPhone(e) {
 
-    if (e !== undefined && e.preventDefault !== undefined) {
-        e.preventDefault();
+   _preventDefault(e);
+
+    if (window.navigator.simulator === true){
+        mobileNotify("Phone Calls are't supported in the emulator");
+        return;
     }
 
-     var number = contactModel.currentContact.get('phone');
-    phonedialer.dial(
-        number,
+    var number = contactModel.currentContact.get('phone');
+    window.plugins.CallNumber.callNumber(
         function(err) {
             if (err == "empty")
-                navigator.notification.alert("Invalid phone number", null, 'ghostgrams dailer', 'Close');
+                mobileNotify("Invalid phone number", null, 'ghostgrams dailer', 'Close');
             else
                 navigator.notification.alert("Error: " + err , null, 'ghostgrams dailer', 'Close');
         },
         function(success) {
             mobileNotify("Dialing " + number);
-        }
+        },
+        number
     );
 
 }
@@ -457,7 +460,7 @@ function onInitContacts(e) {
 			if (contact.category === 'phone') {
                 if (contactModel.unifiedDeviceContact) {
                     // Have a unified device contact -- just to add contact
-                    launchAddContact({dataItem : contact});
+                   addContactView.openModal(contact);
                 } else {
                     // Still have multiple contacts
                     APP.kendo.navigate('#contactImport?query=' + contact.name);

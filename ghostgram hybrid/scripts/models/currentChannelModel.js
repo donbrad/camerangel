@@ -52,7 +52,9 @@ var currentChannelModel = {
     initDataSources : function () {
         currentChannelModel.memberList = [];
         currentChannelModel.messagesDS.data([]);
+        currentChannelModel.messagesDS.sync();
         currentChannelModel.membersDS.data([]);
+        currentChannelModel.membersDS.sync();
     },
 
     setCurrentChannel : function (channelId) {
@@ -190,7 +192,8 @@ var currentChannelModel = {
         var dataSource = currentChannelModel.membersDS;
         dataSource.filter( { field: "uuid", operator: "eq", value: memberId });
         var view = dataSource.view();
-        var contact = view[0].items[0];
+        //var contact = view[0].items[0];
+        var contact = view[0];
         dataSource.filter([]);
 
         contact.set('isPresent', isPresent);

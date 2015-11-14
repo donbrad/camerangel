@@ -66,6 +66,7 @@
 	<script src="scripts/views/galleryView.js"></script>
 	<script src="scripts/views/homeViews.js"></script>
 	<script src="scripts/views/placeViews.js"></script>
+	<script src="scripts/views/profileView.js"></script>
 	<script src="scripts/channels/appDataChannel.js"></script>
 	<script src="scripts/channels/userDataChannel.js"></script>
 	<script src="scripts/channels/groupChannel.js"></script>
@@ -288,7 +289,7 @@
 </script> 
     
 <!-- home - for new users -->
- <div data-role="view" data-title="ghostgrams" id="newuserhome" data-layout="newuser" data-model="APP.models.home" class="appearance" style="display:none;" data-show="onShowSignIn" data-transition="fade">
+ <div data-role="view" data-title="ghostgrams" id="newuserhome" data-layout="newuser" class="appearance" style="display:none;" data-init="newUserView.onInit" data-show="newUserView.onShow" data-transition="fade">
  	<div class="newuserBox">
         <img id="newuser-ghost" src="images/introImg.svg">
     </div>
@@ -309,11 +310,11 @@
                    	<span id="forgotPassword" class="helper helper-right btnClear-grey" href="#modalview-recoverPassword" data-rel="modalview" data-role="button">Forgot password?</span>
                	</li>
         	</ul>
-            <a class="btnSecondary" data-click="signInValidate" id="modalview-login-button" type="button" data-role="button">Sign In</a>
+            <a class="btnSecondary" data-click="newUserView.onClear" type="button" data-role="button">Clear</a>
     	</form>
     </div>
-    <div class="footer" data-role="footer">
-    	<a class="btnPrimary btnSpan-btm" data-role="button" href="#signup">Join ghostgrams</a>
+    <div class="footer" data-role="footer" id="newuserhome-footer">
+    	<a class="btnPrimary btnSpan-btm" data-role="button" id="newuserhomeActionBtn" data-click="newUserView.onClick">Join ghostgrams</a>
     </div>
 </div>
    
@@ -482,37 +483,6 @@
 	<a class="btnSecondary btnFull-modal" data-click="homeView.closeLocateMeModal" data-role="button">Cancel</a>
 </div>
 
-<!-- Photo tag modal -->
-<div data-role="modalview" id="modalview-photoTag" style="width: 90%; display: none;"  class="appearance">
-    <div data-role="header">
-        <div data-role="navbar">
-            <span>Tag Photo</span>
-            <a data-click="ux.closeModalViewPhotoTag" data-role="button"  class="btnClear-grey" data-align="left">Cancel</a>
-            
-		</div>
-	</div>
-     <form id="photoForm">
-        <ul data-role="listview" data-style="inset">
-            <li>
-                <label>Title
-                    <input type="search" id="photoTitle" />
-                </label>
-            </li>
-            <li>
-            	<label>Description</label>
-                    <textarea type="text" id="photoDesc" col="80" row="2"></textarea>
-            </li>
-			<li>
-                <label>Tags
-                    <textarea type="text" id="photoTags" col="80" row="2" placeholder="People, event, location..."></textarea>
-                </label>
-			</li>
-        </ul>
-    </form>
-    <div class="footer" data-role="footer">
-    	<a class="btnFull-modal btnPrimary" data-role="button" data-click="homeView.savePhoto">Save</a>
-    </div>
-</div>
 
 <style>
 #galleryPicker-listview .li {
@@ -545,7 +515,7 @@
 			<input class="doubleAppendSearch clearable" placeholder="Search photo memories..." id="galleryPickerSearch" />
 		</div>
 	</div>
-	
+
 	<div style="padding-top: 4px; padding-bottom: 6px; padding-left: 6px; text-align: center;">
         <a  data-role="button" class="btnClearLine-grey-sm"  data-click="galleryPicker.setListView">List View</a>
         <a  data-role="button" class="btnClearLine-grey-sm"  data-click="galleryPicker.setGridView">Grid View </a>
@@ -678,12 +648,12 @@
 					<img src="images/icon-ghostMail.svg" /> email ghostgram</a>
 			</li>
 			<li>
-				<a class="btnClear" data-role="button" data-click="contactCallPhone">
+				<a class="btnClear" data-role="button" data-click="contactActionView.callPhone">
 					<img src="images/icon-phone.svg" /> Phone Call
 				</a>
 			</li>
 			<li>
-				<a class="btnClear" data-role="button" data-click="contactSendSMS">
+				<a class="btnClear" data-role="button" data-click="contactActionView.sendSMS">
 					<img src="images/icon-sms.svg" /> Send SMS
 				</a>
 			</li>

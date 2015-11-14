@@ -13,6 +13,7 @@
  */
 
 var channelsView = {
+    _viewInitialized : false,
 
     onInit : function (e) {
         e.preventDefault();
@@ -72,11 +73,46 @@ var channelsView = {
         });
 
 
+
     },
 
     onShow : function(e) {
         _preventDefault(e);
 
+        if (!channelView._viewInitialized) {
+            channelView._viewInitialized = true;
+            $('#channels .gg_mainSearchInput').attr("placeholder", "Search chats...");
+
+            $('#channels .gg_mainSearchInput').on('input', function (e) {
+                var query = this.value;
+                if (query.length > 0) {
+                    channelModel.channelsDS.filter({
+                        "logic": "or",
+                        "filters": [
+                            {
+                                "field": "name",
+                                "operator": "contains",
+                                "value": query
+                            },
+                            {
+                                "field": "description",
+                                "operator": "contains",
+                                "value": query
+                            }
+                        ]
+                    });
+
+                } else {
+                    channelModel.channelsDS.filter([]);
+
+                }
+            }).clearSearch({
+                callback: function () {
+
+                    channelModel.channelsDS.filter([]);
+                }
+            });
+        }
         ux.checkEmptyUIState(channelModel.channelsDS, "#channels");
     	
         // set action button
@@ -84,11 +120,7 @@ var channelsView = {
         ux.showActionBtnText("#channels", "3em", "New Chat");
         ux.checkEmptyUIState(channelModel.channelsDS, "#channels");
 
-        // set search
-      
 
-        // Binding channel search
-       channelsView.searchBind();
 	        	
     },
 
@@ -96,22 +128,9 @@ var channelsView = {
     	// set action button
 		ux.showActionBtn(false, "#channels");
 
-		ux.resetSearch();
     },
 
-    searchBind: function(){
-    	$('.gg_mainSearchInput').attr("placeholder", "Search chats...");
-    	
-    	$('.gg_mainSearchInput').on('input', function(e){
-    	 	
-        	// Todo Don - wire search
-        	
-        }).clearSearch({
-            callback: function() {
-                
-            }
-        });
-    },
+
 
     editChannel : function (e) {
         if (e!== undefined && e.preventDefault !== undefined){

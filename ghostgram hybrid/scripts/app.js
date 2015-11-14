@@ -480,6 +480,11 @@
 			userModel.currentUser.set('appVersion', deviceModel.appVersion);
 		} else {
 			cordova.getAppVersion.getVersionCode(function(version) {
+
+				if (typeof version === 'number') {
+					version = 'android: ' + version.toString();
+				}
+
 				deviceModel.appVersion = version;
 				userModel.currentUser.set('appVersion', version);
 				mobileNotify("ghostgrams version: " + deviceModel.appVersion);
