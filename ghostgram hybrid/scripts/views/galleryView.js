@@ -510,6 +510,7 @@ var modalPhotoView = {
         modalPhotoView._photoUrl = photo.imageUrl;
         modalPhotoView._activePhoto.set('photoId', photo.photoId);
         modalPhotoView._activePhoto.set('title', photo.title);
+        modalPhotoView._activePhoto.set('imageUrl', photo.imageUrl);
         modalPhotoView._activePhoto.set('description', photo.description);
         modalPhotoView._activePhoto.set('tags', photo.tags);
         modalPhotoView._activePhoto.set('tagsString', photo.tagsString);
@@ -525,9 +526,6 @@ var modalPhotoView = {
 
             modalPhotoView._activePhoto.set('tagsString', tagString);
         }*/
-
-        if (photo.title !== undefined && photo.title !== null)
-            $("#modalPhotoViewTitle").text(photo.title);
 
 
         $("#modalPhotoView").data("kendoMobileModalView").open();
