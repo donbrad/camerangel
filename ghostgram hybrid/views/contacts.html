@@ -20,8 +20,7 @@
 </div>
 
 <!-- Import Contacts -->
-<div data-role="view" data-title="Import Contacts" id="contactImport"  data-model="contactModel"
-	 data-init="contactImportView.onInit" data-show="contactImportView.onShow" data-hide="contactImportView.onHide" style="display: none;">
+<div data-role="view" data-title="Import Contacts" id="contactImport"  data-model="contactModel" data-init="contactImportView.onInit" data-show="contactImportView.onShow" data-hide="contactImportView.onHide" style="display: none;">
     <div data-role="header">
         <div data-role="navbar">
            <a data-role="button" data-align="left" href="#:back"><img src="images/nav-back.svg" /></a>
@@ -30,14 +29,14 @@
                 	<img class="nav-search" src="images/icon-search.svg"/>
             	</a>
         </div>
-        <div class="topViewSearchBox gg_mainSearchBox" data-visible="false">
+    </div>
+    <div class="tempSearchBox">
 	 		<div class="appendSearch">
 				<span class="searchIcon"><img src="images/search.svg" /></span>
 				<input type="text" class="doubleAppendSearch gg_mainSearchInput" placeholder="" />
 			</div>
-		</div>
-    </div>
-    <div style="padding-bottom: 24px;">
+	</div>   
+    <div  style="padding-bottom: 24px;">
         <ul id="contactimport-listview"></ul>
     </div>    
 </div>
