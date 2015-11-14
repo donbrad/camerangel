@@ -183,7 +183,7 @@
 
 <div data-role="modalview" id="modalPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal" data-model="modalPhotoView._activePhoto" data-init="modalPhotoView.onInit">
 	<div class="photoViewBox">
-		<img id="modalPhotoViewImage" data-bind="attr('src', imageUrl)" />
+		<img id="modalPhotoViewImage" data-bind="attr: {src : imageUrl}" />
 		<div class="photoTitleBox">
 			<div class="photoTitleText">
 				<h3><span id="modalPhotoViewTitle" data-bind="text: title">Photo Title</span>
