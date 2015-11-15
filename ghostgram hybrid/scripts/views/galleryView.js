@@ -455,10 +455,14 @@ var photoEditor = {
 };
 
 var modalPhotoTag = {
-    _activePhoto: null,
+    _activePhoto: new kendo.data.ObservableObject(),
 
     openModal : function (photo) {
-        modalPhotoTag._activePhoto = photo;
+        modalPhotoTag._activePhoto.set('photoId', photo.photoId);
+        modalPhotoTag._activePhoto.set('title', photo.title);
+        modalPhotoTag._activePhoto.set('description', photo.description);
+        modalPhotoTag._activePhoto.set('tags', photo.tags);
+        modalPhotoTag._activePhoto.set('tagsString', photo.tagsString);
         $("#modalview-photoTag").data("kendoMobileModalView").open();
     },
 
@@ -468,7 +472,7 @@ var modalPhotoTag = {
 
     onCancel: function (e) {
         modalPhotoTag.closeModal();
-        modalPhotoView.openModal( modalPhotoTag._activePhoto);
+        modalPhotoView.openModal(modalPhotoTag._activePhoto);
     },
 
     onDone : function(e) {
