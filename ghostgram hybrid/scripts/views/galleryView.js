@@ -481,7 +481,11 @@ var modalPhotoTag = {
             photoObj.title = modalPhotoTag._activePhoto.title;
             photoObj.description = modalPhotoTag._activePhoto.description;
             photoObj.tagsString = modalPhotoTag._activePhoto.tagsString;
-            photoObj.tags = photoObj.tagsString.split(',');
+            if (photoObj.tagsString.length > 0){
+                photoObj.tags = photoObj.tagsString.split(',');
+            } else {
+                photoObj.tags = [];
+            }
 
             updateParseObject('photos', "photoId", modalPhotoTag._activePhoto.photoId, "title", photoObj.title);
             updateParseObject('photos', "photoId", modalPhotoTag._activePhoto.photoId, "description", photoObj.description);
