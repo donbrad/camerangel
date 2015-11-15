@@ -460,6 +460,7 @@ var modalPhotoTag = {
     openModal : function (photo) {
         modalPhotoTag._activePhoto.set('photoId', photo.photoId);
         modalPhotoTag._activePhoto.set('title', photo.title);
+        modalPhotoView._activePhoto.set('imageUrl', photo.imageUrl);
         modalPhotoTag._activePhoto.set('description', photo.description);
         modalPhotoTag._activePhoto.set('tags', photo.tags);
         modalPhotoTag._activePhoto.set('tagsString', photo.tagsString);
