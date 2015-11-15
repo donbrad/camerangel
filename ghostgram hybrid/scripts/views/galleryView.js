@@ -530,7 +530,7 @@ var modalPhotoView = {
         }
         modalPhotoView._activePhoto.set('description', photo.description);
         modalPhotoView._activePhoto.set('tags', photo.tags);
-        if (photo.tagsString === null) {
+        if (photo.tagsString === undefined || photo.tagsString === null) {
             photo.tagsString = modalPhotoView._dummyTagsString;
         }
         modalPhotoView._activePhoto.set('tagsString', photo.tagsString);
