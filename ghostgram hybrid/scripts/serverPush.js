@@ -29,13 +29,9 @@ var serverPush = {
         mobileNotify("Server Push enabled : " + data.registrationId);
         serverPush._regId =  data.registrationId;
 
-        if ( deviceModel.state.pubnubInit) {
-            serverPush.provisionDataChannels();
-        } else {
-            mobileNotify("Pubnub npt ready to provision data channels");
-        }
+        deviceModel.setAppState('isDeviceRegistered', true);
 
-
+        deviceModel.isPushProvisioned();
 
     },
 
