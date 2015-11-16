@@ -10,6 +10,7 @@ var serverPush = {
     plugin : null,
     _googleSenderId : "962500978306",   // contact donbrad before changing...
     _regId : null,
+    _channelsProvisioned : false,
 
     init : function () {
         serverPush.plugin = window.PushNotification.init({ "android": {"senderID": serverPush._googleSenderId},
@@ -20,12 +21,17 @@ var serverPush = {
         serverPush.plugin.on('notification', this.onNotification);
 
         serverPush.plugin.on('error', this.onError);
+
+        serverPush.provisionDataChannels();
+
     },
 
     onRegistration : function (data) {
         // data.registrationId
         mobileNotify("Server Push enabled : " + data.registrationId);
         serverPush._regId =  data.registrationId;
+
+
 
     },
 
@@ -41,6 +47,46 @@ var serverPush = {
     onError : function (e) {
         // e.message
         mobileNotify("Server push error : " + e.message);
+    },
+
+    provisionDataChannels : function () {
+        if (!serverPush._channelsProvisioned) {
+            var type = 'apns';
+            if (device.model === "Android") {
+                type = 'gcm';
+            }
+
+
+            APP.pubnub.mobile_gw_provision ({
+                device_id: serverPush._regId,
+                op    : 'add',
+                gw_type  : type,
+                channel  :  appDataChannel.channelId,
+                callback : serverPush._success,
+                error  : serverPush._error
+            });
+
+            APP.pubnub.mobile_gw_provision ({
+                device_id: serverPush._regId,
+                op    : 'add',
+                gw_type  :type,
+                channel  : userDataChannel.channelId,
+                callback : serverPush._success,
+                error  : serverPush._error
+            });
+
+            serverPush._channelsProvisioned = true;
+
+        }
+    },
+
+    _success : function (data) {
+        mobileNotify("Data channel server push enabled!");
+    },
+
+    _error : function (error) {
+        mobileNotify("Push Channel Error " + error);
     }
+
 
 };
