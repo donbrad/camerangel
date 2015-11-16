@@ -97,6 +97,8 @@ var deviceModel = {
             if (!deviceModel.state.pubnubInit) {
                 userModel.initPubNub();
                 deviceModel.setAppState('pubnubInit', true);
+
+                serverPush.provisionDataChannels();
                // channelModel.updateChannelsMessageCount();
                 //channelModel.init();
             }

@@ -22,7 +22,7 @@ var serverPush = {
 
         serverPush.plugin.on('error', this.onError);
 
-        serverPush.provisionDataChannels();
+        //serverPush.provisionDataChannels();
 
     },
 
@@ -52,7 +52,8 @@ var serverPush = {
     provisionDataChannels : function () {
         if (!serverPush._channelsProvisioned) {
             var type = 'apns';
-            if (device.model === "Android") {
+
+            if (device.platform === "Android") {
                 type = 'gcm';
             }
 
