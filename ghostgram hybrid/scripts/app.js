@@ -478,7 +478,7 @@
 		});
 
 		// Provide basic functionality in the simulator and deployable simulator
-		if (window.navigator.simulator === undefined) {
+		if (window.navigator.simulator !== undefined) {
 			deviceModel.appVersion = "emulator: 0.2.1.5";
 			userModel.currentUser.set('appVersion', deviceModel.appVersion);
 		} else {
