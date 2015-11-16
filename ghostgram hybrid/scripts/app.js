@@ -459,6 +459,8 @@
 
 		placesModel.init();
 
+		serverPush.init();
+
 		pruneNotifications();
 
 		// Uncomment to load all device contacts at initialization - major performance hit!!
