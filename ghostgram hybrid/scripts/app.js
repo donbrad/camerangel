@@ -3,7 +3,6 @@
 		_mapElem,
 		_mapObj,
 		_private,
-		_appData = new AppData(),
 		_isOnline = true;
 
 	// create an object to store the models for each view
@@ -462,7 +461,7 @@
 		if (window.navigator.simulator === false) {
 			serverPush.init();
 		}
-		
+
 		pruneNotifications();
 
 		// Uncomment to load all device contacts at initialization - major performance hit!!

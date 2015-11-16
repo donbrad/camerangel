@@ -12,7 +12,7 @@ var serverPush = {
     _regId : null,
 
     init : function () {
-        serverPush.plugin = PushNotification.init({ "android": {"senderID": serverPush._googleSenderId},
+        serverPush.plugin = window.plugins.pushNotification.init({ "android": {"senderID": serverPush._googleSenderId},
             "ios": {"alert": "true", "badge": "true", "sound": "true"}, "windows": {} } );
 
         push.on('registration', this.onRegistration);
