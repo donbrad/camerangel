@@ -459,8 +459,10 @@
 
 		placesModel.init();
 
-		serverPush.init();
-
+		if (window.navigator.simulator === false) {
+			serverPush.init();
+		}
+		
 		pruneNotifications();
 
 		// Uncomment to load all device contacts at initialization - major performance hit!!
@@ -478,7 +480,7 @@
 
 		// Provide basic functionality in the simulator and deployable simulator
 		if (window.navigator.simulator === true) {
-			deviceModel.appVersion = "emulator: 0.2.0.4";
+			deviceModel.appVersion = "emulator: 0.2.1.5";
 			userModel.currentUser.set('appVersion', deviceModel.appVersion);
 		} else {
 			cordova.getAppVersion.getVersionCode(function(version) {
