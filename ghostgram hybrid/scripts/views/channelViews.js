@@ -888,7 +888,7 @@ var channelView = {
           // clear header img
           $('#channelImage').attr('src', '').addClass("hidden");
 
-          groupChannel.open(channelUUID, thisUser.userUUID, thisUser.name, thisUser.alias, thisUser.phone);
+          groupChannel.open(channelUUID, thisChannel.name, thisUser.userUUID, thisUser.name, thisUser.alias, thisUser.phone);
           channelView.sendMessageHandler = groupChannel.sendMessage;
          // channelView.contactData = channelView.buildContactArray(thisChannel.members);
 
