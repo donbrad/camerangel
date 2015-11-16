@@ -458,7 +458,7 @@
 
 		placesModel.init();
 
-		if (window.navigator.simulator === false) {
+		if (window.navigator.simulator === undefined) {
 			serverPush.init();
 		}
 
@@ -478,7 +478,7 @@
 		});
 
 		// Provide basic functionality in the simulator and deployable simulator
-		if (window.navigator.simulator === true) {
+		if (window.navigator.simulator === undefined) {
 			deviceModel.appVersion = "emulator: 0.2.1.5";
 			userModel.currentUser.set('appVersion', deviceModel.appVersion);
 		} else {
