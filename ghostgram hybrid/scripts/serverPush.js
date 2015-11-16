@@ -22,14 +22,18 @@ var serverPush = {
 
         serverPush.plugin.on('error', this.onError);
 
-        //serverPush.provisionDataChannels();
-
     },
 
     onRegistration : function (data) {
         // data.registrationId
         mobileNotify("Server Push enabled : " + data.registrationId);
         serverPush._regId =  data.registrationId;
+
+        if ( deviceModel.state.pubnubInit) {
+            serverPush.provisionDataChannels();
+        } else {
+            mobileNotify("Pubnub npt ready to provision data channels");
+        }
 
 
 
@@ -50,6 +54,7 @@ var serverPush = {
     },
 
     provisionDataChannels : function () {
+
         if (!serverPush._channelsProvisioned) {
             var type = 'apns';
 
