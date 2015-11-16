@@ -116,6 +116,7 @@ var galleryView = {
             }).clearSearch({
                 callback: function() {
                     // todo - wire search
+                    photoModel.photosDS.filter([]);
                 }
             });
         }
