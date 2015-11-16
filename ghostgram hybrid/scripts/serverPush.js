@@ -15,11 +15,11 @@ var serverPush = {
         serverPush.plugin = window.PushNotification.init({ "android": {"senderID": serverPush._googleSenderId},
             "ios": {"alert": "true", "badge": "true", "sound": "true"}, "windows": {} } );
 
-        push.on('registration', this.onRegistration);
+        serverPush.plugin.on('registration', this.onRegistration);
 
-        push.on('notification', this.onNotification);
+        serverPush.plugin.on('notification', this.onNotification);
 
-        push.on('error', this.onError);
+        serverPush.plugin.on('error', this.onError);
     },
 
     onRegistration : function (data) {
