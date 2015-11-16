@@ -81,8 +81,35 @@ var galleryView = {
             $('#gallery .gg_mainSearchInput').attr('placeholder', 'Search memories...');
 
             $("#gallery .gg_mainSearchInput").on('input', function() {
-                var query = $(this).val();
+                var query = this.value;
                 if (query.length > 0) {
+                    photoModel.photosDS.filter( {"logic":"or",
+                        "filters":[
+                            {
+                                "field":"name",
+                                "operator":"contains",
+                                "value":query},
+                            {
+                                "field":"description",
+                                "operator":"contains",
+                                "value":query},
+                            {
+                                "field":"tagsString",
+                                "operator":"contains",
+                                "value":query},
+                            {
+                                "field":"dateString",
+                                "operator":"contains",
+                                "value":query},
+                            {
+                                "field":"addressString",
+                                "operator":"contains",
+                                "value":query}
+                        ]});
+
+
+                } else {
+                    photoModel.photosDS.filter([]);
 
                 }
 
@@ -510,8 +537,8 @@ var modalPhotoView = {
     _photo: null,
     _photoUrl : null,
     _dummyTitle : 'Title',
-    _dummyDescription : 'Description',
-    _dummyTagsString : 'Tags...',
+    _dummyDescription : '',
+    _dummyTagsString : '',
 
     _activePhoto : new kendo.data.ObservableObject(),
 

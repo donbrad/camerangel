@@ -22,9 +22,6 @@ var contactsView = {
 
         contactModel.deviceQueryActive = false;
 
-
-
-
         $("#contacts-listview").kendoMobileListView({
             dataSource: contactModel.contactListDS,
             template: $("#contactsTemplate").html(),
