@@ -53,10 +53,12 @@ var mapModel = {
         mapModel.mapOptions.center.lat =  mapModel.lat;
         mapModel.mapOptions.center.lng =  mapModel.lng;
 
-        mapModel.geocoder =  new google.maps.Geocoder();
+
         mapModel.googleMap = new google.maps.Map(document.getElementById('map-mapdiv'), mapModel.mapOptions);
         mapModel.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
+        mapModel.geocoder =  new google.maps.Geocoder();
         mapModel.googlePlaces = new google.maps.places.PlacesService(mapModel.googleMap);
+
         mapModel.getCurrentAddress(function (isNew, address){
 
             if (isNew) {

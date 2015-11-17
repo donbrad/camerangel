@@ -8,11 +8,18 @@
 
 var serverPush = {
     plugin : null,
+    _initialized : false,
     _googleSenderId : "962500978306",   // contact donbrad before changing...
     _regId : null,
     _channelsProvisioned : false,
 
     init : function () {
+
+        if (serverPush._initialized)
+            return;
+
+        serverPush._initialized = true;
+
         serverPush.plugin = window.plugins.pushNotification;
 
         if (device.platform == 'android' || device.platform == 'Android' || device.platform == 'amazon-fireos' ) {
@@ -27,7 +34,7 @@ var serverPush = {
     },
 
     onRegistration : function (data) {
-       
+
         mobileNotify("Server Push enabled : " + data);
         serverPush._regId =  data;
 
