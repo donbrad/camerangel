@@ -91,7 +91,7 @@ var deviceModel = {
 
     isPushProvisioned : function ()  {
         if (deviceModel.state.pubnubInit && deviceModel.state.isDeviceRegistered) {
-            serverPush.provisionDataChannels();
+         //   serverPush.provisionDataChannels();
             deviceModel.setAppState('devicePushEnabled', true);
         }
 
