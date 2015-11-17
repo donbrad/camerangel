@@ -56,7 +56,7 @@ var serverPush = {
 
     provisionDataChannels : function () {
 
-        if (!serverPush._channelsProvisioned) {
+ /*       if (!serverPush._channelsProvisioned) {
             var type = 'apns';
 
             if (device.platform === "Android") {
@@ -85,7 +85,7 @@ var serverPush = {
             serverPush._channelsProvisioned = true;
 
         }
-    },
+*/    },
 
     _success : function (data) {
         mobileNotify("Data channel server push enabled!");
