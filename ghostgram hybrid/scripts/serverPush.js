@@ -11,8 +11,7 @@ var serverPush = {
     _googleSenderId : "962500978306",   // contact donbrad before changing...
     _regId : null,
     _channelsProvisioned : false,
-    plugin : window.plugins.pushNotification,
-
+    
     init : function () {
         serverPush.plugin = window.plugins.pushNotification;
 
@@ -21,7 +20,7 @@ var serverPush = {
                 {senderID:serverPush._googleSenderId, ecb: serverPush.onNotificationECM});
         } else if (device.platform == 'iOS') {
             serverPush.plugin.register(serverPush.onRegistration, serverPush.onError,
-                {"badge":"true","sound":"true","alert":"true","ecb": serverPush.onNotificationAPN});	
+                {"badge":"true","sound":"true","alert":"true","ecb": serverPush.onNotificationAPN});
         }
 
 
