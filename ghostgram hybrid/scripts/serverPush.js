@@ -157,6 +157,8 @@ var serverPush = {
 
             serverPush._channelsProvisioned = true;
 
+            mobileNotify("pubnub push provisioned!!!");
+
         }
     },
 
