@@ -13,8 +13,8 @@ var serverPush = {
     _channelsProvisioned : false,
 
     init : function () {
-        
-        serverPush.plugin = window.PushNotification.init({
+
+        /*serverPush.plugin = window.PushNotification.init({
             "android": {"senderID": serverPush._googleSenderId},
             "ios": {"alert": "true", "badge": "true", "sound": "true"},
             "windows": {}
@@ -24,7 +24,7 @@ var serverPush = {
 
         serverPush.plugin.on('notification', this.onNotification);
 
-        serverPush.plugin.on('error', this.onError);
+        serverPush.plugin.on('error', this.onError);*/
 
     },
 
