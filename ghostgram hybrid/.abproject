@@ -13,7 +13,6 @@
   ],
   "iOSBackgroundMode": [
     "location",
-    "bluetooth-central",
     "bluetooth-peripheral",
     "fetch",
     "remote-notification"
