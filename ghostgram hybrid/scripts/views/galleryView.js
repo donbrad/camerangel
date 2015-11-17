@@ -81,11 +81,37 @@ var galleryView = {
             
 
             $("#gallery .gg_mainSearchInput").on('input', function() {
-                var query = $(this).val();
+                var query = this.value;
                 if (query.length > 0) {
+
+				photoModel.photosDS.filter( {"logic":"or",
+                        "filters":[
+                            {
+                                "field":"name",
+                                "operator":"contains",
+                                "value":query},
+                            {
+                                "field":"description",
+                                "operator":"contains",
+                                "value":query},
+                            {
+                                "field":"tagsString",
+                                "operator":"contains",
+                                "value":query},
+                            {
+                                "field":"dateString",
+                                "operator":"contains",
+                                "value":query},
+                            {
+                                "field":"addressString",
+                                "operator":"contains",
+                                "value":query}
+                        ]});
+
                 	$("#gallery .enterSearch").removeClass('hidden');
                 } else {
                 	$("#gallery .enterSearch").addClass('hidden');
+                	photoModel.photosDS.filter([]);
                 }
 
             })
@@ -95,10 +121,10 @@ var galleryView = {
 					$("#gallery .gg_mainSearchInput").val('');
 					
 					// reset data filters
-                    // Todo Don - wire gallery filters
+                   photoModel.photosDS.filter([]);
 
-                    // hide clear btn
-                    $(this).addClass('hidden');
+                   // hide clear btn
+                   $(this).addClass('hidden');
 			})
 
         } 
@@ -470,15 +496,25 @@ var photoEditor = {
 };
 
 var modalPhotoTag = {
-    _activePhoto: null,
+    _activePhoto: new kendo.data.ObservableObject(),
 
     openModal : function (photo) {
-        modalPhotoTag._activePhoto = photo;
+        modalPhotoTag._activePhoto.set('photoId', photo.photoId);
+        modalPhotoTag._activePhoto.set('title', photo.title);
+        modalPhotoTag._activePhoto.set('imageUrl', photo.imageUrl);
+        modalPhotoTag._activePhoto.set('description', photo.description);
+        modalPhotoTag._activePhoto.set('tags', photo.tags);
+        modalPhotoTag._activePhoto.set('tagsString', photo.tagsString);
         $("#modalview-photoTag").data("kendoMobileModalView").open();
     },
 
     closeModal : function () {
         $("#modalview-photoTag").data("kendoMobileModalView").close();
+    },
+
+    onCancel: function (e) {
+        modalPhotoTag.closeModal();
+        modalPhotoView.openModal(modalPhotoTag._activePhoto);
     },
 
     onDone : function(e) {
@@ -491,7 +527,11 @@ var modalPhotoTag = {
             photoObj.title = modalPhotoTag._activePhoto.title;
             photoObj.description = modalPhotoTag._activePhoto.description;
             photoObj.tagsString = modalPhotoTag._activePhoto.tagsString;
-            photoObj.tags = photoObj.tagsString.split(',');
+            if (photoObj.tagsString.length > 0){
+                photoObj.tags = photoObj.tagsString.split(',');
+            } else {
+                photoObj.tags = [];
+            }
 
             updateParseObject('photos', "photoId", modalPhotoTag._activePhoto.photoId, "title", photoObj.title);
             updateParseObject('photos', "photoId", modalPhotoTag._activePhoto.photoId, "description", photoObj.description);
@@ -502,6 +542,7 @@ var modalPhotoTag = {
             mobileNotify("Can't find photo model!!");
         }
         modalPhotoTag.closeModal();
+        modalPhotoView.openModal( modalPhotoTag._activePhoto)
     }
 
 };
@@ -509,6 +550,10 @@ var modalPhotoTag = {
 var modalPhotoView = {
     _photo: null,
     _photoUrl : null,
+    _dummyTitle : 'Title',
+    _dummyDescription : '',
+    _dummyTagsString : '',
+
     _activePhoto : new kendo.data.ObservableObject(),
 
     onInit: function(e){
@@ -521,16 +566,29 @@ var modalPhotoView = {
     },
 
     openModal : function (photo) {
+
         modalPhotoView._photo = photo;
         modalPhotoView._photoUrl = photo.imageUrl;
         modalPhotoView._activePhoto.set('photoId', photo.photoId);
+        if (photo.title === null) {
+            photo.title = modalPhotoView._dummyTitle;
+        }
         modalPhotoView._activePhoto.set('title', photo.title);
+        modalPhotoView._activePhoto.set('imageUrl', photo.imageUrl);
+        if (photo.description === null) {
+            photo.description = modalPhotoView._dummyDescription;
+        }
         modalPhotoView._activePhoto.set('description', photo.description);
         modalPhotoView._activePhoto.set('tags', photo.tags);
+        if (photo.tagsString === undefined || photo.tagsString === null) {
+            photo.tagsString = modalPhotoView._dummyTagsString;
+        }
         modalPhotoView._activePhoto.set('tagsString', photo.tagsString);
-        var tagString = '';
 
-       /* if (photo.tags !== undefined && photo.tags.length > 0) {
+
+        /*    var tagString = '';
+
+       if (photo.tags !== undefined && photo.tags.length > 0) {
             for (var i=0; i++; i< photo.tags.length) {
                 tagString += photo.tags[i] + ', ';
             }
@@ -540,9 +598,6 @@ var modalPhotoView = {
 
             modalPhotoView._activePhoto.set('tagsString', tagString);
         }*/
-
-        if (photo.title !== undefined && photo.title !== null)
-            $("#modalPhotoViewTitle").text(photo.title);
 
 
         $("#modalPhotoView").data("kendoMobileModalView").open();
@@ -554,7 +609,11 @@ var modalPhotoView = {
 
     openTagEditor : function (e) {
         _preventDefault(e);
-        modalPhotoTag.openModal(modalPhotoView._activePhoto);
+
+        $(".photoTitleBox").velocity({height: "15rem"}, {duration: 800, easing: "spring"});
+
+        //modalPhotoView.closeModal();
+        //modalPhotoTag.openModal(modalPhotoView._activePhoto);
     },
 
     deletePhoto : function (e) {

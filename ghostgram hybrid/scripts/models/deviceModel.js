@@ -29,7 +29,9 @@ var deviceModel = {
         hasPlaces: false,
         hasPhotos: false,
         introFetched: false,
-        pubnubInit: false
+        pubnubInit: false,
+        isDeviceRegistered : false,
+        devicePushEnabled : false,
     },
 
 
@@ -87,19 +89,31 @@ var deviceModel = {
         localStorage.setItem('ggAppDataTimeStamp', 0);
     },
 
+    isPushProvisioned : function ()  {
+        if (deviceModel.state.pubnubInit && deviceModel.state.isDeviceRegistered) {
+            serverPush.provisionDataChannels();
+            deviceModel.setAppState('devicePushEnabled', true);
+
+
+        }
+
+    },
+
     isParseSyncComplete: function () {
 
         var channels = deviceModel.state.hasChannels, photos = deviceModel.state.hasPhotos, contacts = deviceModel.state.hasContacts ;
-        // Todo:  add places -- need to discuss with tucker
 
-        if (channels && photos) {
+        if (channels && photos && contacts) {
 
-            if (!deviceModel.state.pubnubInit) {
+        //    if (!deviceModel.state.pubnubInit) {
                 userModel.initPubNub();
                 deviceModel.setAppState('pubnubInit', true);
+
+                deviceModel.isPushProvisioned();
+
                // channelModel.updateChannelsMessageCount();
                 //channelModel.init();
-            }
+      //      }
 
         }
     },

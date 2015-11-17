@@ -3,7 +3,6 @@
 		_mapElem,
 		_mapObj,
 		_private,
-		_appData = new AppData(),
 		_isOnline = true;
 
 	// create an object to store the models for each view
@@ -459,6 +458,10 @@
 
 		placesModel.init();
 
+		if (window.navigator.simulator === undefined) {
+			serverPush.init();
+		}
+
 		pruneNotifications();
 
 		// Uncomment to load all device contacts at initialization - major performance hit!!
@@ -475,8 +478,8 @@
 		});
 
 		// Provide basic functionality in the simulator and deployable simulator
-		if (window.navigator.simulator === true) {
-			deviceModel.appVersion = "emulator: 0.2.0.4";
+		if (window.navigator.simulator !== undefined) {
+			deviceModel.appVersion = "emulator: 0.2.1.5";
 			userModel.currentUser.set('appVersion', deviceModel.appVersion);
 		} else {
 			cordova.getAppVersion.getVersionCode(function(version) {

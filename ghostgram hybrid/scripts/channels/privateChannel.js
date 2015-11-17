@@ -160,6 +160,19 @@ var privateChannel = {
                     type: 'privateMessage',
                     recipient: recipient,
                     sender: privateChannel.userId,
+                    pn_apns: {
+                        aps: {
+                            alert : "Private : " + userModel.currentUser.name,
+                            badge: 1,
+                            summary_for_mobile: "New private message..."
+                        }
+                    },
+                    pn_gcm : {
+                        data : {
+                            title_for_mobile: "Private : " + userModel.currentUser.name,
+                            summary_for_mobile: "New private message..."
+                        }
+                    },
                     msgID: msgID,
                     channelId: privateChannel.channelId,
                     content: encryptMessage,  // publish the encryptedMessage
