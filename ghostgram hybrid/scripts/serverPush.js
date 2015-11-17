@@ -27,9 +27,9 @@ var serverPush = {
     },
 
     onRegistration : function (data) {
-        // data.registrationId
-        mobileNotify("Server Push enabled : " + data.registrationId);
-        serverPush._regId =  data.registrationId;
+       
+        mobileNotify("Server Push enabled : " + data);
+        serverPush._regId =  data;
 
         deviceModel.setAppState('isDeviceRegistered', true);
 
