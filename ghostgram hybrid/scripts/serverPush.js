@@ -51,14 +51,14 @@ var serverPush = {
             navigator.notification.alert(e.alert);
         }
 
-        if (e.sound) {
+       /* if (e.sound) {
             // playing a sound also requires the org.apache.cordova.media plugin
             var snd = new Media(e.sound);
             snd.play();
-        }
+        }*/
 
         if (e.badge) {
-            pushNotification.setApplicationIconBadgeNumber(serverPush.onSuccess, e.badge);
+            serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, e.badge);
         }
     },
 
