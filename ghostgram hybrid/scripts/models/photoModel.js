@@ -183,7 +183,7 @@ var photoModel = {
     },
 
     addDevicePhoto: function (data) {
-
+        mobileNotify("Processing photo....");
         // Todo: add additional processing to create Parse photoOffer
         var Photos = Parse.Object.extend("photos");
         var photo = new Photos();
