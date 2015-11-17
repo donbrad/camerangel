@@ -1622,12 +1622,12 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .photoTitleBox {
   position: absolute;
-  bottom: 4rem;
+  bottom: 0px;
   left: 0rem;
   text-align: left;
   color: #fff;
   width: 100%;
-  height: 5rem;
+  height: 6rem;
   padding: 0.5rem 0 0.5rem;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   background: -moz-linear-gradient(top, rgba(0, 0, 0, 0.3) 0%, #000000 99%);
@@ -1644,6 +1644,15 @@ div.footerMenu.km-footer > ul > li > a:active {
   /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4d000000', endColorstr='#000000', GradientType=0);
   /* IE6-9 */
+}
+.photoTitleInput {
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+.photoTitleInput textarea {
+  width: 100%;
+  font-size: 1em;
 }
 #photoView > div.km-content.km-widget.km-scroll-wrapper,
 #modalPhotoView > div.km-content.km-widget.km-scroll-wrapper {
@@ -2064,7 +2073,8 @@ div.footerMenu.km-footer > ul > li > a:active {
 .km-root .km-pane .km-view.appearance .km-listview a {
   border: none;
 }
-.km-root .km-pane .km-view.appearance .km-listview textarea {
+.km-root .km-pane .km-view.appearance .km-listview textarea,
+textarea {
   clear: both;
   position: relative;
   font-size: 1em;
@@ -2074,6 +2084,7 @@ div.footerMenu.km-footer > ul > li > a:active {
   resize: none;
   outline: none;
   padding: 0.5em 0.75em;
+  border-radius: 3px;
 }
 .km-root .km-wp .km-view.appearance .km-listview input {
   color: #2e2e2e;

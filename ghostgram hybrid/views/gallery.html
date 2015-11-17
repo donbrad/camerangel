@@ -157,25 +157,7 @@
 
 		</div>
 	</div>
-	<form id="photoForm">
-		<ul data-role="listview" data-style="inset">
-			<li>
-				<label>Title
-					<input type="search" data-bind="value: title"/>
-				</label>
-			</li>
-			<li>
-				<label>Description</label>
-				<textarea  data-bind="value: description" type="text"  col="80" row="2"></textarea>
-
-			</li>
-			<li>
-				<label>Tags
-					<textarea data-bind="value: tagsString" type="text"  col="80" row="2" placeholder="People, event, location..."></textarea>
-				</label>
-			</li>
-		</ul>
-	</form>
+	
 	<div class="footer" data-role="footer">
 		<a class="btnFull-modal btnPrimary" data-role="button" data-click="modalPhotoTag.onDone">Save</a>
 	</div>
@@ -186,13 +168,28 @@
 		<img id="modalPhotoViewImage" data-bind="attr: {src : imageUrl}" />
 		<div class="photoTitleBox">
 			<div class="photoTitleText">
-				<h3><span id="modalPhotoViewTitle" data-bind="text: title">Photo Title</span>
+				<h3 class="textClamp">
+					<span id="modalPhotoViewTitle" data-bind="text: title">Photo Title</span>
 					<a class="btnClear-sm" data-role="button" data-click="modalPhotoView.openTagEditor">Edit</a>
 				</h3>
-				<p><span data-bind="text: description"> </span></p>
-				<p><img src="images/icon-tag-light.svg" class="icon-sm" /> 
+
+				<p>
+					<span data-bind="text: description"> </span>
+				</p>
+				<p>
+					<img src="images/icon-tag-light.svg" class="icon-sm" /> 
 					<span id="modalPhotoViewTags" data-bind="text: tagsString">photo tags</span>
 				</p>
+			</div>
+			<div class="photoTitleInput hidden">
+				<label>Title</label>
+				<input type="search" class="input-text-md" data-bind="value: title" maxlength="20"/>
+				
+				<label>Description</label>
+				<textarea data-bind="value: description" type="text" col="80" row="2" maxlength="60"></textarea>
+				
+				<label>Tags</label>
+				<textarea data-bind="value: tagsString" type="text" col="80" row="2" maxlength="60" placeholder="People, event, location..."></textarea>
 			</div>
 			<a class="actionBtn primary-100" data-role="button" data-click="modalPhotoView.sharePhoto">
 				<img src="images/icon-share-light.svg"/>
@@ -201,7 +198,8 @@
 
 	</div>
 	<div class="footer" data-role="footer">
-		<a class="btnSpan-btm btnClear glass" data-role="button" data-click="modalPhotoView.closeModal">Close</a>
+		<a class="btnSpan-btm btnClear glass" data-role="button" data-click="modalPhotoView.closeModal" id="modalPhotoView-close">Close</a>
+		<a class="btnSpan-btm btnPrimary hidden" data-role="button" data-click="modalPhotoView.closeTagEditor" id="modalPhotoView-update">Update</a>
 	</div>
 </div>
 

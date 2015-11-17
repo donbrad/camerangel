@@ -553,14 +553,23 @@ var modalPhotoView = {
     _dummyTitle : 'Title',
     _dummyDescription : '',
     _dummyTagsString : '',
-
     _activePhoto : new kendo.data.ObservableObject(),
+    _showInfo: false,
 
     onInit: function(e){
+    	var showInfo =  modalPhotoView._showInfo;
+
     	$(".photoViewBox").kendoTouch({
     		filter: "img",
     		tap: function(e){
-
+    			if(!showInfo){
+    				$(".photoTitleBox").velocity({height: "10rem"}, {duration: 300});
+    				showInfo = true;
+    			} else {
+    				$(".photoTitleBox").velocity({height: "6rem"}, {duration: 300});
+    				showInfo = false;
+    			}
+   
     		}
     	});
     },
@@ -610,10 +619,56 @@ var modalPhotoView = {
     openTagEditor : function (e) {
         _preventDefault(e);
 
-        $(".photoTitleBox").velocity({height: "15rem"}, {duration: 800, easing: "spring"});
+        $(".photoTitleBox").velocity({height: "20rem"}, {duration: 800, easing: "spring"});
+        $(".photoTitleText").addClass("hidden");
+        $(".photoTitleInput").removeClass("hidden");
+
+        modalPhotoView._showInfo = true;
+
+        // Hide actionBtn
+        $("#modalPhotoView .actionBtn").velocity("fadeOut", {duration: 0});
+
+        // bug - can't access data-click so have to have 2 btns
+        $("#modalPhotoView-close").addClass("hidden");
+        $("#modalPhotoView-update").removeClass("hidden");
 
         //modalPhotoView.closeModal();
         //modalPhotoTag.openModal(modalPhotoView._activePhoto);
+    },
+
+    closeTagEditor: function(e){
+    	// Update data source and parse...
+
+        var photoObj = photoModel.findPhotoById(modalPhotoView._activePhoto.photoId);
+
+        if (photoObj !== undefined) {
+            photoObj.title = modalPhotoView._activePhoto.title;
+            photoObj.description = modalPhotoView._activePhoto.description;
+            photoObj.tagsString = modalPhotoView._activePhoto.tagsString;
+            if (photoObj.tagsString.length > 0){
+                photoObj.tags = photoObj.tagsString.split(',');
+            } else {
+                photoObj.tags = [];
+            }
+
+            updateParseObject('photos', "photoId", modalPhotoView._activePhoto.photoId, "title", photoObj.title);
+            updateParseObject('photos', "photoId", modalPhotoView._activePhoto.photoId, "description", photoObj.description);
+            updateParseObject('photos', "photoId", modalPhotoView._activePhoto.photoId, "tags", photoObj.tags);
+            updateParseObject('photos', "photoId", modalPhotoView._activePhoto.photoId, "tagsString", photoObj.tagsString);
+
+        } else {
+            mobileNotify("Can't find photo model!!");
+        }
+
+    	// UI reset
+    	$(".photoTitleBox").velocity({height: "6rem"}, {duration: 400});
+        $(".photoTitleText").removeClass("hidden");
+        $(".photoTitleInput").addClass("hidden");
+
+        $("#modalPhotoView .actionBtn").velocity("fadeIn", {delay: 300});
+
+        $("#modalPhotoView-close").removeClass("hidden");
+        $("#modalPhotoView-update").addClass("hidden");
     },
 
     deletePhoto : function (e) {
