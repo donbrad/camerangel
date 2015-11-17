@@ -93,8 +93,6 @@ var deviceModel = {
         if (deviceModel.state.pubnubInit && deviceModel.state.isDeviceRegistered) {
             serverPush.provisionDataChannels();
             deviceModel.setAppState('devicePushEnabled', true);
-
-
         }
 
     },
