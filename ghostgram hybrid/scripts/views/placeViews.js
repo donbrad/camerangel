@@ -85,10 +85,7 @@ var placesView = {
 
         if (!placesView._viewInitialized) {
             placesView._viewInitialized = true;
-            // Set placeholder
-            $('#places .gg_mainSearchInput').attr('placeholder', 'Search places...');
-
-
+           
 
             // Filter current places and query google places on keyup
             $('#places .gg_mainSearchInput').on('input', function() {
@@ -122,19 +119,32 @@ var placesView = {
                                 "value":query}
                         ]});
 
+						$('#places .enterSearch').removeClass('hidden');
+
                 } else {
 
                     placesView.placeListDS.data(placesModel.placesDS.data());
                     placesView.placeListDS.filter([]);
                 }
                 // Activate clearsearch and zero the filter when it's called
-            }).clearSearch({
-                callback: function() {
+            });
+			
+
+			// bind clear search btn
+			$("#places .enterSearch").on("click", function(){
+					$("#places .gg_mainSearchInput").val('');
+					
+					// reset data filters
                     placesView.placeListDS.data(placesModel.placesDS.data());
                     placesView.placeListDS.filter([]);
-                }
-            });
+
+                    // hide clear btn
+                    $(this).addClass('hidden');
+			})
         }
+
+        // Set placeholder
+        $('#places .gg_mainSearchInput').attr('placeholder', 'Search places...');
 
         // Always display the add places button so users can create a new place (even if others exist)
         
@@ -167,6 +177,8 @@ var placesView = {
         ux.showActionBtn(false, "#places");
         //ux.hideActionBtnText("#places");
         ux.changeActionBtnImg("#places", "nav-add-white");
+
+        ux.hideSearch();
 
     }
 

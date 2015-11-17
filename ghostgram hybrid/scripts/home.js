@@ -221,12 +221,13 @@ var homeView = {
 			$('#checked-in-place > span').html(userModel.currentUser.currentPlace);
 			$('#checked-in-place').show();
 		}
-
+		/*
 		 $('#homeSearchQuery').clearSearch({
 	        callback: function() {
 	        	// todo - wire search
 	        }
 	    });
+		*/
 
 		$("#notification-listview").kendoMobileListView({
 			dataSource: notificationModel.notificationDS,
@@ -433,6 +434,7 @@ function onShowHome(e) {
 	// hide search button and show gear
 	$(".homeToggleSetting").removeClass("hidden");
 	$(".homeToggleSearch").addClass("hidden");
+	$(".gg_mainSearchBox").css("display", "none");
 
     // set verified ui for start screen 
     if(userModel.currentUser.phoneVerified) {

@@ -30,13 +30,15 @@
             	</a>
         </div>
     </div>
-    <div class="tempSearchBox">
+    <div class="gg_mainSearchBox" data-visible="false">
 	 		<div class="appendSearch">
 				<span class="searchIcon"><img src="images/search.svg" /></span>
 				<input type="text" class="doubleAppendSearch gg_mainSearchInput" placeholder="" />
+				<span class="enterSearch hidden"><a class="btnClear-grey"><img class="icon-sm" src="images/close.svg" /></a></span>
 			</div>
 	</div>   
-    <div  style="padding-bottom: 24px;">
+    <div style="padding-bottom: 24px;">
+    	<div id="contactImport-noResults" class="hidden">No results found</div>
         <ul id="contactimport-listview"></ul>
     </div>    
 </div>

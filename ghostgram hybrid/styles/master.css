@@ -4367,7 +4367,8 @@ html .km-pane-wrapper .k-header {
 .k-state-hover:hover {
   background: #979797;
 }
-.topViewSearchBox {
+.topViewSearchBox,
+.gg_mainSearchBox {
   width: 100%;
   background-color: #f5f5f5;
   display: none;

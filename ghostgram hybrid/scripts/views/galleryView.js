@@ -78,20 +78,33 @@ var galleryView = {
 
         if (!galleryView._viewInitialized) {
             galleryView._viewInitialized = true;
-            $('#gallery .gg_mainSearchInput').attr('placeholder', 'Search memories...');
+            
 
             $("#gallery .gg_mainSearchInput").on('input', function() {
                 var query = $(this).val();
                 if (query.length > 0) {
-
+                	$("#gallery .enterSearch").removeClass('hidden');
+                } else {
+                	$("#gallery .enterSearch").addClass('hidden');
                 }
 
-            }).clearSearch({
-                callback: function() {
-                    // todo - wire search
-                }
-            });
-        }
+            })
+           
+            // bind clear search btn
+			$("#gallery .enterSearch").on("click", function(){
+					$("#gallery .gg_mainSearchInput").val('');
+					
+					// reset data filters
+                    // Todo Don - wire gallery filters
+
+                    // hide clear btn
+                    $(this).addClass('hidden');
+			})
+
+        } 
+        	
+        $('#gallery .gg_mainSearchInput').attr('placeholder', 'Search memories...');
+        
 
         if (e.view.params.mode !== undefined && e.view.params.mode === 'picker') {
             galleryView._pickerMode = true;
@@ -164,6 +177,8 @@ var galleryView = {
         $actionBtnImg.attr("src", "images/nav-add-white.svg");
 
         $actionBtnP.removeClass("actionBtn-text-light").text("");
+
+        ux.hideSearch();
 
     },
 
