@@ -13,8 +13,12 @@ var serverPush = {
     _channelsProvisioned : false,
 
     init : function () {
-        serverPush.plugin = window.PushNotification.init({ "android": {"senderID": serverPush._googleSenderId},
-            "ios": {"alert": "true", "badge": "true", "sound": "true"}, "windows": {} } );
+        
+        serverPush.plugin = window.PushNotification.init({
+            "android": {"senderID": serverPush._googleSenderId},
+            "ios": {"alert": "true", "badge": "true", "sound": "true"},
+            "windows": {}
+        });
 
         serverPush.plugin.on('registration', this.onRegistration);
 
@@ -36,6 +40,7 @@ var serverPush = {
     },
 
     onNotification : function (data) {
+        mobileNotify("Push: " +  data.title + " : " + data.message);
         // data.message,
         // data.title,
         // data.count,
