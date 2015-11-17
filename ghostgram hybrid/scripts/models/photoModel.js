@@ -215,8 +215,8 @@ var photoModel = {
         var timeStr = moment().format('MMMM Do YYYY, h:mm'); // October 7th 2015, 10:26 am
         photo.set("dateString", timeStr);
 
-        photo.set('lat', mapModel.lat);
-        photo.set('lng', mapModel.lng);
+        photo.set('lat', mapModel.lat.toString());
+        photo.set('lng', mapModel.lng.toString());
         photo.set('geoPoint', new Parse.GeoPoint(parseFloat(mapModel.lat), parseFloat(mapModel.lng)));
 
         if (mapModel.currentAddress !== null && mapModel.currentAddress.city !== undefined) {
@@ -259,8 +259,9 @@ var photoModel = {
             photo.save(null, {
                 success: function(photo) {
                     // Execute any logic that should take place after the object is saved.
+                    var photoObj = photo.toJSON();
                     mobileNotify('Photo added to ghostgrams gallery');
-                    photoModel.photosDS.add(photo.attributes);
+                    photoModel.photosDS.add(photoObject);
                     photoModel.parsePhoto = photo;
                     currentChannelModel.currentMessage.photo = {thumb: photo.get('thumbnailUrl'), photo: photo.get('imageUrl'), phone: photo.get('phoneUrl')};
 
