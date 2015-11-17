@@ -105,7 +105,7 @@ var deviceModel = {
 
         if (channels && photos && contacts) {
 
-        //    if (!deviceModel.state.pubnubInit) {
+            if (!deviceModel.state.pubnubInit) {
                 userModel.initPubNub();
                 deviceModel.setAppState('pubnubInit', true);
 
@@ -113,7 +113,7 @@ var deviceModel = {
 
                // channelModel.updateChannelsMessageCount();
                 //channelModel.init();
-      //      }
+           }
 
         }
     },
