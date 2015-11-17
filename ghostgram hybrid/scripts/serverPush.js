@@ -11,7 +11,7 @@ var serverPush = {
     _googleSenderId : "962500978306",   // contact donbrad before changing...
     _regId : null,
     _channelsProvisioned : false,
-    
+
     init : function () {
         serverPush.plugin = window.plugins.pushNotification;
 

@@ -26,12 +26,14 @@ var mapModel = {
     _pingInterval: 5, //Ping debounce interval in seconds.  app will only get position after _pingInterval seconds
 
     geocoder : null,
-    mapOptions : {zoom: 14,  mapTypeId : google.maps.MapTypeId.ROADMAP, center: { lat: 42.1347293 , lng: -91.1362623}},
+    mapOptions : {zoom: 14,  center: { lat: 42.1347293 , lng: -91.1362623}},
     googleMap : null,
     googlePlaces : null,
 
 
     init: function () {
+
+
 
         mapModel.lastPingSeconds = ggTime.currentTimeInSeconds() - 11;
 
@@ -53,6 +55,7 @@ var mapModel = {
 
         mapModel.geocoder =  new google.maps.Geocoder();
         mapModel.googleMap = new google.maps.Map(document.getElementById('map-mapdiv'), mapModel.mapOptions);
+        mapModel.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
         mapModel.googlePlaces = new google.maps.places.PlacesService(mapModel.googleMap);
         mapModel.getCurrentAddress(function (isNew, address){
 
