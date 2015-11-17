@@ -18,7 +18,7 @@ SemanticDSs.prototype = {
 			value: 'name'
 		});
 
-		this.places = this.makeSemanticDataSource('Places', APP.models.places.placesDS, {
+		this.places = this.makeSemanticDataSource('Places', placesModel.placesDS, {
 			name: 'name',
 			alias: 'alias',
 			value: 'address'

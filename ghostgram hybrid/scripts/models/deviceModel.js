@@ -91,10 +91,8 @@ var deviceModel = {
 
     isPushProvisioned : function ()  {
         if (deviceModel.state.pubnubInit && deviceModel.state.isDeviceRegistered) {
-            serverPush.provisionDataChannels();
+         //   serverPush.provisionDataChannels();
             deviceModel.setAppState('devicePushEnabled', true);
-
-
         }
 
     },
@@ -105,7 +103,7 @@ var deviceModel = {
 
         if (channels && photos && contacts) {
 
-        //    if (!deviceModel.state.pubnubInit) {
+            if (!deviceModel.state.pubnubInit) {
                 userModel.initPubNub();
                 deviceModel.setAppState('pubnubInit', true);
 
@@ -113,7 +111,7 @@ var deviceModel = {
 
                // channelModel.updateChannelsMessageCount();
                 //channelModel.init();
-      //      }
+           }
 
         }
     },
@@ -131,12 +129,12 @@ var deviceModel = {
         deviceModel.setAppState('isOnline', true);
         // Take all data sources online
 
-        APP.models.home.invitesDS.online(true);
+       // APP.models.home.invitesDS.online(true);
         notificationModel.notificationDS.online(true);
         channelModel.channelsDS.online(true);
         photoModel.photosDS.online(true);
-       // contactModel.contactsDS.online(true);
-       // placesModel.placesDS.online(true);
+       contactModel.contactsDS.online(true);
+       placesModel.placesDS.online(true);
 
         deviceModel.getNetworkState();
     },
@@ -145,12 +143,12 @@ var deviceModel = {
         deviceModel.setAppState('isOnline', false);
         // Take all data sources offline
 
-        APP.models.home.invitesDS.online(false);
+        //APP.models.home.invitesDS.online(false);
         notificationModel.notificationDS.online(false);
         channelModel.channelsDS.online(false);
         photoModel.photosDS.online(false);
-        //contactModel.contactsDS.online(false);
-       // placesModel.placesDS.online(false);
+        contactModel.contactsDS.online(false);
+        placesModel.placesDS.online(false);
 
     },
 

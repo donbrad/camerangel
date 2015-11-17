@@ -213,7 +213,7 @@ var homeView = {
 		ux.closeModalViewPhotoTag();
 	},
 
-	onInitHome: function(e) {
+	onInit: function(e) {
 		_preventDefault(e);
 
 
@@ -238,7 +238,30 @@ var homeView = {
 		})
 	},
 
-	onHideHome: function(){
+	onShow: function (e) {
+		_preventDefault(e);
+
+		// hide search button and show gear
+		$(".homeToggleSetting").removeClass("hidden");
+		$(".homeToggleSearch").addClass("hidden");
+
+		// set verified ui for start screen
+		if(userModel.currentUser.phoneVerified) {
+			$("#startPhoneVerified").addClass("hidden");
+		}
+
+		// Set user availibility
+		ux.updateHeaderStatusImages();
+
+		//APP.models.presence.current.bind('change' , syncPresence);
+
+		// Hide action button on home
+		ux.showActionBtn(false, "#home");
+
+	},
+
+	onHide: function(e){
+		_preventDefault (e);
 		$(".homeToggleSetting").addClass("hidden");
 		$(".homeToggleSearch").removeClass("hidden");
 	},
@@ -428,31 +451,9 @@ function onShowSignIn(e){
 	});
 }
 
-function onShowHome(e) {
-	_preventDefault(e);
-
-	// hide search button and show gear
-	$(".homeToggleSetting").removeClass("hidden");
-	$(".homeToggleSearch").addClass("hidden");
-	$(".gg_mainSearchBox").css("display", "none");
-
-    // set verified ui for start screen 
-    if(userModel.currentUser.phoneVerified) {
-    	$("#startPhoneVerified").addClass("hidden");
-    }
-    
-    // Set user availibility 
-    ux.updateHeaderStatusImages();
-        
-    APP.models.presence.current.bind('change' , syncPresence);
-
-    // Hide action button on home
-    ux.showActionBtn(false, "#home");
-}
 
 function setUserStatusUI(e){
-	if (e !== undefined && e.preventDefault !== undefined)
-		e.preventDefault();
+	_preventDefault(e);
 
 	//Set available
 	var currentAvailable = userModel.currentUser.isAvailable;
@@ -474,6 +475,7 @@ function setUserStatusUI(e){
 }
 
 function testingStatus(e) {
+	_preventDefault(e);
 	
 }
 
