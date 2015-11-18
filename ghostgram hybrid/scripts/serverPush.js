@@ -24,7 +24,7 @@ var serverPush = {
         serverPush.plugin = window.plugins.pushNotification;
 
         if (device.platform == 'android' || device.platform == 'Android' || device.platform == 'amazon-fireos' ) {
-            serverPush.plugin.register(serverPush.onSuccess, serverPush.onError,
+            serverPush.plugin.register(serverPush.onRegistration, serverPush.onError,
                 {senderID: serverPush._googleSenderId, ecb: 'serverPush.onNotificationECM'});
         } else if (device.platform == 'iOS') {
             serverPush.plugin.register(serverPush.onRegistration, serverPush.onError,
@@ -63,7 +63,7 @@ var serverPush = {
         }
     },
 
-    onNotificationECM : function (data) {
+    onNotificationECM : function (e) {
 
         switch( e.event )
         {
