@@ -18,14 +18,14 @@ var serverPush = {
         if (serverPush._initialized)
             return;
 
-        window.serverPush = serverPush;
+       // window.serverPush = serverPush;
         serverPush._initialized = true;
 
         serverPush.plugin = window.plugins.pushNotification;
 
         if (device.platform == 'android' || device.platform == 'Android' || device.platform == 'amazon-fireos' ) {
             serverPush.plugin.register(serverPush.onSuccess, serverPush.onError,
-                {senderID: serverPush._googleSenderId, ecb: window.serverPush.onNotificationECM});
+                {senderID: serverPush._googleSenderId, ecb: 'serverPush.onNotificationECM'});
         } else if (device.platform == 'iOS') {
             serverPush.plugin.register(serverPush.onRegistration, serverPush.onError,
                 {badge: false, sound : false, alert: true, ecb : serverPush.onNotificationAPN});
