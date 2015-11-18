@@ -156,7 +156,7 @@ var userModel = {
                     notificationModel.deleteNotification('phoneVerified');
                 } else {
                     mobileNotify("Please verify your phone number");
-                    $("#modalview-verifyPhone").data("kendoMobileModalView").open();
+                    //Add verify phone notification to home screen
                 }
             });
         }
