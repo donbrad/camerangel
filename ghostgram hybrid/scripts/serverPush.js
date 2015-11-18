@@ -136,21 +136,23 @@ var serverPush = {
                 type = 'gcm';
             }
 
+            var regId = serverPush._regId;
+            var dataChannel = appDataChannel.channelId, userChannel = userDataChannel.channelId;
 
             APP.pubnub.mobile_gw_provision ({
-                device_id: serverPush._regId,
+                device_id: regId,
                 op    : 'add',
                 gw_type  : type,
-                channel  :  appDataChannel.channelId,
+                channel  :  dataChannel,
                 callback : serverPush._success,
                 error  : serverPush._error
             });
 
             APP.pubnub.mobile_gw_provision ({
-                device_id: serverPush._regId,
+                device_id: regId,
                 op    : 'add',
                 gw_type  :type,
-                channel  : userDataChannel.channelId,
+                channel  : userChannel,
                 callback : serverPush._success,
                 error  : serverPush._error
             });
@@ -167,7 +169,7 @@ var serverPush = {
     },
 
     _error : function (error) {
-        mobileNotify("Push Channel Error " + error);
+        mobileNotify("Pubnub Push Channel Error " + error);
     }
 
 
