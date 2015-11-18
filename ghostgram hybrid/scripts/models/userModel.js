@@ -133,7 +133,8 @@ var userModel = {
                 userModel.currentUser.set('isPhotoStored', user.get('isPhotoStored'));
                 userModel.currentUser.set('saveToPhotoAlbum',user.get('saveToPhotoAlbum'));
                 userModel.currentUser.set('rememberUsername', user.get('rememberUsername'));
-                userModel.currentUser.set('phoneVerified', user.get('phoneVerified'));
+                var phoneVerified = user.get('phoneVerified');
+                userModel.currentUser.set('phoneVerified', phoneVerfied);
                 userModel.currentUser.set('emailValidated', user.get('emailVerified'));
                 userModel.currentUser.set('useIdenticon', user.get('useIdenticon'));
                 userModel.currentUser.set('availImgUrl', 'images/status-away.svg');
@@ -149,6 +150,14 @@ var userModel = {
 
                 userModel.currentUser.bind('change', userModel.sync);
                 userModel.fetchParseData();
+
+                if (phoneVerified) {
+                    deviceModel.setAppState('phoneVerified', true);
+                    notificationModel.deleteNotification('phoneVerified');
+                } else {
+                    mobileNotify("Please verify your phone number");
+                    $("#modalview-verifyPhone").data("kendoMobileModalView").open();
+                }
             });
         }
 
