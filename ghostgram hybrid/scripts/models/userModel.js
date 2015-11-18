@@ -134,7 +134,7 @@ var userModel = {
                 userModel.currentUser.set('saveToPhotoAlbum',user.get('saveToPhotoAlbum'));
                 userModel.currentUser.set('rememberUsername', user.get('rememberUsername'));
                 var phoneVerified = user.get('phoneVerified');
-                userModel.currentUser.set('phoneVerified', phoneVerfied);
+                userModel.currentUser.set('phoneVerified', phoneVerified);
                 userModel.currentUser.set('emailValidated', user.get('emailVerified'));
                 userModel.currentUser.set('useIdenticon', user.get('useIdenticon'));
                 userModel.currentUser.set('availImgUrl', 'images/status-away.svg');
