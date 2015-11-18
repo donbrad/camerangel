@@ -139,8 +139,6 @@ var serverPush = {
             var regId = serverPush._regId;
             var dataChannel = appDataChannel.channelId, userChannel = userDataChannel.channelId;
 
-            console.log("Reg ID = " + regID + " dataChannel = " + dataChannel + " userChannel =" + userChannel);
-
             APP.pubnub.mobile_gw_provision ({
                 device_id: regId,
                 op    : 'add',
