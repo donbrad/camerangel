@@ -24,10 +24,10 @@ var serverPush = {
 
         if (device.platform == 'android' || device.platform == 'Android' || device.platform == 'amazon-fireos' ) {
             serverPush.plugin.register(serverPush.onSuccess, serverPush.onError,
-                {senderID:serverPush._googleSenderId, ecb: serverPush.onNotificationECM});
+                {senderID: serverPush._googleSenderId, ecb: serverPush.onNotificationECM});
         } else if (device.platform == 'iOS') {
             serverPush.plugin.register(serverPush.onRegistration, serverPush.onError,
-                {"badge":"true","sound":"true","alert":"true","ecb": serverPush.onNotificationAPN});
+                {badge: false, sound : false, alert: true, ecb : serverPush.onNotificationAPN});
         }
 
 
