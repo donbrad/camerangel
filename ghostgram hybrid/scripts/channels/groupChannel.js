@@ -133,7 +133,7 @@ var groupChannel = {
                     },
                     pn_gcm : {
                         data : {
-                            summary: notificationString,
+                            summary: notificationString
                         }
                     },
                     sender: groupChannel.userId,
