@@ -271,7 +271,6 @@ var userModel = {
         if (APP.pubnub !== null) {
             return;
         }
-
         var uuid = userModel.currentUser.get('userUUID');
 
         if (uuid === undefined || uuid === null) {

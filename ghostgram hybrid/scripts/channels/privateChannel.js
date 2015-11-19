@@ -158,14 +158,11 @@ var privateChannel = {
             APP.pubnub.publish({
                 channel: privateChannel.contactId,
                 message: {
-                    type: 'privateMessage',
-                    recipient: recipient,
-                    sender: privateChannel.userId,
                     pn_apns: {
                         aps: {
                             alert : notificationString,
                             badge: 1,
-                            'content-available' : 1
+                            'content-available' : '1'
                         },
                         target: '#channel?channel='+ privateChannel.channelId
                     },
@@ -175,9 +172,13 @@ var privateChannel = {
                             summary: 'Private Message from ' + userModel.currentUser.name,
                             target: '#channel?channel=' + privateChannel.channelId
                         }
+
                     },
-                    msgID: msgID,
+                    type: 'privateMessage',
                     channelId: privateChannel.channelId,
+                    recipient: recipient,
+                    sender: privateChannel.userId,
+                    msgID: msgID,
                     content: encryptMessage,  // publish the encryptedMessage
                     data: encryptData,        // publish the encryptedData.
                     time: currentTime,
