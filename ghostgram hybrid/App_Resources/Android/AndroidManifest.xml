@@ -30,5 +30,8 @@
         </application>
 		<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 		<uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
+		<uses-permission android:name="android.permission.INTERNET" />
+		<uses-permission android:name="android.permission.WAKE_LOCK" />
+	    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
         <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="21"/>
 </manifest>
