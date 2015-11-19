@@ -62,18 +62,42 @@ var userDataChannel = {
             callback: function(messages) {
                 messages = messages[0];
                 messages = messages || [];
+                var RSAKey = cryptico.privateKeyFromString(userModel.currentUser.privateKey);
+
                 for (var i = 0; i < messages.length; i++) {
 
                     var lastAccess = ggTime.toPubNubTime(userDataChannel.lastAccess);
 
-                    if ( messages[i].type === 'privateMessage') {
+                    var msg  =  messages[i];
+                    if (msg.type === 'privateMessage') {
 
                         // Add the last 24 hours worth of messages to the private channel archive
-                        if (messages[i].sender !== userModel.currentUser.userUUID) {
+                        if (msg.sender !== userModel.currentUser.userUUID) {
                             // if the sender isn't this user, update the channel list
-                            channelList[messages[i].sender] = channelList[messages[i].sender]++;
+                            channelList[msg.sender] = channelList[msg.sender]++;
                         }
-                        channelModel.privateMessagesDS.add(messages[i]);
+
+                        var data = null;
+                        var content = cryptico.decrypt(msg.content.cipher, RSAKey).plaintext;
+                        if (msg.data !== undefined && msg.data !== null) {
+                            data = cryptico.decrypt(msg.data.cipher, RSAKey).plaintext;
+                            data = JSON.parse(data);
+                        }
+
+                        var parsedMsg = {
+                            type: 'privateMessage',
+                            msgID: msg.msgID,
+                            channelId: privateChannel.channelId,
+                            content: content,
+                            data: data,
+                            TTL: msg.ttl,
+                            time: msg.time,
+                            sender: msg.sender,
+                            recipient: msg.recipient
+                        };
+
+
+                        channelModel.privateMessagesDS.add(msg);
 
                     }
                 }

@@ -226,7 +226,11 @@ var privateChannel = {
         var messages = view;
         var clearMessageArray = [];
         dataSource.filter([]);
-        for(var i = 0; i < messages.length; i++) {
+
+        if(callBack)
+            callBack(messages);
+
+  /*      for(var i = 0; i < messages.length; i++) {
             var msg = messages[i];
             var content = '';
             var parsedMsg;
@@ -266,5 +270,5 @@ var privateChannel = {
         if(callBack)
             callBack(clearMessageArray);
 
-     }
+*/     }
 };
