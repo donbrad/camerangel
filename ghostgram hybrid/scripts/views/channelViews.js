@@ -819,7 +819,7 @@ var channelView = {
         $('#privacyMode').html('<img src="images/privacy-off.svg" />');
         $("#privacyStatus").addClass("hidden");
 
-        $("#channelNavBar").data('kendoMobileNavBar').title(name);
+      //  $("#channelNavBar").data('kendoMobileNavBar').title(name);
 
         if (thisChannel.isPrivate) {
             // *** Private Channel ***
