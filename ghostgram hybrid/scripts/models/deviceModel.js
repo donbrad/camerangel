@@ -139,6 +139,11 @@ var deviceModel = {
         deviceModel.getNetworkState();
     },
 
+
+    inBackground : function () {
+        return(deviceModel.state.inBackground);
+    },
+
     onOffline: function() {
         deviceModel.setAppState('isOnline', false);
         // Take all data sources offline

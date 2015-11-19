@@ -48,9 +48,16 @@ var serverPush = {
 
     onNotificationAPN : function (e) {
 
-        if (e.alert) {
-            navigator.notification.alert(e.alert);
+        if (deviceModel.inBackground()) {
+            if (e.badge) {
+                serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, e.badge);
+            }
+        } else {
+            if (e.alert) {
+                mobileNotify(e.alert);
+            }
         }
+
 
        /* if (e.sound) {
             // playing a sound also requires the org.apache.cordova.media plugin
@@ -58,9 +65,7 @@ var serverPush = {
             snd.play();
         }*/
 
-        if (e.badge) {
-            serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, e.badge);
-        }
+
     },
 
     onNotificationECM : function (e) {
