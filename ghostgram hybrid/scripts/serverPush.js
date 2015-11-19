@@ -86,14 +86,17 @@ var serverPush = {
                 // you might want to play a sound to get the user's attention, throw up a dialog, etc.
                 if (e.foreground)
                 {
-                    // on Android soundname is outside the payload.
+                   /* // on Android soundname is outside the payload.
                     // On Amazon FireOS all custom attributes are contained within payload
                     var soundfile = e.soundname || e.payload.sound;
                     // if the notification contains a soundname, play it.
                     // playing a sound also requires the org.apache.cordova.media plugin
                     var my_media = new Media("/android_asset/www/"+ soundfile);
 
-                    my_media.play();
+                    my_media.play();*/
+
+                    mobileNotify(e.payload.summary);
+
                 }
                 else
                 {	// otherwise we were launched because the user touched a notification in the notification tray.
@@ -102,7 +105,7 @@ var serverPush = {
 
                 }
 
-                navigator.notification.alert(e.payload.message);
+
 
                 break;
 
