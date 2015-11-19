@@ -91,7 +91,7 @@ var userDataChannel = {
                         var parsedMsg = {
                             type: 'privateMessage',
                             msgID: msg.msgID,
-                            channelId: privateChannel.channelId,
+                            channelId: msg.sender,   // Private channelId is just contacts UUID...
                             content: content,
                             data: data,
                             TTL: msg.ttl,
