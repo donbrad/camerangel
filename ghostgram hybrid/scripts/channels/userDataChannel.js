@@ -101,7 +101,7 @@ var userDataChannel = {
                         };
 
 
-                        userDataChannel.messages.add(parsedMsg);
+                        userDataChannel.messagesDS.add(parsedMsg);
 
                     }
                 }
