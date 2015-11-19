@@ -130,7 +130,7 @@ var privateChannel = {
         // -- we add the message to the chat datasource at time of send
        // if (message.actualRecipient === undefined)
         channelModel.incrementPrivateMessageCount(message.channelId, 1);
-        privateChannel.messagesDS.add(message);
+        userDataChannel.messagesDS.add(message);
 
         // If this message is for the current channel, then display immediately
         if (message.channelId === channelView._channelId)
@@ -210,7 +210,7 @@ var privateChannel = {
 
                     parsedMsg.channelId = recipient;
 
-                    privateChannel.messages.add(parsedMsg);
+                    userDataChannel.messagesDS.add(parsedMsg);
                     // archive message in the current channel
                    // privateChannel.archiveMessage(parsedMsg);
                     //deleteMessage(recipient, msgID, ttl);
@@ -222,7 +222,7 @@ var privateChannel = {
 
     getMessageHistory: function (callBack) {
 
-        var dataSource = privateChannel.messagesDS;
+        var dataSource = userDataChannel.messagesDS;
 
         dataSource.filter({ field: "channelId", operator: "eq", value: privateChannel.contactId });
 
@@ -231,45 +231,9 @@ var privateChannel = {
         var clearMessageArray = [];
         dataSource.filter([]);
 
-
-
-
         for(var i = 0; i < messages.length; i++) {
             var msg = messages[i];
-            /*var content = '';
-            var parsedMsg;
-
-            // Process
-            var data = null;
-            var content = cryptico.decrypt(msg.content.cipher, privateChannel.RSAKey).plaintext;
-            if (content === undefined) {
-                content = null;
-            }
-            if (msg.data !== undefined && msg.data !== null) {
-                data = cryptico.decrypt(msg.data.cipher, privateChannel.RSAKey).plaintext;
-                if (data === undefined) {
-                    data = null;
-                } else {
-                    data = JSON.parse(data);
-                }
-            }
-
-            if (content !== null) {
-                parsedMsg = {
-                    msgID: msg.msgID,
-                    content: content,
-                    data: data,
-                    ttl: msg.ttl,
-                    time: msg.time,
-                    sender: msg.sender,
-                    fromHistory: true,
-                    recipient: msg.recipient
-                };
-
-                clearMessageArray.push(parsedMsg);
-            }
-*/
-
+            
             clearMessageArray.push(msg);
         }
 
