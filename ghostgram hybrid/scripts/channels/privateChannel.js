@@ -233,7 +233,7 @@ var privateChannel = {
 
         for(var i = 0; i < messages.length; i++) {
             var msg = messages[i];
-            
+
             clearMessageArray.push(msg);
         }
 

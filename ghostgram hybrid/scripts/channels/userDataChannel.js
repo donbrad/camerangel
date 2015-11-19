@@ -13,7 +13,7 @@ var userDataChannel = {
     channelId: null,   // channelId is users uuid
     lastAccess: 0,   // last access time stamp
     timeStamp: 0,
-    messages :  new kendo.data.DataSource({
+    messagesDS :  new kendo.data.DataSource({
         offlineStorage: "privatemessages"
         }),
 
