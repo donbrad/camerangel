@@ -117,7 +117,8 @@ var deviceModel = {
     },
 
     onPause: function() {
-       deviceModel.setAppState('inBackground', true);
+        deviceModel.setAppState('inBackground', true);
+
 
     },
 
@@ -133,8 +134,8 @@ var deviceModel = {
         notificationModel.notificationDS.online(true);
         channelModel.channelsDS.online(true);
         photoModel.photosDS.online(true);
-       contactModel.contactsDS.online(true);
-       placesModel.placesDS.online(true);
+        contactModel.contactsDS.online(true);
+        placesModel.placesDS.online(true);
 
         deviceModel.getNetworkState();
     },
