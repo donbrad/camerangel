@@ -648,6 +648,7 @@ var newUserView = {
                 userModel.currentUser.set('emailValidated', userModel.parseUser.get('emailVerified'));
                 userModel.parseACL = new Parse.ACL(userModel.parseUser);
                 userModel.currentUser.bind('change', userModel.sync);
+                userModel.initPubNub();
                 userModel.fetchParseData();
 
                 APP.kendo.navigate('#home');
@@ -761,6 +762,7 @@ var newUserView = {
                                         userModel.currentUser.bind('change', userModel.sync);
                                         userModel.parseACL = new Parse.ACL(Parse.User.current());
                                         mobileNotify('Welcome to ghostgrams!');
+                                        userModel.initPubNub();
                                         /*if (window.navigator.simulator !== true) {
 
                                          cordova.plugins.notification.local.add({
