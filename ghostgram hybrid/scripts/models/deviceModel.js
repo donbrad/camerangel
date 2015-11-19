@@ -107,7 +107,7 @@ var deviceModel = {
                 userModel.initPubNub();
                 deviceModel.setAppState('pubnubInit', true);
 
-                deviceModel.isPushProvisioned();
+              //  deviceModel.isPushProvisioned();
 
                // channelModel.updateChannelsMessageCount();
                 //channelModel.init();
@@ -117,17 +117,17 @@ var deviceModel = {
     },
 
     onPause: function() {
-     //   deviceModel.setAppState('inBackground', true);
+        deviceModel.setAppState('inBackground', true);
 
 
     },
 
     onResume: function() {
-  /*      deviceModel.setAppState('inBackground', false);
+       deviceModel.setAppState('inBackground', false);
         setTimeout(function() {
             navigator.splashscreen.hide();
         },0);
-*/    },
+    },
 
     onOnline: function() {
         deviceModel.setAppState('isOnline', true);
