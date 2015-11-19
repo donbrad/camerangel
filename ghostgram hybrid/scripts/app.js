@@ -57,18 +57,19 @@
 	};
 
 
-	// Add event listeners
-	document.addEventListener("pause", deviceModel.onPause, false);
-	document.addEventListener("resume", deviceModel.onResume, false);
-
-
-	document.addEventListener("online", deviceModel.onOnline, false);
-	document.addEventListener("offline", deviceModel.onOffline, false);
-
 
 
 	// this function is called by Cordova when the application is loaded by the device
 	document.addEventListener('deviceready', function() {
+
+		// Add event listeners
+		document.addEventListener("pause", deviceModel.onPause, false);
+		document.addEventListener("resume", deviceModel.onResume, false);
+
+
+		document.addEventListener("online", deviceModel.onOnline, false);
+		document.addEventListener("offline", deviceModel.onOffline, false);
+
 
 		deviceModel.getAppState();
 
