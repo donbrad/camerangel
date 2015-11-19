@@ -57,18 +57,19 @@
 	};
 
 
-	// Add event listeners
-	document.addEventListener("pause", deviceModel.onPause, false);
-	document.addEventListener("resume", deviceModel.onResume, false);
-
-
-	document.addEventListener("online", deviceModel.onOnline, false);
-	document.addEventListener("offline", deviceModel.onOffline, false);
-
 
 
 	// this function is called by Cordova when the application is loaded by the device
 	document.addEventListener('deviceready', function() {
+
+		// Add event listeners
+		document.addEventListener("pause", deviceModel.onPause, false);
+		document.addEventListener("resume", deviceModel.onResume, false);
+
+
+		document.addEventListener("online", deviceModel.onOnline, false);
+		document.addEventListener("offline", deviceModel.onOffline, false);
+
 
 		deviceModel.getAppState();
 
@@ -78,7 +79,6 @@
 
 
 		// hide the splash screen as soon as the app is ready. otherwise
-
 		navigator.splashscreen.hide();
 		// Set status bar color
 
@@ -87,7 +87,7 @@
 		StatusBar.styleDefault();
 		
 		Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
-		Parse.User.enableRevocableSession();
+		//Parse.User.enableRevocableSession();
 
 		contactModel.init();
 

@@ -119,22 +119,24 @@ var groupChannel = {
         var currentTime =  ggTime.currentTime();
 
         APP.pubnub.uuid(function (msgID) {
+            var notificationString = "Chat : " + groupChannel.channelName;
             APP.pubnub.publish({
                 channel: groupChannel.channelId,
                 message: {
                     msgID: msgID,
                     pn_apns: {
                         aps: {
-                            alert : "Chat : " + groupChannel.channelName,
+                            alert : notificationString,
                             badge: 1,
-                            summary_for_mobile: "New message from " + userModel.currentUser.name
-                        }
-
+                            'content-available' : 1
+                        },
+                        target: '#channel?channel='+ groupChannel.channelId
                     },
                     pn_gcm : {
                         data : {
-                            title_for_mobile: "Chat : " + groupChannel.channelName,
-                            summary_for_mobile: "New message from " + userModel.currentUser.name
+                            title: notificationString,
+                            summary: "Message from " + userModel.currentUser.name,
+                            target: '#channel?channel='+ groupChannel.channelId
                         }
                     },
                     sender: groupChannel.userId,

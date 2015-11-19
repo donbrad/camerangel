@@ -645,6 +645,12 @@ var newUserView = {
                 if (isAvailable) {
                     userModel.currentUser.set('availImgUrl', 'images/status-available.svg');
                 }
+                userModel.currentUser.set('emailValidated', userModel.parseUser.get('emailVerified'));
+                userModel.parseACL = new Parse.ACL(userModel.parseUser);
+                userModel.currentUser.bind('change', userModel.sync);
+                userModel.fetchParseData();
+
+                APP.kendo.navigate('#home');
 
                 if (phoneVerified) {
                     deviceModel.setAppState('phoneVerified', true);
@@ -653,12 +659,6 @@ var newUserView = {
                     mobileNotify("Please verify your phone number");
                     $("#modalview-verifyPhone").data("kendoMobileModalView").open();
                 }
-                userModel.currentUser.set('emailValidated', userModel.parseUser.get('emailVerified'));
-                userModel.parseACL = new Parse.ACL(userModel.parseUser);
-                userModel.currentUser.bind('change', userModel.sync);
-                userModel.fetchParseData();
-
-                APP.kendo.navigate('#home');
             },
             error: function(user, error) {
                 // The login failed. Check error to see why.

@@ -263,8 +263,7 @@ var mapModel = {
 
     setMapCenter : function (lat, lng) {
         if (lat === undefined || lng === undefined) {
-            lat = mapModel.lat;
-            lng = mapModel.lng;
+            return;
         }
         mapModel.googleMap.setCenter({lat : lat, lng: lng});
 

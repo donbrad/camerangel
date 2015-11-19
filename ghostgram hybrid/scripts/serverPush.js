@@ -18,16 +18,17 @@ var serverPush = {
         if (serverPush._initialized)
             return;
 
+       // window.serverPush = serverPush;
         serverPush._initialized = true;
 
         serverPush.plugin = window.plugins.pushNotification;
 
         if (device.platform == 'android' || device.platform == 'Android' || device.platform == 'amazon-fireos' ) {
-            serverPush.plugin.register(serverPush.onSuccess, serverPush.onError,
-                {senderID:serverPush._googleSenderId, ecb: serverPush.onNotificationECM});
+            serverPush.plugin.register(serverPush.onRegistration, serverPush.onError,
+                {senderID: serverPush._googleSenderId, ecb: serverPush.onNotificationECM});
         } else if (device.platform == 'iOS') {
             serverPush.plugin.register(serverPush.onRegistration, serverPush.onError,
-                {"badge":"true","sound":"true","alert":"true","ecb": serverPush.onNotificationAPN});
+                {badge: false, sound : false, alert: true, ecb : serverPush.onNotificationAPN});
         }
 
 
@@ -47,22 +48,28 @@ var serverPush = {
 
     onNotificationAPN : function (e) {
 
-        if (e.alert) {
-            navigator.notification.alert(e.alert);
+        if (deviceModel.inBackground()) {
+            if (e.badge) {
+                serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, e.badge);
+                serverPush.plugin.finish();
+            }
+        } else {
+            if (e.alert) {
+                mobileNotify(e.alert);
+            }
         }
 
-        if (e.sound) {
+
+       /* if (e.sound) {
             // playing a sound also requires the org.apache.cordova.media plugin
             var snd = new Media(e.sound);
             snd.play();
-        }
+        }*/
 
-        if (e.badge) {
-            pushNotification.setApplicationIconBadgeNumber(serverPush.onSuccess, e.badge);
-        }
+
     },
 
-    onNotificationECM : function (data) {
+    onNotificationECM : function (e) {
 
         switch( e.event )
         {
@@ -85,14 +92,17 @@ var serverPush = {
                 // you might want to play a sound to get the user's attention, throw up a dialog, etc.
                 if (e.foreground)
                 {
-                    // on Android soundname is outside the payload.
+                   /* // on Android soundname is outside the payload.
                     // On Amazon FireOS all custom attributes are contained within payload
                     var soundfile = e.soundname || e.payload.sound;
                     // if the notification contains a soundname, play it.
                     // playing a sound also requires the org.apache.cordova.media plugin
                     var my_media = new Media("/android_asset/www/"+ soundfile);
 
-                    my_media.play();
+                    my_media.play();*/
+
+                    mobileNotify(e.payload.summary);
+
                 }
                 else
                 {	// otherwise we were launched because the user touched a notification in the notification tray.
@@ -100,9 +110,6 @@ var serverPush = {
                         mobileNotify('Notification : Cold Start');
 
                 }
-
-                navigator.notification.alert(e.payload.message);
-
                 break;
 
             case 'error':
@@ -136,26 +143,30 @@ var serverPush = {
                 type = 'gcm';
             }
 
+            var regId = serverPush._regId;
+            var dataChannel = appDataChannel.channelId, userChannel = userDataChannel.channelId;
 
             APP.pubnub.mobile_gw_provision ({
-                device_id: serverPush._regId,
+                device_id: regId,
                 op    : 'add',
                 gw_type  : type,
-                channel  :  appDataChannel.channelId,
+                channel  :  dataChannel,
                 callback : serverPush._success,
                 error  : serverPush._error
             });
 
             APP.pubnub.mobile_gw_provision ({
-                device_id: serverPush._regId,
+                device_id: regId,
                 op    : 'add',
                 gw_type  :type,
-                channel  : userDataChannel.channelId,
+                channel  : userChannel,
                 callback : serverPush._success,
                 error  : serverPush._error
             });
 
             serverPush._channelsProvisioned = true;
+
+            mobileNotify("pubnub push provisioned!!!");
 
         }
     },
@@ -165,7 +176,7 @@ var serverPush = {
     },
 
     _error : function (error) {
-        mobileNotify("Push Channel Error " + error);
+        mobileNotify("Pubnub Push Channel Error " + error);
     }
 
 

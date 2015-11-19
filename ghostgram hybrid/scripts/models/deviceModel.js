@@ -91,7 +91,7 @@ var deviceModel = {
 
     isPushProvisioned : function ()  {
         if (deviceModel.state.pubnubInit && deviceModel.state.isDeviceRegistered) {
-         //   serverPush.provisionDataChannels();
+            serverPush.provisionDataChannels();
             deviceModel.setAppState('devicePushEnabled', true);
         }
 
@@ -117,12 +117,16 @@ var deviceModel = {
     },
 
     onPause: function() {
-       deviceModel.setAppState('inBackground', true);
+        deviceModel.setAppState('inBackground', true);
+
 
     },
 
     onResume: function() {
         deviceModel.setAppState('inBackground', false);
+        setTimeout(function() {
+            navigator.splashscreen.hide();
+        },0);
     },
 
     onOnline: function() {
@@ -133,10 +137,15 @@ var deviceModel = {
         notificationModel.notificationDS.online(true);
         channelModel.channelsDS.online(true);
         photoModel.photosDS.online(true);
-       contactModel.contactsDS.online(true);
-       placesModel.placesDS.online(true);
+        contactModel.contactsDS.online(true);
+        placesModel.placesDS.online(true);
 
         deviceModel.getNetworkState();
+    },
+
+
+    inBackground : function () {
+        return(deviceModel.state.inBackground);
     },
 
     onOffline: function() {
