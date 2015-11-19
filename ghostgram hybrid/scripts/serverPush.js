@@ -109,9 +109,6 @@ var serverPush = {
                         mobileNotify('Notification : Cold Start');
 
                 }
-
-
-
                 break;
 
             case 'error':
