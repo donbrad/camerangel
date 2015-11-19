@@ -38,7 +38,7 @@ var userDataChannel = {
             });
         }
 
-        userDataChannel.messages.online(false);
+        userDataChannel.messagesDS.online(false);
         userDataChannel.history();
     },
 
