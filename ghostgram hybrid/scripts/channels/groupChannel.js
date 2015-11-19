@@ -127,17 +127,16 @@ var groupChannel = {
                     pn_apns: {
                         aps: {
                             alert : notificationString,
-                            badge: 1
+                            badge: 1,
+                            'content-available' : 1
                         },
                         target: '#channel?channel='+ groupChannel.channelId
-
                     },
                     pn_gcm : {
                         data : {
                             title: notificationString,
                             summary: "Message from " + userModel.currentUser.name,
                             target: '#channel?channel='+ groupChannel.channelId
-
                         }
                     },
                     sender: groupChannel.userId,

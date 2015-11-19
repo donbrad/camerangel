@@ -164,7 +164,8 @@ var privateChannel = {
                     pn_apns: {
                         aps: {
                             alert : notificationString,
-                            badge: 1
+                            badge: 1,
+                            'content-available' : 1
                         },
                         target: '#channel?channel='+ privateChannel.channelId
                     },

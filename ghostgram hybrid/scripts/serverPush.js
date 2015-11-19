@@ -51,6 +51,7 @@ var serverPush = {
         if (deviceModel.inBackground()) {
             if (e.badge) {
                 serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, e.badge);
+                serverPush.plugin.finish();
             }
         } else {
             if (e.alert) {
