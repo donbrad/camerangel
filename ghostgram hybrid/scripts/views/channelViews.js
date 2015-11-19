@@ -819,6 +819,8 @@ var channelView = {
         $('#privacyMode').html('<img src="images/privacy-off.svg" />');
         $("#privacyStatus").addClass("hidden");
 
+        $("#channelName").text(name);
+
       //  $("#channelNavBar").data('kendoMobileNavBar').title(name);
 
         if (thisChannel.isPrivate) {
@@ -860,21 +862,21 @@ var channelView = {
 
             channelView.sendMessageHandler = privateChannel.sendMessage;
 
-            if (thisChannel.messagesArray == undefined) {
-                privateChannel.getMessageHistory(function (messages) {
 
-                    thisChannel.messagesArray = messages;
-                    channelView.messagesDS.data(messages);
+            privateChannel.getMessageHistory(function (messages) {
 
-                    //channelView.updateMessageTimeStamps();
+                thisChannel.messagesArray = messages;
+                channelView.messagesDS.data(messages);
 
-                    /*if (channelView.intervalId === null) {
-                     channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 60 * 5000);
-                     }*/
+                //channelView.updateMessageTimeStamps();
 
-                    channelView.scrollToBottom();
-                });
-            }
+                /*if (channelView.intervalId === null) {
+                 channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 60 * 5000);
+                 }*/
+
+                channelView.scrollToBottom();
+            });
+
 
 
 
