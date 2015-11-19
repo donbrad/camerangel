@@ -169,7 +169,8 @@ var privateChannel = {
                     },
                     pn_gcm : {
                         data : {
-                            summary: notificationString
+                            title: notificationString,
+                            summary: 'Private Message from ' + userModel.currentUser.name
                         }
                     },
                     msgID: msgID,
