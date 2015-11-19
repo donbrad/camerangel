@@ -124,7 +124,9 @@ var deviceModel = {
 
     onResume: function() {
         deviceModel.setAppState('inBackground', false);
-        navigator.splashscreen.hide();
+        setTimeout(function() {
+            navigator.splashscreen.hide();
+        },0);
     },
 
     onOnline: function() {
