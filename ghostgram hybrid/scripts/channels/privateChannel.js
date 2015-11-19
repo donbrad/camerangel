@@ -225,13 +225,12 @@ var privateChannel = {
         var clearMessageArray = [];
         dataSource.filter([]);
 
-        if(callBack)
-            callBack(messages);
 
-       /*
+
+
         for(var i = 0; i < messages.length; i++) {
             var msg = messages[i];
-            var content = '';
+            /*var content = '';
             var parsedMsg;
 
             // Process
@@ -263,11 +262,13 @@ var privateChannel = {
 
                 clearMessageArray.push(parsedMsg);
             }
+*/
 
+            clearMessageArray.push(msg);
         }
 
         if(callBack)
-            callBack(clearMessageArray);*/
+            callBack(clearMessageArray);
 
      }
 };
