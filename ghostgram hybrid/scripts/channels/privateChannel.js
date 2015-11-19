@@ -158,13 +158,15 @@ var privateChannel = {
             APP.pubnub.publish({
                 channel: privateChannel.contactId,
                 message: {
+                    type: 'privateMessage',
+                    recipient: recipient,
+                    sender: privateChannel.userId,
                     pn_apns: {
                         aps: {
                             alert : notificationString,
-                            badge: 1,
-                            'content-available' : '1'
+                            badge: 1
                         },
-                        target: '#channel?channel='+ privateChannel.channelId
+                        target: '#channel?channel='
                     },
                     pn_gcm : {
                         data : {
@@ -172,13 +174,9 @@ var privateChannel = {
                             summary: 'Private Message from ' + userModel.currentUser.name,
                             target: '#channel?channel=' + privateChannel.channelId
                         }
-
                     },
-                    type: 'privateMessage',
-                    channelId: privateChannel.channelId,
-                    recipient: recipient,
-                    sender: privateChannel.userId,
                     msgID: msgID,
+                    channelId: privateChannel.channelId,
                     content: encryptMessage,  // publish the encryptedMessage
                     data: encryptData,        // publish the encryptedData.
                     time: currentTime,
@@ -230,7 +228,8 @@ var privateChannel = {
         if(callBack)
             callBack(messages);
 
-  /*      for(var i = 0; i < messages.length; i++) {
+       /*
+        for(var i = 0; i < messages.length; i++) {
             var msg = messages[i];
             var content = '';
             var parsedMsg;
@@ -268,7 +267,7 @@ var privateChannel = {
         }
 
         if(callBack)
-            callBack(clearMessageArray);
+            callBack(clearMessageArray);*/
 
-*/     }
+     }
 };

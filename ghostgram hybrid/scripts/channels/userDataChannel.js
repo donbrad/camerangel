@@ -97,7 +97,7 @@ var userDataChannel = {
                         };
 
 
-                        channelModel.privateMessagesDS.add(msg);
+                        channelModel.privateMessagesDS.add(parsedMsg);
 
                     }
                 }
