@@ -413,6 +413,17 @@ form p {
   margin-left: auto;
   margin-right: auto;
 }
+.noResults {
+  position: absolute;
+  width: 100%;
+  opacity: 0.6;
+  text-align: center;
+}
+.noResults img {
+  width: 6rem;
+  margin-left: auto;
+  margin-right: auto;
+}
 .show {
   display: block !important;
 }
@@ -3530,11 +3541,8 @@ div.loginBox > form > div > ul > li {
   width: 90%;
   float: left;
 }
-#btnSearchDeviceContacts {
+.topSearchReferral {
   margin: 0.5rem;
-}
-#btnSearchDeviceContacts img {
-  vertical-align: bottom;
 }
 #contacts-listview,
 #contactimport-listview {
@@ -4999,6 +5007,7 @@ html .km-pane-wrapper .k-header {
 #findplace-listview li,
 #checkin-listview li {
   background: #fff;
+  padding: 0px;
 }
 #placeTypeBtns,
 #addplace-typeBtns {
@@ -5043,10 +5052,6 @@ html .km-pane-wrapper .k-header {
 #findplace-listview li h4,
 #places-listview li h4 {
   color: #2E93FD;
-}
-#findplace-listview li {
-  padding-top: 0px;
-  padding-bottom: 0px;
 }
 #current-place-name {
   padding-top: 0.2rem;

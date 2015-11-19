@@ -168,7 +168,7 @@ var contactsView = {
         contactModel.updateContactListStatus();
 
         // Reset the filters and ux state on show.
-        contactsView.clearSearchFilter();
+        
 
         // set action button
     	ux.showActionBtn(true, "#contacts", "#contactImport");
@@ -188,17 +188,6 @@ var contactsView = {
     	$("#btnSearchDeviceContacts").addClass("hidden");
     	ux.hideSearch();
     	
-    },
-
-    // Clear the search box and reset the filter
-    clearSearchFilter: function () {
-        $('#contacts .gg_mainSearchInput').val('');
-        $('#contacts .enterSearch').addClass('hidden');
-        
-        //Clear the filter to show all the contacts
-        contactModel.contactListDS.filter([]);
-
-        contactsView.hideSearchUX();
     },
 
     updateSearchUX: function (event) {
@@ -232,30 +221,6 @@ var contactsView = {
 
         APP.kendo.navigate("#contactImport?query="+query);
 
-     /*   if (query.length > 2) {
-            deviceFindContacts(query, function (array) {
-
-                var name = query.toLowerCase(), nameArray = name.split(' ');
-
-                // Two names?
-                if (nameArray.length > 1) {
-                    mobileNotify("Unifying " + query + "'s data");
-                    unifyContacts(array);
-                    contactModel.unifiedDeviceContact = true;
-                    contactModel.contactListDS.data([]);
-                    contactModel.contactListDS.add(array[0]);
-                } else {
-                    contactModel.unifiedDeviceContact = false;
-                    for (var i = 0; i < array.length; i++) {
-                        contactModel.contactListDS.add(array[i]);
-                    }
-                }
-
-            });
-        } else {
-            mobileNotify("Please enter contacts first or last name. ")
-        }
-        */
     },
 
 
@@ -323,6 +288,7 @@ var contactImportView = {
             click: contactImportView.processDeviceContact,
             dataBinding: function(e){
             	// todo jordan - wire results UI
+            	
             }
 
         });
@@ -348,20 +314,23 @@ var contactImportView = {
             var timer = 0, delay = 800;  //delay is .8 secs
         	var query = $(this).val();
         	
-            if(query.length > 2) {
-
+        	if(query.length > 0){
         		$("#contactImport .enterSearch").removeClass("hidden");
-                
+        	} else {
+        		$("#contactImport .enterSearch").addClass("hidden");
+        	}
+
+
+            if(query.length > 2) {
                 // delay
                 window.clearTimeout(timer);
                 timer = window.setTimeout(function () {
                     contactImportView.searchContacts(query);
                 }, delay);
-        	} else {
-        		$("#contactImport .enterSearch").addClass("hidden");
         	} 
         }).keyup(function(e){
         	var query = $(this).val();
+
         	if (e.keyCode === 13) {
 				contactImportView.searchContacts(query);
 			}
@@ -372,6 +341,7 @@ var contactImportView = {
 					
 			// reset data filters
             contactModel.deviceContactsDS.filter([]);
+            contactModel.deviceContactsDS.data(contactModel.deviceContactsDS.data());
 
             // hide clear btn
             $(this).addClass('hidden');
@@ -383,14 +353,17 @@ var contactImportView = {
         var query = null;
         query = e.view.params.query;
         
-        if (query !== null && e.view.params !== undefined) {
+        if (query !== null && query !== undefined) {
             
             deviceFindContacts(query);
-            console.log("passed: " + query);
+            //console.log("passed: " + query);
             // Pass query to search box
             $("#contactImport .gg_mainSearchInput").val(query);
             $("#contactImport .enterSearch").removeClass('hidden');
 
+        } else {
+        	$("#contactImport .gg_mainSearchInput").val("");
+        	$("#contactImport .enterSearch").addClass("hidden");
         }
 
         // always show search
@@ -407,7 +380,7 @@ var contactImportView = {
     },
 
     onHide: function(e){
-    	contactsView.clearSearchFilter();
+    	// clear contact import search
 
     },
 
