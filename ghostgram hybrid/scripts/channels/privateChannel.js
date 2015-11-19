@@ -61,6 +61,7 @@ var privateChannel = {
         archiveMsg.ttl = msg.ttl;
         archiveMsg.sender = msg.sender;
         archiveMsg.recipient = privateChannel.userId;
+        archiveMsg.channelId = msg.recipient;   // private channelId is just the contacts Id;
         archiveMsg.actualRecipient = msg.recipient;  // since we're echoing back to sender, need to store recipient.
         var encryptMessage = '', encryptData = '';
         var currentTime =  msg.time;  // use the current message time (time sent by this user)
@@ -89,29 +90,35 @@ var privateChannel = {
     receiveHandler : function (msg) {
 
         if (msg.recipient === privateChannel.userId) {
-            var data = null;
-            var content = cryptico.decrypt(msg.content.cipher, privateChannel.RSAKey).plaintext;
-            if (msg.data !== undefined && msg.data !== null) {
-                data = cryptico.decrypt(msg.data.cipher, privateChannel.RSAKey).plaintext;
-                data = JSON.parse(data);
-            }
 
-            var parsedMsg = {
-                type: 'privateMessage',
-                msgID: msg.msgID,
-                channelId: privateChannel.channelId,
-                content: content,
-                data: data,
-                TTL: msg.ttl,
-                time: msg.time,
-                sender: msg.sender,
-                recipient: msg.recipient
-            };
-
+            var parsedMsg = privateChannel.decryptMessage(msg);
             privateChannel.receiveMessage(parsedMsg);
            // deleteMessage(msg.sender, msg.msgID, msg.ttl);
         }
     },
+
+    decryptMessage : function (msg) {
+        var data = null;
+        var content = cryptico.decrypt(msg.content.cipher, privateChannel.RSAKey).plaintext;
+        if (msg.data !== undefined && msg.data !== null) {
+            data = cryptico.decrypt(msg.data.cipher, privateChannel.RSAKey).plaintext;
+            data = JSON.parse(data);
+        }
+        var parsedMsg = {
+            type: 'privateMessage',
+            msgID: msg.msgID,
+            channelId: privateChannel.channelId,
+            content: content,
+            data: data,
+            TTL: msg.ttl,
+            time: msg.time,
+            sender: msg.sender,
+            recipient: msg.recipient
+        };
+
+        return(parsedMsg);
+    },
+
 
     receiveMessage : function (message) {
 
@@ -119,11 +126,11 @@ var privateChannel = {
         if (message.fromHistory === undefined) {
             message.fromHistory = false;
         }
-
         // ignore echoed sender copies in read message
         // -- we add the message to the chat datasource at time of send
        // if (message.actualRecipient === undefined)
-        channelModel.privateMessagesDS.add(message);
+        channelModel.incrementPrivateMessageCount(message.channelId, 1);
+        privateChannel.messagesDS.add(message);
 
         // If this message is for the current channel, then display immediately
         if (message.channelId === channelView._channelId)
@@ -201,8 +208,11 @@ var privateChannel = {
                     // echo the message
                     privateChannel.receiveMessage(parsedMsg);
 
+                    parsedMsg.channelId = recipient;
+
+                    privateChannel.messages.add(parsedMsg);
                     // archive message in the current channel
-                    privateChannel.archiveMessage(parsedMsg);
+                   // privateChannel.archiveMessage(parsedMsg);
                     //deleteMessage(recipient, msgID, ttl);
                 }
             });
@@ -212,13 +222,9 @@ var privateChannel = {
 
     getMessageHistory: function (callBack) {
 
-        var dataSource = channelModel.privateMessagesDS;
+        var dataSource = privateChannel.messagesDS;
 
-        dataSource.filter(  {"logic":"or",
-            "filters":[
-                { field: "sender", operator: "eq", value: privateChannel.contactId },
-                { field: "actualRecipient", operator: "eq", value: privateChannel.contactId }
-            ]});
+        dataSource.filter({ field: "channelId", operator: "eq", value: privateChannel.contactId });
 
         var view = dataSource.view();
         var messages = view;

@@ -13,6 +13,9 @@ var userDataChannel = {
     channelId: null,   // channelId is users uuid
     lastAccess: 0,   // last access time stamp
     timeStamp: 0,
+    messages :  new kendo.data.DataSource({
+        offlineStorage: "privatemessages"
+        }),
 
     init: function (channelId) {
 
@@ -35,6 +38,7 @@ var userDataChannel = {
             });
         }
 
+        userDataChannel.messages.online(false);
         userDataChannel.history();
     },
 
@@ -97,7 +101,7 @@ var userDataChannel = {
                         };
 
 
-                        channelModel.privateMessagesDS.add(parsedMsg);
+                        userDataChannel.messages.add(parsedMsg);
 
                     }
                 }
@@ -111,29 +115,14 @@ var userDataChannel = {
     },
 
     channelRead : function (m) {
-        userDataChannel.updateTimeStamp();
+
 
         switch(m.type) {
 
-          /*  //  { type: 'privateInvite',  channelId: <channelUUID>,  owner: <ownerUUID>, message: <text>, time: current time}
-            case 'privateInvite' : {
-                this.processPrivateInvite(m.ownerId, m.ownerPublicKey,  m.channelId, m.message);
-            } break;
-
-            case 'privateDelete' : {
-                this.processPrivateDelete(m.ownerId, m.channelId, m.message);
-            } break;*/
-
-
-
             case 'privateMessage' : {
-                //Add the message to the privateChannel data source.
-                channelModel.privateMessagesDS.add(m);
-                // Is this private channel active?
-                if (channelView._channelId == m.sender) {
-                    //Its the active channel, receive the message
-                    privateChannel.receiveHandler(m);
-                }
+                userDataChannel.updateTimeStamp();
+
+                privateChannel.receiveHandler(m);
 
             } break;
 
