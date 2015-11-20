@@ -14,6 +14,9 @@
         <param name="android-package" value="org.apache.cordova.App" />
     </feature>
 
+	<allow-navigation href="http://*/*" />
+<allow-navigation href="https://*/*" />
+<allow-navigation href="data:*" />
     <!-- For projects that target Apache Cordova 3.0 and later, comment out or delete the <plugins></plugins> block and its contents. -->
     <plugins>
         <plugin name="App" value="org.apache.cordova.App"/>
