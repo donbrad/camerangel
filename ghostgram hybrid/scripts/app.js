@@ -70,6 +70,8 @@
 		document.addEventListener("online", deviceModel.onOnline, false);
 		document.addEventListener("offline", deviceModel.onOffline, false);
 
+		document.addEventListener("resign", deviceModel.onResign, false);
+		document.addEventListener("active", deviceModel.onActive, false);
 
 		deviceModel.getAppState();
 
