@@ -197,7 +197,8 @@ var serverPush = {
     },
 
     _error : function (error) {
-        mobileNotify("Pubnub Push Channel Error " + error);
+        if (error !== undefined)
+            mobileNotify("Pubnub Push Channel Error " + error);
     }
 
 
