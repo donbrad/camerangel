@@ -135,7 +135,7 @@ var groupChannel = {
                     pn_gcm : {
                         data : {
                             title: notificationString,
-                            summary: "Message from " + userModel.currentUser.name,
+                            message: "Message from " + userModel.currentUser.name,
                             target: '#channel?channel='+ groupChannel.channelId
                         }
                     },
