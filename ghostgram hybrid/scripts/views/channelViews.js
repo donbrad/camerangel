@@ -795,7 +795,8 @@ var channelView = {
 
     onShow : function (e) {
         _preventDefault(e);
-        
+
+        channelView.topOffset = APP.kendo.scroller().scrollTop;
         // hide action btn
         ux.showActionBtn(false, "#channel");
 
@@ -832,7 +833,9 @@ var channelView = {
         $('#privacyMode').html('<img src="images/privacy-off.svg" />');
         $("#privacyStatus").addClass("hidden");
 
-        $("#channelNavBar").data('kendoMobileNavBar').title(name);
+        $("#channelName").text(name);
+
+      //  $("#channelNavBar").data('kendoMobileNavBar').title(name);
 
         if (thisChannel.isPrivate) {
             // *** Private Channel ***
@@ -873,21 +876,21 @@ var channelView = {
 
             channelView.sendMessageHandler = privateChannel.sendMessage;
 
-            if (thisChannel.messagesArray == undefined) {
-                privateChannel.getMessageHistory(function (messages) {
 
-                    thisChannel.messagesArray = messages;
-                    channelView.messagesDS.data(messages);
+            privateChannel.getMessageHistory(function (messages) {
 
-                    //channelView.updateMessageTimeStamps();
+                thisChannel.messagesArray = messages;
+                channelView.messagesDS.data(messages);
 
-                    /*if (channelView.intervalId === null) {
-                     channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 60 * 5000);
-                     }*/
+                //channelView.updateMessageTimeStamps();
 
-                    channelView.scrollToBottom();
-                });
-            }
+                /*if (channelView.intervalId === null) {
+                 channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 60 * 5000);
+                 }*/
+
+                channelView.scrollToBottom();
+            });
+
 
 
 

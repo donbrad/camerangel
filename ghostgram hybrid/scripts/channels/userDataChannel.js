@@ -13,6 +13,9 @@ var userDataChannel = {
     channelId: null,   // channelId is users uuid
     lastAccess: 0,   // last access time stamp
     timeStamp: 0,
+    messagesDS :  new kendo.data.DataSource({
+        offlineStorage: "privatemessages"
+        }),
 
     init: function (channelId) {
 
@@ -25,7 +28,7 @@ var userDataChannel = {
 
             APP.pubnub.subscribe({
                 channel: userDataChannel.channelId,
-                windowing: 500,
+                windowing: 100,
                 message: userDataChannel.channelRead,
                 connect: userDataChannel.channelConnect,
                 disconnect:userDataChannel.channelDisconnect,
@@ -35,6 +38,7 @@ var userDataChannel = {
             });
         }
 
+        userDataChannel.messagesDS.online(false);
         userDataChannel.history();
     },
 
@@ -62,18 +66,42 @@ var userDataChannel = {
             callback: function(messages) {
                 messages = messages[0];
                 messages = messages || [];
+                var RSAKey = cryptico.privateKeyFromString(userModel.currentUser.privateKey);
+
                 for (var i = 0; i < messages.length; i++) {
 
                     var lastAccess = ggTime.toPubNubTime(userDataChannel.lastAccess);
 
-                    if ( messages[i].type === 'privateMessage') {
+                    var msg  =  messages[i];
+                    if (msg.type === 'privateMessage') {
 
                         // Add the last 24 hours worth of messages to the private channel archive
-                        if (messages[i].sender !== userModel.currentUser.userUUID) {
+                        if (msg.sender !== userModel.currentUser.userUUID) {
                             // if the sender isn't this user, update the channel list
-                            channelList[messages[i].sender] = channelList[messages[i].sender]++;
+                            channelList[msg.sender] = channelList[msg.sender]++;
                         }
-                        channelModel.privateMessagesDS.add(messages[i]);
+
+                        var data = null;
+                        var content = cryptico.decrypt(msg.content.cipher, RSAKey).plaintext;
+                        if (msg.data !== undefined && msg.data !== null) {
+                            data = cryptico.decrypt(msg.data.cipher, RSAKey).plaintext;
+                            data = JSON.parse(data);
+                        }
+
+                        var parsedMsg = {
+                            type: 'privateMessage',
+                            msgID: msg.msgID,
+                            channelId: msg.sender,   // Private channelId is just contacts UUID...
+                            content: content,
+                            data: data,
+                            TTL: msg.ttl,
+                            time: msg.time,
+                            sender: msg.sender,
+                            recipient: msg.recipient
+                        };
+
+
+                        userDataChannel.messagesDS.add(parsedMsg);
 
                     }
                 }
@@ -87,29 +115,14 @@ var userDataChannel = {
     },
 
     channelRead : function (m) {
-        userDataChannel.updateTimeStamp();
+
 
         switch(m.type) {
 
-          /*  //  { type: 'privateInvite',  channelId: <channelUUID>,  owner: <ownerUUID>, message: <text>, time: current time}
-            case 'privateInvite' : {
-                this.processPrivateInvite(m.ownerId, m.ownerPublicKey,  m.channelId, m.message);
-            } break;
-
-            case 'privateDelete' : {
-                this.processPrivateDelete(m.ownerId, m.channelId, m.message);
-            } break;*/
-
-
-
             case 'privateMessage' : {
-                //Add the message to the privateChannel data source.
-                channelModel.privateMessagesDS.add(m);
-                // Is this private channel active?
-                if (channelView._channelId == m.sender) {
-                    //Its the active channel, receive the message
-                    privateChannel.receiveHandler(m);
-                }
+                userDataChannel.updateTimeStamp();
+
+                privateChannel.receiveHandler(m);
 
             } break;
 

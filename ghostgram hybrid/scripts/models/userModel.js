@@ -149,6 +149,7 @@ var userModel = {
                 userModel.parseACL = new Parse.ACL(userModel.parseUser);
 
                 userModel.currentUser.bind('change', userModel.sync);
+                userModel.initPubNub();
                 userModel.fetchParseData();
 
                 if (phoneVerified) {
@@ -265,8 +266,16 @@ var userModel = {
         userModel.currentUser.set('isCheckedIn', false);
     },
 
+    // Need a valid uuid to initialize pubnub and create appData and userData channels
     initPubNub: function () {
+        if (APP.pubnub !== null) {
+            return;
+        }
         var uuid = userModel.currentUser.get('userUUID');
+
+        if (uuid === undefined || uuid === null) {
+            mobileNotify("initPubNub : invalid UUID!!!!");
+        }
 
         APP.pubnub = PUBNUB.init({
             publish_key: 'pub-c-d4fcc2b9-2c1c-4a38-9e2c-a11331c895be',

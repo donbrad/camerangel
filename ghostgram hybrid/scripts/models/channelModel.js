@@ -134,12 +134,16 @@ var channelModel = {
            var contact = contactModel.findContactByUUID(channelId);
             if (contact !== undefined && contact.contactUUID !== undefined) {
                 channelModel.addPrivateChannel(contact.contactUUID, contact.publicKey, contact.name);
+                channel = channelModel.findChannelModel(contact.contactUUID);
+                channel.unreadCount = channel.unreadCount + count;
+                channel.lastAccess = ggTime.currentTime();
             } else {
                 mobileNotify("incrementPrivateMessageCount : unknown contact " + channelId);
             }
         } else {
             channel.unreadCount = channel.unreadCount + count;
-            updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
+            channel.lastAccess = ggTime.currentTime();
+           // updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
         }
     },
 

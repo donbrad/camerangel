@@ -8,7 +8,7 @@
 
 var serverPush = {
     plugin : null,
-    _initialized : false,
+    _initialized : true,
     _googleSenderId : "962500978306",   // contact donbrad before changing...
     _regId : null,
     _channelsProvisioned : false,
