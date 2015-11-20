@@ -197,7 +197,7 @@ var privateChannel = {
                     var parsedMsg = {
                         type: 'privateMessage',
                         recipient: recipient,
-                        sender: privateChannel.userId,
+                        sender: userModel.currentUser.userUUID,
                         msgID: msgID,
                         channelId: privateChannel.channelId,
                         content: content,

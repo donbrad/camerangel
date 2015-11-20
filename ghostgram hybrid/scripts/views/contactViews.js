@@ -466,7 +466,7 @@ var addContactView = {
     doInit: function (e) {
         _preventDefault(e);
 
-        $( "#addContactPhone" ).change(function() {
+        $( "#addContactPhone" ).on('input', function() {
             var phone = $("#addContactPhone").val();
 
             isValidMobileNumber(phone, function(result){
@@ -558,6 +558,20 @@ var addContactView = {
 
         $("#modalview-AddContact").data("kendoMobileModalView").open();
 
+        // Test the initial phone number
+        /*var phone = $("#addContactPhone").val();
+
+        isValidMobileNumber(phone, function(result){
+            if (result.status === 'ok') {
+                if (result.valid === false) {
+                    mobileNotify(phone + 'is not a valid mobile number');
+                    $('#addContacViewAddButton').addClass('hidden');
+                } else {
+                    $('#addContacViewAddButton').removeClass('hidden');
+                }
+            }
+        });
+*/
     },
 
     closeModal : function () {
