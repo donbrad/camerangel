@@ -116,8 +116,18 @@ var deviceModel = {
         }
     },
 
+    onResign : function () {
+        console.log("Resign");
+    },
+
+    onActive : function () {
+        console.log("Active");
+    },
+
+
     onPause: function() {
         deviceModel.setAppState('inBackground', true);
+        console.log("Pause");
 
 
     },
@@ -125,6 +135,7 @@ var deviceModel = {
     onResume: function() {
        deviceModel.setAppState('inBackground', false);
         setTimeout(function() {
+            console.log("Resume");
             navigator.splashscreen.hide();
         },0);
     },
