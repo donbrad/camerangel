@@ -1,5 +1,5 @@
 
- <div data-role="view" id="channels" data-title="Chats" data-layout="main" data-model="channelModel" data-init="channelsView.onInit" data-show="channelsView.onShow" data-before-hide="channelsView.onBeforeHide">
+ <div data-role="view" id="channels" data-title="Chats" data-layout="main" data-model="channelModel" data-init="channelsView.onInit" data-show="channelsView.onShow" data-hide="channelsView.onHide">
      <div id="channelListDiv">
          <ul id="channels-listview"></ul>
          <div class="emptyState hidden">
@@ -107,10 +107,12 @@
 				}
 			}
 	    	#
-	    		<h4>
-	    			<div class="chatStatusIcon"><img src="images/status-new.svg" class="list-status" /></div>
-	        		 <div class="textClamp chatNameDiv">#:name#</div>
-	        		<div class="chatActivityTime left">#:accessTime#</div>
+	    		<h4 class="textClamp">
+	    			<span class="chatStatusIcon">
+	    				<img src="images/status-new.svg" class="list-status" />
+	    			</span>
+	        		<span class="textClamp chatNameDiv">#:name#</span>
+	        		<span class="chatActivityTime left">#:accessTime#</span>
 	    		</h4>
 	    		<div class="clearfix"></div>
 	    		<div class="chatType">
@@ -257,7 +259,7 @@
             	<img src="images/nav-back.svg" />
             </a>
             <img src="" id="channelImage" height="32" class="circle-img"/>
-            <span data-role="view-title" id="channelName"></span>
+            <span id="channelName"></span>
             <a data-align="right" data-role="button" id="messagePresenceButton" data-rel="drawer" href="#channelPresence"> 
             	<img src="images/group-icon.svg" />
             </a>
@@ -468,12 +470,7 @@
 
 <!-- edit chat members -->
 <div data-role="view" id="channelMembers" data-layout="main" data-title="Invite" data-init="channelMembersView.doInit" data-show="channelMembersView.doShow" data-transition="overlay:up">
-    <header data-role="header">
-        <div data-role="navbar">
-            <span data-role="view-title"></span>
-            <!--<a data-role="button" data-align="right" href="#contactImport">Import Contact</a>-->
-        </div>
-    </header>
+    
     <div class="addedChatMember" style="display: none"></div>
     <ul id="channelMembers-listview"></ul>
     <div class="footerBk" data-role="footer">
@@ -483,24 +480,24 @@
 
 <script type="text/x-kendo-template" id="memberTemplate">      
 <div>
-	<div class="memberTempPhoto">
+	<div class="memberTempPhoto left">
 	<img src="#: data.photo #" class="circle-img-md" />
 	</div>
-	<div class="memberTempName">
+	<div class="memberTempName left">
 
 		#if (data.alias !== '' && data.name !== data.alias && data.phoneVerified){#
-			<h4>
+			<h4 class="textClamp">
 				#: data.alias #
 				<img class="user-status-icon" src="images/user-verified.svg" />
 				<span class="contacts-alias-sm">#: data.name #</span>
 			</h4>
 		#} else if(data.alias !== '' && data.name !== data.alias) {#
-			<h4>
+			<h4 class="textClamp">
 				#: data.alias #
 				<span class="contacts-alias-sm">#: data.name #</span>
 			</h4>
 		#} else {#
-			<h4>#: data.name #</h4>
+			<h4 class="textClamp">#: data.name #</h4>
 		#}#
 	</div>
 
@@ -513,11 +510,11 @@
 	 #}else {#
 	 	<div style="clear: both;">
 	 #}#
-		 <div class="memberTempPhoto">
+		 <div class="memberTempPhoto left">
 			 <img src="#: data.photo #" class="circle-img-md" />
 		 </div>
-		 <div class="memberTempName">
-			 <h4>#: data.name #</h4>
+		 <div class="memberTempName left">
+			 <h4 class="textClamp">#: data.name #</h4>
 		 </div>
 	 </div>
 </script>
@@ -530,18 +527,18 @@
 	 </div>
 	 <div class="editMemberName">
 		 #if (data.alias !== '' && data.name !== data.alias && data.phoneVerified){#
-		 <h4>
+		 <h4 class="textClamp">
 			 #: data.alias #
 			 <img class="user-status-icon" src="images/user-verified.svg" />
 			 <span class="contacts-alias-sm">#: data.name #</span>
 		 </h4>
 		 #} else if(data.alias !== '' && data.name !== data.alias) {#
-		 <h4>
+		 <h4 class="textClamp">
 			 #: data.alias #
 			 <span class="contacts-alias-sm">#: data.name #</span>
 		 </h4>
 		 #} else {#
-		 <h4>#: data.name #</h4>
+		 <h4 class="textClamp">#: data.name #</h4>
 		 #}#
 	 </div>
 

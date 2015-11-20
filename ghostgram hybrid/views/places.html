@@ -1,6 +1,6 @@
- <div data-role="view" data-title="Places" id="places" data-layout="main" data-model="placesModel" data-show="placesView.onShow" data-init="placesView.onInit" data-before-hide="placesView.onHide">
-
-    <div class="mapInfo">
+ <div data-role="view" data-title="Places" id="places" data-layout="main" data-model="placesModel" data-show="placesView.onShow" data-init="placesView.onInit" data-hide="placesView.onHide">
+ 	
+    <div>
            <div id="current-place" class="hidden">
            		<img src="images/icon-puff.svg" width="30" class="left"/>
            		<p class="left" id="current-place-name"></p>
@@ -9,6 +9,11 @@
            		<div class="clearfix"></div>
            </div>
 	        <div id="placeListDiv">
+	        	<div class="topSearchReferral">
+	        		<a class="btnClear hidden" data-role="button" id="quickFindPlaceBtn">
+	        			<img src="images/icon-gps-selected.svg" class="icon-btn" /> View Nearby Places
+	        		</a>
+	        	</div>
 	         	<ul id="places-listview"></ul>
 		         <div class="emptyState hidden">
 		         	<img src="images/empty-places.svg" />
@@ -53,7 +58,8 @@
 	<div class="tempSearchBox">
 			<div class="appendSearch">
 				<span class="searchIcon"><img src="images/search.svg" /></span>
-				<input class="doubleAppendSearch clearable"  placeholder="Match places with ..." id="findPlaceSearchQuery" />
+				<input class="doubleAppendSearch"  placeholder="Search nearby ..." id="findPlaceSearchQuery" />
+				<span class="enterSearch hidden"><a class="btnClear-grey"><img class="icon-sm" src="images/close.svg" /></a></span>
 			</div>
 	</div>
 	<div>

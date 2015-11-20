@@ -40,7 +40,6 @@
 	<script src='bower_components/autosize/dist/autosize.js'></script>
     <script src="bower_components/moment/moment.js"></script>
 	<script src="scripts/libs/uuid.js"></script>
-    <script src="scripts/libs/jquery-clearsearch.js"></script>
     <script src="scripts/libs/cropper.js"></script>
 	<script src="scripts/libs/base64-string.js"></script>
 	<script src="scripts/libs/lz-string.js"></script>
@@ -108,10 +107,11 @@
                 	<img class="nav-search" src="images/icon-search.svg"/>
             	</a>
         </div>
-        <div class="topViewSearchBox gg_mainSearchBox" data-visible="false">
+        <div class="gg_mainSearchBox" data-visible="false">
 	 		<div class="appendSearch">
 				<span class="searchIcon"><img src="images/search.svg" /></span>
 				<input type="text" class="doubleAppendSearch gg_mainSearchInput" placeholder="" />
+				<span class="enterSearch hidden"><a class="btnClear-grey"><img class="icon-sm" src="images/close.svg" /></a></span>
 			</div>
 		</div>
     </div>

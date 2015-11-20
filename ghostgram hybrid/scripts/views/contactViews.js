@@ -102,11 +102,10 @@ var contactsView = {
 
     onShow : function (e) {
        _preventDefault(e);
-
+       
         if (!contactsView._viewInitialized) {
             contactsView._viewInitialized = true;
-            $("#contacts .gg_mainSearchInput").attr("placeholder", "Search contacts...");
-
+         
             $("#contacts .gg_mainSearchInput").on('input', function() {
 
                 var query = this.value;
@@ -126,8 +125,12 @@ var contactsView = {
                                 "operator":"contains",
                                 "value":query}
                         ]});
+
+                    $('#contacts .enterSearch').removeClass('hidden');
+
                     if (query.length > 2) {
                         $('#btnSearchDeviceContacts').removeClass('hidden');
+                        
                     }
 
                     $("#btnSearchDeviceName").text(query);
@@ -135,25 +138,37 @@ var contactsView = {
                 } else {
                     contactModel.contactListDS.filter([]);
                     contactsView.hideSearchUX();
+                    $('#contacts .enterSearch').addClass('hidden');
                 }
-            }).clearSearch({
-                callback: function() {
-                    contactModel.contactListDS.data(contactModel.contactListDS.data());
+            });
+
+			// bind clear search btn
+			$("#contacts .enterSearch").on("click", function(){
+					$("#contacts .gg_mainSearchInput").val('');
+					
+					// reset data filters
+					contactModel.contactListDS.data(contactModel.contactListDS.data());
                     contactModel.contactListDS.filter([]);
 
                     // hide find on device btn
                     $('#btnSearchDeviceContacts').addClass('hidden');
                     $('#btnSearchDeviceName').val('');
-                }
-            });
+
+                    // hide clear btn
+                    $(this).addClass('hidden');
+			});
+
         }
+
+        $("#contacts .gg_mainSearchInput").attr("placeholder", "Search contacts...");
+        
        // contactModel.contactListDS.data(contactModel.contactsDS.data());
         //APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
 
         contactModel.updateContactListStatus();
 
         // Reset the filters and ux state on show.
-        contactsView.clearSearchFilter();
+        
 
         // set action button
     	ux.showActionBtn(true, "#contacts", "#contactImport");
@@ -168,20 +183,11 @@ var contactsView = {
         contactModel.contactListDS.data(contactModel.contactsDS.data());
     },
 
-    onBeforeHide: function(){
+    onHide: function(){
     	ux.showActionBtn(false, "#contacts");
     	$("#btnSearchDeviceContacts").addClass("hidden");
-
-    },
-
-    // Clear the search box and reset the filter
-    clearSearchFilter: function () {
-        $('#contacts .gg_mainSearchInput').val('');
-
-        //Clear the filter to show all the contacts
-        contactModel.contactListDS.filter([]);
-
-        contactsView.hideSearchUX();
+    	ux.hideSearch();
+    	
     },
 
     updateSearchUX: function (event) {
@@ -208,35 +214,14 @@ var contactsView = {
 
     searchDeviceContacts: function (e) {
        _preventDefault(e);
+       // hide clear search
+       	$("#contacts .enterSearch").addClass("hidden");
 
         var query = $('#contacts .gg_mainSearchInput').val();
-
+        ux.hideSearch();
+        
         APP.kendo.navigate("#contactImport?query="+query);
 
-     /*   if (query.length > 2) {
-            deviceFindContacts(query, function (array) {
-
-                var name = query.toLowerCase(), nameArray = name.split(' ');
-
-                // Two names?
-                if (nameArray.length > 1) {
-                    mobileNotify("Unifying " + query + "'s data");
-                    unifyContacts(array);
-                    contactModel.unifiedDeviceContact = true;
-                    contactModel.contactListDS.data([]);
-                    contactModel.contactListDS.add(array[0]);
-                } else {
-                    contactModel.unifiedDeviceContact = false;
-                    for (var i = 0; i < array.length; i++) {
-                        contactModel.contactListDS.add(array[i]);
-                    }
-                }
-
-            });
-        } else {
-            mobileNotify("Please enter contacts first or last name. ")
-        }
-        */
     },
 
 
@@ -294,15 +279,18 @@ var contactImportView = {
 
     onInit: function (e) {
         _preventDefault(e);
-
-        $(".enterSearch > span").css("color", "#E0E0E0");
+        
 
         $("#contactimport-listview").kendoMobileListView({
             dataSource: contactModel.deviceContactsDS,
             template: $("#deviceContactsTemplate").html(),
             headerTemplate: "${value}",
             fixedHeaders: true,
-            click: contactImportView.processDeviceContact
+            click: contactImportView.processDeviceContact,
+            dataBinding: function(e){
+            	// todo jordan - wire results UI
+            	
+            }
 
         });
 
@@ -319,58 +307,81 @@ var contactImportView = {
                 }
             });
         });
-        
-        $("#contactImportQuery").on('input', function(e) {
+
+        // Top search
+        $('#contactImport .gg_mainSearchInput').attr("placeholder", "Search device contacts...");
+
+        $("#contactImport .gg_mainSearchInput").on('input', function(e) {
             var timer = 0, delay = 800;  //delay is .8 secs
-        	var query = $('#contactImportQuery').val();
-        	// Change the text color...
+        	var query = $(this).val();
+        	
+        	if(query.length > 0){
+        		$("#contactImport .enterSearch").removeClass("hidden");
+        	} else {
+        		$("#contactImport .enterSearch").addClass("hidden");
+        	}
+
+
             if(query.length > 2) {
-        		$(".enterSearch").css("color", "#2E93FD");
+                // delay
                 window.clearTimeout(timer);
                 timer = window.setTimeout(function () {
-                    contactImportView.searchContacts();
+                    contactImportView.searchContacts(query);
                 }, delay);
-        	} else {
-
-        		$(".enterSearch").css("color", "#E0E0E0");
-        	}
+        	} 
         }).keyup(function(e){
+        	var query = $(this).val();
+
         	if (e.keyCode === 13) {
-                $(".enterSearch").css("color", "#2E93FD");
-				contactImportView.searchContacts();
+				contactImportView.searchContacts(query);
 			}
         });
+
+        $("#contactImport .enterSearch").on("click", function(){
+			$("#contactImport .gg_mainSearchInput").val('');
+					
+			// reset data filters
+            contactModel.deviceContactsDS.filter([]);
+            contactModel.deviceContactsDS.data(contactModel.deviceContactsDS.data());
+
+            // hide clear btn
+            $(this).addClass('hidden');
+		});
     },
 
     onShow: function (e) {
        _preventDefault(e);
         var query = null;
-
-        if (e.view.params !== undefined) {
-            query = e.view.params.query;
-        }
-
-        if (query !== null) {
-            $('#contactImportQuery').val(query);
+        query = e.view.params.query;
+        
+        if (query !== null && query !== undefined) {
+            
             deviceFindContacts(query);
+            //console.log("passed: " + query);
+            // Pass query to search box
+            $("#contactImport .gg_mainSearchInput").val(query);
+            $("#contactImport .enterSearch").removeClass('hidden');
+
+        } else {
+        	$("#contactImport .gg_mainSearchInput").val("");
+        	$("#contactImport .enterSearch").addClass("hidden");
         }
+
+        // always show search
+        $(".gg_mainSearchBox").css("display", "block").data("visible", true);
     },
 
-    searchContacts: function (e) {
-       _preventDefault(e);
+    searchContacts: function (query) {
+       	//_preventDefault(e);
+		deviceFindContacts(query, function(contacts) {
 
-        var query = $('#contactImportQuery').val();
+		});
 
-        if (query.length > 2) {
-            deviceFindContacts(query, function(contacts) {
-
-            });
-        }
+       
     },
 
     onHide: function(e){
-        $(".enterSearch > span").css("color", "#E0E0E0");
-    	contactsView.clearSearchFilter();
+    	// clear contact import search
 
     },
 

@@ -331,6 +331,23 @@ form {
 	}
 }
 
+.noResults {
+	position: absolute;
+	width: 100%;
+	text-align: center;
+	opacity: 0.6;
+	text-align: center;
+	//display: none;
+	img {
+		width: 6rem;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	p {
+
+	}
+}
+
 .show {
     display: block !important;
 }
@@ -1579,12 +1596,12 @@ div.footerMenu.km-footer > ul > li > a:active {
 
 .photoTitleBox {
 	position: absolute;
-	bottom: 3.5rem;
+	bottom: 0px;
 	left: 0rem;
 	text-align: left;
 	color: #fff;
 	width: 100%;
-	height: 5rem;
+	height: 10rem;
 	padding: 0.5rem 0 0.5rem;
 	border-top: 1px solid rgba(255, 255, 255, 0.2);
 	background: -moz-linear-gradient(top,  rgba(0,0,0,0.3) 0%, rgba(0,0,0,1) 99%); /* FF3.6+ */
@@ -1595,6 +1612,21 @@ div.footerMenu.km-footer > ul > li > a:active {
 	background: linear-gradient(to bottom,  rgba(0,0,0,0.3) 0%,rgba(0,0,0,1) 99%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4d000000', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
 }
+
+#modalPhotoView > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div > a {
+	margin-bottom: 4rem;
+}
+
+.photoTitleInput {
+	width: 90%;
+	margin-left: 5%;
+	margin-right: 5%;
+	textarea {
+		width: 100%;
+		font-size: 1em;
+	}
+}
+
 
 #photoView > div.km-content.km-widget.km-scroll-wrapper,
 #modalPhotoView > div.km-content.km-widget.km-scroll-wrapper {
@@ -2022,7 +2054,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 .km-root .km-pane .km-view.appearance .km-listview a {
     border: none;
 }
-.km-root .km-pane .km-view.appearance .km-listview textarea {
+.km-root .km-pane .km-view.appearance .km-listview textarea, textarea {
     clear: both;
     position: relative;
     font-size: 1em;
@@ -2032,6 +2064,7 @@ div.footerMenu.km-footer > ul > li > a:active {
     resize: none;
     outline: none;
     padding: 0.5em 0.75em;
+    border-radius: 3px;
 }
 
 .km-root .km-wp .km-view.appearance .km-listview input {
@@ -2560,17 +2593,18 @@ a:hover {
 }
 
 .chatType {
-	margin-left: 1.5rem;
+	margin-left: 8%;
 }
 
 .chatNameDiv {
-	width: 80%;
+	width: 75%;
 	float: left;
 }
 
 .chatStatusIcon {
 	float: left;
 	width: 1.5rem;
+	width: 8%;
 }
 
 #channels-listview > li > div > h4 > a {
@@ -2583,6 +2617,8 @@ a:hover {
     line-height: 1.9;
     font-weight: 400;
     font-family: 'Hind', sans-serif;
+    width: 17%;
+    text-align: right;
 }
 .chatDetails img {
     vertical-align: text-top;
@@ -2653,8 +2689,12 @@ a:hover {
 	background: @darkBk;
 }
 
-.memberTempName {
+#channelPresence-listview > li > div > div.memberTempName > h4 {
 	color: #fff;
+}
+
+.memberTempName {
+	color: @black;
 }
 
 #channelPresence > div.km-header > div > div.km-view-title {
@@ -3655,10 +3695,10 @@ div.loginBox > form > div > ul > li {
 	}
 }
 
-#btnSearchDeviceContacts {
-	margin: 0.5rem;
+.topSearchReferral {
+	margin: 0.5rem 1rem !important;
 	img {
-		vertical-align: bottom;
+		vertical-align: sub;
 	}
 }
 
@@ -4314,6 +4354,7 @@ div.contactListBox.activeContact > div > div > ul {
 
 .editMemberName {
 	padding-top: 0.75rem;
+	padding-right: 1.5em;
 }
 
 .deleteMemberText {
@@ -4346,11 +4387,18 @@ div.contactListBox.activeContact > div > div > ul {
 
 .memberTempName {
 	padding-top: 1rem;
+	max-width: 80%;
 }
 
 .memberTempPhoto {
 	padding-top: 0.5rem;
 	padding-left: 1rem;
+	max-width: 20%;
+}
+
+#channelMembers-listview > li > div {
+	width: 100%;
+	display: inline-flex;
 }
 
 /* Don's development styles...*/
@@ -4630,7 +4678,7 @@ div.contactListBox.activeContact > div > div > ul {
 	//display: none;
 }
 
-.topViewSearchBox {
+.topViewSearchBox, .gg_mainSearchBox {
 	width: 100%;
 	background-color: @shade-300;
 	display: none;
@@ -5311,6 +5359,8 @@ div.contactListBox.activeContact > div > div > ul {
 	}
 	li {
 		background: #fff;
+		padding: 0px;
+
 	}
 }
 
@@ -5366,9 +5416,10 @@ div.contactListBox.activeContact > div > div > ul {
 }
 
 #findplace-listview li {
-	padding-top: 0px;
-	padding-bottom: 0px;
+	//padding-top: 0px;
+	//padding-bottom: 1px;
 }
+
 
 #current-place-name {
 	padding-top: 0.2rem;
@@ -5413,4 +5464,17 @@ div.contactListBox.activeContact > div > div > ul {
 
 #editPlace > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > form > div.km-listview-wrapper > ul {
 	margin: 0px;
+}
+
+/* Editor styles */
+.k-editor.k-header, .editorToolbarWindow.k-header, .k-filebrowser .k-header {
+	background: #fff;
+}
+
+#messageEditor > div.messageCompose > table > tbody > tr:nth-child(2) > td > div > span {
+	display: none !important;
+}
+
+table.k-editor {
+	border-color: #fff;
 }

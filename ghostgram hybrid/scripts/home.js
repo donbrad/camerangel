@@ -221,12 +221,13 @@ var homeView = {
 			$('#checked-in-place > span').html(userModel.currentUser.currentPlace);
 			$('#checked-in-place').show();
 		}
-
+		/*
 		 $('#homeSearchQuery').clearSearch({
 	        callback: function() {
 	        	// todo - wire search
 	        }
 	    });
+		*/
 
 		$("#notification-listview").kendoMobileListView({
 			dataSource: notificationModel.notificationDS,
@@ -449,6 +450,7 @@ function onShowSignIn(e){
 		}
 	});
 }
+
 
 function setUserStatusUI(e){
 	_preventDefault(e);

@@ -30,6 +30,9 @@ var placesView = {
             template: $("#placesTemplate").html(),
             dataBound: function(e){
                 ux.checkEmptyUIState(placesView.placeListDS, "#placeListDiv >");
+            },
+            dataBinding: function(e){
+            	// todo jordan - wire results UI
             }
         }).kendoTouch({
         	filter: ".list-box",
@@ -85,10 +88,7 @@ var placesView = {
 
         if (!placesView._viewInitialized) {
             placesView._viewInitialized = true;
-            // Set placeholder
-            $('#places .gg_mainSearchInput').attr('placeholder', 'Search places...');
-
-
+           
 
             // Filter current places and query google places on keyup
             $('#places .gg_mainSearchInput').on('input', function() {
@@ -122,19 +122,41 @@ var placesView = {
                                 "value":query}
                         ]});
 
-                } else {
+						if(query.length > 1){
+							$("#quickFindPlaceBtn").removeClass("hidden");
+						} else {
+							$("#quickFindPlaceBtn").addClass("hidden");
+						}
 
-                    placesView.placeListDS.data(placesModel.placesDS.data());
-                    placesView.placeListDS.filter([]);
+						$('#places .enterSearch').removeClass('hidden');
+
+                } else {
+                	$("#quickFindPlaceBtn").addClass("hidden");
+                	$('#places .enterSearch').addClass('hidden');
+                   
                 }
-                // Activate clearsearch and zero the filter when it's called
-            }).clearSearch({
-                callback: function() {
-                    placesView.placeListDS.data(placesModel.placesDS.data());
-                    placesView.placeListDS.filter([]);
-                }
+                
             });
+			
+
+			// bind clear search btn
+			$("#places .enterSearch").on("click", function(){
+					$("#places .gg_mainSearchInput").val('');
+					
+					// reset data filters
+                    placesView.placeListDS.data(placesModel.placesDS.data());
+                    placesView.placeListDS.filter([]);
+
+                    // hide clear btn
+                    $(this).addClass('hidden');
+
+                    // hide quick find
+                    $("#quickFindPlaceBtn").addClass("hidden");
+			});
         }
+
+        // Set placeholder
+        $('#places .gg_mainSearchInput').attr('placeholder', 'Search places...');
 
         // Always display the add places button so users can create a new place (even if others exist)
         
@@ -144,6 +166,9 @@ var placesView = {
 
         var findPlaceUrl = "#findPlace?lat="+ mapModel.lat + "&lng=" +  mapModel.lng +"&returnview=places";
         ux.showActionBtn(true, "#places", findPlaceUrl);
+        $("#quickFindPlaceBtn").attr("href", findPlaceUrl);
+
+
         //$("#places > div.footerMenu.km-footer > a").removeAttr('href').css("display", "none");
 
 
@@ -167,6 +192,10 @@ var placesView = {
         ux.showActionBtn(false, "#places");
         //ux.hideActionBtnText("#places");
         ux.changeActionBtnImg("#places", "nav-add-white");
+
+        $("#quickFindPlaceBtn").addClass("hidden");
+
+        ux.hideSearch();
 
     }
 
@@ -192,16 +221,9 @@ var findPlacesView = {
     onInit : function (e) {
         _preventDefault(e);
 
-        // Activate clearsearch and zero the filter when it's called
-        $('#findPlaceSearchQuery').clearSearch({
-            callback: function() {
-                //findPlacesView.placesDS.data(placesModel.placesDS.data());
-                findPlacesView.placesDS.filter([]);
-            }
-        });
 
         // Filter current places and query google places on keyup
-        $('#findPlaceSearchQuery').keyup(function() {
+        $('#findPlaceSearchQuery').on('input', function() {
             var query = this.value;
             if (query.length > 0) {
                 findPlacesView.placesDS.filter(  {"logic":"or",
@@ -220,12 +242,26 @@ var findPlacesView = {
                             "value":query}
                     ]});
 
+                	$("#findPlace .enterSearch").removeClass("hidden");
+
             } else {
 
-               // placesView.placeListDS.data(placesModel.placesDS.data());
-                findPlacesView.placesDS.filter([]);
+            	$("#findPlace .enterSearch").addClass("hidden");
+               	findPlacesView.placesDS.filter([]);
             }
         });
+
+		// bind clear search btn
+			$("#findPlace .enterSearch").on("click", function(){
+					$("#findPlaceSearchQuery").val('');
+					
+					// reset data filters
+                    findPlacesView.placesDS.filter([]);
+
+                    // hide clear btn
+                    $(this).addClass('hidden');
+			});
+
 
         $("#findplace-listview").kendoMobileListView({
                 dataSource: findPlacesView.placesDS,
@@ -247,6 +283,9 @@ var findPlacesView = {
                     var navStr = "#addPlace?returnview=" + findPlacesView._returnView;
                     APP.kendo.navigate(navStr);
 
+                },
+                dataBinding: function(e){
+                	// todo jordan - wire results UI
                 }
             }
         );
@@ -277,6 +316,7 @@ var findPlacesView = {
             if (e.view.params.returnmodal !== undefined){
                 findPlacesView._returnModal = e.view.params.returnmodal;
             }
+
         }
 
         var latlng = new google.maps.LatLng(lat, lng);
@@ -325,6 +365,8 @@ var findPlacesView = {
 
             findPlacesView.updatePlaces(lat,lng);
         });
+
+		
 
 
     },

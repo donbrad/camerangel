@@ -72,7 +72,7 @@ var channelsView = {
 
         });
 
-
+		ux.checkEmptyUIState(channelModel.channelsDS, "#channels");
 
     },
 
@@ -81,9 +81,9 @@ var channelsView = {
 
         if (!channelView._viewInitialized) {
             channelView._viewInitialized = true;
-            $('#channels .gg_mainSearchInput').attr("placeholder", "Search chats...");
 
             $('#channels .gg_mainSearchInput').on('input', function (e) {
+
                 var query = this.value;
                 if (query.length > 0) {
                     channelModel.channelsDS.filter({
@@ -101,33 +101,46 @@ var channelsView = {
                             }
                         ]
                     });
+                    $('#channels .enterSearch').removeClass('hidden');
 
                 } else {
                     channelModel.channelsDS.filter([]);
+                    $('#channels .enterSearch').addClass('hidden');
 
-                }
-            }).clearSearch({
-                callback: function () {
-
-                    channelModel.channelsDS.filter([]);
                 }
             });
+
+
+			// bind clear search btn
+			$("#channels .enterSearch").on("click", function(){
+					$("#channels .gg_mainSearchInput").val('');
+					
+					// reset data filters
+                    channelModel.channelsDS.filter([]);
+
+                    // hide clear btn
+                    $(this).addClass('hidden');
+			})
+
         }
+
+        $('#channels .gg_mainSearchInput').attr("placeholder", "Search chats...");
+
         ux.checkEmptyUIState(channelModel.channelsDS, "#channels");
     	
         // set action button
         ux.showActionBtn(true, "#channels", "#addChannel");
         ux.showActionBtnText("#channels", "3em", "New Chat");
-        ux.checkEmptyUIState(channelModel.channelsDS, "#channels");
+        
 
 
 	        	
     },
 
-    onBeforeHide: function(){
+    onHide: function(){
     	// set action button
 		ux.showActionBtn(false, "#channels");
-
+		ux.hideSearch();
     },
 
 

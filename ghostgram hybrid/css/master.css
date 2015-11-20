@@ -2627,8 +2627,11 @@ a:hover {
 #channelPresence > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
   background: #323642;
 }
-.memberTempName {
+#channelPresence-listview > li > div > div.memberTempName > h4 {
   color: #fff;
+}
+.memberTempName {
+  color: #4A4A4A;
 }
 #channelPresence > div.km-header > div > div.km-view-title {
   background: #323642;
@@ -3475,9 +3478,6 @@ div.loginBox > form > div > ul > li {
   font-size: 0.875em;
   margin-left: 0.5rem;
 }
-.mapInfo {
-  box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.12);
-}
 .circleBtn-text {
   color: #979797;
 }
@@ -4077,6 +4077,7 @@ div.contactListBox.activeContact > div > div > ul {
 }
 .editMemberName {
   padding-top: 0.75rem;
+  padding-right: 1.5em;
 }
 .deleteMemberText {
   position: absolute;
@@ -4105,10 +4106,16 @@ div.contactListBox.activeContact > div > div > ul {
 }
 .memberTempName {
   padding-top: 1rem;
+  max-width: 80%;
 }
 .memberTempPhoto {
   padding-top: 0.5rem;
   padding-left: 1rem;
+  max-width: 20%;
+}
+#channelMembers-listview > li > div {
+  width: 100%;
+  display: inline-flex;
 }
 /* Don's development styles...*/
 #gallery-listview {
@@ -4360,10 +4367,15 @@ html .km-pane-wrapper .k-header {
 .k-state-hover:hover {
   background: #979797;
 }
-.topViewSearchBox {
+.topViewSearchBox,
+.gg_mainSearchBox {
   width: 100%;
   background-color: #f5f5f5;
   display: none;
+}
+.tempSearchBox {
+  width: 100%;
+  background-color: #f5f5f5;
 }
 .appendSearch {
   background: #fff;
