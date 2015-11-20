@@ -137,7 +137,7 @@ var channelsView = {
 	        	
     },
 
-    onBeforeHide: function(){
+    onHide: function(){
     	// set action button
 		ux.showActionBtn(false, "#channels");
 		ux.hideSearch();

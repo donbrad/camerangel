@@ -218,7 +218,8 @@ var contactsView = {
        	$("#contacts .enterSearch").addClass("hidden");
 
         var query = $('#contacts .gg_mainSearchInput').val();
-
+        ux.hideSearch();
+        
         APP.kendo.navigate("#contactImport?query="+query);
 
     },

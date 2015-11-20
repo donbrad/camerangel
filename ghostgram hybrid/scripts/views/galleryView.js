@@ -554,7 +554,7 @@ var modalPhotoView = {
     _dummyDescription : '',
     _dummyTagsString : '',
     _activePhoto : new kendo.data.ObservableObject(),
-    _showInfo: false,
+    _showInfo: true,
 
     onInit: function(e){
     	var showInfo =  modalPhotoView._showInfo;
@@ -661,7 +661,7 @@ var modalPhotoView = {
         }
 
     	// UI reset
-    	$(".photoTitleBox").velocity({height: "6rem"}, {duration: 400});
+    	$(".photoTitleBox").velocity({height: "10rem"}, {duration: 400});
         $(".photoTitleText").removeClass("hidden");
         $(".photoTitleInput").addClass("hidden");
 
