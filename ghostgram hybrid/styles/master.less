@@ -2593,13 +2593,14 @@ a:hover {
 }
 
 .chatNameDiv {
-	width: 80%;
+	width: 75%;
 	float: left;
 }
 
 .chatStatusIcon {
 	float: left;
 	width: 1.5rem;
+	width: 8%;
 }
 
 #channels-listview > li > div > h4 > a {
@@ -2612,6 +2613,8 @@ a:hover {
     line-height: 1.9;
     font-weight: 400;
     font-family: 'Hind', sans-serif;
+    width: 17%;
+    text-align: right;
 }
 .chatDetails img {
     vertical-align: text-top;
@@ -5457,4 +5460,17 @@ div.contactListBox.activeContact > div > div > ul {
 
 #editPlace > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > form > div.km-listview-wrapper > ul {
 	margin: 0px;
+}
+
+/* Editor styles */
+.k-editor.k-header, .editorToolbarWindow.k-header, .k-filebrowser .k-header {
+	background: #fff;
+}
+
+#messageEditor > div.messageCompose > table > tbody > tr:nth-child(2) > td > div > span {
+	display: none !important;
+}
+
+table.k-editor {
+	border-color: #fff;
 }

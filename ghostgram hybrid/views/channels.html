@@ -1,5 +1,5 @@
 
- <div data-role="view" id="channels" data-title="Chats" data-layout="main" data-model="channelModel" data-init="channelsView.onInit" data-show="channelsView.onShow" data-before-hide="channelsView.onBeforeHide">
+ <div data-role="view" id="channels" data-title="Chats" data-layout="main" data-model="channelModel" data-init="channelsView.onInit" data-show="channelsView.onShow" data-before-hide="channelsView.onHide">
      <div id="channelListDiv">
          <ul id="channels-listview"></ul>
          <div class="emptyState hidden">
@@ -107,10 +107,12 @@
 				}
 			}
 	    	#
-	    		<h4>
-	    			<div class="chatStatusIcon"><img src="images/status-new.svg" class="list-status" /></div>
-	        		 <div class="textClamp chatNameDiv">#:name#</div>
-	        		<div class="chatActivityTime left">#:accessTime#</div>
+	    		<h4 class="textClamp">
+	    			<span class="chatStatusIcon">
+	    				<img src="images/status-new.svg" class="list-status" />
+	    			</span>
+	        		<span class="textClamp chatNameDiv">#:name#</span>
+	        		<span class="chatActivityTime left">#:accessTime#</span>
 	    		</h4>
 	    		<div class="clearfix"></div>
 	    		<div class="chatType">
@@ -257,7 +259,7 @@
             	<img src="images/nav-back.svg" />
             </a>
             <img src="" id="channelImage" height="32" class="circle-img"/>
-            <span data-role="view-title" id="channelName"></span>
+            <span id="channelName"></span>
             <a data-align="right" data-role="button" id="messagePresenceButton" data-rel="drawer" href="#channelPresence"> 
             	<img src="images/group-icon.svg" />
             </a>

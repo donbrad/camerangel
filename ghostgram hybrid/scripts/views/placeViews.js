@@ -285,7 +285,7 @@ var findPlacesView = {
 
                 },
                 dataBinding: function(e){
-                	console.log(e);
+                	// todo jordan - wire results UI
                 }
             }
         );
@@ -317,12 +317,6 @@ var findPlacesView = {
                 findPlacesView._returnModal = e.view.params.returnmodal;
             }
 
-            if(e.view.params.query !== undefined){
-            	var query = e.view.params.query;
-            	$("#findPlaceSearchQuery").val(query);
-
-  
-            }
         }
 
         var latlng = new google.maps.LatLng(lat, lng);
