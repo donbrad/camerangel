@@ -173,13 +173,16 @@ var privateChannel = {
                             alert : notificationString,
                             badge: 1
                         },
-                        target: '#channel?channel='
+                        target: '#channel?channel=' + privateChannel.userId,
+                        channelId : privateChannel.userId
                     },
                     pn_gcm : {
                         data : {
                             title: notificationString,
                             message: 'Private Message from ' + userModel.currentUser.name,
-                            target: '#channel?channel=' + privateChannel.channelId
+                            target: '#channel?channel=' + privateChannel.userId,
+                            image: "icon",
+                            channelId : privateChannel.userId
                         }
                     },
                     msgID: msgID,

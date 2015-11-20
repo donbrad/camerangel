@@ -32,6 +32,7 @@ var deviceModel = {
         pubnubInit: false,
         isDeviceRegistered : false,
         devicePushEnabled : false,
+        hasAccount : false
     },
 
 
@@ -83,6 +84,9 @@ var deviceModel = {
         deviceModel.state.hasPhotos = false;
         deviceModel.state.introFetched =false;
         deviceModel.state.pubnubInit = false;
+        deviceModel.state.isDeviceRegistered = false;
+        deviceModel.state.devicePushEnabled = false;
+        deviceModel.state.hasAccount = false;
 
         // Reset App and User channel timestamps (should be rare on actual devices)
         localStorage.setItem('ggUserDataTimeStamp', 0);
@@ -92,6 +96,7 @@ var deviceModel = {
     isPushProvisioned : function ()  {
         if (deviceModel.state.pubnubInit && deviceModel.state.isDeviceRegistered) {
             serverPush.provisionDataChannels();
+            serverPush.provisionGroupChannels();
             deviceModel.setAppState('devicePushEnabled', true);
         }
 
@@ -118,28 +123,25 @@ var deviceModel = {
 
     onResign : function () {
         deviceModel.setAppState('inBackground', true);
-        console.log("Resign");
+        //console.log("Resign");
     },
 
     onActive : function () {
         deviceModel.setAppState('inBackground', false);
-        console.log("Active");
+        //console.log("Active");
     },
 
 
     onPause: function() {
         deviceModel.setAppState('inBackground', true);
-        console.log("Pause");
+       // console.log("Pause");
 
 
     },
 
     onResume: function() {
        deviceModel.setAppState('inBackground', false);
-        setTimeout(function() {
-            console.log("Resume");
-            navigator.splashscreen.hide();
-        },0);
+
     },
 
     onOnline: function() {
