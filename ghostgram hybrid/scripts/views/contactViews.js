@@ -559,7 +559,7 @@ var addContactView = {
         $("#modalview-AddContact").data("kendoMobileModalView").open();
 
         // Test the initial phone number
-        /*var phone = $("#addContactPhone").val();
+        var phone = $("#addContactPhone").val();
 
         isValidMobileNumber(phone, function(result){
             if (result.status === 'ok') {
@@ -571,7 +571,7 @@ var addContactView = {
                 }
             }
         });
-*/
+
     },
 
     closeModal : function () {
