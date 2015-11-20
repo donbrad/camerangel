@@ -391,9 +391,11 @@ var contactImportView = {
         contactModel.currentDeviceContact = e.dataItem;
         // User has picked a contact from the list --
         // sync data from  any contacts with same name
-        mobileNotify("Unifying contact information for " + e.dataItem.name);
+        var query = e.dataItem.name;
 
-        syncContactWithDevice(e.dataItem.name, function (contacts) {
+        mobileNotify("Unifying contact information for " + query);
+
+        syncContactWithDevice(query, function (contacts) {
 
             contactModel.emailArray = [];
 
@@ -449,8 +451,8 @@ var contactImportView = {
             // Select the contact
             contactModel.deviceContactsDS.data([contacts[0]]);
 
-            // Open add contact view
-            contactImportView.openModal(data);
+
+            APP.kendo.navigate("#contactImport?query="+ name);
 
         });
     }
