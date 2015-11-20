@@ -107,7 +107,7 @@ var deviceModel = {
                 userModel.initPubNub();
                 deviceModel.setAppState('pubnubInit', true);
 
-              //  deviceModel.isPushProvisioned();
+                deviceModel.isPushProvisioned();
 
                // channelModel.updateChannelsMessageCount();
                 //channelModel.init();
@@ -117,10 +117,12 @@ var deviceModel = {
     },
 
     onResign : function () {
+        deviceModel.setAppState('inBackground', true);
         console.log("Resign");
     },
 
     onActive : function () {
+        deviceModel.setAppState('inBackground', false);
         console.log("Active");
     },
 
