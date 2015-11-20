@@ -147,7 +147,7 @@ var serverPush = {
         mobileNotify("Server push error : " + e.message);
     },
 
-    provisionChannels : function () {
+    provisionGroupChannels : function () {
 
         if (!serverPush._channelsProvisioned) {
 
