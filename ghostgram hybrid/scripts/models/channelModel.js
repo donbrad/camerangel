@@ -63,6 +63,14 @@ var channelModel = {
                         object.save();
                     }
 
+                    if (object.get('isMuted') === undefined) {
+                        object.set('isMuted', false);
+                    }
+
+                    if (object.get('isDeleted') === undefined) {
+                        object.set('isDeleted', false);
+                    }
+
                     if (object.get('isOwner')) {
                         if (object.get('ownerId') === undefined) {
                             object.set('ownerId', userModel.currentUser.userUUID);
