@@ -27,13 +27,6 @@ var channelModel = {
         offlineStorage: "privatechannels-offline"
     }),
 
-    // All active private messages (including archived messages)
-    privateMessagesDS: new kendo.data.DataSource({
-        offlineStorage: "privatemessages-offline"
-    }),
-    
-
-
     init :  function () {
         // Start the updateMessageCount async after 5 seconds...
         setTimeout(function(){
@@ -539,25 +532,43 @@ var channelModel = {
         dataSource.filter([]);
 
         if (channel !== undefined) {
-            dataSource.filter([]);
             if (channel.isOwner) {
                 // If this user is the owner -- delete the channel map
-               // deleteParseObject("channelmap", 'channelId', channelId)
+                // deleteParseObject("channelmap", 'channelId', channelId)
                 if (silent === undefined || silent === false) {
-                    if (channel.isPrivate  === false) {
+                    if (channel.isPrivate === false) {
                         // Send delete channel messages to all members
                         var members = channel.members;
                         // Skip the first member as it's the owner
                         for (var i = 1; i < channel.members.length; i++) {
-                            appDataChannel.groupChannelDelete(members[i],channelId, 'Chat "' + channel.name + 'has been deleted' );
+                            appDataChannel.groupChannelDelete(members[i], channelId, 'Chat "' + channel.name + 'has been deleted');
                         }
                     }
                 }
 
-            }
-            dataSource.remove(channel);
-            deleteParseObject("channels", 'channelId', channelId);
-            //mobileNotify("Removed channel : " + channel.get('name'));
+
+                dataSource.remove(channel);
+                deleteParseObject("channels", 'channelId', channelId);
+                //mobileNotify("Removed channel : " + channel.get('name'));
+            } else {
+
+                updateParseObject("channels", 'channelId', channelId, 'isDeleted', true);
+                channel.set('isDeleted', true);            }
+        }
+    },
+
+    muteChannel : function (channelId, isMuted) {
+        var dataSource = channelModel.channelsDS;
+        dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
+        var view = dataSource.view();
+        var channel = view[0];
+        dataSource.filter([]);
+
+        if (channel !== undefined) {
+
+            updateParseObject("channels", 'channelId', channelId, 'isMuted', isMuted);
+            channel.set('isMuted', isMuted);
+
         }
     },
 

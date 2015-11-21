@@ -1346,8 +1346,8 @@ var channelView = {
 
 
         }
+        
         if (e.direction === 'right' && $(selection).hasClass("message-active") ) {
- 
 
             $(selection).velocity({translateX:"0"},{duration: "fast"}).removeClass("message-active");
         }

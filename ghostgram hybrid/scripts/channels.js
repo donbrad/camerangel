@@ -41,7 +41,14 @@ function deleteChannel(e) {
 	channelModel.deleteChannel(channelId);
 
 }
-    
+
+function muteChannel(e) {
+	e.preventDefault();
+
+	var channelId = e.button[0].attributes["data-channel"].value;
+
+	channelModel.muteChannel(channelId, true);
+}
 /*
 function onChannelsClick(e) {
 	e.preventDefault();
