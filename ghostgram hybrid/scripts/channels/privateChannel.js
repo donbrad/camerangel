@@ -173,13 +173,16 @@ var privateChannel = {
                             alert : notificationString,
                             badge: 1
                         },
-                        target: '#channel?channel='
+                        target: '#channel?channel=' + privateChannel.userId,
+                        channelId : privateChannel.userId
                     },
                     pn_gcm : {
                         data : {
                             title: notificationString,
-                            summary: 'Private Message from ' + userModel.currentUser.name,
-                            target: '#channel?channel=' + privateChannel.channelId
+                            message: 'Private Message from ' + userModel.currentUser.name,
+                            target: '#channel?channel=' + privateChannel.userId,
+                            image: "icon",
+                            channelId : privateChannel.userId
                         }
                     },
                     msgID: msgID,
@@ -194,7 +197,7 @@ var privateChannel = {
                     var parsedMsg = {
                         type: 'privateMessage',
                         recipient: recipient,
-                        sender: privateChannel.userId,
+                        sender: userModel.currentUser.userUUID,
                         msgID: msgID,
                         channelId: privateChannel.channelId,
                         content: content,
@@ -233,6 +236,10 @@ var privateChannel = {
 
         for(var i = 0; i < messages.length; i++) {
             var msg = messages[i];
+
+            if (msg.sender === undefined || msg.sender === 0) {
+                msg.sender = userModel.currentUser.userUUID;
+            }
 
             clearMessageArray.push(msg);
         }

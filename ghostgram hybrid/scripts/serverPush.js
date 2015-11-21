@@ -8,10 +8,12 @@
 
 var serverPush = {
     plugin : null,
-    _initialized : true,
+    _initialized : false,
+    _registered : false,
     _googleSenderId : "962500978306",   // contact donbrad before changing...
     _regId : null,
     _channelsProvisioned : false,
+    _dataChannelsProvisioned : false,
 
     init : function () {
 
@@ -23,10 +25,10 @@ var serverPush = {
 
         serverPush.plugin = window.plugins.pushNotification;
 
-        if (device.platform == 'android' || device.platform == 'Android' || device.platform == 'amazon-fireos' ) {
+        if (device.platform === 'android' || device.platform === 'Android' || device.platform === 'amazon-fireos' ) {
             serverPush.plugin.register(serverPush.onRegistration, serverPush.onError,
-                {senderID: serverPush._googleSenderId, ecb: serverPush.onNotificationECM});
-        } else if (device.platform == 'iOS') {
+                {senderID: serverPush._googleSenderId, ecb: 'serverPush.onNotificationECM'});
+        } else if (device.platform === 'iOS') {
             serverPush.plugin.register(serverPush.onRegistration, serverPush.onError,
                 {badge: false, sound : false, alert: true, ecb : serverPush.onNotificationAPN});
         }
@@ -36,6 +38,10 @@ var serverPush = {
 
     onRegistration : function (data) {
 
+        if (serverPush._registered)
+            return;
+
+        serverPush._registered = true;
         mobileNotify("Server Push enabled : " + data);
         serverPush._regId =  data;
 
@@ -45,7 +51,7 @@ var serverPush = {
 
     },
 
-
+    // Handle iOS / Apple Notifications
     onNotificationAPN : function (e) {
 
         if (deviceModel.inBackground()) {
@@ -54,6 +60,7 @@ var serverPush = {
                 serverPush.plugin.finish();
             }
         } else {
+            // Just show gg quick notification is the app is running in the foreground
             if (e.alert) {
                 mobileNotify(e.alert);
             }
@@ -69,6 +76,7 @@ var serverPush = {
 
     },
 
+    // Handle Android / Google Notifications
     onNotificationECM : function (e) {
 
         switch( e.event )
@@ -78,6 +86,11 @@ var serverPush = {
                 {
                     // Your GCM push server needs to know the regID before it can push to this device
                     // here is where you might want to send it the regID for later use.
+                    if (serverPush._registered)
+                        return;
+
+                    serverPush._registered = true;
+
                     mobileNotify("Notification: Android regID = " + e.regid);
                     serverPush._regId =  e.regid;
 
@@ -101,7 +114,7 @@ var serverPush = {
 
                     my_media.play();*/
 
-                    mobileNotify(e.payload.summary);
+                    mobileNotify(e.payload.message);
 
                 }
                 else
@@ -126,7 +139,7 @@ var serverPush = {
 
     onSuccess : function (e) {
         // e.message
-        mobileNotify("Server push : " + e.message);
+       // mobileNotify("Server push : " + e.message);
     },
 
     onError : function (e) {
@@ -134,9 +147,17 @@ var serverPush = {
         mobileNotify("Server push error : " + e.message);
     },
 
-    provisionDataChannels : function () {
+    provisionGroupChannels : function () {
 
         if (!serverPush._channelsProvisioned) {
+
+            serverPush._channelsProvisioned = true;
+        }
+    },
+
+    provisionDataChannels : function () {
+
+        if (!serverPush._dataChannelsProvisioned) {
             var type = 'apns';
 
             if (device.platform === "Android") {
@@ -164,9 +185,9 @@ var serverPush = {
                 error  : serverPush._error
             });
 
-            serverPush._channelsProvisioned = true;
+            serverPush._dataChannelsProvisioned = true;
 
-            mobileNotify("pubnub push provisioned!!!");
+            //mobileNotify("pubnub push provisioned!!!");
 
         }
     },
@@ -176,7 +197,8 @@ var serverPush = {
     },
 
     _error : function (error) {
-        mobileNotify("Pubnub Push Channel Error " + error);
+        if (error !== undefined)
+            mobileNotify("Pubnub Push Channel Error " + error);
     }
 
 

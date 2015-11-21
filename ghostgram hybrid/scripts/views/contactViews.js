@@ -391,9 +391,10 @@ var contactImportView = {
         contactModel.currentDeviceContact = e.dataItem;
         // User has picked a contact from the list --
         // sync data from  any contacts with same name
-        mobileNotify("Unifying contact information for " + e.dataItem.name);
+        var query = e.dataItem.name;
+        mobileNotify("Unifying contact information for " + query);
 
-        syncContactWithDevice(e.dataItem.name, function (contacts) {
+        syncContactWithDevice(query, function (contacts) {
 
             contactModel.emailArray = [];
 
@@ -449,8 +450,8 @@ var contactImportView = {
             // Select the contact
             contactModel.deviceContactsDS.data([contacts[0]]);
 
-            // Open add contact view
-            contactImportView.openModal(data);
+
+            addContactView.openModal(contacts[0]);
 
         });
     }
@@ -465,7 +466,7 @@ var addContactView = {
     doInit: function (e) {
         _preventDefault(e);
 
-        $( "#addContactPhone" ).change(function() {
+        $( "#addContactPhone" ).on('input', function() {
             var phone = $("#addContactPhone").val();
 
             isValidMobileNumber(phone, function(result){
@@ -556,6 +557,20 @@ var addContactView = {
         }
 
         $("#modalview-AddContact").data("kendoMobileModalView").open();
+
+        // Test the initial phone number
+        var phone = $("#addContactPhone").val();
+
+        isValidMobileNumber(phone, function(result){
+            if (result.status === 'ok') {
+                if (result.valid === false) {
+                    mobileNotify(phone + 'is not a valid mobile number');
+                    $('#addContacViewAddButton').addClass('hidden');
+                } else {
+                    $('#addContacViewAddButton').removeClass('hidden');
+                }
+            }
+        });
 
     },
 

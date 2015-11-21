@@ -70,6 +70,7 @@
 		document.addEventListener("online", deviceModel.onOnline, false);
 		document.addEventListener("offline", deviceModel.onOffline, false);
 
+		// special Pause / Resume for iOS related to locked and unlocked modes for the phone...
 		document.addEventListener("resign", deviceModel.onResign, false);
 		document.addEventListener("active", deviceModel.onActive, false);
 

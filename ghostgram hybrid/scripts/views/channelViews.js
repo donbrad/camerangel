@@ -965,7 +965,7 @@ var channelView = {
         var data = contactModel.inContactList(uuid);
 
         if (data === undefined) {
-            mobileNotify("ChatView Unknown Contact : " + uuid);
+            mobileNotify("Chat View Unknown Contact : " + uuid);
             contact.uuid = 0;
             contact.alias = 'unknown';
             contact.name = 'Unknown User';

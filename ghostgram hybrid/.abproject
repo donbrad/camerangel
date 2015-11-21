@@ -6,15 +6,13 @@
   "DisplayName": "ghostgrams",
   "Author": "don bradford",
   "Description": "ghostgrams for iOS and Android",
-  "BundleVersion": "0.2.1.8",
+  "BundleVersion": "0.2.1.9",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1"
   ],
   "iOSBackgroundMode": [
-    "audio",
     "location",
-    "bluetooth-peripheral",
     "fetch",
     "remote-notification"
   ],
@@ -27,7 +25,6 @@
     "android.permission.ACCESS_MOCK_LOCATION",
     "android.permission.ACCESS_NETWORK_STATE",
     "android.permission.ACCESS_WIFI_STATE",
-    "android.permission.BATTERY_STATS",
     "android.permission.BIND_NOTIFICATION_LISTENER_SERVICE",
     "android.permission.BLUETOOTH",
     "android.permission.CALL_PHONE",
@@ -111,7 +108,6 @@
     "nl.x-services.plugins.toast@2.2.1",
     "org.apache.cordova.labs.keyboard",
     "org.apache.cordova.plugin.sms@0.1.1",
-    "org.devgeeks.privacyscreen@0.0.7",
     "uk.co.whiteoctober.cordova.appversion@0.1.7"
   ],
   "iOSDeploymentTarget": "8.0"
