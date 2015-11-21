@@ -46,7 +46,8 @@ var channelModel = {
                 var models = new Array();
                 for (var i = 0; i < collection.length; i++) {
                     var object = collection[i];
-
+                    var dirty = false;
+                    
                     if (object.get('category') === undefined) {
                         if (object.get('isPrivate') === true) {
                             object.set('category', "Private");
@@ -60,29 +61,34 @@ var channelModel = {
                         if (object.get('isEvent') === true) {
                             object.set('category', "Event");
                         }
-                        object.save();
+                        dirty = true;
                     }
 
                     if (object.get('isMuted') === undefined) {
                         object.set('isMuted', false);
+                        dirty = true;
                     }
 
                     if (object.get('isDeleted') === undefined) {
                         object.set('isDeleted', false);
+                        dirty = true;
                     }
 
                     if (object.get('isOwner')) {
                         if (object.get('ownerId') === undefined) {
                             object.set('ownerId', userModel.currentUser.userUUID);
-                            object.save();
+                            dirty = true;
                         }
 
                         if (object.get('ownerName') === undefined) {
                             object.set('ownerName', userModel.currentUser.name);
-                            object.save();
+                            dirty = true;
                         }
                     }
 
+                    if (dirty) {
+                        object.save();
+                    }
                     var data = object.toJSON();
                     models.push(data);
                 }
