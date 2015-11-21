@@ -98,6 +98,11 @@ var channelsView = {
                                 "field": "description",
                                 "operator": "contains",
                                 "value": query
+                            },
+                            {
+                                "field": "isDeleted",
+                                "operator": "equals",
+                                "value": false
                             }
                         ]
                     });
@@ -116,7 +121,11 @@ var channelsView = {
 					$("#channels .gg_mainSearchInput").val('');
 					
 					// reset data filters
-                    channelModel.channelsDS.filter([]);
+                    channelModel.channelsDS.filter([ {
+                        "field": "isDeleted",
+                        "operator": "eq",
+                        "value": false
+                    }]);
 
                     // hide clear btn
                     $(this).addClass('hidden');
@@ -142,7 +151,6 @@ var channelsView = {
 		ux.showActionBtn(false, "#channels");
 		ux.hideSearch();
     },
-
 
 
     editChannel : function (e) {

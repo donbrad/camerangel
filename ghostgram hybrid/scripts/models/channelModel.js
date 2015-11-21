@@ -47,7 +47,7 @@ var channelModel = {
                 for (var i = 0; i < collection.length; i++) {
                     var object = collection[i];
                     var dirty = false;
-                    
+
                     if (object.get('category') === undefined) {
                         if (object.get('isPrivate') === true) {
                             object.set('category', "Private");
