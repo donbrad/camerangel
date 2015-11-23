@@ -112,21 +112,26 @@ var channelModel = {
     },
 
     queryChannels : function (query) {
+        if (query === undefined)
+            return([]);
         var dataSource = channelModel.channelsDS;
         var cacheFilter = dataSource.filter();
-        dataSource.filter( filter);
+        dataSource.filter( query);
         var view = dataSource.view();
-        var channel = view;
+        return(view);
         dataSource.filter(cacheFilter);
     },
 
     queryChannel : function (query) {
+        if (query === undefined)
+            return(undefined);
         var dataSource = channelModel.channelsDS;
         var cacheFilter = dataSource.filter();
-        dataSource.filter( filter);
+        dataSource.filter( query);
         var view = dataSource.view();
         var channel = view[0];
         dataSource.filter(cacheFilter);
+        return(channel);
     },
 
     updateUnreadCount: function (channelId, count) {

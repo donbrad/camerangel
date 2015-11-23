@@ -57,8 +57,6 @@
 	};
 
 
-
-
 	// this function is called by Cordova when the application is loaded by the device
 	document.addEventListener('deviceready', function() {
 
