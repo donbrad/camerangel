@@ -1006,7 +1006,8 @@ var checkInView = {
     },
 
     addPlace: function (e) {
-        APP.kendo.navigate("views/places.html#findPlace?returnmodal=checkin");
+        checkInView.closeModal();
+        APP.kendo.navigate("#findPlace?returnmodal=checkin");
     },
 
     onDone: function (e) {
