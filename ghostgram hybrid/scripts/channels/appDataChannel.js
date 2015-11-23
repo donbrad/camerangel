@@ -142,7 +142,6 @@ var appDataChannel = {
                 // Todo:  user has violated terms of service or is spamming.  notify all contacts
             } break;
 
-
             //  { type: 'appInfo',  level: 'info'|'update'|issue', id: <id>  message: <text>, url: <url>}
             case 'appInfo' : {
 
@@ -192,6 +191,7 @@ var appDataChannel = {
     groupChannelInvite : function (contactUUID, channelUUID, channelName, channelDescription, durationDays,  message) {
         var msg = {};
 
+        var notificationString = "Chat Invite : " + channelName;
         msg.type = 'groupInvite';
         msg.ownerId = userModel.currentUser.get('userUUID');
         msg.ownerName = userModel.currentUser.get('name');
@@ -201,6 +201,23 @@ var appDataChannel = {
         msg.durationDays = durationDays;
         msg.message  = message;
         msg.time = new Date().getTime();
+        msg.pn_apns = {
+            aps: {
+                alert : notificationString,
+                    badge: 1
+            },
+            target: '#channel?channel=' + channelUUID,
+                channelId :channelUUID
+        };
+        msg.pn_gcm = {
+            data : {
+                title: notificationString,
+                    message: "You've been invited to " + channelName,
+                    target: '#channel?channel=' + channelUUID,
+                    image: "icon",
+                    channelId : channelUUID
+            }
+        };
 
         var channel = appDataChannel.getContactAppChannel(contactUUID);
 
@@ -208,13 +225,14 @@ var appDataChannel = {
             channel: channel,
             message: msg,
             callback: appDataChannel.publishCallback,
-            error: appDataChannel.errorCallback,
+            error: appDataChannel.errorCallback
         });
     },
 
     groupChannelDelete : function (contactUUID, channelUUID, channelName, message) {
         var msg = {};
 
+        var notificationString = channelName + " has been deleted...";
         msg.type = 'groupDelete';
         msg.ownerId = userModel.currentUser.get('userUUID');
         msg.ownerName = userModel.currentUser.get('name');
@@ -222,6 +240,23 @@ var appDataChannel = {
         msg.channelName = channelName;
         msg.message  = message;
         msg.time = new Date().getTime();
+        msg.pn_apns = {
+            aps: {
+                alert : notificationString,
+                badge: 1
+            },
+            target: '#channels',
+            channelId :channelUUID
+        };
+        msg.pn_gcm = {
+            data : {
+                title: notificationString,
+                message: "The owner has deleted : " + channelName,
+                target: "#channels",
+                image: "icon",
+                channelId : channelUUID
+            }
+        };
 
         var channel = appDataChannel.getContactAppChannel(contactUUID);
 
@@ -247,7 +282,6 @@ var appDataChannel = {
 
         var channel = appDataChannel.getContactAppChannel(contactUUID);
 
-
         APP.pubnub.publish({
             channel: channel,
             message: msg,
@@ -257,65 +291,6 @@ var appDataChannel = {
         });
     },
 
-    /* // This could be an initial request or a follow up to delete current channel
-     // and create a new one -- effectively orphaning / deleting the data in the channel
-     processPrivateInvite: function (ownerId, ownerPublicKey, channelId, message) {
-     // Can be only one private channel per user -- need to lookup channel by ownerId
-     var privateChannel = channelModel.findPrivateChannel(ownerId);
-     var deleteFlag = false;
-
-     // The private channel requester needs to be in the user's contact list...
-     var contact = contactModel.findContact(ownerId);
-
-     //mobileNotify("Private Chat Request from " + contact.get('name') + '\n ' + message);
-
-
-     if (privateChannel !== undefined) {
-     // Theres already a private channel for this user -- need to delete it
-     if (privateChannel.channelId === channelId) {
-     // Invite is trying to create a channel with same channelId -- just ignore this request
-     mobileNotify("Private Chat Request from " + contact.get('name'));
-     return;
-     }
-     deleteFlag = true;
-     channelModel.deleteChannel(privateChannel.channelId, true);
-     //deleteParseObject('channels', 'channelId', privateChannel.channelId);
-     }
-
-
-     if (contact !== undefined) {
-     var contactAlias = contact.get('alias');
-     channelModel.addPrivateChannel(ownerId, ownerPublicKey, contactAlias, channelId);
-     if (deleteFlag) {
-     mobileNotify("Updated Private Chat with " + contactAlias);
-     } else {
-     notificationModel.addNewPrivateChatNotification(channelId, "Private: " + contactAlias);
-     }
-
-     //mobileNotify("Created Private Chat with " + contactAlias);
-
-     } else {
-     mobileNotify("Null contact in processPrivateInvite!!");
-     }
-
-
-
-     },
-
-     processPrivateDelete: function (ownerId, channelId, memberId,  message) {
-     var channel = channelModel.findChannelModel(channelId),
-     privateChannel = channelModel.findPrivateChannel(ownerId);
-     var contact = contactModel.findContact(ownerId);
-
-     if (channel === undefined) {
-     // mobileNotify("Private Chat Delete Request from " + contact.get('name'));
-     notificationModel.deletePrivateChatNotification(channelId,"Private Chat: " + contact.alias);
-     channelModel.deleteChannel(channel);
-     }
-
-     },
-
-     */
 
     processGroupInvite: function (ownerName, channelId, channelName) {
         // Todo:  Does channel exist?  If not create,  if so notify user of request

@@ -900,9 +900,6 @@ var channelView = {
             });
 
 
-
-
-
         } else {
 
           //*** Group Channel ***

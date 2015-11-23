@@ -152,8 +152,66 @@ var serverPush = {
         if (!serverPush._channelsProvisioned) {
 
             serverPush._channelsProvisioned = true;
+
+            var channels = channelModel.queryChannels({ field: "isPrivate", operator: "eq", value: false });
+
+            if (channels !== undefined && channels.length > 0) {
+                for (var i=0; i< channels.length; i++) {
+                    var channel = channels[i];
+
+                    serverPush.provisionGroupChannel(channel.channelId)
+                }
+            }
         }
     },
+
+    provisionGroupChannel : function (channelId) {
+
+        if (channelId === undefined || channelId === null) {
+            mobileNotify("Can't provision null channnel");
+            return;
+
+        }
+        var regId = serverPush._regId;
+        var type = 'apns';
+
+        if (device.platform === "Android") {
+            type = 'gcm';
+        }
+
+        APP.pubnub.mobile_gw_provision ({
+            device_id: regId,
+            op    : 'add',
+            gw_type  : type,
+            channel  :  channelId,
+            callback : serverPush._success,
+            error  : serverPush._error
+        });
+    },
+
+    unprovisionGroupChannel : function (channelId) {
+        if (channelId === undefined || channelId === null) {
+            mobileNotify("Can't provision null channnel");
+            return;
+
+        }
+        var regId = serverPush._regId;
+        var type = 'apns';
+
+        if (device.platform === "Android") {
+            type = 'gcm';
+        }
+
+        APP.pubnub.mobile_gw_provision ({
+            device_id: regId,
+            op    : 'remove',
+            gw_type  : type,
+            channel  :  channelId,
+            callback : serverPush._success,
+            error  : serverPush._error
+        });
+    },
+
 
     provisionDataChannels : function () {
 

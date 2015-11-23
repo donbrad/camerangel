@@ -111,6 +111,29 @@ var channelModel = {
 
     },
 
+    queryChannels : function (query) {
+        if (query === undefined)
+            return([]);
+        var dataSource = channelModel.channelsDS;
+        var cacheFilter = dataSource.filter();
+        dataSource.filter( query);
+        var view = dataSource.view();
+        return(view);
+        dataSource.filter(cacheFilter);
+    },
+
+    queryChannel : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = channelModel.channelsDS;
+        var cacheFilter = dataSource.filter();
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var channel = view[0];
+        dataSource.filter(cacheFilter);
+        return(channel);
+    },
+
     updateUnreadCount: function (channelId, count) {
         var channel = channelModel.findChannelModel(channelId);
         if (channel === undefined) {
@@ -274,13 +297,16 @@ var channelModel = {
 
 
     findChannelModel: function (channelId) {
-        var dataSource =  channelModel.channelsDS;
+
+        return(channelModel.queryChannel({ field: "channelId", operator: "eq", value: channelId }));
+
+        /*var dataSource =  channelModel.channelsDS;
         dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
         var view = dataSource.view();
         var channel = view[0];
         dataSource.filter([]);
 
-        return(channel);
+        return(channel);*/
     },
 
     findChannelByName: function (channelName) {
@@ -410,11 +436,7 @@ var channelModel = {
 
             }
         });
-
-
-
     },
-
 
     // Add group channel for owner...
     addChannel : function (channelName, channelDescription, isOwner, durationDays, channelUUID, ownerUUID, ownerName, placeId, placeName, isPrivatePlace, members) {
@@ -540,10 +562,11 @@ var channelModel = {
 
     deleteChannel : function (channelId, silent) {
         var dataSource = channelModel.channelsDS;
+        var cacheFilter = dataSource.filter();
         dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
         var view = dataSource.view();
         var channel = view[0];
-        dataSource.filter([]);
+        dataSource.filter(cacheFilter);
 
         if (channel !== undefined) {
             if (channel.isOwner) {
@@ -561,27 +584,52 @@ var channelModel = {
                 }
 
 
+                serverPush.unprovisionGroupChannel(channelId);
                 dataSource.remove(channel);
                 deleteParseObject("channels", 'channelId', channelId);
                 //mobileNotify("Removed channel : " + channel.get('name'));
             } else {
-
+                serverPush.unprovisionGroupChannel(channelId);
                 updateParseObject("channels", 'channelId', channelId, 'isDeleted', true);
-                channel.set('isDeleted', true);            }
+                channel.set('isDeleted', true);
+            }
         }
+    },
+
+    // For members only -- undelete a previous deleted channel
+    unDeleteChannel : function (channelId) {
+        var dataSource = channelModel.channelsDS;
+        var cacheFilter = dataSource.filter();
+        dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
+        var view = dataSource.view();
+        var channel = view[0];
+        dataSource.filter(cacheFilter);
+
+        if (channel !== undefined) {
+            updateParseObject("channels", 'channelId', channelId, 'isDeleted', false);
+            channel.set('isDeleted', false);
+            serverPush.provisionGroupChannel(channelId);
+        }
+
     },
 
     muteChannel : function (channelId, isMuted) {
         var dataSource = channelModel.channelsDS;
+        var cacheFilter = dataSource.filter();
         dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
         var view = dataSource.view();
         var channel = view[0];
-        dataSource.filter([]);
+        dataSource.filter(cacheFilter);
 
         if (channel !== undefined) {
 
             updateParseObject("channels", 'channelId', channelId, 'isMuted', isMuted);
             channel.set('isMuted', isMuted);
+            if (isMuted) {
+                serverPush.unprovisionGroupChannel(channelId);
+            } else {
+                serverPush.provisionGroupChannel(channelId);
+            }
 
         }
     },
