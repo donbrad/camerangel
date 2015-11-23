@@ -67,7 +67,7 @@ var userDataChannel = {
                 messages = messages[0];
                 messages = messages || [];
                 var RSAKey = cryptico.privateKeyFromString(userModel.currentUser.privateKey);
-
+                var latestTime = 0;
                 for (var i = 0; i < messages.length; i++) {
 
                     var lastAccess = ggTime.toPubNubTime(userDataChannel.lastAccess);

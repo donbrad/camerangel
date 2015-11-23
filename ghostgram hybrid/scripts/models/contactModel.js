@@ -215,6 +215,7 @@ var contactModel = {
                 var models = [];
                 for (var i = 0; i < collection.length; i++) {
                     var model = collection[i];
+                    var dirty = false;
                    // Set the photo to identicon
                     var url = contactModel.createIdenticon(model.get('uuid'));
 
@@ -226,9 +227,45 @@ var contactModel = {
                     //Push to the ownerUUID to legacy contacts...
                     if (model.get('ownerUUID') === undefined) {
                         model.set('ownerUUID', userModel.currentUser.userUUID);
-                        model.save();
+                        dirty = true;
                     }
 
+                    if (model.get('phoneVerified') === undefined) {
+                        model.set('phoneVerified', false);
+                        dirty = true;
+                    }
+                    if (model.get('isBlocked') === undefined) {
+                        model.set('isBlocked', false);
+                        dirty = true;
+                    }
+
+                    if (model.get('isDeleted') === undefined) {
+                        model.set('isDeleted', false);
+                        dirty = true;
+                    }
+
+                    if (model.get('connectSent') === undefined) {
+                        model.set('connectSent', false);
+                        dirty = true;
+                    }
+
+                    if (model.get('connectReceived') === undefined) {
+                        model.set('connectReceived', false);
+                        dirty = true;
+                    }
+
+                    if (model.get('contactAddress') === undefined) {
+                        model.set('contactAddress', null);
+                        dirty = true;
+                    }
+
+                    if (model.get('version') === undefined) {
+                        model.set('version', 1);
+                        dirty = true;
+                    }
+
+                    if (dirty)
+                        model.save();
                     var data = model.toJSON();
                     models.push(data);
                 }
