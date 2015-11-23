@@ -525,7 +525,10 @@ function homeSignin (e) {
 	_preventDefault(e);
 	
 	}
-
+function launchVerifyPhone (e) {
+	_preventDefault(e);
+	$("#modalview-verifyPhone").data("kendoMobileModalView").open();
+}
 
 
 function closeModalViewVerifyPhone() {

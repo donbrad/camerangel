@@ -59,6 +59,10 @@ var notificationModel = {
 
     },
 
+    addVerifyPhoneNotification : function () {
+        this.newNotification('system', 'Please Verify Phone', null, "Please verify your mobile phone", "Verify", launchVerifyPhone , null, false);
+    },
+
     addUnreadNotification : function (channelId, channelName, unreadCount) {
         this.newNotification(this._unreadCount, channelName, null, unreadCount + " new messages.", 'Read Messages', null,
         '#channel?channel='+channelId, true);

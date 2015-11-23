@@ -162,11 +162,6 @@
 				});
 
 
-				/*cordova.plugins.notification.local.cancelAll(
-				 function() {
-				 MobileNotify("Local notifications cleared");
-				 }
-				 );*/
 
 			});
 
