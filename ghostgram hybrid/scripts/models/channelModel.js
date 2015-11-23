@@ -410,11 +410,7 @@ var channelModel = {
 
             }
         });
-
-
-
     },
-
 
     // Add group channel for owner...
     addChannel : function (channelName, channelDescription, isOwner, durationDays, channelUUID, ownerUUID, ownerName, placeId, placeName, isPrivatePlace, members) {
