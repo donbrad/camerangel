@@ -2242,6 +2242,12 @@ textarea {
   color: #979797;
   background: #f5f5f5;
 }
+.listTag-primary {
+  border-radius: 3px;
+  padding: 0.1em 0.5em;
+  color: #fff;
+  background: #FADDB0;
+}
 #contacts-listview > li > ul > li > div > a > div.left.listName > h4 {
   margin-right: 0px;
 }
@@ -2625,7 +2631,7 @@ a:hover {
   top: 0px;
   left: 0px;
   display: block;
-  padding-left: 1rem;
+  padding-left: 0.5rem;
   padding-right: 1rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
