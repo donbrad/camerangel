@@ -45,6 +45,7 @@
 </div>
 
 <script type="text/x-kendo-tmpl" id="channels-listview-template">
+    
     <div>
     	<div class="chat-options">
     		<div>
@@ -53,26 +54,37 @@
     					<li>
 		    				<a class="btnClear-red" data-channel="#:channelId #" data-role="button"  data-click="deleteChannel">
 		    					<img src="images/trash.svg" />
-		    					<p class="chat-option-selection"> Delete</p>
+		    					<p class="chat-option-selection"> Delete </p>
 		    				</a>
 	    				</li>
 	    				<li>
-		    				<a class="btnClear-grey" data-role="button" data-channel="#:channelId #" data-click="eraseChannel">
-			    				<img src="images/option-clear.svg" id="chat-option-clearBtn"/>
-			    				<p class="chat-option-selection">Clear</p>
+		    				<a class="btnClear-grey" data-role="button" data-channel="#:channelId #" data-click="muteChannel" data-mute="#: isMuted #">
+			    				# if(data.isMuted) {#
+		    						<img src="images/icon-unmute.svg" class="channelMuteImg"/>
+			    					<p class="channelMute">Unmute</p>
+		    					#} else {#
+		    						<img src="images/icon-mute.svg" class="channelMuteImg"/>
+			    					<p class="channelMute">Mute</p>
+		    					#}#
 			    			</a>
 	    				</li>
     				#} else {#
     					<li>
-		    				<a class="btnClear-red" data-role="button" data-channel="#:channelId #"data-click="deleteChannel" data-channel="#:channelId #">
+		    				<a class="btnClear-red" data-role="button" data-channel="#:channelId #" data-click="deleteChannel" data-channel="#:channelId #">
 		    					<img src="images/trash.svg" />
 		    					<p class="chat-option-selection"> Delete</p>
 		    				</a>
 	    				</li>
+	    				
 	    				<li>
-		    				<a class="btnClear-grey" data-role="button" data-channel="#:channelId #" data-click="eraseChannel">
-			    				<img src="images/option-clear.svg" id="chat-option-clearBtn"/>
-			    				<p class="chat-option-selection">Clear</p>
+		    				<a class="btnClear-grey" data-role="button" data-channel="#:channelId #" data-click="muteChannel" data-mute="#: isMuted #">
+		    					# if(data.isMuted) {#
+		    						<img src="images/icon-unmute.svg" class="channelMuteImg"/>
+			    					<p class="channelMute">Unmute</p>
+		    					#} else {#
+		    						<img src="images/icon-mute.svg" class="channelMuteImg"/>
+			    					<p class="channelMute">Mute</p>
+		    					#}#
 			    			</a>
 	    				</li>
 	    				
@@ -109,20 +121,27 @@
 	    	#
 	    		<h4 class="textClamp">
 	    			<span class="chatStatusIcon">
-	    				<img src="images/status-new.svg" class="list-status" />
+	    				# if(data.isMuted){#
+	    					<img src="images/icon-mute.svg" class="channelMuteImg" />
+	    				#}else {#
+	    					<img src="images/status-new.svg" class="list-status" />
+	    				#}#
+	    				
 	    			</span>
 	        		<span class="textClamp chatNameDiv">#:name#</span>
 	        		<span class="chatActivityTime left">#:accessTime#</span>
 	    		</h4>
 	    		<div class="clearfix"></div>
 	    		<div class="chatType">
+	    		    
 		    		# if(isPrivate && members.length <= 2){#
-		    			<img src="images/private-icon.svg" /> Private Chat
+		    			<img src="images/private-icon.svg" /> Private Chat  
 		    		#} else if (false) {# // For place chats
-		    			<img src="images/place-icon.svg" id="chatList-place-icon" class="icon-sm" /> Place Chat
+		    			<img src="images/place-icon.svg" id="chatList-place-icon" class="icon-sm" /> Place Chat 
 		    		#} else {#
-		    			<img src="images/group-icon.svg" class="icon-sm" /> Group Chat
+		    			<img src="images/group-icon.svg" class="icon-sm" /> Group Chat 
 		    		#}#
+		    		#if (data.isMuted) {# <span class="listTag-light">Muted</span> #} #
 	    		</div>
 
 	    	</div><!-- chat-mainBox -->

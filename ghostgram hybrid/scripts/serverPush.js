@@ -27,7 +27,7 @@ var serverPush = {
 
         if (device.platform === 'android' || device.platform === 'Android' || device.platform === 'amazon-fireos' ) {
             serverPush.plugin.register(serverPush.onRegistration, serverPush.onError,
-                {senderID: serverPush._googleSenderId, ecb: 'serverPush.onNotificationECM'});
+                {senderID: serverPush._googleSenderId, icon: 'icon', iconColor: 'white', ecb: 'serverPush.onNotificationECM'});
         } else if (device.platform === 'iOS') {
             serverPush.plugin.register(serverPush.onRegistration, serverPush.onError,
                 {badge: false, sound : false, alert: true, ecb : serverPush.onNotificationAPN});
@@ -152,8 +152,66 @@ var serverPush = {
         if (!serverPush._channelsProvisioned) {
 
             serverPush._channelsProvisioned = true;
+
+            var channels = channelModel.queryChannels({ field: "isPrivate", operator: "eq", value: false });
+
+            if (channels !== undefined && channels.length > 0) {
+                for (var i=0; i< channels.length; i++) {
+                    var channel = channels[i];
+
+                    serverPush.provisionGroupChannel(channel.channelId)
+                }
+            }
         }
     },
+
+    provisionGroupChannel : function (channelId) {
+
+        if (channelId === undefined || channelId === null) {
+            mobileNotify("Can't provision null channnel");
+            return;
+
+        }
+        var regId = serverPush._regId;
+        var type = 'apns';
+
+        if (device.platform === "Android") {
+            type = 'gcm';
+        }
+
+        APP.pubnub.mobile_gw_provision ({
+            device_id: regId,
+            op    : 'add',
+            gw_type  : type,
+            channel  :  channelId,
+            callback : serverPush._success,
+            error  : serverPush._error
+        });
+    },
+
+    unprovisionGroupChannel : function (channelId) {
+        if (channelId === undefined || channelId === null) {
+            mobileNotify("Can't provision null channnel");
+            return;
+
+        }
+        var regId = serverPush._regId;
+        var type = 'apns';
+
+        if (device.platform === "Android") {
+            type = 'gcm';
+        }
+
+        APP.pubnub.mobile_gw_provision ({
+            device_id: regId,
+            op    : 'remove',
+            gw_type  : type,
+            channel  :  channelId,
+            callback : serverPush._success,
+            error  : serverPush._error
+        });
+    },
+
 
     provisionDataChannels : function () {
 

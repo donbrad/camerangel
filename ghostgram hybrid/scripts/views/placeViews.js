@@ -23,8 +23,6 @@ var placesView = {
 
         placesModel.locatorActive = false;
 
-        
-
         $("#places-listview").kendoMobileListView({
             dataSource: placesView.placeListDS,
             template: $("#placesTemplate").html(),
@@ -67,8 +65,6 @@ var placesView = {
 
 
     },
-
-
 
     editPlaceBtn: function(e){
     	var place = e.button[0].dataset["id"];
@@ -494,6 +490,7 @@ var addPlaceView = {
     _activeGeo : {},
     _activePlace : new kendo.data.ObservableObject(),
     _returnView : 'places',
+    _returnModal : null,
 
     onInit : function (e) {
         _preventDefault(e);
@@ -538,7 +535,13 @@ var addPlaceView = {
         // unbind the activePlace change handler...
         addPlaceView._activePlace.unbind('change',addPlaceView.onSync);
 
-        APP.kendo.navigate(returnUrl);
+        if (addPlaceView._returnModal !== null) {
+
+        } else {
+            APP.kendo.navigate(returnUrl);
+        }
+
+
 
     },
 
@@ -1003,9 +1006,9 @@ var checkInView = {
     },
 
     addPlace: function (e) {
-
+        /*checkInView.closeModal();
+        APP.kendo.navigate('#'+"findPlace?returnmodal=checkin");*/
     },
-
 
     onDone: function (e) {
         _preventDefault(e);

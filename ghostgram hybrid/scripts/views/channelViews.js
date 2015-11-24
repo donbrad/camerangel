@@ -57,7 +57,7 @@ var channelsView = {
                         $(selection).velocity({translateX:"-40%"},{duration: "fast"}).addClass("chat-active");
                     // if larger screen and owner
                 	} else if($(selection).hasClass("owner")){
-                		$(selection).velocity({translateX:"-50%"},{duration: "fast"}).addClass("chat-active");
+                		$(selection).velocity({translateX:"-55%"},{duration: "fast"}).addClass("chat-active");
                     // if larger screen
                     } else {
                         $(selection).velocity({translateX:"-40%"},{duration: "fast"}).addClass("chat-active");
@@ -98,6 +98,11 @@ var channelsView = {
                                 "field": "description",
                                 "operator": "contains",
                                 "value": query
+                            },
+                            {
+                                "field": "isDeleted",
+                                "operator": "equals",
+                                "value": false
                             }
                         ]
                     });
@@ -116,7 +121,11 @@ var channelsView = {
 					$("#channels .gg_mainSearchInput").val('');
 					
 					// reset data filters
-                    channelModel.channelsDS.filter([]);
+                    channelModel.channelsDS.filter([ {
+                        "field": "isDeleted",
+                        "operator": "eq",
+                        "value": false
+                    }]);
 
                     // hide clear btn
                     $(this).addClass('hidden');
@@ -142,7 +151,6 @@ var channelsView = {
 		ux.showActionBtn(false, "#channels");
 		ux.hideSearch();
     },
-
 
 
     editChannel : function (e) {
@@ -825,7 +833,7 @@ var channelView = {
         // Hide the image preview div
         channelView.hideChatImagePreview();
 
-        channelModel.updateUnreadCount(channelUUID, 0);
+        channelModel.updateUnreadCount(channelUUID, 0, null);
 
         //default private mode off for now. Todo: don and jordan fix privacy mode
         channelView.privacyMode = false;
@@ -890,9 +898,6 @@ var channelView = {
 
                 channelView.scrollToBottom();
             });
-
-
-
 
 
         } else {
@@ -1346,8 +1351,8 @@ var channelView = {
 
 
         }
+        
         if (e.direction === 'right' && $(selection).hasClass("message-active") ) {
- 
 
             $(selection).velocity({translateX:"0"},{duration: "fast"}).removeClass("message-active");
         }

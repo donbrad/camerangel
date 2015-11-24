@@ -92,6 +92,7 @@ var privateChannel = {
         if (msg.recipient === privateChannel.userId) {
 
             var parsedMsg = privateChannel.decryptMessage(msg);
+
             privateChannel.receiveMessage(parsedMsg);
            // deleteMessage(msg.sender, msg.msgID, msg.ttl);
         }
@@ -107,7 +108,7 @@ var privateChannel = {
         var parsedMsg = {
             type: 'privateMessage',
             msgID: msg.msgID,
-            channelId: privateChannel.channelId,
+            channelId: msg.sender,  //For private channels, channelID is just sender ID
             content: content,
             data: data,
             TTL: msg.ttl,
@@ -126,17 +127,18 @@ var privateChannel = {
         if (message.fromHistory === undefined) {
             message.fromHistory = false;
         }
-        // ignore echoed sender copies in read message
-        // -- we add the message to the chat datasource at time of send
-       // if (message.actualRecipient === undefined)
-        channelModel.incrementPrivateMessageCount(message.channelId, 1);
+
         userDataChannel.messagesDS.add(message);
-
+        userDataChannel.messagesDS.sync();
         // If this message is for the current channel, then display immediately
-        if (message.channelId === channelView._channelId)
+        if (message.channelId === channelView._channelId) {
+            channelModel.updateLastAccess(message.channelId, null);
             channelView.messagesDS.add(message);
-
-        //currentChannelModel.updateLastAccess();
+        } else {
+            // Is there a private channel for this sender?
+            channelModel.confirmPrivateChannel(message.channelId);
+            channelModel.incrementUnreadCount(message.channelId, 1, null);
+        }
 
         channelView.scrollToBottom();
 
@@ -186,7 +188,7 @@ var privateChannel = {
                         }
                     },
                     msgID: msgID,
-                    channelId: privateChannel.channelId,
+                    channelId: privateChannel.userId,
                     content: encryptMessage,  // publish the encryptedMessage
                     data: encryptData,        // publish the encryptedData.
                     time: currentTime,
@@ -197,7 +199,7 @@ var privateChannel = {
                     var parsedMsg = {
                         type: 'privateMessage',
                         recipient: recipient,
-                        sender: userModel.currentUser.userUUID,
+                        sender: privateChannel.userID,
                         msgID: msgID,
                         channelId: privateChannel.channelId,
                         content: content,
@@ -208,15 +210,11 @@ var privateChannel = {
 
                     };
 
-                    // echo the message
-                    privateChannel.receiveMessage(parsedMsg);
-
-                    parsedMsg.channelId = recipient;
-
+                    channelModel.updateLastAccess(parsedMsg.channelId, null);
+                    channelView.messagesDS.add(parsedMsg);
                     userDataChannel.messagesDS.add(parsedMsg);
-                    // archive message in the current channel
-                   // privateChannel.archiveMessage(parsedMsg);
-                    //deleteMessage(recipient, msgID, ttl);
+                    userDataChannel.messagesDS.sync();
+
                 }
             });
         });
@@ -226,21 +224,16 @@ var privateChannel = {
     getMessageHistory: function (callBack) {
 
         var dataSource = userDataChannel.messagesDS;
-
-        dataSource.filter({ field: "channelId", operator: "eq", value: privateChannel.contactId });
+        var queryCache = dataSource.filter();
+        dataSource.filter({ field: "channelId", operator: "eq", value: privateChannel.channelId });
 
         var view = dataSource.view();
         var messages = view;
         var clearMessageArray = [];
-        dataSource.filter([]);
+        dataSource.filter(queryCache);
 
         for(var i = 0; i < messages.length; i++) {
             var msg = messages[i];
-
-            if (msg.sender === undefined || msg.sender === 0) {
-                msg.sender = userModel.currentUser.userUUID;
-            }
-
             clearMessageArray.push(msg);
         }
 

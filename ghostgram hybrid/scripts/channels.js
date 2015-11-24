@@ -41,21 +41,26 @@ function deleteChannel(e) {
 	channelModel.deleteChannel(channelId);
 
 }
-    
-/*
-function onChannelsClick(e) {
+
+function muteChannel(e) {
 	e.preventDefault();
-	var channel = e.dataItem;	
-	var target = e.closest('a');
-	APP.kendo.navigate('#channel?channel='+channel.channelId);
+	
+	var channelId = e.button[0].attributes["data-channel"].value;
+	var channel = channelModel.findChannelModel(channelId);
+	
+	if(channel.isMuted){
+		channelModel.muteChannel(channelId, false);
+		mobileNotify(channel.name + " is unmuted");
+
+	} else {
+		channelModel.muteChannel(channelId, true);
+		mobileNotify(channel.name + " is muted");
+	}
+	
+	
+
+	
 }
-
-
-function gotoChannel(channelId) {
-	APP.kendo.navigate('#channel?channel='+channelId);
-}
-*/
-
 
 function onInitChannels (e) {
     e.preventDefault();

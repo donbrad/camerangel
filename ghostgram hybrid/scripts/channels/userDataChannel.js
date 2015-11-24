@@ -39,6 +39,7 @@ var userDataChannel = {
         }
 
         userDataChannel.messagesDS.online(false);
+        userDataChannel.messagesDS.fetch();
         userDataChannel.history();
     },
 
@@ -67,7 +68,7 @@ var userDataChannel = {
                 messages = messages[0];
                 messages = messages || [];
                 var RSAKey = cryptico.privateKeyFromString(userModel.currentUser.privateKey);
-
+                var latestTime = 0;
                 for (var i = 0; i < messages.length; i++) {
 
                     var lastAccess = ggTime.toPubNubTime(userDataChannel.lastAccess);
@@ -105,6 +106,7 @@ var userDataChannel = {
 
                     }
                 }
+                userDataChannel.messagesDS.sync();
                 userDataChannel.updateTimeStamp();
                 channelKeys = Object.keys(channelList);
                 channelModel.updatePrivateChannels(channelKeys, channelList);

@@ -30,19 +30,6 @@
     </ul>
 </div>
 
-<!-- Nearby Results -->
-<div data-role="modalview" data-tile="Nearby Results" id="nearby-results" style="height:90%; width:90%;">
-    <div data-role="header">
-        <div data-role="navbar">
-            <span>Nearby Results</span>
-            <a id="close-nearby-results" data-role="button" data-click="closeNearbyResults"><i class="fa fa-close"></i></a>
-        </div>
-    </div>
-
-    <ul id="nearby-results-list"></ul>
-</div>
-
-
 <!-- Find Place -->
  <div data-role="view" data-title="New Places Nearby" id="findPlace" data-layout="main"  data-show="findPlacesView.onShow" data-init="findPlacesView.onInit" data-before-hide="findPlacesView.onHide" data-transition="slide:up">
      <div data-role="header">
@@ -67,6 +54,18 @@
 	</div>
 </div>
 
+
+ <!-- Nearby Results -->
+ <div data-role="modalview" data-tile="Nearby Results" id="nearby-results" style="height:90%; width:90%;">
+	 <div data-role="header">
+		 <div data-role="navbar">
+			 <span>Nearby Results</span>
+			 <a id="close-nearby-results" data-role="button" data-click="closeNearbyResults"><i class="fa fa-close"></i></a>
+		 </div>
+	 </div>
+
+	 <ul id="nearby-results-list"></ul>
+ </div>
 
  <div data-role="view" id="placeView" data-title="Place View" data-model="placeView._activePlace" class="appearance" data-layout="main" data-init="placeView.onInit" data-show="placeView.onShow" data-hide="placeView.onHide" data-transition="fade">
 	 <div class="smallHeader" data-role="header">

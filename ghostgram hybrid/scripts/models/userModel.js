@@ -152,11 +152,21 @@ var userModel = {
                 userModel.initPubNub();
                 userModel.fetchParseData();
 
+
                 if (phoneVerified) {
                     deviceModel.setAppState('phoneVerified', true);
                     notificationModel.deleteNotification('phoneVerified');
                 } else {
                     mobileNotify("Please verify your phone number");
+
+                    cordova.plugins.notification.local.schedule({
+                        id         : 1,
+                        title      : 'Phone not verified',
+                        text       : 'Please verify your mobile phone number ',
+                        sound      : null,
+                        autoClear  : true,
+                        at         : new Date(new Date().getTime() + 100)
+                    });
                     //Add verify phone notification to home screen
                 }
             });
