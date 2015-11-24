@@ -43,7 +43,7 @@ var channelModel = {
 
         query.find({
             success: function(collection) {
-                var models = new Array();
+                var models =[];
                 for (var i = 0; i < collection.length; i++) {
                     var object = collection[i];
                     var dirty = false;
@@ -118,8 +118,9 @@ var channelModel = {
         var cacheFilter = dataSource.filter();
         dataSource.filter( query);
         var view = dataSource.view();
-        return(view);
         dataSource.filter(cacheFilter);
+        return(view);
+
     },
 
     queryChannel : function (query) {
@@ -215,6 +216,16 @@ var channelModel = {
         }
     }, this._messageCountRefresh, true ),
 
+    // sync channel access/unread counts
+    updateParseChannels : function () {
+        var channels = channelModel.channelsDS.data();
+
+        for (var i=0; i<channels.length; i++) {
+            var channel = channels[i];
+            updateParseObject('channels', 'channelId', channel.channelId, 'unreadCount', channel.unreadCount);
+            updateParseObject('channels', 'channelId', channel.channelId, 'lastAccess', channel.lastAccess);
+        }
+    },
 
     syncParseChannels : function (callback) {
         // Only sync channels for users with atleast email or phone validated
