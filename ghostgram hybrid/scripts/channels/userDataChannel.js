@@ -39,6 +39,7 @@ var userDataChannel = {
         }
 
         userDataChannel.messagesDS.online(false);
+        userDataChannel.messagesDS.fetch();
         userDataChannel.history();
     },
 
@@ -105,6 +106,7 @@ var userDataChannel = {
 
                     }
                 }
+                userDataChannel.sync();
                 userDataChannel.updateTimeStamp();
                 channelKeys = Object.keys(channelList);
                 channelModel.updatePrivateChannels(channelKeys, channelList);

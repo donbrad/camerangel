@@ -132,19 +132,16 @@ var privateChannel = {
        // if (message.actualRecipient === undefined)
        // channelModel.incrementPrivateMessageCount(message.channelId, 1);
         userDataChannel.messagesDS.add(message);
-
+        userDataChannel.messagesDS.sync();
         // If this message is for the current channel, then display immediately
         if (message.channelId === channelView._channelId) {
-            channelModel.updateLastAccess(message.channelId,null);
+            channelModel.updateLastAccess(message.channelId, null);
             channelView.messagesDS.add(message);
         } else {
             // Is there a private channel for this sender?
             channelModel.confirmPrivateChannel(message.channelId);
             channelModel.incrementUnreadCount(message.channelId, 1, null);
         }
-
-
-        //currentChannelModel.updateLastAccess();
 
         channelView.scrollToBottom();
 
@@ -222,6 +219,7 @@ var privateChannel = {
                     parsedMsg.channelId = recipient;
 
                     userDataChannel.messagesDS.add(parsedMsg);
+                    userDataChannel.messagesDS.sync();
                     // archive message in the current channel
                    // privateChannel.archiveMessage(parsedMsg);
                     //deleteMessage(recipient, msgID, ttl);

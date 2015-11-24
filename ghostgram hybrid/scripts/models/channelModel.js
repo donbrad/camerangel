@@ -344,13 +344,12 @@ var channelModel = {
             var chan = view[i];
 
             if (chan.contactUUID === contactUUID) {
-                dataSource.filter([]);
+                dataSource.filter(queryCache);
                 channel = chan;
                 return(channel);
             }
         }
-
-
+        
         dataSource.filter(queryCache);
         return(channel);
     },
