@@ -833,7 +833,7 @@ var channelView = {
         // Hide the image preview div
         channelView.hideChatImagePreview();
 
-        channelModel.updateUnreadCount(channelUUID, 0);
+        channelModel.updateUnreadCount(channelUUID, 0, null);
 
         //default private mode off for now. Todo: don and jordan fix privacy mode
         channelView.privacyMode = false;

@@ -134,46 +134,58 @@ var channelModel = {
         return(channel);
     },
 
-    updateUnreadCount: function (channelId, count) {
+    updateLastAccess : function (channelId, lastAccess) {
+        var channel = channelModel.findChannelModel(channelId);
+        if (channel === undefined) {
+            mobileNotify('updateLastAccess: unknown channel ' + channelId);
+        } else {
+            if (lastAccess === undefined || lastAccess === null) {
+                lastAccess = ggTime.currentTime();
+            }
+            channel.set('lastAccess', lastAccess);
+            //updateParseObject('channels', 'channelId', channelId, 'lastAccess', lastAccess);
+
+        }
+    },
+
+    updateUnreadCount: function (channelId, count, lastAccess) {
+
+        var channel = channelModel.findChannelModel(channelId);
+        if (channel === undefined) {
+            mobileNotify('updateUnreadCount: unknown channel ' + channelId);
+        } else {
+            if (lastAccess === undefined || lastAccess === null) {
+                lastAccess = ggTime.currentTime();
+            }
+            channel.set('unreadCount',count);
+            //updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
+
+        }
+    },
+
+    incrementUnreadCount: function (channelId, count, lastAccess) {
         var channel = channelModel.findChannelModel(channelId);
         if (channel === undefined) {
             mobileNotify('incrementUnreadCount: unknown channel ' + channelId);
         } else {
-            channel.unreadCount = count;
-            updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
-            if (count > 0)
-            notificationModel.addUnreadNotification(channelId, channel.name, count);
-        }
-    },
 
-    incrementUnreadCount: function (channelId, count) {
-        var channel = channelModel.findChannelModel(channelId);
-        if (channel === undefined) {
-            mobileNotify('incrementUnreadCount: unknown channel ' + channelId);
-        } else {
-            channel.unreadCount = channel.unreadCount + count;
-            updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
+            if (lastAccess === undefined || lastAccess === null) {
+                lastAccess = ggTime.currentTime();
+            }
+            channel.set('unreadCount', channel.unreadCount + count);
+           //updateParseObject('channels', 'channelId', channelId, 'unreadCount', channel.unreadCount + count);
         }
 
     },
 
-    // If the channel exists, increment the message count, if not create the channel and then increment
-    incrementPrivateMessageCount: function (channelId, count) {
+    // confirm that there's a private channel for this sender - if not just silently create it
+    confirmPrivateChannel: function (channelId) {
         var channel = channelModel.findChannelModel(channelId);
         if (channel === undefined) {
            var contact = contactModel.findContactByUUID(channelId);
             if (contact !== undefined && contact.contactUUID !== undefined) {
                 channelModel.addPrivateChannel(contact.contactUUID, contact.publicKey, contact.name);
-                channel = channelModel.findChannelModel(contact.contactUUID);
-                channel.unreadCount = channel.unreadCount + count;
-                channel.lastAccess = ggTime.currentTime();
-            } else {
-                mobileNotify("incrementPrivateMessageCount : unknown contact " + channelId);
             }
-        } else {
-            channel.unreadCount = channel.unreadCount + count;
-            channel.lastAccess = ggTime.currentTime();
-           // updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
         }
     },
 
@@ -310,18 +322,21 @@ var channelModel = {
     },
 
     findChannelByName: function (channelName) {
-        var dataSource =  channelModel.channelsDS;
+
+        return(channelModel.queryChannel({ field: "name", operator: "eq", value: channelName }));
+      /*  var dataSource =  channelModel.channelsDS;
         dataSource.filter( { field: "name", operator: "eq", value: channelName });
         var view = dataSource.view();
         var channel = view[0];
         dataSource.filter([]);
 
-        return(channel);
+        return(channel);*/
     },
 
 
     findPrivateChannel : function (contactUUID) {
         var dataSource =  channelModel.channelsDS;
+        var queryCache = dataSource.filter();
         dataSource.filter({ field: "isPrivate", operator: "eq", value: true });
         var view = dataSource.view();
         var channel = undefined;
@@ -336,7 +351,7 @@ var channelModel = {
         }
 
 
-        dataSource.filter([]);
+        dataSource.filter(queryCache);
         return(channel);
     },
 

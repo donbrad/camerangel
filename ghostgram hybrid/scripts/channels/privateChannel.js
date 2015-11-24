@@ -130,12 +130,19 @@ var privateChannel = {
         // ignore echoed sender copies in read message
         // -- we add the message to the chat datasource at time of send
        // if (message.actualRecipient === undefined)
-        channelModel.incrementPrivateMessageCount(message.channelId, 1);
+       // channelModel.incrementPrivateMessageCount(message.channelId, 1);
         userDataChannel.messagesDS.add(message);
 
         // If this message is for the current channel, then display immediately
-        if (message.channelId === channelView._channelId)
+        if (message.channelId === channelView._channelId) {
+            channelModel.updateLastAccess(message.channelId,null);
             channelView.messagesDS.add(message);
+        } else {
+            // Is there a private channel for this sender?
+            channelModel.confirmPrivateChannel(message.channelId);
+            channelModel.incrementUnreadCount(message.channelId, 1, null);
+        }
+
 
         //currentChannelModel.updateLastAccess();
 
