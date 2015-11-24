@@ -116,6 +116,9 @@ var channelModel = {
             return([]);
         var dataSource = channelModel.channelsDS;
         var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = [];
+        }
         dataSource.filter( query);
         var view = dataSource.view();
         dataSource.filter(cacheFilter);
@@ -128,6 +131,9 @@ var channelModel = {
             return(undefined);
         var dataSource = channelModel.channelsDS;
         var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = [];
+        }
         dataSource.filter( query);
         var view = dataSource.view();
         var channel = view[0];
@@ -348,6 +354,9 @@ var channelModel = {
     findPrivateChannel : function (contactUUID) {
         var dataSource =  channelModel.channelsDS;
         var queryCache = dataSource.filter();
+        if (queryCache === undefined) {
+            queryCache = [];
+        }
         dataSource.filter({ field: "isPrivate", operator: "eq", value: true });
         var view = dataSource.view();
         var channel = undefined;
@@ -592,6 +601,9 @@ var channelModel = {
     deleteChannel : function (channelId, silent) {
         var dataSource = channelModel.channelsDS;
         var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = [];
+        }
         dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
         var view = dataSource.view();
         var channel = view[0];
@@ -629,6 +641,9 @@ var channelModel = {
     unDeleteChannel : function (channelId) {
         var dataSource = channelModel.channelsDS;
         var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = [];
+        }
         dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
         var view = dataSource.view();
         var channel = view[0];
@@ -645,6 +660,9 @@ var channelModel = {
     muteChannel : function (channelId, isMuted) {
         var dataSource = channelModel.channelsDS;
         var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = [];
+        }
         dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
         var view = dataSource.view();
         var channel = view[0];
