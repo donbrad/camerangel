@@ -191,7 +191,7 @@ var privateChannel = {
                         }
                     },
                     msgID: msgID,
-                    channelId: privateChannel.channelId,
+                    channelId: privateChannel.userId,
                     content: encryptMessage,  // publish the encryptedMessage
                     data: encryptData,        // publish the encryptedData.
                     time: currentTime,
