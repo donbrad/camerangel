@@ -108,7 +108,7 @@ var privateChannel = {
         var parsedMsg = {
             type: 'privateMessage',
             msgID: msg.msgID,
-            channelId: privateChannel.channelId,
+            channelId: msg.sender,  //For private channels, channelID is just sender ID
             content: content,
             data: data,
             TTL: msg.ttl,
@@ -127,10 +127,7 @@ var privateChannel = {
         if (message.fromHistory === undefined) {
             message.fromHistory = false;
         }
-        // ignore echoed sender copies in read message
-        // -- we add the message to the chat datasource at time of send
-       // if (message.actualRecipient === undefined)
-       // channelModel.incrementPrivateMessageCount(message.channelId, 1);
+
         userDataChannel.messagesDS.add(message);
         userDataChannel.messagesDS.sync();
         // If this message is for the current channel, then display immediately
@@ -202,9 +199,9 @@ var privateChannel = {
                     var parsedMsg = {
                         type: 'privateMessage',
                         recipient: recipient,
-                        sender: userModel.currentUser.userUUID,
+                        sender: privateChannel.userID,
                         msgID: msgID,
-                        channelId: recipient,
+                        channelId: privateChannel.channelId,
                         content: content,
                         data: contentData,
                         time: currentTime,
@@ -212,7 +209,6 @@ var privateChannel = {
                         ttl: ttl
 
                     };
-
 
                     channelModel.updateLastAccess(parsedMsg.channelId, null);
                     channelView.messagesDS.add(parsedMsg);
@@ -228,21 +224,16 @@ var privateChannel = {
     getMessageHistory: function (callBack) {
 
         var dataSource = userDataChannel.messagesDS;
-
-        dataSource.filter({ field: "channelId", operator: "eq", value: privateChannel.contactId });
+        var queryCache = dataSource.filter();
+        dataSource.filter({ field: "channelId", operator: "eq", value: privateChannel.channelId });
 
         var view = dataSource.view();
         var messages = view;
         var clearMessageArray = [];
-        dataSource.filter([]);
+        dataSource.filter(queryCache);
 
         for(var i = 0; i < messages.length; i++) {
             var msg = messages[i];
-
-            if (msg.sender === undefined || msg.sender === 0) {
-                msg.sender = userModel.currentUser.userUUID;
-            }
-
             clearMessageArray.push(msg);
         }
 
