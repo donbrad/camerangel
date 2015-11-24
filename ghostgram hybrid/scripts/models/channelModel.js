@@ -349,7 +349,7 @@ var channelModel = {
                 return(channel);
             }
         }
-        
+
         dataSource.filter(queryCache);
         return(channel);
     },

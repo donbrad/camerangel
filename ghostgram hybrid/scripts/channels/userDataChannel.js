@@ -106,7 +106,7 @@ var userDataChannel = {
 
                     }
                 }
-                userDataChannel.sync();
+                userDataChannel.messagesDS.sync();
                 userDataChannel.updateTimeStamp();
                 channelKeys = Object.keys(channelList);
                 channelModel.updatePrivateChannels(channelKeys, channelList);

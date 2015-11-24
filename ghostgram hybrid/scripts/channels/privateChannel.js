@@ -204,7 +204,7 @@ var privateChannel = {
                         recipient: recipient,
                         sender: userModel.currentUser.userUUID,
                         msgID: msgID,
-                        channelId: privateChannel.channelId,
+                        channelId: recipient,
                         content: content,
                         data: contentData,
                         time: currentTime,
@@ -213,16 +213,12 @@ var privateChannel = {
 
                     };
 
-                    // echo the message
-                    privateChannel.receiveMessage(parsedMsg);
-
-                    parsedMsg.channelId = recipient;
-
+                    
+                    channelModel.updateLastAccess(parsedMsg.channelId, null);
+                    channelView.messagesDS.add(parsedMsg);
                     userDataChannel.messagesDS.add(parsedMsg);
                     userDataChannel.messagesDS.sync();
-                    // archive message in the current channel
-                   // privateChannel.archiveMessage(parsedMsg);
-                    //deleteMessage(recipient, msgID, ttl);
+
                 }
             });
         });
