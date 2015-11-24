@@ -379,6 +379,8 @@ var channelModel = {
         channel.set("isOwner", true);
         channel.set('isPrivate', true);
         channel.set('isPlace', false);
+        channel.set('isDeleted', false);
+        channel.set('isMuted', false);
         channel.set('category', 'Private');
         channel.set('isEvent', false);
         channel.set("media",  true);
@@ -478,6 +480,8 @@ var channelModel = {
         channel.set('isPlace', false);
         channel.set ('category', 'Group');
         channel.set('isPrivate', false);
+        channel.set('isMuted', false);
+        channel.set('isDeleted', false);
 
 
         // If there's a placeId passed in, need to create a place channel / chat
