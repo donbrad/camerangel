@@ -1218,11 +1218,11 @@ var contactActionView = {
 
         if (channel !== undefined) {
             var  channelId = channel.channelId;
-            APP.kendo.navigate('views/channels.html');
+            //APP.kendo.navigate('views/channels.html');
             APP.kendo.navigate("#channel?channel="+channelId);
         } else {
             channelModel.addPrivateChannel(contactUUID,contactPublicKey, contactName);
-            APP.kendo.navigate('views/channels.html');
+            //APP.kendo.navigate('views/channels.html');
             APP.kendo.navigate("#channel?channel="+contactUUID);
         }
 
