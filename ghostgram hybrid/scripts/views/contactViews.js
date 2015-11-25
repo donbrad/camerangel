@@ -1097,6 +1097,7 @@ var contactActionView = {
             contactModel.getContactStatusObject(thisContact.contactUUID, function (user) {
                 if (user !== null) {
                     var contactIsAvailable = user.get('isAvailable');
+                    contactActionView._activeContact.set('contactUUID', thisContact.contactUUID);
                     contactActionView._activeContact.set('statusMessage', user.get('statusMessage'));
                     contactActionView._activeContact.set('currentPlace', user.get('currentPlace'));
                     contactActionView._activeContact.set('currentPlaceUUID', user.get('currentPlaceUUID'));
@@ -1144,7 +1145,10 @@ var contactActionView = {
             	$("#currentGroup").addClass("hidden");
             	$("#currentContactGroup").text("");
             }
-           
+
+            contactActionView._activeContact.set('contactUUID', contact.contactUUID);
+            contactActionView._activeContact.set('publicKey', contact.publicKey);
+            contactActionView._activeContact.set('phone', contact.phone);
             contactActionView._activeContact.set('name', contactName);
             contactActionView._activeContact.set('alias', contactAlias);
             if (contact.photo !== undefined && contact.photo !== null) {
@@ -1152,11 +1156,6 @@ var contactActionView = {
             } else {
                 contactActionView._activeContact.set('photo', contact.identicon);
             }
-
-       /*     contactActionView._activeContact.set('statusMessage', contact.statusMessage);
-            contactActionView._activeContact.set('currentPlace', contact.currentPlace);
-            contactActionView._activeContact.set('currentPlaceUUID', contact.currentPlaceUUID);
-            contactActionView._activeContact.set('isAvailable', contact.isAvailable);*/
 
             // Set name/alias layout
             ux.formatNameAlias(contactName, contactAlias, "#modalview-contactActions");
@@ -1207,7 +1206,6 @@ var contactActionView = {
 
         var contact = contactActionView._activeContact;
         var contactUUID = contact.contactUUID, contactName = contact.name, contactPublicKey = contact.publicKey;
-        var userName = userModel.currentUser.get('name');
 
         if (contactUUID === undefined || contactUUID === null) {
             mobileNotify(contact.name + " hasn't verified their contact info");
@@ -1247,7 +1245,7 @@ var contactActionView = {
             return;
         }
 
-        var number = contactModel.currentContact.get('phone');
+        var number = contactActionView._activeContact.get('phone');
         window.plugins.CallNumber.callNumber(
 
             function(success) {
@@ -1263,7 +1261,7 @@ var contactActionView = {
     sendSMS : function (e) {
         _preventDefault(e);
 
-        var number = contactModel.currentContact.get('phone');
+        var number = contactActionView._activeContact.get('phone');
         var message = "";
 
         //CONFIGURATION
@@ -1292,9 +1290,12 @@ var contactActionView = {
         contactActionView._activeContact.set('name', thisContact.name);
         contactActionView._activeContact.set('alias', thisContact.alias);
         contactActionView._activeContact.set('photo', thisContact.photo);
+        contactActionView._activeContact.set('contactUUID', thisContact.contactUUID);
+        contactActionView._activeContact.set('contactKey', thisContact.contactKey);
         contactActionView._activeContact.set('statusMessage', thisContact.statusMessage);
         contactActionView._activeContact.set('currentPlace',thisContact.currentPlace);
         contactActionView._activeContact.set('isAvailable', thisContact.isAvailable);
+
         // set available
         if(thisContact.isAvailable){
             $(".statusContactCard-icon").attr("src", "images/status-available.svg");
