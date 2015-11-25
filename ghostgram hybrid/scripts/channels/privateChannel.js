@@ -205,12 +205,15 @@ var privateChannel = {
                         mobileNotify("Private Channel Publish error "  + statusText);
                     }
 
+                    // Store a local copy of the sent message.  Need to update channelId :
+                    // for the recipient, its this users uuid.
+                    // for the sender, it's the recipients uuid
                     var parsedMsg = {
                         type: 'privateMessage',
                         recipient: message.recipient,
                         sender: message.sender,
                         msgID: message.msgID,
-                        channelId: message.channelId,
+                        channelId: message.recipient, //
                         content: content,
                         data: contentData,
                         time: currentTime,
