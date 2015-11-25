@@ -1,19 +1,6 @@
-require.config({
-	paths: {
-		'text': '../bower_components/requirejs-text/text'
-	}
-});
 
-define([
-	'text!../views/archive.html',
-	'text!../views/channels.html',
-	'text!../views/contacts.html',
-	'text!../views/gallery.html',
-	'text!../views/home.html',
-	'text!../views/places.html',
-	'text!../views/profile.html',
-	'text!../views/settings.html'
-], function($, doc) {
+
+(function($, doc) {
 	var _app,
 		_private,
 		_isOnline = true;
@@ -194,7 +181,6 @@ define([
 		}
 		
 		APP.emailAvailable = false;
-
 
 		/* $(".email-Autocomplete").emailautocomplete({
 		     domains: _emailDomainList //additional domains (optional)
