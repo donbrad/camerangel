@@ -121,15 +121,15 @@
 		// Uncomment to load all device contacts at initialization - major performance hit!!
 		//contactModel.importDeviceContacts();
 
+		var content = document.querySelector('link[rel="import"]').import;
+
+		document.body.appendChild(content);
+		
 		APP.kendo = new kendo.mobile.Application(document.body, {
 
 			// comment out the following line to get a UI which matches the look
 			// and feel of the operating system
 			skin: 'material',
-
-			hashBang: false,
-
-			pushState: false,
 
 			// the application needs to know which view to load first
 			initial: userModel.initialView
