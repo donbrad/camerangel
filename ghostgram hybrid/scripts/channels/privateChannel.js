@@ -88,13 +88,11 @@ var privateChannel = {
 
     receiveHandler : function (msg) {
 
-        if (msg.recipient === privateChannel.userId) {
+        var parsedMsg = privateChannel.decryptMessage(msg);
 
-            var parsedMsg = privateChannel.decryptMessage(msg);
+        privateChannel.receiveMessage(parsedMsg);
+       // deleteMessage(msg.sender, msg.msgID, msg.ttl);
 
-            privateChannel.receiveMessage(parsedMsg);
-           // deleteMessage(msg.sender, msg.msgID, msg.ttl);
-        }
     },
 
     decryptMessage : function (msg) {
