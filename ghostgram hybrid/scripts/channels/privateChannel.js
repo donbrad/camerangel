@@ -172,10 +172,13 @@ var privateChannel = {
                 pn_apns: {
                     aps: {
                         alert : notificationString,
-                        badge: 1
+                        badge: 1,
+                        'content-available' : 1
                     },
                     target: '#channel?channelId=' + privateChannel.userId,
-                    channelId : privateChannel.userId
+                    channelId : privateChannel.userId,
+                    isMessage: true,
+                    isPrivate: true
                 },
                 pn_gcm : {
                     data : {
@@ -183,7 +186,9 @@ var privateChannel = {
                         message: 'Private Message from ' + userModel.currentUser.name,
                         target: '#channel?channelId=' + privateChannel.userId,
                         image: "icon",
-                        channelId : privateChannel.userId
+                        channelId : privateChannel.userId,
+                        isMessage: true,
+                        isPrivate: true
                     }
                 },
                 msgID: msgID,

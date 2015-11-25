@@ -203,18 +203,21 @@ var appDataChannel = {
         msg.pn_apns = {
             aps: {
                 alert : notificationString,
-                    badge: 1
+                badge: 1,
+                'content-available' : 1
             },
+            isMessage: false,
             target: '#channel?channelId=' + channelUUID,
-                channelId :channelUUID
+            channelId :channelUUID
         };
         msg.pn_gcm = {
             data : {
                 title: notificationString,
-                    message: "You've been invited to " + channelName,
-                    target: '#channel?channelId=' + channelUUID,
-                    image: "icon",
-                    channelId : channelUUID
+                message: "You've been invited to " + channelName,
+                target: '#channel?channelId=' + channelUUID,
+                image: "icon",
+                isMessage: false,
+                channelId : channelUUID
             }
         };
 
