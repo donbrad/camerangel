@@ -29,10 +29,10 @@ var channelModel = {
 
     init :  function () {
         // Start the updateMessageCount async after 5 seconds...
-        setTimeout(function(){
+     /*   setTimeout(function(){
            // channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
             channelModel.updateChannelsMessageCount();
-        }, 5000);
+        }, 5000);*/
     },
 
 
@@ -196,7 +196,7 @@ var channelModel = {
         }
     },
 
-    updateChannelsMessageCount : debounce(function () {
+   /* updateChannelsMessageCount : debounce(function () {
         var channelArray = channelModel.channelsDS.data();
 
         for (var i=0; i<channelArray.length; i++) {
@@ -220,9 +220,9 @@ var channelModel = {
 
 
         }
-    }, this._messageCountRefresh, true ),
+    }, this._messageCountRefresh, true ),*/
 
-    // sync channel access/unread counts
+   /* // sync channel access/unread counts
     updateParseChannels : function () {
         var channels = channelModel.channelsDS.data();
 
@@ -231,7 +231,7 @@ var channelModel = {
             updateParseObject('channels', 'channelId', channel.channelId, 'unreadCount', channel.unreadCount);
             updateParseObject('channels', 'channelId', channel.channelId, 'lastAccess', channel.lastAccess);
         }
-    },
+    },*/
 
     syncParseChannels : function (callback) {
         // Only sync channels for users with atleast email or phone validated
