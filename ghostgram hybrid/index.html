@@ -1054,6 +1054,11 @@
 <link rel="import" href="views/profile.html">
 <link rel="import" href="views/settings.html">
 
+<script>
+	var content = document.querySelector('link[rel="import"]').import;
 
+	document.body.appendChild(content);
+
+</script>
 </body>
 </html>
