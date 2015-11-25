@@ -847,6 +847,7 @@ var channelView = {
       //  $("#channelNavBar").data('kendoMobileNavBar').title(name);
 
         if (thisChannel.isPrivate) {
+
             // *** Private Channel ***
             var contactKey = thisChannel.contactKey;
             if (contactKey === undefined) {
@@ -868,20 +869,15 @@ var channelView = {
               mobileNotify("ChannelView : Undefined contact for " + contactUUID);
               return;
           }
-          channelView.currentContact = thisContact;
           //channelView.contactData = channelView.buildContactArray(thisChannel.members);
-          //Todo: remove currentContactModel
           currentChannelModel.currentContactModel = thisContact;
           
           // Show contact img in header
           $('#channelImage').attr('src', thisContact.photo).removeClass("hidden");
 
           privateChannel.open(channelUUID, thisUser.userUUID, thisUser.alias, name, userKey, privateKey, contactUUID, contactKey, thisContact.name);
-            /*  thisChannelHandler.onMessage(channelView.onChannelRead);
-              thisChannelHandler.onPresence(channelView.onChannelPresence);
-              mobileNotify("Getting Previous Messages...");
-              currentChannelModel.openChannel(thisChannelHandler);*/
-            channelView.messagesDS.data([]);
+
+
 
             channelView.sendMessageHandler = privateChannel.sendMessage;
 
@@ -889,13 +885,8 @@ var channelView = {
             privateChannel.getMessageHistory(function (messages) {
 
                 thisChannel.messagesArray = messages;
+                channelView.messagesDS.data([]);
                 channelView.messagesDS.data(messages);
-
-                //channelView.updateMessageTimeStamps();
-
-                /*if (channelView.intervalId === null) {
-                 channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 60 * 5000);
-                 }*/
 
                 channelView.scrollToBottom();
             });
@@ -903,7 +894,11 @@ var channelView = {
 
         } else {
 
-          //*** Group Channel ***
+            // No current contact in group chats...
+            channelView.currentContactId = null;
+            currentChannelModel.currentContactModel = null;
+
+            //*** Group Channel ***
           $('#messagePresenceButton').show();
           // Provision a group channel
 
