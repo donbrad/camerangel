@@ -31,7 +31,7 @@ var serverPush = {
                 {senderID: serverPush._googleSenderId, icon: 'icon', iconColor: 'white', ecb: 'serverPush.onNotificationECM'});
         } else if (device.platform === 'iOS') {
             serverPush.plugin.register(serverPush.onRegistration, serverPush.onError,
-                {badge: true, sound : true, alert: true, ecb : serverPush.onNotificationAPN});
+                {badge: true, sound : true, alert: true, ecb : 'serverPush.onNotificationAPN'});
         }
 
 
@@ -71,11 +71,11 @@ var serverPush = {
         }
 
 
-        if (e.sound) {
+       /* if (e.sound) {
             // playing a sound also requires the org.apache.cordova.media plugin
             var snd = new Media(e.sound);
             snd.play();
-        }
+        }*/
 
 
     },
