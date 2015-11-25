@@ -879,7 +879,7 @@ var channelView = {
             channelView.messagesDS.data([]);
 
             channelView.sendMessageHandler = privateChannel.sendMessage;
-            
+
             privateChannel.getMessageHistory(function (messages) {
 
                 thisChannel.messagesArray = messages;
