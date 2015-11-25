@@ -40,7 +40,6 @@ var appDataChannel = {
 
         // Load the appData message queue
         appDataChannel.history();
-        channelModel.updateChannelsMessageCount();
     },
 
     updateTimeStamp : function () {
