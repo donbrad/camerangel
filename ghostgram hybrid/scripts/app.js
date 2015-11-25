@@ -125,6 +125,10 @@
 			// and feel of the operating system
 			skin: 'material',
 
+			hashBang: false,
+
+			pushState: false,
+			
 			// the application needs to know which view to load first
 			initial: userModel.initialView
 		});
