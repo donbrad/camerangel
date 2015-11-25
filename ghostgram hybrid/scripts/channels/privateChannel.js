@@ -147,15 +147,17 @@ var privateChannel = {
     },
 
 
-    sendMessage: function (recipient, message, data, ttl) {
+    sendMessage: function (recipient, text, data, ttl) {
         if (ttl === undefined || ttl < 60)
             ttl = 86400;  // 24 hours
         // if (recipient in users) {
-        var content = message;
+        var content = text;
         var contentData = data;
         var encryptMessage = '', encryptData = '';
         var currentTime =  ggTime.currentTime();
-        encryptMessage = cryptico.encrypt(message, privateChannel.contactKey);
+        if (text === undefined || text === null)
+            text = '';
+        encryptMessage = cryptico.encrypt(text, privateChannel.contactKey);
         if (data !== undefined && data !== null)
             encryptData = cryptico.encrypt(JSON.stringify(data), privateChannel.contactKey);
         else
@@ -197,12 +199,18 @@ var privateChannel = {
                 channel: privateChannel.contactId,
                 message: message,
                 callback: function (m) {
+                    var status = m[0], statusText = m[1];
+
+                    if (status !== 1) {
+                        mobileNotify("Private Channel Publish error "  + statusText);
+                    }
+
                     var parsedMsg = {
                         type: 'privateMessage',
-                        recipient: recipient,
-                        sender: privateChannel.userId,
-                        msgID: msgID,
-                        channelId: privateChannel.channelId,
+                        recipient: message.recipient,
+                        sender: message.sender,
+                        msgID: message.msgID,
+                        channelId: message.channelId,
                         content: content,
                         data: contentData,
                         time: currentTime,
