@@ -1202,6 +1202,30 @@ var contactActionView = {
         contactActionView.openModal(contactActionView._activeContactId);
     },
 
+    privateChat : function (e) {
+        _preventDefault(e);
+
+        var contact = contactModel.currentContact;
+        var contactUUID = contact.contactUUID, contactName = contact.name, contactPublicKey = contact.publicKey;
+        var userName = userModel.currentUser.get('name');
+
+        if (contactUUID === undefined || contactUUID === null) {
+            mobileNotify(contact.name + " hasn't verified their contact info");
+            return;
+        }
+        // Is there already a private channel provisioned for this user?
+        var channel = channelModel.findPrivateChannel(contactUUID);
+
+        if (channel !== undefined) {
+            var  channelId = channel.channelId;
+            APP.kendo.navigate('#'+ "channel?channel="+channelId);
+        } else {
+            channelModel.addPrivateChannel(contactUUID,contactPublicKey, contactName);
+            APP.kendo.navigate('#'+ "channel?channel="+contactUUID);
+        }
+
+    },
+
     ghostEmail : function (e) {
         _preventDefault(e);
         var viewId = APP.kendo.view().id;
