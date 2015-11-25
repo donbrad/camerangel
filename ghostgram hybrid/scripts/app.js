@@ -11,7 +11,7 @@ define([
 	'text!../views/gallery.html',
 	'text!../views/home.html',
 	'text!../views/places.html',
-	'text!../views/profilel.html',
+	'text!../views/profile.html',
 	'text!../views/settings.html'
 ], function($, doc) {
 	var _app,
