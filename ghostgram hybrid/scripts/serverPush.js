@@ -30,7 +30,7 @@ var serverPush = {
                 {senderID: serverPush._googleSenderId, icon: 'icon', iconColor: 'white', ecb: 'serverPush.onNotificationECM'});
         } else if (device.platform === 'iOS') {
             serverPush.plugin.register(serverPush.onRegistration, serverPush.onError,
-                {badge: false, sound : false, alert: true, ecb : serverPush.onNotificationAPN});
+                {badge: true, sound : false, alert: true, ecb : serverPush.onNotificationAPN});
         }
 
 
