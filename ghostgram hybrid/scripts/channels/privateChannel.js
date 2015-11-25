@@ -16,15 +16,13 @@ var privateChannel = {
     contactId : '',
     contactKey: '',
     contactName : '',
+    last24hours : 0,
 
 
 
     close: function () {
 
- /*       APP.pubnub.unsubscribe({
-            channel: privateChannel.channelId
-        });
-*/    },
+    },
 
     open : function (channelUUID, userUUID, alias, name,  publicKey, privateKey, contactUUID, contactKey, contactName) {
         privateChannel.RSAKey = cryptico.privateKeyFromString(privateKey);
@@ -48,6 +46,7 @@ var privateChannel = {
         privateChannel.users = new Array();
         privateChannel.users[userUUID] = privateChannel.thisUser;
         privateChannel.channelId = channelUUID;
+        privateChannel.last24Hours = ggTime.lastDay();
 
     },
 
@@ -222,6 +221,7 @@ var privateChannel = {
 
     },
 
+
     getMessageHistory: function (callBack) {
 
         var dataSource = userDataChannel.messagesDS;
@@ -229,24 +229,32 @@ var privateChannel = {
         if (queryCache === undefined) {
             queryCache = [];
         }
-        dataSource.filter({ field: "channelId", operator: "eq", value: privateChannel.channelId });
 
-        var view = dataSource.view();
-        var messages = view;
+        privateChannel.last24Hours = ggTime.lastDay();
+        dataSource.filter({operator: 'and',
+            filters : [
+            { field: "channelId", operator: "eq", value: privateChannel.channelId },
+            { field: "time", operator: "gte", value:  privateChannel.last24Hours}
+        ]});
+
+        var messages = dataSource.view();
         var clearMessageArray = [];
-        dataSource.filter(queryCache);
 
         for(var i = 0; i < messages.length; i++) {
             var msg = messages[i];
-            
+
             if (msg.sender === undefined)
                 msg.sender = userModel.currentUser.userUUID;
 
             clearMessageArray.push(msg);
         }
 
+        dataSource.filter(queryCache);
+
         if(callBack)
             callBack(clearMessageArray);
+
+        userDataChannel.removeExpiredMessages();
 
      }
 };

@@ -12,7 +12,6 @@ var userDataChannel = {
 
     channelId: null,   // channelId is users uuid
     lastAccess: 0,   // last access time stamp
-    timeStamp: 0,
     messagesDS :  new kendo.data.DataSource({
         offlineStorage: "privatemessages"
         }),
@@ -23,8 +22,19 @@ var userDataChannel = {
             userDataChannel.channelId = channelId;
 
             var ts = localStorage.getItem('ggUserDataTimeStamp');
-            if (ts !== undefined)
-                this.lastAccess = parseInt(ts);
+            if (ts !== undefined) {
+                userDataChannel.lastAccess = parseInt(ts);
+
+                // Was last access more than 24 hours ago -- if yes set it to 24 hours ago
+                if (userDataChannel.lastAccess < ggTime.lastDay()) {
+                    userDataChannel.lastAccess = ggTime.lastDay();
+                    localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);
+                }
+            } else {
+                // No lastAccess stored so set it to 24 hours
+                userDataChannel.lastAccess = ggTime.lastDay();
+                localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);
+            }
 
             APP.pubnub.subscribe({
                 channel: userDataChannel.channelId,
@@ -41,6 +51,7 @@ var userDataChannel = {
         userDataChannel.messagesDS.online(false);
         userDataChannel.messagesDS.fetch();
         userDataChannel.history();
+        userDataChannel.removeExpiredMessages();
     },
 
     updateTimeStamp : function () {
@@ -51,7 +62,7 @@ var userDataChannel = {
     history : function () {
 
         var channelList = [], channelKeys = [];
-        var timeStamp = ggTime.toPubNubTime(ggTime.lastDay());
+        var timeStamp = ggTime.toPubNubTime(userDataChannel.lastAccess);
 
  /*       if (userDataChannel.lastAccess === 0 || isNaN(userDataChannel.lastAccess)) {
             timeStamp = ggTime.toPubNubTime(timeStamp);
@@ -133,6 +144,26 @@ var userDataChannel = {
     },
 
 
+    removeExpiredMessages : function () {
+
+        var yesterday = ggTime.lastDay();
+        var dataSource = userDataChannel.messagesDS;
+        var queryCache = dataSource.filter();
+        if (queryCache === undefined) {
+            queryCache = [];
+        }
+        dataSource.filter({ field: "time", operator: "lt", value:  yesterday});
+        var messageList = dataSource.view();
+        dataSource.filter(queryCache);
+        if (messageList.length > 0) {
+            for (var i=0; i< messageList.length; i++) {
+                var msg = messageList[i];
+                dataSource.remove(msg);
+            }
+        }
+        dataSource.sync();
+
+    },
 
 
     publishCallback : function (m) {
