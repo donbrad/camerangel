@@ -150,7 +150,7 @@ var channelModel = {
                 lastAccess = ggTime.currentTime();
             }
             channel.set('lastAccess', lastAccess);
-            //updateParseObject('channels', 'channelId', channelId, 'lastAccess', lastAccess);
+            updateParseObject('channels', 'channelId', channelId, 'lastAccess', lastAccess);
 
         }
     },
@@ -165,7 +165,7 @@ var channelModel = {
                 lastAccess = ggTime.currentTime();
             }
             channel.set('unreadCount',count);
-            //updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
+            updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
 
         }
     },
@@ -180,7 +180,7 @@ var channelModel = {
                 lastAccess = ggTime.currentTime();
             }
             channel.set('unreadCount', channel.unreadCount + count);
-           //updateParseObject('channels', 'channelId', channelId, 'unreadCount', channel.unreadCount + count);
+           updateParseObject('channels', 'channelId', channelId, 'unreadCount', channel.unreadCount + count);
         }
 
     },
