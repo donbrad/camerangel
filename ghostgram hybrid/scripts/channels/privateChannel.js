@@ -16,15 +16,13 @@ var privateChannel = {
     contactId : '',
     contactKey: '',
     contactName : '',
+    last24hours : 0,
 
 
 
     close: function () {
 
- /*       APP.pubnub.unsubscribe({
-            channel: privateChannel.channelId
-        });
-*/    },
+    },
 
     open : function (channelUUID, userUUID, alias, name,  publicKey, privateKey, contactUUID, contactKey, contactName) {
         privateChannel.RSAKey = cryptico.privateKeyFromString(privateKey);
@@ -48,6 +46,7 @@ var privateChannel = {
         privateChannel.users = new Array();
         privateChannel.users[userUUID] = privateChannel.thisUser;
         privateChannel.channelId = channelUUID;
+        privateChannel.last24Hours = ggTime.lastDay();
 
     },
 
@@ -222,6 +221,26 @@ var privateChannel = {
 
     },
 
+    removeExpiredMessages : function () {
+        privateChannel.last24Hours = ggTime.lastDay();
+        var dataSource = userDataChannel.messagesDS;
+        var queryCache = dataSource.filter();
+        if (queryCache === undefined) {
+            queryCache = [];
+        }
+        dataSource.filter({ field: "lastAccess", operator: "lt", value:  privateChannel.last24Hours});
+        var messageList = dataSource.view();
+        dataSource.filter(queryCache);
+        if (messageList.length > 0) {
+            for (var i=0; i< messageList.length; i++) {
+                var msg = messageList[i];
+                dataSource.remove(msg);
+            }
+        }
+        dataSource.sync();
+
+    },
+
     getMessageHistory: function (callBack) {
 
         var dataSource = userDataChannel.messagesDS;
@@ -229,7 +248,13 @@ var privateChannel = {
         if (queryCache === undefined) {
             queryCache = [];
         }
-        dataSource.filter({ field: "channelId", operator: "eq", value: privateChannel.channelId });
+
+        privateChannel.last24Hours = ggTime.lastDay();
+        dataSource.filter({operator: 'and',
+        filters : [
+            { field: "channelId", operator: "eq", value: privateChannel.channelId },
+            { field: "lastAccess", operator: "gte", value:  privateChannel.last24Hours}
+        ]});
 
         var view = dataSource.view();
         var messages = view;
@@ -238,7 +263,7 @@ var privateChannel = {
 
         for(var i = 0; i < messages.length; i++) {
             var msg = messages[i];
-            
+
             if (msg.sender === undefined)
                 msg.sender = userModel.currentUser.userUUID;
 
@@ -247,6 +272,8 @@ var privateChannel = {
 
         if(callBack)
             callBack(clearMessageArray);
+
+        privateChannel.removeExpiredMessages();
 
      }
 };

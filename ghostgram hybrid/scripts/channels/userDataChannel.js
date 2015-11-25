@@ -12,7 +12,6 @@ var userDataChannel = {
 
     channelId: null,   // channelId is users uuid
     lastAccess: 0,   // last access time stamp
-    timeStamp: 0,
     messagesDS :  new kendo.data.DataSource({
         offlineStorage: "privatemessages"
         }),
@@ -23,8 +22,11 @@ var userDataChannel = {
             userDataChannel.channelId = channelId;
 
             var ts = localStorage.getItem('ggUserDataTimeStamp');
-            if (ts !== undefined)
+            if (ts !== undefined) {
                 this.lastAccess = parseInt(ts);
+            } else {
+                userDataChannel.updateTimeStamp();
+            }
 
             APP.pubnub.subscribe({
                 channel: userDataChannel.channelId,
@@ -51,7 +53,7 @@ var userDataChannel = {
     history : function () {
 
         var channelList = [], channelKeys = [];
-        var timeStamp = ggTime.toPubNubTime(ggTime.lastDay());
+        var timeStamp = ggTime.toPubNubTime(userDataChannel.lastAccess);
 
  /*       if (userDataChannel.lastAccess === 0 || isNaN(userDataChannel.lastAccess)) {
             timeStamp = ggTime.toPubNubTime(timeStamp);
