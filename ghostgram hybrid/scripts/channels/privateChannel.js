@@ -225,6 +225,9 @@ var privateChannel = {
 
         var dataSource = userDataChannel.messagesDS;
         var queryCache = dataSource.filter();
+        if (queryCache === undefined) {
+            queryCache = [];
+        }
         dataSource.filter({ field: "channelId", operator: "eq", value: privateChannel.channelId });
 
         var view = dataSource.view();
