@@ -22,7 +22,7 @@ var groupChannel = {
     
     open : function (channelId, channelName, userId, name, alias, phoneNumber) {
         groupChannel.channelId = channelId;
-        groupChannel.channelId = channelName;
+        groupChannel.channelName = channelName;
         groupChannel.userId = userId;
         groupChannel.thisUser.username = userId;
         groupChannel.thisUser.name = name;
@@ -35,7 +35,7 @@ var groupChannel = {
         // Subscribe to our PubNub channel.
         APP.pubnub.subscribe({
             channel: groupChannel.channelId,
-            windowing: 1000,
+            windowing: 500,
             restore: true,
             callback: groupChannel.receiveHandler,
             presence: groupChannel.presenceHandler,
@@ -170,7 +170,7 @@ var groupChannel = {
     },
 
     getMessageHistory: function (callBack) {
-        var timeStamp = ggTime.lastWeek();
+        var timeStamp = ggTime.lastMonth();
 
         APP.pubnub.history({
             channel: groupChannel.channelId,
