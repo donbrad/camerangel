@@ -827,7 +827,7 @@ var channelView = {
         var thisChannelHandler = null;
         channelView.activeMessage = null;
         var name = channelView.formatName(thisChannel.name);
-        
+
 
         // Hide the image preview div
         channelView.hideChatImagePreview();
@@ -876,15 +876,14 @@ var channelView = {
 
           privateChannel.open(channelUUID, thisUser.userUUID, thisUser.alias, name, userKey, privateKey, contactUUID, contactKey, thisContact.name);
 
-
+            channelView.messagesDS.data([]);
 
             channelView.sendMessageHandler = privateChannel.sendMessage;
-
-
+            
             privateChannel.getMessageHistory(function (messages) {
 
                 thisChannel.messagesArray = messages;
-                channelView.messagesDS.data([]);
+
                 channelView.messagesDS.data(messages);
 
                 channelView.scrollToBottom();
@@ -910,9 +909,9 @@ var channelView = {
          // channelView.contactData = channelView.buildContactArray(thisChannel.members);
 
             mobileNotify("Loading Messages...");
-
+            channelView.messagesDS.data([]);
           groupChannel.getMessageHistory(function (messages) {
-              channelView.messagesDS.data([]);
+
               channelView.messagesDS.data(messages);
               //channelView.updateMessageTimeStamps();
 
