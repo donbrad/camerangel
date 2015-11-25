@@ -117,7 +117,7 @@ var channelModel = {
         var dataSource = channelModel.channelsDS;
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
-            cacheFilter = [];
+            cacheFilter = {};
         }
         dataSource.filter( query);
         var view = dataSource.view();
@@ -132,7 +132,7 @@ var channelModel = {
         var dataSource = channelModel.channelsDS;
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
-            cacheFilter = [];
+            cacheFilter = {};
         }
         dataSource.filter( query);
         var view = dataSource.view();
@@ -355,7 +355,7 @@ var channelModel = {
         var dataSource =  channelModel.channelsDS;
         var queryCache = dataSource.filter();
         if (queryCache === undefined) {
-            queryCache = [];
+            queryCache = {};
         }
         dataSource.filter(
             [
