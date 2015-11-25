@@ -131,14 +131,18 @@ var groupChannel = {
                             'content-available' : 1
                         },
                         target: '#channel?channelId='+ groupChannel.channelId,
-                        channelId: groupChannel.channelId
+                        channelId: groupChannel.channelId,
+                        isMessage: true,
+                        isPrivate: false
                     },
                     pn_gcm : {
                         data : {
                             title: notificationString,
                             message: "Message from " + userModel.currentUser.name,
                             target: '#channel?channelId='+ groupChannel.channelId,
-                            channelId: groupChannel.channelId
+                            channelId: groupChannel.channelId,
+                            isMessage: true,
+                            isPrivate: false
                         }
                     },
                     sender: groupChannel.userId,

@@ -31,7 +31,7 @@ var serverPush = {
                 {senderID: serverPush._googleSenderId, icon: 'icon', iconColor: 'white', ecb: 'serverPush.onNotificationECM'});
         } else if (device.platform === 'iOS') {
             serverPush.plugin.register(serverPush.onRegistration, serverPush.onError,
-                {badge: true, sound : true, alert: true, ecb : 'serverPush.onNotificationAPN'});
+                {badge: true, clearBadge: true, sound : true, alert: true, ecb : 'serverPush.onNotificationAPN'});
         }
 
 
@@ -55,19 +55,21 @@ var serverPush = {
     // Handle iOS / Apple Notifications
     onNotificationAPN : function (e) {
 
-        if (deviceModel.inBackground()) {
-            if (e.badge) {
-                serverPush._badgeCount++;
-                serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, serverPush._badgeCount);
-                serverPush.plugin.finish();
-            }
-        } else {
+        if (e.foreground !== undefined && e.foreground === '1') {
             // Just show gg quick notification is the app is running in the foreground
             if (e.alert) {
                 mobileNotify(e.alert);
             }
             serverPush._badgeCount = 0;
             serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, serverPush._badgeCount);
+
+        } else {
+            if (e.badge) {
+                serverPush._badgeCount++;
+                serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, serverPush._badgeCount);
+                serverPush.plugin.finish();
+            }
+
         }
 
 
