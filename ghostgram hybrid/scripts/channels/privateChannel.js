@@ -102,10 +102,11 @@ var privateChannel = {
             data = cryptico.decrypt(msg.data.cipher, privateChannel.RSAKey).plaintext;
             data = JSON.parse(data);
         }
+        
         var parsedMsg = {
             type: 'privateMessage',
             msgID: msg.msgID,
-            channelId: msg.sender,  //For private channels, channelID is just sender ID
+            channelId: msg.channelId,  //For private channels, channelID is just sender ID
             content: content,
             data: data,
             TTL: msg.ttl,
