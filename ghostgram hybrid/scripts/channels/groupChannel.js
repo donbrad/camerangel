@@ -130,14 +130,14 @@ var groupChannel = {
                             badge: 1,
                             'content-available' : 1
                         },
-                        target: '#channel?channel='+ groupChannel.channelId,
+                        target: '#channel?channelId='+ groupChannel.channelId,
                         channelId: groupChannel.channelId
                     },
                     pn_gcm : {
                         data : {
                             title: notificationString,
                             message: "Message from " + userModel.currentUser.name,
-                            target: '#channel?channel='+ groupChannel.channelId,
+                            target: '#channel?channelId='+ groupChannel.channelId,
                             channelId: groupChannel.channelId
                         }
                     },

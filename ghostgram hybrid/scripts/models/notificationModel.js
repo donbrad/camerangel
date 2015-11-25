@@ -65,17 +65,17 @@ var notificationModel = {
 
     addUnreadNotification : function (channelId, channelName, unreadCount) {
         this.newNotification(this._unreadCount, channelName, null, unreadCount + " new messages.", 'Read Messages', null,
-        '#channel?channel='+channelId, true);
+        '#channel?channelId='+channelId, true);
     },
 
     addNewChatNotification : function (channelId, channelName, channelDescription) {
         this.newNotification(this._newChat, channelName, null, channelDescription, 'Goto Chat', null,
-            '#channel?channel='+channelId, true);
+            '#channel?channelId='+channelId, true);
     },
 
     addNewPrivateChatNotification : function (channelId, channelName) {
         this.newNotification(this._newPrivate, channelName, null, 'Private Chat Request', 'Goto Chat', null,
-            '#channel?channel='+channelId, true);
+            '#channel?channelId='+channelId, true);
     },
 
     deleteChatNotification : function (channelId, channelName) {
