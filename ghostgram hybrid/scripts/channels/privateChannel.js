@@ -102,7 +102,7 @@ var privateChannel = {
             data = cryptico.decrypt(msg.data.cipher, privateChannel.RSAKey).plaintext;
             data = JSON.parse(data);
         }
-        
+
         var parsedMsg = {
             type: 'privateMessage',
             msgID: msg.msgID,
@@ -163,38 +163,40 @@ var privateChannel = {
 
         APP.pubnub.uuid(function (msgID) {
             var notificationString = "Private : " + userModel.currentUser.name;
+            var message = {
+                type: 'privateMessage',
+                recipient: recipient,
+                sender: privateChannel.userId,
+                pn_apns: {
+                    aps: {
+                        alert : notificationString,
+                        badge: 1
+                    },
+                    target: '#channel?channelId=' + privateChannel.userId,
+                    channelId : privateChannel.userId
+                },
+                pn_gcm : {
+                    data : {
+                        title: notificationString,
+                        message: 'Private Message from ' + userModel.currentUser.name,
+                        target: '#channel?channelId=' + privateChannel.userId,
+                        image: "icon",
+                        channelId : privateChannel.userId
+                    }
+                },
+                msgID: msgID,
+                channelId: privateChannel.userId,
+                content: encryptMessage,  // publish the encryptedMessage
+                data: encryptData,        // publish the encryptedData.
+                time: currentTime,
+                fromHistory: false,
+                ttl: ttl
+            };
+
             APP.pubnub.publish({
                 channel: privateChannel.contactId,
-                message: {
-                    type: 'privateMessage',
-                    recipient: recipient,
-                    sender: privateChannel.userId,
-                    pn_apns: {
-                        aps: {
-                            alert : notificationString,
-                            badge: 1
-                        },
-                        target: '#channel?channelId=' + privateChannel.userId,
-                        channelId : privateChannel.userId
-                    },
-                    pn_gcm : {
-                        data : {
-                            title: notificationString,
-                            message: 'Private Message from ' + userModel.currentUser.name,
-                            target: '#channel?channelId=' + privateChannel.userId,
-                            image: "icon",
-                            channelId : privateChannel.userId
-                        }
-                    },
-                    msgID: msgID,
-                    channelId: privateChannel.userId,
-                    content: encryptMessage,  // publish the encryptedMessage
-                    data: encryptData,        // publish the encryptedData.
-                    time: currentTime,
-                    fromHistory: false,
-                    ttl: ttl
-                },
-                callback: function () {
+                message: message,
+                callback: function (m) {
                     var parsedMsg = {
                         type: 'privateMessage',
                         recipient: recipient,
@@ -243,7 +245,7 @@ var privateChannel = {
             var msg = messages[i];
 
             if (msg.sender === undefined)
-                msg.sender = userModel.currentUser.userUUID;
+                msg.sender = privateChannel.channelId;
 
             clearMessageArray.push(msg);
         }
