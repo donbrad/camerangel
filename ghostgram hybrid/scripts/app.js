@@ -5,14 +5,14 @@ require.config({
 });
 
 define([
-	'text!/views/archive.html',
-	'text!/views/channels.html',
-	'text!/views/contacts.html',
-	'text!/views/gallery.html',
-	'text!/views/home.html',
-	'text!/views/places.html',
-	'text!/views/profilel.html',
-	'text!/views/settings.html'
+	'text!../views/archive.html',
+	'text!../views/channels.html',
+	'text!../views/contacts.html',
+	'text!../views/gallery.html',
+	'text!../views/home.html',
+	'text!../views/places.html',
+	'text!../views/profilel.html',
+	'text!../views/settings.html'
 ], function($, doc) {
 	var _app,
 		_private,
