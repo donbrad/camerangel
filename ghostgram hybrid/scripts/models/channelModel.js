@@ -363,7 +363,7 @@ var channelModel = {
                 { field: "isPrivate", operator: "eq", value: true },
                 { field: "contactUUID", operator: "eq", value: contactUUID }
             ]});
-        
+
         var view = dataSource.view();
         var channel = view[0];
        /* for (var i=0; i< view.length; i++) {
