@@ -238,6 +238,10 @@ var privateChannel = {
 
         for(var i = 0; i < messages.length; i++) {
             var msg = messages[i];
+            
+            if (msg.sender === undefined)
+                msg.sender = userModel.currentUser.userUUID;
+
             clearMessageArray.push(msg);
         }
 
