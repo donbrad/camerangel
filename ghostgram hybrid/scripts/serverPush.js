@@ -14,6 +14,7 @@ var serverPush = {
     _regId : null,
     _channelsProvisioned : false,
     _dataChannelsProvisioned : false,
+    _badgeCount : 0,
 
     init : function () {
 
@@ -56,7 +57,8 @@ var serverPush = {
 
         if (deviceModel.inBackground()) {
             if (e.badge) {
-                serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, e.badge);
+                serverPush._badgeCount++;
+                serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, serverPush._badgeCount);
                 serverPush.plugin.finish();
             }
         } else {
@@ -64,6 +66,8 @@ var serverPush = {
             if (e.alert) {
                 mobileNotify(e.alert);
             }
+            serverPush._badgeCount = 0;
+            serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, serverPush._badgeCount);
         }
 
 
