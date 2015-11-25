@@ -358,11 +358,10 @@ var channelModel = {
             queryCache = [];
         }
         dataSource.filter(
-            {"logic": "and",
-            "filters": [
+            [
                 { field: "isPrivate", operator: "eq", value: true },
                 { field: "contactUUID", operator: "eq", value: contactUUID }
-            ]});
+            ]);
 
         var view = dataSource.view();
         var channel = view[0];

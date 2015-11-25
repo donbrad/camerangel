@@ -229,11 +229,11 @@ var privateChannel = {
         }
 
         privateChannel.last24Hours = ggTime.lastDay();
-        dataSource.filter({operator: 'and',
-            filters : [
+        dataSource.filter(
+            [
             { field: "channelId", operator: "eq", value: privateChannel.channelId },
             { field: "time", operator: "gte", value:  privateChannel.last24Hours}
-        ]});
+        ]);
 
         var messages = dataSource.view();
         var clearMessageArray = [];
