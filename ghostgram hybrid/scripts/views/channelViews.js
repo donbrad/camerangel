@@ -140,7 +140,7 @@ var channelsView = {
         // set action button
         ux.showActionBtn(true, "#channels", "#addChannel");
         ux.showActionBtnText("#channels", "3em", "New Chat");
-        
+
     },
 
     onHide: function(){
