@@ -121,6 +121,8 @@
 		// Uncomment to load all device contacts at initialization - major performance hit!!
 		//contactModel.importDeviceContacts();
 
+		document.body.appendChild(document.importNode(getImport.import.querySelector('#channels-html'), true));
+
 		APP.kendo = new kendo.mobile.Application(document.body, {
 
 			// comment out the following line to get a UI which matches the look
