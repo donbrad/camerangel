@@ -705,7 +705,6 @@ var channelView = {
         }
     }),
 
-    _timeStampUpdateInterval: 1000 * 60 * 5, // update every 5 minutes...
     _channel : null,
     _channelId : null,
 
@@ -808,7 +807,6 @@ var channelView = {
         // hide action btn
         ux.showActionBtn(false, "#channel");
 
-
         var channelUUID = e.view.params.channelId;
 
         channelView._channelId = channelUUID;
@@ -817,7 +815,7 @@ var channelView = {
 
         channelView.initDataSources();
 
-        var thisChannel =  currentChannelModel.setCurrentChannel(channelUUID);
+        var thisChannel = currentChannelModel.setCurrentChannel(channelUUID);
         if (thisChannel === null) {
             mobileNotify("ChatView -- chat doesn't exist : " + channelUUID);
             return;
@@ -829,7 +827,7 @@ var channelView = {
         var thisChannelHandler = null;
         channelView.activeMessage = null;
         var name = channelView.formatName(thisChannel.name);
-        channelView.isPrivateChat = thisChannel.isPrivate;
+        
 
         // Hide the image preview div
         channelView.hideChatImagePreview();
@@ -848,6 +846,7 @@ var channelView = {
 
         if (thisChannel.isPrivate) {
 
+            channelView.isPrivateChat = true;
             // *** Private Channel ***
             var contactKey = thisChannel.contactKey;
             if (contactKey === undefined) {
@@ -894,6 +893,7 @@ var channelView = {
 
         } else {
 
+            channelView.isPrivateChat = false;
             // No current contact in group chats...
             channelView.currentContactId = null;
             currentChannelModel.currentContactModel = null;
@@ -934,15 +934,6 @@ var channelView = {
             groupChannel.close();
         }
 
-        /*if (currentChannelModel.currentChannel !== undefined && currentChannelModel.handler !== null) {
-            currentChannelModel.handler.closeChannel();
-
-        }
-*/
-        if (channelView.intervalId !== undefined && channelView.intervalId !== null) {
-            clearInterval(channelView.intervalId);
-            channelView = null;
-        }
 
     },
 
@@ -1077,7 +1068,7 @@ var channelView = {
 
     setPresence: function (userId, isPresent) {
         // Don't set presence for the current user -- they already know they're in the channel
-        if (userId === userModel.currentUser.userUUID) {
+        if (userId === userModel.currentUser.userUUID || channelView.isPrivateChat) {
             return;
         }
 
