@@ -23,9 +23,17 @@ var userDataChannel = {
 
             var ts = localStorage.getItem('ggUserDataTimeStamp');
             if (ts !== undefined) {
-                this.lastAccess = parseInt(ts);
+                userDataChannel.lastAccess = parseInt(ts);
+
+                // Was last access more than 24 hours ago -- if yes set it to 24 hours ago
+                if (userDataChannel.lastAccess < ggTime.lastDay()) {
+                    userDataChannel.lastAccess = ggTime.lastDay();
+                    localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);
+                }
             } else {
-                userDataChannel.updateTimeStamp();
+                // No lastAccess stored so set it to 24 hours
+                userDataChannel.lastAccess = ggTime.lastDay();
+                localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);
             }
 
             APP.pubnub.subscribe({
@@ -43,6 +51,7 @@ var userDataChannel = {
         userDataChannel.messagesDS.online(false);
         userDataChannel.messagesDS.fetch();
         userDataChannel.history();
+        userDataChannel.removeExpiredMessages();
     },
 
     updateTimeStamp : function () {
@@ -135,6 +144,26 @@ var userDataChannel = {
     },
 
 
+    removeExpiredMessages : function () {
+
+        var yesterday = ggTime.lastDay();
+        var dataSource = userDataChannel.messagesDS;
+        var queryCache = dataSource.filter();
+        if (queryCache === undefined) {
+            queryCache = [];
+        }
+        dataSource.filter({ field: "time", operator: "lt", value:  yesterday});
+        var messageList = dataSource.view();
+        dataSource.filter(queryCache);
+        if (messageList.length > 0) {
+            for (var i=0; i< messageList.length; i++) {
+                var msg = messageList[i];
+                dataSource.remove(msg);
+            }
+        }
+        dataSource.sync();
+
+    },
 
 
     publishCallback : function (m) {

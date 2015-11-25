@@ -221,25 +221,6 @@ var privateChannel = {
 
     },
 
-    removeExpiredMessages : function () {
-        privateChannel.last24Hours = ggTime.lastDay();
-        var dataSource = userDataChannel.messagesDS;
-        var queryCache = dataSource.filter();
-        if (queryCache === undefined) {
-            queryCache = [];
-        }
-        dataSource.filter({ field: "lastAccess", operator: "lt", value:  privateChannel.last24Hours});
-        var messageList = dataSource.view();
-        dataSource.filter(queryCache);
-        if (messageList.length > 0) {
-            for (var i=0; i< messageList.length; i++) {
-                var msg = messageList[i];
-                dataSource.remove(msg);
-            }
-        }
-        dataSource.sync();
-
-    },
 
     getMessageHistory: function (callBack) {
 
@@ -251,15 +232,13 @@ var privateChannel = {
 
         privateChannel.last24Hours = ggTime.lastDay();
         dataSource.filter({operator: 'and',
-        filters : [
+            filters : [
             { field: "channelId", operator: "eq", value: privateChannel.channelId },
-            { field: "lastAccess", operator: "gte", value:  privateChannel.last24Hours}
+            { field: "time", operator: "gte", value:  privateChannel.last24Hours}
         ]});
 
-        var view = dataSource.view();
-        var messages = view;
+        var messages = dataSource.view();
         var clearMessageArray = [];
-        dataSource.filter(queryCache);
 
         for(var i = 0; i < messages.length; i++) {
             var msg = messages[i];
@@ -270,10 +249,12 @@ var privateChannel = {
             clearMessageArray.push(msg);
         }
 
+        dataSource.filter(queryCache);
+
         if(callBack)
             callBack(clearMessageArray);
 
-        privateChannel.removeExpiredMessages();
+        userDataChannel.removeExpiredMessages();
 
      }
 };
