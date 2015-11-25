@@ -111,7 +111,7 @@ var groupChannel = {
         channelView.updatePresence(groupChannel.users, msg.occupancy);
     },
 
-    sendMessage: function (recipient, message, data, ttl) {
+    sendMessage: function (recipient, text, data, ttl) {
         if (ttl === undefined || ttl < 60)
             ttl = 86400;  // 24 hours
 
@@ -142,27 +142,36 @@ var groupChannel = {
                         }
                     },
                     sender: groupChannel.userId,
-                    content: message,
+                    content: text,
                     data: data,
                     time: currentTime,
                     fromHistory: false,
                     ttl: ttl
                 },
-                callback: function () {
-                   /* var parsedMsg = {
-                        msgID: msgID,
-                        channelId: groupChannel.channelId,
-                        content: message,
-                        data: data,
-                        ttl: ttl,
-                        time: currentTime,
-                        sender: groupChannel.userId,
-                        fromHistory: false
+                callback: function (m) {
+                    if (m === undefined)
+                        return;
 
-                    };
+                    var status = m[0], message = m[1], time = m[2];
 
-                    groupChannel.receiveMessage(parsedMsg);
-*/
+                    if (status !== 1) {
+                        mobileNotify('Group Channel publish error: ' + message);
+                    }
+
+                    /* var parsedMsg = {
+                         msgID: msgID,
+                         channelId: groupChannel.channelId,
+                         content: message,
+                         data: data,
+                         ttl: ttl,
+                         time: currentTime,
+                         sender: groupChannel.userId,
+                         fromHistory: false
+
+                     };
+
+                     groupChannel.receiveMessage(parsedMsg);
+ */
                 }
             });
         });
