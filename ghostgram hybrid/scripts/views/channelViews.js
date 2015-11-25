@@ -101,7 +101,7 @@ var channelsView = {
                             },
                             {
                                 "field": "isDeleted",
-                                "operator": "equals",
+                                "operator": "eq",
                                 "value": false
                             }
                         ]

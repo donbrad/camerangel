@@ -357,10 +357,16 @@ var channelModel = {
         if (queryCache === undefined) {
             queryCache = [];
         }
-        dataSource.filter({ field: "isPrivate", operator: "eq", value: true });
+        dataSource.filter(
+            {"logic": "and",
+            "filters": [
+                { field: "isPrivate", operator: "eq", value: true },
+                { field: "contactUUID", operator: "eq", value: contactUUID }
+            ]});
+        
         var view = dataSource.view();
-        var channel = undefined;
-        for (var i=0; i< view.length; i++) {
+        var channel = view[0];
+       /* for (var i=0; i< view.length; i++) {
             var chan = view[i];
 
             if (chan.contactUUID === contactUUID) {
@@ -368,7 +374,7 @@ var channelModel = {
                 channel = chan;
                 return(channel);
             }
-        }
+        }*/
 
         dataSource.filter(queryCache);
         return(channel);
