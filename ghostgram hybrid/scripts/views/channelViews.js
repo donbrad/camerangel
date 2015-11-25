@@ -877,7 +877,7 @@ var channelView = {
 
           privateChannel.open(channelUUID, thisUser.userUUID, thisUser.alias, name, userKey, privateKey, contactUUID, contactKey, thisContact.name);
 
-            channelView.messagesDS.data([]);
+
 
             channelView.sendMessageHandler = privateChannel.sendMessage;
 
@@ -885,13 +885,8 @@ var channelView = {
             privateChannel.getMessageHistory(function (messages) {
 
                 thisChannel.messagesArray = messages;
+                channelView.messagesDS.data([]);
                 channelView.messagesDS.data(messages);
-
-                //channelView.updateMessageTimeStamps();
-
-                /*if (channelView.intervalId === null) {
-                 channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 60 * 5000);
-                 }*/
 
                 channelView.scrollToBottom();
             });
