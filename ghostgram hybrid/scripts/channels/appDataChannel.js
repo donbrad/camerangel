@@ -206,14 +206,14 @@ var appDataChannel = {
                 alert : notificationString,
                     badge: 1
             },
-            target: '#channel?channel=' + channelUUID,
+            target: '#channel?channelId=' + channelUUID,
                 channelId :channelUUID
         };
         msg.pn_gcm = {
             data : {
                 title: notificationString,
                     message: "You've been invited to " + channelName,
-                    target: '#channel?channel=' + channelUUID,
+                    target: '#channel?channelId=' + channelUUID,
                     image: "icon",
                     channelId : channelUUID
             }

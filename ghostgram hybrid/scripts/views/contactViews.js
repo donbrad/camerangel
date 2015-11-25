@@ -1205,7 +1205,7 @@ var contactActionView = {
     privateChat : function (e) {
         _preventDefault(e);
 
-        var contact = contactModel.currentContact;
+        var contact = contactActionView._activeContact;
         var contactUUID = contact.contactUUID, contactName = contact.name, contactPublicKey = contact.publicKey;
         var userName = userModel.currentUser.get('name');
 
@@ -1216,14 +1216,14 @@ var contactActionView = {
         // Is there already a private channel provisioned for this user?
         var channel = channelModel.findPrivateChannel(contactUUID);
 
+        var navStr = '#channel?channelId=';
         if (channel !== undefined) {
-            var  channelId = channel.channelId;
-            //APP.kendo.navigate('views/channels.html');
-            APP.kendo.navigate("#channel?channel="+channelId);
+            navStr = navStr + channel.channelId;
+            APP.kendo.navigate(navStr);
         } else {
             channelModel.addPrivateChannel(contactUUID,contactPublicKey, contactName);
-            //APP.kendo.navigate('views/channels.html');
-            APP.kendo.navigate("#channel?channel="+contactUUID);
+            navStr = navStr + contactUUID;
+            APP.kendo.navigate(navStr);
         }
 
     },

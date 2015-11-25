@@ -32,7 +32,7 @@ var channelsView = {
                 var selector = $(e.sender.events.currentTarget);
                 if(selector.hasClass("chat-mainBox") === true || e.target[0].className === "chat-mainBox"){
                     var channelId = selector.context.parentElement.id;
-                    var channelUrl = "#channel?channel=" + channelId;
+                    var channelUrl = "#channel?channelId=" + channelId;
                     APP.kendo.navigate(channelUrl);
                 }
             },
@@ -808,7 +808,8 @@ var channelView = {
         // hide action btn
         ux.showActionBtn(false, "#channel");
 
-        var channelUUID = e.view.params.channel;
+
+        var channelUUID = e.view.params.channelId;
 
         channelView._channelId = channelUUID;
 
