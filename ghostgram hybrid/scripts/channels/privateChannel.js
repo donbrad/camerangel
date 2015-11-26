@@ -12,29 +12,26 @@ var privateChannel = {
     userId: '',
     users: [],
     channelId: '',
-    RSAKey: '',
     contactId : '',
     contactKey: '',
     contactName : '',
     last24hours : 0,
-
-
+    
 
     close: function () {
 
     },
 
-    open : function (channelUUID, userUUID, alias, name,  publicKey, privateKey, contactUUID, contactKey, contactName) {
-        privateChannel.RSAKey = cryptico.privateKeyFromString(privateKey);
+    open : function (channelUUID, userUUID, alias, name, contactUUID, contactKey, contactName) {
+
 
 
         privateChannel.userId = userUUID;
-        privateChannel.publicKey = publicKey;
         privateChannel.thisUser = {
             alias: alias,
             name: name,
             username: userUUID,
-            publicKey: publicKey
+            publicKey: userModel.currentUser.get('publicKey')
         };
 
         privateChannel.contactId = contactUUID;
@@ -96,10 +93,11 @@ var privateChannel = {
     },
 
     decryptMessage : function (msg) {
+        var RSAKey = userModel.currentUser.get('RSAKey');
         var data = null;
-        var content = cryptico.decrypt(msg.content.cipher, privateChannel.RSAKey).plaintext;
+        var content = cryptico.decrypt(msg.content.cipher, RSAKey).plaintext;
         if (msg.data !== undefined && msg.data !== null) {
-            data = cryptico.decrypt(msg.data.cipher, privateChannel.RSAKey).plaintext;
+            data = cryptico.decrypt(msg.data.cipher, RSAKey).plaintext;
             data = JSON.parse(data);
         }
 
