@@ -871,7 +871,7 @@ var channelView = {
           // Show contact img in header
           $('#channelImage').attr('src', thisContact.photo).removeClass("hidden");
 
-          privateChannel.open(channelUUID, thisUser.userUUID, thisUser.alias, name, userKey, privateKey, contactUUID, contactKey, thisContact.name);
+          privateChannel.open(channelUUID, thisUser.userUUID, thisUser.alias, name, contactUUID, contactKey, thisContact.name);
 
             channelView.messagesDS.data([]);
 
