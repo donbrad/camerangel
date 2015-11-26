@@ -16,7 +16,7 @@ var privateChannel = {
     contactKey: '',
     contactName : '',
     last24hours : 0,
-    
+
 
     close: function () {
 
@@ -93,7 +93,7 @@ var privateChannel = {
     },
 
     decryptMessage : function (msg) {
-        var RSAKey = userModel.currentUser.get('RSAKey');
+        var RSAKey = cryptico.privateKeyFromString(userModel.currentUser.privateKey);
         var data = null;
         var content = cryptico.decrypt(msg.content.cipher, RSAKey).plaintext;
         if (msg.data !== undefined && msg.data !== null) {
