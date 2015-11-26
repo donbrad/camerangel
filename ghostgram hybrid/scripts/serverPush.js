@@ -55,20 +55,35 @@ var serverPush = {
     // Handle iOS / Apple Notifications
     onNotificationAPN : function (e) {
 
+        // If this is a message and there's a channelId, update activeChannels so we can
+        // build inApp notifications on launch.
+        if (e.isMessage !== undefined && e.isMessage) {
+            if (e.channelId !== undefined) {
+                channelModel.updateActiveChannel(e.channelId);
+            }
+        }
+
         if (e.foreground !== undefined && e.foreground === '1') {
             // Just show gg quick notification is the app is running in the foreground
+            // and the channel isn't the current channel
             if (e.alert) {
-                mobileNotify(e.alert);
+                if (e.channelId !== undefined) {
+                    if (e.channelId !== channelView._channelId) {
+                        mobileNotify(e.alert);
+                    }
+
+                }
             }
             serverPush._badgeCount = 0;
-            serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, serverPush._badgeCount);
+            serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, serverPush.onError, serverPush._badgeCount);
 
         } else {
             if (e.badge) {
                 serverPush._badgeCount++;
-                serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, serverPush._badgeCount);
+                serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, serverPush.onError, serverPush._badgeCount);
                 serverPush.plugin.finish();
             }
+
 
         }
 
