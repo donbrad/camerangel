@@ -1080,8 +1080,9 @@ var channelView = {
 
         $('#occupancyCount').text(occupancyCount + 1);
 
-        for (var i=0; i<members.length; i++) {
-            var userId = members.username;
+        var length = Object.keys(members).length;
+        for (var i=0; i<length; i++) {
+            var userId = members[i].username;
 
             if (userId !== userModel.currentUser.userUUID) {
                 var member = channelView.findChatMember(userId);
