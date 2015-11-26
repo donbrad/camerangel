@@ -1527,11 +1527,6 @@ var channelPresence = {
 
         currentChannelModel.buildMembersDS();
 
-       /// var channelTitle = currentChannelModel.currentChannel.get('name');
-
-       // $('#channelPresenceTitle').text(channelTitle + ' Members');
-
-       // $("#channelPresence").data("kendoMobileDrawer").show();
     },
 
     onDone: function (e) {
