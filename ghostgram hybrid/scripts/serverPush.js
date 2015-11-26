@@ -59,8 +59,10 @@ var serverPush = {
         // build inApp notifications on launch.
         if (e.isMessage !== undefined && e.isMessage) {
             if (e.channelId !== undefined) {
-                channelModel.incrementUnreadCount(e.channelId, 1, null);
-                channelModel.updateActiveChannel(e.channelId);
+                if (e.channelId !== channelView._channelId) {
+                    channelModel.incrementUnreadCount(e.channelId, 1, null);
+                    channelModel.updateActiveChannel(e.channelId);
+                }
             }
         }
 
@@ -70,7 +72,6 @@ var serverPush = {
             if (e.alert) {
                 if (e.channelId !== undefined) {
                     if (e.channelId !== channelView._channelId) {
-                        channelModel.incrementUnreadCount(e.channelId, 1, null);
                         mobileNotify(e.alert);
                     }
 
