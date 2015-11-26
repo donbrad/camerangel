@@ -25,6 +25,7 @@ var groupChannel = {
         groupChannel.channelName = channelName;
         groupChannel.userId = userId;
         groupChannel.thisUser.username = userId;
+        groupChannel.thisUser.uuid = userId;
         groupChannel.thisUser.name = name;
         groupChannel.thisUser.alias = alias;
         groupChannel.thisUser.phone = phoneNumber;  // Use this to look up new members (don't have userId therefore no contactUUID)
