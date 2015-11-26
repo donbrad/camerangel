@@ -1081,6 +1081,10 @@ var channelView = {
         $('#occupancyCount').text(occupancyCount + 1);
 
         var length = Object.keys(members).length;
+
+        if (length === 0)
+            return;
+
         for (var i=0; i<length; i++) {
             var userId = members[i].username;
 
