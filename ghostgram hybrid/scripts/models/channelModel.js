@@ -174,6 +174,7 @@ var channelModel = {
             }
             channel.set('unreadCount',count);
             updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
+            channelModel.updateLastAccess(channelId, lastAccess);
 
         }
     },
@@ -188,7 +189,8 @@ var channelModel = {
                 lastAccess = ggTime.currentTime();
             }
             channel.set('unreadCount', channel.unreadCount + count);
-           updateParseObject('channels', 'channelId', channelId, 'unreadCount', channel.unreadCount + count);
+            updateParseObject('channels', 'channelId', channelId, 'unreadCount', channel.unreadCount + count);
+            channelModel.updateLastAccess(channelId, lastAccess);
         }
 
     },
