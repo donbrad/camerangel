@@ -59,13 +59,14 @@ var serverPush = {
         // build inApp notifications on launch.
         if (e.isMessage !== undefined && e.isMessage) {
             if (e.channelId !== undefined) {
+                // Update unread  unless it's the current channel
                 if (e.channelId !== channelView._channelId) {
                     channelModel.incrementUnreadCount(e.channelId, 1, null);
                     channelModel.updateActiveChannel(e.channelId);
                 }
             }
         }
-
+        
         if (e.foreground !== undefined && e.foreground === '1') {
             // Just show gg quick notification is the app is running in the foreground
             // and the channel isn't the current channel
