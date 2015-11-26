@@ -924,6 +924,9 @@ var channelView = {
 
     onHide : function (e) {
 
+        channelView._channelId = null;
+        channelView._channel = null;
+
         // If this isn't a privateChat the close the channel (unsubscribe)
         // All private chat messages go through userdatachannel which is always subscribed
         if (!channelView.isPrivateChat) {
