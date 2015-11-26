@@ -28,7 +28,7 @@ var groupChannel = {
         groupChannel.thisUser.name = name;
         groupChannel.thisUser.alias = alias;
         groupChannel.thisUser.phone = phoneNumber;  // Use this to look up new members (don't have userId therefore no contactUUID)
-        groupChannel.users = new Array();
+        groupChannel.users = [];
 
         groupChannel.users[userId] = groupChannel.thisUser;
 
@@ -72,9 +72,8 @@ var groupChannel = {
             if ("data" in msg) {
                 groupChannel.users[msg.data.username] = msg.data;
                 // Only update presence if it's not THIS user...
-                if (msg.data.username !== groupChannel.thisUser.username) {
+                if (msg.data.username !== userModel.currentUser.userUUID) {
                     mobileNotify(groupChannel.users[msg.uuid].name + " has joined...");
-
                     groupChannel.presenceChange(msg.uuid,  true);
                 }
 
@@ -91,9 +90,17 @@ var groupChannel = {
         }
         // A user has left or timed out of ghostgrams so we remove them from our users object.
         else if (msg.action === "timeout" || msg.action === "leave") {
-            mobileNotify(groupChannel.users[msg.uuid].name + " has left ...");
-            delete groupChannel.users[msg.uuid];
-            groupChannel.presenceChange(msg.uuid, false);
+            // Don't report presence for this user -- only other members
+            if (msg.uuid !== userModel.currentUser.userUUID) {
+                if (groupChannel.users.length > 0) {
+                    mobileNotify(groupChannel.users[msg.uuid].name + " has left ...");
+                    delete groupChannel.users[msg.uuid];
+                }
+
+                groupChannel.presenceChange(msg.uuid, false);
+            }
+
+
         }
     },
 

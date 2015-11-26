@@ -66,7 +66,7 @@ var serverPush = {
                 }
             }
         }
-        
+
         if (e.foreground !== undefined && e.foreground === '1') {
             // Just show gg quick notification is the app is running in the foreground
             // and the channel isn't the current channel
