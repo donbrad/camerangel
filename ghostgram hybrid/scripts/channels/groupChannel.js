@@ -74,8 +74,8 @@ var groupChannel = {
                 groupChannel.users[msg.data.username] = msg.data;
                 // Only update presence if it's not THIS user...
                 if (msg.data.username !== userModel.currentUser.userUUID) {
-                    mobileNotify(groupChannel.users[msg.uuid].name + " has joined...");
-                    groupChannel.presenceChange(msg.uuid,  true);
+                    mobileNotify(msg.data.name + ' (' + msg.data.alias +  ") has joined...");
+                    groupChannel.presenceChange(msg.data.username,  true);
                 }
 
             }
@@ -94,11 +94,11 @@ var groupChannel = {
             // Don't report presence for this user -- only other members
             if (msg.uuid !== userModel.currentUser.userUUID) {
                 if (groupChannel.users.length > 0) {
-                    mobileNotify(groupChannel.users[msg.uuid].name + " has left ...");
-                    delete groupChannel.users[msg.uuid];
+                    mobileNotify(msg.data.name + ' (' + msg.data.alias + ") has left ...");
+                    delete groupChannel.users[msg.data.username];
                 }
 
-                groupChannel.presenceChange(msg.uuid, false);
+                groupChannel.presenceChange(msg.data.username, false);
             }
 
 
