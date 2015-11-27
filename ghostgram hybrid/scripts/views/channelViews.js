@@ -32,7 +32,7 @@ var channelsView = {
                 var selector = $(e.sender.events.currentTarget);
                 if(selector.hasClass("chat-mainBox") === true || e.target[0].className === "chat-mainBox"){
                     var channelId = selector.context.parentElement.id;
-                    var channelUrl = "#channel?channel=" + channelId;
+                    var channelUrl = "#channel?channelId=" + channelId;
                     APP.kendo.navigate(channelUrl);
                 }
             },
@@ -101,7 +101,7 @@ var channelsView = {
                             },
                             {
                                 "field": "isDeleted",
-                                "operator": "equals",
+                                "operator": "eq",
                                 "value": false
                             }
                         ]
@@ -121,11 +121,11 @@ var channelsView = {
 					$("#channels .gg_mainSearchInput").val('');
 					
 					// reset data filters
-                    channelModel.channelsDS.filter([ {
+                    channelModel.channelsDS.filter({
                         "field": "isDeleted",
                         "operator": "eq",
                         "value": false
-                    }]);
+                    });
 
                     // hide clear btn
                     $(this).addClass('hidden');
@@ -140,10 +140,7 @@ var channelsView = {
         // set action button
         ux.showActionBtn(true, "#channels", "#addChannel");
         ux.showActionBtnText("#channels", "3em", "New Chat");
-        
 
-
-	        	
     },
 
     onHide: function(){
@@ -705,7 +702,6 @@ var channelView = {
         }
     }),
 
-    _timeStampUpdateInterval: 1000 * 60 * 5, // update every 5 minutes...
     _channel : null,
     _channelId : null,
 
@@ -808,7 +804,7 @@ var channelView = {
         // hide action btn
         ux.showActionBtn(false, "#channel");
 
-        var channelUUID = e.view.params.channel;
+        var channelUUID = e.view.params.channelId;
 
         channelView._channelId = channelUUID;
 
@@ -816,7 +812,7 @@ var channelView = {
 
         channelView.initDataSources();
 
-        var thisChannel =  currentChannelModel.setCurrentChannel(channelUUID);
+        var thisChannel = currentChannelModel.setCurrentChannel(channelUUID);
         if (thisChannel === null) {
             mobileNotify("ChatView -- chat doesn't exist : " + channelUUID);
             return;
@@ -828,7 +824,7 @@ var channelView = {
         var thisChannelHandler = null;
         channelView.activeMessage = null;
         var name = channelView.formatName(thisChannel.name);
-        channelView.isPrivateChat = thisChannel.isPrivate;
+
 
         // Hide the image preview div
         channelView.hideChatImagePreview();
@@ -846,6 +842,8 @@ var channelView = {
       //  $("#channelNavBar").data('kendoMobileNavBar').title(name);
 
         if (thisChannel.isPrivate) {
+
+            channelView.isPrivateChat = true;
             // *** Private Channel ***
             var contactKey = thisChannel.contactKey;
             if (contactKey === undefined) {
@@ -867,34 +865,23 @@ var channelView = {
               mobileNotify("ChannelView : Undefined contact for " + contactUUID);
               return;
           }
-          channelView.currentContact = thisContact;
           //channelView.contactData = channelView.buildContactArray(thisChannel.members);
-          //Todo: remove currentContactModel
           currentChannelModel.currentContactModel = thisContact;
           
           // Show contact img in header
           $('#channelImage').attr('src', thisContact.photo).removeClass("hidden");
 
-          privateChannel.open(channelUUID, thisUser.userUUID, thisUser.alias, name, userKey, privateKey, contactUUID, contactKey, thisContact.name);
-            /*  thisChannelHandler.onMessage(channelView.onChannelRead);
-              thisChannelHandler.onPresence(channelView.onChannelPresence);
-              mobileNotify("Getting Previous Messages...");
-              currentChannelModel.openChannel(thisChannelHandler);*/
+          privateChannel.open(channelUUID, thisUser.userUUID, thisUser.alias, name, contactUUID, contactKey, thisContact.name);
+
             channelView.messagesDS.data([]);
 
             channelView.sendMessageHandler = privateChannel.sendMessage;
 
-
             privateChannel.getMessageHistory(function (messages) {
 
                 thisChannel.messagesArray = messages;
+
                 channelView.messagesDS.data(messages);
-
-                //channelView.updateMessageTimeStamps();
-
-                /*if (channelView.intervalId === null) {
-                 channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 60 * 5000);
-                 }*/
 
                 channelView.scrollToBottom();
             });
@@ -902,7 +889,12 @@ var channelView = {
 
         } else {
 
-          //*** Group Channel ***
+            channelView.isPrivateChat = false;
+            // No current contact in group chats...
+            channelView.currentContactId = null;
+            currentChannelModel.currentContactModel = null;
+
+            //*** Group Channel ***
           $('#messagePresenceButton').show();
           // Provision a group channel
 
@@ -914,9 +906,9 @@ var channelView = {
          // channelView.contactData = channelView.buildContactArray(thisChannel.members);
 
             mobileNotify("Loading Messages...");
-
+            channelView.messagesDS.data([]);
           groupChannel.getMessageHistory(function (messages) {
-              channelView.messagesDS.data([]);
+
               channelView.messagesDS.data(messages);
               //channelView.updateMessageTimeStamps();
 
@@ -932,21 +924,15 @@ var channelView = {
 
     onHide : function (e) {
 
+        channelView._channelId = null;
+        channelView._channel = null;
+
         // If this isn't a privateChat the close the channel (unsubscribe)
         // All private chat messages go through userdatachannel which is always subscribed
         if (!channelView.isPrivateChat) {
             groupChannel.close();
         }
 
-        /*if (currentChannelModel.currentChannel !== undefined && currentChannelModel.handler !== null) {
-            currentChannelModel.handler.closeChannel();
-
-        }
-*/
-        if (channelView.intervalId !== undefined && channelView.intervalId !== null) {
-            clearInterval(channelView.intervalId);
-            channelView = null;
-        }
 
     },
 
@@ -1081,7 +1067,7 @@ var channelView = {
 
     setPresence: function (userId, isPresent) {
         // Don't set presence for the current user -- they already know they're in the channel
-        if (userId === userModel.currentUser.userUUID) {
+        if (userId === userModel.currentUser.userUUID || channelView.isPrivateChat) {
             return;
         }
 
@@ -1094,8 +1080,13 @@ var channelView = {
 
         $('#occupancyCount').text(occupancyCount + 1);
 
-        for (var i=0; i<members.length; i++) {
-            var userId = members.username;
+        var length = Object.keys(members).length;
+
+        if (length === 0)
+            return;
+
+        for (var i=0; i<length; i++) {
+            var userId = members[i].username;
 
             if (userId !== userModel.currentUser.userUUID) {
                 var member = channelView.findChatMember(userId);
@@ -1541,11 +1532,6 @@ var channelPresence = {
 
         currentChannelModel.buildMembersDS();
 
-       /// var channelTitle = currentChannelModel.currentChannel.get('name');
-
-       // $('#channelPresenceTitle').text(channelTitle + ' Members');
-
-       // $("#channelPresence").data("kendoMobileDrawer").show();
     },
 
     onDone: function (e) {

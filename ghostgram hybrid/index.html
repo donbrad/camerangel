@@ -8,6 +8,17 @@
 	<link href="kendo/styles/kendo.material.min.css" rel="stylesheet" />
     <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet" />
     <link href="styles/master.css" rel="stylesheet" />
+
+	<!--&lt;!&ndash;Factored view files &#45;&#45; we include here as a workaround to kendo navigate issues &ndash;&gt;
+
+	<link rel="import" href="views/archive.html">
+	<link rel="import" href="views/contacts.html">
+	<link rel="import" id="channels-html" href="views/channels.html">
+	<link rel="import" href="views/gallery.html">
+	<link rel="import" href="views/places.html">
+	<link rel="import" href="views/profile.html">
+	<link rel="import" href="views/settings.html">-->
+
  <!-- External scripts -->
     <script src="cordova.js"></script>
     <script src="kendo/js/jquery.min.js"></script>
@@ -70,17 +81,10 @@
 	<script src="scripts/channels/userDataChannel.js"></script>
 	<script src="scripts/channels/groupChannel.js"></script>
 	<script src="scripts/channels/privateChannel.js"></script>
+<!--	<script src="bower_components/requirejs/require.js" data-main="scripts/app.js"></script>-->
 	<script src="scripts/app.js"></script>
 
-	<!-- Factored view files -- we include here as a workaround to kendo navigate issues -->
 
-	<link rel="import" href="views/archive.html">
-	<link rel="import" href="views/contacts.html">
-	<link rel="import" href="views/channels.html">
-	<link rel="import" href="views/gallery.html">
-	<link rel="import" href="views/places.html">
-	<link rel="import" href="views/profile.html">
-	<link rel="import" href="views/settings.html">
 
 </head>
 <body id="body">
@@ -139,7 +143,7 @@
                 </a>
             </li>
             <li>
-                <a data-role="button" href="views/channels.html" data-click-on="down">
+                <a data-role="button" href="views/channels.html#channels" data-click-on="down">
 	                <svg width="28px" height="23px" viewBox="0 0 28 23" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
 					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 					        <g id="nav-chat" transform="translate(-97.000000, -635.000000)" fill="#979797">
@@ -637,7 +641,7 @@
 	<div class="modal-bottom">
 		<ul class="list-inline hasMotion" id="contactActionBtns" >
 			<li>
-				<a class="btnClear" data-role="button" data-click="privateChat" >
+				<a class="btnClear" data-role="button" data-click="contactActionView.privateChat" >
 					<img src="images/icon-ghostgram.svg" /> Private Chat
 				</a>
 			</li>
@@ -782,8 +786,6 @@
  </script>
 	
 
-	</body>
-</html>
 
 <script type="text/x-kendo-template" id="checkinPlacesTemplate">
 	# var addressOnly = false; alias = data.alias; name = data.name; #
@@ -1048,3 +1050,10 @@
 		<div>#: data.name # </div>
 	</div>
 </script>
+
+
+
+
+
+</body>
+</html>

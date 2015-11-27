@@ -78,7 +78,7 @@ function onInitChannels (e) {
         click: function(e) {
         	var selector = e.target[0].parentElement;
         	if($(selector).hasClass("chat-mainBox") === true || e.target[0].className === "chat-mainBox"){
-        		var channelUrl = "#channel?channel=" + e.dataItem.channelId;
+        		var channelUrl = "#channel?channelId=" + e.dataItem.channelId;
         		APP.kendo.navigate(channelUrl);
         	} 
         },

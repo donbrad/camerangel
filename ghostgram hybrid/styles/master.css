@@ -2246,6 +2246,12 @@ textarea {
   border-radius: 3px;
   padding: 0.1em 0.5em;
   color: #fff;
+  background: #6CADF3;
+}
+.listTag-secondary {
+  border-radius: 3px;
+  padding: 0.1em 0.5em;
+  color: #fff;
   background: #FADDB0;
 }
 #contacts-listview > li > ul > li > div > a > div.left.listName > h4 {

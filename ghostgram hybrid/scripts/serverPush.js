@@ -14,6 +14,7 @@ var serverPush = {
     _regId : null,
     _channelsProvisioned : false,
     _dataChannelsProvisioned : false,
+    _badgeCount : 0,
 
     init : function () {
 
@@ -30,7 +31,7 @@ var serverPush = {
                 {senderID: serverPush._googleSenderId, icon: 'icon', iconColor: 'white', ecb: 'serverPush.onNotificationECM'});
         } else if (device.platform === 'iOS') {
             serverPush.plugin.register(serverPush.onRegistration, serverPush.onError,
-                {badge: false, sound : false, alert: true, ecb : serverPush.onNotificationAPN});
+                {badge: true, clearBadge: true, sound : true, alert: true, ecb : 'serverPush.onNotificationAPN'});
         }
 
 
@@ -54,16 +55,40 @@ var serverPush = {
     // Handle iOS / Apple Notifications
     onNotificationAPN : function (e) {
 
-        if (deviceModel.inBackground()) {
+        // If this is a message and there's a channelId, update activeChannels so we can
+        // build inApp notifications on launch.
+        if (e.isMessage !== undefined && e.isMessage) {
+            if (e.channelId !== undefined) {
+                // Update unread  unless it's the current channel
+                if (e.channelId !== channelView._channelId) {
+                    channelModel.incrementUnreadCount(e.channelId, 1, null);
+                    channelModel.updateActiveChannel(e.channelId);
+                }
+            }
+        }
+
+        if (e.foreground !== undefined && e.foreground === '1') {
+            // Just show gg quick notification is the app is running in the foreground
+            // and the channel isn't the current channel
+            if (e.alert) {
+                if (e.channelId !== undefined) {
+                    if (e.channelId !== channelView._channelId) {
+                        mobileNotify(e.alert);
+                    }
+
+                }
+            }
+            serverPush._badgeCount = 0;
+            serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, serverPush.onError, serverPush._badgeCount);
+
+        } else {
             if (e.badge) {
-                serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, e.badge);
+                serverPush._badgeCount++;
+                serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, serverPush.onError, serverPush._badgeCount);
                 serverPush.plugin.finish();
             }
-        } else {
-            // Just show gg quick notification is the app is running in the foreground
-            if (e.alert) {
-                mobileNotify(e.alert);
-            }
+
+
         }
 
 

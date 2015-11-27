@@ -12,6 +12,8 @@ var channelModel = {
     currentChannel: new kendo.data.ObservableObject(),
     intervalTimer : undefined,
     _sentMessages : "sentMessages",
+    activeChannels: [],
+
     _messageCountRefresh : 300000,   // Delta between message count  calls (in milliseconds)
 
     channelsDS: new kendo.data.DataSource({
@@ -28,13 +30,19 @@ var channelModel = {
     }),
 
     init :  function () {
+
+        channelModel.activeChannels = [];
+
         // Start the updateMessageCount async after 5 seconds...
-        setTimeout(function(){
+     /*   setTimeout(function(){
            // channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
             channelModel.updateChannelsMessageCount();
-        }, 5000);
+        }, 5000);*/
     },
 
+    updateActiveChannel : function (channelId) {
+        channelModel.activeChannels[channelId] = 1;
+    },
 
 
     fetch : function () {
@@ -117,7 +125,7 @@ var channelModel = {
         var dataSource = channelModel.channelsDS;
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
-            cacheFilter = [];
+            cacheFilter = {};
         }
         dataSource.filter( query);
         var view = dataSource.view();
@@ -132,7 +140,7 @@ var channelModel = {
         var dataSource = channelModel.channelsDS;
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
-            cacheFilter = [];
+            cacheFilter = {};
         }
         dataSource.filter( query);
         var view = dataSource.view();
@@ -150,7 +158,7 @@ var channelModel = {
                 lastAccess = ggTime.currentTime();
             }
             channel.set('lastAccess', lastAccess);
-            //updateParseObject('channels', 'channelId', channelId, 'lastAccess', lastAccess);
+            updateParseObject('channels', 'channelId', channelId, 'lastAccess', lastAccess);
 
         }
     },
@@ -165,7 +173,8 @@ var channelModel = {
                 lastAccess = ggTime.currentTime();
             }
             channel.set('unreadCount',count);
-            //updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
+            updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
+            channelModel.updateLastAccess(channelId, lastAccess);
 
         }
     },
@@ -180,7 +189,8 @@ var channelModel = {
                 lastAccess = ggTime.currentTime();
             }
             channel.set('unreadCount', channel.unreadCount + count);
-           //updateParseObject('channels', 'channelId', channelId, 'unreadCount', channel.unreadCount + count);
+            updateParseObject('channels', 'channelId', channelId, 'unreadCount', channel.unreadCount + count);
+            channelModel.updateLastAccess(channelId, lastAccess);
         }
 
     },
@@ -196,7 +206,7 @@ var channelModel = {
         }
     },
 
-    updateChannelsMessageCount : debounce(function () {
+   /* updateChannelsMessageCount : debounce(function () {
         var channelArray = channelModel.channelsDS.data();
 
         for (var i=0; i<channelArray.length; i++) {
@@ -220,9 +230,9 @@ var channelModel = {
 
 
         }
-    }, this._messageCountRefresh, true ),
+    }, this._messageCountRefresh, true ),*/
 
-    // sync channel access/unread counts
+   /* // sync channel access/unread counts
     updateParseChannels : function () {
         var channels = channelModel.channelsDS.data();
 
@@ -231,7 +241,7 @@ var channelModel = {
             updateParseObject('channels', 'channelId', channel.channelId, 'unreadCount', channel.unreadCount);
             updateParseObject('channels', 'channelId', channel.channelId, 'lastAccess', channel.lastAccess);
         }
-    },
+    },*/
 
     syncParseChannels : function (callback) {
         // Only sync channels for users with atleast email or phone validated
@@ -355,12 +365,17 @@ var channelModel = {
         var dataSource =  channelModel.channelsDS;
         var queryCache = dataSource.filter();
         if (queryCache === undefined) {
-            queryCache = [];
+            queryCache = {};
         }
-        dataSource.filter({ field: "isPrivate", operator: "eq", value: true });
+        dataSource.filter(
+            [
+                { field: "isPrivate", operator: "eq", value: true },
+                { field: "contactUUID", operator: "eq", value: contactUUID }
+            ]);
+
         var view = dataSource.view();
-        var channel = undefined;
-        for (var i=0; i< view.length; i++) {
+        var channel = view[0];
+       /* for (var i=0; i< view.length; i++) {
             var chan = view[i];
 
             if (chan.contactUUID === contactUUID) {
@@ -368,7 +383,7 @@ var channelModel = {
                 channel = chan;
                 return(channel);
             }
-        }
+        }*/
 
         dataSource.filter(queryCache);
         return(channel);

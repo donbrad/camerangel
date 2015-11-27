@@ -22,20 +22,21 @@ var groupChannel = {
     
     open : function (channelId, channelName, userId, name, alias, phoneNumber) {
         groupChannel.channelId = channelId;
-        groupChannel.channelId = channelName;
+        groupChannel.channelName = channelName;
         groupChannel.userId = userId;
         groupChannel.thisUser.username = userId;
+        groupChannel.thisUser.uuid = userId;
         groupChannel.thisUser.name = name;
         groupChannel.thisUser.alias = alias;
         groupChannel.thisUser.phone = phoneNumber;  // Use this to look up new members (don't have userId therefore no contactUUID)
-        groupChannel.users = new Array();
+        groupChannel.users = [];
 
         groupChannel.users[userId] = groupChannel.thisUser;
 
         // Subscribe to our PubNub channel.
         APP.pubnub.subscribe({
             channel: groupChannel.channelId,
-            windowing: 1000,
+            windowing: 500,
             restore: true,
             callback: groupChannel.receiveHandler,
             presence: groupChannel.presenceHandler,
@@ -72,10 +73,9 @@ var groupChannel = {
             if ("data" in msg) {
                 groupChannel.users[msg.data.username] = msg.data;
                 // Only update presence if it's not THIS user...
-                if (msg.data.username !== groupChannel.thisUser.username) {
-                    mobileNotify(groupChannel.users[msg.uuid].name + " has joined...");
-
-                    groupChannel.presenceChange(msg.uuid,  true);
+                if (msg.data.username !== userModel.currentUser.userUUID) {
+                    mobileNotify(msg.data.name + ' (' + msg.data.alias +  ") has joined...");
+                    groupChannel.presenceChange(msg.data.username,  true);
                 }
 
             }
@@ -91,9 +91,17 @@ var groupChannel = {
         }
         // A user has left or timed out of ghostgrams so we remove them from our users object.
         else if (msg.action === "timeout" || msg.action === "leave") {
-            mobileNotify(groupChannel.users[msg.uuid].name + " has left ...");
-            delete groupChannel.users[msg.uuid];
-            groupChannel.presenceChange(msg.uuid, false);
+            // Don't report presence for this user -- only other members
+            if (msg.uuid !== userModel.currentUser.userUUID) {
+                if (groupChannel.users.length > 0) {
+                    mobileNotify(msg.data.name + ' (' + msg.data.alias + ") has left ...");
+                    delete groupChannel.users[msg.data.username];
+                }
+
+                groupChannel.presenceChange(msg.data.username, false);
+            }
+
+
         }
     },
 
@@ -111,7 +119,7 @@ var groupChannel = {
         channelView.updatePresence(groupChannel.users, msg.occupancy);
     },
 
-    sendMessage: function (recipient, message, data, ttl) {
+    sendMessage: function (recipient, text, data, ttl) {
         if (ttl === undefined || ttl < 60)
             ttl = 86400;  // 24 hours
 
@@ -130,39 +138,52 @@ var groupChannel = {
                             badge: 1,
                             'content-available' : 1
                         },
-                        target: '#channel?channel='+ groupChannel.channelId,
-                        channelId: groupChannel.channelId
+                        target: '#channel?channelId='+ groupChannel.channelId,
+                        channelId: groupChannel.channelId,
+                        isMessage: true,
+                        isPrivate: false
                     },
                     pn_gcm : {
                         data : {
                             title: notificationString,
                             message: "Message from " + userModel.currentUser.name,
-                            target: '#channel?channel='+ groupChannel.channelId,
-                            channelId: groupChannel.channelId
+                            target: '#channel?channelId='+ groupChannel.channelId,
+                            channelId: groupChannel.channelId,
+                            isMessage: true,
+                            isPrivate: false
                         }
                     },
                     sender: groupChannel.userId,
-                    content: message,
+                    content: text,
                     data: data,
                     time: currentTime,
                     fromHistory: false,
                     ttl: ttl
                 },
-                callback: function () {
-                   /* var parsedMsg = {
-                        msgID: msgID,
-                        channelId: groupChannel.channelId,
-                        content: message,
-                        data: data,
-                        ttl: ttl,
-                        time: currentTime,
-                        sender: groupChannel.userId,
-                        fromHistory: false
+                callback: function (m) {
+                    if (m === undefined)
+                        return;
 
-                    };
+                    var status = m[0], message = m[1], time = m[2];
 
-                    groupChannel.receiveMessage(parsedMsg);
-*/
+                    if (status !== 1) {
+                        mobileNotify('Group Channel publish error: ' + message);
+                    }
+
+                    /* var parsedMsg = {
+                         msgID: msgID,
+                         channelId: groupChannel.channelId,
+                         content: message,
+                         data: data,
+                         ttl: ttl,
+                         time: currentTime,
+                         sender: groupChannel.userId,
+                         fromHistory: false
+
+                     };
+
+                     groupChannel.receiveMessage(parsedMsg);
+ */
                 }
             });
         });
@@ -170,7 +191,7 @@ var groupChannel = {
     },
 
     getMessageHistory: function (callBack) {
-        var timeStamp = ggTime.lastWeek();
+        var timeStamp = ggTime.lastMonth();
 
         APP.pubnub.history({
             channel: groupChannel.channelId,

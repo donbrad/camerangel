@@ -238,7 +238,10 @@ var userModel = {
 
         var privateKey = userModel.parseUser.get('privateKey');
         var newPrivateKey  = GibberishAES.dec(privateKey, userModel.key);
+        var RSAKey = cryptico.privateKeyFromString(newPrivateKey);
         userModel.currentUser.set('privateKey', newPrivateKey);
+        userModel.currentUser.set('RSAKey', RSAKey);
+
     },
 
     encryptBlob : function (blobIn) {

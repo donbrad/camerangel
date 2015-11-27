@@ -1,3 +1,5 @@
+
+
 (function($, doc) {
 	var _app,
 		_private,
@@ -119,6 +121,7 @@
 		// Uncomment to load all device contacts at initialization - major performance hit!!
 		//contactModel.importDeviceContacts();
 
+
 		APP.kendo = new kendo.mobile.Application(document.body, {
 
 			// comment out the following line to get a UI which matches the look
@@ -175,7 +178,6 @@
 		}
 		
 		APP.emailAvailable = false;
-
 
 		/* $(".email-Autocomplete").emailautocomplete({
 		     domains: _emailDomainList //additional domains (optional)

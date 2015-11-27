@@ -12,31 +12,26 @@ var privateChannel = {
     userId: '',
     users: [],
     channelId: '',
-    RSAKey: '',
     contactId : '',
     contactKey: '',
     contactName : '',
-
+    last24hours : 0,
 
 
     close: function () {
 
- /*       APP.pubnub.unsubscribe({
-            channel: privateChannel.channelId
-        });
-*/    },
+    },
 
-    open : function (channelUUID, userUUID, alias, name,  publicKey, privateKey, contactUUID, contactKey, contactName) {
-        privateChannel.RSAKey = cryptico.privateKeyFromString(privateKey);
+    open : function (channelUUID, userUUID, alias, name, contactUUID, contactKey, contactName) {
+
 
 
         privateChannel.userId = userUUID;
-        privateChannel.publicKey = publicKey;
         privateChannel.thisUser = {
             alias: alias,
             name: name,
             username: userUUID,
-            publicKey: publicKey
+            publicKey: userModel.currentUser.get('publicKey')
         };
 
         privateChannel.contactId = contactUUID;
@@ -48,6 +43,7 @@ var privateChannel = {
         privateChannel.users = new Array();
         privateChannel.users[userUUID] = privateChannel.thisUser;
         privateChannel.channelId = channelUUID;
+        privateChannel.last24Hours = ggTime.lastDay();
 
     },
 
@@ -89,26 +85,26 @@ var privateChannel = {
 
     receiveHandler : function (msg) {
 
-        if (msg.recipient === privateChannel.userId) {
+        var parsedMsg = privateChannel.decryptMessage(msg);
 
-            var parsedMsg = privateChannel.decryptMessage(msg);
+        privateChannel.receiveMessage(parsedMsg);
+       // deleteMessage(msg.sender, msg.msgID, msg.ttl);
 
-            privateChannel.receiveMessage(parsedMsg);
-           // deleteMessage(msg.sender, msg.msgID, msg.ttl);
-        }
     },
 
     decryptMessage : function (msg) {
+        var RSAKey = cryptico.privateKeyFromString(userModel.currentUser.privateKey);
         var data = null;
-        var content = cryptico.decrypt(msg.content.cipher, privateChannel.RSAKey).plaintext;
+        var content = cryptico.decrypt(msg.content.cipher, RSAKey).plaintext;
         if (msg.data !== undefined && msg.data !== null) {
-            data = cryptico.decrypt(msg.data.cipher, privateChannel.RSAKey).plaintext;
+            data = cryptico.decrypt(msg.data.cipher, RSAKey).plaintext;
             data = JSON.parse(data);
         }
+
         var parsedMsg = {
             type: 'privateMessage',
             msgID: msg.msgID,
-            channelId: msg.sender,  //For private channels, channelID is just sender ID
+            channelId: msg.channelId,  //For private channels, channelID is just sender ID
             content: content,
             data: data,
             TTL: msg.ttl,
@@ -128,17 +124,18 @@ var privateChannel = {
             message.fromHistory = false;
         }
 
-        userDataChannel.messagesDS.add(message);
-        userDataChannel.messagesDS.sync();
         // If this message is for the current channel, then display immediately
         if (message.channelId === channelView._channelId) {
-            channelModel.updateLastAccess(message.channelId, null);
+            channelModel.updateLastAccess(channelView._channelId, null);
             channelView.messagesDS.add(message);
         } else {
             // Is there a private channel for this sender?
             channelModel.confirmPrivateChannel(message.channelId);
             channelModel.incrementUnreadCount(message.channelId, 1, null);
         }
+
+        userDataChannel.messagesDS.add(message);
+        userDataChannel.messagesDS.sync();
 
         channelView.scrollToBottom();
 
@@ -148,15 +145,17 @@ var privateChannel = {
     },
 
 
-    sendMessage: function (recipient, message, data, ttl) {
+    sendMessage: function (recipient, text, data, ttl) {
         if (ttl === undefined || ttl < 60)
             ttl = 86400;  // 24 hours
         // if (recipient in users) {
-        var content = message;
+        var content = text;
         var contentData = data;
         var encryptMessage = '', encryptData = '';
         var currentTime =  ggTime.currentTime();
-        encryptMessage = cryptico.encrypt(message, privateChannel.contactKey);
+        if (text === undefined || text === null)
+            text = '';
+        encryptMessage = cryptico.encrypt(text, privateChannel.contactKey);
         if (data !== undefined && data !== null)
             encryptData = cryptico.encrypt(JSON.stringify(data), privateChannel.contactKey);
         else
@@ -164,44 +163,60 @@ var privateChannel = {
 
         APP.pubnub.uuid(function (msgID) {
             var notificationString = "Private : " + userModel.currentUser.name;
+            var message = {
+                type: 'privateMessage',
+                recipient: recipient,
+                sender: privateChannel.userId,
+                pn_apns: {
+                    aps: {
+                        alert : notificationString,
+                        badge: 1,
+                        'content-available' : 1
+                    },
+                    target: '#channel?channelId=' + privateChannel.userId,
+                    channelId : privateChannel.userId,
+                    isMessage: true,
+                    isPrivate: true
+                },
+                pn_gcm : {
+                    data : {
+                        title: notificationString,
+                        message: 'Private Message from ' + userModel.currentUser.name,
+                        target: '#channel?channelId=' + privateChannel.userId,
+                        image: "icon",
+                        channelId : privateChannel.userId,
+                        isMessage: true,
+                        isPrivate: true
+                    }
+                },
+                msgID: msgID,
+                channelId: privateChannel.userId,
+                content: encryptMessage,  // publish the encryptedMessage
+                data: encryptData,        // publish the encryptedData.
+                time: currentTime,
+                fromHistory: false,
+                ttl: ttl
+            };
+
             APP.pubnub.publish({
                 channel: privateChannel.contactId,
-                message: {
-                    type: 'privateMessage',
-                    recipient: recipient,
-                    sender: privateChannel.userId,
-                    pn_apns: {
-                        aps: {
-                            alert : notificationString,
-                            badge: 1
-                        },
-                        target: '#channel?channel=' + privateChannel.userId,
-                        channelId : privateChannel.userId
-                    },
-                    pn_gcm : {
-                        data : {
-                            title: notificationString,
-                            message: 'Private Message from ' + userModel.currentUser.name,
-                            target: '#channel?channel=' + privateChannel.userId,
-                            image: "icon",
-                            channelId : privateChannel.userId
-                        }
-                    },
-                    msgID: msgID,
-                    channelId: privateChannel.userId,
-                    content: encryptMessage,  // publish the encryptedMessage
-                    data: encryptData,        // publish the encryptedData.
-                    time: currentTime,
-                    fromHistory: false,
-                    ttl: ttl
-                },
-                callback: function () {
+                message: message,
+                callback: function (m) {
+                    var status = m[0], statusText = m[1];
+
+                    if (status !== 1) {
+                        mobileNotify("Private Channel Publish error "  + statusText);
+                    }
+
+                    // Store a local copy of the sent message.  Need to update channelId :
+                    // for the recipient, its this users uuid.
+                    // for the sender, it's the recipients uuid
                     var parsedMsg = {
                         type: 'privateMessage',
-                        recipient: recipient,
-                        sender: privateChannel.userID,
-                        msgID: msgID,
-                        channelId: privateChannel.channelId,
+                        recipient: message.recipient,
+                        sender: message.sender,
+                        msgID: message.msgID,
+                        channelId: message.recipient, //
                         content: content,
                         data: contentData,
                         time: currentTime,
@@ -221,24 +236,40 @@ var privateChannel = {
 
     },
 
+
     getMessageHistory: function (callBack) {
 
         var dataSource = userDataChannel.messagesDS;
         var queryCache = dataSource.filter();
-        dataSource.filter({ field: "channelId", operator: "eq", value: privateChannel.channelId });
+        if (queryCache === undefined) {
+            queryCache = [];
+        }
 
-        var view = dataSource.view();
-        var messages = view;
+        privateChannel.last24Hours = ggTime.lastDay();
+        dataSource.filter(
+            [
+            { field: "channelId", operator: "eq", value: privateChannel.channelId },
+            { field: "time", operator: "gte", value:  privateChannel.last24Hours}
+        ]);
+
+        var messages = dataSource.view();
         var clearMessageArray = [];
-        dataSource.filter(queryCache);
 
         for(var i = 0; i < messages.length; i++) {
             var msg = messages[i];
+
+            if (msg.sender === undefined)
+                msg.sender = privateChannel.channelId;
+
             clearMessageArray.push(msg);
         }
 
+        dataSource.filter(queryCache);
+
         if(callBack)
             callBack(clearMessageArray);
+
+        userDataChannel.removeExpiredMessages();
 
      }
 };
