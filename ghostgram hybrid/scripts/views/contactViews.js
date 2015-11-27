@@ -1214,7 +1214,7 @@ var contactActionView = {
         // Is there already a private channel provisioned for this user?
         var channel = channelModel.findPrivateChannel(contactUUID);
 
-        var navStr = 'views/channels.html#channel?channelId=';
+        var navStr = '#channel?channelId=';
         if (channel !== undefined) {
             navStr = navStr + channel.channelId;
             APP.kendo.navigate(navStr);
