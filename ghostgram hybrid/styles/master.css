@@ -2603,6 +2603,11 @@ a:hover {
   width: 75%;
   float: left;
 }
+@media only screen and (max-width: 320px) {
+  .chatNameDiv {
+    width: 72%;
+  }
+}
 .chatStatusIcon {
   float: left;
   width: 1.5rem;
@@ -2621,6 +2626,11 @@ a:hover {
   font-family: 'Hind', sans-serif;
   width: 17%;
   text-align: right;
+}
+@media only screen and (max-width: 320px) {
+  .chatActivityTime {
+    width: 20%;
+  }
 }
 .chatDetails img {
   vertical-align: text-top;

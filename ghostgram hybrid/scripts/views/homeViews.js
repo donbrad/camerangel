@@ -542,7 +542,7 @@ var newUserView = {
     onClick : function (e) {
 
         if (newUserView._clickCreate) {
-            newUserView.doCreateAccount();
+            APP.kendo.navigate("#signup");
         } else {
             newUserView.doSignIn();
         }
@@ -803,7 +803,7 @@ var newUserView = {
                     });
                 }
             },
-            error: function(user, error) {
+            error: function(error) {
                 // Show the error message somewhere and let the user try again.
                 mobileNotify("Error: " + error.code + " " + error.message);
             }
