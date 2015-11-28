@@ -288,28 +288,58 @@
     <div class="clearfix"></div>
     <div class="loginBox card">
         <h3>
-            Login
+            Create an Account
         </h3>
-        <form id="formSignIn">
+        <form id="formNewUser">
         	<ul data-role="listview" data-style="inset">
                	<li>
-                   	<label for="home-signin-username">Email Address</label>
-                   	<input type="email" id="home-signin-username" name="Email" required />
+                   	<label for="newuser-username">Email Address</label>
+                   	<input type="email" id="newuser-username" name="Email" required />
                	</li>
                	<li>
                    	<label>Password</label>
-                   	<input type="password" id="home-signin-password" value=""  name="Password" required />
-                   	<span id="forgotPassword" class="helper helper-right btnClear-grey" href="#modalview-recoverPassword" data-rel="modalview" data-role="button">Forgot password?</span>
+                   	<input type="password" id="newuser-password" value=""  name="Password" required />
                	</li>
         	</ul>
-            <a class="btnSecondary" data-click="newUserView.onClear" type="button" data-role="button">Clear</a>
     	</form>
+		<a class="btnSecondary" href="#usersignup" type="button" data-role="button">Sign In</a>
     </div>
     <div class="footer" data-role="footer" id="newuserhome-footer">
     	<a class="btnPrimary btnSpan-btm" data-role="button" id="newuserhomeActionBtn" data-click="newUserView.onClick">Join ghostgrams</a>
     </div>
 </div>
-   
+
+<!-- home - for new users -->
+<div data-role="view" data-title="ghostgrams" id="usersignup" data-layout="newuser" class="appearance" style="display:none;" data-init="signupView.onInit" data-show="signupView.onShow" data-transition="fade">
+	<div class="newuserBox">
+		<img id="signin-ghost" src="images/introImg.svg">
+	</div>
+	<div class="clearfix"></div>
+	<div class="loginBox card">
+		<h3>
+			Login
+		</h3>
+		<form id="formSignIn">
+			<a class="btnSecondary" data-click="signupView.onClear" type="button" data-role="button">Clear</a>
+			<ul data-role="listview" data-style="inset">
+				<li>
+					<label for="home-signin-username">Email Address</label>
+					<input type="email" id="home-signin-username" name="Email" required />
+				</li>
+				<li>
+					<label>Password</label>
+					<input type="password" id="home-signin-password" value=""  name="Password" required />
+					<span id="forgotPassword" class="helper helper-right btnClear-grey" href="#modalview-recoverPassword" data-rel="modalview" data-role="button">Forgot password?</span>
+				</li>
+			</ul>
+			<a class="btnPrimary btnSpan-btm" data-role="button"  data-click="signupView.doSignIn">Sign In</a>
+		</form>
+	</div>
+	<div class="footer" data-role="footer" id="newuserhome-footer">
+		<a class="btnPrimary btnSpan-btm" data-role="button"  data-click="signupView.doSignIn">Sign In</a>
+	</div>
+</div>
+
 
 <div data-role="modalview" id="modalview-support" style="width: 90%; display: none;" class="appearance">
     <div data-role="header">
