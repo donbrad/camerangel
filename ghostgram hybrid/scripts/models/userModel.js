@@ -70,7 +70,7 @@ var userModel = {
         var hasAccount = window.localStorage.getItem('ggHasAccount');
         if (hasAccount !== undefined) {
             userModel.hasAccount = true;
-            userModel.initialView = '#usersignup';
+            userModel.initialView = '#usersignin';
         } else {
             userModel.hasAccount = false;
             userModel.initialView = '#newuserhome';        }

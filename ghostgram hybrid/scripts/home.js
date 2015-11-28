@@ -501,7 +501,7 @@ function homeSignout (e) {
 
 	_signOut();
 
-    APP.kendo.navigate('#usersignup');
+    APP.kendo.navigate('#usersignin');
 }
 
 function doInitSignIn () {
