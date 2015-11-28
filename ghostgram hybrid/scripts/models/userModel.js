@@ -84,7 +84,7 @@ var userModel = {
        }*/
 
 
-        userModel.parseUser = Parse.User.current();
+       // userModel.parseUser = Parse.User.current();
         userModel.device.udid = device.uuid;
         userModel.device.platform = device.platform;
         userModel.device.device = device.name;
@@ -102,14 +102,16 @@ var userModel = {
 
         }
 
-        if (userModel.parseUser === null) {
+        if (Parse.User.authenticated()) {
             mobileNotify("Please login to ghostgrams");
+            return;
         } else {
             // Need to force parse to actually fetch the data from the service.  Parse creates a local cache of user data that gets saved on login / create
             // account while all user.set / saves are pushed to the cloud...
             mobileNotify("Syncing user data...");
             Parse.User.currentAsync().then(function (user) {
 
+                userModel.parseUser = user;
 
                 userModel.generateUserKey();
                 if (user.get("version") === undefined) {

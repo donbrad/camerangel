@@ -107,7 +107,7 @@
 		/*}*/
 
 		userModel.init();
-		
+
 		userModel.initParse();
 
 		mapModel.init();
