@@ -32,7 +32,9 @@ var photoModel = {
                 var models = [];
                 for (var i = 0; i < collection.length; i++) {
                     var photo = collection[i].toJSON();
-                    if (photo.get(''))
+                    if (photo.imageUrl === undefined) {
+                        photo.imageUrl = null;
+                    }
                     photoModel.upgradePhoto(photo);
                     models.push(photo);
                 }
