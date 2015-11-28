@@ -104,7 +104,6 @@ var userModel = {
 
         if (userModel.parseUser === null) {
             mobileNotify("Please login to ghostgrams");
-            APP.kendo.navigate("#usersignup");
         } else {
             // Need to force parse to actually fetch the data from the service.  Parse creates a local cache of user data that gets saved on login / create
             // account while all user.set / saves are pushed to the cloud...
