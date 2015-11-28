@@ -878,6 +878,6 @@ var signInView = {
             }
         });
 
-    },
+    }
 
 };

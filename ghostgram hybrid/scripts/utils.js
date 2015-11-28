@@ -175,7 +175,7 @@ function handleParseError(err) {
 		case Parse.Error.INVALID_SESSION_TOKEN:
 			mobileNotify("Security Check: Please Sign In");
 			_signOut();
-			APP.kendo.navigate('#newuserhome');
+			APP.kendo.navigate('#usersignin');
 			break;
 	}
 }
