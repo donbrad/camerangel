@@ -35,6 +35,11 @@ var photoModel = {
                     if (photo.imageUrl === undefined) {
                         photo.imageUrl = null;
                     }
+
+                    if (window.navigator.simulator === undefined && (photo.deviceUrl === undefined || photo.deviceUrl === null)) {
+                       photoModel.addToLocalCache(photo.imageUrl, photo.photoId);
+                    }
+
                     photoModel.upgradePhoto(photo);
                     models.push(photo);
                 }
@@ -46,6 +51,20 @@ var photoModel = {
                 handleParseError(error);
             }
         });
+    },
+
+    addToLocalCache : function (url, name) {
+        var store = cordova.file.dataDirectory;
+
+        var fileTransfer = new FileTransfer();
+        fileTransfer.download(url, store + name + '.jpg',
+            function(entry) {
+                console.log("Success!");
+            },
+            function(err) {
+                console.log("Error");
+                console.dir(err);
+            });
     },
 
     findPhotoById: function (photoId) {
