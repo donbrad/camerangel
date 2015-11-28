@@ -102,7 +102,8 @@ var userModel = {
 
         }
 
-        if (Parse.User.Current.authenticated()) {
+        var user = Parse.User.current();
+        if (user.authenticated()) {
             mobileNotify("Please login to ghostgrams");
             return;
         } else {
