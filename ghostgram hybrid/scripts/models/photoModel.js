@@ -32,6 +32,7 @@ var photoModel = {
                 var models = [];
                 for (var i = 0; i < collection.length; i++) {
                     var photo = collection[i].toJSON();
+                    if (photo.get(''))
                     photoModel.upgradePhoto(photo);
                     models.push(photo);
                 }
@@ -165,9 +166,16 @@ var photoModel = {
             if (photo.tags === undefined) {
 
                 photo.tags = [];
-                photo.tagsString = null;
 
                 updateParseObject('photos', "photoId", photo.photoId, "tags",  []);
+
+            }
+
+            if (photo.tagsString === undefined) {
+
+
+                photo.tagsString = null;
+
                 updateParseObject('photos', "photoId", photo.photoId, "tagsString",  null);
             }
 
