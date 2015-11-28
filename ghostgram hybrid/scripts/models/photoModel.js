@@ -32,6 +32,27 @@ var photoModel = {
                 var models = [];
                 for (var i = 0; i < collection.length; i++) {
                     var photo = collection[i].toJSON();
+                    if (photo.imageUrl === undefined) {
+                        photo.imageUrl = null;
+                    }
+
+                    if (window.navigator.simulator === undefined && (photo.deviceUrl === undefined || photo.deviceUrl === null)) {
+                        var store = cordova.file.dataDirectory;
+                        window.resolveLocalFileSystemURL(store + photo.photoId + '.jpg',
+                            function(fileEntry) {
+                                collection[i].set("deviceUrl", fileEntry);
+                                collection[i].save();
+                                photo.deviceUrl = fileEntry;
+                            },
+                            function (error) {
+                                photoModel.addToLocalCache(photo.imageUrl, photo.photoId, photo, parseObj);
+                            }
+                        );
+
+                    } else {
+                        photo.deviceUrl === null;
+                    }
+
                     photoModel.upgradePhoto(photo);
                     models.push(photo);
                 }
@@ -43,6 +64,23 @@ var photoModel = {
                 handleParseError(error);
             }
         });
+    },
+
+    addToLocalCache : function (url, name, photo, parseObj) {
+        var store = cordova.file.dataDirectory;
+
+        var fileTransfer = new FileTransfer();
+        fileTransfer.download(url, store + name + '.jpg',
+            function(entry) {
+                photo.deviceURl = entry;
+                parseObj.set('deviceUrl', entry);
+                parseObj.save();
+                console.log("Cached local copy of " + name);
+            },
+            function(err) {
+                console.log("Error");
+                console.dir(err);
+            });
     },
 
     findPhotoById: function (photoId) {
@@ -165,9 +203,16 @@ var photoModel = {
             if (photo.tags === undefined) {
 
                 photo.tags = [];
-                photo.tagsString = null;
 
                 updateParseObject('photos', "photoId", photo.photoId, "tags",  []);
+
+            }
+
+            if (photo.tagsString === undefined) {
+
+
+                photo.tagsString = null;
+
                 updateParseObject('photos', "photoId", photo.photoId, "tagsString",  null);
             }
 

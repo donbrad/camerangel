@@ -1,6 +1,6 @@
-# Image Resizer plugin for Phonegap/Cordova 3.0+ #
+* NOTE - I am sorry, I just can't find the time to fully test the plugin and develop it further. Small updates are constantly integrated. *
 
-This plugin has been forked and updated for cordova 3.0 from https://github.com/raananw/PhoneGap-Image-Resizer Updates have been made to the iOS native plugin, Android updates coming soon.
+# Image Resizer plugin for Phonegap/Cordova 3.0+ #
 
 This plugin resizes images natively using the phonegap / cordova architecture.
 
@@ -10,9 +10,9 @@ The plugin conforms to the Cordova plugin specification, it can be installed
 using the Cordova / Phonegap command line interface.
 
 ```
-phonegap plugin add https://github.com/CSullivan102/cordova-imageResizer.git
+phonegap plugin add https://github.com/RaananW/PhoneGap-Image-Resizer
 
-cordova plugin add https://github.com/CSullivan102/cordova-imageResizer.git
+cordova plugin add https://github.com/RaananW/PhoneGap-Image-Resizer
 ```
 
 ## Using the plugin ##
@@ -47,8 +47,10 @@ The storeImage funtion will always store the image to the device's default exter
 ### iOS quirks and howto's ###
 
 For a full iOS integration, two extra extensions should be used:
+
 1. Base64 Encoder/Decoder using Dave Wimer implementation (http://colloquy.info/project/browser/trunk/NSDataAdditions.h?rev=1576)
 2. Image Scaling for UIImage (Using the great howto guide here : http://iphonedevelopertips.com/graphics/how-to-scale-an-image-using-an-objective-c-category.html )
+
 The sources are added to the github.
 
 The storeImage function in iOS saves either in the photo album, or in the application's temporary directory. 
@@ -56,6 +58,8 @@ In the first case (photo album is set to true), the filename and directory will 
 In the second case, only filename will be used and directory will be ignored.
 
 ### The MIT License
+
+Copyright (c) 2012-2015 Raanan Weber (raananw@gmail.com)
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal

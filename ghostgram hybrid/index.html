@@ -8,18 +8,6 @@
 	<link href="kendo/styles/kendo.material.min.css" rel="stylesheet" />
     <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet" />
     <link href="styles/master.css" rel="stylesheet" />
-
-	<!--&lt;!&ndash;Factored view files &#45;&#45; we include here as a workaround to kendo navigate issues &ndash;&gt;
-
-	<link rel="import" href="views/archive.html">
-	<link rel="import" href="views/contacts.html">
-	<link rel="import" id="channels-html" href="views/channels.html">
-	<link rel="import" href="views/gallery.html">
-	<link rel="import" href="views/places.html">
-	<link rel="import" href="views/profile.html">
-	<link rel="import" href="views/settings.html">-->
-
- <!-- External scripts -->
     <script src="cordova.js"></script>
     <script src="kendo/js/jquery.min.js"></script>
     <script src="kendo/js/kendo.all.min.js"></script>
@@ -143,7 +131,7 @@
                 </a>
             </li>
             <li>
-                <a data-role="button" href="views/channels.html#channels" data-click-on="down">
+                <a data-role="button" href="#channels" data-click-on="down">
 	                <svg width="28px" height="23px" viewBox="0 0 28 23" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
 					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 					        <g id="nav-chat" transform="translate(-97.000000, -635.000000)" fill="#979797">
@@ -157,7 +145,7 @@
 				</a>
             </li>
             <li>
-                <a data-role="button" href="views/contacts.html" data-click-on="down">
+                <a data-role="button" href="#contacts" data-click-on="down">
                 	<svg width="22px" height="24px" viewBox="0 0 22 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
 					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 					        <g transform="translate(-176.000000, -634.000000)" fill="#979797">
@@ -176,7 +164,7 @@
                 </a>
             </li>
             <li>
-                <a data-role="button" href="views/places.html" data-click-on="down">
+                <a data-role="button" href="#places" data-click-on="down">
                 	<svg width="19px" height="27px" viewBox="0 0 19 27" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
 					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
 					        <g transform="translate(-253.000000, -633.000000)" stroke="#979797">
@@ -189,7 +177,7 @@
                 </a>
             </li>
             <li>
-                <a data-role="button" href="views/gallery.html#gallery" data-click-on="down">
+                <a data-role="button" href="#gallery" data-click-on="down">
                 	<svg width="26px" height="21px" viewBox="0 0 26 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
 					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 					        <g id="nav-gallery" transform="translate(-22.000000, -431.000000)" fill="#979797">
@@ -204,13 +192,10 @@
 	
 	<ul data-role="actionsheet" id="settingsAction" data-popup='{"direction": "left"}'>
 		<li>
-	  		<a data-role="button" data-click="go2Profile">View profile</a>
+	  		<a data-role="button" href="#profile">View profile</a>
 	  	</li>
 	    <li>
-	    	<a data-role="button" id="menuSettings" data-click="go2Settings">Settings</a>
-	    </li>
-	    <li>
-	    	<a data-role="button" data-click="go2Support">Support</a>
+	    	<a data-role="button" id="menuSettings" href="#settings">Settings</a>
 	    </li>
 		<li>
 			<a data-role="button" id="menuSignOut" data-click="homeSignout">Sign out</a>
@@ -300,28 +285,63 @@
     <div class="clearfix"></div>
     <div class="loginBox card">
         <h3>
-            Login
+            Sign Up for ghostgrams
         </h3>
-        <form id="formSignIn">
-        	<ul data-role="listview" data-style="inset">
-               	<li>
-                   	<label for="home-signin-username">Email Address</label>
-                   	<input type="email" id="home-signin-username" name="Email" required />
-               	</li>
-               	<li>
-                   	<label>Password</label>
-                   	<input type="password" id="home-signin-password" value=""  name="Password" required />
-                   	<span id="forgotPassword" class="helper helper-right btnClear-grey" href="#modalview-recoverPassword" data-rel="modalview" data-role="button">Forgot password?</span>
-               	</li>
-        	</ul>
-            <a class="btnSecondary" data-click="newUserView.onClear" type="button" data-role="button">Clear</a>
-    	</form>
+       <div>
+		   <ul>
+			   <li>
+				   Personal - stay in touch with the people and places the matter.
+			   </li>
+			   <li>
+				   Private - Have a private life. Share only what you want with only who want.
+			   </li>
+			   <li>
+				   Efficient - Only receive and store what's important.
+			   </li>
+
+		   </ul>
+	   </div>
+		<a class="btnSecondary" href="#usersignin" type="button" data-role="button">Sign In</a>
     </div>
     <div class="footer" data-role="footer" id="newuserhome-footer">
-    	<a class="btnPrimary btnSpan-btm" data-role="button" id="newuserhomeActionBtn" data-click="newUserView.onClick">Join ghostgrams</a>
+    	<a class="btnPrimary btnSpan-btm" data-role="button" href="#signup">Join ghostgrams</a>
     </div>
 </div>
-   
+
+<!-- home - for new users -->
+<div data-role="view" data-title="ghostgrams" id="usersignin" data-layout="newuser" data-model="userModel" class="appearance" style="display:none;" data-init="signInView.onInit" data-show="signInView.onShow" data-transition="fade">
+	<div class="newuserBox">
+		<img id="signin-ghost" src="images/introImg.svg">
+	</div>
+	<div class="clearfix"></div>
+	<div class="loginBox card">
+		<h3>
+			Login
+		</h3>
+		<form id="formSignIn">
+			<ul data-role="listview" data-style="inset">
+				<li>
+					<label for="home-signin-username">User Name (email address)</label>
+					<input type="email" id="home-signin-username" name="Email" required />
+				</li>
+				<li>
+					<label class="helper helper-right btnClear-grey">
+						Remember Username </label>
+					<input type="checkbox" data-role="switch" data-bind="checked: rememberUsername"/></label>
+
+				</li>
+				<li>
+					<label>Password</label>
+					<input type="password" id="home-signin-password" value=""  name="Password" required />
+					<span id="forgotPassword" class="helper helper-right btnClear-grey" href="#modalview-recoverPassword" data-rel="modalview" data-role="button">Forgot password?</span>
+				</li>
+			</ul>
+			<a class="btnPrimary btnSpan" data-role="button"  data-click="signInView.doSignIn">Sign In</a>
+		</form>
+	</div>
+
+</div>
+
 
 <div data-role="modalview" id="modalview-support" style="width: 90%; display: none;" class="appearance">
     <div data-role="header">
@@ -385,7 +405,7 @@
    	</div>
 </div>
     
-<div data-role="view" id="signup" data-title="Sign Up" data-layout="main" style="display: none;" class="appearance" data-init="initSignUp">
+<div data-role="view" id="signup" data-title="Sign Up" data-layout="main" style="display: none;" class="appearance" data-init="signUpView.onInit" data-show="signUpView.onShow">
    	<div data-role="header">
       <div data-role="navbar">
         <a data-role="button" href="#:back" data-align="left"><img src="images/nav-back.svg" />  </a>
@@ -422,7 +442,9 @@
         </ul>  
     </form> 
     <div data-role="footer">
-            <a class="btnSpan-btm btnPrimary" data-click="newUserView.doCreateAccount" id="home-createAccount" type="button" data-role="button">Submit</a>
+
+            <a class="btnSpan-btm btnPrimary" data-click="signUpView.onSubmit" type="button" data-role="button">Submit</a>
+
     </div>
 </div>
 	
@@ -717,7 +739,7 @@
 	</div>
 	<div class="modal-bottom">
 		<p class="caption right">
-			<a data-role="button" class="btnClear-sm" href="views/profile.html#profileEdit">Edit Profile</a>
+			<a data-role="button" class="btnClear-sm" href="#profileEdit">Edit Profile</a>
 		</p>
 		<label for="profileStatusUpdate">Quick Status</label>
 		<textarea id="profileStatusUpdate" maxlength="35" placeholder="What's going on..."></textarea>
@@ -833,7 +855,9 @@
 <script type="text/x-kendo-template" id="modalGalleryTemplate">
 	<div>
 		<div class="galleryImgBox">
-			# if (imageUrl !== undefined && imageUrl !== '') { #
+			# if (deviceUrl !== undefined && deviceUrl !== null) { #
+			<img class="galleryImg" src="#=deviceUrl#" />
+			# } else if (imageUrl !== undefined && imageUrl !== null) { #
 			<img class="galleryImg" src="#=imageUrl#" />
 			# } else { #
 			<img class="galleryImg" src="#=thumbnailUrl#" />
@@ -1052,7 +1076,1936 @@
 </script>
 
 
+<!--
+/*
+ * archive
+ */
+-->
 
+<div data-role="view" id="archive" data-title="Archive" data-layout="main" data-stretch="true" data-init="window.archiveView.init">
+
+	<main>
+		<div id="search-archives">
+
+			<button data-role="button" data-click="archiveView.toggleSearch"><img height="18" src="images/sentinel-search.svg" /> </button>
+			<div>
+
+
+				<input type="search" placeholder="Search archive..." />
+
+				<ul class="tags">
+					<!-- Test tags :)
+					<li><img src="images/sentinel-contacts.svg" />Don<button></button></li>
+					<li><img src="images/sentinel-chats.svg" />myplacez design<button></button></li>
+					-->
+				</ul>
+			</div>
+		</div>
+
+		<div id="archive-list" data-role="scroller">
+			<ul data-role="listview" data-source="archive.dataSource" data-template="archive-template" data-header-template="header-template"></ul>
+		</div>
+
+		<div id="archive-empty">Your archive is empty</div>
+		<div id="archive-search-empty">Nothing found</div>
+	</main>
+
+</div>
+
+<script type="text/x-kendo-template" id="header-template">
+	<div>
+		<img class="archive-header-img" src="images/archive-#= value #.svg"> #: value #
+	</div>
+</script>
+
+<script type="text/x-kendo-template" id="archive-template">
+	<header>
+		# if (data.message.sender.image) { #
+		<img src="#= data.message.sender.image #" />
+		# } else { #
+		<img src="images/ghost-default.svg" />
+		# } #
+		<button class="delete" data-role="button" data-click="archiveView.deleteDoc" data-id="#= data.id #"></button>
+		<h3>#= data.message.sender.name #</h3><br />
+		<p>#= moment(data.message.date).fromNow() # in <strong>#= data.message.channelName #</strong></p>
+	</header>
+	<div class="message">#= data.message.text #</div>
+	# if (data.type === 'Events') { #
+	<div class="event object">
+		<h3>#= data.object.name #</h3>
+		<p>at <strong>#= data.object.placeName #</strong> #= data.object.address #</p>
+		# if (moment().isBefore(data.object.start)) { #
+		<span>starts #= moment(data.object.start).fromNow() #</span>
+		# } else if (moment().isAfter(data.object.end)) { #
+		<span>ended #= moment(data.object.start).fromNow() #</span>
+		# } else { #
+		<span>happening now! #= moment(data.object.start).format('h:mma') # to #= moment(data.object.end).format('h:mma') #</span>
+		# } #
+	</div>
+	# } #
+	# if (data.type === 'Links') { #
+	<div class="link object" data-url="#= data.object.url #">
+		<h3>#= data.object.title #</h3>
+		<p>#= data.object.url #</p>
+	</div>
+	# } #
+	# if (data.type === 'Photos') { #
+	<div class="photo object">
+		<img src="#= data.object.url #" />
+		<p><strong>#= data.object.placeName #, #= data.object.address #</strong> <span>#= moment(data.object.date).fromNow() #</span></p>
+	</div>
+	# } #
+</script>
+
+<!--/*
+ * channels
+ */-->
+
+<div data-role="view" id="channels" data-title="Chats" data-layout="main" data-model="channelModel" data-init="channelsView.onInit" data-show="channelsView.onShow" data-hide="channelsView.onHide">
+	<div id="channelListDiv">
+		<ul id="channels-listview"></ul>
+		<div class="emptyState hidden">
+			<img src="images/empty-chat.svg" />
+		</div>
+	</div>
+</div>
+
+<div data-role="modalview" id="modalview-requestContent" style="width: 90%; display: none;" class="appearance" data-init="askRequestModal.onInit" data-before-open="askRequestModal.onOpen">
+	<div class="modal-top">
+		<a data-role="button" class="modal-close" data-click="closeAskRequest"><img src="images/close-white.svg"/></a>
+		<div><img src="images/icon-access.svg" /></div>
+		<p class="helper">
+			<svg width="14px" height="8px" viewBox="0 0 14 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+				<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+					<g  transform="translate(-32.000000, -166.000000)" stroke="#ffffff" stroke-width="0.75">
+						<g transform="translate(32.000000, 135.000000)">
+							<g transform="translate(0.000000, 32.000000)">
+								<ellipse cx="3.5" cy="3" rx="3" ry="3"></ellipse>
+								<path d="M6.5,3.375 L13.5,3.375"  stroke-linecap="square"></path>
+								<path d="M12.375,3.5 L12.375,6.5"  stroke-linecap="square"></path>
+								<path d="M10.375,3.5 L10.375,5.5"  stroke-linecap="square"></path>
+							</g>
+						</g>
+					</g>
+				</g>
+			</svg>
+			<span id="askRequest-contactName">  </span></p>
+	</div>
+	<div class="modal-bottom">
+		<h4>Locked content</h4>
+		<p class="modal-helper">Ask to save this message.</p>
+		<div id="askRequest-content">
+
+		</div>
+		<a class="btnClear" data-role="button" data-click="askRequestModal.onSend">Send request</a>
+		<div class="modalAction-helper">
+			<span> or swipe to dismiss </span>
+		</div>
+	</div>
+
+
+</div>
+
+<script type="text/x-kendo-tmpl" id="channels-listview-template">
+
+    <div>
+    	<div class="chat-options">
+    		<div>
+    			<ul class="chat-option-ul">
+    				# if (isPrivate){#
+    					<li>
+		    				<a class="btnClear-red" data-channel="#:channelId #" data-role="button"  data-click="deleteChannel">
+		    					<img src="images/trash.svg" />
+		    					<p class="chat-option-selection"> Delete </p>
+		    				</a>
+	    				</li>
+	    				<li>
+		    				<a class="btnClear-grey" data-role="button" data-channel="#:channelId #" data-click="muteChannel" data-mute="#: isMuted #">
+			    				# if(data.isMuted) {#
+		    						<img src="images/icon-unmute.svg" class="channelMuteImg"/>
+			    					<p class="channelMute">Unmute</p>
+		    					#} else {#
+		    						<img src="images/icon-mute.svg" class="channelMuteImg"/>
+			    					<p class="channelMute">Mute</p>
+		    					#}#
+			    			</a>
+	    				</li>
+    				#} else {#
+    					<li>
+		    				<a class="btnClear-red" data-role="button" data-channel="#:channelId #" data-click="deleteChannel" data-channel="#:channelId #">
+		    					<img src="images/trash.svg" />
+		    					<p class="chat-option-selection"> Delete</p>
+		    				</a>
+	    				</li>
+
+	    				<li>
+		    				<a class="btnClear-grey" data-role="button" data-channel="#:channelId #" data-click="muteChannel" data-mute="#: isMuted #">
+		    					# if(data.isMuted) {#
+		    						<img src="images/icon-unmute.svg" class="channelMuteImg"/>
+			    					<p class="channelMute">Unmute</p>
+		    					#} else {#
+		    						<img src="images/icon-mute.svg" class="channelMuteImg"/>
+			    					<p class="channelMute">Mute</p>
+		    					#}#
+			    			</a>
+	    				</li>
+
+    				#}#
+    				# if(isPrivate !== true && isOwner){#
+    						<li>
+			    				<a class="btnClear-grey" data-role="button" data-click="channelsView.editChannel" data-channel="#:channelId #">
+				    				<img src="images/option-edit.svg" />
+				    				<p class="chat-option-selection">Edit</p>
+				    			</a>
+	    					</li>
+    					#}#
+
+    			</ul>
+    		</div>
+    	</div><!-- chat-options -->
+    	<a class="chat-mainBoxLink" id="#:channelId#" data-channel="#:channelId#">
+	    	#if (isPrivate){#
+	    		<div class="chat-mainBox private">
+	    	#} else if (isOwner){#
+	    		<div class="chat-mainBox owner">
+	    	#} else {#
+	    		<div class="chat-mainBox">
+	    	#}#
+	    	#
+	    	if (lastAccess !== undefined && lastAccess !== null) {
+				var accessTime = timeSince(lastAccess);
+				if(accessTime === "0s"){
+					accessTime = "Just now";
+				} else {
+					accessTime = accessTime + " ago";
+				}
+			}
+	    	#
+	    		<h4 class="textClamp">
+	    			<span class="chatStatusIcon">
+	    				# if(data.isMuted){#
+	    					<img src="images/icon-mute.svg" class="channelMuteImg" />
+	    				#}else {#
+	    					<img src="images/status-new.svg" class="list-status" />
+	    				#}#
+
+	    			</span>
+	        		<span class="textClamp chatNameDiv">#:name#</span>
+	        		<span class="chatActivityTime left">#:accessTime#</span>
+	    		</h4>
+	    		<div class="clearfix"></div>
+	    		<div class="chatType">
+
+		    		# if(isPrivate && members.length <= 2){#
+		    			<img src="images/private-icon.svg" /> Private Chat
+		    		#} else if (false) {# // For place chats
+		    			<img src="images/place-icon.svg" id="chatList-place-icon" class="icon-sm" /> Place Chat
+		    		#} else {#
+		    			<img src="images/group-icon.svg" class="icon-sm" /> Group Chat
+		    		#}#
+		    		#if (data.isMuted) {# <span class="listTag-light">Muted</span> #} #
+		    		#if (data.unreadCount > 0) {# <span class="chatActivityTime left">#:unreadCount# new</span> # } #
+	    		</div>
+
+	    	</div><!-- chat-mainBox -->
+    	</a>
+   </div>
+</script>
+
+<div data-role="view" id="channel" data-layout="main" data-model="currentChannelModel" data-show="channelView.onShow" data-init="channelView.onInit"  data-hide="channelView.onHide" data-transition="slide">
+	<div data-role="header">
+		<div data-role="navbar" id="channelNavBar">
+			<a data-align="left" data-role="button" href="#:back" id="channel-back-button">
+				<img src="images/nav-back.svg" />
+			</a>
+			<img src="" id="channelImage" height="32" class="circle-img"/>
+			<span id="channelName"></span>
+			<a data-align="right" data-role="button" id="messagePresenceButton" data-rel="drawer" href="#channelPresence">
+				<img src="images/group-icon.svg" />
+			</a>
+		</div>
+
+	</div>
+	<div id="privacyStatus" class="hidden">Ghost Mode On</div>
+	<div id="privacyScreen">
+		<ul id="messages-listview"></ul>
+	</div>
+
+	<div data-role="footer" style="display: block; background: #fff; padding-left: 2px;"  id="messageEditor" style="min-height: 48px; max-height: 60%;">
+		<div id="chatImagePreview" style="margin: 8px; ">
+			<img id="chatImage" src="" />
+		</div>
+		<div class="messageCompose">
+			<span class="helper" id="ghostgramMode" style="display: none">ghostgram editor</span>
+			<textarea id="messageTextArea" rows="1" autofocus="true" wrap="soft" spellcheck="true" placeholder="Message..."></textarea>
+			<div class="messageMediaBar" id="editorOptionBar" style="display: none">
+				<ul>
+					<li>
+						<a class="btnBar" data-role="button" data-click="channelView.toggleTool" data-tool="bold">
+							<img src="images/icon-bold.svg" class="icon-bar" />
+						</a>
+					</li>
+					<li>
+						<a class="btnBar" data-role="button" data-click="channelView.toggleTool" data-tool="italic">
+							<img src="images/icon-italic.svg" class="icon-bar" />
+						</a>
+					</li>
+					<li>
+						<a class="btnBar" data-role="button" data-click="channelView.toggleTool" data-tool="underline">
+							<img src="images/icon-underline.svg" class="icon-bar" />
+						</a>
+					</li>
+					<li>
+						<a class="btnBar" data-role="button" data-click="channelView.toggleTool" data-tool="insertUnorderedList">
+							<img src="images/icon-list.svg" class="icon-bar" />
+						</a>
+					</li>
+					<li>
+						<a class="btnBar" data-role="button" data-click="channelView.toggleTool" data-tool="indent">
+							<img src="images/icon-indent.svg" class="icon-bar" />
+						</a>
+					</li>
+					<li>
+						<a class="btnBar" data-role="button" data-click="channelView.toggleTool" data-tool="outdent">
+							<img src="images/icon-outdent.svg" class="icon-bar" />
+						</a>
+					</li>
+				</ul>
+				<div class="lineArrow"></div>
+			</div>
+			<div class="messageMediaBar">
+				<ul>
+					<li>
+						<a data-role="button" data-click="channelView.messageCamera">
+							<img src="images/chat-camera.svg" height="24">
+						</a>
+					</li>
+					<li>
+						<a data-role="button" data-rel="actionsheet" href="#galleryActions">
+							<img src="images/chat-photo.svg" height="24">
+						</a>
+					</li>
+					<li>
+						<a data-role="button" data-click="channelView.messageAudio">
+							<img src="images/chat-sound.svg" height="24">
+						</a>
+					</li>
+					<li >
+						<a data-role="button" data-badge="0" data-click="channelView.ghostgram" id="chat-editorBtn">
+							<img src="images/icon-editor.svg" height="20" id="chat-editorBtnImg"/>
+						</a>
+					</li>
+					<li class="hidden">
+						<a data-role="button" data-click="channelView.messageLocation">
+							<img src="images/chat-places.svg" height="24">
+						</a>
+					</li>
+					<li>
+						<a data-role="button" data-rel="actionsheet" href="#newMessageActions">
+							<img src="images/chat-smart.svg" height="24">
+						</a>
+					</li>
+					<li class="hidden">
+						<a data-role="button" data-click="channelView.togglePrivacyMode" id="privacyMode">
+							<img src="images/privacy-off.svg" height="24"/>
+						</a>
+					</li>
+					<li class="right">
+						<a data-role="button" class="btnClear" id="messageSend" data-click="channelView.messageSend">Send</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<ul data-role="actionsheet" id="newMessageActions" data-popup='{"direction": "left"}'>
+		<li><a data-action="channelView.messageCalendar"> Add Calendar</a></li>
+		<li><a data-action="channelView.messageMovie"> Add Movie</a></li>
+		<li><a data-action="channelView.messageEvent"> Add Event</a></li>
+		<li><a data-action="channelView.messageMusic"> Add Music</a></li>
+	</ul>
+
+	<ul data-role="actionsheet" id="galleryActions" data-popup='{"direction": "left"}'>
+		<li><a data-action="channelView.messagePhoto"> Phone Gallery</a></li>
+		<li><a data-action="channelView.messageGallery"> Memories Gallery</a></li>
+	</ul>
+
+	<ul data-role="actionsheet" id="messageActions" data-popup='{"direction": "left"}'>
+		<li><a data-action="channelView.archiveMessage"><img src="images/icon-memories.svg" class="icon-sm" /> Remember Message</a></li>
+		<li><a data-action="channelView.smartScanMessage"> Smart Scan Message</a></li>
+		<!--<li><a data-action="channelView.messageEraser"><i class="fa fa-eraser"> </i> Erase Message</a></li>-->
+	</ul>
+
+</div>
+
+<div data-role="view" data-title='Add Chat' id="addChannel" style="display: none;" data-init="addChannelView.onInit" data-show="addChannelView.onShow" data-hide="addChannelView.onHide"
+	 class="appearance" data-transition="overlay:up">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span data-role="view-title"></span>
+			<a data-role="button" href="#:back" data-align="right">
+				<img src="images/close.svg" />
+			</a>
+		</div>
+	</div>
+	<div id="addChatNoContacts" class="hidden">
+		<p class="helper"><img src="images/help.svg" /> Chat members must be existing contacts. You don't have any ghostgrams contacts yet. </p>
+		<a class="btnClear" data-role="button" href="#contacts">Go to ghostgram contacts</a>
+	</div>
+	<div id="addChatHasContacts">
+		<div id="chat-title-setup">
+			<span id="chat-title-step1"></span>
+			<span class="right">
+				<a id="editChatName" data-click="addChannelView.addChatStep1" data-role="button">edit</a>
+			</span>
+		</div>
+		<form id="addChat-step1">
+			<h3>
+				<img src="images/flag.svg" id="start-chat-img"/> Create a New Chat
+			</h3>
+			<p>Chat with friends and family around shared interests.</p>
+
+			<ul data-role="listview" data-style="inset" id="channel-addChannel-list">
+				<li>
+					<input type="search" id="channels-addChannel-name" placeholder="What's the topic?" value="" required />
+
+					<input type="search" style="display: none" id="channels-addChannel-description" value="" placeholder="Description"/>
+					<a class="btnClear-grey" data-role="button" data-click="addChannelView.showChatDescription" id="addChatDescription">Add description</a>
+				</li>
+				<li >
+					<label>Save messages for
+						<div class="select-md">
+							<select id="channels-addChannel-archive">
+								<option value="1">1 Day</option>
+								<option value="7">7 Days</option>
+								<option value="30" selected>30 Days</option>
+							</select>
+						</div>
+					</label>
+				</li>
+				<li>
+					<p class="right">
+						<a id="addChat-createBtn" class="btnClear" data-click="addChannelView.addChannel" type="button" data-role="button">Next - Invite friends</a>
+					</p>
+				</li>
+				<li class="hidden">
+					<div class="line"></div>
+					<label>Optional
+						<div class="chatOption-event">
+							<img class="chatOptionImg" src="images/event.svg" />
+							<a class="btnClear-grey" data-role="button" data-click="addChannelView.doShowEventInputs" id="addChatEvent">Add Event info</a>
+						</div>
+
+					</label>
+				</li>
+				<li>
+					<label class="addChannelEvent hidden">Place (Location for event)
+						<div class="select">
+							<select id="channels-addChannel-place">
+								<option value="0">None - Virtual Event</option>
+							</select>
+						</div>
+					</label>
+					<label class="addChannelEvent hidden">Date (Date of the event)
+						<input type="date" id="channels-addChannel-eventDate"  />
+					</label>
+				</li>
+			</ul>
+		</form>
+
+
+		<div class="footerBk" data-role="footer" id="addChat-helper-1">
+			<div class="helperBox" id="addChat-helper1" >
+				<p class="helper"><img src="images/help.svg" /> Looking for 1-on-1 private chat?</p>
+				<a class="btnClear" data-role="button" href="#contacts">Go to ghostgram contacts</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Edit chat -->
+<div data-role="view" id="editChannel" data-model="editChannelView._activeChannel" style="display: none;" data-show="editChannelView.onShow"  data-init="editChannelView.onInit" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span> Edit Chat </span>
+			<a data-role="button" href="#channels" data-align="left">
+				<img src="images/nav-back.svg" />
+			</a>
+		</div>
+	</div>
+
+	<div>
+		<form>
+			<input type="search" id="channels-editChannel-name" data-bind="value: name"  placeholder="Chat name"/>
+			<input type="search" id="channels-editChannel-description" data-bind="value: description" placeholder="Add optional description"/>
+
+		</form>
+		<div>
+			<div class="pad">
+				<img src="images/edit-chat.svg" /> Chat Members
+			</div>
+			<div>
+				<ul class="list-inline" id="editmembers-listview"></ul>
+			</div>
+		</div>
+	</div>
+	<div class="footerBk" data-role="footer">
+		<a class="actionBtn secondary-100" data-role="button" href="#channelMembers">
+			<p class="actionBtn-text">Add members</p>
+			<img src="images/nav-add-white.svg"/>
+		</a>
+		<a class="btnSpan-btm btnPrimary" data-click="editChannelView.finalizeEdit" type="button" data-role="button">	Save
+		</a>
+	</div>
+</div>
+
+
+<script type="text/x-kendo-tmpl" id="messagesTemplate">
+
+	# var history='', contactData = channelView.getContactData(sender), formattedTime = 'Just now';
+	if (currentChannelModel.privacyMode) {
+		if (fromHistory !== undefined && fromHistory === true ) {
+			history = "privateMode"; }
+	}
+	if (time !== undefined && time !== null) {
+		formattedTime = timeSince(time);
+		if(formattedTime === "0s"){
+			formattedTime = "Just now";
+		} else {
+			formattedTime = formattedTime + " ago";
+		}
+	}
+	#
+	<div id=#:msgID# class="chat-message #=history# clearfix">
+	#
+
+		var name = "Me";
+		var photoUrl = '';
+		sender = contactData.uuid;
+		name = contactData.name;
+		var alias = contactData.alias;
+		photoUrl = contactData.photoUrl;
+		var displayName = ux.returnUXPrimaryName(name, alias);
+		var messageClass = "chat-message-text";
+	#
+	# if(userModel.currentUser.useLargeView){#
+		# var messageClass = "userLgFontSize chat-message-text"; #
+	#}#
+
+	# if (currentChannelModel.privacyMode) {
+			if (fromHistory !== undefined && fromHistory === true ) {
+				history = "privateMode"; }
+	}#
+	<div id=#:msgID# class="chat-message #=history# clearfix">
+		<div class="chat-details">
+			# if(contactData.isContact){#
+				<span class="chat-sender">#: displayName #</span>
+			#} else {#
+				<span class="chat-sender">Me</span>
+			#}#
+			<span class="chat-time">#:formattedTime# </span>
+			<div class="clearfix"></div>
+		</div>
+
+		<div class="chat-message-user-img">
+			# if(photoUrl !== '') {#
+				<img class="chat-message-profileImg circle-img-sm" src="#: photoUrl #" alt="" />
+			#} else {#
+				<img class="chat-message-profileImg circle-img-sm" src="images/ghost-blue.svg" alt="" />
+			#}#
+		</div>
+		# if (content !== "") {#
+			# if (contactData.isContact ) {#
+				<div class="chat-message-receiver chat-message-content  clearfix">
+					<div class="#= messageClass #">#= content #</div>
+				</div>
+			#} else {#
+				<div class="chat-message-sender chat-message-content">
+					<div class="#= messageClass #">
+						#= content #
+					</div>
+				</div>
+			#}#
+			<div class="clearfix"></div>
+		#}#
+		# if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {#
+				<div class="chat-photo-box">
+					<img class="chat-message-photo" src="#:data.photo.thumb #" alt="" >
+				</div>
+		#}#
+			<div class="clearfix"></div>
+	</div>
+</script>
+
+<div data-role="drawer" id="channelPresence"  data-position="right" data-init="channelPresence.onInit" data-show="channelPresence.onShow" data-swipeToOpen="false" data-views='["channel"]' style="width: 80%;">
+	<div data-role="header">
+		<div data-role="navbar">
+			<a data-align="left" data-role="button" data-click="channelPresence.onDone">
+				<img src="images/close.svg" />
+			</a>
+			<span>Members</span> <span class="badge primary-200" id="occupancyCount">1</span>
+		</div>
+
+	</div>
+	<ul id="channelPresence-listview" ></ul>
+</div>
+
+<!-- edit chat members -->
+<div data-role="view" id="channelMembers" data-layout="main" data-title="Invite" data-init="channelMembersView.doInit" data-show="channelMembersView.doShow" data-transition="overlay:up">
+
+	<div class="addedChatMember" style="display: none"></div>
+	<ul id="channelMembers-listview"></ul>
+	<div class="footerBk" data-role="footer">
+		<a class="btnSpan-btm btnSecondary" type="button" data-role="button" href="#editChannel?updateMembers=true">Done</a>
+	</div>
+</div>
+
+<script type="text/x-kendo-template" id="memberTemplate">
+	<div>
+		<div class="memberTempPhoto left">
+			<img src="#: data.photo #" class="circle-img-md" />
+		</div>
+		<div class="memberTempName left">
+
+			#if (data.alias !== '' && data.name !== data.alias && data.phoneVerified){#
+			<h4 class="textClamp">
+				#: data.alias #
+				<img class="user-status-icon" src="images/user-verified.svg" />
+				<span class="contacts-alias-sm">#: data.name #</span>
+			</h4>
+			#} else if(data.alias !== '' && data.name !== data.alias) {#
+			<h4 class="textClamp">
+				#: data.alias #
+				<span class="contacts-alias-sm">#: data.name #</span>
+			</h4>
+			#} else {#
+			<h4 class="textClamp">#: data.name #</h4>
+			#}#
+		</div>
+
+	</div>
+</script>
+
+<script type="text/x-kendo-template" id="chatMemberTemplate">
+	# if(!data.isPresent){#
+	<div class="gone">
+		#}else {#
+		<div style="clear: both;">
+			#}#
+			<div class="memberTempPhoto left">
+				<img src="#: data.photo #" class="circle-img-md" />
+			</div>
+			<div class="memberTempName left">
+				<h4 class="textClamp">#: data.name #</h4>
+			</div>
+		</div>
+</script>
+
+<script type="text/x-kendo-template" id="editMembersTemplate">
+
+	<div class="editMemberBox" data-id="#: data.uuid #">
+		<div class="editMemberPhoto">
+			<img class="circle-img-md editChatImg" src="#: data.photo #"  />
+		</div>
+		<div class="editMemberName">
+			#if (data.alias !== '' && data.name !== data.alias && data.phoneVerified){#
+			<h4 class="textClamp">
+				#: data.alias #
+				<img class="user-status-icon" src="images/user-verified.svg" />
+				<span class="contacts-alias-sm">#: data.name #</span>
+			</h4>
+			#} else if(data.alias !== '' && data.name !== data.alias) {#
+			<h4 class="textClamp">
+				#: data.alias #
+				<span class="contacts-alias-sm">#: data.name #</span>
+			</h4>
+			#} else {#
+			<h4 class="textClamp">#: data.name #</h4>
+			#}#
+		</div>
+
+		<div class="deleteMemberText">
+			<a class="btnClear-red deleteChannelMember" data-role="button" data-id="#: data.uuid#" data-click="editChannelView.deleteMemberBtn">
+				<img src="images/trash.svg" class="icon" />
+			</a>
+		</div>
+	</div>
+</script>
+
+<!--/*
+ * contacts
+ */-->
+<div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="contactModel" data-init="contactsView.onInit" data-show="contactsView.onShow" data-hide="contactsView.onHide" style="display: none;">
+	<a class="hidden btnClear topSearchReferral" data-role="button" data-click="contactsView.searchDeviceContacts" id="btnSearchDeviceContacts">
+		<img src="images/contacts.svg" />
+		Search device for "<span id="btnSearchDeviceName"></span>"
+	</a>
+	<div id="contactListDiv" style="padding-bottom: 24px;">
+		<ul id="contacts-listview"></ul>
+		<!-- Only display if device permission is needed -->
+		<div id="deviceContactPermission" class="pad center hidden">
+
+			<a class="btnClear">
+				<img src="images/import.svg" height="16" />
+				Find contacts on device
+			</a>
+		</div>
+		<div class="emptyState hidden">
+			<img src="images/empty-contacts.svg" />
+		</div>
+	</div>
+</div>
+
+<!-- Import Contacts -->
+<div data-role="view" data-title="Import Contacts" id="contactImport"  data-model="contactModel" data-init="contactImportView.onInit" data-show="contactImportView.onShow" data-hide="contactImportView.onHide" style="display: none;">
+	<div data-role="header">
+		<div data-role="navbar">
+			<a data-role="button" data-align="left" href="#:back"><img src="images/nav-back.svg" /></a>
+			<span data-role="view-title"></span>
+		</div>
+	</div>
+
+	<div style="padding-bottom: 24px;">
+		<div class="tempSearchBox">
+			<div class="appendSearch">
+				<span class="searchIcon"><img src="images/search.svg" /></span>
+				<input type="text" class="doubleAppendSearch gg_mainSearchInput" placeholder="" />
+				<span class="enterSearch hidden"><a class="btnClear-grey"><img class="icon-sm" src="images/close.svg" /></a></span>
+			</div>
+		</div>
+		<div id="contactImport-noResults" class="hidden">No results found</div>
+		<ul id="contactimport-listview"></ul>
+	</div>
+</div>
+
+<!-- Modal add contact -->
+<div data-role="modalview" data-model="contactModel" data-title="Add Contact" id="modalview-AddContact" data-init="addContactView.doInit" class="appearance" style="width: 90%; min-height: 100%; display: none;">
+	<div class="appBox">
+		<div class="inviteTop hidden">
+			<img src="images/invite.svg" height="16" />
+		</div>
+    	<span class="right closeBox">
+    		<a data-role="button" data-click="closeAddContact">
+				<img src="images/close.svg"/>
+			</a>
+    	</span>
+
+		<div class="topHalf">
+			<div class="topHalfLeft">
+				<img class="circle-img-lg shadow" id="addContactPhoto" src="images/ghostgramcontact.png" />
+			</div>
+			<div class="topHalfRight">
+				<div>
+					<input class="input-text-md" id="addContactName" type="search" placeholder="Contact full name"/>
+				</div>
+				<div>
+					<span class="caption">aka</span>
+					<input class="input-text-sm " id="addContactAlias" type="search" placeholder="Add a nickname"/>
+				</div>
+				<div>
+					<input class="input-text-md" id="addContactGroup" type="search" placeholder="Add Group (optional)"/>
+				</div>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<ul data-role="listview" data-style="inset" class="inviteContactInfo">
+			<li>
+				<label>Phone
+					<div class="select-lg">
+						<select id="addContactPhone"
+								data-text-field="number"
+								data-value-field="number"
+								data-bind="source: phoneDS"
+								auto-bind="false">
+						</select>
+					</div>
+				</label>
+			</li>
+			<li>
+				<label>Email
+					<div class="select-lg">
+						<select id="addContactEmail"
+								data-text-field="address"
+								data-value-field="address"
+								data-bind="source: emailDS"
+								auto-bind="false">
+						</select>
+					</div>
+				</label>
+			</li>
+			<li>
+				<label>Address
+					<div class="select-lg">
+						<select id="addContactAddress"
+								data-text-field="address"
+								data-value-field="address"
+								data-bind="source: addressDS"
+								auto-bind="false">
+						</select>
+					</div>
+				</label>
+			</li>
+		</ul>
+	</div>
+	<div class="footer" data-role="footer">
+		<a class="btnPrimary btnFull-modal" data-role="button" data-click="addContactView.addContact" id="addContacViewAddButton">Add Contact</a>
+	</div>
+</div>
+
+<!-- Edit Contacts -->
+<div data-role="view" data-model="editContactView._activeContact" data-title="Edit Contact" id="editContact"  data-transition="slide" data-show="editContactView.onShow" data-init="editContactView.onInit" class="appearance" style="display: none;">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span data-role="view-title"></span>
+			<a data-role="button" data-click="editContactView.onDone" data-align="left" >Done</a>
+		</div>
+	</div>
+
+	<div style="padding-bottom: 12px;">
+		<form>
+			<div class="topHalf">
+				<div class="topHalfLeft">
+					<img class="circle-img-lg shadow" data-bind="attr:{src: photo}" />
+				</div>
+				<div class="contactImg">
+					<label for="editContactName">
+						<input class="input-text-lg" type="text" id="editContactName" data-bind="value: name"/>
+					</label>
+					<div>
+						<span class="caption">aka</span>
+						<span>
+							<input style="width: 75%;" type="search" placeholder="Add a nickname" id="editContactAlias" data-bind="value: alias"/>
+						</span>
+					</div>
+					<div>
+						<span class="caption">Group</span>
+						<span>
+							<input style="width: 75%;" type="search" placeholder="Add a Group" id="editContactGroup" data-bind="value: group"/>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+
+			<ul data-role="listview" data-style="inset" id="contactEditList">
+				<li>
+					<label>Phone
+						<span class="helper helper-verified hidden" id="edit-verified-phone">
+	                         <img class="helper-verified-img" src="images/verified.svg" height="14">
+	                             Verified
+	                    	<span class="helper helper-right helper-form"> <img src="images/lock.svg"/> Locked
+	                    	</span>
+                        </span>
+
+						<input id="editContactPhone" type="phone" data-bind="value:phone"/>
+					</label>
+				</li>
+				<li>
+					<label>Email
+						<span class="helper helper-verified hidden" id="edit-verified-email">
+	                         <img class="helper-verified-img" src="images/verified.svg" height="14">
+	                             Verified
+		                    <span class="helper helper-right helper-form">
+		                    	<img class="helper-img" src="images/lock.svg"/> Locked
+		                    </span>
+                        </span>
+
+						<input id="editContactEmail" type="email" data-bind="value: email"/>
+
+					</label>
+				</li>
+				<li>
+					<label>Address
+						<input id="editContactAddress" data-bind="value: address"/>
+					</label>
+				</li>
+			</ul>
+
+
+			<div class="edit-contacts-options">
+				<!--<a data-role="button" class="btnClear-grey" id="editContact-resyncBtn" data-click="editContactView.syncWithParse">
+					<img src="images/ghost-sm.svg" />  Refresh Contact
+				</a>-->
+				<a data-role="button" class="btnClear-grey" id="editContact-resyncDeviceBtn" data-click="editContactView.syncWithDevice">
+					<img src="images/icon-sync.svg" class="icon-sm" />  Sync Contact with Device
+				</a>
+				<a data-role="button" class="btnClear-red " id="editContact-deleteBtn" data-click="deleteContact">
+					<img src="images/trash.svg" />  Delete Contact
+				</a>
+			</div>
+		</form>
+	</div>
+	<div class="footerBk" data-role="footer">
+		<a data-role="button" class="btnPrimary btnSpan-btm" id="editContact-saveBtn" data-click="editContactView.updateDone">Update Contact
+		</a>
+
+	</div>
+</div>
+
+
+<div data-role="view" data-model="contactModel.currentContact" data-title="Edit Contact" id="deviceSyncContact"  class="appearance" style="display: none;">
+	<ul data-role="listview" data-style="inset" id="syncEditList">
+		<li>
+			<p> Device Info</p>
+		</li>
+		<li>
+			<label>Phone <span class="input-count hidden" id="syncEditPhoneCount"></span>
+				<select id="syncContactPhone" data-role="dropdownlist"
+						data-text-field="number"
+						data-value-field="number"
+						data-bind="source: phoneDS"
+						auto-bind="false">
+				</select>
+			</label>
+		</li>
+		<li>
+			<label>Email Addresses
+				<select id="syncContactEmail" data-role="dropdownlist"
+						data-text-field="address"
+						data-value-field="address"
+						data-bind="source: emailDS"
+						auto-bind="false">
+				</select>
+			</label>
+		</li>
+		<li>
+			<label>Address List
+				<select id="syncContactAddress" data-role="dropdownlist"
+						data-text-field="address"
+						data-value-field="address"
+						data-bind="source: addressDS"
+						auto-bind="false">
+				</select>
+			</label>
+		</li>
+		<li>
+			<div style="text-align: center; padding-top: 6px; padding-bottom: 6px;">
+				<a data-role="button" class="btnSecondary btnSpan" id="editContact-syncCompleteBtn" data-click="onDoneSyncContact" style="display: none;"> Update Contact</a>
+			</div>
+		</li>
+	</ul>
+</div>
+
+
+
+<script type="text/x-kendo-template" id="contactsHeaderTemplate">
+	<div>
+		# if (data.value === 'phone') {#
+		Device
+		#} else if (data.value === 'new'){#
+		Invited
+		#} else if (data.value === 'member') {#
+		Member
+		#} else if (data.value === 'unknown') {#
+		New Chat Member
+		#} else if (data.value === 'zapped') {#
+		Blocked User
+		#}#
+	</div>
+</script>
+
+
+<script type="text/x-kendo-template" id="contactsTemplate">
+	#
+	var name = data.name;
+	var alias = data.alias;
+	var group = data.group;
+	var primaryName = ux.returnUXPrimaryName(name, alias);
+	var secondaryName = ux.returnAliasName(name, alias);
+	#
+	<div>
+		<div class="contact-options">
+			# if (data.contactUUID === undefined || data.contactUUID === null){#
+			<a class="btnClear-grey" data-role="button" data-click="contactsView.doInviteContact" data-contact="#:uuid#">
+				<img src="images/contact-invite.svg" height="12" />
+				<p class="chat-option-selection"> Resend Invite</p>
+			</a>
+			#}#
+			<a class="btnClear-grey" data-role="button" data-click="contactsView.doEditContact" data-contact="#:uuid#">
+				<img src="images/option-edit.svg" height="18" />
+				<p class="chat-option-selection">Edit</p>
+			</a>
+			<a class="btnClear-red" data-role="button" data-click="contactsView.doDeleteContact" data-contact="#:uuid#">
+				<img src="images/trash.svg" height="18" />
+				<p class="chat-option-selection"> Delete</p>
+			</a>
+
+		</div><!-- contact-options -->
+		# if(data.category === 'member') {#
+		<a class="contactListBox member">
+			#} else if(data.category === 'new'){#
+			<a class="contactListBox">
+				#} else {#
+				<a class="contactListBox noSlide">
+					#}#
+					#if (data.category === 'member') {#
+					<div class="left listPhoto">
+						<div class="statusContactList">
+
+							#if (data.isAvailable !== undefined && data.isAvailable) { #
+							<img class="circle-img-md" src="#:data.photo#" />
+							<img width="16" src="images/status-available.svg" class="statusContactList-icon" />
+							# }
+							else { #
+							<img class="circle-img-md" src="#:data.photo#" />
+							<img width="16" src="images/status-away.svg" class="statusContactList-icon" />
+							#}#
+						</div>
+					</div><!-- left -->
+
+					<div class="left listName">
+						<h4 class="textClamp">
+							#= primaryName #
+							#if (data.phoneVerified){#
+							<img src="images/user-verified.svg" class="user-status-icon" />
+							#}#
+							<span class="contacts-alias-sm hidden">#= secondaryName  #</span>
+
+							#if(data.group !== "" && data.group !== null){#
+							<span class="contact-group">#: data.group #</span>
+							#}#
+
+						</h4>
+					</div>
+
+					<div class="left contact-status textClamp">
+						<p class="contactStatusMessage-sm">
+							# var message = "", location = "";
+							if (data.statusMessage !== undefined && data.statusMessage !== "") {
+							message = data.statusMessage;
+							}#
+
+							#:message#
+
+							# if (data.cateogy === 'zapped') {#
+							Blocked User - Tap to Unblock
+							#}#
+						</p>
+
+						# if (data.currentPlace !== undefined && data.currentPlace !== ""){#
+						<p class="contactStatus-location">
+							@#:data.currentPlace#
+						</p>
+						#}#
+					</div>
+
+					<div class="clearfix"></div>
+					#} else if(data.category === 'new'){#
+					<div class="left listPhoto">
+						<div class="statusContactList">
+							<img class="circle-img-md" src="#:data.photo#" />
+						</div>
+					</div><!-- left -->
+					<div class="left listName">
+						<h4 class="textClamp">
+							#= primaryName #
+							<span class="contacts-alias-sm">#= secondaryName  #</span>
+						</h4>
+					</div>
+					<div class="left contact-status">
+						<p class="left contactStatusMessage-sm">Invite Sent</p>
+					</div>
+					#} else {#
+					<div class="left listPhoto">
+						<div class="statusContactList">
+							<img class="circle-img-md" src="#:data.photo#" />
+						</div>
+					</div><!-- left -->
+					<div class="left listName">
+						<h4 class="textClamp">
+							#: data.name #
+							#if (data.phoneVerified){#
+							<img src="images/user-verified.svg" class="user-status-icon" />
+							#}#
+							<span class="contacts-alias-sm">#: data.alias #</span>
+						</h4>
+					</div>
+					<div class="left contact-status">
+						<p class="left contactStatusMessage-sm">
+							New Contact - Tap to Connect!
+						</p>
+					</div>
+					#}#
+				</a><!-- listBox -->
+	</div>
+
+</script>
+
+<script type="text/x-kendo-template" id="deviceContactsTemplate">
+	<div>
+		<h3>#:data.name#
+		</h3>
+		<table class="contactImportTable">
+			#if (data.emails.length > 0) {#
+			<tr>
+				<td>
+					# var email = data.emails[0].name; #
+					# var cleanEmail = ux.showCleanEmail(email) #
+					<span class="contactEmail">#: cleanEmail #</span>
+
+					# var emailCount = (data.emails.length);
+					if (emailCount > 1){#
+					<span class="badge">+#:emailCount - 1 #</span>
+					#}#
+
+
+				</td>
+			</tr>
+			#}#
+			<tr>
+				<td>
+			  			<span class="contactPhone">
+			  				# var phone = data.phoneNumbers[0].number;
+			  				var cleanPhone = ux.showCleanPhone(phone) #
+			  				#: cleanPhone #
+			  			</span>
+					# var phoneCount = (data.phoneNumbers.length);
+					if (phoneCount > 1){#
+					<span class="badge">+#:phoneCount - 1#</span>
+					#}#
+				</td>
+			</tr>
+			#if (data.addresses.length > 0) {#
+			<tr>
+				<td>
+					# var addressCount = data.addresses.length; #
+					<span class="contactAddress">#:data.addresses[0].fullAddress#</span>
+					#if (addressCount > 1){#
+					<span class="badge">+#:addressCount - 1 #</span>
+					#}#
+				</td>
+			</tr>
+			#}#
+		</table>
+	</div>
+</script>
+
+<div data-role="view" data-title="Contact" id="contact" data-layout="main" data-model="contactModel" data-init="onInitContact">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span data-role="view-title"></span>
+			<a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img class="menuIcon" src="images/menu-icon.svg"/></a>
+			<a data-role="button" href="#contactImport" data-align="right" ><i class="ghostIconNavbar fa fa-plus"></i> </a>
+		</div>
+	</div>
+
+	<div>
+		<ul id="xcontacts-listview"></ul>
+	</div>
+
+
+</div>
+
+<!--/*
+ * gallery
+ */-->
+<div data-role="view" data-title="Memories" id="gallery" data-layout="main" data-model="photoModel" data-init="galleryView.OnInit" data-show="galleryView.onShow" data-before-hide="galleryView.onHide">
+	<div>
+
+		<ul data-role="buttongroup" data-index="0" id="galleryMenuSelect" data-select="galleryView.selectCategory">
+			<li>
+				Photos
+			</li>
+			<li>
+				Saved Messages
+			</li>
+		</ul>
+
+		<div class="resultsBar">
+			<div class="results"><span id="resultCount"></span> Results</div>
+
+			<div class="filter">
+				<a class="btnClear" data-role="button" href="#filterGallery" id="toggleFilterBtn">
+					<img src="images/icon-filter-link.svg" />
+					<span id="filterCount"></span>
+					<span id="filterText"> Filter </span>
+				</a>
+			</div>
+
+			<div class="clearfix"></div>
+		</div>
+		<div id="archive-listview" class="hidden" data-role="scroller">
+			<ul data-role="listview" data-source="archive.dataSource" data-template="archive-template" data-header-template="archive-header-template" data-click="archiveView.archiveClick"></ul>
+		</div>
+		<!-- Photos -->
+		<ul id="gallery-listview" class="list-inline" data-role="listview" data-source="photoModel.photosDS" data-template="gallery-template" data-click="galleryView.galleryClick"></ul>
+
+		<div id="archive-empty">Your archive is empty</div>
+		<div id="archive-search-empty">Nothing found</div>
+	</div>
+
+</div>
+
+<div data-role="view" data-title="Filter" id="filterGallery" data-layout="main" data-transition="overlay:up" data-init="archiveView.onFilterInit">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span data-role="view-title"></span>
+			<a data-role="button" href="#:back" data-align="right">
+				Cancel
+			</a>
+		</div>
+	</div>
+
+	<div class="card">
+		<p class="helper">Filter types</p>
+		<ul class="filterList" data-role="listview">
+			<li>
+				<label for="filter-contact">
+					<input type="checkbox" id="filter-contact" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="archiveView.filterChange"/>
+					<img src="images/nav-contacts.svg" /> Contacts
+				</label>
+			</li>
+			<li>
+				<div class="filterAdd filter-contact-add" style="display: none">
+					<input type="text" placeholder="Add contact name" />
+					<a class="btnClear" data-role="button" data-type="contact" data-click="archiveView.addFilter">Add</a>
+				</div>
+				<div class="clearfix"></div>
+			</li>
+			<li>
+				<label for="filter-link">
+					<input type="checkbox" id="filter-link" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="archiveView.filterChange"/>
+					<img src="images/icon-Links.svg" /> Links
+				</label>
+			</li>
+			<li>
+				<div class="filterAdd filter-link-add" style="display: none">
+					<input type="text" placeholder="Add website" />
+					<a class="btnClear" data-role="button" data-type="link" data-click="archiveView.addFilter">Add</a>
+				</div>
+				<div class="clearfix"></div>
+			</li>
+			<li>
+				<label for="filter-chat">
+					<input type="checkbox" id="filter-chat" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="archiveView.filterChange"/>
+					<img src="images/icon-Chat.svg" /> Chats
+				</label>
+			</li>
+			<li>
+				<div class="filterAdd filter-chat-add" style="display: none">
+					<input type="text" placeholder="Add chat name" />
+					<a class="btnClear" data-role="button" data-type="chat" data-click="archiveView.addFilter">Add</a>
+				</div>
+				<div class="clearfix"></div>
+			</li>
+			<li>
+				<label for="filter-place">
+					<input type="checkbox" id="filter-place" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="archiveView.filterChange"/>
+					<img src="images/icon-Events.svg" /> Events
+				</label>
+			</li>
+			<li>
+				<div class="filterAdd filter-place-add" style="display: none">
+					<input type="text" placeholder="Add event" />
+					<a class="btnClear" data-role="button" data-type="event" data-click="archiveView.addFilter">Add</a>
+				</div>
+				<div class="clearfix"></div>
+			</li>
+			<li data-role="button" data-click="archiveView.openFilterDate">
+				<div>
+					<img src="images/icon-date.svg" height="18"/> Select Date
+				</div>
+			</li>
+		</ul>
+	</div>
+	<div class="currentFilterTags">
+		<p>
+			Current Filters
+			<a class="btnClear-red hidden right" data-role="button" data-click="archiveView.deleteTags" id="deleteTagBtn">Delete</a>
+			<a class="btnClear-grey right" data-role="button" data-click="archiveView.clearAllTags">Clear all</a>
+
+		</p>
+		<ul class="tagList list-inline" data-role="listview" data-template="tag-template"></ul>
+	</div>
+	<div data-role="footer">
+		<a class="btnSpan-btm btnPrimary" data-role="button" data-click="archiveView.saveFilters"> Save </a>
+	</div>
+
+</div>
+
+<div id="modalview-dateFilter" data-role="modalview" style="width: 90%; display: none;" class="appearance" data-init="archiveView.onInitDateSelect">
+	<h3>Select date
+		<a class="right closeBox" data-role="button" data-click="archiveView.closeModalDateSelect">
+			<img src="images/close.svg"/>
+		</a>
+	</h3>
+	<div class="helper">
+		<ul id="select-period">
+			<li>
+				Before
+			</li>
+			<li>
+				On
+			</li>
+			<li>
+				After
+			</li>
+		</ul>
+	</div>
+	<div id="dateSelect"></div>
+
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnClear" data-role="button" data-click="archiveView.closeModalDateSelect">Add</a>
+	</div>
+</div>
+
+<!-- Photo tag modal -->
+<div data-role="modalview" id="modalview-photoTag" style="width: 90%; display: none;"  data-model="modalPhotoTag._activePhoto" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Tag Photo</span>
+			<a data-click="modalPhotoTag.onCancel" data-role="button"  class="btnClear-grey" data-align="left">Cancel</a>
+
+		</div>
+	</div>
+
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnPrimary" data-role="button" data-click="modalPhotoTag.onDone">Save</a>
+	</div>
+</div>
+
+<div data-role="modalview" id="modalPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal" data-model="modalPhotoView._activePhoto" data-init="modalPhotoView.onInit">
+	<div class="photoViewBox">
+		<img id="modalPhotoViewImage" data-bind="attr: {src : imageUrl}" />
+		<div class="photoTitleBox">
+			<div class="photoTitleText">
+				<h3 class="textClamp">
+					<span id="modalPhotoViewTitle" data-bind="text: title">Photo Title</span>
+					<a class="btnClear-sm" data-role="button" data-click="modalPhotoView.openTagEditor">Edit</a>
+				</h3>
+
+				<p>
+					<span data-bind="text: description"> </span>
+				</p>
+				<p>
+					<img src="images/icon-tag-light.svg" class="icon-sm" />
+					<span id="modalPhotoViewTags" data-bind="text: tagsString">photo tags</span>
+				</p>
+			</div>
+			<div class="photoTitleInput hidden">
+				<label>Title</label>
+				<input type="search" class="input-text-md" data-bind="value: title" maxlength="20"/>
+
+				<label>Description</label>
+				<textarea data-bind="value: description" type="text" col="80" row="2" maxlength="60"></textarea>
+
+				<label>Tags</label>
+				<textarea data-bind="value: tagsString" type="text" col="80" row="2" maxlength="60" placeholder="People, event, location..."></textarea>
+			</div>
+			<a class="actionBtn primary-100" data-role="button" data-click="modalPhotoView.sharePhoto">
+				<img src="images/icon-share-light.svg"/>
+			</a>
+		</div>
+
+	</div>
+	<div class="footer" data-role="footer">
+		<a class="btnSpan-btm btnClear glass" data-role="button" data-click="modalPhotoView.closeModal" id="modalPhotoView-close">Close</a>
+		<a class="btnSpan-btm btnPrimary hidden" data-role="button" data-click="modalPhotoView.closeTagEditor" id="modalPhotoView-update">Update</a>
+	</div>
+</div>
+
+
+
+<div data-role="view" id="photoView" class="fullPhotoModal" data-zoom="true" style="width: 100%; height: 100%; display: none;" data-model="photoView._activePhoto" data-init="photoView.onInit" data-show="photoView.onShow" data-transition="fade">
+	<div class="photoViewBox">
+		<img id="photoViewImage" src="" />
+		<div class="photoTitleBox">
+			<h3><span>Photo Title</span>
+				<a class="btnClear-sm" data-role="button" data-rel="modalview" href="#modalview-photoTag">Edit</a>
+			</h3>
+			<p><img src="images/icon-tag-light.svg" class="icon-sm" /> photo tags</p>
+			<a class="actionBtn primary-100" data-role="button" data-click="photoView.sharePhoto">
+				<img src="images/icon-share-light.svg"/>
+			</a>
+		</div>
+	</div>
+	<div class="footer" data-role="footer">
+		<a class="btnSpan-btm btnClear glass" data-role="button" href="#:back">Close</a>
+	</div>
+</div>
+
+
+<div data-role="view" id="photoEditor" style="width: 100%; height:100%; display: none;"  data-show="photoEditor.onShow"  data-hide="photoEditor.onHide" data-init="photoEditor.onInit" data-transition="slide:left">
+	<div class="photoViewNavTop" data-role="header">
+		<a data-role="button"  data-click="photoEditor.rotateLeft"><img src="images/photo-left.svg" /> </a>
+		<a data-role="button"  data-click="photoEditor.rotateRight"> <img src="images/photo-right.svg" /></a>
+		<a data-role="button" data-click="photoEditor.crop"> <img class="photo-options" src="images/photo-crop.svg" /> </a>
+		<a data-role="button" data-rel="modalview"  href="#modalview-photoTag"><img src="images/photo-tag.svg" /></a>
+	</div>
+
+
+	<div class="photoViewBox">
+		<img class="centerPhoto" id="photoEditImage" src="images/photo-default.svg" />
+	</div>
+
+	<div data-role="footer">
+		<a class="btnSpan-btm btnPrimary" id="photoEditSaveDiv" data-role="button" data-click="photoEditor.savePhoto"> Save </a>
+	</div>
+
+</div>
+
+<script id="tag-template" type="text/x-kendo-template">
+	<div class="tag">
+		<div class="tag-category">
+			<img src="images/icon-#=type#-light.svg" />
+		</div>
+		<div class="tag-text">
+			#: tag #
+		</div>
+	</div>
+</script>
+
+<script id="archive-dateOption-template" type="text/x-kendo-template">
+	<img src="images/icon-filter.svg"> Filter
+</script>
+
+<script id="calendar-footer-template" type="text/x-kendo-template">
+	Today - #: kendo.toString(data, "d") #
+</script>
+
+<script id="archive-filter-template" type="text/x-kendo-template">
+	<span>#: data.name #</span>
+</script>
+
+<script type="text/x-kendo-template" id="tags-template">
+	<div class="">
+		<span class="left">#: data.name # </span>
+		<span class="right"><a class="btnClear-red"><img src="images/trash.svg"></a></span>
+	</div>
+</script>
+
+
+<!-- galleryPicker template -->
+<script type="text/x-kendo-template" id="gallery-template">
+	<div class="touch">
+		<div class="galleryImgBox">
+			# if (imageUrl !== undefined && imageUrl !== '') { #
+			<img class="galleryImg" src="#=imageUrl#" />
+			# } else { #
+			<img class="galleryImg" src="#=thumbnailUrl#" />
+			# } #
+		</div>
+	</div>
+</script>
+
+<script type="text/x-kendo-template" id="archive-header-template">
+	<div>
+		<img class="archive-header-img" src="images/archive-#= value #.svg"> #: value #
+	</div>
+</script>
+
+<script type="text/x-kendo-template" id="archive-template">
+	<div class="card">
+		#
+		var singleDayTime = moment(data.object.start).format("MMM Do, YYYY");
+		var multiStartTime = moment(data.object.start).format("MMM Do - ");
+		var multiEndTime = moment(data.object.end).format("Do, YYYY");
+		var multiDayTime = multiStartTime + multiEndTime;
+		#
+		<p class="helper cardInfoBar"><img src="images/icon-#=data.type#.svg" />
+			#= data.message.sender.name # posted in #= data.message.channelName #
+		</p>
+
+		# if (data.type === "Events"){#
+		<div class="event">
+			<h4> #: data.object.name # </h4>
+			<p>#: data.object.placeName #</p><p>#: data.object.address #</p>
+			# if(data.object.start === data.object.end && data.object.start !== "") {#
+			<p>#: singleDayTime # </p>
+			#} else {#
+			<p>#: multiDayTime # </p>
+			#}#
+		</div>
+		#}#
+		# if(data.type === "Links") {#
+		<div class="link">
+			<h4>#: data.object.title #</h4>
+			<p>#: data.object.url #</p>
+		</div>
+		#}#
+		# if(data.type === "Photos") {#
+		<div class="photo">
+			<div class="photoPreview">
+				<img src="#= data.object.url #" />
+			</div>
+			<div class="photoInfo">
+				<h4>#: data.object.placeName #</h4>
+				<p>#: data.object.address #</p>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		#}#
+		# if(data.type === "Chat") {#
+		<div class="chat">
+			<p>#: data.message.text #</p>
+		</div>
+		#}#
+		<div class="bottom">
+			<div class="cardAction">
+				#if(data.type !== "Chat"){#
+				<a class="btnClear link" data-role="button" data-click="archiveView.viewOpen">View</a>
+				#}#
+				<a class="btnClear" data-role="button" data-click="archiveView.archiveShare">Share</a>
+				<div>
+				</div>
+			</div>
+</script>
+
+<!--/*
+ * Places
+ */-->
+
+<div data-role="view" data-title="Places" id="places" data-layout="main" data-model="placesModel" data-show="placesView.onShow" data-init="placesView.onInit" data-hide="placesView.onHide">
+
+	<div>
+		<div id="current-place" class="hidden">
+			<img src="images/icon-puff.svg" width="30" class="left"/>
+			<p class="left" id="current-place-name"></p>
+			<a class="btnClear whiteBtn right" data-role="button" id="checkoutBtn">
+				<img src="images/icon-checkout-light.svg" class="icon-btn"  /> Checkout</a>
+			<div class="clearfix"></div>
+		</div>
+		<div id="placeListDiv">
+			<div class="topSearchReferral">
+				<a class="btnClear hidden" data-role="button" id="quickFindPlaceBtn">
+					<img src="images/icon-gps-selected.svg" class="icon-btn" /> View Nearby Places
+				</a>
+			</div>
+			<ul id="places-listview"></ul>
+			<div class="emptyState hidden">
+				<img src="images/empty-places.svg" />
+			</div>
+		</div>
+
+	</div>
+
+	<ul data-role="actionsheet" id="placesActions" data-popup='{"direction": "left"}'>
+		<li id="check-out"><a data-action="checkOut">Check Out</a></li>
+		<li id="go-to-chat"><a data-action="goToChat">Go To Chat</a></li>
+		<li><a data-action="doEditPlace">Edit Place</a></li>
+		<li><a data-action="doDeletePlace">Delete Place</a></li>
+	</ul>
+</div>
+
+<!-- Find Place -->
+<div data-role="view" data-title="New Places Nearby" id="findPlace" data-layout="main"  data-show="findPlacesView.onShow" data-init="findPlacesView.onInit" data-before-hide="findPlacesView.onHide" data-transition="slide:up">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span data-role="view-title"></span>
+			<a data-role="button" data-click="findPlacesView.onDone" data-align="left" >
+				<img src="images/nav-back.svg" />
+			</a>
+		</div>
+	</div>
+
+
+	<div class="tempSearchBox">
+		<div class="appendSearch">
+			<span class="searchIcon"><img src="images/search.svg" /></span>
+			<input class="doubleAppendSearch"  placeholder="Search nearby ..." id="findPlaceSearchQuery" />
+			<span class="enterSearch hidden"><a class="btnClear-grey"><img class="icon-sm" src="images/close.svg" /></a></span>
+		</div>
+	</div>
+	<div>
+		<ul id="findplace-listview"></ul>
+	</div>
+</div>
+
+
+<!-- Nearby Results -->
+<div data-role="modalview" data-tile="Nearby Results" id="nearby-results" style="height:90%; width:90%;">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Nearby Results</span>
+			<a id="close-nearby-results" data-role="button" data-click="closeNearbyResults"><i class="fa fa-close"></i></a>
+		</div>
+	</div>
+
+	<ul id="nearby-results-list"></ul>
+</div>
+
+<div data-role="view" id="placeView" data-title="Place View" data-model="placeView._activePlace" class="appearance" data-layout="main" data-init="placeView.onInit" data-show="placeView.onShow" data-hide="placeView.onHide" data-transition="fade">
+	<div class="smallHeader" data-role="header">
+		<a data-role="button" class="left" data-click="placeView.onDone">
+			<img src="images/nav-back-light.svg" />
+		</a>
+		<a data-role="button" class="right btnClear-light" data-click="placeView.openPlaceMap">
+			View on map
+		</a>
+	</div>
+	<div class="map-placeLayer"></div>
+
+	<div class="placeCard">
+		<div class="placeCardTop">
+			<h4 class="textClamp"><span class="primaryName"></span> <span class="secondName"></span></h4>
+			<p data-bind="text: address"></p>
+			<p id="publicPlaceView">
+				<span class="helper-sm">
+					<img src="images/place-public.svg" /> Public Place
+				</span>
+			</p>
+			<p id="privatePlaceView">
+				<span class="helper-sm">
+					<img src="images/place-private.svg" /> Private Place
+				</span>
+			</p>
+		</div>
+		<div class="line"></div>
+		<ul class="list-inline" id="placeListOpt">
+			<li>
+				<a class="btnClear-sm" data-role="button" data-click="placeView.openChat">
+					<img src="images/icon-chat-active.svg" class="icon-btn" /> Start a Chat </a>
+			</li>
+			<li>
+				<a class="btnClear-sm" data-role="button" data-click="placeView.takePhoto">
+					<img src="images/icon-camera-active.svg" class="icon-btn" /> Snap a Photo
+				</a>
+			</li>
+		</ul>
+	</div>
+	<div class="placeContent">
+		<p class="helper"><img src="images/icon-memories.svg" class="icon" /> No Memories here yet </p>
+		<p class="hidden"><img src="images/icon-memories.svg" class="icon" /> Memories</p>
+
+		<div class="placeContentBox">
+			<!-- Place content here-->
+		</div>
+	</div>
+</div>
+
+
+<!--/*
+ * Profile
+ */-->
+<!-- profile view -->
+<div data-role="view" id="profile" data-title="Profile" data-layout="profileLayout" data-model="userModel.currentUser" class="appearance" data-init="profileView.onInit" data-transition="slide:right" data-show="profileView.onShow">
+
+	<div data-role="header">
+		<div data-role="navbar">
+			<span data-role="view-title"></span>
+			<a data-role="button" href="#home" data-align="right">
+				<img class="menuIcon" src="images/close.svg"/>
+			</a>
+		</div>
+	</div>
+	<div class="profileEdit" id="profileEditPhotos">
+		<div class="profileTopBox">
+			<div class="profileEditPrivate">
+				<div class="profilePrivateImg">
+					<img src="images/default-private.svg" data-bind="attr: {src: photo}"/>
+				</div>
+				<div class="profilePrivateImgBtn">
+					<label>Profile photo</label>
+					<p class="caption">
+						Your profile photo is visible <b>ONLY</b> to your contacts.
+					</p>
+					<a class="btnClear" data-role="button" href="#profilePhotoEdit" >Update Profile Photo</a>
+				</div>
+			</div>
+		</div>
+		<div class="line"></div>
+	</div>
+	<!-- Edit info -->
+	<div class="profileEditBtm">
+		<form style="clear:both;">
+			<h3>Edit Info
+				<a class="btnClear right" href="#modalview-changePassword" data-rel="modalview" id="profile-changePassword" data-role="button" >Change Password</a>
+			</h3>
+			<ul data-role="listview" data-style="inset">
+				<li>
+					<label>Name (Your First and Last Name)
+						<input type="search" id="profile-name" data-bind="value: name" />
+					</label>
+				</li>
+				<li>
+					<label>Alias (How other users see you)
+						<input type="search" id="profile-alias" data-bind="value: alias" />
+					</label>
+				</li>
+				<li>
+					<label>Contact email
+						<input type="email" id="profile-email" data-bind="value: email" />
+					</label>
+				</li>
+				<li>
+					<label>Mobile Phone
+						<span class="helper helper-right helper-form"><img src="images/lock.svg" /> Locked </span>
+						<input type="tel" id="profile-phone" class="phone" data-bind="value: phone" readonly />
+					</label>
+				</li>
+			</ul>
+
+		</form>
+	</div>
+</div>
+
+<!-- Profile Edit -->
+<div data-role="view" id="profileEdit" data-title="Edit Profile" data-layout="profileLayout" data-model="profileEditView._activeProfile"
+	 data-init="profileEditView.onInit"  data-show="profileEditView.onShow" class="appearance" data-transition="slide:right">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span data-role="view-title"></span>
+			<a data-role="button" href="#:back" data-align="left"><img src="images/nav-back.svg"/></a>
+			<a data-role="button"  data-click="profileEditView.doSave" data-align="right">Save</a>
+		</div>
+	</div>
+	<div class="profileEdit" >
+		<div class="profileTopBox">
+			<div class="profileEditPrivate">
+				<div class="profilePrivateImg">
+					<img src="images/default-private.svg" data-bind="attr: {src: photo}"/>
+				</div>
+				<div class="profilePrivateImgBtn">
+					<label>Profile photo</label>
+					<p class="caption">
+						Your profile photo is visible <b>ONLY</b> to your contacts.
+					</p>
+					<a class="btnClear" data-role="button" href="#profilePhotoEdit" >Update Profile Photo</a>
+				</div>
+			</div>
+		</div>
+		<div class="line"></div>
+	</div>
+	<!-- Edit info -->
+	<div class="profileEditBtm">
+		<form style="clear:both;">
+			<h3>Edit Info</h3>
+			<ul data-role="listview" data-style="inset">
+				<li>
+					<label>Name (Your First and Last Name)
+						<input type="search" data-bind="value: name" />
+					</label>
+				</li>
+				<li>
+					<label>Alias (How other users see you)
+						<input type="search" data-bind="value: alias" />
+					</label>
+				</li>
+				<li>
+					<label>Contact email
+						<input type="email"  data-bind="value: email" />
+					</label>
+				</li>
+				<li>
+					<label>Mobile Phone
+						<span class="helper helper-right helper-form"><i class="fa fa-lock"></i> Locked <a class="btnClear" id="helper-profilePhone"></a></span>
+						<input type="tel" id="profile-phone" data-bind="value: phone" readonly />
+					</label>
+				</li>
+			</ul>
+			<a class="btnClear" href="#modalview-changePassword" data-rel="modalview" id="profile-changePassword" data-role="button" >Change Password</a>
+		</form>
+	</div>
+</div>
+
+<!-- Ghost selection modal -->
+<div data-role="modalview" id="modalview-chooseGhost" style="width: 90%; display:none;" class="appearance">
+	<div class="modalTop">
+		<h2>
+			Let's do this
+            <span class="closeBox" style="float:right;">
+                <a data-click="closeChooseGhost;" data-role="button"><img src="images/close.svg" /></a>
+            </span>
+		</h2>
+		<p>
+			Select a public ghost.
+		</p>
+	</div>
+	<div class="line"></div>
+
+	<div class="ghostSelectionBox">
+		<div class="ghostPhotoBox">
+			<a data-click="whichGhost" id="ghost-red" data-role="button">
+				<img class="circle-img-lg" src="images/ghost-red.svg"/>
+			</a>
+		</div>
+		<div class="ghostPhotoBox">
+			<a data-click="whichGhost" id="ghost-purple" data-role="button">
+				<img class="circle-img-lg" src="images/ghost-purple.svg"/>
+			</a>
+		</div>
+		<div class="ghostPhotoBox">
+			<a data-click="whichGhost" class="currentGhost" id="ghost-blue" data-role="button">
+				<img class="circle-img-lg" src="images/ghost-blue.svg"/>
+			</a>
+		</div>
+		<div class="ghostPhotoBox">
+			<a data-click="whichGhost"  id="ghost-teal" data-role="button">
+				<img class="circle-img-lg" src="images/ghost-teal.svg"/>
+			</a>
+		</div>
+		<div class="ghostPhotoBox">
+			<a data-click="whichGhost" id="ghost-green" data-role="button">
+				<img class="circle-img-lg"  src="images/ghost-green.svg"/>
+			</a>
+		</div>
+		<div class="ghostPhotoBox">
+			<a data-click="whichGhost" id="ghost-yellow" data-role="button">
+				<img class="circle-img-lg"  src="images/ghost-yellow.svg"/>
+			</a>
+		</div>
+		<div class="ghostPhotoBox">
+			<a data-click="whichGhost" id="ghost-orange" data-role="button">
+				<img class="circle-img-lg"  src="images/ghost-orange.svg"/>
+			</a>
+		</div>
+		<div class="ghostPhotoBox">
+			<a data-click="whichGhost" id="ghost-grey" data-role="button">
+				<img class="circle-img-lg" src="images/ghost-grey.svg"/>
+			</a>
+		</div>
+		<div class="ghostPhotoBox">
+			<a data-click="whichGhost" id="ghost-black" data-role="button">
+				<img class="circle-img-lg"  src="images/ghost-black.svg"/>
+			</a>
+		</div>
+	</div>
+	<div class="clearfix"></div>
+</div>
+
+<!-- change password modal -->
+<div data-role="modalview" id="modalview-changePassword" style="width: 90%; display:none;" class="appearance">
+	<div class="modal-bottom">
+		<h4>Change Password
+    	<span style="float:right; ">
+        	<a data-click="closeNewPass;" data-role="button"><img src="images/close.svg" /></a>
+        </span>
+		</h4>
+		<ul data-role="listview" data-style="inset">
+			<li>
+				<label>New Password
+					<input type="password" id="newPassword1" />
+				</label>
+			</li>
+			<li>
+				<label>Confirm Password
+					<input type="password" id="newPassword2" />
+				</label>
+			</li>
+		</ul>
+	</div>
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnSecondary" data-click="validNewPass" data-role="button">Update</a>
+	</div>
+</div>
+
+<div data-role="view" id="profilePhotoEdit" data-show="editProfilePhotoView.onShow" data-init="editProfilePhotoView.onInit" style="display: none;"  class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<a data-role="button"  data-align="left" href="#:back" ><img src="images/nav-back.svg" /></a>
+			<span>Change Profile Photo</span>
+			<a data-click="onDone"  type="button" data-role="button" data-align="right">Update</a>
+		</div>
+	</div>
+
+	<div style="text-align: center; padding-top: 6px;" id="profilePhotoImportDiv">
+		<p> Choose a photo from your phone's gallery or ghostgram Memories.  Or take a new one with your phone's camera!</p>
+		<div style="display: inline-block;">
+			<a type="button" data-role="button" data-click="editProfilePhotoView.doCamera" class="btnClearLine-grey-sm">Phone Camera</a>
+			<a type="button" data-role="button" data-click="editProfilePhotoView.doPhotoGallery" class="btnClearLine-grey-sm">Phone Photos</a>
+			<a type="button" data-role="button" data-click="editProfilePhotoView.doMemories" class="btnClearLine-grey-sm">Memories</a>
+		</div>
+	</div>
+
+	<div style="margin:8px; height: 50%; width: auto; text-align: center">
+		<img id="profilePhotoImage" class="wraption"  style="max-height: 100%; max-width:100%; vertical-align: middle;">
+	</div>
+
+</div>
+
+<!--/*
+ * Settings
+ */-->
+
+<div data-role="view" id="settings" data-title="Settings" data-layout="main" data-model="userModel" class="appearance" data-init="homeView.settingsOnInit">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span data-role="view-title"></span>
+			<a data-role="button" href="#home" data-align="right">
+				<img class="menuIcon" src="images/close.svg"/>
+			</a>
+		</div>
+	</div>
+	<form>
+		<ul data-role="listview" data-style="inset">
+			<li>
+				<h3>Display</h3>
+			</li>
+			<li>
+				<label>Increase Chat Font Size</label>
+				<a class="btnClear right" data-role="button" data-click="homeView.settingRegFont">
+					<img src="images/icon-font-sm.svg" class="icon" />
+				</a>
+				<a class="btnClear right" data-role="button" data-click="homeView.settingBigFont">
+					<img src="images/icon-font-lg.svg" class="icon" />
+				</a>
+			</li>
+			<li>
+				<div class="chat-message-sender">
+					<div class="chat-message-text" id="sampleChatSize">
+						Sample chat text size
+					</div>
+				</div>
+			</li>
+			<br />
+			<li>
+				<h3>
+					Photos
+				</h3>
+			</li>
+			<li>
+				<label>Use Retina Photos
+					<input type="checkbox" id="settingsRetinaPhoto" data-role="switch" data-bind="checked: currentUser.isRetina"/>
+				</label>
+			</li>
+			<li>
+				<label> Sync on WIFI Only
+					<input type="checkbox" id="settingsWIFIOnly" data-role="switch" data-bind="checked: currentUser.isWIFIOnly" />
+				</label>
+			</li>
+			<li>
+				<label> Keep Original Photo
+					<input type="checkbox" id="settingsKeepPhoto" data-role="switch" data-bind="checked: currentUser.isPhotoStored" />
+				</label>
+			</li>
+			<li>
+				<label> Save to Phone Photo Album
+					<input type="checkbox" id="settingsSaveToAlbum" data-role="switch"  data-bind="checked: currentUser.saveToPhotoAlbum"/>
+				</label>
+			</li>
+			<li>
+				<h3>
+					Development
+				</h3>
+			</li>
+
+			<li>
+				<label>Device Id (udid) <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
+					<input type="text" id="profile-udid" data-bind="value: device.udid" readonly/>
+				</label>
+			</li>
+			<li>
+				<label>User Id (UUID) <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
+					<input type="text" id="profile-uuid" data-bind="value: currentUser.userUUID" readonly/>
+				</label>
+			</li>
+			<li>
+				<label>App Version <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
+					<input type="text" id="profile-version" data-bind="value: currentUser.appVersion" readonly/>
+				</label>
+			</li>
+			<li>
+				<label> Application Directory <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
+					<input type="text" id="profile-appDirectory" data-bind="value: appDirectory" readonly/>
+				</label>
+			</li>
+			<li>
+				<label> Temporary Directory <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
+					<input type="text" id="profile-tempDirectory" data-bind="value: tempDirectory" readonly/>
+				</label>
+			</li>
+	</form>
+</div>
 
 
 </body>

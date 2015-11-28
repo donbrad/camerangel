@@ -106,6 +106,8 @@
 			notificationModel.localStorageFetch();
 		/*}*/
 
+		userModel.init();
+
 		userModel.initParse();
 
 		mapModel.init();
