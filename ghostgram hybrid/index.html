@@ -192,13 +192,13 @@
 	
 	<ul data-role="actionsheet" id="settingsAction" data-popup='{"direction": "left"}'>
 		<li>
-	  		<a data-role="button" data-click="go2Profile">View profile</a>
+	  		<a data-role="button" href="#profile">View profile</a>
 	  	</li>
 	    <li>
-	    	<a data-role="button" id="menuSettings" data-click="go2Settings">Settings</a>
+	    	<a data-role="button" id="menuSettings" href="#settings">Settings</a>
 	    </li>
 	    <li>
-	    	<a data-role="button" data-click="go2Support">Support</a>
+	    	<a data-role="button" href="#support" >Support</a>
 	    </li>
 		<li>
 			<a data-role="button" id="menuSignOut" data-click="homeSignout">Sign out</a>
@@ -311,7 +311,7 @@
 			Login
 		</h3>
 		<form id="formSignIn">
-			<a class="btnSecondary" data-click="signInView.onClear" type="button" data-role="button">Clear</a>
+
 			<ul data-role="listview" data-style="inset">
 				<li>
 					<label for="home-signin-username">Email Address</label>
@@ -323,7 +323,7 @@
 					<span id="forgotPassword" class="helper helper-right btnClear-grey" href="#modalview-recoverPassword" data-rel="modalview" data-role="button">Forgot password?</span>
 				</li>
 			</ul>
-			<a class="btnPrimary left" data-role="button"  data-click="signInView.doSignIn">Sign In</a>
+			<a class="btnPrimary btnSpan" data-role="button"  data-click="signInView.doSignIn">Sign In</a>
 		</form>
 	</div>
 	<div class="footer" data-role="footer" id="home-signin-footer">

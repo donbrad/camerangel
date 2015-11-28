@@ -800,6 +800,7 @@ var signInView = {
                 window.localStorage.setItem('ggHasAccount', true);
                 // Clear sign in form
                 $("#home-signin-username, #home-signin-password").val("");
+
                 userModel.parseUser = user;
 
                 userModel.generateUserKey();
