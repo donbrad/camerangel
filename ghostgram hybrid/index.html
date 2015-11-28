@@ -197,9 +197,6 @@
 	    <li>
 	    	<a data-role="button" id="menuSettings" href="#settings">Settings</a>
 	    </li>
-	    <li>
-	    	<a data-role="button" href="#support" >Support</a>
-	    </li>
 		<li>
 			<a data-role="button" id="menuSignOut" data-click="homeSignout">Sign out</a>
 		</li>
@@ -301,7 +298,7 @@
 </div>
 
 <!-- home - for new users -->
-<div data-role="view" data-title="ghostgrams" id="usersignin" data-layout="newuser" class="appearance" style="display:none;" data-init="signInView.onInit" data-show="signInView.onShow" data-transition="fade">
+<div data-role="view" data-title="ghostgrams" id="usersignin" data-layout="newuser" data-model="userModel" class="appearance" style="display:none;" data-init="signInView.onInit" data-show="signInView.onShow" data-transition="fade">
 	<div class="newuserBox">
 		<img id="signin-ghost" src="images/introImg.svg">
 	</div>
@@ -314,8 +311,10 @@
 
 			<ul data-role="listview" data-style="inset">
 				<li>
-					<label for="home-signin-username">Email Address</label>
+					<label for="home-signin-username">User Name (email address)</label>
 					<input type="email" id="home-signin-username" name="Email" required />
+					<span id="rememberUserName" class="helper helper-right btnClear-grey">Remember Username <input type="checkbox" data-role="switch" data-bind="checked: rememberUsername"/></span>
+
 				</li>
 				<li>
 					<label>Password</label>
@@ -326,9 +325,7 @@
 			<a class="btnPrimary btnSpan" data-role="button"  data-click="signInView.doSignIn">Sign In</a>
 		</form>
 	</div>
-	<div class="footer" data-role="footer" id="home-signin-footer">
-		<a class="btnPrimary btnSpan-btm" data-role="button"  data-click="signInView.doSignIn">Sign In</a>
-	</div>
+
 </div>
 
 
