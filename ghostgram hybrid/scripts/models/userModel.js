@@ -102,10 +102,10 @@ var userModel = {
 
         }
 
-        var user = Parse.User.current();
-        if (user.authenticated()) {
+
+        if (Parse.User.current() === null) {
             mobileNotify("Please login to ghostgrams");
-            return;
+            userModel.initialView = '#usersignin';
         } else {
             // Need to force parse to actually fetch the data from the service.  Parse creates a local cache of user data that gets saved on login / create
             // account while all user.set / saves are pushed to the cloud...
