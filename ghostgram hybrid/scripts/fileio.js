@@ -8,9 +8,10 @@
 
 
 var FileIO = {
-    _imageUrl : null,
+    _imageURI : null,
     _fileSystem : null,
     _imageName : null,
+    _callback : null,
 
 // sets the filesystem to the global var gFileSystem
     init : function(fileSystem) {
@@ -20,9 +21,20 @@ var FileIO = {
 // pickup the URI from the Camera edit and assign it to the global var gImageURI
 // create a filesystem object called a 'file entry' based on the image URI
 // pass that file entry over to gotImageURI()
-    savefile : function(imageURI, imageName) {
+    saveUrl : function(imageUrl, imageName, callback) {
+        FileIO._imageURI = imageUrl;
+        FileIO._imageName = imageName;
+        if (callback === undefined)
+            callback = null;
+        FileIO._callback = callback;
+    },
+
+    savefile : function(imageURI, imageName, callback) {
         FileIO._imageURI = imageURI;
         FileIO._imageName = imageName;
+        if (callback === undefined)
+            callback = null;
+        FileIO._callback = callback;
         window.resolveLocalFileSystemURI(imageURI, FileIO._saveFile, FileIO.errorHandler);
     },
 
@@ -30,12 +42,13 @@ var FileIO = {
 // on success run the movedImageSuccess() method
     _saveFile : function(fileEntry) {
         var newName = FileIO._imageName + ".jpg";
-        fileEntry.moveTo(gFileSystem.root, newName, FileIO.movedImageSuccess, FileIO.errorHandler);
+        fileEntry.moveTo(gFileSystem.root, newName, FileIO._Success, FileIO.errorHandler);
     },
 
 // send the full URI of the moved image to the updateImageSrc() method which does some DOM manipulation
-    movedImageSuccess : function(fileEntry) {
-        updateImageSrc(fileEntry.fullPath);
+    _Success : function(fileEntry) {
+        if (FileIO._callback !== null)
+            FileIO._callback(fileEntry.fullPath);
     },
 
 // get a new file entry for the moved image when the user hits the delete button
