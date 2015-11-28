@@ -501,70 +501,82 @@ var editProfilePhotoView = {
     }
 };
 
-
-var newUserView = {
-    _actionCreate: "Join ghostgrams",
-    _actionLogin : "Sign In",
-    _clickCreate : true,
-
+var signUpView = {
     onInit : function (e) {
         _preventDefault(e);
 
-        $("#home-signin-username").on("input", function(e) {
-            newUserView.checkUserName();
-        });
+        // Simple phone mask - http://jsfiddle.net/mykisscool/VpNMA/
+        $('#home-signup-phone')
 
-        $("#home-signin-password").on("input", function(e){
+            .keydown(function (e) {
+                var key = e.charCode || e.keyCode || 0;
+                var $phone = $(this);
 
-        });
+                // Auto-format- do not expose the mask as the user begins to type
+                if (key !== 8 && key !== 9) {
+                    if ($phone.val().length === 4) {
+                        $phone.val($phone.val() + ')');
+                    }
+                    if ($phone.val().length === 5) {
+                        $phone.val($phone.val() + ' ');
+                    }
+                    if ($phone.val().length === 9) {
+                        $phone.val($phone.val() + '-');
+                    }
+                }
 
+                // Allow numeric (and tab, backspace, delete) keys only
+                return (key == 8 ||
+                key == 9 ||
+                key == 46 ||
+                (key >= 48 && key <= 57) ||
+                (key >= 96 && key <= 105));
+            })
+            .keyup(function(e){
+                if ($(this).val().length === 14) {
+                    continueSignUp();
+                    $('#home-signup-phone').unbind("keyup")
+                }
+            })
+
+            .bind('focus click', function () {
+                var $phone = $(this);
+
+                if ($phone.val().length === 0) {
+                    $phone.val('(');
+                }
+                else {
+                    var val = $phone.val();
+                    $phone.val('').val(val); // Ensure cursor remains at the end
+                }
+            })
+
+            .blur(function () {
+                var $phone = $(this);
+
+                if ($phone.val() === '(') {
+                    $phone.val('');
+                }
+            });
+
+
+        $("#create-user-email, #create-user-name, #create-user-alias, #create-user-password").css("display", "none");
     },
 
-    checkUserName : function () {
-        var email = $("#home-signin-username").val();
-        if (email.length > 0) {
-            newUserView.setLoginMode();
-        } else {
-            newUserView.setCreateMode();
+    onSubmit : function (e) {
+        e.preventDefault();
+        var form = $("#formCreateAccount").kendoValidator().data("kendoValidator");
+
+        if (form.validate()) {
+            signUpView.doCreateAccount();
         }
     },
 
     onShow : function (e) {
         _preventDefault(e);
 
-        if (userModel.rememberUsername && userModel.username !== '') {
-            $('#home-signin-username').val(userModel.username)
-        }
 
-       newUserView.checkUserName();
     },
-
-    onClick : function (e) {
-
-        if (newUserView._clickCreate) {
-            newUserView.doCreateAccount();
-        } else {
-            newUserView.doSignIn();
-        }
-    },
-
-    onClear : function (e) {
-        $('#home-signin-username').val('');
-        $('#home-signin-password').val('');
-        newUserView.setCreateMode();
-    },
-
-    setCreateMode : function () {
-        $("#newuserhomeActionBtn").text(newUserView._actionCreate);
-        newUserView._clickCreate = true;
-    },
-
-    setLoginMode : function () {
-        $("#newuserhomeActionBtn").text(newUserView._actionLogin);
-        newUserView._clickCreate = false;
-    },
-
-
 
     doCreateAccount : function (e) {
         _preventDefault (e);
@@ -661,16 +673,16 @@ var newUserView = {
                                         mobileNotify('Welcome to ghostgrams!');
                                         userModel.initPubNub();
                                         window.localStorage.setItem('ggHasAccount', true);
-                                        /*if (window.navigator.simulator !== true) {
+                                        if (window.navigator.simulator === undefined) {
 
-                                         cordova.plugins.notification.local.add({
-                                         id         : 'userWelcome',
-                                         title      : 'Welcome to ghostgrams',
-                                         message    : 'You have a secure connection to your family, friends and favorite places',
-                                         autoCancel : true,
-                                         date : new Date(new Date().getTime() + 120)
-                                         });
-                                         }*/
+                                             cordova.plugins.notification.local.add({
+                                                 id         : 'userWelcome',
+                                                 title      : 'Welcome to ghostgrams',
+                                                 message    : 'You have a secure connection to your family, friends and favorite places',
+                                                 autoCancel : true,
+                                                 date : new Date(new Date().getTime() + 120)
+                                             });
+                                         }
 
                                         Parse.Cloud.run('sendPhoneVerificationCode', { phoneNumber: phone }, {
                                             success: function (result) {
@@ -709,10 +721,31 @@ var newUserView = {
 
     }
 
+};
+
+
+var newUserView = {
+
+    onInit : function (e) {
+        _preventDefault(e);
+
+
+    },
+
+
+    onShow : function (e) {
+        _preventDefault(e);
+
+
+    },
+
+
+
+
 
 };
 
-var signupView = {
+var signInView = {
     onInit : function (e) {
         _preventDefault(e);
 
