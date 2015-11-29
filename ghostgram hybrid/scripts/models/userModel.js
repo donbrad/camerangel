@@ -73,7 +73,8 @@ var userModel = {
             userModel.initialView = '#usersignin';
         } else {
             userModel.hasAccount = false;
-            userModel.initialView = '#newuserhome';        }
+            userModel.initialView = '#newuserhome';
+        }
     },
 
 
