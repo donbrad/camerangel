@@ -40,9 +40,10 @@ var photoModel = {
                         var store = cordova.file.dataDirectory;
                         window.resolveLocalFileSystemURL(store + photo.photoId + '.jpg',
                             function(fileEntry) {
-                                collection[i].set("deviceUrl", fileEntry);
+                                var deviceUrl = fileEntry.nativeURL;
+                                collection[i].set("deviceUrl", deviceUrl);
                                 collection[i].save();
-                                photo.deviceUrl = fileEntry;
+                                photo.deviceUrl = deviceUrl;
                             },
                             function (error) {
                                 photoModel.addToLocalCache(photo.imageUrl, photo.photoId, photo, collection[i]);
