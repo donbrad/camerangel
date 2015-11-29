@@ -23,8 +23,8 @@ var photoModel = {
     },
 
     fetch: function () {
-        var PhotoModel = Parse.Object.extend("photos");
-        var query = new Parse.Query(PhotoModel);
+        var ParsePhotoModel = Parse.Object.extend("photos");
+        var query = new Parse.Query(ParsePhotoModel);
 
         query.find({
             success: function(collection) {
@@ -45,7 +45,7 @@ var photoModel = {
                                 photo.deviceUrl = fileEntry;
                             },
                             function (error) {
-                                photoModel.addToLocalCache(photo.imageUrl, photo.photoId, photo, parseObj);
+                                photoModel.addToLocalCache(photo.imageUrl, photo.photoId, photo, collection[i]);
                             }
                         );
 
