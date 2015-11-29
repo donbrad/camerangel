@@ -31,7 +31,8 @@ var photoModel = {
                 mobileNotify("Fetching and upgrading photos ...");
                 var models = [];
                 for (var i = 0; i < collection.length; i++) {
-                    var photo = collection[i].toJSON();
+                    var parsePhoto = collection[i];
+                    var photo = parsePhoto.toJSON();
                     if (photo.imageUrl === undefined) {
                         photo.imageUrl = null;
                     }
@@ -41,12 +42,13 @@ var photoModel = {
                         window.resolveLocalFileSystemURL(store + photo.photoId + '.jpg',
                             function(fileEntry) {
                                 var deviceUrl = fileEntry.nativeURL;
-                                collection[i].set("deviceUrl", deviceUrl);
-                                collection[i].save();
+                               parsePhoto.set("deviceUrl", deviceUrl);
+                                parsePhoto.save();
                                 photo.deviceUrl = deviceUrl;
+                                photo.isDirty = true;
                             },
                             function (error) {
-                                photoModel.addToLocalCache(photo.imageUrl, photo.photoId, photo, collection[i]);
+                                photoModel.addToLocalCache(photo.imageUrl, photo.photoId, photo, parsePhoto);
                             }
                         );
 
