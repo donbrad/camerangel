@@ -1997,7 +1997,7 @@
 		#} else if (data.value === 'unknown') {#
 		New Chat Member
 		#} else if (data.value === 'zapped') {#
-		Blocked User
+		Deleted
 		#}#
 	</div>
 </script>
@@ -2075,9 +2075,7 @@
 
 							#:message#
 
-							# if (data.cateogy === 'zapped') {#
-							Blocked User - Tap to Unblock
-							#}#
+
 						</p>
 
 						# if (data.currentPlace !== undefined && data.currentPlace !== ""){#
@@ -2085,6 +2083,14 @@
 							@#:data.currentPlace#
 						</p>
 						#}#
+
+						<div>
+							# if (data.isBlocked) {#
+							<a data-type="button" data-contact="#:uuid#" data-click="contactsView.doBlockContact">Block</a>
+							#} else {#
+							<a data-type="button" data-contact="#:uuid#" data-click="contactsView.doUnBlockContact">UnBlock</a>
+							#}#
+						</div>
 					</div>
 
 					<div class="clearfix"></div>

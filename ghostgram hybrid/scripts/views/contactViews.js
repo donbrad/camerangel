@@ -233,6 +233,18 @@ var contactsView = {
     },
 
 
+    doBlockContact : function (e) {
+        _preventDefault(e);
+        var contactId = e.button[0].attributes["data-contact"].value;
+        contactModel.blockContact(contactId);
+    },
+
+    doUnBlockContact : function (e) {
+        _preventDefault(e);
+        var contactId = e.button[0].attributes["data-contact"].value;
+        contactModel.unblockContact(contactId);
+
+    },
 
     doDeleteContact : function (e) {
         _preventDefault(e);
