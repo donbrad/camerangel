@@ -237,6 +237,7 @@ var contactsView = {
         _preventDefault(e);
         var contactId = e.button[0].attributes["data-contact"].value;
         contactModel.blockContact(contactId);
+
     },
 
     doUnBlockContact : function (e) {
