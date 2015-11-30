@@ -748,7 +748,7 @@ var newUserView = {
         _preventDefault(e);
 
 
-    },
+    }
 
 
 
@@ -761,7 +761,7 @@ var signInView = {
         _preventDefault(e);
 
         $("#home-signin-username").on("input", function(e) {
-            signUpView.checkUserName();
+            // Add additional validation / helper code...
         });
 
         $("#home-signin-password").on("input", function(e){
