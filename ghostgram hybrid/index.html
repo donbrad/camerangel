@@ -853,7 +853,7 @@
 <script type="text/x-kendo-template" id="modalGalleryTemplate">
 	<div>
 		<div class="galleryImgBox">
-			# if (deviceUrl !== undefined && deviceUrl !== null) { #
+			# if (window.navigator.simulator === undefined && deviceUrl !== undefined && deviceUrl !== null) { #
 			<img class="galleryImg" src="#=deviceUrl#" />
 			# } else if (imageUrl !== undefined && imageUrl !== null) { #
 			<img class="galleryImg" src="#=imageUrl#" />
