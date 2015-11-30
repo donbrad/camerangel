@@ -122,6 +122,79 @@ var userModel = {
                     userModel.parseUser.save();
                 }
 
+                // Update new fields
+                var dirty = false;
+                if (user.get('addressList') === undefined) {
+                    userModel.currentUser.set('addressList', []);
+                    user.set('addressList', []);
+                    dirty = true;
+                }
+
+                if (user.get('emailList') === undefined) {
+                    userModel.currentUser.set('emailList', []);
+                    user.set('emailList', []);
+                    dirty = true;
+                }
+
+                if (user.get('phoneList') === undefined) {
+                    userModel.currentUser.set('phoneList', []);
+                    user.set('phoneList', []);
+                    dirty = true;
+                }
+
+                if (user.get('archiveIntro') === undefined) {
+                    userModel.currentUser.set('archiveIntro', false);
+                    user.set('archiveIntro', false);
+                    dirty = true;
+                }
+
+
+                if (user.get('homeIntro') === undefined) {
+                    userModel.currentUser.set('homeIntro', false);
+                    user.set('homeIntro', false);
+                    dirty = true;
+                }
+
+                if (user.get('chatIntro') === undefined) {
+                    userModel.currentUser.set('chatIntro', false);
+                    user.set('chatIntro', false);
+                    dirty = true;
+                }
+
+                if (user.get('contactIntro') === undefined) {
+                    userModel.currentUser.set('contactIntro', false);
+                    user.set('contactIntro', false);
+                    dirty = true;
+                }
+
+                if (user.get('galleryIntro') === undefined) {
+                    userModel.currentUser.set('galleryIntro', false);
+                    user.set('galleryIntro', false);
+                    dirty = true;
+                }
+
+                if (user.get('identiconIntro') === undefined) {
+                    userModel.currentUser.set('identiconIntro', false);
+                    user.set('identiconIntro', false);
+                    dirty = true;
+                }
+
+                if (user.get('placesIntro') === undefined) {
+                    userModel.currentUser.set('placesIntro', false);
+                    user.set('placesIntro', false);
+                    dirty = true;
+                }
+
+                if (user.get('firstMessage') === undefined) {
+                    userModel.currentUser.set('firstMessage', false);
+                    user.set('firstMessage', false);
+                    dirty = true;
+                }
+
+
+                if (dirty)
+                    user.save();
+
                 userModel.updatePrivateKey();
                 userModel.decryptPrivateKey();
                 userModel.initialView = '#home';
@@ -147,6 +220,16 @@ var userModel = {
                 userModel.currentUser.set('isRetina', user.get('isRetina'));
                 userModel.currentUser.set('isWIFIOnly', user.get('isWIFIOnly'));
                 userModel.currentUser.set('isPhotoStored', user.get('isPhotoStored'));
+                userModel.currentUser.set('addressList', user.get('addressList'));
+                userModel.currentUser.set('emailList', user.get('emailList'));
+                userModel.currentUser.set('phoneList', user.get('phoneList'));
+                userModel.currentUser.set('archiveIntro', user.get('archiveIntro'));
+                userModel.currentUser.set('homeIntro', user.get('homeIntro'));
+                userModel.currentUser.set('chatIntro', user.get('chatIntro'));
+                userModel.currentUser.set('contactIntro', user.get('contactIntro'));
+                userModel.currentUser.set('galleryIntro', user.get('galleryIntro'));
+                userModel.currentUser.set('identiconIntro', user.get('identiconIntro'));
+                userModel.currentUser.set('placesIntro', user.get('placesIntro'));
                 userModel.currentUser.set('saveToPhotoAlbum',user.get('saveToPhotoAlbum'));
                 userModel.currentUser.set('rememberUsername', user.get('rememberUsername'));
                 var phoneVerified = user.get('phoneVerified');

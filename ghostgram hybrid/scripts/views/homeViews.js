@@ -628,6 +628,17 @@ var signUpView = {
                                 user.set("useLargeView", false);
                                 user.set("rememberUsername", false);
                                 user.set("userUUID", userUUID);
+                                user.set('addressList', []);
+                                user.set('emailList', []);
+                                user.set('phoneList', []);
+                                user.set('archiveIntro', false);
+                                user.set('homeIntro', false);
+                                user.set('chatIntro', false);
+                                user.set('contactIntro', false);
+                                user.set('galleryIntro', false);
+                                user.set('identiconIntro', false);
+                                user.set('placesIntro', false);
+                                user.set('firstMessage', false);
                                 //user.set("publicKey", publicKey);
                                 //user.set("privateKey", privateKey);
 
@@ -841,6 +852,16 @@ var signInView = {
                 userModel.currentUser.set('useIdenticon', userModel.parseUser.get('useIdenticon'));
                 userModel.currentUser.set('useLargeView', userModel.parseUser.get('useLargeView'));
                 userModel.currentUser.set('rememberUsername', userModel.parseUser.get('rememberUsername'));
+                userModel.currentUser.set('addressList', userModel.parseUser.get('addressList'));
+                userModel.currentUser.set('emailList', userModel.parseUser.get('emailList'));
+                userModel.currentUser.set('phoneList', userModel.parseUser.get('phoneList'));
+                userModel.currentUser.set('archiveIntro', userModel.parseUser.get('archiveIntro'));
+                userModel.currentUser.set('homeIntro', userModel.parseUser.get('homeIntro'));
+                userModel.currentUser.set('chatIntro', userModel.parseUser.get('chatIntro'));
+                userModel.currentUser.set('contactIntro', userModel.parseUser.get('contactIntro'));
+                userModel.currentUser.set('galleryIntro', userModel.parseUser.get('galleryIntro'));
+                userModel.currentUser.set('identiconIntro', userModel.parseUser.get('identiconIntro'));
+                userModel.currentUser.set('placesIntro', userModel.parseUser.get('placesIntro'));
                 userModel.currentUser.set('publicKey', publicKey);
                 userModel.decryptPrivateKey();
                 //		userModel.currentUser.set('privateKey', privateKey);
