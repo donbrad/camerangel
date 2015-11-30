@@ -716,7 +716,7 @@ var channelView = {
 
        // var width = window.innerWidth - 68;
         //$('#messageTextArea').css("width", width+'px');
-        channelView.topOffset = APP.kendo.scroller().scrollTop;
+        //channelView.topOffset = APP.kendo.scroller().scrollTop;
        	autosize($('#messageTextArea'));
         
         $("#messages-listview").kendoMobileListView({
