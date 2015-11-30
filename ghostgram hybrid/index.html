@@ -311,35 +311,70 @@
 <!-- home - for new users -->
 <div data-role="view" data-title="ghostgrams" id="usersignin" data-layout="newuser" data-model="userModel" class="appearance" style="display:none;" data-init="signInView.onInit" data-show="signInView.onShow" data-transition="fade">
 	<div class="newuserBox">
-		<img id="signin-ghost" src="images/introImg.svg">
+		<p id="newWelcome">Welcome to</p>
+		<p id="newLogo"><img src="images/logo.svg" class="icon-md"/></p>
+		<h3>
+			<span class="feature" id="feature1">Personal</span> 
+			<span class="feature" id="feature2">Private</span>
+			<span class="feature" id="feature3">Secure</span>
+			<span id="messageIntro">Messaging</span></h3>
 	</div>
 	<div class="clearfix"></div>
-	<div class="loginBox card">
-		<h3>
-			Login
-		</h3>
+	<div class="loginBox card" id="signUpBox">
+		<form id="formCreateAccount">
+        <ul data-role="listview" data-style="inset">
+        	<li>
+                <label class="left" for="home-signup-phone"> Mobile Phone</label>
+                	<div class="mobile-countryCode">+1</div>
+                	<input class="mobile-phone mobile-input" type="tel" id="home-signup-phone" value="" name="Mobile Phone" placeholder="(•••) ••• - ••••" maxlength="14" required />
+                	<div class="mobile-helper">Important! Your number is how friends and family will find and connect with you. </div>
+                	<div class="clearfix"></div>
+            </li>
+            <li id="create-user-email">
+                <label for="home-signup-username">Email Address</label>
+                    <input type="email" id="home-signup-username" name="Email" default="Enter your email" required/>
+            </li>
+			  <li id="create-user-name">
+                <label for="home-signup-fullname">Full Name</label>
+                    <input type="text" id="home-signup-fullname" default="Enter your full name" required/>
+            </li>
+            <li id="create-user-password">
+                <label for="home-signup-password">Password</label>
+                <input type="password" id="home-signup-password" name="Password" value="" required />
+            </li> 
+        </ul>  
+
+    </form>
+    	<a class="btnSecondary btnSpan-btm" id="createAccountBtn" data-role="button" data-click="signUpView.doCreateAccount">Submit</a>
+	</div>
+	<div class="loginBox card" id="signInBox">
+		<h2>
+			Sign in
+		</h2>
 		<form id="formSignIn">
 			<ul data-role="listview" data-style="inset">
 				<li>
-					<label for="home-signin-username">User Name (email address)</label>
-					<input type="email" id="home-signin-username" name="Email" required />
-				</li>
-				<li>
-					<label class="helper helper-right btnClear-grey">
-						Remember Username </label>
-					<input type="checkbox" data-role="switch" data-bind="checked: rememberUsername"/></label>
-
+					<label for="home-signin-username">Username (email address)</label>
+					<input type="email" id="home-signin-username" name="Email" placeholder="me@example.com" required />
 				</li>
 				<li>
 					<label>Password</label>
 					<input type="password" id="home-signin-password" value=""  name="Password" required />
 					<span id="forgotPassword" class="helper helper-right btnClear-grey" href="#modalview-recoverPassword" data-rel="modalview" data-role="button">Forgot password?</span>
 				</li>
+				<li>
+					<label>
+					<input type="checkbox" data-role="switch" data-bind="checked: rememberUsername"/>
+						Remember Username 
+					</label>
+				</li>
 			</ul>
-			<a class="btnPrimary btnSpan" data-role="button"  data-click="signInView.doSignIn">Sign In</a>
+			<br/>
+			
 		</form>
+		<a class="btnSecondary btnSpan-btm" data-role="button" data-click="signInView.doSignIn">Submit</a>
 	</div>
-
+	<a class="btnSpan-btm" data-role="button" id="testingBtn" data-click="signInView.testingAnimation">Testing animation</a>
 </div>
 
 

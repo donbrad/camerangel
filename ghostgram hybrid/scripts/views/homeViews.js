@@ -746,6 +746,8 @@ var newUserView = {
 };
 
 var signInView = {
+	_introRun : false,
+	_hasSignedIn: false,
     onInit : function (e) {
         _preventDefault(e);
 
@@ -757,6 +759,63 @@ var signInView = {
 
         });
 
+        // Simple phone mask - http://jsfiddle.net/mykisscool/VpNMA/
+        $('#home-signup-phone')
+
+            .keydown(function (e) {
+                var key = e.charCode || e.keyCode || 0;
+                var $phone = $(this);
+
+                // Auto-format- do not expose the mask as the user begins to type
+                if (key !== 8 && key !== 9) {
+                    if ($phone.val().length === 4) {
+                        $phone.val($phone.val() + ')');
+                    }
+                    if ($phone.val().length === 5) {
+                        $phone.val($phone.val() + ' ');
+                    }
+                    if ($phone.val().length === 9) {
+                        $phone.val($phone.val() + '-');
+                    }
+                }
+
+                // Allow numeric (and tab, backspace, delete) keys only
+                return (key == 8 ||
+                key == 9 ||
+                key == 46 ||
+                (key >= 48 && key <= 57) ||
+                (key >= 96 && key <= 105));
+            })
+            .keyup(function(e){
+                if ($(this).val().length === 14) {
+                    continueSignUp();
+                    $('#home-signup-phone').unbind("keyup")
+                }
+            })
+
+            .bind('focus click', function () {
+                var $phone = $(this);
+
+                if ($phone.val().length === 0) {
+                    $phone.val('(');
+                }
+                else {
+                    var val = $phone.val();
+                    $phone.val('').val(val); // Ensure cursor remains at the end
+                }
+            })
+
+            .blur(function () {
+                var $phone = $(this);
+
+                if ($phone.val() === '(') {
+                    $phone.val('');
+                }
+            });
+
+
+        $("#create-user-email, #create-user-name, #create-user-alias, #create-user-password").css("display", "none");
+
     },
 
     onShow : function (e) {
@@ -766,7 +825,35 @@ var signInView = {
             $('#home-signin-username').val(userModel.username)
         }
 
+        if(!signInView._introRun){
+        	 // Animation
+        	$("#messageIntro").velocity({opacity: 1}).velocity({left: "50%"},{delay: 300});
+        	
+        	$("#feature1").velocity({opacity: 1, translateY: "0%"}, {delay: 1000, duration: 1000}).velocity({opacity: 0, translateY: "100%"});
+        	$("#feature2").velocity({opacity: 1, translateY: "0%"}, {delay: 2000, duration: 1000}).velocity({opacity: 0, translateY: "100%"});
+        	$("#feature3").velocity({opacity: 1, translateY: "0%"}, {delay: 3000, duration: 1000}).velocity({opacity: 0, translateY: "100%"});
+        	$("#messageIntro").velocity({opacity: 0, translateY: "-100%"}, {delay: 3000});
 
+
+        	$("#newWelcome").velocity("fadeIn", {delay: 4500});
+        	$("#newLogo").velocity({opacity: 1}, {delay: 5000, duration: 500, easing: "easeIn"});
+        	
+        	
+        	// todo jordan - wire different options
+        	$("#signInBox").velocity({translateY: "-10px;", opacity: 1}, {delay: 5500, duration: 1000, easing: "easeIn"});
+        	
+        	// delete testing btn
+    		$("#testingBtn").velocity("fadeIn", {delay: 6000});
+			
+    		signInView._introRun = true;
+        }
+        
+    
+    },
+    // todo - delete 
+    testingAnimation: function(){
+    	$("#signUpBox").velocity({translateY: "-10px;", opacity: 1}, {delay: 500, duration: 1000, easing: "easeIn"});
+    	$("#signInBox").css("display","none");
     },
 
     onClear : function (e) {

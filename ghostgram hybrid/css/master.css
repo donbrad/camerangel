@@ -2248,6 +2248,12 @@ textarea {
   color: #fff;
   background: #6CADF3;
 }
+.listTag-secondary {
+  border-radius: 3px;
+  padding: 0.1em 0.5em;
+  color: #fff;
+  background: #FADDB0;
+}
 #contacts-listview > li > ul > li > div > a > div.left.listName > h4 {
   margin-right: 0px;
 }
@@ -2597,6 +2603,11 @@ a:hover {
   width: 75%;
   float: left;
 }
+@media only screen and (max-width: 320px) {
+  .chatNameDiv {
+    width: 72%;
+  }
+}
 .chatStatusIcon {
   float: left;
   width: 1.5rem;
@@ -2616,6 +2627,11 @@ a:hover {
   width: 17%;
   text-align: right;
 }
+@media only screen and (max-width: 320px) {
+  .chatActivityTime {
+    width: 20%;
+  }
+}
 .chatDetails img {
   vertical-align: text-top;
 }
@@ -2631,7 +2647,7 @@ a:hover {
   top: 0px;
   left: 0px;
   display: block;
-  padding-left: 1rem;
+  padding-left: 0.5rem;
   padding-right: 1rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
@@ -5130,4 +5146,8 @@ html .km-pane-wrapper .k-header {
 }
 table.k-editor {
   border-color: #fff;
+}
+/* User sign in */
+#usersignin > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container {
+  background-image: radial-gradient(48% 50%, #A5D6FA 0%, #6CADF3 50%);
 }
