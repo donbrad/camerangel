@@ -827,20 +827,20 @@ var signInView = {
 
         if(!signInView._introRun){
         	 // Animation
-        	$("#messageIntro").velocity({opacity: 1}).velocity({left: "50%"},{delay: 300});
+        	$("#messageIntro").velocity({opacity: 1}).velocity({left: "50%"},{delay: 1300});
         	
-        	$("#feature1").velocity({opacity: 1, translateY: "0%"}, {delay: 1000, duration: 1000}).velocity({opacity: 0, translateY: "100%"});
-        	$("#feature2").velocity({opacity: 1, translateY: "0%"}, {delay: 2000, duration: 1000}).velocity({opacity: 0, translateY: "100%"});
-        	$("#feature3").velocity({opacity: 1, translateY: "0%"}, {delay: 3000, duration: 1000}).velocity({opacity: 0, translateY: "100%"});
+        	$("#feature1").velocity({opacity: 1, translateY: "0%"}, {delay: 2000, duration: 1000}).velocity({opacity: 0, translateY: "100%"});
+        	$("#feature2").velocity({opacity: 1, translateY: "0%"}, {delay: 3000, duration: 1000}).velocity({opacity: 0, translateY: "100%"});
+        	$("#feature3").velocity({opacity: 1, translateY: "0%"}, {delay: 4000, duration: 1000}).velocity({opacity: 0, translateY: "100%"});
         	$("#messageIntro").velocity({opacity: 0, translateY: "-100%"}, {delay: 3000});
 
 
-        	$("#newWelcome").velocity("fadeIn", {delay: 4500});
-        	$("#newLogo").velocity({opacity: 1}, {delay: 5000, duration: 500, easing: "easeIn"});
+        	$("#newWelcome").velocity("fadeIn", {delay: 5500});
+        	$("#newLogo").velocity({opacity: 1}, {delay: 6000, duration: 500, easing: "easeIn"});
         	
         	
         	// todo jordan - wire different options
-        	$("#signInBox").velocity({translateY: "-10px;", opacity: 1}, {delay: 5500, duration: 1000, easing: "easeIn"});
+        	$("#signInBox").velocity({translateY: "-10px;", opacity: 1}, {delay: 6500, duration: 1000, easing: "easeIn"});
         	
         	// delete testing btn
     		$("#testingBtn").velocity("fadeIn", {delay: 6000});
