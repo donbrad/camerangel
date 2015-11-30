@@ -1917,6 +1917,11 @@
 						<input id="editContactAddress" data-bind="value: address"/>
 					</label>
 				</li>
+				<li>
+					<label>Block
+						<input type="checkbox" data-role="switch"  data-bind="checked: isBlocked"/>
+					</label>
+				</li>
 			</ul>
 
 
@@ -2075,7 +2080,9 @@
 
 							#:message#
 
-
+							# if (data.isBlocked) {#
+							 (Blocked)
+							#}#
 						</p>
 
 						# if (data.currentPlace !== undefined && data.currentPlace !== ""){#
@@ -2083,14 +2090,6 @@
 							@#:data.currentPlace#
 						</p>
 						#}#
-
-						<div>
-							# if (data.isBlocked) {#
-							<a data-type="button" data-contact="#:uuid#" data-click="contactsView.doBlockContact">Block</a>
-							#} else {#
-							<a data-type="button" data-contact="#:uuid#" data-click="contactsView.doUnBlockContact">UnBlock</a>
-							#}#
-						</div>
 					</div>
 
 					<div class="clearfix"></div>
