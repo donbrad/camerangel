@@ -46,7 +46,10 @@ var galleryView = {
         photoModel.optionsShown = true;
 
 
-        
+        // Set img size for gallery
+        $("#gallery-listview li").css("width",galleryView._previewSize);
+        $("#gallery-listview li").css("padding-bottom",galleryView._previewSize);
+
 
         var scroller = e.view.scroller;
         //scroller.scrollTo(0,-44);
@@ -158,8 +161,8 @@ var galleryView = {
         
 
         // Set img size for gallery
-        $("#gallery-listview li").css("width",photoModel.previewSize);
-        $("#gallery-listview li").css("padding-bottom",photoModel.previewSize);
+        $("#gallery-listview li").css("width",galleryView._previewSize);
+        $("#gallery-listview li").css("padding-bottom",galleryView._previewSize);
 
         // if gallery photos are open, display actionBtn
         var galleryMenuIndex = $("#galleryMenuSelect").data("kendoMobileButtonGroup").current().index();
