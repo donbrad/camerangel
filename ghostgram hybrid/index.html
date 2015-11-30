@@ -321,6 +321,7 @@
 	</div>
 	<div class="clearfix"></div>
 	<div class="loginBox card" id="signUpBox">
+		<h2>Let's get started!</h2>
 		<form id="formCreateAccount">
         <ul data-role="listview" data-style="inset">
         	<li>
@@ -360,7 +361,7 @@
 				<li>
 					<label>Password</label>
 					<input type="password" id="home-signin-password" value=""  name="Password" required />
-					<span id="forgotPassword" class="helper helper-right btnClear-grey" href="#modalview-recoverPassword" data-rel="modalview" data-role="button">Forgot password?</span>
+					<span id="forgotPassword" class="btnClear-grey" href="#modalview-recoverPassword" data-rel="modalview" data-role="button">Forgot password?</span>
 				</li>
 				<li>
 					<label>
@@ -464,11 +465,11 @@
             </li>
             <li id="create-user-email">
                 <label for="home-signup-username">Email Address</label>
-                    <input type="email" id="home-signup-username" name="Email" default="Enter your email" required/>
+                    <input type="email" id="home-signup-username" name="Email" placeholder="me@example.com" required/>
             </li>
 			  <li id="create-user-name">
                 <label for="home-signup-fullname">Full Name</label>
-                    <input type="text" id="home-signup-fullname" default="Enter your full name" required/>
+                    <input type="text" id="home-signup-fullname" required/>
             </li>
             <li id="create-user-password">
                 <label for="home-signup-password">Password</label>

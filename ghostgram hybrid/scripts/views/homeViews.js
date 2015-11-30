@@ -752,7 +752,7 @@ var signInView = {
         _preventDefault(e);
 
         $("#home-signin-username").on("input", function(e) {
-            signUpView.checkUserName();
+            //signUpView.checkUserName();
         });
 
         $("#home-signin-password").on("input", function(e){

@@ -2073,12 +2073,12 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .km-root .appearance .km-listview label {
   color: #212121;
-  font-size: 0.875em;
+  font-size: 1em;
   width: 100%;
 }
 .km-wp .appearance .km-listview label {
   color: #212121;
-  font-size: 0.875em;
+  font-size: 1em;
 }
 .km-root .km-pane .km-view.appearance .km-listview input {
   position: relative;
@@ -3146,8 +3146,8 @@ div.loginBox > form > div > ul > li {
   margin-bottom: 1px;
 }
 #forgotPassword {
-  font-size: 12px !important;
-  font-size: 0.75em !important;
+  font-size: 14px !important;
+  font-size: 0.875em !important;
 }
 .forgotBox {
   padding: 1rem;
@@ -4038,8 +4038,8 @@ div.contactListBox.activeContact > div > div > ul {
 .mobile-helper {
   width: 80%;
   margin-left: 20%;
-  font-size: 11px;
-  font-size: 0.6875em;
+  font-size: 14px;
+  font-size: 0.875em;
 }
 #formCreateAccount > div > ul > li,
 #formCreateAccount > div > ul {
