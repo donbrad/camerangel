@@ -309,7 +309,7 @@ var photoModel = {
                     // Execute any logic that should take place after the object is saved.
                     var photoObj = photo.toJSON();
                     mobileNotify('Photo added to ghostgrams gallery');
-                    photoModel.photosDS.add(photoObject);
+                    photoModel.photosDS.add(photoObj);
                     photoModel.parsePhoto = photo;
                     currentChannelModel.currentMessage.photo = {thumb: photo.get('thumbnailUrl'), photo: photo.get('imageUrl'), phone: photo.get('phoneUrl')};
 
