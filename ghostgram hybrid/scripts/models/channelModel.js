@@ -613,6 +613,15 @@ var channelModel = {
         });
     },
 
+    deletePrivateChannel : function (channelId) {
+        var channel = channelModel.findPrivateChannel(channelId);
+
+        if (channel !== undefined) {
+            deleteParseObject('channels', 'channelId', channelId);
+            channelModel.channelsDS.remove(channel);
+        }
+    },
+
     deleteChannel : function (channelId, silent) {
         var dataSource = channelModel.channelsDS;
         var cacheFilter = dataSource.filter();
