@@ -465,10 +465,16 @@ var channelModel = {
     // Add group channel for members...
     // Get's the current owner details from parse and then creates a local channel for this user
     addMemberChannel : function (channelId, channelName) {
-        if (channelName === undefined || channelName === null) {
-
+        var channel = channelModel.findChannelModel(channelId);
+        if (channel !== undefined)  {
+            // Channel already exists
+            return;
         }
-        mobileNotify("Getting details for channel :" + channelName);
+
+        if (channelName !== undefined && channelName !== null) {
+            mobileNotify("Getting details for channel :" + channelName);
+        }
+
        getChannelDetails(channelId, function (result) {
             if (result.found) {
                 var newChannel = result.channel;
@@ -491,6 +497,9 @@ var channelModel = {
 
     // Add group channel for owner...
     addChannel : function (channelName, channelDescription, isOwner, durationDays, channelUUID, ownerUUID, ownerName, placeId, placeName, isPrivatePlace, members) {
+
+
+
         var Channels = Parse.Object.extend("channels");
         var channel = new Channels();
 
@@ -501,6 +510,7 @@ var channelModel = {
         var name = channelName,
             description = channelDescription,
             channelId = channelUUID;
+
 
         // If this is a member request, channelUUID will be passed in.
         // If user is creating new channel, they own it so create new uuid and update ownerUUID and ownerName
