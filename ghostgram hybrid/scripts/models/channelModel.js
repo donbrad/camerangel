@@ -652,10 +652,8 @@ var channelModel = {
             success: function(channel) {
                 // Execute any logic that should take place after the object is saved.
                 mobileNotify('Added Chat : ' + channel.get('name'));
-                if (isOwner) {
-                    // If this is an owner channel, jump to create to add members...
-                    APP.kendo.navigate('#editChannel?channel=' + channelId);
-                }
+                APP.kendo.navigate('#editChannel?channel=' + channelId);
+                
             },
             error: function(channel, error) {
                 // Execute any logic that should take place if the save fails.
