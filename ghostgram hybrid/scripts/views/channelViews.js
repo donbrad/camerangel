@@ -1534,8 +1534,16 @@ var channelPresence = {
 
     },
 
+    openModal: function () {
+        $("#channelPresence").data("kendoMobileModalView").open();
+    },
+
+    closeModal : function () {
+        $("#channelPresence").data("kendoMobileModalView").close();
+    },
+
     onDone: function (e) {
-        $("#channelPresence").data("kendoMobileDrawer").hide();
+        $("#channelPresence").data("kendoMobileModalView").close();
     },
 
     onClose : function (e) {

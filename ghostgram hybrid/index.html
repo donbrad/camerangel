@@ -1318,7 +1318,7 @@
 			</a>
 			<img src="" id="channelImage" height="32" class="circle-img"/>
 			<span id="channelName"></span>
-			<a data-align="right" data-role="button" id="messagePresenceButton" data-rel="drawer" href="#channelPresence">
+			<a data-align="right" data-role="button" id="messagePresenceButton" data-click="channelPresence.openModal">
 				<img src="images/group-icon.svg" />
 			</a>
 		</div>
@@ -1635,10 +1635,10 @@
 	</div>
 </script>
 
-<div data-role="drawer" id="channelPresence"  data-position="right" data-init="channelPresence.onInit" data-show="channelPresence.onShow" data-swipeToOpen="false" data-views='["channel"]' style="width: 80%;">
+<div data-role="modalView" id="channelPresence"  data-init="channelPresence.onInit" data-open="channelPresence.onShow"  style="width: 90%;">
 	<div data-role="header">
 		<div data-role="navbar">
-			<a data-align="left" data-role="button" data-click="channelPresence.onDone">
+			<a data-align="left" data-role="button" data-click="channelPresence.closeModal">
 				<img src="images/close.svg" />
 			</a>
 			<span>Members</span> <span class="badge primary-200" id="occupancyCount">1</span>
