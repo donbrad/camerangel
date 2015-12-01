@@ -287,6 +287,13 @@ var contactModel = {
         });
     },
 
+    setCurrentContact: function (contact) {
+        if (contact !== undefined && contact !== null) {
+            contactModel.currentContact = contact;
+        } else {
+            contactModel.currentContact = null;
+        }
+    },
 
     // Build an identity list for contacts indexed by contactUUID
     buildContactList : function () {

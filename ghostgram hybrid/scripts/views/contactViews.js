@@ -36,7 +36,7 @@ var contactsView = {
                     return;
                 }
 
-                updateCurrentContact(contact);
+                contactModel.setCurrentContact(contact);
 
                 if (contact.category === 'phone') {
                     if (contactModel.unifiedDeviceContact) {
@@ -51,6 +51,10 @@ var contactsView = {
                     // New Chat Member
                     mobileNotify("Looking up " + contact.name);
                     contactModel.updateContactDetails(contact.uuid, function (thisContact) {
+                        if (thisContact.contactUUID !== undefined && thisContact.contactUUID !== null) {
+                            // TODO: Need to convert this user to member
+
+                        }
 
                     })
 
