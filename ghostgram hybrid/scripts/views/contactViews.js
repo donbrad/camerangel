@@ -1215,7 +1215,7 @@ var contactActionView = {
     	$("#contactProfileImg, #contactStatusImg").css("opacity", 0);
 
         if (contactActionView._returnModalId !== null) {
-            $(contactActionView._returnModalId).data("kendoMobileModalView").close();
+            $(contactActionView._returnModalId).data("kendoMobileModalView").open();
             contactActionView._returnModalId = null;
         }
 
