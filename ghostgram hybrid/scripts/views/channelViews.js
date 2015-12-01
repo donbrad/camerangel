@@ -86,7 +86,13 @@ var channelsView = {
 
                 var query = this.value;
                 if (query.length > 0) {
-                    channelModel.channelsDS.filter({
+                    channelModel.channelsDS.filter([
+                        {
+                            "field": "isDeleted",
+                            "operator": "eq",
+                            "value": false
+                        },
+                        {
                         "logic": "or",
                         "filters": [
                             {
@@ -98,14 +104,10 @@ var channelsView = {
                                 "field": "description",
                                 "operator": "contains",
                                 "value": query
-                            },
-                            {
-                                "field": "isDeleted",
-                                "operator": "eq",
-                                "value": false
                             }
+
                         ]
-                    });
+                    }]);
                     $('#channels .enterSearch').removeClass('hidden');
 
                 } else {
