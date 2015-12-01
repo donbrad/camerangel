@@ -208,7 +208,7 @@ var contactModel = {
     fetch : function () {
         var ContactModel = Parse.Object.extend("contacts");
         var query = new Parse.Query(ContactModel);
-        query.limit(512);
+        query.limit(1000);
 
         query.find({
             success: function(collection) {
@@ -303,7 +303,9 @@ var contactModel = {
                     name: contact.name,
                     alias: contact.alias,
                     phone: contact.phone,
-                    photo: contact.photo
+                    photo: contact.photo,
+                    isDeleted: contact.isDeleted,
+                    isBlocked: contact.isBlocked
                 };
             }
 
@@ -333,31 +335,89 @@ var contactModel = {
         return(url);
     },
 
-    delete: function() {
+    queryContact : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = contactModel.contactsDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var contact = view[0];
 
-        var uuid = contactModel.currentContact.uuid;
-        this.deleteContact(uuid);
+        dataSource.filter(cacheFilter);
 
+        return(contact);
+    },
+
+    queryContactList : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = contactModel.contactListDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var contact = view[0];
+
+        dataSource.filter(cacheFilter);
+
+        return(contact);
+    },
+
+    queryContacts : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = contactModel.contactListDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+
+        dataSource.filter(cacheFilter);
+
+        return(view);
     },
 
     deleteContact : function (contactId) {
-        var dataSource = contactModel.contactsDS;
+        var contact = contactModel.queryContact({ field: "uuid", operator: "eq", value: contactId });
+
+       /* var dataSource = contactModel.contactsDS;
         var uuid = contactId;
 
+        var queryCache =  dataSource.filter();
+        if (queryCache === undefined) {
+            queryCache = {};
+        }
         dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
         var view = dataSource.view();
         var contact = view[0];
-        dataSource.filter([]);
-        dataSource.remove(contact);
+        dataSource.filter(queryCache);*/
 
-        deleteParseObject("contacts", 'uuid', uuid);
+        if (contact !== undefined) {
+            contact.set('isDeleted', true);
+            contact.set('category', 'zapped');
 
-        // If there's a private channel for this contact, need to delete it.
-        var localChannel = channelModel.findPrivateChannel(uuid);
-        if (localChannel !== undefined) {
-            channelModel.deleteChannel(localChannel);
+            var contactList = contactModel.queryContactList({ field: "contactUUID", operator: "eq", value: contact.contactUUID });
+            if (contactList !== undefined) {
+                contactList.set('isDeleted', true);
+                contactList.set('category', 'zapped');
+            }
+           // dataSource.remove(contact);
+
+            updateParseObject("contacts", 'uuid', contactId, "isDeleted", true);
+            updateParseObject("contacts", 'uuid', contactId, "category", 'zapped');
+
+            // Delete any current private channel
+            channelModel.deletePrivateChannel(contactId);
+
         }
-
     },
 
     deleteAllContacts : function () {
@@ -370,6 +430,10 @@ var contactModel = {
 
     getPotentialMemberList : function () {
         var dataSource = contactModel.contactsDS;
+        var queryCache = dataSource.filter();
+        if (queryCache === undefined) {
+            queryCache = {};
+        }
         dataSource.filter( { "logic" : "or",
             filters : [
                 {field: "category", operator: "eq", value: 'member' },
@@ -378,26 +442,30 @@ var contactModel = {
 
         var view = dataSource.view();
         return(view);
-        dataSource.filter([]);
+        dataSource.filter(queryCache);
     },
 
     findContact: function (contactUUID) {
-        var dataSource = contactModel.contactsDS; 
+        var contact = contactModel.queryContact({ field: "contactUUID", operator: "eq", value: contactUUID });
+
+       /* var dataSource = contactModel.contactsDS;
         dataSource.filter( { field: "contactUUID", operator: "eq", value: contactUUID });
         var view = dataSource.view();
         var contact = view[0];
-        dataSource.filter([]);
+        dataSource.filter([]);*/
 
         return(contact);
     },
 
 
     findContactByUUID : function(uuid) {
-        var dataSource = contactModel.contactsDS;
+        var contact = contactModel.queryContact({ field: "uuid", operator: "eq", value: uuid });
+
+       /* var dataSource = contactModel.contactsDS;
         dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
         var view = dataSource.view();
         var contact = view[0];
-        dataSource.filter([]);
+        dataSource.filter([]);*/
 
         return(contact);
     },
@@ -450,11 +518,33 @@ var contactModel = {
     },
 
     blockContact : function (contactId) {
+        var contact = contactModel.queryContact({ field: "uuid", operator: "eq", value: contactId });
+
+
+        if (contact !== undefined) {
+            contact.set('isBlocked', true);
+            updateParseObject("contacts", 'uuid', contactId, "isBlocked", true);
+            var contactList = contactModel.queryContactList({ field: "contactUUID", operator: "eq", value: contact.contactUUID });
+            if (contactList !== undefined) {
+                contactList.set('isBlocked', true);
+            }
+        }
 
     },
 
     unblockContact : function (contactId) {
+        var contact = contactModel.queryContact({ field: "uuid", operator: "eq", value: contactId });
+        if (contact !== undefined) {
 
+            contact.set('isBlocked', false);
+
+            updateParseObject("contacts", 'uuid', contactId, "isBlocked", false);
+            var contactList = contactModel.queryContactList({ field: "contactUUID", operator: "eq", value: contact.contactUUID });
+            if (contactList !== undefined) {
+                contactList.set('isBlocked', false);
+            }
+
+        }
     },
 
     // Get a full contact details update, including phone and email.

@@ -192,10 +192,11 @@
 	
 	<ul data-role="actionsheet" id="settingsAction" data-popup='{"direction": "left"}'>
 		<li>
-	  		<a data-role="button" href="#profile">View profile</a>
+	  		<a data-role="button" data-click="go2Profile">View Profile</a>
 	  	</li>
 	    <li>
-	    	<a data-role="button" id="menuSettings" href="#settings">Settings</a>
+	    	<a data-role="button" id="menuSettings" data-click="go2Settings">View Settings</a>
+
 	    </li>
 		<li>
 			<a data-role="button" id="menuSignOut" data-click="homeSignout">Sign out</a>
@@ -311,6 +312,7 @@
 <!-- home - for new users -->
 <div data-role="view" data-title="ghostgrams" id="usersignin" data-layout="newuser" data-model="userModel" class="appearance" style="display:none;" data-init="signInView.onInit" data-show="signInView.onShow" data-transition="fade">
 	<div class="newuserBox">
+
 		<p id="newWelcome">Welcome to</p>
 		<p id="newLogo"><img src="images/logo.svg" class="icon-md"/></p>
 		<h3>
@@ -478,9 +480,7 @@
         </ul>  
     </form> 
     <div data-role="footer">
-
             <a class="btnSpan-btm btnPrimary" data-click="signUpView.onSubmit" type="button" data-role="button">Submit</a>
-
     </div>
 </div>
 	
@@ -891,7 +891,7 @@
 <script type="text/x-kendo-template" id="modalGalleryTemplate">
 	<div>
 		<div class="galleryImgBox">
-			# if (deviceUrl !== undefined && deviceUrl !== null) { #
+			# if (window.navigator.simulator === undefined && deviceUrl !== undefined && deviceUrl !== null) { #
 			<img class="galleryImg" src="#=deviceUrl#" />
 			# } else if (imageUrl !== undefined && imageUrl !== null) { #
 			<img class="galleryImg" src="#=imageUrl#" />
@@ -1955,6 +1955,11 @@
 						<input id="editContactAddress" data-bind="value: address"/>
 					</label>
 				</li>
+				<li>
+					<label>Block
+						<input type="checkbox" data-role="switch"  data-bind="checked: isBlocked"/>
+					</label>
+				</li>
 			</ul>
 
 
@@ -2035,7 +2040,9 @@
 		#} else if (data.value === 'unknown') {#
 		New Chat Member
 		#} else if (data.value === 'zapped') {#
-		Blocked User
+
+		Deleted
+
 		#}#
 	</div>
 </script>
@@ -2113,8 +2120,10 @@
 
 							#:message#
 
-							# if (data.cateogy === 'zapped') {#
-							Blocked User - Tap to Unblock
+
+							# if (data.isBlocked) {#
+							 (Blocked)
+
 							#}#
 						</p>
 

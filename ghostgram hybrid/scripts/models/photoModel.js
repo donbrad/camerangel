@@ -23,15 +23,17 @@ var photoModel = {
     },
 
     fetch: function () {
-        var PhotoModel = Parse.Object.extend("photos");
-        var query = new Parse.Query(PhotoModel);
+        var ParsePhotoModel = Parse.Object.extend("photos");
+        var query = new Parse.Query(ParsePhotoModel);
 
         query.find({
             success: function(collection) {
                 mobileNotify("Fetching and upgrading photos ...");
                 var models = [];
                 for (var i = 0; i < collection.length; i++) {
-                    var photo = collection[i].toJSON();
+
+                    var parsePhoto = collection[i];
+                    var photo = parsePhoto.toJSON();
                     if (photo.imageUrl === undefined) {
                         photo.imageUrl = null;
                     }
@@ -40,12 +42,16 @@ var photoModel = {
                         var store = cordova.file.dataDirectory;
                         window.resolveLocalFileSystemURL(store + photo.photoId + '.jpg',
                             function(fileEntry) {
-                                collection[i].set("deviceUrl", fileEntry);
-                                collection[i].save();
-                                photo.deviceUrl = fileEntry;
+
+                                var deviceUrl = fileEntry.nativeURL;
+                               parsePhoto.set("deviceUrl", deviceUrl);
+                                parsePhoto.save();
+                                photo.deviceUrl = deviceUrl;
+                                photo.isDirty = true;
                             },
                             function (error) {
-                                photoModel.addToLocalCache(photo.imageUrl, photo.photoId, photo, parseObj);
+                                photoModel.addToLocalCache(photo.imageUrl, photo.photoId, photo, parsePhoto);
+
                             }
                         );
 
@@ -306,7 +312,7 @@ var photoModel = {
                     // Execute any logic that should take place after the object is saved.
                     var photoObj = photo.toJSON();
                     mobileNotify('Photo added to ghostgrams gallery');
-                    photoModel.photosDS.add(photoObject);
+                    photoModel.photosDS.add(photoObj);
                     photoModel.parsePhoto = photo;
                     currentChannelModel.currentMessage.photo = {thumb: photo.get('thumbnailUrl'), photo: photo.get('imageUrl'), phone: photo.get('phoneUrl')};
 

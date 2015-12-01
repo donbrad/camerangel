@@ -110,7 +110,7 @@ var ux = {
 	},
 
 	changeActionBtnImg: function(view, img){
-		$(view + " > div.footerMenu.km-footer > a > span > img").attr("src", "images/" +img+".svg");
+		$("div.footerMenu.km-footer > a > span > img").attr("src", "images/" +img+".svg");
 	},
 
 	scrollUpSearch: function(e){

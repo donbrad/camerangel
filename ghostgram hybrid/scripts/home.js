@@ -1007,11 +1007,11 @@ function go2Archive(e){
 }
 function go2Settings(e){
 	e.preventDefault;
-	APP.kendo.navigate("views/settings.html");
+	APP.kendo.navigate("#settings");
 }
 function go2Profile(e){
 	e.preventDefault;
-	APP.kendo.navigate("views/profile.html");
+	APP.kendo.navigate("#profile");
 }
 
 function go2Support(e){

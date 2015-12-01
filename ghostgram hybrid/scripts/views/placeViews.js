@@ -184,13 +184,13 @@ var placesView = {
     onHide: function (e) {
         //_preventDefault(e);
 
-        // update actionBtn
-        ux.showActionBtn(false, "#places");
-        //ux.hideActionBtnText("#places");
         ux.changeActionBtnImg("#places", "nav-add-white");
 
+        // update actionBtn
+        ux.showActionBtn(false, "#places");
+      
         $("#quickFindPlaceBtn").addClass("hidden");
-
+        
         ux.hideSearch();
 
     }

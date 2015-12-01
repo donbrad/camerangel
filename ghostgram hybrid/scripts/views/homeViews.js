@@ -508,6 +508,7 @@ var signUpView = {
         // Simple phone mask - http://jsfiddle.net/mykisscool/VpNMA/
         $('#home-signup-phone')
 
+
             .keydown(function (e) {
                 var key = e.charCode || e.keyCode || 0;
                 var $phone = $(this);
@@ -562,6 +563,7 @@ var signUpView = {
 
         $("#create-user-email, #create-user-name, #create-user-alias, #create-user-password").css("display", "none");
     },
+
 
     onSubmit : function (e) {
         e.preventDefault();
@@ -628,6 +630,17 @@ var signUpView = {
                                 user.set("useLargeView", false);
                                 user.set("rememberUsername", false);
                                 user.set("userUUID", userUUID);
+                                user.set('addressList', []);
+                                user.set('emailList', []);
+                                user.set('phoneList', []);
+                                user.set('archiveIntro', false);
+                                user.set('homeIntro', false);
+                                user.set('chatIntro', false);
+                                user.set('contactIntro', false);
+                                user.set('galleryIntro', false);
+                                user.set('identiconIntro', false);
+                                user.set('placesIntro', false);
+                                user.set('firstMessage', false);
                                 //user.set("publicKey", publicKey);
                                 //user.set("privateKey", privateKey);
 
@@ -736,28 +749,28 @@ var newUserView = {
     onShow : function (e) {
         _preventDefault(e);
 
-
-    },
-
-
-
-
+    }
 
 };
 
 var signInView = {
+
 	_introRun : false,
 	_hasSignedIn: false,
+
     onInit : function (e) {
         _preventDefault(e);
 
         $("#home-signin-username").on("input", function(e) {
-            //signUpView.checkUserName();
+
+            // Add additional validation / helper code...
+
         });
 
         $("#home-signin-password").on("input", function(e){
 
         });
+
 
         // Simple phone mask - http://jsfiddle.net/mykisscool/VpNMA/
         $('#home-signup-phone')
@@ -816,6 +829,7 @@ var signInView = {
 
         $("#create-user-email, #create-user-name, #create-user-alias, #create-user-password").css("display", "none");
 
+
     },
 
     onShow : function (e) {
@@ -824,6 +838,7 @@ var signInView = {
         if (userModel.rememberUsername && userModel.username !== '') {
             $('#home-signin-username').val(userModel.username)
         }
+
 
         if(!signInView._introRun){
         	 // Animation
@@ -854,6 +869,7 @@ var signInView = {
     testingAnimation: function(){
     	$("#signUpBox").velocity({translateY: "-10px;", opacity: 1}, {delay: 500, duration: 1000, easing: "easeIn"});
     	$("#signInBox").css("display","none");
+
     },
 
     onClear : function (e) {
@@ -928,6 +944,18 @@ var signInView = {
                 userModel.currentUser.set('useIdenticon', userModel.parseUser.get('useIdenticon'));
                 userModel.currentUser.set('useLargeView', userModel.parseUser.get('useLargeView'));
                 userModel.currentUser.set('rememberUsername', userModel.parseUser.get('rememberUsername'));
+
+                userModel.currentUser.set('addressList', userModel.parseUser.get('addressList'));
+                userModel.currentUser.set('emailList', userModel.parseUser.get('emailList'));
+                userModel.currentUser.set('phoneList', userModel.parseUser.get('phoneList'));
+                userModel.currentUser.set('archiveIntro', userModel.parseUser.get('archiveIntro'));
+                userModel.currentUser.set('homeIntro', userModel.parseUser.get('homeIntro'));
+                userModel.currentUser.set('chatIntro', userModel.parseUser.get('chatIntro'));
+                userModel.currentUser.set('contactIntro', userModel.parseUser.get('contactIntro'));
+                userModel.currentUser.set('galleryIntro', userModel.parseUser.get('galleryIntro'));
+                userModel.currentUser.set('identiconIntro', userModel.parseUser.get('identiconIntro'));
+                userModel.currentUser.set('placesIntro', userModel.parseUser.get('placesIntro'));
+
                 userModel.currentUser.set('publicKey', publicKey);
                 userModel.decryptPrivateKey();
                 //		userModel.currentUser.set('privateKey', privateKey);
