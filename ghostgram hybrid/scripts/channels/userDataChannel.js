@@ -64,12 +64,6 @@ var userDataChannel = {
         var channelList = [], channelKeys = [];
         var timeStamp = ggTime.toPubNubTime(userDataChannel.lastAccess);
 
- /*       if (userDataChannel.lastAccess === 0 || isNaN(userDataChannel.lastAccess)) {
-            timeStamp = ggTime.toPubNubTime(timeStamp);
-       } else {
-            timeStamp = ggTime.toPubNubTime(userDataChannel.lastAccess - 86400);
-        }
-*/
         // Get any messages in the channel
         APP.pubnub.history({
             channel: userDataChannel.channelId,

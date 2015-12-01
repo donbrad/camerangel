@@ -22,10 +22,21 @@ var appDataChannel = {
 
         appDataChannel.channelId = channel;
 
-        var ts = localStorage.getItem('ggAppDataTimeStamp');
+        var ts = localStorage.getItem('appDataChannel');
 
-        if (ts !== undefined)
+        if (ts !== undefined) {
             appDataChannel.lastAccess = parseInt(ts);
+            // Was last access more than a month ago -- if yes set it to a month ago
+            if (appDataChannel.lastAccess < ggTime.lastMonth()) {
+                appDataChannel.lastAccess = ggTime.lastMonth();
+                localStorage.setItem('appDataChannel', appDataChannel.lastAccess);
+            }
+        } else {
+            appDataChannel.lastAccess = ggTime.lastMonth();
+            localStorage.setItem('appDataChannel', appDataChannel.lastAccess);
+        }
+
+
 
         APP.pubnub.subscribe({
             channel: appDataChannel.channelId,
@@ -43,7 +54,7 @@ var appDataChannel = {
     },
 
     updateTimeStamp : function () {
-        appDataChannel.lastAccess = ggTime.currentPubNubTime();
+        appDataChannel.lastAccess = ggTime.currentTime();
         localStorage.setItem('ggAppDataTimeStamp', appDataChannel.lastAccess);
     },
 
@@ -54,11 +65,12 @@ var appDataChannel = {
     history : function () {
         // Just look back 7 days -- can expand or shorten this window.
 
-        var timeStamp = ggTime.toPubNubTime(ggTime.lastWeek());
+        var timeStamp = ggTime.toPubNubTime(appDataChannel.lastAccess);
         // Get any messages in the channel
+
         APP.pubnub.history({
             channel: appDataChannel.channelId,
-            start: appDataChannel.lastAccess,
+            start: timeStamp,
             reverse: true,
             callback: function(messages) {
                 messages = messages[0];
@@ -125,6 +137,16 @@ var appDataChannel = {
 
             case 'groupUpdate' : {
                 appDataChannel.processGroupUpdate(m.ownerName, m.channelId, m.channelName);
+            } break;
+
+            //  { type: 'connectRequest',  contactId: <contactUUID>, owner: <ownerUUID>}
+            case 'connectRequest' : {
+
+            } break;
+
+            //  { type: 'connectResponse',  contactId: <contactUUID>, owner: <ownerUUID>. accepted: true|false}
+            case 'connectResponse' : {
+
             } break;
 
             //  { type: 'packageOffer',  channelId: <channelUUID>, owner: <ownerUUID>, packageId: <packageUUID>, private: true|false, type: 'text'|'pdf'|'image'|'video', title: <text>, message: <text>}
