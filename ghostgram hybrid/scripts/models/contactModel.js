@@ -303,6 +303,7 @@ var contactModel = {
                     name: contact.name,
                     alias: contact.alias,
                     phone: contact.phone,
+                    email: contact.email,
                     photo: contact.photo,
                     isDeleted: contact.isDeleted,
                     isBlocked: contact.isBlocked
@@ -383,6 +384,10 @@ var contactModel = {
         dataSource.filter(cacheFilter);
 
         return(view);
+    },
+
+    syncNewMembers : function () {
+        var newMembers = contactModel.queryContacts({ field: "category", operator: "eq", value: "unknown" });
     },
 
     deleteContact : function (contactId) {

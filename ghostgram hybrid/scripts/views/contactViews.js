@@ -47,6 +47,13 @@ var contactsView = {
                         APP.kendo.navigate('#contactImport?query=' + contact.name);
                     }
 
+                } else if (contact.category === 'unknown') {
+                    // New Chat Member
+                    mobileNotify("Looking up " + contact.name);
+                    contactModel.updateContactDetails(contact.uuid, function (thisContact) {
+
+                    })
+
                 } else {
                     // If we know the contacts uuid enable the full feature set
                    // $("#modalview-contactActions").data("kendoMobileModalView").open();
