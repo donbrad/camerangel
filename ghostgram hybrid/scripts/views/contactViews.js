@@ -1072,6 +1072,7 @@ var editContactView = {
 
 var contactActionView = {
     _activeContactId : null,
+    _returnModalId : null,
     _activeContact : new kendo.data.ObservableObject(),
 
     onInit: function (e) {
@@ -1094,6 +1095,10 @@ var contactActionView = {
                 $("#contactActionBtns > li:first-child").hide();
             }
         }
+    },
+
+    setReturnModal : function (modalId) {
+        contactActionView._returnModalId = modalId;
     },
 
     openModal : function (contactId) {
@@ -1208,6 +1213,12 @@ var contactActionView = {
 
         $("#modalview-contactActions .preMotionUp, #modalview-contactActions .hasMotion").css("display", "none").velocity("fadeOut", {opacity: 0, translateY: "0%"});
     	$("#contactProfileImg, #contactStatusImg").css("opacity", 0);
+
+        if (contactActionView._returnModalId !== null) {
+            $(contactActionView._returnModalId).data("kendoMobileModalView").close();
+            contactActionView._returnModalId = null;
+        }
+
     },
 
     restoreModal : function () {
