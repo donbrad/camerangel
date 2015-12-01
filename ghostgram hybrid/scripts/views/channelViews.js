@@ -465,7 +465,7 @@ var editChannelView = {
         //Send Invite messages to users added to channel
         for (var ma = 0; ma < editChannelView.membersAdded.length; ma++) {
             inviteArray.push(editChannelView.membersAdded[ma].contactUUID);
-            appDataChannel.groupChannelInvite(editChannelView.membersAdded[ma].contactUUID, channelId,  editChannelView._activeChannel.name, "You've been invited to " + editChannelView._activeChannel.name);
+            appDataChannel.groupChannelInvite(editChannelView.membersAdded[ma].contactUUID, channelId,  editChannelView._activeChannel.name,  editChannelView._activeChannel.description, memberArray);
         }
 
         
@@ -478,7 +478,7 @@ var editChannelView = {
 
             // Only send updates to current members (new members got an invite above)
             if (memberArray[m] !== userModel.currentUser.userUUID && ($.inArray(memberArray[m],inviteArray) == -1) ) {
-                appDataChannel.groupChannelUpdate(memberArray[m], channelId,  editChannelView._activeChannel.name, editChannelView._activeChannel.name + " has been updated...");
+                appDataChannel.groupChannelUpdate(memberArray[m], channelId,  editChannelView._activeChannel.name, editChannelView._activeChannel.description, memberArray);
             }
         }
 
@@ -498,10 +498,6 @@ var editChannelView = {
         updateParseObject('channels', 'channelId', channelId, 'members', memberArray);
         updateParseObject('channels', 'channelId', channelId, 'invitedMembers', invitedMemberArray);
 
-       /* // Update the channelmap entry so members can update or create the channel
-        updateParseObject('channelmap', 'channelId', channelId, 'members', memberArray);
-        // Add new members phone numbers to the channel map
-        updateParseObject('channelmap', 'channelId', channelId, 'invitedMembers', invitedPhoneArray);*/
 
         // Reset UI
         $("#showEditDescriptionBtn").velocity("fadeIn");
