@@ -476,14 +476,18 @@ var editChannelView = {
                 // This is a ggMember -- send delete.
                 appDataChannel.groupChannelDelete(contactId, channelId, editChannelView._activeChannel.name + "has been deleted.");
             } else {
-                // Invited member -- need to look up userId before sending delete
-                findUserByPhone(phone, function (result) {
-                    if (result.found) {
-                        var user = result.user, contactId = user.get('userUUID');
-                        appDataChannel.groupChannelDelete(contactId, channelId, editChannelView._activeChannel.name + "has been deleted.");
-                    }
+                // Invited member -- need to look up userId by phone number before sending delete notification
+                var phone = editChannelView.membersDeleted[md].phone;
+                if (phone !== undefined && phone !== null) {
+                    findUserByPhone(phone, function (result) {
+                        if (result.found) {
+                            var user = result.user, contactId = user.get('userUUID');
+                            appDataChannel.groupChannelDelete(contactId, channelId, editChannelView._activeChannel.name + "has been deleted.");
+                        }
 
-                });
+                    });
+                }
+
             }
         }
 
