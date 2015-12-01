@@ -649,7 +649,8 @@ var channelModel = {
                 }
 
 
-                serverPush.unprovisionGroupChannel(channelId);
+                if (window.navigator.simulator === undefined)
+                    serverPush.unprovisionGroupChannel(channelId);
                 dataSource.remove(channel);
                 deleteParseObject("channels", 'channelId', channelId);
                 //mobileNotify("Removed channel : " + channel.get('name'));
