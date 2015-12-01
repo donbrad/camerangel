@@ -1085,8 +1085,8 @@ var channelView = {
         if (length === 0)
             return;
 
-        for (var i=0; i<length; i++) {
-            var userId = members[i].username;
+        for (var member in members) {
+            var userId = member.username;
 
             if (userId !== userModel.currentUser.userUUID) {
                 var member = channelView.findChatMember(userId);
