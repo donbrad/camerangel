@@ -15,9 +15,16 @@ var groupChannel = {
     userAlias : '',
 
     close: function () {
-        APP.pubnub.unsubscribe({
-            channel: groupChannel.channelId
-        });
+        if (groupChannel.channelId !== null) {
+            APP.pubnub.unsubscribe({
+                channel: groupChannel.channelId
+            });
+
+            groupChannel.channelId = null;
+            groupChannel.channelName = null;
+            groupChannel.users = [];
+        }
+
     },
     
     open : function (channelId, channelName, userId, name, alias, phoneNumber) {
