@@ -471,7 +471,20 @@ var editChannelView = {
         
         //Send Delete messages to users deleted from the channel
         for (var md = 0; md < editChannelView.membersDeleted.length; md++) {
-            appDataChannel.groupChannelDelete(editChannelView.membersDeleted[md].contactUUID, channelId, editChannelView._activeChannel.name + "has been deleted.");
+            var contactId = editChannelView.membersDeleted[md].contactUUID;
+            if (contactId !== null) {
+                // This is a ggMember -- send delete.
+                appDataChannel.groupChannelDelete(contactId, channelId, editChannelView._activeChannel.name + "has been deleted.");
+            } else {
+                // Invited member -- need to look up userId before sending delete
+                findUserByPhone(phone, function (result) {
+                    if (result.found) {
+                        var user = result.user, contactId = user.get('userUUID');
+                        appDataChannel.groupChannelDelete(contactId, channelId, editChannelView._activeChannel.name + "has been deleted.");
+                    }
+
+                });
+            }
         }
 
         for (var m=0; m< memberArray.length; m++) {

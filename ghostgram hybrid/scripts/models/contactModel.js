@@ -502,10 +502,14 @@ var contactModel = {
 
     findContactByPhone: function (phone) {
         var dataSource = this.contactsDS;
+        var queryCache = dataSource.filter();
+        if (queryCache === undefined) {
+            queryCache = {};
+        }
         dataSource.filter( { field: "phone", operator: "eq", value: phone });
         var view = dataSource.view();
         var contact = view[0];
-        dataSource.filter([]);
+        dataSource.filter(queryCache);
 
         return(contact);
     },
