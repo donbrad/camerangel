@@ -655,7 +655,8 @@ var channelModel = {
                 deleteParseObject("channels", 'channelId', channelId);
                 //mobileNotify("Removed channel : " + channel.get('name'));
             } else {
-                serverPush.unprovisionGroupChannel(channelId);
+                if (window.navigator.simulator === undefined)
+                    serverPush.unprovisionGroupChannel(channelId);
                 updateParseObject("channels", 'channelId', channelId, 'isDeleted', true);
                 channel.set('isDeleted', true);
             }
