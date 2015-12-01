@@ -323,7 +323,7 @@ var appDataChannel = {
         // Todo:  Does channel exist?  If not create,  if so notify user of request
         var channel = channelModel.findChannelModel(channelId);
 
-        if (channel === undefined) {
+        if (channel === undefined && channelMembers !== undefined && typeof (channelMembers) === 'array') {
             mobileNotify("Chat invite from  " + ownerName + ' " ' + channelName + '"');
             channelModel.addMemberChannel(channelId, channelName, channelDescription, channelMembers);
             //notificationModel.addNewChatNotification(channelId, channelName, "new channel...");
