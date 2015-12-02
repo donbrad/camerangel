@@ -653,7 +653,7 @@ var channelModel = {
                 // Execute any logic that should take place after the object is saved.
                 mobileNotify('Added Chat : ' + channel.get('name'));
                 APP.kendo.navigate('#editChannel?channel=' + channelId);
-                
+
             },
             error: function(channel, error) {
                 // Execute any logic that should take place if the save fails.
