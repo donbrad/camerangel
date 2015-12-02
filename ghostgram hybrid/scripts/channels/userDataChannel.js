@@ -91,7 +91,11 @@ var userDataChannel = {
                         var content = cryptico.decrypt(msg.content.cipher, RSAKey).plaintext;
                         if (msg.data !== undefined && msg.data !== null) {
                             data = cryptico.decrypt(msg.data.cipher, RSAKey).plaintext;
-                            data = JSON.parse(data);
+                            if (data !== undefined) {
+                                data = JSON.parse(data);
+                            } else {
+                                data = {};
+                            }
                         }
 
                         var parsedMsg = {
@@ -105,7 +109,6 @@ var userDataChannel = {
                             sender: msg.sender,
                             recipient: msg.recipient
                         };
-
 
                         userDataChannel.messagesDS.add(parsedMsg);
 
