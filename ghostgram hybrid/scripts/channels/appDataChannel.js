@@ -126,7 +126,7 @@ var appDataChannel = {
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, ownerID: <ownerUUID>,  ownerName: <text>, channelName: <text>, channelDescription: <text>}
             case 'groupInvite' : {
-                appDataChannel.processGroupInvite( m.ownerName,  m.channelId, m.channelName);
+                appDataChannel.processGroupInvite( m.ownerName,  m.channelId, m.channelName, m.channelDescription,  m.channelMembers);
             } break;
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, owner: <ownerUUID>}
@@ -135,7 +135,7 @@ var appDataChannel = {
             } break;
 
             case 'groupUpdate' : {
-                appDataChannel.processGroupUpdate(m.ownerName, m.channelId, m.channelName);
+                appDataChannel.processGroupUpdate(m.ownerName, m.channelId, m.channelName, m.channelDescription, m.channelMembers);
             } break;
 
             //  { type: 'connectRequest',  contactId: <contactUUID>, owner: <ownerUUID>}
@@ -208,7 +208,7 @@ var appDataChannel = {
     },
 
 
-    groupChannelInvite : function (contactUUID, channelUUID, channelName, channelDescription, durationDays,  message) {
+    groupChannelInvite : function (contactUUID, channelUUID, channelName, channelDescription,  members) {
         var msg = {};
 
         var notificationString = "Chat Invite : " + channelName;
@@ -218,8 +218,9 @@ var appDataChannel = {
         msg.channelId = channelUUID;
         msg.channelName = channelName;
         msg.channelDescription = channelDescription;
-        msg.durationDays = durationDays;
-        msg.message  = message;
+        msg.channelMembers = members;
+        msg.message  = "You've been invited to " + channelName;
+
         msg.time = new Date().getTime();
         msg.pn_apns = {
             aps: {
@@ -292,7 +293,7 @@ var appDataChannel = {
         });
     },
 
-    groupChannelUpdate : function (contactUUID, channelUUID, channelName, message) {
+    groupChannelUpdate : function (contactUUID, channelUUID, channelName, channelDescription,  members) {
         var msg = {};
 
         msg.type = 'groupUpdate';
@@ -300,7 +301,9 @@ var appDataChannel = {
         msg.ownerName = userModel.currentUser.get('name');
         msg.channelId = channelUUID;
         msg.channelName = channelName;
-        msg.message  = message;
+        msg.channelDescription = channelDescription;
+        msg.channelMembers = members;
+        msg.message  = "Chat " + channelName + " has been updated...";
         msg.time = new Date().getTime();
 
         var channel = appDataChannel.getContactAppChannel(contactUUID);
@@ -315,13 +318,13 @@ var appDataChannel = {
     },
 
 
-    processGroupInvite: function (ownerName, channelId, channelName) {
+    processGroupInvite: function (ownerName, channelId, channelName, channelDescription, channelMembers) {
         // Todo:  Does channel exist?  If not create,  if so notify user of request
         var channel = channelModel.findChannelModel(channelId);
 
-        if (channel === undefined) {
+        if (channel === undefined && channelMembers !== undefined && typeof (channelMembers) === 'array') {
             mobileNotify("Chat invite from  " + ownerName + ' " ' + channelName + '"');
-            channelModel.addMemberChannel(channelId, channelName);
+            channelModel.addMemberChannel(channelId, channelName, channelDescription, channelMembers);
             //notificationModel.addNewChatNotification(channelId, channelName, "new channel...");
         }
 
@@ -337,13 +340,9 @@ var appDataChannel = {
 
     },
 
-    processGroupUpdate: function (ownerName, channelId, channelName) {
+    processGroupUpdate: function (ownerName, channelId, channelName, channelDescription, channelMembers) {
 
-        var channel = channelModel.findChannelModel(channelId);
-        if (channel !== undefined) {
-            mobileNotify('Owner has updated Chat: "' + channelName + '"');
-            channelModel.updateChannel(channel);
-        }
+        channelModel.updateChannel(channelId, channelName, channelDescription, channelMembers);
 
     },
 

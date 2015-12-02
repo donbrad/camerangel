@@ -86,7 +86,13 @@ var channelsView = {
 
                 var query = this.value;
                 if (query.length > 0) {
-                    channelModel.channelsDS.filter({
+                    channelModel.channelsDS.filter([
+                        {
+                            "field": "isDeleted",
+                            "operator": "eq",
+                            "value": false
+                        },
+                        {
                         "logic": "or",
                         "filters": [
                             {
@@ -98,14 +104,10 @@ var channelsView = {
                                 "field": "description",
                                 "operator": "contains",
                                 "value": query
-                            },
-                            {
-                                "field": "isDeleted",
-                                "operator": "eq",
-                                "value": false
                             }
+
                         ]
-                    });
+                    }]);
                     $('#channels .enterSearch').removeClass('hidden');
 
                 } else {
@@ -247,7 +249,7 @@ var addChannelView = {
            if (channelModel.findChannelByName(name)) {
                mobileNotify('There is already a chat named : "' + name + '"');
            } else {
-               channelModel.addChannel(name, description, true, duration);
+               channelModel.addChannel(name, description, null, null, false);
            }
 
 
@@ -465,20 +467,37 @@ var editChannelView = {
         //Send Invite messages to users added to channel
         for (var ma = 0; ma < editChannelView.membersAdded.length; ma++) {
             inviteArray.push(editChannelView.membersAdded[ma].contactUUID);
-            appDataChannel.groupChannelInvite(editChannelView.membersAdded[ma].contactUUID, channelId,  editChannelView._activeChannel.name, "You've been invited to " + editChannelView._activeChannel.name);
+            appDataChannel.groupChannelInvite(editChannelView.membersAdded[ma].contactUUID, channelId,  editChannelView._activeChannel.name,  editChannelView._activeChannel.description, memberArray);
         }
 
         
         //Send Delete messages to users deleted from the channel
         for (var md = 0; md < editChannelView.membersDeleted.length; md++) {
-            appDataChannel.groupChannelDelete(editChannelView.membersDeleted[md].contactUUID, channelId, editChannelView._activeChannel.name + "has been deleted.");
+            var contactId = editChannelView.membersDeleted[md].contactUUID;
+            if (contactId !== null) {
+                // This is a ggMember -- send delete.
+                appDataChannel.groupChannelDelete(contactId, channelId, editChannelView._activeChannel.name + "has been deleted.");
+            } else {
+                // Invited member -- need to look up userId by phone number before sending delete notification
+                var phone = editChannelView.membersDeleted[md].phone;
+                if (phone !== undefined && phone !== null) {
+                    findUserByPhone(phone, function (result) {
+                        if (result.found) {
+                            var user = result.user, contactId = user.get('userUUID');
+                            appDataChannel.groupChannelDelete(contactId, channelId, editChannelView._activeChannel.name + "has been deleted.");
+                        }
+
+                    });
+                }
+
+            }
         }
 
         for (var m=0; m< memberArray.length; m++) {
 
             // Only send updates to current members (new members got an invite above)
             if (memberArray[m] !== userModel.currentUser.userUUID && ($.inArray(memberArray[m],inviteArray) == -1) ) {
-                appDataChannel.groupChannelUpdate(memberArray[m], channelId,  editChannelView._activeChannel.name, editChannelView._activeChannel.name + " has been updated...");
+                appDataChannel.groupChannelUpdate(memberArray[m], channelId,  editChannelView._activeChannel.name, editChannelView._activeChannel.description, memberArray);
             }
         }
 
@@ -498,10 +517,6 @@ var editChannelView = {
         updateParseObject('channels', 'channelId', channelId, 'members', memberArray);
         updateParseObject('channels', 'channelId', channelId, 'invitedMembers', invitedMemberArray);
 
-       /* // Update the channelmap entry so members can update or create the channel
-        updateParseObject('channelmap', 'channelId', channelId, 'members', memberArray);
-        // Add new members phone numbers to the channel map
-        updateParseObject('channelmap', 'channelId', channelId, 'invitedMembers', invitedPhoneArray);*/
 
         // Reset UI
         $("#showEditDescriptionBtn").velocity("fadeIn");

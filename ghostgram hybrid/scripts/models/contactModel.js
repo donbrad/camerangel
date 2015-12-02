@@ -287,6 +287,13 @@ var contactModel = {
         });
     },
 
+    setCurrentContact: function (contact) {
+        if (contact !== undefined && contact !== null) {
+            contactModel.currentContact = contact;
+        } else {
+            contactModel.currentContact = null;
+        }
+    },
 
     // Build an identity list for contacts indexed by contactUUID
     buildContactList : function () {
@@ -502,10 +509,14 @@ var contactModel = {
 
     findContactByPhone: function (phone) {
         var dataSource = this.contactsDS;
+        var queryCache = dataSource.filter();
+        if (queryCache === undefined) {
+            queryCache = {};
+        }
         dataSource.filter( { field: "phone", operator: "eq", value: phone });
         var view = dataSource.view();
         var contact = view[0];
-        dataSource.filter([]);
+        dataSource.filter(queryCache);
 
         return(contact);
     },

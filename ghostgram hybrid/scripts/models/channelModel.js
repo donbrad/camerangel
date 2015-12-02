@@ -281,8 +281,38 @@ var channelModel = {
        }
     },
 
+    updateChannel : function (channelId, channelName, channelDescription, channelMembers) {
+        var channel = channelModel.findChannelModel(channelId);
+        if (channel !== undefined) {
+            channel.set('name', channelName);
+
+            if (channelDescription === undefined)
+                channelDescription  = null;
+            channel.set('description', channelDescription);
+
+
+            if (channelMembers === undefined || channelMembers === null || typeof(channelMembers) !== 'array') {
+                channelMembers = [];
+            }
+
+            if (channelMembers.length === 0) {
+                mobileNotify("Chat " + channelName + "has no members!");
+                return;
+
+            }
+            channel.set('members', channelMembers);
+            channel.set('isDirty', true);
+
+            updateParseObject('channels', 'channelId', channelId, 'name', channelName );
+            updateParseObject('channels', 'channelId', channelId, 'description', channelDescription );
+            updateParseObject('channels', 'channelId', channelId, 'members', channelMembers );
+        }
+
+    },
+
+
     // Update members and other channel Member data for this channel
-    updateChannel : function (channelId) {
+    syncChannel : function (channelId) {
 
         getChannelDetails(channelId,  function (result) {
             if (result.found) {
@@ -443,19 +473,21 @@ var channelModel = {
         channel.set("contactUUID", contactUUID);
         channel.set('contactKey', contactPublicKey);
         channel.set("members", [userModel.currentUser.userUUID, contactUUID]);
-        channelModel.channelsDS.add(channel.attributes);
+
+        var channelObj = channel.toJSON();
+        channelModel.channelsDS.add(channelObj);
         channelModel.channelsDS.sync();
 
         channel.setACL(userModel.parseACL);
         channel.save(null, {
             success: function(channel) {
                 //ux.closeModalViewAddChannel();
-                mobileNotify('Added private channel : ' + channel.get('name'));
+                mobileNotify('Added Private Chat : ' + channel.get('name'));
             },
             error: function(channel, error) {
                 // Execute any logic that should take place if the save fails.
                 // error is a Parse.Error with an error code and message.
-                mobileNotify('Error creating channel: ' + error.message);
+                mobileNotify('Error creating Chat: ' + error.message);
                 handleParseError(error);
             }
         });
@@ -464,14 +496,64 @@ var channelModel = {
 
     // Add group channel for members...
     // Get's the current owner details from parse and then creates a local channel for this user
-    addMemberChannel : function (channelId, channelName) {
+    addMemberChannel : function (channelId, channelName,  channelMembers) {
         var channel = channelModel.findChannelModel(channelId);
         if (channel !== undefined)  {
             // Channel already exists
             return;
         }
 
-        if (channelName !== undefined && channelName !== null) {
+        var Channels = Parse.Object.extend(channelModel._channelName);
+        var channel = new Channels();
+        var addTime = ggTime.currentTime();
+        channel.set("version", channelModel._version);
+        channel.set("name", channelName);
+        channel.set("isOwner", false);
+        channel.set('isPrivate', false);
+        channel.set('isPlace', false);
+        channel.set('isDeleted', false);
+        channel.set('isMuted', false);
+        channel.set('category', 'Group');
+        channel.set('isEvent', false);
+        channel.set("media",  true);
+        channel.set("durationDays", 30);
+        channel.set("archive",  false);
+        channel.set("unreadCount", 0);
+        channel.set("clearBefore", addTime);
+        channel.set("lastAccess", addTime);
+        channel.set("description", "");
+        channel.set("channelId", channelId);
+        if (channelMembers === undefined || channelMembers === null || typeof(channelMembers) !== 'array') {
+            channelMembers = [];
+        }
+        if (channelMembers.length === 0) {
+            mobileNotify("Chat " + channelName + "has no members!");
+            return;
+
+        }
+        channel.set("members", members);
+        channel.set("invitedMembers", []);
+
+        var channelObj = channel.toJSON();
+        channelModel.channelsDS.add(channelObj);
+        channelModel.channelsDS.sync();
+
+        channel.setACL(userModel.parseACL);
+        channel.save(null, {
+            success: function(channel) {
+                //ux.closeModalViewAddChannel();
+                mobileNotify('Added Group Chat : ' + channel.get('name'));
+            },
+            error: function(channel, error) {
+                // Execute any logic that should take place if the save fails.
+                // error is a Parse.Error with an error code and message.
+                mobileNotify('Error creating Chat: ' + error.message);
+                handleParseError(error);
+            }
+        });
+
+
+       /* if (channelName !== undefined && channelName !== null) {
             mobileNotify("Getting details for channel :" + channelName);
         }
 
@@ -488,18 +570,16 @@ var channelModel = {
                     newChannel.ownerName,
                     newChannel.placeId,
                     newChannel.placeName,
-                    newChannel.isPrivatePlace
+                    newChannel.isPrivatePlace,
+                    members
                 );
 
             }
-        });
+        });*/
     },
 
     // Add group channel for owner...
-    addChannel : function (channelName, channelDescription, isOwner, durationDays, channelUUID, ownerUUID, ownerName, placeId, placeName, isPrivatePlace, members) {
-
-
-
+    addChannel : function (channelName, channelDescription, placeId, placeName, isPrivatePlace) {
         var Channels = Parse.Object.extend("channels");
         var channel = new Channels();
 
@@ -508,32 +588,20 @@ var channelModel = {
 
         var addTime = ggTime.currentTime();
         var name = channelName,
-            description = channelDescription,
-            channelId = channelUUID;
+            description = channelDescription;
 
 
         // If this is a member request, channelUUID will be passed in.
         // If user is creating new channel, they own it so create new uuid and update ownerUUID and ownerName
-        if (isOwner) {
-            channelId = uuid.v4();
-            ownerUUID = userModel.currentUser.userUUID;
-            ownerName = userModel.currentUser.name;
-        }
+
+        var channelId = uuid.v4();
+        var ownerUUID = userModel.currentUser.userUUID;
+        var ownerName = userModel.currentUser.name;
 
 
         // Ensure we have a valid duration for this channel
-        if (durationDays === undefined) {
-            durationDays = 30;
-        } else {
-            durationDays = parseInt(durationDays);
-        }
 
-        if (durationDays < 1 || durationDays > 30) {
-            durationDays = 30;
-        }
-
-        if (isPrivatePlace === undefined)
-            isPrivatePlace = true;
+        var durationDays = 30;
 
         channel.set('version', channelModel._version);
         channel.set('isPlace', false);
@@ -558,6 +626,8 @@ var channelModel = {
             }
         }
 
+        if (isPrivatePlace === undefined)
+            isPrivatePlace = true;
         // Generic fields for owner and members
         channel.set("name", name );
 
@@ -572,35 +642,16 @@ var channelModel = {
         channel.set("channelId", channelId);
 
         channel.set("ownerId", ownerUUID);
-        if (ownerName === undefined || ownerName === null) {
-            if (ownerUUID === userModel.currentUser.userUUID) {
-                ownerName = userModel.currentUser.name;
-            } else {
-                var contact = contactModel.findContact(ownerUUID);
-                if (contact !== undefined) {
-                    ownerName = contact.name;
-                }
-            }
 
-        }
         channel.set("ownerName", ownerName);
         // Channel owner can access and edit members...
-        if (isOwner) {
-            channel.set("isOwner", true);
-            channel.set("members", [ownerUUID]);
-            channel.set("invitedMembers", []);
-        } else {
-            // Channel members have no access to members...
-            channel.set("isOwner", false);
-            if (members === undefined || members.length === 0) {
-                mobileNotify("addChannel - no members for member channel!!");
-                members = [];
-            }
-            channel.set("members", members);
 
-        }
+        channel.set("isOwner", true);
+        channel.set("members", [ownerUUID]);
+        channel.set("invitedMembers", []);
 
-        channelModel.channelsDS.add(channel.attributes);
+        var channelObj = channel.toJSON();
+        channelModel.channelsDS.add(channelObj);
         channelModel.channelsDS.sync();
         //currentChannelModel.currentChannel = channelModel.findChannelModel(channelId);
 
@@ -608,16 +659,14 @@ var channelModel = {
         channel.save(null, {
             success: function(channel) {
                 // Execute any logic that should take place after the object is saved.
-                mobileNotify('Added channel : ' + channel.get('name'));
-                if (isOwner) {
-                    // If this is an owner channel, jump to create to add members...
-                    APP.kendo.navigate('#editChannel?channel=' + channelId);
-                }
+                mobileNotify('Added Chat : ' + channel.get('name'));
+                APP.kendo.navigate('#editChannel?channel=' + channelId);
+
             },
             error: function(channel, error) {
                 // Execute any logic that should take place if the save fails.
                 // error is a Parse.Error with an error code and message.
-                mobileNotify('Error creating channel: ' + error.message);
+                mobileNotify('Error creating Chat: ' + error.message);
                 handleParseError(error);
             }
         });
