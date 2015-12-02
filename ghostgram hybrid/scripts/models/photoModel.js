@@ -42,8 +42,8 @@ var photoModel = {
                         window.resolveLocalFileSystemURL(store + photo.photoId + '.jpg',
                             function(fileEntry) {
                                 var deviceUrl = fileEntry.nativeURL;
-                               parsePhoto.set("deviceUrl", deviceUrl);
-                                parsePhoto.save();
+                               /*parsePhoto.set("deviceUrl", deviceUrl);
+                                parsePhoto.save();*/
                                 photo.deviceUrl = deviceUrl;
                                 photo.isDirty = true;
                             },
