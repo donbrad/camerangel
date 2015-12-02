@@ -53,7 +53,7 @@ var photoModel = {
                         );
 
                     } else {
-                        photo.deviceUrl === null;
+                        photo.deviceUrl = null;
                     }
 
                     photoModel.upgradePhoto(photo);
