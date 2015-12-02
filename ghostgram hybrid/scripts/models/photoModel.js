@@ -37,13 +37,16 @@ var photoModel = {
                         photo.imageUrl = null;
                     }
 
-                    if (window.navigator.simulator === undefined && (photo.deviceUrl === undefined || photo.deviceUrl === null)) {
+                    if (photo.deviceUrl === undefined)
+                        photo.deviceUrl = null;
+
+                   /* if (window.navigator.simulator === undefined && (photo.deviceUrl === undefined || photo.deviceUrl === null)) {
                         var store = cordova.file.dataDirectory;
                         window.resolveLocalFileSystemURL(store + photo.photoId + '.jpg',
                             function(fileEntry) {
                                 var deviceUrl = fileEntry.nativeURL;
-                               /*parsePhoto.set("deviceUrl", deviceUrl);
-                                parsePhoto.save();*/
+                               /!*parsePhoto.set("deviceUrl", deviceUrl);
+                                parsePhoto.save();*!/
                                 photo.deviceUrl = deviceUrl;
                                 photo.isDirty = true;
                             },
@@ -54,7 +57,7 @@ var photoModel = {
 
                     } else {
                         photo.deviceUrl = null;
-                    }
+                    }*/
 
                     photoModel.upgradePhoto(photo);
                     models.push(photo);
@@ -75,7 +78,8 @@ var photoModel = {
         var fileTransfer = new FileTransfer();
         fileTransfer.download(url, store + name + '.jpg',
             function(entry) {
-                photo.deviceURl = entry;
+                photo.deviceUrl = entry;
+                photo.isDirty = true;
                 parseObj.set('deviceUrl', entry);
                 parseObj.save();
                 console.log("Cached local copy of " + name);
