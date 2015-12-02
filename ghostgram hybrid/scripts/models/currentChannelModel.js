@@ -51,10 +51,15 @@ var currentChannelModel = {
 
     initDataSources : function () {
         currentChannelModel.memberList = [];
+
         currentChannelModel.messagesDS.data([]);
-        currentChannelModel.messagesDS.sync();
+       // currentChannelModel.messagesDS.sync();
+
         currentChannelModel.membersDS.data([]);
-        currentChannelModel.membersDS.sync();
+       // currentChannelModel.membersDS.sync();
+
+        currentChannelModel.potentialMembersDS.data([]);
+        //currentChannelModel.potentialMembersDS.sync();
     },
 
     setCurrentChannel : function (channelId) {
@@ -70,15 +75,19 @@ var currentChannelModel = {
             currentChannelModel.currentChannel = channel;
             currentChannelModel.channelId = channelId;
 
-            currentChannelModel.buildMemberList();
+            if (channel.category !== 'Private') {
+                currentChannelModel.buildMemberList();
 
-            if (!channel.isOwner) {
+            }
+
+
+           /* if (!channel.isOwner) {
                 currentChannelModel.syncChannelMembers(function (members) {
                     mobileNotify("Synced Member List...");
                     currentChannelModel.currentChannel.set('members', members);
                     currentChannelModel.buildMemberList();
                 });
-            }
+            }*/
             return(channel);
          } else {
             mobileNotify("CurrentChat :  Couldn't find Chat!!");

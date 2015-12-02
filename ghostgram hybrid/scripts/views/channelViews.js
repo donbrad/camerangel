@@ -895,19 +895,19 @@ var channelView = {
             currentChannelModel.currentContactModel = null;
 
             //*** Group Channel ***
-          $('#messagePresenceButton').show();
-          // Provision a group channel
+            $('#messagePresenceButton').show();
+            // Provision a group channel
 
-          // clear header img
-          $('#channelImage').attr('src', '').addClass("hidden");
+            // clear header img
+            $('#channelImage').attr('src', '').addClass("hidden");
 
-          groupChannel.open(channelUUID, thisChannel.name, thisUser.userUUID, thisUser.name, thisUser.alias, thisUser.phone);
-          channelView.sendMessageHandler = groupChannel.sendMessage;
-         // channelView.contactData = channelView.buildContactArray(thisChannel.members);
+            groupChannel.open(channelUUID, thisChannel.name, thisUser.userUUID, thisUser.name, thisUser.alias, thisUser.phone);
+            channelView.sendMessageHandler = groupChannel.sendMessage;
+            // channelView.contactData = channelView.buildContactArray(thisChannel.members);
 
             mobileNotify("Loading Messages...");
             channelView.messagesDS.data([]);
-          groupChannel.getMessageHistory(function (messages) {
+            groupChannel.getMessageHistory(function (messages) {
 
               channelView.messagesDS.data(messages);
               //channelView.updateMessageTimeStamps();
@@ -916,7 +916,7 @@ var channelView = {
                   channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 60 * 5000);
               }*/
               channelView.scrollToBottom();
-          });
+            });
 
         }
 
@@ -1534,7 +1534,7 @@ var channelPresence = {
 
     onShow: function (e) {
 
-        currentChannelModel.buildMembersDS();
+       /// currentChannelModel.buildMembersDS();
 
     },
 

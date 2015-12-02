@@ -37,7 +37,6 @@ var appDataChannel = {
         }
 
 
-
         APP.pubnub.subscribe({
             channel: appDataChannel.channelId,
             windowing: 500,
