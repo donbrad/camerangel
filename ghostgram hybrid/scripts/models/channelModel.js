@@ -290,11 +290,15 @@ var channelModel = {
                 channelDescription  = null;
             channel.set('description', channelDescription);
 
-            if (channelMembers === undefined) {
+
+            if (channelMembers === undefined || channelMembers === null || typeof(channelMembers) !== 'array') {
                 channelMembers = [];
             }
+
             if (channelMembers.length === 0) {
                 mobileNotify("Chat " + channelName + "has no members!");
+                return;
+
             }
             channel.set('members', channelMembers);
             channel.set('isDirty', true);
@@ -492,7 +496,7 @@ var channelModel = {
 
     // Add group channel for members...
     // Get's the current owner details from parse and then creates a local channel for this user
-    addMemberChannel : function (channelId, channelName, members) {
+    addMemberChannel : function (channelId, channelName,  channelMembers) {
         var channel = channelModel.findChannelModel(channelId);
         if (channel !== undefined)  {
             // Channel already exists
@@ -519,6 +523,14 @@ var channelModel = {
         channel.set("lastAccess", addTime);
         channel.set("description", "");
         channel.set("channelId", channelId);
+        if (channelMembers === undefined || channelMembers === null || typeof(channelMembers) !== 'array') {
+            channelMembers = [];
+        }
+        if (channelMembers.length === 0) {
+            mobileNotify("Chat " + channelName + "has no members!");
+            return;
+
+        }
         channel.set("members", members);
         channel.set("invitedMembers", []);
 
@@ -590,10 +602,6 @@ var channelModel = {
         // Ensure we have a valid duration for this channel
 
         var durationDays = 30;
-
-
-
-
 
         channel.set('version', channelModel._version);
         channel.set('isPlace', false);
