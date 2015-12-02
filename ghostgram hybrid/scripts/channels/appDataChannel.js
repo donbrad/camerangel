@@ -219,7 +219,7 @@ var appDataChannel = {
         msg.channelId = channelUUID;
         msg.channelName = channelName;
         msg.channelDescription = channelDescription;
-        msg.channelMembres = members;
+        msg.channelMembers = members;
         msg.message  = "You've been invited to " + channelName;
 
         msg.time = new Date().getTime();
