@@ -234,6 +234,10 @@ var photoModel = {
 
     },
 
+    addPhotoOffer : function (photoId, thumbnail, image) {
+
+    },
+
     addDevicePhoto: function (data) {
         mobileNotify("Processing photo....");
         // Todo: add additional processing to create Parse photoOffer
