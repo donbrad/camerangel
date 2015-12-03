@@ -234,7 +234,42 @@ var photoModel = {
 
     },
 
+    getPHotoOfferACL : function () {
+        var acl = new Parse.ACL();
+        acl.setPublicReadAccess(true);
+        acl.setPublicWriteAccess(false);
+        acl.setWriteAccess(Parse.User.current().id, true);
+       return(acl);
+    },
+
     addPhotoOffer : function (photoId, thumbnail, image) {
+        var PhotoOffer = Parse.Object.extend("photoOffer");
+        var offer = new PhotoOffer();
+        var uuid = uuid.v4();
+        var uploadFlag = true;
+
+        offer.setACL(userModel.parseACL);
+        offer.set('version', photoModel._version);
+
+        offer.set('uuid', uuid);
+        offer.set('photoId', photoId);
+        offer.set('ownerId', userModel.currentUser.userUUID);
+        offer.set('ownerName', userModel.currentUser.name);
+
+        if (thumbnail === undefined || thumbnail === null) {
+            thumbnail = null;
+            uploadFlag = false;
+        }
+        offer.set('uploaded', uploadFlag);
+        offer.set('thumbnailUrl', thumbnail);
+        if (image === undefined) {
+            image = null;
+        }
+        offer.set('imageUrl', image);
+
+    },
+
+    addImageToPhotoOffer : function (photoId, image) {
 
     },
 
@@ -247,8 +282,8 @@ var photoModel = {
         photo.setACL(userModel.parseACL);
         photo.set('version', photoModel._version);
 
-        photo.set('photoId', photoModel.currentPhoto.photoId);
-        photo.set('deviceUrl', photoModel.currentPhoto.phoneUrl);
+        photo.set('photoId', devicePhoto.currentPhoto.photoId);
+        photo.set('deviceUrl', devicePhoto.currentPhoto.phoneUrl);
         photo.set('title', null);
         photo.set('description', null);
         photo.set('senderUUID', userModel.currentUser.userUUID);
@@ -286,7 +321,7 @@ var photoModel = {
         }
 
 
-        var parseFile = new Parse.File("thumbnail_"+photoModel.currentPhoto.filename + ".jpeg",{'base64': data.imageData}, "image/jpg");
+       /* var parseFile = new Parse.File("thumbnail_"+photoModel.currentPhoto.filename + ".jpeg",{'base64': data.imageData}, "image/jpg");
         parseFile.save().then(function() {
             photo.set("thumbnail", parseFile);
             photo.set("thumbnailUrl", parseFile._url);
@@ -329,7 +364,7 @@ var photoModel = {
                 }
             });
         });
-
+*/
     },
 
 

@@ -1183,8 +1183,34 @@ var channelView = {
         }
     },
 
+    messageInit : function () {
+        channelView.activeMessage = {};
+    },
+
+    messageAddLocation : function  () {
+        channelView.activeMessage.geo= {lat: mapModel.lat, lng: mapModel.lng};
+        channelView.activeMessage.address = mapModel.currentAddress;
+        if (userModel.currentUser.currentPlaceUUID !== null) {
+            channelView.activeMessage.place = {name: userModel.currentUser.currentPlace, uuid: userModel.currentUser.currentPlaceUUID};
+        }
+    },
+
+    messageAddPhoto : function (offer) {
+        channelView.activeMessage.photo = {
+            photoId : offer.photoId,
+            thumb: offer.thumbnail,
+            image: offer.image,
+            ownerId: offer.ownerId,
+            ownerName: offer.ownerName};
+    },
+
+    messageAddRichText : function (text) {
+        channelView.activeMessage.html = text;
+    },
+
     messageSend : function (e) {
         _preventDefault(e);
+
         var validMessage = false; // If message is valid, send is enabled
 
         //var text = $('#messageTextArea').val();
@@ -1194,27 +1220,21 @@ var channelView = {
         }
 
 
-        // Add current location information to message
-        var messageData = {geo: {lat: mapModel.lat, lng: mapModel.lng} , address: mapModel.currentAddress};
-
         if (channelView.ghostgramActive) {
-            messageData.html = text;
+           channelView.messageAddRichText(text);
         }
 
-        if (userModel.currentUser.currentPlaceUUID !== null) {
-            messageData.place = {name: userModel.currentUser.currentPlace, uuid: userModel.currentUser.currentPlaceUUID};
-        }
 
-        if (currentChannelModel.currentMessage.photo !== undefined && currentChannelModel.currentMessage.photo !== null) {
+        // Todo: update to new offer model
+        if (channelView.activeMessage.photo !== undefined) {
             validMessage = true;
-            messageData.photo = currentChannelModel.currentMessage.photo;
         }
 
         if (validMessage === true ) {
-            channelView.sendMessageHandler(channelView.currentContactId, text, messageData, 86400);
+            channelView.sendMessageHandler(channelView.currentContactId, text, channelView.activeMessage, 86400);
             channelView.hideChatImagePreview();
             channelView._initMessageTextArea();
-            currentChannelModel.currentMessage = {};
+            channelView.messageInit();
         }
 
     },

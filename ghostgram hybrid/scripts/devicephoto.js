@@ -50,51 +50,53 @@ var devicePhoto = {
                 }
 
                 mobileNotify("Processing photo...");
+                if (isChat) {
+                    var scaleOptions = {
+                        uri: imageUrl,
+                        folderName: "thumbnails",
+                        quality: 75,
+                        width: 512,
+                        height: 512
+                    };
 
-                var scaleOptions = {
-                    uri: imageUrl,
-                    folderName: "thumbnails",
-                    quality: 75,
-                    width: 512,
-                    height: 512};
+                    window.ImageResizer.resize(scaleOptions,
+                        function (image) {
+                            var thumbNail = image;
+                            if (device.platform === 'iOS') {
+                                thumbNail = image.replace('file://', '');
+                            }
 
-                window.ImageResizer.resize(scaleOptions,
-                    function(image) {
-                        var thumbNail = image;
-                        if (device.platform === 'iOS') {
-                            thumbNail = image.replace('file://', '');
-                        }
+                            devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
+                                var parseFile = new Parse.File("thumbnail_" + filename + ".jpg", {'base64': dataUrl}, "image/jpeg");
+                                parseFile.save().then(function () {
+                                    /* photo.set("thumbnail", parseFile);
+                                     photo.set("thumbnailUrl", parseFile._url);*/
+                                    devicePhoto.currentPhoto.thumbnailUrl = parseFile._url;
+                                    /*photo.save(null, {
+                                     success: function(photo) {
+                                     // Execute any logic that should take place after the object is saved.
+                                     devicePhoto.parsePhoto = photo;
 
+                                     },
+                                     error: function(contact, error) {
+                                     // Execute any logic that should take place if the save fails.
+                                     // error is a Parse.Error with an error code and message.
+                                     handleParseError(error);
+                                     }
+                                     });*/
+                                });
 
-                        devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
-                            var parseFile = new Parse.File("thumbnail_"+ filename + ".jpg", {'base64': dataUrl}, "image/jpeg");
-                            parseFile.save().then(function() {
-                                /* photo.set("thumbnail", parseFile);
-                                 photo.set("thumbnailUrl", parseFile._url);*/
-                                devicePhoto.currentPhoto.thumbnailUrl = parseFile._url;
-                                /*photo.save(null, {
-                                 success: function(photo) {
-                                 // Execute any logic that should take place after the object is saved.
-                                 devicePhoto.parsePhoto = photo;
-
-                                 },
-                                 error: function(contact, error) {
-                                 // Execute any logic that should take place if the save fails.
-                                 // error is a Parse.Error with an error code and message.
-                                 handleParseError(error);
-                                 }
-                                 });*/
-                            });
-
-                        },'png');
+                            }, 'png');
 
 
-                        // success: image is the new resized image
-                    }, function() {
-                        mobileNotify("Error creating thumbnail...");
-                        // failed: grumpy cat likes this function
-                    });
+                            // success: image is the new resized image
+                        }, function () {
+                            mobileNotify("Error creating thumbnail...");
+                            // failed: grumpy cat likes this function
+                        });
+                } else {
 
+                }
               /*  if (isChat) {
                     window.imageResizer.resizeImage(resizeSuccessChat, resizeFailure,  imageUrl, 0, resolution, {
                         storeImage: true, pixelDensity: true, quality: quality });
