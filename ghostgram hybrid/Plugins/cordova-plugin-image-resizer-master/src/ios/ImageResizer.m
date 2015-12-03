@@ -67,7 +67,7 @@
     NSData* data = UIImageJPEGRepresentation(newImage, [quality floatValue] / 100.0f);
     int i = 1;
     do {
-        filePath = [NSString stringWithFormat:@"%@/%@%03d.%@", docsPath, PROTONET_PHOTO_PREFIX, i++, @"jpg"];
+        filePath = [NSString stringWithFormat:@"%@/%@%03d.%@", docsPath, 'thumbnail', i++, @"jpg"];
     } while ([fileMgr fileExistsAtPath:filePath]);
 
     // save file
