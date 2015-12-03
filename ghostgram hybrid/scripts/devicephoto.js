@@ -70,7 +70,8 @@ var devicePhoto = {
                             }
 
                             devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
-                                var parseFile = new Parse.File("thumbnail" + filename + ".jpg", {'base64': dataUrl}, "image/jpeg");
+                                var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
+                                var parseFile = new Parse.File("thumbnail_" + filename + ".jpg", {'base64': imageBase64}, "image/jpeg");
                                 parseFile.save().then(function () {
                                     devicePhoto.currentPhoto.thumbnailUrl = parseFile._url;
 
