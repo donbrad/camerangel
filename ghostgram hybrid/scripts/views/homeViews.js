@@ -469,8 +469,8 @@ var editProfilePhotoView = {
     doCamera : function (e) {
       _preventDefault(e);
 
-        deviceCamera(
-            1200, // max resolution in pixels
+        devicePhoto.deviceCamera(
+            512, // max resolution in pixels
             75,  // quality: 1-99.
             false,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
            editProfilePhotoView.setPhotoUrl  // Optional preview callback
@@ -480,8 +480,8 @@ var editProfilePhotoView = {
     doPhotoGallery : function(e) {
         _preventDefault(e);
 
-        deviceGallery(
-            1200, // max resolution in pixels
+        devicePhoto.deviceGallery(
+            512, // max resolution in pixels
             75,  // quality: 1-99.
             false,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
             editProfilePhotoView.setPhotoUrl  // Optional preview callback

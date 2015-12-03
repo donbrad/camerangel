@@ -1399,7 +1399,7 @@ var channelView = {
 
     messageCamera : function (e) {
        _preventDefault(e);
-        deviceCamera(
+        devicePhoto.deviceCamera(
             1600, // max resolution in pixels
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
@@ -1410,7 +1410,7 @@ var channelView = {
     messagePhoto : function (e) {
         _preventDefault(e);
         // Call the device gallery function to get a photo and get it scaled to gg resolution
-        deviceGallery(
+        devicePhoto.deviceGallery(
             1600, // max resolution in pixels
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
