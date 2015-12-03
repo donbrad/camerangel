@@ -1225,9 +1225,11 @@ var channelView = {
         }
 
 
-        // Todo: update to new offer model
-        if (channelView.activeMessage.photo !== undefined) {
+        // Is there a current photo offer
+        if (photoModel.currentOffer !== null) {
             validMessage = true;
+            channelView.messageAddPhoto(photoModel.currentOffer);
+            photoModel.initOffer();
         }
 
         if (validMessage === true ) {

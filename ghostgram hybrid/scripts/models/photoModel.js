@@ -11,7 +11,7 @@
 var photoModel = {
     _version : 1,
     currentPhoto: {},
-    currentOffer: {},
+    currentOffer: null,
     previewSize: "33%",
     optionsShown: false,
     parsePhoto: {},
@@ -27,13 +27,17 @@ var photoModel = {
 
     },
 
+    initOffer : function () {
+        photoModel.currentOffer = null;
+    },
+
+
     _fetchPhotos : function () {
         var ParsePhotoModel = Parse.Object.extend("photos");
         var query = new Parse.Query(ParsePhotoModel);
 
         query.find({
             success: function(collection) {
-                mobileNotify("Fetching and upgrading photos ...");
                 var models = [];
                 for (var i = 0; i < collection.length; i++) {
                     var parsePhoto = collection[i];
@@ -322,7 +326,7 @@ var photoModel = {
 
     },
 
-    addDevicePhoto: function (data) {
+    addDevicePhoto: function (devicePhoto) {
         mobileNotify("Processing photo....");
         // Todo: add additional processing to create Parse photoOffer
         var Photos = Parse.Object.extend("photos");
@@ -331,8 +335,8 @@ var photoModel = {
         photo.setACL(userModel.parseACL);
         photo.set('version', photoModel._version);
 
-        photo.set('photoId', devicePhoto.currentPhoto.photoId);
-        photo.set('deviceUrl', devicePhoto.currentPhoto.phoneUrl);
+        photo.set('photoId', devicePhoto.photoId);
+        photo.set('deviceUrl', devicePhoto.phoneUrl);
         photo.set('title', null);
         photo.set('description', null);
         photo.set('senderUUID', userModel.currentUser.userUUID);
@@ -369,6 +373,21 @@ var photoModel = {
             photo.set('placeString', userModel.currentUser.currentPlace);
         }
 
+        photo.save(null, {
+            success: function(photo) {
+                var photoObj = photo.toJSON();
+                // Execute any logic that should take place after the object is saved.
+                photoModel.parsePhoto = photo;
+                photoModel.photosDS.add(photoObj);
+
+
+            },
+            error: function(contact, error) {
+                // Execute any logic that should take place if the save fails.
+                // error is a Parse.Error with an error code and message.
+                handleParseError(error);
+            }
+        });
 
        /* var parseFile = new Parse.File("thumbnail_"+photoModel.currentPhoto.filename + ".jpeg",{'base64': data.imageData}, "image/jpg");
         parseFile.save().then(function() {

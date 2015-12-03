@@ -45,12 +45,15 @@ var devicePhoto = {
                 devicePhoto.currentPhoto.imageUrl = imageUrl;
                 devicePhoto.currentPhoto.phoneUrl = imageUrl;
 
+                photoModel.addDevicePhoto(devicePhoto.currentPhoto);
+
                 if (displayCallback !== undefined) {
                     displayCallback(imageData);
                 }
 
-                mobileNotify("Processing photo...");
+
                 if (isChat) {
+                    mobileNotify("Processing photo...");
                     var scaleOptions = {
                         uri: imageUrl,
                         folderName: "thumbnails",
@@ -69,24 +72,13 @@ var devicePhoto = {
                             devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
                                 var parseFile = new Parse.File("thumbnail_" + filename + ".jpg", {'base64': dataUrl}, "image/jpeg");
                                 parseFile.save().then(function () {
-                                    /* photo.set("thumbnail", parseFile);
-                                     photo.set("thumbnailUrl", parseFile._url);*/
                                     devicePhoto.currentPhoto.thumbnailUrl = parseFile._url;
-                                    /*photo.save(null, {
-                                     success: function(photo) {
-                                     // Execute any logic that should take place after the object is saved.
-                                     devicePhoto.parsePhoto = photo;
 
-                                     },
-                                     error: function(contact, error) {
-                                     // Execute any logic that should take place if the save fails.
-                                     // error is a Parse.Error with an error code and message.
-                                     handleParseError(error);
-                                     }
-                                     });*/
+                                    photoModel.addPhotoOffer(photouuid, parseFile._url, null );
+
                                 });
 
-                            }, 'png');
+                            }, 'jpg');
 
 
                             // success: image is the new resized image
@@ -94,16 +86,7 @@ var devicePhoto = {
                             mobileNotify("Error creating thumbnail...");
                             // failed: grumpy cat likes this function
                         });
-                } else {
-
                 }
-              /*  if (isChat) {
-                    window.imageResizer.resizeImage(resizeSuccessChat, resizeFailure,  imageUrl, 0, resolution, {
-                        storeImage: true, pixelDensity: true, quality: quality });
-                } else {
-                    window.imageResizer.resizeImage(resizeSuccessProfile, resizeFailure,  imageUrl, 0, resolution, {
-                        storeImage: true, pixelDensity: true, quality: quality });
-                }*/
 
             },
             function (error) {
@@ -164,41 +147,48 @@ var devicePhoto = {
                 devicePhoto.currentPhoto.imageUrl = imageUrl;
                 devicePhoto.currentPhoto.phoneUrl = imageUrl;
 
+                photoModel.addDevicePhoto(devicePhoto.currentPhoto);
+
                 if (displayCallback !== undefined) {
                     displayCallback(displayUrl);
                 }
 
-                mobileNotify("Processing photo...");
-                //resize image to 1200 pixels high
-                /*		   window.imageResizer.resizeImage(resizeSuccess, resizeFailure,  imageUrl, 0, 1200, {
-                 quality: 75, storeImage: 1, photoAlbum: 0, filename: "photo_"+filename+'.jpg' }); */
+                if (isChat) {
+                    mobileNotify("Processing photo...");
+                    var scaleOptions = {
+                        uri: imageUrl,
+                        folderName: "thumbnails",
+                        quality: 75,
+                        width: 512,
+                        height: 512
+                    };
 
-              /*  if (device.platform === 'iOS') {
-                    if (isChat) {
-                        window.imageResizer.resizeImage(resizeSuccessChat, resizeFailure,  imageUrl, 0, resolution, {
-                            storeImage: false, pixelDensity: true, quality: quality });
-                    } else {
-                        window.imageResizer.resizeImage(resizeSuccessProfile, resizeFailure,  imageUrl, 0, resolution, {
-                            storeImage: false, pixelDensity: true, quality: quality });
-                    }
+                    window.ImageResizer.resize(scaleOptions,
+                        function (image) {
+                            var thumbNail = image;
+                            if (device.platform === 'iOS') {
+                                thumbNail = image.replace('file://', '');
+                            }
 
-                } else {
-                    if (isChat) {
-                        window.imageResizer.resizeImage(resizeSuccessAndroidChat, resizeFailure, imageUrl, 0, resolution, {
-                            imageDataType: ImageResizer.IMAGE_DATA_TYPE_BASE64,
-                            storeImage: false,
-                            pixelDensity: true,
-                            quality: quality
+                            devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
+                                var parseFile = new Parse.File("thumbnail_" + filename + ".jpg", {'base64': dataUrl}, "image/jpeg");
+                                parseFile.save().then(function () {
+
+                                    devicePhoto.currentPhoto.thumbnailUrl = parseFile._url;
+
+                                    photoModel.addPhotoOffer(photouuid, parseFile._url, null );
+
+                                });
+
+                            }, 'jpg');
+
+
+
+                        }, function () {
+                            mobileNotify("Error creating thumbnail...");
                         });
-                    } else {
-                        window.imageResizer.resizeImage(resizeSuccessProfile, resizeFailure, imageUrl, 0, resolution, {
-                            imageDataType: ImageResizer.IMAGE_DATA_TYPE_BASE64,
-                            storeImage: false,
-                            pixelDensity: true,
-                            quality: quality
-                        });
-                    }
-                }*/
+                }
+
             },
             function (error) {
                 mobileNotify("Phone Gallery error " + error);
@@ -266,7 +256,7 @@ var devicePhoto = {
 
         var imageUrl = deviceModel.fileDirectory+data.filename;
 
-        photoModel.addDevicePhoto(data);
+        photoModel.addDevicePhoto();
 
        /* // Todo: add additional processing to create ParsePhoto and photoOffer
         var Photos = Parse.Object.extend("photos");
