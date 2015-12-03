@@ -69,29 +69,30 @@ var devicePhoto = {
 
                         reader.onloadend = function () {
                             var base64 = reader.result;
+                            var parseFile = new Parse.File("thumbnail_"+ filename + ".png", image, "image/png");
+                            parseFile.save().then(function() {
+                                /* photo.set("thumbnail", parseFile);
+                                 photo.set("thumbnailUrl", parseFile._url);*/
+                                devicePhoto.currentPhoto.thumbnailUrl = parseFile._url;
+                                /*photo.save(null, {
+                                 success: function(photo) {
+                                 // Execute any logic that should take place after the object is saved.
+                                 devicePhoto.parsePhoto = photo;
+
+                                 },
+                                 error: function(contact, error) {
+                                 // Execute any logic that should take place if the save fails.
+                                 // error is a Parse.Error with an error code and message.
+                                 handleParseError(error);
+                                 }
+                                 });*/
+                            });
                         };
 
 
                         reader.readAsDataURL(image);
 
-                        var parseFile = new Parse.File("thumbnail_"+ filename + ".png", image, "image/png");
-                        parseFile.save().then(function() {
-                           /* photo.set("thumbnail", parseFile);
-                            photo.set("thumbnailUrl", parseFile._url);*/
-                            devicePhoto.currentPhoto.thumbnailUrl = parseFile._url;
-                            /*photo.save(null, {
-                                success: function(photo) {
-                                    // Execute any logic that should take place after the object is saved.
-                                    devicePhoto.parsePhoto = photo;
 
-                                },
-                                error: function(contact, error) {
-                                    // Execute any logic that should take place if the save fails.
-                                    // error is a Parse.Error with an error code and message.
-                                    handleParseError(error);
-                                }
-                            });*/
-                        });
                         // success: image is the new resized image
                     }, function() {
                         mobileNotify("Error creating thumbnail...");
