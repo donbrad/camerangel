@@ -64,7 +64,7 @@ var devicePhoto = {
                         if (device.platform === 'iOS') {
                             thumbNail = image.replace('file://', '');
                         }
-                        var parseFile = new Parse.File("thumbnail_"+ filename + ".png", thumbNail, "image/png");
+                        var parseFile = new Parse.File("thumbnail_"+ filename + ".png", image, "image/png");
                         parseFile.save().then(function() {
                            /* photo.set("thumbnail", parseFile);
                             photo.set("thumbnailUrl", parseFile._url);*/
