@@ -86,7 +86,13 @@ var channelsView = {
 
                 var query = this.value;
                 if (query.length > 0) {
-                    channelModel.channelsDS.filter({
+                    channelModel.channelsDS.filter([
+                        {
+                            "field": "isDeleted",
+                            "operator": "eq",
+                            "value": false
+                        },
+                        {
                         "logic": "or",
                         "filters": [
                             {
@@ -98,14 +104,10 @@ var channelsView = {
                                 "field": "description",
                                 "operator": "contains",
                                 "value": query
-                            },
-                            {
-                                "field": "isDeleted",
-                                "operator": "eq",
-                                "value": false
                             }
+
                         ]
-                    });
+                    }]);
                     $('#channels .enterSearch').removeClass('hidden');
 
                 } else {
@@ -247,7 +249,7 @@ var addChannelView = {
            if (channelModel.findChannelByName(name)) {
                mobileNotify('There is already a chat named : "' + name + '"');
            } else {
-               channelModel.addChannel(name, description, true, duration);
+               channelModel.addChannel(name, description, null, null, false);
            }
 
 
@@ -465,20 +467,37 @@ var editChannelView = {
         //Send Invite messages to users added to channel
         for (var ma = 0; ma < editChannelView.membersAdded.length; ma++) {
             inviteArray.push(editChannelView.membersAdded[ma].contactUUID);
-            appDataChannel.groupChannelInvite(editChannelView.membersAdded[ma].contactUUID, channelId,  editChannelView._activeChannel.name, "You've been invited to " + editChannelView._activeChannel.name);
+            appDataChannel.groupChannelInvite(editChannelView.membersAdded[ma].contactUUID, channelId,  editChannelView._activeChannel.name,  editChannelView._activeChannel.description, memberArray);
         }
 
         
         //Send Delete messages to users deleted from the channel
         for (var md = 0; md < editChannelView.membersDeleted.length; md++) {
-            appDataChannel.groupChannelDelete(editChannelView.membersDeleted[md].contactUUID, channelId, editChannelView._activeChannel.name + "has been deleted.");
+            var contactId = editChannelView.membersDeleted[md].contactUUID;
+            if (contactId !== null) {
+                // This is a ggMember -- send delete.
+                appDataChannel.groupChannelDelete(contactId, channelId, editChannelView._activeChannel.name + "has been deleted.");
+            } else {
+                // Invited member -- need to look up userId by phone number before sending delete notification
+                var phone = editChannelView.membersDeleted[md].phone;
+                if (phone !== undefined && phone !== null) {
+                    findUserByPhone(phone, function (result) {
+                        if (result.found) {
+                            var user = result.user, contactId = user.get('userUUID');
+                            appDataChannel.groupChannelDelete(contactId, channelId, editChannelView._activeChannel.name + "has been deleted.");
+                        }
+
+                    });
+                }
+
+            }
         }
 
         for (var m=0; m< memberArray.length; m++) {
 
             // Only send updates to current members (new members got an invite above)
             if (memberArray[m] !== userModel.currentUser.userUUID && ($.inArray(memberArray[m],inviteArray) == -1) ) {
-                appDataChannel.groupChannelUpdate(memberArray[m], channelId,  editChannelView._activeChannel.name, editChannelView._activeChannel.name + " has been updated...");
+                appDataChannel.groupChannelUpdate(memberArray[m], channelId,  editChannelView._activeChannel.name, editChannelView._activeChannel.description, memberArray);
             }
         }
 
@@ -498,10 +517,6 @@ var editChannelView = {
         updateParseObject('channels', 'channelId', channelId, 'members', memberArray);
         updateParseObject('channels', 'channelId', channelId, 'invitedMembers', invitedMemberArray);
 
-       /* // Update the channelmap entry so members can update or create the channel
-        updateParseObject('channelmap', 'channelId', channelId, 'members', memberArray);
-        // Add new members phone numbers to the channel map
-        updateParseObject('channelmap', 'channelId', channelId, 'invitedMembers', invitedPhoneArray);*/
 
         // Reset UI
         $("#showEditDescriptionBtn").velocity("fadeIn");
@@ -895,19 +910,19 @@ var channelView = {
             currentChannelModel.currentContactModel = null;
 
             //*** Group Channel ***
-          $('#messagePresenceButton').show();
-          // Provision a group channel
+            $('#messagePresenceButton').show();
+            // Provision a group channel
 
-          // clear header img
-          $('#channelImage').attr('src', '').addClass("hidden");
+            // clear header img
+            $('#channelImage').attr('src', '').addClass("hidden");
 
-          groupChannel.open(channelUUID, thisChannel.name, thisUser.userUUID, thisUser.name, thisUser.alias, thisUser.phone);
-          channelView.sendMessageHandler = groupChannel.sendMessage;
-         // channelView.contactData = channelView.buildContactArray(thisChannel.members);
+            groupChannel.open(channelUUID, thisChannel.name, thisUser.userUUID, thisUser.name, thisUser.alias, thisUser.phone);
+            channelView.sendMessageHandler = groupChannel.sendMessage;
+            // channelView.contactData = channelView.buildContactArray(thisChannel.members);
 
             mobileNotify("Loading Messages...");
             channelView.messagesDS.data([]);
-          groupChannel.getMessageHistory(function (messages) {
+            groupChannel.getMessageHistory(function (messages) {
 
               channelView.messagesDS.data(messages);
               //channelView.updateMessageTimeStamps();
@@ -916,7 +931,7 @@ var channelView = {
                   channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 60 * 5000);
               }*/
               channelView.scrollToBottom();
-          });
+            });
 
         }
 
@@ -1085,8 +1100,8 @@ var channelView = {
         if (length === 0)
             return;
 
-        for (var i=0; i<length; i++) {
-            var userId = members[i].username;
+        for (var member in members) {
+            var userId = member.username;
 
             if (userId !== userModel.currentUser.userUUID) {
                 var member = channelView.findChatMember(userId);
@@ -1168,8 +1183,34 @@ var channelView = {
         }
     },
 
+    messageInit : function () {
+        channelView.activeMessage = {};
+    },
+
+    messageAddLocation : function  () {
+        channelView.activeMessage.geo= {lat: mapModel.lat, lng: mapModel.lng};
+        channelView.activeMessage.address = mapModel.currentAddress;
+        if (userModel.currentUser.currentPlaceUUID !== null) {
+            channelView.activeMessage.place = {name: userModel.currentUser.currentPlace, uuid: userModel.currentUser.currentPlaceUUID};
+        }
+    },
+
+    messageAddPhoto : function (offer) {
+        channelView.activeMessage.photo = {
+            photoId : offer.photoId,
+            thumb: offer.thumbnail,
+            image: offer.image,
+            ownerId: offer.ownerId,
+            ownerName: offer.ownerName};
+    },
+
+    messageAddRichText : function (text) {
+        channelView.activeMessage.html = text;
+    },
+
     messageSend : function (e) {
         _preventDefault(e);
+
         var validMessage = false; // If message is valid, send is enabled
 
         //var text = $('#messageTextArea').val();
@@ -1179,27 +1220,23 @@ var channelView = {
         }
 
 
-        // Add current location information to message
-        var messageData = {geo: {lat: mapModel.lat, lng: mapModel.lng} , address: mapModel.currentAddress};
-
         if (channelView.ghostgramActive) {
-            messageData.html = text;
+           channelView.messageAddRichText(text);
         }
 
-        if (userModel.currentUser.currentPlaceUUID !== null) {
-            messageData.place = {name: userModel.currentUser.currentPlace, uuid: userModel.currentUser.currentPlaceUUID};
-        }
 
-        if (currentChannelModel.currentMessage.photo !== undefined && currentChannelModel.currentMessage.photo !== null) {
+        // Is there a current photo offer
+        if (photoModel.currentOffer !== null) {
             validMessage = true;
-            messageData.photo = currentChannelModel.currentMessage.photo;
+            channelView.messageAddPhoto(photoModel.currentOffer);
+            photoModel.initOffer();
         }
 
         if (validMessage === true ) {
-            channelView.sendMessageHandler(channelView.currentContactId, text, messageData, 86400);
+            channelView.sendMessageHandler(channelView.currentContactId, text, channelView.activeMessage, 86400);
             channelView.hideChatImagePreview();
             channelView._initMessageTextArea();
-            currentChannelModel.currentMessage = {};
+            channelView.messageInit();
         }
 
     },
@@ -1384,7 +1421,7 @@ var channelView = {
 
     messageCamera : function (e) {
        _preventDefault(e);
-        deviceCamera(
+        devicePhoto.deviceCamera(
             1600, // max resolution in pixels
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
@@ -1395,7 +1432,7 @@ var channelView = {
     messagePhoto : function (e) {
         _preventDefault(e);
         // Call the device gallery function to get a photo and get it scaled to gg resolution
-        deviceGallery(
+        devicePhoto.deviceGallery(
             1600, // max resolution in pixels
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
@@ -1518,8 +1555,12 @@ var channelPresence = {
             click: function (e) {
                 // Click to potential member list -- add this member to channel
                 var thisMember = e.dataItem;
-                if (thisMember !== undefined && thisMember.contactId !== null)
+                if (thisMember !== undefined && thisMember.contactId !== null) {
+                    contactActionView.setReturnModal("#channelPresence");
+                    channelPresence.closeModal();
                     contactActionView.openModal(thisMember.contactId);
+                }
+
 
             }
 
@@ -1530,12 +1571,20 @@ var channelPresence = {
 
     onShow: function (e) {
 
-        currentChannelModel.buildMembersDS();
+       /// currentChannelModel.buildMembersDS();
 
     },
 
+    openModal: function () {
+        $("#channelPresence").data("kendoMobileModalView").open();
+    },
+
+    closeModal : function () {
+        $("#channelPresence").data("kendoMobileModalView").close();
+    },
+
     onDone: function (e) {
-        $("#channelPresence").data("kendoMobileDrawer").hide();
+        $("#channelPresence").data("kendoMobileModalView").close();
     },
 
     onClose : function (e) {

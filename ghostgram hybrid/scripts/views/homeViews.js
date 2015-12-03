@@ -469,8 +469,8 @@ var editProfilePhotoView = {
     doCamera : function (e) {
       _preventDefault(e);
 
-        deviceCamera(
-            1200, // max resolution in pixels
+        devicePhoto.deviceCamera(
+            512, // max resolution in pixels
             75,  // quality: 1-99.
             false,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
            editProfilePhotoView.setPhotoUrl  // Optional preview callback
@@ -480,8 +480,8 @@ var editProfilePhotoView = {
     doPhotoGallery : function(e) {
         _preventDefault(e);
 
-        deviceGallery(
-            1200, // max resolution in pixels
+        devicePhoto.deviceGallery(
+            512, // max resolution in pixels
             75,  // quality: 1-99.
             false,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
             editProfilePhotoView.setPhotoUrl  // Optional preview callback
@@ -506,9 +506,9 @@ var signUpView = {
         _preventDefault(e);
 
         // Simple phone mask - http://jsfiddle.net/mykisscool/VpNMA/
-   
-        $('#home-signup-phone')
 
+
+        $('#home-signup-phone')
 
             .keydown(function (e) {
                 var key = e.charCode || e.keyCode || 0;
@@ -562,9 +562,11 @@ var signUpView = {
             });
 
 
+
         $("#create-user-email, #create-user-name, #create-user-alias, .create-user-password").css("display", "none");
         
     },
+
 
 
     onSubmit : function (e) {
@@ -578,6 +580,7 @@ var signUpView = {
 
     onShow : function (e) {
         _preventDefault(e);
+
 
         $("#signUpBox").velocity({translateY: "-10px;", opacity: 1}, {duration: 1000, easing: "easeIn"});
     },
@@ -714,8 +717,6 @@ var signUpView = {
                                             }
                                         });
 
-
-
                                         APP.kendo.navigate('#home');
                                     },
 
@@ -748,6 +749,7 @@ var signUpView = {
 
 var newUserView = {
 	_introRun : false,
+
     onInit : function (e) {
         _preventDefault(e);
 
@@ -756,6 +758,7 @@ var newUserView = {
 
 
     onShow : function (e) {
+
     	_introRun: false,
         _preventDefault(e);
 
@@ -785,7 +788,6 @@ var newUserView = {
 };
 
 var signInView = {
-	_hasSignedIn: false,
 
     onInit : function (e) {
         _preventDefault(e);
@@ -793,13 +795,11 @@ var signInView = {
         $("#home-signin-username").on("input", function(e) {
 
             // Add additional validation / helper code...
-
         });
 
         $("#home-signin-password").on("input", function(e){
 
         });
-
 
     },
 
@@ -809,6 +809,7 @@ var signInView = {
         if (userModel.rememberUsername && userModel.username !== '') {
             $('#home-signin-username').val(userModel.username)
         }
+
 
         $("#signInBox").velocity({opacity: 1, translateY: "-10px"}, {duration: 1000});
 
@@ -831,6 +832,7 @@ var signInView = {
     testingAnimation: function(){
     	$("#signUpBox").velocity({translateY: "-10px;", opacity: 1}, {delay: 500, duration: 1000, easing: "easeIn"});
     	$("#signInBox").css("display","none");
+
 
     },
 
@@ -861,7 +863,7 @@ var signInView = {
         Parse.User.logIn(username,password , {
             success: function(user) {
                 // Do stuff after successful login.
-                
+
                 window.localStorage.setItem('ggHasAccount', true);
                 // Clear sign in form
                 $("#home-signin-username, #home-signin-password").val("");
@@ -947,18 +949,22 @@ var signInView = {
                     deviceModel.setAppState('phoneVerified', true);
                     notificationModel.deleteNotification('phoneVerified');
                 } else {
+
                     mobileNotify("Please verify your phone number");
                     $("#modalview-verifyPhone").data("kendoMobileModalView").open();
+
                 }
             },
             error: function(user, error) {
                 // The login failed. Check error to see why.
+
                if(error.code === 101){
                		mobileNotify("Invalid email/password");
                } else {
                		mobileNotify("Error: " + error.code + " " + error.message);
                }
                
+
             }
         });
 

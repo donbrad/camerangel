@@ -11,6 +11,7 @@
 var photoModel = {
     _version : 1,
     currentPhoto: {},
+    currentOffer: null,
     previewSize: "33%",
     optionsShown: false,
     parsePhoto: {},
@@ -18,17 +19,25 @@ var photoModel = {
         offlineStorage: "gallery-offline"
     }),
 
+    offersDS: new kendo.data.DataSource({  // this is the gallery datasource
+        offlineStorage: "offers-offline"
+    }),
+
     init: function () {
 
     },
 
-    fetch: function () {
+    initOffer : function () {
+        photoModel.currentOffer = null;
+    },
+
+
+    _fetchPhotos : function () {
         var ParsePhotoModel = Parse.Object.extend("photos");
         var query = new Parse.Query(ParsePhotoModel);
 
         query.find({
             success: function(collection) {
-                mobileNotify("Fetching and upgrading photos ...");
                 var models = [];
                 for (var i = 0; i < collection.length; i++) {
 
@@ -38,26 +47,29 @@ var photoModel = {
                         photo.imageUrl = null;
                     }
 
-                    if (window.navigator.simulator === undefined && (photo.deviceUrl === undefined || photo.deviceUrl === null)) {
-                        var store = cordova.file.dataDirectory;
-                        window.resolveLocalFileSystemURL(store + photo.photoId + '.jpg',
-                            function(fileEntry) {
 
-                                var deviceUrl = fileEntry.nativeURL;
-                               parsePhoto.set("deviceUrl", deviceUrl);
-                                parsePhoto.save();
-                                photo.deviceUrl = deviceUrl;
-                                photo.isDirty = true;
-                            },
-                            function (error) {
-                                photoModel.addToLocalCache(photo.imageUrl, photo.photoId, photo, parsePhoto);
+                    if (photo.deviceUrl === undefined)
+                        photo.deviceUrl = null;
 
-                            }
-                        );
+                    /* if (window.navigator.simulator === undefined && (photo.deviceUrl === undefined || photo.deviceUrl === null)) {
+                     var store = cordova.file.dataDirectory;
+                     window.resolveLocalFileSystemURL(store + photo.photoId + '.jpg',
+                     function(fileEntry) {
+                     var deviceUrl = fileEntry.nativeURL;
+                     /!*parsePhoto.set("deviceUrl", deviceUrl);
+                     parsePhoto.save();*!/
+                     photo.deviceUrl = deviceUrl;
+                     photo.isDirty = true;
+                     },
+                     function (error) {
+                     photoModel.addToLocalCache(photo.imageUrl, photo.photoId, photo, parsePhoto);
+                     }
+                     );
 
-                    } else {
-                        photo.deviceUrl === null;
-                    }
+                     } else {
+                     photo.deviceUrl = null;
+                     }*/
+
 
                     photoModel.upgradePhoto(photo);
                     models.push(photo);
@@ -72,13 +84,44 @@ var photoModel = {
         });
     },
 
+
+    _fetchOffers : function () {
+        var ParsePhotoOffer = Parse.Object.extend("photoOffer");
+        var query = new Parse.Query(ParsePhotoOffer);
+
+        query.find({
+            success: function(collection) {
+
+                var models = [];
+                for (var i = 0; i < collection.length; i++) {
+                    var parseOffer = collection[i];
+                    var offer = parseOffer.toJSON();
+
+                    models.push(offer);
+                }
+
+                photoModel.offersDS.data(models);
+
+            },
+            error: function(error) {
+                handleParseError(error);
+            }
+        });
+    },
+
+    fetch: function () {
+        photoModel._fetchPhotos();
+        photoModel._fetchOffers();
+    },
+
     addToLocalCache : function (url, name, photo, parseObj) {
         var store = cordova.file.dataDirectory;
 
         var fileTransfer = new FileTransfer();
         fileTransfer.download(url, store + name + '.jpg',
             function(entry) {
-                photo.deviceURl = entry;
+                photo.deviceUrl = entry;
+                photo.isDirty = true;
                 parseObj.set('deviceUrl', entry);
                 parseObj.save();
                 console.log("Cached local copy of " + name);
@@ -233,7 +276,64 @@ var photoModel = {
 
     },
 
-    addDevicePhoto: function (data) {
+    getPhotoOfferACL : function () {
+        var acl = new Parse.ACL();
+        acl.setPublicReadAccess(true);
+        acl.setPublicWriteAccess(false);
+        acl.setWriteAccess(Parse.User.current().id, true);
+       return(acl);
+    },
+
+    addPhotoOffer : function (photoId, thumbnail, image) {
+        var PhotoOffer = Parse.Object.extend("photoOffer");
+        var offer = new PhotoOffer();
+
+        var uploadFlag = true;
+
+        var offeruuid = uuid.v4();
+
+        
+        offer.setACL(userModel.parseACL);
+        offer.set('version', photoModel._version);
+
+        offer.set('uuid', offeruuid);
+        offer.set('photoId', photoId);
+        offer.set('ownerId', userModel.currentUser.userUUID);
+        offer.set('ownerName', userModel.currentUser.name);
+
+        if (thumbnail === undefined || thumbnail === null) {
+            thumbnail = null;
+            uploadFlag = false;
+        }
+        offer.set('uploaded', uploadFlag);
+        offer.set('thumbnailUrl', thumbnail);
+        if (image === undefined) {
+            image = null;
+        }
+        offer.set('imageUrl', image);
+
+        offer.save(null, {
+            success: function(offer) {
+                var offerObject = offer.toJSON();
+                // Execute any logic that should take place after the object is saved.
+                photoModel.currentOffer = offerObject;
+                photoModel.offersDS.add(offerObject);
+
+            },
+            error: function(contact, error) {
+                // Execute any logic that should take place if the save fails.
+                // error is a Parse.Error with an error code and message.
+                handleParseError(error);
+            }
+        });
+
+    },
+
+    addImageToPhotoOffer : function (photoId, image) {
+
+    },
+
+    addDevicePhoto: function (devicePhoto) {
         mobileNotify("Processing photo....");
         // Todo: add additional processing to create Parse photoOffer
         var Photos = Parse.Object.extend("photos");
@@ -242,8 +342,8 @@ var photoModel = {
         photo.setACL(userModel.parseACL);
         photo.set('version', photoModel._version);
 
-        photo.set('photoId', photoModel.currentPhoto.photoId);
-        photo.set('deviceUrl', photoModel.currentPhoto.phoneUrl);
+        photo.set('photoId', devicePhoto.photoId);
+        photo.set('deviceUrl', devicePhoto.phoneUrl);
         photo.set('title', null);
         photo.set('description', null);
         photo.set('senderUUID', userModel.currentUser.userUUID);
@@ -280,8 +380,23 @@ var photoModel = {
             photo.set('placeString', userModel.currentUser.currentPlace);
         }
 
+        photo.save(null, {
+            success: function(photo) {
+                var photoObj = photo.toJSON();
+                // Execute any logic that should take place after the object is saved.
+                photoModel.parsePhoto = photo;
+                photoModel.photosDS.add(photoObj);
 
-        var parseFile = new Parse.File("thumbnail_"+photoModel.currentPhoto.filename + ".jpeg",{'base64': data.imageData}, "image/jpg");
+
+            },
+            error: function(contact, error) {
+                // Execute any logic that should take place if the save fails.
+                // error is a Parse.Error with an error code and message.
+                handleParseError(error);
+            }
+        });
+
+       /* var parseFile = new Parse.File("thumbnail_"+photoModel.currentPhoto.filename + ".jpeg",{'base64': data.imageData}, "image/jpg");
         parseFile.save().then(function() {
             photo.set("thumbnail", parseFile);
             photo.set("thumbnailUrl", parseFile._url);
@@ -324,7 +439,7 @@ var photoModel = {
                 }
             });
         });
-
+*/
     },
 
 

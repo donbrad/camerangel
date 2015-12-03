@@ -36,7 +36,7 @@ var contactsView = {
                     return;
                 }
 
-                updateCurrentContact(contact);
+                contactModel.setCurrentContact(contact);
 
                 if (contact.category === 'phone') {
                     if (contactModel.unifiedDeviceContact) {
@@ -46,6 +46,18 @@ var contactsView = {
                         // Still have multiple contacts
                         APP.kendo.navigate('#contactImport?query=' + contact.name);
                     }
+
+                } else if (contact.category === 'unknown') {
+                    // New Chat Member
+                    mobileNotify("Looking up " + contact.name);
+                    contactModel.updateContactDetails(contact.uuid, function (thisContact) {
+                        if (thisContact.contactUUID !== undefined && thisContact.contactUUID !== null) {
+                            // TODO: Need to convert this user to member
+
+
+                        }
+
+                    })
 
                 } else {
                     // If we know the contacts uuid enable the full feature set
@@ -1072,6 +1084,7 @@ var editContactView = {
 
 var contactActionView = {
     _activeContactId : null,
+    _returnModalId : null,
     _activeContact : new kendo.data.ObservableObject(),
 
     onInit: function (e) {
@@ -1094,6 +1107,10 @@ var contactActionView = {
                 $("#contactActionBtns > li:first-child").hide();
             }
         }
+    },
+
+    setReturnModal : function (modalId) {
+        contactActionView._returnModalId = modalId;
     },
 
     openModal : function (contactId) {
@@ -1208,6 +1225,12 @@ var contactActionView = {
 
         $("#modalview-contactActions .preMotionUp, #modalview-contactActions .hasMotion").css("display", "none").velocity("fadeOut", {opacity: 0, translateY: "0%"});
     	$("#contactProfileImg, #contactStatusImg").css("opacity", 0);
+
+        if (contactActionView._returnModalId !== null) {
+            $(contactActionView._returnModalId).data("kendoMobileModalView").open();
+            contactActionView._returnModalId = null;
+        }
+
     },
 
     restoreModal : function () {

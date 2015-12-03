@@ -309,6 +309,7 @@
 
 		   </ul>
 	   </div>
+
 		<a class="btnSecondary" href="#usersignin" type="button" data-role="button">Sign In</a>
     </div>
     <div class="footer" data-role="footer" id="newuserhome-footer">
@@ -319,6 +320,7 @@
 <!-- home - for new users -->
 <div data-role="view" data-title="ghostgrams" id="usersignin" data-layout="newuser" data-model="userModel" class="appearance" style="display:none;" data-init="signInView.onInit" data-show="signInView.onShow" data-transition="fade">
 	<div class="newuserBox">
+
 		<p>Welcome back to</p>
 		<p><img src="images/logo.svg" class="icon-md"/></p>
 	</div>
@@ -417,7 +419,6 @@
 </div>
     
 <div data-role="view" id="signup" data-title="Sign Up" data-layout="main" style="display: none;" class="appearance" data-init="signUpView.onInit" data-show="signUpView.onShow">
-   	
 	<div class="banner-welcome">
 		<h2>
 			<img src="images/sign-up-icon.svg" class="icon-md" /> Welcome
@@ -444,7 +445,7 @@
             </li>
             <li class="create-user-password">
                 <label for="home-signup-password">Password</label>
-                <input type="password" id="home-signup-password" name="Password" value="" required />
+                <input type="text" id="home-signup-password" name="Password" value="" required />
             </li> 
             <li class="create-user-password">
                 <label for="home-signup-password">Confirm Password</label>
@@ -1330,7 +1331,7 @@
 			</a>
 			<img src="" id="channelImage" height="32" class="circle-img"/>
 			<span id="channelName"></span>
-			<a data-align="right" data-role="button" id="messagePresenceButton" data-rel="drawer" href="#channelPresence">
+			<a data-align="right" data-role="button" id="messagePresenceButton" data-click="channelPresence.openModal">
 				<img src="images/group-icon.svg" />
 			</a>
 		</div>
@@ -1647,10 +1648,11 @@
 	</div>
 </script>
 
-<div data-role="drawer" id="channelPresence"  data-position="right" data-init="channelPresence.onInit" data-show="channelPresence.onShow" data-swipeToOpen="false" data-views='["channel"]' style="width: 80%;">
+
+<div data-role="modalview" id="channelPresence"  data-init="channelPresence.onInit" data-open="channelPresence.onShow"  style="width: 90%;">
 	<div data-role="header">
 		<div data-role="navbar">
-			<a data-align="left" data-role="button" data-click="channelPresence.onDone">
+			<a data-align="left" data-role="button" data-click="channelPresence.closeModal">
 				<img src="images/close.svg" />
 			</a>
 			<span>Members</span> <span class="badge primary-200" id="occupancyCount">1</span>
@@ -1871,6 +1873,7 @@
 		</div>
 	</div>
 
+
 	<div style="padding-bottom: 12px;">
 		<form>
 			<div class="topHalf">
@@ -2014,7 +2017,6 @@
 		#} else if (data.value === 'unknown') {#
 		New Chat Member
 		#} else if (data.value === 'zapped') {#
-
 		Deleted
 
 		#}#
@@ -2094,11 +2096,11 @@
 
 							#:message#
 
-
 							# if (data.isBlocked) {#
 							 (Blocked)
-
 							#}#
+
+
 						</p>
 
 						# if (data.currentPlace !== undefined && data.currentPlace !== ""){#

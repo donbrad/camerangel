@@ -442,6 +442,10 @@ var ux = {
 	    });
 	},
 
+	closeModalViewVerifyPhone: function(e) {
+		_preventDefault(e);
+		$("#modalview-verifyPhone").kendoMobileModalView("close");
+	},
 	closeModalViewProfilePhotoEdit: function(e) {
 		_preventDefault(e);
     	$("#modalview-profilePhotoEdit").kendoMobileModalView("close");

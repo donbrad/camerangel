@@ -64,12 +64,6 @@ var userDataChannel = {
         var channelList = [], channelKeys = [];
         var timeStamp = ggTime.toPubNubTime(userDataChannel.lastAccess);
 
- /*       if (userDataChannel.lastAccess === 0 || isNaN(userDataChannel.lastAccess)) {
-            timeStamp = ggTime.toPubNubTime(timeStamp);
-       } else {
-            timeStamp = ggTime.toPubNubTime(userDataChannel.lastAccess - 86400);
-        }
-*/
         // Get any messages in the channel
         APP.pubnub.history({
             channel: userDataChannel.channelId,
@@ -97,7 +91,11 @@ var userDataChannel = {
                         var content = cryptico.decrypt(msg.content.cipher, RSAKey).plaintext;
                         if (msg.data !== undefined && msg.data !== null) {
                             data = cryptico.decrypt(msg.data.cipher, RSAKey).plaintext;
-                            data = JSON.parse(data);
+                            if (data !== undefined) {
+                                data = JSON.parse(data);
+                            } else {
+                                data = {};
+                            }
                         }
 
                         var parsedMsg = {
@@ -111,7 +109,6 @@ var userDataChannel = {
                             sender: msg.sender,
                             recipient: msg.recipient
                         };
-
 
                         userDataChannel.messagesDS.add(parsedMsg);
 
