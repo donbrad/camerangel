@@ -83,7 +83,7 @@ var devicePhoto = {
 
                                 });
 
-                            }, 'jpg');
+                            });
 
 
                             // success: image is the new resized image
