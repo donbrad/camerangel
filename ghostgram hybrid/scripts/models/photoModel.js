@@ -283,13 +283,16 @@ var photoModel = {
     addPhotoOffer : function (photoId, thumbnail, image) {
         var PhotoOffer = Parse.Object.extend("photoOffer");
         var offer = new PhotoOffer();
-        var uuid = uuid.v4();
+
         var uploadFlag = true;
 
+        var offeruuid = uuid.v4();
+
+        
         offer.setACL(userModel.parseACL);
         offer.set('version', photoModel._version);
 
-        offer.set('uuid', uuid);
+        offer.set('uuid', offeruuid);
         offer.set('photoId', photoId);
         offer.set('ownerId', userModel.currentUser.userUUID);
         offer.set('ownerName', userModel.currentUser.name);
