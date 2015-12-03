@@ -101,7 +101,7 @@ var devicePhoto = {
                 allEdit: true,
                 saveToPhotoAlbum: saveToAlbum,
                 targetWidth: resolution,
-                destinationType: navigator.camera.DestinationType.FILE_URL
+                destinationType: destinationType
             }
         );
     },
