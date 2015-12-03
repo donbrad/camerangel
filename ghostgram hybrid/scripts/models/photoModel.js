@@ -287,7 +287,6 @@ var photoModel = {
         var uploadFlag = true;
 
         var offeruuid = uuid.v4();
-
         
         offer.setACL(userModel.parseACL);
         offer.set('version', photoModel._version);
@@ -303,10 +302,17 @@ var photoModel = {
         }
         offer.set('uploaded', uploadFlag);
         offer.set('thumbnailUrl', thumbnail);
+
+        offer.set('thumbnailFile', thumbnailFile);
         if (image === undefined) {
             image = null;
         }
         offer.set('imageUrl', image);
+
+        if (imageFile === undefined) {
+            imageFile = null;
+        }
+        offer.set('imageFile', imageFile);
 
         offer.save(null, {
             success: function(offer) {
