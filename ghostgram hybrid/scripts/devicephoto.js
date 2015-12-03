@@ -65,11 +65,9 @@ var devicePhoto = {
                             thumbNail = image.replace('file://', '');
                         }
 
-                        var reader  = new FileReader();
 
-                        reader.onload = function () {
-                            var base64 = reader.result;
-                            var parseFile = new Parse.File("thumbnail_"+ filename + ".png", image, "image/png");
+                        devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
+                            var parseFile = new Parse.File("thumbnail_"+ filename + ".png", dataUrl, "image/png");
                             parseFile.save().then(function() {
                                 /* photo.set("thumbnail", parseFile);
                                  photo.set("thumbnailUrl", parseFile._url);*/
@@ -87,10 +85,8 @@ var devicePhoto = {
                                  }
                                  });*/
                             });
-                        };
 
-
-                        reader.readAsDataURL(image);
+                        },'png');
 
 
                         // success: image is the new resized image
@@ -343,6 +339,23 @@ var devicePhoto = {
             });
         });
     */
+    },
+
+    convertImgToDataURL: function (url, callback, outputFormat) {
+    var img = new Image();
+
+        img.onload = function(){
+            var canvas = document.createElement('CANVAS');
+            var ctx = canvas.getContext('2d');
+            var dataURL;
+            canvas.height = this.height;
+            canvas.width = this.width;
+            ctx.drawImage(this, 0, 0);
+            dataURL = canvas.toDataURL(outputFormat);
+            callback(dataURL);
+            canvas = null;
+        };
+        img.src = url;
     }
 
 
