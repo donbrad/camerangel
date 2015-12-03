@@ -51,6 +51,21 @@ var devicePhoto = {
 
                 mobileNotify("Processing photo...");
 
+                var scaleOptions = {
+                    uri: imageUrl,
+                    folderName: "thumbnails",
+                    quality: 75,
+                    width: 512,
+                    height: 512};
+
+                window.ImageResizer.resize(scaleOptions,
+                    function(image) {
+                        var thumbNail = image;
+                        // success: image is the new resized image
+                    }, function() {
+                        // failed: grumpy cat likes this function
+                    });
+
               /*  if (isChat) {
                     window.imageResizer.resizeImage(resizeSuccessChat, resizeFailure,  imageUrl, 0, resolution, {
                         storeImage: true, pixelDensity: true, quality: quality });
@@ -91,11 +106,11 @@ var devicePhoto = {
         // So need to get a data url in our space rather an direct link to the image in current storage
         var options = {
             sourceType: pictureSource.SAVEDPHOTOALBUM,
-            destinationType: destinationType.DATA_URL
+            destinationType: destinationType.FILE_URI
         };
 
         if (device.platform === 'iOS') {
-            options.destinationType = destinationType.FILE_URL;
+            options.destinationType = destinationType.NATIVE_URI;
         }
 
         navigator.camera.getPicture(
