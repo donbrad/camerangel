@@ -280,7 +280,7 @@ var photoModel = {
        return(acl);
     },
 
-    addPhotoOffer : function (photoId, thumbnail, image) {
+    addPhotoOffer : function (photoId, thumbnail, thumbnailFile,  image) {
         var PhotoOffer = Parse.Object.extend("photoOffer");
         var offer = new PhotoOffer();
 
@@ -340,6 +340,8 @@ var photoModel = {
 
         photo.set('photoId', devicePhoto.photoId);
         photo.set('deviceUrl', devicePhoto.phoneUrl);
+        photo.set('imageUrl', devicePhoto.phoneUrl);
+        photo.set('thumbnailUrl', devicePhoto.phoneUrl);
         photo.set('title', null);
         photo.set('description', null);
         photo.set('senderUUID', userModel.currentUser.userUUID);
