@@ -64,6 +64,16 @@ var devicePhoto = {
                         if (device.platform === 'iOS') {
                             thumbNail = image.replace('file://', '');
                         }
+
+                        var reader  = new FileReader();
+
+                        reader.onloadend = function () {
+                            var base64 = reader.result;
+                        };
+
+
+                        reader.readAsDataURL(image);
+
                         var parseFile = new Parse.File("thumbnail_"+ filename + ".png", image, "image/png");
                         parseFile.save().then(function() {
                            /* photo.set("thumbnail", parseFile);
