@@ -280,7 +280,7 @@ var photoModel = {
        return(acl);
     },
 
-    addPhotoOffer : function (photoId, thumbnail, thumbnailFile,  image) {
+    addPhotoOffer : function (photoId, thumbnail, thumbnailFile,  image, imageFile) {
         var PhotoOffer = Parse.Object.extend("photoOffer");
         var offer = new PhotoOffer();
 

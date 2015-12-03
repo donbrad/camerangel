@@ -79,7 +79,7 @@ var devicePhoto = {
                                     devicePhoto.currentPhoto.parseThumbnail = parseFile;
                                     devicePhoto.currentPhoto.thumbnailUrl = parseFile._url;
 
-                                    photoModel.addPhotoOffer(photouuid, parseFile._url, null );
+                                    photoModel.addPhotoOffer(photouuid, parseFile._url, parseFile, null, null );
 
                                 });
 
