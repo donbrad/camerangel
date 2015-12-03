@@ -11,6 +11,7 @@
 var photoModel = {
     _version : 1,
     currentPhoto: {},
+    currentOffer: {},
     previewSize: "33%",
     optionsShown: false,
     parsePhoto: {},
@@ -18,11 +19,15 @@ var photoModel = {
         offlineStorage: "gallery-offline"
     }),
 
+    offersDS: new kendo.data.DataSource({  // this is the gallery datasource
+        offlineStorage: "offers-offline"
+    }),
+
     init: function () {
 
     },
 
-    fetch: function () {
+    _fetchPhotos : function () {
         var ParsePhotoModel = Parse.Object.extend("photos");
         var query = new Parse.Query(ParsePhotoModel);
 
@@ -40,24 +45,24 @@ var photoModel = {
                     if (photo.deviceUrl === undefined)
                         photo.deviceUrl = null;
 
-                   /* if (window.navigator.simulator === undefined && (photo.deviceUrl === undefined || photo.deviceUrl === null)) {
-                        var store = cordova.file.dataDirectory;
-                        window.resolveLocalFileSystemURL(store + photo.photoId + '.jpg',
-                            function(fileEntry) {
-                                var deviceUrl = fileEntry.nativeURL;
-                               /!*parsePhoto.set("deviceUrl", deviceUrl);
-                                parsePhoto.save();*!/
-                                photo.deviceUrl = deviceUrl;
-                                photo.isDirty = true;
-                            },
-                            function (error) {
-                                photoModel.addToLocalCache(photo.imageUrl, photo.photoId, photo, parsePhoto);
-                            }
-                        );
+                    /* if (window.navigator.simulator === undefined && (photo.deviceUrl === undefined || photo.deviceUrl === null)) {
+                     var store = cordova.file.dataDirectory;
+                     window.resolveLocalFileSystemURL(store + photo.photoId + '.jpg',
+                     function(fileEntry) {
+                     var deviceUrl = fileEntry.nativeURL;
+                     /!*parsePhoto.set("deviceUrl", deviceUrl);
+                     parsePhoto.save();*!/
+                     photo.deviceUrl = deviceUrl;
+                     photo.isDirty = true;
+                     },
+                     function (error) {
+                     photoModel.addToLocalCache(photo.imageUrl, photo.photoId, photo, parsePhoto);
+                     }
+                     );
 
-                    } else {
-                        photo.deviceUrl = null;
-                    }*/
+                     } else {
+                     photo.deviceUrl = null;
+                     }*/
 
                     photoModel.upgradePhoto(photo);
                     models.push(photo);
@@ -70,6 +75,35 @@ var photoModel = {
                 handleParseError(error);
             }
         });
+    },
+
+    _fetchOffers : function () {
+        var ParsePhotoOffer = Parse.Object.extend("photoOffer");
+        var query = new Parse.Query(ParsePhotoOffer);
+
+        query.find({
+            success: function(collection) {
+
+                var models = [];
+                for (var i = 0; i < collection.length; i++) {
+                    var parseOffer = collection[i];
+                    var offer = parseOffer.toJSON();
+
+                    models.push(offer);
+                }
+
+                photoModel.offersDS.data(models);
+
+            },
+            error: function(error) {
+                handleParseError(error);
+            }
+        });
+    },
+
+    fetch: function () {
+        photoModel._fetchPhotos();
+        photoModel._fetchOffers();
     },
 
     addToLocalCache : function (url, name, photo, parseObj) {
@@ -234,7 +268,7 @@ var photoModel = {
 
     },
 
-    getPHotoOfferACL : function () {
+    getPhotoOfferACL : function () {
         var acl = new Parse.ACL();
         acl.setPublicReadAccess(true);
         acl.setPublicWriteAccess(false);
@@ -266,6 +300,21 @@ var photoModel = {
             image = null;
         }
         offer.set('imageUrl', image);
+
+        offer.save(null, {
+            success: function(offer) {
+                var offerObject = offer.toJSON();
+                // Execute any logic that should take place after the object is saved.
+                photoModel.currentOffer = offerObject;
+                photoModel.offersDS.add(offerObject);
+
+            },
+            error: function(contact, error) {
+                // Execute any logic that should take place if the save fails.
+                // error is a Parse.Error with an error code and message.
+                handleParseError(error);
+            }
+        });
 
     },
 
