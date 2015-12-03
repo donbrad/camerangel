@@ -67,7 +67,7 @@ var devicePhoto = {
 
                         var reader  = new FileReader();
 
-                        reader.onloadend = function () {
+                        reader.onload = function () {
                             var base64 = reader.result;
                             var parseFile = new Parse.File("thumbnail_"+ filename + ".png", image, "image/png");
                             parseFile.save().then(function() {
