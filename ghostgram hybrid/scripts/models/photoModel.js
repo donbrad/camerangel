@@ -331,7 +331,7 @@ var photoModel = {
 
     },
 
-    addImageToPhotoOffer : function (photoId, image) {
+    addImageToPhotoOffer : function (photoId, image, imageFile) {
 
     },
 

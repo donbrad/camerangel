@@ -296,7 +296,7 @@ var channelModel = {
             }
 
             if (channelMembers.length === 0) {
-                mobileNotify("Chat " + channelName + "has no members!");
+                mobileNotify("Updatechat " + channelName + " has no members!");
                 return;
 
             }
@@ -527,7 +527,7 @@ var channelModel = {
             channelMembers = [];
         }
         if (channelMembers.length === 0) {
-            mobileNotify("Chat " + channelName + "has no members!");
+            mobileNotify("addMemberChat: " + channelName + " has no members!");
             return;
 
         }
