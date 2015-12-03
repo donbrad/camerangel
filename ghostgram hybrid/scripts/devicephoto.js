@@ -103,7 +103,6 @@ var devicePhoto = {
                 correctOrientation: true,
                 allEdit: true,
                 saveToPhotoAlbum: saveToAlbum,
-                encodingType: navigator.camera.EncodingType.PNG,
                 targetWidth: resolution,
                 destinationType: navigator.camera.DestinationType.FILE_URL
             }
