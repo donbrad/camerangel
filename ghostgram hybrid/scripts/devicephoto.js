@@ -63,6 +63,7 @@ var devicePhoto = {
                         var thumbNail = image;
                         // success: image is the new resized image
                     }, function() {
+                        mobileNotify("Error creating thumbnail...");
                         // failed: grumpy cat likes this function
                     });
 
