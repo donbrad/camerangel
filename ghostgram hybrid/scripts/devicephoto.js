@@ -61,6 +61,10 @@ var devicePhoto = {
                 window.ImageResizer.resize(scaleOptions,
                     function(image) {
                         var thumbNail = image;
+                        if (device.platform === 'iOS') {
+                            thumbNail = image.replace('file://', '');
+                        }
+
                         // success: image is the new resized image
                     }, function() {
                         mobileNotify("Error creating thumbnail...");
@@ -82,8 +86,9 @@ var devicePhoto = {
                 correctOrientation: true,
                 allEdit: true,
                 saveToPhotoAlbum: saveToAlbum,
+                encodingType: navigator.camera.EncodingType.PNG,
                 targetWidth: resolution,
-                destinationType: destinationType.FILE_URL
+                destinationType: navigator.camera.DestinationType.FILE_URL
             }
         );
     },
