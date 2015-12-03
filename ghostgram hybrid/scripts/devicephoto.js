@@ -70,7 +70,7 @@ var devicePhoto = {
                             }
 
                             devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
-                                var parseFile = new Parse.File("thumbnail_" + filename + ".jpg", {'base64': dataUrl}, "image/jpeg");
+                                var parseFile = new Parse.File("thumbnail" + filename + ".jpg", {'base64': dataUrl}, "image/jpeg");
                                 parseFile.save().then(function () {
                                     devicePhoto.currentPhoto.thumbnailUrl = parseFile._url;
 
@@ -171,7 +171,8 @@ var devicePhoto = {
                             }
 
                             devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
-                                var parseFile = new Parse.File("thumbnail_" + filename + ".jpg", {'base64': dataUrl}, "image/jpeg");
+                                var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
+                                var parseFile = new Parse.File("thumbnail_" + filename + ".jpg", {'base64': imageBase64}, "image/jpeg");
                                 parseFile.save().then(function () {
 
                                     devicePhoto.currentPhoto.thumbnailUrl = parseFile._url;
@@ -180,8 +181,7 @@ var devicePhoto = {
 
                                 });
 
-                            }, 'jpg');
-
+                            });
 
 
                         }, function () {
@@ -336,6 +336,9 @@ var devicePhoto = {
     convertImgToDataURL: function (url, callback, outputFormat) {
     var img = new Image();
 
+        if (outputFormat === undefined) {
+            outputFormat = "image/jpeg";
+        }
         img.onload = function(){
             var canvas = document.createElement('CANVAS');
             var ctx = canvas.getContext('2d');

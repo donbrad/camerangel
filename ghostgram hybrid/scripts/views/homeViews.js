@@ -704,7 +704,7 @@ var signUpView = {
                                                 mobileNotify('Error sending verification code ' + error);
                                             }
                                         });
-                                        
+
                                         APP.kendo.navigate('#home');
                                     },
 
