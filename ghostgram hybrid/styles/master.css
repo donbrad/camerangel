@@ -120,6 +120,9 @@
   display: none;
   opacity: 0;
 }
+.preMotion {
+  opacity: 0;
+}
 .preMotionUp {
   display: none;
 }
@@ -276,7 +279,6 @@ input,
   width: 100%;
   border: 0px;
   font-size: 16px;
-  font-size: 1em;
   border-bottom: 1px solid #e0e0e0;
   padding: .5em .7em;
   -webkit-appearance: none;
@@ -285,18 +287,18 @@ input,
   color: #4A4A4A;
 }
 ::-webkit-input-placeholder {
-  color: #E0E0E0 !important;
+  color: #979797 !important;
 }
 :-moz-placeholder {
   /* Firefox 18- */
-  color: #E0E0E0;
+  color: #979797;
 }
 ::-moz-placeholder {
   /* Firefox 19+ */
-  color: #E0E0E0;
+  color: #979797;
 }
 :-ms-input-placeholder {
-  color: #E0E0E0;
+  color: #979797;
 }
 label {
   font-size: 14px;
@@ -480,6 +482,10 @@ form p {
 }
 .warning {
   background: #E57373 !important;
+}
+.highlight-primary-100 {
+  background: #2E93FD;
+  color: #fff;
 }
 /* Text colors */
 .blue-100-txt {
@@ -939,6 +945,7 @@ div.km-content.km-widget.km-scroll-wrapper {
 }
 .modalview-content {
   padding: 1rem;
+  margin-bottom: 3rem !important;
 }
 .modalview-button {
   margin-top: 0.5rem;
@@ -4026,7 +4033,7 @@ div.contactListBox.activeContact > div > div > ul {
   float: left;
   position: absolute;
   top: 28px;
-  left: -15px;
+  left: -16px;
 }
 .mobile-input {
   float: left;
@@ -4045,12 +4052,16 @@ div.contactListBox.activeContact > div > div > ul {
 #formCreateAccount > div > ul {
   overflow: visible;
 }
-#formCreateAccount {
-  margin-bottom: 3rem;
+#formCreateAccount > div > ul {
+  margin-top: 0px;
 }
 .banner-welcome {
   margin-top: 1rem;
   text-align: center;
+}
+.banner-welcome h2,
+.banner-welcome p {
+  color: #fff;
 }
 .banner-welcome img {
   vertical-align: text-top;
@@ -5173,7 +5184,9 @@ table.k-editor {
   border-color: #fff;
 }
 /* User sign in */
-#usersignin > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container {
+#newuserhome > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container,
+#usersignin > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container,
+#signup > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container {
   background: url('../images/icon-bk.svg') no-repeat center bottom fixed, radial-gradient(100% 100%, #A5D6FA 0%, #6CADF3 50%);
   background-size: contain;
 }
@@ -5206,7 +5219,12 @@ table.k-editor {
 #signUpBox {
   opacity: 0;
 }
-#usersignin > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent {
+#signUpBox {
+  top: 20%;
+  margin-bottom: 4rem;
+}
+#usersignin > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent,
+#newuserhome > div.km-content.km-widget.km-scroll-wrapper {
   padding: 0px;
 }
 #createAccountBtn {
@@ -5215,4 +5233,11 @@ table.k-editor {
 #testingBtn {
   color: #fff;
   opacity: 0;
+}
+#signup > div.km-header,
+#signup > div.footerMenu.km-footer {
+  display: none;
+}
+#signup > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent {
+  padding: 0px;
 }

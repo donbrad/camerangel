@@ -94,6 +94,10 @@
 	opacity: 0;
 }
  
+.preMotion {
+	opacity: 0;
+}
+
 .preMotionUp {
 	display: none;
 }
@@ -251,7 +255,7 @@ p {
 input {
     width: 100%;
     border: 0px;
-    .font-size(16);
+    font-size: 16px;
     border-bottom: 1px solid #e0e0e0;
     padding: .5em .7em;
     -webkit-appearance: none;
@@ -416,6 +420,11 @@ form {
 
 .warning {
 	background: @warning-100 !important;
+}
+
+.highlight-primary-100 {
+	background: @primary-100;
+	color: #fff;
 }
 
 /* Text colors */
@@ -906,6 +915,7 @@ div.km-content.km-widget.km-scroll-wrapper {
 
 .modalview-content {
     padding: 1rem;
+    margin-bottom: 3rem !important;
 }
 
 .modalview-button {
@@ -4254,7 +4264,7 @@ div.contactListBox.activeContact > div > div > ul {
 	float: left;
 	position: absolute;
 	top: 28px;
-	left: -15px;
+	left: -16px;
 }
 
 .mobile-input {
@@ -4275,13 +4285,20 @@ div.contactListBox.activeContact > div > div > ul {
 	overflow: visible;
 }
 
+#formCreateAccount > div > ul {
+	margin-top: 0px;
+}
+
 #formCreateAccount {
-	margin-bottom: 3rem;
+	//margin-bottom: 3rem;
 }
 
 .banner-welcome {
 	margin-top: 1rem;
 	text-align: center;
+	h2, p {
+		color: #fff;
+	}
 	img {
 		vertical-align: text-top;
 	}
@@ -5542,8 +5559,9 @@ table.k-editor {
 }
 
 /* User sign in */
-
-#usersignin > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container {
+#newuserhome > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container,
+#usersignin > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container,
+#signup > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container {
 	background: 
 		url('../images/icon-bk.svg') no-repeat center bottom fixed,
 		radial-gradient(100% 100%, #A5D6FA 0%, #6CADF3 50%);
@@ -5583,7 +5601,13 @@ table.k-editor {
 	//transform: translateY(50%);
 }
 
-#usersignin > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent {
+#signUpBox {
+	top: 20%;
+	margin-bottom: 4rem;
+}
+
+#usersignin > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent,
+#newuserhome > div.km-content.km-widget.km-scroll-wrapper {
 	padding: 0px;
 }
 
@@ -5597,6 +5621,12 @@ table.k-editor {
 	opacity: 0;
 } 
 
+#signup > div.km-header,
+#signup > div.footerMenu.km-footer {
+	display: none;
+}
 
-
+#signup > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent {
+	padding: 0px;
+}
 

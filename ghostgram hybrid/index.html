@@ -281,10 +281,17 @@
 <!-- home - for new users -->
  <div data-role="view" data-title="ghostgrams" id="newuserhome" data-layout="newuser" class="appearance" style="display:none;" data-init="newUserView.onInit" data-show="newUserView.onShow" data-transition="fade">
  	<div class="newuserBox">
-        <img id="newuser-ghost" src="images/introImg.svg">
-    </div>
+		<p id="newWelcome">Welcome to</p>
+		<p id="newLogo"><img src="images/logo.svg" class="icon-md"/></p>
+		<h3>
+			<span class="feature" id="feature1">Personal</span> 
+			<span class="feature" id="feature2">Private</span>
+			<span class="feature" id="feature3">Secure</span>
+			<span id="messageIntro">Messaging</span>
+		</h3>
+	</div>
     <div class="clearfix"></div>
-    <div class="loginBox card">
+    <div class="loginBox card preMotion" id="featureCard1">
         <h3>
             Sign Up for ghostgrams
         </h3>
@@ -305,51 +312,17 @@
 		<a class="btnSecondary" href="#usersignin" type="button" data-role="button">Sign In</a>
     </div>
     <div class="footer" data-role="footer" id="newuserhome-footer">
-    	<a class="btnPrimary btnSpan-btm" data-role="button" href="#signup">Join ghostgrams</a>
+    	<a class="btnSecondary btnSpan-btm preMotion" data-role="button" href="#signup" id="newUserHomeBtn">Join ghostgrams</a>
     </div>
 </div>
 
 <!-- home - for new users -->
 <div data-role="view" data-title="ghostgrams" id="usersignin" data-layout="newuser" data-model="userModel" class="appearance" style="display:none;" data-init="signInView.onInit" data-show="signInView.onShow" data-transition="fade">
 	<div class="newuserBox">
-
-		<p id="newWelcome">Welcome to</p>
-		<p id="newLogo"><img src="images/logo.svg" class="icon-md"/></p>
-		<h3>
-			<span class="feature" id="feature1">Personal</span> 
-			<span class="feature" id="feature2">Private</span>
-			<span class="feature" id="feature3">Secure</span>
-			<span id="messageIntro">Messaging</span></h3>
+		<p>Welcome back to</p>
+		<p><img src="images/logo.svg" class="icon-md"/></p>
 	</div>
 	<div class="clearfix"></div>
-	<div class="loginBox card" id="signUpBox">
-		<h2>Let's get started!</h2>
-		<form id="formCreateAccount">
-        <ul data-role="listview" data-style="inset">
-        	<li>
-                <label class="left" for="home-signup-phone"> Mobile Phone</label>
-                	<div class="mobile-countryCode">+1</div>
-                	<input class="mobile-phone mobile-input" type="tel" id="home-signup-phone" value="" name="Mobile Phone" placeholder="(•••) ••• - ••••" maxlength="14" required />
-                	<div class="mobile-helper">Important! Your number is how friends and family will find and connect with you. </div>
-                	<div class="clearfix"></div>
-            </li>
-            <li id="create-user-email">
-                <label for="home-signup-username">Email Address</label>
-                    <input type="email" id="home-signup-username" name="Email" default="Enter your email" required/>
-            </li>
-			  <li id="create-user-name">
-                <label for="home-signup-fullname">Full Name</label>
-                    <input type="text" id="home-signup-fullname" default="Enter your full name" required/>
-            </li>
-            <li id="create-user-password">
-                <label for="home-signup-password">Password</label>
-                <input type="password" id="home-signup-password" name="Password" value="" required />
-            </li> 
-        </ul>  
-
-    </form>
-    	<a class="btnSecondary btnSpan-btm" id="createAccountBtn" data-role="button" data-click="signUpView.doCreateAccount">Submit</a>
-	</div>
 	<div class="loginBox card" id="signInBox">
 		<h2>
 			Sign in
@@ -363,7 +336,7 @@
 				<li>
 					<label>Password</label>
 					<input type="password" id="home-signin-password" value=""  name="Password" required />
-					<span id="forgotPassword" class="btnClear-grey" href="#modalview-recoverPassword" data-rel="modalview" data-role="button">Forgot password?</span>
+					<span id="forgotPassword" class="btnClear-grey" data-click="signInView.openForgotPassword" data-role="button">Forgot password?</span>
 				</li>
 				<li>
 					<label>
@@ -375,9 +348,9 @@
 			<br/>
 			
 		</form>
-		<a class="btnSecondary btnSpan-btm" data-role="button" data-click="signInView.doSignIn">Submit</a>
+		<a class="btnSecondary btnSpan-btm" data-role="button" data-click="signInView.doSignIn">Sign in</a>
 	</div>
-	<a class="btnSpan-btm" data-role="button" id="testingBtn" data-click="signInView.testingAnimation">Testing animation</a>
+	<a class="btnSpan-btm" data-role="button" href="#newuserhome">Go to New User</a>
 </div>
 
 
@@ -444,44 +417,48 @@
 </div>
     
 <div data-role="view" id="signup" data-title="Sign Up" data-layout="main" style="display: none;" class="appearance" data-init="signUpView.onInit" data-show="signUpView.onShow">
-   	<div data-role="header">
-      <div data-role="navbar">
-        <a data-role="button" href="#:back" data-align="left"><img src="images/nav-back.svg" />  </a>
-        <span data-role="view-title"></span>
-      </div>
-	</div>
+   	
 	<div class="banner-welcome">
 		<h2>
-			<img src="images/sign-up-icon.svg" /> Welcome
+			<img src="images/sign-up-icon.svg" class="icon-md" /> Welcome
 		</h2>
 		<p>Let's get some basic info.</p>
 	</div>
-   <form id="formCreateAccount">
+   <div class="loginBox card" id="signUpBox">
+		<form id="formCreateAccount">
         <ul data-role="listview" data-style="inset">
         	<li>
                 <label class="left" for="home-signup-phone"> Mobile Phone</label>
                 	<div class="mobile-countryCode">+1</div>
                 	<input class="mobile-phone mobile-input" type="tel" id="home-signup-phone" value="" name="Mobile Phone" placeholder="(•••) ••• - ••••" maxlength="14" required />
-                	<div class="mobile-helper">Important! Your number is how friends and family will find and connect with you. </div>
+                	<div class="mobile-helper"> Important! Your mobile number is how friends and family will add you. </div>
                 	<div class="clearfix"></div>
             </li>
             <li id="create-user-email">
                 <label for="home-signup-username">Email Address</label>
-                    <input type="email" id="home-signup-username" name="Email" placeholder="me@example.com" required/>
+                    <input type="email" id="home-signup-username" name="Email" default="Enter your email" required/>
             </li>
 			  <li id="create-user-name">
                 <label for="home-signup-fullname">Full Name</label>
-                    <input type="text" id="home-signup-fullname" required/>
+                    <input type="text" id="home-signup-fullname" default="Enter your full name" required/>
             </li>
-            <li id="create-user-password">
+            <li class="create-user-password">
                 <label for="home-signup-password">Password</label>
                 <input type="password" id="home-signup-password" name="Password" value="" required />
             </li> 
+            <li class="create-user-password">
+                <label for="home-signup-password">Confirm Password</label>
+                <input type="password" id="home-signup-password2" name="Password" value="" required />
+            </li> 
         </ul>  
-    </form> 
-    <div data-role="footer">
-            <a class="btnSpan-btm btnPrimary" data-click="signUpView.onSubmit" type="button" data-role="button">Submit</a>
-    </div>
+
+    </form>
+    	
+	</div>
+	<div class="footer" data-role="footer">
+		<a class="btnSecondary btnSpan-btm" id="createAccountBtn" data-role="button" data-click="signUpView.doCreateAccount">Submit</a>
+	</div>
+
 </div>
 	
 	
@@ -493,14 +470,11 @@
 	        </a>
 	    </h2>
 	    <label>Email password recovery instructions to 
-	    	<input type="email" id="home-recoverPassword-email"  placeholder="Email address"/>
+	    	<input type="text" id="home-recoverPassword-email" placeholder="me@example.com" />
 	    </label>
-	    <div class="modalview-button">
-	    	
-	    </div>
 	</div>
 	<div data-role="footer">
-		<a class="btnFull btnPrimary" data-click="homeRecoverPassword" id="modalview-recoverPassword-button" type="button" data-role="button">Send</a>
+		<a class="btnSpan-btm btnPrimary" data-click="homeRecoverPassword" id="modalview-recoverPassword-button" type="button" data-role="button">Send</a>
 	</div>
 </div>
     

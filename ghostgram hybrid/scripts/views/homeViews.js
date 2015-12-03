@@ -506,6 +506,7 @@ var signUpView = {
         _preventDefault(e);
 
         // Simple phone mask - http://jsfiddle.net/mykisscool/VpNMA/
+   
         $('#home-signup-phone')
 
 
@@ -561,7 +562,8 @@ var signUpView = {
             });
 
 
-        $("#create-user-email, #create-user-name, #create-user-alias, #create-user-password").css("display", "none");
+        $("#create-user-email, #create-user-name, #create-user-alias, .create-user-password").css("display", "none");
+        
     },
 
 
@@ -577,7 +579,7 @@ var signUpView = {
     onShow : function (e) {
         _preventDefault(e);
 
-
+        $("#signUpBox").velocity({translateY: "-10px;", opacity: 1}, {duration: 1000, easing: "easeIn"});
     },
 
     doCreateAccount : function (e) {
@@ -587,12 +589,17 @@ var signUpView = {
         var username = $('#home-signup-username').val();
         var name = $('#home-signup-fullname').val();
         var password = $('#home-signup-password').val();
+        var confirmPassword = $('#home-signup-password2').val();
         var phone = $('#home-signup-phone').val();
         var alias = $('#home-signup-alias').val();
 
         var userUUID = uuid.v4();
 
-        // clean up the phone number and ensure it's prefixed with 1
+        if (password !== confirmPassword){
+        	// add addition validataion 
+			mobileNotify("Passwords do not match");
+        } else {
+        	// clean up the phone number and ensure it's prefixed with 1
         // phone = phone.replace(/\+[0-9]{1-2}/,'');
         phone = unformatPhoneNumber(phone);
 
@@ -733,12 +740,14 @@ var signUpView = {
         });
 
     }
+        }
+        
 
 };
 
 
 var newUserView = {
-
+	_introRun : false,
     onInit : function (e) {
         _preventDefault(e);
 
@@ -747,15 +756,35 @@ var newUserView = {
 
 
     onShow : function (e) {
+    	_introRun: false,
         _preventDefault(e);
+
+        if(!newUserView._introRun){
+        	
+         // Animation
+        	$("#messageIntro").velocity({opacity: 1}).velocity({left: "50%"},{delay: 1300});
+        	
+        	$("#feature1").velocity({opacity: 1, translateY: "0%"}, {delay: 2000, duration: 1000}).velocity({opacity: 0, translateY: "100%"});
+        	$("#feature2").velocity({opacity: 1, translateY: "0%"}, {delay: 3000, duration: 1000}).velocity({opacity: 0, translateY: "100%"});
+        	$("#feature3").velocity({opacity: 1, translateY: "0%"}, {delay: 4000, duration: 1000}).velocity({opacity: 0, translateY: "100%"});
+        	$("#messageIntro").velocity({opacity: 0, translateY: "-100%"}, {delay: 3000});
+
+
+        	$("#newWelcome").velocity("fadeIn", {delay: 5500});
+        	$("#newLogo").velocity({opacity: 1}, {delay: 6000, duration: 500, easing: "easeIn"});
+        	
+        	$("#featureCard1").velocity({opacity: 1, translateY: "-10px"}, {delay: 6000, duration: 1000});
+        	$("#newUserHomeBtn").velocity({opacity: 1}, {delay: 6000,duration: 1000});
+			
+    		newUserView._introRun = true;
+    		
+        }
 
     }
 
 };
 
 var signInView = {
-
-	_introRun : false,
 	_hasSignedIn: false,
 
     onInit : function (e) {
@@ -772,64 +801,6 @@ var signInView = {
         });
 
 
-        // Simple phone mask - http://jsfiddle.net/mykisscool/VpNMA/
-        $('#home-signup-phone')
-
-            .keydown(function (e) {
-                var key = e.charCode || e.keyCode || 0;
-                var $phone = $(this);
-
-                // Auto-format- do not expose the mask as the user begins to type
-                if (key !== 8 && key !== 9) {
-                    if ($phone.val().length === 4) {
-                        $phone.val($phone.val() + ')');
-                    }
-                    if ($phone.val().length === 5) {
-                        $phone.val($phone.val() + ' ');
-                    }
-                    if ($phone.val().length === 9) {
-                        $phone.val($phone.val() + '-');
-                    }
-                }
-
-                // Allow numeric (and tab, backspace, delete) keys only
-                return (key == 8 ||
-                key == 9 ||
-                key == 46 ||
-                (key >= 48 && key <= 57) ||
-                (key >= 96 && key <= 105));
-            })
-            .keyup(function(e){
-                if ($(this).val().length === 14) {
-                    continueSignUp();
-                    $('#home-signup-phone').unbind("keyup")
-                }
-            })
-
-            .bind('focus click', function () {
-                var $phone = $(this);
-
-                if ($phone.val().length === 0) {
-                    $phone.val('(');
-                }
-                else {
-                    var val = $phone.val();
-                    $phone.val('').val(val); // Ensure cursor remains at the end
-                }
-            })
-
-            .blur(function () {
-                var $phone = $(this);
-
-                if ($phone.val() === '(') {
-                    $phone.val('');
-                }
-            });
-
-
-        $("#create-user-email, #create-user-name, #create-user-alias, #create-user-password").css("display", "none");
-
-
     },
 
     onShow : function (e) {
@@ -839,32 +810,23 @@ var signInView = {
             $('#home-signin-username').val(userModel.username)
         }
 
+        $("#signInBox").velocity({opacity: 1, translateY: "-10px"}, {duration: 1000});
 
-        if(!signInView._introRun){
-        	 // Animation
-        	$("#messageIntro").velocity({opacity: 1}).velocity({left: "50%"},{delay: 1300});
-        	
-        	$("#feature1").velocity({opacity: 1, translateY: "0%"}, {delay: 2000, duration: 1000}).velocity({opacity: 0, translateY: "100%"});
-        	$("#feature2").velocity({opacity: 1, translateY: "0%"}, {delay: 3000, duration: 1000}).velocity({opacity: 0, translateY: "100%"});
-        	$("#feature3").velocity({opacity: 1, translateY: "0%"}, {delay: 4000, duration: 1000}).velocity({opacity: 0, translateY: "100%"});
-        	$("#messageIntro").velocity({opacity: 0, translateY: "-100%"}, {delay: 3000});
-
-
-        	$("#newWelcome").velocity("fadeIn", {delay: 5500});
-        	$("#newLogo").velocity({opacity: 1}, {delay: 6000, duration: 500, easing: "easeIn"});
-        	
-        	
-        	// todo jordan - wire different options
-        	$("#signInBox").velocity({translateY: "-10px;", opacity: 1}, {delay: 6500, duration: 1000, easing: "easeIn"});
-        	
-        	// delete testing btn
-    		$("#testingBtn").velocity("fadeIn", {delay: 6000});
-			
-    		signInView._introRun = true;
-        }
-        
-    
     },
+
+    openForgotPassword: function(){
+    	var email = $("#home-signin-username").val();
+
+    	$("#modalview-recoverPassword").data("kendoMobileModalView").open();
+    	
+    	// ux helper for quick user input 
+    	if(email !== ''){
+    		$("#home-recoverPassword-email").val(email);
+    	} else{
+    		$("#home-recoverPassword-email").val('');
+    	}
+    },
+
     // todo - delete 
     testingAnimation: function(){
     	$("#signUpBox").velocity({translateY: "-10px;", opacity: 1}, {delay: 500, duration: 1000, easing: "easeIn"});
@@ -899,7 +861,7 @@ var signInView = {
         Parse.User.logIn(username,password , {
             success: function(user) {
                 // Do stuff after successful login.
-                ux.closeModalViewLogin();
+                
                 window.localStorage.setItem('ggHasAccount', true);
                 // Clear sign in form
                 $("#home-signin-username, #home-signin-password").val("");
@@ -985,12 +947,18 @@ var signInView = {
                     deviceModel.setAppState('phoneVerified', true);
                     notificationModel.deleteNotification('phoneVerified');
                 } else {
-                    mobileNotify("Please verify your phone number");$("#modalview-verifyPhone").data("kendoMobileModalView").open();
+                    mobileNotify("Please verify your phone number");
+                    $("#modalview-verifyPhone").data("kendoMobileModalView").open();
                 }
             },
             error: function(user, error) {
                 // The login failed. Check error to see why.
-                mobileNotify("Error: " + error.code + " " + error.message);
+               if(error.code === 101){
+               		mobileNotify("Invalid email/password");
+               } else {
+               		mobileNotify("Error: " + error.code + " " + error.message);
+               }
+               
             }
         });
 

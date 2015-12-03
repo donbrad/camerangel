@@ -275,8 +275,6 @@ input,
 .standard-input {
   width: 100%;
   border: 0px;
-  font-size: 16px;
-  font-size: 1em;
   border-bottom: 1px solid #e0e0e0;
   padding: .5em .7em;
   -webkit-appearance: none;
@@ -939,6 +937,7 @@ div.km-content.km-widget.km-scroll-wrapper {
 }
 .modalview-content {
   padding: 1rem;
+  margin-bottom: 3rem !important;
 }
 .modalview-button {
   margin-top: 0.5rem;
@@ -5173,7 +5172,8 @@ table.k-editor {
   border-color: #fff;
 }
 /* User sign in */
-#usersignin > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container {
+#usersignin > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container,
+#signup > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container {
   background: url('../images/icon-bk.svg') no-repeat center bottom fixed, radial-gradient(100% 100%, #A5D6FA 0%, #6CADF3 50%);
   background-size: contain;
 }
