@@ -380,6 +380,8 @@ var photoModel = {
         photo.set('tagsString', null);
         photo.set('placeId', null);
         photo.set('placeName', null);
+        photo.set('offerId', null);
+
 
         var channelId = (currentChannelModel.currentChannel.get('channelId') === undefined) ? null : currentChannelModel.currentChannel.get('channelId');
 
@@ -473,7 +475,7 @@ var photoModel = {
         var photo = this.findPhotoById(photoId);
         // Delete from local datasource
         if (photo === undefined || photo === null) {
-            mobileNotify("deletePhoto - can't find photo!")
+            mobileNotify("deletePhoto - can't find photo!");
         }
         photoModel.photosDS.remove(photo);
         // Remove from isotope and then rerender the layout
