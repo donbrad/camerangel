@@ -23,11 +23,11 @@ var devicePhoto = {
             isChat = false;
         }
         var pictureSource = navigator.camera.PictureSourceType;   // picture source
-        var destinationType = navigator.camera.destinationType.FILE_URI; // sets the format of returned value
+        var destinationType = navigator.camera.DestinationType.FILE_URI; // sets the format of returned value
         var saveToAlbum = userModel.currentUser.get('saveToPhotoAlbum');
 
         if (device.platform === 'iOS') {
-            destinationType = navigator.camera.destinationType.NATIVE_URI;
+            destinationType = navigator.camera.DestinationType.NATIVE_URI;
         }
         if (saveToAlbum === undefined) {
             saveToAlbum = false;
@@ -100,6 +100,7 @@ var devicePhoto = {
                 correctOrientation: true,
                 allEdit: true,
                 saveToPhotoAlbum: saveToAlbum,
+                pictureSource : pictureSource.CAMERA,
                 targetWidth: resolution,
                 destinationType: destinationType
             }
