@@ -23,8 +23,13 @@ var devicePhoto = {
             isChat = false;
         }
         var pictureSource = navigator.camera.PictureSourceType;   // picture source
-        var destinationType = navigator.camera.DestinationType; // sets the format of returned value
+
+        var destinationType = destinationType.FILE_URI; // sets the format of returned value
         var saveToAlbum = userModel.currentUser.get('saveToPhotoAlbum');
+
+        if (device.platform === 'iOS') {
+            destinationType = destinationType.NATIVE_URI;
+        }
 
         if (saveToAlbum === undefined) {
             saveToAlbum = false;
@@ -51,7 +56,6 @@ var devicePhoto = {
                     displayCallback(imageData);
                 }
 
-
                 if (isChat) {
                     mobileNotify("Processing photo...");
                     var scaleOptions = {
@@ -70,15 +74,19 @@ var devicePhoto = {
                             }
 
                             devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
-                                var parseFile = new Parse.File("thumbnail" + filename + ".jpg", {'base64': dataUrl}, "image/jpeg");
+
+                                var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
+                                var parseFile = new Parse.File("thumbnail" + filename + ".jpg", {'base64': imageBase64});
                                 parseFile.save().then(function () {
+                                    devicePhoto.currentPhoto.parseThumbnail = parseFile;
                                     devicePhoto.currentPhoto.thumbnailUrl = parseFile._url;
 
-                                    photoModel.addPhotoOffer(photouuid, parseFile._url, null );
+                                    photoModel.addPhotoOffer(photouuid, parseFile._url, parseFile, null, null );
 
                                 });
 
-                            }, 'jpg');
+                            });
+
 
 
                             // success: image is the new resized image
@@ -96,7 +104,7 @@ var devicePhoto = {
                 allEdit: true,
                 saveToPhotoAlbum: saveToAlbum,
                 targetWidth: resolution,
-                destinationType: navigator.camera.DestinationType.FILE_URL
+                destinationType: destinationType
             }
         );
     },
@@ -115,6 +123,7 @@ var devicePhoto = {
 
         var pictureSource = navigator.camera.PictureSourceType;   // picture source
         var destinationType = navigator.camera.DestinationType; // sets the format of returned value
+
 
         // Android storage is seriously different -- multiple photo directories with different permissions.
         // So need to get a data url in our space rather an direct link to the image in current storage
@@ -172,8 +181,11 @@ var devicePhoto = {
 
                             devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
                                 var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
-                                var parseFile = new Parse.File("thumbnail_" + filename + ".jpg", {'base64': imageBase64}, "image/jpeg");
+
+                                var parseFile = new Parse.File("thumbnail" + filename + ".jpg", {'base64': imageBase64});
                                 parseFile.save().then(function () {
+
+                                    devicePhoto.currentPhoto.parseThumbnail = parseFile;
 
                                     devicePhoto.currentPhoto.thumbnailUrl = parseFile._url;
 

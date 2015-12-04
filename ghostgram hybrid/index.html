@@ -321,6 +321,7 @@
 <div data-role="view" data-title="ghostgrams" id="usersignin" data-layout="newuser" data-model="userModel" class="appearance" style="display:none;" data-init="signInView.onInit" data-show="signInView.onShow" data-transition="fade">
 	<div class="newuserBox">
 
+
 		<p>Welcome back to</p>
 		<p><img src="images/logo.svg" class="icon-md"/></p>
 	</div>
@@ -419,6 +420,14 @@
 </div>
     
 <div data-role="view" id="signup" data-title="Sign Up" data-layout="main" style="display: none;" class="appearance" data-init="signUpView.onInit" data-show="signUpView.onShow">
+
+   	<div data-role="header">
+      <div data-role="navbar">
+        <a data-role="button" href="#:back" data-align="left"><img src="images/nav-back.svg" />  </a>
+        <span data-role="view-title"></span>
+      </div>
+	</div>
+
 	<div class="banner-welcome">
 		<h2>
 			<img src="images/sign-up-icon.svg" class="icon-md" /> Welcome
@@ -446,6 +455,7 @@
             <li class="create-user-password">
                 <label for="home-signup-password">Password</label>
                 <input type="text" id="home-signup-password" name="Password" value="" required />
+
             </li> 
             <li class="create-user-password">
                 <label for="home-signup-password">Confirm Password</label>
@@ -459,7 +469,6 @@
 	<div class="footer" data-role="footer">
 		<a class="btnSecondary btnSpan-btm" id="createAccountBtn" data-role="button" data-click="signUpView.doCreateAccount">Submit</a>
 	</div>
-
 </div>
 	
 	
@@ -1802,6 +1811,81 @@
 			</a>
     	</span>
 
+
+		<div class="topHalf">
+			<div class="topHalfLeft">
+				<img class="circle-img-lg shadow" id="addContactPhoto" src="images/ghostgramcontact.png" />
+			</div>
+			<div class="topHalfRight">
+				<div>
+					<input class="input-text-md" id="addContactName" type="search" placeholder="Contact full name"/>
+				</div>
+				<div>
+					<span class="caption">aka</span>
+					<input class="input-text-sm " id="addContactAlias" type="search" placeholder="Add a nickname"/>
+				</div>
+				<div>
+					<input class="input-text-md" id="addContactGroup" type="search" placeholder="Add Group (optional)"/>
+				</div>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<ul data-role="listview" data-style="inset" class="inviteContactInfo">
+			<li>
+				<label>Phone
+					<div class="select-lg">
+						<select id="addContactPhone"
+								data-text-field="number"
+								data-value-field="number"
+								data-bind="source: phoneDS"
+								auto-bind="false">
+						</select>
+					</div>
+				</label>
+			</li>
+			<li>
+				<label>Email
+					<div class="select-lg">
+						<select id="addContactEmail"
+								data-text-field="address"
+								data-value-field="address"
+								data-bind="source: emailDS"
+								auto-bind="false">
+						</select>
+					</div>
+				</label>
+			</li>
+			<li>
+				<label>Address
+					<div class="select-lg">
+						<select id="addContactAddress"
+								data-text-field="address"
+								data-value-field="address"
+								data-bind="source: addressDS"
+								auto-bind="false">
+						</select>
+					</div>
+				</label>
+			</li>
+		</ul>
+	</div>
+	<div class="footer" data-role="footer">
+		<a class="btnPrimary btnFull-modal" data-role="button" data-click="addContactView.addContact" id="addContacViewAddButton">Add Contact</a>
+	</div>
+</div>
+
+<!-- Edit Contacts -->
+<div data-role="view" data-model="editContactView._activeContact" data-title="Edit Contact" id="editContact"  data-transition="slide" data-show="editContactView.onShow" data-init="editContactView.onInit" class="appearance" style="display: none;">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span data-role="view-title"></span>
+			<a data-role="button" data-click="editContactView.onDone" data-align="left" >Done</a>
+		</div>
+	</div>
+
+
+=======
+
 		<div class="topHalf">
 			<div class="topHalfLeft">
 				<img class="circle-img-lg shadow" id="addContactPhoto" src="images/ghostgramcontact.png" />
@@ -2018,7 +2102,6 @@
 		New Chat Member
 		#} else if (data.value === 'zapped') {#
 		Deleted
-
 		#}#
 	</div>
 </script>
@@ -2099,7 +2182,6 @@
 							# if (data.isBlocked) {#
 							 (Blocked)
 							#}#
-
 
 						</p>
 

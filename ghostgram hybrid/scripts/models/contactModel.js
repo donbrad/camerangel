@@ -395,7 +395,6 @@ var contactModel = {
 
     syncNewMembers : function () {
         var newMembers = contactModel.queryContacts({ field: "category", operator: "eq", value: "unknown" });
-
     },
 
     deleteContact : function (contactId) {

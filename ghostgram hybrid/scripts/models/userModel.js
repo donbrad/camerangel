@@ -75,7 +75,6 @@ var userModel = {
             userModel.hasAccount = false;
             userModel.initialView = '#newuserhome';
         }
-
     },
 
 
@@ -113,7 +112,6 @@ var userModel = {
             } else {
                 userModel.initialView = '#newuserhome';
             }
-
 
         } else {
             // Need to force parse to actually fetch the data from the service.  Parse creates a local cache of user data that gets saved on login / create
