@@ -23,14 +23,15 @@ var devicePhoto = {
             isChat = false;
         }
         var pictureSource = navigator.camera.PictureSourceType;   // picture source
+        var encodingType = navigator.camera.EncodingType;
 
-        var destinationType = navigator.camera.DestinationType.FILE_URI; // sets the format of returned value
+        var destinationType = navigator.camera.DestinationType; // sets the format of returned value
 
         var saveToAlbum = userModel.currentUser.get('saveToPhotoAlbum');
 
-        if (device.platform === 'iOS') {
+       /* if (device.platform === 'iOS') {
             destinationType = navigator.camera.DestinationType.NATIVE_URI;
-        }
+        }*/
 
         if (saveToAlbum === undefined) {
             saveToAlbum = false;
@@ -105,8 +106,9 @@ var devicePhoto = {
                 allEdit: true,
                 saveToPhotoAlbum: saveToAlbum,
                 pictureSource : pictureSource.CAMERA,
+                encodingType: encodingType.JPEG,
                 targetWidth: resolution,
-                destinationType: destinationType
+                destinationType: destinationType.FILE_URI
             }
         );
     },
