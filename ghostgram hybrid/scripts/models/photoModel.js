@@ -284,7 +284,7 @@ var photoModel = {
        return(acl);
     },
 
-    addPhotoOffer : function (photoId, thumbnail, thumbnailFile,  image, imageFile) {
+    addPhotoOffer : function (photoId, thumbnail, thumbnailFile, image, imageFile, canCopy) {
 
         var PhotoOffer = Parse.Object.extend("photoOffer");
         var offer = new PhotoOffer();
@@ -320,12 +320,26 @@ var photoModel = {
         offer.set('imageFile', imageFile);
 
 
+        if (canCopy === undefined) {
+            canCopy = true;
+        }
+
+        offer.set('canCopy', canCopy);
         offer.save(null, {
             success: function(offer) {
                 var offerObject = offer.toJSON();
                 // Execute any logic that should take place after the object is saved.
                 photoModel.currentOffer = offerObject;
                 photoModel.offersDS.add(offerObject);
+
+                //Update the photo with offerId
+                var photo = photoModel.findPhotoById(photoId);
+                if (photo === undefined) {
+                    mobileNotify("Photo Offer with photo: " + photoId);
+                } else {
+                    photo.set("offerId", offeruuid);
+                    updateParseObject('photos', 'photoId', photoId, 'offerId', offeruuid);
+                }
 
             },
             error: function(contact, error) {
