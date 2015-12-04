@@ -105,6 +105,7 @@ var userModel = {
 
 
         if (Parse.User.current() === null) {
+
             if (userModel.hasAccount) {
                 mobileNotify("Please login to ghostgrams");
                 userModel.initialView = '#usersignin';

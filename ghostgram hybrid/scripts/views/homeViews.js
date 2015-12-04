@@ -506,6 +506,8 @@ var signUpView = {
         _preventDefault(e);
 
         // Simple phone mask - http://jsfiddle.net/mykisscool/VpNMA/
+
+
         $('#home-signup-phone')
 
             .keydown(function (e) {
@@ -560,8 +562,12 @@ var signUpView = {
             });
 
 
-        $("#create-user-email, #create-user-name, #create-user-alias, #create-user-password").css("display", "none");
+
+        $("#create-user-email, #create-user-name, #create-user-alias, .create-user-password").css("display", "none");
+        
     },
+
+
 
     onSubmit : function (e) {
         e.preventDefault();
@@ -576,6 +582,7 @@ var signUpView = {
         _preventDefault(e);
 
 
+        $("#signUpBox").velocity({translateY: "-10px;", opacity: 1}, {duration: 1000, easing: "easeIn"});
     },
 
     doCreateAccount : function (e) {
@@ -585,12 +592,17 @@ var signUpView = {
         var username = $('#home-signup-username').val();
         var name = $('#home-signup-fullname').val();
         var password = $('#home-signup-password').val();
+        var confirmPassword = $('#home-signup-password2').val();
         var phone = $('#home-signup-phone').val();
         var alias = $('#home-signup-alias').val();
 
         var userUUID = uuid.v4();
 
-        // clean up the phone number and ensure it's prefixed with 1
+        if (password !== confirmPassword){
+        	// add addition validataion 
+			mobileNotify("Passwords do not match");
+        } else {
+        	// clean up the phone number and ensure it's prefixed with 1
         // phone = phone.replace(/\+[0-9]{1-2}/,'');
         phone = unformatPhoneNumber(phone);
 
@@ -722,18 +734,21 @@ var signUpView = {
                     });
                 }
             },
-            error: function(user, error) {
+            error: function(error) {
                 // Show the error message somewhere and let the user try again.
                 mobileNotify("Error: " + error.code + " " + error.message);
             }
         });
 
     }
+        }
+        
 
 };
 
 
 var newUserView = {
+	_introRun : false,
 
     onInit : function (e) {
         _preventDefault(e);
@@ -743,22 +758,42 @@ var newUserView = {
 
 
     onShow : function (e) {
+
+    	_introRun: false,
         _preventDefault(e);
 
+        if(!newUserView._introRun){
+        	
+         // Animation
+        	$("#messageIntro").velocity({opacity: 1}).velocity({left: "50%"},{delay: 1300});
+        	
+        	$("#feature1").velocity({opacity: 1, translateY: "0%"}, {delay: 2000, duration: 1000}).velocity({opacity: 0, translateY: "100%"});
+        	$("#feature2").velocity({opacity: 1, translateY: "0%"}, {delay: 3000, duration: 1000}).velocity({opacity: 0, translateY: "100%"});
+        	$("#feature3").velocity({opacity: 1, translateY: "0%"}, {delay: 4000, duration: 1000}).velocity({opacity: 0, translateY: "100%"});
+        	$("#messageIntro").velocity({opacity: 0, translateY: "-100%"}, {delay: 3000});
+
+
+        	$("#newWelcome").velocity("fadeIn", {delay: 5500});
+        	$("#newLogo").velocity({opacity: 1}, {delay: 6000, duration: 500, easing: "easeIn"});
+        	
+        	$("#featureCard1").velocity({opacity: 1, translateY: "-10px"}, {delay: 6000, duration: 1000});
+        	$("#newUserHomeBtn").velocity({opacity: 1}, {delay: 6000,duration: 1000});
+			
+    		newUserView._introRun = true;
+    		
+        }
 
     }
-
-
-
-
 
 };
 
 var signInView = {
+
     onInit : function (e) {
         _preventDefault(e);
 
         $("#home-signin-username").on("input", function(e) {
+
             // Add additional validation / helper code...
         });
 
@@ -774,6 +809,29 @@ var signInView = {
         if (userModel.rememberUsername && userModel.username !== '') {
             $('#home-signin-username').val(userModel.username)
         }
+
+
+        $("#signInBox").velocity({opacity: 1, translateY: "-10px"}, {duration: 1000});
+
+    },
+
+    openForgotPassword: function(){
+    	var email = $("#home-signin-username").val();
+
+    	$("#modalview-recoverPassword").data("kendoMobileModalView").open();
+    	
+    	// ux helper for quick user input 
+    	if(email !== ''){
+    		$("#home-recoverPassword-email").val(email);
+    	} else{
+    		$("#home-recoverPassword-email").val('');
+    	}
+    },
+
+    // todo - delete 
+    testingAnimation: function(){
+    	$("#signUpBox").velocity({translateY: "-10px;", opacity: 1}, {delay: 500, duration: 1000, easing: "easeIn"});
+    	$("#signInBox").css("display","none");
 
 
     },
@@ -805,7 +863,7 @@ var signInView = {
         Parse.User.logIn(username,password , {
             success: function(user) {
                 // Do stuff after successful login.
-                ux.closeModalViewLogin();
+
                 window.localStorage.setItem('ggHasAccount', true);
                 // Clear sign in form
                 $("#home-signin-username, #home-signin-password").val("");
@@ -850,6 +908,7 @@ var signInView = {
                 userModel.currentUser.set('useIdenticon', userModel.parseUser.get('useIdenticon'));
                 userModel.currentUser.set('useLargeView', userModel.parseUser.get('useLargeView'));
                 userModel.currentUser.set('rememberUsername', userModel.parseUser.get('rememberUsername'));
+
                 userModel.currentUser.set('addressList', userModel.parseUser.get('addressList'));
                 userModel.currentUser.set('emailList', userModel.parseUser.get('emailList'));
                 userModel.currentUser.set('phoneList', userModel.parseUser.get('phoneList'));
@@ -860,6 +919,7 @@ var signInView = {
                 userModel.currentUser.set('galleryIntro', userModel.parseUser.get('galleryIntro'));
                 userModel.currentUser.set('identiconIntro', userModel.parseUser.get('identiconIntro'));
                 userModel.currentUser.set('placesIntro', userModel.parseUser.get('placesIntro'));
+
                 userModel.currentUser.set('publicKey', publicKey);
                 userModel.decryptPrivateKey();
                 //		userModel.currentUser.set('privateKey', privateKey);
@@ -889,12 +949,22 @@ var signInView = {
                     deviceModel.setAppState('phoneVerified', true);
                     notificationModel.deleteNotification('phoneVerified');
                 } else {
-                    mobileNotify("Please verify your phone number");$("#modalview-verifyPhone").data("kendoMobileModalView").open();
+
+                    mobileNotify("Please verify your phone number");
+                    $("#modalview-verifyPhone").data("kendoMobileModalView").open();
+
                 }
             },
             error: function(user, error) {
                 // The login failed. Check error to see why.
-                mobileNotify("Error: " + error.code + " " + error.message);
+
+               if(error.code === 101){
+               		mobileNotify("Invalid email/password");
+               } else {
+               		mobileNotify("Error: " + error.code + " " + error.message);
+               }
+               
+
             }
         });
 

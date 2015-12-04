@@ -120,6 +120,9 @@
   display: none;
   opacity: 0;
 }
+.preMotion {
+  opacity: 0;
+}
 .preMotionUp {
   display: none;
 }
@@ -276,13 +279,26 @@ input,
   width: 100%;
   border: 0px;
   font-size: 16px;
-  font-size: 1em;
   border-bottom: 1px solid #e0e0e0;
   padding: .5em .7em;
   -webkit-appearance: none;
   -webkit-border-radius: 3px;
   border-radius: 3px !important;
   color: #4A4A4A;
+}
+::-webkit-input-placeholder {
+  color: #979797 !important;
+}
+:-moz-placeholder {
+  /* Firefox 18- */
+  color: #979797;
+}
+::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #979797;
+}
+:-ms-input-placeholder {
+  color: #979797;
 }
 label {
   font-size: 14px;
@@ -467,6 +483,10 @@ form p {
 .warning {
   background: #E57373 !important;
 }
+.highlight-primary-100 {
+  background: #2E93FD;
+  color: #fff;
+}
 /* Text colors */
 .blue-100-txt {
   color: #2E93FD;
@@ -523,6 +543,9 @@ form p {
 .icon-sm {
   height: 1em;
   vertical-align: middle;
+}
+.icon-md {
+  height: 1.5em;
 }
 .icon-bar {
   height: 1em;
@@ -922,6 +945,7 @@ div.km-content.km-widget.km-scroll-wrapper {
 }
 .modalview-content {
   padding: 1rem;
+  margin-bottom: 3rem !important;
 }
 .modalview-button {
   margin-top: 0.5rem;
@@ -2056,12 +2080,12 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .km-root .appearance .km-listview label {
   color: #212121;
-  font-size: 0.875em;
+  font-size: 1em;
   width: 100%;
 }
 .km-wp .appearance .km-listview label {
   color: #212121;
-  font-size: 0.875em;
+  font-size: 1em;
 }
 .km-root .km-pane .km-view.appearance .km-listview input {
   position: relative;
@@ -2241,6 +2265,18 @@ textarea {
   padding: 0.1em 0.5em;
   color: #979797;
   background: #f5f5f5;
+}
+.listTag-primary {
+  border-radius: 3px;
+  padding: 0.1em 0.5em;
+  color: #fff;
+  background: #6CADF3;
+}
+.listTag-secondary {
+  border-radius: 3px;
+  padding: 0.1em 0.5em;
+  color: #fff;
+  background: #FADDB0;
 }
 #contacts-listview > li > ul > li > div > a > div.left.listName > h4 {
   margin-right: 0px;
@@ -2591,6 +2627,11 @@ a:hover {
   width: 75%;
   float: left;
 }
+@media only screen and (max-width: 320px) {
+  .chatNameDiv {
+    width: 72%;
+  }
+}
 .chatStatusIcon {
   float: left;
   width: 1.5rem;
@@ -2610,6 +2651,11 @@ a:hover {
   width: 17%;
   text-align: right;
 }
+@media only screen and (max-width: 320px) {
+  .chatActivityTime {
+    width: 20%;
+  }
+}
 .chatDetails img {
   vertical-align: text-top;
 }
@@ -2625,7 +2671,7 @@ a:hover {
   top: 0px;
   left: 0px;
   display: block;
-  padding-left: 1rem;
+  padding-left: 0.5rem;
   padding-right: 1rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
@@ -3061,12 +3107,16 @@ div.chat-message-user-content.clearfix > p {
   -o-background-size: cover;
   background-size: cover;
 }
-.newuserBox h1 {
-  margin-bottom: 0px;
-  padding-top: 1rem;
+.newuserBox {
+  margin-top: 16.667%;
+}
+.newuserBox h3 {
+  text-align: center;
+  color: #fff;
 }
 .newuserBox p {
-  margin-left: 1rem;
+  text-align: center;
+  color: #fff;
 }
 #newuser-ghost {
   position: absolute;
@@ -3076,7 +3126,7 @@ div.chat-message-user-content.clearfix > p {
 }
 .loginBox {
   position: absolute;
-  top: 30%;
+  top: 22.5%;
   margin-top: 1rem;
   left: 2.5%;
 }
@@ -3093,6 +3143,7 @@ div.loginBox > form > div > ul > li {
 }
 #formSignIn {
   padding-top: 0px;
+  padding-bottom: 3rem;
 }
 #newuserhome > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > div.loginBox > form > div > ul > li {
   margin-bottom: 0.5rem;
@@ -3102,8 +3153,8 @@ div.loginBox > form > div > ul > li {
   margin-bottom: 1px;
 }
 #forgotPassword {
-  font-size: 12px !important;
-  font-size: 0.75em !important;
+  font-size: 14px !important;
+  font-size: 0.875em !important;
 }
 .forgotBox {
   padding: 1rem;
@@ -3974,7 +4025,7 @@ div.contactListBox.activeContact > div > div > ul {
 }
 /* sign up */
 .mobile-countryCode {
-  background-color: #6CADF3;
+  background-color: #D4ABC4;
   color: #fff;
   font-size: 30px;
   font-size: 1.875em;
@@ -3982,7 +4033,7 @@ div.contactListBox.activeContact > div > div > ul {
   float: left;
   position: absolute;
   top: 28px;
-  left: -15px;
+  left: -16px;
 }
 .mobile-input {
   float: left;
@@ -3994,16 +4045,23 @@ div.contactListBox.activeContact > div > div > ul {
 .mobile-helper {
   width: 80%;
   margin-left: 20%;
-  font-size: 11px;
-  font-size: 0.6875em;
+  font-size: 14px;
+  font-size: 0.875em;
 }
 #formCreateAccount > div > ul > li,
 #formCreateAccount > div > ul {
   overflow: visible;
 }
+#formCreateAccount > div > ul {
+  margin-top: 0px;
+}
 .banner-welcome {
   margin-top: 1rem;
   text-align: center;
+}
+.banner-welcome h2,
+.banner-welcome p {
+  color: #fff;
 }
 .banner-welcome img {
   vertical-align: text-top;
@@ -5124,4 +5182,62 @@ html .km-pane-wrapper .k-header {
 }
 table.k-editor {
   border-color: #fff;
+}
+/* User sign in */
+#newuserhome > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container,
+#usersignin > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container,
+#signup > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container {
+  background: url('../images/icon-bk.svg') no-repeat center bottom fixed, radial-gradient(100% 100%, #A5D6FA 0%, #6CADF3 50%);
+  background-size: contain;
+}
+#newLogo,
+#newWelcome {
+  opacity: 0;
+}
+.feature {
+  position: absolute;
+  left: 30%;
+  display: inline-block;
+  text-align: right;
+}
+#feature1,
+#feature2,
+#feature3 {
+  position: absolute;
+  opacity: 0;
+  transform: translateY(-100%);
+}
+#feature1 {
+  left: 28%;
+}
+#messageIntro {
+  opacity: 0;
+  position: absolute;
+  left: 40%;
+}
+#signInBox,
+#signUpBox {
+  opacity: 0;
+}
+#signUpBox {
+  top: 20%;
+  margin-bottom: 4rem;
+}
+#usersignin > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent,
+#newuserhome > div.km-content.km-widget.km-scroll-wrapper {
+  padding: 0px;
+}
+#createAccountBtn {
+  display: none;
+}
+#testingBtn {
+  color: #fff;
+  opacity: 0;
+}
+#signup > div.km-header,
+#signup > div.footerMenu.km-footer {
+  display: none;
+}
+#signup > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent {
+  padding: 0px;
 }

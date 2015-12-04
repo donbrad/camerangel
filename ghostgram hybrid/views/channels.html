@@ -123,17 +123,24 @@
 	    			<span class="chatStatusIcon">
 	    				# if(data.isMuted){#
 	    					<img src="images/icon-mute.svg" class="channelMuteImg" />
-	    				#}else {#
+	    				#} else if(data.unreadCount > 1){#
 	    					<img src="images/status-new.svg" class="list-status" />
+	    				#} else {#
+	    					<span class="list-status"></span>
 	    				#}#
 
 	    			</span>
 	        		<span class="textClamp chatNameDiv">#:name#</span>
 	        		<span class="chatActivityTime left">#:accessTime#</span>
 	    		</h4>
-	    		<div class="clearfix"></div>
-	    		<div class="chatType">
 
+	    		#if(data.unreadCount > 1 && !data.isMuted){#
+	    			<span class="right listTag-primary">#: data.unreadCount#</span>
+	    		#} else if (data.isMuted){#
+	    			<span class="listTag-light right">Muted</span>
+	    		#}#
+	    		
+	    		<div class="chatType left">
 		    		# if(isPrivate && members.length <= 2){#
 		    			<img src="images/private-icon.svg" /> Private Chat
 		    		#} else if (false) {# // For place chats
@@ -141,8 +148,6 @@
 		    		#} else {#
 		    			<img src="images/group-icon.svg" class="icon-sm" /> Group Chat
 		    		#}#
-		    		#if (data.isMuted) {# <span class="listTag-light">Muted</span> #} #
-		    		#if (data.unreadCount > 0) {# <span class="chatActivityTime left">#:unreadCount# new</span> # } #
 	    		</div>
 
 	    	</div><!-- chat-mainBox -->

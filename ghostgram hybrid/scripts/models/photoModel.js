@@ -40,11 +40,13 @@ var photoModel = {
             success: function(collection) {
                 var models = [];
                 for (var i = 0; i < collection.length; i++) {
+
                     var parsePhoto = collection[i];
                     var photo = parsePhoto.toJSON();
                     if (photo.imageUrl === undefined) {
                         photo.imageUrl = null;
                     }
+
 
                     if (photo.deviceUrl === undefined)
                         photo.deviceUrl = null;
@@ -68,6 +70,7 @@ var photoModel = {
                      photo.deviceUrl = null;
                      }*/
 
+
                     photoModel.upgradePhoto(photo);
                     models.push(photo);
                 }
@@ -80,6 +83,7 @@ var photoModel = {
             }
         });
     },
+
 
     _fetchOffers : function () {
         var ParsePhotoOffer = Parse.Object.extend("photoOffer");
@@ -281,6 +285,7 @@ var photoModel = {
     },
 
     addPhotoOffer : function (photoId, thumbnail, thumbnailFile,  image, imageFile) {
+
         var PhotoOffer = Parse.Object.extend("photoOffer");
         var offer = new PhotoOffer();
 
@@ -302,8 +307,8 @@ var photoModel = {
         }
         offer.set('uploaded', uploadFlag);
         offer.set('thumbnailUrl', thumbnail);
-
         offer.set('thumbnailFile', thumbnailFile);
+
         if (image === undefined) {
             image = null;
         }
@@ -313,6 +318,7 @@ var photoModel = {
             imageFile = null;
         }
         offer.set('imageFile', imageFile);
+
 
         offer.save(null, {
             success: function(offer) {
@@ -346,8 +352,10 @@ var photoModel = {
 
         photo.set('photoId', devicePhoto.photoId);
         photo.set('deviceUrl', devicePhoto.phoneUrl);
+
         photo.set('imageUrl', devicePhoto.phoneUrl);
         photo.set('thumbnailUrl', devicePhoto.phoneUrl);
+
         photo.set('title', null);
         photo.set('description', null);
         photo.set('senderUUID', userModel.currentUser.userUUID);
@@ -391,7 +399,6 @@ var photoModel = {
                 photoModel.parsePhoto = photo;
                 photoModel.photosDS.add(photoObj);
 
-
             },
             error: function(contact, error) {
                 // Execute any logic that should take place if the save fails.
@@ -399,6 +406,7 @@ var photoModel = {
                 handleParseError(error);
             }
         });
+
 
        /* var parseFile = new Parse.File("thumbnail_"+photoModel.currentPhoto.filename + ".jpeg",{'base64': data.imageData}, "image/jpg");
         parseFile.save().then(function() {
