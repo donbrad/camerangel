@@ -23,13 +23,15 @@ var devicePhoto = {
             isChat = false;
         }
         var pictureSource = navigator.camera.PictureSourceType;   // picture source
+        var encodingType = navigator.camera.EncodingType;
 
-        var destinationType = destinationType.FILE_URI; // sets the format of returned value
+        var destinationType = navigator.camera.DestinationType; // sets the format of returned value
+
         var saveToAlbum = userModel.currentUser.get('saveToPhotoAlbum');
 
-        if (device.platform === 'iOS') {
-            destinationType = destinationType.NATIVE_URI;
-        }
+       /* if (device.platform === 'iOS') {
+            destinationType = navigator.camera.DestinationType.NATIVE_URI;
+        }*/
 
         if (saveToAlbum === undefined) {
             saveToAlbum = false;
@@ -39,9 +41,9 @@ var devicePhoto = {
             function (imageData) {
                 var photouuid = uuid.v4();
                 var imageUrl = imageData;
-                if (device.platform === 'iOS') {
+               /* if (device.platform === 'iOS') {
                     imageUrl = imageData.replace('file://', '');
-                }
+                }*/
                 // convert uuid into valid file name;
                 var filename = photouuid.replace(/-/g,'');
 
@@ -81,7 +83,7 @@ var devicePhoto = {
                                     devicePhoto.currentPhoto.parseThumbnail = parseFile;
                                     devicePhoto.currentPhoto.thumbnailUrl = parseFile._url;
 
-                                    photoModel.addPhotoOffer(photouuid, parseFile._url, parseFile, null, null );
+                                    photoModel.addPhotoOffer(photouuid, parseFile._url, parseFile, null, null , false);
 
                                 });
 
@@ -103,8 +105,10 @@ var devicePhoto = {
                 correctOrientation: true,
                 allEdit: true,
                 saveToPhotoAlbum: saveToAlbum,
+                pictureSource : pictureSource.CAMERA,
+                encodingType: encodingType.JPEG,
                 targetWidth: resolution,
-                destinationType: destinationType
+                destinationType: destinationType.FILE_URI
             }
         );
     },

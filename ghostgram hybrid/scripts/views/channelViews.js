@@ -1200,6 +1200,7 @@ var channelView = {
             photoId : offer.photoId,
             thumb: offer.thumbnail,
             image: offer.image,
+            canCopy: offer.canCopy,
             ownerId: offer.ownerId,
             ownerName: offer.ownerName};
     },

@@ -3,7 +3,7 @@
 #import <Cordova/CDVPluginResult.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
-#define PROTONET_PHOTO_PREFIX @"protonet_"
+#define PROTONET_PHOTO_PREFIX @"ghostgram_"
 
 @implementation ImageResizer
 
@@ -13,6 +13,8 @@
     NSDictionary* arguments = [command.arguments objectAtIndex:0];
     NSString* imageUrlString = [arguments objectForKey:@"uri"];
     NSString* quality = [arguments objectForKey:@"quality"];
+    NSString* folder = [arguments objectForKey:@"folderName"];
+
     CGSize frameSize = CGSizeMake([[arguments objectForKey:@"width"] floatValue], [[arguments objectForKey:@"height"] floatValue]);
 
     //Get the image from the path
@@ -67,7 +69,7 @@
     NSData* data = UIImageJPEGRepresentation(newImage, [quality floatValue] / 100.0f);
     int i = 1;
     do {
-        filePath = [NSString stringWithFormat:@"%@/%@%03d.%@", docsPath, 'thumbnail', i++, @"jpg"];
+        filePath = [NSString stringWithFormat:@"%@/%@%03d.%@", docsPath, folder, i++, @"jpg"];
     } while ([fileMgr fileExistsAtPath:filePath]);
 
     // save file

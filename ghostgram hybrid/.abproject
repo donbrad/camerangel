@@ -6,13 +6,14 @@
   "DisplayName": "ghostgrams",
   "Author": "don bradford",
   "Description": "ghostgrams for iOS and Android",
-  "BundleVersion": "0.2.2.4",
+  "BundleVersion": "0.2.2.5",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1"
   ],
   "iOSBackgroundMode": [
     "location",
+    "external-accessory",
     "fetch",
     "remote-notification"
   ],
