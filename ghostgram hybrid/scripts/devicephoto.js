@@ -41,9 +41,9 @@ var devicePhoto = {
             function (imageData) {
                 var photouuid = uuid.v4();
                 var imageUrl = imageData;
-                if (device.platform === 'iOS') {
+               /* if (device.platform === 'iOS') {
                     imageUrl = imageData.replace('file://', '');
-                }
+                }*/
                 // convert uuid into valid file name;
                 var filename = photouuid.replace(/-/g,'');
 
