@@ -679,7 +679,10 @@ var addPlaceView = {
                 // update the distance value for the local object...
                 place.set('distance',distance.toFixed(2));
 
-                placesModel.placesDS.add(place.attributes);
+                // Get a json object to add to kendo (strip the parse specific stuff)
+                var placeObj = place.toJSON();
+                placesModel.placesDS.add(placeObj);
+
                 mobileNotify(place.get('name') + " added to your Places...");
 
                 addPlaceView.onDone();
