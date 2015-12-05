@@ -841,7 +841,7 @@ var editPlaceView = {
         editPlaceView._activePlace.unbind('change' , editPlaceView.validatePlace);
 
         editPlaceView._activePlace.set('placeId', placeId);
-        editPlaceView._activePlace.set('placeChatId', placeChatId);
+        editPlaceView._activePlace.set('placeChatId', placeObj.placeChatId);
         editPlaceView._activePlace.set('uuid', placeObj.uuid);
         editPlaceView._activePlace.set('name', placeObj.name);
         editPlaceView._activePlace.set('placeName', placeObj.placeName);
