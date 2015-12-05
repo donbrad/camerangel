@@ -60,7 +60,8 @@ var placesModel = {
             success: function(collection) {
                 var models = [];
                 for (var i = 0; i < collection.length; i++) {
-                    var model = collection[i].toJSON();
+                    var parseModel = collection[i];
+                    var model = parseModel.toJSON();
                     models.push(model);
                 }
 
