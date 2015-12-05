@@ -1288,13 +1288,15 @@ var channelView = {
     scrollToBottom : function () {
     // topOffset set when the view loads like the following
         var scroller = APP.kendo.scroller;
-
+        var position = 0;
         var scrollerHeight =  APP.kendo.scroller().scrollHeight();
         var viewportHeight =  APP.kendo.scroller().height();
-
-        if ((scrollerHeight + channelView.topOffset) > viewportHeight) {
-            var position = -1 * (scrollerHeight - viewportHeight - channelView.topOffset);
-            APP.kendo.scroller().animatedScrollTo(0, position);
+        
+        if (scrollerHeight > viewportHeight) {
+             position = -1 * (scrollerHeight - viewportHeight - channelView.topOffset);
+           	 APP.kendo.scroller().animatedScrollTo(0, position);
+        } else {
+        	APP.kendo.scroller().scrollTo(0, 0);
         }
 
     },
