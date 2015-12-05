@@ -750,9 +750,9 @@ var editPlaceView = {
         }
 
         if (activePlace.hasPlaceChat) {
-            $("#editplace-placechat").text("Edit Chat");
+            $("#editplace-placechat").text("Edit Place Chat");
         } else {
-            $("#editplace-placechat").text("Add Chat");
+            $("#editplace-placechat").text("Add Place Chat");
         }
     },
 
