@@ -264,8 +264,7 @@ var channelModel = {
                                     channelModel.addPrivateChannel(channel.channelId, channel.contactKey, channel.name);
                                 } else {
 
-                                    channelModel.addChannel(channel.name, channel.description, false, channel.durationDays,
-                                        channel.channelId, channel.ownerUUID, null, null,false);
+                                    channelModel.addChannel(channel.name, channel.description);
                                     channelModel.updateChannelMembers(channel.channelId, channel.members);
                                 }
                             }
@@ -578,8 +577,92 @@ var channelModel = {
         });*/
     },
 
+
+    addPlaceChannel : function (channelId, placeId, placeName, isPrivatePlace) {
+        var Channels = Parse.Object.extend("channels");
+        var channel = new Channels();
+
+        /* var ChannelMap = Parse.Object.extend('channelmap');
+         var channelMap = new ChannelMap();*/
+
+        var addTime = ggTime.currentTime();
+        var name = placeName,
+            description = "Place Chat about: " + placeName;
+
+
+        // If this is a member request, channelUUID will be passed in.
+        // If user is creating new channel, they own it so create new uuid and update ownerUUID and ownerName
+
+
+        var ownerUUID = userModel.currentUser.userUUID;
+        var ownerName = userModel.currentUser.name;
+
+
+        // Ensure we have a valid duration for this channel
+
+        var durationDays = 30;
+
+        channel.set('version', channelModel._version);
+        channel.set ('category', 'Place');
+        channel.set('isMuted', false);
+        channel.set('isDeleted', false);
+
+        if (isPrivatePlace === undefined)
+            isPrivatePlace = true;
+
+        channel.set('isPlace', true);
+        channel.set('isPrivatePlace', isPrivatePlace);
+        channel.set('placeUUID', placeId);
+        channel.set('placeName', placeName);
+        channel.set('category', 'Place');
+
+
+        // Generic fields for owner and members
+        channel.set("name", name );
+
+        channel.set('isEvent', false);
+        channel.set("media",   true);
+        channel.set("archive", true);
+        channel.set("description", description);
+        channel.set("durationDays", durationDays);
+        channel.set("unreadCount", 0);
+        channel.set("clearBefore", addTime);
+        channel.set("lastAccess", addTime);
+        channel.set("channelId", channelId);
+
+        channel.set("ownerId", ownerUUID);
+
+        channel.set("ownerName", ownerName);
+        // Channel owner can access and edit members...
+
+        channel.set("isOwner", true);
+        channel.set("members", [ownerUUID]);
+        channel.set("invitedMembers", []);
+
+        var channelObj = channel.toJSON();
+        channelModel.channelsDS.add(channelObj);
+        channelModel.channelsDS.sync();
+        //currentChannelModel.currentChannel = channelModel.findChannelModel(channelId);
+
+        channel.setACL(userModel.parseACL);
+        channel.save(null, {
+            success: function(channel) {
+                // Execute any logic that should take place after the object is saved.
+                mobileNotify('Added Chat : ' + channel.get('name'));
+                APP.kendo.navigate('#editChannel?channel=' + channelId);
+
+            },
+            error: function(channel, error) {
+                // Execute any logic that should take place if the save fails.
+                // error is a Parse.Error with an error code and message.
+                mobileNotify('Error creating Chat: ' + error.message);
+                handleParseError(error);
+            }
+        });
+    },
+
     // Add group channel for owner...
-    addChannel : function (channelName, channelDescription, placeId, placeName, isPrivatePlace) {
+    addChannel : function (channelName, channelDescription) {
         var Channels = Parse.Object.extend("channels");
         var channel = new Channels();
 
@@ -610,25 +693,11 @@ var channelModel = {
         channel.set('isMuted', false);
         channel.set('isDeleted', false);
 
+        channel.set('isPlace', false);
+        channel.set('isPrivatePlace', false);
+        channel.set('placeUUID', null);
+        channel.set('placeName', null);
 
-        // If there's a placeId passed in, need to create a place channel / chat
-        if (placeId !== undefined && placeId !== null) {
-            channel.set('isPlace', true);
-            channel.set('isPrivatePlace', isPrivatePlace);
-            channel.set('placeUUID', placeId);
-            channel.set('placeName', placeName);
-            channel.set('category', 'Place');
-            if (name === '') {
-                name =  placeName;
-            }
-            if (description === '') {
-                description = "Place : " + placeName;
-            }
-        }
-
-        if (isPrivatePlace === undefined)
-            isPrivatePlace = true;
-        // Generic fields for owner and members
         channel.set("name", name );
 
         channel.set('isEvent', false);

@@ -602,7 +602,8 @@ var addPlaceView = {
         if (geoPlace.category === "Location") {
             // A location / street address
             addPlaceView._activePlace.set('category',"Location");
-            addPlaceView._activePlace.set('googleId', '');
+            addPlaceView._activePlace.set('googleId', null);
+            addPlaceView._activePlace.set('factualId', null);
             addPlaceView._activePlace.set('icon', '');
             addPlaceView._activePlace.set('reference', '');
 
@@ -612,6 +613,7 @@ var addPlaceView = {
             addPlaceView._activePlace.set('icon', geoPlace.icon);
             addPlaceView._activePlace.set('reference', geoPlace.reference);
             addPlaceView._activePlace.set('googleId', geoPlace.googleId);
+            addPlaceView._activePlace.set('factualId', null);
         }
 
         addPlaceView._activePlace.bind('change',addPlaceView.onSync);
@@ -658,7 +660,15 @@ var addPlaceView = {
 
         placeParse.set('isAvailable', place.isAvailable === "true");
         placeParse.set('isPrivate', place.isPrivate === "true");
-        placeParse.set('hasPlaceChat', createChatFlag);
+
+        if (!createChatFlag) {
+            placeParse.set('hasPlaceChat', false);
+            placeParse.set('placeChatId', null);
+        } else {
+            placeParse.set('hasPlaceChat', true);
+            var placeChatguid = uuid.v4();
+            placeParse.set('placeChatId', placeChatguid);
+        }
 
         placeParse.save(null, {
             success: function(place) {
@@ -673,6 +683,10 @@ var addPlaceView = {
                 mobileNotify(place.get('name') + " added to your Places...");
 
                 addPlaceView.onDone();
+
+                if (createChatFlag) {
+                    channelModel.addPlaceChannel(placeChatguid, guid, name, place.isPrivate);
+                }
 
             },
             error: function(place, error) {

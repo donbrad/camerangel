@@ -249,7 +249,7 @@ var addChannelView = {
            if (channelModel.findChannelByName(name)) {
                mobileNotify('There is already a chat named : "' + name + '"');
            } else {
-               channelModel.addChannel(name, description, null, null, false);
+               channelModel.addChannel(name, description);
            }
 
 

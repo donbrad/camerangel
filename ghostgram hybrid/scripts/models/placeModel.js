@@ -192,7 +192,7 @@ var placesModel = {
         var place = placesModel.queryPlace({field: "uuid", operator: "eq", value: uuid});
 
         if (place !== undefined) {
-            
+
             var dataSource = placesModel.placesDS;
             dataSource.remove(place);
 
