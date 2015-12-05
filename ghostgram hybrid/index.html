@@ -191,12 +191,8 @@
     </div>
 	
 	<ul data-role="actionsheet" id="settingsAction" data-popup='{"direction": "left"}'>
-		<li>
-	  		<a data-role="button" data-click="go2Profile">View Profile</a>
-	  	</li>
 	    <li>
 	    	<a data-role="button" id="menuSettings" data-click="go2Settings">View Settings</a>
-
 	    </li>
 		<li>
 			<a data-role="button" id="menuSignOut" data-click="homeSignout">Sign out</a>
@@ -1873,79 +1869,6 @@
 	</div>
 </div>
 
-<!-- Edit Contacts -->
-<div data-role="view" data-model="editContactView._activeContact" data-title="Edit Contact" id="editContact"  data-transition="slide" data-show="editContactView.onShow" data-init="editContactView.onInit" class="appearance" style="display: none;">
-	<div data-role="header">
-		<div data-role="navbar">
-			<span data-role="view-title"></span>
-			<a data-role="button" data-click="editContactView.onDone" data-align="left" >Done</a>
-		</div>
-	</div>
-
-
-=======
-
-		<div class="topHalf">
-			<div class="topHalfLeft">
-				<img class="circle-img-lg shadow" id="addContactPhoto" src="images/ghostgramcontact.png" />
-			</div>
-			<div class="topHalfRight">
-				<div>
-					<input class="input-text-md" id="addContactName" type="search" placeholder="Contact full name"/>
-				</div>
-				<div>
-					<span class="caption">aka</span>
-					<input class="input-text-sm " id="addContactAlias" type="search" placeholder="Add a nickname"/>
-				</div>
-				<div>
-					<input class="input-text-md" id="addContactGroup" type="search" placeholder="Add Group (optional)"/>
-				</div>
-			</div>
-		</div>
-		<div class="clearfix"></div>
-		<ul data-role="listview" data-style="inset" class="inviteContactInfo">
-			<li>
-				<label>Phone
-					<div class="select-lg">
-						<select id="addContactPhone"
-								data-text-field="number"
-								data-value-field="number"
-								data-bind="source: phoneDS"
-								auto-bind="false">
-						</select>
-					</div>
-				</label>
-			</li>
-			<li>
-				<label>Email
-					<div class="select-lg">
-						<select id="addContactEmail"
-								data-text-field="address"
-								data-value-field="address"
-								data-bind="source: emailDS"
-								auto-bind="false">
-						</select>
-					</div>
-				</label>
-			</li>
-			<li>
-				<label>Address
-					<div class="select-lg">
-						<select id="addContactAddress"
-								data-text-field="address"
-								data-value-field="address"
-								data-bind="source: addressDS"
-								auto-bind="false">
-						</select>
-					</div>
-				</label>
-			</li>
-		</ul>
-	</div>
-	<div class="footer" data-role="footer">
-		<a class="btnPrimary btnFull-modal" data-role="button" data-click="addContactView.addContact" id="addContacViewAddButton">Add Contact</a>
-	</div>
-</div>
 
 <!-- Edit Contacts -->
 <div data-role="view" data-model="editContactView._activeContact" data-title="Edit Contact" id="editContact"  data-transition="slide" data-show="editContactView.onShow" data-init="editContactView.onInit" class="appearance" style="display: none;">
