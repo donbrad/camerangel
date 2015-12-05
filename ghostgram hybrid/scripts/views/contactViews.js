@@ -660,6 +660,13 @@ var addContactView = {
             photo = $('#addContactPhoto').prop('src'),
             group =  $('#addContactGroup').val(),
             address = $('#addContactAddress').val();
+
+
+        if (phone === null || phone.length < 10) {
+            // Todo: need better UX for contacts without phone
+            mobileNotify('Contacts must have a valid phone number!');
+            return;
+        }
         var guid = uuid.v4();
 
         contact.setACL(userModel.parseACL);
@@ -676,7 +683,9 @@ var addContactView = {
         contact.set('contactPhone', null);
         contact.set('contactEmail', null);
         contact.set('ownerUUID', userModel.currentUser.userUUID);
+
         //phone = phone.replace(/\+[0-9]{1-2}/,'');
+
         phone = phone.replace(/\D+/g, "");
         if (phone[0] !== '1')
             phone = '1' + phone;
