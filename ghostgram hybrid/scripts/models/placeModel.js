@@ -158,6 +158,23 @@ var placesModel = {
         });
 */    },
 
+    queryPlace : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = placesModel.placesDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var place = view[0];
+
+        dataSource.filter(cacheFilter);
+
+        return(place);
+    },
+
     matchLocation: function (lat, lng) {
 
         /*if (!placesModel.placesFetched) {
@@ -238,21 +255,16 @@ var placesModel = {
     },
 
     deletePlace : function (placeId) {
-        var dataSource = placesModel.placesDS;
         var uuid = placeId;
 
-        dataSource.filter({field: "uuid", operator: "eq", value: uuid});
-        var view = dataSource.view();
-        var place = view[0];
-        dataSource.filter([]);
+        var place = placesModel.queryPlace({field: "uuid", operator: "eq", value: uuid});
 
-        dataSource.remove(place);
-        
-        // Delete the parse object directly
-        deleteParseObject('places', "uuid", uuid);
+        if (place !== undefined) {
+            dataSource.remove(place);
 
-
+            // Delete the parse object directly
+            deleteParseObject('places', "uuid", uuid);
+        }
     }
-
 
 };
