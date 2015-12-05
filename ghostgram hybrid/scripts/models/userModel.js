@@ -197,7 +197,7 @@ var userModel = {
                     dirty = true;
                 }
 
-                if (user.get('phoneVerified') === true && user.get('emailVerfied') === true) {
+                if (user.get('phoneVerified') === true && user.get('emailVerified') === true) {
                     if (user.get('isVerified') !== true) {
                         user.set('isVerified', true);
                         dirty = true;
