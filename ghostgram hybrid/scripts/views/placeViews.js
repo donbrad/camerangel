@@ -748,6 +748,27 @@ var editPlaceView = {
         	$("#publicPlaceHelper").removeClass("hidden");
         	$("#privatePlaceHelper").addClass("hidden");
         }
+
+        if (activePlace.hasPlaceChat) {
+            $("#editplace-placechat").text("Edit Chat");
+        } else {
+            $("#editplace-placechat").text("Add Chat");
+        }
+    },
+
+    doPlaceChat : function (e) {
+        _preventDefault(e);
+        var activePlace = editPlaceView._activePlace;
+
+        if (activePlace.hasPlaceChat) {
+            // Already had a place chat -- jump to editChat
+            APP.kendo.navigate("#editchannel?channelId=" + activePlace.placeChatId);
+        } else {
+            // No placechat yet, create and then jump to edit
+            var placeChatguid = uuid.v4();
+
+            channelModel.addPlaceChannel(placeChatguid, activePlace.uuid, activePlace.name, false);
+        }
     },
 
     /*update: function(){
