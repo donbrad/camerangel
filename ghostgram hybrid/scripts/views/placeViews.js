@@ -767,7 +767,11 @@ var editPlaceView = {
             // No placechat yet, create and then jump to edit
             var placeChatguid = uuid.v4();
 
+            // Todo: need to add place name collision detection here...
             channelModel.addPlaceChannel(placeChatguid, activePlace.uuid, activePlace.name, false);
+            editPlaceView._activePlace.set('placeChatId', placeChatguid);
+            editPlaceView._activePlace.set('hasPlaceChat', true);
+
         }
     },
 
