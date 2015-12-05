@@ -799,12 +799,18 @@ var editPlaceView = {
         model.set('address', newModel.address);
         model.set('isPrivate', newModel.isPrivate);
         model.set('isAvailable', newModel.isAvailable);
+        model.set('hasPlaceChat', newModel.hasPlaceChat);
+        model.set('placeChatId', newModel.placeChatId);
+        model.set('placeName', newModel.placeName);
 
         updateParseObject('places', 'uuid', newModel.uuid, "name", newModel.name);
         updateParseObject('places', 'uuid', newModel.uuid,'alias', newModel.alias);
         updateParseObject('places', 'uuid', newModel.uuid,'address', newModel.address);
         updateParseObject('places', 'uuid', newModel.uuid, 'isPrivate', newModel.isPrivate);
         updateParseObject('places', 'uuid', newModel.uuid,'isAvailable', newModel.isAvailable);
+        updateParseObject('places', 'uuid', newModel.uuid,'hasPlaceChat', newModel.hasPlaceChat);
+        updateParseObject('places', 'uuid', newModel.uuid,'placeChatId', newModel.placeChatId);
+        updateParseObject('places', 'uuid', newModel.uuid,'placeName', newModel.placeName);
 
         mobileNotify("Updated " + newModel.name);
 
@@ -833,14 +839,18 @@ var editPlaceView = {
         editPlaceView._activePlaceModel = placeObj;
 
         editPlaceView._activePlace.unbind('change' , editPlaceView.validatePlace);
+
         editPlaceView._activePlace.set('placeId', placeId);
+        editPlaceView._activePlace.set('placeChatId', placeChatId);
         editPlaceView._activePlace.set('uuid', placeObj.uuid);
         editPlaceView._activePlace.set('name', placeObj.name);
+        editPlaceView._activePlace.set('placeName', placeObj.placeName);
         editPlaceView._activePlace.set('alias', placeObj.alias);
         editPlaceView._activePlace.set('address', placeObj.address);
         editPlaceView._activePlace.set('city', placeObj.city);
         editPlaceView._activePlace.set('state', placeObj.state);
         editPlaceView._activePlace.set('zipcode', placeObj.zipcode);
+        editPlaceView._activePlace.set('hasPlaceChat', placeObj.hasPlaceChat);
         editPlaceView._activePlace.set('isPrivate', placeObj.isPrivate);
         editPlaceView._activePlace.set('isAvailable', placeObj.isAvailable);
         editPlaceView._activePlace.bind('change' , editPlaceView.validatePlace);
