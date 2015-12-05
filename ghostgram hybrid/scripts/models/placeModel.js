@@ -48,7 +48,7 @@ var placesModel = {
 
 
     newPlace : function () {
-        return(new placesModel._placeModel);
+        return(new Object(placesModel._placeModel));
     },
 
     fetch : function () {
