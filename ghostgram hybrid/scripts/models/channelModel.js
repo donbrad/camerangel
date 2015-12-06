@@ -448,6 +448,11 @@ var channelModel = {
 
     // Add a new private channel that this user created -- create a channel object
     addPrivateChannel : function (contactUUID, contactPublicKey,  contactName) {
+        var channel = channelModel.findChannelModel(contactUUID);
+        if (channel !== undefined)  {
+            // Channel already exists
+            return;
+        }
 
         var Channels = Parse.Object.extend(channelModel._channelName);
         var channel = new Channels();
@@ -588,6 +593,13 @@ var channelModel = {
 
 
     addPlaceChannel : function (channelId, placeId, placeName, isPrivatePlace) {
+
+        var channel = channelModel.findChannelModel(channelId);
+        if (channel !== undefined)  {
+            // Channel already exists
+            return;
+        }
+
         var Channels = Parse.Object.extend("channels");
         var channel = new Channels();
 

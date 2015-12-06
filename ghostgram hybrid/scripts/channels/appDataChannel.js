@@ -13,6 +13,7 @@ var appDataChannel = {
 
     channelId: '',   // current app channel
     lastAccess: 0,   // last access time stamp
+    _version: 1,
 
     init: function () {
 
@@ -126,16 +127,19 @@ var appDataChannel = {
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, ownerID: <ownerUUID>,  ownerName: <text>, channelName: <text>, channelDescription: <text>}
             case 'groupInvite' : {
-                appDataChannel.processGroupInvite( m.channelId, m.channelName, m.channelDescription,  m.channelMembers, m.ownerId, m.ownerName,  m.options);
+                if (m.version === appDataChannel._version)
+                    appDataChannel.processGroupInvite( m.channelId, m.channelName, m.channelDescription,  m.channelMembers, m.ownerId, m.ownerName,  m.options);
             } break;
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, owner: <ownerUUID>}
             case 'groupDelete' : {
-                appDataChannel.processGroupDelete(m.channelId, m.channelName, m.ownerId, m.ownerName);
+                if (m.version === appDataChannel._version)
+                    appDataChannel.processGroupDelete(m.channelId, m.channelName, m.ownerId, m.ownerName);
             } break;
 
             case 'groupUpdate' : {
-                appDataChannel.processGroupUpdate(m.channelId, m.channelName, m.channelDescription, m.channelMembers, m.ownerId, m.ownerName);
+                if (m.version === appDataChannel._version)
+                    appDataChannel.processGroupUpdate(m.channelId, m.channelName, m.channelDescription, m.channelMembers, m.ownerId, m.ownerName);
             } break;
 
 
@@ -181,6 +185,7 @@ var appDataChannel = {
         var msg = {};
 
         msg.type = 'newUser';
+        msg.version = appDataChannel._version;
         msg.userUUID = userUUID;
         msg.phone = phone;
         msg.email = email;
@@ -199,6 +204,7 @@ var appDataChannel = {
         var msg = new Object();
 
         msg.type = 'userValidated';
+        msg.version = appDataChannel._version;
         msg.userUUID = userUUID;
         msg.phone = phone;
         msg.email = email;
@@ -220,6 +226,7 @@ var appDataChannel = {
 
         var notificationString = "Chat Invite : " + channelName;
         msg.type = 'groupInvite';
+        msg.version = appDataChannel._version;
         msg.ownerId = userModel.currentUser.get('userUUID');
         msg.ownerName = userModel.currentUser.get('name');
         msg.channelId = channelUUID;
@@ -269,6 +276,7 @@ var appDataChannel = {
 
         var notificationString = channelName + " has been deleted...";
         msg.type = 'groupDelete';
+        msg.version = appDataChannel._version;
         msg.ownerId = userModel.currentUser.get('userUUID');
         msg.ownerName = userModel.currentUser.get('name');
         msg.channelId = channelUUID;
@@ -308,6 +316,7 @@ var appDataChannel = {
         var msg = {};
 
         msg.type = 'groupUpdate';
+        msg.version = appDataChannel._version;
         msg.ownerId = userModel.currentUser.get('userUUID');
         msg.ownerName = userModel.currentUser.get('name');
         msg.channelId = channelUUID;
