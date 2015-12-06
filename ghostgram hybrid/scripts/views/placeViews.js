@@ -930,7 +930,7 @@ var placeView = {
     },
 
     openPlaceMap: function(e){
-        _preventDefault(e);
+        //_preventDefault(e);
         var placeId = LZString.compressToEncodedURIComponent(placeView._activePlaceId);
     	APP.kendo.navigate("#mapView?place=" + placeId );
     },
@@ -942,7 +942,7 @@ var placeView = {
 
     openChat: function(e){
 
-        _preventDefault(e);
+        //_preventDefault(e);
 
         if (placeView._activePlace.hasPlaceChat) {
             APP.kendo.navigate('#channel?channelId=' + placeView._activePlace.placeChatId);
