@@ -587,7 +587,7 @@ var channelModel = {
 
         var addTime = ggTime.currentTime();
         var name = placeName,
-            description = "Place Chat about: " + placeName;
+            description = "Place Chat: " + placeName;
 
 
         // If this is a member request, channelUUID will be passed in.
@@ -606,6 +606,7 @@ var channelModel = {
         channel.set ('category', 'Place');
         channel.set('isMuted', false);
         channel.set('isDeleted', false);
+        channel.set('isPrivate', false);
 
         if (isPrivatePlace === undefined)
             isPrivatePlace = true;
@@ -648,14 +649,14 @@ var channelModel = {
         channel.save(null, {
             success: function(channel) {
                 // Execute any logic that should take place after the object is saved.
-                mobileNotify('Added Chat : ' + channel.get('name'));
+                mobileNotify('Added Place Chat : ' + channel.get('name'));
                 APP.kendo.navigate('#editChannel?channel=' + channelId);
 
             },
             error: function(channel, error) {
                 // Execute any logic that should take place if the save fails.
                 // error is a Parse.Error with an error code and message.
-                mobileNotify('Error creating Chat: ' + error.message);
+                mobileNotify('Error creating Place Chat: ' + error.message);
                 handleParseError(error);
             }
         });
