@@ -680,8 +680,8 @@ var editPlaceView = {
         }
 
         // Show place type
-        var activePlace = editPlaceView._activePlace;
-        if(activePlace.isPrivate){
+
+        if(editPlaceView._activePlace.get('isPrivate')){
         	$("#publicPlaceHelper").addClass("hidden");
         	$("#privatePlaceHelper").removeClass("hidden");
         } else {
@@ -690,7 +690,7 @@ var editPlaceView = {
         	$("#privatePlaceHelper").addClass("hidden");
         }
 
-        if (activePlace.hasPlaceChat) {
+        if (editPlaceView._activePlace.get('hasPlaceChat')) {
             $("#editplace-placechat").text("Edit Place Chat");
         } else {
             $("#editplace-placechat").text("Add Place Chat");
@@ -699,9 +699,9 @@ var editPlaceView = {
 
     doPlaceChat : function (e) {
         _preventDefault(e);
-        var activePlace = editPlaceView._activePlace;
 
-        if (activePlace.hasPlaceChat) {
+
+        if (editPlaceView._activePlace.get('hasPlaceChat')) {
             // Already had a place chat -- jump to editChat
             APP.kendo.navigate("#editchannel?channelId=" + activePlace.placeChatId);
         } else {
@@ -709,7 +709,7 @@ var editPlaceView = {
             var placeChatguid = uuid.v4();
 
             // Todo: need to add place name collision detection here...
-            channelModel.addPlaceChannel(placeChatguid, activePlace.uuid, activePlace.name, false);
+            channelModel.addPlaceChannel(placeChatguid, editPlaceView._activePlace.get('uuid'), editPlaceView._activePlace.get('name'), false);
 
             editPlaceView._activePlace.set('placeChatId', placeChatguid);
             editPlaceView._activePlace.set('hasPlaceChat', true);
@@ -740,15 +740,15 @@ var editPlaceView = {
     },
 
     isUniquePlaceName : function () {
-        var place = placesModel.findPlaceByName(editPlaceView._activePlace.name);
+        var place = placesModel.findPlaceByName(editPlaceView._activePlace.get('name'));
 
        // Is there already
         if (place === undefined)
             return true;
 
         // Make sure the matching place isn't the one we're currently editing...
-        if (place.uuid !== editPlaceView._activePlace.placeId) {
-            mobileNotify("You already have a place named " + editPlaceView._activePlace.name);
+        if (place.uuid !== editPlaceView._activePlace.get('placeId')) {
+            mobileNotify("You already have a place named " + editPlaceView._activePlace.get('name'));
             return false;
         }
 
@@ -765,7 +765,7 @@ var editPlaceView = {
         var model = editPlaceView._activePlaceModel, newModel = editPlaceView._activePlace;
 
         // Unbind the handler...
-        editPlaceView._activePlace.unbind('change' , editContactView.validatePlace);
+        editPlaceView._activePlace.unbind('change' , editPlaceView.validatePlace);
 
         model.set('name', newModel.name);
         model.set('alias', newModel.alias);
