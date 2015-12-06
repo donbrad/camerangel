@@ -66,6 +66,10 @@ var placesModel = {
                         parseModel.set('isShared', false);
                         dirty = true;
                     }
+                    if (parseModel.get('isDeleted') === undefined) {
+                        parseModel.set('isDeleted', false);
+                        dirty = true;
+                    }
                     if (parseModel.get('distance') === undefined) {
                         parseModel.set('distance', 0);
                         dirty = true;
@@ -239,6 +243,7 @@ var placesModel = {
         placeParse.set('country', place.country);
         placeParse.set('zipcode', place.zipcode);
         placeParse.set('isVisible', true);
+        placeParse.set('isDeleted', false);
         placeParse.set('isAvailable', place.isAvailable === "true");
         placeParse.set('isPrivate', place.isPrivate === "true");
         placeParse.set('hasPlaceChat', true);
@@ -314,6 +319,7 @@ var placesModel = {
         placeParse.set('country', place.country);
         placeParse.set('zipcode', place.zipcode);
         placeParse.set('isVisible', true);
+        placeParse.set('isDeleted', false);
         placeParse.set('isAvailable', place.isAvailable === "true");
         placeParse.set('isPrivate', place.isPrivate === "true");
 
@@ -361,11 +367,22 @@ var placesModel = {
 
         if (place !== undefined) {
 
-            var dataSource = placesModel.placesDS;
-            dataSource.remove(place);
+            if (place.isShared === true) {
+                place.set('isDeleted', true);
+                updateParseObject('places', 'uuid', place.uuid,'isDeleted', true);
+            } else {
 
-            // Delete the parse object directly
-            deleteParseObject('places', "uuid", uuid);
+                // If there's a channel related to this place, need to delete it
+                if (place.placeChatId !== null) {
+                    channelModel.deleteChannel(place.placeChatId, false);
+                }
+                var dataSource = placesModel.placesDS;
+                dataSource.remove(place);
+
+                // Delete the parse object directly
+                deleteParseObject('places', "uuid", uuid);
+            }
+
         }
     }
 
