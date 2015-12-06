@@ -466,15 +466,14 @@ var editChannelView = {
         }
         editChannelView._activeChannel.members = memberArray;
 
-
-
         //Send Invite messages to users added to channel
         for (var ma = 0; ma < editChannelView.membersAdded.length; ma++) {
             var options = null;
 
             // If this is a place chat, send the place data to the members
             if (editChannelView._activeChannel.placeUUID !== null) {
-                options.chatType = 'Place';
+                options = {chatType: "Place"};
+
                 var place = placesModel.getPlaceModel(editChannelView._activeChannel.placeUUID);
                 var newPlace = new Object(place);
 

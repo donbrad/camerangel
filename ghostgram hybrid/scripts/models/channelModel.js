@@ -495,13 +495,18 @@ var channelModel = {
 
     // Add group channel for members...
     // Get's the current owner details from parse and then creates a local channel for this user
-    addMemberChannel : function (channelId, channelName,  channelMembers, channelDescription,  ownerId, ownerName) {
+    addMemberChannel : function (channelId, channelName, channelDescription, channelMembers, ownerId, ownerName, options) {
+
         var channel = channelModel.findChannelModel(channelId);
         if (channel !== undefined)  {
             // Channel already exists
             return;
         }
-
+        if (options !== undefined && options !== null) {
+            if (options.chatType === 'Place') {
+                placesModel.addSharedPlace(options.chatData, channelId);
+            }
+        }
         var Channels = Parse.Object.extend(channelModel._channelName);
         var channel = new Channels();
         var addTime = ggTime.currentTime();
@@ -545,7 +550,7 @@ var channelModel = {
         channel.save(null, {
             success: function(channel) {
                 //ux.closeModalViewAddChannel();
-                mobileNotify('Added Group Chat : ' + channel.get('name'));
+                mobileNotify('Added  Chat : ' + channel.get('name'));
             },
             error: function(channel, error) {
                 // Execute any logic that should take place if the save fails.
@@ -593,14 +598,12 @@ var channelModel = {
         var name = placeName,
             description = "Place Chat: " + placeName;
 
-
         // If this is a member request, channelUUID will be passed in.
         // If user is creating new channel, they own it so create new uuid and update ownerUUID and ownerName
 
 
         var ownerUUID = userModel.currentUser.userUUID;
         var ownerName = userModel.currentUser.name;
-
 
         // Ensure we have a valid duration for this channel
 

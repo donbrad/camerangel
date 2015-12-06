@@ -710,8 +710,15 @@ var editPlaceView = {
 
             // Todo: need to add place name collision detection here...
             channelModel.addPlaceChannel(placeChatguid, activePlace.uuid, activePlace.name, false);
+
             editPlaceView._activePlace.set('placeChatId', placeChatguid);
             editPlaceView._activePlace.set('hasPlaceChat', true);
+
+            editPlaceView._activePlaceModel.set('placeChatId', placeChatguid);
+            editPlaceView._activePlaceModel.set('hasPlaceChat', true);
+
+            updateParseObject('places', 'uuid', activePlace.uuid,'hasPlaceChat', true);
+            updateParseObject('places', 'uuid', activePlace.uuid,'placeChatId', placeChatguid);
 
         }
     },
@@ -767,7 +774,7 @@ var editPlaceView = {
         model.set('isAvailable', newModel.isAvailable);
         model.set('hasPlaceChat', newModel.hasPlaceChat);
         model.set('placeChatId', newModel.placeChatId);
-        model.set('placeName', newModel.placeName);
+
 
         updateParseObject('places', 'uuid', newModel.uuid, "name", newModel.name);
         updateParseObject('places', 'uuid', newModel.uuid,'alias', newModel.alias);
@@ -776,7 +783,7 @@ var editPlaceView = {
         updateParseObject('places', 'uuid', newModel.uuid,'isAvailable', newModel.isAvailable);
         updateParseObject('places', 'uuid', newModel.uuid,'hasPlaceChat', newModel.hasPlaceChat);
         updateParseObject('places', 'uuid', newModel.uuid,'placeChatId', newModel.placeChatId);
-        updateParseObject('places', 'uuid', newModel.uuid,'placeName', newModel.placeName);
+
 
         mobileNotify("Updated " + newModel.name);
 

@@ -126,7 +126,7 @@ var appDataChannel = {
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, ownerID: <ownerUUID>,  ownerName: <text>, channelName: <text>, channelDescription: <text>}
             case 'groupInvite' : {
-                appDataChannel.processGroupInvite(m.ownerId, m.ownerName,  m.channelId, m.channelName, m.channelDescription,  m.channelMembers);
+                appDataChannel.processGroupInvite(m.ownerId, m.ownerName,  m.channelId, m.channelName, m.channelDescription,  m.channelMembers, m.options);
             } break;
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, owner: <ownerUUID>}
@@ -335,8 +335,10 @@ var appDataChannel = {
 
         if (channel === undefined && channelMembers !== undefined && typeof (channelMembers) === 'array') {
             mobileNotify("Chat invite from  " + ownerName + ' " ' + channelName + '"');
+
             channelModel.addMemberChannel(channelId, channelName, channelDescription, channelMembers, ownerId, ownerName, options);
             //notificationModel.addNewChatNotification(channelId, channelName, "new channel...");
+
         }
 
     },
