@@ -333,16 +333,16 @@ var placesModel = {
         }
 
         placeParse.save(null, {
-            success: function(place) {
+            success: function(placeIn) {
                 // Execute any logic that should take place after the object is saved.
 
                 var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, place.get('lat'), place.get('lng'));
 
                 // update the distance value for the local object...
-                place.set('distance',distance.toFixed(2));
+                placeIn.set('distance',distance.toFixed(2));
 
                 // Get a json object to add to kendo (strip the parse specific stuff)
-                var placeObj = place.toJSON();
+                var placeObj = placeIn.toJSON();
                 placesModel.placesDS.add(placeObj);
 
                 if (callback !== undefined) {
@@ -367,7 +367,9 @@ var placesModel = {
 
         if (place !== undefined) {
 
+            //This is shared place from PlaceChat (this is a member, not the owner)
             if (place.isShared === true) {
+                //Mark the place as deleted...
                 place.set('isDeleted', true);
                 updateParseObject('places', 'uuid', place.uuid,'isDeleted', true);
             } else {
