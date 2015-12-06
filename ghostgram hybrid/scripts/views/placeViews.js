@@ -886,6 +886,12 @@ var placeView = {
             $('#publicPlaceView').removeClass('hidden');
         }
 
+        if (placeView._activePlace.hasPlaceChat) {
+            $("#placeview-gotochat").text("Goto Place Chat");
+        } else {
+            $("#placeview-gotochat").text("Start a Chat");
+        }
+
         mapModel.setMapCenter(placeView._activePlaceModel.lat, placeView._activePlaceModel.lng);
     },
 
@@ -917,20 +923,32 @@ var placeView = {
         placeView._activePlace.set('zipcode', placeObj.zipcode);
         placeView._activePlace.set('isPrivate', placeObj.isPrivate);
         placeView._activePlace.set('isAvailable', placeObj.isAvailable);
+        placeView._activePlace.set('hasPlaceChat', placeObj.hasPlaceChat);
+        placeView._activePlace.set('placeChatId', placeObj.placeChatId);
+
 
     },
 
     openPlaceMap: function(e){
+        _preventDefault(e);
         var placeId = LZString.compressToEncodedURIComponent(placeView._activePlaceId);
     	APP.kendo.navigate("#mapView?place=" + placeId );
     },
 
     takePhoto: function(e){
+        _preventDefault(e);
     	// TODO Don - wire camera feature
     },
 
     openChat: function(e){
-    	// TODO Don - wire chat feature
+
+        _preventDefault(e);
+
+        if (placeView._activePlace.hasPlaceChat) {
+            APP.kendo.navigate('#channel?channelId=' + placeView._activePlace.hasPlaceChat);
+        } else {
+            // TODO Don - wire chat feature
+        }
     }
 };
 
