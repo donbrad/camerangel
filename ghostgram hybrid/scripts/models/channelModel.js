@@ -777,6 +777,18 @@ var channelModel = {
                     }
                 }
 
+                if (channel.isPlace) {
+                    var placeId = channel.placeUUID;
+                    if (placeId !== undefined && placeId !== null) {
+                        var place = placesModel.getPlaceModel(placeId);
+                        if (place !== undefined) {
+                            place.set('hasPlaceChat', false);
+                            place.set('placeChatId', null);
+                            updateParseObject("places", 'uuid', placeId, 'hasPlaceChat', false);
+                            updateParseObject("places", 'uuid', placeId, 'placeChatId', null);
+                        }
+                    }
+                }
 
                 if (window.navigator.simulator === undefined)
                     serverPush.unprovisionGroupChannel(channelId);
@@ -784,6 +796,7 @@ var channelModel = {
                 deleteParseObject("channels", 'channelId', channelId);
                 //mobileNotify("Removed channel : " + channel.get('name'));
             } else {
+
                 if (window.navigator.simulator === undefined)
                     serverPush.unprovisionGroupChannel(channelId);
                 updateParseObject("channels", 'channelId', channelId, 'isDeleted', true);
