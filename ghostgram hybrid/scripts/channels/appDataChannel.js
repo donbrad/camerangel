@@ -126,7 +126,7 @@ var appDataChannel = {
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, ownerID: <ownerUUID>,  ownerName: <text>, channelName: <text>, channelDescription: <text>}
             case 'groupInvite' : {
-                appDataChannel.processGroupInvite( m.ownerName,  m.channelId, m.channelName, m.channelDescription,  m.channelMembers);
+                appDataChannel.processGroupInvite(m.ownerId, m.ownerName,  m.channelId, m.channelName, m.channelDescription,  m.channelMembers);
             } break;
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, owner: <ownerUUID>}
@@ -137,6 +137,13 @@ var appDataChannel = {
             case 'groupUpdate' : {
                 appDataChannel.processGroupUpdate(m.ownerName, m.channelId, m.channelName, m.channelDescription, m.channelMembers);
             } break;
+
+
+            case 'placeAdd' : {
+                appDataChannel.processPlaceAdd( m.ownerName,  m.placeId, m.placeName, m.channelDescription,  m.channelMembers);
+            } break;
+
+
 
             //  { type: 'connectRequest',  contactId: <contactUUID>, owner: <ownerUUID>}
             case 'connectRequest' : {
@@ -208,7 +215,7 @@ var appDataChannel = {
     },
 
 
-    groupChannelInvite : function (contactUUID, channelUUID, channelName, channelDescription,  members) {
+    groupChannelInvite : function (contactUUID, channelUUID, channelName, channelDescription,  members, options) {
         var msg = {};
 
         var notificationString = "Chat Invite : " + channelName;
@@ -220,6 +227,10 @@ var appDataChannel = {
         msg.channelDescription = channelDescription;
         msg.channelMembers = members;
         msg.message  = "You've been invited to " + channelName;
+        if (options === undefined) {
+            options = null;
+        }
+        msg.options = options;
 
         msg.time = new Date().getTime();
         msg.pn_apns = {
@@ -318,13 +329,13 @@ var appDataChannel = {
     },
 
 
-    processGroupInvite: function (ownerName, channelId, channelName, channelDescription, channelMembers) {
+    processGroupInvite: function (channelId, channelName, channelDescription, channelMembers, ownerId, ownerName, options) {
         // Todo:  Does channel exist?  If not create,  if so notify user of request
         var channel = channelModel.findChannelModel(channelId);
 
         if (channel === undefined && channelMembers !== undefined && typeof (channelMembers) === 'array') {
             mobileNotify("Chat invite from  " + ownerName + ' " ' + channelName + '"');
-            channelModel.addMemberChannel(channelId, channelName, channelDescription, channelMembers);
+            channelModel.addMemberChannel(channelId, channelName, channelDescription, channelMembers, ownerId, ownerName, options);
             //notificationModel.addNewChatNotification(channelId, channelName, "new channel...");
         }
 
@@ -342,7 +353,8 @@ var appDataChannel = {
 
     processGroupUpdate: function (ownerName, channelId, channelName, channelDescription, channelMembers) {
 
-        channelModel.updateChannel(channelId, channelName, channelDescription, channelMembers);
+        if (channelMembers !== undefined && channelMembers !== null && channelMembers.length > 0)
+            channelModel.updateChannel(channelId, channelName, channelDescription, channelMembers);
 
     },
 

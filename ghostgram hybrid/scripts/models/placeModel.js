@@ -186,6 +186,87 @@ var placesModel = {
 
     },
 
+    addPlace: function (place, createChatFlag, callback) {
+        var Place = Parse.Object.extend("places");
+        var placeParse = new Place();
+
+        var newPlace = placesModel.newPlace();
+        var place = addPlaceView._activePlace;
+
+        // Check that the place name is unique (in this users place's)
+        place.name = place.name.toString();
+
+        if (!placesModel.isUniquePlaceName(place.name)) {
+            mobileNotify(addPlaceView._activePlace.name + "is already one of your Places!");
+            return;
+        }
+
+        var guid = uuid.v4();
+
+
+        placeParse.setACL(userModel.parseACL);
+        placeParse.set('uuid', guid);
+        placeParse.set('category', place.category);
+        var name =  place.name.toString();
+        placeParse.set('name', name);
+        placeParse.set('venueName', place.venueName);
+        if (place.alias === undefined)
+            place.alias = null;
+        placeParse.set('alias', place.alias);
+        placeParse.set('googleId', place.googleId);
+        if (place.factualId === undefined)
+            place.factualId = null;
+        placeParse.set('factualId', place.factualId);
+        placeParse.set('address', place.address);
+        placeParse.set('lat', place.lat);
+        placeParse.set('lng', place.lng);
+        placeParse.set('distance',0);
+        placeParse.set('type', place.type);
+        placeParse.set('city', place.city);
+        placeParse.set('state', place.state);
+        placeParse.set('country', place.country);
+        placeParse.set('zipcode', place.zipcode);
+        placeParse.set('isVisible', true);
+        placeParse.set('isAvailable', place.isAvailable === "true");
+        placeParse.set('isPrivate', place.isPrivate === "true");
+
+        if (!createChatFlag) {
+            placeParse.set('hasPlaceChat', false);
+            placeParse.set('placeChatId', null);
+        } else {
+            placeParse.set('hasPlaceChat', true);
+            var placeChatguid = uuid.v4();
+            placeParse.set('placeChatId', placeChatguid);
+        }
+
+        placeParse.save(null, {
+            success: function(place) {
+                // Execute any logic that should take place after the object is saved.
+
+                var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, place.get('lat'), place.get('lng'));
+
+                // update the distance value for the local object...
+                place.set('distance',distance.toFixed(2));
+
+                // Get a json object to add to kendo (strip the parse specific stuff)
+                var placeObj = place.toJSON();
+                placesModel.placesDS.add(placeObj);
+
+                if (callback !== undefined) {
+                    callback(placeObj);
+                }
+
+
+            },
+            error: function(place, error) {
+                // Execute any logic that should take place if the save fails.
+                // error is a Parse.Error with an error code and message.
+                handleParseError(error);
+            }
+        });
+
+    },
+
     deletePlace : function (placeId) {
         var uuid = placeId;
 

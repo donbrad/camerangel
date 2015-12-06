@@ -495,7 +495,7 @@ var channelModel = {
 
     // Add group channel for members...
     // Get's the current owner details from parse and then creates a local channel for this user
-    addMemberChannel : function (channelId, channelName,  channelMembers) {
+    addMemberChannel : function (channelId, channelName,  channelMembers, channelDescription,  ownerId, ownerName) {
         var channel = channelModel.findChannelModel(channelId);
         if (channel !== undefined)  {
             // Channel already exists
@@ -506,7 +506,12 @@ var channelModel = {
         var channel = new Channels();
         var addTime = ggTime.currentTime();
         channel.set("version", channelModel._version);
+
+        channel.set("channelId", channelId);
         channel.set("name", channelName);
+        channel.set("description", channelDescription);
+        channel.set("ownerId", ownerId);
+        channel.set("ownerName", ownerName);
         channel.set("isOwner", false);
         channel.set('isPrivate', false);
         channel.set('isPlace', false);
@@ -520,8 +525,7 @@ var channelModel = {
         channel.set("unreadCount", 0);
         channel.set("clearBefore", addTime);
         channel.set("lastAccess", addTime);
-        channel.set("description", "");
-        channel.set("channelId", channelId);
+
         if (channelMembers === undefined || channelMembers === null || typeof(channelMembers) !== 'array') {
             channelMembers = [];
         }

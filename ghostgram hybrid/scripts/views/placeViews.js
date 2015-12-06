@@ -624,80 +624,21 @@ var addPlaceView = {
     addPlace : function (e) {
         _preventDefault(e);
 
-        var Place = Parse.Object.extend("places");
-        var placeParse = new Place();
-
-        var newPlace = placesModel.newPlace();
-        var place = addPlaceView._activePlace;
-
-        // Check that the place name is unique (in this users place's)
-        place.name = place.name.toString();
-
-        if (!placesModel.isUniquePlaceName(place.name)) {
-            mobileNotify(addPlaceView._activePlace.name + "is already one of your Places!");
-            return;
-        }
-
-        var guid = uuid.v4();
-
         var createChatFlag = $('#addPlaceCreateChat').is('checked');
-        placeParse.setACL(userModel.parseACL);
-        placeParse.set('uuid', guid);
-        placeParse.set('category', place.category);
-        var name =  place.name.toString();
-        placeParse.set('name', name);
-        placeParse.set('venueName', place.venueName);
-        placeParse.set('alias', place.alias);
-        placeParse.set('googleId', place.googleId);
-        placeParse.set('address', place.address);
-        placeParse.set('lat', place.lat);
-        placeParse.set('lng', place.lng);
-        placeParse.set('type', place.type);
-        placeParse.set('city', place.city);
-        placeParse.set('state', place.state);
-        placeParse.set('country', place.country);
-        placeParse.set('zipcode', place.zipcode);
 
-        placeParse.set('isAvailable', place.isAvailable === "true");
-        placeParse.set('isPrivate', place.isPrivate === "true");
+        var place = addPlaceView._activePlace;
+        placesModel.addPlace(place, createChatFlag, function (placeObj) {
 
-        if (!createChatFlag) {
-            placeParse.set('hasPlaceChat', false);
-            placeParse.set('placeChatId', null);
-        } else {
-            placeParse.set('hasPlaceChat', true);
-            var placeChatguid = uuid.v4();
-            placeParse.set('placeChatId', placeChatguid);
-        }
 
-        placeParse.save(null, {
-            success: function(place) {
-                // Execute any logic that should take place after the object is saved.
+            mobileNotify(placeObj.name + " added to your Places...");
 
-                var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, place.get('lat'), place.get('lng'));
+            addPlaceView.onDone();
 
-                // update the distance value for the local object...
-                place.set('distance',distance.toFixed(2));
-
-                // Get a json object to add to kendo (strip the parse specific stuff)
-                var placeObj = place.toJSON();
-                placesModel.placesDS.add(placeObj);
-
-                mobileNotify(place.get('name') + " added to your Places...");
-
-                addPlaceView.onDone();
-
-                if (createChatFlag) {
-                    channelModel.addPlaceChannel(placeChatguid, guid, name, place.isPrivate);
-                }
-
-            },
-            error: function(place, error) {
-                // Execute any logic that should take place if the save fails.
-                // error is a Parse.Error with an error code and message.
-                handleParseError(error);
+            if (createChatFlag) {
+                channelModel.addPlaceChannel(placeObj.placeChatId, placeObj.uuid, placeObj.name, placeObj.isPrivate);
             }
         });
+
 
     }
 };

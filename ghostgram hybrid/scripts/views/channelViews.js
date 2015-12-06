@@ -429,6 +429,10 @@ var editChannelView = {
     setActiveChannel : function (channel) {
         editChannelView._activeChannel.set('name', channel.name);
         editChannelView._activeChannel.set('description', channel.description);
+        editChannelView._activeChannel.set('isPlace', channel.isPlace);
+        editChannelView._activeChannel.set('placeUUID', channel.placeUUID);
+        editChannelView._activeChannel.set('placeName', channel.placeName);
+
         if (channel.members === undefined)
             channel.members = [];
         editChannelView._activeChannel.set('members', channel.members);
@@ -466,8 +470,20 @@ var editChannelView = {
 
         //Send Invite messages to users added to channel
         for (var ma = 0; ma < editChannelView.membersAdded.length; ma++) {
+            var options = null;
+
+            // If this is a place chat, send the place data to the members
+            if (editChannelView._activeChannel.placeUUID !== null) {
+                options.chatType = 'Place';
+                var place = placesModel.getPlaceModel(editChannelView._activeChannel.placeUUID);
+                var newPlace = new Object(place);
+
+                options.chatData = newPlace;
+            }
+
             inviteArray.push(editChannelView.membersAdded[ma].contactUUID);
-            appDataChannel.groupChannelInvite(editChannelView.membersAdded[ma].contactUUID, channelId,  editChannelView._activeChannel.name,  editChannelView._activeChannel.description, memberArray);
+            appDataChannel.groupChannelInvite(editChannelView.membersAdded[ma].contactUUID, channelId,  editChannelView._activeChannel.name,  editChannelView._activeChannel.description, memberArray,
+                options);
         }
 
         
