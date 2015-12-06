@@ -126,21 +126,21 @@ var appDataChannel = {
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, ownerID: <ownerUUID>,  ownerName: <text>, channelName: <text>, channelDescription: <text>}
             case 'groupInvite' : {
-                appDataChannel.processGroupInvite(m.ownerId, m.ownerName,  m.channelId, m.channelName, m.channelDescription,  m.channelMembers, m.options);
+                appDataChannel.processGroupInvite( m.channelId, m.channelName, m.channelDescription,  m.channelMembers, m.ownerId, m.ownerName,  m.options);
             } break;
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, owner: <ownerUUID>}
             case 'groupDelete' : {
-                appDataChannel.processGroupDelete(m.ownerName, m.channelId, m.channelName);
+                appDataChannel.processGroupDelete(m.channelId, m.channelName, m.ownerId, m.ownerName);
             } break;
 
             case 'groupUpdate' : {
-                appDataChannel.processGroupUpdate(m.ownerName, m.channelId, m.channelName, m.channelDescription, m.channelMembers);
+                appDataChannel.processGroupUpdate(m.channelId, m.channelName, m.channelDescription, m.channelMembers, m.ownerId, m.ownerName);
             } break;
 
 
             case 'placeAdd' : {
-                appDataChannel.processPlaceAdd( m.ownerName,  m.placeId, m.placeName, m.channelDescription,  m.channelMembers);
+                appDataChannel.processPlaceAdd(m.placeId, m.placeName, m.ownerId,  m.ownerName);
             } break;
 
 
@@ -343,7 +343,7 @@ var appDataChannel = {
 
     },
 
-    processGroupDelete: function (ownerName, channelId, channelName) {
+    processGroupDelete: function (channelId, channelName, ownerId, ownerName) {
         // Todo:  Does channel exist?  If not do nothing,  if so delete the channel
         var channel = channelModel.findChannelModel(channelId);
         if (channel === undefined) {
@@ -353,7 +353,7 @@ var appDataChannel = {
 
     },
 
-    processGroupUpdate: function (ownerName, channelId, channelName, channelDescription, channelMembers) {
+    processGroupUpdate: function (channelId, channelName, channelDescription, channelMembers, ownerId, ownerName) {
 
         if (channelMembers !== undefined && channelMembers !== null && channelMembers.length > 0)
             channelModel.updateChannel(channelId, channelName, channelDescription, channelMembers);
