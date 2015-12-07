@@ -53,11 +53,11 @@ var devicePhoto = {
                     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function directoryEntrySuccess(directoryEntry) {
                         var uniqueNewFilename = "photo_" + filename + ".jpg";
                         fileEntry.moveTo(directoryEntry.root, uniqueNewFilename, function moveFileSuccess(newFileEntry) {
-                            var localUrl = newFileEntry.fullPath;
+                            var localUrl = newFileEntry.fullPath, nativeUrl =  newFileEntry.nativeURL;
                             devicePhoto.currentPhoto.photoId = photouuid;
                             devicePhoto.currentPhoto.filename = filename;
                             devicePhoto.currentPhoto.imageUrl = localUrl;
-                            devicePhoto.currentPhoto.phoneUrl = localUrl;
+                            devicePhoto.currentPhoto.phoneUrl = nativeUrl;
 
                             photoModel.addDevicePhoto(devicePhoto.currentPhoto);
 
@@ -69,7 +69,7 @@ var devicePhoto = {
                             if (isChat) {
                                 mobileNotify("Processing photo...");
                                 var scaleOptions = {
-                                    uri: localUrl,
+                                    uri: nativeUrl,
                                     filename: "thumb_"+filename,
                                     quality: 75,
                                     width: 512,
