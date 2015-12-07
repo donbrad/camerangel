@@ -67,9 +67,13 @@ var devicePhoto = {
                             }
 
                             if (isChat) {
-                                mobileNotify("Processing photo...");
+                                mobileNotify("Processing thumbnail...");
+                                var uri = nativeUrl;
+                                if (device.platform === 'iOS') {
+                                    uri = nativeUrl.replace('file://', '');
+                                }
                                 var scaleOptions = {
-                                    uri: nativeUrl,
+                                    uri: uri,
                                     filename: "thumb_"+filename,
                                     quality: 75,
                                     width: 512,
