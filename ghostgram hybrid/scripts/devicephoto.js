@@ -56,10 +56,11 @@ var devicePhoto = {
                             var localUrl = newFileEntry.fullPath, nativeUrl =  newFileEntry.nativeURL;
                             devicePhoto.currentPhoto.photoId = photouuid;
                             devicePhoto.currentPhoto.filename = filename;
-                            devicePhoto.currentPhoto.imageUrl = localUrl;
+                            devicePhoto.currentPhoto.imageUrl = null;
+                            devicePhoto.currentPhoto.imageFile = null;
                             devicePhoto.currentPhoto.phoneUrl = nativeUrl;
 
-                            photoModel.addDevicePhoto(devicePhoto.currentPhoto);
+
 
 
                             if (displayCallback !== undefined) {
@@ -93,10 +94,11 @@ var devicePhoto = {
                                             var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
                                             var parseFile = new Parse.File("thumbnail" + filename + ".jpg", {'base64': imageBase64});
                                             parseFile.save().then(function () {
-                                                devicePhoto.currentPhoto.parseThumbnail = parseFile;
+                                                devicePhoto.currentPhoto.thumbnailFile = parseFile;
                                                 devicePhoto.currentPhoto.thumbnailUrl = parseFile._url;
 
-                                                photoModel.addPhotoOffer(photouuid, parseFile._url, parseFile, null, null , false);
+                                                photoModel.addDevicePhoto(devicePhoto.currentPhoto);
+                                                photoModel.addPhotoOffer(photouuid, parseFile._url, null, null , false);
 
                                             });
 

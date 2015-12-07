@@ -284,7 +284,7 @@ var photoModel = {
        return(acl);
     },
 
-    addPhotoOffer : function (photoId, thumbnail, thumbnailFile, image, imageFile, canCopy) {
+    addPhotoOffer : function (photoId, thumbnail, image, canCopy) {
 
         var PhotoOffer = Parse.Object.extend("photoOffer");
         var offer = new PhotoOffer();
@@ -307,17 +307,11 @@ var photoModel = {
         }
         offer.set('uploaded', uploadFlag);
         offer.set('thumbnailUrl', thumbnail);
-        offer.set('thumbnailFile', thumbnailFile);
 
         if (image === undefined) {
             image = null;
         }
         offer.set('imageUrl', image);
-
-        if (imageFile === undefined) {
-            imageFile = null;
-        }
-        offer.set('imageFile', imageFile);
 
 
         if (canCopy === undefined) {
@@ -367,8 +361,12 @@ var photoModel = {
         photo.set('photoId', devicePhoto.photoId);
         photo.set('deviceUrl', devicePhoto.phoneUrl);
 
-        photo.set('imageUrl', devicePhoto.phoneUrl);
-        photo.set('thumbnailUrl', devicePhoto.phoneUrl);
+        photo.set('imageUrl', devicePhoto.imageUrl);
+
+        photo.set('thumbnailUrl', devicePhoto.thumbnailUrl);
+        photo.set('thumbnail', devicePhoto.thumbnailFile);
+
+
 
         photo.set('title', null);
         photo.set('description', null);
