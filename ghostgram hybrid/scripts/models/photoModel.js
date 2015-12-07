@@ -46,10 +46,9 @@ var photoModel = {
                     if (photo.imageUrl === undefined) {
                         photo.imageUrl = null;
                     }
-
-
-                    if (photo.deviceUrl === undefined)
-                        photo.deviceUrl = null;
+                    if (photo.imageUrl === null) {
+                        photo.imageUrl = photo.deviceUrl;
+                    }
 
                     /* if (window.navigator.simulator === undefined && (photo.deviceUrl === undefined || photo.deviceUrl === null)) {
                      var store = cordova.file.dataDirectory;
@@ -362,10 +361,12 @@ var photoModel = {
         photo.set('deviceUrl', devicePhoto.phoneUrl);
 
         photo.set('imageUrl', devicePhoto.imageUrl);
+        if (devicePhoto.imageFile !== null) {
+            photo.set('image', devicePhoto.imageFile);
+        }
 
         photo.set('thumbnailUrl', devicePhoto.thumbnailUrl);
         photo.set('thumbnail', devicePhoto.thumbnailFile);
-
 
 
         photo.set('title', null);
@@ -406,12 +407,15 @@ var photoModel = {
             photo.set('placeString', userModel.currentUser.currentPlace);
         }
 
+        var photoObj = photo.toJSON();
+        photoModel.photosDS.add(photoObj);
+
         photo.save(null, {
-            success: function(photo) {
-                var photoObj = photo.toJSON();
+            success: function(photoIn) {
+
                 // Execute any logic that should take place after the object is saved.
-                photoModel.parsePhoto = photo;
-                photoModel.photosDS.add(photoObj);
+                photoModel.parsePhoto = photoIn;
+
 
             },
             error: function(contact, error) {
