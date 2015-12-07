@@ -77,7 +77,7 @@ var devicePhoto = {
                             if (isChat) {
                                 mobileNotify("Processing Chat thumbnail...");
 
-                                if (deviceModel.connection === 'internet') {
+                                if (deviceModel.isWifi()) {
                                     // If the phone is on wifi -- upload the shareable image now...
                                     devicePhoto.convertImgToDataURL(nativeUrl, function (dataUrl) {
 

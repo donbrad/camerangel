@@ -177,6 +177,10 @@ var deviceModel = {
 
     },
 
+    isWifi : function () {
+       return(deviceModel.state.connection === 'internet');
+    },
+
     setAppState: function(field, value) {
         deviceModel.state[field] = value;
        // deviceModel.state.set(field,value);
