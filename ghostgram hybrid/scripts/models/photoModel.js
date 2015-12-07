@@ -131,34 +131,84 @@ var photoModel = {
             });
     },
 
-    findPhotoById: function (photoId) {
+    queryPhoto: function (query) {
+        if (query === undefined)
+            return(undefined);
         var dataSource = photoModel.photosDS;
-        dataSource.filter( { field: "photoId", operator: "eq", value: photoId });
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
         var view = dataSource.view();
         var photo = view[0];
-        dataSource.filter([]);
+
+        dataSource.filter(cacheFilter);
 
         return(photo);
     },
 
+    queryPhotoOffer : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = photoModel.offersDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var offer = view[0];
+
+        dataSource.filter(cacheFilter);
+
+        return(offer);
+    },
+
+
+    findOfferById : function (offerId) {
+
+        return(photoModel.queryPhotoOffer({ field: "uuid", operator: "eq", value: offerId }));
+    },
+
+    findOfferByPhotoId : function (photoId) {
+
+
+        return(photoModel.queryPhotoOffer({ field: "photoId", operator: "eq", value: photoId }));
+    },
+
+    findPhotoById : function (photoId) {
+
+       /* var dataSource = photoModel.photosDS;
+        dataSource.filter( { field: "photoId", operator: "eq", value: photoId });
+        var view = dataSource.view();
+        var photo = view[0];
+        dataSource.filter([]);*/
+
+        return(photoModel.queryPhoto({ field: "photoId", operator: "eq", value: photoId }));
+    },
+
     findPhotosByChannel : function (channelId) {
-        var dataSource = photoModel.photosDS;
+       /* var dataSource = photoModel.photosDS;
         dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
         var view = dataSource.view();
         var photos = view;
         dataSource.filter([]);
 
-        return(photos);
+        return(photos);*/
+        return(photoModel.queryPhoto({ field: "channelId", operator: "eq", value: channelId }));
     },
 
     findPhotosBySender: function (senderId) {
-        var dataSource = photoModel.photosDS;
+       /* var dataSource = photoModel.photosDS;
         dataSource.filter( { field: "senderUUID", operator: "eq", value: senderId });
         var view = dataSource.view();
         var photos = view;
         dataSource.filter([]);
 
-        return(photos);
+        return(photos);*/
+
+        return(photoModel.queryPhoto({ field: "senderUUID", operator: "eq", value: senderId }));
     },
 
     upgradePhoto : function (photo) {
@@ -345,6 +395,12 @@ var photoModel = {
     },
 
     addImageToPhotoOffer : function (photoId, image, imageFile) {
+        var photo = photoModel.findPhotoById(photoId);
+
+        if (photo !== undefined) {
+            photo.set('imageUrl', image);
+
+        }
 
     },
 
