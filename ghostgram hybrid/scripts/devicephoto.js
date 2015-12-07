@@ -62,12 +62,12 @@ var devicePhoto = {
 
                             if (device.platform === 'iOS') {
                                 nativeUrl = nativeUrl.replace('file://', '');
+                                uri = nativeUrl;
                             }
                             devicePhoto.currentPhoto.phoneUrl = nativeUrl;
 
 
                             deviceModel.getNetworkState();
-
 
 
                             if (displayCallback !== undefined) {
