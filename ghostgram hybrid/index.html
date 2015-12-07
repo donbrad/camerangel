@@ -2508,11 +2508,13 @@
 <script type="text/x-kendo-template" id="gallery-template">
 	<div class="touch">
 		<div class="galleryImgBox">
-			# if (imageUrl !== undefined && imageUrl !== '') { #
-			<img class="galleryImg" src="#=imageUrl#" />
-			# } else { #
-			<img class="galleryImg" src="#=thumbnailUrl#" />
-			# } #
+			<div class="galleryImgBox">
+				# if (window.navigator.simulator === undefined && deviceUrl !== undefined && deviceUrl !== null) { #
+				<img class="galleryImg" src="#=deviceUrl#" />
+				# } else { #
+				<img class="galleryImg" src="#=thumbnailUrl#" />
+				# } #
+			</div>
 		</div>
 	</div>
 </script>
