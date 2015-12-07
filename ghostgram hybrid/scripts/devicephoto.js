@@ -59,11 +59,14 @@ var devicePhoto = {
                             devicePhoto.currentPhoto.imageUrl = null;
                             devicePhoto.currentPhoto.imageFile = null;
                             var uri = nativeUrl;
+
                             if (device.platform === 'iOS') {
-                                uri = nativeUrl.replace('file://', '');
+                                nativeUrl = nativeUrl.replace('file://', '');
                             }
                             devicePhoto.currentPhoto.phoneUrl = nativeUrl;
 
+
+                            deviceModel.getNetworkState();
 
 
 
@@ -73,6 +76,23 @@ var devicePhoto = {
 
                             if (isChat) {
                                 mobileNotify("Processing Chat thumbnail...");
+
+                                if (deviceModel.connection === 'internet') {
+                                    // If the phone is on wifi -- upload the shareable image now...
+                                    devicePhoto.convertImgToDataURL(nativeUrl, function (dataUrl) {
+
+                                        var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
+                                        var parseFileImage = new Parse.File("photo_" + filename + ".jpg", {'base64': imageBase64});
+                                        parseFileImage.save().then(function () {
+                                            devicePhoto.currentPhoto.imageFile = parseFileImage;
+                                            devicePhoto.currentPhoto.imageUrl = parseFileImage._url;
+
+
+                                        });
+
+                                    });
+                                }
+
 
                                 var scaleOptions = {
                                     uri: uri,
@@ -93,7 +113,7 @@ var devicePhoto = {
                                         devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
 
                                             var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
-                                            var parseFile = new Parse.File("thumbnail" + filename + ".jpg", {'base64': imageBase64});
+                                            var parseFile = new Parse.File("thumbnail_" + filename + ".jpg", {'base64': imageBase64});
                                             parseFile.save().then(function () {
                                                 devicePhoto.currentPhoto.thumbnailFile = parseFile;
                                                 devicePhoto.currentPhoto.thumbnailUrl = parseFile._url;
