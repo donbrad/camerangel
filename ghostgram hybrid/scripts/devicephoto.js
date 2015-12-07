@@ -54,62 +54,65 @@ var devicePhoto = {
                         var uniqueNewFilename = "photo_" + filename + ".jpg";
                         fileEntry.moveTo(directoryEntry.root, uniqueNewFilename, function moveFileSuccess(newFileEntry) {
                             var localUrl = newFileEntry.fullPath;
+                            devicePhoto.currentPhoto.photoId = photouuid;
+                            devicePhoto.currentPhoto.filename = filename;
+                            devicePhoto.currentPhoto.imageUrl = localUrl;
+                            devicePhoto.currentPhoto.phoneUrl = localUrl;
+
+                            photoModel.addDevicePhoto(devicePhoto.currentPhoto);
+
+
+                            if (displayCallback !== undefined) {
+                                displayCallback(localUrl);
+                            }
+
+                            if (isChat) {
+                                mobileNotify("Processing photo...");
+                                var scaleOptions = {
+                                    uri: localUrl,
+                                    filename: "thumb_"+filename,
+                                    quality: 75,
+                                    width: 512,
+                                    height: 512
+                                };
+
+                                window.ImageResizer.resize(scaleOptions,
+                                    function (image) {
+
+                                        var thumbNail = image;
+                                        if (device.platform === 'iOS') {
+                                            thumbNail = image.replace('file://', '');
+                                        }
+
+                                        devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
+
+                                            var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
+                                            var parseFile = new Parse.File("thumbnail" + filename + ".jpg", {'base64': imageBase64});
+                                            parseFile.save().then(function () {
+                                                devicePhoto.currentPhoto.parseThumbnail = parseFile;
+                                                devicePhoto.currentPhoto.thumbnailUrl = parseFile._url;
+
+                                                photoModel.addPhotoOffer(photouuid, parseFile._url, parseFile, null, null , false);
+
+                                            });
+
+                                        });
+
+
+
+                                        // success: image is the new resized image
+                                    }, function () {
+                                        mobileNotify("Error creating thumbnail...");
+                                        // failed: grumpy cat likes this function
+                                    });
+                            }
+
                             navigator.camera.cleanup(function(){}, function(){});
                         }, function(){});
                     }, function(){});
                 }, function(){});
 
-                devicePhoto.currentPhoto.photoId = photouuid;
-                devicePhoto.currentPhoto.filename = filename;
-                devicePhoto.currentPhoto.imageUrl = localUrl;
-                devicePhoto.currentPhoto.phoneUrl = localUrl;
 
-                photoModel.addDevicePhoto(devicePhoto.currentPhoto);
-
-
-                if (displayCallback !== undefined) {
-                    displayCallback(localUrl);
-                }
-
-                if (isChat) {
-                    mobileNotify("Processing photo...");
-                    var scaleOptions = {
-                        uri: imageUrl,
-                        filename: "thumb_"+filename,
-                        quality: 75,
-                        width: 512,
-                        height: 512
-                    };
-
-                    window.ImageResizer.resize(scaleOptions,
-                        function (image) {
-                            var thumbNail = image;
-                            if (device.platform === 'iOS') {
-                                thumbNail = image.replace('file://', '');
-                            }
-
-                            devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
-
-                                var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
-                                var parseFile = new Parse.File("thumbnail" + filename + ".jpg", {'base64': imageBase64});
-                                parseFile.save().then(function () {
-                                    devicePhoto.currentPhoto.parseThumbnail = parseFile;
-                                    devicePhoto.currentPhoto.thumbnailUrl = parseFile._url;
-
-                                    photoModel.addPhotoOffer(photouuid, parseFile._url, parseFile, null, null , false);
-
-                                });
-
-                            });
-
-
-
-                            // success: image is the new resized image
-                        }, function () {
-                            mobileNotify("Error creating thumbnail...");
-                            // failed: grumpy cat likes this function
-                        });
-                }
 
             },
             function (error) {
