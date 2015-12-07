@@ -41,28 +41,41 @@ var devicePhoto = {
             function (imageData) {
                 var photouuid = uuid.v4();
                 var imageUrl = imageData;
-               /* if (device.platform === 'iOS') {
+                if (device.platform === 'iOS') {
                     imageUrl = imageData.replace('file://', '');
-                }*/
+                }
+                var localUrl = null;
                 // convert uuid into valid file name;
                 var filename = photouuid.replace(/-/g,'');
 
+                // Create a local copy of the
+                window.resolveLocalFileSystemURI(imageData, function fileEntrySuccess(fileEntry) {
+                    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function directoryEntrySuccess(directoryEntry) {
+                        var uniqueNewFilename = "photo_" + filename + ".jpg";
+                        fileEntry.moveTo(directoryEntry.root, uniqueNewFilename, function moveFileSuccess(newFileEntry) {
+                            var localUrl = newFileEntry.fullPath;
+                            navigator.camera.cleanup(function(){}, function(){});
+                        }, function(){});
+                    }, function(){});
+                }, function(){});
+
                 devicePhoto.currentPhoto.photoId = photouuid;
                 devicePhoto.currentPhoto.filename = filename;
-                devicePhoto.currentPhoto.imageUrl = imageUrl;
-                devicePhoto.currentPhoto.phoneUrl = imageUrl;
+                devicePhoto.currentPhoto.imageUrl = localUrl;
+                devicePhoto.currentPhoto.phoneUrl = localUrl;
 
                 photoModel.addDevicePhoto(devicePhoto.currentPhoto);
 
+
                 if (displayCallback !== undefined) {
-                    displayCallback(imageData);
+                    displayCallback(localUrl);
                 }
 
                 if (isChat) {
                     mobileNotify("Processing photo...");
                     var scaleOptions = {
                         uri: imageUrl,
-                        folderName: "thumbnails",
+                        filename: "thumb_"+filename,
                         quality: 75,
                         width: 512,
                         height: 512

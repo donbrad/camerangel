@@ -945,7 +945,7 @@ var placeView = {
         //_preventDefault(e);
 
         if (placeView._activePlace.hasPlaceChat) {
-            
+
           //  APP.kendo.navigate('#channel?channelId=' + placeView._activePlace.placeChatId);
         } else {
             // TODO Don - wire chat feature

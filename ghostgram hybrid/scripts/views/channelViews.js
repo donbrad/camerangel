@@ -466,6 +466,7 @@ var editChannelView = {
         }
         editChannelView._activeChannel.members = memberArray;
 
+
         //Send Invite messages to users added to channel
         for (var ma = 0; ma < editChannelView.membersAdded.length; ma++) {
             var options = null;
@@ -721,7 +722,7 @@ var channelView = {
     isPrivateChat: false,
     privacyMode: false,  // Privacy mode - obscure messages after timeout
     currentContact: null,
-    activeMessage: null,
+    activeMessage: {},
     intervalId : null,
     ghostgramActive : false,
     sendMessageHandler : null,
@@ -852,7 +853,7 @@ var channelView = {
 
         var contactUUID = null;
         var thisChannelHandler = null;
-        channelView.activeMessage = null;
+        channelView.activeMessage = {};
         var name = channelView.formatName(thisChannel.name);
 
 
@@ -1062,7 +1063,7 @@ var channelView = {
         $(".selectedLI").velocity("slideUp", {delay: 150});
 
         //mobileNotify("message archived");
-        var message = channelView.activeMessage;
+        var message = channelView.currentMessage;
 
         // ToDo - wire up archive
         if (message === null) {
@@ -1211,6 +1212,7 @@ var channelView = {
     },
 
     messageAddPhoto : function (offer) {
+
         channelView.activeMessage.photo = {
             photoId : offer.photoId,
             thumb: offer.thumbnail,
