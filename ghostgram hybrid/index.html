@@ -872,8 +872,6 @@
 		<div class="galleryImgBox">
 			# if (window.navigator.simulator === undefined && deviceUrl !== undefined && deviceUrl !== null) { #
 			<img class="galleryImg" src="#=deviceUrl#" />
-			# } else if (imageUrl !== undefined && imageUrl !== null) { #
-			<img class="galleryImg" src="#=imageUrl#" />
 			# } else { #
 			<img class="galleryImg" src="#=thumbnailUrl#" />
 			# } #
@@ -2685,7 +2683,7 @@
 		<ul class="list-inline" id="placeListOpt">
 			<li >
 				<a class="btnClear-sm" data-role="button" data-click="placeView.openChat">
-					<img src="images/icon-chat-active.svg" class="icon-btn" /> <span id="placeview-gotochat"> Start a Chat </span></a>
+					<img src="images/icon-chat-active.svg" class="icon-btn" /> <span id="placeview-gotochat"> Start a Chat </a>
 			</li>
 			<li>
 				<a class="btnClear-sm" data-role="button" data-click="placeView.takePhoto">
