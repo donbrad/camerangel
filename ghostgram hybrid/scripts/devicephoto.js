@@ -69,9 +69,9 @@ var devicePhoto = {
                             if (isChat) {
                                 mobileNotify("Processing thumbnail...");
                                 var uri = nativeUrl;
-                                if (device.platform === 'iOS') {
+                               /* if (device.platform === 'iOS') {
                                     uri = nativeUrl.replace('file://', '');
-                                }
+                                }*/
                                 var scaleOptions = {
                                     uri: uri,
                                     filename: "thumb_"+filename,
