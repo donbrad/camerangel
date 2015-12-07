@@ -703,7 +703,7 @@ var editPlaceView = {
 
         if (editPlaceView._activePlace.get('hasPlaceChat')) {
             // Already had a place chat -- jump to editChat
-            APP.kendo.navigate("#editchannel?channelId=" + activePlace.placeChatId);
+            APP.kendo.navigate("#editchannel?channelId=" +  editPlaceView._activePlace.get('placeChatId'));
         } else {
             // No placechat yet, create and then jump to edit
             var placeChatguid = uuid.v4();
@@ -946,7 +946,7 @@ var placeView = {
 
         if (placeView._activePlace.hasPlaceChat) {
 
-          //  APP.kendo.navigate('#channel?channelId=' + placeView._activePlace.placeChatId);
+           APP.kendo.navigate('#channel?channelId=' + placeView._activePlace.placeChatId);
         } else {
             // TODO Don - wire chat feature
         }
