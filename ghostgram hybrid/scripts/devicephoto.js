@@ -63,7 +63,7 @@ var devicePhoto = {
 
 
                             if (displayCallback !== undefined) {
-                                displayCallback(localUrl);
+                                displayCallback(nativeUrl);
                             }
 
                             if (isChat) {
