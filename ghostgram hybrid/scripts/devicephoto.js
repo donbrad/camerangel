@@ -58,6 +58,10 @@ var devicePhoto = {
                             devicePhoto.currentPhoto.filename = filename;
                             devicePhoto.currentPhoto.imageUrl = null;
                             devicePhoto.currentPhoto.imageFile = null;
+                            var uri = nativeUrl;
+                            if (device.platform === 'iOS') {
+                                uri = nativeUrl.replace('file://', '');
+                            }
                             devicePhoto.currentPhoto.phoneUrl = nativeUrl;
 
 
@@ -68,15 +72,12 @@ var devicePhoto = {
                             }
 
                             if (isChat) {
-                                mobileNotify("Processing thumbnail...");
-                                var uri = nativeUrl;
-                               /* if (device.platform === 'iOS') {
-                                    uri = nativeUrl.replace('file://', '');
-                                }*/
+                                mobileNotify("Processing Chat thumbnail...");
+
                                 var scaleOptions = {
                                     uri: uri,
                                     filename: "thumb_"+filename,
-                                    quality: 75,
+                                    quality: 60,
                                     width: 512,
                                     height: 512
                                 };
@@ -103,8 +104,6 @@ var devicePhoto = {
                                             });
 
                                         });
-
-
 
                                         // success: image is the new resized image
                                     }, function () {
