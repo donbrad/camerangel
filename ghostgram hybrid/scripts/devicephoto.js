@@ -67,8 +67,6 @@ var devicePhoto = {
                             devicePhoto.currentPhoto.phoneUrl = nativeUrl;
 
 
-                            deviceModel.getNetworkState();
-
 
                             if (displayCallback !== undefined) {
                                 displayCallback(nativeUrl);
@@ -76,24 +74,6 @@ var devicePhoto = {
 
                             if (isChat) {
                                 mobileNotify("Processing Chat thumbnail...");
-
-                                if (deviceModel.isWifi()) {
-                                    // If the phone is on wifi -- upload the shareable image now...
-                                    devicePhoto.convertImgToDataURL(nativeUrl, function (dataUrl) {
-
-                                        var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
-                                        var parseFileImage = new Parse.File("photo_" + filename + ".jpg", {'base64': imageBase64});
-                                        parseFileImage.save().then(function () {
-                                            devicePhoto.currentPhoto.imageFile = parseFileImage;
-                                            devicePhoto.currentPhoto.imageUrl = parseFileImage._url;
-
-
-                                        });
-
-                                    });
-                                }
-
-
                                 var scaleOptions = {
                                     uri: uri,
                                     filename: "thumb_"+filename,
@@ -120,6 +100,7 @@ var devicePhoto = {
 
                                                 photoModel.addDevicePhoto(devicePhoto.currentPhoto);
                                                 photoModel.addPhotoOffer(photouuid, parseFile._url, null, null , false);
+                                                photoModel.uploadPhotoImage(devicePhoto.currentPhoto.photoId);
 
                                             });
 

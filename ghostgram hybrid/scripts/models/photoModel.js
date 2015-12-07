@@ -338,7 +338,7 @@ var photoModel = {
         var PhotoOffer = Parse.Object.extend("photoOffer");
         var offer = new PhotoOffer();
 
-        var uploadFlag = true;
+        var uploadFlag = false;
 
         var offeruuid = uuid.v4();
         
@@ -354,7 +354,7 @@ var photoModel = {
             thumbnail = null;
             uploadFlag = false;
         }
-        offer.set('uploaded', uploadFlag);
+
         offer.set('thumbnailUrl', thumbnail);
 
         if (image === undefined) {
@@ -362,12 +362,16 @@ var photoModel = {
         }
         offer.set('imageUrl', image);
 
+        if (image !== null)
+            uploadFlag = true;
+
+        offer.set('uploaded', uploadFlag);
 
         if (canCopy === undefined) {
             canCopy = true;
         }
-
         offer.set('canCopy', canCopy);
+
         offer.save(null, {
             success: function(offer) {
                 var offerObject = offer.toJSON();
@@ -394,11 +398,48 @@ var photoModel = {
 
     },
 
-    addImageToPhotoOffer : function (photoId, image, imageFile) {
+    // Upload a device resolution photo to parse (update an outstanding offers)
+    uploadPhotoImage: function (photoId) {
         var photo = photoModel.findPhotoById(photoId);
 
         if (photo !== undefined) {
-            photo.set('imageUrl', image);
+
+            deviceModel.getNetworkState();
+
+            var deviceUrl = photo.get('deviceUrl');
+            if (deviceModel.isWifi()) {
+                // If the phone is on wifi -- upload the shareable image now...
+                devicePhoto.convertImgToDataURL(deviceUrl, function (dataUrl) {
+
+                    var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
+                    var parseFileImage = new Parse.File("photo_" + filename + ".jpg", {'base64': imageBase64});
+                    parseFileImage.save().then(function () {
+
+                        photo.set('imageUrl', parseFileImage._url);
+
+                        updateParseObject('photos', 'photoId', photoId, 'image', parseFileImage);
+                        updateParseObject('photos', 'photoId', photoId, 'imageUrl', parseFileImage._url);
+
+                    });
+
+                });
+            } else {
+                // If we're not on wifi, set the upload flag to update server image
+                photo.set('needsUpload', true);
+            }
+
+        }
+
+    },
+
+    addImageToPhotoOffer : function (photoId, image) {
+        var offer = photoModel.findOfferByPhotoId(photoId);
+
+        if (offer !== undefined) {
+            offer.set('imageUrl', image);
+            offer.set('uploaded', true);
+            updateParseObject('photoOffer', 'photoId', photoId, 'image', image);
+            updateParseObject('photoOffer', 'photoId', photoId, 'uploaded', true);
 
         }
 
