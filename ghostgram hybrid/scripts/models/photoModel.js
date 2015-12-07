@@ -43,34 +43,7 @@ var photoModel = {
 
                     var parsePhoto = collection[i];
                     var photo = parsePhoto.toJSON();
-                    if (photo.imageUrl === undefined) {
-                        photo.imageUrl = null;
-                    }
-                    if (photo.imageUrl === null) {
-                        photo.imageUrl = photo.deviceUrl;
-                    }
 
-                    /* if (window.navigator.simulator === undefined && (photo.deviceUrl === undefined || photo.deviceUrl === null)) {
-                     var store = cordova.file.dataDirectory;
-                     window.resolveLocalFileSystemURL(store + photo.photoId + '.jpg',
-                     function(fileEntry) {
-                     var deviceUrl = fileEntry.nativeURL;
-                     /!*parsePhoto.set("deviceUrl", deviceUrl);
-                     parsePhoto.save();*!/
-                     photo.deviceUrl = deviceUrl;
-                     photo.isDirty = true;
-                     },
-                     function (error) {
-                     photoModel.addToLocalCache(photo.imageUrl, photo.photoId, photo, parsePhoto);
-                     }
-                     );
-
-                     } else {
-                     photo.deviceUrl = null;
-                     }*/
-
-
-                    photoModel.upgradePhoto(photo);
                     models.push(photo);
                 }
                 deviceModel.setAppState('hasPhotos', true);
@@ -86,20 +59,20 @@ var photoModel = {
 
     _fetchOffers : function () {
         var ParsePhotoOffer = Parse.Object.extend("photoOffer");
-        var query = new Parse.Query(ParsePhotoOffer);
+        var queryOffer = new Parse.Query(ParsePhotoOffer);
 
-        query.find({
+        queryOffer.find({
             success: function(collection) {
 
-                var models = [];
+                var offers = [];
                 for (var i = 0; i < collection.length; i++) {
                     var parseOffer = collection[i];
                     var offer = parseOffer.toJSON();
 
-                    models.push(offer);
+                    offers.push(offer);
                 }
 
-                photoModel.offersDS.data(models);
+                photoModel.offersDS.data(offers);
 
             },
             error: function(error) {
@@ -246,11 +219,6 @@ var photoModel = {
 
                 updateParseObject('photos', "photoId", photo.photoId, "eventId",  null);
                 updateParseObject('photos', "photoId", photo.photoId, "eventName",  null);
-            }
-
-            if (photo.deviceUrl === undefined) {
-                photo.deviceUrl = null;
-                updateParseObject('photos', "photoId", photo.photoId, "deviceUrl",  null);
             }
 
             if (photo.address === undefined) {
@@ -406,6 +374,7 @@ var photoModel = {
 
             deviceModel.getNetworkState();
 
+            var filename = photoId.replace(/-/g,'');
             var deviceUrl = photo.get('deviceUrl');
             if (deviceModel.isWifi()) {
                 // If the phone is on wifi -- upload the shareable image now...

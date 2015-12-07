@@ -66,8 +66,6 @@ var devicePhoto = {
                             }
                             devicePhoto.currentPhoto.phoneUrl = nativeUrl;
 
-
-
                             if (displayCallback !== undefined) {
                                 displayCallback(nativeUrl);
                             }
