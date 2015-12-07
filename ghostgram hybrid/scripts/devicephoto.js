@@ -164,6 +164,84 @@ var devicePhoto = {
             function (imageData) {
                 var photouuid = uuid.v4();
                 var imageUrl = imageData;
+               /* if (device.platform === 'iOS') {
+                    imageUrl = imageData.replace('file://', '');
+                }*/
+                var localUrl = null;
+                // convert uuid into valid file name;
+                var filename = photouuid.replace(/-/g,'');
+
+                // Create a local copy of the
+                window.resolveLocalFileSystemURL(imageData, function fileEntrySuccess(fileEntry) {
+                    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function directoryEntrySuccess(directoryEntry) {
+                        var uniqueNewFilename = "photo_" + filename + ".jpg";
+                        fileEntry.moveTo(directoryEntry.root, uniqueNewFilename, function moveFileSuccess(newFileEntry) {
+                            var localUrl = newFileEntry.fullPath, nativeUrl =  newFileEntry.nativeURL;
+                            devicePhoto.currentPhoto.photoId = photouuid;
+                            devicePhoto.currentPhoto.filename = filename;
+                            devicePhoto.currentPhoto.imageUrl = null;
+                            devicePhoto.currentPhoto.imageFile = null;
+                            var uri = nativeUrl;
+
+                            if (device.platform === 'iOS') {
+                                nativeUrl = nativeUrl.replace('file://', '');
+                                uri = nativeUrl;
+                            }
+                            devicePhoto.currentPhoto.phoneUrl = nativeUrl;
+
+                            if (displayCallback !== undefined) {
+                                displayCallback(nativeUrl);
+                            }
+
+                            if (isChat) {
+                                mobileNotify("Processing Chat thumbnail...");
+                                var scaleOptions = {
+                                    uri: uri,
+                                    filename: "thumb_"+filename,
+                                    quality: 60,
+                                    width: 512,
+                                    height: 512
+                                };
+
+                                window.ImageResizer.resize(scaleOptions,
+                                    function (image) {
+
+                                        var thumbNail = image;
+                                        if (device.platform === 'iOS') {
+                                            thumbNail = image.replace('file://', '');
+                                        }
+
+                                        devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
+
+                                            var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
+                                            var parseFile = new Parse.File("thumbnail_" + filename + ".jpg", {'base64': imageBase64});
+                                            parseFile.save().then(function () {
+                                                devicePhoto.currentPhoto.thumbnailFile = parseFile;
+                                                devicePhoto.currentPhoto.thumbnailUrl = parseFile._url;
+
+                                                photoModel.addDevicePhoto(devicePhoto.currentPhoto);
+                                                photoModel.addPhotoOffer(photouuid, parseFile._url, null, null , false);
+                                                photoModel.uploadPhotoImage(devicePhoto.currentPhoto.photoId);
+
+                                            });
+
+                                        });
+
+                                        // success: image is the new resized image
+                                    }, function () {
+                                        mobileNotify("Error creating thumbnail...");
+                                        // failed: grumpy cat likes this function
+                                    });
+                            }
+
+                            navigator.camera.cleanup(function(){}, function(){});
+                        }, function(){});
+                    }, function(){});
+                }, function(){});
+
+/*
+                var photouuid = uuid.v4();
+                var imageUrl = imageData;
                 var displayUrl = imageData;
 
                 if (device.platform === 'iOS') {
@@ -225,6 +303,7 @@ var devicePhoto = {
                         });
                 }
 
+*/
             },
             function (error) {
                 mobileNotify("Phone Gallery error " + error);
