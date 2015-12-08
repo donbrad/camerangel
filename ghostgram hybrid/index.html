@@ -870,11 +870,7 @@
 <script type="text/x-kendo-template" id="modalGalleryTemplate">
 	<div>
 		<div class="galleryImgBox">
-			# if (window.navigator.simulator === undefined && deviceUrl !== undefined && deviceUrl !== null) { #
-			<img class="galleryImg" src="#=deviceUrl#" />
-			# } else { #
 			<img class="galleryImg" src="#=thumbnailUrl#" />
-			# } #
 		</div>
 	</div>
 </script>
@@ -2509,8 +2505,8 @@
 	<div class="touch">
 		<div class="galleryImgBox">
 			<div class="galleryImgBox">
-				# if (window.navigator.simulator === undefined) { #
-				<img class="galleryImg" src="#=deviceUrl#" />
+				# if (imageUrl !== null) { #
+				<img class="galleryImg" src="#=imageUrl#" />
 				# } else { #
 				<img class="galleryImg" src="#=thumbnailUrl#" />
 				# } #

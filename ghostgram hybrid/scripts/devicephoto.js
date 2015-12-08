@@ -52,6 +52,7 @@ var devicePhoto = {
                 window.resolveLocalFileSystemURL(imageData, function fileEntrySuccess(fileEntry) {
                     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function directoryEntrySuccess(directoryEntry) {
                         var uniqueNewFilename = "photo_" + filename + ".jpg";
+
                         fileEntry.moveTo(directoryEntry.root, uniqueNewFilename, function moveFileSuccess(newFileEntry) {
                             var localUrl = newFileEntry.fullPath, nativeUrl =  newFileEntry.nativeURL;
                             devicePhoto.currentPhoto.photoId = photouuid;
