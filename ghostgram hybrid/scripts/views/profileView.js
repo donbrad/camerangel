@@ -43,6 +43,7 @@ var profileEditView = {
         profileEditView._activeProfile.set('alias', userModel.currentUser.get('alias'));
         profileEditView._activeProfile.set('email', userModel.currentUser.get('email'));
         profileEditView._activeProfile.set('photo', userModel.currentUser.get('photo'));
+        profileEditView._activeProfile.set('phone', userModel.currentUser.get('phone'));
 
     },
 
