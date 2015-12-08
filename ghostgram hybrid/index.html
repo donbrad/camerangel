@@ -2804,14 +2804,8 @@
 	<!-- Edit info -->
 	<div class="profileEditBtm">
 		<form style="clear:both;">
-			<h3>Edit Info</h3>
+			<h3>Edit Info <span data-bind="text: username"></span></h3>
 			<ul data-role="listview" data-style="inset">
-				<li>
-					<label>User Name
-						<span class="helper helper-right helper-form"><i class="fa fa-lock"></i> Locked </span>
-						<input type="text" data-bind="value: username" readonly/>
-					</label>
-				</li>
 				<li>
 					<label>Name (Your First and Last Name)
 						<input type="search" data-bind="value: name" />
@@ -2830,7 +2824,7 @@
 				<li>
 					<label>Mobile Phone
 						<span class="helper helper-right helper-form"><i class="fa fa-lock"></i> Locked <a class="btnClear" id="helper-profilePhone"></a></span>
-						<input type="tel"data-bind="value: phone" readonly />
+						<input style="color: black;" type="tel"data-bind="value: phone" readonly />
 					</label>
 				</li>
 			</ul>
