@@ -51,36 +51,7 @@ function closeNewPass() {
     $("#newPassword1, #newPassword2").val("");
 }
 
-function validNewPass(e) {
-    if (e.preventDefault !== undefined)
-        e.preventDefault();
 
-    var pass1 = $("#newPassword1").val();
-    var pass2 = $("#newPassword2").val();
-
-    if(pass1 !== pass2){
-        mobileNotify("Passwords don't match, try again");
-    } else {
-        user = Parse.User.current();
-        if (user) {
-            user.set("password",pass1);
-            user.save()
-                .then(
-                function(user) {
-                    mobileNotify("Your password was changed");
-                    $("#modalview-changePassword").data("kendoMobileModalView").close();
-
-                    // Clear forms
-                    $("#newPassword1, #newPassword2").val("");
-                },
-                function(error) {
-                    mobileNotify("Error updating password" + error);
-                }
-            );
-        }
-
-    }
-}
 
 function profilePhotoScaleSuccess (data) {
 

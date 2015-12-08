@@ -7,6 +7,7 @@
     <link href="kendo/styles/kendo.common.min.css" rel="stylesheet" />
 	<link href="kendo/styles/kendo.material.min.css" rel="stylesheet" />
     <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet" />
+	<link href="css/strength.css" rel="stylesheet" />
     <link href="styles/master.css" rel="stylesheet" />
     <script src="cordova.js"></script>
     <script src="kendo/js/jquery.min.js"></script>
@@ -43,6 +44,7 @@
 	<script src="scripts/libs/base64-string.js"></script>
 	<script src="scripts/libs/lz-string.js"></script>
 	<script src="scripts/libs/cropper.js"></script>
+	<script src="scripts/libs/strength.js"></script>
 	<script src="scripts/libs/jdenticon-1.3.0.js"></script>
     <script src="bower_components/velocity/velocity.js"></script>
     <script src="bower_components/lodash/lodash.js"></script>
@@ -2891,11 +2893,12 @@
 </div>
 
 <!-- change password modal -->
-<div data-role="modalview" id="modalview-changePassword" style="width: 90%; display:none;" class="appearance">
+<div data-role="modalview" id="modalview-changePassword" data-init="changePasswordView.onInit"   data-open="changePasswordView.onShow" style="width: 90%; display:none;" class="appearance">
+
 	<div class="modal-bottom">
 		<h4>Change Password
     	<span style="float:right; ">
-        	<a data-click="closeNewPass;" data-role="button"><img src="images/close.svg" /></a>
+        	<a data-click="changePasswordView.closeModal" data-role="button"><img src="images/close.svg" /></a>
         </span>
 		</h4>
 		<ul data-role="listview" data-style="inset">
@@ -2912,7 +2915,7 @@
 		</ul>
 	</div>
 	<div class="footer" data-role="footer">
-		<a class="btnFull-modal btnSecondary" data-click="validNewPass" data-role="button">Update</a>
+		<a class="btnFull-modal btnSecondary" data-click="changePasswordView.onDone" data-role="button">Update</a>
 	</div>
 </div>
 
