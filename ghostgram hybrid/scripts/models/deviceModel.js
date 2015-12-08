@@ -20,6 +20,7 @@ var deviceModel = {
         isAvailable: true,
         rememberUsername: false,
         isOnline: true,
+        connection: 'none',
         inBackground: false,
         userNotifications: [],
         phoneVerified: false,
@@ -176,6 +177,10 @@ var deviceModel = {
 
     },
 
+    isWifi : function () {
+       return(deviceModel.state.connection === 'internet');
+    },
+
     setAppState: function(field, value) {
         deviceModel.state[field] = value;
        // deviceModel.state.set(field,value);
@@ -198,6 +203,10 @@ var deviceModel = {
     getNetworkState: function () {
         var networkState = navigator.connection.type;
         switch (networkState) {
+            case Connection.NONE:
+                deviceModel.setAppState('connection', "none");
+                mobileNotify("Offline");
+                break;
             case Connection.ETHERNET:
             case Connection.WIFI:
                 deviceModel.setAppState('connection', "internet");

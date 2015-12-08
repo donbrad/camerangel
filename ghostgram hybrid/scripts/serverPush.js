@@ -43,7 +43,8 @@ var serverPush = {
             return;
 
         serverPush._registered = true;
-        mobileNotify("Server Push enabled : " + data);
+       // mobileNotify("Server Push enabled : " + data);
+
         serverPush._regId =  data;
 
         deviceModel.setAppState('isDeviceRegistered', true);
@@ -116,7 +117,7 @@ var serverPush = {
 
                     serverPush._registered = true;
 
-                    mobileNotify("Notification: Android regID = " + e.regid);
+                    //mobileNotify("Notification: Android regID = " + e.regid);
                     serverPush._regId =  e.regid;
 
                     deviceModel.setAppState('isDeviceRegistered', true);

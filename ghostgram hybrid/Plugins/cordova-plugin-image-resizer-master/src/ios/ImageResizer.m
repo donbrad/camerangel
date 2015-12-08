@@ -13,7 +13,7 @@
     NSDictionary* arguments = [command.arguments objectAtIndex:0];
     NSString* imageUrlString = [arguments objectForKey:@"uri"];
     NSString* quality = [arguments objectForKey:@"quality"];
-    NSString* folder = [arguments objectForKey:@"folderName"];
+    NSString* filename = [arguments objectForKey:@"filename"];
 
     CGSize frameSize = CGSizeMake([[arguments objectForKey:@"width"] floatValue], [[arguments objectForKey:@"height"] floatValue]);
 
@@ -69,7 +69,7 @@
     NSData* data = UIImageJPEGRepresentation(newImage, [quality floatValue] / 100.0f);
     int i = 1;
     do {
-        filePath = [NSString stringWithFormat:@"%@/%@%03d.%@", docsPath, folder, i++, @"jpg"];
+        filePath = [NSString stringWithFormat:@"%@/%@.%@", docsPath, filename, @"jpg"];
     } while ([fileMgr fileExistsAtPath:filePath]);
 
     // save file

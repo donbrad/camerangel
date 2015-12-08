@@ -197,6 +197,17 @@ var userModel = {
                     dirty = true;
                 }
 
+                if (user.get('phoneVerified') === true && user.get('emailVerified') === true) {
+                    if (user.get('isVerified') !== true) {
+                        user.set('isVerified', true);
+                        dirty = true;
+                    }
+                } else {
+                    if (user.get('isVerified') !== false) {
+                        user.set('isVerified', false);
+                        dirty = true;
+                    }
+                }
 
                 if (dirty)
                     user.save();

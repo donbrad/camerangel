@@ -602,7 +602,8 @@ var addPlaceView = {
         if (geoPlace.category === "Location") {
             // A location / street address
             addPlaceView._activePlace.set('category',"Location");
-            addPlaceView._activePlace.set('googleId', '');
+            addPlaceView._activePlace.set('googleId', null);
+            addPlaceView._activePlace.set('factualId', null);
             addPlaceView._activePlace.set('icon', '');
             addPlaceView._activePlace.set('reference', '');
 
@@ -612,6 +613,7 @@ var addPlaceView = {
             addPlaceView._activePlace.set('icon', geoPlace.icon);
             addPlaceView._activePlace.set('reference', geoPlace.reference);
             addPlaceView._activePlace.set('googleId', geoPlace.googleId);
+            addPlaceView._activePlace.set('factualId', null);
         }
 
         addPlaceView._activePlace.bind('change',addPlaceView.onSync);
@@ -622,65 +624,21 @@ var addPlaceView = {
     addPlace : function (e) {
         _preventDefault(e);
 
-        var Place = Parse.Object.extend("places");
-        var placeParse = new Place();
-
-        var newPlace = placesModel.newPlace();
-        var place = addPlaceView._activePlace;
-
-        // Check that the place name is unique (in this users place's)
-        place.name = place.name.toString();
-
-        if (!placesModel.isUniquePlaceName(place.name)) {
-            mobileNotify(addPlaceView._activePlace.name + "is already one of your Places!");
-            return;
-        }
-
-        var guid = uuid.v4();
-
         var createChatFlag = $('#addPlaceCreateChat').is('checked');
-        placeParse.setACL(userModel.parseACL);
-        placeParse.set('uuid', guid);
-        placeParse.set('category', place.category);
-        var name =  place.name.toString();
-        placeParse.set('name', name);
-        placeParse.set('venueName', place.venueName);
-        placeParse.set('alias', place.alias);
-        placeParse.set('googleId', place.googleId);
-        placeParse.set('address', place.address);
-        placeParse.set('lat', place.lat);
-        placeParse.set('lng', place.lng);
-        placeParse.set('type', place.type);
-        placeParse.set('city', place.city);
-        placeParse.set('state', place.state);
-        placeParse.set('country', place.country);
-        placeParse.set('zipcode', place.zipcode);
 
-        placeParse.set('isAvailable', place.isAvailable === "true");
-        placeParse.set('isPrivate', place.isPrivate === "true");
-        placeParse.set('hasPlaceChat', createChatFlag);
+        var place = addPlaceView._activePlace;
+        placesModel.addPlace(place, createChatFlag, function (placeObj) {
 
-        placeParse.save(null, {
-            success: function(place) {
-                // Execute any logic that should take place after the object is saved.
 
-                var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, place.get('lat'), place.get('lng'));
+            mobileNotify(placeObj.name + " added to your Places...");
 
-                // update the distance value for the local object...
-                place.set('distance',distance.toFixed(2));
+            addPlaceView.onDone();
 
-                placesModel.placesDS.add(place.attributes);
-                mobileNotify(place.get('name') + " added to your Places...");
-
-                addPlaceView.onDone();
-
-            },
-            error: function(place, error) {
-                // Execute any logic that should take place if the save fails.
-                // error is a Parse.Error with an error code and message.
-                handleParseError(error);
+            if (createChatFlag) {
+                channelModel.addPlaceChannel(placeObj.placeChatId, placeObj.uuid, placeObj.name, placeObj.isPrivate);
             }
         });
+
 
     }
 };
@@ -722,14 +680,46 @@ var editPlaceView = {
         }
 
         // Show place type
-        var activePlace = editPlaceView._activePlace;
-        if(activePlace.isPrivate){
+
+        if(editPlaceView._activePlace.get('isPrivate')){
         	$("#publicPlaceHelper").addClass("hidden");
         	$("#privatePlaceHelper").removeClass("hidden");
         } else {
         
         	$("#publicPlaceHelper").removeClass("hidden");
         	$("#privatePlaceHelper").addClass("hidden");
+        }
+
+        if (editPlaceView._activePlace.get('hasPlaceChat')) {
+            $("#editplace-placechat").text("Edit Place Chat");
+        } else {
+            $("#editplace-placechat").text("Add Place Chat");
+        }
+    },
+
+    doPlaceChat : function (e) {
+        _preventDefault(e);
+
+
+        if (editPlaceView._activePlace.get('hasPlaceChat')) {
+            // Already had a place chat -- jump to editChat
+            APP.kendo.navigate("#editchannel?channelId=" +  editPlaceView._activePlace.get('placeChatId'));
+        } else {
+            // No placechat yet, create and then jump to edit
+            var placeChatguid = uuid.v4();
+
+            // Todo: need to add place name collision detection here...
+            channelModel.addPlaceChannel(placeChatguid, editPlaceView._activePlace.get('uuid'), editPlaceView._activePlace.get('name'), false);
+
+            editPlaceView._activePlace.set('placeChatId', placeChatguid);
+            editPlaceView._activePlace.set('hasPlaceChat', true);
+
+            editPlaceView._activePlaceModel.set('placeChatId', placeChatguid);
+            editPlaceView._activePlaceModel.set('hasPlaceChat', true);
+
+            updateParseObject('places', 'uuid', activePlace.uuid,'hasPlaceChat', true);
+            updateParseObject('places', 'uuid', activePlace.uuid,'placeChatId', placeChatguid);
+
         }
     },
 
@@ -750,15 +740,15 @@ var editPlaceView = {
     },
 
     isUniquePlaceName : function () {
-        var place = placesModel.findPlaceByName(editPlaceView._activePlace.name);
+        var place = placesModel.findPlaceByName(editPlaceView._activePlace.get('name'));
 
        // Is there already
         if (place === undefined)
             return true;
 
         // Make sure the matching place isn't the one we're currently editing...
-        if (place.uuid !== editPlaceView._activePlace.placeId) {
-            mobileNotify("You already have a place named " + editPlaceView._activePlace.name);
+        if (place.uuid !== editPlaceView._activePlace.get('placeId')) {
+            mobileNotify("You already have a place named " + editPlaceView._activePlace.get('name'));
             return false;
         }
 
@@ -775,19 +765,25 @@ var editPlaceView = {
         var model = editPlaceView._activePlaceModel, newModel = editPlaceView._activePlace;
 
         // Unbind the handler...
-        editPlaceView._activePlace.unbind('change' , editContactView.validatePlace);
+        editPlaceView._activePlace.unbind('change' , editPlaceView.validatePlace);
 
         model.set('name', newModel.name);
         model.set('alias', newModel.alias);
         model.set('address', newModel.address);
         model.set('isPrivate', newModel.isPrivate);
         model.set('isAvailable', newModel.isAvailable);
+        model.set('hasPlaceChat', newModel.hasPlaceChat);
+        model.set('placeChatId', newModel.placeChatId);
+
 
         updateParseObject('places', 'uuid', newModel.uuid, "name", newModel.name);
         updateParseObject('places', 'uuid', newModel.uuid,'alias', newModel.alias);
         updateParseObject('places', 'uuid', newModel.uuid,'address', newModel.address);
         updateParseObject('places', 'uuid', newModel.uuid, 'isPrivate', newModel.isPrivate);
         updateParseObject('places', 'uuid', newModel.uuid,'isAvailable', newModel.isAvailable);
+        updateParseObject('places', 'uuid', newModel.uuid,'hasPlaceChat', newModel.hasPlaceChat);
+        updateParseObject('places', 'uuid', newModel.uuid,'placeChatId', newModel.placeChatId);
+
 
         mobileNotify("Updated " + newModel.name);
 
@@ -816,14 +812,18 @@ var editPlaceView = {
         editPlaceView._activePlaceModel = placeObj;
 
         editPlaceView._activePlace.unbind('change' , editPlaceView.validatePlace);
+
         editPlaceView._activePlace.set('placeId', placeId);
+        editPlaceView._activePlace.set('placeChatId', placeObj.placeChatId);
         editPlaceView._activePlace.set('uuid', placeObj.uuid);
         editPlaceView._activePlace.set('name', placeObj.name);
+        editPlaceView._activePlace.set('placeName', placeObj.placeName);
         editPlaceView._activePlace.set('alias', placeObj.alias);
         editPlaceView._activePlace.set('address', placeObj.address);
         editPlaceView._activePlace.set('city', placeObj.city);
         editPlaceView._activePlace.set('state', placeObj.state);
         editPlaceView._activePlace.set('zipcode', placeObj.zipcode);
+        editPlaceView._activePlace.set('hasPlaceChat', placeObj.hasPlaceChat);
         editPlaceView._activePlace.set('isPrivate', placeObj.isPrivate);
         editPlaceView._activePlace.set('isAvailable', placeObj.isAvailable);
         editPlaceView._activePlace.bind('change' , editPlaceView.validatePlace);
@@ -886,6 +886,12 @@ var placeView = {
             $('#publicPlaceView').removeClass('hidden');
         }
 
+        if (placeView._activePlace.hasPlaceChat) {
+            $("#placeview-gotochat").text("Goto Place Chat");
+        } else {
+            $("#placeview-gotochat").text("Start a Chat");
+        }
+
         mapModel.setMapCenter(placeView._activePlaceModel.lat, placeView._activePlaceModel.lng);
     },
 
@@ -917,20 +923,33 @@ var placeView = {
         placeView._activePlace.set('zipcode', placeObj.zipcode);
         placeView._activePlace.set('isPrivate', placeObj.isPrivate);
         placeView._activePlace.set('isAvailable', placeObj.isAvailable);
+        placeView._activePlace.set('hasPlaceChat', placeObj.hasPlaceChat);
+        placeView._activePlace.set('placeChatId', placeObj.placeChatId);
+
 
     },
 
     openPlaceMap: function(e){
+        //_preventDefault(e);
         var placeId = LZString.compressToEncodedURIComponent(placeView._activePlaceId);
     	APP.kendo.navigate("#mapView?place=" + placeId );
     },
 
     takePhoto: function(e){
+        _preventDefault(e);
     	// TODO Don - wire camera feature
     },
 
     openChat: function(e){
-    	// TODO Don - wire chat feature
+
+        //_preventDefault(e);
+
+        if (placeView._activePlace.hasPlaceChat) {
+
+           APP.kendo.navigate('#channel?channelId=' + placeView._activePlace.placeChatId);
+        } else {
+            // TODO Don - wire chat feature
+        }
     }
 };
 

@@ -43,35 +43,7 @@ var photoModel = {
 
                     var parsePhoto = collection[i];
                     var photo = parsePhoto.toJSON();
-                    if (photo.imageUrl === undefined) {
-                        photo.imageUrl = null;
-                    }
 
-
-                    if (photo.deviceUrl === undefined)
-                        photo.deviceUrl = null;
-
-                    /* if (window.navigator.simulator === undefined && (photo.deviceUrl === undefined || photo.deviceUrl === null)) {
-                     var store = cordova.file.dataDirectory;
-                     window.resolveLocalFileSystemURL(store + photo.photoId + '.jpg',
-                     function(fileEntry) {
-                     var deviceUrl = fileEntry.nativeURL;
-                     /!*parsePhoto.set("deviceUrl", deviceUrl);
-                     parsePhoto.save();*!/
-                     photo.deviceUrl = deviceUrl;
-                     photo.isDirty = true;
-                     },
-                     function (error) {
-                     photoModel.addToLocalCache(photo.imageUrl, photo.photoId, photo, parsePhoto);
-                     }
-                     );
-
-                     } else {
-                     photo.deviceUrl = null;
-                     }*/
-
-
-                    photoModel.upgradePhoto(photo);
                     models.push(photo);
                 }
                 deviceModel.setAppState('hasPhotos', true);
@@ -87,20 +59,20 @@ var photoModel = {
 
     _fetchOffers : function () {
         var ParsePhotoOffer = Parse.Object.extend("photoOffer");
-        var query = new Parse.Query(ParsePhotoOffer);
+        var queryOffer = new Parse.Query(ParsePhotoOffer);
 
-        query.find({
+        queryOffer.find({
             success: function(collection) {
 
-                var models = [];
+                var offers = [];
                 for (var i = 0; i < collection.length; i++) {
                     var parseOffer = collection[i];
                     var offer = parseOffer.toJSON();
 
-                    models.push(offer);
+                    offers.push(offer);
                 }
 
-                photoModel.offersDS.data(models);
+                photoModel.offersDS.data(offers);
 
             },
             error: function(error) {
@@ -132,34 +104,84 @@ var photoModel = {
             });
     },
 
-    findPhotoById: function (photoId) {
+    queryPhoto: function (query) {
+        if (query === undefined)
+            return(undefined);
         var dataSource = photoModel.photosDS;
-        dataSource.filter( { field: "photoId", operator: "eq", value: photoId });
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
         var view = dataSource.view();
         var photo = view[0];
-        dataSource.filter([]);
+
+        dataSource.filter(cacheFilter);
 
         return(photo);
     },
 
+    queryPhotoOffer : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = photoModel.offersDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var offer = view[0];
+
+        dataSource.filter(cacheFilter);
+
+        return(offer);
+    },
+
+
+    findOfferById : function (offerId) {
+
+        return(photoModel.queryPhotoOffer({ field: "uuid", operator: "eq", value: offerId }));
+    },
+
+    findOfferByPhotoId : function (photoId) {
+
+
+        return(photoModel.queryPhotoOffer({ field: "photoId", operator: "eq", value: photoId }));
+    },
+
+    findPhotoById : function (photoId) {
+
+       /* var dataSource = photoModel.photosDS;
+        dataSource.filter( { field: "photoId", operator: "eq", value: photoId });
+        var view = dataSource.view();
+        var photo = view[0];
+        dataSource.filter([]);*/
+
+        return(photoModel.queryPhoto({ field: "photoId", operator: "eq", value: photoId }));
+    },
+
     findPhotosByChannel : function (channelId) {
-        var dataSource = photoModel.photosDS;
+       /* var dataSource = photoModel.photosDS;
         dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
         var view = dataSource.view();
         var photos = view;
         dataSource.filter([]);
 
-        return(photos);
+        return(photos);*/
+        return(photoModel.queryPhoto({ field: "channelId", operator: "eq", value: channelId }));
     },
 
     findPhotosBySender: function (senderId) {
-        var dataSource = photoModel.photosDS;
+       /* var dataSource = photoModel.photosDS;
         dataSource.filter( { field: "senderUUID", operator: "eq", value: senderId });
         var view = dataSource.view();
         var photos = view;
         dataSource.filter([]);
 
-        return(photos);
+        return(photos);*/
+
+        return(photoModel.queryPhoto({ field: "senderUUID", operator: "eq", value: senderId }));
     },
 
     upgradePhoto : function (photo) {
@@ -197,11 +219,6 @@ var photoModel = {
 
                 updateParseObject('photos', "photoId", photo.photoId, "eventId",  null);
                 updateParseObject('photos', "photoId", photo.photoId, "eventName",  null);
-            }
-
-            if (photo.deviceUrl === undefined) {
-                photo.deviceUrl = null;
-                updateParseObject('photos', "photoId", photo.photoId, "deviceUrl",  null);
             }
 
             if (photo.address === undefined) {
@@ -284,12 +301,12 @@ var photoModel = {
        return(acl);
     },
 
-    addPhotoOffer : function (photoId, thumbnail, thumbnailFile, image, imageFile, canCopy) {
+    addPhotoOffer : function (photoId, thumbnail, image, canCopy) {
 
         var PhotoOffer = Parse.Object.extend("photoOffer");
         var offer = new PhotoOffer();
 
-        var uploadFlag = true;
+        var uploadFlag = false;
 
         var offeruuid = uuid.v4();
         
@@ -305,26 +322,24 @@ var photoModel = {
             thumbnail = null;
             uploadFlag = false;
         }
-        offer.set('uploaded', uploadFlag);
+
         offer.set('thumbnailUrl', thumbnail);
-        offer.set('thumbnailFile', thumbnailFile);
 
         if (image === undefined) {
             image = null;
         }
         offer.set('imageUrl', image);
 
-        if (imageFile === undefined) {
-            imageFile = null;
-        }
-        offer.set('imageFile', imageFile);
+        if (image !== null)
+            uploadFlag = true;
 
+        offer.set('uploaded', uploadFlag);
 
         if (canCopy === undefined) {
             canCopy = true;
         }
-
         offer.set('canCopy', canCopy);
+
         offer.save(null, {
             success: function(offer) {
                 var offerObject = offer.toJSON();
@@ -351,7 +366,51 @@ var photoModel = {
 
     },
 
-    addImageToPhotoOffer : function (photoId, image, imageFile) {
+    // Upload a device resolution photo to parse (update an outstanding offers)
+    uploadPhotoImage: function (photoId) {
+        var photo = photoModel.findPhotoById(photoId);
+
+        if (photo !== undefined) {
+
+            deviceModel.getNetworkState();
+
+            var filename = photoId.replace(/-/g,'');
+            var deviceUrl = photo.get('deviceUrl');
+            if (deviceModel.isWifi()) {
+                // If the phone is on wifi -- upload the shareable image now...
+                devicePhoto.convertImgToDataURL(deviceUrl, function (dataUrl) {
+
+                    var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
+                    var parseFileImage = new Parse.File("photo_" + filename + ".jpg", {'base64': imageBase64});
+                    parseFileImage.save().then(function () {
+
+                        photo.set('imageUrl', parseFileImage._url);
+
+                        updateParseObject('photos', 'photoId', photoId, 'image', parseFileImage);
+                        updateParseObject('photos', 'photoId', photoId, 'imageUrl', parseFileImage._url);
+
+                    });
+
+                });
+            } else {
+                // If we're not on wifi, set the upload flag to update server image
+                photo.set('needsUpload', true);
+            }
+
+        }
+
+    },
+
+    addImageToPhotoOffer : function (photoId, image) {
+        var offer = photoModel.findOfferByPhotoId(photoId);
+
+        if (offer !== undefined) {
+            offer.set('imageUrl', image);
+            offer.set('uploaded', true);
+            updateParseObject('photoOffer', 'photoId', photoId, 'image', image);
+            updateParseObject('photoOffer', 'photoId', photoId, 'uploaded', true);
+
+        }
 
     },
 
@@ -367,8 +426,14 @@ var photoModel = {
         photo.set('photoId', devicePhoto.photoId);
         photo.set('deviceUrl', devicePhoto.phoneUrl);
 
-        photo.set('imageUrl', devicePhoto.phoneUrl);
-        photo.set('thumbnailUrl', devicePhoto.phoneUrl);
+        photo.set('imageUrl', devicePhoto.imageUrl);
+        if (devicePhoto.imageFile !== null) {
+            photo.set('image', devicePhoto.imageFile);
+        }
+
+        photo.set('thumbnailUrl', devicePhoto.thumbnailUrl);
+        photo.set('thumbnail', devicePhoto.thumbnailFile);
+
 
         photo.set('title', null);
         photo.set('description', null);
@@ -408,12 +473,15 @@ var photoModel = {
             photo.set('placeString', userModel.currentUser.currentPlace);
         }
 
+        var photoObj = photo.toJSON();
+        photoModel.photosDS.add(photoObj);
+
         photo.save(null, {
-            success: function(photo) {
-                var photoObj = photo.toJSON();
+            success: function(photoIn) {
+
                 // Execute any logic that should take place after the object is saved.
-                photoModel.parsePhoto = photo;
-                photoModel.photosDS.add(photoObj);
+                photoModel.parsePhoto = photoIn;
+
 
             },
             error: function(contact, error) {

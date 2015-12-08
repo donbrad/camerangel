@@ -249,7 +249,7 @@ var addChannelView = {
            if (channelModel.findChannelByName(name)) {
                mobileNotify('There is already a chat named : "' + name + '"');
            } else {
-               channelModel.addChannel(name, description, null, null, false);
+               channelModel.addChannel(name, description);
            }
 
 
@@ -429,6 +429,10 @@ var editChannelView = {
     setActiveChannel : function (channel) {
         editChannelView._activeChannel.set('name', channel.name);
         editChannelView._activeChannel.set('description', channel.description);
+        editChannelView._activeChannel.set('isPlace', channel.isPlace);
+        editChannelView._activeChannel.set('placeUUID', channel.placeUUID);
+        editChannelView._activeChannel.set('placeName', channel.placeName);
+
         if (channel.members === undefined)
             channel.members = [];
         editChannelView._activeChannel.set('members', channel.members);
@@ -463,11 +467,23 @@ var editChannelView = {
         editChannelView._activeChannel.members = memberArray;
 
 
-
         //Send Invite messages to users added to channel
         for (var ma = 0; ma < editChannelView.membersAdded.length; ma++) {
+            var options = null;
+
+            // If this is a place chat, send the place data to the members
+            if (editChannelView._activeChannel.placeUUID !== null) {
+                options = {chatType: "Place"};
+
+                var place = placesModel.getPlaceModel(editChannelView._activeChannel.placeUUID);
+                var newPlace = new Object(place);
+
+                options.chatData = newPlace;
+            }
+
             inviteArray.push(editChannelView.membersAdded[ma].contactUUID);
-            appDataChannel.groupChannelInvite(editChannelView.membersAdded[ma].contactUUID, channelId,  editChannelView._activeChannel.name,  editChannelView._activeChannel.description, memberArray);
+            appDataChannel.groupChannelInvite(editChannelView.membersAdded[ma].contactUUID, channelId,  editChannelView._activeChannel.name,  editChannelView._activeChannel.description, memberArray,
+                options);
         }
 
         
@@ -706,7 +722,7 @@ var channelView = {
     isPrivateChat: false,
     privacyMode: false,  // Privacy mode - obscure messages after timeout
     currentContact: null,
-    activeMessage: null,
+    activeMessage: {},
     intervalId : null,
     ghostgramActive : false,
     sendMessageHandler : null,
@@ -837,7 +853,7 @@ var channelView = {
 
         var contactUUID = null;
         var thisChannelHandler = null;
-        channelView.activeMessage = null;
+        channelView.activeMessage = {};
         var name = channelView.formatName(thisChannel.name);
 
 
@@ -1047,7 +1063,7 @@ var channelView = {
         $(".selectedLI").velocity("slideUp", {delay: 150});
 
         //mobileNotify("message archived");
-        var message = channelView.activeMessage;
+        var message = channelView.currentMessage;
 
         // ToDo - wire up archive
         if (message === null) {
@@ -1196,6 +1212,7 @@ var channelView = {
     },
 
     messageAddPhoto : function (offer) {
+
         channelView.activeMessage.photo = {
             photoId : offer.photoId,
             thumb: offer.thumbnail,

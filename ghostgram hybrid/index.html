@@ -873,8 +873,6 @@
 		<div class="galleryImgBox">
 			# if (window.navigator.simulator === undefined && deviceUrl !== undefined && deviceUrl !== null) { #
 			<img class="galleryImg" src="#=deviceUrl#" />
-			# } else if (imageUrl !== undefined && imageUrl !== null) { #
-			<img class="galleryImg" src="#=imageUrl#" />
 			# } else { #
 			<img class="galleryImg" src="#=thumbnailUrl#" />
 			# } #
@@ -910,6 +908,11 @@
 					<div style="padding-left: 8px; font-size: 12px;">
 						<span data-bind="html: city"></span>, <span data-bind="html: state"></span> &nbsp; <span data-bind="html: zipcode"></span>
 					</div>
+				</label>
+			</li>
+			<li>
+				<label> Has Place Chat
+				<input type="checkbox" data-role="switch"  data-bind="checked: hasPlaceChat"/>
 				</label>
 			</li>
 		</ul>
@@ -980,7 +983,7 @@
 				</div>
 			</li>
 		</ul>
-
+		<a data-role="button" type="button" class="btnSecondary"  id="editplace-placechat"  data-click="editPlaceView.doPlaceChat"/>Add Place Chat</a>
 
 	</form>
 	<div class="footer" data-role="footer">
@@ -1006,10 +1009,12 @@
 	# var addressOnly = false; alias = data.alias; name = data.name; #
 	<div>
 		<div class="list-options">
+			# if (data.isShared === undefined || data.isShared === false) {#
 			<a class="btnClear-grey" data-role="button" data-id="#: data.uuid #" data-click="placesView.editPlaceBtn">
 				<img src="images/option-edit.svg" height="18" />
 				<p class="chat-option-selection">Edit</p>
 			</a>
+			# } #
 			<a class="btnClear-red" data-role="button" data-id="#: data.uuid #" data-click="placesView.deletePlaceBtn">
 				<img src="images/trash.svg" height="18" />
 				<p class="chat-option-selection"> Delete</p>
@@ -1047,6 +1052,7 @@
 				 # } else { #
 					<img src="images/place-public.svg" /> Public
 				 # }#
+				   #if (data.hasPlaceChat) {# <img src="images/icon-Chat.svg" /> Place Chat #}#
 				   </span>
 					 <span class="distPlace">
 						 # var fixedDistance = 0;  if (data.distance !== undefined) {fixedDistance = data.distance; } #
@@ -1315,7 +1321,7 @@
 
 		    		# if(isPrivate && members.length <= 2){#
 		    			<img src="images/private-icon.svg" /> Private Chat
-		    		#} else if (false) {# // For place chats
+		    		#} else if (isPlace) {#
 		    			<img src="images/place-icon.svg" id="chatList-place-icon" class="icon-sm" /> Place Chat
 		    		#} else {#
 		    			<img src="images/group-icon.svg" class="icon-sm" /> Group Chat
@@ -1493,8 +1499,6 @@
 					<label>Save messages for
 						<div class="select-md">
 							<select id="channels-addChannel-archive">
-								<option value="1">1 Day</option>
-								<option value="7">7 Days</option>
 								<option value="30" selected>30 Days</option>
 							</select>
 						</div>
@@ -2504,11 +2508,13 @@
 <script type="text/x-kendo-template" id="gallery-template">
 	<div class="touch">
 		<div class="galleryImgBox">
-			# if (imageUrl !== undefined && imageUrl !== '') { #
-			<img class="galleryImg" src="#=imageUrl#" />
-			# } else { #
-			<img class="galleryImg" src="#=thumbnailUrl#" />
-			# } #
+			<div class="galleryImgBox">
+				# if (window.navigator.simulator === undefined) { #
+				<img class="galleryImg" src="#=deviceUrl#" />
+				# } else { #
+				<img class="galleryImg" src="#=thumbnailUrl#" />
+				# } #
+			</div>
 		</div>
 	</div>
 </script>
@@ -2677,9 +2683,9 @@
 		</div>
 		<div class="line"></div>
 		<ul class="list-inline" id="placeListOpt">
-			<li>
+			<li >
 				<a class="btnClear-sm" data-role="button" data-click="placeView.openChat">
-					<img src="images/icon-chat-active.svg" class="icon-btn" /> Start a Chat </a>
+					<img src="images/icon-chat-active.svg" class="icon-btn" /> <span id="placeview-gotochat"> Start a Chat </a>
 			</li>
 			<li>
 				<a class="btnClear-sm" data-role="button" data-click="placeView.takePhoto">

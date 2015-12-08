@@ -48,7 +48,7 @@ public class ImageResizer extends CordovaPlugin {
         // get the arguments
         JSONObject jsonObject = args.getJSONObject(0);
         uri = jsonObject.getString("uri");
-        folderName = jsonObject.getString("folderName");
+        filename = jsonObject.getString("filename");
         quality = jsonObject.getInt("quality");
         width = jsonObject.getInt("width");
         height = jsonObject.getInt("height");
@@ -101,14 +101,13 @@ public class ImageResizer extends CordovaPlugin {
   }
 
   private Uri saveFile(Bitmap bitmap) {
-    File folder = new File(Environment.getExternalStorageDirectory() + "/" + folderName);
+    File folder = new File(Environment.getExternalStorageDirectory() + "/");
     boolean success = true;
     if (!folder.exists()) {
       success = folder.mkdir();
     }
 
     if(success) {
-      String fileName = System.currentTimeMillis() + ".jpg";
       File file = new File(folder, fileName);
       if(file.exists()) file.delete();
       try {
