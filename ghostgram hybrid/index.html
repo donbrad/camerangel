@@ -848,6 +848,7 @@
      		#}#
      		</h4>
      	#}#
+
      	# if(addressOnly !== true){#
      		<p>#:data.address#, #:data.city#, #:data.state# #:data.zipcode#</p>
      	#}#
@@ -1014,22 +1015,23 @@
 				<p class="chat-option-selection"> Delete</p>
 			</a>
 		</div>
+		
 		<a class="list-box" data-id="#: data.uuid #">
 			<div>
 				# if(data.category === 'Location'){#
-				# if(data.alias !== "" && data.alias !== undefined){#
-				<h4 class="textClamp">#:data.alias#
-					<span class="secondName">#:data.name#</span>
-				</h4>
-				#} else {#
-				<h4 class="textClamp">#:data.address#</h4>
-				# addressOnly = true #
-				<p>#:data.city#, #:data.state# #:data.zipcode#</p>
-				#}#
+					# if(data.alias !== "" && data.alias !== null){#
+					<h4 class="textClamp">#:data.alias#
+						<span class="secondName">#:data.name#</span>
+					</h4>
+					#} else {#
+					<h4 class="textClamp">#:data.address#</h4>
+					# addressOnly = true #
+					<p>#:data.city#, #:data.state# #:data.zipcode#</p>
+					#}#
 
 				#} else {#
 				<h4 class="textClamp">#: data.name #
-					# if (data.alias !== "" && data.alias !== undefined){#
+					# if (data.alias !== "" && data.alias !== null){#
 					<span class="secondName">#:data.alias#</span>
 					#}#
 				</h4>
@@ -1718,26 +1720,24 @@
 </script>
 
 <script type="text/x-kendo-template" id="editMembersTemplate">
-
+	#
+	var name = data.name;
+	var alias = data.alias;
+	var primaryName = ux.returnUXPrimaryName(name, alias);
+	#
 	<div class="editMemberBox" data-id="#: data.uuid #">
 		<div class="editMemberPhoto">
 			<img class="circle-img-md editChatImg" src="#: data.photo #"  />
 		</div>
 		<div class="editMemberName">
-			#if (data.alias !== '' && data.name !== data.alias && data.phoneVerified){#
 			<h4 class="textClamp">
-				#: data.alias #
-				<img class="user-status-icon" src="images/user-verified.svg" />
-				<span class="contacts-alias-sm">#: data.name #</span>
+				#= primaryName #
+				#if(data.phoneVerified){#
+					<img class="user-status-icon" src="images/user-verified.svg" />
+				#}#
+				
 			</h4>
-			#} else if(data.alias !== '' && data.name !== data.alias) {#
-			<h4 class="textClamp">
-				#: data.alias #
-				<span class="contacts-alias-sm">#: data.name #</span>
-			</h4>
-			#} else {#
-			<h4 class="textClamp">#: data.name #</h4>
-			#}#
+			
 		</div>
 
 		<div class="deleteMemberText">
@@ -2774,7 +2774,7 @@
 			<a data-role="button"  data-click="profileEditView.doSave" data-align="right">Save</a>
 		</div>
 	</div>
-	<div class="profileEdit" >
+	<div class="profileEdit">
 		<div class="profileTopBox">
 			<div class="profileEditPrivate">
 				<div class="profilePrivateImg">

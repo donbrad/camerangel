@@ -8,11 +8,11 @@ var ux = {
 
 		var primaryName, secondName;
 
-		if (alias !== "" && alias !== undefined && name !== "" && name !== undefined){
+		if (alias !== "" && alias !== null && name !== "" && name !== null){
 			primaryName = alias;
 			secondName = name;
 
-		} else if(name !== "" && name !== undefined) {
+		} else if(name !== "" && name !== null) {
 			primaryName = name;
 			secondName = "";
 		}

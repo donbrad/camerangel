@@ -1168,6 +1168,7 @@ var contactActionView = {
                 // This is a new contact.
                 contact = contactModel.findContactByUUID(contactId);
             }
+            
 
             var contactName = contact.name;
             var contactAlias = contact.alias;
