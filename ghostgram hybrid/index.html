@@ -2748,6 +2748,11 @@
 					</label>
 				</li>
 				<li>
+					<label>Username
+						<input type="text"  data-bind="value: username" readonly/>
+					</label>
+				</li>
+				<li>
 					<label>Alias (How other users see you)
 						<input type="search" id="profile-alias" data-bind="value: alias" />
 					</label>
@@ -2760,7 +2765,7 @@
 				<li>
 					<label>Mobile Phone
 						<span class="helper helper-right helper-form"><img src="images/lock.svg" /> Locked </span>
-						<input type="tel" id="profile-phone" class="phone" data-bind="value: phone" readonly />
+						<input type="tel"  class="phone" data-bind="value: phone" readonly />
 					</label>
 				</li>
 			</ul>
@@ -2802,6 +2807,12 @@
 			<h3>Edit Info</h3>
 			<ul data-role="listview" data-style="inset">
 				<li>
+					<label>User Name
+						<span class="helper helper-right helper-form"><i class="fa fa-lock"></i> Locked </span>
+						<input type="text" data-bind="value: username" readonly/>
+					</label>
+				</li>
+				<li>
 					<label>Name (Your First and Last Name)
 						<input type="search" data-bind="value: name" />
 					</label>
@@ -2819,7 +2830,7 @@
 				<li>
 					<label>Mobile Phone
 						<span class="helper helper-right helper-form"><i class="fa fa-lock"></i> Locked <a class="btnClear" id="helper-profilePhone"></a></span>
-						<input type="tel" id="profile-phone" data-bind="value: phone" readonly />
+						<input type="tel"data-bind="value: phone" readonly />
 					</label>
 				</li>
 			</ul>
