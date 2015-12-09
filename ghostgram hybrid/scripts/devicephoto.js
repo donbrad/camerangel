@@ -221,7 +221,42 @@ var devicePhoto = {
 
                                     photoModel.addDevicePhoto(devicePhoto.currentPhoto);
                                     photoModel.addPhotoOffer(photouuid, parseFile._url, null, null , false);
-                                    photoModel.uploadPhotoImage(devicePhoto.currentPhoto.photoId);
+
+                                   // Need to scale the gallery photo (android returns at full resolution)
+                                    var imageOptions = {
+                                        uri: uri,
+                                        filename: "photo_"+filename,
+                                        quality: 75,
+                                        width: 1600,
+                                        height: 1600
+                                    };
+
+                                    window.ImageResizer.resize(imageOptions,
+                                        function (photo) {
+                                            var photoUrl = photo;
+                                            if (device.platform === 'iOS') {
+                                                photoUrl = photo.replace('file://', '');
+                                            }
+                                            devicePhoto.convertImgToDataURL(photoUrl, function (dataUrl) {
+
+                                                var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
+                                                var parseFilePhoto = new Parse.File("photo_" + filename + ".jpg", {'base64': imageBase64});
+                                                parseFilePhoto.save().then(function () {
+                                                    devicePhoto.currentPhoto.imageFile = parseFilePhoto;
+                                                    devicePhoto.currentPhoto.imageUrl = parseFilePhoto._url;
+                                                    var photo = photoModel.findPhotoById(photouuid);
+                                                    photo.set('imageUrl', parseFilePhoto._url);
+
+                                                    updateParseObject('photos', 'photoId', photoId, 'image', parseFilePhoto);
+                                                    updateParseObject('photos', 'photoId', photoId, 'imageUrl', parseFilePhoto._url);
+
+                                                });
+
+                                            });
+                                        },
+                                        function () {
+                                            mobileNotify("Error creating photo...");
+                                        });
 
                                 });
 
