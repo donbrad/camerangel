@@ -112,7 +112,7 @@ var photoModel = {
         var fileTransfer = new FileTransfer();
         fileTransfer.download(url, store + name,
             function(entry) {
-                photo.set('deviceUrl', entry);
+                photo.deviceUrl =  entry;
                 photo.isDirty = true;
                 console.log("Cached local copy of " + name);
             },
