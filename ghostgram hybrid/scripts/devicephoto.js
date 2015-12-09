@@ -247,8 +247,8 @@ var devicePhoto = {
                                                     var photo = photoModel.findPhotoById(photouuid);
                                                     photo.set('imageUrl', parseFilePhoto._url);
 
-                                                    updateParseObject('photos', 'photoId', photoId, 'image', parseFilePhoto);
-                                                    updateParseObject('photos', 'photoId', photoId, 'imageUrl', parseFilePhoto._url);
+                                                    updateParseObject('photos', 'photoId', photouuid, 'image', parseFilePhoto);
+                                                    updateParseObject('photos', 'photoId', photouuid, 'imageUrl', parseFilePhoto._url);
 
                                                 });
 
