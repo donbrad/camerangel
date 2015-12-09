@@ -2800,9 +2800,14 @@
 	<!-- Edit info -->
 	<div class="profileEditBtm">
 		<form style="clear:both;">
-			<div style="text-align:center" font-size=18px;>User: <span data-bind="text: username"></span></div>
 			<h3>Edit Info </h3>
 			<ul data-role="listview" data-style="inset">
+				<li>
+					<label>Username (The email you signed up with)
+						<span class="helper helper-right helper-form"><i class="fa fa-lock"></i> Locked</span>
+						<input type="text" data-bind="value: username" readonly/>
+					</label>
+				</li>
 				<li>
 					<label>Name (Your First and Last Name)
 						<input type="search" data-bind="value: name" />
