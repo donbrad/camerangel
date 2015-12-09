@@ -333,7 +333,7 @@
 				</li>
 				<li>
 					<label>Password</label>
-					<input type="password" id="home-signin-password" value=""  name="Password" required />
+					<input type="password" id="home-signin-password" value=""  name="Password"  required />
 					<span id="forgotPassword" class="btnClear-grey" data-click="signInView.openForgotPassword" data-role="button">Forgot password?</span>
 				</li>
 				<li>
@@ -342,11 +342,12 @@
 						Remember Username 
 					</label>
 				</li>
+				<div id="signInErrors"></div>
 			</ul>
 			<br/>
 			
 		</form>
-		<a class="btnSecondary btnSpan-btm" data-role="button" data-click="signInView.doSignIn">Sign in</a>
+		<a class="btnSecondary btnSpan-btm" data-role="button" data-click="signInView.validate">Sign in</a>
 	</div>
 	<a class="btnSpan-btm" data-role="button" href="#newuserhome">Go to New User</a>
 </div>
@@ -983,7 +984,8 @@
 				</div>
 			</li>
 		</ul>
-		<a data-role="button" type="button" class="btnSecondary"  id="editplace-placechat"  data-click="editPlaceView.doPlaceChat"/>Add Place Chat</a>
+
+		<a data-role="button" type="button" class="btnClearLine"  id="editplace-placechat"  data-click="editPlaceView.doPlaceChat">Add Place Chat</a>
 
 	</form>
 	<div class="footer" data-role="footer">
@@ -1674,7 +1676,14 @@
 
 <!-- edit chat members -->
 <div data-role="view" id="channelMembers" data-layout="main" data-title="Invite" data-init="channelMembersView.doInit" data-show="channelMembersView.doShow" data-transition="overlay:up">
-
+	<div data-role="header">
+		<div data-role="navbar">
+			<span data-role="view-title"></span>
+			<a data-role="button" href="#:back" data-align="left">
+				<img src="images/nav-back.svg" />
+			</a>
+		</div>
+	</div>
 	<div class="addedChatMember" style="display: none"></div>
 	<ul id="channelMembers-listview"></ul>
 	<div class="footerBk" data-role="footer">
@@ -1683,26 +1692,22 @@
 </div>
 
 <script type="text/x-kendo-template" id="memberTemplate">
+	#
+	var name = data.name;
+	var alias = data.alias;
+	var primaryName = ux.returnUXPrimaryName(name, alias);
+	#
 	<div>
 		<div class="memberTempPhoto left">
 			<img src="#: data.photo #" class="circle-img-md" />
 		</div>
 		<div class="memberTempName left">
-
-			#if (data.alias !== '' && data.name !== data.alias && data.phoneVerified){#
 			<h4 class="textClamp">
-				#: data.alias #
+			#= primaryName #
+			#if(data.phoneVerified){#
 				<img class="user-status-icon" src="images/user-verified.svg" />
-				<span class="contacts-alias-sm">#: data.name #</span>
-			</h4>
-			#} else if(data.alias !== '' && data.name !== data.alias) {#
-			<h4 class="textClamp">
-				#: data.alias #
-				<span class="contacts-alias-sm">#: data.name #</span>
-			</h4>
-			#} else {#
-			<h4 class="textClamp">#: data.name #</h4>
 			#}#
+			</h4>
 		</div>
 
 	</div>
@@ -2040,6 +2045,7 @@
 	var group = data.group;
 	var primaryName = ux.returnUXPrimaryName(name, alias);
 	var secondaryName = ux.returnAliasName(name, alias);
+	
 	#
 	<div>
 		<div class="contact-options">
@@ -2048,6 +2054,18 @@
 				<img src="images/contact-invite.svg" height="12" />
 				<p class="chat-option-selection"> Resend Invite</p>
 			</a>
+			#} else {#
+				#if(data.isBlocked) {#
+					<a class="btnClear-grey" data-role="button" data-click="contactsView.doUnBlockContact" data-contact="#:uuid#">
+					<img src="images/icon-unblock.svg" height="24" />
+					<p class="chat-option-selection"> Unblock </p>
+					</a>
+				#} else {#
+					<a class="btnClear-grey" data-role="button" data-click="contactsView.doBlockContact" data-contact="#:uuid#">
+					<img src="images/icon-block.svg" height="24" />
+					<p class="chat-option-selection"> Block </p>
+					</a>
+				#}#
 			#}#
 			<a class="btnClear-grey" data-role="button" data-click="contactsView.doEditContact" data-contact="#:uuid#">
 				<img src="images/option-edit.svg" height="18" />
@@ -2060,9 +2078,9 @@
 
 		</div><!-- contact-options -->
 		# if(data.category === 'member') {#
-		<a class="contactListBox member">
+		<a class="contactListBox member" data-contact="#:uuid#">
 			#} else if(data.category === 'new'){#
-			<a class="contactListBox">
+			<a class="contactListBox" data-contact="#:uuid#">
 				#} else {#
 				<a class="contactListBox noSlide">
 					#}#
@@ -2077,6 +2095,11 @@
 							else { #
 							<img class="circle-img-md" src="#:data.photo#" />
 							<img width="16" src="images/status-away.svg" class="statusContactList-icon" />
+							#}#
+							# if (data.isBlocked) {#
+								<div class="left">
+								<span class="helper helper-sm">Blocked</span>
+								</div>
 							#}#
 						</div>
 					</div><!-- left -->
@@ -2104,11 +2127,6 @@
 							}#
 
 							#:message#
-
-							# if (data.isBlocked) {#
-							 (Blocked)
-							#}#
-
 						</p>
 
 						# if (data.currentPlace !== undefined && data.currentPlace !== ""){#

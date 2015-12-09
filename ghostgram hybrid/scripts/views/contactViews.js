@@ -27,10 +27,18 @@ var contactsView = {
             template: $("#contactsTemplate").html(),
             headerTemplate: $("#contactsHeaderTemplate").html(),
             fixedHeaders: true,
-            click: function (e) {
-                var contact = e.dataItem;
+            dataBound: function(e){
+                ux.checkEmptyUIState(contactModel.contactListDS, "#contactListDiv >");
+            }
 
-                contact = contactModel.findContactByUUID(contact.uuid);
+        }).kendoTouch({
+            filter: ".contactListBox",
+            // filter: "div",
+            enableSwipe: true,
+            tap: function(e){
+            	var contactId = e.touch.currentTarget.attributes['data-contact'].value;
+            	
+                var contact = contactModel.findContactByUUID(contactId);
                 if (contact === undefined) {
                     mobileNotify('Contact List: no matching Contact in ContactsDS');
                     return;
@@ -71,16 +79,8 @@ var contactsView = {
                     }
 
                 }
-
+                
             },
-            dataBound: function(e){
-                ux.checkEmptyUIState(contactModel.contactListDS, "#contactListDiv >");
-            }
-
-        }).kendoTouch({
-            filter: ".contactListBox",
-            // filter: "div",
-            enableSwipe: true,
             swipe: function(e) {
                 // Need to set current contact before exposing editing ux!
                 var selection = e.sender.events.currentTarget;
@@ -90,9 +90,9 @@ var contactsView = {
                     $(otherOpenedLi).velocity({translateX:"0"},{duration: "fast"}).removeClass("contact-active");
                     
                     if($(selection).hasClass("member") && $(window).width() < 375){
-                    	$(selection).velocity({translateX:"-50%"},{duration: "fast"}).addClass("contact-active");
+                    	$(selection).velocity({translateX:"-75%"},{duration: "fast"}).addClass("contact-active");
                     } else if ($(selection).hasClass("member"))  {
-                    	$(selection).velocity({translateX:"-40%"},{duration: "fast"}).addClass("contact-active");
+                    	$(selection).velocity({translateX:"-60%"},{duration: "fast"}).addClass("contact-active");
                     } else if($(window).width() < 375) {
         				$(selection).velocity({translateX:"-85%"},{duration: "fast"}).addClass("contact-active");
                     } else {

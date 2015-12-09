@@ -556,6 +556,7 @@ form p {
 }
 .line {
   border: 1px solid rgba(0, 0, 0, 0.12);
+  margin: 0.5em 0;
 }
 .list-inline {
   display: inline-block;
@@ -808,10 +809,9 @@ form p {
   background: transparent !important;
 }
 .btnClearLine {
-  background: #fff !important;
   color: #2D93FF !important;
+  border: 1px solid #6CADF3 !important;
   border-radius: 2px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
 }
 .btnClearLine :active {
   color: #3A779D !important;

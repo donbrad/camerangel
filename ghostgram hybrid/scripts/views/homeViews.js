@@ -847,7 +847,7 @@ var signInView = {
 
         if (form.validate()) {
             // If the form is valid, run sign in
-            newUserView.doSignIn();
+            signInView.doSignIn();
         }
     },
 
