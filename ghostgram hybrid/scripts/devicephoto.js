@@ -169,7 +169,7 @@ var devicePhoto = {
                     imageUrl = imageData.replace('file://', '');
                 }*/
 
-                if (device.platform === 'android') {
+                if (device.platform === 'Android') {
                   imageUrl = imageData.replace('content://', '');
                  }
                 var localUrl = null;
