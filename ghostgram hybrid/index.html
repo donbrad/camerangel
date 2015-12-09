@@ -7,7 +7,9 @@
     <link href="kendo/styles/kendo.common.min.css" rel="stylesheet" />
 	<link href="kendo/styles/kendo.material.min.css" rel="stylesheet" />
     <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet" />
+	<link href="styles/strength.css" rel="stylesheet" />
     <link href="styles/master.css" rel="stylesheet" />
+
     <script src="cordova.js"></script>
     <script src="kendo/js/jquery.min.js"></script>
     <script src="kendo/js/kendo.all.min.js"></script>
@@ -43,6 +45,7 @@
 	<script src="scripts/libs/base64-string.js"></script>
 	<script src="scripts/libs/lz-string.js"></script>
 	<script src="scripts/libs/cropper.js"></script>
+	<script src="scripts/libs/strength.js"></script>
 	<script src="scripts/libs/jdenticon-1.3.0.js"></script>
     <script src="bower_components/velocity/velocity.js"></script>
     <script src="bower_components/lodash/lodash.js"></script>
@@ -452,11 +455,7 @@
                 <label for="home-signup-password">Password</label>
                 <input type="text" id="home-signup-password" name="Password" value="" required />
 
-            </li> 
-            <li class="create-user-password">
-                <label for="home-signup-password">Confirm Password</label>
-                <input type="password" id="home-signup-password2" name="Password" value="" required />
-            </li> 
+            </li>
         </ul>  
 
     </form>
@@ -872,11 +871,7 @@
 <script type="text/x-kendo-template" id="modalGalleryTemplate">
 	<div>
 		<div class="galleryImgBox">
-			# if (window.navigator.simulator === undefined && deviceUrl !== undefined && deviceUrl !== null) { #
-			<img class="galleryImg" src="#=deviceUrl#" />
-			# } else { #
 			<img class="galleryImg" src="#=thumbnailUrl#" />
-			# } #
 		</div>
 	</div>
 </script>
@@ -2431,7 +2426,7 @@
 			</div>
 			<div class="photoTitleInput hidden">
 				<label>Title</label>
-				<input type="search" class="input-text-md" data-bind="value: title" maxlength="20"/>
+				<input type="search" class="input-text-md" data-bind="value: title" maxlength="48"/>
 
 				<label>Description</label>
 				<textarea data-bind="value: description" type="text" col="80" row="2" maxlength="60"></textarea>
@@ -2527,8 +2522,8 @@
 	<div class="touch">
 		<div class="galleryImgBox">
 			<div class="galleryImgBox">
-				# if (window.navigator.simulator === undefined) { #
-				<img class="galleryImg" src="#=deviceUrl#" />
+				# if (imageUrl !== null) { #
+				<img class="galleryImg" src="#=imageUrl#" />
 				# } else { #
 				<img class="galleryImg" src="#=thumbnailUrl#" />
 				# } #
@@ -2767,6 +2762,11 @@
 					</label>
 				</li>
 				<li>
+					<label>Username
+						<input type="text"  data-bind="value: username" readonly/>
+					</label>
+				</li>
+				<li>
 					<label>Alias (How other users see you)
 						<input type="search" id="profile-alias" data-bind="value: alias" />
 					</label>
@@ -2779,7 +2779,7 @@
 				<li>
 					<label>Mobile Phone
 						<span class="helper helper-right helper-form"><img src="images/lock.svg" /> Locked </span>
-						<input type="tel" id="profile-phone" class="phone" data-bind="value: phone" readonly />
+						<input type="tel"  class="phone" data-bind="value: phone" readonly />
 					</label>
 				</li>
 			</ul>
@@ -2818,8 +2818,14 @@
 	<!-- Edit info -->
 	<div class="profileEditBtm">
 		<form style="clear:both;">
-			<h3>Edit Info</h3>
+			<h3>Edit Info </h3>
 			<ul data-role="listview" data-style="inset">
+				<li>
+					<label>Username (The email you signed up with)
+						<span class="helper helper-right helper-form"><i class="fa fa-lock"></i> Locked</span>
+						<input type="text" data-bind="value: username" readonly/>
+					</label>
+				</li>
 				<li>
 					<label>Name (Your First and Last Name)
 						<input type="search" data-bind="value: name" />
@@ -2838,7 +2844,7 @@
 				<li>
 					<label>Mobile Phone
 						<span class="helper helper-right helper-form"><i class="fa fa-lock"></i> Locked <a class="btnClear" id="helper-profilePhone"></a></span>
-						<input type="tel" id="profile-phone" data-bind="value: phone" readonly />
+						<input  type="tel"data-bind="value: phone" readonly />
 					</label>
 				</li>
 			</ul>
@@ -2913,28 +2919,24 @@
 </div>
 
 <!-- change password modal -->
-<div data-role="modalview" id="modalview-changePassword" style="width: 90%; display:none;" class="appearance">
+<div data-role="modalview" id="modalview-changePassword" data-init="changePasswordView.onInit"   data-open="changePasswordView.onShow" style="width: 90%; display:none;" class="appearance">
+
 	<div class="modal-bottom">
 		<h4>Change Password
     	<span style="float:right; ">
-        	<a data-click="closeNewPass;" data-role="button"><img src="images/close.svg" /></a>
+        	<a data-click="changePasswordView.closeModal" data-role="button"><img src="images/close.svg" /></a>
         </span>
 		</h4>
 		<ul data-role="listview" data-style="inset">
 			<li>
 				<label>New Password
-					<input type="password" id="newPassword1" />
-				</label>
-			</li>
-			<li>
-				<label>Confirm Password
-					<input type="password" id="newPassword2" />
+					<input type="password" id="newPassword1" value=""/>
 				</label>
 			</li>
 		</ul>
 	</div>
 	<div class="footer" data-role="footer">
-		<a class="btnFull-modal btnSecondary" data-click="validNewPass" data-role="button">Update</a>
+		<a class="btnFull-modal btnSecondary" data-click="changePasswordView.onDone" data-role="button">Update</a>
 	</div>
 </div>
 

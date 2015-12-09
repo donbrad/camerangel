@@ -33,7 +33,7 @@ public class ImageResizer extends CordovaPlugin {
   public CallbackContext callbackContext;
 
   private String uri;
-  private String folderName;
+  private String filename;
   private int quality;
   private int width;
   private int height;
@@ -108,7 +108,7 @@ public class ImageResizer extends CordovaPlugin {
     }
 
     if(success) {
-      File file = new File(folder, fileName);
+      File file = new File(folder, filename);
       if(file.exists()) file.delete();
       try {
         FileOutputStream out = new FileOutputStream(file);

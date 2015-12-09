@@ -505,9 +505,10 @@ var signUpView = {
     onInit : function (e) {
         _preventDefault(e);
 
+       // Add strength meter to password
+        $("#home-signup-password").strength();
+
         // Simple phone mask - http://jsfiddle.net/mykisscool/VpNMA/
-
-
         $('#home-signup-phone')
 
             .keydown(function (e) {
@@ -970,4 +971,55 @@ var signInView = {
 
     }
 
+};
+
+var changePasswordView = {
+
+    onInit : function (e) {
+        _preventDefault(e);
+        $('#newPassword1').strength();
+
+    },
+
+    onShow: function (e) {
+        _preventDefault(e);
+        $("#newPassword1").val('');
+
+    },
+
+    onDone : function (e) {
+        _preventDefault(e);
+
+        var pass1 = $("#newPassword1").val();
+
+        if (pass1 === null || pass1.length < 6) {
+            mobileNotify("Password must be 6 or more characters");
+            return;
+        }
+
+        var user = Parse.User.current();
+        if (user) {
+            user.set("password",pass1);
+            user.save()
+                .then(
+                    function(user) {
+                        mobileNotify("Your password was changed");
+                       changePasswordView.closeModal();
+
+                        // Clear forms
+                        $("#newPassword1").val("");
+                    },
+                    function(error) {
+                        mobileNotify("Error updating password" + error);
+                    }
+                );
+        }
+
+
+    },
+
+    closeModal : function (e) {
+        _preventDefault(e);
+        $("#modalview-changePassword").kendoMobileModalView("close");
+    }
 };

@@ -44,6 +44,19 @@ var photoModel = {
                     var parsePhoto = collection[i];
                     var photo = parsePhoto.toJSON();
 
+                    var filename = photo.photoId.replace(/-/g,'');
+                    filename = "photo_" + filename + ".jpg";
+
+                    if (photo.imageUrl === null) {
+                        photo.imageUrl = photo.thumbnailUrl;
+                    }
+                    if (window.navigator.simulator === undefined) {
+                        if (photo.imageUrl !== null) {
+                            photoModel.isPhotoCached(photo.imageUrl, filename, photo);
+                        }
+                    }
+
+
                     models.push(photo);
                 }
                 deviceModel.setAppState('hasPhotos', true);
@@ -86,16 +99,21 @@ var photoModel = {
         photoModel._fetchOffers();
     },
 
-    addToLocalCache : function (url, name, photo, parseObj) {
+    isPhotoCached : function (url, filename, photo) {
+        var store = cordova.file.dataDirectory;
+
+        //Check for the file.
+        window.resolveLocalFileSystemURL(store + filename, function(){}, function() {photoModel.addToLocalCache(url, filename, photo)});
+    },
+
+    addToLocalCache : function (url, name, photo) {
         var store = cordova.file.dataDirectory;
 
         var fileTransfer = new FileTransfer();
-        fileTransfer.download(url, store + name + '.jpg',
+        fileTransfer.download(url, store + name,
             function(entry) {
-                photo.deviceUrl = entry;
+                photo.deviceUrl =  entry;
                 photo.isDirty = true;
-                parseObj.set('deviceUrl', entry);
-                parseObj.save();
                 console.log("Cached local copy of " + name);
             },
             function(err) {

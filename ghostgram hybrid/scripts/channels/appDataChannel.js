@@ -13,6 +13,7 @@ var appDataChannel = {
 
     channelId: '',   // current app channel
     lastAccess: 0,   // last access time stamp
+    _channelName: 'app',
     _version: 1,
 
     init: function () {
