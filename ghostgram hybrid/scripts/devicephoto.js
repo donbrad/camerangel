@@ -168,12 +168,16 @@ var devicePhoto = {
                /* if (device.platform === 'iOS') {
                     imageUrl = imageData.replace('file://', '');
                 }*/
+
+                if (device.platform === 'android') {
+                  imageUrl = imageData.replace('content://', '');
+                 }
                 var localUrl = null;
                 // convert uuid into valid file name;
                 var filename = photouuid.replace(/-/g,'');
 
                 // Create a local copy of the
-                window.resolveLocalFileSystemURL(imageData, function fileEntrySuccess(fileEntry) {
+                window.resolveLocalFileSystemURL(imageUrl, function fileEntrySuccess(fileEntry) {
                     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function directoryEntrySuccess(directoryEntry) {
                         var uniqueNewFilename = "photo_" + filename + ".jpg";
                         fileEntry.moveTo(directoryEntry.root, uniqueNewFilename, function moveFileSuccess(newFileEntry) {
