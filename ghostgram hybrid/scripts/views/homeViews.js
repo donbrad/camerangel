@@ -983,40 +983,39 @@ var changePasswordView = {
 
     onShow: function (e) {
         _preventDefault(e);
+        $("#newPassword1").val('');
+
     },
 
     onDone : function (e) {
         _preventDefault(e);
 
         var pass1 = $("#newPassword1").val();
-        var pass2 = $("#newPassword2").val();
 
         if (pass1 === null || pass1.length < 6) {
             mobileNotify("Password must be 6 or more characters");
             return;
         }
-        if(pass1 !== pass2){
-            mobileNotify("Passwords don't match, try again");
-        } else {
-            var user = Parse.User.current();
-            if (user) {
-                user.set("password",pass1);
-                user.save()
-                    .then(
-                        function(user) {
-                            mobileNotify("Your password was changed");
-                           changePasswordView.closeModal();
 
-                            // Clear forms
-                            $("#newPassword1, #newPassword2").val("");
-                        },
-                        function(error) {
-                            mobileNotify("Error updating password" + error);
-                        }
-                    );
-            }
+        var user = Parse.User.current();
+        if (user) {
+            user.set("password",pass1);
+            user.save()
+                .then(
+                    function(user) {
+                        mobileNotify("Your password was changed");
+                       changePasswordView.closeModal();
 
+                        // Clear forms
+                        $("#newPassword1").val("");
+                    },
+                    function(error) {
+                        mobileNotify("Error updating password" + error);
+                    }
+                );
         }
+
+
     },
 
     closeModal : function (e) {
