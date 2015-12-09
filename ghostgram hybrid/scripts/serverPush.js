@@ -59,6 +59,7 @@ var serverPush = {
         // If this is a message and there's a channelId, update activeChannels so we can
         // build inApp notifications on launch.
         if (e.isMessage !== undefined && e.isMessage) {
+            //This is userDataChannel Notification
             if (e.channelId !== undefined) {
                 // Update unread  unless it's the current channel
                 if (e.channelId !== channelView._channelId) {
@@ -66,6 +67,8 @@ var serverPush = {
                     channelModel.updateActiveChannel(e.channelId);
                 }
             }
+        } else {
+            //This is an appDataChannel Notification
         }
 
         if (e.foreground !== undefined && e.foreground === '1') {
@@ -140,6 +143,7 @@ var serverPush = {
 
                     my_media.play();*/
 
+
                     mobileNotify(e.payload.message);
 
                 }
@@ -157,7 +161,7 @@ var serverPush = {
                 break;
 
             default:
-               mobileNotify('Notification Unknown: an event was received and we do not know what it is');
+               mobileNotify('Unknown notification : contact support');
                 break;
         }
 
