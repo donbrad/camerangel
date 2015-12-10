@@ -319,7 +319,7 @@ var photoModel = {
        return(acl);
     },
 
-    addPhotoOffer : function (photoId, thumbnail, image, canCopy) {
+    addPhotoOffer : function (photoId, thumbnailUrl, imageUrl, canCopy) {
 
         var PhotoOffer = Parse.Object.extend("photoOffer");
         var offer = new PhotoOffer();
@@ -336,19 +336,19 @@ var photoModel = {
         offer.set('ownerId', userModel.currentUser.userUUID);
         offer.set('ownerName', userModel.currentUser.name);
 
-        if (thumbnail === undefined || thumbnail === null) {
-            thumbnail = null;
+       /* if (thumbnailUrl === undefined || thumbnailUrl === null) {
+            thumbnailUrl = null;
             uploadFlag = false;
         }
+*/
+        offer.set('thumbnailUrl', thumbnailUrl);
 
-        offer.set('thumbnailUrl', thumbnail);
-
-        if (image === undefined) {
-            image = null;
+        if (imageUrl === undefined) {
+            imageUrl = null;
         }
-        offer.set('imageUrl', image);
+        offer.set('imageUrl', imageUrl);
 
-        if (image !== null)
+        if (imageUrl !== null)
             uploadFlag = true;
 
         offer.set('uploaded', uploadFlag);

@@ -1227,8 +1227,8 @@ var channelView = {
 
         channelView.activeMessage.photo = {
             photoId : offer.photoId,
-            thumb: offer.thumbnail,
-            image: offer.image,
+            thumbnailUrl: offer.thumbnailUrl,
+            imageUrl: offer.imageUrl,
             canCopy: offer.canCopy,
             ownerId: offer.ownerId,
             ownerName: offer.ownerName};
