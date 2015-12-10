@@ -515,7 +515,7 @@ var editChannelView = {
                 options);
         }
 
-        
+
 
 
         for (var m=0; m< memberArray.length; m++) {
@@ -1457,7 +1457,6 @@ var channelView = {
             1600, // max resolution in pixels
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
-            channelView._channelId,  // Current channel Id for offers
             channelView.showChatImagePreview  // Optional preview callback
         );
     },
@@ -1481,9 +1480,9 @@ var channelView = {
 
              photoModel.addPhotoOffer(photo.photoId, channelView._channelId,  photo.thumbnailUrl, photo.imageUrl, true);
 
-             var url = photo.imageUrl;
-             if (photo.thumbnailUrl !== undefined)
-                url = photo.thumbnailUrl;
+             var url = photo.thumbnailUrl;
+             if (photo.imageUrl !== undefined && photo.imageUrl !== null)
+                url = photo.imageUrl;
 
              channelView.showChatImagePreview(url);
          });

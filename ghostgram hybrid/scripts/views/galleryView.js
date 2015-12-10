@@ -580,12 +580,16 @@ var modalPhotoView = {
     openModal : function (photo) {
 
         modalPhotoView._photo = photo;
-        modalPhotoView._photoUrl = photo.imageUrl;
+        var url = photo.thumbnailUrl;
+        if (photo.imageUrl !== null)
+            url = photo.imageUrl;
+        modalPhotoView._photoUrl = url;
         modalPhotoView._activePhoto.set('photoId', photo.photoId);
         if (photo.title === null) {
             photo.title = modalPhotoView._dummyTitle;
         }
         modalPhotoView._activePhoto.set('title', photo.title);
+        modalPhotoView._activePhoto.set('thumbnailUrl', photo.thumbnailUrl);
         modalPhotoView._activePhoto.set('imageUrl', photo.imageUrl);
         if (photo.description === null) {
             photo.description = modalPhotoView._dummyDescription;
@@ -718,7 +722,7 @@ var modalGalleryView = {
 
         var photoId = e.dataItem.photoId, photoUrl = e.dataItem.imageUrl, thumbUrl = e.dataItem.thumbnailUrl;
 
-        currentChannelModel.currentMessage.photo = {thumb: thumbUrl, photo: photoUrl};
+        currentChannelModel.currentMessage.photo = {thumbnailUrl: thumbUrl, imageUrl: photoUrl};
         if (modalGalleryView._callback !== null) {
             modalGalleryView._callback(photoUrl);
             modalGalleryView.closeModal();
