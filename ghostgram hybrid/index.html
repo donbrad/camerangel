@@ -1392,13 +1392,8 @@
 			<div class="messageMediaBar">
 				<ul>
 					<li>
-						<a data-role="button" data-click="channelView.messageCamera">
-							<img src="images/chat-camera.svg" height="24">
-						</a>
-					</li>
-					<li>
 						<a data-role="button" data-rel="actionsheet" href="#galleryActions">
-							<img src="images/chat-photo.svg" height="24">
+							<img src="images/chat-camera.svg" height="24">
 						</a>
 					</li>
 					<li>
@@ -1442,6 +1437,7 @@
 	</ul>
 
 	<ul data-role="actionsheet" id="galleryActions" data-popup='{"direction": "left"}'>
+		<li><a data-action="channelView.messageCamera"> Phone Camera</a></li>
 		<li><a data-action="channelView.messagePhoto"> Phone Gallery</a></li>
 		<li><a data-action="channelView.messageGallery"> Memories Gallery</a></li>
 	</ul>
@@ -2683,8 +2679,8 @@
 					<img src="images/icon-chat-active.svg" class="icon-btn" /> <span id="placeview-gotochat"> Start a Chat </a>
 			</li>
 			<li>
-				<a class="btnClear-sm" data-role="button" data-click="placeView.takePhoto">
-					<img src="images/icon-camera-active.svg" class="icon-btn" /> Snap a Photo
+				<a class="btnClear-sm" data-role="button" data-rel="actionsheet" href="#placeViewPhotoActions">
+					<img src="images/icon-camera-active.svg" class="icon-btn" /> Add a Photo
 				</a>
 			</li>
 		</ul>
@@ -2697,6 +2693,12 @@
 			<!-- Place content here-->
 		</div>
 	</div>
+	<ul data-role="actionsheet" id="placeViewPhotoActions" data-popup='{"direction": "left"}'>
+		<li><a data-action="placeView.camera"> Phone Camera</a></li>
+		<li><a data-action="placeView.gallery"> Phone Gallery</a></li>
+		<li><a data-action="placeView.memories"> Memories Gallery</a></li>
+	</ul>
+
 </div>
 
 

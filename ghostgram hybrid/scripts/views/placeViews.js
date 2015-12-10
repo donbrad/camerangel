@@ -929,6 +929,18 @@ var placeView = {
 
     },
 
+    camera : function (e) {
+
+    },
+
+    gallery : function (e) {
+
+    },
+
+    memories : function (e) {
+
+    },
+    
     openPlaceMap: function(e){
         //_preventDefault(e);
         var placeId = LZString.compressToEncodedURIComponent(placeView._activePlaceId);
