@@ -520,8 +520,9 @@ var editChannelView = {
 
         for (var m=0; m< memberArray.length; m++) {
 
+            var invited = ($.inArray(memberArray[m],inviteArray) !== -1);
             // Only send updates to current members (new members got an invite above)
-            if (memberArray[m] !== userModel.currentUser.userUUID && ($.inArray(memberArray[m],inviteArray) == -1) ) {
+            if (memberArray[m] !== userModel.currentUser.userUUID &&  invited === false) {
                 appDataChannel.groupChannelUpdate(memberArray[m], channelId,  editChannelView._activeChannel.name, editChannelView._activeChannel.description, memberArray);
             }
         }
