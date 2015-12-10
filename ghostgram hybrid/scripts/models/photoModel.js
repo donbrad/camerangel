@@ -319,7 +319,7 @@ var photoModel = {
        return(acl);
     },
 
-    addPhotoOffer : function (photoId, thumbnailUrl, imageUrl, canCopy) {
+    addPhotoOffer : function (photoId, channelId, thumbnailUrl, imageUrl, canCopy) {
 
         var PhotoOffer = Parse.Object.extend("photoOffer");
         var offer = new PhotoOffer();
@@ -333,6 +333,7 @@ var photoModel = {
 
         offer.set('uuid', offeruuid);
         offer.set('photoId', photoId);
+        offer.set('channelId', channelId);
         offer.set('ownerId', userModel.currentUser.userUUID);
         offer.set('ownerName', userModel.currentUser.name);
 

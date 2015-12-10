@@ -12,7 +12,7 @@ var devicePhoto = {
     _quality : 75,
 
 
-    deviceCamera : function (resolution, quality, isChat, displayCallback) {
+    deviceCamera : function (resolution, quality, isChat, channelId,  displayCallback) {
         if (resolution === undefined) {
             resolution = devicePhoto._resolution;  // default resolution for ghostgrams
         }
@@ -98,7 +98,7 @@ var devicePhoto = {
 
 
                                                 photoModel.addDevicePhoto(devicePhoto.currentPhoto);
-                                                photoModel.addPhotoOffer(photouuid, parseFile._url, null, null , false);
+                                                photoModel.addPhotoOffer(photouuid, channelId, parseFile._url, null, null , false);
                                                 if (displayCallback !== undefined) {
                                                     displayCallback(nativeUrl);
                                                 }
@@ -139,7 +139,7 @@ var devicePhoto = {
     },
 
 
-    deviceGallery : function (resolution, quality, isChat, displayCallback) {
+    deviceGallery : function (resolution, quality, isChat, channelId, displayCallback) {
         if (resolution === undefined) {
             resolution = devicePhoto._resolution;  // default resolution for ghostgrams
         }
@@ -222,7 +222,7 @@ var devicePhoto = {
                                     devicePhoto.currentPhoto.thumbnailUrl = parseFile._url;
 
                                     photoModel.addDevicePhoto(devicePhoto.currentPhoto);
-                                    photoModel.addPhotoOffer(photouuid, parseFile._url, null, null , false);
+                                    photoModel.addPhotoOffer(photouuid, channelId,  parseFile._url, null, null , false);
 
                                     if (displayCallback !== undefined) {
                                         displayCallback(imageUrl);
