@@ -329,7 +329,6 @@ var appDataChannel = {
         msg.channelMembers = members;
         msg.message  = "Chat " + channelName + " has been updated...";
         msg.time = new Date().getTime();
-        msg.time = new Date().getTime();
         msg.pn_apns = {
             aps: {
                 alert : notificationString,
@@ -337,14 +336,14 @@ var appDataChannel = {
                 'content-available' : 1
             },
             isMessage: false,
-            target: '#channel?channelId=' + channelUUID,
+            target: '#channels',
             channelId :channelUUID
         };
         msg.pn_gcm = {
             data : {
                 title: notificationString,
                 message: "Owner has updated  " + channelName,
-                target: '#channel?channelId=' + channelUUID,
+                target: '#channels',
                 image: "icon",
                 isMessage: false,
                 channelId : channelUUID
