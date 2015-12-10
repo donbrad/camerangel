@@ -327,8 +327,6 @@ var addChannelView = {
 var editChannelView = {
     _activeChannelId : null,
     _activeChannel : new kendo.data.ObservableObject(),
-    membersAdded : [],
-    membersDeleted: [],
 
     potentialMembersDS: new kendo.data.DataSource({
         //group: 'category',
@@ -344,6 +342,12 @@ var editChannelView = {
             dir: "asc"
         }
     }),
+
+    originalMembers : [],   // Need to keep track of original members (at start of edit sessions).  as user can add and remove same member.
+
+    membersAddedDS : new kendo.data.DataSource(),
+
+    membersDeletedDS: new kendo.data.DataSource(),
 
     onInit: function (e) {
        _preventDefault(e);
@@ -368,6 +372,8 @@ var editChannelView = {
 
             editChannelView._activeChannelId = e.view.params.channel;
 
+            editChannelView.orginalMembers = [];
+
             var channel = channelModel.findChannelModel(editChannelView._activeChannelId);
             editChannelView.setActiveChannel(channel);
 
@@ -380,8 +386,8 @@ var editChannelView = {
 
             //Zero out current members as we're going rebuild ds and ux
             editChannelView.membersDS.data([]);
-            editChannelView.membersAdded = [];
-            editChannelView.membersDeleted = [];
+            editChannelView.membersAddedDS.data([]);
+            editChannelView.membersDeletedDS.data([]);
 
             $('#editChannelMemberList').empty();
 
@@ -396,7 +402,7 @@ var editChannelView = {
                     if (thisMember !== undefined) {
                         editChannelView.membersDS.add(thisMember);
                         editChannelView.potentialMembersDS.remove(thisMember);
-                        //appendMemberToUXList(thisMember);
+
                     }
                 }
 
@@ -405,7 +411,6 @@ var editChannelView = {
                         thisMember = contactModel.findContactByUUID(invitedMembers[j]);
                         editChannelView.membersDS.add(thisMember);
                         editChannelView.potentialMembersDS.remove(thisMember);
-                        //appendInvitedMemberToUXList(thisMember);
                     }
                 }
 
@@ -467,8 +472,32 @@ var editChannelView = {
         editChannelView._activeChannel.members = memberArray;
 
 
+        var membersDeleted = editChannelView.membersDeletedDS.data();
+        //Send Delete messages to users deleted from the channel
+        for (var md = 0; md < membersDeleted.length; md++) {
+            var contactId = membersDeleted[md].contactUUID;
+            if (contactId !== null && ($.inArray(contactId, memberArray) == -1)) {  // if this user is still in the member array don't send a delete
+                // This is a ggMember -- send delete.
+                appDataChannel.groupChannelDelete(contactId, channelId,  editChannelView._activeChannel.name, editChannelView._activeChannel.name + " has been deleted.");
+            } else {
+                // Invited member -- need to look up userId by phone number before sending delete notification
+                var phone = editChannelView.membersDeleted[md].phone;
+                if (phone !== undefined && phone !== null) {
+                    findUserByPhone(phone, function (result) {
+                        if (result.found) {
+                            var user = result.user, contactId = user.get('userUUID');
+                            appDataChannel.groupChannelDelete(contactId, channelId, editChannelView._activeChannel.name, editChannelView._activeChannel.name + " has been deleted.");
+                        }
+
+                    });
+                }
+
+            }
+        }
+
+        var membersAdded = editChannelView.membersAddedDS.data();
         //Send Invite messages to users added to channel
-        for (var ma = 0; ma < editChannelView.membersAdded.length; ma++) {
+        for (var ma = 0; ma <  membersAdded.length; ma++) {
             var options = null;
 
             // If this is a place chat, send the place data to the members
@@ -481,33 +510,13 @@ var editChannelView = {
                 options.chatData = newPlace;
             }
 
-            inviteArray.push(editChannelView.membersAdded[ma].contactUUID);
-            appDataChannel.groupChannelInvite(editChannelView.membersAdded[ma].contactUUID, channelId,  editChannelView._activeChannel.name,  editChannelView._activeChannel.description, memberArray,
+            inviteArray.push(membersAdded[ma].contactUUID);
+            appDataChannel.groupChannelInvite(membersAdded[ma].contactUUID, channelId,  editChannelView._activeChannel.name,  editChannelView._activeChannel.description, memberArray,
                 options);
         }
 
         
-        //Send Delete messages to users deleted from the channel
-        for (var md = 0; md < editChannelView.membersDeleted.length; md++) {
-            var contactId = editChannelView.membersDeleted[md].contactUUID;
-            if (contactId !== null) {
-                // This is a ggMember -- send delete.
-                appDataChannel.groupChannelDelete(contactId, channelId, editChannelView._activeChannel.name + "has been deleted.");
-            } else {
-                // Invited member -- need to look up userId by phone number before sending delete notification
-                var phone = editChannelView.membersDeleted[md].phone;
-                if (phone !== undefined && phone !== null) {
-                    findUserByPhone(phone, function (result) {
-                        if (result.found) {
-                            var user = result.user, contactId = user.get('userUUID');
-                            appDataChannel.groupChannelDelete(contactId, channelId, editChannelView._activeChannel.name + "has been deleted.");
-                        }
 
-                    });
-                }
-
-            }
-        }
 
         for (var m=0; m< memberArray.length; m++) {
 
@@ -556,7 +565,8 @@ var editChannelView = {
         
         var thisMember = contactModel.findContactByUUID(contactId);
 
-        editChannelView.membersDeleted.push(thisMember);
+        editChannelView.membersDeletedDS.add(thisMember);
+        editChannelView.membersAddedDS.remove(thisMember);
         editChannelView.potentialMembersDS.add(thisMember);
         editChannelView.potentialMembersDS.sync();
         editChannelView.membersDS.remove(thisMember);
@@ -625,7 +635,8 @@ var channelMembersView = {
                     //appendMemberToUXList (thisMember);
                 }
                 editChannelView.membersDS.sync();
-                editChannelView.membersAdded.push(thisMember);
+                editChannelView.membersAddedDS.add(thisMember);
+                editChannelView.membersDeletedDS.remove(thisMember);
                 editChannelView.potentialMembersDS.remove(thisMember);
                 $(".addedChatMember").text("+ added " + thisMember.name).velocity("slideDown", { duration: 300, display: "block"}).velocity("slideUp", {delay: 1400, duration: 300, display: "none"});
             }
