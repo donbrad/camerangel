@@ -79,8 +79,8 @@ var channelsView = {
     onShow : function(e) {
         _preventDefault(e);
 
-        if (!channelViews._viewInitialized) {
-            channelViews._viewInitialized = true;
+        if (!channelsView._viewInitialized) {
+            channelsView._viewInitialized = true;
 
             $('#channels .gg_mainSearchInput').on('input', function (e) {
 

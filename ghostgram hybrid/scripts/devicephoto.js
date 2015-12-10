@@ -102,7 +102,7 @@ var devicePhoto = {
                                                 if (displayCallback !== undefined) {
                                                     displayCallback(nativeUrl);
                                                 }
-                                                
+
                                                 photoModel.uploadPhotoImage(devicePhoto.currentPhoto.photoId);
 
                                             });
