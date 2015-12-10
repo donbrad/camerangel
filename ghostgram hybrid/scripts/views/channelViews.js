@@ -79,8 +79,8 @@ var channelsView = {
     onShow : function(e) {
         _preventDefault(e);
 
-        if (!channelView._viewInitialized) {
-            channelView._viewInitialized = true;
+        if (!channelViews._viewInitialized) {
+            channelViews._viewInitialized = true;
 
             $('#channels .gg_mainSearchInput').on('input', function (e) {
 
@@ -1259,7 +1259,7 @@ var channelView = {
         if (photoModel.currentOffer !== null) {
             validMessage = true;
             channelView.messageAddPhoto(photoModel.currentOffer);
-            photoModel.initOffer();
+
         }
 
         if (validMessage === true ) {
@@ -1267,6 +1267,7 @@ var channelView = {
             channelView.hideChatImagePreview();
             channelView._initMessageTextArea();
             channelView.messageInit();
+            photoModel.initOffer();
         }
 
     },
@@ -1474,9 +1475,13 @@ var channelView = {
         _preventDefault(e);
 
          galleryPicker.openModal(function (photo) {
+
+             photoModel.addPhotoOffer(photo.photoId, photo.thumbnailUrl, photo.imageUrl, true);
+
              var url = photo.imageUrl;
              if (photo.thumbnailUrl !== undefined)
                 url = photo.thumbnailUrl;
+
              channelView.showChatImagePreview(url);
          });
       //  APP.kendo.navigate("views/gallery.html#gallery?mode=picker");

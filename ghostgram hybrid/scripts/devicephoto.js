@@ -67,9 +67,7 @@ var devicePhoto = {
                             }
                             devicePhoto.currentPhoto.phoneUrl = nativeUrl;
 
-                            if (displayCallback !== undefined) {
-                                displayCallback(nativeUrl);
-                            }
+
 
                             if (isChat) {
                                 mobileNotify("Processing Chat thumbnail...");
@@ -97,8 +95,14 @@ var devicePhoto = {
                                                 devicePhoto.currentPhoto.thumbnailFile = parseFile;
                                                 devicePhoto.currentPhoto.thumbnailUrl = parseFile._url;
 
+
+
                                                 photoModel.addDevicePhoto(devicePhoto.currentPhoto);
                                                 photoModel.addPhotoOffer(photouuid, parseFile._url, null, null , false);
+                                                if (displayCallback !== undefined) {
+                                                    displayCallback(nativeUrl);
+                                                }
+                                                
                                                 photoModel.uploadPhotoImage(devicePhoto.currentPhoto.photoId);
 
                                             });
@@ -189,9 +193,7 @@ var devicePhoto = {
                 }*/
                 devicePhoto.currentPhoto.phoneUrl = imageUrl;
 
-                if (displayCallback !== undefined) {
-                    displayCallback(imageUrl);
-                }
+
 
                 if (isChat) {
                     mobileNotify("Processing Chat thumbnail...");
@@ -221,6 +223,10 @@ var devicePhoto = {
 
                                     photoModel.addDevicePhoto(devicePhoto.currentPhoto);
                                     photoModel.addPhotoOffer(photouuid, parseFile._url, null, null , false);
+
+                                    if (displayCallback !== undefined) {
+                                        displayCallback(imageUrl);
+                                    }
 
                                    // Need to scale the gallery photo (android returns at full resolution)
                                     var imageOptions = {
