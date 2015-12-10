@@ -695,8 +695,8 @@ var modalPhotoView = {
    }
 };
 
-
-var modalGalleryView = {
+// Removing this legacy view -- gallerypicker is new replacement.  just keeping the code for reference...
+/*var modalGalleryView = {
 
     _callback: null,
 
@@ -727,7 +727,7 @@ var modalGalleryView = {
             modalGalleryView._callback(photoUrl);
             modalGalleryView.closeModal();
         }
-       /* galleryView._currentPhotoUrl = photoUrl;
+       /!* galleryView._currentPhotoUrl = photoUrl;
         galleryView._currentPhotoId = photoId;
 
         galleryView._currentPhoto = photoModel.findPhotoById(photoId);
@@ -743,10 +743,10 @@ var modalGalleryView = {
         } else {
             var photoParam = LZString.compressToEncodedURIComponent(photoId);
             APP.kendo.navigate('#photoView?photo='+photoParam);
-        }*/
+        }*!/
     }
 
-};
+};*/
 
 
 var galleryPicker = {
