@@ -887,6 +887,8 @@ var channelView = {
         if (thisChannel.isPrivate) {
 
             channelView.isPrivateChat = true;
+            channelView.messageLock = true;
+            channelView.setMessageLockIcon(channelView.messageLock);
             // *** Private Channel ***
             var contactKey = thisChannel.contactKey;
             if (contactKey === undefined) {
@@ -933,6 +935,10 @@ var channelView = {
         } else {
 
             channelView.isPrivateChat = false;
+
+            channelView.messageLock = false;
+            channelView.setMessageLockIcon(channelView.messageLock);
+
             // No current contact in group chats...
             channelView.currentContactId = null;
             currentChannelModel.currentContactModel = null;
@@ -1212,7 +1218,7 @@ var channelView = {
     },
 
     messageInit : function () {
-        channelView.activeMessage = {};
+        channelView.activeMessage = {canCopy: channelView.messageLock};
     },
 
     messageAddLocation : function  () {
@@ -1442,14 +1448,18 @@ var channelView = {
         channelView._initMessageTextArea();
     },
 
+    setMessageLockIcon : function (locked) {
+        if (locked) {
+            $('#messageLockButtonIcon').attr('src', 'images/icon-lock.svg');
+        } else {
+            $('#messageLockButtonIcon').attr('src', 'images/icon-umlock.svg');
+        }
+    },
+
     messageLockButton : function (e) {
         e.preventDefault();
         channelView.messageLock = !channelView.messageLock;
-        if (channelView.messageLock) {
-            $('#messageLockButton').html('<i class="fa fa-lock"></i>');
-        } else {
-            $('#messageLockButton').html('<i class="fa fa-unlock"></i>');
-        }
+        channelView.setMessageLockIcon(channelView.messageLock);
     },
 
     messageCamera : function (e) {
