@@ -1376,7 +1376,7 @@ var channelView = {
             var photoObj = message.data.photo;
           /*  var photoUrl = message.data.photo.photo;
             $('#modalPhotoViewImage').attr('src', photoUrl);*/
-            modalPhotoView.openModal(photoObj);
+            modalChatPhotoView.openModal(photoObj);
         }
 
         if (channelView.privacyMode) {
@@ -1452,7 +1452,7 @@ var channelView = {
         if (locked) {
             $('#messageLockButtonIcon').attr('src', 'images/icon-lock.svg');
         } else {
-            $('#messageLockButtonIcon').attr('src', 'images/icon-umlock.svg');
+            $('#messageLockButtonIcon').attr('src', 'images/icon-unlock.svg');
         }
     },
 

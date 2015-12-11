@@ -2389,7 +2389,36 @@
 	</div>
 </div>
 
-<div data-role="modalview" id="modalPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal" data-model="modalPhotoView._activePhoto" data-init="modalPhotoView.onInit">
+<div data-role="modalview" id="modalChatPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal" data-model="modalChatPhotoView._activePhoto" data-init="modalChatPhotoView.onInit"  data-zoom="true">
+	<div class="photoViewBox">
+		<img id="modalChatPhotoViewImage" data-bind="attr: {src : thumbnailUrl}" />
+		<div class="photoTitleBox">
+			<div class="photoTitleText">
+				<div id="modalChatPhotoViewUnlocked" >
+					<span data-bind="text: title">Photo is unlocked</span>
+					<a class="btnClear-sm" data-role="button" data-click="modalChatPhotoView.savePhoto">Save</a>
+				</div>
+				<div id="modalChatPhotoViewLocked" class="hidden">
+					<span data-bind="text: title">Photo is unlocked</span>
+					<a class="btnClear-sm" data-role="button" data-click="modalChatPhotoView.requestCopy">Request a copy</a>
+				</div>
+
+				<div id="modalChatPhotoViewRequestSent" class="hidden">
+					<span data-bind="text: title">Photo Copy Requested</span>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+	<div class="footer" data-role="footer">
+		<a class="btnSpan-btm btnClear glass" data-role="button" data-click="modalChatPhotoView.closeModal">Close</a>
+
+	</div>
+</div>
+
+
+<div data-role="modalview" id="modalPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal" data-model="modalPhotoView._activePhoto" data-init="modalPhotoView.onInit" data-zoom="true">
 	<div class="photoViewBox">
 		<img id="modalPhotoViewImage" data-bind="attr: {src : thumbnailUrl}" />
 		<div class="photoTitleBox">
