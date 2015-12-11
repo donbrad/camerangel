@@ -591,12 +591,13 @@ var modalChatPhotoView = {
         if (photo.imageUrl !== null)
             url = photo.imageUrl;
         modalChatPhotoView._photoUrl = url;
+        modalChatPhotoView._activePhoto.set('photoUrl', url);
         modalChatPhotoView._activePhoto.set('photoId', photo.photoId);
 
         if (photo.canCopy === undefined) {
             photo.canCopy = true;
         }
-        
+
         modalChatPhotoView.updatePhotoStatus(photo);
 
         $("#modalChatPhotoView").data("kendoMobileModalView").open();
