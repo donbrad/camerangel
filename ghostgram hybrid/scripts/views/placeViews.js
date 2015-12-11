@@ -917,6 +917,8 @@ var placeView = {
         placeView._activePlace.set('placeId', placeId);
         placeView._activePlace.set('name', placeObj.name);
         placeView._activePlace.set('alias', placeObj.alias);
+        placeView._activePlace.set('lat', placeObj.lat);
+        placeView._activePlace.set('lng', placeObj.lng);
         placeView._activePlace.set('address', placeObj.address);
         placeView._activePlace.set('city', placeObj.city);
         placeView._activePlace.set('state', placeObj.state);
@@ -930,17 +932,46 @@ var placeView = {
     },
 
     camera : function (e) {
-
+        devicePhoto.deviceCamera(
+            1600, // max resolution in pixels
+            75,  // quality: 1-99.
+            false,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+            null,  // Current channel Id for offers
+            placeView.photoComplete  // Optional preview callback
+        );
     },
 
     gallery : function (e) {
-
+        devicePhoto.deviceGallery(
+            1600, // max resolution in pixels
+            75,  // quality: 1-99.
+            false,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+            null,  // Current channel Id for offers
+            placeView.photoComplete // Optional preview callback
+        );
     },
 
-    memories : function (e) {
+    photoComplete : function (photoId, imageUrl) {
 
+        var photo = photoModel.findPhotoById(photoId);
+
+
+
+        if (photo !== undefined) {
+
+            // Override the place info the photo with information from this place
+            photo.set('placeId',  placeView._activePlace.placeId);
+            photo.set('placeString',  placeView._activePlace.name);
+            var addressString = placeView._activePlace.city + ', ' + placeView._activePlace.state + "  " +  placeView._activePlace.zipcode;
+            photo.set('addressString', addressString);
+
+            updateParseObject('photos','photoId', photoId, 'placeId',  placeView._activePlace.placeId);
+            updateParseObject('photos','photoId', photoId, 'placeString',  placeView._activePlace.name);
+            updateParseObject('photos','photoId', photoId, 'addressString',  addressString);
+            modalPhotoView.openModal(photo);
+        }
     },
-    
+
     openPlaceMap: function(e){
         //_preventDefault(e);
         var placeId = LZString.compressToEncodedURIComponent(placeView._activePlaceId);

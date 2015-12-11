@@ -114,6 +114,10 @@ var devicePhoto = {
                                         mobileNotify("Error creating thumbnail...");
                                         // failed: grumpy cat likes this function
                                     });
+                            } else {
+                                if (displayCallback !== undefined) {
+                                    displayCallback(nativeUrl);
+                                }
                             }
 
                             navigator.camera.cleanup(function(){}, function(){});
@@ -195,85 +199,91 @@ var devicePhoto = {
 
 
 
-                if (isChat) {
-                    mobileNotify("Processing Chat thumbnail...");
-                    var scaleOptions = {
-                        uri: uri,
-                        filename: "thumb_"+filename,
-                        quality: 60,
-                        width: 512,
-                        height: 512
-                    };
 
-                    window.ImageResizer.resize(scaleOptions,
-                        function (image) {
+                mobileNotify("Processing photo thumbnail...");
+                var scaleOptions = {
+                    uri: uri,
+                    filename: "thumb_"+filename,
+                    quality: 60,
+                    width: 512,
+                    height: 512
+                };
 
-                            var thumbNail = image;
-                            if (device.platform === 'iOS') {
-                                thumbNail = image.replace('file://', '');
-                            }
+                window.ImageResizer.resize(scaleOptions,
+                    function (image) {
 
-                            devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
+                        var thumbNail = image;
+                        if (device.platform === 'iOS') {
+                            thumbNail = image.replace('file://', '');
+                        }
 
-                                var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
-                                var parseFile = new Parse.File("thumbnail_" + filename + ".jpg", {'base64': imageBase64});
-                                parseFile.save().then(function () {
-                                    devicePhoto.currentPhoto.thumbnailFile = parseFile;
-                                    devicePhoto.currentPhoto.thumbnailUrl = parseFile._url;
+                        devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
 
-                                    photoModel.addDevicePhoto(devicePhoto.currentPhoto);
-                                    photoModel.addPhotoOffer(photouuid, channelId,  parseFile._url, null, null , false);
+                            var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
+                            var parseFile = new Parse.File("thumbnail_" + filename + ".jpg", {'base64': imageBase64});
+                            parseFile.save().then(function () {
+                                devicePhoto.currentPhoto.thumbnailFile = parseFile;
+                                devicePhoto.currentPhoto.thumbnailUrl = parseFile._url;
 
+                                photoModel.addDevicePhoto(devicePhoto.currentPhoto);
+                                if (isChat) {
+                                    photoModel.addPhotoOffer(photouuid, channelId, parseFile._url, null, null, false);
                                     if (displayCallback !== undefined) {
-                                        displayCallback(imageUrl);
+                                        displayCallback(photouuid, imageUrl);
                                     }
+                                }
 
-                                   // Need to scale the gallery photo (android returns at full resolution)
-                                    var imageOptions = {
-                                        uri: uri,
-                                        filename: "photo_"+filename,
-                                        quality: 75,
-                                        width: 1600,
-                                        height: 1600
-                                    };
 
-                                    window.ImageResizer.resize(imageOptions,
-                                        function (photo) {
-                                            var photoUrl = photo;
-                                            if (device.platform === 'iOS') {
-                                                photoUrl = photo.replace('file://', '');
-                                            }
-                                            devicePhoto.convertImgToDataURL(photoUrl, function (dataUrl) {
+                               // Need to scale the gallery photo (android returns at full resolution)
+                                var imageOptions = {
+                                    uri: uri,
+                                    filename: "photo_"+filename,
+                                    quality: 75,
+                                    width: 1600,
+                                    height: 1600
+                                };
 
-                                                var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
-                                                var parseFilePhoto = new Parse.File("photo_" + filename + ".jpg", {'base64': imageBase64});
-                                                parseFilePhoto.save().then(function () {
-                                                    devicePhoto.currentPhoto.imageFile = parseFilePhoto;
-                                                    devicePhoto.currentPhoto.imageUrl = parseFilePhoto._url;
-                                                    var photo = photoModel.findPhotoById(photouuid);
-                                                    photo.set('imageUrl', parseFilePhoto._url);
+                                window.ImageResizer.resize(imageOptions,
+                                    function (photo) {
+                                        var photoUrl = photo;
+                                        if (device.platform === 'iOS') {
+                                            photoUrl = photo.replace('file://', '');
+                                        }
+                                        devicePhoto.convertImgToDataURL(photoUrl, function (dataUrl) {
 
-                                                    updateParseObject('photos', 'photoId', photouuid, 'image', parseFilePhoto);
-                                                    updateParseObject('photos', 'photoId', photouuid, 'imageUrl', parseFilePhoto._url);
+                                            var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
+                                            var parseFilePhoto = new Parse.File("photo_" + filename + ".jpg", {'base64': imageBase64});
+                                            parseFilePhoto.save().then(function () {
+                                                devicePhoto.currentPhoto.imageFile = parseFilePhoto;
+                                                devicePhoto.currentPhoto.imageUrl = parseFilePhoto._url;
+                                                var photo = photoModel.findPhotoById(photouuid);
+                                                photo.set('imageUrl', parseFilePhoto._url);
 
-                                                });
+                                                if (isChat === false) {
+                                                    displayCallback(photouuid, imageUrl);
+                                                }
+
+                                                updateParseObject('photos', 'photoId', photouuid, 'image', parseFilePhoto);
+                                                updateParseObject('photos', 'photoId', photouuid, 'imageUrl', parseFilePhoto._url);
 
                                             });
-                                        },
-                                        function () {
-                                            mobileNotify("Error creating photo...");
-                                        });
 
-                                });
+                                        });
+                                    },
+                                    function () {
+                                        mobileNotify("Error creating photo...");
+                                    });
 
                             });
 
-                            // success: image is the new resized image
-                        }, function () {
-                            mobileNotify("Error creating thumbnail...");
-                            // failed: grumpy cat likes this function
                         });
-                }
+
+                        // success: image is the new resized image
+                    }, function () {
+                        mobileNotify("Error creating thumbnail...");
+                        // failed: grumpy cat likes this function
+                    });
+
 
 
 

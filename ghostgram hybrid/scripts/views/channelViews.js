@@ -1290,7 +1290,7 @@ var channelView = {
 
     },
 
-    showChatImagePreview: function (displayUrl) {
+    showChatImagePreview: function (photoId, displayUrl) {
         $('#chatImage').attr('src', displayUrl);
         $('#chatImagePreview').show();
     },
@@ -1457,6 +1457,7 @@ var channelView = {
             1600, // max resolution in pixels
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+            channelView._channelId,  // Current channel Id for offers
             channelView.showChatImagePreview  // Optional preview callback
         );
     },
@@ -1484,7 +1485,7 @@ var channelView = {
              if (photo.imageUrl !== undefined && photo.imageUrl !== null)
                 url = photo.imageUrl;
 
-             channelView.showChatImagePreview(url);
+             channelView.showChatImagePreview(photo.photoId, url);
          });
       //  APP.kendo.navigate("views/gallery.html#gallery?mode=picker");
 
