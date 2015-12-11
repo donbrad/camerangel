@@ -1367,7 +1367,7 @@ var channelView = {
         // User actually clicked on the photo so show the open the photo viewer
         if (target.hasClass('chat-message-photo')) {
         	// Open this img full screen
-            var photoObj = data.photo;
+            var photoObj = message.data.photo;
           /*  var photoUrl = message.data.photo.photo;
             $('#modalPhotoViewImage').attr('src', photoUrl);*/
             modalPhotoView.openModal(photoObj);
