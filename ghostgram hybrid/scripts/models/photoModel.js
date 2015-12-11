@@ -304,10 +304,60 @@ var photoModel = {
 
         }
 
-
     },
 
-    addChatPhoto : function (photo) {
+    addChatPhoto : function (photoObj) {
+
+        mobileNotify("Adding Chat photo to Memories...");
+        var Photos = Parse.Object.extend("photos");
+        var photo = new Photos();
+
+        photo.setACL(userModel.parseACL);
+        photo.set('version', photoModel._version);
+
+        var photoId = uuid.v4();
+
+        var channelId = photoObj.channelId;
+
+        var channel = channelModel.findChannelModel(channelId);
+        if (channel !== undefined) {
+            photo.set('channelName', channel.name);
+        }
+
+        var ownerId = photoObj.ownerId, ownerName = photoObj.ownerName;
+
+        photo.set('photoId', photoId);
+        photo.set('channelId', channelId);
+
+        photo.set('senderUUID',ownerId );
+        photo.set('senderName', ownerName);
+
+        devicePhoto.convertImgToDataURL(photo.imageUrl, function (dataUrl) {
+
+            var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
+            var parseFilePhoto = new Parse.File("photo_" + filename + ".jpg", {'base64': imageBase64});
+            parseFilePhoto.save().then(function () {
+                photo.set('image',parseFilePhoto);
+                photo.set('imageUrl',parseFilePhoto._url);
+
+                devicePhoto.convertImgToDataURL(photo.thumbnailUrl, function (dataUrl) {
+
+                    var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
+                    var parseFile = new Parse.File("thumbnail_" + filename + ".jpg", {'base64': imageBase64});
+                    parseFile.save().then(function () {
+                        photo.set('thumbnail',parseFile);
+                        photo.set('thumbnailUrl',parseFile._url);
+                        var photoModel = photo.toJSON();
+
+                        photoModel.photosDS.add(photoModel);
+                    });
+
+                });
+            });
+
+        });
+
+
 
     },
 
@@ -434,7 +484,7 @@ var photoModel = {
     },
 
     addDevicePhoto: function (devicePhoto) {
-        mobileNotify("Processing photo....");
+        mobileNotify("Adding  photo....");
         // Todo: add additional processing to create Parse photoOffer
         var Photos = Parse.Object.extend("photos");
         var photo = new Photos();

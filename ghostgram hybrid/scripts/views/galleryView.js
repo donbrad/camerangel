@@ -584,7 +584,18 @@ var modalChatPhotoView = {
         }
     },
 
-    openModal : function (photo) {
+    savePhoto : function (e) {
+        _preventDefault(e);
+
+        photoModel.addChatPhoto(modalChatPhotoView._photo);
+    },
+
+    requestCopy : function (e) {
+        _preventDefault(e);
+        // Todo: wire up photo request
+    },
+
+     openModal : function (photo) {
 
         modalChatPhotoView._photo = photo;
         var url = photo.thumbnailUrl;
