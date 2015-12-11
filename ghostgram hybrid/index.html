@@ -2391,7 +2391,9 @@
 
 <div data-role="modalview" id="modalChatPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal" data-model="modalChatPhotoView._activePhoto" data-init="modalChatPhotoView.onInit"  data-zoom="true">
 	<div class="photoViewBox">
-		<img id="modalChatPhotoViewImage" src="" data-bind="attr: {src : photoUrl}" />
+		<div style="max-width: 100%; ">
+			<img id="modalChatPhotoViewImage" src="" width="100%" data-bind="attr: {src : photoUrl}" />
+		</div>
 		<div >
 			<div id="modalChatPhotoViewUnlocked" >
 				<span data-bind="text: title">Photo is unlocked</span>
