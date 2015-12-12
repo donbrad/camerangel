@@ -27,10 +27,18 @@ var contactsView = {
             template: $("#contactsTemplate").html(),
             headerTemplate: $("#contactsHeaderTemplate").html(),
             fixedHeaders: true,
-            click: function (e) {
-                var contact = e.dataItem;
+            dataBound: function(e){
+                ux.checkEmptyUIState(contactModel.contactListDS, "#contactListDiv >");
+            }
 
-                contact = contactModel.findContactByUUID(contact.uuid);
+        }).kendoTouch({
+            filter: ".contactListBox",
+            // filter: "div",
+            enableSwipe: true,
+            tap: function(e){
+            	var contactId = e.touch.currentTarget.attributes['data-contact'].value;
+            	
+                var contact = contactModel.findContactByUUID(contactId);
                 if (contact === undefined) {
                     mobileNotify('Contact List: no matching Contact in ContactsDS');
                     return;
@@ -71,16 +79,8 @@ var contactsView = {
                     }
 
                 }
-
+                
             },
-            dataBound: function(e){
-                ux.checkEmptyUIState(contactModel.contactListDS, "#contactListDiv >");
-            }
-
-        }).kendoTouch({
-            filter: ".contactListBox",
-            // filter: "div",
-            enableSwipe: true,
             swipe: function(e) {
                 // Need to set current contact before exposing editing ux!
                 var selection = e.sender.events.currentTarget;
@@ -90,9 +90,9 @@ var contactsView = {
                     $(otherOpenedLi).velocity({translateX:"0"},{duration: "fast"}).removeClass("contact-active");
                     
                     if($(selection).hasClass("member") && $(window).width() < 375){
-                    	$(selection).velocity({translateX:"-50%"},{duration: "fast"}).addClass("contact-active");
+                    	$(selection).velocity({translateX:"-75%"},{duration: "fast"}).addClass("contact-active");
                     } else if ($(selection).hasClass("member"))  {
-                    	$(selection).velocity({translateX:"-40%"},{duration: "fast"}).addClass("contact-active");
+                    	$(selection).velocity({translateX:"-60%"},{duration: "fast"}).addClass("contact-active");
                     } else if($(window).width() < 375) {
         				$(selection).velocity({translateX:"-85%"},{duration: "fast"}).addClass("contact-active");
                     } else {
@@ -246,6 +246,7 @@ var contactsView = {
 
 
     doBlockContact : function (e) {
+    	// Todo Don - review Contact block from contact list
         _preventDefault(e);
         var contactId = e.button[0].attributes["data-contact"].value;
         contactModel.blockContact(contactId);
@@ -487,6 +488,7 @@ var contactImportView = {
  */
 
 var addContactView = {
+	_closeModal: false,
 
     doInit: function (e) {
         _preventDefault(e);
@@ -497,13 +499,21 @@ var addContactView = {
             isValidMobileNumber(phone, function(result){
                 if (result.status === 'ok') {
                     if (result.valid === false) {
-                        mobileNotify(phone + 'is not a valid mobile number');
-                        $('#addContacViewAddButton').addClass('hidden');
-                    } else {
-                        $('#addContacViewAddButton').removeClass('hidden');
-                    }
+                    mobileNotify(phone + ' is not a valid mobile number');
+                    $("#vaildMobileNumberError").velocity("slideDown");
+                    $("#addContacViewAddButton").text("Close");
+                    addContactView._closeModal = true;
+                } else {
+                    $("#vaildMobileNumberError").velocity("slideUp");
+                    $("#addContacViewAddButton").text("Add Contact");
+                    addContactView._closeModal = false;
+                }
                 }
             });
+        });
+
+        $("#addContactForm").kendoValidator({
+        	errorTemplate: '<span class="error-msg">#=message#</span>'
         });
     },
 
@@ -511,14 +521,19 @@ var addContactView = {
 
 
         // Hide the Add Contact Button until the mobile number is validated...
-        $('#addContacViewAddButton').addClass('hidden');
+        //$('#addContacViewAddButton').addClass('hidden');
         var data = contact;
 
         // Set name
         var name = data.name;
 
-
-        $("#addContactName").val(name);
+        if(name !== ''){
+        	$("#addContactName-blank").removeClass("hidden");
+        	$("#addContactName, #addContactName-error").val(name);
+        } else {
+        	$("#addContactName-blank").addClass("hidden");
+        }
+        
 
 
         if (data.photo === null) {
@@ -568,18 +583,6 @@ var addContactView = {
          $("#addNicknameBtn").removeClass("hidden");
          $("#contactNicknameInput input").val("");*/
 
-        var data = contactModel.currentDeviceContact;
-
-        // Set name
-        var name = data.name;
-        $("#addContactName").val(name);
-
-
-        if (data.photo !== null) {
-            returnValidPhoto(data.photo, function(validUrl) {
-                $("#addContactPhoto").attr("src",validUrl);
-            });
-        }
 
         $("#modalview-AddContact").data("kendoMobileModalView").open();
 
@@ -589,10 +592,14 @@ var addContactView = {
         isValidMobileNumber(phone, function(result){
             if (result.status === 'ok') {
                 if (result.valid === false) {
-                    mobileNotify(phone + 'is not a valid mobile number');
-                    $('#addContacViewAddButton').addClass('hidden');
+                    mobileNotify(phone + ' is not a valid mobile number');
+                    $("#vaildMobileNumberError").velocity("slideDown");
+                    $("#addContacViewAddButton").text("Close");
+                    addContactView._closeModal = true;
                 } else {
-                    $('#addContacViewAddButton').removeClass('hidden');
+                    $("#vaildMobileNumberError").velocity("slideUp");
+                    $("#addContacViewAddButton").text("Add Contact");
+                    addContactView._closeModal = false;
                 }
             }
         });
@@ -645,6 +652,17 @@ var addContactView = {
                 handleParseError(error);
             }
         });
+    },
+
+    validate: function(){
+    	var form = $("#addContactForm").kendoValidator().data("kendoValidator");
+ 		
+    	if(form.validate() && addContactView._closeModal === false){
+    		addContactView.addContact();
+    	} else {
+    		addContactView.closeModal();
+    	}
+
     },
 
     addContact : function (e) {
@@ -811,6 +829,10 @@ var editContactView = {
     onInit: function (e) {
        _preventDefault(e);
 
+       $("#editContactForm").kendoValidator({
+       		errorTemplate: "<span class='error-msg'>#=message#</span>"
+       });
+
     },
 
     updateVerifiedUX: function (phone, email) {
@@ -974,17 +996,31 @@ var editContactView = {
         contactModel.updateContactDetails(contactId, function(contact) {
             editContactView.setActiveContact(contact);
             editContactView.updateVerifiedUX(contact.phoneVerified, contact.emailValidated);
-
             editContactView.updateContact();
             // Hide the status update div
         });
 
-        //   $("#syncEditList").velocity("slideUp", {duration: 0});
+       // Set verified inputs
+       if(editContactView._activeContact.phoneVerified){
+       		$("#edit-verified-phone").addClass("hidden");
+       } else {
+       		$("#edit-verified-phone").addClass("hidden");
+       }
 
-       // $('#contactEditList').removeClass('hidden');
+       if(editContactView._activeContact.emailVerified){
+       		$("#edit-verified-email").addClass("hidden");
+       } else {
+       		$("#edit-verified-email").addClass("hidden");
+       }
 
-       
+    },
 
+    validate: function(){
+    	var form = $("#editContactForm").kendoValidator().data("kendoValidator");
+
+    	if (form.validate()) {
+        	editContactView.updateDone();
+    	}
 
     },
 
@@ -1168,6 +1204,7 @@ var contactActionView = {
                 // This is a new contact.
                 contact = contactModel.findContactByUUID(contactId);
             }
+            
 
             var contactName = contact.name;
             var contactAlias = contact.alias;

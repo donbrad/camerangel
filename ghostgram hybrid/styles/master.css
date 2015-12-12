@@ -503,6 +503,11 @@ form p {
 .status {
   height: 10px;
 }
+.panel {
+  width: 100%;
+  padding: 0.5em 1em;
+  background: #fff;
+}
 .verified-txt {
   color: #6CADF3;
   font-size: 12px;
@@ -546,6 +551,7 @@ form p {
 }
 .icon-md {
   height: 1.5em;
+  vertical-align: middle;
 }
 .icon-bar {
   height: 1em;
@@ -556,6 +562,7 @@ form p {
 }
 .line {
   border: 1px solid rgba(0, 0, 0, 0.12);
+  margin: 0.5em 0;
 }
 .list-inline {
   display: inline-block;
@@ -808,10 +815,9 @@ form p {
   background: transparent !important;
 }
 .btnClearLine {
-  background: #fff !important;
   color: #2D93FF !important;
+  border: 1px solid #6CADF3 !important;
   border-radius: 2px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
 }
 .btnClearLine :active {
   color: #3A779D !important;
@@ -990,15 +996,15 @@ div.km-content.km-widget.km-scroll-wrapper {
   font-size: 157.14%;
 }
 /* validation styles */
-.k-invalid-msg {
+.k-invalid-msg,
+.error-msg {
   color: #fff;
   background: #EA6262;
   border-radius: 2px;
-  font-size: 12px;
-  font-size: 0.75em;
-  padding: 1px;
-  padding-left: 2px;
-  padding-right: 2px;
+  font-size: #FFA9A9;
+  padding: 2px;
+  padding-left: 4px;
+  padding-right: 4px;
 }
 .error {
   color: #EA6262;
@@ -1410,7 +1416,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .helper-form {
   position: absolute;
-  top: 40px;
+  top: 38px;
   z-index: 99;
   right: 10px;
 }
@@ -2198,7 +2204,8 @@ textarea {
   color: #fff;
 }
 .km-material .km-view .km-navbar .km-button {
-  padding: 0.25em 0.5em;
+  padding: 1em;
+  vertical-align: middle;
 }
 .k-popup.k-group {
   border-color: transparent !important;
@@ -2636,6 +2643,7 @@ a:hover {
   float: left;
   width: 1.5rem;
   width: 8%;
+  text-align: center;
 }
 #channels-listview > li > div > h4 > a {
   text-decoration: none;
@@ -4726,6 +4734,9 @@ html .km-pane-wrapper .k-header {
   margin-left: 2%;
   float: left;
 }
+#vaildMobileNumberError {
+  display: none;
+}
 /*!
  * Cropper v0.10.0
  * https://github.com/fengyuanchen/cropper
@@ -5240,4 +5251,49 @@ table.k-editor {
 }
 #signup > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent {
   padding: 0px;
+}
+/* Modal Chat Photo */
+.modalChatPhotoList {
+  padding: 0px;
+  margin-bottom: 1px;
+  margin-top: 0px;
+  position: absolute;
+  bottom: 0px;
+  left: 0rem;
+  text-align: left;
+  color: #fff;
+  width: 100%;
+  height: 8rem;
+  padding: 0.5rem 0 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  background: -moz-linear-gradient(top, rgba(0, 0, 0, 0.3) 0%, #000000 99%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0.3)), color-stop(99%, #000000));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.3) 0%, #000000 99%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, rgba(0, 0, 0, 0.3) 0%, #000000 99%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, rgba(0, 0, 0, 0.3) 0%, #000000 99%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, #000000 99%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4d000000', endColorstr='#000000', GradientType=0);
+  /* IE6-9 */
+}
+.modalChatPhotoList li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.modalChatPhotoListOpt {
+  font-size: 0.875em;
+}
+#modalChatPhotoView > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
+  background: #000;
+}
+.modalChatPhotoListImg {
+  height: 2em;
+  vertical-align: middle;
 }

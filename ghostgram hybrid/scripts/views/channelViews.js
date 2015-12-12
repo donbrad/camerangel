@@ -420,7 +420,8 @@ var editChannelView = {
             dataSource: editChannelView.membersDS,
             template: $("#editMembersTemplate").html()
         });
-        //$('#editChannelMemberList li').remove();
+
+        $("#editChannelForm").kendoValidator();
     },
 
     onShow : function (e) {
@@ -508,8 +509,17 @@ var editChannelView = {
 
     },
 
+    validate: function(){
+    	var form = $("#editChannelForm").data("kendoValidator");
+
+    	if(form.validate()){
+    		editChannelView.finalizeEdit();
+    	}
+
+    },
+
     finalizeEdit : function (e) {
-        e.preventDefault(e);
+        _preventDefault(e);
 
         var memberArray = [], invitedMemberArray = [], invitedPhoneArray = [], inviteArray = [],members = editChannelView.membersDS.data();
 
@@ -1473,13 +1483,15 @@ var channelView = {
     scrollToBottom : function () {
     // topOffset set when the view loads like the following
         var scroller = APP.kendo.scroller;
-
+        var position = 0;
         var scrollerHeight =  APP.kendo.scroller().scrollHeight();
         var viewportHeight =  APP.kendo.scroller().height();
-
-        if ((scrollerHeight + channelView.topOffset) > viewportHeight) {
-            var position = -1 * (scrollerHeight - viewportHeight - channelView.topOffset);
-            APP.kendo.scroller().animatedScrollTo(0, position);
+        
+        if (scrollerHeight > viewportHeight) {
+             position = -1 * (scrollerHeight - viewportHeight - channelView.topOffset);
+           	 APP.kendo.scroller().animatedScrollTo(0, position);
+        } else {
+        	APP.kendo.scroller().scrollTo(0, 0);
         }
 
     },

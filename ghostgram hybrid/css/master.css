@@ -120,6 +120,9 @@
   display: none;
   opacity: 0;
 }
+.preMotion {
+  opacity: 0;
+}
 .preMotionUp {
   display: none;
 }
@@ -275,6 +278,7 @@ input,
 .standard-input {
   width: 100%;
   border: 0px;
+  font-size: 16px;
   border-bottom: 1px solid #e0e0e0;
   padding: .5em .7em;
   -webkit-appearance: none;
@@ -479,6 +483,10 @@ form p {
 .warning {
   background: #E57373 !important;
 }
+.highlight-primary-100 {
+  background: #2E93FD;
+  color: #fff;
+}
 /* Text colors */
 .blue-100-txt {
   color: #2E93FD;
@@ -494,6 +502,11 @@ form p {
 /* Elements */
 .status {
   height: 10px;
+}
+.panel {
+  width: 100%;
+  padding: 0.5em 1em;
+  background: #fff;
 }
 .verified-txt {
   color: #6CADF3;
@@ -538,6 +551,7 @@ form p {
 }
 .icon-md {
   height: 1.5em;
+  vertical-align: middle;
 }
 .icon-bar {
   height: 1em;
@@ -548,6 +562,7 @@ form p {
 }
 .line {
   border: 1px solid rgba(0, 0, 0, 0.12);
+  margin: 0.5em 0;
 }
 .list-inline {
   display: inline-block;
@@ -800,10 +815,9 @@ form p {
   background: transparent !important;
 }
 .btnClearLine {
-  background: #fff !important;
   color: #2D93FF !important;
+  border: 1px solid #6CADF3 !important;
   border-radius: 2px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
 }
 .btnClearLine :active {
   color: #3A779D !important;
@@ -982,15 +996,15 @@ div.km-content.km-widget.km-scroll-wrapper {
   font-size: 157.14%;
 }
 /* validation styles */
-.k-invalid-msg {
+.k-invalid-msg,
+.error-msg {
   color: #fff;
   background: #EA6262;
   border-radius: 2px;
-  font-size: 12px;
-  font-size: 0.75em;
-  padding: 1px;
-  padding-left: 2px;
-  padding-right: 2px;
+  font-size: #FFA9A9;
+  padding: 2px;
+  padding-left: 4px;
+  padding-right: 4px;
 }
 .error {
   color: #EA6262;
@@ -1402,7 +1416,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .helper-form {
   position: absolute;
-  top: 40px;
+  top: 38px;
   z-index: 99;
   right: 10px;
 }
@@ -2190,7 +2204,8 @@ textarea {
   color: #fff;
 }
 .km-material .km-view .km-navbar .km-button {
-  padding: 0.25em 0.5em;
+  padding: 1em;
+  vertical-align: middle;
 }
 .k-popup.k-group {
   border-color: transparent !important;
@@ -2628,6 +2643,7 @@ a:hover {
   float: left;
   width: 1.5rem;
   width: 8%;
+  text-align: center;
 }
 #channels-listview > li > div > h4 > a {
   text-decoration: none;
@@ -4025,7 +4041,7 @@ div.contactListBox.activeContact > div > div > ul {
   float: left;
   position: absolute;
   top: 28px;
-  left: -15px;
+  left: -16px;
 }
 .mobile-input {
   float: left;
@@ -4044,12 +4060,16 @@ div.contactListBox.activeContact > div > div > ul {
 #formCreateAccount > div > ul {
   overflow: visible;
 }
-#formCreateAccount {
-  margin-bottom: 3rem;
+#formCreateAccount > div > ul {
+  margin-top: 0px;
 }
 .banner-welcome {
   margin-top: 1rem;
   text-align: center;
+}
+.banner-welcome h2,
+.banner-welcome p {
+  color: #fff;
 }
 .banner-welcome img {
   vertical-align: text-top;
@@ -5172,6 +5192,7 @@ table.k-editor {
   border-color: #fff;
 }
 /* User sign in */
+#newuserhome > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container,
 #usersignin > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container,
 #signup > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container {
   background: url('../images/icon-bk.svg') no-repeat center bottom fixed, radial-gradient(100% 100%, #A5D6FA 0%, #6CADF3 50%);
@@ -5206,7 +5227,12 @@ table.k-editor {
 #signUpBox {
   opacity: 0;
 }
-#usersignin > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent {
+#signUpBox {
+  top: 20%;
+  margin-bottom: 4rem;
+}
+#usersignin > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent,
+#newuserhome > div.km-content.km-widget.km-scroll-wrapper {
   padding: 0px;
 }
 #createAccountBtn {
@@ -5215,4 +5241,23 @@ table.k-editor {
 #testingBtn {
   color: #fff;
   opacity: 0;
+}
+#signup > div.km-header,
+#signup > div.footerMenu.km-footer {
+  display: none;
+}
+#signup > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent {
+  padding: 0px;
+}
+/* Modal Chat Photo */
+.modalChatPhotoList {
+  padding: 0px;
+  margin-bottom: 1px;
+  margin-top: 0px;
+}
+.modalChatPhotoList li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
