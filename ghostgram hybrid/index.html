@@ -2421,17 +2421,17 @@
 	</div>
 	<div class="footer" data-role="footer">
 		<div id="modalChatPhotoRecipient"  class="hidden">
-				<div style="text-align: center;" > <span id="modalChatPhotoOwnerName"></span></div>
+				<div style="text-align: center;" id="modalChatPhotoOwnerName"> </div>
 				<ul class="modalChatPhotoList">
 					<li id="modalChatPhotoViewUnlocked">
-						<span>Photo is unlocked</span>
+						<div>Photo is unlocked</div>
 						<a class="btnClear-light" data-role="button" data-click="modalChatPhotoView.savePhoto">
 							<img src="images/icon-save-memories.svg" class="modalChatPhotoListImg" />
 							<p class="modalChatPhotoListOpt">Save to Memories</p>
 						</a>
 					</li>
 					<li id="modalChatPhotoViewLocked">
-						<span >Photo is locked</span>
+						<div >Photo is locked</div>
 						<a class="btnClear-light" data-role="button" data-click="modalChatPhotoView.requestCopy">
 							<img src="images/icon-download-light.svg" class="modalChatPhotoListImg" />
 							<p class="modalChatPhotoListOpt">Request a copy</p>
@@ -2446,10 +2446,10 @@
 		<div id="modalChatPhotoOwner" class="hidden">
 			<ul class="modalChatPhotoList" >
 				<li id="modalChatPhotoViewOwnerUnlocked">
-					<span>Photo is unlocked</span>
+					<div>Photo is unlocked</div>
 				</li>
 				<li id="modalChatPhotoViewUnlock">
-					<span>Photo is locked</span>
+					<div>Photo is locked</div>
 					<a class="btnClear-light" data-role="button" data-click="modalChatPhotoView.unlockPhoto">
 						<img src="images/icon-unlock.svg" class="modalChatPhotoListImg" />
 						<p class="modalChatPhotoListOpt">Unlock Photo</p>
