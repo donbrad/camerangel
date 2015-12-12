@@ -615,6 +615,14 @@ var modalChatPhotoView = {
         // Todo: wire up photo request
     },
 
+    unlockPhoto : function (e) {
+        _preventDefault(e);
+    },
+
+    approveRequest: function (e) {
+        _preventDefault(e);
+    },
+
      openModal : function (photo) {
 
         modalChatPhotoView._photo = photo;

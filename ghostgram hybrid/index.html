@@ -2421,7 +2421,7 @@
 	</div>
 	<div class="footer" data-role="footer">
 		<div>
-			<ul class="modalChatPhotoList" id="modalChatPhotoRecipient">
+			<ul class="modalChatPhotoList" id="modalChatPhotoRecipient" class="hidden">
 				<li id="modalChatPhotoViewUnlocked">
 					<span data-bind="text: title">Photo is unlocked</span>
 					<a class="btnClear-light" data-role="button" data-click="modalChatPhotoView.savePhoto">
@@ -2441,7 +2441,7 @@
 					<span data-bind="text: title">Photo Copy Requested</span>
 				</li>
 			</ul>
-			<ul class="modalChatPhotoList" id="modalChatPhotoOwner">
+			<ul class="modalChatPhotoList" id="modalChatPhotoOwner" class="hidden">
 				<li id="modalChatPhotoViewOwnerUnlocked">
 					<img src="images/icon-sent.svg" class="modalChatPhotoListImg" />
 					<span data-bind="text: title">Photo is unlocked</span>
@@ -2456,15 +2456,10 @@
 				<li id="modalChatPhotoViewApprove">
 					<a class="btnClear-light" data-role="button" data-click="modalChatPhotoView.approveRequest">
 						<img src="images/icon-download-light.svg" class="modalChatPhotoListImg" />
-						<p class="modalChatPhotoListOpt">Approve Copy Request</p>
+						<p class="modalChatPhotoListOpt">Respond to Copy Request</p>
 					</a>
 				</li>
-				<li id="modalChatPhotoViewDecline">
-					<a class="btnClear-light" data-role="button" data-click="modalChatPhotoView.declineRequest">
-						<img src="images/icon-download-light.svg" class="modalChatPhotoListImg" />
-						<p class="modalChatPhotoListOpt">Decline Copy Request</p>
-					</a>
-				</li>
+
 			</ul>
 		</div>
 		<a class="btnSpan-btm btnClear glass" data-role="button" data-click="modalChatPhotoView.closeModal">Close</a>
