@@ -246,6 +246,7 @@ var contactsView = {
 
 
     doBlockContact : function (e) {
+    	// Todo Don - review Contact block from contact list
         _preventDefault(e);
         var contactId = e.button[0].attributes["data-contact"].value;
         contactModel.blockContact(contactId);
