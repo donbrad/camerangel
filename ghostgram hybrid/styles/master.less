@@ -452,6 +452,12 @@ form {
 	//display: inline-block;
 }
 
+.panel {
+	width: 100%;
+	padding: 0.5em 1em;
+	background: #fff;
+}
+
 .verified-txt {
 	color: @primary-200;
 	.font-size(12);
@@ -498,6 +504,7 @@ form {
 
 .icon-md {
 	height: 1.5em;
+	vertical-align: middle;
 }
 
 .icon-bar {
@@ -966,14 +973,15 @@ div.km-content.km-widget.km-scroll-wrapper {
 }
 /* validation styles */
 
-.k-invalid-msg {
+.k-invalid-msg,
+.error-msg {
     color: #fff;
     background: #EA6262;
     border-radius: 2px;
-    .font-size(12);
-    padding: 1px;
-    padding-left: 2px;
-    padding-right: 2px;
+    font-size: @warning-200;
+    padding: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
 }
 .error {
     color: #EA6262;
@@ -1047,7 +1055,6 @@ div.km-header a img{
 	border: none;
 	border-bottom: 1px solid @shade-200;
 }
-
 
 
 .k-header, .k-grid-header-wrap, .k-grid .k-grouping-header, .k-grid-header, .k-pager-wrap, .k-pager-wrap .k-textbox, .k-pager-wrap .k-link, .k-grouping-header .k-group-indicator, .k-gantt-toolbar .k-state-default {
@@ -1342,7 +1349,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .helper-form {
     position: absolute;
-    top: 40px;
+    top: 38px;
     z-index: 99; 
     right: 10px;
 }
@@ -2175,7 +2182,8 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
  
 .km-material .km-view .km-navbar .km-button {
-	padding: 0.25em 0.5em;
+	padding: 1em;
+	vertical-align: middle;
 }
 
 .k-popup.k-group {
@@ -2588,6 +2596,7 @@ a:hover {
 .km-listview-label:after {
     display: none;
 }
+
 /* Chat menu */
 
 #channels-listview {

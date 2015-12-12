@@ -355,7 +355,8 @@ var editChannelView = {
             dataSource: editChannelView.membersDS,
             template: $("#editMembersTemplate").html()
         });
-        //$('#editChannelMemberList li').remove();
+
+        $("#editChannelForm").kendoValidator();
     },
 
     onShow : function (e) {
@@ -442,8 +443,17 @@ var editChannelView = {
 
     },
 
+    validate: function(){
+    	var form = $("#editChannelForm").data("kendoValidator");
+
+    	if(form.validate()){
+    		editChannelView.finalizeEdit();
+    	}
+
+    },
+
     finalizeEdit : function (e) {
-        e.preventDefault(e);
+        _preventDefault(e);
 
         var memberArray = [], invitedMemberArray = [], invitedPhoneArray = [], inviteArray = [],members = editChannelView.membersDS.data();
 

@@ -497,13 +497,17 @@ var addContactView = {
             isValidMobileNumber(phone, function(result){
                 if (result.status === 'ok') {
                     if (result.valid === false) {
-                        mobileNotify(phone + 'is not a valid mobile number');
-                        $('#addContacViewAddButton').addClass('hidden');
+                        mobileNotify(phone + ' is not a valid mobile number');
+                        //$('#addContacViewAddButton').addClass('hidden');
                     } else {
-                        $('#addContacViewAddButton').removeClass('hidden');
+                        //$('#addContacViewAddButton').removeClass('hidden');
                     }
                 }
             });
+        });
+
+        $("#addContactForm").kendoValidator({
+        	errorTemplate: '<span class="error-msg">#=message#</span>'
         });
     },
 
@@ -511,7 +515,7 @@ var addContactView = {
 
 
         // Hide the Add Contact Button until the mobile number is validated...
-        $('#addContacViewAddButton').addClass('hidden');
+        //$('#addContacViewAddButton').addClass('hidden');
         var data = contact;
 
         // Set name
@@ -589,10 +593,10 @@ var addContactView = {
         isValidMobileNumber(phone, function(result){
             if (result.status === 'ok') {
                 if (result.valid === false) {
-                    mobileNotify(phone + 'is not a valid mobile number');
-                    $('#addContacViewAddButton').addClass('hidden');
+                    mobileNotify(phone + ' is not a valid mobile number');
+                    //$('#addContacViewAddButton').addClass('hidden');
                 } else {
-                    $('#addContacViewAddButton').removeClass('hidden');
+                    //$('#addContacViewAddButton').removeClass('hidden');
                 }
             }
         });
@@ -645,6 +649,15 @@ var addContactView = {
                 handleParseError(error);
             }
         });
+    },
+
+    validate: function(){
+    	var form = $("#addContactForm").kendoValidator().data("kendoValidator");
+ 
+    	if(form.validate()){
+    		addContactView.addContact();
+    	}
+
     },
 
     addContact : function (e) {
@@ -811,6 +824,10 @@ var editContactView = {
     onInit: function (e) {
        _preventDefault(e);
 
+       $("#editContactForm").kendoValidator({
+       		errorTemplate: "<span class='error-msg'>#=message#</span>"
+       });
+
     },
 
     updateVerifiedUX: function (phone, email) {
@@ -974,17 +991,31 @@ var editContactView = {
         contactModel.updateContactDetails(contactId, function(contact) {
             editContactView.setActiveContact(contact);
             editContactView.updateVerifiedUX(contact.phoneVerified, contact.emailValidated);
-
             editContactView.updateContact();
             // Hide the status update div
         });
 
-        //   $("#syncEditList").velocity("slideUp", {duration: 0});
+       // Set verified inputs
+       if(editContactView._activeContact.phoneVerified){
+       		$("#edit-verified-phone").addClass("hidden");
+       } else {
+       		$("#edit-verified-phone").addClass("hidden");
+       }
 
-       // $('#contactEditList').removeClass('hidden');
+       if(editContactView._activeContact.emailVerified){
+       		$("#edit-verified-email").addClass("hidden");
+       } else {
+       		$("#edit-verified-email").addClass("hidden");
+       }
 
-       
+    },
 
+    validate: function(){
+    	var form = $("#editContactForm").kendoValidator().data("kendoValidator");
+
+    	if (form.validate()) {
+        	editContactView.updateDone();
+    	}
 
     },
 

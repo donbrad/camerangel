@@ -1553,8 +1553,8 @@
 	</div>
 
 	<div>
-		<form>
-			<input type="search" id="channels-editChannel-name" data-bind="value: name"  placeholder="Chat name"/>
+		<form id="editChannelForm">
+			<input type="search" id="channels-editChannel-name" data-bind="value: name"  name="Chat name" placeholder="Chat name" required />
 			<input type="search" id="channels-editChannel-description" data-bind="value: description" placeholder="Add optional description"/>
 
 		</form>
@@ -1572,7 +1572,7 @@
 			<p class="actionBtn-text">Add members</p>
 			<img src="images/nav-add-white.svg"/>
 		</a>
-		<a class="btnSpan-btm btnPrimary" data-click="editChannelView.finalizeEdit" type="button" data-role="button">	Save
+		<a class="btnSpan-btm btnPrimary" data-click="editChannelView.validate" type="button" data-role="button">	Save
 		</a>
 	</div>
 </div>
@@ -1800,7 +1800,7 @@
 
 <!-- Modal add contact -->
 <div data-role="modalview" data-model="contactModel" data-title="Add Contact" id="modalview-AddContact" data-init="addContactView.doInit" class="appearance" style="width: 90%; min-height: 100%; display: none;">
-	<div class="appBox">
+	
 		<div class="inviteTop hidden">
 			<img src="images/invite.svg" height="16" />
 		</div>
@@ -1809,27 +1809,33 @@
 				<img src="images/close.svg"/>
 			</a>
     	</span>
-
-
+    	<form id="addContactForm">
 		<div class="topHalf">
 			<div class="topHalfLeft">
 				<img class="circle-img-lg shadow" id="addContactPhoto" src="images/ghostgramcontact.png" />
 			</div>
 			<div class="topHalfRight">
 				<div>
-					<input class="input-text-md" id="addContactName" type="search" placeholder="Contact full name"/>
+					<label>Full Name</label>
+					<input class="input-text-md" id="addContactName" type="search" placeholder="Contact full name" name="Full Name" required />
 				</div>
 				<div>
 					<span class="caption">aka</span>
 					<input class="input-text-sm " id="addContactAlias" type="search" placeholder="Add a nickname"/>
 				</div>
 				<div>
-					<input class="input-text-md" id="addContactGroup" type="search" placeholder="Add Group (optional)"/>
+					<input class="input-text-sm" id="addContactGroup" type="search" placeholder="Add Group (optional)"/>
 				</div>
 			</div>
 		</div>
 		<div class="clearfix"></div>
 		<ul data-role="listview" data-style="inset" class="inviteContactInfo">
+			<li>
+				<div class="panel">
+					<h3><img src="images/icon-warning.svg" class="icon-sm" /> Oh no!</h3>
+					<p>You will not be able import this contact without a vaild mobile phone number</p> 
+				</div>	
+			</li>
 			<li>
 				<label>Phone
 					<div class="select-lg">
@@ -1867,9 +1873,10 @@
 				</label>
 			</li>
 		</ul>
-	</div>
+		</form>
+	
 	<div class="footer" data-role="footer">
-		<a class="btnPrimary btnFull-modal" data-role="button" data-click="addContactView.addContact" id="addContacViewAddButton">Add Contact</a>
+		<a class="btnPrimary btnFull-modal" data-role="button" data-click="addContactView.validate" id="addContacViewAddButton">Add Contact</a>
 	</div>
 </div>
 
@@ -1882,17 +1889,15 @@
 			<a data-role="button" data-click="editContactView.onDone" data-align="left" >Done</a>
 		</div>
 	</div>
-
-
 	<div style="padding-bottom: 12px;">
-		<form>
+		<form id="editContactForm">
 			<div class="topHalf">
 				<div class="topHalfLeft">
 					<img class="circle-img-lg shadow" data-bind="attr:{src: photo}" />
 				</div>
 				<div class="contactImg">
 					<label for="editContactName">
-						<input class="input-text-lg" type="text" id="editContactName" data-bind="value: name"/>
+						<input class="input-text-lg" type="text" id="editContactName" data-bind="value: name" name="Contact Name" required />
 					</label>
 					<div>
 						<span class="caption">aka</span>
@@ -1916,11 +1921,12 @@
 						<span class="helper helper-verified hidden" id="edit-verified-phone">
 	                         <img class="helper-verified-img" src="images/verified.svg" height="14">
 	                             Verified
-	                    	<span class="helper helper-right helper-form"> <img src="images/lock.svg"/> Locked
+	                    	<span class="helper helper-right helper-form"> 
+	                    		<img src="images/lock.svg"/> Locked
 	                    	</span>
                         </span>
 
-						<input id="editContactPhone" type="phone" data-bind="value:phone"/>
+						<input id="editContactPhone" type="phone" data-bind="value:phone" name="Phone" />
 					</label>
 				</li>
 				<li>
@@ -1933,13 +1939,13 @@
 		                    </span>
                         </span>
 
-						<input id="editContactEmail" type="email" data-bind="value: email"/>
+						<input id="editContactEmail" type="email" data-bind="value: email" name="Email" />
 
 					</label>
 				</li>
 				<li>
 					<label>Address
-						<input id="editContactAddress" data-bind="value: address"/>
+						<input type="text" id="editContactAddress" data-bind="value: address"/>
 					</label>
 				</li>
 				<li>
@@ -1964,7 +1970,7 @@
 		</form>
 	</div>
 	<div class="footerBk" data-role="footer">
-		<a data-role="button" class="btnPrimary btnSpan-btm" id="editContact-saveBtn" data-click="editContactView.updateDone">Update Contact
+		<a data-role="button" class="btnPrimary btnSpan-btm" id="editContact-saveBtn" data-click="editContactView.validate">Update Contact
 		</a>
 
 	</div>
@@ -2721,72 +2727,6 @@
 <!--/*
  * Profile
  */-->
-<!-- profile view -->
-<div data-role="view" id="profile" data-title="Profile" data-layout="profileLayout" data-model="userModel.currentUser" class="appearance" data-init="profileView.onInit" data-transition="slide:right" data-show="profileView.onShow">
-
-	<div data-role="header">
-		<div data-role="navbar">
-			<span data-role="view-title"></span>
-			<a data-role="button" href="#home" data-align="right">
-				<img class="menuIcon" src="images/close.svg"/>
-			</a>
-		</div>
-	</div>
-	<div class="profileEdit" id="profileEditPhotos">
-		<div class="profileTopBox">
-			<div class="profileEditPrivate">
-				<div class="profilePrivateImg">
-					<img src="images/default-private.svg" data-bind="attr: {src: photo}"/>
-				</div>
-				<div class="profilePrivateImgBtn">
-					<label>Profile photo</label>
-					<p class="caption">
-						Your profile photo is visible <b>ONLY</b> to your contacts.
-					</p>
-					<a class="btnClear" data-role="button" href="#profilePhotoEdit" >Update Profile Photo</a>
-				</div>
-			</div>
-		</div>
-		<div class="line"></div>
-	</div>
-	<!-- Edit info -->
-	<div class="profileEditBtm">
-		<form style="clear:both;">
-			<h3>Edit Info
-				<a class="btnClear right" href="#modalview-changePassword" data-rel="modalview" id="profile-changePassword" data-role="button" >Change Password</a>
-			</h3>
-			<ul data-role="listview" data-style="inset">
-				<li>
-					<label>Name (Your First and Last Name)
-						<input type="search" id="profile-name" data-bind="value: name" />
-					</label>
-				</li>
-				<li>
-					<label>Username
-						<input type="text"  data-bind="value: username" readonly/>
-					</label>
-				</li>
-				<li>
-					<label>Alias (How other users see you)
-						<input type="search" id="profile-alias" data-bind="value: alias" />
-					</label>
-				</li>
-				<li>
-					<label>Contact email
-						<input type="email" id="profile-email" data-bind="value: email" />
-					</label>
-				</li>
-				<li>
-					<label>Mobile Phone
-						<span class="helper helper-right helper-form"><img src="images/lock.svg" /> Locked </span>
-						<input type="tel"  class="phone" data-bind="value: phone" readonly />
-					</label>
-				</li>
-			</ul>
-
-		</form>
-	</div>
-</div>
 
 <!-- Profile Edit -->
 <div data-role="view" id="profileEdit" data-title="Edit Profile" data-layout="profileLayout" data-model="profileEditView._activeProfile"
@@ -2795,7 +2735,7 @@
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
 			<a data-role="button" href="#:back" data-align="left"><img src="images/nav-back.svg"/></a>
-			<a data-role="button"  data-click="profileEditView.doSave" data-align="right">Save</a>
+			<a data-role="button"  data-click="profileEditView.validate" data-align="right">Save</a>
 		</div>
 	</div>
 	<div class="profileEdit">
@@ -2817,38 +2757,52 @@
 	</div>
 	<!-- Edit info -->
 	<div class="profileEditBtm">
-		<form style="clear:both;">
+		<form id="editProfile">
 			<h3>Edit Info </h3>
 			<ul data-role="listview" data-style="inset">
 				<li>
-					<label>Username (The email you signed up with)
-						<span class="helper helper-right helper-form"><i class="fa fa-lock"></i> Locked</span>
+					<label>Username (Email Address)
+						<span class="helper helper-verified hidden" id="profile-verified-email">
+	                         <img class="helper-verified-img" src="images/verified.svg" height="14">
+	                             Verified
+                        </span>
+						<span class="helper helper-right helper-form">
+							<i class="fa fa-lock"></i> Locked</span>
 						<input type="text" data-bind="value: username" readonly/>
 					</label>
 				</li>
 				<li>
-					<label>Name (Your First and Last Name)
-						<input type="search" data-bind="value: name" />
+					<label>Mobile Phone
+						<span class="helper helper-verified hidden" id="profile-verified-phone">
+	                         <img class="helper-verified-img" src="images/verified.svg" height="14">
+	                             Verified
+                        </span>
+						<span class="helper helper-right helper-form">
+							<i class="fa fa-lock"></i> Locked</span>
+						<input class="phone" type="tel" name="Mobile" readonly />
 					</label>
 				</li>
 				<li>
-					<label>Alias (How other users see you)
-						<input type="search" data-bind="value: alias" />
+					<label>Name (Full Name)
+						<input type="search" name="Full Name" data-bind="value: name" required/>
+					</label>
+				</li>
+				<li>
+					<label>Alias/Nickname
+						<input type="search" name="Alias" data-bind="value: alias" />
 					</label>
 				</li>
 				<li>
 					<label>Contact email
-						<input type="email"  data-bind="value: email" />
+						<input type="email"  name="Contact Email" data-bind="value: email" placeholer="me@example.com"/>
 					</label>
 				</li>
+				
 				<li>
-					<label>Mobile Phone
-						<span class="helper helper-right helper-form"><i class="fa fa-lock"></i> Locked <a class="btnClear" id="helper-profilePhone"></a></span>
-						<input  type="tel"data-bind="value: phone" readonly />
-					</label>
+					<a class="btnClear" href="#modalview-changePassword" data-rel="modalview" id="profile-changePassword" data-role="button" >Change Password</a>
 				</li>
 			</ul>
-			<a class="btnClear" href="#modalview-changePassword" data-rel="modalview" id="profile-changePassword" data-role="button" >Change Password</a>
+			
 		</form>
 	</div>
 </div>

@@ -503,6 +503,11 @@ form p {
 .status {
   height: 10px;
 }
+.panel {
+  width: 100%;
+  padding: 0.5em 1em;
+  background: #fff;
+}
 .verified-txt {
   color: #6CADF3;
   font-size: 12px;
@@ -546,6 +551,7 @@ form p {
 }
 .icon-md {
   height: 1.5em;
+  vertical-align: middle;
 }
 .icon-bar {
   height: 1em;
@@ -990,15 +996,15 @@ div.km-content.km-widget.km-scroll-wrapper {
   font-size: 157.14%;
 }
 /* validation styles */
-.k-invalid-msg {
+.k-invalid-msg,
+.error-msg {
   color: #fff;
   background: #EA6262;
   border-radius: 2px;
-  font-size: 12px;
-  font-size: 0.75em;
-  padding: 1px;
-  padding-left: 2px;
-  padding-right: 2px;
+  font-size: #FFA9A9;
+  padding: 2px;
+  padding-left: 4px;
+  padding-right: 4px;
 }
 .error {
   color: #EA6262;
@@ -1410,7 +1416,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .helper-form {
   position: absolute;
-  top: 40px;
+  top: 38px;
   z-index: 99;
   right: 10px;
 }
@@ -2198,7 +2204,8 @@ textarea {
   color: #fff;
 }
 .km-material .km-view .km-navbar .km-button {
-  padding: 0.25em 0.5em;
+  padding: 1em;
+  vertical-align: middle;
 }
 .k-popup.k-group {
   border-color: transparent !important;

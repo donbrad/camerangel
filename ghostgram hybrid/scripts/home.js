@@ -303,8 +303,6 @@ var homeView = {
 	},
 
 	settingBigFont: function(e){
-		// TODO DON - save big font setting
-		
 		userModel.currentUser.set("useLargeView", true);
 
 		// Show sample size
@@ -314,7 +312,6 @@ var homeView = {
 
 
 	settingRegFont: function(e){
-		// TODO DON - save big font setting
 		userModel.currentUser.set("useLargeView", false);
 
 		// Show sample size
