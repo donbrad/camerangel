@@ -97,7 +97,13 @@ var channelsView = {
             if (cacheFilter === undefined) {
                 cacheFilter = {};
             }
-            dataSource.filter( query);
+            dataSource.filter(
+                {
+                    "field": "isDeleted",
+                    "operator": "eq",
+                    "value": false
+                }
+            );
             var view = dataSource.view();
             channelsView._channelListDS.data(view);
             dataSource.filter(cacheFilter);
