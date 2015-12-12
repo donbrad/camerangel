@@ -2391,7 +2391,7 @@
 
 <div data-role="modalview" id="modalChatPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal" data-model="modalChatPhotoView._activePhoto" data-init="modalChatPhotoView.onInit"  data-zoom="true">
 	<div class="photoViewBox">
-		<div style="max-width: 100%; ">
+		<div style="width: 100%; height: 90%;">
 			<img id="modalChatPhotoViewImage" src="" width="100%" data-bind="attr: {src : photoUrl}" />
 		</div>
 		<div >
@@ -2400,10 +2400,9 @@
 				<a class="btnSpan" data-role="button" data-click="modalChatPhotoView.savePhoto">Save to Memories</a>
 			</div>
 			<div id="modalChatPhotoViewLocked" class="hidden">
-				<span data-bind="text: title">Photo is unlocked</span>
+				<span data-bind="text: title">Photo is locked</span>
 				<a class="btnSpan" data-role="button" data-click="modalChatPhotoView.requestCopy">Request a copy</a>
 			</div>
-
 			<div id="modalChatPhotoViewRequestSent" class="hidden">
 				<span data-bind="text: title">Photo Copy Requested</span>
 			</div>
