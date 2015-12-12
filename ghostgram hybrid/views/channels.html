@@ -406,7 +406,7 @@
 <script type="text/x-kendo-tmpl" id="messagesTemplate">
 
 	# var history='', contactData = channelView.getContactData(sender), formattedTime = 'Just now';
-	if (currentChannelModel.privacyMode) {
+	if (channelView.privacyMode) {
 		if (fromHistory !== undefined && fromHistory === true ) {
 			history = "privateMode"; }
 	}
@@ -435,7 +435,7 @@
 		# var messageClass = "userLgFontSize chat-message-text"; #
 	#}#
 
-	# if (currentChannelModel.privacyMode) {
+	# if (channelView.privacyMode) {
 			if (fromHistory !== undefined && fromHistory === true ) {
 				history = "privateMode"; }
 	}#

@@ -518,11 +518,15 @@ var photoModel = {
         photo.set('offerId', null);
 
 
-        var channelId = (currentChannelModel.currentChannel.get('channelId') === undefined) ? null : currentChannelModel.currentChannel.get('channelId');
-
-        var channelName = (currentChannelModel.currentChannel.get('name') === undefined) ? null : currentChannelModel.currentChannel.get('name');
-        photo.set('channelId', channelId);
-        photo.set('channelName', channelName);
+        if (channelView._active) {
+            var channelId = channelView._channelId;
+            var channelName = channelView._channel.name;
+            photo.set('channelId', channelId);
+            photo.set('channelName', channelName);
+        } else {
+            photo.set('channelId', null);
+            photo.set('channelName', null);
+        }
 
         var timeStamp = new Date().getTime();
         photo.set("timestamp", timeStamp);

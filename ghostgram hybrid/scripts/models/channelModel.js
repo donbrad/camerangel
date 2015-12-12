@@ -355,7 +355,7 @@ var channelModel = {
                 var contact = contactModel.inContactList(members[i]);
                 if (contact === undefined) {
 
-                    currentChannelModel.createChatContact(members[i]);
+                    contactModel.createChatContact(members[i]);
 
                 }
             }

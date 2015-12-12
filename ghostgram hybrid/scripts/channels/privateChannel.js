@@ -25,7 +25,6 @@ var privateChannel = {
     open : function (channelUUID, userUUID, alias, name, contactUUID, contactKey, contactName) {
 
 
-
         privateChannel.userId = userUUID;
         privateChannel.thisUser = {
             alias: alias,

@@ -329,8 +329,8 @@ var ux = {
 	togglePrivate: function (e) {
     _preventDefault(e);
 
-    var privateMode = !currentChannelModel.privacyMode;
-    currentChannelModel.privacyModee = privateMode;
+    var privateMode = !channelView.privacyMode;
+   channelView.privacyMode = privateMode;
 	    if (privateMode) {
 	        $('.privateModeButton').text('Private');
 	        $('.user-content').removeClass('publicMode');
