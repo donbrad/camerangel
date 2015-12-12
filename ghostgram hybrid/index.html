@@ -1230,13 +1230,13 @@
     			<ul class="chat-option-ul">
     				# if (isPrivate){#
     					<li>
-		    				<a class="btnClear-red" data-channel="#:channelId #" data-role="button"  data-click="deleteChannel">
+		    				<a class="btnClear-red" data-channel="#:channelId #" data-role="button"  data-click="channelsView.deleteChannel">
 		    					<img src="images/trash.svg" />
 		    					<p class="chat-option-selection"> Delete </p>
 		    				</a>
 	    				</li>
 	    				<li>
-		    				<a class="btnClear-grey" data-role="button" data-channel="#:channelId #" data-click="muteChannel" data-mute="#: isMuted #">
+		    				<a class="btnClear-grey" data-role="button" data-channel="#:channelId #" data-click="channelsView.muteChannel" data-mute="#: isMuted #">
 			    				# if(data.isMuted) {#
 		    						<img src="images/icon-unmute.svg" class="channelMuteImg"/>
 			    					<p class="channelMute">Unmute</p>
@@ -1248,14 +1248,14 @@
 	    				</li>
     				#} else {#
     					<li>
-		    				<a class="btnClear-red" data-role="button" data-channel="#:channelId #" data-click="deleteChannel" data-channel="#:channelId #">
+		    				<a class="btnClear-red" data-role="button" data-channel="#:channelId #" data-click="channelsView.deleteChannel" data-channel="#:channelId #">
 		    					<img src="images/trash.svg" />
 		    					<p class="chat-option-selection"> Delete</p>
 		    				</a>
 	    				</li>
 
 	    				<li>
-		    				<a class="btnClear-grey" data-role="button" data-channel="#:channelId #" data-click="muteChannel" data-mute="#: isMuted #">
+		    				<a class="btnClear-grey" data-role="button" data-channel="#:channelId #" data-click="channelsView.muteChannel" data-mute="#: isMuted #">
 		    					# if(data.isMuted) {#
 		    						<img src="images/icon-unmute.svg" class="channelMuteImg"/>
 			    					<p class="channelMute">Unmute</p>

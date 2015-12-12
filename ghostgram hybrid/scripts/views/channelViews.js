@@ -14,15 +14,24 @@
 
 var channelsView = {
     _viewInitialized : false,
+    _showDeletedChannels : false,
+
+    _channelListDS : new kendo.data.DataSource({
+        offlineStorage: "channellist",
+        sort: {
+            field: "lastAccess",
+            dir: "desc"
+        }
+    }),
 
     onInit : function (e) {
         e.preventDefault();
 
         $("#channels-listview").kendoMobileListView({
-            dataSource: channelModel.channelsDS,
+            dataSource: channelsView._channelListDS,
             template: $("#channels-listview-template").html(),
             dataBound: function(e){
-                ux.checkEmptyUIState(channelModel.channelsDS, "#channelListDiv");
+                ux.checkEmptyUIState(channelsView._channelListDS, "#channelListDiv");
             }
         }).kendoTouch({
             filter: ".chat-mainBox",
@@ -72,12 +81,35 @@ var channelsView = {
 
         });
 
-		ux.checkEmptyUIState(channelModel.channelsDS, "#channels");
+		ux.checkEmptyUIState(channelsView._channelListDS, "#channels");
+
+    },
+
+    // Update channel display list from channel master list
+    updateChannelListDS : function () {
+
+        if (channelsView._showDeletedChannels) {
+            channelsView._channelListDS.data(channelModel.channelsDS.data());
+        } else {
+
+            var dataSource = channelModel.channelsDS;
+            var cacheFilter = dataSource.filter();
+            if (cacheFilter === undefined) {
+                cacheFilter = {};
+            }
+            dataSource.filter( query);
+            var view = dataSource.view();
+            channelsView._channelListDS.data(view);
+            dataSource.filter(cacheFilter);
+
+        }
 
     },
 
     onShow : function(e) {
         _preventDefault(e);
+
+        channelsView.updateChannelListDS();
 
         if (!channelsView._viewInitialized) {
             channelsView._viewInitialized = true;
@@ -86,32 +118,23 @@ var channelsView = {
 
                 var query = this.value;
                 if (query.length > 0) {
-                    channelModel.channelsDS.filter([
+                    channelsView._channelListDS.filter([
                         {
-                            "field": "isDeleted",
-                            "operator": "eq",
-                            "value": false
+                            "field": "name",
+                            "operator": "contains",
+                            "value": query
                         },
                         {
-                        "logic": "or",
-                        "filters": [
-                            {
-                                "field": "name",
-                                "operator": "contains",
-                                "value": query
-                            },
-                            {
-                                "field": "description",
-                                "operator": "contains",
-                                "value": query
-                            }
+                            "field": "description",
+                            "operator": "contains",
+                            "value": query
+                        }
 
-                        ]
-                    }]);
+                    ]);
                     $('#channels .enterSearch').removeClass('hidden');
 
                 } else {
-                    channelModel.channelsDS.filter([]);
+                    channelsView._channelListDS.filter({});
                     $('#channels .enterSearch').addClass('hidden');
 
                 }
@@ -123,11 +146,7 @@ var channelsView = {
 					$("#channels .gg_mainSearchInput").val('');
 					
 					// reset data filters
-                    channelModel.channelsDS.filter({
-                        "field": "isDeleted",
-                        "operator": "eq",
-                        "value": false
-                    });
+                channelsView._channelListDS.filter({});
 
                     // hide clear btn
                     $(this).addClass('hidden');
@@ -137,7 +156,7 @@ var channelsView = {
 
         $('#channels .gg_mainSearchInput').attr("placeholder", "Search chats...");
 
-        ux.checkEmptyUIState(channelModel.channelsDS, "#channels");
+        ux.checkEmptyUIState(channelsView._channelListDS, "#channels");
     	
         // set action button
         ux.showActionBtn(true, "#channels", "#addChannel");
@@ -151,6 +170,33 @@ var channelsView = {
 		ux.hideSearch();
     },
 
+    queryChannel : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = channelsView._channelListDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var channel = view[0];
+        dataSource.filter(cacheFilter);
+        return(channel);
+    },
+
+    findChannelModel: function (channelId) {
+
+        return(channelsView.queryChannel({ field: "channelId", operator: "eq", value: channelId }));
+
+        /*var dataSource =  channelModel.channelsDS;
+         dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
+         var view = dataSource.view();
+         var channel = view[0];
+         dataSource.filter([]);
+
+         return(channel);*/
+    },
 
     editChannel : function (e) {
         if (e!== undefined && e.preventDefault !== undefined){
@@ -159,34 +205,43 @@ var channelsView = {
         // Did a quick bind to the button, feel free to change
 
         var channelId = e.button[0].attributes["data-channel"].value;
-        /*var dataSource = channelModel.channelsDS;
 
-        dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
-        var view = dataSource.view();
-        var channel = view[0];
-        dataSource.filter([]);
 
-        // Kendo Observable doesnt have unbind so bind to dummy change function
-        currentChannelModel.currentChannel.bind('change', function() {});
-        currentChannelModel.currentChannel = channel;
-
-        currentChannelModel.currentChannel.set('channelId', channel.channelId);
-        currentChannelModel.currentChannel.set('name', channel.name);
-        currentChannelModel.currentChannel.set('description', channel.description);
-        currentChannelModel.currentChannel.set('media', channel.media);
-        if (channel.invitedMembers === undefined) {
-            channel.invitedMembers = [];
-        }
-        currentChannelModel.currentChannel.set('invitedMembers', channel.invitedMembers);
-        currentChannelModel.currentChannel.set('members', channel.members);
-        currentChannelModel.currentChannel.set('isPrivate', channel.isPrivate);
-        currentChannelModel.currentChannel.set('isOwner', channel.isOwner);
-        currentChannelModel.currentChannel.set('archive', channel.archive);
-        currentChannelModel.currentChannel.bind('change', syncCurrentChannel);
-*/
         APP.kendo.navigate('#editChannel?channel='+channelId);
 
+    },
+
+    deleteChannel: function (e) {
+        e.preventDefault();
+
+        var channelId = e.button[0].attributes["data-channel"].value;
+
+        var channelListModel = channelsView.findChannelModel(channelId);
+        channelsView._channelListDS.remove(channelListModel);
+        channelModel.deleteChannel(channelId);
+
+    },
+
+    muteChannel : function (e) {
+        e.preventDefault();
+
+        var channelId = e.button[0].attributes["data-channel"].value;
+        var channel = channelModel.findChannelModel(channelId);
+        var channelListModel = channelsView.findChannelModel(channelId);
+        channelListModel.set('isMuted', channel.isMuted);
+
+        if(channel.isMuted){
+            channelModel.muteChannel(channelId, false);
+            mobileNotify(channel.name + " is unmuted");
+
+
+        } else {
+            channelModel.muteChannel(channelId, true);
+            mobileNotify(channel.name + " is muted");
+        }
+
     }
+
 };
 
 /*
