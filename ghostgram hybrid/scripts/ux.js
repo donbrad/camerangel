@@ -158,7 +158,7 @@ var ux = {
 	    } else {
 			var photoUrl = userModel.currentUser.get('photo');
 
-			if (photoUrl === undefined || photo === null) {
+			if (photoUrl === undefined || photoUrl === null) {
 				$('.home-profile-img').attr('src',userModel.identiconUrl);
 			} else {
 				$('.home-profile-img').attr('src',photoUrl);
