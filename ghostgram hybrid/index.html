@@ -1806,7 +1806,7 @@
 			<img src="images/invite.svg" height="16" />
 		</div>
     	<span class="right closeBox">
-    		<a data-role="button" data-click="closeAddContact">
+    		<a data-role="button" data-click="addContactView.closeModal">
 				<img src="images/close.svg"/>
 			</a>
     	</span>
@@ -1832,9 +1832,9 @@
 		<div class="clearfix"></div>
 		<ul data-role="listview" data-style="inset" class="inviteContactInfo">
 			<li>
-				<div class="panel">
+				<div class="panel" id="vaildMobileNumberError">
 					<h3><img src="images/icon-warning.svg" class="icon-sm" /> Oh no!</h3>
-					<p>You will not be able import this contact without a vaild mobile phone number</p> 
+					<p>You will not be able import <span id="addContactName-blank"><span id="addContactName-error"></span>'s </span>info without a vaild mobile phone number. Try another number or go to your device's Contact app and add a mobile number.</p> 
 				</div>	
 			</li>
 			<li>

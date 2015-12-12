@@ -914,7 +914,7 @@ var channelView = {
     onShow : function (e) {
         _preventDefault(e);
 
-        channelView.topOffset = APP.kendo.scroller().scrollTop;
+        //channelView.topOffset = APP.kendo.scroller().scrollTop;
         // hide action btn
         ux.showActionBtn(false, "#channel");
 

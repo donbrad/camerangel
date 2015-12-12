@@ -487,6 +487,7 @@ var contactImportView = {
  */
 
 var addContactView = {
+	_closeModal: false,
 
     doInit: function (e) {
         _preventDefault(e);
@@ -497,11 +498,15 @@ var addContactView = {
             isValidMobileNumber(phone, function(result){
                 if (result.status === 'ok') {
                     if (result.valid === false) {
-                        mobileNotify(phone + ' is not a valid mobile number');
-                        //$('#addContacViewAddButton').addClass('hidden');
-                    } else {
-                        //$('#addContacViewAddButton').removeClass('hidden');
-                    }
+                    mobileNotify(phone + ' is not a valid mobile number');
+                    $("#vaildMobileNumberError").velocity("slideDown");
+                    $("#addContacViewAddButton").text("Close");
+                    addContactView._closeModal = true;
+                } else {
+                    $("#vaildMobileNumberError").velocity("slideUp");
+                    $("#addContacViewAddButton").text("Add Contact");
+                    addContactView._closeModal = false;
+                }
                 }
             });
         });
@@ -521,8 +526,13 @@ var addContactView = {
         // Set name
         var name = data.name;
 
-
-        $("#addContactName").val(name);
+        if(name !== ''){
+        	$("#addContactName-blank").removeClass("hidden");
+        	$("#addContactName, #addContactName-error").val(name);
+        } else {
+        	$("#addContactName-blank").addClass("hidden");
+        }
+        
 
 
         if (data.photo === null) {
@@ -572,18 +582,6 @@ var addContactView = {
          $("#addNicknameBtn").removeClass("hidden");
          $("#contactNicknameInput input").val("");*/
 
-        var data = contactModel.currentDeviceContact;
-
-        // Set name
-        var name = data.name;
-        $("#addContactName").val(name);
-
-
-        if (data.photo !== null) {
-            returnValidPhoto(data.photo, function(validUrl) {
-                $("#addContactPhoto").attr("src",validUrl);
-            });
-        }
 
         $("#modalview-AddContact").data("kendoMobileModalView").open();
 
@@ -594,9 +592,13 @@ var addContactView = {
             if (result.status === 'ok') {
                 if (result.valid === false) {
                     mobileNotify(phone + ' is not a valid mobile number');
-                    //$('#addContacViewAddButton').addClass('hidden');
+                    $("#vaildMobileNumberError").velocity("slideDown");
+                    $("#addContacViewAddButton").text("Close");
+                    addContactView._closeModal = true;
                 } else {
-                    //$('#addContacViewAddButton').removeClass('hidden');
+                    $("#vaildMobileNumberError").velocity("slideUp");
+                    $("#addContacViewAddButton").text("Add Contact");
+                    addContactView._closeModal = false;
                 }
             }
         });
@@ -653,9 +655,11 @@ var addContactView = {
 
     validate: function(){
     	var form = $("#addContactForm").kendoValidator().data("kendoValidator");
- 
-    	if(form.validate()){
+ 		console.log(addContactView._closeModal)
+    	if(form.validate() && addContactView._closeModal === false){
     		addContactView.addContact();
+    	} else {
+    		addContactView.closeModal();
     	}
 
     },

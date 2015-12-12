@@ -4734,6 +4734,9 @@ html .km-pane-wrapper .k-header {
   margin-left: 2%;
   float: left;
 }
+#vaildMobileNumberError {
+  display: none;
+}
 /*!
  * Cropper v0.10.0
  * https://github.com/fengyuanchen/cropper
