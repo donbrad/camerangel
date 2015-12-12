@@ -776,6 +776,32 @@ var contactModel = {
 
     },
 
+    // Create a contact for channel member that this user isn't connected to
+    // The contact is a valid member and connected to the channel owner
+    createChatContact : function (userId) {
+
+        getUserContactInfo(userId, function (result) {
+            if (result.found) {
+                var guid = uuid.v4();
+                var contact = {};
+                contact.isContact = true;
+                contact.uuid = result.user.userUUID;
+                contact.alias = result.user.alias;
+                contact.name = result.user.name;
+                var url = contactModel.createIdenticon(guid);
+                contact.photo = url;
+                contact.publicKey = null;
+
+               /* currentChannelModel.memberList[contact.uuid] = contact;
+                currentChannelModel.membersDS.add(contact);*/
+                addContactView.addChatContact(guid, contact.name, contact.alias, contact.uuid);
+                mobileNotify("Created New Contact for: " + contact.name);
+            }
+
+        })
+
+    },
+
     importDeviceContacts: function() {
         var options = new ContactFindOptions();
         options.filter = '';

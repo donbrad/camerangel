@@ -788,10 +788,12 @@ var channelMembersView = {
 
 var channelView = {
     topOffset: 0,
+    _active: false,
     messageLock: false,
     thisUser : null,
     contactData : [],
-    currentContactId: null,
+    privateContactId: null,
+    privateContact : null,
     isPrivateChat: false,
     privacyMode: false,  // Privacy mode - obscure messages after timeout
     currentContact: null,
@@ -799,6 +801,14 @@ var channelView = {
     intervalId : null,
     ghostgramActive : false,
     sendMessageHandler : null,
+
+    membersDS: new kendo.data.DataSource({
+        sort: {
+            field: "name",
+            dir: "asc"
+        }
+    }),
+
     messagesDS: new kendo.data.DataSource({  // this is the list view data source for chat messages
         sort: {
             field: "time",
@@ -905,6 +915,8 @@ var channelView = {
         _preventDefault(e);
 
         channelView.topOffset = APP.kendo.scroller().scrollTop;
+        channelView._active = true;
+
         // hide action btn
         ux.showActionBtn(false, "#channel");
 
@@ -916,7 +928,7 @@ var channelView = {
 
         channelView.initDataSources();
 
-        var thisChannel = currentChannelModel.setCurrentChannel(channelUUID);
+        var thisChannel = channelModel.findChannelModel(channelUUID);
         if (thisChannel === null) {
             mobileNotify("ChatView -- chat doesn't exist : " + channelUUID);
             return;
@@ -965,23 +977,21 @@ var channelView = {
           contactUUID = thisChannel.channelId;
 
 
-          channelView.currentContactId = contactUUID;
+          channelView.privateContactId = contactUUID;
           var thisContact = contactModel.findContact(contactUUID);
           if (thisContact === undefined) {
               mobileNotify("ChannelView : Undefined contact for " + contactUUID);
               return;
+          } else {
+              channelView.privateContact = thisContact;
           }
-          //channelView.contactData = channelView.buildContactArray(thisChannel.members);
-          currentChannelModel.currentContactModel = thisContact;
           
           // Show contact img in header
           $('#channelImage').attr('src', thisContact.photo).removeClass("hidden");
 
-          privateChannel.open(channelUUID, thisUser.userUUID, thisUser.alias, name, contactUUID, contactKey, thisContact.name);
-
+          privateChannel.open(channelUUID, thisUser.userUUID, thisUser.alias, name, contactUUID, contactKey, channelView.privateContact.name);
             channelView.messagesDS.data([]);
 
-            channelView.sendMessageHandler = privateChannel.sendMessage;
 
             privateChannel.getMessageHistory(function (messages) {
 
@@ -1001,8 +1011,8 @@ var channelView = {
             channelView.setMessageLockIcon(channelView.messageLock);
 
             // No current contact in group chats...
-            channelView.currentContactId = null;
-            currentChannelModel.currentContactModel = null;
+            channelView.privateContactId = null;
+            channelView.privateContact = null;
 
             //*** Group Channel ***
             $('#messagePresenceButton').show();
@@ -1012,7 +1022,6 @@ var channelView = {
             $('#channelImage').attr('src', '').addClass("hidden");
 
             groupChannel.open(channelUUID, thisChannel.name, thisUser.userUUID, thisUser.name, thisUser.alias, thisUser.phone);
-            channelView.sendMessageHandler = groupChannel.sendMessage;
             // channelView.contactData = channelView.buildContactArray(thisChannel.members);
 
             mobileNotify("Loading Messages...");
@@ -1036,7 +1045,7 @@ var channelView = {
 
         channelView._channelId = null;
         channelView._channel = null;
-
+        channelView._active  = false;
         // If this isn't a privateChat the close the channel (unsubscribe)
         // All private chat messages go through userdatachannel which is always subscribed
         if (!channelView.isPrivateChat) {
@@ -1171,7 +1180,7 @@ var channelView = {
     },
 
     onChannelPresence : function () {
-        var users = currentChannelModel.handler.listUsers();
+        //var users = currentChannelModel.handler.listUsers();
 
     },
 
@@ -1183,7 +1192,20 @@ var channelView = {
 
         //var member = currentChannelModel.memberList[userId];
        // contact.isPresent = isPresent;
-        currentChannelModel.setMemberPresence(userId, isPresent);
+        channelView.setMemberPresence(userId, isPresent);
+    },
+
+    setMemberPresence : function (memberId, isPresent) {
+
+        var dataSource = channelView.membersDS;
+        dataSource.filter( { field: "uuid", operator: "eq", value: memberId });
+        var view = dataSource.view();
+        //var contact = view[0].items[0];
+        var contact = view[0];
+        dataSource.filter([]);
+
+        contact.set('isPresent', isPresent);
+
     },
 
     updatePresence : function (members, occupancyCount) {
@@ -1227,9 +1249,7 @@ var channelView = {
         $("#messages-listview").data("kendoMobileListView").refresh();
 
         channelView.messagesDS.add(message);
-
-        currentChannelModel.updateLastAccess();
-
+        channelModel.updateLastAccess(channelView._channelId, null);
         channelView.scrollToBottom();
 
         if (channelView.privacyMode) {
@@ -1331,7 +1351,12 @@ var channelView = {
         }
 
         if (validMessage === true ) {
-            channelView.sendMessageHandler(channelView.currentContactId, text, channelView.activeMessage, 86400);
+            if (channelView.isPrivateChat) {
+                privateChannel.sendMessage(channelView.privateContactId, text, channelView.activeMessage, 86400);
+            } else {
+                groupChannel.sendMessage(text, channelView.activeMessage, 86400);
+            }
+
             channelView.hideChatImagePreview();
             channelView._initMessageTextArea();
             channelView.messageInit();
@@ -1463,7 +1488,7 @@ var channelView = {
         var selectionListItem = $(selection).closest("div");
         var selectionInnerDiv = $(selectionListItem);
 
-        if (currentChannelModel.privacyMode) {
+        if (channelView.privacyMode) {
             $('#'+message.msgID).removeClass('privateMode');
         }
 
@@ -1654,7 +1679,7 @@ var channelPresence = {
 
     onInit: function (e) {
         $("#channelPresence-listview").kendoMobileListView({
-            dataSource: currentChannelModel.membersDS,
+            dataSource: channelView.membersDS,
             template: $("#chatMemberTemplate").html(),
             autobind: false,
            /* filterable: {

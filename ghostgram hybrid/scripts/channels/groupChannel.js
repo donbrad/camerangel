@@ -65,11 +65,13 @@ var groupChannel = {
             message.fromHistory = false;
         }
 
-        channelView.messagesDS.add(message);
+        if (channelView._active) {
 
-        currentChannelModel.updateLastAccess();
+            channelView.messagesDS.add(message);
+            channelModel.updateLastAccess(channelView._channelId, null);
+            channelView.scrollToBottom();
+        }
 
-        channelView.scrollToBottom();
 
     },
 
@@ -126,7 +128,7 @@ var groupChannel = {
         channelView.updatePresence(groupChannel.users, msg.occupancy);
     },
 
-    sendMessage: function (recipient, text, data, ttl) {
+    sendMessage: function (text, data, ttl) {
         if (ttl === undefined || ttl < 60)
             ttl = 86400;  // 24 hours
 
