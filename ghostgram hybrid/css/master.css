@@ -5249,3 +5249,15 @@ table.k-editor {
 #signup > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent {
   padding: 0px;
 }
+/* Modal Chat Photo */
+.modalChatPhotoList {
+  padding: 0px;
+  margin-bottom: 1px;
+  margin-top: 0px;
+}
+.modalChatPhotoList li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
