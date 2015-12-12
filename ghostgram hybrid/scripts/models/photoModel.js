@@ -50,12 +50,13 @@ var photoModel = {
                     if (photo.imageUrl === null) {
                         photo.imageUrl = photo.thumbnailUrl;
                     }
-                    if (window.navigator.simulator === undefined) {
+
+                  /*  if (window.navigator.simulator === undefined) {
                         if (photo.imageUrl !== null) {
                             photoModel.isPhotoCached(photo.imageUrl, filename, photo);
                         }
                     }
-
+*/
 
                     models.push(photo);
                 }
