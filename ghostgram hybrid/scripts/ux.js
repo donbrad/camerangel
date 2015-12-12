@@ -156,7 +156,14 @@ var ux = {
 	        $('.home-profile-img').attr('src',userModel.identiconUrl);
 	      //  userModel.enableIdenticon();
 	    } else {
-	        $('.home-profile-img').attr('src',userModel.currentUser.get('photo'));
+			var photoUrl = userModel.currentUser.get('photo');
+
+			if (photoUrl === undefined || photoUrl === null) {
+				$('.home-profile-img').attr('src',userModel.identiconUrl);
+			} else {
+				$('.home-profile-img').attr('src',photoUrl);
+			}
+
 	      //  userModel.disableIdenticon();
 	    }
 	},

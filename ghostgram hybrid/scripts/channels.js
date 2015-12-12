@@ -12,112 +12,16 @@ function onBeforeHideChannels(){
 
 }
 
-function syncCurrentChannel(e) {
-	if (e.preventDefault !== undefined)
-		e.preventDefault();
+    
 
-	updateParseObject('channels','channelId', currentChannelModel.currentChannel.channelId, e.field, this[e.field]);
-	currentChannelModel.currentChannel.set(e.field, this[e.field]);
-}
-    
-    
-function eraseChannel(e) {
-	e.preventDefault();
-    var channelId = e.context;
-    mobileNotify("Clearing channel");
-}
 
 function archiveChannel(e) {
 	e.preventDefault();
     var channelId = e.context;
     mobileNotify("Archiving channel"); 
 }
-    
-function deleteChannel(e) {
-	e.preventDefault();
-	
-    var channelId = e.button[0].attributes["data-channel"].value;
 
-	channelModel.deleteChannel(channelId);
 
-}
-
-function muteChannel(e) {
-	e.preventDefault();
-	
-	var channelId = e.button[0].attributes["data-channel"].value;
-	var channel = channelModel.findChannelModel(channelId);
-	
-	if(channel.isMuted){
-		channelModel.muteChannel(channelId, false);
-		mobileNotify(channel.name + " is unmuted");
-
-	} else {
-		channelModel.muteChannel(channelId, true);
-		mobileNotify(channel.name + " is muted");
-	}
-	
-	
-
-	
-}
-
-function onInitChannels (e) {
-    e.preventDefault();
-    
-    // set search bar 
-    var scroller = e.view.scroller;
-	scroller.scrollTo(0,-44);
-
-	
-    // ToDo: Initialize list view
-	
-     $("#channels-listview").kendoMobileListView({
-        dataSource: channelModel.channelsDS,
-        template: $("#channels-listview-template").html(),
-        click: function(e) {
-        	var selector = e.target[0].parentElement;
-        	if($(selector).hasClass("chat-mainBox") === true || e.target[0].className === "chat-mainBox"){
-        		var channelUrl = "#channel?channelId=" + e.dataItem.channelId;
-        		APP.kendo.navigate(channelUrl);
-        	} 
-        },
-        dataBound: function(e){	
-        	checkEmptyUIState(channelModel.channelsDS, "#channelListDiv");
-        }
-    }).kendoTouch({
-    	filter: ".chat-mainBox",
-    	enableSwipe: true,
-    	swipe: function(e){
-    		var selection = e.sender.events.currentTarget;
-
-    		if(e.direction === "left"){
-    			var otherOpenedLi = $(".chat-active");
-    			$(otherOpenedLi).velocity({translateX:"0"},{duration: "fast"}).removeClass("chat-active");
-
-    			if($(selection).hasClass("private") !== true && $(window).width() < 375){
-    				$(selection).velocity({translateX:"-80%"},{duration: "fast"}).addClass("chat-active");
-    			} else if ($(selection).hasClass("private")){
-    				$(selection).velocity({translateX:"-40%"},{duration: "fast"}).addClass("chat-active");
-    			} else {
-    				$(selection).velocity({translateX:"-70%"},{duration: "fast"}).addClass("chat-active");
-    			}
-    			
-    			
-    		}
-    		if (e.direction === "right" && $(selection).hasClass("chat-active")){
-    			$(selection).velocity({translateX:"0"},{duration: 150}).removeClass("chat-active");
-    		}
-    	}
-    	
-    });
-    
-   	
-}
-
-function cancelEditChat(e){
-
-}
 
 
 function doShowEventInputs(e) {
@@ -287,52 +191,6 @@ function getMessageCount(callback) {
 
 }
 
-
-
-
-
-
-function sendGhostChat(e) {
-	if (e !== undefined && e.preventDefault !== undefined) {
-		e.preventDefault();
-	}
-
-
-	APP.kendo.navigate('#:back');
-}
-
-function doOpenGhostChat(e) {
-	if (e !== undefined && e.preventDefault !== undefined) {
-		e.preventDefault();
-	}
-
-	APP.views.ghostEditor.title="ghostChat";
-	APP.views.ghostEditor.sendAction = sendGhostChat;
-
-	$("#ghostChatEditor").kendoEditor({
-		tools: [
-			"bold",
-			"italic",
-			"underline",
-			"justifyLeft",
-			"justifyCenter",
-			"justifyRight",
-			"insertUnorderedList",
-			"insertOrderedList",
-			"indent",
-			"outdent"
-
-		]
-	});
-
-}
-
-
-function onOpenGhostChat(e) {
-	if (e !== undefined && e.preventDefault !== undefined) {
-		e.preventDefault();
-	}
-}
 
 function toggleListTrash() {
 	$(".listTrash").velocity("fadeIn", {duration: 100});

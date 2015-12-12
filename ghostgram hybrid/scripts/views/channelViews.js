@@ -14,15 +14,24 @@
 
 var channelsView = {
     _viewInitialized : false,
+    _showDeletedChannels : false,
+
+    _channelListDS : new kendo.data.DataSource({
+        offlineStorage: "channellist",
+        sort: {
+            field: "lastAccess",
+            dir: "desc"
+        }
+    }),
 
     onInit : function (e) {
         e.preventDefault();
 
         $("#channels-listview").kendoMobileListView({
-            dataSource: channelModel.channelsDS,
+            dataSource: channelsView._channelListDS,
             template: $("#channels-listview-template").html(),
             dataBound: function(e){
-                ux.checkEmptyUIState(channelModel.channelsDS, "#channelListDiv");
+                ux.checkEmptyUIState(channelsView._channelListDS, "#channelListDiv");
             }
         }).kendoTouch({
             filter: ".chat-mainBox",
@@ -72,46 +81,66 @@ var channelsView = {
 
         });
 
-		ux.checkEmptyUIState(channelModel.channelsDS, "#channels");
+		ux.checkEmptyUIState(channelsView._channelListDS, "#channels");
+
+    },
+
+    // Update channel display list from channel master list
+    updateChannelListDS : function () {
+
+        if (channelsView._showDeletedChannels) {
+            channelsView._channelListDS.data(channelModel.channelsDS.data());
+        } else {
+
+            var dataSource = channelModel.channelsDS;
+            var cacheFilter = dataSource.filter();
+            if (cacheFilter === undefined) {
+                cacheFilter = {};
+            }
+            dataSource.filter(
+                {
+                    "field": "isDeleted",
+                    "operator": "eq",
+                    "value": false
+                }
+            );
+            var view = dataSource.view();
+            channelsView._channelListDS.data(view);
+            dataSource.filter(cacheFilter);
+
+        }
 
     },
 
     onShow : function(e) {
         _preventDefault(e);
 
-        if (!channelView._viewInitialized) {
-            channelView._viewInitialized = true;
+        channelsView.updateChannelListDS();
+
+        if (!channelsView._viewInitialized) {
+            channelsView._viewInitialized = true;
 
             $('#channels .gg_mainSearchInput').on('input', function (e) {
 
                 var query = this.value;
                 if (query.length > 0) {
-                    channelModel.channelsDS.filter([
+                    channelsView._channelListDS.filter([
                         {
-                            "field": "isDeleted",
-                            "operator": "eq",
-                            "value": false
+                            "field": "name",
+                            "operator": "contains",
+                            "value": query
                         },
                         {
-                        "logic": "or",
-                        "filters": [
-                            {
-                                "field": "name",
-                                "operator": "contains",
-                                "value": query
-                            },
-                            {
-                                "field": "description",
-                                "operator": "contains",
-                                "value": query
-                            }
+                            "field": "description",
+                            "operator": "contains",
+                            "value": query
+                        }
 
-                        ]
-                    }]);
+                    ]);
                     $('#channels .enterSearch').removeClass('hidden');
 
                 } else {
-                    channelModel.channelsDS.filter([]);
+                    channelsView._channelListDS.filter({});
                     $('#channels .enterSearch').addClass('hidden');
 
                 }
@@ -123,11 +152,7 @@ var channelsView = {
 					$("#channels .gg_mainSearchInput").val('');
 					
 					// reset data filters
-                    channelModel.channelsDS.filter({
-                        "field": "isDeleted",
-                        "operator": "eq",
-                        "value": false
-                    });
+                channelsView._channelListDS.filter({});
 
                     // hide clear btn
                     $(this).addClass('hidden');
@@ -137,7 +162,7 @@ var channelsView = {
 
         $('#channels .gg_mainSearchInput').attr("placeholder", "Search chats...");
 
-        ux.checkEmptyUIState(channelModel.channelsDS, "#channels");
+        ux.checkEmptyUIState(channelsView._channelListDS, "#channels");
     	
         // set action button
         ux.showActionBtn(true, "#channels", "#addChannel");
@@ -151,6 +176,33 @@ var channelsView = {
 		ux.hideSearch();
     },
 
+    queryChannel : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = channelsView._channelListDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var channel = view[0];
+        dataSource.filter(cacheFilter);
+        return(channel);
+    },
+
+    findChannelModel: function (channelId) {
+
+        return(channelsView.queryChannel({ field: "channelId", operator: "eq", value: channelId }));
+
+        /*var dataSource =  channelModel.channelsDS;
+         dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
+         var view = dataSource.view();
+         var channel = view[0];
+         dataSource.filter([]);
+
+         return(channel);*/
+    },
 
     editChannel : function (e) {
         if (e!== undefined && e.preventDefault !== undefined){
@@ -159,34 +211,43 @@ var channelsView = {
         // Did a quick bind to the button, feel free to change
 
         var channelId = e.button[0].attributes["data-channel"].value;
-        /*var dataSource = channelModel.channelsDS;
 
-        dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
-        var view = dataSource.view();
-        var channel = view[0];
-        dataSource.filter([]);
 
-        // Kendo Observable doesnt have unbind so bind to dummy change function
-        currentChannelModel.currentChannel.bind('change', function() {});
-        currentChannelModel.currentChannel = channel;
-
-        currentChannelModel.currentChannel.set('channelId', channel.channelId);
-        currentChannelModel.currentChannel.set('name', channel.name);
-        currentChannelModel.currentChannel.set('description', channel.description);
-        currentChannelModel.currentChannel.set('media', channel.media);
-        if (channel.invitedMembers === undefined) {
-            channel.invitedMembers = [];
-        }
-        currentChannelModel.currentChannel.set('invitedMembers', channel.invitedMembers);
-        currentChannelModel.currentChannel.set('members', channel.members);
-        currentChannelModel.currentChannel.set('isPrivate', channel.isPrivate);
-        currentChannelModel.currentChannel.set('isOwner', channel.isOwner);
-        currentChannelModel.currentChannel.set('archive', channel.archive);
-        currentChannelModel.currentChannel.bind('change', syncCurrentChannel);
-*/
         APP.kendo.navigate('#editChannel?channel='+channelId);
 
+    },
+
+    deleteChannel: function (e) {
+        e.preventDefault();
+
+        var channelId = e.button[0].attributes["data-channel"].value;
+
+        var channelListModel = channelsView.findChannelModel(channelId);
+        channelsView._channelListDS.remove(channelListModel);
+        channelModel.deleteChannel(channelId);
+
+    },
+
+    muteChannel : function (e) {
+        e.preventDefault();
+
+        var channelId = e.button[0].attributes["data-channel"].value;
+        var channel = channelModel.findChannelModel(channelId);
+        var channelListModel = channelsView.findChannelModel(channelId);
+        channelListModel.set('isMuted', channel.isMuted);
+
+        if(channel.isMuted){
+            channelModel.muteChannel(channelId, false);
+            mobileNotify(channel.name + " is unmuted");
+
+
+        } else {
+            channelModel.muteChannel(channelId, true);
+            mobileNotify(channel.name + " is muted");
+        }
+
     }
+
 };
 
 /*
@@ -327,8 +388,6 @@ var addChannelView = {
 var editChannelView = {
     _activeChannelId : null,
     _activeChannel : new kendo.data.ObservableObject(),
-    membersAdded : [],
-    membersDeleted: [],
 
     potentialMembersDS: new kendo.data.DataSource({
         //group: 'category',
@@ -344,6 +403,12 @@ var editChannelView = {
             dir: "asc"
         }
     }),
+
+    originalMembers : [],   // Need to keep track of original members (at start of edit sessions).  as user can add and remove same member.
+
+    membersAddedDS : new kendo.data.DataSource(),
+
+    membersDeletedDS: new kendo.data.DataSource(),
 
     onInit: function (e) {
        _preventDefault(e);
@@ -369,6 +434,8 @@ var editChannelView = {
 
             editChannelView._activeChannelId = e.view.params.channel;
 
+            editChannelView.orginalMembers = [];
+
             var channel = channelModel.findChannelModel(editChannelView._activeChannelId);
             editChannelView.setActiveChannel(channel);
 
@@ -381,8 +448,8 @@ var editChannelView = {
 
             //Zero out current members as we're going rebuild ds and ux
             editChannelView.membersDS.data([]);
-            editChannelView.membersAdded = [];
-            editChannelView.membersDeleted = [];
+            editChannelView.membersAddedDS.data([]);
+            editChannelView.membersDeletedDS.data([]);
 
             $('#editChannelMemberList').empty();
 
@@ -397,7 +464,7 @@ var editChannelView = {
                     if (thisMember !== undefined) {
                         editChannelView.membersDS.add(thisMember);
                         editChannelView.potentialMembersDS.remove(thisMember);
-                        //appendMemberToUXList(thisMember);
+
                     }
                 }
 
@@ -406,7 +473,6 @@ var editChannelView = {
                         thisMember = contactModel.findContactByUUID(invitedMembers[j]);
                         editChannelView.membersDS.add(thisMember);
                         editChannelView.potentialMembersDS.remove(thisMember);
-                        //appendInvitedMemberToUXList(thisMember);
                     }
                 }
 
@@ -477,8 +543,32 @@ var editChannelView = {
         editChannelView._activeChannel.members = memberArray;
 
 
+        var membersDeleted = editChannelView.membersDeletedDS.data();
+        //Send Delete messages to users deleted from the channel
+        for (var md = 0; md < membersDeleted.length; md++) {
+            var contactId = membersDeleted[md].contactUUID;
+            if (contactId !== null && ($.inArray(contactId, memberArray) == -1)) {  // if this user is still in the member array don't send a delete
+                // This is a ggMember -- send delete.
+                appDataChannel.groupChannelDelete(contactId, channelId,  editChannelView._activeChannel.name, editChannelView._activeChannel.name + " has been deleted.");
+            } else {
+                // Invited member -- need to look up userId by phone number before sending delete notification
+                var phone = editChannelView.membersDeleted[md].phone;
+                if (phone !== undefined && phone !== null) {
+                    findUserByPhone(phone, function (result) {
+                        if (result.found) {
+                            var user = result.user, contactId = user.get('userUUID');
+                            appDataChannel.groupChannelDelete(contactId, channelId, editChannelView._activeChannel.name, editChannelView._activeChannel.name + " has been deleted.");
+                        }
+
+                    });
+                }
+
+            }
+        }
+
+        var membersAdded = editChannelView.membersAddedDS.data();
         //Send Invite messages to users added to channel
-        for (var ma = 0; ma < editChannelView.membersAdded.length; ma++) {
+        for (var ma = 0; ma <  membersAdded.length; ma++) {
             var options = null;
 
             // If this is a place chat, send the place data to the members
@@ -491,38 +581,19 @@ var editChannelView = {
                 options.chatData = newPlace;
             }
 
-            inviteArray.push(editChannelView.membersAdded[ma].contactUUID);
-            appDataChannel.groupChannelInvite(editChannelView.membersAdded[ma].contactUUID, channelId,  editChannelView._activeChannel.name,  editChannelView._activeChannel.description, memberArray,
+            inviteArray.push(membersAdded[ma].contactUUID);
+            appDataChannel.groupChannelInvite(membersAdded[ma].contactUUID, channelId,  editChannelView._activeChannel.name,  editChannelView._activeChannel.description, memberArray,
                 options);
         }
 
-        
-        //Send Delete messages to users deleted from the channel
-        for (var md = 0; md < editChannelView.membersDeleted.length; md++) {
-            var contactId = editChannelView.membersDeleted[md].contactUUID;
-            if (contactId !== null) {
-                // This is a ggMember -- send delete.
-                appDataChannel.groupChannelDelete(contactId, channelId, editChannelView._activeChannel.name + "has been deleted.");
-            } else {
-                // Invited member -- need to look up userId by phone number before sending delete notification
-                var phone = editChannelView.membersDeleted[md].phone;
-                if (phone !== undefined && phone !== null) {
-                    findUserByPhone(phone, function (result) {
-                        if (result.found) {
-                            var user = result.user, contactId = user.get('userUUID');
-                            appDataChannel.groupChannelDelete(contactId, channelId, editChannelView._activeChannel.name + "has been deleted.");
-                        }
 
-                    });
-                }
 
-            }
-        }
 
         for (var m=0; m< memberArray.length; m++) {
 
+            var invited = ($.inArray(memberArray[m],inviteArray) !== -1);
             // Only send updates to current members (new members got an invite above)
-            if (memberArray[m] !== userModel.currentUser.userUUID && ($.inArray(memberArray[m],inviteArray) == -1) ) {
+            if (memberArray[m] !== userModel.currentUser.userUUID &&  invited === false) {
                 appDataChannel.groupChannelUpdate(memberArray[m], channelId,  editChannelView._activeChannel.name, editChannelView._activeChannel.description, memberArray);
             }
         }
@@ -566,7 +637,8 @@ var editChannelView = {
         
         var thisMember = contactModel.findContactByUUID(contactId);
 
-        editChannelView.membersDeleted.push(thisMember);
+        editChannelView.membersDeletedDS.add(thisMember);
+        editChannelView.membersAddedDS.remove(thisMember);
         editChannelView.potentialMembersDS.add(thisMember);
         editChannelView.potentialMembersDS.sync();
         editChannelView.membersDS.remove(thisMember);
@@ -635,7 +707,8 @@ var channelMembersView = {
                     //appendMemberToUXList (thisMember);
                 }
                 editChannelView.membersDS.sync();
-                editChannelView.membersAdded.push(thisMember);
+                editChannelView.membersAddedDS.add(thisMember);
+                editChannelView.membersDeletedDS.remove(thisMember);
                 editChannelView.potentialMembersDS.remove(thisMember);
                 $(".addedChatMember").text("+ added " + thisMember.name).velocity("slideDown", { duration: 300, display: "block"}).velocity("slideUp", {delay: 1400, duration: 300, display: "none"});
             }
@@ -885,6 +958,8 @@ var channelView = {
         if (thisChannel.isPrivate) {
 
             channelView.isPrivateChat = true;
+            channelView.messageLock = true;
+            channelView.setMessageLockIcon(channelView.messageLock);
             // *** Private Channel ***
             var contactKey = thisChannel.contactKey;
             if (contactKey === undefined) {
@@ -931,6 +1006,10 @@ var channelView = {
         } else {
 
             channelView.isPrivateChat = false;
+
+            channelView.messageLock = false;
+            channelView.setMessageLockIcon(channelView.messageLock);
+
             // No current contact in group chats...
             channelView.currentContactId = null;
             currentChannelModel.currentContactModel = null;
@@ -1210,7 +1289,7 @@ var channelView = {
     },
 
     messageInit : function () {
-        channelView.activeMessage = {};
+        channelView.activeMessage = {canCopy: channelView.messageLock};
     },
 
     messageAddLocation : function  () {
@@ -1225,8 +1304,9 @@ var channelView = {
 
         channelView.activeMessage.photo = {
             photoId : offer.photoId,
-            thumb: offer.thumbnail,
-            image: offer.image,
+            channelId: offer.channelId,
+            thumbnailUrl: offer.thumbnailUrl,
+            imageUrl: offer.imageUrl,
             canCopy: offer.canCopy,
             ownerId: offer.ownerId,
             ownerName: offer.ownerName};
@@ -1257,7 +1337,7 @@ var channelView = {
         if (photoModel.currentOffer !== null) {
             validMessage = true;
             channelView.messageAddPhoto(photoModel.currentOffer);
-            photoModel.initOffer();
+
         }
 
         if (validMessage === true ) {
@@ -1265,6 +1345,7 @@ var channelView = {
             channelView.hideChatImagePreview();
             channelView._initMessageTextArea();
             channelView.messageInit();
+            photoModel.initOffer();
         }
 
     },
@@ -1286,7 +1367,7 @@ var channelView = {
 
     },
 
-    showChatImagePreview: function (displayUrl) {
+    showChatImagePreview: function (photoId, displayUrl) {
         $('#chatImage').attr('src', displayUrl);
         $('#chatImagePreview').show();
     },
@@ -1365,9 +1446,10 @@ var channelView = {
         // User actually clicked on the photo so show the open the photo viewer
         if (target.hasClass('chat-message-photo')) {
         	// Open this img full screen
-            var photoUrl = message.data.photo.photo;
-            $('#modalPhotoViewImage').attr('src', photoUrl);
-            modalPhotoView.openModal(photoUrl);
+            var photoObj = message.data.photo;
+          /*  var photoUrl = message.data.photo.photo;
+            $('#modalPhotoViewImage').attr('src', photoUrl);*/
+            modalChatPhotoView.openModal(photoObj);
         }
 
         if (channelView.privacyMode) {
@@ -1439,14 +1521,18 @@ var channelView = {
         channelView._initMessageTextArea();
     },
 
+    setMessageLockIcon : function (locked) {
+        if (locked) {
+            $('#messageLockButtonIcon').attr('src', 'images/icon-lock.svg');
+        } else {
+            $('#messageLockButtonIcon').attr('src', 'images/icon-unlock.svg');
+        }
+    },
+
     messageLockButton : function (e) {
         e.preventDefault();
         channelView.messageLock = !channelView.messageLock;
-        if (channelView.messageLock) {
-            $('#messageLockButton').html('<i class="fa fa-lock"></i>');
-        } else {
-            $('#messageLockButton').html('<i class="fa fa-unlock"></i>');
-        }
+        channelView.setMessageLockIcon(channelView.messageLock);
     },
 
     messageCamera : function (e) {
@@ -1455,6 +1541,7 @@ var channelView = {
             1600, // max resolution in pixels
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+            channelView._channelId,  // Current channel Id for offers
             channelView.showChatImagePreview  // Optional preview callback
         );
     },
@@ -1466,6 +1553,7 @@ var channelView = {
             1600, // max resolution in pixels
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+            channelView._channelId,  // Current channel Id for offers
             channelView.showChatImagePreview  // Optional preview callback
         );
     },
@@ -1474,10 +1562,14 @@ var channelView = {
         _preventDefault(e);
 
          galleryPicker.openModal(function (photo) {
-             var url = photo.imageUrl;
-             if (photo.thumbnailUrl !== undefined)
-                url = photo.thumbnailUrl;
-             channelView.showChatImagePreview(url);
+
+             photoModel.addPhotoOffer(photo.photoId, channelView._channelId,  photo.thumbnailUrl, photo.imageUrl, true);
+
+             var url = photo.thumbnailUrl;
+             if (photo.imageUrl !== undefined && photo.imageUrl !== null)
+                url = photo.imageUrl;
+
+             channelView.showChatImagePreview(photo.photoId, url);
          });
       //  APP.kendo.navigate("views/gallery.html#gallery?mode=picker");
 

@@ -289,6 +289,7 @@ var appDataChannel = {
                 alert : notificationString,
                 badge: 1
             },
+            isMessage: false,
             target: '#channels',
             channelId :channelUUID
         };
@@ -298,6 +299,7 @@ var appDataChannel = {
                 message: "The owner has deleted : " + channelName,
                 target: "#channels",
                 image: "icon",
+                isMessage: false,
                 channelId : channelUUID
             }
         };
@@ -316,6 +318,7 @@ var appDataChannel = {
     groupChannelUpdate : function (contactUUID, channelUUID, channelName, channelDescription,  members) {
         var msg = {};
 
+        var notificationString = "Chat Update : " + channelName;
         msg.type = 'groupUpdate';
         msg.version = appDataChannel._version;
         msg.ownerId = userModel.currentUser.get('userUUID');
@@ -326,7 +329,26 @@ var appDataChannel = {
         msg.channelMembers = members;
         msg.message  = "Chat " + channelName + " has been updated...";
         msg.time = new Date().getTime();
-
+        msg.pn_apns = {
+            aps: {
+                alert : notificationString,
+                badge: 1,
+                'content-available' : 1
+            },
+            isMessage: false,
+            target: '#channels',
+            channelId :channelUUID
+        };
+        msg.pn_gcm = {
+            data : {
+                title: notificationString,
+                message: "Owner has updated  " + channelName,
+                target: '#channels',
+                image: "icon",
+                isMessage: false,
+                channelId : channelUUID
+            }
+        };
         var channel = appDataChannel.getContactAppChannel(contactUUID);
 
         APP.pubnub.publish({

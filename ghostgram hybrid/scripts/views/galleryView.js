@@ -496,6 +496,7 @@ var photoEditor = {
     }
 
 
+
 };
 
 var modalPhotoTag = {
@@ -504,6 +505,7 @@ var modalPhotoTag = {
     openModal : function (photo) {
         modalPhotoTag._activePhoto.set('photoId', photo.photoId);
         modalPhotoTag._activePhoto.set('title', photo.title);
+        modalPhotoTag._activePhoto.set('thumbnailUrl', photo.thumbnailUrl);
         modalPhotoTag._activePhoto.set('imageUrl', photo.imageUrl);
         modalPhotoTag._activePhoto.set('description', photo.description);
         modalPhotoTag._activePhoto.set('tags', photo.tags);
@@ -550,6 +552,75 @@ var modalPhotoTag = {
 
 };
 
+
+var modalChatPhotoView = {
+    _photo: null,
+    _photoUrl : null,
+    _dummyTitle : 'Title',
+    _dummyDescription : '',
+    _dummyTagsString : '',
+    _activePhoto : new kendo.data.ObservableObject(),
+
+    onInit: function(e){
+        var showInfo =  modalPhotoView._showInfo;
+
+
+    },
+
+    updatePhotoStatus : function (photo) {
+        if (photo.canCopy) {
+            $("#modalChatPhotoViewLocked").addClass('hidden');
+            $("#modalChatPhotoViewRequestSent").addClass('hidden');
+            $("#modalChatPhotoViewUnlocked").removeClass('hidden');
+        } else {
+            $("#modalChatPhotoViewUnlocked").addClass('hidden');
+            if (photo.requestSent === undefined) {
+                $("#modalChatPhotoViewLocked").removeClass('hidden');
+                $("#modalChatPhotoViewRequestSent").addClass('hidden');
+            } else {
+                $("#modalChatPhotoViewRequestSent").removeClass('hidden');
+                $("#modalChatPhotoViewLocked").addClass('hidden');
+            }
+        }
+    },
+
+    savePhoto : function (e) {
+        _preventDefault(e);
+
+        photoModel.addChatPhoto(modalChatPhotoView._photo);
+    },
+
+    requestCopy : function (e) {
+        _preventDefault(e);
+        // Todo: wire up photo request
+    },
+
+     openModal : function (photo) {
+
+        modalChatPhotoView._photo = photo;
+        var url = photo.thumbnailUrl;
+        if (photo.imageUrl !== null)
+            url = photo.imageUrl;
+        modalChatPhotoView._photoUrl = url;
+        modalChatPhotoView._activePhoto.set('photoUrl', url);
+        modalChatPhotoView._activePhoto.set('photoId', photo.photoId);
+
+        if (photo.canCopy === undefined) {
+            photo.canCopy = true;
+        }
+
+        modalChatPhotoView.updatePhotoStatus(photo);
+
+        $("#modalChatPhotoView").data("kendoMobileModalView").open();
+    },
+
+    closeModal : function () {
+        $("#modalChatPhotoView").data("kendoMobileModalView").close();
+    },
+
+
+};
+
 var modalPhotoView = {
     _photo: null,
     _photoUrl : null,
@@ -580,12 +651,16 @@ var modalPhotoView = {
     openModal : function (photo) {
 
         modalPhotoView._photo = photo;
-        modalPhotoView._photoUrl = photo.imageUrl;
+        var url = photo.thumbnailUrl;
+        if (photo.imageUrl !== null)
+            url = photo.imageUrl;
+        modalPhotoView._photoUrl = url;
         modalPhotoView._activePhoto.set('photoId', photo.photoId);
         if (photo.title === null) {
             photo.title = modalPhotoView._dummyTitle;
         }
         modalPhotoView._activePhoto.set('title', photo.title);
+        modalPhotoView._activePhoto.set('thumbnailUrl', photo.thumbnailUrl);
         modalPhotoView._activePhoto.set('imageUrl', photo.imageUrl);
         if (photo.description === null) {
             photo.description = modalPhotoView._dummyDescription;
@@ -691,8 +766,8 @@ var modalPhotoView = {
    }
 };
 
-
-var modalGalleryView = {
+// Removing this legacy view -- gallerypicker is new replacement.  just keeping the code for reference...
+/*var modalGalleryView = {
 
     _callback: null,
 
@@ -718,12 +793,12 @@ var modalGalleryView = {
 
         var photoId = e.dataItem.photoId, photoUrl = e.dataItem.imageUrl, thumbUrl = e.dataItem.thumbnailUrl;
 
-        currentChannelModel.currentMessage.photo = {thumb: thumbUrl, photo: photoUrl};
+        currentChannelModel.currentMessage.photo = {thumbnailUrl: thumbUrl, imageUrl: photoUrl};
         if (modalGalleryView._callback !== null) {
             modalGalleryView._callback(photoUrl);
             modalGalleryView.closeModal();
         }
-       /* galleryView._currentPhotoUrl = photoUrl;
+       /!* galleryView._currentPhotoUrl = photoUrl;
         galleryView._currentPhotoId = photoId;
 
         galleryView._currentPhoto = photoModel.findPhotoById(photoId);
@@ -739,10 +814,10 @@ var modalGalleryView = {
         } else {
             var photoParam = LZString.compressToEncodedURIComponent(photoId);
             APP.kendo.navigate('#photoView?photo='+photoParam);
-        }*/
+        }*!/
     }
 
-};
+};*/
 
 
 var galleryPicker = {

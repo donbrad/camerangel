@@ -1234,13 +1234,13 @@
     			<ul class="chat-option-ul">
     				# if (isPrivate){#
     					<li>
-		    				<a class="btnClear-red" data-channel="#:channelId #" data-role="button"  data-click="deleteChannel">
+		    				<a class="btnClear-red" data-channel="#:channelId #" data-role="button"  data-click="channelsView.deleteChannel">
 		    					<img src="images/trash.svg" />
 		    					<p class="chat-option-selection"> Delete </p>
 		    				</a>
 	    				</li>
 	    				<li>
-		    				<a class="btnClear-grey" data-role="button" data-channel="#:channelId #" data-click="muteChannel" data-mute="#: isMuted #">
+		    				<a class="btnClear-grey" data-role="button" data-channel="#:channelId #" data-click="channelsView.muteChannel" data-mute="#: isMuted #">
 			    				# if(data.isMuted) {#
 		    						<img src="images/icon-unmute.svg" class="channelMuteImg"/>
 			    					<p class="channelMute">Unmute</p>
@@ -1252,14 +1252,14 @@
 	    				</li>
     				#} else {#
     					<li>
-		    				<a class="btnClear-red" data-role="button" data-channel="#:channelId #" data-click="deleteChannel" data-channel="#:channelId #">
+		    				<a class="btnClear-red" data-role="button" data-channel="#:channelId #" data-click="channelsView.deleteChannel" data-channel="#:channelId #">
 		    					<img src="images/trash.svg" />
 		    					<p class="chat-option-selection"> Delete</p>
 		    				</a>
 	    				</li>
 
 	    				<li>
-		    				<a class="btnClear-grey" data-role="button" data-channel="#:channelId #" data-click="muteChannel" data-mute="#: isMuted #">
+		    				<a class="btnClear-grey" data-role="button" data-channel="#:channelId #" data-click="channelsView.muteChannel" data-mute="#: isMuted #">
 		    					# if(data.isMuted) {#
 		    						<img src="images/icon-unmute.svg" class="channelMuteImg"/>
 			    					<p class="channelMute">Unmute</p>
@@ -1396,13 +1396,8 @@
 			<div class="messageMediaBar">
 				<ul>
 					<li>
-						<a data-role="button" data-click="channelView.messageCamera">
-							<img src="images/chat-camera.svg" height="24">
-						</a>
-					</li>
-					<li>
 						<a data-role="button" data-rel="actionsheet" href="#galleryActions">
-							<img src="images/chat-photo.svg" height="24">
+							<img src="images/chat-camera.svg" height="24">
 						</a>
 					</li>
 					<li>
@@ -1423,6 +1418,11 @@
 					<li>
 						<a data-role="button" data-rel="actionsheet" href="#newMessageActions">
 							<img src="images/chat-smart.svg" height="24">
+						</a>
+					</li>
+					<li>
+						<a data-role="button" data-click="channelView.messageLockButton">
+							<img id="messageLockButtonIcon" src="images/icon-lock.svg" height="24">
 						</a>
 					</li>
 					<li class="hidden">
@@ -1446,6 +1446,7 @@
 	</ul>
 
 	<ul data-role="actionsheet" id="galleryActions" data-popup='{"direction": "left"}'>
+		<li><a data-action="channelView.messageCamera"> Phone Camera</a></li>
 		<li><a data-action="channelView.messagePhoto"> Phone Gallery</a></li>
 		<li><a data-action="channelView.messageGallery"> Memories Gallery</a></li>
 	</ul>
@@ -1646,9 +1647,9 @@
 			#}#
 			<div class="clearfix"></div>
 		#}#
-		# if (data !== null && data.photo !== undefined && data.photo.thumb !== undefined) {#
+		# if (data !== null && data.photo !== undefined && data.photo.thumbnailUrl !== undefined) {#
 				<div class="chat-photo-box">
-					<img class="chat-message-photo" src="#:data.photo.thumb #" alt="" >
+					<img class="chat-message-photo" src="#:data.photo.thumbnailUrl #" alt="" >
 				</div>
 		#}#
 			<div class="clearfix"></div>
@@ -2412,9 +2413,36 @@
 	</div>
 </div>
 
-<div data-role="modalview" id="modalPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal" data-model="modalPhotoView._activePhoto" data-init="modalPhotoView.onInit">
+<div data-role="modalview" id="modalChatPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal" data-model="modalChatPhotoView._activePhoto" data-init="modalChatPhotoView.onInit"  data-zoom="true">
 	<div class="photoViewBox">
-		<img id="modalPhotoViewImage" data-bind="attr: {src : imageUrl}" />
+		<div style="width: 100%; height: 90%;">
+			<img id="modalChatPhotoViewImage" src="" width="100%" data-bind="attr: {src : photoUrl}" />
+		</div>
+		<div >
+			<div id="modalChatPhotoViewUnlocked" >
+				<span data-bind="text: title">Photo is unlocked</span>
+				<a class="btnSpan" data-role="button" data-click="modalChatPhotoView.savePhoto">Save to Memories</a>
+			</div>
+			<div id="modalChatPhotoViewLocked" class="hidden">
+				<span data-bind="text: title">Photo is locked</span>
+				<a class="btnSpan" data-role="button" data-click="modalChatPhotoView.requestCopy">Request a copy</a>
+			</div>
+			<div id="modalChatPhotoViewRequestSent" class="hidden">
+				<span data-bind="text: title">Photo Copy Requested</span>
+			</div>
+		</div>
+
+	</div>
+	<div class="footer" data-role="footer">
+		<a class="btnSpan-btm btnClear glass" data-role="button" data-click="modalChatPhotoView.closeModal">Close</a>
+
+	</div>
+</div>
+
+
+<div data-role="modalview" id="modalPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal" data-model="modalPhotoView._activePhoto" data-init="modalPhotoView.onInit" data-zoom="true">
+	<div class="photoViewBox">
+		<img id="modalPhotoViewImage" data-bind="attr: {src : thumbnailUrl}" />
 		<div class="photoTitleBox">
 			<div class="photoTitleText">
 				<h3 class="textClamp">
@@ -2707,8 +2735,8 @@
 					<img src="images/icon-chat-active.svg" class="icon-btn" /> <span id="placeview-gotochat"> Start a Chat </a>
 			</li>
 			<li>
-				<a class="btnClear-sm" data-role="button" data-click="placeView.takePhoto">
-					<img src="images/icon-camera-active.svg" class="icon-btn" /> Snap a Photo
+				<a class="btnClear-sm" data-role="button" data-rel="actionsheet" href="#placeViewPhotoActions">
+					<img src="images/icon-camera-active.svg" class="icon-btn" /> Add a Photo
 				</a>
 			</li>
 		</ul>
@@ -2721,6 +2749,11 @@
 			<!-- Place content here-->
 		</div>
 	</div>
+	<ul data-role="actionsheet" id="placeViewPhotoActions" data-popup='{"direction": "left"}'>
+		<li><a data-action="placeView.camera"> Phone Camera</a></li>
+		<li><a data-action="placeView.gallery"> Phone Gallery</a></li>
+	</ul>
+
 </div>
 
 
