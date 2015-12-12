@@ -2420,8 +2420,8 @@
 		</div>
 	</div>
 	<div class="footer" data-role="footer">
-		<div>
-			<ul class="modalChatPhotoList" id="modalChatPhotoRecipient" class="hidden">
+		<div id="modalChatPhotoRecipient"  class="hidden">
+			<ul class="modalChatPhotoList">
 				<li id="modalChatPhotoViewUnlocked">
 					<span data-bind="text: title">Photo is unlocked</span>
 					<a class="btnClear-light" data-role="button" data-click="modalChatPhotoView.savePhoto">
@@ -2441,7 +2441,9 @@
 					<span data-bind="text: title">Photo Copy Requested</span>
 				</li>
 			</ul>
-			<ul class="modalChatPhotoList" id="modalChatPhotoOwner" class="hidden">
+			</div>
+		   <div id="modalChatPhotoOwner" class="hidden">
+			<ul class="modalChatPhotoList" >
 				<li id="modalChatPhotoViewOwnerUnlocked">
 					<img src="images/icon-sent.svg" class="modalChatPhotoListImg" />
 					<span data-bind="text: title">Photo is unlocked</span>
