@@ -568,18 +568,38 @@ var modalChatPhotoView = {
     },
 
     updatePhotoStatus : function (photo) {
-        if (photo.canCopy) {
-            $("#modalChatPhotoViewLocked").addClass('hidden');
-            $("#modalChatPhotoViewRequestSent").addClass('hidden');
-            $("#modalChatPhotoViewUnlocked").removeClass('hidden');
-        } else {
-            $("#modalChatPhotoViewUnlocked").addClass('hidden');
-            if (photo.requestSent === undefined) {
-                $("#modalChatPhotoViewLocked").removeClass('hidden');
-                $("#modalChatPhotoViewRequestSent").addClass('hidden');
+        if (photo.senderUUID === userModel.currentUser.userUUID) {
+            $("#modalChatPhotoRecipient").addClass('hidden');
+            $("#modalChatPhotoSender").removeClass('hidden');
+            if (photo.canCopy) {
+                $("#modalChatPhotoViewDecline").addClass('hidden');
+                $("#modalChatPhotoViewUnlock").addClass('hidden');
+                $("#modalChatPhotoViewApprove").addClass('hidden');
+                $("#modalChatPhotoViewOwnerUnlocked").removeClass('hidden');
+
             } else {
-                $("#modalChatPhotoViewRequestSent").removeClass('hidden');
+                $("#modalChatPhotoViewDecline").addClass('hidden');
+                $("#modalChatPhotoViewUnlock").removeClass('hidden');
+                $("#modalChatPhotoViewApprove").addClass('hidden');
+                $("#modalChatPhotoViewOwnerUnlocked").addClass('hidden');
+            }
+
+        } else {
+            $("#modalChatPhotoRecipient").removeClass('hidden');
+            $("#modalChatPhotoSender").addClass('hidden');
+            if (photo.canCopy) {
                 $("#modalChatPhotoViewLocked").addClass('hidden');
+                $("#modalChatPhotoViewRequestSent").addClass('hidden');
+                $("#modalChatPhotoViewUnlocked").removeClass('hidden');
+            } else {
+                $("#modalChatPhotoViewUnlocked").addClass('hidden');
+                if (photo.requestSent === undefined) {
+                    $("#modalChatPhotoViewLocked").removeClass('hidden');
+                    $("#modalChatPhotoViewRequestSent").addClass('hidden');
+                } else {
+                    $("#modalChatPhotoViewRequestSent").removeClass('hidden');
+                    $("#modalChatPhotoViewLocked").addClass('hidden');
+                }
             }
         }
     },
