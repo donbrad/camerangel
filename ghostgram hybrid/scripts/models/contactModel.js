@@ -778,7 +778,7 @@ var contactModel = {
 
     // Create a contact for channel member that this user isn't connected to
     // The contact is a valid member and connected to the channel owner
-    createChatContact : function (userId) {
+    createChatContact : function (userId, callback) {
 
         getUserContactInfo(userId, function (result) {
             if (result.found) {
@@ -791,6 +791,10 @@ var contactModel = {
                 var url = contactModel.createIdenticon(guid);
                 contact.photo = url;
                 contact.publicKey = null;
+
+                if (callback !== undefined) {
+                    callback(contact);
+                }
 
                /* currentChannelModel.memberList[contact.uuid] = contact;
                 currentChannelModel.membersDS.add(contact);*/

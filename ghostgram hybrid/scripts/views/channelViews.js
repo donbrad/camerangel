@@ -809,6 +809,10 @@ var channelView = {
         }
     }),
 
+    members : [],
+
+    memberList: [],
+
     messagesDS: new kendo.data.DataSource({  // this is the list view data source for chat messages
         sort: {
             field: "time",
@@ -941,6 +945,7 @@ var channelView = {
         channelView.activeMessage = {};
         var name = channelView.formatName(thisChannel.name);
 
+        channelView.members = thisChannel.members;
 
         // Hide the image preview div
         channelView.hideChatImagePreview();
@@ -1014,6 +1019,8 @@ var channelView = {
             channelView.privateContactId = null;
             channelView.privateContact = null;
 
+            //Build the members datasource and quick access list
+            channelView.buildMemberDS();
             //*** Group Channel ***
             $('#messagePresenceButton').show();
             // Provision a group channel
@@ -1090,6 +1097,58 @@ var channelView = {
         return(contact);
     },
 
+    // Build a member list for this channel
+    buildMemberDS : function () {
+
+       channelView.memberList = [];
+
+        var contactArray = channelView.members;
+
+        if (contactArray === undefined || contactArray === null)
+            return;
+
+        var userId = userModel.currentUser.userUUID;
+
+        for (var i=0; i< contactArray.length; i++) {
+            var contact = {};
+
+            if (contactArray[i] === userId) {
+                contact.isContact = false;
+                contact.uuid = userId;
+                contact.contactId = null;
+                contact.alias = userModel.currentUser.alias;
+                contact.name = userModel.currentUser.name;
+                contact.photo = userModel.currentUser.photo;
+                contact.publicKey = userModel.currentUser.publicKey;
+                contact.isPresent = true;
+                channelView.memberList[contact.uuid] = contact;
+                // this is our user.
+            } else {
+                var thisContact = contactModel.findContact(contactArray[i]);
+                if (thisContact === undefined) {
+                    // Need to create a contact and then add to channels member list
+                    var contactId = contactArray[i];
+                    contactModel.createChatContact(contactId, function (newContact) {
+                        channelView.memberList[contactId] = newContact;
+                        channelView.membersDS.add(newContact);
+                    });
+
+
+                } else {
+                    contact.isContact = true;
+                    contact.uuid = contactArray[i];
+                    contact.contactId = thisContact.uuid;
+                    contact.alias = thisContact.alias;
+                    contact.name = thisContact.name;
+                    contact.photo = thisContact.photo;
+                    contact.publicKey = thisContact.publicKey;
+                    contact.isPresent = false;
+                   channelView.memberList[contact.uuid] = contact;
+                   channelView.membersDS.add(contact);
+                }
+            }
+        }
+    },
 
   /*  // Create an array of channel/chat members.  Needs to be all members as this is used for message display.
     buildContactArray : function (contactArray) {
@@ -1170,11 +1229,14 @@ var channelView = {
     },
 
     findChatMember: function (contactUUID) {
-        var dataSource = currentChannelModel.membersDS;
+        var dataSource = channelView.membersDS;
+        var queryCache = dataSource.filter();
+        if (queryCache === undefined)
+            queryCache = {};
         dataSource.filter( { field: "contactUUID", operator: "eq", value: contactUUID });
         var view = dataSource.view();
         var contact = view[0];
-        dataSource.filter([]);
+        dataSource.filter(queryCache);
 
         return(contact);
     },
@@ -1190,21 +1252,16 @@ var channelView = {
             return;
         }
 
-        //var member = currentChannelModel.memberList[userId];
-       // contact.isPresent = isPresent;
         channelView.setMemberPresence(userId, isPresent);
     },
 
     setMemberPresence : function (memberId, isPresent) {
 
-        var dataSource = channelView.membersDS;
-        dataSource.filter( { field: "uuid", operator: "eq", value: memberId });
-        var view = dataSource.view();
-        //var contact = view[0].items[0];
-        var contact = view[0];
-        dataSource.filter([]);
+       var member = channelView.findChatMember(memberId);
 
-        contact.set('isPresent', isPresent);
+        if (member !== undefined) {
+            member.set('isPresent', isPresent);
+        }
 
     },
 
