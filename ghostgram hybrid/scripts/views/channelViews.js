@@ -912,7 +912,9 @@ var channelView = {
     // Initialize the channel specific view data sources.
     initDataSources : function () {
         channelView.messagesDS.data([]);
-
+        channelView.members = [];
+        channelView.memberList = [];
+        channelView.membersDS.data([]);
     },
 
     onShow : function (e) {
@@ -1053,6 +1055,8 @@ var channelView = {
         channelView._channelId = null;
         channelView._channel = null;
         channelView._active  = false;
+        channelView.initDataSources();
+
         // If this isn't a privateChat the close the channel (unsubscribe)
         // All private chat messages go through userdatachannel which is always subscribed
         if (!channelView.isPrivateChat) {
@@ -1101,6 +1105,7 @@ var channelView = {
     buildMemberDS : function () {
 
        channelView.memberList = [];
+       channelView.membersDS.data([]);
 
         var contactArray = channelView.members;
 
