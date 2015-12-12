@@ -550,7 +550,6 @@ var userStatus = {
     syncField : function (field) {
         switch(field) {
             case 'userUUID':
-            case 'photo' :
             case 'isAvailable' :
             case 'isVisible' :
             case 'isCheckedIn' :
@@ -574,12 +573,11 @@ var userStatus = {
         var status = userStatus.parseUserStatus;
 
         status.set('userUUID', userModel.currentUser.userUUID);
-        status.set('photo', userModel.currentUser.photo);
         status.set('isAvailable', userModel.currentUser.isAvailable);
         status.set('isVisible', userModel.currentUser.isVisible);
         status.set('statusMessage', userModel.currentUser.statusMessage);
         status.set('currentPlace', userModel.currentUser.currentPlace);
-        status.set('currentPlaceUUID', userModel.currentUser.currentPlaceUUID);
+        status.set('currentPlaceUUID', userModel.currentUser.currentPlaceId);
         status.set('isCheckedIn', userModel.currentUser.isCheckedIn);
         status.set('lastUpdate', ggTime.currentTime());
         status.save(null, {
