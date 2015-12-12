@@ -568,7 +568,7 @@ var modalChatPhotoView = {
     },
 
     updatePhotoStatus : function (photo) {
-        if (photo.senderUUID === userModel.currentUser.userUUID) {
+        if (photo.ownerId === userModel.currentUser.userUUID) {
             $("#modalChatPhotoRecipient").addClass('hidden');
             $("#modalChatPhotoSender").removeClass('hidden');
             if (photo.canCopy) {
@@ -585,6 +585,8 @@ var modalChatPhotoView = {
             }
 
         } else {
+
+            $("#modalChatPhotoOwnerName").text(photo.ownerName + "'s Photo");
             $("#modalChatPhotoRecipient").removeClass('hidden');
             $("#modalChatPhotoSender").addClass('hidden');
             if (photo.canCopy) {
