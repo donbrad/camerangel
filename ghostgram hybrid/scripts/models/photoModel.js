@@ -333,32 +333,20 @@ var photoModel = {
         photo.set('senderUUID',ownerId );
         photo.set('senderName', ownerName);
 
-        devicePhoto.convertImgToDataURL(photo.imageUrl, function (dataUrl) {
-
+        devicePhoto.convertImgToDataURL(photoObj.thumbnailUrl, function (dataUrl) {
             var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
-            var parseFilePhoto = new Parse.File("photo_" + filename + ".jpg", {'base64': imageBase64});
-            parseFilePhoto.save().then(function () {
-                photo.set('image',parseFilePhoto);
-                photo.set('imageUrl',parseFilePhoto._url);
+            var parseFile = new Parse.File("thumbnail_" + filename + ".jpg", {'base64': imageBase64});
+            parseFile.save().then(function () {
+                photo.set('thumbnail',parseFile);
+                photo.set('thumbnailUrl',parseFile._url);
+                var photoModel = photo.toJSON();
 
-                devicePhoto.convertImgToDataURL(photo.thumbnailUrl, function (dataUrl) {
+                photoModel.photosDS.add(photoModel);
 
-                    var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
-                    var parseFile = new Parse.File("thumbnail_" + filename + ".jpg", {'base64': imageBase64});
-                    parseFile.save().then(function () {
-                        photo.set('thumbnail',parseFile);
-                        photo.set('thumbnailUrl',parseFile._url);
-                        var photoModel = photo.toJSON();
-
-                        photoModel.photosDS.add(photoModel);
-                    });
-
-                });
+                photoModel.uploadPhotoImage(photoId);
             });
 
         });
-
-
 
     },
 

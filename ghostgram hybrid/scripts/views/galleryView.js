@@ -51,9 +51,10 @@ var galleryView = {
         $("#gallery-listview li").css("padding-bottom",galleryView._previewSize);
 
 
+/*
         var scroller = e.view.scroller;
         //scroller.scrollTo(0,-44);
-        /* Testing dynamic header 
+
 		
 		scroller.bind("scroll", function(e){
 			
