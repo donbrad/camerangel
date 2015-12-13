@@ -782,6 +782,19 @@ var modalPhotoView = {
     deletePhoto : function (e) {
         _preventDefault(e);
 
+        modalView.open("Delete Photo?", "This action will delete this photo and any offers",
+            "Delete" ,
+            function() {
+                //User wants to delete the photo
+                photoModel.deletePhoto(modalPhotoView._activePhoto.photoId);
+                modalView.close();
+            },
+            "Cancel",
+            function() {
+                // Just cancel the delete request
+                modalView.close();
+            });
+
     },
 
    sharePhoto: function (e) {
