@@ -343,12 +343,31 @@ var photoModel = {
 
                 photoModel.photosDS.add(photoModel);
 
-                photoModel.uploadPhotoImage(photoId);
+                photoModel.addOfferImage(photoId, photoObj.imageUrl);
             });
 
         });
 
     },
+
+    addOfferImage : function (photoId, imageUrl) {
+        var photo = photoModel.findPhotoById(photoId);
+        devicePhoto.convertImgToDataURL(imageUrl, function (dataUrl) {
+            var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
+            var parseFile = new Parse.File("thumbnail_" + filename + ".jpg", {'base64': imageBase64});
+            parseFile.save().then(function () {
+
+                photo.set('imageUrl',parseFile._url);
+
+                updateParseObject('photos', 'photoId', photoId, 'image', parseFile);
+                updateParseObject('photos', 'photoId', photoId, 'imageUrl', parseFile._url);
+
+            });
+
+        });
+
+    },
+
 
     getPhotoOfferACL : function () {
         var acl = new Parse.ACL();
