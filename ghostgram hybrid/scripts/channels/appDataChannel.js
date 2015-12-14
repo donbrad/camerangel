@@ -366,7 +366,7 @@ var appDataChannel = {
         var channel = channelModel.findChannelModel(channelId);
 
         if (channel === undefined && channelMembers !== undefined && channelMembers.length > 1) {
-            mobileNotify("Chat invite from  " + ownerName + ' " ' + channelName + '"');
+            //mobileNotify("Chat invite from  " + ownerName + ' " ' + channelName + '"');
 
             channelModel.addMemberChannel(channelId, channelName, channelDescription, channelMembers, ownerId, ownerName, options);
             //notificationModel.addNewChatNotification(channelId, channelName, "new channel...");
@@ -379,7 +379,7 @@ var appDataChannel = {
         // Todo:  Does channel exist?  If not do nothing,  if so delete the channel
         var channel = channelModel.findChannelModel(channelId);
         if (channel === undefined) {
-            mobileNotify('Owner has deleted Chat: "' + channelName + '"');
+           // mobileNotify('Owner has deleted Chat: "' + channelName + '"');
             channelModel.deleteChannel(channel);
         }
 
