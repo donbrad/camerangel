@@ -682,6 +682,7 @@ var modalPhotoView = {
     openModal : function (photo) {
 
         modalPhotoView._photo = photo;
+
         var url = photo.thumbnailUrl;
         if (photo.imageUrl !== null)
             url = photo.imageUrl;
@@ -719,6 +720,9 @@ var modalPhotoView = {
 
 
         $("#modalPhotoView").data("kendoMobileModalView").open();
+
+        // Confirm that we have a valid local copy of this photo
+        photoModel.isPhotoCached(photo);
     },
 
     closeModal : function () {

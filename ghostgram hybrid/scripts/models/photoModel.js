@@ -53,7 +53,7 @@ var photoModel = {
 
                   /*  if (window.navigator.simulator === undefined) {
                         if (photo.imageUrl !== null) {
-                            photoModel.isPhotoCached(photo.imageUrl, filename, photo);
+                            photoModel.isPhotoCached(photo);
                         }
                     }
 */
@@ -100,15 +100,17 @@ var photoModel = {
         //photoModel._fetchOffers();
     },
 
-    isPhotoCached : function (url, filename, photo) {
-        var store = cordova.file.dataDirectory;
+    isPhotoCached : function (photo) {
+        var store = deviceModel.fileDirectory;
+        var url = photo.imageUrl;
+        var filename = photo.photoId.replace(/-/g, '');
 
         //Check for the file.
         window.resolveLocalFileSystemURL(store + filename, function(){}, function() {photoModel.addToLocalCache(url, filename, photo)});
     },
 
     addToLocalCache : function (url, name, photo) {
-        var store = cordova.file.dataDirectory;
+        var store = deviceModel.fileDirectory;
 
         var fileTransfer = new FileTransfer();
         fileTransfer.download(url, store + name,
@@ -249,9 +251,35 @@ var photoModel = {
 
                 }
 
-
                 if (callback !== undefined) {
                     callback(offer)
+                }
+
+            },
+            error: function(error) {
+                handleParseError(error);
+            }
+        });
+    },
+
+    getAllPhotoOffers : function (photoId, callback) {
+        var ParsePhotoOffer = Parse.Object.extend("photoOffer");
+        var queryOffer = new Parse.Query(ParsePhotoOffer);
+
+        queryOffer.equalTo("photoId", photoId);
+        queryOffer.find({
+            success: function(collection) {
+
+                var offers = [];
+                for (var i = 0; i < collection.length; i++) {
+                    var parseOffer = collection[i];
+                    var offer = parseOffer.toJSON();
+
+                    offers.push(offer);
+                }
+
+                if (callback !== undefined) {
+                    callback(offers)
                 }
 
 

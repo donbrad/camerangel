@@ -1598,12 +1598,11 @@
 	<div id=#:msgID# class="chat-message #=history# clearfix">
 	#
 
-		var name = "Me";
-		var photoUrl = '';
-		sender = contactData.uuid;
-		name = contactData.name;
+		var photoUrl = channelView.mapPhotoUrl(msgID, data.photo);
+		var sender = contactData.uuid;
+		var name = contactData.name;
 		var alias = contactData.alias;
-		photoUrl = contactData.photoUrl;
+		var contactPhotoUrl = contactData.photoUrl;
 		var displayName = ux.returnUXPrimaryName(name, alias);
 		var messageClass = "chat-message-text";
 	#
@@ -1628,7 +1627,7 @@
 
 		<div class="chat-message-user-img">
 			# if(photoUrl !== '') {#
-				<img class="chat-message-profileImg circle-img-sm" src="#: photoUrl #" alt="" />
+				<img class="chat-message-profileImg circle-img-sm" src="#: contactPhotoUrl #" alt="" />
 			#} else {#
 				<img class="chat-message-profileImg circle-img-sm" src="images/ghost-blue.svg" alt="" />
 			#}#

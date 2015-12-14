@@ -169,10 +169,10 @@
 
 			});
 
-			cordova.plugins.notification.local.ontrigger = function(id, state, json) {
+			/*cordova.plugins.notification.local.ontrigger = function(id, state, json) {
 				var message = 'ID: ' + id + (json == '' ? '' : '\nData: ' + json);
 				navigator.notification.alert(message, null, 'Notification received while the app was in the foreground', 'Close');
-			};
+			};*/
 
 
 			// hiding the accessory bar

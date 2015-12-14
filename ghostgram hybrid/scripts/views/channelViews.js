@@ -823,6 +823,12 @@ var channelView = {
 
     memberList: [],
 
+    photoOffersDS: new kendo.data.DataSource({  // this is the list view data source for chat messages
+
+    }),
+
+    photoUrlMap: [], // Dynamic map of photos to image urls based on offers
+
     messagesDS: new kendo.data.DataSource({  // this is the list view data source for chat messages
         sort: {
             field: "time",
@@ -833,6 +839,27 @@ var channelView = {
     _channel : null,
     _channelId : null,
 
+    queryMessage: function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = channelView.messagesDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var message = view[0];
+
+        dataSource.filter(cacheFilter);
+
+        return(message);
+    },
+
+    findMessageById : function (msgID) {
+
+        return(photoModel.queryMessage({ field: "msgID", operator: "eq", value: msgID }));
+    },
 
     onInit: function (e) {
 
@@ -918,7 +945,6 @@ var channelView = {
     	
     },
 
-
     // Initialize the channel specific view data sources.
     initDataSources : function () {
         channelView.messagesDS.data([]);
@@ -943,6 +969,10 @@ var channelView = {
         var thisUser = userModel.currentUser;
 
         channelView.initDataSources();
+
+        photoModel.getChannelOffers(channelUUID, function (offers) {
+            channelView.photoOffersDS.data(offers);
+        });
 
         var thisChannel = channelModel.findChannelModel(channelUUID);
         if (thisChannel === null) {
@@ -1074,6 +1104,41 @@ var channelView = {
         }
 
 
+    },
+
+    // find photo offer in the list of photo offers
+    findPhotoOffer : function (photoId) {
+
+        var dataSource = channelView.photoOffersDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter({ field: "photoId", operator: "eq", value: photoId });
+        var view = dataSource.view();
+        var offer = view[0];
+        dataSource.filter(cacheFilter);
+
+        return(offer);
+
+    },
+
+    mapPhotoUrl : function (msgID, photo) {
+
+        var photoObj = photoModel.findOfferByPhotoId(photo.photoId);
+        if (photoObj !== undefined) {
+            // This is the senders photo  -- it's the in the gallery so just reutrn the thumbnail
+            return(photoObj.thumbnailUrl);
+        } else {
+            // This is a recieved photo -- need to look up current offer
+            var offer = channelView.findPhotoOffer(photo.photoId);
+            if (offer === undefined) {
+
+            } else {
+                return(photo.thumbnailUrl);
+            }
+            return('images/photo-default.svg');
+        }
     },
 
     // Quick access to contact data for display.
