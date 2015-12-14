@@ -516,7 +516,7 @@ var photoModel = {
                 //Update the photo with offerId
                 var photo = photoModel.findPhotoById(photoId);
                 if (photo === undefined) {
-                    mobileNotify("Photo Offer with photo: " + photoId);
+                    mobileNotify("Photo Offer with unknown photo: " + photoId);
                 } else {
                     photo.set("offerId", offeruuid);
                     updateParseObject('photos', 'photoId', photoId, 'offerId', offeruuid);
