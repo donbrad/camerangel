@@ -1125,6 +1125,9 @@ var channelView = {
 
     mapPhotoUrl : function (msgID, photo) {
 
+        if (photo === undefined || photo.photoId === undefined) {
+            return('images/photo-default.svg');
+        }
         var photoObj = photoModel.findPhotoById(photo.photoId);
         if (photoObj !== undefined) {
             // This is the senders photo  -- it's the in the gallery so just reutrn the thumbnail
