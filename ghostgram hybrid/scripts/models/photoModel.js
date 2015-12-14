@@ -97,7 +97,7 @@ var photoModel = {
 
     fetch: function () {
         photoModel._fetchPhotos();
-        photoModel._fetchOffers();
+        //photoModel._fetchOffers();
     },
 
     isPhotoCached : function (url, filename, photo) {
@@ -202,6 +202,66 @@ var photoModel = {
 
         return(photoModel.queryPhoto({ field: "senderUUID", operator: "eq", value: senderId }));
     },
+
+     getChannelOffers : function (channelId, callback) {
+        var ParsePhotoOffer = Parse.Object.extend("photoOffer");
+        var queryOffer = new Parse.Query(ParsePhotoOffer);
+
+         queryOffer.equalTo("channelId", channelId);
+        queryOffer.find({
+            success: function(collection) {
+
+                var offers = [];
+                for (var i = 0; i < collection.length; i++) {
+                    var parseOffer = collection[i];
+                    var offer = parseOffer.toJSON();
+
+                    offers.push(offer);
+                }
+
+                if (callback !== undefined) {
+                    callback(offers)
+                }
+
+
+            },
+            error: function(error) {
+                handleParseError(error);
+            }
+        });
+    },
+
+    getPhotoOffer : function (channelId, photoId, callback) {
+        var ParsePhotoOffer = Parse.Object.extend("photoOffer");
+        var queryOffer = new Parse.Query(ParsePhotoOffer);
+        queryOffer.equalTo("channelId", channelId);
+        queryOffer.equalTo("photoId", photoId);
+        queryOffer.find({
+            success: function(collection) {
+                var offer = null;
+
+                if (collection.length > 0) {
+                    var parseOffer = collection[i];
+
+                    if (parseOffer !== undefined) {
+                        var offer = parseOffer.toJSON();
+                    }
+
+                }
+
+
+                if (callback !== undefined) {
+                    callback(offer)
+                }
+
+
+            },
+            error: function(error) {
+                handleParseError(error);
+            }
+        });
+    },
+
 
     upgradePhoto : function (photo) {
         // current trigger is no version field -- later we'll compare numbers
@@ -385,8 +445,9 @@ var photoModel = {
         var uploadFlag = false;
 
         var offeruuid = uuid.v4();
-        
-        offer.setACL(userModel.parseACL);
+
+
+        offer.setACL(photoModel.getPhotoOfferACL());
         offer.set('version', photoModel._version);
 
         offer.set('uuid', offeruuid);
