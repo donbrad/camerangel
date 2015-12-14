@@ -1598,13 +1598,17 @@
 	<div id=#:msgID# class="chat-message #=history# clearfix">
 	#
 
-		var photoUrl = channelView.mapPhotoUrl(msgID, data.photo);
+		var photoUrl='images/photo-default.svg';
 		var sender = contactData.uuid;
 		var name = contactData.name;
 		var alias = contactData.alias;
 		var contactPhotoUrl = contactData.photoUrl;
 		var displayName = ux.returnUXPrimaryName(name, alias);
 		var messageClass = "chat-message-text";
+
+		if (data!== undefined && data.photo !== undefined) {
+		 photoUrl = channelView.mapPhotoUrl(msgID, data.photo);
+		}
 	#
 	# if(userModel.currentUser.useLargeView){#
 		# var messageClass = "userLgFontSize chat-message-text"; #
