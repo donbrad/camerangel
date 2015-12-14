@@ -811,6 +811,7 @@ var channelView = {
     intervalId : null,
     ghostgramActive : false,
     sendMessageHandler : null,
+    _offersLoaded : false,
 
     membersDS: new kendo.data.DataSource({
         sort: {
@@ -958,7 +959,7 @@ var channelView = {
 
         channelView.topOffset = APP.kendo.scroller().scrollTop;
         channelView._active = true;
-
+        channelView._offersLoaded = false;
         // hide action btn
         ux.showActionBtn(false, "#channel");
 
@@ -972,6 +973,7 @@ var channelView = {
 
         photoModel.getChannelOffers(channelUUID, function (offers) {
             channelView.photoOffersDS.data(offers);
+            channelView._offersLoaded = true;
         });
 
         var thisChannel = channelModel.findChannelModel(channelUUID);
