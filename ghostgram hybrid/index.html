@@ -2081,107 +2081,108 @@
 				<img src="images/trash.svg" height="18" />
 				<p class="chat-option-selection"> Delete</p>
 			</a>
-
 		</div><!-- contact-options -->
+
 		# if(data.category === 'member') {#
-		<a class="contactListBox member" data-contact="#:uuid#">
-			#} else if(data.category === 'new'){#
+			<a class="contactListBox member" data-contact="#:uuid#">
+		#} else if(data.category === 'new'){#
 			<a class="contactListBox" data-contact="#:uuid#">
-				#} else {#
-				<a class="contactListBox noSlide">
-					#}#
-					#if (data.category === 'member') {#
-					<div class="left listPhoto">
-						<div class="statusContactList">
+		#} else {#
+			<a class="contactListBox noSlide" data-contact="#:uuid#">
+		#}#
+		#if (data.category === 'member') {#
+		<div class="left listPhoto">
+			<div class="statusContactList">
 
-							#if (data.isAvailable !== undefined && data.isAvailable) { #
-							<img class="circle-img-md" src="#:data.photo#" />
-							<img width="16" src="images/status-available.svg" class="statusContactList-icon" />
-							# }
-							else { #
-							<img class="circle-img-md" src="#:data.photo#" />
-							<img width="16" src="images/status-away.svg" class="statusContactList-icon" />
-							#}#
-							# if (data.isBlocked) {#
-								<div class="left">
-								<span class="helper helper-sm">Blocked</span>
-								</div>
-							#}#
-						</div>
-					</div><!-- left -->
-
-					<div class="left listName">
-						<h4 class="textClamp">
-							#= primaryName #
-							#if (data.phoneVerified){#
-							<img src="images/user-verified.svg" class="user-status-icon" />
-							#}#
-							<span class="contacts-alias-sm hidden">#= secondaryName  #</span>
-
-							#if(data.group !== "" && data.group !== null){#
-							<span class="contact-group">#: data.group #</span>
-							#}#
-
-						</h4>
+				#if (data.isAvailable !== undefined && data.isAvailable) { #
+				<img class="circle-img-md" src="#:data.photo#" />
+				<img width="16" src="images/status-available.svg" class="statusContactList-icon" />
+				# }
+				else { #
+				<img class="circle-img-md" src="#:data.photo#" />
+				<img width="16" src="images/status-away.svg" class="statusContactList-icon" />
+				#}#
+				# if (data.isBlocked) {#
+					<div class="left">
+					<span class="helper helper-sm">Blocked</span>
 					</div>
+				#}#
+			</div>
+		</div><!-- left -->
 
-					<div class="left contact-status textClamp">
-						<p class="contactStatusMessage-sm">
-							# var message = "", location = "";
-							if (data.statusMessage !== undefined && data.statusMessage !== "") {
-							message = data.statusMessage;
-							}#
+		<div class="left listName">
+			<h4 class="textClamp">
+				#= primaryName #
+				#if (data.phoneVerified){#
+				<img src="images/user-verified.svg" class="user-status-icon" />
+				#}#
+				<span class="contacts-alias-sm hidden">#= secondaryName  #</span>
 
-							#:message#
-						</p>
+				#if(data.group !== "" && data.group !== null){#
+				<span class="contact-group">#: data.group #</span>
+				#}#
 
-						# if (data.currentPlace !== undefined && data.currentPlace !== ""){#
-						<p class="contactStatus-location">
-							@#:data.currentPlace#
-						</p>
-						#}#
-					</div>
+			</h4>
+		</div>
 
-					<div class="clearfix"></div>
-					#} else if(data.category === 'new'){#
-					<div class="left listPhoto">
-						<div class="statusContactList">
-							<img class="circle-img-md" src="#:data.photo#" />
-						</div>
-					</div><!-- left -->
-					<div class="left listName">
-						<h4 class="textClamp">
-							#= primaryName #
-							<span class="contacts-alias-sm">#= secondaryName  #</span>
-						</h4>
-					</div>
-					<div class="left contact-status">
-						<p class="left contactStatusMessage-sm">Invite Sent</p>
-					</div>
-					#} else {#
-					<div class="left listPhoto">
-						<div class="statusContactList">
-							<img class="circle-img-md" src="#:data.photo#" />
-						</div>
-					</div><!-- left -->
-					<div class="left listName">
-						<h4 class="textClamp">
-							#: data.name #
-							#if (data.phoneVerified){#
-							<img src="images/user-verified.svg" class="user-status-icon" />
-							#}#
-							<span class="contacts-alias-sm">#: data.alias #</span>
-						</h4>
-					</div>
-					<div class="left contact-status">
-						<p class="left contactStatusMessage-sm">
-							New Contact - Tap to Connect!
-						</p>
-					</div>
-					#}#
-				</a><!-- listBox -->
+		<div class="left contact-status textClamp">
+			<p class="contactStatusMessage-sm">
+				# var message = "", location = "";
+				if (data.statusMessage !== undefined && data.statusMessage !== "") {
+				message = data.statusMessage;
+				}#
+
+				#:message#
+			</p>
+
+			# if (data.currentPlace !== undefined && data.currentPlace !== ""){#
+			<p class="contactStatus-location">
+				@#:data.currentPlace#
+			</p>
+			#}#
+		</div>
+
+		<div class="clearfix"></div>
+		#} else if(data.category === 'new'){#
+		<div class="left listPhoto">
+			<div class="statusContactList">
+				<img class="circle-img-md" src="#:data.photo#" />
+			</div>
+		</div><!-- left -->
+		<div class="left listName">
+			<h4 class="textClamp">
+				#= primaryName #
+				<span class="contacts-alias-sm">#= secondaryName  #</span>
+			</h4>
+		</div>
+		<div class="left contact-status">
+			<p class="left contactStatusMessage-sm">Invite Sent</p>
+		</div>
+		#} else {#
+		<div class="left listPhoto">
+			<div class="statusContactList">
+				<img class="circle-img-md" src="#:data.photo#" />
+			</div>
+		</div><!-- left -->
+		<div class="left listName">
+			<h4 class="textClamp">
+				#: data.name #
+				#if (data.phoneVerified){#
+				<img src="images/user-verified.svg" class="user-status-icon" />
+				#}#
+				<span class="contacts-alias-sm">#: data.alias #</span>
+			</h4>
+		</div>
+		<div class="left contact-status">
+			<p class="left contactStatusMessage-sm">
+				New Contact - Tap to Connect!
+			</p>
+		</div>
+		#}#
+	</a><!-- listBox -->
 	</div>
-
+</div>
+	
 </script>
 
 <script type="text/x-kendo-template" id="deviceContactsTemplate">
