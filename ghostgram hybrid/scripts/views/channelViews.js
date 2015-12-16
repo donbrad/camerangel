@@ -918,6 +918,8 @@ var channelView = {
         });
         $(".k-editor-toolbar").hide();
 
+        $.browser = {webkit: true};
+        
         $('#messageTextArea').textntags({
             onDataRequest: function (mode, query, triggerChar, callback) {
                 var data = [
