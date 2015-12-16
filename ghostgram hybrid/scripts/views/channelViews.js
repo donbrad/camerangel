@@ -918,6 +918,23 @@ var channelView = {
         });
         $(".k-editor-toolbar").hide();
 
+        $('#messageTextArea').textntags({
+            onDataRequest: function (mode, query, triggerChar, callback) {
+                var data = [
+                    { id:1, name:'call',  'img':'images/icon-smart.svg', 'type':'meeting' },
+                    { id:2, name:'meet', 'img':'images/icon-smart.svg', 'type':'meeting' },
+                    { id:3, name:'conference',   'img':'images/icon-smart.svg', 'type':'meeting'},
+                    { id:4, name:'breakfast',   'img':'images/icon-smart.svg', 'type':'meeting'},
+                    { id:5, name:'lunch',   'img':'images/icon-smart.svg', 'type':'meeting'},
+                    { id:6, name:'dinner',   'img':'images/icon-smart.svg', 'type':'meeting'}
+                ];
+
+                query = query.toLowerCase();
+                var found = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query) > -1; });
+
+                callback.call(this, found);
+            }
+        });
 
 
         /*$("#channelMembers-listview").kendoMobileListView({
