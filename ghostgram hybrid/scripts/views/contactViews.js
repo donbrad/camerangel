@@ -71,10 +71,10 @@ var contactsView = {
                             contactObj.set('phone', thisContact.contactPhone);
                             contactObj.set('email', thisContact.contactEmail);
 
-                            updateParseObject('contacts', 'uuid', thisContact.uuid, 'category', thisContact.category);
+                           /* updateParseObject('contacts', 'uuid', thisContact.uuid, 'category', thisContact.category);
                             updateParseObject('contacts', 'uuid', thisContact.uuid, 'publicKey', thisContact.publicKey);
                             updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactPhone', thisContact.contactPhone);
-                            updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactEmail', thisContact.contactEmail);
+                            updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactEmail', thisContact.contactEmail);*/
 
                         }
 
@@ -190,6 +190,7 @@ var contactsView = {
        // contactModel.contactListDS.data(contactModel.contactsDS.data());
         //APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
 
+        contactsView.updateContactListDS();
         contactModel.updateContactListStatus();
 
         // Reset the filters and ux state on show.
