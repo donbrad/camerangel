@@ -812,6 +812,10 @@ var channelView = {
     ghostgramActive : false,
     sendMessageHandler : null,
     _offersLoaded : false,
+    _tagActive : false,
+    _tagStart : null,
+    _tagEnd: null,
+    _tagRange: null,
 
     membersDS: new kendo.data.DataSource({
         sort: {
@@ -904,7 +908,18 @@ var channelView = {
         });
         $(".k-editor-toolbar").hide();
 
-  		
+        $("#messageTextArea").kendoEditor({
+            keyup: function(e) {
+                if (channelView._tagActive) {
+                    if (e.keyCode === '.') {
+                        var editor = $("#messageTextArea").data("kendoEditor");
+                        var range = editor.getRange();
+                        channelView._tagRange = range;
+                        channelView.processTag();
+                    }
+                }
+            }
+        });
         /*$("#channelMembers-listview").kendoMobileListView({
             dataSource: currentChannelModel.membersDS,
             template: $("#membersTemplate").html(),
@@ -1673,6 +1688,10 @@ var channelView = {
         $("#messageActions").data("kendoMobileActionSheet").open();
     },
 
+    processTag : function () {
+
+    },
+
     messageEraser: function (e) {
         _preventDefault(e);
         channelView._initMessageTextArea();
@@ -1744,6 +1763,14 @@ var channelView = {
             {limit:1, duration: 5}
         );
     },
+
+    messageInsertTag : function (e) {
+        _preventDefault(e);
+        var editor = $("#messageTextArea").data("kendoEditor");
+        editor.paste("@");
+
+    },
+
 
     smartScanMessage: function (e) {
         _preventDefault(e);
