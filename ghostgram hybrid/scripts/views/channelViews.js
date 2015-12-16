@@ -1572,7 +1572,7 @@ var channelView = {
         var photoObj = photoModel.findPhotoById(photoId);
 
         if (photoObj !== undefined) {
-            var imgUrl = '<img class="chat-message-photo" data-photoid="'+ photoId + '" id="chatphoto_'+photoId+'" src="'+photoObj.thumbnailUrl+'" />';
+            var imgUrl = '<img class="chat-message-photo" data-photoid="'+ photoId + '" id="chatphoto_' + photoId + '" src="'+photoObj.thumbnailUrl+'" />';
             editor.paste(imgUrl);
         }
 
