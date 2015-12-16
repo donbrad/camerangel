@@ -5691,3 +5691,42 @@ table.k-editor {
 }
 
 
+/* Strength styles */
+.strength_meter {
+    font-size: 1em;
+    width: 50%;
+    background: none;
+    * {
+        background: none;
+    }
+    div {
+        text-align: right;
+		color: @shade-100;
+    }
+    .strong {
+        color: @success-200;
+    }
+    .medium {
+        color: @secondary-100;
+    }
+    .veryweak, .weak {
+        color: @warning-200;
+    }
+}
+
+.hide_button_strength, .button_strength {
+    text-decoration: none;
+}
+
+.button_strength {
+	color: @primary-200 !important;
+    float: left;
+    width: 50% !important;
+    text-align: left !important;
+}
+
+.strength_meter {
+    float: right;
+    width: 50%;
+}
+

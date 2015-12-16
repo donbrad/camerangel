@@ -5297,3 +5297,40 @@ table.k-editor {
   height: 2em;
   vertical-align: middle;
 }
+/* Strength styles */
+.strength_meter {
+  font-size: 1em;
+  width: 50%;
+  background: none;
+}
+.strength_meter * {
+  background: none;
+}
+.strength_meter div {
+  text-align: right;
+  color: #979797;
+}
+.strength_meter .strong {
+  color: #65BBB3;
+}
+.strength_meter .medium {
+  color: #FFB74D;
+}
+.strength_meter .veryweak,
+.strength_meter .weak {
+  color: #FFA9A9;
+}
+.hide_button_strength,
+.button_strength {
+  text-decoration: none;
+}
+.button_strength {
+  color: #6CADF3 !important;
+  float: left;
+  width: 50% !important;
+  text-align: left !important;
+}
+.strength_meter {
+  float: right;
+  width: 50%;
+}

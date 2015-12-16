@@ -1001,7 +1001,13 @@ var changePasswordView = {
 
     onInit : function (e) {
         _preventDefault(e);
-        $('#newPassword1').strength();
+        $('#newPassword1').strength({
+        	strengthClass: 'strength',
+        	strengthMeterClass: 'strength_meter',
+        	strengthButtonClass: 'button_strength',
+        	strengthButtonText: 'Show password',
+        	strengthButtonTextToggle: 'Hide Password'
+        });
 
     },
 
