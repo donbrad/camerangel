@@ -920,6 +920,7 @@ var channelView = {
                 }
             }
         });
+
         /*$("#channelMembers-listview").kendoMobileListView({
             dataSource: currentChannelModel.membersDS,
             template: $("#membersTemplate").html(),
