@@ -656,7 +656,7 @@ var addContactView = {
 
     validate: function(){
     	var form = $("#addContactForm").kendoValidator().data("kendoValidator");
- 		console.log(addContactView._closeModal)
+
     	if(form.validate() && addContactView._closeModal === false){
     		addContactView.addContact();
     	} else {

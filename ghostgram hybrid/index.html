@@ -8,6 +8,7 @@
 	<link href="kendo/styles/kendo.material.min.css" rel="stylesheet" />
     <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet" />
 	<link href="styles/strength.css" rel="stylesheet" />
+	<link href="styles/jquery-textntags.css" rel="stylesheet" />
     <link href="styles/master.css" rel="stylesheet" />
 
     <script src="cordova.js"></script>
@@ -16,6 +17,7 @@
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-XdXhoF08ubebxTjTh9jf0Ra4xFV1Jwo&libraries=places"></script>
     <script src="bower_components/eventEmitter/EventEmitter.js"></script>
     <script src="bower_components/q/q.js"></script>
+	<script src="bower_components/underscore/underscore.js"></script>
 	<script src="scripts/libs/parse.js"></script>
     <script src="https://cdn.pubnub.com/pubnub-3.7.16.js"></script>
     <script src="scripts/parseKendoDataSourceFactory.js"></script>
@@ -36,7 +38,7 @@
     <script src="scripts/libs/smartcrop.js"></script>
 	<script src="scripts/ux.js"></script>
 	<script src="scripts/libs/lunr.js"></script>
-    <script src="scripts/libs/jq.wraptions.js"></script>
+    <script src="scripts/libs/jquery-textntags.js"></script>
     <script src="scripts/jquery.email-autocomplete.js"></script>
 	<script src='bower_components/autosize/dist/autosize.js'></script>
     <script src="bower_components/moment/moment.js"></script>
@@ -88,8 +90,8 @@
 						<span class="home-status">
 							<img class="home-status-img userAvailable" src="images/status-away.svg"/>
 						</span>
-						<img class="circle-img-home home-profile-img" id="homeProfileImg"/>
-						<svg width="40" height="40" class="circle-img-home hidden" id="homeProfileIdenticon"/> </svg>
+						<img class="circle-img-home home-profile-img" />
+						<svg width="40" height="40" class="circle-img-home hidden homeProfileIdenticon"/> </svg>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -1400,11 +1402,6 @@
 							<img src="images/chat-camera.svg" height="24">
 						</a>
 					</li>
-					<li>
-						<a data-role="button" data-click="channelView.messageAudio">
-							<img src="images/chat-sound.svg" height="24">
-						</a>
-					</li>
 					<li >
 						<a data-role="button" data-badge="0" data-click="channelView.ghostgram" id="chat-editorBtn">
 							<img src="images/icon-editor.svg" height="20" id="chat-editorBtnImg"/>
@@ -1413,6 +1410,11 @@
 					<li class="hidden">
 						<a data-role="button" data-click="channelView.messageLocation">
 							<img src="images/chat-places.svg" height="24">
+						</a>
+					</li>
+					<li>
+						<a data-role="button" data-click="channelView.messageInsertTag">
+							<img src="images/icon-smart.svg" height="24">
 						</a>
 					</li>
 					<li>
@@ -1440,8 +1442,8 @@
 
 	<ul data-role="actionsheet" id="newMessageActions" data-popup='{"direction": "left"}'>
 		<li><a data-action="channelView.messageCalendar"> Add Calendar</a></li>
-		<li><a data-action="channelView.messageMovie"> Add Movie</a></li>
 		<li><a data-action="channelView.messageEvent"> Add Event</a></li>
+		<li><a data-action="channelView.messageMovie"> Add Movie</a></li>
 		<li><a data-action="channelView.messageMusic"> Add Music</a></li>
 	</ul>
 
@@ -1598,14 +1600,17 @@
 	<div id=#:msgID# class="chat-message #=history# clearfix">
 	#
 
-		var name = "Me";
-		var photoUrl = '';
-		sender = contactData.uuid;
-		name = contactData.name;
+		var photoUrl='images/photo-default.svg';
+		var sender = contactData.uuid;
+		var name = contactData.name;
 		var alias = contactData.alias;
-		photoUrl = contactData.photoUrl;
+		var contactPhotoUrl = contactData.photoUrl;
 		var displayName = ux.returnUXPrimaryName(name, alias);
 		var messageClass = "chat-message-text";
+
+		if (data !== undefined && data.photo !== undefined) {
+		 photoUrl = channelView.mapPhotoUrl(msgID, data.photo);
+		}
 	#
 	# if(userModel.currentUser.useLargeView){#
 		# var messageClass = "userLgFontSize chat-message-text"; #
@@ -1628,7 +1633,7 @@
 
 		<div class="chat-message-user-img">
 			# if(photoUrl !== '') {#
-				<img class="chat-message-profileImg circle-img-sm" src="#: photoUrl #" alt="" />
+				<img class="chat-message-profileImg circle-img-sm" src="#: contactPhotoUrl #" alt="" />
 			#} else {#
 				<img class="chat-message-profileImg circle-img-sm" src="images/ghost-blue.svg" alt="" />
 			#}#
@@ -2077,107 +2082,108 @@
 				<img src="images/icon-trash.svg" height="18" />
 				<p class="chat-option-selection"> Delete</p>
 			</a>
-
 		</div><!-- contact-options -->
+
 		# if(data.category === 'member') {#
-		<a class="contactListBox member" data-contact="#:uuid#">
-			#} else if(data.category === 'new'){#
+			<a class="contactListBox member" data-contact="#:uuid#">
+		#} else if(data.category === 'new'){#
 			<a class="contactListBox" data-contact="#:uuid#">
-				#} else {#
-				<a class="contactListBox noSlide">
-					#}#
-					#if (data.category === 'member') {#
-					<div class="left listPhoto">
-						<div class="statusContactList">
+		#} else {#
+			<a class="contactListBox noSlide" data-contact="#:uuid#">
+		#}#
+		#if (data.category === 'member') {#
+		<div class="left listPhoto">
+			<div class="statusContactList">
 
-							#if (data.isAvailable !== undefined && data.isAvailable) { #
-							<img class="circle-img-md" src="#:data.photo#" />
-							<img width="16" src="images/status-available.svg" class="statusContactList-icon" />
-							# }
-							else { #
-							<img class="circle-img-md" src="#:data.photo#" />
-							<img width="16" src="images/status-away.svg" class="statusContactList-icon" />
-							#}#
-							# if (data.isBlocked) {#
-								<div class="left">
-								<span class="helper helper-sm">Blocked</span>
-								</div>
-							#}#
-						</div>
-					</div><!-- left -->
-
-					<div class="left listName">
-						<h4 class="textClamp">
-							#= primaryName #
-							#if (data.phoneVerified){#
-							<img src="images/user-verified.svg" class="user-status-icon" />
-							#}#
-							<span class="contacts-alias-sm hidden">#= secondaryName  #</span>
-
-							#if(data.group !== "" && data.group !== null){#
-							<span class="contact-group">#: data.group #</span>
-							#}#
-
-						</h4>
+				#if (data.isAvailable !== undefined && data.isAvailable) { #
+				<img class="circle-img-md" src="#:data.photo#" />
+				<img width="16" src="images/status-available.svg" class="statusContactList-icon" />
+				# }
+				else { #
+				<img class="circle-img-md" src="#:data.photo#" />
+				<img width="16" src="images/status-away.svg" class="statusContactList-icon" />
+				#}#
+				# if (data.isBlocked) {#
+					<div class="left">
+					<span class="helper helper-sm">Blocked</span>
 					</div>
+				#}#
+			</div>
+		</div><!-- left -->
 
-					<div class="left contact-status textClamp">
-						<p class="contactStatusMessage-sm">
-							# var message = "", location = "";
-							if (data.statusMessage !== undefined && data.statusMessage !== "") {
-							message = data.statusMessage;
-							}#
+		<div class="left listName">
+			<h4 class="textClamp">
+				#= primaryName #
+				#if (data.phoneVerified){#
+				<img src="images/user-verified.svg" class="user-status-icon" />
+				#}#
+				<span class="contacts-alias-sm hidden">#= secondaryName  #</span>
 
-							#:message#
-						</p>
+				#if(data.group !== "" && data.group !== null){#
+				<span class="contact-group">#: data.group #</span>
+				#}#
 
-						# if (data.currentPlace !== undefined && data.currentPlace !== ""){#
-						<p class="contactStatus-location">
-							@#:data.currentPlace#
-						</p>
-						#}#
-					</div>
+			</h4>
+		</div>
 
-					<div class="clearfix"></div>
-					#} else if(data.category === 'new'){#
-					<div class="left listPhoto">
-						<div class="statusContactList">
-							<img class="circle-img-md" src="#:data.photo#" />
-						</div>
-					</div><!-- left -->
-					<div class="left listName">
-						<h4 class="textClamp">
-							#= primaryName #
-							<span class="contacts-alias-sm">#= secondaryName  #</span>
-						</h4>
-					</div>
-					<div class="left contact-status">
-						<p class="left contactStatusMessage-sm">Invite Sent</p>
-					</div>
-					#} else {#
-					<div class="left listPhoto">
-						<div class="statusContactList">
-							<img class="circle-img-md" src="#:data.photo#" />
-						</div>
-					</div><!-- left -->
-					<div class="left listName">
-						<h4 class="textClamp">
-							#: data.name #
-							#if (data.phoneVerified){#
-							<img src="images/user-verified.svg" class="user-status-icon" />
-							#}#
-							<span class="contacts-alias-sm">#: data.alias #</span>
-						</h4>
-					</div>
-					<div class="left contact-status">
-						<p class="left contactStatusMessage-sm">
-							New Contact - Tap to Connect!
-						</p>
-					</div>
-					#}#
-				</a><!-- listBox -->
+		<div class="left contact-status textClamp">
+			<p class="contactStatusMessage-sm">
+				# var message = "", location = "";
+				if (data.statusMessage !== undefined && data.statusMessage !== "") {
+				message = data.statusMessage;
+				}#
+
+				#:message#
+			</p>
+
+			# if (data.currentPlace !== undefined && data.currentPlace !== ""){#
+			<p class="contactStatus-location">
+				@#:data.currentPlace#
+			</p>
+			#}#
+		</div>
+
+		<div class="clearfix"></div>
+		#} else if(data.category === 'new'){#
+		<div class="left listPhoto">
+			<div class="statusContactList">
+				<img class="circle-img-md" src="#:data.photo#" />
+			</div>
+		</div><!-- left -->
+		<div class="left listName">
+			<h4 class="textClamp">
+				#= primaryName #
+				<span class="contacts-alias-sm">#= secondaryName  #</span>
+			</h4>
+		</div>
+		<div class="left contact-status">
+			<p class="left contactStatusMessage-sm">Invite Sent</p>
+		</div>
+		#} else {#
+		<div class="left listPhoto">
+			<div class="statusContactList">
+				<img class="circle-img-md" src="#:data.photo#" />
+			</div>
+		</div><!-- left -->
+		<div class="left listName">
+			<h4 class="textClamp">
+				#: data.name #
+				#if (data.phoneVerified){#
+				<img src="images/user-verified.svg" class="user-status-icon" />
+				#}#
+				<span class="contacts-alias-sm">#: data.alias #</span>
+			</h4>
+		</div>
+		<div class="left contact-status">
+			<p class="left contactStatusMessage-sm">
+				New Contact - Tap to Connect!
+			</p>
+		</div>
+		#}#
+	</a><!-- listBox -->
 	</div>
-
+</div>
+	
 </script>
 
 <script type="text/x-kendo-template" id="deviceContactsTemplate">
@@ -2420,28 +2426,51 @@
 		</div>
 	</div>
 	<div class="footer" data-role="footer">
-		<div>
-			<ul class="modalChatPhotoList">
-				<li id="modalChatPhotoViewUnlocked">
-					<span data-bind="text: title">Photo is unlocked</span>
-					<a class="btnClear-light" data-role="button" data-click="modalChatPhotoView.savePhoto">
-						<img src="images/icon-save-memories.svg" class="modalChatPhotoListImg" />
-						<p class="modalChatPhotoListOpt">Save to Memories</p>
-					</a>
-				</li>
-				<li id="modalChatPhotoViewLocked">
-					<span data-bind="text: title">Photo is locked</span>
-					<a class="btnClear-light" data-role="button" data-click="modalChatPhotoView.requestCopy">
-						<img src="images/icon-download-light.svg" class="modalChatPhotoListImg" />
-						<p class="modalChatPhotoListOpt">Request a copy</p>
-					</a>
-				</li>
-				<li id="modalChatPhotoViewRequestSent">
-					<img src="images/icon-sent.svg" class="modalChatPhotoListImg" />
-					<span data-bind="text: title">Photo Copy Requested</span>
-				</li>
-			</ul>
+
+		<div id="modalChatPhotoRecipient"  class="hidden">
+				<div style="text-align: center;" id="modalChatPhotoOwnerName"> </div>
+				<ul class="modalChatPhotoList">
+					<li id="modalChatPhotoViewUnlocked">
+
+						<a class="btnClear-light" data-role="button" data-click="modalChatPhotoView.savePhoto">
+							<img src="images/icon-save-memories.svg" class="modalChatPhotoListImg" />
+							<p class="modalChatPhotoListOpt">Save to Memories</p>
+						</a>
+					</li>
+					<li id="modalChatPhotoViewLocked">
+
+						<a class="btnClear-light" data-role="button" data-click="modalChatPhotoView.requestCopy">
+							<img src="images/icon-download-light.svg" class="modalChatPhotoListImg" />
+							<p class="modalChatPhotoListOpt">Request a copy</p>
+						</a>
+					</li>
+					<li id="modalChatPhotoViewRequestSent">
+						<img src="images/icon-sent.svg" class="modalChatPhotoListImg" />
+						<span>Photo Copy Requested</span>
+					</li>
+				</ul>
 			</div>
+		<div id="modalChatPhotoOwner" class="hidden">
+			<ul class="modalChatPhotoList" >
+				<li id="modalChatPhotoViewOwnerUnlocked">
+					<div>Photo is unlocked</div>
+				</li>
+				<li id="modalChatPhotoViewUnlock">
+					<a class="btnClear-light" data-role="button" data-click="modalChatPhotoView.unlockPhoto">
+						<img src="images/icon-unlock.svg" class="modalChatPhotoListImg" />
+						<p class="modalChatPhotoListOpt">Unlock Photo</p>
+					</a>
+				</li>
+				<li id="modalChatPhotoViewApprove">
+					<a class="btnClear-light" data-role="button" data-click="modalChatPhotoView.approveRequest">
+						<img src="images/icon-download-light.svg" class="modalChatPhotoListImg" />
+						<p class="modalChatPhotoListOpt">Respond to Copy Request</p>
+					</a>
+				</li>
+
+			</ul>
+		</div>
+
 		<a class="btnSpan-btm btnClear glass" data-role="button" data-click="modalChatPhotoView.closeModal">Close</a>
 
 	</div>
@@ -2480,7 +2509,9 @@
 				<img src="images/icon-share-light.svg"/>
 			</a>
 		</div>
-
+		<a class="actionBtn primary-100" data-role="button" data-click="modalPhotoView.deletePhoto">
+			<img src="images/icon-trash.svg"/>
+		</a>
 	</div>
 	<div class="footer" data-role="footer">
 		<a class="btnSpan-btm btnClear glass" data-role="button" data-click="modalPhotoView.closeModal" id="modalPhotoView-close">Close</a>
@@ -2834,6 +2865,7 @@
 					</label>
 				</li>
 				<li>
+
 					<label>Contact email
 						<input type="email"  name="Contact Email" data-bind="value: email" placeholer="me@example.com"/>
 					</label>

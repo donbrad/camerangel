@@ -811,6 +811,11 @@ var channelView = {
     intervalId : null,
     ghostgramActive : false,
     sendMessageHandler : null,
+    _offersLoaded : false,
+    _tagActive : false,
+    _tagStart : null,
+    _tagEnd: null,
+    _tagRange: null,
 
     membersDS: new kendo.data.DataSource({
         sort: {
@@ -823,6 +828,12 @@ var channelView = {
 
     memberList: [],
 
+    photoOffersDS: new kendo.data.DataSource({  // this is the list view data source for chat messages
+
+    }),
+
+    photoUrlMap: [], // Dynamic map of photos to image urls based on offers
+
     messagesDS: new kendo.data.DataSource({  // this is the list view data source for chat messages
         sort: {
             field: "time",
@@ -833,6 +844,27 @@ var channelView = {
     _channel : null,
     _channelId : null,
 
+    queryMessage: function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = channelView.messagesDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var message = view[0];
+
+        dataSource.filter(cacheFilter);
+
+        return(message);
+    },
+
+    findMessageById : function (msgID) {
+
+        return(photoModel.queryMessage({ field: "msgID", operator: "eq", value: msgID }));
+    },
 
     onInit: function (e) {
 
@@ -865,6 +897,16 @@ var channelView = {
                 content: true,
                 min: 24
             },
+            keyup: function(e) {
+                if (channelView._tagActive) {
+                    if (e.keyCode === '.') {
+                        var editor = $("#messageTextArea").data("kendoEditor");
+                        var range = editor.getRange();
+                        channelView._tagRange = range;
+                        channelView.processTag();
+                    }
+                }
+            },
             tools: [
                 "bold",
                 "italic",
@@ -876,7 +918,27 @@ var channelView = {
         });
         $(".k-editor-toolbar").hide();
 
-  		
+        $.browser = {webkit: true};
+
+        $('#messageTextArea').textntags({
+            onDataRequest: function (mode, query, triggerChar, callback) {
+                var data = [
+                    { id:1, name:'call',  'img':'images/icon-smart.svg', 'type':'meeting' },
+                    { id:2, name:'meet', 'img':'images/icon-smart.svg', 'type':'meeting' },
+                    { id:3, name:'conference',   'img':'images/icon-smart.svg', 'type':'meeting'},
+                    { id:4, name:'breakfast',   'img':'images/icon-smart.svg', 'type':'meeting'},
+                    { id:5, name:'lunch',   'img':'images/icon-smart.svg', 'type':'meeting'},
+                    { id:6, name:'dinner',   'img':'images/icon-smart.svg', 'type':'meeting'}
+                ];
+
+                query = query.toLowerCase();
+                var found = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query) > -1; });
+
+                callback.call(this, found);
+            }
+        });
+
+
         /*$("#channelMembers-listview").kendoMobileListView({
             dataSource: currentChannelModel.membersDS,
             template: $("#membersTemplate").html(),
@@ -918,7 +980,6 @@ var channelView = {
     	
     },
 
-
     // Initialize the channel specific view data sources.
     initDataSources : function () {
         channelView.messagesDS.data([]);
@@ -932,7 +993,7 @@ var channelView = {
 
         channelView.topOffset = APP.kendo.scroller().scrollTop;
         channelView._active = true;
-
+        channelView._offersLoaded = false;
         // hide action btn
         ux.showActionBtn(false, "#channel");
 
@@ -943,6 +1004,11 @@ var channelView = {
         var thisUser = userModel.currentUser;
 
         channelView.initDataSources();
+
+        photoModel.getChannelOffers(channelUUID, function (offers) {
+            channelView.photoOffersDS.data(offers);
+            channelView._offersLoaded = true;
+        });
 
         var thisChannel = channelModel.findChannelModel(channelUUID);
         if (thisChannel === null) {
@@ -1074,6 +1140,44 @@ var channelView = {
         }
 
 
+    },
+
+    // find photo offer in the list of photo offers
+    findPhotoOffer : function (photoId) {
+
+        var dataSource = channelView.photoOffersDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter({ field: "photoId", operator: "eq", value: photoId });
+        var view = dataSource.view();
+        var offer = view[0];
+        dataSource.filter(cacheFilter);
+
+        return(offer);
+
+    },
+
+    mapPhotoUrl : function (msgID, photo) {
+
+        if (photo === undefined || photo.photoId === undefined) {
+            return('images/photo-default.svg');
+        }
+        var photoObj = photoModel.findPhotoById(photo.photoId);
+        if (photoObj !== undefined) {
+            // This is the senders photo  -- it's the in the gallery so just reutrn the thumbnail
+            return(photoObj.thumbnailUrl);
+        } else {
+            // This is a recieved photo -- need to look up current offer
+            var offer = channelView.findPhotoOffer(photo.photoId);
+            if (offer === undefined) {
+
+            } else {
+                return(photo.thumbnailUrl);
+            }
+            return('images/photo-default.svg');
+        }
     },
 
     // Quick access to contact data for display.
@@ -1329,44 +1433,52 @@ var channelView = {
         }
     },
 
+    activateEditor : function () {
+        //$(".k-editor-toolbar").show();
+        $("#chat-editorBtnImg").attr("src","images/icon-editor-active.svg");
+        // Hide badge
+        //$("#chat-editorBtn > span.km-badge").hide();
+
+
+        // open up editor
+        $(".k-editor .k-editable-area").velocity({height: "10em"}, {duration: 300});
+        $("#editorOptionBar").velocity("slideDown");
+
+        $("#ghostgramMode").velocity("fadeIn", {delay: 300});
+    },
+
+    deactivateEditor : function () {
+        //$(".k-editor-toolbar").hide();
+        $("#chat-editorBtnImg").attr("src","images/icon-editor.svg");
+
+        $("#ghostgramMode").velocity("fadeOut");
+
+        // min editor
+        $(".k-editor .k-editable-area").velocity({height: "3em"}, {duration: 300});
+
+        // Show badge
+        //$("#chat-editorBtn > span.km-badge").show();
+        $("#editorOptionBar").velocity("slideUp");
+        /*
+         var toolCount = $("#chat-editorBtn").kendoMobileButton("badge");
+         parseInt(toolCount);
+
+         if (toolCount > 0){
+         $("#chat-editorBtn > span.km-badge").show();
+         } else {
+         $("#chat-editorBtn > span.km-badge").hide();
+         }
+         */
+    },
+
     ghostgram: function (e) {
         _preventDefault(e);
         channelView.ghostgramActive = !channelView.ghostgramActive;
         if (channelView.ghostgramActive){
-            //$(".k-editor-toolbar").show();
-        	$("#chat-editorBtnImg").attr("src","images/icon-editor-active.svg");
-        	// Hide badge
-        	//$("#chat-editorBtn > span.km-badge").hide();
-        	
-
-        	// open up editor
-        	$(".k-editor .k-editable-area").velocity({height: "10em"}, {duration: 300});
-        	$("#editorOptionBar").velocity("slideDown");
-
-        	$("#ghostgramMode").velocity("fadeIn", {delay: 300});
+          channelView.activateEditor();
 
         } else {
-            //$(".k-editor-toolbar").hide();
-        	$("#chat-editorBtnImg").attr("src","images/icon-editor.svg");
-        	
-        	$("#ghostgramMode").velocity("fadeOut");
-
-        	// min editor
-        	$(".k-editor .k-editable-area").velocity({height: "3em"}, {duration: 300});
-
-        	// Show badge
-        	//$("#chat-editorBtn > span.km-badge").show();
-        	$("#editorOptionBar").velocity("slideUp");
-        	/*
-        	var toolCount = $("#chat-editorBtn").kendoMobileButton("badge");
-        	parseInt(toolCount);
-
-        	if (toolCount > 0){
-    			$("#chat-editorBtn > span.km-badge").show();
-    		} else {
-    			$("#chat-editorBtn > span.km-badge").hide();
-    		}
-    		*/
+            channelView.deactivateEditor();
         }
     },
 
@@ -1603,6 +1715,10 @@ var channelView = {
         $("#messageActions").data("kendoMobileActionSheet").open();
     },
 
+    processTag : function () {
+
+    },
+
     messageEraser: function (e) {
         _preventDefault(e);
         channelView._initMessageTextArea();
@@ -1674,6 +1790,14 @@ var channelView = {
             {limit:1, duration: 5}
         );
     },
+
+    messageInsertTag : function (e) {
+        _preventDefault(e);
+        var editor = $("#messageTextArea").data("kendoEditor");
+        editor.paste("@");
+
+    },
+
 
     smartScanMessage: function (e) {
         _preventDefault(e);

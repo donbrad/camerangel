@@ -365,8 +365,8 @@ var appDataChannel = {
         // Todo:  Does channel exist?  If not create,  if so notify user of request
         var channel = channelModel.findChannelModel(channelId);
 
-        if (channel === undefined && channelMembers !== undefined && typeof (channelMembers) === 'array') {
-            mobileNotify("Chat invite from  " + ownerName + ' " ' + channelName + '"');
+        if (channel === undefined && channelMembers !== undefined && channelMembers.length > 1) {
+            //mobileNotify("Chat invite from  " + ownerName + ' " ' + channelName + '"');
 
             channelModel.addMemberChannel(channelId, channelName, channelDescription, channelMembers, ownerId, ownerName, options);
             //notificationModel.addNewChatNotification(channelId, channelName, "new channel...");
@@ -379,7 +379,7 @@ var appDataChannel = {
         // Todo:  Does channel exist?  If not do nothing,  if so delete the channel
         var channel = channelModel.findChannelModel(channelId);
         if (channel === undefined) {
-            mobileNotify('Owner has deleted Chat: "' + channelName + '"');
+           // mobileNotify('Owner has deleted Chat: "' + channelName + '"');
             channelModel.deleteChannel(channel);
         }
 
@@ -387,7 +387,7 @@ var appDataChannel = {
 
     processGroupUpdate: function (channelId, channelName, channelDescription, channelMembers, ownerId, ownerName) {
 
-        if (channelMembers !== undefined && channelMembers !== null && channelMembers.length > 0)
+        if (channelMembers !== undefined && channelMembers !== null && channelMembers.length > 1)
             channelModel.updateChannel(channelId, channelName, channelDescription, channelMembers);
 
     },

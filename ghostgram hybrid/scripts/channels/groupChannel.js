@@ -65,7 +65,7 @@ var groupChannel = {
             message.fromHistory = false;
         }
 
-        if (channelView._active) {
+        if (channelView._active && message.channelId === channelView._channelId) {
 
             channelView.messagesDS.add(message);
             channelModel.updateLastAccess(channelView._channelId, null);

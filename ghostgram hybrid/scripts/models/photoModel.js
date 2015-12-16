@@ -53,7 +53,7 @@ var photoModel = {
 
                   /*  if (window.navigator.simulator === undefined) {
                         if (photo.imageUrl !== null) {
-                            photoModel.isPhotoCached(photo.imageUrl, filename, photo);
+                            photoModel.isPhotoCached(photo);
                         }
                     }
 */
@@ -97,18 +97,20 @@ var photoModel = {
 
     fetch: function () {
         photoModel._fetchPhotos();
-        photoModel._fetchOffers();
+        //photoModel._fetchOffers();
     },
 
-    isPhotoCached : function (url, filename, photo) {
-        var store = cordova.file.dataDirectory;
+    isPhotoCached : function (photo) {
+        var store = deviceModel.fileDirectory;
+        var url = photo.imageUrl;
+        var filename = photo.photoId.replace(/-/g, '');
 
         //Check for the file.
         window.resolveLocalFileSystemURL(store + filename, function(){}, function() {photoModel.addToLocalCache(url, filename, photo)});
     },
 
     addToLocalCache : function (url, name, photo) {
-        var store = cordova.file.dataDirectory;
+        var store = deviceModel.fileDirectory;
 
         var fileTransfer = new FileTransfer();
         fileTransfer.download(url, store + name,
@@ -202,6 +204,92 @@ var photoModel = {
 
         return(photoModel.queryPhoto({ field: "senderUUID", operator: "eq", value: senderId }));
     },
+
+     getChannelOffers : function (channelId, callback) {
+        var ParsePhotoOffer = Parse.Object.extend("photoOffer");
+        var queryOffer = new Parse.Query(ParsePhotoOffer);
+
+         queryOffer.equalTo("channelId", channelId);
+        queryOffer.find({
+            success: function(collection) {
+
+                var offers = [];
+                for (var i = 0; i < collection.length; i++) {
+                    var parseOffer = collection[i];
+                    var offer = parseOffer.toJSON();
+
+                    offers.push(offer);
+                }
+
+                if (callback !== undefined) {
+                    callback(offers)
+                }
+
+
+            },
+            error: function(error) {
+                handleParseError(error);
+            }
+        });
+    },
+
+    getPhotoOffer : function (channelId, photoId, callback) {
+        var ParsePhotoOffer = Parse.Object.extend("photoOffer");
+        var queryOffer = new Parse.Query(ParsePhotoOffer);
+        queryOffer.equalTo("channelId", channelId);
+        queryOffer.equalTo("photoId", photoId);
+        queryOffer.find({
+            success: function(collection) {
+                var offer = null;
+
+                if (collection.length > 0) {
+                    var parseOffer = collection[i];
+
+                    if (parseOffer !== undefined) {
+                        var offer = parseOffer.toJSON();
+                    }
+
+                }
+
+                if (callback !== undefined) {
+                    callback(offer)
+                }
+
+            },
+            error: function(error) {
+                handleParseError(error);
+            }
+        });
+    },
+
+    getAllPhotoOffers : function (photoId, callback) {
+        var ParsePhotoOffer = Parse.Object.extend("photoOffer");
+        var queryOffer = new Parse.Query(ParsePhotoOffer);
+
+        queryOffer.equalTo("photoId", photoId);
+        queryOffer.find({
+            success: function(collection) {
+
+                var offers = [];
+                for (var i = 0; i < collection.length; i++) {
+                    var parseOffer = collection[i];
+                    var offer = parseOffer.toJSON();
+
+                    offers.push(offer);
+                }
+
+                if (callback !== undefined) {
+                    callback(offers)
+                }
+
+
+            },
+            error: function(error) {
+                handleParseError(error);
+            }
+        });
+    },
+
 
     upgradePhoto : function (photo) {
         // current trigger is no version field -- later we'll compare numbers
@@ -333,34 +421,41 @@ var photoModel = {
         photo.set('senderUUID',ownerId );
         photo.set('senderName', ownerName);
 
-        devicePhoto.convertImgToDataURL(photo.imageUrl, function (dataUrl) {
-
+        devicePhoto.convertImgToDataURL(photoObj.thumbnailUrl, function (dataUrl) {
             var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
-            var parseFilePhoto = new Parse.File("photo_" + filename + ".jpg", {'base64': imageBase64});
-            parseFilePhoto.save().then(function () {
-                photo.set('image',parseFilePhoto);
-                photo.set('imageUrl',parseFilePhoto._url);
+            var parseFile = new Parse.File("thumbnail_" + filename + ".jpg", {'base64': imageBase64});
+            parseFile.save().then(function () {
+                photo.set('thumbnail',parseFile);
+                photo.set('thumbnailUrl',parseFile._url);
+                var photoModel = photo.toJSON();
 
-                devicePhoto.convertImgToDataURL(photo.thumbnailUrl, function (dataUrl) {
+                photoModel.photosDS.add(photoModel);
 
-                    var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
-                    var parseFile = new Parse.File("thumbnail_" + filename + ".jpg", {'base64': imageBase64});
-                    parseFile.save().then(function () {
-                        photo.set('thumbnail',parseFile);
-                        photo.set('thumbnailUrl',parseFile._url);
-                        var photoModel = photo.toJSON();
-
-                        photoModel.photosDS.add(photoModel);
-                    });
-
-                });
+                photoModel.addOfferImage(photoId, photoObj.imageUrl);
             });
 
         });
 
+    },
 
+    addOfferImage : function (photoId, imageUrl) {
+        var photo = photoModel.findPhotoById(photoId);
+        devicePhoto.convertImgToDataURL(imageUrl, function (dataUrl) {
+            var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
+            var parseFile = new Parse.File("thumbnail_" + filename + ".jpg", {'base64': imageBase64});
+            parseFile.save().then(function () {
+
+                photo.set('imageUrl',parseFile._url);
+
+                updateParseObject('photos', 'photoId', photoId, 'image', parseFile);
+                updateParseObject('photos', 'photoId', photoId, 'imageUrl', parseFile._url);
+
+            });
+
+        });
 
     },
+
 
     getPhotoOfferACL : function () {
         var acl = new Parse.ACL();
@@ -378,8 +473,9 @@ var photoModel = {
         var uploadFlag = false;
 
         var offeruuid = uuid.v4();
-        
-        offer.setACL(userModel.parseACL);
+
+
+        offer.setACL(photoModel.getPhotoOfferACL());
         offer.set('version', photoModel._version);
 
         offer.set('uuid', offeruuid);
@@ -420,7 +516,7 @@ var photoModel = {
                 //Update the photo with offerId
                 var photo = photoModel.findPhotoById(photoId);
                 if (photo === undefined) {
-                    mobileNotify("Photo Offer with photo: " + photoId);
+                    mobileNotify("Photo Offer with unknown photo: " + photoId);
                 } else {
                     photo.set("offerId", offeruuid);
                     updateParseObject('photos', 'photoId', photoId, 'offerId', offeruuid);

@@ -483,7 +483,7 @@ var userModel = {
 
     enableIdenticon : function () {
         $('.homeProfileImg').addClass('hidden');
-        $('#homeProfileIdenticon').removeClass('hidden');
+        $('.homeProfileIdenticon').removeClass('hidden');
 
         $('#profileStatusPhoto').addClass('hidden');
         $('#profileStatusIdenticon').removeClass('hidden');
@@ -495,7 +495,7 @@ var userModel = {
             hash = hash.replace(/-/g,'');  //strip the dashes...
         }
 
-        jdenticon.update("#homeProfileIdenticon", hash);
+        jdenticon.update(".homeProfileIdenticon", hash);
 
         jdenticon.update("#profileStatusIdenticon", hash);
     },
@@ -503,7 +503,7 @@ var userModel = {
     disableIdenticon : function () {
 
         $('.homeProfileImg').removeClass('hidden');
-        $('#homeProfileIdenticon').addClass('hidden');
+        $('.homeProfileIdenticon').addClass('hidden');
 
         $('#profileStatusIdenticon').addClass('hidden');
     }

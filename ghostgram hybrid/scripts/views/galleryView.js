@@ -51,9 +51,10 @@ var galleryView = {
         $("#gallery-listview li").css("padding-bottom",galleryView._previewSize);
 
 
+/*
         var scroller = e.view.scroller;
         //scroller.scrollTo(0,-44);
-        /* Testing dynamic header 
+
 		
 		scroller.bind("scroll", function(e){
 			
@@ -568,18 +569,40 @@ var modalChatPhotoView = {
     },
 
     updatePhotoStatus : function (photo) {
-        if (photo.canCopy) {
-            $("#modalChatPhotoViewLocked").addClass('hidden');
-            $("#modalChatPhotoViewRequestSent").addClass('hidden');
-            $("#modalChatPhotoViewUnlocked").removeClass('hidden');
-        } else {
-            $("#modalChatPhotoViewUnlocked").addClass('hidden');
-            if (photo.requestSent === undefined) {
-                $("#modalChatPhotoViewLocked").removeClass('hidden');
-                $("#modalChatPhotoViewRequestSent").addClass('hidden');
+        if (photo.ownerId === userModel.currentUser.userUUID) {
+            $("#modalChatPhotoRecipient").addClass('hidden');
+            $("#modalChatPhotoSender").removeClass('hidden');
+            if (photo.canCopy) {
+                $("#modalChatPhotoViewDecline").addClass('hidden');
+                $("#modalChatPhotoViewUnlock").addClass('hidden');
+                $("#modalChatPhotoViewApprove").addClass('hidden');
+                $("#modalChatPhotoViewOwnerUnlocked").removeClass('hidden');
+
             } else {
-                $("#modalChatPhotoViewRequestSent").removeClass('hidden');
+                $("#modalChatPhotoViewDecline").addClass('hidden');
+                $("#modalChatPhotoViewUnlock").removeClass('hidden');
+                $("#modalChatPhotoViewApprove").addClass('hidden');
+                $("#modalChatPhotoViewOwnerUnlocked").addClass('hidden');
+            }
+
+        } else {
+
+            $("#modalChatPhotoOwnerName").text(photo.ownerName + "'s Photo");
+            $("#modalChatPhotoRecipient").removeClass('hidden');
+            $("#modalChatPhotoSender").addClass('hidden');
+            if (photo.canCopy) {
                 $("#modalChatPhotoViewLocked").addClass('hidden');
+                $("#modalChatPhotoViewRequestSent").addClass('hidden');
+                $("#modalChatPhotoViewUnlocked").removeClass('hidden');
+            } else {
+                $("#modalChatPhotoViewUnlocked").addClass('hidden');
+                if (photo.requestSent === undefined) {
+                    $("#modalChatPhotoViewLocked").removeClass('hidden');
+                    $("#modalChatPhotoViewRequestSent").addClass('hidden');
+                } else {
+                    $("#modalChatPhotoViewRequestSent").removeClass('hidden');
+                    $("#modalChatPhotoViewLocked").addClass('hidden');
+                }
             }
         }
     },
@@ -593,6 +616,14 @@ var modalChatPhotoView = {
     requestCopy : function (e) {
         _preventDefault(e);
         // Todo: wire up photo request
+    },
+
+    unlockPhoto : function (e) {
+        _preventDefault(e);
+    },
+
+    approveRequest: function (e) {
+        _preventDefault(e);
     },
 
      openModal : function (photo) {
@@ -651,6 +682,7 @@ var modalPhotoView = {
     openModal : function (photo) {
 
         modalPhotoView._photo = photo;
+
         var url = photo.thumbnailUrl;
         if (photo.imageUrl !== null)
             url = photo.imageUrl;
@@ -688,6 +720,9 @@ var modalPhotoView = {
 
 
         $("#modalPhotoView").data("kendoMobileModalView").open();
+
+        // Confirm that we have a valid local copy of this photo
+        photoModel.isPhotoCached(photo);
     },
 
     closeModal : function () {
@@ -751,6 +786,19 @@ var modalPhotoView = {
 
     deletePhoto : function (e) {
         _preventDefault(e);
+
+        modalView.open("Delete Photo?", "This action will delete this photo and any offers",
+            "Delete" ,
+            function() {
+                //User wants to delete the photo
+                photoModel.deletePhoto(modalPhotoView._activePhoto.photoId);
+                modalView.close();
+            },
+            "Cancel",
+            function() {
+                // Just cancel the delete request
+                modalView.close();
+            });
 
     },
 
