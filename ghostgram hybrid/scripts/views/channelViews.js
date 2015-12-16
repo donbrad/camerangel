@@ -919,7 +919,7 @@ var channelView = {
         $(".k-editor-toolbar").hide();
 
         $.browser = {webkit: true};
-        
+
         $('#messageTextArea').textntags({
             onDataRequest: function (mode, query, triggerChar, callback) {
                 var data = [
@@ -1433,44 +1433,52 @@ var channelView = {
         }
     },
 
+    activateEditor : function () {
+        //$(".k-editor-toolbar").show();
+        $("#chat-editorBtnImg").attr("src","images/icon-editor-active.svg");
+        // Hide badge
+        //$("#chat-editorBtn > span.km-badge").hide();
+
+
+        // open up editor
+        $(".k-editor .k-editable-area").velocity({height: "10em"}, {duration: 300});
+        $("#editorOptionBar").velocity("slideDown");
+
+        $("#ghostgramMode").velocity("fadeIn", {delay: 300});
+    },
+
+    deactivateEditor : function () {
+        //$(".k-editor-toolbar").hide();
+        $("#chat-editorBtnImg").attr("src","images/icon-editor.svg");
+
+        $("#ghostgramMode").velocity("fadeOut");
+
+        // min editor
+        $(".k-editor .k-editable-area").velocity({height: "3em"}, {duration: 300});
+
+        // Show badge
+        //$("#chat-editorBtn > span.km-badge").show();
+        $("#editorOptionBar").velocity("slideUp");
+        /*
+         var toolCount = $("#chat-editorBtn").kendoMobileButton("badge");
+         parseInt(toolCount);
+
+         if (toolCount > 0){
+         $("#chat-editorBtn > span.km-badge").show();
+         } else {
+         $("#chat-editorBtn > span.km-badge").hide();
+         }
+         */
+    },
+
     ghostgram: function (e) {
         _preventDefault(e);
         channelView.ghostgramActive = !channelView.ghostgramActive;
         if (channelView.ghostgramActive){
-            //$(".k-editor-toolbar").show();
-        	$("#chat-editorBtnImg").attr("src","images/icon-editor-active.svg");
-        	// Hide badge
-        	//$("#chat-editorBtn > span.km-badge").hide();
-        	
-
-        	// open up editor
-        	$(".k-editor .k-editable-area").velocity({height: "10em"}, {duration: 300});
-        	$("#editorOptionBar").velocity("slideDown");
-
-        	$("#ghostgramMode").velocity("fadeIn", {delay: 300});
+          channelView.activateEditor();
 
         } else {
-            //$(".k-editor-toolbar").hide();
-        	$("#chat-editorBtnImg").attr("src","images/icon-editor.svg");
-        	
-        	$("#ghostgramMode").velocity("fadeOut");
-
-        	// min editor
-        	$(".k-editor .k-editable-area").velocity({height: "3em"}, {duration: 300});
-
-        	// Show badge
-        	//$("#chat-editorBtn > span.km-badge").show();
-        	$("#editorOptionBar").velocity("slideUp");
-        	/*
-        	var toolCount = $("#chat-editorBtn").kendoMobileButton("badge");
-        	parseInt(toolCount);
-
-        	if (toolCount > 0){
-    			$("#chat-editorBtn > span.km-badge").show();
-    		} else {
-    			$("#chat-editorBtn > span.km-badge").hide();
-    		}
-    		*/
+            channelView.deactivateEditor();
         }
     },
 
