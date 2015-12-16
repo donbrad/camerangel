@@ -908,7 +908,7 @@
 			</li>
 			<li>
 				<label> Has Place Chat
-				<input type="checkbox" data-role="switch"  data-bind="checked: hasPlaceChat"/>
+					<input type="checkbox" data-role="switch"  data-bind="checked: hasPlaceChat"/>
 				</label>
 			</li>
 		</ul>
@@ -936,7 +936,7 @@
 	</form>
 
 	<div class="footer" data-role="footer">
-		<a class="btnPrimary btnFull-modal" data-click="addPlaceView.addPlace" data-role="button">Add Place</a>
+		<a class="btnPrimary btnFull-modal" data-click="addPlaceView.validate" data-role="button">Add Place</a>
 	</div>
 </div>
 
@@ -1013,7 +1013,7 @@
 			</a>
 			# } #
 			<a class="btnClear-red" data-role="button" data-id="#: data.uuid #" data-click="placesView.deletePlaceBtn">
-				<img src="images/trash.svg" height="18" />
+				<img src="images/icon-trash.svg" height="18" />
 				<p class="chat-option-selection"> Delete</p>
 			</a>
 		</div>
@@ -1235,7 +1235,7 @@
     				# if (isPrivate){#
     					<li>
 		    				<a class="btnClear-red" data-channel="#:channelId #" data-role="button"  data-click="channelsView.deleteChannel">
-		    					<img src="images/trash.svg" />
+		    					<img src="images/icon-trash.svg" />
 		    					<p class="chat-option-selection"> Delete </p>
 		    				</a>
 	    				</li>
@@ -1253,7 +1253,7 @@
     				#} else {#
     					<li>
 		    				<a class="btnClear-red" data-role="button" data-channel="#:channelId #" data-click="channelsView.deleteChannel" data-channel="#:channelId #">
-		    					<img src="images/trash.svg" />
+		    					<img src="images/icon-trash.svg" />
 		    					<p class="chat-option-selection"> Delete</p>
 		    				</a>
 	    				</li>
@@ -1747,7 +1747,7 @@
 
 		<div class="deleteMemberText">
 			<a class="btnClear-red deleteChannelMember" data-role="button" data-id="#: data.uuid#" data-click="editChannelView.deleteMemberBtn">
-				<img src="images/trash.svg" class="icon" />
+				<img src="images/icon-trash.svg" class="icon" />
 			</a>
 		</div>
 	</div>
@@ -1965,7 +1965,7 @@
 					<img src="images/icon-sync.svg" class="icon-sm" />  Sync Contact with Device
 				</a>
 				<a data-role="button" class="btnClear-red " id="editContact-deleteBtn" data-click="deleteContact">
-					<img src="images/trash.svg" />  Delete Contact
+					<img src="images/icon-trash.svg" />  Delete Contact
 				</a>
 			</div>
 		</form>
@@ -2074,7 +2074,7 @@
 				<p class="chat-option-selection">Edit</p>
 			</a>
 			<a class="btnClear-red" data-role="button" data-click="contactsView.doDeleteContact" data-contact="#:uuid#">
-				<img src="images/trash.svg" height="18" />
+				<img src="images/icon-trash.svg" height="18" />
 				<p class="chat-option-selection"> Delete</p>
 			</a>
 
@@ -2554,7 +2554,7 @@
 <script type="text/x-kendo-template" id="tags-template">
 	<div class="">
 		<span class="left">#: data.name # </span>
-		<span class="right"><a class="btnClear-red"><img src="images/trash.svg"></a></span>
+		<span class="right"><a class="btnClear-red"><img src="images/icon-trash.svg"></a></span>
 	</div>
 </script>
 
@@ -2917,11 +2917,13 @@
 <div data-role="modalview" id="modalview-changePassword" data-init="changePasswordView.onInit"   data-open="changePasswordView.onShow" style="width: 90%; display:none;" class="appearance">
 
 	<div class="modal-bottom">
-		<h4>Change Password
-    	<span style="float:right; ">
-        	<a data-click="changePasswordView.closeModal" data-role="button"><img src="images/close.svg" /></a>
-        </span>
-		</h4>
+		<h3>Change Password
+	    	<span class="right">
+	        	<a data-click="changePasswordView.closeModal" data-role="button">
+	        		<img src="images/close.svg" />
+	        	</a>
+	        </span>
+		</h3>
 		<ul data-role="listview" data-style="inset">
 			<li>
 				<label>New Password

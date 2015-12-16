@@ -497,6 +497,8 @@ var addPlaceView = {
 
         $("#addplace-typeBtns").data("kendoMobileButtonGroup");
 
+        // validated form
+        $("#addPlace-form").kendoValidator();
 
     },
 
@@ -619,6 +621,16 @@ var addPlaceView = {
         addPlaceView._activePlace.bind('change',addPlaceView.onSync);
         addPlaceView._activePlace.set('name', geoPlace.name);
 
+    },
+
+    validate: function(e){
+    	_preventDefault(e);
+
+    	var form = $("#addPlace-form").kendoValidator().data("kendoValidator");
+
+    	if(form.validate()){
+    		addPlaceView.addPlace();
+    	}
     },
 
     addPlace : function (e) {
