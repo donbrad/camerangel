@@ -535,7 +535,7 @@ function isValidMobileNumber(phone, callback) {
 		phone: phone
 	}, {
 		success: function(result) {
-			if (result.status !== 'ok' || result.result.carrier.type !== 'mobile') {
+			if (result.status === 'ok' && (result.result.carrier.type !== 'mobile'|| result.result.carrier.type !== 'voip' )) {
 				callback({
 					status: 'ok',
 					valid: false,
