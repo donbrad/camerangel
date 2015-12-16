@@ -897,6 +897,16 @@ var channelView = {
                 content: true,
                 min: 24
             },
+            keyup: function(e) {
+                if (channelView._tagActive) {
+                    if (e.keyCode === '.') {
+                        var editor = $("#messageTextArea").data("kendoEditor");
+                        var range = editor.getRange();
+                        channelView._tagRange = range;
+                        channelView.processTag();
+                    }
+                }
+            },
             tools: [
                 "bold",
                 "italic",
@@ -908,18 +918,7 @@ var channelView = {
         });
         $(".k-editor-toolbar").hide();
 
-        $("#messageTextArea").kendoEditor({
-            keyup: function(e) {
-                if (channelView._tagActive) {
-                    if (e.keyCode === '.') {
-                        var editor = $("#messageTextArea").data("kendoEditor");
-                        var range = editor.getRange();
-                        channelView._tagRange = range;
-                        channelView.processTag();
-                    }
-                }
-            }
-        });
+
 
         /*$("#channelMembers-listview").kendoMobileListView({
             dataSource: currentChannelModel.membersDS,
