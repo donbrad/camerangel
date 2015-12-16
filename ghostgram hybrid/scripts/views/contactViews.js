@@ -61,7 +61,7 @@ var contactsView = {
                     contactModel.updateContactDetails(contact.uuid, function (thisContact) {
                         if (thisContact.contactUUID !== undefined && thisContact.contactUUID !== null) {
                             // TODO: Need to convert this user to member
-                            var contactObj = contactModel.findContactByUUID(thisContact.uuid);
+                            var contactObj = contactModel.findContactListUUID(thisContact.uuid);
 
                             contactObj.set('category', thisContact.category);
                             contactObj.set('publicKey', thisContact.publicKey);
