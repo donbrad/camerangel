@@ -1566,9 +1566,19 @@ var channelView = {
 
     },
 
-    showChatImagePreview: function (photoId, displayUrl) {
-        $('#chatImage').attr('src', displayUrl);
-        $('#chatImagePreview').show();
+    addImageToMessage: function (photoId, displayUrl) {
+
+        var editor = $("#messageTextArea").data("kendoEditor");
+        var photoObj = photoModel.findPhotoById(photoId);
+
+        if (photoObj !== undefined) {
+            var imgUrl = '<img class="chat-message-photo" data-photoid="'+ photoId + '" id="chatphoto_'+photoId+'" src="'+photoObj.thumbnailUrl+'" />';
+            editor.paste(imgUrl);
+        }
+
+
+       /* $('#chatImage').attr('src', displayUrl);
+        $('#chatImagePreview').show();*/
     },
 
     hideChatImagePreview : function () {
@@ -1745,7 +1755,7 @@ var channelView = {
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
             channelView._channelId,  // Current channel Id for offers
-            channelView.showChatImagePreview  // Optional preview callback
+            channelView.addImageToMessage  // Optional preview callback
         );
     },
 
@@ -1757,7 +1767,7 @@ var channelView = {
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
             channelView._channelId,  // Current channel Id for offers
-            channelView.showChatImagePreview  // Optional preview callback
+            channelView.addImageToMessage  // Optional preview callback
         );
     },
 
@@ -1772,7 +1782,7 @@ var channelView = {
              if (photo.imageUrl !== undefined && photo.imageUrl !== null)
                 url = photo.imageUrl;
 
-             channelView.showChatImagePreview(photo.photoId, url);
+             channelView.addImageToMessage(photo.photoId, url);
          });
       //  APP.kendo.navigate("views/gallery.html#gallery?mode=picker");
 
