@@ -60,7 +60,8 @@ var contactsView = {
                     mobileNotify("Looking up " + contact.name);
                     contactModel.updateContactDetails(contact.uuid, function (thisContact) {
                         if (thisContact.contactUUID !== undefined && thisContact.contactUUID !== null) {
-                            // TODO: Need to convert this user to member
+
+                            mobileNotify(thisContact.name + " is now a member!");
                             var contactObj = contactModel.findContactListUUID(thisContact.uuid);
 
                             contactObj.set('category', thisContact.category);
@@ -70,6 +71,9 @@ var contactsView = {
 
                             contactObj.set('phone', thisContact.contactPhone);
                             contactObj.set('email', thisContact.contactEmail);
+
+                           /* $("#contactActionBtns > li:first-child").show();
+                            contactActionView.openModal(contact.uuid);*/
 
                            /* updateParseObject('contacts', 'uuid', thisContact.uuid, 'category', thisContact.category);
                             updateParseObject('contacts', 'uuid', thisContact.uuid, 'publicKey', thisContact.publicKey);
