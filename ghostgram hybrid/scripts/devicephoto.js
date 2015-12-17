@@ -100,7 +100,7 @@ var devicePhoto = {
                                                 photoModel.addDevicePhoto(devicePhoto.currentPhoto);
                                                 photoModel.addPhotoOffer(photouuid, channelId, parseFile._url, null, null , false);
                                                 if (displayCallback !== undefined) {
-                                                    displayCallback(nativeUrl);
+                                                    displayCallback(photouuid, nativeUrl);
                                                 }
 
                                                 photoModel.uploadPhotoImage(devicePhoto.currentPhoto.photoId);
@@ -116,7 +116,7 @@ var devicePhoto = {
                                     });
                             } else {
                                 if (displayCallback !== undefined) {
-                                    displayCallback(nativeUrl);
+                                    displayCallback(photouuid, nativeUrl);
                                 }
                             }
 
