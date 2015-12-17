@@ -919,7 +919,10 @@ var channelView = {
                         } else {
                             channelView._firstSpace = true;
                         }
+                    } else {
+                        channelView._firstSpace = false;
                     }
+                    
                     if (e.keyCode === 190) {
                         channelView._tagActive = false;
                         channelView._firstSpace = false;
