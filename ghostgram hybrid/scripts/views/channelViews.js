@@ -802,6 +802,7 @@ var channelView = {
     messageLock: false,
     thisUser : null,
     contactData : [],
+    messagePhotos: [],
     privateContactId: null,
     privateContact : null,
     isPrivateChat: false,
@@ -1483,7 +1484,8 @@ var channelView = {
     },
 
     messageInit : function () {
-        channelView.activeMessage = {canCopy: channelView.messageLock};
+        channelView.activeMessage = {canCopy: !channelView.messageLock, photos: []};
+        channelView.messagePhotos = [];
     },
 
     messageAddLocation : function  () {
@@ -1494,16 +1496,27 @@ var channelView = {
         }
     },
 
-    messageAddPhoto : function (offer) {
 
-        channelView.activeMessage.photo = {
-            photoId : offer.photoId,
-            channelId: offer.channelId,
-            thumbnailUrl: offer.thumbnailUrl,
-            imageUrl: offer.imageUrl,
-            canCopy: offer.canCopy,
-            ownerId: offer.ownerId,
-            ownerName: offer.ownerName};
+    messageAddPhotoOffer : function (photoId, canCopy) {
+
+        var photo = photoModel.findPhotoById(photoId);
+
+        if (photo !== undefined) {
+
+            var photoObj  = {
+                photoId : photo.photoId,
+                channelId: channelView._channelId,
+                thumbnailUrl: photo.thumbnailUrl,
+                imageUrl: photo.imageUrl,
+                canCopy: canCopy,
+                ownerId: photo.senderUUID,
+                ownerName: photo.senderName
+            };
+        }
+
+
+        channelView.activeMessage.photos.push(photoObj);
+        photoModel.addPhotoOffer(photo.photoId, channelView._channelId, photo.thumbnailUrl, photo.imageUrl, canCopy);
     },
 
     messageAddRichText : function (text) {
@@ -1527,10 +1540,12 @@ var channelView = {
         }
 
 
-        // Is there a current photo offer
-        if (photoModel.currentOffer !== null) {
+        // Are there any photos in the current message
+        if (channelView.activeMessage.photos.length > 0) {
             validMessage = true;
-            channelView.messageAddPhoto(photoModel.currentOffer);
+
+            //Need to make sure the user didn't delete the photo reference in the html...
+            channelView.validateMessagePhotos();
 
         }
 
@@ -1546,6 +1561,24 @@ var channelView = {
             channelView.messageInit();
             photoModel.initOffer();
         }
+
+    },
+
+    // Need to make sure all the photos in activeMessage.photos still exist in the editor
+    validateMessagePhotos : function () {
+        var validPhotos = [];
+        var messageText = $('#messageTextArea').value();
+
+        for (var i=0; i< channelView.messagePhotos.length; i++) {
+            var photoId = channelView.messagePhotos[i];
+
+            if (messageText.indexOf(photoId) !== -1) {
+                //the photoId is in the current message text
+                channelView.messageAddPhotoOffer(photoId, !channelView.messageLock);
+            }
+        }
+
+
 
     },
 
@@ -1566,9 +1599,20 @@ var channelView = {
 
     },
 
-    showChatImagePreview: function (photoId, displayUrl) {
-        $('#chatImage').attr('src', displayUrl);
-        $('#chatImagePreview').show();
+    addImageToMessage: function (photoId, displayUrl) {
+
+        var editor = $("#messageTextArea").data("kendoEditor");
+        var photoObj = photoModel.findPhotoById(photoId);
+
+       // channelView.messageAddPhoto(photoModel.currentOffer);
+        if (photoObj !== undefined) {
+            var imgUrl = '<img class="photoPreview" data-photoid="'+ photoId + '" id="chatphoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
+            editor.paste(imgUrl);
+        }
+
+
+       /* $('#chatImage').attr('src', displayUrl);
+        $('#chatImagePreview').show();*/
     },
 
     hideChatImagePreview : function () {
@@ -1745,7 +1789,7 @@ var channelView = {
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
             channelView._channelId,  // Current channel Id for offers
-            channelView.showChatImagePreview  // Optional preview callback
+            channelView.addImageToMessage  // Optional preview callback
         );
     },
 
@@ -1757,7 +1801,7 @@ var channelView = {
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
             channelView._channelId,  // Current channel Id for offers
-            channelView.showChatImagePreview  // Optional preview callback
+            channelView.addImageToMessage  // Optional preview callback
         );
     },
 
@@ -1772,7 +1816,7 @@ var channelView = {
              if (photo.imageUrl !== undefined && photo.imageUrl !== null)
                 url = photo.imageUrl;
 
-             channelView.showChatImagePreview(photo.photoId, url);
+             channelView.addImageToMessage(photo.photoId, url);
          });
       //  APP.kendo.navigate("views/gallery.html#gallery?mode=picker");
 

@@ -16,11 +16,15 @@ var photoModel = {
     optionsShown: false,
     parsePhoto: {},
     photosDS: new kendo.data.DataSource({  // this is the gallery datasource
-        offlineStorage: "gallery-offline"
+        offlineStorage: "gallery"
     }),
 
     offersDS: new kendo.data.DataSource({  // this is the gallery datasource
-        offlineStorage: "offers-offline"
+        offlineStorage: "offers"
+    }),
+
+    deletedPhotosDS: new kendo.data.DataSource({  // this is the gallery datasource
+        offlineStorage: "deletedphotos"
     }),
 
     init: function () {

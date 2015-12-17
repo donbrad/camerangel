@@ -277,7 +277,7 @@ var contactModel = {
 
                 contactModel.buildContactList();
 
-                contactModel.updateContactListStatus();
+                contactModel.updateContactListStatus(true);
 
                 deviceModel.isParseSyncComplete();
             },
@@ -692,15 +692,20 @@ var contactModel = {
         });
     },
 
-    updateContactListStatus : function () {
+    // force defined and === true overrides the timer
+    updateContactListStatus : function (force) {
+
         var time = ggTime.currentTimeInSeconds();
 
         // Only sync contacts every 15 minutes
-        if (time < contactModel.lastSyncTime + 900) {
-            return;
+        if (time < contactModel.lastSyncTime + 300) {
+            if (force === undefined || force === false)
+                return;
         }
 
         contactModel.lastSyncTime = time;
+
+
 
         var index = 0, length = contactModel.contactsDS.total(), array = contactModel.contactsDS.data();
 

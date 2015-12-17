@@ -60,8 +60,25 @@ var contactsView = {
                     mobileNotify("Looking up " + contact.name);
                     contactModel.updateContactDetails(contact.uuid, function (thisContact) {
                         if (thisContact.contactUUID !== undefined && thisContact.contactUUID !== null) {
-                            // TODO: Need to convert this user to member
 
+                            mobileNotify(thisContact.name + " is now a member!");
+                            var contactObj = contactModel.findContactListUUID(thisContact.uuid);
+
+                            contactObj.set('category', thisContact.category);
+                            contactObj.set('publicKey', thisContact.publicKey);
+                            contactObj.set('contactPhone', thisContact.contactPhone);
+                            contactObj.set('contactEmail', thisContact.contactEmail);
+
+                            contactObj.set('phone', thisContact.contactPhone);
+                            contactObj.set('email', thisContact.contactEmail);
+
+                           /* $("#contactActionBtns > li:first-child").show();
+                            contactActionView.openModal(contact.uuid);*/
+
+                           /* updateParseObject('contacts', 'uuid', thisContact.uuid, 'category', thisContact.category);
+                            updateParseObject('contacts', 'uuid', thisContact.uuid, 'publicKey', thisContact.publicKey);
+                            updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactPhone', thisContact.contactPhone);
+                            updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactEmail', thisContact.contactEmail);*/
 
                         }
 
@@ -177,6 +194,7 @@ var contactsView = {
        // contactModel.contactListDS.data(contactModel.contactsDS.data());
         //APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
 
+        contactsView.updateContactListDS();
         contactModel.updateContactListStatus();
 
         // Reset the filters and ux state on show.

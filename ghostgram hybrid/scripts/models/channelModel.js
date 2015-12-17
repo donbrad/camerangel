@@ -290,7 +290,7 @@ var channelModel = {
             channel.set('description', channelDescription);
 
 
-            if (channelMembers === undefined || channelMembers === null || typeof(channelMembers) !== 'array') {
+            if (channelMembers === undefined || channelMembers === null) {
                 channelMembers = [];
             }
 
@@ -536,7 +536,7 @@ var channelModel = {
         channel.set("clearBefore", addTime);
         channel.set("lastAccess", addTime);
 
-        if (channelMembers === undefined || channelMembers === null || typeof(channelMembers) !== 'array') {
+        if (channelMembers === undefined || channelMembers === null) {
             channelMembers = [];
         }
         if (channelMembers.length === 0) {
@@ -544,7 +544,7 @@ var channelModel = {
             return;
 
         }
-        channel.set("members", members);
+        channel.set("members", channelMembers);
         channel.set("invitedMembers", []);
 
         var channelObj = channel.toJSON();
