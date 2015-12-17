@@ -1567,7 +1567,7 @@ var channelView = {
     // Need to make sure all the photos in activeMessage.photos still exist in the editor
     validateMessagePhotos : function () {
         var validPhotos = [];
-        var messageText = $('#messageTextArea').value();
+        var messageText = $('#messageTextArea').data("kendoEditor").value();
 
         for (var i=0; i< channelView.messagePhotos.length; i++) {
             var photoId = channelView.messagePhotos[i];
