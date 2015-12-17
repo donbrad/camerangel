@@ -1483,7 +1483,7 @@ var channelView = {
     },
 
     messageInit : function () {
-        channelView.activeMessage = {canCopy: channelView.messageLock};
+        channelView.activeMessage = {canCopy: channelView.messageLock, photos: []};
     },
 
     messageAddLocation : function  () {
@@ -1496,7 +1496,7 @@ var channelView = {
 
     messageAddPhoto : function (offer) {
 
-        channelView.activeMessage.photo = {
+      var photoObj  = {
             photoId : offer.photoId,
             channelId: offer.channelId,
             thumbnailUrl: offer.thumbnailUrl,
@@ -1504,6 +1504,8 @@ var channelView = {
             canCopy: offer.canCopy,
             ownerId: offer.ownerId,
             ownerName: offer.ownerName};
+
+        channelView.activeMessage.photos.push(photoObj);
     },
 
     messageAddRichText : function (text) {
@@ -1527,10 +1529,12 @@ var channelView = {
         }
 
 
-        // Is there a current photo offer
-        if (photoModel.currentOffer !== null) {
+        // Are there any photos in the current message
+        if (channelView.activeMessage.photos.length > 0) {
             validMessage = true;
-            channelView.messageAddPhoto(photoModel.currentOffer);
+
+            //Need to make sure the user didn't delete the photo reference in the html...
+            channelView.validateMessagePhotos();
 
         }
 
@@ -1546,6 +1550,24 @@ var channelView = {
             channelView.messageInit();
             photoModel.initOffer();
         }
+
+    },
+
+    // Need to make sure all the photos in activeMessage.photos still exist in the editor
+    validateMessagePhotos : function () {
+        var photosCache = channelView.activeMessage.photos, validPhotos = [];
+        var messageText = $('#messageTextArea').value;
+
+        for (var i=0; i<photosCache.length; i++) {
+            var photoId = photosCache[i].photoId;
+
+            if (messageText.indexOf(photoId) !== -1) {
+                //the photoId is in the current message text
+                validPhotos.push(photosCache[i]);
+            }
+        }
+
+        channelView.activeMessage.photos = validPhotos;
 
     },
 
@@ -1571,6 +1593,7 @@ var channelView = {
         var editor = $("#messageTextArea").data("kendoEditor");
         var photoObj = photoModel.findPhotoById(photoId);
 
+        channelView.messageAddPhoto(photoModel.currentOffer);
         if (photoObj !== undefined) {
             var imgUrl = '<img class="chat-message-photo" data-photoid="'+ photoId + '" id="chatphoto_' + photoId + '" src="'+photoObj.thumbnailUrl+'" />';
             editor.paste(imgUrl);
