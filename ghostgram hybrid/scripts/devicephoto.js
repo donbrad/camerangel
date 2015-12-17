@@ -98,7 +98,7 @@ var devicePhoto = {
 
 
                                                 photoModel.addDevicePhoto(devicePhoto.currentPhoto);
-                                                photoModel.addPhotoOffer(photouuid, channelId, parseFile._url, null, null , false);
+                                                //photoModel.addPhotoOffer(photouuid, channelId, parseFile._url, null, null , false);
                                                 if (displayCallback !== undefined) {
                                                     displayCallback(photouuid, nativeUrl);
                                                 }
@@ -227,7 +227,7 @@ var devicePhoto = {
 
                                 photoModel.addDevicePhoto(devicePhoto.currentPhoto);
                                 if (isChat) {
-                                    photoModel.addPhotoOffer(photouuid, channelId, parseFile._url, null, null, false);
+                                  //  photoModel.addPhotoOffer(photouuid, channelId, parseFile._url, null, null, false);
                                     if (displayCallback !== undefined) {
                                         displayCallback(photouuid, imageUrl);
                                     }

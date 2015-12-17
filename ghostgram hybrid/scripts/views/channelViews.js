@@ -802,6 +802,7 @@ var channelView = {
     messageLock: false,
     thisUser : null,
     contactData : [],
+    messagePhotos: [],
     privateContactId: null,
     privateContact : null,
     isPrivateChat: false,
@@ -1483,7 +1484,8 @@ var channelView = {
     },
 
     messageInit : function () {
-        channelView.activeMessage = {canCopy: channelView.messageLock, photos: []};
+        channelView.activeMessage = {canCopy: !channelView.messageLock, photos: []};
+        channelView.messagePhotos = [];
     },
 
     messageAddLocation : function  () {
@@ -1494,19 +1496,27 @@ var channelView = {
         }
     },
 
-    messageAddPhoto : function (offer) {
 
-        var photoObj  = {
-            photoId : offer.photoId,
-            channelId: offer.channelId,
-            thumbnailUrl: offer.thumbnailUrl,
-            imageUrl: offer.imageUrl,
-            canCopy: offer.canCopy,
-            ownerId: offer.ownerId,
-            ownerName: offer.ownerName
-        };
+    messageAddPhotoOffer : function (photoId, canCopy) {
+
+        var photo = photoModel.findPhotoById(photoId);
+
+        if (photo !== undefined) {
+
+            var photoObj  = {
+                photoId : photo.photoId,
+                channelId: channelView._channelId,
+                thumbnailUrl: photo.thumbnailUrl,
+                imageUrl: photo.imageUrl,
+                canCopy: canCopy,
+                ownerId: photo.senderUUID,
+                ownerName: photo.senderName
+            };
+        }
+
 
         channelView.activeMessage.photos.push(photoObj);
+        photoModel.addPhotoOffer(photo.photoId, channelView._channelId, photo.thumbnailUrl, photo.imageUrl, canCopy);
     },
 
     messageAddRichText : function (text) {
@@ -1556,19 +1566,19 @@ var channelView = {
 
     // Need to make sure all the photos in activeMessage.photos still exist in the editor
     validateMessagePhotos : function () {
-        var photosCache = channelView.activeMessage.photos, validPhotos = [];
-        var messageText = $('#messageTextArea').value;
+        var validPhotos = [];
+        var messageText = $('#messageTextArea').value();
 
-        for (var i=0; i<photosCache.length; i++) {
-            var photoId = photosCache[i].photoId;
+        for (var i=0; i< channelView.messagePhotos.length; i++) {
+            var photoId = channelView.messagePhotos[i];
 
             if (messageText.indexOf(photoId) !== -1) {
                 //the photoId is in the current message text
-                validPhotos.push(photosCache[i]);
+                channelView.messageAddPhotoOffer(photoId, !channelView.messageLock);
             }
         }
 
-        channelView.activeMessage.photos = validPhotos;
+
 
     },
 
@@ -1594,9 +1604,9 @@ var channelView = {
         var editor = $("#messageTextArea").data("kendoEditor");
         var photoObj = photoModel.findPhotoById(photoId);
 
-        channelView.messageAddPhoto(photoModel.currentOffer);
+       // channelView.messageAddPhoto(photoModel.currentOffer);
         if (photoObj !== undefined) {
-            var imgUrl = '<img class="photoPreview" data-photoid="'+ photoId + '" id="chatphoto_' + photoId + '" src="'+photoObj.thumbnailUrl+'" />';
+            var imgUrl = '<img class="photoPreview" data-photoid="'+ photoId + '" id="chatphoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
             editor.paste(imgUrl);
         }
 
