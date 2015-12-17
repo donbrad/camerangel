@@ -1496,15 +1496,16 @@ var channelView = {
 
     messageAddPhoto : function (offer) {
 
-      var photoObj  = {
+        var photoObj  = {
             photoId : offer.photoId,
             channelId: offer.channelId,
             thumbnailUrl: offer.thumbnailUrl,
             imageUrl: offer.imageUrl,
             canCopy: offer.canCopy,
             ownerId: offer.ownerId,
-            ownerName: offer.ownerName};
-
+            ownerName: offer.ownerName
+        };
+        
         channelView.activeMessage.photos.push(photoObj);
     },
 
@@ -1593,8 +1594,7 @@ var channelView = {
         var editor = $("#messageTextArea").data("kendoEditor");
         var photoObj = photoModel.findPhotoById(photoId);
 
-        var offerObj = photoModel.currentOffer.toJSON();
-        channelView.messageAddPhoto(offerObj);
+        channelView.messageAddPhoto(photoModel.currentOffer);
         if (photoObj !== undefined) {
             var imgUrl = '<img class="photoPreview" data-photoid="'+ photoId + '" id="chatphoto_' + photoId + '" src="'+photoObj.thumbnailUrl+'" />';
             editor.paste(imgUrl);
