@@ -1593,7 +1593,8 @@ var channelView = {
         var editor = $("#messageTextArea").data("kendoEditor");
         var photoObj = photoModel.findPhotoById(photoId);
 
-        channelView.messageAddPhoto(photoModel.currentOffer);
+        var offerObj = photoModel.currentOffer.toJSON();
+        channelView.messageAddPhoto(offerObj);
         if (photoObj !== undefined) {
             var imgUrl = '<img class="photoPreview" data-photoid="'+ photoId + '" id="chatphoto_' + photoId + '" src="'+photoObj.thumbnailUrl+'" />';
             editor.paste(imgUrl);
