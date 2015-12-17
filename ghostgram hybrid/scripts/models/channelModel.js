@@ -544,7 +544,7 @@ var channelModel = {
             return;
 
         }
-        channel.set("members", members);
+        channel.set("members", channelMembers);
         channel.set("invitedMembers", []);
 
         var channelObj = channel.toJSON();
