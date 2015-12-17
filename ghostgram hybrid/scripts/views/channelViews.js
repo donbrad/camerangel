@@ -1541,7 +1541,7 @@ var channelView = {
 
 
         // Are there any photos in the current message
-        if (channelView.activeMessage.photos.length > 0) {
+        if (channelView.messagePhotos.length > 0) {
             validMessage = true;
 
             //Need to make sure the user didn't delete the photo reference in the html...
