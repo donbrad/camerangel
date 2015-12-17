@@ -912,7 +912,7 @@ var channelView = {
                     if (e.keyCode === 32) {
                         // can do a look up here...
                     }
-                    if (e.keyCode === 46) {
+                    if (e.keyCode === 190) {
                         channelView._tagActive = false;
                         channelView._tagRange.endOffset = range.endOffset;
                         channelView._tagEnd = range.endOffset;
