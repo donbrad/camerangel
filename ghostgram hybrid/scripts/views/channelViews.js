@@ -1688,12 +1688,22 @@ var channelView = {
         $('#'+message.msgID + ' .chat-photo-box').removeClass('chat-photo-box').addClass('chat-photo-box-zoom');
         
         // User actually clicked on the photo so show the open the photo viewer
-        if (target.hasClass('chat-message-photo')) {
-        	// Open this img full screen
-            var photoObj = message.data.photo;
+        if (target.hasClass('photoPreview')) {
+        	var photoId = target.attr('data-photoId');
+            var photoList = message.data.photos;
+
+            for (var i=0; i< photoList.length; i++) {
+                var photoObj = photoList[i];
+
+                if (photoObj.photoId === photoId) {
+                    modalChatPhotoView.openModal(photoObj);
+                    return;
+                }
+            }
+
           /*  var photoUrl = message.data.photo.photo;
             $('#modalPhotoViewImage').attr('src', photoUrl);*/
-            modalChatPhotoView.openModal(photoObj);
+
         }
 
         if (channelView.privacyMode) {

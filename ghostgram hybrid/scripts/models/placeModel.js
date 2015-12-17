@@ -71,7 +71,7 @@ var placesModel = {
                         dirty = true;
                     }
                     if (parseModel.get('distance') === undefined) {
-                        parseModel.set('distance', 0);
+                        parseModel.set('distance', 0.0);
                         dirty = true;
                     }
                     if (parseModel.get('alias') === undefined) {
@@ -236,7 +236,7 @@ var placesModel = {
         placeParse.set('address', place.address);
         placeParse.set('lat', place.lat);
         placeParse.set('lng', place.lng);
-        placeParse.set('distance',0);
+        placeParse.set('distance', 0);
         placeParse.set('type', place.type);
         placeParse.set('city', place.city);
         placeParse.set('state', place.state);
@@ -252,7 +252,7 @@ var placesModel = {
         var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, place.lat, place.lng);
 
         // update the distance value for the local object...
-        placeParse.set('distance',distance.toFixed(2));
+        placeParse.set('distance', distance);
         // Get a json object to add to kendo (strip the parse specific stuff)
         var placeObj = placeParse.toJSON();
         placesModel.placesDS.add(placeObj);
