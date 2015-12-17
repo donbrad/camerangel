@@ -210,7 +210,7 @@ var placesModel = {
 
     },
 
-    addSharedPlace : function (place, placeChatId) {
+    addSharedPlace : function (place, placeChatId, callback) {
         var Place = Parse.Object.extend("places");
         var placeParse = new Place();
 
