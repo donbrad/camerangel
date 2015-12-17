@@ -907,7 +907,7 @@ var channelView = {
                     channelView._tagRange = range;
                     channelView._tagStart = range.startOffset;
                     channelView._firstSpace = false;
-
+                    return;
                 }
 
                 if (channelView._tagActive) {
