@@ -1505,7 +1505,7 @@ var channelView = {
             ownerId: offer.ownerId,
             ownerName: offer.ownerName
         };
-        
+
         channelView.activeMessage.photos.push(photoObj);
     },
 
