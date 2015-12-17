@@ -817,6 +817,7 @@ var channelView = {
     _tagStart : null,
     _tagEnd: null,
     _tagRange: null,
+    _firstSpace: false,
 
     membersDS: new kendo.data.DataSource({
         sort: {
@@ -905,19 +906,28 @@ var channelView = {
                     channelView._tagActive = true;
                     channelView._tagRange = range;
                     channelView._tagStart = range.startOffset;
+                    channelView._firstSpace = false;
 
                 }
 
                 if (channelView._tagActive) {
                     if (e.keyCode === 32) {
                         // can do a look up here...
+                        if (channelView._firstSpace) {
+                            channelView._firstSpace = false;
+                            e.keyCode = 190;
+                        } else {
+                            channelView._firstSpace = true;
+                        }
                     }
                     if (e.keyCode === 190) {
                         channelView._tagActive = false;
+                        channelView._firstSpace = false;
                         channelView._tagRange.endOffset = range.endOffset;
                         channelView._tagEnd = range.endOffset;
                         var text = editor.value();
                         var tagString = text.substring(range.startOffset, range.endOffset);
+                        console.log("tag string = " + tagString);
                         channelView.processTag(tagString);
                     }
                 }
