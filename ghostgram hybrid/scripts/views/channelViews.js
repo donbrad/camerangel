@@ -903,6 +903,8 @@ var channelView = {
                 var range = editor.getRange();
                 if (e.keyCode === '@') {
                     channelView._tagActive = true;
+                    channelView._tagRange = range;
+                    channelView._tagStart = range.startOffset;
 
                 }
 
@@ -911,8 +913,12 @@ var channelView = {
                         // can do a look up here...
                     }
                     if (e.keyCode === '.') {
-                        channelView._tagRange = range;
-                        channelView.processTag();
+                        channelView._tagActive = false;
+                        channelView._tagRange.endOffset = range.endOffset;
+                        channelView._tagEnd = range.endOffset;
+                        var text = editor.value();
+                        var tagString = text.substring(range.startOffset, range.endOffset);
+                        channelView.processTag(tagString);
                     }
                 }
             },
@@ -1778,7 +1784,8 @@ var channelView = {
         $("#messageActions").data("kendoMobileActionSheet").open();
     },
 
-    processTag : function () {
+    // Process a tag recognized by the editor
+    processTag : function (tagString) {
 
     },
 
