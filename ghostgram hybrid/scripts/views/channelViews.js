@@ -901,7 +901,7 @@ var channelView = {
             keyup: function(e) {
                 var editor = $("#messageTextArea").data("kendoEditor");
                 var range = editor.getRange();
-                if (e.keyCode === '@') {
+                if ((e.keyCode === 50 && e.shiftKey === true) || e.keyCode === 64) {
                     channelView._tagActive = true;
                     channelView._tagRange = range;
                     channelView._tagStart = range.startOffset;
@@ -909,10 +909,10 @@ var channelView = {
                 }
 
                 if (channelView._tagActive) {
-                    if (e.keyCode === ' ') {
+                    if (e.keyCode === 32) {
                         // can do a look up here...
                     }
-                    if (e.keyCode === '.') {
+                    if (e.keyCode === 46) {
                         channelView._tagActive = false;
                         channelView._tagRange.endOffset = range.endOffset;
                         channelView._tagEnd = range.endOffset;
