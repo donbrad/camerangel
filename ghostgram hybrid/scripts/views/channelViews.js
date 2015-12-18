@@ -1558,6 +1558,8 @@ var channelView = {
         _preventDefault(e);
 
         var validMessage = false; // If message is valid, send is enabled
+        channelView.activeMessage = {canCopy: !channelView.messageLock, photos: []};
+
 
         //var text = $('#messageTextArea').val();
         var text = $('#messageTextArea').data("kendoEditor").value();
@@ -1565,11 +1567,8 @@ var channelView = {
             validMessage = true;
         }
 
-
-        if (channelView.ghostgramActive) {
-           channelView.messageAddRichText(text);
-        }
-
+        channelView.messageAddLocation();
+        
         // Are there any photos in the current message
         if (channelView.messagePhotos.length > 0) {
             validMessage = true;
