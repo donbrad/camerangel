@@ -124,7 +124,7 @@ var privateChannel = {
         }
 
         // If this message is for the current channel, then display immediately
-        if (channelView._Active && message.channelId === channelView._channelId) {
+        if (channelView._active && message.channelId === channelView._channelId) {
             channelModel.updateLastAccess(channelView._channelId, null);
             channelView.messagesDS.add(message);
         } else {
