@@ -179,7 +179,7 @@ var groupChannel = {
                         mobileNotify('Group Channel publish error: ' + message);
                     }
 
-                    /* var parsedMsg = {
+                    var parsedMsg = {
                          msgID: msgID,
                          channelId: groupChannel.channelId,
                          content: message,
@@ -190,7 +190,6 @@ var groupChannel = {
                          fromHistory: false
 
                      };
-                     */
                      groupChannel.receiveMessage(parsedMsg);
 
                 }
