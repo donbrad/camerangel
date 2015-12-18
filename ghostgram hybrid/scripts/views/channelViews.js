@@ -1031,7 +1031,8 @@ var channelView = {
         var thisUser = userModel.currentUser;
 
         channelView.initDataSources();
-
+        channelView.messageInit();
+        
         photoModel.getChannelOffers(channelUUID, function (offers) {
             channelView.photoOffersDS.data(offers);
             channelView._offersLoaded = true;
@@ -1047,13 +1048,12 @@ var channelView = {
 
         var contactUUID = null;
         var thisChannelHandler = null;
-        channelView.activeMessage = {};
+
+
         var name = channelView.formatName(thisChannel.name);
 
         channelView.members = thisChannel.members;
 
-        // Hide the image preview div
-        channelView.hideChatImagePreview();
 
         channelModel.updateUnreadCount(channelUUID, 0, null);
 
