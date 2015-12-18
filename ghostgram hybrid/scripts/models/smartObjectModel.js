@@ -28,6 +28,7 @@ var smartObject = {
         {term: "hike", category: "action", type: "meeting", composite: true, date: 1, place: 1, info: 0},
         {term: "bike", category: "action", type: "meeting", composite: true, date: 1, place: 1, info: 0},
         {term: "watch", category: "action", type: "meeting", composite: true, date: 1, place: -1, info: 0},
+        {term: "movie", category: "action", type: "meeting", composite: true, date: 1, place: -1, info: 0},
         {term: "goto", category: "action", type: "event", composite: true, date: 1, place: -1, info: 0},
         {term: "show", category: "action", type: "tvshow", composite: true, date: 1, place: 0, info: 0}
 
