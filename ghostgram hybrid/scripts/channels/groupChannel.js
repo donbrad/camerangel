@@ -137,38 +137,39 @@ var groupChannel = {
 
         APP.pubnub.uuid(function (msgID) {
             var notificationString = "Chat : " + groupChannel.channelName;
-            APP.pubnub.publish({
-                channel: groupChannel.channelId,
-                message: {
-                    msgID: msgID,
-                    pn_apns: {
-                        aps: {
-                            alert : notificationString,
-                            badge: 1,
-                            'content-available' : 1
-                        },
+            var thisMessage = {
+                msgID: msgID,
+                pn_apns: {
+                    aps: {
+                        alert : notificationString,
+                        badge: 1,
+                        'content-available' : 1
+                    },
+                    target: '#channel?channelId='+ groupChannel.channelId,
+                    channelId: groupChannel.channelId,
+                    isMessage: true,
+                    isPrivate: false
+                },
+                pn_gcm : {
+                    data : {
+                        title: notificationString,
+                        message: "Message from " + userModel.currentUser.name,
                         target: '#channel?channelId='+ groupChannel.channelId,
                         channelId: groupChannel.channelId,
                         isMessage: true,
                         isPrivate: false
-                    },
-                    pn_gcm : {
-                        data : {
-                            title: notificationString,
-                            message: "Message from " + userModel.currentUser.name,
-                            target: '#channel?channelId='+ groupChannel.channelId,
-                            channelId: groupChannel.channelId,
-                            isMessage: true,
-                            isPrivate: false
-                        }
-                    },
-                    sender: userModel.currentUser.userUUID,
-                    content: text,
-                    data: data,
-                    time: currentTime,
-                    fromHistory: false,
-                    ttl: ttl
+                    }
                 },
+                sender: userModel.currentUser.userUUID,
+                content: text,
+                data: data,
+                time: currentTime,
+                fromHistory: false,
+                ttl: ttl
+            };
+            APP.pubnub.publish({
+                channel: groupChannel.channelId,
+                message: thisMessage,
                 callback: function (m) {
                     if (m === undefined)
                         return;
@@ -179,7 +180,7 @@ var groupChannel = {
                         mobileNotify('Group Channel publish error: ' + message);
                     }
 
-                    var parsedMsg = {
+                    /*var parsedMsg = {
                          msgID: msgID,
                          channelId: groupChannel.channelId,
                          content: message,
@@ -189,8 +190,8 @@ var groupChannel = {
                          sender: userModel.currentUser.userUUID,
                          fromHistory: false
 
-                     };
-                     groupChannel.receiveMessage(parsedMsg);
+                     };*/
+                     groupChannel.receiveMessage(thisMessage);
 
                 }
             });
