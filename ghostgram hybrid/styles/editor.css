@@ -7,3 +7,12 @@ table.k-editor .k-content {
 .k-editor .k-editor-toolbar-wrap {
   display: none;
 }
+table.k-editor {
+  border-color: none !important;
+  background: #fff;
+}
+.photo-chat {
+  height: 6em !important;
+  max-width: 90%;
+  border-radius: 3px;
+}

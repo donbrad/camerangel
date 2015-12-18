@@ -1633,7 +1633,7 @@ var channelView = {
        // channelView.messageAddPhoto(photoModel.currentOffer);
         if (photoObj !== undefined) {
 
-            var imgUrl = '<img style="height: 75px;" class="photo-chat-sm" data-photoid="'+ photoId + '" id="chatphoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
+            var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="chatphoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
 
             editor.paste(imgUrl);
         }
@@ -1709,13 +1709,13 @@ var channelView = {
         //$('.archive').css('display', 'none');
         
         // Scale down the other photos in this chat...
-        $('.chat-photo-box-zoom').removeClass('chat-photo-box-zoom').addClass("chat-photo-box");
+        //$('.chat-photo-box-zoom').removeClass('chat-photo-box-zoom').addClass("chat-photo-box");
 
         // If the photo is minimized and the user just clicked in the message zoom the photo in place
-        $('#'+message.msgID + ' .chat-photo-box').removeClass('chat-photo-box').addClass('chat-photo-box-zoom');
+        //$('#'+message.msgID + ' .chat-photo-box').removeClass('chat-photo-box').addClass('chat-photo-box-zoom');
         
         // User actually clicked on the photo so show the open the photo viewer
-        if (target.hasClass('photoPreview')) {
+        if (target.hasClass('photo-chat')) {
         	var photoId = target.attr('data-photoId');
             var photoList = message.data.photos;
 
