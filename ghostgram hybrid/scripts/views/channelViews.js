@@ -480,8 +480,7 @@ var editChannelView = {
             }
         }
 
-
-
+        
         if (editChannelView._activeChannel.members.length > 0) {
             $(".addChatMembersBanner a").text("+ add new members");
         } else {
@@ -1032,7 +1031,7 @@ var channelView = {
 
         channelView.initDataSources();
         channelView.messageInit();
-        
+
         photoModel.getChannelOffers(channelUUID, function (offers) {
             channelView.photoOffersDS.data(offers);
             channelView._offersLoaded = true;
@@ -1299,46 +1298,6 @@ var channelView = {
         }
     },
 
-  /*  // Create an array of channel/chat members.  Needs to be all members as this is used for message display.
-    buildContactArray : function (contactArray) {
-       if (contactArray === undefined || contactArray.length === 0) {
-           return ([]);
-       }
-        var contactInfoArray = [], userId = userModel.currentUser.userUUID;
-
-        for (var i=0; i< contactArray.length; i++) {
-            var contact = new Object();
-
-            if (contactArray[i] === userId) {
-                contact.isContact = false;
-                contact.uuid = userId;
-                contact.alias = userModel.currentUser.alias;
-                contact.name = userModel.currentUser.name;
-                contact.photoUrl = userModel.currentUser.photo;
-                contact.publicKey = userModel.currentUser.publicKey;
-                contact.isPresent = true;
-                contactInfoArray[contact.uuid] = contact;
-                // this is our user.
-            } else {
-                var thisContact = contactModel.findContact(contactArray[i]);
-                if (thisContact === undefined) {
-                    mobileNotify("buildContactArray - undefined contact!!!");
-                    return(contactInfoArray);
-                }
-                contact.isContact = true;
-                contact.uuid = contactArray[i];
-                contact.alias = thisContact.alias;
-                contact.name = thisContact.name;
-                contact.photoUrl = thisContact.photo;
-                contact.publicKey = thisContact.publicKey;
-                contact.isPresent = false;
-                contactInfoArray[contact.uuid] = contact;
-            }
-        }
-
-        return (contactInfoArray)
-    },*/
-
     getUserType: function (uuid) {
         var userType = { isContact: true, alias : '', profileUrl: ''};
 
@@ -1516,7 +1475,7 @@ var channelView = {
         channelView.activeMessage = {canCopy: !channelView.messageLock, photos: []};
         channelView.messagePhotos = [];
         photoModel.initOffer();
-        channelView._initMessageTextArea();
+
     },
 
     messageAddLocation : function  () {
@@ -1585,7 +1544,7 @@ var channelView = {
             }
 
             //channelView.hideChatImagePreview();
-           // channelView._initMessageTextArea();
+            channelView._initMessageTextArea();
             channelView.messageInit();
 
         }
