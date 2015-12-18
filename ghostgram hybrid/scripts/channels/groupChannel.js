@@ -162,7 +162,7 @@ var groupChannel = {
                             isPrivate: false
                         }
                     },
-                    sender: groupChannel.userId,
+                    sender: userModel.currentUser.userUUID,
                     content: text,
                     data: data,
                     time: currentTime,
@@ -186,7 +186,7 @@ var groupChannel = {
                          data: data,
                          ttl: ttl,
                          time: currentTime,
-                         sender: groupChannel.userId,
+                         sender: userModel.currentUser.userUUID,
                          fromHistory: false
 
                      };
