@@ -1604,7 +1604,7 @@ var channelView = {
 
        // channelView.messageAddPhoto(photoModel.currentOffer);
         if (photoObj !== undefined) {
-            var imgUrl = '<img class="photoPreview" data-photoid="'+ photoId + '" id="chatphoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
+            var imgUrl = '<img style="height: 75px;" class="photo-chat-sm" data-photoid="'+ photoId + '" id="chatphoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
             editor.paste(imgUrl);
         }
 
