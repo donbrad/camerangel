@@ -177,11 +177,14 @@ var placesModel = {
 
     getPlaceModel : function (placeId) {
 
-        var dataSource = placesModel.placesDS;
+        var place = placesModel.queryPlace({ field: "uuid", operator: "eq", value: placeId });
+
+
+       /* var dataSource = placesModel.placesDS;
         dataSource.filter( { field: "uuid", operator: "eq", value: placeId });
         var view = dataSource.view();
         var place = view[0];
-        dataSource.filter([]);
+        dataSource.filter([]);*/
 
         return(place);
 
@@ -200,17 +203,25 @@ var placesModel = {
 
     findPlaceByName : function (name) {
 
-        var dataSource = placesModel.placesDS;
+        var place = placesModel.queryPlace({ field: "name", operator: "eq", value: name });
+
+       /* var dataSource = placesModel.placesDS;
         dataSource.filter( { field: "name", operator: "eq", value: name });
         var view = dataSource.view();
         var place = view[0];
-        dataSource.filter([]);
+        dataSource.filter([]);*/
 
         return(place);
 
     },
 
     addSharedPlace : function (place, placeChatId, callback) {
+
+        var existingPlace = placesModel.getPlaceModel(place.uuid);
+        if (existingPlace !== undefined) {
+            return;
+        }
+
         var Place = Parse.Object.extend("places");
         var placeParse = new Place();
 
