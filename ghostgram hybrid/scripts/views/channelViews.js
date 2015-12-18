@@ -1707,7 +1707,7 @@ var channelView = {
         var message = dataSource.getByUid(messageUID);
         //$('.delete').css('display', 'none');
         //$('.archive').css('display', 'none');
-        
+
         // Scale down the other photos in this chat...
         //$('.chat-photo-box-zoom').removeClass('chat-photo-box-zoom').addClass("chat-photo-box");
 
@@ -1716,17 +1716,21 @@ var channelView = {
         
         // User actually clicked on the photo so show the open the photo viewer
         if (target.hasClass('photo-chat')) {
+
         	var photoId = target.attr('data-photoId');
-            var photoList = message.data.photos;
+            if (message.data.photos !== undefined) {
+                var photoList = message.data.photos;
 
-            for (var i=0; i< photoList.length; i++) {
-                var photoObj = photoList[i];
+                for (var i=0; i< photoList.length; i++) {
+                    var photoObj = photoList[i];
 
-                if (photoObj.photoId === photoId) {
-                    modalChatPhotoView.openModal(photoObj);
-                    return;
+                    if (photoObj.photoId === photoId) {
+                        modalChatPhotoView.openModal(photoObj);
+                        return;
+                    }
                 }
             }
+
 
           /*  var photoUrl = message.data.photo.photo;
             $('#modalPhotoViewImage').attr('src', photoUrl);*/

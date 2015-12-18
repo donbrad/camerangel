@@ -498,15 +498,17 @@ var channelModel = {
 
     },
 
+
     // Add group channel for members...
     // Get's the current owner details from parse and then creates a local channel for this user
-    addMemberChannel : function (channelId, channelName, channelDescription, channelMembers, ownerId, ownerName, options) {
+    addMemberChannel : function (channelId, channelName, channelDescription, channelMembers, ownerId, ownerName, options, isDeleted) {
 
         var channel = channelModel.findChannelModel(channelId);
         if (channel !== undefined)  {
             // Channel already exists
             return;
         }
+
         if (options !== undefined && options !== null) {
             if (options.chatType === 'Place') {
                 placesModel.addSharedPlace(options.chatData, channelId);
@@ -536,6 +538,7 @@ var channelModel = {
         channel.set("clearBefore", addTime);
         channel.set("lastAccess", addTime);
 
+
         if (channelMembers === undefined || channelMembers === null) {
             channelMembers = [];
         }
@@ -555,7 +558,8 @@ var channelModel = {
         channel.save(null, {
             success: function(channel) {
                 //ux.closeModalViewAddChannel();
-                mobileNotify('Added  Chat : ' + channel.get('name'));
+                if (isDeleted === undefined)
+                    mobileNotify('Added  Chat : ' + channel.get('name'));
             },
             error: function(channel, error) {
                 // Execute any logic that should take place if the save fails.

@@ -368,8 +368,15 @@ var appDataChannel = {
         if (channel === undefined && channelMembers !== undefined && channelMembers.length > 1) {
             //mobileNotify("Chat invite from  " + ownerName + ' " ' + channelName + '"');
 
-            channelModel.addMemberChannel(channelId, channelName, channelDescription, channelMembers, ownerId, ownerName, options);
-            //notificationModel.addNewChatNotification(channelId, channelName, "new channel...");
+            getChannelDetails(channelId, function (result) {
+                if (result.found) {
+                    channelModel.addMemberChannel(channelId, channelName, channelDescription, channelMembers, ownerId, ownerName, options);
+                } else {
+                    channelModel.addMemberChannel(channelId, channelName, channelDescription, channelMembers, ownerId, ownerName, options, true);
+
+                }
+            });
+                    //notificationModel.addNewChatNotification(channelId, channelName, "new channel...");
 
         }
 
