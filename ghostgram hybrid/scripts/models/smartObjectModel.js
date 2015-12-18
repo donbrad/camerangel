@@ -30,6 +30,27 @@ var smartObject = {
         {term: "watch", category: "action", type: "meeting", composite: true, date: 1, place: -1, info: 0},
         {term: "goto", category: "action", type: "event", composite: true, date: 1, place: -1, info: 0},
         {term: "show", category: "action", type: "tvshow", composite: true, date: 1, place: 0, info: 0}
+
+
+    ],
+
+    dateMap : [
+        {term: "tomorrow", category: "calendar", type: "date", composite: false},
+        {term: "today", category: "calendar", type: "date", composite: false},
+        {term: "week", category: "calendar", type: "date", composite: false},
+        {term: "month", category: "calendar", type: "date", composite: false},
+        {term: "morning", category: "calendar", type: "time", composite: false},
+        {term: "afternoon", category: "calendar", type: "time", composite: false},
+        {term: "evening", category: "calendar", type: "time", composite: false},
+        {term: "night", category: "calendar", type: "time", composite: false},
+        {term: "next", category: "calendar", type: "time", composite: true},
+        {term: "mon", category: "calendar", type: "day", composite: true},
+        {term: "tue", category: "calendar", type: "day", composite: true},
+        {term: "wed", category: "calendar", type: "day", composite: true},
+        {term: "thu", category: "calendar", type: "day", composite: true},
+        {term: "fri", category: "calendar", type: "day", composite: true},
+        {term: "sat", category: "calendar", type: "day", composite: true},
+        {term: "sun", category: "calendar", type: "day", composite: true},
     ],
 
     termsDS : null,
