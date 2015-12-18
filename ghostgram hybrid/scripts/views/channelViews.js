@@ -480,7 +480,7 @@ var editChannelView = {
             }
         }
 
-        
+
         if (editChannelView._activeChannel.members.length > 0) {
             $(".addChatMembersBanner a").text("+ add new members");
         } else {

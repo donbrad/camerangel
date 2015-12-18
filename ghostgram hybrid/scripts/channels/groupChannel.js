@@ -139,6 +139,7 @@ var groupChannel = {
             var notificationString = "Chat : " + groupChannel.channelName;
             var thisMessage = {
                 msgID: msgID,
+                channelId : groupChannel.channelId,
                 pn_apns: {
                     aps: {
                         alert : notificationString,
