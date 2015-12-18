@@ -1218,7 +1218,7 @@ var channelView = {
            contact.alias = userModel.currentUser.alias;
            contact.name = userModel.currentUser.name;
            contact.photoUrl = userModel.currentUser.photo;
-           if (contact.photoUrl === undefined || contact.photoUrl === null) {
+           if (contact.photoUrl === undefined || contact.photoUrl === null || contact.photoUrl === '') {
                contact.photoUrl = userModel.identiconUrl;
            }
            contact.publicKey = userModel.currentUser.publicKey;
@@ -1568,7 +1568,7 @@ var channelView = {
         }
 
         channelView.messageAddLocation();
-        
+
         // Are there any photos in the current message
         if (channelView.messagePhotos.length > 0) {
             validMessage = true;
