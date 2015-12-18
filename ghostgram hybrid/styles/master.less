@@ -357,7 +357,6 @@ form {
 	width: 100%;
 	text-align: center;
 	opacity: 0.6;
-	text-align: center;
 	//display: none;
 	img {
 		width: 6rem;
@@ -1641,7 +1640,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 	color: #fff;
 	width: 100%;
 	height: 10rem;
-	padding: 0.5rem 0 0.5rem;
+	padding: 0.5rem 1rem;
 	border-top: 1px solid rgba(255, 255, 255, 0.2);
 	background: -moz-linear-gradient(top,  rgba(0,0,0,0.3) 0%, rgba(0,0,0,1) 99%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.3)), color-stop(99%,rgba(0,0,0,1))); /* Chrome,Safari4+ */
@@ -1657,9 +1656,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 
 .photoTitleInput {
-	width: 90%;
-	margin-left: 5%;
-	margin-right: 5%;
+	width: 100%;
 	textarea {
 		width: 100%;
 		font-size: 1em;
@@ -2895,11 +2892,9 @@ div.footerMenu.km-footer > ul > li > a {
 	.shadow-1 !important;
 	border-radius: 1.5rem !important;
 	text-align: center;
-	position: fixed;
 	right: 1rem;
 	padding-top: 0.85rem !important;
 	position: absolute;
-	right: 1rem;
 	bottom: 4rem;
 	p {
 		width: 100px;
@@ -2907,6 +2902,8 @@ div.footerMenu.km-footer > ul > li > a {
 		right: 0rem;
 		top: 1rem;
 		opacity:0;
+		text-align: right;
+		padding-right: 5px;
 	}
 	img {
 		height:1.25rem;
@@ -2914,6 +2911,10 @@ div.footerMenu.km-footer > ul > li > a {
 	a {
 		padding-top: 0.75rem;
 	}
+}
+
+.actionBtn-stacked {
+	bottom: 9em !important;
 }
 
 .actionBtn-text {
@@ -3488,6 +3489,16 @@ div.loginBox > form > div > ul > li {
 	> img {
 		width: 100%;
 	}
+}
+
+.photo-chat {
+	height: auto;
+	max-width: 90%;
+}
+
+.photo-chat-sm {
+	height: 6em !important;
+	width: auto;
 }
 
 .photoInfo {
