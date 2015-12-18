@@ -3354,12 +3354,14 @@ div.loginBox > form > div > ul > li {
   font-size: 1em;
 }
 .photoPreview {
-  max-width: 25%;
+  width:25%;
   height: auto;
-  float: left;
+
 }
 .photoPreview > img {
-  width: 100%;
+  width:25%;
+  height: auto;
+
 }
 .photoInfo {
   float: left;
