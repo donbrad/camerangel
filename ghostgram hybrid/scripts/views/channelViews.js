@@ -1544,7 +1544,7 @@ var channelView = {
 
 
         channelView.activeMessage.photos.push(photoObj);
-        photoModel.addPhotoOffer(photo.photoId, channelView._channelId, photo.thumbnailUrl, photo.imageUrl, canCopy);
+       // photoModel.addPhotoOffer(photo.photoId, channelView._channelId, photo.thumbnailUrl, photo.imageUrl, canCopy);
     },
 
     messageAddRichText : function (text) {
@@ -1847,7 +1847,7 @@ var channelView = {
 
          galleryPicker.openModal(function (photo) {
 
-             photoModel.addPhotoOffer(photo.photoId, channelView._channelId,  photo.thumbnailUrl, photo.imageUrl, true);
+            // photoModel.addPhotoOffer(photo.photoId, channelView._channelId,  photo.thumbnailUrl, photo.imageUrl, true);
 
              var url = photo.thumbnailUrl;
              if (photo.imageUrl !== undefined && photo.imageUrl !== null)
