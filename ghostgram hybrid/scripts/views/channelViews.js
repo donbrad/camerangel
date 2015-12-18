@@ -1159,7 +1159,7 @@ var channelView = {
         channelView._channel = null;
         channelView._active  = false;
         channelView.initDataSources();
-
+        channelView.messageInit();
         // If this isn't a privateChat the close the channel (unsubscribe)
         // All private chat messages go through userdatachannel which is always subscribed
         if (!channelView.isPrivateChat) {
@@ -1512,6 +1512,8 @@ var channelView = {
     messageInit : function () {
         channelView.activeMessage = {canCopy: !channelView.messageLock, photos: []};
         channelView.messagePhotos = [];
+        photoModel.initOffer();
+        channelView._initMessageTextArea();
     },
 
     messageAddLocation : function  () {
@@ -1582,10 +1584,10 @@ var channelView = {
                 groupChannel.sendMessage(text, channelView.activeMessage, 86400);
             }
 
-            channelView.hideChatImagePreview();
-            channelView._initMessageTextArea();
+            //channelView.hideChatImagePreview();
+           // channelView._initMessageTextArea();
             channelView.messageInit();
-            photoModel.initOffer();
+
         }
 
     },

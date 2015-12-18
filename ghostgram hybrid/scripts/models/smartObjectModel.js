@@ -51,6 +51,18 @@ var smartObject = {
         {term: "fri", category: "calendar", type: "day", composite: true},
         {term: "sat", category: "calendar", type: "day", composite: true},
         {term: "sun", category: "calendar", type: "day", composite: true},
+        {term: "jan", category: "calendar", type: "month", composite: true},
+        {term: "feb", category: "calendar", type: "month", composite: true},
+        {term: "mar", category: "calendar", type: "month", composite: true},
+        {term: "apr", category: "calendar", type: "month", composite: true},
+        {term: "may", category: "calendar", type: "month", composite: true},
+        {term: "jun", category: "calendar", type: "month", composite: true},
+        {term: "jul", category: "calendar", type: "month", composite: true},
+        {term: "aug", category: "calendar", type: "month", composite: true},
+        {term: "sep", category: "calendar", type: "month", composite: true},
+        {term: "oct", category: "calendar", type: "month", composite: true},
+        {term: "nov", category: "calendar", type: "month", composite: true},
+        {term: "dec", category: "calendar", type: "month", composite: true}
     ],
 
     termsDS : null,
