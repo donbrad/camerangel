@@ -1210,7 +1210,7 @@ var channelView = {
     // Quick access to contact data for display.
     getContactData : function (uuid) {
         var contact = {isContact: true};
-        //var data = channelView.contactData[uuid];
+        //var data = channelView.contactData[uuid];x
 
        if (uuid === userModel.currentUser.userUUID) {
            contact.isContact = false;
@@ -1640,16 +1640,11 @@ var channelView = {
             editor.paste(imgUrl);
         }
 
+        channelView.messagePhotos.push(photoId);
 
        /* $('#chatImage').attr('src', displayUrl);
         $('#chatImagePreview').show();*/
     },
-
-    hideChatImagePreview : function () {
-        $('#chatImagePreview').hide();
-        $('#chatImage').attr('src', null);
-    },
-
     togglePrivacyMode :function (e) {
         _preventDefault(e);
         channelView.privacyMode = ! channelView.privacyMode;
@@ -1794,7 +1789,18 @@ var channelView = {
                 $("#"+message.msgID).addClass('privateMode');
             });
         }
-        $("#messageActions").data("kendoMobileActionSheet").open();
+
+        if (message.sender === userModel.currentUser.userUUID) {
+            $("#messageActionsSender").data("kendoMobileActionSheet").open();
+        } else {
+            if (message.canCopy) {
+                $("#messageActions").data("kendoMobileActionSheet").open();
+            } else {
+                mobileNotify("This Message was locked by Sender");
+            }
+
+        }
+
     },
 
     // Process a tag recognized by the editor
@@ -1802,9 +1808,10 @@ var channelView = {
 
     },
 
-    messageEraser: function (e) {
+    messageRecall: function (e) {
         _preventDefault(e);
-        channelView._initMessageTextArea();
+        var message = channelView.activeMessage;
+        mobileNotify("Recalling message " + message.msgID);
     },
 
     setMessageLockIcon : function (locked) {

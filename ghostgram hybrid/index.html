@@ -1461,8 +1461,14 @@
 
 	<ul data-role="actionsheet" id="messageActions" data-popup='{"direction": "left"}'>
 		<li><a data-action="channelView.archiveMessage"><img src="images/icon-memories.svg" class="icon-sm" /> Remember Message</a></li>
-		<li><a data-action="channelView.smartScanMessage"> Smart Scan Message</a></li>
+		<!--<li><a data-action="channelView.smartScanMessage"> Smart Scan Message</a></li>-->
 		<!--<li><a data-action="channelView.messageEraser"><i class="fa fa-eraser"> </i> Erase Message</a></li>-->
+	</ul>
+
+	<ul data-role="actionsheet" id="messageActionsSender" data-popup='{"direction": "left"}'>
+		<li><a data-action="channelView.archiveMessage"><img src="images/icon-memories.svg" class="icon-sm" /> Remember Message</a></li>
+		<!--<li><a data-action="channelView.smartScanMessage"> Smart Scan Message</a></li>-->
+		<li><a data-action="channelView.messageRecall"><i class="fa fa-eraser"> </i> Recall Message</a></li>
 	</ul>
 
 </div>
@@ -1606,15 +1612,12 @@
 	<div id=#:msgID# class="chat-message #=history# clearfix">
 	#
 
-
 		var sender = contactData.uuid;
 		var name = contactData.name;
 		var alias = contactData.alias;
 		var contactPhotoUrl = contactData.photoUrl;
 		var displayName = ux.returnUXPrimaryName(name, alias);
 		var messageClass = "chat-message-text";
-
-
 	#
 	# if(userModel.currentUser.useLargeView){#
 		# var messageClass = "userLgFontSize chat-message-text"; #
