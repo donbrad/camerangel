@@ -1700,24 +1700,18 @@ var channelView = {
 
     tapChannel : function (e) {
         e.preventDefault();
-        
-        var target = $(e.touch.initialTouch);
+
+        var $target = $(e.touch.initialTouch);
         var dataSource = channelView.messagesDS;
         var messageUID = $(e.touch.currentTarget).data("uid");
         var message = dataSource.getByUid(messageUID);
-        //$('.delete').css('display', 'none');
-        //$('.archive').css('display', 'none');
 
-        // Scale down the other photos in this chat...
-        //$('.chat-photo-box-zoom').removeClass('chat-photo-box-zoom').addClass("chat-photo-box");
-
-        // If the photo is minimized and the user just clicked in the message zoom the photo in place
-        //$('#'+message.msgID + ' .chat-photo-box').removeClass('chat-photo-box').addClass('chat-photo-box-zoom');
-        
         // User actually clicked on the photo so show the open the photo viewer
-        if (target.hasClass('photo-chat')) {
+        if ($target.hasClass('photo-chat')) {
 
-        	var photoId = target.attr('data-photoId');
+        	var photoId = $target.attr('data-photoId');
+
+            // todo Don - review photos source
             if (message.data.photos !== undefined) {
                 var photoList = message.data.photos;
 
