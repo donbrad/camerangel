@@ -190,9 +190,9 @@ var groupChannel = {
                          fromHistory: false
 
                      };
-
+                     */
                      groupChannel.receiveMessage(parsedMsg);
- */
+
                 }
             });
         });
