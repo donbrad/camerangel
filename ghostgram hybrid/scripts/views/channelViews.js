@@ -1218,6 +1218,9 @@ var channelView = {
            contact.alias = userModel.currentUser.alias;
            contact.name = userModel.currentUser.name;
            contact.photoUrl = userModel.currentUser.photo;
+           if (contact.photoUrl === undefined || contact.photoUrl === null) {
+               contact.photoUrl = userModel.identiconUrl;
+           }
            contact.publicKey = userModel.currentUser.publicKey;
            contact.isPresent = true;
 
