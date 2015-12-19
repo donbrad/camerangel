@@ -1583,11 +1583,12 @@ var channelView = {
 
      _initMessageTextArea : function () {
 
+         var editor =  $('#messageTextArea').data("kendoEditor");
       //   $('#messageTextArea').val('')
          $('#messageTextArea').attr("rows","1");
          $('#messageTextArea').attr("height","24px");
-         $('#messageTextArea').data("kendoEditor").value('');
-         $('#messageTextArea').data("kendoEditor").update();
+         editor.value('');
+         editor.update();
 
         autosize.update($('#messageTextArea'));
 
@@ -1609,6 +1610,7 @@ var channelView = {
             var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="chatphoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
 
             editor.paste(imgUrl);
+            editor.update();
         }
 
         channelView.messagePhotos.push(photoId);
