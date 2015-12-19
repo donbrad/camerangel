@@ -1450,11 +1450,26 @@ var channelView = {
             message.fromHistory = false;
         }
 
-        $("#messages-listview").data("kendoMobileListView").refresh();
+       // $("#messages-listview").data("kendoMobileListView").refresh();
 
         channelView.messagesDS.add(message);
         channelModel.updateLastAccess(channelView._channelId, null);
-        channelView.scrollToBottom();
+        if (message.data.photos !== undefined && message.data.photos.length > 0) {
+            var selector = '#' + message.msgID + " img";
+            var $img = $(selector), n = $img.length;
+            if (n > 0) {
+                $img.on("load error", function () {
+                    if(!--n) {
+                        channelView.scrollToBottom();
+                    }
+                });
+            } else {
+                channelView.scrollToBottom();
+            }
+        } else {
+            channelView.scrollToBottom();
+        }
+
 
         if (channelView.privacyMode) {
             kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(9000).play();
