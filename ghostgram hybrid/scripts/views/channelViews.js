@@ -964,7 +964,7 @@ var channelView = {
                 content: true,
                 min: 24
             },
-            keyup: function(e) {
+            /*keyup: function(e) {
                 var editor = $("#messageTextArea").data("kendoEditor");
                 var range = editor.getRange();
                 if ((e.keyCode === 50 && e.shiftKey === true) || e.keyCode === 64) {
@@ -998,7 +998,7 @@ var channelView = {
                         channelView.processTag(tagString);
                     }
                 }
-            },
+            },*/
             tools: [
                 "bold",
                 "italic",
@@ -1856,8 +1856,31 @@ var channelView = {
 
     messageInsertTag : function (e) {
         _preventDefault(e);
+
         var editor = $("#messageTextArea").data("kendoEditor");
-        editor.paste("@");
+        var range = editor.getRange();
+
+        if (channelView._insertTag) {
+            $("#chatSmartTagBtn").attr('src','images/icon-smart.svg');
+            channelView._tagActive = false;
+
+            channelView._tagEnd = range.endOffset;
+            var text = editor.value();
+            var tagString = text.substring(range.startOffset, range.endOffset);
+            mobileNotify("Smart Object: will process " + tagString);
+            channelView.processTag(tagString);
+
+
+        } else {
+            editor.paste("@");
+            editor.update();
+            channelView._tagActive = true;
+            channelView._tagRange = range;
+            channelView._tagStart = range.startOffset;
+
+            $("#chatSmartTagBtn").attr('src','images/icon-smart-active.svg');
+        }
+
 
     },
 
