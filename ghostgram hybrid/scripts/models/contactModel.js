@@ -573,6 +573,10 @@ var contactModel = {
         if (thisContact.contactUUID === undefined || thisContact.contactUUID === null) {
             var phone  = thisContact.phone;
             findUserByPhone(phone, function (result) {
+                if (result === null) {
+                    console.error("findUserByPhone got Null" + phone);
+                    return;
+                }
                 if (result.found) {
                     var contact = result.user;
                     var current = thisContact;
@@ -618,6 +622,10 @@ var contactModel = {
         } else {
 
             getUserContactInfo(thisContact.contactUUID, function (result) {
+                if (result === null) {
+                    console.error("getUseContactInfo got Null" + thisContact.contactUUID);
+                    return;
+                }
                 if (result.found) {
                     var contact = result.user;
                     var current = thisContact;

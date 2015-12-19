@@ -878,7 +878,7 @@ var channelView = {
        // var width = window.innerWidth - 68;
         //$('#messageTextArea').css("width", width+'px');
         //channelView.topOffset = APP.kendo.scroller().scrollTop;
-       	autosize($('#messageTextArea'));
+
         
         $("#messages-listview").kendoMobileListView({
             dataSource: channelView.messagesDS,
@@ -892,57 +892,7 @@ var channelView = {
             hold: channelView.holdChannel
         });
 
-        $("#messageTextArea").kendoEditor({
-        	stylesheets:["styles/editor.css"],
-            resizable: {
-                content: true,
-                min: 24
-            },
-            keyup: function(e) {
-                var editor = $("#messageTextArea").data("kendoEditor");
-                var range = editor.getRange();
-                if ((e.keyCode === 50 && e.shiftKey === true) || e.keyCode === 64) {
-                    channelView._tagActive = true;
-                    channelView._tagRange = range;
-                    channelView._tagStart = range.startOffset;
-                    channelView._firstSpace = false;
-                    return;
-                }
 
-                if (channelView._tagActive) {
-                    if (e.keyCode === 32) {
-                        // can do a look up here...
-                        if (channelView._firstSpace) {
-                            channelView._firstSpace = false;
-                            e.keyCode = 190;
-                        } else {
-                            channelView._firstSpace = true;
-                        }
-                    } else {
-                        channelView._firstSpace = false;
-                    }
-
-                    if (e.keyCode === 190) {
-                        channelView._tagActive = false;
-                        channelView._firstSpace = false;
-                        channelView._tagEnd = range.endOffset;
-                        var text = editor.value();
-                        var tagString = text.substring(range.startOffset, range.endOffset);
-                        console.log("tag string = " + tagString);
-                        channelView.processTag(tagString);
-                    }
-                }
-            },
-            tools: [
-                "bold",
-                "italic",
-                "underline",
-                "insertUnorderedList",
-                "indent",
-                "outdent"
-            ]
-        });
-        $(".k-editor-toolbar").hide();
 
        /* $.browser = {webkit: true};
 
@@ -1006,6 +956,65 @@ var channelView = {
     	
     },
 
+    openEditor : function () {
+        autosize($('#messageTextArea'));
+        $("#messageTextArea").kendoEditor({
+            stylesheets:["styles/editor.css"],
+            resizable: {
+                content: true,
+                min: 24
+            },
+            keyup: function(e) {
+                var editor = $("#messageTextArea").data("kendoEditor");
+                var range = editor.getRange();
+                if ((e.keyCode === 50 && e.shiftKey === true) || e.keyCode === 64) {
+                    channelView._tagActive = true;
+                    channelView._tagRange = range;
+                    channelView._tagStart = range.startOffset;
+                    channelView._firstSpace = false;
+                    return;
+                }
+
+                if (channelView._tagActive) {
+                    if (e.keyCode === 32) {
+                        // can do a look up here...
+                        if (channelView._firstSpace) {
+                            channelView._firstSpace = false;
+                            e.keyCode = 190;
+                        } else {
+                            channelView._firstSpace = true;
+                        }
+                    } else {
+                        channelView._firstSpace = false;
+                    }
+
+                    if (e.keyCode === 190) {
+                        channelView._tagActive = false;
+                        channelView._firstSpace = false;
+                        channelView._tagEnd = range.endOffset;
+                        var text = editor.value();
+                        var tagString = text.substring(range.startOffset, range.endOffset);
+                        console.log("tag string = " + tagString);
+                        channelView.processTag(tagString);
+                    }
+                }
+            },
+            tools: [
+                "bold",
+                "italic",
+                "underline",
+                "insertUnorderedList",
+                "indent",
+                "outdent"
+            ]
+        });
+        $(".k-editor-toolbar").hide();
+    },
+
+    closeEditor : function () {
+        $('#messageTextArea').data("kendoEditor").destroy();
+    },
+
     // Initialize the channel specific view data sources.
     initDataSources : function () {
         channelView.messagesDS.data([]);
@@ -1044,6 +1053,8 @@ var channelView = {
         }
 
         channelView._channel = thisChannel;
+
+        channelView.openEditor(); // Create the kendo editor instance
 
         var contactUUID = null;
         var thisChannelHandler = null;
@@ -1159,6 +1170,7 @@ var channelView = {
         channelView._active  = false;
         channelView.initDataSources();
         channelView.messageInit();
+        channelView.closeEditor();
         // If this isn't a privateChat the close the channel (unsubscribe)
         // All private chat messages go through userdatachannel which is always subscribed
         if (!channelView.isPrivateChat) {
