@@ -67,7 +67,7 @@ var groupChannel = {
 
         if (channelView._active && message.channelId === channelView._channelId) {
 
-            channelView.messagesDS.add(message);
+            //channelView.messagesDS.add(message);
             channelModel.updateLastAccess(channelView._channelId, null);
             //channelView.scrollToBottom();
         }
