@@ -1122,8 +1122,7 @@ var channelView = {
                 channelView.messagesDS.data(messages);
 
                 setTimeout(function () {
-                    $("#messages-listview").data("kendoMobileListView").refresh();
-                    setTimeout(channelView.scrollToBottom, 500);
+                    channelView.scrollToBottom();
                 }, 1000);
                // channelView.scrollToBottom();
             });
@@ -1160,8 +1159,7 @@ var channelView = {
               //channelView.updateMessageTimeStamps();
 
                 setTimeout(function () {
-                    $("#messages-listview").data("kendoMobileListView").refresh();
-                    setTimeout(channelView.scrollToBottom, 500);
+                    channelView.scrollToBottom();
                 }, 1000);
 
                 /* if (channelView.intervalId === null) {
@@ -1650,7 +1648,8 @@ var channelView = {
         var scroller = APP.kendo.scroller;
         var position = 0;
         var scrollerHeight =  APP.kendo.scroller().scrollHeight();
-        var listViewHeight =  $("#messages-listview").scrollHeight;
+        var listView = $("#messages-listview");
+        var listViewHeight =  listView.scrollHeight;
         var viewportHeight =  APP.kendo.scroller().height();
 
         if (scrollerHeight < listViewHeight) {
