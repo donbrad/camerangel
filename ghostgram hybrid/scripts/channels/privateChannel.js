@@ -127,7 +127,22 @@ var privateChannel = {
         if (channelView._active && message.channelId === channelView._channelId) {
             channelModel.updateLastAccess(channelView._channelId, null);
             channelView.messagesDS.add(message);
-            channelView.scrollToBottom();
+
+            if (message.data.photos !== undefined && message.data.photos.length > 0) {
+                var selector = '#' + message.msgID + " img";
+                var $img = $(selector), n = $img.length;
+                if (n > 0) {
+                    $img.on("load error", function () {
+                        if(!--n) {
+                            channelView.scrollToBottom();
+                        }
+                    });
+                } else {
+                    channelView.scrollToBottom();
+                }
+            } else {
+                channelView.scrollToBottom();
+            }
         } else {
             // Is there a private channel for this sender?
             channelModel.confirmPrivateChannel(message.channelId);
@@ -225,11 +240,12 @@ var privateChannel = {
 
                     };
 
-                    channelView.scrollToBottom();
+
                     channelModel.updateLastAccess(parsedMsg.channelId, null);
                     channelView.messagesDS.add(parsedMsg);
                     userDataChannel.messagesDS.add(parsedMsg);
                     userDataChannel.messagesDS.sync();
+                    channelView.scrollToBottom();
 
                 }
             });

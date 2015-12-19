@@ -65,12 +65,25 @@ var groupChannel = {
             message.fromHistory = false;
         }
 
-        //if (channelView._active && message.channelId === channelView._channelId) {
-
-            channelView.messagesDS.add(message);
-            channelModel.updateLastAccess(channelView._channelId, null);
+        channelView.messagesDS.add(message);
+        channelModel.updateLastAccess(channelView._channelId, null);
+        if (message.data.photos !== undefined && message.data.photos.length > 0) {
+            var selector = '#' + message.msgID + " img";
+            var $img = $(selector), n = $img.length;
+            if (n > 0) {
+                $img.on("load error", function () {
+                    if(!--n) {
+                        channelView.scrollToBottom();
+                    }
+                });
+            } else {
+                channelView.scrollToBottom();
+            }
+        } else {
             channelView.scrollToBottom();
-        //}
+        }
+
+
 
 
     },
