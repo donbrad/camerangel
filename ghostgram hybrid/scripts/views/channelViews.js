@@ -1121,10 +1121,21 @@ var channelView = {
 
                 channelView.messagesDS.data(messages);
 
-                setTimeout(function () {
+                var $img = $("#messages-listview img"), n = $img.length;
+                if (n > 0) {
+                    $img.on("load error", function () {
+                        if(!--n) {
+                            channelView.scrollToBottom();
+                        }
+                    });
+                } else {
                     channelView.scrollToBottom();
-                }, 1000);
-               // channelView.scrollToBottom();
+                }
+
+               /* setTimeout(function () {
+                    channelView.scrollToBottom();
+                }, 1000);*/
+
             });
 
 
@@ -1158,9 +1169,16 @@ var channelView = {
               channelView.messagesDS.data(messages);
               //channelView.updateMessageTimeStamps();
 
-                setTimeout(function () {
+                var $img = $("#messages-listview img"), n = $img.length;
+                if (n > 0) {
+                    $img.on("load error", function () {
+                        if(!--n) {
+                            channelView.scrollToBottom();
+                        }
+                    });
+                } else {
                     channelView.scrollToBottom();
-                }, 1000);
+                }
 
                 /* if (channelView.intervalId === null) {
                   channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 60 * 5000);
@@ -1649,7 +1667,7 @@ var channelView = {
         var position = 0;
         var scrollerHeight =  APP.kendo.scroller().scrollHeight();
         var listViewHeight =  $("#messages-listview")[0].scrollHeight;
-        var viewportHeight =  APP.kendo.scroller().height() - 240;
+        var viewportHeight =  APP.kendo.scroller().height();
 
         if (scrollerHeight < listViewHeight) {
             scrollerHeight = listViewHeight;
