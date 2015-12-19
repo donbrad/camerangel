@@ -1863,13 +1863,12 @@ var channelView = {
         var range = editor.getRange();
 
         if (channelView._insertTag) {
-
             $("#chatSmartTagBtn").attr('src','images/icon-smart.svg');
             channelView._tagActive = false;
 
             channelView._tagEnd = range.endOffset;
             var text = editor.value();
-            var tagString = text.substring(range.startOffset, range.endOffset);
+            var tagString = text.substring(channelView._tagStart, channelView._tagEnd);
             mobileNotify("Smart Object: will process " + tagString);
             channelView.processTag(tagString);
             channelView._insertTag = false;
