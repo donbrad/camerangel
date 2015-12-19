@@ -166,7 +166,7 @@ var privateChannel = {
             var message = {
                 type: 'privateMessage',
                 recipient: recipient,
-                sender: privateChannel.userId,
+                sender: userModel.currentUser.userUUID,
                 pn_apns: {
                     aps: {
                         alert : notificationString,
@@ -214,7 +214,7 @@ var privateChannel = {
                     var parsedMsg = {
                         type: 'privateMessage',
                         recipient: message.recipient,
-                        sender: message.sender,
+                        sender: userModel.currentUser.userUUID,
                         msgID: message.msgID,
                         channelId: message.recipient, //
                         content: content,
