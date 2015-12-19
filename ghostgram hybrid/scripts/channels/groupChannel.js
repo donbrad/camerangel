@@ -65,12 +65,12 @@ var groupChannel = {
             message.fromHistory = false;
         }
 
-        if (channelView._active && message.channelId === channelView._channelId) {
+        //if (channelView._active && message.channelId === channelView._channelId) {
 
-            //channelView.messagesDS.add(message);
+            channelView.messagesDS.add(message);
             channelModel.updateLastAccess(channelView._channelId, null);
             channelView.scrollToBottom();
-        }
+        //}
 
 
     },
@@ -192,7 +192,10 @@ var groupChannel = {
                          fromHistory: false
 
                      };*/
-                     groupChannel.receiveMessage(thisMessage);
+
+                    channelModel.updateLastAccess(groupChannel.channelId, null);
+                    channelView.scrollToBottom();
+                   // groupChannel.receiveMessage(thisMessage);
 
                 }
             });
