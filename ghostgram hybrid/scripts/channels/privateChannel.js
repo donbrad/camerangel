@@ -127,6 +127,7 @@ var privateChannel = {
         if (channelView._active && message.channelId === channelView._channelId) {
             channelModel.updateLastAccess(channelView._channelId, null);
             channelView.messagesDS.add(message);
+            channelView.scrollToBottom();
         } else {
             // Is there a private channel for this sender?
             channelModel.confirmPrivateChannel(message.channelId);
