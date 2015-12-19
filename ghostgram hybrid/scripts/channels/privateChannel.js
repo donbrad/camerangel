@@ -225,6 +225,7 @@ var privateChannel = {
 
                     };
 
+                    channelView.scrollToBottom();
                     channelModel.updateLastAccess(parsedMsg.channelId, null);
                     channelView.messagesDS.add(parsedMsg);
                     userDataChannel.messagesDS.add(parsedMsg);

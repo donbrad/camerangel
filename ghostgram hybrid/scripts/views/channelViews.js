@@ -1649,7 +1649,7 @@ var channelView = {
         var position = 0;
         var scrollerHeight =  APP.kendo.scroller().scrollHeight();
         var listViewHeight =  $("#messages-listview")[0].scrollHeight;
-        var viewportHeight =  APP.kendo.scroller().height();
+        var viewportHeight =  APP.kendo.scroller().height() - 240;
 
         if (scrollerHeight < listViewHeight) {
             scrollerHeight = listViewHeight;
