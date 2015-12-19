@@ -1122,7 +1122,7 @@ var channelView = {
                 channelView.messagesDS.data(messages);
 
                 setTimeout(function () {
-                    $("#messages-listview").data("kendoListView").refresh();
+                    $("#messages-listview").data("kendoMobileListView").refresh();
                     setTimeout(channelView.scrollToBottom, 500);
                 }, 1000);
                // channelView.scrollToBottom();
@@ -1160,7 +1160,7 @@ var channelView = {
               //channelView.updateMessageTimeStamps();
 
                 setTimeout(function () {
-                    $("#messages-listview").data("kendoListView").refresh();
+                    $("#messages-listview").data("kendoMobileListView").refresh();
                     setTimeout(channelView.scrollToBottom, 500);
                 }, 1000);
 
@@ -1656,7 +1656,7 @@ var channelView = {
         if (scrollerHeight < listViewHeight) {
             scrollerHeight = listViewHeight;
         }
-        
+
         if (scrollerHeight > viewportHeight) {
              position = -1 * (scrollerHeight - viewportHeight - channelView.topOffset);
            	 APP.kendo.scroller().animatedScrollTo(0, position);
