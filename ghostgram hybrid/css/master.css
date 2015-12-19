@@ -3027,7 +3027,7 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 .messageCompose {
   padding: 0.5rem;
   padding-bottom: 0px;
-  padding-top: 0.25rem;
+  padding-top: 6px;
 }
 .messageMediaBar ul {
   padding: 0px;

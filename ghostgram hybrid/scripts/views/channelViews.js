@@ -1445,14 +1445,14 @@ var channelView = {
         $(".k-editor .k-editable-area").velocity({height: "10em"}, {duration: 300});
         $("#editorOptionBar").velocity("slideDown");
 
-        $("#ghostgramMode").velocity("fadeIn", {delay: 300});
+        //$("#ghostgramMode").velocity("fadeIn", {delay: 300});
     },
 
     deactivateEditor : function () {
         //$(".k-editor-toolbar").hide();
         $("#chat-editorBtnImg").attr("src","images/icon-editor.svg");
 
-        $("#ghostgramMode").velocity("fadeOut");
+       // $("#ghostgramMode").velocity("fadeOut");
 
         // min editor
         $(".k-editor .k-editable-area").velocity({height: "3em"}, {duration: 300});
