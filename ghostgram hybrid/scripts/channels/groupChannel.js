@@ -69,7 +69,7 @@ var groupChannel = {
 
             //channelView.messagesDS.add(message);
             channelModel.updateLastAccess(channelView._channelId, null);
-            //channelView.scrollToBottom();
+            channelView.scrollToBottom();
         }
 
 
