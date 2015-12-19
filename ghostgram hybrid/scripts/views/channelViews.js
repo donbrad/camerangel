@@ -1649,9 +1649,13 @@ var channelView = {
     // topOffset set when the view loads like the following
         var scroller = APP.kendo.scroller;
         var position = 0;
-      //  var scrollerHeight =  APP.kendo.scroller().scrollHeight();
-        var scrollerHeight =  $("#messages-listview").scrollHeight;
+        var scrollerHeight =  APP.kendo.scroller().scrollHeight();
+        var listViewHeight =  $("#messages-listview").scrollHeight;
         var viewportHeight =  APP.kendo.scroller().height();
+
+        if (scrollerHeight < listViewHeight) {
+            scrollerHeight = listViewHeight;
+        }
         
         if (scrollerHeight > viewportHeight) {
              position = -1 * (scrollerHeight - viewportHeight - channelView.topOffset);
