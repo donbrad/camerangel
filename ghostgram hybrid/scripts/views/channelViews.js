@@ -1121,7 +1121,8 @@ var channelView = {
 
                 channelView.messagesDS.data(messages);
 
-                //channelView.scrollToBottom();
+                setTimeout(channelView.scrollToBottom, 1000);
+               // channelView.scrollToBottom();
             });
 
 
@@ -1154,8 +1155,9 @@ var channelView = {
 
               channelView.messagesDS.data(messages);
               //channelView.updateMessageTimeStamps();
+                setTimeout(channelView.scrollToBottom, 1000);
 
-             /* if (channelView.intervalId === null) {
+                /* if (channelView.intervalId === null) {
                   channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 60 * 5000);
               }*/
               //channelView.scrollToBottom();
