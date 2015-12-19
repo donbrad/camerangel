@@ -1121,7 +1121,10 @@ var channelView = {
 
                 channelView.messagesDS.data(messages);
 
-                setTimeout(channelView.scrollToBottom, 1000);
+                setTimeout(function () {
+                    $("#messages-listview").data("kendoListView").refresh();
+                    setTimeout(channelView.scrollToBottom, 500);
+                }, 1000);
                // channelView.scrollToBottom();
             });
 
@@ -1155,7 +1158,11 @@ var channelView = {
 
               channelView.messagesDS.data(messages);
               //channelView.updateMessageTimeStamps();
-                setTimeout(channelView.scrollToBottom, 1000);
+
+                setTimeout(function () {
+                    $("#messages-listview").data("kendoListView").refresh();
+                    setTimeout(channelView.scrollToBottom, 500);
+                }, 1000);
 
                 /* if (channelView.intervalId === null) {
                   channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 60 * 5000);
