@@ -1013,6 +1013,7 @@ var channelView = {
 
     closeEditor : function () {
         $('#messageTextArea').data("kendoEditor").destroy();
+        $('#messageTextArea').empty();
     },
 
     // Initialize the channel specific view data sources.
