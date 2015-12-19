@@ -813,6 +813,7 @@ var channelView = {
     sendMessageHandler : null,
     _offersLoaded : false,
     _tagActive : false,
+    _insertTag: false,
     _tagStart : null,
     _tagEnd: null,
     _tagRange: null,
@@ -893,6 +894,7 @@ var channelView = {
         });
 
 
+        channelView.openEditor(); // Create the kendo editor instance
 
        /* $.browser = {webkit: true};
 
@@ -1012,8 +1014,8 @@ var channelView = {
     },
 
     closeEditor : function () {
-        $('#messageTextArea').data("kendoEditor").destroy();
-        $('#messageTextArea').empty();
+       /* $('#messageTextArea').data("kendoEditor").destroy();
+        $('#messageTextArea').empty();*/
     },
 
     // Initialize the channel specific view data sources.
@@ -1055,7 +1057,6 @@ var channelView = {
 
         channelView._channel = thisChannel;
 
-        channelView.openEditor(); // Create the kendo editor instance
 
         var contactUUID = null;
         var thisChannelHandler = null;
@@ -1171,7 +1172,7 @@ var channelView = {
         channelView._active  = false;
         channelView.initDataSources();
         channelView.messageInit();
-        channelView.closeEditor();
+        //channelView.closeEditor();
         // If this isn't a privateChat the close the channel (unsubscribe)
         // All private chat messages go through userdatachannel which is always subscribed
         if (!channelView.isPrivateChat) {
@@ -1862,6 +1863,7 @@ var channelView = {
         var range = editor.getRange();
 
         if (channelView._insertTag) {
+
             $("#chatSmartTagBtn").attr('src','images/icon-smart.svg');
             channelView._tagActive = false;
 
@@ -1870,7 +1872,7 @@ var channelView = {
             var tagString = text.substring(range.startOffset, range.endOffset);
             mobileNotify("Smart Object: will process " + tagString);
             channelView.processTag(tagString);
-
+            channelView._insertTag = false;
 
         } else {
             editor.paste("@");
@@ -1878,7 +1880,7 @@ var channelView = {
             channelView._tagActive = true;
             channelView._tagRange = range;
             channelView._tagStart = range.startOffset;
-
+            channelView._insertTag = true;
             $("#chatSmartTagBtn").attr('src','images/icon-smart-active.svg');
         }
 
