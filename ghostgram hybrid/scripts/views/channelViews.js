@@ -1079,7 +1079,7 @@ var channelView = {
         var thisChannelHandler = null;
 
 
-        var name =  ux.returnUXPrimaryName(thisChannel.name, thisChannel.alias);
+        var name =  thisChannel.name;
 
         channelView.members = thisChannel.members;
 
@@ -1125,7 +1125,11 @@ var channelView = {
           } else {
               channelView.privateContact = thisContact;
           }
-          
+
+          // Update private Chat name using combination of contact's name and alias.
+
+          name =  ux.returnUXPrimaryName(thisContact.name, thisContact.alias);
+            $("#channelName").text(name);
           // Show contact img in header
           $('#channelImage').attr('src', thisContact.photo).removeClass("hidden");
 
@@ -1147,6 +1151,8 @@ var channelView = {
 
         } else {
 
+            $("#channelName").text(name);
+            
             channelView.isPrivateChat = false;
 
             channelView.messageLock = false;
