@@ -64,7 +64,7 @@ var groupChannel = {
         if (message.fromHistory === undefined) {
             message.fromHistory = false;
         }
-        channelView.preprocessMessage(parsedMsg);
+        channelView.preprocessMessage(message);
 
         channelView.messagesDS.add(message);
         channelModel.updateLastAccess(channelView._channelId, null);
