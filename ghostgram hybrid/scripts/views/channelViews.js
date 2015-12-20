@@ -1079,7 +1079,7 @@ var channelView = {
         var thisChannelHandler = null;
 
 
-        var name = channelView.formatName(thisChannel.name);
+        var name =  ux.returnUXPrimaryName(thisChannel.name, thisChannel.alias);
 
         channelView.members = thisChannel.members;
 
@@ -1091,6 +1091,7 @@ var channelView = {
         // Privacy UI
         $('#privacyMode').html('<img src="images/privacy-off.svg" />');
         $("#privacyStatus").addClass("hidden");
+
 
         $("#channelName").text(name);
 
@@ -1201,6 +1202,7 @@ var channelView = {
         var name = contactData.name;
         var alias = contactData.alias;
         var contactPhotoUrl = contactData.photoUrl;
+        message.isContact = contactData.isContact;
         message.contactPhotoUrl = contactPhotoUrl;
         if (message.sender === userModel.currentUser.userUUID) {
             message.displayName = "Me";
