@@ -1589,10 +1589,10 @@
 
 <script type="text/x-kendo-tmpl" id="messagesTemplate">
 
-	# var history='', formattedTime = 'Just now';
+	# var isPrivate='', formattedTime = 'Just now';
 	if (currentChannelModel.privacyMode) {
 		if (fromHistory !== undefined && fromHistory === true ) {
-			history = "privateMode"; }
+			isPrivate = "privateMode"; }
 	}
 	if (time !== undefined && time !== null) {
 		formattedTime = timeSince(time);
@@ -1603,16 +1603,11 @@
 		}
 	}
 	var messageClass = "chat-message-text";
-		if(userModel.currentUser.useLargeView){
-			 messageClass = "userLgFontSize chat-message-text";
-		}
-
-		if (currentChannelModel.privacyMode) {
-				if (fromHistory !== undefined && fromHistory === true ) {
-					history = "privateMode"; }
-		}
+	if(userModel.currentUser.useLargeView){
+		 messageClass = "userLgFontSize chat-message-text";
+	}
 	#
-	<div id=#:msgID# class="chat-message #=history# clearfix">
+	<div id=#:msgID# class="chat-message #=isPrivate# clearfix">
 		<div class="chat-details">
 
 			<span class="chat-sender">#: displayName #</span>
