@@ -75,10 +75,10 @@ var contactsView = {
                            /* $("#contactActionBtns > li:first-child").show();
                             contactActionView.openModal(contact.uuid);*/
 
-                           /* updateParseObject('contacts', 'uuid', thisContact.uuid, 'category', thisContact.category);
+                            updateParseObject('contacts', 'uuid', thisContact.uuid, 'category', thisContact.category);
                             updateParseObject('contacts', 'uuid', thisContact.uuid, 'publicKey', thisContact.publicKey);
                             updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactPhone', thisContact.contactPhone);
-                            updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactEmail', thisContact.contactEmail);*/
+                            updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactEmail', thisContact.contactEmail);
 
                         }
 
