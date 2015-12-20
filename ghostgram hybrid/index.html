@@ -1337,7 +1337,7 @@
    </div>
 </script>
 
-<div data-role="view" id="channel" data-layout="main" data-model="currentChannelModel" data-show="channelView.onShow" data-init="channelView.onInit"  data-hide="channelView.onHide" data-transition="slide">
+<div data-role="view" id="channel" data-layout="main" data-model="channelView._channel" data-show="channelView.onShow" data-init="channelView.onInit"  data-hide="channelView.onHide" data-transition="slide">
 	<div data-role="header">
 		<div data-role="navbar" id="channelNavBar">
 			<a data-align="left" data-role="button" href="#:back" id="channel-back-button">
@@ -1589,7 +1589,7 @@
 <script type="text/x-kendo-tmpl" id="messagesTemplate">
 
 	# var isPrivate='', formattedTime = 'Just now';
-	if (currentChannelModel.privacyMode) {
+	if (channelView.privacyMode) {
 		if (fromHistory !== undefined && fromHistory === true ) {
 			isPrivate = "privateMode"; }
 	}
