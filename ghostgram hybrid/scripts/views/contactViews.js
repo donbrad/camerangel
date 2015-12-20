@@ -695,7 +695,9 @@ var addContactView = {
             email = $('#addContactEmail').val(),
             photo = $('#addContactPhoto').prop('src'),
             group =  $('#addContactGroup').val(),
-            address = $('#addContactAddress').val();
+            address = $('#addContactAddress').val(),
+            emailValid = false,
+            addressValid = false;
 
 
         if (phone === null || phone.length < 10) {
@@ -705,9 +707,20 @@ var addContactView = {
         }
         var guid = uuid.v4();
 
+       if (email === undefined) {
+           email = null;
+           emailValid  = false;
+       }
+
+        if (address === undefined) {
+            address = null;
+            addressValid = false;
+        }
+
         contact.setACL(userModel.parseACL);
         contact.set("name", name );
         contact.set("alias", alias);
+        contact.set("email", email);
         contact.set("address", address);
         contact.set("group", group);
         contact.set('category', "new");
@@ -733,10 +746,11 @@ var addContactView = {
         }
 
         contact.set("phone", phone);
+
         // Close modal
         addContactView.closeModal();
 
-        mobileNotify("Invite sent");
+       // mobileNotify("Invite sent");
 
         // Look up this contacts phone number in the gg directory
       findUserByPhone(phone, function (result) {
@@ -769,7 +783,8 @@ var addContactView = {
             } else {
                 // No - just use the email address the our user selected
                 contact.set("email", email);
-                contactSendEmailInvite(email);
+                if (emailValid)
+                    contactSendEmailInvite(email);
                 contact.set("phoneVerified", false);
                 contact.set('publicKey',  null);
                 contact.set("contactUUID", null);

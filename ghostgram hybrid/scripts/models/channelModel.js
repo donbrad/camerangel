@@ -343,7 +343,7 @@ var channelModel = {
 
     },
 
-    // confirm that all members of the channel are in contact list.
+    // confirm that all members of the channel are user contacts.
     confirmChannelMembers : function (members) {
         if (members === undefined || members.length === 0) {
             return;
@@ -352,7 +352,7 @@ var channelModel = {
         var userId = userModel.currentUser.userUUID;
         for (var i=0; i<members.length; i++) {
             if (members[i] !== userId) {
-                var contact = contactModel.inContactList(members[i]);
+                var contact = contactModel.findContact(members[i]);
                 if (contact === undefined) {
 
                     contactModel.createChatContact(members[i]);

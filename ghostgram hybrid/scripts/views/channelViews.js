@@ -1129,9 +1129,9 @@ var channelView = {
           // Update private Chat name using combination of contact's name and alias.
 
           name =  ux.returnUXPrimaryName(thisContact.name, thisContact.alias);
-            $("#channelName").text(name);
+        $("#channelName").text(name);
           // Show contact img in header
-          $('#channelImage').attr('src', thisContact.photo).removeClass("hidden");
+        $('#channelImage').attr('src', thisContact.photo).removeClass("hidden");
 
           privateChannel.open(channelUUID, thisUser.userUUID, thisUser.alias, name, contactUUID, contactKey, channelView.privateContact.name);
             channelView.messagesDS.data([]);
@@ -1152,7 +1152,7 @@ var channelView = {
         } else {
 
             $("#channelName").text(name);
-            
+
             channelView.isPrivateChat = false;
 
             channelView.messageLock = false;
