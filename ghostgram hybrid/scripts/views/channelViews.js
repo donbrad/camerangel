@@ -1123,6 +1123,7 @@ var channelView = {
 
                 var $img = $("#messages-listview img"), n = $img.length;
                 if (n > 0) {
+                    mobileNotify("Loading " + n + " Chat Images...");
                     $img.on("load error", function () {
                         if(!--n) {
                             channelView.scrollToBottom();
@@ -1171,6 +1172,7 @@ var channelView = {
 
                 var $img = $("#messages-listview img"), n = $img.length;
                 if (n > 0) {
+                    mobileNotify("Loading " + n + " Chat Images...");
                     $img.on("load error", function () {
                         if(!--n) {
                             channelView.scrollToBottom();
@@ -1435,14 +1437,14 @@ var channelView = {
 
     },
 
-    onChannelRead : function (message) {
+/*    onChannelRead : function (message) {
 
-       /* if (message.content !== null) {
+       /!* if (message.content !== null) {
             message.formattedContent = message.content;
         } else {
             message.formattedContent = '';
         }
-*/
+*!/
         message.formattedContent = message.content;
 
         // Ensure that new messages get the timer
@@ -1455,6 +1457,7 @@ var channelView = {
         channelView.messagesDS.add(message);
         channelModel.updateLastAccess(channelView._channelId, null);
         if (message.data.photos !== undefined && message.data.photos.length > 0) {
+
             var selector = '#' + message.msgID + " img";
             var $img = $(selector), n = $img.length;
             if (n > 0) {
@@ -1474,7 +1477,7 @@ var channelView = {
         if (channelView.privacyMode) {
             kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(9000).play();
         }
-    },
+    },*/
 
     activateEditor : function () {
         //$(".k-editor-toolbar").show();
