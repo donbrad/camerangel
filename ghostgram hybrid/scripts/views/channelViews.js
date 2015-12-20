@@ -1026,6 +1026,22 @@ var channelView = {
         channelView.membersDS.data([]);
     },
 
+   loadImagesThenScroll : function () {
+        setTimeout( function () {
+            var $img = $("#messages-listview img"), n = $img.length;
+            if (n > 0) {
+                mobileNotify("Loading " + n + " Chat Images...");
+                $img.on("load error", function () {
+                    if(n === 0 ) {
+                        channelView.scrollToBottom();
+                    }
+                });
+            } else {
+                channelView.scrollToBottom();
+            }
+        }, 500);
+    },
+
     onShow : function (e) {
         _preventDefault(e);
 
@@ -1116,27 +1132,11 @@ var channelView = {
 
 
             privateChannel.getMessageHistory(function (messages) {
-
                 thisChannel.messagesArray = messages;
 
                 channelView.messagesDS.data(messages);
 
-                var $img = $("#messages-listview img"), n = $img.length;
-                if (n > 0) {
-                    mobileNotify("Loading " + n + " Chat Images...");
-                    $img.on("load error", function () {
-                        if(!--n) {
-                            channelView.scrollToBottom();
-                        }
-                    });
-                } else {
-                    channelView.scrollToBottom();
-                }
-
-               /* setTimeout(function () {
-                    channelView.scrollToBottom();
-                }, 1000);*/
-
+                channelView.loadImagesThenScroll()
             });
 
 
@@ -1167,25 +1167,11 @@ var channelView = {
             channelView.messagesDS.data([]);
             groupChannel.getMessageHistory(function (messages) {
 
-              channelView.messagesDS.data(messages);
-              //channelView.updateMessageTimeStamps();
+                channelView.messagesDS.data(messages);
+                //channelView.updateMessageTimeStamps();
 
-                var $img = $("#messages-listview img"), n = $img.length;
-                if (n > 0) {
-                    mobileNotify("Loading " + n + " Chat Images...");
-                    $img.on("load error", function () {
-                        if(!--n) {
-                            channelView.scrollToBottom();
-                        }
-                    });
-                } else {
-                    channelView.scrollToBottom();
-                }
+                channelView.loadImagesThenScroll();
 
-                /* if (channelView.intervalId === null) {
-                  channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 60 * 5000);
-              }*/
-              //channelView.scrollToBottom();
             });
 
         }
