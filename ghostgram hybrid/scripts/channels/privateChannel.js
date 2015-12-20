@@ -123,6 +123,7 @@ var privateChannel = {
             message.fromHistory = false;
         }
 
+        channelView.preprocessMessage(message);
         // If this message is for the current channel, then display immediately
         if (channelView._active && message.channelId === channelView._channelId) {
             channelModel.updateLastAccess(channelView._channelId, null);
@@ -242,6 +243,7 @@ var privateChannel = {
 
 
                     channelModel.updateLastAccess(parsedMsg.channelId, null);
+                    channelView.preprocessMessage(parsedMsg);
                     channelView.messagesDS.add(parsedMsg);
                     userDataChannel.messagesDS.add(parsedMsg);
                     userDataChannel.messagesDS.sync();

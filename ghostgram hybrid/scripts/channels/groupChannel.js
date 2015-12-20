@@ -64,7 +64,8 @@ var groupChannel = {
         if (message.fromHistory === undefined) {
             message.fromHistory = false;
         }
-
+        channelView.preprocessMessage(parsedMsg);
+        
         channelView.messagesDS.add(message);
         channelModel.updateLastAccess(channelView._channelId, null);
         if (message.data.photos !== undefined && message.data.photos.length > 0) {

@@ -1133,6 +1133,9 @@ var channelView = {
 
 
             privateChannel.getMessageHistory(function (messages) {
+
+                channelView.preprocessMessages(messages);
+
                 thisChannel.messagesArray = messages;
 
                 channelView.messagesDS.data(messages);
@@ -1168,6 +1171,7 @@ var channelView = {
             channelView.messagesDS.data([]);
             groupChannel.getMessageHistory(function (messages) {
 
+                channelView.preprocessMessages(messages);
                 channelView.messagesDS.data(messages);
                 //channelView.updateMessageTimeStamps();
 
@@ -1177,7 +1181,32 @@ var channelView = {
 
         }
 
-        channelView.updateTimer = setInterval(function(){ channelView.updateTimeStamps();}, 10000);
+        channelView.updateTimer = setInterval(function(){ channelView.updateTimeStamps();}, 60000);
+    },
+
+    preprocessMessages : function (messages) {
+        // Process the derived message data on load so
+        // 1) we don't recalc on each display
+        // 2) kendo refresh just renders the data and doesn't re-execute functions...
+        for (var i=0; i<messages.length; i++) {
+            var message = messages[i];
+
+            channelView.preprocessMessage(message);
+        }
+    },
+
+    preprocessMessage : function (message) {
+        var contactData = channelView.getContactData(message.sender);
+        var sender = contactData.uuid;
+        var name = contactData.name;
+        var alias = contactData.alias;
+        var contactPhotoUrl = contactData.photoUrl;
+        message.contactPhotoUrl = contactPhotoUrl;
+        if (message.sender === userModel.currentUser.userUUID) {
+            message.displayName = "Me";
+        } else {
+            message.displayName = ux.returnUXPrimaryName(name, alias);
+        }
     },
 
     updateTimeStamps: function () {
@@ -1193,7 +1222,7 @@ var channelView = {
             clearInterval(channelView.updateTimer);
             channelView.updateTimer = undefined;
         }
-        
+
         channelView.initDataSources();
         channelView.messageInit();
         //channelView.closeEditor();

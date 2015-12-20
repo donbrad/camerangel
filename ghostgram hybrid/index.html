@@ -1589,7 +1589,7 @@
 
 <script type="text/x-kendo-tmpl" id="messagesTemplate">
 
-	# var history='', contactData = channelView.getContactData(sender), formattedTime = 'Just now';
+	# var history='', formattedTime = 'Just now';
 	if (currentChannelModel.privacyMode) {
 		if (fromHistory !== undefined && fromHistory === true ) {
 			history = "privateMode"; }
@@ -1605,12 +1605,6 @@
 	#
 	<div id=#:msgID# class="chat-message #=history# clearfix">
 	#
-
-		var sender = contactData.uuid;
-		var name = contactData.name;
-		var alias = contactData.alias;
-		var contactPhotoUrl = contactData.photoUrl;
-		var displayName = ux.returnUXPrimaryName(name, alias);
 		var messageClass = "chat-message-text";
 	#
 	# if(userModel.currentUser.useLargeView){#
@@ -1623,21 +1617,15 @@
 	}#
 	<div id=#:msgID# class="chat-message #=history# clearfix">
 		<div class="chat-details">
-			# if(contactData.isContact){#
-				<span class="chat-sender">#: displayName #</span>
-			#} else {#
-				<span class="chat-sender">Me</span>
-			#}#
+
+			<span class="chat-sender">#: displayName #</span>
+
 			<span class="chat-time">#:formattedTime# </span>
 			<div class="clearfix"></div>
 		</div>
 
 		<div class="chat-message-user-img">
-			# if(contactPhotoUrl !== '') {#
-				<img class="chat-message-profileImg circle-img-sm" src="#: contactPhotoUrl #" alt="" />
-			#} else {#
-				<img class="chat-message-profileImg circle-img-sm" src="images/ghost-blue.svg" alt="" />
-			#}#
+			<img class="chat-message-profileImg circle-img-sm" src="#: contactPhotoUrl #" alt="" />
 		</div>
 		# if (content !== "") {#
 			# if (contactData.isContact ) {#
