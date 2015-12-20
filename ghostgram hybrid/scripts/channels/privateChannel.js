@@ -277,9 +277,6 @@ var privateChannel = {
         for(var i = 0; i < messages.length; i++) {
             var msg = messages[i];
 
-            if (msg.sender === undefined)
-                msg.sender = privateChannel.channelId;
-
             clearMessageArray.push(msg);
         }
 
