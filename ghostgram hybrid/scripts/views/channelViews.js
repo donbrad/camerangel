@@ -1027,19 +1027,19 @@ var channelView = {
     },
 
    loadImagesThenScroll : function () {
-        setTimeout( function () {
-            var $img = $("#messages-listview img"), n = $img.length;
-            if (n > 0) {
-                mobileNotify("Loading " + n + " Chat Images...");
-                $img.on("load error", function () {
-                    if(n === 0 ) {
-                        channelView.scrollToBottom();
-                    }
-                });
-            } else {
-                channelView.scrollToBottom();
-            }
-        }, 500);
+
+        var $img = $("#messages-listview img"), n = $img.length;
+        if (n > 0) {
+            mobileNotify("Loading " + n + " Chat Images...");
+            $img.on("load error", function () {
+                if(--n === 0 ) {
+                    setTimeout( function () {channelView.scrollToBottom();}, 500);
+                }
+            });
+        } else {
+            setTimeout( function () {channelView.scrollToBottom();}, 500);
+        }
+
     },
 
     onShow : function (e) {
