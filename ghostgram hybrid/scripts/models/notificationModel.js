@@ -186,7 +186,7 @@ var notificationModel = {
         if (notObj === undefined) {
             notificationModel.addUnreadNotification(channelId, channelName, unreadCount);
         } else {
-            if (unreadCount === 0) {
+            if (unreadCount === undefined || unreadCount === 0) {
                 notificationModel.notificationDS.remove(notObj);
             } else {
                 notObj.set('unreadCount', unreadCount);
