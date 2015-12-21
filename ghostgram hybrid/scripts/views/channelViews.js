@@ -481,7 +481,6 @@ var editChannelView = {
         }
 
 
-
         if (editChannelView._activeChannel.members.length > 0) {
             $(".addChatMembersBanner a").text("+ add new members");
         } else {
@@ -814,9 +813,11 @@ var channelView = {
     sendMessageHandler : null,
     _offersLoaded : false,
     _tagActive : false,
+    _insertTag: false,
     _tagStart : null,
     _tagEnd: null,
     _tagRange: null,
+    _firstSpace: false,
 
     membersDS: new kendo.data.DataSource({
         sort: {
@@ -862,6 +863,34 @@ var channelView = {
         return(message);
     },
 
+    queryMessages: function (query) {
+        if (query === undefined)
+            return(undefined);
+
+        var dataSource = channelView.messagesDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+
+        dataSource.filter(cacheFilter);
+        return(view);
+    },
+
+    isDuplicateMessage : function (msgID) {
+        var messages = channelView.queryMessages({ field: "msgID", operator: "eq", value: msgID });
+
+        if (messages === undefined) {
+            return (false);
+        } else if (messages.length === 0) {
+            return (false);
+        } else {
+            return(true);
+        }
+    },
+
     findMessageById : function (msgID) {
 
         return(photoModel.queryMessage({ field: "msgID", operator: "eq", value: msgID }));
@@ -878,7 +907,7 @@ var channelView = {
        // var width = window.innerWidth - 68;
         //$('#messageTextArea').css("width", width+'px');
         //channelView.topOffset = APP.kendo.scroller().scrollTop;
-       	autosize($('#messageTextArea'));
+
         
         $("#messages-listview").kendoMobileListView({
             dataSource: channelView.messagesDS,
@@ -892,34 +921,10 @@ var channelView = {
             hold: channelView.holdChannel
         });
 
-        $("#messageTextArea").kendoEditor({
-        	stylesheets:["styles/editor.css"],
-            resizable: {
-                content: true,
-                min: 24
-            },
-            keyup: function(e) {
-                if (channelView._tagActive) {
-                    if (e.keyCode === '.') {
-                        var editor = $("#messageTextArea").data("kendoEditor");
-                        var range = editor.getRange();
-                        channelView._tagRange = range;
-                        channelView.processTag();
-                    }
-                }
-            },
-            tools: [
-                "bold",
-                "italic",
-                "underline",
-                "insertUnorderedList",
-                "indent",
-                "outdent"
-            ]
-        });
-        $(".k-editor-toolbar").hide();
 
-        $.browser = {webkit: true};
+        channelView.openEditor(); // Create the kendo editor instance
+
+       /* $.browser = {webkit: true};
 
         $('#messageTextArea').textntags({
             onDataRequest: function (mode, query, triggerChar, callback) {
@@ -938,7 +943,7 @@ var channelView = {
                 callback.call(this, found);
             }
         });
-
+*/
 
         /*$("#channelMembers-listview").kendoMobileListView({
             dataSource: currentChannelModel.membersDS,
@@ -981,6 +986,66 @@ var channelView = {
     	
     },
 
+    openEditor : function () {
+        autosize($('#messageTextArea'));
+        $("#messageTextArea").kendoEditor({
+            stylesheets:["styles/editor.css"],
+            resizable: {
+                content: true,
+                min: 24
+            },
+            /*keyup: function(e) {
+                var editor = $("#messageTextArea").data("kendoEditor");
+                var range = editor.getRange();
+                if ((e.keyCode === 50 && e.shiftKey === true) || e.keyCode === 64) {
+                    channelView._tagActive = true;
+                    channelView._tagRange = range;
+                    channelView._tagStart = range.startOffset;
+                    channelView._firstSpace = false;
+                    return;
+                }
+
+                if (channelView._tagActive) {
+                    if (e.keyCode === 32) {
+                        // can do a look up here...
+                        if (channelView._firstSpace) {
+                            channelView._firstSpace = false;
+                            e.keyCode = 190;
+                        } else {
+                            channelView._firstSpace = true;
+                        }
+                    } else {
+                        channelView._firstSpace = false;
+                    }
+
+                    if (e.keyCode === 190) {
+                        channelView._tagActive = false;
+                        channelView._firstSpace = false;
+                        channelView._tagEnd = range.endOffset;
+                        var text = editor.value();
+                        var tagString = text.substring(range.startOffset, range.endOffset);
+                        console.log("tag string = " + tagString);
+                        channelView.processTag(tagString);
+                    }
+                }
+            },*/
+            tools: [
+                "bold",
+                "italic",
+                "underline",
+                "insertUnorderedList",
+                "indent",
+                "outdent"
+            ]
+        });
+        $(".k-editor-toolbar").hide();
+    },
+
+    closeEditor : function () {
+       /* $('#messageTextArea').data("kendoEditor").destroy();
+        $('#messageTextArea').empty();*/
+    },
+
     // Initialize the channel specific view data sources.
     initDataSources : function () {
         channelView.messagesDS.data([]);
@@ -989,9 +1054,26 @@ var channelView = {
         channelView.membersDS.data([]);
     },
 
+   loadImagesThenScroll : function () {
+
+        var $img = $("#messages-listview img"), n = $img.length;
+        if (n > 0) {
+            mobileNotify("Loading " + n + " Chat Images...");
+            $img.on("load error", function () {
+                if(--n === 0 ) {
+                    setTimeout( function () {channelView.scrollToBottom();}, 500);
+                }
+            });
+        } else {
+            setTimeout( function () {channelView.scrollToBottom();}, 500);
+        }
+
+    },
+
     onShow : function (e) {
         _preventDefault(e);
 
+        APP.kendo.scroller().reset();
         channelView.topOffset = APP.kendo.scroller().scrollTop;
         channelView._active = true;
         channelView._offersLoaded = false;
@@ -1005,6 +1087,8 @@ var channelView = {
         var thisUser = userModel.currentUser;
 
         channelView.initDataSources();
+        channelView.messageInit();
+        channelView._initMessageTextArea();
 
         photoModel.getChannelOffers(channelUUID, function (offers) {
             channelView.photoOffersDS.data(offers);
@@ -1019,15 +1103,15 @@ var channelView = {
 
         channelView._channel = thisChannel;
 
+
         var contactUUID = null;
         var thisChannelHandler = null;
-        channelView.activeMessage = {};
-        var name = channelView.formatName(thisChannel.name);
+
+
+        var name =  thisChannel.name;
 
         channelView.members = thisChannel.members;
 
-        // Hide the image preview div
-        channelView.hideChatImagePreview();
 
         channelModel.updateUnreadCount(channelUUID, 0, null);
 
@@ -1036,6 +1120,7 @@ var channelView = {
         // Privacy UI
         $('#privacyMode').html('<img src="images/privacy-off.svg" />');
         $("#privacyStatus").addClass("hidden");
+
 
         $("#channelName").text(name);
 
@@ -1069,9 +1154,13 @@ var channelView = {
           } else {
               channelView.privateContact = thisContact;
           }
-          
+
+          // Update private Chat name using combination of contact's name and alias.
+
+          name =  ux.returnUXPrimaryName(thisContact.name, thisContact.alias);
+        $("#channelName").text(name);
           // Show contact img in header
-          $('#channelImage').attr('src', thisContact.photo).removeClass("hidden");
+        $('#channelImage').attr('src', thisContact.photo).removeClass("hidden");
 
           privateChannel.open(channelUUID, thisUser.userUUID, thisUser.alias, name, contactUUID, contactKey, channelView.privateContact.name);
             channelView.messagesDS.data([]);
@@ -1079,15 +1168,19 @@ var channelView = {
 
             privateChannel.getMessageHistory(function (messages) {
 
+                channelView.preprocessMessages(messages);
+
                 thisChannel.messagesArray = messages;
 
                 channelView.messagesDS.data(messages);
 
-                channelView.scrollToBottom();
+                channelView.loadImagesThenScroll()
             });
 
 
         } else {
+
+            $("#channelName").text(name);
 
             channelView.isPrivateChat = false;
 
@@ -1113,18 +1206,55 @@ var channelView = {
             mobileNotify("Loading Messages...");
             channelView.messagesDS.data([]);
             groupChannel.getMessageHistory(function (messages) {
+                var filteredMessages = [];
 
-              channelView.messagesDS.data(messages);
-              //channelView.updateMessageTimeStamps();
+                for (var i=0; i<messages.length; i++) {
+                    var message = messages[i];
+                    if (!channelView.isDuplicateMessage(message.msgID)) {
+                        filteredMessages.push(message);
+                    }
+                }
+                channelView.preprocessMessages(filteredMessages);
+                channelView.messagesDS.data(filteredMessages);
+                //channelView.updateMessageTimeStamps();
 
-             /* if (channelView.intervalId === null) {
-                  channelView.intervalId = window.setInterval(channelView.updateMessageTimeStamps, 60 * 5000);
-              }*/
-              channelView.scrollToBottom();
+                channelView.loadImagesThenScroll();
+
             });
 
         }
 
+        channelView.updateTimer = setInterval(function(){ channelView.updateTimeStamps();}, 60000);
+    },
+
+    preprocessMessages : function (messages) {
+        // Process the derived message data on load so
+        // 1) we don't recalc on each display
+        // 2) kendo refresh just renders the data and doesn't re-execute functions...
+        for (var i=0; i<messages.length; i++) {
+            var message = messages[i];
+
+            channelView.preprocessMessage(message);
+        }
+    },
+
+    preprocessMessage : function (message) {
+        var contactData = channelView.getContactData(message.sender);
+        var sender = contactData.uuid;
+        var name = contactData.name;
+        var alias = contactData.alias;
+        var contactPhotoUrl = contactData.photoUrl;
+        message.isContact = contactData.isContact;
+        message.contactPhotoUrl = contactPhotoUrl;
+        if (message.sender === userModel.currentUser.userUUID) {
+            message.displayName = "Me";
+        } else {
+            message.displayName = ux.returnUXPrimaryName(name, alias);
+        }
+    },
+
+    updateTimeStamps: function () {
+        $("#messages-listview").data("kendoMobileListView").refresh();
     },
 
     onHide : function (e) {
@@ -1132,8 +1262,15 @@ var channelView = {
         channelView._channelId = null;
         channelView._channel = null;
         channelView._active  = false;
-        channelView.initDataSources();
+        if (channelView.updateTimer !== undefined) {
+            clearInterval(channelView.updateTimer);
+            channelView.updateTimer = undefined;
+        }
 
+        channelView.initDataSources();
+        channelView.messageInit();
+        channelView._initMessageTextArea();
+        //channelView.closeEditor();
         // If this isn't a privateChat the close the channel (unsubscribe)
         // All private chat messages go through userdatachannel which is always subscribed
         if (!channelView.isPrivateChat) {
@@ -1184,7 +1321,7 @@ var channelView = {
     // Quick access to contact data for display.
     getContactData : function (uuid) {
         var contact = {isContact: true};
-        //var data = channelView.contactData[uuid];
+        //var data = channelView.contactData[uuid];x
 
        if (uuid === userModel.currentUser.userUUID) {
            contact.isContact = false;
@@ -1192,6 +1329,9 @@ var channelView = {
            contact.alias = userModel.currentUser.alias;
            contact.name = userModel.currentUser.name;
            contact.photoUrl = userModel.currentUser.photo;
+           if (contact.photoUrl === undefined || contact.photoUrl === null || contact.photoUrl === '') {
+               contact.photoUrl = userModel.identiconUrl;
+           }
            contact.publicKey = userModel.currentUser.publicKey;
            contact.isPresent = true;
 
@@ -1201,7 +1341,7 @@ var channelView = {
         var data = contactModel.inContactList(uuid);
 
         if (data === undefined) {
-            mobileNotify("Chat View Unknown Contact : " + uuid);
+            console.log("Chat View Unknown Contact : " + uuid);
             contact.uuid = 0;
             contact.alias = 'unknown';
             contact.name = 'Unknown User';
@@ -1269,46 +1409,6 @@ var channelView = {
             }
         }
     },
-
-  /*  // Create an array of channel/chat members.  Needs to be all members as this is used for message display.
-    buildContactArray : function (contactArray) {
-       if (contactArray === undefined || contactArray.length === 0) {
-           return ([]);
-       }
-        var contactInfoArray = [], userId = userModel.currentUser.userUUID;
-
-        for (var i=0; i< contactArray.length; i++) {
-            var contact = new Object();
-
-            if (contactArray[i] === userId) {
-                contact.isContact = false;
-                contact.uuid = userId;
-                contact.alias = userModel.currentUser.alias;
-                contact.name = userModel.currentUser.name;
-                contact.photoUrl = userModel.currentUser.photo;
-                contact.publicKey = userModel.currentUser.publicKey;
-                contact.isPresent = true;
-                contactInfoArray[contact.uuid] = contact;
-                // this is our user.
-            } else {
-                var thisContact = contactModel.findContact(contactArray[i]);
-                if (thisContact === undefined) {
-                    mobileNotify("buildContactArray - undefined contact!!!");
-                    return(contactInfoArray);
-                }
-                contact.isContact = true;
-                contact.uuid = contactArray[i];
-                contact.alias = thisContact.alias;
-                contact.name = thisContact.name;
-                contact.photoUrl = thisContact.photo;
-                contact.publicKey = thisContact.publicKey;
-                contact.isPresent = false;
-                contactInfoArray[contact.uuid] = contact;
-            }
-        }
-
-        return (contactInfoArray)
-    },*/
 
     getUserType: function (uuid) {
         var userType = { isContact: true, alias : '', profileUrl: ''};
@@ -1408,14 +1508,14 @@ var channelView = {
 
     },
 
-    onChannelRead : function (message) {
+/*    onChannelRead : function (message) {
 
-       /* if (message.content !== null) {
+       /!* if (message.content !== null) {
             message.formattedContent = message.content;
         } else {
             message.formattedContent = '';
         }
-*/
+*!/
         message.formattedContent = message.content;
 
         // Ensure that new messages get the timer
@@ -1423,16 +1523,32 @@ var channelView = {
             message.fromHistory = false;
         }
 
-        $("#messages-listview").data("kendoMobileListView").refresh();
+       // $("#messages-listview").data("kendoMobileListView").refresh();
 
         channelView.messagesDS.add(message);
         channelModel.updateLastAccess(channelView._channelId, null);
-        channelView.scrollToBottom();
+        if (message.data.photos !== undefined && message.data.photos.length > 0) {
+
+            var selector = '#' + message.msgID + " img";
+            var $img = $(selector), n = $img.length;
+            if (n > 0) {
+                $img.on("load error", function () {
+                    if(!--n) {
+                        channelView.scrollToBottom();
+                    }
+                });
+            } else {
+                channelView.scrollToBottom();
+            }
+        } else {
+            channelView.scrollToBottom();
+        }
+
 
         if (channelView.privacyMode) {
             kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(9000).play();
         }
-    },
+    },*/
 
     activateEditor : function () {
         //$(".k-editor-toolbar").show();
@@ -1445,14 +1561,14 @@ var channelView = {
         $(".k-editor .k-editable-area").velocity({height: "10em"}, {duration: 300});
         $("#editorOptionBar").velocity("slideDown");
 
-        $("#ghostgramMode").velocity("fadeIn", {delay: 300});
+        //$("#ghostgramMode").velocity("fadeIn", {delay: 300});
     },
 
     deactivateEditor : function () {
         //$(".k-editor-toolbar").hide();
         $("#chat-editorBtnImg").attr("src","images/icon-editor.svg");
 
-        $("#ghostgramMode").velocity("fadeOut");
+       // $("#ghostgramMode").velocity("fadeOut");
 
         // min editor
         $(".k-editor .k-editable-area").velocity({height: "3em"}, {duration: 300});
@@ -1486,6 +1602,8 @@ var channelView = {
     messageInit : function () {
         channelView.activeMessage = {canCopy: !channelView.messageLock, photos: []};
         channelView.messagePhotos = [];
+        photoModel.initOffer();
+
     },
 
     messageAddLocation : function  () {
@@ -1516,7 +1634,7 @@ var channelView = {
 
 
         channelView.activeMessage.photos.push(photoObj);
-        photoModel.addPhotoOffer(photo.photoId, channelView._channelId, photo.thumbnailUrl, photo.imageUrl, canCopy);
+       // photoModel.addPhotoOffer(photo.photoId, channelView._channelId, photo.thumbnailUrl, photo.imageUrl, canCopy);
     },
 
     messageAddRichText : function (text) {
@@ -1527,6 +1645,8 @@ var channelView = {
         _preventDefault(e);
 
         var validMessage = false; // If message is valid, send is enabled
+        channelView.activeMessage = {canCopy: !channelView.messageLock, photos: []};
+
 
         //var text = $('#messageTextArea').val();
         var text = $('#messageTextArea').data("kendoEditor").value();
@@ -1534,10 +1654,7 @@ var channelView = {
             validMessage = true;
         }
 
-
-        if (channelView.ghostgramActive) {
-           channelView.messageAddRichText(text);
-        }
+        channelView.messageAddLocation();
 
         // Are there any photos in the current message
         if (channelView.messagePhotos.length > 0) {
@@ -1554,10 +1671,10 @@ var channelView = {
                 groupChannel.sendMessage(text, channelView.activeMessage, 86400);
             }
 
-            channelView.hideChatImagePreview();
+            //channelView.hideChatImagePreview();
             channelView._initMessageTextArea();
             channelView.messageInit();
-            photoModel.initOffer();
+
         }
 
     },
@@ -1565,7 +1682,7 @@ var channelView = {
     // Need to make sure all the photos in activeMessage.photos still exist in the editor
     validateMessagePhotos : function () {
         var validPhotos = [];
-        var messageText = $('#messageTextArea').value();
+        var messageText = $('#messageTextArea').data("kendoEditor").value();
 
         for (var i=0; i< channelView.messagePhotos.length; i++) {
             var photoId = channelView.messagePhotos[i];
@@ -1582,11 +1699,12 @@ var channelView = {
 
      _initMessageTextArea : function () {
 
+         var editor =  $('#messageTextArea').data("kendoEditor");
       //   $('#messageTextArea').val('')
          $('#messageTextArea').attr("rows","1");
          $('#messageTextArea').attr("height","24px");
-         $('#messageTextArea').data("kendoEditor").value('');
-         $('#messageTextArea').data("kendoEditor").update();
+         editor.value('');
+         editor.update();
 
         autosize.update($('#messageTextArea'));
 
@@ -1604,18 +1722,17 @@ var channelView = {
 
        // channelView.messageAddPhoto(photoModel.currentOffer);
         if (photoObj !== undefined) {
-            var imgUrl = '<img style="height: 75px;" class="photo-chat-sm" data-photoid="'+ photoId + '" id="chatphoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
+
+            var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="chatphoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
+
             editor.paste(imgUrl);
+            editor.update();
         }
 
+        channelView.messagePhotos.push(photoId);
 
        /* $('#chatImage').attr('src', displayUrl);
         $('#chatImagePreview').show();*/
-    },
-
-    hideChatImagePreview : function () {
-        $('#chatImagePreview').hide();
-        $('#chatImage').attr('src', null);
     },
 
     togglePrivacyMode :function (e) {
@@ -1636,17 +1753,21 @@ var channelView = {
 
     scrollToBottom : function () {
     // topOffset set when the view loads like the following
-        var scroller = APP.kendo.scroller;
+        var topOffset = channelView.topOffset;
+
+        if (topOffset === undefined)
+            topOffset = APP.kendo.scroller().scrollTop;
+
         var position = 0;
         var scrollerHeight =  APP.kendo.scroller().scrollHeight();
         var viewportHeight =  APP.kendo.scroller().height();
-        
+
         if (scrollerHeight > viewportHeight) {
-             position = -1 * (scrollerHeight - viewportHeight - channelView.topOffset);
-           	 APP.kendo.scroller().animatedScrollTo(0, position);
-        } else {
-        	APP.kendo.scroller().scrollTo(0, 0);
-        }
+             position = -1 * (scrollerHeight - viewportHeight - topOffset);
+           	// APP.kendo.scroller().animatedScrollTo(0, position);
+        } //else {
+        	APP.kendo.scroller().scrollTo(0, position);
+       // }
 
     },
 
@@ -1670,27 +1791,35 @@ var channelView = {
 
     tapChannel : function (e) {
         e.preventDefault();
-        
-        var target = $(e.touch.initialTouch);
+
+        var $target = $(e.touch.initialTouch);
         var dataSource = channelView.messagesDS;
         var messageUID = $(e.touch.currentTarget).data("uid");
         var message = dataSource.getByUid(messageUID);
-        //$('.delete').css('display', 'none');
-        //$('.archive').css('display', 'none');
-        
-        // Scale down the other photos in this chat...
-        $('.chat-photo-box-zoom').removeClass('chat-photo-box-zoom').addClass("chat-photo-box");
 
-        // If the photo is minimized and the user just clicked in the message zoom the photo in place
-        $('#'+message.msgID + ' .chat-photo-box').removeClass('chat-photo-box').addClass('chat-photo-box-zoom');
-        
         // User actually clicked on the photo so show the open the photo viewer
-        if (target.hasClass('chat-message-photo')) {
-        	// Open this img full screen
-            var photoObj = message.data.photo;
+        if ($target.hasClass('photo-chat')) {
+
+        	var photoId = $target.attr('data-photoId');
+
+            // todo Don - review photos source
+            if (message.data.photos !== undefined) {
+                var photoList = message.data.photos;
+
+                for (var i=0; i< photoList.length; i++) {
+                    var photoObj = photoList[i];
+
+                    if (photoObj.photoId === photoId) {
+                        modalChatPhotoView.openModal(photoObj);
+                        return;
+                    }
+                }
+            }
+
+
           /*  var photoUrl = message.data.photo.photo;
             $('#modalPhotoViewImage').attr('src', photoUrl);*/
-            modalChatPhotoView.openModal(photoObj);
+
         }
 
         if (channelView.privacyMode) {
@@ -1754,16 +1883,29 @@ var channelView = {
                 $("#"+message.msgID).addClass('privateMode');
             });
         }
-        $("#messageActions").data("kendoMobileActionSheet").open();
+
+        if (message.sender === userModel.currentUser.userUUID) {
+            $("#messageActionsSender").data("kendoMobileActionSheet").open();
+        } else {
+            if (message.canCopy) {
+                $("#messageActions").data("kendoMobileActionSheet").open();
+            } else {
+                mobileNotify("This Message was locked by Sender");
+            }
+
+        }
+
     },
 
-    processTag : function () {
+    // Process a tag recognized by the editor
+    processTag : function (tagString) {
 
     },
 
-    messageEraser: function (e) {
+    messageRecall: function (e) {
         _preventDefault(e);
-        channelView._initMessageTextArea();
+        var message = channelView.activeMessage;
+        mobileNotify("Recalling message " + message.msgID);
     },
 
     setMessageLockIcon : function (locked) {
@@ -1808,7 +1950,7 @@ var channelView = {
 
          galleryPicker.openModal(function (photo) {
 
-             photoModel.addPhotoOffer(photo.photoId, channelView._channelId,  photo.thumbnailUrl, photo.imageUrl, true);
+            // photoModel.addPhotoOffer(photo.photoId, channelView._channelId,  photo.thumbnailUrl, photo.imageUrl, true);
 
              var url = photo.thumbnailUrl;
              if (photo.imageUrl !== undefined && photo.imageUrl !== null)
@@ -1835,8 +1977,31 @@ var channelView = {
 
     messageInsertTag : function (e) {
         _preventDefault(e);
+
         var editor = $("#messageTextArea").data("kendoEditor");
-        editor.paste("@");
+        var range = editor.getRange();
+
+        if (channelView._insertTag) {
+            $("#chatSmartTagBtn").attr('src','images/icon-smart.svg');
+            channelView._tagActive = false;
+
+            channelView._tagEnd = range.endOffset;
+            var text = editor.value();
+            var tagString = text.substring(channelView._tagStart, channelView._tagEnd);
+            mobileNotify("Smart Object: will process " + tagString);
+            channelView.processTag(tagString);
+            channelView._insertTag = false;
+
+        } else {
+            editor.paste("@");
+            editor.update();
+            channelView._tagActive = true;
+            channelView._tagRange = range;
+            channelView._tagStart = range.startOffset;
+            channelView._insertTag = true;
+            $("#chatSmartTagBtn").attr('src','images/icon-smart-active.svg');
+        }
+
 
     },
 

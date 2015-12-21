@@ -633,9 +633,16 @@ var photoModel = {
         var timeStr = moment().format('MMMM Do YYYY, h:mm'); // October 7th 2015, 10:26 am
         photo.set("dateString", timeStr);
 
-        photo.set('lat', mapModel.lat.toString());
-        photo.set('lng', mapModel.lng.toString());
-        photo.set('geoPoint', new Parse.GeoPoint(parseFloat(mapModel.lat), parseFloat(mapModel.lng)));
+        var lat = '0.0', lng ='0.0';
+        if (mapModel.lat !== null) {
+            lat = mapModel.lat.toString();
+        }
+        if (mapModel.lng !== null) {
+            lng = mapModel.lng.toString();
+        }
+        photo.set('lat', lat);
+        photo.set('lng', lng);
+        photo.set('geoPoint', new Parse.GeoPoint(parseFloat(lat), parseFloat(lng)));
 
         if (mapModel.currentAddress !== null && mapModel.currentAddress.city !== undefined) {
             var addressStr = mapModel.currentAddress.city + ', ' + mapModel.currentAddress.state + '  ' + mapModel.currentAddress.zipcode;

@@ -60,6 +60,8 @@ var contactModel = {
             // Rebuild the contactList cache when the underlying list changes: add, delete, update...
             contactModel.buildContactList();
 
+
+
         });
 
         /*  contactModel.contactsDS = parseKendoDataSourceFactory.make('contacts',
@@ -280,6 +282,9 @@ var contactModel = {
                 contactModel.updateContactListStatus(true);
 
                 deviceModel.isParseSyncComplete();
+
+
+
             },
             error: function(error) {
                 handleParseError(error);
@@ -573,6 +578,10 @@ var contactModel = {
         if (thisContact.contactUUID === undefined || thisContact.contactUUID === null) {
             var phone  = thisContact.phone;
             findUserByPhone(phone, function (result) {
+                if (result === null) {
+                    console.error("findUserByPhone got Null" + phone);
+                    return;
+                }
                 if (result.found) {
                     var contact = result.user;
                     var current = thisContact;
@@ -618,6 +627,10 @@ var contactModel = {
         } else {
 
             getUserContactInfo(thisContact.contactUUID, function (result) {
+                if (result === null) {
+                    console.error("getUseContactInfo got Null" + thisContact.contactUUID);
+                    return;
+                }
                 if (result.found) {
                     var contact = result.user;
                     var current = thisContact;
@@ -695,7 +708,7 @@ var contactModel = {
     // force defined and === true overrides the timer
     updateContactListStatus : function (force) {
 
-        var time = ggTime.currentTimeInSeconds();
+       /* var time = ggTime.currentTimeInSeconds();
 
         // Only sync contacts every 15 minutes
         if (time < contactModel.lastSyncTime + 300) {
@@ -704,10 +717,10 @@ var contactModel = {
         }
 
         contactModel.lastSyncTime = time;
+*/
 
 
-
-        var index = 0, length = contactModel.contactsDS.total(), array = contactModel.contactsDS.data();
+        var index = 0, length = contactModel.contactListDS.total(), array = contactModel.contactListDS.data();
 
         if (length === 0)
             return;

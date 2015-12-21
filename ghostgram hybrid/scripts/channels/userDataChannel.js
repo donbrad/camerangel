@@ -51,7 +51,37 @@ var userDataChannel = {
         userDataChannel.messagesDS.online(false);
         userDataChannel.messagesDS.fetch();
         userDataChannel.history();
-        userDataChannel.removeExpiredMessages();
+
+        userDataChannel.expireMessages = setInterval(function(){  userDataChannel.removeExpiredMessages(); }, 60000);
+
+    },
+
+    queryMessages : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = userDataChannel.messagesDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+
+        dataSource.filter(cacheFilter);
+
+        return(view);
+    },
+
+    isDuplicateMessage : function (msgID) {
+        var messages = userDataChannel.queryMessages({ field: "msgID", operator: "eq", value: msgID });
+
+        if (messages === undefined) {
+            return (false);
+        } else if (messages.length === 0) {
+            return (false);
+        } else {
+            return(true);
+        }
     },
 
     updateTimeStamp : function () {
@@ -79,7 +109,7 @@ var userDataChannel = {
                     var lastAccess = ggTime.toPubNubTime(userDataChannel.lastAccess);
 
                     var msg  =  messages[i];
-                    if (msg.type === 'privateMessage') {
+                    if (msg.type === 'privateMessage' && !userDataChannel.isDuplicateMessage(msg.msgID)) {
 
                         // Add the last 24 hours worth of messages to the private channel archive
                         if (msg.sender !== userModel.currentUser.userUUID) {

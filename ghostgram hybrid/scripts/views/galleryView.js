@@ -62,7 +62,10 @@ var galleryView = {
 
         if (!galleryView._viewInitialized) {
             galleryView._viewInitialized = true;
-            
+
+            // Set img size for gallery
+            $("#gallery-listview li").css("width",galleryView._previewSize);
+            $("#gallery-listview li").css("padding-bottom",galleryView._previewSize);
 
             $("#gallery .gg_mainSearchInput").on('input', function() {
                 var query = this.value;

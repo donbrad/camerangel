@@ -149,6 +149,11 @@ var channelModel = {
         return(channel);
     },
 
+    getUnreadChannels : function () {
+        var channels = channelModel.queryChannels({ field: "unreadCount", operator: "gte", value: 0 })
+        return(channels);
+    },
+
     updateLastAccess : function (channelId, lastAccess) {
         var channel = channelModel.findChannelModel(channelId);
         if (channel === undefined) {
@@ -160,6 +165,15 @@ var channelModel = {
             channel.set('lastAccess', lastAccess);
             updateParseObject('channels', 'channelId', channelId, 'lastAccess', lastAccess);
 
+        }
+    },
+
+    getLastAccess : function (channelId) {
+        var channel = channelModel.findChannelModel(channelId);
+        if (channel === undefined) {
+            mobileNotify('updateLastAccess: unknown channel ' + channelId);
+        } else {
+            return(channel.get('lastAccess'));
         }
     },
 
@@ -343,7 +357,7 @@ var channelModel = {
 
     },
 
-    // confirm that all members of the channel are in contact list.
+    // confirm that all members of the channel are user contacts.
     confirmChannelMembers : function (members) {
         if (members === undefined || members.length === 0) {
             return;
@@ -352,7 +366,7 @@ var channelModel = {
         var userId = userModel.currentUser.userUUID;
         for (var i=0; i<members.length; i++) {
             if (members[i] !== userId) {
-                var contact = contactModel.inContactList(members[i]);
+                var contact = contactModel.findContact(members[i]);
                 if (contact === undefined) {
 
                     contactModel.createChatContact(members[i]);
@@ -498,15 +512,17 @@ var channelModel = {
 
     },
 
+
     // Add group channel for members...
     // Get's the current owner details from parse and then creates a local channel for this user
-    addMemberChannel : function (channelId, channelName, channelDescription, channelMembers, ownerId, ownerName, options) {
+    addMemberChannel : function (channelId, channelName, channelDescription, channelMembers, ownerId, ownerName, options, isDeleted) {
 
         var channel = channelModel.findChannelModel(channelId);
         if (channel !== undefined)  {
             // Channel already exists
             return;
         }
+
         if (options !== undefined && options !== null) {
             if (options.chatType === 'Place') {
                 placesModel.addSharedPlace(options.chatData, channelId);
@@ -536,6 +552,7 @@ var channelModel = {
         channel.set("clearBefore", addTime);
         channel.set("lastAccess", addTime);
 
+
         if (channelMembers === undefined || channelMembers === null) {
             channelMembers = [];
         }
@@ -555,7 +572,9 @@ var channelModel = {
         channel.save(null, {
             success: function(channel) {
                 //ux.closeModalViewAddChannel();
-                mobileNotify('Added  Chat : ' + channel.get('name'));
+                if (isDeleted === undefined)
+                    mobileNotify('Added  Chat : ' + channel.get('name'));
+                    notificationModel.addNewChatNotification(channel.get('channelId'), channel.get('name'), channel.get('description'));
             },
             error: function(channel, error) {
                 // Execute any logic that should take place if the save fails.
@@ -669,6 +688,8 @@ var channelModel = {
             success: function(channel) {
                 // Execute any logic that should take place after the object is saved.
                 mobileNotify('Added Place Chat : ' + channel.get('name'));
+                notificationModel.addNewChatNotification(channel.get('channelId'), channel.get('name'), channel.get('description'));
+
                 APP.kendo.navigate('#editChannel?channel=' + channelId);
 
             },

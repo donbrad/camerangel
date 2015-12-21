@@ -8,7 +8,6 @@
 	<link href="kendo/styles/kendo.material.min.css" rel="stylesheet" />
     <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet" />
 	<link href="styles/strength.css" rel="stylesheet" />
-	<link href="styles/jquery-textntags.css" rel="stylesheet" />
     <link href="styles/master.css" rel="stylesheet" />
 
     <script src="cordova.js"></script>
@@ -17,13 +16,13 @@
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-XdXhoF08ubebxTjTh9jf0Ra4xFV1Jwo&libraries=places"></script>
 
 	<!-- bower componets -->
-	<script src="componets/eventEmitter/EventEmitter.js"></script>
-	<script src="componets/q/q.js"></script>
-	<script src="componets/underscore/underscore.js"></script>
-	<script src='componets/autosize/dist/autosize.js'></script>
-	<script src="componets/moment/moment.js"></script>
-	<script src="componets/velocity/velocity.js"></script>
-	<script src="componets/lodash/lodash.js"></script>
+	<script src="bower_components/eventEmitter/EventEmitter.js"></script>
+	<script src="bower_components/q/q.js"></script>
+	<script src="bower_components/underscore/underscore.js"></script>
+	<script src='bower_components/autosize/dist/autosize.js'></script>
+	<script src="bower_components/moment/moment.js"></script>
+	<script src="bower_components/velocity/velocity.js"></script>
+	<script src="bower_components/lodash/lodash.js"></script>
 	<!-- other componets -->
 	<script src="scripts/libs/parse.js"></script>
     <script src="https://cdn.pubnub.com/pubnub-3.7.16.js"></script>
@@ -32,7 +31,6 @@
 	<script src="scripts/libs/gibberish-aes.js"></script>
 	<script src="scripts/libs/smartcrop.js"></script>
 	<script src="scripts/libs/lunr.js"></script>
-	<script src="scripts/libs/jquery-textntags.js"></script>
 	<script src="scripts/libs/uuid.js"></script>
 	<script src="scripts/libs/cropper.js"></script>
 	<script src="scripts/libs/base64-string.js"></script>
@@ -55,16 +53,17 @@
 	<script src="scripts/utils.js"></script>
 	<script src="scripts/ux.js"></script>
     <script src="scripts/jquery.email-autocomplete.js"></script>
+
     <script src="scripts/models/semanticDSs.js"></script>
     <script src="scripts/models/archive.js"></script>
 	<script src="scripts/models/channelModel.js"></script>
 	<script src="scripts/models/contactModel.js"></script>
-	<script src="scripts/models/currentChannelModel.js"></script>
 	<script src="scripts/models/deviceModel.js"></script>
 	<script src="scripts/models/mapModel.js"></script>
 	<script src="scripts/models/notificationModel.js"></script>
 	<script src="scripts/models/photoModel.js"></script>
 	<script src="scripts/models/placeModel.js"></script>
+	<script src="scripts/models/smartObjectModel.js"></script>
 	<script src="scripts/models/userModel.js"></script>
     <script src="scripts/views/sentinel.js"></script>
     <script src="scripts/views/archiveView.js"></script>
@@ -1338,7 +1337,7 @@
    </div>
 </script>
 
-<div data-role="view" id="channel" data-layout="main" data-model="currentChannelModel" data-show="channelView.onShow" data-init="channelView.onInit"  data-hide="channelView.onHide" data-transition="slide">
+<div data-role="view" id="channel" data-layout="main" data-model="channelView._channel" data-show="channelView.onShow" data-init="channelView.onInit"  data-hide="channelView.onHide" data-transition="slide">
 	<div data-role="header">
 		<div data-role="navbar" id="channelNavBar">
 			<a data-align="left" data-role="button" href="#:back" id="channel-back-button">
@@ -1358,13 +1357,9 @@
 	</div>
 
 	<div data-role="footer" style="display: block; background: #fff; padding-left: 2px;"  id="messageEditor" style="min-height: 48px; max-height: 60%;">
-		<div id="chatImagePreview" style="margin: 8px; ">
-			<img id="chatImage" src="" />
-		</div>
 		<div class="messageCompose">
-			<span class="helper" id="ghostgramMode" style="display: none">ghostgram editor</span>
 			<textarea id="messageTextArea" rows="1" autofocus="true" wrap="soft" spellcheck="true" placeholder="Message..."></textarea>
-			<div class="messageMediaBar" id="editorOptionBar" style="display: none">
+			<div class="messageMediaBar" id="editorOptionBar" style="display: none;">
 				<ul>
 					<li>
 						<a class="btnBar" data-role="button" data-click="channelView.toggleTool" data-tool="bold">
@@ -1418,7 +1413,7 @@
 					</li>
 					<li>
 						<a data-role="button" data-click="channelView.messageInsertTag">
-							<img src="images/icon-smart.svg" height="24">
+							<img id="chatSmartTagBtn" src="images/icon-smart.svg" height="24">
 						</a>
 					</li>
 					<li>
@@ -1459,8 +1454,14 @@
 
 	<ul data-role="actionsheet" id="messageActions" data-popup='{"direction": "left"}'>
 		<li><a data-action="channelView.archiveMessage"><img src="images/icon-memories.svg" class="icon-sm" /> Remember Message</a></li>
-		<li><a data-action="channelView.smartScanMessage"> Smart Scan Message</a></li>
+		<!--<li><a data-action="channelView.smartScanMessage"> Smart Scan Message</a></li>-->
 		<!--<li><a data-action="channelView.messageEraser"><i class="fa fa-eraser"> </i> Erase Message</a></li>-->
+	</ul>
+
+	<ul data-role="actionsheet" id="messageActionsSender" data-popup='{"direction": "left"}'>
+		<li><a data-action="channelView.archiveMessage"><img src="images/icon-memories.svg" class="icon-sm" /> Remember Message</a></li>
+		<!--<li><a data-action="channelView.smartScanMessage"> Smart Scan Message</a></li>-->
+		<li><a data-action="channelView.messageRecall"><i class="fa fa-eraser"> </i> Recall Message</a></li>
 	</ul>
 
 </div>
@@ -1587,10 +1588,10 @@
 
 <script type="text/x-kendo-tmpl" id="messagesTemplate">
 
-	# var history='', contactData = channelView.getContactData(sender), formattedTime = 'Just now';
-	if (currentChannelModel.privacyMode) {
+	# var isPrivate='', formattedTime = 'Just now';
+	if (channelView.privacyMode) {
 		if (fromHistory !== undefined && fromHistory === true ) {
-			history = "privateMode"; }
+			isPrivate = "privateMode"; }
 	}
 	if (time !== undefined && time !== null) {
 		formattedTime = timeSince(time);
@@ -1600,50 +1601,25 @@
 			formattedTime = formattedTime + " ago";
 		}
 	}
+	var messageClass = "chat-message-text";
+	if(userModel.currentUser.useLargeView){
+		 messageClass = "userLgFontSize chat-message-text";
+	}
 	#
-	<div id=#:msgID# class="chat-message #=history# clearfix">
-	#
-
-		var photoUrl='images/photo-default.svg';
-		var sender = contactData.uuid;
-		var name = contactData.name;
-		var alias = contactData.alias;
-		var contactPhotoUrl = contactData.photoUrl;
-		var displayName = ux.returnUXPrimaryName(name, alias);
-		var messageClass = "chat-message-text";
-
-		if (data !== undefined && data.photo !== undefined) {
-		 photoUrl = channelView.mapPhotoUrl(msgID, data.photo);
-		}
-	#
-	# if(userModel.currentUser.useLargeView){#
-		# var messageClass = "userLgFontSize chat-message-text"; #
-	#}#
-
-	# if (currentChannelModel.privacyMode) {
-			if (fromHistory !== undefined && fromHistory === true ) {
-				history = "privateMode"; }
-	}#
-	<div id=#:msgID# class="chat-message #=history# clearfix">
+	<div id=#:msgID# class="chat-message #=isPrivate# clearfix">
 		<div class="chat-details">
-			# if(contactData.isContact){#
-				<span class="chat-sender">#: displayName #</span>
-			#} else {#
-				<span class="chat-sender">Me</span>
-			#}#
+
+			<span class="chat-sender">#: displayName #</span>
+
 			<span class="chat-time">#:formattedTime# </span>
 			<div class="clearfix"></div>
 		</div>
 
 		<div class="chat-message-user-img">
-			# if(contactPhotoUrl !== '') {#
-				<img class="chat-message-profileImg circle-img-sm" src="#: contactPhotoUrl #" alt="" />
-			#} else {#
-				<img class="chat-message-profileImg circle-img-sm" src="images/ghost-blue.svg" alt="" />
-			#}#
+			<img class="chat-message-profileImg circle-img-sm" src="#: contactPhotoUrl #" alt="" />
 		</div>
 		# if (content !== "") {#
-			# if (contactData.isContact ) {#
+			# if (isContact ) {#
 				<div class="chat-message-receiver chat-message-content  clearfix">
 					<div class="#= messageClass #">#= content #</div>
 				</div>
@@ -1686,7 +1662,7 @@
 		</div>
 	</div>
 	<div class="addedChatMember" style="display: none"></div>
-	<ul id="channelMembers-listview"></ul>
+	<ul style="padding-bottom: 48px;" id="channelMembers-listview"></ul>
 	<div class="footerBk" data-role="footer">
 		<a class="btnSpan-btm btnSecondary" type="button" data-role="button" href="#editChannel?updateMembers=true">Done</a>
 	</div>

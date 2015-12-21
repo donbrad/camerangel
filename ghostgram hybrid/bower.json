@@ -1,6 +1,6 @@
 {
   "name": "ghostgrams",
-  "version": "0.9.1",
+  "version": "0.2.2.6",
   "dependencies": {
     "moment": "~2.10.3",
     "q": "1.0.1",

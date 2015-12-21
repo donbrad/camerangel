@@ -65,12 +65,30 @@ var groupChannel = {
             message.fromHistory = false;
         }
 
-        if (channelView._active && message.channelId === channelView._channelId) {
+        if (channelView.isDuplicateMessage(message.msgID)) {
+            return;
+        }
+        channelView.preprocessMessage(message);
 
-            channelView.messagesDS.add(message);
-            channelModel.updateLastAccess(channelView._channelId, null);
+        channelView.messagesDS.add(message);
+        channelModel.updateLastAccess(channelView._channelId, null);
+        if (message.data.photos !== undefined && message.data.photos.length > 0) {
+            var selector = '#' + message.msgID + " img";
+            var $img = $(selector), n = $img.length;
+            if (n > 0) {
+                $img.on("load error", function () {
+                    if(!--n) {
+                        channelView.scrollToBottom();
+                    }
+                });
+            } else {
+                channelView.scrollToBottom();
+            }
+        } else {
             channelView.scrollToBottom();
         }
+
+
 
 
     },
@@ -136,39 +154,41 @@ var groupChannel = {
         var currentTime =  ggTime.currentTime();
 
         APP.pubnub.uuid(function (msgID) {
-            var notificationString = "Chat : " + groupChannel.channelName;
-            APP.pubnub.publish({
-                channel: groupChannel.channelId,
-                message: {
-                    msgID: msgID,
-                    pn_apns: {
-                        aps: {
-                            alert : notificationString,
-                            badge: 1,
-                            'content-available' : 1
-                        },
+            var notificationString = "Chat : " + groupChannel.channelName ;
+            var thisMessage = {
+                msgID: msgID,
+                channelId : groupChannel.channelId,
+                pn_apns: {
+                    aps: {
+                        alert : notificationString,
+                        badge: 1,
+                        'content-available' : 1
+                    },
+                    target: '#channel?channelId='+ groupChannel.channelId,
+                    channelId: groupChannel.channelId,
+                    isMessage: true,
+                    isPrivate: false
+                },
+                pn_gcm : {
+                    data : {
+                        title: notificationString,
+                        message: "Message from " + userModel.currentUser.name,
                         target: '#channel?channelId='+ groupChannel.channelId,
                         channelId: groupChannel.channelId,
                         isMessage: true,
                         isPrivate: false
-                    },
-                    pn_gcm : {
-                        data : {
-                            title: notificationString,
-                            message: "Message from " + userModel.currentUser.name,
-                            target: '#channel?channelId='+ groupChannel.channelId,
-                            channelId: groupChannel.channelId,
-                            isMessage: true,
-                            isPrivate: false
-                        }
-                    },
-                    sender: groupChannel.userId,
-                    content: text,
-                    data: data,
-                    time: currentTime,
-                    fromHistory: false,
-                    ttl: ttl
+                    }
                 },
+                sender: userModel.currentUser.userUUID,
+                content: text,
+                data: data,
+                time: currentTime,
+                fromHistory: false,
+                ttl: ttl
+            };
+            APP.pubnub.publish({
+                channel: groupChannel.channelId,
+                message: thisMessage,
                 callback: function (m) {
                     if (m === undefined)
                         return;
@@ -179,20 +199,22 @@ var groupChannel = {
                         mobileNotify('Group Channel publish error: ' + message);
                     }
 
-                    /* var parsedMsg = {
+                    /*var parsedMsg = {
                          msgID: msgID,
                          channelId: groupChannel.channelId,
                          content: message,
                          data: data,
                          ttl: ttl,
                          time: currentTime,
-                         sender: groupChannel.userId,
+                         sender: userModel.currentUser.userUUID,
                          fromHistory: false
 
-                     };
+                     };*/
 
-                     groupChannel.receiveMessage(parsedMsg);
- */
+                    channelModel.updateLastAccess(groupChannel.channelId, null);
+                    channelView.scrollToBottom();
+                   // groupChannel.receiveMessage(thisMessage);
+
                 }
             });
         });

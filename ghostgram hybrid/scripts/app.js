@@ -7,6 +7,7 @@
 
 	// create an object to store the models for each view
 	window.APP = {
+		version: "prealpha : 0.2.2.7",
 
 		models: {
 

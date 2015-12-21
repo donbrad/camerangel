@@ -16,6 +16,7 @@
 var contactsView = {
 
     _viewInitialized : false,
+    updateInterval: null,
 
     onInit : function (e) {
         _preventDefault(e);
@@ -75,10 +76,10 @@ var contactsView = {
                            /* $("#contactActionBtns > li:first-child").show();
                             contactActionView.openModal(contact.uuid);*/
 
-                           /* updateParseObject('contacts', 'uuid', thisContact.uuid, 'category', thisContact.category);
+                            updateParseObject('contacts', 'uuid', thisContact.uuid, 'category', thisContact.category);
                             updateParseObject('contacts', 'uuid', thisContact.uuid, 'publicKey', thisContact.publicKey);
                             updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactPhone', thisContact.contactPhone);
-                            updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactEmail', thisContact.contactEmail);*/
+                            updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactEmail', thisContact.contactEmail);
 
                         }
 
@@ -195,8 +196,11 @@ var contactsView = {
         //APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
 
         contactsView.updateContactListDS();
+        mobileNotify("Updating contact status...");
         contactModel.updateContactListStatus();
 
+        // Update the contact list every 5 minutes while the contact list view is active
+        contactsView.updateInterval = setInterval(function(){ contactModel.updateContactListStatus(true) }, 300000);
         // Reset the filters and ux state on show.
         
 
@@ -217,7 +221,11 @@ var contactsView = {
     	ux.showActionBtn(false, "#contacts");
     	$("#btnSearchDeviceContacts").addClass("hidden");
     	ux.hideSearch();
-    	
+        if (contactsView.updateInterval !== null) {
+            clearInterval(contactsView.updateInterval);
+            contactsView.updateInterval = null;
+        }
+
     },
 
     updateSearchUX: function (event) {
@@ -695,7 +703,9 @@ var addContactView = {
             email = $('#addContactEmail').val(),
             photo = $('#addContactPhoto').prop('src'),
             group =  $('#addContactGroup').val(),
-            address = $('#addContactAddress').val();
+            address = $('#addContactAddress').val(),
+            emailValid = false,
+            addressValid = false;
 
 
         if (phone === null || phone.length < 10) {
@@ -705,9 +715,20 @@ var addContactView = {
         }
         var guid = uuid.v4();
 
+       if (email === undefined) {
+           email = null;
+           emailValid  = false;
+       }
+
+        if (address === undefined) {
+            address = null;
+            addressValid = false;
+        }
+
         contact.setACL(userModel.parseACL);
         contact.set("name", name );
         contact.set("alias", alias);
+        contact.set("email", email);
         contact.set("address", address);
         contact.set("group", group);
         contact.set('category', "new");
@@ -733,10 +754,11 @@ var addContactView = {
         }
 
         contact.set("phone", phone);
+
         // Close modal
         addContactView.closeModal();
 
-        mobileNotify("Invite sent");
+       // mobileNotify("Invite sent");
 
         // Look up this contacts phone number in the gg directory
       findUserByPhone(phone, function (result) {
@@ -769,7 +791,8 @@ var addContactView = {
             } else {
                 // No - just use the email address the our user selected
                 contact.set("email", email);
-                contactSendEmailInvite(email);
+                if (emailValid)
+                    contactSendEmailInvite(email);
                 contact.set("phoneVerified", false);
                 contact.set('publicKey',  null);
                 contact.set("contactUUID", null);

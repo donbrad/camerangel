@@ -3027,7 +3027,7 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 .messageCompose {
   padding: 0.5rem;
   padding-bottom: 0px;
-  padding-top: 0.25rem;
+  padding-top: 6px;
 }
 .messageMediaBar ul {
   padding: 0px;
@@ -3354,12 +3354,14 @@ div.loginBox > form > div > ul > li {
   font-size: 1em;
 }
 .photoPreview {
-  width: 25%;
+  width:25%;
   height: auto;
-  float: left;
+
 }
 .photoPreview > img {
-  width: 100%;
+  width:25%;
+  height: auto;
+
 }
 .photoInfo {
   float: left;

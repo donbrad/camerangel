@@ -71,7 +71,7 @@ var placesModel = {
                         dirty = true;
                     }
                     if (parseModel.get('distance') === undefined) {
-                        parseModel.set('distance', 0);
+                        parseModel.set('distance', 0.0);
                         dirty = true;
                     }
                     if (parseModel.get('alias') === undefined) {
@@ -177,11 +177,14 @@ var placesModel = {
 
     getPlaceModel : function (placeId) {
 
-        var dataSource = placesModel.placesDS;
+        var place = placesModel.queryPlace({ field: "uuid", operator: "eq", value: placeId });
+
+
+       /* var dataSource = placesModel.placesDS;
         dataSource.filter( { field: "uuid", operator: "eq", value: placeId });
         var view = dataSource.view();
         var place = view[0];
-        dataSource.filter([]);
+        dataSource.filter([]);*/
 
         return(place);
 
@@ -200,17 +203,25 @@ var placesModel = {
 
     findPlaceByName : function (name) {
 
-        var dataSource = placesModel.placesDS;
+        var place = placesModel.queryPlace({ field: "name", operator: "eq", value: name });
+
+       /* var dataSource = placesModel.placesDS;
         dataSource.filter( { field: "name", operator: "eq", value: name });
         var view = dataSource.view();
         var place = view[0];
-        dataSource.filter([]);
+        dataSource.filter([]);*/
 
         return(place);
 
     },
 
-    addSharedPlace : function (place, placeChatId) {
+    addSharedPlace : function (place, placeChatId, callback) {
+
+        var existingPlace = placesModel.getPlaceModel(place.uuid);
+        if (existingPlace !== undefined) {
+            return;
+        }
+
         var Place = Parse.Object.extend("places");
         var placeParse = new Place();
 
@@ -236,7 +247,7 @@ var placesModel = {
         placeParse.set('address', place.address);
         placeParse.set('lat', place.lat);
         placeParse.set('lng', place.lng);
-        placeParse.set('distance',0);
+        placeParse.set('distance', 0);
         placeParse.set('type', place.type);
         placeParse.set('city', place.city);
         placeParse.set('state', place.state);
@@ -252,7 +263,7 @@ var placesModel = {
         var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, place.lat, place.lng);
 
         // update the distance value for the local object...
-        placeParse.set('distance',distance.toFixed(2));
+        placeParse.set('distance', distance);
         // Get a json object to add to kendo (strip the parse specific stuff)
         var placeObj = placeParse.toJSON();
         placesModel.placesDS.add(placeObj);

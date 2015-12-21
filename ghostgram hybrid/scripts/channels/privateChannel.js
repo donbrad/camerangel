@@ -123,10 +123,27 @@ var privateChannel = {
             message.fromHistory = false;
         }
 
+        channelView.preprocessMessage(message);
         // If this message is for the current channel, then display immediately
-        if (channelView._Active && message.channelId === channelView._channelId) {
+        if (channelView._active && message.channelId === channelView._channelId) {
             channelModel.updateLastAccess(channelView._channelId, null);
             channelView.messagesDS.add(message);
+
+            if (message.data.photos !== undefined && message.data.photos.length > 0) {
+                var selector = '#' + message.msgID + " img";
+                var $img = $(selector), n = $img.length;
+                if (n > 0) {
+                    $img.on("load error", function () {
+                        if(!--n) {
+                            channelView.scrollToBottom();
+                        }
+                    });
+                } else {
+                    channelView.scrollToBottom();
+                }
+            } else {
+                channelView.scrollToBottom();
+            }
         } else {
             // Is there a private channel for this sender?
             channelModel.confirmPrivateChannel(message.channelId);
@@ -165,7 +182,7 @@ var privateChannel = {
             var message = {
                 type: 'privateMessage',
                 recipient: recipient,
-                sender: privateChannel.userId,
+                sender: userModel.currentUser.userUUID,
                 pn_apns: {
                     aps: {
                         alert : notificationString,
@@ -213,7 +230,7 @@ var privateChannel = {
                     var parsedMsg = {
                         type: 'privateMessage',
                         recipient: message.recipient,
-                        sender: message.sender,
+                        sender: userModel.currentUser.userUUID,
                         msgID: message.msgID,
                         channelId: message.recipient, //
                         content: content,
@@ -224,10 +241,13 @@ var privateChannel = {
 
                     };
 
+
                     channelModel.updateLastAccess(parsedMsg.channelId, null);
+                    channelView.preprocessMessage(parsedMsg);
                     channelView.messagesDS.add(parsedMsg);
                     userDataChannel.messagesDS.add(parsedMsg);
                     userDataChannel.messagesDS.sync();
+                    channelView.scrollToBottom();
 
                 }
             });
@@ -256,9 +276,6 @@ var privateChannel = {
 
         for(var i = 0; i < messages.length; i++) {
             var msg = messages[i];
-
-            if (msg.sender === undefined)
-                msg.sender = privateChannel.channelId;
 
             clearMessageArray.push(msg);
         }
