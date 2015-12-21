@@ -218,12 +218,13 @@ var homeView = {
 
     clearNotifications : function (e) {
         _preventDefault(e);
+        notificationModel.deleteAllNotifications();
     },
 
     dismissNotification : function (e) {
         _preventDefault(e);
         var uuid = e.sender.element[0].attributes['data-param'].value;
-        
+
         notificationModel.deleteNotification(uuid);
     },
 

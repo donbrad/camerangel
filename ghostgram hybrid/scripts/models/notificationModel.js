@@ -199,6 +199,11 @@ var notificationModel = {
         return (notificationModel.queryNotification({ field: "privateId", operator: "eq", value: privateId }));
     },
 
+    deleteAllNotifications : function () {
+        notificationModel.notificationDS.data([]);
+        notificationModel.notificationDS.sync();
+    },
+
     deleteNotificationsByType : function (notificationType) {
         var list = notificationModel.queryNotifications({ field: "type", operator: "eq", value: notificationType });
 
