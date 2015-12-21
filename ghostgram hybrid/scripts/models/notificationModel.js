@@ -218,15 +218,8 @@ var notificationModel = {
         // Does this notification exist?  if not, just return
         if (notification === undefined)
             return;
-        var data = deviceModel.state.userNotifications;
-        for(var i = 0; i < data.length; i++) {
-            if(data[i].uuid == uuid) {
-                data.splice(i, 1); 
-                break;
-            }
-        }
-        deviceModel.setAppState('userNotifications', JSON.stringify(data));
-        dataSource.remove(notification);
+     
+        notificationModel.notificationDS.remove(notification);
     }
 
 
