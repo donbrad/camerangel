@@ -262,7 +262,6 @@ var groupChannel = {
         APP.pubnub.history({
             channel: groupChannel.channelId,
             end: endTime.toString(),
-            include_token: true,
             error: function (error) {
 
             },
