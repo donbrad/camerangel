@@ -92,12 +92,14 @@ var userDataChannel = {
     history : function () {
 
         var channelList = [], channelKeys = [];
-        var timeStamp = ggTime.toPubNubTime(ggTime.currentTime());
+        var start = ggTime.toPubNubTime(ggTime.lastDay()),
+            end = ggTime.toPubNubTime(ggTime.currentTime());
 
         // Get any messages in the channel
         APP.pubnub.history({
             channel: userDataChannel.channelId,
-            end: timeStamp,
+            start: start,
+            end: end,
             include_token: true,
             error: userDataChannel.error,
             callback: function(messages) {
