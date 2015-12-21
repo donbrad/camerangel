@@ -89,17 +89,18 @@ var userDataChannel = {
         localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);
     },
 
-    history : function () {
+    // Iterative function to get all messages in the user data channel for the last 24 hours
+    // Note: pubnubs api will only return a max of 100 messsges so need to iterate until
+    // we have full 24 hours for all contactc
+    _fetchHistory : function (timestamp) {
 
-        var channelList = [], channelKeys = [];
-        var start = ggTime.toPubNubTime(ggTime.lastDay()),
-            end = ggTime.toPubNubTime(ggTime.currentTime());
+        var start = ggTime.toPubNubTime(ggTime.lastDay());    // Need to fetch the last 24 hours of private messages
 
         // Get any messages in the channel
         APP.pubnub.history({
             channel: userDataChannel.channelId,
             start: start.toString(),
-            end: end.toString(),
+            end: timeStamp,
             error: userDataChannel.error,
             callback: function(messages) {
                 messages = messages[0];
@@ -109,7 +110,7 @@ var userDataChannel = {
                 var latestTime = 0;
                 for (var i = 0; i < messages.length; i++) {
 
-                    var lastAccess = ggTime.toPubNubTime(userDataChannel.lastAccess);
+
 
                     var msg  =  messages[i];
                     if (msg.type === 'privateMessage' && !userDataChannel.isDuplicateMessage(msg.msgID)) {
@@ -150,11 +151,27 @@ var userDataChannel = {
                 }
                 userDataChannel.messagesDS.sync();
                 userDataChannel.updateTimeStamp();
-             /*   channelKeys = Object.keys(channelList);
-                channelModel.updatePrivateChannels(channelKeys, channelList);*/
-            }
-        });
+                /*   channelKeys = Object.keys(channelList);
+                 channelModel.updatePrivateChannels(channelKeys, channelList);*/
 
+                var startTime = parseInt(start);
+                if (messages.length === 100 && startTime >= start) {
+
+                    userDataChannel._fetchHistory(end);
+                }
+
+            }
+
+
+        });
+    },
+
+    history : function () {
+
+        var timeStamp = ggTime.toPubNubTime(ggTime.currentTime());
+        var lastAccess = ggTime.toPubNubTime(userDataChannel.lastAccess);
+        
+        userDataChannel._fetchHistory(timeStamp.toString());
 
     },
 
@@ -169,8 +186,6 @@ var userDataChannel = {
                 privateChannel.receiveHandler(m);
 
             } break;
-
-
         }
     },
 
