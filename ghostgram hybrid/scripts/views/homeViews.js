@@ -216,7 +216,16 @@ var homeView = {
         userModel.currentUser.set('currentPlaceUUID', '');
     },
 
+    clearNotifications : function (e) {
+        _preventDefault(e);
+    },
 
+    dismissNotification : function (e) {
+        _preventDefault(e);
+        var uuid = e.sender.element[0].attributes['data-param'].value;
+        
+        notificationModel.deleteNotification(uuid);
+    },
 
     onInit: function(e) {
         _preventDefault(e);
