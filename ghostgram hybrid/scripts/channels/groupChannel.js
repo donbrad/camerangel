@@ -269,11 +269,11 @@ var groupChannel = {
                 var messageList = messages[0];
                 var start = messages[1];
                 var end = messages[2];
-                messages = messages || [];
+                //messages = messages || [];
 
                 groupChannel.nextFetchEnd = end;
                 if(callBack)
-                    callBack(messages);
+                    callBack(messageList);
             }
 
         });
