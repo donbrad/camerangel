@@ -208,7 +208,7 @@ var channelModel = {
 
             notificationModel.updateUnreadNotification(channelId, channel.get('name'), count);
             channel.set('unreadCount',channel.get('unreadCount') + count);
-           // updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
+            updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
             channelModel.updateLastAccess(channelId, lastAccess);
 
         }
@@ -225,7 +225,7 @@ var channelModel = {
             }
             notificationModel.updateUnreadNotification(channelId, channel.get('name'), count);
             channel.set('unreadCount', channel.unreadCount + count);
-            //updateParseObject('channels', 'channelId', channelId, 'unreadCount', channel.unreadCount + count);
+            updateParseObject('channels', 'channelId', channelId, 'unreadCount', channel.unreadCount + count);
             channelModel.updateLastAccess(channelId, lastAccess);
         }
 

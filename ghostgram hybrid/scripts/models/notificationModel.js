@@ -218,7 +218,7 @@ var notificationModel = {
         // Does this notification exist?  if not, just return
         if (notification === undefined)
             return;
-     
+
         notificationModel.notificationDS.remove(notification);
     }
 

@@ -1090,10 +1090,10 @@ var channelView = {
         channelView.messageInit();
         channelView._initMessageTextArea();
 
-        photoModel.getChannelOffers(channelUUID, function (offers) {
+      /*  photoModel.getChannelOffers(channelUUID, function (offers) {
             channelView.photoOffersDS.data(offers);
             channelView._offersLoaded = true;
-        });
+        });*/
 
         var thisChannel = channelModel.findChannelModel(channelUUID);
         if (thisChannel === null) {
@@ -1103,6 +1103,7 @@ var channelView = {
 
         channelView._channel = thisChannel;
 
+        channelModel.updateUnreadCount(thisChannel.channelId, 0, ggTime.currentPubNubTime());
 
         var contactUUID = null;
         var thisChannelHandler = null;
