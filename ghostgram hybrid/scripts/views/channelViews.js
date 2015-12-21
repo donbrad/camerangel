@@ -1060,6 +1060,7 @@ var channelView = {
 
         channelView.initDataSources();
         channelView.messageInit();
+        channelView._initMessageTextArea();
 
         photoModel.getChannelOffers(channelUUID, function (offers) {
             channelView.photoOffersDS.data(offers);
@@ -1233,6 +1234,7 @@ var channelView = {
 
         channelView.initDataSources();
         channelView.messageInit();
+        channelView._initMessageTextArea();
         //channelView.closeEditor();
         // If this isn't a privateChat the close the channel (unsubscribe)
         // All private chat messages go through userdatachannel which is always subscribed
@@ -1697,6 +1699,7 @@ var channelView = {
        /* $('#chatImage').attr('src', displayUrl);
         $('#chatImagePreview').show();*/
     },
+
     togglePrivacyMode :function (e) {
         _preventDefault(e);
         channelView.privacyMode = ! channelView.privacyMode;
