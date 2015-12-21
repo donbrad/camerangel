@@ -16,6 +16,7 @@
 var contactsView = {
 
     _viewInitialized : false,
+    updateInterval: null,
 
     onInit : function (e) {
         _preventDefault(e);
@@ -195,8 +196,11 @@ var contactsView = {
         //APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
 
         contactsView.updateContactListDS();
+        mobileNotify("Updating contact status...");ix
         contactModel.updateContactListStatus();
 
+        // Update the contact list every 5 minutes while the contact list view is active
+        contactsView.updateInterval = setInterval(function(){ contactModel.updateContactListStatus(true) }, 300000);
         // Reset the filters and ux state on show.
         
 
@@ -217,7 +221,11 @@ var contactsView = {
     	ux.showActionBtn(false, "#contacts");
     	$("#btnSearchDeviceContacts").addClass("hidden");
     	ux.hideSearch();
-    	
+        if (contactsView.updateInterval !== null) {
+            clearInterval(contactsView.updateInterval);
+            contactsView.updateInterval = null;
+        }
+
     },
 
     updateSearchUX: function (event) {
