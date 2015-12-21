@@ -149,6 +149,11 @@ var channelModel = {
         return(channel);
     },
 
+    getUnreadChannels : function () {
+        var channels = channelModel.queryChannels({ field: "unreadCount", operator: "gte", value: 0 })
+        return(channels);
+    },
+
     updateLastAccess : function (channelId, lastAccess) {
         var channel = channelModel.findChannelModel(channelId);
         if (channel === undefined) {
@@ -569,6 +574,7 @@ var channelModel = {
                 //ux.closeModalViewAddChannel();
                 if (isDeleted === undefined)
                     mobileNotify('Added  Chat : ' + channel.get('name'));
+                    notificationModel.addNewChatNotification(channel.get('channelId'), channel.get('name'), channel.get('description'));
             },
             error: function(channel, error) {
                 // Execute any logic that should take place if the save fails.
@@ -682,6 +688,8 @@ var channelModel = {
             success: function(channel) {
                 // Execute any logic that should take place after the object is saved.
                 mobileNotify('Added Place Chat : ' + channel.get('name'));
+                notificationModel.addNewChatNotification(channel.get('channelId'), channel.get('name'), channel.get('description'));
+
                 APP.kendo.navigate('#editChannel?channel=' + channelId);
 
             },

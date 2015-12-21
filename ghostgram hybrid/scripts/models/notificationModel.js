@@ -23,14 +23,15 @@ var notificationModel = {
     notificationDS: new kendo.data.DataSource({
         offlineStorage: "notifications-offline",
         sort: {
-            field: "priority",
-            dir: "asc"
+            field: "date",
+            dir: "desc"
         }
     }),
 
-    Notification: function(type, title, date, description, actionTitle, action, href, dismissed, dismissable) {
-            this.uuid = new uuid.v4();
+    Notification: function(type,  id, title, date, description, actionTitle, action, href, dismissed, dismissable) {
+            this.uuid = new uuid.v4(),
             this.type = type ? type : 'system',
+                this.id = id ? id : null,
             this.title = title ? title : '',
             this.actionTitle = actionTitle ? actionTitle : '',
             this.action = action ? action : null,
@@ -41,8 +42,8 @@ var notificationModel = {
             this.dismissable = dismissable ? dismissable : false
     },
 
-    newNotification: function(type, title, date, description, actionTitle, action, href, dismissable) {
-        var notification = new notificationModel.Notification(type, title, date, description, actionTitle, action, href, dismissable);
+    newNotification: function(type, id, title, date, description, actionTitle, action, href, dismissable) {
+        var notification = new notificationModel.Notification(type, id, title, date, description, actionTitle, action, href, dismissable);
         notificationModel.notificationDS.add(notification);
     },
 
@@ -64,27 +65,27 @@ var notificationModel = {
     },
 
     addUnreadNotification : function (channelId, channelName, unreadCount) {
-        this.newNotification(this._unreadCount, channelName, null, unreadCount + " new messages.", 'Read Messages', null,
+        this.newNotification(this._unreadCount, channelId, channelName, null, unreadCount + " new messages.", 'Read Messages', null,
         '#channel?channelId='+channelId, true);
     },
 
     addNewChatNotification : function (channelId, channelName, channelDescription) {
-        this.newNotification(this._newChat, channelName, null, channelDescription, 'Goto Chat', null,
+        this.newNotification(this._newChat, channelId, channelName, null, channelDescription, 'Goto Chat', null,
             '#channel?channelId='+channelId, true);
     },
 
     addNewPrivateChatNotification : function (channelId, channelName) {
-        this.newNotification(this._newPrivate, channelName, null, 'Private Chat Request', 'Goto Chat', null,
+        this.newNotification(this._newPrivate, channelId, channelName, null, 'Private Chat Request', 'Goto Chat', null,
             '#channel?channelId='+channelId, true);
     },
 
     deleteChatNotification : function (channelId, channelName) {
-        this.newNotification(this._deleteChat, channelName, null, "Has been deleted.", null, null,
+        this.newNotification(this._deleteChat, channelId, channelName, null, "Has been deleted.", null, null,
            null, true);
     },
 
     deletePrivateChatNotification : function (channelId, channelName) {
-        this.newNotification(this._deletePrivateChat, channelName, null, "Has been deleted.", null, null,
+        this.newNotification(this._deletePrivateChat, channelId, channelName, null, "Has been deleted.", null, null,
             null, true);
     },
 

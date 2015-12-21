@@ -127,11 +127,6 @@ var deviceModel = {
         //console.log("Resign");
     },
 
-    onActive : function () {
-        deviceModel.setAppState('inBackground', false);
-        //console.log("Active");
-    },
-
 
     onPause: function() {
         deviceModel.setAppState('inBackground', true);
@@ -140,9 +135,28 @@ var deviceModel = {
 
     },
 
+    onActive : function () {
+        deviceModel.setAppState('inBackground', false);
+       /* var channels = channelModel.getUnreadChannels();
+
+        for (var i=0; i<channels.length; i++) {
+            var channel = channels[i];
+
+            notificationModel.addUnreadNotification(channel.channelId, channel.name, channel.unreadCount);
+        }*/
+    },
+
+
     onResume: function() {
        deviceModel.setAppState('inBackground', false);
+        // app is resuming / becoming active -- add unread notifications
+        var channels = channelModel.getUnreadChannels();
 
+        for (var i=0; i<channels.length; i++) {
+            var channel = channels[i];
+
+            notificationModel.addUnreadNotification(channel.channelId, channel.name, channel.unreadCount);
+        }
     },
 
     onOnline: function() {
