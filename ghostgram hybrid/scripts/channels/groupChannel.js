@@ -64,6 +64,10 @@ var groupChannel = {
         if (message.fromHistory === undefined) {
             message.fromHistory = false;
         }
+
+        if (channelView.isDuplicateMessage(message.msgID)) {
+            return;
+        }
         channelView.preprocessMessage(message);
 
         channelView.messagesDS.add(message);

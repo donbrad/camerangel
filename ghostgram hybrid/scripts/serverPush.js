@@ -86,11 +86,11 @@ var serverPush = {
             serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, serverPush.onError, serverPush._badgeCount);
 
         } else {
-            if (e.badge) {
+            //if (e.badge) {
                 serverPush._badgeCount++;
                 serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, serverPush.onError, serverPush._badgeCount);
                 serverPush.plugin.finish();
-            }
+           // }
 
 
         }
