@@ -51,26 +51,6 @@ var galleryView = {
         $("#gallery-listview li").css("padding-bottom",galleryView._previewSize);
 
 
-/*
-        var scroller = e.view.scroller;
-        //scroller.scrollTo(0,-44);
-
-		
-		scroller.bind("scroll", function(e){
-			
-			var scrollPos = scroller.scrollTop;
-			var newHeight = 56 - scrollPos;
-			console.log(scrollPos);
-			if (scrollPos > 56){
-				$("#gallery > div.km-header > div.km-widget.km-navbar").addClass("home-smallHeader");
-				//$("#gallery > div.km-header > .helperInfoBar").removeClass("hidden");
-			} else {
-				$("#gallery > div.km-header > div.km-widget.km-navbar").removeClass("home-smallHeader");
-				//$("#gallery > div.km-header > .helperInfoBar").addClass("hidden");
-			}
-		}); 
-		*/
-
 
     },
 
@@ -134,7 +114,7 @@ var galleryView = {
         } 
         	
         $('#gallery .gg_mainSearchInput').attr('placeholder', 'Search memories...');
-        
+
 
         if (e.view.params.mode !== undefined && e.view.params.mode === 'picker') {
             galleryView._pickerMode = true;
@@ -149,28 +129,29 @@ var galleryView = {
 
         photoModel.rotationAngle = 0;
         
-        // Set action btn
-        var $actionBtn = $("#gallery > div.footerMenu.km-footer > a");
-        var $actionBtnImg = $("#gallery > div.footerMenu.km-footer > a > span > img");
-        var $actionBtnP = $("#gallery > div.footerMenu.km-footer > a > span > p");
+
         var scroller = e.view.scroller;
-      	
-        $actionBtn.removeAttr("href").on("click", function(e){
-				galleryView.galleryActionView(e);
-			
-			});
+
         
 
         // Set img size for gallery
         $("#gallery-listview li").css("width",galleryView._previewSize);
         $("#gallery-listview li").css("padding-bottom",galleryView._previewSize);
 
+
+        // Set action btn
+        ux.showActionBtn(true, "#gallery", "#");
+        ux.changeActionBtnImg("#gallery", "icon-camera");
+        ux.showActionBtnText("#gallery", "3.5rem", "Camera");
+
+
         // if gallery photos are open, display actionBtn
         var galleryMenuIndex = $("#galleryMenuSelect").data("kendoMobileButtonGroup").current().index();
         if(galleryMenuIndex === 0){
-        	$actionBtn.css("display", "inline-block");
-        } 
+        	//$actionBtn.css("display", "inline-block");
+        }
 
+        /*
         if(galleryView._previewSize === "33%"){
         	$actionBtnP.text("List view");
         	$actionBtnImg.attr("src", "images/gallery-list.svg");
@@ -178,9 +159,7 @@ var galleryView = {
         	$actionBtnP.text("Grid view");
         	$actionBtnImg.attr("src", "images/gallery-grid.svg");
         }
-        
-        $actionBtnP.addClass("actionBtn-text-light");
-        ux.showActionBtnText("#gallery", "3.5rem");
+        */
 
         // set filter count
         var filterCount = 0;
@@ -203,10 +182,9 @@ var galleryView = {
         var $actionBtnImg = $("div.footerMenu.km-footer > a > span > img");
         var $actionBtnP = $("div.footerMenu.km-footer > a > span > p");
 
-        $actionBtn.css("display", "none");
-        $actionBtnImg.attr("src", "images/nav-add-white.svg");
-
         $actionBtnP.removeClass("actionBtn-text-light").text("");
+        ux.changeActionBtnImg("#gallery", "nav-add-white");
+        ux.showActionBtn(false, "#gallery");
 
         ux.hideSearch();
 
@@ -786,6 +764,9 @@ var modalPhotoView = {
 
     deletePhoto : function (e) {
         _preventDefault(e);
+
+        // Overlapping modals, need to close photoView first
+        modalPhotoView.closeModal();
 
         modalView.open("Delete Photo?", "This action will delete this photo and any offers",
             "Delete" ,
