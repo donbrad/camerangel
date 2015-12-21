@@ -149,6 +149,10 @@ var appDataChannel = {
             } break;
 
 
+            //  { type: 'recallMessage',  channelId: <channel Id>,  messageId: <messageId>: ownerId: <ownerUUID>}
+            case 'recallMessage' : {
+                appDataChannel.recallMessage(m.channelId, m.messageId, m.ownerId, m.isPrivateChat);
+            } break;
 
             //  { type: 'connectRequest',  contactId: <contactUUID>, owner: <ownerUUID>}
             case 'connectRequest' : {
@@ -190,6 +194,26 @@ var appDataChannel = {
         msg.userUUID = userUUID;
         msg.phone = phone;
         msg.email = email;
+        msg.time = new Date().getTime();
+
+
+        APP.pubnub.publish({
+            channel: appDataChannel.channelId,
+            message: msg,
+            success: appDataChannel.channelSuccess,
+            error: appDataChannel.channelError
+        });
+    },
+
+    recallMessage : function (channelId, messageId, ownerId, isPrivateChat) {
+        var msg = {};
+
+        msg.type = 'recallMessage';
+        msg.version = appDataChannel._version;
+        msg.channelId = channelId;
+        msg.messageId = messageId;
+        msg.ownerId = ownerId;
+        msg.isPrivateChat = isPrivateChat;
         msg.time = new Date().getTime();
 
 
@@ -399,6 +423,14 @@ var appDataChannel = {
 
     },
 
+
+    processPlaceAdd : function (placeId, placeName, ownerId,  ownerName) {
+
+    },
+
+    processRecallMessage: function (channelId, messageId, ownerId, isPrivateChat) {
+
+    },
 
     publishCallback : function (m) {
         if (m === undefined)

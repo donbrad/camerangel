@@ -163,6 +163,15 @@ var channelModel = {
         }
     },
 
+    getLastAccess : function (channelId) {
+        var channel = channelModel.findChannelModel(channelId);
+        if (channel === undefined) {
+            mobileNotify('updateLastAccess: unknown channel ' + channelId);
+        } else {
+            return(channel.get('lastAccess'));
+        }
+    },
+
     updateUnreadCount: function (channelId, count, lastAccess) {
 
         var channel = channelModel.findChannelModel(channelId);

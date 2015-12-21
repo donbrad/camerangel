@@ -863,6 +863,34 @@ var channelView = {
         return(message);
     },
 
+    queryMessages: function (query) {
+        if (query === undefined)
+            return(undefined);
+
+        var dataSource = channelView.messagesDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+
+        dataSource.filter(cacheFilter);
+        return(view);
+    },
+
+    isDuplicateMessage : function (msgID) {
+        var messages = channelView.queryMessages({ field: "msgID", operator: "eq", value: msgID });
+
+        if (messages === undefined) {
+            return (false);
+        } else if (messages.length === 0) {
+            return (false);
+        } else {
+            return(true);
+        }
+    },
+
     findMessageById : function (msgID) {
 
         return(photoModel.queryMessage({ field: "msgID", operator: "eq", value: msgID }));
@@ -1178,9 +1206,16 @@ var channelView = {
             mobileNotify("Loading Messages...");
             channelView.messagesDS.data([]);
             groupChannel.getMessageHistory(function (messages) {
+                var filteredMessages = [];
 
-                channelView.preprocessMessages(messages);
-                channelView.messagesDS.data(messages);
+                for (var i=0; i<messages.length; i++) {
+                    var message = messages[i];
+                    if (!channelView.isDuplicateMessage(message.msgID)) {
+                        filteredMessages.push(message);
+                    }
+                }
+                channelView.preprocessMessages(filteredMessages);
+                channelView.messagesDS.data(filteredMessages);
                 //channelView.updateMessageTimeStamps();
 
                 channelView.loadImagesThenScroll();
