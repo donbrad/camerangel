@@ -103,6 +103,7 @@ var userDataChannel = {
             error: userDataChannel.error,
             callback: function(messages) {
                 messages = messages[0];
+                var start = messages[1], end = messages[2];
                 messages = messages || [];
                 var RSAKey = cryptico.privateKeyFromString(userModel.currentUser.privateKey);
                 var latestTime = 0;
