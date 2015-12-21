@@ -92,7 +92,7 @@ var userDataChannel = {
     // Iterative function to get all messages in the user data channel for the last 24 hours
     // Note: pubnubs api will only return a max of 100 messsges so need to iterate until
     // we have full 24 hours for all contactc
-    _fetchHistory : function (timestamp) {
+    _fetchHistory : function (timeStamp) {
 
         var start = ggTime.toPubNubTime(ggTime.lastDay());    // Need to fetch the last 24 hours of private messages
 
@@ -170,7 +170,7 @@ var userDataChannel = {
 
         var timeStamp = ggTime.toPubNubTime(ggTime.currentTime());
         var lastAccess = ggTime.toPubNubTime(userDataChannel.lastAccess);
-        
+
         userDataChannel._fetchHistory(timeStamp.toString());
 
     },
