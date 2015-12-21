@@ -261,7 +261,7 @@ var privateChannel = {
         var dataSource = userDataChannel.messagesDS;
         var queryCache = dataSource.filter();
         if (queryCache === undefined) {
-            queryCache = [];
+            queryCache = {};
         }
 
         privateChannel.last24Hours = ggTime.lastDay();

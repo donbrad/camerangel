@@ -26,7 +26,15 @@ var channelModel = {
 
     // List of all active private channels (those with messages)
     privateChannelsDS: new kendo.data.DataSource({
-        offlineStorage: "privatechannels-offline"
+        offlineStorage: "privatechannels"
+    }),
+
+    recalledMessagesDS : new kendo.data.DataSource({
+        offlineStorage: "recalledMessages"
+    }),
+
+    groupMessagesDS : new kendo.data.DataSource({
+        offlineStorage: "groupMessages"
     }),
 
     init :  function () {
@@ -175,6 +183,10 @@ var channelModel = {
         } else {
             return(channel.get('lastAccess'));
         }
+    },
+
+    cacheGroupMessage : function (message) {
+        channelModel.groupMessagesDS.add(message);
     },
 
     updateUnreadCount: function (channelId, count, lastAccess) {
