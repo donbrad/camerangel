@@ -98,8 +98,8 @@ var userDataChannel = {
         // Get any messages in the channel
         APP.pubnub.history({
             channel: userDataChannel.channelId,
-            start: start,
-            end: end,
+            start: start.toString(),
+            end: end.toString(),
             include_token: true,
             error: userDataChannel.error,
             callback: function(messages) {

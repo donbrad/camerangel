@@ -249,7 +249,7 @@ var groupChannel = {
 
     getMessageHistory: function (callBack) {
         var channel = channelModel.findChannelModel(groupChannel.channelId);
-        var endTime = ggTime.currentTime() * 10000, lastTime = ggTime.lastMonth() * 10000;
+        var endTime = ggTime.currentTime() * 1000, lastTime = ggTime.lastMonth() * 1000;
         groupChannel.channelFetchCallBack = callBack;
 
         if (groupChannel.nextFetchEnd !== null) {
@@ -261,7 +261,7 @@ var groupChannel = {
 
         APP.pubnub.history({
             channel: groupChannel.channelId,
-            end: endTime,
+            end: endTime.toString(),
             include_token: true,
             error: function (error) {
 
