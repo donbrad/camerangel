@@ -186,8 +186,29 @@ var channelModel = {
             if (lastAccess === undefined || lastAccess === null) {
                 lastAccess = ggTime.currentTime();
             }
-            channel.set('unreadCount',count);
+            channel.set('unreadCount',channel.get('unreadCount') + count);
             updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
+            channelModel.updateLastAccess(channelId, lastAccess);
+
+        }
+    },
+
+    updatePrivateUnreadCount: function (channelId, count, lastAccess) {
+        if (lastAccess === undefined || lastAccess === null) {
+            lastAccess = ggTime.currentTime();
+        }
+
+        var channel = channelModel.findChannelModel(channelId);
+        if (channel === undefined) {
+            channelModel.confirmPrivateChannel(channelId);
+        } else {
+            if (lastAccess === undefined || lastAccess === null) {
+                lastAccess = ggTime.currentTime();
+            }
+
+            notificationModel.updateUnreadNotification(channelId, channel.get('name'), count);
+            channel.set('unreadCount',channel.get('unreadCount') + count);
+           // updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
             channelModel.updateLastAccess(channelId, lastAccess);
 
         }
@@ -202,8 +223,9 @@ var channelModel = {
             if (lastAccess === undefined || lastAccess === null) {
                 lastAccess = ggTime.currentTime();
             }
+            notificationModel.updateUnreadNotification(channelId, channel.get('name'), count);
             channel.set('unreadCount', channel.unreadCount + count);
-            updateParseObject('channels', 'channelId', channelId, 'unreadCount', channel.unreadCount + count);
+            //updateParseObject('channels', 'channelId', channelId, 'unreadCount', channel.unreadCount + count);
             channelModel.updateLastAccess(channelId, lastAccess);
         }
 
@@ -501,6 +523,7 @@ var channelModel = {
             success: function(channel) {
                 //ux.closeModalViewAddChannel();
                 mobileNotify('Added Private Chat : ' + channel.get('name'));
+                notificationModel.addNewPrivateChatNotification(channel.get('channelId'), channel.get('name'));
             },
             error: function(channel, error) {
                 // Execute any logic that should take place if the save fails.

@@ -21,17 +21,52 @@ var notificationModel = {
     _deletePrivateChat : 'Delete Private Chat',
 
     notificationDS: new kendo.data.DataSource({
-        offlineStorage: "notifications-offline",
+        offlineStorage: "notifications",
         sort: {
             field: "date",
             dir: "desc"
         }
     }),
 
+    queryNotification : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = notificationModel.notificationDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var item = view[0];
+
+        dataSource.filter(cacheFilter);
+
+        return(item);
+    },
+
+    queryNotifications : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = notificationModel.notificationDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+
+        var contact = view[0].items[0];
+
+        dataSource.filter(cacheFilter);
+
+        return(contact);
+    },
+
     Notification: function(type,  id, title, date, description, actionTitle, action, href, dismissed, dismissable) {
             this.uuid = new uuid.v4(),
             this.type = type ? type : 'system',
-                this.id = id ? id : null,
+            this.privateId = id ? id : null,
             this.title = title ? title : '',
             this.actionTitle = actionTitle ? actionTitle : '',
             this.action = action ? action : null,
@@ -136,20 +171,45 @@ var notificationModel = {
     },
 
     findNotificationModel: function (uuid) {
-        var dataSource = notificationModel.notificationDS;
+        return (notificationModel.queryNotification({ field: "uuid", operator: "eq", value: uuid }));
+     /*   var dataSource = notificationModel.notificationDS;
         dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
         var view = dataSource.view();
         var contact = view[0];
         dataSource.filter([]);
-        return(contact);
+        return(contact);*/
+    },
+
+    updateUnreadNotification : function (channelId, channelName, unreadCount) {
+        var notObj = notificationModel.findNotificationByPrivateId(channelId);
+
+        if (notObj === undefined) {
+            notificationModel.addUnreadNotification(channelId, channelName, unreadCount);
+        } else {
+            if (unreadCount === 0) {
+                notificationModel.notificationDS.remove(notObj);
+            } else {
+                notObj.set('unreadCount', unreadCount);
+            }
+        }
+
+    },
+
+    findNotificationByPrivateId : function (privateId) {
+        return (notificationModel.queryNotification({ field: "privateId", operator: "eq", value: privateId }));
+    },
+
+    deleteNotificationsByType : function (notificationType) {
+        var list = notificationModel.queryNotifications({ field: "type", operator: "eq", value: notificationType });
+
+        for (var i=0; i<list.length; i++) {
+            var item = list[i];
+            notificationModel.deleteNotification(item.uuid);
+        }
     },
 
     deleteNotification: function (uuid) {
-        var dataSource = notificationModel.notificationDS;
-        dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
-        var view = dataSource.view();
-        var notification = view[0];
-        dataSource.filter([]);
+        var notification = notificationModel.findNotificationModel(uuid);
         // Does this notification exist?  if not, just return
         if (notification === undefined)
             return;

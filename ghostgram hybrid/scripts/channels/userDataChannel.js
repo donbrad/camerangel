@@ -140,14 +140,15 @@ var userDataChannel = {
                             recipient: msg.recipient
                         };
 
+                        channelModel.updatePrivateUnreadCount(msg.channelId, 1, null);
                         userDataChannel.messagesDS.add(parsedMsg);
 
                     }
                 }
                 userDataChannel.messagesDS.sync();
                 userDataChannel.updateTimeStamp();
-                channelKeys = Object.keys(channelList);
-                channelModel.updatePrivateChannels(channelKeys, channelList);
+             /*   channelKeys = Object.keys(channelList);
+                channelModel.updatePrivateChannels(channelKeys, channelList);*/
             }
         });
 
