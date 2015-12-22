@@ -434,6 +434,14 @@ var userStatusView = {
 
     },
 
+    openModalRestore : function (e) {
+        _preventDefault(e);
+        
+        APP.kendo.navigate('#'+ userStatusView._returnView);
+        userStatusView.openModal();
+
+    },
+
     // close and redirect for user status
     closeModal : function () {
 

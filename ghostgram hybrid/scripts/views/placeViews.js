@@ -549,7 +549,9 @@ var addPlaceView = {
         addPlaceView._activePlace.unbind('change',addPlaceView.onSync);
 
         if (addPlaceView._returnModal !== null) {
-
+            if (addPlaceView._returnModal === "checkin") {
+                checkInView.locateAndOpenModal(userStatusView.openModalRestore);
+            }
         } else {
             APP.kendo.navigate(returnUrl);
         }
