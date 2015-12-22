@@ -389,10 +389,11 @@ var placesModel = {
                 if (place.placeChatId !== null) {
                     channelModel.deleteChannel(place.placeChatId, false);
                 }
+                var placeObj = place.toJSON();
                 placesModel.placesDS.remove(place);
 
                 // Delete the parse object directly
-                deleteParseObject('places', "uuid", uuid);
+                deleteParseObject('places',"uuid", placeId);
             }
 
         }
