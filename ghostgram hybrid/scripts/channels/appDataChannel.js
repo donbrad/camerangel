@@ -251,7 +251,7 @@ var appDataChannel = {
         });
     },
 
-    recallMessage : function (channelId, messageId, ownerId, isPrivateChat) {
+    recallMessage : function (contactId, channelId, messageId, ownerId, isPrivateChat) {
         var msg = {};
 
         msg.msgID = uuid.v4();
@@ -262,7 +262,7 @@ var appDataChannel = {
         msg.ownerId = ownerId;
         msg.isPrivateChat = isPrivateChat;
         msg.time = new Date().getTime();
-        var channel = appDataChannel.getContactAppChannel(channelId);
+        var channel = appDataChannel.getContactAppChannel(contactId);
 
         APP.pubnub.publish({
             channel: channel,

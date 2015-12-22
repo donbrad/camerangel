@@ -1917,12 +1917,16 @@ var channelView = {
                 var member = members[i];
 
                 if (member !== thisUser)
-                    appDataChannel.recallMessage(member, message.msgID, thisUser, channelView.isPrivateChat);
+                    appDataChannel.recallMessage(member, channelView._channelId, message.msgID, thisUser, channelView.isPrivateChat);
 
             }
 
             mobileNotify("Recalling message " + message.msgID);
-            channelView.membersDS.remove(recallMessage);
+            // Add the recall Message for this user (as the message is still in the respective channel
+            // until it ages out...
+            channelModel.addMessageRecall(channelView._channelId, message.msgID, thisUser,  channelView.isPrivateChat)
+            channelView.messagesDS.remove(recallMessage);
+            channelView.messagesDS.sync();
         }
 
 
