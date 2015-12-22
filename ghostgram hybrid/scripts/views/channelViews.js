@@ -1073,8 +1073,8 @@ var channelView = {
     onShow : function (e) {
         _preventDefault(e);
 
-        APP.kendo.scroller().reset();
-        channelView.topOffset = APP.kendo.scroller().scrollTop;
+        $("#messages-listview").data("kendoMobileListView").scroller().reset();
+        channelView.topOffset = $("#messages-listview").data("kendoMobileListView").scroller().scrollTop;
         channelView._active = true;
         channelView._offersLoaded = false;
         // hide action btn
@@ -1257,6 +1257,8 @@ var channelView = {
 
     updateTimeStamps: function () {
         $("#messages-listview").data("kendoMobileListView").refresh();
+        $("#messages-listview").data("kendoMobileListView").scroller().reset();
+
     },
 
     onHide : function (e) {
@@ -1908,6 +1910,7 @@ var channelView = {
         _preventDefault(e);
         var message = channelView.activeMessage;
         mobileNotify("Recalling message " + message.msgID);
+
         appDataChannel.recallMessage(channelView._channel.channelId, message.msgID, userModel.currentUser.userUUID, channelView.isPrivateChat);
 
     },

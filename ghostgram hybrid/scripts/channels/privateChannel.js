@@ -169,6 +169,7 @@ var privateChannel = {
         var contentData = data;
         var encryptMessage = '', encryptData = '';
         var currentTime =  ggTime.currentTime();
+
         if (text === undefined || text === null)
             text = '';
         encryptMessage = cryptico.encrypt(text, privateChannel.contactKey);
