@@ -192,9 +192,11 @@ var channelModel = {
         var message = channelModel.queryRecalledMessage({ field: "msgID", operator: "eq", value: msgID });
 
         if (message === undefined) {
-            return(true);
-        } else {
+            //msgID not found in recall list
             return(false);
+        } else {
+            //msgID exists in recall list
+            return(true);
         }
     },
 
