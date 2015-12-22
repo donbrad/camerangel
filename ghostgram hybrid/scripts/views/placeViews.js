@@ -311,6 +311,8 @@ var findPlacesView = {
 
             if (e.view.params.returnmodal !== undefined){
                 findPlacesView._returnModal = e.view.params.returnmodal;
+            } else {
+                findPlacesView._returnModal = null;
             }
 
         }
@@ -477,7 +479,13 @@ var findPlacesView = {
         _preventDefault(e);
         var navUrl = '#' + findPlacesView._returnView;
 
-        APP.kendo.navigate(navUrl);
+        if (findPlacesView._returnModal === "checkin") {
+            checkInView.locateAndOpenModal();
+            APP.kendo.navigate(navUrl);
+        } else {
+            APP.kendo.navigate(navUrl);
+        }
+
     }
 };
 
@@ -1080,8 +1088,8 @@ var checkInView = {
     },
 
     addPlace: function (e) {
-        /*checkInView.closeModal();
-        APP.kendo.navigate('#'+"findPlace?returnmodal=checkin");*/
+        checkInView.closeModal();
+        APP.kendo.navigate('#'+"findPlace?returnmodal=checkin");
     },
 
     onDone: function (e) {

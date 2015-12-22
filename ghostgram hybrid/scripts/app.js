@@ -115,6 +115,8 @@
 
 		placesModel.init();
 
+		smartObject.init();
+
 		if (window.navigator.simulator === undefined) {
 			serverPush.init();
 		}

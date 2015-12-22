@@ -1925,7 +1925,7 @@ var channelView = {
             // Add the recall Message for this user (as the message is still in the respective channel
             // until it ages out...
             channelModel.addMessageRecall(channelView._channelId, message.msgID, thisUser,  channelView.isPrivateChat)
-           
+
         }
 
 

@@ -30,12 +30,7 @@ var smartObject = {
         {term: "watch", category: "action", type: "meeting", composite: true, date: 1, place: -1, info: 0},
         {term: "movie", category: "action", type: "meeting", composite: true, date: 1, place: -1, info: 0},
         {term: "goto", category: "action", type: "event", composite: true, date: 1, place: -1, info: 0},
-        {term: "show", category: "action", type: "tvshow", composite: true, date: 1, place: 0, info: 0}
-
-
-    ],
-
-    dateMap : [
+        {term: "show", category: "action", type: "tvshow", composite: true, date: 1, place: 0, info: 0},
         {term: "tomorrow", category: "calendar", type: "date", composite: false},
         {term: "today", category: "calendar", type: "date", composite: false},
         {term: "week", category: "calendar", type: "date", composite: false},
@@ -63,7 +58,12 @@ var smartObject = {
         {term: "sep", category: "calendar", type: "month", composite: true},
         {term: "oct", category: "calendar", type: "month", composite: true},
         {term: "nov", category: "calendar", type: "month", composite: true},
-        {term: "dec", category: "calendar", type: "month", composite: true}
+        {term: "dec", category: "calendar", type: "month", composite: true},
+        {term: "title", category: "photo", type: "meta", composite: false},
+        {term: "tags", category: "photo", type: "meta", composite: false},
+        {term: "description", category: "photo", type: "meta", composite: false}
+
+
     ],
 
     termsDS : null,
