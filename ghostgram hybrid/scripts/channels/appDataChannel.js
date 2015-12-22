@@ -173,30 +173,32 @@ var appDataChannel = {
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, ownerID: <ownerUUID>,  ownerName: <text>, channelName: <text>, channelDescription: <text>}
             case 'groupInvite' : {
-                if (m.version === appDataChannel._version)
+                if (m.version === appDataChannel._version && m.msgID !== undefined)
                     appDataChannel.processGroupInvite( m.channelId, m.channelName, m.channelDescription,  m.channelMembers, m.ownerId, m.ownerName,  m.options);
             } break;
 
             //  { type: 'channelInvite',  channelId: <channelUUID>, owner: <ownerUUID>}
             case 'groupDelete' : {
-                if (m.version === appDataChannel._version)
+                if (m.version === appDataChannel._version && m.msgID !== undefined)
                     appDataChannel.processGroupDelete(m.channelId, m.channelName, m.ownerId, m.ownerName);
             } break;
 
             case 'groupUpdate' : {
-                if (m.version === appDataChannel._version)
+                if (m.version === appDataChannel._version && m.msgID !== undefined)
                     appDataChannel.processGroupUpdate(m.channelId, m.channelName, m.channelDescription, m.channelMembers, m.ownerId, m.ownerName);
             } break;
 
 
             case 'placeAdd' : {
-                appDataChannel.processPlaceAdd(m.placeId, m.placeName, m.ownerId,  m.ownerName);
+                if (m.version === appDataChannel._version && m.msgID !== undefined)
+                    appDataChannel.processPlaceAdd(m.placeId, m.placeName, m.ownerId,  m.ownerName);
             } break;
 
 
             //  { type: 'recallMessage',  channelId: <channel Id>,  messageId: <messageId>: ownerId: <ownerUUID>}
             case 'recallMessage' : {
-                appDataChannel.recallMessage(m.channelId, m.messageId, m.ownerId, m.isPrivateChat);
+                if (m.version === appDataChannel._version && m.msgID !== undefined)
+                    appDataChannel.recallMessage(m.channelId, m.messageId, m.ownerId, m.isPrivateChat);
             } break;
 
             //  { type: 'connectRequest',  contactId: <contactUUID>, owner: <ownerUUID>}
