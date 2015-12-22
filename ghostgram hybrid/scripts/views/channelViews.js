@@ -1915,10 +1915,9 @@ var channelView = {
 
             for (var i=0; i< members.length; i++) {
                 var member = members[i];
-                if (member) {
-                    appDataChannel.recallMessage(member, message.msgID, userModel.currentUser.userUUID, channelView.isPrivateChat);
-                }
 
+                appDataChannel.recallMessage(member, message.msgID, userModel.currentUser.userUUID, channelView.isPrivateChat);
+                
             }
 
             mobileNotify("Recalling message " + message.msgID);
