@@ -893,7 +893,7 @@ var channelView = {
 
     findMessageById : function (msgID) {
 
-        return(photoModel.queryMessage({ field: "msgID", operator: "eq", value: msgID }));
+        return(channelView.queryMessage({ field: "msgID", operator: "eq", value: msgID }));
     },
 
     onInit: function (e) {
@@ -1235,7 +1235,8 @@ var channelView = {
         for (var i=0; i<messages.length; i++) {
             var message = messages[i];
 
-            channelView.preprocessMessage(message);
+            if (!channelModel.isMessageRecalled(message.msgID))
+                channelView.preprocessMessage(message);
         }
     },
 
@@ -1888,7 +1889,7 @@ var channelView = {
         if (message.sender === userModel.currentUser.userUUID) {
             $("#messageActionsSender").data("kendoMobileActionSheet").open();
         } else {
-            if (message.canCopy) {
+            if (message.data.canCopy) {
                 $("#messageActions").data("kendoMobileActionSheet").open();
             } else {
                 mobileNotify("This Message was locked by Sender");
@@ -1907,6 +1908,8 @@ var channelView = {
         _preventDefault(e);
         var message = channelView.activeMessage;
         mobileNotify("Recalling message " + message.msgID);
+        appDataChannel.recallMessage(channelView._channel.channelId, message.msgID, userModel.currentUser.userUUID, channelView.isPrivateChat);
+
     },
 
     setMessageLockIcon : function (locked) {

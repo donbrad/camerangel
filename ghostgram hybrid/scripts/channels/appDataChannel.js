@@ -15,12 +15,16 @@ var appDataChannel = {
     lastAccess: 0,   // last access time stamp
     _channelName: 'app',
     _version: 1,
+    messagesDS : new kendo.data.DataSource({
+        offlineStorage: "appmessages"
+    }),
 
     init: function () {
 
         // Generate a unique channel name for the app data channel that is recognizable to related userDataChannel
         // replacing - with _ should achive this...
         var channel = userModel.currentUser.userUUID.replace(/-/g,'_');
+
 
         appDataChannel.channelId = channel;
 
@@ -50,6 +54,8 @@ var appDataChannel = {
 
         });
 
+        appDataChannel.messagesDS.online(false);
+
         // Load the appData message queue
         appDataChannel.history();
     },
@@ -57,6 +63,34 @@ var appDataChannel = {
     updateTimeStamp : function () {
         appDataChannel.lastAccess = ggTime.currentTime();
         localStorage.setItem('ggAppDataTimeStamp', appDataChannel.lastAccess);
+    },
+
+    queryMessages : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = appDataChannel.messagesDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+
+        dataSource.filter(cacheFilter);
+
+        return(view);
+    },
+
+    isProcessedMessage : function (msgID) {
+        var messages = appDataChannel.queryMessages({ field: "msgID", operator: "eq", value: msgID });
+
+        if (messages === undefined) {
+            return (false);
+        } else if (messages.length === 0) {
+            return (false);
+        } else {
+            return(true);
+        }
     },
 
     getContactAppChannel : function (channelId) {
@@ -86,9 +120,20 @@ var appDataChannel = {
         appDataChannel.updateTimeStamp();
     },
 
+    archiveMessage : function (message) {
+        message.processed = true;
+        message.processTime = ggTime.currentTime();
+        appDataChannel.messagesDS.add(message);
+    },
+
+
     channelRead : function (m) {
 
         appDataChannel.updateTimeStamp();
+
+        if (m.msgID === undefined || appDataChannel.isProcessedMessage(m.msgID)) {
+            return;
+        }
 
         switch(m.type) {
             //  { type: 'newUser',  userId: <userUUID>,  phone: <phone>, email: <email>}
@@ -189,6 +234,7 @@ var appDataChannel = {
     newUserMessage : function (userUUID, phone, email) {
         var msg = {};
 
+        msg.msgID = uuid.v4();
         msg.type = 'newUser';
         msg.version = appDataChannel._version;
         msg.userUUID = userUUID;
@@ -208,6 +254,7 @@ var appDataChannel = {
     recallMessage : function (channelId, messageId, ownerId, isPrivateChat) {
         var msg = {};
 
+        msg.msgID = uuid.v4();
         msg.type = 'recallMessage';
         msg.version = appDataChannel._version;
         msg.channelId = channelId;
@@ -228,6 +275,7 @@ var appDataChannel = {
     userValidatedMessage : function (userUUID, phone, email, publicKey) {
         var msg = new Object();
 
+        msg.msgID = uuid.v4();
         msg.type = 'userValidated';
         msg.version = appDataChannel._version;
         msg.userUUID = userUUID;
@@ -249,6 +297,7 @@ var appDataChannel = {
     groupChannelInvite : function (contactUUID, channelUUID, channelName, channelDescription,  members, options) {
         var msg = {};
 
+        msg.msgID = uuid.v4();
         var notificationString = "Chat Invite : " + channelName;
         msg.type = 'groupInvite';
         msg.version = appDataChannel._version;
@@ -300,6 +349,7 @@ var appDataChannel = {
         var msg = {};
 
         var notificationString = channelName + " has been deleted...";
+        msg.msgID = uuid.v4();
         msg.type = 'groupDelete';
         msg.version = appDataChannel._version;
         msg.ownerId = userModel.currentUser.get('userUUID');
@@ -343,6 +393,7 @@ var appDataChannel = {
         var msg = {};
 
         var notificationString = "Chat Update : " + channelName;
+        msg.msgID = uuid.v4();
         msg.type = 'groupUpdate';
         msg.version = appDataChannel._version;
         msg.ownerId = userModel.currentUser.get('userUUID');

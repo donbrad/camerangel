@@ -157,6 +157,59 @@ var channelModel = {
         return(channel);
     },
 
+
+    queryRecalledMessages : function (query) {
+        if (query === undefined)
+            return([]);
+        var dataSource = channelModel.recalledMessagesDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        dataSource.filter(cacheFilter);
+        return(view);
+
+    },
+
+    queryRecalledMessage : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = channelModel.recalledMessagesDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var channel = view[0];
+        dataSource.filter(cacheFilter);
+        return(channel);
+    },
+
+    isMessageRecalled : function (msgID) {
+        var message = channelModel.queryRecalledMessage({ field: "msgID", operator: "eq", value: msgID });
+
+        if (message === undefined) {
+            return(true);
+        } else {
+            return(false);
+        }
+    },
+
+    addMessageRecall : function (channelId, msgId, ownerId, isPrivateChat) {
+        var recallObj = {channelId : channelId, msgID: ownerId, isPrivateChat: isPrivateChat};
+
+        channelModel.recalledMessagesDS.add(recallObj);
+        if (channelId === channelView._channelId) {
+            // need to delete from channel view too
+            var liveMessage = channelView.findMessageById(msgId);
+            channelView.messagesDS.remove(liveMessage);
+        }
+
+    },
+
     getUnreadChannels : function () {
         var channels = channelModel.queryChannels({ field: "unreadCount", operator: "gte", value: 0 })
         return(channels);
