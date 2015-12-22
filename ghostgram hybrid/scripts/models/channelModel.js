@@ -208,6 +208,7 @@ var channelModel = {
             // need to delete from channel view too
             var liveMessage = channelView.findMessageById(msgId);
             channelView.messagesDS.remove(liveMessage);
+            channelView.messagesDS.sync();
         }
 
     },
