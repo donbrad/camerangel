@@ -67,13 +67,17 @@ var placesView = {
     },
 
     editPlaceBtn: function(e){
+        _preventDefault(e);
     	var place = e.button[0].dataset["id"];
-    	var navStr = "#editPlace?place="+LZString.compressToEncodedURIComponent(place)+"&returnview=places";
+
+        var navStr = "#editPlace?place="+LZString.compressToEncodedURIComponent(place)+"&returnview=places";
 
         APP.kendo.navigate(navStr);
     },
 
     deletePlaceBtn: function(e){
+        _preventDefault(e);
+
         var placeId = e.button[0].dataset["id"];
     	placesModel.deletePlace(placeId);
 

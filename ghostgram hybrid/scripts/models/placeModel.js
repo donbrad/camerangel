@@ -372,9 +372,9 @@ var placesModel = {
     },
 
     deletePlace : function (placeId) {
-        var uuid = placeId;
 
-        var place = placesModel.queryPlace({field: "uuid", operator: "eq", value: uuid});
+
+        var place = placesModel.queryPlace({field: "uuid", operator: "eq", value: placeId});
 
         if (place !== undefined) {
 
@@ -389,8 +389,7 @@ var placesModel = {
                 if (place.placeChatId !== null) {
                     channelModel.deleteChannel(place.placeChatId, false);
                 }
-                var dataSource = placesModel.placesDS;
-                dataSource.remove(place);
+                placesModel.placesDS.remove(place);
 
                 // Delete the parse object directly
                 deleteParseObject('places', "uuid", uuid);
