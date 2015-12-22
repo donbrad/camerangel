@@ -80,6 +80,7 @@ var placesView = {
 
         var placeId = e.button[0].dataset["uuid"];
     	placesModel.deletePlace(placeId);
+        placesView.placeListDS.data(placesModel.placesDS.data());
 
     },
 
@@ -144,7 +145,7 @@ var placesView = {
 					$("#places .gg_mainSearchInput").val('');
 					
 					// reset data filters
-                    placesView.placeListDS.data(placesModel.placesDS.data());
+
                     placesView.placeListDS.filter([]);
 
                     // hide clear btn
@@ -157,6 +158,10 @@ var placesView = {
 
         // Set placeholder
         $('#places .gg_mainSearchInput').attr('placeholder', 'Search places...');
+
+        placesModel.placesDS.bind("change", function () {
+            placesView.placeListDS.data(placesModel.placesDS.data());
+        });
 
         // Always display the add places button so users can create a new place (even if others exist)
         
@@ -179,7 +184,7 @@ var placesView = {
                // modalView.openInfo("New Location","Are you somewhere new? Create a new Place!", "OK", null);
             }
 
-            placesView.placeListDS.data(placesModel.placesDS.data());
+
         });
         
 
@@ -196,7 +201,9 @@ var placesView = {
         $("#quickFindPlaceBtn").addClass("hidden");
         
         ux.hideSearch();
-
+        placesModel.placesDS.unbind("change", function () {
+            placesView.placeListDS.data(placesModel.placesDS.data());
+        });
     }
 
 };
