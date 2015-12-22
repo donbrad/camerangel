@@ -1908,7 +1908,7 @@ var channelView = {
         _preventDefault(e);
         var message = channelView.activeMessage;
         var memberList = channelView.memberList, members = Object.keys(memberList);
-
+        var thisUser = userModel.currentUser.userUUID;
 
         var recallMessage = channelView.findMessageById(message.msgID);
         if (recallMessage !== undefined) {
@@ -1916,8 +1916,9 @@ var channelView = {
             for (var i=0; i< members.length; i++) {
                 var member = members[i];
 
-                appDataChannel.recallMessage(member, message.msgID, userModel.currentUser.userUUID, channelView.isPrivateChat);
-                
+                if (member !== thisUser)
+                    appDataChannel.recallMessage(member, message.msgID, thisUser, channelView.isPrivateChat);
+
             }
 
             mobileNotify("Recalling message " + message.msgID);
