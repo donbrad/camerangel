@@ -262,10 +262,10 @@ var appDataChannel = {
         msg.ownerId = ownerId;
         msg.isPrivateChat = isPrivateChat;
         msg.time = new Date().getTime();
-
+        var channel = appDataChannel.getContactAppChannel(channelId);
 
         APP.pubnub.publish({
-            channel: appDataChannel.channelId,
+            channel: channel,
             message: msg,
             success: appDataChannel.channelSuccess,
             error: appDataChannel.channelError

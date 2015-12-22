@@ -1909,9 +1909,25 @@ var channelView = {
     messageRecall: function (e) {
         _preventDefault(e);
         var message = channelView.activeMessage;
-        mobileNotify("Recalling message " + message.msgID);
+        var members = channelView.memberList;
 
-        appDataChannel.recallMessage(channelView._channel.channelId, message.msgID, userModel.currentUser.userUUID, channelView.isPrivateChat);
+
+        var recallMessage = channelView.findMessageById(message.msgID);
+        if (recallMessage !== undefined) {
+
+            for (var i=0; i< members.length; i++) {
+                var member = members[i];
+                if (member.isContact) {
+                    appDataChannel.recallMessage(member.uuid, message.msgID, userModel.currentUser.userUUID, channelView.isPrivateChat);
+                }
+
+            }
+
+            mobileNotify("Recalling message " + message.msgID);
+            channelView.membersDS.remove(recallMessage);
+        }
+
+
 
     },
 
