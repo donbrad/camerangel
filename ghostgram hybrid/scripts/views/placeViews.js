@@ -68,7 +68,7 @@ var placesView = {
 
     editPlaceBtn: function(e){
         _preventDefault(e);
-    	var place = e.button[0].dataset["id"];
+    	var place = e.button[0].dataset["uuid"];
 
         var navStr = "#editPlace?place="+LZString.compressToEncodedURIComponent(place)+"&returnview=places";
 
@@ -78,7 +78,7 @@ var placesView = {
     deletePlaceBtn: function(e){
         _preventDefault(e);
 
-        var placeId = e.button[0].dataset["id"];
+        var placeId = e.button[0].dataset["uuid"];
     	placesModel.deletePlace(placeId);
 
     },
