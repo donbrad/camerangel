@@ -277,8 +277,8 @@ var privateChannel = {
 
         for(var i = 0; i < messages.length; i++) {
             var msg = messages[i];
-
-            clearMessageArray.push(msg);
+            if (!channelModel.isMessageRecalled(msg.msgID))
+                clearMessageArray.push(msg);
         }
 
         dataSource.filter(queryCache);

@@ -1211,7 +1211,7 @@ var channelView = {
 
                 for (var i=0; i<messages.length; i++) {
                     var message = messages[i];
-                    if (!channelView.isDuplicateMessage(message.msgID)) {
+                    if (!channelView.isDuplicateMessage(message.msgID) && !channelModel.isMessageRecalled(message.msgID)) {
                         filteredMessages.push(message);
                     }
                 }
@@ -1234,9 +1234,7 @@ var channelView = {
         // 2) kendo refresh just renders the data and doesn't re-execute functions...
         for (var i=0; i<messages.length; i++) {
             var message = messages[i];
-
-            if (!channelModel.isMessageRecalled(message.msgID))
-                channelView.preprocessMessage(message);
+            channelView.preprocessMessage(message);
         }
     },
 
