@@ -132,15 +132,10 @@ var placesModel = {
     },
 
     matchLocation: function (lat, lng) {
-
-        /*if (!placesModel.placesFetched) {
-            return([]);
-        }*/
-
         var length = placesModel.placesDS.total();
 
         var matchArray = [];
-        for (var i=0; i< placesData.length; i++){
+        for (var i=0; i< length; i++){
             var place = placesModel.placesDS.at(i);
             if (placesModel.inRadius(lat, lng, place.lat,place.lng, placesModel._radius)){
                 matchArray.push(place);
