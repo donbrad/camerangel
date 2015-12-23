@@ -36,7 +36,7 @@ var placesView = {
         	filter: ".list-box",
         	enableSwipe: true,
         	tap: function(e){
-        		var place = e.touch.target[0].dataset["id"];
+        		var place = e.touch.target[0].dataset["uuid"];
                 var placeId = LZString.compressToEncodedURIComponent(place);
 
                 APP.kendo.navigate("#placeView?place="+placeId+"&returnview=places");
