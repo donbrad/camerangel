@@ -160,6 +160,8 @@ var placesView = {
 
             placesView.computePlaceDSDistance();
             placesView.placeListDS.data(placesModel.placesDS.data());
+            placesModel.placesDS.bind("change", placesView.syncPlacesListDS);
+
         }
 
         // Set placeholder
@@ -167,7 +169,6 @@ var placesView = {
 
 
 
-        placesModel.placesDS.bind("change", placesView.syncPlacesListDS);
 
         // Always display the add places button so users can create a new place (even if others exist)
         
@@ -243,9 +244,6 @@ var placesView = {
         
         ux.hideSearch();
         
-        placesModel.placesDS.unbind("change", function () {
-            placesView.placeListDS.data(placesModel.placesDS.data());
-        });
     }
 
 };
