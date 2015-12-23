@@ -341,7 +341,7 @@ var userStatusView = {
     _activeStatus : new kendo.data.ObservableObject(),
     _returnView : null,
     _modalId : "#modalview-profileStatus",
-    _profileStatusMax: 40,
+    _profileStatusMax: 35,
 
     _update : function () {
         var status = userStatusView._activeStatus, user = userModel.currentUser;
@@ -388,12 +388,13 @@ var userStatusView = {
 
         	$("#profileCheckOutLi").removeClass("hidden");
         	$("#checkOut-text").text(user.currentPlace);
+            $("#checked-in-place").removeClass("hidden");
 
         } else {
             $('#profileCheckOutLi').addClass('hidden');
         	// hide checkout if not checked in
         	$("#checked-in-place").addClass("hidden");
-
+            $("#checkOut-text").text("");
         	// hide checkin selection 
         	$("#userStatusLocationBox").addClass("hidden");
 
@@ -486,6 +487,7 @@ var userStatusView = {
             userModel.checkIn(mapModel.currentPlaceId);
             mapModel.checkIn(mapModel.currentPlaceId);
             mobileNotify("You're checked in!");
+            userStatusView._update();
             $('#profileCheckOutLi').velocity("slideDown", {begin: function(element){
             	$(element).removeClass("hidden");
             }
@@ -506,6 +508,7 @@ var userStatusView = {
     	});
         userModel.checkOut();
         mapModel.checkOut();
+        userStatusView._update();
         $('#profileStatusCheckInPlace').text('');
     },
 
