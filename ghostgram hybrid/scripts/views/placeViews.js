@@ -242,8 +242,7 @@ var placesView = {
         $("#quickFindPlaceBtn").addClass("hidden");
         
         ux.hideSearch();
-
-        placesView.isActive = false;
+        
         placesModel.placesDS.unbind("change", function () {
             placesView.placeListDS.data(placesModel.placesDS.data());
         });
