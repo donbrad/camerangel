@@ -67,6 +67,23 @@ var placesView = {
 
     },
 
+    queryPlace : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = placesView.placeListDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var place = view[0];
+
+        dataSource.filter(cacheFilter);
+
+        return(place);
+    },
+
     editPlaceBtn: function(e){
         _preventDefault(e);
     	var place = e.button[0].dataset["uuid"];
@@ -213,9 +230,19 @@ var placesView = {
                 placesView.placeListDS.add(remPlaces[r]);
             }
 
-        } else if (e.action === 'sync') {
+        } else if (e.action === 'itemchange') {
             var field = e.field;
-            var changes = e.items;
+            var changes = e.items,
+            newItem = changes[0];
+
+            var oldPlace = placesView.queryPlace({ field: "uuid", operator: "eq", value: oldPlace.uuid });
+
+            if (oldPlace !== undefined) {
+                oldPlace.set(field, changes[field]);
+            }
+
+
+        } else if (e.action === 'sync') {
 
         }
 
@@ -243,7 +270,7 @@ var placesView = {
         $("#quickFindPlaceBtn").addClass("hidden");
         
         ux.hideSearch();
-        
+
     }
 
 };
