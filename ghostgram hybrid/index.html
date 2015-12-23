@@ -494,7 +494,7 @@
 
 
 
-<div data-role="modalview" id="modalview-checkin" style="width: 90%; height:auto; display: none; z-index: 100;" class="appearance" data-init="checkInView.onInit">
+<div data-role="modalview" id="modalview-checkin" style="width: 100%; height:100%; display: none; z-index: 100;" class="appearance" data-init="checkInView.onInit">
 	
 	<div class="modal-bottom">
 		<h3>
@@ -804,7 +804,7 @@
 </div>
 
 <!-- option dialog modal -->
-<div data-role="modalview" id="modal-dialog" style="width: 80%; display:none;" class="appearance">
+<div data-role="modalview" id="modal-dialog" style="width: 90%; display:none; z-index: 1000;" class="appearance">
 	<div class="modal-dialog">
 	    <h3 id="modalTitle">Are you sure?</h3>
 	    <p id="modalDescription">This item will be deleted.</p>
@@ -1012,12 +1012,12 @@
 	<div>
 		<div class="list-options">
 			# if (data.isShared === undefined || data.isShared === false) {#
-			<a class="btnClear-grey" data-role="button" data-uuid="#: data.uuid #" data-click="placesView.editPlaceBtn">
+			<a class="btnClear-grey" data-role="button" data-id="#: data.uuid #" data-click="placesView.editPlaceBtn">
 				<img src="images/option-edit.svg" height="18" />
 				<p class="chat-option-selection">Edit</p>
 			</a>
 			# } #
-			<a class="btnClear-red" data-role="button" data-uuid="#: data.uuid #" data-click="placesView.deletePlaceBtn">
+			<a class="btnClear-red" data-role="button" data-id="#: data.uuid #" data-click="placesView.deletePlaceBtn">
 				<img src="images/icon-trash.svg" height="18" />
 				<p class="chat-option-selection"> Delete</p>
 			</a>
