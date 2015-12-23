@@ -195,6 +195,20 @@ var notificationModel = {
 
     },
 
+    processUnreadChannels : function () {
+        // app is resuming / becoming active -- add unread notifications
+        var channels = channelModel.getUnreadChannels();
+
+        for (var i=0; i<channels.length; i++) {
+            var channel = channels[i];
+            if (channel.unreadCount === undefined)
+                channel.unreadCount = 0;
+
+            notificationModel.addUnreadNotification(channel.channelId, channel.name, channel.unreadCount);
+        }
+    },
+
+
     findNotificationByPrivateId : function (privateId) {
         return (notificationModel.queryNotification({ field: "privateId", operator: "eq", value: privateId }));
     },

@@ -220,7 +220,7 @@ var channelModel = {
 
     getUnreadChannels : function () {
         var channels = channelModel.queryChannels({ field: "unreadCount", operator: "gte", value: 0 });
-        
+
         return(channels);
     },
 

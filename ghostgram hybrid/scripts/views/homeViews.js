@@ -255,6 +255,8 @@ var homeView = {
     onShow: function (e) {
         _preventDefault(e);
 
+        notificationModel.processUnreadChannels();
+        
         // hide search button and show gear
         $(".homeToggleSetting").removeClass("hidden");
         $(".homeToggleSearch").addClass("hidden");
