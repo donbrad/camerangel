@@ -137,12 +137,13 @@ var placesModel = {
             return([]);
         }*/
 
-        var placesData = placesModel.placesDS.data();
+        var length = placesModel.placesDS.total();
 
         var matchArray = [];
         for (var i=0; i< placesData.length; i++){
-            if (placesModel.inRadius(lat, lng, placesData[i].lat,placesData[i].lng, placesModel._radius)){
-                matchArray.push(placesData[i]);
+            var place = placesModel.placesDS.at(i);
+            if (placesModel.inRadius(lat, lng, place.lat,place.lng, placesModel._radius)){
+                matchArray.push(place);
             }
         }
 

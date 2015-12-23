@@ -125,7 +125,6 @@ var mapModel = {
 
 
     computePlaceDSDistance : function() {
-        var placeArray = placesModel.placesDS.data();
         var length = placesModel.placesDS.total();
 
         for (var i=0; i< length; i++) {

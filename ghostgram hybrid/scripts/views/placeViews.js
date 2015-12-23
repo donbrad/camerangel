@@ -10,6 +10,7 @@
  */
 var placesView = {
     _viewInitialized : false,
+    isActive : false,
 
     placeListDS: new kendo.data.DataSource({
         sort: {
@@ -86,6 +87,8 @@ var placesView = {
 
     onShow: function (e) {
         _preventDefault(e);
+
+        placesView.isActive = true;
 
         if (!placesView._viewInitialized) {
             placesView._viewInitialized = true;
@@ -164,9 +167,7 @@ var placesView = {
 
 
 
-        placesModel.placesDS.bind("change", function () {
-            placesView.placeListDS.data(placesModel.placesDS.data());
-        });
+        placesModel.placesDS.bind("change", placesView.syncPlacesListDS);
 
         // Always display the add places button so users can create a new place (even if others exist)
         
@@ -186,17 +187,30 @@ var placesView = {
             // Is this a new location
             if (isNew) {
                 placesView.computePlaceDSDistance();
-               // modalView.openInfo("New Location","Are you somewhere new? Create a new Place!", "OK", null);
+                // modalView.openInfo("New Location","Are you somewhere new? Create a new Place!", "OK", null);
             }
 
-
         });
-        
+
+    },
+
+    // do an intelligent sync with underlying data source: placesModel.placesDS
+    syncPlacesListDS : function (e) {
+        if (e.action === undefined) {
+            return;
+        }
+
+        if (e.action === 'add') {
+
+        } else if (e.action === 'remove') {
+
+        } else if (e.action === 'sync') {
+
+        }
 
     },
 
     computePlaceDSDistance : function() {
-        var placeArray = placesModel.placesDS.data();
         var length = placesModel.placesDS.total();
 
         for (var i=0; i< length; i++) {
@@ -218,6 +232,8 @@ var placesView = {
         $("#quickFindPlaceBtn").addClass("hidden");
         
         ux.hideSearch();
+
+        placesView.isActive = false;
         placesModel.placesDS.unbind("change", function () {
             placesView.placeListDS.data(placesModel.placesDS.data());
         });
