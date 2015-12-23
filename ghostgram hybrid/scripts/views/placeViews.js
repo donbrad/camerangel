@@ -236,7 +236,7 @@ var placesView = {
             newItem = changes[0];
 
             var oldPlace = placesView.queryPlace({ field: "uuid", operator: "eq", value: newItem.uuid });
-            var newValue = changes[field];
+            var newValue = newItem[field];
 
             if (oldPlace !== undefined) {
                 oldPlace.set(field, newValue);
