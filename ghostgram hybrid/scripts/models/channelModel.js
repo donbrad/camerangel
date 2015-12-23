@@ -203,6 +203,11 @@ var channelModel = {
     addMessageRecall : function (channelId, msgId, ownerId, isPrivateChat) {
         var recallObj = {channelId : channelId, msgID: ownerId, isPrivateChat: isPrivateChat};
 
+        var channel = channelModel.findChannelModel(channelId);
+
+        if (channel === undefined)
+            return;
+
         channelModel.recalledMessagesDS.add(recallObj);
         if (channelId === channelView._channelId) {
             // need to delete from channel view too

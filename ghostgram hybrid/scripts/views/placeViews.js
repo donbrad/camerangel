@@ -80,7 +80,7 @@ var placesView = {
 
         var placeId = e.button[0].dataset["uuid"];
     	placesModel.deletePlace(placeId);
-        placesView.placeListDS.data(placesModel.placesDS.data());
+
 
     },
 
@@ -159,6 +159,9 @@ var placesView = {
         // Set placeholder
         $('#places .gg_mainSearchInput').attr('placeholder', 'Search places...');
 
+        placesView.computePlaceDSDistance();
+        placesView.placeListDS.data(placesModel.placesDS.data());
+
         placesModel.placesDS.bind("change", function () {
             placesView.placeListDS.data(placesModel.placesDS.data());
         });
@@ -187,6 +190,17 @@ var placesView = {
 
         });
         
+
+    },
+
+    computePlaceDSDistance : function() {
+        var placeArray = placesModel.placesDS.data();
+
+        for (var i=0; i<placeArray.length; i++) {
+            var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, placeArray[i].lat, placeArray[i].lng);
+            var placeModel = placesModel.getPlaceModel(placeArray[i].uuid);
+            placeModel.set('distance', distance.toFixed(2));
+        }
 
     },
 

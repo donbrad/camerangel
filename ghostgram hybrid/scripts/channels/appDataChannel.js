@@ -198,7 +198,7 @@ var appDataChannel = {
             //  { type: 'recallMessage',  channelId: <channel Id>,  messageId: <messageId>: ownerId: <ownerUUID>}
             case 'recallMessage' : {
                 if (m.version === appDataChannel._version && m.msgID !== undefined)
-                    appDataChannel.recallMessage(m.channelId, m.messageId, m.ownerId, m.isPrivateChat);
+                    appDataChannel.processRecallMessage(m.channelId, m.messageId, m.ownerId, m.isPrivateChat);
             } break;
 
             //  { type: 'connectRequest',  contactId: <contactUUID>, owner: <ownerUUID>}
@@ -482,7 +482,7 @@ var appDataChannel = {
     },
 
     processRecallMessage: function (channelId, messageId, ownerId, isPrivateChat) {
-
+        channelModel.addMessageRecall(channelId, messageId, ownerId, isPrivateChat);
     },
 
     publishCallback : function (m) {
