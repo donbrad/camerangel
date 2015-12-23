@@ -126,11 +126,12 @@ var mapModel = {
 
     computePlaceDSDistance : function() {
         var placeArray = placesModel.placesDS.data();
+        var length = placesModel.placesDS.total();
 
-        for (var i=0; i<placeArray.length; i++) {
-            var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, placeArray[i].lat, placeArray[i].lng);
-            var placeModel = placesModel.getPlaceModel(placeArray[i].uuid);
-            placeModel.set('distance', distance.toFixed(2));
+        for (var i=0; i< length; i++) {
+            var place = placesModel.placesDS.at(i);
+            var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, place.lat, place.lng);
+            place.set('distance', distance.toFixed(2));
         }
 
     },

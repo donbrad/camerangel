@@ -154,13 +154,15 @@ var placesView = {
                     // hide quick find
                     $("#quickFindPlaceBtn").addClass("hidden");
 			});
+
+            placesView.computePlaceDSDistance();
+            placesView.placeListDS.data(placesModel.placesDS.data());
         }
 
         // Set placeholder
         $('#places .gg_mainSearchInput').attr('placeholder', 'Search places...');
 
-        placesView.computePlaceDSDistance();
-        placesView.placeListDS.data(placesModel.placesDS.data());
+
 
         placesModel.placesDS.bind("change", function () {
             placesView.placeListDS.data(placesModel.placesDS.data());
@@ -183,7 +185,7 @@ var placesView = {
         mapModel.getCurrentAddress(function (isNew, address) {
             // Is this a new location
             if (isNew) {
-                mapModel.computePlaceDSDistance();
+                placesView.computePlaceDSDistance();
                // modalView.openInfo("New Location","Are you somewhere new? Create a new Place!", "OK", null);
             }
 
@@ -195,11 +197,12 @@ var placesView = {
 
     computePlaceDSDistance : function() {
         var placeArray = placesModel.placesDS.data();
+        var length = placesModel.placesDS.total();
 
-        for (var i=0; i<placeArray.length; i++) {
-            var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, placeArray[i].lat, placeArray[i].lng);
-            var placeModel = placesModel.getPlaceModel(placeArray[i].uuid);
-            placeModel.set('distance', distance.toFixed(2));
+        for (var i=0; i< length; i++) {
+            var place = placesModel.placesDS.at(i);
+            var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, place.lat, place.lng);
+            place.set('distance', distance.toFixed(2));
         }
 
     },
