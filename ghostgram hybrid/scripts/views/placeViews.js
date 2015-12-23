@@ -201,10 +201,20 @@ var placesView = {
         }
 
         if (e.action === 'add') {
+            var newPlaces = e.items;
+            for (var a=0; a< newPlaces.length; a++) {
+                placesView.placeListDS.add(newPlaces[a]);
+            }
 
         } else if (e.action === 'remove') {
+            var remPlaces = e.items;
+            for (var r=0; r< remPlaces.length; r++) {
+                placesView.placeListDS.add(remPlaces[r]);
+            }
 
         } else if (e.action === 'sync') {
+            var field = e.field;
+            var changes = e.items;
 
         }
 
