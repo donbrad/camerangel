@@ -448,7 +448,7 @@ var userStatusView = {
 
         var placeUUID = userModel.currentUser.currentPlaceId;
         var placeId = LZString.compressToEncodedURIComponent(placeUUID);
-        APP.kendo.navigate("#placeView?place="+placeId);
+        APP.kendo.navigate("#placeView?place="+placeId+"&returnmodal=userstatus");
     },
 
     openCheckIn : function (e) {
