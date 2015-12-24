@@ -180,14 +180,13 @@ var placesView = {
 
             placesView.computePlaceDSDistance();
             placesView.placeListDS.data(placesModel.placesDS.data());
+
             placesModel.placesDS.bind("change", placesView.syncPlacesListDS);
 
         }
 
         // Set placeholder
         $('#places .gg_mainSearchInput').attr('placeholder', 'Search places...');
-
-
 
 
         // Always display the add places button so users can create a new place (even if others exist)
@@ -227,7 +226,8 @@ var placesView = {
                 var newPlace = newPlaces[a];
                 var place = placesView.queryPlace({ field: "uuid", operator: "eq", value: newPlace.uuid });
                 if (place === undefined) {
-                    placesView.placeListDS.add(newPlaces[a]);
+                    placesView.placeListDS.add(newPlace);
+                    placesView.placeListDS.sync();
                 }
             }
 
@@ -235,6 +235,7 @@ var placesView = {
             var remPlaces = e.items;
             for (var r=0; r< remPlaces.length; r++) {
                 placesView.placeListDS.remove(remPlaces[r]);
+                placesView.placeListDS.sync();
             }
 
         } else if (e.action === 'itemchange') {
