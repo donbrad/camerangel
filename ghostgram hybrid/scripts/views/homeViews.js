@@ -443,6 +443,13 @@ var userStatusView = {
 
     },
 
+    gotoPlace: function (e) {
+        _preventDefault(e);
+
+        var placeId = LZString.compressToEncodedURIComponent(userStatusView._activeStatus.currentPlaceUUID);
+        APP.kendo.navigate("#placeView?place="+placeId);
+    },
+
     openCheckIn : function (e) {
         _preventDefault(e);
 

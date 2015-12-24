@@ -745,7 +745,7 @@
 		</h3>
 		<p id="profileStatusMessage" data-bind="text: statusMessage"></p>
 		<p id="profileLocation">
-			<a class="btnClear-light-sm" data-role="button">
+			<a class="btnClear-light-sm" data-role="button" data-click="userStatusView.gotoPlace">
 				<span>@</span>
 				<span data-bind="text: currentPlace"></span>
 			</a>
@@ -775,7 +775,7 @@
 					</div>
 				</div>
 			</li>
-			<li id="profileCheckInLi">
+			<li>
 				<a class="btnClear" data-role="button" data-click="userStatusView.openCheckIn">
 					<img src="images/icon-checkin-active.svg" class="icon-sm" /> Check In
 				</a>
