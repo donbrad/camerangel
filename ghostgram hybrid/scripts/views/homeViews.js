@@ -352,7 +352,7 @@ var userStatusView = {
 
         // Set name/alias layout
         ux.formatNameAlias(user.name, user.alias, "#modalview-profileStatus");
-        $('#profileStatusMessage').text(user.get('statusMessage'));
+       // $('#profileStatusMessage').text(user.get('statusMessage'));
 
         // Zero the status character count
         $("#profileStatusUpdate").val('');
@@ -360,6 +360,17 @@ var userStatusView = {
         /* Setup syncing for automatic update
         userStatusView._activeStatus.unbind('change' , userStatusView.syncUserStatus);
         */
+
+        if (userModel.currentUser.isCheckedIn && userModel.currentUser.currentPlaceUUID !== null) {
+            // hide location if the user is not checked in
+            $("#profileLocation, #checked-in-place").removeClass("hidden");
+            status.set('currentPlace', userModel.currentUser.currentPlace);
+        } else {
+            $("#profileLocation, #checked-in-place").addClass("hidden");
+            status.set('currentPlace', "");
+        }
+
+        $(".statusCharacterCount").css("color", "#979797");
 
         // Set available
 		if(user.isAvailable){
@@ -377,30 +388,39 @@ var userStatusView = {
 
         status.set('statusMessage', user.statusMessage);
 
-        if (user.isCheckedIn) {
+       /* if (user.isCheckedIn) {
             status.set('currentPlace', user.currentPlace);
+            $("#profileCheckOutLi").removeClass("hidden");
+            $("#checkOut-text").text(user.currentPlace);
+            $("#profileLocation").removeClass("hidden");
         } else {
             status.set('currentPlace','');
-        }
+            $('#profileCheckOutLi').addClass('hidden');
+            // hide checkout if not checked in
+            //$("#checked-in-place").addClass("hidden");
+            $("#checkOut-text").text("");
+            // hide checkin selection
+            $("#profileLocation").addClass("hidden");
+        }*/
 
         status.set('isAvailable', user.isAvailable);
 
-        // if there's a current checked in place -- select it in the list
+    /*    // if there's a current checked in place -- select it in the list
         if (user.currentPlaceUUID !== null && user.isCheckedIn) {
 
         	$("#profileCheckOutLi").removeClass("hidden");
         	$("#checkOut-text").text(user.currentPlace);
-            $("#checked-in-place").removeClass("hidden");
+           // $("#checked-in-place").removeClass("hidden");
 
         } else {
             $('#profileCheckOutLi').addClass('hidden');
         	// hide checkout if not checked in
-        	$("#checked-in-place").addClass("hidden");
+        	//$("#checked-in-place").addClass("hidden");
             $("#checkOut-text").text("");
         	// hide checkin selection 
-        	$("#userStatusLocationBox").addClass("hidden");
+        	$("#profileLocation").addClass("hidden");
 
-        }
+        }*/
 
     },
 
@@ -413,14 +433,14 @@ var userStatusView = {
 
        // mobileNotify("Updating your location...");
 
-        if (userModel.currentUser.isCheckedIn && userModel.currentUser.currentPlaceUUID !== null) {
+      /*  if (userModel.currentUser.isCheckedIn && userModel.currentUser.currentPlaceUUID !== null) {
             // hide location if the user is not checked in
             $("#profileLocation, #checked-in-place").removeClass("hidden");
         } else {
             $("#profileLocation, #checked-in-place").addClass("hidden");
         }
 
-        $(".statusCharacterCount").css("color", "#979797");
+        $(".statusCharacterCount").css("color", "#979797");*/
 
         mapModel.getCurrentAddress(function (isNew, address) {
             // Is this a new location
@@ -481,7 +501,7 @@ var userStatusView = {
         })
     },
 
-    checkIn : function (e) {
+   /* checkIn : function (e) {
         _preventDefault(e);
 
         if (mapModel.currentPlaceId !== null) {
@@ -489,7 +509,8 @@ var userStatusView = {
             userModel.checkIn(mapModel.currentPlaceId);
             mapModel.checkIn(mapModel.currentPlaceId);
             mobileNotify("You're checked in!");
-            userStatusView._update();
+
+            //userStatusView._update();
             $('#profileCheckOutLi').velocity("slideDown", {begin: function(element){
             	$(element).removeClass("hidden");
             }
@@ -498,20 +519,19 @@ var userStatusView = {
             mobileNotify("No place to check in to...");
         }
 
-    },
+    },*/
 
     checkOut : function (e) {
         _preventDefault(e);
 
-        $('#profileCheckInLi').removeClass('hidden');
         $('#profileCheckOutLi').velocity("slideUp", {complete: function(element){
         	$(element).addClass("hidden");
         	}
     	});
         userModel.checkOut();
         mapModel.checkOut();
-        userStatusView._update();
-        $('#profileStatusCheckInPlace').text('');
+        //userStatusView._update();
+       // $('#profileStatusCheckInPlace').text('');
     },
 
     syncUserStatus: function (e) {
