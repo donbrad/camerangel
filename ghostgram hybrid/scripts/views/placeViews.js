@@ -1020,9 +1020,7 @@ var placeView = {
 
         if (placeView._returnModal === 'userstatus') {
             userStatusView.openModal();
-        }
-
-        if (placeView._returnView !== null) {
+        } else if (placeView._returnView !== null) {
             var returnUrl = '#'+ placeView._returnView;
 
             APP.kendo.navigate(returnUrl);
