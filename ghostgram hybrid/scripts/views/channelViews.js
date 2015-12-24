@@ -1887,8 +1887,9 @@ var channelView = {
         if (message.sender === userModel.currentUser.userUUID) {
             $("#messageActionsSender").data("kendoMobileActionSheet").open();
         } else {
-            if (message.canCopy) {
+            if (message.data.canCopy) {
                 $("#messageActions").data("kendoMobileActionSheet").open();
+
             } else {
                 mobileNotify("This Message was locked by Sender");
             }

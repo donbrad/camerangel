@@ -432,8 +432,8 @@ form p {
 .noResults {
   position: absolute;
   width: 100%;
-  opacity: 0.6;
   text-align: center;
+  opacity: 0.6;
 }
 .noResults img {
   width: 6rem;
@@ -1669,7 +1669,7 @@ div.footerMenu.km-footer > ul > li > a:active {
   color: #fff;
   width: 100%;
   height: 10rem;
-  padding: 0.5rem 0 0.5rem;
+  padding: 0.5rem 1rem;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   background: -moz-linear-gradient(top, rgba(0, 0, 0, 0.3) 0%, #000000 99%);
   /* FF3.6+ */
@@ -1690,9 +1690,7 @@ div.footerMenu.km-footer > ul > li > a:active {
   margin-bottom: 4rem;
 }
 .photoTitleInput {
-  width: 90%;
-  margin-left: 5%;
-  margin-right: 5%;
+  width: 100%;
 }
 .photoTitleInput textarea {
   width: 100%;
@@ -2836,10 +2834,9 @@ div.footerMenu.km-footer > ul > li > a {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
   border-radius: 1.5rem !important;
   text-align: center;
-  position: fixed;
+  right: 1rem;
   padding-top: 0.85rem !important;
   position: absolute;
-  right: 1rem;
   bottom: 4rem;
 }
 .actionBtn p {
@@ -2848,12 +2845,17 @@ div.footerMenu.km-footer > ul > li > a {
   right: 0rem;
   top: 1rem;
   opacity: 0;
+  text-align: right;
+  padding-right: 5px;
 }
 .actionBtn img {
   height: 1.25rem;
 }
 .actionBtn a {
   padding-top: 0.75rem;
+}
+.actionBtn-stacked {
+  bottom: 9em !important;
 }
 .actionBtn-text {
   color: #979797;
@@ -3027,7 +3029,7 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 .messageCompose {
   padding: 0.5rem;
   padding-bottom: 0px;
-  padding-top: 6px;
+  padding-top: 0;
 }
 .messageMediaBar ul {
   padding: 0px;
@@ -3041,7 +3043,6 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   list-style: none;
 }
 #messageEditor {
-  padding-top: 4px;
   border: none;
   box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.24);
 }
@@ -3354,14 +3355,18 @@ div.loginBox > form > div > ul > li {
   font-size: 1em;
 }
 .photoPreview {
-  width:25%;
+  width: 25%;
   height: auto;
-
+  float: left;
 }
 .photoPreview > img {
-  width:25%;
+  width: 100%;
+}
+.photo-chat {
   height: auto;
-
+  max-width: 95%;
+  border-radius: 3px;
+  margin: 2.5% 2.5% 0 2.5%;
 }
 .photoInfo {
   float: left;
@@ -4243,8 +4248,8 @@ div.contactListBox.activeContact > div > div > ul {
 #gallery-listview li {
   padding: 0px !important;
   display: inline-block;
-  width: 25%;
-  padding-bottom: 25%;
+  width: 33%;
+  padding-bottom: 33%;
   border: 1px solid #fff !important;
 }
 #galleryPicker-listview {
@@ -4284,9 +4289,11 @@ div.contactListBox.activeContact > div > div > ul {
   bottom: 0px;
   background: #e2e2e2;
   overflow: hidden;
+  width: 33%;
+  padding-bottom: -50%;
 }
 .galleryImg {
-  width: 100%;
+  object-fit: cover;
 }
 .gallerySearchOptions {
   background: #E0E0E0;
@@ -4735,6 +4742,9 @@ html .km-pane-wrapper .k-header {
   max-width: 83%;
   margin-left: 2%;
   float: left;
+}
+#vaildMobileNumberError {
+  display: none;
 }
 /*!
  * Cropper v0.10.0
@@ -5256,10 +5266,80 @@ table.k-editor {
   padding: 0px;
   margin-bottom: 1px;
   margin-top: 0px;
+  position: absolute;
+  bottom: 0px;
+  left: 0rem;
+  text-align: left;
+  color: #fff;
+  width: 100%;
+  height: 8rem;
+  padding: 0.5rem 0 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  background: -moz-linear-gradient(top, rgba(0, 0, 0, 0.3) 0%, #000000 99%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0.3)), color-stop(99%, #000000));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.3) 0%, #000000 99%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, rgba(0, 0, 0, 0.3) 0%, #000000 99%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, rgba(0, 0, 0, 0.3) 0%, #000000 99%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, #000000 99%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4d000000', endColorstr='#000000', GradientType=0);
+  /* IE6-9 */
 }
 .modalChatPhotoList li {
   display: inline-block;
   padding: 0;
   margin: 0;
   list-style: none;
+}
+.modalChatPhotoListOpt {
+  font-size: 0.875em;
+}
+#modalChatPhotoView > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
+  background: #000;
+}
+.modalChatPhotoListImg {
+  height: 2em;
+  vertical-align: middle;
+}
+/* Strength styles */
+.strength_meter {
+  font-size: 1em;
+  width: 50%;
+  background: none;
+}
+.strength_meter * {
+  background: none;
+}
+.strength_meter div {
+  text-align: right;
+  color: #979797;
+}
+.strength_meter .strong {
+  color: #65BBB3;
+}
+.strength_meter .medium {
+  color: #FFB74D;
+}
+.strength_meter .veryweak,
+.strength_meter .weak {
+  color: #FFA9A9;
+}
+.hide_button_strength,
+.button_strength {
+  text-decoration: none;
+}
+.button_strength {
+  color: #6CADF3 !important;
+  float: left;
+  width: 50% !important;
+  text-align: left !important;
+}
+.strength_meter {
+  float: right;
+  width: 50%;
 }

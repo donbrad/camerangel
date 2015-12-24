@@ -1611,7 +1611,14 @@
 
 			<span class="chat-sender">#: displayName #</span>
 
-			<span class="chat-time">#:formattedTime# </span>
+			<span class="chat-time">
+			# if(channelView.isPrivateChat && data.canCopy){#
+				Unlocked •
+			#} else if(!channelView.isPrivateChat && !data.canCopy){#
+				Locked •
+			#}#
+
+			#:formattedTime# </span>
 			<div class="clearfix"></div>
 		</div>
 
@@ -2243,8 +2250,25 @@
 		</ul>
 
 		<div class="resultsBar">
-			<div class="results"><span id="resultCount"></span> Results</div>
+			<div class="results">
+				<span id="resultCount"></span> Results
+			</div>
+			<div class="photoDisplayView">
+				<ul data-role="buttongroup" data-index="0" data-select="galleryView.galleryActionView">
+					<li>
+						<a class="btnClear gallerySelectBtn-grid" data-role="button">
+							<img src="images/icon-grid-active.svg" class="icon-md"/>
+						</a>
+					</li>
+					<li>
+						<a class="btnClear gallerySelectBtn-list" data-role="button">
+							<img src="images/icon-list-alt.svg" class="icon-md"/>
+						</a>
+					</li>
+				</ul>
 
+
+			</div>
 			<div class="filter">
 				<a class="btnClear" data-role="button" href="#filterGallery" id="toggleFilterBtn">
 					<img src="images/icon-filter-link.svg" />
@@ -2261,9 +2285,12 @@
 		<!-- Photos -->
 		<ul id="gallery-listview" class="list-inline" data-role="listview" data-source="photoModel.photosDS" data-template="gallery-template" data-click="galleryView.galleryClick"></ul>
 
-		<div id="archive-empty">Your archive is empty</div>
-		<div id="archive-search-empty">Nothing found</div>
 	</div>
+	<ul data-role="actionsheet" id="galleryActions1" data-popup='{"direction": "left"}'>
+		<li><a data-action="channelView.messageCamera"> Phone Camera</a></li>
+		<li><a data-action="channelView.messagePhoto"> Phone Gallery</a></li>
+		<li><a data-action="channelView.messageGallery"> Memories Gallery</a></li>
+	</ul>
 
 </div>
 
@@ -2566,20 +2593,13 @@
 	</div>
 </script>
 
-
-<!-- galleryPicker template -->
 <script type="text/x-kendo-template" id="gallery-template">
-	<div class="touch">
-		<div class="galleryImgBox">
-			<div class="galleryImgBox">
-				# if (imageUrl !== null) { #
-				<img class="galleryImg" src="#=imageUrl#" />
-				# } else { #
-				<img class="galleryImg" src="#=thumbnailUrl#" />
-				# } #
-			</div>
-		</div>
-	</div>
+	# if (imageUrl !== null) { #
+		<div class="galleryImg galleryImg-grid" style="background-image: url('#=imageUrl#')"> </div>
+	# } else { #
+		<div class="galleryImg galleryImg-grid" style="background-image: url('#=thumbnailUrl#')"> </div>
+	# } #
+
 </script>
 
 <script type="text/x-kendo-template" id="archive-header-template">
