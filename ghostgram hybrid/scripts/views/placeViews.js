@@ -951,6 +951,7 @@ var placeView = {
     _lat: null,
     _lng: null,
     _returnView : 'places',
+    _returnModal: null,
 
     onInit : function (e) {
         _preventDefault(e);
@@ -976,6 +977,12 @@ var placeView = {
 
             if (e.view.params.returnview !== undefined){
                 placeView._returnView = e.view.params.returnview;
+            }
+
+            if (e.view.params.returnmodal !== undefined){
+                placeView._returnModal = e.view.params.returnmodal;
+            } else {
+                placeView._returnModal = null;
             }
 
         }
@@ -1011,9 +1018,18 @@ var placeView = {
     onDone: function (e) {
         _preventDefault(e);
 
-        var returnUrl = '#'+ placeView._returnView;
+        if (placeView._returnModal === 'userstatus') {
+            userStatusView.openModal();
+        }
 
-        APP.kendo.navigate(returnUrl);
+        if (placeView._returnView !== null) {
+            var returnUrl = '#'+ placeView._returnView;
+
+            APP.kendo.navigate(returnUrl);
+        } else {
+            APP.kendo.navigate("#:back;");
+        }
+
 
     },
 
