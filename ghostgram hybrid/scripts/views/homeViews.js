@@ -446,7 +446,8 @@ var userStatusView = {
     gotoPlace: function (e) {
         _preventDefault(e);
 
-        var placeId = LZString.compressToEncodedURIComponent(userStatusView._activeStatus.currentPlaceUUID);
+        var placeUUID = userModel.currentUser.currentPlaceUUID;
+        var placeId = LZString.compressToEncodedURIComponent(placeId);
         APP.kendo.navigate("#placeView?place="+placeId);
     },
 
