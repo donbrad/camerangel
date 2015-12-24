@@ -339,22 +339,26 @@ var placesModel = {
             placeParse.set('placeChatId', placeChatguid);
         }
 
+        var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, place.get('lat'), place.get('lng'));
+
+        // update the distance value for the local object...
+        placeParse.set('distance',distance.toFixed(2));
+
+        // Get a json object to add to kendo (strip the parse specific stuff)
+        var placeObj = placeParse.toJSON();
+        placeObj.isDirty = true;
+        placesModel.placesDS.add(placeObj);
+        placesModel.placesDS.sync();
+
+        if (callback !== undefined) {
+            callback(placeObj);
+        }
+
         placeParse.save(null, {
             success: function(placeIn) {
-                // Execute any logic that should take place after the object is saved.
-
-                var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, place.get('lat'), place.get('lng'));
-
-                // update the distance value for the local object...
-                placeIn.set('distance',distance.toFixed(2));
-
-                // Get a json object to add to kendo (strip the parse specific stuff)
-                var placeObj = placeIn.toJSON();
-                placesModel.placesDS.add(placeObj);
-
-                if (callback !== undefined) {
-                    callback(placeObj);
-                }
+                // Set the needs sync (isDirty flag to false)
+                var place = placesModel.getPlaceModel(placeIn.uuid);
+                place.set('isDirty', false);
 
 
             },
