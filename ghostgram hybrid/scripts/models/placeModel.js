@@ -346,7 +346,7 @@ var placesModel = {
         // Get a json object to add to kendo (strip the parse specific stuff)
         var placeObj = placeParse.toJSON();
         // update the distance value for the local object...
-        placeObj.set('distance', distance.toFixed(2));
+        placeObj.distance = distance.toFixed(2);
         placeObj.isDirty = true;
         placesModel.placesDS.add(placeObj);
         placesModel.placesDS.sync();
