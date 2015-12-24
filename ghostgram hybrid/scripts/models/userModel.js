@@ -48,7 +48,7 @@ var userModel = {
         useIdenticon: true,
         availImgUrl: 'images/status-available.svg',
         currentPlace: '',
-        currentPlaceUUID: '',
+        currentPlaceId: '',
         isCheckedIn: false
     }),
 
@@ -226,7 +226,7 @@ var userModel = {
                 userModel.currentUser.set('publicKey', user.get('publicKey'));
                 // userModel.currentUser.set('privateKey', userModel.parseUser.get('privateKey'));
                 userModel.currentUser.set('statusMessage', user.get('statusMessage'));
-                userModel.currentUser.set('currentPlaceUUID', user.get('currentPlaceUUID'));
+                userModel.currentUser.set('currentPlaceId', user.get('currentPlaceId'));
                 userModel.currentUser.set('currentPlace', user.get('currentPlace'));
                 userModel.currentUser.set('aliasPublic', user.get('aliasPublic'));
                 userModel.currentUser.set('aliasPhoto', user.get('aliasPhoto'));
@@ -555,7 +555,7 @@ var userStatus = {
             case 'isCheckedIn' :
             case 'statusMessage' :
             case 'currentPlace' :
-            case 'currentPlaceUUID' :
+            case 'currentPlaceId' :
                 userStatus.parseUserStatus.set(field, userModel.currentUser.get(field));
                 userStatus.parseUserStatus.set('lastUpdate', ggTime.currentTime());
                 userStatus.parseUserStatus.save(null, {
@@ -577,7 +577,7 @@ var userStatus = {
         status.set('isVisible', userModel.currentUser.isVisible);
         status.set('statusMessage', userModel.currentUser.statusMessage);
         status.set('currentPlace', userModel.currentUser.currentPlace);
-        status.set('currentPlaceUUID', userModel.currentUser.currentPlaceId);
+        status.set('currentPlaceId', userModel.currentUser.currentPlaceId);
         status.set('isCheckedIn', userModel.currentUser.isCheckedIn);
         status.set('lastUpdate', ggTime.currentTime());
         status.save(null, {

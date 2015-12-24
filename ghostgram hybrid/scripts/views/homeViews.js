@@ -181,7 +181,7 @@ var homeView = {
             APP.models.places.placesDS.add(item);
 
             userModel.currentUser.set('currentPlace', item.name);
-            userModel.currentUser.set('currentPlaceUUID', item.uuid);
+            userModel.currentUser.set('currentPlaceId', item.uuid);
         };
 
         // If the item has a uuid it means we've already added it,
@@ -213,7 +213,7 @@ var homeView = {
         $('#checked-in-place').hide(200);
 
         userModel.currentUser.set('currentPlace', '');
-        userModel.currentUser.set('currentPlaceUUID', '');
+        userModel.currentUser.set('currentPlaceId', '');
     },
 
     clearNotifications : function (e) {
@@ -348,7 +348,7 @@ var userStatusView = {
     _update : function () {
         var status = userStatusView._activeStatus, user = userModel.currentUser;
 
-        status.set('currentPlaceUUID', user.currentPlaceUUID);
+        status.set('currentPlaceId', user.currentPlaceId);
         status.set('isCheckedIn', user.isCheckedIn);
         status.set('currentPlace', user.currentPlace);
         status.set('isAvailable', user.isAvailable);
@@ -363,7 +363,7 @@ var userStatusView = {
         $("#statusCharCount").text(userStatusView._profileStatusMax);
         $(".statusCharacterCount").css("color", "#979797");
 
-        if (user.isCheckedIn && user.currentPlaceUUID !== null) {
+        if (user.isCheckedIn && user.currentPlaceId !== null) {
             // hide location if the user is not checked in
             $("#profileLocation, #checked-in-place").removeClass("hidden");
 
@@ -446,7 +446,7 @@ var userStatusView = {
     gotoPlace: function (e) {
         _preventDefault(e);
 
-        var placeUUID = userModel.currentUser.currentPlaceUUID;
+        var placeUUID = userModel.currentUser.currentPlaceId;
         var placeId = LZString.compressToEncodedURIComponent(placeId);
         APP.kendo.navigate("#placeView?place="+placeId);
     },
@@ -959,7 +959,7 @@ var signUpView = {
                             user.set("alias", alias);
                             user.set("aliasPublic", "ghostgram user");
                             user.set("currentPlace", "");
-                            user.set("currentPlaceUUID", "");
+                            user.set("currentPlaceId", "");
                             user.set('photo', null);
                             user.set('aliasPhoto', null);
                             user.set("isAvailable", true);
@@ -997,7 +997,7 @@ var signUpView = {
                                     userModel.currentUser.set('phone', user.get('phone'));
                                     userModel.currentUser.set('alias', user.get('alias'));
                                     userModel.currentUser.set('currentPlace', user.get('currentPlace'));
-                                    userModel.currentUser.set('currentPlaceUUID', user.get('currentPlaceUUID'));
+                                    userModel.currentUser.set('currentPlaceId', user.get('currentPlaceId'));
                                     userModel.currentUser.set('photo', user.get('photo'));
                                     userModel.currentUser.set('isAvailable', user.get('isAvailable'));
                                     userModel.currentUser.set('isVisible', user.get('isVisible'));
@@ -1247,7 +1247,7 @@ var signInView = {
                 userModel.currentUser.set('isPhotoStored', userModel.parseUser.get('isPhotoStored'));
                 userModel.currentUser.set('saveToPhotoAlbum', userModel.parseUser.get('saveToPhotoAlbum'));
                 userModel.currentUser.set('currentPlace', userModel.parseUser.get('currentPlace'));
-                userModel.currentUser.set('currentPlaceUUID', userModel.parseUser.get('currentPlaceUUID'));
+                userModel.currentUser.set('currentPlaceId', userModel.parseUser.get('currentPlaceId'));
                 userModel.currentUser.set('photo', userModel.parseUser.get('photo'));
                 userModel.currentUser.set('aliasPublic', userModel.parseUser.get('aliasPublic'));
                 userModel.currentUser.set('userUUID', userModel.parseUser.get('userUUID'));

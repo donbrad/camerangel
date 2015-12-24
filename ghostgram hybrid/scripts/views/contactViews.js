@@ -1174,7 +1174,7 @@ var contactActionView = {
                     contactActionView._activeContact.set('contactUUID', thisContact.contactUUID);
                     contactActionView._activeContact.set('statusMessage', user.get('statusMessage'));
                     contactActionView._activeContact.set('currentPlace', user.get('currentPlace'));
-                    contactActionView._activeContact.set('currentPlaceUUID', user.get('currentPlaceUUID'));
+                    contactActionView._activeContact.set('currentPlaceId', user.get('currentPlaceId'));
                     contactActionView._activeContact.set('isAvailable', contactIsAvailable);
                     // set available
                     if(contactIsAvailable){
@@ -1186,7 +1186,7 @@ var contactActionView = {
                     contactList.set('statusMessage', user.get('statusMessage'));
                     var contactPlace = user.get('currentPlace');
                     contactList.set('currentPlace', contactPlace);
-                    contactList.set('currentPlaceUUID', user.get('currentPlaceUUID'));
+                    contactList.set('currentPlaceId', user.get('currentPlaceId'));
                     contactList.set('isAvailable', contactIsAvailable);
 
                     // set current place

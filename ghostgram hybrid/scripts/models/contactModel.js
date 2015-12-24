@@ -739,7 +739,7 @@ var contactModel = {
                         var contact = contactModel.findContactList(userId);
                         contact.set('statusMessage', user.get('statusMessage'));
                         contact.set('currentPlace', user.get('currentPlace'));
-                        contact.set('currentPlaceUUID', user.get('currentPlaceUUID'));
+                        contact.set('currentPlaceId', user.get('currentPlaceId'));
                         contact.set('isAvailable', user.get('isAvailable'));
                     }
                 });
