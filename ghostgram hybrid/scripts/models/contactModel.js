@@ -489,31 +489,35 @@ var contactModel = {
     },
 
     findContactList : function (contactUUID) {
-        var dataSource = contactModel.contactListDS;
+        var contact = contactModel.queryContactList({ field: "contactUUID", operator: "eq", value: contactUUID });
+
+        /*var dataSource = contactModel.contactListDS;
         dataSource.filter( { field: "contactUUID", operator: "eq", value: contactUUID });
         var view = dataSource.view();
         if (view.length === 0 || view[0].items.length === 0)
             return(undefined);
         var contact = view[0].items[0];
-        dataSource.filter([]);
+        dataSource.filter([]);*/
 
         return(contact);
     },
 
     findContactListUUID : function ( uuid) {
-        var dataSource = contactModel.contactListDS;
+        var contact = contactModel.queryContactList({ field: "uuid", operator: "eq", value: uuid });
+       /* var dataSource = contactModel.contactListDS;
         dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
         var view = dataSource.view();
         if (view.length === 0 || view[0].items.length === 0)
             return(undefined);
         var contact = view[0].items[0];
-        dataSource.filter([]);
+        dataSource.filter([]);*/
 
         return(contact);
     },
 
 
     findContactByPhone: function (phone) {
+
         var dataSource = this.contactsDS;
         var queryCache = dataSource.filter();
         if (queryCache === undefined) {

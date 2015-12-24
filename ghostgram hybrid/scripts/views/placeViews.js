@@ -84,6 +84,7 @@ var placesView = {
         return(place);
     },
 
+
     editPlaceBtn: function(e){
         _preventDefault(e);
     	var place = e.button[0].dataset["uuid"];
@@ -97,7 +98,9 @@ var placesView = {
         _preventDefault(e);
 
         var placeId = e.button[0].dataset["uuid"];
-    	placesModel.deletePlace(placeId);
+        var place = placesModel.getPlaceModel(placeId);
+        if (place !== undefined)
+    	    placesModel.deletePlace(placeId);
 
 
     },
@@ -221,13 +224,17 @@ var placesView = {
         if (e.action === 'add') {
             var newPlaces = e.items;
             for (var a=0; a< newPlaces.length; a++) {
-                placesView.placeListDS.add(newPlaces[a]);
+                var newPlace = newPlaces[a];
+                var place = placesView.queryPlace({ field: "uuid", operator: "eq", value: newPlace.uuid });
+                if (place === undefined) {
+                    placesView.placeListDS.add(newPlaces[a]);
+                }
             }
 
         } else if (e.action === 'remove') {
             var remPlaces = e.items;
             for (var r=0; r< remPlaces.length; r++) {
-                placesView.placeListDS.add(remPlaces[r]);
+                placesView.placeListDS.remove(remPlaces[r]);
             }
 
         } else if (e.action === 'itemchange') {
