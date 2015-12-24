@@ -476,10 +476,10 @@ var userStatusView = {
     checkOut : function (e) {
         _preventDefault(e);
 
-        $('#profileCheckOutLi').velocity("slideUp", {complete: function(element){
+       /* $('#profileCheckOutLi').velocity("slideUp", {complete: function(element){
         	$(element).addClass("hidden");
         	}
-    	});
+    	});*/
         userModel.checkOut();
         mapModel.checkOut();
 
