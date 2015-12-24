@@ -1019,7 +1019,8 @@ var placeView = {
         _preventDefault(e);
 
         if (placeView._returnModal === 'userstatus') {
-            userStatusView.openModal();
+            userStatusView.openModalRestore();
+            return;
         } else if (placeView._returnView !== null) {
             var returnUrl = '#'+ placeView._returnView;
 
