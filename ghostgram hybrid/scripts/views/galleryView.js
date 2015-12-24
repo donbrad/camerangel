@@ -154,6 +154,14 @@ var galleryView = {
 
         }
 
+        // set result count
+        var photoCount = photoModel.photosDS._total;
+        if(photoCount > 0){
+            $(".results").css("visibility", "visible");
+            $("#resultCount").text(photoCount);
+        } else {
+            $(".results").css("visibility", "hidden");
+        }
         // set filter count
         var filterCount = 0;
         $("#filterCount").text(filterCount);
