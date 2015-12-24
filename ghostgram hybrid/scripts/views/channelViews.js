@@ -1891,6 +1891,7 @@ var channelView = {
         } else {
             if (message.data.canCopy) {
                 $("#messageActions").data("kendoMobileActionSheet").open();
+
             } else {
                 mobileNotify("This Message was locked by Sender");
             }

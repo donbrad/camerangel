@@ -2207,6 +2207,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 .km-material .km-view .km-content .km-button.km-state-active {
     background-color: @shade-300;
     border-radius: 3px;
+	border: none;
 }
 .km-material .km-view .km-content .km-list > li .km-switch .km-switch-container .km-switch-handle .km-switch-label-on {
     color: rgb(255, 255, 255);
@@ -3116,7 +3117,7 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 .messageCompose {
     padding: 0.5rem;
     padding-bottom: 0px;
-    padding-top: 0.25rem;
+    padding-top: 0;
 }
 .messageMediaBar ul {
     padding: 0px;
@@ -3130,7 +3131,6 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
     list-style: none;
 }
 #messageEditor {
-    padding-top: 4px;
     border: none;
     box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.24);
 }
@@ -4499,47 +4499,30 @@ div.contactListBox.activeContact > div > div > ul {
 	display: inline-flex;
 }
 
-/* Don's development styles...*/
-
 #gallery-listview {
-    line-height: 0 !important;
-    padding-top: 0.25rem;
-    padding-bottom: 5em;
-    /* need to work on better responsive
-   -webkit-column-count: 2;
-   -webkit-column-gap:   1px;
-   -moz-column-count:   	2;
-   -moz-column-gap:      1px;
-   column-count:         2;
-   column-gap:           1px;
- */
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	text-align: center;
+   li {
+	   display: inline;
+	   margin: 0;
+	   padding:0;
+   }
 }
 
-#gallery-listview li {
-    padding: 0px !important;
-    display: inline-block;
-    width: 25%;
-    padding-bottom: 25%;
-    border: 1px solid #fff !important;
-}
+
 
 #galleryPicker-listview {
 	line-height: 0 !important;
-   	/* need to work on better responsive
-	  -webkit-column-count: 2;
-	  -webkit-column-gap:   1px;
-	  -moz-column-count:   	2;
-	  -moz-column-gap:      1px;
-	  column-count:         2;
-	  column-gap:           1px;
-	*/
 } 
 
 #galleryPicker-listview li {
 	padding: 0px !important;
 	display: inline-block;
-	width: 25%;
-    padding-bottom: 25%;
+	//width: 33%;
+    //padding-bottom: 25%;
 	border: 1px solid #fff !important;
 }
 
@@ -4558,17 +4541,27 @@ div.contactListBox.activeContact > div > div > ul {
     padding-bottom: 25%;
 }
 
-.galleryImgBox {
-    left: 1px;
-    right: 1px;
-    top: 1px;
-    bottom: 0px;
-	background: #e2e2e2;
-	overflow: hidden;
+.galleryImg-grid {
+	float:left;
+	position: relative;
+	width: 33.33%;
+	padding-bottom : 33.33%;
+	border: 1px solid #fff;
+	background-position:center center;
+	background-repeat:no-repeat;
+	background-size:cover;
 }
 
-.galleryImg {
-	width: 100%;	
+
+.galleryImg-full {
+	float:left;
+	position: relative;
+	width: 100%;
+	padding-bottom : 100%;
+	border: 1px solid #fff;
+	background-position:center center;
+	background-repeat:no-repeat;
+	background-size:cover;
 }
 
 .gallerySearchOptions {
@@ -4659,14 +4652,16 @@ div.contactListBox.activeContact > div > div > ul {
 }
 
 .resultsBar {
-	padding: 0rem 1rem;
 	background: #fff;
 	border-bottom: 1px solid @shade-200;
-	.font-size(14);
+	font-size: 0.875em;
+	padding: 0.25em 0 0.25em 0;
 	.results {
-		width: 30%;
+		width: 20%;
 		padding-top: 0.25rem;
 		float: left;
+		text-align: right;
+		visibility: hidden;
 	}
 	.tags {
 		img {
@@ -4682,12 +4677,19 @@ div.contactListBox.activeContact > div > div > ul {
 		}
 	}
 	.filter {
-		width: 70%;
+		width: 30%;
 		float: right;
-		text-align: right;
+		text-align: left;
+		visibility: hidden;
 		@media @mobile {
 			width: 30%;
 		}
+	}
+	.photoDisplayView {
+		width: 50%;
+		text-align: center;
+		float: left;
+		padding-left: 5%;
 	}
 }
 

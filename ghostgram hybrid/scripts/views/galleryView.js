@@ -47,29 +47,8 @@ var galleryView = {
 
 
         // Set img size for gallery
-        $("#gallery-listview li").css("width",galleryView._previewSize);
-        $("#gallery-listview li").css("padding-bottom",galleryView._previewSize);
-
-
-/*
-        var scroller = e.view.scroller;
-        //scroller.scrollTo(0,-44);
-
-		
-		scroller.bind("scroll", function(e){
-			
-			var scrollPos = scroller.scrollTop;
-			var newHeight = 56 - scrollPos;
-			console.log(scrollPos);
-			if (scrollPos > 56){
-				$("#gallery > div.km-header > div.km-widget.km-navbar").addClass("home-smallHeader");
-				//$("#gallery > div.km-header > .helperInfoBar").removeClass("hidden");
-			} else {
-				$("#gallery > div.km-header > div.km-widget.km-navbar").removeClass("home-smallHeader");
-				//$("#gallery > div.km-header > .helperInfoBar").addClass("hidden");
-			}
-		}); 
-		*/
+        //$("#gallery-listview li").css("width",galleryView._previewSize);
+        //$("#gallery-listview li").css("padding-bottom",galleryView._previewSize);
 
 
     },
@@ -83,9 +62,6 @@ var galleryView = {
         if (!galleryView._viewInitialized) {
             galleryView._viewInitialized = true;
 
-            // Set img size for gallery
-            $("#gallery-listview li").css("width",galleryView._previewSize);
-            $("#gallery-listview li").css("padding-bottom",galleryView._previewSize);
 
             $("#gallery .gg_mainSearchInput").on('input', function() {
                 var query = this.value;
@@ -134,10 +110,10 @@ var galleryView = {
                    $(this).addClass('hidden');
 			})
 
-        } 
-        	
+        }
+
         $('#gallery .gg_mainSearchInput').attr('placeholder', 'Search memories...');
-        
+
 
         if (e.view.params.mode !== undefined && e.view.params.mode === 'picker') {
             galleryView._pickerMode = true;
@@ -152,38 +128,31 @@ var galleryView = {
 
         photoModel.rotationAngle = 0;
         
-        // Set action btn
-        var $actionBtn = $("#gallery > div.footerMenu.km-footer > a");
-        var $actionBtnImg = $("#gallery > div.footerMenu.km-footer > a > span > img");
-        var $actionBtnP = $("#gallery > div.footerMenu.km-footer > a > span > p");
-        var scroller = e.view.scroller;
-      	
-        $actionBtn.removeAttr("href").on("click", function(e){
-				galleryView.galleryActionView(e);
-			
-			});
-        
 
-        // Set img size for gallery
-        $("#gallery-listview li").css("width",galleryView._previewSize);
-        $("#gallery-listview li").css("padding-bottom",galleryView._previewSize);
+        var scroller = e.view.scroller;
+
+
+
+        // Set action btn
+        ux.showActionBtn(true, "#gallery", "");
+        ux.changeActionBtnImg("#gallery", "icon-camera");
+        ux.showActionBtnText("#gallery", "3.5rem", "Camera");
+
+
+
+        $("#gallery > div.footerMenu.km-footer > a").removeAttr("href").on("click", function(e){
+            _preventDefault(e);
+            $("#galleryActions1").data("kendoMobileActionSheet").open();
+        });
+
 
         // if gallery photos are open, display actionBtn
         var galleryMenuIndex = $("#galleryMenuSelect").data("kendoMobileButtonGroup").current().index();
         if(galleryMenuIndex === 0){
-        	$actionBtn.css("display", "inline-block");
-        } 
-
-        if(galleryView._previewSize === "33%"){
-        	$actionBtnP.text("List view");
-        	$actionBtnImg.attr("src", "images/gallery-list.svg");
+        	//$actionBtn.css("display", "inline-block");
         } else {
-        	$actionBtnP.text("Grid view");
-        	$actionBtnImg.attr("src", "images/gallery-grid.svg");
+
         }
-        
-        $actionBtnP.addClass("actionBtn-text-light");
-        ux.showActionBtnText("#gallery", "3.5rem");
 
         // set filter count
         var filterCount = 0;
@@ -198,7 +167,6 @@ var galleryView = {
         	$("#filterText").text("Filter");
         }
 
-
     },
 
     onHide: function(e){
@@ -206,10 +174,10 @@ var galleryView = {
         var $actionBtnImg = $("div.footerMenu.km-footer > a > span > img");
         var $actionBtnP = $("div.footerMenu.km-footer > a > span > p");
 
-        $actionBtn.css("display", "none");
-        $actionBtnImg.attr("src", "images/nav-add-white.svg");
-
         $actionBtnP.removeClass("actionBtn-text-light").text("");
+        ux.changeActionBtnImg("#gallery", "nav-add-white");
+        ux.showActionBtn(false, "#gallery");
+        $actionBtn.unbind();
 
         ux.hideSearch();
 
@@ -217,21 +185,15 @@ var galleryView = {
 
     galleryActionView: function(e){
     	_preventDefault(e);
-    	var $actionBtnP = $("#gallery > div.footerMenu.km-footer > a > span > p");
-    	
-		if(galleryView._previewSize === "33%") {
-			ux.changeActionBtnImg("#gallery", "gallery-grid");
-			$actionBtnP.text("Grid view");
-
-            galleryView._previewSize = "100%";
-		} else {
-			ux.changeActionBtnImg("#gallery", "gallery-list");
-			$actionBtnP.text("List view");
-            galleryView._previewSize = "33%";
-			
-		}
-		$("#gallery-listview li").css("width",galleryView._previewSize);
-        $("#gallery-listview li").css("padding-bottom",galleryView._previewSize);
+        if(e.index === 0){
+            $(".galleryImg").addClass("galleryImg-grid").removeClass("galleryImg-full");
+            $(".gallerySelectBtn-grid img").attr("src", "images/icon-grid-active.svg");
+            $(".gallerySelectBtn-list img").attr("src", "images/icon-list-alt.svg");
+        } else{
+            $(".galleryImg").addClass("galleryImg-full").removeClass("galleryImg-grid");
+            $(".gallerySelectBtn-grid img").attr("src", "images/icon-grid.svg");
+            $(".gallerySelectBtn-list img").attr("src", "images/icon-list-alt-active.svg");
+        }
     },
 
     selectCategory : function (e){
@@ -239,15 +201,17 @@ var galleryView = {
         var index = this.current().index();
         switch (index) {
             case 0:
-            	ux.showActionBtn(true, "#gallery");
+                ux.showActionBtn(true, "#gallery");
                 $('#archive-listview').addClass('hidden');
                 $("#gallery-listview").removeClass("hidden");
+                $(".resultsBar").removeClass("hidden");
                 break;
 
             case 1:
                 ux.showActionBtn(false, "#gallery");
                 $('#archive-listview').removeClass('hidden');
                 $("#gallery-listview").addClass('hidden');
+                $(".resultsBar").addClass("hidden");
                 break;
         }
         $("#gallerySearch").attr("placeholder", "Search All");
@@ -789,6 +753,9 @@ var modalPhotoView = {
 
     deletePhoto : function (e) {
         _preventDefault(e);
+
+        // Overlapping modals, need to close photoView first
+        modalPhotoView.closeModal();
 
         modalView.open("Delete Photo?", "This action will delete this photo and any offers",
             "Delete" ,
