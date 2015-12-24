@@ -27,11 +27,8 @@ var placesView = {
         $("#places-listview").kendoMobileListView({
             dataSource: placesView.placeListDS,
             template: $("#placesTemplate").html(),
-            dataBound: function(e){
-                ux.checkEmptyUIState(placesView.placeListDS, "#placeListDiv >");
-            },
-            dataBinding: function(e){
-            	// todo jordan - wire results UI
+            dataBound: function(e) {
+                ux.checkEmptyUIState(placesModel.placesDS, "#placeListDiv >");
             }
         }).kendoTouch({
         	filter: ".list-box",
