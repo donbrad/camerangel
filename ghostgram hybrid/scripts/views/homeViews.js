@@ -347,30 +347,30 @@ var userStatusView = {
 
     _update : function () {
         var status = userStatusView._activeStatus, user = userModel.currentUser;
-        
-       	/// setting up user
+
+        status.set('currentPlaceUUID', user.currentPlaceUUID);
+        status.set('isCheckedIn', user.isCheckedIn);
+        status.set('currentPlace', user.currentPlace);
+        status.set('isAvailable', user.isAvailable);
+        status.set('statusMessage', user.statusMessage);
 
         // Set name/alias layout
         ux.formatNameAlias(user.name, user.alias, "#modalview-profileStatus");
-       // $('#profileStatusMessage').text(user.get('statusMessage'));
+
 
         // Zero the status character count
         $("#profileStatusUpdate").val('');
         $("#statusCharCount").text(userStatusView._profileStatusMax);
-        /* Setup syncing for automatic update
-        userStatusView._activeStatus.unbind('change' , userStatusView.syncUserStatus);
-        */
+        $(".statusCharacterCount").css("color", "#979797");
 
-        if (userModel.currentUser.isCheckedIn && userModel.currentUser.currentPlaceUUID !== null) {
+        if (user.isCheckedIn && user.currentPlaceUUID !== null) {
             // hide location if the user is not checked in
             $("#profileLocation, #checked-in-place").removeClass("hidden");
-            status.set('currentPlace', userModel.currentUser.currentPlace);
+
         } else {
             $("#profileLocation, #checked-in-place").addClass("hidden");
-            status.set('currentPlace', "");
         }
 
-        $(".statusCharacterCount").css("color", "#979797");
 
         // Set available
 		if(user.isAvailable){
@@ -384,43 +384,6 @@ var userStatusView = {
 			$("#currentAvailableTxt").text("available");
 		}
 
-		/// Setting up status
-
-        status.set('statusMessage', user.statusMessage);
-
-       /* if (user.isCheckedIn) {
-            status.set('currentPlace', user.currentPlace);
-            $("#profileCheckOutLi").removeClass("hidden");
-            $("#checkOut-text").text(user.currentPlace);
-            $("#profileLocation").removeClass("hidden");
-        } else {
-            status.set('currentPlace','');
-            $('#profileCheckOutLi').addClass('hidden');
-            // hide checkout if not checked in
-            //$("#checked-in-place").addClass("hidden");
-            $("#checkOut-text").text("");
-            // hide checkin selection
-            $("#profileLocation").addClass("hidden");
-        }*/
-
-        status.set('isAvailable', user.isAvailable);
-
-    /*    // if there's a current checked in place -- select it in the list
-        if (user.currentPlaceUUID !== null && user.isCheckedIn) {
-
-        	$("#profileCheckOutLi").removeClass("hidden");
-        	$("#checkOut-text").text(user.currentPlace);
-           // $("#checked-in-place").removeClass("hidden");
-
-        } else {
-            $('#profileCheckOutLi').addClass('hidden');
-        	// hide checkout if not checked in
-        	//$("#checked-in-place").addClass("hidden");
-            $("#checkOut-text").text("");
-        	// hide checkin selection 
-        	$("#profileLocation").addClass("hidden");
-
-        }*/
 
     },
 
@@ -430,17 +393,6 @@ var userStatusView = {
 
         //Cache the current view
         userStatusView._returnView = APP.kendo.view().id;
-
-       // mobileNotify("Updating your location...");
-
-      /*  if (userModel.currentUser.isCheckedIn && userModel.currentUser.currentPlaceUUID !== null) {
-            // hide location if the user is not checked in
-            $("#profileLocation, #checked-in-place").removeClass("hidden");
-        } else {
-            $("#profileLocation, #checked-in-place").addClass("hidden");
-        }
-
-        $(".statusCharacterCount").css("color", "#979797");*/
 
         mapModel.getCurrentAddress(function (isNew, address) {
             // Is this a new location
@@ -530,7 +482,8 @@ var userStatusView = {
     	});
         userModel.checkOut();
         mapModel.checkOut();
-        //userStatusView._update();
+
+        userStatusView._update();
        // $('#profileStatusCheckInPlace').text('');
     },
 
