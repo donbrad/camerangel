@@ -176,7 +176,7 @@ var placesView = {
 			});
 
             placesView.computePlaceDSDistance();
-            placesView.placeListDS.data(placesModel.placesDS.data());
+
 
             placesModel.placesDS.bind("change", placesView.syncPlacesListDS);
 
@@ -250,7 +250,7 @@ var placesView = {
 
         } else if (e.action === 'sync') {
             var changeList = e.items;
-
+            placesView.placeListDS.data(placesModel.placesDS.data());
         }
 
     },

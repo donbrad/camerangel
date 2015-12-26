@@ -178,7 +178,7 @@ var homeView = {
             $('#checked-in-place').show(200);
             $('#modalview-locate-me').data('kendoMobileModalView').close();
 
-            APP.models.places.placesDS.add(item);
+           // APP.models.places.placesDS.add(item);
 
             userModel.currentUser.set('currentPlace', item.name);
             userModel.currentUser.set('currentPlaceId', item.uuid);
