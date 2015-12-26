@@ -271,7 +271,7 @@ var userModel = {
 
                 if (phoneVerified) {
                     deviceModel.setAppState('phoneVerified', true);
-                    notificationModel.deleteNotification('phoneVerified');
+                    notificationModel.deleteNotificationsByType(notificationModel._verifyPhone, 0);
                 } else {
                     mobileNotify("Please verify your phone number");
 
@@ -281,7 +281,7 @@ var userModel = {
                         text       : 'Please verify your mobile phone number ',
                         sound      : null,
                         autoClear  : true,
-                        at         : new Date(new Date().getTime() + 100)
+                        at         : new Date(new Date().getTime())
                     });
                     //Add verify phone notification to home screen
                 }
