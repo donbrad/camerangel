@@ -41,7 +41,7 @@ function onBeforeOpenPhoto() {
 
 function pruneNotifications() {
 	if 	( deviceModel.state.phoneVerified) {
-		notificationModel.deleteNotification(notificationModel._verifyPhone, 0);
+		notificationModel.deleteNotificationsByType(notificationModel._verifyPhone, 0);
 	}
 
 }
