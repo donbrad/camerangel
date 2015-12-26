@@ -19,6 +19,10 @@ var notificationModel = {
     _memberStatus : 'New Member Status',
     _deleteChat : 'Delete Chat',
     _deletePrivateChat : 'Delete Private Chat',
+    _system: 'ghostgrams',
+    _verifyPhone : 'Verify Phone',
+    _verifyEmail : 'Verify Email',
+
 
     notificationDS: new kendo.data.DataSource({
         offlineStorage: "notifications",
@@ -27,6 +31,14 @@ var notificationModel = {
             dir: "desc"
         }
     }),
+
+    findNotification : function (type, id) {
+        var query = [
+            { field: "type", operator: "eq", value: type },
+            { field: "id", operator: "gte", value: 0 }
+        ];
+
+    },
 
     queryNotification : function (query) {
         if (query === undefined)
@@ -63,9 +75,9 @@ var notificationModel = {
         return(contact);
     },
 
-    Notification: function(type,  id, title, date, description, actionTitle, action, href, dismissed, dismissable) {
+    Notification: function(type, id, title, date, description, actionTitle, action, href, dismissed, dismissable) {
             this.uuid = new uuid.v4(),
-            this.type = type ? type : 'system',
+            this.type = type ? type : notificationModel._system,
             this.privateId = id ? id : null,
             this.title = title ? title : '',
             this.actionTitle = actionTitle ? actionTitle : '',
@@ -80,6 +92,7 @@ var notificationModel = {
     newNotification: function(type, id, title, date, description, actionTitle, action, href, dismissable) {
         var notification = new notificationModel.Notification(type, id, title, date, description, actionTitle, action, href, dismissable);
         notificationModel.notificationDS.add(notification);
+        return(notification);
     },
 
     addAppNotification : function () {
@@ -96,7 +109,7 @@ var notificationModel = {
     },
 
     addVerifyPhoneNotification : function () {
-        this.newNotification('system', 'Please Verify Phone', null, "Please verify your mobile phone", "Verify", launchVerifyPhone , null, false);
+        this.newNotification(notificationModel._verifyPhone, 0, 'Please Verify Phone', null, "Please verify your mobile phone", "Verify", launchVerifyPhone , null, false);
     },
 
     addUnreadNotification : function (channelId, channelName, unreadCount) {
@@ -218,8 +231,16 @@ var notificationModel = {
         notificationModel.notificationDS.sync();
     },
 
-    deleteNotificationsByType : function (notificationType) {
-        var list = notificationModel.queryNotifications({ field: "type", operator: "eq", value: notificationType });
+    deleteNotificationsByType : function (notificationType, id) {
+        var query = [{ field: "type", operator: "eq", value: notificationType }];
+
+        if (id !== undefined && id !== null) {
+            query = [
+                { field: "type", operator: "eq", value: notificationType },
+                { field: "id", operator: "eq", value: id }
+            ];
+        }
+        var list = notificationModel.queryNotifications(query);
 
         for (var i=0; i<list.length; i++) {
             var item = list[i];
@@ -227,7 +248,7 @@ var notificationModel = {
         }
     },
 
-    deleteNotification: function (uuid) {
+    deleteNotificationById: function (uuid) {
         var notification = notificationModel.findNotificationModel(uuid);
         // Does this notification exist?  if not, just return
         if (notification === undefined)

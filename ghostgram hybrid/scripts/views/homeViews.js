@@ -1293,7 +1293,7 @@ var signInView = {
 
                 if (phoneVerified) {
                     deviceModel.setAppState('phoneVerified', true);
-                    notificationModel.deleteNotification('phoneVerified');
+                    notificationModel.deleteNotificationsByType(notificationModel._verifyPhone, 0);
                 } else {
 
                     mobileNotify("Please verify your phone number");

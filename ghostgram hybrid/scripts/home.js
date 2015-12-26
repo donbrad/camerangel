@@ -18,7 +18,7 @@ function homeBeforeShow () {
 
 function dismissNotification (e) {
 	e.preventDefault();
-	var uuid = e.sender.element[0].attributes['data-param'].value;
+	var uuid = e.sender.element[0].attributes['data-uuid'].value;
 	
 	var data = deviceModel.state.userNotifications;
 	for(var i = 0; i < data.length; i++) {
@@ -29,7 +29,7 @@ function dismissNotification (e) {
 	}
 	
 	deviceModel.setAppState('userNotifications', JSON.stringify(data));
-	notificationModel.deleteNotification(uuid);
+	notificationModel.deleteNotificationById(uuid);
 	
 }
 
@@ -41,7 +41,7 @@ function onBeforeOpenPhoto() {
 
 function pruneNotifications() {
 	if 	( deviceModel.state.phoneVerified) {
-		notificationModel.deleteNotification('verifyphone');
+		notificationModel.deleteNotification(notificationModel._verifyPhone, 0);
 	}
 
 }
