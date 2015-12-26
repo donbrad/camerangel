@@ -243,7 +243,7 @@ var notificationModel = {
 
         for (var i=0; i<list.length; i++) {
             var item = list[i];
-            notificationModel.deleteNotification(item.uuid);
+            notificationModel.deleteNotificationById(item.uuid);
         }
     },
 
