@@ -249,6 +249,7 @@ var placesView = {
 
 
         } else if (e.action === 'sync') {
+            var changeList = e.items;
 
         }
 

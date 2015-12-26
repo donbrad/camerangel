@@ -132,7 +132,6 @@ var galleryView = {
         var scroller = e.view.scroller;
 
 
-
         // Set action btn
         ux.showActionBtn(true, "#gallery", "");
         ux.changeActionBtnImg("#gallery", "icon-camera");
