@@ -69,10 +69,9 @@ var notificationModel = {
         var view = dataSource.view();
 
        // var contact = view[0].items[0];
-        var contact = view[0];
         dataSource.filter(cacheFilter);
 
-        return(contact);
+        return(view);
     },
 
     Notification: function(type, id, title, date, description, actionTitle, action, href, dismissed, dismissable) {
