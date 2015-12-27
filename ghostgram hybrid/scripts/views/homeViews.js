@@ -223,9 +223,9 @@ var homeView = {
 
     dismissNotification : function (e) {
         _preventDefault(e);
-        var uuid = e.sender.element[0].attributes['data-param'].value;
+        var uuid = e.sender.element[0].attributes['data-uuid'].value;
 
-        notificationModel.deleteNotification(uuid);
+        notificationModel.deleteNotificationById(uuid);
     },
 
     onInit: function(e) {
