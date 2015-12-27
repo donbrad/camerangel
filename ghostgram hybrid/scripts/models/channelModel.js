@@ -261,6 +261,7 @@ var channelModel = {
                 lastAccess = ggTime.currentTime();
             }
             channel.set('unreadCount',channel.get('unreadCount') + count);
+            notificationModel.updateUnreadNotification(channelId, channel.get('name'), count);
             updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
             channelModel.updateLastAccess(channelId, lastAccess);
 
