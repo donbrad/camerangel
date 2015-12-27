@@ -1949,6 +1949,7 @@ var channelView = {
 
     messageCamera : function (e) {
        _preventDefault(e);
+
         devicePhoto.deviceCamera(
             1600, // max resolution in pixels
             75,  // quality: 1-99.
