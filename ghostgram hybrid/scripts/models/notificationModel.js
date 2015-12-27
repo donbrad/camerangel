@@ -236,7 +236,7 @@ var notificationModel = {
         if (id !== undefined && id !== null) {
             query = [
                 { field: "type", operator: "eq", value: notificationType },
-                { field: "id", operator: "eq", value: id }
+                { field: "privateId", operator: "eq", value: id }
             ];
         }
         var list = notificationModel.queryNotifications(query);

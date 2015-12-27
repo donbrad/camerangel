@@ -257,14 +257,14 @@
 	<div class="notify-box">
 		<div class="notify-info">
 			<span class="notify-helper">#= type #</span>
-			<a class="right notify-close" data-role="button"  href="\\#" data-uuid="#:uuid#" data-click="homeView.dismissNotification">
+			<a class="right notify-close" data-role="button" data-uuid="#:uuid#"  data-privateid="#:privateId"  data-click="homeView.dismissNotification">
 				<img src="images/close.svg" />
 			</a>
 		</div>
 		<div class="notify-content">
 			# if (action !== undefined && action !== 'none') {#
 				<h4>
-					<a data-role="button" data-param="#:uuid#" href="\\#" data-click="#=action#" class="btnClear-link">#= title #</a>
+					<a data-role="button" data-param="#:uuid#"  data-click="#=action#" class="btnClear-link">#= title #</a>
 				</h4>
 			#} else {#
 				<h4>
