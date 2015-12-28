@@ -254,14 +254,12 @@
 <script type="text/x-kendo-template" id="notificationTemplate">
 # 	var dateTime= new Date(date);
 	var formattedDate = dateTime.toDateString();
-	if (privateId === undefined) {
-		privateId = null;
-}
+
 #
 	<div class="notify-box">
 		<div class="notify-info">
 			<span class="notify-helper">#= type #</span>
-			<a class="right notify-close" data-role="button" data-uuid="#:uuid#"  data-privateid="#:privateId#"  data-click="homeView.dismissNotification">
+			<a class="right notify-close" data-role="button" data-uuid="#:uuid#"  data-click="homeView.dismissNotification">
 				<img src="images/close.svg" />
 			</a>
 		</div>
