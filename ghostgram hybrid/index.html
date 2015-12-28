@@ -253,7 +253,11 @@
     
 <script type="text/x-kendo-template" id="notificationTemplate">
 # 	var dateTime= new Date(date);
-	var formattedDate = dateTime.toDateString(); #
+	var formattedDate = dateTime.toDateString();
+	if (privateId === undefined) {
+		privateId = null;
+}
+#
 	<div class="notify-box">
 		<div class="notify-info">
 			<span class="notify-helper">#= type #</span>
