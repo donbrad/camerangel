@@ -70,7 +70,7 @@ var galleryView = {
 				photoModel.photosDS.filter( {"logic":"or",
                         "filters":[
                             {
-                                "field":"name",
+                                "field":"title",
                                 "operator":"contains",
                                 "value":query},
                             {
@@ -87,6 +87,14 @@ var galleryView = {
                                 "value":query},
                             {
                                 "field":"addressString",
+                                "operator":"contains",
+                                "value":query},
+                            {
+                                "field":"placeString",
+                                "operator":"contains",
+                                "value":query},
+                            {
+                                "field":"senderName",
                                 "operator":"contains",
                                 "value":query}
                         ]});
@@ -130,7 +138,6 @@ var galleryView = {
         
 
         var scroller = e.view.scroller;
-
 
 
         // Set action btn
@@ -262,6 +269,27 @@ var galleryView = {
         APP.kendo.navigate('#:back');
     },
 
+    galleryCamera : function (e) {
+        _preventDefault(e);
+
+        devicePhoto.deviceCamera(
+            1600, // max resolution in pixels
+            75,  // quality: 1-99.
+            true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+            null  // Current channel Id for offers
+        );
+    },
+
+    galleryPhoto : function (e) {
+        _preventDefault(e);
+        // Call the device gallery function to get a photo and get it scaled to gg resolution
+        devicePhoto.deviceGallery(
+            1600, // max resolution in pixels
+            75,  // quality: 1-99.
+            true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+            null // Current channel Id for offers
+        );
+    },
     sharePhoto: function (e)  {
         _preventDefault(e);
 

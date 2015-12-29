@@ -116,11 +116,11 @@ var userDataChannel = {
                     if (msg.type === 'privateMessage' && !userDataChannel.isDuplicateMessage(msg.msgID)) {
 
                         // Add the last 24 hours worth of messages to the private channel archive
-                        if (msg.sender !== userModel.currentUser.userUUID) {
+                       /* if (msg.sender !== userModel.currentUser.userUUID) {
                             // if the sender isn't this user, update the channel list
                             channelList[msg.sender] = channelList[msg.sender]++;
                         }
-
+*/
                         var data = null;
                         var content = cryptico.decrypt(msg.content.cipher, RSAKey).plaintext;
                         if (msg.data !== undefined && msg.data !== null) {

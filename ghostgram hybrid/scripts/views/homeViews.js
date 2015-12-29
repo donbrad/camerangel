@@ -178,7 +178,7 @@ var homeView = {
             $('#checked-in-place').show(200);
             $('#modalview-locate-me').data('kendoMobileModalView').close();
 
-            APP.models.places.placesDS.add(item);
+           // APP.models.places.placesDS.add(item);
 
             userModel.currentUser.set('currentPlace', item.name);
             userModel.currentUser.set('currentPlaceId', item.uuid);
@@ -223,9 +223,9 @@ var homeView = {
 
     dismissNotification : function (e) {
         _preventDefault(e);
-        var uuid = e.sender.element[0].attributes['data-param'].value;
+        var uuid = e.sender.element[0].attributes['data-uuid'].value;
 
-        notificationModel.deleteNotification(uuid);
+        notificationModel.deleteNotificationById(uuid);
     },
 
     onInit: function(e) {
@@ -319,6 +319,7 @@ var homeView = {
     },
 
     settingBigFont: function(e){
+        _preventDefault(e);
         userModel.currentUser.set("useLargeView", true);
 
         // Show sample size
@@ -328,10 +329,31 @@ var homeView = {
 
 
     settingRegFont: function(e){
+        _preventDefault(e);
         userModel.currentUser.set("useLargeView", false);
 
         // Show sample size
         $("#sampleChatSize").removeClass("userLgFontSize").addClass("chat-message-text").text("Regular Font Size");
+
+    },
+
+    handleNotificationAction : function (e) {
+        _preventDefault(e);
+
+        var uuid = e.sender.element[0].attributes['data-uuid'].value;
+
+        var notification = notificationModel.findNotificationModel(uuid);
+
+        if (notification !== undefined) {
+            var type = notification.type, href = notification.href;
+
+            if (type === notificationModel._unreadCount || type === notificationModel._newChat || type === notificationModel._newPrivate) {
+                // For unread messages, new chats (including private chats) the action is to go to the the chat....
+                APP.kendo.navigate(href);
+            } else if (type === notificationModel._deleteChat || type === notificationModel._deletePrivateChat) {
+                notificationModel.notificationDS.remove(notification);
+            }
+        }
 
     }
 };
@@ -1299,7 +1321,7 @@ var signInView = {
 
                 if (phoneVerified) {
                     deviceModel.setAppState('phoneVerified', true);
-                    notificationModel.deleteNotification('phoneVerified');
+                    notificationModel.deleteNotificationsByType(notificationModel._verifyPhone, 0);
                 } else {
 
                     mobileNotify("Please verify your phone number");

@@ -175,8 +175,9 @@ var placesView = {
                     $("#quickFindPlaceBtn").addClass("hidden");
 			});
 
-            placesView.computePlaceDSDistance();
             placesView.placeListDS.data(placesModel.placesDS.data());
+            placesView.computePlaceDSDistance();
+
 
             placesModel.placesDS.bind("change", placesView.syncPlacesListDS);
 
@@ -249,6 +250,7 @@ var placesView = {
 
 
         } else if (e.action === 'sync') {
+            var changeList = e.items;
 
         }
 

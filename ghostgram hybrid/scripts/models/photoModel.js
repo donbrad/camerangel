@@ -410,6 +410,8 @@ var photoModel = {
 
         var photoId = uuid.v4();
 
+        var filename = photoId.replace(/-/g,'');
+
         var channelId = photoObj.channelId;
 
         var channel = channelModel.findChannelModel(channelId);

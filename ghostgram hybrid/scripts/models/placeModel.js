@@ -358,7 +358,8 @@ var placesModel = {
         placeParse.save(null, {
             success: function(placeIn) {
                 // Set the needs sync (isDirty flag to false)
-                var place = placesModel.getPlaceModel(placeIn.uuid);
+                var placeInuuid = placeIn.get('uuid');
+                var place = placesModel.getPlaceModel(placeInuuid);
                 place.set('isDirty', false);
 
 

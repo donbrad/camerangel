@@ -1256,6 +1256,7 @@ var channelView = {
     updateTimeStamps: function () {
         $("#messages-listview").data("kendoMobileListView").refresh();
         $("#messages-listview").data("kendoMobileListView").scroller().reset();
+        channelView.scrollToBottom();
 
     },
 
@@ -1667,15 +1668,14 @@ var channelView = {
         }
 
         if (validMessage === true ) {
+            channelView._initMessageTextArea();
+            channelView.messageInit();
+
             if (channelView.isPrivateChat) {
                 privateChannel.sendMessage(channelView.privateContactId, text, channelView.activeMessage, 86400);
             } else {
                 groupChannel.sendMessage(text, channelView.activeMessage, 86400);
             }
-
-            //channelView.hideChatImagePreview();
-            channelView._initMessageTextArea();
-            channelView.messageInit();
 
         }
 
@@ -1702,7 +1702,7 @@ var channelView = {
      _initMessageTextArea : function () {
 
          var editor =  $('#messageTextArea').data("kendoEditor");
-      //   $('#messageTextArea').val('')
+         $('#messageTextArea').val('');
          $('#messageTextArea').attr("rows","1");
          $('#messageTextArea').attr("height","24px");
          editor.value('');
@@ -1949,6 +1949,7 @@ var channelView = {
 
     messageCamera : function (e) {
        _preventDefault(e);
+
         devicePhoto.deviceCamera(
             1600, // max resolution in pixels
             75,  // quality: 1-99.

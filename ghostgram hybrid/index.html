@@ -44,6 +44,7 @@
 	<script src="scripts/home.js"></script>
 	<script src="scripts/channels.js"></script>
 	<script src="scripts/channel.js"></script>
+	<script src="scripts/devicecontacts.js"></script>
     <script src="scripts/devicephoto.js"></script>
     <script src="scripts/profile.js"></script>
 	<script src="scripts/serverPush.js"></script>
@@ -252,22 +253,24 @@
     
 <script type="text/x-kendo-template" id="notificationTemplate">
 # 	var dateTime= new Date(date);
-	var formattedDate = dateTime.toDateString(); #
+	var formattedDate = dateTime.toDateString();
+
+#
 	<div class="notify-box">
 		<div class="notify-info">
 			<span class="notify-helper">#= type #</span>
-			<a class="right notify-close" data-role="button" data-role="button" href="\\#" data-param="#:uuid#" data-click="homeView.dismissNotification">
+			<a class="right notify-close" data-role="button" data-uuid="#:uuid#"  data-type="#:type#" data-click="homeView.dismissNotification">
 				<img src="images/close.svg" />
 			</a>
 		</div>
 		<div class="notify-content">
 			# if (action !== undefined && action !== 'none') {#
 				<h4>
-					<a data-role="button" data-param="#:uuid#" href="\\#" data-click="#=action#" class="btnClear-link">#= title #</a>
+					<a data-role="button" data-uuid="#:uuid#"  data-action="#=action#" data-click="homeView.handleNotificationAction" class="btnClear-link">#= title #</a>
 				</h4>
 			#} else {#
 				<h4>
-					<a data-role="button" data-param="#:uuid#" href="#=href#"  class="btnClear-link"> #=  actionTitle # </a>
+					<a data-role="button" data-uuid="#:uuid#" data-link="#=href#"  data-click="homeView.handleNotificationAction" class="btnClear-link"> #=  actionTitle # </a>
 				</h4>
 			#}#
 			<p>#= description # </p>
@@ -2325,9 +2328,8 @@
 
 	</div>
 	<ul data-role="actionsheet" id="galleryActions1" data-popup='{"direction": "left"}'>
-		<li><a data-action="channelView.messageCamera"> Phone Camera</a></li>
-		<li><a data-action="channelView.messagePhoto"> Phone Gallery</a></li>
-		<li><a data-action="channelView.messageGallery"> Memories Gallery</a></li>
+		<li><a data-action="galleryView.galleryCamera"> Phone Camera</a></li>
+		<li><a data-action="galleryView.galleryPhoto"> Phone Gallery</a></li>
 	</ul>
 
 </div>
