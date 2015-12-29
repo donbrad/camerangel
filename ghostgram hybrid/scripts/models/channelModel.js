@@ -672,7 +672,7 @@ var channelModel = {
                 //ux.closeModalViewAddChannel();
                 if (isDeleted === undefined)
                     mobileNotify('Added  Chat : ' + channel.get('name'));
-                    notificationModel.addNewChatNotification(channel.get('channelId'), channel.get('name'), channel.get('description'));
+                    notificationModel.addNewChatNotification(channel.get('channelId'), "Group Chat: " + channel.get('name'), channel.get('description'));
             },
             error: function(channel, error) {
                 // Execute any logic that should take place if the save fails.
@@ -786,7 +786,7 @@ var channelModel = {
             success: function(channel) {
                 // Execute any logic that should take place after the object is saved.
                 mobileNotify('Added Place Chat : ' + channel.get('name'));
-                notificationModel.addNewChatNotification(channel.get('channelId'), channel.get('name'), channel.get('description'));
+                notificationModel.addNewChatNotification(channel.get('channelId'), "Place Chat: " + channel.get('name'), channel.get('description'));
 
                 APP.kendo.navigate('#editChannel?channel=' + channelId);
 
