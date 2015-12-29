@@ -75,7 +75,7 @@ var notificationModel = {
     },
 
     Notification: function(type, id, title, date, description, actionTitle, action, href, dismissed, dismissable) {
-            this.uuid = new uuid.v4(),
+            this.uuid = uuid.v4(),
             this.type = type ? type : notificationModel._system,
             this.privateId = id ? id : null,
             this.title = title ? title : '',
