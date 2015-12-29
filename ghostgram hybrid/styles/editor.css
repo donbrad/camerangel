@@ -16,3 +16,10 @@ table.k-editor {
   max-width: 90%;
   border-radius: 3px;
 }
+.img-sm {
+  width: 3%;
+}
+.img-sm img {
+  width: 100%;
+  height: 100%;
+}

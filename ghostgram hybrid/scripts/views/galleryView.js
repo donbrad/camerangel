@@ -850,6 +850,7 @@ var galleryPicker = {
     _photo: null,
     _photoId : null,
     _callback : null,
+    _isGridView: true,
 
     onInit : function (e) {
         _preventDefault(e);
@@ -881,12 +882,26 @@ var galleryPicker = {
                             "value":query}
                     ]});
 
-
+                $("#modalview-galleryPicker .enterSearch").removeClass("hidden");
             } else {
                 photoModel.photosDS.filter([]);
-
+                $("#modalview-galleryPicker .enterSearch").addClass("hidden");
             }
         });
+
+        $("#modalview-galleryPicker .enterSearch").on("click", function(){
+            $("#modalview-galleryPicker .gg_mainSearchInput").val('');
+
+            // reset data filters
+            photoModel.photosDS.filter([]);
+
+            // hide clear btn
+            $(this).addClass('hidden');
+        });
+
+        ux.toggleSearch();
+        ux.setSearchPlaceholder("Search photos...");
+
     },
 
 
@@ -912,23 +927,32 @@ var galleryPicker = {
         if (callback !== undefined) {
             galleryPicker._callback = callback;
         }
+
         $("#modalview-galleryPicker").kendoMobileModalView("open");
     },
 
     closeModal : function ()  {
+        // reset photos
+        $("#modalview-galleryPicker > div.footer.km-footer > a img").attr("src", "images/gallery-list.svg");
+        $("#galleryPicker-listview li .galleryImg").addClass("galleryImg-grid").removeClass("galleryImg-full");
+        galleryPicker._isGridView = true;
+
         // Reset the photo filter...
         photoModel.photosDS.filter([]);
         $("#modalview-galleryPicker").kendoMobileModalView("close");
     },
 
-    setListView : function (e) {
-        $("#galleryPicker-listview li").css("width","100%");
-        $("#galleryPicker-listview li").css("padding-bottom","100%");
-    },
+    setView: function(){
+        if(galleryPicker._isGridView){
+            $("#modalview-galleryPicker > div.footer.km-footer > a img").attr("src", "images/gallery-grid.svg");
+            $("#galleryPicker-listview li .galleryImg").addClass("galleryImg-full").removeClass("galleryImg-grid");
+            galleryPicker._isGridView = false;
+        } else {
 
-    setGridView : function (e) {
-        $("#galleryPicker-listview li").css("width","33%");
-        $("#galleryPicker-listview li").css("padding-bottom","33%");
+            $("#modalview-galleryPicker > div.footer.km-footer > a img").attr("src", "images/gallery-list.svg");
+            $("#galleryPicker-listview li .galleryImg").addClass("galleryImg-grid").removeClass("galleryImg-full");
+            galleryPicker._isGridView = true;
+        }
     }
 
 };

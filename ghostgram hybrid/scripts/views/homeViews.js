@@ -641,41 +641,14 @@ var ghostEditView = {
         autosize($('#ghostEmailEditor'));
 
         $("#ghostEmailEditor").kendoEditor({
+            stylesheets:["styles/editor.css"],
             tools: [
                 "bold",
                 "italic",
                 "underline",
-                "justifyLeft",
-                "justifyCenter",
-                "justifyRight",
                 "insertUnorderedList",
                 "indent",
-                "outdent",
-                "createTable",
-                "fontSize",
-                {
-                    name: "insertImage",
-                    exec: function (e) {
-                        e.preventDefault();
-
-                        galleryPicker.openModal(function (photo) {
-
-                            photoModel.addPhotoOffer(photo.photoId, channelView._channelId,  photo.thumbnailUrl, photo.imageUrl, true);
-
-                            var url = photo.thumbnailUrl;
-                            if (photo.imageUrl !== undefined && photo.imageUrl !== null)
-                                url = photo.imageUrl;
-
-                            $('#ghostEmailEditor').data("kendoEditor").paste('<div style="max-width: 50%; max-height: 50%;>" <img src="'+ url +'"/></div>', {split: true});
-
-                           // channelView.showChatImagePreview(url);
-                        });
-                       /* modalGalleryView.openModal(function(imageUrl){
-                         $('#ghostEmailEditor').data("kendoEditor").paste('<div style="max-width: 50%; max-height: 50%;>" <img src="'+imageUrl+'"/></div>', {split: true});
-                         });*/
-                    }
-
-                }
+                "outdent"
             ]
         });
     },
@@ -726,9 +699,7 @@ var ghostEditView = {
     },
 
     closeModal : function (e) {
-
         _preventDefault(e);
-
         $('#ghostEditModal').data('kendoMobileModalView').close();
         if (ghostEditView._callback  !== null) {
             ghostEditView._callback();
@@ -761,6 +732,41 @@ var ghostEditView = {
             });
         }
 
+    },
+    toggleTool: function(e){
+        var tool = e.button[0].dataset['tool'];
+
+        var editor = $("#ghostEmailEditor").data("kendoEditor");
+        editor.exec(tool);
+
+        // If a togglable tool, reflect state
+        if (tool !== 'indent' && tool !== 'outdent'){
+
+            var toolState = editor.state(tool);
+            var $currentBtn = $(e.target[0]);
+            var $currentBtnImg = $currentBtn.closest("img");
+
+            if(toolState){
+                $currentBtn.addClass("activeTool");
+            } else {
+                $currentBtn.removeClass("activeTool");
+            }
+
+        }
+    },
+    insertImage: function(e) {
+        galleryPicker.openModal(function (photo) {
+
+            photoModel.addPhotoOffer(photo.photoId, channelView._channelId, photo.thumbnailUrl, photo.imageUrl, true);
+
+            var url = photo.thumbnailUrl;
+            if (photo.imageUrl !== undefined && photo.imageUrl !== null){
+                url = photo.imageUrl;
+            }
+            var editor = $('#ghostEmailEditor').data("kendoEditor");
+            // Image styles are controled via editor.less
+            editor.paste('<div class="img-sm"> <img src="' + url + '"/></div>', {split: true});
+        });
     }
 };
 
