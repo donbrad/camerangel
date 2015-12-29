@@ -340,6 +340,9 @@ var homeView = {
     handleNotificationAction : function (e) {
         _preventDefault(e);
 
+        var uuid = e.sender.element[0].attributes['data-uuid'].value;
+
+        var notification = notificationModel.findNotificationModel(uuid);
 
     }
 };
