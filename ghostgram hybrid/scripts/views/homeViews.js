@@ -319,6 +319,7 @@ var homeView = {
     },
 
     settingBigFont: function(e){
+        _preventDefault(e);
         userModel.currentUser.set("useLargeView", true);
 
         // Show sample size
@@ -328,10 +329,17 @@ var homeView = {
 
 
     settingRegFont: function(e){
+        _preventDefault(e);
         userModel.currentUser.set("useLargeView", false);
 
         // Show sample size
         $("#sampleChatSize").removeClass("userLgFontSize").addClass("chat-message-text").text("Regular Font Size");
+
+    },
+
+    handleNotificationAction : function (e) {
+        _preventDefault(e);
+
 
     }
 };
