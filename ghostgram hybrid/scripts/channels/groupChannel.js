@@ -158,7 +158,7 @@ var groupChannel = {
         var currentTime =  ggTime.currentTime();
 
         APP.pubnub.uuid(function (msgID) {
-            var notificationString = "Chat : " + groupChannel.channelName ;
+            var notificationString = "Group Chat : " + groupChannel.channelName ;
             var thisMessage = {
                 msgID: msgID,
                 channelId : groupChannel.channelId,

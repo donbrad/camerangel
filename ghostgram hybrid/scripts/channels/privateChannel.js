@@ -179,7 +179,7 @@ var privateChannel = {
             encryptData = null;
 
         APP.pubnub.uuid(function (msgID) {
-            var notificationString = "Private : " + userModel.currentUser.name;
+            var notificationString = "Private Chat: " + userModel.currentUser.name;
             var message = {
                 type: 'privateMessage',
                 recipient: recipient,
