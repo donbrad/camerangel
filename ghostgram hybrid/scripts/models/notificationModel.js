@@ -216,7 +216,7 @@ var notificationModel = {
             if (channel.unreadCount === undefined)
                 channel.unreadCount = 0;
 
-            notificationModel.addUnreadNotification(channel.channelId, channel.name, channel.unreadCount);
+            notificationModel.updateUnreadNotification(channel.channelId, channel.name, channel.unreadCount);
         }
     },
 
