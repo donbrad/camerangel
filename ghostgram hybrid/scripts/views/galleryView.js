@@ -70,7 +70,7 @@ var galleryView = {
 				photoModel.photosDS.filter( {"logic":"or",
                         "filters":[
                             {
-                                "field":"name",
+                                "field":"title",
                                 "operator":"contains",
                                 "value":query},
                             {
@@ -87,6 +87,14 @@ var galleryView = {
                                 "value":query},
                             {
                                 "field":"addressString",
+                                "operator":"contains",
+                                "value":query},
+                            {
+                                "field":"placeString",
+                                "operator":"contains",
+                                "value":query},
+                            {
+                                "field":"senderName",
                                 "operator":"contains",
                                 "value":query}
                         ]});
