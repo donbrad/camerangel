@@ -56,6 +56,7 @@ var serverPush = {
     // Handle iOS / Apple Notifications
     onNotificationAPN : function (e) {
 
+        console.log(e);
         // If this is a message and there's a channelId, update activeChannels so we can
         // build inApp notifications on launch.
         if (e.isMessage !== undefined && e.isMessage) {
