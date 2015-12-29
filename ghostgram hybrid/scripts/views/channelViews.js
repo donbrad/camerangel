@@ -1256,6 +1256,7 @@ var channelView = {
     updateTimeStamps: function () {
         $("#messages-listview").data("kendoMobileListView").refresh();
         $("#messages-listview").data("kendoMobileListView").scroller().reset();
+        channelView.scrollToBottom();
 
     },
 
