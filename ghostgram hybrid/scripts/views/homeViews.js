@@ -344,6 +344,14 @@ var homeView = {
 
         var notification = notificationModel.findNotificationModel(uuid);
 
+        if (notification !== undefined) {
+            var type = notification.type, href = notification.href;
+
+            if (type === notificationModel._unreadCount) {
+                APP.kendo.navigate(href);
+            }
+        }
+
     }
 };
 /*
