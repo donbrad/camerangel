@@ -168,6 +168,7 @@ var groupChannel = {
                         badge: 1,
                         'content-available' : 1
                     },
+                    senderId: userModel.currentUser.userUUID,
                     target: '#channel?channelId='+ groupChannel.channelId,
                     channelId: groupChannel.channelId,
                     isMessage: true,
@@ -177,6 +178,7 @@ var groupChannel = {
                     data : {
                         title: notificationString,
                         message: "Message from " + userModel.currentUser.name,
+                        senderId: userModel.currentUser.userUUID,
                         target: '#channel?channelId='+ groupChannel.channelId,
                         channelId: groupChannel.channelId,
                         isMessage: true,

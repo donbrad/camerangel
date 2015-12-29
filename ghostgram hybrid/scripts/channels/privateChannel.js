@@ -192,6 +192,7 @@ var privateChannel = {
                     },
                     target: '#channel?channelId=' + privateChannel.userId,
                     channelId : privateChannel.userId,
+                    senderId: userModel.currentUser.userUUID,
                     isMessage: true,
                     isPrivate: true
                 },
@@ -202,6 +203,7 @@ var privateChannel = {
                         target: '#channel?channelId=' + privateChannel.userId,
                         image: "icon",
                         channelId : privateChannel.userId,
+                        senderId: userModel.currentUser.userUUID,
                         isMessage: true,
                         isPrivate: true
                     }
