@@ -200,6 +200,7 @@ var notificationModel = {
         } else {
             if (unreadCount === undefined || unreadCount === 0) {
                 notificationModel.notificationDS.remove(notObj);
+                notificationModel.notificationDS.sync();
             } else {
                 notObj.set('unreadCount', unreadCount);
             }
