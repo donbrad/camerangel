@@ -1923,13 +1923,13 @@ var channelView = {
 
         switch (tagArray[0]) {
             case  'title' :
-                    var titleString = tagArray.shift().join(' ');
+                    var titleArray = tagArray.shift(), titleString = titleArray.join(' ');
                 break;
             case  'description' :
-                var descString = tagArray.shift().join(' ');
+                var descArray = tagArray.shift(), descString = descArray.join(' ');
                 break;
             case  'tags' :
-                var tagString = tagArray.shift().join(',');
+                var tagArray = tagArray.shift(), tagString = tagArray.join(' ');
                 break;
 
         }
