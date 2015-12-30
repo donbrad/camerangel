@@ -2019,7 +2019,7 @@ var channelView = {
 
             channelView._tagEnd = range.endOffset;
             var text = editor.value();
-            var tagString = text.substring(channelView._tagStart, channelView._tagEnd);
+            var tagString = text.substring(channelView._tagStart+1, channelView._tagEnd);
             mobileNotify("Smart Object: will process " + tagString);
             channelView.processTag(tagString);
             channelView._insertTag = false;
