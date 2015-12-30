@@ -1970,7 +1970,7 @@ var channelView = {
     processCalendarTag : function (tagArray, tagList) {
         var calendarTag = tagArray[0].toLowerCase();
 
-        
+
 
     },
 
