@@ -1906,10 +1906,46 @@ var channelView = {
 
         var tagList = smartObject.findTerm(tagTokens[0]);
         if (tagList !== undefined) {
+            switch (tagList[0].category) {
+
+                case 'photo' : channelView.processPhotoTag(tagTokens); break;
+                case 'action' : channelView.processActionTag(tagTokens); break;
+                case 'calendar' : channelView.processCalendarTag(tagTokens); break;
+
+            }
+        }
+
+    },
+
+    processPhotoTag : function (tagArray) {
+
+        var photoTag = tagArray[0].toLowerCase();
+
+        switch (tagArray[0]) {
+            case  'title' :
+                    var titleString = tagArray.shift().join(' ');
+                break;
+            case  'description' :
+                var descString = tagArray.shift().join(' ');
+                break;
+            case  'tags' :
+                var tagString = tagArray.shift().join(',');
+                break;
 
         }
 
     },
+
+    processActionTag : function (tagArray) {
+        var actionTag = tagArray[0].toLowerCase();
+
+    },
+
+    processCalendarTag : function (tagArray) {
+        var calendarTag = tagArray[0].toLowerCase();
+
+    },
+
 
     messageRecall: function (e) {
         _preventDefault(e);
