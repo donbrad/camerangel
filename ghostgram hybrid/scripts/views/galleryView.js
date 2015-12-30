@@ -204,10 +204,12 @@ var galleryView = {
             $(".galleryImg").addClass("galleryImg-grid").removeClass("galleryImg-full");
             $(".gallerySelectBtn-grid img").attr("src", "images/icon-grid-active.svg");
             $(".gallerySelectBtn-list img").attr("src", "images/icon-list-alt.svg");
+            $("#gallery-listview").data("kendoMobileListView").scroller().reset();
         } else{
             $(".galleryImg").addClass("galleryImg-full").removeClass("galleryImg-grid");
             $(".gallerySelectBtn-grid img").attr("src", "images/icon-grid.svg");
             $(".gallerySelectBtn-list img").attr("src", "images/icon-list-alt-active.svg");
+            $("#gallery-listview").data("kendoMobileListView").scroller().reset();
         }
     },
 
