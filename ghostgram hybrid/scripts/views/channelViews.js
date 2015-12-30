@@ -1900,6 +1900,7 @@ var channelView = {
 
     },
 
+
     // Process a tag recognized by the editor
     processTag : function (tagString) {
         var tagTokens = tagString.split(' ');
@@ -1963,12 +1964,14 @@ var channelView = {
                 break;
             case 'tvshow' :
                 break;
+
         }
 
     },
 
     processCalendarTag : function (tagArray, tagList) {
         var calendarTag = tagArray[0].toLowerCase();
+        var regexTime = /^([0]\d|[1][0-2]):([0-5]\d)\s?(?:AM|PM)$/i;
 
 
 
