@@ -1902,6 +1902,12 @@ var channelView = {
 
     // Process a tag recognized by the editor
     processTag : function (tagString) {
+        var tagTokens = tagString.split(' ');
+
+        var tagList = smartObject.findTerm(tagTokens[0]);
+        if (tagList !== undefined) {
+
+        }
 
     },
 
