@@ -1908,16 +1908,22 @@ var channelView = {
         if (tagList !== undefined) {
             switch (tagList[0].category) {
 
-                case 'photo' : channelView.processPhotoTag(tagTokens); break;
-                case 'action' : channelView.processActionTag(tagTokens); break;
-                case 'calendar' : channelView.processCalendarTag(tagTokens); break;
+                case 'photo' :
+                    channelView.processPhotoTag(tagTokens);
+                    break;
+                case 'action' :
+                    channelView.processActionTag(tagTokens, tagList);
+                    break;
+                case 'calendar' :
+                    channelView.processCalendarTag(tagTokens, tagList);
+                    break;
 
             }
         }
 
     },
 
-    processPhotoTag : function (tagArray) {
+    processPhotoTag : function (tagArray, tagList) {
 
         var photoTag = tagArray[0].toLowerCase();
 
@@ -1925,9 +1931,11 @@ var channelView = {
             case  'title' :
                     var titleArray = tagArray.shift(), titleString = titleArray.join(' ');
                 break;
+
             case  'description' :
                 var descArray = tagArray.shift(), descString = descArray.join(' ');
                 break;
+
             case  'tags' :
                 var tagArray = tagArray.shift(), tagString = tagArray.join(' ');
                 break;
@@ -1936,13 +1944,33 @@ var channelView = {
 
     },
 
-    processActionTag : function (tagArray) {
+    processActionTag : function (tagArray, tagList) {
         var actionTag = tagArray[0].toLowerCase();
+        switch (tagList[0].type) {
+            case 'meeting':
+                break;
+            case 'flight' :
+                break;
+            case 'event' :
+                break;
+            case 'day' :
+                break;
+            case 'month' :
+                break;
+            case 'movie' :
+                break;
+            case 'time' :
+                break;
+            case 'tvshow' :
+                break;
+        }
 
     },
 
-    processCalendarTag : function (tagArray) {
+    processCalendarTag : function (tagArray, tagList) {
         var calendarTag = tagArray[0].toLowerCase();
+
+        
 
     },
 
