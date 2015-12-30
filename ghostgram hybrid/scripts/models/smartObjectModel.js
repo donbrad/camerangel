@@ -73,6 +73,50 @@ var smartObject = {
         smartObject.termsDS = new kendo.data.DataSource({
             data: smartObject.termMap
         });
+    },
+
+    queryTerm: function (query) {
+
+        if (query === undefined)
+            return(undefined);
+        var dataSource = smartObject.termsDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+
+        dataSource.filter(cacheFilter);
+
+        return(view);
+
+    },
+
+
+    findTerm: function (termIn) {
+        var target = termIn.toLowerCase();
+        var termList = smartObject.queryTerm({ field: "term", operator: "eq", value: target });
+
+        return(termList);
+
+    },
+
+    containsTerm: function (termIn) {
+        var target = termIn.toLowerCase();
+        var termList = smartObject.queryTerm({ field: "term", operator: "contains", value: target });
+
+        return(termList);
+
+    },
+
+    startsWithTerm: function (termIn) {
+        var target = termIn.toLowerCase();
+        var termList = smartObject.queryTerm({ field: "term", operator: "startswith", value: target });
+
+        return(termList);
+
     }
+
 
 };
