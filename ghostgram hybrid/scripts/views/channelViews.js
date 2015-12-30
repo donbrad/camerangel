@@ -1954,11 +1954,15 @@ var channelView = {
                 break;
             case 'event' :
                 break;
+            case 'datejs' :
+                break;
             case 'day' :
                 break;
             case 'month' :
                 break;
             case 'movie' :
+                break;
+            case 'movies' :
                 break;
             case 'time' :
                 break;
