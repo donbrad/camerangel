@@ -516,7 +516,7 @@
 
 <div data-role="modalview" id="modalview-locate-me" style="width: 90%; display: none;" class="appearance">
 	<div data-role="content">
-		<ul id="nearby-results-list" data-role="listview" data-template="nearby-results-template" data-click="homeView.checkInToPlace">
+		<ul id="locate-me-list" data-role="listview" data-template="nearby-results-template" data-click="homeView.checkInToPlace">
 		</ul>
 	</div>
 	<a class="btnSecondary btnFull-modal" data-click="homeView.closeLocateMeModal" data-role="button">Cancel</a>
@@ -2813,7 +2813,7 @@
 
 
 <!-- Nearby Results -->
-<div data-role="modalview" data-tile="Nearby Results" id="nearby-results" style="height:90%; width:90%;">
+<div data-role="modalview" data-tile="Nearby Results" id="nearby-results" style="height:90%; width:90%; display: none;">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>Nearby Results</span>
