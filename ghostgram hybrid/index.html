@@ -15,7 +15,7 @@
     <script src="kendo/js/kendo.all.min.js"></script>
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-XdXhoF08ubebxTjTh9jf0Ra4xFV1Jwo&libraries=places"></script>
 
-	<!-- bower componets -->
+	<!-- bower components -->
 	<script src="bower_components/eventEmitter/EventEmitter.js"></script>
 	<script src="bower_components/q/q.js"></script>
 	<script src="bower_components/underscore/underscore.js"></script>
@@ -23,6 +23,7 @@
 	<script src="bower_components/moment/moment.js"></script>
 	<script src="bower_components/velocity/velocity.js"></script>
 	<script src="bower_components/lodash/lodash.js"></script>
+
 	<!-- other componets -->
 	<script src="scripts/libs/parse.js"></script>
     <script src="https://cdn.pubnub.com/pubnub-3.7.16.js"></script>
@@ -63,6 +64,7 @@
 	<script src="scripts/models/smartObjectModel.js"></script>
 	<script src="scripts/models/userModel.js"></script>
     <script src="scripts/views/sentinel.js"></script>
+	<script src="scripts/views/actionView.js"></script>
     <script src="scripts/views/archiveView.js"></script>
 	<script src="scripts/views/channelViews.js"></script>
 	<script src="scripts/views/contactViews.js"></script>
@@ -2447,6 +2449,50 @@
 	</div>
 </div>
 
+<!-- smartObject ACtion modal -->
+<div data-role="modalview" id="modalview-actionMeeting" style="width: 90%; display: none;"  data-model="modalActionMeeting._activeObject" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span data-bind="text: title">Meeting</span>
+			<a data-click="modalActionMeeting.onCancel" data-role="button"  class="btnClear-grey" data-align="left">Cancel</a>
+
+		</div>
+	</div>
+	<form>
+		<ul data-role="listview" data-style="inset">
+			<li>
+				<label> Title
+					<input type="search"  data-bind="value: title" required/>
+				</label>
+			</li>
+			<li>
+				<label> Notes
+					<input type="search"  data-bind="value: description"/>
+				</label>
+			</li>
+			<li>
+				<label> Date / Time
+					<input id="modalActionMeeting-datetimepicker"/>
+				</label>
+			</li>
+			<li>
+				<label> Location
+					<input type="search"  data-bind="value: location"/>
+				</label>
+			</li>
+			<li>
+				<label> Date / Time is flexible
+					<input type="checkbox"  data-role="switch" data-bind="checked: timeFlexible"/>
+				</label>
+			</li>
+		</ul>
+	</form>
+
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnPrimary" data-role="button" data-click="modalActionMeeting.onDone">Save</a>
+	</div>
+</div>
+
 <!-- Photo tag modal -->
 <div data-role="modalview" id="modalview-photoTag" style="width: 90%; display: none;"  data-model="modalPhotoTag._activePhoto" class="appearance">
 	<div data-role="header">
@@ -3029,6 +3075,9 @@
 	</div>
 
 </div>
+
+
+
 
 <!--/*
  * Settings

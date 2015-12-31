@@ -79,6 +79,10 @@ var smartObject = {
         {term: "october", category: "calendar", type: "month", composite: true},
         {term: "november", category: "calendar", type: "month", composite: true},
         {term: "december", category: "calendar", type: "month", composite: true},
+        {term: "near", category: "target", type: "location", composite: true},
+        {term: "in", category: "target", type: "location", composite: true},
+        {term: "at", category: "target", type: "ambig", composite: true},
+        {term: "on", category: "target", type: "ambig", composite: true},
         {term: "title", category: "photo", type: "meta", composite: false},
         {term: "tags", category: "photo", type: "meta", composite: false},
         {term: "description", category: "photo", type: "meta", composite: false}
