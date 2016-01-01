@@ -67,7 +67,7 @@ var modalActionMeeting = {
             });
 
             $("#modalActionMeeting-placesearch").kendoAutoComplete({
-                dataSource: placesView.placeListDS,
+                dataSource: placesModel.placesDS,
                 dataTextField: "name",
                 dataValueField: "uuid",
                 select: function(e) {
@@ -82,7 +82,7 @@ var modalActionMeeting = {
             modalActionMeeting._isInited = true;
         }
         modalActionMeeting._date = new Date();
-        
+
         if (actionObj === undefined || actionObj === null) {
             modalActionMeeting.initActiveObject();
         } else {
