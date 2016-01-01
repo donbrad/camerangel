@@ -7,26 +7,12 @@
 var modalActionMeeting = {
     _activeObject : new kendo.data.ObservableObject(),
     _date : new Date(),
+    _isInited : false,
 
     onInit: function (e) {
         _preventDefault(e);
 
-        $("#modalActionMeeting-datetimepicker").kendoDateTimePicker({
-            value: this._date
-        });
 
-        $("#modalActionMeeting-placesearch").kendoAutoComplete({
-            dataSource: placesView.placeListDS,
-            dataTextField: "name",
-            dataValueField: "uuid",
-            select: function(e) {
-                var item = e.item;
-                var text = item.text();
-                // Use the selected item or its text
-            },
-            filter: "startswith",
-            placeholder: "Select location... "
-        });
     },
 
     initActiveObject : function () {
@@ -70,7 +56,26 @@ var modalActionMeeting = {
     onShow: function (e) {
         _preventDefault(e);
 
+        if (!modalActionMeeting._isInited) {
+            $("#modalActionMeeting-datetimepicker").kendoDateTimePicker({
+                value: this._date
+            });
 
+            $("#modalActionMeeting-placesearch").kendoAutoComplete({
+                dataSource: placesView.placeListDS,
+                dataTextField: "name",
+                dataValueField: "uuid",
+                select: function(e) {
+                    var item = e.item;
+                    var text = item.text();
+                    // Use the selected item or its text
+                },
+                filter: "startswith",
+                placeholder: "Select location... "
+            });
+
+            modalActionMeeting._isInited = true;
+        }
         modalActionMeeting._date = new Date();
     },
 
