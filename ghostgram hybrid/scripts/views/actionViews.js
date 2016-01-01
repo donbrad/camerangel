@@ -66,8 +66,8 @@ var modalActionMeeting = {
         if (actionObj === undefined || actionObj === null) {
             modalActionMeeting.initActiveObject();
         } else {
-
-        }modalActionMeeting.setActiveObject(actionObj);
+            modalActionMeeting.setActiveObject(actionObj);
+        }
 
         $("#modalview-actionMeeting").data("kendoMobileModalView").open();
     },
