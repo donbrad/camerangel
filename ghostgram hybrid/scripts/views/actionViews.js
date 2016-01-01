@@ -56,6 +56,11 @@ var modalActionMeeting = {
     onShow: function (e) {
         _preventDefault(e);
 
+
+    },
+
+
+    openModal: function (actionObj) {
         if (!modalActionMeeting._isInited) {
             $("#modalActionMeeting-datetimepicker").kendoDateTimePicker({
                 value: this._date
@@ -77,11 +82,7 @@ var modalActionMeeting = {
             modalActionMeeting._isInited = true;
         }
         modalActionMeeting._date = new Date();
-    },
-
-
-    openModal: function (actionObj) {
-
+        
         if (actionObj === undefined || actionObj === null) {
             modalActionMeeting.initActiveObject();
         } else {
