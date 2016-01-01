@@ -63,8 +63,14 @@ var serverPush = {
             if (e.channelId !== undefined) {
                 // Update unread  unless it's the current channel
                 if (e.channelId !== channelView._channelId) {
-                    channelModel.incrementUnreadCount(e.channelId, 1, null);
-                    channelModel.updateActiveChannel(e.channelId);
+                    if (e.senderId !== undefined && e.senderId !== userModel.currentUser.userUUID) {
+                        if (e.isPrivate) {
+                            channelModel.updatePrivateUnreadCount(e.channelId, 1, null);
+                        } else {
+                            channelModel.updateUnreadCount(e.channelId, 1, null);
+                            channelModel.updateActiveChannel(e.channelId);
+                        }
+                    }
                 }
             }
         } else {

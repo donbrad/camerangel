@@ -636,49 +636,7 @@ var addContactView = {
         $("#modalview-AddContact").data("kendoMobileModalView").close();
     },
 
-    addChatContact : function (guid, name, alias, contactUUID) {
-        var Contacts = Parse.Object.extend("contacts");
-        var contact = new Contacts();
 
-
-        contact.setACL(userModel.parseACL);
-        contact.set("name", name );
-        contact.set("alias", alias);
-        contact.set('category', "unknown");
-        contact.set("address", null);
-        contact.set("group", null);
-        contact.set("priority", 0);
-        contact.set("isFavorite", false);
-        contact.set("isBlocked", false);
-        contact.set("uuid", guid);
-        contact.set('contactUUID', contactUUID);
-        contact.set('contactPhone', null);
-        contact.set('contactEmail', null);
-        contact.set('ownerUUID', userModel.currentUser.userUUID);
-
-        contact.save(null, {
-            success: function(contact) {
-                // Execute any logic that should take place after the object is saved.;
-                //var photo = contact.get('photo');
-                var url = contactModel.createIdenticon(guid);
-                contact.set('photo',url);
-                // Don't set actual phone and email for this contact until connected...
-                contact.set('contactPhone', contact.phone);
-                contact.set('phoneVerified', contact.phoneVerified);
-                contact.set('contactEmail', contact.email);
-                contact.set('emailVerified', contact.emailVerified);
-
-                contactModel.contactsDS.add(contact.attributes);
-                contactModel.contactListDS.add(contact.attributes);
-                addContactView.closeModal();
-            },
-            error: function(contact, error) {
-                // Execute any logic that should take place if the save fails.
-                // error is a Parse.Error with an error code and message.
-                handleParseError(error);
-            }
-        });
-    },
 
     validate: function(){
     	var form = $("#addContactForm").kendoValidator().data("kendoValidator");
@@ -1216,7 +1174,7 @@ var contactActionView = {
                     contactActionView._activeContact.set('contactUUID', thisContact.contactUUID);
                     contactActionView._activeContact.set('statusMessage', user.get('statusMessage'));
                     contactActionView._activeContact.set('currentPlace', user.get('currentPlace'));
-                    contactActionView._activeContact.set('currentPlaceUUID', user.get('currentPlaceUUID'));
+                    contactActionView._activeContact.set('currentPlaceId', user.get('currentPlaceId'));
                     contactActionView._activeContact.set('isAvailable', contactIsAvailable);
                     // set available
                     if(contactIsAvailable){
@@ -1228,7 +1186,7 @@ var contactActionView = {
                     contactList.set('statusMessage', user.get('statusMessage'));
                     var contactPlace = user.get('currentPlace');
                     contactList.set('currentPlace', contactPlace);
-                    contactList.set('currentPlaceUUID', user.get('currentPlaceUUID'));
+                    contactList.set('currentPlaceId', user.get('currentPlaceId'));
                     contactList.set('isAvailable', contactIsAvailable);
 
                     // set current place

@@ -26,7 +26,15 @@ var channelModel = {
 
     // List of all active private channels (those with messages)
     privateChannelsDS: new kendo.data.DataSource({
-        offlineStorage: "privatechannels-offline"
+        offlineStorage: "privatechannels"
+    }),
+
+    recalledMessagesDS : new kendo.data.DataSource({
+        offlineStorage: "recalledMessages"
+    }),
+
+    groupMessagesDS : new kendo.data.DataSource({
+        offlineStorage: "groupMessages"
     }),
 
     init :  function () {
@@ -149,8 +157,70 @@ var channelModel = {
         return(channel);
     },
 
+
+    queryRecalledMessages : function (query) {
+        if (query === undefined)
+            return([]);
+        var dataSource = channelModel.recalledMessagesDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        dataSource.filter(cacheFilter);
+        return(view);
+
+    },
+
+    queryRecalledMessage : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = channelModel.recalledMessagesDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var channel = view[0];
+        dataSource.filter(cacheFilter);
+        return(channel);
+    },
+
+    isMessageRecalled : function (msgID) {
+        var message = channelModel.queryRecalledMessage({ field: "msgID", operator: "eq", value: msgID });
+
+        if (message === undefined) {
+            //msgID not found in recall list
+            return(false);
+        } else {
+            //msgID exists in recall list
+            return(true);
+        }
+    },
+
+    addMessageRecall : function (channelId, msgId, ownerId, isPrivateChat) {
+        var recallObj = {channelId : channelId, msgID: ownerId, isPrivateChat: isPrivateChat};
+
+        var channel = channelModel.findChannelModel(channelId);
+
+        if (channel === undefined)
+            return;
+
+        channelModel.recalledMessagesDS.add(recallObj);
+        if (channelId === channelView._channelId) {
+            // need to delete from channel view too
+            var liveMessage = channelView.findMessageById(msgId);
+            channelView.messagesDS.remove(liveMessage);
+            channelView.messagesDS.sync();
+        }
+
+    },
+
     getUnreadChannels : function () {
-        var channels = channelModel.queryChannels({ field: "unreadCount", operator: "gte", value: 0 })
+        var channels = channelModel.queryChannels({ field: "unreadCount", operator: "gte", value: 0 });
+
         return(channels);
     },
 
@@ -177,6 +247,10 @@ var channelModel = {
         }
     },
 
+    cacheGroupMessage : function (message) {
+        channelModel.groupMessagesDS.add(message);
+    },
+
     updateUnreadCount: function (channelId, count, lastAccess) {
 
         var channel = channelModel.findChannelModel(channelId);
@@ -186,7 +260,29 @@ var channelModel = {
             if (lastAccess === undefined || lastAccess === null) {
                 lastAccess = ggTime.currentTime();
             }
-            channel.set('unreadCount',count);
+            channel.set('unreadCount',channel.get('unreadCount') + count);
+            notificationModel.updateUnreadNotification(channelId, channel.get('name'), count);
+            updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
+            channelModel.updateLastAccess(channelId, lastAccess);
+
+        }
+    },
+
+    updatePrivateUnreadCount: function (channelId, count, lastAccess) {
+        if (lastAccess === undefined || lastAccess === null) {
+            lastAccess = ggTime.currentTime();
+        }
+
+        var channel = channelModel.findChannelModel(channelId);
+        if (channel === undefined) {
+            channelModel.confirmPrivateChannel(channelId);
+        } else {
+            if (lastAccess === undefined || lastAccess === null) {
+                lastAccess = ggTime.currentTime();
+            }
+
+            notificationModel.updateUnreadNotification(channelId, channel.get('name'), count);
+            channel.set('unreadCount',channel.get('unreadCount') + count);
             updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
             channelModel.updateLastAccess(channelId, lastAccess);
 
@@ -202,6 +298,7 @@ var channelModel = {
             if (lastAccess === undefined || lastAccess === null) {
                 lastAccess = ggTime.currentTime();
             }
+            notificationModel.updateUnreadNotification(channelId, channel.get('name'), count);
             channel.set('unreadCount', channel.unreadCount + count);
             updateParseObject('channels', 'channelId', channelId, 'unreadCount', channel.unreadCount + count);
             channelModel.updateLastAccess(channelId, lastAccess);
@@ -501,6 +598,7 @@ var channelModel = {
             success: function(channel) {
                 //ux.closeModalViewAddChannel();
                 mobileNotify('Added Private Chat : ' + channel.get('name'));
+                notificationModel.addNewPrivateChatNotification(channel.get('channelId'), channel.get('name'));
             },
             error: function(channel, error) {
                 // Execute any logic that should take place if the save fails.
@@ -574,7 +672,7 @@ var channelModel = {
                 //ux.closeModalViewAddChannel();
                 if (isDeleted === undefined)
                     mobileNotify('Added  Chat : ' + channel.get('name'));
-                    notificationModel.addNewChatNotification(channel.get('channelId'), channel.get('name'), channel.get('description'));
+                    notificationModel.addNewChatNotification(channel.get('channelId'), "Group Chat: " + channel.get('name'), channel.get('description'));
             },
             error: function(channel, error) {
                 // Execute any logic that should take place if the save fails.
@@ -688,7 +786,7 @@ var channelModel = {
             success: function(channel) {
                 // Execute any logic that should take place after the object is saved.
                 mobileNotify('Added Place Chat : ' + channel.get('name'));
-                notificationModel.addNewChatNotification(channel.get('channelId'), channel.get('name'), channel.get('description'));
+                notificationModel.addNewChatNotification(channel.get('channelId'), "Place Chat: " + channel.get('name'), channel.get('description'));
 
                 APP.kendo.navigate('#editChannel?channel=' + channelId);
 

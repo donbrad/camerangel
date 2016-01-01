@@ -489,31 +489,35 @@ var contactModel = {
     },
 
     findContactList : function (contactUUID) {
-        var dataSource = contactModel.contactListDS;
+        var contact = contactModel.queryContactList({ field: "contactUUID", operator: "eq", value: contactUUID });
+
+        /*var dataSource = contactModel.contactListDS;
         dataSource.filter( { field: "contactUUID", operator: "eq", value: contactUUID });
         var view = dataSource.view();
         if (view.length === 0 || view[0].items.length === 0)
             return(undefined);
         var contact = view[0].items[0];
-        dataSource.filter([]);
+        dataSource.filter([]);*/
 
         return(contact);
     },
 
     findContactListUUID : function ( uuid) {
-        var dataSource = contactModel.contactListDS;
+        var contact = contactModel.queryContactList({ field: "uuid", operator: "eq", value: uuid });
+       /* var dataSource = contactModel.contactListDS;
         dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
         var view = dataSource.view();
         if (view.length === 0 || view[0].items.length === 0)
             return(undefined);
         var contact = view[0].items[0];
-        dataSource.filter([]);
+        dataSource.filter([]);*/
 
         return(contact);
     },
 
 
     findContactByPhone: function (phone) {
+
         var dataSource = this.contactsDS;
         var queryCache = dataSource.filter();
         if (queryCache === undefined) {
@@ -726,7 +730,8 @@ var contactModel = {
             return;
 
         for (var i=0; i<length; i++) {
-            var contactId = array[i].contactUUID;
+            var contact = contactModel.contactListDS.at(i);
+            var contactId = contact.contactUUID;
             if (contactId !== undefined && contactId !== null) {
                 contactModel.getContactStatusObject(contactId, function(user) {
                     if (user !== undefined && user !== null) {
@@ -734,7 +739,7 @@ var contactModel = {
                         var contact = contactModel.findContactList(userId);
                         contact.set('statusMessage', user.get('statusMessage'));
                         contact.set('currentPlace', user.get('currentPlace'));
-                        contact.set('currentPlaceUUID', user.get('currentPlaceUUID'));
+                        contact.set('currentPlaceId', user.get('currentPlaceId'));
                         contact.set('isAvailable', user.get('isAvailable'));
                     }
                 });
@@ -810,20 +815,65 @@ var contactModel = {
                 contact.photo = url;
                 contact.publicKey = null;
 
+
+               /* currentChannelModel.memberList[contact.uuid] = contact;
+                currentChannelModel.membersDS.add(contact);*/
+                contactModel.addChatContact(guid, contact.name, contact.alias, contact.uuid);
+                mobileNotify("Created New Contact for: " + contact.name);
+
                 if (callback !== undefined) {
                     callback(contact);
                 }
 
-               /* currentChannelModel.memberList[contact.uuid] = contact;
-                currentChannelModel.membersDS.add(contact);*/
-                addContactView.addChatContact(guid, contact.name, contact.alias, contact.uuid);
-                mobileNotify("Created New Contact for: " + contact.name);
             }
 
         })
 
     },
 
+    addChatContact : function (guid, name, alias, contactUUID) {
+        var Contacts = Parse.Object.extend("contacts");
+        var contact = new Contacts();
+
+
+        contact.setACL(userModel.parseACL);
+        contact.set("name", name );
+        contact.set("alias", alias);
+        contact.set('category', "unknown");
+        contact.set("address", null);
+        contact.set("group", null);
+        contact.set("priority", 0);
+        contact.set("isFavorite", false);
+        contact.set("isBlocked", false);
+        contact.set("uuid", guid);
+        contact.set('contactUUID', contactUUID);
+        contact.set('contactPhone', null);
+        contact.set('contactEmail', null);
+        contact.set('ownerUUID', userModel.currentUser.userUUID);
+
+        contact.save(null, {
+            success: function(contact) {
+                // Execute any logic that should take place after the object is saved.;
+                //var photo = contact.get('photo');
+                var url = contactModel.createIdenticon(guid);
+                contact.set('photo',url);
+                // Don't set actual phone and email for this contact until connected...
+                contact.set('contactPhone', contact.phone);
+                contact.set('phoneVerified', contact.phoneVerified);
+                contact.set('contactEmail', contact.email);
+                contact.set('emailVerified', contact.emailVerified);
+
+                contactModel.contactsDS.add(contact.attributes);
+                contactModel.contactListDS.add(contact.attributes);
+                //addContactView.closeModal();
+            },
+            error: function(contact, error) {
+                // Execute any logic that should take place if the save fails.
+                // error is a Parse.Error with an error code and message.
+                handleParseError(error);
+            }
+        });
+    },
     importDeviceContacts: function() {
         var options = new ContactFindOptions();
         options.filter = '';

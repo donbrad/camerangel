@@ -70,7 +70,7 @@ var galleryView = {
 				photoModel.photosDS.filter( {"logic":"or",
                         "filters":[
                             {
-                                "field":"name",
+                                "field":"title",
                                 "operator":"contains",
                                 "value":query},
                             {
@@ -87,6 +87,14 @@ var galleryView = {
                                 "value":query},
                             {
                                 "field":"addressString",
+                                "operator":"contains",
+                                "value":query},
+                            {
+                                "field":"placeString",
+                                "operator":"contains",
+                                "value":query},
+                            {
+                                "field":"senderName",
                                 "operator":"contains",
                                 "value":query}
                         ]});
@@ -132,7 +140,6 @@ var galleryView = {
         var scroller = e.view.scroller;
 
 
-
         // Set action btn
         ux.showActionBtn(true, "#gallery", "");
         ux.changeActionBtnImg("#gallery", "icon-camera");
@@ -154,6 +161,14 @@ var galleryView = {
 
         }
 
+        // set result count
+        var photoCount = photoModel.photosDS._total;
+        if(photoCount > 0){
+            $(".results").css("visibility", "visible");
+            $("#resultCount").text(photoCount);
+        } else {
+            $(".results").css("visibility", "hidden");
+        }
         // set filter count
         var filterCount = 0;
         $("#filterCount").text(filterCount);
@@ -254,6 +269,27 @@ var galleryView = {
         APP.kendo.navigate('#:back');
     },
 
+    galleryCamera : function (e) {
+        _preventDefault(e);
+
+        devicePhoto.deviceCamera(
+            1600, // max resolution in pixels
+            75,  // quality: 1-99.
+            true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+            null  // Current channel Id for offers
+        );
+    },
+
+    galleryPhoto : function (e) {
+        _preventDefault(e);
+        // Call the device gallery function to get a photo and get it scaled to gg resolution
+        devicePhoto.deviceGallery(
+            1600, // max resolution in pixels
+            75,  // quality: 1-99.
+            true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+            null // Current channel Id for offers
+        );
+    },
     sharePhoto: function (e)  {
         _preventDefault(e);
 
@@ -842,6 +878,7 @@ var galleryPicker = {
     _photo: null,
     _photoId : null,
     _callback : null,
+    _isGridView: true,
 
     onInit : function (e) {
         _preventDefault(e);
@@ -873,12 +910,26 @@ var galleryPicker = {
                             "value":query}
                     ]});
 
-
+                $("#modalview-galleryPicker .enterSearch").removeClass("hidden");
             } else {
                 photoModel.photosDS.filter([]);
-
+                $("#modalview-galleryPicker .enterSearch").addClass("hidden");
             }
         });
+
+        $("#modalview-galleryPicker .enterSearch").on("click", function(){
+            $("#modalview-galleryPicker .gg_mainSearchInput").val('');
+
+            // reset data filters
+            photoModel.photosDS.filter([]);
+
+            // hide clear btn
+            $(this).addClass('hidden');
+        });
+
+        ux.toggleSearch();
+        ux.setSearchPlaceholder("Search photos...");
+
     },
 
 
@@ -904,23 +955,32 @@ var galleryPicker = {
         if (callback !== undefined) {
             galleryPicker._callback = callback;
         }
+
         $("#modalview-galleryPicker").kendoMobileModalView("open");
     },
 
     closeModal : function ()  {
+        // reset photos
+        $("#modalview-galleryPicker > div.footer.km-footer > a img").attr("src", "images/gallery-list.svg");
+        $("#galleryPicker-listview li .galleryImg").addClass("galleryImg-grid").removeClass("galleryImg-full");
+        galleryPicker._isGridView = true;
+
         // Reset the photo filter...
         photoModel.photosDS.filter([]);
         $("#modalview-galleryPicker").kendoMobileModalView("close");
     },
 
-    setListView : function (e) {
-        $("#galleryPicker-listview li").css("width","100%");
-        $("#galleryPicker-listview li").css("padding-bottom","100%");
-    },
+    setView: function(){
+        if(galleryPicker._isGridView){
+            $("#modalview-galleryPicker > div.footer.km-footer > a img").attr("src", "images/gallery-grid.svg");
+            $("#galleryPicker-listview li .galleryImg").addClass("galleryImg-full").removeClass("galleryImg-grid");
+            galleryPicker._isGridView = false;
+        } else {
 
-    setGridView : function (e) {
-        $("#galleryPicker-listview li").css("width","33%");
-        $("#galleryPicker-listview li").css("padding-bottom","33%");
+            $("#modalview-galleryPicker > div.footer.km-footer > a img").attr("src", "images/gallery-list.svg");
+            $("#galleryPicker-listview li .galleryImg").addClass("galleryImg-grid").removeClass("galleryImg-full");
+            galleryPicker._isGridView = true;
+        }
     }
 
 };

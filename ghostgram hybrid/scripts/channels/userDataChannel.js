@@ -89,34 +89,38 @@ var userDataChannel = {
         localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);
     },
 
-    history : function () {
+    // Iterative function to get all messages in the user data channel for the last 24 hours
+    // Note: pubnubs api will only return a max of 100 messsges so need to iterate until
+    // we have full 24 hours for all contactc
+    _fetchHistory : function (timeStamp) {
 
-        var channelList = [], channelKeys = [];
-        var timeStamp = ggTime.toPubNubTime(userDataChannel.lastAccess);
+        var start = ggTime.toPubNubTime(ggTime.lastDay());    // Need to fetch the last 24 hours of private messages
 
         // Get any messages in the channel
         APP.pubnub.history({
             channel: userDataChannel.channelId,
+            start: start.toString(),
             end: timeStamp,
             error: userDataChannel.error,
             callback: function(messages) {
                 messages = messages[0];
+                var start = messages[1], end = messages[2];
                 messages = messages || [];
                 var RSAKey = cryptico.privateKeyFromString(userModel.currentUser.privateKey);
                 var latestTime = 0;
                 for (var i = 0; i < messages.length; i++) {
 
-                    var lastAccess = ggTime.toPubNubTime(userDataChannel.lastAccess);
+
 
                     var msg  =  messages[i];
                     if (msg.type === 'privateMessage' && !userDataChannel.isDuplicateMessage(msg.msgID)) {
 
                         // Add the last 24 hours worth of messages to the private channel archive
-                        if (msg.sender !== userModel.currentUser.userUUID) {
+                       /* if (msg.sender !== userModel.currentUser.userUUID) {
                             // if the sender isn't this user, update the channel list
                             channelList[msg.sender] = channelList[msg.sender]++;
                         }
-
+*/
                         var data = null;
                         var content = cryptico.decrypt(msg.content.cipher, RSAKey).plaintext;
                         if (msg.data !== undefined && msg.data !== null) {
@@ -140,17 +144,34 @@ var userDataChannel = {
                             recipient: msg.recipient
                         };
 
+                        channelModel.updatePrivateUnreadCount(msg.channelId, 1, null);
                         userDataChannel.messagesDS.add(parsedMsg);
 
                     }
                 }
                 userDataChannel.messagesDS.sync();
                 userDataChannel.updateTimeStamp();
-                channelKeys = Object.keys(channelList);
-                channelModel.updatePrivateChannels(channelKeys, channelList);
-            }
-        });
+                /*   channelKeys = Object.keys(channelList);
+                 channelModel.updatePrivateChannels(channelKeys, channelList);*/
 
+                var startTime = parseInt(start);
+                if (messages.length === 100 && startTime >= start) {
+
+                    userDataChannel._fetchHistory(end);
+                }
+
+            }
+
+
+        });
+    },
+
+    history : function () {
+
+        var timeStamp = ggTime.toPubNubTime(ggTime.currentTime());
+        var lastAccess = ggTime.toPubNubTime(userDataChannel.lastAccess);
+
+        userDataChannel._fetchHistory(timeStamp.toString());
 
     },
 
@@ -165,8 +186,6 @@ var userDataChannel = {
                 privateChannel.receiveHandler(m);
 
             } break;
-
-
         }
     },
 

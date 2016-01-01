@@ -893,7 +893,7 @@ var channelView = {
 
     findMessageById : function (msgID) {
 
-        return(photoModel.queryMessage({ field: "msgID", operator: "eq", value: msgID }));
+        return(channelView.queryMessage({ field: "msgID", operator: "eq", value: msgID }));
     },
 
     onInit: function (e) {
@@ -1073,8 +1073,8 @@ var channelView = {
     onShow : function (e) {
         _preventDefault(e);
 
-        APP.kendo.scroller().reset();
-        channelView.topOffset = APP.kendo.scroller().scrollTop;
+        $("#messages-listview").data("kendoMobileListView").scroller().reset();
+        channelView.topOffset = $("#messages-listview").data("kendoMobileListView").scroller().scrollTop;
         channelView._active = true;
         channelView._offersLoaded = false;
         // hide action btn
@@ -1090,10 +1090,10 @@ var channelView = {
         channelView.messageInit();
         channelView._initMessageTextArea();
 
-        photoModel.getChannelOffers(channelUUID, function (offers) {
+      /*  photoModel.getChannelOffers(channelUUID, function (offers) {
             channelView.photoOffersDS.data(offers);
             channelView._offersLoaded = true;
-        });
+        });*/
 
         var thisChannel = channelModel.findChannelModel(channelUUID);
         if (thisChannel === null) {
@@ -1103,6 +1103,7 @@ var channelView = {
 
         channelView._channel = thisChannel;
 
+        channelModel.updateUnreadCount(thisChannel.channelId, 0, ggTime.currentPubNubTime());
 
         var contactUUID = null;
         var thisChannelHandler = null;
@@ -1210,7 +1211,7 @@ var channelView = {
 
                 for (var i=0; i<messages.length; i++) {
                     var message = messages[i];
-                    if (!channelView.isDuplicateMessage(message.msgID)) {
+                    if (!channelView.isDuplicateMessage(message.msgID) && !channelModel.isMessageRecalled(message.msgID)) {
                         filteredMessages.push(message);
                     }
                 }
@@ -1233,7 +1234,6 @@ var channelView = {
         // 2) kendo refresh just renders the data and doesn't re-execute functions...
         for (var i=0; i<messages.length; i++) {
             var message = messages[i];
-
             channelView.preprocessMessage(message);
         }
     },
@@ -1255,6 +1255,9 @@ var channelView = {
 
     updateTimeStamps: function () {
         $("#messages-listview").data("kendoMobileListView").refresh();
+        $("#messages-listview").data("kendoMobileListView").scroller().reset();
+        channelView.scrollToBottom();
+
     },
 
     onHide : function (e) {
@@ -1609,8 +1612,8 @@ var channelView = {
     messageAddLocation : function  () {
         channelView.activeMessage.geo= {lat: mapModel.lat, lng: mapModel.lng};
         channelView.activeMessage.address = mapModel.currentAddress;
-        if (userModel.currentUser.currentPlaceUUID !== null) {
-            channelView.activeMessage.place = {name: userModel.currentUser.currentPlace, uuid: userModel.currentUser.currentPlaceUUID};
+        if (userModel.currentUser.currentPlaceId !== null) {
+            channelView.activeMessage.place = {name: userModel.currentUser.currentPlace, uuid: userModel.currentUser.currentPlaceId};
         }
     },
 
@@ -1665,15 +1668,14 @@ var channelView = {
         }
 
         if (validMessage === true ) {
+            channelView._initMessageTextArea();
+            channelView.messageInit();
+
             if (channelView.isPrivateChat) {
                 privateChannel.sendMessage(channelView.privateContactId, text, channelView.activeMessage, 86400);
             } else {
                 groupChannel.sendMessage(text, channelView.activeMessage, 86400);
             }
-
-            //channelView.hideChatImagePreview();
-            channelView._initMessageTextArea();
-            channelView.messageInit();
 
         }
 
@@ -1700,7 +1702,7 @@ var channelView = {
      _initMessageTextArea : function () {
 
          var editor =  $('#messageTextArea').data("kendoEditor");
-      //   $('#messageTextArea').val('')
+         $('#messageTextArea').val('');
          $('#messageTextArea').attr("rows","1");
          $('#messageTextArea').attr("height","24px");
          editor.value('');
@@ -1906,7 +1908,29 @@ var channelView = {
     messageRecall: function (e) {
         _preventDefault(e);
         var message = channelView.activeMessage;
-        mobileNotify("Recalling message " + message.msgID);
+        var memberList = channelView.memberList, members = Object.keys(memberList);
+        var thisUser = userModel.currentUser.userUUID;
+
+        var recallMessage = channelView.findMessageById(message.msgID);
+        if (recallMessage !== undefined) {
+
+            for (var i=0; i< members.length; i++) {
+                var member = members[i];
+
+                if (member !== thisUser)
+                    appDataChannel.recallMessage(member, channelView._channelId, message.msgID, thisUser, channelView.isPrivateChat);
+
+            }
+
+            mobileNotify("Recalling message " + message.msgID);
+            // Add the recall Message for this user (as the message is still in the respective channel
+            // until it ages out...
+            channelModel.addMessageRecall(channelView._channelId, message.msgID, thisUser,  channelView.isPrivateChat)
+
+        }
+
+
+
     },
 
     setMessageLockIcon : function (locked) {
@@ -1925,6 +1949,7 @@ var channelView = {
 
     messageCamera : function (e) {
        _preventDefault(e);
+
         devicePhoto.deviceCamera(
             1600, // max resolution in pixels
             75,  // quality: 1-99.

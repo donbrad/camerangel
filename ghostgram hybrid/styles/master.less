@@ -510,6 +510,10 @@ form {
 	height: 1em;
 }
 
+.icon-bar-md {
+	height: 1.25em;
+}
+
 .loading-icon {
 	height: 1rem;
 	vertical-align: middle;
@@ -1331,6 +1335,11 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .helper-sm {
 	.helper;
+}
+
+.helper-header {
+	&:extend(.helper);
+	font-size: 0.75em;
 }
 
 .helper-right {
@@ -3054,10 +3063,26 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 
 #ghostEmailEditor {
 	line-height: 1.5;
-	.font-size(16);
+	font-size: 1.2em;
 	color: @black !important;
 }
 
+#editorGhostMail {
+	position: absolute;
+	top: 13em;
+	left: 0;
+	text-align: center;
+	width: 100%;
+}
+
+#ghostEmailwrapper > table > tbody > tr:nth-child(1) {
+	display: none;
+}
+
+#ghostEmailwrapper > table,
+#ghostEmailwrapper {
+	background: #f5f5f5 !important;
+}
 
 #ghostEmailwrapper > table > tbody > tr:nth-child(1) > td > ul > li > a {
 	background: @shade-100 !important;
@@ -3162,9 +3187,12 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 	height: 2em;
 	width: 2em;
 }
-
-.k-editor .k-editable-area {
+#messageEditor > div > table > tbody > tr:nth-child(2) > td {
 	height: 3em;
+}
+.k-editor .k-editable-area {
+	height: 12em;
+	padding: 0.25em;
 }
 
 #ghostgramMode {
@@ -4499,7 +4527,8 @@ div.contactListBox.activeContact > div > div > ul {
 	display: inline-flex;
 }
 
-#gallery-listview {
+#gallery-listview,
+#galleryPicker-listview {
 	width: 100%;
 	margin: 0;
 	padding: 0;
@@ -4513,18 +4542,19 @@ div.contactListBox.activeContact > div > div > ul {
 }
 
 
-
+/*
 #galleryPicker-listview {
 	line-height: 0 !important;
+	width: 100%;
 } 
 
 #galleryPicker-listview li {
 	padding: 0px !important;
 	display: inline-block;
-	//width: 33%;
-    //padding-bottom: 25%;
+	width: 100%;
+    padding-bottom: 100%;
 	border: 1px solid #fff !important;
-}
+}*/
 
 .galleryImg-2up {
 	width: 50%;
@@ -4578,6 +4608,7 @@ div.contactListBox.activeContact > div > div > ul {
 /* Gallery styles */
 #galleryMenuSelect {
 	.shadowHelper(1);
+	font-size: 1.2em;
 	li.km-button {
 		width: 50%;
 		color: @black;
@@ -4654,14 +4685,16 @@ div.contactListBox.activeContact > div > div > ul {
 .resultsBar {
 	background: #fff;
 	border-bottom: 1px solid @shade-200;
-	font-size: 0.875em;
 	padding: 0.25em 0 0.25em 0;
 	.results {
 		width: 20%;
-		padding-top: 0.25rem;
+		padding-top: 0.55rem;
 		float: left;
 		text-align: right;
-		visibility: hidden;
+		font-size: 1em;
+		@media @mobile {
+			width: 25%;
+		}
 	}
 	.tags {
 		img {
@@ -4690,6 +4723,9 @@ div.contactListBox.activeContact > div > div > ul {
 		text-align: center;
 		float: left;
 		padding-left: 5%;
+		@media @mobile {
+			width: 45%;
+		}
 	}
 }
 
@@ -5740,3 +5776,37 @@ table.k-editor {
     width: 50%;
 }
 
+// Ghost Editor
+
+#ghostEditor > div.km-content.km-widget.km-scroll-wrapper {
+	padding-bottom: 0px;
+}
+#ghostEmailwrapper > table > tbody > tr:nth-child(2) > td {
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	top: 0;
+	-webkit-overflow-scrolling: touch;
+	overflow-y: scroll;
+}
+
+#ghostEmailwrapper > table > tbody > tr:nth-child(2) > td > iframe {
+	height: 100%;
+	width: 100%;
+}
+
+#ghostEmailwrapper > table, #ghostEmailwrapper {
+	max-height: 100%;
+}
+
+#ghostEmailHeader {
+	position: absolute;
+	top: 0.25em;
+	left: 0;
+	z-index: 99;
+}
+
+#editorGhostMail > ul > li > a {
+	margin-left: 0.5em;
+}

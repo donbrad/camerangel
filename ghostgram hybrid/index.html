@@ -44,16 +44,13 @@
 	<script src="scripts/home.js"></script>
 	<script src="scripts/channels.js"></script>
 	<script src="scripts/channel.js"></script>
+	<script src="scripts/devicecontacts.js"></script>
     <script src="scripts/devicephoto.js"></script>
-	<script src="scripts/contacts.js"></script>
-	<script src="scripts/places.js"></script>
     <script src="scripts/profile.js"></script>
-	<script src="scripts/gallery.js"></script>
 	<script src="scripts/serverPush.js"></script>
 	<script src="scripts/utils.js"></script>
 	<script src="scripts/ux.js"></script>
     <script src="scripts/jquery.email-autocomplete.js"></script>
-
     <script src="scripts/models/semanticDSs.js"></script>
     <script src="scripts/models/archive.js"></script>
 	<script src="scripts/models/channelModel.js"></script>
@@ -241,7 +238,7 @@
 			    	<img src="images/notify-icon.svg" height="14" />
 			    		Notifications
 			    	<span class="right">
-			    		<a class="btnClear-grey-sm" data-role="button" data-rel="modalview" href="#testing">Clear</a>
+			    		<a class="btnClear-grey-sm" data-role="button" data-click="homeView.clearNotifications">Clear</a>
 			    	</span>
 		    	</div>
 		    	<div class="clearfix"></div>
@@ -256,22 +253,24 @@
     
 <script type="text/x-kendo-template" id="notificationTemplate">
 # 	var dateTime= new Date(date);
-	var formattedDate = dateTime.toDateString(); #
+	var formattedDate = dateTime.toDateString();
+
+#
 	<div class="notify-box">
 		<div class="notify-info">
 			<span class="notify-helper">#= type #</span>
-			<a class="right notify-close" data-role="button" data-role="button" href="\\#" data-param="#:uuid#" data-click="dismissNotification">
+			<a class="right notify-close" data-role="button" data-uuid="#:uuid#"  data-type="#:type#" data-click="homeView.dismissNotification">
 				<img src="images/close.svg" />
 			</a>
 		</div>
 		<div class="notify-content">
 			# if (action !== undefined && action !== 'none') {#
 				<h4>
-					<a data-role="button" data-param="#:uuid#" href="\\#" data-click="#=action#" class="btnClear-link">#= title #</a>
+					<a data-role="button" data-uuid="#:uuid#"  data-action="#=action#" data-click="homeView.handleNotificationAction" class="btnClear-link">#= title #</a>
 				</h4>
 			#} else {#
 				<h4>
-					<a data-role="button" data-param="#:uuid#" href="#=href#"  class="btnClear-link"> #=  actionTitle # </a>
+					<a data-role="button" data-uuid="#:uuid#" data-link="#=href#"  data-click="homeView.handleNotificationAction" class="btnClear-link"> #=  actionTitle # </a>
 				</h4>
 			#}#
 			<p>#= description # </p>
@@ -487,16 +486,10 @@
 		<a class="btnSpan-btm btnPrimary" data-click="homeRecoverPassword" id="modalview-recoverPassword-button" type="button" data-role="button">Send</a>
 	</div>
 </div>
-    
 
+<div data-role="modalview" id="modalview-checkin" style="width: 100%; height:100%; display: none; z-index: 100;" class="appearance" data-init="checkInView.onInit">
 	
-
-
-
-
-<div data-role="modalview" id="modalview-checkin" style="width: 90%; height:auto; display: none; z-index: 100;" class="appearance" data-init="checkInView.onInit">
-	
-	<div class="modal-bottom">
+	<div style="padding: 12px;" data-role="header">
 		<h3>
 			Check In
 			<a class="modal-close" data-click="checkInView.closeModal" data-role="button">
@@ -550,24 +543,26 @@
     <div data-role="header">
         <div data-role="navbar">
             <span>Memories Picker</span>
-            <a data-click="galleryPicker.closeModal" data-role="button" data-align="left">Done</a>
+            <a data-click="galleryPicker.closeModal" data-role="button" data-align="left" class="btnClear-grey">Done</a>
         </div>
-	</div>
-	<div class="tempSearchBox">
-		<div class="appendSearch">
-			<span class="searchIcon"><img src="images/search.svg" /></span>
-			<input class="doubleAppendSearch clearable" placeholder="Search photo memories..." id="galleryPickerSearch" />
+		<div>
+			<div class="appendSearch">
+				<span class="searchIcon"><img src="images/search.svg" /></span>
+				<input type="text" class="doubleAppendSearch gg_mainSearchInput" placeholder="" id="galleryPickerSearch" />
+				<span class="enterSearch hidden"><a class="btnClear-grey"><img class="icon-sm" src="images/close.svg" /></a></span>
+			</div>
 		</div>
 	</div>
-
-	<div style="padding-top: 4px; padding-bottom: 6px; padding-left: 6px; text-align: center;">
-        <a  data-role="button" class="btnClearLine-grey-sm"  data-click="galleryPicker.setListView">List View</a>
-        <a  data-role="button" class="btnClearLine-grey-sm"  data-click="galleryPicker.setGridView">Grid View </a>
-    </div>
 
     <div>
         <ul id="galleryPicker-listview" class="list-inline" data-role="listview" data-click="galleryPicker.onGalleryClick" data-source="photoModel.photosDS" data-template="galleryPicker-template"></ul>
     </div>
+	<div class="footer" data-role="footer">
+		<a class="actionBtn secondary-100" data-role="button" data-click="galleryPicker.setView">
+			<p class="actionBtn-text">Cancel</p>
+			<img src="images/gallery-list.svg"/>
+		</a>
+	</div>
 
 </div>
 
@@ -575,7 +570,7 @@
 <script type="text/x-kendo-template" id="galleryPicker-template">
 	<div>
 		<div class="galleryImgBox">
-			<img class="galleryImg" src="#=thumbnailUrl#" />
+			<div class="galleryImg galleryImg-grid" style="background-image: url('#=thumbnailUrl#')"> </div>
 		</div>
 	</div>
 </script>
@@ -637,17 +632,63 @@
 <div data-role="view" data-title="ghostgram Editor" id="ghostEditor" data-init="ghostEditView.onInit" data-show="ghostEditView.onShow" style="width:100%; height: 100%; display: none;" >
 	<div data-role="header">
 		<div data-role="navbar">
-			<span data-role="view-title"></span>
-			<a data-role="button" data-click="ghostEditView.onDone" data-align="left" ><img src="images/close.svg" /></a>
-			<a data-role="button" data-click="ghostEditView.sendGhostEmail" data-align="right" >Send</a>
+			<span><img src="images/icon-mail.svg" class="icon-sm" /> ghostMail</span>
+			<a data-role="button" data-click="ghostEditView.onDone" data-align="left" class="btnClear-grey">Cancel</a>
+			<a data-role="button" data-click="ghostEditView.sendGhostEmail" data-align="right" class="btnClear">Send</a>
 		</div>
 	</div>
 
 	<div id="ghostEmailHeader">
-
+		<p class="helper" id="currentGhostEmail"></p>
 	</div>
 	<div id="ghostEmailwrapper" style="width: 100%; height:60%;">
 		<textarea id="ghostEmailEditor" contenteditable="true" rows="40" cols="80" autofocus></textarea>
+	</div>
+	<div class="messageMediaBar" id="editorGhostMail" style="display: block;">
+		<ul>
+			<li>
+				<a class="btnBar km-widget km-button" data-role="button" data-click="ghostEditView.toggleTool" data-tool="bold">
+					<span class="km-text">
+						<img src="images/icon-bold.svg" class="icon-bar-md km-image">
+					</span></a>
+			</li>
+			<li>
+				<a class="btnBar km-widget km-button" data-role="button" data-click="ghostEditView.toggleTool" data-tool="italic">
+					<span class="km-text">
+						<img src="images/icon-italic.svg" class="icon-bar-md km-image">
+					</span></a>
+			</li>
+			<li>
+				<a class="btnBar km-widget km-button" data-role="button" data-click="ghostEditView.toggleTool" data-tool="underline">
+					<span class="km-text">
+						<img src="images/icon-underline.svg" class="icon-bar-md km-image">
+					</span></a>
+			</li>
+			<li>
+				<a class="btnBar km-widget km-button" data-role="button" data-click="ghostEditView.toggleTool" data-tool="insertUnorderedList">
+					<span class="km-text">
+						<img src="images/icon-list.svg" class="icon-bar-md km-image">
+					</span></a>
+			</li>
+			<li>
+				<a class="btnBar km-widget km-button" data-role="button" data-click="ghostEditView.toggleTool" data-tool="indent">
+					<span class="km-text">
+						<img src="images/icon-indent.svg" class="icon-bar-md km-image">
+					</span></a>
+			</li>
+			<li>
+				<a class="btnBar km-widget km-button" data-role="button" data-click="ghostEditView.toggleTool" data-tool="outdent">
+					<span class="km-text">
+						<img src="images/icon-outdent.svg" class="icon-bar-md km-image">
+					</span></a>
+			</li>
+			<li>
+				<a class="btnBar km-widget km-button" data-role="button" data-click="ghostEditView.insertImage" data-tool="insertImage">
+					<span class="km-text">
+						<img src="images/icon-photo-dark.svg" class="icon-bar-md km-image">
+					</span></a>
+			</li>
+		</ul>
 	</div>
 
 
@@ -751,7 +792,7 @@
 		</h3>
 		<p id="profileStatusMessage" data-bind="text: statusMessage"></p>
 		<p id="profileLocation">
-			<a class="btnClear-light-sm" data-role="button">
+			<a class="btnClear-light-sm" data-role="button" data-click="userStatusView.gotoPlace">
 				<span>@</span>
 				<span data-bind="text: currentPlace"></span>
 			</a>
@@ -781,7 +822,7 @@
 					</div>
 				</div>
 			</li>
-			<li id="profileCheckInLi">
+			<li>
 				<a class="btnClear" data-role="button" data-click="userStatusView.openCheckIn">
 					<img src="images/icon-checkin-active.svg" class="icon-sm" /> Check In
 				</a>
@@ -804,7 +845,7 @@
 </div>
 
 <!-- option dialog modal -->
-<div data-role="modalview" id="modal-dialog" style="width: 80%; display:none;" class="appearance">
+<div data-role="modalview" id="modal-dialog" style="width: 90%; display:none; z-index: 1000;" class="appearance">
 	<div class="modal-dialog">
 	    <h3 id="modalTitle">Are you sure?</h3>
 	    <p id="modalDescription">This item will be deleted.</p>
@@ -1012,18 +1053,18 @@
 	<div>
 		<div class="list-options">
 			# if (data.isShared === undefined || data.isShared === false) {#
-			<a class="btnClear-grey" data-role="button" data-id="#: data.uuid #" data-click="placesView.editPlaceBtn">
+			<a class="btnClear-grey" data-role="button" data-uuid="#: data.uuid #" data-click="placesView.editPlaceBtn">
 				<img src="images/option-edit.svg" height="18" />
 				<p class="chat-option-selection">Edit</p>
 			</a>
 			# } #
-			<a class="btnClear-red" data-role="button" data-id="#: data.uuid #" data-click="placesView.deletePlaceBtn">
+			<a class="btnClear-red" data-role="button" data-uuid="#: data.uuid #" data-click="placesView.deletePlaceBtn">
 				<img src="images/icon-trash.svg" height="18" />
 				<p class="chat-option-selection"> Delete</p>
 			</a>
 		</div>
 		
-		<a class="list-box" data-id="#: data.uuid #">
+		<a class="list-box" data-uuid="#: data.uuid #">
 			<div>
 				# if(data.category === 'Location'){#
 					# if(data.alias !== "" && data.alias !== null){#
@@ -1871,7 +1912,7 @@
 
 
 <!-- Edit Contacts -->
-<div data-role="view" data-model="editContactView._activeContact" data-title="Edit Contact" id="editContact"  data-transition="slide" data-show="editContactView.onShow" data-init="editContactView.onInit" class="appearance" style="display: none;">
+<div data-role="view" id="editContact" data-model="editContactView._activeContact" data-title="Edit Contact"   data-transition="slide" data-show="editContactView.onShow" data-init="editContactView.onInit" class="appearance" style="display: none;">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
@@ -2251,7 +2292,7 @@
 
 		<div class="resultsBar">
 			<div class="results">
-				<span id="resultCount"></span> Results
+				<span id="resultCount"></span> Photos
 			</div>
 			<div class="photoDisplayView">
 				<ul data-role="buttongroup" data-index="0" data-select="galleryView.galleryActionView">
@@ -2287,9 +2328,8 @@
 
 	</div>
 	<ul data-role="actionsheet" id="galleryActions1" data-popup='{"direction": "left"}'>
-		<li><a data-action="channelView.messageCamera"> Phone Camera</a></li>
-		<li><a data-action="channelView.messagePhoto"> Phone Gallery</a></li>
-		<li><a data-action="channelView.messageGallery"> Memories Gallery</a></li>
+		<li><a data-action="galleryView.galleryCamera"> Phone Camera</a></li>
+		<li><a data-action="galleryView.galleryPhoto"> Phone Gallery</a></li>
 	</ul>
 
 </div>

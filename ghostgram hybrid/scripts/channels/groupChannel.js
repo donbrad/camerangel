@@ -13,6 +13,9 @@ var groupChannel = {
     userId : '',
     userName : '',
     userAlias : '',
+    messageDS: [],
+    nextFetchEnd : null,
+    channelFetchCallBack : null,
 
     close: function () {
         if (groupChannel.channelId !== null) {
@@ -37,7 +40,7 @@ var groupChannel = {
         groupChannel.thisUser.alias = alias;
         groupChannel.thisUser.phone = phoneNumber;  // Use this to look up new members (don't have userId therefore no contactUUID)
         groupChannel.users = [];
-
+        groupChannel.nextFetchEnd = null;
         groupChannel.users[userId] = groupChannel.thisUser;
 
         // Subscribe to our PubNub channel.
@@ -71,6 +74,7 @@ var groupChannel = {
         channelView.preprocessMessage(message);
 
         channelView.messagesDS.add(message);
+        channelModel.cacheGroupMessage(message);
         channelModel.updateLastAccess(channelView._channelId, null);
         if (message.data.photos !== undefined && message.data.photos.length > 0) {
             var selector = '#' + message.msgID + " img";
@@ -154,7 +158,7 @@ var groupChannel = {
         var currentTime =  ggTime.currentTime();
 
         APP.pubnub.uuid(function (msgID) {
-            var notificationString = "Chat : " + groupChannel.channelName ;
+            var notificationString = "Group Chat : " + groupChannel.channelName ;
             var thisMessage = {
                 msgID: msgID,
                 channelId : groupChannel.channelId,
@@ -164,6 +168,7 @@ var groupChannel = {
                         badge: 1,
                         'content-available' : 1
                     },
+                    senderId: userModel.currentUser.userUUID,
                     target: '#channel?channelId='+ groupChannel.channelId,
                     channelId: groupChannel.channelId,
                     isMessage: true,
@@ -173,6 +178,7 @@ var groupChannel = {
                     data : {
                         title: notificationString,
                         message: "Message from " + userModel.currentUser.name,
+                        senderId: userModel.currentUser.userUUID,
                         target: '#channel?channelId='+ groupChannel.channelId,
                         channelId: groupChannel.channelId,
                         isMessage: true,
@@ -221,22 +227,55 @@ var groupChannel = {
 
     },
 
+    getAllMessages:  function(timetoken) {
+        APP.pubnub.history({
+            start: timetoken,
+            channel: groupChannel.channelId,
+            callback: function(payload) {
+                var msgs = payload[0];
+                var start = payload[1];
+                var end = payload[2];
+                // if msgs were retrieved, do something useful with them
+                if (msgs != undefined && msgs.length > 0) {
+                    // Add messages to the cache
+                }
+                // if 100 msgs were retrieved, there might be more; call history again
+                if (msgs.length == 100)  {
+                    groupChannel.getAllMessages(start);
+                } else {
+
+                }
+            }
+        });
+    },
+
     getMessageHistory: function (callBack) {
-        var timeStamp = ggTime.lastMonth();
+        var channel = channelModel.findChannelModel(groupChannel.channelId);
+        var endTime = ggTime.currentTime() * 1000, lastTime = ggTime.lastMonth() * 1000;
+        groupChannel.channelFetchCallBack = callBack;
+
+        if (groupChannel.nextFetchEnd !== null) {
+            if (groupChannel.nextFetchEnd <= lastTime)
+                endTime = lastTime;
+            else
+                endTime = groupChannel.nextFetchEnd;
+        }
 
         APP.pubnub.history({
             channel: groupChannel.channelId,
-            end: timeStamp * 10000,
+            end: endTime.toString(),
             error: function (error) {
 
             },
             callback: function (messages) {
-                var clearMessageArray = [];
-                messages = messages[0];
-                messages = messages || [];
+                var messageList = messages[0];
+                var start = messages[1];
+                var end = messages[2];
+                //messages = messages || [];
 
+                groupChannel.nextFetchEnd = end;
                 if(callBack)
-                    callBack(messages);
+                    callBack(messageList);
             }
 
         });

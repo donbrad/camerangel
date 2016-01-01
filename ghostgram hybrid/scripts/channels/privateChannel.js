@@ -169,6 +169,7 @@ var privateChannel = {
         var contentData = data;
         var encryptMessage = '', encryptData = '';
         var currentTime =  ggTime.currentTime();
+
         if (text === undefined || text === null)
             text = '';
         encryptMessage = cryptico.encrypt(text, privateChannel.contactKey);
@@ -178,7 +179,7 @@ var privateChannel = {
             encryptData = null;
 
         APP.pubnub.uuid(function (msgID) {
-            var notificationString = "Private : " + userModel.currentUser.name;
+            var notificationString = "Private Chat: " + userModel.currentUser.name;
             var message = {
                 type: 'privateMessage',
                 recipient: recipient,
@@ -191,6 +192,7 @@ var privateChannel = {
                     },
                     target: '#channel?channelId=' + privateChannel.userId,
                     channelId : privateChannel.userId,
+                    senderId: userModel.currentUser.userUUID,
                     isMessage: true,
                     isPrivate: true
                 },
@@ -201,6 +203,7 @@ var privateChannel = {
                         target: '#channel?channelId=' + privateChannel.userId,
                         image: "icon",
                         channelId : privateChannel.userId,
+                        senderId: userModel.currentUser.userUUID,
                         isMessage: true,
                         isPrivate: true
                     }
@@ -261,7 +264,7 @@ var privateChannel = {
         var dataSource = userDataChannel.messagesDS;
         var queryCache = dataSource.filter();
         if (queryCache === undefined) {
-            queryCache = [];
+            queryCache = {};
         }
 
         privateChannel.last24Hours = ggTime.lastDay();
@@ -276,8 +279,8 @@ var privateChannel = {
 
         for(var i = 0; i < messages.length; i++) {
             var msg = messages[i];
-
-            clearMessageArray.push(msg);
+            if (!channelModel.isMessageRecalled(msg.msgID))
+                clearMessageArray.push(msg);
         }
 
         dataSource.filter(queryCache);

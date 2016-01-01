@@ -178,10 +178,10 @@ var homeView = {
             $('#checked-in-place').show(200);
             $('#modalview-locate-me').data('kendoMobileModalView').close();
 
-            APP.models.places.placesDS.add(item);
+           // APP.models.places.placesDS.add(item);
 
             userModel.currentUser.set('currentPlace', item.name);
-            userModel.currentUser.set('currentPlaceUUID', item.uuid);
+            userModel.currentUser.set('currentPlaceId', item.uuid);
         };
 
         // If the item has a uuid it means we've already added it,
@@ -213,10 +213,20 @@ var homeView = {
         $('#checked-in-place').hide(200);
 
         userModel.currentUser.set('currentPlace', '');
-        userModel.currentUser.set('currentPlaceUUID', '');
+        userModel.currentUser.set('currentPlaceId', '');
     },
 
+    clearNotifications : function (e) {
+        _preventDefault(e);
+        notificationModel.deleteAllNotifications();
+    },
 
+    dismissNotification : function (e) {
+        _preventDefault(e);
+        var uuid = e.sender.element[0].attributes['data-uuid'].value;
+
+        notificationModel.deleteNotificationById(uuid);
+    },
 
     onInit: function(e) {
         _preventDefault(e);
@@ -244,6 +254,8 @@ var homeView = {
 
     onShow: function (e) {
         _preventDefault(e);
+
+        notificationModel.processUnreadChannels();
 
         // hide search button and show gear
         $(".homeToggleSetting").removeClass("hidden");
@@ -307,6 +319,7 @@ var homeView = {
     },
 
     settingBigFont: function(e){
+        _preventDefault(e);
         userModel.currentUser.set("useLargeView", true);
 
         // Show sample size
@@ -316,10 +329,31 @@ var homeView = {
 
 
     settingRegFont: function(e){
+        _preventDefault(e);
         userModel.currentUser.set("useLargeView", false);
 
         // Show sample size
         $("#sampleChatSize").removeClass("userLgFontSize").addClass("chat-message-text").text("Regular Font Size");
+
+    },
+
+    handleNotificationAction : function (e) {
+        _preventDefault(e);
+
+        var uuid = e.sender.element[0].attributes['data-uuid'].value;
+
+        var notification = notificationModel.findNotificationModel(uuid);
+
+        if (notification !== undefined) {
+            var type = notification.type, href = notification.href;
+
+            if (type === notificationModel._unreadCount || type === notificationModel._newChat || type === notificationModel._newPrivate) {
+                // For unread messages, new chats (including private chats) the action is to go to the the chat....
+                APP.kendo.navigate(href);
+            } else if (type === notificationModel._deleteChat || type === notificationModel._deletePrivateChat) {
+                notificationModel.notificationDS.remove(notification);
+            }
+        }
 
     }
 };
@@ -331,23 +365,34 @@ var userStatusView = {
     _activeStatus : new kendo.data.ObservableObject(),
     _returnView : null,
     _modalId : "#modalview-profileStatus",
-    _profileStatusMax: 40,
+    _profileStatusMax: 35,
 
     _update : function () {
         var status = userStatusView._activeStatus, user = userModel.currentUser;
-        
-       	/// setting up user
+
+        status.set('currentPlaceId', user.currentPlaceId);
+        status.set('isCheckedIn', user.isCheckedIn);
+        status.set('currentPlace', user.currentPlace);
+        status.set('isAvailable', user.isAvailable);
+        status.set('statusMessage', user.statusMessage);
 
         // Set name/alias layout
         ux.formatNameAlias(user.name, user.alias, "#modalview-profileStatus");
-        $('#profileStatusMessage').text(user.get('statusMessage'));
+
 
         // Zero the status character count
         $("#profileStatusUpdate").val('');
         $("#statusCharCount").text(userStatusView._profileStatusMax);
-        /* Setup syncing for automatic update
-        userStatusView._activeStatus.unbind('change' , userStatusView.syncUserStatus);
-        */
+        $(".statusCharacterCount").css("color", "#979797");
+
+        if (user.isCheckedIn && user.currentPlaceId !== null) {
+            // hide location if the user is not checked in
+            $("#profileLocation, #checked-in-place").removeClass("hidden");
+
+        } else {
+            $("#profileLocation, #checked-in-place").addClass("hidden");
+        }
+
 
         // Set available
 		if(user.isAvailable){
@@ -361,33 +406,6 @@ var userStatusView = {
 			$("#currentAvailableTxt").text("available");
 		}
 
-		/// Setting up status
-
-        status.set('statusMessage', user.statusMessage);
-
-        if (user.isCheckedIn) {
-            status.set('currentPlace', user.currentPlace);
-        } else {
-            status.set('currentPlace','');
-        }
-
-        status.set('isAvailable', user.isAvailable);
-
-        // if there's a current checked in place -- select it in the list
-        if (user.currentPlaceUUID !== null && user.isCheckedIn) {
-
-        	$("#profileCheckOutLi").removeClass("hidden");
-        	$("#checkOut-text").text(user.currentPlace);
-
-        } else {
-            $('#profileCheckOutLi').addClass('hidden');
-        	// hide checkout if not checked in
-        	$("#checked-in-place").addClass("hidden");
-
-        	// hide checkin selection 
-        	$("#userStatusLocationBox").addClass("hidden");
-
-        }
 
     },
 
@@ -397,17 +415,6 @@ var userStatusView = {
 
         //Cache the current view
         userStatusView._returnView = APP.kendo.view().id;
-
-       // mobileNotify("Updating your location...");
-
-        if (userModel.currentUser.isCheckedIn && userModel.currentUser.currentPlaceUUID !== null) {
-            // hide location if the user is not checked in
-            $("#profileLocation, #checked-in-place").removeClass("hidden");
-        } else {
-            $("#profileLocation, #checked-in-place").addClass("hidden");
-        }
-
-        $(".statusCharacterCount").css("color", "#979797");
 
         mapModel.getCurrentAddress(function (isNew, address) {
             // Is this a new location
@@ -421,6 +428,14 @@ var userStatusView = {
         userStatusView._update();
 
         $(userStatusView._modalId).data("kendoMobileModalView").open();
+
+    },
+
+    openModalRestore : function (e) {
+        _preventDefault(e);
+
+        APP.kendo.navigate('#'+ userStatusView._returnView);
+        userStatusView.openModal();
 
     },
 
@@ -450,6 +465,14 @@ var userStatusView = {
 
     },
 
+    gotoPlace: function (e) {
+        _preventDefault(e);
+
+        var placeUUID = userModel.currentUser.currentPlaceId;
+        var placeId = LZString.compressToEncodedURIComponent(placeUUID);
+        APP.kendo.navigate("#placeView?place="+placeId+"&returnmodal=userstatus");
+    },
+
     openCheckIn : function (e) {
         _preventDefault(e);
 
@@ -460,7 +483,7 @@ var userStatusView = {
         })
     },
 
-    checkIn : function (e) {
+   /* checkIn : function (e) {
         _preventDefault(e);
 
         if (mapModel.currentPlaceId !== null) {
@@ -468,6 +491,8 @@ var userStatusView = {
             userModel.checkIn(mapModel.currentPlaceId);
             mapModel.checkIn(mapModel.currentPlaceId);
             mobileNotify("You're checked in!");
+
+            //userStatusView._update();
             $('#profileCheckOutLi').velocity("slideDown", {begin: function(element){
             	$(element).removeClass("hidden");
             }
@@ -476,19 +501,20 @@ var userStatusView = {
             mobileNotify("No place to check in to...");
         }
 
-    },
+    },*/
 
     checkOut : function (e) {
         _preventDefault(e);
 
-        $('#profileCheckInLi').removeClass('hidden');
-        $('#profileCheckOutLi').velocity("slideUp", {complete: function(element){
+       /* $('#profileCheckOutLi').velocity("slideUp", {complete: function(element){
         	$(element).addClass("hidden");
         	}
-    	});
+    	});*/
         userModel.checkOut();
         mapModel.checkOut();
-        $('#profileStatusCheckInPlace').text('');
+
+        userStatusView._update();
+       // $('#profileStatusCheckInPlace').text('');
     },
 
     syncUserStatus: function (e) {
@@ -637,41 +663,14 @@ var ghostEditView = {
         autosize($('#ghostEmailEditor'));
 
         $("#ghostEmailEditor").kendoEditor({
+            stylesheets:["styles/editor.css"],
             tools: [
                 "bold",
                 "italic",
                 "underline",
-                "justifyLeft",
-                "justifyCenter",
-                "justifyRight",
                 "insertUnorderedList",
                 "indent",
-                "outdent",
-                "createTable",
-                "fontSize",
-                {
-                    name: "insertImage",
-                    exec: function (e) {
-                        e.preventDefault();
-
-                        galleryPicker.openModal(function (photo) {
-
-                            photoModel.addPhotoOffer(photo.photoId, channelView._channelId,  photo.thumbnailUrl, photo.imageUrl, true);
-
-                            var url = photo.thumbnailUrl;
-                            if (photo.imageUrl !== undefined && photo.imageUrl !== null)
-                                url = photo.imageUrl;
-
-                            $('#ghostEmailEditor').data("kendoEditor").paste('<div style="max-width: 50%; max-height: 50%;>" <img src="'+ url +'"/></div>', {split: true});
-
-                           // channelView.showChatImagePreview(url);
-                        });
-                       /* modalGalleryView.openModal(function(imageUrl){
-                         $('#ghostEmailEditor').data("kendoEditor").paste('<div style="max-width: 50%; max-height: 50%;>" <img src="'+imageUrl+'"/></div>', {split: true});
-                         });*/
-                    }
-
-                }
+                "outdent"
             ]
         });
     },
@@ -722,9 +721,7 @@ var ghostEditView = {
     },
 
     closeModal : function (e) {
-
         _preventDefault(e);
-
         $('#ghostEditModal').data('kendoMobileModalView').close();
         if (ghostEditView._callback  !== null) {
             ghostEditView._callback();
@@ -757,6 +754,41 @@ var ghostEditView = {
             });
         }
 
+    },
+    toggleTool: function(e){
+        var tool = e.button[0].dataset['tool'];
+
+        var editor = $("#ghostEmailEditor").data("kendoEditor");
+        editor.exec(tool);
+
+        // If a togglable tool, reflect state
+        if (tool !== 'indent' && tool !== 'outdent'){
+
+            var toolState = editor.state(tool);
+            var $currentBtn = $(e.target[0]);
+            var $currentBtnImg = $currentBtn.closest("img");
+
+            if(toolState){
+                $currentBtn.addClass("activeTool");
+            } else {
+                $currentBtn.removeClass("activeTool");
+            }
+
+        }
+    },
+    insertImage: function(e) {
+        galleryPicker.openModal(function (photo) {
+
+            photoModel.addPhotoOffer(photo.photoId, channelView._channelId, photo.thumbnailUrl, photo.imageUrl, true);
+
+            var url = photo.thumbnailUrl;
+            if (photo.imageUrl !== undefined && photo.imageUrl !== null){
+                url = photo.imageUrl;
+            }
+            var editor = $('#ghostEmailEditor').data("kendoEditor");
+            // Image styles are controled via editor.less
+            editor.paste('<div class="img-sm"> <img src="' + url + '"/></div>', {split: true});
+        });
     }
 };
 
@@ -955,7 +987,7 @@ var signUpView = {
                             user.set("alias", alias);
                             user.set("aliasPublic", "ghostgram user");
                             user.set("currentPlace", "");
-                            user.set("currentPlaceUUID", "");
+                            user.set("currentPlaceId", "");
                             user.set('photo', null);
                             user.set('aliasPhoto', null);
                             user.set("isAvailable", true);
@@ -993,7 +1025,7 @@ var signUpView = {
                                     userModel.currentUser.set('phone', user.get('phone'));
                                     userModel.currentUser.set('alias', user.get('alias'));
                                     userModel.currentUser.set('currentPlace', user.get('currentPlace'));
-                                    userModel.currentUser.set('currentPlaceUUID', user.get('currentPlaceUUID'));
+                                    userModel.currentUser.set('currentPlaceId', user.get('currentPlaceId'));
                                     userModel.currentUser.set('photo', user.get('photo'));
                                     userModel.currentUser.set('isAvailable', user.get('isAvailable'));
                                     userModel.currentUser.set('isVisible', user.get('isVisible'));
@@ -1243,7 +1275,7 @@ var signInView = {
                 userModel.currentUser.set('isPhotoStored', userModel.parseUser.get('isPhotoStored'));
                 userModel.currentUser.set('saveToPhotoAlbum', userModel.parseUser.get('saveToPhotoAlbum'));
                 userModel.currentUser.set('currentPlace', userModel.parseUser.get('currentPlace'));
-                userModel.currentUser.set('currentPlaceUUID', userModel.parseUser.get('currentPlaceUUID'));
+                userModel.currentUser.set('currentPlaceId', userModel.parseUser.get('currentPlaceId'));
                 userModel.currentUser.set('photo', userModel.parseUser.get('photo'));
                 userModel.currentUser.set('aliasPublic', userModel.parseUser.get('aliasPublic'));
                 userModel.currentUser.set('userUUID', userModel.parseUser.get('userUUID'));
@@ -1289,7 +1321,7 @@ var signInView = {
 
                 if (phoneVerified) {
                     deviceModel.setAppState('phoneVerified', true);
-                    notificationModel.deleteNotification('phoneVerified');
+                    notificationModel.deleteNotificationsByType(notificationModel._verifyPhone, 0);
                 } else {
 
                     mobileNotify("Please verify your phone number");

@@ -19,19 +19,65 @@ var notificationModel = {
     _memberStatus : 'New Member Status',
     _deleteChat : 'Delete Chat',
     _deletePrivateChat : 'Delete Private Chat',
+    _system: 'ghostgrams',
+    _verifyPhone : 'Verify Phone',
+    _verifyEmail : 'Verify Email',
+
 
     notificationDS: new kendo.data.DataSource({
-        offlineStorage: "notifications-offline",
+        offlineStorage: "notifications",
         sort: {
             field: "date",
             dir: "desc"
         }
     }),
 
-    Notification: function(type,  id, title, date, description, actionTitle, action, href, dismissed, dismissable) {
-            this.uuid = new uuid.v4(),
-            this.type = type ? type : 'system',
-                this.id = id ? id : null,
+    findNotification : function (type, id) {
+        var query = [
+            { field: "type", operator: "eq", value: type },
+            { field: "id", operator: "gte", value: 0 }
+        ];
+
+    },
+
+    queryNotification : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = notificationModel.notificationDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var item = view[0];
+
+        dataSource.filter(cacheFilter);
+
+        return(item);
+    },
+
+    queryNotifications : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = notificationModel.notificationDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+
+       // var contact = view[0].items[0];
+        dataSource.filter(cacheFilter);
+
+        return(view);
+    },
+
+    Notification: function(type, id, title, date, description, actionTitle, action, href, dismissed, dismissable) {
+            this.uuid = uuid.v4(),
+            this.type = type ? type : notificationModel._system,
+            this.privateId = id ? id : null,
             this.title = title ? title : '',
             this.actionTitle = actionTitle ? actionTitle : '',
             this.action = action ? action : null,
@@ -45,6 +91,7 @@ var notificationModel = {
     newNotification: function(type, id, title, date, description, actionTitle, action, href, dismissable) {
         var notification = new notificationModel.Notification(type, id, title, date, description, actionTitle, action, href, dismissable);
         notificationModel.notificationDS.add(notification);
+        return(notification);
     },
 
     addAppNotification : function () {
@@ -61,7 +108,7 @@ var notificationModel = {
     },
 
     addVerifyPhoneNotification : function () {
-        this.newNotification('system', 'Please Verify Phone', null, "Please verify your mobile phone", "Verify", launchVerifyPhone , null, false);
+        this.newNotification(notificationModel._verifyPhone, 0, 'Please Verify Phone', null, "Please verify your mobile phone", "Verify", launchVerifyPhone , null, false);
     },
 
     addUnreadNotification : function (channelId, channelName, unreadCount) {
@@ -136,32 +183,78 @@ var notificationModel = {
     },
 
     findNotificationModel: function (uuid) {
-        var dataSource = notificationModel.notificationDS;
+        return (notificationModel.queryNotification({ field: "uuid", operator: "eq", value: uuid }));
+     /*   var dataSource = notificationModel.notificationDS;
         dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
         var view = dataSource.view();
         var contact = view[0];
         dataSource.filter([]);
-        return(contact);
+        return(contact);*/
     },
 
-    deleteNotification: function (uuid) {
-        var dataSource = notificationModel.notificationDS;
-        dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
-        var view = dataSource.view();
-        var notification = view[0];
-        dataSource.filter([]);
+    updateUnreadNotification : function (channelId, channelName, unreadCount) {
+        var notObj = notificationModel.findNotificationByPrivateId(channelId);
+
+        if (notObj === undefined) {
+            notificationModel.addUnreadNotification(channelId, channelName, unreadCount);
+        } else {
+            if (unreadCount === undefined || unreadCount === 0) {
+                notificationModel.notificationDS.remove(notObj);
+                notificationModel.notificationDS.sync();
+            } else {
+                notObj.set('unreadCount', unreadCount);
+            }
+        }
+
+    },
+
+    processUnreadChannels : function () {
+        // app is resuming / becoming active -- add unread notifications
+        var channels = channelModel.getUnreadChannels();
+
+        for (var i=0; i<channels.length; i++) {
+            var channel = channels[i];
+            if (channel.unreadCount === undefined)
+                channel.unreadCount = 0;
+
+            notificationModel.updateUnreadNotification(channel.channelId, channel.name, channel.unreadCount);
+        }
+    },
+
+
+    findNotificationByPrivateId : function (privateId) {
+        return (notificationModel.queryNotification({ field: "privateId", operator: "eq", value: privateId }));
+    },
+
+    deleteAllNotifications : function () {
+        notificationModel.notificationDS.data([]);
+        notificationModel.notificationDS.sync();
+    },
+
+    deleteNotificationsByType : function (notificationType, id) {
+        var query = [{ field: "type", operator: "eq", value: notificationType }];
+
+        if (id !== undefined && id !== null) {
+            query = [
+                { field: "type", operator: "eq", value: notificationType },
+                { field: "privateId", operator: "eq", value: id }
+            ];
+        }
+        var list = notificationModel.queryNotifications(query);
+
+        for (var i=0; i<list.length; i++) {
+            var item = list[i];
+            notificationModel.deleteNotificationById(item.uuid);
+        }
+    },
+
+    deleteNotificationById: function (uuid) {
+        var notification = notificationModel.findNotificationModel(uuid);
         // Does this notification exist?  if not, just return
         if (notification === undefined)
             return;
-        var data = deviceModel.state.userNotifications;
-        for(var i = 0; i < data.length; i++) {
-            if(data[i].uuid == uuid) {
-                data.splice(i, 1); 
-                break;
-            }
-        }
-        deviceModel.setAppState('userNotifications', JSON.stringify(data));
-        dataSource.remove(notification);
+
+        notificationModel.notificationDS.remove(notification);
     }
 
 

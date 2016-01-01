@@ -132,17 +132,13 @@ var placesModel = {
     },
 
     matchLocation: function (lat, lng) {
-
-        /*if (!placesModel.placesFetched) {
-            return([]);
-        }*/
-
-        var placesData = placesModel.placesDS.data();
+        var length = placesModel.placesDS.total();
 
         var matchArray = [];
-        for (var i=0; i< placesData.length; i++){
-            if (placesModel.inRadius(lat, lng, placesData[i].lat,placesData[i].lng, placesModel._radius)){
-                matchArray.push(placesData[i]);
+        for (var i=0; i< length; i++){
+            var place = placesModel.placesDS.at(i);
+            if (placesModel.inRadius(lat, lng, place.lat,place.lng, placesModel._radius)){
+                matchArray.push(place);
             }
         }
 
@@ -343,22 +339,28 @@ var placesModel = {
             placeParse.set('placeChatId', placeChatguid);
         }
 
+        var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, place.get('lat'), place.get('lng'));
+
+
+
+        // Get a json object to add to kendo (strip the parse specific stuff)
+        var placeObj = placeParse.toJSON();
+        // update the distance value for the local object...
+        placeObj.distance = distance.toFixed(2);
+        placeObj.isDirty = true;
+        placesModel.placesDS.add(placeObj);
+        placesModel.placesDS.sync();
+
+        if (callback !== undefined) {
+            callback(placeObj);
+        }
+
         placeParse.save(null, {
             success: function(placeIn) {
-                // Execute any logic that should take place after the object is saved.
-
-                var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, place.get('lat'), place.get('lng'));
-
-                // update the distance value for the local object...
-                placeIn.set('distance',distance.toFixed(2));
-
-                // Get a json object to add to kendo (strip the parse specific stuff)
-                var placeObj = placeIn.toJSON();
-                placesModel.placesDS.add(placeObj);
-
-                if (callback !== undefined) {
-                    callback(placeObj);
-                }
+                // Set the needs sync (isDirty flag to false)
+                var placeInuuid = placeIn.get('uuid');
+                var place = placesModel.getPlaceModel(placeInuuid);
+                place.set('isDirty', false);
 
 
             },
@@ -372,9 +374,9 @@ var placesModel = {
     },
 
     deletePlace : function (placeId) {
-        var uuid = placeId;
 
-        var place = placesModel.queryPlace({field: "uuid", operator: "eq", value: uuid});
+
+        var place = placesModel.queryPlace({field: "uuid", operator: "eq", value: placeId});
 
         if (place !== undefined) {
 
@@ -389,11 +391,11 @@ var placesModel = {
                 if (place.placeChatId !== null) {
                     channelModel.deleteChannel(place.placeChatId, false);
                 }
-                var dataSource = placesModel.placesDS;
-                dataSource.remove(place);
+                var placeObj = place.toJSON();
+                placesModel.placesDS.remove(place);
 
                 // Delete the parse object directly
-                deleteParseObject('places', "uuid", uuid);
+                deleteParseObject('places',"uuid", placeId);
             }
 
         }

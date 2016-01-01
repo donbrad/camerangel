@@ -27,6 +27,7 @@ var deviceModel = {
         hasContacts: false,
         hasChannels: false,
         hasPrivateChannels: false,
+        parseSyncComplete: false,
         hasPlaces: false,
         hasPhotos: false,
         introFetched: false,
@@ -88,6 +89,7 @@ var deviceModel = {
         deviceModel.state.isDeviceRegistered = false;
         deviceModel.state.devicePushEnabled = false;
         deviceModel.state.hasAccount = false;
+        deviceModel.state.parseSyncComplete = false;
 
         // Reset App and User channel timestamps (should be rare on actual devices)
         localStorage.setItem('ggUserDataTimeStamp', 0);
@@ -108,6 +110,8 @@ var deviceModel = {
         var channels = deviceModel.state.hasChannels, photos = deviceModel.state.hasPhotos, contacts = deviceModel.state.hasContacts ;
 
         if (channels && photos && contacts) {
+
+            deviceModel.state.parseSyncComplete = true;
 
             if (!deviceModel.state.pubnubInit) {
                 userModel.initPubNub();
@@ -149,14 +153,11 @@ var deviceModel = {
 
     onResume: function() {
        deviceModel.setAppState('inBackground', false);
-        // app is resuming / becoming active -- add unread notifications
-        var channels = channelModel.getUnreadChannels();
 
-        for (var i=0; i<channels.length; i++) {
-            var channel = channels[i];
-
-            notificationModel.addUnreadNotification(channel.channelId, channel.name, channel.unreadCount);
+        if (deviceModel.state.parseSyncComplete) {
+            notificationModel.processUnreadChannels();
         }
+
     },
 
     onOnline: function() {
