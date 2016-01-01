@@ -2470,19 +2470,25 @@
 					<input type="search"  data-bind="value: description"/>
 				</label>
 			</li>
+
 			<li>
-				<label> Date / Time
+				<label> When
 					<input id="modalActionMeeting-datetimepicker"/>
 				</label>
 			</li>
 			<li>
-				<label> Location
-					<input type="search"  data-bind="value: location"/>
+				<label> When is flexible
+					<input type="checkbox"  data-role="switch" data-bind="checked: timeFlexible"/>
 				</label>
 			</li>
 			<li>
-				<label> Date / Time is flexible
-					<input type="checkbox"  data-role="switch" data-bind="checked: timeFlexible"/>
+				<label> Location
+					<input type="search"  id="modalActionMeeting-placesearch"/>
+				</label>
+			</li>
+			<li>
+				<label> Location is flexible
+					<input type="checkbox"  data-role="switch" data-bind="checked: placeFlexible"/>
 				</label>
 			</li>
 		</ul>

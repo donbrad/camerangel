@@ -14,6 +14,19 @@ var modalActionMeeting = {
         $("#modalActionMeeting-datetimepicker").kendoDateTimePicker({
             value: this._date
         });
+
+        $("#modalActionMeeting-placesearch").kendoAutoComplete({
+            dataSource: placesView.placeListDS,
+            dataTextField: "name",
+            dataValueField: "uuid",
+            select: function(e) {
+                var item = e.item;
+                var text = item.text();
+                // Use the selected item or its text
+            },
+            filter: "startswith",
+            placeholder: "Select location... "
+        });
     },
 
     initActiveObject : function () {
