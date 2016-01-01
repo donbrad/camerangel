@@ -10,6 +10,7 @@ var modalActionMeeting = {
 
     onInit: function (e) {
         _preventDefault(e);
+
         $("#actionMeeting-datetimepicker").kendoDateTimePicker({
             value: this._date
         });
