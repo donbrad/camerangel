@@ -1948,6 +1948,8 @@ var channelView = {
     processActionTag : function (tagArray, tagList) {
         var actionTag = tagArray[0].toLowerCase();
         switch (tagList[0].type) {
+            case 'activity':
+                break;
             case 'meeting':
                 break;
             case 'flight' :
@@ -1967,6 +1969,8 @@ var channelView = {
             case 'time' :
                 break;
             case 'tvshow' :
+                break;
+            case 'tvmovie' :
                 break;
 
         }
@@ -2122,7 +2126,7 @@ var channelView = {
 
     messageCalendar : function (e) {
         _preventDefault(e);
-        mobileNotify("Chat Calendar isn't wired up yet");
+       modalActionMeeting.openModal(null);
     },
 
     messageEvent : function (e) {
