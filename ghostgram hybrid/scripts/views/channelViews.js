@@ -1900,10 +1900,91 @@ var channelView = {
 
     },
 
+
     // Process a tag recognized by the editor
     processTag : function (tagString) {
+        var tagTokens = tagString.split(' ');
+
+        var tagList = smartObject.findTerm(tagTokens[0]);
+        if (tagList !== undefined) {
+            switch (tagList[0].category) {
+
+                case 'photo' :
+                    channelView.processPhotoTag(tagTokens);
+                    break;
+                case 'action' :
+                    channelView.processActionTag(tagTokens, tagList);
+                    break;
+                case 'calendar' :
+                    channelView.processCalendarTag(tagTokens, tagList);
+                    break;
+
+            }
+        }
 
     },
+
+    processPhotoTag : function (tagArray, tagList) {
+
+        var photoTag = tagArray[0].toLowerCase();
+
+        switch (tagArray[0]) {
+            case  'title' :
+                    var titleArray = tagArray.shift(), titleString = titleArray.join(' ');
+                break;
+
+            case  'description' :
+                var descArray = tagArray.shift(), descString = descArray.join(' ');
+                break;
+
+            case  'tags' :
+                var tagArray = tagArray.shift(), tagString = tagArray.join(' ');
+                break;
+
+        }
+
+    },
+
+    processActionTag : function (tagArray, tagList) {
+        var actionTag = tagArray[0].toLowerCase();
+        switch (tagList[0].type) {
+            case 'activity':
+                break;
+            case 'meeting':
+                break;
+            case 'flight' :
+                break;
+            case 'event' :
+                break;
+            case 'datejs' :
+                break;
+            case 'day' :
+                break;
+            case 'month' :
+                break;
+            case 'movie' :
+                break;
+            case 'movies' :
+                break;
+            case 'time' :
+                break;
+            case 'tvshow' :
+                break;
+            case 'tvmovie' :
+                break;
+
+        }
+
+    },
+
+    processCalendarTag : function (tagArray, tagList) {
+        var calendarTag = tagArray[0].toLowerCase();
+        var regexTime = /^([0]\d|[1][0-2]):([0-5]\d)\s?(?:AM|PM)$/i;
+
+
+
+    },
+
 
     messageRecall: function (e) {
         _preventDefault(e);
@@ -2013,7 +2094,7 @@ var channelView = {
 
             channelView._tagEnd = range.endOffset;
             var text = editor.value();
-            var tagString = text.substring(channelView._tagStart, channelView._tagEnd);
+            var tagString = text.substring(channelView._tagStart+1, channelView._tagEnd);
             mobileNotify("Smart Object: will process " + tagString);
             channelView.processTag(tagString);
             channelView._insertTag = false;
@@ -2045,7 +2126,7 @@ var channelView = {
 
     messageCalendar : function (e) {
         _preventDefault(e);
-        mobileNotify("Chat Calendar isn't wired up yet");
+       modalActionMeeting.openModal(null);
     },
 
     messageEvent : function (e) {
