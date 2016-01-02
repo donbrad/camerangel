@@ -67,13 +67,15 @@ var modalActionMeeting = {
                 value: this._date
             });*/
 
-            $("#modalActionMeeting-datetime").on('input', function (e) {
+
+           /* $("#modalActionMeeting-datetime").on('input', function (e) {
                 var value = $("#modalActionMeeting-date").val();
 
-                if (value.length > 4) {
+                if (value.length >= 5) {
+                    var dataIn = Date.parse(value);
 
                 }
-            });
+            });*/
 
             $("#modalActionMeeting-placesearch").kendoAutoComplete({
                 dataSource: placesModel.placesDS,
@@ -103,6 +105,7 @@ var modalActionMeeting = {
             modalActionMeeting.setActiveObject(actionObj);
         }
 
+        $("#modalActionMeeting-datetime").val(modalActionMeeting.activeObject.get('date'));
         $("#modalview-actionMeeting").data("kendoMobileModalView").open();
     },
 
