@@ -105,7 +105,7 @@ var modalActionMeeting = {
             modalActionMeeting.setActiveObject(actionObj);
         }
 
-        $("#modalActionMeeting-datetime").val(modalActionMeeting.activeObject.get('date'));
+        $("#modalActionMeeting-datetime").val(modalActionMeeting._activeObject.get('date'));
         $("#modalview-actionMeeting").data("kendoMobileModalView").open();
     },
 
