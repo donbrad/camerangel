@@ -98,7 +98,7 @@ var modalActionMeeting = {
             $("#modalActionMeeting-placesearch").on('input', function (e) {
                 var placeStr =  $("#modalActionMeeting-placesearch").val(), keycode = e.keyCode;
                 if (placeStr.length > 6 && keycode === 32) {
-                    $("#modalActionMeeting.placeSearch").removeClass('hidden');
+                    $("#modalActionMeeting.placesearchicon").removeClass('hidden');
                 }
 
             });
@@ -112,7 +112,7 @@ var modalActionMeeting = {
             modalActionMeeting.setActiveObject(actionObj);
         }
 
-        $("#modalActionMeeting.placeSearch").addClass('hidden');
+        $("#modalActionMeeting.placesearchicon").addClass('hidden');
         $("#modalActionMeeting-datetime").val(modalActionMeeting._activeObject.get('date'));
         $("#modalview-actionMeeting").data("kendoMobileModalView").open();
     },
