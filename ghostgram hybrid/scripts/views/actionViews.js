@@ -62,12 +62,22 @@ var modalActionMeeting = {
 
     openModal: function (actionObj) {
         if (!modalActionMeeting._isInited) {
-            $("#modalActionMeeting-datetimepicker").kendoDateTimePicker({
+
+           /* $("#modalActionMeeting-datetimepicker").kendoDateTimePicker({
                 value: this._date
+            });*/
+
+            $("#modalActionMeeting-datetime").on('input', function (e) {
+                var value = $("#modalActionMeeting-date").val();
+
+                if (value.length > 4) {
+
+                }
             });
 
             $("#modalActionMeeting-placesearch").kendoAutoComplete({
                 dataSource: placesModel.placesDS,
+                ignoreCase: true,
                 dataTextField: "name",
                 dataValueField: "uuid",
                 select: function(e) {
@@ -79,6 +89,10 @@ var modalActionMeeting = {
                 placeholder: "Select location... "
             });
 
+            $("#modalActionMeeting-placesearch").on('input', function (e) {
+                var placeStr =  $("#modalActionMeeting-placesearch").val();
+
+            });
             modalActionMeeting._isInited = true;
         }
         modalActionMeeting._date = new Date();
