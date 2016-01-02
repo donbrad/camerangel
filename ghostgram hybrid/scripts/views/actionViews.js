@@ -86,6 +86,12 @@ var modalActionMeeting = {
                 ignoreCase: true,
                 dataTextField: "name",
                 dataValueField: "uuid",
+                change: function (e) {
+                    var placeStr =  $("#modalActionMeeting-placesearch").val(), keycode = e.keyCode;
+                    if (placeStr.length > 6 && keycode === 32) {
+                        $("#modalActionMeeting.placesearchicon").removeClass('hidden');
+                    }
+                },
                 select: function(e) {
                     var item = e.item;
                     var text = item.text();
@@ -95,13 +101,13 @@ var modalActionMeeting = {
                 placeholder: "Select location... "
             });
 
-            $("#modalActionMeeting-placesearch").on('input', function (e) {
+            /*$("#modalActionMeeting-placesearch").on('input', function (e) {
                 var placeStr =  $("#modalActionMeeting-placesearch").val(), keycode = e.keyCode;
                 if (placeStr.length > 6 && keycode === 32) {
                     $("#modalActionMeeting.placesearchicon").removeClass('hidden');
                 }
 
-            });
+            });*/
             modalActionMeeting._isInited = true;
         }
         modalActionMeeting._date = new Date();
