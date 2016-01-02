@@ -59,6 +59,10 @@ var modalActionMeeting = {
 
     },
 
+    placeSearch : function (e) {
+        _preventDefault(e);
+
+    },
 
     openModal: function (actionObj) {
         if (!modalActionMeeting._isInited) {
@@ -92,7 +96,10 @@ var modalActionMeeting = {
             });
 
             $("#modalActionMeeting-placesearch").on('input', function (e) {
-                var placeStr =  $("#modalActionMeeting-placesearch").val();
+                var placeStr =  $("#modalActionMeeting-placesearch").val(), keycode = e.keyCode;
+                if (placeStr.length > 6 && keycode === 32) {
+                    $("#modalActionMeeting.placeSearch").removeClass('hidden');
+                }
 
             });
             modalActionMeeting._isInited = true;
@@ -105,6 +112,7 @@ var modalActionMeeting = {
             modalActionMeeting.setActiveObject(actionObj);
         }
 
+        $("#modalActionMeeting.placeSearch").addClass('hidden');
         $("#modalActionMeeting-datetime").val(modalActionMeeting._activeObject.get('date'));
         $("#modalview-actionMeeting").data("kendoMobileModalView").open();
     },
