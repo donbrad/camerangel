@@ -2453,20 +2453,20 @@
 <div data-role="modalview" id="modalview-actionMeeting" style="width: 100%;  height: 100%; display: none;"  data-model="modalActionMeeting._activeObject" data-init="modalActionMeeting.onInit" data-open="modalActionMeeting.onShow" class="appearance">
 	<div data-role="header">
 		<div data-role="navbar">
-			<span data-bind="text: title">Meeting</span>
+			<span>Smart Event</span>
 			<a data-click="modalActionMeeting.onCancel" data-role="button"  class="btnClear-grey" data-align="left">Cancel</a>
 
 		</div>
 	</div>
 	<form>
 		<ul data-role="listview" data-style="inset">
-			<li>
-				<label> Title
+			<li style="font-size: 18px;">
+				<label>
 					<input type="search"  data-bind="value: title" />
 				</label>
 			</li>
 			<li>
-				<label> Notes
+				<label  style="font-size: 12px;">
 					<input type="search"  data-bind="value: description"/>
 				</label>
 			</li>
