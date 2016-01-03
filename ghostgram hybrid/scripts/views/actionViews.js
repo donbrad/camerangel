@@ -8,6 +8,7 @@ var modalActionMeeting = {
     _activeObject : new kendo.data.ObservableObject(),
     _date : new Date(),
     _isInited : false,
+    _eventList :[],
 
     onInit: function (e) {
         _preventDefault(e);
@@ -81,6 +82,25 @@ var modalActionMeeting = {
                 }
             });*/
 
+            modalActionMeeting._eventList = smartObject.getActionNames();
+
+            $("#modalActionMeeting-title").kendoAutoComplete({
+                dataSource: modalActionMeeting._eventList,
+                ignoreCase: true,
+                change: function (e) {
+                    var eventStr =  $("#modalActionMeeting-title").val();
+
+                },
+                select: function(e) {
+                    var event = e.item;
+
+                    // Use the selected item or its text
+                },
+                filter: "startswith",
+                placeholder: "Select Event... "
+            });
+
+
             $("#modalActionMeeting-placesearch").kendoAutoComplete({
                 dataSource: placesModel.placesDS,
                 ignoreCase: true,
@@ -93,9 +113,8 @@ var modalActionMeeting = {
                     }
                 },
                 select: function(e) {
-                    var item = e.item;
-                    var text = item.text();
-                    // Use the selected item or its text
+                    var place = e.item;
+
                 },
                 filter: "startswith",
                 placeholder: "Select location... "

@@ -133,6 +133,16 @@ var smartObject = {
 
     },
 
+    getActionNames : function () {
+
+        var nameList = [], results = smartObject.queryTerm({ field: "categoy", operator: "eq", value: 'action' });
+
+        for (var i=0; i<results.length; i++) {
+            nameList.push(results[i].term);
+        }
+
+        return(nameList);
+    },
 
     findTerm: function (termIn) {
         var target = termIn.toLowerCase();
