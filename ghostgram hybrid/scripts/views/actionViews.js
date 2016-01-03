@@ -88,7 +88,7 @@ var modalActionMeeting = {
                 dataValueField: "uuid",
                 change: function (e) {
                     var placeStr =  $("#modalActionMeeting-placesearch").val(), keycode = e.keyCode;
-                    if (placeStr.length > 6 && keycode === 32) {
+                    if (placeStr.length > 6) {
                         $("#modalActionMeeting.placesearchicon").removeClass('hidden');
                     }
                 },
