@@ -19,7 +19,7 @@ var modalActionMeeting = {
     initActiveObject : function () {
         var thisObj = modalActionMeeting._activeObject;
 
-        thisObj.set('title', 'Meeting Invite');
+        thisObj.set('title', null);
         thisObj.set('action', null);
         thisObj.set('descrption', null);
         thisObj.set('address', null);
@@ -89,10 +89,14 @@ var modalActionMeeting = {
                 ignoreCase: true,
                 change: function (e) {
                     var eventStr =  $("#modalActionMeeting-title").val();
+                    modalActionMeeting._activeObject.set('title', eventStr);
 
                 },
                 select: function(e) {
                     var event = e.item;
+                    modalActionMeeting._activeObject.set('action', event);
+
+
 
                     // Use the selected item or its text
                 },
