@@ -63,24 +63,15 @@ var modalActionMeeting = {
     placeSearch : function (e) {
         _preventDefault(e);
 
+        var placeStr =  $("#modalActionMeeting-placesearch").val();
+
+        APP.kendo.navigate('#'+"searchPlaces?query="+placeStr);
+
     },
 
     openModal: function (actionObj) {
         if (!modalActionMeeting._isInited) {
 
-           /* $("#modalActionMeeting-datetimepicker").kendoDateTimePicker({
-                value: this._date
-            });*/
-
-
-           /* $("#modalActionMeeting-datetime").on('input', function (e) {
-                var value = $("#modalActionMeeting-date").val();
-
-                if (value.length >= 5) {
-                    var dataIn = Date.parse(value);
-
-                }
-            });*/
 
             modalActionMeeting._eventList = smartObject.getActionNames();
 
@@ -94,7 +85,8 @@ var modalActionMeeting = {
                 },
                 select: function(e) {
                     var event = e.item;
-                    modalActionMeeting._activeObject.set('action', event);
+                    var actionStr = e.item[0].textContent;
+                    modalActionMeeting._activeObject.set('action', actionStr);
 
 
 
@@ -111,7 +103,8 @@ var modalActionMeeting = {
                 dataTextField: "name",
                 dataValueField: "uuid",
                 change: function (e) {
-                    var placeStr =  $("#modalActionMeeting-placesearch").val(), keycode = e.keyCode;
+                    // event fired on blur -- if a place wasn't selected, need to do a nearby search
+                    var placeStr =  $("#modalActionMeeting-placesearch").val();
                     if (placeStr.length > 6) {
                         $("#modalActionMeeting.placesearchicon").removeClass('hidden');
                     }

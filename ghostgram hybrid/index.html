@@ -1483,8 +1483,8 @@
 	</div>
 
 	<ul data-role="actionsheet" id="newMessageActions" data-popup='{"direction": "left"}'>
-		<li><a data-action="channelView.messageCalendar"> Add Smart Event</a></li>
-		<li><a data-action="channelView.messageEvent"> Add Smart Flight</a></li>
+		<li><a data-action="channelView.messageCalendar"> Add Event</a></li>
+		<li><a data-action="channelView.messageFlight"> Add Flight</a></li>
 		<li><a data-action="channelView.messageMovie"> Add Movie</a></li>
 		<li><a data-action="channelView.messageMusic"> Add Music</a></li>
 	</ul>
@@ -2498,6 +2498,33 @@
 		<a class="btnFull-modal btnPrimary" data-role="button" data-click="modalActionMeeting.onDone">Save</a>
 	</div>
 </div>
+
+<!-- Find Place -->
+<div data-role="view" data-title="Search Places" id="searchPlaces" data-layout="main"  data-show="searchPlacesView.onShow" data-init="searchPlacesView.onInit" data-before-hide="searchPlacesView.onHide" data-transition="slide:up">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span data-role="view-title"></span>
+			<a data-role="button" data-click="searchPlacesView.onDone" data-align="left" >
+				<img src="images/nav-back.svg" />
+			</a>
+		</div>
+	</div>
+
+
+	<div class="tempSearchBox">
+		<div class="appendSearch">
+			<span class="searchIcon"><img src="images/search.svg" /></span>
+			<input class="doubleAppendSearch"  placeholder="Search nearby ..." id="searchPlaceSearchQuery" />
+			<span class="enterSearch hidden"><a class="btnClear-grey"><img class="icon-sm" src="images/close.svg" /></a></span>
+		</div>
+	</div>
+	<div>
+		<ul id="searchplaces-listview"></ul>
+	</div>
+</div>
+
+
+
 
 <!-- Photo tag modal -->
 <div data-role="modalview" id="modalview-photoTag" style="width: 90%; display: none;"  data-model="modalPhotoTag._activePhoto" class="appearance">

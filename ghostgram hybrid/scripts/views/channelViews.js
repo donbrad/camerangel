@@ -1511,47 +1511,7 @@ var channelView = {
 
     },
 
-/*    onChannelRead : function (message) {
 
-       /!* if (message.content !== null) {
-            message.formattedContent = message.content;
-        } else {
-            message.formattedContent = '';
-        }
-*!/
-        message.formattedContent = message.content;
-
-        // Ensure that new messages get the timer
-        if (message.fromHistory === undefined) {
-            message.fromHistory = false;
-        }
-
-       // $("#messages-listview").data("kendoMobileListView").refresh();
-
-        channelView.messagesDS.add(message);
-        channelModel.updateLastAccess(channelView._channelId, null);
-        if (message.data.photos !== undefined && message.data.photos.length > 0) {
-
-            var selector = '#' + message.msgID + " img";
-            var $img = $(selector), n = $img.length;
-            if (n > 0) {
-                $img.on("load error", function () {
-                    if(!--n) {
-                        channelView.scrollToBottom();
-                    }
-                });
-            } else {
-                channelView.scrollToBottom();
-            }
-        } else {
-            channelView.scrollToBottom();
-        }
-
-
-        if (channelView.privacyMode) {
-            kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(9000).play();
-        }
-    },*/
 
     activateEditor : function () {
         //$(".k-editor-toolbar").show();
@@ -2082,6 +2042,16 @@ var channelView = {
         );
     },
 
+    messageMenuTag : function (e) {
+        // Get the current insertion point
+        var editor = $("#messageTextArea").data("kendoEditor");
+        var range = editor.getRange();
+        channelView._tagRange = range;
+        channelView._tagStart = range.startOffset;
+        channelView._tagEnd = range.endOffset;
+
+    },
+
     messageInsertTag : function (e) {
         _preventDefault(e);
 
@@ -2126,7 +2096,8 @@ var channelView = {
 
     messageCalendar : function (e) {
         _preventDefault(e);
-       modalActionMeeting.openModal(null);
+        channelView.messageMenuTag();
+        modalActionMeeting.openModal(null);
     },
 
     messageEvent : function (e) {
@@ -2134,6 +2105,11 @@ var channelView = {
         mobileNotify("Chat Event isn't wired up yet");
     },
 
+    messageFlight : function (e) {
+        _preventDefault(e);
+        channelView.messageMenuTag();
+        mobileNotify("Chat Flight isn't wired up yet");
+    },
 
     messageMusic : function (e) {
         _preventDefault(e);
