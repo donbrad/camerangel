@@ -95,6 +95,15 @@ var modalActionMeeting = {
                 placeholder: "Select Event... "
             });
 
+            $("#modalActionMeeting-placesearch").on('input', function () {
+                var placeStr =  $("#modalActionMeeting-placesearch").val();
+                if (placeStr.length > 3) {
+                    $("#modalActionMeeting-placesearchBtn").text("Find " + placeStr);
+                    $("#modalActionMeeting-placesearchdiv").removeClass('hidden');
+                } else {
+                    $("#modalActionMeeting-placesearchdiv").addClass('hidden');
+                }
+            });
 
             $("#modalActionMeeting-placesearch").kendoAutoComplete({
                 dataSource: placesModel.placesDS,
@@ -112,6 +121,7 @@ var modalActionMeeting = {
                     }
                 },
                 select: function(e) {
+                    // User has selected one of their places
                     var place = e.item;
 
                 },
