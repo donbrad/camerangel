@@ -64,8 +64,8 @@ var modalActionMeeting = {
 
     onShow: function (e) {
         _preventDefault(e);
-
-
+        $("#modalActionMeeting-placesearchBtn").text("");
+        $("#modalActionMeeting-placesearch").val("");
     },
 
     placeSearch : function (e) {
