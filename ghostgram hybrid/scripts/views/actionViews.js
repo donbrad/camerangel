@@ -91,7 +91,7 @@ var modalActionMeeting = {
 
                     // Use the selected item or its text
                 },
-                filter: "startswith",
+                filter: "contains",
                 placeholder: "Select Event... "
             });
 
@@ -115,7 +115,7 @@ var modalActionMeeting = {
                     var place = e.item;
 
                 },
-                filter: "startswith",
+                filter: "contains",
                 placeholder: "Select location... "
             });
 
