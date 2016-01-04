@@ -95,8 +95,6 @@ var modalActionMeeting = {
                     var actionStr = e.item[0].textContent;
                     modalActionMeeting._activeObject.set('action', actionStr);
 
-
-
                     // Use the selected item or its text
                 },
                 filter: "contains",
