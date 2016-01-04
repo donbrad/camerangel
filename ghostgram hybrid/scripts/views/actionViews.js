@@ -72,7 +72,6 @@ var modalActionMeeting = {
     openModal: function (actionObj) {
         if (!modalActionMeeting._isInited) {
 
-
             modalActionMeeting._eventList = smartObject.getActionNames();
 
             $("#modalActionMeeting-title").kendoAutoComplete({
@@ -120,13 +119,6 @@ var modalActionMeeting = {
                 placeholder: "Select location... "
             });
 
-            /*$("#modalActionMeeting-placesearch").on('input', function (e) {
-                var placeStr =  $("#modalActionMeeting-placesearch").val(), keycode = e.keyCode;
-                if (placeStr.length > 6 && keycode === 32) {
-                    $("#modalActionMeeting.placesearchicon").removeClass('hidden');
-                }
-
-            });*/
             modalActionMeeting._isInited = true;
         }
         modalActionMeeting._date = new Date();
