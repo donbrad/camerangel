@@ -96,7 +96,7 @@ var modalActionMeeting = {
             });
 
 
-            $("#modalActionMeeting-placesearch").kendoAutoComplete({
+            $("#modalActionMeeting-placesearch").kendoComboBox({
                 dataSource: placesModel.placesDS,
                 ignoreCase: true,
                 dataTextField: "name",
