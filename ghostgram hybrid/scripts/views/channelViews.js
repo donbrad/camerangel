@@ -802,6 +802,7 @@ var channelView = {
     thisUser : null,
     contactData : [],
     messagePhotos: [],
+    messageObjects: [],
     privateContactId: null,
     privateContact : null,
     isPrivateChat: false,
@@ -1565,6 +1566,7 @@ var channelView = {
     messageInit : function () {
         channelView.activeMessage = {canCopy: !channelView.messageLock, photos: []};
         channelView.messagePhotos = [];
+        channelView.messageObjects = [];
         photoModel.initOffer();
 
     },
@@ -1627,6 +1629,14 @@ var channelView = {
             channelView.validateMessagePhotos();
         }
 
+        if (channelView.messageObjects.length > 0) {
+            validMessage = true;
+
+          //Process message smart objects...
+
+
+        }
+
         if (validMessage === true ) {
             channelView._initMessageTextArea();
             channelView.messageInit();
@@ -1639,6 +1649,21 @@ var channelView = {
 
         }
 
+    },
+
+    // Parse message text to make user didn't delete object anchor in text
+    validateMessageObjects : function () {
+        var validObject = [];
+        var messageText = $('#messageTextArea').data("kendoEditor").value();
+
+        for (var i=0; i< channelView.messageObjects.length; i++) {
+            var objectId = channelView.messageObjects[i].uuid;
+
+            if (messageText.indexOf(objectId) !== -1) {
+                //the photoId is in the current message text
+               // channelView.messageAddPhotoOffer(photoId, !channelView.messageLock);
+            }
+        }
     },
 
     // Need to make sure all the photos in activeMessage.photos still exist in the editor
@@ -1654,8 +1679,6 @@ var channelView = {
                 channelView.messageAddPhotoOffer(photoId, !channelView.messageLock);
             }
         }
-
-
 
     },
 

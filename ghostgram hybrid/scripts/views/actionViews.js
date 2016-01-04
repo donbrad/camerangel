@@ -20,6 +20,8 @@ var modalActionMeeting = {
         var thisObj = modalActionMeeting._activeObject;
 
         thisObj.set('title', null);
+        thisObj.set('type', null);
+        thisObj.set('uuid', null);
         thisObj.set('action', null);
         thisObj.set('descrption', null);
         thisObj.set('address', null);
@@ -36,7 +38,13 @@ var modalActionMeeting = {
     setActiveObject : function (newObj) {
         var thisObj = modalActionMeeting._activeObject;
 
+        if (newObj.uuid === undefined || newObj.uuid === null) {
+            newObj.uuid = uuid.v4();
+        }
+
         thisObj.set('title', newObj.title);
+        thisObj.set('type', newObj.type);
+        thisObj.set('uuid', newObj.uuid);
         thisObj.set('action', newObj.action);
         thisObj.set('descrption', newObj.description);
         thisObj.set('address', newObj.address);
@@ -152,6 +160,7 @@ var modalActionMeeting = {
 
     onDone: function (e) {
         //_preventDefault(e);
+
         $("#modalview-actionMeeting").data("kendoMobileModalView").close();
     }
 
