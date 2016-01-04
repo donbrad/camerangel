@@ -105,10 +105,10 @@ var modalActionMeeting = {
                     // event fired on blur -- if a place wasn't selected, need to do a nearby search
                     var placeStr =  $("#modalActionMeeting-placesearch").val();
                     if (placeStr.length > 4) {
-                        $("#modalActionMeeting.placesearchdBtn").text("Find " + placeStr);
-                        $("#modalActionMeeting.placesearchdiv").removeClass('hidden');
+                        $("#modalActionMeeting-placesearchdBtn").text("Find " + placeStr);
+                        $("#modalActionMeeting-placesearchdiv").removeClass('hidden');
                     } else {
-                        $("#modalActionMeeting.placesearchdiv").addClass('hidden');
+                        $("#modalActionMeeting-placesearchdiv").addClass('hidden');
                     }
                 },
                 select: function(e) {
@@ -129,7 +129,7 @@ var modalActionMeeting = {
             modalActionMeeting.setActiveObject(actionObj);
         }
 
-        $("#modalActionMeeting.placesearchdiv").addClass('hidden');
+        $("#modalActionMeeting-placesearchdiv").addClass('hidden');
         $("#modalActionMeeting-datetime").val(modalActionMeeting._activeObject.get('date'));
         $("#modalview-actionMeeting").data("kendoMobileModalView").open();
     },
