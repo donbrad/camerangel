@@ -104,8 +104,8 @@ var modalActionMeeting = {
                 change: function (e) {
                     // event fired on blur -- if a place wasn't selected, need to do a nearby search
                     var placeStr =  $("#modalActionMeeting-placesearch").val();
-                    if (placeStr.length > 4) {
-                        $("#modalActionMeeting-placesearchdBtn").text("Find " + placeStr);
+                    if (placeStr.length > 3) {
+                        $("#modalActionMeeting-placesearchBtn").text("Find " + placeStr);
                         $("#modalActionMeeting-placesearchdiv").removeClass('hidden');
                     } else {
                         $("#modalActionMeeting-placesearchdiv").addClass('hidden');
