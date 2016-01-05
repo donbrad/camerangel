@@ -19,9 +19,9 @@ var modalActionMeeting = {
     initActiveObject : function () {
         var thisObj = modalActionMeeting._activeObject;
 
+        thisObj.set("uuid", uuid.v4());
         thisObj.set('title', null);
         thisObj.set('type', null);
-        thisObj.set('uuid', null);
         thisObj.set('action', null);
         thisObj.set('descrption', null);
         thisObj.set('address', null);
@@ -164,6 +164,29 @@ var modalActionMeeting = {
 
     onDone: function (e) {
         //_preventDefault(e);
+
+        var thisObject = {}, thisObj = modalActionMeeting._activeObject;
+        thisObject.uuid = thisObj.uuid;
+        thisObject.action = thisObj.action;
+        thisObject.type = thisObj.type;
+        thisObject.title = thisObj.title;
+        thisObject.description = thisObj.description;
+        thisObject.date = thisObj.date;
+        thisObject.placeId = thisObj.placeId;
+        thisObject.address = thisObj.address;
+        thisObject.senderUUID = thisObj.senderUUID;
+        thisObject.address = thisObj.address;
+        thisObject.lat = thisObj.lat;
+        thisObject.lng = thisObj.lng;
+        thisObject.approxTime = thisObj.approxTime;
+        thisObject.approxPlace = thisObj.approxPlace;
+        thisObject.timeFlexible = thisObj.timeFlexible;
+        thisObject.placeFlexible = thisObj.placeFlexible;
+        thisObject.isDeleted = false;
+        thisObject.isModified = true;
+        thisObject.isAccepted = thisObj.isAccepted;
+
+        channelView.addSmartObjectToMessage(thisObj.uuid, thisObject);
 
         $("#modalview-actionMeeting").data("kendoMobileModalView").close();
     }

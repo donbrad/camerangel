@@ -1700,21 +1700,21 @@ var channelView = {
 
     },
 
-    addSmartObjectToMessage: function (photoId, displayUrl) {
+    onObjectClick : function (e) {
+        _preventDefault(e);
+    },
+
+    addSmartObjectToMessage: function (objectId, smartObject) {
 
         var editor = $("#messageTextArea").data("kendoEditor");
-        var photoObj = photoModel.findPhotoById(photoId);
+        var date = smartObject.date.toLocaleString();
+        var dateStr = moment(date).format('llll');
+        var objectUrl = '<a data-role="button" class="btnClear" data-objectid="'+ objectId + '" id="chatobject_' + objectId + '" data-click="channelView.onObjectClick" />' + smartObject.action + " : " + smartObject.title + " " + dateStr +'</a>';
 
-        // channelView.messageAddPhoto(photoModel.currentOffer);
-        if (photoObj !== undefined) {
+        editor.paste(objectUrl);
+        editor.update();
 
-            var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="chatphoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
-
-            editor.paste(imgUrl);
-            editor.update();
-        }
-
-        channelView.messagePhotos.push(photoId);
+        channelView.messageObjects.push(smartObject);
 
         /* $('#chatImage').attr('src', displayUrl);
          $('#chatImagePreview').show();*/
