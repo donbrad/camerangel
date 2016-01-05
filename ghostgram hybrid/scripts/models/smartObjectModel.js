@@ -178,7 +178,7 @@ var smartObject = {
         var target = termIn.toLowerCase();
         var termList = smartObject.queryTerm({ field: "action", operator: "eq", value: target });
 
-        if (termlist !== undefined) {
+        if (termList.length > 0) {
             return(true);
         }
 
