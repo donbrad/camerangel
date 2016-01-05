@@ -1708,6 +1708,8 @@ var channelView = {
 
     },
 
+
+    // Handle a click on a smart object
     onObjectClick : function (e) {
         _preventDefault(e);
         var uuid = e.sender.element[0].attributes['data-objectid'].value;
@@ -1716,7 +1718,25 @@ var channelView = {
         var message = channelView.findMessageById(messageId);
 
         if (message !== undefined) {
-            
+
+            if (message.data.objects !== undefined && message.data.objects.length > 0) {
+                var objectList = message.data.objects,object = null;
+
+                for (var i=0; i<objectList.length; i++ ) {
+                    if (objectList[i].uuid === uuid) {
+                        object = objectList[i];
+                    }
+                }
+
+                if (object !== null) {
+                    // User is interacting with the object so add it, if it doesn't already exist
+                    smartObject.smartAddObject(object);
+                    modalActionMeeting.openModal(object);
+                }
+
+            } else {
+                mobileNotify("Sender deleted this Smart Event!");
+            }
         }
 
     },
