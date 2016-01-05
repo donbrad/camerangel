@@ -73,7 +73,7 @@ var modalActionMeeting = {
 
         var placeStr =  $("#modalActionMeeting-placesearch").val();
 
-        APP.kendo.navigate("#searchPlaces?query="+placeStr);
+        mobileNotify("SearchPlaces : "  + placeStr);
 
     },
 
