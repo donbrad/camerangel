@@ -174,6 +174,17 @@ var smartObject = {
         return(nameList);
     },
 
+    isCurrentAction : function (termIn) {
+        var target = termIn.toLowerCase();
+        var termList = smartObject.queryTerm({ field: "action", operator: "eq", value: target });
+
+        if (termlist !== undefined) {
+            return(true);
+        }
+
+        return(false);
+    },
+
     findTerm: function (termIn) {
         var target = termIn.toLowerCase();
         var termList = smartObject.queryTerm({ field: "term", operator: "eq", value: target });

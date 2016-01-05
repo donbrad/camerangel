@@ -21,7 +21,7 @@ var modalActionMeeting = {
 
         thisObj.set("uuid", uuid.v4());
         thisObj.set('title', null);
-        thisObj.set('type', null);
+        thisObj.set('type', "meeting");
         thisObj.set('action', null);
         thisObj.set('descrption', null);
         thisObj.set('address', null);
@@ -166,6 +166,16 @@ var modalActionMeeting = {
         //_preventDefault(e);
 
         var thisObject = {}, thisObj = modalActionMeeting._activeObject;
+
+        if (thisObj.action === null) {
+            // User has submitted a custom action
+            var titleArray = thisObj.title.split(' ');
+            thisObj.action = titleArray[0].toLowerCase();
+            if (!smartObject.isCurrentAction(thisObj.action)) {
+                // Todo: add new action to users private dictionary
+            }
+        }
+
         thisObject.uuid = thisObj.uuid;
         thisObject.action = thisObj.action;
         thisObject.type = thisObj.type;
