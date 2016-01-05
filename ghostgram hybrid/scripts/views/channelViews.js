@@ -1713,6 +1713,12 @@ var channelView = {
         var uuid = e.sender.element[0].attributes['data-objectid'].value;
         var messageId = e.sender.element[0].parentElement.parentElement.parentElement.attributes['id'].value;
 
+        var message = channelView.findMessageById(messageId);
+
+        if (message !== undefined) {
+            
+        }
+
     },
 
     addSmartObjectToMessage: function (objectId, smartObject) {
@@ -1725,7 +1731,7 @@ var channelView = {
         editor.paste(objectUrl);
         editor.update();
 
-        
+
         smartObject.channelId = channelView._channelId;
 
         channelView.messageObjects.push(smartObject);
