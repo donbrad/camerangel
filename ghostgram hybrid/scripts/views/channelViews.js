@@ -1702,6 +1702,7 @@ var channelView = {
 
     onObjectClick : function (e) {
         _preventDefault(e);
+        mobileNotify("You clicked a smart object!!!");
     },
 
     addSmartObjectToMessage: function (objectId, smartObject) {
