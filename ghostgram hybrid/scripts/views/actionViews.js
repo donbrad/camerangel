@@ -26,13 +26,16 @@ var modalActionMeeting = {
         thisObj.set('descrption', null);
         thisObj.set('address', null);
         thisObj.set('placeId', null);
-        thisObj.set('lat', 0);
-        thisObj.set('lng', 0);
+        thisObj.set('lat', null);
+        thisObj.set('lng', null);
         thisObj.set('date', new Date());
         thisObj.set('approxTime', false);
         thisObj.set('approxPlace', false);
         thisObj.set('timeFlexible', false);
         thisObj.set('placeFlexible', false);
+        thisObj.set('isDeleted', false);
+        thisObj.set('isModified', false);
+        thisObj.set('isAccepted', false);
     },
 
     setActiveObject : function (newObj) {
@@ -59,6 +62,9 @@ var modalActionMeeting = {
         thisObj.set('approxPlace', newObj.approxPlace);
         thisObj.set('timeFlexible', newObj.timeFlexible);
         thisObj.set('placeFlexible', newObj.placeFlexible);
+        thisObj.set('isModified', newObj.isModified);
+        thisObj.set('isDeleted', newObj.isDeleted);
+        thisObj.set('isAccepted', newObj.isAccepted);
     },
 
 

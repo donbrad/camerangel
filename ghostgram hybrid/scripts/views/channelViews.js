@@ -1700,6 +1700,26 @@ var channelView = {
 
     },
 
+    addSmartObjectToMessage: function (photoId, displayUrl) {
+
+        var editor = $("#messageTextArea").data("kendoEditor");
+        var photoObj = photoModel.findPhotoById(photoId);
+
+        // channelView.messageAddPhoto(photoModel.currentOffer);
+        if (photoObj !== undefined) {
+
+            var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="chatphoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
+
+            editor.paste(imgUrl);
+            editor.update();
+        }
+
+        channelView.messagePhotos.push(photoId);
+
+        /* $('#chatImage').attr('src', displayUrl);
+         $('#chatImagePreview').show();*/
+    },
+
     addImageToMessage: function (photoId, displayUrl) {
 
         var editor = $("#messageTextArea").data("kendoEditor");

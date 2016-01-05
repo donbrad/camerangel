@@ -108,6 +108,13 @@ var smartObject = {
 
     termsDS : null,
 
+    objectsDS: new kendo.data.DataSource({
+        offlineStorage: "smartobjects",
+        sort: {
+            field: "date",
+            dir: "desc"
+        }
+    }),
 
     init : function () {
         smartObject.termsDS = new kendo.data.DataSource({
@@ -115,7 +122,30 @@ var smartObject = {
         });
     },
 
-    queryTerm: function (query) {
+
+    fetch : function () {
+        var SmartObjects = Parse.Object.extend("smartobject");
+        var query = new Parse.Query(SmartObjects);
+
+        query.find({
+            success: function(collection) {
+                var models = [];
+                for (var i = 0; i < collection.length; i++) {
+                    var smartObj = collection[i];
+
+                    models.push(smartObj.toJSON());
+                }
+                deviceModel.setAppState('hasSmartObjects', true);
+                smartObject.objectsDS.data(models);
+                deviceModel.isParseSyncComplete();
+            },
+            error: function(error) {
+                handleParseError(error);
+            }
+        });
+    },
+
+      queryTerm: function (query) {
 
         if (query === undefined)
             return(undefined);
@@ -166,6 +196,47 @@ var smartObject = {
 
         return(termList);
 
+    },
+
+    addObject : function (objectIn) {
+        var SmartObjects = Parse.Object.extend("smartobject");
+        var smartObject = new SmartObjects();
+
+        if (objectIn.senderUUID === undefined || objectIn.senderUUID === null) {
+            objectIn.senderUUID = userModel.currentUser.userUUID;
+        }
+        smartObject.set('uuid', objectIn.uuid);
+        smartObject.set('action', objectIn.action);
+        smartObject.set('type', objectIn.type);
+        smartObject.set('title', objectIn.title);
+        smartObject.set('description', objectIn.description);
+        smartObject.set('date', objectIn.date);
+        smartObject.set('approxTime', objectIn.approxTime);
+        smartObject.set('approxPlace', objectIn.approxPlace);
+        smartObject.set('address', objectIn.address);
+        smartObject.set('lat', objectIn.lat);
+        smartObject.set('lng', objectIn.lng);
+        smartObject.set('placeId', objectIn.placeId);
+        smartObject.set('placeFlexible', objectIn.placeFlexible);
+        smartObject.set('timeFlexible', objectIn.timeFlexible);
+        smartObject.set('isAccepted', objectIn.isAccepted);
+        smartObject.set('isModified', objectIn.isModified);
+        smartObject.set('isDeleted', objectIn.isDeleted);
+
+
+        smartObject.save(null, {
+            success: function(thisObject) {
+                // Execute any logic that should take place after the object is saved.;
+               var smartObj = thisObject.toJSON();
+                smartObject.objectsDS.add(smartObj);
+
+            },
+            error: function(contact, error) {
+                // Execute any logic that should take place if the save fails.
+                // error is a Parse.Error with an error code and message.
+                handleParseError(error);
+            }
+        });
     }
 
 
