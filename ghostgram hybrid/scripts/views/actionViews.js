@@ -20,6 +20,8 @@ var modalActionMeeting = {
         var thisObj = modalActionMeeting._activeObject;
 
         thisObj.set("uuid", uuid.v4());
+        thisObj.set('senderUUID', null);
+        thisObj.set('channelId', null);
         thisObj.set('title', null);
         thisObj.set('type', "meeting");
         thisObj.set('action', null);
@@ -44,7 +46,7 @@ var modalActionMeeting = {
         if (newObj.uuid === undefined || newObj.uuid === null) {
             newObj.uuid = uuid.v4();
         }
-
+        thisObj.set('channelId', newObj.channelId);
         thisObj.set('title', newObj.title);
         thisObj.set('type', newObj.type);
         thisObj.set('uuid', newObj.uuid);
@@ -185,6 +187,7 @@ var modalActionMeeting = {
         thisObject.placeId = thisObj.placeId;
         thisObject.address = thisObj.address;
         thisObject.senderUUID = thisObj.senderUUID;
+        thisObject.channelId = thisObj.channelId;
         thisObject.address = thisObj.address;
         thisObject.lat = thisObj.lat;
         thisObject.lng = thisObj.lng;

@@ -1725,6 +1725,9 @@ var channelView = {
         editor.paste(objectUrl);
         editor.update();
 
+        
+        smartObject.channelId = channelView._channelId;
+
         channelView.messageObjects.push(smartObject);
 
         /* $('#chatImage').attr('src', displayUrl);
