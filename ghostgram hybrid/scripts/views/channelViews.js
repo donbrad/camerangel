@@ -1564,7 +1564,7 @@ var channelView = {
     },
 
     messageInit : function () {
-        channelView.activeMessage = {canCopy: !channelView.messageLock, photos: []};
+        channelView.activeMessage = {canCopy: !channelView.messageLock, photos: [], objects: []};
         channelView.messagePhotos = [];
         channelView.messageObjects = [];
         photoModel.initOffer();
@@ -1577,6 +1577,12 @@ var channelView = {
         if (userModel.currentUser.currentPlaceId !== null) {
             channelView.activeMessage.place = {name: userModel.currentUser.currentPlace, uuid: userModel.currentUser.currentPlaceId};
         }
+    },
+
+
+    messageAddSmartObject : function (smartObj) {
+
+        channelView.activeMessage.objects.push(smartObj);
     },
 
 
@@ -1660,6 +1666,8 @@ var channelView = {
             var objectId = channelView.messageObjects[i].uuid;
 
             if (messageText.indexOf(objectId) !== -1) {
+
+                channelView.messageAddSmartObject(channelView.messageObjects[i]);
                 //the photoId is in the current message text
                // channelView.messageAddPhotoOffer(photoId, !channelView.messageLock);
             }
@@ -1702,7 +1710,9 @@ var channelView = {
 
     onObjectClick : function (e) {
         _preventDefault(e);
-        mobileNotify("You clicked a smart object!!!");
+        var uuid = e.sender.element[0].attributes['data-objectid'].value;
+        var messageId = e.sender.element[0].parentElement.parentElement.parentElement.attributes['id'].value;
+
     },
 
     addSmartObjectToMessage: function (objectId, smartObject) {
