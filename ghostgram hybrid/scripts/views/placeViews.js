@@ -306,7 +306,7 @@ var searchPlacesView = {
         _preventDefault(e);
 
 
-        // Filter current places and query google places on keyup
+       /* // Filter current places and query google places on keyup
         $('#searchPlaceSearchQuery').on('input', function() {
             var query = this.value;
             if (query.length > 0) {
@@ -336,7 +336,7 @@ var searchPlacesView = {
         });
 
         // bind clear search btn
-        $("##searchPlaces .enterSearch").on("click", function(){
+        $("#searchPlaces .enterSearch").on("click", function(){
             $("#searchPlacesSearchQuery").val('');
 
             // reset data filters
@@ -345,7 +345,7 @@ var searchPlacesView = {
             // hide clear btn
             $(this).addClass('hidden');
         });
-
+*/
 
         $("#searchplaces-listview").kendoMobileListView({
                 dataSource: searchPlacesView.placesDS,
