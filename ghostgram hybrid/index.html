@@ -8,7 +8,12 @@
 	<link href="kendo/styles/kendo.material.min.css" rel="stylesheet" />
     <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet" />
 	<link href="styles/strength.css" rel="stylesheet" />
+
+	<link href="bower_components/pickadate/lib/themes/default.css" rel="stylesheet" />
+	<link href="bower_components/pickadate/lib/themes/default.time.css" rel="stylesheet" />
+	<link href="bower_components/pickadate/lib/themes/default.date.css" rel="stylesheet" />
 	<link href="styles/redactor.css" rel="stylesheet" />
+
     <link href="styles/master.css" rel="stylesheet" />
 
     <script src="cordova.js"></script>
@@ -24,8 +29,11 @@
 	<script src="bower_components/moment/moment.js"></script>
 	<script src="bower_components/velocity/velocity.js"></script>
 	<script src="bower_components/lodash/lodash.js"></script>
+	<script src="bower_components/pickadate/lib/picker.js"></script>
+	<script src="bower_components/pickadate/lib/picker.date.js"></script>
+	<script src="bower_components/pickadate/lib/picker.time.js"></script>
 
-	<!-- other componets -->
+	<!-- other components -->
 	<script src="scripts/libs/parse.js"></script>
     <script src="https://cdn.pubnub.com/pubnub-3.7.16.js"></script>
 	<script src="scripts/libs/guid.js"></script>
@@ -254,37 +262,36 @@
 	  </div>
 	<div class="hidden"> <canvas id="identiconCanvas" width="256" height="256"></canvas></div>
 </div>
-    
-<script type="text/x-kendo-template" id="notificationTemplate">
-# 	var dateTime= new Date(date);
-	var formattedDate = dateTime.toDateString();
 
-#
+<script type="text/x-kendo-template" id="notificationTemplate">
+	# 	var dateTime= new Date(date);
+	var formattedDate = dateTime.toDateString();
+	#
 	<div class="notify-box">
 		<div class="notify-info">
-			<span class="notify-helper">#= type #</span>
-			<a class="right notify-close" data-role="button" data-uuid="#:uuid#"  data-type="#:type#" data-click="homeView.dismissNotification">
-				<img src="images/close.svg" />
-			</a>
+			<span class="notify-helper">
+				#if(data.type === 'Unread Messages'){#
+					<img src="images/icon-notify-unread.svg" class="icon-notify" /> New Message
+				#} else if(data.type === 'ghostgram recommends'){#
+					<img src="images/icon-notify-recommend.svg" class="icon-notify" /> Recommended
+				#} else if(data.type === 'New Member'){#
+					<img src="images/icon-notify-request.svg" class="icon-notify" /> New Member
+				#}#
+			</span>
 		</div>
 		<div class="notify-content">
-			# if (action !== undefined && action !== 'none') {#
-				<h4>
-					<a data-role="button" data-uuid="#:uuid#"  data-action="#=action#" data-click="homeView.handleNotificationAction" class="btnClear-link">#= title #</a>
-				</h4>
-			#} else {#
-				<h4>
-					<a data-role="button" data-uuid="#:uuid#" data-link="#=href#"  data-click="homeView.handleNotificationAction" class="btnClear-link"> #=  actionTitle # </a>
-				</h4>
-			#}#
+			<h2>#=title#</h2>
 			<p>#= description # </p>
-			<div class="notify-action">
-
-			</div>
+		</div>
+		<div class="notify-action">
+			<a class="btnClear" data-role="button" data-uuid="#:uuid#" data-link="#=href#" data-action="#=action#" data-click="homeView.handleNotificationAction">#= actionTitle#</a>
+			<a class="btnClear-grey" data-role="button" data-uuid="#:uuid#" data-click="homeView.dismissNotification">Dismiss</a>
 		</div>
 	</div><!-- notify-box -->
-</script> 
-    
+</script>
+
+
+
 <!-- home - for new users -->
  <div data-role="view" data-title="ghostgrams" id="newuserhome" data-layout="newuser" class="appearance" style="display:none;" data-init="newUserView.onInit" data-show="newUserView.onShow" data-transition="fade">
  	<div class="newuserBox">
@@ -1485,9 +1492,9 @@
 	</div>
 
 	<ul data-role="actionsheet" id="newMessageActions" data-popup='{"direction": "left"}'>
-		<li><a data-action="channelView.messageCalendar"> Add Event</a></li>
-		<li><a data-action="channelView.messageFlight"> Add Flight</a></li>
-		<li><a data-action="channelView.messageMovie"> Add Movie</a></li>
+		<li><a data-action="channelView.messageCalendar"><img src="images/smart-event.svg" class="icon-sm"/> Add Event</a></li>
+		<li><a data-action="channelView.messageFlight"><img src="images/smart-flight.svg" class="icon-sm"/> Add Flight</a></li>
+		<li><a data-action="channelView.messageMovie"><img src="images/smart-movie.svg" class="icon-sm"/> Add Movie</a></li>
 		<li><a data-action="channelView.messageMusic"> Add Music</a></li>
 	</ul>
 
@@ -2476,6 +2483,7 @@
 			<li>
 				<label> When
 				<input type="datetime-local" id="modalActionMeeting-datetime" data-bind="value: date"/>
+
 				</label>
 			</li>
 			<li>

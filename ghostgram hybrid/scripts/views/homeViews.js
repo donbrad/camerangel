@@ -338,6 +338,7 @@ var homeView = {
     },
 
     handleNotificationAction : function (e) {
+        // todo Don - refactor notifications to have a single action
         _preventDefault(e);
 
         var uuid = e.sender.element[0].attributes['data-uuid'].value;

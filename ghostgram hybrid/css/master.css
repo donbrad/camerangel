@@ -543,18 +543,30 @@ form p {
 }
 .icon {
   height: 1.3rem;
+  max-width: 1.3em;
   vertical-align: middle;
 }
 .icon-sm {
   height: 1em;
+  max-width: 1em;
   vertical-align: middle;
 }
 .icon-md {
   height: 1.5em;
+  max-width: 1.5em;
+  vertical-align: middle;
+}
+.icon-notify {
+  height: 1em;
+  max-width: 1em;
   vertical-align: middle;
 }
 .icon-bar {
   height: 1em;
+  max-width: 1em;
+}
+.icon-bar-md {
+  height: 1.25em;
 }
 .loading-icon {
   height: 1rem;
@@ -1383,7 +1395,8 @@ div.footerMenu.km-footer > ul > li > a:active {
   visibility: hidden;
 }
 /* Helpers */
-.helper {
+.helper,
+.helper-header {
   color: #979797;
 }
 .helper img {
@@ -1394,6 +1407,9 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .helper-sm img {
   height: 12px;
+}
+.helper-header {
+  font-size: 0.75em;
 }
 .helper-right {
   color: #979797;
@@ -2973,9 +2989,22 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 }
 #ghostEmailEditor {
   line-height: 1.5;
-  font-size: 16px;
-  font-size: 1em;
+  font-size: 1.2em;
   color: #4A4A4A !important;
+}
+#editorGhostMail {
+  position: absolute;
+  top: 13em;
+  left: 0;
+  text-align: center;
+  width: 100%;
+}
+#ghostEmailwrapper > table > tbody > tr:nth-child(1) {
+  display: none;
+}
+#ghostEmailwrapper > table,
+#ghostEmailwrapper {
+  background: #f5f5f5 !important;
 }
 #ghostEmailwrapper > table > tbody > tr:nth-child(1) > td > ul > li > a {
   background: #979797 !important;
@@ -3075,8 +3104,12 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   height: 2em;
   width: 2em;
 }
-.k-editor .k-editable-area {
+#messageEditor > div > table > tbody > tr:nth-child(2) > td {
   height: 3em;
+}
+.k-editor .k-editable-area {
+  height: 12em;
+  padding: 0.25em;
 }
 #ghostgramMode {
   font-size: 0.75em;
@@ -3964,7 +3997,6 @@ div.contactListBox.activeContact > div > div > ul {
 }
 /* Notify styles */
 .notify-box {
-  padding: 0.5rem 1rem;
   background: #FFFFFF;
   border: 1px solid rgba(228, 228, 228, 0.3);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
@@ -3975,7 +4007,11 @@ div.contactListBox.activeContact > div > div > ul {
   margin-bottom: 0.5rem;
 }
 .notify-helper {
+  padding: 0 1rem;
   color: #979797;
+}
+.notify-content {
+  padding: 0.25rem 1rem;
 }
 .notify-content h4,
 .notify-content p {
@@ -3989,10 +4025,13 @@ div.contactListBox.activeContact > div > div > ul {
   vertical-align: middle;
 }
 .notify-info {
-  margin-bottom: 0.25rem;
+  margin: 0.4em 0 0.25em;
 }
 .notify-action {
-  margin-top: 0.5rem;
+  margin: 0.25em 0.5em;
+}
+.notify-action a {
+  font-size: 1.15em !important;
 }
 .notify-dismiss {
   margin-left: 1rem;
@@ -4232,26 +4271,33 @@ div.contactListBox.activeContact > div > div > ul {
   width: 100%;
   display: inline-flex;
 }
-#gallery-listview {
+#gallery-listview,
+#galleryPicker-listview {
   width: 100%;
   margin: 0;
   padding: 0;
   list-style-type: none;
   text-align: center;
 }
-#gallery-listview li {
+#gallery-listview li,
+#galleryPicker-listview li {
   display: inline;
   margin: 0;
   padding: 0;
 }
+/*
 #galleryPicker-listview {
-  line-height: 0 !important;
-}
+	line-height: 0 !important;
+	width: 100%;
+} 
+
 #galleryPicker-listview li {
-  padding: 0px !important;
-  display: inline-block;
-  border: 1px solid #fff !important;
-}
+	padding: 0px !important;
+	display: inline-block;
+	width: 100%;
+    padding-bottom: 100%;
+	border: 1px solid #fff !important;
+}*/
 .galleryImg-2up {
   width: 50%;
   padding-bottom: 50%;
@@ -4293,6 +4339,7 @@ div.contactListBox.activeContact > div > div > ul {
 /* Gallery styles */
 #galleryMenuSelect {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  font-size: 1.2em;
 }
 #galleryMenuSelect li.km-button {
   width: 50%;
@@ -4357,14 +4404,19 @@ div.contactListBox.activeContact > div > div > ul {
 .resultsBar {
   background: #fff;
   border-bottom: 1px solid #E0E0E0;
-  font-size: 0.875em;
   padding: 0.25em 0 0.25em 0;
 }
 .resultsBar .results {
   width: 20%;
-  padding-top: 0.25rem;
+  padding-top: 0.55rem;
   float: left;
   text-align: right;
+  font-size: 1em;
+}
+@media only screen and (max-width: 320px) {
+  .resultsBar .results {
+    width: 25%;
+  }
 }
 .resultsBar .tags img {
   height: 18px;
@@ -4391,6 +4443,11 @@ div.contactListBox.activeContact > div > div > ul {
   text-align: center;
   float: left;
   padding-left: 5%;
+}
+@media only screen and (max-width: 320px) {
+  .resultsBar .photoDisplayView {
+    width: 45%;
+  }
 }
 #gallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.resultsBar > span.right > span > span > span.k-input > img {
   vertical-align: sub;
@@ -5338,4 +5395,36 @@ table.k-editor {
 .strength_meter {
   float: right;
   width: 50%;
+}
+#ghostEditor > div.km-content.km-widget.km-scroll-wrapper {
+  padding-bottom: 0px;
+}
+#ghostEmailwrapper > table > tbody > tr:nth-child(2) > td {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  top: 0;
+  -webkit-overflow-scrolling: touch;
+  overflow-y: scroll;
+}
+#ghostEmailwrapper > table > tbody > tr:nth-child(2) > td > iframe {
+  height: 100%;
+  width: 100%;
+}
+#ghostEmailwrapper > table,
+#ghostEmailwrapper {
+  max-height: 100%;
+}
+#ghostEmailHeader {
+  position: absolute;
+  top: 0.25em;
+  left: 0;
+  z-index: 99;
+}
+#editorGhostMail > ul > li > a {
+  margin-left: 0.5em;
+}
+.picker__frame {
+  top: 4em;
 }
