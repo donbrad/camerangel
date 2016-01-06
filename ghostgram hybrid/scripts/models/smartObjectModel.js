@@ -279,8 +279,10 @@ var smartObject = {
         smartOb.set('type', objectIn.type);
         smartOb.set('title', objectIn.title);
         smartOb.set('description', objectIn.description);
+        // Parse.com date gymnastics...
         var dateString = objectIn.date.toISOString();
-        smartOb.set('date', dateString);
+        var d = {"__type":"Date","iso":dateString};
+        smartOb.set('date', d);
         smartOb.set('approxTime', objectIn.approxTime);
         smartOb.set('approxPlace', objectIn.approxPlace);
         smartOb.set('address', objectIn.address);
