@@ -802,6 +802,7 @@ var channelView = {
     thisUser : null,
     contactData : [],
     messagePhotos: [],
+    messageObjects: [],
     privateContactId: null,
     privateContact : null,
     isPrivateChat: false,
@@ -1511,47 +1512,7 @@ var channelView = {
 
     },
 
-/*    onChannelRead : function (message) {
 
-       /!* if (message.content !== null) {
-            message.formattedContent = message.content;
-        } else {
-            message.formattedContent = '';
-        }
-*!/
-        message.formattedContent = message.content;
-
-        // Ensure that new messages get the timer
-        if (message.fromHistory === undefined) {
-            message.fromHistory = false;
-        }
-
-       // $("#messages-listview").data("kendoMobileListView").refresh();
-
-        channelView.messagesDS.add(message);
-        channelModel.updateLastAccess(channelView._channelId, null);
-        if (message.data.photos !== undefined && message.data.photos.length > 0) {
-
-            var selector = '#' + message.msgID + " img";
-            var $img = $(selector), n = $img.length;
-            if (n > 0) {
-                $img.on("load error", function () {
-                    if(!--n) {
-                        channelView.scrollToBottom();
-                    }
-                });
-            } else {
-                channelView.scrollToBottom();
-            }
-        } else {
-            channelView.scrollToBottom();
-        }
-
-
-        if (channelView.privacyMode) {
-            kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(9000).play();
-        }
-    },*/
 
     activateEditor : function () {
         //$(".k-editor-toolbar").show();
@@ -1603,8 +1564,9 @@ var channelView = {
     },
 
     messageInit : function () {
-        channelView.activeMessage = {canCopy: !channelView.messageLock, photos: []};
+        channelView.activeMessage = {canCopy: !channelView.messageLock, photos: [], objects: []};
         channelView.messagePhotos = [];
+        channelView.messageObjects = [];
         photoModel.initOffer();
 
     },
@@ -1615,6 +1577,12 @@ var channelView = {
         if (userModel.currentUser.currentPlaceId !== null) {
             channelView.activeMessage.place = {name: userModel.currentUser.currentPlace, uuid: userModel.currentUser.currentPlaceId};
         }
+    },
+
+
+    messageAddSmartObject : function (smartObj) {
+
+        channelView.activeMessage.objects.push(smartObj);
     },
 
 
@@ -1667,6 +1635,14 @@ var channelView = {
             channelView.validateMessagePhotos();
         }
 
+        if (channelView.messageObjects.length > 0) {
+            validMessage = true;
+
+          //Process message smart objects...
+
+
+        }
+
         if (validMessage === true ) {
             channelView._initMessageTextArea();
             channelView.messageInit();
@@ -1679,6 +1655,23 @@ var channelView = {
 
         }
 
+    },
+
+    // Parse message text to make user didn't delete object anchor in text
+    validateMessageObjects : function () {
+        var validObject = [];
+        var messageText = $('#messageTextArea').data("kendoEditor").value();
+
+        for (var i=0; i< channelView.messageObjects.length; i++) {
+            var objectId = channelView.messageObjects[i].uuid;
+
+            if (messageText.indexOf(objectId) !== -1) {
+
+                channelView.messageAddSmartObject(channelView.messageObjects[i]);
+                //the photoId is in the current message text
+               // channelView.messageAddPhotoOffer(photoId, !channelView.messageLock);
+            }
+        }
     },
 
     // Need to make sure all the photos in activeMessage.photos still exist in the editor
@@ -1694,8 +1687,6 @@ var channelView = {
                 channelView.messageAddPhotoOffer(photoId, !channelView.messageLock);
             }
         }
-
-
 
     },
 
@@ -1715,6 +1706,58 @@ var channelView = {
              $(".k-editor-toolbar").hide();
         }
 
+    },
+
+
+    // Handle a click on a smart object
+    onObjectClick : function (e) {
+        _preventDefault(e);
+        var uuid = e.sender.element[0].attributes['data-objectid'].value;
+        var messageId = e.sender.element[0].parentElement.parentElement.parentElement.attributes['id'].value;
+
+        var message = channelView.findMessageById(messageId);
+
+        if (message !== undefined) {
+
+            if (message.data.objects !== undefined && message.data.objects.length > 0) {
+                var objectList = message.data.objects,object = null;
+
+                for (var i=0; i<objectList.length; i++ ) {
+                    if (objectList[i].uuid === uuid) {
+                        object = objectList[i];
+                    }
+                }
+
+                if (object !== null) {
+                    // User is interacting with the object so add it, if it doesn't already exist
+                    smartObject.smartAddObject(object);
+                    modalActionMeeting.openModal(object);
+                }
+
+            } else {
+                mobileNotify("Sender deleted this Smart Event!");
+            }
+        }
+
+    },
+
+    addSmartObjectToMessage: function (objectId, smartObject) {
+
+        var editor = $("#messageTextArea").data("kendoEditor");
+        var date = smartObject.date.toLocaleString();
+        var dateStr = moment(date).format('llll');
+        var objectUrl = '<a data-role="button" class="btnClear" data-objectid="'+ objectId + '" id="chatobject_' + objectId + '" data-click="channelView.onObjectClick" />' + smartObject.action + " : " + smartObject.title + " " + dateStr +'</a>';
+
+        editor.paste(objectUrl);
+        editor.update();
+
+
+        smartObject.channelId = channelView._channelId;
+
+        channelView.messageObjects.push(smartObject);
+
+        /* $('#chatImage').attr('src', displayUrl);
+         $('#chatImagePreview').show();*/
     },
 
     addImageToMessage: function (photoId, displayUrl) {
@@ -2082,6 +2125,16 @@ var channelView = {
         );
     },
 
+    messageMenuTag : function (e) {
+        // Get the current insertion point
+        var editor = $("#messageTextArea").data("kendoEditor");
+        var range = editor.getRange();
+        channelView._tagRange = range;
+        channelView._tagStart = range.startOffset;
+        channelView._tagEnd = range.endOffset;
+
+    },
+
     messageInsertTag : function (e) {
         _preventDefault(e);
 
@@ -2126,7 +2179,8 @@ var channelView = {
 
     messageCalendar : function (e) {
         _preventDefault(e);
-       modalActionMeeting.openModal(null);
+        channelView.messageMenuTag();
+        modalActionMeeting.openModal(null);
     },
 
     messageEvent : function (e) {
@@ -2134,6 +2188,11 @@ var channelView = {
         mobileNotify("Chat Event isn't wired up yet");
     },
 
+    messageFlight : function (e) {
+        _preventDefault(e);
+        channelView.messageMenuTag();
+        mobileNotify("Chat Flight isn't wired up yet");
+    },
 
     messageMusic : function (e) {
         _preventDefault(e);

@@ -863,6 +863,7 @@ var contactModel = {
                 contact.set('contactEmail', contact.email);
                 contact.set('emailVerified', contact.emailVerified);
 
+                var contactObj = contact.toJSON();
                 contactModel.contactsDS.add(contact.attributes);
                 contactModel.contactListDS.add(contact.attributes);
                 //addContactView.closeModal();

@@ -1488,8 +1488,8 @@
 	</div>
 
 	<ul data-role="actionsheet" id="newMessageActions" data-popup='{"direction": "left"}'>
-		<li><a data-action="channelView.messageCalendar"> Add Calendar</a></li>
-		<li><a data-action="channelView.messageEvent"> Add Event</a></li>
+		<li><a data-action="channelView.messageCalendar"> Add Event</a></li>
+		<li><a data-action="channelView.messageFlight"> Add Flight</a></li>
 		<li><a data-action="channelView.messageMovie"> Add Movie</a></li>
 		<li><a data-action="channelView.messageMusic"> Add Music</a></li>
 	</ul>
@@ -2454,25 +2454,25 @@
 	</div>
 </div>
 
-<!-- smartObject ACtion modal -->
+<!-- smartObject Action modal -->
 <div data-role="modalview" id="modalview-actionMeeting" style="width: 100%;  height: 100%; display: none;"  data-model="modalActionMeeting._activeObject" data-init="modalActionMeeting.onInit" data-open="modalActionMeeting.onShow" class="appearance">
 	<div data-role="header">
 		<div data-role="navbar">
-			<span data-bind="text: title">Meeting</span>
+			<span>Smart Event</span>
 			<a data-click="modalActionMeeting.onCancel" data-role="button"  class="btnClear-grey" data-align="left">Cancel</a>
 
 		</div>
 	</div>
 	<form>
 		<ul data-role="listview" data-style="inset">
-			<li>
-				<label> Title
-					<input type="search"  data-bind="value: title" />
+			<li style="font-size: 18px;">
+				<label>
+					<input type="search" id="modalActionMeeting-title"  data-bind="value: title" placeholder="Title..."/>
 				</label>
 			</li>
 			<li>
-				<label> Notes
-					<input type="search"  data-bind="value: description"/>
+				<label  style="font-size: 12px;">
+					<input type="search"  data-bind="value: description" placeholder="Description..."/>
 				</label>
 			</li>
 
@@ -2488,8 +2488,13 @@
 			</li>
 			<li>
 				<label> Where (Location or Place)
-					<span> <input type="search" id="modalActionMeeting-placesearch"/> <a data-role="button" data-click="modalActionMeeting.placeSearch" id="modalActionMeeting-placesearchicon" class="hidden"><span class="searchIcon"><img src="images/search.svg" /></span></a> </span>
+					<input type="search" id="modalActionMeeting-placesearch"/>
 				</label>
+			</li>
+			<li id="modalActionMeeting-placesearchdiv" class="hidden">
+				<div>
+					<img src='images/icon-gps-selected.svg' class='icon-sm'/> <a data-click="modalActionMeeting.placeSearch" data-role="button" class="btnClear" id="modalActionMeeting-placesearchBtn"> Find... </a>
+				</div>
 			</li>
 			<li>
 				<label> Location is flexible
@@ -2503,6 +2508,33 @@
 		<a class="btnFull-modal btnPrimary" data-role="button" data-click="modalActionMeeting.onDone">Save</a>
 	</div>
 </div>
+
+<!-- Search Places -->
+<div data-role="modalview" data-title="Search Places" id="searchPlaces" data-open="searchPlacesView.onShow" data-init="searchPlacesView.onInit"  data-transition="slide:up">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span data-role="view-title"></span>
+			<a data-role="button" data-click="searchPlacesView.onDone" data-align="left" >
+				<img src='images/nav-back.svg' />
+			</a>
+		</div>
+	</div>
+
+
+	<div class="tempSearchBox">
+		<div class="appendSearch">
+			<span class="searchIcon"><img src="images/search.svg" /></span>
+			<input class="doubleAppendSearch"  placeholder="Search nearby ..." id="searchPlaceSearchQuery" />
+			<span class="enterSearch hidden"><a class="btnClear-grey"><img class="icon-sm" src="images/close.svg" /></a></span>
+		</div>
+	</div>
+	<div>
+		<ul id="searchplaces-listview"></ul>
+	</div>
+</div>
+
+
+
 
 <!-- Photo tag modal -->
 <div data-role="modalview" id="modalview-photoTag" style="width: 90%; display: none;"  data-model="modalPhotoTag._activePhoto" class="appearance">

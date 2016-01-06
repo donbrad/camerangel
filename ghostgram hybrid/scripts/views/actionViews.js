@@ -8,6 +8,7 @@ var modalActionMeeting = {
     _activeObject : new kendo.data.ObservableObject(),
     _date : new Date(),
     _isInited : false,
+    _eventList :[],
 
     onInit: function (e) {
         _preventDefault(e);
@@ -18,24 +19,37 @@ var modalActionMeeting = {
     initActiveObject : function () {
         var thisObj = modalActionMeeting._activeObject;
 
-        thisObj.set('title', 'Meeting Invite');
+        thisObj.set("uuid", uuid.v4());
+        thisObj.set('senderUUID', null);
+        thisObj.set('channelId', null);
+        thisObj.set('title', null);
+        thisObj.set('type', "meeting");
         thisObj.set('action', null);
         thisObj.set('descrption', null);
         thisObj.set('address', null);
         thisObj.set('placeId', null);
-        thisObj.set('lat', 0);
-        thisObj.set('lng', 0);
+        thisObj.set('lat', null);
+        thisObj.set('lng', null);
         thisObj.set('date', new Date());
         thisObj.set('approxTime', false);
         thisObj.set('approxPlace', false);
         thisObj.set('timeFlexible', false);
         thisObj.set('placeFlexible', false);
+        thisObj.set('isDeleted', false);
+        thisObj.set('isModified', false);
+        thisObj.set('isAccepted', false);
     },
 
     setActiveObject : function (newObj) {
         var thisObj = modalActionMeeting._activeObject;
 
+        if (newObj.uuid === undefined || newObj.uuid === null) {
+            newObj.uuid = uuid.v4();
+        }
+        thisObj.set('channelId', newObj.channelId);
         thisObj.set('title', newObj.title);
+        thisObj.set('type', newObj.type);
+        thisObj.set('uuid', newObj.uuid);
         thisObj.set('action', newObj.action);
         thisObj.set('descrption', newObj.description);
         thisObj.set('address', newObj.address);
@@ -50,36 +64,60 @@ var modalActionMeeting = {
         thisObj.set('approxPlace', newObj.approxPlace);
         thisObj.set('timeFlexible', newObj.timeFlexible);
         thisObj.set('placeFlexible', newObj.placeFlexible);
+        thisObj.set('isModified', newObj.isModified);
+        thisObj.set('isDeleted', newObj.isDeleted);
+        thisObj.set('isAccepted', newObj.isAccepted);
     },
 
 
     onShow: function (e) {
         _preventDefault(e);
-
-
+        $("#modalActionMeeting-placesearchBtn").text("");
+        $("#modalActionMeeting-placesearch").val("");
     },
 
     placeSearch : function (e) {
         _preventDefault(e);
+
+        var placeStr =  $("#modalActionMeeting-placesearch").val();
+
+        mobileNotify("SearchPlaces : "  + placeStr);
 
     },
 
     openModal: function (actionObj) {
         if (!modalActionMeeting._isInited) {
 
-           /* $("#modalActionMeeting-datetimepicker").kendoDateTimePicker({
-                value: this._date
-            });*/
+            modalActionMeeting._eventList = smartObject.getActionNames();
 
+            $("#modalActionMeeting-title").kendoAutoComplete({
+                dataSource: modalActionMeeting._eventList,
+                ignoreCase: true,
+                change: function (e) {
+                    var eventStr =  $("#modalActionMeeting-title").val();
+                    modalActionMeeting._activeObject.set('title', eventStr);
 
-           /* $("#modalActionMeeting-datetime").on('input', function (e) {
-                var value = $("#modalActionMeeting-date").val();
+                },
+                select: function(e) {
+                    var event = e.item;
+                    var actionStr = e.item[0].textContent;
+                    modalActionMeeting._activeObject.set('action', actionStr);
 
-                if (value.length >= 5) {
-                    var dataIn = Date.parse(value);
+                    // Use the selected item or its text
+                },
+                filter: "contains",
+                placeholder: "Select Event... "
+            });
 
+            $("#modalActionMeeting-placesearch").on('input', function () {
+                var placeStr =  $("#modalActionMeeting-placesearch").val();
+                if (placeStr.length > 3) {
+                    $("#modalActionMeeting-placesearchBtn").text("Find " + placeStr);
+                    $("#modalActionMeeting-placesearchdiv").removeClass('hidden');
+                } else {
+                    $("#modalActionMeeting-placesearchdiv").addClass('hidden');
                 }
-            });*/
+            });
 
             $("#modalActionMeeting-placesearch").kendoAutoComplete({
                 dataSource: placesModel.placesDS,
@@ -87,27 +125,24 @@ var modalActionMeeting = {
                 dataTextField: "name",
                 dataValueField: "uuid",
                 change: function (e) {
-                    var placeStr =  $("#modalActionMeeting-placesearch").val(), keycode = e.keyCode;
-                    if (placeStr.length > 6 && keycode === 32) {
-                        $("#modalActionMeeting.placesearchicon").removeClass('hidden');
+                    // event fired on blur -- if a place wasn't selected, need to do a nearby search
+                    var placeStr =  $("#modalActionMeeting-placesearch").val();
+                    if (placeStr.length > 3) {
+                        $("#modalActionMeeting-placesearchBtn").text("Find " + placeStr);
+                        $("#modalActionMeeting-placesearchdiv").removeClass('hidden');
+                    } else {
+                        $("#modalActionMeeting-placesearchdiv").addClass('hidden');
                     }
                 },
                 select: function(e) {
-                    var item = e.item;
-                    var text = item.text();
-                    // Use the selected item or its text
+                    // User has selected one of their places
+                    var place = e.item;
+
                 },
-                filter: "startswith",
+                filter: "contains",
                 placeholder: "Select location... "
             });
 
-            /*$("#modalActionMeeting-placesearch").on('input', function (e) {
-                var placeStr =  $("#modalActionMeeting-placesearch").val(), keycode = e.keyCode;
-                if (placeStr.length > 6 && keycode === 32) {
-                    $("#modalActionMeeting.placesearchicon").removeClass('hidden');
-                }
-
-            });*/
             modalActionMeeting._isInited = true;
         }
         modalActionMeeting._date = new Date();
@@ -118,7 +153,7 @@ var modalActionMeeting = {
             modalActionMeeting.setActiveObject(actionObj);
         }
 
-        $("#modalActionMeeting.placesearchicon").addClass('hidden');
+        $("#modalActionMeeting-placesearchdiv").addClass('hidden');
         $("#modalActionMeeting-datetime").val(modalActionMeeting._activeObject.get('date'));
         $("#modalview-actionMeeting").data("kendoMobileModalView").open();
     },
@@ -131,6 +166,41 @@ var modalActionMeeting = {
 
     onDone: function (e) {
         //_preventDefault(e);
+
+        var thisObject = {}, thisObj = modalActionMeeting._activeObject;
+
+        if (thisObj.action === null) {
+            // User has submitted a custom action
+            var titleArray = thisObj.title.split(' ');
+            thisObj.action = titleArray[0].toLowerCase();
+            if (!smartObject.isCurrentAction(thisObj.action)) {
+                // Todo: add new action to users private dictionary
+            }
+        }
+
+        thisObject.uuid = thisObj.uuid;
+        thisObject.action = thisObj.action;
+        thisObject.type = thisObj.type;
+        thisObject.title = thisObj.title;
+        thisObject.description = thisObj.description;
+        thisObject.date = thisObj.date;
+        thisObject.placeId = thisObj.placeId;
+        thisObject.address = thisObj.address;
+        thisObject.senderUUID = thisObj.senderUUID;
+        thisObject.channelId = thisObj.channelId;
+        thisObject.address = thisObj.address;
+        thisObject.lat = thisObj.lat;
+        thisObject.lng = thisObj.lng;
+        thisObject.approxTime = thisObj.approxTime;
+        thisObject.approxPlace = thisObj.approxPlace;
+        thisObject.timeFlexible = thisObj.timeFlexible;
+        thisObject.placeFlexible = thisObj.placeFlexible;
+        thisObject.isDeleted = false;
+        thisObject.isModified = true;
+        thisObject.isAccepted = thisObj.isAccepted;
+
+        channelView.addSmartObjectToMessage(thisObj.uuid, thisObject);
+
         $("#modalview-actionMeeting").data("kendoMobileModalView").close();
     }
 

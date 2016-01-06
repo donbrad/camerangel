@@ -108,10 +108,40 @@ var smartObject = {
 
     termsDS : null,
 
+    objectsDS: new kendo.data.DataSource({
+        offlineStorage: "smartobjects",
+        sort: {
+            field: "date",
+            dir: "desc"
+        }
+    }),
 
     init : function () {
         smartObject.termsDS = new kendo.data.DataSource({
             data: smartObject.termMap
+        });
+    },
+
+
+    fetch : function () {
+        var SmartObjects = Parse.Object.extend("smartobject");
+        var query = new Parse.Query(SmartObjects);
+
+        query.find({
+            success: function(collection) {
+                var models = [];
+                for (var i = 0; i < collection.length; i++) {
+                    var smartObj = collection[i];
+
+                    models.push(smartObj.toJSON());
+                }
+                deviceModel.setAppState('hasSmartObjects', true);
+                smartObject.objectsDS.data(models);
+                deviceModel.isParseSyncComplete();
+            },
+            error: function(error) {
+                handleParseError(error);
+            }
         });
     },
 
@@ -133,6 +163,71 @@ var smartObject = {
 
     },
 
+    queryObjects: function (query) {
+
+        if (query === undefined)
+            return(undefined);
+        var dataSource = smartObject.objectsDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+
+        dataSource.filter(cacheFilter);
+
+        return(view);
+
+    },
+
+    queryObject: function (query) {
+
+        if (query === undefined)
+            return(undefined);
+        var dataSource = smartObject.objectsDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+
+        dataSource.filter(cacheFilter);
+
+        return(view.items[0]);
+
+    },
+
+    // Find all objects that aren't deleted...
+    findObject: function (uuid) {
+        var result = smartObject.queryObject([{ field: "uuid", operator: "eq", value: uuid }, { field: "isDeleted", operator: "eq", value: false }]);
+
+        return(result);
+    },
+
+
+    getActionNames : function () {
+
+        var nameList = [], results = smartObject.queryTerm({ field: "category", operator: "eq", value: 'action' });
+
+        for (var i=0; i<results.length; i++) {
+            nameList.push(results[i].term);
+        }
+
+        return(nameList);
+    },
+
+    isCurrentAction : function (termIn) {
+        var target = termIn.toLowerCase();
+        var termList = smartObject.queryTerm({ field: "action", operator: "eq", value: target });
+
+        if (termList.length > 0) {
+            return(true);
+        }
+
+        return(false);
+    },
 
     findTerm: function (termIn) {
         var target = termIn.toLowerCase();
@@ -156,6 +251,56 @@ var smartObject = {
 
         return(termList);
 
+    },
+
+    smartAddObject : function (objectIn) {
+        var objectId = objectIn.uuid;
+
+        if (smartObject.findObject(objectId) === undefined) {
+            smartObject.addObject(objectIn);
+        }
+    },
+
+    addObject : function (objectIn) {
+        var SmartObjects = Parse.Object.extend("smartobject");
+        var smartOb = new SmartObjects();
+
+        if (objectIn.senderUUID === undefined || objectIn.senderUUID === null) {
+            objectIn.senderUUID = userModel.currentUser.userUUID;
+        }
+        smartOb.set('uuid', objectIn.uuid);
+        smartOb.set('action', objectIn.action);
+        smartOb.set('type', objectIn.type);
+        smartOb.set('title', objectIn.title);
+        smartOb.set('description', objectIn.description);
+        smartOb.set('date', objectIn.date);
+        smartOb.set('approxTime', objectIn.approxTime);
+        smartOb.set('approxPlace', objectIn.approxPlace);
+        smartOb.set('address', objectIn.address);
+        smartOb.set('lat', objectIn.lat);
+        smartOb.set('lng', objectIn.lng);
+        smartOb.set('placeId', objectIn.placeId);
+        smartOb.set('placeFlexible', objectIn.placeFlexible);
+        smartOb.set('timeFlexible', objectIn.timeFlexible);
+        smartOb.set('isAccepted', objectIn.isAccepted);
+        smartOb.set('isModified', objectIn.isModified);
+        smartOb.set('isDeleted', objectIn.isDeleted);
+
+        var smartObj = smartOb.toJSON();
+        smartObject.objectsDS.add(smartObj);
+
+        smartOb.save(null, {
+            success: function(thisObject) {
+                // Execute any logic that should take place after the object is saved.;
+
+
+            },
+            error: function(contact, error) {
+                // Execute any logic that should take place if the save fails.
+                // error is a Parse.Error with an error code and message.
+                handleParseError(error);
+            }
+        });
     }
 
 

@@ -437,6 +437,8 @@ var userModel = {
 
         photoModel.fetch();
 
+        smartObject.fetch();
+
         userStatus.init();
 
        /* var InviteModel = Parse.Object.extend("invites");
