@@ -1,0 +1,3 @@
+[1451770892:6374] ERR: ERROR on binding to port 5758 (-1 48)
+2016-01-02 16:41:33.264 CodeKit[8085:232986] Error starting websocket server: Error Domain=com.LPWebSocketServer Code=0 "Couldn't create the libwebsockets context." UserInfo=0x7f95c9373940 {NSLocalizedDescription=Couldn't create the libwebsockets context.}
+2016-01-02 16:41:37.831 CodeKit[8085:233128] Error starting HTTP server. Host: jordans-macbook-pro.local, IP: 192.168.1.5 Error: Error Domain=NSPOSIXErrorDomain Code=48 "Address already in use" UserInfo=0x7f95c8724ea0 {NSLocalizedDescription=Address already in use, NSLocalizedFailureReason=Error in bind() function}
