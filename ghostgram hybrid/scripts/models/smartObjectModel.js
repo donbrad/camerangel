@@ -195,7 +195,13 @@ var smartObject = {
 
         dataSource.filter(cacheFilter);
 
-        return(view.items[0]);
+        if (view.items === undefined) {
+            return(undefined)
+        } else {
+            return (view.items[0]);
+        }
+
+
 
     },
 
