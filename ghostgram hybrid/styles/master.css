@@ -543,22 +543,27 @@ form p {
 }
 .icon {
   height: 1.3rem;
+  max-width: 1.3em;
   vertical-align: middle;
 }
 .icon-sm {
   height: 1em;
+  max-width: 1em;
   vertical-align: middle;
 }
 .icon-md {
   height: 1.5em;
+  max-width: 1.5em;
   vertical-align: middle;
 }
 .icon-notify {
   height: 1em;
+  max-width: 1em;
   vertical-align: middle;
 }
 .icon-bar {
   height: 1em;
+  max-width: 1em;
 }
 .icon-bar-md {
   height: 1.25em;

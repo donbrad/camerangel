@@ -543,22 +543,27 @@ form p {
 }
 .icon {
   height: 1.3rem;
+  max-width: 1.3em;
   vertical-align: middle;
 }
 .icon-sm {
   height: 1em;
+  max-width: 1em;
   vertical-align: middle;
 }
 .icon-md {
   height: 1.5em;
+  max-width: 1.5em;
   vertical-align: middle;
 }
 .icon-notify {
-  width: 0.75em;
+  height: 1em;
+  max-width: 1em;
   vertical-align: middle;
 }
 .icon-bar {
   height: 1em;
+  max-width: 1em;
 }
 .icon-bar-md {
   height: 1.25em;
@@ -3992,7 +3997,6 @@ div.contactListBox.activeContact > div > div > ul {
 }
 /* Notify styles */
 .notify-box {
-  padding: 0.5rem 1rem;
   background: #FFFFFF;
   border: 1px solid rgba(228, 228, 228, 0.3);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
@@ -4003,7 +4007,11 @@ div.contactListBox.activeContact > div > div > ul {
   margin-bottom: 0.5rem;
 }
 .notify-helper {
+  padding: 0 1rem;
   color: #979797;
+}
+.notify-content {
+  padding: 0.25rem 1rem;
 }
 .notify-content h4,
 .notify-content p {
@@ -4017,10 +4025,13 @@ div.contactListBox.activeContact > div > div > ul {
   vertical-align: middle;
 }
 .notify-info {
-  margin-bottom: 0.25rem;
+  margin: 0.4em 0 0.25em;
 }
 .notify-action {
-  margin-top: 0.5rem;
+  margin: 0.25em 0.5em;
+}
+.notify-action a {
+  font-size: 1.15em !important;
 }
 .notify-dismiss {
   margin-left: 1rem;
