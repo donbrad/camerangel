@@ -1714,7 +1714,7 @@ var channelView = {
         var editor = $("#messageTextArea").data("kendoEditor");
         var date = smartObject.date.toLocaleString();
         var dateStr = moment(date).format('llll');
-        var objectUrl = '<a data-role="button" class="btnClear-light" data-objectid="'+ objectId + '" id="chatobject_' + objectId + '" data-click="channelView.onObjectClick" />'  + smartObject.title + '</a>';
+        var objectUrl = '<a data-role="button" class="btnClear-light" data-objectid="'+ objectId + '" id="chatobject_' + objectId + '" data-click="channelView.onObjectClick" /><img src="images/smart-event.svg" class="icon-sm"/>'  + smartObject.title + '</a>';
 
         editor.paste(objectUrl);
         editor.update();
