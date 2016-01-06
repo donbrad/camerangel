@@ -279,7 +279,7 @@ var smartObject = {
         smartOb.set('type', objectIn.type);
         smartOb.set('title', objectIn.title);
         smartOb.set('description', objectIn.description);
-        var dateNumber = objectIn.date.UTC();
+        var dateNumber = objectIn.date.getMilliseconds();
         smartOb.set('date', dateNumber);
         smartOb.set('approxTime', objectIn.approxTime);
         smartOb.set('approxPlace', objectIn.approxPlace);
