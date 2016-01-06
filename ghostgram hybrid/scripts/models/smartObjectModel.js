@@ -275,6 +275,8 @@ var smartObject = {
             objectIn.senderUUID = userModel.currentUser.userUUID;
         }
         smartOb.set('uuid', objectIn.uuid);
+        smartOb.set('senderUUID', objectIn.senderUUID);
+        smartOb.set('channelId', objectIn.channelId);
         smartOb.set('action', objectIn.action);
         smartOb.set('type', objectIn.type);
         smartOb.set('title', objectIn.title);
