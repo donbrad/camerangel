@@ -116,7 +116,7 @@ var modalActionMeeting = {
                     if (timeString.length > 0) {
                         dateStr = dateStr.replace(timeString[0], '');
                         dateStr = dateStr.trim();
-                        var date = Date.parse(dateStr).at(timeString[0]);
+                        var date = Date.parse(dateStr);
                         var time = Date.parse(timeString[0]);
                        // var finalDateStr  = new Date(date).toShortDateString() + " " +  new Date(time).toShortTimeString();
                         var date2 = moment(date);
