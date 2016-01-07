@@ -644,6 +644,7 @@ form p {
 .btnClear-sm,
 .btnClear-light-sm,
 .btnClearLine,
+.btnSmart,
 .btnClearLine-grey-sm,
 .btnClear-grey,
 .btnClear-red,
@@ -838,6 +839,11 @@ form p {
 .btnClearLine :disabled {
   color: #A4A4A4 !important;
   background: transparent !important;
+}
+.btnSmart {
+  color: #fff !important;
+  border-radius: 12px !important;
+  background-color: #6CADF3 !important;
 }
 .glass {
   background: #242424 !important;
@@ -4695,8 +4701,8 @@ html .km-pane-wrapper .k-header {
   float: left;
   padding: 0.2em 0.35em;
   border-radius: .25em;
-  color: #fff;
-  background: #6CADF3;
+  color: #4A4A4A;
+  background: #cae2fb;
   margin-top: 0.2em;
 }
 .chat-message-sender:after {
@@ -4706,7 +4712,7 @@ html .km-pane-wrapper .k-header {
   width: 0;
   border-top: 0.4rem solid transparent;
   border-bottom: 0.4rem solid transparent;
-  border-right: 0.3rem solid #6CADF3;
+  border-right: 0.3rem solid #cae2fb;
   top: 1.5rem;
   left: 11%;
 }

@@ -787,6 +787,13 @@ form {
 	}
 }
 
+.btnSmart {
+	&:extend(.btnStyle);
+	color: #fff !important;
+	border-radius: 12px !important;
+	background-color: #6CADF3 !important;
+}
+
 .glass {
 	//color: #fff !important;
 	background: #242424 !important;
@@ -5005,8 +5012,8 @@ div.contactListBox.activeContact > div > div > ul {
     float: left;
     padding: 0.2em 0.35em;
     border-radius: .25em;
-    color: #fff;
-    background: @primary-200;
+    color: @black;
+    background: lighten(@primary-200, 20%);
     margin-top: 0.2em;
 }
 
@@ -5017,7 +5024,7 @@ div.contactListBox.activeContact > div > div > ul {
 	width: 0;
 	border-top: 0.4rem solid transparent;
 	border-bottom: 0.4rem solid transparent;
-	border-right: 0.3rem solid @primary-200;
+	border-right: 0.3rem solid lighten(@primary-200, 20%);
 	top: 1.5rem;
 	left: 11%;
 	@media @mobile {
