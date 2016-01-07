@@ -114,6 +114,8 @@ var modalActionMeeting = {
                 if (dateStr.length > 6) {
                     var date = moment(dateStr);
                     var date2 = Date.parse(dateStr);
+                    var timeString = dateStr.match(/\d{1,2}([:.]?\d{1,2})?([ ]?[a|p]m)/ig);
+                    
                 }
             });
 
