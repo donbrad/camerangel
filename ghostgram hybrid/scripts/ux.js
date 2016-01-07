@@ -86,7 +86,8 @@ var ux = {
 	// display empty view graphic if no results
 	checkEmptyUIState: function(ds, view){
 		var selectionList = ds.total();
-	    if(ds <= 0){
+
+	    if(selectionList <= 0){
 	    	$(view + " .emptyState").removeClass("hidden");
 	    } else {
 	    	$(view + " .emptyState").addClass("hidden");

@@ -269,28 +269,30 @@
 	#
 	<div class="notify-box">
 		<div class="notify-info">
-			<span class="notify-helper">
-				#if(data.type === 'Unread Messages'){#
-					<img src="images/icon-notify-unread.svg" class="icon-notify" /> New Message
-				#} else if(data.type === 'ghostgram recommends'){#
-					<img src="images/icon-notify-recommend.svg" class="icon-notify" /> Recommended
-				#} else if(data.type === 'New Member'){#
-					<img src="images/icon-notify-request.svg" class="icon-notify" /> New Member
-				#}#
-			</span>
+		#if(data.type === 'Unread Messages'){#
+				<span><img src="images/icon-notify-unread.svg" class="icon-notify" /> #= description #</span>
+			#} else if(data.type === 'ghostgram recommends'){#
+				<span><img src="images/icon-notify-recommend.svg" class="icon-notify" /> Recommended</span>
+			#} else if(data.type === 'New Member'){#
+				<span>New Member</span>
+			#}#
+			<a class="closeBox" data-role="button" data-uuid="#:uuid#" data-click="homeView.dismissNotification"><img src="images/close.svg" class="img-sm" /></a>
 		</div>
 		<div class="notify-content">
-			<h2>#=title#</h2>
-			<p>#= description # </p>
-		</div>
-		<div class="notify-action">
-			<a class="btnClear" data-role="button" data-uuid="#:uuid#" data-link="#=href#" data-action="#=action#" data-click="homeView.handleNotificationAction">#= actionTitle#</a>
-			<a class="btnClear-grey" data-role="button" data-uuid="#:uuid#" data-click="homeView.dismissNotification">Dismiss</a>
+
+			# if (action !== undefined && action !== 'none') {#
+				<a class="btnClear btnNotify" data-role="button" data-uuid="#:uuid#" data-action="#=action#" data-click="homeView.handleNotificationAction">#= title #</a>
+			#} else {#
+				<a class="btnClear btnNotify" data-role="button" data-uuid="#:uuid#" data-link="#=href#"  data-click="homeView.handleNotificationAction"> #=  actionTitle # </a>
+			#}#
+
+			<a class="btnClear btnNotify hidden" data-role="button" data-uuid="#:uuid#" data-link="#=href#" data-action="#=action#" data-click="homeView.handleNotificationAction">#=title#</a>
+			#if(data.type !== 'Unread Messages'){#
+				<p class="textClamp">#= description # </p>
+			#}#
 		</div>
 	</div><!-- notify-box -->
 </script>
-
-
 
 <!-- home - for new users -->
  <div data-role="view" data-title="ghostgrams" id="newuserhome" data-layout="newuser" class="appearance" style="display:none;" data-init="newUserView.onInit" data-show="newUserView.onShow" data-transition="fade">

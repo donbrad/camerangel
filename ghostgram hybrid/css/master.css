@@ -4026,6 +4026,8 @@ div.contactListBox.activeContact > div > div > ul {
 }
 .notify-info {
   margin: 0.4em 0 0.25em;
+  width: 100%;
+  background: #FADDB0;
 }
 .notify-action {
   margin: 0.25em 0.5em;

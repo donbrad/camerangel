@@ -2069,7 +2069,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 .ghostContent {
   background-color: #e0e0e0;
   color: #27476e;
-  background: cover;
+  background-size: cover;
   width: 100%;
   height: 100%;
   padding-top: 12px;
@@ -3998,7 +3998,6 @@ div.contactListBox.activeContact > div > div > ul {
 /* Notify styles */
 .notify-box {
   background: #FFFFFF;
-  border: 1px solid rgba(228, 228, 228, 0.3);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   border-radius: 2px;
 }
@@ -4011,21 +4010,26 @@ div.contactListBox.activeContact > div > div > ul {
   color: #979797;
 }
 .notify-content {
-  padding: 0.25rem 1rem;
+  padding: 0.25em;
 }
-.notify-content h4,
 .notify-content p {
   margin-left: 0px;
   margin-right: 0px;
+  padding-left: 0.5em;
 }
 .notify-content h4 {
   font-weight: 600;
+}
+.btnNotify {
+  font-size: 1.2em !important;
 }
 .notify-title img {
   vertical-align: middle;
 }
 .notify-info {
-  margin: 0.4em 0 0.25em;
+  width: 100%;
+  padding: 0.25em 0 0 1em;
+  font-size: 0.875em;
 }
 .notify-action {
   margin: 0.25em 0.5em;
