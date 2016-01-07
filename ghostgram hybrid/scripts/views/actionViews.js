@@ -109,9 +109,9 @@ var modalActionMeeting = {
                 placeholder: "Select Event... "
             });
 
-            $("#modalActionMeeting-datestring").on('input', function () {
+            $("#modalActionMeeting-datestring").on('blur', function () {
                 var dateStr =  $("#modalActionMeeting-datestring").val();
-                if (dateStr.length > 4 ) {
+                if (dateStr.length > 6) {
                     var date = moment.parse(dateStr);
                 }
             });
