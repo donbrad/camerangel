@@ -169,6 +169,8 @@ var modalActionMeeting = {
         }
         modalActionMeeting._date = new Date();
 
+        $("#modalActionMeeting-datetime").val(modalActionMeeting._date.toString());
+        
         if (actionObj === undefined || actionObj === null) {
             modalActionMeeting.initActiveObject();
         } else {
