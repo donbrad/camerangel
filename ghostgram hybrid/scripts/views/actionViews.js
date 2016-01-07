@@ -120,6 +120,7 @@ var modalActionMeeting = {
                         var time = Date.parse(timeString[0]);
                         var finalDateStr  = new Date(date).toString("MMMM dd, yyyy") + " " +  new Date(time).toString("h:mm tt");
                         $("#modalActionMeeting-datetime").val(finalDateStr);
+                        modalActionMeeting._activeObject.set('date', new Date(finalDateStr));
                         var date2 = moment(date);
 
                     }
@@ -170,7 +171,7 @@ var modalActionMeeting = {
         modalActionMeeting._date = new Date();
 
         $("#modalActionMeeting-datetime").val(modalActionMeeting._date.toString());
-        
+
         if (actionObj === undefined || actionObj === null) {
             modalActionMeeting.initActiveObject();
         } else {
