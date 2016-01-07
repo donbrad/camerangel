@@ -109,6 +109,13 @@ var modalActionMeeting = {
                 placeholder: "Select Event... "
             });
 
+            $("#modalActionMeeting-datestring").on('input', function () {
+                var dateStr =  $("#modalActionMeeting-datestring").val();
+                if (dateStr.length > 4 ) {
+                    var date = moment.parse(dateStr);
+                }
+            });
+
             $("#modalActionMeeting-placesearch").on('input', function () {
                 var placeStr =  $("#modalActionMeeting-placesearch").val();
                 if (placeStr.length > 3) {
