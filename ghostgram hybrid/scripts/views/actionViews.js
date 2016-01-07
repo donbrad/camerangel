@@ -116,9 +116,11 @@ var modalActionMeeting = {
                     if (timeString.length > 0) {
                         dateStr = dateStr.replace(timeString[0], '');
                         dateStr = dateStr.trim();
+                        var date2 = Date.parse(dateStr);
+                        var time2 = Date.parse(timeString[0]);
                     }
                     var date = moment(dateStr);
-                    var date2 = Date.parse(dateStr);
+
 
                 }
             });
