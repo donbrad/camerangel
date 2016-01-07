@@ -125,8 +125,11 @@ var modalActionMeeting = {
                         }
 
                         var time = Date.parse(timeString[0]);
-                        var finalDateStr  = new Date(date).toString("MMMM dd, yyyy") + " " +  new Date(time).toString("h:mm tt");
-                        $("#modalActionMeeting-datetime").val(finalDateStr);
+                        var dateComp = new Date(date).toString("MMMM dd, yyyy"), timeComp = new Date(time).toString("h:mm tt");
+                        var finalDateStr  =  dateComp + " " +  timeComp;
+
+                        $('#modalActionMeeting-date').val(dateComp);
+                        $('#modalActionMeeting-time').val(timeComp);
                         modalActionMeeting._activeObject.set('date', new Date(finalDateStr));
                         var date2 = moment(date);
 
@@ -135,6 +138,10 @@ var modalActionMeeting = {
 
                 }
             });
+
+            $('#modalActionMeeting-date').pickadate();
+            $('#modalActionMeeting-time').pickatime();
+
 
             $("#modalActionMeeting-placesearch").on('input', function () {
                 var placeStr =  $("#modalActionMeeting-placesearch").val();
@@ -177,7 +184,6 @@ var modalActionMeeting = {
         }
         modalActionMeeting._date = new Date();
 
-        $("#modalActionMeeting-datetime").val(modalActionMeeting._date.toString());
 
         if (actionObj === undefined || actionObj === null) {
             modalActionMeeting.initActiveObject();
@@ -186,7 +192,6 @@ var modalActionMeeting = {
         }
 
         $("#modalActionMeeting-placesearchdiv").addClass('hidden');
-        $("#modalActionMeeting-datetime").val(modalActionMeeting._activeObject.get('date'));
         $("#modalview-actionMeeting").data("kendoMobileModalView").open();
     },
 
