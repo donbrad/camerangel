@@ -67,6 +67,8 @@ var modalActionMeeting = {
         thisObj.set('isModified', newObj.isModified);
         thisObj.set('isDeleted', newObj.isDeleted);
         thisObj.set('isAccepted', newObj.isAccepted);
+
+        $("#modalActionMeeting-datetime").val(modalActionMeeting._date.toString());
     },
 
 
@@ -74,6 +76,7 @@ var modalActionMeeting = {
         _preventDefault(e);
         $("#modalActionMeeting-placesearchBtn").text("");
         $("#modalActionMeeting-placesearch").val("");
+        $("#modalActionMeeting-datestring").val("");
     },
 
     placeSearch : function (e) {
@@ -114,9 +117,13 @@ var modalActionMeeting = {
                 if (dateStr.length > 6) {
                     var timeString = dateStr.match(/\d{1,2}([:.]?\d{1,2})?([ ]?[a|p]m)/ig);
                     if (timeString.length > 0) {
+                        var date = Date.today();
                         dateStr = dateStr.replace(timeString[0], '');
                         dateStr = dateStr.trim();
-                        var date = Date.parse(dateStr);
+                        if (dateStr.length > 4) {
+                            date = Date.parse(dateStr);
+                        }
+
                         var time = Date.parse(timeString[0]);
                         var finalDateStr  = new Date(date).toString("MMMM dd, yyyy") + " " +  new Date(time).toString("h:mm tt");
                         $("#modalActionMeeting-datetime").val(finalDateStr);
