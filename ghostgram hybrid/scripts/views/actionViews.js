@@ -138,6 +138,9 @@ var modalActionMeeting = {
                     // User has selected one of their places
                     var place = e.item;
 
+                    // Hide the Find Location button
+                    $("#modalActionMeeting-placesearchdiv").addClass('hidden');
+
                 },
                 filter: "contains",
                 placeholder: "Select location... "

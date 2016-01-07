@@ -1610,14 +1610,14 @@ var channelView = {
 
         if (validMessage === true ) {
             channelView._initMessageTextArea();
-            channelView.messageInit();
+
 
             if (channelView.isPrivateChat) {
                 privateChannel.sendMessage(channelView.privateContactId, text, channelView.activeMessage, 86400);
             } else {
                 groupChannel.sendMessage(text, channelView.activeMessage, 86400);
             }
-
+            channelView.messageInit();
         }
 
     },
