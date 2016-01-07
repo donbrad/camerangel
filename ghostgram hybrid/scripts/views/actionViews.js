@@ -112,10 +112,14 @@ var modalActionMeeting = {
             $("#modalActionMeeting-datestring").on('blur', function () {
                 var dateStr =  $("#modalActionMeeting-datestring").val();
                 if (dateStr.length > 6) {
+                    var timeString = dateStr.match(/\d{1,2}([:.]?\d{1,2})?([ ]?[a|p]m)/ig);
+                    if (timeString.length > 0) {
+                        dateStr = dateStr.replace(timeString[0], '');
+                        dateStr = dateStr.trim();
+                    }
                     var date = moment(dateStr);
                     var date2 = Date.parse(dateStr);
-                    var timeString = dateStr.match(/\d{1,2}([:.]?\d{1,2})?([ ]?[a|p]m)/ig);
-                    
+
                 }
             });
 
