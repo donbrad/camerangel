@@ -981,9 +981,7 @@ var channelView = {
     		}
     	
     		$("#chat-editorBtn").kendoMobileButton({badge: toolCount});
-    	} 
-
-    	
+    	}
     	
     },
 
@@ -995,41 +993,6 @@ var channelView = {
                 content: true,
                 min: 24
             },
-            /*keyup: function(e) {
-                var editor = $("#messageTextArea").data("kendoEditor");
-                var range = editor.getRange();
-                if ((e.keyCode === 50 && e.shiftKey === true) || e.keyCode === 64) {
-                    channelView._tagActive = true;
-                    channelView._tagRange = range;
-                    channelView._tagStart = range.startOffset;
-                    channelView._firstSpace = false;
-                    return;
-                }
-
-                if (channelView._tagActive) {
-                    if (e.keyCode === 32) {
-                        // can do a look up here...
-                        if (channelView._firstSpace) {
-                            channelView._firstSpace = false;
-                            e.keyCode = 190;
-                        } else {
-                            channelView._firstSpace = true;
-                        }
-                    } else {
-                        channelView._firstSpace = false;
-                    }
-
-                    if (e.keyCode === 190) {
-                        channelView._tagActive = false;
-                        channelView._firstSpace = false;
-                        channelView._tagEnd = range.endOffset;
-                        var text = editor.value();
-                        var tagString = text.substring(range.startOffset, range.endOffset);
-                        console.log("tag string = " + tagString);
-                        channelView.processTag(tagString);
-                    }
-                }
-            },*/
             tools: [
                 "bold",
                 "italic",
@@ -1583,6 +1546,8 @@ var channelView = {
     messageAddSmartObject : function (smartObj) {
 
         channelView.activeMessage.objects.push(smartObj);
+        smartObject.smartAddObject(smartObj);
+
     },
 
 
@@ -1616,7 +1581,7 @@ var channelView = {
         _preventDefault(e);
 
         var validMessage = false; // If message is valid, send is enabled
-        channelView.activeMessage = {canCopy: !channelView.messageLock, photos: []};
+        channelView.activeMessage = {canCopy: !channelView.messageLock, photos: [], objects: []};
 
 
         //var text = $('#messageTextArea').val();
@@ -1639,20 +1604,20 @@ var channelView = {
             validMessage = true;
 
           //Process message smart objects...
-
+            channelView.validateMessageObjects();
 
         }
 
         if (validMessage === true ) {
             channelView._initMessageTextArea();
-            channelView.messageInit();
+
 
             if (channelView.isPrivateChat) {
                 privateChannel.sendMessage(channelView.privateContactId, text, channelView.activeMessage, 86400);
             } else {
                 groupChannel.sendMessage(text, channelView.activeMessage, 86400);
             }
-
+            channelView.messageInit();
         }
 
     },
@@ -1750,7 +1715,7 @@ var channelView = {
         var editor = $("#messageTextArea").data("kendoEditor");
         var date = smartObject.date.toLocaleString();
         var dateStr = moment(date).format('llll');
-        var objectUrl = '<a data-role="button" class="btnClear" data-objectid="'+ objectId + '" id="chatobject_' + objectId + '" data-click="channelView.onObjectClick" />'  + smartObject.title + '</a>';
+        var objectUrl = '<a data-role="button" class="btnClear-light" data-objectid="'+ objectId + '" id="chatobject_' + objectId + '" data-click="channelView.onObjectClick" /><img src="images/smart-event.svg" class="icon-sm"/> '  + " - " + smartObject.title + '</a>';
 
         editor.paste(objectUrl);
         editor.update();

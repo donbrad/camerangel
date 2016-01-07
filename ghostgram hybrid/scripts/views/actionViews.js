@@ -25,7 +25,7 @@ var modalActionMeeting = {
         thisObj.set('title', null);
         thisObj.set('type', "meeting");
         thisObj.set('action', null);
-        thisObj.set('descrption', null);
+        thisObj.set('description', null);
         thisObj.set('address', null);
         thisObj.set('placeId', null);
         thisObj.set('lat', null);
@@ -51,7 +51,7 @@ var modalActionMeeting = {
         thisObj.set('type', newObj.type);
         thisObj.set('uuid', newObj.uuid);
         thisObj.set('action', newObj.action);
-        thisObj.set('descrption', newObj.description);
+        thisObj.set('description', newObj.description);
         thisObj.set('address', newObj.address);
         thisObj.set('placeId', newObj.placeId);
         thisObj.set('lat', newObj.lat);
@@ -109,6 +109,14 @@ var modalActionMeeting = {
                 placeholder: "Select Event... "
             });
 
+            $("#modalActionMeeting-datestring").on('blur', function () {
+                var dateStr =  $("#modalActionMeeting-datestring").val();
+                if (dateStr.length > 6) {
+                    var date = moment(dateStr);
+                    var date2 = Date.parse(dateStr);
+                }
+            });
+
             $("#modalActionMeeting-placesearch").on('input', function () {
                 var placeStr =  $("#modalActionMeeting-placesearch").val();
                 if (placeStr.length > 3) {
@@ -137,6 +145,9 @@ var modalActionMeeting = {
                 select: function(e) {
                     // User has selected one of their places
                     var place = e.item;
+
+                    // Hide the Find Location button
+                    $("#modalActionMeeting-placesearchdiv").addClass('hidden');
 
                 },
                 filter: "contains",

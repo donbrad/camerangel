@@ -195,7 +195,13 @@ var smartObject = {
 
         dataSource.filter(cacheFilter);
 
-        return(view.items[0]);
+        if (view.items === undefined) {
+            return(undefined)
+        } else {
+            return (view.items[0]);
+        }
+
+
 
     },
 
@@ -269,11 +275,16 @@ var smartObject = {
             objectIn.senderUUID = userModel.currentUser.userUUID;
         }
         smartOb.set('uuid', objectIn.uuid);
+        smartOb.set('senderUUID', objectIn.senderUUID);
+        smartOb.set('channelId', objectIn.channelId);
         smartOb.set('action', objectIn.action);
         smartOb.set('type', objectIn.type);
         smartOb.set('title', objectIn.title);
         smartOb.set('description', objectIn.description);
-        smartOb.set('date', objectIn.date);
+        // Parse.com date gymnastics...
+        var dateString = objectIn.date.toISOString();
+        var d = {"__type":"Date","iso":dateString};
+        smartOb.set('date', d);
         smartOb.set('approxTime', objectIn.approxTime);
         smartOb.set('approxPlace', objectIn.approxPlace);
         smartOb.set('address', objectIn.address);

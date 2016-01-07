@@ -1,3 +1,29 @@
-[1451770893:3823] ERR: ERROR on binding to port 5758 (-1 48)
-2016-01-02 16:41:33.912 CodeKit[8082:232953] Error starting websocket server: Error Domain=com.LPWebSocketServer Code=0 "Couldn't create the libwebsockets context." UserInfo=0x7feea513aa60 {NSLocalizedDescription=Couldn't create the libwebsockets context.}
-2016-01-02 16:41:38.440 CodeKit[8082:232969] Error starting HTTP server. Host: jordans-macbook-pro.local, IP: 192.168.1.5 Error: Error Domain=NSPOSIXErrorDomain Code=48 "Address already in use" UserInfo=0x7feea5334030 {NSLocalizedDescription=Address already in use, NSLocalizedFailureReason=Error in bind() function}
+/*!
+ * Styling for RTL (right-to-left) languages using pickadate.js
+ */
+/**
+ * Switch the direction - only really necessary if
+ * it hasn’t already been applied higher up in the DOM.
+ */
+.picker {
+  direction: rtl;
+}
+/**
+ * Flip around the “next” and “previous” buttons.
+ */
+.picker__nav--next {
+  right: auto;
+  left: -1em;
+}
+.picker__nav--prev {
+  left: auto;
+  right: -1em;
+}
+.picker__nav--next:before {
+  border-left: 0;
+  border-right: 0.75em solid #000000;
+}
+.picker__nav--prev:before {
+  border-right: 0;
+  border-left: 0.75em solid #000000;
+}
