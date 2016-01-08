@@ -7,6 +7,7 @@
 var modalActionMeeting = {
     _activeObject : new kendo.data.ObservableObject(),
     _date : new Date(),
+    _placeId :null,
     _isInited : false,
     _eventList :[],
 
@@ -25,12 +26,13 @@ var modalActionMeeting = {
         thisObj.set('title', null);
         thisObj.set('type', "meeting");
         thisObj.set('action', null);
-        thisObj.set('descrption', null);
+        thisObj.set('description', null);
         thisObj.set('address', null);
+        thisObj.set('placeName', null);
         thisObj.set('placeId', null);
         thisObj.set('lat', null);
         thisObj.set('lng', null);
-        thisObj.set('date', new Date());
+        thisObj.set('date', new Date().today());
         thisObj.set('approxTime', false);
         thisObj.set('approxPlace', false);
         thisObj.set('timeFlexible', false);
@@ -38,6 +40,11 @@ var modalActionMeeting = {
         thisObj.set('isDeleted', false);
         thisObj.set('isModified', false);
         thisObj.set('isAccepted', false);
+
+        $('#modalActionMeeting-placesearch').val(thisObj.placeName);
+        $('#modalActionMeeting-datestring').val(new Date(thisObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
+        $('#modalActionMeeting-date').val(new Date(thisObj.date).toString('MMMM dd, yyyy'));
+        $('#modalActionMeeting-time').val(new Date(thisObj.date).toString('h:mm tt'));
     },
 
     setActiveObject : function (newObj) {
@@ -51,8 +58,9 @@ var modalActionMeeting = {
         thisObj.set('type', newObj.type);
         thisObj.set('uuid', newObj.uuid);
         thisObj.set('action', newObj.action);
-        thisObj.set('descrption', newObj.description);
+        thisObj.set('description', newObj.description);
         thisObj.set('address', newObj.address);
+        thisObj.set('placeName', newObj.placeName);
         thisObj.set('placeId', newObj.placeId);
         thisObj.set('lat', newObj.lat);
         thisObj.set('lng', newObj.lng);
@@ -67,13 +75,20 @@ var modalActionMeeting = {
         thisObj.set('isModified', newObj.isModified);
         thisObj.set('isDeleted', newObj.isDeleted);
         thisObj.set('isAccepted', newObj.isAccepted);
+
+        $('#modalActionMeeting-placesearch').val(newObj.placeName);
+        $('#modalActionMeeting-datestring').val(new Date(newObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
+        $('#modalActionMeeting-date').val(new Date(newObj.date).toString('MMMM dd, yyyy'));
+        $('#modalActionMeeting-time').val(new Date(newObj.date).toString('h:mm tt'));
     },
 
 
     onShow: function (e) {
         _preventDefault(e);
+        modalActionMeeting._placeId = null;
         $("#modalActionMeeting-placesearchBtn").text("");
         $("#modalActionMeeting-placesearch").val("");
+        $("#modalActionMeeting-datestring").val("");
     },
 
     placeSearch : function (e) {
@@ -82,6 +97,14 @@ var modalActionMeeting = {
         var placeStr =  $("#modalActionMeeting-placesearch").val();
 
         mobileNotify("SearchPlaces : "  + placeStr);
+
+    },
+
+    updateDateString : function () {
+        var date = $('#modalActionMeeting-date').val();
+        var time = $('#modalActionMeeting-time').val();
+
+        $("#modalActionMeeting-datestring").val(date + " " + time);
 
     },
 
@@ -109,6 +132,51 @@ var modalActionMeeting = {
                 placeholder: "Select Event... "
             });
 
+            $("#modalActionMeeting-datestring").on('blur', function () {
+                var dateStr =  $("#modalActionMeeting-datestring").val();
+                if (dateStr.length > 6) {
+                    var timeString = dateStr.match(/\d{1,2}([:.]?\d{1,2})?([ ]?[a|p]m)/ig);
+                    var date = Date.today();
+                    var timeComp = '';
+                    if (timeString !== null && timeString.length > 0) {
+
+                        dateStr = dateStr.replace(timeString[0], '');
+                        dateStr = dateStr.trim();
+
+
+                        var time = Date.parse(timeString[0]);
+                        timeComp = new Date(time).toString("h:mm tt");
+
+
+
+                    }
+                    if (dateStr.length > 4) {
+                        date = Date.parse(dateStr);
+                    }
+                    var dateComp = new Date(date).toString("MMMM dd, yyyy");
+                    var finalDateStr  =  dateComp;
+
+                    if(timeComp !== '')
+                        finalDateStr += " " +  timeComp;
+
+                    $('#modalActionMeeting-date').val(dateComp);
+                    $('#modalActionMeeting-time').val(timeComp);
+                    modalActionMeeting._activeObject.set('date', new Date(finalDateStr));
+
+                }
+            });
+
+            $('#modalActionMeeting-date').pickadate();
+            $('#modalActionMeeting-time').pickatime();
+
+            $("#modalActionMeeting-date").on('blur', function () {
+                modalActionMeeting.updateDateString();
+            });
+
+            $("#modalActionMeeting-time").on('blur', function () {
+                modalActionMeeting.updateDateString();
+            });
+
             $("#modalActionMeeting-placesearch").on('input', function () {
                 var placeStr =  $("#modalActionMeeting-placesearch").val();
                 if (placeStr.length > 3) {
@@ -125,18 +193,43 @@ var modalActionMeeting = {
                 dataTextField: "name",
                 dataValueField: "uuid",
                 change: function (e) {
+                    var placeStr = $("#modalActionMeeting-placesearch").val();
+
+                    if (modalActionMeeting._placeId !== null) {
+                        var place = placesModel.getPlaceModel(modalActionMeeting._placeId);
+
+                        if (placeStr === place.name) {
+                            return;
+                        }
+                        modalActionMeeting._placeId = null;
+                        modalActionMeeting._activeObject.set('placeId', modalActionMeeting._placeId);
+                        modalActionMeeting._activeObject.set('placeName',placeStr);
+                        modalActionMeeting._activeObject.set('address',placeStr);
+
+                    }
                     // event fired on blur -- if a place wasn't selected, need to do a nearby search
-                    var placeStr =  $("#modalActionMeeting-placesearch").val();
+
                     if (placeStr.length > 3) {
                         $("#modalActionMeeting-placesearchBtn").text("Find " + placeStr);
                         $("#modalActionMeeting-placesearchdiv").removeClass('hidden');
                     } else {
                         $("#modalActionMeeting-placesearchdiv").addClass('hidden');
                     }
+
                 },
                 select: function(e) {
                     // User has selected one of their places
                     var place = e.item;
+                    var dataItem = this.dataItem(e.item.index());
+                    modalActionMeeting._placeId = dataItem.uuid;
+                    modalActionMeeting._activeObject.set('placeId', modalActionMeeting._placeId);
+                    modalActionMeeting._activeObject.set('placeName',dataItem.name);
+                    modalActionMeeting._activeObject.set('address',dataItem.address);
+
+
+
+                    // Hide the Find Location button
+                    $("#modalActionMeeting-placesearchdiv").addClass('hidden');
 
                 },
                 filter: "contains",
@@ -147,6 +240,7 @@ var modalActionMeeting = {
         }
         modalActionMeeting._date = new Date();
 
+
         if (actionObj === undefined || actionObj === null) {
             modalActionMeeting.initActiveObject();
         } else {
@@ -154,7 +248,6 @@ var modalActionMeeting = {
         }
 
         $("#modalActionMeeting-placesearchdiv").addClass('hidden');
-        $("#modalActionMeeting-datetime").val(modalActionMeeting._activeObject.get('date'));
         $("#modalview-actionMeeting").data("kendoMobileModalView").open();
     },
 
@@ -185,10 +278,10 @@ var modalActionMeeting = {
         thisObject.description = thisObj.description;
         thisObject.date = thisObj.date;
         thisObject.placeId = thisObj.placeId;
+        thisObject.placeName = thisObj.placeName;
         thisObject.address = thisObj.address;
         thisObject.senderUUID = thisObj.senderUUID;
         thisObject.channelId = thisObj.channelId;
-        thisObject.address = thisObj.address;
         thisObject.lat = thisObj.lat;
         thisObject.lng = thisObj.lng;
         thisObject.approxTime = thisObj.approxTime;

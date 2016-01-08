@@ -246,10 +246,19 @@ var homeView = {
         $("#notification-listview").kendoMobileListView({
             dataSource: notificationModel.notificationDS,
             template: $("#notificationTemplate").html(),
+            click: function(e){
+                var $target = $(e.target);
+                if($target.hasClass("textClamp")){
+                    $(".notify-expand").addClass("textClamp").removeClass("notify-expand");
+                    $target.removeClass("textClamp").addClass("notify-expand");
+                } else {
+                    $(".notify-expand").addClass("textClamp").removeClass("notify-expand");
+                }
+            },
             dataBound: function(e) {
                 ux.checkEmptyUIState(notificationModel.notificationDS, "#home");
             }
-        })
+        });
     },
 
     onShow: function (e) {

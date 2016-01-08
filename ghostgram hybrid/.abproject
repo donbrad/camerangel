@@ -6,7 +6,7 @@
   "DisplayName": "ghostgrams",
   "Author": "don bradford",
   "Description": "ghostgrams for iOS and Android",
-  "BundleVersion": "0.2.2.8",
+  "BundleVersion": "0.2.2.9",
   "AndroidVersionCode": "2",
   "iOSDeviceFamily": [
     "1"
@@ -78,9 +78,9 @@
   ],
   "CorePlugins": [
     "ch.ti8m.documenthandler@0.2.2",
-    "com.ionic.keyboard@1.0.4",
+    "com.ionic.keyboard@1.0.8",
     "com.ohh2ahh.plugins.appavailability@0.3.1",
-    "com.telerik.plugins.nativepagetransitions@0.5.6",
+    "com.telerik.plugins.nativepagetransitions@0.5.7",
     "cordova-plugin-battery-status",
     "cordova-plugin-camera",
     "cordova-plugin-console",

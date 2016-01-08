@@ -2,6 +2,7 @@
 
 body {
 	font-size: 1em;
+	padding-top: 0.5em;
 	
 }
 
@@ -30,4 +31,30 @@ table.k-editor {
 		width: 100%;
 		height: 100%;
 	}
+}
+
+.btnStyle {
+	text-decoration: none;
+	font-size: 1em;
+	font-weight: 400;
+	padding: 0.25em 0.5em;
+	margin: 0px;
+}
+
+.btnSmart {
+	&:extend(.btnStyle);
+	color: #fff !important;
+	border-radius: 12px !important;
+	background-color: #6CADF3 !important;
+}
+
+.icon-sm {
+	height: 1em;
+	max-width: 1em;
+	vertical-align: middle;
+}
+
+.icon-smart {
+	&:extend(.icon-sm);
+	margin-right: 0.3em;
 }

@@ -503,6 +503,11 @@ form {
 	vertical-align: middle;
 }
 
+.icon-smart {
+	&:extend(.icon-sm);
+	margin-right: 0.3em;
+}
+
 .icon-md {
 	height: 1.5em;
 	max-width: 1.5em;
@@ -785,6 +790,13 @@ form {
     	color: #A4A4A4 !important;
     	background: transparent !important;
 	}
+}
+
+.btnSmart {
+	&:extend(.btnStyle);
+	color: #fff !important;
+	border-radius: 12px !important;
+	background-color: #6CADF3 !important;
 }
 
 .glass {
@@ -2047,7 +2059,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 .ghostContent {
     background-color: #e0e0e0;
     color: #27476e;
-    background: cover;
+    background-size: cover;
     width: 100%;
     height: 100%;
     padding-top: 12px;
@@ -2160,7 +2172,7 @@ div.footerMenu.km-footer > ul > li > a:active {
     color: #2e2e2e;
 }
 .fa-lg .km-icon:after,
-.fa-lg .km-icon:before,
+.fa-lg .km-icon:before
 {
     font: 1.333333em/1.333333em 'FontAwesome';
     color: #2e2e2e;
@@ -4219,7 +4231,7 @@ div.contactListBox.activeContact > div > div > ul {
 /* Notify styles */
 .notify-box {
 	background: #FFFFFF;
-	border: 1px solid rgba(228,228,228,0.30);
+	//border: 1px solid rgba(228,228,228,0.30);
 	//box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.12), 0px 2px 4px 0px rgba(0,0,0,0.12);
 	.shadowHelper(1);
 	border-radius: 2px;
@@ -4237,14 +4249,19 @@ div.contactListBox.activeContact > div > div > ul {
 }
 
 .notify-content {
-	padding: 0.25rem 1rem;
-	h4, p {
+	padding: 0.25em;
+	p {
 		margin-left: 0px;
 		margin-right: 0px;
+		padding-left: 0.5em;
 	}
 	h4 {
 		font-weight: 600;
 	}
+}
+
+.btnNotify {
+	font-size: 1.2em !important;
 }
 
 .notify-title img {
@@ -4252,7 +4269,9 @@ div.contactListBox.activeContact > div > div > ul {
 }
 
 .notify-info {
-	margin:0.4em 0 0.25em;
+	width: 100%;
+	padding: 0.25em 0 0 1em;
+	font-size: 0.875em;
 }
 
 .notify-action {
@@ -4265,6 +4284,7 @@ div.contactListBox.activeContact > div > div > ul {
 .notify-dismiss {
 	margin-left: 1rem;
 }
+
 
 .notify-content-text {
 	background: @shade-400;
@@ -4997,8 +5017,8 @@ div.contactListBox.activeContact > div > div > ul {
     float: left;
     padding: 0.2em 0.35em;
     border-radius: .25em;
-    color: #fff;
-    background: @primary-200;
+    color: @black;
+    background: lighten(@primary-200, 20%);
     margin-top: 0.2em;
 }
 
@@ -5009,7 +5029,7 @@ div.contactListBox.activeContact > div > div > ul {
 	width: 0;
 	border-top: 0.4rem solid transparent;
 	border-bottom: 0.4rem solid transparent;
-	border-right: 0.3rem solid @primary-200;
+	border-right: 0.3rem solid lighten(@primary-200, 20%);
 	top: 1.5rem;
 	left: 11%;
 	@media @mobile {

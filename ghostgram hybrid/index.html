@@ -8,9 +8,12 @@
 	<link href="kendo/styles/kendo.material.min.css" rel="stylesheet" />
     <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet" />
 	<link href="styles/strength.css" rel="stylesheet" />
+
 	<link href="bower_components/pickadate/lib/themes/default.css" rel="stylesheet" />
 	<link href="bower_components/pickadate/lib/themes/default.time.css" rel="stylesheet" />
 	<link href="bower_components/pickadate/lib/themes/default.date.css" rel="stylesheet" />
+	<link href="styles/redactor.css" rel="stylesheet" />
+
     <link href="styles/master.css" rel="stylesheet" />
 
     <script src="cordova.js"></script>
@@ -33,6 +36,7 @@
 	<!-- other components -->
 	<script src="scripts/libs/parse.js"></script>
     <script src="https://cdn.pubnub.com/pubnub-3.7.16.js"></script>
+	<script src="scripts/libs/date.js"></script>
 	<script src="scripts/libs/guid.js"></script>
 	<script src="scripts/libs/cryptico.js"></script>
 	<script src="scripts/libs/gibberish-aes.js"></script>
@@ -43,6 +47,7 @@
 	<script src="scripts/libs/base64-string.js"></script>
 	<script src="scripts/libs/lz-string.js"></script>
 	<script src="scripts/libs/cropper.js"></script>
+	<script src="scripts/libs/redactor.js"></script>
 	<script src="scripts/libs/strength.js"></script>
 	<script src="scripts/libs/jdenticon-1.3.0.js"></script>
 
@@ -265,28 +270,30 @@
 	#
 	<div class="notify-box">
 		<div class="notify-info">
-			<span class="notify-helper">
-				#if(data.type === 'Unread Messages'){#
-					<img src="images/icon-notify-unread.svg" class="icon-notify" /> New Message
-				#} else if(data.type === 'ghostgram recommends'){#
-					<img src="images/icon-notify-recommend.svg" class="icon-notify" /> Recommended
-				#} else if(data.type === 'New Member'){#
-					<img src="images/icon-notify-request.svg" class="icon-notify" /> New Member
-				#}#
-			</span>
+		#if(data.type === 'Unread Messages'){#
+				<span><img src="images/icon-notify-unread.svg" class="icon-notify" /> #= description #</span>
+			#} else if(data.type === 'ghostgram recommends'){#
+				<span><img src="images/icon-notify-recommend.svg" class="icon-notify" /> Recommended</span>
+			#} else if(data.type === 'New Member'){#
+				<span>New Member</span>
+			#}#
+			<a class="closeBox" data-role="button" data-uuid="#:uuid#" data-click="homeView.dismissNotification"><img src="images/close.svg" class="img-sm" /></a>
 		</div>
 		<div class="notify-content">
-			<h2>#=title#</h2>
-			<p>#= description # </p>
-		</div>
-		<div class="notify-action">
-			<a class="btnClear" data-role="button" data-uuid="#:uuid#" data-link="#=href#" data-action="#=action#" data-click="homeView.handleNotificationAction">#= actionTitle#</a>
-			<a class="btnClear-grey" data-role="button" data-uuid="#:uuid#" data-click="homeView.dismissNotification">Dismiss</a>
+
+			# if (action !== undefined && action !== 'none') {#
+				<a class="btnClear btnNotify" data-role="button" data-uuid="#:uuid#" data-action="#=action#" data-click="homeView.handleNotificationAction">#= title #</a>
+			#} else {#
+				<a class="btnClear btnNotify" data-role="button" data-uuid="#:uuid#" data-link="#=href#"  data-click="homeView.handleNotificationAction"> #=  actionTitle # </a>
+			#}#
+
+			<a class="btnClear btnNotify hidden" data-role="button" data-uuid="#:uuid#" data-link="#=href#" data-action="#=action#" data-click="homeView.handleNotificationAction">#=title#</a>
+			#if(data.type !== 'Unread Messages'){#
+				<p class="textClamp">#= description # </p>
+			#}#
 		</div>
 	</div><!-- notify-box -->
 </script>
-
-
 
 <!-- home - for new users -->
  <div data-role="view" data-title="ghostgrams" id="newuserhome" data-layout="newuser" class="appearance" style="display:none;" data-init="newUserView.onInit" data-show="newUserView.onShow" data-transition="fade">
@@ -1191,44 +1198,6 @@
 	</div>
 </script>
 
-<script type="text/x-kendo-template" id="archive-template">
-	<header>
-		# if (data.message.sender.image) { #
-		<img src="#= data.message.sender.image #" />
-		# } else { #
-		<img src="images/ghost-default.svg" />
-		# } #
-		<button class="delete" data-role="button" data-click="archiveView.deleteDoc" data-id="#= data.id #"></button>
-		<h3>#= data.message.sender.name #</h3><br />
-		<p>#= moment(data.message.date).fromNow() # in <strong>#= data.message.channelName #</strong></p>
-	</header>
-	<div class="message">#= data.message.text #</div>
-	# if (data.type === 'Events') { #
-	<div class="event object">
-		<h3>#= data.object.name #</h3>
-		<p>at <strong>#= data.object.placeName #</strong> #= data.object.address #</p>
-		# if (moment().isBefore(data.object.start)) { #
-		<span>starts #= moment(data.object.start).fromNow() #</span>
-		# } else if (moment().isAfter(data.object.end)) { #
-		<span>ended #= moment(data.object.start).fromNow() #</span>
-		# } else { #
-		<span>happening now! #= moment(data.object.start).format('h:mma') # to #= moment(data.object.end).format('h:mma') #</span>
-		# } #
-	</div>
-	# } #
-	# if (data.type === 'Links') { #
-	<div class="link object" data-url="#= data.object.url #">
-		<h3>#= data.object.title #</h3>
-		<p>#= data.object.url #</p>
-	</div>
-	# } #
-	# if (data.type === 'Photos') { #
-	<div class="photo object">
-		<img src="#= data.object.url #" />
-		<p><strong>#= data.object.placeName #, #= data.object.address #</strong> <span>#= moment(data.object.date).fromNow() #</span></p>
-	</div>
-	# } #
-</script>
 
 <!--/*
  * channels
@@ -2471,14 +2440,20 @@
 				</label>
 			</li>
 			<li>
-				<label  style="font-size: 12px;">
+				<label style="font-size: 12px;">
 					<input type="search"  data-bind="value: description" placeholder="Description..."/>
 				</label>
 			</li>
 
 			<li>
 				<label> When
-				<input  id="modalActionMeeting-datetime"/>
+					<input type="search" id="modalActionMeeting-datestring" />	<br/>
+					<span>
+						<img src='images/smart-event.svg' class='icon-sm'/>
+						<input type="text" style="width: 50%" id="modalActionMeeting-date"/>
+						<img src='images/smart-time.svg' class='icon-sm'/>
+						<input type="text" style="width: 30%" id="modalActionMeeting-time"/>
+					</span>
 				</label>
 			</li>
 			<li>

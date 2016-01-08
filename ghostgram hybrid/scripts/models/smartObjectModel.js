@@ -41,11 +41,16 @@ var smartObject = {
         {term: "today", category: "calendar", type: "datejs", composite: false},
         {term: "week", category: "calendar", type: "datejs", composite: false},
         {term: "month", category: "calendar", type: "datejs", composite: false},
-        {term: "morning", category: "calendar", type: "time-macro", composite: false},
-        {term: "midmorning", category: "calendar", type: "time-macro", composite: false},
-        {term: "afternoon", category: "calendar", type: "time-macro", composite: false},
-        {term: "evening", category: "calendar", type: "time-macro", composite: false},
-        {term: "night", category: "calendar", type: "time-macro", composite: false},
+        {term: "morning", category: "calendar", type: "time-macro", composite: false, start: "5:00am", end: "11:00am" },
+        {term: "early morning", category: "calendar", type: "time-macro", composite: false, start: "5:00am", end: "8:00am"},
+        {term: "late morning", category: "calendar", type: "time-macro", composite: false, start: "9:00am", end: "11:00am"},
+        {term: "midmorning", category: "calendar", type: "time-macro", composite: false, start: "8:00am", end: "10:00am"},
+        {term: "afternoon", category: "calendar", type: "time-macro", composite: false, start: "1:00pm", end: "5:00pm"},
+        {term: "early afternoon", category: "calendar", type: "time-macro", composite: false, start: "1:00pm", end: "3:00pm"},
+        {term: "evening", category: "calendar", type: "time-macro", composite: false, start: "5:00am", end: "11:00am"},
+        {term: "night", category: "calendar", type: "time-macro", composite: false, start: "7:00pm", end: "9:00pm"},
+        {term: "late night", category: "calendar", type: "time-macro", composite: false, start: "10:00pm", end: "2:00am"},
+        {term: "early evening", category: "calendar", type: "time-macro", composite: false, start: "5:00pm", end: "7:00pm"},
         {term: "next", category: "calendar", type: "datejs", composite: true},
         {term: "second", category: "calendar", type: "datejs", composite: true},
         {term: "mon", category: "calendar", type: "day", composite: true},
@@ -195,7 +200,13 @@ var smartObject = {
 
         dataSource.filter(cacheFilter);
 
-        return(view.items[0]);
+        if (view.items === undefined) {
+            return(undefined)
+        } else {
+            return (view[0]);
+        }
+
+
 
     },
 
@@ -268,12 +279,19 @@ var smartObject = {
         if (objectIn.senderUUID === undefined || objectIn.senderUUID === null) {
             objectIn.senderUUID = userModel.currentUser.userUUID;
         }
+
+        smartOb.setACL(userModel.parseACL);
         smartOb.set('uuid', objectIn.uuid);
+        smartOb.set('senderUUID', objectIn.senderUUID);
+        smartOb.set('channelId', objectIn.channelId);
         smartOb.set('action', objectIn.action);
         smartOb.set('type', objectIn.type);
         smartOb.set('title', objectIn.title);
         smartOb.set('description', objectIn.description);
-        smartOb.set('date', objectIn.date);
+        // Parse.com date gymnastics...
+        var dateString = new Date(objectIn.date).toISOString();
+        var d = {"__type":"Date","iso":dateString};
+        smartOb.set('date', d);
         smartOb.set('approxTime', objectIn.approxTime);
         smartOb.set('approxPlace', objectIn.approxPlace);
         smartOb.set('address', objectIn.address);

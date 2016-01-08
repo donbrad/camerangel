@@ -546,10 +546,14 @@ form p {
   max-width: 1.3em;
   vertical-align: middle;
 }
-.icon-sm {
+.icon-sm,
+.icon-smart {
   height: 1em;
   max-width: 1em;
   vertical-align: middle;
+}
+.icon-smart {
+  margin-right: 0.3em;
 }
 .icon-md {
   height: 1.5em;
@@ -644,6 +648,7 @@ form p {
 .btnClear-sm,
 .btnClear-light-sm,
 .btnClearLine,
+.btnSmart,
 .btnClearLine-grey-sm,
 .btnClear-grey,
 .btnClear-red,
@@ -838,6 +843,11 @@ form p {
 .btnClearLine :disabled {
   color: #A4A4A4 !important;
   background: transparent !important;
+}
+.btnSmart {
+  color: #fff !important;
+  border-radius: 12px !important;
+  background-color: #6CADF3 !important;
 }
 .glass {
   background: #242424 !important;
@@ -2069,7 +2079,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 .ghostContent {
   background-color: #e0e0e0;
   color: #27476e;
-  background: cover;
+  background-size: cover;
   width: 100%;
   height: 100%;
   padding-top: 12px;
@@ -3998,7 +4008,6 @@ div.contactListBox.activeContact > div > div > ul {
 /* Notify styles */
 .notify-box {
   background: #FFFFFF;
-  border: 1px solid rgba(228, 228, 228, 0.3);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   border-radius: 2px;
 }
@@ -4011,21 +4020,26 @@ div.contactListBox.activeContact > div > div > ul {
   color: #979797;
 }
 .notify-content {
-  padding: 0.25rem 1rem;
+  padding: 0.25em;
 }
-.notify-content h4,
 .notify-content p {
   margin-left: 0px;
   margin-right: 0px;
+  padding-left: 0.5em;
 }
 .notify-content h4 {
   font-weight: 600;
+}
+.btnNotify {
+  font-size: 1.2em !important;
 }
 .notify-title img {
   vertical-align: middle;
 }
 .notify-info {
-  margin: 0.4em 0 0.25em;
+  width: 100%;
+  padding: 0.25em 0 0 1em;
+  font-size: 0.875em;
 }
 .notify-action {
   margin: 0.25em 0.5em;
@@ -4691,8 +4705,8 @@ html .km-pane-wrapper .k-header {
   float: left;
   padding: 0.2em 0.35em;
   border-radius: .25em;
-  color: #fff;
-  background: #6CADF3;
+  color: #4A4A4A;
+  background: #cae2fb;
   margin-top: 0.2em;
 }
 .chat-message-sender:after {
@@ -4702,7 +4716,7 @@ html .km-pane-wrapper .k-header {
   width: 0;
   border-top: 0.4rem solid transparent;
   border-bottom: 0.4rem solid transparent;
-  border-right: 0.3rem solid #6CADF3;
+  border-right: 0.3rem solid #cae2fb;
   top: 1.5rem;
   left: 11%;
 }
