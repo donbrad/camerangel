@@ -71,7 +71,10 @@ var modalActionMeeting = {
         thisObj.set('isDeleted', newObj.isDeleted);
         thisObj.set('isAccepted', newObj.isAccepted);
 
-        $("#modalActionMeeting-datetime").val(modalActionMeeting._date.toString());
+        $('#modalActionMeeting-placesearch').val(newObj.placeName);
+        $('#modalActionMeeting-datestring').val(new Date(newObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
+        $('#modalActionMeeting-date').val(new Date(newObj.date).toString('MMMM dd, yyyy'));
+        $('#modalActionMeeting-time').val(new Date(newObj.date).toString('h:mm tt'));
     },
 
 
@@ -255,10 +258,10 @@ var modalActionMeeting = {
         thisObject.description = thisObj.description;
         thisObject.date = thisObj.date;
         thisObject.placeId = thisObj.placeId;
+        thisObject.placeName = thisObj.placeName;
         thisObject.address = thisObj.address;
         thisObject.senderUUID = thisObj.senderUUID;
         thisObject.channelId = thisObj.channelId;
-        thisObject.address = thisObj.address;
         thisObject.lat = thisObj.lat;
         thisObject.lng = thisObj.lng;
         thisObject.approxTime = thisObj.approxTime;
