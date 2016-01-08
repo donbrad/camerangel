@@ -7,6 +7,7 @@
 var modalActionMeeting = {
     _activeObject : new kendo.data.ObservableObject(),
     _date : new Date(),
+    _placeId :null,
     _isInited : false,
     _eventList :[],
 
@@ -74,6 +75,7 @@ var modalActionMeeting = {
 
     onShow: function (e) {
         _preventDefault(e);
+        modalActionMeeting._placeId = null;
         $("#modalActionMeeting-placesearchBtn").text("");
         $("#modalActionMeeting-placesearch").val("");
         $("#modalActionMeeting-datestring").val("");
@@ -178,6 +180,7 @@ var modalActionMeeting = {
                 select: function(e) {
                     // User has selected one of their places
                     var place = e.item;
+                    var dataItem = this.dataItem(e.item.index());
 
                     // Hide the Find Location button
                     $("#modalActionMeeting-placesearchdiv").addClass('hidden');
