@@ -25,6 +25,7 @@ var modalActionMeeting = {
     initActiveObject : function () {
         var thisObj = modalActionMeeting._activeObject;
 
+        var newDate = Date().today();
         thisObj.set("uuid", uuid.v4());
         thisObj.set('senderUUID', null);
         thisObj.set('channelId', null);
@@ -38,7 +39,7 @@ var modalActionMeeting = {
         thisObj.set('calendarId', null);
         thisObj.set('lat', null);
         thisObj.set('lng', null);
-        thisObj.set('date', new Date().today());
+        thisObj.set('date', newDate);
         thisObj.set('approxTime', false);
         thisObj.set('approxPlace', false);
         thisObj.set('timeFlexible', false);
