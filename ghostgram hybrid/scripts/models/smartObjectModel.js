@@ -203,7 +203,7 @@ var smartObject = {
         if (view.items === undefined) {
             return(undefined)
         } else {
-            return (view.items[0]);
+            return (view[0]);
         }
 
 
@@ -279,6 +279,8 @@ var smartObject = {
         if (objectIn.senderUUID === undefined || objectIn.senderUUID === null) {
             objectIn.senderUUID = userModel.currentUser.userUUID;
         }
+
+        smartOb.setACL(userModel.parseACL);
         smartOb.set('uuid', objectIn.uuid);
         smartOb.set('senderUUID', objectIn.senderUUID);
         smartOb.set('channelId', objectIn.channelId);
