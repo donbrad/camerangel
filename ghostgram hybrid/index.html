@@ -2476,11 +2476,22 @@
 					<input type="checkbox"  data-role="switch" data-bind="checked: placeFlexible"/>
 				</label>
 			</li>
+			<li>
+				<label> Add to Calendar
+					<input type="checkbox" id="actionMeeting-addToCalendar"  data-role="switch" data-bind="checked: addToCalendar"/>
+				</label>
+			</li>
 		</ul>
 	</form>
 
 	<div class="footer" data-role="footer">
-		<a class="btnFull-modal btnPrimary" data-role="button" data-click="modalActionMeeting.onDone">Save</a>
+		<div id="actionMeeting-save">
+			<a class="btnFull-modal btnPrimary" data-role="button" data-click="modalActionMeeting.onDone">Save</a>
+		</div>
+		<div id="actionMeeting-accept" class="hidden">
+			<a class="btnPrimary" data-role="button" data-click="modalActionMeeting.onAccept">Accept</a>
+			<a class="btnPrimary" data-role="button" data-click="modalActionMeeting.onDecline">Decline</a>
+		</div>
 	</div>
 </div>
 

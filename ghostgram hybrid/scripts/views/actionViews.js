@@ -1,5 +1,10 @@
 /**
  * Created by donbrad on 12/31/15.
+ *
+ * Smart Objects UX -- one modal for each action
+ * Events - modalActionMeeting
+ * Flights - modalActionFlight
+ * Movies - modalActionMovies
  */
 
 'use strict';
@@ -30,6 +35,7 @@ var modalActionMeeting = {
         thisObj.set('address', null);
         thisObj.set('placeName', null);
         thisObj.set('placeId', null);
+        thisObj.set('calendarId', null);
         thisObj.set('lat', null);
         thisObj.set('lng', null);
         thisObj.set('date', new Date().today());
@@ -40,6 +46,7 @@ var modalActionMeeting = {
         thisObj.set('isDeleted', false);
         thisObj.set('isModified', false);
         thisObj.set('isAccepted', false);
+        thisObj.set('addToCalendar', false);
 
         $('#modalActionMeeting-placesearch').val(thisObj.placeName);
         $('#modalActionMeeting-datestring').val(new Date(thisObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
@@ -61,6 +68,7 @@ var modalActionMeeting = {
         thisObj.set('description', newObj.description);
         thisObj.set('address', newObj.address);
         thisObj.set('placeName', newObj.placeName);
+        thisObj.set('calendarId', newObj.calendarId);
         thisObj.set('placeId', newObj.placeId);
         thisObj.set('lat', newObj.lat);
         thisObj.set('lng', newObj.lng);
@@ -75,6 +83,14 @@ var modalActionMeeting = {
         thisObj.set('isModified', newObj.isModified);
         thisObj.set('isDeleted', newObj.isDeleted);
         thisObj.set('isAccepted', newObj.isAccepted);
+
+        thisObj.set('addToCalendar', false);
+        if (newObj.calendarId !== undefined || newObj.calendarID !== null) {
+            thisObj.set('addToCalendar', true);
+            $('#actionMeeting-addToCalendar').prop('readonly', true);
+        } else {
+            $('#actionMeeting-addToCalendar').prop('readonly', false);
+        }
 
         $('#modalActionMeeting-placesearch').val(newObj.placeName);
         $('#modalActionMeeting-datestring').val(new Date(newObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
@@ -256,6 +272,13 @@ var modalActionMeeting = {
         $("#modalview-actionMeeting").data("kendoMobileModalView").close();
     },
 
+    onAccept : function (e) {
+
+    },
+
+    onDecline : function (e) {
+
+    },
 
     onDone: function (e) {
         //_preventDefault(e);
@@ -282,6 +305,7 @@ var modalActionMeeting = {
         thisObject.address = thisObj.address;
         thisObject.senderUUID = thisObj.senderUUID;
         thisObject.channelId = thisObj.channelId;
+        thisObject.calendarId = thisObj.calendarId;
         thisObject.lat = thisObj.lat;
         thisObject.lng = thisObj.lng;
         thisObject.approxTime = thisObj.approxTime;
