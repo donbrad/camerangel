@@ -47,9 +47,11 @@ var modalActionMeeting = {
         thisObj.set('isDeleted', false);
         thisObj.set('isModified', false);
         thisObj.set('isAccepted', false);
+        thisObj.set('isAccepted', false);
         thisObj.set('addToCalendar', false);
         thisObj.set('declineList', []);
         thisObj.set('acceptList', []);
+        thisObj.set('inviteList', []);
 
 
         $('#modalActionMeeting-placesearch').val(thisObj.placeName);
@@ -83,6 +85,7 @@ var modalActionMeeting = {
         thisObj.set('date', newObj.date);
         thisObj.set('acceptList', newObj.acceptList);
         thisObj.set('declineList', newObj.declineList);
+        thisObj.set('inviteList', newObj.inviteList);
         thisObj.set('approxTime', newObj.approxTime);
         thisObj.set('approxPlace', newObj.approxPlace);
         thisObj.set('timeFlexible', newObj.timeFlexible);
@@ -90,6 +93,7 @@ var modalActionMeeting = {
         thisObj.set('isModified', newObj.isModified);
         thisObj.set('isDeleted', newObj.isDeleted);
         thisObj.set('isAccepted', newObj.isAccepted);
+        thisObj.set('isDeclined', newObj.isDeclined);
 
         thisObj.set('addToCalendar', false);
         if (newObj.calendarId !== undefined || newObj.calendarID !== null) {
@@ -327,8 +331,10 @@ var modalActionMeeting = {
         thisObject.isDeleted = false;
         thisObject.isModified = true;
         thisObject.isAccepted = thisObj.isAccepted;
+        thisObject.isDeclined = thisObj.isDeclined;
         thisObject.declineList = thisObj.declineList;
         thisObject.acceptList = thisObj.acceptList;
+        thisObject.inviteList = thisObj.inviteList;
 
         channelView.addSmartObjectToMessage(thisObj.uuid, thisObject);
 
