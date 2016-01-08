@@ -1678,14 +1678,14 @@ var channelView = {
     onObjectClick : function (e) {
         _preventDefault(e);
         var uuid = e.sender.element[0].attributes['data-objectid'].value;
-        var messageId = e.sender.element[0].parentElement.parentElement.parentElement.attributes['id'].value;
+        var messageId = null;
 
         if (e.sender.element[0].parentElement.parentElement.parentElement.parentElement.attributes['id'] !== undefined) {
             messageId = e.sender.element[0].parentElement.parentElement.parentElement.parentElement.attributes['id'].value;
         } else if (e.sender.element[0].parentElement.parentElement.parentElement.attributes['id']) {
             messageId = e.sender.element[0].parentElement.parentElement.parentElement.attributes['id'].value;
         }
-        if (messageId === undefined) {
+        if (messageId === null) {
             mobileNotify("Sender deleted this Smart Event!");
             return;
         }
