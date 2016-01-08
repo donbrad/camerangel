@@ -27,7 +27,7 @@ var modalActionMeeting = {
 
         var newDate = Date().today();
         thisObj.set("uuid", uuid.v4());
-        thisObj.set('senderUUID', null);
+        thisObj.set('senderUUID', userModel.currentUser.userUUID);
         thisObj.set('channelId', null);
         thisObj.set('title', null);
         thisObj.set('type', "meeting");
@@ -48,6 +48,9 @@ var modalActionMeeting = {
         thisObj.set('isModified', false);
         thisObj.set('isAccepted', false);
         thisObj.set('addToCalendar', false);
+        thisObj.set('declineList', []);
+        thisObj.set('acceptList', []);
+
 
         $('#modalActionMeeting-placesearch').val(thisObj.placeName);
         $('#modalActionMeeting-datestring').val(new Date(thisObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
@@ -65,6 +68,7 @@ var modalActionMeeting = {
         thisObj.set('title', newObj.title);
         thisObj.set('type', newObj.type);
         thisObj.set('uuid', newObj.uuid);
+        thisObj.set('senderUUID', newObj.senderUUID);
         thisObj.set('action', newObj.action);
         thisObj.set('description', newObj.description);
         thisObj.set('address', newObj.address);
@@ -77,6 +81,8 @@ var modalActionMeeting = {
             newObj.date = new Date ();
         }
         thisObj.set('date', newObj.date);
+        thisObj.set('acceptList', newObj.acceptList);
+        thisObj.set('declineList', newObj.declineList);
         thisObj.set('approxTime', newObj.approxTime);
         thisObj.set('approxPlace', newObj.approxPlace);
         thisObj.set('timeFlexible', newObj.timeFlexible);
@@ -91,6 +97,14 @@ var modalActionMeeting = {
             $('#actionMeeting-addToCalendar').prop('readonly', true);
         } else {
             $('#actionMeeting-addToCalendar').prop('readonly', false);
+        }
+
+        if (newObj.senderUUID === undefined || newObj.senderUUID === userModel.currentUser.userUUID) {
+            $('#actionMeeting-save').removeClass('hidden');
+            $('#actionMeeting-accept').addClass('hidden');
+        } else {
+            $('#actionMeeting-save').addClass('hidden');
+            $('#actionMeeting-accept').removeClass('hidden');
         }
 
         $('#modalActionMeeting-placesearch').val(newObj.placeName);
@@ -281,11 +295,8 @@ var modalActionMeeting = {
 
     },
 
-    onDone: function (e) {
-        //_preventDefault(e);
-
-        var thisObject = {}, thisObj = modalActionMeeting._activeObject;
-
+    createSmartEvent : function (thisObj) {
+        var thisObject = {};
         if (thisObj.action === null) {
             // User has submitted a custom action
             var titleArray = thisObj.title.split(' ');
@@ -316,8 +327,22 @@ var modalActionMeeting = {
         thisObject.isDeleted = false;
         thisObject.isModified = true;
         thisObject.isAccepted = thisObj.isAccepted;
+        thisObject.declineList = thisObj.declineList;
+        thisObject.acceptList = thisObj.acceptList;
 
         channelView.addSmartObjectToMessage(thisObj.uuid, thisObject);
+
+    },
+
+    onDone: function (e) {
+        //_preventDefault(e);
+
+        var thisObj = modalActionMeeting._activeObject;
+
+        if (thisObject.senderUUID === userModel.currentUser.userUUID) {
+            modalActionMeeting.createSmartEvent();
+        }
+
 
         $("#modalview-actionMeeting").data("kendoMobileModalView").close();
     }
