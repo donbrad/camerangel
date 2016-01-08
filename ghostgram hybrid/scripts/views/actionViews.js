@@ -116,30 +116,37 @@ var modalActionMeeting = {
                 var dateStr =  $("#modalActionMeeting-datestring").val();
                 if (dateStr.length > 6) {
                     var timeString = dateStr.match(/\d{1,2}([:.]?\d{1,2})?([ ]?[a|p]m)/ig);
-                    if (timeString.length > 0) {
-                        var date = Date.today();
+                    var date = Date.today();
+                    var timeComp = '';
+                    if (timeString !== null && timeString.length > 0) {
+
                         dateStr = dateStr.replace(timeString[0], '');
                         dateStr = dateStr.trim();
-                        if (dateStr.length > 4) {
-                            date = Date.parse(dateStr);
-                        }
+
 
                         var time = Date.parse(timeString[0]);
-                        var dateComp = new Date(date).toString("MMMM dd, yyyy"), timeComp = new Date(time).toString("h:mm tt");
-                        var finalDateStr  =  dateComp + " " +  timeComp;
+                        timeComp = new Date(time).toString("h:mm tt");
 
-                        $('#modalActionMeeting-date').val(dateComp);
-                        $('#modalActionMeeting-time').val(timeComp);
-                        modalActionMeeting._activeObject.set('date', new Date(finalDateStr));
-                        var date2 = moment(date);
+
 
                     }
+                    if (dateStr.length > 4) {
+                        date = Date.parse(dateStr);
+                    }
+                    var dateComp = new Date(date).toString("MMMM dd, yyyy");
+                    var finalDateStr  =  dateComp;
 
+                    if(timeComp !== '')
+                        finalDateStr += " " +  timeComp;
+
+                    $('#modalActionMeeting-date').val(dateComp);
+                    $('#modalActionMeeting-time').val(timeComp);
+                    modalActionMeeting._activeObject.set('date', new Date(finalDateStr));
 
                 }
             });
 
-            $('#modalActionMeeting-date').pickadate();
+            $('#modalActionMeeting-date').pickadate({selectMonths: true});
             $('#modalActionMeeting-time').pickatime();
 
 
