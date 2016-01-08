@@ -146,7 +146,7 @@ var modalActionMeeting = {
                 }
             });
 
-            $('#modalActionMeeting-date').pickadate({selectMonths: true});
+            $('#modalActionMeeting-date').pickadate();
             $('#modalActionMeeting-time').pickatime();
 
 
