@@ -1680,8 +1680,14 @@ var channelView = {
         var uuid = e.sender.element[0].attributes['data-objectid'].value;
         var messageId = e.sender.element[0].parentElement.parentElement.parentElement.attributes['id'].value;
 
-        if (messageId === undefined) {
+        if (e.sender.element[0].parentElement.parentElement.parentElement.parentElement.attributes['id'] !== undefined) {
             messageId = e.sender.element[0].parentElement.parentElement.parentElement.parentElement.attributes['id'].value;
+        } else if (e.sender.element[0].parentElement.parentElement.parentElement.attributes['id']) {
+            messageId = e.sender.element[0].parentElement.parentElement.parentElement.attributes['id'].value;
+        }
+        if (messageId === undefined) {
+            mobileNotify("Sender deleted this Smart Event!");
+            return;
         }
 
         var message = channelView.findMessageById(messageId);
