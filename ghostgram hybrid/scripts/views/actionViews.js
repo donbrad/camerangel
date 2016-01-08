@@ -95,6 +95,14 @@ var modalActionMeeting = {
 
     },
 
+    updateDateString : function () {
+        var date = $('#modalActionMeeting-date').val();
+        var time = $('#modalActionMeeting-time').val();
+
+        $("#modalActionMeeting-datestring").val(date + " " + time);
+
+    },
+
     openModal: function (actionObj) {
         if (!modalActionMeeting._isInited) {
 
@@ -155,7 +163,14 @@ var modalActionMeeting = {
 
             $('#modalActionMeeting-date').pickadate();
             $('#modalActionMeeting-time').pickatime();
+            
+            $("#modalActionMeeting-date").on('blur', function () {
+                modalActionMeeting.updateDateString();
+            });
 
+            $("#modalActionMeeting-time").on('blur', function () {
+                modalActionMeeting.updateDateString();
+            });
 
             $("#modalActionMeeting-placesearch").on('input', function () {
                 var placeStr =  $("#modalActionMeeting-placesearch").val();
