@@ -32,7 +32,7 @@ var modalActionMeeting = {
         thisObj.set('placeId', null);
         thisObj.set('lat', null);
         thisObj.set('lng', null);
-        thisObj.set('date', new Date());
+        thisObj.set('date', new Date().today());
         thisObj.set('approxTime', false);
         thisObj.set('approxPlace', false);
         thisObj.set('timeFlexible', false);
@@ -40,6 +40,11 @@ var modalActionMeeting = {
         thisObj.set('isDeleted', false);
         thisObj.set('isModified', false);
         thisObj.set('isAccepted', false);
+
+        $('#modalActionMeeting-placesearch').val(thisObj.placeName);
+        $('#modalActionMeeting-datestring').val(new Date(thisObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
+        $('#modalActionMeeting-date').val(new Date(thisObj.date).toString('MMMM dd, yyyy'));
+        $('#modalActionMeeting-time').val(new Date(thisObj.date).toString('h:mm tt'));
     },
 
     setActiveObject : function (newObj) {
@@ -163,7 +168,7 @@ var modalActionMeeting = {
 
             $('#modalActionMeeting-date').pickadate();
             $('#modalActionMeeting-time').pickatime();
-            
+
             $("#modalActionMeeting-date").on('blur', function () {
                 modalActionMeeting.updateDateString();
             });
