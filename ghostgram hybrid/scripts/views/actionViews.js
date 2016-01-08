@@ -28,6 +28,7 @@ var modalActionMeeting = {
         thisObj.set('action', null);
         thisObj.set('description', null);
         thisObj.set('address', null);
+        thisObj.set('placeName', null);
         thisObj.set('placeId', null);
         thisObj.set('lat', null);
         thisObj.set('lng', null);
@@ -54,6 +55,7 @@ var modalActionMeeting = {
         thisObj.set('action', newObj.action);
         thisObj.set('description', newObj.description);
         thisObj.set('address', newObj.address);
+        thisObj.set('placeName', newObj.placeName);
         thisObj.set('placeId', newObj.placeId);
         thisObj.set('lat', newObj.lat);
         thisObj.set('lng', newObj.lng);
@@ -168,19 +170,40 @@ var modalActionMeeting = {
                 dataTextField: "name",
                 dataValueField: "uuid",
                 change: function (e) {
+                    var placeStr = $("#modalActionMeeting-placesearch").val();
+
+                    if (modalActionMeeting._placeId !== null) {
+                        var place = placesModel.getPlaceModel(modalActionMeeting._placeId);
+
+                        if (placeStr === place.name) {
+                            return;
+                        }
+                        modalActionMeeting._placeId = null;
+                        modalActionMeeting._activeObject.set('placeId', modalActionMeeting._placeId);
+                        modalActionMeeting._activeObject.set('placeName',placeStr);
+                        modalActionMeeting._activeObject.set('address',placeStr);
+
+                    }
                     // event fired on blur -- if a place wasn't selected, need to do a nearby search
-                    var placeStr =  $("#modalActionMeeting-placesearch").val();
+
                     if (placeStr.length > 3) {
                         $("#modalActionMeeting-placesearchBtn").text("Find " + placeStr);
                         $("#modalActionMeeting-placesearchdiv").removeClass('hidden');
                     } else {
                         $("#modalActionMeeting-placesearchdiv").addClass('hidden');
                     }
+
                 },
                 select: function(e) {
                     // User has selected one of their places
                     var place = e.item;
                     var dataItem = this.dataItem(e.item.index());
+                    modalActionMeeting._placeId = dataItem.uuid;
+                    modalActionMeeting._activeObject.set('placeId', modalActionMeeting._placeId);
+                    modalActionMeeting._activeObject.set('placeName',dataItem.name);
+                    modalActionMeeting._activeObject.set('address',dataItem.address);
+
+
 
                     // Hide the Find Location button
                     $("#modalActionMeeting-placesearchdiv").addClass('hidden');
