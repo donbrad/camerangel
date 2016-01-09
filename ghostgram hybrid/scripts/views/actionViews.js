@@ -202,7 +202,7 @@ var modalActionMeeting = {
             });
 
             $('#modalActionMeeting-date').pickadate();
-            $('#modalActionMeeting-time').pickatime();
+            //$('#modalActionMeeting-time').pickatime();
 
             $("#modalActionMeeting-date").on('blur', function () {
                 modalActionMeeting.updateDateString();
