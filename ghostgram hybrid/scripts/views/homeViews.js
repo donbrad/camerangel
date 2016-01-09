@@ -988,6 +988,8 @@ var signUpView = {
                             return;
                         } else {
 
+                            window.localStorage.setItem('ggRecoveryPassword', password);
+                            window.localStorage.setItem('ggUsername', username);
                             //Phone number isn't a duplicate -- create user
                             user.set("username", username);
                             user.set("password", password);
@@ -1251,6 +1253,9 @@ var signInView = {
                 // Do stuff after successful login.
 
                 window.localStorage.setItem('ggHasAccount', true);
+                window.localStorage.setItem('ggRecoveryPassword', password);
+                window.localStorage.setItem('ggUsername', username);
+                
                 // Clear sign in form
                 $("#home-signin-username, #home-signin-password").val("");
 

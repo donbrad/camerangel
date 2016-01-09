@@ -91,14 +91,12 @@ var userModel = {
         userModel.device.device = device.name;
         userModel.device.model = device.model;
         userModel.rememberUsername = window.localStorage.getItem('ggRememberUsername');
-
+        userModel.recoveryPassword = window.localStorage.getItem('ggRecoveryPassword');
         // If remembering Username, get it from localstorage and prefill signin.
         if (userModel.rememberUsername) {
            userModel.username = window.localStorage.getItem('ggUsername');
             if (userModel.username == undefined || userModel.username === '') {
                 window.localStorage.setItem('ggUsername', userModel.parseUser.get('username'));
-            } else {
-                $('#home-signin-username').val(userModel.username);
             }
 
         }
