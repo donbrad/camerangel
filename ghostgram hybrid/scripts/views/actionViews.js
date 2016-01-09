@@ -52,6 +52,7 @@ var modalActionMeeting = {
         thisObj.set('declineList', []);
         thisObj.set('acceptList', []);
         thisObj.set('inviteList', []);
+        thisObj.set('commentList', []);
 
 
         $('#modalActionMeeting-placesearch').val(thisObj.placeName);
@@ -86,6 +87,7 @@ var modalActionMeeting = {
         thisObj.set('acceptList', newObj.acceptList);
         thisObj.set('declineList', newObj.declineList);
         thisObj.set('inviteList', newObj.inviteList);
+        thisObj.set('commentList', newObj.commentList);
         thisObj.set('approxTime', newObj.approxTime);
         thisObj.set('approxPlace', newObj.approxPlace);
         thisObj.set('timeFlexible', newObj.timeFlexible);
@@ -335,6 +337,7 @@ var modalActionMeeting = {
         thisObject.declineList = thisObj.declineList;
         thisObject.acceptList = thisObj.acceptList;
         thisObject.inviteList = thisObj.inviteList;
+        thisObject.commentList = thisObj.commentList;
 
         channelView.addSmartObjectToMessage(thisObj.uuid, thisObject);
 
