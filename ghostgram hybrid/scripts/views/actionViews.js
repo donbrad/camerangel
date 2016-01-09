@@ -213,6 +213,9 @@ var modalActionMeeting = {
             });
 
             $("#modalActionMeeting-time").on('blur', function () {
+                var time = Date.parse(timeString[0]);
+                var timeComp = new Date(time).toString("h:mm tt");
+                $("#modalActionMeeting-time").val(timeComp);
                 modalActionMeeting.updateDateString();
             });
 
@@ -307,7 +310,7 @@ var modalActionMeeting = {
         _preventDefault(e);
         mobileNotify("Create Event Chat in progress...");
     },
-    
+
     createSmartEvent : function (thisObj) {
         var thisObject = {};
         if (thisObj.action === null) {
