@@ -1255,7 +1255,7 @@ var signInView = {
                 window.localStorage.setItem('ggHasAccount', true);
                 window.localStorage.setItem('ggRecoveryPassword', password);
                 window.localStorage.setItem('ggUsername', username);
-                
+
                 // Clear sign in form
                 $("#home-signin-username, #home-signin-password").val("");
 
