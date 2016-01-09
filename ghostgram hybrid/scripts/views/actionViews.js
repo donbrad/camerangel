@@ -361,7 +361,7 @@ var modalActionMeeting = {
         var thisObj = modalActionMeeting._activeObject;
 
         if (thisObj.senderUUID === userModel.currentUser.userUUID) {
-            modalActionMeeting.createSmartEvent();
+            modalActionMeeting.createSmartEvent(thisObj);
         } else {
             mobileNotify("Invitee features in progress...");
         }
