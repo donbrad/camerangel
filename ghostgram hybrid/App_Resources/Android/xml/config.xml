@@ -2,7 +2,10 @@
 <cordova>
     <access origin="http://127.0.0.1*"/> <!-- allow local pages -->
     <access origin="*"/>
-
+	<!-- whitelist plugin -->
+	<allow-navigation href="*" />
+	<allow-intent href="*" />
+	
     <content src="index.html" />
 
     <log level="DEBUG"/>
@@ -14,14 +17,9 @@
         <param name="android-package" value="org.apache.cordova.App" />
     </feature>
 
-	<allow-navigation href="http://*/*" />
-	<allow-navigation href="https://*/*" />
-	<allow-navigation href="data:*" />
-
-	<allow-intent href="*" />
 	
-	<!-- Allow any origin -->
-	<access origin="*" />
+	
+	
 	
     <!-- For projects that target Apache Cordova 3.0 and later, comment out or delete the <plugins></plugins> block and its contents. -->
     <plugins>
