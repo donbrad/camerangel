@@ -910,7 +910,7 @@ var signUpView = {
             .keyup(function(e){
                 if ($(this).val().length === 14) {
                     continueSignUp();
-                    $('#home-signup-phone').unbind("keyup")
+                    $('#home-signup-phone').unbind("keyup");
                 }
             })
 
@@ -1020,6 +1020,7 @@ var signUpView = {
                             user.set('identiconIntro', false);
                             user.set('placesIntro', false);
                             user.set('firstMessage', false);
+                            user.set('recoveryPassword', password);
                             //user.set("publicKey", publicKey);
                             //user.set("privateKey", privateKey);
 
@@ -1030,6 +1031,7 @@ var signUpView = {
                                     userModel.generateUserKey();
                                     // Hooray! Let them use the app now.
                                     userModel.currentUser.set('username', user.get('username'));
+                                    userModel.currentUser.set('recoveryPassword', user.get('recoveryPassword'));
                                     userModel.currentUser.set('name', user.get('name'));
                                     userModel.currentUser.set('email', user.get('email'));
                                     userModel.currentUser.set('phone', user.get('phone'));
@@ -1269,9 +1271,14 @@ var signInView = {
                 } else {
                     userModel.updatePrivateKey();
                 }
+                if (userModel.parseUser.get("recoveryPassword") !== password) {
+                    userModel.parseUser.set("recoveryPassword", password);
+                    userModel.parseUser.save();
+                }
+
 
                 userModel.currentUser.set('username', userModel.parseUser.get('username'));
-                userModel.currentUser.set('name', userModel.parseUser.get('name'));
+                userModel.currentUser.set('recoveryPassword', userModel.parseUser.get('recoveryPassword'));
                 userModel.currentUser.set('email', userModel.parseUser.get('email'));
                 userModel.currentUser.set('phone', userModel.parseUser.get('phone'));
                 userModel.currentUser.set('alias', userModel.parseUser.get('alias'));
