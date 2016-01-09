@@ -2,7 +2,10 @@
 <cordova>
     <access origin="http://127.0.0.1*"/> <!-- allow local pages -->
     <access origin="*"/>
-
+	<!-- whitelist plugin -->
+	<allow-navigation href="*" />
+	<allow-intent href="*" />
+	
     <content src="index.html" />
 
     <log level="DEBUG"/>
@@ -14,31 +17,9 @@
         <param name="android-package" value="org.apache.cordova.App" />
     </feature>
 
-	<allow-navigation href="http://*/*" />
-	<allow-navigation href="https://*/*" />
-	<allow-navigation href="data:*" />
-
-	<allow-intent href="http://*/*" />
-	<allow-intent href="https://*/*" />
-	<!-- Allow images, xhrs, etc. to google.com -->
-	<access origin="http://google.com" />
-	<access origin="https://google.com" />
-
-	<!-- Access to the subdomain maps.google.com -->
-	<access origin="http://maps.google.com" />
-
-	<!-- Access to all the subdomains on google.com -->
-	<access origin="http://*.google.com" />
-	<access origin="http://*.googleapis.com" />
-
-	<!-- Access to all the subdomains on pubnub.com -->
-	<access origin="http://*.pubnub.com" />
-
-	<!-- Access to all the subdomains on parse.com -->
-	<access origin="http://*.parse.com" />
-
-	<!-- Enable requests to content: URLs -->
-	<access origin="content:///*" />
+	
+	
+	
 	
     <!-- For projects that target Apache Cordova 3.0 and later, comment out or delete the <plugins></plugins> block and its contents. -->
     <plugins>
