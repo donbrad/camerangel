@@ -213,6 +213,7 @@ var modalActionMeeting = {
             });
 
             $("#modalActionMeeting-time").on('blur', function () {
+                var timeIn =  $("#modalActionMeeting-time").val();
                 var time = Date.parse(timeString[0]);
                 var timeComp = new Date(time).toString("h:mm tt");
                 $("#modalActionMeeting-time").val(timeComp);
