@@ -29,6 +29,7 @@ var modalActionMeeting = {
         thisObj.set("uuid", uuid.v4());
         thisObj.set('senderUUID', userModel.currentUser.userUUID);
         thisObj.set('channelId', null);
+        thisObj.set('eventChatId', null);
         thisObj.set('title', null);
         thisObj.set('type', "meeting");
         thisObj.set('action', null);
@@ -68,6 +69,7 @@ var modalActionMeeting = {
             newObj.uuid = uuid.v4();
         }
         thisObj.set('channelId', newObj.channelId);
+        thisObj.set('eventChatId', newObj.eventChatId);
         thisObj.set('title', newObj.title);
         thisObj.set('type', newObj.type);
         thisObj.set('uuid', newObj.uuid);
@@ -301,6 +303,11 @@ var modalActionMeeting = {
 
     },
 
+    doEventChat : function (e) {
+        _preventDefault(e);
+        mobileNotify("Create Event Chat in progress...");
+    },
+    
     createSmartEvent : function (thisObj) {
         var thisObject = {};
         if (thisObj.action === null) {
@@ -323,6 +330,7 @@ var modalActionMeeting = {
         thisObject.address = thisObj.address;
         thisObject.senderUUID = thisObj.senderUUID;
         thisObject.channelId = thisObj.channelId;
+        thisObject.eventChatId = thisObj.eventChatId;
         thisObject.calendarId = thisObj.calendarId;
         thisObject.lat = thisObj.lat;
         thisObject.lng = thisObj.lng;
