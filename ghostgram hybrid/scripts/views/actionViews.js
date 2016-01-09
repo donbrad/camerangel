@@ -143,7 +143,10 @@ var modalActionMeeting = {
         var date = $('#modalActionMeeting-date').val();
         var time = $('#modalActionMeeting-time').val();
 
-        $("#modalActionMeeting-datestring").val(date + " " + time);
+        var finalDateStr = date + " " + time;
+        $("#modalActionMeeting-datestring").val(finalDateStr);
+
+        modalActionMeeting._activeObject.set('date', new Date(finalDateStr));
 
     },
 
@@ -361,6 +364,9 @@ var modalActionMeeting = {
         var thisObj = modalActionMeeting._activeObject;
 
         if (thisObj.senderUUID === userModel.currentUser.userUUID) {
+            var finalDateStr = $("#modalActionMeeting-datestring").val();
+
+            modalActionMeeting._activeObject.set('date', new Date(finalDateStr));
             modalActionMeeting.createSmartEvent(thisObj);
         } else {
             mobileNotify("Invitee features in progress...");
