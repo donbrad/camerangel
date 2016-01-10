@@ -272,6 +272,64 @@ var smartObject = {
         }
     },
 
+    // process accept for this user as recipient (another user is creator / sender)
+    accept : function (eventId, senderId, comment) {
+        var event = smartObject.findObject(eventId);
+        if (event !== undefined) {
+            event.set('isAccepted', true);
+            event.set('isDeclined', false);
+
+            updateParseObject('smartobject', 'uuid', eventId, 'isAccepted', true);
+            updateParseObject('smartobject', 'uuid', eventId, 'isDeclined', false);
+        }
+
+    },
+    // process decline for this user as recipient (another user is creator / sender)
+    decline : function (eventId, senderId, comment) {
+        var event = smartObject.findObject(eventId);
+        if (event !== undefined) {
+            event.set('isAccepted', false);
+            event.set('isDeclined', true);
+
+            updateParseObject('smartobject', 'uuid', eventId, 'isAccepted', false);
+            updateParseObject('smartobject', 'uuid', eventId, 'isDeclined', true);
+        }
+    },
+
+    // Process accept from a recipeient
+    recipientAccept : function (eventId, recipientId, comment) {
+        var event = smartObject.findObject(eventId);
+        if (event !== undefined) {
+
+        }
+
+    },
+
+    recipientDecline : function (eventId, recipientId, comment) {
+        var event = smartObject.findObject(eventId);
+        if (event !== undefined) {
+
+
+        }
+    },
+
+
+    update : function (eventId, eventObj, comment) {
+        var event = smartObject.findObject(eventId);
+        if (event !== undefined) {
+
+
+        }
+    },
+
+    cancel : function (eventId,  eventObj, comment) {
+        var event = smartObject.findObject(eventId);
+        if (event !== undefined) {
+
+
+        }
+    },
+
     addObject : function (objectIn) {
         var SmartObjects = Parse.Object.extend("smartobject");
         var smartOb = new SmartObjects();

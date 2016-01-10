@@ -201,22 +201,28 @@ var appDataChannel = {
                     appDataChannel.processRecallMessage(m.channelId, m.messageId, m.ownerId, m.isPrivateChat);
             } break;
 
-            //  { type: 'connectRequest',  contactId: <contactUUID>, owner: <ownerUUID>}
+            //  { type: 'eventAccept',  }
             case 'eventAccept' : {
                 if (m.version === appDataChannel._version && m.msgID !== undefined)
                     appDataChannel.processEventAccept(m.eventId, m.ownerId, m.comment);
             } break;
 
-            //  { type: 'connectResponse',  contactId: <contactUUID>, owner: <ownerUUID>. accepted: true|false}
+            //  { type: 'eventDecline',  }
             case 'eventDecline' : {
                 if (m.version === appDataChannel._version && m.msgID !== undefined)
                     appDataChannel.processEventDecline(m.eventId, m.ownerId, m.comment);
             } break;
 
-            //  { type: 'connectRequest',  contactId: <contactUUID>, owner: <ownerUUID>}
+            //  { type: 'eventUpdate',  }
             case 'eventUpdate' : {
                 if (m.version === appDataChannel._version && m.msgID !== undefined)
-                    appDataChannel.processEventUpdate(m.channelId, m.messageId, m.ownerId, m.isPrivateChat);
+                    appDataChannel.processEventUpdate(m.eventId, m.ownerId, m.eventObject, m.comment);
+            } break;
+
+            //  { type: 'eventUpdate',  }
+            case 'eventCancel' : {
+                if (m.version === appDataChannel._version && m.msgID !== undefined)
+                    appDataChannel.processEventCancel(m.eventId, m.ownerId, m.comment);
             } break;
 
             //  { type: 'connectRequest',  contactId: <contactUUID>, owner: <ownerUUID>}
@@ -313,6 +319,62 @@ var appDataChannel = {
         });
     },
 
+    eventAccept: function (eventId, recipientId, comment) {
+        var channel = appDataChannel.getContactAppChannel(recipientId);
+        var msg = new Object();
+
+        msg.msgID = uuid.v4();
+        msg.type = 'eventAccept';
+        msg.version = appDataChannel._version;
+        msg.date = new Date.today();
+        msg.eventId = eventId;
+        msg.recipientId = recipientId;
+        msg.comment = comment;
+
+    },
+
+    eventDecline : function (eventId, recipientId, comment) {
+        var channel = appDataChannel.getContactAppChannel(recipientId);
+        var msg = new Object();
+
+        msg.msgID = uuid.v4();
+        msg.type = 'eventDecline';
+        msg.version = appDataChannel._version;
+        msg.date = new Date.today();
+        msg.eventId = eventId;
+        msg.recipientId = recipientId;
+        msg.comment = comment;
+
+    },
+
+    // Must be sent to each invitee or accepted member
+    sendEventCancel : function (eventId, recipientId, comment) {
+        var channel = appDataChannel.getContactAppChannel(recipientId);
+        var msg = new Object();
+
+        msg.msgID = uuid.v4();
+        msg.type = 'eventCancel';
+        msg.version = appDataChannel._version;
+        msg.date = new Date.today();
+        msg.eventId = eventId;
+        msg.comment = comment;
+    },
+
+    // Must be sent to each invitee or accepted member
+    sendEventUpdate : function (eventId, recipientId, updateObject, comment) {
+        var channel = appDataChannel.getContactAppChannel(recipientId);
+        var msg = new Object();
+
+        msg.msgID = uuid.v4();
+        msg.type = 'eventCancel';
+        msg.version = appDataChannel._version;
+        msg.date = new Date.today();
+        msg.eventId = eventId;
+        msg.eventUpdate = updateObject;
+        msg.comment = comment;
+    },
+
+
 
     groupChannelInvite : function (contactUUID, channelUUID, channelName, channelDescription,  members, options) {
         var msg = {};
@@ -364,6 +426,7 @@ var appDataChannel = {
             error: appDataChannel.errorCallback
         });
     },
+
 
     groupChannelDelete : function (contactUUID, channelUUID, channelName, message) {
         var msg = {};
@@ -453,6 +516,22 @@ var appDataChannel = {
             error: appDataChannel.errorCallback
 
         });
+    },
+
+    processEventAccept : function (eventId, recipientId, comment) {
+        smartObject.recipientAccept(eventId, recipientId, comment);
+    },
+
+    processEventDecline : function (eventId, recipientId, comment) {
+        smartObject.recipientDecline(eventId, recipientId, comment);
+    },
+
+    processEventCancel : function (eventId, recipientId, comment) {
+
+    },
+
+    processEventUpdate : function (eventId, recipientId, eventObj, comment) {
+
     },
 
 
