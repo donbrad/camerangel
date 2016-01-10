@@ -53,6 +53,7 @@ var modalActionMeeting = {
         thisObj.set('declineList', []);
         thisObj.set('acceptList', []);
         thisObj.set('inviteList', []);
+        thisObj.set('comment', null);
         thisObj.set('commentList', []);
 
 
@@ -108,11 +109,9 @@ var modalActionMeeting = {
         }
 
         if (newObj.senderUUID === undefined || newObj.senderUUID === userModel.currentUser.userUUID) {
-            $('#actionMeeting-save').removeClass('hidden');
-            $('#actionMeeting-accept').addClass('hidden');
+            modalActionMeeting.setSenderMode();
         } else {
-            $('#actionMeeting-save').addClass('hidden');
-            $('#actionMeeting-accept').removeClass('hidden');
+            modalActionMeeting.setRecipientMode();
         }
 
         $('#modalActionMeeting-placesearch').val(newObj.placeName);
@@ -122,12 +121,37 @@ var modalActionMeeting = {
     },
 
 
+    setSenderMode: function () {
+        $('#actionMeeting-save').removeClass('hidden');
+        $('#actionMeeting-accept').addClass('hidden');
+        $('#modalActionMeeting-commentsLi').addClass('hidden');
+
+        $('#modalActionMeeting-title').prop('readonly', false);
+        $('#modalActionMeeting-desc').prop('readonly', false);
+        $('#modalActionMeeting-datestring').prop('readonly', false);
+        $('#modalActionMeeting-date').prop('readonly', false);
+        $('#modalActionMeeting-time').prop('readonly', false);
+    },
+
+    setRecipientMode : function () {
+        $('#actionMeeting-save').addClass('hidden');
+        $('#actionMeeting-accept').removeClass('hidden');
+        $('#modalActionMeeting-commentsLi').removeClass('hidden');
+        $('#modalActionMeeting-title').prop('readonly', true);
+        $('#modalActionMeeting-desc').prop('readonly', true);
+        $('#modalActionMeeting-datestring').prop('readonly', true);
+        $('#modalActionMeeting-date').prop('readonly', true);
+        $('#modalActionMeeting-time').prop('readonly', true);
+    },
+
     onShow: function (e) {
         _preventDefault(e);
         modalActionMeeting._placeId = null;
+
         $("#modalActionMeeting-placesearchBtn").text("");
         $("#modalActionMeeting-placesearch").val("");
         $("#modalActionMeeting-datestring").val("");
+        $("#modalActionMeeting-comments").val("");
     },
 
     placeSearch : function (e) {
@@ -294,6 +318,15 @@ var modalActionMeeting = {
         }
 
         $("#modalActionMeeting-placesearchdiv").addClass('hidden');
+        var thisObject = modalActionMeeting._activeObject;
+        if (thisObject.senderUUID === undefined || thisObject.senderUUID === null) {
+            modalActionMeeting.setSenderMode();
+        } else if (thisObject.senderUUID === userModel.currentUser.userUUID) {
+            modalActionMeeting.setSenderMode();
+        } else {
+            modalActionMeeting.setRecipientMode();
+        }
+
         $("#modalview-actionMeeting").data("kendoMobileModalView").open();
     },
 

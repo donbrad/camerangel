@@ -2443,7 +2443,7 @@
 			</li>
 			<li>
 				<label style="font-size: 12px;">
-					<input type="search"  data-bind="value: description" placeholder="Description..."/>
+					<input type="search"  id="modalActionMeeting-desc" data-bind="value: description" placeholder="Description..."/>
 				</label>
 			</li>
 
@@ -2478,6 +2478,11 @@
 					<!--<input type="checkbox"  data-role="switch" data-bind="checked: placeFlexible"/>-->
 				<!--</label>-->
 			<!--</li>-->
+			<li id="modalActionMeeting-commentsLi"> Comments
+				<label style="font-size: 12px;">
+					<input type="search"  id="modalActionMeeting-comments" data-bind="value: comments" placeholder="Comment..."/>
+				</label>
+			</li>
 			<li>
 				<label> Add to Calendar
 					<input type="checkbox" id="actionMeeting-addToCalendar"  data-role="switch" data-bind="checked: addToCalendar"/>

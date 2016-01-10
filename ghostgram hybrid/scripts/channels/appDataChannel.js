@@ -202,6 +202,24 @@ var appDataChannel = {
             } break;
 
             //  { type: 'connectRequest',  contactId: <contactUUID>, owner: <ownerUUID>}
+            case 'eventAccept' : {
+                if (m.version === appDataChannel._version && m.msgID !== undefined)
+                    appDataChannel.processEventAccept(m.eventId, m.ownerId, m.comment);
+            } break;
+
+            //  { type: 'connectResponse',  contactId: <contactUUID>, owner: <ownerUUID>. accepted: true|false}
+            case 'eventDecline' : {
+                if (m.version === appDataChannel._version && m.msgID !== undefined)
+                    appDataChannel.processEventDecline(m.eventId, m.ownerId, m.comment);
+            } break;
+
+            //  { type: 'connectRequest',  contactId: <contactUUID>, owner: <ownerUUID>}
+            case 'eventUpdate' : {
+                if (m.version === appDataChannel._version && m.msgID !== undefined)
+                    appDataChannel.processEventUpdate(m.channelId, m.messageId, m.ownerId, m.isPrivateChat);
+            } break;
+
+            //  { type: 'connectRequest',  contactId: <contactUUID>, owner: <ownerUUID>}
             case 'connectRequest' : {
 
             } break;
