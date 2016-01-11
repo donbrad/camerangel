@@ -2484,12 +2484,12 @@
 					<!--<input type="checkbox"  data-role="switch" data-bind="checked: placeFlexible"/>-->
 				<!--</label>-->
 			<!--</li>-->
-			<li id="modalActionMeeting-commentsLi"> Comments
+			<li id="modalActionMeeting-commentsLi"> Comment to Organizer
 				<label style="font-size: 12px;">
 					<input type="search"  id="modalActionMeeting-comments" data-bind="value: comments" placeholder="Comment..."/>
 				</label>
 			</li>
-			<li>
+			<li id="modalActionMeeting-calendarLi">
 				<label> Add to Calendar
 					<input type="checkbox" id="actionMeeting-addToCalendar"  data-role="switch" data-bind="checked: addToCalendar"/>
 				</label>
@@ -2507,7 +2507,11 @@
 		<div id="actionMeeting-save" class="hidden">
 			<a class="btnFull-modal btnPrimary" data-role="button" data-click="modalActionMeeting.onSaveEvent">Create Event</a>
 		</div>
+		<div id="actionMeeting-reschedule" class="hidden">
+			<a class="btnFull-modal btnPrimary" data-role="button" data-click="modalActionMeeting.onSaveEvent">RescheduleEvent</a>
+		</div>
 		<div id="actionMeeting-accept" class="hidden">
+			<span id="actionMeeting-acceptStatus"></span>
 			<a class="btnFull-modal btnSecondary" data-role="button" data-click="modalActionMeeting.onDecline">Decline Event</a>
 			<a class="btnFull-modal btnPrimary" data-role="button" data-click="modalActionMeeting.onAccept">Accept Event</a>
 		</div>
@@ -2581,6 +2585,7 @@
 			<a class="btnFull-modal btnPrimary" data-role="button" data-click="smartEventView.onSaveEvent">Save</a>
 		</div>
 		<div id="smartEventView-accept" class="hidden">
+			<span id="smartEventView-acceptStatus"></span>
 			<a class="btnFull-modal btnSecondary" data-role="button" data-click="smartEventView.onDecline">Decline</a>
 			<a class="btnFull-modal btnPrimary" data-role="button" data-click="smartEventView.onAccept">Accept</a>
 		</div>
