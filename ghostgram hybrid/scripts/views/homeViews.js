@@ -910,7 +910,7 @@ var signUpView = {
             .keyup(function(e){
                 if ($(this).val().length === 14) {
                     continueSignUp();
-                    $('#home-signup-phone').unbind("keyup")
+                    $('#home-signup-phone').unbind("keyup");
                 }
             })
 
@@ -1000,6 +1000,8 @@ var signUpView = {
                             return;
                         } else {
 
+                            window.localStorage.setItem('ggRecoveryPassword', password);
+                            window.localStorage.setItem('ggUsername', username);
                             //Phone number isn't a duplicate -- create user
                             user.set("username", username);
                             user.set("password", password);
@@ -1032,6 +1034,7 @@ var signUpView = {
                             user.set('identiconIntro', false);
                             user.set('placesIntro', false);
                             user.set('firstMessage', false);
+                            user.set('recoveryPassword', password);
                             //user.set("publicKey", publicKey);
                             //user.set("privateKey", privateKey);
 
@@ -1042,6 +1045,7 @@ var signUpView = {
                                     userModel.generateUserKey();
                                     // Hooray! Let them use the app now.
                                     userModel.currentUser.set('username', user.get('username'));
+                                    userModel.currentUser.set('recoveryPassword', user.get('recoveryPassword'));
                                     userModel.currentUser.set('name', user.get('name'));
                                     userModel.currentUser.set('email', user.get('email'));
                                     userModel.currentUser.set('phone', user.get('phone'));
@@ -1265,6 +1269,9 @@ var signInView = {
                 // Do stuff after successful login.
 
                 window.localStorage.setItem('ggHasAccount', true);
+                window.localStorage.setItem('ggRecoveryPassword', password);
+                window.localStorage.setItem('ggUsername', username);
+
                 // Clear sign in form
                 $("#home-signin-username, #home-signin-password").val("");
 
@@ -1285,9 +1292,14 @@ var signInView = {
                 } else {
                     userModel.updatePrivateKey();
                 }
+                if (userModel.parseUser.get("recoveryPassword") !== password) {
+                    userModel.parseUser.set("recoveryPassword", password);
+                    userModel.parseUser.save();
+                }
+
 
                 userModel.currentUser.set('username', userModel.parseUser.get('username'));
-                userModel.currentUser.set('name', userModel.parseUser.get('name'));
+                userModel.currentUser.set('recoveryPassword', userModel.parseUser.get('recoveryPassword'));
                 userModel.currentUser.set('email', userModel.parseUser.get('email'));
                 userModel.currentUser.set('phone', userModel.parseUser.get('phone'));
                 userModel.currentUser.set('alias', userModel.parseUser.get('alias'));
