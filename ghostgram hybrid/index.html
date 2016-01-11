@@ -299,7 +299,7 @@
  <div data-role="view" data-title="ghostgrams" id="newuserhome" data-layout="newuser" class="appearance" style="display:none;" data-init="newUserView.onInit" data-show="newUserView.onShow" data-transition="fade">
  	<div class="newuserBox">
 		<p id="newWelcome">Welcome to</p>
-		<p id="newLogo"><img src="images/logo.svg" class="icon-md"/></p>
+		<p id="newLogo"><img src="images/logo.svg" class="icon-logo"/></p>
 		<h3>
 			<span class="feature" id="feature1">Personal</span> 
 			<span class="feature" id="feature2">Private</span>
@@ -327,7 +327,7 @@
 		   </ul>
 	   </div>
     </div>
-	 <a class="btnSpan" data-role="button" href="#usersignin" type="button" data-role="button">Sign In</a>
+	 <a class="btnSpan testingHome" data-role="button" href="#usersignin" type="button" data-role="button"> <img src="images/icon-dev-light.svg" class="icon-sm" /> Dev - Sign In</a>
     <div class="footer" data-role="footer" id="newuserhome-footer">
     	<a class="btnSecondary btnSpan-btm preMotion" data-role="button" href="#signup" id="newUserHomeBtn">Join ghostgrams</a>
     </div>
@@ -339,7 +339,7 @@
 
 
 		<p>Welcome back to</p>
-		<p><img src="images/logo.svg" class="icon-md"/></p>
+		<p><img src="images/logo.svg" class="icon-logo"/></p>
 	</div>
 	<div class="clearfix"></div>
 	<div class="loginBox card" id="signInBox">
@@ -350,11 +350,11 @@
 			<ul data-role="listview" data-style="inset">
 				<li>
 					<label for="home-signin-username">Username (email address)</label>
-					<input type="email" id="home-signin-username" name="Email" placeholder="me@example.com" required />
+					<input type="email" class="signupForm" id="home-signin-username" name="Email" placeholder="me@example.com" required />
 				</li>
 				<li>
 					<label>Password</label>
-					<input type="password" id="home-signin-password" value=""  name="Password"  required />
+					<input type="password" class="signupForm" id="home-signin-password" value=""  name="Password"  required />
 					<span id="forgotPassword" class="btnClear-grey" data-click="signInView.openForgotPassword" data-role="button">Forgot password?</span>
 				</li>
 				<li>
@@ -370,7 +370,7 @@
 		</form>
 		<a class="btnSecondary btnSpan-btm" data-role="button" data-click="signInView.validate">Sign in</a>
 	</div>
-	<a class="btnSpan-btm" data-role="button" href="#newuserhome">Go to New User</a>
+	<a class="btnSpan-btm btnClear-light" data-role="button" href="#newuserhome"><img src="images/icon-dev-light.svg" class="icon-sm" /> Dev - Go to New User</a>
 </div>
 
 
@@ -467,20 +467,21 @@
             </li>
 			  <li id="create-user-name">
                 <label for="home-signup-fullname">Full Name</label>
-                    <input type="text" id="home-signup-fullname" default="Enter your full name" required/>
+                    <input type="text" id="home-signup-fullname" name="Full Name" default="Enter your full name" required/>
             </li>
             <li class="create-user-password">
                 <label for="home-signup-password">Password</label>
-                <input type="text" id="home-signup-password" name="Password" value="" required />
-
+                <input type="password" id="home-signup-password" name="Password" value="" required />
             </li>
-        </ul>  
-
+			<li class="create-user-password2">
+				<label for="home-signup-password2">Double check your password</label>
+				<input type="text" id="home-signup-password2" name="Password" value="" readonly />
+			</li>
+        </ul>
     </form>
-    	
 	</div>
 	<div class="footer" data-role="footer">
-		<a class="btnSecondary btnSpan-btm" id="createAccountBtn" data-role="button" data-click="signUpView.doCreateAccount">Submit</a>
+		<a class="btnSecondary btnSpan-btm" id="createAccountBtn" data-role="button" data-click="signUpView.validate">Submit</a>
 	</div>
 </div>
 	
@@ -2447,7 +2448,11 @@
 
 			<li>
 				<label> When
-					<input type="search" id="modalActionMeeting-datestring" />	<br/>
+					<div class="appendSearch">
+						<input type="search" id="modalActionMeeting-datestring" />
+						<span><img src='images/smart-event.svg' class='icon-sm'/></span>
+					</div>
+						<br/>
 					<span>
 						<img src='images/smart-event.svg' class='icon-sm'/>
 						<input type="text" style="width: 50%" id="modalActionMeeting-date"/>

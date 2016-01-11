@@ -166,12 +166,21 @@ var modalActionMeeting = {
                 }
             });
 
-            $('#modalActionMeeting-date').pickadate();
+            $('#modalActionMeeting-date').pickadate({
+                weekdaysShort: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+                showMonthsShort: true,
+                onClose: function(){
+                    modalActionMeeting.updateDateString();
+                }
+            });
+
             $('#modalActionMeeting-time').pickatime();
 
+            /*
             $("#modalActionMeeting-date").on('blur', function () {
                 modalActionMeeting.updateDateString();
             });
+            */
 
             $("#modalActionMeeting-time").on('blur', function () {
                 modalActionMeeting.updateDateString();

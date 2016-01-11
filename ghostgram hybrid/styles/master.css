@@ -72,6 +72,11 @@
   background-repeat: no-repeat;
   background-size: contain;
 }
+.testingHome {
+  position: absolute;
+  top: 1em;
+  color: #fff !important;
+}
 /* elements */
 .userLgFontSize {
   font-size: 1.4em !important;
@@ -571,6 +576,10 @@ form p {
 }
 .icon-bar-md {
   height: 1.25em;
+}
+.icon-logo {
+  height: 1.5em;
+  max-width: 50%;
 }
 .loading-icon {
   height: 1rem;
@@ -5297,6 +5306,9 @@ table.k-editor {
 #feature1 {
   left: 28%;
 }
+#feature3 {
+  left: 24%;
+}
 #messageIntro {
   opacity: 0;
   position: absolute;
@@ -5440,5 +5452,5 @@ table.k-editor {
   margin-left: 0.5em;
 }
 .picker__frame {
-  top: 4em;
+  bottom: 6em !important;
 }
