@@ -110,7 +110,7 @@ var modalActionMeeting = {
             $('#actionMeeting-addToCalendar').prop('readonly', false);
         }
 
-        if (newObj.senderUUID === undefined || newObj.senderUUID === userModel.currentUser.userUUID) {
+        if (newObj.senderUUID === null || newObj.senderUUID === userModel.currentUser.userUUID) {
             modalActionMeeting.setSenderMode();
         } else {
             modalActionMeeting.setRecipientMode();
@@ -186,7 +186,7 @@ var modalActionMeeting = {
         $('#modalActionMeeting-datestring').prop('readonly', true);
         $('#modalActionMeeting-date').prop('readonly', true);
         $('#modalActionMeeting-time').prop('readonly', true);
-        $('#modalActionMeeting-placeSearch').prop('readonly', true);
+        $('#modalActionMeeting-placesearch').prop('readonly', true);
     },
 
     onShow: function (e) {

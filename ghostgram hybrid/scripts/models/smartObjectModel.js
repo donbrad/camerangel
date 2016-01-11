@@ -279,6 +279,7 @@ var smartObject = {
             event.set('isAccepted', true);
             event.set('isDeclined', false);
 
+            appDataChannel.eventAccept(eventId, senderId, userModel.currentUser.userUUID, comment);
             updateParseObject('smartobject', 'uuid', eventId, 'isAccepted', true);
             updateParseObject('smartobject', 'uuid', eventId, 'isDeclined', false);
         }
@@ -291,6 +292,7 @@ var smartObject = {
             event.set('isAccepted', false);
             event.set('isDeclined', true);
 
+            appDataChannel.eventDecline(eventId, senderId, userModel.currentUser.userUUID, comment);
             updateParseObject('smartobject', 'uuid', eventId, 'isAccepted', false);
             updateParseObject('smartobject', 'uuid', eventId, 'isDeclined', true);
         }
@@ -300,7 +302,13 @@ var smartObject = {
     recipientAccept : function (eventId, recipientId, comment) {
         var event = smartObject.findObject(eventId);
         if (event !== undefined) {
+            var accepts = event.acceptList, declines = event.declineList;
 
+            smartObject.removeFromList(declines, recipientId);
+            smartObject.removeFromList(accepts, recipientId);
+            accepts.push(recipientId);
+            updateParseObject('smartobject', 'uuid', eventId, 'acceptList', accepts);
+            updateParseObject('smartobject', 'uuid', eventId, 'declineList', declines);
         }
 
     },
@@ -308,7 +316,13 @@ var smartObject = {
     recipientDecline : function (eventId, recipientId, comment) {
         var event = smartObject.findObject(eventId);
         if (event !== undefined) {
+            var accepts = event.acceptList, declines = event.declineList;
 
+            smartObject.removeFromList(declines, recipientId);
+            smartObject.removeFromList(accepts, recipientId);
+            declines.push(recipientId);
+            updateParseObject('smartobject', 'uuid', eventId, 'acceptList', accepts);
+            updateParseObject('smartobject', 'uuid', eventId, 'declineList', declines);
 
         }
     },
@@ -377,6 +391,14 @@ var smartObject = {
                 handleParseError(error);
             }
         });
+    },
+
+    removeFromList: function (list, target) {
+        var filteredList = list.filter(function(elem){
+            return elem != target;
+        });
+
+        return(filteredList);
     }
 
 

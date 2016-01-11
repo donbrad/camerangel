@@ -319,10 +319,14 @@ var appDataChannel = {
         });
     },
 
-    eventAccept: function (eventId, recipientId, comment) {
-        var channel = appDataChannel.getContactAppChannel(recipientId);
+    eventAccept: function (eventId, senderId, recipientId, comment) {
+        var channel = appDataChannel.getContactAppChannel(senderId);
         var msg = new Object();
 
+        var event = smartObject.findObject(eventId);
+
+
+        var notificationString =  userModel.currentUser.name + " has accepted " + event.name;
         msg.msgID = uuid.v4();
         msg.type = 'eventAccept';
         msg.version = appDataChannel._version;
@@ -330,13 +334,43 @@ var appDataChannel = {
         msg.eventId = eventId;
         msg.recipientId = recipientId;
         msg.comment = comment;
+        msg.pn_apns = {
+            aps: {
+                alert : notificationString,
+                badge: 1,
+                'content-available' : 1
+            },
+            isMessage: false,
+            isEvent: true,
+            target: '#smartEvent?event='+eventId,
+            eventId :eventId
+        };
+        msg.pn_gcm = {
+            data : {
+                title: notificationString,
+                message: userModel.currentUser.name +  ' says "' + comment + '"',
+                target: '#smartEvent?event='+eventId,
+                image: "icon",
+                isMessage: false,
+                isEvent: true,
+                eventId :eventId
+            }
+        };
+
+        APP.pubnub.publish({
+            channel: channel,
+            message: msg,
+            callback: appDataChannel.publishCallback,
+            error: appDataChannel.errorCallback
+        });
 
     },
 
-    eventDecline : function (eventId, recipientId, comment) {
-        var channel = appDataChannel.getContactAppChannel(recipientId);
+    eventDecline : function (eventId, senderId, recipientId, comment) {
+        var channel = appDataChannel.getContactAppChannel(senderId);
         var msg = new Object();
 
+        var notificationString =  userModel.currentUser.name + " has declined " + event.name;
         msg.msgID = uuid.v4();
         msg.type = 'eventDecline';
         msg.version = appDataChannel._version;
@@ -344,6 +378,34 @@ var appDataChannel = {
         msg.eventId = eventId;
         msg.recipientId = recipientId;
         msg.comment = comment;
+        msg.pn_apns = {
+            aps: {
+                alert : notificationString,
+                badge: 1,
+                'content-available' : 1
+            },
+            isMessage: false,
+            isEvent: true,
+            target: '#smartEvent?event='+eventId,
+            eventId :eventId
+        };
+        msg.pn_gcm = {
+            data : {
+                title: notificationString,
+                message: userModel.currentUser.name +  ' says "' + comment + '"',
+                target: '#smartEvent?event='+eventId,
+                image: "icon",
+                isMessage: false,
+                isEvent: true,
+                eventId :eventId
+            }
+        };
+        APP.pubnub.publish({
+            channel: channel,
+            message: msg,
+            callback: appDataChannel.publishCallback,
+            error: appDataChannel.errorCallback
+        });
 
     },
 
@@ -358,6 +420,13 @@ var appDataChannel = {
         msg.date = new Date.today();
         msg.eventId = eventId;
         msg.comment = comment;
+
+        APP.pubnub.publish({
+            channel: channel,
+            message: msg,
+            callback: appDataChannel.publishCallback,
+            error: appDataChannel.errorCallback
+        });
     },
 
     // Must be sent to each invitee or accepted member
@@ -372,6 +441,13 @@ var appDataChannel = {
         msg.eventId = eventId;
         msg.eventUpdate = updateObject;
         msg.comment = comment;
+
+        APP.pubnub.publish({
+            channel: channel,
+            message: msg,
+            callback: appDataChannel.publishCallback,
+            error: appDataChannel.errorCallback
+        });
     },
 
 
