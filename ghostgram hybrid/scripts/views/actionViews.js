@@ -27,7 +27,7 @@ var modalActionMeeting = {
 
         var newDate = Date.today();
         thisObj.set("uuid", uuid.v4());
-        thisObj.set('senderUUID', userModel.currentUser.userUUID);
+        thisObj.set('senderUUID', null);
         thisObj.set('channelId', null);
         thisObj.set('eventChatId', null);
         thisObj.set('title', null);
@@ -123,15 +123,29 @@ var modalActionMeeting = {
     },
 
 
-    setSenderMode: function (wasSent) {
+    setSenderMode: function () {
+        var thisEvent = modalActionMeeting._activeObject;
+        var wasSent = thisEvent.senderUUID !== null;
+
         if (wasSent) {
-            $('#actionMeeting-update').removeClass('hidden');
+
             $('#actionMeeting-save').addClass('hidden');
+            if (thisEvent.isExpired) {
+                $('#actionMeeting-cancel').addClass('hidden');
+                $('#actionMeeting-reschedule').removeClass('hidden');
+            } else {
+                $('#actionMeeting-cancel').removeClass('hidden');
+                $('#actionMeeting-reschedule').addClass('hidden');
+            }
         } else {
             $('#actionMeeting-save').removeClass('hidden');
             $('#actionMeeting-update').addClass('hidden');
+            $('#actionMeeting-reschedule').addClass('hidden');
         }
 
+
+
+        $('#modalActionMeeting-eventchat').removeClass('hidden');
         $('#actionMeeting-accept').addClass('hidden');
         $('#modalActionMeeting-commentsLi').addClass('hidden');
 
@@ -163,7 +177,9 @@ var modalActionMeeting = {
 
 
         $('#actionMeeting-save').addClass('hidden');
-        $('#actionMeeting-accept').removeClass('hidden');
+        $('#modalActionMeeting-eventchat').addClass('hidden');
+        if (thisEvent.isExpired === false)
+            $('#actionMeeting-accept').removeClass('hidden');
         $('#modalActionMeeting-commentsLi').removeClass('hidden');
         $('#modalActionMeeting-title').prop('readonly', true);
         $('#modalActionMeeting-desc').prop('readonly', true);
@@ -180,7 +196,8 @@ var modalActionMeeting = {
         $("#modalActionMeeting-placesearchBtn").text("");
         $("#modalActionMeeting-placesearch").val("");
         $("#modalActionMeeting-datestring").val("");
-        $("#modalActionMeeting-comments").val("");
+        $("#modalActionMeeting-date").val("");
+        $("#modalActionMeeting-time").val("");
         $('#modalActionMeeting-comments').val("");
     },
 
@@ -356,6 +373,7 @@ var modalActionMeeting = {
         if (modalActionMeeting._date >= Date.parse(thisObject.date)) {
             $("#modalActionMeeting-eventExpired").removeClass('hidden');
             thisObject.set('isExpired', true);
+
         } else {
             $("#modalActionMeeting-eventExpired").addClass('hidden');
             thisObject.set('isExpired', false);
@@ -426,7 +444,7 @@ var modalActionMeeting = {
         thisObject.placeId = thisObj.placeId;
         thisObject.placeName = thisObj.placeName;
         thisObject.address = thisObj.address;
-        thisObject.senderUUID = thisObj.senderUUID;
+        thisObject.senderUUID = userModel.currentUser.userUUID;
         thisObject.channelId = thisObj.channelId;
         thisObject.eventChatId = thisObj.eventChatId;
         thisObject.calendarId = thisObj.calendarId;
@@ -457,12 +475,12 @@ var modalActionMeeting = {
 
     onSaveEvent : function (e) {
         var thisObj = modalActionMeeting._activeObject;
-        if (thisObj.senderUUID === userModel.currentUser.userUUID) {
-            var finalDateStr = $("#modalActionMeeting-datestring").val();
 
-            modalActionMeeting._activeObject.set('date', new Date(finalDateStr));
-            modalActionMeeting.createSmartEvent(thisObj);
-        }
+        var finalDateStr = $("#modalActionMeeting-datestring").val();
+
+        modalActionMeeting._activeObject.set('date', new Date(finalDateStr));
+        modalActionMeeting.createSmartEvent(thisObj);
+
 
         modalActionMeeting.onDone();
     },
