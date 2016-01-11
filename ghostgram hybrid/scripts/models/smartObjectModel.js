@@ -339,8 +339,7 @@ var smartObject = {
     cancel : function (eventId,  eventObj, comment) {
         var event = smartObject.findObject(eventId);
         if (event !== undefined) {
-
-
+            event.set('isDeleted', true);
         }
     },
 

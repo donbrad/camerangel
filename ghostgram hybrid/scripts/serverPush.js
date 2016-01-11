@@ -75,18 +75,28 @@ var serverPush = {
             }
         } else {
             //This is an appDataChannel Notification
+            if (e.isEvent !== undefined && e.isEvent) {
+
+            }
+
         }
 
         if (e.foreground !== undefined && e.foreground === '1') {
             // Just show gg quick notification is the app is running in the foreground
             // and the channel isn't the current channel
             if (e.alert) {
-                if (e.channelId !== undefined) {
+                if (e.isMessage !== undefined && e.isMessage === true && e.channelId !== undefined) {
                     if (e.channelId !== channelView._channelId) {
                         mobileNotify(e.alert);
                     }
 
                 }
+                
+                if (e.isEvent !== undefined && e.isEvent) {
+                    mobileNotify(e.alert);
+                }
+
+
             }
             serverPush._badgeCount = 0;
             serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, serverPush.onError, serverPush._badgeCount);

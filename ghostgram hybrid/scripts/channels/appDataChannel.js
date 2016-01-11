@@ -370,6 +370,8 @@ var appDataChannel = {
         var channel = appDataChannel.getContactAppChannel(senderId);
         var msg = new Object();
 
+        var event = smartObject.findObject(eventId);
+
         var notificationString =  userModel.currentUser.name + " has declined " + event.name;
         msg.msgID = uuid.v4();
         msg.type = 'eventDecline';
@@ -413,14 +415,37 @@ var appDataChannel = {
     sendEventCancel : function (eventId, recipientId, comment) {
         var channel = appDataChannel.getContactAppChannel(recipientId);
         var msg = new Object();
+        var event = smartObject.findObject(eventId);
 
+        var notificationString =  userModel.currentUser.name + " has cancelled " + event.name;
         msg.msgID = uuid.v4();
         msg.type = 'eventCancel';
         msg.version = appDataChannel._version;
         msg.date = new Date.today();
         msg.eventId = eventId;
         msg.comment = comment;
-
+        msg.pn_apns = {
+            aps: {
+                alert : notificationString,
+                badge: 1,
+                'content-available' : 1
+            },
+            isMessage: false,
+            isEvent: true,
+            target: '#',
+            eventId :eventId
+        };
+        msg.pn_gcm = {
+            data : {
+                title: notificationString,
+                message: userModel.currentUser.name +  ' says "' + comment + '"',
+                target: '#',
+                image: "icon",
+                isMessage: false,
+                isEvent: true,
+                eventId :eventId
+            }
+        };
         APP.pubnub.publish({
             channel: channel,
             message: msg,
@@ -433,15 +458,39 @@ var appDataChannel = {
     sendEventUpdate : function (eventId, recipientId, updateObject, comment) {
         var channel = appDataChannel.getContactAppChannel(recipientId);
         var msg = new Object();
+        var event = smartObject.findObject(eventId);
 
+        var notificationString =  userModel.currentUser.name + " has updated " + event.name;
         msg.msgID = uuid.v4();
-        msg.type = 'eventCancel';
+        msg.type = 'eventUpdate';
         msg.version = appDataChannel._version;
         msg.date = new Date.today();
         msg.eventId = eventId;
         msg.eventUpdate = updateObject;
         msg.comment = comment;
 
+        msg.pn_apns = {
+            aps: {
+                alert : notificationString,
+                badge: 1,
+                'content-available' : 1
+            },
+            isMessage: false,
+            isEvent: true,
+            target: '#smartEvent?event='+eventId,
+            eventId :eventId
+        };
+        msg.pn_gcm = {
+            data : {
+                title: notificationString,
+                message: userModel.currentUser.name +  ' says "' + comment + '"',
+                target: '#smartEvent?event='+eventId,
+                image: "icon",
+                isMessage: false,
+                isEvent: true,
+                eventId :eventId
+            }
+        };
         APP.pubnub.publish({
             channel: channel,
             message: msg,
