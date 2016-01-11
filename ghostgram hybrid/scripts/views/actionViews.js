@@ -143,7 +143,25 @@ var modalActionMeeting = {
         $('#modalActionMeeting-placeSearch').prop('readonly', false);
     },
 
+    setAcceptStatus : function () {
+        var thisEvent = modalActionMeeting._activeObject;
+
+        if (thisEvent.isAccepted) {
+            $('#actionMeeting-acceptStatus').text("You've accepted this event");
+        } else if (thisEvent.isDeclined) {
+            $('#actionMeeting-acceptStatus').text("You've declined this event");
+        } else {
+            $('#actionMeeting-acceptStatus').text("Please accept or decline this event");
+
+        }
+    },
+
     setRecipientMode : function () {
+        var thisEvent = modalActionMeeting._activeObject;
+
+         modalActionMeeting.setAcceptStatus();
+
+
         $('#actionMeeting-save').addClass('hidden');
         $('#actionMeeting-accept').removeClass('hidden');
         $('#modalActionMeeting-commentsLi').removeClass('hidden');
@@ -163,6 +181,7 @@ var modalActionMeeting = {
         $("#modalActionMeeting-placesearch").val("");
         $("#modalActionMeeting-datestring").val("");
         $("#modalActionMeeting-comments").val("");
+        $('#modalActionMeeting-comments').val("");
     },
 
     placeSearch : function (e) {
@@ -359,11 +378,27 @@ var modalActionMeeting = {
     },
 
     onAccept : function (e) {
+        var thisEvent = modalActionMeeting._activeObject;
 
+        var commentStr = $('#modalActionMeeting-comments').val();
+
+        smartObject.accept(thisEvent.uuid, thisEvent.senderUUID, commentStr);
+
+        modalActionMeeting.setAcceptStatus();
+
+        modalActionMeeting.onDone();
     },
 
     onDecline : function (e) {
+        var thisEvent = modalActionMeeting._activeObject;
 
+        var commentStr = $('#modalActionMeeting-comments').val();
+
+        smartObject.accept(thisEvent.uuid, thisEvent.senderUUID, commentStr);
+
+        modalActionMeeting.setAcceptStatus();
+
+        modalActionMeeting.onDone();
     },
 
     doEventChat : function (e) {
