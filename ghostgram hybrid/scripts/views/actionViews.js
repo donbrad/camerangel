@@ -502,7 +502,6 @@ var modalActionMeeting = {
     onDone: function (e) {
         //_preventDefault(e);
 
-
         $("#modalview-actionMeeting").data("kendoMobileModalView").close();
     }
 
