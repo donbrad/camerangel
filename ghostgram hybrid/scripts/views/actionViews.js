@@ -320,6 +320,8 @@ var modalActionMeeting = {
         modalActionMeeting._date = new Date();
 
 
+
+
         if (actionObj === undefined || actionObj === null) {
             modalActionMeeting.initActiveObject();
         } else {
@@ -328,6 +330,11 @@ var modalActionMeeting = {
 
         $("#modalActionMeeting-placesearchdiv").addClass('hidden');
         var thisObject = modalActionMeeting._activeObject;
+        if (modalActionMeeting._date >= Date.parse(thisObject.date)) {
+            $("#modalActionMeeting-eventExpired").removeClass('hidden');
+        } else {
+            $("#modalActionMeeting-eventExpired").addClass('hidden');
+        }
         if (thisObject.senderUUID === undefined || thisObject.senderUUID === null) {
             modalActionMeeting.setSenderMode();
         } else if (thisObject.senderUUID === userModel.currentUser.userUUID) {
