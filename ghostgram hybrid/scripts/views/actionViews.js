@@ -180,6 +180,14 @@ var modalActionMeeting = {
         $('#modalActionMeeting-eventchat').addClass('hidden');
         if (thisEvent.isExpired === false)
             $('#actionMeeting-accept').removeClass('hidden');
+        if (thisEvent.isAccepted) {
+            $('#actionMeeting-declineBtn').removeClass('hidden');
+            $('#actionMeeting-acceptBtn').addClass('hidden');
+        }
+        if (thisEvent.isDeclined) {
+            $('#actionMeeting-declineBtn').addClass('hidden');
+            $('#actionMeeting-acceptBtn').removeClass('hidden');
+        }
         $('#modalActionMeeting-commentsLi').removeClass('hidden');
         $('#modalActionMeeting-title').prop('readonly', true);
         $('#modalActionMeeting-desc').prop('readonly', true);

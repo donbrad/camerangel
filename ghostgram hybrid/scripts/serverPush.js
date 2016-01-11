@@ -91,7 +91,7 @@ var serverPush = {
                     }
 
                 }
-                
+
                 if (e.isEvent !== undefined && e.isEvent) {
                     mobileNotify(e.alert);
                 }
