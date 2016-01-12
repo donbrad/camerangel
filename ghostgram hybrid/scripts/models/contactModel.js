@@ -222,8 +222,11 @@ var contactModel = {
                     var url = contactModel.createIdenticon(model.get('uuid'));
 
                     model.set('identicon', url);
-                    if ( model.attributes.photo !== null || model.attributes.photo !== '') {
+                    var photo = model.get('photo');
+
+                    if ( photo === undefined || photo === null || photo === '') {
                         model.set('photo', url);
+                        dirty = true;
                     }
 
                     //Push to the ownerUUID to legacy contacts...
@@ -236,8 +239,22 @@ var contactModel = {
                         model.set('phoneVerified', false);
                         dirty = true;
                     }
+
+                    if (model.get('contactPhoto') === undefined) {
+                        model.set('contactPhoto', null);
+                        dirty = true;
+                    }
                     if (model.get('isBlocked') === undefined) {
                         model.set('isBlocked', false);
+                        dirty = true;
+                    }
+                    if (model.get('isFavorite') === undefined) {
+                        model.set('isFavorite', false);
+                        dirty = true;
+                    }
+
+                    if (model.get('emailValidated') === undefined) {
+                        model.set('emailValidated', false);
                         dirty = true;
                     }
 
@@ -263,6 +280,9 @@ var contactModel = {
 
                     var phone = model.get('phone'), contactPhone = model.get('contactPhone');
 
+                    if (phone === undefined) {
+                        phone = null;
+                    }
                     if (phone === null && contactPhone !== null) {
                         model.set('phone', contactPhone);
                         dirty = true;
