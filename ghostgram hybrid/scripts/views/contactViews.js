@@ -849,6 +849,7 @@ var addContactView = {
                   var contactx = thiscontact.toJSON();
 
                   contactx.identicon = url;
+                  contactx.photo = url;
                   contactModel.contactsDS.add(contactx);
                   //contactModel.contactListDS.add(contactx);
 

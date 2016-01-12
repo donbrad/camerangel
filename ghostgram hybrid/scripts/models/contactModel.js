@@ -225,9 +225,10 @@ var contactModel = {
                     if (identicon === undefined || identicon === null || identicon === '') {
                         model.set('identicon', url);
                     }
-
-                    model.set('photo', url);
-
+                  //  var photo = model.get('photo');
+                   // if (photo === undefined || photo === null || photo === '') {
+                        model.set('photo', url);
+                   // }
                     //Push to the ownerUUID to legacy contacts...
                     if (model.get('ownerUUID') === undefined) {
                         model.set('ownerUUID', userModel.currentUser.userUUID);
