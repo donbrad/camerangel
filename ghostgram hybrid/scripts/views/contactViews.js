@@ -291,8 +291,8 @@ var contactsView = {
 
         var contactId = e.button[0].attributes["data-contact"].value;
         contactModel.deleteContact(contactId);
-
-        var string = "Deleted contact: " + contactModel.currentContact.name + " ("+ contactModel.currentContact.alias + ")" ;
+        var contact = contactModel.findContactByUUID(contactId)
+        var string = "Deleted contact: " + contact.name + " ("+ contact.alias + ")" ;
 
         mobileNotify(string);
         APP.kendo.navigate('#contacts');
