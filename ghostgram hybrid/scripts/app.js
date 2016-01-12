@@ -85,6 +85,20 @@
 
 		deviceModel.init();
 
+		// Add undo and redo to chat editor
+		$.Redactor.prototype.bufferbuttons = function()
+		{
+			return {
+				init: function()
+				{
+					var undo = this.button.addFirst('undo', 'Undo');
+					var redo = this.button.addAfter('undo', 'redo', 'Redo');
+
+					this.button.addCallback(undo, this.buffer.undo);
+					this.button.addCallback(redo, this.buffer.redo);
+				}
+			};
+		};
 
 		// hide the splash screen as soon as the app is ready. otherwise
 		navigator.splashscreen.hide();
