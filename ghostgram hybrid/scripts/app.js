@@ -139,7 +139,7 @@
 
 		// Provide basic functionality in the simulator and deployable simulator
 		if (window.navigator.simulator !== undefined) {
-			deviceModel.appVersion = "emulator: 0.2.2.8";
+			deviceModel.appVersion = "emulator: 0.2.3.1";
 			userModel.currentUser.set('appVersion', deviceModel.appVersion);
 		} else {
 			cordova.getAppVersion.getVersionCode(function(version) {
