@@ -2176,9 +2176,14 @@
 				<span class="contacts-alias-sm">#: data.alias #</span>
 			</h4>
 		</div>
+
 		<div class="left contact-status">
 			<p class="left contactStatusMessage-sm">
+				# if (data.category === 'unknown' ) { #
 				New Contact - Tap to Connect!
+				# }  else { #
+				Deleted Contact - Tap to Restore !
+				#} #
 			</p>
 		</div>
 		#}#

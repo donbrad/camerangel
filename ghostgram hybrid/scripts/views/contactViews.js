@@ -293,8 +293,6 @@ var contactsView = {
         contactModel.deleteContact(contactId);
 
         var string = "Deleted contact: " + contactModel.currentContact.name + " ("+ contactModel.currentContact.alias + ")" ;
-        
-        // TODO DON - Wire delete for 'New Chat Members'
 
         mobileNotify(string);
         APP.kendo.navigate('#contacts');
