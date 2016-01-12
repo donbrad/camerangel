@@ -22,7 +22,7 @@ var privateChannel = {
 
     },
 
-    open : function (channelUUID, userUUID, alias, name, contactUUID, contactKey, contactName) {
+    open : function ( userUUID, alias, name, contactUUID, contactKey, contactName) {
 
 
         privateChannel.userId = userUUID;
@@ -41,7 +41,7 @@ var privateChannel = {
         // A mapping of all currently connected users' usernames userUUID's to their public keys and aliases
         privateChannel.users = new Array();
         privateChannel.users[userUUID] = privateChannel.thisUser;
-        privateChannel.channelId = channelUUID;
+        privateChannel.channelId = contactUUID;
         privateChannel.last24Hours = ggTime.lastDay();
 
     },
@@ -218,8 +218,9 @@ var privateChannel = {
             };
 
             APP.pubnub.publish({
-                channel: privateChannel.contactId,
+                channel: recipient,
                 message: message,
+                error: userDataChannel.channelError,
                 callback: function (m) {
                     var status = m[0], statusText = m[1];
 
@@ -235,7 +236,7 @@ var privateChannel = {
                         recipient: message.recipient,
                         sender: userModel.currentUser.userUUID,
                         msgID: message.msgID,
-                        channelId: message.recipient, //
+                        channelId: message.recipient, 
                         content: content,
                         data: contentData,
                         time: currentTime,
