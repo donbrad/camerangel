@@ -267,7 +267,7 @@ var contactModel = {
                         model.set('phone', contactPhone);
                         dirty = true;
                     }
-                    
+
                     if (model.get('version') === undefined) {
                         model.set('version', 1);
                         dirty = true;

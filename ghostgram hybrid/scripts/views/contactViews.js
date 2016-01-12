@@ -200,7 +200,7 @@ var contactsView = {
         contactModel.updateContactListStatus();
 
         // Update the contact list every 5 minutes while the contact list view is active
-        contactsView.updateInterval = setInterval(function(){ contactModel.updateContactListStatus(true) }, 300000);
+        //contactsView.updateInterval = setInterval(function(){ contactModel.updateContactListStatus(true) }, 300000);
         // Reset the filters and ux state on show.
         
 
@@ -221,10 +221,10 @@ var contactsView = {
     	ux.showActionBtn(false, "#contacts");
     	$("#btnSearchDeviceContacts").addClass("hidden");
     	ux.hideSearch();
-        if (contactsView.updateInterval !== null) {
+        /*if (contactsView.updateInterval !== null) {
             clearInterval(contactsView.updateInterval);
             contactsView.updateInterval = null;
-        }
+        }*/
 
     },
 
