@@ -179,7 +179,7 @@
 
 
 			// hiding the accessory bar
-			//cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+			cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
 		}
 		
 		APP.emailAvailable = false;
