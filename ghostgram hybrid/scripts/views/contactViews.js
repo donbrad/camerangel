@@ -690,7 +690,7 @@ var addContactView = {
             mobileNotify('Phone: ' + phone + " matches existing contact: " + contact.name);
             return;
         }
-
+        mobileNotify("Please wait - validating mobile phone....");
         isValidMobileNumber(phone, function(result){
             if (result.status === 'ok') {
                 if (result.valid === false) {
@@ -700,9 +700,20 @@ var addContactView = {
                     return;
 
                 } else {
+
                     $("#vaildMobileNumberError").velocity("slideUp");
                     $("#addContacViewAddButton").text("Add Contact");
-                    addContactView.addContact();
+                    mobileNotify("Mobile phone is valid!");
+
+                    if (addContactView._emailValid){
+                        isValidEmail(email, function(emailResult) {
+                            if (emailResult.status === 'ok' )
+                                addContactView.addContact();
+                        });
+                    } else {
+                        addContactView.addContact();
+                    }
+
                 }
             }
         });
