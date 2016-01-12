@@ -522,7 +522,7 @@ function unformatPhoneNumber(phone) {
 	if (phone === null && phone === undefined)
 		return ('');
 
-	var newPhone = phone.replace(/[\-+xX\(\)]/g, '');
+	var newPhone = phone.replace(/[\-+xX\(\)\.\,]/g, '');
 	newPhone = newPhone.replace(/\s/g, '');
 	if (newPhone.length === 10) {
 		newPhone = '1' + newPhone;
