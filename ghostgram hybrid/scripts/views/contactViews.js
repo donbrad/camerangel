@@ -666,11 +666,20 @@ var addContactView = {
             addressValid = false;
 
 
+
         if (phone === null || phone.length < 10) {
             // Todo: need better UX for contacts without phone
             mobileNotify('Contacts must have a valid phone number!');
             return;
         }
+
+        var contact = contactModel.findContactByPhone(phone);
+
+        if (contact !== undefined) {
+            mobileNotify('Phone: ' + phone + " matches existing contact: " + contact.name);
+            return;
+        }
+
         var guid = uuid.v4();
 
        if (email === undefined) {

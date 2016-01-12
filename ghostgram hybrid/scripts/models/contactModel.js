@@ -261,6 +261,13 @@ var contactModel = {
                         dirty = true;
                     }
 
+                    var phone = model.get('phone'), contactPhone = model.get('contactPhone');
+
+                    if (phone === null && contactPhone !== null) {
+                        model.set('phone', contactPhone);
+                        dirty = true;
+                    }
+                    
                     if (model.get('version') === undefined) {
                         model.set('version', 1);
                         dirty = true;
@@ -523,7 +530,8 @@ var contactModel = {
         if (queryCache === undefined) {
             queryCache = {};
         }
-        dataSource.filter( { field: "phone", operator: "eq", value: phone });
+        dataSource.filter( [{ field: "phone", operator: "eq", value: phone },
+            { field: "contactPhone", operator: "eq", value: phone }]);
         var view = dataSource.view();
         var contact = view[0];
         dataSource.filter(queryCache);
@@ -875,6 +883,7 @@ var contactModel = {
             }
         });
     },
+
     importDeviceContacts: function() {
         var options = new ContactFindOptions();
         options.filter = '';
