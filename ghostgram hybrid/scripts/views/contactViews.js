@@ -568,7 +568,7 @@ var addContactView = {
                         nameArray[nameArray.length-1] = lastInitial;
                         var newAlias = '';
                         for (var i=0; i<nameArray.length; i++) {
-                            newAlias += nameArray[i];
+                            newAlias += nameArray[i] + ' ';
                         }
 
                         newAlias.trim();
