@@ -768,8 +768,7 @@ var addContactView = {
         contact.set("email", email);
         contact.set("address", address);
         contact.set("group", group);
-        contact.set("photo", url);
-        contact.set("identicon", url);
+        contact.set("photo", null);
         contact.set('category', "new");
         contact.set("priority", 0);
         contact.set("isFavorite", false);
@@ -849,6 +848,7 @@ var addContactView = {
 
                   var contactx = thiscontact.toJSON();
 
+                  contactx.identicon = url;
                   contactModel.contactsDS.add(contactx);
                   //contactModel.contactListDS.add(contactx);
 

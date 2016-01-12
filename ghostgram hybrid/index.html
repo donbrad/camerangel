@@ -2054,7 +2054,7 @@
 	var group = data.group;
 	var primaryName = ux.returnUXPrimaryName(name, alias);
 	var secondaryName = ux.returnAliasName(name, alias);
-	
+	var photo = data.identicon;
 	#
 	<div>
 		<div class="contact-options">
@@ -2098,11 +2098,11 @@
 			<div class="statusContactList">
 
 				#if (data.isAvailable !== undefined && data.isAvailable) { #
-				<img class="circle-img-md" src="#:data.photo#" />
+				<img class="circle-img-md" src="#:photo#" />
 				<img width="16" src="images/status-available.svg" class="statusContactList-icon" />
 				# }
 				else { #
-				<img class="circle-img-md" src="#:data.photo#" />
+				<img class="circle-img-md" src="#:photo#" />
 				<img width="16" src="images/status-away.svg" class="statusContactList-icon" />
 				#}#
 				# if (data.isBlocked) {#

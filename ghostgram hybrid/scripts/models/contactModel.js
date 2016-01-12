@@ -221,13 +221,12 @@ var contactModel = {
                    // Set the photo to identicon
                     var url = contactModel.createIdenticon(model.get('uuid'));
 
-                    model.set('identicon', url);
-                    var photo = model.get('photo');
-
-                    if ( photo === undefined || photo === null || photo === '') {
-                        model.set('photo', url);
-                        dirty = true;
+                    var identicon = model.get('identicon');
+                    if (identicon === undefined || identicon === null || identicon === '') {
+                        model.set('identicon', url);
                     }
+
+                    model.set('photo', url);
 
                     //Push to the ownerUUID to legacy contacts...
                     if (model.get('ownerUUID') === undefined) {
