@@ -45,7 +45,13 @@ var contactsView = {
                     return;
                 }
 
+                // Todo: don remove current contact logic...
                 contactModel.setCurrentContact(contact);
+                if (contact.contactUUID !== undefined && contact.contactUUID !== null){
+                    $("#contactActionBtns > li:first-child").show();
+                } else {
+                    $("#contactActionBtns > li:first-child").hide();
+                }
 
                 if (contact.category === 'phone') {
                     if (contactModel.unifiedDeviceContact) {
@@ -57,45 +63,28 @@ var contactsView = {
                     }
 
                 } else if (contact.category === 'unknown') {
-                    // New Chat Member
-                    mobileNotify("Looking up " + contact.name);
-                    contactModel.updateContactDetails(contact.uuid, function (thisContact) {
-                        if (thisContact.contactUUID !== undefined && thisContact.contactUUID !== null) {
+                    // Chat contacts - click to connect
+                    mobileNotify("Requesting contact info from  " + contact.name +  "...");
+                    // Todo:  Wire up contact connect logic
 
-                            mobileNotify(thisContact.name + " is now a member!");
-                            var contactObj = contactModel.findContactListUUID(thisContact.uuid);
-
-                            contactObj.set('category', thisContact.category);
-                            contactObj.set('publicKey', thisContact.publicKey);
-                            contactObj.set('contactPhone', thisContact.contactPhone);
-                            contactObj.set('contactEmail', thisContact.contactEmail);
-
-                            contactObj.set('phone', thisContact.contactPhone);
-                            contactObj.set('email', thisContact.contactEmail);
-
-                           /* $("#contactActionBtns > li:first-child").show();
-                            contactActionView.openModal(contact.uuid);*/
-
-                            updateParseObject('contacts', 'uuid', thisContact.uuid, 'category', thisContact.category);
-                            updateParseObject('contacts', 'uuid', thisContact.uuid, 'publicKey', thisContact.publicKey);
-                            updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactPhone', thisContact.contactPhone);
-                            updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactEmail', thisContact.contactEmail);
-
-                        }
-
-                    })
+                } else if (contact.category === 'zapped') {
+                    // Deleted Contacts -- click to undelete
+                    mobileNotify("Undeleting " + contact.name +  "...");
+                    contactModel.undeleteContact(contactId);
+                    contactActionView.openModal(contact.uuid);
 
                 } else {
-                    // If we know the contacts uuid enable the full feature set
-                   // $("#modalview-contactActions").data("kendoMobileModalView").open();
+                    // Memebers and Invited Chat Member
+                    mobileNotify("Looking up " + contact.name);
 
+                    // Get the latest information from this contact's user data
+                    contactModel.updateContactDetails(contact.uuid, function (thisContact) {
+                        if (contact.category === 'new' && thisContact.category === 'member') {
+                            mobileNotify(thisContact.name + " is now a member!");
+                        }
+
+                    });
                     contactActionView.openModal(contact.uuid);
-                    if (contact.contactUUID !== undefined && contact.contactUUID !== null){
-                        $("#contactActionBtns > li:first-child").show();
-                    } else {
-                        $("#contactActionBtns > li:first-child").hide();
-                    }
-
                 }
                 
             },

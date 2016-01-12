@@ -342,6 +342,9 @@ var contactModel = {
                     name: contact.name,
                     alias: contact.alias,
                     phone: contact.phone,
+                    address: contact.address,
+                    category: contact.category,
+                    identicon: contact.identicon,
                     email: contact.email,
                     photo: contact.photo,
                     isDeleted: contact.isDeleted,
@@ -447,6 +450,7 @@ var contactModel = {
 
         if (contact !== undefined) {
             contact.set('isDeleted', true);
+            contact.set('xcategory', contact.get('category'));
             contact.set('category', 'zapped');
 
             var contactList = contactModel.queryContactList({ field: "contactUUID", operator: "eq", value: contact.contactUUID });
@@ -458,9 +462,39 @@ var contactModel = {
 
             updateParseObject("contacts", 'uuid', contactId, "isDeleted", true);
             updateParseObject("contacts", 'uuid', contactId, "category", 'zapped');
+            updateParseObject("contacts", 'uuid', contactId, "xcategory", contact.get('xcategory'));
 
             // Delete any current private channel
             channelModel.deletePrivateChannel(contactId);
+
+        }
+    },
+
+    undeleteContact : function (contactId) {
+        var contact = contactModel.queryContact({ field: "uuid", operator: "eq", value: contactId });
+        if (contact !== undefined) {
+            var xcategory = contact.get('xcategory');
+
+            if (xcategory === undefined || xcategory === null) {
+                xcategory = 'member';
+                if (contact.contactUUID === undefined || contact.contactUUID === null) {
+                    xcategory = 'new';
+                }
+            }
+            contact.set('isDeleted', false);
+            contact.set('category', xcategory);
+            contact.set('xcategory', null);
+
+            var contactList = contactModel.queryContactList({ field: "contactUUID", operator: "eq", value: contact.contactUUID });
+            if (contactList !== undefined) {
+                contactList.set('isDeleted', false);
+                contactList.set('category', xcategory);
+            }
+            // dataSource.remove(contact);
+
+            updateParseObject("contacts", 'uuid', contactId, "isDeleted", false);
+            updateParseObject("contacts", 'uuid', contactId, "category", xcategory);
+            updateParseObject("contacts", 'uuid', contactId, "xcategory", null);
 
         }
     },
@@ -550,8 +584,7 @@ var contactModel = {
         if (queryCache === undefined) {
             queryCache = {};
         }
-        dataSource.filter( [{ field: "phone", operator: "eq", value: phone },
-            { field: "contactPhone", operator: "eq", value: phone }]);
+        dataSource.filter( [{ field: "phone", operator: "eq", value: phone }]);
         var view = dataSource.view();
         var contact = view[0];
         dataSource.filter(queryCache);
@@ -601,10 +634,76 @@ var contactModel = {
         }
     },
 
+    _syncContactDetails : function (contact, thisContact, thisContactList) {
+        var isDirty = false;
+
+        thisContact.set('contactUUID', contact.userUUID);
+        thisContact.set('contactPhone', contact.phone);
+        thisContactList.set('contactUUID', contact.userUUID);
+        thisContactList.set('contactPhone', contact.phone);
+        if (thisContact.phone !== contact.phone) {
+            isDirty = true;
+            thisContact.set('phoneUpdate', true);
+            thisContactList.set('phoneUpdate', true);
+        }
+        thisContact.set('phoneVerified', contact.phoneVerified);
+        thisContactList.set('phoneVerified', contact.phoneVerified);
+        if (contact.userUUID !== undefined && contact.userUUID !== null) {
+            if (thisContact.category !== 'member'){
+                isDirty = true;
+                thisContact.set('category', 'member');
+                thisContact.set('memberUpdate', true);
+                thisContactList.set('category', 'member');
+                thisContactList.set('memberUpdate', true);
+            }
+        }
+
+        thisContact.set('contactEmail', contact.email);
+        thisContactList.set('contactEmail', contact.email);
+        if(thisContact.email !== contact.email) {
+            isDirty = true;
+            thisContact.set('email', contact.email);
+            thisContactList.set('email', contact.email);
+            thisContact.set('emailUpdated', true);
+            thisContactList.set('emailUpdated', true);
+        }
+
+        thisContact.set('emailValidated', contact.emailVerified);
+        thisContact.set('contactPhoto', contact.photo);
+        thisContact.set('contactAddress', contact.address);
+        thisContactList.set('emailValidated', contact.emailVerified);
+        thisContactList.set('contactPhoto', contact.photo);
+        thisContactList.set('contactAddress', contact.address);
+        if(thisContact.address !== contact.address) {
+            thisContact.set('addressUpdate', true);
+            thisContactList.set('addressUpdate', true);
+        }
+
+        thisContact.set('publicKey', contact.publicKey);
+        thisContactList.set('publicKey', contact.publicKey);
+
+        if (isDirty) {
+            updateParseObject('contacts', 'uuid', thisContact.uuid, 'category', thisContact.category);
+            updateParseObject('contacts', 'uuid', thisContact.uuid, 'publicKey', thisContact.publicKey);
+            updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactPhone', thisContact.contactPhone);
+            updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactEmail', thisContact.contactEmail);
+            updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactPhoto', thisContact.contactPhoto);
+            updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactAddress', thisContact.contactAddress);
+            updateParseObject('contacts', 'uuid', thisContact.uuid, 'phone', thisContact.phone);
+            updateParseObject('contacts', 'uuid', thisContact.uuid, 'phoneVerified', thisContact.phoneVerified);
+            updateParseObject('contacts', 'uuid', thisContact.uuid, 'email', thisContact.email);
+            updateParseObject('contacts', 'uuid', thisContact.uuid, 'emailValidated', thisContact.emailValidated);
+            updateParseObject('contacts', 'uuid', thisContact.uuid, 'address', thisContact.address);
+
+        }
+
+    },
+
+
     // Get a full contact details update, including phone and email.
     updateContactDetails : function (contactId, callback) {
         // Get this contacts record...
-        var thisContact = contactModel.findContactByUUID(contactId);
+        var thisContact = contactModel.findContactByUUID(contactId), thisContactList = contactModel.findContactListUUID(contactId);
 
         // If there's no contactUUID, need to lookup user by phone.
         if (thisContact.contactUUID === undefined || thisContact.contactUUID === null) {
@@ -616,38 +715,12 @@ var contactModel = {
                 }
                 if (result.found) {
                     var contact = result.user;
-                    var current = thisContact;
-
-                    current.set('contactUUID', contact.userUUID);
-
-                    current.set('contactPhone', contact.phone);
-                    if (current.phone !== contact.phone) {
-                        current.set('phoneUpdate', true);
-                    }
-                    current.set('phoneVerified', contact.phoneVerified);
-                    if (contact.phoneVerified) {
-                        if (current.category !== 'member'){
-                            current.set('category', 'member');
-                            current.set('memberUpdate', true);
-                        }
-                    }
-                    current.set('contactEmail', contact.email);
-                    if(current.email !== contact.email) {
-                        current.set('emailUpdate', true);
-                    }
-
-                    current.set('emailValidated', contact.emailVerified);
-                    current.set('contactPhoto', contact.photo);
-                    current.set('contactAddress', contact.address);
-                    if(current.address !== contact.address) {
-                        current.set('addressUpdate', true);
-                    }
 
 
-                    current.set('publicKey', contact.publicKey);
+                    contactModel._syncContactDetails(contact, thisContact, thisContactList);
 
 
-                    callback(current);
+                    callback(thisContact);
 
                 } else {
                     // No user data -- just return the current contact model
@@ -665,37 +738,10 @@ var contactModel = {
                 }
                 if (result.found) {
                     var contact = result.user;
-                    var current = thisContact;
-                    current.set('contactUUID', contact.userUUID);
 
-                    current.set('contactPhone', contact.phone);
-                    if (current.phone !== contact.phone) {
-                        current.set('phoneUpdate', true);
-                    }
-                    current.set('phoneVerified', contact.phoneVerified);
-                    if (contact.phoneVerified) {
-                        if (current.category !== 'member'){
-                            current.set('category', 'member');
-                            current.set('memberUpdate', true);
-                        }
-                    }
+                    contactModel._syncContactDetails(contact, thisContact, thisContactList);
 
-                    current.set('contactEmail', contact.email);
-                    if(current.email !== contact.email) {
-                        current.set('emailUpdate', true);
-                    }
-                    current.set('emailValidated', contact.emailVerified);
-
-                    current.set('contactPhoto', contact.photo);
-
-                    current.set('contactAddress', contact.address);
-                    if(current.address !== contact.address) {
-                        current.set('addressUpdate', true);
-                    }
-
-                    current.set('publicKey', contact.publicKey);
-
-                    callback(current);
+                    callback(thisContact);
                 } else {
                     // No user data -- just return the current contact model
                     callback(thisContact);
