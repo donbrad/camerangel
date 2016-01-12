@@ -647,7 +647,7 @@ var addContactView = {
                     $("#vaildMobileNumberError").velocity("slideDown");
                     $("#addContacViewAddButton").text("Close");
 
-                    
+
                     //addContactView._closeModal = true;
                 } else {
                     $("#vaildMobileNumberError").velocity("slideUp");
