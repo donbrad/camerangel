@@ -541,6 +541,36 @@ var addContactView = {
         $("#addContactForm").kendoValidator({
         	errorTemplate: '<span class="error-msg">#=message#</span>'
         });
+
+        // Generate a contact alias on blur if the user hasn't already added one...
+        $('#addContactName').on('blur', function () {
+            var alias =  $('#addContactAlias').val();
+
+            if (alias.length === 0) {
+                var name = $('#addContactName').val();
+                if (name.length > 0) {
+                    var nameArray = name.split(' ');
+
+                    if (nameArray.length === 1) {
+                        $('#addContactAlias').val(nameArray[0]);
+                    } else {
+                        var lastInitial = nameArray[nameArray.length-1].charAt(0);
+                        nameArray[nameArray.length-1] = lastInitial;
+                        var newAlias = '';
+                        for (var i=0; i<nameArray.length; i++) {
+                            newAlias += nameArray[i];
+                        }
+
+                        newAlias.trim();
+                        $('#addContactAlias').val(newAlias);
+
+                    }
+
+                }
+
+            }
+
+        });
     },
 
     openModal : function (contact) {
@@ -626,11 +656,16 @@ var addContactView = {
 
     validateContact: function(e) {
         _preventDefault(e);
+        var name = $('#addContactName').val(),
+            alias = $('#addContactAlias').val(),
+            phone = $('#addContactPhone').val(),
+            email = $('#addContactEmail').val(),
+            photo = $('#addContactPhoto').prop('src'),
+            group =  $('#addContactGroup').val(),
+            address = $('#addContactAddress').val();
 
         var form = $("#addContactForm").kendoValidator().data("kendoValidator");
 
-        // Get the current phone number
-        var phone = $("#addContactPhone").val();
 
         // Confirm that there not an existing contact with this phone number.
         var contact = contactModel.findContactByPhone(phone);
@@ -645,8 +680,8 @@ var addContactView = {
                 if (result.valid === false) {
                     mobileNotify(phone + ' is not a valid mobile number');
                     $("#vaildMobileNumberError").velocity("slideDown");
-                    $("#addContacViewAddButton").text("Close");
-
+                    //$("#addContacViewAddButton").text("Close");
+                    return;
 
                     //addContactView._closeModal = true;
                 } else {
