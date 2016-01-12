@@ -763,6 +763,7 @@ var addContactView = {
         }
 
         contact.setACL(userModel.parseACL);
+        contact.set("version", contactModel._version );
         contact.set("name", name );
         contact.set("alias", alias);
         contact.set("email", email);
@@ -772,6 +773,8 @@ var addContactView = {
         contact.set("priority", 0);
         contact.set("isFavorite", false);
         contact.set("isBlocked", false);
+        contact.set("inviteSent", false);
+        contact.set("lastInvite", 0);
         contact.set("uuid", guid);
         contact.set('contactUUID', null);
         contact.set('contactPhone', null);
@@ -793,7 +796,7 @@ var addContactView = {
         contact.set("phone", phone);
 
         // Close modal
-        addContactView.closeModal();
+       // addContactView.closeModal();
 
        // mobileNotify("Invite sent");
 
@@ -851,7 +854,7 @@ var addContactView = {
                   }
 
                   contactModel.contactsDS.add(contactx);
-                  contactModel.contactListDS.add(contactx);
+                  //contactModel.contactListDS.add(contactx);
 
                   addContactView.closeModal();
                   APP.kendo.navigate('#contacts');
