@@ -515,6 +515,7 @@ var contactImportView = {
 
 var addContactView = {
 	_closeModal: false,
+    _emailValid: false,
 
     doInit: function (e) {
         _preventDefault(e);
@@ -540,6 +541,17 @@ var addContactView = {
 
         $("#addContactForm").kendoValidator({
         	errorTemplate: '<span class="error-msg">#=message#</span>'
+        });
+
+
+        $('#addContactEmail').on('blur', function () {
+            var email = $('#addContactEmail').val();
+            if (!addContactView.validateContact(email)){
+                addContactView._emailValid = false;
+                mobileNotify(email + " + is not a valid email address");
+            } else {
+                addContactView._emailValid = true;
+            }
         });
 
         // Generate a contact alias on blur if the user hasn't already added one...
@@ -652,6 +664,10 @@ var addContactView = {
         $("#modalview-AddContact").data("kendoMobileModalView").close();
     },
 
+    validateEmail : function (email) {
+        var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
+    },
 
 
     validateContact: function(e) {
@@ -683,7 +699,6 @@ var addContactView = {
                     //$("#addContacViewAddButton").text("Close");
                     return;
 
-                    //addContactView._closeModal = true;
                 } else {
                     $("#vaildMobileNumberError").velocity("slideUp");
                     $("#addContacViewAddButton").text("Add Contact");
