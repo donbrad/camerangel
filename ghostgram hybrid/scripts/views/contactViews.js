@@ -733,7 +733,7 @@ var addContactView = {
             alias = $('#addContactAlias').val(),
             phone = $('#addContactPhone').val(),
             email = $('#addContactEmail').val(),
-            photo = $('#addContactPhoto').prop('src'),
+            //photo = $('#addContactPhoto').prop('src'),
             group =  $('#addContactGroup').val(),
             address = $('#addContactAddress').val(),
             emailValid = false,
@@ -759,7 +759,7 @@ var addContactView = {
             address = null;
             addressValid = false;
         }
-
+        var url = contactModel.createIdenticon(guid);
         contact.setACL(userModel.parseACL);
         contact.set("version", contactModel._version );
         contact.set("name", name );
@@ -767,6 +767,8 @@ var addContactView = {
         contact.set("email", email);
         contact.set("address", address);
         contact.set("group", group);
+        contact.set("photo", url);
+        contact.set("identicon", url);
         contact.set('category', "new");
         contact.set("priority", 0);
         contact.set("isFavorite", false);
@@ -843,13 +845,8 @@ var addContactView = {
                   // Execute any logic that should take place after the object is saved.
                   mobileNotify('Added contact : ' + thiscontact.get('name'));
                   //var photo = contact.get('photo');
-                  var url = contactModel.createIdenticon(guid);
-                  thiscontact.set('identicon',url);
 
                   var contactx = thiscontact.toJSON();
-                  if ( contactx.photo !== null || contactx.photo !== '') {
-                    thiscontact.set('photo',url);
-                  }
 
                   contactModel.contactsDS.add(contactx);
                   //contactModel.contactListDS.add(contactx);
