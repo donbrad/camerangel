@@ -236,7 +236,7 @@ var privateChannel = {
                         recipient: message.recipient,
                         sender: userModel.currentUser.userUUID,
                         msgID: message.msgID,
-                        channelId: message.recipient, 
+                        channelId: message.recipient,
                         content: content,
                         data: contentData,
                         time: currentTime,
