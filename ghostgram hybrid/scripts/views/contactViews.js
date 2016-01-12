@@ -760,6 +760,7 @@ var addContactView = {
             addressValid = false;
         }
         var url = contactModel.createIdenticon(guid);
+        $('#addContactPhoto').prop('src', url);
         contact.setACL(userModel.parseACL);
         contact.set("version", contactModel._version );
         contact.set("name", name );
