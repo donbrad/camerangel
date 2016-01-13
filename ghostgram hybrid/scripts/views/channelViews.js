@@ -1520,7 +1520,7 @@ var channelView = {
 
     deactivateEditor : function () {
 
-        $("#messageComposeToolbar").removeClass('hidden');
+        $("#messageComposeToolbar").addClass('hidden');
 
        /* //$(".k-editor-toolbar").hide();
         $("#chat-editorBtnImg").attr("src","images/icon-editor.svg");
@@ -1699,7 +1699,7 @@ var channelView = {
 */
          $('#messageTextArea').redactor('code.set', '');
          $('#messageTextArea').redactor('focus.start');
-         
+
         autosize.update($('#messageTextArea'));
 
         if (channelView.ghostgramActive) {
