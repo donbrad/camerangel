@@ -1704,7 +1704,7 @@ var channelView = {
 
         if (channelView.ghostgramActive) {
              channelView.ghostgramActive = false;
-             $(".k-editor-toolbar").hide();
+            channelView.deactivateEditor();
         }
 
     },
