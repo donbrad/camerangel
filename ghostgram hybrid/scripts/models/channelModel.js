@@ -519,6 +519,7 @@ var channelModel = {
         return(channel);
     },
 
+/*
     // update current private channels based on channelList passed
     updatePrivateChannels : function (channelKeys, channelList) {
         if (channelList === undefined || channelList.length === 0) {
@@ -545,6 +546,7 @@ var channelModel = {
         }
 
     },
+*/
 
 
     // Add a new private channel that this user created -- create a channel object
