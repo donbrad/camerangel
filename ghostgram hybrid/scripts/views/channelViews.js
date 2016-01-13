@@ -1256,7 +1256,7 @@ var channelView = {
 
         channelView.initDataSources();
         channelView.messageInit();
-        channelView._initMessageTextArea();
+ //       channelView._initMessageTextArea();
         //channelView.closeEditor();
         // If this isn't a privateChat the close the channel (unsubscribe)
         // All private chat messages go through userdatachannel which is always subscribed
@@ -1643,7 +1643,6 @@ var channelView = {
         if (validMessage === true ) {
             channelView._initMessageTextArea();
 
-
             if (channelView.isPrivateChat) {
                 privateChannel.sendMessage(channelView.privateContactId, text, channelView.activeMessage, 86400);
             } else {
@@ -1699,11 +1698,12 @@ var channelView = {
          editor.update();
 */
          $('#messageTextArea').redactor('code.set', '');
-
+         $('#messageTextArea').redactor('focus.start');
+         
         autosize.update($('#messageTextArea'));
 
         if (channelView.ghostgramActive) {
-             channelView.ghostgramActive = false;
+            channelView.ghostgramActive = false;
             channelView.deactivateEditor();
         }
 
