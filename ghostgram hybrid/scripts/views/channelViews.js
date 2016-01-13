@@ -1335,12 +1335,11 @@ var channelView = {
         var data = contactModel.inContactList(uuid);
 
         if (data === undefined) {
-
             contact.uuid = uuid;
             contact.alias = 'New!';
             contact.name = 'Chat Member';
             contact.photoUrl = 'images/ghost-blue.svg';
-            
+
             if (channelView.newMembers[uuid] === undefined) {
                 channelView.newMembers[uuid] = uuid;
                 mobileNotify("New Chat Member - Looking Up Info...");
