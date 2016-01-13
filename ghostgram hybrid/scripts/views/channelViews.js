@@ -990,12 +990,10 @@ var channelView = {
         $("#messageComposeToolbar").removeClass('hidden');
 
         $('#messageTextArea').redactor({
-            focus: true,
             minHeight: 36,
             maxHeight: 360,
             placeholder: 'Type message here...',
-            buttons: [ 'format','bold', 'italic', 'lists','horizontalrule'],
-            formatting: ['p', 'blockquote', 'h1', 'h2', 'h3','h4'],
+            buttons: [ 'bold', 'italic', 'lists','horizontalrule'],
             plugins: ['bufferbuttons'],
             toolbarExternal: '#messageComposeToolbar'
         });
