@@ -2144,9 +2144,13 @@ var channelView = {
     },
 
     messageMenuTag : function (e) {
+
         // Get the current insertion point
-        var editor = $("#messageTextArea").data("kendoEditor");
-        var range = editor.getRange();
+        //var editor = $("#messageTextArea").data("kendoEditor");
+        // var range = editor.getRange();
+        var selection = $('#messageTextArea').redactor('selection.save');
+        var range = $('#messageTextArea').redactor('selection.range', selection);
+        
         channelView._tagRange = range;
         channelView._tagStart = range.startOffset;
         channelView._tagEnd = range.endOffset;
