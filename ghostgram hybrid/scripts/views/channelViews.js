@@ -1055,10 +1055,10 @@ var channelView = {
     onShow : function (e) {
         _preventDefault(e);
 
-        if (window.navigator.simulator === undefined) {
+       /* if (window.navigator.simulator === undefined) {
             cordova.plugins.Keyboard.disableScroll(true); // false to enable again
         }
-
+*/
         $("#messages-listview").data("kendoMobileListView").scroller().reset();
         channelView.topOffset = $("#messages-listview").data("kendoMobileListView").scroller().scrollTop;
         channelView._active = true;
@@ -1263,9 +1263,9 @@ var channelView = {
         // If this isn't a privateChat the close the channel (unsubscribe)
         // All private chat messages go through userdatachannel which is always subscribed
 
-        if (window.navigator.simulator === undefined) {
+       /* if (window.navigator.simulator === undefined) {
             cordova.plugins.Keyboard.disableScroll(false); // false to enable again
-        }
+        }*/
         if (!channelView.isPrivateChat) {
             groupChannel.close();
         }
@@ -1783,7 +1783,7 @@ var channelView = {
         if (photoObj !== undefined) {
 
             var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="chatphoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
-            
+
             $('#messageTextArea').redactor('insert.html', imgUrl);
            /* editor.paste(imgUrl);
             editor.update();*/
