@@ -372,7 +372,7 @@ var channelModel = {
                             if ( channelObj=== undefined) {
 
                                 if (channel.isPrivate) {
-                                    channelModel.addPrivateChannel(channel.channelId, channel.contactKey, channel.name);
+                                    channelModel.addPrivateChannel(channel.contactUUID, channel.contactKey, channel.name);
                                 } else {
 
                                     channelModel.addChannel(channel.name, channel.description);
@@ -515,16 +515,6 @@ var channelModel = {
 
         var view = dataSource.view();
         var channel = view[0];
-       /* for (var i=0; i< view.length; i++) {
-            var chan = view[i];
-
-            if (chan.contactUUID === contactUUID) {
-                dataSource.filter(queryCache);
-                channel = chan;
-                return(channel);
-            }
-        }*/
-
         dataSource.filter(queryCache);
         return(channel);
     },
@@ -597,7 +587,7 @@ var channelModel = {
         channel.save(null, {
             success: function(channel) {
                 //ux.closeModalViewAddChannel();
-                mobileNotify('Added Private Chat : ' + channel.get('name'));
+                mobileNotify('New Private Chat : ' + channel.get('name'));
                 notificationModel.addNewPrivateChatNotification(channel.get('channelId'), channel.get('name'));
             },
             error: function(channel, error) {

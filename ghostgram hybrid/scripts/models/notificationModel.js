@@ -122,7 +122,7 @@ var notificationModel = {
     },
 
     addNewPrivateChatNotification : function (channelId, channelName) {
-        this.newNotification(this._newPrivate, channelId, channelName, null, 'Private Chat Request', 'Goto Chat', null,
+        this.newNotification(this._newPrivate, channelId, channelName, null, 'New Private Chat', 'Goto Chat', null,
             '#channel?channelId='+channelId, true);
     },
 
