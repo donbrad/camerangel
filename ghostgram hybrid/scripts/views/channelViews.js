@@ -1759,12 +1759,13 @@ var channelView = {
       //  var editor = $("#messageTextArea").data("kendoEditor");
         var date = smartObject.date.toLocaleString();
         var dateStr = moment(date).format('llll');
-        var objectUrl = '<a data-role="button" class="btnSmart" data-objectid="'+ objectId + '" id="chatobject_' + objectId + '" data-click="channelView.onObjectClick" /><img src="images/smart-event-light.svg" class="icon-smart"/> '  + ' ' + smartObject.title + '</a>';
+        var objectUrl = '<a data-role="button" class="btnSmart" data-objectid="'+ objectId + '" id="chatobject_' + objectId + '" data-click="channelView.onObjectClick" /><img src="images/smart-event-light.svg" class="icon-smart"/> '  + ' ' + smartObject.title + " " +
+            dateStr+  '</a>';
 
      /*   editor.paste(objectUrl);
         editor.update();*/
 
-        $('#messageTextArea').redactor('insert.html', objectUrl);
+        $('#messageTextArea').redactor('insert.raw', objectUrl);
 
         smartObject.channelId = channelView._channelId;
 
@@ -1784,7 +1785,7 @@ var channelView = {
 
             var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="chatphoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
 
-            $('#messageTextArea').redactor('insert.html', imgUrl);
+            $('#messageTextArea').redactor('insert.raw', imgUrl);
            /* editor.paste(imgUrl);
             editor.update();*/
         }
@@ -2146,7 +2147,7 @@ var channelView = {
     messageMenuTag : function (e) {
 
         // Get the current insertion point
-       
+
         var isSelected = $('#messageTextArea').redactor('selection.is');
 
         if (!isSelected) {
