@@ -1332,11 +1332,15 @@ var channelView = {
         var data = contactModel.inContactList(uuid);
 
         if (data === undefined) {
-            console.log("Chat View Unknown Contact : " + uuid);
-            contact.uuid = 0;
-            contact.alias = 'unknown';
-            contact.name = 'Unknown User';
+            mobileNotify("New Chat Member - Looking Up Info...");
+            contact.uuid = uuid;
+            contact.alias = 'New!';
+            contact.name = 'Chat Member';
             contact.photoUrl = 'images/ghost-blue.svg';
+            contactModel.createChatContact(uuid, function (contact) {
+                mobileNotify(contact.name + " Added -- Refreshing Chat...");
+                $("#messages-listview").data("kendoMobileListView").refresh();
+            })
         } else {
             contact.uuid = data.userUUID;
             contact.alias = data.alias;

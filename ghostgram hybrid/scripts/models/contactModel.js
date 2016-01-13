@@ -905,6 +905,7 @@ var contactModel = {
 
     },
 
+
     addChatContact : function (guid, name, alias, contactUUID) {
         var Contacts = Parse.Object.extend("contacts");
         var contact = new Contacts();
