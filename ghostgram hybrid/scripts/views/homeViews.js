@@ -272,7 +272,7 @@ var homeView = {
         if(userModel.currentUser.phoneVerified) {
             $("#startPhoneVerified").addClass("hidden");
         }
-        
+
         // Set user availibility
         ux.updateHeaderStatusImages();
 

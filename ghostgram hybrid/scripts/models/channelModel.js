@@ -111,6 +111,8 @@ var channelModel = {
                 channelModel.channelsDS.data(models);
                 deviceModel.setAppState('hasChannels', true);
                 deviceModel.isParseSyncComplete();
+
+                notificationModel.processUnreadChannels();
             },
             error: function(error) {
                 handleParseError(error);
