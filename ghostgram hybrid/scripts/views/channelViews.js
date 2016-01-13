@@ -831,6 +831,8 @@ var channelView = {
 
     memberList: [],
 
+    newMembers : [],
+
     photoOffersDS: new kendo.data.DataSource({  // this is the list view data source for chat messages
 
     }),
@@ -1030,6 +1032,7 @@ var channelView = {
     initDataSources : function () {
         channelView.messagesDS.data([]);
         channelView.members = [];
+        channelView.newMembers = [];
         channelView.memberList = [];
         channelView.membersDS.data([]);
     },
@@ -1332,15 +1335,21 @@ var channelView = {
         var data = contactModel.inContactList(uuid);
 
         if (data === undefined) {
-            mobileNotify("New Chat Member - Looking Up Info...");
+
             contact.uuid = uuid;
             contact.alias = 'New!';
             contact.name = 'Chat Member';
             contact.photoUrl = 'images/ghost-blue.svg';
-            contactModel.createChatContact(uuid, function (contact) {
-                mobileNotify(contact.name + " Added -- Refreshing Chat...");
-                $("#messages-listview").data("kendoMobileListView").refresh();
-            })
+            
+            if (channelView.newMembers[uuid] === undefined) {
+                channelView.newMembers[uuid] = uuid;
+                mobileNotify("New Chat Member - Looking Up Info...");
+                contactModel.createChatContact(uuid, function (contact) {
+                    mobileNotify(contact.name + " Added -- Refreshing Chat...");
+                    $("#messages-listview").data("kendoMobileListView").refresh();
+                });
+            }
+
         } else {
             contact.uuid = data.userUUID;
             contact.alias = data.alias;

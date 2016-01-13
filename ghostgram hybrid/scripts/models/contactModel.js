@@ -356,6 +356,25 @@ var contactModel = {
 
     },
 
+    addContactToContactList : function (contact) {
+        var newContact = {
+            uuid: contact.uuid,
+            contactId: contact.contactUUID,
+            name: contact.name,
+            alias: contact.alias,
+            phone: contact.phone,
+            address: contact.address,
+            category: contact.category,
+            identicon: contact.identicon,
+            email: contact.email,
+            photo: contact.photo,
+            isDeleted: contact.isDeleted,
+            isBlocked: contact.isBlocked
+        };
+
+        contactModel.contactList[contact.contactUUID] = newContact;
+    },
+
     inContactList : function (contactUUID) {
         return(contactModel.contactList[contactUUID]);
     },
@@ -939,7 +958,9 @@ var contactModel = {
                 contact.set('emailVerified', contact.emailVerified);
 
                 var contactObj = contact.toJSON();
+                contactModel.addContactToContactList(contactObj);
                 contactModel.contactsDS.add(contact.attributes);
+
                 contactModel.contactListDS.add(contact.attributes);
                 //addContactView.closeModal();
             },
