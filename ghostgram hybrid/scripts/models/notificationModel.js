@@ -195,8 +195,9 @@ var notificationModel = {
     updateUnreadNotification : function (channelId, channelName, unreadCount) {
         var notObj = notificationModel.findNotificationByPrivateId(channelId);
 
-        if (notObj === undefined && unreadCount > 0) {
-            notificationModel.addUnreadNotification(channelId, channelName, unreadCount);
+        if (notObj === undefined ) {
+            if (unreadCount > 0)
+                notificationModel.addUnreadNotification(channelId, channelName, unreadCount);
         } else {
             if (unreadCount === undefined || unreadCount === 0) {
                 notificationModel.notificationDS.remove(notObj);
@@ -216,7 +217,6 @@ var notificationModel = {
             var channel = channels[i];
             if (channel.unreadCount === undefined)
                 channel.unreadCount = 0;
-
 
             notificationModel.updateUnreadNotification(channel.channelId, channel.name, Number(channel.unreadCount));
 
