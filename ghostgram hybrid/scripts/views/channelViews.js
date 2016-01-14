@@ -993,7 +993,7 @@ var channelView = {
         //$("#messageComposeToolbar").removeClass('hidden');
         $('#messageTextArea').on('touchstart', function () {
             $(this).focus();
-            $('#messageTextArea').redactor('focus.end');
+            var focus =  $('#messageTextArea').redactor('focus.is');
         });
 
         $('#messageTextArea').redactor({
@@ -1001,12 +1001,12 @@ var channelView = {
             maxHeight: 360,
             focus: true,
             placeholder: 'Message....',
-            callbacks: {
+           /* callbacks: {
                 focus: function(e)
                 {
                     $('#messageTextArea').focus();
                 }
-            },
+            },*/
             buttons: [ 'bold', 'italic', 'lists','horizontalrule'],
             plugins: ['bufferbuttons'],
             toolbarExternal: '#messageComposeToolbar'
