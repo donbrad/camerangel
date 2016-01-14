@@ -991,6 +991,10 @@ var channelView = {
     openEditor : function () {
         //autosize($('#messageTextArea'));
         //$("#messageComposeToolbar").removeClass('hidden');
+        $('#messageTextArea').on('touchstart', function () {
+            $(this).focus();
+            $('#messageTextArea').redactor('focus.end');
+        });
 
         $('#messageTextArea').redactor({
             minHeight: 36,
