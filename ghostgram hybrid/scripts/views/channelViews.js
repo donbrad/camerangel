@@ -989,12 +989,13 @@ var channelView = {
 */    },
 
     openEditor : function () {
-        autosize($('#messageTextArea'));
-        $("#messageComposeToolbar").removeClass('hidden');
+        //autosize($('#messageTextArea'));
+        //$("#messageComposeToolbar").removeClass('hidden');
 
         $('#messageTextArea').redactor({
             minHeight: 36,
             maxHeight: 360,
+            focus: true,
             placeholder: 'Message....',
             buttons: [ 'bold', 'italic', 'lists','horizontalrule'],
             plugins: ['bufferbuttons'],
@@ -1018,9 +1019,6 @@ var channelView = {
         });
         $(".k-editor-toolbar").hide();*/
     },
-
-
-
 
 
     closeEditor : function () {
@@ -1700,6 +1698,12 @@ var channelView = {
 
     },
 
+    _checkMessageTextFocus: function () {
+        var focused = $('#messageTextArea').redactor('focus.is');
+        $('#messageTextArea').focus();
+        $('#messageTextArea').redactor('focus.end');
+    },
+
      _initMessageTextArea : function () {
 
         /* var editor =  $('#messageTextArea').data("kendoEditor");
@@ -1709,13 +1713,11 @@ var channelView = {
          editor.value('');
          editor.update();
 */
-         var focused = $('#messageTextArea').redactor('focus.is');
-         $('#messageTextArea').focus();
-         $('#messageTextArea').click();
-         $('#messageTextArea').redactor('code.set', '');
-         $('#messageTextArea').redactor('focus.start');
 
-        autosize.update($('#messageTextArea'));
+         $('#messageTextArea').redactor('code.set', '');
+
+
+       // autosize.update($('#messageTextArea'));
 
         if (channelView.ghostgramActive) {
             channelView.ghostgramActive = false;
