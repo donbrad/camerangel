@@ -927,6 +927,7 @@ var channelView = {
 
         channelView.openEditor(); // Create the kendo editor instance
 
+
        /* $.browser = {webkit: true};
 
         $('#messageTextArea').textntags({
@@ -994,7 +995,7 @@ var channelView = {
         $('#messageTextArea').redactor({
             minHeight: 36,
             maxHeight: 360,
-            placeholder: 'Type message here...',
+            placeholder: 'Message....',
             buttons: [ 'bold', 'italic', 'lists','horizontalrule'],
             plugins: ['bufferbuttons'],
             toolbarExternal: '#messageComposeToolbar'
@@ -1621,7 +1622,6 @@ var channelView = {
 
     messageSend : function (e) {
         _preventDefault(e);
-
         var validMessage = false; // If message is valid, send is enabled
         channelView.activeMessage = {canCopy: !channelView.messageLock, photos: [], objects: []};
 
