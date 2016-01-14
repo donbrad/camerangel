@@ -1,60 +1,19 @@
 // Editor styles //
-
-body {
-	font-size: 1em;
-	padding-top: 0.5em;
-	
+.redactor-editor {
+	padding: 0.25em 0.5em !important;
+	border: none !important;
 }
 
-table.k-editor .k-content {
-  resize: vertical;
+.redactor-editor p {
+	margin-bottom: 0.5em;
 }
 
-.k-editor .k-editor-toolbar-wrap {
-	display: none;
+.redactor-toolbar {
+	box-shadow: none;
 }
 
-table.k-editor {
-	border-color: none !important;
-	background: #fff;
-}
-
-.photo-chat {
-	height: 6em !important;
-	max-width: 90%;
-	border-radius: 3px;
-}
-
-.img-sm {
-	width: 30%;
-	img {
-		width: 100%;
-		height: 100%;
-	}
-}
-
-.btnStyle {
-	text-decoration: none;
-	font-size: 1em;
-	font-weight: 400;
-	padding: 0.25em 0.5em;
-	margin: 0px;
-}
-
-.btnSmart {
-	&:extend(.btnStyle);
-	color: #fff !important;
-	border-radius: 12px !important;
-	background-color: #6CADF3 !important;
-}
-
-.icon-sm {
-	height: 1em;
-	max-width: 1em;
-	vertical-align: middle;
-}
-
-.icon-smart {
-	&:extend(.icon-sm);
-	margin-right: 0.3em;
+#messageComposeToolbar,
+#redactor-toolbar-0 {
+	border: none !important;
+	border-bottom: 1px solid @shade-200;
 }
