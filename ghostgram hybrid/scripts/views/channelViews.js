@@ -831,6 +831,8 @@ var channelView = {
 
     memberList: [],
 
+    newMembers : [],
+
     photoOffersDS: new kendo.data.DataSource({  // this is the list view data source for chat messages
 
     }),
@@ -1031,6 +1033,7 @@ var channelView = {
     initDataSources : function () {
         channelView.messagesDS.data([]);
         channelView.members = [];
+        channelView.newMembers = [];
         channelView.memberList = [];
         channelView.membersDS.data([]);
     },
@@ -1333,11 +1336,20 @@ var channelView = {
         var data = contactModel.inContactList(uuid);
 
         if (data === undefined) {
-            console.log("Chat View Unknown Contact : " + uuid);
-            contact.uuid = 0;
-            contact.alias = 'unknown';
-            contact.name = 'Unknown User';
+            contact.uuid = uuid;
+            contact.alias = 'New!';
+            contact.name = 'Chat Member';
             contact.photoUrl = 'images/ghost-blue.svg';
+
+            if (channelView.newMembers[uuid] === undefined) {
+                channelView.newMembers[uuid] = uuid;
+                mobileNotify("New Chat Member - Looking Up Info...");
+                contactModel.createChatContact(uuid, function (contact) {
+                    mobileNotify(contact.name + " Added -- Refreshing Chat...");
+                    $("#messages-listview").data("kendoMobileListView").refresh();
+                });
+            }
+
         } else {
             contact.uuid = data.userUUID;
             contact.alias = data.alias;
@@ -1697,6 +1709,8 @@ var channelView = {
          editor.value('');
          editor.update();
 */
+         $('#messageTextArea').focus();
+         $('#messageTextArea').click();
          $('#messageTextArea').redactor('code.set', '');
          $('#messageTextArea').redactor('focus.start');
 
@@ -1857,7 +1871,7 @@ var channelView = {
         var message = dataSource.getByUid(messageUID);
 
         // User has clicked in message area, so hide the keyboard
-         ux.hideKeyboard();
+        // ux.hideKeyboard();
 
         // User actually clicked on the photo so show the open the photo viewer
         if ($target.hasClass('photo-chat')) {
