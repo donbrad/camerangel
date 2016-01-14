@@ -64,8 +64,9 @@ var contactsView = {
 
                 } else if (contact.category === 'unknown') {
                     // Chat contacts - click to connect
-                    mobileNotify("Requesting contact info from  " + contact.name +  "...");
+                   // mobileNotify("Requesting contact info from  " + contact.name +  "...");
                     // Todo:  Wire up contact connect logic
+                    contactActionView.openModal(contact.uuid);
 
                 } else if (contact.category === 'zapped') {
                     // Deleted Contacts -- click to undelete
