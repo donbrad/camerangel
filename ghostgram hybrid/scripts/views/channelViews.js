@@ -1709,6 +1709,7 @@ var channelView = {
          editor.value('');
          editor.update();
 */
+         var focused = $('#messageTextArea').redactor('focus.is');
          $('#messageTextArea').focus();
          $('#messageTextArea').click();
          $('#messageTextArea').redactor('code.set', '');
