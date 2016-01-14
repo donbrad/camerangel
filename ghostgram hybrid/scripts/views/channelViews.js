@@ -997,6 +997,12 @@ var channelView = {
             maxHeight: 360,
             focus: true,
             placeholder: 'Message....',
+            callbacks: {
+                focus: function(e)
+                {
+                    $('#messageTextArea').focus();
+                }
+            },
             buttons: [ 'bold', 'italic', 'lists','horizontalrule'],
             plugins: ['bufferbuttons'],
             toolbarExternal: '#messageComposeToolbar'
