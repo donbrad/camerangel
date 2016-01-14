@@ -1168,7 +1168,7 @@
 				},
 				createContainerBox: function()
 				{
-					this.$box = $('<div class="redactor-box" role="application" />');
+					this.$box = $('<div class="redactor-box"  />');
 				},
 				setIn: function()
 				{
