@@ -87,6 +87,9 @@
   border: none !important;
   border-bottom: 1px solid #E0E0E0;
 }
+*[contenteditable] {
+  -webkit-user-select: auto !important;
+}
 /* elements */
 .userLgFontSize {
   font-size: 1.4em !important;
@@ -3077,19 +3080,19 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 }
 #messageSend {
   font-weight: 600;
-  margin-top: 0px;
-  padding: 0px;
+  margin-top: 0;
+  padding: 0;
   padding-top: 3px;
 }
 .messageCompose {
   padding: 0.5rem;
-  padding-bottom: 0px;
+  padding-bottom: 0;
   padding-top: 0;
 }
 .messageMediaBar ul {
-  padding: 0px;
+  padding: 0;
   margin-bottom: 1px;
-  margin-top: 0px;
+  margin-top: 0;
 }
 .messageMediaBar ul li {
   display: inline-block;
