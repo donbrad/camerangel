@@ -1720,14 +1720,14 @@ var channelView = {
      _initMessageTextArea : function () {
 
         /* var editor =  $('#messageTextArea').data("kendoEditor");
-         $('#messageTextArea').val('');
+
          $('#messageTextArea').attr("rows","1");
          $('#messageTextArea').attr("height","24px");
          editor.value('');
          editor.update();
 */
-
-         $('#messageTextArea').redactor('code.set', $('<p></p>'));
+         $('#messageTextArea').val('');
+         $('#messageTextArea').redactor('code.set', "");
 
 
        // autosize.update($('#messageTextArea'));
@@ -1793,7 +1793,7 @@ var channelView = {
      /*   editor.paste(objectUrl);
         editor.update();*/
 
-        $('#messageTextArea').redactor('insert.html', $(objectUrl));
+        $('#messageTextArea').redactor('insert.html', objectUrl);
 
         smartObject.channelId = channelView._channelId;
 
@@ -1813,7 +1813,7 @@ var channelView = {
 
             var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="chatphoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
 
-            $('#messageTextArea').redactor('insert.html', $(imgUrl));
+            $('#messageTextArea').redactor('insert.html', imgUrl);
            /* editor.paste(imgUrl);
             editor.update();*/
         }
