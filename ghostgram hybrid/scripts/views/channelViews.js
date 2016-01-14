@@ -1710,8 +1710,11 @@ var channelView = {
 
     _checkMessageTextFocus: function () {
         var focused = $('#messageTextArea').redactor('focus.is');
-        $('#messageTextArea').focus();
-        $('#messageTextArea').redactor('focus.end');
+        if (!focused) {
+           // $('#messageTextArea').focus();
+            $('#messageTextArea').redactor('focus.start');
+        }
+
     },
 
      _initMessageTextArea : function () {

@@ -1168,7 +1168,7 @@
 				},
 				createContainerBox: function()
 				{
-					this.$box = $('<div class="redactor-box"  />');
+					this.$box = $('<div class="redactor-box" role="application" />');
 				},
 				setIn: function()
 				{
@@ -1199,8 +1199,8 @@
 					this.$editor.addClass('redactor-editor');
 					this.$element.hide();
 
-					this.$box.prepend('<span class="redactor-voice-label" id="redactor-voice-' + this.uuid +'" aria-hidden="false">' + this.lang.get('accessibility-help-label') + '</span>');
-					this.$editor.attr({ 'aria-labelledby': 'redactor-voice-' + this.uuid, 'role': 'presentation' });
+					/*this.$box.prepend('<span class="redactor-voice-label" id="redactor-voice-' + this.uuid +'" aria-hidden="false">' + this.lang.get('accessibility-help-label') + '</span>');
+					this.$editor.attr({ 'aria-labelledby': 'redactor-voice-' + this.uuid, 'role': 'presentation' });*/
 				},
 				startTextarea: function()
 				{
