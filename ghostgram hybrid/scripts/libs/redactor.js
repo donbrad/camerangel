@@ -5175,8 +5175,9 @@
 
 					var sel = this.selection.get();
 
-					var range = this.selection.range(sel);
-					range.deleteContents();
+					var range = this.selection.range(sel)
+					if (range !== null)
+						range.deleteContents();
 
 		            var el = document.createElement("div");
 		            el.innerHTML = html;

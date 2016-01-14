@@ -1727,7 +1727,7 @@ var channelView = {
          editor.update();
 */
 
-         $('#messageTextArea').redactor('code.set', '');
+         $('#messageTextArea').redactor('code.set', '<p></p>');
 
 
        // autosize.update($('#messageTextArea'));
