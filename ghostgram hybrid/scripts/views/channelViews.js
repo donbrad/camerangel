@@ -1008,7 +1008,7 @@ var channelView = {
                 }
             },*/
             buttons: [ 'bold', 'italic', 'lists','horizontalrule'],
-            plugins: ['bufferbuttons'],
+            plugins: ['bufferbuttons', 'source'],
             toolbarExternal: '#messageComposeToolbar'
         });
 
