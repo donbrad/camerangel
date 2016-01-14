@@ -961,7 +961,7 @@ var contactModel = {
                 contactModel.addContactToContactList(contactObj);
                 contactModel.contactsDS.add(contact.attributes);
 
-                contactModel.contactListDS.add(contact.attributes);
+                //contactModel.contactListDS.add(contact.attributes);
                 //addContactView.closeModal();
             },
             error: function(contact, error) {

@@ -1870,7 +1870,7 @@ var channelView = {
         var message = dataSource.getByUid(messageUID);
 
         // User has clicked in message area, so hide the keyboard
-         ux.hideKeyboard();
+        // ux.hideKeyboard();
 
         // User actually clicked on the photo so show the open the photo viewer
         if ($target.hasClass('photo-chat')) {
