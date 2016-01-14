@@ -989,30 +989,30 @@ var channelView = {
 */    },
 
     openEditor : function () {
-        autosize($('#messageTextArea'));
+        //autosize($('#messageTextArea'));
         //$("#messageComposeToolbar").removeClass('hidden');
       /*  $('#messageTextArea').on('touchstart', function () {
             $(this).focus();
             var focus =  $('#messageTextArea').redactor('focus.is');
         });
 */
-    /*    $('#messageTextArea').redactor({
+        $('#messageTextArea').redactor({
             minHeight: 36,
             maxHeight: 360,
             focus: true,
             placeholder: 'Message....',
-           /!* callbacks: {
+           /* callbacks: {
                 focus: function(e)
                 {
                     $('#messageTextArea').focus();
                 }
-            },*!/
+            },*/
             buttons: [ 'bold', 'italic', 'lists','horizontalrule'],
             plugins: ['bufferbuttons'],
             toolbarExternal: '#messageComposeToolbar'
-        });*/
+        });
 
-         $("#messageTextArea").kendoEditor({
+        /* $("#messageTextArea").kendoEditor({
             stylesheets:["styles/editor.css"],
             resizable: {
                 content: true,
@@ -1027,7 +1027,7 @@ var channelView = {
                 "outdent"
             ]
         });
-        $(".k-editor-toolbar").hide();
+        $(".k-editor-toolbar").hide();*/
     },
 
 
@@ -1524,9 +1524,8 @@ var channelView = {
 
     activateEditor : function () {
 
-       // $("#messageComposeToolbar").removeClass('hidden');
+        $("#messageComposeToolbar").removeClass('hidden');
         $("#chat-editorBtnImg").attr("src","images/icon-editor-active.svg");
-        $(".k-editor-toolbar").show();
       /*  //$(".k-editor-toolbar").show();
         $("#chat-editorBtnImg").attr("src","images/icon-editor-active.svg");
         // Hide badge
@@ -1542,10 +1541,8 @@ var channelView = {
 
     deactivateEditor : function () {
 
-        //$("#messageComposeToolbar").addClass('hidden');
+        $("#messageComposeToolbar").addClass('hidden');
         $("#chat-editorBtnImg").attr("src","images/icon-editor.svg");
-        $(".k-editor-toolbar").hide();
-
        /* //$(".k-editor-toolbar").hide();
         $("#chat-editorBtnImg").attr("src","images/icon-editor.svg");
 
@@ -1638,8 +1635,8 @@ var channelView = {
 
 
         //var text = $('#messageTextArea').val();
-        var text = $('#messageTextArea').data("kendoEditor").value();
-        //var text = $('#messageTextArea').redactor('code.get');
+        //var text = $('#messageTextArea').data("kendoEditor").value();
+        var text = $('#messageTextArea').redactor('code.get');
 
         if (text.length > 0) {
             validMessage = true;
@@ -1679,8 +1676,8 @@ var channelView = {
     // Parse message text to make user didn't delete object anchor in text
     validateMessageObjects : function () {
         var validObject = [];
-        var messageText = $('#messageTextArea').data("kendoEditor").value();
-        //var messageText = $('#messageTextArea').redactor('code.get');
+        //var messageText = $('#messageTextArea').data("kendoEditor").value();
+        var messageText = $('#messageTextArea').redactor('code.get');
 
         for (var i=0; i< channelView.messageObjects.length; i++) {
             var objectId = channelView.messageObjects[i].uuid;
@@ -1697,8 +1694,8 @@ var channelView = {
     // Need to make sure all the photos in activeMessage.photos still exist in the editor
     validateMessagePhotos : function () {
         var validPhotos = [];
-        var messageText = $('#messageTextArea').data("kendoEditor").value();
-        //var messageText = $('#messageTextArea').redactor('code.get');
+       // var messageText = $('#messageTextArea').data("kendoEditor").value();
+        var messageText = $('#messageTextArea').redactor('code.get');
 
         for (var i=0; i< channelView.messagePhotos.length; i++) {
             var photoId = channelView.messagePhotos[i];
@@ -1715,25 +1712,25 @@ var channelView = {
         var focused = $('#messageTextArea').redactor('focus.is');
         if (!focused) {
            // $('#messageTextArea').focus();
-            //$('#messageTextArea').redactor('focus.start');
+            $('#messageTextArea').redactor('focus.start');
         }
 
     },
 
      _initMessageTextArea : function () {
 
-         var editor =  $('#messageTextArea').data("kendoEditor");
+        /* var editor =  $('#messageTextArea').data("kendoEditor");
          $('#messageTextArea').val('');
          $('#messageTextArea').attr("rows","1");
          $('#messageTextArea').attr("height","24px");
          editor.value('');
          editor.update();
+*/
+
+         $('#messageTextArea').redactor('code.set', '');
 
 
-         //$('#messageTextArea').redactor('code.set', '');
-
-
-       autosize.update($('#messageTextArea'));
+       // autosize.update($('#messageTextArea'));
 
         if (channelView.ghostgramActive) {
             channelView.ghostgramActive = false;
@@ -1787,16 +1784,16 @@ var channelView = {
 
     addSmartObjectToMessage: function (objectId, smartObject) {
 
-        var editor = $("#messageTextArea").data("kendoEditor");
+      //  var editor = $("#messageTextArea").data("kendoEditor");
         var date = smartObject.date.toLocaleString();
         var dateStr = moment(date).format('llll');
         var objectUrl = '<a data-role="button" class="btnSmart" data-objectid="'+ objectId + '" id="chatobject_' + objectId + '" data-click="channelView.onObjectClick" /><img src="images/smart-event-light.svg" class="icon-smart"/> '  + ' ' + smartObject.title + " " +
             dateStr+  '</a>';
 
-        editor.paste(objectUrl);
-        editor.update();
+     /*   editor.paste(objectUrl);
+        editor.update();*/
 
-       // $('#messageTextArea').redactor('insert.raw', objectUrl);
+        $('#messageTextArea').redactor('insert.raw', objectUrl);
 
         smartObject.channelId = channelView._channelId;
 
@@ -1808,7 +1805,7 @@ var channelView = {
 
     addImageToMessage: function (photoId, displayUrl) {
 
-        var editor = $("#messageTextArea").data("kendoEditor");
+      //  var editor = $("#messageTextArea").data("kendoEditor");
         var photoObj = photoModel.findPhotoById(photoId);
 
        // channelView.messageAddPhoto(photoModel.currentOffer);
@@ -1816,9 +1813,9 @@ var channelView = {
 
             var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="chatphoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
 
-           // $('#messageTextArea').redactor('insert.raw', imgUrl);
-            editor.paste(imgUrl);
-            editor.update();
+            $('#messageTextArea').redactor('insert.raw', imgUrl);
+           /* editor.paste(imgUrl);
+            editor.update();*/
         }
 
         channelView.messagePhotos.push(photoId);
@@ -2179,15 +2176,7 @@ var channelView = {
 
         // Get the current insertion point
 
-        var editor = $("#messageTextArea").data("kendoEditor");
-        var range = editor.getRange();
-
-        channelView._tagRange = range;
-        channelView._tagStart = range.startOffset;
-        channelView._tagEnd = range.endOffset;
-
-
-       /* var isSelected = $('#messageTextArea').redactor('selection.is');
+        var isSelected = $('#messageTextArea').redactor('selection.is');
 
         if (!isSelected) {
             // Nothing is selected
@@ -2201,7 +2190,7 @@ var channelView = {
             channelView._tagStart = range.startOffset;
             channelView._tagEnd = range.endOffset;
         }
-*/
+
 
     },
 
