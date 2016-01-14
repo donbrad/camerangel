@@ -64,8 +64,6 @@ var contactsView = {
 
                 } else if (contact.category === 'unknown') {
                     // Chat contacts - click to connect
-                   // mobileNotify("Requesting contact info from  " + contact.name +  "...");
-                    // Todo:  Wire up contact connect logic
                     contactActionView.openModal(contact.uuid);
 
                 } else if (contact.category === 'zapped') {
@@ -1239,7 +1237,7 @@ var contactActionView = {
         $(".statusContactCard-icon").attr("src", "images/status-away.svg");
 
         //Show the status update div
-        if (thisContact.contactUUID !== undefined && thisContact.contactUUID !== null) {
+        if (thisContact.contactUUID !== undefined && thisContact.contactUUID !== null && thisContact.category !== 'unknown') {
             contactModel.getContactStatusObject(thisContact.contactUUID, function (user) {
                 if (user !== null) {
                     var contactIsAvailable = user.get('isAvailable');
@@ -1269,58 +1267,62 @@ var contactActionView = {
             });
         }
 
-        contactModel.updateContactDetails(contactId, function(contact) {
-         
-            if (contact === undefined) {
-                // This is a new contact.
-                contact = contactModel.findContactByUUID(contactId);
-            }
-            
+        if (thisContact.category !== 'unknown') {
+            // Need to connect with this user before updating contact details
+            contactModel.updateContactDetails(contactId, function (contact) {
 
-            var contactName = contact.name;
-            var contactAlias = contact.alias;
-            var contactVerified = contact.phoneVerified;
-            var contactGroup = contact.group;
+                if (contact === undefined) {
+                    // This is a new contact.
+                    contact = contactModel.findContactByUUID(contactId);
+                }
 
-            var contactIsAvailable = contact.isAvailable;
 
-            // Add group name
-            if(contactGroup !== '' && contactGroup !== null){
-            	$("#currentGroup").removeClass("hidden");
-            	$("#currentContactGroup").text(contactGroup);
-            } else {
-            	$("#currentGroup").addClass("hidden");
-            	$("#currentContactGroup").text("");
-            }
+                var contactName = contact.name;
+                var contactAlias = contact.alias;
+                var contactVerified = contact.phoneVerified;
+                var contactGroup = contact.group;
 
-            contactActionView._activeContact.set('contactUUID', contact.contactUUID);
-            contactActionView._activeContact.set('publicKey', contact.publicKey);
-            contactActionView._activeContact.set('phone', contact.phone);
-            contactActionView._activeContact.set('name', contactName);
-            contactActionView._activeContact.set('alias', contactAlias);
-            if (contact.photo !== undefined && contact.photo !== null) {
-                contactActionView._activeContact.set('photo', contact.photo);
-            } else {
-                contactActionView._activeContact.set('photo', contact.identicon);
-            }
+                var contactIsAvailable = contact.isAvailable;
 
-            // Set name/alias layout
-            ux.formatNameAlias(contactName, contactAlias, "#modalview-contactActions");
+                // Add group name
+                if (contactGroup !== '' && contactGroup !== null) {
+                    $("#currentGroup").removeClass("hidden");
+                    $("#currentContactGroup").text(contactGroup);
+                } else {
+                    $("#currentGroup").addClass("hidden");
+                    $("#currentContactGroup").text("");
+                }
 
-            // set verified status
-            if(contactVerified){
-                $("#currentContactVerified").removeClass("hidden");
-            } else {
-                $("#currentContactVerified").addClass("hidden");
-            }
+                contactActionView._activeContact.set('contactUUID', contact.contactUUID);
+                contactActionView._activeContact.set('publicKey', contact.publicKey);
+                contactActionView._activeContact.set('phone', contact.phone);
+                contactActionView._activeContact.set('category', contact.category);
+                contactActionView._activeContact.set('name', contactName);
+                contactActionView._activeContact.set('alias', contactAlias);
+                if (contact.photo !== undefined && contact.photo !== null) {
+                    contactActionView._activeContact.set('photo', contact.photo);
+                } else {
+                    contactActionView._activeContact.set('photo', contact.identicon);
+                }
 
-            // set profile img
-            $("#contactProfileImg").attr("src", contact.photo);
+                // Set name/alias layout
+                ux.formatNameAlias(contactName, contactAlias, "#modalview-contactActions");
 
-            contactActionView.refreshUX(contact);
-            
+                // set verified status
+                if (contactVerified) {
+                    $("#currentContactVerified").removeClass("hidden");
+                } else {
+                    $("#currentContactVerified").addClass("hidden");
+                }
 
-        });
+                // set profile img
+                $("#contactProfileImg").attr("src", contact.photo);
+
+                contactActionView.refreshUX(contact);
+
+
+            });
+        }
 
 
         $("#modalview-contactActions").data("kendoMobileModalView").open();
