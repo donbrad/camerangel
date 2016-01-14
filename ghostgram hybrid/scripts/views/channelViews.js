@@ -1525,7 +1525,7 @@ var channelView = {
     activateEditor : function () {
 
         $("#messageComposeToolbar").removeClass('hidden');
-
+        $("#chat-editorBtnImg").attr("src","images/icon-editor-active.svg");
       /*  //$(".k-editor-toolbar").show();
         $("#chat-editorBtnImg").attr("src","images/icon-editor-active.svg");
         // Hide badge
@@ -1542,7 +1542,7 @@ var channelView = {
     deactivateEditor : function () {
 
         $("#messageComposeToolbar").addClass('hidden');
-
+        $("#chat-editorBtnImg").attr("src","images/icon-editor.svg");
        /* //$(".k-editor-toolbar").hide();
         $("#chat-editorBtnImg").attr("src","images/icon-editor.svg");
 
