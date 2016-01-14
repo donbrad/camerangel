@@ -309,6 +309,20 @@ var smartObject = {
             accepts.push(recipientId);
             updateParseObject('smartobject', 'uuid', eventId, 'acceptList', accepts);
             updateParseObject('smartobject', 'uuid', eventId, 'declineList', declines);
+
+            if (comment !== null) {
+                var contact = contactModel.findContact(recipientId);
+                if (contact !== undefined) {
+                    var commentObj = {
+                        contactId : recipientId,
+                        contactName : contact.name,
+                        comment: comment
+                    };
+
+                    event.commentList.push(commentObj);
+                    updateParseObject('smartobject', 'uuid', eventId, 'commentList', event.commentList);
+                }
+            }
         }
 
     },
@@ -323,7 +337,19 @@ var smartObject = {
             declines.push(recipientId);
             updateParseObject('smartobject', 'uuid', eventId, 'acceptList', accepts);
             updateParseObject('smartobject', 'uuid', eventId, 'declineList', declines);
+            if (comment !== null) {
+                var contact = contactModel.findContact(recipientId);
+                if (contact !== undefined) {
+                    var commentObj = {
+                        contactId : recipientId,
+                        contactName : contact.name,
+                        comment: comment
+                    };
 
+                    event.commentList.push(commentObj);
+                    updateParseObject('smartobject', 'uuid', eventId, 'commentList', event.commentList);
+                }
+            }
         }
     },
 

@@ -319,6 +319,112 @@ var appDataChannel = {
         });
     },
 
+    connectRequest: function (recipientId, comment) {
+        var channel = appDataChannel.getContactAppChannel(recipientId);
+        var msg = new Object();
+
+        var event = smartObject.findObject(eventId);
+        var notificationString =  userModel.currentUser.name + " wants to connect on Ghostgrams";
+        msg.msgID = uuid.v4();
+        msg.type = 'connectRequest';
+        msg.version = appDataChannel._version;
+        msg.date = new Date.today();
+        msg.comment = comment;
+        msg.userUUID = userModel.currentUser.userUUID;
+        msg.name = userModel.currentUser.name;
+        msg.alias = userModel.currentUser.alias;
+        msg.phone = userModel.currentUser.phone;
+        msg.email = userModel.currentUser.email;
+        msg.publicKey = userModel.currentUser.publicKey;
+        msg.pn_apns = {
+            aps: {
+                alert : notificationString,
+                badge: 1,
+                'content-available' : 1
+            },
+            isMessage: false,
+            isConnect: true,
+            target: '#contacts',
+            eventId :eventId
+        };
+        msg.pn_gcm = {
+            data : {
+                title: notificationString,
+                message: userModel.currentUser.name +  ' wants to share contact information with you.',
+                target: '#contacts',
+                image: "icon",
+                isMessage: false,
+                isConnect: true,
+                eventId :eventId
+            }
+        };
+
+        APP.pubnub.publish({
+            channel: channel,
+            message: msg,
+            callback: appDataChannel.publishCallback,
+            error: appDataChannel.errorCallback
+        });
+
+    },
+
+    connectReponse: function (recipientId, accept, comment) {
+        var channel = appDataChannel.getContactAppChannel(recipientId);
+        var msg = new Object();
+
+        var event = smartObject.findObject(eventId);
+        var notificationString =  userModel.currentUser.name + " wants to connect on Ghostgrams";
+        msg.msgID = uuid.v4();
+        msg.type = 'connectResponse';
+        msg.version = appDataChannel._version;
+        msg.date = new Date.today();
+        msg.accept = accept;
+        if (accept === true) {
+            msg.userUUID = userModel.currentUser.userUUID;
+            msg.name = userModel.currentUser.name;
+            msg.alias = userModel.currentUser.alias;
+            msg.phone = userModel.currentUser.phone;
+            msg.email = userModel.currentUser.email;
+            msg.publicKey = userModel.currentUser.publicKey;
+        }
+        msg.comment = comment;
+        msg.userUUID = userModel.currentUser.userUUID;
+        msg.name = userModel.currentUser.name;
+        msg.alias = userModel.currentUser.alias;
+        msg.phone = userModel.currentUser.phone;
+        msg.email = userModel.currentUser.email;
+        msg.pn_apns = {
+            aps: {
+                alert : notificationString,
+                badge: 1,
+                'content-available' : 1
+            },
+            isMessage: false,
+            isConnect: true,
+            target: '#contacts',
+            eventId :eventId
+        };
+        msg.pn_gcm = {
+            data : {
+                title: notificationString,
+                message: userModel.currentUser.name +  ' wants to share contact information with you.',
+                target: '#contacts',
+                image: "icon",
+                isMessage: false,
+                isConnect: true,
+                eventId :eventId
+            }
+        };
+
+        APP.pubnub.publish({
+            channel: channel,
+            message: msg,
+            callback: appDataChannel.publishCallback,
+            error: appDataChannel.errorCallback
+        });
+
+    },
+
     eventAccept: function (eventId, senderId, recipientId, comment) {
         var channel = appDataChannel.getContactAppChannel(senderId);
         var msg = new Object();
@@ -641,6 +747,23 @@ var appDataChannel = {
             error: appDataChannel.errorCallback
 
         });
+    },
+
+    processConnectRequest : function (senderId, senderName, comment) {
+        contactModel.connectReceived(senderId);
+        notificationModel.addConnectRequest(senderId, senderName);
+
+    },
+
+    processConnectResponse : function (senderId, senderName, accept, comment) {
+        if (accept) {
+            contactModel.updateContactDetails(senderId, function (contact) {
+                notificationModel.addConnectResponse(senderId, senderName, true);
+            });
+        } else {
+            notificationModel.addConnectResponse(senderId, senderName, false);
+        }
+
     },
 
     processEventAccept : function (eventId, recipientId, comment) {

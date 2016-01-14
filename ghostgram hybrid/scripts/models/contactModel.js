@@ -611,17 +611,45 @@ var contactModel = {
         return(contact);
     },
 
-    requestConnect : function (contactId) {
+    requestToConnect : function (contactId, comment) {
+        var contact = contactModel.findContactByUUID(contactId);
+        if (contact !== undefined) {
+            if (contact.category !== 'unknown') {
+                mobileNotify(contact.name + " is not a Chat Member!");
+            } else {
+                contact.set("connectSent",true);
+                updateParseObject("contacts", 'uuid', contactId, "connectSent", true);
+                appDataChannel.connectRequest(contact.contactUUID, comment);
+            }
+        }
 
     },
 
-    acceptConnect : function (contactId) {
-
+    connectReceived : function (contactUUID) {
+        var contact = contactModel.findContact(contactUUID);
+        if (contact !== undefined) {
+            if (contact.category !== 'unknown') {
+                mobileNotify(contact.name + " is not a Chat Member!");
+            } else {
+                contact.set("connectReceived",true);
+                updateParseObject("contacts", 'uuid', contactId, "connectReceived", true);
+            }
+        }
     },
 
-    declineConnect : function (contactId) {
+    respondToConnect : function (contactId, accept, comment) {
+        var contact = contactModel.findContactByUUID(contactId);
+        if (contact !== undefined) {
+            appDataChannel.connectReponse(contact.contactUUID, accept, comment);
+            if (accept) {
+                contactModel.updateContactDetails(contactId, function (contact) {
 
+                });
+            }
+        }
     },
+
+
 
     blockContact : function (contactId) {
         var contact = contactModel.queryContact({ field: "uuid", operator: "eq", value: contactId });
