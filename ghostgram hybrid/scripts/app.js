@@ -193,7 +193,7 @@
 
 
 			// hiding the accessory bar
-			cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
+			//cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
 		}
 		
 		APP.emailAvailable = false;
