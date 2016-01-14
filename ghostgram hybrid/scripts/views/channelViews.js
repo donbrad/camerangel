@@ -1720,13 +1720,13 @@ var channelView = {
      _initMessageTextArea : function () {
 
         /* var editor =  $('#messageTextArea').data("kendoEditor");
-         $('#messageTextArea').val('');
+
          $('#messageTextArea').attr("rows","1");
          $('#messageTextArea').attr("height","24px");
          editor.value('');
          editor.update();
 */
-
+         $('#messageTextArea').val('');
          $('#messageTextArea').redactor('code.set', "");
 
 
