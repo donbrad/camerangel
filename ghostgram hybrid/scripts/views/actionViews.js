@@ -368,7 +368,7 @@ var modalActionMeeting = {
 
             modalActionMeeting._isInited = true;
         }
-        modalActionMeeting._date = new Date().today().addMinutes(30);
+        modalActionMeeting._date = new Date().today().setTimeToNow();
 
         $("#modalActionMeeting-eventExpired").addClass('hidden');
 
