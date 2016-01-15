@@ -1787,13 +1787,13 @@ var channelView = {
       //  var editor = $("#messageTextArea").data("kendoEditor");
         var date = smartObject.date.toLocaleString();
         var dateStr = moment(date).format('llll');
-        var objectUrl = '<a data-role="button" class="btnSmart" data-objectid="'+ objectId + '" id="chatobject_' + objectId + '" data-click="channelView.onObjectClick" /><img src="images/smart-event-light.svg" class="icon-smart"/> '  + ' ' + smartObject.title + " " +
-            dateStr+  '</a>';
+        var objectUrl = '<a data-role="button" class="btnSmart" data-objectid="'+ objectId + '" id="chatobject_' + objectId + '" data-click="channelView.onObjectClick"> <img src="images/smart-event-light.svg" class="icon-smart" /> '  + ' ' + smartObject.title + " " +
+            dateStr +  '</a>';
 
      /*   editor.paste(objectUrl);
         editor.update();*/
 
-        $('#messageTextArea').redactor('insert.node', $('<span />').html(objectUrl));
+        $('#messageTextArea').redactor('insert.node', $('<div />').html(objectUrl));
 
         smartObject.channelId = channelView._channelId;
 
@@ -1813,7 +1813,7 @@ var channelView = {
 
             var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="chatphoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
 
-            $('#messageTextArea').redactor('insert.node', imgUrl);
+            $('#messageTextArea').redactor('insert.node', $('<div />').html(imgUrl));
            /* editor.paste(imgUrl);
             editor.update();*/
         }
