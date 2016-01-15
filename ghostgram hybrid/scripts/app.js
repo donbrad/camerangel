@@ -86,7 +86,7 @@
 		deviceModel.init();
 
 		// Add undo and redo to chat editor
-		$.Redactor.prototype.bufferbuttons = function()
+		/*$.Redactor.prototype.bufferbuttons = function()
 		{
 			return {
 				init: function()
@@ -98,7 +98,7 @@
 					this.button.addCallback(redo, this.buffer.redo);
 				}
 			};
-		};
+		};*/
 
 		$.Redactor.prototype.source = function()
 		{
