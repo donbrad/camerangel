@@ -25,7 +25,7 @@ var modalActionMeeting = {
     initActiveObject : function () {
         var thisObj = modalActionMeeting._activeObject;
 
-        var newDate = Date.today().add(1).hour().fromNow();
+        var newDate = Date.today();
         thisObj.set("uuid", uuid.v4());
         thisObj.set('senderUUID', null);
         thisObj.set('channelId', null);
@@ -218,6 +218,17 @@ var modalActionMeeting = {
 
     },
 
+    checkExpired : function (date) {
+        if (moment(modalActionMeeting._date).isAfter(date)) {
+            $("#modalActionMeeting-eventExpired").removeClass('hidden');
+            thisObject.set('isExpired', true);
+
+        } else {
+            $("#modalActionMeeting-eventExpired").addClass('hidden');
+            thisObject.set('isExpired', false);
+        }
+    },
+
     updateDateString : function () {
         var date = $('#modalActionMeeting-date').val();
         var time = $('#modalActionMeeting-time').val();
@@ -382,6 +393,8 @@ var modalActionMeeting = {
 
         var thisObject = modalActionMeeting._activeObject;
 
+
+
         if (thisObject.senderUUID === null || thisObject.senderUUID === userModel.currentUser.userUUID) {
             $("#modalActionMeeting-organizer").text("You");
         } else {
@@ -391,14 +404,7 @@ var modalActionMeeting = {
             }
         }
 
-        if (moment(modalActionMeeting._date).isAfter(thisObject.date)) {
-            $("#modalActionMeeting-eventExpired").removeClass('hidden');
-            thisObject.set('isExpired', true);
-
-        } else {
-            $("#modalActionMeeting-eventExpired").addClass('hidden');
-            thisObject.set('isExpired', false);
-        }
+       modalActionMeeting.checkExpired();
 
         if (thisObject.senderUUID === undefined || thisObject.senderUUID === null) {
             modalActionMeeting.setSenderMode();
@@ -406,6 +412,7 @@ var modalActionMeeting = {
             modalActionMeeting.setSenderMode();
         } else {
             modalActionMeeting.setRecipientMode();
+            modalActionMeeting.checkExpired(thisObject.date);
         }
 
         $("#modalview-actionMeeting").data("kendoMobileModalView").open();
