@@ -382,6 +382,15 @@ var modalActionMeeting = {
 
         var thisObject = modalActionMeeting._activeObject;
 
+        if (thisObject.senderUUID === null || thisObject.senderUUID === userModel.currentUser.userUUID) {
+            $("#modalActionMeeting-organizer").text("You");
+        } else {
+           var contact = contactModel.findContactByUUID(thisObject.senderUUID);
+            if (contact !== undefined) {
+                $("#modalActionMeeting-organizer").text(contact.name);
+            }
+        }
+
         if (moment(modalActionMeeting._date).isAfter(thisObject.date)) {
             $("#modalActionMeeting-eventExpired").removeClass('hidden');
             thisObject.set('isExpired', true);
