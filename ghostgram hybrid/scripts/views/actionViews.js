@@ -365,9 +365,8 @@ var modalActionMeeting = {
         }
         modalActionMeeting._date = new Date();
 
-
-
-
+        $("#modalActionMeeting-eventExpired").addClass('hidden');
+        
         if (actionObj === undefined || actionObj === null) {
             modalActionMeeting.initActiveObject();
         } else {
