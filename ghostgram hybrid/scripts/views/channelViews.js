@@ -1793,7 +1793,7 @@ var channelView = {
      /*   editor.paste(objectUrl);
         editor.update();*/
 
-        $('#messageTextArea').redactor('insert.node', $('</span>').html(objectUrl));
+        $('#messageTextArea').redactor('insert.node', $('<span />').html(objectUrl));
 
         smartObject.channelId = channelView._channelId;
 

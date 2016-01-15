@@ -485,8 +485,9 @@ var modalActionMeeting = {
         var thisObj = modalActionMeeting._activeObject;
 
         var finalDateStr = $("#modalActionMeeting-datestring").val();
+        var saveDate = new Date(finalDateStr);
 
-        modalActionMeeting._activeObject.set('date', new Date(finalDateStr));
+        modalActionMeeting._activeObject.set('date', saveDate);
         modalActionMeeting.createSmartEvent(thisObj);
 
 
