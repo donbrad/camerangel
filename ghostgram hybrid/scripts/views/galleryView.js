@@ -621,7 +621,11 @@ var modalChatPhotoView = {
     savePhoto : function (e) {
         _preventDefault(e);
 
-        photoModel.addChatPhoto(modalChatPhotoView._photo);
+        photoModel.addChatPhoto(modalChatPhotoView._photo, function () {
+            modalChatPhotoView._userHasCopy = true;
+            ("#modalChatPhotoView-recipientlist").addClass('hidden');
+            $('#modalChatPhotoView-userhascopy').removeClass('hidden');
+        });
 
 
     },
@@ -652,6 +656,7 @@ var modalChatPhotoView = {
 
          var photo = photoModel.findPhotoById(photo.photoId);
          modalChatPhotoView._userHasCopy = false;
+         $('#modalChatPhotoView-userhascopy').addClass('hidden');
          $('#modalChatPhotoView-userhascopy').addClass('hidden');
          if (photo !== undefined) {
              // This user already has a copy of this photo

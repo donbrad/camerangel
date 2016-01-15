@@ -399,7 +399,7 @@ var photoModel = {
 
     },
 
-    addChatPhoto : function (photoObj) {
+    addChatPhoto : function (photoObj, callback) {
 
         mobileNotify("Adding Chat photo to Memories...");
         var Photos = Parse.Object.extend("photos");
@@ -438,6 +438,8 @@ var photoModel = {
                 photoModel.photosDS.add(photoObj);
                 mobileNotify("Photo added to Memories!");
                 photoModel.addOfferImage(photoId, photoObj.imageUrl);
+                if (callback !== undefined)
+                    callback(photo);
             });
 
         });
