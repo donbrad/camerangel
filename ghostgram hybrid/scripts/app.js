@@ -384,7 +384,14 @@
 				navigator.notification.alert(message, null, 'Notification received while the app was in the foreground', 'Close');
 			};*/
 
+			window.addEventListener('native.keyboardshow', function (e) {
+				// Hide the page header
+			});
 
+			window.addEventListener('native.keyboardhide', function (e) {
+				// Show the page header
+
+			});
 			// hiding the accessory bar
 			cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 		}

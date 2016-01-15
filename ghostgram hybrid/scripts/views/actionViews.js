@@ -25,7 +25,7 @@ var modalActionMeeting = {
     initActiveObject : function () {
         var thisObj = modalActionMeeting._activeObject;
 
-        var newDate = Date.today();
+        var newDate = Date.today().add(1).hour().fromNow();
         thisObj.set("uuid", uuid.v4());
         thisObj.set('senderUUID', null);
         thisObj.set('channelId', null);
@@ -255,21 +255,16 @@ var modalActionMeeting = {
 
             $("#modalActionMeeting-datestring").on('blur', function () {
                 var dateStr =  $("#modalActionMeeting-datestring").val();
-                if (dateStr.length > 6) {
+                if (dateStr.length > 5) {
                     var timeString = dateStr.match(/\d{1,2}([:.]?\d{1,2})?([ ]?[a|p]m)/ig);
                     var date = Date.today();
                     var timeComp = '';
                     if (timeString !== null && timeString.length > 0) {
-
                         dateStr = dateStr.replace(timeString[0], '');
                         dateStr = dateStr.trim();
 
-
                         var time = Date.parse(timeString[0]);
                         timeComp = new Date(time).toString("h:mm tt");
-
-
-
                     }
                     if (dateStr.length > 4) {
                         date = Date.parse(dateStr);
@@ -287,19 +282,29 @@ var modalActionMeeting = {
                 }
             });
 
-            $('#modalActionMeeting-date').pickadate();
+            $('#modalActionMeeting-date').pickadate({
+                format: 'ddd,  mmm, d yyyy',
+                formatSubmit: 'mm d yyyy',
+                min: true,
+                onSet : function (context) {
+                    modalActionMeeting.updateDateString();
+                }
+            });
             //$('#modalActionMeeting-time').pickatime();
 
-            $("#modalActionMeeting-date").on('blur', function () {
-                modalActionMeeting.updateDateString();
-            });
+           /* $("#modalActionMeeting-date").on('blur', function () {
+
+            });*/
 
             $("#modalActionMeeting-time").on('blur', function () {
                 var timeIn =  $("#modalActionMeeting-time").val();
-                var time = Date.parse(timeIn);
-                var timeComp = new Date(time).toString("h:mm tt");
-                $("#modalActionMeeting-time").val(timeComp);
-                modalActionMeeting.updateDateString();
+                if (timeIn.length > 3) {
+
+                    var time = Date.parse(timeIn);
+                    var timeComp = new Date(time).toString("h:mm tt");
+                    $("#modalActionMeeting-time").val(timeComp);
+                    modalActionMeeting.updateDateString();
+                }
             });
 
             $("#modalActionMeeting-placesearch").on('input', function () {
@@ -363,7 +368,7 @@ var modalActionMeeting = {
 
             modalActionMeeting._isInited = true;
         }
-        modalActionMeeting._date = new Date();
+        modalActionMeeting._date = new Date().fromNow();
 
         $("#modalActionMeeting-eventExpired").addClass('hidden');
 
@@ -377,7 +382,7 @@ var modalActionMeeting = {
 
         var thisObject = modalActionMeeting._activeObject;
 
-        if (modalActionMeeting._date >= Date.parse(thisObject.date)) {
+        if (moment(modalActionMeeting._date).isAfter(thisObject.date)) {
             $("#modalActionMeeting-eventExpired").removeClass('hidden');
             thisObject.set('isExpired', true);
 
