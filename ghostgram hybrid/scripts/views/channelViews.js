@@ -1099,7 +1099,7 @@ var channelView = {
 
         channelView._channel = thisChannel;
 
-        channelModel.updateUnreadCount(thisChannel.channelId, 0, ggTime.currentPubNubTime());
+        channelModel.zeroUnreadCount(thisChannel.channelId);
 
         var contactUUID = null;
         var thisChannelHandler = null;
@@ -1109,8 +1109,6 @@ var channelView = {
 
         channelView.members = thisChannel.members;
 
-
-        channelModel.updateUnreadCount(channelUUID, 0, null);
 
         //default private mode off for now. Todo: don and jordan fix privacy mode
         channelView.privacyMode = false;
