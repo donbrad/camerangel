@@ -219,6 +219,8 @@ var modalActionMeeting = {
     },
 
     checkExpired : function (date) {
+        var thisObject = modalActionMeeting._activeObject;
+        
         if (moment(modalActionMeeting._date).isAfter(date)) {
             $("#modalActionMeeting-eventExpired").removeClass('hidden');
             thisObject.set('isExpired', true);
