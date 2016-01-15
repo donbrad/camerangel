@@ -2607,6 +2607,7 @@
 </div>
 
 <div data-role="modalview" id="modalChatPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal" data-model="modalChatPhotoView._activePhoto" data-init="modalChatPhotoView.onInit"  data-zoom="true">
+	<div style="text-align: center; margin: 16px;" id="modalChatPhotoView-userhascopy">In Memories</div>
 	<div class="photoViewBox">
 		<div style="width: 100%; height: 90%;">
 			<img class="centerPhoto" id="modalChatPhotoViewImage" src="" width="100%" data-bind="attr: {src : photoUrl}" />
@@ -2615,27 +2616,27 @@
 	<div class="footer" data-role="footer">
 
 		<div style="text-align: center;" id="modalChatPhotoRecipient"  class="hidden">
-				<div style="text-align: center;" id="modalChatPhotoOwnerName"> </div>
-				<ul class="modalChatPhotoList">
-					<li id="modalChatPhotoViewUnlocked">
+			<div style="text-align: center;" id="modalChatPhotoOwnerName"> </div>
+			<ul class="modalChatPhotoList" id="modalChatPhotoView-recipientlist">
+				<li id="modalChatPhotoViewUnlocked">
 
-						<a class="btnClear-light" data-role="button" data-click="modalChatPhotoView.savePhoto">
-							<img src="images/icon-save-memories.svg" class="modalChatPhotoListImg" />
-							<p class="modalChatPhotoListOpt">Save to Memories</p>
-						</a>
-					</li>
-					<li id="modalChatPhotoViewLocked">
-						<a class="btnClear-light" data-role="button" data-click="modalChatPhotoView.requestCopy">
-							<img src="images/icon-download-light.svg" class="modalChatPhotoListImg" />
-							<p class="modalChatPhotoListOpt">Request a copy</p>
-						</a>
-					</li>
-					<li id="modalChatPhotoViewRequestSent">
-						<img src="images/icon-sent.svg" class="modalChatPhotoListImg" />
-						<span>Photo Copy Requested</span>
-					</li>
-				</ul>
-			</div>
+					<a class="btnClear-light" data-role="button" data-click="modalChatPhotoView.savePhoto">
+						<img src="images/icon-save-memories.svg" class="modalChatPhotoListImg" />
+						<p class="modalChatPhotoListOpt">Save to Memories</p>
+					</a>
+				</li>
+				<li id="modalChatPhotoViewLocked">
+					<a class="btnClear-light" data-role="button" data-click="modalChatPhotoView.requestCopy">
+						<img src="images/icon-download-light.svg" class="modalChatPhotoListImg" />
+						<p class="modalChatPhotoListOpt">Request a copy</p>
+					</a>
+				</li>
+				<li id="modalChatPhotoViewRequestSent">
+					<img src="images/icon-sent.svg" class="modalChatPhotoListImg" />
+					<span>Photo Copy Requested</span>
+				</li>
+			</ul>
+		</div>
 		<div id="modalChatPhotoOwner" class="hidden">
 			<ul class="modalChatPhotoList" >
 				<li id="modalChatPhotoViewOwnerUnlocked">
