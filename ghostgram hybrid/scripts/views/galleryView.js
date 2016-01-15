@@ -616,11 +616,14 @@ var modalChatPhotoView = {
         _preventDefault(e);
 
         photoModel.addChatPhoto(modalChatPhotoView._photo);
+
+
     },
 
     requestCopy : function (e) {
         _preventDefault(e);
         // Todo: wire up photo request
+
     },
 
     unlockPhoto : function (e) {

@@ -497,7 +497,8 @@ var devicePhoto = {
     },
 
     convertImgToDataURL: function (url, callback, outputFormat) {
-    var img = new Image();
+        var img = new Image();
+        img.setAttribute('crossOrigin', 'anonymous');
 
         if (outputFormat === undefined) {
             outputFormat = "image/jpeg";
