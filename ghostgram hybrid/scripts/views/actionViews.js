@@ -142,6 +142,7 @@ var modalActionMeeting = {
     },
 
     showEditMode: function(){
+        $("#event-owner-edit").addClass("hidden");
         $("#event-editMode").removeClass("hidden");
         $("#event-viewMode").addClass("hidden");
 
@@ -149,10 +150,12 @@ var modalActionMeeting = {
         $('#actionMeeting-save').removeClass('hidden');
         $('#actionMeeting-reschedule').addClass('hidden');
 
+        // set event times
+        var thisEvent = modalActionMeeting._activeObject;
         $('#modalActionMeeting-placesearch').val('');
-        $('#modalActionMeeting-datestring').val(new Date().toString('dddd, MMMM dd, yyyy h:mm tt'));
-        $('#modalActionMeeting-date').val(new Date().toString('MMMM dd, yyyy'));
-        $('#modalActionMeeting-time').val(new Date().toString('h:mm tt'));
+        $('#modalActionMeeting-datestring').val(new Date(thisEvent.date).toString("MMMM dd, yyyy h:mm tt"));
+        $('#modalActionMeeting-date').val(new Date(thisEvent.date).toString("MMMM dd, yyyy"));
+        $('#modalActionMeeting-time').val(new Date(thisEvent.date).toString("h:mm tt"));
     },
 
     setAcceptStatus : function () {
