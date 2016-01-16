@@ -15,6 +15,7 @@ var modalActionMeeting = {
     _placeId :null,
     _isInited : false,
     _eventList :[],
+    response: false,
 
     onInit: function (e) {
         _preventDefault(e);
@@ -86,7 +87,7 @@ var modalActionMeeting = {
         thisObj.set('lat', newObj.lat);
         thisObj.set('lng', newObj.lng);
         if (newObj.date === undefined || newObj.date === null) {
-            newObj.date = new Date ();
+            newObj.date = new Date();
         }
         thisObj.set('date', newObj.date);
         thisObj.set('acceptList', newObj.acceptList);
@@ -116,45 +117,52 @@ var modalActionMeeting = {
             modalActionMeeting.setRecipientMode();
         }
 
-        $('#modalActionMeeting-placesearch').val(newObj.placeName);
-        $('#modalActionMeeting-datestring').val(new Date(newObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
-        $('#modalActionMeeting-date').val(new Date(newObj.date).toString('MMMM dd, yyyy'));
-        $('#modalActionMeeting-time').val(new Date(newObj.date).toString('h:mm tt'));
+
     },
 
 
     setSenderMode: function () {
         var thisEvent = modalActionMeeting._activeObject;
-        var wasSent = thisEvent.senderUUID !== null;
 
-        if (wasSent) {
-
-            $('#actionMeeting-save').addClass('hidden');
-            if (thisEvent.isExpired) {
-                $('#actionMeeting-cancel').addClass('hidden');
+        $(".event-owner, #event-viewMode").removeClass("hidden");
+        $(".event-recipient, #event-editMode").addClass("hidden");
+        $("#event-owner-edit").addClass("hidden");
+        if(thisEvent.wasSent){
+            // owner of a previously created event
+            if(thisEvent.isExpired){
                 $('#actionMeeting-reschedule').removeClass('hidden');
+                $('#actionMeeting-update').addClass('hidden');
+                $("#event-owner-cancel").addClass("hidden");
+
             } else {
-                $('#actionMeeting-cancel').removeClass('hidden');
                 $('#actionMeeting-reschedule').addClass('hidden');
+                $("#event-owner-cancel").removeClass("hidden");
+                // show edit button in header
+                $("#event-owner-edit").removeClass("hidden");
             }
         } else {
-            $('#actionMeeting-save').removeClass('hidden');
-            $('#actionMeeting-update').addClass('hidden');
-            $('#actionMeeting-reschedule').addClass('hidden');
+            // new event
+            modalActionMeeting.showEditMode();
         }
 
 
+    },
 
-        $('#modalActionMeeting-eventchat').removeClass('hidden');
-        $('#actionMeeting-accept').addClass('hidden');
-        $('#modalActionMeeting-commentsLi').addClass('hidden');
+    showEditMode: function(){
+        $("#event-owner-edit").addClass("hidden");
+        $("#event-editMode").removeClass("hidden");
+        $("#event-viewMode").addClass("hidden");
 
-        $('#modalActionMeeting-title').prop('readonly', false);
-        $('#modalActionMeeting-desc').prop('readonly', false);
-        $('#modalActionMeeting-datestring').prop('readonly', false);
-        $('#modalActionMeeting-date').prop('readonly', false);
-        $('#modalActionMeeting-time').prop('readonly', false);
-        $('#modalActionMeeting-placeSearch').prop('readonly', false);
+        // Set btm action btn
+        $('#actionMeeting-save').removeClass('hidden');
+        $('#actionMeeting-reschedule').addClass('hidden');
+
+        // set event times
+        var thisEvent = modalActionMeeting._activeObject;
+        $('#modalActionMeeting-placesearch').val('');
+        $('#modalActionMeeting-datestring').val(new Date(thisEvent.date).toString("MMMM dd, yyyy h:mm tt"));
+        $('#modalActionMeeting-date').val(new Date(thisEvent.date).toString("MMMM dd, yyyy"));
+        $('#modalActionMeeting-time').val(new Date(thisEvent.date).toString("h:mm tt"));
     },
 
     setAcceptStatus : function () {
@@ -173,28 +181,24 @@ var modalActionMeeting = {
     setRecipientMode : function () {
         var thisEvent = modalActionMeeting._activeObject;
 
-         modalActionMeeting.setAcceptStatus();
-
-
-        $('#actionMeeting-save').addClass('hidden');
-        $('#modalActionMeeting-eventchat').addClass('hidden');
-        if (thisEvent.isExpired === false)
-            $('#actionMeeting-accept').removeClass('hidden');
-        if (thisEvent.isAccepted) {
-            $('#actionMeeting-declineBtn').removeClass('hidden');
-            $('#actionMeeting-acceptBtn').addClass('hidden');
+        $(".event-owner").addClass("hidden");
+        $(".event-recipient, #event-viewMode").removeClass("hidden");
+        // if event is expired disable rsvp
+        if(thisEvent.isExpired){
+            $("#event-rsvp").data("kendoMobileButtonGroup").enable(false);
+        } else {
+            $("#event-rsvp").data("kendoMobileButtonGroup").enable(true);
+            // set user response
+            if(thisEvent.isAccepted){
+                $("#event-rsvp").data("kendoMobileButtonGroup").select(0);
+                modalActionMeeting.setEventBanner("accepted");
+            } else if(thisEvent.isDeclined){
+                $("#event-rsvp").data("kendoMobileButtonGroup").select(1);
+                modalActionMeeting.setEventBanner("declined");
+            } else {
+                modalActionMeeting.setEventBanner("pending");
+            }
         }
-        if (thisEvent.isDeclined) {
-            $('#actionMeeting-declineBtn').addClass('hidden');
-            $('#actionMeeting-acceptBtn').removeClass('hidden');
-        }
-        $('#modalActionMeeting-commentsLi').removeClass('hidden');
-        $('#modalActionMeeting-title').prop('readonly', true);
-        $('#modalActionMeeting-desc').prop('readonly', true);
-        $('#modalActionMeeting-datestring').prop('readonly', true);
-        $('#modalActionMeeting-date').prop('readonly', true);
-        $('#modalActionMeeting-time').prop('readonly', true);
-        $('#modalActionMeeting-placesearch').prop('readonly', true);
     },
 
     onShow: function (e) {
@@ -250,7 +254,7 @@ var modalActionMeeting = {
                     // Use the selected item or its text
                 },
                 filter: "contains",
-                placeholder: "Select Event... "
+                placeholder: "Event title"
             });
 
             $("#modalActionMeeting-datestring").on('blur', function () {
@@ -286,13 +290,15 @@ var modalActionMeeting = {
 
                 }
             });
-
-            $('#modalActionMeeting-date').pickadate();
-            //$('#modalActionMeeting-time').pickatime();
-
-            $("#modalActionMeeting-date").on('blur', function () {
-                modalActionMeeting.updateDateString();
+            
+            $('#modalActionMeeting-date').pickadate({
+                weekdaysShort: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+                showMonthsShort: true,
+                onClose: function(){
+                    modalActionMeeting.updateDateString();
+                }
             });
+
 
             $("#modalActionMeeting-time").on('blur', function () {
                 var timeIn =  $("#modalActionMeeting-time").val();
@@ -370,37 +376,95 @@ var modalActionMeeting = {
 
         if (actionObj === undefined || actionObj === null) {
             modalActionMeeting.initActiveObject();
+            // setup as a new event
+            modalActionMeeting.setSenderMode();
         } else {
+            // we have an existing event
             modalActionMeeting.setActiveObject(actionObj);
+            var thisObject = modalActionMeeting._activeObject;
+
+            if (moment(modalActionMeeting._date).isAfter(thisObject.date)) {
+                // event is expired
+                modalActionMeeting.setEventBanner("expired");
+                thisObject.set('isExpired', true);
+
+            } else {
+                // event is in the future
+                thisObject.set('isExpired', false);
+            }
+
+            // setting send/receiver
+            if (thisObject.senderUUID === undefined || thisObject.senderUUID === null) {
+                modalActionMeeting.setSenderMode();
+            } else if (thisObject.senderUUID === userModel.currentUser.userUUID) {
+                modalActionMeeting.setSenderMode();
+            } else {
+                modalActionMeeting.setRecipientMode();
+            }
+
+            // setting event location
+            if(thisObject.placeName !== null){
+                $(".event-location").removeClass("hidden");
+            } else {
+                $(".event-location").addClass("hidden");
+            }
+
+            var prettyDate = moment(thisObject.date).format('ddd MMM Do [at] hA');
+            $(".event-date").text(prettyDate);
+
         }
 
         $("#modalActionMeeting-placesearchdiv").addClass('hidden');
 
-        var thisObject = modalActionMeeting._activeObject;
-
-        if (modalActionMeeting._date >= Date.parse(thisObject.date)) {
-            $("#modalActionMeeting-eventExpired").removeClass('hidden');
-            thisObject.set('isExpired', true);
-
-        } else {
-            $("#modalActionMeeting-eventExpired").addClass('hidden');
-            thisObject.set('isExpired', false);
-        }
-
-        if (thisObject.senderUUID === undefined || thisObject.senderUUID === null) {
-            modalActionMeeting.setSenderMode();
-        } else if (thisObject.senderUUID === userModel.currentUser.userUUID) {
-            modalActionMeeting.setSenderMode();
-        } else {
-            modalActionMeeting.setRecipientMode();
-        }
 
         $("#modalview-actionMeeting").data("kendoMobileModalView").open();
     },
 
+    setEventBanner: function(state){
+        // Styling for event banner state
+        switch(state){
+            case "expired":
+                $(".eventBanner").removeClass("hidden").addClass("eventExpired");
+                $(".eventBannerTitle").text("Event expired");
+                $(".eventBannerImg").attr("src", "images/smart-time-light.svg");
+
+                break;
+            case "pending":
+                $(".eventBanner").removeClass("hidden").addClass("eventPending");
+
+                break;
+            case "accepted":
+                $(".eventBanner").removeClass("hidden").addClass("eventAccepted");
+
+                break;
+            case "declined":
+                $(".eventBanner").removeClass("hidden").addClass("eventDeclined");
+
+                break;
+            default:
+                $(".eventBanner").addClass("hidden");
+                $(".eventBannerTitle").text("");
+                $(".eventBannerImg").attr("src", "");
+        }
+
+    },
+
+    eventMapLocation: function(e){
+        _preventDefault(e);
+        // todo - wire map view of event location
+
+    },
+
     onCancel: function (e) {
-        //_preventDefault(e);
+        _preventDefault(e);
+        $(".event-owner, .event-recipient, #event-editMode, #event-viewMode").addClass("hidden");
         $("#modalview-actionMeeting").data("kendoMobileModalView").close();
+        modalActionMeeting.setEventBanner();
+    },
+
+    sendEventStatus: function(e){
+        // todo - wire event status
+        modalActionMeeting.onDone();
     },
 
     onAccept : function (e) {
@@ -477,13 +541,15 @@ var modalActionMeeting = {
 
     onUpdateEvent: function (e) {
         var thisObj = modalActionMeeting._activeObject;
-
+        // todo - wire event update
         modalActionMeeting.onDone();
     },
 
     onSaveEvent : function (e) {
         var thisObj = modalActionMeeting._activeObject;
+        // todo - wire create new event
 
+        
         var finalDateStr = $("#modalActionMeeting-datestring").val();
 
         modalActionMeeting._activeObject.set('date', new Date(finalDateStr));
@@ -495,7 +561,7 @@ var modalActionMeeting = {
 
     onCancelEvent: function (e) {
         var thisObj = modalActionMeeting._activeObject;
-
+        // todo - wire conformation and delete
         modalActionMeeting.onDone();
     },
 
@@ -624,6 +690,7 @@ var smartEventView = {
 
 
     setSenderMode: function (wasSent) {
+
         if (wasSent) {
             $('#smartEventView-update').removeClass('hidden');
             $('#smartEventView-save').addClass('hidden');
@@ -643,6 +710,7 @@ var smartEventView = {
     },
 
     setRecipientMode : function () {
+
         $('#smartEventView-save').addClass('hidden');
         $('#smartEventView-accept').removeClass('hidden');
         $('#smartEventView-commentsLi').removeClass('hidden');
@@ -741,11 +809,12 @@ var smartEventView = {
 
             $('#smartEventView-date').pickadate();
 
-
+            // edit event date
             $("#smartEventView-date").on('blur', function () {
                 smartEventView.updateDateString();
             });
 
+            // Edit event time
             $("#smartEventView-time").on('blur', function () {
                 var timeIn =  $("#smartEventView-time").val();
                 var time = Date.parse(timeIn);
@@ -754,6 +823,7 @@ var smartEventView = {
                 smartEventView.updateDateString();
             });
 
+            // Search Places for event
             $("#smartEventView-placesearch").on('input', function () {
                 var placeStr =  $("#smartEventView-placesearch").val();
                 if (placeStr.length > 3) {
@@ -835,6 +905,21 @@ var smartEventView = {
         }
 
 
+    },
+
+    changeStatus: function(e){
+        var index = this.current().index();
+        if(modalActionMeeting.response !== true){
+            $("#event-comment").velocity("slideDown");
+            modalActionMeeting.response = true;
+        }
+        if(index === 0){
+            // User accepted
+            $("#event-comment textarea").attr("placeholder", "Looking forward to it!");
+        } else {
+            // User declined
+            $("#event-comment textarea").attr("placeholder", "Sorry can't make it.")
+        }
     },
 
     onCancel: function (e) {

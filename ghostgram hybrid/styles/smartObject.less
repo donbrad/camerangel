@@ -1,0 +1,88 @@
+/* Smart Object styles */
+
+// Smart object edit and view
+.eventBanner {
+  width: 100%;
+  padding: 0.25em 1em;
+  p {
+    margin: 0;
+  }
+}
+
+.event-details {
+  margin: 0.5em 1em 0 1em;
+  h1,h2,h3,h4,h5,p {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+.eventExpired {
+  background: @warning-100;
+  color: #fff;
+}
+
+.picker__frame {
+  bottom: 2em !important;
+}
+
+#event-rsvp {
+  text-align: left;
+  li {
+      width: 25%;
+      border: 1px solid @shade-200;
+  }
+  li:nth-child(1).km-state-active {
+    background-color: @primary-200;
+    color: #fff !important;
+  }
+  li:nth-child(2).km-state-active {
+    background-color: @warning-100;
+    color: #fff !important;
+  }
+}
+
+#event-comment {
+  display: none;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+// Smart object chat inline
+
+.btnSmart {
+  display: inline-block;
+  border-radius: 4px;
+  padding: 0 !important;
+  margin: 0;
+  .btnSmart-type {
+    float: left;
+    background: @primary-200;
+    padding: 1em;
+    border-radius: 4px 0 0 4px;
+    width: 30%;
+    img {
+      text-align: center;
+    }
+  }
+  .btnSmart-content {
+    float: left;
+    background: #fff;
+    padding: 0.25em;
+    border-radius: 0 4px 4px 0;
+    border: 1px solid @shade-300;
+    border-left: 0;
+    width: 70%;
+    .btnSmart-title {
+      font-size: 1.2em;
+      margin: 0px;
+    }
+    .btnSmart-date {
+      font-size: 0.75em;
+      margin: 0px;
+    }
+    p {
+      text-align: left;
+    }
+  }
+}

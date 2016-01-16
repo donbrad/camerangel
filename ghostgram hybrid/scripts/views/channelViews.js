@@ -1786,9 +1786,22 @@ var channelView = {
 
       //  var editor = $("#messageTextArea").data("kendoEditor");
         var date = smartObject.date.toLocaleString();
-        var dateStr = moment(date).format('llll');
-        var objectUrl = '<a data-role="button" class="btnSmart" data-objectid="'+ objectId + '" id="chatobject_' + objectId + '" data-click="channelView.onObjectClick" /><img src="images/smart-event-light.svg" class="icon-smart"/> '  + ' ' + smartObject.title + " " +
-            dateStr+  '</a>';
+
+        var dateStr = moment(date).format('dd MMM Do');
+        var localTime = moment(date).format("LT");
+
+        var objectUrl = '<a class="btnSmart" data-role="button" data-objectid="' + objectId +
+            '" id="chatobject_' + objectId + '"'+
+            'data-click="channelView.onObjectClick" >' +
+            '<span class="btnSmart-type">' +
+            '<img src="images/smart-event-light.svg" class="icon-md" />' +
+            '</span>' +
+                '<span class="btnSmart-content">' +
+                    '<p class="textClamp btnSmart-title">' + smartObject.title + '</p>' +
+                    '<p class="textClamp btnSmart-date">' + dateStr + ' ' + localTime + '</p>' +
+                '</span>' +
+            '</a>';
+
 
      /*   editor.paste(objectUrl);
         editor.update();*/

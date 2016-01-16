@@ -877,7 +877,7 @@ var signUpView = {
         _preventDefault(e);
 
        // Add strength meter to password
-        $("#home-signup-password").strength();
+        //$("#home-signup-password").strength();
 
         // Simple phone mask - http://jsfiddle.net/mykisscool/VpNMA/
         $('#home-signup-phone')
@@ -933,15 +933,31 @@ var signUpView = {
                 }
             });
 
+        // Confirm password events
+        $("#home-signup-password").on("keyup", function(){
+            var pwd1Val = $(this).val();
+            $("#home-signup-password2").val(pwd1Val);
+        });
+
+        $("#home-signup-password").on("focus", function(e) {
+            _preventDefault(e);
+            var pwdLength = $(this).val().length;
+            $(".create-user-password2").css("display", "inline-block");
+
+        }).blur(function(e){
+            _preventDefault(e);
+            $(".create-user-password2").css("display", "none");
+        });
 
 
-        $("#create-user-email, #create-user-name, #create-user-alias, .create-user-password").css("display", "none");
+
+        $("#create-user-email, #create-user-name, #create-user-alias, .create-user-password, .create-user-password2").css("display", "none");
         
     },
 
 
 
-    onSubmit : function (e) {
+    validate : function (e) {
         e.preventDefault();
         var form = $("#formCreateAccount").kendoValidator().data("kendoValidator");
 
@@ -958,30 +974,26 @@ var signUpView = {
     },
 
     doCreateAccount : function (e) {
-        _preventDefault (e);
+        _preventDefault(e);
 
         var user = new Parse.User();
         var username = $('#home-signup-username').val();
         var name = $('#home-signup-fullname').val();
         var password = $('#home-signup-password').val();
-        var confirmPassword = $('#home-signup-password2').val();
+        //var confirmPassword = $('#home-signup-password2').val();
         var phone = $('#home-signup-phone').val();
         var alias = $('#home-signup-alias').val();
 
         var userUUID = uuid.v4();
 
-        if (password !== confirmPassword){
-        	// add addition validataion 
-			mobileNotify("Passwords do not match");
-        } else {
-        	// clean up the phone number and ensure it's prefixed with 1
+        // clean up the phone number and ensure it's prefixed with 1
         // phone = phone.replace(/\+[0-9]{1-2}/,'');
         phone = unformatPhoneNumber(phone);
 
-        isValidMobileNumber(phone, function (result){
+        isValidMobileNumber(phone, function (result) {
             if (result.status === 'ok' && result.valid === true) {
-                Parse.Cloud.run('preflightPhone', { phone: phone }, {
-                    success: function(data) {
+                Parse.Cloud.run('preflightPhone', {phone: phone}, {
+                    success: function (data) {
                         if (data.status !== 'ok' || data.count !== 0) {
                             mobileNotify("Your phone number matches existing user.");
                             return;
@@ -1026,7 +1038,7 @@ var signUpView = {
                             //user.set("privateKey", privateKey);
 
                             user.signUp(null, {
-                                success: function(user) {
+                                success: function (user) {
 
                                     userModel.parseUser = user;
                                     userModel.generateUserKey();
@@ -1050,8 +1062,8 @@ var signUpView = {
                                     userModel.currentUser.set('userUUID', user.get('userUUID'));
                                     userModel.currentUser.set('phoneVerified', false);
                                     userModel.currentUser.set('useLargeView', false);
-                                    userModel.currentUser.set('useIdenticon',user.get('useIdenticon'));
-                                    userModel.currentUser.set('emailValidated',user.get('emailVerified'));
+                                    userModel.currentUser.set('useIdenticon', user.get('useIdenticon'));
+                                    userModel.currentUser.set('emailValidated', user.get('emailVerified'));
                                     userModel.generateNewPrivateKey(user);
 
                                     userModel.createIdenticon(userUUID);
@@ -1071,20 +1083,20 @@ var signUpView = {
                                     if (window.navigator.simulator === undefined) {
 
                                         cordova.plugins.notification.local.add({
-                                            id         : 'userWelcome',
-                                            title      : 'Welcome to ghostgrams',
-                                            message    : 'You have a secure connection to your family, friends and favorite places',
-                                            autoCancel : true,
-                                            date : new Date(new Date().getTime() + 120)
+                                            id: 'userWelcome',
+                                            title: 'Welcome to ghostgrams',
+                                            message: 'You have a secure connection to your family, friends and favorite places',
+                                            autoCancel: true,
+                                            date: new Date(new Date().getTime() + 120)
                                         });
                                     }
 
-                                    Parse.Cloud.run('sendPhoneVerificationCode', { phoneNumber: phone }, {
+                                    Parse.Cloud.run('sendPhoneVerificationCode', {phoneNumber: phone}, {
                                         success: function (result) {
                                             mobileNotify('Please verify your phone');
                                             $("#modalview-verifyPhone").data("kendoMobileModalView").open();
                                         },
-                                        error: function (result, error){
+                                        error: function (result, error) {
                                             mobileNotify('Error sending verification code ' + error);
                                         }
                                     });
@@ -1092,7 +1104,7 @@ var signUpView = {
                                     APP.kendo.navigate('#home');
                                 },
 
-                                error: function(user, error) {
+                                error: function (user, error) {
                                     // Show the error message somewhere and let the user try again.
                                     mobileNotify("Error: " + error.code + " " + error.message);
                                 }
@@ -1100,7 +1112,7 @@ var signUpView = {
 
                         }
                     },
-                    error: function(error) {
+                    error: function (error) {
                         mobileNotify("Error checking phone number" + error);
                     }
                 });
@@ -1110,26 +1122,25 @@ var signUpView = {
             }
 
 
-
         });
-  /*      Parse.Cloud.run('validateMobileNumber', { phone: phone }, {
-            success: function(result) {
-                if (result.status !== 'ok' || result.result.carrier.type !== 'mobile') {
-                    mobileNotify("This phone number is not a valid mobile number.");
-                    return;
-                } else {
+        /*      Parse.Cloud.run('validateMobileNumber', { phone: phone }, {
+         success: function(result) {
+         if (result.status !== 'ok' || result.result.carrier.type !== 'mobile') {
+         mobileNotify("This phone number is not a valid mobile number.");
+         return;
+         } else {
 
-                }
-            },
-            error: function(error) {
-                // Show the error message somewhere and let the user try again.
-                mobileNotify("Error: " + error.code + " " + error.message);
-            }
-        });
-*/
+         }
+         },
+         error: function(error) {
+         // Show the error message somewhere and let the user try again.
+         mobileNotify("Error: " + error.code + " " + error.message);
+         }
+         });
+
+         }*/
+
     }
-        }
-        
 
 };
 
@@ -1156,7 +1167,7 @@ var newUserView = {
         	
         	$("#feature1").velocity({opacity: 1, translateY: "0%"}, {delay: 2000, duration: 1000}).velocity({opacity: 0, translateY: "100%"});
         	$("#feature2").velocity({opacity: 1, translateY: "0%"}, {delay: 3000, duration: 1000}).velocity({opacity: 0, translateY: "100%"});
-        	$("#feature3").velocity({opacity: 1, translateY: "0%"}, {delay: 4000, duration: 1000}).velocity({opacity: 0, translateY: "100%"});
+        	$("#feature3").velocity({opacity: 1, translateY: "0%"}, {delay: 4000, duration: 1000}) .velocity({opacity: 0, translateY: "100%"});
         	$("#messageIntro").velocity({opacity: 0, translateY: "-100%"}, {delay: 3000});
 
 
@@ -1165,7 +1176,6 @@ var newUserView = {
         	
         	$("#featureCard1").velocity({opacity: 1, translateY: "-10px"}, {delay: 6000, duration: 1000});
         	$("#newUserHomeBtn").velocity({opacity: 1}, {delay: 6000,duration: 1000});
-			
     		newUserView._introRun = true;
     		
         }
@@ -1186,6 +1196,12 @@ var signInView = {
 
         $("#home-signin-password").on("input", function(e){
 
+        });
+
+        $(".signupForm").on("keyup", function(e){
+            if(e.keyCode === 13){
+                signInView.validate();
+            }
         });
 
     },
