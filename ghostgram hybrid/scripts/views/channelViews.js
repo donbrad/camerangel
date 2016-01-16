@@ -1744,15 +1744,8 @@ var channelView = {
         _preventDefault(e);
         var uuid = e.sender.element[0].attributes['data-objectid'].value, id = e.sender.element[0].id;
         var chatmessage = $('#'+id).closest('.chat-message');
-        var messageId = chatmessage.attributes['data-id'].value;
-
-/*
-        if (e.sender.element[0].parentElement.parentElement.parentElement.parentElement.attributes['id'] !== undefined) {
-            messageId = e.sender.element[0].parentElement.parentElement.parentElement.parentElement.attributes['id'].value;
-        } else if (e.sender.element[0].parentElement.parentElement.parentElement.attributes['id']) {
-            messageId = e.sender.element[0].parentElement.parentElement.parentElement.attributes['id'].value;
-        }*/
-
+        var messageId = chatmessage[0].attributes['data-id'].value;
+        
         if (messageId === null) {
             mobileNotify("Sender deleted this Smart Event!");
             return;
