@@ -1594,9 +1594,10 @@ var channelView = {
 
     messageAddSmartEvent : function (smartObj) {
         smartObj.channelId = channelView._channelId;
-        channelView.messageObjects.push(smartObj);
-        channelView.activeMessage.objects.push(smartObj);
+
         smartObject.smartAddObject(smartObj);
+
+        channelView.messageObjects.push(smartObj);
 
     },
 
@@ -1800,6 +1801,8 @@ var channelView = {
             '</a></div>';
 
         var fullMessage = message + objectUrl;
+
+        channelView.activeMessage.objects.push(smartObject);
 
         return (fullMessage);
 
