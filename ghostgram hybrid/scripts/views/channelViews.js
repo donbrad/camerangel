@@ -1805,7 +1805,7 @@ var channelView = {
 
         var fullMessage = message + objectUrl;
 
-        return (message);
+        return (fullMessage);
 
     },
 
