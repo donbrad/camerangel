@@ -1742,8 +1742,8 @@ var channelView = {
     // Handle a click on a smart object
     onObjectClick : function (e) {
         _preventDefault(e);
-        var uuid = e.sender.element[0].attributes['data-objectid'].value;
-        var chatmessage = e.sender.element[0].closest('chat-message');
+        var uuid = e.sender.element[0].attributes['data-objectid'].value, id = e.sender.element[0].id;
+        var chatmessage = $('#'+id).closest('chat-message');
         var messageId = chatmessage.attributes['data-id'].value;
 
 /*
