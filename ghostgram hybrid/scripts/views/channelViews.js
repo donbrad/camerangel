@@ -1594,6 +1594,7 @@ var channelView = {
 
     messageAddSmartEvent : function (smartObj) {
         smartObj.channelId = channelView._channelId;
+        channelView.messageObjects.push(smartObj);
         channelView.activeMessage.objects.push(smartObj);
         smartObject.smartAddObject(smartObj);
 
