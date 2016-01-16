@@ -2500,25 +2500,26 @@
 	<div class="footer" data-role="footer">
 
 		<div class="event-recipient">
-			<div id="actionMeeting-accept event-valid" class="hidden">
+			<div id="actionMeeting-accept"  class="event-valid hidden">
 				<span id="actionMeeting-acceptStatus"></span>
 				<a class="btnFull-modal btnSecondary" data-role="button" data-click="modalActionMeeting.onDecline">Decline Event</a>
 				<a class="btnFull-modal btnPrimary" data-role="button" data-click="modalActionMeeting.onAccept">Accept Event</a>
 			</div>
-
+			<div id="actionMeeting-acceptExpired" class="event-expired hidden">
+				<a class="btnFull-modal btnPrimary" data-role="button" data-click="modalActionMeeting.onCancel">Close</a>
+			</div>
 		</div>
 		<div class="event-owner">
 			<div id="actionMeeting-update" class="hidden">
 				<a data-role="button" class="btnFull-modal btnSeconary event-valid event-owner" data-align="right" data-click="modalActionMeeting.showEditMode">Edit Event</a>
 				<a class="btnFull-modal btnSecondary event-valid event-owner" data-role="button" data-click="modalActionMeeting.onCancelEvent">Cancel Event</a>
-				<a class="btnFull-modal btnSecondary event-expired hidden" data-role="button" data-click="modalActionMeeting.onRescheduleEvent">Reschedule Event</a>
+				<a class="btnFull-modal btnSecondary event-expired event-owner hidden" data-role="button" data-click="modalActionMeeting.onRescheduleEvent">Reschedule Event</a>
 			</div>
 			<div id="actionMeeting-save" class="hidden">
-				<a data-role="button" type="button" class="btnClearLine"  id="modalActionMeeting-eventchat"  data-click="modalActionMeeting.doEventChat">Add Event Chat</a>
-				<a class="btnFull-modal btnSecondary" data-role="button" data-click="modalActionMeeting.onSaveEvent">Create Event</a>
+				<a data-role="button" type="button" class="btnFull-modal btnSecondary"  id="modalActionMeeting-eventchat"  data-click="modalActionMeeting.doEventChat">Add Event Chat</a>
+				<a class="btnFull-modal btnPrimary" data-role="button" data-click="modalActionMeeting.onSaveEvent">Create Event</a>
 			</div>
 		</div>
-		<a class="btnFull-modal btnPrimary" data-role="button" data-click="modalActionMeeting.onCancel">Close</a>
 	</div>
 </div>
 
