@@ -1655,7 +1655,7 @@ var channelView = {
             validMessage = true;
 
             var smartObject = channelView.messageObjects[0];
-            text = channelView.addSmartEventToMessage(smartObject.objectId, smartObject, text);
+            text = channelView.addSmartEventToMessage(smartObject, text);
 
         }
 
@@ -1781,10 +1781,10 @@ var channelView = {
 
     },
 
-    addSmartEventToMessage: function (objectId, smartObject, message) {
+    addSmartEventToMessage: function (smartObject, message) {
 
       //  var editor = $("#messageTextArea").data("kendoEditor");
-        var date = smartObject.date.toLocaleString();
+        var date = smartObject.date.toLocaleString(), objectId = smartObject.uuid;
 
 
         var dateStr = moment(date).format('ddd MMM Do');
