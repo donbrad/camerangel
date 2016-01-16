@@ -77,6 +77,89 @@
   top: 1em;
   color: #fff !important;
 }
+/* Smart Object styles */
+.eventBanner {
+  width: 100%;
+  padding: 0.25em 1em;
+}
+.eventBanner p {
+  margin: 0;
+}
+.event-details {
+  margin: 0.5em 1em 0 1em;
+}
+.event-details h1,
+.event-details h2,
+.event-details h3,
+.event-details h4,
+.event-details h5,
+.event-details p {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+.eventExpired {
+  background: #E57373;
+  color: #fff;
+}
+.picker__frame {
+  bottom: 6em !important;
+}
+#event-rsvp {
+  text-align: left;
+}
+#event-rsvp li {
+  width: 25%;
+  border: 1px solid #E0E0E0;
+}
+#event-rsvp li:nth-child(1).km-state-active {
+  background-color: #6CADF3;
+  color: #fff !important;
+}
+#event-rsvp li:nth-child(2).km-state-active {
+  background-color: #E57373;
+  color: #fff !important;
+}
+#event-comment {
+  display: none;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+.btnSmart {
+  display: inline-block;
+  border-radius: 4px;
+  padding: 0 !important;
+  margin: 0;
+}
+.btnSmart .btnSmart-type {
+  float: left;
+  background: #6CADF3;
+  padding: 1em;
+  border-radius: 4px 0 0 4px;
+  width: 30%;
+}
+.btnSmart .btnSmart-type img {
+  text-align: center;
+}
+.btnSmart .btnSmart-content {
+  float: left;
+  background: #fff;
+  padding: 0.25em;
+  border-radius: 0 4px 4px 0;
+  border: 1px solid #f5f5f5;
+  border-left: 0;
+  width: 70%;
+}
+.btnSmart .btnSmart-content .btnSmart-title {
+  font-size: 1.2em;
+  margin: 0px;
+}
+.btnSmart .btnSmart-content .btnSmart-date {
+  font-size: 0.75em;
+  margin: 0px;
+}
+.btnSmart .btnSmart-content p {
+  text-align: left;
+}
 /* elements */
 .userLgFontSize {
   font-size: 1.4em !important;
@@ -218,7 +301,13 @@
 }
 html,
 .km-root {
-  font-size: 16px;
+  font-size: 1.2em;
+}
+@media only screen and (max-width: 320px) {
+  html,
+  .km-root {
+    font-size: 1em;
+  }
 }
 html {
   height: 100%;
@@ -657,7 +746,6 @@ form p {
 .btnClear-sm,
 .btnClear-light-sm,
 .btnClearLine,
-.btnSmart,
 .btnClearLine-grey-sm,
 .btnClear-grey,
 .btnClear-red,
@@ -852,11 +940,6 @@ form p {
 .btnClearLine :disabled {
   color: #A4A4A4 !important;
   background: transparent !important;
-}
-.btnSmart {
-  color: #fff !important;
-  border-radius: 12px !important;
-  background-color: #6CADF3 !important;
 }
 .glass {
   background: #242424 !important;
@@ -2559,8 +2642,14 @@ a:hover {
 }
 .statusContactCard-icon {
   position: absolute;
-  top: 70px;
+  top: 5em;
   left: 54%;
+  width: 1.2em;
+}
+@media only screen and (max-width: 320px) {
+  .statusContactCard-icon {
+    top: 70px;
+  }
 }
 .contactStatusMessage {
   font-style: italic;
@@ -4654,7 +4743,6 @@ html .km-pane-wrapper .k-header {
 }
 .chat-message p {
   margin: 0px 0px 4px;
-  height: 100%;
 }
 .chat-message h5 {
   line-height: 1.5em;
@@ -5450,7 +5538,4 @@ table.k-editor {
 }
 #editorGhostMail > ul > li > a {
   margin-left: 0.5em;
-}
-.picker__frame {
-  bottom: 6em !important;
 }

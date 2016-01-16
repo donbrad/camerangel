@@ -37,7 +37,8 @@
 @import "mixins.less";
 @import "mixin-shadow";
 @import "_sentinel.less";
-@import "temp.less";
+@import "temp";
+@import "smartObject";
 
 /* elements */
 .userLgFontSize {
@@ -196,7 +197,10 @@
 }
 
 html, .km-root {
-	font-size: 16px;
+	font-size: 1.2em;
+	@media @mobile {
+		font-size: 1em;
+	}
 }
 
 html {
@@ -798,12 +802,6 @@ form {
 	}
 }
 
-.btnSmart {
-	&:extend(.btnStyle);
-	color: #fff !important;
-	border-radius: 12px !important;
-	background-color: #6CADF3 !important;
-}
 
 .glass {
 	//color: #fff !important;
@@ -2568,8 +2566,13 @@ a:hover {
 
 .statusContactCard-icon {
 	position: absolute;
-	top: 70px;
+	top: 5em;
 	left: 54%;
+	width: 1.2em;
+	@media @mobile {
+		top: 70px;
+	}
+
 }
 
 .contactStatusMessage {
@@ -4960,8 +4963,6 @@ div.contactListBox.activeContact > div > div > ul {
 
 .chat-message p {
     margin: 0px 0px 4px;
-    //.font-size(14);
-    height: 100%;
 }
 
 .chat-message h5 {
@@ -5855,7 +5856,3 @@ table.k-editor {
 	margin-left: 0.5em;
 }
 
-// Smart Object styling
-.picker__frame {
-	bottom: 6em !important;
-}
