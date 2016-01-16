@@ -1786,7 +1786,7 @@ var channelView = {
         var date = smartObject.date.toLocaleString();
 
 
-        var dateStr = moment(date).format('dd MMM Do');
+        var dateStr = moment(date).format('ddd MMM Do');
         var localTime = moment(date).format("LT");
 
         var objectUrl = '<a class="btnSmart" data-role="button" data-objectid="' + objectId +
