@@ -1789,7 +1789,7 @@ var channelView = {
         var dateStr = moment(date).format('ddd MMM Do');
         var localTime = moment(date).format("LT");
 
-        var objectUrl = '<a class="btnSmart" data-role="button" data-objectid="' + objectId +
+        /*var objectUrl = '<a class="btnSmart" data-role="button" data-objectid="' + objectId +
             '" id="chatobject_' + objectId + '"'+
             'data-click="channelView.onObjectClick" >' +
             '<span class="btnSmart-type">' +
@@ -1800,13 +1800,38 @@ var channelView = {
                     '<p class="textClamp btnSmart-date">' + dateStr + ' ' + localTime + '</p>' +
                 '</span>' +
             '</a>';
+*/
+        var objectUrl = '<a class="btnSmart" data-role="button" data-objectid="' + objectId +
+            '" id="chatobject_' + objectId + '"'+
+            'data-click="channelView.onObjectClick" >' +
+            '<span class="btnSmart-type">' +
+            '<img src="images/smart-event-light.svg" class="icon-md" />' +
+            '</span>' +
+            '<span class="btnSmart-content">' +
+            '<p class="textClamp btnSmart-title">' + smartObject.title + '</p>' +
+            '<p class="textClamp btnSmart-date">' + dateStr + ' ' + localTime + '</p>' +
+            '</span>' +
+            '</a>';
 
+        var span1 = $('<span class="btnSmart-content" />').html(  '<p class="textClamp btnSmart-title">' + smartObject.title + '</p>' +
+            '<p class="textClamp btnSmart-date">' + dateStr + ' ' + localTime + '</p>');
+
+        var span2 = $('<span class="btnSmart-type" />').html( '<img src="images/smart-event-light.svg" class="icon-md" />');
 
      /*   editor.paste(objectUrl);
         editor.update();*/
 
-        $('#messageTextArea').redactor('insert.node', $('<div />').html(objectUrl));
+        //$('#messageTextArea').redactor('insert.node', $('<div />').html(objectUrl));
 
+        $('#messageTextArea').redactor('insert.node', $('<div >').html('<a class="btnSmart" data-role="button" data-objectid="' + objectId +
+        '" id="chatobject_' + objectId + '"'+
+        'data-click="channelView.onObjectClick" >'));
+        $('#messageTextArea').redactor('insert.node', $('<span class="btnSmart-content" />').html(  '<p class="textClamp btnSmart-title">' + smartObject.title + '</p>' +
+            '<p class="textClamp btnSmart-date">' + dateStr + ' ' + localTime + '</p>'));
+        $('#messageTextArea').redactor('insert.node', $('<span class="btnSmart-type" />').html( '<img src="images/smart-event-light.svg" class="icon-md" />'));
+
+        $('#messageTextArea').redactor('insert.node', $('</div>'));
+        
         smartObject.channelId = channelView._channelId;
 
         channelView.messageObjects.push(smartObject);
