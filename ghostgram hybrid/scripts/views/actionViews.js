@@ -111,6 +111,13 @@ var modalActionMeeting = {
             $('#actionMeeting-addToCalendar').prop('readonly', false);
         }
 
+        if (newObj.senderUUID === null || newObj.senderUUID === userModel.currentUser.userUUID) {
+            modalActionMeeting.setSenderMode();
+        } else {
+            modalActionMeeting.setRecipientMode();
+        }
+
+
     },
 
 
@@ -560,7 +567,6 @@ var modalActionMeeting = {
 
     onDone: function (e) {
         //_preventDefault(e);
-
 
         $("#modalview-actionMeeting").data("kendoMobileModalView").close();
     }

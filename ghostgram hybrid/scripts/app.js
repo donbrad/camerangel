@@ -85,6 +85,20 @@
 
 		deviceModel.init();
 
+		// Add undo and redo to chat editor
+		$.Redactor.prototype.bufferbuttons = function()
+		{
+			return {
+				init: function()
+				{
+					var undo = this.button.addFirst('undo', 'Undo');
+					var redo = this.button.addAfter('undo', 'redo', 'Redo');
+
+					this.button.addCallback(undo, this.buffer.undo);
+					this.button.addCallback(redo, this.buffer.redo);
+				}
+			};
+		};
 
 		// hide the splash screen as soon as the app is ready. otherwise
 		navigator.splashscreen.hide();
@@ -139,7 +153,7 @@
 
 		// Provide basic functionality in the simulator and deployable simulator
 		if (window.navigator.simulator !== undefined) {
-			deviceModel.appVersion = "emulator: 0.2.2.8";
+			deviceModel.appVersion = "emulator: 0.2.3.1";
 			userModel.currentUser.set('appVersion', deviceModel.appVersion);
 		} else {
 			cordova.getAppVersion.getVersionCode(function(version) {
@@ -179,7 +193,7 @@
 
 
 			// hiding the accessory bar
-			//cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+			//cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
 		}
 		
 		APP.emailAvailable = false;

@@ -45,7 +45,13 @@ var contactsView = {
                     return;
                 }
 
+                // Todo: don remove current contact logic...
                 contactModel.setCurrentContact(contact);
+                if (contact.contactUUID !== undefined && contact.contactUUID !== null){
+                    $("#contactActionBtns > li:first-child").show();
+                } else {
+                    $("#contactActionBtns > li:first-child").hide();
+                }
 
                 if (contact.category === 'phone') {
                     if (contactModel.unifiedDeviceContact) {
@@ -57,45 +63,27 @@ var contactsView = {
                     }
 
                 } else if (contact.category === 'unknown') {
-                    // New Chat Member
-                    mobileNotify("Looking up " + contact.name);
-                    contactModel.updateContactDetails(contact.uuid, function (thisContact) {
-                        if (thisContact.contactUUID !== undefined && thisContact.contactUUID !== null) {
+                    // Chat contacts - click to connect
+                    contactActionView.openModal(contact.uuid);
 
-                            mobileNotify(thisContact.name + " is now a member!");
-                            var contactObj = contactModel.findContactListUUID(thisContact.uuid);
-
-                            contactObj.set('category', thisContact.category);
-                            contactObj.set('publicKey', thisContact.publicKey);
-                            contactObj.set('contactPhone', thisContact.contactPhone);
-                            contactObj.set('contactEmail', thisContact.contactEmail);
-
-                            contactObj.set('phone', thisContact.contactPhone);
-                            contactObj.set('email', thisContact.contactEmail);
-
-                           /* $("#contactActionBtns > li:first-child").show();
-                            contactActionView.openModal(contact.uuid);*/
-
-                            updateParseObject('contacts', 'uuid', thisContact.uuid, 'category', thisContact.category);
-                            updateParseObject('contacts', 'uuid', thisContact.uuid, 'publicKey', thisContact.publicKey);
-                            updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactPhone', thisContact.contactPhone);
-                            updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactEmail', thisContact.contactEmail);
-
-                        }
-
-                    })
+                } else if (contact.category === 'zapped') {
+                    // Deleted Contacts -- click to undelete
+                    mobileNotify("Undeleting " + contact.name +  "...");
+                    contactModel.undeleteContact(contactId);
+                    contactActionView.openModal(contact.uuid);
 
                 } else {
-                    // If we know the contacts uuid enable the full feature set
-                   // $("#modalview-contactActions").data("kendoMobileModalView").open();
+                    // Memebers and Invited Chat Member
+                    mobileNotify("Looking up " + contact.name);
 
+                    // Get the latest information from this contact's user data
+                    contactModel.updateContactDetails(contact.uuid, function (thisContact) {
+                        if (contact.category === 'new' && thisContact.category === 'member') {
+                            mobileNotify(thisContact.name + " is now a member!");
+                        }
+
+                    });
                     contactActionView.openModal(contact.uuid);
-                    if (contact.contactUUID !== undefined && contact.contactUUID !== null){
-                        $("#contactActionBtns > li:first-child").show();
-                    } else {
-                        $("#contactActionBtns > li:first-child").hide();
-                    }
-
                 }
                 
             },
@@ -200,7 +188,7 @@ var contactsView = {
         contactModel.updateContactListStatus();
 
         // Update the contact list every 5 minutes while the contact list view is active
-        contactsView.updateInterval = setInterval(function(){ contactModel.updateContactListStatus(true) }, 300000);
+        //contactsView.updateInterval = setInterval(function(){ contactModel.updateContactListStatus(true) }, 300000);
         // Reset the filters and ux state on show.
         
 
@@ -221,10 +209,10 @@ var contactsView = {
     	ux.showActionBtn(false, "#contacts");
     	$("#btnSearchDeviceContacts").addClass("hidden");
     	ux.hideSearch();
-        if (contactsView.updateInterval !== null) {
+        /*if (contactsView.updateInterval !== null) {
             clearInterval(contactsView.updateInterval);
             contactsView.updateInterval = null;
-        }
+        }*/
 
     },
 
@@ -291,10 +279,8 @@ var contactsView = {
 
         var contactId = e.button[0].attributes["data-contact"].value;
         contactModel.deleteContact(contactId);
-
-        var string = "Deleted contact: " + contactModel.currentContact.name + " ("+ contactModel.currentContact.alias + ")" ;
-        
-        // TODO DON - Wire delete for 'New Chat Members'
+        var contact = contactModel.findContactByUUID(contactId)
+        var string = "Deleted contact: " + contact.name + " ("+ contact.alias + ")" ;
 
         mobileNotify(string);
         APP.kendo.navigate('#contacts');
@@ -515,6 +501,7 @@ var contactImportView = {
 
 var addContactView = {
 	_closeModal: false,
+    _emailValid: false,
 
     doInit: function (e) {
         _preventDefault(e);
@@ -540,6 +527,47 @@ var addContactView = {
 
         $("#addContactForm").kendoValidator({
         	errorTemplate: '<span class="error-msg">#=message#</span>'
+        });
+
+
+        $('#addContactEmail').on('blur', function () {
+            var email = $('#addContactEmail').val();
+            if (!addContactView.validateContact(email)){
+                addContactView._emailValid = false;
+                mobileNotify(email + " + is not a valid email address");
+            } else {
+                addContactView._emailValid = true;
+            }
+        });
+
+        // Generate a contact alias on blur if the user hasn't already added one...
+        $('#addContactName').on('blur', function () {
+            var alias =  $('#addContactAlias').val();
+
+            if (alias.length === 0) {
+                var name = $('#addContactName').val();
+                if (name.length > 0) {
+                    var nameArray = name.split(' ');
+
+                    if (nameArray.length === 1) {
+                        $('#addContactAlias').val(nameArray[0]);
+                    } else {
+                        var lastInitial = nameArray[nameArray.length-1].charAt(0);
+                        nameArray[nameArray.length-1] = lastInitial;
+                        var newAlias = '';
+                        for (var i=0; i<nameArray.length; i++) {
+                            newAlias += nameArray[i] + ' ';
+                        }
+
+                        newAlias.trim();
+                        $('#addContactAlias').val(newAlias);
+
+                    }
+
+                }
+
+            }
+
         });
     },
 
@@ -612,23 +640,9 @@ var addContactView = {
 
         $("#modalview-AddContact").data("kendoMobileModalView").open();
 
-        // Test the initial phone number
-        var phone = $("#addContactPhone").val();
 
-        isValidMobileNumber(phone, function(result){
-            if (result.status === 'ok') {
-                if (result.valid === false) {
-                    mobileNotify(phone + ' is not a valid mobile number');
-                    $("#vaildMobileNumberError").velocity("slideDown");
-                    $("#addContacViewAddButton").text("Close");
-                    addContactView._closeModal = true;
-                } else {
-                    $("#vaildMobileNumberError").velocity("slideUp");
-                    $("#addContacViewAddButton").text("Add Contact");
-                    addContactView._closeModal = false;
-                }
-            }
-        });
+        // Moved mobile number test to validate contact -- this is an expensive call in time and $$
+
 
     },
 
@@ -636,17 +650,65 @@ var addContactView = {
         $("#modalview-AddContact").data("kendoMobileModalView").close();
     },
 
+    validateEmail : function (email) {
+        var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
+    },
 
 
-    validate: function(){
-    	var form = $("#addContactForm").kendoValidator().data("kendoValidator");
+    validateContact: function(e) {
+        _preventDefault(e);
+        var name = $('#addContactName').val(),
+            alias = $('#addContactAlias').val(),
+            phone = $('#addContactPhone').val(),
+            email = $('#addContactEmail').val(),
+            photo = $('#addContactPhoto').prop('src'),
+            group =  $('#addContactGroup').val(),
+            address = $('#addContactAddress').val();
 
-    	if(form.validate() && addContactView._closeModal === false){
+        var form = $("#addContactForm").kendoValidator().data("kendoValidator");
+
+
+        // Confirm that there not an existing contact with this phone number.
+        var contact = contactModel.findContactByPhone(phone);
+
+        if (contact !== undefined) {
+            mobileNotify('Phone: ' + phone + " matches existing contact: " + contact.name);
+            return;
+        }
+        mobileNotify("Please wait - validating mobile phone....");
+        isValidMobileNumber(phone, function(result){
+            if (result.status === 'ok') {
+                if (result.valid === false) {
+                    mobileNotify(phone + ' is not a valid mobile number');
+                    $("#vaildMobileNumberError").velocity("slideDown");
+                    //$("#addContacViewAddButton").text("Close");
+                    return;
+
+                } else {
+
+                    $("#vaildMobileNumberError").velocity("slideUp");
+                    $("#addContacViewAddButton").text("Add Contact");
+                    mobileNotify("Mobile phone is valid!");
+
+                    if (addContactView._emailValid){
+                        isValidEmail(email, function(emailResult) {
+                            if (emailResult.status === 'ok' )
+                                addContactView.addContact();
+                        });
+                    } else {
+                        addContactView.addContact();
+                    }
+
+                }
+            }
+        });
+    	/*if(form.validate() && addContactView._closeModal === false){
     		addContactView.addContact();
     	} else {
     		addContactView.closeModal();
     	}
-
+*/
     },
 
     addContact : function (e) {
@@ -659,11 +721,12 @@ var addContactView = {
             alias = $('#addContactAlias').val(),
             phone = $('#addContactPhone').val(),
             email = $('#addContactEmail').val(),
-            photo = $('#addContactPhoto').prop('src'),
+            //photo = $('#addContactPhoto').prop('src'),
             group =  $('#addContactGroup').val(),
             address = $('#addContactAddress').val(),
             emailValid = false,
             addressValid = false;
+
 
 
         if (phone === null || phone.length < 10) {
@@ -671,6 +734,8 @@ var addContactView = {
             mobileNotify('Contacts must have a valid phone number!');
             return;
         }
+
+
         var guid = uuid.v4();
 
        if (email === undefined) {
@@ -682,17 +747,22 @@ var addContactView = {
             address = null;
             addressValid = false;
         }
-
+        var url = contactModel.createIdenticon(guid);
+        $('#addContactPhoto').prop('src', url);
         contact.setACL(userModel.parseACL);
+        contact.set("version", contactModel._version );
         contact.set("name", name );
         contact.set("alias", alias);
         contact.set("email", email);
         contact.set("address", address);
         contact.set("group", group);
+        contact.set("photo", null);
         contact.set('category', "new");
         contact.set("priority", 0);
         contact.set("isFavorite", false);
         contact.set("isBlocked", false);
+        contact.set("inviteSent", false);
+        contact.set("lastInvite", 0);
         contact.set("uuid", guid);
         contact.set('contactUUID', null);
         contact.set('contactPhone', null);
@@ -714,7 +784,7 @@ var addContactView = {
         contact.set("phone", phone);
 
         // Close modal
-        addContactView.closeModal();
+       // addContactView.closeModal();
 
        // mobileNotify("Invite sent");
 
@@ -725,20 +795,19 @@ var addContactView = {
                 var thisContact = result.user;
                 contact.set("phoneVerified", thisContact.phoneVerified);
                 // Does the contact have a verified email address
+                contact.set("email", thisContact.email);
                 if (thisContact.emailVerified) {
                     // Yes - save the email address the contact verified
-                    contact.set("email", thisContact.email);
                     contact.set("emailValidated", true);
                 } else {
                     // No - just use the email address the our user selected
-                    contact.set("email", email);
                     contact.set("emailValidated", false);
                 }
                 contact.set('contactUUID', thisContact.userUUID);
                 contact.set('contactPhone', thisContact.phone);
                 contact.set('phoneVerified', thisContact.phoneVerified);
+                contact.set('phone', thisContact.phone);
                 if (thisContact.phoneVerified) {
-                    contact.set('phone', thisContact.phone);
                     contact.set('category', 'member');
                 }
                 contact.set('contactEmail', thisContact.email);
@@ -758,19 +827,20 @@ var addContactView = {
                 contact.set("contactEmail", null);
             }
 
-          contact.save(null, {
-              success: function(contact) {
-                  // Execute any logic that should take place after the object is saved.
-                  mobileNotify('Added contact : ' + contact.get('name'));
-                  //var photo = contact.get('photo');
-                  var url = contactModel.createIdenticon(guid);
-                  contact.set('identicon',url);
-                  if ( contact.attributes.photo !== null || contact.attributes.photo !== '') {
-                    contact.set('photo',url);
-                  }
 
-                  contactModel.contactsDS.add(contact.attributes);
-                  contactModel.contactListDS.add(contact.attributes);
+          contact.save(null, {
+              success: function(thiscontact) {
+                  // Execute any logic that should take place after the object is saved.
+                  mobileNotify('Added contact : ' + thiscontact.get('name'));
+                  //var photo = contact.get('photo');
+
+                  var contactx = thiscontact.toJSON();
+
+                  contactx.identicon = url;
+                  contactx.photo = url;
+                  contactModel.contactsDS.add(contactx);
+                  //contactModel.contactListDS.add(contactx);
+
                   addContactView.closeModal();
                   APP.kendo.navigate('#contacts');
               },
@@ -1167,7 +1237,7 @@ var contactActionView = {
         $(".statusContactCard-icon").attr("src", "images/status-away.svg");
 
         //Show the status update div
-        if (thisContact.contactUUID !== undefined && thisContact.contactUUID !== null) {
+        if (thisContact.contactUUID !== undefined && thisContact.contactUUID !== null && thisContact.category !== 'unknown') {
             contactModel.getContactStatusObject(thisContact.contactUUID, function (user) {
                 if (user !== null) {
                     var contactIsAvailable = user.get('isAvailable');
@@ -1197,58 +1267,62 @@ var contactActionView = {
             });
         }
 
-        contactModel.updateContactDetails(contactId, function(contact) {
-         
-            if (contact === undefined) {
-                // This is a new contact.
-                contact = contactModel.findContactByUUID(contactId);
-            }
-            
+        if (thisContact.category !== 'unknown') {
+            // Need to connect with this user before updating contact details
+            contactModel.updateContactDetails(contactId, function (contact) {
 
-            var contactName = contact.name;
-            var contactAlias = contact.alias;
-            var contactVerified = contact.phoneVerified;
-            var contactGroup = contact.group;
+                if (contact === undefined) {
+                    // This is a new contact.
+                    contact = contactModel.findContactByUUID(contactId);
+                }
 
-            var contactIsAvailable = contact.isAvailable;
 
-            // Add group name
-            if(contactGroup !== '' && contactGroup !== null){
-            	$("#currentGroup").removeClass("hidden");
-            	$("#currentContactGroup").text(contactGroup);
-            } else {
-            	$("#currentGroup").addClass("hidden");
-            	$("#currentContactGroup").text("");
-            }
+                var contactName = contact.name;
+                var contactAlias = contact.alias;
+                var contactVerified = contact.phoneVerified;
+                var contactGroup = contact.group;
 
-            contactActionView._activeContact.set('contactUUID', contact.contactUUID);
-            contactActionView._activeContact.set('publicKey', contact.publicKey);
-            contactActionView._activeContact.set('phone', contact.phone);
-            contactActionView._activeContact.set('name', contactName);
-            contactActionView._activeContact.set('alias', contactAlias);
-            if (contact.photo !== undefined && contact.photo !== null) {
-                contactActionView._activeContact.set('photo', contact.photo);
-            } else {
-                contactActionView._activeContact.set('photo', contact.identicon);
-            }
+                var contactIsAvailable = contact.isAvailable;
 
-            // Set name/alias layout
-            ux.formatNameAlias(contactName, contactAlias, "#modalview-contactActions");
+                // Add group name
+                if (contactGroup !== '' && contactGroup !== null) {
+                    $("#currentGroup").removeClass("hidden");
+                    $("#currentContactGroup").text(contactGroup);
+                } else {
+                    $("#currentGroup").addClass("hidden");
+                    $("#currentContactGroup").text("");
+                }
 
-            // set verified status
-            if(contactVerified){
-                $("#currentContactVerified").removeClass("hidden");
-            } else {
-                $("#currentContactVerified").addClass("hidden");
-            }
+                contactActionView._activeContact.set('contactUUID', contact.contactUUID);
+                contactActionView._activeContact.set('publicKey', contact.publicKey);
+                contactActionView._activeContact.set('phone', contact.phone);
+                contactActionView._activeContact.set('category', contact.category);
+                contactActionView._activeContact.set('name', contactName);
+                contactActionView._activeContact.set('alias', contactAlias);
+                if (contact.photo !== undefined && contact.photo !== null) {
+                    contactActionView._activeContact.set('photo', contact.photo);
+                } else {
+                    contactActionView._activeContact.set('photo', contact.identicon);
+                }
 
-            // set profile img
-            $("#contactProfileImg").attr("src", contact.photo);
+                // Set name/alias layout
+                ux.formatNameAlias(contactName, contactAlias, "#modalview-contactActions");
 
-            contactActionView.refreshUX(contact);
-            
+                // set verified status
+                if (contactVerified) {
+                    $("#currentContactVerified").removeClass("hidden");
+                } else {
+                    $("#currentContactVerified").addClass("hidden");
+                }
 
-        });
+                // set profile img
+                $("#contactProfileImg").attr("src", contact.photo);
+
+                contactActionView.refreshUX(contact);
+
+
+            });
+        }
 
 
         $("#modalview-contactActions").data("kendoMobileModalView").open();

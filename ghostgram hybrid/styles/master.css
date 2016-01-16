@@ -160,6 +160,24 @@
 .btnSmart .btnSmart-content p {
   text-align: left;
 }
+.redactor-editor {
+  padding: 0.25em 0.5em !important;
+  border: none !important;
+}
+.redactor-editor p {
+  margin-bottom: 0.5em;
+}
+.redactor-toolbar {
+  box-shadow: none;
+}
+#messageComposeToolbar,
+#redactor-toolbar-0 {
+  border: none !important;
+  border-bottom: 1px solid #E0E0E0;
+}
+*[contenteditable] {
+  -webkit-user-select: auto !important;
+}
 /* elements */
 .userLgFontSize {
   font-size: 1.4em !important;
@@ -3152,27 +3170,27 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 }
 /* Chat styles */
 #messageTextArea {
-  font-size: 1em;
-  resize: none;
-  border: none;
-  padding-bottom: 0px;
-  line-height: 1.5;
+  /*font-size: 1em;
+    resize: none;
+   //border: none;
+    padding-bottom: 0px;
+    line-height: 1.5;*/
 }
 #messageSend {
   font-weight: 600;
-  margin-top: 0px;
-  padding: 0px;
+  margin-top: 0;
+  padding: 0;
   padding-top: 3px;
 }
 .messageCompose {
   padding: 0.5rem;
-  padding-bottom: 0px;
+  padding-bottom: 0;
   padding-top: 0;
 }
 .messageMediaBar ul {
-  padding: 0px;
+  padding: 0;
   margin-bottom: 1px;
-  margin-top: 0px;
+  margin-top: 0;
 }
 .messageMediaBar ul li {
   display: inline-block;

@@ -264,8 +264,6 @@ var homeView = {
     onShow: function (e) {
         _preventDefault(e);
 
-        notificationModel.processUnreadChannels();
-
         // hide search button and show gear
         $(".homeToggleSetting").removeClass("hidden");
         $(".homeToggleSearch").addClass("hidden");
@@ -275,7 +273,6 @@ var homeView = {
             $("#startPhoneVerified").addClass("hidden");
         }
 
-
         // Set user availibility
         ux.updateHeaderStatusImages();
 
@@ -283,6 +280,8 @@ var homeView = {
         // Hide action button on home
         ux.showActionBtn(false, "#home");
 
+        // Display Unread Chat Notifications
+        notificationModel.processUnreadChannels();
     },
 
     onHide: function(e){

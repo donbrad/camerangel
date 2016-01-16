@@ -6,7 +6,7 @@
 	<meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-eval';   img-src * data: blob: filesystem:; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
 
     <!-- Styles -->
-    <link href="kendo/styles/kendo.common.min.css" rel="stylesheet" />
+	<link href="kendo/styles/kendo.common.min.css" rel="stylesheet" />
 	<link href="kendo/styles/kendo.material.min.css" rel="stylesheet" />
     <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet" />
 	<link href="styles/strength.css" rel="stylesheet" />
@@ -1378,42 +1378,8 @@
 
 	<div data-role="footer" style="display: block; background: #fff; padding-left: 2px;"  id="messageEditor" style="min-height: 48px; max-height: 60%;">
 		<div class="messageCompose">
-			<textarea id="messageTextArea" rows="1" autofocus="true" wrap="soft" spellcheck="true" placeholder="Message..."></textarea>
-			<div class="messageMediaBar" id="editorOptionBar" style="display: none;">
-				<ul>
-					<li>
-						<a class="btnBar" data-role="button" data-click="channelView.toggleTool" data-tool="bold">
-							<img src="images/icon-bold.svg" class="icon-bar" />
-						</a>
-					</li>
-					<li>
-						<a class="btnBar" data-role="button" data-click="channelView.toggleTool" data-tool="italic">
-							<img src="images/icon-italic.svg" class="icon-bar" />
-						</a>
-					</li>
-					<li>
-						<a class="btnBar" data-role="button" data-click="channelView.toggleTool" data-tool="underline">
-							<img src="images/icon-underline.svg" class="icon-bar" />
-						</a>
-					</li>
-					<li>
-						<a class="btnBar" data-role="button" data-click="channelView.toggleTool" data-tool="insertUnorderedList">
-							<img src="images/icon-list.svg" class="icon-bar" />
-						</a>
-					</li>
-					<li>
-						<a class="btnBar" data-role="button" data-click="channelView.toggleTool" data-tool="indent">
-							<img src="images/icon-indent.svg" class="icon-bar" />
-						</a>
-					</li>
-					<li>
-						<a class="btnBar" data-role="button" data-click="channelView.toggleTool" data-tool="outdent">
-							<img src="images/icon-outdent.svg" class="icon-bar" />
-						</a>
-					</li>
-				</ul>
-				<div class="lineArrow"></div>
-			</div>
+			<div id="messageComposeToolbar" class="hidden"></div>
+			<textarea id="messageTextArea" type='text' name="messageTextArea" autofocus="true"></textarea>
 			<div class="messageMediaBar">
 				<ul>
 					<li>
@@ -1857,7 +1823,7 @@
 					</div>
 				</label>
 			</li>
-			<li>
+			<li id="addContact-emailSelect">
 				<label>Email
 					<div class="select-lg">
 						<select id="addContactEmail"
@@ -1869,7 +1835,7 @@
 					</div>
 				</label>
 			</li>
-			<li>
+			<li id="addContact-addressSelect">
 				<label>Address
 					<div class="select-lg">
 						<select id="addContactAddress"
@@ -1885,7 +1851,7 @@
 		</form>
 	
 	<div class="footer" data-role="footer">
-		<a class="btnPrimary btnFull-modal" data-role="button" data-click="addContactView.validate" id="addContacViewAddButton">Add Contact</a>
+		<a class="btnPrimary btnFull-modal" data-role="button" data-click="addContactView.validateContact" id="addContacViewAddButton">Add Contact</a>
 	</div>
 </div>
 
@@ -2040,7 +2006,7 @@
 		#} else if (data.value === 'member') {#
 		Member
 		#} else if (data.value === 'unknown') {#
-		New Chat Member
+		Chat Contact
 		#} else if (data.value === 'zapped') {#
 		Deleted
 		#}#
@@ -2055,7 +2021,7 @@
 	var group = data.group;
 	var primaryName = ux.returnUXPrimaryName(name, alias);
 	var secondaryName = ux.returnAliasName(name, alias);
-	
+
 	#
 	<div>
 		<div class="contact-options">
@@ -2177,9 +2143,14 @@
 				<span class="contacts-alias-sm">#: data.alias #</span>
 			</h4>
 		</div>
+
 		<div class="left contact-status">
 			<p class="left contactStatusMessage-sm">
+				# if (data.category === 'unknown' ) { #
 				New Contact - Tap to Connect!
+				# }  else { #
+				Deleted Contact - Tap to Restore !
+				#} #
 			</p>
 		</div>
 		#}#

@@ -522,7 +522,7 @@ function unformatPhoneNumber(phone) {
 	if (phone === null && phone === undefined)
 		return ('');
 
-	var newPhone = phone.replace(/[\-+xX\(\)]/g, '');
+	var newPhone = phone.replace(/[\-+xX\(\)\.\,]/g, '');
 	newPhone = newPhone.replace(/\s/g, '');
 	if (newPhone.length === 10) {
 		newPhone = '1' + newPhone;
@@ -547,6 +547,45 @@ function isValidMobileNumber(phone, callback) {
 					valid: true,
 					result: result.result
 				});
+			}
+		},
+		error: function(error) {
+			mobileNotify("Error checking phone number" + error);
+			callback({
+				status: 'error',
+				valid: false,
+				error: error
+			});
+		}
+	});
+}
+
+function isValidEmail(email, callback) {
+	Parse.Cloud.run('validateEmail', {
+		email: email
+	}, {
+		success: function(result) {
+			if (result.status === 'ok') {
+				var data = result.result;
+
+				if (data.result === 'undeliverable' || data.result === 'unknown') {
+					callback({
+						status: 'ok',
+						valid: false,
+						result: data
+					});
+				} else {
+					callback({
+						status: 'ok',
+						valid: true,
+						isFree:  data.free,
+						isDisposable: data.disposable,
+						isHighQuality: data.sendex > 0.55,
+						correctedEmail: data.did_you_mean,
+						result: data
+					});
+				}
+
 			}
 		},
 		error: function(error) {

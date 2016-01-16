@@ -319,10 +319,120 @@ var appDataChannel = {
         });
     },
 
-    eventAccept: function (eventId, recipientId, comment) {
+    connectRequest: function (recipientId, comment) {
         var channel = appDataChannel.getContactAppChannel(recipientId);
         var msg = new Object();
 
+        var event = smartObject.findObject(eventId);
+        var notificationString =  userModel.currentUser.name + " wants to connect on Ghostgrams";
+        msg.msgID = uuid.v4();
+        msg.type = 'connectRequest';
+        msg.version = appDataChannel._version;
+        msg.date = new Date.today();
+        msg.comment = comment;
+        msg.userUUID = userModel.currentUser.userUUID;
+        msg.name = userModel.currentUser.name;
+        msg.alias = userModel.currentUser.alias;
+        msg.phone = userModel.currentUser.phone;
+        msg.email = userModel.currentUser.email;
+        msg.publicKey = userModel.currentUser.publicKey;
+        msg.pn_apns = {
+            aps: {
+                alert : notificationString,
+                badge: 1,
+                'content-available' : 1
+            },
+            isMessage: false,
+            isConnect: true,
+            target: '#contacts',
+            eventId :eventId
+        };
+        msg.pn_gcm = {
+            data : {
+                title: notificationString,
+                message: userModel.currentUser.name +  ' wants to share contact information with you.',
+                target: '#contacts',
+                image: "icon",
+                isMessage: false,
+                isConnect: true,
+                eventId :eventId
+            }
+        };
+
+        APP.pubnub.publish({
+            channel: channel,
+            message: msg,
+            callback: appDataChannel.publishCallback,
+            error: appDataChannel.errorCallback
+        });
+
+    },
+
+    connectReponse: function (recipientId, accept, comment) {
+        var channel = appDataChannel.getContactAppChannel(recipientId);
+        var msg = new Object();
+
+        var event = smartObject.findObject(eventId);
+        var notificationString =  userModel.currentUser.name + " wants to connect on Ghostgrams";
+        msg.msgID = uuid.v4();
+        msg.type = 'connectResponse';
+        msg.version = appDataChannel._version;
+        msg.date = new Date.today();
+        msg.accept = accept;
+        if (accept === true) {
+            msg.userUUID = userModel.currentUser.userUUID;
+            msg.name = userModel.currentUser.name;
+            msg.alias = userModel.currentUser.alias;
+            msg.phone = userModel.currentUser.phone;
+            msg.email = userModel.currentUser.email;
+            msg.publicKey = userModel.currentUser.publicKey;
+        }
+        msg.comment = comment;
+        msg.userUUID = userModel.currentUser.userUUID;
+        msg.name = userModel.currentUser.name;
+        msg.alias = userModel.currentUser.alias;
+        msg.phone = userModel.currentUser.phone;
+        msg.email = userModel.currentUser.email;
+        msg.pn_apns = {
+            aps: {
+                alert : notificationString,
+                badge: 1,
+                'content-available' : 1
+            },
+            isMessage: false,
+            isConnect: true,
+            target: '#contacts',
+            eventId :eventId
+        };
+        msg.pn_gcm = {
+            data : {
+                title: notificationString,
+                message: userModel.currentUser.name +  ' wants to share contact information with you.',
+                target: '#contacts',
+                image: "icon",
+                isMessage: false,
+                isConnect: true,
+                eventId :eventId
+            }
+        };
+
+        APP.pubnub.publish({
+            channel: channel,
+            message: msg,
+            callback: appDataChannel.publishCallback,
+            error: appDataChannel.errorCallback
+        });
+
+    },
+
+    eventAccept: function (eventId, senderId, recipientId, comment) {
+        var channel = appDataChannel.getContactAppChannel(senderId);
+        var msg = new Object();
+
+        var event = smartObject.findObject(eventId);
+
+
+        var notificationString =  userModel.currentUser.name + " has accepted " + event.name;
         msg.msgID = uuid.v4();
         msg.type = 'eventAccept';
         msg.version = appDataChannel._version;
@@ -330,13 +440,45 @@ var appDataChannel = {
         msg.eventId = eventId;
         msg.recipientId = recipientId;
         msg.comment = comment;
+        msg.pn_apns = {
+            aps: {
+                alert : notificationString,
+                badge: 1,
+                'content-available' : 1
+            },
+            isMessage: false,
+            isEvent: true,
+            target: '#smartEvent?event='+eventId,
+            eventId :eventId
+        };
+        msg.pn_gcm = {
+            data : {
+                title: notificationString,
+                message: userModel.currentUser.name +  ' says "' + comment + '"',
+                target: '#smartEvent?event='+eventId,
+                image: "icon",
+                isMessage: false,
+                isEvent: true,
+                eventId :eventId
+            }
+        };
+
+        APP.pubnub.publish({
+            channel: channel,
+            message: msg,
+            callback: appDataChannel.publishCallback,
+            error: appDataChannel.errorCallback
+        });
 
     },
 
-    eventDecline : function (eventId, recipientId, comment) {
-        var channel = appDataChannel.getContactAppChannel(recipientId);
+    eventDecline : function (eventId, senderId, recipientId, comment) {
+        var channel = appDataChannel.getContactAppChannel(senderId);
         var msg = new Object();
 
+        var event = smartObject.findObject(eventId);
+
+        var notificationString =  userModel.currentUser.name + " has declined " + event.name;
         msg.msgID = uuid.v4();
         msg.type = 'eventDecline';
         msg.version = appDataChannel._version;
@@ -344,6 +486,34 @@ var appDataChannel = {
         msg.eventId = eventId;
         msg.recipientId = recipientId;
         msg.comment = comment;
+        msg.pn_apns = {
+            aps: {
+                alert : notificationString,
+                badge: 1,
+                'content-available' : 1
+            },
+            isMessage: false,
+            isEvent: true,
+            target: '#smartEvent?event='+eventId,
+            eventId :eventId
+        };
+        msg.pn_gcm = {
+            data : {
+                title: notificationString,
+                message: userModel.currentUser.name +  ' says "' + comment + '"',
+                target: '#smartEvent?event='+eventId,
+                image: "icon",
+                isMessage: false,
+                isEvent: true,
+                eventId :eventId
+            }
+        };
+        APP.pubnub.publish({
+            channel: channel,
+            message: msg,
+            callback: appDataChannel.publishCallback,
+            error: appDataChannel.errorCallback
+        });
 
     },
 
@@ -351,27 +521,88 @@ var appDataChannel = {
     sendEventCancel : function (eventId, recipientId, comment) {
         var channel = appDataChannel.getContactAppChannel(recipientId);
         var msg = new Object();
+        var event = smartObject.findObject(eventId);
 
+        var notificationString =  userModel.currentUser.name + " has cancelled " + event.name;
         msg.msgID = uuid.v4();
         msg.type = 'eventCancel';
         msg.version = appDataChannel._version;
         msg.date = new Date.today();
         msg.eventId = eventId;
         msg.comment = comment;
+        msg.pn_apns = {
+            aps: {
+                alert : notificationString,
+                badge: 1,
+                'content-available' : 1
+            },
+            isMessage: false,
+            isEvent: true,
+            target: '#',
+            eventId :eventId
+        };
+        msg.pn_gcm = {
+            data : {
+                title: notificationString,
+                message: userModel.currentUser.name +  ' says "' + comment + '"',
+                target: '#',
+                image: "icon",
+                isMessage: false,
+                isEvent: true,
+                eventId :eventId
+            }
+        };
+        APP.pubnub.publish({
+            channel: channel,
+            message: msg,
+            callback: appDataChannel.publishCallback,
+            error: appDataChannel.errorCallback
+        });
     },
 
     // Must be sent to each invitee or accepted member
     sendEventUpdate : function (eventId, recipientId, updateObject, comment) {
         var channel = appDataChannel.getContactAppChannel(recipientId);
         var msg = new Object();
+        var event = smartObject.findObject(eventId);
 
+        var notificationString =  userModel.currentUser.name + " has updated " + event.name;
         msg.msgID = uuid.v4();
-        msg.type = 'eventCancel';
+        msg.type = 'eventUpdate';
         msg.version = appDataChannel._version;
         msg.date = new Date.today();
         msg.eventId = eventId;
         msg.eventUpdate = updateObject;
         msg.comment = comment;
+
+        msg.pn_apns = {
+            aps: {
+                alert : notificationString,
+                badge: 1,
+                'content-available' : 1
+            },
+            isMessage: false,
+            isEvent: true,
+            target: '#smartEvent?event='+eventId,
+            eventId :eventId
+        };
+        msg.pn_gcm = {
+            data : {
+                title: notificationString,
+                message: userModel.currentUser.name +  ' says "' + comment + '"',
+                target: '#smartEvent?event='+eventId,
+                image: "icon",
+                isMessage: false,
+                isEvent: true,
+                eventId :eventId
+            }
+        };
+        APP.pubnub.publish({
+            channel: channel,
+            message: msg,
+            callback: appDataChannel.publishCallback,
+            error: appDataChannel.errorCallback
+        });
     },
 
 
@@ -516,6 +747,23 @@ var appDataChannel = {
             error: appDataChannel.errorCallback
 
         });
+    },
+
+    processConnectRequest : function (senderId, senderName, comment) {
+        contactModel.connectReceived(senderId);
+        notificationModel.addConnectRequest(senderId, senderName);
+
+    },
+
+    processConnectResponse : function (senderId, senderName, accept, comment) {
+        if (accept) {
+            contactModel.updateContactDetails(senderId, function (contact) {
+                notificationModel.addConnectResponse(senderId, senderName, true);
+            });
+        } else {
+            notificationModel.addConnectResponse(senderId, senderName, false);
+        }
+
     },
 
     processEventAccept : function (eventId, recipientId, comment) {

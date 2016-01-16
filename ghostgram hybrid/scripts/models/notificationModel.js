@@ -22,6 +22,8 @@ var notificationModel = {
     _system: 'ghostgrams',
     _verifyPhone : 'Verify Phone',
     _verifyEmail : 'Verify Email',
+    _connectRequest: 'Connect Request',
+    _connectResponse: 'Connect Response',
 
 
     notificationDS: new kendo.data.DataSource({
@@ -111,6 +113,21 @@ var notificationModel = {
         this.newNotification(notificationModel._verifyPhone, 0, 'Please Verify Phone', null, "Please verify your mobile phone", "Verify", launchVerifyPhone , null, false);
     },
 
+
+    addConnectRequest : function (contactId, contactName) {
+        this.newNotification(this._connectRequest, contactId, contactName, null, contactName  + " wants to connect.", 'New Contact', null,
+            '#contacts', true);
+    },
+
+    addConnectResponse : function (contactId, contactName, accept) {
+        var responseStr = "has declined your Connect request";
+        if (accept) {
+            responseStr = "has accepted your Connect request!";
+        }
+        this.newNotification(this._connectResponse, contactId, contactName, null, contactName  + responseStr, 'New Contact', null,
+            '#contacts', true);
+    },
+
     addUnreadNotification : function (channelId, channelName, unreadCount) {
         this.newNotification(this._unreadCount, channelId, channelName, null, unreadCount + " new messages.", 'Read Messages', null,
         '#channel?channelId='+channelId, true);
@@ -122,7 +139,7 @@ var notificationModel = {
     },
 
     addNewPrivateChatNotification : function (channelId, channelName) {
-        this.newNotification(this._newPrivate, channelId, channelName, null, 'Private Chat Request', 'Goto Chat', null,
+        this.newNotification(this._newPrivate, channelId, channelName, null, 'New Private Chat', 'Goto Chat', null,
             '#channel?channelId='+channelId, true);
     },
 
@@ -195,8 +212,9 @@ var notificationModel = {
     updateUnreadNotification : function (channelId, channelName, unreadCount) {
         var notObj = notificationModel.findNotificationByPrivateId(channelId);
 
-        if (notObj === undefined) {
-            notificationModel.addUnreadNotification(channelId, channelName, unreadCount);
+        if (notObj === undefined ) {
+            if (unreadCount > 0)
+                notificationModel.addUnreadNotification(channelId, channelName, unreadCount);
         } else {
             if (unreadCount === undefined || unreadCount === 0) {
                 notificationModel.notificationDS.remove(notObj);
@@ -217,7 +235,9 @@ var notificationModel = {
             if (channel.unreadCount === undefined)
                 channel.unreadCount = 0;
 
-            notificationModel.updateUnreadNotification(channel.channelId, channel.name, channel.unreadCount);
+            notificationModel.updateUnreadNotification(channel.channelId, channel.name, Number(channel.unreadCount));
+
+
         }
     },
 
