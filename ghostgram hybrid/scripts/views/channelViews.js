@@ -1744,8 +1744,8 @@ var channelView = {
         _preventDefault(e);
         var uuid = e.sender.element[0].attributes['data-objectid'].value, id = e.sender.element[0].id;
         var chatmessage = $('#'+id).closest('.chat-message');
-        var messageId = chatmessage[0].attributes['data-id'].value;
-        
+        var messageId = chatmessage[0].attributes.id.value;
+
         if (messageId === null) {
             mobileNotify("Sender deleted this Smart Event!");
             return;
