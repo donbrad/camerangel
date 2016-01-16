@@ -1743,8 +1743,8 @@ var channelView = {
     onObjectClick : function (e) {
         _preventDefault(e);
         var uuid = e.sender.element[0].attributes['data-objectid'].value;
-        var message = e.sender.element[0].closest('chat-message');
-        var messageId = message.attributes['data-id'].value;
+        var chatmessage = e.sender.element[0].closest('chat-message');
+        var messageId = chatmessage.attributes['data-id'].value;
 
 /*
         if (e.sender.element[0].parentElement.parentElement.parentElement.parentElement.attributes['id'] !== undefined) {
