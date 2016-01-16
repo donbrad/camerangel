@@ -565,6 +565,7 @@ var modalChatPhotoView = {
     _dummyTitle : 'Title',
     _dummyDescription : '',
     _dummyTagsString : '',
+    _userHasCopy: false,
     _activePhoto : new kendo.data.ObservableObject(),
 
     onInit: function(e){
@@ -591,7 +592,12 @@ var modalChatPhotoView = {
             }
 
         } else {
-
+            // If the user already has a copy of this photo -- hide all recipient options
+            if (modalChatPhotoView._userHasCopy) {
+                $("#modalChatPhotoView-recipientlist").addClass('hidden');
+            } else {
+                $("#modalChatPhotoView-recipientlist").removeClass('hidden');
+            }
             $("#modalChatPhotoOwnerName").text(photo.ownerName + "'s Photo");
             $("#modalChatPhotoRecipient").removeClass('hidden');
             $("#modalChatPhotoSender").addClass('hidden');
@@ -615,12 +621,19 @@ var modalChatPhotoView = {
     savePhoto : function (e) {
         _preventDefault(e);
 
-        photoModel.addChatPhoto(modalChatPhotoView._photo);
+        photoModel.addChatPhoto(modalChatPhotoView._photo, function () {
+            modalChatPhotoView._userHasCopy = true;
+            ("#modalChatPhotoView-recipientlist").addClass('hidden');
+            $('#modalChatPhotoView-userhascopy').removeClass('hidden');
+        });
+
+
     },
 
     requestCopy : function (e) {
         _preventDefault(e);
         // Todo: wire up photo request
+
     },
 
     unlockPhoto : function (e) {
@@ -640,6 +653,16 @@ var modalChatPhotoView = {
         modalChatPhotoView._photoUrl = url;
         modalChatPhotoView._activePhoto.set('photoUrl', url);
         modalChatPhotoView._activePhoto.set('photoId', photo.photoId);
+
+         var photo = photoModel.findPhotoById(photo.photoId);
+         modalChatPhotoView._userHasCopy = false;
+         $('#modalChatPhotoView-userhascopy').addClass('hidden');
+         $('#modalChatPhotoView-userhascopy').addClass('hidden');
+         if (photo !== undefined) {
+             // This user already has a copy of this photo
+             modalChatPhotoView._userHasCopy = true;
+             $('#modalChatPhotoView-userhascopy').removeClass('hidden');
+         }
 
         if (photo.canCopy === undefined) {
             photo.canCopy = true;

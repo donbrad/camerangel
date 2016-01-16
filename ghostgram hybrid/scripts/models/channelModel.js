@@ -253,15 +253,29 @@ var channelModel = {
         channelModel.groupMessagesDS.add(message);
     },
 
-    updateUnreadCount: function (channelId, count, lastAccess) {
+    zeroUnreadCount: function (channelId) {
+        var channel = channelModel.findChannelModel(channelId);
+        if (channel === undefined) {
+            mobileNotify('updateUnreadCount: unknown channel ' + channelId);
+        } else {
+
+            var lastAccess = ggTime.currentTime();
+            channel.set('unreadCount',0);
+            //notificationModel.updateUnreadNotification(channelId, channel.get('name'), count);
+            updateParseObject('channels', 'channelId', channelId, 'unreadCount', 0);
+            channelModel.updateLastAccess(channelId, lastAccess);
+
+        }
+    },
+
+    updateUnreadCount: function (channelId, count) {
 
         var channel = channelModel.findChannelModel(channelId);
         if (channel === undefined) {
             mobileNotify('updateUnreadCount: unknown channel ' + channelId);
         } else {
-            if (lastAccess === undefined || lastAccess === null) {
-                lastAccess = ggTime.currentTime();
-            }
+
+            var lastAccess = ggTime.currentTime();
             channel.set('unreadCount',channel.get('unreadCount') + count);
             notificationModel.updateUnreadNotification(channelId, channel.get('name'), count);
             updateParseObject('channels', 'channelId', channelId, 'unreadCount', count);
@@ -270,7 +284,7 @@ var channelModel = {
         }
     },
 
-    updatePrivateUnreadCount: function (channelId, count, lastAccess) {
+    updatePrivateUnreadCount: function (channelId, count) {
         if (lastAccess === undefined || lastAccess === null) {
             lastAccess = ggTime.currentTime();
         }
@@ -279,9 +293,8 @@ var channelModel = {
         if (channel === undefined) {
             channelModel.confirmPrivateChannel(channelId);
         } else {
-            if (lastAccess === undefined || lastAccess === null) {
-                lastAccess = ggTime.currentTime();
-            }
+
+            var lastAccess = ggTime.currentTime();
 
             notificationModel.updateUnreadNotification(channelId, channel.get('name'), count);
             channel.set('unreadCount',channel.get('unreadCount') + count);

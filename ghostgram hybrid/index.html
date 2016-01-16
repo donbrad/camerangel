@@ -1324,6 +1324,8 @@
 				} else {
 					accessTime = accessTime + " ago";
 				}
+			} else {
+				accessTime = "A while ago";
 			}
 	    	#
 	    		<h4 class="textClamp">
@@ -1349,7 +1351,7 @@
 		    			<img src="images/group-icon.svg" class="icon-sm" /> Group Chat
 		    		#}#
 		    		#if (data.isMuted) {# <span class="listTag-light">Muted</span> #} #
-		    		#if (data.unreadCount > 0) {# <span class="chatActivityTime left">#:unreadCount# new</span> # } #
+		    		#if (data.unreadCount > 0) {# <span class="right"><img src="images/icon-chat.svg" class="icon-sm" /> #:unreadCount# new</span> # } #
 	    		</div>
 
 	    	</div><!-- chat-mainBox -->
@@ -1397,7 +1399,7 @@
 							<img src="images/chat-places.svg" height="24">
 						</a>
 					</li>
-					<li>
+					<li class="hidden">
 						<a data-role="button" data-click="channelView.messageInsertTag">
 							<img id="chatSmartTagBtn" src="images/icon-smart.svg" height="24">
 						</a>
@@ -1446,6 +1448,7 @@
 
 	<ul data-role="actionsheet" id="messageActionsSender" data-popup='{"direction": "left"}'>
 		<li><a data-action="channelView.archiveMessage"><img src="images/icon-memories.svg" class="icon-sm" /> Remember Message</a></li>
+		<li><a data-action="channelView.addToSmartList"><img src="images/gallery-list.svg" class="icon-sm" /> Add To Smart List</a></li>
 		<!--<li><a data-action="channelView.smartScanMessage"> Smart Scan Message</a></li>-->
 		<li><a data-action="channelView.messageRecall"><i class="fa fa-eraser"> </i> Recall Message</a></li>
 	</ul>
@@ -2416,6 +2419,7 @@
 		<div class="event-details">
 			<h2 data-bind="text: title"></h2>
 			<p class="helper" data-bind="text: description"></p>
+			<p class="helper">Organized by <span id="modalActionMeeting-organizer"></span></p>
 		</div>
 		<div class="event-details">
 			<p>
@@ -2470,7 +2474,7 @@
 						<img src='images/smart-event.svg' class='icon-sm'/>
 						<input type="text" style="width: 50%" id="modalActionMeeting-date"/>
 						<img src='images/smart-time.svg' class='icon-sm'/>
-						<input type="text" style="width: 30%" id="modalActionMeeting-time"/>
+						<input type="search" style="width: 30%" id="modalActionMeeting-time"/>
 					</span>
 				</label>
 			</li>
@@ -2633,6 +2637,7 @@
 </div>
 
 <div data-role="modalview" id="modalChatPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal" data-model="modalChatPhotoView._activePhoto" data-init="modalChatPhotoView.onInit"  data-zoom="true">
+	<div style="text-align: center; margin: 16px;" id="modalChatPhotoView-userhascopy">In Memories</div>
 	<div class="photoViewBox">
 		<div style="width: 100%; height: 90%;">
 			<img class="centerPhoto" id="modalChatPhotoViewImage" src="" width="100%" data-bind="attr: {src : photoUrl}" />
@@ -2640,29 +2645,28 @@
 	</div>
 	<div class="footer" data-role="footer">
 
-		<div id="modalChatPhotoRecipient"  class="hidden">
-				<div style="text-align: center;" id="modalChatPhotoOwnerName"> </div>
-				<ul class="modalChatPhotoList">
-					<li id="modalChatPhotoViewUnlocked">
+		<div style="text-align: center;" id="modalChatPhotoRecipient"  class="hidden">
+			<div style="text-align: center;" id="modalChatPhotoOwnerName"> </div>
+			<ul class="modalChatPhotoList" id="modalChatPhotoView-recipientlist">
+				<li id="modalChatPhotoViewUnlocked">
 
-						<a class="btnClear-light" data-role="button" data-click="modalChatPhotoView.savePhoto">
-							<img src="images/icon-save-memories.svg" class="modalChatPhotoListImg" />
-							<p class="modalChatPhotoListOpt">Save to Memories</p>
-						</a>
-					</li>
-					<li id="modalChatPhotoViewLocked">
-
-						<a class="btnClear-light" data-role="button" data-click="modalChatPhotoView.requestCopy">
-							<img src="images/icon-download-light.svg" class="modalChatPhotoListImg" />
-							<p class="modalChatPhotoListOpt">Request a copy</p>
-						</a>
-					</li>
-					<li id="modalChatPhotoViewRequestSent">
-						<img src="images/icon-sent.svg" class="modalChatPhotoListImg" />
-						<span>Photo Copy Requested</span>
-					</li>
-				</ul>
-			</div>
+					<a class="btnClear-light" data-role="button" data-click="modalChatPhotoView.savePhoto">
+						<img src="images/icon-save-memories.svg" class="modalChatPhotoListImg" />
+						<p class="modalChatPhotoListOpt">Save to Memories</p>
+					</a>
+				</li>
+				<li id="modalChatPhotoViewLocked">
+					<a class="btnClear-light" data-role="button" data-click="modalChatPhotoView.requestCopy">
+						<img src="images/icon-download-light.svg" class="modalChatPhotoListImg" />
+						<p class="modalChatPhotoListOpt">Request a copy</p>
+					</a>
+				</li>
+				<li id="modalChatPhotoViewRequestSent">
+					<img src="images/icon-sent.svg" class="modalChatPhotoListImg" />
+					<span>Photo Copy Requested</span>
+				</li>
+			</ul>
+		</div>
 		<div id="modalChatPhotoOwner" class="hidden">
 			<ul class="modalChatPhotoList" >
 				<li id="modalChatPhotoViewOwnerUnlocked">
@@ -3074,7 +3078,7 @@
 				<li>
 
 					<label>Contact email
-						<input type="email"  name="Contact Email" data-bind="value: email" placeholer="me@example.com"/>
+						<input type="email"  name="Contact Email" data-bind="value: email" placeholder="me@example.com"/>
 					</label>
 				</li>
 				

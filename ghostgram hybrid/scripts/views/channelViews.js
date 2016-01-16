@@ -1008,7 +1008,7 @@ var channelView = {
                 }
             },*/
             buttons: [ 'bold', 'italic', 'lists','horizontalrule'],
-            plugins: ['bufferbuttons'],
+            plugins: ['source'],
             toolbarExternal: '#messageComposeToolbar'
         });
 
@@ -1099,7 +1099,7 @@ var channelView = {
 
         channelView._channel = thisChannel;
 
-        channelModel.updateUnreadCount(thisChannel.channelId, 0, ggTime.currentPubNubTime());
+        channelModel.zeroUnreadCount(thisChannel.channelId);
 
         var contactUUID = null;
         var thisChannelHandler = null;
@@ -1109,8 +1109,6 @@ var channelView = {
 
         channelView.members = thisChannel.members;
 
-
-        channelModel.updateUnreadCount(channelUUID, 0, null);
 
         //default private mode off for now. Todo: don and jordan fix privacy mode
         channelView.privacyMode = false;
@@ -1720,14 +1718,14 @@ var channelView = {
      _initMessageTextArea : function () {
 
         /* var editor =  $('#messageTextArea').data("kendoEditor");
-         $('#messageTextArea').val('');
+
          $('#messageTextArea').attr("rows","1");
          $('#messageTextArea').attr("height","24px");
          editor.value('');
          editor.update();
 */
-
-         $('#messageTextArea').redactor('code.set', '');
+         $('#messageTextArea').val('');
+         $('#messageTextArea').redactor('code.set', "");
 
 
        // autosize.update($('#messageTextArea'));
@@ -1787,6 +1785,7 @@ var channelView = {
       //  var editor = $("#messageTextArea").data("kendoEditor");
         var date = smartObject.date.toLocaleString();
 
+
         var dateStr = moment(date).format('dd MMM Do');
         var localTime = moment(date).format("LT");
 
@@ -1806,7 +1805,7 @@ var channelView = {
      /*   editor.paste(objectUrl);
         editor.update();*/
 
-        $('#messageTextArea').redactor('insert.raw', objectUrl);
+        $('#messageTextArea').redactor('insert.node', $('<div />').html(objectUrl));
 
         smartObject.channelId = channelView._channelId;
 
@@ -1826,7 +1825,7 @@ var channelView = {
 
             var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="chatphoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
 
-            $('#messageTextArea').redactor('insert.raw', imgUrl);
+            $('#messageTextArea').redactor('insert.node', $('<div />').html(imgUrl));
            /* editor.paste(imgUrl);
             editor.update();*/
         }

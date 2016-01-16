@@ -399,7 +399,7 @@ var photoModel = {
 
     },
 
-    addChatPhoto : function (photoObj) {
+    addChatPhoto : function (photoObj, callback) {
 
         mobileNotify("Adding Chat photo to Memories...");
         var Photos = Parse.Object.extend("photos");
@@ -433,11 +433,13 @@ var photoModel = {
             parseFile.save().then(function () {
                 photo.set('thumbnail',parseFile);
                 photo.set('thumbnailUrl',parseFile._url);
-                var photoModel = photo.toJSON();
+                var photoObj = photo.toJSON();
 
-                photoModel.photosDS.add(photoModel);
-
+                photoModel.photosDS.add(photoObj);
+                mobileNotify("Photo added to Memories!");
                 photoModel.addOfferImage(photoId, photoObj.imageUrl);
+                if (callback !== undefined)
+                    callback(photo);
             });
 
         });

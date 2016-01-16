@@ -222,6 +222,19 @@ var modalActionMeeting = {
 
     },
 
+    checkExpired : function (date) {
+        var thisObject = modalActionMeeting._activeObject;
+
+        if (moment(modalActionMeeting._date).isAfter(date)) {
+            thisObject.set('isExpired', true);
+            modalActionMeeting.setEventBanner("expired");
+
+        } else {
+            thisObject.set('isExpired', false);
+            modalActionMeeting.setEventBanner();
+        }
+    },
+
     updateDateString : function () {
         var date = $('#modalActionMeeting-date').val();
         var time = $('#modalActionMeeting-time').val();
@@ -259,21 +272,16 @@ var modalActionMeeting = {
 
             $("#modalActionMeeting-datestring").on('blur', function () {
                 var dateStr =  $("#modalActionMeeting-datestring").val();
-                if (dateStr.length > 6) {
+                if (dateStr.length > 5) {
                     var timeString = dateStr.match(/\d{1,2}([:.]?\d{1,2})?([ ]?[a|p]m)/ig);
                     var date = Date.today();
                     var timeComp = '';
                     if (timeString !== null && timeString.length > 0) {
-
                         dateStr = dateStr.replace(timeString[0], '');
                         dateStr = dateStr.trim();
 
-
                         var time = Date.parse(timeString[0]);
                         timeComp = new Date(time).toString("h:mm tt");
-
-
-
                     }
                     if (dateStr.length > 4) {
                         date = Date.parse(dateStr);
@@ -290,22 +298,33 @@ var modalActionMeeting = {
 
                 }
             });
-            
+
+
             $('#modalActionMeeting-date').pickadate({
-                weekdaysShort: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-                showMonthsShort: true,
-                onClose: function(){
+                format: 'ddd,  mmm, d yyyy',
+                formatSubmit: 'mm d yyyy',
+                min: true,
+                onSet : function (context) {
                     modalActionMeeting.updateDateString();
                 }
             });
+            //$('#modalActionMeeting-time').pickatime();
+
+           /* $("#modalActionMeeting-date").on('blur', function () {
+
+            });*/
+
 
 
             $("#modalActionMeeting-time").on('blur', function () {
                 var timeIn =  $("#modalActionMeeting-time").val();
-                var time = Date.parse(timeIn);
-                var timeComp = new Date(time).toString("h:mm tt");
-                $("#modalActionMeeting-time").val(timeComp);
-                modalActionMeeting.updateDateString();
+                if (timeIn.length > 3) {
+
+                    var time = Date.parse(timeIn);
+                    var timeComp = new Date(time).toString("h:mm tt");
+                    $("#modalActionMeeting-time").val(timeComp);
+                    modalActionMeeting.updateDateString();
+                }
             });
 
             $("#modalActionMeeting-placesearch").on('input', function () {
@@ -371,58 +390,60 @@ var modalActionMeeting = {
         }
         modalActionMeeting._date = new Date();
 
-
-
+        $("#modalActionMeeting-eventExpired").addClass('hidden');
 
         if (actionObj === undefined || actionObj === null) {
             modalActionMeeting.initActiveObject();
-            // setup as a new event
-            modalActionMeeting.setSenderMode();
+
         } else {
             // we have an existing event
             modalActionMeeting.setActiveObject(actionObj);
-            var thisObject = modalActionMeeting._activeObject;
-
-            if (moment(modalActionMeeting._date).isAfter(thisObject.date)) {
-                // event is expired
-                modalActionMeeting.setEventBanner("expired");
-                thisObject.set('isExpired', true);
-
-            } else {
-                // event is in the future
-                thisObject.set('isExpired', false);
-            }
-
-            // setting send/receiver
-            if (thisObject.senderUUID === undefined || thisObject.senderUUID === null) {
+        }
+        var thisObject = modalActionMeeting._activeObject;
+        // setting send/receiver
+        if (thisObject.senderUUID === undefined || thisObject.senderUUID === null) {
                 modalActionMeeting.setSenderMode();
-            } else if (thisObject.senderUUID === userModel.currentUser.userUUID) {
+        } else if (thisObject.senderUUID === userModel.currentUser.userUUID) {
                 modalActionMeeting.setSenderMode();
-            } else {
+        } else {
                 modalActionMeeting.setRecipientMode();
-            }
+                modalActionMeeting.checkExpired(thisObject.date);
+        }
+
+
+
 
             // setting event location
-            if(thisObject.placeName !== null){
+        if(thisObject.placeName !== null){
                 $(".event-location").removeClass("hidden");
-            } else {
+        } else {
                 $(".event-location").addClass("hidden");
-            }
-
-            var prettyDate = moment(thisObject.date).format('ddd MMM Do [at] hA');
-            $(".event-date").text(prettyDate);
-
         }
+
+        var prettyDate = moment(thisObject.date).format('ddd MMM Do [at] hA');
+        $(".event-date").text(prettyDate);
+
+
 
         $("#modalActionMeeting-placesearchdiv").addClass('hidden');
 
+        if (thisObject.senderUUID === null || thisObject.senderUUID === userModel.currentUser.userUUID) {
+            $("#modalActionMeeting-organizer").text("You");
+        } else {
+            var contact = contactModel.findContactByUUID(thisObject.senderUUID);
+            if (contact !== undefined) {
+                $("#modalActionMeeting-organizer").text(contact.name);
+            }
+        }
+
+        modalActionMeeting.checkExpired();
 
         $("#modalview-actionMeeting").data("kendoMobileModalView").open();
     },
 
     setEventBanner: function(state){
         // Styling for event banner state
-        switch(state){
+        switch(state) {
             case "expired":
                 $(".eventBanner").removeClass("hidden").addClass("eventExpired");
                 $(".eventBannerTitle").text("Event expired");
@@ -551,8 +572,9 @@ var modalActionMeeting = {
 
         
         var finalDateStr = $("#modalActionMeeting-datestring").val();
+        var saveDate = new Date(finalDateStr);
 
-        modalActionMeeting._activeObject.set('date', new Date(finalDateStr));
+        modalActionMeeting._activeObject.set('date', saveDate);
         modalActionMeeting.createSmartEvent(thisObj);
 
 
