@@ -1743,13 +1743,16 @@ var channelView = {
     onObjectClick : function (e) {
         _preventDefault(e);
         var uuid = e.sender.element[0].attributes['data-objectid'].value;
-        var messageId = null;
+        var message = e.sender.element[0].closest('chat-message');
+        var messageId = message.attributes['data-id'].value;
 
+/*
         if (e.sender.element[0].parentElement.parentElement.parentElement.parentElement.attributes['id'] !== undefined) {
             messageId = e.sender.element[0].parentElement.parentElement.parentElement.parentElement.attributes['id'].value;
         } else if (e.sender.element[0].parentElement.parentElement.parentElement.attributes['id']) {
             messageId = e.sender.element[0].parentElement.parentElement.parentElement.attributes['id'].value;
-        }
+        }*/
+
         if (messageId === null) {
             mobileNotify("Sender deleted this Smart Event!");
             return;
