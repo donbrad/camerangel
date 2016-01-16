@@ -1592,8 +1592,8 @@ var channelView = {
     },
 
 
-    messageAddSmartObject : function (smartObj) {
-
+    messageAddSmartEvent : function (smartObj) {
+        smartObj.channelId = channelView._channelId;
         channelView.activeMessage.objects.push(smartObj);
         smartObject.smartAddObject(smartObj);
 
@@ -1653,8 +1653,8 @@ var channelView = {
         if (channelView.messageObjects.length > 0) {
             validMessage = true;
 
-          //Process message smart objects...
-            channelView.validateMessageObjects();
+            var smartObject = channelView.messageObjects[0];
+            text = channelView.addSmartEventToMessage(smartObject.objectId, smartObject, text);
 
         }
 
@@ -1672,7 +1672,7 @@ var channelView = {
     },
 
     // Parse message text to make user didn't delete object anchor in text
-    validateMessageObjects : function () {
+  /*  validateMessageObjects : function () {
         var validObject = [];
         //var messageText = $('#messageTextArea').data("kendoEditor").value();
         var messageText = $('#messageTextArea').redactor('code.get');
@@ -1687,7 +1687,7 @@ var channelView = {
                // channelView.messageAddPhotoOffer(photoId, !channelView.messageLock);
             }
         }
-    },
+    },*/
 
     // Need to make sure all the photos in activeMessage.photos still exist in the editor
     validateMessagePhotos : function () {
@@ -1780,7 +1780,7 @@ var channelView = {
 
     },
 
-    addSmartObjectToMessage: function (objectId, smartObject) {
+    addSmartEventToMessage: function (objectId, smartObject, message) {
 
       //  var editor = $("#messageTextArea").data("kendoEditor");
         var date = smartObject.date.toLocaleString();
@@ -1789,18 +1789,6 @@ var channelView = {
         var dateStr = moment(date).format('ddd MMM Do');
         var localTime = moment(date).format("LT");
 
-        /*var objectUrl = '<a class="btnSmart" data-role="button" data-objectid="' + objectId +
-            '" id="chatobject_' + objectId + '"'+
-            'data-click="channelView.onObjectClick" >' +
-            '<span class="btnSmart-type">' +
-            '<img src="images/smart-event-light.svg" class="icon-md" />' +
-            '</span>' +
-                '<span class="btnSmart-content">' +
-                    '<p class="textClamp btnSmart-title">' + smartObject.title + '</p>' +
-                    '<p class="textClamp btnSmart-date">' + dateStr + ' ' + localTime + '</p>' +
-                '</span>' +
-            '</a>';
-*/
         var objectUrl = '<div><a class="btnSmart" data-role="button" data-objectid="' + objectId +
             '" id="chatobject_' + objectId + '"'+
             'data-click="channelView.onObjectClick" >' +
@@ -1810,35 +1798,10 @@ var channelView = {
             '<span class="btnSmart-content">' +
             '<p class="textClamp btnSmart-title">' + smartObject.title + '</p>' +
             '<p class="textClamp btnSmart-date">' + dateStr + ' ' + localTime + '</p>' +
+            '<p class="textClamp btnSmart-date">' + smartObject.placeName + '</p>' +
             '</span>' +
             '</a></div>';
 
-      /*  var span1 = $('<span class="btnSmart-content" />').html(  '<p class="textClamp btnSmart-title">' + smartObject.title + '</p>' +
-            '<p class="textClamp btnSmart-date">' + dateStr + ' ' + localTime + '</p>');
-
-        var span2 = $('<span class="btnSmart-type" />').html( '<img src="images/smart-event-light.svg" class="icon-md" />');
-
-     /!*   editor.paste(objectUrl);
-        editor.update();*!/
-
-        //$('#messageTextArea').redactor('insert.node', $('<div />').html(objectUrl));
-
-        $('#messageTextArea').redactor('insert.node', $('<div >').html('<a class="btnSmart" data-role="button" data-objectid="' + objectId +
-        '" id="chatobject_' + objectId + '"'+
-        'data-click="channelView.onObjectClick" >'));
-        $('#messageTextArea').redactor('insert.node', $('<span class="btnSmart-content" />').html(  '<p class="textClamp btnSmart-title">' + smartObject.title + '</p>' +
-            '<p class="textClamp btnSmart-date">' + dateStr + ' ' + localTime + '</p>'));
-        $('#messageTextArea').redactor('insert.node', $('<span class="btnSmart-type" />').html( '<img src="images/smart-event-light.svg" class="icon-md" />'));
-
-        $('#messageTextArea').redactor('insert.node', $('</div>'));
-*/
-        $('#messageTextArea').redactor('insert.raw',objectUrl);
-        smartObject.channelId = channelView._channelId;
-
-        channelView.messageObjects.push(smartObject);
-
-        /* $('#chatImage').attr('src', displayUrl);
-         $('#chatImagePreview').show();*/
     },
 
     addImageToMessage: function (photoId, displayUrl) {
@@ -2277,7 +2240,12 @@ var channelView = {
     messageCalendar : function (e) {
         _preventDefault(e);
         channelView.messageMenuTag();
-        modalActionMeeting.openModal(null);
+        modalActionMeeting.openModal(null, function (event) {
+
+            channelView.messageAddSmartEvent(event);
+            mobileNotify("Sending Smart Event...");
+            channelView.messageSend();
+        });
     },
 
     messageEvent : function (e) {

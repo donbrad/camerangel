@@ -14,6 +14,7 @@ var modalActionMeeting = {
     _date : new Date(),
     _placeId :null,
     _isInited : false,
+    _callback : null,
     _eventList :[],
     response: false,
 
@@ -246,7 +247,7 @@ var modalActionMeeting = {
 
     },
 
-    openModal: function (actionObj) {
+    openModal: function (actionObj, callback) {
         if (!modalActionMeeting._isInited) {
 
             modalActionMeeting._eventList = smartObject.getActionNames();
@@ -388,6 +389,13 @@ var modalActionMeeting = {
 
             modalActionMeeting._isInited = true;
         }
+
+        if (callback === undefined) {
+            callback = null;
+        }
+
+        modalActionMeeting._callback = callback;
+
         modalActionMeeting._date = new Date();
 
         $("#modalActionMeeting-eventExpired").addClass('hidden');
@@ -483,8 +491,9 @@ var modalActionMeeting = {
         modalActionMeeting.setEventBanner();
     },
 
-    sendEventStatus: function(e){
-        // todo - wire event status
+    sendRSVP: function(e){
+
+        // todo - recipient RSVP
         modalActionMeeting.onDone();
     },
 
@@ -556,7 +565,7 @@ var modalActionMeeting = {
         thisObject.inviteList = thisObj.inviteList;
         thisObject.commentList = thisObj.commentList;
 
-        channelView.addSmartObjectToMessage(thisObj.uuid, thisObject);
+        //channelView.addSmartObjectToMessage(thisObj.uuid, thisObject);
 
     },
 
@@ -568,13 +577,13 @@ var modalActionMeeting = {
 
     onSaveEvent : function (e) {
         var thisObj = modalActionMeeting._activeObject;
-        // todo - wire create new event
-
         
         var finalDateStr = $("#modalActionMeeting-datestring").val();
         var saveDate = new Date(finalDateStr);
 
         modalActionMeeting._activeObject.set('date', saveDate);
+
+
         modalActionMeeting.createSmartEvent(thisObj);
 
 
@@ -591,6 +600,9 @@ var modalActionMeeting = {
         //_preventDefault(e);
 
         $("#modalview-actionMeeting").data("kendoMobileModalView").close();
+        if (modalActionMeeting._callback !== null) {
+            modalActionMeeting._callback(modalActionMeeting._activeObject);
+        }
     }
 
 };

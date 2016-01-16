@@ -2406,7 +2406,6 @@
 		<div data-role="navbar">
 			<span>Smart Event</span>
 			<a data-click="modalActionMeeting.onCancel" data-role="button"  class="btnClear-grey" data-align="left"><img src="images/nav-back.svg" /></a>
-			<a data-role="button" class="btnClear-grey event-owner" data-align="right" data-click="modalActionMeeting.showEditMode" id="event-owner-edit">Edit</a>
 		</div>
 	</div>
 	<div class="event-view" id="event-viewMode">
@@ -2424,9 +2423,10 @@
 		<div class="event-details">
 			<p>
 				<span class="event-date"></span>
-				<a class="btnClear-red event-owner" data-role="button" data-click="modalActionMeeting.onCancelEvent" id="event-owner-cancel">Cancel Event</a>
+				<span class="event-expired hidden"><em> Expired!</em></span>
+		<!--		<a class="btnClear-red event-owner" data-role="button" data-click="modalActionMeeting.onCancelEvent" id="event-owner-cancel">Cancel Event</a>
 				<a class="btnClear event-owner hidden" data-role="button" data-click="modalActionMeeting.onSaveEvent" id="actionMeeting-reschedule">Reschedule Event</a>
-			</p>
+-->			</p>
 
 			<p class="event-location">
 				<a class="btnClear" data-role="button" data-click="modalActionMeeting.eventMapLocation">
@@ -2447,7 +2447,7 @@
 		<div class="event-details event-recipient" id="event-comment">
 			<label>Add a quick note (Optional)</label>
 			<textarea row="2" col="80" placeholder="" maxlength="80" id="modalActionMeeting-comments"></textarea>
-			<a class="btnPrimary" data-role="button" data-click="smartEventView.sendEventStatus">Send RSVP</a>
+			<a class="btnPrimary" data-role="button" data-click="modalActionMeeting.sendEventStatus">Send RSVP</a>
 		</div>
 	</div>
 
@@ -2495,27 +2495,30 @@
 				</label>
 			</li>-->
 		</ul>
-		<!--<a data-role="button" type="button" class="btnClearLine"  id="modalActionMeeting-eventchat"  data-click="modalActionMeeting.doEventChat">Add Event Chat</a>-->
 	</form>
 
 	<div class="footer" data-role="footer">
+
 		<div class="event-recipient">
-			<a class="btnFull-modal btnPrimary" data-role="button" data-click="modalActionMeeting.onCancel">Close</a>
-		</div>
-		<div class="event-owner">
-			<div id="actionMeeting-update" class="hidden">
-				<a class="btnFull-modal btnPrimary" data-role="button" data-click="modalActionMeeting.onUpdateEvent">Update Event</a>
-			</div>
-			<div id="actionMeeting-save" class="hidden">
-				<a class="btnFull-modal btnPrimary" data-role="button" data-click="modalActionMeeting.onSaveEvent">Create Event</a>
-			</div>
-			<div id="actionMeeting-accept" class="hidden">
+			<div id="actionMeeting-accept event-valid" class="hidden">
 				<span id="actionMeeting-acceptStatus"></span>
 				<a class="btnFull-modal btnSecondary" data-role="button" data-click="modalActionMeeting.onDecline">Decline Event</a>
 				<a class="btnFull-modal btnPrimary" data-role="button" data-click="modalActionMeeting.onAccept">Accept Event</a>
 			</div>
-		</div>
 
+		</div>
+		<div class="event-owner">
+			<div id="actionMeeting-update" class="hidden">
+				<a data-role="button" class="btnFull-modal btnSeconary event-valid event-owner" data-align="right" data-click="modalActionMeeting.showEditMode">Edit Event</a>
+				<a class="btnFull-modal btnSecondary event-valid event-owner" data-role="button" data-click="modalActionMeeting.onCancelEvent">Cancel Event</a>
+				<a class="btnFull-modal btnSecondary event-expired hidden" data-role="button" data-click="modalActionMeeting.onRescheduleEvent">Reschedule Event</a>
+			</div>
+			<div id="actionMeeting-save" class="hidden">
+				<a data-role="button" type="button" class="btnClearLine"  id="modalActionMeeting-eventchat"  data-click="modalActionMeeting.doEventChat">Add Event Chat</a>
+				<a class="btnFull-modal btnSecondary" data-role="button" data-click="modalActionMeeting.onSaveEvent">Create Event</a>
+			</div>
+		</div>
+		<a class="btnFull-modal btnPrimary" data-role="button" data-click="modalActionMeeting.onCancel">Close</a>
 	</div>
 </div>
 
