@@ -1802,6 +1802,10 @@ var channelView = {
             '</span>' +
             '</a></div>';
 
+        var fullMessage = message + objectUrl;
+
+        return (message);
+
     },
 
     addImageToMessage: function (photoId, displayUrl) {
