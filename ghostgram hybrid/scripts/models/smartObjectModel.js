@@ -302,27 +302,23 @@ var smartObject = {
     recipientAccept : function (eventId, recipientId, comment) {
         var event = smartObject.findObject(eventId);
         if (event !== undefined) {
-            var accepts = event.acceptList, declines = event.declineList;
+            var rsvpList = event.rsvpList;
 
-            smartObject.removeFromList(declines, recipientId);
-            smartObject.removeFromList(accepts, recipientId);
-            accepts.push(recipientId);
-            updateParseObject('smartobject', 'uuid', eventId, 'acceptList', accepts);
-            updateParseObject('smartobject', 'uuid', eventId, 'declineList', declines);
 
-            if (comment !== null) {
-                var contact = contactModel.findContact(recipientId);
-                if (contact !== undefined) {
-                    var commentObj = {
-                        contactId : recipientId,
-                        contactName : contact.name,
-                        comment: comment
-                    };
+            var contact = contactModel.findContact(recipientId);
+            if (contact !== undefined) {
+                var commentObj = {
+                    date: new Date(),
+                    isAccepted: true,
+                    contactId: recipientId,
+                    contactName: contact.name,
+                    comment: comment
+                };
 
-                    event.commentList.push(commentObj);
-                    updateParseObject('smartobject', 'uuid', eventId, 'commentList', event.commentList);
-                }
+                event.rsvpList.push(commentObj);
+                updateParseObject('smartobject', 'uuid', eventId, 'commentList', event.commentList);
             }
+
         }
 
     },
@@ -330,26 +326,23 @@ var smartObject = {
     recipientDecline : function (eventId, recipientId, comment) {
         var event = smartObject.findObject(eventId);
         if (event !== undefined) {
-            var accepts = event.acceptList, declines = event.declineList;
+            var rsvpList = event.rsvpList;
 
-            smartObject.removeFromList(declines, recipientId);
-            smartObject.removeFromList(accepts, recipientId);
-            declines.push(recipientId);
-            updateParseObject('smartobject', 'uuid', eventId, 'acceptList', accepts);
-            updateParseObject('smartobject', 'uuid', eventId, 'declineList', declines);
-            if (comment !== null) {
-                var contact = contactModel.findContact(recipientId);
-                if (contact !== undefined) {
-                    var commentObj = {
-                        contactId : recipientId,
-                        contactName : contact.name,
-                        comment: comment
-                    };
 
-                    event.commentList.push(commentObj);
-                    updateParseObject('smartobject', 'uuid', eventId, 'commentList', event.commentList);
-                }
+            var contact = contactModel.findContact(recipientId);
+            if (contact !== undefined) {
+                var commentObj = {
+                    date: new Date(),
+                    isAccepted: false,
+                    contactId: recipientId,
+                    contactName: contact.name,
+                    comment: comment
+                };
+
+                event.rsvpList.push(commentObj);
+                updateParseObject('smartobject', 'uuid', eventId, 'commentList', event.commentList);
             }
+
         }
     },
 
@@ -380,7 +373,9 @@ var smartObject = {
         smartOb.setACL(userModel.parseACL);
         smartOb.set('uuid', objectIn.uuid);
         smartOb.set('senderUUID', objectIn.senderUUID);
+        smartOb.set('senderName', objectIn.senderName);
         smartOb.set('channelId', objectIn.channelId);
+        smartOb.set('calendarId', objectIn.calendarId);
         smartOb.set('action', objectIn.action);
         smartOb.set('type', objectIn.type);
         smartOb.set('title', objectIn.title);
@@ -400,6 +395,8 @@ var smartObject = {
         smartOb.set('isAccepted', objectIn.isAccepted);
         smartOb.set('isModified', objectIn.isModified);
         smartOb.set('isDeleted', objectIn.isDeleted);
+        smartOb.set('inviteList', objectIn.inviteList);
+        smartOb.set('rsvpList', objectIn.rsvpList);
 
         var smartObj = smartOb.toJSON();
         smartObject.objectsDS.add(smartObj);

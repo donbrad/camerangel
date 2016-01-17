@@ -53,11 +53,8 @@ var modalActionMeeting = {
         thisObj.set('isAccepted', false);
         thisObj.set('isAccepted', false);
         thisObj.set('addToCalendar', false);
-        thisObj.set('declineList', []);
-        thisObj.set('acceptList', []);
-        thisObj.set('inviteList', []);
+        thisObj.set('rsvpList', []);
         thisObj.set('comment', null);
-        thisObj.set('commentList', []);
         thisObj.set('wasSent', false);
 
 
@@ -514,6 +511,7 @@ var modalActionMeeting = {
             $("#event-comment textarea").attr("placeholder", "Sorry can't make it.")
         }
     },
+
     sendRSVP: function(e){
         _preventDefault(e);
         var thisEvent = modalActionMeeting._activeObject;
@@ -529,6 +527,7 @@ var modalActionMeeting = {
         }
 
         if (!modalActionMeeting.userAccepted) {
+
             smartObject.accept(thisEvent.uuid, thisEvent.senderUUID, commentStr);
 
             modalActionMeeting.setAcceptStatus();
@@ -569,6 +568,7 @@ var modalActionMeeting = {
 
     createSmartEvent : function (thisObj) {
         var thisObject = {};
+
         if (thisObj.action === null) {
             // User has submitted a custom action
             var titleArray = thisObj.title.split(' ');
@@ -601,10 +601,8 @@ var modalActionMeeting = {
         thisObject.isModified = true;
         thisObject.isAccepted = thisObj.isAccepted;
         thisObject.isDeclined = thisObj.isDeclined;
-        thisObject.declineList = thisObj.declineList;
-        thisObject.acceptList = thisObj.acceptList;
+        thisObject.rsvpList = thisObj.rsvpList;
         thisObject.inviteList = thisObj.inviteList;
-        thisObject.commentList = thisObj.commentList;
 
         //channelView.addSmartObjectToMessage(thisObj.uuid, thisObject);
 
@@ -627,6 +625,7 @@ var modalActionMeeting = {
 
         modalActionMeeting.createSmartEvent(thisObj);
 
+      //  smartObject.addObject(thisObj);
 
         modalActionMeeting.onDone();
     },
