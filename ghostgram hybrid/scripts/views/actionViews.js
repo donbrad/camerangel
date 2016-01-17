@@ -130,10 +130,10 @@ var modalActionMeeting = {
         $(".event-recipient, #event-editMode").addClass("hidden");
         $("#event-owner-edit").addClass("hidden");
         if(thisEvent.wasSent){
-            $('#actionMeeting-save').addClass('hidden');
+            $('#event-owner-save').addClass('hidden');
             // owner of a previously created event
             if(thisEvent.isExpired){
-                $('#actionMeeting-reschedule').removeClass('hidden');
+                $('#event-owner-reschedule').removeClass('hidden');
                 $('#actionMeeting-update').addClass('hidden');
                 $("#event-owner-cancel").addClass("hidden");
 
@@ -145,7 +145,7 @@ var modalActionMeeting = {
                 $("#event-owner-edit").removeClass("hidden");
             }
         } else {
-            $('#actionMeeting-save').removeClass('hidden');
+            $('#event-owner-save').removeClass('hidden');
             // new event
             modalActionMeeting.showEditMode();
         }
@@ -159,8 +159,8 @@ var modalActionMeeting = {
         $("#event-viewMode").addClass("hidden");
 
         // Set btm action btn
-        $('#actionMeeting-save').removeClass('hidden');
-        $('#actionMeeting-reschedule').addClass('hidden');
+        $('#event-owner-save').removeClass('hidden');
+        $('#event-owner-reschedule').addClass('hidden');
 
         // set event times
         var thisEvent = modalActionMeeting._activeObject;
