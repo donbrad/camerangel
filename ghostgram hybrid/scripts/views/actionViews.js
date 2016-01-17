@@ -409,26 +409,26 @@ var modalActionMeeting = {
         }
         var thisObject = modalActionMeeting._activeObject;
         // setting send/receiver
+
+        modalActionMeeting.checkExpired(thisObject.date);
+
         if (thisObject.senderUUID === undefined || thisObject.senderUUID === null) {
                 modalActionMeeting.setSenderMode();
         } else if (thisObject.senderUUID === userModel.currentUser.userUUID) {
                 modalActionMeeting.setSenderMode();
         } else {
                 modalActionMeeting.setRecipientMode();
-                modalActionMeeting.checkExpired(thisObject.date);
+
         }
-
-
-
 
             // setting event location
         if(thisObject.placeName !== null){
-                $(".event-location").removeClass("hidden");
+            $(".event-location").removeClass("hidden");
         } else {
-                $(".event-location").addClass("hidden");
+            $(".event-location").addClass("hidden");
         }
 
-        var prettyDate = moment(thisObject.date).format('ddd MMM Do [at] hA');
+        var prettyDate = moment(thisObject.date).format('dddd MMM Do [at] hA');
         $(".event-date").text(prettyDate);
 
 
