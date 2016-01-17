@@ -131,7 +131,7 @@ var modalActionMeeting = {
         $("#event-owner-edit").addClass("hidden");
         if(thisEvent.wasSent){
             $('#event-owner-save').addClass('hidden');
-            $('#modalActionMeeting-recipientlist').removeClass('hidden');
+            $('#modalActionMeeting-recipientListDiv').removeClass('hidden');
             // owner of a previously created event
             if(thisEvent.isExpired){
                 $('#event-owner-reschedule').removeClass('hidden');
@@ -415,6 +415,7 @@ var modalActionMeeting = {
         var thisObject = modalActionMeeting._activeObject;
         // setting send/receiver
 
+        $('#modalActionMeeting-organizer').text(thisObject.senderName);
         modalActionMeeting.checkExpired(thisObject.date);
 
         if (thisObject.senderUUID === undefined || thisObject.senderUUID === null) {
