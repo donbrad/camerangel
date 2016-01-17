@@ -17,6 +17,7 @@ var modalActionMeeting = {
     _callback : null,
     _eventList :[],
     response: false,
+    userAccepted : null,
 
     onInit: function (e) {
         _preventDefault(e);
@@ -497,10 +498,44 @@ var modalActionMeeting = {
         modalActionMeeting.setEventBanner();
     },
 
+    changeStatus: function(e){
+        var index = this.current().index();
+        if(modalActionMeeting.response !== true){
+            $("#event-comment").velocity("slideDown");
+            modalActionMeeting.response = true;
+        }
+        if(index === 0){
+            // User accepted
+            modalActionMeeting.userAccepted = true;
+            $("#event-comment textarea").attr("placeholder", "Looking forward to it!");
+        } else {
+            // User declined
+            modalActionMeeting.userAccepted = false;
+            $("#event-comment textarea").attr("placeholder", "Sorry can't make it.")
+        }
+    },
     sendRSVP: function(e){
+        _preventDefault(e);
+        var thisEvent = modalActionMeeting._activeObject;
+        var commentStr = $('#modalActionMeeting-comments').val();
 
-        // todo - recipient RSVP
-        modalActionMeeting.onDone();
+        if (modalActionMeeting.userAccepted) {
+
+            smartObject.accept(thisEvent.uuid, thisEvent.senderUUID, commentStr);
+
+            modalActionMeeting.setAcceptStatus();
+
+            modalActionMeeting.onDone();
+        }
+
+        if (!modalActionMeeting.userAccepted) {
+            smartObject.accept(thisEvent.uuid, thisEvent.senderUUID, commentStr);
+
+            modalActionMeeting.setAcceptStatus();
+
+            modalActionMeeting.onDone();
+        }
+
     },
 
     onAccept : function (e) {
@@ -615,6 +650,7 @@ var modalActionMeeting = {
 
 
 
+/*
 var smartEventView = {
     _activeObject : new kendo.data.ObservableObject(),
     _date : new Date(),
@@ -707,6 +743,13 @@ var smartEventView = {
         thisObj.set('isDeleted', newObj.isDeleted);
         thisObj.set('isAccepted', newObj.isAccepted);
         thisObj.set('isDeclined', newObj.isDeclined);
+
+        if (newObj.isDeclined) {
+            modalActionMeeting.userAccepted = false;
+        }
+        if (newObj.isAccepted) {
+            modalActionMeeting.userAccepted = true;
+        }
 
         thisObj.set('addToCalendar', false);
         if (newObj.calendarId !== undefined || newObj.calendarID !== null) {
@@ -947,20 +990,7 @@ var smartEventView = {
 
     },
 
-    changeStatus: function(e){
-        var index = this.current().index();
-        if(modalActionMeeting.response !== true){
-            $("#event-comment").velocity("slideDown");
-            modalActionMeeting.response = true;
-        }
-        if(index === 0){
-            // User accepted
-            $("#event-comment textarea").attr("placeholder", "Looking forward to it!");
-        } else {
-            // User declined
-            $("#event-comment textarea").attr("placeholder", "Sorry can't make it.")
-        }
-    },
+
 
     onCancel: function (e) {
         //_preventDefault(e);
@@ -1055,4 +1085,5 @@ var smartEventView = {
     }
 
 };
+*/
 
