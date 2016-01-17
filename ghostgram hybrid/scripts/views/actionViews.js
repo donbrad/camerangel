@@ -434,7 +434,7 @@ var modalActionMeeting = {
             $(".event-location").addClass("hidden");
         }
 
-        var prettyDate = moment(thisObject.date).format('dddd MMM Do [at] hA');
+        var prettyDate = moment(thisObject.date).format('dddd MMMM, Do [at] h:mmA');
         $(".event-date").text(prettyDate);
 
 
