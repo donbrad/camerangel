@@ -60,6 +60,7 @@ var modalActionMeeting = {
         thisObj.set('wasSent', false);
 
 
+
         $('#modalActionMeeting-placesearch').val(thisObj.placeName);
         $('#modalActionMeeting-datestring').val(new Date(thisObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
         $('#modalActionMeeting-date').val(new Date(thisObj.date).toString('MMMM dd, yyyy'));
@@ -129,6 +130,7 @@ var modalActionMeeting = {
         $(".event-recipient, #event-editMode").addClass("hidden");
         $("#event-owner-edit").addClass("hidden");
         if(thisEvent.wasSent){
+            $('#actionMeeting-save').addClass('hidden');
             // owner of a previously created event
             if(thisEvent.isExpired){
                 $('#actionMeeting-reschedule').removeClass('hidden');
@@ -136,12 +138,14 @@ var modalActionMeeting = {
                 $("#event-owner-cancel").addClass("hidden");
 
             } else {
+
                 $('#actionMeeting-reschedule').addClass('hidden');
                 $("#event-owner-cancel").removeClass("hidden");
                 // show edit button in header
                 $("#event-owner-edit").removeClass("hidden");
             }
         } else {
+            $('#actionMeeting-save').removeClass('hidden');
             // new event
             modalActionMeeting.showEditMode();
         }
