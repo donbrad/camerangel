@@ -363,7 +363,7 @@ var modalActionMeeting = {
                     if (duration > 60) {
                         duration = duration / 60;
                         modalActionMeeting._activeObject.duration = duration;
-                        $("#modalActionMeeting-duration").val(juration.stringify(duration, { format: 'long' }));
+                        $("#modalActionMeeting-duration").val(juration.stringify(duration * 60, { format: 'long' }));
 
                     }
 
