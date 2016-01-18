@@ -718,7 +718,7 @@ var modalActionMeeting = {
         _preventDefault(e);
 
         var thisObj = modalActionMeeting._activeObject;
-        var endDate = moment(thisObj.date).add(thisObj.duration, 'minutes');
+        var startDate = new Date(thisObj.date), endDate = new Date(moment(thisObj.date).add(thisObj.duration, 'minutes'));
 
         if (window.navigator.simulator !== undefined) {
             mobileNotify("Not supported in emulator");
@@ -726,7 +726,7 @@ var modalActionMeeting = {
             window.plugins.calendar.createEvent(thisObj.title,
                 thisObj.placeName + " " + thisObj.address,
                 thisObj.description,
-                thisObj.date,
+                startDate,
                 endDate,
                 function (message) {
                     mobileNotify(message);
