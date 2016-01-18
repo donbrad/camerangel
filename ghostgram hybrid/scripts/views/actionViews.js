@@ -30,8 +30,8 @@ var modalActionMeeting = {
 
         var newDate = Date.today();
         thisObj.set("uuid", uuid.v4());
-        thisObj.set('senderUUID', null);
-        thisObj.set('senderName', null);
+        thisObj.set('senderUUID', userModel.currentUser.userUUID);
+        thisObj.set('senderName', userModel.currentUser.name);
         thisObj.set('channelId', null);
         thisObj.set('calendarId', null);
         thisObj.set('eventChatId', null);
@@ -81,6 +81,17 @@ var modalActionMeeting = {
         thisObj.set('type', newObj.type);
         thisObj.set('uuid', newObj.uuid);
         thisObj.set('senderUUID', newObj.senderUUID);
+
+        if (newObj.senderName === null) {
+            if (newObj.senderUUID === userModel.currentUser.userUUID) {
+                newObj.senderName = userModel.currentUser.name;
+            } else {
+                var contact = contactModel.findContact(newObj.senderUUID);
+                if (contact !== undefined) {
+                    newObj.senderName = contact.name;
+                }
+            }
+        }
         thisObj.set('senderName', newObj.senderName);
         thisObj.set('action', newObj.action);
         thisObj.set('description', newObj.description);
@@ -635,7 +646,8 @@ var modalActionMeeting = {
         var finalDateStr = $("#modalActionMeeting-datestring").val();
         var saveDate = new Date(finalDateStr);
 
-        modalActionMeeting._activeObject.set('date', saveDate);
+       thisObj.set('date', saveDate);
+        thisObj.set('senderName', userModel.currentUser.name);
 
 
         modalActionMeeting.createSmartEvent(thisObj);
@@ -647,7 +659,6 @@ var modalActionMeeting = {
 
     onCancelEvent: function (e) {
         var thisObj = modalActionMeeting._activeObject;
-
 
         modalActionMeeting.onDone();
     },
