@@ -521,7 +521,17 @@ var modalActionMeeting = {
         } else {
 
             if (window.navigator.simulator === undefined) {
-                if (event.address !== null) {
+                if (event.lat !== null) {
+                    launchnavigator.navigate(
+                        [event.lat,event.lng],
+                        null,
+                        function(){
+                            mobileNotify("Launching Navigation...");
+                        },
+                        function(error){
+                            mobileNotify("Plugin error: "+ error);
+                        });
+                } else if (event.address !== null) {
                     launchnavigator.navigate(
                         event.address,
                         null,
