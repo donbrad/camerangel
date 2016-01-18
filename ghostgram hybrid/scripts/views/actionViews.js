@@ -355,7 +355,20 @@ var modalActionMeeting = {
 
             });*/
 
+            $("#modalActionMeeting-duration").on('blur', function () {
+                var durIn =  $("#modalActionMeeting-duration").val();
+                var duration = -1;
+                if (durIn.length > 1) {
+                    duration = juration.parse(durIn,{ defaultUnit: 'minutes' });
+                    if (duration > 60) {
+                        duration = duration / 60;
+                        modalActionMeeting._activeObject.duration = duration;
+                        $("#modalActionMeeting-duration").val(juration.stringify(duration, { format: 'long' }));
 
+                    }
+
+                }
+            });
 
             $("#modalActionMeeting-time").on('blur', function () {
                 var timeIn =  $("#modalActionMeeting-time").val();
