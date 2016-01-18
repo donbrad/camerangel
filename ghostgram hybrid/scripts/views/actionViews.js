@@ -512,7 +512,7 @@ var modalActionMeeting = {
         var event =  modalActionMeeting._activeObject;
 
         if (event.placeId !== null) {
-            var place = placesModel.getPlaceModel(placeId);
+            var place = placesModel.getPlaceModel(event.placeId);
             if (place !== undefined) {
                 var placeId = LZString.compressToEncodedURIComponent(event.placeId);
                 APP.kendo.navigate('#placeView?place=' + placeId);
@@ -674,7 +674,8 @@ var modalActionMeeting = {
         thisObject.rsvpList = thisObj.rsvpList;
         thisObject.inviteList = thisObj.inviteList;
 
-        //channelView.addSmartObjectToMessage(thisObj.uuid, thisObject);
+        smartEvent.addObject(thisObject);
+
 
     },
 
@@ -690,13 +691,10 @@ var modalActionMeeting = {
         var finalDateStr = $("#modalActionMeeting-datestring").val();
         var saveDate = new Date(finalDateStr);
 
-       thisObj.set('date', saveDate);
+        thisObj.set('date', saveDate);
         thisObj.set('senderName', userModel.currentUser.name);
 
-
         modalActionMeeting.createSmartEvent(thisObj);
-
-       smartEvent.addObject(thisObj);
 
         modalActionMeeting.onDone();
     },
