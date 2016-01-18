@@ -515,7 +515,7 @@ var modalActionMeeting = {
             var place = placesModel.getPlaceModel(event.placeId);
             if (place !== undefined) {
                 var placeId = LZString.compressToEncodedURIComponent(event.placeId);
-                APP.kendo.navigate('#placeView?place=' + placeId);
+                APP.kendo.navigate('#placeView?place=' + placeId + '&returnview=channel?'+channelView._channelId);
             }
 
         } else {
