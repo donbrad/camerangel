@@ -377,7 +377,7 @@ var smartEvent = {
         smartOb.set('senderName', objectIn.senderName);
         smartOb.set('channelId', objectIn.channelId);
         smartOb.set('calendarId', objectIn.calendarId);
-        smartOb.set('eventChatId', objectIn.calendarId);
+        smartOb.set('eventChatId', objectIn.eventChatId);
         smartOb.set('action', objectIn.action);
         smartOb.set('type', objectIn.type);
         smartOb.set('title', objectIn.title);
@@ -386,6 +386,8 @@ var smartEvent = {
         var dateString = new Date(objectIn.date).toISOString();
         var d = {"__type":"Date","iso":dateString};
         smartOb.set('date', d);
+        smartOb.set('duration', objectIn.duration);
+        smartOb.set('durationString', objectIn.durationString);
         smartOb.set('approxTime', objectIn.approxTime);
         smartOb.set('approxPlace', objectIn.approxPlace);
         smartOb.set('address', objectIn.address);

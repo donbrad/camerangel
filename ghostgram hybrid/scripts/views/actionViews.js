@@ -46,6 +46,8 @@ var modalActionMeeting = {
         thisObj.set('lat', null);
         thisObj.set('lng', null);
         thisObj.set('date', newDate);
+        thisObj.set('duration', 60);
+        thisObj.set('durationString', '1 hour');
         thisObj.set('approxTime', false);
         thisObj.set('approxPlace', false);
         thisObj.set('timeFlexible', false);
@@ -105,6 +107,7 @@ var modalActionMeeting = {
             newObj.date = new Date();
         }
         thisObj.set('date', newObj.date);
+        thisObj.set('duration', newObj.duration);
         thisObj.set('rsvpList', newObj.rsvpList);
         thisObj.set('inviteList', newObj.inviteList);
         thisObj.set('approxTime', newObj.approxTime);
@@ -258,6 +261,18 @@ var modalActionMeeting = {
         } else {
             thisObject.set('isExpired', false);
             modalActionMeeting.setEventBanner();
+        }
+    },
+
+    updateCalendar : function () {
+        var thisObject = modalActionMeeting._activeObject;
+
+        if (thisObject.calendarId === null) {
+            $("#modalActionMeeting-add-calendar").removeClass('hidden');
+            $("#modalActionMeeting-view-calendar").addClass('hidden');
+        } else {
+            $("#modalActionMeeting-view-calendar").removeClass('hidden');
+            $("#modalActionMeeting-add-calendar").addClass('hidden');
         }
     },
 
@@ -456,6 +471,8 @@ var modalActionMeeting = {
             $(".event-location").addClass("hidden");
         }
 
+        modalActionMeeting.updateCalendar();
+
         var prettyDate = moment(thisObject.date).format('dddd MMMM, Do [at] h:mmA');
         $(".event-date").text(prettyDate);
 
@@ -651,6 +668,8 @@ var modalActionMeeting = {
         thisObject.title = thisObj.title;
         thisObject.description = thisObj.description;
         thisObject.date = thisObj.date;
+        thisObject.duration = thisObj.duration;
+        thisObject.durationString = thisObj.durationString;
         thisObject.placeId = thisObj.placeId;
         thisObject.placeName = thisObj.placeName;
         thisObject.address = thisObj.address;
@@ -659,7 +678,6 @@ var modalActionMeeting = {
         thisObject.channelId = thisObj.channelId;
         thisObject.calendarId = thisObj.calendarId;
         thisObject.eventChatId = thisObj.eventChatId;
-        thisObject.calendarId = thisObj.calendarId;
         thisObject.lat = thisObj.lat;
         thisObject.lng = thisObj.lng;
         thisObject.approxTime = thisObj.approxTime;
@@ -680,15 +698,34 @@ var modalActionMeeting = {
     },
 
     addToCalendar : function (e) {
+        var thisObj = modalActionMeeting._activeObject;
+        var endDate = moment(thisObj.date).add(thisObj.duration, 'minutes');
+
+        if (window.navigator.simulator !== undefined) {
+            mobileNotify("Not supported in emulator");
+        } else {
+            window.plugins.calendar.createEvent(thisObj.title,
+                thisObj.placeName + " " + thisObj.address,
+                thisObj.description,
+                thisObj.date,
+                endDate,
+                function (message) {
+                    mobileNotify(message);
+                },
+                function (message) {
+                    mobileNotify('Calendar error :' + message);
+                });
+        }
 
     },
 
     showCalendar : function (e) {
-
+        mobileNotify("Under development....");
     },
 
     onUpdateEvent: function (e) {
         var thisObj = modalActionMeeting._activeObject;
+
         // todo - wire event update
         modalActionMeeting.onDone();
     },
@@ -701,6 +738,10 @@ var modalActionMeeting = {
 
         thisObj.set('date', saveDate);
         thisObj.set('senderName', userModel.currentUser.name);
+
+        if (thisObj.addToCalendar && thisObj.calendarId === null) {
+            modalActionMeeting.addToCalendar();
+        }
 
         modalActionMeeting.createSmartEvent(thisObj);
 
