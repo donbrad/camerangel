@@ -172,7 +172,7 @@ var modalActionMeeting = {
 
         $(".event-owner").addClass("hidden");
         $('#modalActionMeeting-recipientListDiv').addClass('hidden');
-        
+
         $(".event-recipient, #event-viewMode").removeClass("hidden");
         // if event is expired disable rsvp
         if(thisEvent.isExpired){
@@ -504,7 +504,15 @@ var modalActionMeeting = {
 
     eventMapLocation: function(e){
         _preventDefault(e);
-        // todo - wire map view of event location
+
+        var event =  modalActionMeeting._activeObject;
+
+        if (event.placeId !== null) {
+            var placeId = LZString.compressToEncodedURIComponent(event.placeId);
+            APP.kendo.navigate('#placeView?place=placeId');
+        } else {
+            mobileNotify("Smart Place Lookup is under development");
+        }
 
     },
 
