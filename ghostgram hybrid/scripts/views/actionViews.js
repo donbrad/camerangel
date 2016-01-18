@@ -336,6 +336,7 @@ var modalActionMeeting = {
                     $('#modalActionMeeting-date').val(dateComp);
                     $('#modalActionMeeting-time').val(timeComp);
                     modalActionMeeting._activeObject.set('date', new Date(finalDateStr));
+                    modalActionMeeting.updateDateString();
 
                 }
             });
