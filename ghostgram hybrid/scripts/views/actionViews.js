@@ -508,10 +508,29 @@ var modalActionMeeting = {
         var event =  modalActionMeeting._activeObject;
 
         if (event.placeId !== null) {
-            var placeId = LZString.compressToEncodedURIComponent(event.placeId);
-            APP.kendo.navigate('#placeView?place=placeId');
+            var place = placesModel.getPlaceModel(placeId);
+            if (place !== undefined) {
+                var placeId = LZString.compressToEncodedURIComponent(event.placeId);
+                APP.kendo.navigate('#placeView?place=' + placeId);
+            }
+
         } else {
-            mobileNotify("Smart Place Lookup is under development");
+
+            if (window.navigator.simulator === undefined) {
+                if (event.address !== null) {
+                    launchnavigator.navigate(
+                        event.address,
+                        null,
+                        function(){
+                           mobileNotify("Launching Navigation...");
+                        },
+                        function(error){
+                            mobileNotify("Plugin error: "+ error);
+                        });
+                }
+            } else {
+                mobileNotify("Navigation not yet supported in emulator...");
+            }
         }
 
     },
@@ -663,7 +682,7 @@ var modalActionMeeting = {
 
         modalActionMeeting.createSmartEvent(thisObj);
 
-      //  smartEvent.addObject(thisObj);
+       smartEvent.addObject(thisObj);
 
         modalActionMeeting.onDone();
     },
