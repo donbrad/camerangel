@@ -2426,6 +2426,10 @@
 				<span class="event-date"></span>
 			</p>
 
+			<p>
+				<span data-bind="text: durationString"></span>
+			</p>
+
 			<p class="event-location">
 				<a class="btnClear" data-role="button" data-click="modalActionMeeting.eventMapLocation">
 					<img src="images/icon-location.svg" class="icon-sm" />
@@ -2492,18 +2496,20 @@
 				</div>
 			</li>
 
-			<li id="modalActionMeeting-add-calendar" class="event-valid" >
-				<label> Add to Calendar
-					<input type="checkbox" id="actionMeeting-addToCalendar"  data-role="switch" data-bind="checked: addToCalendar"/>
-				</label>
-			</li>
-			<li id="modalActionMeeting-view-calendar" class="event-valid hidden">
-<				<div>
-					<a class="btnSecondary" data-role="button" data-click="modalActionMeeting.showCalendar">Show Calendar</a>
-				</div>
-			</li>
+
 		</ul>
 	</form>
+
+	<div id="modalActionMeeting-add-calendar" class="event-valid" >
+		<span> Add to Calendar
+			<input type="checkbox" id="actionMeeting-addToCalendar"  data-role="switch" data-bind="checked: addToCalendar"/>
+		</span>
+	</div>
+	<div id="modalActionMeeting-view-calendar" class="event-valid hidden">
+		<div>
+			<a class="btnSecondary" data-role="button" data-click="modalActionMeeting.showCalendar">Show Calendar</a>
+		</div>
+	</div>
 
 	<div class="hidden" id="modalActionMeeting-recipientListDiv">
 		<h3>Event RSVP's</h3>
