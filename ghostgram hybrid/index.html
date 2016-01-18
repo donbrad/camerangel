@@ -2418,7 +2418,7 @@
 		<div class="event-details">
 			<h2 data-bind="text: title"></h2>
 			<p class="helper" data-bind="text: description"></p>
-			<p class="helper">Organized by <span id="modalActionMeeting-organizer"></span></p>
+			<p class="helper">Organized by <span id="modalActionMeeting-organizer" data-bind="text: senderName"></span></p>
 		</div>
 		<div class="event-details">
 			<p>
@@ -2450,7 +2450,7 @@
 		</div>
 	</div>
 
-	<form id="event-editMode" class="hidden">
+	<form id="event-editMode" class="event-owner hidden">
 		<ul data-role="listview" data-style="inset">
 			<li style="font-size: 18px;">
 				<label>
@@ -2496,7 +2496,7 @@
 		</ul>
 	</form>
 
-	<div class="event-owner" id="modalActionMeeting-recipientListDiv">
+	<div class="event-owner hidden" id="modalActionMeeting-recipientListDiv">
 		<h3>Event RSVP's</h3>
 		<ul data-role="listview" data-style="inset" id="modalActionMeeting-recipientListView">
 
