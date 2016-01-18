@@ -144,7 +144,7 @@ var userDataChannel = {
                             recipient: msg.recipient
                         };
 
-                        channelModel.updatePrivateUnreadCount(msg.channelId, 1, null);
+                        channelModel.updatePrivateUnreadCount(msg.channelId, 1);
                         userDataChannel.messagesDS.add(parsedMsg);
 
                     }

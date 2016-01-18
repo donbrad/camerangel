@@ -435,7 +435,7 @@ var userModel = {
 
         photoModel.fetch();
 
-        smartObject.fetch();
+        smartEvent.fetch();
 
         userStatus.init();
 

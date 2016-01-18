@@ -323,7 +323,7 @@ var appDataChannel = {
         var channel = appDataChannel.getContactAppChannel(recipientId);
         var msg = new Object();
 
-        var event = smartObject.findObject(eventId);
+        var event = smartEvent.findObject(eventId);
         var notificationString =  userModel.currentUser.name + " wants to connect on Ghostgrams";
         msg.msgID = uuid.v4();
         msg.type = 'connectRequest';
@@ -372,7 +372,7 @@ var appDataChannel = {
         var channel = appDataChannel.getContactAppChannel(recipientId);
         var msg = new Object();
 
-        var event = smartObject.findObject(eventId);
+        var event = smartEvent.findObject(eventId);
         var notificationString =  userModel.currentUser.name + " wants to connect on Ghostgrams";
         msg.msgID = uuid.v4();
         msg.type = 'connectResponse';
@@ -429,7 +429,7 @@ var appDataChannel = {
         var channel = appDataChannel.getContactAppChannel(senderId);
         var msg = new Object();
 
-        var event = smartObject.findObject(eventId);
+        var event = smartEvent.findObject(eventId);
 
 
         var notificationString =  userModel.currentUser.name + " has accepted " + event.name;
@@ -476,7 +476,7 @@ var appDataChannel = {
         var channel = appDataChannel.getContactAppChannel(senderId);
         var msg = new Object();
 
-        var event = smartObject.findObject(eventId);
+        var event = smartEvent.findObject(eventId);
 
         var notificationString =  userModel.currentUser.name + " has declined " + event.name;
         msg.msgID = uuid.v4();
@@ -521,7 +521,7 @@ var appDataChannel = {
     sendEventCancel : function (eventId, recipientId, comment) {
         var channel = appDataChannel.getContactAppChannel(recipientId);
         var msg = new Object();
-        var event = smartObject.findObject(eventId);
+        var event = smartEvent.findObject(eventId);
 
         var notificationString =  userModel.currentUser.name + " has cancelled " + event.name;
         msg.msgID = uuid.v4();
@@ -564,7 +564,7 @@ var appDataChannel = {
     sendEventUpdate : function (eventId, recipientId, updateObject, comment) {
         var channel = appDataChannel.getContactAppChannel(recipientId);
         var msg = new Object();
-        var event = smartObject.findObject(eventId);
+        var event = smartEvent.findObject(eventId);
 
         var notificationString =  userModel.currentUser.name + " has updated " + event.name;
         msg.msgID = uuid.v4();
@@ -767,15 +767,15 @@ var appDataChannel = {
     },
 
     processEventAccept : function (eventId, recipientId, comment) {
-        smartObject.recipientAccept(eventId, recipientId, comment);
+        smartEvent.recipientAccept(eventId, recipientId, comment);
     },
 
     processEventDecline : function (eventId, recipientId, comment) {
-        smartObject.recipientDecline(eventId, recipientId, comment);
+        smartEvent.recipientDecline(eventId, recipientId, comment);
     },
 
     processEventCancel : function (eventId, recipientId, comment) {
-
+        smartEvent.cancel(eventId, comment);
     },
 
     processEventUpdate : function (eventId, recipientId, eventObj, comment) {

@@ -3,7 +3,7 @@
  */
 'use strict';
 
-var smartObject = {
+var smartEvent = {
     // date/place : -1 optional, 0 not used,  1  required
     termMap : [
         {term: "call", category: "action", type: "meeting", composite: true, date: 1, place: 0, info: 0},
@@ -114,7 +114,7 @@ var smartObject = {
     termsDS : null,
 
     objectsDS: new kendo.data.DataSource({
-        offlineStorage: "smartobjects",
+        offlineStorage:"smartEvent",
         sort: {
             field: "date",
             dir: "desc"
@@ -122,15 +122,15 @@ var smartObject = {
     }),
 
     init : function () {
-        smartObject.termsDS = new kendo.data.DataSource({
-            data: smartObject.termMap
+        smartEvent.termsDS = new kendo.data.DataSource({
+            data: smartEvent.termMap
         });
     },
 
 
     fetch : function () {
-        var SmartObjects = Parse.Object.extend("smartobject");
-        var query = new Parse.Query(SmartObjects);
+        var smartObjects = Parse.Object.extend("smartobject");
+        var query = new Parse.Query(smartObjects);
 
         query.find({
             success: function(collection) {
@@ -141,7 +141,7 @@ var smartObject = {
                     models.push(smartObj.toJSON());
                 }
                 deviceModel.setAppState('hasSmartObjects', true);
-                smartObject.objectsDS.data(models);
+                smartEvent.objectsDS.data(models);
                 deviceModel.isParseSyncComplete();
             },
             error: function(error) {
@@ -154,7 +154,7 @@ var smartObject = {
 
         if (query === undefined)
             return(undefined);
-        var dataSource = smartObject.termsDS;
+        var dataSource = smartEvent.termsDS;
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
             cacheFilter = {};
@@ -172,7 +172,7 @@ var smartObject = {
 
         if (query === undefined)
             return(undefined);
-        var dataSource = smartObject.objectsDS;
+        var dataSource = smartEvent.objectsDS;
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
             cacheFilter = {};
@@ -190,7 +190,7 @@ var smartObject = {
 
         if (query === undefined)
             return(undefined);
-        var dataSource = smartObject.objectsDS;
+        var dataSource = smartEvent.objectsDS;
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
             cacheFilter = {};
@@ -212,7 +212,7 @@ var smartObject = {
 
     // Find all objects that aren't deleted...
     findObject: function (uuid) {
-        var result = smartObject.queryObject([{ field: "uuid", operator: "eq", value: uuid }, { field: "isDeleted", operator: "eq", value: false }]);
+        var result = smartEvent.queryObject([{ field: "uuid", operator: "eq", value: uuid }, { field: "isDeleted", operator: "eq", value: false }]);
 
         return(result);
     },
@@ -220,7 +220,7 @@ var smartObject = {
 
     getActionNames : function () {
 
-        var nameList = [], results = smartObject.queryTerm({ field: "category", operator: "eq", value: 'action' });
+        var nameList = [], results = smartEvent.queryTerm({ field: "category", operator: "eq", value: 'action' });
 
         for (var i=0; i<results.length; i++) {
             nameList.push(results[i].term);
@@ -231,7 +231,7 @@ var smartObject = {
 
     isCurrentAction : function (termIn) {
         var target = termIn.toLowerCase();
-        var termList = smartObject.queryTerm({ field: "action", operator: "eq", value: target });
+        var termList = smartEvent.queryTerm({ field: "action", operator: "eq", value: target });
 
         if (termList.length > 0) {
             return(true);
@@ -242,7 +242,7 @@ var smartObject = {
 
     findTerm: function (termIn) {
         var target = termIn.toLowerCase();
-        var termList = smartObject.queryTerm({ field: "term", operator: "eq", value: target });
+        var termList = smartEvent.queryTerm({ field: "term", operator: "eq", value: target });
 
         return(termList);
 
@@ -250,7 +250,7 @@ var smartObject = {
 
     containsTerm: function (termIn) {
         var target = termIn.toLowerCase();
-        var termList = smartObject.queryTerm({ field: "term", operator: "contains", value: target });
+        var termList = smartEvent.queryTerm({ field: "term", operator: "contains", value: target });
 
         return(termList);
 
@@ -258,7 +258,7 @@ var smartObject = {
 
     startsWithTerm: function (termIn) {
         var target = termIn.toLowerCase();
-        var termList = smartObject.queryTerm({ field: "term", operator: "startswith", value: target });
+        var termList = smartEvent.queryTerm({ field: "term", operator: "startswith", value: target });
 
         return(termList);
 
@@ -267,14 +267,14 @@ var smartObject = {
     smartAddObject : function (objectIn) {
         var objectId = objectIn.uuid;
 
-        if (smartObject.findObject(objectId) === undefined) {
-            smartObject.addObject(objectIn);
+        if (smartEvent.findObject(objectId) === undefined) {
+            smartEvent.addObject(objectIn);
         }
     },
 
     // process accept for this user as recipient (another user is creator / sender)
     accept : function (eventId, senderId, comment) {
-        var event = smartObject.findObject(eventId);
+        var event = smartEvent.findObject(eventId);
         if (event !== undefined) {
             event.set('isAccepted', true);
             event.set('isDeclined', false);
@@ -287,7 +287,7 @@ var smartObject = {
     },
     // process decline for this user as recipient (another user is creator / sender)
     decline : function (eventId, senderId, comment) {
-        var event = smartObject.findObject(eventId);
+        var event = smartEvent.findObject(eventId);
         if (event !== undefined) {
             event.set('isAccepted', false);
             event.set('isDeclined', true);
@@ -300,72 +300,66 @@ var smartObject = {
 
     // Process accept from a recipeient
     recipientAccept : function (eventId, recipientId, comment) {
-        var event = smartObject.findObject(eventId);
+        var event = smartEvent.findObject(eventId);
         if (event !== undefined) {
-            var accepts = event.acceptList, declines = event.declineList;
+            var rsvpList = event.rsvpList;
 
-            smartObject.removeFromList(declines, recipientId);
-            smartObject.removeFromList(accepts, recipientId);
-            accepts.push(recipientId);
-            updateParseObject('smartobject', 'uuid', eventId, 'acceptList', accepts);
-            updateParseObject('smartobject', 'uuid', eventId, 'declineList', declines);
 
-            if (comment !== null) {
-                var contact = contactModel.findContact(recipientId);
-                if (contact !== undefined) {
-                    var commentObj = {
-                        contactId : recipientId,
-                        contactName : contact.name,
-                        comment: comment
-                    };
+            var contact = contactModel.findContact(recipientId);
+            if (contact !== undefined) {
+                var commentObj = {
+                    date: new Date(),
+                    isAccepted: true,
+                    contactId: recipientId,
+                    contactName: contact.name,
+                    comment: comment
+                };
 
-                    event.commentList.push(commentObj);
-                    updateParseObject('smartobject', 'uuid', eventId, 'commentList', event.commentList);
-                }
+                event.rsvpList.push(commentObj);
+                updateParseObject('smartobject', 'uuid', eventId, 'rsvpList', event.rsvpList);
             }
+
         }
 
     },
 
     recipientDecline : function (eventId, recipientId, comment) {
-        var event = smartObject.findObject(eventId);
+        var event = smartEvent.findObject(eventId);
         if (event !== undefined) {
-            var accepts = event.acceptList, declines = event.declineList;
+            var rsvpList = event.rsvpList;
 
-            smartObject.removeFromList(declines, recipientId);
-            smartObject.removeFromList(accepts, recipientId);
-            declines.push(recipientId);
-            updateParseObject('smartobject', 'uuid', eventId, 'acceptList', accepts);
-            updateParseObject('smartobject', 'uuid', eventId, 'declineList', declines);
-            if (comment !== null) {
-                var contact = contactModel.findContact(recipientId);
-                if (contact !== undefined) {
-                    var commentObj = {
-                        contactId : recipientId,
-                        contactName : contact.name,
-                        comment: comment
-                    };
 
-                    event.commentList.push(commentObj);
-                    updateParseObject('smartobject', 'uuid', eventId, 'commentList', event.commentList);
-                }
+            var contact = contactModel.findContact(recipientId);
+            if (contact !== undefined) {
+                var commentObj = {
+                    date: new Date(),
+                    isAccepted: false,
+                    contactId: recipientId,
+                    contactName: contact.name,
+                    comment: comment
+                };
+
+                event.rsvpList.push(commentObj);
+                updateParseObject('smartobject', 'uuid', eventId, 'rsvpList', event.rsvpList);
             }
+
         }
     },
 
 
     update : function (eventId, eventObj, comment) {
-        var event = smartObject.findObject(eventId);
+        var event = smartEvent.findObject(eventId);
         if (event !== undefined) {
 
 
         }
     },
 
-    cancel : function (eventId,  eventObj, comment) {
-        var event = smartObject.findObject(eventId);
+    cancel : function (eventId, comment) {
+        var event = smartEvent.findObject(eventId);
         if (event !== undefined) {
-            event.set('isDeleted', true);
+            event.set('wasCancelled', true);
+            updateParseObject('smartobject', 'uuid', eventId, 'wasCancelled', true);
         }
     },
 
@@ -380,7 +374,10 @@ var smartObject = {
         smartOb.setACL(userModel.parseACL);
         smartOb.set('uuid', objectIn.uuid);
         smartOb.set('senderUUID', objectIn.senderUUID);
+        smartOb.set('senderName', objectIn.senderName);
         smartOb.set('channelId', objectIn.channelId);
+        smartOb.set('calendarId', objectIn.calendarId);
+        smartOb.set('eventChatId', objectIn.calendarId);
         smartOb.set('action', objectIn.action);
         smartOb.set('type', objectIn.type);
         smartOb.set('title', objectIn.title);
@@ -400,9 +397,12 @@ var smartObject = {
         smartOb.set('isAccepted', objectIn.isAccepted);
         smartOb.set('isModified', objectIn.isModified);
         smartOb.set('isDeleted', objectIn.isDeleted);
+        smartOb.set('wasCancelled', objectIn.wasCancelled);
+        smartOb.set('inviteList', objectIn.inviteList);
+        smartOb.set('rsvpList', objectIn.rsvpList);
 
         var smartObj = smartOb.toJSON();
-        smartObject.objectsDS.add(smartObj);
+        smartEvent.objectsDS.add(smartObj);
 
         smartOb.save(null, {
             success: function(thisObject) {

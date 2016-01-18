@@ -1008,7 +1008,7 @@ var channelView = {
                 }
             },*/
             buttons: [ 'bold', 'italic', 'lists','horizontalrule'],
-            plugins: ['bufferbuttons'],
+            plugins: ['source'],
             toolbarExternal: '#messageComposeToolbar'
         });
 
@@ -1099,7 +1099,7 @@ var channelView = {
 
         channelView._channel = thisChannel;
 
-        channelModel.updateUnreadCount(thisChannel.channelId, 0, ggTime.currentPubNubTime());
+        channelModel.zeroUnreadCount(thisChannel.channelId);
 
         var contactUUID = null;
         var thisChannelHandler = null;
@@ -1109,8 +1109,6 @@ var channelView = {
 
         channelView.members = thisChannel.members;
 
-
-        channelModel.updateUnreadCount(channelUUID, 0, null);
 
         //default private mode off for now. Todo: don and jordan fix privacy mode
         channelView.privacyMode = false;
@@ -1594,10 +1592,12 @@ var channelView = {
     },
 
 
-    messageAddSmartObject : function (smartObj) {
+    messageAddSmartEvent : function (smartObj) {
+        smartObj.channelId = channelView._channelId;
 
-        channelView.activeMessage.objects.push(smartObj);
-        smartObject.smartAddObject(smartObj);
+        smartEvent.smartAddObject(smartObj);
+
+        channelView.messageObjects.push(smartObj);
 
     },
 
@@ -1655,8 +1655,8 @@ var channelView = {
         if (channelView.messageObjects.length > 0) {
             validMessage = true;
 
-          //Process message smart objects...
-            channelView.validateMessageObjects();
+            var smartEvent = channelView.messageObjects[0];
+            text = channelView.addSmartEventToMessage(smartEvent, text);
 
         }
 
@@ -1674,7 +1674,7 @@ var channelView = {
     },
 
     // Parse message text to make user didn't delete object anchor in text
-    validateMessageObjects : function () {
+  /*  validateMessageObjects : function () {
         var validObject = [];
         //var messageText = $('#messageTextArea').data("kendoEditor").value();
         var messageText = $('#messageTextArea').redactor('code.get');
@@ -1689,7 +1689,7 @@ var channelView = {
                // channelView.messageAddPhotoOffer(photoId, !channelView.messageLock);
             }
         }
-    },
+    },*/
 
     // Need to make sure all the photos in activeMessage.photos still exist in the editor
     validateMessagePhotos : function () {
@@ -1720,14 +1720,14 @@ var channelView = {
      _initMessageTextArea : function () {
 
         /* var editor =  $('#messageTextArea').data("kendoEditor");
-         $('#messageTextArea').val('');
+
          $('#messageTextArea').attr("rows","1");
          $('#messageTextArea').attr("height","24px");
          editor.value('');
          editor.update();
 */
-
-         $('#messageTextArea').redactor('code.set', '');
+         $('#messageTextArea').val('');
+         $('#messageTextArea').redactor('code.set', "");
 
 
        // autosize.update($('#messageTextArea'));
@@ -1743,14 +1743,10 @@ var channelView = {
     // Handle a click on a smart object
     onObjectClick : function (e) {
         _preventDefault(e);
-        var uuid = e.sender.element[0].attributes['data-objectid'].value;
-        var messageId = null;
+        var uuid = e.sender.element[0].attributes['data-objectid'].value, id = e.sender.element[0].id;
+        var chatmessage = $('#'+id).closest('.chat-message');
+        var messageId = chatmessage[0].attributes.id.value;
 
-        if (e.sender.element[0].parentElement.parentElement.parentElement.parentElement.attributes['id'] !== undefined) {
-            messageId = e.sender.element[0].parentElement.parentElement.parentElement.parentElement.attributes['id'].value;
-        } else if (e.sender.element[0].parentElement.parentElement.parentElement.attributes['id']) {
-            messageId = e.sender.element[0].parentElement.parentElement.parentElement.attributes['id'].value;
-        }
         if (messageId === null) {
             mobileNotify("Sender deleted this Smart Event!");
             return;
@@ -1771,7 +1767,7 @@ var channelView = {
 
                 if (object !== null) {
                     // User is interacting with the object so add it, if it doesn't already exist
-                    smartObject.smartAddObject(object);
+                    smartEvent.smartAddObject(object);
                     modalActionMeeting.openModal(object);
                 }
 
@@ -1782,38 +1778,36 @@ var channelView = {
 
     },
 
-    addSmartObjectToMessage: function (objectId, smartObject) {
+    addSmartEventToMessage: function (smartEvent, message) {
 
       //  var editor = $("#messageTextArea").data("kendoEditor");
-        var date = smartObject.date.toLocaleString();
 
-        var dateStr = moment(date).format('dd MMM Do');
+        var date = smartEvent.date.toLocaleString(), objectId = smartEvent.uuid;
+
+
+
+        var dateStr = moment(date).format('ddd MMM Do');
         var localTime = moment(date).format("LT");
 
-        var objectUrl = '<a class="btnSmart" data-role="button" data-objectid="' + objectId +
+        var objectUrl = '<div><a class="btnSmart" data-role="button" data-objectid="' + objectId +
             '" id="chatobject_' + objectId + '"'+
             'data-click="channelView.onObjectClick" >' +
             '<span class="btnSmart-type">' +
             '<img src="images/smart-event-light.svg" class="icon-md" />' +
             '</span>' +
-                '<span class="btnSmart-content">' +
-                    '<p class="textClamp btnSmart-title">' + smartObject.title + '</p>' +
-                    '<p class="textClamp btnSmart-date">' + dateStr + ' ' + localTime + '</p>' +
-                '</span>' +
-            '</a>';
+            '<span class="btnSmart-content">' +
+            '<p class="textClamp btnSmart-title">' + smartEvent.title + '</p>' +
+            '<p class="textClamp btnSmart-date">' + dateStr + ' ' + localTime + '</p>' +
+            '<p class="textClamp btnSmart-date">' + smartEvent.placeName + '</p>' +
+            '</span>' +
+            '</a></div>';
 
+        var fullMessage = message + objectUrl;
 
-     /*   editor.paste(objectUrl);
-        editor.update();*/
+        channelView.activeMessage.objects.push(smartEvent);
 
-        $('#messageTextArea').redactor('insert.raw', objectUrl);
+        return (fullMessage);
 
-        smartObject.channelId = channelView._channelId;
-
-        channelView.messageObjects.push(smartObject);
-
-        /* $('#chatImage').attr('src', displayUrl);
-         $('#chatImagePreview').show();*/
     },
 
     addImageToMessage: function (photoId, displayUrl) {
@@ -1826,7 +1820,7 @@ var channelView = {
 
             var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="chatphoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
 
-            $('#messageTextArea').redactor('insert.raw', imgUrl);
+            $('#messageTextArea').redactor('insert.node', $('<div />').html(imgUrl));
            /* editor.paste(imgUrl);
             editor.update();*/
         }
@@ -2008,7 +2002,7 @@ var channelView = {
     processTag : function (tagString) {
         var tagTokens = tagString.split(' ');
 
-        var tagList = smartObject.findTerm(tagTokens[0]);
+        var tagList = smartEvent.findTerm(tagTokens[0]);
         if (tagList !== undefined) {
             switch (tagList[0].category) {
 
@@ -2252,7 +2246,12 @@ var channelView = {
     messageCalendar : function (e) {
         _preventDefault(e);
         channelView.messageMenuTag();
-        modalActionMeeting.openModal(null);
+        modalActionMeeting.openModal(null, function (event) {
+
+            channelView.messageAddSmartEvent(event);
+            mobileNotify("Sending Smart Event...");
+            channelView.messageSend();
+        });
     },
 
     messageEvent : function (e) {

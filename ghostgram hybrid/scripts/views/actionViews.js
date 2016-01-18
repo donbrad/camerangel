@@ -14,8 +14,10 @@ var modalActionMeeting = {
     _date : new Date(),
     _placeId :null,
     _isInited : false,
+    _callback : null,
     _eventList :[],
     response: false,
+    userAccepted : null,
 
     onInit: function (e) {
         _preventDefault(e);
@@ -28,8 +30,10 @@ var modalActionMeeting = {
 
         var newDate = Date.today();
         thisObj.set("uuid", uuid.v4());
-        thisObj.set('senderUUID', null);
+        thisObj.set('senderUUID', userModel.currentUser.userUUID);
+        thisObj.set('senderName', userModel.currentUser.name);
         thisObj.set('channelId', null);
+        thisObj.set('calendarId', null);
         thisObj.set('eventChatId', null);
         thisObj.set('title', null);
         thisObj.set('type', "meeting");
@@ -47,16 +51,15 @@ var modalActionMeeting = {
         thisObj.set('timeFlexible', false);
         thisObj.set('placeFlexible', false);
         thisObj.set('isDeleted', false);
+        thisObj.set('wasCancelled', false);
         thisObj.set('isModified', false);
-        thisObj.set('isAccepted', false);
+        thisObj.set('isDeclined', false);
         thisObj.set('isAccepted', false);
         thisObj.set('addToCalendar', false);
-        thisObj.set('declineList', []);
-        thisObj.set('acceptList', []);
-        thisObj.set('inviteList', []);
+        thisObj.set('rsvpList', []);
         thisObj.set('comment', null);
-        thisObj.set('commentList', []);
         thisObj.set('wasSent', false);
+
 
 
         $('#modalActionMeeting-placesearch').val(thisObj.placeName);
@@ -78,6 +81,18 @@ var modalActionMeeting = {
         thisObj.set('type', newObj.type);
         thisObj.set('uuid', newObj.uuid);
         thisObj.set('senderUUID', newObj.senderUUID);
+
+        if (newObj.senderName === null) {
+            if (newObj.senderUUID === userModel.currentUser.userUUID) {
+                newObj.senderName = userModel.currentUser.name;
+            } else {
+                var contact = contactModel.findContact(newObj.senderUUID);
+                if (contact !== undefined) {
+                    newObj.senderName = contact.name;
+                }
+            }
+        }
+        thisObj.set('senderName', newObj.senderName);
         thisObj.set('action', newObj.action);
         thisObj.set('description', newObj.description);
         thisObj.set('address', newObj.address);
@@ -90,10 +105,8 @@ var modalActionMeeting = {
             newObj.date = new Date();
         }
         thisObj.set('date', newObj.date);
-        thisObj.set('acceptList', newObj.acceptList);
-        thisObj.set('declineList', newObj.declineList);
+        thisObj.set('rsvpList', newObj.rsvpList);
         thisObj.set('inviteList', newObj.inviteList);
-        thisObj.set('commentList', newObj.commentList);
         thisObj.set('approxTime', newObj.approxTime);
         thisObj.set('approxPlace', newObj.approxPlace);
         thisObj.set('timeFlexible', newObj.timeFlexible);
@@ -102,6 +115,7 @@ var modalActionMeeting = {
         thisObj.set('isDeleted', newObj.isDeleted);
         thisObj.set('isAccepted', newObj.isAccepted);
         thisObj.set('isDeclined', newObj.isDeclined);
+        thisObj.set('wasCancelled', newObj.wasCancelled);
 
         thisObj.set('addToCalendar', false);
         if (newObj.calendarId !== undefined || newObj.calendarID !== null) {
@@ -128,19 +142,26 @@ var modalActionMeeting = {
         $(".event-recipient, #event-editMode").addClass("hidden");
         $("#event-owner-edit").addClass("hidden");
         if(thisEvent.wasSent){
+
+            $('#event-owner-save').addClass('hidden');
+            $('#modalActionMeeting-recipientListDiv').removeClass('hidden');
             // owner of a previously created event
             if(thisEvent.isExpired){
-                $('#actionMeeting-reschedule').removeClass('hidden');
-                $('#actionMeeting-update').addClass('hidden');
+                $('#event-owner-reschedule').removeClass('hidden');
+                $('#event-owner-edit').addClass('hidden');
                 $("#event-owner-cancel").addClass("hidden");
 
             } else {
+
                 $('#actionMeeting-reschedule').addClass('hidden');
                 $("#event-owner-cancel").removeClass("hidden");
                 // show edit button in header
                 $("#event-owner-edit").removeClass("hidden");
             }
         } else {
+
+            $('#event-owner-save').removeClass('hidden');
+            $('#modalActionMeeting-recipientListDiv').addClass('hidden');
             // new event
             modalActionMeeting.showEditMode();
         }
@@ -148,14 +169,42 @@ var modalActionMeeting = {
 
     },
 
+    setRecipientMode : function () {
+        var thisEvent = modalActionMeeting._activeObject;
+
+        $(".event-owner").addClass("hidden");
+        $('#modalActionMeeting-recipientListDiv').addClass('hidden');
+
+        $(".event-recipient, #event-viewMode").removeClass("hidden");
+        // if event is expired disable rsvp
+        if (thisEvent.isExpired) {
+            $("#event-rsvp").data("kendoMobileButtonGroup").enable(false);
+        } else {
+            $("#event-rsvp").data("kendoMobileButtonGroup").enable(true);
+            // set user response
+            if (thisEvent.isAccepted) {
+                $("#event-rsvp").data("kendoMobileButtonGroup").select(0);
+                modalActionMeeting.setEventBanner("accepted");
+            } else if (thisEvent.isDeclined) {
+                $("#event-rsvp").data("kendoMobileButtonGroup").select(1);
+                modalActionMeeting.setEventBanner("declined");
+            } else {
+                modalActionMeeting.setEventBanner("pending");
+            }
+
+            modalActionMeeting.setAcceptStatus();
+        }
+    },
+
+
     showEditMode: function(){
         $("#event-owner-edit").addClass("hidden");
         $("#event-editMode").removeClass("hidden");
         $("#event-viewMode").addClass("hidden");
 
-        // Set btm action btn
-        $('#actionMeeting-save').removeClass('hidden');
-        $('#actionMeeting-reschedule').addClass('hidden');
+        // Set btm action bt
+        $('#event-owner-save').removeClass('hidden');
+        $('#event-owner-reschedule').addClass('hidden');
 
         // set event times
         var thisEvent = modalActionMeeting._activeObject;
@@ -164,6 +213,7 @@ var modalActionMeeting = {
         $('#modalActionMeeting-date').val(new Date(thisEvent.date).toString("MMMM dd, yyyy"));
         $('#modalActionMeeting-time').val(new Date(thisEvent.date).toString("h:mm tt"));
     },
+
 
     setAcceptStatus : function () {
         var thisEvent = modalActionMeeting._activeObject;
@@ -178,28 +228,6 @@ var modalActionMeeting = {
         }
     },
 
-    setRecipientMode : function () {
-        var thisEvent = modalActionMeeting._activeObject;
-
-        $(".event-owner").addClass("hidden");
-        $(".event-recipient, #event-viewMode").removeClass("hidden");
-        // if event is expired disable rsvp
-        if(thisEvent.isExpired){
-            $("#event-rsvp").data("kendoMobileButtonGroup").enable(false);
-        } else {
-            $("#event-rsvp").data("kendoMobileButtonGroup").enable(true);
-            // set user response
-            if(thisEvent.isAccepted){
-                $("#event-rsvp").data("kendoMobileButtonGroup").select(0);
-                modalActionMeeting.setEventBanner("accepted");
-            } else if(thisEvent.isDeclined){
-                $("#event-rsvp").data("kendoMobileButtonGroup").select(1);
-                modalActionMeeting.setEventBanner("declined");
-            } else {
-                modalActionMeeting.setEventBanner("pending");
-            }
-        }
-    },
 
     onShow: function (e) {
         _preventDefault(e);
@@ -222,6 +250,19 @@ var modalActionMeeting = {
 
     },
 
+    checkExpired : function (date) {
+        var thisObject = modalActionMeeting._activeObject;
+
+        if (moment(modalActionMeeting._date).isAfter(date)) {
+            thisObject.set('isExpired', true);
+            modalActionMeeting.setEventBanner("expired");
+
+        } else {
+            thisObject.set('isExpired', false);
+            modalActionMeeting.setEventBanner();
+        }
+    },
+
     updateDateString : function () {
         var date = $('#modalActionMeeting-date').val();
         var time = $('#modalActionMeeting-time').val();
@@ -233,10 +274,10 @@ var modalActionMeeting = {
 
     },
 
-    openModal: function (actionObj) {
+    openModal: function (actionObj, callback) {
         if (!modalActionMeeting._isInited) {
 
-            modalActionMeeting._eventList = smartObject.getActionNames();
+            modalActionMeeting._eventList = smartEvent.getActionNames();
 
             $("#modalActionMeeting-title").kendoAutoComplete({
                 dataSource: modalActionMeeting._eventList,
@@ -259,21 +300,16 @@ var modalActionMeeting = {
 
             $("#modalActionMeeting-datestring").on('blur', function () {
                 var dateStr =  $("#modalActionMeeting-datestring").val();
-                if (dateStr.length > 6) {
+                if (dateStr.length > 5) {
                     var timeString = dateStr.match(/\d{1,2}([:.]?\d{1,2})?([ ]?[a|p]m)/ig);
                     var date = Date.today();
                     var timeComp = '';
                     if (timeString !== null && timeString.length > 0) {
-
                         dateStr = dateStr.replace(timeString[0], '');
                         dateStr = dateStr.trim();
 
-
                         var time = Date.parse(timeString[0]);
                         timeComp = new Date(time).toString("h:mm tt");
-
-
-
                     }
                     if (dateStr.length > 4) {
                         date = Date.parse(dateStr);
@@ -290,22 +326,35 @@ var modalActionMeeting = {
 
                 }
             });
-            
+
+
+
             $('#modalActionMeeting-date').pickadate({
-                weekdaysShort: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-                showMonthsShort: true,
-                onClose: function(){
+                format: 'ddd,  mmm, d yyyy',
+                formatSubmit: 'mm d yyyy',
+                min: true,
+                onSet : function (context) {
                     modalActionMeeting.updateDateString();
                 }
             });
+            //$('#modalActionMeeting-time').pickatime();
+
+           /* $("#modalActionMeeting-date").on('blur', function () {
+
+            });*/
+
+
 
 
             $("#modalActionMeeting-time").on('blur', function () {
                 var timeIn =  $("#modalActionMeeting-time").val();
-                var time = Date.parse(timeIn);
-                var timeComp = new Date(time).toString("h:mm tt");
-                $("#modalActionMeeting-time").val(timeComp);
-                modalActionMeeting.updateDateString();
+                if (timeIn.length > 3) {
+
+                    var time = Date.parse(timeIn);
+                    var timeComp = new Date(time).toString("h:mm tt");
+                    $("#modalActionMeeting-time").val(timeComp);
+                    modalActionMeeting.updateDateString();
+                }
             });
 
             $("#modalActionMeeting-placesearch").on('input', function () {
@@ -335,7 +384,9 @@ var modalActionMeeting = {
                         modalActionMeeting._placeId = null;
                         modalActionMeeting._activeObject.set('placeId', modalActionMeeting._placeId);
                         modalActionMeeting._activeObject.set('placeName',placeStr);
-                        modalActionMeeting._activeObject.set('address',placeStr);
+                        modalActionMeeting._activeObject.set('address', null);
+                        modalActionMeeting._activeObject.set('lat',null);
+                        modalActionMeeting._activeObject.set('lng',null);
 
                     }
                     // event fired on blur -- if a place wasn't selected, need to do a nearby search
@@ -355,7 +406,9 @@ var modalActionMeeting = {
                     modalActionMeeting._placeId = dataItem.uuid;
                     modalActionMeeting._activeObject.set('placeId', modalActionMeeting._placeId);
                     modalActionMeeting._activeObject.set('placeName',dataItem.name);
-                    modalActionMeeting._activeObject.set('address',dataItem.address);
+                    modalActionMeeting._activeObject.set('address',dataItem.address +  ' ' + dataItem.city + ', ' + dataItem.state);
+                    modalActionMeeting._activeObject.set('lat',dataItem.lat);
+                    modalActionMeeting._activeObject.set('lng',dataItem.lng);
 
 
 
@@ -369,15 +422,20 @@ var modalActionMeeting = {
 
             modalActionMeeting._isInited = true;
         }
+
+        if (callback === undefined) {
+            callback = null;
+        }
+
+        modalActionMeeting._callback = callback;
+
         modalActionMeeting._date = new Date();
 
-
-
+        $("#modalActionMeeting-eventExpired").addClass('hidden');
 
         if (actionObj === undefined || actionObj === null) {
             modalActionMeeting.initActiveObject();
-            // setup as a new event
-            modalActionMeeting.setSenderMode();
+
         } else {
             // we have an existing event
             modalActionMeeting.setActiveObject(actionObj);
@@ -414,15 +472,49 @@ var modalActionMeeting = {
 
         }
 
+        var thisObject = modalActionMeeting._activeObject;
+        // setting send/receiver
+
+        $('#modalActionMeeting-organizer').text(thisObject.senderName);
+        modalActionMeeting.checkExpired(thisObject.date);
+
+        if (thisObject.senderUUID === userModel.currentUser.userUUID) {
+                modalActionMeeting.setSenderMode();
+        } else {
+                modalActionMeeting.setRecipientMode();
+
+        }
+
+            // setting event location
+        if(thisObject.placeName !== null){
+            $(".event-location").removeClass("hidden");
+        } else {
+            $(".event-location").addClass("hidden");
+        }
+
+        var prettyDate = moment(thisObject.date).format('dddd MMMM, Do [at] h:mmA');
+        $(".event-date").text(prettyDate);
+
+
         $("#modalActionMeeting-placesearchdiv").addClass('hidden');
 
+        if (thisObject.senderUUID === null || thisObject.senderUUID === userModel.currentUser.userUUID) {
+            $("#modalActionMeeting-organizer").text("You");
+        } else {
+            var contact = contactModel.findContactByUUID(thisObject.senderUUID);
+            if (contact !== undefined) {
+                $("#modalActionMeeting-organizer").text(contact.name);
+            }
+        }
+
+        modalActionMeeting.checkExpired();
 
         $("#modalview-actionMeeting").data("kendoMobileModalView").open();
     },
 
     setEventBanner: function(state){
         // Styling for event banner state
-        switch(state){
+        switch(state) {
             case "expired":
                 $(".eventBanner").removeClass("hidden").addClass("eventExpired");
                 $(".eventBannerTitle").text("Event expired");
@@ -451,20 +543,102 @@ var modalActionMeeting = {
 
     eventMapLocation: function(e){
         _preventDefault(e);
-        // todo - wire map view of event location
+
+        var event =  modalActionMeeting._activeObject;
+
+        if (event.placeId !== null) {
+            var place = placesModel.getPlaceModel(event.placeId);
+            if (place !== undefined) {
+                var placeId = LZString.compressToEncodedURIComponent(event.placeId);
+                APP.kendo.navigate('#placeView?place=' + placeId + '&returnview=channel?'+channelView._channelId);
+            }
+
+        } else {
+
+            if (window.navigator.simulator === undefined) {
+                if (event.lat !== null) {
+                    launchnavigator.navigate(
+                        [event.lat,event.lng],
+                        null,
+                        function(){
+                            mobileNotify("Launching Navigation...");
+                        },
+                        function(error){
+                            mobileNotify("Plugin error: "+ error);
+                        });
+                } else if (event.address !== null) {
+                    launchnavigator.navigate(
+                        event.address,
+                        null,
+                        function(){
+                           mobileNotify("Launching Navigation...");
+                        },
+                        function(error){
+                            mobileNotify("Plugin error: "+ error);
+                        });
+                }
+            } else {
+                mobileNotify("Navigation not yet supported in emulator...");
+            }
+        }
 
     },
 
     onCancel: function (e) {
         _preventDefault(e);
         $(".event-owner, .event-recipient, #event-editMode, #event-viewMode").addClass("hidden");
-        $("#modalview-actionMeeting").data("kendoMobileModalView").close();
+       // Use onDone so the modal can redirect or restore state as required...  $("#modalview-actionMeeting").data("kendoMobileModalView").close();
+
+        modalActionMeeting._activeObject.set("wasCancelled", true);
+
         modalActionMeeting.setEventBanner();
+
+        modalActionMeeting.onDone();
+
     },
 
-    sendEventStatus: function(e){
-        // todo - wire event status
-        modalActionMeeting.onDone();
+    changeStatus: function(e){
+        var index = this.current().index();
+        if(modalActionMeeting.response !== true){
+            $("#event-comment").velocity("slideDown");
+            modalActionMeeting.response = true;
+        }
+        if(index === 0){
+            // User accepted
+            modalActionMeeting.userAccepted = true;
+            $("#event-comment textarea").attr("placeholder", "Looking forward to it!");
+        } else {
+            // User declined
+            modalActionMeeting.userAccepted = false;
+            $("#event-comment textarea").attr("placeholder", "Sorry can't make it.")
+        }
+    },
+
+    sendRSVP: function(e){
+        _preventDefault(e);
+
+        var thisEvent = modalActionMeeting._activeObject;
+        var commentStr = $('#modalActionMeeting-comments').val();
+
+
+        if (modalActionMeeting.userAccepted) {
+
+            smartEvent.accept(thisEvent.uuid, thisEvent.senderUUID, commentStr);
+
+            modalActionMeeting.setAcceptStatus();
+
+            modalActionMeeting.onDone();
+        }
+
+        if (!modalActionMeeting.userAccepted) {
+
+            smartEvent.accept(thisEvent.uuid, thisEvent.senderUUID, commentStr);
+
+            modalActionMeeting.setAcceptStatus();
+
+            modalActionMeeting.onDone();
+        }
+
     },
 
     onAccept : function (e) {
@@ -472,9 +646,11 @@ var modalActionMeeting = {
 
         var commentStr = $('#modalActionMeeting-comments').val();
 
-        smartObject.accept(thisEvent.uuid, thisEvent.senderUUID, commentStr);
+        smartEvent.accept(thisEvent.uuid, thisEvent.senderUUID, commentStr);
+
 
         modalActionMeeting.setAcceptStatus();
+
 
         modalActionMeeting.onDone();
     },
@@ -484,7 +660,7 @@ var modalActionMeeting = {
 
         var commentStr = $('#modalActionMeeting-comments').val();
 
-        smartObject.accept(thisEvent.uuid, thisEvent.senderUUID, commentStr);
+        smartEvent.accept(thisEvent.uuid, thisEvent.senderUUID, commentStr);
 
         modalActionMeeting.setAcceptStatus();
 
@@ -498,11 +674,12 @@ var modalActionMeeting = {
 
     createSmartEvent : function (thisObj) {
         var thisObject = {};
+
         if (thisObj.action === null) {
             // User has submitted a custom action
             var titleArray = thisObj.title.split(' ');
             thisObj.action = titleArray[0].toLowerCase();
-            if (!smartObject.isCurrentAction(thisObj.action)) {
+            if (!smartEvent.isCurrentAction(thisObj.action)) {
                 // Todo: add new action to users private dictionary
             }
         }
@@ -517,7 +694,9 @@ var modalActionMeeting = {
         thisObject.placeName = thisObj.placeName;
         thisObject.address = thisObj.address;
         thisObject.senderUUID = userModel.currentUser.userUUID;
+        thisObject.senderName = userModel.currentUser.name;
         thisObject.channelId = thisObj.channelId;
+        thisObject.calendarId = thisObj.calendarId;
         thisObject.eventChatId = thisObj.eventChatId;
         thisObject.calendarId = thisObj.calendarId;
         thisObject.lat = thisObj.lat;
@@ -528,14 +707,14 @@ var modalActionMeeting = {
         thisObject.placeFlexible = thisObj.placeFlexible;
         thisObject.isDeleted = false;
         thisObject.isModified = true;
+        thisObject.wasCancelled = false;
         thisObject.isAccepted = thisObj.isAccepted;
         thisObject.isDeclined = thisObj.isDeclined;
-        thisObject.declineList = thisObj.declineList;
-        thisObject.acceptList = thisObj.acceptList;
+        thisObject.rsvpList = thisObj.rsvpList;
         thisObject.inviteList = thisObj.inviteList;
-        thisObject.commentList = thisObj.commentList;
 
-        channelView.addSmartObjectToMessage(thisObj.uuid, thisObject);
+        smartEvent.addObject(thisObject);
+
 
     },
 
@@ -547,21 +726,21 @@ var modalActionMeeting = {
 
     onSaveEvent : function (e) {
         var thisObj = modalActionMeeting._activeObject;
-        // todo - wire create new event
-
-        /*
+        
         var finalDateStr = $("#modalActionMeeting-datestring").val();
+        var saveDate = new Date(finalDateStr);
 
-        modalActionMeeting._activeObject.set('date', new Date(finalDateStr));
+        thisObj.set('date', saveDate);
+        thisObj.set('senderName', userModel.currentUser.name);
+
         modalActionMeeting.createSmartEvent(thisObj);
-        */
 
         modalActionMeeting.onDone();
     },
 
     onCancelEvent: function (e) {
         var thisObj = modalActionMeeting._activeObject;
-        // todo - wire conformation and delete
+
         modalActionMeeting.onDone();
     },
 
@@ -569,450 +748,13 @@ var modalActionMeeting = {
         //_preventDefault(e);
 
         $("#modalview-actionMeeting").data("kendoMobileModalView").close();
+        if (modalActionMeeting._callback !== null) {
+            modalActionMeeting._callback(modalActionMeeting._activeObject);
+        }
     }
 
 };
 
 
 
-var smartEventView = {
-    _activeObject : new kendo.data.ObservableObject(),
-    _date : new Date(),
-    _placeId :null,
-    _isInited : false,
-    _eventList :[],
-
-    onInit: function (e) {
-        _preventDefault(e);
-
-
-    },
-
-    initActiveObject : function () {
-        var thisObj = smartEventView._activeObject;
-
-        var newDate = Date.today();
-        thisObj.set("uuid", uuid.v4());
-        thisObj.set('senderUUID', userModel.currentUser.userUUID);
-        thisObj.set('channelId', null);
-        thisObj.set('eventChatId', null);
-        thisObj.set('title', null);
-        thisObj.set('type', "meeting");
-        thisObj.set('action', null);
-        thisObj.set('description', null);
-        thisObj.set('address', null);
-        thisObj.set('placeName', null);
-        thisObj.set('placeId', null);
-        thisObj.set('calendarId', null);
-        thisObj.set('lat', null);
-        thisObj.set('lng', null);
-        thisObj.set('date', newDate);
-        thisObj.set('approxTime', false);
-        thisObj.set('approxPlace', false);
-        thisObj.set('timeFlexible', false);
-        thisObj.set('placeFlexible', false);
-        thisObj.set('isDeleted', false);
-        thisObj.set('isModified', false);
-        thisObj.set('isAccepted', false);
-        thisObj.set('isAccepted', false);
-        thisObj.set('addToCalendar', false);
-        thisObj.set('declineList', []);
-        thisObj.set('acceptList', []);
-        thisObj.set('inviteList', []);
-        thisObj.set('comment', null);
-        thisObj.set('commentList', []);
-        thisObj.set('wasSent', false);
-
-
-        $('#smartEventView-placesearch').val(thisObj.placeName);
-        $('#smartEventView-datestring').val(new Date(thisObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
-        $('#smartEventView-date').val(new Date(thisObj.date).toString('MMMM dd, yyyy'));
-        $('#smartEventView-time').val(new Date(thisObj.date).toString('h:mm tt'));
-    },
-
-    setActiveObject : function (newObj) {
-        var thisObj = smartEventView._activeObject;
-
-        if (newObj.uuid === undefined || newObj.uuid === null) {
-            newObj.uuid = uuid.v4();
-        }
-        thisObj.set("wasSent", true);
-        thisObj.set('channelId', newObj.channelId);
-        thisObj.set('eventChatId', newObj.eventChatId);
-        thisObj.set('title', newObj.title);
-        thisObj.set('type', newObj.type);
-        thisObj.set('uuid', newObj.uuid);
-        thisObj.set('senderUUID', newObj.senderUUID);
-        thisObj.set('action', newObj.action);
-        thisObj.set('description', newObj.description);
-        thisObj.set('address', newObj.address);
-        thisObj.set('placeName', newObj.placeName);
-        thisObj.set('calendarId', newObj.calendarId);
-        thisObj.set('placeId', newObj.placeId);
-        thisObj.set('lat', newObj.lat);
-        thisObj.set('lng', newObj.lng);
-        if (newObj.date === undefined || newObj.date === null) {
-            newObj.date = new Date ();
-        }
-        thisObj.set('date', newObj.date);
-        thisObj.set('acceptList', newObj.acceptList);
-        thisObj.set('declineList', newObj.declineList);
-        thisObj.set('inviteList', newObj.inviteList);
-        thisObj.set('commentList', newObj.commentList);
-        thisObj.set('approxTime', newObj.approxTime);
-        thisObj.set('approxPlace', newObj.approxPlace);
-        thisObj.set('timeFlexible', newObj.timeFlexible);
-        thisObj.set('placeFlexible', newObj.placeFlexible);
-        thisObj.set('isModified', newObj.isModified);
-        thisObj.set('isDeleted', newObj.isDeleted);
-        thisObj.set('isAccepted', newObj.isAccepted);
-        thisObj.set('isDeclined', newObj.isDeclined);
-
-        thisObj.set('addToCalendar', false);
-        if (newObj.calendarId !== undefined || newObj.calendarID !== null) {
-            thisObj.set('addToCalendar', true);
-            $('#smartEventView-addToCalendar').prop('readonly', true);
-        } else {
-            $('#smartEventView-addToCalendar').prop('readonly', false);
-        }
-
-        if (newObj.senderUUID === undefined || newObj.senderUUID === userModel.currentUser.userUUID) {
-            smartEventView.setSenderMode();
-        } else {
-            smartEventView.setRecipientMode();
-        }
-
-        $('#smartEventView-placesearch').val(newObj.placeName);
-        $('#smartEventView-datestring').val(new Date(newObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
-        $('#smartEventView-date').val(new Date(newObj.date).toString('MMMM dd, yyyy'));
-        $('#smartEventView-time').val(new Date(newObj.date).toString('h:mm tt'));
-    },
-
-
-    setSenderMode: function (wasSent) {
-
-        if (wasSent) {
-            $('#smartEventView-update').removeClass('hidden');
-            $('#smartEventView-save').addClass('hidden');
-        } else {
-            $('#smartEventView-save').removeClass('hidden');
-            $('#smartEventView-update').addClass('hidden');
-        }
-
-        $('#smartEventView-accept').addClass('hidden');
-        $('#smartEventView-commentsLi').addClass('hidden');
-
-        $('#smartEventView-title').prop('readonly', false);
-        $('#smartEventView-desc').prop('readonly', false);
-        $('#smartEventView-datestring').prop('readonly', false);
-        $('#smartEventView-date').prop('readonly', false);
-        $('#smartEventView-time').prop('readonly', false);
-    },
-
-    setRecipientMode : function () {
-
-        $('#smartEventView-save').addClass('hidden');
-        $('#smartEventView-accept').removeClass('hidden');
-        $('#smartEventView-commentsLi').removeClass('hidden');
-        $('#smartEventView-title').prop('readonly', true);
-        $('#smartEventView-desc').prop('readonly', true);
-        $('#smartEventView-datestring').prop('readonly', true);
-        $('#smartEventView-date').prop('readonly', true);
-        $('#smartEventView-time').prop('readonly', true);
-    },
-
-
-
-    placeSearch : function (e) {
-        _preventDefault(e);
-
-        var placeStr =  $("#smartEventView-placesearch").val();
-
-        mobileNotify("SearchPlaces : "  + placeStr);
-
-    },
-
-    updateDateString : function () {
-        var date = $('#smartEventView-date').val();
-        var time = $('#smartEventView-time').val();
-
-        var finalDateStr = date + " " + time;
-        $("#smartEventView-datestring").val(finalDateStr);
-
-        smartEventView._activeObject.set('date', new Date(finalDateStr));
-
-    },
-
-    onShow: function (e) {
-        _preventDefault(e);
-        modalActionMeeting._placeId = null;
-
-        $("#smartEventView-placesearchBtn").text("");
-        $("#smartEventView-placesearch").val("");
-        $("#smartEventView-datestring").val("");
-        $("#smartEventView-comments").val("");
-
-
-        if (!smartEventView._isInited) {
-
-            smartEventView._eventList = smartObject.getActionNames();
-
-            $("#smartEventView-title").kendoAutoComplete({
-                dataSource: smartEventView._eventList,
-                ignoreCase: true,
-                change: function (e) {
-                    var eventStr =  $("#modalActionMeeting-title").val();
-                    smartEventView._activeObject.set('title', eventStr);
-
-                },
-                select: function(e) {
-                    var event = e.item;
-                    var actionStr = e.item[0].textContent;
-                    smartEventView._activeObject.set('action', actionStr);
-
-                    // Use the selected item or its text
-                },
-                filter: "contains",
-                placeholder: "Select Event... "
-            });
-
-            $("#smartEventView-datestring").on('blur', function () {
-                var dateStr =  $("#smartEventView-datestring").val();
-                if (dateStr.length > 6) {
-                    var timeString = dateStr.match(/\d{1,2}([:.]?\d{1,2})?([ ]?[a|p]m)/ig);
-                    var date = Date.today();
-                    var timeComp = '';
-                    if (timeString !== null && timeString.length > 0) {
-
-                        dateStr = dateStr.replace(timeString[0], '');
-                        dateStr = dateStr.trim();
-
-                        var time = Date.parse(timeString[0]);
-                        timeComp = new Date(time).toString("h:mm tt");
-
-                    }
-                    if (dateStr.length > 4) {
-                        date = Date.parse(dateStr);
-                    }
-                    var dateComp = new Date(date).toString("MMMM dd, yyyy");
-                    var finalDateStr  =  dateComp;
-
-                    if(timeComp !== '')
-                        finalDateStr += " " +  timeComp;
-
-                    $('#smartEventView-date').val(dateComp);
-                    $('#smartEventView-time').val(timeComp);
-                    smartEventView._activeObject.set('date', new Date(finalDateStr));
-
-                }
-            });
-
-            $('#smartEventView-date').pickadate();
-
-            // edit event date
-            $("#smartEventView-date").on('blur', function () {
-                smartEventView.updateDateString();
-            });
-
-            // Edit event time
-            $("#smartEventView-time").on('blur', function () {
-                var timeIn =  $("#smartEventView-time").val();
-                var time = Date.parse(timeIn);
-                var timeComp = new Date(time).toString("h:mm tt");
-                $("#smartEventView-time").val(timeComp);
-                smartEventView.updateDateString();
-            });
-
-            // Search Places for event
-            $("#smartEventView-placesearch").on('input', function () {
-                var placeStr =  $("#smartEventView-placesearch").val();
-                if (placeStr.length > 3) {
-                    $("#smartEventView-placesearchBtn").text("Find " + placeStr);
-                    $("#smartEventView-placesearchdiv").removeClass('hidden');
-                } else {
-                    $("#smartEventView-placesearchdiv").addClass('hidden');
-                }
-            });
-
-            $("#smartEventView-placesearch").kendoAutoComplete({
-                dataSource: placesModel.placesDS,
-                ignoreCase: true,
-                dataTextField: "name",
-                dataValueField: "uuid",
-                change: function (e) {
-                    var placeStr = $("#smartEventView-placesearch").val();
-
-                    if (smartEventView._placeId !== null) {
-                        var place = placesModel.getPlaceModel(smartEventView._placeId);
-
-                        if (placeStr === place.name) {
-                            return;
-                        }
-                        smartEventView._placeId = null;
-                        smartEventView._activeObject.set('placeId', smartEventView._placeId);
-                        smartEventView._activeObject.set('placeName',placeStr);
-                        smartEventView._activeObject.set('address',placeStr);
-
-                    }
-                    // event fired on blur -- if a place wasn't selected, need to do a nearby search
-
-                    if (placeStr.length > 3) {
-                        $("#smartEventView-placesearchBtn").text("Find " + placeStr);
-                        $("#smartEventView-placesearchdiv").removeClass('hidden');
-                    } else {
-                        $("#smartEventView-placesearchdiv").addClass('hidden');
-                    }
-
-                },
-                select: function(e) {
-                    // User has selected one of their places
-                    var place = e.item;
-                    var dataItem = this.dataItem(e.item.index());
-                    smartEventView._placeId = dataItem.uuid;
-                    smartEventView._activeObject.set('placeId', modalActionMeeting._placeId);
-                    smartEventView._activeObject.set('placeName',dataItem.name);
-                    smartEventView._activeObject.set('address',dataItem.address);
-
-
-
-                    // Hide the Find Location button
-                    $("#smartEventView-placesearchdiv").addClass('hidden');
-
-                },
-                filter: "contains",
-                placeholder: "Select location... "
-            });
-
-            smartEventView._isInited = true;
-        }
-        smartEventView._date = new Date();
-
-
-        if (actionObj === undefined || actionObj === null) {
-            smartEventView.initActiveObject();
-        } else {
-            smartEventView.setActiveObject(actionObj);
-        }
-
-        $("#smartEventView-placesearchdiv").addClass('hidden');
-        var thisObject = smartEventView._activeObject;
-        if (thisObject.senderUUID === undefined || thisObject.senderUUID === null) {
-            smartEventView.setSenderMode();
-        } else if (thisObject.senderUUID === userModel.currentUser.userUUID) {
-            smartEventView.setSenderMode();
-        } else {
-            smartEventView.setRecipientMode();
-        }
-
-
-    },
-
-    changeStatus: function(e){
-        var index = this.current().index();
-        if(modalActionMeeting.response !== true){
-            $("#event-comment").velocity("slideDown");
-            modalActionMeeting.response = true;
-        }
-        if(index === 0){
-            // User accepted
-            $("#event-comment textarea").attr("placeholder", "Looking forward to it!");
-        } else {
-            // User declined
-            $("#event-comment textarea").attr("placeholder", "Sorry can't make it.")
-        }
-    },
-
-    onCancel: function (e) {
-        //_preventDefault(e);
-
-    },
-
-    onAccept : function (e) {
-
-    },
-
-    onDecline : function (e) {
-
-    },
-
-    doEventChat : function (e) {
-        _preventDefault(e);
-        mobileNotify("Create Event Chat in progress...");
-    },
-
-    createSmartEvent : function (thisObj) {
-        var thisObject = {};
-        if (thisObj.action === null) {
-            // User has submitted a custom action
-            var titleArray = thisObj.title.split(' ');
-            thisObj.action = titleArray[0].toLowerCase();
-            if (!smartObject.isCurrentAction(thisObj.action)) {
-                // Todo: add new action to users private dictionary
-            }
-        }
-
-        thisObject.uuid = thisObj.uuid;
-        thisObject.action = thisObj.action;
-        thisObject.type = thisObj.type;
-        thisObject.title = thisObj.title;
-        thisObject.description = thisObj.description;
-        thisObject.date = thisObj.date;
-        thisObject.placeId = thisObj.placeId;
-        thisObject.placeName = thisObj.placeName;
-        thisObject.address = thisObj.address;
-        thisObject.senderUUID = thisObj.senderUUID;
-        thisObject.channelId = thisObj.channelId;
-        thisObject.eventChatId = thisObj.eventChatId;
-        thisObject.calendarId = thisObj.calendarId;
-        thisObject.lat = thisObj.lat;
-        thisObject.lng = thisObj.lng;
-        thisObject.approxTime = thisObj.approxTime;
-        thisObject.approxPlace = thisObj.approxPlace;
-        thisObject.timeFlexible = thisObj.timeFlexible;
-        thisObject.placeFlexible = thisObj.placeFlexible;
-        thisObject.isDeleted = false;
-        thisObject.isModified = true;
-        thisObject.isAccepted = thisObj.isAccepted;
-        thisObject.isDeclined = thisObj.isDeclined;
-        thisObject.declineList = thisObj.declineList;
-        thisObject.acceptList = thisObj.acceptList;
-        thisObject.inviteList = thisObj.inviteList;
-        thisObject.commentList = thisObj.commentList;
-
-        channelView.addSmartObjectToMessage(thisObj.uuid, thisObject);
-
-    },
-
-    onUpdateEvent: function (e) {
-        var thisObj = modalActionMeeting._activeObject;
-
-        modalActionMeeting.onDone();
-    },
-
-    onSaveEvent : function (e) {
-        var thisObj = smartEventView._activeObject;
-        if (thisObj.senderUUID === userModel.currentUser.userUUID) {
-            var finalDateStr = $("#smartEventView-datestring").val();
-
-            smartEventView._activeObject.set('date', new Date(finalDateStr));
-            smartEventView.createSmartEvent(thisObj);
-        }
-
-        smartEventView.onDone();
-    },
-
-    onCancelEvent: function (e) {
-        var thisObj = smartEventView._activeObject;
-
-        smartEventView.onDone();
-    },
-
-    onDone: function (e) {
-        //_preventDefault(e);
-
-        APP.kendo.navigate('#:back');
-
-    }
-
-};
 
