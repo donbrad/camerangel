@@ -714,6 +714,8 @@ var modalActionMeeting = {
     },
 
     addToCalendar : function (e) {
+        _preventDefault(e);
+
         var thisObj = modalActionMeeting._activeObject;
         var endDate = moment(thisObj.date).add(thisObj.duration, 'minutes');
 
@@ -727,6 +729,8 @@ var modalActionMeeting = {
                 endDate,
                 function (message) {
                     mobileNotify(message);
+                    $('#modalActionMeeting-view-calendar-edit').addClass('hidden');
+                    $('#modalActionMeeting-view-calendar').removeClass('hidden');
                 },
                 function (message) {
                     mobileNotify('Calendar error :' + message);
