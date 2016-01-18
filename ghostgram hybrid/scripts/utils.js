@@ -684,6 +684,13 @@ function timeSince(date) {
 	return Math.floor(seconds) + "s";
 }
 
+function packParameter (parameter) {
+	return(LZString.compressToEncodedURIComponent(parameter));
+}
+
+function unpackParameter (parameter) {
+	return(LZString.decompressFromEncodedURIComponent(parameter));
+}
 
 // Returns a function, that, as long as it continues to be invoked, will not
 // be triggered. The function will be called after it stops being called for

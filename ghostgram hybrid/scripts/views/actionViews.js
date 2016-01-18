@@ -514,8 +514,8 @@ var modalActionMeeting = {
         if (event.placeId !== null) {
             var place = placesModel.getPlaceModel(event.placeId);
             if (place !== undefined) {
-                var placeId = LZString.compressToEncodedURIComponent(event.placeId);
-                APP.kendo.navigate('#placeView?place=' + placeId + '&returnview=channel?'+channelView._channelId);
+                var placeId = packParameter(event.placeId), channelUrl = packParameter('channel?'+channelView._channelId);
+                APP.kendo.navigate('#placeView?place=' + placeId + '&returnview=' + channelUrl);
             }
 
         } else {
@@ -549,7 +549,7 @@ var modalActionMeeting = {
 
     },
 
-    onCancel: function (e) {
+    onCancelEvent: function (e) {
         _preventDefault(e);
         $(".event-owner, .event-recipient, #event-editMode, #event-viewMode").addClass("hidden");
        // Use onDone so the modal can redirect or restore state as required...  $("#modalview-actionMeeting").data("kendoMobileModalView").close();
@@ -679,6 +679,14 @@ var modalActionMeeting = {
 
     },
 
+    addToCalendar : function (e) {
+
+    },
+
+    showCalendar : function (e) {
+
+    },
+
     onUpdateEvent: function (e) {
         var thisObj = modalActionMeeting._activeObject;
         // todo - wire event update
@@ -699,10 +707,13 @@ var modalActionMeeting = {
         modalActionMeeting.onDone();
     },
 
-    onCancelEvent: function (e) {
-        var thisObj = modalActionMeeting._activeObject;
+    onRSVP : function (e) {
+        _preventDefault(e);
+    },
 
-        modalActionMeeting.onDone();
+    onCancel : function (e) {
+        _preventDefault(e);
+        $("#modalview-actionMeeting").data("kendoMobileModalView").close();
     },
 
     onDone: function (e) {
