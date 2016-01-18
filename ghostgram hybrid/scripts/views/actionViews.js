@@ -268,11 +268,11 @@ var modalActionMeeting = {
         var thisObject = modalActionMeeting._activeObject;
 
         if (thisObject.calendarId === null) {
-            $("#modalActionMeeting-add-calendar").removeClass('hidden');
+            $("#modalActionMeeting-view-calendar-add").removeClass('hidden');
             $("#modalActionMeeting-view-calendar").addClass('hidden');
         } else {
             $("#modalActionMeeting-view-calendar").removeClass('hidden');
-            $("#modalActionMeeting-add-calendar").addClass('hidden');
+            $("#modalActionMeeting-view-calendar-add").addClass('hidden');
         }
     },
 
@@ -729,7 +729,7 @@ var modalActionMeeting = {
                 endDate,
                 function (message) {
                     mobileNotify(message);
-                    $('#modalActionMeeting-view-calendar-edit').addClass('hidden');
+                    $('#modalActionMeeting-view-calendar-add').addClass('hidden');
                     $('#modalActionMeeting-view-calendar').removeClass('hidden');
                 },
                 function (message) {
