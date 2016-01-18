@@ -380,7 +380,9 @@ var modalActionMeeting = {
                         modalActionMeeting._placeId = null;
                         modalActionMeeting._activeObject.set('placeId', modalActionMeeting._placeId);
                         modalActionMeeting._activeObject.set('placeName',placeStr);
-                        modalActionMeeting._activeObject.set('address',placeStr);
+                        modalActionMeeting._activeObject.set('address', null);
+                        modalActionMeeting._activeObject.set('lat',null);
+                        modalActionMeeting._activeObject.set('lng',null);
 
                     }
                     // event fired on blur -- if a place wasn't selected, need to do a nearby search
@@ -400,7 +402,9 @@ var modalActionMeeting = {
                     modalActionMeeting._placeId = dataItem.uuid;
                     modalActionMeeting._activeObject.set('placeId', modalActionMeeting._placeId);
                     modalActionMeeting._activeObject.set('placeName',dataItem.name);
-                    modalActionMeeting._activeObject.set('address',dataItem.address);
+                    modalActionMeeting._activeObject.set('address',dataItem.address +  ' ' + dataItem.city + ', ' + dataItem.state);
+                    modalActionMeeting._activeObject.set('lat',dataItem.lat);
+                    modalActionMeeting._activeObject.set('lng',dataItem.lng);
 
 
 
