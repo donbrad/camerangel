@@ -376,6 +376,7 @@ var smartObject = {
         smartOb.set('senderName', objectIn.senderName);
         smartOb.set('channelId', objectIn.channelId);
         smartOb.set('calendarId', objectIn.calendarId);
+        smartOb.set('eventChatId', objectIn.calendarId);
         smartOb.set('action', objectIn.action);
         smartOb.set('type', objectIn.type);
         smartOb.set('title', objectIn.title);
@@ -395,6 +396,7 @@ var smartObject = {
         smartOb.set('isAccepted', objectIn.isAccepted);
         smartOb.set('isModified', objectIn.isModified);
         smartOb.set('isDeleted', objectIn.isDeleted);
+        smartOb.set('wasCancelled', objectIn.wasCancelled);
         smartOb.set('inviteList', objectIn.inviteList);
         smartOb.set('rsvpList', objectIn.rsvpList);
 

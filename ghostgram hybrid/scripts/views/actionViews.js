@@ -31,7 +31,9 @@ var modalActionMeeting = {
         var newDate = Date.today();
         thisObj.set("uuid", uuid.v4());
         thisObj.set('senderUUID', null);
+        thisObj.set('senderName', null);
         thisObj.set('channelId', null);
+        thisObj.set('calendarId', null);
         thisObj.set('eventChatId', null);
         thisObj.set('title', null);
         thisObj.set('type', "meeting");
@@ -49,8 +51,9 @@ var modalActionMeeting = {
         thisObj.set('timeFlexible', false);
         thisObj.set('placeFlexible', false);
         thisObj.set('isDeleted', false);
+        thisObj.set('wasCancelled', false);
         thisObj.set('isModified', false);
-        thisObj.set('isAccepted', false);
+        thisObj.set('isDeclined', false);
         thisObj.set('isAccepted', false);
         thisObj.set('addToCalendar', false);
         thisObj.set('rsvpList', []);
@@ -78,6 +81,7 @@ var modalActionMeeting = {
         thisObj.set('type', newObj.type);
         thisObj.set('uuid', newObj.uuid);
         thisObj.set('senderUUID', newObj.senderUUID);
+        thisObj.set('senderName', newObj.senderName);
         thisObj.set('action', newObj.action);
         thisObj.set('description', newObj.description);
         thisObj.set('address', newObj.address);
@@ -90,10 +94,8 @@ var modalActionMeeting = {
             newObj.date = new Date();
         }
         thisObj.set('date', newObj.date);
-        thisObj.set('acceptList', newObj.acceptList);
-        thisObj.set('declineList', newObj.declineList);
+        thisObj.set('rsvpList', newObj.rsvpList);
         thisObj.set('inviteList', newObj.inviteList);
-        thisObj.set('commentList', newObj.commentList);
         thisObj.set('approxTime', newObj.approxTime);
         thisObj.set('approxPlace', newObj.approxPlace);
         thisObj.set('timeFlexible', newObj.timeFlexible);
@@ -102,6 +104,7 @@ var modalActionMeeting = {
         thisObj.set('isDeleted', newObj.isDeleted);
         thisObj.set('isAccepted', newObj.isAccepted);
         thisObj.set('isDeclined', newObj.isDeclined);
+        thisObj.set('wasCancelled', newObj.wasCancelled);
 
         thisObj.set('addToCalendar', false);
         if (newObj.calendarId !== undefined || newObj.calendarID !== null) {
@@ -588,7 +591,9 @@ var modalActionMeeting = {
         thisObject.placeName = thisObj.placeName;
         thisObject.address = thisObj.address;
         thisObject.senderUUID = userModel.currentUser.userUUID;
+        thisObject.senderName = userModel.currentUser.name;
         thisObject.channelId = thisObj.channelId;
+        thisObject.calendarId = thisObj.calendarId;
         thisObject.eventChatId = thisObj.eventChatId;
         thisObject.calendarId = thisObj.calendarId;
         thisObject.lat = thisObj.lat;
@@ -599,6 +604,7 @@ var modalActionMeeting = {
         thisObject.placeFlexible = thisObj.placeFlexible;
         thisObject.isDeleted = false;
         thisObject.isModified = true;
+        thisObject.wasCancelled = false;
         thisObject.isAccepted = thisObj.isAccepted;
         thisObject.isDeclined = thisObj.isDeclined;
         thisObject.rsvpList = thisObj.rsvpList;
@@ -632,7 +638,8 @@ var modalActionMeeting = {
 
     onCancelEvent: function (e) {
         var thisObj = modalActionMeeting._activeObject;
-        // todo - wire conformation and delete
+
+
         modalActionMeeting.onDone();
     },
 
