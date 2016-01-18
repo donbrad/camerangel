@@ -159,6 +159,7 @@ var modalActionMeeting = {
             }
         } else {
             $('#event-owner-save').removeClass('hidden');
+            $('#modalActionMeeting-recipientListDiv').addClass('hidden');
             // new event
             modalActionMeeting.showEditMode();
         }
@@ -170,6 +171,8 @@ var modalActionMeeting = {
         var thisEvent = modalActionMeeting._activeObject;
 
         $(".event-owner").addClass("hidden");
+        $('#modalActionMeeting-recipientListDiv').addClass('hidden');
+        
         $(".event-recipient, #event-viewMode").removeClass("hidden");
         // if event is expired disable rsvp
         if(thisEvent.isExpired){
@@ -187,6 +190,8 @@ var modalActionMeeting = {
                 modalActionMeeting.setEventBanner("pending");
             }
         }
+
+        modalActionMeeting.setAcceptStatus();
     },
 
     showEditMode: function(){
@@ -433,9 +438,7 @@ var modalActionMeeting = {
         $('#modalActionMeeting-organizer').text(thisObject.senderName);
         modalActionMeeting.checkExpired(thisObject.date);
 
-        if (thisObject.senderUUID === undefined || thisObject.senderUUID === null) {
-                modalActionMeeting.setSenderMode();
-        } else if (thisObject.senderUUID === userModel.currentUser.userUUID) {
+        if (thisObject.senderUUID === userModel.currentUser.userUUID) {
                 modalActionMeeting.setSenderMode();
         } else {
                 modalActionMeeting.setRecipientMode();
