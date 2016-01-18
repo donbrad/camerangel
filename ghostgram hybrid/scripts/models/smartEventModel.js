@@ -114,7 +114,7 @@ var smartEvent = {
     termsDS : null,
 
     objectsDS: new kendo.data.DataSource({
-        offlineStorage: "smartobjects",
+        offlineStorage:"smartEvent",
         sort: {
             field: "date",
             dir: "desc"
@@ -129,8 +129,8 @@ var smartEvent = {
 
 
     fetch : function () {
-        var SmartObjects = Parse.Object.extend("smartobject");
-        var query = new Parse.Query(SmartObjects);
+        var smartObjects = Parse.Object.extend("smartobject");
+        var query = new Parse.Query(smartObjects);
 
         query.find({
             success: function(collection) {

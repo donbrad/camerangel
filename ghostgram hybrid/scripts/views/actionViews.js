@@ -256,7 +256,7 @@ var modalActionMeeting = {
     openModal: function (actionObj, callback) {
         if (!modalActionMeeting._isInited) {
 
-            modalActionMeeting._eventList = smartObject.getActionNames();
+            modalActionMeeting._eventList = smartEvent.getActionNames();
 
             $("#modalActionMeeting-title").kendoAutoComplete({
                 dataSource: modalActionMeeting._eventList,
@@ -494,8 +494,14 @@ var modalActionMeeting = {
     onCancel: function (e) {
         _preventDefault(e);
         $(".event-owner, .event-recipient, #event-editMode, #event-viewMode").addClass("hidden");
-        $("#modalview-actionMeeting").data("kendoMobileModalView").close();
+       // Use onDone so the modal can redirect or restore state as required...  $("#modalview-actionMeeting").data("kendoMobileModalView").close();
+
+        modalActionMeeting._activeObject.set("wasCancelled", true);
+
         modalActionMeeting.setEventBanner();
+
+        modalActionMeeting.onDone();
+
     },
 
     changeStatus: function(e){
@@ -522,7 +528,7 @@ var modalActionMeeting = {
 
         if (modalActionMeeting.userAccepted) {
 
-            smartObject.accept(thisEvent.uuid, thisEvent.senderUUID, commentStr);
+            smartEvent.accept(thisEvent.uuid, thisEvent.senderUUID, commentStr);
 
             modalActionMeeting.setAcceptStatus();
 
@@ -531,7 +537,7 @@ var modalActionMeeting = {
 
         if (!modalActionMeeting.userAccepted) {
 
-            smartObject.accept(thisEvent.uuid, thisEvent.senderUUID, commentStr);
+            smartEvent.accept(thisEvent.uuid, thisEvent.senderUUID, commentStr);
 
             modalActionMeeting.setAcceptStatus();
 
@@ -545,7 +551,7 @@ var modalActionMeeting = {
 
         var commentStr = $('#modalActionMeeting-comments').val();
 
-        smartObject.accept(thisEvent.uuid, thisEvent.senderUUID, commentStr);
+        smartEvent.accept(thisEvent.uuid, thisEvent.senderUUID, commentStr);
 
         modalActionMeeting.setAcceptStatus();
 
@@ -557,7 +563,7 @@ var modalActionMeeting = {
 
         var commentStr = $('#modalActionMeeting-comments').val();
 
-        smartObject.accept(thisEvent.uuid, thisEvent.senderUUID, commentStr);
+        smartEvent.accept(thisEvent.uuid, thisEvent.senderUUID, commentStr);
 
         modalActionMeeting.setAcceptStatus();
 
@@ -576,7 +582,7 @@ var modalActionMeeting = {
             // User has submitted a custom action
             var titleArray = thisObj.title.split(' ');
             thisObj.action = titleArray[0].toLowerCase();
-            if (!smartObject.isCurrentAction(thisObj.action)) {
+            if (!smartEvent.isCurrentAction(thisObj.action)) {
                 // Todo: add new action to users private dictionary
             }
         }
@@ -631,7 +637,7 @@ var modalActionMeeting = {
 
         modalActionMeeting.createSmartEvent(thisObj);
 
-      //  smartObject.addObject(thisObj);
+      //  smartEvent.addObject(thisObj);
 
         modalActionMeeting.onDone();
     },
@@ -844,7 +850,7 @@ var smartEventView = {
 
         if (!smartEventView._isInited) {
 
-            smartEventView._eventList = smartObject.getActionNames();
+            smartEventView._eventList = smartEvent.getActionNames();
 
             $("#smartEventView-title").kendoAutoComplete({
                 dataSource: smartEventView._eventList,
@@ -1022,7 +1028,7 @@ var smartEventView = {
             // User has submitted a custom action
             var titleArray = thisObj.title.split(' ');
             thisObj.action = titleArray[0].toLowerCase();
-            if (!smartObject.isCurrentAction(thisObj.action)) {
+            if (!smartEvent.isCurrentAction(thisObj.action)) {
                 // Todo: add new action to users private dictionary
             }
         }

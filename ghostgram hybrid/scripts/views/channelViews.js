@@ -1595,7 +1595,7 @@ var channelView = {
     messageAddSmartEvent : function (smartObj) {
         smartObj.channelId = channelView._channelId;
 
-        smartObject.smartAddObject(smartObj);
+        smartEvent.smartAddObject(smartObj);
 
         channelView.messageObjects.push(smartObj);
 
@@ -1655,8 +1655,8 @@ var channelView = {
         if (channelView.messageObjects.length > 0) {
             validMessage = true;
 
-            var smartObject = channelView.messageObjects[0];
-            text = channelView.addSmartEventToMessage(smartObject, text);
+            var smartEvent = channelView.messageObjects[0];
+            text = channelView.addSmartEventToMessage(smartEvent, text);
 
         }
 
@@ -1767,7 +1767,7 @@ var channelView = {
 
                 if (object !== null) {
                     // User is interacting with the object so add it, if it doesn't already exist
-                    smartObject.smartAddObject(object);
+                    smartEvent.smartAddObject(object);
                     modalActionMeeting.openModal(object);
                 }
 
@@ -1778,10 +1778,10 @@ var channelView = {
 
     },
 
-    addSmartEventToMessage: function (smartObject, message) {
+    addSmartEventToMessage: function (smartEvent, message) {
 
       //  var editor = $("#messageTextArea").data("kendoEditor");
-        var date = smartObject.date.toLocaleString(), objectId = smartObject.uuid;
+        var date = smartEvent.date.toLocaleString(), objectId = smartEvent.uuid;
 
 
         var dateStr = moment(date).format('ddd MMM Do');
@@ -1794,15 +1794,15 @@ var channelView = {
             '<img src="images/smart-event-light.svg" class="icon-md" />' +
             '</span>' +
             '<span class="btnSmart-content">' +
-            '<p class="textClamp btnSmart-title">' + smartObject.title + '</p>' +
+            '<p class="textClamp btnSmart-title">' + smartEvent.title + '</p>' +
             '<p class="textClamp btnSmart-date">' + dateStr + ' ' + localTime + '</p>' +
-            '<p class="textClamp btnSmart-date">' + smartObject.placeName + '</p>' +
+            '<p class="textClamp btnSmart-date">' + smartEvent.placeName + '</p>' +
             '</span>' +
             '</a></div>';
 
         var fullMessage = message + objectUrl;
 
-        channelView.activeMessage.objects.push(smartObject);
+        channelView.activeMessage.objects.push(smartEvent);
 
         return (fullMessage);
 
@@ -2000,7 +2000,7 @@ var channelView = {
     processTag : function (tagString) {
         var tagTokens = tagString.split(' ');
 
-        var tagList = smartObject.findTerm(tagTokens[0]);
+        var tagList = smartEvent.findTerm(tagTokens[0]);
         if (tagList !== undefined) {
             switch (tagList[0].category) {
 
