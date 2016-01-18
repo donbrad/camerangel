@@ -136,7 +136,7 @@ var modalActionMeeting = {
             // owner of a previously created event
             if(thisEvent.isExpired){
                 $('#event-owner-reschedule').removeClass('hidden');
-                $('#actionMeeting-update').addClass('hidden');
+                $('#event-owner-edit').addClass('hidden');
                 $("#event-owner-cancel").addClass("hidden");
 
             } else {

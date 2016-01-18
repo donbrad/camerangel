@@ -2423,9 +2423,7 @@
 		<div class="event-details">
 			<p>
 				<span class="event-date"></span>
-		<!--		<a class="btnClear-red event-owner" data-role="button" data-click="modalActionMeeting.onCancelEvent" id="event-owner-cancel">Cancel Event</a>
-				<a class="btnClear event-owner hidden" data-role="button" data-click="modalActionMeeting.onSaveEvent" id="actionMeeting-reschedule">Reschedule Event</a>
--->			</p>
+			</p>
 
 			<p class="event-location">
 				<a class="btnClear" data-role="button" data-click="modalActionMeeting.eventMapLocation">
@@ -2496,14 +2494,13 @@
 		</ul>
 	</form>
 
-	<div class="event-owner hidden" id="modalActionMeeting-recipientListDiv">
+	<div class="hidden" id="modalActionMeeting-recipientListDiv">
 		<h3>Event RSVP's</h3>
 		<ul data-role="listview" data-style="inset" id="modalActionMeeting-recipientListView">
 
 		</ul>
 	</div>
-
-
+	
 
 	<div class="footer" data-role="footer">
 
@@ -2519,7 +2516,7 @@
 		</div>
 		<div class="event-owner">
 			<div id="actionMeeting-update" class="hidden">
-				<a data-role="button" class="btnFull-modal btnSeconary event-valid event-owner" data-align="right" data-click="modalActionMeeting.showEditMode">Edit Event</a>
+				<!--<a data-role="button" class="btnFull-modal btnSeconary event-valid event-owner" data-align="right" data-click="modalActionMeeting.showEditMode">Edit Event</a>-->
 				<a class="btnFull-modal btnSecondary event-valid event-owner" data-role="button" id="event-owner-cancel" data-click="modalActionMeeting.onCancelEvent">Cancel Event</a>
 				<a class="btnFull-modal btnSecondary event-expired event-owner hidden" data-role="button" data-click="modalActionMeeting.onRescheduleEvent">Reschedule Event</a>
 			</div>
@@ -2527,7 +2524,7 @@
 <!--
 				<a data-role="button" type="button" class="btnFull-modal btnSecondary"  id="modalActionMeeting-eventchat"  data-click="modalActionMeeting.doEventChat">Add Event Chat</a>
 -->
-				<a class="btnFull-modal btnPrimary" data-role="button" data-click="modalActionMeeting.onSaveEvent">Create Event</a>
+				<a class="btnFull-modal btnPrimary" data-role="button" data-click="modalActionMeeting.onSaveEvent">Save and Send Event</a>
 			</div>
 		</div>
 	</div>
