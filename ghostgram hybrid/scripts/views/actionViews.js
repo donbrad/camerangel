@@ -108,6 +108,7 @@ var modalActionMeeting = {
         }
         thisObj.set('date', newObj.date);
         thisObj.set('duration', newObj.duration);
+        thisObj.set('durationString', newObj.durationString);
         thisObj.set('rsvpList', newObj.rsvpList);
         thisObj.set('inviteList', newObj.inviteList);
         thisObj.set('approxTime', newObj.approxTime);
