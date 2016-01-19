@@ -1281,7 +1281,7 @@ var placeView = {
             }
 
             if (e.view.params.returnview !== undefined){
-                placeView._returnView = e.view.params.returnview;
+                placeView._returnView = unpackParameter(e.view.params.returnview);
             }
 
             if (e.view.params.returnmodal !== undefined){

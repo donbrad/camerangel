@@ -44,6 +44,7 @@
 	<script src="scripts/libs/gibberish-aes.js"></script>
 	<script src="scripts/libs/smartcrop.js"></script>
 	<script src="scripts/libs/lunr.js"></script>
+	<script src="scripts/libs/juration.js"></script>
 	<script src="scripts/libs/uuid.js"></script>
 	<script src="scripts/libs/cropper.js"></script>
 	<script src="scripts/libs/base64-string.js"></script>
@@ -2423,6 +2424,23 @@
 				<span class="event-date"></span>
 			</p>
 
+
+			<p>
+				For  <span data-bind="text: durationString"></span>
+			</p>
+
+			<div id="modalActionMeeting-view-calendar-add" class="event-valid">
+				<div style="text-align: center;padding: 8px;">
+					<a class="btnSecondary" data-role="button" data-click="modalActionMeeting.addToCalendar">Add To Calendar</a>
+				</div>
+			</div>
+
+			<div id="modalActionMeeting-view-calendar" class="event-valid hidden">
+				<div style="text-align: center; padding: 8px;">
+					<a class="btnSecondary" data-role="button" data-click="modalActionMeeting.showCalendar">Show Calendar</a>
+				</div>
+			</div>
+
 			<p class="event-location">
 				<a class="btnClear" data-role="button" data-click="modalActionMeeting.eventMapLocation">
 					<img src="images/icon-location.svg" class="icon-sm" />
@@ -2435,7 +2453,6 @@
 		<div class="event-details event-recipient" id="event-response">
 			<label>My RSVP</label>
 			<ul data-role="buttongroup" id="event-rsvp" data-select="modalActionMeeting.changeStatus">
-
 				<li>Accept</li>
 				<li>Decline</li>
 			</ul>
@@ -2474,6 +2491,16 @@
 					</span>
 				</label>
 			</li>
+			<li >
+				<label> How long (Duration)
+					<input type="search" id="modalActionMeeting-duration"  data-bind="value: durationString" placeholder="1 hour..."/>
+				</label>
+			</li>
+			<li id="modalActionMeeting-add-calendar" class="event-valid" >
+				<label> Add to Calendar
+					<input type="checkbox" id="actionMeeting-addToCalendar"  data-role="switch" data-bind="checked: addToCalendar"/>
+				</label>
+			</li>
 			<li>
 				<label> Where (Location or Place)
 					<input type="search" id="modalActionMeeting-placesearch"/>
@@ -2483,12 +2510,6 @@
 				<div>
 					<img src='images/icon-gps-selected.svg' class='icon-sm'/> <a data-click="modalActionMeeting.placeSearch" data-role="button" class="btnClear" id="modalActionMeeting-placesearchBtn"> Find... </a>
 				</div>
-			</li>
-
-			<li id="modalActionMeeting-calendarLi" class="event-valid">r
-				<label> Add to Calendar
-					<input type="checkbox" id="actionMeeting-addToCalendar"  data-role="switch" data-bind="checked: addToCalendar"/>
-				</label>
 			</li>
 		</ul>
 	</form>
