@@ -1635,3 +1635,288 @@ var mapView = {
 
     }
 };
+
+
+/*
+ * smartEventPlacesView
+ */
+var smartEventPlacesView = {
+    _returnView : 'places',
+    _returnModal : null,
+    _radius: 500,   // set a larger radius for find places
+    _currentLocation: {},
+
+    placesDS :  new kendo.data.DataSource({
+        sort: {
+            field: "distance",
+            dir: "asc"
+        },
+        group: 'category'
+    }),
+
+    onInit : function (e) {
+        _preventDefault(e);
+
+        // Filter current places and query google places on keyup
+        $('#smartEventPlaces-SearchQuery').on('input', function() {
+            var query = this.value;
+            if (query.length > 0) {
+                smartEventPlacesView.placesDS.filter(  {"logic":"or",
+                    "filters":[
+                        {
+                            "field":"vicinity",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"name",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"type",
+                            "operator":"contains",
+                            "value":query}
+                    ]});
+
+                $("#findPlace .enterSearch").removeClass("hidden");
+
+            } else {
+
+                $("#findPlace .enterSearch").addClass("hidden");
+                smartEventPlacesView.placesDS.filter([]);
+            }
+        });
+
+        // bind clear search btn
+        $("#findPlace .enterSearch").on("click", function(){
+            $("#smartEventPlaces-SearchQuery").val('');
+
+            // reset data filters
+            smartEventPlacesView.placesDS.filter([]);
+
+            // hide clear btn
+            $(this).addClass('hidden');
+        });
+
+
+        $("#smartEventPlaces-listview").kendoMobileListView({
+                dataSource: smartEventPlacesView.placesDS,
+                template: $("#findPlacesTemplate").html(),
+                headerTemplate: $("#findPlacesHeaderTemplate").html(),
+                fixedHeaders: true,
+                click: function (e) {
+                    var geo = e.dataItem;
+
+                    delete geo._events;
+                    delete geo.parent;
+                    delete geo.__proto__;
+
+                   
+                },
+                dataBinding: function(e){
+                    // todo jordan - wire results UI
+                }
+            }
+        );
+    },
+
+    openModal : function (e) {
+
+
+        var ds = smartEventPlacesView.placesDS;
+
+        var lat = smartEventPlacesView._lat, lng = smartEventPlacesView._lng;
+
+
+        if (e.view.params !== undefined) {
+            if (e.view.params.lat !== undefined) {
+                lat = parseFloat(e.view.params.lat);
+                lng = parseFloat(e.view.params.lng);
+
+            } else {
+                lat = mapModel.lat;
+                lng = mapModel.lng;
+            }
+
+            if (e.view.params.returnview !== undefined){
+                smartEventPlacesView._returnView = e.view.params.returnview;
+            }
+
+            if (e.view.params.returnmodal !== undefined){
+                smartEventPlacesView._returnModal = e.view.params.returnmodal;
+            } else {
+                smartEventPlacesView._returnModal = null;
+            }
+
+        }
+
+        var latlng = new google.maps.LatLng(lat, lng);
+
+        // empty current data
+        ds.data([]);
+
+
+        // Geocode the current location
+        mapModel.geocoder.geocode({ 'latLng': latlng }, function (geoResults, geoStatus) {
+            if (geoStatus !== google.maps.GeocoderStatus.OK) {
+                mobileNotify('Google geocoding service error!');
+                return;
+            }
+
+            if (geoResults.length === 0 ) {
+                mobileNotify('We couldn\'t match your position to an address.');
+                return;
+            }
+
+            var address = findPlacesView.getAddressFromComponents(geoResults[0].address_components);
+
+            var location = {
+                category: 'Location',   // valid categories are: Place and Location
+                name: address.streetNumber+' '+address.street,
+                type: 'Street Address',
+                googleId: null,
+                icon: null,
+                reference: null,
+                streetNumber: address.streetNumber,
+                street: address.street,
+                address: address.streetNumber+' '+address.street,
+                city:  address.city,
+                state: address.state,
+                zipcode: address.zip,
+                country: address.country,
+                lat: lat,
+                lng: lng,
+                vicinity: address.city+', '+address.state,
+                distance: 0
+            };
+
+            smartEventPlacesView._currentLocation = location;
+
+            ds.add(location);
+
+            smartEventPlacesView.updatePlaces(lat,lng);
+        });
+
+
+
+
+    },
+
+    onHide: function (e) {
+        // _preventDefault(e);
+
+    },
+
+    getTypesFromComponents : function (types) {
+        var typeString = '';
+
+        if (types === undefined || types.length === 0) {
+            return  "Establishment";
+        }
+
+        for (var i=0; i<types.length; i++) {
+            if (types[i] !== 'point_of_interest' && types[i] !== 'establishment' && types[i] !== 'food') {
+                var typeStr = types[i].replace(/_/g,' ');
+                var typeStr = typeStr.charAt(0).toUpperCase() + typeStr.substring(1);
+                typeString += typeStr + ", ";
+
+            }
+        }
+
+        if (typeString.length > 3) {
+            typeString = typeString.substring(0, typeString.length - 2);
+        } else {
+            typeString = "Establishment";
+        }
+
+        return(typeString);
+    },
+
+    truncatePlaceName : function (name) {
+
+    },
+
+    getAddressFromComponents: function (addressComponents) {
+        var address = {};
+
+        address.streetNumber = _.findWhere(addressComponents, { 'types': [ 'street_number' ] });
+        address.streetNumber = address.streetNumber === undefined ? '' : address.streetNumber.short_name;
+
+        address.street = _.findWhere(addressComponents, { 'types': [ 'route' ] });
+        address.street = address.street === undefined ? '' : address.street.short_name;
+
+        address.city = _.findWhere(addressComponents, { 'types': [ 'locality', 'political' ] });
+        address.city = address.city === undefined ? '' : address.city.short_name;
+
+        address.state = _.findWhere(addressComponents, { 'types': [ 'administrative_area_level_1', 'political' ] });
+        address.state = address.state === undefined ? '' : address.state.short_name;
+
+        address.zip = _.findWhere(addressComponents, { 'types': [ 'postal_code' ] });
+        address.zip = address.zip === undefined ? '' : address.zip.short_name;
+
+        address.country = _.findWhere(addressComponents, { 'types': [ 'country', 'political' ] });
+        address.country = address.country === undefined ? '' : address.country.short_name;
+
+        return address;
+    },
+
+    updatePlaces : function (lat, lng) {
+        var latlng = new google.maps.LatLng(lat, lng);
+        var places = mapModel.googlePlaces;
+        var ds = smartEventPlacesView.placesDS;
+
+        // Search nearby places
+        places.nearbySearch({
+            location: latlng,
+            radius: smartEventPlacesView._radius,
+            types: ['establishment']
+        }, function (placesResults, placesStatus) {
+
+            if (placesStatus !== google.maps.places.PlacesServiceStatus.OK) {
+                //mobileNotify('Google Places error: '+ placesStatus);
+                return;
+            }
+
+            placesResults.forEach( function (placeResult) {
+
+                var address = smartEventPlacesView._currentLocation;
+                var distance = getDistanceInMiles(lat, lng, placeResult.geometry.location.lat(), placeResult.geometry.location.lng());
+                ds.add({
+                    category: 'Place',   // valid categories are: Place and Location
+                    name: placeResult.name.smartTruncate(38, true).toString(),
+                    type: findPlacesView.getTypesFromComponents(placeResult.types),
+                    googleId: placeResult.place_id,
+                    icon: placeResult.icon,
+                    address: address.address,
+                    city:  address.city,
+                    state: address.state,
+                    zipcode: address.zipcode,
+                    country: address.country,
+                    reference: placeResult.reference,
+                    //lat: placeResult.geometry.location.H,
+                    //lng: placeResult.geometry.location.L,
+                    lat: placeResult.geometry.location.lat(),
+                    lng: placeResult.geometry.location.lng(),
+                    vicinity: placeResult.vicinity,
+                    distance: distance.toFixed(2)
+                });
+
+            });
+
+
+            // Show modal letting user select current place
+        });
+    },
+
+    onDone : function (e) {
+        _preventDefault(e);
+        var navUrl = '#' + smartEventPlacesView._returnView;
+
+        if (findPlacesView._returnModal === "smartEvent") {
+            modalActionMeeting.restoreAndOpenModal();
+            //APP.kendo.navigate(navUrl);
+        } /*else {
+            APP.kendo.navigate(navUrl);
+        }*/
+
+    }
+};
