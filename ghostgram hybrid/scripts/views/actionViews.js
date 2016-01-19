@@ -729,7 +729,7 @@ var modalActionMeeting = {
                 startDate,
                 endDate,
                 function (message) {
-                    mobileNotify(message);
+                    thisObj.set('calendarId', message);
                     $('#modalActionMeeting-view-calendar-add').addClass('hidden');
                     $('#modalActionMeeting-view-calendar').removeClass('hidden');
                 },
@@ -742,6 +742,23 @@ var modalActionMeeting = {
 
     showCalendar : function (e) {
         mobileNotify("Under development....");
+        var thisObj = modalActionMeeting._activeObject;
+        var startDate = new Date(thisObj.date);
+        if (window.navigator.simulator !== undefined) {
+            mobileNotify("Not supported in emulator");
+        } else {
+            window.plugins.calendar.openCalendar(
+                startDate,
+                endDate,
+                function (message) {
+                    mobileNotify(message);
+                    $('#modalActionMeeting-view-calendar-add').addClass('hidden');
+                    $('#modalActionMeeting-view-calendar').removeClass('hidden');
+                },
+                function (message) {
+                    mobileNotify('Calendar error :' + message);
+                });
+        }
     },
 
     onUpdateEvent: function (e) {
