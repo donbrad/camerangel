@@ -1713,7 +1713,7 @@ var smartEventPlacesView = {
 
                     $("#smartEventPlacesModal").data("kendoMobileModalView").close();
                     if (smartEventPlacesView._callback !== null) {
-                        callback(geo);
+                        smartEventPlacesView._callback(geo);
                     }
 
 
@@ -1737,6 +1737,8 @@ var smartEventPlacesView = {
             var input = document.getElementById('smartEventPlaces-SearchQuery');
             smartEventPlacesView._searchBox = new google.maps.places.SearchBox(input);
             $('#smartEventPlaces-SearchQuery').val(query);
+
+            
             smartEventPlacesView._searchBox.addListener('places_changed', function() {
                 var placesResults = smartEventPlacesView._searchBox.getPlaces();
                 var ds = smartEventPlacesView.placesDS;
