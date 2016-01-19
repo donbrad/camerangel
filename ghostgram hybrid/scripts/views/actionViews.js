@@ -615,25 +615,14 @@ var modalActionMeeting = {
 
     sendRSVP: function(e){
         _preventDefault(e);
-        var thisEvent = modalActionMeeting._activeObject;
-        var commentStr = $('#modalActionMeeting-comments').val();
 
         if (modalActionMeeting.userAccepted) {
 
-            smartEvent.accept(thisEvent.uuid, thisEvent.senderUUID, commentStr);
-
-            modalActionMeeting.setAcceptStatus();
-
-            modalActionMeeting.onDone();
+            modalActionMeeting.onAccept();
         }
 
         if (!modalActionMeeting.userAccepted) {
-
-            smartEvent.accept(thisEvent.uuid, thisEvent.senderUUID, commentStr);
-
-            modalActionMeeting.setAcceptStatus();
-
-            modalActionMeeting.onDone();
+            modalActionMeeting.onDecline();
         }
 
     },
@@ -643,11 +632,16 @@ var modalActionMeeting = {
 
         var commentStr = $('#modalActionMeeting-comments').val();
 
-        smartEvent.accept(thisEvent.uuid, thisEvent.senderUUID, commentStr);
+        smartEvent.smartAddObject(thisEvent, function (event) {
 
-        modalActionMeeting.setAcceptStatus();
+            mobileNotify("Graciously accepting " + event.title);
 
-        modalActionMeeting.onDone();
+            smartEvent.accept(event.uuid, event.senderUUID, commentStr);
+
+            modalActionMeeting.setAcceptStatus();
+
+        });
+
     },
 
     onDecline : function (e) {
@@ -655,11 +649,15 @@ var modalActionMeeting = {
 
         var commentStr = $('#modalActionMeeting-comments').val();
 
-        smartEvent.accept(thisEvent.uuid, thisEvent.senderUUID, commentStr);
+        smartEvent.smartAddObject(thisEvent, function (event) {
 
-        modalActionMeeting.setAcceptStatus();
+            mobileNotify("Respectfully declining " + event.title);
 
-        modalActionMeeting.onDone();
+            smartEvent.decline(event.uuid, event.senderUUID, commentStr);
+
+            modalActionMeeting.setAcceptStatus();
+
+        });
     },
 
     doEventChat : function (e) {

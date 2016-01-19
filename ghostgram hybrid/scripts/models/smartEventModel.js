@@ -264,11 +264,12 @@ var smartEvent = {
 
     },
 
-    smartAddObject : function (objectIn) {
+    smartAddObject : function (objectIn, callback) {
         var objectId = objectIn.uuid;
 
         if (smartEvent.findObject(objectId) === undefined) {
-            smartEvent.addObject(objectIn);
+
+            smartEvent.addObject(objectIn, callback);
         }
     },
 
@@ -363,9 +364,12 @@ var smartEvent = {
         }
     },
 
-    addObject : function (objectIn) {
+    addObject : function (objectIn, callback) {
         var SmartObjects = Parse.Object.extend("smartobject");
         var smartOb = new SmartObjects();
+
+
+        mobileNotify("Creating Smart Event...");
 
         if (objectIn.senderUUID === undefined || objectIn.senderUUID === null) {
             objectIn.senderUUID = userModel.currentUser.userUUID;
@@ -409,6 +413,10 @@ var smartEvent = {
         smartOb.save(null, {
             success: function(thisObject) {
                 // Execute any logic that should take place after the object is saved.;
+
+                if (callback !== undefined) {
+                    callback(thisObject.toJSON());
+                }
 
 
             },
