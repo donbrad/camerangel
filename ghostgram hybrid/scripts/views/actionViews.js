@@ -27,7 +27,7 @@ var modalActionMeeting = {
 
     initActiveObject : function () {
         var thisObj = modalActionMeeting._activeObject;
-
+        // todo - review update to make date/time more useful as defaults
         var newDate = new Date();
         var newDateHour = newDate.getHours();
         var newDateDay = newDate.getDate();
@@ -55,7 +55,9 @@ var modalActionMeeting = {
         thisObj.set('description', null);
         thisObj.set('address', null);
         thisObj.set('placeName', null);
+        thisObj.set('placeType', null);
         thisObj.set('placeId', null);
+        thisObj.set('googleId', null);
         thisObj.set('calendarId', null);
         thisObj.set('lat', null);
         thisObj.set('lng', null);
@@ -113,8 +115,10 @@ var modalActionMeeting = {
         thisObj.set('description', newObj.description);
         thisObj.set('address', newObj.address);
         thisObj.set('placeName', newObj.placeName);
+        thisObj.set('placeType', newObj.placeType);
         thisObj.set('calendarId', newObj.calendarId);
         thisObj.set('placeId', newObj.placeId);
+        thisObj.set('googleId', newObj.googleId);
         thisObj.set('lat', newObj.lat);
         thisObj.set('lng', newObj.lng);
         if (newObj.date === undefined || newObj.date === null) {
@@ -256,12 +260,34 @@ var modalActionMeeting = {
         $('#modalActionMeeting-comments').val("");
     },
 
-    placeSearch : function(e) {
+
+    onAddPlace: function (e) {
+        _preventDefault(e);
+    },
+
+    onPlaceSearch : function (e) {
+
         _preventDefault(e);
 
         var placeStr =  $("#modalActionMeeting-placesearch").val();
 
-        mobileNotify("SearchPlaces : "  + placeStr);
+       smartEventPlacesView.openModal(placeStr, function (geo) {
+           if (geo === null) {
+               mobileNotify("Smart Place Search cancelled...");
+               return;
+           }
+           var thisObj = modalActionMeeting._activeObject;
+
+           thisObj.set('placeId', null);
+           thisObj.set('googleId', geo.googleId);
+           thisObj.set('placeName', geo.name);
+           thisObj.set('address', geo.address);
+           thisObj.set('placeType', geo.type);
+           thisObj.set('lat', geo.lat);
+           thisObj.set('lng', geo.lng);
+
+           //Todo: Jordan: add place ux enable here
+       });
 
     },
 
@@ -298,6 +324,10 @@ var modalActionMeeting = {
         $("#modalActionMeeting-datestring").val(finalDateStr);
 
         modalActionMeeting._activeObject.set('date', new Date(finalDateStr));
+
+    },
+
+    restoreAndOpenModal : function () {
 
     },
 
@@ -459,7 +489,6 @@ var modalActionMeeting = {
                     modalActionMeeting._activeObject.set('address',dataItem.address +  ' ' + dataItem.city + ', ' + dataItem.state);
                     modalActionMeeting._activeObject.set('lat',dataItem.lat);
                     modalActionMeeting._activeObject.set('lng',dataItem.lng);
-
 
 
                     // Hide the Find Location button
@@ -647,25 +676,14 @@ var modalActionMeeting = {
 
     sendRSVP: function(e){
         _preventDefault(e);
-        var thisEvent = modalActionMeeting._activeObject;
-        var commentStr = $('#modalActionMeeting-comments').val();
 
         if (modalActionMeeting.userAccepted) {
 
-            smartEvent.accept(thisEvent.uuid, thisEvent.senderUUID, commentStr);
-
-            modalActionMeeting.setAcceptStatus();
-
-            modalActionMeeting.onDone();
+            modalActionMeeting.onAccept();
         }
 
         if (!modalActionMeeting.userAccepted) {
-
-            smartEvent.accept(thisEvent.uuid, thisEvent.senderUUID, commentStr);
-
-            modalActionMeeting.setAcceptStatus();
-
-            modalActionMeeting.onDone();
+            modalActionMeeting.onDecline();
         }
 
     },
@@ -675,11 +693,16 @@ var modalActionMeeting = {
 
         var commentStr = $('#modalActionMeeting-comments').val();
 
-        smartEvent.accept(thisEvent.uuid, thisEvent.senderUUID, commentStr);
+        smartEvent.smartAddObject(thisEvent, function (event) {
 
-        modalActionMeeting.setAcceptStatus();
+            mobileNotify("Graciously accepting " + event.title);
 
-        modalActionMeeting.onDone();
+            smartEvent.accept(event.uuid, event.senderUUID, commentStr);
+
+            modalActionMeeting.setAcceptStatus();
+
+        });
+
     },
 
     onDecline : function (e) {
@@ -687,11 +710,15 @@ var modalActionMeeting = {
 
         var commentStr = $('#modalActionMeeting-comments').val();
 
-        smartEvent.accept(thisEvent.uuid, thisEvent.senderUUID, commentStr);
+        smartEvent.smartAddObject(thisEvent, function (event) {
 
-        modalActionMeeting.setAcceptStatus();
+            mobileNotify("Respectfully declining " + event.title);
 
-        modalActionMeeting.onDone();
+            smartEvent.decline(event.uuid, event.senderUUID, commentStr);
+
+            modalActionMeeting.setAcceptStatus();
+
+        });
     },
 
     doEventChat : function (e) {
@@ -720,6 +747,7 @@ var modalActionMeeting = {
         thisObject.duration = thisObj.duration;
         thisObject.durationString = thisObj.durationString;
         thisObject.placeId = thisObj.placeId;
+        thisObject.googleId = thisObj.googleId;
         thisObject.placeName = thisObj.placeName;
         thisObject.address = thisObj.address;
         thisObject.senderUUID = userModel.currentUser.userUUID;
@@ -750,7 +778,8 @@ var modalActionMeeting = {
         _preventDefault(e);
 
         var thisObj = modalActionMeeting._activeObject;
-        var endDate = moment(thisObj.date).add(thisObj.duration, 'minutes');
+        var startDate = new Date(thisObj.date), endDate = new Date(moment(thisObj.date).add(thisObj.duration, 'minutes'));
+
 
         if (window.navigator.simulator !== undefined) {
             mobileNotify("Not supported in emulator");
@@ -758,10 +787,10 @@ var modalActionMeeting = {
             window.plugins.calendar.createEvent(thisObj.title,
                 thisObj.placeName + " " + thisObj.address,
                 thisObj.description,
-                thisObj.date,
+                startDate,
                 endDate,
                 function (message) {
-                    mobileNotify(message);
+                    thisObj.set('calendarId', message);
                     $('#modalActionMeeting-view-calendar-add').addClass('hidden');
                     $('#modalActionMeeting-view-calendar').removeClass('hidden');
                 },
@@ -774,6 +803,23 @@ var modalActionMeeting = {
 
     showCalendar : function (e) {
         mobileNotify("Under development....");
+        var thisObj = modalActionMeeting._activeObject;
+        var startDate = new Date(thisObj.date);
+        if (window.navigator.simulator !== undefined) {
+            mobileNotify("Not supported in emulator");
+        } else {
+            window.plugins.calendar.openCalendar(
+                startDate,
+                endDate,
+                function (message) {
+                    mobileNotify(message);
+                    $('#modalActionMeeting-view-calendar-add').addClass('hidden');
+                    $('#modalActionMeeting-view-calendar').removeClass('hidden');
+                },
+                function (message) {
+                    mobileNotify('Calendar error :' + message);
+                });
+        }
     },
 
     onUpdateEvent: function (e) {

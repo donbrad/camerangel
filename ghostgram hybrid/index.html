@@ -1126,6 +1126,24 @@
 	</div>
 </script>
 
+<script type="text/x-kendo-template" id="smartEventPlacesTemplate">
+	# 	var types = data.type
+	    var subType = type.split(',')
+	#
+	<div>
+		<a class="findPlaceListItem">
+			<div>
+				<h4 class="textClamp"> #: data.name #  </h4>
+				<p class="textClamp"> #: data.address # </p>
+				<p class="textClamp helper">
+					<span><i>#= subType[0] # </i> </span>
+				</p>
+				<div class="clearfix"> </div>
+			</div>
+		</a>
+	</div>
+</script>
+
 <script type="text/x-kendo-template" id="findPlacesTemplate">
 # 	var types = data.type 
 	var subType = type.split(',')
@@ -2516,7 +2534,7 @@
 			</li>
 			<li id="modalActionMeeting-placesearchdiv" class="hidden">
 				<div>
-					<img src='images/icon-gps-selected.svg' class='icon-sm'/> <a data-click="modalActionMeeting.placeSearch" data-role="button" class="btnClear" id="modalActionMeeting-placesearchBtn"> Find... </a>
+					<img src='images/icon-gps-selected.svg' class='icon-sm'/> <a data-click="modalActionMeeting.onPlaceSearch" data-role="button" class="btnClear" id="modalActionMeeting-placesearchBtn"> Find... </a>
 				</div>
 			</li>
 		</ul>
@@ -2978,13 +2996,38 @@
 	</div>
 </div>
 
+<!-- Smart Event Places -->
+<div data-role="modalview" data-tile="Smart Event Places" id="smartEventPlacesModal" data-init="smartEventPlacesView.onInit" style="height:100%; width:100%; z-index:1000; display: none;">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Smart Event Places</span>
+			<a data-role="button" data-align="left" data-click="smartEventPlacesView.closeModal"><img src="images/nav-back.svg" /></a>
+		</div>
+	</div>
+
+	<div class="tempSearchBox">
+		<div class="appendSearch">
+			<span class="searchIcon"><img src="images/search.svg" /></span>
+			<input class="doubleAppendSearch"  type="text" placeholder="Find place or address..." id="smartEventPlaces-SearchQuery" />
+			<span class="enterSearch hidden"><a class="btnClear-grey"><img class="icon-sm" src="images/close.svg" /></a></span>
+		</div>
+	</div>
+
+
+	<div>
+		<ul id="smartEventPlaces-listview"></ul>
+	</div>
+
+</div>
+
+
 
 <!-- Nearby Results -->
 <div data-role="modalview" data-tile="Nearby Results" id="nearby-results" style="height:90%; width:90%; display: none;">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>Nearby Results</span>
-			<a id="close-nearby-results" data-role="button" data-click="closeNearbyResults"><i class="fa fa-close"></i></a>
+			<a id="close-nearby-results" data-role="button" data-click="closeNearbyResults"><img class="icon-sm" src="images/close.svg" /></a>
 		</div>
 	</div>
 

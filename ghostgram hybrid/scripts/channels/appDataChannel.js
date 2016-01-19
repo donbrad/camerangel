@@ -767,11 +767,11 @@ var appDataChannel = {
     },
 
     processEventAccept : function (eventId, recipientId, comment) {
-        smartEvent.recipientAccept(eventId, recipientId, comment);
+        smartEvent.recipientAccept(eventId, recipientId, comment, true);
     },
 
     processEventDecline : function (eventId, recipientId, comment) {
-        smartEvent.recipientDecline(eventId, recipientId, comment);
+        smartEvent.recipientAccept(eventId, recipientId, comment, false);
     },
 
     processEventCancel : function (eventId, recipientId, comment) {

@@ -264,11 +264,18 @@ var smartEvent = {
 
     },
 
-    smartAddObject : function (objectIn) {
+    smartAddObject : function (objectIn, callback) {
         var objectId = objectIn.uuid;
 
-        if (smartEvent.findObject(objectId) === undefined) {
-            smartEvent.addObject(objectIn);
+        var event = smartEvent.findObject(objectId);
+        if ( event  === undefined) {
+            // Event doesnt exist -- need to create it
+            smartEvent.addObject(objectIn, callback);
+        } else {
+            // Event exists, so just return current instance
+            if (callback !== undefined && callback !== null) {
+               callback(event);
+            }
         }
     },
 
@@ -299,23 +306,34 @@ var smartEvent = {
     },
 
     // Process accept from a recipeient
-    recipientAccept : function (eventId, recipientId, comment) {
+    recipientAccept : function (eventId, recipientId, comment, accept) {
         var event = smartEvent.findObject(eventId);
         if (event !== undefined) {
-            var rsvpList = event.rsvpList;
+            var rsvpList = event.rsvpList, found = false;
 
 
             var contact = contactModel.findContact(recipientId);
             if (contact !== undefined) {
                 var commentObj = {
                     date: new Date(),
-                    isAccepted: true,
+                    isAccepted: accept,
                     contactId: recipientId,
                     contactName: contact.name,
                     comment: comment
                 };
 
-                event.rsvpList.push(commentObj);
+                // Is there already a response from this recipient
+                for (var i=0; i<event.rsvpList.length; i++) {
+                    if (event.rsvpList[i].contactId === recipientId) {
+                        event.rsvpList[i] = commentObj;
+                        found = true;
+                    }
+                }
+                if (!found) {
+                    // No response from this recipient -- need to add one
+                    event.rsvpList.push(commentObj);
+                }
+
                 updateParseObject('smartobject', 'uuid', eventId, 'rsvpList', event.rsvpList);
             }
 
@@ -323,7 +341,7 @@ var smartEvent = {
 
     },
 
-    recipientDecline : function (eventId, recipientId, comment) {
+   /* recipientDecline : function (eventId, recipientId, comment) {
         var event = smartEvent.findObject(eventId);
         if (event !== undefined) {
             var rsvpList = event.rsvpList;
@@ -344,7 +362,7 @@ var smartEvent = {
             }
 
         }
-    },
+    },*/
 
 
     update : function (eventId, eventObj, comment) {
@@ -363,9 +381,12 @@ var smartEvent = {
         }
     },
 
-    addObject : function (objectIn) {
+    addObject : function (objectIn, callback) {
         var SmartObjects = Parse.Object.extend("smartobject");
         var smartOb = new SmartObjects();
+
+
+        mobileNotify("Creating Smart Event...");
 
         if (objectIn.senderUUID === undefined || objectIn.senderUUID === null) {
             objectIn.senderUUID = userModel.currentUser.userUUID;
@@ -394,6 +415,9 @@ var smartEvent = {
         smartOb.set('lat', objectIn.lat);
         smartOb.set('lng', objectIn.lng);
         smartOb.set('placeId', objectIn.placeId);
+        smartOb.set('placeName', objectIn.placeName);
+        smartOb.set('placeType', objectIn.placeType);
+        smartOb.set('googleId', objectIn.googleId);
         smartOb.set('placeFlexible', objectIn.placeFlexible);
         smartOb.set('timeFlexible', objectIn.timeFlexible);
         smartOb.set('isAccepted', objectIn.isAccepted);
@@ -410,12 +434,19 @@ var smartEvent = {
             success: function(thisObject) {
                 // Execute any logic that should take place after the object is saved.;
 
+                if (callback !== undefined && callback !== null) {
+                    callback(thisObject.toJSON());
+                }
+
 
             },
             error: function(contact, error) {
                 // Execute any logic that should take place if the save fails.
                 // error is a Parse.Error with an error code and message.
                 handleParseError(error);
+                if (callback !== undefined && callback !== null) {
+                    callback(null);
+                }
             }
         });
     },
