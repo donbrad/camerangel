@@ -1703,7 +1703,7 @@ var smartEventPlacesView = {
 
         $("#smartEventPlaces-listview").kendoMobileListView({
                 dataSource: smartEventPlacesView.placesDS,
-                template: $("#findPlacesTemplate").html(),
+                template: $("#smartEventPlacesTemplate").html(),
                 click: function (e) {
                     var geo = e.dataItem;
 
@@ -1736,7 +1736,22 @@ var smartEventPlacesView = {
             smartEventPlacesView._searchBox = new google.maps.places.SearchBox(input);
             $('#smartEventPlaces-SearchQuery').val(query);
             smartEventPlacesView._searchBox.addListener('places_changed', function() {
-                var places = smartEventPlacesView._searchBox.getPlaces();
+                var placesResults = smartEventPlacesView._searchBox.getPlaces();
+                var ds = smartEventPlacesView.placesDS;
+                ds.data([]);
+                placesResults.forEach( function (placeResult) {
+                    ds.add({
+                        name: placeResult.name.smartTruncate(38, true).toString(),
+                        type: findPlacesView.getTypesFromComponents(placeResult.types),
+                        googleId: placeResult.place_id,
+                        icon: placeResult.icon,
+                        address: placeResult.formatted_address,
+                        reference: placeResult.reference,
+                        lat: placeResult.geometry.location.lat(),
+                        lng: placeResult.geometry.location.lng()
+                    });
+
+                });
             });
 
         }

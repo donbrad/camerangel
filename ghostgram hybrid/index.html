@@ -1126,6 +1126,24 @@
 	</div>
 </script>
 
+<script type="text/x-kendo-template" id="smartEventPlacesTemplate">
+	# 	var types = data.type
+	var subType = type.split(',')
+	#
+	<div>
+		<a class="findPlaceListItem">
+			<div>
+				<h4 class="textClamp"> #: data.name #  </h4>
+				<p class="textClamp"> #: data.address # </p>
+				<p class="textClamp helper">
+					<span><i>#= subType[0] # </i> </span>
+				</p>
+				<div class="clearfix"> </div>
+			</div>
+		</a>
+	</div>
+</script>
+
 <script type="text/x-kendo-template" id="findPlacesTemplate">
 # 	var types = data.type 
 	var subType = type.split(',')
