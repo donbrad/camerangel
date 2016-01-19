@@ -1741,10 +1741,13 @@ var smartEventPlacesView = {
 
         }
 
+        $("#smartEventPlacesModal").data("kendoMobileModalView").open();
 
+    },
 
-
-
+    closeModal : function (e) {
+        _preventDefault(e);
+        $("#smartEventPlacesModal").data("kendoMobileModalView").close();
     },
 
     onHide: function (e) {
