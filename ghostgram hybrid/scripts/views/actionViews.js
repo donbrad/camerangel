@@ -247,6 +247,10 @@ var modalActionMeeting = {
         $('#modalActionMeeting-comments').val("");
     },
 
+    onAddPlace: function (e) {
+        _preventDefault(e);
+    },
+
     onPlaceSearch : function (e) {
         _preventDefault(e);
 
@@ -266,6 +270,8 @@ var modalActionMeeting = {
            thisObj.set('placeType', geo.type);
            thisObj.set('lat', geo.lat);
            thisObj.set('lng', geo.lng);
+
+           //Todo: Jordan: add place ux enable here
        });
 
     },
