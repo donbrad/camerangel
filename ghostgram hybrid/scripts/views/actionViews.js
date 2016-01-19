@@ -461,7 +461,6 @@ var modalActionMeeting = {
                     modalActionMeeting._activeObject.set('lng',dataItem.lng);
 
 
-
                     // Hide the Find Location button
                     $("#modalActionMeeting-placesearchdiv").addClass('hidden');
 
