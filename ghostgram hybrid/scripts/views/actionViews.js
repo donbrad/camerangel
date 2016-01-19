@@ -718,6 +718,7 @@ var modalActionMeeting = {
         var thisObj = modalActionMeeting._activeObject;
         var startDate = new Date(thisObj.date), endDate = new Date(moment(thisObj.date).add(thisObj.duration, 'minutes'));
 
+
         if (window.navigator.simulator !== undefined) {
             mobileNotify("Not supported in emulator");
         } else {
