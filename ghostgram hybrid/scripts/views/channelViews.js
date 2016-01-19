@@ -1787,7 +1787,10 @@ var channelView = {
         var dateStr = moment(date).format('ddd MMM Do');
         var localTime = moment(date).format("LT");
 
-        var objectUrl = '<div><a class="btnSmart" data-role="button" data-objectid="' + objectId +
+        var dateTest = moment(date).toNow(true);
+        console.log(dateTest);
+
+        /*var objectUrl = '<div><span class="btnSmart" data-role="button" data-objectid="' + objectId +
             '" id="chatobject_' + objectId + '"'+
             'data-click="channelView.onObjectClick" >' +
             '<span class="btnSmart-type">' +
@@ -1798,7 +1801,20 @@ var channelView = {
             '<p class="textClamp btnSmart-date">' + dateStr + ' ' + localTime + '</p>' +
             '<p class="textClamp btnSmart-date">' + smartEvent.placeName + '</p>' +
             '</span>' +
-            '</a></div>';
+            '</span></div>';*/
+        console.log(smartEvent);
+
+        var objectUrl = '<div><span class="btnSmart" data-role="button" data-objectid="' + objectId +
+            '" id="chatobject_' + objectId + '"'+
+            'data-click="channelView.onObjectClick" >' +
+            '<span class="btnSmart-type">' +
+            '<img src="images/smart-event-test.svg" class="icon-smartBtn" />' +
+            '</span>' +
+            '<span class="btnSmart-content">' +
+            '<span class="btnSmart-title">' + smartEvent.title + ' - </span> ' +
+            '<span class="btnSmart-date">' + dateStr + ' at ' + localTime + '</span> ' +
+            '</span>' +
+            '</span></div>';
 
         var fullMessage = message + objectUrl;
 

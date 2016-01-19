@@ -1627,7 +1627,6 @@
 					</div>
 				</div>
 			#}#
-			<div class="clearfix"></div>
 		#}#
 
 			<div class="clearfix"></div>
@@ -2466,40 +2465,49 @@
 
 	<form id="event-editMode" class="event-owner hidden">
 		<ul data-role="listview" data-style="inset">
-			<li style="font-size: 18px;">
+			<li>
 				<label>
-					<input type="search" id="modalActionMeeting-title"  data-bind="value: title" placeholder="Title..."/>
+					<input class="input-text-md" type="search" id="modalActionMeeting-title"  data-bind="value: title" placeholder="Title..."/>
 				</label>
 			</li>
 			<li>
-				<label style="font-size: 12px;">
-					<input type="search"  id="modalActionMeeting-desc" data-bind="value: description" placeholder="Description..."/>
+				<label>
+					<input class="input-text-sm" type="search"  id="modalActionMeeting-desc" data-bind="value: description" placeholder="Description..."/>
 				</label>
 			</li>
 
 			<li>
 				<label> When
-					<div class="appendSearch">
-						<input type="search" id="modalActionMeeting-datestring" />
-					</div>
-						<br/>
-					<span>
-						<img src='images/smart-event.svg' class='icon-sm'/>
-						<input type="text" style="width: 50%" id="modalActionMeeting-date"/>
-						<img src='images/smart-time.svg' class='icon-sm'/>
-						<input type="search" style="width: 30%" id="modalActionMeeting-time"/>
-					</span>
+					<input type="search" id="modalActionMeeting-datestring" />
 				</label>
 			</li>
-			<li >
-				<label> How long (Duration)
-					<input type="search" id="modalActionMeeting-duration"  data-bind="value: durationString" placeholder="1 hour..."/>
-				</label>
+			<li>
+				<div class="smallSearch">
+							<span class="searchIcon">
+								<img src='images/smart-event.svg' />
+							</span>
+						<input type="text" class="viewSearchBox" id="modalActionMeeting-date"/>
+					</div>
+					<div class="smallSearch-sm">
+						<span class="searchIcon">
+							<img src='images/smart-time.svg' />
+						</span>
+						<input type="search" id="modalActionMeeting-time"/>
+					</div>
 			</li>
 			<li id="modalActionMeeting-add-calendar" class="event-valid" >
 				<label> Add to Calendar
-					<input type="checkbox" id="actionMeeting-addToCalendar"  data-role="switch" data-bind="checked: addToCalendar"/>
+					<input type="checkbox" id="actionMeeting-addToCalendar"  data-role="switch" data-bind="checked: addToCalendar" data-change="modalActionMeeting.onChangeCalendar"/>
 				</label>
+			</li>
+			<li id="modalActionMeeting-durationBox">
+				<label> How Long (Duration) </label>
+				<div class="fullSearch">
+						<span class="searchIcon">
+							<img src="images/icon-duration.svg"/>
+						</span>
+					<input type="search" class="viewSearchBox" id="modalActionMeeting-duration"  data-bind="value: durationString" placeholder="1 hour..."/>
+				</div>
 			</li>
 			<li>
 				<label> Where (Location or Place)

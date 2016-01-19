@@ -28,7 +28,21 @@ var modalActionMeeting = {
     initActiveObject : function () {
         var thisObj = modalActionMeeting._activeObject;
 
-        var newDate = Date.today();
+        var newDate = new Date();
+        var newDateHour = newDate.getHours();
+        var newDateDay = newDate.getDate();
+
+        if(newDateHour < 20 && newDate > 0){
+            newDateHour += 3;
+            newDate.setHours(newDateHour);
+            newDate.setMinutes(0);
+        } else {
+            newDateDay += 1;
+            newDateHour = 10;
+            newDate.setDate(newDateDay);
+            newDate.setHours(newDateHour);
+            newDate.setMinutes(0);
+        }
         thisObj.set("uuid", uuid.v4());
         thisObj.set('senderUUID', userModel.currentUser.userUUID);
         thisObj.set('senderName', userModel.currentUser.name);
@@ -66,7 +80,7 @@ var modalActionMeeting = {
 
         $('#modalActionMeeting-placesearch').val(thisObj.placeName);
         $('#modalActionMeeting-datestring').val(new Date(thisObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
-        $('#modalActionMeeting-date').val(new Date(thisObj.date).toString('MMMM dd, yyyy'));
+        $('#modalActionMeeting-date').val(new Date(thisObj.date).toString('MMM dd, yyyy'));
         $('#modalActionMeeting-time').val(new Date(thisObj.date).toString('h:mm tt'));
     },
 
@@ -210,8 +224,8 @@ var modalActionMeeting = {
         // set event times
         var thisEvent = modalActionMeeting._activeObject;
         $('#modalActionMeeting-placesearch').val('');
-        $('#modalActionMeeting-datestring').val(new Date(thisEvent.date).toString("MMMM dd, yyyy h:mm tt"));
-        $('#modalActionMeeting-date').val(new Date(thisEvent.date).toString("MMMM dd, yyyy"));
+        $('#modalActionMeeting-datestring').val(new Date(thisEvent.date).toString("MMM dd, yyyy h:mm tt"));
+        $('#modalActionMeeting-date').val(new Date(thisEvent.date).toString("MMM dd, yyyy"));
         $('#modalActionMeeting-time').val(new Date(thisEvent.date).toString("h:mm tt"));
     },
 
@@ -327,7 +341,7 @@ var modalActionMeeting = {
                     if (dateStr.length > 4) {
                         date = Date.parse(dateStr);
                     }
-                    var dateComp = new Date(date).toString("MMMM dd, yyyy");
+                    var dateComp = new Date(date).toString("MMM dd, yyyy");
                     var finalDateStr  =  dateComp;
 
                     if(timeComp !== '')
@@ -343,7 +357,7 @@ var modalActionMeeting = {
 
 
             $('#modalActionMeeting-date').pickadate({
-                format: 'ddd,  mmm, d yyyy',
+                format: 'ddd,  mm, d yyyy',
                 formatSubmit: 'mm d yyyy',
                 min: true,
                 onSet : function (context) {
@@ -545,6 +559,15 @@ var modalActionMeeting = {
                 $(".eventBannerImg").attr("src", "");
         }
 
+    },
+
+    onChangeCalendar: function(e){
+        console.log(e.checked);
+        if(e.checked){
+            $("#modalActionMeeting-durationBox").velocity("slideDown");
+        } else {
+            $("#modalActionMeeting-durationBox").velocity("slideUp");
+        }
     },
 
     eventMapLocation: function(e){
