@@ -248,7 +248,7 @@ var modalActionMeeting = {
 
         var placeStr =  $("#modalActionMeeting-placesearch").val();
 
-        mobileNotify("SearchPlaces : "  + placeStr);
+       smartEventPlacesView.openModal(placeStr, null, null);
 
     },
 
@@ -285,6 +285,10 @@ var modalActionMeeting = {
         $("#modalActionMeeting-datestring").val(finalDateStr);
 
         modalActionMeeting._activeObject.set('date', new Date(finalDateStr));
+
+    },
+
+    restoreAndOpenModal : function () {
 
     },
 
