@@ -768,7 +768,7 @@ var modalActionMeeting = {
     },
 
     showCalendar : function (e) {
-        mobileNotify("Under development....");
+
         var thisObj = modalActionMeeting._activeObject;
         var startDate = new Date(thisObj.date);
         if (window.navigator.simulator !== undefined) {
@@ -776,11 +776,8 @@ var modalActionMeeting = {
         } else {
             window.plugins.calendar.openCalendar(
                 startDate,
-                endDate,
                 function (message) {
-                    mobileNotify(message);
-                    $('#modalActionMeeting-view-calendar-add').addClass('hidden');
-                    $('#modalActionMeeting-view-calendar').removeClass('hidden');
+
                 },
                 function (message) {
                     mobileNotify('Calendar error :' + message);
@@ -798,8 +795,19 @@ var modalActionMeeting = {
     onSaveEvent : function (e) {
         var thisObj = modalActionMeeting._activeObject;
         
-        var finalDateStr = $("#modalActionMeeting-datestring").val();
+        var finalDateStr = $("#modalActionMeeting-datestring").val(),
+            title = $("#modalActionMeeting-title").val() ;
         var saveDate = new Date(finalDateStr);
+
+        if (title === null || title.length < 3) {
+            mobileNotify ('Events must have a valid title!');
+            return;
+        }
+
+        if (saveDate === null) {
+            mobileNotify (finalDateStr + " is not a valid date!");
+            return;
+        }
 
         thisObj.set('date', saveDate);
         thisObj.set('senderName', userModel.currentUser.name);
