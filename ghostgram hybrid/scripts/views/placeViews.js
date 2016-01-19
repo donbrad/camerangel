@@ -1736,8 +1736,6 @@ var smartEventPlacesView = {
             smartEventPlacesView._inited = true;
             var input = document.getElementById('smartEventPlaces-SearchQuery');
             smartEventPlacesView._searchBox = new google.maps.places.SearchBox(input);
-            $('#smartEventPlaces-SearchQuery').val(query);
-
 
             smartEventPlacesView._searchBox.addListener('places_changed', function() {
                 var placesResults = smartEventPlacesView._searchBox.getPlaces();
@@ -1760,6 +1758,7 @@ var smartEventPlacesView = {
 
         }
 
+        $('#smartEventPlaces-SearchQuery').val(query);
         $("#smartEventPlacesModal").data("kendoMobileModalView").open();
 
     },
