@@ -41,7 +41,9 @@ var modalActionMeeting = {
         thisObj.set('description', null);
         thisObj.set('address', null);
         thisObj.set('placeName', null);
+        thisObj.set('placeType', null);
         thisObj.set('placeId', null);
+        thisObj.set('googleId', null);
         thisObj.set('calendarId', null);
         thisObj.set('lat', null);
         thisObj.set('lng', null);
@@ -99,8 +101,10 @@ var modalActionMeeting = {
         thisObj.set('description', newObj.description);
         thisObj.set('address', newObj.address);
         thisObj.set('placeName', newObj.placeName);
+        thisObj.set('placeType', newObj.placeType);
         thisObj.set('calendarId', newObj.calendarId);
         thisObj.set('placeId', newObj.placeId);
+        thisObj.set('googleId', newObj.googleId);
         thisObj.set('lat', newObj.lat);
         thisObj.set('lng', newObj.lng);
         if (newObj.date === undefined || newObj.date === null) {
@@ -243,12 +247,26 @@ var modalActionMeeting = {
         $('#modalActionMeeting-comments').val("");
     },
 
-    placeSearch : function (e) {
+    onPlaceSearch : function (e) {
         _preventDefault(e);
 
         var placeStr =  $("#modalActionMeeting-placesearch").val();
 
-       smartEventPlacesView.openModal(placeStr, null, null);
+       smartEventPlacesView.openModal(placeStr, function (geo) {
+           if (geo === null) {
+               mobileNotify("Smart Place Search cancelled...");
+               return;
+           }
+           var thisObj = modalActionMeeting._activeObject;
+
+           thisObj.set('placeId', null);
+           thisObj.set('googleId', geo.googleId);
+           thisObj.set('placeName', geo.name);
+           thisObj.set('address', geo.address);
+           thisObj.set('placeType', geo.type);
+           thisObj.set('lat', geo.lat);
+           thisObj.set('lng', geo.lng);
+       });
 
     },
 
@@ -690,6 +708,7 @@ var modalActionMeeting = {
         thisObject.duration = thisObj.duration;
         thisObject.durationString = thisObj.durationString;
         thisObject.placeId = thisObj.placeId;
+        thisObject.googleId = thisObj.googleId;
         thisObject.placeName = thisObj.placeName;
         thisObject.address = thisObj.address;
         thisObject.senderUUID = userModel.currentUser.userUUID;

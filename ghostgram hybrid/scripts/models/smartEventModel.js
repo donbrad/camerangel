@@ -415,6 +415,9 @@ var smartEvent = {
         smartOb.set('lat', objectIn.lat);
         smartOb.set('lng', objectIn.lng);
         smartOb.set('placeId', objectIn.placeId);
+        smartOb.set('placeName', objectIn.placeName);
+        smartOb.set('placeType', objectIn.placeType);
+        smartOb.set('googleId', objectIn.googleId);
         smartOb.set('placeFlexible', objectIn.placeFlexible);
         smartOb.set('timeFlexible', objectIn.timeFlexible);
         smartOb.set('isAccepted', objectIn.isAccepted);

@@ -1711,6 +1711,11 @@ var smartEventPlacesView = {
                     delete geo.parent;
                     delete geo.__proto__;
 
+                    $("#smartEventPlacesModal").data("kendoMobileModalView").close();
+                    if (smartEventPlacesView._callback !== null) {
+                        callback(geo);
+                    }
+
 
                 }
             }
@@ -1721,14 +1726,11 @@ var smartEventPlacesView = {
         smartEventPlacesView.placesDS.data([]);
     },
 
-    openModal : function (query, returnview, returnmodal) {
+    openModal : function (query, callback) {
 
         smartEventPlacesView.initDataSource();
 
-        smartEventPlacesView._returnView = returnview;
-
-        smartEventPlacesView._returnModal = returnmodal;
-
+        smartEventPlacesView._callback = callback;
 
         if (!smartEventPlacesView._inited) {
             smartEventPlacesView._inited = true;
@@ -1762,6 +1764,9 @@ var smartEventPlacesView = {
 
     closeModal : function (e) {
         _preventDefault(e);
+        if (smartEventPlacesView._callback !== null) {
+            callback(null);
+        }
         $("#smartEventPlacesModal").data("kendoMobileModalView").close();
     },
 
