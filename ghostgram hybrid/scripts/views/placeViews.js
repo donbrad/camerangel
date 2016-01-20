@@ -1116,14 +1116,15 @@ var editPlaceView = {
 
 
         if (editPlaceView._activePlace.get('hasPlaceChat')) {
+            var placeChatId =  editPlaceView._activePlace.get('placeChatId');
             // Already had a place chat -- jump to editChat
-            APP.kendo.navigate("#editchannel?channelId=" +  editPlaceView._activePlace.get('placeChatId'));
+            APP.kendo.navigate("#editchannel?channel=" + placeChatId);
         } else {
             // No placechat yet, create and then jump to edit
-            var placeChatguid = uuid.v4();
+            var placeChatguid = uuid.v4(), placeId = editPlaceView._activePlace.get('uuid');
 
             // Todo: need to add place name collision detection here...
-            channelModel.addPlaceChannel(placeChatguid, editPlaceView._activePlace.get('uuid'), editPlaceView._activePlace.get('name'), false);
+            channelModel.addPlaceChannel(placeChatguid, placeId, editPlaceView._activePlace.get('name'), true);
 
             editPlaceView._activePlace.set('placeChatId', placeChatguid);
             editPlaceView._activePlace.set('hasPlaceChat', true);
@@ -1131,9 +1132,9 @@ var editPlaceView = {
             editPlaceView._activePlaceModel.set('placeChatId', placeChatguid);
             editPlaceView._activePlaceModel.set('hasPlaceChat', true);
 
-            var thisuuid =  editPlaceView._activePlace.get('uuid');
-            updateParseObject('places', 'uuid', thisuuid,'hasPlaceChat', true);
-            updateParseObject('places', 'uuid', thisuuid,'placeChatId', placeChatguid);
+
+            updateParseObject('places', 'uuid', placeId,'hasPlaceChat', true);
+            updateParseObject('places', 'uuid', placeId,'placeChatId', placeChatguid);
 
         }
     },

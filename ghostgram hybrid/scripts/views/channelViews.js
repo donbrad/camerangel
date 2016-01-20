@@ -580,9 +580,15 @@ var editChannelView = {
                 options.chatData = newPlace;
             }
 
-            inviteArray.push(membersAdded[ma].contactUUID);
-            appDataChannel.groupChannelInvite(membersAdded[ma].contactUUID, channelId,  editChannelView._activeChannel.name,  editChannelView._activeChannel.description, memberArray,
-                options);
+            var contactId = membersAdded[ma].contactUUID;
+            if (contactId !== undefined && contactId !== null) {
+                inviteArray.push(contactId);
+                appDataChannel.groupChannelInvite(contactId, channelId,  editChannelView._activeChannel.name,  editChannelView._activeChannel.description, memberArray,
+                    options);
+            } else {
+                console.error("Invalid Contact " + contactId);
+            }
+
         }
 
 
