@@ -644,7 +644,6 @@ var modalActionMeeting = {
         _preventDefault(e);
 
         if (modalActionMeeting.userAccepted) {
-
             modalActionMeeting.onAccept();
         }
 
@@ -689,7 +688,7 @@ var modalActionMeeting = {
 
     doEventChat : function (e) {
         _preventDefault(e);
-        mobileNotify("Create Event Chat in progress...");
+        mobileNotify("Create Event Chat under development...");
     },
 
     createSmartEvent : function (thisObj) {
@@ -821,9 +820,6 @@ var modalActionMeeting = {
         modalActionMeeting.onDone();
     },
 
-    onRSVP : function (e) {
-        _preventDefault(e);
-    },
 
     onCancel : function (e) {
         _preventDefault(e);
