@@ -3065,23 +3065,28 @@
 		<ul class="list-inline" id="placeListOpt">
 			<li >
 				<a class="btnClear-sm" data-role="button" data-click="placeView.addNote">
-					<img src="images/icon-chat-active.svg" class="icon-btn" /> <span id="placeview-gotochat"> Add a Note </span>
+					<img src="images/icon-editor.svg" class="icon-btn" />  Add Note </span>
 				</a>
 			</li>
 			<li>
 				<a class="btnClear-sm" data-role="button" data-rel="actionsheet" href="#placeViewPhotoActions">
-					<img src="images/icon-camera-active.svg" class="icon-btn" /> Add a Photo
+					<img src="images/icon-camera-active.svg" class="icon-btn" /> Add Photo
+				</a>
+			</li>
+			<li id="placeView-gotochat" class="hidden">
+				<a class="btnClear-sm" data-role="button" data-click="placeView.openChat">
+					<img src="images/icon-chat-active.svg" class="icon-btn" />  Open Chat
 				</a>
 			</li>
 		</ul>
 	</div>
 	<div class="placeContent">
-		<p class="helper"><img src="images/icon-memories.svg" class="icon" /> No Memories here yet </p>
+		<p class="helper" style="padding-top: 20px;"><img src="images/icon-memories.svg" class="icon" /> No Memories here yet </p>
 		<p class="hidden"><img src="images/icon-memories.svg" class="icon" /> Memories</p>
 
-		<div class="placeContentBox">
-			<!-- Place content here-->
-		</div>
+		<ul id="placeView-listView">
+
+		</ul>
 	</div>
 	<ul data-role="actionsheet" id="placeViewPhotoActions" data-popup='{"direction": "left"}'>
 		<li><a data-action="placeView.camera"> Phone Camera</a></li>

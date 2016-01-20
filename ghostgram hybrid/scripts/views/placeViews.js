@@ -1259,6 +1259,12 @@ var placeView = {
     _lng: null,
     _returnView : 'places',
     _returnModal: null,
+    _memoriesDS : new kendo.data.DataSource({
+        sort: {
+            field: "date",
+            dir: "desc"
+        }
+    }),
 
     onInit : function (e) {
         _preventDefault(e);
@@ -1310,10 +1316,11 @@ var placeView = {
         }
 
         if (placeView._activePlace.hasPlaceChat) {
-            $("#placeview-gotochat").text("Go to Place Chat");
+            $("#placeView-gotochat").removeClass('hidden');
         } else {
-            $("#placeview-gotochat").text("Start a Chat");
+            $("#placeview-gotochat").addClass('hidden');
         }
+
 
         mapModel.setMapCenter(placeView._activePlaceModel.lat, placeView._activePlaceModel.lng);
     },
