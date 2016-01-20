@@ -393,7 +393,7 @@
 
 			});
 			// hiding the accessory bar
-			cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+			//cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 		}
 		
 		APP.emailAvailable = false;

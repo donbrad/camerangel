@@ -1742,6 +1742,8 @@ var smartEventPlacesView = {
                 var ds = smartEventPlacesView.placesDS;
                 ds.data([]);
                 placesResults.forEach( function (placeResult) {
+                    var lat = placeResult.geometry.location.lat(),
+                        lng = placeResult.geometry.location.lng();
                     ds.add({
                         name: placeResult.name.smartTruncate(38, true).toString(),
                         type: findPlacesView.getTypesFromComponents(placeResult.types),
@@ -1749,8 +1751,8 @@ var smartEventPlacesView = {
                         icon: placeResult.icon,
                         address: placeResult.formatted_address,
                         reference: placeResult.reference,
-                        lat: placeResult.geometry.location.lat(),
-                        lng: placeResult.geometry.location.lng()
+                        lat: lat.toFixed(6),
+                        lng: lng.toFixed(6)
                     });
 
                 });
