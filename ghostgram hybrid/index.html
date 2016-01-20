@@ -3040,8 +3040,8 @@
 <div data-role="view" id="placeView" data-title="Place View" data-model="placeView._activePlace" class="appearance" data-layout="main" data-init="placeView.onInit" data-show="placeView.onShow" data-hide="placeView.onHide" data-transition="fade">
 	<div class="smallHeader" data-role="header">
 		<a data-role="button" class="left" data-click="placeView.onDone"> <img src="images/nav-back-light.svg" /></a>
-		<a data-role="button" class="right btnClear-light" data-click="placeView.openPlaceMap">
-			View on map
+		<a data-role="button" class="right btnClear-light" data-click="placeView.doDirections">
+			Get Directions
 		</a>
 	</div>
 	<div class="map-placeLayer"></div>
@@ -3064,8 +3064,8 @@
 		<div class="line"></div>
 		<ul class="list-inline" id="placeListOpt">
 			<li >
-				<a class="btnClear-sm" data-role="button" data-click="placeView.openChat">
-					<img src="images/icon-chat-active.svg" class="icon-btn" /> <span id="placeview-gotochat"> Start a Chat 					</span>
+				<a class="btnClear-sm" data-role="button" data-click="placeView.addNote">
+					<img src="images/icon-chat-active.svg" class="icon-btn" /> <span id="placeview-gotochat"> Add a Note </span>
 				</a>
 			</li>
 			<li>

@@ -1401,6 +1401,47 @@ var placeView = {
         }
     },
 
+    doDirections : function (e) {
+        _preventDefault(e);
+
+        var place = placesModel.getPlaceModel(placeView._activePlace.placeId);
+        if (place === undefined) {
+            mobileNotify("Oops, Couldn't find this place");
+            return;
+        }
+        if (window.navigator.simulator === undefined) {
+            if (event.lat !== null) {
+                launchnavigator.navigate(
+                    [place.lat,place.lng],
+                    null,
+                    function(){
+                        mobileNotify("Launching Navigation...");
+                    },
+                    function(error){
+                        mobileNotify("Plugin error: "+ error);
+                    });
+            } else if (event.address !== null) {
+                launchnavigator.navigate(
+                    event.address,
+                    null,
+                    function(){
+                        mobileNotify("Launching Navigation...");
+                    },
+                    function(error){
+                        mobileNotify("Plugin error: "+ error);
+                    });
+            }
+        } else {
+            mobileNotify("Navigation not yet supported in emulator...");
+        }
+    },
+
+   addNote : function (e) {
+        _preventDefault(e);
+
+    },
+
+
     openPlaceMap: function(e){
         //_preventDefault(e);
         var placeId = LZString.compressToEncodedURIComponent(placeView._activePlaceId);
