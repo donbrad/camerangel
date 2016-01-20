@@ -72,7 +72,6 @@
   background-repeat: no-repeat;
   background-size: contain;
 }
-<<<<<<< HEAD
 .testingHome {
   position: absolute;
   top: 1em;
@@ -87,53 +86,109 @@
   margin: 0;
 }
 .event-details {
-  margin-top: 0.5em;
+  margin: 0.5em 1em 0 1em;
+}
+.event-details h1,
+.event-details h2,
+.event-details h3,
+.event-details h4,
+.event-details h5,
+.event-details p {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
 }
 .eventExpired {
   background: #E57373;
   color: #fff;
 }
 .picker__frame {
-  bottom: 6em !important;
+  bottom: 5em !important;
+}
+@media only screen and (max-width: 320px) {
+  .picker__frame {
+    bottom: 2em !important;
+  }
+}
+#event-rsvp {
+  text-align: left;
+}
+#event-rsvp li {
+  width: 25%;
+  border: 1px solid #E0E0E0;
+}
+#event-rsvp li:nth-child(1).km-state-active {
+  background-color: #6CADF3;
+  color: #fff !important;
+}
+#event-rsvp li:nth-child(2).km-state-active {
+  background-color: #E57373;
+  color: #fff !important;
+}
+#event-comment {
+  display: none;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+#modalActionMeeting-view-calendar-add,
+#modalActionMeeting-view-calendar {
+  margin-top: 0.5em;
 }
 .btnSmart {
-  display: inline-block;
-  border-radius: 4px;
-  padding: 0 !important;
-  margin: 0;
+  padding: 0.25em !important;
+  border-radius: 3px;
+  text-align: left;
 }
 .btnSmart .btnSmart-type {
-  float: left;
-  background: #6CADF3;
-  height: 4.5em;
-  border-radius: 4px 0 0 4px;
-  width: 35%;
+  width: 1.5em;
+  height: 1.5em;
+  background: #fff !important;
+  border-radius: 50%;
+  padding: 0.25em;
+  margin-right: 0.25em;
 }
 .btnSmart .btnSmart-type img {
   text-align: center;
+  vertical-align: middle;
 }
 .btnSmart .btnSmart-content {
-  float: left;
-  background: #fff;
-  padding: 0.25em;
-  border-radius: 0 4px 4px 0;
-  border: 1px solid #f5f5f5;
-  border-left: 0;
-  height: 4.5em;
-  width: 65%;
+  color: #4A4A4A;
+  line-height: 1.7;
 }
 .btnSmart .btnSmart-content .btnSmart-title {
-  font-size: 1.4em;
+  color: #fff !important;
+  background: #65BBB3 !important;
+  padding: 2px 4px;
+  border-radius: 3px !important;
+  margin-right: 0.25em;
 }
-.btnSmart .btnSmart-content .btnSmart-date {
-  font-size: 0.875em;
+.icon-smartBtn {
+  height: 1em;
+  max-width: 1em;
 }
-.btnSmart .btnSmart-content p {
-  text-align: left;
-=======
+#modalActionMeeting-date:read-only {
+  background: #fff !important;
+}
+#event-editMode > div > ul > li:nth-child(3) {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
 .redactor-editor {
   padding: 0.25em 0.5em !important;
->>>>>>> master
+  border: none !important;
+}
+.redactor-editor p {
+  margin-bottom: 0.5em;
+}
+.redactor-toolbar {
+  box-shadow: none;
+}
+#messageComposeToolbar,
+#redactor-toolbar-0 {
+  border: none !important;
+  border-bottom: 1px solid #E0E0E0;
+}
+*[contenteditable] {
+  -webkit-user-select: auto !important;
 }
 /* elements */
 .userLgFontSize {
@@ -276,7 +331,13 @@
 }
 html,
 .km-root {
-  font-size: 16px;
+  font-size: 1.2em;
+}
+@media only screen and (max-width: 320px) {
+  html,
+  .km-root {
+    font-size: 1em;
+  }
 }
 html {
   height: 100%;
@@ -715,6 +776,8 @@ form p {
 .btnClear-sm,
 .btnClear-light-sm,
 .btnClearLine,
+.btnClearLine-highlight,
+.btnHighlight,
 .btnClearLine-grey-sm,
 .btnClear-grey,
 .btnClear-red,
@@ -921,6 +984,17 @@ form p {
   position: absolute;
   right: 1rem;
   top: 2rem;
+}
+.btnClearLine-highlight {
+  border-radius: 3px !important;
+  color: #9E788F !important;
+  border: 1px solid #9E788F !important;
+}
+.btnHighlight {
+  color: #fff !important;
+  border-radius: 3px !important;
+  background: #9E788F !important;
+  border: 1px solid #9E788F !important;
 }
 .btnClearLine-grey-sm {
   background: transparent;
@@ -2611,8 +2685,14 @@ a:hover {
 }
 .statusContactCard-icon {
   position: absolute;
-  top: 70px;
+  top: 5em;
   left: 54%;
+  width: 1.2em;
+}
+@media only screen and (max-width: 320px) {
+  .statusContactCard-icon {
+    top: 70px;
+  }
 }
 .contactStatusMessage {
   font-style: italic;
@@ -3123,19 +3203,19 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 }
 #messageSend {
   font-weight: 600;
-  margin-top: 0px;
-  padding: 0px;
+  margin-top: 0;
+  padding: 0;
   padding-top: 3px;
 }
 .messageCompose {
   padding: 0.5rem;
-  padding-bottom: 0px;
+  padding-bottom: 0;
   padding-top: 0;
 }
 .messageMediaBar ul {
-  padding: 0px;
+  padding: 0;
   margin-bottom: 1px;
-  margin-top: 0px;
+  margin-top: 0;
 }
 .messageMediaBar ul li {
   display: inline-block;
@@ -4621,6 +4701,207 @@ html .km-pane-wrapper .k-header {
   width: 100%;
   background-color: #f5f5f5;
 }
+.smallSearch {
+  background: #fff;
+  display: inline-block;
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
+  border-bottom: 1px solid #E0E0E0;
+  margin-top: 0.25rem;
+  border-radius: 3px;
+  transition: all 0.5s ease-out;
+  width: 50% !important;
+  margin-left: 0;
+  float: left;
+}
+.smallSearch input {
+  float: left;
+  border: none !important;
+  width: 80% !important;
+  padding-left: 0px !important;
+  padding-right: 1rem;
+}
+@media only screen and (max-width: 320px) {
+  .smallSearch input {
+    width: 85%;
+  }
+}
+.smallSearch span:not(.helper) {
+  float: left;
+  padding-top: 0.75em;
+  color: #979797;
+  font-size: 12px;
+  font-size: 0.75em;
+  width: 20%;
+  text-align: center;
+}
+@media only screen and (max-width: 320px) {
+  .smallSearch span:not(.helper) {
+    width: 15%;
+  }
+}
+.smallSearch .searchIcon {
+  float: left;
+  padding-top: 0.75em;
+  color: #979797;
+  width: 15% !important;
+  text-align: center !important;
+}
+.smallSearch .searchIcon img {
+  height: 1rem;
+}
+.smallSearch .viewSearchBox {
+  width: 85% !important;
+}
+.smallSearch .doubleAppendSearch {
+  width: 75%;
+  padding-right: 0px !important;
+}
+.smallSearch .enterSearch {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  width: 13% !important;
+}
+.smallSearch .enterSearch span {
+  padding-top: 0px;
+  color: #E0E0E0;
+  font-weight: 600;
+}
+.smallSearch-sm {
+  background: #fff;
+  display: inline-block;
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
+  border-bottom: 1px solid #E0E0E0;
+  margin-top: 0.25rem;
+  border-radius: 3px;
+  transition: all 0.5s ease-out;
+  width: 40% !important;
+  margin-left: 0;
+  float: left;
+}
+.smallSearch-sm input {
+  float: left;
+  border: none !important;
+  width: 80% !important;
+  padding-left: 0px !important;
+  padding-right: 1rem;
+}
+@media only screen and (max-width: 320px) {
+  .smallSearch-sm input {
+    width: 85%;
+  }
+}
+.smallSearch-sm span:not(.helper) {
+  float: left;
+  padding-top: 0.75em;
+  color: #979797;
+  font-size: 12px;
+  font-size: 0.75em;
+  width: 20%;
+  text-align: center;
+}
+@media only screen and (max-width: 320px) {
+  .smallSearch-sm span:not(.helper) {
+    width: 15%;
+  }
+}
+.smallSearch-sm .searchIcon {
+  float: left;
+  padding-top: 0.75em;
+  color: #979797;
+  width: 15% !important;
+  text-align: center !important;
+}
+.smallSearch-sm .searchIcon img {
+  height: 1rem;
+}
+.smallSearch-sm .viewSearchBox {
+  width: 85% !important;
+}
+.smallSearch-sm .doubleAppendSearch {
+  width: 75%;
+  padding-right: 0px !important;
+}
+.smallSearch-sm .enterSearch {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  width: 13% !important;
+}
+.smallSearch-sm .enterSearch span {
+  padding-top: 0px;
+  color: #E0E0E0;
+  font-weight: 600;
+}
+.fullSearch {
+  background: #fff;
+  display: inline-block;
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
+  border-bottom: 1px solid #E0E0E0;
+  margin-top: 0.25rem;
+  border-radius: 3px;
+  transition: all 0.5s ease-out;
+  width: 100% !important;
+  margin-left: 0;
+  margin-right: 0;
+}
+.fullSearch input {
+  float: left;
+  border: none !important;
+  width: 80% !important;
+  padding-left: 0px !important;
+  padding-right: 1rem;
+}
+@media only screen and (max-width: 320px) {
+  .fullSearch input {
+    width: 85%;
+  }
+}
+.fullSearch span:not(.helper) {
+  float: left;
+  padding-top: 0.75em;
+  color: #979797;
+  font-size: 12px;
+  font-size: 0.75em;
+  width: 20%;
+  text-align: center;
+}
+@media only screen and (max-width: 320px) {
+  .fullSearch span:not(.helper) {
+    width: 15%;
+  }
+}
+.fullSearch .searchIcon {
+  float: left;
+  padding-top: 0.75em;
+  color: #979797;
+  width: 15% !important;
+  text-align: center !important;
+}
+.fullSearch .searchIcon img {
+  height: 1rem;
+}
+.fullSearch .viewSearchBox {
+  width: 85% !important;
+}
+.fullSearch .doubleAppendSearch {
+  width: 75%;
+  padding-right: 0px !important;
+}
+.fullSearch .enterSearch {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  width: 13% !important;
+}
+.fullSearch .enterSearch span {
+  padding-top: 0px;
+  color: #E0E0E0;
+  font-weight: 600;
+}
 .appendSearch {
   background: #fff;
   display: inline-block;
@@ -4635,11 +4916,16 @@ html .km-pane-wrapper .k-header {
 .appendSearch input {
   float: left;
   border: none !important;
-  width: 80%;
+  width: 80% !important;
   padding-left: 0px !important;
   padding-right: 1rem;
 }
-.appendSearch span {
+@media only screen and (max-width: 320px) {
+  .appendSearch input {
+    width: 85%;
+  }
+}
+.appendSearch span:not(.helper) {
   float: left;
   padding-top: 0.75em;
   color: #979797;
@@ -4648,18 +4934,23 @@ html .km-pane-wrapper .k-header {
   width: 20%;
   text-align: center;
 }
+@media only screen and (max-width: 320px) {
+  .appendSearch span:not(.helper) {
+    width: 15%;
+  }
+}
 .appendSearch .searchIcon {
   float: left;
   padding-top: 0.75em;
   color: #979797;
-  width: 12%;
-  text-align: center;
+  width: 15% !important;
+  text-align: center !important;
 }
 .appendSearch .searchIcon img {
   height: 1rem;
 }
 .appendSearch .viewSearchBox {
-  width: 88%;
+  width: 85% !important;
 }
 .appendSearch .doubleAppendSearch {
   width: 75%;
@@ -4668,7 +4959,7 @@ html .km-pane-wrapper .k-header {
 .appendSearch .enterSearch {
   padding-top: 8px;
   padding-bottom: 8px;
-  width: 13%;
+  width: 13% !important;
 }
 .appendSearch .enterSearch span {
   padding-top: 0px;
@@ -4705,8 +4996,7 @@ html .km-pane-wrapper .k-header {
   z-index: 1;
 }
 .chat-message p {
-  margin: 0px 0px 4px;
-  height: 100%;
+  margin: 0px;
 }
 .chat-message h5 {
   line-height: 1.5em;
@@ -5269,6 +5559,11 @@ html .km-pane-wrapper .k-header {
 .icon-info {
   height: 1rem;
   vertical-align: sub;
+}
+.icon-header {
+  height: 0.75em;
+  max-width: 0.75em;
+  vertical-align: baseline;
 }
 .placeIconImgBtn {
   height: 2rem;
