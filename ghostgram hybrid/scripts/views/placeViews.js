@@ -1331,7 +1331,7 @@ var placeView = {
 
             APP.kendo.navigate(returnUrl);
         } else {
-            APP.kendo.navigate("#:back;");
+            APP.kendo.navigate("#:back");
         }
 
 
