@@ -1131,8 +1131,9 @@ var editPlaceView = {
             editPlaceView._activePlaceModel.set('placeChatId', placeChatguid);
             editPlaceView._activePlaceModel.set('hasPlaceChat', true);
 
-            updateParseObject('places', 'uuid', activePlace.uuid,'hasPlaceChat', true);
-            updateParseObject('places', 'uuid', activePlace.uuid,'placeChatId', placeChatguid);
+            var uuid =  editPlaceView._activePlace.get('uuid');
+            updateParseObject('places', 'uuid', uuid,'hasPlaceChat', true);
+            updateParseObject('places', 'uuid', uuid,'placeChatId', placeChatguid);
 
         }
     },
