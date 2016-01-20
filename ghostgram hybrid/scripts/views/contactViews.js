@@ -38,7 +38,7 @@ var contactsView = {
             enableSwipe: true,
             tap: function(e){
             	var contactId = null;
-                
+
                 if (e.touch.currentTarget !== undefined) {
                     // iOS and the previous versions
                     contactId = e.touch.currentTarget.attributes['data-contact'].value
