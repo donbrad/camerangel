@@ -412,8 +412,8 @@ var smartEvent = {
         smartOb.set('approxTime', objectIn.approxTime);
         smartOb.set('approxPlace', objectIn.approxPlace);
         smartOb.set('address', objectIn.address);
-        smartOb.set('lat', objectIn.lat);
-        smartOb.set('lng', objectIn.lng);
+        smartOb.set('lat', objectIn.lat.toString());
+        smartOb.set('lng', objectIn.lng.toString());
         smartOb.set('placeId', objectIn.placeId);
         smartOb.set('placeName', objectIn.placeName);
         smartOb.set('placeType', objectIn.placeType);
