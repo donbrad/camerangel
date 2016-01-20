@@ -37,7 +37,16 @@ var contactsView = {
             // filter: "div",
             enableSwipe: true,
             tap: function(e){
-            	var contactId = e.touch.target[0].attributes['data-contact'].value;
+            	var contactId = null;
+                
+                if (e.touch.currentTarget !== undefined) {
+                    // iOS and the previous versions
+                    contactId = e.touch.currentTarget.attributes['data-contact'].value
+                } else {
+                    // Latest kendo versions for android
+                    contactId = e.touch.target[0].attributes['data-contact'].value;
+                }
+
             	
                 var contact = contactModel.findContactByUUID(contactId);
                 if (contact === undefined) {
