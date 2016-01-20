@@ -2440,24 +2440,10 @@
 			<p>
 				<span class="event-date"></span>
 			</p>
-
-
 			<p>
-				For  <span data-bind="text: durationString"></span>
+				<img src="images/icon-time.svg" class="icon-sm" />
+				<span data-bind="text: durationString"></span>
 			</p>
-
-			<div id="modalActionMeeting-view-calendar-add" class="event-valid">
-				<div style="text-align: center;padding: 8px;">
-					<a class="btnSecondary" data-role="button" data-click="modalActionMeeting.addToCalendar">Add To Calendar</a>
-				</div>
-			</div>
-
-			<div id="modalActionMeeting-view-calendar" class="event-valid hidden">
-				<div style="text-align: center; padding: 8px;">
-					<a class="btnSecondary" data-role="button" data-click="modalActionMeeting.showCalendar">Show Calendar</a>
-				</div>
-			</div>
-
 			<p class="event-location">
 				<a class="btnClear" data-role="button" data-click="modalActionMeeting.eventMapLocation">
 					<img src="images/icon-location.svg" class="icon-sm" />
@@ -2465,6 +2451,20 @@
 				</a>
 			</p>
 			<p> <span class="event-location-title" data-bind="text: address"> </span> </p>
+			<div id="modalActionMeeting-view-calendar-add" class="event-valid">
+				<div>
+					<a class="btnClearLine-highlight" data-role="button" data-click="modalActionMeeting.addToCalendar">
+						<img src="images/icon-date-highlight.svg" class="icon-sm" /> Add To Calendar</a>
+				</div>
+			</div>
+
+			<div id="modalActionMeeting-view-calendar" class="event-valid hidden">
+				<div>
+					<a class="btnHighlight" data-role="button" data-click="modalActionMeeting.showCalendar">
+						<img src="images/icon-date-light.svg" class="icon-sm" /> View on Calendar</a>
+				</div>
+			</div>
+			<div class="clearfix"></div>
 		</div>
 
 		<div class="event-details event-recipient" id="event-response">
@@ -2494,13 +2494,16 @@
 				</label>
 			</li>
 
-			<li>
+			<li class="hidden">
 				<label> When
 					<input type="search" id="modalActionMeeting-datestring" />
 				</label>
 			</li>
 			<li>
+				<label> When </label>
+				<div class="clearfix"></div>
 				<div class="smallSearch">
+
 							<span class="searchIcon">
 								<img src='images/smart-event.svg' />
 							</span>
@@ -2518,7 +2521,7 @@
 					<input type="checkbox" id="actionMeeting-addToCalendar"  data-role="switch" data-bind="checked: addToCalendar" data-change="modalActionMeeting.onChangeCalendar"/>
 				</label>
 			</li>
-			<li id="modalActionMeeting-durationBox">
+			<li id="modalActionMeeting-durationBox" class="hidden">
 				<label> How Long (Duration) </label>
 				<div class="fullSearch">
 						<span class="searchIcon">
@@ -2539,7 +2542,7 @@
 			</li>
 		</ul>
 	</form>
-
+	<div class="line"></div>
 	<div class="hidden" id="modalActionMeeting-recipientListDiv">
 		<h3>Event RSVP's</h3>
 		<ul data-role="listview" data-style="inset" id="modalActionMeeting-recipientListView">

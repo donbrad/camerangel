@@ -81,7 +81,7 @@ var modalActionMeeting = {
 
 
         $('#modalActionMeeting-placesearch').val(thisObj.placeName);
-        $('#modalActionMeeting-datestring').val(new Date(thisObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
+        //$('#modalActionMeeting-datestring').val(new Date(thisObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
         $('#modalActionMeeting-date').val(new Date(thisObj.date).toString('MMM dd, yyyy'));
         $('#modalActionMeeting-time').val(new Date(thisObj.date).toString('h:mm tt'));
     },
@@ -228,7 +228,7 @@ var modalActionMeeting = {
         // set event times
         var thisEvent = modalActionMeeting._activeObject;
         $('#modalActionMeeting-placesearch').val('');
-        $('#modalActionMeeting-datestring').val(new Date(thisEvent.date).toString("MMM dd, yyyy h:mm tt"));
+        //$('#modalActionMeeting-datestring').val(new Date(thisEvent.date).toString("MMM dd, yyyy h:mm tt"));
         $('#modalActionMeeting-date').val(new Date(thisEvent.date).toString("MMM dd, yyyy"));
         $('#modalActionMeeting-time').val(new Date(thisEvent.date).toString("h:mm tt"));
     },
@@ -254,7 +254,7 @@ var modalActionMeeting = {
 
         $("#modalActionMeeting-placesearchBtn").text("");
         $("#modalActionMeeting-placesearch").val("");
-        $("#modalActionMeeting-datestring").val("");
+        //$("#modalActionMeeting-datestring").val("");
         $("#modalActionMeeting-date").val("");
         $("#modalActionMeeting-time").val("");
         $('#modalActionMeeting-comments').val("");
@@ -321,7 +321,7 @@ var modalActionMeeting = {
         var time = $('#modalActionMeeting-time').val();
 
         var finalDateStr = date + " " + time;
-        $("#modalActionMeeting-datestring").val(finalDateStr);
+        //$("#modalActionMeeting-datestring").val(finalDateStr);
 
         modalActionMeeting._activeObject.set('date', new Date(finalDateStr));
 
@@ -354,7 +354,7 @@ var modalActionMeeting = {
                 filter: "contains",
                 placeholder: "Event title"
             });
-
+            /*
             $("#modalActionMeeting-datestring").on('blur', function () {
                 var dateStr =  $("#modalActionMeeting-datestring").val();
                 if (dateStr.length > 5) {
@@ -384,10 +384,10 @@ var modalActionMeeting = {
 
                 }
             });
-
+            */
 
             $('#modalActionMeeting-date').pickadate({
-                format: 'ddd,  mm, d yyyy',
+                format: 'mmm, d yyyy',
                 formatSubmit: 'mm d yyyy',
                 min: true,
                 onSet : function (context) {
@@ -591,11 +591,11 @@ var modalActionMeeting = {
     },
 
     onChangeCalendar: function(e){
-        console.log(e.checked);
+
         if(e.checked){
-            $("#modalActionMeeting-durationBox").velocity("slideDown");
+            $("#modalActionMeeting-durationBox").removeClass("hidden");
         } else {
-            $("#modalActionMeeting-durationBox").velocity("slideUp");
+            $("#modalActionMeeting-durationBox").addClass("hidden");
         }
     },
 
@@ -832,19 +832,22 @@ var modalActionMeeting = {
     onSaveEvent : function (e) {
         var thisObj = modalActionMeeting._activeObject;
         
-        var finalDateStr = $("#modalActionMeeting-datestring").val();
+        //var finalDateStr = $("#modalActionMeeting-datestring").val();
+        var meetingDate = $("#modalActionMeeting-date").val();
+        var meetingTime = $("#modalActionMeeting-time").val();
+        var finalDateStr = meetingDate + " " + meetingTime;
         var saveDate = new Date(finalDateStr);
 
         thisObj.set('date', saveDate);
-        thisObj.set('senderName', userModel.currentUser.name);
+         thisObj.set('senderName', userModel.currentUser.name);
 
-        if (thisObj.addToCalendar && thisObj.calendarId === null) {
-            modalActionMeeting.addToCalendar();
-        }
+         if (thisObj.addToCalendar && thisObj.calendarId === null) {
+         modalActionMeeting.addToCalendar();
+         }
 
-        modalActionMeeting.createSmartEvent(thisObj);
+         modalActionMeeting.createSmartEvent(thisObj);
 
-        modalActionMeeting.onDone();
+         modalActionMeeting.onDone();
     },
 
     onRSVP : function (e) {

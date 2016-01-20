@@ -52,7 +52,12 @@
 }
 
 #modalActionMeeting-durationBox {
-  display: none;
+  //display: none;
+}
+
+#modalActionMeeting-view-calendar-add,
+#modalActionMeeting-view-calendar {
+  margin-top: 0.5em;
 }
 
 // Smart object chat inline
@@ -62,7 +67,7 @@
   border-radius: 3px;
   text-align: left;
   span:not(.btnSmart-type) {
-    background: #65BBB3 !important;
+    //background: #65BBB3 !important;
   }
   .btnSmart-type {
     width: 1.5em;
@@ -77,10 +82,15 @@
     }
   }
   .btnSmart-content {
-    color: #fff;
-    padding: 2px 4px;
-    border-radius: 3px !important;
+    color: @black;
     line-height: 1.7;
+    .btnSmart-title {
+      color: #fff !important;
+      background: #65BBB3 !important;
+      padding: 2px 4px;
+      border-radius: 3px !important;
+      margin-right: 0.25em;
+    }
   }
 }
 

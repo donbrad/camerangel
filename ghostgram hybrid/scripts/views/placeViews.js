@@ -1308,7 +1308,7 @@ var placeView = {
         }
 
         if (placeView._activePlace.hasPlaceChat) {
-            $("#placeview-gotochat").text("Goto Place Chat");
+            $("#placeview-gotochat").text("Go to Place Chat");
         } else {
             $("#placeview-gotochat").text("Start a Chat");
         }
@@ -1713,9 +1713,8 @@ var smartEventPlacesView = {
 
                     $("#smartEventPlacesModal").data("kendoMobileModalView").close();
                     if (smartEventPlacesView._callback !== null) {
-                        callback(geo);
+                        smartEventPlacesView._callback(geo);
                     }
-
 
                 }
             }

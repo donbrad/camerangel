@@ -1787,9 +1787,6 @@ var channelView = {
         var dateStr = moment(date).format('ddd MMM Do');
         var localTime = moment(date).format("LT");
 
-        var dateTest = moment(date).toNow(true);
-        console.log(dateTest);
-
         /*var objectUrl = '<div><span class="btnSmart" data-role="button" data-objectid="' + objectId +
             '" id="chatobject_' + objectId + '"'+
             'data-click="channelView.onObjectClick" >' +
@@ -1802,8 +1799,11 @@ var channelView = {
             '<p class="textClamp btnSmart-date">' + smartEvent.placeName + '</p>' +
             '</span>' +
             '</span></div>';*/
-        console.log(smartEvent);
-
+        var placeName = smartEvent.placeName;
+        if(placeName === null){
+            placeName = "";
+        }
+        
         var objectUrl = '<div><span class="btnSmart" data-role="button" data-objectid="' + objectId +
             '" id="chatobject_' + objectId + '"'+
             'data-click="channelView.onObjectClick" >' +
@@ -1811,8 +1811,9 @@ var channelView = {
             '<img src="images/smart-event-test.svg" class="icon-smartBtn" />' +
             '</span>' +
             '<span class="btnSmart-content">' +
-            '<span class="btnSmart-title">' + smartEvent.title + ' - </span> ' +
-            '<span class="btnSmart-date">' + dateStr + ' at ' + localTime + '</span> ' +
+            '<span class="btnSmart-title">' + smartEvent.title + ' </span><br /> ' +
+            '<span class="btnSmart-date">' + dateStr + ' ' + localTime + '</span> ' +
+            '<span class="btnSmart-date">' + placeName + '</span> ' +
             '</span>' +
             '</span></div>';
 

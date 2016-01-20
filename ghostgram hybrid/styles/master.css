@@ -129,16 +129,14 @@
   margin-left: 1rem;
   margin-right: 1rem;
 }
-#modalActionMeeting-durationBox {
-  display: none;
+#modalActionMeeting-view-calendar-add,
+#modalActionMeeting-view-calendar {
+  margin-top: 0.5em;
 }
 .btnSmart {
   padding: 0.25em !important;
   border-radius: 3px;
   text-align: left;
-}
-.btnSmart span:not(.btnSmart-type) {
-  background: #65BBB3 !important;
 }
 .btnSmart .btnSmart-type {
   width: 1.5em;
@@ -153,10 +151,15 @@
   vertical-align: middle;
 }
 .btnSmart .btnSmart-content {
-  color: #fff;
+  color: #4A4A4A;
+  line-height: 1.7;
+}
+.btnSmart .btnSmart-content .btnSmart-title {
+  color: #fff !important;
+  background: #65BBB3 !important;
   padding: 2px 4px;
   border-radius: 3px !important;
-  line-height: 1.7;
+  margin-right: 0.25em;
 }
 .icon-smartBtn {
   height: 1em;
@@ -773,6 +776,8 @@ form p {
 .btnClear-sm,
 .btnClear-light-sm,
 .btnClearLine,
+.btnClearLine-highlight,
+.btnHighlight,
 .btnClearLine-grey-sm,
 .btnClear-grey,
 .btnClear-red,
@@ -979,6 +984,17 @@ form p {
   position: absolute;
   right: 1rem;
   top: 2rem;
+}
+.btnClearLine-highlight {
+  border-radius: 3px !important;
+  color: #9E788F !important;
+  border: 1px solid #9E788F !important;
+}
+.btnHighlight {
+  color: #fff !important;
+  border-radius: 3px !important;
+  background: #9E788F !important;
+  border: 1px solid #9E788F !important;
 }
 .btnClearLine-grey-sm {
   background: transparent;
