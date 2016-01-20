@@ -9,6 +9,7 @@
 
 'use strict';
 
+//Todo:  rename to smartEventView after jordan checks in
 var modalActionMeeting = {
     _activeObject : new kendo.data.ObservableObject(),
     _date : new Date(),
@@ -27,8 +28,22 @@ var modalActionMeeting = {
 
     initActiveObject : function () {
         var thisObj = modalActionMeeting._activeObject;
+        // todo - review update to make date/time more useful as defaults
+        var newDate = new Date();
+        var newDateHour = newDate.getHours();
+        var newDateDay = newDate.getDate();
 
-        var newDate = Date.today();
+        if(newDateHour < 20 && newDate > 0){
+            newDateHour += 3;
+            newDate.setHours(newDateHour);
+            newDate.setMinutes(0);
+        } else {
+            newDateDay += 1;
+            newDateHour = 10;
+            newDate.setDate(newDateDay);
+            newDate.setHours(newDateHour);
+            newDate.setMinutes(0);
+        }
         thisObj.set("uuid", uuid.v4());
         thisObj.set('senderUUID', userModel.currentUser.userUUID);
         thisObj.set('senderName', userModel.currentUser.name);
@@ -67,8 +82,8 @@ var modalActionMeeting = {
 
 
         $('#modalActionMeeting-placesearch').val(thisObj.placeName);
-        $('#modalActionMeeting-datestring').val(new Date(thisObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
-        $('#modalActionMeeting-date').val(new Date(thisObj.date).toString('MMMM dd, yyyy'));
+        //$('#modalActionMeeting-datestring').val(new Date(thisObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
+        $('#modalActionMeeting-date').val(new Date(thisObj.date).toString('MMM dd, yyyy'));
         $('#modalActionMeeting-time').val(new Date(thisObj.date).toString('h:mm tt'));
     },
 
@@ -170,8 +185,8 @@ var modalActionMeeting = {
             $('#modalActionMeeting-recipientListDiv').addClass('hidden');
             // new event
             modalActionMeeting.showEditMode();
-        }
 
+        }
 
     },
 
@@ -214,10 +229,11 @@ var modalActionMeeting = {
         // set event times
         var thisEvent = modalActionMeeting._activeObject;
         $('#modalActionMeeting-placesearch').val('');
-        $('#modalActionMeeting-datestring').val(new Date(thisEvent.date).toString("MMMM dd, yyyy h:mm tt"));
-        $('#modalActionMeeting-date').val(new Date(thisEvent.date).toString("MMMM dd, yyyy"));
+        //$('#modalActionMeeting-datestring').val(new Date(thisEvent.date).toString("MMM dd, yyyy h:mm tt"));
+        $('#modalActionMeeting-date').val(new Date(thisEvent.date).toString("MMM dd, yyyy"));
         $('#modalActionMeeting-time').val(new Date(thisEvent.date).toString("h:mm tt"));
     },
+
 
 
     setAcceptStatus : function () {
@@ -233,25 +249,25 @@ var modalActionMeeting = {
         }
     },
 
-
-
-    onShow: function (e) {
+    onShow: function(e) {
         _preventDefault(e);
         modalActionMeeting._placeId = null;
 
         $("#modalActionMeeting-placesearchBtn").text("");
         $("#modalActionMeeting-placesearch").val("");
-        $("#modalActionMeeting-datestring").val("");
+        //$("#modalActionMeeting-datestring").val("");
         $("#modalActionMeeting-date").val("");
         $("#modalActionMeeting-time").val("");
         $('#modalActionMeeting-comments').val("");
     },
+
 
     onAddPlace: function (e) {
         _preventDefault(e);
     },
 
     onPlaceSearch : function (e) {
+
         _preventDefault(e);
 
         var placeStr =  $("#modalActionMeeting-placesearch").val();
@@ -306,7 +322,7 @@ var modalActionMeeting = {
         var time = $('#modalActionMeeting-time').val();
 
         var finalDateStr = date + " " + time;
-        $("#modalActionMeeting-datestring").val(finalDateStr);
+        //$("#modalActionMeeting-datestring").val(finalDateStr);
 
         modalActionMeeting._activeObject.set('date', new Date(finalDateStr));
 
@@ -339,7 +355,7 @@ var modalActionMeeting = {
                 filter: "contains",
                 placeholder: "Event title"
             });
-
+            /*
             $("#modalActionMeeting-datestring").on('blur', function () {
                 var dateStr =  $("#modalActionMeeting-datestring").val();
                 if (dateStr.length > 5) {
@@ -356,7 +372,7 @@ var modalActionMeeting = {
                     if (dateStr.length > 4) {
                         date = Date.parse(dateStr);
                     }
-                    var dateComp = new Date(date).toString("MMMM dd, yyyy");
+                    var dateComp = new Date(date).toString("MMM dd, yyyy");
                     var finalDateStr  =  dateComp;
 
                     if(timeComp !== '')
@@ -369,10 +385,10 @@ var modalActionMeeting = {
 
                 }
             });
-
+            */
 
             $('#modalActionMeeting-date').pickadate({
-                format: 'ddd,  mmm, d yyyy',
+                format: 'mmm, d yyyy',
                 formatSubmit: 'mm d yyyy',
                 min: true,
                 onSet : function (context) {
@@ -399,8 +415,17 @@ var modalActionMeeting = {
 
                     }
 
+
                 }
             });
+            //$('#modalActionMeeting-time').pickatime();
+
+           /* $("#modalActionMeeting-date").on('blur', function () {
+
+            });*/
+
+
+
 
             $("#modalActionMeeting-time").on('blur', function () {
                 var timeIn =  $("#modalActionMeeting-time").val();
@@ -521,7 +546,6 @@ var modalActionMeeting = {
         $(".event-date").text(prettyDate);
 
 
-
         $("#modalActionMeeting-placesearchdiv").addClass('hidden');
 
         if (thisObject.senderUUID === null || thisObject.senderUUID === userModel.currentUser.userUUID) {
@@ -567,6 +591,15 @@ var modalActionMeeting = {
 
     },
 
+    onChangeCalendar: function(e){
+
+        if(e.checked){
+            $("#modalActionMeeting-durationBox").removeClass("hidden");
+        } else {
+            $("#modalActionMeeting-durationBox").addClass("hidden");
+        }
+    },
+
     eventMapLocation: function(e){
         _preventDefault(e);
 
@@ -575,8 +608,10 @@ var modalActionMeeting = {
         if (event.placeId !== null) {
             var place = placesModel.getPlaceModel(event.placeId);
             if (place !== undefined) {
+
                 var placeId = packParameter(event.placeId), channelUrl = packParameter('channel?'+channelView._channelId);
                 APP.kendo.navigate('#placeView?place=' + placeId + '&returnview=' + channelUrl);
+
             }
 
         } else {
@@ -794,8 +829,15 @@ var modalActionMeeting = {
     onSaveEvent : function (e) {
         var thisObj = modalActionMeeting._activeObject;
         
-        var finalDateStr = $("#modalActionMeeting-datestring").val(),
-            title = $("#modalActionMeeting-title").val() ;
+
+
+        var title = $("#modalActionMeeting-title").val() ;
+
+        //var finalDateStr = $("#modalActionMeeting-datestring").val();
+        var meetingDate = $("#modalActionMeeting-date").val();
+        var meetingTime = $("#modalActionMeeting-time").val();
+        var finalDateStr = meetingDate + " " + meetingTime;
+
         var saveDate = new Date(finalDateStr);
 
         if (title === null || title.length < 3) {
@@ -809,15 +851,15 @@ var modalActionMeeting = {
         }
 
         thisObj.set('date', saveDate);
-        thisObj.set('senderName', userModel.currentUser.name);
+         thisObj.set('senderName', userModel.currentUser.name);
 
-        if (thisObj.addToCalendar && thisObj.calendarId === null) {
-            modalActionMeeting.addToCalendar();
-        }
+         if (thisObj.addToCalendar && thisObj.calendarId === null) {
+         modalActionMeeting.addToCalendar();
+         }
 
-        modalActionMeeting.createSmartEvent(thisObj);
+         modalActionMeeting.createSmartEvent(thisObj);
 
-        modalActionMeeting.onDone();
+         modalActionMeeting.onDone();
     },
 
 
@@ -837,6 +879,14 @@ var modalActionMeeting = {
 
 };
 
+
+var smartFlightView = {
+
+};
+
+var smartMovieView = {
+
+};
 
 
 

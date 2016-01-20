@@ -1308,7 +1308,7 @@ var placeView = {
         }
 
         if (placeView._activePlace.hasPlaceChat) {
-            $("#placeview-gotochat").text("Goto Place Chat");
+            $("#placeview-gotochat").text("Go to Place Chat");
         } else {
             $("#placeview-gotochat").text("Start a Chat");
         }
@@ -1715,7 +1715,6 @@ var smartEventPlacesView = {
                     if (smartEventPlacesView._callback !== null) {
                         smartEventPlacesView._callback(geo);
                     }
-
 
                 }
             }
