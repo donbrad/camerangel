@@ -821,6 +821,22 @@ form {
 	top: 2rem;
 }
 
+.btnClearLine-highlight {
+	&:extend(.btnStyle);
+	border-radius: 3px !important;
+	color: @highlight-100 !important;
+	border: 1px solid @highlight-100 !important;
+}
+
+
+.btnHighlight {
+	&:extend(.btnStyle);
+	color: #fff !important;
+	border-radius: 3px !important;
+	background: @highlight-100 !important;
+	border: 1px solid @highlight-100 !important;
+}
+
 .btnClearLine-grey-sm {
 	&:extend(.btnStyle);
     background: transparent;
@@ -4870,6 +4886,27 @@ div.contactListBox.activeContact > div > div > ul {
 	background-color: @shade-300;
 }
 
+.smallSearch {
+	.appendSearch;
+	width: 50% !important;
+	margin-left: 0;
+	float: left;
+}
+
+.smallSearch-sm {
+	.appendSearch;
+	width: 40% !important;
+	margin-left: 0;
+	float: left;
+}
+
+.fullSearch {
+	.appendSearch;
+	width: 100% !important;
+	margin-left: 0;
+	margin-right: 0;
+}
+
 .appendSearch {
 	background: #fff;
 	display: inline-block;
@@ -4883,30 +4920,36 @@ div.contactListBox.activeContact > div > div > ul {
 	input {
 		float: left;
 		border: none !important;
-		width: 80%;
+		width: 80% !important;
 		padding-left: 0px !important;
 		padding-right: 1rem;
+		@media @mobile {
+			width: 85%;
+		}
 	}
-	span {
+	span:not(.helper) {
 		float: left;
 		padding-top: 0.75em;
 		color: @shade-100;
 		.font-size(12);
 		width: 20%;
 		text-align: center;
+		@media @mobile {
+			width: 15%;
+		}
 	}
 	.searchIcon {
 		float: left;
 		padding-top: 0.75em;
 		color: @shade-100;
-		width: 12%;
-		text-align: center;
+		width: 15% !important;
+		text-align: center !important;
 		img {
 			height: 1rem;
 		}
 	}
 	.viewSearchBox {
-		width:88%;
+		width:85% !important;
 	}
 	.doubleAppendSearch {
 		width: 75%;
@@ -4915,7 +4958,7 @@ div.contactListBox.activeContact > div > div > ul {
 	.enterSearch {
 		padding-top: 8px;
 		padding-bottom: 8px;
-		width: 13%;
+		width: 13% !important;
 		span {
 			padding-top: 0px;
 			color: @shade-200;
@@ -4964,7 +5007,7 @@ div.contactListBox.activeContact > div > div > ul {
 }
 
 .chat-message p {
-    margin: 0px 0px 4px;
+    margin: 0px;
 }
 
 .chat-message h5 {
