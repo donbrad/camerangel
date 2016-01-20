@@ -2,9 +2,9 @@
  * Created by donbrad on 12/31/15.
  *
  * Smart Objects UX -- one modal for each action
- * Events - modalActionMeeting
- * Flights - modalActionFlight
- * Movies - modalActionMovies
+ * Events - smartEventView
+ * Flights - smartFlightView
+ * Movies - smartMovieView
  */
 
 'use strict';
