@@ -1322,7 +1322,7 @@ var placeView = {
         }
 
 
-        mapModel.setMapCenter(placeView._activePlaceModel.lat, placeView._activePlaceModel.lng);
+        //mapModel.setMapCenter(placeView._activePlaceModel.lat, placeView._activePlaceModel.lng);
     },
 
     onHide : function (e) {
@@ -1457,20 +1457,17 @@ var placeView = {
     	APP.kendo.navigate("#mapView?place=" + placeId );
     },
 
-    takePhoto: function(e){
+  /*  takePhoto: function(e){
         _preventDefault(e);
     	// TODO Don - wire camera feature
     },
-
+*/
     openChat: function(e){
-
-        //_preventDefault(e);
+        _preventDefault(e);
 
         if (placeView._activePlace.hasPlaceChat) {
 
            APP.kendo.navigate('#channel?channelId=' + placeView._activePlace.placeChatId);
-        } else {
-            // TODO Don - wire chat feature
         }
     }
 };

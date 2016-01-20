@@ -5560,6 +5560,11 @@ html .km-pane-wrapper .k-header {
   height: 1rem;
   vertical-align: sub;
 }
+.icon-header {
+  height: 0.75em;
+  max-width: 0.75em;
+  vertical-align: baseline;
+}
 .placeIconImgBtn {
   height: 2rem;
 }
