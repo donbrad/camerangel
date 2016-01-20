@@ -9,6 +9,7 @@
 
 'use strict';
 
+//Todo:  rename to smartEventView after jordan checks in
 var modalActionMeeting = {
     _activeObject : new kendo.data.ObservableObject(),
     _date : new Date(),
@@ -837,6 +838,14 @@ var modalActionMeeting = {
 
 };
 
+
+var smartFlightView = {
+
+};
+
+var smartMovieView = {
+
+};
 
 
 
