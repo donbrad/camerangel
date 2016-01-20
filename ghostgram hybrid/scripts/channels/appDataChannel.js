@@ -432,7 +432,7 @@ var appDataChannel = {
         var event = smartEvent.findObject(eventId);
 
 
-        var notificationString =  userModel.currentUser.name + " has accepted " + event.name;
+        var notificationString =  userModel.currentUser.name + " has accepted " + event.title;
         msg.msgID = uuid.v4();
         msg.type = 'eventAccept';
         msg.version = appDataChannel._version;
@@ -478,7 +478,7 @@ var appDataChannel = {
 
         var event = smartEvent.findObject(eventId);
 
-        var notificationString =  userModel.currentUser.name + " has declined " + event.name;
+        var notificationString =  userModel.currentUser.name + " has declined " + event.title;
         msg.msgID = uuid.v4();
         msg.type = 'eventDecline';
         msg.version = appDataChannel._version;

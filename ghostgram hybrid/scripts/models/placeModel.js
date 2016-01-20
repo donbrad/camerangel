@@ -376,7 +376,7 @@ var placesModel = {
     },
 
     deletePlace : function (placeId) {
-        
+
         var place = placesModel.queryPlace({field: "uuid", operator: "eq", value: placeId});
 
         if (place !== undefined) {

@@ -691,7 +691,10 @@ var modalActionMeeting = {
     onAccept : function (e) {
         var thisEvent = modalActionMeeting._activeObject;
 
-        var commentStr = $('#modalActionMeeting-comments').val();
+        var commentStr = $('#modalActionMeeting-comments').text();
+        if (commentStr === null || commentStr.length === 0) {
+            commentStr = "Looking forward to it!"
+        }
 
         smartEvent.smartAddObject(thisEvent, function (event) {
 
@@ -708,7 +711,11 @@ var modalActionMeeting = {
     onDecline : function (e) {
         var thisEvent = modalActionMeeting._activeObject;
 
-        var commentStr = $('#modalActionMeeting-comments').val();
+        var commentStr = $('#modalActionMeeting-comments').text();
+        if (commentStr === null || commentStr.length === 0) {
+            commentStr = "Sorry can't make it!"
+        }
+
 
         smartEvent.smartAddObject(thisEvent, function (event) {
 
