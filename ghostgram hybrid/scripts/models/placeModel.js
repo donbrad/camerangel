@@ -252,7 +252,8 @@ var placesModel = {
         placeParse.set('isVisible', true);
         placeParse.set('isDeleted', false);
         placeParse.set('isAvailable', place.isAvailable === "true");
-        placeParse.set('isPrivate', place.isPrivate === "true");
+    //    placeParse.set('isPrivate', place.isPrivate === "true");
+        placeParse.set('isPrivate', true);
         placeParse.set('hasPlaceChat', true);
         placeParse.set('placeChatId', placeChatId);
 
@@ -328,7 +329,8 @@ var placesModel = {
         placeParse.set('isVisible', true);
         placeParse.set('isDeleted', false);
         placeParse.set('isAvailable', place.isAvailable === "true");
-        placeParse.set('isPrivate', place.isPrivate === "true");
+ //       placeParse.set('isPrivate', place.isPrivate === "true");
+        placeParse.set('isPrivate', true);
 
         if (!createChatFlag) {
             placeParse.set('hasPlaceChat', false);
