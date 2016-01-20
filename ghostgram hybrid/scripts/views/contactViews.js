@@ -37,7 +37,7 @@ var contactsView = {
             // filter: "div",
             enableSwipe: true,
             tap: function(e){
-            	var contactId = e.touch.currentTarget.attributes['data-contact'].value;
+            	var contactId = e.touch.target[0].attributes['data-contact'].value;
             	
                 var contact = contactModel.findContactByUUID(contactId);
                 if (contact === undefined) {
