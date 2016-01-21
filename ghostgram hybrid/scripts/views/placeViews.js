@@ -1818,6 +1818,7 @@ var smartEventPlacesView = {
             $('#searchEventPlaces-searchDiv').addClass('hidden');
 
             $('#smartEventPlaces-place').val(smartEventPlacesView._placeQuery);
+            smartEventPlacesView._processPlaceQuery(smartEventPlacesView._placeQuery);
 
         } else {
 
@@ -1874,12 +1875,12 @@ var smartEventPlacesView = {
 
     _processPlaceQuery : function (query) {
 
-        smartEventPlacesView._autocompletePlace.getPlacePredictions({ input: query, options: {types: ['geocode', 'cities']} }, function(predictions, status) {
+        smartEventPlacesView._autocompletePlace.getPlacePredictions({ input: query, options: {types: ['geocode']} }, function(predictions, status) {
             if (status == google.maps.places.PlacesServiceStatus.OK) {
                 ds.data([]);
                 predictions.forEach( function (prediction) {
                     var desObj = {category:"Area", description: prediction.description};
-                     if (prediction.types[0] === 'route' ) {
+                   /*  if (prediction.types[0] === 'route' ) {
                         desObj.title = "Area";
                         desObj.address = prediction.terms[0].value + " " + prediction.terms[1].value + ", " + prediction.terms[2].value;
                         desObj.type = 'Route';
@@ -1891,7 +1892,7 @@ var smartEventPlacesView = {
                         desObj.title = "Unknown";
                         desObj.address = "Unknown";
                         desObj.type = 'Unknown';
-                    }
+                    }*/
 
                     ds.add(desObj);
 

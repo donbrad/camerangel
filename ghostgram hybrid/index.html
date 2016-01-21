@@ -1133,11 +1133,15 @@
 <script type="text/x-kendo-template" id="smartEventPlacesTemplate">
 
 	<div class="findPlaceListItem">
+		# if (data.category === 'Place' ) { #
 		<h4 class="textClamp"> #: data.title #  </h4>
 		<p class="textClamp"> #: data.address # </p>
 		<p class="textClamp helper">
 			<span><i>#= data.type # </i> </span>
 		</p>
+		# } else { #
+		<p class="textClamp"> #: data.description # </p>
+		# } #
 	</div>
 
 </script>
