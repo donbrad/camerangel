@@ -1082,7 +1082,7 @@ var channelView = {
     onDone : function (e) {
 
         if (channelView._returnview === null) {
-            channelView.onHide();
+            //channelView.onHide();
             APP.kendo.navigate('#channels');
         } else {
             APP.kendo.navigate('#'+channelView._returnview);
