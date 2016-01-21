@@ -825,6 +825,7 @@ var channelView = {
     _tagEnd: null,
     _tagRange: null,
     _firstSpace: false,
+    _returnview: null,
 
     membersDS: new kendo.data.DataSource({
         sort: {
@@ -1078,6 +1079,16 @@ var channelView = {
 
     },
 
+    onDone : function (e) {
+
+        if (channelView._returnview === null) {
+            channelView.onHide();
+            APP.kendo.navigate('#channels');
+        } else {
+            APP.kendo.navigate('#'+channelView._returnview);
+        }
+    },
+
     onShow : function (e) {
         _preventDefault(e);
 
@@ -1093,7 +1104,14 @@ var channelView = {
         // hide action btn
         ux.showActionBtn(false, "#channel");
 
+
         var channelUUID = e.view.params.channelId;
+
+        if (e.view.params.returnview !== undefined){
+            channelView._returnview = unpackParameter(e.view.params.returnview);
+        } else {
+            channelView._returnview = null;
+        }
 
         channelView._channelId = channelUUID;
 
