@@ -418,6 +418,26 @@ var userStatusView = {
 
     },
 
+    doSignOut : function (e) {
+        _preventDefault(e);
+
+        Parse.User.logOut();
+        userModel.parseUser = null;
+        userModel.currentUser.unbind('change', userModel.sync);
+        userModel.currentUser.set('username', null);
+        userModel.currentUser.set('email', null);
+        userModel.currentUser.set('phone',null);
+        userModel.currentUser.set('alias', null);
+        userModel.currentUser.set('userUUID', null);
+        userModel.currentUser.set('rememberUsername', false);
+        userModel.currentUser.set('phoneVerified', false);
+        userModel.currentUser.set('emailVerified', false);
+        userModel.parseACL = '';
+        deviceModel.resetDeviceState();
+
+        APP.kendo.navigate('#usersignin');
+    },
+    
     // Main entry point for userstatus modal
     openModal : function (e) {
         _preventDefault(e);
