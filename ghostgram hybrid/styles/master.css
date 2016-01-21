@@ -2788,6 +2788,9 @@ a:hover {
 .chat-option-ul li a {
   padding: 0px !important;
 }
+#channelNavBar > div.km-view-title > span {
+  padding: 0 !important;
+}
 .chat-mainBox h4 {
   margin-left: 0px;
   margin-right: 0px;
