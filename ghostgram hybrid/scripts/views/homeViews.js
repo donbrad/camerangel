@@ -418,6 +418,11 @@ var userStatusView = {
 
     },
 
+    gotoSettings : function (e) {
+        userStatusView.closeModal();
+        APP.kendo.navigate('#settings');
+    },
+
     doSignOut : function (e) {
         _preventDefault(e);
 
@@ -435,9 +440,10 @@ var userStatusView = {
         userModel.parseACL = '';
         deviceModel.resetDeviceState();
 
+        userStatusView.closeModal();
         APP.kendo.navigate('#usersignin');
     },
-    
+
     // Main entry point for userstatus modal
     openModal : function (e) {
         _preventDefault(e);
