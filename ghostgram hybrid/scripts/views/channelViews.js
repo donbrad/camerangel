@@ -1072,11 +1072,11 @@ var channelView = {
         _preventDefault(e);
 
         if (channelView._channel.isPrivateChat) {
-            var contactId = channelView.privateContactId;
+            var contactId = channelView._channel.contactUUID;
 
             contactActionView.openModal(contactId);
 
-        } else if (channelView._channel.isPlace) {
+        } else if (channelView.isPlaceChat) {
             var placeId = channel._channel.placeUUID;
 
             var placeUrl = LZString.compressToEncodedURIComponent(placeId );
@@ -1125,10 +1125,10 @@ var channelView = {
 
         if (thisChannel.isPlace !== undefined && thisChannel.isPlace === true) {
           channelView.isPlaceChat = true;
-            $('#channelView .icon-header').removeClass('hidden');
+            $('#channel-titleBtn .icon-header').removeClass('hidden');
         } else {
             channelView.isPlaceChat = false;
-            $('#channelView .icon-header').addClass('hidden');
+            $('#channel-titleBtn .icon-header').addClass('hidden');
         }
         channelModel.zeroUnreadCount(thisChannel.channelId);
 
