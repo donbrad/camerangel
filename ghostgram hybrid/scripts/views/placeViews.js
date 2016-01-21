@@ -1767,6 +1767,10 @@ var smartEventPlacesView = {
                             smartEventPlacesView._selectPlaceFirst = false;
                             $('#searchEventPlaces-selectPlace').addClass('hidden');
                             $('#searchEventPlaces-searchDiv').removeClass('hidden');
+
+                            $('#smartEventPlaces-query').val(smartEventPlacesView._query);
+                            smartEventPlacesView._processQuery(smartEventPlacesView._query);
+
                         }
                     } else {
 
@@ -1894,7 +1898,7 @@ var smartEventPlacesView = {
                                     desObj.title = "Area";
                                     desObj.address = prediction.terms[0].value + " " + prediction.terms[1].value + ", " + prediction.terms[2].value;
                                 }
-
+                                ds.add(desObj);
                             break;
                     }
                    /*  if (prediction.types[0] === 'route' ) {
@@ -1911,7 +1915,7 @@ var smartEventPlacesView = {
                         desObj.type = 'Unknown';
                     }*/
 
-                    ds.add(desObj);
+
 
                 });
             }
