@@ -1763,13 +1763,13 @@ var smartEventPlacesView = {
                 click: function (e) {
                     var geo = e.dataItem;
 
+
+                    var request = {
+                        placeId: geo.placeId
+                    };
+
                     if (geo.category === 'Area') {
                         // Geocoded address
-
-                        var request = {
-                            placeId: geo.placeId
-                        };
-
 
                         mapModel.googlePlaces.getDetails(request, function(place, status) {
                             if (status == google.maps.places.PlacesServiceStatus.OK) {
@@ -1792,9 +1792,20 @@ var smartEventPlacesView = {
 
 
                     } else {
+                        mapModel.googlePlaces.getDetails(request, function(place, status) {
+                            if (status == google.maps.places.PlacesServiceStatus.OK) {
 
+                                var placeObj = {}
+
+                                $("#smartEventPlacesModal").data("kendoMobileModalView").close();
+                                if (smartEventPlacesView._callback !== null) {
+                                    smartEventPlacesView._callback(placeObj);
+                                }
+                            }
+                        });
 
                     }
+
                    /* delete geo._events;
                     delete geo.parent;
                     delete geo.__proto__;
