@@ -1760,14 +1760,20 @@ var smartEventPlacesView = {
                 click: function (e) {
                     var geo = e.dataItem;
 
-                    delete geo._events;
+                    if (geo.category === 'geocode') {
+                        // Geocoded address
+                    } else {
+
+
+                    }
+                   /* delete geo._events;
                     delete geo.parent;
                     delete geo.__proto__;
 
                     $("#smartEventPlacesModal").data("kendoMobileModalView").close();
                     if (smartEventPlacesView._callback !== null) {
                         smartEventPlacesView._callback(geo);
-                    }
+                    }*/
 
                 }
             }
@@ -1817,7 +1823,7 @@ var smartEventPlacesView = {
                 var ds = smartEventPlacesView.placesDS;
                 ds.data([]);
                 predictions.forEach( function (prediction) {
-                    var desObj = {description: prediction.description};
+                    var desObj = {category:"Place",description: prediction.description};
                     if (prediction.types[0] === 'establishment') {
                         desObj.title = prediction.terms[0].value;
                         desObj.address = prediction.terms[1].value + " " + prediction.terms[2].value + ", " + prediction.terms[3].value;
@@ -1849,9 +1855,9 @@ var smartEventPlacesView = {
 
         smartEventPlacesView._autocompletePlace.getPlacePredictions({ input: query, options: {types: ['geocode', 'cities']} }, function(predictions, status) {
             if (status == google.maps.places.PlacesServiceStatus.OK) {
-              ;
+                ds.data([]);
                 predictions.forEach( function (prediction) {
-                    var desObj = {description: prediction.description};
+                    var desObj = {category:"Area", description: prediction.description};
                      if (prediction.types[0] === 'route' ) {
                         desObj.title = "Area";
                         desObj.address = prediction.terms[0].value + " " + prediction.terms[1].value + ", " + prediction.terms[2].value;
@@ -1865,7 +1871,7 @@ var smartEventPlacesView = {
                         desObj.address = "Unknown";
                         desObj.type = 'Unknown';
                     }
-                    desObj.placeId = prediction.place_id;
+
                     ds.add(desObj);
 
                 });
