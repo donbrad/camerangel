@@ -2946,7 +2946,7 @@
  * Places
  */-->
 
-<div data-role="view" data-title="Places" id="places" data-layout="main" data-model="placesModel" data-show="placesView.onShow" data-init="placesView.onInit" data-before-hide="placesView.onHide">
+<div data-role="view" data-title="Places" id="places" data-layout="main" data-model="placesModel" data-show="placesView.onShow" data-init="placesView.onInit" data-before-hide="placesView.onHide" style="display: none;">
 
 	<div>
 		<div id="current-place" class="hidden">
@@ -2979,7 +2979,7 @@
 </div>
 
 <!-- Find Place -->
-<div data-role="view" data-title="New Places Nearby" id="findPlace" data-layout="main"  data-show="findPlacesView.onShow" data-init="findPlacesView.onInit" data-before-hide="findPlacesView.onHide" data-transition="slide:up">
+<div data-role="view" data-title="New Places Nearby" id="findPlace" data-layout="main"  data-show="findPlacesView.onShow" data-init="findPlacesView.onInit" data-before-hide="findPlacesView.onHide" data-transition="slide:up" style="display: none;">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
@@ -3040,7 +3040,7 @@
 	<ul id="nearby-results-list"></ul>
 </div>
 
-<div data-role="view" id="placeView" data-title="Place View" data-model="placeView._activePlace" class="appearance" data-layout="main" data-init="placeView.onInit" data-show="placeView.onShow" data-hide="placeView.onHide">
+<div data-role="view" id="placeView" data-title="Place View" data-model="placeView._activePlace" class="appearance" data-layout="main" data-init="placeView.onInit" data-show="placeView.onShow" data-hide="placeView.onHide" style="display: none;">
 	<div class="smallHeader" data-role="header">
 		<a data-role="button" class="left" data-click="placeView.onDone"> <img src="images/nav-back-light.svg" /></a>
 		<a data-role="button" class="right btnClear-light" data-click="placeView.doDirections">
@@ -3105,7 +3105,7 @@
 
 <!-- Profile Edit -->
 <div data-role="view" id="profileEdit" data-title="Edit Profile" data-layout="profileLayout" data-model="profileEditView._activeProfile"
-	 data-init="profileEditView.onInit"  data-show="profileEditView.onShow" class="appearance" data-transition="slide:right">
+	 data-init="profileEditView.onInit"  data-show="profileEditView.onShow" class="appearance" data-transition="slide:right" style="display: none;">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
@@ -3303,7 +3303,7 @@
  * Settings
  */-->
 
-<div data-role="view" id="settings" data-title="Settings" data-layout="main" data-model="userModel" class="appearance" data-init="homeView.settingsOnInit">
+<div data-role="view" id="settings" data-title="Settings" data-layout="main" data-model="userModel" class="appearance" data-init="homeView.settingsOnInit" style="display: none;">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
