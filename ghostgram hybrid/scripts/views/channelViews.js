@@ -1083,10 +1083,9 @@ var channelView = {
 
             var placeUrl = LZString.compressToEncodedURIComponent(placeId);
 
-           // channelView.onHide();
-
-           // setTimeout( function () {APP.kendo.navigate('#placeView?place=' + placeUrl);}, 500);
-            APP.kendo.navigate('#placeView?place=' + placeUrl);
+            channelView.onHide();
+            setTimeout( function () {APP.kendo.navigate('#placeView?place=' + placeUrl);}, 1000);
+           // APP.kendo.navigate('#placeView?place=' + placeUrl);
         }
 
 
