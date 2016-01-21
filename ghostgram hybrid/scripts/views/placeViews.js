@@ -1767,7 +1767,7 @@ var smartEventPlacesView = {
                             smartEventPlacesView._selectPlaceFirst = false;
                             $('#searchEventPlaces-selectPlace').addClass('hidden');
                             $('#searchEventPlaces-searchDiv').removeClass('hidden');
-                            
+
                             $('#smartEventPlaces-query').val(smartEventPlacesView._query);
                             smartEventPlacesView._processQuery(smartEventPlacesView._query);
 
