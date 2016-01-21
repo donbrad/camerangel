@@ -1763,15 +1763,27 @@ var smartEventPlacesView = {
 
                     if (geo.category === 'Area') {
                         // Geocoded address
-                        if (smartEventPlacesView._selectPlaceFirst) {
-                            smartEventPlacesView._selectPlaceFirst = false;
-                            $('#searchEventPlaces-selectPlace').addClass('hidden');
-                            $('#searchEventPlaces-searchDiv').removeClass('hidden');
 
-                            $('#smartEventPlaces-query').val(smartEventPlacesView._query);
-                            smartEventPlacesView._processQuery(smartEventPlacesView._query);
+                        var request = {
+                            placeId: geo.placeId
+                        };
 
-                        }
+
+                        mapModel.googlePlaces.getDetails(request, function(place, status) {
+                            if (status == google.maps.places.PlacesServiceStatus.OK) {
+                                if (smartEventPlacesView._selectPlaceFirst) {
+                                    smartEventPlacesView._selectPlaceFirst = false;
+                                    $('#searchEventPlaces-selectPlace').addClass('hidden');
+                                    $('#searchEventPlaces-searchDiv').removeClass('hidden');
+
+                                    $('#smartEventPlaces-query').val(smartEventPlacesView._query);
+                                    smartEventPlacesView._processQuery(smartEventPlacesView._query);
+
+                                }
+                            }
+                        });
+                        
+
                     } else {
 
 
