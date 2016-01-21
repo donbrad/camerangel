@@ -1068,6 +1068,24 @@ var channelView = {
 
     },
 
+    doTitleClick : function () {
+        _preventDefault(e);
+
+        if (channelView._channel.isPrivateChat) {
+            var contactId = channelView.privateContactId;
+
+            contactActionView.openModal(contactId);
+
+        } else if (channelView._channel.isPlace) {
+            var placeId = channel._channel.placeUUID;
+
+            var placeUrl = LZString.compressToEncodedURIComponent(placeId );
+            APP.kendo.navigate('#placeView?place=' + placeUrl);
+        }
+
+
+    },
+
     onShow : function (e) {
         _preventDefault(e);
 
