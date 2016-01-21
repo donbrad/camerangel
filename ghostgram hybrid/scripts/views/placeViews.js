@@ -1692,7 +1692,7 @@ var smartEventPlacesView = {
     _returnModal : null,
     _radius: 16000,   // set a larger radius for find places
     _currentLocation: {},
-    _searchBox : null,
+    _autocomplete : null,
     _inited : false,
 
     placesDS :  new kendo.data.DataSource({
@@ -1780,10 +1780,36 @@ var smartEventPlacesView = {
 
         if (!smartEventPlacesView._inited) {
             smartEventPlacesView._inited = true;
-            var input = document.getElementById('smartEventPlaces-SearchQuery');
-            smartEventPlacesView._searchBox = new google.maps.places.SearchBox(input);
 
-            smartEventPlacesView._searchBox.addListener('places_changed', function() {
+            smartEventPlacesView._autocomplete = new google.maps.places.AutocompleteService();
+
+
+            $('#smartEventPlaces-query').on('input', function () {
+               var query =  $('#smartEventPlaces-query').val();
+                if (query.length > 4) {
+                    smartEventPlacesView._autocomplete.getPlacePredictions({ input: query }, function(predictions, status) {
+                        if (status == google.maps.places.PlacesServiceStatus.OK) {
+                            var ds = smartEventPlacesView.placesDS;
+                            ds.data([]);
+                            predictions.forEach( function (prediction) {
+
+                                ds.add({
+                                    description : prediction.description,
+                                    placeId : prediction.place_id,
+                                    substrings: prediction.matched_substrings,
+                                    terms: prediction.terms,
+                                    types: prediction.types
+                                });
+
+                            });
+                        }
+
+                    });
+                }
+            });
+
+
+            /*smartEventPlacesView._searchBox.addListener('places_changed', function() {
                 var placesResults = smartEventPlacesView._searchBox.getPlaces();
                 var ds = smartEventPlacesView.placesDS;
                 ds.data([]);
@@ -1802,11 +1828,11 @@ var smartEventPlacesView = {
                     });
 
                 });
-            });
+            });*/
 
         }
 
-        $('#smartEventPlaces-SearchQuery').val(query);
+        $('#smartEventPlaces-query').val(query);
         $("#smartEventPlacesModal").data("kendoMobileModalView").open();
 
     },
