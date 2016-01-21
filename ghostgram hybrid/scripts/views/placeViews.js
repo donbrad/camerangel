@@ -1879,8 +1879,8 @@ var smartEventPlacesView = {
 
         smartEventPlacesView.initDataSource();
 
-        smartEventPlacesView._lat = mapModel._lat;
-        smartEventPlacesView._lng = mapModel._lng;
+        smartEventPlacesView._lat = mapModel.lat;
+        smartEventPlacesView._lng = mapModel.lng;
 
         smartEventPlacesView._callback = callback;
 
