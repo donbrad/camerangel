@@ -3,8 +3,7 @@
 <head>
     <title></title>
     <meta charset="utf-8" />
-	<meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-eval';   img-src * data: blob: filesystem:; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
-
+	<meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-eval';   img-src * data: blob: filesystem:; style-src  'self' 'unsafe-inline' *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *;">
     <!-- Styles -->
 	<link href="kendo/styles/kendo.common.min.css" rel="stylesheet" />
 	<link href="kendo/styles/kendo.material.min.css" rel="stylesheet" />
@@ -815,6 +814,11 @@
 				<span data-bind="text: currentPlace"></span>
 			</a>
 		</p>
+		<p>
+			<a style="float: left;" data-role="button" class="btnClear" data-click="userStatusView.doSignOut" >Sign Out</a>
+			<a style="float: right;"data-role="button" class="btnClear" data-click="userStatusView.gotoSettings" >Settings</a>
+		</p>
+		<div style="clear: both;"></div>
 	</div>
 	<div class="modal-bottom">
 		<p class="caption right">
@@ -1127,21 +1131,19 @@
 </script>
 
 <script type="text/x-kendo-template" id="smartEventPlacesTemplate">
-	# 	var types = data.type
-	    var subType = type.split(',')
-	#
-	<div>
-		<a class="findPlaceListItem">
-			<div>
-				<h4 class="textClamp"> #: data.name #  </h4>
-				<p class="textClamp"> #: data.address # </p>
-				<p class="textClamp helper">
-					<span><i>#= subType[0] # </i> </span>
-				</p>
-				<div class="clearfix"> </div>
-			</div>
-		</a>
+
+	<div class="findPlaceListItem">
+
+			<h4 class="textClamp"> #: data.title #  </h4>
+			<p class="textClamp"> #: data.address # </p>
+			<p class="textClamp helper">
+				<span><i>#= data.type # </i> </span>
+			</p>
+			<p class="textClamp">#: data.description #</p>
+			
+
 	</div>
+
 </script>
 
 <script type="text/x-kendo-template" id="findPlacesTemplate">
@@ -1381,11 +1383,14 @@
 <div data-role="view" id="channel" data-layout="main" data-model="channelView._channel" data-show="channelView.onShow" data-init="channelView.onInit"  data-hide="channelView.onHide" data-transition="slide">
 	<div data-role="header">
 		<div data-role="navbar" id="channelNavBar">
-			<a data-align="left" data-role="button" href="#:back" id="channel-back-button">
+			<a data-align="left" data-role="button" data-click="channelView.onDone" id="channel-back-button">
 				<img src="images/nav-back.svg" />
 			</a>
-			<img src="" id="channelImage" height="32" class="circle-img"/>
-			<span id="channelName"></span>
+			<span id="channel-titleBtn" data-role="button" data-click="channelView.doTitleClick">
+				<img src="" id="channelImage" height="32" class="circle-img"/>
+				<img src="images/icon-location.svg" class="icon-header hidden" />
+				<span id="channelName"></span>
+			</span>
 			<a data-align="right" data-role="button" id="messagePresenceButton" data-click="channelPresence.openModal">
 				<img src="images/group-icon.svg" />
 			</a>
@@ -2542,8 +2547,9 @@
 			</li>
 		</ul>
 	</form>
-	<div class="line"></div>
+
 	<div class="hidden" id="modalActionMeeting-recipientListDiv">
+		<div class="line"></div>
 		<h3>Event RSVP's</h3>
 		<ul data-role="listview" data-style="inset" id="modalActionMeeting-recipientListView">
 
@@ -2943,7 +2949,7 @@
  * Places
  */-->
 
-<div data-role="view" data-title="Places" id="places" data-layout="main" data-model="placesModel" data-show="placesView.onShow" data-init="placesView.onInit" data-before-hide="placesView.onHide">
+<div data-role="view" data-title="Places" id="places" data-layout="main" data-model="placesModel" data-show="placesView.onShow" data-init="placesView.onInit" data-before-hide="placesView.onHide" style="display: none;">
 
 	<div>
 		<div id="current-place" class="hidden">
@@ -2976,7 +2982,7 @@
 </div>
 
 <!-- Find Place -->
-<div data-role="view" data-title="New Places Nearby" id="findPlace" data-layout="main"  data-show="findPlacesView.onShow" data-init="findPlacesView.onInit" data-before-hide="findPlacesView.onHide" data-transition="slide:up">
+<div data-role="view" data-title="New Places Nearby" id="findPlace" data-layout="main"  data-show="findPlacesView.onShow" data-init="findPlacesView.onInit" data-before-hide="findPlacesView.onHide" data-transition="slide:up" style="display: none;">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
@@ -3000,7 +3006,7 @@
 </div>
 
 <!-- Smart Event Places -->
-<div data-role="modalview" data-tile="Smart Event Places" id="smartEventPlacesModal" data-init="smartEventPlacesView.onInit" style="height:100%; width:100%; z-index:1000; display: none;">
+<div data-role="modalview" data-title="Smart Event Places" id="smartEventPlacesModal" data-init="smartEventPlacesView.onInit" style="height:100%; width:100%; z-index:1000; display: none;">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>Smart Event Places</span>
@@ -3011,8 +3017,7 @@
 	<div class="tempSearchBox">
 		<div class="appendSearch">
 			<span class="searchIcon"><img src="images/search.svg" /></span>
-			<input class="doubleAppendSearch"  type="text" placeholder="Find place or address..." id="smartEventPlaces-SearchQuery" />
-			<span class="enterSearch hidden"><a class="btnClear-grey"><img class="icon-sm" src="images/close.svg" /></a></span>
+			<input type="search" placeholder="Find place or address..." id="smartEventPlaces-query" />
 		</div>
 	</div>
 
@@ -3026,7 +3031,7 @@
 
 
 <!-- Nearby Results -->
-<div data-role="modalview" data-tile="Nearby Results" id="nearby-results" style="height:90%; width:90%; display: none;">
+<div data-role="modalview" data-title="Nearby Results" id="nearby-results" style="height:90%; width:90%; display: none;">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>Nearby Results</span>
@@ -3037,16 +3042,17 @@
 	<ul id="nearby-results-list"></ul>
 </div>
 
-<div data-role="view" id="placeView" data-title="Place View" data-model="placeView._activePlace" class="appearance" data-layout="main" data-init="placeView.onInit" data-show="placeView.onShow" data-hide="placeView.onHide" data-transition="fade">
-	<div class="smallHeader" data-role="header">
-		<a data-role="button" class="left" data-click="placeView.onDone">
-			<img src="images/nav-back-light.svg" />
-		</a>
-		<a data-role="button" class="right btnClear-light" data-click="placeView.openPlaceMap">
-			View on map
-		</a>
+<div data-role="view" id="placeView" data-title="Place View" data-model="placeView._activePlace"  data-layout="main" data-init="placeView.onInit" data-show="placeView.onShow" data-hide="placeView.onHide" data-title="Place View" style="height:100%; width: 100%; display: none;">
+	<div data-role="header">
+		<div data-role="navbar">
+			<a data-role="button" data-align="left" data-click="placeView.onDone">
+				<img src="images/nav-back.svg" /></a>
+			<span>Place View</span>
+			<a data-role="button" data-align="right" data-click="placeView.doDirections">
+				<img src="images/icon-directions.svg" />
+			</a>
+		</div>
 	</div>
-	<div class="map-placeLayer"></div>
 
 	<div class="placeCard">
 		<div class="placeCardTop">
@@ -3062,34 +3068,39 @@
 					<img src="images/place-private.svg" /> Private Place
 				</span>
 			</p>
+			<div id="placeView-gotochat" class="hidden" style="text-align: center;">
+				<a class="btnClear-sm" data-role="button" data-click="placeView.openChat">
+					<img src="images/icon-chat-active.svg" class="icon-btn" />  Open Place Chat
+				</a>
+			</div>
 		</div>
 		<div class="line"></div>
 		<ul class="list-inline" id="placeListOpt">
 			<li >
-				<a class="btnClear-sm" data-role="button" data-click="placeView.openChat">
-					<img src="images/icon-chat-active.svg" class="icon-btn" /> <span id="placeview-gotochat"> Start a Chat 					</span>
+				<a class="btnClear-sm" data-role="button" data-click="placeView.addNote">
+					<img src="images/icon-list-alt.svg" class="icon-sm" />  Add Note
 				</a>
 			</li>
 			<li>
 				<a class="btnClear-sm" data-role="button" data-rel="actionsheet" href="#placeViewPhotoActions">
-					<img src="images/icon-camera-active.svg" class="icon-btn" /> Add a Photo
+					<img src="images/icon-camera-active.svg" class="icon-btn" /> Add Photo
 				</a>
 			</li>
+
 		</ul>
 	</div>
 	<div class="placeContent">
-		<p class="helper"><img src="images/icon-memories.svg" class="icon" /> No Memories here yet </p>
-		<p class="hidden"><img src="images/icon-memories.svg" class="icon" /> Memories</p>
+		<p class="helper hidden" style="padding-top: 20px;"><img src="images/icon-memories.svg" class="icon" /> No Memories here yet </p>
+		<p ><img src="images/icon-memories.svg" class="icon" /> Memories</p>
 
-		<div class="placeContentBox">
-			<!-- Place content here-->
-		</div>
+		<ul id="placeView-listView">
+
+		</ul>
 	</div>
 	<ul data-role="actionsheet" id="placeViewPhotoActions" data-popup='{"direction": "left"}'>
 		<li><a data-action="placeView.camera"> Phone Camera</a></li>
 		<li><a data-action="placeView.gallery"> Phone Gallery</a></li>
 	</ul>
-
 </div>
 
 
@@ -3099,7 +3110,7 @@
 
 <!-- Profile Edit -->
 <div data-role="view" id="profileEdit" data-title="Edit Profile" data-layout="profileLayout" data-model="profileEditView._activeProfile"
-	 data-init="profileEditView.onInit"  data-show="profileEditView.onShow" class="appearance" data-transition="slide:right">
+	 data-init="profileEditView.onInit"  data-show="profileEditView.onShow" class="appearance" data-transition="slide:right" style="display: none;">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
@@ -3297,11 +3308,11 @@
  * Settings
  */-->
 
-<div data-role="view" id="settings" data-title="Settings" data-layout="main" data-model="userModel" class="appearance" data-init="homeView.settingsOnInit">
+<div data-role="view" id="settings" data-title="Settings" data-layout="main" data-model="userModel" class="appearance" data-init="homeView.settingsOnInit" style="display: none;">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
-			<a data-role="button" href="#home" data-align="right">
+			<a data-role="button" data-click="homeView.settingsOnClose" data-align="right">
 				<img class="menuIcon" src="images/close.svg"/>
 			</a>
 		</div>

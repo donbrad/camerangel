@@ -580,9 +580,15 @@ var editChannelView = {
                 options.chatData = newPlace;
             }
 
-            inviteArray.push(membersAdded[ma].contactUUID);
-            appDataChannel.groupChannelInvite(membersAdded[ma].contactUUID, channelId,  editChannelView._activeChannel.name,  editChannelView._activeChannel.description, memberArray,
-                options);
+            var contactId = membersAdded[ma].contactUUID;
+            if (contactId !== undefined && contactId !== null) {
+                inviteArray.push(contactId);
+                appDataChannel.groupChannelInvite(contactId, channelId,  editChannelView._activeChannel.name,  editChannelView._activeChannel.description, memberArray,
+                    options);
+            } else {
+                console.error("Invalid Contact " + contactId);
+            }
+
         }
 
 
@@ -819,6 +825,7 @@ var channelView = {
     _tagEnd: null,
     _tagRange: null,
     _firstSpace: false,
+    _returnview: null,
 
     membersDS: new kendo.data.DataSource({
         sort: {
@@ -925,7 +932,7 @@ var channelView = {
         });
 
 
-        channelView.openEditor(); // Create the kendo editor instance
+        //channelView.openEditor(); // Create the kendo editor instance
 
 
        /* $.browser = {webkit: true};
@@ -1012,29 +1019,16 @@ var channelView = {
             toolbarExternal: '#messageComposeToolbar'
         });
 
-        /* $("#messageTextArea").kendoEditor({
-            stylesheets:["styles/editor.css"],
-            resizable: {
-                content: true,
-                min: 24
-            },
-            tools: [
-                "bold",
-                "italic",
-                "underline",
-                "insertUnorderedList",
-                "indent",
-                "outdent"
-            ]
-        });
-        $(".k-editor-toolbar").hide();*/
+
     },
 
 
     closeEditor : function () {
-       /* $('#messageTextArea').data("kendoEditor").destroy();
-        $('#messageTextArea').empty();*/
+
+        $('#messageTextArea').redactor('core.destroy');
+
         $("#messageComposeToolbar").addClass('hidden');
+
     },
 
     // Initialize the channel specific view data sources.
@@ -1062,6 +1056,39 @@ var channelView = {
 
     },
 
+    doTitleClick : function (e) {
+        _preventDefault(e);
+
+        if (channelView.isPrivateChat) {
+            var contactUUID = channelView._channel.contactUUID;
+
+            var contact = contactModel.findContact(contactUUID);
+
+            contactActionView.openModal(contact.uuid);
+
+        } else if (channelView.isPlaceChat) {
+            var placeId = channelView._channel.placeUUID;
+
+            var placeUrl = LZString.compressToEncodedURIComponent(placeId);
+
+          //  channelView.onHide();
+           // setTimeout( function () {APP.kendo.navigate('#placeView?place=' + placeUrl);}, 500);
+            APP.kendo.navigate('#placeView?place=' + placeUrl + "&returnview=" + packParameter("channel?channelId="+channelView._channelId));
+        }
+
+
+    },
+
+    onDone : function (e) {
+
+        if (channelView._returnview === null) {
+            //channelView.onHide();
+            APP.kendo.navigate('#channels');
+        } else {
+            APP.kendo.navigate('#'+channelView._returnview);
+        }
+    },
+
     onShow : function (e) {
         _preventDefault(e);
 
@@ -1069,6 +1096,7 @@ var channelView = {
             cordova.plugins.Keyboard.disableScroll(true); // false to enable again
         }
 */
+        channelView.openEditor();
         $("#messages-listview").data("kendoMobileListView").scroller().reset();
         channelView.topOffset = $("#messages-listview").data("kendoMobileListView").scroller().scrollTop;
         channelView._active = true;
@@ -1076,7 +1104,14 @@ var channelView = {
         // hide action btn
         ux.showActionBtn(false, "#channel");
 
+
         var channelUUID = e.view.params.channelId;
+
+        if (e.view.params.returnview !== undefined){
+            channelView._returnview = unpackParameter(e.view.params.returnview);
+        } else {
+            channelView._returnview = null;
+        }
 
         channelView._channelId = channelUUID;
 
@@ -1099,6 +1134,13 @@ var channelView = {
 
         channelView._channel = thisChannel;
 
+        if (thisChannel.isPlace !== undefined && thisChannel.isPlace === true) {
+          channelView.isPlaceChat = true;
+            $('#channel-titleBtn .icon-header').removeClass('hidden');
+        } else {
+            channelView.isPlaceChat = false;
+            $('#channel-titleBtn .icon-header').addClass('hidden');
+        }
         channelModel.zeroUnreadCount(thisChannel.channelId);
 
         var contactUUID = null;
@@ -1266,17 +1308,10 @@ var channelView = {
 
         channelView.initDataSources();
         channelView.messageInit();
- //       channelView._initMessageTextArea();
-        //channelView.closeEditor();
-        // If this isn't a privateChat the close the channel (unsubscribe)
-        // All private chat messages go through userdatachannel which is always subscribed
-
-       /* if (window.navigator.simulator === undefined) {
-            cordova.plugins.Keyboard.disableScroll(false); // false to enable again
-        }*/
         if (!channelView.isPrivateChat) {
             groupChannel.close();
         }
+        channelView.closeEditor();
 
 
     },
@@ -1812,7 +1847,7 @@ var channelView = {
             '</span>' +
             '<span class="btnSmart-content">' +
             '<span class="btnSmart-title">' + smartEvent.title + ' </span><br /> ' +
-            '<span class="btnSmart-date">' + dateStr + ' ' + localTime + '</span> ' +
+            '<span class="btnSmart-date">' + dateStr + ' ' + localTime + '</span><br /> ' +
             '<span class="btnSmart-date">' + placeName + '</span> ' +
             '</span>' +
             '</span></div>';

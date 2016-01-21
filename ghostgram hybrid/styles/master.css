@@ -2788,6 +2788,9 @@ a:hover {
 .chat-option-ul li a {
   padding: 0px !important;
 }
+#channelNavBar > div.km-view-title > span {
+  padding: 0 !important;
+}
 .chat-mainBox h4 {
   margin-left: 0px;
   margin-right: 0px;
@@ -5489,10 +5492,6 @@ html .km-pane-wrapper .k-header {
 .placeCardTop {
   margin: 0.5rem 0 0.5rem;
 }
-.placeContent {
-  position: relative;
-  top: 3.5rem;
-}
 .placeContentBox {
   padding: 0.5rem 1rem;
 }
@@ -5560,9 +5559,15 @@ html .km-pane-wrapper .k-header {
   height: 1rem;
   vertical-align: sub;
 }
+.icon-header {
+  height: 0.75em;
+  max-width: 0.75em;
+  vertical-align: baseline;
+}
 .placeIconImgBtn {
   height: 2rem;
 }
+#placeView > div.footerMenu.km-footer,
 #findPlace > div.footerMenu.km-footer,
 #mapView > div.footerMenu.km-footer {
   display: none;
@@ -5592,8 +5597,6 @@ html .km-pane-wrapper .k-header {
   width: 90%;
   margin-left: 5%;
   margin-right: 5%;
-  position: absolute;
-  top: 4rem;
 }
 #placeView > div.footerMenu.km-footer {
   display: none;

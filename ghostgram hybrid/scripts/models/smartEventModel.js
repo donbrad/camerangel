@@ -187,7 +187,6 @@ var smartEvent = {
     },
 
     queryObject: function (query) {
-
         if (query === undefined)
             return(undefined);
         var dataSource = smartEvent.objectsDS;
@@ -200,19 +199,12 @@ var smartEvent = {
 
         dataSource.filter(cacheFilter);
 
-        if (view.items === undefined) {
-            return(undefined)
-        } else {
-            return (view[0]);
-        }
-
-
-
+        return (view[0]);
     },
 
     // Find all objects that aren't deleted...
     findObject: function (uuid) {
-        var result = smartEvent.queryObject([{ field: "uuid", operator: "eq", value: uuid }, { field: "isDeleted", operator: "eq", value: false }]);
+        var result = smartEvent.queryObject({ field: "uuid", operator: "eq", value: uuid });
 
         return(result);
     },
@@ -341,29 +333,6 @@ var smartEvent = {
 
     },
 
-   /* recipientDecline : function (eventId, recipientId, comment) {
-        var event = smartEvent.findObject(eventId);
-        if (event !== undefined) {
-            var rsvpList = event.rsvpList;
-
-
-            var contact = contactModel.findContact(recipientId);
-            if (contact !== undefined) {
-                var commentObj = {
-                    date: new Date(),
-                    isAccepted: false,
-                    contactId: recipientId,
-                    contactName: contact.name,
-                    comment: comment
-                };
-
-                event.rsvpList.push(commentObj);
-                updateParseObject('smartobject', 'uuid', eventId, 'rsvpList', event.rsvpList);
-            }
-
-        }
-    },*/
-
 
     update : function (eventId, eventObj, comment) {
         var event = smartEvent.findObject(eventId);
@@ -412,7 +381,13 @@ var smartEvent = {
         smartOb.set('approxTime', objectIn.approxTime);
         smartOb.set('approxPlace', objectIn.approxPlace);
         smartOb.set('address', objectIn.address);
+        if (objectIn.lat !== null) {
+            objectIn.lat = objectIn.lat.toString();
+        }
         smartOb.set('lat', objectIn.lat);
+        if (objectIn.lng !== null) {
+            objectIn.lng = objectIn.lng.toString();
+        }
         smartOb.set('lng', objectIn.lng);
         smartOb.set('placeId', objectIn.placeId);
         smartOb.set('placeName', objectIn.placeName);
@@ -429,6 +404,7 @@ var smartEvent = {
 
         var smartObj = smartOb.toJSON();
         smartEvent.objectsDS.add(smartObj);
+        smartEvent.objectsDS.sync();
 
         smartOb.save(null, {
             success: function(thisObject) {

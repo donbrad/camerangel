@@ -672,6 +672,8 @@ var channelModel = {
         var channelObj = channel.toJSON();
         channelModel.channelsDS.add(channelObj);
         channelModel.channelsDS.sync();
+        channelView._channelListDS.add(channelObj);
+        channelView._channelListDS.sync();
 
         channel.setACL(userModel.parseACL);
         channel.save(null, {

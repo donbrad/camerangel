@@ -252,7 +252,8 @@ var placesModel = {
         placeParse.set('isVisible', true);
         placeParse.set('isDeleted', false);
         placeParse.set('isAvailable', place.isAvailable === "true");
-        placeParse.set('isPrivate', place.isPrivate === "true");
+    //    placeParse.set('isPrivate', place.isPrivate === "true");
+        placeParse.set('isPrivate', true);
         placeParse.set('hasPlaceChat', true);
         placeParse.set('placeChatId', placeChatId);
 
@@ -328,7 +329,8 @@ var placesModel = {
         placeParse.set('isVisible', true);
         placeParse.set('isDeleted', false);
         placeParse.set('isAvailable', place.isAvailable === "true");
-        placeParse.set('isPrivate', place.isPrivate === "true");
+ //       placeParse.set('isPrivate', place.isPrivate === "true");
+        placeParse.set('isPrivate', true);
 
         if (!createChatFlag) {
             placeParse.set('hasPlaceChat', false);
@@ -375,7 +377,6 @@ var placesModel = {
 
     deletePlace : function (placeId) {
 
-
         var place = placesModel.queryPlace({field: "uuid", operator: "eq", value: placeId});
 
         if (place !== undefined) {
@@ -388,11 +389,12 @@ var placesModel = {
             } else {
 
                 // If there's a channel related to this place, need to delete it
-                if (place.placeChatId !== null) {
+                if (place.placeChatId !== undefined && place.placeChatId !== null) {
                     channelModel.deleteChannel(place.placeChatId, false);
                 }
                 var placeObj = place.toJSON();
                 placesModel.placesDS.remove(place);
+                placesModel.placesDS.sync();
 
                 // Delete the parse object directly
                 deleteParseObject('places',"uuid", placeId);

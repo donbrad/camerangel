@@ -2,13 +2,14 @@
  * Created by donbrad on 12/31/15.
  *
  * Smart Objects UX -- one modal for each action
- * Events - modalActionMeeting
- * Flights - modalActionFlight
- * Movies - modalActionMovies
+ * Events - smartEventView
+ * Flights - smartFlightView
+ * Movies - smartMovieView
  */
 
 'use strict';
 
+//Todo:  rename to smartEventView after jordan checks in
 var modalActionMeeting = {
     _activeObject : new kendo.data.ObservableObject(),
     _date : new Date(),
@@ -678,7 +679,6 @@ var modalActionMeeting = {
         _preventDefault(e);
 
         if (modalActionMeeting.userAccepted) {
-
             modalActionMeeting.onAccept();
         }
 
@@ -691,7 +691,10 @@ var modalActionMeeting = {
     onAccept : function (e) {
         var thisEvent = modalActionMeeting._activeObject;
 
-        var commentStr = $('#modalActionMeeting-comments').val();
+        var commentStr = $('#modalActionMeeting-comments').text();
+        if (commentStr === null || commentStr.length === 0) {
+            commentStr = "Looking forward to it!"
+        }
 
         smartEvent.smartAddObject(thisEvent, function (event) {
 
@@ -708,7 +711,11 @@ var modalActionMeeting = {
     onDecline : function (e) {
         var thisEvent = modalActionMeeting._activeObject;
 
-        var commentStr = $('#modalActionMeeting-comments').val();
+        var commentStr = $('#modalActionMeeting-comments').text();
+        if (commentStr === null || commentStr.length === 0) {
+            commentStr = "Sorry can't make it!"
+        }
+
 
         smartEvent.smartAddObject(thisEvent, function (event) {
 
@@ -723,7 +730,7 @@ var modalActionMeeting = {
 
     doEventChat : function (e) {
         _preventDefault(e);
-        mobileNotify("Create Event Chat in progress...");
+        mobileNotify("Create Event Chat under development...");
     },
 
     createSmartEvent : function (thisObj) {
@@ -802,7 +809,7 @@ var modalActionMeeting = {
     },
 
     showCalendar : function (e) {
-        mobileNotify("Under development....");
+
         var thisObj = modalActionMeeting._activeObject;
         var startDate = new Date(thisObj.date);
         if (window.navigator.simulator !== undefined) {
@@ -810,11 +817,8 @@ var modalActionMeeting = {
         } else {
             window.plugins.calendar.openCalendar(
                 startDate,
-                endDate,
                 function (message) {
-                    mobileNotify(message);
-                    $('#modalActionMeeting-view-calendar-add').addClass('hidden');
-                    $('#modalActionMeeting-view-calendar').removeClass('hidden');
+
                 },
                 function (message) {
                     mobileNotify('Calendar error :' + message);
@@ -832,11 +836,26 @@ var modalActionMeeting = {
     onSaveEvent : function (e) {
         var thisObj = modalActionMeeting._activeObject;
         
+
+
+        var title = $("#modalActionMeeting-title").val() ;
+
         //var finalDateStr = $("#modalActionMeeting-datestring").val();
         var meetingDate = $("#modalActionMeeting-date").val();
         var meetingTime = $("#modalActionMeeting-time").val();
         var finalDateStr = meetingDate + " " + meetingTime;
+
         var saveDate = new Date(finalDateStr);
+
+        if (title === null || title.length < 3) {
+            mobileNotify ('Events must have a valid title!');
+            return;
+        }
+
+        if (saveDate === null) {
+            mobileNotify (finalDateStr + " is not a valid date!");
+            return;
+        }
 
         thisObj.set('date', saveDate);
          thisObj.set('senderName', userModel.currentUser.name);
@@ -850,9 +869,6 @@ var modalActionMeeting = {
          modalActionMeeting.onDone();
     },
 
-    onRSVP : function (e) {
-        _preventDefault(e);
-    },
 
     onCancel : function (e) {
         _preventDefault(e);
@@ -870,6 +886,14 @@ var modalActionMeeting = {
 
 };
 
+
+var smartFlightView = {
+
+};
+
+var smartMovieView = {
+
+};
 
 
 
