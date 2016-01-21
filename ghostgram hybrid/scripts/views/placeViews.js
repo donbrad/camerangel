@@ -1775,7 +1775,7 @@ var smartEventPlacesView = {
                             if (status == google.maps.places.PlacesServiceStatus.OK) {
                                 smartEventPlacesView._lat = place.geometry.location.lat();
                                 smartEventPlacesView._lng = place.geometry.location.lng();
-                                
+
                                 smartEventPlacesView.setLocationAndBounds();
 
                                 if (smartEventPlacesView._selectPlaceFirst) {
@@ -1820,7 +1820,7 @@ var smartEventPlacesView = {
             lng: smartEventPlacesView._lng
         };
 
-        smartEventPlacesView._location = geoLocation;
+        smartEventPlacesView._location = geolocation;
         var circle = new google.maps.Circle({
             center: geolocation,
             radius: smartEventPlacesView._radius
