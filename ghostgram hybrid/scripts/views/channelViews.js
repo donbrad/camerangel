@@ -1076,13 +1076,14 @@ var channelView = {
 
             var contact = contactModel.findContact(contactUUID);
 
-
             contactActionView.openModal(contact.uuid);
 
         } else if (channelView.isPlaceChat) {
             var placeId = channelView._channel.placeUUID;
 
             var placeUrl = LZString.compressToEncodedURIComponent(placeId);
+
+            channelView.onHide();
             APP.kendo.navigate('#placeView?place=' + placeUrl);
         }
 
