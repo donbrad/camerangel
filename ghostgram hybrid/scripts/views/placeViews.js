@@ -1700,6 +1700,7 @@ var smartEventPlacesView = {
     _lat: null,
     _lng: null,
     _inited : false,
+    _selectPlaceFirst: false,
 
     placesDS :  new kendo.data.DataSource({
       /*  sort: {
@@ -1760,8 +1761,13 @@ var smartEventPlacesView = {
                 click: function (e) {
                     var geo = e.dataItem;
 
-                    if (geo.category === 'geocode') {
+                    if (geo.category === 'Area') {
                         // Geocoded address
+                        if (smartEventPlacesView._selectPlaceFirst) {
+                            smartEventPlacesView._selectPlaceFirst = false;
+                            $('#searchEventPlaces-selectPlace').addClass('hidden');
+                            $('#searchEventPlaces-searchDiv').removeClass('hidden');
+                        }
                     } else {
 
 
@@ -1804,10 +1810,22 @@ var smartEventPlacesView = {
         if (queryArray.length > 1) {
             thisQuery = queryArray[0];
             thisPlace = queryArray[1];
+
+            smartEventPlacesView._query = thisQuery.trim();
+            smartEventPlacesView._placeQuery = thisPlace.trim();
+            smartEventPlacesView._selectPlaceFirst = true;
+            $('#searchEventPlaces-selectPlace').removeClass('hidden');
+            $('#searchEventPlaces-searchDiv').addClass('hidden');
         } else {
 
-        }
+            smartEventPlacesView._selectPlaceFirst = false;
+            $('#searchEventPlaces-selectPlace').addClass('hidden');
+            $('#searchEventPlaces-searchDiv').removeClass('hidden');
 
+            smartEventPlacesView._query = query.toLowerCase().trim();
+
+            smartEventPlacesView._processQuery(smartEventPlacesView._query);
+        }
 
     },
 
