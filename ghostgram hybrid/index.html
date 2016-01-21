@@ -1383,9 +1383,11 @@
 			<a data-align="left" data-role="button" href="#:back" id="channel-back-button">
 				<img src="images/nav-back.svg" />
 			</a>
-			<img src="" id="channelImage" height="32" class="circle-img"/>
-			<img src="images/icon-location.svg" class="icon-header hidden" />
-			<span id="channelName"></span>
+			<a id="channel-titleBtn" data-role="button" data-click="channelView.doTitleClick">
+				<img src="" id="channelImage" height="32" class="circle-img"/>
+				<img src="images/icon-location.svg" class="icon-header hidden" />
+				<span id="channelName"></span>
+			</a>
 			<a data-align="right" data-role="button" id="messagePresenceButton" data-click="channelPresence.openModal">
 				<img src="images/group-icon.svg" />
 			</a>
