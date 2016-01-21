@@ -326,6 +326,11 @@ var homeView = {
 
     },
 
+    settingsOnClose : function (e) {
+        APP.kendo.navigate('#:back');
+        userStatusView.openModal();
+    },
+
     settingBigFont: function(e){
         _preventDefault(e);
         userModel.currentUser.set("useLargeView", true);

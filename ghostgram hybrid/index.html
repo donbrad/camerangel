@@ -815,8 +815,8 @@
 			</a>
 		</p>
 		<p>
-			<a style="float: left;" data-role="button" class="btnClear" data-click="homeView.doSignOut" >Sign Out</a>
-			<a style="float: right;"data-role="button" class="btnClear" data-click="homeView.gotoSettings" >Settings</a>
+			<a style="float: left;" data-role="button" class="btnClear" data-click="userStatusView.doSignOut" >Sign Out</a>
+			<a style="float: right;"data-role="button" class="btnClear" data-click="userStatusView.gotoSettings" >Settings</a>
 		</p>
 		<div style="clear: both;"></div>
 	</div>
@@ -3315,7 +3315,7 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
-			<a data-role="button" href="#home" data-align="right">
+			<a data-role="button" data-click="homeView.settingsOnClose" data-align="right">
 				<img class="menuIcon" src="images/close.svg"/>
 			</a>
 		</div>
