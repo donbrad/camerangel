@@ -1699,6 +1699,8 @@ var smartEventPlacesView = {
     _placeQuery: null,
     _lat: null,
     _lng: null,
+    _location: null,
+    _bounds: null,
     _inited : false,
     _selectPlaceFirst: false,
 
@@ -1771,6 +1773,11 @@ var smartEventPlacesView = {
 
                         mapModel.googlePlaces.getDetails(request, function(place, status) {
                             if (status == google.maps.places.PlacesServiceStatus.OK) {
+                                smartEventPlacesView._lat = place.geometry.location.lat();
+                                smartEventPlacesView._lng = place.geometry.location.lng();
+                                
+                                smartEventPlacesView.setLocationAndBounds();
+
                                 if (smartEventPlacesView._selectPlaceFirst) {
                                     smartEventPlacesView._selectPlaceFirst = false;
                                     $('#searchEventPlaces-selectPlace').addClass('hidden');
@@ -1782,7 +1789,7 @@ var smartEventPlacesView = {
                                 }
                             }
                         });
-                        
+
 
                     } else {
 
@@ -1806,18 +1813,22 @@ var smartEventPlacesView = {
         smartEventPlacesView.placesDS.data([]);
     },
 
-    getBounds : function () {
+
+    setLocationAndBounds : function () {
         var geolocation = {
             lat: smartEventPlacesView._lat,
-            lng: smartEventPlacesView._ng
+            lng: smartEventPlacesView._lng
         };
+
+        smartEventPlacesView._location = geoLocation;
         var circle = new google.maps.Circle({
             center: geolocation,
             radius: smartEventPlacesView._radius
-        })
-        var bounds = circle.getBounds();
+        });
 
-        return (bounds);
+        var bounds = circle.getBounds();
+        smartEventPlacesView._bounds = bounds;
+
     },
 
     preprocessQuery : function (query) {
@@ -1852,9 +1863,9 @@ var smartEventPlacesView = {
 
     _processQuery : function (query) {
 
-        var lat = smartEventPlacesView._lat, lng= smartEventPlacesView._lat;
-        var location = {lat: lat, lng: lng };
-        var bounds = smartEventPlacesView.getBounds();
+        smartEventPlacesView.setLocationAndBounds();
+        var location = smartEventPlacesView._location;
+        var bounds = smartEventPlacesView._bounds;
 
         smartEventPlacesView._autocomplete.getPlacePredictions({ input: query, options: {location: location, bounds: bounds } }, function(predictions, status) {
             if (status == google.maps.places.PlacesServiceStatus.OK) {
@@ -1942,6 +1953,9 @@ var smartEventPlacesView = {
 
         smartEventPlacesView._lat = mapModel.lat;
         smartEventPlacesView._lng = mapModel.lng;
+
+        smartEventPlacesView.setLocationAndBounds();
+
 
         smartEventPlacesView._callback = callback;
 
