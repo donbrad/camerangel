@@ -1072,7 +1072,7 @@ var channelView = {
 
           //  channelView.onHide();
            // setTimeout( function () {APP.kendo.navigate('#placeView?place=' + placeUrl);}, 500);
-            APP.kendo.navigate('#placeView?place=' + placeUrl + "&returnview=" + packParameter("channel?channelId="+channelView._channel.channelid));
+            APP.kendo.navigate('#placeView?place=' + placeUrl + "&returnview=" + packParameter("channel?channelId="+channelView._channelId));
         }
 
 
