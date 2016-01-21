@@ -5492,10 +5492,6 @@ html .km-pane-wrapper .k-header {
 .placeCardTop {
   margin: 0.5rem 0 0.5rem;
 }
-.placeContent {
-  position: relative;
-  top: 3.5rem;
-}
 .placeContentBox {
   padding: 0.5rem 1rem;
 }
@@ -5571,6 +5567,7 @@ html .km-pane-wrapper .k-header {
 .placeIconImgBtn {
   height: 2rem;
 }
+#placeView > div.footerMenu.km-footer,
 #findPlace > div.footerMenu.km-footer,
 #mapView > div.footerMenu.km-footer {
   display: none;
@@ -5600,8 +5597,6 @@ html .km-pane-wrapper .k-header {
   width: 90%;
   margin-left: 5%;
   margin-right: 5%;
-  position: absolute;
-  top: 4rem;
 }
 #placeView > div.footerMenu.km-footer {
   display: none;

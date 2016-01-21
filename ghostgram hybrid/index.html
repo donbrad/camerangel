@@ -3003,7 +3003,7 @@
 </div>
 
 <!-- Smart Event Places -->
-<div data-role="modalview" data-tile="Smart Event Places" id="smartEventPlacesModal" data-init="smartEventPlacesView.onInit" style="height:100%; width:100%; z-index:1000; display: none;">
+<div data-role="modalview" data-title="Smart Event Places" id="smartEventPlacesModal" data-init="smartEventPlacesView.onInit" style="height:100%; width:100%; z-index:1000; display: none;">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>Smart Event Places</span>
@@ -3029,7 +3029,7 @@
 
 
 <!-- Nearby Results -->
-<div data-role="modalview" data-tile="Nearby Results" id="nearby-results" style="height:90%; width:90%; display: none;">
+<div data-role="modalview" data-title="Nearby Results" id="nearby-results" style="height:90%; width:90%; display: none;">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>Nearby Results</span>
@@ -3040,12 +3040,16 @@
 	<ul id="nearby-results-list"></ul>
 </div>
 
-<div data-role="view" id="placeView" data-title="Place View" data-model="placeView._activePlace" class="appearance" data-layout="main" data-init="placeView.onInit" data-show="placeView.onShow" data-hide="placeView.onHide">
-	<div class="smallHeader" data-role="header">
-		<a data-role="button" class="left" data-click="placeView.onDone"> <img src="images/nav-back-light.svg" /></a>
-		<a data-role="button" class="right btnClear-light" data-click="placeView.doDirections">
-			Get Directions
-		</a>
+<div data-role="view" id="placeView" data-title="Place View" data-model="placeView._activePlace" class="appearance" data-layout="main" data-init="placeView.onInit" data-show="placeView.onShow" data-hide="placeView.onHide" data-title="Place View" style="height:100%; width: 100%;">
+	<div data-role="header">
+		<div data-role="navbar">
+			<a data-role="button" data-align="left" data-click="placeView.onDone">
+				<img src="images/nav-back.svg" /></a>
+			<span>Place View</span>
+			<a data-role="button" data-align="right" data-click="placeView.doDirections">
+				<img src="images/icon-directions.svg" />
+			</a>
+		</div>
 	</div>
 
 	<div class="placeCard">
@@ -3072,7 +3076,7 @@
 		<ul class="list-inline" id="placeListOpt">
 			<li >
 				<a class="btnClear-sm" data-role="button" data-click="placeView.addNote">
-					<img src="images/icon-list-alt.svg" class="icon-btn" />  Add Note
+					<img src="images/icon-list-alt.svg" class="icon-sm" />  Add Note
 				</a>
 			</li>
 			<li>
@@ -3095,7 +3099,6 @@
 		<li><a data-action="placeView.camera"> Phone Camera</a></li>
 		<li><a data-action="placeView.gallery"> Phone Gallery</a></li>
 	</ul>
-
 </div>
 
 
