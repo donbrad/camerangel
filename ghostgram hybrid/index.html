@@ -1380,7 +1380,7 @@
 <div data-role="view" id="channel" data-layout="main" data-model="channelView._channel" data-show="channelView.onShow" data-init="channelView.onInit"  data-hide="channelView.onHide" data-transition="slide">
 	<div data-role="header">
 		<div data-role="navbar" id="channelNavBar">
-			<a data-align="left" data-role="button" href="#:back" id="channel-back-button">
+			<a data-align="left" data-role="button" data-click="channelView.onDone" id="channel-back-button">
 				<img src="images/nav-back.svg" />
 			</a>
 			<span id="channel-titleBtn" data-role="button" data-click="channelView.doTitleClick">
