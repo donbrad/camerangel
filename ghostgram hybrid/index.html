@@ -793,7 +793,6 @@
 
 <div data-role="modalview" id="modalview-profileStatus" style="width: 90%; display: none;" data-model="userStatusView._activeStatus"  data-init="userStatusView.onInit" data-open="userStatusView.onOpen">
 	<div class="modal-top">
-		<a data-role="button" class="btnClear" data-click="homeView.doSignOut" >Sign Out</a>
 		<a data-role="button" class="modal-close" data-click="homeView.closeStatusModal">
 			<img src="images/close.svg"/>
 		</a>
@@ -815,6 +814,11 @@
 				<span data-bind="text: currentPlace"></span>
 			</a>
 		</p>
+		<p>
+			<a style="float: left;" data-role="button" class="btnClear" data-click="homeView.doSignOut" >Sign Out</a>
+			<a style="float: right;"data-role="button" class="btnClear" data-click="homeView.gotoSettings" >Settings</a>
+		</p>
+		<div style="clear: both;"></div>
 	</div>
 	<div class="modal-bottom">
 		<p class="caption right">
