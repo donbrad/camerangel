@@ -1315,10 +1315,10 @@ var placeView = {
             $('#publicPlaceView').removeClass('hidden');
         }
 
-        if (placeView._activePlace.hasPlaceChat) {
-            $("#placeView-gotochat").removeClass('hidden');
+        if (placeView._activePlace.hasPlaceChat === true && placeView._activePlace.placeChatId !== null) {
+            $('#placeView-gotochat').removeClass('hidden');
         } else {
-            $("#placeview-gotochat").addClass('hidden');
+            $('#placeView-gotochat').addClass('hidden');
         }
 
 
