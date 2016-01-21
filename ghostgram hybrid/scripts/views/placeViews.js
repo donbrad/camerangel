@@ -1781,12 +1781,12 @@ var smartEventPlacesView = {
                 predictions.forEach( function (prediction) {
                     var desObj = {description: prediction.description};
                     if (prediction.types[0] === 'establishment') {
-                        desObj.title = prediction.terms[0];
-                        desObj.address = prediction.terms[1] + " " + prediction.terms[2] + ", " + prediction.terms[3];
+                        desObj.title = prediction.terms[0].value;
+                        desObj.address = prediction.terms[1].value + " " + prediction.terms[2].value + ", " + prediction.terms[3].value;
                         desObj.type = 'Establishment'
                     } else if (prediction.types[0] === 'route' ) {
                         desObj.title = "Address";
-                        desObj.address = prediction.terms[0] + " " + prediction.terms[1] + ", " + prediction.terms[2];
+                        desObj.address = prediction.terms[0].value + " " + prediction.terms[1].value + ", " + prediction.terms[2].value;
                         desObj.type = 'Address';
                     } else {
                         desObj.title = "Unknown";
