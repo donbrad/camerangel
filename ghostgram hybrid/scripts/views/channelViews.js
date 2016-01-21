@@ -1070,7 +1070,7 @@ var channelView = {
 
             var placeUrl = LZString.compressToEncodedURIComponent(placeId);
 
-            channelView.onHide();
+          //  channelView.onHide();
             setTimeout( function () {APP.kendo.navigate('#placeView?place=' + placeUrl);}, 1000);
            // APP.kendo.navigate('#placeView?place=' + placeUrl);
         }
@@ -1279,8 +1279,6 @@ var channelView = {
     },
 
     onHide : function (e) {
-
-
 
         channelView._channelId = null;
         channelView._channel = null;
