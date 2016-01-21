@@ -1123,6 +1123,13 @@ var channelView = {
 
         channelView._channel = thisChannel;
 
+        if (thisChannel.isPlace !== undefined && thisChannel.isPlace === true) {
+          channelView.isPlaceChat = true;
+            $('#channelView .icon-header').removeClass('hidden');
+        } else {
+            channelView.isPlaceChat = false;
+            $('#channelView .icon-header').addClass('hidden');
+        }
         channelModel.zeroUnreadCount(thisChannel.channelId);
 
         var contactUUID = null;
