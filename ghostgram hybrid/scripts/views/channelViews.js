@@ -1023,9 +1023,11 @@ var channelView = {
 
 
     closeEditor : function () {
+        
+        $('#messageTextArea').redactor('core.destroy');
 
         $("#messageComposeToolbar").addClass('hidden');
-        $('#messageTextArea').redactor('core.destroy');
+
     },
 
     // Initialize the channel specific view data sources.
