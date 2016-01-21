@@ -1024,8 +1024,10 @@ var channelView = {
 
     closeEditor : function () {
 
-        $("#messageComposeToolbar").addClass('hidden');
         $('#messageTextArea').redactor('core.destroy');
+
+        $("#messageComposeToolbar").addClass('hidden');
+
     },
 
     // Initialize the channel specific view data sources.
@@ -1278,6 +1280,8 @@ var channelView = {
 
     onHide : function (e) {
 
+
+
         channelView._channelId = null;
         channelView._channel = null;
         channelView._active  = false;
@@ -1288,20 +1292,11 @@ var channelView = {
 
         channelView.initDataSources();
         channelView.messageInit();
- //       channelView._initMessageTextArea();
-        //channelView.closeEditor();
-        // If this isn't a privateChat the close the channel (unsubscribe)
-        // All private chat messages go through userdatachannel which is always subscribed
-
-       /* if (window.navigator.simulator === undefined) {
-            cordova.plugins.Keyboard.disableScroll(false); // false to enable again
-        }*/
         if (!channelView.isPrivateChat) {
             groupChannel.close();
         }
-
-
         channelView.closeEditor();
+
 
     },
 
