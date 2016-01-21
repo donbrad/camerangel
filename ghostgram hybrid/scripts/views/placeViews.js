@@ -1877,6 +1877,7 @@ var smartEventPlacesView = {
 
         smartEventPlacesView._autocompletePlace.getPlacePredictions({ input: query, options: {types: ['geocode']} }, function(predictions, status) {
             if (status == google.maps.places.PlacesServiceStatus.OK) {
+                var ds = smartEventPlacesView.placesDS;
                 ds.data([]);
                 predictions.forEach( function (prediction) {
                     var desObj = {category:"Area", description: prediction.description, placeId: prediction.place_id};
