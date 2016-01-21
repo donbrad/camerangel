@@ -1816,6 +1816,9 @@ var smartEventPlacesView = {
             smartEventPlacesView._selectPlaceFirst = true;
             $('#searchEventPlaces-selectPlace').removeClass('hidden');
             $('#searchEventPlaces-searchDiv').addClass('hidden');
+
+            $('#smartEventPlaces-place').val(smartEventPlacesView._placeQuery);
+
         } else {
 
             smartEventPlacesView._selectPlaceFirst = false;
@@ -1823,7 +1826,7 @@ var smartEventPlacesView = {
             $('#searchEventPlaces-searchDiv').removeClass('hidden');
 
             smartEventPlacesView._query = query.toLowerCase().trim();
-
+            $('#smartEventPlaces-query').val(smartEventPlacesView._query);
             smartEventPlacesView._processQuery(smartEventPlacesView._query);
         }
 
