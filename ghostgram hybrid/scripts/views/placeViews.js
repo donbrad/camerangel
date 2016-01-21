@@ -1772,6 +1772,37 @@ var smartEventPlacesView = {
         smartEventPlacesView.placesDS.data([]);
     },
 
+    _processQuery : function (query) {
+
+        smartEventPlacesView._autocomplete.getPlacePredictions({ input: query }, function(predictions, status) {
+            if (status == google.maps.places.PlacesServiceStatus.OK) {
+                var ds = smartEventPlacesView.placesDS;
+                ds.data([]);
+                predictions.forEach( function (prediction) {
+                    var desObj = {description: prediction.description};
+                    if (prediction.types[0] === 'establishment') {
+                        desObj.title = prediction.terms[0];
+                        desObj.address = prediction.terms[1] + " " + prediction.terms[2] + ", " + prediction.terms[3];
+                        desObj.type = 'Establishment'
+                    } else if (prediction.types[0] === 'route' ) {
+                        desObj.title = "Address";
+                        desObj.address = prediction.terms[0] + " " + prediction.terms[1] + ", " + prediction.terms[2];
+                        desObj.type = 'Address';
+                    } else {
+                        desObj.title = "Unknown";
+                        desObj.address = "Unknown";
+                        desObj.type = 'Unknown';
+                    }
+                    desObj.placeId = prediction.place_id;
+                    ds.add(desObj);
+
+                });
+            }
+
+        });
+
+    },
+
     openModal : function (query, callback) {
 
         smartEventPlacesView.initDataSource();
@@ -1787,26 +1818,7 @@ var smartEventPlacesView = {
             $('#smartEventPlaces-query').on('input', function () {
                var query =  $('#smartEventPlaces-query').val();
                 if (query.length > 4) {
-                    smartEventPlacesView._autocomplete.getPlacePredictions({ input: query }, function(predictions, status) {
-                        if (status == google.maps.places.PlacesServiceStatus.OK) {
-                            var ds = smartEventPlacesView.placesDS;
-                            ds.data([]);
-                            predictions.forEach( function (prediction) {
-
-                                ds.add({
-                                    title: '',
-                                    address: '',
-                                    description : prediction.description,
-                                    placeId : prediction.place_id,
-                                    substrings: prediction.matched_substrings,
-                                    terms: prediction.terms,
-                                    types: prediction.types
-                                });
-
-                            });
-                        }
-
-                    });
+                    smartEventPlacesView._processQuery(query);
                 }
             });
 
@@ -1834,7 +1846,11 @@ var smartEventPlacesView = {
 
         }
 
-        $('#smartEventPlaces-query').val(query);
+        if (query.length > 3) {
+            $('#smartEventPlaces-query').val(query);
+            smartEventPlacesView._processQuery(query);
+        }
+
         $("#smartEventPlacesModal").data("kendoMobileModalView").open();
 
     },

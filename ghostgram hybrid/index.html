@@ -1131,18 +1131,19 @@
 </script>
 
 <script type="text/x-kendo-template" id="smartEventPlacesTemplate">
-	<div>
-		<a class="findPlaceListItem">
-			<div>
-				<h4 class="textClamp"> #: data.title #  </h4>
-				<p class="textClamp"> #: data.address # </p>
-				<p class="textClamp helper">
-					<span><i>#= data.type # </i> </span>
-				</p>
-				<div class="clearfix"> </div>
-			</div>
-		</a>
+
+	<div class="findPlaceListItem">
+		<div>
+			<h4 class="textClamp"> #: data.title #  </h4>
+			<p class="textClamp"> #: data.address # </p>
+			<p class="textClamp helper">
+				<span><i>#= data.type # </i> </span>
+			</p>
+			<p class="textClamp">#: data.description #</p>
+			<div class="clearfix"> </div>
+		</div>
 	</div>
+
 </script>
 
 <script type="text/x-kendo-template" id="findPlacesTemplate">
