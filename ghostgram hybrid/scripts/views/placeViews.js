@@ -1794,6 +1794,8 @@ var smartEventPlacesView = {
                             predictions.forEach( function (prediction) {
 
                                 ds.add({
+                                    title: '',
+                                    address: '',
                                     description : prediction.description,
                                     placeId : prediction.place_id,
                                     substrings: prediction.matched_substrings,
