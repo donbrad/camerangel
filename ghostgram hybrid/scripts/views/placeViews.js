@@ -1785,9 +1785,13 @@ var smartEventPlacesView = {
                         desObj.address = prediction.terms[1].value + " " + prediction.terms[2].value + ", " + prediction.terms[3].value;
                         desObj.type = 'Establishment'
                     } else if (prediction.types[0] === 'route' ) {
-                        desObj.title = "Address";
+                        desObj.title = "Area";
                         desObj.address = prediction.terms[0].value + " " + prediction.terms[1].value + ", " + prediction.terms[2].value;
-                        desObj.type = 'Address';
+                        desObj.type = 'Route';
+                    } else if (prediction.types[0] === 'street_address' ) {
+                        desObj.title = "Location";
+                        desObj.address = prediction.terms[0].value + " " + prediction.terms[1].value + ", " + prediction.terms[2].value;
+                        desObj.type = 'Street Address';
                     } else {
                         desObj.title = "Unknown";
                         desObj.address = "Unknown";
