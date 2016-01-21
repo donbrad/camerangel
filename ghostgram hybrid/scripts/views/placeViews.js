@@ -1879,7 +1879,23 @@ var smartEventPlacesView = {
             if (status == google.maps.places.PlacesServiceStatus.OK) {
                 ds.data([]);
                 predictions.forEach( function (prediction) {
-                    var desObj = {category:"Area", description: prediction.description};
+                    var desObj = {category:"Area", description: prediction.description, placeId: prediction.place_id};
+                    switch (prediction.types[0]) {
+                        case 'geocode':
+                        case 'locality':
+                        case 'political':
+
+                                desObj.type = prediction.types[0];
+                                if (prediction.terms.length == 3) {
+                                    desObj.title = "City";
+                                    desObj.address = prediction.terms[0].value + ",  " + prediction.terms[1].value;
+                                } else if (prediction.terms.length == 4) {
+                                    desObj.title = "Area";
+                                    desObj.address = prediction.terms[0].value + " " + prediction.terms[1].value + ", " + prediction.terms[2].value;
+                                }
+
+                            break;
+                    }
                    /*  if (prediction.types[0] === 'route' ) {
                         desObj.title = "Area";
                         desObj.address = prediction.terms[0].value + " " + prediction.terms[1].value + ", " + prediction.terms[2].value;
