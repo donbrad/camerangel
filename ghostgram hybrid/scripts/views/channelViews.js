@@ -1072,9 +1072,12 @@ var channelView = {
         _preventDefault(e);
 
         if (channelView.isPrivateChat) {
-            var contactId = channelView._channel.contactUUID;
+            var contactUUID = channelView._channel.contactUUID;
 
-            contactActionView.openModal(contactId);
+            var contact = contactModel.findContact(contactUUID);
+
+
+            contactActionView.openModal(contact.uuid);
 
         } else if (channelView.isPlaceChat) {
             var placeId = channelView._channel.placeUUID;
