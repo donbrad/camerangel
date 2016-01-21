@@ -1938,9 +1938,9 @@ var smartEventPlacesView = {
 
         }
 
+        $('#smartEventPlaces-query').val(query);
         if (query.length > 3) {
-            $('#smartEventPlaces-query').val(query);
-            smartEventPlacesView._processQuery(query);
+            smartEventPlacesView.preprocessQuery(query);
         }
 
         $("#smartEventPlacesModal").data("kendoMobileModalView").open();
