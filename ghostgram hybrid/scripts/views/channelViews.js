@@ -1071,7 +1071,7 @@ var channelView = {
     doTitleClick : function (e) {
         _preventDefault(e);
 
-        if (channelView._channel.isPrivateChat) {
+        if (channelView.isPrivateChat) {
             var contactId = channelView._channel.contactUUID;
 
             contactActionView.openModal(contactId);
@@ -1079,7 +1079,7 @@ var channelView = {
         } else if (channelView.isPlaceChat) {
             var placeId = channelView._channel.placeUUID;
 
-            var placeUrl = LZString.compressToEncodedURIComponent(placeId );
+            var placeUrl = LZString.compressToEncodedURIComponent(placeId);
             APP.kendo.navigate('#placeView?place=' + placeUrl);
         }
 
