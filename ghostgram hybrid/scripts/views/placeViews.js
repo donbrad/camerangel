@@ -1693,6 +1693,12 @@ var smartEventPlacesView = {
     _radius: 16000,   // set a larger radius for find places
     _currentLocation: {},
     _autocomplete : null,
+    _autocompletePlace : null,
+    _autocompletePlaceOptions : {},
+    _query: null,
+    _placeQuery: null,
+    _lat: null,
+    _lng: null,
     _inited : false,
 
     placesDS :  new kendo.data.DataSource({
@@ -1772,9 +1778,41 @@ var smartEventPlacesView = {
         smartEventPlacesView.placesDS.data([]);
     },
 
+    getBounds : function () {
+        var geolocation = {
+            lat: smartEventPlacesView._lat,
+            lng: smartEventPlacesView._ng
+        };
+        var circle = new google.maps.Circle({
+            center: geolocation,
+            radius: smartEventPlacesView._radius
+        })
+        var bounds = circle.getBounds();
+
+        return (bounds);
+    },
+
+    preprocessQuery : function (query) {
+        var queryArray = query.toLowerCase().split('near'), thisQuery = null, thisPlace = null;
+
+        if (queryArray.length > 1) {
+            thisQuery = queryArray[0];
+            thisPlace = queryArray[1];
+        } else {
+
+        }
+
+
+    },
+
+
     _processQuery : function (query) {
 
-        smartEventPlacesView._autocomplete.getPlacePredictions({ input: query }, function(predictions, status) {
+        var lat = smartEventPlacesView._lat, lng= smartEventPlacesView._lat;
+        var location = {lat: lat, lng: lng };
+        var bounds = smartEventPlacesView.getBounds();
+
+        smartEventPlacesView._autocomplete.getPlacePredictions({ input: query, options: {location: location, bounds: bounds } }, function(predictions, status) {
             if (status == google.maps.places.PlacesServiceStatus.OK) {
                 var ds = smartEventPlacesView.placesDS;
                 ds.data([]);
@@ -1807,9 +1845,42 @@ var smartEventPlacesView = {
 
     },
 
+    _processPlaceQuery : function (query) {
+
+        smartEventPlacesView._autocompletePlace.getPlacePredictions({ input: query, options: {types: ['geocode', 'cities']} }, function(predictions, status) {
+            if (status == google.maps.places.PlacesServiceStatus.OK) {
+              ;
+                predictions.forEach( function (prediction) {
+                    var desObj = {description: prediction.description};
+                     if (prediction.types[0] === 'route' ) {
+                        desObj.title = "Area";
+                        desObj.address = prediction.terms[0].value + " " + prediction.terms[1].value + ", " + prediction.terms[2].value;
+                        desObj.type = 'Route';
+                    } else if (prediction.types[0] === 'street_address' ) {
+                        desObj.title = "Location";
+                        desObj.address = prediction.terms[0].value + " " + prediction.terms[1].value + ", " + prediction.terms[2].value;
+                        desObj.type = 'Street Address';
+                    } else {
+                        desObj.title = "Unknown";
+                        desObj.address = "Unknown";
+                        desObj.type = 'Unknown';
+                    }
+                    desObj.placeId = prediction.place_id;
+                    ds.add(desObj);
+
+                });
+            }
+
+        });
+
+    },
+
     openModal : function (query, callback) {
 
         smartEventPlacesView.initDataSource();
+
+        smartEventPlacesView._lat = mapModel._lat;
+        smartEventPlacesView._lng = mapModel._lng;
 
         smartEventPlacesView._callback = callback;
 
@@ -1817,15 +1888,26 @@ var smartEventPlacesView = {
             smartEventPlacesView._inited = true;
 
             smartEventPlacesView._autocomplete = new google.maps.places.AutocompleteService();
+            smartEventPlacesView._autocompletePlace = new google.maps.places.AutocompleteService();
 
 
-            $('#smartEventPlaces-query').on('input', function () {
-               var query =  $('#smartEventPlaces-query').val();
+            $('#smartEventPlaces-place').on('input', function () {
+               var query =  $('#smartEventPlaces-place').val();
                 if (query.length > 4) {
-                    smartEventPlacesView._processQuery(query);
+                    smartEventPlacesView._processPlaceQuery(query);
                 }
             });
 
+            $('#smartEventPlaces-query').on('input', function () {
+                var query =  $('#smartEventPlaces-query').val();
+                if (query.toLowerCase().indexOf('near') !== -1) {
+                    smartEventPlacesView.preprocessQuery(query);
+                }
+                if (query.length > 4) {
+
+                    smartEventPlacesView._processQuery(query);
+                }
+            });
 
             /*smartEventPlacesView._searchBox.addListener('places_changed', function() {
                 var placesResults = smartEventPlacesView._searchBox.getPlaces();
