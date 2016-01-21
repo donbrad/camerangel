@@ -1068,7 +1068,7 @@ var channelView = {
 
     },
 
-    doTitleClick : function () {
+    doTitleClick : function (e) {
         _preventDefault(e);
 
         if (channelView._channel.isPrivateChat) {
