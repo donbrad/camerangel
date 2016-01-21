@@ -931,7 +931,7 @@ var channelView = {
         });
 
 
-        channelView.openEditor(); // Create the kendo editor instance
+        //channelView.openEditor(); // Create the kendo editor instance
 
 
        /* $.browser = {webkit: true};
@@ -1018,29 +1018,14 @@ var channelView = {
             toolbarExternal: '#messageComposeToolbar'
         });
 
-        /* $("#messageTextArea").kendoEditor({
-            stylesheets:["styles/editor.css"],
-            resizable: {
-                content: true,
-                min: 24
-            },
-            tools: [
-                "bold",
-                "italic",
-                "underline",
-                "insertUnorderedList",
-                "indent",
-                "outdent"
-            ]
-        });
-        $(".k-editor-toolbar").hide();*/
+
     },
 
 
     closeEditor : function () {
-       /* $('#messageTextArea').data("kendoEditor").destroy();
-        $('#messageTextArea').empty();*/
+
         $("#messageComposeToolbar").addClass('hidden');
+        $('#messageTextArea').redactor('core.destroy');
     },
 
     // Initialize the channel specific view data sources.
@@ -1098,6 +1083,7 @@ var channelView = {
             cordova.plugins.Keyboard.disableScroll(true); // false to enable again
         }
 */
+        channelView.openEditor();
         $("#messages-listview").data("kendoMobileListView").scroller().reset();
         channelView.topOffset = $("#messages-listview").data("kendoMobileListView").scroller().scrollTop;
         channelView._active = true;
@@ -1314,6 +1300,8 @@ var channelView = {
             groupChannel.close();
         }
 
+
+        channelView.closeEditor();
 
     },
 
