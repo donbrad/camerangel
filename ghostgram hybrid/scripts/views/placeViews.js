@@ -1453,7 +1453,7 @@ var placeView = {
    addNote : function (e) {
         _preventDefault(e);
 
-       smartEventNote.openModal();
+       smartEventView.openModal();
     },
 
 
