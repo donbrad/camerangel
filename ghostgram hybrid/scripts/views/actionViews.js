@@ -523,7 +523,7 @@ var smartEventView = {
 
         smartEventView.checkExpired();
 
-        $("#modalview-actionMeeting").data("kendoMobileModalView").open();
+        $("#smartEventModal").data("kendoMobileModalView").open();
     },
 
     setEventBanner: function(state){
@@ -612,7 +612,7 @@ var smartEventView = {
     onCancelEvent: function (e) {
         _preventDefault(e);
         $(".event-owner, .event-recipient, #event-editMode, #event-viewMode").addClass("hidden");
-       // Use onDone so the modal can redirect or restore state as required...  $("#modalview-actionMeeting").data("kendoMobileModalView").close();
+       // Use onDone so the modal can redirect or restore state as required...  $("#smartEventModal").data("kendoMobileModalView").close();
 
         smartEventView._activeObject.set("wasCancelled", true);
 
@@ -836,13 +836,13 @@ var smartEventView = {
 
     onCancel : function (e) {
         _preventDefault(e);
-        $("#modalview-actionMeeting").data("kendoMobileModalView").close();
+        $("#smartEventModal").data("kendoMobileModalView").close();
     },
 
     onDone: function (e) {
         //_preventDefault(e);
 
-        $("#modalview-actionMeeting").data("kendoMobileModalView").close();
+        $("#smartEventModal").data("kendoMobileModalView").close();
         if (smartEventView._callback !== null) {
             smartEventView._callback(smartEventView._activeObject);
         }
