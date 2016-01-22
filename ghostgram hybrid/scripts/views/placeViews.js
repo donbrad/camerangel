@@ -1753,6 +1753,7 @@ var smartEventPlacesView = {
                         mapModel.googlePlaces.getDetails(request, function(place, status) {
                             if (status == google.maps.places.PlacesServiceStatus.OK) {
 
+                                // Provide the default fields for Places...
                                 var address = smartEventPlacesView.getAddressFromComponents(place.address_components);
                                 var placeObj = {
                                     googleId : place.place_id,
@@ -1762,9 +1763,16 @@ var smartEventPlacesView = {
                                     vicinity : place.vicinity,
                                     address : address.streetNumber + ' ' + address.street + ", " + address.city + ", " + address.state +
                                         "  " + address.zip,
+                                    city:  address.city,
+                                    state: address.state,
+                                    zipcode: address.zipcode,
+                                    country: address.country,
                                     type :  smartEventPlacesView.getTypesFromComponents(place.types),
                                     phone : place.formatted_phone_number
                                 };
+
+                                placeObj.veneuName = placeObj.name;
+                                placeObj.alias = placeObj.alias;
                                 placeObj.category = smartEventPlacesView.getCategoryFromComponents(place.types);
                                 $("#smartEventPlacesModal").data("kendoMobileModalView").close();
                                 if (smartEventPlacesView._callback !== null) {
