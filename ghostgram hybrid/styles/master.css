@@ -129,8 +129,8 @@
   margin-left: 1rem;
   margin-right: 1rem;
 }
-#modalActionMeeting-view-calendar-add,
-#modalActionMeeting-view-calendar {
+#smartEventView-view-calendar-add,
+#smartEventView-view-calendar {
   margin-top: 0.5em;
 }
 .btnSmart {
@@ -165,7 +165,7 @@
   height: 1em;
   max-width: 1em;
 }
-#modalActionMeeting-date:read-only {
+#smartEventView-date:read-only {
   background: #fff !important;
 }
 #event-editMode > div > ul > li:nth-child(3) {
