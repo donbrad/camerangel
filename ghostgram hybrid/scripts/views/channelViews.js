@@ -1803,7 +1803,7 @@ var channelView = {
                 if (object !== null) {
                     // User is interacting with the object so add it, if it doesn't already exist
                     smartEvent.smartAddObject(object);
-                    modalActionMeeting.openModal(object);
+                    smartEventView.openModal(object);
                 }
 
             } else {
@@ -2296,7 +2296,7 @@ var channelView = {
     messageCalendar : function (e) {
         _preventDefault(e);
         channelView.messageMenuTag();
-        modalActionMeeting.openModal(null, function (event) {
+        smartEventView.openModal(null, function (event) {
 
             channelView.messageAddSmartEvent(event);
             mobileNotify("Sending Smart Event...");

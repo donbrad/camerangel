@@ -2420,11 +2420,11 @@
 </div>
 
 <!-- smartObject Action modal -->
-<div data-role="modalview" id="modalview-actionMeeting" style="width: 100%;  height: 100%; display: none;"  data-model="modalActionMeeting._activeObject" data-init="modalActionMeeting.onInit" data-open="modalActionMeeting.onShow" class="appearance">
+<div data-role="modalview" id="modalview-actionMeeting" style="width: 100%;  height: 100%; display: none;"  data-model="smartEventView._activeObject" data-init="smartEventView.onInit" data-open="smartEventView.onShow" class="appearance">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>Smart Event</span>
-			<a data-click="modalActionMeeting.onCancel" data-role="button"  class="btnClear-grey" data-align="left"><img src="images/nav-back.svg" /></a>
+			<a data-click="smartEventView.onCancel" data-role="button"  class="btnClear-grey" data-align="left"><img src="images/nav-back.svg" /></a>
 		</div>
 	</div>
 	<div class="event-view" id="event-viewMode">
@@ -2437,7 +2437,7 @@
 		<div class="event-details">
 			<h2 data-bind="text: title"></h2>
 			<p class="helper" data-bind="text: description"></p>
-			<p class="helper">Organized by <span id="modalActionMeeting-organizer" data-bind="text: senderName"></span></p>
+			<p class="helper">Organized by <span id="smartEventView-organizer" data-bind="text: senderName"></span></p>
 		</div>
 		<div class="event-details">
 			<p>
@@ -2448,22 +2448,22 @@
 				<span data-bind="text: durationString"></span>
 			</p>
 			<p class="event-location">
-				<a class="btnClear" data-role="button" data-click="modalActionMeeting.eventMapLocation">
+				<a class="btnClear" data-role="button" data-click="smartEventView.eventMapLocation">
 					<img src="images/icon-location.svg" class="icon-sm" />
 					<span class="event-location-title" data-bind="text: placeName"></span>
 				</a>
 			</p>
 			<p> <span class="event-location-title" data-bind="text: address"> </span> </p>
-			<div id="modalActionMeeting-view-calendar-add" class="event-valid">
+			<div id="smartEventView-view-calendar-add" class="event-valid">
 				<div>
-					<a class="btnClearLine-highlight" data-role="button" data-click="modalActionMeeting.addToCalendar">
+					<a class="btnClearLine-highlight" data-role="button" data-click="smartEventView.addToCalendar">
 						<img src="images/icon-date-highlight.svg" class="icon-sm" /> Add To Calendar</a>
 				</div>
 			</div>
 
-			<div id="modalActionMeeting-view-calendar" class="event-valid hidden">
+			<div id="smartEventView-view-calendar" class="event-valid hidden">
 				<div>
-					<a class="btnHighlight" data-role="button" data-click="modalActionMeeting.showCalendar">
+					<a class="btnHighlight" data-role="button" data-click="smartEventView.showCalendar">
 						<img src="images/icon-date-light.svg" class="icon-sm" /> View on Calendar</a>
 				</div>
 			</div>
@@ -2472,15 +2472,15 @@
 
 		<div class="event-details event-recipient" id="event-response">
 			<label>My RSVP</label>
-			<ul data-role="buttongroup" id="event-rsvp" data-select="modalActionMeeting.changeStatus">
+			<ul data-role="buttongroup" id="event-rsvp" data-select="smartEventView.changeStatus">
 				<li>Accept</li>
 				<li>Decline</li>
 			</ul>
 		</div>
 		<div class="event-details event-recipient" id="event-comment">
 			<label>Add a quick note (Optional)</label>
-			<textarea row="2" col="80" placeholder="" maxlength="80" id="modalActionMeeting-comments"></textarea>
-			<a class="btnPrimary" data-role="button" data-click="modalActionMeeting.sendRSVP">Send RSVP</a>
+			<textarea row="2" col="80" placeholder="" maxlength="80" id="smartEventView-comments"></textarea>
+			<a class="btnPrimary" data-role="button" data-click="smartEventView.sendRSVP">Send RSVP</a>
 		</div>
 	</div>
 
@@ -2488,18 +2488,18 @@
 		<ul data-role="listview" data-style="inset">
 			<li>
 				<label>
-					<input class="input-text-md" type="search" id="modalActionMeeting-title"  data-bind="value: title" placeholder="Title..."/>
+					<input class="input-text-md" type="search" id="smartEventView-title"  data-bind="value: title" placeholder="Title..."/>
 				</label>
 			</li>
 			<li>
 				<label>
-					<input class="input-text-sm" type="search"  id="modalActionMeeting-desc" data-bind="value: description" placeholder="Description..."/>
+					<input class="input-text-sm" type="search"  id="smartEventView-desc" data-bind="value: description" placeholder="Description..."/>
 				</label>
 			</li>
 
 			<li class="hidden">
 				<label> When
-					<input type="search" id="modalActionMeeting-datestring" />
+					<input type="search" id="smartEventView-datestring" />
 				</label>
 			</li>
 			<li>
@@ -2510,46 +2510,46 @@
 							<span class="searchIcon">
 								<img src='images/smart-event.svg' />
 							</span>
-						<input type="text" class="viewSearchBox" id="modalActionMeeting-date"/>
+						<input type="text" class="viewSearchBox" id="smartEventView-date"/>
 					</div>
 					<div class="smallSearch-sm">
 						<span class="searchIcon">
 							<img src='images/smart-time.svg' />
 						</span>
-						<input type="search" id="modalActionMeeting-time"/>
+						<input type="search" id="smartEventView-time"/>
 					</div>
 			</li>
-			<li id="modalActionMeeting-add-calendar" class="event-valid" >
+			<li id="smartEventView-add-calendar" class="event-valid" >
 				<label> Add to Calendar
-					<input type="checkbox" id="actionMeeting-addToCalendar"  data-role="switch" data-bind="checked: addToCalendar" data-change="modalActionMeeting.onChangeCalendar"/>
+					<input type="checkbox" id="actionMeeting-addToCalendar"  data-role="switch" data-bind="checked: addToCalendar" data-change="smartEventView.onChangeCalendar"/>
 				</label>
 			</li>
-			<li id="modalActionMeeting-durationBox" class="hidden">
+			<li id="smartEventView-durationBox" class="hidden">
 				<label> How Long (Duration) </label>
 				<div class="fullSearch">
 						<span class="searchIcon">
 							<img src="images/icon-duration.svg"/>
 						</span>
-					<input type="search" class="viewSearchBox" id="modalActionMeeting-duration"  data-bind="value: durationString" placeholder="1 hour..."/>
+					<input type="search" class="viewSearchBox" id="smartEventView-duration"  data-bind="value: durationString" placeholder="1 hour..."/>
 				</div>
 			</li>
 			<li>
 				<label> Where (Location or Place)
-					<input type="search" id="modalActionMeeting-placesearch"/>
+					<input type="search" id="smartEventView-placesearch"/>
 				</label>
 			</li>
-			<li id="modalActionMeeting-placesearchdiv" class="hidden">
+			<li id="smartEventView-placesearchdiv" class="hidden">
 				<div>
-					<img src='images/icon-gps-selected.svg' class='icon-sm'/> <a data-click="modalActionMeeting.onPlaceSearch" data-role="button" class="btnClear" id="modalActionMeeting-placesearchBtn"> Find... </a>
+					<img src='images/icon-gps-selected.svg' class='icon-sm'/> <a data-click="smartEventView.onPlaceSearch" data-role="button" class="btnClear" id="smartEventView-placesearchBtn"> Find... </a>
 				</div>
 			</li>
 		</ul>
 	</form>
 
-	<div class="hidden" id="modalActionMeeting-recipientListDiv">
+	<div class="hidden" id="smartEventView-recipientListDiv">
 		<div class="line"></div>
 		<h3>Event RSVP's</h3>
-		<ul data-role="listview" data-style="inset" id="modalActionMeeting-recipientListView">
+		<ul data-role="listview" data-style="inset" id="smartEventView-recipientListView">
 
 		</ul>
 	</div>
@@ -2559,24 +2559,24 @@
 		<div class="event-recipient">
 			<div id="actionMeeting-accept"  class="event-valid hidden">
 				<span id="actionMeeting-acceptStatus"></span>
-				<a class="btnFull-modal btnSecondary" data-role="button" data-click="modalActionMeeting.onDecline">Decline Event</a>
-				<a class="btnFull-modal btnPrimary" data-role="button" data-click="modalActionMeeting.onAccept">Accept Event</a>
+				<a class="btnFull-modal btnSecondary" data-role="button" data-click="smartEventView.onDecline">Decline Event</a>
+				<a class="btnFull-modal btnPrimary" data-role="button" data-click="smartEventView.onAccept">Accept Event</a>
 			</div>
 			<div id="actionMeeting-acceptExpired" class="event-expired hidden">
-				<a class="btnFull-modal btnPrimary" data-role="button" data-click="modalActionMeeting.onCancel">Close</a>
+				<a class="btnFull-modal btnPrimary" data-role="button" data-click="smartEventView.onCancel">Close</a>
 			</div>
 		</div>
 		<div class="event-owner">
 			<div id="actionMeeting-update" class="hidden">
-				<!--<a data-role="button" class="btnFull-modal btnSeconary event-valid event-owner" data-align="right" data-click="modalActionMeeting.showEditMode">Edit Event</a>-->
-				<a class="btnFull-modal btnSecondary event-valid event-owner" data-role="button" id="event-owner-cancel" data-click="modalActionMeeting.onCancelEvent">Cancel Event</a>
-				<a class="btnFull-modal btnSecondary event-expired event-owner hidden" data-role="button" data-click="modalActionMeeting.onRescheduleEvent">Reschedule Event</a>
+				<!--<a data-role="button" class="btnFull-modal btnSeconary event-valid event-owner" data-align="right" data-click="smartEventView.showEditMode">Edit Event</a>-->
+				<a class="btnFull-modal btnSecondary event-valid event-owner" data-role="button" id="event-owner-cancel" data-click="smartEventView.onCancelEvent">Cancel Event</a>
+				<a class="btnFull-modal btnSecondary event-expired event-owner hidden" data-role="button" data-click="smartEventView.onRescheduleEvent">Reschedule Event</a>
 			</div>
 			<div id="event-owner-save" class="hidden">
 <!--
-				<a data-role="button" type="button" class="btnFull-modal btnSecondary"  id="modalActionMeeting-eventchat"  data-click="modalActionMeeting.doEventChat">Add Event Chat</a>
+				<a data-role="button" type="button" class="btnFull-modal btnSecondary"  id="smartEventView-eventchat"  data-click="smartEventView.doEventChat">Add Event Chat</a>
 -->
-				<a class="btnFull-modal btnPrimary" data-role="button" data-click="modalActionMeeting.onSaveEvent">Save and Send Event</a>
+				<a class="btnFull-modal btnPrimary" data-role="button" data-click="smartEventView.onSaveEvent">Save and Send Event</a>
 			</div>
 		</div>
 
