@@ -865,6 +865,63 @@ var smartEventView = {
 
 };
 
+var smartNoteView = {
+    _activeObject : new kendo.data.ObservableObject(),
+    _date : new Date(),
+    _expirationDate : null,
+    _isInited : false,
+    _callback : null,
+
+    onInit: function (e) {
+        _preventDefault(e);
+
+
+    },
+
+    openModal: function (actionObj, callback) {
+        if (!smartNoteView._isInited) {
+
+
+            $('#smartNoteView-expirationDate').pickadate({
+                format: 'mmm, d yyyy',
+                formatSubmit: 'mm d yyyy',
+                min: true,
+                onSet: function (context) {
+                    smartNoteView.updateDateString();
+                }
+            });
+
+            smartNoteView._isInited = true;
+        }
+
+        if (callback === undefined) {
+            callback = null;
+        }
+
+        smartNoteView._callback = callback;
+
+
+
+
+        var d = new Date();
+        d.setFullYear(d.getFullYear()+1);
+        smartNoteView._expirationDate = d;
+    },
+
+    onCancel : function (e) {
+        _preventDefault(e);
+        $("#smartNoteModal").data("kendoMobileModalView").close();
+    },
+
+    onDone: function (e) {
+        //_preventDefault(e);
+
+        $("#smartNoteModal").data("kendoMobileModalView").close();
+        if (smartNoteView._callback !== null) {
+            smartNoteView._callback(smartNoteView._activeObject);
+        }
+    }
+};
 
 var smartFlightView = {
 

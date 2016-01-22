@@ -1371,7 +1371,7 @@
 		    			<img src="images/group-icon.svg" class="icon-sm" /> Group Chat
 		    		#}#
 		    		#if (data.isMuted) {# <span class="listTag-light">Muted</span> #} #
-		    		#if (data.unreadCount > 0) {# <span class="right"><img src="images/icon-chat.svg" class="icon-sm" /> #:unreadCount# new</span> # } #
+		    		#if (data.unreadCount > 0) {# <span class="right"><img src="images/icon-Chat.svg" class="icon-sm" /> #:unreadCount# new</span> # } #
 	    		</div>
 
 	    	</div><!-- chat-mainBox -->
@@ -2419,6 +2419,42 @@
 		<a class="btnFull-modal btnClear" data-role="button" data-click="archiveView.closeModalDateSelect">Add</a>
 	</div>
 </div>
+
+<!-- smartObject Action modal -->
+<div data-role="modalview" id="smartNoteModal" style="width: 100%;  height: 100%; display: none;"  data-model="smartNoteView._activeObject" data-init="smartNoteView.onInit" data-open="smartNoteView.onShow" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Smart Note</span>
+			<a data-click="smartNoteView.onCancel" data-role="button"  class="btnClear-grey" data-align="left"><img src="images/nav-back.svg" /></a>
+		</div>
+	</div>
+	<form >
+		<ul data-role="listview" data-style="inset">
+			<li>
+				<input class="input-text-md" type="search" id="smartNoteView-title"  data-bind="value: title" placeholder="@Title ..."/>
+
+			</li>
+			<li>
+				<input class="input-text-sm" type="search"  id="smartNoteView-tags" data-bind="value: tagString" placeholder="@Tags ..."/>
+			</li>
+			<li>
+				<label> Expires
+					<select id="smartNoteView-expires">
+						<option value="0">Never</option>
+						<option value="1">Tomorrow</option>
+						<option value="7">In a Week</option>
+						<option value="30">In a Month</option>
+						<option value="365">In a Year</option>
+
+					</select>
+				</label>
+			</li>
+		</ul>
+	</form>
+
+</div>
+
+
 
 <!-- smartObject Action modal -->
 <div data-role="modalview" id="smartEventModal" style="width: 100%;  height: 100%; display: none;"  data-model="smartEventView._activeObject" data-init="smartEventView.onInit" data-open="smartEventView.onShow" class="appearance">
