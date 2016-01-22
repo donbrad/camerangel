@@ -2116,7 +2116,7 @@ var smartEventPlacesView = {
         var navUrl = '#' + smartEventPlacesView._returnView;
 
         if (findPlacesView._returnModal === "smartEvent") {
-            modalActionMeeting.restoreAndOpenModal();
+            smartEventView.restoreAndOpenModal();
             //APP.kendo.navigate(navUrl);
         } /*else {
             APP.kendo.navigate(navUrl);
