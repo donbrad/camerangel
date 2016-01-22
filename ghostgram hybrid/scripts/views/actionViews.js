@@ -269,8 +269,8 @@ var smartEventView = {
     onAddPlace: function (e) {
         _preventDefault(e);
 
-        mobileNotify("Adding place : " + smartEventPlacesView._geoObj.name);
-        placesModel.addPlace(smartEventPlacesView._geoObj);
+        mobileNotify("Adding place : " + smartEventView._geoObj.name);
+        placesModel.addPlace(smartEventView._geoObj);
         $("#smartEventView-placeadddiv").addClass('hidden');
     },
 
