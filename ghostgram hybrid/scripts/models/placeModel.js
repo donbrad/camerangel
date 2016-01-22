@@ -353,9 +353,10 @@ var placesModel = {
         placesModel.placesDS.add(placeObj);
         placesModel.placesDS.sync();
 
-        if (callback !== undefined) {
-            callback(placeObj);
-        }
+        placesView.placeListDS.add(placeObj);
+        placesView.placeListDS.sync();
+
+
 
         placeParse.save(null, {
             success: function(placeIn) {
@@ -363,7 +364,9 @@ var placesModel = {
                 var placeInuuid = placeIn.get('uuid');
                 var place = placesModel.getPlaceModel(placeInuuid);
                 place.set('isDirty', false);
-
+                if (callback !== undefined) {
+                    callback(placeIn.toJSON());
+                }
 
             },
             error: function(place, error) {
