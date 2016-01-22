@@ -2439,7 +2439,7 @@
 			</li>
 			<li>
 				<label> Expires
-					<select id="smartNoteView-expires">
+					<select id="smartNoteView-expires" data-bind="value: expires">
 						<option value="0">Never</option>
 						<option value="1">Tomorrow</option>
 						<option value="7">In a Week</option>
@@ -2451,7 +2451,12 @@
 			</li>
 		</ul>
 	</form>
+	<div id="smartNoteView-contentToolbar"></div>
+	<textarea id="smartNoteView-content"></textarea>
 
+	<div class="footer" data-role="footer" id="smartNoteModal-saveBtn">
+		<a class="btnSpan btnPrimary" data-role="button" data-click="smartNoteView.onSave">Save Note</a>
+	</div>
 </div>
 
 
