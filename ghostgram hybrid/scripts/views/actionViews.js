@@ -14,6 +14,7 @@ var smartEventView = {
     _activeObject : new kendo.data.ObservableObject(),
     _date : new Date(),
     _placeId :null,
+    _geoObj: null,
     _isInited : false,
     _callback : null,
     _eventList :[],
@@ -252,6 +253,7 @@ var smartEventView = {
     onShow: function(e) {
         _preventDefault(e);
         smartEventView._placeId = null;
+        smartEventView._geoObj = null;
 
         $("#smartEventView-placesearchBtn").text("");
         $("#smartEventView-placesearch").val("");
@@ -259,11 +261,15 @@ var smartEventView = {
         $("#smartEventView-date").val("");
         $("#smartEventView-time").val("");
         $('#smartEventView-comments').val("");
+
+        $("#smartEventView-placeadddiv").addClass('hidden');
     },
 
 
     onAddPlace: function (e) {
         _preventDefault(e);
+
+        $("#smartEventView-placeadddiv").addClass('hidden');
     },
 
     onPlaceSearch : function (e) {
@@ -279,6 +285,8 @@ var smartEventView = {
            }
            var thisObj = smartEventView._activeObject;
 
+
+
            thisObj.set('placeId', null);
            thisObj.set('googleId', geo.googleId);
            thisObj.set('placeName', geo.name);
@@ -287,9 +295,13 @@ var smartEventView = {
            thisObj.set('lat', geo.lat);
            thisObj.set('lng', geo.lng);
 
-
+           var addressArray = geo.address.split(','), address = addressArray[0];
+           // Place addresses are just the Street Number and Street;
+           geo.address = address;
+           smartEventView._geoObj = geo;
            $("#smartEventView-placesearch").val(geo.name);
            $("#smartEventView-placesearchdiv").addClass('hidden');
+           $("#smartEventView-placeadddiv").removeClass('hidden');
        });
 
     },
@@ -796,6 +808,8 @@ var smartEventView = {
         // todo - wire event update
         smartEventView.onDone();
     },
+
+
 
     onSaveEvent : function (e) {
         var thisObj = smartEventView._activeObject;
