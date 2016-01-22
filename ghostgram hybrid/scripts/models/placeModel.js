@@ -341,7 +341,7 @@ var placesModel = {
             placeParse.set('placeChatId', placeChatguid);
         }
 
-        var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, place.get('lat'), place.get('lng'));
+        var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, place.lat, place.lng);
 
 
 
