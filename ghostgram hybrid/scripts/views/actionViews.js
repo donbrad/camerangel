@@ -269,6 +269,8 @@ var smartEventView = {
     onAddPlace: function (e) {
         _preventDefault(e);
 
+        mobileNotify("Adding place : " + smartEventPlacesView._geoObj.name);
+        placesModel.addPlace(smartEventPlacesView._geoObj);
         $("#smartEventView-placeadddiv").addClass('hidden');
     },
 
@@ -284,7 +286,7 @@ var smartEventView = {
                return;
            }
            var thisObj = smartEventView._activeObject;
-           
+
            thisObj.set('placeId', null);
            thisObj.set('googleId', geo.googleId);
            thisObj.set('placeName', geo.name);
