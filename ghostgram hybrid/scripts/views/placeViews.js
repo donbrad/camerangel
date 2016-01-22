@@ -1733,7 +1733,7 @@ var smartEventPlacesView = {
                             if (status == google.maps.places.PlacesServiceStatus.OK) {
                                 smartEventPlacesView._lat = place.geometry.location.lat();
                                 smartEventPlacesView._lng = place.geometry.location.lng();
-
+                                $('#smartEventPlaces-place').val(place.formatted_address);
                                 smartEventPlacesView.setLocationAndBounds();
 
                                 if (smartEventPlacesView._selectPlaceFirst) {
@@ -1742,9 +1742,9 @@ var smartEventPlacesView = {
                                     $('#searchEventPlaces-searchDiv').removeClass('hidden');
 
                                     $('#smartEventPlaces-query').val(smartEventPlacesView._query);
-                                    smartEventPlacesView._processQuery(smartEventPlacesView._query);
 
                                 }
+                                smartEventPlacesView._processQuery(smartEventPlacesView._query);
                             }
                         });
 
@@ -2072,7 +2072,7 @@ var smartEventPlacesView = {
         return address;
     },
 
-    updatePlaces : function (lat, lng) {
+  /*  updatePlaces : function (lat, lng) {
         var latlng = new google.maps.LatLng(lat, lng);
         var places = mapModel.googlePlaces;
         var ds = smartEventPlacesView.placesDS;
@@ -2118,7 +2118,7 @@ var smartEventPlacesView = {
             // Show modal letting user select current place
         });
     },
-
+*/
     onDone : function (e) {
         _preventDefault(e);
         var navUrl = '#' + smartEventPlacesView._returnView;
