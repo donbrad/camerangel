@@ -1757,14 +1757,15 @@ var smartEventPlacesView = {
                                 var placeObj = {
                                     googleId : place.place_id,
                                     name: place.name.smartTruncate(38, true).toString(),
-                                    lat : place.geometry.location.lat(),
-                                    lng : place.geometry.location.lat(),
-                                    vacinity : place.vacinity,
-                                    address : address.streetNumber + ' ' + address.street + " " + address.city + ", " + address.state +
-                                        "  " + address.zipcode,
-                                    type :  smartEventPlacesView.getTypesFromComponents(place.types)
+                                    lat : place.geometry.location.lat().toFixed(6),
+                                    lng : place.geometry.location.lng().toFixed(6),
+                                    vicinity : place.vicinity,
+                                    address : address.streetNumber + ' ' + address.street + ", " + address.city + ", " + address.state +
+                                        "  " + address.zip,
+                                    type :  smartEventPlacesView.getTypesFromComponents(place.types),
+                                    phone : place.formatted_phone_number
                                 };
-
+                                placeObj.category = smartEventPlacesView.getCategoryFromComponents(place.types);
                                 $("#smartEventPlacesModal").data("kendoMobileModalView").close();
                                 if (smartEventPlacesView._callback !== null) {
                                     smartEventPlacesView._callback(placeObj);
@@ -1999,6 +2000,18 @@ var smartEventPlacesView = {
 
     },
 
+    getCategoryFromComponents : function (types) {
+        if (types === undefined || types.length === 0) {
+            return  "Location";
+        }
+
+        if (types[0] === 'geocode' || types[types.length-1] === 'geocode') {
+             return "Location";
+        }
+
+        return "Venue"
+    },
+
     getTypesFromComponents : function (types) {
         var typeString = '';
 
@@ -2014,7 +2027,6 @@ var smartEventPlacesView = {
 
             }
         }
-
         if (typeString.length > 3) {
             typeString = typeString.substring(0, typeString.length - 2);
         } else {
