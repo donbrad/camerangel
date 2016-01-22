@@ -30,6 +30,8 @@ var deviceModel = {
         parseSyncComplete: false,
         hasPlaces: false,
         hasPhotos: false,
+        hasNotes: false,
+        hasNotifications: false,
         hasSmartObjects: false,
         introFetched: false,
         pubnubInit: false,
@@ -86,6 +88,8 @@ var deviceModel = {
         deviceModel.state.hasPlaces = false;
         deviceModel.state.hasPhotos = false;
         deviceModel.state.hasSmartObjects = false;
+        deviceModel.state.hasNotes = false;
+        deviceModel.state.hasNotifications = false;
         deviceModel.state.introFetched =false;
         deviceModel.state.pubnubInit = false;
         deviceModel.state.isDeviceRegistered = false;
@@ -109,9 +113,11 @@ var deviceModel = {
 
     isParseSyncComplete: function () {
 
-        var channels = deviceModel.state.hasChannels, photos = deviceModel.state.hasPhotos, contacts = deviceModel.state.hasContacts, objects = deviceModel.state.hasSmartObjects;
+        var channels = deviceModel.state.hasChannels, photos = deviceModel.state.hasPhotos,
+            contacts = deviceModel.state.hasContacts, objects = deviceModel.state.hasSmartObjects,
+            notes = deviceModel.state.hasNotes;
 
-        if (channels && photos && contacts && objects) {
+        if (channels && photos && contacts && objects & notes) {
 
             deviceModel.state.parseSyncComplete = true;
 
@@ -121,8 +127,6 @@ var deviceModel = {
 
                 deviceModel.isPushProvisioned();
 
-               // channelModel.updateChannelsMessageCount();
-                //channelModel.init();
            }
 
         }

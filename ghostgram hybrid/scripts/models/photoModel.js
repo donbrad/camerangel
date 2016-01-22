@@ -377,6 +377,13 @@ var photoModel = {
                 updateParseObject('photos', "photoId", photo.photoId, "description",  null);
             }
 
+            if (photo.address === undefined) {
+
+                photo.address = null;
+
+                updateParseObject('photos', "photoId", photo.photoId, "address",  null);
+            }
+
             if (photo.tags === undefined) {
 
                 photo.tags = [];
@@ -408,7 +415,7 @@ var photoModel = {
         photo.setACL(userModel.parseACL);
         photo.set('version', photoModel._version);
 
-        var photoId = uuid.v4();
+        //var photoId = uuid.v4();
 
         var filename = photoId.replace(/-/g,'');
 
@@ -421,11 +428,22 @@ var photoModel = {
 
         var ownerId = photoObj.ownerId, ownerName = photoObj.ownerName;
 
-        photo.set('photoId', photoId);
+        photo.set('photoId', photoObj.photoId);  // use the original photo id from sender to enable recall
         photo.set('channelId', channelId);
 
         photo.set('senderUUID',ownerId );
         photo.set('senderName', ownerName);
+
+        photo.set('title', photoObj.title);
+        photo.set('description',  photoObj.description);
+        photo.set('eventId', photoObj.eventId);
+        photo.set('eventName', photoObj.eventName);
+        photo.set('tagString', photoObj.tagString);
+        photo.set('tags', photoObj.tags);
+        photo.set('placeId', photoObj.placeId);
+        photo.set('placeName', photoObj.placeName);
+        photo.set('address', photoObj.address);
+        photo.set('offerId', photoObj.offerId);
 
         devicePhoto.convertImgToDataURL(photoObj.thumbnailUrl, function (dataUrl) {
             var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
@@ -615,10 +633,12 @@ var photoModel = {
         photo.set('senderName', userModel.currentUser.name);
         photo.set('eventId', null);
         photo.set('eventName', null);
+        photo.set('tagString', null);
         photo.set('tags', []);
         photo.set('tagsString', null);
         photo.set('placeId', null);
         photo.set('placeName', null);
+        photo.set('address', null);
         photo.set('offerId', null);
 
 
@@ -660,6 +680,7 @@ var photoModel = {
 
         var photoObj = photo.toJSON();
         photoModel.photosDS.add(photoObj);
+        photoModel.photosDS.sync();
 
         photo.save(null, {
             success: function(photoIn) {
