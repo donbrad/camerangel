@@ -1270,6 +1270,11 @@ var placeView = {
         _preventDefault(e);
     },
 
+    loadMemories : function () {
+        var photos = photoModel.photosDS,
+            notes = noteModel.notesDS;
+    },
+
     onShow : function (e) {
         _preventDefault(e);
 
@@ -1770,7 +1775,6 @@ var smartEventPlacesView = {
                                     type :  smartEventPlacesView.getTypesFromComponents(place.types),
                                     phone : place.formatted_phone_number
                                 };
-
                                 placeObj.veneuName = placeObj.name;
                                 placeObj.alias = placeObj.alias;
                                 placeObj.category = smartEventPlacesView.getCategoryFromComponents(place.types);
