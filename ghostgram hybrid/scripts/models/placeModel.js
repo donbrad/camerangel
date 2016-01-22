@@ -353,6 +353,9 @@ var placesModel = {
         placesModel.placesDS.add(placeObj);
         placesModel.placesDS.sync();
 
+        placesView.placeListDS.add(placeObj);
+        placesView.placeListDS.sync();
+
         if (callback !== undefined) {
             callback(placeObj);
         }
