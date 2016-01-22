@@ -1714,47 +1714,7 @@ var smartEventPlacesView = {
     onInit : function (e) {
         _preventDefault(e);
 
-        // Filter current places and query google places on keyup
-/*
-        $('#smartEventPlaces-SearchQuery').on('input', function() {
-            var query = this.value;
-            if (query.length > 0) {
-                smartEventPlacesView.placesDS.filter(  {"logic":"or",
-                    "filters":[
-                        {
-                            "field":"vicinity",
-                            "operator":"contains",
-                            "value":query},
-                        {
-                            "field":"name",
-                            "operator":"contains",
-                            "value":query},
-                        {
-                            "field":"type",
-                            "operator":"contains",
-                            "value":query}
-                    ]});
 
-                $("#findPlace .enterSearch").removeClass("hidden");
-
-            } else {
-
-                $("#findPlace .enterSearch").addClass("hidden");
-                smartEventPlacesView.placesDS.filter([]);
-            }
-        });
-
-*/
-        // bind clear search btn
-  /*      $("#smartEventPlaces .enterSearch").on("click", function(){
-            $("#smartEventPlaces-SearchQuery").val('');
-
-            // reset data filters
-            smartEventPlacesView.placesDS.filter([]);
-
-            // hide clear btn
-            $(this).addClass('hidden');
-        });*/
 
 
         $("#smartEventPlaces-listview").kendoMobileListView({
@@ -1762,8 +1722,6 @@ var smartEventPlacesView = {
                 template: $("#smartEventPlacesTemplate").html(),
                 click: function (e) {
                     var geo = e.dataItem;
-
-
                     var request = {
                         placeId: geo.placeId
                     };
@@ -1795,7 +1753,17 @@ var smartEventPlacesView = {
                         mapModel.googlePlaces.getDetails(request, function(place, status) {
                             if (status == google.maps.places.PlacesServiceStatus.OK) {
 
-                                var placeObj = {}
+                                var address = smartEventPlacesView.getAddressFromComponents(place.address_components);
+                                var placeObj = {
+                                    googleId : place.place_id,
+                                    name: place.name.smartTruncate(38, true).toString(),
+                                    lat : place.geometry.location.lat(),
+                                    lng : place.geometry.location.lat(),
+                                    vacinity : place.vacinity,
+                                    address : address.streetNumber + ' ' + address.street + " " + address.city + ", " + address.state +
+                                        "  " + address.zipcode,
+                                    type :  smartEventPlacesView.getTypesFromComponents(place.types)
+                                };
 
                                 $("#smartEventPlacesModal").data("kendoMobileModalView").close();
                                 if (smartEventPlacesView._callback !== null) {
@@ -1805,15 +1773,6 @@ var smartEventPlacesView = {
                         });
 
                     }
-
-                   /* delete geo._events;
-                    delete geo.parent;
-                    delete geo.__proto__;
-
-                    $("#smartEventPlacesModal").data("kendoMobileModalView").close();
-                    if (smartEventPlacesView._callback !== null) {
-                        smartEventPlacesView._callback(geo);
-                    }*/
 
                 }
             }
