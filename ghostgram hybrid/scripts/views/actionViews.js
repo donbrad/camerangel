@@ -880,17 +880,6 @@ var smartNoteView = {
 
     openModal: function (actionObj, callback) {
         if (!smartNoteView._isInited) {
-
-
-            $('#smartNoteView-expirationDate').pickadate({
-                format: 'mmm, d yyyy',
-                formatSubmit: 'mm d yyyy',
-                min: true,
-                onSet: function (context) {
-                    smartNoteView.updateDateString();
-                }
-            });
-
             smartNoteView._isInited = true;
         }
 
@@ -926,10 +915,12 @@ var smartNoteView = {
 
         smartNoteView._callback = callback;
 
+        $("#smartNoteModal").data("kendoMobileModalView").open();
 
-        var d = new Date();
-        d.setFullYear(d.getFullYear()+1);
-        smartNoteView._expirationDate = d;
+    },
+
+    onSave : function (e) {
+        _preventDefault(e);
     },
 
     onCancel : function (e) {
