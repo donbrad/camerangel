@@ -284,9 +284,7 @@ var smartEventView = {
                return;
            }
            var thisObj = smartEventView._activeObject;
-
-
-
+           
            thisObj.set('placeId', null);
            thisObj.set('googleId', geo.googleId);
            thisObj.set('placeName', geo.name);
