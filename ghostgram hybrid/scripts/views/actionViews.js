@@ -865,6 +865,87 @@ var smartEventView = {
 
 };
 
+var smartNoteView = {
+    _activeObject : new kendo.data.ObservableObject(),
+    _date : new Date(),
+    _expirationDate : null,
+    _isInited : false,
+    _callback : null,
+
+    onInit: function (e) {
+        _preventDefault(e);
+
+
+    },
+
+    openModal: function (actionObj, callback) {
+        if (!smartNoteView._isInited) {
+
+
+            $('#smartNoteView-expirationDate').pickadate({
+                format: 'mmm, d yyyy',
+                formatSubmit: 'mm d yyyy',
+                min: true,
+                onSet: function (context) {
+                    smartNoteView.updateDateString();
+                }
+            });
+
+            smartNoteView._isInited = true;
+        }
+
+        if (actionObj === null) {
+            smartNoteView._activeObject.set('title', '');
+            smartNoteView._activeObject.set('tags', '');
+            smartNoteView._activeObject.set('content', '');
+            smartNoteView._activeObject.set('expiration', '30');
+        } else {
+            smartNoteView._activeObject.set('title', actionObj.title);
+            smartNoteView._activeObject.set('tags', actionObj.tags);
+            smartNoteView._activeObject.set('content', actionObj.content);
+            smartNoteView._activeObject.set('expiration', actionObj.expiration);
+        }
+
+        $('#smartNoteView-content').redactor({
+            minHeight: 240,
+            maxHeight: 360,
+            focus: true,
+            placeholder: 'Message....',
+            /* callbacks: {
+             focus: function(e)
+             {
+             $('#messageTextArea').focus();
+             }
+             },*/
+            buttons: [ 'bold', 'italic', 'lists','horizontalrule'],
+            toolbarExternal: 'smartNoteView-contentToolbar'
+        });
+        if (callback === undefined) {
+            callback = null;
+        }
+
+        smartNoteView._callback = callback;
+
+
+        var d = new Date();
+        d.setFullYear(d.getFullYear()+1);
+        smartNoteView._expirationDate = d;
+    },
+
+    onCancel : function (e) {
+        _preventDefault(e);
+        $("#smartNoteModal").data("kendoMobileModalView").close();
+    },
+
+    onDone: function (e) {
+        //_preventDefault(e);
+
+        $("#smartNoteModal").data("kendoMobileModalView").close();
+        if (smartNoteView._callback !== null) {
+            smartNoteView._callback(smartNoteView._activeObject);
+        }
+    }
+};
 
 var smartFlightView = {
 
