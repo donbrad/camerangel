@@ -46,6 +46,14 @@ var placesModel = {
         }
     }),
 
+    placesTagsDS: new kendo.data.DataSource({
+        offlineStorage: "placeTags",
+        sort: {
+            field: "name",
+            dir: "asc"
+        }
+    }),
+
 
     newPlace : function () {
         return(new Object(placesModel._placeModel));
@@ -54,6 +62,7 @@ var placesModel = {
     fetch : function () {
         var PlaceModel = Parse.Object.extend("places");
         var query = new Parse.Query(PlaceModel);
+        placeModel.placesTagsDS.data([]);
         query.limit(1000);
 
         query.find({
@@ -86,12 +95,15 @@ var placesModel = {
                         parseModel.save();
 
                     var model = parseModel.toJSON();
+                    var tag = {type: 'place', tagname: ux.returnUXPrimaryName(model.name, model.alias), name: model.name, uuid: model.uuid };
+                    placesModel.placesTagsDS.add(tag);
                     models.push(model);
                 }
 
                 placesModel.placesDS.data(models);
                 mapModel.computePlaceDSDistance();
 
+                placesModel.buildPlaceLists();
                 deviceModel.setAppState('hasPlaces', true);
                 deviceModel.isParseSyncComplete();
             },
@@ -102,17 +114,25 @@ var placesModel = {
     },
 
     init : function () {
-   /*     placesModel.placesDS =  parseKendoDataSourceFactory.make('places', placesModel.placeModel ,
-            false,
-            undefined,
-            undefined
-        );
+        // Reflect any core contact changes to contactList
+        placesModel.placesDS.bind("change", function (e) {
+            // Rebuild the contactList cache when the underlying list changes: add, delete, update...
+            placesModel.buildPlaceLists();
 
-        placesModel.placesDS.fetch(function () {
-            placesModel.placesFetched = true;
-            placesModel.placesArray  = placesModel.placesDS.data();
         });
-*/    },
+     },
+
+    buildPlaceLists : function () {
+        var placeList = placesView.placesDS.data();
+        placesView.placeListDS.data(placeList);
+
+        for (var i=0; i< placeList.length; i++) {
+
+            var model = (placeList[i]).toJSON();
+            var tag = {type: 'place', tagname: ux.returnUXPrimaryName(model.name, model.alias), name: model.name, alias: model.alias, uuid: model.uuid };
+            placesModel.placesTagsDS.add(tag);
+        }
+    },
 
     queryPlace : function (query) {
         if (query === undefined)
