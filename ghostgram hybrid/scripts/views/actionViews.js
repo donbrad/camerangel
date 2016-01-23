@@ -857,7 +857,7 @@ var smartEventView = {
         var finalDateStr = meetingDate + " " + meetingTime;
 
         var saveDate = new Date(finalDateStr);
-        
+
         if (saveDate === null) {
             mobileNotify (finalDateStr + " is not a valid date!");
             return;

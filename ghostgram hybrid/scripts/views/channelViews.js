@@ -27,6 +27,8 @@ var channelsView = {
     onInit : function (e) {
         e.preventDefault();
 
+        channelsView._channelListDS.online(false);
+
         $("#channels-listview").kendoMobileListView({
             dataSource: channelsView._channelListDS,
             template: $("#channels-listview-template").html(),
@@ -932,78 +934,13 @@ var channelView = {
         });
 
 
-        //channelView.openEditor(); // Create the kendo editor instance
-
-
-       /* $.browser = {webkit: true};
-
-        $('#messageTextArea').textntags({
-            onDataRequest: function (mode, query, triggerChar, callback) {
-                var data = [
-                    { id:1, name:'call',  'img':'images/icon-smart.svg', 'type':'meeting' },
-                    { id:2, name:'meet', 'img':'images/icon-smart.svg', 'type':'meeting' },
-                    { id:3, name:'conference',   'img':'images/icon-smart.svg', 'type':'meeting'},
-                    { id:4, name:'breakfast',   'img':'images/icon-smart.svg', 'type':'meeting'},
-                    { id:5, name:'lunch',   'img':'images/icon-smart.svg', 'type':'meeting'},
-                    { id:6, name:'dinner',   'img':'images/icon-smart.svg', 'type':'meeting'}
-                ];
-
-                query = query.toLowerCase();
-                var found = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query) > -1; });
-
-                callback.call(this, found);
-            }
-        });
-*/
-
-        /*$("#channelMembers-listview").kendoMobileListView({
-            dataSource: currentChannelModel.membersDS,
-            template: $("#membersTemplate").html(),
-            click: function (e) {
-                var member = e.dataItem;
-                currentChannelModel.currentMember = member;
-                // display message actionsheet
-                $("#memberActions").data("kendoMobileActionSheet").open();
-            }
-        });*/
     },
 
     toggleTool: function(e){
- /*   	var tool = e.button[0].dataset['tool'];
-    	var editor = $("#messageTextArea").data("kendoEditor");
-    	editor.exec(tool);
-   	
-    	// If a togglable tool, reflect state
-    	if (tool !== 'indent' && tool !== 'outdent'){
-    		
-    		var toolState = editor.state(tool);
-    		var $currentBtn = $(e.target[0]);
-    		var $currentBtnImg = $currentBtn.closest("img");
-    		var toolCount = $("#chat-editorBtn").kendoMobileButton("badge");
-    		toolCount = parseInt(toolCount);
-    	
-    		if(toolState){
-    			$currentBtn.addClass("activeTool");
-    			toolCount = toolCount + 1;
-    		} else {
-    			$currentBtn.removeClass("activeTool");
-    			toolCount = toolCount - 1;
-    		}
-    	
-    		$("#chat-editorBtn").kendoMobileButton({badge: toolCount});
-    	}
-    	
-*/    },
+    },
 
     openEditor : function () {
-        //autosize($('#messageTextArea'));
-        //$("#messageComposeToolbar").removeClass('hidden');
-      /*  $('#messageTextArea').on('touchstart', function () {
-            $(this).focus();
-            var focus =  $('#messageTextArea').redactor('focus.is');
-        });
-*/
-        $('#messageTextArea').redactor({
+           $('#messageTextArea').redactor({
             minHeight: 36,
             maxHeight: 360,
             focus: true,
