@@ -65,11 +65,8 @@ var contactModel = {
 
         // Reflect any core contact changes to contactList
         contactModel.contactsDS.bind("change", function (e) {
-
             // Rebuild the contactList cache when the underlying list changes: add, delete, update...
             contactModel.buildContactList();
-
-
 
         });
 
