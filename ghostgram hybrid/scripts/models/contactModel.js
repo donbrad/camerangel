@@ -363,7 +363,7 @@ var contactModel = {
                     isBlocked: contact.isBlocked
                 };
             }
-            var tag = {type: 'contact', tagname: ux.returnUXPrimaryName(contact.name, contact.alias), name: contact.name, uuid: contact.uuid, contactUUID: contact.contactUUID };
+            var tag = { tagname: ux.returnUXPrimaryName(contact.name, contact.alias), name: contact.name, uuid: contact.uuid, contactUUID: contact.contactUUID };
             contactModel.contactTagsDS.add(tag);
             contactModel.contactListDS.add(contact);
         }
