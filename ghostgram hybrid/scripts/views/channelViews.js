@@ -1181,11 +1181,10 @@ var channelView = {
             channelView.messagesDS.data([]);
             var recalledMessages = channelModel.getRecalledMessages(channelUUID), hasRecalled = false;
 
-            if (recalledMessages === undefined || recalledMessages === null) {
-                hasRecalled = false;
-            } else {
+            if (recalledMessages.length > 0) {
                 hasRecalled = true;
             }
+            
             groupChannel.getMessageHistory(function (messages) {
                 var filteredMessages = [];
 

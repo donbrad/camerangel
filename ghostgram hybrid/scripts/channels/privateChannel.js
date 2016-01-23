@@ -278,9 +278,11 @@ var privateChannel = {
         var messages = dataSource.view();
         var clearMessageArray = [];
 
+        // Does this channel have recalled messages
         var recalledMessages = channelModel.getRecalledMessages(privateChannel.channelId);
 
-        if (recalledMessages !== null) {
+        if (recalledMessages.length > 0) {
+            // Has recalled messages -- remove by brute force
             for(var i = 0; i < messages.length; i++) {
                 var msg = messages[i];
                 if (!channelModel.isMessageRecalled(msg.msgID))
@@ -289,6 +291,7 @@ var privateChannel = {
             if (callBack)
                 callBack(clearMessageArray);
         } else {
+            // No recalled messages so return full list
             if (callBack)
                 callBack(messages);
         }
