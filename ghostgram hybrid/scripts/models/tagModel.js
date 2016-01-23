@@ -49,7 +49,37 @@ var tagModel = {
     },
 
     addTag : function (tag) {
+        var Tags = Parse.Object.extend(tagModel._parseClass);
+        var tagParse = new Tags();
 
+        tagParse.setACL(userModel.parseACL);
+
+        tagParse.set('version', noteModel._version);
+        tagParse.set('uuid', tag.uuid);
+        tagParse.set('name', tag.name);
+        tagParse.set('type', tag.type);
+        tagParse.set('alias', tag.alias);
+        tagParse.set('description', tag.description);
+        tagParse.set('ownerUUID', tag.ownerUUID);
+        tagParse.set('category', tag.category);
+
+        var tagObj = tagParse.toJSON();
+
+        tagModel.tagsDS.add(tagObj);
+        tagModel.tagsDS.sync();
+
+        tagParse.save(null, {
+            success: function(tagIn) {
+
+                // Execute any logic that should take place after the object is saved.
+
+            },
+            error: function(contact, error) {
+                // Execute any logic that should take place if the save fails.
+                // error is a Parse.Error with an error code and message.
+                handleParseError(error);
+            }
+        });
     },
 
     createTag : function () {
