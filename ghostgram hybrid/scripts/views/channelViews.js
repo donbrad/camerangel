@@ -1179,14 +1179,28 @@ var channelView = {
 
             mobileNotify("Loading Messages...");
             channelView.messagesDS.data([]);
+            var recalledMessages = channelModel.getRecalledMessages(channelUUID), hasRecalled = false;
+
+            if (recalledMessages === undefined || recalledMessages === null) {
+                hasRecalled = false;
+            } else {
+                hasRecalled = true;
+            }
             groupChannel.getMessageHistory(function (messages) {
                 var filteredMessages = [];
 
                 for (var i=0; i<messages.length; i++) {
                     var message = messages[i];
-                    if (!channelView.isDuplicateMessage(message.msgID) && !channelModel.isMessageRecalled(message.msgID)) {
-                        filteredMessages.push(message);
+                    if (hasRecalled) {
+                        if (!channelView.isDuplicateMessage(message.msgID) && !channelModel.isMessageRecalled(message.msgID)) {
+                            filteredMessages.push(message);
+                        }
+                    } else {
+                        if (!channelView.isDuplicateMessage(message.msgID)) {
+                            filteredMessages.push(message);
+                        }
                     }
+
                 }
                 channelView.preprocessMessages(filteredMessages);
                 channelView.messagesDS.data(filteredMessages);

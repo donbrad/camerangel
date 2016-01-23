@@ -278,16 +278,25 @@ var privateChannel = {
         var messages = dataSource.view();
         var clearMessageArray = [];
 
-        for(var i = 0; i < messages.length; i++) {
-            var msg = messages[i];
-            if (!channelModel.isMessageRecalled(msg.msgID))
-                clearMessageArray.push(msg);
+        var recalledMessages = channelModel.getRecalledMessages(privateChannel.channelId);
+
+        if (recalledMessages !== null) {
+            for(var i = 0; i < messages.length; i++) {
+                var msg = messages[i];
+                if (!channelModel.isMessageRecalled(msg.msgID))
+                    clearMessageArray.push(msg);
+            }
+            if (callBack)
+                callBack(clearMessageArray);
+        } else {
+            if (callBack)
+                callBack(messages);
         }
+
 
         dataSource.filter(queryCache);
 
-        if(callBack)
-            callBack(clearMessageArray);
+
 
         userDataChannel.removeExpiredMessages();
 

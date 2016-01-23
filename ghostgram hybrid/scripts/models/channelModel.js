@@ -39,6 +39,8 @@ var channelModel = {
 
     init :  function () {
 
+        channelModel.recalledMessagesDS.online(false);
+
         channelModel.activeChannels = [];
         // Reflect any core contact changes to contactList
         channelModel.channelsDS.bind("change", function (e) {
@@ -196,6 +198,12 @@ var channelModel = {
         return(channel);
     },
 
+    getRecalledMessages : function (channelId) {
+        var messages = channelModel.queryRecalledMessages({ field: "channelId", operator: "eq", value: channelId });
+
+        return(messages);
+    },
+
     isMessageRecalled : function (msgID) {
         var message = channelModel.queryRecalledMessage({ field: "msgID", operator: "eq", value: msgID });
 
@@ -215,7 +223,7 @@ var channelModel = {
 
         if (channel === undefined)
             return;
-
+        ;
         channelModel.recalledMessagesDS.add(recallObj);
         if (channelId === channelView._channelId) {
             // need to delete from channel view too
@@ -685,7 +693,7 @@ var channelModel = {
         var channelObj = channel.toJSON();
         channelModel.channelsDS.add(channelObj);
         channelModel.channelsDS.sync();
-       
+
         channel.setACL(userModel.parseACL);
         channel.save(null, {
             success: function(channel) {
