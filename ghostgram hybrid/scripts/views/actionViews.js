@@ -897,17 +897,17 @@ var smartNoteView = {
 
         $('#smartNoteView-content').redactor({
             minHeight: 240,
-            maxHeight: 360,
+            maxHeight: 420,
             focus: true,
-            placeholder: 'Message....',
+            placeholder: 'Note ...',
             /* callbacks: {
              focus: function(e)
              {
              $('#messageTextArea').focus();
              }
              },*/
-            buttons: [ 'bold', 'italic', 'lists','horizontalrule'],
-            toolbarExternal: 'smartNoteView-contentToolbar'
+            buttons: [ 'bold', 'italic', 'lists', 'horizontalrule'],
+            toolbarExternal: '#smartNoteView-contentToolbar'
         });
         if (callback === undefined) {
             callback = null;
