@@ -19,6 +19,14 @@ var contactModel = {
     }),
 
 
+    contactTagsDS: new kendo.data.DataSource({
+        offlineStorage: 'contactTags',
+        sort: {
+            field: "name",
+            dir: "asc"
+        }
+    }),
+
     deviceContactsDS: new kendo.data.DataSource({
         sort: {
             field: "name",
@@ -215,6 +223,7 @@ var contactModel = {
         query.find({
             success: function(collection) {
                 var models = [];
+                contactModel.contactTagsDS([]);
                 for (var i = 0; i < collection.length; i++) {
                     var model = collection[i];
                     var dirty = false;
@@ -296,6 +305,8 @@ var contactModel = {
                     if (dirty)
                         model.save();
                     var data = model.toJSON();
+                    var tag = {type: 'contact', tagname: ux.returnUXPrimaryName(data.name, data.alias), name: data.name, uuid: data.uuid, contactUUID: data.contactUUID };
+                    contactModel.contactTagsDS.add(tag);
                     models.push(data);
                 }
                 deviceModel.setAppState('hasContacts', true);
