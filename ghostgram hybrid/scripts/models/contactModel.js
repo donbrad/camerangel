@@ -224,7 +224,6 @@ var contactModel = {
         query.find({
             success: function(collection) {
                 var models = [];
-                contactModel.contactTagsDS([]);
                 for (var i = 0; i < collection.length; i++) {
                     var model = collection[i];
                     var dirty = false;
