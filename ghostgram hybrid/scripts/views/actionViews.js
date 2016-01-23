@@ -9,7 +9,7 @@
 
 'use strict';
 
-//Todo:  rename to smartEventView after jordan checks in
+
 var smartEventView = {
     _activeObject : new kendo.data.ObservableObject(),
     _date : new Date(),
@@ -230,6 +230,7 @@ var smartEventView = {
         // set event times
         var thisEvent = smartEventView._activeObject;
         $('#smartEventView-placesearch').val('');
+
         //$('#smartEventView-datestring').val(new Date(thisEvent.date).toString("MMM dd, yyyy h:mm tt"));
         $('#smartEventView-date').val(new Date(thisEvent.date).toString("MMM dd, yyyy"));
         $('#smartEventView-time').val(new Date(thisEvent.date).toString("h:mm tt"));
@@ -406,7 +407,7 @@ var smartEventView = {
 
             $("#smartEventView-time").on('blur', function () {
                 var timeIn =  $("#smartEventView-time").val();
-                if (timeIn.length > 3) {
+                if (timeIn.length > 2) {
 
                     var time = Date.parse(timeIn);
                     var timeComp = new Date(time).toString("h:mm tt");
