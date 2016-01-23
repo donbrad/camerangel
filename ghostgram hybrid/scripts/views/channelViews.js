@@ -1135,7 +1135,7 @@ var channelView = {
         channelView._channel = thisChannel;
 
         if (thisChannel.isPlace !== undefined && thisChannel.isPlace === true) {
-          channelView.isPlaceChat = true;
+            channelView.isPlaceChat = true;
             $('#channel-titleBtn .icon-header').removeClass('hidden');
         } else {
             channelView.isPlaceChat = false;
