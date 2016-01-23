@@ -846,6 +846,10 @@ var smartEventView = {
 
 
         var title = $("#smartEventView-title").val() ;
+        if (title === null || title.length < 3) {
+            mobileNotify ('Events must have a valid title!');
+            return;
+        }
 
         //var finalDateStr = $("#smartEventView-datestring").val();
         var meetingDate = $("#smartEventView-date").val();
@@ -853,12 +857,11 @@ var smartEventView = {
         var finalDateStr = meetingDate + " " + meetingTime;
 
         var saveDate = new Date(finalDateStr);
-
-        if (title === null || title.length < 3) {
-            mobileNotify ('Events must have a valid title!');
+        
+        if (saveDate === null) {
+            mobileNotify (finalDateStr + " is not a valid date!");
             return;
         }
-        
 
         thisObj.set('date', saveDate);
          thisObj.set('senderName', userModel.currentUser.name);
