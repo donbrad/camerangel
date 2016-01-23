@@ -344,8 +344,29 @@ var smartEventView = {
 
     },
 
-    restoreAndOpenModal : function () {
+    validDateTime : function () {
+        var timeIn =  $("#smartEventView-time").val(), dateIn = $("#smartEventView-time").val();
 
+        if (timeIn === null || dateIn === null) {
+            return (false);
+        }
+        var time = Date.parse(timeIn);
+
+        var date = Date.parse(dateIn);
+
+        if (time === null && date === null) {
+            mobileNotify("Please enter a valid Date and Time");
+            return(false);
+        } else if (time === null) {
+            mobileNotify("Please enter a valid Time");
+        } else if (date === null) {
+            mobileNotify("Please enter a valid Date");
+        } else {
+            var timeComp = new Date(time).toString("h:mm tt");
+            var dateCome = new Date(date).toString('MMM dd, yyyy');
+            smartEventView.updateDateString();
+            return (true);
+        }
     },
 
     openModal: function (actionObj, callback) {
@@ -814,6 +835,12 @@ var smartEventView = {
 
 
     onSaveEvent : function (e) {
+
+
+        if (!smartEventView.validDateTime()) {
+            return;
+        }
+
         var thisObj = smartEventView._activeObject;
         
 
@@ -831,11 +858,7 @@ var smartEventView = {
             mobileNotify ('Events must have a valid title!');
             return;
         }
-
-        if (saveDate === null) {
-            mobileNotify (finalDateStr + " is not a valid date!");
-            return;
-        }
+        
 
         thisObj.set('date', saveDate);
          thisObj.set('senderName', userModel.currentUser.name);
