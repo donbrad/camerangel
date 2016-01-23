@@ -895,6 +895,20 @@ var smartNoteView = {
             smartNoteView._activeObject.set('expiration', actionObj.expiration);
         }
 
+        $("#smartNoteView-tags").kendoMultiSelect({
+            autoClose: false,
+            dataTextField: "name",
+            dataValueField: "uuid",
+            change: function (e) {
+                var value = this.value();
+            },
+            select : function (e) {
+                var item = e.item;
+                var text = item.text();
+            },
+            dataSource: contactModel.contactsDS
+        });
+
         $('#smartNoteView-content').redactor({
             minHeight: 240,
             maxHeight: 420,
