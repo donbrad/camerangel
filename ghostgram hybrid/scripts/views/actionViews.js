@@ -872,6 +872,7 @@ var smartNoteView = {
     _isInited : false,
     _callback : null,
 
+
     onInit: function (e) {
         _preventDefault(e);
 
@@ -897,7 +898,7 @@ var smartNoteView = {
 
         $("#smartNoteView-tags").kendoMultiSelect({
             autoClose: false,
-            dataTextField: "name",
+            dataTextField: "mapname",
             dataValueField: "uuid",
             change: function (e) {
                 var value = this.value();
@@ -906,7 +907,7 @@ var smartNoteView = {
                 var item = e.item;
                 var text = item.text();
             },
-            dataSource: contactModel.contactsDS
+            dataSource: contactModel.contactTagsDS
         });
 
         $('#smartNoteView-content').redactor({
