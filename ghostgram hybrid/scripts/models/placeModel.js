@@ -62,7 +62,7 @@ var placesModel = {
     fetch : function () {
         var PlaceModel = Parse.Object.extend("places");
         var query = new Parse.Query(PlaceModel);
-        placeModel.placesTagsDS.data([]);
+
         query.limit(1000);
 
         query.find({
@@ -123,6 +123,8 @@ var placesModel = {
      },
 
     buildPlaceLists : function () {
+        placesModel.placesTagsDS.data([]);
+        placesView.placeListDS.data([]);
         var placeList = placesView.placesDS.data();
         placesView.placeListDS.data(placeList);
 
