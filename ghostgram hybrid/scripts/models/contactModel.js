@@ -61,6 +61,7 @@ var contactModel = {
     init : function () {
 
         contactModel.contactListDS.online(false);
+        contactModel.contactTagsDS.online(false);
 
         // Reflect any core contact changes to contactList
         contactModel.contactsDS.bind("change", function (e) {
@@ -305,15 +306,14 @@ var contactModel = {
                     if (dirty)
                         model.save();
                     var data = model.toJSON();
-                    var tag = {type: 'contact', tagname: ux.returnUXPrimaryName(data.name, data.alias), name: data.name, uuid: data.uuid, contactUUID: data.contactUUID };
-                    contactModel.contactTagsDS.add(tag);
+
                     models.push(data);
                 }
                 deviceModel.setAppState('hasContacts', true);
                 contactModel.contactsDS.data(models);
 
                 // Update contactlistDs and get latest status for contacts
-                contactModel.contactListDS.data(models);
+               // contactModel.contactListDS.data(models);
 
                 contactModel.buildContactList();
 
@@ -341,11 +341,12 @@ var contactModel = {
     // Build an identity list for contacts indexed by contactUUID
     buildContactList : function () {
         var array = contactModel.contactsDS.data();
-
+        contactModel.contactTagsDS.data([]);
+        contactModel.contactListDS.data([]);
         contactModel.contactList = [];
 
         for (var i=0; i<array.length; i++) {
-            var contact = array[i];
+            var contact = (array[i]).toJSON();
             if (contact.contactUUID !== undefined && contact.contactUUID !== null) {
                 contactModel.contactList[contact.contactUUID] = {
                     uuid: contact.uuid,
@@ -362,7 +363,9 @@ var contactModel = {
                     isBlocked: contact.isBlocked
                 };
             }
-
+            var tag = {type: 'contact', tagname: ux.returnUXPrimaryName(contact.name, contact.alias), name: contact.name, uuid: contact.uuid, contactUUID: contact.contactUUID };
+            contactModel.contactTagsDS.add(tag);
+            contactModel.contactListDS.add(contact);
         }
 
     },
