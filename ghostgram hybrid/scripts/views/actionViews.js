@@ -586,7 +586,7 @@ var smartEventView = {
             var place = placesModel.getPlaceModel(event.placeId);
             if (place !== undefined) {
 
-                var placeId = packParameter(event.placeId), channelUrl = packParameter('channel?'+channelView._channelId);
+                var placeId = packParameter(event.placeId), channelUrl = packParameter('channel?channelId='+channelView._channelId);
                 APP.kendo.navigate('#placeView?place=' + placeId + '&returnview=' + channelUrl);
 
             }
