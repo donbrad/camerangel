@@ -900,8 +900,8 @@ var smartNoteView = {
             autoClose: false,
             dataTextField: "tagname",
             dataValueField: "uuid",
-            itemTemplate: '<div><span>#:data.tagname# </span> <span style="font-size: 9px">#:data.type#</span></div>' ,
-            tagTemplate: '<span><img height="24" src="#:data.icon#"/> &nbsp; #:data.tagname#</span>',
+            itemTemplate: '<div style="border: steelblue;"><span>#:data.tagname# - #:data.name# <img height="18" src="#:data.icon#"/></span></div>' ,
+            tagTemplate: '<span><img height="18" src="#:data.icon#"/> &nbsp; #:data.tagname#</span>',
             change: function (e) {
                 var value = this.value();
             },
