@@ -898,8 +898,10 @@ var smartNoteView = {
 
         $("#smartNoteView-tags").kendoMultiSelect({
             autoClose: false,
-            dataTextField: "mapname",
+            dataTextField: "tagname",
             dataValueField: "uuid",
+            itemTemplate: '<div><span>#:data.tagname# </span> <span style="font-size: 9px">#:data.type#</span></div>' ,
+            tagTemplate: '<span><img height="24" src="#:data.icon#"/> &nbsp; #:data.tagname#</span>',
             change: function (e) {
                 var value = this.value();
             },
