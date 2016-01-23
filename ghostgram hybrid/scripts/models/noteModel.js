@@ -14,7 +14,7 @@ var noteModel = {
     _places: 'place',
     _group: 'group',
     _parseClass : 'note',
-
+    _version: 1,
 
     notesDS: new kendo.data.DataSource({
         offlineStorage: "note",
@@ -79,17 +79,17 @@ var noteModel = {
 
     fetch: function () {
         var NoteModel = Parse.Object.extend(noteModel._parseClass);
-
+        var query = new Parse.Query(NoteModel);
+        query.limit(1000);
         query.find({
             success: function(collection) {
                 var userNotifications = [];
                 for (var i = 0; i < collection.length; i++) {
                     var object = collection[i];
-
                     var data = object.toJSON();
 
                    noteModel.notesDS.add(data);
-                    deviceModel.setAppState('notesFetched', true);
+                    deviceModel.setAppState('hasNotes', true);
                 }
 
             },
@@ -128,8 +128,6 @@ var noteModel = {
             success: function(noteIn) {
 
                 // Execute any logic that should take place after the object is saved.
-                photoModel.parsePhoto = photoIn;
-
 
             },
             error: function(contact, error) {
@@ -164,5 +162,7 @@ var noteModel = {
         note.expirationDate = d;
         note.isPrivate = isPrivate;
         note.isExpired = false;
+
+        return(note);
     }
 };

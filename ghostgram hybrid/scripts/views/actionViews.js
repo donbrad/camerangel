@@ -872,11 +872,29 @@ var smartNoteView = {
     _isInited : false,
     _callback : null,
 
-
     onInit: function (e) {
         _preventDefault(e);
+    },
 
+    findTag: function (tag) {
+        return(smartNoteView.query({ field: "tagname", operator: "eq", value: tag }));
+    },
 
+    queryTag : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = contactModel.contactTagsDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var contact = view[0];
+
+        dataSource.filter(cacheFilter);
+
+        return(contact);
     },
 
     openModal: function (actionObj, callback) {
@@ -904,6 +922,7 @@ var smartNoteView = {
             tagTemplate: '<span><img height="18" src="#:data.icon#"/> &nbsp; #:data.tagname#</span>',
             change: function (e) {
                 var value = this.value();
+
             },
             select : function (e) {
                 var item = e.item;
