@@ -12,12 +12,6 @@ var placesView = {
     _viewInitialized : false,
     isActive : false,
 
-    placeListDS: new kendo.data.DataSource({
-        sort: {
-            field: "distance",
-            dir: "asc"
-        }
-    }),
 
     onInit: function (e) {
         _preventDefault(e);
@@ -25,7 +19,7 @@ var placesView = {
         placesModel.locatorActive = false;
 
         $("#places-listview").kendoMobileListView({
-            dataSource: placesView.placeListDS,
+            dataSource: placesModel.placeListDS,
             template: $("#placesTemplate").html(),
             dataBound: function(e) {
                 ux.checkEmptyUIState(placesModel.placesDS, "#placeListDiv >");
@@ -64,23 +58,6 @@ var placesView = {
 
     },
 
-    queryPlace : function (query) {
-        if (query === undefined)
-            return(undefined);
-        var dataSource = placesView.placeListDS;
-        var cacheFilter = dataSource.filter();
-        if (cacheFilter === undefined) {
-            cacheFilter = {};
-        }
-        dataSource.filter( query);
-        var view = dataSource.view();
-        var place = view[0];
-
-        dataSource.filter(cacheFilter);
-
-        return(place);
-    },
-
 
     editPlaceBtn: function(e){
         _preventDefault(e);
@@ -115,7 +92,7 @@ var placesView = {
             $('#places .gg_mainSearchInput').on('input', function() {
                 var query = this.value;
                 if (query.length > 0) {
-                    placesView.placeListDS.filter(  {"logic":"or",
+                    placesModel.placeListDS.filter(  {"logic":"or",
                         "filters":[
                             {
                                 "field":"address",
@@ -166,7 +143,7 @@ var placesView = {
 					
 					// reset data filters
 
-                    placesView.placeListDS.filter([]);
+                    placesModel.placeListDS.filter([]);
 
                     // hide clear btn
                     $(this).addClass('hidden');
@@ -175,7 +152,7 @@ var placesView = {
                     $("#quickFindPlaceBtn").addClass("hidden");
 			});
 
-            placesView.placeListDS.data(placesModel.placesDS.data());
+            placesModel.placeListDS.data(placesModel.placesDS.data());
             placesView.computePlaceDSDistance();
 
 
@@ -222,18 +199,18 @@ var placesView = {
             var newPlaces = e.items;
             for (var a=0; a< newPlaces.length; a++) {
                 var newPlace = newPlaces[a];
-                var place = placesView.queryPlace({ field: "uuid", operator: "eq", value: newPlace.uuid });
+                var place = placeModel.queryPlaceList({ field: "uuid", operator: "eq", value: newPlace.uuid });
                 if (place === undefined) {
-                    placesView.placeListDS.add(newPlace);
-                    placesView.placeListDS.sync();
+                    placesModel.placeListDS.add(newPlace);
+                    placesModel.placeListDS.sync();
                 }
             }
 
         } else if (e.action === 'remove') {
             var remPlaces = e.items;
             for (var r=0; r< remPlaces.length; r++) {
-                placesView.placeListDS.remove(remPlaces[r]);
-                placesView.placeListDS.sync();
+                placesModel.placeListDS.remove(remPlaces[r]);
+                placesModel.placeListDS.sync();
             }
 
         } else if (e.action === 'itemchange') {
@@ -241,7 +218,7 @@ var placesView = {
             var changes = e.items,
             newItem = changes[0];
 
-            var oldPlace = placesView.queryPlace({ field: "uuid", operator: "eq", value: newItem.uuid });
+            var oldPlace = placeModel.queryPlaceList({ field: "uuid", operator: "eq", value: newItem.uuid });
             var newValue = newItem[field];
 
             if (oldPlace !== undefined) {
@@ -1042,8 +1019,7 @@ var addPlaceView = {
 
         var place = addPlaceView._activePlace;
         placesModel.addPlace(place, createChatFlag, function (placeObj) {
-
-
+            
             mobileNotify(placeObj.name + " added to your Places...");
 
             addPlaceView.onDone();

@@ -96,6 +96,7 @@ var contactModel = {
                         break;
 
                     case "add" :
+                        var contact = e.items[0];
                         // add to contactlist and contacttags
                         contactModel.contactListDS.add(contact);
                         var tag = {
