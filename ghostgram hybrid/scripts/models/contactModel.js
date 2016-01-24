@@ -65,8 +65,7 @@ var contactModel = {
 
         // Reflect any core contact changes to contactList
         contactModel.contactsDS.bind("change", function (e) {
-            // Rebuild the contactList cache when the underlying list changes: add, delete, update...
-            //contactModel.buildContactList();
+
 
             var changedContacts = e.items;
 
@@ -76,6 +75,19 @@ var contactModel = {
                         var field  =  e.field;
                         var contact = e.items[0], contactId = contact.uuid;
                         var contactList = contactModel.findContactListUUID(contactId);
+                        // if the contact's name or alias has been updated, need to update the tag...
+                        if (field === 'name') {
+                            var newName = ux.returnUXPrimaryName(contact.name, contact.alias);
+                            var contactTag = contactModel.findContactTag(contact.uuid);
+                            contactTag.alias = newName;
+                            contactTag.name = contact.name;
+                        }
+                        if (field === 'alias') {
+                            var newName = ux.returnUXPrimaryName(contact.name, contact.alias);
+                            var contactTag = contactModel.findContactTag(contact.uuid);
+                            contactTag.alias = newName;
+                            contactTag.alias = contact.alias;
+                        }
                         contactList[field] = contact [field];
                         break;
 
@@ -84,7 +96,17 @@ var contactModel = {
                         break;
 
                     case "add" :
-                        // add to contactlist
+                        // add to contactlist and contacttags
+                        contactModel.contactListDS.add(contact);
+                        var tag = {
+                            type: 'contact',
+                            tagname: ux.returnUXPrimaryName(contact.name, contact.alias),
+                            name: contact.name,
+                            uuid: contact.uuid,
+                            contactUUID: contact.contactUUID,
+                            icon: 'images/icon-contact.svg'
+                        };
+                        contactModel.contactTagsDS.add(tag);
                          break;
                 }
             }
@@ -284,7 +306,6 @@ var contactModel = {
         return(contactModel.contactList[contactUUID]);
     },
 
-
     totalContacts : function () {
         if (contactModel.contactsDS !== undefined) {
             return(contactModel.contactsDS.total());
@@ -319,6 +340,28 @@ var contactModel = {
         return(contact);
     },
 
+    findContactTag : function (uuid) {
+        var contact = contactModel.queryContactTag({ field: "uuid", operator: "eq", value: uuid });
+
+        return (contact);
+    },
+
+    queryContactTag : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = contactModel.contactTagsDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var contact = view[0];
+
+        dataSource.filter(cacheFilter);
+
+        return(contact);
+    },
     queryContactList : function (query) {
         if (query === undefined)
             return(undefined);
