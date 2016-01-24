@@ -79,9 +79,9 @@ var contactModel = {
 
     },
 
-    processChangedContacts : function (contacts) {
+    processContactUpdates : function (contacts) {
         for (var i=0; i<contacts.length; i++) {
-            
+
         }
     },
 
