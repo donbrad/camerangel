@@ -204,7 +204,7 @@ var placesModel = {
     },
 
     findPlaceListUUID : function (uuid) {
-        var placeList = placesModel.queryPlaceList({ field: "uuid", operator: "eq", value: placeId });
+        var placeList = placesModel.queryPlaceList({ field: "uuid", operator: "eq", value: uuid });
         return(placeList);
     },
 

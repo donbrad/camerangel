@@ -1019,7 +1019,7 @@ var addPlaceView = {
 
         var place = addPlaceView._activePlace;
         placesModel.addPlace(place, createChatFlag, function (placeObj) {
-            
+
             mobileNotify(placeObj.name + " added to your Places...");
 
             addPlaceView.onDone();
