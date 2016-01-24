@@ -70,8 +70,23 @@ var contactModel = {
 
             var changedContacts = e.items;
 
-            if (changedContacts.length > 0) {
-                contactModel.processContactUpdates(changedContacts);
+            if (e.action !== undefined) {
+                switch (e.action) {
+                    case "itemchange" :
+                        var field  =  e.field;
+                        var contact = e.items[0], contactId = contact.uuid;
+                        var contactList = contactModel.findContactListUUID(contactId);
+                        contactList[field] = contact [field];
+                        break;
+
+                    case "remove" :
+                        // delete from contact list
+                        break;
+
+                    case "add" :
+                        // add to contactlist
+                         break;
+                }
             }
 
 
