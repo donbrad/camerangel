@@ -66,151 +66,24 @@ var contactModel = {
         // Reflect any core contact changes to contactList
         contactModel.contactsDS.bind("change", function (e) {
             // Rebuild the contactList cache when the underlying list changes: add, delete, update...
-            contactModel.buildContactList();
+            //contactModel.buildContactList();
+
+            var changedContacts = e.items;
+
+            if (changedContacts.length > 0) {
+                contactModel.processContactUpdates(changedContacts);
+            }
+
 
         });
 
-        /*  contactModel.contactsDS = parseKendoDataSourceFactory.make('contacts',
-          {
-                id: 'id',
-                fields: {
-                    uuid: {
-                        editable: false,
-                        nullable: false
-                    },
-                    category: {
-                        editable: true,
-                        nullable: false,
-                        defaultValue: 'new'
-                    },
-                    address: {
-                        editable: true,
-                        nullable: true
-                    },
-                    name: {
-                        editable: true,
-                        nullable: false
-                    },
-                    alias: {
-                        editable: true,
-                        nullable: true
-                    },
-                    email: {
-                        editable: true,
-                        nullable: false
-                    },
-                    phone: {
-                        editable: true,
-                        nullable: false
-                    },
-                    location: {
-                        editable: true,
-                        nullable: true
-                    },
-                    photo: {
-                        editable: true,
-                        nullable: true
-                    },
-                    parsePhoto: {
-                        editable: false,
-                        nullable: true,
-                        type: 'Parse.File'
-                    },
-                    message: {
-                        editable: true,
-                        nullable: true
-                    },
-                    contactEmail: {
-                        editable: true,
-                        nullable: true
-                    },
-                    contactPhone: {
-                        editable: true,
-                        nullable: true
-                    },
-                    contactUUID: {
-                        editable: true,
-                        nullable: true
-                    },
-                    publicKey: {
-                        editable: true,
-                        nullable: true
-                    },
-                    group: {
-                        editable: true,
-                        nullable: true
-                    },
-                    statusMessage: {
-                        editable: true,
-                        nullable: true
-                    },
-                    currentPlace: {
-                        editable: true,
-                        nullable: true
-                    },
-                    currentPlaceUUID: {
-                        editable: true,
-                        nullable: true
-                    },
-                    lastInvite: {
-                        editable: true,
-                        type: 'number'
-                    },
-                    lastStatusFetch: {
-                        editable: true,
-                        type: 'number'
-                    },
-                    priority: {
-                        editable: true,
-                        type: 'number',
-                        default: 0
-                    },
-                    phoneVerified: {
-                        editable: true,
-                        type: 'boolean',
-                        default: false
-                    },
-                    emailValidated: {
-                        editable: true,
-                        type: 'boolean',
-                        default: false
-                    },
-                    isAvailable: {
-                        editable: true,
-                        type: 'boolean'
-                    },
-                    isVisible: {
-                        editable: true,
-                        type: 'boolean',
-                        default: true
-                    },
-                    inviteSent: {
-                        editable: true,
-                        type: 'boolean',
-                        default: false
-                    },
-                    isBlocked: {
-                        editable: true,
-                        type: 'boolean',
-                        default: false
-                    },
-                    isFavorite: {
-                        editable: true,
-                        type: 'boolean',
-                        default: false
-                    }
-
-                }
-            },
-            false,
-            { // SortBy
-                field: "name",
-                dir: "asc"
-            },
-            undefined // group by category: new, member, invited
-            )*/
     },
 
+    processChangedContacts : function (contacts) {
+        for (var i=0; i<contacts.length; i++) {
+            
+        }
+    },
 
 
     fetch : function () {
@@ -471,18 +344,6 @@ var contactModel = {
 
     deleteContact : function (contactId) {
         var contact = contactModel.queryContact({ field: "uuid", operator: "eq", value: contactId });
-
-       /* var dataSource = contactModel.contactsDS;
-        var uuid = contactId;
-
-        var queryCache =  dataSource.filter();
-        if (queryCache === undefined) {
-            queryCache = {};
-        }
-        dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
-        var view = dataSource.view();
-        var contact = view[0];
-        dataSource.filter(queryCache);*/
 
         if (contact !== undefined) {
             contact.set('isDeleted', true);
@@ -849,38 +710,28 @@ var contactModel = {
 
     // force defined and === true overrides the timer
     updateContactListStatus : function (force) {
-
-       /* var time = ggTime.currentTimeInSeconds();
-
-        // Only sync contacts every 15 minutes
-        if (time < contactModel.lastSyncTime + 300) {
-            if (force === undefined || force === false)
-                return;
-        }
-
-        contactModel.lastSyncTime = time;
-*/
-
-
+        var time = ggTime.currentTimeInSeconds();
         var index = 0, length = contactModel.contactListDS.total(), array = contactModel.contactListDS.data();
-
         if (length === 0)
             return;
 
         for (var i=0; i<length; i++) {
             var contact = contactModel.contactListDS.at(i);
-            var contactId = contact.contactUUID;
-            if (contactId !== undefined && contactId !== null) {
-                contactModel.getContactStatusObject(contactId, function(user) {
-                    if (user !== undefined && user !== null) {
-                        var userId = user.get('userUUID');
-                        var contact = contactModel.findContactList(userId);
-                        contact.set('statusMessage', user.get('statusMessage'));
-                        contact.set('currentPlace', user.get('currentPlace'));
-                        contact.set('currentPlaceId', user.get('currentPlaceId'));
-                        contact.set('isAvailable', user.get('isAvailable'));
-                    }
-                });
+            if (contact.lastUpdate === undefined || contact.lastUpdate > time + 900) {
+                var contactId = contact.contactUUID;
+                if (contactId !== undefined && contactId !== null) {
+                    contactModel.getContactStatusObject(contactId, function (user) {
+                        if (user !== undefined && user !== null) {
+                            var userId = user.get('userUUID');
+                            var contact = contactModel.findContactList(userId);
+                            contact.set('statusMessage', user.get('statusMessage'));
+                            contact.set('currentPlace', user.get('currentPlace'));
+                            contact.set('currentPlaceId', user.get('currentPlaceId'));
+                            contact.set('isAvailable', user.get('isAvailable'));
+                            contact.set('lastUpdate', ggTime.currentTimeInSeconds());
+                        }
+                    });
+                }
             }
         }
     },
