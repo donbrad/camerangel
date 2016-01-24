@@ -1290,10 +1290,10 @@ var contactActionView = {
                 }
 
 
-
                 // set current place
                 if (thisContact.currentPlace !== "" && thisContact.currentPlace !== undefined) {
                     $("#contactCurrentPlace").text("@" + thisContact.currentPlace);
+                }
             }
         }
 
