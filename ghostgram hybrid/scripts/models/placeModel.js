@@ -46,6 +46,13 @@ var placesModel = {
         }
     }),
 
+    placeListDS: new kendo.data.DataSource({
+        sort: {
+            field: "distance",
+            dir: "asc"
+        }
+    }),
+
     placesTagsDS: new kendo.data.DataSource({
         offlineStorage: "placeTags",
         sort: {
@@ -117,16 +124,60 @@ var placesModel = {
         // Reflect any core contact changes to contactList
         placesModel.placesDS.bind("change", function (e) {
             // Rebuild the contactList cache when the underlying list changes: add, delete, update...
-            placesModel.buildPlaceLists();
+            //placesModel.buildPlaceLists();
+            var changedPlaces = e.items;
+
+            if (e.action !== undefined) {
+                switch (e.action) {
+                    case "itemchange" :
+                        var field  =  e.field;
+                        var place = e.items[0], placeId = place.uuid;
+                        var placeList = placesModel.findPlaceListUUID(placeId);
+                        // if the contact's name or alias has been updated, need to update the tag...
+                        if (field === 'name') {
+                            var newName = ux.returnUXPrimaryName(place.name, place.alias);
+                            var placeTag = placesModel.findPlaceTag(place.uuid);
+                            placeTag.alias = newName;
+                            placeTag.name = contact.name;
+                        }
+                        if (field === 'alias') {
+                            var newName = ux.returnUXPrimaryName(place.name, place.alias);
+                            var placeTag = contactModel.findContactTag(place.uuid);
+                            placeTag.alias = newName;
+                            placeTag.alias = place.alias;
+                        }
+                        placeList[field] = place [field];
+                        break;
+
+                    case "remove" :
+                        // delete from contact list
+                        break;
+
+                    case "add" :
+                        var place = e.items[0];
+                        // add to contactlist and contacttags
+                        placesModel.placeListDS.add(place);
+                        var tag = {
+                            type: 'place',
+                            tagname: ux.returnUXPrimaryName(place.name, place.alias),
+                            name: place.name,
+                            uuid: place.uuid,
+                            icon: 'images/icon-location.svg'
+                        };
+                        contactModel.contactTagsDS.add(tag);
+                        break;
+                }
+            }
+
 
         });
      },
 
     buildPlaceLists : function () {
         placesModel.placesTagsDS.data([]);
-        placesView.placeListDS.data([]);
+        placesModel.placeListDS.data([]);
         var placeList = placesModel.placesDS.data();
-        placesView.placeListDS.data(placeList);
+        placesModel.placeListDS.data(placeList);
 
         for (var i=0; i< placeList.length; i++) {
             var model = (placeList[i]).toJSON();
@@ -152,6 +203,49 @@ var placesModel = {
         return(place);
     },
 
+    findPlaceListUUID : function (uuid) {
+        var placeList = placesModel.queryPlaceList({ field: "uuid", operator: "eq", value: placeId });
+        return(placeList);
+    },
+
+    queryPlaceList : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = placesModel.placeListDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var place = view[0];
+
+        dataSource.filter(cacheFilter);
+
+        return(place);
+    },
+
+    findPlaceTag: function (uuid) {
+        var placeList = placesModel.queryPlaceTag({ field: "uuid", operator: "eq", value: uuid });
+        return(placeList);
+    },
+
+    queryPlaceTag : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = placesModel.placesTagsDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var place = view[0];
+
+        dataSource.filter(cacheFilter);
+
+        return(place);
+    },
     matchLocation: function (lat, lng) {
         var length = placesModel.placesDS.total();
 
@@ -364,8 +458,6 @@ var placesModel = {
 
         var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, place.lat, place.lng);
 
-
-
         // Get a json object to add to kendo (strip the parse specific stuff)
         var placeObj = placeParse.toJSON();
         // update the distance value for the local object...
@@ -373,11 +465,6 @@ var placesModel = {
         placeObj.isDirty = true;
         placesModel.placesDS.add(placeObj);
         placesModel.placesDS.sync();
-
-        placesView.placeListDS.add(placeObj);
-        placesView.placeListDS.sync();
-
-
 
         placeParse.save(null, {
             success: function(placeIn) {
