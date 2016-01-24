@@ -689,16 +689,6 @@ var contactModel = {
                 } else {
                     callback(null);
                 }
-                /*else {
-                    // No current userStatusObject
-                    getUserContactInfo(contactUUID, function(result) {
-                        if (result.found) {
-                            callback(result.user);
-                        } else {
-                            callback(null);
-                        }
-                    });
-                }*/
 
             },
             error: function(error) {
