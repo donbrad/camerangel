@@ -39,7 +39,15 @@ var channelModel = {
 
     init :  function () {
 
+        channelModel.recalledMessagesDS.online(false);
+
         channelModel.activeChannels = [];
+        // Reflect any core contact changes to contactList
+        channelModel.channelsDS.bind("change", function (e) {
+            // Rebuild the channelView.channelListDS when the underlying list changes: add, delete, update...
+           channelView._channelListDS.data(channelModel.channelsDS.data());
+
+        });
 
         // Start the updateMessageCount async after 5 seconds...
      /*   setTimeout(function(){
@@ -190,6 +198,12 @@ var channelModel = {
         return(channel);
     },
 
+    getRecalledMessages : function (channelId) {
+        var messages = channelModel.queryRecalledMessages({ field: "channelId", operator: "eq", value: channelId });
+
+        return(messages);
+    },
+
     isMessageRecalled : function (msgID) {
         var message = channelModel.queryRecalledMessage({ field: "msgID", operator: "eq", value: msgID });
 
@@ -209,7 +223,7 @@ var channelModel = {
 
         if (channel === undefined)
             return;
-
+        ;
         channelModel.recalledMessagesDS.add(recallObj);
         if (channelId === channelView._channelId) {
             // need to delete from channel view too
@@ -627,14 +641,22 @@ var channelModel = {
             // Channel already exists
             return;
         }
+        var Channels = Parse.Object.extend(channelModel._channelName);
 
+        channel = new Channels();
+        channel.set('isPlace', false);
+        channel.set('placeUUID', null);
+        channel.set('placeName', null);
+        channel.set('isPrivatePlace', true);
         if (options !== undefined && options !== null) {
             if (options.chatType === 'Place') {
+                channel.set('isPlace', true);
+                channel.set('placeUUID', options.chatData.placeUUID);
+                channel.set('placeName', options.chatData.placeName);
                 placesModel.addSharedPlace(options.chatData, channelId);
             }
         }
-        var Channels = Parse.Object.extend(channelModel._channelName);
-        var channel = new Channels();
+
         var addTime = ggTime.currentTime();
         channel.set("version", channelModel._version);
 
@@ -645,7 +667,6 @@ var channelModel = {
         channel.set("ownerName", ownerName);
         channel.set("isOwner", false);
         channel.set('isPrivate', false);
-        channel.set('isPlace', false);
         channel.set('isDeleted', false);
         channel.set('isMuted', false);
         channel.set('category', 'Group');
@@ -672,8 +693,6 @@ var channelModel = {
         var channelObj = channel.toJSON();
         channelModel.channelsDS.add(channelObj);
         channelModel.channelsDS.sync();
-        channelView._channelListDS.add(channelObj);
-        channelView._channelListDS.sync();
 
         channel.setACL(userModel.parseACL);
         channel.save(null, {

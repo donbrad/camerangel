@@ -9,11 +9,12 @@
 
 'use strict';
 
-//Todo:  rename to smartEventView after jordan checks in
-var modalActionMeeting = {
+
+var smartEventView = {
     _activeObject : new kendo.data.ObservableObject(),
     _date : new Date(),
     _placeId :null,
+    _geoObj: null,
     _isInited : false,
     _callback : null,
     _eventList :[],
@@ -27,7 +28,7 @@ var modalActionMeeting = {
     },
 
     initActiveObject : function () {
-        var thisObj = modalActionMeeting._activeObject;
+        var thisObj = smartEventView._activeObject;
         // todo - review update to make date/time more useful as defaults
         var newDate = new Date();
         var newDateHour = newDate.getHours();
@@ -81,14 +82,14 @@ var modalActionMeeting = {
 
 
 
-        $('#modalActionMeeting-placesearch').val(thisObj.placeName);
-        //$('#modalActionMeeting-datestring').val(new Date(thisObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
-        $('#modalActionMeeting-date').val(new Date(thisObj.date).toString('MMM dd, yyyy'));
-        $('#modalActionMeeting-time').val(new Date(thisObj.date).toString('h:mm tt'));
+        $('#smartEventView-placesearch').val(thisObj.placeName);
+        //$('#smartEventView-datestring').val(new Date(thisObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
+        $('#smartEventView-date').val(new Date(thisObj.date).toString('MMM dd, yyyy'));
+        $('#smartEventView-time').val(new Date(thisObj.date).toString('h:mm tt'));
     },
 
     setActiveObject : function (newObj) {
-        var thisObj = modalActionMeeting._activeObject;
+        var thisObj = smartEventView._activeObject;
 
         if (newObj.uuid === undefined || newObj.uuid === null) {
             newObj.uuid = uuid.v4();
@@ -149,9 +150,9 @@ var modalActionMeeting = {
         }
 
         if (newObj.senderUUID === null || newObj.senderUUID === userModel.currentUser.userUUID) {
-            modalActionMeeting.setSenderMode();
+            smartEventView.setSenderMode();
         } else {
-            modalActionMeeting.setRecipientMode();
+            smartEventView.setRecipientMode();
         }
 
 
@@ -159,14 +160,14 @@ var modalActionMeeting = {
 
 
     setSenderMode: function () {
-        var thisEvent = modalActionMeeting._activeObject;
+        var thisEvent = smartEventView._activeObject;
 
         $(".event-owner, #event-viewMode").removeClass("hidden");
         $(".event-recipient, #event-editMode").addClass("hidden");
         $("#event-owner-edit").addClass("hidden");
         if(thisEvent.wasSent){
             $('#event-owner-save').addClass('hidden');
-            $('#modalActionMeeting-recipientListDiv').removeClass('hidden');
+            $('#smartEventView-recipientListDiv').removeClass('hidden');
             // owner of a previously created event
             if(thisEvent.isExpired){
                 $('#event-owner-reschedule').removeClass('hidden');
@@ -182,19 +183,19 @@ var modalActionMeeting = {
             }
         } else {
             $('#event-owner-save').removeClass('hidden');
-            $('#modalActionMeeting-recipientListDiv').addClass('hidden');
+            $('#smartEventView-recipientListDiv').addClass('hidden');
             // new event
-            modalActionMeeting.showEditMode();
+            smartEventView.showEditMode();
 
         }
 
     },
 
     setRecipientMode : function () {
-        var thisEvent = modalActionMeeting._activeObject;
+        var thisEvent = smartEventView._activeObject;
 
         $(".event-owner").addClass("hidden");
-        $('#modalActionMeeting-recipientListDiv').addClass('hidden');
+        $('#smartEventView-recipientListDiv').addClass('hidden');
 
         $(".event-recipient, #event-viewMode").removeClass("hidden");
         // if event is expired disable rsvp
@@ -205,16 +206,16 @@ var modalActionMeeting = {
             // set user response
             if(thisEvent.isAccepted){
                 $("#event-rsvp").data("kendoMobileButtonGroup").select(0);
-                modalActionMeeting.setEventBanner("accepted");
+                smartEventView.setEventBanner("accepted");
             } else if(thisEvent.isDeclined){
                 $("#event-rsvp").data("kendoMobileButtonGroup").select(1);
-                modalActionMeeting.setEventBanner("declined");
+                smartEventView.setEventBanner("declined");
             } else {
-                modalActionMeeting.setEventBanner("pending");
+                smartEventView.setEventBanner("pending");
             }
         }
 
-        modalActionMeeting.setAcceptStatus();
+        smartEventView.setAcceptStatus();
     },
 
     showEditMode: function(){
@@ -227,17 +228,18 @@ var modalActionMeeting = {
         $('#event-owner-reschedule').addClass('hidden');
 
         // set event times
-        var thisEvent = modalActionMeeting._activeObject;
-        $('#modalActionMeeting-placesearch').val('');
-        //$('#modalActionMeeting-datestring').val(new Date(thisEvent.date).toString("MMM dd, yyyy h:mm tt"));
-        $('#modalActionMeeting-date').val(new Date(thisEvent.date).toString("MMM dd, yyyy"));
-        $('#modalActionMeeting-time').val(new Date(thisEvent.date).toString("h:mm tt"));
+        var thisEvent = smartEventView._activeObject;
+        $('#smartEventView-placesearch').val('');
+
+        //$('#smartEventView-datestring').val(new Date(thisEvent.date).toString("MMM dd, yyyy h:mm tt"));
+        $('#smartEventView-date').val(new Date(thisEvent.date).toString("MMM dd, yyyy"));
+        $('#smartEventView-time').val(new Date(thisEvent.date).toString("h:mm tt"));
     },
 
 
 
     setAcceptStatus : function () {
-        var thisEvent = modalActionMeeting._activeObject;
+        var thisEvent = smartEventView._activeObject;
 
         if (thisEvent.isAccepted) {
             $('#actionMeeting-acceptStatus').text("You've accepted this event");
@@ -251,33 +253,41 @@ var modalActionMeeting = {
 
     onShow: function(e) {
         _preventDefault(e);
-        modalActionMeeting._placeId = null;
+        smartEventView._placeId = null;
+        smartEventView._geoObj = null;
 
-        $("#modalActionMeeting-placesearchBtn").text("");
-        $("#modalActionMeeting-placesearch").val("");
-        //$("#modalActionMeeting-datestring").val("");
-        $("#modalActionMeeting-date").val("");
-        $("#modalActionMeeting-time").val("");
-        $('#modalActionMeeting-comments').val("");
+        $("#smartEventView-placesearchBtn").text("");
+        $("#smartEventView-placesearch").val("");
+        //$("#smartEventView-datestring").val("");
+        $("#smartEventView-date").val("");
+        $("#smartEventView-time").val("");
+        $('#smartEventView-comments').val("");
+
+        $("#smartEventView-placeadddiv").addClass('hidden');
     },
 
 
     onAddPlace: function (e) {
         _preventDefault(e);
+        placesModel.addPlace(smartEventView._geoObj, false, function () {
+            mobileNotify("Adding place : " + smartEventView._geoObj.name);
+        });
+
+        $("#smartEventView-placeadddiv").addClass('hidden');
     },
 
     onPlaceSearch : function (e) {
 
         _preventDefault(e);
 
-        var placeStr =  $("#modalActionMeeting-placesearch").val();
+        var placeStr =  $("#smartEventView-placesearch").val();
 
        smartEventPlacesView.openModal(placeStr, function (geo) {
            if (geo === null) {
                mobileNotify("Smart Place Search cancelled...");
                return;
            }
-           var thisObj = modalActionMeeting._activeObject;
+           var thisObj = smartEventView._activeObject;
 
            thisObj.set('placeId', null);
            thisObj.set('googleId', geo.googleId);
@@ -287,196 +297,185 @@ var modalActionMeeting = {
            thisObj.set('lat', geo.lat);
            thisObj.set('lng', geo.lng);
 
-           //Todo: Jordan: add place ux enable here
+           var addressArray = geo.address.split(','), address = addressArray[0];
+           // Place addresses are just the Street Number and Street;
+           geo.address = address;
+           smartEventView._geoObj = geo;
+           $("#smartEventView-placesearch").val(geo.name);
+           $("#smartEventView-placesearchdiv").addClass('hidden');
+           $("#smartEventView-placeadddiv").removeClass('hidden');
        });
 
     },
 
     checkExpired : function (date) {
-        var thisObject = modalActionMeeting._activeObject;
+        var thisObject = smartEventView._activeObject;
 
-        if (moment(modalActionMeeting._date).isAfter(date)) {
+        if (moment(smartEventView._date).isAfter(date)) {
             thisObject.set('isExpired', true);
-            modalActionMeeting.setEventBanner("expired");
+            smartEventView.setEventBanner("expired");
 
         } else {
             thisObject.set('isExpired', false);
-            modalActionMeeting.setEventBanner();
+            smartEventView.setEventBanner();
         }
     },
 
     updateCalendar : function () {
-        var thisObject = modalActionMeeting._activeObject;
+        var thisObject = smartEventView._activeObject;
 
         if (thisObject.calendarId === null) {
-            $("#modalActionMeeting-view-calendar-add").removeClass('hidden');
-            $("#modalActionMeeting-view-calendar").addClass('hidden');
+            $("#smartEventView-view-calendar-add").removeClass('hidden');
+            $("#smartEventView-view-calendar").addClass('hidden');
         } else {
-            $("#modalActionMeeting-view-calendar").removeClass('hidden');
-            $("#modalActionMeeting-view-calendar-add").addClass('hidden');
+            $("#smartEventView-view-calendar").removeClass('hidden');
+            $("#smartEventView-view-calendar-add").addClass('hidden');
         }
     },
 
     updateDateString : function () {
-        var date = $('#modalActionMeeting-date').val();
-        var time = $('#modalActionMeeting-time').val();
+        var date = $('#smartEventView-date').val();
+        var time = $('#smartEventView-time').val();
 
         var finalDateStr = date + " " + time;
-        //$("#modalActionMeeting-datestring").val(finalDateStr);
+        //$("#smartEventView-datestring").val(finalDateStr);
 
-        modalActionMeeting._activeObject.set('date', new Date(finalDateStr));
+        smartEventView._activeObject.set('date', new Date(finalDateStr));
 
     },
 
-    restoreAndOpenModal : function () {
+    validDateTime : function () {
+        var timeIn =  $("#smartEventView-time").val(), dateIn = $("#smartEventView-time").val();
 
+        if (timeIn === null || dateIn === null) {
+            return (false);
+        }
+        var time = Date.parse(timeIn);
+
+        var date = Date.parse(dateIn);
+
+        if (time === null && date === null) {
+            mobileNotify("Please enter a valid Date and Time");
+            return(false);
+        } else if (time === null) {
+            mobileNotify("Please enter a valid Time");
+        } else if (date === null) {
+            mobileNotify("Please enter a valid Date");
+        } else {
+            var timeComp = new Date(time).toString("h:mm tt");
+            var dateCome = new Date(date).toString('MMM dd, yyyy');
+            smartEventView.updateDateString();
+            return (true);
+        }
     },
 
     openModal: function (actionObj, callback) {
-        if (!modalActionMeeting._isInited) {
+        if (!smartEventView._isInited) {
 
-            modalActionMeeting._eventList = smartEvent.getActionNames();
+            smartEventView._eventList = smartEvent.getActionNames();
 
-            $("#modalActionMeeting-title").kendoAutoComplete({
-                dataSource: modalActionMeeting._eventList,
+            $("#smartEventView-title").kendoAutoComplete({
+                dataSource: smartEventView._eventList,
                 ignoreCase: true,
                 change: function (e) {
-                    var eventStr =  $("#modalActionMeeting-title").val();
-                    modalActionMeeting._activeObject.set('title', eventStr);
+                    var eventStr =  $("#smartEventView-title").val();
+                    smartEventView._activeObject.set('title', eventStr);
 
                 },
                 select: function(e) {
                     var event = e.item;
                     var actionStr = e.item[0].textContent;
-                    modalActionMeeting._activeObject.set('action', actionStr);
+                    smartEventView._activeObject.set('action', actionStr);
 
                     // Use the selected item or its text
                 },
                 filter: "contains",
                 placeholder: "Event title"
             });
-            /*
-            $("#modalActionMeeting-datestring").on('blur', function () {
-                var dateStr =  $("#modalActionMeeting-datestring").val();
-                if (dateStr.length > 5) {
-                    var timeString = dateStr.match(/\d{1,2}([:.]?\d{1,2})?([ ]?[a|p]m)/ig);
-                    var date = Date.today();
-                    var timeComp = '';
-                    if (timeString !== null && timeString.length > 0) {
-                        dateStr = dateStr.replace(timeString[0], '');
-                        dateStr = dateStr.trim();
 
-                        var time = Date.parse(timeString[0]);
-                        timeComp = new Date(time).toString("h:mm tt");
-                    }
-                    if (dateStr.length > 4) {
-                        date = Date.parse(dateStr);
-                    }
-                    var dateComp = new Date(date).toString("MMM dd, yyyy");
-                    var finalDateStr  =  dateComp;
 
-                    if(timeComp !== '')
-                        finalDateStr += " " +  timeComp;
-
-                    $('#modalActionMeeting-date').val(dateComp);
-                    $('#modalActionMeeting-time').val(timeComp);
-                    modalActionMeeting._activeObject.set('date', new Date(finalDateStr));
-                    modalActionMeeting.updateDateString();
-
-                }
-            });
-            */
-
-            $('#modalActionMeeting-date').pickadate({
+            $('#smartEventView-date').pickadate({
                 format: 'mmm, d yyyy',
                 formatSubmit: 'mm d yyyy',
                 min: true,
                 onSet : function (context) {
-                    modalActionMeeting.updateDateString();
+                    smartEventView.updateDateString();
                 }
             });
-            //$('#modalActionMeeting-time').pickatime();
+            //$('#smartEventView-time').pickatime();
 
-           /* $("#modalActionMeeting-date").on('blur', function () {
+           /* $("#smartEventView-date").on('blur', function () {
 
             });*/
 
-            $("#modalActionMeeting-duration").on('blur', function () {
-                var durIn =  $("#modalActionMeeting-duration").val();
+            $("#smartEventView-duration").on('blur', function () {
+                var durIn =  $("#smartEventView-duration").val();
                 var duration = -1;
                 if (durIn.length > 1) {
                     duration = juration.parse(durIn,{ defaultUnit: 'minutes' });
                     if (duration > 60) {
                         duration = duration / 60;
-                        modalActionMeeting._activeObject.duration = duration;
+                        smartEventView._activeObject.duration = duration;
                         var durationStr = juration.stringify(duration * 60, { format: 'long' });
-                        modalActionMeeting._activeObject.durationString = durationStr;
-                        $("#modalActionMeeting-duration").val(durationStr);
+                        smartEventView._activeObject.durationString = durationStr;
+                        $("#smartEventView-duration").val(durationStr);
 
                     }
 
 
                 }
             });
-            //$('#modalActionMeeting-time').pickatime();
 
-           /* $("#modalActionMeeting-date").on('blur', function () {
-
-            });*/
-
-
-
-
-            $("#modalActionMeeting-time").on('blur', function () {
-                var timeIn =  $("#modalActionMeeting-time").val();
-                if (timeIn.length > 3) {
+            $("#smartEventView-time").on('blur', function () {
+                var timeIn =  $("#smartEventView-time").val();
+                if (timeIn.length > 2) {
 
                     var time = Date.parse(timeIn);
                     var timeComp = new Date(time).toString("h:mm tt");
-                    $("#modalActionMeeting-time").val(timeComp);
-                    modalActionMeeting.updateDateString();
+                    $("#smartEventView-time").val(timeComp);
+                    smartEventView.updateDateString();
                 }
             });
 
-            $("#modalActionMeeting-placesearch").on('input', function () {
-                var placeStr =  $("#modalActionMeeting-placesearch").val();
+            $("#smartEventView-placesearch").on('input', function () {
+                var placeStr =  $("#smartEventView-placesearch").val();
                 if (placeStr.length > 3) {
-                    $("#modalActionMeeting-placesearchBtn").text("Find " + placeStr);
-                    $("#modalActionMeeting-placesearchdiv").removeClass('hidden');
+                    $("#smartEventView-placesearchBtn").text("Find " + placeStr);
+                    $("#smartEventView-placesearchdiv").removeClass('hidden');
                 } else {
-                    $("#modalActionMeeting-placesearchdiv").addClass('hidden');
+                    $("#smartEventView-placesearchdiv").addClass('hidden');
                 }
             });
 
-            $("#modalActionMeeting-placesearch").kendoAutoComplete({
+            $("#smartEventView-placesearch").kendoAutoComplete({
                 dataSource: placesModel.placesDS,
                 ignoreCase: true,
                 dataTextField: "name",
                 dataValueField: "uuid",
                 change: function (e) {
-                    var placeStr = $("#modalActionMeeting-placesearch").val();
+                    var placeStr = $("#smartEventView-placesearch").val();
 
-                    if (modalActionMeeting._placeId !== null) {
-                        var place = placesModel.getPlaceModel(modalActionMeeting._placeId);
+                    if (smartEventView._placeId !== null) {
+                        var place = placesModel.getPlaceModel(smartEventView._placeId);
 
                         if (placeStr === place.name) {
                             return;
                         }
-                        modalActionMeeting._placeId = null;
-                        modalActionMeeting._activeObject.set('placeId', modalActionMeeting._placeId);
-                        modalActionMeeting._activeObject.set('placeName',placeStr);
-                        modalActionMeeting._activeObject.set('address', null);
-                        modalActionMeeting._activeObject.set('lat',null);
-                        modalActionMeeting._activeObject.set('lng',null);
+                        smartEventView._placeId = null;
+                        smartEventView._activeObject.set('placeId', smartEventView._placeId);
+                        smartEventView._activeObject.set('placeName',placeStr);
+                        smartEventView._activeObject.set('address', null);
+                        smartEventView._activeObject.set('lat',null);
+                        smartEventView._activeObject.set('lng',null);
 
                     }
                     // event fired on blur -- if a place wasn't selected, need to do a nearby search
 
                     if (placeStr.length > 3) {
-                        $("#modalActionMeeting-placesearchBtn").text("Find " + placeStr);
-                        $("#modalActionMeeting-placesearchdiv").removeClass('hidden');
+                        $("#smartEventView-placesearchBtn").text("Find " + placeStr);
+                        $("#smartEventView-placesearchdiv").removeClass('hidden');
                     } else {
-                        $("#modalActionMeeting-placesearchdiv").addClass('hidden');
+                        $("#smartEventView-placesearchdiv").addClass('hidden');
                     }
 
                 },
@@ -484,52 +483,52 @@ var modalActionMeeting = {
                     // User has selected one of their places
                     var place = e.item;
                     var dataItem = this.dataItem(e.item.index());
-                    modalActionMeeting._placeId = dataItem.uuid;
-                    modalActionMeeting._activeObject.set('placeId', modalActionMeeting._placeId);
-                    modalActionMeeting._activeObject.set('placeName',dataItem.name);
-                    modalActionMeeting._activeObject.set('address',dataItem.address +  ' ' + dataItem.city + ', ' + dataItem.state);
-                    modalActionMeeting._activeObject.set('lat',dataItem.lat);
-                    modalActionMeeting._activeObject.set('lng',dataItem.lng);
+                    smartEventView._placeId = dataItem.uuid;
+                    smartEventView._activeObject.set('placeId', smartEventView._placeId);
+                    smartEventView._activeObject.set('placeName',dataItem.name);
+                    smartEventView._activeObject.set('address',dataItem.address +  ' ' + dataItem.city + ', ' + dataItem.state);
+                    smartEventView._activeObject.set('lat',dataItem.lat);
+                    smartEventView._activeObject.set('lng',dataItem.lng);
 
 
                     // Hide the Find Location button
-                    $("#modalActionMeeting-placesearchdiv").addClass('hidden');
+                    $("#smartEventView-placesearchdiv").addClass('hidden');
 
                 },
                 filter: "contains",
                 placeholder: "Select location... "
             });
 
-            modalActionMeeting._isInited = true;
+            smartEventView._isInited = true;
         }
 
         if (callback === undefined) {
             callback = null;
         }
 
-        modalActionMeeting._callback = callback;
+        smartEventView._callback = callback;
 
-        modalActionMeeting._date = new Date();
+        smartEventView._date = new Date();
 
-        $("#modalActionMeeting-eventExpired").addClass('hidden');
+        $("#smartEventView-eventExpired").addClass('hidden');
 
         if (actionObj === undefined || actionObj === null) {
-            modalActionMeeting.initActiveObject();
+            smartEventView.initActiveObject();
 
         } else {
             // we have an existing event
-            modalActionMeeting.setActiveObject(actionObj);
+            smartEventView.setActiveObject(actionObj);
         }
-        var thisObject = modalActionMeeting._activeObject;
+        var thisObject = smartEventView._activeObject;
         // setting send/receiver
 
-        $('#modalActionMeeting-organizer').text(thisObject.senderName);
-        modalActionMeeting.checkExpired(thisObject.date);
+        $('#smartEventView-organizer').text(thisObject.senderName);
+        smartEventView.checkExpired(thisObject.date);
 
         if (thisObject.senderUUID === userModel.currentUser.userUUID) {
-                modalActionMeeting.setSenderMode();
+                smartEventView.setSenderMode();
         } else {
-                modalActionMeeting.setRecipientMode();
+                smartEventView.setRecipientMode();
 
         }
 
@@ -540,26 +539,26 @@ var modalActionMeeting = {
             $(".event-location").addClass("hidden");
         }
 
-        modalActionMeeting.updateCalendar();
+        smartEventView.updateCalendar();
 
         var prettyDate = moment(thisObject.date).format('dddd MMMM, Do [at] h:mmA');
         $(".event-date").text(prettyDate);
 
 
-        $("#modalActionMeeting-placesearchdiv").addClass('hidden');
+        $("#smartEventView-placesearchdiv").addClass('hidden');
 
         if (thisObject.senderUUID === null || thisObject.senderUUID === userModel.currentUser.userUUID) {
-            $("#modalActionMeeting-organizer").text("You");
+            $("#smartEventView-organizer").text("You");
         } else {
             var contact = contactModel.findContactByUUID(thisObject.senderUUID);
             if (contact !== undefined) {
-                $("#modalActionMeeting-organizer").text(contact.name);
+                $("#smartEventView-organizer").text(contact.name);
             }
         }
 
-        modalActionMeeting.checkExpired();
+        smartEventView.checkExpired();
 
-        $("#modalview-actionMeeting").data("kendoMobileModalView").open();
+        $("#smartEventModal").data("kendoMobileModalView").open();
     },
 
     setEventBanner: function(state){
@@ -594,22 +593,22 @@ var modalActionMeeting = {
     onChangeCalendar: function(e){
 
         if(e.checked){
-            $("#modalActionMeeting-durationBox").removeClass("hidden");
+            $("#smartEventView-durationBox").removeClass("hidden");
         } else {
-            $("#modalActionMeeting-durationBox").addClass("hidden");
+            $("#smartEventView-durationBox").addClass("hidden");
         }
     },
 
     eventMapLocation: function(e){
         _preventDefault(e);
 
-        var event =  modalActionMeeting._activeObject;
+        var event =  smartEventView._activeObject;
 
         if (event.placeId !== null) {
             var place = placesModel.getPlaceModel(event.placeId);
             if (place !== undefined) {
 
-                var placeId = packParameter(event.placeId), channelUrl = packParameter('channel?'+channelView._channelId);
+                var placeId = packParameter(event.placeId), channelUrl = packParameter('channel?channelId='+channelView._channelId);
                 APP.kendo.navigate('#placeView?place=' + placeId + '&returnview=' + channelUrl);
 
             }
@@ -648,29 +647,29 @@ var modalActionMeeting = {
     onCancelEvent: function (e) {
         _preventDefault(e);
         $(".event-owner, .event-recipient, #event-editMode, #event-viewMode").addClass("hidden");
-       // Use onDone so the modal can redirect or restore state as required...  $("#modalview-actionMeeting").data("kendoMobileModalView").close();
+       // Use onDone so the modal can redirect or restore state as required...  $("#smartEventModal").data("kendoMobileModalView").close();
 
-        modalActionMeeting._activeObject.set("wasCancelled", true);
+        smartEventView._activeObject.set("wasCancelled", true);
 
-        modalActionMeeting.setEventBanner();
+        smartEventView.setEventBanner();
 
-        modalActionMeeting.onDone();
+        smartEventView.onDone();
 
     },
 
     changeStatus: function(e){
         var index = this.current().index();
-        if(modalActionMeeting.response !== true){
+        if(smartEventView.response !== true){
             $("#event-comment").velocity("slideDown");
-            modalActionMeeting.response = true;
+            smartEventView.response = true;
         }
         if(index === 0){
             // User accepted
-            modalActionMeeting.userAccepted = true;
+            smartEventView.userAccepted = true;
             $("#event-comment textarea").attr("placeholder", "Looking forward to it!");
         } else {
             // User declined
-            modalActionMeeting.userAccepted = false;
+            smartEventView.userAccepted = false;
             $("#event-comment textarea").attr("placeholder", "Sorry can't make it.")
         }
     },
@@ -678,20 +677,20 @@ var modalActionMeeting = {
     sendRSVP: function(e){
         _preventDefault(e);
 
-        if (modalActionMeeting.userAccepted) {
-            modalActionMeeting.onAccept();
+        if (smartEventView.userAccepted) {
+            smartEventView.onAccept();
         }
 
-        if (!modalActionMeeting.userAccepted) {
-            modalActionMeeting.onDecline();
+        if (!smartEventView.userAccepted) {
+            smartEventView.onDecline();
         }
 
     },
 
     onAccept : function (e) {
-        var thisEvent = modalActionMeeting._activeObject;
+        var thisEvent = smartEventView._activeObject;
 
-        var commentStr = $('#modalActionMeeting-comments').text();
+        var commentStr = $('#smartEventView-comments').text();
         if (commentStr === null || commentStr.length === 0) {
             commentStr = "Looking forward to it!"
         }
@@ -702,16 +701,16 @@ var modalActionMeeting = {
 
             smartEvent.accept(event.uuid, event.senderUUID, commentStr);
 
-            modalActionMeeting.setAcceptStatus();
+            smartEventView.setAcceptStatus();
 
         });
 
     },
 
     onDecline : function (e) {
-        var thisEvent = modalActionMeeting._activeObject;
+        var thisEvent = smartEventView._activeObject;
 
-        var commentStr = $('#modalActionMeeting-comments').text();
+        var commentStr = $('#smartEventView-comments').text();
         if (commentStr === null || commentStr.length === 0) {
             commentStr = "Sorry can't make it!"
         }
@@ -723,7 +722,7 @@ var modalActionMeeting = {
 
             smartEvent.decline(event.uuid, event.senderUUID, commentStr);
 
-            modalActionMeeting.setAcceptStatus();
+            smartEventView.setAcceptStatus();
 
         });
     },
@@ -784,7 +783,7 @@ var modalActionMeeting = {
     addToCalendar : function (e) {
         _preventDefault(e);
 
-        var thisObj = modalActionMeeting._activeObject;
+        var thisObj = smartEventView._activeObject;
         var startDate = new Date(thisObj.date), endDate = new Date(moment(thisObj.date).add(thisObj.duration, 'minutes'));
 
 
@@ -798,8 +797,8 @@ var modalActionMeeting = {
                 endDate,
                 function (message) {
                     thisObj.set('calendarId', message);
-                    $('#modalActionMeeting-view-calendar-add').addClass('hidden');
-                    $('#modalActionMeeting-view-calendar').removeClass('hidden');
+                    $('#smartEventView-view-calendar-add').addClass('hidden');
+                    $('#smartEventView-view-calendar').removeClass('hidden');
                 },
                 function (message) {
                     mobileNotify('Calendar error :' + message);
@@ -810,7 +809,7 @@ var modalActionMeeting = {
 
     showCalendar : function (e) {
 
-        var thisObj = modalActionMeeting._activeObject;
+        var thisObj = smartEventView._activeObject;
         var startDate = new Date(thisObj.date);
         if (window.navigator.simulator !== undefined) {
             mobileNotify("Not supported in emulator");
@@ -827,30 +826,37 @@ var modalActionMeeting = {
     },
 
     onUpdateEvent: function (e) {
-        var thisObj = modalActionMeeting._activeObject;
+        var thisObj = smartEventView._activeObject;
 
         // todo - wire event update
-        modalActionMeeting.onDone();
+        smartEventView.onDone();
     },
 
+
+
     onSaveEvent : function (e) {
-        var thisObj = modalActionMeeting._activeObject;
+
+
+        if (!smartEventView.validDateTime()) {
+            return;
+        }
+
+        var thisObj = smartEventView._activeObject;
         
 
 
-        var title = $("#modalActionMeeting-title").val() ;
-
-        //var finalDateStr = $("#modalActionMeeting-datestring").val();
-        var meetingDate = $("#modalActionMeeting-date").val();
-        var meetingTime = $("#modalActionMeeting-time").val();
-        var finalDateStr = meetingDate + " " + meetingTime;
-
-        var saveDate = new Date(finalDateStr);
-
+        var title = $("#smartEventView-title").val() ;
         if (title === null || title.length < 3) {
             mobileNotify ('Events must have a valid title!');
             return;
         }
+
+        //var finalDateStr = $("#smartEventView-datestring").val();
+        var meetingDate = $("#smartEventView-date").val();
+        var meetingTime = $("#smartEventView-time").val();
+        var finalDateStr = meetingDate + " " + meetingTime;
+
+        var saveDate = new Date(finalDateStr);
 
         if (saveDate === null) {
             mobileNotify (finalDateStr + " is not a valid date!");
@@ -861,31 +867,139 @@ var modalActionMeeting = {
          thisObj.set('senderName', userModel.currentUser.name);
 
          if (thisObj.addToCalendar && thisObj.calendarId === null) {
-         modalActionMeeting.addToCalendar();
+         smartEventView.addToCalendar();
          }
 
-         modalActionMeeting.createSmartEvent(thisObj);
+         smartEventView.createSmartEvent(thisObj);
 
-         modalActionMeeting.onDone();
+         smartEventView.onDone();
     },
 
 
     onCancel : function (e) {
         _preventDefault(e);
-        $("#modalview-actionMeeting").data("kendoMobileModalView").close();
+        $("#smartEventModal").data("kendoMobileModalView").close();
     },
 
     onDone: function (e) {
         //_preventDefault(e);
 
-        $("#modalview-actionMeeting").data("kendoMobileModalView").close();
-        if (modalActionMeeting._callback !== null) {
-            modalActionMeeting._callback(modalActionMeeting._activeObject);
+        $("#smartEventModal").data("kendoMobileModalView").close();
+        if (smartEventView._callback !== null) {
+            smartEventView._callback(smartEventView._activeObject);
         }
     }
 
 };
 
+var smartNoteView = {
+    _activeObject : new kendo.data.ObservableObject(),
+    _date : new Date(),
+    _expirationDate : null,
+    _isInited : false,
+    _callback : null,
+
+    onInit: function (e) {
+        _preventDefault(e);
+    },
+
+    findTag: function (tag) {
+        return(smartNoteView.query({ field: "tagname", operator: "eq", value: tag }));
+    },
+
+    queryTag : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = contactModel.contactTagsDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var contact = view[0];
+
+        dataSource.filter(cacheFilter);
+
+        return(contact);
+    },
+
+    openModal: function (actionObj, callback) {
+        if (!smartNoteView._isInited) {
+            smartNoteView._isInited = true;
+        }
+
+        if (actionObj === null) {
+            smartNoteView._activeObject.set('title', '');
+            smartNoteView._activeObject.set('tags', '');
+            smartNoteView._activeObject.set('content', '');
+            smartNoteView._activeObject.set('expiration', '30');
+        } else {
+            smartNoteView._activeObject.set('title', actionObj.title);
+            smartNoteView._activeObject.set('tags', actionObj.tags);
+            smartNoteView._activeObject.set('content', actionObj.content);
+            smartNoteView._activeObject.set('expiration', actionObj.expiration);
+        }
+
+        $("#smartNoteView-tags").kendoMultiSelect({
+            autoClose: false,
+            dataTextField: "tagname",
+            dataValueField: "uuid",
+            itemTemplate: '<div style="vertical-align: middle;"><img height="18"src="#:data.icon#"/><span>#:data.tagname#</span> <span style="font-size: 9px;"> #:data.name#</span> </div>' ,
+            tagTemplate: '<div style="vertical-align: middle;"><img height="18" src="#:data.icon#"/>#:data.tagname#</div>',
+            change: function (e) {
+                var value = this.value();
+
+            },
+            select : function (e) {
+                var item = e.item;
+                var text = item.text();
+            },
+            dataSource: contactModel.contactTagsDS
+        });
+
+        $('#smartNoteView-content').redactor({
+            minHeight: 240,
+            maxHeight: 420,
+            focus: true,
+            placeholder: 'Note ...',
+            /* callbacks: {
+             focus: function(e)
+             {
+             $('#messageTextArea').focus();
+             }
+             },*/
+            buttons: [ 'bold', 'italic', 'lists', 'horizontalrule'],
+            toolbarExternal: '#smartNoteView-contentToolbar'
+        });
+        if (callback === undefined) {
+            callback = null;
+        }
+
+        smartNoteView._callback = callback;
+
+        $("#smartNoteModal").data("kendoMobileModalView").open();
+
+    },
+
+    onSave : function (e) {
+        _preventDefault(e);
+    },
+
+    onCancel : function (e) {
+        _preventDefault(e);
+        $("#smartNoteModal").data("kendoMobileModalView").close();
+    },
+
+    onDone: function (e) {
+        //_preventDefault(e);
+
+        $("#smartNoteModal").data("kendoMobileModalView").close();
+        if (smartNoteView._callback !== null) {
+            smartNoteView._callback(smartNoteView._activeObject);
+        }
+    }
+};
 
 var smartFlightView = {
 

@@ -19,6 +19,14 @@ var contactModel = {
     }),
 
 
+    contactTagsDS: new kendo.data.DataSource({
+        offlineStorage: 'contactTags',
+        sort: {
+            field: "name",
+            dir: "asc"
+        }
+    }),
+
     deviceContactsDS: new kendo.data.DataSource({
         sort: {
             field: "name",
@@ -53,158 +61,67 @@ var contactModel = {
     init : function () {
 
         contactModel.contactListDS.online(false);
+        contactModel.contactTagsDS.online(false);
 
         // Reflect any core contact changes to contactList
         contactModel.contactsDS.bind("change", function (e) {
 
-            // Rebuild the contactList cache when the underlying list changes: add, delete, update...
-            contactModel.buildContactList();
 
+            var changedContacts = e.items;
+
+            if (e.action !== undefined) {
+                switch (e.action) {
+                    case "itemchange" :
+                        var field  =  e.field;
+                        var contact = e.items[0], contactId = contact.uuid;
+                        var contactList = contactModel.findContactListUUID(contactId);
+                        // if the contact's name or alias has been updated, need to update the tag...
+                        if (field === 'name') {
+                            var newName = ux.returnUXPrimaryName(contact.name, contact.alias);
+                            var contactTag = contactModel.findContactTag(contact.uuid);
+                            contactTag.alias = newName;
+                            contactTag.name = contact.name;
+                        }
+                        if (field === 'alias') {
+                            var newName = ux.returnUXPrimaryName(contact.name, contact.alias);
+                            var contactTag = contactModel.findContactTag(contact.uuid);
+                            contactTag.alias = newName;
+                            contactTag.alias = contact.alias;
+                        }
+                        contactList[field] = contact [field];
+                        break;
+
+                    case "remove" :
+                        // delete from contact list
+                        break;
+
+                    case "add" :
+                        var contact = e.items[0];
+                        // add to contactlist and contacttags
+                        contactModel.contactListDS.add(contact);
+                        var tag = {
+                            type: 'contact',
+                            tagname: ux.returnUXPrimaryName(contact.name, contact.alias),
+                            name: contact.name,
+                            uuid: contact.uuid,
+                            contactUUID: contact.contactUUID,
+                            icon: 'images/icon-contact.svg'
+                        };
+                        contactModel.contactTagsDS.add(tag);
+                         break;
+                }
+            }
 
 
         });
 
-        /*  contactModel.contactsDS = parseKendoDataSourceFactory.make('contacts',
-          {
-                id: 'id',
-                fields: {
-                    uuid: {
-                        editable: false,
-                        nullable: false
-                    },
-                    category: {
-                        editable: true,
-                        nullable: false,
-                        defaultValue: 'new'
-                    },
-                    address: {
-                        editable: true,
-                        nullable: true
-                    },
-                    name: {
-                        editable: true,
-                        nullable: false
-                    },
-                    alias: {
-                        editable: true,
-                        nullable: true
-                    },
-                    email: {
-                        editable: true,
-                        nullable: false
-                    },
-                    phone: {
-                        editable: true,
-                        nullable: false
-                    },
-                    location: {
-                        editable: true,
-                        nullable: true
-                    },
-                    photo: {
-                        editable: true,
-                        nullable: true
-                    },
-                    parsePhoto: {
-                        editable: false,
-                        nullable: true,
-                        type: 'Parse.File'
-                    },
-                    message: {
-                        editable: true,
-                        nullable: true
-                    },
-                    contactEmail: {
-                        editable: true,
-                        nullable: true
-                    },
-                    contactPhone: {
-                        editable: true,
-                        nullable: true
-                    },
-                    contactUUID: {
-                        editable: true,
-                        nullable: true
-                    },
-                    publicKey: {
-                        editable: true,
-                        nullable: true
-                    },
-                    group: {
-                        editable: true,
-                        nullable: true
-                    },
-                    statusMessage: {
-                        editable: true,
-                        nullable: true
-                    },
-                    currentPlace: {
-                        editable: true,
-                        nullable: true
-                    },
-                    currentPlaceUUID: {
-                        editable: true,
-                        nullable: true
-                    },
-                    lastInvite: {
-                        editable: true,
-                        type: 'number'
-                    },
-                    lastStatusFetch: {
-                        editable: true,
-                        type: 'number'
-                    },
-                    priority: {
-                        editable: true,
-                        type: 'number',
-                        default: 0
-                    },
-                    phoneVerified: {
-                        editable: true,
-                        type: 'boolean',
-                        default: false
-                    },
-                    emailValidated: {
-                        editable: true,
-                        type: 'boolean',
-                        default: false
-                    },
-                    isAvailable: {
-                        editable: true,
-                        type: 'boolean'
-                    },
-                    isVisible: {
-                        editable: true,
-                        type: 'boolean',
-                        default: true
-                    },
-                    inviteSent: {
-                        editable: true,
-                        type: 'boolean',
-                        default: false
-                    },
-                    isBlocked: {
-                        editable: true,
-                        type: 'boolean',
-                        default: false
-                    },
-                    isFavorite: {
-                        editable: true,
-                        type: 'boolean',
-                        default: false
-                    }
-
-                }
-            },
-            false,
-            { // SortBy
-                field: "name",
-                dir: "asc"
-            },
-            undefined // group by category: new, member, invited
-            )*/
     },
 
+    processContactUpdates : function (contacts) {
+        for (var i=0; i<contacts.length; i++) {
+
+        }
+    },
 
 
     fetch : function () {
@@ -296,13 +213,14 @@ var contactModel = {
                     if (dirty)
                         model.save();
                     var data = model.toJSON();
+
                     models.push(data);
                 }
                 deviceModel.setAppState('hasContacts', true);
                 contactModel.contactsDS.data(models);
 
                 // Update contactlistDs and get latest status for contacts
-                contactModel.contactListDS.data(models);
+               // contactModel.contactListDS.data(models);
 
                 contactModel.buildContactList();
 
@@ -330,11 +248,12 @@ var contactModel = {
     // Build an identity list for contacts indexed by contactUUID
     buildContactList : function () {
         var array = contactModel.contactsDS.data();
-
+        contactModel.contactTagsDS.data([]);
+        contactModel.contactListDS.data([]);
         contactModel.contactList = [];
 
         for (var i=0; i<array.length; i++) {
-            var contact = array[i];
+            var contact = (array[i]).toJSON();
             if (contact.contactUUID !== undefined && contact.contactUUID !== null) {
                 contactModel.contactList[contact.contactUUID] = {
                     uuid: contact.uuid,
@@ -351,7 +270,16 @@ var contactModel = {
                     isBlocked: contact.isBlocked
                 };
             }
-
+            var tag = {
+                type: 'contact',
+                tagname: ux.returnUXPrimaryName(contact.name, contact.alias),
+                name: contact.name,
+                uuid: contact.uuid,
+                contactUUID: contact.contactUUID,
+                icon: 'images/icon-contact.svg'
+            };
+            contactModel.contactTagsDS.add(tag);
+            contactModel.contactListDS.add(contact);
         }
 
     },
@@ -378,7 +306,6 @@ var contactModel = {
     inContactList : function (contactUUID) {
         return(contactModel.contactList[contactUUID]);
     },
-
 
     totalContacts : function () {
         if (contactModel.contactsDS !== undefined) {
@@ -414,6 +341,28 @@ var contactModel = {
         return(contact);
     },
 
+    findContactTag : function (uuid) {
+        var contact = contactModel.queryContactTag({ field: "uuid", operator: "eq", value: uuid });
+
+        return (contact);
+    },
+
+    queryContactTag : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = contactModel.contactTagsDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var contact = view[0];
+
+        dataSource.filter(cacheFilter);
+
+        return(contact);
+    },
     queryContactList : function (query) {
         if (query === undefined)
             return(undefined);
@@ -454,18 +403,6 @@ var contactModel = {
 
     deleteContact : function (contactId) {
         var contact = contactModel.queryContact({ field: "uuid", operator: "eq", value: contactId });
-
-       /* var dataSource = contactModel.contactsDS;
-        var uuid = contactId;
-
-        var queryCache =  dataSource.filter();
-        if (queryCache === undefined) {
-            queryCache = {};
-        }
-        dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
-        var view = dataSource.view();
-        var contact = view[0];
-        dataSource.filter(queryCache);*/
 
         if (contact !== undefined) {
             contact.set('isDeleted', true);
@@ -811,16 +748,6 @@ var contactModel = {
                 } else {
                     callback(null);
                 }
-                /*else {
-                    // No current userStatusObject
-                    getUserContactInfo(contactUUID, function(result) {
-                        if (result.found) {
-                            callback(result.user);
-                        } else {
-                            callback(null);
-                        }
-                    });
-                }*/
 
             },
             error: function(error) {
@@ -832,38 +759,28 @@ var contactModel = {
 
     // force defined and === true overrides the timer
     updateContactListStatus : function (force) {
-
-       /* var time = ggTime.currentTimeInSeconds();
-
-        // Only sync contacts every 15 minutes
-        if (time < contactModel.lastSyncTime + 300) {
-            if (force === undefined || force === false)
-                return;
-        }
-
-        contactModel.lastSyncTime = time;
-*/
-
-
+        var time = ggTime.currentTimeInSeconds();
         var index = 0, length = contactModel.contactListDS.total(), array = contactModel.contactListDS.data();
-
         if (length === 0)
             return;
 
         for (var i=0; i<length; i++) {
             var contact = contactModel.contactListDS.at(i);
-            var contactId = contact.contactUUID;
-            if (contactId !== undefined && contactId !== null) {
-                contactModel.getContactStatusObject(contactId, function(user) {
-                    if (user !== undefined && user !== null) {
-                        var userId = user.get('userUUID');
-                        var contact = contactModel.findContactList(userId);
-                        contact.set('statusMessage', user.get('statusMessage'));
-                        contact.set('currentPlace', user.get('currentPlace'));
-                        contact.set('currentPlaceId', user.get('currentPlaceId'));
-                        contact.set('isAvailable', user.get('isAvailable'));
-                    }
-                });
+            if (contact.lastUpdate === undefined || contact.lastUpdate > time + 900) {
+                var contactId = contact.contactUUID;
+                if (contactId !== undefined && contactId !== null) {
+                    contactModel.getContactStatusObject(contactId, function (user) {
+                        if (user !== undefined && user !== null) {
+                            var userId = user.get('userUUID');
+                            var contact = contactModel.findContactList(userId);
+                            contact.set('statusMessage', user.get('statusMessage'));
+                            contact.set('currentPlace', user.get('currentPlace'));
+                            contact.set('currentPlaceId', user.get('currentPlaceId'));
+                            contact.set('isAvailable', user.get('isAvailable'));
+                            contact.set('lastUpdate', ggTime.currentTimeInSeconds());
+                        }
+                    });
+                }
             }
         }
     },

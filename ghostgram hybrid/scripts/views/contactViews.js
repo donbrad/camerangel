@@ -1238,6 +1238,7 @@ var contactActionView = {
 
     openModal : function (contactId) {
 
+        var time = ggTime.currentTimeInSeconds();
         $("#contactActionBtns").removeClass('hidden');
         var thisContact = contactModel.findContactByUUID(contactId);
         contactActionView.setContact(thisContact);
@@ -1247,33 +1248,53 @@ var contactActionView = {
 
         //Show the status update div
         if (thisContact.contactUUID !== undefined && thisContact.contactUUID !== null && thisContact.category !== 'unknown') {
-            contactModel.getContactStatusObject(thisContact.contactUUID, function (user) {
-                if (user !== null) {
-                    var contactIsAvailable = user.get('isAvailable');
-                    contactActionView._activeContact.set('contactUUID', thisContact.contactUUID);
-                    contactActionView._activeContact.set('statusMessage', user.get('statusMessage'));
-                    contactActionView._activeContact.set('currentPlace', user.get('currentPlace'));
-                    contactActionView._activeContact.set('currentPlaceId', user.get('currentPlaceId'));
-                    contactActionView._activeContact.set('isAvailable', contactIsAvailable);
-                    // set available
-                    if(contactIsAvailable){
-                        $(".statusContactCard-icon").attr("src", "images/status-available.svg");
-                    }
 
-                    // Update the contactList object too
-                    var contactList = contactModel.findContactList(thisContact.contactUUID);
-                    contactList.set('statusMessage', user.get('statusMessage'));
-                    var contactPlace = user.get('currentPlace');
-                    contactList.set('currentPlace', contactPlace);
-                    contactList.set('currentPlaceId', user.get('currentPlaceId'));
-                    contactList.set('isAvailable', contactIsAvailable);
+            if (thisContact.lastUpdate !== undefined && thisContact.lastUpdate > time + 900) {
+                // Need to get current data for this contact
+                contactModel.getContactStatusObject(thisContact.contactUUID, function (user) {
+                    if (user !== null) {
+                        var contactIsAvailable = user.get('isAvailable');
+                        contactActionView._activeContact.set('contactUUID', thisContact.contactUUID);
+                        contactActionView._activeContact.set('statusMessage', user.get('statusMessage'));
+                        contactActionView._activeContact.set('currentPlace', user.get('currentPlace'));
+                        contactActionView._activeContact.set('currentPlaceId', user.get('currentPlaceId'));
+                        contactActionView._activeContact.set('isAvailable', contactIsAvailable);
+                        // set available
+                        if (contactIsAvailable) {
+                            $(".statusContactCard-icon").attr("src", "images/status-available.svg");
+                        }
 
-                    // set current place
-                    if(contactPlace !== "" && contactPlace !== undefined){
-                        $("#contactCurrentPlace").text("@" + contactPlace);
+                        // Update the contactList object too
+                        var contactList = contactModel.findContactList(thisContact.contactUUID);
+                        contactList.set('statusMessage', user.get('statusMessage'));
+                        var contactPlace = user.get('currentPlace');
+                        contactList.set('currentPlace', contactPlace);
+                        contactList.set('currentPlaceId', user.get('currentPlaceId'));
+                        contactList.set('isAvailable', contactIsAvailable);
+
+                        // set current place
+                        if (contactPlace !== "" && contactPlace !== undefined) {
+                            $("#contactCurrentPlace").text("@" + contactPlace);
+                        }
                     }
+                });
+            } else {
+                contactActionView._activeContact.set('contactUUID', thisContact.contactUUID);
+                contactActionView._activeContact.set('statusMessage', thisContact.statusMessage);
+                contactActionView._activeContact.set('currentPlace', thisContact.currentPlace);
+                contactActionView._activeContact.set('currentPlaceId', thisContact.currentPlaceId);
+                contactActionView._activeContact.set('isAvailable', thisContact.isAvailable);
+                // set available
+                if (thisContact.isAvailable) {
+                    $(".statusContactCard-icon").attr("src", "images/status-available.svg");
                 }
-            });
+
+
+                // set current place
+                if (thisContact.currentPlace !== "" && thisContact.currentPlace !== undefined) {
+                    $("#contactCurrentPlace").text("@" + thisContact.currentPlace);
+                }
+            }
         }
 
         if (thisContact.category !== 'unknown') {

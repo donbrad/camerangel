@@ -46,6 +46,21 @@ var placesModel = {
         }
     }),
 
+    placeListDS: new kendo.data.DataSource({
+        sort: {
+            field: "distance",
+            dir: "asc"
+        }
+    }),
+
+    placesTagsDS: new kendo.data.DataSource({
+        offlineStorage: "placeTags",
+        sort: {
+            field: "name",
+            dir: "asc"
+        }
+    }),
+
 
     newPlace : function () {
         return(new Object(placesModel._placeModel));
@@ -54,6 +69,7 @@ var placesModel = {
     fetch : function () {
         var PlaceModel = Parse.Object.extend("places");
         var query = new Parse.Query(PlaceModel);
+
         query.limit(1000);
 
         query.find({
@@ -86,12 +102,15 @@ var placesModel = {
                         parseModel.save();
 
                     var model = parseModel.toJSON();
+                    var tag = {type: 'place', tagname: ux.returnUXPrimaryName(model.name, model.alias), name: model.name, uuid: model.uuid };
+                    placesModel.placesTagsDS.add(tag);
                     models.push(model);
                 }
 
                 placesModel.placesDS.data(models);
                 mapModel.computePlaceDSDistance();
 
+                placesModel.buildPlaceLists();
                 deviceModel.setAppState('hasPlaces', true);
                 deviceModel.isParseSyncComplete();
             },
@@ -102,17 +121,70 @@ var placesModel = {
     },
 
     init : function () {
-   /*     placesModel.placesDS =  parseKendoDataSourceFactory.make('places', placesModel.placeModel ,
-            false,
-            undefined,
-            undefined
-        );
+        // Reflect any core contact changes to contactList
+        placesModel.placesDS.bind("change", function (e) {
+            // Rebuild the contactList cache when the underlying list changes: add, delete, update...
+            //placesModel.buildPlaceLists();
+            var changedPlaces = e.items;
 
-        placesModel.placesDS.fetch(function () {
-            placesModel.placesFetched = true;
-            placesModel.placesArray  = placesModel.placesDS.data();
+            if (e.action !== undefined) {
+                switch (e.action) {
+                    case "itemchange" :
+                        var field  =  e.field;
+                        var place = e.items[0], placeId = place.uuid;
+                        var placeList = placesModel.findPlaceListUUID(placeId);
+                        // if the contact's name or alias has been updated, need to update the tag...
+                        if (field === 'name') {
+                            var newName = ux.returnUXPrimaryName(place.name, place.alias);
+                            var placeTag = placesModel.findPlaceTag(place.uuid);
+                            placeTag.alias = newName;
+                            placeTag.name = contact.name;
+                        }
+                        if (field === 'alias') {
+                            var newName = ux.returnUXPrimaryName(place.name, place.alias);
+                            var placeTag = contactModel.findContactTag(place.uuid);
+                            placeTag.alias = newName;
+                            placeTag.alias = place.alias;
+                        }
+                        placeList[field] = place [field];
+                        break;
+
+                    case "remove" :
+                        // delete from contact list
+                        break;
+
+                    case "add" :
+                        var place = e.items[0];
+                        // add to contactlist and contacttags
+                        placesModel.placeListDS.add(place);
+                        var tag = {
+                            type: 'place',
+                            tagname: ux.returnUXPrimaryName(place.name, place.alias),
+                            name: place.name,
+                            uuid: place.uuid,
+                            icon: 'images/icon-location.svg'
+                        };
+                        contactModel.contactTagsDS.add(tag);
+                        break;
+                }
+            }
+
+
         });
-*/    },
+     },
+
+    buildPlaceLists : function () {
+        placesModel.placesTagsDS.data([]);
+        placesModel.placeListDS.data([]);
+        var placeList = placesModel.placesDS.data();
+        placesModel.placeListDS.data(placeList);
+
+        for (var i=0; i< placeList.length; i++) {
+            var model = (placeList[i]).toJSON();
+            var tag = {type: 'place', tagname: ux.returnUXPrimaryName(model.name, model.alias), name: model.name, alias: model.alias, uuid: model.uuid };
+            placesModel.placesTagsDS.add(tag);
+        }
+    },
 
     queryPlace : function (query) {
         if (query === undefined)
@@ -131,6 +203,49 @@ var placesModel = {
         return(place);
     },
 
+    findPlaceListUUID : function (uuid) {
+        var placeList = placesModel.queryPlaceList({ field: "uuid", operator: "eq", value: uuid });
+        return(placeList);
+    },
+
+    queryPlaceList : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = placesModel.placeListDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var place = view[0];
+
+        dataSource.filter(cacheFilter);
+
+        return(place);
+    },
+
+    findPlaceTag: function (uuid) {
+        var placeList = placesModel.queryPlaceTag({ field: "uuid", operator: "eq", value: uuid });
+        return(placeList);
+    },
+
+    queryPlaceTag : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = placesModel.placesTagsDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var place = view[0];
+
+        dataSource.filter(cacheFilter);
+
+        return(place);
+    },
     matchLocation: function (lat, lng) {
         var length = placesModel.placesDS.total();
 
@@ -341,9 +456,7 @@ var placesModel = {
             placeParse.set('placeChatId', placeChatguid);
         }
 
-        var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, place.get('lat'), place.get('lng'));
-
-
+        var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, place.lat, place.lng);
 
         // Get a json object to add to kendo (strip the parse specific stuff)
         var placeObj = placeParse.toJSON();
@@ -353,17 +466,15 @@ var placesModel = {
         placesModel.placesDS.add(placeObj);
         placesModel.placesDS.sync();
 
-        if (callback !== undefined) {
-            callback(placeObj);
-        }
-
         placeParse.save(null, {
             success: function(placeIn) {
                 // Set the needs sync (isDirty flag to false)
                 var placeInuuid = placeIn.get('uuid');
                 var place = placesModel.getPlaceModel(placeInuuid);
                 place.set('isDirty', false);
-
+                if (callback !== undefined) {
+                    callback(placeIn.toJSON());
+                }
 
             },
             error: function(place, error) {

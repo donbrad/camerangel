@@ -39,7 +39,20 @@ var notificationModel = {
             { field: "type", operator: "eq", value: type },
             { field: "id", operator: "gte", value: 0 }
         ];
+        if (query === undefined)
+            return(undefined);
+        var dataSource = notificationModel.notificationDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var item = view[0];
 
+        dataSource.filter(cacheFilter);
+
+        return(item);
     },
 
     queryNotification : function (query) {
