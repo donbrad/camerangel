@@ -712,7 +712,7 @@
 </div>
 
 <!-- contact action -->
-<div data-role="modalview" id="modalview-contactActions" data-model="contactActionView._activeContact"  style="width: 90%; height:65%; display: none;">
+<div data-role="modalview" id="modalview-contactActions" data-model="contactActionView._activeContact"  style="width: 90%; min-height:65%; display: none;">
 	<div class="modal-top">
 		<a data-role="button" class="modal-close" data-click="contactActionView.closeModal"><img src="images/close.svg"/></a>
 
@@ -797,8 +797,7 @@
 			<img src="images/close.svg"/>
 		</a>
 		<img class="circle-img-lg home-profile-img"/>
-		<svg width="40" height="40" class="circle-img-md hidden" id="profileStatusIdenticon"></svg>
-		<img width="20" src="images/status-away.svg" class="userAvailable home-status-card-img" />
+		<img src="images/status-away.svg" class="userAvailable home-status-card-img" />
 
 		<h3>
 			<span class="primaryName"></span>
@@ -1096,7 +1095,7 @@
 					#} else {#
 					<h4 class="textClamp">#:data.address#</h4>
 					# addressOnly = true #
-					<p>#:data.city#, #:data.state# #:data.zipcode#</p>
+					<p class="textClamp">#:data.city#, #:data.state# #:data.zipcode#</p>
 					#}#
 
 				#} else {#
@@ -1131,17 +1130,12 @@
 </script>
 
 <script type="text/x-kendo-template" id="smartEventPlacesTemplate">
-
 	<div class="findPlaceListItem">
-
-			<h4 class="textClamp"> #: data.title #  </h4>
-			<p class="textClamp"> #: data.address # </p>
-			<p class="textClamp helper">
-				<span><i>#= data.type # </i> </span>
-			</p>
-			<p class="textClamp">#: data.description #</p>
-			
-
+		<h4 class="textClamp"> #: data.title #  </h4>
+		<p class="textClamp"> #: data.address # </p>
+		<p class="textClamp helper">
+			<span><i>#= data.type # </i> </span>
+		</p>
 	</div>
 
 </script>
@@ -2092,11 +2086,11 @@
 
 				#if (data.isAvailable !== undefined && data.isAvailable) { #
 				<img class="circle-img-md" src="#:data.photo#" />
-				<img width="16" src="images/status-available.svg" class="statusContactList-icon" />
+				<img src="images/status-available.svg" class="statusContactList-icon" />
 				# }
 				else { #
 				<img class="circle-img-md" src="#:data.photo#" />
-				<img width="16" src="images/status-away.svg" class="statusContactList-icon" />
+				<img src="images/status-away.svg" class="statusContactList-icon" />
 				#}#
 				# if (data.isBlocked) {#
 					<div class="left">

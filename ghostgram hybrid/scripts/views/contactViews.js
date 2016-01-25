@@ -107,11 +107,11 @@ var contactsView = {
                     if($(selection).hasClass("member") && $(window).width() < 375){
                     	$(selection).velocity({translateX:"-75%"},{duration: "fast"}).addClass("contact-active");
                     } else if ($(selection).hasClass("member"))  {
-                    	$(selection).velocity({translateX:"-60%"},{duration: "fast"}).addClass("contact-active");
+                    	$(selection).velocity({translateX:"-75%"},{duration: "fast"}).addClass("contact-active");
                     } else if($(window).width() < 375) {
         				$(selection).velocity({translateX:"-85%"},{duration: "fast"}).addClass("contact-active");
                     } else {
-                    	$(selection).velocity({translateX:"-75%"},{duration: "fast"}).addClass("contact-active");
+                    	$(selection).velocity({translateX:"-80%"},{duration: "fast"}).addClass("contact-active");
                     }
                 }
                 if (e.direction === "right" && $(selection).hasClass("contact-active")){
