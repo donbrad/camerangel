@@ -14,6 +14,7 @@ var noteModel = {
     _places: 'place',
     _group: 'group',
     _parseClass : 'note',
+    _ggClass: 'Note',
     _version: 1,
 
     notesDS: new kendo.data.DataSource({
@@ -148,6 +149,8 @@ var noteModel = {
         note.uuid = uuid.v4();
 
 
+        note.ggType = noteModel._ggClass;
+        note.version = noteModel._version;
         note.userUUID = null;
         note.date = new Date();
         note.objectType = type;

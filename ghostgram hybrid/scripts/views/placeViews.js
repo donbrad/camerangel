@@ -1244,11 +1244,34 @@ var placeView = {
 
     onInit : function (e) {
         _preventDefault(e);
+        $("#channels-listview").kendoMobileListView({
+            dataSource: placeView._memoriesDS,
+            template: $("#placeViewMemories-template").html()/*,
+            dataBound: function(e){
+                ux.checkEmptyUIState(placeView._memoriesDS, "#channelListDiv");
+            }*/
+        });
+
+        // ToDo: bind change functions for notes and photos here
+
+
     },
 
     loadMemories : function () {
         var photos = photoModel.photosDS,
             notes = noteModel.notesDS;
+    },
+
+    buildMemoriesDS : function () {
+        var ds = placeView._memoriesDS;
+        ds.data([]);
+        var placeId = placeView._activePlaceId;
+        var photoList = photoModel.queryPhotos({ field: "placeId", operator: "eq", value: placeId});
+        var notesList = noteModel.findNotesByObjectId(noteModel._places, placeId );
+
+        if (photoList.length > 0) {
+
+        }
     },
 
     onShow : function (e) {
