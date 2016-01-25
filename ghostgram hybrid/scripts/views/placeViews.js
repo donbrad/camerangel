@@ -1746,7 +1746,7 @@ var smartEventPlacesView = {
                                     lng : Number(place.geometry.location.lng().toFixed(6)),
                                     vicinity : place.vicinity,
                                     address : address.streetNumber + ' ' + address.street + ", " + address.city + ", " + address.state +
-                                        "  " + address.zip,
+                                        "  " + address.zipcode,
                                     city:  address.city,
                                     state: address.state,
                                     zipcode: address.zipcode,
