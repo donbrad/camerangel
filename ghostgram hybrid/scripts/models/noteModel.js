@@ -117,6 +117,7 @@ var noteModel = {
         noteParse.set('content', note.content);
         noteParse.set('tags', note.tags);
         noteParse.set('date',  note.date);
+        noteParse.set('expiration', Number(note.expiration));
         noteParse.set('expirationDate',note.expirationDate);
         noteParse.set('isPrivate',  note.isPrivate);
         noteParse.set('isExpired',  note.isExpired);
@@ -160,6 +161,7 @@ var noteModel = {
         note.metaTagString = null;
         note.content = null;
         note.tags = [];
+        note.expiration = 30;
         var d = new Date();
         d.setFullYear(d.getFullYear()+1);
         note.expirationDate = d;
@@ -167,5 +169,7 @@ var noteModel = {
         note.isExpired = false;
 
         return(note);
-    }
+    },
+
+
 };

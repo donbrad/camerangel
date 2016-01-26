@@ -1453,6 +1453,19 @@ var placeView = {
         _preventDefault(e);
 
        smartNoteView.openModal(null, function (note) {
+           var newNote = noteModel.createNote(noteModel._places, placeView._activePlaceId, true );
+
+           newNote.description = note.description;
+           newNote.expiration = note.expiration;
+           newNote.content = note.content;
+           newNote.expirationDate = note.expirationDate;
+           newNote.tags =  tagModel.parseTagString(note.tagString);
+           newNote.tagString = tagModel.createTagString(newNote.tags);
+
+
+           noteModel.addNote(note);
+
+           placeView._memoriesDS.add(note);
 
        });
     },
@@ -1464,11 +1477,6 @@ var placeView = {
     	APP.kendo.navigate("#mapView?place=" + placeId );
     },
 
-  /*  takePhoto: function(e){
-        _preventDefault(e);
-    	// TODO Don - wire camera feature
-    },
-*/
     openChat: function(e){
         _preventDefault(e);
 

@@ -82,6 +82,7 @@ var tagModel = {
         });
     },
 
+
     createTag : function () {
         var tag = new Object();
 
@@ -96,6 +97,41 @@ var tagModel = {
 
         return(tag);
 
+    },
+
+    parseTagString : function (tagString) {
+
+        if (tagString === null || tagString.length === 0) {
+            return [];
+        }
+        var tagArray = tagString.split(',');
+
+        for (var i=0; i< tagArray.length; i++) {
+            tagArray[i].trim();
+        }
+
+        return(tagString);
+    },
+
+
+    createTagString : function (tagArray) {
+
+        var tagString = '';
+        if (tagArray === null || tagArray.lengh === 0) {
+            return(null)
+        }
+
+        for (var i=0; i<tagArray.length; i++) {
+
+            tagString += tagArray + ', ';
+
+        }
+
+        tagString = tagString.trim();
+
+        tagString = tagString.substr(0, tagString.length-1);
+
     }
+
 
 };

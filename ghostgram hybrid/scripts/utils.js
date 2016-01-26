@@ -617,6 +617,18 @@ function reverseGeoCode(lat, lng) {
 
 }
 
+function ggAddDays(startDate,numberOfDays)
+{
+
+	var returnDate = new Date(
+		startDate.getFullYear(),
+		startDate.getMonth(),
+		startDate.getDate()+numberOfDays,
+		startDate.getHours(),
+		startDate.getMinutes(),
+		startDate.getSeconds());
+	return returnDate;
+}
 // utility to class to get time in normal and pubnub formats and convert between
 var ggTime = {
 
