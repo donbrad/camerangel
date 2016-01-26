@@ -101,23 +101,23 @@ var tagModel = {
 
     parseTagString : function (tagString) {
 
-        if (tagString === null || tagString.length === 0) {
+        if (tagString === undefined || tagString === null || tagString.length === 0) {
             return [];
         }
-        var tagArray = tagString.split(',');
+        var tagArray = tagString.split(",");
 
         for (var i=0; i< tagArray.length; i++) {
             tagArray[i].trim();
         }
 
-        return(tagString);
+        return(tagArray);
     },
 
 
     createTagString : function (tagArray) {
 
         var tagString = '';
-        if (tagArray === null || tagArray.lengh === 0) {
+        if (tagArray === undefined || tagArray === null || tagArray.lengh === 0) {
             return(null)
         }
 
@@ -130,6 +130,8 @@ var tagModel = {
         tagString = tagString.trim();
 
         tagString = tagString.substr(0, tagString.length-1);
+
+        return(tagString);
 
     }
 
