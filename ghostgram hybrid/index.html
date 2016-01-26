@@ -3069,7 +3069,7 @@
 	</div>
 	<div class="placeContent">
 		<p class="helper hidden" style="padding-top: 20px;"><img src="images/icon-memories.svg" class="icon" /> No Memories here yet </p>
-		<p ><img src="images/icon-memories.svg" class="icon" /> Memories</p>
+		<p ><img src="images/icon-memories.svg" class="icon" /> No Memories</p>
 
 		<ul id="placeView-listView">
 
@@ -3081,6 +3081,33 @@
 	</ul>
 </div>
 
+<script type="text/x-kendo-template" id="placeViewMemories-template">
+
+		# if (data.ggtype === "Note"){#
+		<div class="note">
+			<h4> #: data.title # </h4>
+			<p>#: data.comment #</p>
+			# if(data.object.start === data.object.end && data.object.start !== "") {#
+			<p>#: singleDayTime # </p>
+			#} else {#
+			<p>#: multiDayTime # </p>
+			#}#
+		</div>
+		#}#
+		# if(data.ggtype === "Photo") {#
+		<div class="photo">
+			<h4> #: data.title # </h4>
+			<div class="photoPreview">
+				<img src="#= data.object.url #" />
+			</div>
+			<div class="photoInfo">
+				<h4>#: data.object.placeName #</h4>
+				<p>#: data.object.address #</p>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		#}#
+</script>
 
 <!--/*
  * Profile

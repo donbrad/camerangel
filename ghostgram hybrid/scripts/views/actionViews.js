@@ -927,36 +927,24 @@ var smartNoteView = {
     openModal: function (actionObj, callback) {
         if (!smartNoteView._isInited) {
             smartNoteView._isInited = true;
+            $("#smartNoteView-tags").kendoMultiSelect({
+                autoClose: false,
+                dataTextField: "tagname",
+                dataValueField: "uuid",
+                itemTemplate: '<div style="vertical-align: middle;"><img height="18"src="#:data.icon#"/><span>#:data.tagname#</span> <span style="font-size: 9px;"> #:data.name#</span> </div>' ,
+                tagTemplate: '<div style="vertical-align: middle;"><img height="18" src="#:data.icon#"/>#:data.tagname#</div>',
+                change: function (e) {
+                    var value = this.value();
+
+                },
+                select : function (e) {
+                    var item = e.item;
+                    var text = item.text();
+                },
+                dataSource: contactModel.contactTagsDS
+            });
+
         }
-
-        if (actionObj === null) {
-            smartNoteView._activeObject.set('title', '');
-            smartNoteView._activeObject.set('tags', '');
-            smartNoteView._activeObject.set('content', '');
-            smartNoteView._activeObject.set('expiration', '30');
-        } else {
-            smartNoteView._activeObject.set('title', actionObj.title);
-            smartNoteView._activeObject.set('tags', actionObj.tags);
-            smartNoteView._activeObject.set('content', actionObj.content);
-            smartNoteView._activeObject.set('expiration', actionObj.expiration);
-        }
-
-        $("#smartNoteView-tags").kendoMultiSelect({
-            autoClose: false,
-            dataTextField: "tagname",
-            dataValueField: "uuid",
-            itemTemplate: '<div style="vertical-align: middle;"><img height="18"src="#:data.icon#"/><span>#:data.tagname#</span> <span style="font-size: 9px;"> #:data.name#</span> </div>' ,
-            tagTemplate: '<div style="vertical-align: middle;"><img height="18" src="#:data.icon#"/>#:data.tagname#</div>',
-            change: function (e) {
-                var value = this.value();
-
-            },
-            select : function (e) {
-                var item = e.item;
-                var text = item.text();
-            },
-            dataSource: contactModel.contactTagsDS
-        });
 
         $('#smartNoteView-content').redactor({
             minHeight: 240,
@@ -972,6 +960,21 @@ var smartNoteView = {
             buttons: [ 'bold', 'italic', 'lists', 'horizontalrule'],
             toolbarExternal: '#smartNoteView-contentToolbar'
         });
+
+
+        if (actionObj === null) {
+            smartNoteView._activeObject.set('title', '');
+            smartNoteView._activeObject.set('tags', '');
+            smartNoteView._activeObject.set('content', '');
+            smartNoteView._activeObject.set('expiration', '30');
+        } else {
+            smartNoteView._activeObject.set('title', actionObj.title);
+            smartNoteView._activeObject.set('tags', actionObj.tags);
+            smartNoteView._activeObject.set('content', actionObj.content);
+            smartNoteView._activeObject.set('expiration', actionObj.expiration);
+        }
+
+
         if (callback === undefined) {
             callback = null;
         }
@@ -984,20 +987,32 @@ var smartNoteView = {
 
     onSave : function (e) {
         _preventDefault(e);
+        var exp = Number(smartNoteView._activeObject.get('expiration'));
+
+        var expDate = ggAddDays(new Date(), exp);
+
+        smartNoteView._activeObject.set('expirationDate', expDate);
+
+
+        if (smartNoteView._callback !== null) {
+            smartNoteView._callback(smartNoteView._activeObject);
+        }
+
+        smartNoteView.onDone();
+
     },
 
     onCancel : function (e) {
         _preventDefault(e);
-        $("#smartNoteModal").data("kendoMobileModalView").close();
+        smartNoteView.onDone();
     },
 
     onDone: function (e) {
         //_preventDefault(e);
 
+        $('#smartNoteView-content').redactor('core.destroy');
         $("#smartNoteModal").data("kendoMobileModalView").close();
-        if (smartNoteView._callback !== null) {
-            smartNoteView._callback(smartNoteView._activeObject);
-        }
+
     }
 };
 

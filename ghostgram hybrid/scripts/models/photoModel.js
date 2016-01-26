@@ -10,6 +10,8 @@
 
 var photoModel = {
     _version : 1,
+    _parseClass : 'photos',
+    _ggClass: 'Photo',
     currentPhoto: {},
     currentOffer: null,
     previewSize: "33%",
@@ -37,7 +39,7 @@ var photoModel = {
 
 
     _fetchPhotos : function () {
-        var ParsePhotoModel = Parse.Object.extend("photos");
+        var ParsePhotoModel = Parse.Object.extend(photoModel._parseClass);
         var query = new Parse.Query(ParsePhotoModel);
 
         query.find({
@@ -145,6 +147,25 @@ var photoModel = {
 
         return(photo);
     },
+
+
+    queryPhotos: function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = photoModel.photosDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+
+
+        dataSource.filter(cacheFilter);
+
+        return(view);
+    },
+
 
     queryPhotoOffer : function (query) {
         if (query === undefined)
@@ -331,6 +352,12 @@ var photoModel = {
                 updateParseObject('photos', "photoId", photo.photoId, "eventId",  null);
                 updateParseObject('photos', "photoId", photo.photoId, "eventName",  null);
             }
+            if (photo.ggType === undefined) {
+
+                photo.ggType = photoModel._ggClass;
+
+                updateParseObject('photos', "photoId", photo.photoId, "ggType",  photoModel._ggClass);
+            }
 
             if (photo.address === undefined) {
 
@@ -430,6 +457,7 @@ var photoModel = {
 
         photo.set('photoId', photoObj.photoId);  // use the original photo id from sender to enable recall
         photo.set('channelId', channelId);
+        photo.set('version', photoModel._version);
 
         photo.set('senderUUID',ownerId );
         photo.set('senderName', ownerName);
@@ -626,7 +654,7 @@ var photoModel = {
         photo.set('thumbnailUrl', devicePhoto.thumbnailUrl);
         photo.set('thumbnail', devicePhoto.thumbnailFile);
 
-
+        photo.set('ggType', photoModel._ggClass);
         photo.set('title', null);
         photo.set('description', null);
         photo.set('senderUUID', userModel.currentUser.userUUID);

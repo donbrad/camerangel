@@ -1244,11 +1244,34 @@ var placeView = {
 
     onInit : function (e) {
         _preventDefault(e);
+        $("#channels-listview").kendoMobileListView({
+            dataSource: placeView._memoriesDS,
+            template: $("#placeViewMemories-template").html()/*,
+            dataBound: function(e){
+                ux.checkEmptyUIState(placeView._memoriesDS, "#channelListDiv");
+            }*/
+        });
+
+        // ToDo: bind change functions for notes and photos here
+
+
     },
 
     loadMemories : function () {
         var photos = photoModel.photosDS,
             notes = noteModel.notesDS;
+    },
+
+    buildMemoriesDS : function () {
+        var ds = placeView._memoriesDS;
+        ds.data([]);
+        var placeId = placeView._activePlaceId;
+        var photoList = photoModel.queryPhotos({ field: "placeId", operator: "eq", value: placeId});
+        var notesList = noteModel.findNotesByObjectId(noteModel._places, placeId );
+
+        if (photoList.length > 0) {
+
+        }
     },
 
     onShow : function (e) {
@@ -1430,6 +1453,19 @@ var placeView = {
         _preventDefault(e);
 
        smartNoteView.openModal(null, function (note) {
+           var newNote = noteModel.createNote(noteModel._places, placeView._activePlaceId, true );
+
+           newNote.description = note.description;
+           newNote.expiration = note.expiration;
+           newNote.content = note.content;
+           newNote.expirationDate = note.expirationDate;
+           newNote.tags =  tagModel.parseTagString(note.tagString);
+           newNote.tagString = tagModel.createTagString(newNote.tags);
+
+
+           noteModel.addNote(note);
+
+           placeView._memoriesDS.add(note);
 
        });
     },
@@ -1441,11 +1477,6 @@ var placeView = {
     	APP.kendo.navigate("#mapView?place=" + placeId );
     },
 
-  /*  takePhoto: function(e){
-        _preventDefault(e);
-    	// TODO Don - wire camera feature
-    },
-*/
     openChat: function(e){
         _preventDefault(e);
 

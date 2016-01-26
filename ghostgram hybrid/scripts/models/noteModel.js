@@ -14,6 +14,7 @@ var noteModel = {
     _places: 'place',
     _group: 'group',
     _parseClass : 'note',
+    _ggClass: 'Note',
     _version: 1,
 
     notesDS: new kendo.data.DataSource({
@@ -116,6 +117,7 @@ var noteModel = {
         noteParse.set('content', note.content);
         noteParse.set('tags', note.tags);
         noteParse.set('date',  note.date);
+        noteParse.set('expiration', Number(note.expiration));
         noteParse.set('expirationDate',note.expirationDate);
         noteParse.set('isPrivate',  note.isPrivate);
         noteParse.set('isExpired',  note.isExpired);
@@ -148,6 +150,8 @@ var noteModel = {
         note.uuid = uuid.v4();
 
 
+        note.ggType = noteModel._ggClass;
+        note.version = noteModel._version;
         note.userUUID = null;
         note.date = new Date();
         note.objectType = type;
@@ -157,6 +161,7 @@ var noteModel = {
         note.metaTagString = null;
         note.content = null;
         note.tags = [];
+        note.expiration = 30;
         var d = new Date();
         d.setFullYear(d.getFullYear()+1);
         note.expirationDate = d;
@@ -164,5 +169,7 @@ var noteModel = {
         note.isExpired = false;
 
         return(note);
-    }
+    },
+
+
 };
