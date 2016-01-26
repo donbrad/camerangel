@@ -133,6 +133,7 @@ var placesModel = {
                         var field  =  e.field;
                         var place = e.items[0], placeId = place.uuid;
                         var placeList = placesModel.findPlaceListUUID(placeId);
+
                         // if the contact's name or alias has been updated, need to update the tag...
                         if (field === 'name') {
                             var newName = ux.returnUXPrimaryName(place.name, place.alias);
@@ -146,7 +147,8 @@ var placesModel = {
                             placeTag.alias = newName;
                             placeTag.alias = place.alias;
                         }
-                        placeList[field] = place [field];
+                        if (placeList !== undefined)
+                            placeList[field] = place [field];
                         break;
 
                     case "remove" :
