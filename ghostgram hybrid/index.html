@@ -3071,9 +3071,7 @@
 		<p class="helper hidden" style="padding-top: 20px;"><img src="images/icon-memories.svg" class="icon" /> No Memories here yet </p>
 		<p ><img src="images/icon-memories.svg" class="icon" /> Memories</p>
 
-		<ul id="placeView-listview">
-
-		</ul>
+		<ul id="placeView-listview"></ul>
 	</div>
 	<ul data-role="actionsheet" id="placeViewPhotoActions" data-popup='{"direction": "left"}'>
 		<li><a data-action="placeView.camera"> Phone Camera</a></li>
@@ -3095,7 +3093,7 @@
 			<h4> #: data.title # </h4>
 			<p> #: data.tagString #</p>
 			<div class="photoPreview">
-				<img src="#= data.deviceUrl #" />
+				<img src="#= data.thumbnailUrl #" />
 			</div>
 			<div class="photoInfo">
 				<p> From : #: data.senderName #</p>
