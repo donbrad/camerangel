@@ -1265,14 +1265,14 @@ var placeView = {
         var photoList = photoModel.findPhotosByPlaceId(placeId);
         var notesList = noteModel.findNotesByObjectId(noteModel._places, placeId );
 
-        if (photoList.length > 0) {
+        if (photoList !== undefined && photoList.length > 0) {
             ds.data(photoList);
-            if (notesList.length > 0) {
+            if (notesList !== undefined && notesList.length > 0) {
                 for (var i=0; i<notesList.length; i++) {
                     ds.add(notesList[i]);
                 }
             }
-        } else  if (notesList.length > 0) {
+        } else  if (notesList !== undefined && notesList.length > 0) {
             ds.data(notesList);
         }
     },
