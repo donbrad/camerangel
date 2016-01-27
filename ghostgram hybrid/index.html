@@ -3086,23 +3086,20 @@
 		# if (data.ggtype === "Note"){#
 		<div class="note">
 			<h4> #: data.title # </h4>
-			<p>#: data.comment #</p>
-			# if(data.object.start === data.object.end && data.object.start !== "") {#
-			<p>#: singleDayTime # </p>
-			#} else {#
-			<p>#: multiDayTime # </p>
-			#}#
+			<p>#: data.tagString #</p>
+			<div>#: data.comment #</div>
 		</div>
 		#}#
 		# if(data.ggtype === "Photo") {#
 		<div class="photo">
 			<h4> #: data.title # </h4>
+			<p> #: data.tagString #</p>
 			<div class="photoPreview">
-				<img src="#= data.object.url #" />
+				<img src="#= data.imageUrl #" />
 			</div>
 			<div class="photoInfo">
-				<h4>#: data.object.placeName #</h4>
-				<p>#: data.object.address #</p>
+				<p> From : #: data.senderName #</p>
+				<p> #: data.dateString #</p>
 			</div>
 			<div class="clearfix"></div>
 		</div>
