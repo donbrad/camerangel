@@ -1267,7 +1267,7 @@ var placeView = {
         if (photoList !== undefined && photoList.length > 0) {
             for (var p=0; p<photoList.length; p++) {
                 var photo = photoList[p];
-                photo.date = new Date(photo.dateString);
+                photo.date = new Date(photo.updatedAt);
                 ds.add(photo);
             }
             if (notesList !== undefined && notesList.length > 0) {
