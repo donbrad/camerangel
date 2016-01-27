@@ -57,12 +57,6 @@ var photoModel = {
                         photo.imageUrl = photo.thumbnailUrl;
                     }
 
-                  /*  if (window.navigator.simulator === undefined) {
-                        if (photo.imageUrl !== null) {
-                            photoModel.isPhotoCached(photo);
-                        }
-                    }
-*/
                     photo.ggType = photoModel._ggClass;
 
                     models.push(photo);
