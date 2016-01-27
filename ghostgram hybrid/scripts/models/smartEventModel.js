@@ -4,6 +4,10 @@
 'use strict';
 
 var smartEvent = {
+    _parseClass : 'smartobject',
+    _ggClass : 'event',
+    _version : 1,
+
     // date/place : -1 optional, 0 not used,  1  required
     termMap : [
         {term: "call", category: "action", type: "meeting", composite: true, date: 1, place: 0, info: 0},
@@ -351,7 +355,7 @@ var smartEvent = {
     },
 
     addObject : function (objectIn, callback) {
-        var SmartObjects = Parse.Object.extend("smartobject");
+        var SmartObjects = Parse.Object.extend(smartEvent._parseClass);
         var smartOb = new SmartObjects();
 
 
@@ -362,6 +366,8 @@ var smartEvent = {
         }
 
         smartOb.setACL(userModel.parseACL);
+        smartObj.set('version', smartEvent._version);
+        smartObj.set('ggType', smartEvent._ggClass);
         smartOb.set('uuid', objectIn.uuid);
         smartOb.set('senderUUID', objectIn.senderUUID);
         smartOb.set('senderName', objectIn.senderName);

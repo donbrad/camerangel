@@ -10,6 +10,8 @@
 
 var photoModel = {
     _version : 1,
+    _parseClass : 'photos',
+    _ggClass: 'Photo',
     currentPhoto: {},
     currentOffer: null,
     previewSize: "33%",
@@ -37,7 +39,7 @@ var photoModel = {
 
 
     _fetchPhotos : function () {
-        var ParsePhotoModel = Parse.Object.extend("photos");
+        var ParsePhotoModel = Parse.Object.extend(photoModel._parseClass);
         var query = new Parse.Query(ParsePhotoModel);
 
         query.find({
@@ -55,12 +57,7 @@ var photoModel = {
                         photo.imageUrl = photo.thumbnailUrl;
                     }
 
-                  /*  if (window.navigator.simulator === undefined) {
-                        if (photo.imageUrl !== null) {
-                            photoModel.isPhotoCached(photo);
-                        }
-                    }
-*/
+                    photo.ggType = photoModel._ggClass;
 
                     models.push(photo);
                 }
@@ -146,6 +143,25 @@ var photoModel = {
         return(photo);
     },
 
+
+    queryPhotos: function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = photoModel.photosDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+
+
+        dataSource.filter(cacheFilter);
+
+        return(view);
+    },
+
+
     queryPhotoOffer : function (query) {
         if (query === undefined)
             return(undefined);
@@ -177,36 +193,27 @@ var photoModel = {
 
     findPhotoById : function (photoId) {
 
-       /* var dataSource = photoModel.photosDS;
-        dataSource.filter( { field: "photoId", operator: "eq", value: photoId });
-        var view = dataSource.view();
-        var photo = view[0];
-        dataSource.filter([]);*/
-
-        return(photoModel.queryPhoto({ field: "photoId", operator: "eq", value: photoId }));
+        return(photoModel.queryPhotos({ field: "photoId", operator: "eq", value: photoId }));
     },
 
     findPhotosByChannel : function (channelId) {
-       /* var dataSource = photoModel.photosDS;
-        dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
-        var view = dataSource.view();
-        var photos = view;
-        dataSource.filter([]);
 
-        return(photos);*/
-        return(photoModel.queryPhoto({ field: "channelId", operator: "eq", value: channelId }));
+        return(photoModel.queryPhotos({ field: "channelId", operator: "eq", value: channelId }));
+    },
+
+    findPhotosByPlaceId : function (placeId) {
+
+        return(photoModel.queryPhotos({ field: "placeId", operator: "eq", value: placeId }));
+    },
+
+    findPhotosByPlaceString : function (placeString) {
+
+        return(photoModel.queryPhotos({ field: "placeString", operator: "contains", value: placeString }));
     },
 
     findPhotosBySender: function (senderId) {
-       /* var dataSource = photoModel.photosDS;
-        dataSource.filter( { field: "senderUUID", operator: "eq", value: senderId });
-        var view = dataSource.view();
-        var photos = view;
-        dataSource.filter([]);
 
-        return(photos);*/
-
-        return(photoModel.queryPhoto({ field: "senderUUID", operator: "eq", value: senderId }));
+        return(photoModel.queryPhotos({ field: "senderUUID", operator: "eq", value: senderId }));
     },
 
      getChannelOffers : function (channelId, callback) {
@@ -331,6 +338,12 @@ var photoModel = {
                 updateParseObject('photos', "photoId", photo.photoId, "eventId",  null);
                 updateParseObject('photos', "photoId", photo.photoId, "eventName",  null);
             }
+            if (photo.ggType === undefined) {
+
+                photo.ggType = photoModel._ggClass;
+
+                updateParseObject('photos', "photoId", photo.photoId, "ggType",  photoModel._ggClass);
+            }
 
             if (photo.address === undefined) {
 
@@ -430,6 +443,7 @@ var photoModel = {
 
         photo.set('photoId', photoObj.photoId);  // use the original photo id from sender to enable recall
         photo.set('channelId', channelId);
+        photo.set('version', photoModel._version);
 
         photo.set('senderUUID',ownerId );
         photo.set('senderName', ownerName);
@@ -626,7 +640,7 @@ var photoModel = {
         photo.set('thumbnailUrl', devicePhoto.thumbnailUrl);
         photo.set('thumbnail', devicePhoto.thumbnailFile);
 
-
+        photo.set('ggType', photoModel._ggClass);
         photo.set('title', null);
         photo.set('description', null);
         photo.set('senderUUID', userModel.currentUser.userUUID);

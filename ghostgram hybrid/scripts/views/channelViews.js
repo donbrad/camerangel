@@ -1768,7 +1768,6 @@ var channelView = {
       //  var editor = $("#messageTextArea").data("kendoEditor");
         var date = smartEvent.date.toLocaleString(), objectId = smartEvent.uuid;
 
-
         var dateStr = moment(date).format('ddd MMM Do');
         var localTime = moment(date).format("LT");
 

@@ -2436,11 +2436,11 @@
 
 			</li>
 			<li>
-				<select id="smartNoteView-tags" multiple="multiple"  data-bind="value: tagString" data-placeholder="@Tags..."> </select>
+				<select id="smartNoteView-tags" multiple="multiple"  data-bind="value: tags" data-placeholder="@Tags..."> </select>
 			</li>
 			<li>
 				<label> Expires
-					<select id="smartNoteView-expires" data-bind="value: expires">
+					<select id="smartNoteView-expires" data-bind="value: expiration">
 						<option value="0">Never</option>
 						<option value="1">Tomorrow</option>
 						<option value="7">In a Week</option>
@@ -3106,6 +3106,30 @@
 	</ul>
 </div>
 
+<script type="text/x-kendo-template" id="placeViewMemories-template">
+
+		# if (data.ggType === "Note"){#
+		<div class="note">
+			<h4> #: data.title # </h4>
+			<p>#: data.tagString #</p>
+			<div>#: data.comment #</div>
+		</div>
+		#}#
+		# if(data.ggType === "Photo") {#
+		<div class="photo">
+			<h4> #: data.title # </h4>
+			<p> #: data.tagString #</p>
+			<div class="photoPreview">
+				<img src="#= data.thumbnailUrl #" />
+			</div>
+			<div class="photoInfo">
+				<p> From : #: data.senderName #</p>
+				<p> #: data.dateString #</p>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		#}#
+</script>
 
 <!--/*
  * Profile

@@ -14,6 +14,7 @@ var noteModel = {
     _places: 'place',
     _group: 'group',
     _parseClass : 'note',
+    _ggClass: 'Note',
     _version: 1,
 
     notesDS: new kendo.data.DataSource({
@@ -102,7 +103,9 @@ var noteModel = {
     addNote : function (note) {
         var Notes = Parse.Object.extend(noteModel._parseClass);
         var noteParse = new Notes();
-        if (isPrivate) {
+
+
+        if (note.isPrivate === undefined || note.isPrivate) {
             noteParse.setACL(userModel.parseACL);
         }
         noteParse.set('version', noteModel._version);
@@ -115,8 +118,13 @@ var noteModel = {
         noteParse.set('metaTagString',  note.metaTagString);
         noteParse.set('content', note.content);
         noteParse.set('tags', note.tags);
-        noteParse.set('date',  note.date);
-        noteParse.set('expirationDate',note.expirationDate);
+        var dateString = new Date(note.date).toISOString();
+        var d = {"__type":"Date","iso":dateString};
+        noteParse.set('date',  d);
+        noteParse.set('expiration', Number(note.expiration));
+        dateString = new Date(note.expirationDate).toISOString();
+        d = {"__type":"Date","iso":dateString};
+        noteParse.set('expirationDate', d);
         noteParse.set('isPrivate',  note.isPrivate);
         noteParse.set('isExpired',  note.isExpired);
         var noteObj = noteParse.toJSON();
@@ -130,7 +138,7 @@ var noteModel = {
                 // Execute any logic that should take place after the object is saved.
 
             },
-            error: function(contact, error) {
+            error: function(note, error) {
                 // Execute any logic that should take place if the save fails.
                 // error is a Parse.Error with an error code and message.
                 handleParseError(error);
@@ -148,6 +156,8 @@ var noteModel = {
         note.uuid = uuid.v4();
 
 
+        note.ggType = noteModel._ggClass;
+        note.version = noteModel._version;
         note.userUUID = null;
         note.date = new Date();
         note.objectType = type;
@@ -157,6 +167,7 @@ var noteModel = {
         note.metaTagString = null;
         note.content = null;
         note.tags = [];
+        note.expiration = 30;
         var d = new Date();
         d.setFullYear(d.getFullYear()+1);
         note.expirationDate = d;
@@ -164,5 +175,7 @@ var noteModel = {
         note.isExpired = false;
 
         return(note);
-    }
+    },
+
+
 };

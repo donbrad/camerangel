@@ -7,6 +7,8 @@
 var channelModel = {
 
     _version: 1,
+    _parseClass: "channels",
+    _ggClass: 'Chat',
     _channelName : "channels",
     _channelMemberName : "channelMember",
     currentChannel: new kendo.data.ObservableObject(),
@@ -62,7 +64,7 @@ var channelModel = {
 
 
     fetch : function () {
-        var Channel = Parse.Object.extend("channels");
+        var Channel = Parse.Object.extend(channelModel._parseClass);
         var query = new Parse.Query(Channel);
 
         query.find({
@@ -93,6 +95,11 @@ var channelModel = {
                         dirty = true;
                     }
 
+                    if (object.get('ggType') === undefined) {
+                        object.set('ggType', channelModel._ggClass);
+                        dirty = true;
+                    }
+                    
                     if (object.get('isDeleted') === undefined) {
                         object.set('isDeleted', false);
                         dirty = true;
@@ -586,7 +593,7 @@ var channelModel = {
             return;
         }
 
-        var Channels = Parse.Object.extend(channelModel._channelName);
+        var Channels = Parse.Object.extend(channelModel._parseClass);
         var channel = new Channels();
         var addTime = ggTime.currentTime();
         channel.set("version", channelModel._version);
@@ -641,7 +648,7 @@ var channelModel = {
             // Channel already exists
             return;
         }
-        var Channels = Parse.Object.extend(channelModel._channelName);
+        var Channels = Parse.Object.extend(channelModel._parseClass);
 
         channel = new Channels();
         channel.set('isPlace', false);
@@ -659,7 +666,7 @@ var channelModel = {
 
         var addTime = ggTime.currentTime();
         channel.set("version", channelModel._version);
-
+        channel.set("ggType", channelModel._ggClass);
         channel.set("channelId", channelId);
         channel.set("name", channelName);
         channel.set("description", channelDescription);
@@ -745,7 +752,7 @@ var channelModel = {
             return;
         }
 
-        var Channels = Parse.Object.extend("channels");
+        var Channels = Parse.Object.extend(channelModel._parseClass);
         var channel = new Channels();
 
         /* var ChannelMap = Parse.Object.extend('channelmap');
@@ -767,6 +774,7 @@ var channelModel = {
         var durationDays = 30;
 
         channel.set('version', channelModel._version);
+        channel.set('ggType', channelModel._ggClass);
         channel.set ('category', 'Place');
         channel.set('isMuted', false);
         channel.set('isDeleted', false);
@@ -830,7 +838,7 @@ var channelModel = {
 
     // Add group channel for owner...
     addChannel : function (channelName, channelDescription) {
-        var Channels = Parse.Object.extend("channels");
+        var Channels = Parse.Object.extend(channelModel._parseClass);
         var channel = new Channels();
 
        /* var ChannelMap = Parse.Object.extend('channelmap');
@@ -854,6 +862,7 @@ var channelModel = {
         var durationDays = 30;
 
         channel.set('version', channelModel._version);
+        channel.set('ggType', channelModel._ggClass);
         channel.set('isPlace', false);
         channel.set ('category', 'Group');
         channel.set('isPrivate', false);

@@ -59,7 +59,7 @@ var tagModel = {
         tagParse.set('name', tag.name);
         tagParse.set('type', tag.type);
         tagParse.set('alias', tag.alias);
-        tagParse.set('description', tag.description);
+        tagParse.set('title', tag.title);
         tagParse.set('ownerUUID', tag.ownerUUID);
         tagParse.set('category', tag.category);
 
@@ -82,6 +82,7 @@ var tagModel = {
         });
     },
 
+
     createTag : function () {
         var tag = new Object();
 
@@ -89,13 +90,51 @@ var tagModel = {
         tag.name = null;
         tag.alias = null;
         tag.type = tagModel._user;
-        tag.description = null;
+        tag.objectUUID = null;
+        tag.title = null;
         tag.ownerUUID = null;
         tag.category = null;
         tag.icon = null;
 
         return(tag);
 
+    },
+
+    parseTagString : function (tagString) {
+
+        if (tagString === undefined || tagString === null || tagString.length === 0) {
+            return [];
+        }
+        var tagArray = tagString.split(",");
+
+        for (var i=0; i< tagArray.length; i++) {
+            tagArray[i].trim();
+        }
+
+        return(tagArray);
+    },
+
+
+    createTagString : function (tagArray) {
+
+        var tagString = '';
+        if (tagArray === undefined || tagArray === null || tagArray.lengh === 0) {
+            return(null)
+        }
+
+        for (var i=0; i<tagArray.length; i++) {
+
+            tagString += tagArray[0].tagname + ', ';
+
+        }
+
+        tagString = tagString.trim();
+
+        tagString = tagString.substr(0, tagString.length-1);
+
+        return(tagString);
+
     }
+
 
 };
