@@ -183,7 +183,7 @@ var placesModel = {
 
         for (var i=0; i< placeList.length; i++) {
             var model = (placeList[i]).toJSON();
-            var tag = {type: 'place', tagname: ux.returnUXPrimaryName(model.name, model.alias), name: model.name, alias: model.alias, uuid: model.uuid };
+            var tag = {type: 'place', tagname: ux.returnUXPrimaryName(model.name, model.alias), name: model.name, alias: model.alias, uuid: model.uuid, objectUUID: model.uuid, icon: 'images/icon-locationPin.svg' };
             placesModel.placesTagsDS.add(tag);
         }
     },

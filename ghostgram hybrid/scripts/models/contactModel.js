@@ -274,8 +274,9 @@ var contactModel = {
                 type: 'contact',
                 tagname: ux.returnUXPrimaryName(contact.name, contact.alias),
                 name: contact.name,
+                alias: contact.alias,
                 uuid: contact.uuid,
-                contactUUID: contact.contactUUID,
+                objectUUID: contact.contactUUID,
                 icon: 'images/icon-contact.svg'
             };
             contactModel.contactTagsDS.add(tag);
