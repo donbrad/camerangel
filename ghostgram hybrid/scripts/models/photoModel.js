@@ -206,7 +206,7 @@ var photoModel = {
         return(photoModel.queryPhoto({ field: "channelId", operator: "eq", value: channelId }));
     },
 
-    findPhotosByPlace : function (placeId) {
+    findPhotosByPlaceId : function (placeId) {
 
         return(photoModel.queryPhoto({ field: "placeId", operator: "eq", value: placeId }));
     },

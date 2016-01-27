@@ -1257,20 +1257,23 @@ var placeView = {
 
     },
 
-    loadMemories : function () {
-        var photos = photoModel.photosDS,
-            notes = noteModel.notesDS;
-    },
 
     buildMemoriesDS : function () {
         var ds = placeView._memoriesDS;
         ds.data([]);
         var placeId = placeView._activePlaceId;
-        var photoList = photoModel.queryPhotos({ field: "placeId", operator: "eq", value: placeId});
+        var photoList = photoModel.findPhotosByPlaceId(placeId);
         var notesList = noteModel.findNotesByObjectId(noteModel._places, placeId );
 
         if (photoList.length > 0) {
-
+            ds.data(photoList);
+            if (notesList.length > 0) {
+                for (var i=0; i<notesList.length; i++) {
+                    ds.add(notesList[i]);
+                }
+            }
+        } else  if (notesList.length > 0) {
+            ds.data(notesList);
         }
     },
 
@@ -1325,7 +1328,8 @@ var placeView = {
             $('#placeView-gotochat').addClass('hidden');
         }
 
-
+        mobileNotify("Looking up Memories...");
+        placeView.buildMemoriesDS();
         //mapModel.setMapCenter(placeView._activePlaceModel.lat, placeView._activePlaceModel.lng);
     },
 
