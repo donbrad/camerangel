@@ -99,6 +99,7 @@ var channelModel = {
                         object.set('ggType', channelModel._ggClass);
                         dirty = true;
                     }
+                    
                     if (object.get('isDeleted') === undefined) {
                         object.set('isDeleted', false);
                         dirty = true;
@@ -665,7 +666,7 @@ var channelModel = {
 
         var addTime = ggTime.currentTime();
         channel.set("version", channelModel._version);
-
+        channel.set("ggType", channelModel._ggClass);
         channel.set("channelId", channelId);
         channel.set("name", channelName);
         channel.set("description", channelDescription);
@@ -773,6 +774,7 @@ var channelModel = {
         var durationDays = 30;
 
         channel.set('version', channelModel._version);
+        channel.set('ggType', channelModel._ggClass);
         channel.set ('category', 'Place');
         channel.set('isMuted', false);
         channel.set('isDeleted', false);
@@ -860,6 +862,7 @@ var channelModel = {
         var durationDays = 30;
 
         channel.set('version', channelModel._version);
+        channel.set('ggType', channelModel._ggClass);
         channel.set('isPlace', false);
         channel.set ('category', 'Group');
         channel.set('isPrivate', false);

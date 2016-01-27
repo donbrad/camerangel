@@ -1262,24 +1262,23 @@ var placeView = {
         ds.data([]);
         var placeId = placeView._activePlaceId;
         var photoList = photoModel.findPhotosByPlaceId(placeId);
-        var notesList = noteModel.findNotesByObjectId(noteModel._places, placeId );
+        var notesList = noteModel.findNotesByObjectId(noteModel._places, placeId);
 
         if (photoList !== undefined && photoList.length > 0) {
-            for (var p=0; p<photoList.length; p++) {
+            for (var p = 0; p < photoList.length; p++) {
                 var photo = photoList[p];
                 photo.date = new Date(photo.updatedAt);
                 ds.add(photo);
             }
-            if (notesList !== undefined && notesList.length > 0) {
+        }
 
-                for (var i=0; i<notesList.length; i++) {
-                    var note = notesList[i];
-                    note.date = new Date(note.updatedAt);
-                    ds.add(note);
-                }
+        if (notesList !== undefined && notesList.length > 0) {
+
+            for (var i = 0; i < notesList.length; i++) {
+                var note = notesList[i];
+                note.date = new Date(note.updatedAt);
+                ds.add(note);
             }
-        } else  if (notesList !== undefined && notesList.length > 0) {
-            ds.data(notesList);
         }
     },
 
