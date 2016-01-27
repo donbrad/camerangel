@@ -1,7 +1,7 @@
 /* Smart Object styles */
 
 // Smart object edit and view
-.eventBanner {
+#eventBanner {
   width: 100%;
   padding: 0.25em 1em;
   p {
@@ -21,10 +21,21 @@
   line-height: 1;
 }
 
-.eventExpired {
+.eventExpired, .eventDeclined {
   background: @warning-100;
   color: #fff;
 }
+
+.eventAccepted {
+  background: @success-200;
+  color: #fff;
+}
+
+.eventPending {
+  background: @highlight-200;
+  color: #fff;
+}
+
 
 .picker__frame {
   bottom: 5em !important;

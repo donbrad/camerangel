@@ -78,11 +78,11 @@
   color: #fff !important;
 }
 /* Smart Object styles */
-.eventBanner {
+#eventBanner {
   width: 100%;
   padding: 0.25em 1em;
 }
-.eventBanner p {
+#eventBanner p {
   margin: 0;
 }
 .event-details {
@@ -100,8 +100,17 @@
 #event-viewMode > div:nth-child(2) > h2 {
   line-height: 1;
 }
-.eventExpired {
+.eventExpired,
+.eventDeclined {
   background: #E57373;
+  color: #fff;
+}
+.eventAccepted {
+  background: #65BBB3;
+  color: #fff;
+}
+.eventPending {
+  background: #D4ABC4;
   color: #fff;
 }
 .picker__frame {

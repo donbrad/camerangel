@@ -208,7 +208,7 @@ var smartEventView = {
 
     setRecipientMode : function () {
         var thisEvent = smartEventView._activeObject;
-        console.log("reciepent");
+
         $(".event-owner").addClass("hidden");
         $('#smartEventView-recipientListDiv').addClass('hidden');
 
@@ -216,6 +216,7 @@ var smartEventView = {
         // if event is expired disable rsvp
         if(thisEvent.isExpired){
             $("#event-rsvp").data("kendoMobileButtonGroup").enable(false);
+            smartEventView.setEventBanner("expired");
         } else {
             $("#event-rsvp").data("kendoMobileButtonGroup").enable(true);
             // set user response
@@ -326,7 +327,6 @@ var smartEventView = {
                geo.address = address;
                smartEventView._geoObj = geo;
 
-               console.log("onPlaceSearch");
                //
                $("#smartEventView-placesearch").val(geo.name);
                // hide place search btn
@@ -348,7 +348,7 @@ var smartEventView = {
 
         } else {
             thisObject.set('isExpired', false);
-            smartEventView.setEventBanner();
+            //smartEventView.setEventBanner();
         }
     },
 
@@ -588,7 +588,6 @@ var smartEventView = {
         }
 
         smartEventView.checkExpired();
-        console.log(thisObject);
         $("#smartEventModal").data("kendoMobileModalView").open();
     },
 
@@ -596,27 +595,28 @@ var smartEventView = {
         // Styling for event banner state
         switch(state) {
             case "expired":
-                $(".eventBanner").removeClass("hidden").addClass("eventExpired");
+                $("#eventBanner").removeClass("hidden, eventPending, eventAccepted, eventDeclined").addClass("eventExpired");
                 $(".eventBannerTitle").text("Event expired");
                 $(".eventBannerImg").attr("src", "images/smart-time-light.svg");
-                console.log("expired event banner");
+
                 break;
             case "pending":
-                $(".eventBanner").removeClass("hidden").addClass("eventPending");
-                console.log("pending event banner");
+                $("#eventBanner").removeClass("hidden, eventAccepted, eventDeclined, eventExpired").addClass("eventPending");
+                $(".eventBannerTitle").text("Awaiting your response");
+                $(".eventBannerImg").attr("src", "images/icon-question.svg");
+
                 break;
             case "accepted":
-                $(".eventBanner").removeClass("hidden").addClass("eventAccepted");
-                console.log("accepted event banner");
+                $("#eventBanner").removeClass("hidden, eventDeclined, eventExpired, eventPending").addClass("eventAccepted");
+                $(".eventBannerTitle").text("Accepted!");
+                //$(".eventBannerImg").attr("src", "images/icon");
+
                 break;
             case "declined":
-                $(".eventBanner").removeClass("hidden").addClass("eventDeclined");
-                console.log("declined event banner");
+                $("#eventBanner").removeClass("hidden, eventAccepted, eventExpired, eventPending").addClass("eventDeclined");
+                $(".eventBannerTitle").text("Declined");
+
                 break;
-            default:
-                $(".eventBanner").addClass("hidden");
-                $(".eventBannerTitle").text("");
-                $(".eventBannerImg").attr("src", "");
         }
 
     },
@@ -682,7 +682,7 @@ var smartEventView = {
 
         smartEventView._activeObject.set("wasCancelled", true);
 
-        smartEventView.setEventBanner();
+        //smartEventView.setEventBanner();
 
         smartEventView.onDone();
 
@@ -910,6 +910,7 @@ var smartEventView = {
     onCancel : function (e) {
         _preventDefault(e);
         $("#smartEventModal").data("kendoMobileModalView").close();
+        $("#eventBanner").removeClass();
     },
 
     onDone: function (e) {
@@ -1020,6 +1021,7 @@ var smartNoteView = {
     onCancel : function (e) {
         _preventDefault(e);
         $("#smartNoteModal").data("kendoMobileModalView").close();
+        $("#eventBanner").removeClass();
     },
 
     onDone: function (e) {

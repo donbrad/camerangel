@@ -1761,7 +1761,7 @@ var smartEventPlacesView = {
 
                                 // Provide the default fields for Places...
                                 var address = smartEventPlacesView.getAddressFromComponents(place.address_components);
-                                console.log(address)
+
                                 var placeObj = {
                                     googleId : place.place_id,
                                     name: place.name.smartTruncate(38, true).toString(),
