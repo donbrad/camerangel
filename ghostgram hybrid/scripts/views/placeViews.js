@@ -1274,7 +1274,7 @@ var placeView = {
 
                 for (var i=0; i<notesList.length; i++) {
                     var note = notesList[i];
-                    note.date new Date(note.updatedAt);
+                    note.date = new Date(note.updatedAt);
                     ds.add(note);
                 }
             }
