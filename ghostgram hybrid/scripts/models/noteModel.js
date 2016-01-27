@@ -103,7 +103,9 @@ var noteModel = {
     addNote : function (note) {
         var Notes = Parse.Object.extend(noteModel._parseClass);
         var noteParse = new Notes();
-        if (isPrivate) {
+
+
+        if (note.isPrivate === undefined || note.isPrivate) {
             noteParse.setACL(userModel.parseACL);
         }
         noteParse.set('version', noteModel._version);
