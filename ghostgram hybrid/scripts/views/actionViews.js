@@ -965,11 +965,13 @@ var smartNoteView = {
         if (actionObj === null) {
             smartNoteView._activeObject.set('title', '');
             smartNoteView._activeObject.set('tagString', '');
+            smartNoteView._activeObject.set('tags', []);
             smartNoteView._activeObject.set('content', '');
             smartNoteView._activeObject.set('expiration', '30');
         } else {
             smartNoteView._activeObject.set('title', actionObj.title);
             smartNoteView._activeObject.set('tagstring', actionObj.tagString);
+            smartNoteView._activeObject.set('tags', actionObj.tags);
             smartNoteView._activeObject.set('content', actionObj.content);
             smartNoteView._activeObject.set('expiration', actionObj.expiration);
         }
@@ -990,7 +992,18 @@ var smartNoteView = {
         var exp = Number(smartNoteView._activeObject.get('expiration'));
 
         var text = $('#smartNoteView-content').redactor('code.get');
+        var tags =  smartNoteView._activeObject.get('tags');
         var expDate = ggAddDays(new Date(), exp);
+        var tagArray = [];
+
+        if (tags.length > 0) {
+
+            for (var i = 0; i < tags.length; i++) {
+                var tag = tags[0].toJSON();
+                tagArray.push(tag);
+            }
+            smartNoteView._activeObject.get('tags', tagArray);
+        }
 
         smartNoteView._activeObject.set('content', text);
         smartNoteView._activeObject.set('expirationDate', expDate);

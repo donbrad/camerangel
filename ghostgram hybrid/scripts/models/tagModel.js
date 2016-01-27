@@ -123,7 +123,7 @@ var tagModel = {
 
         for (var i=0; i<tagArray.length; i++) {
 
-            tagString += tagArray + ', ';
+            tagString += tagArray[0].tagname + ', ';
 
         }
 
