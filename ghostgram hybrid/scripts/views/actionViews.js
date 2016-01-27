@@ -86,6 +86,8 @@ var smartEventView = {
         //$('#smartEventView-datestring').val(new Date(thisObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
         $('#smartEventView-date').val(new Date(thisObj.date).toString('MMM dd, yyyy'));
         $('#smartEventView-time').val(new Date(thisObj.date).toString('h:mm tt'));
+        $("#smartEventView-placeadddiv").addClass('hidden');
+        $("#searchEventPlace-input").removeClass('hidden');
     },
 
     setActiveObject : function (newObj) {
@@ -158,6 +160,11 @@ var smartEventView = {
 
     },
 
+    onDropPlace: function(){
+        $("#smartEventView-placeadddiv").addClass("hidden");
+        $("#searchEventPlace-input").removeClass("hidden");
+    },
+
 
     setSenderMode: function () {
         var thisEvent = smartEventView._activeObject;
@@ -168,6 +175,14 @@ var smartEventView = {
         if(thisEvent.wasSent){
             $('#event-owner-save').addClass('hidden');
             $('#smartEventView-recipientListDiv').removeClass('hidden');
+
+            // show/hide place btn
+            if(thisEvent.placeId === null){
+                $(".event-place").addClass("hidden");
+            } else {
+                $(".event-place").removeClass("hidden");
+            }
+
             // owner of a previously created event
             if(thisEvent.isExpired){
                 $('#event-owner-reschedule').removeClass('hidden');
@@ -201,6 +216,7 @@ var smartEventView = {
         // if event is expired disable rsvp
         if(thisEvent.isExpired){
             $("#event-rsvp").data("kendoMobileButtonGroup").enable(false);
+            smartEventView.setEventBanner("expired");
         } else {
             $("#event-rsvp").data("kendoMobileButtonGroup").enable(true);
             // set user response
@@ -213,6 +229,12 @@ var smartEventView = {
             } else {
                 smartEventView.setEventBanner("pending");
             }
+        }
+        // show/hide place btn
+        if(thisEvent.placeId === null){
+            $(".event-place").addClass("hidden");
+        } else {
+            $(".event-place").removeClass("hidden");
         }
 
         smartEventView.setAcceptStatus();
@@ -264,11 +286,13 @@ var smartEventView = {
         $('#smartEventView-comments').val("");
 
         $("#smartEventView-placeadddiv").addClass('hidden');
+        $("#searchEventPlace-input").removeClass('hidden');
     },
 
 
     onAddPlace: function (e) {
         _preventDefault(e);
+
         placesModel.addPlace(smartEventView._geoObj, false, function () {
             mobileNotify("Adding place : " + smartEventView._geoObj.name);
         });
@@ -282,29 +306,36 @@ var smartEventView = {
 
         var placeStr =  $("#smartEventView-placesearch").val();
 
-       smartEventPlacesView.openModal(placeStr, function (geo) {
-           if (geo === null) {
-               mobileNotify("Smart Place Search cancelled...");
-               return;
-           }
-           var thisObj = smartEventView._activeObject;
+           smartEventPlacesView.openModal(placeStr, function (geo) {
+               if (geo === null) {
+                   mobileNotify("Smart Place Search cancelled...");
+                   return;
+               }
 
-           thisObj.set('placeId', null);
-           thisObj.set('googleId', geo.googleId);
-           thisObj.set('placeName', geo.name);
-           thisObj.set('address', geo.address);
-           thisObj.set('placeType', geo.type);
-           thisObj.set('lat', geo.lat);
-           thisObj.set('lng', geo.lng);
+               var thisObj = smartEventView._activeObject;
 
-           var addressArray = geo.address.split(','), address = addressArray[0];
-           // Place addresses are just the Street Number and Street;
-           geo.address = address;
-           smartEventView._geoObj = geo;
-           $("#smartEventView-placesearch").val(geo.name);
-           $("#smartEventView-placesearchdiv").addClass('hidden');
-           $("#smartEventView-placeadddiv").removeClass('hidden');
-       });
+               thisObj.set('placeId', null);
+               thisObj.set('googleId', geo.googleId);
+               thisObj.set('placeName', geo.name);
+               thisObj.set('address', geo.address);
+               thisObj.set('placeType', geo.type);
+               thisObj.set('lat', geo.lat);
+               thisObj.set('lng', geo.lng);
+
+               var addressArray = geo.address.split(','), address = addressArray[0];
+               // Place addresses are just the Street Number and Street;
+               geo.address = address;
+               smartEventView._geoObj = geo;
+
+               //
+               $("#smartEventView-placesearch").val(geo.name);
+               // hide place search btn
+               $("#smartEventView-placesearchdiv").addClass('hidden');
+               // show selected place
+               $("#smartEventView-placeadddiv").removeClass('hidden');
+               // hide input
+               $("#searchEventPlace-input").addClass("hidden");
+           });
 
     },
 
@@ -317,7 +348,7 @@ var smartEventView = {
 
         } else {
             thisObject.set('isExpired', false);
-            smartEventView.setEventBanner();
+            //smartEventView.setEventBanner();
         }
     },
 
@@ -557,7 +588,6 @@ var smartEventView = {
         }
 
         smartEventView.checkExpired();
-
         $("#smartEventModal").data("kendoMobileModalView").open();
     },
 
@@ -565,27 +595,28 @@ var smartEventView = {
         // Styling for event banner state
         switch(state) {
             case "expired":
-                $(".eventBanner").removeClass("hidden").addClass("eventExpired");
+                $("#eventBanner").removeClass("hidden, eventPending, eventAccepted, eventDeclined").addClass("eventExpired");
                 $(".eventBannerTitle").text("Event expired");
                 $(".eventBannerImg").attr("src", "images/smart-time-light.svg");
 
                 break;
             case "pending":
-                $(".eventBanner").removeClass("hidden").addClass("eventPending");
+                $("#eventBanner").removeClass("hidden, eventAccepted, eventDeclined, eventExpired").addClass("eventPending");
+                $(".eventBannerTitle").text("Awaiting your response");
+                $(".eventBannerImg").attr("src", "images/icon-question.svg");
 
                 break;
             case "accepted":
-                $(".eventBanner").removeClass("hidden").addClass("eventAccepted");
+                $("#eventBanner").removeClass("hidden, eventDeclined, eventExpired, eventPending").addClass("eventAccepted");
+                $(".eventBannerTitle").text("Accepted!");
+                //$(".eventBannerImg").attr("src", "images/icon");
 
                 break;
             case "declined":
-                $(".eventBanner").removeClass("hidden").addClass("eventDeclined");
+                $("#eventBanner").removeClass("hidden, eventAccepted, eventExpired, eventPending").addClass("eventDeclined");
+                $(".eventBannerTitle").text("Declined");
 
                 break;
-            default:
-                $(".eventBanner").addClass("hidden");
-                $(".eventBannerTitle").text("");
-                $(".eventBannerImg").attr("src", "");
         }
 
     },
@@ -651,7 +682,7 @@ var smartEventView = {
 
         smartEventView._activeObject.set("wasCancelled", true);
 
-        smartEventView.setEventBanner();
+        //smartEventView.setEventBanner();
 
         smartEventView.onDone();
 
@@ -879,6 +910,7 @@ var smartEventView = {
     onCancel : function (e) {
         _preventDefault(e);
         $("#smartEventModal").data("kendoMobileModalView").close();
+        $("#eventBanner").removeClass();
     },
 
     onDone: function (e) {
@@ -1019,6 +1051,10 @@ var smartNoteView = {
 
     onCancel : function (e) {
         _preventDefault(e);
+
+        $("#smartNoteModal").data("kendoMobileModalView").close();
+        $("#eventBanner").removeClass();
+
         smartNoteView.onDone();
     },
 

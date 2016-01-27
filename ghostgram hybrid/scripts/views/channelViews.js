@@ -68,7 +68,7 @@ var channelsView = {
                         $(selection).velocity({translateX:"-40%"},{duration: "fast"}).addClass("chat-active");
                     // if larger screen and owner
                 	} else if($(selection).hasClass("owner")){
-                		$(selection).velocity({translateX:"-55%"},{duration: "fast"}).addClass("chat-active");
+                		$(selection).velocity({translateX:"-60%"},{duration: "fast"}).addClass("chat-active");
                     // if larger screen
                     } else {
                         $(selection).velocity({translateX:"-40%"},{duration: "fast"}).addClass("chat-active");
@@ -1767,7 +1767,6 @@ var channelView = {
 
       //  var editor = $("#messageTextArea").data("kendoEditor");
         var date = smartEvent.date.toLocaleString(), objectId = smartEvent.uuid;
-
 
         var dateStr = moment(date).format('ddd MMM Do');
         var localTime = moment(date).format("LT");
