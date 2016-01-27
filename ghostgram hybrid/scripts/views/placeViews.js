@@ -224,7 +224,7 @@ var placesView = {
             if (oldPlace !== undefined) {
                 oldPlace.set(field, newValue);
             }
-            
+
         } else if (e.action === 'sync') {
             var changeList = e.items;
 

@@ -8,7 +8,9 @@
 
 var contactModel = {
 
-
+    _version: 1,
+    _ggClass: 'Contact',
+    _parseClass: 'contacts',
 
    contactsDS: new kendo.data.DataSource({
         offlineStorage: "contacts",
@@ -45,7 +47,7 @@ var contactModel = {
 
     }),
 
-    _version: 1,
+
     currentDeviceContact: {},
     unifiedDeviceContact: false,
     currentContact: null,
@@ -125,7 +127,7 @@ var contactModel = {
 
 
     fetch : function () {
-        var ContactModel = Parse.Object.extend("contacts");
+        var ContactModel = Parse.Object.extend(contactModel._parseClass);
         var query = new Parse.Query(ContactModel);
         query.limit(1000);
 
@@ -152,8 +154,8 @@ var contactModel = {
                         dirty = true;
                     }
 
-                    if (model.get('phoneVerified') === undefined) {
-                        model.set('phoneVerified', false);
+                    if (model.get('_ggType') === undefined) {
+                        model.set('ggType', contactModel._ggClass);
                         dirty = true;
                     }
 
