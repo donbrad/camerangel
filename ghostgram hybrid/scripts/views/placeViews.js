@@ -1265,7 +1265,11 @@ var placeView = {
         var notesList = noteModel.findNotesByObjectId(noteModel._places, placeId );
 
         if (photoList !== undefined && photoList.length > 0) {
-            ds.data(photoList);
+            for (var p=0; p<photoList.length; p++) {
+                var photo = photoList[p];
+                photo.date = new Date(photo.dateString);
+                ds.add(photo);
+            }
             if (notesList !== undefined && notesList.length > 0) {
                 for (var i=0; i<notesList.length; i++) {
                     ds.add(notesList[i]);

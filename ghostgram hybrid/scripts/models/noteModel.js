@@ -118,9 +118,13 @@ var noteModel = {
         noteParse.set('metaTagString',  note.metaTagString);
         noteParse.set('content', note.content);
         noteParse.set('tags', note.tags);
-        noteParse.set('date',  note.date);
+        var dateString = new Date(note.date).toISOString();
+        var d = {"__type":"Date","iso":dateString};
+        noteParse.set('date',  d);
         noteParse.set('expiration', Number(note.expiration));
-        noteParse.set('expirationDate',note.expirationDate);
+        dateString = new Date(note.expirationDate).toISOString();
+        d = {"__type":"Date","iso":dateString};
+        noteParse.set('expirationDate', d);
         noteParse.set('isPrivate',  note.isPrivate);
         noteParse.set('isExpired',  note.isExpired);
         var noteObj = noteParse.toJSON();
