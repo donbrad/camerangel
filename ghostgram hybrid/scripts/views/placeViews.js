@@ -1243,7 +1243,7 @@ var placeView = {
 
     onInit : function (e) {
         _preventDefault(e);
-        $("#channels-listview").kendoMobileListView({
+        $("#placeView-listview").kendoMobileListView({
             dataSource: placeView._memoriesDS,
             template: $("#placeViewMemories-template").html()/*,
             dataBound: function(e){
