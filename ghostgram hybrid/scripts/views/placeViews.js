@@ -1459,9 +1459,8 @@ var placeView = {
            newNote.expiration = note.expiration;
            newNote.content = note.content;
            newNote.expirationDate = note.expirationDate;
-           newNote.tags =  tagModel.parseTagString(note.tagString);
+           newNote.tags =  note.tags;
            newNote.tagString = tagModel.createTagString(newNote.tags);
-
 
            noteModel.addNote(note);
 
