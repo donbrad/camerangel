@@ -1285,6 +1285,7 @@ var placeView = {
         var place = placeView._activePlace.isPrivate;
         var address = placeView._activePlace.address;
 
+        $("#placeViewName").text(name);
         ux.formatNameAlias(name, alias, "#placeView");
 
         // Toggle display of private/public icons 
@@ -1302,12 +1303,33 @@ var placeView = {
             $('#placeView-gotochat').addClass('hidden');
         }
 
+        ux.setSearchPlaceholder("Search memories...");
 
-        //mapModel.setMapCenter(placeView._activePlaceModel.lat, placeView._activePlaceModel.lng);
+
+        $('#placeViewSearch').on('input', function() {
+            var query = this.value;
+            if (query.length > 0) {
+                // todo - wire data source
+                $("#placeView .enterSearch").removeClass("hidden");
+            } else {
+                $("#placeView .enterSearch").addClass("hidden");
+
+            }
+        });
+
+        // bind clear search btn
+        $("#placeView .enterSearch").on("click", function(){
+            $("#placeViewSearch").val('');
+
+            // hide clear btn
+            $(this).addClass('hidden');
+        });
+
     },
 
     onHide : function (e) {
         //_preventDefault(e);  Cant use here -- prevents navigation
+
     },
 
     onDone: function (e) {
@@ -1324,7 +1346,7 @@ var placeView = {
             APP.kendo.navigate("#:back");
         }
 
-
+        ux.hideSearch();
     },
 
     setActivePlace : function (placeId) {
@@ -1739,14 +1761,14 @@ var smartEventPlacesView = {
 
                                 // Provide the default fields for Places...
                                 var address = smartEventPlacesView.getAddressFromComponents(place.address_components);
+                                console.log(address)
                                 var placeObj = {
                                     googleId : place.place_id,
                                     name: place.name.smartTruncate(38, true).toString(),
                                     lat : Number(place.geometry.location.lat().toFixed(6)),
                                     lng : Number(place.geometry.location.lng().toFixed(6)),
                                     vicinity : place.vicinity,
-                                    address : address.streetNumber + ' ' + address.street + ", " + address.city + ", " + address.state +
-                                        "  " + address.zipcode,
+                                    address : address.streetNumber + ' ' + address.street + ", " + address.city + ", " + address.state + "  " + address.zipcode,
                                     city:  address.city,
                                     state: address.state,
                                     zipcode: address.zipcode,
@@ -1973,6 +1995,9 @@ var smartEventPlacesView = {
         if (query.length > 3) {
             smartEventPlacesView.preprocessQuery(query);
         }
+
+        var form = $("#searchEventPlace-form").kendoValidator().data("kendoValidator");
+        form.validate();
 
         $("#smartEventPlacesModal").data("kendoMobileModalView").open();
 

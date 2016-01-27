@@ -221,11 +221,11 @@ body {
 h1 {
     .font-size(34); /* 34px */
     font-family: @displayFont !important;
-    font-weight: 300;
+    font-weight: 500;
 }
 h2 {
     .font-size(24); /* 24px */
-    font-weight: 300; 
+    font-weight: 500;
     font-family: @displayFont !important;
 }
 h3 {
@@ -507,7 +507,7 @@ form {
 .icon-sm {
 	height: 1em;
 	max-width: 1em;
-	vertical-align: middle;
+	vertical-align: text-top;
 }
 
 .icon-smart {
@@ -1047,7 +1047,8 @@ button {
     font-family: @defaultFont;
 }
 div.km-header a img{
-	height: 16px;
+	height: 1.2em;
+	vertical-align: middle;
 }
 .km-drawer-button:before,
 .km-drawer-button:after {
@@ -1076,7 +1077,7 @@ div.km-header a img{
     background-color: #fff !important;
     color: @shade-100;
     box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.12);
-    height: 3.5em;
+    height: 4em;
     //border: transparent;
 }
 
@@ -2844,7 +2845,7 @@ a:hover {
 
 #channelPresence > div.km-header > div > div.km-view-title {
 	background: @darkBk;
-	color: #fff;
+	color: #fff !important;
 }
 
 #channelPresence-listview > li {
@@ -3111,6 +3112,20 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 	height: 14px;
 }
 
+.placeChat-chatIcon {
+	margin-left: 0.5em;
+}
+
+.navbar-btn {
+	padding: 0 !important;
+}
+
+#placeView > div.km-header > div.km-widget.km-navbar > div.km-view-title > span {
+	width: 60%;
+}
+
+
+
 /* ghost mail */
 
 .emailOptions {
@@ -3275,6 +3290,12 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 		background: @highlight-200;
 		display: none;
 	}
+}
+div.footerMenu.km-footer > ul > li > a .km-badge {
+	background: @highlight-100;
+	color: #fff;
+	top: 0;
+	right: 0;
 }
 
 
@@ -3515,6 +3536,7 @@ div.loginBox > form > div > ul > li {
 	.shadowHelper(1);
 	border-radius: 2px;
 	padding-top: 0.5rem;
+	padding-bottom: 0.5em;
 	.top {
 		background-color: #f5f5f5;
 		border-bottom: 1px solid @shade-200;
@@ -4933,7 +4955,7 @@ div.contactListBox.activeContact > div > div > ul {
 		float: left;
 		border: none !important;
 		width: 80% !important;
-		padding-left: 0px !important;
+		//padding-left: 0px !important;
 		padding-right: 1rem;
 		@media @mobile {
 			width: 85%;
@@ -4964,7 +4986,7 @@ div.contactListBox.activeContact > div > div > ul {
 		width:85% !important;
 	}
 	.doubleAppendSearch {
-		width: 75%;
+		width: 72% !important;
 		padding-right: 0px !important;
 	}
 	.enterSearch {
@@ -4977,6 +4999,10 @@ div.contactListBox.activeContact > div > div > ul {
 			font-weight: 600;
 		}
 	}
+}
+
+.warning-input {
+	border-bottom: 1px solid @warning-200 !important;
 }
 
 .viewScroller {

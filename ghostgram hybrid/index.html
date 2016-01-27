@@ -1108,17 +1108,19 @@
 				</h4>
 				#}#
 				# if(addressOnly !== true){#
-				<p>#:data.address#, #:data.city#, #:data.state# #:data.zipcode#</p>
+				<p class="textClamp">#:data.address#, #:data.city#, #:data.state# #:data.zipcode#</p>
 				#}#
 
 				<p class="helper">
 				   <span class="left">
 				 # if (data.isPrivate === true) { #
 					<img src="images/place-private.svg" /> Private
-				 # } else { #
+				 #} else {#
 					<img src="images/place-public.svg" /> Public
-				 # }#
-				   #if (data.hasPlaceChat) {# <img src="images/icon-Chat.svg" /> Place Chat #}#
+				 #}#
+				   	#if (data.hasPlaceChat) {#
+					   <span class="placeChat-chatIcon"><img src="images/icon-Chat.svg" /> Place Chat</span>
+					#}#
 				   </span>
 					 <span class="distPlace">
 						 # var fixedDistance = 0;  if (data.distance !== undefined) {fixedDistance = data.distance; } #
@@ -2468,7 +2470,7 @@
 			<a data-click="smartEventView.onCancel" data-role="button"  class="btnClear-grey" data-align="left"><img src="images/nav-back.svg" /></a>
 		</div>
 	</div>
-	<div class="event-view" id="event-viewMode">
+	<div class="event-view card" id="event-viewMode">
 		<div class="eventBanner">
 			<p>
 				<img src="" class="icon-sm eventBannerImg" />
@@ -2484,30 +2486,28 @@
 			<p>
 				<span class="event-date"></span>
 			</p>
-			<p>
-				<img src="images/icon-time.svg" class="icon-sm" />
-				<span data-bind="text: durationString"></span>
-			</p>
-			<p class="event-location">
+			<span class="hidden">
+				<img src="images/icon-time.svg" class="icon-sm" /> <span data-bind="text: durationString"></span>
+			</span>
+
+			<span id="smartEventView-view-calendar-add" class="event-valid">
+				<a class="btnClear" data-role="button" data-click="smartEventView.addToCalendar">
+					Add To Calendar</a>
+			</span>
+
+			<span id="smartEventView-view-calendar" class="event-valid hidden">
+				<a class="btnHighlight" data-role="button" data-click="smartEventView.showCalendar">
+					<img src="images/icon-date-light.svg" class="icon-sm" />
+					View on Calendar
+				</a>
+			</span>
+			<p class="event-place hidden" style="margin-top: 1em; margin-bottom: 1em;">
 				<a class="btnClear" data-role="button" data-click="smartEventView.eventMapLocation">
 					<img src="images/icon-location.svg" class="icon-sm" />
 					<span class="event-location-title" data-bind="text: placeName"></span>
 				</a>
 			</p>
-			<p> <span class="event-location-title" data-bind="text: address"> </span> </p>
-			<div id="smartEventView-view-calendar-add" class="event-valid">
-				<div>
-					<a class="btnClearLine-highlight" data-role="button" data-click="smartEventView.addToCalendar">
-						<img src="images/icon-date-highlight.svg" class="icon-sm" /> Add To Calendar</a>
-				</div>
-			</div>
 
-			<div id="smartEventView-view-calendar" class="event-valid hidden">
-				<div>
-					<a class="btnHighlight" data-role="button" data-click="smartEventView.showCalendar">
-						<img src="images/icon-date-light.svg" class="icon-sm" /> View on Calendar</a>
-				</div>
-			</div>
 			<div class="clearfix"></div>
 		</div>
 
@@ -2574,30 +2574,37 @@
 					<input type="search" class="viewSearchBox" id="smartEventView-duration"  data-bind="value: durationString" placeholder="1 hour..."/>
 				</div>
 			</li>
-			<li>
+			<li id="searchEventPlace-input">
 				<label> Where (Location or Place)
 					<input type="search" id="smartEventView-placesearch"/>
 				</label>
 			</li>
 			<li id="smartEventView-placesearchdiv" class="hidden">
 				<div>
-					<img src='images/icon-gps-selected.svg' class='icon-sm'/> <a data-click="smartEventView.onPlaceSearch" data-role="button" class="btnClear" id="smartEventView-placesearchBtn"> Find... </a>
+					<img src='images/icon-gps-selected.svg' class='icon-sm'/>
+					<a data-click="smartEventView.onPlaceSearch" data-role="button" class="btnClear" id="smartEventView-placesearchBtn"> Find... </a>
 				</div>
 			</li>
 			<li id="smartEventView-placeadddiv" class="hidden">
+				<label>Where (Location or Place)</label>
 				<div>
-					<img src='images/icon-locationPin.svg' class='icon-sm'/> <a data-click="smartEventView.onAddPlace" data-role="button" class="btnClear" id="smartEventView-placeAddBtn"> Add To Places </a>
+					<p id="smartEventView-placeAddBtn">
+						<img src='images/icon-location.svg' class='icon-sm'/>
+						<span id="smartEventView-placeAddBtn-title" data-bind="text: placeName"></span>
+					</p>
+					<div id="searchEventPlace-actionBtns">
+						<a class="btnClear-grey" data-role="button" data-click="smartEventView.onAddPlace">Add to My Places</a>
+						<a class="btnClear-red" data-role="button" data-click="smartEventView.onDropPlace">Drop Place</a>
+					</div>
 				</div>
 			</li>
 		</ul>
 	</form>
 
 	<div class="hidden" id="smartEventView-recipientListDiv">
-		<div class="line"></div>
 		<h3>Event RSVP's</h3>
-		<ul data-role="listview" data-style="inset" id="smartEventView-recipientListView">
 
-		</ul>
+		<ul data-role="listview" data-style="inset" id="smartEventView-recipientListView" data-template="smartEventView-recipientListView-tmpl"></ul>
 	</div>
 
 
@@ -2629,6 +2636,21 @@
 	</div>
 </div>
 
+<script id="smartEventView-recipientListView-tmpl" type="text/x-kendo-template">
+	<div>
+		<div class="left listPhoto">
+			<div class="statusContactList">
+				<img class="circle-img-md" src="images/default-private.svg" />
+			</div>
+		</div><!-- left -->
+		<div class="left listName" style="margin-top: 0.5em;">
+			<h4 class="textClamp">
+				<span class="rsvp-name"></span>
+				<span class="rsvp-accepted"></span>
+			</h4>
+		</div>
+	</div>
+</script>
 
 <!-- Search Places -->
 <div data-role="modalview" data-title="Search Places" id="searchPlaces" data-open="searchPlacesView.onShow" data-init="searchPlacesView.onInit"  data-transition="slide:up">
@@ -2930,11 +2952,6 @@
 			<div class="clearfix"></div>
 		</div>
 		<div id="placeListDiv">
-			<div class="topSearchReferral">
-				<a class="btnClear hidden" data-role="button" id="quickFindPlaceBtn">
-					<img src="images/icon-gps-selected.svg" class="icon-btn" /> View Nearby Places
-				</a>
-			</div>
 			<ul id="places-listview"></ul>
 			<div class="emptyState hidden">
 				<img src="images/empty-places.svg" />
@@ -2984,17 +3001,21 @@
 		</div>
 	</div>
 
-	<div class="tempSearchBox">
+	<div class="tempSearchBox" id="searchEventPlace-form">
 		<div class="appendSearch" id="searchEventPlaces-searchDiv">
 			<span class="searchIcon"><img src="images/search.svg" /></span>
-			<input type="search" placeholder="Find place or address..." id="smartEventPlaces-query" />
+			<input type="search" name="place" placeholder="Find place or address..." id="smartEventPlaces-query" data-required-msg="Enter a place name" required />
 		</div>
+		<span class="k-invalid-msg" data-for="place"></span>
 		<p id="searchEventPlaces-selectPlace" class="hidden">Please select the area to search</p>
 		<div class="appendSearch">
 			<span class="searchIcon"><img src="images/place-icon.svg" /></span>
-			<input type="search" placeholder="Area or city to search..." id="smartEventPlaces-place" />
+			<input type="search" name="Area" placeholder="Area or city to search..." id="smartEventPlaces-place" data-required-msg="Enter area to search" required />
 		</div>
-		<div style="text-align: center"><img height="16" src="images/powered_by_google_on_white.png"/></div>
+		<span class="k-invalid-msg" data-for="Area"></span>
+		<div class="partnerDiv">
+			<img src="images/powered_by_google_on_white.png"/>
+		</div>
 	</div>
 
 
@@ -3018,64 +3039,69 @@
 	<ul id="nearby-results-list"></ul>
 </div>
 
-<div data-role="view" id="placeView" data-title="Place View" data-model="placeView._activePlace"  data-layout="main" data-init="placeView.onInit" data-show="placeView.onShow" data-hide="placeView.onHide" data-title="Place View" style="height:100%; width: 100%; display: none;">
+<div data-role="view" id="placeView"  data-model="placeView._activePlace"  data-layout="main" data-init="placeView.onInit" data-show="placeView.onShow" data-hide="placeView.onHide" style="height:100%; width: 100%; display: none;">
 	<div data-role="header">
 		<div data-role="navbar">
 			<a data-role="button" data-align="left" data-click="placeView.onDone">
-				<img src="images/nav-back.svg" /></a>
-			<span>Place View</span>
-			<a data-role="button" data-align="right" data-click="placeView.doDirections">
-				<img src="images/icon-directions.svg" />
+				<img src="images/nav-back.svg" />
+			</a>
+			<span class="textClamp navbar-btn" data-role="button" data-click="placeView.openChat">
+				<img src="images/icon-chat-active.svg" class="icon-btn" id="#placeView-gotochat" />
+				<span id="placeViewName"></span>
+			</span>
+			<a data-role="button" data-align="right" data-click="ux.toggleSearch">
+				<img src="images/icon-search.svg" />
 			</a>
 		</div>
-	</div>
-
-	<div class="placeCard">
-		<div class="placeCardTop">
-			<h4 class="textClamp"><span class="primaryName"></span> <span class="secondName"></span></h4>
-			<p data-bind="text: address"></p>
-			<p id="publicPlaceView">
-				<span class="helper-sm">
-					<img src="images/place-public.svg" /> Public Place
-				</span>
-			</p>
-			<p id="privatePlaceView">
-				<span class="helper-sm">
-					<img src="images/place-private.svg" /> Private Place
-				</span>
-			</p>
-			<div id="placeView-gotochat" class="hidden" style="text-align: center;">
-				<a class="btnClear-sm" data-role="button" data-click="placeView.openChat">
-					<img src="images/icon-chat-active.svg" class="icon-btn" />  Open Place Chat
-				</a>
+		<div class="gg_mainSearchBox" data-visible="false">
+			<div class="appendSearch">
+				<span class="searchIcon"><img src="images/search.svg" /></span>
+				<input type="text" class="doubleAppendSearch gg_mainSearchInput" id="placeViewSearch" placeholder="" />
+				<span class="enterSearch hidden"><a class="btnClear-grey"><img class="icon-sm" src="images/close.svg" /></a></span>
 			</div>
 		</div>
-		<div class="line"></div>
-		<ul class="list-inline" id="placeListOpt">
-			<li >
-				<a class="btnClear-sm" data-role="button" data-click="placeView.addNote">
-					<img src="images/icon-list-alt.svg" class="icon-sm" />  Add Note
-				</a>
-			</li>
-			<li>
-				<a class="btnClear-sm" data-role="button" data-rel="actionsheet" href="#placeViewPhotoActions">
-					<img src="images/icon-camera-active.svg" class="icon-btn" /> Add Photo
-				</a>
-			</li>
+	</div>
+	<div class="placeCard">
+		<div class="placeCardTop">
+			<h4 class="textClamp">
+				<span id="publicPlaceView">
+					<img src="images/place-public.svg" />
+				</span>
+				<span id="privatePlaceView">
+					<img src="images/place-private.svg" />
+				</span>
+				<span class="primaryName"></span>
+				<span class="secondName"></span>
+			</h4>
+			<p data-bind="text: address"></p>
+			<a class="btnClear" data-role="button" style="margin-left: 0.75em;">Directions</a>
 
-		</ul>
+		</div>
 	</div>
 	<div class="placeContent">
-		<p class="helper hidden" style="padding-top: 20px;"><img src="images/icon-memories.svg" class="icon" /> No Memories here yet </p>
-		<p ><img src="images/icon-memories.svg" class="icon" /> Memories</p>
+		<p class="helper hidden" style="padding-top: 20px;">
+			<img src="images/icon-memories.svg" class="icon" /> No Memories here yet
+		</p>
+		<p>
+			<img src="images/icon-memories.svg" class="icon" /> Memories
+		</p>
+		<ul id="placeView-listView"></ul>
 
-		<ul id="placeView-listView">
-
-		</ul>
 	</div>
 	<ul data-role="actionsheet" id="placeViewPhotoActions" data-popup='{"direction": "left"}'>
 		<li><a data-action="placeView.camera"> Phone Camera</a></li>
 		<li><a data-action="placeView.gallery"> Phone Gallery</a></li>
+	</ul>
+	<div class="footer" data-role="footer">
+		<a class="actionBtn secondary-100" data-role="button" data-rel="actionsheet" href="#placeViewOptions">
+			<p class="actionBtn-text">Cancel</p>
+			<img src="images/nav-add-white.svg"/>
+		</a>
+	</div>
+	<ul id="placeViewOptions" data-role="actionsheet" data-cancel="Cancel">
+		<li><a data-role="button" data-click="placeView.addNote"><img src="images/icon-note.svg" class="icon-sm"/> New Place Note </a></li>
+		<!--<li><a data-role="button">Add Place Chat</a></li>-->
+		<li><a data-role="button"><img src="images/icon-Photos.svg" /> New Place Photo</a></li>
 	</ul>
 </div>
 
