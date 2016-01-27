@@ -90,6 +90,7 @@ var tagModel = {
         tag.name = null;
         tag.alias = null;
         tag.type = tagModel._user;
+        tag.objectUUID = null;
         tag.title = null;
         tag.ownerUUID = null;
         tag.category = null;

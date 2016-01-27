@@ -198,34 +198,25 @@ var photoModel = {
 
     findPhotoById : function (photoId) {
 
-       /* var dataSource = photoModel.photosDS;
-        dataSource.filter( { field: "photoId", operator: "eq", value: photoId });
-        var view = dataSource.view();
-        var photo = view[0];
-        dataSource.filter([]);*/
-
         return(photoModel.queryPhoto({ field: "photoId", operator: "eq", value: photoId }));
     },
 
     findPhotosByChannel : function (channelId) {
-       /* var dataSource = photoModel.photosDS;
-        dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
-        var view = dataSource.view();
-        var photos = view;
-        dataSource.filter([]);
 
-        return(photos);*/
         return(photoModel.queryPhoto({ field: "channelId", operator: "eq", value: channelId }));
     },
 
-    findPhotosBySender: function (senderId) {
-       /* var dataSource = photoModel.photosDS;
-        dataSource.filter( { field: "senderUUID", operator: "eq", value: senderId });
-        var view = dataSource.view();
-        var photos = view;
-        dataSource.filter([]);
+    findPhotosByPlaceId : function (placeId) {
 
-        return(photos);*/
+        return(photoModel.queryPhoto({ field: "placeId", operator: "eq", value: placeId }));
+    },
+
+    findPhotosByPlaceString : function (placeString) {
+
+        return(photoModel.queryPhoto({ field: "placeString", operator: "contains", value: placeString }));
+    },
+
+    findPhotosBySender: function (senderId) {
 
         return(photoModel.queryPhoto({ field: "senderUUID", operator: "eq", value: senderId }));
     },

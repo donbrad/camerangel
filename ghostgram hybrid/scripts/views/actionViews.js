@@ -999,7 +999,7 @@ var smartNoteView = {
         if (tags.length > 0) {
 
             for (var i = 0; i < tags.length; i++) {
-                var tag = tags[0].toJSON();
+                var tag = tags[i].toJSON();
                 tagArray.push(tag);
             }
             smartNoteView._activeObject.get('tags', tagArray);
