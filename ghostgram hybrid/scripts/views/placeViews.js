@@ -1434,8 +1434,6 @@ var placeView = {
 
         var photo = photoModel.findPhotoById(photoId);
 
-
-
         if (photo !== undefined) {
 
             // Override the place info the photo with information from this place
