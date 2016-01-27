@@ -221,11 +221,11 @@ body {
 h1 {
     .font-size(34); /* 34px */
     font-family: @displayFont !important;
-    font-weight: 300;
+    font-weight: 500;
 }
 h2 {
     .font-size(24); /* 24px */
-    font-weight: 300; 
+    font-weight: 500;
     font-family: @displayFont !important;
 }
 h3 {
@@ -507,7 +507,7 @@ form {
 .icon-sm {
 	height: 1em;
 	max-width: 1em;
-	vertical-align: middle;
+	vertical-align: text-top;
 }
 
 .icon-smart {
@@ -569,6 +569,7 @@ form {
     line-height: 1.5;
     vertical-align: middle;
     background: #fff;
+	padding: 2px;
 }
 
 .circle-img-sm {
@@ -579,8 +580,8 @@ form {
 
 .circle-img-md {
 	.circle-img;
-	width: 3rem;
-	height: 3rem;
+	width: 2.5rem;
+	height: 2.5rem;
 }
 
 .circle-img-lg {
@@ -1046,7 +1047,8 @@ button {
     font-family: @defaultFont;
 }
 div.km-header a img{
-	height: 16px;
+	height: 1.2em;
+	vertical-align: middle;
 }
 .km-drawer-button:before,
 .km-drawer-button:after {
@@ -1059,7 +1061,7 @@ div.km-header a img{
 .km-content,
 .km-navbar {
     .font-size(14);
-    background: #f5f5f5;
+    background: #fff;
     background: cover;
     background-size: 100% 100%;
     color: white;
@@ -1072,10 +1074,10 @@ div.km-header a img{
     transition: all 0.75s;
 }
 .km-material .km-navbar { 
-    background-color: #fff;
+    background-color: #fff !important;
     color: @shade-100;
     box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.12);
-    height: 56px;
+    height: 4em;
     //border: transparent;
 }
 
@@ -1241,6 +1243,7 @@ div.km-header a img{
 .km-view-title span {
     font-family: @defaultFont;
     font-weight: 400;
+	color: @black;
     -webkit-transition: all 0.5s;
     -moz-transition: all 0.5s;
     -ms-transition: all 0.5s;
@@ -1326,7 +1329,7 @@ div.km-header a img{
 	border-style: inherit;
 }
 
-.km-material, .km-material .km-header, .km-material .km-content, .km-material .km-pane, .km-material .km-scroll-header .km-group-title, .km-material input[type=password], .km-material input[type=search], .km-material input[type=number], .km-material input[type=tel], .km-material input[type=url], .km-material input[type=email], .km-material input[type=text]:not(.k-input), .km-root .km-material textarea {
+.km-material, .km-material .km-content, .km-material .km-pane, .km-material .km-scroll-header .km-group-title, .km-material input[type=password], .km-material input[type=search], .km-material input[type=number], .km-material input[type=tel], .km-material input[type=url], .km-material input[type=email], .km-material input[type=text]:not(.k-input), .km-root .km-material textarea {
 	color: #4a4a4a;
 }
 
@@ -1523,14 +1526,15 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 
 .home-status-img {
-	width: 18px !important;;
-	height: 18px !important;
+	width: 1.25em !important;;
+	height: 1.25em !important;
 }
 
 .home-status-card-img {
 	position: absolute;
-	top: 73px;
+	top: 4.6525em;
 	left: 54%;
+	width: 2em;
 }
 
 #profileStatusList {
@@ -1549,15 +1553,17 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 
 .circle-img-home {
-	.circle-img;
-	width: 40px;
-	height: 40px !important;
-	.shadow;
+	border-radius: 50%;
+	width: 2.5em;
+	height: 2.5em !important;
 	margin-right: 0.5rem;
 	position: absolute;
-	top: 8px;
+	top: 0.5em;
 	left: 0.5rem;
 	z-index: -1;
+	padding: 1px;
+	border: 1px solid @shade-200;
+	background: #fff;
 }
 
 .nav-gear {
@@ -1567,14 +1573,15 @@ div.footerMenu.km-footer > ul > li > a:active {
 
 .nav-search {
 	height: 20px !important;
+	vertical-align: -webkit-baseline-middle;
 	vertical-align: middle;
 }
 
 .home-status {
 	z-index: 1;
-	top: 34px;
 	position: absolute;
-	left: 32px;
+	top: 2em;
+	left: 2em;
 }
 
 .profileLocation {
@@ -2444,6 +2451,7 @@ a:hover {
     color: #3CAAEE;
 }
 
+#smartEventPlaces-listview > li,
 #findplace-listview > li > ul > li > div > a:hover > div > p,
 #findplace-listview > li > ul > li > a:hover > div > p,
 #findplace-listview > li > ul > li > a:hover,
@@ -2578,8 +2586,9 @@ a:hover {
 }
 .statusContactList-icon {
 	position: absolute;
-	top: 30px;
-	left: 32px;
+	top: 1.75em;
+	left: 1.75em;
+	width: 1.25em;
 }
 
 .statusContactCard-icon {
@@ -2836,7 +2845,7 @@ a:hover {
 
 #channelPresence > div.km-header > div > div.km-view-title {
 	background: @darkBk;
-	color: #fff;
+	color: #fff !important;
 }
 
 #channelPresence-listview > li {
@@ -3103,6 +3112,20 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 	height: 14px;
 }
 
+.placeChat-chatIcon {
+	margin-left: 0.5em;
+}
+
+.navbar-btn {
+	padding: 0 !important;
+}
+
+#placeView > div.km-header > div.km-widget.km-navbar > div.km-view-title > span {
+	width: 60%;
+}
+
+
+
 /* ghost mail */
 
 .emailOptions {
@@ -3267,6 +3290,12 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 		background: @highlight-200;
 		display: none;
 	}
+}
+div.footerMenu.km-footer > ul > li > a .km-badge {
+	background: @highlight-100;
+	color: #fff;
+	top: 0;
+	right: 0;
 }
 
 
@@ -3507,6 +3536,7 @@ div.loginBox > form > div > ul > li {
 	.shadowHelper(1);
 	border-radius: 2px;
 	padding-top: 0.5rem;
+	padding-bottom: 0.5em;
 	.top {
 		background-color: #f5f5f5;
 		border-bottom: 1px solid @shade-200;
@@ -4925,7 +4955,7 @@ div.contactListBox.activeContact > div > div > ul {
 		float: left;
 		border: none !important;
 		width: 80% !important;
-		padding-left: 0px !important;
+		//padding-left: 0px !important;
 		padding-right: 1rem;
 		@media @mobile {
 			width: 85%;
@@ -4956,7 +4986,7 @@ div.contactListBox.activeContact > div > div > ul {
 		width:85% !important;
 	}
 	.doubleAppendSearch {
-		width: 75%;
+		width: 72% !important;
 		padding-right: 0px !important;
 	}
 	.enterSearch {
@@ -4969,6 +4999,10 @@ div.contactListBox.activeContact > div > div > ul {
 			font-weight: 600;
 		}
 	}
+}
+
+.warning-input {
+	border-bottom: 1px solid @warning-200 !important;
 }
 
 .viewScroller {
@@ -5581,6 +5615,7 @@ div.contactListBox.activeContact > div > div > ul {
 
 /** Place **/
 #places-listview,
+#smartEventPlaces-listview,
 #findplace-listview,
 #checkin-listview {
 	width: 100%;
