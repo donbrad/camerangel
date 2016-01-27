@@ -63,6 +63,7 @@ var photoModel = {
                         }
                     }
 */
+                    photo.ggType = photoModel._ggClass;
 
                     models.push(photo);
                 }
