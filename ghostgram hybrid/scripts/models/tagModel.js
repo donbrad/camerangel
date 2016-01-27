@@ -59,7 +59,7 @@ var tagModel = {
         tagParse.set('name', tag.name);
         tagParse.set('type', tag.type);
         tagParse.set('alias', tag.alias);
-        tagParse.set('description', tag.description);
+        tagParse.set('title', tag.title);
         tagParse.set('ownerUUID', tag.ownerUUID);
         tagParse.set('category', tag.category);
 
@@ -90,7 +90,7 @@ var tagModel = {
         tag.name = null;
         tag.alias = null;
         tag.type = tagModel._user;
-        tag.description = null;
+        tag.title = null;
         tag.ownerUUID = null;
         tag.category = null;
         tag.icon = null;
