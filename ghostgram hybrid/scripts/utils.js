@@ -177,6 +177,10 @@ function handleParseError(err) {
 			_signOut();
 			APP.kendo.navigate('#usersignin');
 			break;
+		default:
+			mobileNotify(err.code + " : " + err.message);
+			console.error(err.code + " : " + err.message);
+			break;
 	}
 }
 
