@@ -1329,7 +1329,7 @@ var placeView = {
 
         mobileNotify("Looking up Memories...");
         placeView.buildMemoriesDS();
-        
+
         //mapModel.setMapCenter(placeView._activePlaceModel.lat, placeView._activePlaceModel.lng);
     },
 
