@@ -134,7 +134,7 @@ var noteModel = {
                 // Execute any logic that should take place after the object is saved.
 
             },
-            error: function(contact, error) {
+            error: function(note, error) {
                 // Execute any logic that should take place if the save fails.
                 // error is a Parse.Error with an error code and message.
                 handleParseError(error);
