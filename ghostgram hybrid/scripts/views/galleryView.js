@@ -683,7 +683,7 @@ var modalChatPhotoView = {
 var modalPhotoView = {
     _photo: null,
     _photoUrl : null,
-    _dummyTitle : 'Title',
+    _dummyTitle : '',
     _dummyDescription : '',
     _dummyTagsString : '',
     _activePhoto : new kendo.data.ObservableObject(),
