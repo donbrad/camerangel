@@ -3089,10 +3089,7 @@
 		<ul id="placeView-listView"></ul>
 
 	</div>
-	<ul data-role="actionsheet" id="placeViewPhotoActions" data-popup='{"direction": "left"}'>
-		<li><a data-action="placeView.camera"> Phone Camera</a></li>
-		<li><a data-action="placeView.gallery"> Phone Gallery</a></li>
-	</ul>
+
 	<div class="footer" data-role="footer">
 		<a class="actionBtn secondary-100" data-role="button" data-rel="actionsheet" href="#placeViewOptions">
 			<p class="actionBtn-text">Cancel</p>
@@ -3100,9 +3097,10 @@
 		</a>
 	</div>
 	<ul id="placeViewOptions" data-role="actionsheet" data-cancel="Cancel">
-		<li><a data-role="button" data-click="placeView.addNote"><img src="images/icon-note.svg" class="icon-sm"/> New Place Note </a></li>
+		<li><a data-role="button" data-click="placeView.addNote"><img src="images/icon-note.svg" class="icon-sm"/> Add A Note </a></li>
 		<!--<li><a data-role="button">Add Place Chat</a></li>-->
-		<li><a data-role="button"><img src="images/icon-Photos.svg" /> New Place Photo</a></li>
+		<li><a data-role="button" data-action="placeView.camera" ><img src="images/icon-camera.svg" /> Take A Photo</a></li>
+		<li><a data-role="button" data-action="placeView.gallery"><img src="images/icon-Photos.svg" /> Add A Photo</a></li>
 	</ul>
 </div>
 
