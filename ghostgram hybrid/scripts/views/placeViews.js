@@ -1329,6 +1329,7 @@ var placeView = {
 
         mobileNotify("Looking up Memories...");
         placeView.buildMemoriesDS();
+        
         //mapModel.setMapCenter(placeView._activePlaceModel.lat, placeView._activePlaceModel.lng);
     },
 
@@ -1414,6 +1415,8 @@ var placeView = {
             updateParseObject('photos','photoId', photoId, 'placeString',  placeView._activePlace.name);
             updateParseObject('photos','photoId', photoId, 'addressString',  addressString);
             modalPhotoView.openModal(photo);
+
+            placeView._memoriesDS.add(photo);
         }
     },
 
