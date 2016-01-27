@@ -199,7 +199,7 @@ var placesView = {
             var newPlaces = e.items;
             for (var a=0; a< newPlaces.length; a++) {
                 var newPlace = newPlaces[a];
-                var place = placeModel.queryPlaceList({ field: "uuid", operator: "eq", value: newPlace.uuid });
+                var place = placesModel.queryPlaceList({ field: "uuid", operator: "eq", value: newPlace.uuid });
                 if (place === undefined) {
                     placesModel.placeListDS.add(newPlace);
                     placesModel.placeListDS.sync();
@@ -218,14 +218,13 @@ var placesView = {
             var changes = e.items,
             newItem = changes[0];
 
-            var oldPlace = placeModel.queryPlaceList({ field: "uuid", operator: "eq", value: newItem.uuid });
+            var oldPlace = placesModel.queryPlaceList({ field: "uuid", operator: "eq", value: newItem.uuid });
             var newValue = newItem[field];
 
             if (oldPlace !== undefined) {
                 oldPlace.set(field, newValue);
             }
-
-
+            
         } else if (e.action === 'sync') {
             var changeList = e.items;
 
