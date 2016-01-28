@@ -3111,9 +3111,9 @@
 		  var tagString = "";
 		 	if (data.tagString !== undefined && data.tagString !== null) { tagString = data.tagString;}
 		  var sender = 'You';
-		    if (data.senderName !== undefined && data.senderName !== null) { sender = data.senderName }
+		    if (data.senderName !== undefined && data.senderName !== null && data.senderName !== "") { sender = data.senderName }
 
-		  var dateString = moment(data.updatedAt).format("ddd, Do MMM YYYY hA a");
+		  var dateString = moment(data.updatedAt).format("ddd, MMM Do YYYY hA");
 		#
 		# if (data.ggType === "Note"){#
 		<div class="note">

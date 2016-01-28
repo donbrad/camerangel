@@ -118,7 +118,7 @@ var noteModel = {
         noteParse.set('metaTagString',  note.metaTagString);
         noteParse.set('content', note.content);
         noteParse.set('tags', note.tags);
-        var dateString = new Date(note.date).toISOString();
+        var dateString = new Date().toISOString();
         var d = {"__type":"Date","iso":dateString};
         noteParse.set('date',  d);
         noteParse.set('expiration', Number(note.expiration));
