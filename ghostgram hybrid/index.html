@@ -3089,7 +3089,12 @@
 		<ul id="placeView-listview"></ul>
 
 	</div>
-
+	<ul id="placeViewItemActions" data-role="actionsheet" data-cancel="Cancel">
+		<li><a data-role="button" data-click="placeView.editItem"> Edit </a></li>
+		<!--<li><a data-role="button">Add Place Chat</a></li>-->
+		<li><a data-role="button" data-action="placeView.shareItem" > Share </a></li>
+		<li><a data-role="button" data-action="placeView.deleteItem"> Delete </a></li>
+	</ul>
 	<div class="footer" data-role="footer">
 		<a class="actionBtn secondary-100" data-role="button" data-rel="actionsheet" href="#placeViewOptions">
 			<p class="actionBtn-text">Cancel</p>

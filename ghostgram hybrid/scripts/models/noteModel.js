@@ -154,7 +154,7 @@ var noteModel = {
         if (isPrivate === undefined || isPrivate) {
             noteParse.setACL(userModel.parseACL);
         }
-        
+
         noteModel.notesDS.add(noteObj);
         noteModel.notesDS.sync();
 

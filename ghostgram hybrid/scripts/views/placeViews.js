@@ -1230,6 +1230,7 @@ var placeView = {
     _activePlace :  new kendo.data.ObservableObject(),
     _activePlaceId : null,
     _activePlaceModel : null,
+    _currentItem: null,
     _lat: null,
     _lng: null,
     _returnView : 'places',
@@ -1245,7 +1246,13 @@ var placeView = {
         _preventDefault(e);
         $("#placeView-listview").kendoMobileListView({
             dataSource: placeView._memoriesDS,
-            template: $("#placeViewMemories-template").html()/*,
+            template: $("#placeViewMemories-template").html(),
+            click: function(e) {
+                placeView._currentItem =  e.dataItem;
+                $("#placeViewItemActions").data("kendoMobileActionSheet").open();
+
+            }
+            /*,
             dataBound: function(e){
                 ux.checkEmptyUIState(placeView._memoriesDS, "#channelListDiv");
             }*/
@@ -1514,11 +1521,38 @@ var placeView = {
     },
 
 
-    openPlaceMap: function(e){
-        //_preventDefault(e);
-        var placeId = LZString.compressToEncodedURIComponent(placeView._activePlaceId);
-    	APP.kendo.navigate("#mapView?place=" + placeId );
+   shareItem : function (e) {
+       _preventDefault(e);
+       var item = placeView._currentItem;
+       if (item.ggType === 'Note') {
+
+       } else if (item.ggType === 'Photo') {
+
+       }
+       $("#placeViewItemActions").data("kendoMobileActionSheet").close();
+   },
+
+    editItem : function (e) {
+        _preventDefault(e);
+        var item = placeView._currentItem;
+        if (item.ggType === 'Note') {
+
+        } else if (item.ggType === 'Photo') {
+
+        }
+        $("#placeViewItemActions").data("kendoMobileActionSheet").close();
     },
+
+    deleteItem : function (e) {
+        _preventDefault(e);
+        if (item.ggType === 'Note') {
+
+        } else if (item.ggType === 'Photo') {
+
+        }
+        $("#placeViewItemActions").data("kendoMobileActionSheet").close();
+    },
+
 
     openChat: function(e){
         _preventDefault(e);
