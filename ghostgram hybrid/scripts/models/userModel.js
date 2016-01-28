@@ -435,6 +435,8 @@ var userModel = {
 
         photoModel.fetch();
 
+        noteModel.fetch();
+
         smartEvent.fetch();
 
         userStatus.init();
