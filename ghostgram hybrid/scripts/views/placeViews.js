@@ -1504,7 +1504,7 @@ var placeView = {
            newNote.set('tags', note.tags);
            newNote.set('tagString', tagModel.createTagString(newNote.tags));
 
-           noteModel.addNote(note);
+           noteModel.addNote(note.toJSON());
 
            placeView._memoriesDS.add(note.toJSON());
 

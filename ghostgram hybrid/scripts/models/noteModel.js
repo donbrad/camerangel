@@ -112,7 +112,7 @@ var noteModel = {
         noteParse.set('uuid', note.uuid);
         noteParse.set('userUUID', note.userUUID);
         noteParse.set('objectType', note.objectType);
-        noteParse.set('ObjectUUID', note.ObjectUUID);
+        noteParse.set('objectUUID', note.objectUUID);
         noteParse.set('title', note.title);
         noteParse.set('tagString', note.tagString);
         noteParse.set('metaTagString',  note.metaTagString);
