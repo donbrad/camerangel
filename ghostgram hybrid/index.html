@@ -3047,7 +3047,7 @@
 				<img src="images/nav-back.svg" />
 			</a>
 			<span class="textClamp navbar-btn" data-role="button" data-click="placeView.openChat">
-				<img src="images/icon-chat-active.svg" class="icon-btn" id="#placeView-gotochat" />
+				<img src="images/icon-chat-active.svg" class="icon-btn" id="placeView-gotochat" />
 				<span id="placeViewName"></span>
 			</span>
 			<a data-role="button" data-align="right" data-click="ux.toggleSearch">
@@ -3106,10 +3106,19 @@
 
 <script type="text/x-kendo-template" id="placeViewMemories-template">
 
+		# var title = "Untitled";
+			if (data.title !== null) { title = data.title; }
+		  var tagString = "";
+		 	if (data.tagString !== undefined && data.tagString !== null) { tagString = data.tagString;}
+		  var sender = 'You';
+		    if (data.senderName !== undefined && data.senderName !== null) { sender = data.senderName }
+
+		  var dataString = moment(data.updatedAt).format("ddd, Do MMM YYYY hA");
+		#
 		# if (data.ggType === "Note"){#
 		<div class="note">
-			<h4> #: data.title # </h4>
-			<p>#: data.tagString #</p>
+			<h4> #: title # </h4>
+			<p>#: tagString #</p>
 			<div>#: data.comment #</div>
 		</div>
 		#}#
@@ -3122,7 +3131,7 @@
 			</div>
 			<div class="photoInfo">
 				<p> From : #: data.senderName #</p>
-				<p> #: data.dateString #</p>
+				<p> #: dateString #</p>
 			</div>
 			<div class="clearfix"></div>
 		</div>

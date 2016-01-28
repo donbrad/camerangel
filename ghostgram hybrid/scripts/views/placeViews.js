@@ -1253,7 +1253,6 @@ var placeView = {
 
         // ToDo: bind change functions for notes and photos here
 
-
     },
 
 
