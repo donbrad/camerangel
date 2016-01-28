@@ -36,8 +36,7 @@ var noteModel = {
 
     findNotesByObjectId: function (type, objectId) {
         var query = [
-            {field: "isExpired", operator: "eq", value: false},
-            {field: "type", operator: "eq", value: type},
+            {field: "objectType", operator: "eq", value: type},
             {field: "objectUUID", operator: "eq", value: objectId}
         ];
 
@@ -154,8 +153,6 @@ var noteModel = {
         if (isPrivate === undefined || isPrivate) {
             noteParse.setACL(userModel.parseACL);
         }
-
-
 
         noteParse.save(null, {
             success: function(noteIn) {
