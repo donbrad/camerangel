@@ -50,7 +50,7 @@ var noteModel = {
     queryNote: function (query) {
         if (query === undefined)
             return (undefined);
-        var dataSource = notificationModel.notificationDS;
+        var dataSource = noteModel.notesDS;
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
             cacheFilter = {};
@@ -67,7 +67,7 @@ var noteModel = {
     queryNotes: function (query) {
         if (query === undefined)
             return (undefined);
-        var dataSource = notificationModel.notificationDS;
+        var dataSource = noteModel.notesDS;
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
             cacheFilter = {};
