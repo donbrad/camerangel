@@ -146,36 +146,56 @@ var noteModel = {
         });
     },
 
+    saveParseNote : function (noteParse) {
+        var noteObj = noteParse.toJSON();
+
+        noteModel.notesDS.add(noteObj);
+        noteModel.notesDS.sync();
+
+        noteParse.save(null, {
+            success: function(noteIn) {
+
+                // Execute any logic that should take place after the object is saved.
+
+            },
+            error: function(note, error) {
+                // Execute any logic that should take place if the save fails.
+                // error is a Parse.Error with an error code and message.
+                handleParseError(error);
+            }
+        });
+    },
+
     // Creates an new note with field values to set defaults
     // type should be a note model type noteModel._x
     // object id is uuid / is for the parent object
     // private sets the acl on the note to available to this user only
     createNote : function (type, objectId, isPrivate) {
-        var note = new Object();
+        var Notes = Parse.Object.extend(noteModel._parseClass);
+        var note = new Notes();
 
-        note.uuid = uuid.v4();
+        note.set('uuid',uuid.v4());
 
-
-        note.ggType = noteModel._ggClass;
-        note.version = noteModel._version;
-        note.userUUID = null;
-        note.date = new Date();
-        note.objectType = type;
-        note.ObjectUUID = objectId;
-        note.title = null;
-        note.tagString = null;
-        note.metaTagString = null;
-        note.content = null;
-        note.tags = [];
-        note.expiration = 30;
+        note.set('ggType',noteModel._ggClass);
+        note.set('version',noteModel._version);
+        note.set('userUUID',  userModel.currentUser.userUUID);
+        note.set('date',new Date());
+        note.set('objectType', type);
+        note.set('objectUUID',objectId);
+        note.set('title', null);
+        note.set('tagString',null);
+        note.set('metaTagString', null);
+        note.set('content',null);
+        note.set('tags', []);
+        note.set('expiration',30);
         var d = new Date();
         d.setFullYear(d.getFullYear()+1);
-        note.expirationDate = d;
-        note.isPrivate = isPrivate;
-        note.isExpired = false;
+        note.set('expirationDate', d);
+        note.set('isPrivate', isPrivate);
+        note.set('isExpired', false);
 
         return(note);
-    },
+    }
 
 
 };
