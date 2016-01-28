@@ -1498,7 +1498,7 @@ var placeView = {
            var newNote = noteModel.createNote(noteModel._places, placeView._activePlaceId, true );
 
            newNote.set('title',note.title);
-           newNote.set('expiration',note.expiration);
+           newNote.set('expiration', Number(note.expiration));
            newNote.set('content', note.content);
            newNote.set('expirationDate', note.expirationDate);
            newNote.set('tags', note.tags);
@@ -1507,6 +1507,8 @@ var placeView = {
            noteModel.saveParseNote(newNote);
 
            placeView._memoriesDS.add(newNote.toJSON());
+
+           smartNoteView.closeModal();
 
        });
     },
