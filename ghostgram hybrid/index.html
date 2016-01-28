@@ -3113,7 +3113,7 @@
 		  var sender = 'You';
 		    if (data.senderName !== undefined && data.senderName !== null) { sender = data.senderName }
 
-		  var dataString = moment(data.updatedAt).format("ddd, Do MMM YYYY hA");
+		  var dateString = moment(data.updatedAt).format("ddd, Do MMM YYYY hA a");
 		#
 		# if (data.ggType === "Note"){#
 		<div class="note">
