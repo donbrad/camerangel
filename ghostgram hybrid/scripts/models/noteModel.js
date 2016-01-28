@@ -25,6 +25,10 @@ var noteModel = {
         }
     }),
 
+    init: function () {
+
+    },
+
     findNote: function (type, uuid) {
         var query = [
             {field: "type", operator: "eq", value: type},
