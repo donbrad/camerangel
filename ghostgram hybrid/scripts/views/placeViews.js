@@ -1497,6 +1497,7 @@ var placeView = {
        smartNoteView.openModal(null, function (note) {
            var newNote = noteModel.createNote(noteModel._places, placeView._activePlaceId, true );
 
+           newNote.set('title',note.title);
            newNote.set('expiration',note.expiration);
            newNote.set('content', note.content);
            newNote.set('expirationDate', note.expirationDate);
