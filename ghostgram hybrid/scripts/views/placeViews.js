@@ -45,7 +45,7 @@ var placesView = {
                     if($(window).width() < 375){
                     	$(selection).velocity({translateX:"-50%"},{duration: "fast"}).addClass("place-active");
                     } else {
-                    	$(selection).velocity({translateX:"-40%"},{duration: "fast"}).addClass("place-active");
+                    	$(selection).velocity({translateX:"-50%"},{duration: "fast"}).addClass("place-active");
                     }
                 }
                 if (e.direction === "right" && $(selection).hasClass("place-active")){

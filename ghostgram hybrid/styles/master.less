@@ -4066,8 +4066,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', e
 }
 
 .list-box {
-	padding-top: 0.5em;
-	padding-bottom: 0.5em;
+	padding-top: 0.75em;
+	padding-bottom: 0.75em;
 	position: absolute;
 	left: 0px;
 	top: 0px; 
@@ -4075,17 +4075,22 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', e
 	display: inline-block;
 	box-shadow: 3px 0 3px -3px @shade-100;
 	width: 100%;
+	@media @mobile {
+		padding-top: 0.5em;
+		padding-bottom: 0.5em;
+	}
 }
 
 .list-options {
 	width: 100%;
-	height: 80px;
+	height: 5.51em;
 	background-color: @shade-300;
 	z-index:-1;
     display: inline-block;
     float: left;
     text-align: right;
-    padding-top: 1rem;
+    padding-top: 1em;
+	padding-bottom: 1em;
 }
 
 .list-options-lg {
