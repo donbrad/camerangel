@@ -1497,16 +1497,15 @@ var placeView = {
        smartNoteView.openModal(null, function (note) {
            var newNote = noteModel.createNote(noteModel._places, placeView._activePlaceId, true );
 
-           newNote.set('description',note.description);
            newNote.set('expiration',note.expiration);
            newNote.set('content', note.content);
            newNote.set('expirationDate', note.expirationDate);
            newNote.set('tags', note.tags);
-           newNote.set('tagString', tagModel.createTagString(newNote.tags));
+           newNote.set('tagString', tagModel.createTagString(note.tags));
 
-           noteModel.addNote(note.toJSON());
+           noteModel.saveParseNote(newNote);
 
-           placeView._memoriesDS.add(note.toJSON());
+           placeView._memoriesDS.add(newNote.toJSON());
 
        });
     },
