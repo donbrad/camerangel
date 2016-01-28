@@ -147,7 +147,7 @@ var noteModel = {
     },
 
     saveParseNote : function (noteParse) {
-        var noteObj = noteParse.toJSON();
+
 
         var isPrivate = noteParse.get('isPrivate');
 
@@ -155,12 +155,13 @@ var noteModel = {
             noteParse.setACL(userModel.parseACL);
         }
 
-        noteModel.notesDS.add(noteObj);
-        noteModel.notesDS.sync();
+
 
         noteParse.save(null, {
             success: function(noteIn) {
-
+                var noteObj = noteIn.toJSON();
+                noteModel.notesDS.add(noteObj);
+                noteModel.notesDS.sync();
                 // Execute any logic that should take place after the object is saved.
 
             },
