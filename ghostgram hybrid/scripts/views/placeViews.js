@@ -1508,7 +1508,7 @@ var placeView = {
 
            placeView._memoriesDS.add(newNote.toJSON());
 
-           smartNoteView.closeModal();
+           smartNoteView.onDone();
 
        });
     },
