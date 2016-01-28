@@ -1410,6 +1410,8 @@ var placeView = {
     },
 
     camera : function (e) {
+        $("#placeViewOptions").data("kendoMobileActionSheet").close();
+
         devicePhoto.deviceCamera(
             1600, // max resolution in pixels
             75,  // quality: 1-99.
@@ -1417,9 +1419,11 @@ var placeView = {
             null,  // Current channel Id for offers
             placeView.photoComplete  // Optional preview callback
         );
+
     },
 
     gallery : function (e) {
+        $("#placeViewOptions").data("kendoMobileActionSheet").close();
         devicePhoto.deviceGallery(
             1600, // max resolution in pixels
             75,  // quality: 1-99.
@@ -1487,6 +1491,8 @@ var placeView = {
 
    addNote : function (e) {
         _preventDefault(e);
+
+       $("#placeViewOptions").data("kendoMobileActionSheet").close();
 
        smartNoteView.openModal(null, function (note) {
            var newNote = noteModel.createNote(noteModel._places, placeView._activePlaceId, true );
