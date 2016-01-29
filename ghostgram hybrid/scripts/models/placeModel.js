@@ -160,7 +160,9 @@ var placesModel = {
                     case "add" :
                         var place = e.items[0];
                         // add to contactlist and contacttags
-                        placesModel.placeListDS.add(place);
+                        var placeList = placesModel.findPlaceListUUID(place.uuid);
+                        if (placeList === undefined)
+                            placesModel.placeListDS.add(place);
                         var tag = {
                             type: 'place',
                             tagname: ux.returnUXPrimaryName(place.name, place.alias),
