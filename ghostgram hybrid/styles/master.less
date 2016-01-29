@@ -3602,6 +3602,7 @@ div.loginBox > form > div > ul > li {
 	}
 }
 
+
 .photo-chat {
 	height: auto;
 	max-width: 95%;
@@ -5591,7 +5592,8 @@ div.contactListBox.activeContact > div > div > ul {
 }
 
 .placeCardTop {
-	margin: 0.5rem 0 0.5rem;
+	padding: 0.5em 0 0.5em;
+
 }
 
 .placeContent {
@@ -5716,12 +5718,14 @@ div.contactListBox.activeContact > div > div > ul {
 
 .placeCard {
 	//width: 100%;
-	.shadowHelper(1);
-	background: #fff;
+	//.shadowHelper(1);
+	background: @shade-300;
 	border-radius: 3px;
-	width: 90%;
-	margin-left: 5%;
-	margin-right: 5%;
+	width: 100%;
+	padding-left: 5%;
+	padding-right: 5%;
+	border-bottom: 1px solid @shade-200;
+	margin-bottom: 1em;
 }
 
 #placeView > div.footerMenu.km-footer {
