@@ -867,16 +867,13 @@ var smartEventView = {
 
     onSaveEvent : function (e) {
 
-
         if (!smartEventView.validDateTime()) {
             return;
         }
 
         var thisObj = smartEventView._activeObject;
-        
 
-
-        var title = $("#smartEventView-title").val() ;
+        var title = smartEventView._activeObject.title;
         if (title === null || title.length < 3) {
             mobileNotify ('Events must have a valid title!');
             return;
@@ -895,10 +892,10 @@ var smartEventView = {
         }
 
         thisObj.set('date', saveDate);
-         thisObj.set('senderName', userModel.currentUser.name);
+        thisObj.set('senderName', userModel.currentUser.name);
 
          if (thisObj.addToCalendar && thisObj.calendarId === null) {
-         smartEventView.addToCalendar();
+            smartEventView.addToCalendar();
          }
 
          smartEventView.createSmartEvent(thisObj);
@@ -930,6 +927,7 @@ var smartNoteView = {
     _expirationDate : null,
     _isInited : false,
     _callback : null,
+    _redactorActive : false,
 
     onInit: function (e) {
         _preventDefault(e);
@@ -978,6 +976,7 @@ var smartNoteView = {
 
         }
 
+        smartNoteView._redactorActive = true;
         $('#smartNoteView-content').redactor({
             minHeight: 240,
             maxHeight: 420,
@@ -1002,7 +1001,7 @@ var smartNoteView = {
             smartNoteView._activeObject.set('expiration', '30');
         } else {
             smartNoteView._activeObject.set('title', actionObj.title);
-            smartNoteView._activeObject.set('tagstring', actionObj.tagString);
+            smartNoteView._activeObject.set('tagString', actionObj.tagString);
             smartNoteView._activeObject.set('tags', actionObj.tags);
             smartNoteView._activeObject.set('content', actionObj.content);
             smartNoteView._activeObject.set('expiration', actionObj.expiration);
@@ -1026,17 +1025,9 @@ var smartNoteView = {
         var text = $('#smartNoteView-content').redactor('code.get');
         var tags =  smartNoteView._activeObject.get('tags');
         var expDate = ggAddDays(new Date(), exp);
-        var tagArray = [];
 
-        if (tags.length > 0) {
-
-            for (var i = 0; i < tags.length; i++) {
-                var tag = tags[i].toJSON();
-                tagArray.push(tag);
-            }
-            smartNoteView._activeObject.get('tags', tagArray);
-        }
-
+        var tagString = tagModel.createTagString(tags);
+        smartNoteView._activeObject.set('tagString', tagString);
         smartNoteView._activeObject.set('content', text);
         smartNoteView._activeObject.set('expirationDate', expDate);
 
@@ -1052,7 +1043,7 @@ var smartNoteView = {
     onCancel : function (e) {
         _preventDefault(e);
 
-        $("#smartNoteModal").data("kendoMobileModalView").close();
+       // $("#smartNoteModal").data("kendoMobileModalView").close();
         $("#eventBanner").removeClass();
 
         smartNoteView.onDone();
@@ -1061,7 +1052,12 @@ var smartNoteView = {
     onDone: function (e) {
         //_preventDefault(e);
 
-        $('#smartNoteView-content').redactor('core.destroy');
+        if (smartNoteView._redactorActive) {
+            $('#smartNoteView-content').redactor('core.destroy');
+            smartNoteView._redactorActive = false;
+
+        }
+
         $("#smartNoteModal").data("kendoMobileModalView").close();
 
     }

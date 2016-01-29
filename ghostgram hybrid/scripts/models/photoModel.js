@@ -187,13 +187,12 @@ var photoModel = {
 
     findOfferByPhotoId : function (photoId) {
 
-
         return(photoModel.queryPhotoOffer({ field: "photoId", operator: "eq", value: photoId }));
     },
 
     findPhotoById : function (photoId) {
 
-        return(photoModel.queryPhotos({ field: "photoId", operator: "eq", value: photoId }));
+        return(photoModel.queryPhoto({ field: "photoId", operator: "eq", value: photoId }));
     },
 
     findPhotosByChannel : function (channelId) {

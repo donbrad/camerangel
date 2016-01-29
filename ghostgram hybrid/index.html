@@ -2530,7 +2530,7 @@
 		<ul data-role="listview" data-style="inset">
 			<li>
 				<label>
-					<input class="input-text-md" type="search" id="smartEventView-title"  data-bind="value: title" placeholder="Title..."/>
+					<input class="input-text-md" type="search" id="smartEventView-title"  data-bind="value: title" placeholder="Title..." required/>
 				</label>
 			</li>
 			<li>
@@ -2775,7 +2775,7 @@
 			</div>
 			<div class="photoTitleInput hidden">
 				<label>Title</label>
-				<input type="search" class="input-text-md" data-bind="value: title" maxlength="48"/>
+				<input type="search" class="input-text-md" data-bind="value: title" maxlength="48" placeholder="Title..."/>
 
 				<label>Description</label>
 				<textarea data-bind="value: description" type="text" col="80" row="2" maxlength="60"></textarea>
@@ -3047,7 +3047,7 @@
 				<img src="images/nav-back.svg" />
 			</a>
 			<span class="textClamp navbar-btn" data-role="button" data-click="placeView.openChat">
-				<img src="images/icon-chat-active.svg" class="icon-btn" id="#placeView-gotochat" />
+				<img src="images/icon-chat-active.svg" class="icon-btn" id="placeView-gotochat" />
 				<span id="placeViewName"></span>
 			</span>
 			<a data-role="button" data-align="right" data-click="ux.toggleSearch">
@@ -3075,7 +3075,7 @@
 				<span class="secondName"></span>
 			</h4>
 			<p data-bind="text: address"></p>
-			<a class="btnClear" data-role="button" style="margin-left: 0.75em;">Directions</a>
+			<a class="btnClear" data-role="button" style="margin-left: 0.75em;" data-click="placeView.doDirections">Directions</a>
 
 		</div>
 	</div>
@@ -3086,12 +3086,14 @@
 		<p>
 			<img src="images/icon-memories.svg" class="icon" /> Memories
 		</p>
-		<ul id="placeView-listView"></ul>
+		<ul id="placeView-listview"></ul>
 
 	</div>
-	<ul data-role="actionsheet" id="placeViewPhotoActions" data-popup='{"direction": "left"}'>
-		<li><a data-action="placeView.camera"> Phone Camera</a></li>
-		<li><a data-action="placeView.gallery"> Phone Gallery</a></li>
+	<ul id="placeViewItemActions" data-role="actionsheet" data-cancel="Cancel">
+		<li><a data-role="button" data-click="placeView.editItem"> Edit </a></li>
+		<!--<li><a data-role="button">Add Place Chat</a></li>-->
+		<li><a data-role="button" data-action="placeView.shareItem" > Share </a></li>
+		<li><a data-role="button" data-action="placeView.deleteItem"> Delete </a></li>
 	</ul>
 	<div class="footer" data-role="footer">
 		<a class="actionBtn secondary-100" data-role="button" data-rel="actionsheet" href="#placeViewOptions">
@@ -3100,19 +3102,29 @@
 		</a>
 	</div>
 	<ul id="placeViewOptions" data-role="actionsheet" data-cancel="Cancel">
-		<li><a data-role="button" data-click="placeView.addNote"><img src="images/icon-note.svg" class="icon-sm"/> New Place Note </a></li>
+		<li><a data-role="button" data-click="placeView.addNote"><img src="images/icon-note.svg" class="icon-sm"/> Add A Note </a></li>
 		<!--<li><a data-role="button">Add Place Chat</a></li>-->
-		<li><a data-role="button"><img src="images/icon-Photos.svg" /> New Place Photo</a></li>
+		<li><a data-role="button" data-action="placeView.camera" ><img src="images/icon-camera.svg" /> Take A Photo</a></li>
+		<li><a data-role="button" data-action="placeView.gallery"><img src="images/icon-Photos.svg" /> Add A Photo</a></li>
 	</ul>
 </div>
 
 <script type="text/x-kendo-template" id="placeViewMemories-template">
 
+		# var title = "Untitled";
+			if (data.title !== null) { title = data.title; }
+		  var tagString = "";
+		 	if (data.tagString !== undefined && data.tagString !== null) { tagString = data.tagString;}
+		  var sender = 'You';
+		    if (data.senderName !== undefined && data.senderName !== null && data.senderName !== "") { sender = data.senderName }
+		  var dateString = moment(data.updatedAt).format("ddd, MMM Do YYYY hA");
+		#
 		# if (data.ggType === "Note"){#
 		<div class="note">
 			<h4> #: data.title # </h4>
 			<p>#: data.tagString #</p>
-			<div>#: data.comment #</div>
+			<div>#= data.content #</div>
+			<p>#:dateString#</p>
 		</div>
 		#}#
 		# if(data.ggType === "Photo") {#
@@ -3123,8 +3135,8 @@
 				<img src="#= data.thumbnailUrl #" />
 			</div>
 			<div class="photoInfo">
-				<p> From : #: data.senderName #</p>
-				<p> #: data.dateString #</p>
+				<p> From : #: sender #</p>
+				<p> #: dateString #</p>
 			</div>
 			<div class="clearfix"></div>
 		</div>
