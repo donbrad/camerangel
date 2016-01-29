@@ -867,16 +867,13 @@ var smartEventView = {
 
     onSaveEvent : function (e) {
 
-
         if (!smartEventView.validDateTime()) {
             return;
         }
 
         var thisObj = smartEventView._activeObject;
-        
 
-
-        var title = $("#smartEventView-title").val() ;
+        var title = smartEventView._activeObject.title;
         if (title === null || title.length < 3) {
             mobileNotify ('Events must have a valid title!');
             return;
@@ -895,10 +892,10 @@ var smartEventView = {
         }
 
         thisObj.set('date', saveDate);
-         thisObj.set('senderName', userModel.currentUser.name);
+        thisObj.set('senderName', userModel.currentUser.name);
 
          if (thisObj.addToCalendar && thisObj.calendarId === null) {
-         smartEventView.addToCalendar();
+            smartEventView.addToCalendar();
          }
 
          smartEventView.createSmartEvent(thisObj);
@@ -1030,7 +1027,6 @@ var smartNoteView = {
         var expDate = ggAddDays(new Date(), exp);
 
         var tagString = tagModel.createTagString(tags);
-
         smartNoteView._activeObject.set('tagString', tagString);
         smartNoteView._activeObject.set('content', text);
         smartNoteView._activeObject.set('expirationDate', expDate);
