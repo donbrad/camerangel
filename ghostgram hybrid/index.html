@@ -3122,15 +3122,15 @@
 		# if (data.ggType === "Note"){#
 		<div class="note">
 			<h4> #: data.title # </h4>
-			<p>#: tagString #</p>
+			<p>#: data.tagString #</p>
 			<div>#= data.content #</div>
 			<p>#:dateString#</p>
 		</div>
 		#}#
 		# if(data.ggType === "Photo") {#
 		<div class="photo">
-			<h4> #: title # </h4>
-			<p> #: tagString #</p>
+			<h4> #: data.title # </h4>
+			<p> #: data.tagString #</p>
 			<div class="photoPreview">
 				<img src="#= data.thumbnailUrl #" />
 			</div>

@@ -930,6 +930,7 @@ var smartNoteView = {
     _expirationDate : null,
     _isInited : false,
     _callback : null,
+    _redactorActive : false,
 
     onInit: function (e) {
         _preventDefault(e);
@@ -978,6 +979,7 @@ var smartNoteView = {
 
         }
 
+        smartNoteView._redactorActive = true;
         $('#smartNoteView-content').redactor({
             minHeight: 240,
             maxHeight: 420,
@@ -1054,7 +1056,12 @@ var smartNoteView = {
     onDone: function (e) {
         //_preventDefault(e);
 
-        $('#smartNoteView-content').redactor('core.destroy');
+        if (smartNoteView._redactorActive) {
+            $('#smartNoteView-content').redactor('core.destroy');
+            smartNoteView._redactorActive = false;
+
+        }
+
         $("#smartNoteModal").data("kendoMobileModalView").close();
 
     }
