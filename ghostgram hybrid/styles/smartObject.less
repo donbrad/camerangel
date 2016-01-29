@@ -207,3 +207,34 @@
   color: @success-200;
   font-size: 0.875em;
 }
+
+// Place View
+.note {
+  border: 1px solid @shade-300;
+  border-bottom: 1px solid @shade-200;
+  background: #fff;
+  padding: 0.25em 0;
+  border-radius: 3px;
+  margin: 0 1em;
+  p {
+    .textClamp;
+  }
+}
+
+.photo {
+  padding-top: 0.5em;
+  border: 1px solid @shade-300;
+  border-bottom: 1px solid @shade-200;
+  background: #fff;
+  border-radius: 3px;
+}
+
+.smartPhoto {
+  width: 100%;
+  height: auto;
+  float: left;
+  margin-top: 0.25em;
+  > img {
+    width: 100%;
+  }
+}

@@ -3076,7 +3076,6 @@
 			</h4>
 			<p data-bind="text: address"></p>
 			<a class="btnClear" data-role="button" style="margin-left: 0.75em;" data-click="placeView.doDirections">Directions</a>
-
 		</div>
 	</div>
 	<div class="placeContent">
@@ -3102,41 +3101,47 @@
 		</a>
 	</div>
 	<ul id="placeViewOptions" data-role="actionsheet" data-cancel="Cancel">
-		<li><a data-role="button" data-click="placeView.addNote"><img src="images/icon-note.svg" class="icon-sm"/> Add A Note </a></li>
+		<li><a data-role="button" data-click="placeView.addNote"><img src="images/smart-note.svg" class="icon-sm"/> Add A Note </a></li>
 		<!--<li><a data-role="button">Add Place Chat</a></li>-->
-		<li><a data-role="button" data-action="placeView.camera" ><img src="images/icon-camera.svg" /> Take A Photo</a></li>
-		<li><a data-role="button" data-action="placeView.gallery"><img src="images/icon-Photos.svg" /> Add A Photo</a></li>
+		<li><a data-role="button" data-action="placeView.camera" ><img src="images/icon-camera-dark.svg" class="icon-sm" /> Take A Photo</a></li>
+		<li><a data-role="button" data-action="placeView.gallery"><img src="images/icon-Photos.svg" class="icon-sm" /> Add A Photo</a></li>
 	</ul>
 </div>
 
 <script type="text/x-kendo-template" id="placeViewMemories-template">
 
 		# var title = "Untitled";
-			if (data.title !== null) { title = data.title; }
+			if (data.title === null) { title = data.title; }
 		  var tagString = "";
 		 	if (data.tagString !== undefined && data.tagString !== null) { tagString = data.tagString;}
 		  var sender = 'You';
 		    if (data.senderName !== undefined && data.senderName !== null && data.senderName !== "") { sender = data.senderName }
-		  var dateString = moment(data.updatedAt).format("ddd, MMM Do YYYY hA");
+		  var dateString = moment(data.updatedAt).fromNow();
 		#
 		# if (data.ggType === "Note"){#
 		<div class="note">
-			<h4> #: data.title # </h4>
+			<h3 class="textClamp">
+				<img src="images/smart-note-inline.svg" class="icon-md" />
+				<span>#: data.title #</span>
+				<span class="helper right" style="font-size: 12px">#:dateString#</span>
+			</h3>
 			<p>#: data.tagString #</p>
-			<div>#= data.content #</div>
-			<p>#:dateString#</p>
+			<p style="margin-top: 0.5em; width: 100%;">#= data.content #</p>
 		</div>
 		#}#
 		# if(data.ggType === "Photo") {#
 		<div class="photo">
-			<h4> #: data.title # </h4>
+			<h3>
+				<img src="images/smart-photo-inline.svg" class="icon-md" />
+				<span>#: data.title # </span>
+				<span class="helper right" style="font-size: 12px">#:dateString#</span>
+			</h3>
 			<p> #: data.tagString #</p>
-			<div class="photoPreview">
+			<div class="smartPhoto">
 				<img src="#= data.thumbnailUrl #" />
 			</div>
 			<div class="photoInfo">
-				<p> From : #: sender #</p>
-				<p> #: dateString #</p>
+				<p class="helper"> From #: sender #</p>
 			</div>
 			<div class="clearfix"></div>
 		</div>
