@@ -3110,8 +3110,8 @@
 
 <script type="text/x-kendo-template" id="placeViewMemories-template">
 
-		# var title = "Untitled";
-			if (data.title === null) { title = data.title; }
+		# var titleStr = "Untitled";
+			if (data.title === null) { titleStr = data.title; }
 		  var tagString = "";
 		 	if (data.tagString !== undefined && data.tagString !== null) { tagString = data.tagString;}
 		  var sender = 'You';
@@ -3122,10 +3122,10 @@
 		<div class="note">
 			<h3 class="textClamp">
 				<img src="images/smart-note-inline.svg" class="icon-md" />
-				<span>#: data.title #</span>
+				<span>#: titleStr #</span>
 				<span class="helper right" style="font-size: 12px">#:dateString#</span>
 			</h3>
-			<p>#: data.tagString #</p>
+			<p>#: tagString #</p>
 			<p style="margin-top: 0.5em; width: 100%;">#= data.content #</p>
 		</div>
 		#}#
@@ -3133,10 +3133,10 @@
 		<div class="photo">
 			<h3>
 				<img src="images/smart-photo-inline.svg" class="icon-md" />
-				<span>#: data.title # </span>
+				<span>#: titleStr # </span>
 				<span class="helper right" style="font-size: 12px">#:dateString#</span>
 			</h3>
-			<p> #: data.tagString #</p>
+			<p> #: tagString #</p>
 			<div class="smartPhoto">
 				<img src="#= data.thumbnailUrl #" />
 			</div>
