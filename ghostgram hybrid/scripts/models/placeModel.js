@@ -145,11 +145,12 @@ var placesModel = {
                             var newName = ux.returnUXPrimaryName(place.name, place.alias);
                             var placeTag = placesModel.findPlaceTag(place.uuid);
                             placeTag.alias = place.alias;
-                            
+
                         }
 
                         if (placeList !== undefined)
-                            placeList[field] = place [field];
+                            //placeList[field] = place [field];
+                            placeList.set(field, place[field]);
 
                         break;
 
