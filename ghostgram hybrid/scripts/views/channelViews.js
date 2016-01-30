@@ -1888,7 +1888,7 @@ var channelView = {
 
         var $target = $(e.touch.initialTouch);
         var dataSource = channelView.messagesDS;
-        var messageUID = null; 
+        var messageUID = null;
         var message = dataSource.getByUid(messageUID);
 
         if (e.touch.currentTarget !== undefined) {
@@ -1896,7 +1896,7 @@ var channelView = {
             messageUID =  $(e.touch.currentTarget).data("uid");
         } else {
             // New Android
-            messageUID =   e.touch.target[0].attribute['data-uid'].value;
+            messageUID =   e.touch.target[0].attributes['data-uid'].value;
         }
         // User has clicked in message area, so hide the keyboard
         // ux.hideKeyboard();
