@@ -654,20 +654,20 @@ var modalChatPhotoView = {
         modalChatPhotoView._activePhoto.set('photoUrl', url);
         modalChatPhotoView._activePhoto.set('photoId', photo.photoId);
 
-         var photo = photoModel.findPhotoById(photo.photoId);
+         var photoObj = photoModel.findPhotoById(photo.photoId);
+
          modalChatPhotoView._userHasCopy = false;
          $('#modalChatPhotoView-userhascopy').addClass('hidden');
-         $('#modalChatPhotoView-userhascopy').addClass('hidden');
-         if (photo !== undefined) {
+         if (photoObj !== undefined) {
              // This user already has a copy of this photo
              modalChatPhotoView._userHasCopy = true;
              $('#modalChatPhotoView-userhascopy').removeClass('hidden');
+
+             if (photoObj.canCopy === undefined) {
+                 photoObj.canCopy = true;
+             }
          }
-
-        if (photo.canCopy === undefined) {
-            photo.canCopy = true;
-        }
-
+         
         modalChatPhotoView.updatePhotoStatus(photo);
 
         $("#modalChatPhotoView").data("kendoMobileModalView").open();
