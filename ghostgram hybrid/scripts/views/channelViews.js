@@ -929,7 +929,6 @@ var channelView = {
             filter: "li",
             enableSwipe: true,
             tap: channelView.tapChannel,
-            /*swipe: channelView.swipeChannel,*/
             hold: channelView.holdChannel
         });
 
@@ -1889,9 +1888,16 @@ var channelView = {
 
         var $target = $(e.touch.initialTouch);
         var dataSource = channelView.messagesDS;
-        var messageUID = $(e.touch.currentTarget).data("uid");
+        var messageUID = null; $(e.touch.currentTarget).data("uid");
         var message = dataSource.getByUid(messageUID);
 
+        if (e.touch.currentTarget !== undefined) {
+            // Legacy IOS
+            messageUID =  $(e.touch.currentTarget).data("uid");
+        } else {
+            // New Android
+            messageUID =   e.touch.target[0].attribute['data-uid'].value;
+        }
         // User has clicked in message area, so hide the keyboard
         // ux.hideKeyboard();
 
