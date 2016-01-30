@@ -1888,7 +1888,7 @@ var channelView = {
 
         var $target = $(e.touch.initialTouch);
         var dataSource = channelView.messagesDS;
-        var messageUID = null; $(e.touch.currentTarget).data("uid");
+        var messageUID = null; 
         var message = dataSource.getByUid(messageUID);
 
         if (e.touch.currentTarget !== undefined) {
