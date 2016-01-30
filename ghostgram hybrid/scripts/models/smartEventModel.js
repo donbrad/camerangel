@@ -366,8 +366,8 @@ var smartEvent = {
         }
 
         smartOb.setACL(userModel.parseACL);
-        smartObj.set('version', smartEvent._version);
-        smartObj.set('ggType', smartEvent._ggClass);
+        smartOb.set('version', smartEvent._version);
+        smartOb.set('ggType', smartEvent._ggClass);
         smartOb.set('uuid', objectIn.uuid);
         smartOb.set('senderUUID', objectIn.senderUUID);
         smartOb.set('senderName', objectIn.senderName);
