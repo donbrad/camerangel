@@ -279,6 +279,23 @@
 .smartPhoto > img {
   width: 100%;
 }
+#smartNoteModal > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent {
+  background: #fff;
+}
+.smartNote-title {
+  margin-left: 0.5em;
+}
+#smartNoteView-edit {
+  padding: 0;
+  margin: 0;
+}
+#smartNoteModal > div.km-header > div {
+  border: none;
+  box-shadow: none;
+}
+#smartNoteView-edit > li:nth-child(1) {
+  padding-top: 0;
+}
 .redactor-editor {
   padding: 0.5em !important;
   border: none !important;
@@ -654,6 +671,7 @@ form p {
   text-align: center;
   padding-top: 45%;
   opacity: 0.6;
+  margin-left: -1em;
 }
 .emptyState img {
   width: 6rem;
@@ -781,7 +799,7 @@ form p {
 .icon-smart {
   height: 1em;
   max-width: 1em;
-  vertical-align: text-top;
+  vertical-align: baseline;
 }
 .icon-smart {
   margin-right: 0.3em;
@@ -5629,6 +5647,10 @@ html .km-pane-wrapper .k-header {
 }
 .placeCardTop {
   padding: 0.5em 0 0.5em;
+}
+.placeCardTop h4,
+.placeCardTop p {
+  margin: 0;
 }
 .placeContentBox {
   padding: 0.5rem 1rem;
