@@ -2422,23 +2422,25 @@
 </div>
 
 <!-- smartObject Action modal -->
-<div data-role="modalview" id="smartNoteModal" style="width: 100%;  height: 100%; display: none;"  data-model="smartNoteView._activeObject" data-init="smartNoteView.onInit" data-open="smartNoteView.onShow" class="appearance">
+<div data-role="modalview" id="smartNoteModal" style="width: 95%;  height: 95%; display: none;"  data-model="smartNoteView._activeObject" data-init="smartNoteView.onInit" data-open="smartNoteView.onShow" class="appearance">
 	<div data-role="header">
 		<div data-role="navbar">
-			<span>Smart Note</span>
-			<a data-click="smartNoteView.onCancel" data-role="button"  class="btnClear-grey" data-align="left"><img src="images/nav-back.svg" /></a>
+			<span data-align="left" class="helper smartNote-title">
+				<img src="images/smart-note.svg" class="icon-sm" /> Smart Note
+			</span>
+			<a data-click="smartNoteView.onCancel" data-role="button" class="btnClear-red" data-align="right">Cancel</a>
 		</div>
 	</div>
-	<form >
-		<ul data-role="listview" data-style="inset">
+	<form>
+		<ul data-role="listview" data-style="inset" id="smartNoteView-edit">
 			<li>
 				<input class="input-text-md" type="search" id="smartNoteView-title"  data-bind="value: title" placeholder="@Title ..."/>
 
 			</li>
 			<li>
-				<select id="smartNoteView-tags" multiple="multiple"  data-bind="value: tags" data-placeholder="@Tags..."> </select>
+				<select id="smartNoteView-tags" multiple="multiple"  data-bind="value: tags" data-placeholder="@Tags..."> 				</select>
 			</li>
-			<li>
+			<li class="hidden">
 				<label> Expires
 					<select id="smartNoteView-expires" data-bind="value: expiration">
 						<option value="0">Never</option>
@@ -2446,17 +2448,17 @@
 						<option value="7">In a Week</option>
 						<option value="30">In a Month</option>
 						<option value="365">In a Year</option>
-
 					</select>
 				</label>
 			</li>
 		</ul>
 	</form>
-	<div id="smartNoteView-contentToolbar"></div>
-	<textarea id="smartNoteView-content"></textarea>
-
+	<div style="margin: 0 0.5em">
+		<div id="smartNoteView-contentToolbar"></div>
+		<textarea id="smartNoteView-content"></textarea>
+	</div>
 	<div class="footer" data-role="footer" id="smartNoteModal-saveBtn">
-		<a class="btnSpan btnPrimary" data-role="button" data-click="smartNoteView.onSave">Save Note</a>
+		<a class="btnFull-modal btnPrimary" data-role="button" data-click="smartNoteView.onSave">Save Note</a>
 	</div>
 </div>
 
@@ -2663,8 +2665,6 @@
 			</a>
 		</div>
 	</div>
-
-
 	<div class="tempSearchBox">
 		<div class="appendSearch">
 			<span class="searchIcon"><img src="images/search.svg" /></span>
@@ -3075,7 +3075,7 @@
 				<span class="secondName"></span>
 			</h4>
 			<p data-bind="text: address"></p>
-			<a class="btnClear" data-role="button" style="margin-left: 0.75em;" data-click="placeView.doDirections">Directions</a>
+			<a class="btnClear" data-role="button" data-click="placeView.doDirections">Directions</a>
 		</div>
 	</div>
 	<div class="placeContent">
@@ -3110,8 +3110,12 @@
 
 <script type="text/x-kendo-template" id="placeViewMemories-template">
 
-		# var titleStr = "Untitled";
-			if (data.title === null) { titleStr = data.title; }
+		#   var titleStr = "";
+			if (data.title === null || data.title === '') {
+				titleStr = "Untitled"; }
+			else {
+				titleStr = data.title
+			}
 		  var tagString = "";
 		 	if (data.tagString !== undefined && data.tagString !== null) { tagString = data.tagString;}
 		  var sender = 'You';
