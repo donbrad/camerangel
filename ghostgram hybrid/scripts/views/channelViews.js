@@ -1901,7 +1901,7 @@ var channelView = {
         	var photoId = $target.attr('data-photoId');
 
             // todo Don - review photos source
-            if (message.data.photos !== undefined) {
+            if (message.data !== undefined && message.data.photos !== undefined) {
                 var photoList = message.data.photos;
 
                 for (var i=0; i< photoList.length; i++) {
