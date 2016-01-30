@@ -1888,16 +1888,22 @@ var channelView = {
 
         var $target = $(e.touch.initialTouch);
         var dataSource = channelView.messagesDS;
-        var messageUID = null;
-        var message = dataSource.getByUid(messageUID);
+        var messageId = null;
+
 
         if (e.touch.currentTarget !== undefined) {
             // Legacy IOS
-            messageUID =  $(e.touch.currentTarget).data("uid");
+            messageId =  $(e.touch.currentTarget).data("uid");
         } else {
             // New Android
-            messageUID =   e.touch.target[0].attributes['data-uid'].value;
+            messageId =   e.touch.target[0].attributes['data-uid'].value;
         }
+
+        if (messageId === undefined || messageId === null) {
+            mobileNotify("No message content to display...");
+        }
+
+        var message = dataSource.getByUid(messageId);
         // User has clicked in message area, so hide the keyboard
         // ux.hideKeyboard();
 
