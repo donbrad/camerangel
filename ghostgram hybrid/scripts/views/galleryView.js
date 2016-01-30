@@ -667,7 +667,7 @@ var modalChatPhotoView = {
                  photoObj.canCopy = true;
              }
          }
-         
+
         modalChatPhotoView.updatePhotoStatus(photo);
 
         $("#modalChatPhotoView").data("kendoMobileModalView").open();
