@@ -138,14 +138,14 @@ var placesModel = {
                         if (field === 'name') {
                             var newName = ux.returnUXPrimaryName(place.name, place.alias);
                             var placeTag = placesModel.findPlaceTag(place.uuid);
-                            //placeTag.alias = newName;
+
                             placeTag.name = newName;
                         }
                         if (field === 'alias') {
                             var newName = ux.returnUXPrimaryName(place.name, place.alias);
-                            var placeTag = contactModel.findContactTag(place.uuid);
-                            placeTag.alias = newName;
-                            //placeTag.alias = place.alias;
+                            var placeTag = placesModel.findPlaceTag(place.uuid);
+                            placeTag.alias = place.alias;
+                            
                         }
 
                         if (placeList !== undefined)
