@@ -650,27 +650,39 @@ var modalChatPhotoView = {
         var url = photo.thumbnailUrl;
         if (photo.imageUrl !== null)
             url = photo.imageUrl;
-        modalChatPhotoView._photoUrl = url;
-        modalChatPhotoView._activePhoto.set('photoUrl', url);
-        modalChatPhotoView._activePhoto.set('photoId', photo.photoId);
 
-         var photoObj = photoModel.findPhotoById(photo.photoId);
+         $.ajax({
+             url:url,
+             error:
+                 function(){
+                    mobileNotify("Sender has deleted this photo...");
+                 },
+             success:
+                 function(){
+                     modalChatPhotoView._photoUrl = url;
+                     modalChatPhotoView._activePhoto.set('photoUrl', url);
+                     modalChatPhotoView._activePhoto.set('photoId', photo.photoId);
 
-         modalChatPhotoView._userHasCopy = false;
-         $('#modalChatPhotoView-userhascopy').addClass('hidden');
-         if (photoObj !== undefined) {
-             // This user already has a copy of this photo
-             modalChatPhotoView._userHasCopy = true;
-             $('#modalChatPhotoView-userhascopy').removeClass('hidden');
+                     var photoObj = photoModel.findPhotoById(photo.photoId);
 
-             if (photoObj.canCopy === undefined) {
-                 photoObj.canCopy = true;
-             }
-         }
+                     modalChatPhotoView._userHasCopy = false;
+                     $('#modalChatPhotoView-userhascopy').addClass('hidden');
+                     if (photoObj !== undefined) {
+                         // This user already has a copy of this photo
+                         modalChatPhotoView._userHasCopy = true;
+                         $('#modalChatPhotoView-userhascopy').removeClass('hidden');
 
-        modalChatPhotoView.updatePhotoStatus(photo);
+                         if (photoObj.canCopy === undefined) {
+                             photoObj.canCopy = true;
+                         }
+                     }
 
-        $("#modalChatPhotoView").data("kendoMobileModalView").open();
+                     modalChatPhotoView.updatePhotoStatus(photo);
+
+                     $("#modalChatPhotoView").data("kendoMobileModalView").open();
+                 }
+         });
+
     },
 
     closeModal : function () {
