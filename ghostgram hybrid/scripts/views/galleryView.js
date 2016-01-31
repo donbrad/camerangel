@@ -746,20 +746,6 @@ var modalPhotoView = {
         modalPhotoView._activePhoto.set('tagsString', photo.tagsString);
 
 
-        /*    var tagString = '';
-
-       if (photo.tags !== undefined && photo.tags.length > 0) {
-            for (var i=0; i++; i< photo.tags.length) {
-                tagString += photo.tags[i] + ', ';
-            }
-
-            // Remove the trailing comma and space...
-            tagString.substring(0,tagString.length - 2);
-
-            modalPhotoView._activePhoto.set('tagsString', tagString);
-        }*/
-
-
         $("#modalPhotoView").data("kendoMobileModalView").open();
 
         // Confirm that we have a valid local copy of this photo

@@ -5,7 +5,7 @@
 
 var smartEvent = {
     _parseClass : 'smartEvent',
-    _ggClass : 'event',
+    _ggClass : 'Event',
     _version : 1,
 
     // date/place : -1 optional, 0 not used,  1  required
