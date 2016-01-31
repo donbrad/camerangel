@@ -4,7 +4,7 @@
 'use strict';
 
 var smartEvent = {
-    _parseClass : 'smartobject',
+    _parseClass : 'smartEvent',
     _ggClass : 'event',
     _version : 1,
 
@@ -133,7 +133,7 @@ var smartEvent = {
 
 
     fetch : function () {
-        var smartObjects = Parse.Object.extend("smartobject");
+        var smartObjects = Parse.Object.extend(smartEvent._parseClass);
         var query = new Parse.Query(smartObjects);
 
         query.find({

@@ -727,6 +727,7 @@ var modalPhotoView = {
         if (photo.imageUrl !== null)
             url = photo.imageUrl;
         modalPhotoView._photoUrl = url;
+
         modalPhotoView._activePhoto.set('photoId', photo.photoId);
         if (photo.title === null) {
             photo.title = modalPhotoView._dummyTitle;
