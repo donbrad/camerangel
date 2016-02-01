@@ -27,7 +27,6 @@
     "cordova-plugin-vibration",
     "cordova-plugin-whitelist",
     "org.apache.cordova.labs.keyboard",
-    "ch.ti8m.documenthandler@0.2.2",
     "com.ionic.keyboard@1.0.8",
     "com.ohh2ahh.plugins.appavailability@0.3.1",
     "com.telerik.plugins.nativepagetransitions@0.6.0",
