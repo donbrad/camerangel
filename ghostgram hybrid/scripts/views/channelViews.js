@@ -929,7 +929,6 @@ var channelView = {
             filter: "li",
             enableSwipe: true,
             tap: channelView.tapChannel,
-            /*swipe: channelView.swipeChannel,*/
             hold: channelView.holdChannel
         });
 
@@ -1889,9 +1888,22 @@ var channelView = {
 
         var $target = $(e.touch.initialTouch);
         var dataSource = channelView.messagesDS;
-        var messageUID = $(e.touch.currentTarget).data("uid");
-        var message = dataSource.getByUid(messageUID);
+        var messageId = null;
 
+
+        if (e.touch.currentTarget !== undefined) {
+            // Legacy IOS
+            messageId =  $(e.touch.currentTarget).data("uid");
+        } else {
+            // New Android
+            messageId =   e.touch.target[0].attributes['data-uid'].value;
+        }
+
+        if (messageId === undefined || messageId === null) {
+            mobileNotify("No message content to display...");
+        }
+
+        var message = dataSource.getByUid(messageId);
         // User has clicked in message area, so hide the keyboard
         // ux.hideKeyboard();
 
@@ -1901,7 +1913,7 @@ var channelView = {
         	var photoId = $target.attr('data-photoId');
 
             // todo Don - review photos source
-            if (message.data.photos !== undefined) {
+            if (message.data !== undefined && message.data.photos !== undefined) {
                 var photoList = message.data.photos;
 
                 for (var i=0; i< photoList.length; i++) {

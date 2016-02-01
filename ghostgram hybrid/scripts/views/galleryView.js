@@ -650,27 +650,39 @@ var modalChatPhotoView = {
         var url = photo.thumbnailUrl;
         if (photo.imageUrl !== null)
             url = photo.imageUrl;
-        modalChatPhotoView._photoUrl = url;
-        modalChatPhotoView._activePhoto.set('photoUrl', url);
-        modalChatPhotoView._activePhoto.set('photoId', photo.photoId);
 
-         var photo = photoModel.findPhotoById(photo.photoId);
-         modalChatPhotoView._userHasCopy = false;
-         $('#modalChatPhotoView-userhascopy').addClass('hidden');
-         $('#modalChatPhotoView-userhascopy').addClass('hidden');
-         if (photo !== undefined) {
-             // This user already has a copy of this photo
-             modalChatPhotoView._userHasCopy = true;
-             $('#modalChatPhotoView-userhascopy').removeClass('hidden');
-         }
+         $.ajax({
+             url:url,
+             error:
+                 function(){
+                    mobileNotify("Sender has deleted this photo...");
+                 },
+             success:
+                 function(){
+                     modalChatPhotoView._photoUrl = url;
+                     modalChatPhotoView._activePhoto.set('photoUrl', url);
+                     modalChatPhotoView._activePhoto.set('photoId', photo.photoId);
 
-        if (photo.canCopy === undefined) {
-            photo.canCopy = true;
-        }
+                     var photoObj = photoModel.findPhotoById(photo.photoId);
 
-        modalChatPhotoView.updatePhotoStatus(photo);
+                     modalChatPhotoView._userHasCopy = false;
+                     $('#modalChatPhotoView-userhascopy').addClass('hidden');
+                     if (photoObj !== undefined) {
+                         // This user already has a copy of this photo
+                         modalChatPhotoView._userHasCopy = true;
+                         $('#modalChatPhotoView-userhascopy').removeClass('hidden');
 
-        $("#modalChatPhotoView").data("kendoMobileModalView").open();
+                         if (photoObj.canCopy === undefined) {
+                             photoObj.canCopy = true;
+                         }
+                     }
+
+                     modalChatPhotoView.updatePhotoStatus(photo);
+
+                     $("#modalChatPhotoView").data("kendoMobileModalView").open();
+                 }
+         });
+
     },
 
     closeModal : function () {
@@ -715,6 +727,7 @@ var modalPhotoView = {
         if (photo.imageUrl !== null)
             url = photo.imageUrl;
         modalPhotoView._photoUrl = url;
+
         modalPhotoView._activePhoto.set('photoId', photo.photoId);
         if (photo.title === null) {
             photo.title = modalPhotoView._dummyTitle;
@@ -731,20 +744,6 @@ var modalPhotoView = {
             photo.tagsString = modalPhotoView._dummyTagsString;
         }
         modalPhotoView._activePhoto.set('tagsString', photo.tagsString);
-
-
-        /*    var tagString = '';
-
-       if (photo.tags !== undefined && photo.tags.length > 0) {
-            for (var i=0; i++; i< photo.tags.length) {
-                tagString += photo.tags[i] + ', ';
-            }
-
-            // Remove the trailing comma and space...
-            tagString.substring(0,tagString.length - 2);
-
-            modalPhotoView._activePhoto.set('tagsString', tagString);
-        }*/
 
 
         $("#modalPhotoView").data("kendoMobileModalView").open();

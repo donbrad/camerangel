@@ -57,6 +57,7 @@ var tagModel = {
         tagParse.set('version', noteModel._version);
         tagParse.set('uuid', tag.uuid);
         tagParse.set('name', tag.name);
+        tagParse.set('tagName', tag.tagName);
         tagParse.set('type', tag.type);
         tagParse.set('alias', tag.alias);
         tagParse.set('title', tag.title);
@@ -88,6 +89,7 @@ var tagModel = {
 
         tag.uuid = uuid.v4();
         tag.name = null;
+        tag.tagName = null;
         tag.alias = null;
         tag.type = tagModel._user;
         tag.objectUUID = null;
