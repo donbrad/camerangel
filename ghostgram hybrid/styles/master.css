@@ -682,9 +682,9 @@ form p {
 }
 .emptyState {
   position: absolute;
-  width: 99%;
+  width: 100%;
   text-align: center;
-  padding-top: 45%;
+  padding-top: 25%;
   opacity: 0.6;
   margin-left: -1em;
 }
@@ -692,6 +692,11 @@ form p {
   width: 6rem;
   margin-left: auto;
   margin-right: auto;
+}
+@media only screen and (max-width: 320px) {
+  .emptyState {
+    padding-top: 45%;
+  }
 }
 .noResults {
   position: absolute;
@@ -3284,7 +3289,7 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   border-top: 1px solid #E0E0E0;
 }
 #chatList-place-icon {
-  height: 14px;
+  height: 0.75em;
 }
 .placeChat-chatIcon {
   margin-left: 0.5em;
@@ -3294,6 +3299,15 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 }
 #placeView > div.km-header > div.km-widget.km-navbar > div.km-view-title > span {
   width: 60%;
+}
+.placeType-list {
+  border-radius: 3px;
+  padding: 3px;
+  color: #979797;
+}
+.placeType-list img {
+  height: 0.75em;
+  vertical-align: baseline;
 }
 /* ghost mail */
 .emailOptions {

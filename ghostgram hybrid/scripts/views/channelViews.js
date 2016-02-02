@@ -65,13 +65,13 @@ var channelsView = {
 						$(selection).velocity({translateX:"-45%"},{duration: "fast"}).addClass("chat-active");
                     // if larger screen and private chat
                     } else if ($(selection).hasClass("private")){
-                        $(selection).velocity({translateX:"-40%"},{duration: "fast"}).addClass("chat-active");
+                        $(selection).velocity({translateX:"-45%"},{duration: "fast"}).addClass("chat-active");
                     // if larger screen and owner
                 	} else if($(selection).hasClass("owner")){
                 		$(selection).velocity({translateX:"-60%"},{duration: "fast"}).addClass("chat-active");
                     // if larger screen
                     } else {
-                        $(selection).velocity({translateX:"-40%"},{duration: "fast"}).addClass("chat-active");
+                        $(selection).velocity({translateX:"-45%"},{duration: "fast"}).addClass("chat-active");
                     }
 
 
