@@ -1235,6 +1235,7 @@ var placeView = {
     _lng: null,
     _returnView : 'places',
     _returnModal: null,
+    _showDetails: false,
     _memoriesDS : new kendo.data.DataSource({
         sort: {
             field: "date",
@@ -1368,8 +1369,29 @@ var placeView = {
         mobileNotify("Looking up Memories...");
         placeView.buildMemoriesDS();
 
+        if(!placeView._showDetails){
+            $(".placeCard").css("display", "block");
+            $("#placeView-showDetails").addClass("hidden");
+        } else {
+            $(".placeCard").css("display", "none");
+            $("#placeView-showDetails").removeClass("hidden");
+        }
 
     },
+
+    togglePlaceDetails: function(){
+        if(placeView._showDetails){
+            $(".placeCard").velocity("slideDown");
+            $("#placeView-showDetails").addClass("hidden");
+            placeView._showDetails = false;
+
+        } else {
+            $(".placeCard").velocity("slideUp");
+            $("#placeView-showDetails").removeClass("hidden");
+            placeView._showDetails = true;
+        }
+    },
+
 
     onHide : function (e) {
         //_preventDefault(e);  Cant use here -- prevents navigation

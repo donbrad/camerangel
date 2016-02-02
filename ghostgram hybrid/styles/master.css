@@ -296,6 +296,21 @@
 #smartNoteView-edit > li:nth-child(1) {
   padding-top: 0;
 }
+#smartNoteView-edit > li:nth-child(2) > div > div > input {
+  height: 2em;
+}
+#smartNoteView-edit .k-state-hover:hover {
+  background: #E0E0E0;
+}
+#smartNoteView-expires {
+  width: 40%;
+}
+.redactor-toolbar.redactor-toolbar-external {
+  border: none;
+}
+#smartNoteView-expires {
+  border-bottom: 1px solid #E0E0E0;
+}
 .redactor-editor {
   padding: 0.5em !important;
   border: none !important;
@@ -719,18 +734,23 @@ form p {
 }
 .primary-100 {
   background: #2E93FD !important;
+  color: #fff;
 }
 .primary-200 {
   background: #6CADF3 !important;
+  color: #fff;
 }
 .secondary-100 {
   background: #FFB74D !important;
+  color: #fff;
 }
 .secondary-200 {
   background: #FADDB0 !important;
+  color: #fff;
 }
 .warning {
   background: #E57373 !important;
+  color: #fff;
 }
 .highlight-primary-100 {
   background: #2E93FD;
@@ -5761,6 +5781,7 @@ html .km-pane-wrapper .k-header {
   padding-right: 5%;
   border-bottom: 1px solid #E0E0E0;
   margin-bottom: 1em;
+  display: none;
 }
 #placeView > div.footerMenu.km-footer {
   display: none;
