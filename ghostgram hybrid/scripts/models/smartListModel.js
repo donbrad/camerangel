@@ -8,7 +8,7 @@
 
 var smartList = {
     _parseClass : 'smartList',
-    _ggClass : 'list',
+    _ggClass : 'List',
     _version : 1,
 
     init : function () {

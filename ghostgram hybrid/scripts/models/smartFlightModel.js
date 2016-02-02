@@ -6,5 +6,11 @@
 
 var smartFlight = {
 
+    _parseClass : 'smartFlight',
+    _ggClass : 'Flight',
+    _version : 1,
 
+    init : function (e) {
+
+    }
 };
