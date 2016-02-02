@@ -827,6 +827,7 @@ var channelView = {
     _tagEnd: null,
     _tagRange: null,
     _firstSpace: false,
+    _editorActive: false,
     _returnview: null,
 
     membersDS: new kendo.data.DataSource({
@@ -939,30 +940,38 @@ var channelView = {
     },
 
     openEditor : function () {
-           $('#messageTextArea').redactor({
-            minHeight: 36,
-            maxHeight: 360,
-            focus: true,
-            placeholder: 'Message....',
-           /* callbacks: {
-                focus: function(e)
-                {
-                    $('#messageTextArea').focus();
-                }
-            },*/
-            buttons: [ 'bold', 'italic', 'lists','horizontalrule'],
-            plugins: ['source'],
-            toolbarExternal: '#messageComposeToolbar'
-        });
+        if (channelView._editorActive === false) {
 
+            channelView._editorActive = true;
+
+            $('#messageTextArea').redactor({
+                minHeight: 36,
+                maxHeight: 360,
+                focus: true,
+                placeholder: 'Message....',
+                /* callbacks: {
+                 focus: function(e)
+                 {
+                 $('#messageTextArea').focus();
+                 }
+                 },*/
+                buttons: ['bold', 'italic', 'lists', 'horizontalrule'],
+                plugins: ['source'],
+                toolbarExternal: '#messageComposeToolbar'
+            });
+        }
 
     },
 
 
     closeEditor : function () {
 
-        $('#messageTextArea').redactor('core.destroy');
+        if (channelView._editorActive) {
 
+            channelView._editorActive = false;
+            $('#messageTextArea').redactor('core.destroy');
+        }
+        
         $("#messageComposeToolbar").addClass('hidden');
 
     },
