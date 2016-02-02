@@ -971,7 +971,7 @@ var channelView = {
             channelView._editorActive = false;
             $('#messageTextArea').redactor('core.destroy');
         }
-        
+
         $("#messageComposeToolbar").addClass('hidden');
 
     },
