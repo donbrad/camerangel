@@ -429,6 +429,8 @@ var photoModel = {
 
         //var photoId = uuid.v4();
 
+        var photoId = photoObj.photoId;
+
         var filename = photoId.replace(/-/g,'');
 
         var channelId = photoObj.channelId;
@@ -456,9 +458,15 @@ var photoModel = {
         photo.set('placeId', photoObj.placeId);
         photo.set('placeName', photoObj.placeName);
         photo.set('address', photoObj.address);
+        photo.set('lat', photoObj.lat);
+        photo.set('lng', photoObj.lng);
         photo.set('offerId', photoObj.offerId);
 
-        devicePhoto.convertImgToDataURL(photoObj.thumbnailUrl, function (dataUrl) {
+        photo.set('thumbnailUrl',photoObj.thumbnailUrl);
+        photo.set('imageUrl',photoObj.imageUrl);
+
+
+        /*devicePhoto.convertImgToDataURL(photoObj.thumbnailUrl, function (dataUrl) {
             var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
             var parseFile = new Parse.File("thumbnail_" + filename + ".jpg", {'base64': imageBase64});
             parseFile.save().then(function () {
@@ -474,7 +482,7 @@ var photoModel = {
             });
 
         });
-
+*/
     },
 
     addOfferImage : function (photoId, imageUrl) {
