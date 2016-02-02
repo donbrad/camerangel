@@ -827,6 +827,7 @@ var channelView = {
     _tagEnd: null,
     _tagRange: null,
     _firstSpace: false,
+    _editorActive: false,
     _returnview: null,
 
     membersDS: new kendo.data.DataSource({
@@ -929,7 +930,6 @@ var channelView = {
             filter: "li",
             enableSwipe: true,
             tap: channelView.tapChannel,
-            /*swipe: channelView.swipeChannel,*/
             hold: channelView.holdChannel
         });
 
@@ -940,29 +940,37 @@ var channelView = {
     },
 
     openEditor : function () {
-           $('#messageTextArea').redactor({
-            minHeight: 36,
-            maxHeight: 360,
-            focus: true,
-            placeholder: 'Message....',
-           /* callbacks: {
-                focus: function(e)
-                {
-                    $('#messageTextArea').focus();
-                }
-            },*/
-            buttons: [ 'bold', 'italic', 'lists','horizontalrule'],
-            plugins: ['source'],
-            toolbarExternal: '#messageComposeToolbar'
-        });
+        if (channelView._editorActive === false) {
 
+            channelView._editorActive = true;
+
+            $('#messageTextArea').redactor({
+                minHeight: 36,
+                maxHeight: 360,
+                focus: true,
+                placeholder: 'Message....',
+                /* callbacks: {
+                 focus: function(e)
+                 {
+                 $('#messageTextArea').focus();
+                 }
+                 },*/
+                buttons: ['bold', 'italic', 'lists', 'horizontalrule'],
+                plugins: ['source'],
+                toolbarExternal: '#messageComposeToolbar'
+            });
+        }
 
     },
 
 
     closeEditor : function () {
 
-        $('#messageTextArea').redactor('core.destroy');
+        if (channelView._editorActive) {
+
+            channelView._editorActive = false;
+            $('#messageTextArea').redactor('core.destroy');
+        }
 
         $("#messageComposeToolbar").addClass('hidden');
 
@@ -1889,9 +1897,22 @@ var channelView = {
 
         var $target = $(e.touch.initialTouch);
         var dataSource = channelView.messagesDS;
-        var messageUID = $(e.touch.currentTarget).data("uid");
-        var message = dataSource.getByUid(messageUID);
+        var messageId = null;
 
+
+        if (e.touch.currentTarget !== undefined) {
+            // Legacy IOS
+            messageId =  $(e.touch.currentTarget).data("uid");
+        } else {
+            // New Android
+            messageId =   e.touch.target[0].attributes['data-uid'].value;
+        }
+
+        if (messageId === undefined || messageId === null) {
+            mobileNotify("No message content to display...");
+        }
+
+        var message = dataSource.getByUid(messageId);
         // User has clicked in message area, so hide the keyboard
         // ux.hideKeyboard();
 
@@ -1901,7 +1922,7 @@ var channelView = {
         	var photoId = $target.attr('data-photoId');
 
             // todo Don - review photos source
-            if (message.data.photos !== undefined) {
+            if (message.data !== undefined && message.data.photos !== undefined) {
                 var photoList = message.data.photos;
 
                 for (var i=0; i< photoList.length; i++) {

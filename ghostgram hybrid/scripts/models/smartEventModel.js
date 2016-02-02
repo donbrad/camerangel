@@ -4,8 +4,8 @@
 'use strict';
 
 var smartEvent = {
-    _parseClass : 'smartobject',
-    _ggClass : 'event',
+    _parseClass : 'smartEvent',
+    _ggClass : 'Event',
     _version : 1,
 
     // date/place : -1 optional, 0 not used,  1  required
@@ -133,7 +133,7 @@ var smartEvent = {
 
 
     fetch : function () {
-        var smartObjects = Parse.Object.extend("smartobject");
+        var smartObjects = Parse.Object.extend(smartEvent._parseClass);
         var query = new Parse.Query(smartObjects);
 
         query.find({
@@ -366,8 +366,8 @@ var smartEvent = {
         }
 
         smartOb.setACL(userModel.parseACL);
-        smartObj.set('version', smartEvent._version);
-        smartObj.set('ggType', smartEvent._ggClass);
+        smartOb.set('version', smartEvent._version);
+        smartOb.set('ggType', smartEvent._ggClass);
         smartOb.set('uuid', objectIn.uuid);
         smartOb.set('senderUUID', objectIn.senderUUID);
         smartOb.set('senderName', objectIn.senderName);

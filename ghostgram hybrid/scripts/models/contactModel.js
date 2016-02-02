@@ -100,7 +100,9 @@ var contactModel = {
                     case "add" :
                         var contact = e.items[0];
                         // add to contactlist and contacttags
-                        contactModel.contactListDS.add(contact);
+                        var contactList = contactModel.findContactList(contact.uuid);
+                        if (contactList !== undefined)
+                            contactModel.contactListDS.add(contact);
                         var tag = {
                             type: 'contact',
                             tagname: ux.returnUXPrimaryName(contact.name, contact.alias),

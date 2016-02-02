@@ -138,18 +138,19 @@ var placesModel = {
                         if (field === 'name') {
                             var newName = ux.returnUXPrimaryName(place.name, place.alias);
                             var placeTag = placesModel.findPlaceTag(place.uuid);
-                            //placeTag.alias = newName;
+
                             placeTag.name = newName;
                         }
                         if (field === 'alias') {
                             var newName = ux.returnUXPrimaryName(place.name, place.alias);
-                            var placeTag = contactModel.findContactTag(place.uuid);
-                            placeTag.alias = newName;
-                            //placeTag.alias = place.alias;
+                            var placeTag = placesModel.findPlaceTag(place.uuid);
+                            placeTag.alias = place.alias;
+
                         }
 
                         if (placeList !== undefined)
-                            placeList[field] = place [field];
+                            //placeList[field] = place [field];
+                            placeList.set(field, place[field]);
 
                         break;
 
@@ -160,7 +161,9 @@ var placesModel = {
                     case "add" :
                         var place = e.items[0];
                         // add to contactlist and contacttags
-                        placesModel.placeListDS.add(place);
+                        var placeList = placesModel.findPlaceListUUID(place.uuid);
+                        if (placeList === undefined)
+                            placesModel.placeListDS.add(place);
                         var tag = {
                             type: 'place',
                             tagname: ux.returnUXPrimaryName(place.name, place.alias),

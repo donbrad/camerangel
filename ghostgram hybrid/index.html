@@ -75,6 +75,7 @@
 	<script src="scripts/models/notificationModel.js"></script>
 	<script src="scripts/models/photoModel.js"></script>
 	<script src="scripts/models/placeModel.js"></script>
+	<script src="scripts/models/smartListModel.js"></script>
 	<script src="scripts/models/smartEventModel.js"></script>
 	<script src="scripts/models/tagModel.js"></script>
 	<script src="scripts/models/userModel.js"></script>
@@ -816,8 +817,8 @@
 			</a>
 		</p>
 		<p>
-			<a style="float: left;" data-role="button" class="btnClear" data-click="userStatusView.doSignOut" >Sign Out</a>
-			<a style="float: right;"data-role="button" class="btnClear" data-click="userStatusView.gotoSettings" >Settings</a>
+
+
 		</p>
 		<div style="clear: both;"></div>
 	</div>
@@ -849,6 +850,13 @@
 				<a class="btnClear" data-role="button" data-click="userStatusView.openCheckIn">
 					<img src="images/icon-checkin-active.svg" class="icon-sm" /> Check In
 				</a>
+			</li>
+			<li>
+				<a data-role="button" class="btnClear-grey" data-click="userStatusView.gotoSettings" >
+					<img src="images/nav-gear.svg" class="icon-sm"> Settings </a>
+			</li>
+			<li>
+				<a data-role="button" class="btnClear-grey" data-click="userStatusView.doSignOut"> Sign Out</a>
 			</li>
 		</ul>
 	</div>
@@ -2422,44 +2430,67 @@
 </div>
 
 <!-- smartObject Action modal -->
-<div data-role="modalview" id="smartNoteModal" style="width: 100%;  height: 100%; display: none;"  data-model="smartNoteView._activeObject" data-init="smartNoteView.onInit" data-open="smartNoteView.onShow" class="appearance">
+<div data-role="modalview" id="smartNoteModal" style="width: 95%;  height: 95%; display: none;"  data-model="smartNoteView._activeObject" data-init="smartNoteView.onInit" data-open="smartNoteView.onShow" class="appearance">
 	<div data-role="header">
 		<div data-role="navbar">
-			<span>Smart Note</span>
-			<a data-click="smartNoteView.onCancel" data-role="button"  class="btnClear-grey" data-align="left"><img src="images/nav-back.svg" /></a>
+			<span data-align="left" class="helper smartNote-title">
+				<img src="images/smart-note.svg" class="icon-sm" /> Smart Note
+			</span>
+			<a data-click="smartNoteView.onCancel" data-role="button" class="btnClear-red" data-align="right">Cancel</a>
 		</div>
 	</div>
-	<form >
-		<ul data-role="listview" data-style="inset">
+	<form>
+		<ul data-role="listview" data-style="inset" id="smartNoteView-edit">
 			<li>
 				<input class="input-text-md" type="search" id="smartNoteView-title"  data-bind="value: title" placeholder="@Title ..."/>
 
 			</li>
 			<li>
-				<select id="smartNoteView-tags" multiple="multiple"  data-bind="value: tags" data-placeholder="@Tags..."> </select>
+				<select id="smartNoteView-tags" multiple="multiple"  data-bind="value: tags" data-placeholder="@Tags..."> 				</select>
 			</li>
-			<li>
-				<label> Expires
+			<li class="">
+				<label> <img src="images/icon-expired.svg" class="icon-sm" /> Expires
 					<select id="smartNoteView-expires" data-bind="value: expiration">
 						<option value="0">Never</option>
 						<option value="1">Tomorrow</option>
 						<option value="7">In a Week</option>
 						<option value="30">In a Month</option>
 						<option value="365">In a Year</option>
-
 					</select>
 				</label>
 			</li>
 		</ul>
 	</form>
-	<div id="smartNoteView-contentToolbar"></div>
-	<textarea id="smartNoteView-content"></textarea>
-
+	<div style="margin: 0 0.5em">
+		<div id="smartNoteView-contentToolbar"></div>
+		<textarea id="smartNoteView-content"></textarea>
+	</div>
 	<div class="footer" data-role="footer" id="smartNoteModal-saveBtn">
-		<a class="btnSpan btnPrimary" data-role="button" data-click="smartNoteView.onSave">Save Note</a>
+		<a class="btnFull-modal btnPrimary" data-role="button" data-click="smartNoteView.onSave">Save Note</a>
 	</div>
 </div>
+<script id="smartNoteView-itemtmpl" type="text/x-kendo-template">
+	#
+		var name = data.name;
+		var alias = data.alias;
+		var newName = ux.returnUXPrimaryName(name, alias);
+	#
+	<div>
+		<img class="icon-sm" src="#:data.icon#"/>
+		<span>#= newName #</span>
+	</div>
+</script>
 
+<script id="smartNoteView-tagtmpl" type="text/x-kendo-template">
+	# var name = data.name;
+	var alias = data.alias;
+	var newName = ux.returnUXPrimaryName(name, alias);
+	#
+	<div class="btnClear-sm">
+			<img class="icon-sm" src="#:data.icon#"/>
+			#:data.tagname#
+	</div>
+</script>
 
 
 <!-- smartObject Action modal -->
@@ -2467,7 +2498,9 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>Smart Event</span>
-			<a data-click="smartEventView.onCancel" data-role="button"  class="btnClear-grey" data-align="left"><img src="images/nav-back.svg" /></a>
+			<a data-click="smartEventView.onCancel" data-role="button" class="btnClear-grey" data-align="left">
+				<img src="images/nav-back.svg" />
+			</a>
 		</div>
 	</div>
 	<div id="eventBanner">
@@ -2663,8 +2696,6 @@
 			</a>
 		</div>
 	</div>
-
-
 	<div class="tempSearchBox">
 		<div class="appendSearch">
 			<span class="searchIcon"><img src="images/search.svg" /></span>
@@ -2777,11 +2808,13 @@
 				<label>Title</label>
 				<input type="search" class="input-text-md" data-bind="value: title" maxlength="48" placeholder="Title..."/>
 
+				<label>Tags</label>
+				<textarea data-bind="value: tagsString" type="text" col="80" row="2" maxlength="60" placeholder="People, event, location..."></textarea>
+
 				<label>Description</label>
 				<textarea data-bind="value: description" type="text" col="80" row="2" maxlength="60"></textarea>
 
-				<label>Tags</label>
-				<textarea data-bind="value: tagsString" type="text" col="80" row="2" maxlength="60" placeholder="People, event, location..."></textarea>
+
 			</div>
 
 		</div>
@@ -3075,16 +3108,23 @@
 				<span class="secondName"></span>
 			</h4>
 			<p data-bind="text: address"></p>
-			<a class="btnClear" data-role="button" style="margin-left: 0.75em;" data-click="placeView.doDirections">Directions</a>
+			<a class="btnClear" data-role="button" data-click="placeView.doDirections">Directions</a>
+			<a class="btnClear-grey right" data-role="button" data-click="placeView.togglePlaceDetails">Hide Info</a>
 		</div>
 	</div>
 	<div class="placeContent">
-		<p class="helper hidden" style="padding-top: 20px;">
-			<img src="images/icon-memories.svg" class="icon" /> No Memories here yet
+		<p class="helper" style="padding-top: 0.5em;">
+			<span class="hidden">
+				<img src="images/icon-memories.svg" class="icon" /> No Memories here yet
+			</span>
+			<span>
+				<img src="images/icon-memories.svg" class="icon" /> Memories
+			</span>
+			<a class="right btnClear-grey" data-role="button" data-click="placeView.togglePlaceDetails" id="placeView-showDetails">
+				View Address
+			</a>
 		</p>
-		<p>
-			<img src="images/icon-memories.svg" class="icon" /> Memories
-		</p>
+		<div class="clearfix"></div>
 		<ul id="placeView-listview"></ul>
 
 	</div>
@@ -3110,8 +3150,12 @@
 
 <script type="text/x-kendo-template" id="placeViewMemories-template">
 
-		# var title = "Untitled";
-			if (data.title === null) { title = data.title; }
+		#   var titleStr = "";
+			if (data.title === null || data.title === '') {
+				titleStr = "Untitled"; }
+			else {
+				titleStr = data.title
+			}
 		  var tagString = "";
 		 	if (data.tagString !== undefined && data.tagString !== null) { tagString = data.tagString;}
 		  var sender = 'You';
@@ -3122,10 +3166,10 @@
 		<div class="note">
 			<h3 class="textClamp">
 				<img src="images/smart-note-inline.svg" class="icon-md" />
-				<span>#: data.title #</span>
+				<span>#: titleStr #</span>
 				<span class="helper right" style="font-size: 12px">#:dateString#</span>
 			</h3>
-			<p>#: data.tagString #</p>
+			<p>#: tagString #</p>
 			<p style="margin-top: 0.5em; width: 100%;">#= data.content #</p>
 		</div>
 		#}#
@@ -3133,10 +3177,10 @@
 		<div class="photo">
 			<h3>
 				<img src="images/smart-photo-inline.svg" class="icon-md" />
-				<span>#: data.title # </span>
+				<span>#: titleStr # </span>
 				<span class="helper right" style="font-size: 12px">#:dateString#</span>
 			</h3>
-			<p> #: data.tagString #</p>
+			<p> #: tagString #</p>
 			<div class="smartPhoto">
 				<img src="#= data.thumbnailUrl #" />
 			</div>
@@ -3173,7 +3217,7 @@
 					<p class="caption">
 						Your profile photo is visible <b>ONLY</b> to your contacts.
 					</p>
-					<a class="btnClear" data-role="button" href="#profilePhotoEdit" >Update Profile Photo</a>
+					<!--<a class="btnClear" data-role="button" href="#profilePhotoEdit" >Update Profile Photo</a>-->
 				</div>
 			</div>
 		</div>
