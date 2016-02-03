@@ -658,8 +658,8 @@ var channelModel = {
         if (options !== undefined && options !== null) {
             if (options.chatType === 'Place') {
                 channel.set('isPlace', true);
-                channel.set('placeUUID', options.chatData.placeUUID);
-                channel.set('placeName', options.chatData.placeName);
+                channel.set('placeUUID', options.chatData.uuid);
+                channel.set('placeName', options.chatData.name);
                 placesModel.addSharedPlace(options.chatData, channelId);
             }
         }
@@ -674,7 +674,7 @@ var channelModel = {
         channel.set("ownerName", ownerName);
         channel.set("isOwner", false);
         channel.set('isPrivate', false);
-        channel.set('isDeleted', false);
+        channel.set('isDeleted', isDeleted);
         channel.set('isMuted', false);
         channel.set('category', 'Group');
         channel.set('isEvent', false);
