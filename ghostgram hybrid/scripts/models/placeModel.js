@@ -8,6 +8,10 @@
 
 var placesModel = {
 
+    _version: 1,
+    _parseClass : 'places',
+    _ggClass : 'Place',
+
     locatorActive : false,
     _radius : 500,
 
@@ -67,7 +71,7 @@ var placesModel = {
     },
 
     fetch : function () {
-        var PlaceModel = Parse.Object.extend("places");
+        var PlaceModel = Parse.Object.extend(placesModel._parseClass);
         var query = new Parse.Query(PlaceModel);
 
         query.limit(1000);
@@ -78,6 +82,17 @@ var placesModel = {
                 for (var i = 0; i < collection.length; i++) {
                     var parseModel = collection[i];
                     var dirty = false;
+
+                    if (parseModel.get('ggType') === undefined) {
+                        parseModel.set('ggType', placesModel._ggClass);
+                        dirty = true;
+                    }
+
+                    if (parseModel.get('version') === undefined) {
+                        parseModel.set('version', placesModel._version);
+                        dirty = true;
+                    }
+
                     if (parseModel.get('isShared') === undefined) {
                         parseModel.set('isShared', false);
                         dirty = true;
@@ -340,7 +355,7 @@ var placesModel = {
             return;
         }
 
-        var Place = Parse.Object.extend("places");
+        var Place = Parse.Object.extend(placesModel._parseClass);
         var placeParse = new Place();
 
         var newPlace = placesModel.newPlace();
@@ -350,6 +365,8 @@ var placesModel = {
 
         placeParse.setACL(userModel.parseACL);
         placeParse.set('uuid', place.uuid);
+        placeParse.set('ggType', placesModel._ggClass);
+        placeParse.set('version', placesModel._version);
         placeParse.set('category', place.category);
         var name =  place.name.toString();
         placeParse.set('name', name);
@@ -409,7 +426,7 @@ var placesModel = {
     },
 
     addPlace: function (place, createChatFlag,  callback) {
-        var Place = Parse.Object.extend("places");
+        var Place = Parse.Object.extend(placesModel._parseClass);
         var placeParse = new Place();
 
         var newPlace = placesModel.newPlace();
@@ -427,6 +444,8 @@ var placesModel = {
 
         placeParse.setACL(userModel.parseACL);
         placeParse.set('uuid', guid);
+        placeParse.set('ggType', placesModel._ggClass);
+        placeParse.set('version', placesModel._version);
         placeParse.set('category', place.category);
         var name =  place.name.toString();
         placeParse.set('name', name);
