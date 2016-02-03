@@ -306,11 +306,12 @@ var contactsView = {
         var email = contact.email, inviteSent = contact.inviteSent;
 
         if (inviteSent === undefined || inviteSent === false) {
-            contactSendEmailInvite(email);
-            contactModel.currentContact.set('inviteSent', true);
+            mobileNotify("Sorry, you can't invite new users to Ghostgrams Alpha");
+
+            /*contactModel.currentContact.set('inviteSent', true);
             contactModel.currentContact.set('lastInvite', ggTime.currentTime());
-            //  updateParseObject('contacts', 'uuid', uuid, 'inviteSent', true );
-            //  updateParseObject('contacts', 'uuid', uuid, 'lastInvite', ggTime.currentTime() );
+            updateParseObject('contacts', 'uuid', uuid, 'inviteSent', true );
+            updateParseObject('contacts', 'uuid', uuid, 'lastInvite', ggTime.currentTime() );*/
         } else {
             mobileNotify(contact.name + "has already been invited");
         }
@@ -827,8 +828,8 @@ var addContactView = {
             } else {
                 // No - just use the email address the our user selected
                 contact.set("email", email);
-                if (emailValid)
-                    contactSendEmailInvite(email);
+             /*   if (emailValid)
+                    contactSendEmailInvite(email);*/
                 contact.set("phoneVerified", false);
                 contact.set('publicKey',  null);
                 contact.set("contactUUID", null);
