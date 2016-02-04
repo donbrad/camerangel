@@ -1331,6 +1331,7 @@ var placeView = {
 
         if (zipcode !== undefined && zipcode !== null) {
             var zipList = photoModel.findPhotosByAddressString(zipcode);
+            
             if (zipList !== undefined && zipList.length > 0) {
 
                 for (var z = 0; z < zipList.length; z++) {
