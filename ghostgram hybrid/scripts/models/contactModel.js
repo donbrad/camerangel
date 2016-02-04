@@ -780,7 +780,7 @@ var contactModel = {
                             var contact = contactModel.findContactList(userId);
                             contact.set('statusMessage', user.get('statusMessage'));
                             contact.set('currentPlace', user.get('currentPlace'));
-                            contact.set('currentPlaceId', user.get('currentPlaceId'));
+                            contact.set('currentPlaceUUID', user.get('currentPlace  UUID'));
                             contact.set('isAvailable', user.get('isAvailable'));
                             contact.set('lastUpdate', ggTime.currentTimeInSeconds());
                         }

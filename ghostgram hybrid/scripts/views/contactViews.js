@@ -1258,7 +1258,7 @@ var contactActionView = {
                         contactActionView._activeContact.set('contactUUID', thisContact.contactUUID);
                         contactActionView._activeContact.set('statusMessage', user.get('statusMessage'));
                         contactActionView._activeContact.set('currentPlace', user.get('currentPlace'));
-                        contactActionView._activeContact.set('currentPlaceId', user.get('currentPlaceId'));
+                        contactActionView._activeContact.set('currentPlaceUUID', user.get('currentPlaceUUID'));
                         contactActionView._activeContact.set('isAvailable', contactIsAvailable);
                         // set available
                         if (contactIsAvailable) {
@@ -1270,7 +1270,7 @@ var contactActionView = {
                         contactList.set('statusMessage', user.get('statusMessage'));
                         var contactPlace = user.get('currentPlace');
                         contactList.set('currentPlace', contactPlace);
-                        contactList.set('currentPlaceId', user.get('currentPlaceId'));
+                        contactList.set('currentPlaceUUID', user.get('currentPlaceUUID'));
                         contactList.set('isAvailable', contactIsAvailable);
 
                         // set current place
@@ -1283,7 +1283,7 @@ var contactActionView = {
                 contactActionView._activeContact.set('contactUUID', thisContact.contactUUID);
                 contactActionView._activeContact.set('statusMessage', thisContact.statusMessage);
                 contactActionView._activeContact.set('currentPlace', thisContact.currentPlace);
-                contactActionView._activeContact.set('currentPlaceId', thisContact.currentPlaceId);
+                contactActionView._activeContact.set('currentPlaceUUID', thisContact.currentPlaceUUID);
                 contactActionView._activeContact.set('isAvailable', thisContact.isAvailable);
                 // set available
                 if (thisContact.isAvailable) {

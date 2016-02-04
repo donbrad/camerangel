@@ -732,8 +732,8 @@ var photoModel = {
             photo.set('addressString', addressStr);
         }
 
-        if (userModel.currentUser.currentPlaceId !== null) {
-            photo.set('placeId', userModel.currentUser.currentPlaceId);
+        if (userModel.currentUser.currentPlaceUUID !== null) {
+            photo.set('placeId', userModel.currentUser.currentPlaceUUID);
             photo.set('placeString', userModel.currentUser.currentPlace);
         }
 

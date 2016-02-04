@@ -1579,8 +1579,8 @@ var channelView = {
     messageAddLocation : function  () {
         channelView.activeMessage.geo= {lat: mapModel.lat, lng: mapModel.lng};
         channelView.activeMessage.address = mapModel.currentAddress;
-        if (userModel.currentUser.currentPlaceId !== null) {
-            channelView.activeMessage.place = {name: userModel.currentUser.currentPlace, uuid: userModel.currentUser.currentPlaceId};
+        if (userModel.currentUser.currentPlaceUUID !== null) {
+            channelView.activeMessage.place = {name: userModel.currentUser.currentPlace, uuid: userModel.currentUser.currentPlaceUUID};
         }
     },
 
