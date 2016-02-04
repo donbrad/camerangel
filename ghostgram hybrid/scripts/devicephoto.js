@@ -11,15 +11,18 @@ var devicePhoto = {
     _uploadActive: false,
     _resolution : 1600,
     _quality : 75,
+    _userPhoto: 'userphoto',
+    _userProfile: 'userprofile',
     _cloudinaryUrl : 'https://res.cloudinary.com/ghostgrams', //Cloudinary delivery url
     _cloudinaryThumb: 'http://res.cloudinary.com/ghostgrams/image/upload/c_scale,h_512,w_512/v1454612367/',
     _cloudinaryImage: 'http://res.cloudinary.com/ghostgrams/image/upload/v1454612367/',
 
-    cloudinaryUpload : function (photoId, photoData, callback) {
+    cloudinaryUpload : function (photoId, photoData, folder, callback) {
         var formData = new FormData();
         formData.append('file', photoData);
         formData.append('api_key', 169985831568325);
         formData.append('public_id', photoId);
+        formData.append('folder', folder);
         formData.append('unsigned_upload', true);
         formData.append('upload_preset', 'gguserphoto');
         formData.append('callback', '/cloudinary_cors.html');
@@ -110,6 +113,16 @@ var devicePhoto = {
                                 height: 1600
                             };
 
+                            var folder = devicePhoto._userPhoto;
+
+                            if (isChat === false) {
+                                // This must be a profile photo so need to adjust scale and target userprofile photo store
+                                scaleOptions.width = 256;
+                                scaleOptions.height = 256;
+
+                                folder = devicePhoto._userProfile;
+                            }
+
                             window.ImageResizer.resize(scaleOptions,
                                 function (image) {
 
@@ -124,7 +137,7 @@ var devicePhoto = {
                                         devicePhoto.currentPhoto.uploadComplete = false;
                                         devicePhoto._uploadActive = true;
 
-                                        devicePhoto.cloudinaryUpload(filename, dataUrl, function (photoData) {
+                                        devicePhoto.cloudinaryUpload(filename, dataUrl, folder,  function (photoData) {
                                             devicePhoto._uploadActive = false;
                                             devicePhoto.currentPhoto.imageUrl = photoData.url;
                                             devicePhoto.currentPhoto.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
@@ -148,57 +161,6 @@ var devicePhoto = {
 
                                 });
 
-
-/*                            if (isChat) {
-                                mobileNotify("Processing Chat thumbnail...");
-                                var scaleOptions = {
-                                    uri: uri,
-                                    filename: "thumb_"+filename,
-                                    quality: 60,
-                                    width: 512,
-                                    height: 512
-                                };
-
-                                window.ImageResizer.resize(scaleOptions,
-                                    function (image) {
-
-                                        var thumbNail = image;
-                                        if (device.platform === 'iOS') {
-                                            thumbNail = image.replace('file://', '');
-                                        }
-
-                                        devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
-
-                                            var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
-                                            var parseFile = new Parse.File("thumbnail_" + filename + ".jpg", {'base64': imageBase64});
-                                            parseFile.save().then(function () {
-                                                devicePhoto.currentPhoto.thumbnailFile = parseFile;
-                                                devicePhoto.currentPhoto.thumbnailUrl = parseFile._url;
-
-
-
-                                                photoModel.addDevicePhoto(devicePhoto.currentPhoto);
-                                                //photoModel.addPhotoOffer(photouuid, channelId, parseFile._url, null, null , false);
-                                                if (displayCallback !== undefined) {
-                                                    displayCallback(photouuid, nativeUrl);
-                                                }
-
-                                                photoModel.uploadPhotoImage(devicePhoto.currentPhoto.photoId);
-
-                                            });
-
-                                        });
-
-                                        // success: image is the new resized image
-                                    }, function () {
-                                        mobileNotify("Error creating thumbnail...");
-                                        // failed: grumpy cat likes this function
-                                    });
-                            } else {
-                                if (displayCallback !== undefined) {
-                                    displayCallback(photouuid, nativeUrl);
-                                }
-                            }*/
 
                             navigator.camera.cleanup(function(){}, function(){});
                         }, function(){});
