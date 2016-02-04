@@ -1593,6 +1593,12 @@ var placeView = {
                 deleteParseObject(noteModel._parseClass, 'uuid', item.uuid);
             }
         } else if (item.ggType === 'Photo') {
+            var photo = placeView._currentItem;
+            placeView._memoriesDS.remove(photo);
+            photoModel.photosDS.remove(photo);
+            deleteParseObject(photoModel._parseClass, 'photoId', photo.photoId);
+
+
 
         }
         $("#placeViewItemActions").data("kendoMobileActionSheet").close();

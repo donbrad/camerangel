@@ -382,6 +382,13 @@ var photoModel = {
                 updateParseObject('photos', "photoId", photo.photoId, "title",  null);
             }
 
+            if (photo.uuid === undefined) {
+
+                photo.uuid = photo.photoId;
+
+                updateParseObject('photos', "photoId", photo.photoId, "uuid",  photo.photoId);
+            }
+
             if (photo.description === undefined) {
 
                 photo.description = null;
@@ -444,6 +451,7 @@ var photoModel = {
         var ownerId = photoObj.ownerId, ownerName = photoObj.ownerName;
 
         photo.set('photoId', photoObj.photoId);  // use the original photo id from sender to enable recall
+        photo.set('uuid', photoObj.photoId);
         photo.set('channelId', channelId);
         photo.set('version', photoModel._version);
 
@@ -663,6 +671,7 @@ var photoModel = {
         photo.set('ggType', photoModel._ggClass);
 
         photo.set('photoId', devicePhoto.photoId);
+        photo.set('uuid', devicePhoto.photoId);
         photo.set('deviceUrl', devicePhoto.phoneUrl);
 
         photo.set('imageUrl', devicePhoto.imageUrl);
