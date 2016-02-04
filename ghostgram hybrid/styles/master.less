@@ -348,15 +348,18 @@ form {
 
 .emptyState {
 	position: absolute;
-	width: 99%;
+	width: 100%;
 	text-align: center;
-	padding-top: 45%;
+	padding-top: 25%;
 	opacity: 0.6;
 	margin-left: -1em;
 	img {
 		width: 6rem;
 		margin-left: auto;
 		margin-right: auto;
+	}
+	@media @mobile {
+		padding-top: 45%;
 	}
 }
 
@@ -753,6 +756,7 @@ form {
 
 .btnClear-sm {
 	&:extend(.btnStyle);
+	font-size: 0.875em;
 	background: transparent;
     color: #2D93FF !important;
     :active {
@@ -1100,7 +1104,9 @@ div.km-header a img{
 	background-color: #fff !important;
 }
 
-#profileStatusList > li:nth-child(3) > div > span > span > span.k-input
+#profileStatusList > li:last-child {
+	border-top: 1px solid @shade-200;
+}
 
 .km-material .km-switch-handle {
 	.shadow-1;
@@ -1410,7 +1416,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .helper-form {
     position: absolute;
-    top: 38px;
+    top: 2.65em;
     z-index: 99; 
     right: 10px;
 }
@@ -1605,6 +1611,8 @@ div.footerMenu.km-footer > ul > li > a:active {
 	width: 85%;
 	display:inline-block;
 	font-style: italic;
+	margin-left: 0;
+	margin-right: 0;
 }
 
 #profilePhotoForm > div > ul > li:nth-child(1) {
@@ -2463,14 +2471,16 @@ a:hover {
 #findplace-listview > li > ul > li > a:hover,
 #contacts-listview > li > ul > li > div > a:hover,
 #places-listview > li > div > a:hover,
-#channels-listview > li > div > a:hover > div {
+#channels-listview > li > div > a:hover > div,
+#checkin-listview > li > ul > li > a:hover {
 	color: @black;
 }
 
 #findplace-listview > li > ul > li > div > a:active,
 #contacts-listview > li > ul > li > div > a:active,
 #places-listview > li > div > a:active,
-#channels-listview > li > div > a:active > div {
+#channels-listview > li > div > a:active > div,
+#checkin-listview > li > ul > li > a:active {
 	background-color: @shade-300;
 	color: @black;
 }
@@ -2599,11 +2609,11 @@ a:hover {
 
 .statusContactCard-icon {
 	position: absolute;
-	top: 5em;
+	top: 4.5em;
 	left: 54%;
-	width: 1.2em;
+	width: 2em;
 	@media @mobile {
-		top: 70px;
+		top: 4.75em;
 	}
 
 }
@@ -2633,6 +2643,10 @@ a:hover {
 
 #profileStatusPhoto {
 	.shadowHelper(1);
+}
+
+#modalview-profileStatus > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div.modal-top > h3 {
+	margin-top: 0.25em;
 }
 
 .km-material .km-list > li {
@@ -2975,7 +2989,7 @@ div.footerMenu.km-footer > ul > li > a {
 	position: absolute;
 	bottom: 4rem;
 	p {
-		width: 100px;
+		width: 8.75em;
 		position: absolute;
 		right: 0rem;
 		top: 1rem;
@@ -3115,7 +3129,7 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 }
 
 #chatList-place-icon {
-	height: 14px;
+	height: 0.75em;
 }
 
 .placeChat-chatIcon {
@@ -3130,7 +3144,15 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 	width: 60%;
 }
 
-
+.placeType-list {
+	border-radius: 3px;
+	padding: 3px;
+	color: @shade-100;
+	img {
+		height: 0.75em;
+		vertical-align: baseline;
+	}
+}
 
 /* ghost mail */
 
@@ -4789,6 +4811,10 @@ div.contactListBox.activeContact > div > div > ul {
 	height: 1.25rem;
 }
 
+#photoTitle-date {
+	font-size: 0.875em;
+}
+
 .resultsBar {
 	background: #fff;
 	border-bottom: 1px solid @shade-200;
@@ -5632,8 +5658,7 @@ div.contactListBox.activeContact > div > div > ul {
 /** Place **/
 #places-listview,
 #smartEventPlaces-listview,
-#findplace-listview,
-#checkin-listview {
+#findplace-listview {
 	width: 100%;
 	margin-bottom: 5em;
 	li:not(.km-group-container) {
@@ -5694,7 +5719,8 @@ div.contactListBox.activeContact > div > div > ul {
 }
 #placeView > div.footerMenu.km-footer,
 #findPlace > div.footerMenu.km-footer,
-#mapView > div.footerMenu.km-footer {
+#mapView > div.footerMenu.km-footer,
+#settings > div.footerMenu.km-footer {
 	display: none;
 }
 

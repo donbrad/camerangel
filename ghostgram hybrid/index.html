@@ -248,7 +248,7 @@
 </div>
    
 <!-- home - for signed in users -->
-<div data-role="view" data-title="ghostgrams" id="home" data-layout="main"  style="display:none;" data-show="homeView.onShow" data-init="homeView.onInit" data-hide="homeView.onHide">
+<div data-role="view" data-title="intelligram" id="home" data-layout="main"  style="display:none;" data-show="homeView.onShow" data-init="homeView.onInit" data-hide="homeView.onHide">
 		<div class="appBox">
 		    <!-- application views will be rendered here -->
 		    <div>
@@ -507,28 +507,17 @@
 	</div>
 </div>
 
-<div data-role="modalview" id="modalview-checkin" style="width: 100%; height:100%; display: none; z-index: 100;" class="appearance" data-init="checkInView.onInit">
-	
-	<div style="padding: 12px;" data-role="header">
-		<h3>
-			Check In
-			<a class="modal-close" data-click="checkInView.closeModal" data-role="button">
-				<img src="images/close.svg" />
-			</a>
-		</h3>
-
-		<p>Please choose one of Places from the list below. Or click Add Place to create a new one.</p>
+<div data-role="modalview" id="modalview-checkin" style="width: 100%; height:100%; display: none; z-index: 100;" class="appearance" data-init="checkInView.onInit" data-title="Checkin">
+	<div data-role="header">
+		<div data-role="navbar">
+			<img src="images/icon-checkin.svg" class="icon-sm" style="vertical-align: text-top;"/>
+			<span data-role="view-title"></span>
+			<a data-role="button" data-align="left" data-click="checkInView.closeModal" class="btnClear-grey"> Cancel </a>
+		</div>
 	</div>
 	<div>
 		<ul id="checkin-listview"></ul>
 	</div>
-
-	<div data-role="footer">
-		<div data-role="navbar">
-			<a data-click="checkInView.addPlace" type="button" data-role="button" data-align="right">Add Place</a>
-		</div>
-	</div>
-
 </div>
 
 
@@ -720,7 +709,7 @@
 		<a data-role="button" class="modal-close" data-click="contactActionView.closeModal"><img src="images/close.svg"/></a>
 
 		<img class="circle-img-lg" id="contactProfileImg" />
-		<img width="20" src="images/status-away.svg" class="statusContactCard-icon" id="contactStatusImg"/>
+		<img src="images/status-away.svg" class="statusContactCard-icon" id="contactStatusImg"/>
 		<h2 class="preMotionUp textClamp">
 
 			<span class="primaryName" id="contactPrimaryName"></span>
@@ -745,7 +734,7 @@
 		<ul class="list-inline hasMotion" id="contactActionBtns" >
 			<li>
 				<a class="btnClear" data-role="button" data-click="contactActionView.privateChat" >
-					<img src="images/icon-ghostgram.svg" /> Private Chat
+					<img src="images/icon-private-alt.svg" /> Private Chat
 				</a>
 			</li>
 			<li>
@@ -801,7 +790,6 @@
 		</a>
 		<img class="circle-img-lg home-profile-img"/>
 		<img src="images/status-away.svg" class="userAvailable home-status-card-img" />
-
 		<h3>
 			<span class="primaryName"></span>
 			<span class="hidden" id="profileStatusVerified">
@@ -809,16 +797,12 @@
 			</span>
 			<span class="secondName"></span>
 		</h3>
-		<p id="profileStatusMessage" data-bind="text: statusMessage"></p>
+		<p id="profileStatusMessage" class="textClamp" data-bind="text: statusMessage"></p>
 		<p id="profileLocation">
 			<a class="btnClear-light-sm" data-role="button" data-click="userStatusView.gotoPlace">
 				<span>@</span>
 				<span data-bind="text: currentPlace"></span>
 			</a>
-		</p>
-		<p>
-
-
 		</p>
 		<div style="clear: both;"></div>
 	</div>
@@ -842,21 +826,28 @@
 			<li id="profileCheckOutLi">
 				<div>
 					<div id="checked-in-place">
-						<a class="btnClear-grey" data-role="button" data-click="userStatusView.checkOut"><img src="images/icon-checkout.svg" class="icon-sm" /> Leave <span id="checkOut-text" data-bind="text: currentPlace"></span></a>
+						<a class="btnClear-grey" data-role="button" data-click="userStatusView.checkOut">
+							<img src="images/icon-checkout.svg" class="icon-sm" />
+							Leave <span id="checkOut-text" data-bind="text: currentPlace"></span>
+						</a>
 					</div>
 				</div>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="userStatusView.openCheckIn">
-					<img src="images/icon-checkin-active.svg" class="icon-sm" /> Check In
+					<img src="images/icon-checkin-active.svg" class="icon-sm" />
+					Check In
 				</a>
 			</li>
-			<li>
-				<a data-role="button" class="btnClear-grey" data-click="userStatusView.gotoSettings" >
-					<img src="images/nav-gear.svg" class="icon-sm"> Settings </a>
+			<li class="hidden">
+				<a data-role="button" class="btnClear-grey" data-click="userStatusView.gotoSettings">
+					<img src="images/nav-gear.svg" class="icon-sm"> Settings
+				</a>
 			</li>
-			<li>
-				<a data-role="button" class="btnClear-grey" data-click="userStatusView.doSignOut"> Sign Out</a>
+			<li class="hidden">
+				<a data-role="button" class="btnClear-grey" data-click="userStatusView.doSignOut">
+					Sign Out
+				</a>
 			</li>
 		</ul>
 	</div>
@@ -902,35 +893,17 @@
 
 
 <script type="text/x-kendo-template" id="checkinPlacesTemplate">
-	# var addressOnly = false; alias = data.alias; name = data.name; #
+	<a>
+		# if(data.category === 'Location'){#
+		<h4 class="textClamp">#:data.name#</h4>
+		<p>#:data.city#, #:data.state# #:data.zipcode#</p>
+		#}#
+		# if(data.category === 'Venue'){#
+		<h4 class="textClamp">#:data.name#</h4>
+		<p>#:data.address# #:data.city#, #:data.state# #:data.zipcode#</p>
+		#}#
 
-	<div>
-		
-     	<div>
-     	# if(data.category === 'Location'){#
-     		# if(data.alias !== "" && data.alias !== undefined){#
-     			<h4 class="textClamp">#:data.alias#
-     			<span class="helper-sm">#:data.name#</span>
-     			</h4>
-     		#} else {#
-     			<h4 class="textClamp">#:data.address#</h4>
-     			# addressOnly = true #
-     			<p>#:data.city#, #:data.state# #:data.zipcode#</p>
-     		#}#
-     		
-     	#} else {#
-     		<h4 class="textClamp">#: data.name # 
-     		# if (data.alias !== "" && data.alias !== undefined){#
-     			<span class="helper-sm">#:data.alias#</span>
-     		#}#
-     		</h4>
-     	#}#
-
-     	# if(addressOnly !== true){#
-     		<p>#:data.address#, #:data.city#, #:data.state# #:data.zipcode#</p>
-     	#}#
-         
-         <p class="helper">
+		<p class="helper">
            <span class="left">
          # if (data.isPrivate === true) { #
             <img src="images/place-private.svg" /> Private
@@ -938,10 +911,9 @@
             <img src="images/place-public.svg" /> Public
          # }#
            </span>
-         </p>
-         <div class="clearfix"> </div>
-       </div>
-	</div>
+				</p>
+				<div class="clearfix"> </div>
+	</a>
 </script>
 
 <!-- galleryPicker template -->
@@ -1373,11 +1345,17 @@
 	    		<div class="chatType">
 
 		    		# if(isPrivate && members.length <= 2){#
-		    			<img src="images/private-icon.svg" /> Private Chat
+		    		<span class="placeType-list">
+		    			<img src="images/icon-private.svg" /> Private Chat
+		    		</span>
 		    		#} else if (isPlace) {#
-		    			<img src="images/place-icon.svg" id="chatList-place-icon" class="icon-sm" /> Place Chat
+		    		<span class="placeType-list">
+		    			<img src="images/icon-place.svg" id="chatList-place-icon" /> Place Chat
+		    		</span>
 		    		#} else {#
-		    			<img src="images/group-icon.svg" class="icon-sm" /> Group Chat
+		    		<span class="placeType-list">
+		    			<img src="images/icon-group.svg" /> Group Chat
+		    		</span>
 		    		#}#
 		    		#if (data.isMuted) {# <span class="listTag-light">Muted</span> #} #
 		    		#if (data.unreadCount > 0) {# <span class="right"><img src="images/icon-Chat.svg" class="icon-sm" /> #:unreadCount# new</span> # } #
@@ -1400,7 +1378,7 @@
 				<span id="channelName"></span>
 			</span>
 			<a data-align="right" data-role="button" id="messagePresenceButton" data-click="channelPresence.openModal">
-				<img src="images/group-icon.svg" />
+				<img src="images/icon-group.svg" />
 			</a>
 		</div>
 
@@ -2447,7 +2425,7 @@
 
 			</li>
 			<li>
-				<select id="smartNoteView-tags" multiple="multiple"  data-bind="value: tags" data-placeholder="@Tags..."> 				</select>
+				<select id="smartNoteView-tags" multiple="multiple" data-bind="value: tags" data-placeholder="@Tags..."></select>
 			</li>
 			<li class="">
 				<label> <img src="images/icon-expired.svg" class="icon-sm" /> Expires
@@ -2796,25 +2774,25 @@
 					<span id="modalPhotoViewTitle" data-bind="text: title">Photo Title</span>
 					<a class="btnClear-sm" data-role="button" data-click="modalPhotoView.openTagEditor">Edit</a>
 				</h3>
-
-				<p>
-					<span data-bind="text: description"> </span>
-				</p>
-				<p>
+				<p id="photoTitle-tags">
 					<img src="images/icon-tag-light.svg" class="icon-sm" />
 					<span id="modalPhotoViewTags" data-bind="text: tagsString">photo tags</span>
 				</p>
+				<p class="helper" id="photoTitle-date"></p>
 			</div>
 			<div class="photoTitleInput hidden">
 				<label>Title</label>
 				<input type="search" class="input-text-md" data-bind="value: title" maxlength="48" placeholder="Title..."/>
 
 				<label>Tags</label>
-				<textarea data-bind="value: tagsString" type="text" col="80" row="2" maxlength="60" placeholder="People, event, location..."></textarea>
+				<select id="photo-smartTag" multiple="multiple"></select>
 
+				<label>Location</label>
+				<input type="text" id="photo-location" />
+				<!--
 				<label>Description</label>
 				<textarea data-bind="value: description" type="text" col="80" row="2" maxlength="60"></textarea>
-
+				-->
 
 			</div>
 
@@ -3168,7 +3146,7 @@
 			<h3 class="textClamp">
 				<img src="images/smart-note-inline.svg" class="icon-md" />
 				<span>#: titleStr #</span>
-				<span class="helper right" style="font-size: 12px">#:dateString#</span>
+				<span class="helper right" style="font-size: 0.75em">#:dateString#</span>
 			</h3>
 			<p>#: tagString #</p>
 			<p style="margin-top: 0.5em; width: 100%;">#= data.content #</p>
@@ -3269,7 +3247,26 @@
 				</li>
 				
 				<li>
-					<a class="btnClear" href="#modalview-changePassword" data-rel="modalview" id="profile-changePassword" data-role="button" >Change Password</a>
+					<div>
+						<a class="btnClear" href="#modalview-changePassword" data-rel="modalview" id="profile-changePassword" data-role="button" >Change Password</a>
+					</div>
+
+				</li>
+				<li>
+					<div>
+						<a data-role="button" class="btnClear" href="#settings">
+							Settings
+						</a>
+					</div>
+
+				</li>
+				<li>
+					<div>
+						<a data-role="button" class="btnClear" data-click='userStatusView.doSignOut'>
+							Sign Out
+						</a>
+					</div>
+
 				</li>
 			</ul>
 			
@@ -3402,7 +3399,7 @@
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
 			<a data-role="button" data-click="homeView.settingsOnClose" data-align="right">
-				<img class="menuIcon" src="images/close.svg"/>
+				Done
 			</a>
 		</div>
 	</div>
@@ -3486,6 +3483,7 @@
 			</li>
 		</ul>
 	</form>
+
 </div>
 
 

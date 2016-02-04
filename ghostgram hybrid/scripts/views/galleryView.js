@@ -717,10 +717,26 @@ var modalPhotoView = {
    
     		}
     	});
+        // todo - wire new photo DS
+        $("#photo-smartTag").kendoMultiSelect({
+            autoClose: false,
+            dataTextField: "tagname",
+            dataValueField: "uuid",
+            itemTemplate: '<div style="vertical-align: middle;"><img height="18"src="#:data.icon#"/><span>#:data.tagname#</span> <span style="font-size: 9px;"> #:data.name#</span> </div>' ,
+            tagTemplate: '<div style="vertical-align: middle;"><img height="18" src="#:data.icon#"/>#:data.tagname#</div>',
+            change: function (e) {
+                var value = this.value();
+
+            },
+            select : function (e) {
+                var item = e.item;
+                var text = item.text();
+            },
+            dataSource: contactModel.contactTagsDS
+        });
     },
 
     openModal : function (photo) {
-
         modalPhotoView._photo = photo;
 
         var url = photo.thumbnailUrl;
@@ -743,8 +759,22 @@ var modalPhotoView = {
         if (photo.tagsString === undefined || photo.tagsString === null) {
             photo.tagsString = modalPhotoView._dummyTagsString;
         }
-        modalPhotoView._activePhoto.set('tagsString', photo.tagsString);
 
+
+        // Tags
+        modalPhotoView._activePhoto.set('tagsString', photo.tagsString);
+        if(modalPhotoView._activePhoto.tagsString === ""){
+            $("#photoTitle-tags").addClass("hidden");
+        } else {
+            $("#photoTitle-tags").removeClass("hidden");
+        }
+        // Address
+        modalPhotoView._activePhoto.set('addressString', photo.addressString);
+        $("#photo-location").val(modalPhotoView._activePhoto.addressString);
+
+        // Date
+        var createdDate = moment(photo.createdAt).format("MMM Do, YYYY");
+        $("#photoTitle-date").text(createdDate);
 
         $("#modalPhotoView").data("kendoMobileModalView").open();
 
@@ -772,8 +802,6 @@ var modalPhotoView = {
         $("#modalPhotoView-close").addClass("hidden");
         $("#modalPhotoView-update").removeClass("hidden");
 
-        //modalPhotoView.closeModal();
-        //modalPhotoTag.openModal(modalPhotoView._activePhoto);
     },
 
     closeTagEditor: function(e){
