@@ -31,7 +31,7 @@ var noteModel = {
 
     findNote: function (type, uuid) {
         var query = [
-            {field: "type", operator: "eq", value: type},
+            {field: "objectType", operator: "eq", value: type},
             {field: "uuid", operator: "eq", value: uuid}
         ];
 
