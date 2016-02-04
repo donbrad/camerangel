@@ -8,10 +8,12 @@
 
 var devicePhoto = {
     currentPhoto : {},
+    _uploadActive: false,
     _resolution : 1600,
     _quality : 75,
     _cloudinaryUrl : 'https://res.cloudinary.com/ghostgrams', //Cloudinary delivery url
     _cloudinaryThumb: 'http://res.cloudinary.com/ghostgrams/image/upload/c_scale,h_512,w_512/v1454612367/',
+    _cloudinaryImage: 'http://res.cloudinary.com/ghostgrams/image/upload/v1454612367/',
 
     cloudinaryUpload : function (photoId, photoData, callback) {
         var formData = new FormData();
@@ -34,10 +36,6 @@ var devicePhoto = {
             },
 
             success: function(responseData, textStatus, jqXHR) {
-                var photoObj = {
-                    photoUrl: responseData.url,
-                    publicId: responseData.public_id
-                };
 
                 callback(responseData, null);
 
@@ -116,40 +114,34 @@ var devicePhoto = {
                                 function (image) {
 
                                     var thumbNail = image;
-                                   /* if (device.platform === 'iOS') {
+                                   if (device.platform === 'iOS') {
                                         thumbNail = image.replace('file://', '');
                                     }
-*/
-                                    devicePhoto.cloudinaryUpload(filename, thumbNail, function (photoData) {
-                                        devicePhoto.currentPhoto.imageUrl = photoData.url;
-                                        devicePhoto.currentPhoto.thumbnailUrl = devicePhoto._cloudinaryThumb+photoData.public_id;
-                                        devicePhoto.currentPhoto.publicId = photoData.public_id;
 
+                                    devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
+                                        var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
 
-                                        photoModel.addDevicePhoto(devicePhoto.currentPhoto);
-                                        //photoModel.addPhotoOffer(photouuid, channelId, parseFile._url, null, null , false);
                                         if (displayCallback !== undefined) {
                                             displayCallback(photouuid, nativeUrl);
                                         }
+                                        // Fill in the device photo info incase the user hits send before cloudiary completes
+                                        devicePhoto.currentPhoto.imageUrl = devicePhoto._cloudinaryImage+'userphoto/'+ filename + '.jpg';
+                                        devicePhoto.currentPhoto.thumbnailUrl = devicePhoto._cloudinaryThumb+'userphoto/'+ filename + '.jpg';
 
-                                    });
-
-                                    /*devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
-                                        var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
-                                        devicePhoto.cloudinaryUpload(filename, dataUrl,function (photoData) {
+                                        devicePhoto._uploadActive = true;
+                                        devicePhoto.cloudinaryUpload(filename, dataUrl, function (photoData) {
+                                            devicePhoto._uploadActive = false;
                                             devicePhoto.currentPhoto.imageUrl = photoData.url;
-                                            devicePhoto.currentPhoto.thumbnailUrl = devicePhoto._cloudinaryThumb+photoData.public_id;
+                                            devicePhoto.currentPhoto.thumbnailUrl = devicePhoto._cloudinaryThumb+photoData.public_id + '.jpg';
                                             devicePhoto.currentPhoto.publicId = photoData.public_id;
 
 
                                             photoModel.addDevicePhoto(devicePhoto.currentPhoto);
                                             //photoModel.addPhotoOffer(photouuid, channelId, parseFile._url, null, null , false);
-                                            if (displayCallback !== undefined) {
-                                                displayCallback(photouuid, nativeUrl);
-                                            }
+
 
                                         });
-                                    }); */
+                                    });
 
                                     // success: image is the new resized image
                                 }, function () {
