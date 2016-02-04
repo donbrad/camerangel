@@ -421,11 +421,12 @@ var photoModel = {
     addChatPhoto : function (photoObj, callback) {
 
         mobileNotify("Adding Chat photo to Memories...");
-        var Photos = Parse.Object.extend("photos");
+        var Photos = Parse.Object.extend(photoModel._parseClass);
         var photo = new Photos();
 
         photo.setACL(userModel.parseACL);
         photo.set('version', photoModel._version);
+        photo.set('ggType', photoModel._ggClass);
 
         //var photoId = uuid.v4();
 
@@ -449,7 +450,13 @@ var photoModel = {
         photo.set('senderUUID',ownerId );
         photo.set('senderName', ownerName);
 
-        photo.set('title', photoObj.title);
+
+        photo.set('title', _nullString(photoObj.title));
+        photo.set('description', _nullString(photoObj.description));
+        photo.set('tagString',  _nullString(photoObj.tagString));
+        photo.set('address',  _nullString(photoObj.address));
+
+       /* photo.set('title', photoObj.title);
         photo.set('description',  photoObj.description);
         photo.set('eventId', photoObj.eventId);
         photo.set('eventName', photoObj.eventName);
@@ -460,11 +467,29 @@ var photoModel = {
         photo.set('address', photoObj.address);
         photo.set('lat', photoObj.lat);
         photo.set('lng', photoObj.lng);
-        photo.set('offerId', photoObj.offerId);
+        photo.set('offerId', photoObj.offerId);*/
 
         photo.set('thumbnailUrl',photoObj.thumbnailUrl);
         photo.set('imageUrl',photoObj.imageUrl);
 
+        var photoObj = photo.toJSON();
+
+        photoModel.photosDS.add(photoObj);
+        photoModel.photosDS.sync();
+
+        photo.save(null, {
+            success: function(photoIn) {
+
+                // Execute any logic that should take place after the object is saved.
+
+
+            },
+            error: function(contact, error) {
+                // Execute any logic that should take place if the save fails.
+                // error is a Parse.Error with an error code and message.
+                handleParseError(error);
+            }
+        });
 
         /*devicePhoto.convertImgToDataURL(photoObj.thumbnailUrl, function (dataUrl) {
             var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
@@ -630,11 +655,12 @@ var photoModel = {
     addDevicePhoto: function (devicePhoto) {
         mobileNotify("Adding  photo....");
         // Todo: add additional processing to create Parse photoOffer
-        var Photos = Parse.Object.extend("photos");
+        var Photos = Parse.Object.extend(photoModel._parseClass);
         var photo = new Photos();
 
         photo.setACL(userModel.parseACL);
         photo.set('version', photoModel._version);
+        photo.set('ggType', photoModel._ggClass);
 
         photo.set('photoId', devicePhoto.photoId);
         photo.set('deviceUrl', devicePhoto.phoneUrl);
@@ -646,8 +672,6 @@ var photoModel = {
 
         photo.set('thumbnailUrl', devicePhoto.thumbnailUrl);
         photo.set('thumbnail', devicePhoto.thumbnailFile);
-
-        photo.set('ggType', photoModel._ggClass);
         photo.set('title', null);
         photo.set('description', null);
         photo.set('senderUUID', userModel.currentUser.userUUID);

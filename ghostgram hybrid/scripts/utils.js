@@ -152,6 +152,14 @@ function deleteParseObject(objectName, field, fieldValue) {
 	});
 }
 
+function _nullString (stringIn) {
+	if (stringIn === undefined) {
+		return(null);
+	}
+
+	return(stringIn);
+}
+
 function getNetworkState() {
 	var networkState = navigator.connection.type;
 	switch (networkState) {
