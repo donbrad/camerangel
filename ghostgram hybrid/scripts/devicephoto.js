@@ -122,11 +122,12 @@ var devicePhoto = {
                                     devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
 
                                         var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
-                                          photoModel.cloudinaryUpload(filename, dataUrl,function (photoData) {
+                                          devicePhoto.cloudinaryUpload(filename, dataUrl,function (photoData) {
                                             devicePhoto.currentPhoto.imageUrl = photoData.url;
                                             devicePhoto.currentPhoto.thumbnailUrl = photoData.url;
+                                              devicePhoto.currentPhoto.publicId = photoData.public_id;
 
-                                              
+
                                             photoModel.addDevicePhoto(devicePhoto.currentPhoto);
                                             //photoModel.addPhotoOffer(photouuid, channelId, parseFile._url, null, null , false);
                                             if (displayCallback !== undefined) {
