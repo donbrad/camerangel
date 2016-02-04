@@ -1263,6 +1263,43 @@ var placeView = {
 
     },
 
+    queryMemories : function (query) {
+        if (query === undefined)
+            return([]);
+        var dataSource = placeView._memoriesDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        dataSource.filter(cacheFilter);
+        return(view);
+
+    },
+
+    queryMemory : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = placeView._memoriesDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var channel = view[0];
+        dataSource.filter(cacheFilter);
+        return(channel);
+    },
+
+    findPhotoMemory : function (photoId) {
+        return(placeView.queryMemory([
+            { field: "ggType", operator: "eq", value: 'Photo' },
+            { field: "photoId", operator: "eq", value: photoId }
+        ]));
+    },
+
 
     buildMemoriesDS : function () {
         var ds = placeView._memoriesDS;
@@ -1298,9 +1335,13 @@ var placeView = {
 
                 for (var z = 0; z < zipList.length; z++) {
                     var zip = zipList[z];
-                    zip.ggType = 'Photo';
-                    zip.date = new Date(zip.updatedAt);
-                    ds.add(zip);
+                    // If the photo isn't already in the list -- add it
+                    if (placeView.findPhotoMemory(zip.photoId) === undefined) {
+                        zip.ggType = 'Photo';
+                        zip.date = new Date(zip.updatedAt);
+                        ds.add(zip);
+                    }
+
                 }
             }
         }
