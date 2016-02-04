@@ -10,7 +10,42 @@ var devicePhoto = {
     currentPhoto : {},
     _resolution : 1600,
     _quality : 75,
+    _cloudinaryUrl : 'https://res.cloudinary.com/ghostgrams', //Cloudinary delivery url
 
+    cloudinaryUpload : function (photoId, photoData, callback) {
+        var formData = new FormData();
+        formData.append('file', photoData);
+        formData.append('api_key', 169985831568325);
+        formData.append('public_id', photoId);
+        formData.append('unsigned_upload', true);
+        formData.append('upload_preset', 'gguserphoto');
+        formData.append('callback', '/cloudinary_cors.html');
+
+        $.ajax({
+            url: 'https://api.cloudinary.com/v1_1/ghostgrams/image/upload',
+            data: formData,
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            headers: {
+                'Accept': 'application/json, text/javascript, */*; q=0.01',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+
+            success: function(responseData, textStatus, jqXHR) {
+                var photoObj = {
+                    photoUrl: responseData.url,
+                    publicId: responseData.public_id
+                };
+
+                callback(responseData, null);
+
+            },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    callback(null, errorThrown);
+                }
+            });
+    },
 
     deviceCamera : function (resolution, quality, isChat, channelId,  displayCallback) {
         if (resolution === undefined) {
@@ -65,11 +100,53 @@ var devicePhoto = {
                                 nativeUrl = nativeUrl.replace('file://', '');
                                 uri = nativeUrl;
                             }
+
                             devicePhoto.currentPhoto.phoneUrl = nativeUrl;
+                            mobileNotify("Processing Photo...");
+                            var scaleOptions = {
+                                uri: uri,
+                                filename: "photo_"+filename,
+                                quality: 75,
+                                width: 1600,
+                                height: 1600
+                            };
+
+                            window.ImageResizer.resize(scaleOptions,
+                                function (image) {
+
+                                    var thumbNail = image;
+                                    if (device.platform === 'iOS') {
+                                        thumbNail = image.replace('file://', '');
+                                    }
+
+                                    devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
+
+                                        var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
+                                          photoModel.cloudinaryUpload(filename, dataUrl,function (photoData) {
+                                            devicePhoto.currentPhoto.imageUrl = photoData.url;
+                                            devicePhoto.currentPhoto.thumbnailUrl = photoData.url;
+
+                                              
+                                            photoModel.addDevicePhoto(devicePhoto.currentPhoto);
+                                            //photoModel.addPhotoOffer(photouuid, channelId, parseFile._url, null, null , false);
+                                            if (displayCallback !== undefined) {
+                                                displayCallback(photouuid, nativeUrl);
+                                            }
 
 
 
-                            if (isChat) {
+                                        });
+
+                                    });
+
+                                    // success: image is the new resized image
+                                }, function () {
+                                    mobileNotify("Error creating thumbnail...");
+                                    // failed: grumpy cat likes this function
+                                });
+
+
+/*                            if (isChat) {
                                 mobileNotify("Processing Chat thumbnail...");
                                 var scaleOptions = {
                                     uri: uri,
@@ -118,7 +195,7 @@ var devicePhoto = {
                                 if (displayCallback !== undefined) {
                                     displayCallback(photouuid, nativeUrl);
                                 }
-                            }
+                            }*/
 
                             navigator.camera.cleanup(function(){}, function(){});
                         }, function(){});
