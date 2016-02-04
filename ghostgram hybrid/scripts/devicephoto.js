@@ -11,6 +11,7 @@ var devicePhoto = {
     _resolution : 1600,
     _quality : 75,
     _cloudinaryUrl : 'https://res.cloudinary.com/ghostgrams', //Cloudinary delivery url
+    _cloudinaryThumb: 'http://res.cloudinary.com/ghostgrams/image/upload/c_scale,h_512,w_512/v1454612367/';
 
     cloudinaryUpload : function (photoId, photoData, callback) {
         var formData = new FormData();
@@ -119,13 +120,25 @@ var devicePhoto = {
                                         thumbNail = image.replace('file://', '');
                                     }
 
-                                    devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
+                                    devicePhoto.cloudinaryUpload(filename, thumbNail ,function (photoData) {
+                                        devicePhoto.currentPhoto.imageUrl = photoData.url;
+                                        devicePhoto.currentPhoto.thumbnailUrl = devicePhoto._cloudinaryThumb+photoData.public_id;
+                                        devicePhoto.currentPhoto.publicId = photoData.public_id;
 
+
+                                        photoModel.addDevicePhoto(devicePhoto.currentPhoto);
+                                        //photoModel.addPhotoOffer(photouuid, channelId, parseFile._url, null, null , false);
+                                        if (displayCallback !== undefined) {
+                                            displayCallback(photouuid, nativeUrl);
+                                        }
+
+                                    });
+                                    /*devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
                                         var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
-                                          devicePhoto.cloudinaryUpload(filename, dataUrl,function (photoData) {
+                                        devicePhoto.cloudinaryUpload(filename, dataUrl,function (photoData) {
                                             devicePhoto.currentPhoto.imageUrl = photoData.url;
-                                            devicePhoto.currentPhoto.thumbnailUrl = photoData.url;
-                                              devicePhoto.currentPhoto.publicId = photoData.public_id;
+                                            devicePhoto.currentPhoto.thumbnailUrl = devicePhoto._cloudinaryThumb+photoData.public_id;
+                                            devicePhoto.currentPhoto.publicId = photoData.public_id;
 
 
                                             photoModel.addDevicePhoto(devicePhoto.currentPhoto);
@@ -134,12 +147,9 @@ var devicePhoto = {
                                                 displayCallback(photouuid, nativeUrl);
                                             }
 
-
-
                                         });
-
                                     });
-
+*/
                                     // success: image is the new resized image
                                 }, function () {
                                     mobileNotify("Error creating thumbnail...");
