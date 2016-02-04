@@ -121,13 +121,17 @@ var devicePhoto = {
                                     devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
                                         var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
 
-                                        if (displayCallback !== undefined) {
-                                            displayCallback(photouuid, nativeUrl);
-                                        }
+
                                         // Fill in the device photo info incase the user hits send before cloudiary completes
                                         devicePhoto.currentPhoto.imageUrl = devicePhoto._cloudinaryImage+'userphoto/'+ filename + '.jpg';
                                         devicePhoto.currentPhoto.thumbnailUrl = devicePhoto._cloudinaryThumb+'userphoto/'+ filename + '.jpg';
 
+                                        photoModel.addDevicePhoto(devicePhoto.currentPhoto);
+                                        if (displayCallback !== undefined) {
+                                            displayCallback(photouuid, nativeUrl);
+                                        }
+
+                                        
                                         devicePhoto._uploadActive = true;
                                         devicePhoto.cloudinaryUpload(filename, dataUrl, function (photoData) {
                                             devicePhoto._uploadActive = false;
@@ -136,7 +140,7 @@ var devicePhoto = {
                                             devicePhoto.currentPhoto.publicId = photoData.public_id;
 
 
-                                            photoModel.addDevicePhoto(devicePhoto.currentPhoto);
+
                                             //photoModel.addPhotoOffer(photouuid, channelId, parseFile._url, null, null , false);
 
 
