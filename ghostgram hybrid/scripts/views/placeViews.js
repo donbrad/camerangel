@@ -1574,6 +1574,8 @@ var placeView = {
 
             });
         } else if (item.ggType === 'Photo') {
+            var photo = placeView._currentItem;
+            modalPhotoView.openModal(photo);
 
         }
         $("#placeViewItemActions").data("kendoMobileActionSheet").close();
