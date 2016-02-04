@@ -121,24 +121,19 @@ var devicePhoto = {
                                     devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
                                         var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
 
-
-                                        // Fill in the device photo info incase the user hits send before cloudiary completes
-                                        devicePhoto.currentPhoto.imageUrl = devicePhoto._cloudinaryImage+'userphoto/'+ filename + '.jpg';
-                                        devicePhoto.currentPhoto.thumbnailUrl = devicePhoto._cloudinaryThumb+'userphoto/'+ filename + '.jpg';
-
-                                        photoModel.addDevicePhoto(devicePhoto.currentPhoto);
-                                        if (displayCallback !== undefined) {
-                                            displayCallback(photouuid, nativeUrl);
-                                        }
-
-                                        
+                                        devicePhoto.currentPhoto.uploadComplete = false;
                                         devicePhoto._uploadActive = true;
+
                                         devicePhoto.cloudinaryUpload(filename, dataUrl, function (photoData) {
                                             devicePhoto._uploadActive = false;
                                             devicePhoto.currentPhoto.imageUrl = photoData.url;
-                                            devicePhoto.currentPhoto.thumbnailUrl = devicePhoto._cloudinaryThumb+photoData.public_id + '.jpg';
+                                            devicePhoto.currentPhoto.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
                                             devicePhoto.currentPhoto.publicId = photoData.public_id;
-
+                                            devicePhoto.currentPhoto.uploadComplete = true;
+                                            photoModel.addDevicePhoto(devicePhoto.currentPhoto);
+                                            if (displayCallback !== undefined) {
+                                                displayCallback(photouuid, nativeUrl);
+                                            }
 
 
                                             //photoModel.addPhotoOffer(photouuid, channelId, parseFile._url, null, null , false);
