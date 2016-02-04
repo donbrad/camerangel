@@ -116,10 +116,10 @@ var devicePhoto = {
                                 function (image) {
 
                                     var thumbNail = image;
-                                    if (device.platform === 'iOS') {
+                                   /* if (device.platform === 'iOS') {
                                         thumbNail = image.replace('file://', '');
                                     }
-
+*/
                                     devicePhoto.cloudinaryUpload(filename, thumbNail, function (photoData) {
                                         devicePhoto.currentPhoto.imageUrl = photoData.url;
                                         devicePhoto.currentPhoto.thumbnailUrl = devicePhoto._cloudinaryThumb+photoData.public_id;
