@@ -203,7 +203,28 @@ var noteModel = {
         note.set('isExpired', false);
 
         return(note);
+    },
+
+    updateNote : function (note) {
+        var keys = Object.keys(note);
+        var noteObj = noteModel.findNote(note.objectType, note.uuid);
+
+        if (noteObj !== undefined) {
+
+            for (var i=0; i < keys.length; i++) {
+                if (keys[i] !== 'uuid' && keys[i] !== 'objectType') {
+                    var field = keys[i];
+                    if (noteObj[field] !== note[field]) {
+                        noteObj.set(field, note[field]);
+                        updateParseObject(noteModel._parseClass, 'uuid', note.uuid, field, note[field]);
+
+                    }
+                }
+            }
+
+        }
     }
+
 
 
 };
