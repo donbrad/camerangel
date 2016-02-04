@@ -1588,6 +1588,7 @@ var placeView = {
             if (note !== undefined) {
                 placeView._memoriesDS.remove(note);
                 noteModel.notesDS.remove(note);
+                deleteParseObject(noteModel._parseClass, 'uuid', item.uuid);
             }
         } else if (item.ggType === 'Photo') {
 

@@ -1004,6 +1004,8 @@ var smartNoteView = {
             smartNoteView._activeObject.set('tagString', actionObj.tagString);
             smartNoteView._activeObject.set('tags', actionObj.tags);
             smartNoteView._activeObject.set('content', actionObj.content);
+            $('#smartNoteView-content').redactor('code.set', actionObj.content);
+
             smartNoteView._activeObject.set('expiration', actionObj.expiration);
         }
 
