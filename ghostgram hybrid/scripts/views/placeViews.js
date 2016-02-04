@@ -1558,8 +1558,8 @@ var placeView = {
         _preventDefault(e);
         var item = placeView._currentItem;
         if (item.ggType === 'Note') {
-            var note = item;
-            smartNoteView.openModal(null, function (note) {
+            var noteObj = item;
+            smartNoteView.openModal(noteObj, function (note) {
 
                 var newNote = noteModel.findNote(note.objectType, note.uuid);
                 newNote.set('title',note.title);
