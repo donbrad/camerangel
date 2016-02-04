@@ -1268,7 +1268,9 @@ var placeView = {
         var ds = placeView._memoriesDS;
         ds.data([]);
         var placeId = placeView._activePlaceId;
+        var zipcode = placeView._activePlace.zipcode;
         var photoList = photoModel.findPhotosByPlaceId(placeId);
+
         var notesList = noteModel.findNotesByObjectId(noteModel._places, placeId);
 
         if (photoList !== undefined && photoList.length > 0) {
@@ -1287,6 +1289,19 @@ var placeView = {
                 note.ggType = 'Note';
                 note.date = new Date(note.updatedAt);
                 ds.add(note);
+            }
+        }
+
+        if (zipcode !== undefined && zipcode !== null) {
+            var zipList = photoModel.findPhotosByAddressString(zipcode);
+            if (zipList !== undefined && zipList.length > 0) {
+
+                for (var z = 0; z < zipList.length; z++) {
+                    var zip = zipList[z];
+                    zip.ggType = 'Photo';
+                    zip.date = new Date(zip.updatedAt);
+                    ds.add(zip);
+                }
             }
         }
     },

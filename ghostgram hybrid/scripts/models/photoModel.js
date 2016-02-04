@@ -210,6 +210,11 @@ var photoModel = {
         return(photoModel.queryPhotos({ field: "placeString", operator: "contains", value: placeString }));
     },
 
+    findPhotosByAddressString : function (addressString) {
+
+        return(photoModel.queryPhotos({ field: "addressString", operator: "contains", value: addressString }));
+    },
+
     findPhotosBySender: function (senderId) {
 
         return(photoModel.queryPhotos({ field: "senderUUID", operator: "eq", value: senderId }));
