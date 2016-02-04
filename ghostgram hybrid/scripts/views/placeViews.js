@@ -1558,8 +1558,24 @@ var placeView = {
         _preventDefault(e);
         var item = placeView._currentItem;
         if (item.ggType === 'Note') {
+            var noteObj = item;
+            smartNoteView.openModal(noteObj, function (note) {
 
+                var newNote = noteModel.findNote(note.objectType, note.uuid);
+                newNote.set('title',note.title);
+                newNote.set('expiration', Number(note.expiration));
+                newNote.set('content', note.content);
+                newNote.set('expirationDate', note.expirationDate);
+                newNote.set('tags', note.tags);
+                newNote.set('tagString', tagModel.createTagString(note.tags));
+
+                noteModel.updateNote(newNote);
+                smartNoteView.onDone();
+
+            });
         } else if (item.ggType === 'Photo') {
+            var photo = placeView._currentItem;
+            modalPhotoView.openModal(photo);
 
         }
         $("#placeViewItemActions").data("kendoMobileActionSheet").close();
@@ -1567,9 +1583,22 @@ var placeView = {
 
     deleteItem : function (e) {
         _preventDefault(e);
-        if (item.ggType === 'Note') {
+        var item = placeView._currentItem;
 
+        if (item.ggType === 'Note') {
+            var note = noteModel.findNote(item.objectType, item.uuid);
+            if (note !== undefined) {
+                placeView._memoriesDS.remove(note);
+                noteModel.notesDS.remove(note);
+                deleteParseObject(noteModel._parseClass, 'uuid', item.uuid);
+            }
         } else if (item.ggType === 'Photo') {
+            var photo = placeView._currentItem;
+            placeView._memoriesDS.remove(photo);
+            photoModel.photosDS.remove(photo);
+            deleteParseObject(photoModel._parseClass, 'photoId', photo.photoId);
+
+
 
         }
         $("#placeViewItemActions").data("kendoMobileActionSheet").close();

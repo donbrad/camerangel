@@ -152,6 +152,14 @@ function deleteParseObject(objectName, field, fieldValue) {
 	});
 }
 
+function _nullString (stringIn) {
+	if (stringIn === undefined) {
+		return(null);
+	}
+
+	return(stringIn);
+}
+
 function getNetworkState() {
 	var networkState = navigator.connection.type;
 	switch (networkState) {
@@ -315,6 +323,9 @@ function getChannelDetails(channelId, callBack) {
 		}
 	});
 }
+
+
+
 function getUserChannels(uuid, callBack) {
 	Parse.Cloud.run('getUserChannels', {
 		uuid: uuid
@@ -363,6 +374,7 @@ function getNewUserChannels(phone, callBack) {
 	});
 }
 
+
 function queryPrivateChannel(uuid, contactuuid, callBack) {
 	Parse.Cloud.run('queryPrivateChannel', {
 		uuid: uuid, contactuuid : contactuuid
@@ -381,6 +393,30 @@ function queryPrivateChannel(uuid, contactuuid, callBack) {
 					channels: null,
 					count: 0,
 					update: true
+				});
+			}
+
+		},
+		error: function(result, error) {
+			callBack(null, error)
+		}
+	});
+}
+
+function doesPhotoExist(photoId, senderId, callback) {
+	Parse.Cloud.run('doesPhotoExist', {
+		photoId: photoId, senderId : senderId
+	}, {
+		success: function(result, error) {
+			if (result.status === 'ok' && result.count > 0) {
+				callBack({
+					found: true,
+					photo: result.photo
+				});
+			} else {
+				callBack({
+					found: false,
+					photo: result.photo
 				});
 			}
 

@@ -1000,10 +1000,13 @@ var smartNoteView = {
             smartNoteView._activeObject.set('content', '');
             smartNoteView._activeObject.set('expiration', '30');
         } else {
+            smartNoteView._activeObject.set('objectType', actionObj.objectType);
+            smartNoteView._activeObject.set('uuid', actionObj.uuid);
             smartNoteView._activeObject.set('title', actionObj.title);
             smartNoteView._activeObject.set('tagString', actionObj.tagString);
             smartNoteView._activeObject.set('tags', actionObj.tags);
             smartNoteView._activeObject.set('content', actionObj.content);
+            $('#smartNoteView-content').redactor('code.set', actionObj.content);
             smartNoteView._activeObject.set('expiration', actionObj.expiration);
         }
 
