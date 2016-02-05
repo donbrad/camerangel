@@ -1685,7 +1685,7 @@ var checkInView = {
             field: "distance",
             dir: "asc"
         },
-        group: 'category'
+        group: 'ggType'
     }),
 
     onInit : function (e) {
