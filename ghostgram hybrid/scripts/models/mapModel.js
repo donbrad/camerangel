@@ -24,6 +24,9 @@ var mapModel = {
     lastPosition: {},
     lastPingSeconds : null,
     _pingInterval: 5, //Ping debounce interval in seconds.  app will only get position after _pingInterval seconds
+    _radiusCheckIn : 1000,
+    _boundsCheckIn : null,
+    _location : null,
 
     geocoder : null,
     mapOptions : {zoom: 14,  center: { lat: 42.1347293 , lng: -91.1362623}},
@@ -110,6 +113,24 @@ var mapModel = {
         }
     },
 
+    setLocationAndBounds : function () {
+        var geolocation = {
+            lat: mapModel.lat,
+            lng: mapModel.lng
+        };
+
+        mapModel._location = geolocation;
+        var circle = new google.maps.Circle({
+            center: geolocation,
+            radius: mapModel._radiusCheckIn
+        });
+
+        var bounds = circle.getBounds();
+        mapModel._boundsCheckIn = bounds;
+
+    },
+
+
     // Return ggPlaces within radius of current lat / lng
     matchPlaces : function (callback) {
 
@@ -129,7 +150,38 @@ var mapModel = {
     getCheckInPlaces : function (callback) {
 
         var placeArray = placesModel.matchLocation(mapModel.lat, mapModel.lng);
+        mapModel.setLocationAndBounds();
 
+        mapModel.googlePlaces.nearbySearch({
+            location: mapModel._location,
+            radius: mapModel._radiusCheckIn
+
+        }, function (results, status) {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                results.forEach( function (prediction) {
+                    var desObj = {category:"Place",description: prediction.description};
+                    if (prediction.types[0] === 'establishment') {
+                        desObj.title = prediction.terms[0].value;
+                        desObj.address = prediction.terms[1].value + " " + prediction.terms[2].value + ", " + prediction.terms[3].value;
+                        desObj.type = 'Establishment'
+                    } else if (prediction.types[0] === 'route' ) {
+                        desObj.title = "Area";
+                        desObj.address = prediction.terms[0].value + " " + prediction.terms[1].value + ", " + prediction.terms[2].value;
+                        desObj.type = 'Route';
+                    } else if (prediction.types[0] === 'street_address' ) {
+                        desObj.title = "Location";
+                        desObj.address = prediction.terms[0].value + " " + prediction.terms[1].value + ", " + prediction.terms[2].value;
+                        desObj.type = 'Street Address';
+                    } else {
+                        desObj.title = "Unknown";
+                        desObj.address = "Unknown";
+                        desObj.type = 'Unknown';
+                    }
+                    desObj.placeId = prediction.place_id;
+                    placeArray.push(desObj);
+                });
+            }
+        });
 
 
     },

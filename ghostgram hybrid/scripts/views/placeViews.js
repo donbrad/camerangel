@@ -1715,13 +1715,12 @@ var checkInView = {
             checkInView._callback = null;
         }
 
-        mapModel.matchPlaces(function (placeArray) {
+        mapModel.getCheckInPlaces(function (placeArray) {
             // Just compute the distance of matches
             mapModel.computePlaceArrayDistance(placeArray);
             checkInView.openModal(placeArray, checkInView.onDone);
         });
-
-
+        
     },
 
     openModal : function (placeArray, callback) {
@@ -1915,9 +1914,6 @@ var smartEventPlacesView = {
 
     onInit : function (e) {
         _preventDefault(e);
-
-
-
 
         $("#smartEventPlaces-listview").kendoMobileListView({
                 dataSource: smartEventPlacesView.placesDS,
@@ -2135,7 +2131,6 @@ var smartEventPlacesView = {
         smartEventPlacesView._lng = mapModel.lng;
 
         smartEventPlacesView.setLocationAndBounds();
-
 
         smartEventPlacesView._callback = callback;
 
