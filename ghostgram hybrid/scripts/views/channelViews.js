@@ -2295,7 +2295,12 @@ var channelView = {
 
     messageMovie : function (e) {
         _preventDefault(e);
-        mobileNotify("Chat Movie isn't wired up yet");
+        smartMovieView.openModal(null, function (movie) {
+
+          //  channelView.messageAddSmartEvent(event);
+            mobileNotify("Sending Smart Movie...");
+           // channelView.messageSend();
+        });
     }
 
 };

@@ -1071,7 +1071,203 @@ var smartFlightView = {
 };
 
 var smartMovieView = {
+    _activeObject : new kendo.data.ObservableObject(),
+    _date : new Date(),
+    _placeId :null,
+    _geoObj: null,
+    _isInited : false,
+    _callback : null,
 
+
+    onChangeCalendar: function (e) {
+        _preventDefault(e);
+
+
+    },
+
+
+    onSave: function (e) {
+        _preventDefault(e);
+
+        smartMovieView.onDone();
+    },
+
+    onInit: function (e) {
+        _preventDefault(e);
+
+
+    },
+
+    openModal: function (actionObj, callback) {
+        if (!smartMovieView._isInited) {
+
+
+            $('#smartMovieView-date').pickadate({
+                format: 'mmm, d yyyy',
+                formatSubmit: 'mm d yyyy',
+                min: true,
+                onSet : function (context) {
+                    smartEventView.updateDateString();
+                }
+            });
+            //$('#smartEventView-time').pickatime();
+
+            /* $("#smartEventView-date").on('blur', function () {
+
+             });*/
+
+
+            $("#smartMovieView-time").on('blur', function () {
+                var timeIn =  $("#smartMovieModal-time").val();
+                if (timeIn.length > 2) {
+
+                    var time = Date.parse(timeIn);
+                    var timeComp = new Date(time).toString("h:mm tt");
+                    $("#smartEventView-time").val(timeComp);
+                    smartEventView.updateDateString();
+                }
+            });
+
+            $("#smartMovieView-placesearch").on('input', function () {
+                var placeStr =  $("#smartMovieModal-placesearch").val();
+                if (placeStr.length > 3) {
+                    $("#smartMovieModal-placesearchBtn").text("Find " + placeStr);
+                    $("#smartMovieModal-placesearchdiv").removeClass('hidden');
+                } else {
+                    $("#smartMovieModal-placesearchdiv").addClass('hidden');
+                }
+            });
+
+            $("#smartMovieView-placesearch").kendoAutoComplete({
+                dataSource: placesModel.placesDS,
+                ignoreCase: true,
+                dataTextField: "name",
+                dataValueField: "uuid",
+                change: function (e) {
+                    var placeStr = $("#smartMovieModal-placesearch").val();
+
+                    if (smartMovieView._placeId !== null) {
+                        var place = placesModel.getPlaceModel(smartMovieView._placeId);
+
+                        if (placeStr === place.name) {
+                            return;
+                        }
+                        smartMovieView._placeId = null;
+                        smartMovieView._activeObject.set('placeId', smartEventView._placeId);
+                        smartMovieView._activeObject.set('placeName',placeStr);
+                        smartMovieView._activeObject.set('address', null);
+                        smartMovieView._activeObject.set('lat',null);
+                        smartMovieView._activeObject.set('lng',null);
+
+                    }
+                    // event fired on blur -- if a place wasn't selected, need to do a nearby search
+
+                    if (placeStr.length > 3) {
+                        $("#smartMovieModal-placesearchBtn").text("Find " + placeStr);
+                        $("#smartMovieModal-placesearchdiv").removeClass('hidden');
+                    } else {
+                        $("#smartMovieModal-placesearchdiv").addClass('hidden');
+                    }
+
+                },
+                select: function(e) {
+                    // User has selected one of their places
+                    var place = e.item;
+                    var dataItem = this.dataItem(e.item.index());
+                    smartMovieView._placeId = dataItem.uuid;
+                    smartMovieView._activeObject.set('placeId', smartEventView._placeId);
+                    smartMovieView._activeObject.set('placeName',dataItem.name);
+                    smartMovieView._activeObject.set('address',dataItem.address +  ' ' + dataItem.city + ', ' + dataItem.state);
+                    smartMovieView._activeObject.set('lat',dataItem.lat);
+                    smartMovieView._activeObject.set('lng',dataItem.lng);
+
+
+                    // Hide the Find Location button
+                    $("#smartMovieModal-placesearchdiv").addClass('hidden');
+
+                },
+                filter: "contains",
+                placeholder: "Select location... "
+            });
+
+            smartMovieView._isInited = true;
+        }
+
+        if (callback === undefined) {
+            callback = null;
+        }
+
+        smartMovieView._callback = callback;
+
+        smartMovieView._date = new Date();
+
+
+        if (actionObj === undefined || actionObj === null) {
+            smartMovieView.initActiveObject();
+
+        } else {
+            // we have an existing event
+            smartMovieView.setActiveObject(actionObj);
+        }
+        var thisObject = smartMovieView._activeObject;
+        // setting send/receiver
+
+
+        if (thisObject.senderUUID === userModel.currentUser.userUUID) {
+            smartEventView.setSenderMode();
+        } else {
+            smartEventView.setRecipientMode();
+
+        }
+
+        // setting event location
+        if(thisObject.placeName !== null){
+            $(".event-location").removeClass("hidden");
+        } else {
+            $(".event-location").addClass("hidden");
+        }
+
+       // smartMovieView.updateCalendar();
+
+        var prettyDate = moment(thisObject.date).format('dddd MMMM, Do [at] h:mmA');
+        $(".event-date").text(prettyDate);
+
+
+        $("#smartMovieView-placesearchdiv").addClass('hidden');
+
+        if (thisObject.senderUUID === null || thisObject.senderUUID === userModel.currentUser.userUUID) {
+            $("#smartMovieView-organizer").text("You");
+        } else {
+            var contact = contactModel.findContactByUUID(thisObject.senderUUID);
+            if (contact !== undefined) {
+                $("#smartMovieView-organizer").text(contact.name);
+            }
+        }
+
+        smartMovieView.checkExpired();
+        $("#smartMovieModal").data("kendoMobileModalView").open();
+    },
+
+    onShow: function (e) {
+        _preventDefault(e);
+        $("#smartMovieModal").data("kendoMobileModalView").open();
+
+    },
+
+    onCancel : function (e) {
+        _preventDefault(e);
+        $("#smartMovieModal").data("kendoMobileModalView").close();
+        $("#eventBanner").removeClass();
+    },
+
+    onDone: function (e) {
+        //_preventDefault(e);
+
+        $("#smartMovieModal").data("kendoMobileModalView").close();
+        if (smartMovieView._callback !== null) {
+            smartMovieView._callback(smartMovieView._activeObject);
+        }
+    }
 };
 
 
