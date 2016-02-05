@@ -3070,8 +3070,38 @@
 	</div>
 </div>
 
+
+<!-- Smart Event Location -->
+<div data-role="modalview" data-title="Smart Location" id="smartEventLocationModal" data-init="smartEventLocationView.onInit" style="height:100%; width:100%; z-index:1000; display: none;">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Smart Location</span>
+			<a data-role="button" data-align="left" data-click="smartEventLocationView.closeModal"><img src="images/nav-back.svg" /></a>
+		</div>
+	</div>
+
+	<div class="tempSearchBox" id="searchEventLocation-form">
+		<p id="searchEventPlaces-selectLocation" >Please select Address or City, State</p>
+		<div class="appendSearch">
+			<span class="searchIcon"><img src="images/place-icon.svg" /></span>
+			<input type="search" name="Area" placeholder="Area or city to search..." id="smartEventLocation-place" data-required-msg="Enter address or city, state" required />
+		</div>
+		<span class="k-invalid-msg" data-for="Area"></span>
+		<div class="partnerDiv">
+			<img src="images/powered_by_google_on_white.png"/>
+		</div>
+	</div>
+
+
+	<div>
+		<ul id="smartEventLocation-listview"></ul>
+	</div>
+
+</div>
+
+
 <!-- Smart Event Places -->
-<div data-role="modalview" data-title="Smart Event Places" id="smartEventPlacesModal" data-init="smartEventPlacesView.onInit" style="height:100%; width:100%; z-index:1000; display: none;">
+<div data-role="modalview" data-title="Smart Places" id="smartEventPlacesModal" data-init="smartEventPlacesView.onInit" style="height:100%; width:100%; z-index:1000; display: none;">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>Smart Event Places</span>
