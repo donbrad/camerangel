@@ -379,18 +379,34 @@ var userModel = {
         }
     },
 
-    checkIn : function (placeId) {
-        var place = placesModel.getPlaceModel(placeId);
+    checkIn : function (placeId, lat, lng, locationName, googlePlaceId) {
 
-        userModel.currentUser.set('currentPlace',place.name);
-        userModel.currentUser.set('currentPlaceUUID', place.uuid);
+        if (placeId !== null) {
+            var place = placesModel.getPlaceModel(placeId);
+
+            userModel.currentUser.set('currentPlace', place.name);
+            userModel.currentUser.set('currentPlaceUUID', place.uuid);
+            userModel.currentUser.set('googlePlaceId', place.googleId);
+            userModel.currentUser.set('lat', place.lat);
+            userModel.currentUser.set('lng', place.lat);
+
+        } else {
+            userModel.currentUser.set('currentPlace', locationName);
+            userModel.currentUser.set('currentPlaceUUID', null);
+            userModel.currentUser.set('googlePlaceId', googlePlaceId);
+            userModel.currentUser.set('lat', lat);
+            userModel.currentUser.set('lng', lat);
+        }
+
         userModel.currentUser.set('isCheckedIn', true);
-
         userStatus.update();
     },
 
     checkOut : function () {
         userModel.currentUser.set('isCheckedIn', false);
+        userModel.currentUser.set('currentPlace', null);
+        userModel.currentUser.set('currentPlaceUUID',null);
+
     },
 
     // Need a valid uuid to initialize pubnub and create appData and userData channels

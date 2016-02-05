@@ -110,7 +110,9 @@ var mapModel = {
         }
     },
 
+    // Return ggPlaces within radius of current lat / lng
     matchPlaces : function (callback) {
+
         var placeArray = placesModel.matchLocation(mapModel.lat, mapModel.lng);
         if (placeArray.length === 0) {
             mapModel.matchedPlaces = null;
@@ -121,6 +123,15 @@ var mapModel = {
         if (callback !== undefined) {
             callback(placeArray);
         }
+    },
+
+    // Todo: don finish getCheckInPlaces
+    getCheckInPlaces : function (callback) {
+
+        var placeArray = placesModel.matchLocation(mapModel.lat, mapModel.lng);
+
+
+
     },
 
 

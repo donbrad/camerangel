@@ -1331,7 +1331,7 @@ var placeView = {
 
         if (zipcode !== undefined && zipcode !== null) {
             var zipList = photoModel.findPhotosByAddressString(zipcode);
-            
+
             if (zipList !== undefined && zipList.length > 0) {
 
                 for (var z = 0; z < zipList.length; z++) {
@@ -1708,11 +1708,13 @@ var checkInView = {
     locateAndOpenModal : function (callBack) {
 
         checkInView._returnView = APP.kendo.view().id;
+
         if (callBack !== undefined && callBack !== null) {
             checkInView._callback = callBack;
         } else {
             checkInView._callback = null;
         }
+
         mapModel.matchPlaces(function (placeArray) {
             // Just compute the distance of matches
             mapModel.computePlaceArrayDistance(placeArray);

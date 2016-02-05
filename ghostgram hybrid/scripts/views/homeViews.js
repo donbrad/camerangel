@@ -523,26 +523,6 @@ var userStatusView = {
         })
     },
 
-   /* checkIn : function (e) {
-        _preventDefault(e);
-
-        if (mapModel.currentPlaceId !== null) {
-
-            userModel.checkIn(mapModel.currentPlaceId);
-            mapModel.checkIn(mapModel.currentPlaceId);
-            mobileNotify("You're checked in!");
-
-            //userStatusView._update();
-            $('#profileCheckOutLi').velocity("slideDown", {begin: function(element){
-            	$(element).removeClass("hidden");
-            }
-        });
-        } else {
-            mobileNotify("No place to check in to...");
-        }
-
-    },*/
-
     checkOut : function (e) {
         _preventDefault(e);
 
@@ -1343,6 +1323,9 @@ var signInView = {
                 userModel.currentUser.set('isPhotoStored', userModel.parseUser.get('isPhotoStored'));
                 userModel.currentUser.set('saveToPhotoAlbum', userModel.parseUser.get('saveToPhotoAlbum'));
                 userModel.currentUser.set('currentPlace', userModel.parseUser.get('currentPlace'));
+                userModel.currentUser.set('googlePlaceId', userModel.parseUser.get('googlePlaceId'));
+                userModel.currentUser.set('lat', userModel.parseUser.get('lat'));
+                userModel.currentUser.set('lng', userModel.parseUser.get('lng'));
                 userModel.currentUser.set('currentPlaceUUID', userModel.parseUser.get('currentPlaceUUID'));
                 userModel.currentUser.set('photo', userModel.parseUser.get('photo'));
                 userModel.currentUser.set('aliasPublic', userModel.parseUser.get('aliasPublic'));
