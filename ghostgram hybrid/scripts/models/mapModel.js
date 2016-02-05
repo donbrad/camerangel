@@ -181,6 +181,8 @@ var mapModel = {
 
                 });
             }
+
+            callback(placeArray);
         });
 
 
