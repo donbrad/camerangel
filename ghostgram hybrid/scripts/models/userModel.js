@@ -394,8 +394,8 @@ var userModel = {
             userModel.currentUser.set('currentPlace', locationName);
             userModel.currentUser.set('currentPlaceUUID', null);
             userModel.currentUser.set('googlePlaceId', googlePlaceId);
-            userModel.currentUser.set('lat', Number(lat));
-            userModel.currentUser.set('lng', Number(lat));
+            userModel.currentUser.set('lat', lat.toFixed(6));
+            userModel.currentUser.set('lng', lat.toFixed(6));
         }
 
         userModel.currentUser.set('isCheckedIn', true);
