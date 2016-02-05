@@ -13,6 +13,8 @@ var mapModel = {
     currentAddress : null,   // Current physical address - location
     currentPlace: null,       // currentPlace Object - null if none
     currentPlaceId: null,     // currentplace UUID - null if none
+    currentGoogleId : null,
+    currentPlaceName : null,
 
     matchedPlaces: null,   // places that match the current lat/lng
 
@@ -35,8 +37,6 @@ var mapModel = {
 
 
     init: function () {
-
-
 
         mapModel.lastPingSeconds = ggTime.currentTimeInSeconds() - 11;
 
@@ -91,11 +91,22 @@ var mapModel = {
     checkOut : function () {
         mapModel.wasPrompted = false;
         mapModel.isCheckedIn = false;
+        mapModel.currentPlaceId = null;
+        mapModel.currentPlace = null;
+        mapModel.currentPlaceName = null;
+        mapModel.currentGoogleId = null;
     },
 
-    checkIn : function (placeId) {
+    checkIn : function (placeId, placeName, googleId) {
 
-        mapModel.setCurrentPlace(placeId, true);
+        if (placeId !== null) {
+            mapModel.setCurrentPlace(placeId, true);
+        } else {
+            mapModel.currentPlaceName = placeName;
+            mapModel.currentGoogleId = googleId;
+            mapModel.currentPlaceId = null;
+            mapModel.currentPlace = null;
+        }
         mapModel.wasPrompted = true;
         mapModel.isCheckedIn = true;
     },
@@ -246,6 +257,8 @@ var mapModel = {
     setCurrentPlace : function (placeId, isCheckedIn) {
         mapModel.currentPlaceId = placeId;
         mapModel.currentPlace = placesModel.getPlaceModel(placeId);
+        mapModel.currentGoogleId = mapModel.currentPlace.googleId;
+        mapModel.currentPlaceName = mapModel.currentPlace.name;
 
         if (isCheckedIn !== undefined) {
             mapModel.isCheckedIn = isCheckedIn;

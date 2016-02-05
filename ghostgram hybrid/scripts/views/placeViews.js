@@ -1694,9 +1694,20 @@ var checkInView = {
             dataSource: checkInView.placesDS,
             template: $("#checkinPlacesTemplate").html(),
             click: function (e) {
-                var place = e.dataItem, placeId = place.uuid;
-                mapModel.checkIn(placeId);
-                userModel.checkIn(placeId);
+
+                var place = e.dataItem, name = null;
+                if (place.ggType === 'Place') {
+                    var placeId = place.uuid;
+                    name = place.name;
+                    mapModel.checkIn(placeId);
+                    userModel.checkIn(placeId);
+                } else {
+                    // Must be  ggType === "Venue" ie lightweight place
+                    name = place.title;
+                    mapModel.checkIn(null, place.title, place.googleId);
+                    userModel.checkIn(null, place.lat, place.lng, place.title, place.googleId);
+                }
+
                 userStatus.update();
                 mobileNotify("You're checked in to " + place.name);
                 checkInView.closeModal();
