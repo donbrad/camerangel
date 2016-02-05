@@ -85,6 +85,7 @@ var noteModel = {
         var NoteModel = Parse.Object.extend(noteModel._parseClass);
         var query = new Parse.Query(NoteModel);
         query.limit(1000);
+        
         query.find({
             success: function(collection) {
                 var userNotifications = [];

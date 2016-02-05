@@ -41,6 +41,7 @@ var photoModel = {
     _fetchPhotos : function () {
         var ParsePhotoModel = Parse.Object.extend(photoModel._parseClass);
         var query = new Parse.Query(ParsePhotoModel);
+        query.limit(1000);
 
         query.find({
             success: function(collection) {
@@ -75,6 +76,7 @@ var photoModel = {
     _fetchOffers : function () {
         var ParsePhotoOffer = Parse.Object.extend("photoOffer");
         var queryOffer = new Parse.Query(ParsePhotoOffer);
+        query.limit(1000);
 
         queryOffer.find({
             success: function(collection) {
