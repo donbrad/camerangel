@@ -893,7 +893,21 @@
 
 
 <script type="text/x-kendo-template" id="checkinPlacesTemplate">
-	<a>
+	<div>
+		# if (data.ggType === 'Venue') { #
+		<h4 class="textClamp">#:data.title#</h4>
+		<p>#:data.address#</p>
+		<p class="helper">
+           <span class="left">
+			   #: date.type #
+		   </span>
+			<span class="right">
+			   #: date.distance #
+		   </span>
+		</p>
+		<div class="clearfix"> </div>
+		# } else {#
+
 		# if(data.category === 'Location'){#
 		<h4 class="textClamp">#:data.name#</h4>
 		<p>#:data.city#, #:data.state# #:data.zipcode#</p>
@@ -913,7 +927,8 @@
            </span>
 				</p>
 				<div class="clearfix"> </div>
-	</a>
+		 # } #
+	</div>
 </script>
 
 <!-- galleryPicker template -->
