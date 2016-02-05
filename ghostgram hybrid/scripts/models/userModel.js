@@ -573,6 +573,9 @@ var userStatus = {
             case 'isCheckedIn' :
             case 'statusMessage' :
             case 'currentPlace' :
+            case 'lat' :
+            case 'lng' :
+            case 'googlePlaceId' :
             case 'currentPlaceUUID' :
                 userStatus.parseUserStatus.set(field, userModel.currentUser.get(field));
                 userStatus.parseUserStatus.set('lastUpdate', ggTime.currentTime());
@@ -595,6 +598,9 @@ var userStatus = {
         status.set('isVisible', userModel.currentUser.isVisible);
         status.set('statusMessage', userModel.currentUser.statusMessage);
         status.set('currentPlace', userModel.currentUser.currentPlace);
+        status.set('lat', userModel.currentUser.lat);
+        status.set('lng', userModel.currentUser.lng);
+        status.set('googlePlaceId', userModel.currentUser.googlePlaceId);
         status.set('currentPlaceUUID', userModel.currentUser.currentPlaceUUID);
         status.set('isCheckedIn', userModel.currentUser.isCheckedIn);
         status.set('lastUpdate', ggTime.currentTime());
