@@ -664,6 +664,9 @@ var channelModel = {
             }
         }
 
+         if (isDeleted === undefined) {
+             isDeleted = false;
+         }
         var addTime = ggTime.currentTime();
         channel.set("version", channelModel._version);
         channel.set("ggType", channelModel._ggClass);
