@@ -2060,25 +2060,31 @@ var smartEventPlacesView = {
                 ds.data([]);
                 predictions.forEach( function (prediction) {
                     var desObj = {category:"Place",description: prediction.description};
+                    desObj.placeId = prediction.place_id;
                     if (prediction.types[0] === 'establishment') {
                         desObj.title = prediction.terms[0].value;
                         desObj.address = prediction.terms[1].value + " " + prediction.terms[2].value + ", " + prediction.terms[3].value;
-                        desObj.type = 'Establishment'
+                        desObj.type = 'Establishment';
+
+                        ds.add(desObj);
                     } else if (prediction.types[0] === 'route' ) {
                         desObj.title = "Area";
                         desObj.address = prediction.terms[0].value + " " + prediction.terms[1].value + ", " + prediction.terms[2].value;
                         desObj.type = 'Route';
+
+                        ds.add(desObj);
                     } else if (prediction.types[0] === 'street_address' ) {
                         desObj.title = "Location";
                         desObj.address = prediction.terms[0].value + " " + prediction.terms[1].value + ", " + prediction.terms[2].value;
                         desObj.type = 'Street Address';
+
+                        ds.add(desObj);
                     } else {
                         desObj.title = "Unknown";
                         desObj.address = "Unknown";
                         desObj.type = 'Unknown';
                     }
-                    desObj.placeId = prediction.place_id;
-                    ds.add(desObj);
+
 
                 });
             }
