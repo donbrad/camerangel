@@ -24,6 +24,7 @@ var channelsView = {
         }
     }),
 
+
     onInit : function (e) {
         e.preventDefault();
 
@@ -113,6 +114,8 @@ var channelsView = {
         }
 
     },
+
+
 
     onShow : function(e) {
         _preventDefault(e);
