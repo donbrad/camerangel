@@ -153,8 +153,8 @@ var mapModel = {
 
         mapModel.googlePlaces.nearbySearch({
             location: mapModel._location,
-            //radius: mapModel._radiusCheckIn,
-            rankBy: google.maps.places.RankBy.DISTANCE
+            radius: mapModel._radiusCheckIn
+            //rankBy: google.maps.places.RankBy.DISTANCE
 
         }, function (results, status) {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
