@@ -67,6 +67,7 @@ var channelModel = {
         var Channel = Parse.Object.extend(channelModel._parseClass);
         var query = new Parse.Query(Channel);
         query.limit(1000);
+
         query.find({
             success: function(collection) {
                 var models =[];
