@@ -1720,7 +1720,7 @@ var checkInView = {
             mapModel.computePlaceArrayDistance(placeArray);
             checkInView.openModal(placeArray, checkInView.onDone);
         });
-        
+
     },
 
     openModal : function (placeArray, callback) {

@@ -146,7 +146,6 @@ var mapModel = {
         }
     },
 
-    // Todo: don finish getCheckInPlaces
     getCheckInPlaces : function (callback) {
 
         var placeArray = placesModel.matchLocation(mapModel.lat, mapModel.lng);
@@ -154,31 +153,32 @@ var mapModel = {
 
         mapModel.googlePlaces.nearbySearch({
             location: mapModel._location,
-            radius: mapModel._radiusCheckIn
+            radius: mapModel._radiusCheckIn,
+            rankBy: google.maps.places.RankBy.DISTANCE
 
         }, function (results, status) {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
-                results.forEach( function (prediction) {
-                    var desObj = {category:"Place",description: prediction.description};
-                    if (prediction.types[0] === 'establishment') {
-                        desObj.title = prediction.terms[0].value;
-                        desObj.address = prediction.terms[1].value + " " + prediction.terms[2].value + ", " + prediction.terms[3].value;
-                        desObj.type = 'Establishment'
-                    } else if (prediction.types[0] === 'route' ) {
-                        desObj.title = "Area";
-                        desObj.address = prediction.terms[0].value + " " + prediction.terms[1].value + ", " + prediction.terms[2].value;
-                        desObj.type = 'Route';
-                    } else if (prediction.types[0] === 'street_address' ) {
-                        desObj.title = "Location";
-                        desObj.address = prediction.terms[0].value + " " + prediction.terms[1].value + ", " + prediction.terms[2].value;
-                        desObj.type = 'Street Address';
+                results.forEach( function (result) {
+                    var desObj = {ggType:"Venue", googleId: result.place_id};
+                    var type = result.types[result.types.length-1];
+                    desObj.lat = result.geometry.location.lat();
+                    desObj.lng = result.geometry.location.lng();
+                    if (type === 'establishment') {
+                        desObj.title = result.name;
+                        desObj.address = result.vicinity;
+                        desObj.type = result.types[0];
+                        placeArray.push(desObj);
+                    } else if (type === 'political' ) {
+                        desObj.title = result.name;
+                        desObj.address = result.vicinity;
+                        desObj.type = result.types[0];
+                        placeArray.push(desObj);
                     } else {
                         desObj.title = "Unknown";
                         desObj.address = "Unknown";
                         desObj.type = 'Unknown';
                     }
-                    desObj.placeId = prediction.place_id;
-                    placeArray.push(desObj);
+
                 });
             }
         });
