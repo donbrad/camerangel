@@ -1176,6 +1176,45 @@ var smartMovieView = {
         //$("#searchEventPlace-input").removeClass('hidden');
     },
 
+    onPlaceSearch : function (e) {
+
+        _preventDefault(e);
+
+        var placeStr =  $("#smartMovieView-placesearch").val();
+
+        smartEventPlacesView.openModal(placeStr, function (geo) {
+            if (geo === null) {
+                mobileNotify("Smart Location cancelled...");
+                return;
+            }
+
+            var thisObj = smartMovieView._activeObject;
+
+            thisObj.set('placeId', null);
+            thisObj.set('googleId', geo.googleId);
+            thisObj.set('placeName', geo.name);
+            thisObj.set('address', geo.address);
+            thisObj.set('placeType', geo.type);
+            thisObj.set('lat', geo.lat);
+            thisObj.set('lng', geo.lng);
+
+            var addressArray = geo.address.split(','), address = addressArray[0];
+            // Place addresses are just the Street Number and Street;
+            geo.address = address;
+            smartEventView._geoObj = geo;
+
+            //
+            $("#smartEventView-placesearch").val(geo.name);
+            // hide place search btn
+            $("#smartEventView-placesearchdiv").addClass('hidden');
+            // show selected place
+            $("#smartEventView-placeadddiv").removeClass('hidden');
+            // hide input
+            $("#searchEventPlace-input").addClass("hidden");
+        });
+
+    },
+
     openModal: function (actionObj, callback) {
         if (!smartMovieView._isInited) {
 
