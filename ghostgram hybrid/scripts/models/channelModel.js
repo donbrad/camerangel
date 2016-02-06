@@ -259,9 +259,12 @@ var channelModel = {
 
         var channel = channelModel.findChannelModel(channelId);
 
-        if (channel === undefined)
+        if (channel === undefined) {
+            mobileNotify("Message recalled from Deleted Channel...");
             return;
-        ;
+        }
+
+
         channelModel.recalledMessagesDS.add(recallObj);
         if (channelId === channelView._channelId) {
             // need to delete from channel view too
