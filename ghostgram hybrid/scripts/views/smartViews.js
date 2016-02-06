@@ -1070,6 +1070,38 @@ var smartFlightView = {
 
 };
 
+var movieListView = {
+    activeObject : new kendo.data.ObservableObject(),
+    _date : new Date(),
+
+    onInit: function (e) {
+        _preventDefault(e);
+    },
+
+    onShow: function (e) {
+        _preventDefault(e);
+    },
+
+    openModal : function (obj, callback) {
+
+    },
+
+    closeModal : function () {
+
+    },
+
+    onDone: function (e) {
+        _preventDefault(e);
+        $("#movieListModal").data("kendoMobileModalView").close();
+    },
+
+    onCancel: function (e) {
+        _preventDefault(e);
+        $("#movieListModal").data("kendoMobileModalView").close();
+    }
+
+};
+
 var smartMovieView = {
     _activeObject : new kendo.data.ObservableObject(),
     _date : new Date(),
