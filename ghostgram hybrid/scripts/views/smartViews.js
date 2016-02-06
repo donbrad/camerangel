@@ -1122,6 +1122,60 @@ var smartMovieView = {
 
     },
 
+    initActiveObject : function () {
+        var thisObj = smartMovieView._activeObject;
+        // todo - review update to make date/time more useful as defaults
+        var newDate = new Date();
+        var newDateHour = newDate.getHours();
+        var newDateDay = newDate.getDate();
+
+        if(newDateHour < 20 && newDate > 0){
+            newDateHour += 3;
+            newDate.setHours(newDateHour);
+            newDate.setMinutes(0);
+        } else {
+            newDateDay += 1;
+            newDateHour = 10;
+            newDate.setDate(newDateDay);
+            newDate.setHours(newDateHour);
+            newDate.setMinutes(0);
+        }
+        thisObj.set("uuid", uuid.v4());
+        thisObj.set('senderUUID', userModel.currentUser.userUUID);
+        thisObj.set('senderName', userModel.currentUser.name);
+        thisObj.set('channelId', null);
+        thisObj.set('title', null);
+        thisObj.set('type', "movie");
+        thisObj.set('theatreId', null);
+        thisObj.set('theatreName', null);
+        thisObj.set('showTimes', []);
+        thisObj.set('action', null);
+        thisObj.set('description', null);
+        thisObj.set('address', null);
+        thisObj.set('googleId', null);
+        thisObj.set('calendarId', null);
+        thisObj.set('lat', null);
+        thisObj.set('lng', null);
+        thisObj.set('date', newDate);
+        thisObj.set('isDeleted', false);
+        thisObj.set('wasCancelled', false);
+        thisObj.set('movieSelected', false);  // if false, no movie selected - "let's see a movie at this theatre around this time
+        thisObj.set('movieId', null);
+        thisObj.set('movieName', null);
+        thisObj.set('addToCalendar', false);
+        thisObj.set('comment', null);
+        thisObj.set('wasSent', false);
+
+
+
+       // $('#smartEventView-placesearch').val(thisObj.placeName);
+        //$('#smartEventView-datestring').val(new Date(thisObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
+        $('#smartMovieView-date').val(new Date(thisObj.date).toString('MMM dd, yyyy'));
+        $('#smartMovieView-time').val(new Date(thisObj.date).toString('h:mm tt'));
+        //$("#smartEventView-placeadddiv").addClass('hidden');
+        //$("#searchEventPlace-input").removeClass('hidden');
+    },
+
     openModal: function (actionObj, callback) {
         if (!smartMovieView._isInited) {
 
