@@ -470,6 +470,12 @@ var photoModel = {
         photo.set('description', _nullString(photoObj.description));
         photo.set('tagString',  _nullString(photoObj.tagString));
         photo.set('address',  _nullString(photoObj.address));
+        photo.set('lat', photoObj.lat);
+        photo.set('lng', photoObj.lng);
+        if (photo.tags === undefined) {
+            photo.tags = [];
+        }
+        photo.set('tags', photoObj.tags);
 
        /* photo.set('title', photoObj.title);
         photo.set('description',  photoObj.description);

@@ -1077,6 +1077,8 @@ var smartMovieView = {
     _geoObj: null,
     _isInited : false,
     _callback : null,
+    _movieId: null,
+    _theatreId: null,
 
 
     onChangeCalendar: function (e) {
@@ -1085,6 +1087,28 @@ var smartMovieView = {
 
     },
 
+    checkExpired : function (date) {
+        var thisObject = smartMovieView._activeObject;
+
+        if (moment(smartMovieView._date).isAfter(date)) {
+            thisObject.set('isExpired', true);
+            smartMovieView.setEventBanner("expired");
+
+        } else {
+            thisObject.set('isExpired', false);
+            //smartEventView.setEventBanner();
+        }
+    },
+
+    updateDateString : function () {
+        var date = $('#smartMovieView-date').val();
+        var time = $('#smartMovieView-time').val();
+
+        var finalDateStr = date + " " + time;
+        //$("#smartEventView-datestring").val(finalDateStr);
+
+        smartMovieView._activeObject.set('date', new Date(finalDateStr));
+    },
 
     onSave: function (e) {
         _preventDefault(e);
@@ -1123,8 +1147,8 @@ var smartMovieView = {
 
                     var time = Date.parse(timeIn);
                     var timeComp = new Date(time).toString("h:mm tt");
-                    $("#smartEventView-time").val(timeComp);
-                    smartEventView.updateDateString();
+                    $("#smartMovieView-time").val(timeComp);
+                    smartMovieView.updateDateString();
                 }
             });
 
@@ -1138,57 +1162,6 @@ var smartMovieView = {
                 }
             });
 
-            $("#smartMovieView-placesearch").kendoAutoComplete({
-                dataSource: placesModel.placesDS,
-                ignoreCase: true,
-                dataTextField: "name",
-                dataValueField: "uuid",
-                change: function (e) {
-                    var placeStr = $("#smartMovieModal-placesearch").val();
-
-                    if (smartMovieView._placeId !== null) {
-                        var place = placesModel.getPlaceModel(smartMovieView._placeId);
-
-                        if (placeStr === place.name) {
-                            return;
-                        }
-                        smartMovieView._placeId = null;
-                        smartMovieView._activeObject.set('placeId', smartEventView._placeId);
-                        smartMovieView._activeObject.set('placeName',placeStr);
-                        smartMovieView._activeObject.set('address', null);
-                        smartMovieView._activeObject.set('lat',null);
-                        smartMovieView._activeObject.set('lng',null);
-
-                    }
-                    // event fired on blur -- if a place wasn't selected, need to do a nearby search
-
-                    if (placeStr.length > 3) {
-                        $("#smartMovieModal-placesearchBtn").text("Find " + placeStr);
-                        $("#smartMovieModal-placesearchdiv").removeClass('hidden');
-                    } else {
-                        $("#smartMovieModal-placesearchdiv").addClass('hidden');
-                    }
-
-                },
-                select: function(e) {
-                    // User has selected one of their places
-                    var place = e.item;
-                    var dataItem = this.dataItem(e.item.index());
-                    smartMovieView._placeId = dataItem.uuid;
-                    smartMovieView._activeObject.set('placeId', smartEventView._placeId);
-                    smartMovieView._activeObject.set('placeName',dataItem.name);
-                    smartMovieView._activeObject.set('address',dataItem.address +  ' ' + dataItem.city + ', ' + dataItem.state);
-                    smartMovieView._activeObject.set('lat',dataItem.lat);
-                    smartMovieView._activeObject.set('lng',dataItem.lng);
-
-
-                    // Hide the Find Location button
-                    $("#smartMovieModal-placesearchdiv").addClass('hidden');
-
-                },
-                filter: "contains",
-                placeholder: "Select location... "
-            });
 
             smartMovieView._isInited = true;
         }

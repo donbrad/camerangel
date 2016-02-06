@@ -3106,19 +3106,19 @@
 
 
 <!-- Smart Event Location -->
-<div data-role="modalview" data-title="Smart Location" id="smartEventLocationModal" data-init="smartEventLocationView.onInit" style="height:100%; width:100%; z-index:1000; display: none;">
+<div data-role="modalview" data-title="Smart Location" id="smartLocationModal" data-init="smartLocationView.onInit" style="height:100%; width:100%; z-index:1000; display: none;">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>Smart Location</span>
-			<a data-role="button" data-align="left" data-click="smartEventLocationView.closeModal"><img src="images/nav-back.svg" /></a>
+			<a data-role="button" data-align="left" data-click="smartLocationView.closeModal"><img src="images/nav-back.svg" /></a>
 		</div>
 	</div>
 
-	<div class="tempSearchBox" id="searchEventLocation-form">
-		<p id="searchEventPlaces-selectLocation" >Please select Address or City, State</p>
+	<div class="tempSearchBox" id="smartLocation-form">
+		<p id="smartLocation-selectLocation" >Please select Address or City, State</p>
 		<div class="appendSearch">
 			<span class="searchIcon"><img src="images/place-icon.svg" /></span>
-			<input type="search" name="Area" placeholder="Area or city to search..." id="smartEventLocation-place" data-required-msg="Enter address or city, state" required />
+			<input type="search" name="Area" placeholder="Area or city to search..." id="smartLocation-place" data-required-msg="Enter address or city, state" required />
 		</div>
 		<span class="k-invalid-msg" data-for="Area"></span>
 		<div class="partnerDiv">
@@ -3126,9 +3126,8 @@
 		</div>
 	</div>
 
-
 	<div>
-		<ul id="smartEventLocation-listview"></ul>
+		<ul id="smartLocation-listview"></ul>
 	</div>
 
 </div>
