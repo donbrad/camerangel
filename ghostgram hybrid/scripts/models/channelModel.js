@@ -260,7 +260,6 @@ var channelModel = {
         var channel = channelModel.findChannelModel(channelId);
 
         if (channel === undefined) {
-            mobileNotify("Message recalled from Deleted Channel...");
             return;
         }
 
