@@ -2486,6 +2486,24 @@
 	</div>
 </script>
 
+<!-- smartMovie movieGram modal -->
+<div data-role="modalview" id="movieListModal" style="width: 100%;  height: 100%; display: none; z-index: 100;"  data-model="movieListView._activeObject" data-init="movieListView.onInit" data-open="movieListView.onShow" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Movie List</span>
+			<a data-click="movieListView.onCancel" data-role="button" class="btnClear-grey" data-align="left">
+				<img src="images/nav-back.svg" />
+			</a>
+		</div>
+	</div>
+	<ul id="movieListView-listview" >
+
+	</ul>
+
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnPrimary" data-role="button" data-click="movieListView.onDone">Done</a>
+	</div>
+</div>
 
 <!-- smartMovie movieGram modal -->
 <div data-role="modalview" id="smartMovieModal" style="width: 100%;  height: 100%; display: none;"  data-model="smartMovieView._activeObject" data-init="smartMovieView.onInit" data-open="smartMovieView.onShow" class="appearance">
@@ -2503,10 +2521,8 @@
 			<h2 data-bind="text: title"></h2>
 			<p class="helper" data-bind="text: description"></p>
 			<p class="helper">Organized by <span id="smartMovieView-organizer" data-bind="text: senderName"></span></p>
+			<p class="helper">Showtimes:  <span  data-bind="text: showtimeString"></span></p>
 		</div>
-		<ul id="smartMovieView-listview" >
-
-		</ul>
 	</div>
 
 	<form id="movie-editMode" class="event-owner hidden">
@@ -2556,14 +2572,15 @@
 					</div>
 				</div>
 			</li>
+			<li >
+				<label> Movie
+					<input type="search" id="smartMovieView-moviesearch"/>
+				</label>
+			</li>
 		</ul>
 	</form>
 
-	<div class="event-view card" id="movie-viewMode">
-		<ul id="smartMovieModal-listview" >
 
-		</ul>
-	</div>
 
 	<div class="footer" data-role="footer">
 		<a class="btnFull-modal btnPrimary" data-role="button" data-click="smartMovieView.onSave">Save and Send Movie</a>
