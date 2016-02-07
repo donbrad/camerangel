@@ -599,12 +599,12 @@ var userStatus = {
         status.set('statusMessage', userModel.currentUser.statusMessage);
         status.set('currentPlace', userModel.currentUser.currentPlace);
         var lat = userModel.currentUser.lat;
-        if (lat !== null)
-            lat = lat.toFixed(6);
+       /* if (lat !== null)
+            lat = lat.toFixed(6);*/
         status.set('lat', lat);
         var lng = userModel.currentUser.lng;
-        if (lng !== null)
-            lng = lng.toFixed(6);
+       /* if (lng !== null)
+            lng = lng.toFixed(6);*/
         status.set('lng', userModel.currentUser.lng);
         status.set('googlePlaceId', userModel.currentUser.googlePlaceId);
         status.set('currentPlaceUUID', userModel.currentUser.currentPlaceUUID);
