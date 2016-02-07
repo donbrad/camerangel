@@ -387,8 +387,8 @@ var userModel = {
             userModel.currentUser.set('currentPlace', place.name);
             userModel.currentUser.set('currentPlaceUUID', place.uuid);
             userModel.currentUser.set('googlePlaceId', place.googleId);
-            userModel.currentUser.set('lat', place.lat);
-            userModel.currentUser.set('lng', place.lat);
+            userModel.currentUser.set('lat', place.lat.toFixed(6));
+            userModel.currentUser.set('lng', place.lat.toFixed(6));
 
         } else {
             userModel.currentUser.set('currentPlace', locationName);
@@ -598,7 +598,13 @@ var userStatus = {
         status.set('isVisible', userModel.currentUser.isVisible);
         status.set('statusMessage', userModel.currentUser.statusMessage);
         status.set('currentPlace', userModel.currentUser.currentPlace);
-        status.set('lat', userModel.currentUser.lat);
+        var lat = userModel.currentUser.lat;
+        if (lat !== null)
+            lat = lat.toFixed(6);
+        status.set('lat', lat);
+        var lng = userModel.currentUser.lng;
+        if (lng !== null)
+            lng = lng.toFixed(6);
         status.set('lng', userModel.currentUser.lng);
         status.set('googlePlaceId', userModel.currentUser.googlePlaceId);
         status.set('currentPlaceUUID', userModel.currentUser.currentPlaceUUID);
