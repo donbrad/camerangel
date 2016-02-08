@@ -1270,14 +1270,14 @@ var smartMovieView = {
                     smartEventView.updateDateString();
                 }
             });
-            //$('#smartEventView-time').pickatime();
+            $('#smartEventView-time').pickatime();
 
             /* $("#smartEventView-date").on('blur', function () {
 
              });*/
 
 
-            $("#smartMovieView-time").on('blur', function () {
+           /* $("#smartMovieView-time").on('blur', function () {
                 var timeIn =  $("#smartMovieModal-time").val();
                 if (timeIn.length > 2) {
 
@@ -1286,15 +1286,15 @@ var smartMovieView = {
                     $("#smartMovieView-time").val(timeComp);
                     smartMovieView.updateDateString();
                 }
-            });
+            });*/
 
             $("#smartMovieView-placesearch").on('input', function () {
-                var placeStr =  $("#smartMovieModal-placesearch").val();
+                var placeStr =  $("#smartMovieView-placesearch").val();
                 if (placeStr.length > 3) {
-                    $("#smartMovieModal-placesearchBtn").text("Find " + placeStr);
-                    $("#smartMovieModal-placesearchdiv").removeClass('hidden');
+                    $("#smartMovieView-placesearchBtn").text("Find " + placeStr);
+                    $("#smartMovieView-placesearchdiv").removeClass('hidden');
                 } else {
-                    $("#smartMovieModal-placesearchdiv").addClass('hidden');
+                    $("#smartMovieView-placesearchdiv").addClass('hidden');
                 }
             });
 
