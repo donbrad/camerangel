@@ -817,6 +817,7 @@ var channelView = {
     privateContactId: null,
     privateContact : null,
     isPrivateChat: false,
+    isPrivateNotes: false,
     privacyMode: false,  // Privacy mode - obscure messages after timeout
     currentContact: null,
     activeMessage: {},
