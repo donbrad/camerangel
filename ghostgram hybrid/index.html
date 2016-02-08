@@ -2487,7 +2487,7 @@
 </script>
 
 <!-- smartMovie movieGram modal -->
-<div data-role="modalview" id="movieListModal" style="width: 100%;  height: 100%; display: none; z-index: 100;"  data-model="movieListView._activeObject" data-init="movieListView.onInit" data-open="movieListView.onShow" class="appearance">
+<div data-role="modalview" id="movieListModal" style="width: 100%;  height: 100%; display: none; z-index: 150;"  data-model="movieListView._activeObject" data-init="movieListView.onInit" data-open="movieListView.onShow" class="appearance">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>Movie List</span>
@@ -2551,7 +2551,7 @@
 			</li>
 			<li id="searchMoviePlace-input">
 				<label> Show Theatres Near
-					<input type="search" id="smartMovieView-placesearch"/>
+					<input type="search" id="smartMovieView-placesearch" data-bind="text: placeString"/>
 				</label>
 			</li>
 			<li id="smartMovieView-placesearchdiv" class="hidden">
@@ -2585,7 +2585,6 @@
 		<div class="event-details">
 			<h2 data-bind="text: movieTitle"></h2>
 			<p class="helper" data-bind="text: movieDescription"></p>
-			<p class="helper">Organized by <span id="smartMovieView-organizer" data-bind="text: senderName"></span></p>
 			<p class="helper">Showtimes:  <span  data-bind="text: showtimeString"></span></p>
 			<p class="helper">Theatre:  <span  data-bind="text: theatreString"></span></p>
 		</div>
