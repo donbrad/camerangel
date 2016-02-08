@@ -1083,7 +1083,7 @@ var movieListView = {
     },
 
     openModal : function (obj, callback) {
-
+        $("#movieListModal").data("kendoMobileModalView").open();
     },
 
     closeModal : function () {
@@ -1152,6 +1152,13 @@ var smartMovieView = {
         _preventDefault(e);
 
 
+    },
+
+    onFindMovies: function (e) {
+        _preventDefault(e);
+        movieListView.openModal(null, function () {
+
+        });
     },
 
     initActiveObject : function () {
