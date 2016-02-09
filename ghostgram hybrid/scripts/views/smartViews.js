@@ -1147,14 +1147,14 @@ var movieListView = {
         for (var s=0; s<showTimes.length; s++) {
             showtime = showTimes[s];
             time = moment(showtime.dateTime).format('h:mm A');
-            theatreArray[showtime.theatre.name] = " " + time  + " ";
+            theatreArray[showtime.theatre.name] += " " + time  + " ";
         }
         theatreNames = Object.keys(theatreArray);
 
         var result = {theatres : theatreNames, showTimes: theatreArray};
 
         var showTimesString = '';
-        for (var i=0; i<theatreArray.length; i++) {
+        for (var i=0; i<theatreNames.length; i++) {
 
             showTimesString += theatreNames[i] + " : " + theatreArray [i] + '</br>';
 
