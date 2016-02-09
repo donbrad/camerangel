@@ -1116,7 +1116,7 @@ var movieListView = {
             // dataType:"jsonp",
             //  contentType: 'application/json',
             success: function(results, textStatus, jqXHR) {
-                var movie = null;
+                var movie = null, movieArray = [];
 
                 for (var i=0; i< results.length; i++) {
                     var movieObj = {};
@@ -1133,10 +1133,14 @@ var movieListView = {
                         movieObj.runTime = movie.runTime;
                         movieObj.showTimes = movieListView.processShowTimes(movie.showtimes);
 
-                        movieListView.moviesDS.add(movieObj);
+                        movieArray.push(movieObj);
+
                     }
 
                 }
+
+                movieListView.moviesDS.data(movieArray);
+                movieListView.moviesDS.sync();
             }
         });
     },
