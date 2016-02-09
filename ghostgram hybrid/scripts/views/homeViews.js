@@ -181,7 +181,7 @@ var homeView = {
            // APP.models.places.placesDS.add(item);
 
             userModel.currentUser.set('currentPlace', item.name);
-            userModel.currentUser.set('currentPlaceId', item.uuid);
+            userModel.currentUser.set('currentPlaceUUID', item.uuid);
         };
 
         // If the item has a uuid it means we've already added it,
@@ -213,7 +213,7 @@ var homeView = {
         $('#checked-in-place').hide(200);
 
         userModel.currentUser.set('currentPlace', '');
-        userModel.currentUser.set('currentPlaceId', '');
+        userModel.currentUser.set('currentPlaceUUID', '');
     },
 
     clearNotifications : function (e) {
@@ -384,7 +384,7 @@ var userStatusView = {
     _update : function () {
         var status = userStatusView._activeStatus, user = userModel.currentUser;
 
-        status.set('currentPlaceId', user.currentPlaceId);
+        status.set('currentPlaceUUID', user.currentPlaceUUID);
         status.set('isCheckedIn', user.isCheckedIn);
         status.set('currentPlace', user.currentPlace);
         status.set('isAvailable', user.isAvailable);
@@ -399,7 +399,7 @@ var userStatusView = {
         $("#statusCharCount").text(userStatusView._profileStatusMax);
         $(".statusCharacterCount").css("color", "#979797");
 
-        if (user.isCheckedIn && user.currentPlaceId !== null) {
+        if (user.isCheckedIn && user.currentPlaceUUID !== null) {
             // hide location if the user is not checked in
             $("#profileLocation, #checked-in-place").removeClass("hidden");
 
@@ -508,7 +508,7 @@ var userStatusView = {
     gotoPlace: function (e) {
         _preventDefault(e);
 
-        var placeUUID = userModel.currentUser.currentPlaceId;
+        var placeUUID = userModel.currentUser.currentPlaceUUID;
         var placeId = LZString.compressToEncodedURIComponent(placeUUID);
         APP.kendo.navigate("#placeView?place="+placeId+"&returnmodal=userstatus");
     },
@@ -522,26 +522,6 @@ var userStatusView = {
             userStatusView.openModal();
         })
     },
-
-   /* checkIn : function (e) {
-        _preventDefault(e);
-
-        if (mapModel.currentPlaceId !== null) {
-
-            userModel.checkIn(mapModel.currentPlaceId);
-            mapModel.checkIn(mapModel.currentPlaceId);
-            mobileNotify("You're checked in!");
-
-            //userStatusView._update();
-            $('#profileCheckOutLi').velocity("slideDown", {begin: function(element){
-            	$(element).removeClass("hidden");
-            }
-        });
-        } else {
-            mobileNotify("No place to check in to...");
-        }
-
-    },*/
 
     checkOut : function (e) {
         _preventDefault(e);
@@ -1041,7 +1021,7 @@ var signUpView = {
                             user.set("alias", alias);
                             user.set("aliasPublic", "ghostgram user");
                             user.set("currentPlace", "");
-                            user.set("currentPlaceId", "");
+                            user.set("currentPlaceUUID", "");
                             user.set('photo', null);
                             user.set('aliasPhoto', null);
                             user.set("isAvailable", true);
@@ -1081,7 +1061,7 @@ var signUpView = {
                                     userModel.currentUser.set('phone', user.get('phone'));
                                     userModel.currentUser.set('alias', user.get('alias'));
                                     userModel.currentUser.set('currentPlace', user.get('currentPlace'));
-                                    userModel.currentUser.set('currentPlaceId', user.get('currentPlaceId'));
+                                    userModel.currentUser.set('currentPlaceUUID', user.get('currentPlaceUUID'));
                                     userModel.currentUser.set('photo', user.get('photo'));
                                     userModel.currentUser.set('isAvailable', user.get('isAvailable'));
                                     userModel.currentUser.set('isVisible', user.get('isVisible'));
@@ -1343,7 +1323,10 @@ var signInView = {
                 userModel.currentUser.set('isPhotoStored', userModel.parseUser.get('isPhotoStored'));
                 userModel.currentUser.set('saveToPhotoAlbum', userModel.parseUser.get('saveToPhotoAlbum'));
                 userModel.currentUser.set('currentPlace', userModel.parseUser.get('currentPlace'));
-                userModel.currentUser.set('currentPlaceId', userModel.parseUser.get('currentPlaceId'));
+                userModel.currentUser.set('googlePlaceId', userModel.parseUser.get('googlePlaceId'));
+                userModel.currentUser.set('lat', userModel.parseUser.get('lat'));
+                userModel.currentUser.set('lng', userModel.parseUser.get('lng'));
+                userModel.currentUser.set('currentPlaceUUID', userModel.parseUser.get('currentPlaceUUID'));
                 userModel.currentUser.set('photo', userModel.parseUser.get('photo'));
                 userModel.currentUser.set('aliasPublic', userModel.parseUser.get('aliasPublic'));
                 userModel.currentUser.set('userUUID', userModel.parseUser.get('userUUID'));

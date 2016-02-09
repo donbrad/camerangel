@@ -41,6 +41,7 @@ var photoModel = {
     _fetchPhotos : function () {
         var ParsePhotoModel = Parse.Object.extend(photoModel._parseClass);
         var query = new Parse.Query(ParsePhotoModel);
+        query.limit(1000);
 
         query.find({
             success: function(collection) {
@@ -75,6 +76,7 @@ var photoModel = {
     _fetchOffers : function () {
         var ParsePhotoOffer = Parse.Object.extend("photoOffer");
         var queryOffer = new Parse.Query(ParsePhotoOffer);
+        query.limit(1000);
 
         queryOffer.find({
             success: function(collection) {
@@ -208,6 +210,11 @@ var photoModel = {
     findPhotosByPlaceString : function (placeString) {
 
         return(photoModel.queryPhotos({ field: "placeString", operator: "contains", value: placeString }));
+    },
+
+    findPhotosByAddressString : function (addressString) {
+
+        return(photoModel.queryPhotos({ field: "addressString", operator: "contains", value: addressString }));
     },
 
     findPhotosBySender: function (senderId) {
@@ -463,6 +470,12 @@ var photoModel = {
         photo.set('description', _nullString(photoObj.description));
         photo.set('tagString',  _nullString(photoObj.tagString));
         photo.set('address',  _nullString(photoObj.address));
+        photo.set('lat', photoObj.lat);
+        photo.set('lng', photoObj.lng);
+        if (photo.tags === undefined) {
+            photo.tags = [];
+        }
+        photo.set('tags', photoObj.tags);
 
        /* photo.set('title', photoObj.title);
         photo.set('description',  photoObj.description);
@@ -727,8 +740,8 @@ var photoModel = {
             photo.set('addressString', addressStr);
         }
 
-        if (userModel.currentUser.currentPlaceId !== null) {
-            photo.set('placeId', userModel.currentUser.currentPlaceId);
+        if (userModel.currentUser.currentPlaceUUID !== null) {
+            photo.set('placeId', userModel.currentUser.currentPlaceUUID);
             photo.set('placeString', userModel.currentUser.currentPlace);
         }
 

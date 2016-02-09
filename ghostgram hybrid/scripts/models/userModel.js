@@ -48,7 +48,7 @@ var userModel = {
         useIdenticon: true,
         availImgUrl: 'images/status-available.svg',
         currentPlace: '',
-        currentPlaceId: '',
+        currentPlaceUUID: '',
         isCheckedIn: false
     }),
 
@@ -224,7 +224,7 @@ var userModel = {
                 userModel.currentUser.set('publicKey', user.get('publicKey'));
                 // userModel.currentUser.set('privateKey', userModel.parseUser.get('privateKey'));
                 userModel.currentUser.set('statusMessage', user.get('statusMessage'));
-                userModel.currentUser.set('currentPlaceId', user.get('currentPlaceId'));
+                userModel.currentUser.set('currentPlaceUUID', user.get('currentPlaceUUID'));
                 userModel.currentUser.set('currentPlace', user.get('currentPlace'));
                 userModel.currentUser.set('aliasPublic', user.get('aliasPublic'));
                 userModel.currentUser.set('aliasPhoto', user.get('aliasPhoto'));
@@ -379,18 +379,34 @@ var userModel = {
         }
     },
 
-    checkIn : function (placeId) {
-        var place = placesModel.getPlaceModel(placeId);
+    checkIn : function (placeId, lat, lng, locationName, googlePlaceId) {
 
-        userModel.currentUser.set('currentPlace',place.name);
-        userModel.currentUser.set('currentPlaceId', place.uuid);
+        if (placeId !== null) {
+            var place = placesModel.getPlaceModel(placeId);
+
+            userModel.currentUser.set('currentPlace', place.name);
+            userModel.currentUser.set('currentPlaceUUID', place.uuid);
+            userModel.currentUser.set('googlePlaceId', place.googleId);
+            userModel.currentUser.set('lat', place.lat.toFixed(6));
+            userModel.currentUser.set('lng', place.lat.toFixed(6));
+
+        } else {
+            userModel.currentUser.set('currentPlace', locationName);
+            userModel.currentUser.set('currentPlaceUUID', null);
+            userModel.currentUser.set('googlePlaceId', googlePlaceId);
+            userModel.currentUser.set('lat', lat.toFixed(6));
+            userModel.currentUser.set('lng', lat.toFixed(6));
+        }
+
         userModel.currentUser.set('isCheckedIn', true);
-
         userStatus.update();
     },
 
     checkOut : function () {
         userModel.currentUser.set('isCheckedIn', false);
+        userModel.currentUser.set('currentPlace', null);
+        userModel.currentUser.set('currentPlaceUUID',null);
+
     },
 
     // Need a valid uuid to initialize pubnub and create appData and userData channels
@@ -557,7 +573,10 @@ var userStatus = {
             case 'isCheckedIn' :
             case 'statusMessage' :
             case 'currentPlace' :
-            case 'currentPlaceId' :
+            case 'lat' :
+            case 'lng' :
+            case 'googlePlaceId' :
+            case 'currentPlaceUUID' :
                 userStatus.parseUserStatus.set(field, userModel.currentUser.get(field));
                 userStatus.parseUserStatus.set('lastUpdate', ggTime.currentTime());
                 userStatus.parseUserStatus.save(null, {
@@ -579,7 +598,16 @@ var userStatus = {
         status.set('isVisible', userModel.currentUser.isVisible);
         status.set('statusMessage', userModel.currentUser.statusMessage);
         status.set('currentPlace', userModel.currentUser.currentPlace);
-        status.set('currentPlaceId', userModel.currentUser.currentPlaceId);
+        var lat = userModel.currentUser.lat;
+       /* if (lat !== null)
+            lat = lat.toFixed(6);*/
+        status.set('lat', lat);
+        var lng = userModel.currentUser.lng;
+       /* if (lng !== null)
+            lng = lng.toFixed(6);*/
+        status.set('lng', userModel.currentUser.lng);
+        status.set('googlePlaceId', userModel.currentUser.googlePlaceId);
+        status.set('currentPlaceUUID', userModel.currentUser.currentPlaceUUID);
         status.set('isCheckedIn', userModel.currentUser.isCheckedIn);
         status.set('lastUpdate', ggTime.currentTime());
         status.save(null, {

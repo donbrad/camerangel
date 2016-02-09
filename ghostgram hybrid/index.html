@@ -80,7 +80,7 @@
 	<script src="scripts/models/tagModel.js"></script>
 	<script src="scripts/models/userModel.js"></script>
     <script src="scripts/views/sentinel.js"></script>
-	<script src="scripts/views/actionViews.js"></script>
+	<script src="scripts/views/smartViews.js"></script>
     <script src="scripts/views/archiveView.js"></script>
 	<script src="scripts/views/channelViews.js"></script>
 	<script src="scripts/views/contactViews.js"></script>
@@ -893,7 +893,21 @@
 
 
 <script type="text/x-kendo-template" id="checkinPlacesTemplate">
-	<a>
+	<div>
+		# if (data.ggType === 'Venue') { #
+		<h4 class="textClamp">#:data.title#</h4>
+		<p>#:data.address#</p>
+		<p class="helper">
+           <span class="left">
+			   #: data.type #
+		   </span>
+			<span class="right">
+			   #: data.distance #
+		   </span>
+		</p>
+		<div class="clearfix"> </div>
+		# } else {#
+
 		# if(data.category === 'Location'){#
 		<h4 class="textClamp">#:data.name#</h4>
 		<p>#:data.city#, #:data.state# #:data.zipcode#</p>
@@ -913,7 +927,8 @@
            </span>
 				</p>
 				<div class="clearfix"> </div>
-	</a>
+		 # } #
+	</div>
 </script>
 
 <!-- galleryPicker template -->
@@ -1459,9 +1474,9 @@
 
 	<ul data-role="actionsheet" id="messageActionsSender" data-popup='{"direction": "left"}'>
 		<li><a data-action="channelView.archiveMessage"><img src="images/icon-memories.svg" class="icon-sm" /> Remember Message</a></li>
-		<li><a data-action="channelView.addToSmartList"><img src="images/gallery-list.svg" class="icon-sm" /> Add To Smart List</a></li>
+		<!--<li><a data-action="channelView.addToSmartList"><img src="images/gallery-list.svg" class="icon-sm" /> Add To Smart List</a></li>-->
 		<!--<li><a data-action="channelView.smartScanMessage"> Smart Scan Message</a></li>-->
-		<li><a data-action="channelView.messageRecall"><i class="fa fa-eraser"> </i> Recall Message</a></li>
+		<li><a data-action="channelView.messageRecall"><img src="images/icon-trash.svg" class="icon-sm" /> Recall Message</a></li>
 	</ul>
 
 </div>
@@ -2471,8 +2486,117 @@
 	</div>
 </script>
 
+<!-- smartMovie movieGram modal -->
+<div data-role="modalview" id="movieListModal" style="width: 100%;  height: 100%; z-index:1000; display: none; "  data-model="movieListView._activeObject" data-init="movieListView.onInit" data-open="movieListView.onShow" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Movie List</span>
+			<a data-click="movieListView.onCancel" data-role="button" class="btnClear-grey" data-align="left">
+				<img src="images/nav-back.svg" />
+			</a>
+		</div>
+	</div>
+	<ul id="movieListView-listview" >
 
-<!-- smartObject Action modal -->
+	</ul>
+
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnPrimary" data-role="button" data-click="movieListView.onDone">Done</a>
+	</div>
+</div>
+
+<!-- smartMovie movieGram modal -->
+<div data-role="modalview" id="smartMovieModal" style="width: 100%;  height: 100%; display: none;"  data-model="smartMovieView._activeObject" data-init="smartMovieView.onInit" data-open="smartMovieView.onShow" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Smart Movie</span>
+			<a data-click="smartMovieView.onCancel" data-role="button" class="btnClear-grey" data-align="left">
+				<img src="images/nav-back.svg" />
+			</a>
+		</div>
+	</div>
+
+	<div class="event-view card hidden" id="movie-viewMode">
+		<div class="event-details">
+			<h2 data-bind="text: movieTitle"></h2>
+			<p class="helper" data-bind="text: movieDescription"></p>
+			<p class="helper">Organized by <span id="smartMovieView-organizer" data-bind="text: senderName"></span></p>
+			<p class="helper">Showtimes:  <span  data-bind="text: showtimeString"></span></p>
+			<p class="helper">Theatre:  <span  data-bind="text: theatreString"></span></p>
+		</div>
+	</div>
+
+	<form id="movie-editMode" class="event-owner hidden">
+		<ul data-role="listview" data-style="inset">
+			<li>
+				<label> When </label>
+				<div class="clearfix"></div>
+				<div class="smallSearch">
+							<span class="searchIcon">
+								<img src='images/smart-event.svg' />
+							</span>
+					<input type="text" class="viewSearchBox" id="smartMovieView-date"/>
+				</div>
+				<div class="smallSearch-sm">
+						<span class="searchIcon">
+							<img src='images/smart-time.svg' />
+						</span>
+					<input type="search" id="smartMovieView-time"/>
+				</div>
+			</li>
+			<li id="smartMovieView-add-calendar" class="event-valid" >
+				<label> Add to Calendar
+					<input type="checkbox" id="smartMovieView-addToCalendar"  data-role="switch" data-bind="checked: addToCalendar" data-change="smartMovieView.onChangeCalendar"/>
+				</label>
+			</li>
+			<li id="searchMoviePlace-input">
+				<label> Show Theatres Near
+					<input type="search" id="smartMovieView-placesearch" data-bind="text: placeString"/>
+				</label>
+			</li>
+			<li id="smartMovieView-placesearchdiv" class="hidden">
+				<div>
+					<img src='images/icon-gps-selected.svg' class='icon-sm'/>
+					<a data-click="smartMovieView.onPlaceSearch" data-role="button" class="btnClear" id="smartMovieView-placesearchBtn"> Find... </a>
+				</div>
+			</li>
+			<li id="smartMovieView-placeadddiv" class="hidden">
+				<label>Where (Location or Place)</label>
+				<div>
+					<p id="smartMovieView-placeAddBtn">
+						<img src='images/icon-location.svg' class='icon-sm'/>
+						<span id="smartMovieView-placeAddBtn-title" data-bind="text: placeName"></span>
+					</p>
+					<div id="smartMovieView-actionBtns">
+						<a class="btnClear-grey" data-role="button" data-click="smartEventView.onAddPlace">Add to My Places</a>
+						<a class="btnClear-red" data-role="button" data-click="smartEventView.onDropPlace">Drop Place</a>
+					</div>
+				</div>
+			</li>
+
+		</ul>
+	</form>
+
+	<div>
+		<a class="btnFull-modal btnSecondary" data-role="button" data-click="smartMovieView.onFindMovies">Explore Theatres and Movies</a>
+	</div>
+
+	<div class="event-view card hidden event-owner" id="smartMovieView-Selection">
+		<div class="event-details">
+			<h2 data-bind="text: movieTitle"></h2>
+			<p class="helper" data-bind="text: movieDescription"></p>
+			<p class="helper">Showtimes:  <span  data-bind="text: showtimeString"></span></p>
+			<p class="helper">Theatre:  <span  data-bind="text: theatreString"></span></p>
+		</div>
+	</div>
+
+
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnPrimary hidden" data-role="button" id=smartMovieViewSaveBtn" data-click="smartMovieView.onSave">Save and Send Movie</a>
+	</div>
+</div>
+
+<!-- smartEvent eventGram modal -->
 <div data-role="modalview" id="smartEventModal" style="width: 100%;  height: 100%; display: none;"  data-model="smartEventView._activeObject" data-init="smartEventView.onInit" data-open="smartEventView.onShow" class="appearance">
 	<div data-role="header">
 		<div data-role="navbar">
@@ -2788,7 +2912,7 @@
 				<select id="photo-smartTag" multiple="multiple"></select>
 
 				<label>Location</label>
-				<input type="text" id="photo-location" />
+				<input type="text" id="photo-location" data-bind="value: addressString"/>
 				<!--
 				<label>Description</label>
 				<textarea data-bind="value: description" type="text" col="80" row="2" maxlength="60"></textarea>
@@ -3005,8 +3129,37 @@
 	</div>
 </div>
 
+
+<!-- Smart Event Location -->
+<div data-role="modalview" data-title="Smart Location" id="smartLocationModal" data-init="smartLocationView.onInit" style="height:100%; width:100%; z-index:1000; display: none;">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Smart Location</span>
+			<a data-role="button" data-align="left" data-click="smartLocationView.closeModal"><img src="images/nav-back.svg" /></a>
+		</div>
+	</div>
+
+	<div class="tempSearchBox" id="smartLocation-form">
+		<p id="smartLocation-selectLocation" >Please select Address or City, State</p>
+		<div class="appendSearch">
+			<span class="searchIcon"><img src="images/place-icon.svg" /></span>
+			<input type="search" name="Area" placeholder="Area or city to search..." id="smartLocation-place" data-required-msg="Enter address or city, state" required />
+		</div>
+		<span class="k-invalid-msg" data-for="Area"></span>
+		<div class="partnerDiv">
+			<img src="images/powered_by_google_on_white.png"/>
+		</div>
+	</div>
+
+	<div>
+		<ul id="smartLocation-listview"></ul>
+	</div>
+
+</div>
+
+
 <!-- Smart Event Places -->
-<div data-role="modalview" data-title="Smart Event Places" id="smartEventPlacesModal" data-init="smartEventPlacesView.onInit" style="height:100%; width:100%; z-index:1000; display: none;">
+<div data-role="modalview" data-title="Smart Places" id="smartEventPlacesModal" data-init="smartEventPlacesView.onInit" style="height:100%; width:100%; z-index:1000; display: none;">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>Smart Event Places</span>

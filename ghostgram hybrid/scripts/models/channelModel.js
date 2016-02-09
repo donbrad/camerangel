@@ -44,12 +44,42 @@ var channelModel = {
         channelModel.recalledMessagesDS.online(false);
 
         channelModel.activeChannels = [];
-        // Reflect any core contact changes to contactList
+
+        // Reflect any core channel changes to channelList
         channelModel.channelsDS.bind("change", function (e) {
             // Rebuild the channelView.channelListDS when the underlying list changes: add, delete, update...
-           channelView._channelListDS.data(channelModel.channelsDS.data());
+           //channelView._channelListDS.data(channelModel.channelsDS.data());
+
+            if (e.action !== undefined) {
+                switch (e.action) {
+                    case "itemchange" :
+                        var field  =  e.field;
+                        var channel = e.items[0], channelId = channel.channelId;
+                        var channelList = channelsView.findChannelModel(channelId);
+
+                        channelList.set(field, channel [field]);
+                        break;
+
+                    case "remove" :
+                        var channel = e.items[0];
+                        channelsView._channelListDS.remove(channel);
+                        // delete from channel list
+                        break;
+
+                    case "add" :
+                        var channel = e.items[0];
+                        // add to contactlist and contacttags
+                        var channelList = channelsView.findChannelModel(channel.channelId);
+                        if (channelList !== undefined)
+                            channelsView._channelListDS.add(channel);
+
+                        break;
+                }
+            }
+
 
         });
+
 
         // Start the updateMessageCount async after 5 seconds...
      /*   setTimeout(function(){
@@ -66,6 +96,7 @@ var channelModel = {
     fetch : function () {
         var Channel = Parse.Object.extend(channelModel._parseClass);
         var query = new Parse.Query(Channel);
+        query.limit(1000);
 
         query.find({
             success: function(collection) {
@@ -224,13 +255,13 @@ var channelModel = {
     },
 
     addMessageRecall : function (channelId, msgId, ownerId, isPrivateChat) {
-        var recallObj = {channelId : channelId, msgID: ownerId, isPrivateChat: isPrivateChat};
+        var recallObj = {channelId : channelId, msgID: msgId, ownerId:  ownerId, isPrivateChat: isPrivateChat};
 
         var channel = channelModel.findChannelModel(channelId);
 
-        if (channel === undefined)
+        if (channel === undefined) {
             return;
-        ;
+        }
         channelModel.recalledMessagesDS.add(recallObj);
         if (channelId === channelView._channelId) {
             // need to delete from channel view too
@@ -664,6 +695,9 @@ var channelModel = {
             }
         }
 
+         if (isDeleted === undefined) {
+             isDeleted = false;
+         }
         var addTime = ggTime.currentTime();
         channel.set("version", channelModel._version);
         channel.set("ggType", channelModel._ggClass);

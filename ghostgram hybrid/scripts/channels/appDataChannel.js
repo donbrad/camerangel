@@ -792,9 +792,10 @@ var appDataChannel = {
 
             getChannelDetails(channelId, function (result) {
                 if (result.found) {
-                    channelModel.addMemberChannel(channelId, channelName, channelDescription, channelMembers, ownerId, ownerName, options);
+                    channelModel.addMemberChannel(channelId, channelName, channelDescription, channelMembers, ownerId, ownerName, options, false);
                 } else {
-                    channelModel.addMemberChannel(channelId, channelName, channelDescription, channelMembers, ownerId, ownerName, options, true);
+                    mobileNotify('Warning - owner may have deleted : ' + channelName);
+                    channelModel.addMemberChannel(channelId, channelName, channelDescription, channelMembers, ownerId, ownerName, options, false);
 
                 }
             });

@@ -73,7 +73,6 @@ var placesModel = {
     fetch : function () {
         var PlaceModel = Parse.Object.extend(placesModel._parseClass);
         var query = new Parse.Query(PlaceModel);
-
         query.limit(1000);
 
         query.find({
@@ -268,6 +267,7 @@ var placesModel = {
 
         return(place);
     },
+
     matchLocation: function (lat, lng) {
         var length = placesModel.placesDS.total();
 
@@ -403,6 +403,7 @@ var placesModel = {
         // Get a json object to add to kendo (strip the parse specific stuff)
         var placeObj = placeParse.toJSON();
         placesModel.placesDS.add(placeObj);
+        placesModel.placesDS.sync();
 
         placeParse.save(null, {
             success: function(placeIn) {

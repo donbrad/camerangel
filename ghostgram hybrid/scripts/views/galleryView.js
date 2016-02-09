@@ -755,22 +755,29 @@ var modalPhotoView = {
             photo.description = modalPhotoView._dummyDescription;
         }
         modalPhotoView._activePhoto.set('description', photo.description);
+
+        // Tags
         modalPhotoView._activePhoto.set('tags', photo.tags);
         if (photo.tagsString === undefined || photo.tagsString === null) {
             photo.tagsString = modalPhotoView._dummyTagsString;
         }
-
-
-        // Tags
         modalPhotoView._activePhoto.set('tagsString', photo.tagsString);
         if(modalPhotoView._activePhoto.tagsString === ""){
             $("#photoTitle-tags").addClass("hidden");
         } else {
             $("#photoTitle-tags").removeClass("hidden");
         }
+
         // Address
         modalPhotoView._activePhoto.set('addressString', photo.addressString);
-        $("#photo-location").val(modalPhotoView._activePhoto.addressString);
+        modalPhotoView._activePhoto.set('placeString', photo.placeString);
+
+        if (photo.placeString !== undefined && photo.placeString !== null) {
+            $("#photo-location").val(modalPhotoView._activePhoto.placeString);
+        } else {
+            $("#photo-location").val(modalPhotoView._activePhoto.addressString);
+        }
+
 
         // Date
         var createdDate = moment(photo.createdAt).format("MMM Do, YYYY");

@@ -24,6 +24,7 @@ var channelsView = {
         }
     }),
 
+
     onInit : function (e) {
         e.preventDefault();
 
@@ -113,6 +114,8 @@ var channelsView = {
         }
 
     },
+
+
 
     onShow : function(e) {
         _preventDefault(e);
@@ -814,6 +817,7 @@ var channelView = {
     privateContactId: null,
     privateContact : null,
     isPrivateChat: false,
+    isPrivateNotes: false,
     privacyMode: false,  // Privacy mode - obscure messages after timeout
     currentContact: null,
     activeMessage: {},
@@ -1579,8 +1583,8 @@ var channelView = {
     messageAddLocation : function  () {
         channelView.activeMessage.geo= {lat: mapModel.lat, lng: mapModel.lng};
         channelView.activeMessage.address = mapModel.currentAddress;
-        if (userModel.currentUser.currentPlaceId !== null) {
-            channelView.activeMessage.place = {name: userModel.currentUser.currentPlace, uuid: userModel.currentUser.currentPlaceId};
+        if (userModel.currentUser.currentPlaceUUID !== null) {
+            channelView.activeMessage.place = {name: userModel.currentUser.currentPlace, uuid: userModel.currentUser.currentPlaceUUID};
         }
     },
 
@@ -2292,7 +2296,12 @@ var channelView = {
 
     messageMovie : function (e) {
         _preventDefault(e);
-        mobileNotify("Chat Movie isn't wired up yet");
+        smartMovieView.openModal(null, function (movie) {
+
+          //  channelView.messageAddSmartEvent(event);
+            mobileNotify("Sending Smart Movie...");
+           // channelView.messageSend();
+        });
     }
 
 };

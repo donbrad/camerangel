@@ -1070,8 +1070,312 @@ var smartFlightView = {
 
 };
 
-var smartMovieView = {
+var movieListView = {
+    activeObject : new kendo.data.ObservableObject(),
+    _date : new Date(),
 
+    onInit: function (e) {
+        _preventDefault(e);
+    },
+
+    onShow: function (e) {
+        _preventDefault(e);
+    },
+
+    openModal : function (obj, callback) {
+        $("#movieListModal").data("kendoMobileModalView").open();
+    },
+
+    closeModal : function () {
+
+    },
+
+    onDone: function (e) {
+        _preventDefault(e);
+        $("#movieListModal").data("kendoMobileModalView").close();
+    },
+
+    onCancel: function (e) {
+        _preventDefault(e);
+        $("#movieListModal").data("kendoMobileModalView").close();
+    }
+
+};
+
+var smartMovieView = {
+    _activeObject : new kendo.data.ObservableObject(),
+    _date : new Date(),
+    _placeId :null,
+    _geoObj: null,
+    _isInited : false,
+    _callback : null,
+    _movieId: null,
+    _theatreId: null,
+
+
+    onChangeCalendar: function (e) {
+        _preventDefault(e);
+
+
+    },
+
+    checkExpired : function (date) {
+        var thisObject = smartMovieView._activeObject;
+
+        if (moment(smartMovieView._date).isAfter(date)) {
+            thisObject.set('isExpired', true);
+            smartMovieView.setEventBanner("expired");
+
+        } else {
+            thisObject.set('isExpired', false);
+            //smartEventView.setEventBanner();
+        }
+    },
+
+    updateDateString : function () {
+        var date = $('#smartMovieView-date').val();
+        var time = $('#smartMovieView-time').val();
+
+        var finalDateStr = date + " " + time;
+        //$("#smartEventView-datestring").val(finalDateStr);
+
+        smartMovieView._activeObject.set('date', new Date(finalDateStr));
+    },
+
+    onSave: function (e) {
+        _preventDefault(e);
+
+        smartMovieView.onDone();
+    },
+
+    onInit: function (e) {
+        _preventDefault(e);
+
+
+    },
+
+    onFindMovies: function (e) {
+        _preventDefault(e);
+        movieListView.openModal(null, function () {
+
+        });
+    },
+
+    initActiveObject : function () {
+        var thisObj = smartMovieView._activeObject;
+        // todo - review update to make date/time more useful as defaults
+        var newDate = new Date();
+        var newDateHour = newDate.getHours();
+        var newDateDay = newDate.getDate();
+
+        if(newDateHour < 20 && newDate > 0){
+            newDateHour += 3;
+            newDate.setHours(newDateHour);
+            newDate.setMinutes(0);
+        } else {
+            newDateDay += 1;
+            newDateHour = 10;
+            newDate.setDate(newDateDay);
+            newDate.setHours(newDateHour);
+            newDate.setMinutes(0);
+        }
+        thisObj.set("uuid", uuid.v4());
+        thisObj.set('senderUUID', userModel.currentUser.userUUID);
+        thisObj.set('senderName', userModel.currentUser.name);
+        thisObj.set('placeString', mapModel.currentAddress);
+        thisObj.set('channelId', null);
+        thisObj.set('movieTitle', null);
+        thisObj.set('movieDescription', null);
+        thisObj.set('type', "movie");
+        thisObj.set('theatreId', null);
+        thisObj.set('theatreName', null);
+        thisObj.set('theatreString', null);
+        thisObj.set('showtimes', []);
+        thisObj.set('showtimeString', null);
+        thisObj.set('action', null);
+        thisObj.set('description', null);
+        thisObj.set('address', null);
+        thisObj.set('googleId', null);
+        thisObj.set('calendarId', null);
+        thisObj.set('lat', null);
+        thisObj.set('lng', null);
+        thisObj.set('date', newDate);
+        thisObj.set('isDeleted', false);
+        thisObj.set('wasCancelled', false);
+        thisObj.set('movieSelected', false);  // if false, no movie selected - "let's see a movie at this theatre around this time
+        thisObj.set('movieId', null);
+        thisObj.set('movieName', null);
+        thisObj.set('addToCalendar', false);
+        thisObj.set('comment', null);
+        thisObj.set('wasSent', false);
+
+
+
+       // $('#smartEventView-placesearch').val(thisObj.placeName);
+        //$('#smartEventView-datestring').val(new Date(thisObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
+        $('#smartMovieView-date').val(new Date(thisObj.date).toString('MMM dd, yyyy'));
+        $('#smartMovieView-time').val(new Date(thisObj.date).toString('h:mm tt'));
+        //$("#smartEventView-placeadddiv").addClass('hidden');
+        //$("#searchEventPlace-input").removeClass('hidden');
+    },
+
+    onPlaceSearch : function (e) {
+
+        _preventDefault(e);
+
+        var placeStr =  $("#smartMovieView-placesearch").val();
+
+        smartLocationView.openModal(placeStr, function (geo) {
+            if (geo === null) {
+                mobileNotify("Smart Location cancelled...");
+                return;
+            }
+
+            var thisObj = smartMovieView._activeObject;
+
+            thisObj.set('placeId', null);
+            thisObj.set('googleId', geo.googleId);
+            thisObj.set('placeName', geo.name);
+            thisObj.set('address', geo.address);
+            thisObj.set('placeType', geo.type);
+            thisObj.set('lat', geo.lat);
+            thisObj.set('lng', geo.lng);
+
+            var addressArray = geo.address.split(','), address = addressArray[0];
+            // Place addresses are just the Street Number and Street;
+            geo.address = address;
+            smartEventView._geoObj = geo;
+
+            //
+            $("#smartEventView-placesearch").val(geo.name);
+            // hide place search btn
+            $("#smartEventView-placesearchdiv").addClass('hidden');
+            // show selected place
+            $("#smartEventView-placeadddiv").removeClass('hidden');
+            // hide input
+            $("#searchEventPlace-input").addClass("hidden");
+        });
+
+    },
+
+    openModal: function (actionObj, callback) {
+        if (!smartMovieView._isInited) {
+
+            $('#smartMovieView-date').pickadate({
+                format: 'mmm, d yyyy',
+                formatSubmit: 'mm d yyyy',
+                min: true,
+                onSet : function (context) {
+                    smartEventView.updateDateString();
+                }
+            });
+            $('#smartMovieView-time').pickatime();
+
+            /* $("#smartEventView-date").on('blur', function () {
+
+             });*/
+
+
+           /* $("#smartMovieView-time").on('blur', function () {
+                var timeIn =  $("#smartMovieModal-time").val();
+                if (timeIn.length > 2) {
+
+                    var time = Date.parse(timeIn);
+                    var timeComp = new Date(time).toString("h:mm tt");
+                    $("#smartMovieView-time").val(timeComp);
+                    smartMovieView.updateDateString();
+                }
+            });*/
+
+            $("#smartMovieView-placesearch").on('input', function () {
+                var placeStr =  $("#smartMovieView-placesearch").val();
+                if (placeStr.length > 3) {
+                    $("#smartMovieView-placesearchBtn").text("Find " + placeStr);
+                    $("#smartMovieView-placesearchdiv").removeClass('hidden');
+                } else {
+                    $("#smartMovieView-placesearchdiv").addClass('hidden');
+                }
+            });
+
+
+            smartMovieView._isInited = true;
+        }
+
+        if (callback === undefined) {
+            callback = null;
+        }
+
+        smartMovieView._callback = callback;
+
+        smartMovieView._date = new Date();
+
+
+        if (actionObj === undefined || actionObj === null) {
+            smartMovieView.initActiveObject();
+
+        } else {
+            // we have an existing event
+            smartMovieView.setActiveObject(actionObj);
+        }
+        var thisObject = smartMovieView._activeObject;
+        // setting send/receiver
+
+
+        if (thisObject.senderUUID === userModel.currentUser.userUUID) {
+            smartEventView.setSenderMode();
+        } else {
+            smartEventView.setRecipientMode();
+
+        }
+
+        // setting event location
+        if(thisObject.placeName !== null){
+            $(".event-location").removeClass("hidden");
+        } else {
+            $(".event-location").addClass("hidden");
+        }
+
+       // smartMovieView.updateCalendar();
+
+        var prettyDate = moment(thisObject.date).format('dddd MMMM, Do [at] h:mmA');
+        $(".event-date").text(prettyDate);
+
+
+        $("#smartMovieView-placesearchdiv").addClass('hidden');
+
+        if (thisObject.senderUUID === null || thisObject.senderUUID === userModel.currentUser.userUUID) {
+            $("#smartMovieView-organizer").text("You");
+        } else {
+            var contact = contactModel.findContactByUUID(thisObject.senderUUID);
+            if (contact !== undefined) {
+                $("#smartMovieView-organizer").text(contact.name);
+            }
+        }
+
+        smartMovieView.checkExpired();
+        $("#smartMovieModal").data("kendoMobileModalView").open();
+    },
+
+    onShow: function (e) {
+        _preventDefault(e);
+        $("#smartMovieModal").data("kendoMobileModalView").open();
+
+    },
+
+    onCancel : function (e) {
+        _preventDefault(e);
+        $("#smartMovieModal").data("kendoMobileModalView").close();
+        $("#eventBanner").removeClass();
+    },
+
+    onDone: function (e) {
+        //_preventDefault(e);
+
+        $("#smartMovieModal").data("kendoMobileModalView").close();
+        if (smartMovieView._callback !== null) {
+            smartMovieView._callback(smartMovieView._activeObject);
+        }
+    }
 };
 
 

@@ -11,8 +11,13 @@ var mapModel = {
     latlng : null,
 
     currentAddress : null,   // Current physical address - location
+    currentCity: null,
+    currentState : null,
+    currentZipcode : null,
     currentPlace: null,       // currentPlace Object - null if none
     currentPlaceId: null,     // currentplace UUID - null if none
+    currentGoogleId : null,
+    currentPlaceName : null,
 
     matchedPlaces: null,   // places that match the current lat/lng
 
@@ -23,7 +28,10 @@ var mapModel = {
     gpsOptions : {enableHighAccuracy : true, timeout: 5000, maximumAge: 10000},
     lastPosition: {},
     lastPingSeconds : null,
-    _pingInterval: 5, //Ping debounce interval in seconds.  app will only get position after _pingInterval seconds
+    _pingInterval: 300, //Ping debounce interval in seconds.  app will only get position after _pingInterval seconds
+    _radiusCheckIn : 1000,
+    _boundsCheckIn : null,
+    _location : null,
 
     geocoder : null,
     mapOptions : {zoom: 14,  center: { lat: 42.1347293 , lng: -91.1362623}},
@@ -32,8 +40,6 @@ var mapModel = {
 
 
     init: function () {
-
-
 
         mapModel.lastPingSeconds = ggTime.currentTimeInSeconds() - 11;
 
@@ -58,6 +64,8 @@ var mapModel = {
         mapModel.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
         mapModel.geocoder =  new google.maps.Geocoder();
         mapModel.googlePlaces = new google.maps.places.PlacesService(mapModel.googleMap);
+
+        mapModel.lastPingSeconds = ggTime.currentTimeInSeconds() + mapModel._pingInterval + 10;
 
         mapModel.getCurrentAddress(function (isNew, address){
 
@@ -88,11 +96,22 @@ var mapModel = {
     checkOut : function () {
         mapModel.wasPrompted = false;
         mapModel.isCheckedIn = false;
+        mapModel.currentPlaceId = null;
+        mapModel.currentPlace = null;
+        mapModel.currentPlaceName = null;
+        mapModel.currentGoogleId = null;
     },
 
-    checkIn : function (placeId) {
+    checkIn : function (placeId, placeName, googleId) {
 
-        mapModel.setCurrentPlace(placeId, true);
+        if (placeId !== null) {
+            mapModel.setCurrentPlace(placeId, true);
+        } else {
+            mapModel.currentPlaceName = placeName;
+            mapModel.currentGoogleId = googleId;
+            mapModel.currentPlaceId = null;
+            mapModel.currentPlace = null;
+        }
         mapModel.wasPrompted = true;
         mapModel.isCheckedIn = true;
     },
@@ -110,7 +129,27 @@ var mapModel = {
         }
     },
 
+    setLocationAndBounds : function () {
+        var geolocation = {
+            lat: mapModel.lat,
+            lng: mapModel.lng
+        };
+
+        mapModel._location = geolocation;
+        var circle = new google.maps.Circle({
+            center: geolocation,
+            radius: mapModel._radiusCheckIn
+        });
+
+        var bounds = circle.getBounds();
+        mapModel._boundsCheckIn = bounds;
+
+    },
+
+
+    // Return ggPlaces within radius of current lat / lng
     matchPlaces : function (callback) {
+
         var placeArray = placesModel.matchLocation(mapModel.lat, mapModel.lng);
         if (placeArray.length === 0) {
             mapModel.matchedPlaces = null;
@@ -121,6 +160,48 @@ var mapModel = {
         if (callback !== undefined) {
             callback(placeArray);
         }
+    },
+
+    getCheckInPlaces : function (callback) {
+
+        var placeArray = placesModel.matchLocation(mapModel.lat, mapModel.lng);
+        mapModel.setLocationAndBounds();
+
+        mapModel.googlePlaces.nearbySearch({
+            location: mapModel._location,
+            radius: mapModel._radiusCheckIn
+            //rankBy: google.maps.places.RankBy.DISTANCE
+
+        }, function (results, status) {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                results.forEach( function (result) {
+                    var desObj = {ggType:"Venue", googleId: result.place_id};
+                    var type = result.types[result.types.length-1];
+                    desObj.lat = result.geometry.location.lat();
+                    desObj.lng = result.geometry.location.lng();
+                    if (type === 'establishment') {
+                        desObj.title = result.name;
+                        desObj.address = result.vicinity;
+                        desObj.type = result.types[0];
+                        placeArray.push(desObj);
+                    } else if (type === 'political' ) {
+                        desObj.title = result.name;
+                        desObj.address = result.vicinity;
+                        desObj.type = result.types[0];
+                        placeArray.push(desObj);
+                    } else {
+                        desObj.title = "Unknown";
+                        desObj.address = "Unknown";
+                        desObj.type = 'Unknown';
+                    }
+
+                });
+            }
+
+            callback(placeArray);
+        });
+
+
     },
 
 
@@ -166,6 +247,10 @@ var mapModel = {
                 mapModel.reverseGeoCode(lat, lng, function (results, error) {
                     if (results !== null) {
                         var address = mapModel._updateAddress(results[0].address_components);
+                        mapModel.currentAddress = address;
+                        mapModel.currentCity = address.city;
+                        mapModel.currentState = address.state;
+                        mapModel.currentZipcode = address.zipcode;
                         if (callback !== undefined)
                             callback(true, address);
                     }
@@ -181,6 +266,8 @@ var mapModel = {
     setCurrentPlace : function (placeId, isCheckedIn) {
         mapModel.currentPlaceId = placeId;
         mapModel.currentPlace = placesModel.getPlaceModel(placeId);
+        mapModel.currentGoogleId = mapModel.currentPlace.googleId;
+        mapModel.currentPlaceName = mapModel.currentPlace.name;
 
         if (isCheckedIn !== undefined) {
             mapModel.isCheckedIn = isCheckedIn;
