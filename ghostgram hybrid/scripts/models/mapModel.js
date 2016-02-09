@@ -11,6 +11,9 @@ var mapModel = {
     latlng : null,
 
     currentAddress : null,   // Current physical address - location
+    currentCity: null,
+    currentState : null,
+    currentZipcode : null,
     currentPlace: null,       // currentPlace Object - null if none
     currentPlaceId: null,     // currentplace UUID - null if none
     currentGoogleId : null,
@@ -25,7 +28,7 @@ var mapModel = {
     gpsOptions : {enableHighAccuracy : true, timeout: 5000, maximumAge: 10000},
     lastPosition: {},
     lastPingSeconds : null,
-    _pingInterval: 5, //Ping debounce interval in seconds.  app will only get position after _pingInterval seconds
+    _pingInterval: 300, //Ping debounce interval in seconds.  app will only get position after _pingInterval seconds
     _radiusCheckIn : 1000,
     _boundsCheckIn : null,
     _location : null,
@@ -61,6 +64,8 @@ var mapModel = {
         mapModel.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
         mapModel.geocoder =  new google.maps.Geocoder();
         mapModel.googlePlaces = new google.maps.places.PlacesService(mapModel.googleMap);
+
+        mapModel.lastPingSeconds = ggTime.currentTimeInSeconds() + mapModel._pingInterval + 10;
 
         mapModel.getCurrentAddress(function (isNew, address){
 
@@ -242,6 +247,10 @@ var mapModel = {
                 mapModel.reverseGeoCode(lat, lng, function (results, error) {
                     if (results !== null) {
                         var address = mapModel._updateAddress(results[0].address_components);
+                        mapModel.currentAddress = address;
+                        mapModel.currentCity = address.city;
+                        mapModel.currentState = address.state;
+                        mapModel.currentZipcode = address.zipcode;
                         if (callback !== undefined)
                             callback(true, address);
                     }
