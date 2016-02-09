@@ -1076,6 +1076,7 @@ var movieListView = {
         //group: { field: "theatreString" }
     }),
 
+    _radius: 10,
     _date : new Date(),
 
     onInit: function (e) {
@@ -1110,7 +1111,7 @@ var movieListView = {
         movieListView.moviesDS.data([]);
 
         var dateStr = moment(date).format('YYYY-MM-DD');
-        var url = 'http://data.tmsapi.com/v1.1/movies/showings?startDate='+ dateStr +'&lat=' + lat + '&lng=' + lng + '&radius=30&imageSize=Sm&api_key=9zah4ggnfz9zpautmrx4bh32';
+        var url = 'http://data.tmsapi.com/v1.1/movies/showings?startDate='+ dateStr +'&lat=' + lat + '&lng=' + lng + '&radius=' + movieListView._radius + '&imageSize=Sm&api_key=9zah4ggnfz9zpautmrx4bh32';
         $.ajax({
             url: url,
             // dataType:"jsonp",
