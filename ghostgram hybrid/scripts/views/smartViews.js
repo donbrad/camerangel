@@ -1072,18 +1072,58 @@ var smartFlightView = {
 
 var movieListView = {
     activeObject : new kendo.data.ObservableObject(),
+    moviesDS :  new kendo.data.DataSource({
+        group: { field: "theatreString" }
+    }),
+
     _date : new Date(),
 
     onInit: function (e) {
         _preventDefault(e);
+
+        $("#searchplaces-listview").kendoMobileListView({
+                dataSource: movieListView.moviesDS,
+                template: $("#movieListTemplate").html(),
+                //headerTemplate: $("#findPlacesHeaderTemplate").html(),
+                fixedHeaders: true,
+                click: function (e) {
+                    var movie = e.dataItem;
+
+
+                },
+                dataBinding: function(e){
+                    // todo jordan - wire results UI
+                }
+            }
+        );
     },
 
     onShow: function (e) {
         _preventDefault(e);
+        movieListView.moviesDS.data([]);
     },
 
-    openModal : function (obj, callback) {
+    openModal : function (lat, lng, date, callback) {
+
         $("#movieListModal").data("kendoMobileModalView").open();
+
+        var dateStr = moment(date).format('YYYY-MM-DD');
+        var url = 'http://data.tmsapi.com/v1.1/movies/showings?startDate='+ dateStr +'&lat=' + lat + '&lng=' + lng + '&radius=30&imageSize=Sm&api_key=9zah4ggnfz9zpautmrx4bh32';
+        $.ajax({
+            url: url,
+            // dataType:"jsonp",
+            //  contentType: 'application/json',
+            success: function(result) {
+                if (result.status_code === 200) {
+
+
+                } else {
+                    mobileNotify("Gracenote: Error = " + result.status_code);
+                }
+
+
+            }
+        });
     },
 
     closeModal : function () {
@@ -1152,14 +1192,15 @@ var smartMovieView = {
         _preventDefault(e);
 
 
+
     },
 
     onFindMovies: function (e) {
         _preventDefault(e);
 
         $("#smartMovieModal").data("kendoMobileModalView").close();
-        movieListView.openModal(null, function (movieObj) {
-
+        var thisObj = smartMovieView._activeObject;
+        movieListView.openModal(thisObj.lat, thisObj.lng, thisObj.date, function (movieObj) {
             smartMovieView.openModal(smartMovieView._activeObject);
         });
     },
