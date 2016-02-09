@@ -1081,7 +1081,7 @@ var movieListView = {
     onInit: function (e) {
         _preventDefault(e);
 
-        $("#searchplaces-listview").kendoMobileListView({
+        $("#movieListView-listview").kendoMobileListView({
                 dataSource: movieListView.moviesDS,
                 template: $("#movieListTemplate").html(),
                 //headerTemplate: $("#findPlacesHeaderTemplate").html(),
