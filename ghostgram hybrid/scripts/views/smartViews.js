@@ -1108,7 +1108,7 @@ var movieListView = {
         $("#movieListModal").data("kendoMobileModalView").open();
 
         movieListView.moviesDS.data([]);
-        
+
         var dateStr = moment(date).format('YYYY-MM-DD');
         var url = 'http://data.tmsapi.com/v1.1/movies/showings?startDate='+ dateStr +'&lat=' + lat + '&lng=' + lng + '&radius=30&imageSize=Sm&api_key=9zah4ggnfz9zpautmrx4bh32';
         $.ajax({
@@ -1147,7 +1147,7 @@ var movieListView = {
             time = moment(showtime.dateTime).format('h:mm A');
             theatreArray[showtime.theatre.name] = " " + time  + " ";
         }
-        theatreNames = Object.Keys(theatreArray);
+        theatreNames = Object.keys(theatreArray);
 
         var result = {theatres : theatreNames, showTimes: theatreArray};
 
