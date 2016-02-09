@@ -1131,7 +1131,7 @@ var movieListView = {
                         movieObj.genre = movie.genres[0];
                         movieObj.posterURl = movie.preferredImage.uri;
                         movieObj.tmsId = movie.tmsId;
-                        movieObj.runTime = movie.runTime;
+                        movieObj.runTime = movieListView.processRuntime(movie.runTime);
                         movieObj.showTimes = movieListView.processShowTimes(movie.showtimes);
 
                         movieArray.push(movieObj);
@@ -1144,6 +1144,14 @@ var movieListView = {
                 movieListView.moviesDS.sync();
             }
         });
+    },
+
+    processRuntime : function (runtime) {
+        var runTimeStr = runtime.replace('PT', '');
+        runTimeStr = runTimeStr.replace('H', 'hours ');
+        runTimeStr = runTimeStr.replace('M', 'minutes ');
+
+        return(runTimeStr);
     },
 
     processShowTimes: function (showTimes) {
