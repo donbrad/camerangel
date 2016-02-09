@@ -1153,6 +1153,15 @@ var movieListView = {
 
         var result = {theatres : theatreNames, showTimes: theatreArray};
 
+        var showTimesString = '';
+        for (var i=0; i<theatreArray.length; i++) {
+
+            showTimesString += theatreNames[i] + " : " + theatreArray [i] + '</br>';
+
+        }
+
+        result.showTimesString = showTimesString;
+
         return (result);
     },
 
