@@ -1123,7 +1123,9 @@ var movieListView = {
                     movie = results[i];
                     if (movie.entityType === 'Movie') {
                         movieObj.movieTitle = movie.title;
-                        movieObj.rating = movie.ratings[0].code;
+                        movieObj.rating = '';
+                        if (movie.ratings.lenght > 0)
+                            movieObj.rating = movie.ratings[0].code;
                         movieObj.description = movie.shortDescription;
                         movieObj.genre = movie.genres[0];
                         movieObj.posterURl = movie.preferredImage.uri;
