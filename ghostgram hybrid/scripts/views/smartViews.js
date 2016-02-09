@@ -1091,7 +1091,7 @@ var movieListView = {
                 //fixedHeaders: true,
                 click: function (e) {
                     var movie = e.dataItem;
-                    
+
                     $('#movieListView').addClass('hidden');
                     $('#movieDetailView').removeClass('hidden');
 
