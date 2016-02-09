@@ -1155,7 +1155,7 @@ var movieListView = {
             if (time !== undefined) {
                 if (theatreArray[showtime.theatre.name] === undefined)
                     theatreArray[showtime.theatre.name] = "";
-                theatreArray[showtime.theatre.name] += " " + time  + " ";
+                theatreArray[showtime.theatre.name] +=  time  + " ";
             }
 
         }
@@ -1166,7 +1166,7 @@ var movieListView = {
         var showTimesString = '';
         for (var i=0; i<theatreNames.length; i++) {
 
-            showTimesString += theatreNames[i] + " : " + theatreArray [theatreNames[i]] + '</br>';
+            showTimesString += theatreNames[i] + ' : </br>' + theatreArray [theatreNames[i]] + '</br>';
 
         }
 
