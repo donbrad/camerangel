@@ -1182,7 +1182,7 @@ var smartMovieView = {
         thisObj.set("uuid", uuid.v4());
         thisObj.set('senderUUID', userModel.currentUser.userUUID);
         thisObj.set('senderName', userModel.currentUser.name);
-        thisObj.set('placeString', mapModel.currentAddress);
+        thisObj.set('placeString', mapModel.currentCity + ". " + mapModel.currentState + "  " + mapModel.currentZipcode);
         thisObj.set('channelId', null);
         thisObj.set('movieTitle', null);
         thisObj.set('movieDescription', null);
