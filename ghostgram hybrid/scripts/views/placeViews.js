@@ -1726,11 +1726,17 @@ var checkInView = {
             checkInView._callback = null;
         }
 
-        mapModel.getCheckInPlaces(function (placeArray) {
-            // Just compute the distance of matches
-            mapModel.computePlaceArrayDistance(placeArray);
-            checkInView.openModal(placeArray, checkInView.onDone);
+        mobileNotify("Checking your current location...");
+        mapModel.getCurrentAddress(function (isNew, address) {
+            mapModel.getCheckInPlaces(function (placeArray) {
+                // Just compute the distance of matches
+                mapModel.computePlaceArrayDistance(placeArray);
+                checkInView.openModal(placeArray, checkInView.onDone);
+            });
+
         });
+
+
 
     },
 

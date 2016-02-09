@@ -457,6 +457,10 @@ var userStatusView = {
         userStatusView._returnView = APP.kendo.view().id;
 
         mapModel.getCurrentAddress(function (isNew, address) {
+
+            if (isNew) {
+                mobileNotify("Are you at a new address?")
+            }
             // Is this a new location
            /* if (isNew) {
                 $('#profileCheckInLi').removeClass('hidden');
