@@ -1156,8 +1156,11 @@ var smartMovieView = {
 
     onFindMovies: function (e) {
         _preventDefault(e);
-        movieListView.openModal(null, function () {
 
+        $("#smartMovieModal").data("kendoMobileModalView").close();
+        movieListView.openModal(null, function (movieObj) {
+            
+            smartMovieView.openModal(smartMovieView._activeObject);
         });
     },
 
@@ -1305,9 +1308,11 @@ var smartMovieView = {
 
         if (callback === undefined) {
             callback = null;
+        } else {
+            smartMovieView._callback = callback;
         }
 
-        smartMovieView._callback = callback;
+
 
         smartMovieView._date = new Date();
 
