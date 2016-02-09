@@ -1197,8 +1197,8 @@ var smartMovieView = {
         thisObj.set('address', null);
         thisObj.set('googleId', null);
         thisObj.set('calendarId', null);
-        thisObj.set('lat', null);
-        thisObj.set('lng', null);
+        thisObj.set('lat', mapModel.lat);
+        thisObj.set('lng', mapModel.lng);
         thisObj.set('date', newDate);
         thisObj.set('isDeleted', false);
         thisObj.set('wasCancelled', false);
@@ -1215,6 +1215,8 @@ var smartMovieView = {
         //$('#smartEventView-datestring').val(new Date(thisObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
         $('#smartMovieView-date').val(new Date(thisObj.date).toString('MMM dd, yyyy'));
         $('#smartMovieView-time').val(new Date(thisObj.date).toString('h:mm tt'));
+
+        $('#smartMovieView-placesearch').val(thisObj.get('placeString'));
         //$("#smartEventView-placeadddiv").addClass('hidden');
         //$("#searchEventPlace-input").removeClass('hidden');
     },
