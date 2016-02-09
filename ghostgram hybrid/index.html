@@ -2510,8 +2510,12 @@
 
 	</ul>
 
+	<ul id="movieDetailView-listview" class="hidden" >
+
+	</ul>
+
 	<div class="footer" data-role="footer">
-		<a class="btnFull-modal btnPrimary" data-role="button" data-click="movieListView.onDone">Done</a>
+		<a class="btnFull-modal btnPrimary" data-role="button" id="movieListView-doneBtn" data-click="movieListView.onDone">Done</a>
 	</div>
 </div>
 
@@ -2583,7 +2587,11 @@
 					</div>
 				</div>
 			</li>
-
+			<li id="searchMovieMovie-input">
+				<label> Find Movie
+					<input type="search" id="smartMovieView-moviesearch" placeholder="Whatever is playing.."/>
+				</label>
+			</li>
 		</ul>
 	</form>
 

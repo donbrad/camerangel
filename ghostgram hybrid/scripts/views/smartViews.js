@@ -1148,8 +1148,8 @@ var movieListView = {
 
     processRuntime : function (runtime) {
         var runTimeStr = runtime.replace('PT', '');
-        runTimeStr = runTimeStr.replace('H', 'hours ');
-        runTimeStr = runTimeStr.replace('M', 'minutes ');
+        runTimeStr = runTimeStr.replace('H', ' hr ');
+        runTimeStr = runTimeStr.replace('M', ' min');
 
         return(runTimeStr);
     },
