@@ -1149,7 +1149,7 @@ var movieListView = {
             time = moment(showtime.dateTime).format('h:mm A');
             if (time !== undefined) {
                 if (theatreArray[showtime.theatre.name] === undefined)
-                    theatreArray[showtime.theatre.name] = null;
+                    theatreArray[showtime.theatre.name] = "";
                 theatreArray[showtime.theatre.name] += " " + time  + " ";
             }
 
