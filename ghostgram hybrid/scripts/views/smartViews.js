@@ -1073,7 +1073,7 @@ var smartFlightView = {
 var movieListView = {
     activeObject : new kendo.data.ObservableObject(),
     moviesDS :  new kendo.data.DataSource({
-        group: { field: "theatreString" }
+        //group: { field: "theatreString" }
     }),
 
     _date : new Date(),
@@ -1085,7 +1085,7 @@ var movieListView = {
                 dataSource: movieListView.moviesDS,
                 template: $("#movieListTemplate").html(),
                 //headerTemplate: $("#findPlacesHeaderTemplate").html(),
-                fixedHeaders: true,
+                //fixedHeaders: true,
                 click: function (e) {
                     var movie = e.dataItem;
 
@@ -1107,23 +1107,51 @@ var movieListView = {
 
         $("#movieListModal").data("kendoMobileModalView").open();
 
+        movieListView.moviesDS.data([]);
+        
         var dateStr = moment(date).format('YYYY-MM-DD');
         var url = 'http://data.tmsapi.com/v1.1/movies/showings?startDate='+ dateStr +'&lat=' + lat + '&lng=' + lng + '&radius=30&imageSize=Sm&api_key=9zah4ggnfz9zpautmrx4bh32';
         $.ajax({
             url: url,
             // dataType:"jsonp",
             //  contentType: 'application/json',
-            success: function(result) {
-                if (result.status_code === 200) {
+            success: function(results, textStatus, jqXHR) {
+                var movie = null;
 
+                for (var i=0; i< results.length; i++) {
+                    var movieObj = {};
+                    movie = results[i];
+                    if (movie.entityType === 'Movie') {
+                        movieObj.movieTitle = movie.title;
+                        movieObj.rating = movie.ratings[0].code;
+                        movieObj.description = movie.shortDescription;
+                        movieObj.genre = movie.genres[0];
+                        movieObj.posterURl = movie.preferredImage.uri;
+                        movieObj.tmsId = movie.tmsId;
+                        movieObj.runTime = movie.runTime;
+                        movieObj.showTimes = movieListView.processShowTimes(movie.showtimes);
 
-                } else {
-                    mobileNotify("Gracenote: Error = " + result.status_code);
+                        movieListView.moviesDS.add(movieObj);
+                    }
+
                 }
-
-
             }
         });
+    },
+
+    processShowTimes: function (showTimes) {
+        var theatreArray = [], theatreNames = [], showtime = null, time = null;
+
+        for (var s=0; s<showTimes.length; s++) {
+            showtime = showTimes[s];
+            time = moment(showtime.dateTime).format('h:mm A');
+            theatreArray[showtime.theatre.name] = " " + time  + " ";
+        }
+        theatreNames = Object.Keys(theatreArray);
+
+        var result = {theatres : theatreNames, showTimes: theatreArray};
+
+        return (result);
     },
 
     closeModal : function () {
