@@ -1225,7 +1225,7 @@ var smartMovieView = {
 
         var placeStr =  $("#smartMovieView-placesearch").val();
 
-        smartEventPlacesView.openModal(placeStr, function (geo) {
+        smartLocationView.openModal(placeStr, function (geo) {
             if (geo === null) {
                 mobileNotify("Smart Location cancelled...");
                 return;
@@ -1261,7 +1261,6 @@ var smartMovieView = {
     openModal: function (actionObj, callback) {
         if (!smartMovieView._isInited) {
 
-
             $('#smartMovieView-date').pickadate({
                 format: 'mmm, d yyyy',
                 formatSubmit: 'mm d yyyy',
@@ -1270,7 +1269,7 @@ var smartMovieView = {
                     smartEventView.updateDateString();
                 }
             });
-            $('#smartEventView-time').pickatime();
+            $('#smartMovieView-time').pickatime();
 
             /* $("#smartEventView-date").on('blur', function () {
 
