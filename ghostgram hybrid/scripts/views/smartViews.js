@@ -1147,8 +1147,12 @@ var movieListView = {
         for (var s=0; s<showTimes.length; s++) {
             showtime = showTimes[s];
             time = moment(showtime.dateTime).format('h:mm A');
-            if (time !== undefined)
+            if (time !== undefined) {
+                if (theatreArray[showtime.theatre.name] === undefined)
+                    theatreArray[showtime.theatre.name] = null;
                 theatreArray[showtime.theatre.name] += " " + time  + " ";
+            }
+
         }
         theatreNames = Object.keys(theatreArray);
 
