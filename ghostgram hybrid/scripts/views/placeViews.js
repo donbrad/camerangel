@@ -2491,8 +2491,8 @@ var smartLocationView = {
         }
 
 
-        var form = $("#searchLocation-form").kendoValidator().data("kendoValidator");
-        form.validate();
+        /*var form = $("#searchLocation-form").kendoValidator().data("kendoValidator");
+        form.validate();*/
 
         $("#smartLocationModal").data("kendoMobileModalView").open();
 
