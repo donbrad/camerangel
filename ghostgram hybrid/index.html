@@ -2495,6 +2495,7 @@
 		<div style = "margin-left: 12px; margin-right: 12px;"> <span style="font-style: oblique" class="right">Rating:  #:data.rating# </span> <span class="left">  #: data.genre# </span></div>
 		<div style="clear:both;margin-left: 12px; margin-right: 12px;"><span class="right"> Movie Run Time: #: data.runTime# </span></div>
 		<div  style = "margin-left: 12px; margin-right: 12px;"> #= data.showTimes.showTimesString #</div>
+		<hr>
 	</div>
 </script>
 
@@ -2508,16 +2509,29 @@
 			</a>
 		</div>
 	</div>
-	<ul id="movieListView-listview" >
+	<div id="movieListView" >
+		<ul id="movieListView-listview" >
 
-	</ul>
+		</ul>
+	</div>
+	<div id="movieDetailView" class="hidden">
+		<div class="event-view card" >
+			<div class="event-details">
+				<h2 data-bind="text: movieTitle"></h2>
+				<p class="helper" data-bind="text: movieDescription"></p>
+				<p class="helper">Showtime:  <span  data-bind="text: showtimeString"></span></p>
+				<p class="helper">Theatre:  <span  data-bind="text: theatreString"></span></p>
+			</div>
+		</div>
+		<div style="text-align: center;">
+			<a class="btnClear" data-role="button" data-click="movieListView.onShowMovieList">Back to Movie List</a>
+		</div>
+		<ul id="movieDetailView-listview"  >
 
-	<ul id="movieDetailView-listview" class="hidden" >
-
-	</ul>
-
+		</ul>
+	<div>
 	<div class="footer" data-role="footer">
-		<a class="btnFull-modal btnPrimary" data-role="button" id="movieListView-doneBtn" data-click="movieListView.onDone">Done</a>
+		<a class="btnFull-modal btnPrimary" data-role="button" id="movieListView-doneBtn" data-click="movieListView.onDone">Select This Movie</a>
 	</div>
 </div>
 

@@ -1075,7 +1075,9 @@ var movieListView = {
     moviesDS :  new kendo.data.DataSource({
         //group: { field: "theatreString" }
     }),
-
+    showtimesDS :  new kendo.data.DataSource({
+        //group: { field: "theatreString" }
+    }),
     _radius: 10,
     _date : new Date(),
 
@@ -1089,11 +1091,23 @@ var movieListView = {
                 //fixedHeaders: true,
                 click: function (e) {
                     var movie = e.dataItem;
+                    
+                    $('#movieListView').addClass('hidden');
+                    $('#movieDetailView').removeClass('hidden');
 
+                }
+            }
+        );
 
-                },
-                dataBinding: function(e){
-                    // todo jordan - wire results UI
+        $("#movieDetailView-listview").kendoMobileListView({
+                dataSource: movieListView.showtimesDS,
+                template: $("#movieShowtimeTemplate").html(),
+                //headerTemplate: $("#findPlacesHeaderTemplate").html(),
+                //fixedHeaders: true,
+                click: function (e) {
+                    var movie = e.dataItem;
+
+                    $('#movieListView-doneBtn').removeClass('hidden');
                 }
             }
         );
@@ -1102,6 +1116,10 @@ var movieListView = {
     onShow: function (e) {
         _preventDefault(e);
         movieListView.moviesDS.data([]);
+        movieListView.showtimesDS.data([]);
+        $('#movieListView').removeClass('hidden');
+        $('#movieDetailView').addClass('hidden');
+        $('#movieListView-doneBtn').addClass('hidden');
     },
 
     openModal : function (lat, lng, date, callback) {
