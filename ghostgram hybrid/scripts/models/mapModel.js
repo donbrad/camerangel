@@ -82,8 +82,6 @@ var mapModel = {
                     mapModel.currentCity = address.city;
                     mapModel.currentState = address.state;
                     mapModel.currentZipcode = address.zipcode;
-                    if (callback !== undefined)
-                        callback(true, address);
                 }
             });
         });
