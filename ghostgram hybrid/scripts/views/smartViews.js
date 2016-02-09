@@ -1156,7 +1156,7 @@ var movieListView = {
         var showTimesString = '';
         for (var i=0; i<theatreNames.length; i++) {
 
-            showTimesString += theatreNames[i] + " : " + theatreArray [i] + '</br>';
+            showTimesString += theatreNames[i] + " : " + theatreArray [theatreNames[i]] + '</br>';
 
         }
 
