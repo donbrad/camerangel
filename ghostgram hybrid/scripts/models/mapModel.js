@@ -30,6 +30,7 @@ var mapModel = {
     lastPingSeconds : null,
     _pingInterval: 300, //Ping debounce interval in seconds.  app will only get position after _pingInterval seconds
     _radiusCheckIn : 1000,
+    _radiusNewLocation : 300,
     _boundsCheckIn : null,
     _location : null,
 
@@ -89,7 +90,7 @@ var mapModel = {
 
     isNewLocation : function (lat, lng) {
 
-       return(placesModel.inRadius(lat, lng, mapModel.lat, mapModel.lng, 150));
+       return(! placesModel.inRadius(lat, lng, mapModel.lat, mapModel.lng, mapModel._radiusNewLocation));
 
     },
 
@@ -244,6 +245,9 @@ var mapModel = {
         mapModel.getCurrentPosition (function(lat, lng) {
             if (mapModel.isNewLocation(lat,lng)) {
                 // User is at a new location
+                var lat = parseFloat(position.coords.latitude.toFixed(6)), lng = parseFloat(position.coords.longitude.toFixed(6));
+                mapModel._updatePosition(lat, lng);
+
                 mapModel.reverseGeoCode(lat, lng, function (results, error) {
                     if (results !== null) {
                         var address = mapModel._updateAddress(results[0].address_components);
