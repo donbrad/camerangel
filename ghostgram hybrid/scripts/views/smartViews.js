@@ -1075,11 +1075,18 @@ var movieListView = {
     moviesDS :  new kendo.data.DataSource({
         //group: { field: "theatreString" }
     }),
+
     showtimesDS :  new kendo.data.DataSource({
         //group: { field: "theatreString" }
     }),
-    _radius: 10,
+
+    _radius: 15,
+    _movieQuery: null,
+    _lat: null,
+    _lng: null,
     _date : new Date(),
+    _minTime : null,
+    _maxTime: null,
 
     onInit: function (e) {
         _preventDefault(e);
@@ -1122,12 +1129,15 @@ var movieListView = {
         $('#movieListView-doneBtn').addClass('hidden');
     },
 
-    openModal : function (lat, lng, date, callback) {
+    openModal : function (lat, lng, date, query, callback) {
 
         $("#movieListModal").data("kendoMobileModalView").open();
 
         movieListView.moviesDS.data([]);
+        movieListView.showtimesDS.data([]);
 
+        movieListView._minTime = moment(date).subtract(2, 'hours');
+        movieListView._maxTime = moment(date).add(2, 'hours');
         var dateStr = moment(date).format('YYYY-MM-DD');
         var url = 'http://data.tmsapi.com/v1.1/movies/showings?startDate='+ dateStr +'&lat=' + lat + '&lng=' + lng + '&radius=' + movieListView._radius + '&imageSize=Sm&api_key=9zah4ggnfz9zpautmrx4bh32';
         $.ajax({
@@ -1152,8 +1162,24 @@ var movieListView = {
                         movieObj.runTime = movieListView.processRuntime(movie.runTime);
                         movieObj.showTimes = movieListView.processShowTimes(movie.showtimes);
 
-                        movieArray.push(movieObj);
+                        for (var s=0; s<movie.showtimes.length; s++) {
 
+                            var showtimeObj = {};
+                            var showtime = movie.showtimes[0];
+
+                            showtimeObj.movieTitle = movieTitle;
+                            showtimeObj.movieId = movieObj.tmsId;
+                            showtimeObj.theatreName = showtime.theatre.name;
+                            showtimeObj.theatreId = showtime.theatre.id;
+                            showtimeObj.date = moment(showtime.dateTime);
+                            showtimeObj.dateStr = moment(showtime.dateTime).format('h:mm A');
+
+                            if (showtimeObj.date >= movieListView._minTime && showtimeObj.date <= movieListView._maxTime)
+                                movieListView.showtimesDS.add(showtimeObj);
+
+                        }
+
+                        movieArray.push(movieObj);
                     }
 
                 }
@@ -1174,15 +1200,20 @@ var movieListView = {
     },
 
     processShowTimes: function (showTimes) {
-        var theatreArray = [], theatreNames = [], showtime = null, time = null;
+        var theatreArray = [], theatreNames = [], showtime = null, time = null, timeStr = null;
 
         for (var s=0; s<showTimes.length; s++) {
             showtime = showTimes[s];
-            time = moment(showtime.dateTime).format('h:mm A');
-            if (time !== undefined) {
-                if (theatreArray[showtime.theatre.name] === undefined)
-                    theatreArray[showtime.theatre.name] = "";
-                theatreArray[showtime.theatre.name] +=  time  + " ";
+
+            time = moment(showtime.dateTime);
+
+            if (time >= movieListView._minTime && time <+ movieListView._maxTime) {
+                timeStr = moment(showtime.dateTime).format('h:mm A');
+                if (timeStr !== undefined) {
+                    if (theatreArray[showtime.theatre.name] === undefined)
+                        theatreArray[showtime.theatre.name] = "";
+                    theatreArray[showtime.theatre.name] +=  timeStr  + " ";
+                }
             }
 
         }
