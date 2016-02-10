@@ -1096,7 +1096,9 @@ var movieListView = {
             dataTextField: "movieTitle",
             ignoreCase: true,
             select: function(e) {
-                var movie = e.item;
+                //var movie = e.item;
+                var offset = e.item[0].attributes['data-offset-index'];
+                var movie = movieListView.moviesDS.at(offset);
 
                 // Use the selected item or its text
             },
