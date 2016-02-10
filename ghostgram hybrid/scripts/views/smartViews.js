@@ -1105,15 +1105,32 @@ var movieListView = {
 
                 // Call movie detail view with this movie...
             },
+            change: function (e) {
+               var  query = $("#movieListView-query").val();
+                var ds = movieListView.moviesDS;
+                if (query.length === 0) {
+                    ds.filter([]);
+                } else {
+                    ds.filter([ {
+                        "field":"movieTitle",
+                        "operator":"contains",
+                        "value":query}]);
+                }
+            },
             filter: "contains",
             placeholder: "Movie title..."
         });
 
-        /*$("#movieListView-query").on('input', function(e) {
+       /* $("#movieListView-query").on('input', function(e) {
+            var query = $("#movieListView-query").val();
+
+            if (query.length === 0) {
+
+            }
 
 
-        });*/
-
+        });
+*/
         $("#movieListView-listview").kendoMobileListView({
                 dataSource: movieListView.moviesDS,
                 template: $("#movieListTemplate").html(),
