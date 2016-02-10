@@ -1167,7 +1167,7 @@ var movieListView = {
                             var showtimeObj = {};
                             var showtime = movie.showtimes[0];
 
-                            showtimeObj.movieTitle = movieTitle;
+                            showtimeObj.movieTitle = movieObj.movieTitle;
                             showtimeObj.movieId = movieObj.tmsId;
                             showtimeObj.theatreName = showtime.theatre.name;
                             showtimeObj.theatreId = showtime.theatre.id;
