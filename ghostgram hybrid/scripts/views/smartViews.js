@@ -1091,6 +1091,24 @@ var movieListView = {
     onInit: function (e) {
         _preventDefault(e);
 
+        $("#movieListView-query").kendoAutoComplete({
+            dataSource: movieListView.moviesDS,
+            dataTextField: "movieTitle",
+            ignoreCase: true,
+            select: function(e) {
+                var movie = e.item;
+
+                // Use the selected item or its text
+            },
+            filter: "contains",
+            placeholder: "Movie title"
+        });
+
+        /*$("#movieListView-query").on('input', function(e) {
+
+
+        });*/
+
         $("#movieListView-listview").kendoMobileListView({
                 dataSource: movieListView.moviesDS,
                 template: $("#movieListTemplate").html(),
@@ -1132,6 +1150,8 @@ var movieListView = {
     openModal : function (lat, lng, date, query, radius, callback) {
 
         $("#movieListModal").data("kendoMobileModalView").open();
+
+        $("#movieListView-searchbox").addClass('hidden');
 
         movieListView.moviesDS.data([]);
         movieListView.showtimesDS.data([]);
@@ -1192,6 +1212,7 @@ var movieListView = {
 
                 movieListView.moviesDS.data(movieArray);
                 movieListView.moviesDS.sync();
+                $("#movieListView-searchbox").removeClass('hidden');
             }
         });
     },
