@@ -1129,13 +1129,19 @@ var movieListView = {
         $('#movieListView-doneBtn').addClass('hidden');
     },
 
-    openModal : function (lat, lng, date, query, callback) {
+    openModal : function (lat, lng, date, query, radius, callback) {
 
         $("#movieListModal").data("kendoMobileModalView").open();
 
         movieListView.moviesDS.data([]);
         movieListView.showtimesDS.data([]);
 
+        if (callback !== undefined) {
+            movieListView.callback = callback;
+        } else {
+            movieListView.callback = null;
+        }
+        movieListView._radius = radius;
         movieListView._minTime = moment(date).subtract(2, 'hours');
         movieListView._maxTime = moment(date).add(2, 'hours');
         var dateStr = moment(date).format('YYYY-MM-DD');
@@ -1245,6 +1251,10 @@ var movieListView = {
     onCancel: function (e) {
         _preventDefault(e);
         $("#movieListModal").data("kendoMobileModalView").close();
+        if (movieListView.callback !== null) {
+            movieListView.callback(null);
+        }
+
     }
 
 };
@@ -1258,6 +1268,7 @@ var smartMovieView = {
     _callback : null,
     _movieId: null,
     _theatreId: null,
+    _radius: 15,
 
 
     onChangeCalendar: function (e) {
@@ -1307,9 +1318,18 @@ var smartMovieView = {
 
         smartMovieView.updateDateString();
 
+        var query = $("#smartMovieView-moviesearch").val();
+        var radius =   $("#smartMovieView-searchDistance").val();
+
+        radius = Number(radius);
+
+        if (radius < 5 || radius > 100) {
+            radius = 15;
+        }
+
         $("#smartMovieModal").data("kendoMobileModalView").close();
         var thisObj = smartMovieView._activeObject;
-        movieListView.openModal(thisObj.lat, thisObj.lng, thisObj.date, function (movieObj) {
+        movieListView.openModal(thisObj.lat, thisObj.lng, thisObj.date, query, radius, function (movieObj) {
             smartMovieView.openModal(smartMovieView._activeObject);
         });
     },
