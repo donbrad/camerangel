@@ -1096,14 +1096,17 @@ var movieListView = {
             dataTextField: "movieTitle",
             ignoreCase: true,
             select: function(e) {
-                //var movie = e.item;
-                var offset = e.item[0].attributes['data-offset-index'];
+                var movieName = e.item[0].textContent;
+                var offset = e.item[0].attributes['data-offset-index'].value;
+                if (offset !== undefined) {
+                    offset = Number(offset);
+                }
                 var movie = movieListView.moviesDS.at(offset);
 
-                // Use the selected item or its text
+                // Call movie detail view with this movie...
             },
             filter: "contains",
-            placeholder: "Movie title"
+            placeholder: "Movie title..."
         });
 
         /*$("#movieListView-query").on('input', function(e) {
