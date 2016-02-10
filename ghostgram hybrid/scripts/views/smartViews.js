@@ -1306,7 +1306,7 @@ var smartMovieView = {
         _preventDefault(e);
 
         smartMovieView.updateDateString();
-        
+
         $("#smartMovieModal").data("kendoMobileModalView").close();
         var thisObj = smartMovieView._activeObject;
         movieListView.openModal(thisObj.lat, thisObj.lng, thisObj.date, function (movieObj) {
