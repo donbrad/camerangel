@@ -3125,6 +3125,32 @@
 	</div>
 </script>
 
+
+<!-- Find Place -->
+<div data-role="view" data-title="New Places Nearby" id="findPlace" data-layout="main"  data-show="findPlacesView.onShow" data-init="findPlacesView.onInit" data-before-hide="findPlacesView.onHide" data-transition="slide:up" style="display: none;">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span data-role="view-title"></span>
+			<a data-role="button" data-click="findPlacesView.onDone" data-align="left" >
+				<img src="images/nav-back.svg" />
+			</a>
+		</div>
+	</div>
+
+
+	<div class="tempSearchBox">
+		<div class="appendSearch">
+			<span class="searchIcon"><img src="images/search.svg" /></span>
+			<input class="doubleAppendSearch"  placeholder="Search nearby ..." id="findPlaceSearchQuery" />
+			<span class="enterSearch hidden"><a class="btnClear-grey"><img class="icon-sm" src="images/close.svg" /></a></span>
+		</div>
+	</div>
+	<div>
+		<ul id="findplace-listview"></ul>
+	</div>
+</div>
+
+
 <!--/*
  * Places
  */-->
@@ -3155,31 +3181,6 @@
 		<li><a data-action="doDeletePlace">Delete Place</a></li>
 	</ul>
 </div>
-
-<!-- Find Place -->
-<div data-role="view" data-title="New Places Nearby" id="findPlace" data-layout="main"  data-show="findPlacesView.onShow" data-init="findPlacesView.onInit" data-before-hide="findPlacesView.onHide" data-transition="slide:up" style="display: none;">
-	<div data-role="header">
-		<div data-role="navbar">
-			<span data-role="view-title"></span>
-			<a data-role="button" data-click="findPlacesView.onDone" data-align="left" >
-				<img src="images/nav-back.svg" />
-			</a>
-		</div>
-	</div>
-
-
-	<div class="tempSearchBox">
-		<div class="appendSearch">
-			<span class="searchIcon"><img src="images/search.svg" /></span>
-			<input class="doubleAppendSearch"  placeholder="Search nearby ..." id="findPlaceSearchQuery" />
-			<span class="enterSearch hidden"><a class="btnClear-grey"><img class="icon-sm" src="images/close.svg" /></a></span>
-		</div>
-	</div>
-	<div>
-		<ul id="findplace-listview"></ul>
-	</div>
-</div>
-
 
 <!-- Smart Event Location -->
 <div data-role="modalview" data-title="Smart Location" id="smartLocationModal" data-init="smartLocationView.onInit" style="height:100%; width:100%; z-index:1000; display: none;">
