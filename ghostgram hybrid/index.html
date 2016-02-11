@@ -2491,13 +2491,18 @@
 
 <script type="text/x-kendo-template" id="movieListTemplate">
 	<div>
-		<h4> #: data.movieTitle # </h4>
-		<p> #: data.description #</p>
-		<div style = "margin-left: 12px; margin-right: 12px;"> <span class="left">  Genre: #: data.genre# </span>  <span style="font-style: oblique" class="right">Rating:  #:data.rating# </span></div>
-		<div style=" clear:both; margin-left: 12px; margin-right: 12px;"><span > Plays for: #: data.runTime# </span></div>
-		<div  style = "margin-left: 12px; margin-right: 12px;"> #= data.showTimes.showTimesString #</div>
-		<div style="clear:both;"></div>
-		<hr>
+		<div style="float: right; width: 25%;">
+			<img src="#=data.posterUrl#" />
+		</div>
+		<div style="float: right; width: 75%;">
+			<h4> #: data.movieTitle # </h4>
+			<p> #: data.description #</p>
+			<div style = "margin-left: 12px; margin-right: 12px;"> <span class="left">  Genre: #: data.genre# </span>  <span style="font-style: oblique" class="right">Rating:  #:data.rating# </span></div>
+			<div style=" clear:both; margin-left: 12px; margin-right: 12px;"><span > Plays for: #: data.runTime# </span></div>
+			<div  style = "margin-left: 12px; margin-right: 12px;"> #= data.showTimes.showTimesString #</div>
+			<div style="clear:both;"></div>
+			<hr>
+		</div>
 	</div>
 </script>
 
