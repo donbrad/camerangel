@@ -844,7 +844,7 @@ var moviePosterPhoto  = {
         query.find({
             success: function(results) {
                 if (results.length > 0)
-                    callback(results[0])
+                    callback(results[0]);
                 else
                     callback(null);
             },
@@ -854,15 +854,6 @@ var moviePosterPhoto  = {
         });
     },
 
-    getPosterUrl : function (movieName) {
-        var poster = moviePosterPhoto.findPoster(movieName);
-
-        if (poster !== null) {
-            return(poster.imageUrl);
-        }
-
-        return (null);
-    },
 
 
     addPoster: function (movieTitle, tmsId,  callback) {
