@@ -1082,7 +1082,7 @@ var movieListView = {
     }),
 
     posterArray : [],
-
+    movieArray : [],
     _radius: 15,
     _movieQuery: null,
     _lat: null,
@@ -1201,6 +1201,7 @@ var movieListView = {
 
         movieListView.moviesDS.data([]);
         movieListView.showtimesDS.data([]);
+        movieListView.movieArray = [];
         movieListView.initActiveObject();
         if (callback !== undefined) {
             movieListView.callback = callback;
@@ -1260,12 +1261,12 @@ var movieListView = {
 
                         }
 
-                        movieArray.push(movieObj);
+                        movieListView.movieArray.push(movieObj);
                     }
 
                 }
 
-                movieListView.processMoviePosters(movieArray);
+                movieListView.processMoviePosters(movieListView.movieArray);
                /* movieListView.moviesDS.data(movieArray);
                 movieListView.moviesDS.sync();
                 $("#movieListView-searchbox").removeClass('hidden');*/
@@ -1317,7 +1318,7 @@ var movieListView = {
                 movieListView.posterArray[poster.tmsId] = poster;
                 // Decrement the counter as we get the data...
                 if (--counter === 0) {
-                    movieListView.finalizeMovieList();
+                    movieListView.finalizeMovieList(movieArray);
                 }
 
             });

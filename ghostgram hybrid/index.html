@@ -248,7 +248,7 @@
 </div>
    
 <!-- home - for signed in users -->
-<div data-role="view" data-title="intelligram" id="home" data-layout="main"  style="display:none;" data-show="homeView.onShow" data-init="homeView.onInit" data-hide="homeView.onHide">
+<div data-role="view" data-title="ghostgrams" id="home" data-layout="main"  style="display:none;" data-show="homeView.onShow" data-init="homeView.onInit" data-hide="homeView.onHide">
 		<div class="appBox">
 		    <!-- application views will be rendered here -->
 		    <div>
@@ -3039,6 +3039,13 @@
 
 
 <div data-role="modalview" id="modalPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal" data-model="modalPhotoView._activePhoto" data-init="modalPhotoView.onInit" data-zoom="true">
+	<div data-role="header">
+		<div data-role="navbar">
+
+			<a data-click="modalPhotoView.closeModal" data-role="button"  class="btnClear-grey" data-align="left">Cancel</a>
+
+		</div>
+	</div>
 	<div class="photoViewBox">
 		<img id="modalPhotoViewImage" data-bind="attr: {src : thumbnailUrl}" />
 	</div>
