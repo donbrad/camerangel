@@ -868,10 +868,10 @@ var moviePosterPhoto  = {
     addPoster: function (movieTitle, tmsId,  callback) {
         var poster = null;
 
-        if (poster = moviePosterPhoto.findPoster(movieName) !== null) {
+        if (poster = moviePosterPhoto.findPoster(movieTitle) !== null) {
             callback(poster);
         }
-        var movieTitle = movieName.replace(/\b/g, '+');
+        var movieTitle = movieTitle.replace(/\b/g, '+');
         var omdbUrl = 'http://www.omdbapi.com/?t=' + movieTitle + '&y=&plot=full&r=json';
         $.ajax({
             url: url,
