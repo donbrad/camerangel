@@ -1287,8 +1287,7 @@ var movieListView = {
 
         for (var i=0; i< movieArray.length; i++) {
             var movie = movieArray[i], poster = movieListView.posterArray[movie.tmsId];
-
-            movie.runtime = poster.runtime;
+            ;
             movie.imageUrl = poster.imageUrl;
             movie.runtime = poster.runtime;
             movie.awards = poster.awards;

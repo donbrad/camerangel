@@ -889,6 +889,9 @@ var moviePosterPhoto  = {
                         obj.set('imdbRating', result.imdbRating);
                         obj.set('imdbVotes', result.imdbVotes);
                         obj.set('imdbId', result.imdbID);
+                        if (result.Runtime === undefined) {
+                            result.Runtime = "0";
+                        }
                         obj.set('runtime', result.Runtime);
                         obj.set('genre', result.Genre);
                         obj.set('rating', result.Rated);
