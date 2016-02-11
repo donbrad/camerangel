@@ -1286,8 +1286,9 @@ var movieListView = {
     finalizeMovieList : function (movieArray) {
 
         for (var i=0; i< movieArray.length; i++) {
-            var movie = movieArray[i], poster = movieListView.posterArray[movie.tmsId];
-            ;
+            var movie = movieArray[i];
+            var poster = movieListView.posterArray[movie.tmsId];
+
             movie.imageUrl = poster.imageUrl;
             movie.runtime = poster.runtime;
             movie.awards = poster.awards;
