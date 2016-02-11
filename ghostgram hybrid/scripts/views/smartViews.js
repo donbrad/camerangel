@@ -1481,15 +1481,18 @@ var smartMovieView = {
         thisObj.set('placeString', mapModel.currentCity + ". " + mapModel.currentState + "  " + mapModel.currentZipcode);
         thisObj.set('channelId', null);
         thisObj.set('movieTitle', null);
-        thisObj.set('movieDescription', null);
+        thisObj.set('tmsId', null);
+        thisObj.set('imdbId', null);
         thisObj.set('type', "movie");
         thisObj.set('theatreId', null);
         thisObj.set('theatreName', null);
         thisObj.set('theatreString', null);
         thisObj.set('showtimes', []);
+        thisObj.set('showtime', null);
         thisObj.set('showtimeString', null);
         thisObj.set('action', null);
         thisObj.set('description', null);
+        thisObj.set('imageUrl', null);
         thisObj.set('address', null);
         thisObj.set('googleId', null);
         thisObj.set('calendarId', null);
@@ -1515,6 +1518,41 @@ var smartMovieView = {
         $('#smartMovieView-placesearch').val(thisObj.get('placeString'));
         //$("#smartEventView-placeadddiv").addClass('hidden');
         //$("#searchEventPlace-input").removeClass('hidden');
+    },
+
+    setActiveObject: function (obj) {
+        var thisObj = smartMovieView._activeObject;
+
+        thisObj.set("uuid", obj.uuid);
+        thisObj.set('senderUUID', obj.senderUUID);
+        thisObj.set('senderName', obj.senderName);
+        thisObj.set('placeString', obj.placeString);
+        thisObj.set('channelId', obj.channelId);
+        thisObj.set('movieTitle', obj.movieTitle);
+        thisObj.set('tmsId', obj.tmsId);
+        thisObj.set('imdbId', obj.imdbId);
+        thisObj.set('type', obj.type);
+        thisObj.set('theatreId', obj.theatreId);
+        thisObj.set('theatreName', obj.theatreName);
+        thisObj.set('theatreString', obj.theatreString);
+        thisObj.set('showtimes', obj.showtimes);
+        thisObj.set('showtimeString', obj.showtimeString);
+        thisObj.set('action', obj.action);
+        thisObj.set('description', obj.description);
+        thisObj.set('imageUrl', obj.imageUrl);
+        thisObj.set('address', obj.address);
+        thisObj.set('googleId', obj.googleId);
+        thisObj.set('calendarId', obj.calendarId);
+        thisObj.set('lat', obj.lat);
+        thisObj.set('lng', obj.lng);
+        thisObj.set('date', obj.date);
+        thisObj.set('isDeleted', obj.isDeleted);
+        thisObj.set('wasCancelled', obj.wasCancelled);
+        thisObj.set('movieSelected', obj.movieSelected);  // if false, no movie selected - "let's see a movie at this theatre around this time
+        thisObj.set('movieId', obj.movieId);
+        thisObj.set('addToCalendar', obj.addToCalendar);
+        thisObj.set('comment', obj.comment);
+        thisObj.set('wasSent', obj.wasSent);
     },
 
     onPlaceSearch : function (e) {
