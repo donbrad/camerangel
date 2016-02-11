@@ -1072,6 +1072,7 @@ var smartFlightView = {
 
 var movieListView = {
     activeObject : new kendo.data.ObservableObject(),
+
     moviesDS :  new kendo.data.DataSource({
         //group: { field: "theatreString" }
     }),
@@ -1087,6 +1088,29 @@ var movieListView = {
     _date : new Date(),
     _minTime : null,
     _maxTime: null,
+
+    initActiveObject: function () {
+        var obj = movieListView.activeObject;
+
+        obj.set('title', null);
+        obj.set('description', null);
+        obj.set('rating', null);
+        obj.set('genre', null);
+        obj.set('posterUrl', null);
+
+    },
+
+    setActiveObject: function (movie) {
+        var obj = movieListView.activeObject;
+
+        obj.set('title', movie.movieTitle);
+        obj.set('description', movie.description);
+        obj.set('rating', movie.rating);
+        obj.set('genre', movie.genre);
+        obj.set('runtime', movie.runtime);
+        obj.set('posterUrl', null);  // Todo: Don - wire up movie posters
+
+    },
 
     onInit: function (e) {
         _preventDefault(e);
@@ -1121,16 +1145,7 @@ var movieListView = {
             placeholder: "Movie title..."
         });
 
-       /* $("#movieListView-query").on('input', function(e) {
-            var query = $("#movieListView-query").val();
 
-            if (query.length === 0) {
-
-            }
-
-
-        });
-*/
         $("#movieListView-listview").kendoMobileListView({
                 dataSource: movieListView.moviesDS,
                 template: $("#movieListTemplate").html(),
@@ -1138,7 +1153,7 @@ var movieListView = {
                 //fixedHeaders: true,
                 click: function (e) {
                     var movie = e.dataItem;
-
+                    movieListView.setActiveObject(movie);
                     $('#movieListView').addClass('hidden');
                     $('#movieDetailView').removeClass('hidden');
 
@@ -1154,10 +1169,17 @@ var movieListView = {
                 click: function (e) {
                     var movie = e.dataItem;
 
+
                     $('#movieListView-doneBtn').removeClass('hidden');
                 }
             }
         );
+    },
+
+    onShowMovieList: function (e) {
+        _preventDefault(e);
+        $('#movieListView').removeClass('hidden');
+        $('#movieDetailView').addClass('hidden')
     },
 
     onShow: function (e) {
@@ -1177,7 +1199,7 @@ var movieListView = {
 
         movieListView.moviesDS.data([]);
         movieListView.showtimesDS.data([]);
-
+        movieListView.initActiveObject();
         if (callback !== undefined) {
             movieListView.callback = callback;
         } else {
@@ -1205,7 +1227,7 @@ var movieListView = {
                             movieObj.rating = movie.ratings[0].code;
                         movieObj.description = movie.shortDescription;
                         movieObj.genre = movie.genres[0];
-                        movieObj.posterURl = movie.preferredImage.uri;
+                        movieObj.posterUrl = movie.preferredImage.uri;
                         movieObj.tmsId = movie.tmsId;
                         movieObj.runTime = movieListView.processRuntime(movie.runTime);
                         movieObj.showTimes = movieListView.processShowTimes(movie.showtimes);
