@@ -1092,7 +1092,8 @@ form p {
 }
 .btnClear-light-sm {
   background: transparent;
-  color: #6CADF3 !important;
+  color: #fff !important;
+  font-size: 0.875em !important;
 }
 .btnClear-light-sm :active {
   color: #3A779D !important;
@@ -1612,7 +1613,7 @@ div.km-header a img {
 .km-material .km-list > li {
   padding: inherit;
   line-height: inherit;
-  padding: 0.5rem 1rem;
+  padding: 0.551em 1em;
 }
 .km-material .km-button {
   box-shadow: inherit;
@@ -2366,6 +2367,89 @@ div.footerMenu.km-footer > ul > li > a:active {
   font-size: 12px;
   font-size: 0.75em;
 }
+#home > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div.appBox {
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 0;
+}
+.home-notification {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.home-notification li:not(.home-section-header) {
+  list-style: none;
+  background: #fff;
+  padding: 0.5em 0 0.5em;
+  border-bottom: 1px solid #E0E0E0;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 1px;
+}
+.home-notification li.km-state-active {
+  background-color: #f5f5f5;
+}
+.home-section-header {
+  width: 100%;
+  color: #fff;
+  font-size: 1.25em;
+}
+.home-section-header div {
+  padding: 0 1em;
+}
+.home-section-header a {
+  padding: 0.14em !important;
+}
+.home-section {
+  padding: 0 1em;
+}
+.home-section h3 {
+  font-weight: 600;
+}
+.home-section-smart {
+  padding: 0 1em;
+}
+.home-section-smart h3 {
+  color: #4A4A4A;
+}
+.smart-flight-status {
+  padding: 1px 3px;
+  color: #fff;
+  font-size: 0.625em;
+  border-radius: 3px;
+  background: #66BB6A;
+  vertical-align: middle;
+}
+.icon-smart-home {
+  width: 3em;
+  margin-right: 1em;
+}
+.icon-home {
+  height: 1.25em;
+  vertical-align: text-bottom;
+}
+.icon-home-sm {
+  height: 1em;
+  vertical-align: text-top;
+}
+.ggHome-close {
+  padding: 1em !important;
+  z-index: 99;
+}
+.ggHome-today {
+  background-color: #F9A825 !important;
+}
+.ggHome-chat {
+  background-color: #3CAAEE !important;
+}
+.ggHome-contact {
+  background-color: #9E788F !important;
+}
+.ggHome-smart {
+  background-color: #4DB6AC !important;
+}
 .ghostMessageTime {
   float: right;
   color: #888888;
@@ -2730,7 +2814,7 @@ a:hover {
 }
 .findPlaceListItem {
   display: block;
-  padding: 0.5rem 0px;
+  padding: 0.551em 0px;
 }
 .distPlace {
   color: #979797;
@@ -3319,6 +3403,25 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 .placeType-list img {
   height: 0.75em;
   vertical-align: baseline;
+}
+#checkin-listview li:not(.km-group-container) {
+  border-bottom: 1px solid #E0E0E0;
+}
+#checkin-listview li.km-group-container {
+  background: #fff;
+}
+#checkin-listview li:last-child {
+  border-width: 0;
+}
+.list-type {
+  text-transform: capitalize;
+}
+ul li:last-child {
+  border-bottom: none !important;
+}
+li > .km-group-title {
+  background: #f5f5f5;
+  color: #E0E0E0;
 }
 /* ghost mail */
 .emailOptions {
@@ -3909,9 +4012,6 @@ div.loginBox > form > div > ul > li {
 #place-checkInImg {
   vertical-align: bottom;
   height: 18px;
-}
-#modalview-checkin > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div:nth-child(2) {
-  background: #fff;
 }
 #place-checkIn-circle {
   height: 4rem;
@@ -5733,6 +5833,11 @@ html .km-pane-wrapper .k-header {
 #findplace-listview li {
   background: #fff;
   padding: 0px;
+}
+#places-listview li:last-child,
+#smartEventPlaces-listview li:last-child,
+#findplace-listview li:last-child {
+  border-bottom: 0 !important;
 }
 #placeTypeBtns,
 #addplace-typeBtns {

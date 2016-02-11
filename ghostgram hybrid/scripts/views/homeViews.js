@@ -13,6 +13,11 @@
 var homeView = {
     _radius: 30, // 30 meters or approx 100 ft
 
+    openNotificationAction: function(e){
+        // todo - wire notification action
+    },
+
+
     openLocateMeModal: function () {
         $('#modalview-locate-me').data('kendoMobileModalView').open();
 
@@ -223,9 +228,15 @@ var homeView = {
 
     dismissNotification : function (e) {
         _preventDefault(e);
-        var uuid = e.sender.element[0].attributes['data-uuid'].value;
+        var $currentBtn = $(e.button[0]);
+        //var uuid = e.sender.element[0].attributes['data-uuid'].value;
+        var closeStatus = $currentBtn.hasClass("ggHome-close");
 
-        notificationModel.deleteNotificationById(uuid);
+        if(closeStatus){
+            // todo - wire dismiss notification
+            console.log("dismissing notification");
+            //notificationModel.deleteNotificationById(uuid);
+        }
     },
 
     onInit: function(e) {
