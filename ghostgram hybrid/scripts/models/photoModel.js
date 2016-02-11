@@ -864,8 +864,8 @@ var moviePosterPhoto  = {
             if (poster !== null) {
                 callback(poster);
             }
-            var title = movieTitle.replace(/\b/g, '+');
-            var imdbUrl = 'http://www.omdbapi.com/?t=' + title + '&y=&plot=full&r=json';
+            //var title = movieTitle.replace(/\b/g, '+');
+            var imdbUrl = 'http://www.omdbapi.com/?t=' + movieTitle + '&y=&plot=full&r=json';
             $.ajax({
                 url: imdbUrl,
                 // dataType:"jsonp",
@@ -885,7 +885,7 @@ var moviePosterPhoto  = {
                         obj.set('metaScore', result.Metascore);
                         obj.set('imdbRating', result.imdbRating);
                         obj.set('imdbVotes', result.imdbVotes);
-                        obj.set('imdbId', result.imdbId);
+                        obj.set('imdbId', result.imdbID);
                         obj.set('runtime', result.Runtime);
                         obj.set('genre', result.Genre);
                         obj.set('rating', result.Rated);
