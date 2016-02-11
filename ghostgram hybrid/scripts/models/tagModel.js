@@ -2,6 +2,8 @@
  * Created by donbrad on 1/22/16.
  *
  * New Tag semantic model that supports custom user tags
+ *
+ * Categories: contact, place, event, account, list, movie, show, sport,
  */
 
 

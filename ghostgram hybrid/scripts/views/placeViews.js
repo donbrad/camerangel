@@ -1730,11 +1730,17 @@ var checkInView = {
             checkInView._callback = null;
         }
 
-        mapModel.getCheckInPlaces(function (placeArray) {
-            // Just compute the distance of matches
-            mapModel.computePlaceArrayDistance(placeArray);
-            checkInView.openModal(placeArray, checkInView.onDone);
+        mobileNotify("Checking your current location...");
+        mapModel.getCurrentAddress(function (isNew, address) {
+            mapModel.getCheckInPlaces(function (placeArray) {
+                // Just compute the distance of matches
+                mapModel.computePlaceArrayDistance(placeArray);
+                checkInView.openModal(placeArray, checkInView.onDone);
+            });
+
         });
+
+
 
     },
 
@@ -2480,13 +2486,12 @@ var smartLocationView = {
         if (!smartLocationView._inited) {
             smartLocationView._inited = true;
 
-
             smartLocationView._autocompletePlace = new google.maps.places.AutocompleteService();
 
 
             $('#smartLocation-place').on('input', function () {
                 var query =  $('#smartLocation-place').val();
-                if (query.length > 4) {
+                if (query.length > 3) {
                     smartLocationView.processPlaceQuery(query);
                 }
             });
@@ -2494,7 +2499,14 @@ var smartLocationView = {
 
         }
 
+        if (query === null)
+            query = '';
 
+        $('#smartLocation-place').val(query);
+
+        if (query.length > 3) {
+            smartLocationView.processPlaceQuery(query);
+        }
         /*var form = $("#searchLocation-form").kendoValidator().data("kendoValidator");
         form.validate();*/
 

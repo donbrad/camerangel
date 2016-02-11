@@ -1072,18 +1072,293 @@ var smartFlightView = {
 
 var movieListView = {
     activeObject : new kendo.data.ObservableObject(),
+
+    moviesDS :  new kendo.data.DataSource({
+        //group: { field: "theatreString" }
+    }),
+
+    showtimesDS :  new kendo.data.DataSource({
+        //group: { field: "theatreString" }
+    }),
+
+    posterArray : [],
+
+    _radius: 15,
+    _movieQuery: null,
+    _lat: null,
+    _lng: null,
     _date : new Date(),
+    _minTime : null,
+    _maxTime: null,
+
+    initActiveObject: function () {
+        var obj = movieListView.activeObject;
+
+        obj.set('title', null);
+        obj.set('description', null);
+        obj.set('rating', null);
+        obj.set('genre', null);
+        obj.set('posterUrl', null);
+
+    },
+
+    setActiveObject: function (movie) {
+        var obj = movieListView.activeObject;
+
+        obj.set('title', movie.movieTitle);
+        obj.set('description', movie.description);
+        obj.set('rating', movie.rating);
+        obj.set('genre', movie.genre);
+        obj.set('runtime', movie.runtime);
+        obj.set('posterUrl', null);  // Todo: Don - wire up movie posters
+
+    },
 
     onInit: function (e) {
         _preventDefault(e);
+
+        $("#movieListView-query").kendoAutoComplete({
+            dataSource: movieListView.moviesDS,
+            dataTextField: "movieTitle",
+            ignoreCase: true,
+            select: function(e) {
+                var movieName = e.item[0].textContent;
+                var offset = e.item[0].attributes['data-offset-index'].value;
+                if (offset !== undefined) {
+                    offset = Number(offset);
+                }
+                var movie = movieListView.moviesDS.at(offset);
+
+                // Call movie detail view with this movie...
+            },
+            change: function (e) {
+               var  query = $("#movieListView-query").val();
+                var ds = movieListView.moviesDS;
+                if (query.length === 0) {
+                    ds.filter([]);
+                } else {
+                    ds.filter([ {
+                        "field":"movieTitle",
+                        "operator":"contains",
+                        "value":query}]);
+                }
+            },
+            filter: "contains",
+            placeholder: "Movie title..."
+        });
+
+
+        $("#movieListView-listview").kendoMobileListView({
+                dataSource: movieListView.moviesDS,
+                template: $("#movieListTemplate").html(),
+                //headerTemplate: $("#findPlacesHeaderTemplate").html(),
+                //fixedHeaders: true,
+                click: function (e) {
+                    var movie = e.dataItem;
+                    movieListView.setActiveObject(movie);
+                    $('#movieListView').addClass('hidden');
+                    $('#movieDetailView').removeClass('hidden');
+
+                }
+            }
+        );
+
+        $("#movieDetailView-listview").kendoMobileListView({
+                dataSource: movieListView.showtimesDS,
+                template: $("#movieShowtimeTemplate").html(),
+                //headerTemplate: $("#findPlacesHeaderTemplate").html(),
+                //fixedHeaders: true,
+                click: function (e) {
+                    var movie = e.dataItem;
+
+
+                    $('#movieListView-doneBtn').removeClass('hidden');
+                }
+            }
+        );
+    },
+
+    onShowMovieList: function (e) {
+        _preventDefault(e);
+        $('#movieListView').removeClass('hidden');
+        $('#movieDetailView').addClass('hidden')
     },
 
     onShow: function (e) {
         _preventDefault(e);
+        movieListView.moviesDS.data([]);
+        movieListView.showtimesDS.data([]);
+        $('#movieListView').removeClass('hidden');
+        $('#movieDetailView').addClass('hidden');
+        $('#movieListView-doneBtn').addClass('hidden');
     },
 
-    openModal : function (obj, callback) {
+    openModal : function (lat, lng, date, query, radius, callback) {
+
         $("#movieListModal").data("kendoMobileModalView").open();
+
+        $("#movieListView-searchbox").addClass('hidden');
+
+        movieListView.moviesDS.data([]);
+        movieListView.showtimesDS.data([]);
+        movieListView.initActiveObject();
+        if (callback !== undefined) {
+            movieListView.callback = callback;
+        } else {
+            movieListView.callback = null;
+        }
+        movieListView._radius = radius;
+        movieListView._minTime = moment(date).subtract(2, 'hours');
+        movieListView._maxTime = moment(date).add(2, 'hours');
+        var dateStr = moment(date).format('YYYY-MM-DD');
+        var url = 'http://data.tmsapi.com/v1.1/movies/showings?startDate='+ dateStr +'&lat=' + lat + '&lng=' + lng + '&radius=' + movieListView._radius + '&api_key=9zah4ggnfz9zpautmrx4bh32';
+        $.ajax({
+            url: url,
+            // dataType:"jsonp",
+            //  contentType: 'application/json',
+            success: function(results, textStatus, jqXHR) {
+                var movie = null, movieArray = [];
+
+                for (var i=0; i< results.length; i++) {
+                    var movieObj = {};
+                    movie = results[i];
+                    if (movie.entityType === 'Movie') {
+                        movieObj.movieTitle = movie.title;
+                        movieObj.rating = '';
+                        if (movie.ratings !== undefined && movie.ratings.length > 0)
+                            movieObj.rating = movie.ratings[0].code;
+                        movieObj.description = movie.shortDescription;
+                        movieObj.genre = '';
+                        if (movie.genres !== undefined && movie.genres.length > 0)
+                            movieObj.genre = movie.genres[0];
+
+                        var imageUrl = '';
+                      /*  if (movie.preferredImage.category !== undefined && movie.preferredImage.category === 'Poster Art') {
+                            imageUrl = 'http://developer.tmsimg.com/movies/' + movie.preferredImage.uri +'?api_key=9zah4ggnfz9zpautmrx4bh32';
+                        } else {
+                            imageUrl = 'http://developer.tmsimg.com/' + movie.preferredImage.uri +'?api_key=9zah4ggnfz9zpautmrx4bh32';
+                        }*/
+                        movieObj.imageUrl = imageUrl;
+                        movieObj.tmsId = movie.tmsId;
+                        movieObj.runtime = movieListView.processRuntime(movie.runTime);
+                        movieObj.showTimes = movieListView.processShowTimes(movie.showtimes);
+
+                        for (var s=0; s<movie.showtimes.length; s++) {
+
+                            var showtimeObj = {};
+                            var showtime = movie.showtimes[0];
+
+                            showtimeObj.movieTitle = movieObj.movieTitle;
+                            showtimeObj.movieId = movieObj.tmsId;
+                            showtimeObj.theatreName = showtime.theatre.name;
+                            showtimeObj.theatreId = showtime.theatre.id;
+                            showtimeObj.date = moment(showtime.dateTime);
+                            showtimeObj.dateStr = moment(showtime.dateTime).format('h:mm A');
+
+                            if (showtimeObj.date >= movieListView._minTime && showtimeObj.date <= movieListView._maxTime)
+                                movieListView.showtimesDS.add(showtimeObj);
+
+                        }
+
+                        movieArray.push(movieObj);
+                    }
+
+                }
+
+                movieListView.processMoviePosters(movieArray);
+               /* movieListView.moviesDS.data(movieArray);
+                movieListView.moviesDS.sync();
+                $("#movieListView-searchbox").removeClass('hidden');*/
+            }
+        });
+    },
+
+    processRuntime : function (runtime) {
+        var runTimeStr = runtime.replace('PT0', '');
+        runTimeStr = runtime.replace('PT', '');
+        runTimeStr = runTimeStr.replace('H', ' hr ');
+        runTimeStr = runTimeStr.replace('M', ' min');
+
+        return(runTimeStr);
+    },
+
+    finalizeMovieList : function (movieArray) {
+
+        for (var i=0; i< movieArray.length; i++) {
+            var movie = movieArray[i], poster = movieListView.posterArray[movie.tmsId];
+
+            movie.runtime = poster.runtime;
+            movie.imageUrl = poster.imageUrl;
+            movie.runtime = poster.runtime;
+            movie.awards = poster.awards;
+            movie.genre = poster.genre;
+            movie.metaScore = poster.metaScore;
+            movie.rating = poster.rating;
+            movie.imdbId = poster.imdbId;
+            movie.imdbRating = poster.imdbRating;
+            movie.imdbVotes = poster.imdbVotes;
+
+        }
+        movieListView.moviesDS.data(movieArray);
+        movieListView.moviesDS.sync();
+        $("#movieListView-searchbox").removeClass('hidden');
+    },
+
+    processMoviePosters : function (movieArray) {
+
+        var len = movieArray.length, counter = len;
+
+        mobileNotify("Getting Movie Posters and ratings...");
+
+        // Fetch the movie poster and rating data
+        for (var i=0; i< len; i++) {
+            var movie = movieArray[i];
+            moviePosterPhoto.addPoster(movie.movieTitle, movie.tmsId, function (poster) {
+                movieListView.posterArray[poster.tmsId] = poster;
+                // Decrement the counter as we get the data...
+                if (--counter === 0) {
+                    movieListView.finalizeMovieList();
+                }
+
+            });
+        }
+
+
+    },
+
+
+    processShowTimes: function (showTimes) {
+        var theatreArray = [], theatreNames = [], showtime = null, time = null, timeStr = null;
+
+        for (var s=0; s<showTimes.length; s++) {
+            showtime = showTimes[s];
+
+            time = moment(showtime.dateTime);
+
+            if (time >= movieListView._minTime && time <+ movieListView._maxTime) {
+                timeStr = moment(showtime.dateTime).format('h:mm A');
+                if (timeStr !== undefined) {
+                    if (theatreArray[showtime.theatre.name] === undefined)
+                        theatreArray[showtime.theatre.name] = "";
+                    theatreArray[showtime.theatre.name] +=  timeStr  + " ";
+                }
+            }
+
+        }
+        theatreNames = Object.keys(theatreArray);
+
+        var result = {theatres : theatreNames, showTimes: theatreArray};
+
+        var showTimesString = '';
+        for (var i=0; i<theatreNames.length; i++) {
+
+            showTimesString += theatreNames[i] + ' : </br>' + theatreArray [theatreNames[i]] + '</br>';
+
+        }
+
+        result.showTimesString = showTimesString;
+
+        return (result);
     },
 
     closeModal : function () {
@@ -1098,6 +1373,10 @@ var movieListView = {
     onCancel: function (e) {
         _preventDefault(e);
         $("#movieListModal").data("kendoMobileModalView").close();
+        if (movieListView.callback !== null) {
+            movieListView.callback(null);
+        }
+
     }
 
 };
@@ -1111,6 +1390,7 @@ var smartMovieView = {
     _callback : null,
     _movieId: null,
     _theatreId: null,
+    _radius: 15,
 
 
     onChangeCalendar: function (e) {
@@ -1152,12 +1432,27 @@ var smartMovieView = {
         _preventDefault(e);
 
 
+
     },
 
     onFindMovies: function (e) {
         _preventDefault(e);
-        movieListView.openModal(null, function () {
 
+        smartMovieView.updateDateString();
+
+        var query = $("#smartMovieView-moviesearch").val();
+        var radius =   $("#smartMovieView-searchDistance").val();
+
+        radius = Number(radius);
+
+        if (radius < 5 || radius > 100) {
+            radius = 15;
+        }
+
+        $("#smartMovieModal").data("kendoMobileModalView").close();
+        var thisObj = smartMovieView._activeObject;
+        movieListView.openModal(thisObj.lat, thisObj.lng, thisObj.date, query, radius, function (movieObj) {
+            smartMovieView.openModal(smartMovieView._activeObject);
         });
     },
 
@@ -1182,7 +1477,7 @@ var smartMovieView = {
         thisObj.set("uuid", uuid.v4());
         thisObj.set('senderUUID', userModel.currentUser.userUUID);
         thisObj.set('senderName', userModel.currentUser.name);
-        thisObj.set('placeString', mapModel.currentAddress);
+        thisObj.set('placeString', mapModel.currentCity + ". " + mapModel.currentState + "  " + mapModel.currentZipcode);
         thisObj.set('channelId', null);
         thisObj.set('movieTitle', null);
         thisObj.set('movieDescription', null);
@@ -1197,8 +1492,8 @@ var smartMovieView = {
         thisObj.set('address', null);
         thisObj.set('googleId', null);
         thisObj.set('calendarId', null);
-        thisObj.set('lat', null);
-        thisObj.set('lng', null);
+        thisObj.set('lat', mapModel.lat);
+        thisObj.set('lng', mapModel.lng);
         thisObj.set('date', newDate);
         thisObj.set('isDeleted', false);
         thisObj.set('wasCancelled', false);
@@ -1215,6 +1510,8 @@ var smartMovieView = {
         //$('#smartEventView-datestring').val(new Date(thisObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
         $('#smartMovieView-date').val(new Date(thisObj.date).toString('MMM dd, yyyy'));
         $('#smartMovieView-time').val(new Date(thisObj.date).toString('h:mm tt'));
+
+        $('#smartMovieView-placesearch').val(thisObj.get('placeString'));
         //$("#smartEventView-placeadddiv").addClass('hidden');
         //$("#searchEventPlace-input").removeClass('hidden');
     },
@@ -1269,7 +1566,13 @@ var smartMovieView = {
                     smartEventView.updateDateString();
                 }
             });
-            $('#smartMovieView-time').pickatime();
+
+            $('#smartMovieView-time').pickatime({
+                interval: 60,
+                min: [10,0],
+                max: [23,0],
+                clear: false
+            });
 
             /* $("#smartEventView-date").on('blur', function () {
 
@@ -1303,9 +1606,11 @@ var smartMovieView = {
 
         if (callback === undefined) {
             callback = null;
+        } else {
+            smartMovieView._callback = callback;
         }
 
-        smartMovieView._callback = callback;
+
 
         smartMovieView._date = new Date();
 
