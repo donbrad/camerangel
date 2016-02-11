@@ -840,7 +840,7 @@ var moviePosterPhoto  = {
     findPoster: function (movieName) {
         var Poster = Parse.Object.extend("moviePoster");
         var query = new Parse.Query(Poster);
-        query.equalTo("movieName", movieName);
+        query.equalTo("movieTitle", movieName);
         query.find({
             success: function(results) {
                 if (results.length > 0)
@@ -872,9 +872,9 @@ var moviePosterPhoto  = {
             callback(poster);
         }
         var movieTitle = movieTitle.replace(/\b/g, '+');
-        var omdbUrl = 'http://www.omdbapi.com/?t=' + movieTitle + '&y=&plot=full&r=json';
+        var imdbUrl = 'http://www.omdbapi.com/?t=' + movieTitle + '&y=&plot=full&r=json';
         $.ajax({
-            url: url,
+            url: imdbUrl,
             // dataType:"jsonp",
             //  contentType: 'application/json',
             success: function (result, textStatus, jqXHR) {
