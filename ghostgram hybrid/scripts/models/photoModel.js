@@ -865,7 +865,7 @@ var moviePosterPhoto  = {
     },
 
 
-    addPoster: function (movieName, tmsId,  callback) {
+    addPoster: function (movieTitle, tmsId,  callback) {
         var poster = null;
 
         if (poster = moviePosterPhoto.findPoster(movieName) !== null) {
@@ -885,7 +885,7 @@ var moviePosterPhoto  = {
                     var awards = '';
                     if (result.Awards !== undefined)
                         awards = result.Awards;
-                    obj.set('movieName', movieName);
+                    obj.set('movieTitle', movieTitle);
                     obj.set('awards', awards);
                     obj.set('tmsId', tmsId);
                     obj.set('imageUrl', result.Poster);
