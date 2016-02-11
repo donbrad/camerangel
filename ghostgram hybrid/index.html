@@ -187,7 +187,7 @@
                 </a>
             </li>
             <li>
-                <a data-role="button" href="#placesView" data-click-on="down">
+                <a data-role="button" href="#places" data-click-on="down">
                 	<svg width="19px" height="27px" viewBox="0 0 19 27" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
 					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
 					        <g transform="translate(-253.000000, -633.000000)" stroke="#979797">
@@ -248,11 +248,11 @@
 </div>
    
 <!-- home - for signed in users -->
-<div data-role="view" data-title="intelligram" id="home" data-layout="main"  style="display:none;" data-show="homeView.onShow" data-init="homeView.onInit" data-hide="homeView.onHide">
+<div data-role="view" data-title="ghostgrams" id="home" data-layout="main"  style="display:none;" data-show="homeView.onShow" data-init="homeView.onInit" data-hide="homeView.onHide">
 		<div class="appBox">
 		    <!-- application views will be rendered here -->
 		    <div>
-		    	<div class="notify-title">
+		    	<div class="notify-title hidden">
 			    	<img src="images/notify-icon.svg" height="14" />
 			    		Notifications
 			    	<span class="right">
@@ -260,7 +260,7 @@
 			    	</span>
 		    	</div>
 		    	<div class="clearfix"></div>
-		    	<ul id="notification-listview"></ul>
+		    	<ul class="home-notification" id="notification-listview"></ul>
 		    	<div class="emptyState hidden">
 	         		<img src="images/empty-home.svg" />
 	         	</div>
@@ -269,20 +269,99 @@
 	<div class="hidden"> <canvas id="identiconCanvas" width="256" height="256"></canvas></div>
 </div>
 
+<script type="text/x-kendo-template" id="notificationTemplate1">
+	<li class="home-section-header ggHome-today">
+		<div>
+			<img src="images/icon-today.svg" class="icon-home" /> Today
+			<span class="right"><a class="btnClear-light-sm right" data-role="button">hide</a></span>
+		</div>
+	</li>
+	<li data-role="button">
+		<div class="home-section home-section-smart">
+			<img src="images/smart-coffee.svg" class="icon-smart-home left" />
+			<h3>Coffee w/ Jon</h3>
+			<p>Today at 7:30am</p>
+		</div>
+	</li>
+	<li data-role="button">
+		<div class="home-section home-section-smart">
+			<img src="images/smart-flight-home.svg" class="icon-smart-home left" />
+			<h3>Delta 871 <span class="smart-flight-status">On Time</span></h3>
+			<p>Landing at 7:31am</p>
+		</div>
+	</li>
+	<li data-role="button">
+		<div class="home-section home-section-smart">
+			<img src="images/smart-event-home.svg" class="icon-smart-home left" />
+			<h3>Dinner w/ Jane</h3>
+			<p>Today at 8pm</p>
+		</div>
+	</li>
+	<li class="home-section-header ggHome-chat">
+		<div>
+			<img src="images/icon-chat-light.svg" class="icon-home-sm" /> Chats
+			<span class="right"><a class="btnClear-light-sm right" data-role="button">hide</a></span>
+		</div>
+	</li>
+	<li data-role="button" data-click="homeView.openNotificationAction">
+		<div class="home-section home-section-contact">
+			<div class="left">
+				<h3>New Request</h3>
+				<p>John Smith wants to connect</p>
+			</div>
+			<a class="btnClear right ggHome-close" data-role="button" data-click="homeView.dismissNotification">
+				<img src="images/close.svg" class="icon-sm" />
+			</a>
+		</div>
+	</li>
+	<li class="home-section-header ggHome-contact">
+		<div>
+			<img src="images/smart-contacts.svg" class="icon-home-sm" /> Contacts
+			<span class="right"><a class="btnClear-light-sm right" data-role="button">hide</a></span>
+		</div>
+	</li>
+	<li data-role="button" data-click="homeView.openNotificationAction">
+		<div class="home-section home-section-contact">
+			<div class="left">
+				<h3>3 New Messages</h3>
+				<p>Family Chat</p>
+			</div>
+			<a class="btnClear right ggHome-close" data-role="button" data-click="homeView.dismissNotification">
+				<img src="images/close.svg" class="icon-sm" />
+			</a>
+		</div>
+	</li>
+	<li class="home-section-header ggHome-smart">
+		<div>
+			<img src="images/icon-smart-light.svg" class="icon-home-sm" /> Smart Events
+			<span class="right"><a class="btnClear-light-sm right" data-role="button">hide</a></span>
+		</div>
+	</li>
+	<li data-role="button" data-click="homeView.openNotificationAction">
+		<div class="home-section home-section-smart">
+			<img src="images/smart-event-home.svg" class="icon-smart-home left" />
+			<h3>Smart Event Title</h3>
+			<p>Event action or update</p>
+		</div>
+	</li>
+</script>
+
 <script type="text/x-kendo-template" id="notificationTemplate">
 	# 	var dateTime= new Date(date);
 	var formattedDate = dateTime.toDateString();
 	#
 	<div class="notify-box">
 		<div class="notify-info">
-		#if(data.type === 'Unread Messages'){#
+			#if(data.type === 'Unread Messages'){#
 				<span><img src="images/icon-notify-unread.svg" class="icon-notify" /> #= description #</span>
 			#} else if(data.type === 'ghostgram recommends'){#
 				<span><img src="images/icon-notify-recommend.svg" class="icon-notify" /> Recommended</span>
 			#} else if(data.type === 'New Member'){#
 				<span>New Member</span>
 			#}#
-			<a class="closeBox" data-role="button" data-uuid="#:uuid#" data-click="homeView.dismissNotification"><img src="images/close.svg" class="img-sm" /></a>
+			<a class="closeBox" data-role="button" data-uuid="#:uuid#" data-click="homeView.dismissNotification">
+				<img src="images/close.svg" class="img-sm" />
+			</a>
 		</div>
 		<div class="notify-content">
 
@@ -517,6 +596,9 @@
 	</div>
 	<div>
 		<ul id="checkin-listview"></ul>
+	</div>
+	<div class="emptyState">
+		<img src="images/empty-places-nearby.svg" />
 	</div>
 </div>
 
@@ -894,16 +976,17 @@
 
 
 <script type="text/x-kendo-template" id="checkinPlacesTemplate">
+	# console.log(data) #
 	<div>
 		# if (data.ggType === 'Venue') { #
 		<h4 class="textClamp">#:data.title#</h4>
 		<p>#:data.address#</p>
 		<p class="helper">
-           <span class="left">
+           <span class="left list-type">
 			   #: data.type #
 		   </span>
 			<span class="right">
-			   #: data.distance #
+			   #: data.distance # mi
 		   </span>
 		</p>
 		<div class="clearfix"> </div>
@@ -2490,14 +2573,20 @@
 
 
 <script type="text/x-kendo-template" id="movieListTemplate">
-	<div>
-		<h4> #: data.movieTitle # </h4>
-		<p> #: data.description #</p>
-		<div style = "margin-left: 12px; margin-right: 12px;"> <span class="left">  Genre: #: data.genre# </span>  <span style="font-style: oblique" class="right">Rating:  #:data.rating# </span></div>
-		<div style=" clear:both; margin-left: 12px; margin-right: 12px;"><span > Plays for: #: data.runTime# </span></div>
-		<div  style = "margin-left: 12px; margin-right: 12px;"> #= data.showTimes.showTimesString #</div>
-		<div style="clear:both;"></div>
-		<hr>
+	<div style="clear:both;">
+		<div style="float: left; width: 25%;">
+			<img src="#=data.imageUrl#" />
+		</div>
+		<div style="float: right; width: 75%;">
+
+			<h4> #: data.movieTitle # </h4>
+			<p> #: data.description #</p>
+			<div style = "margin-left: 12px; margin-right: 12px;"> <span class="left">  Genre: #: data.genre# </span>  <span style="font-style: oblique" class="right">Rating:  #:data.rating# </span></div>
+			<div style=" clear:both; margin-left: 12px; margin-right: 12px;"><span > Plays for: #: data.runtime# </span></div>
+			<div  style = "margin-left: 12px; margin-right: 12px;"> #= data.showTimes.showTimesString #</div>
+			<div style="clear:both;"></div>
+			<hr>
+		</div>
 	</div>
 </script>
 
@@ -2533,11 +2622,11 @@
 	<div id="movieDetailView" class="hidden">
 		<div class="event-view card" >
 			<div class="event-details">
-				<h2 data-bind="text: title"></h2>
+				<h2 data-bind="text: movieTitle"></h2>
 				<p class="helper" data-bind="text: description"></p>
-				<div style = "margin-left: 12px; margin-right: 12px;"> <span class="left">  Genre: #: genre# </span>  <span style="font-style: oblique" class="right">Rating:  #:rating# </span></div>
-				<div style=" clear:both; margin-left: 12px; margin-right: 12px;"><span > Plays for: #: runTime# </span></div>
-				<p class="helper">Theatre:  <span  data-bind="text: theatreString"></span></p>
+				<div style = "margin-left: 12px; margin-right: 12px;"> <span class="left" data-bind="text: genre">  </span>  <span style="font-style: oblique" class="right" data-bind="text: rating"> </span></div>
+				<div style=" clear:both; margin-left: 12px; margin-right: 12px;"><span > Plays for: </span> <span data-bind="text: runtime"></span></div>
+				<p class="helper">Metascore:  <span  data-bind="text: metaScore"></span>   imdb Rating:  <span  data-bind="text: imdbRating"></span></p>
 			</div>
 		</div>
 		<div style="text-align: center;">
@@ -2950,6 +3039,13 @@
 
 
 <div data-role="modalview" id="modalPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal" data-model="modalPhotoView._activePhoto" data-init="modalPhotoView.onInit" data-zoom="true">
+	<div data-role="header">
+		<div data-role="navbar">
+
+			<a data-click="modalPhotoView.closeModal" data-role="button"  class="btnClear-grey" data-align="left">Cancel</a>
+
+		</div>
+	</div>
 	<div class="photoViewBox">
 		<img id="modalPhotoViewImage" data-bind="attr: {src : thumbnailUrl}" />
 	</div>
@@ -3166,7 +3262,7 @@
  * Places
  */-->
 
-<div data-role="view" data-title="Places" id="placesView" data-layout="main" data-model="placesModel" data-show="placesView.onShow" data-init="placesView.onInit" data-before-hide="placesView.onHide" style="display: none;">
+<div data-role="view" data-title="Places" id="places" data-layout="main" data-model="placesModel" data-show="placesView.onShow" data-init="placesView.onInit" data-before-hide="placesView.onHide" style="display: none;">
 	<div>
 		<div id="current-place" class="hidden">
 			<img src="images/icon-puff.svg" width="30" class="left"/>

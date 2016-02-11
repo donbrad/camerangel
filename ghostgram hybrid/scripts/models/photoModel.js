@@ -834,3 +834,94 @@ var photoModel = {
     }
 
 };
+
+var moviePosterPhoto  = {
+
+    findPoster: function (movieName, callback) {
+        var Poster = Parse.Object.extend("moviePoster");
+        var query = new Parse.Query(Poster);
+        query.equalTo("movieTitle", movieName);
+        query.find({
+            success: function(results) {
+                if (results.length > 0)
+                    callback(results[0]);
+                else
+                    callback(null);
+            },
+            error: function(error) {
+                callback(null);
+            }
+        });
+    },
+
+
+
+    addPoster: function (movieTitle, tmsId,  callback) {
+        var poster = null;
+
+
+        moviePosterPhoto.findPoster(movieTitle, function (poster) {
+            if (poster !== null) {
+                callback(poster);
+            }
+            var title = encodeURIComponent(movieTitle);
+            var imdbUrl = 'http://www.omdbapi.com/?t=' + title + '&y=&plot=full&r=json';
+            $.ajax({
+                url: imdbUrl,
+                // dataType:"jsonp",
+                //  contentType: 'application/json',
+                success: function (result, textStatus, jqXHR) {
+                    if (result.Response === 'True') {
+                        var Poster = Parse.Object.extend("moviePoster");
+                        var obj = new Poster();
+
+                        var awards = '';
+                        if (result.Awards !== undefined)
+                            awards = result.Awards;
+                        obj.set('movieTitle', movieTitle);
+                        obj.set('awards', awards);
+                        obj.set('tmsId', tmsId);
+                        if (result.Poster === 'N/A') {
+                            result.Poster = null;
+                        }
+                        obj.set('imageUrl', result.Poster);
+                        obj.set('metaScore', result.Metascore);
+                        obj.set('imdbRating', result.imdbRating);
+                        obj.set('imdbVotes', result.imdbVotes);
+                        obj.set('imdbId', result.imdbID);
+                        if (result.Runtime === undefined) {
+                            result.Runtime = "0";
+                        }
+                        obj.set('runtime', result.Runtime);
+                        obj.set('genre', result.Genre);
+                        obj.set('rating', result.Rated);
+
+                        poster = obj.toJSON();
+                        callback(poster);
+                        obj.save(null, {
+                            success: function(moviePoster) {
+                                // Execute any logic that should take place after the object is saved.;
+                                //var photo = contact.get('photo');
+
+                            },
+                            error: function(contact, error) {
+                                // Execute any logic that should take place if the save fails.
+                                // error is a Parse.Error with an error code and message.
+                                handleParseError(error);
+                            }
+                        });
+                    }
+
+
+
+                },
+                error: function () {
+
+                }
+            });
+        });
+
+
+    }
+
+};

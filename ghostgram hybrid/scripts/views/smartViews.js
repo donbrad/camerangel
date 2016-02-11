@@ -1081,6 +1081,8 @@ var movieListView = {
         //group: { field: "theatreString" }
     }),
 
+    posterArray : [],
+    movieArray : [],
     _radius: 15,
     _movieQuery: null,
     _lat: null,
@@ -1200,6 +1202,7 @@ var movieListView = {
 
         movieListView.moviesDS.data([]);
         movieListView.showtimesDS.data([]);
+        movieListView.movieArray = [];
         movieListView.initActiveObject();
         if (callback !== undefined) {
             movieListView.callback = callback;
@@ -1210,7 +1213,7 @@ var movieListView = {
         movieListView._minTime = moment(date).subtract(2, 'hours');
         movieListView._maxTime = moment(date).add(2, 'hours');
         var dateStr = moment(date).format('YYYY-MM-DD');
-        var url = 'http://data.tmsapi.com/v1.1/movies/showings?startDate='+ dateStr +'&lat=' + lat + '&lng=' + lng + '&radius=' + movieListView._radius + '&imageSize=Sm&api_key=9zah4ggnfz9zpautmrx4bh32';
+        var url = 'http://data.tmsapi.com/v1.1/movies/showings?startDate='+ dateStr +'&lat=' + lat + '&lng=' + lng + '&radius=' + movieListView._radius + '&api_key=9zah4ggnfz9zpautmrx4bh32';
         $.ajax({
             url: url,
             // dataType:"jsonp",
@@ -1227,10 +1230,19 @@ var movieListView = {
                         if (movie.ratings !== undefined && movie.ratings.length > 0)
                             movieObj.rating = movie.ratings[0].code;
                         movieObj.description = movie.shortDescription;
-                        movieObj.genre = movie.genres[0];
-                        movieObj.posterUrl = movie.preferredImage.uri;
+                        movieObj.genre = '';
+                        if (movie.genres !== undefined && movie.genres.length > 0)
+                            movieObj.genre = movie.genres[0];
+
+                        var imageUrl = '';
+                      /*  if (movie.preferredImage.category !== undefined && movie.preferredImage.category === 'Poster Art') {
+                            imageUrl = 'http://developer.tmsimg.com/movies/' + movie.preferredImage.uri +'?api_key=9zah4ggnfz9zpautmrx4bh32';
+                        } else {
+                            imageUrl = 'http://developer.tmsimg.com/' + movie.preferredImage.uri +'?api_key=9zah4ggnfz9zpautmrx4bh32';
+                        }*/
+                        movieObj.imageUrl = imageUrl;
                         movieObj.tmsId = movie.tmsId;
-                        movieObj.runTime = movieListView.processRuntime(movie.runTime);
+                        movieObj.runtime = movieListView.processRuntime(movie.runTime);
                         movieObj.showTimes = movieListView.processShowTimes(movie.showtimes);
 
                         for (var s=0; s<movie.showtimes.length; s++) {
@@ -1250,14 +1262,15 @@ var movieListView = {
 
                         }
 
-                        movieArray.push(movieObj);
+                        movieListView.movieArray.push(movieObj);
                     }
 
                 }
 
-                movieListView.moviesDS.data(movieArray);
+                movieListView.processMoviePosters(movieListView.movieArray);
+               /* movieListView.moviesDS.data(movieArray);
                 movieListView.moviesDS.sync();
-                $("#movieListView-searchbox").removeClass('hidden');
+                $("#movieListView-searchbox").removeClass('hidden');*/
             }
         });
     },
@@ -1270,6 +1283,51 @@ var movieListView = {
 
         return(runTimeStr);
     },
+
+    finalizeMovieList : function (movieArray) {
+
+        for (var i=0; i< movieArray.length; i++) {
+            var movie = movieArray[i];
+            var poster = movieListView.posterArray[movie.tmsId];
+
+            movie.imageUrl = poster.imageUrl;
+            movie.runtime = poster.runtime;
+            movie.awards = poster.awards;
+            movie.genre = poster.genre;
+            movie.metaScore = poster.metaScore;
+            movie.rating = poster.rating;
+            movie.imdbId = poster.imdbId;
+            movie.imdbRating = poster.imdbRating;
+            movie.imdbVotes = poster.imdbVotes;
+
+        }
+        movieListView.moviesDS.data(movieArray);
+        movieListView.moviesDS.sync();
+        $("#movieListView-searchbox").removeClass('hidden');
+    },
+
+    processMoviePosters : function (movieArray) {
+
+        var len = movieArray.length, counter = len;
+
+        mobileNotify("Getting Movie Posters and ratings...");
+
+        // Fetch the movie poster and rating data
+        for (var i=0; i< len; i++) {
+            var movie = movieArray[i];
+            moviePosterPhoto.addPoster(movie.movieTitle, movie.tmsId, function (poster) {
+                movieListView.posterArray[poster.tmsId] = poster;
+                // Decrement the counter as we get the data...
+                if (--counter === 0) {
+                    movieListView.finalizeMovieList(movieArray);
+                }
+
+            });
+        }
+
+
+    },
+
 
     processShowTimes: function (showTimes) {
         var theatreArray = [], theatreNames = [], showtime = null, time = null, timeStr = null;
@@ -1424,15 +1482,18 @@ var smartMovieView = {
         thisObj.set('placeString', mapModel.currentCity + ". " + mapModel.currentState + "  " + mapModel.currentZipcode);
         thisObj.set('channelId', null);
         thisObj.set('movieTitle', null);
-        thisObj.set('movieDescription', null);
+        thisObj.set('tmsId', null);
+        thisObj.set('imdbId', null);
         thisObj.set('type', "movie");
         thisObj.set('theatreId', null);
         thisObj.set('theatreName', null);
         thisObj.set('theatreString', null);
         thisObj.set('showtimes', []);
+        thisObj.set('showtime', null);
         thisObj.set('showtimeString', null);
         thisObj.set('action', null);
         thisObj.set('description', null);
+        thisObj.set('imageUrl', null);
         thisObj.set('address', null);
         thisObj.set('googleId', null);
         thisObj.set('calendarId', null);
@@ -1458,6 +1519,41 @@ var smartMovieView = {
         $('#smartMovieView-placesearch').val(thisObj.get('placeString'));
         //$("#smartEventView-placeadddiv").addClass('hidden');
         //$("#searchEventPlace-input").removeClass('hidden');
+    },
+
+    setActiveObject: function (obj) {
+        var thisObj = smartMovieView._activeObject;
+
+        thisObj.set("uuid", obj.uuid);
+        thisObj.set('senderUUID', obj.senderUUID);
+        thisObj.set('senderName', obj.senderName);
+        thisObj.set('placeString', obj.placeString);
+        thisObj.set('channelId', obj.channelId);
+        thisObj.set('movieTitle', obj.movieTitle);
+        thisObj.set('tmsId', obj.tmsId);
+        thisObj.set('imdbId', obj.imdbId);
+        thisObj.set('type', obj.type);
+        thisObj.set('theatreId', obj.theatreId);
+        thisObj.set('theatreName', obj.theatreName);
+        thisObj.set('theatreString', obj.theatreString);
+        thisObj.set('showtimes', obj.showtimes);
+        thisObj.set('showtimeString', obj.showtimeString);
+        thisObj.set('action', obj.action);
+        thisObj.set('description', obj.description);
+        thisObj.set('imageUrl', obj.imageUrl);
+        thisObj.set('address', obj.address);
+        thisObj.set('googleId', obj.googleId);
+        thisObj.set('calendarId', obj.calendarId);
+        thisObj.set('lat', obj.lat);
+        thisObj.set('lng', obj.lng);
+        thisObj.set('date', obj.date);
+        thisObj.set('isDeleted', obj.isDeleted);
+        thisObj.set('wasCancelled', obj.wasCancelled);
+        thisObj.set('movieSelected', obj.movieSelected);  // if false, no movie selected - "let's see a movie at this theatre around this time
+        thisObj.set('movieId', obj.movieId);
+        thisObj.set('addToCalendar', obj.addToCalendar);
+        thisObj.set('comment', obj.comment);
+        thisObj.set('wasSent', obj.wasSent);
     },
 
     onPlaceSearch : function (e) {
@@ -1510,7 +1606,13 @@ var smartMovieView = {
                     smartEventView.updateDateString();
                 }
             });
-            $('#smartMovieView-time').pickatime();
+
+            $('#smartMovieView-time').pickatime({
+                interval: 60,
+                min: [10,0],
+                max: [23,0],
+                clear: false
+            });
 
             /* $("#smartEventView-date").on('blur', function () {
 
