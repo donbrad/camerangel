@@ -1081,6 +1081,8 @@ var movieListView = {
         //group: { field: "theatreString" }
     }),
 
+    posterArray : [],
+
     _radius: 15,
     _movieQuery: null,
     _lat: null,
@@ -1209,13 +1211,13 @@ var movieListView = {
         movieListView._minTime = moment(date).subtract(2, 'hours');
         movieListView._maxTime = moment(date).add(2, 'hours');
         var dateStr = moment(date).format('YYYY-MM-DD');
-        var url = 'http://data.tmsapi.com/v1.1/movies/showings?startDate='+ dateStr +'&lat=' + lat + '&lng=' + lng + '&radius=' + movieListView._radius + '&imageSize=Sm&api_key=9zah4ggnfz9zpautmrx4bh32';
+        var url = 'http://data.tmsapi.com/v1.1/movies/showings?startDate='+ dateStr +'&lat=' + lat + '&lng=' + lng + '&radius=' + movieListView._radius + '&api_key=9zah4ggnfz9zpautmrx4bh32';
         $.ajax({
             url: url,
             // dataType:"jsonp",
             //  contentType: 'application/json',
             success: function(results, textStatus, jqXHR) {
-                var movie = null, movieArray = [], posterArray = [];
+                var movie = null, movieArray = [];
 
                 for (var i=0; i< results.length; i++) {
                     var movieObj = {};
@@ -1230,16 +1232,15 @@ var movieListView = {
                         if (movie.genres !== undefined && movie.genres.length > 0)
                             movieObj.genre = movie.genres[0];
 
-                        var posterUrl = '';
-                        if (movie.preferredImage.category !== undefined && movie.preferredImage.category === 'Poster Art') {
-                            posterUrl = 'http://developer.tmsimg.com/movies/' + movie.preferredImage.uri +'?api_key=9zah4ggnfz9zpautmrx4bh32';
+                        var imageUrl = '';
+                      /*  if (movie.preferredImage.category !== undefined && movie.preferredImage.category === 'Poster Art') {
+                            imageUrl = 'http://developer.tmsimg.com/movies/' + movie.preferredImage.uri +'?api_key=9zah4ggnfz9zpautmrx4bh32';
                         } else {
-                            posterUrl = 'http://developer.tmsimg.com/' + movie.preferredImage.uri +'?api_key=9zah4ggnfz9zpautmrx4bh32';
-                        }
-                        posterArray[movie.tmsId] = posterUrl;
-                        movieObj.posterUrl = posterUrl;
+                            imageUrl = 'http://developer.tmsimg.com/' + movie.preferredImage.uri +'?api_key=9zah4ggnfz9zpautmrx4bh32';
+                        }*/
+                        movieObj.imageUrl = imageUrl;
                         movieObj.tmsId = movie.tmsId;
-                        movieObj.runTime = movieListView.processRuntime(movie.runTime);
+                        movieObj.runtime = movieListView.processRuntime(movie.runTime);
                         movieObj.showTimes = movieListView.processShowTimes(movie.showtimes);
 
                         for (var s=0; s<movie.showtimes.length; s++) {
@@ -1264,9 +1265,10 @@ var movieListView = {
 
                 }
 
-                movieListView.moviesDS.data(movieArray);
+                movieListView.processMoviePosters(movieArray);
+               /* movieListView.moviesDS.data(movieArray);
                 movieListView.moviesDS.sync();
-                $("#movieListView-searchbox").removeClass('hidden');
+                $("#movieListView-searchbox").removeClass('hidden');*/
             }
         });
     },
@@ -1280,8 +1282,46 @@ var movieListView = {
         return(runTimeStr);
     },
 
-    processMoviePosters : function (posterArray) {
-        var ids = Object.keys(posterArray);
+    finalizeMovieList : function (movieArray) {
+
+        for (var i=0; i< movieArray.length; i++) {
+            var movie = movieArray[i], poster = movieListView.posterArray[movie.tmsId];
+
+            movie.runTime = poster.runtime;
+            movie.imageUrl = poster.imageUrl;
+            movie.runtime = poster.runtime;
+            movie.awards = poster.awards;
+            movie.genre = poster.genre;
+            movie.metaScore = poster.metaScore;
+            movie.rating = poster.rating;
+            movie.imdbId = poster.imdbId;
+            movie.imdbRating = poster.imdbRating;
+            movie.imdbVotes = poster.imdbVotes;
+
+        }
+        movieListView.moviesDS.data(movieArray);
+        movieListView.moviesDS.sync();
+        $("#movieListView-searchbox").removeClass('hidden');
+    },
+
+    processMoviePosters : function (movieArray) {
+
+        var len = movieArray.length, counter = len;
+
+        mobileNotify("Getting Movie Posters and ratings...");
+
+        // Fetch the movie poster and rating data
+        for (var i=0; i< len; i++) {
+            var movie = movieArray[i];
+            photoModel.addPoster(movie.movieName, movie.tmsId, function (poster) {
+                movieListView.posterArray[poster.tmsId] = poster;
+                // Decrement the counter as we get the data...
+                if (--counter === 0) {
+                    movieListView.finalizeMovieList();
+                }
+
+            });
+        }
 
 
     },
@@ -1526,7 +1566,12 @@ var smartMovieView = {
                     smartEventView.updateDateString();
                 }
             });
-            $('#smartMovieView-time').pickatime();
+
+            $('#smartMovieView-time').pickatime({
+                interval: 60,
+                min: [10,0],
+                max: [24,0]
+            });
 
             /* $("#smartEventView-date").on('blur', function () {
 

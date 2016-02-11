@@ -837,10 +837,10 @@ var photoModel = {
 
 var moviePosterPhoto  = {
 
-    findPoster: function (tmsId) {
+    findPoster: function (movieName) {
         var Poster = Parse.Object.extend("moviePoster");
         var query = new Parse.Query(Poster);
-        query.equalTo("tmsId", tmsId);
+        query.equalTo("movieName", movieName);
         query.find({
             success: function(results) {
                 if (results.length > 0)
@@ -854,8 +854,8 @@ var moviePosterPhoto  = {
         });
     },
 
-    getPosterUrl : function (tmsId) {
-        var poster = moviePosterPhoto.findPoster(tmsId);
+    getPosterUrl : function (movieName) {
+        var poster = moviePosterPhoto.findPoster(movieName);
 
         if (poster !== null) {
             return(poster.imageUrl);
@@ -865,44 +865,61 @@ var moviePosterPhoto  = {
     },
 
 
-    addPoster: function (tmsId, imageUrl, callback) {
-        var url = null;
+    addPoster: function (movieName, tmsId,  callback) {
+        var poster = null;
 
-        if (url = moviePosterPhoto.findPosterUrl(tmsId) !== null) {
-            callback(url);
+        if (poster = moviePosterPhoto.findPoster(movieName) !== null) {
+            callback(poster);
         }
+        var movieTitle = movieName.replace(/\b/g, '+');
+        var omdbUrl = 'http://www.omdbapi.com/?t=' + movieTitle + '&y=&plot=full&r=json';
+        $.ajax({
+            url: url,
+            // dataType:"jsonp",
+            //  contentType: 'application/json',
+            success: function (result, textStatus, jqXHR) {
+                if (result.Response === 'True') {
+                    var Poster = Parse.Object.extend("moviePoster");
+                    var obj = new Poster();
 
-        devicePhoto.convertImgToDataURL(imageUrl, function (dataUrl) {
-            var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
+                    var awards = '';
+                    if (result.Awards !== undefined)
+                        awards = result.Awards;
+                    obj.set('movieName', movieName);
+                    obj.set('awards', awards);
+                    obj.set('tmsId', tmsId);
+                    obj.set('imageUrl', result.Poster);
+                    obj.set('metaScore', result.Metascore);
+                    obj.set('imdbRating', result.imdbRating);
+                    obj.set('imdbVotes', result.imdbVotes);
+                    obj.set('imdbId', result.imdbId);
+                    obj.set('runtime', result.Runtime);
+                    obj.set('genre', result.Genre);
+                    obj.set('rating', result.Rated);
 
-            devicePhoto.cloudinaryUpload(tmsId, dataUrl, folder,  function (photoData) {
-                var Poster = Parse.Object.extend("moviePoster");
-                var moviePoster= new Poster();
+                    poster = obj.toJSON();
+                    callback(poster);
+                    obj.save(null, {
+                        success: function(moviePoster) {
+                            // Execute any logic that should take place after the object is saved.;
+                            //var photo = contact.get('photo');
+
+                        },
+                        error: function(contact, error) {
+                            // Execute any logic that should take place if the save fails.
+                            // error is a Parse.Error with an error code and message.
+                            handleParseError(error);
+                        }
+                    });
+                }
 
 
-                var imageUrl = photoData.url;
-                var publicId = photoData.public_id;
 
-                moviePoster.set('tmsId', tmsId);
-                moviePoster.set('imageUrl', imageUrl);
-                moviePoster.set('publicId', publicId);
-                callback(imageUrl);
-                moviePoster.save(null, {
-                    success: function(photoIn) {
+            },
+            error: function () {
 
-
-                    },
-                    error: function(contact, error) {
-                        // Execute any logic that should take place if the save fails.
-                        // error is a Parse.Error with an error code and message.
-                        handleParseError(error);
-                    }
-                });
-
-
-            });
+            }
         });
-
     }
 
 };
