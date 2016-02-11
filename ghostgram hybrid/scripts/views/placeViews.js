@@ -1693,6 +1693,7 @@ var checkInView = {
         $("#checkin-listview").kendoMobileListView({
             dataSource: checkInView.placesDS,
             template: $("#checkinPlacesTemplate").html(),
+            fixedHeaders: true,
             click: function (e) {
 
                 var place = e.dataItem, name = null;
@@ -1709,8 +1710,11 @@ var checkInView = {
                 }
 
                 userStatus.update();
-                mobileNotify("You're checked in to " + place.name);
+                mobileNotify("You're checked in to " + name);
                 checkInView.closeModal();
+            },
+            dataBound: function(){
+                ux.checkEmptyUIState(checkInView.placesDS, '#modalview-checkin');
             }
         });
 

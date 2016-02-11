@@ -252,7 +252,7 @@
 		<div class="appBox">
 		    <!-- application views will be rendered here -->
 		    <div>
-		    	<div class="notify-title">
+		    	<div class="notify-title hidden">
 			    	<img src="images/notify-icon.svg" height="14" />
 			    		Notifications
 			    	<span class="right">
@@ -260,7 +260,7 @@
 			    	</span>
 		    	</div>
 		    	<div class="clearfix"></div>
-		    	<ul id="notification-listview"></ul>
+		    	<ul class="home-notification" id="notification-listview"></ul>
 		    	<div class="emptyState hidden">
 	         		<img src="images/empty-home.svg" />
 	         	</div>
@@ -269,20 +269,99 @@
 	<div class="hidden"> <canvas id="identiconCanvas" width="256" height="256"></canvas></div>
 </div>
 
+<script type="text/x-kendo-template" id="notificationTemplate1">
+	<li class="home-section-header ggHome-today">
+		<div>
+			<img src="images/icon-today.svg" class="icon-home" /> Today
+			<span class="right"><a class="btnClear-light-sm right" data-role="button">hide</a></span>
+		</div>
+	</li>
+	<li data-role="button">
+		<div class="home-section home-section-smart">
+			<img src="images/smart-coffee.svg" class="icon-smart-home left" />
+			<h3>Coffee w/ Jon</h3>
+			<p>Today at 7:30am</p>
+		</div>
+	</li>
+	<li data-role="button">
+		<div class="home-section home-section-smart">
+			<img src="images/smart-flight-home.svg" class="icon-smart-home left" />
+			<h3>Delta 871 <span class="smart-flight-status">On Time</span></h3>
+			<p>Landing at 7:31am</p>
+		</div>
+	</li>
+	<li data-role="button">
+		<div class="home-section home-section-smart">
+			<img src="images/smart-event-home.svg" class="icon-smart-home left" />
+			<h3>Dinner w/ Jane</h3>
+			<p>Today at 8pm</p>
+		</div>
+	</li>
+	<li class="home-section-header ggHome-chat">
+		<div>
+			<img src="images/icon-chat-light.svg" class="icon-home-sm" /> Chats
+			<span class="right"><a class="btnClear-light-sm right" data-role="button">hide</a></span>
+		</div>
+	</li>
+	<li data-role="button" data-click="homeView.openNotificationAction">
+		<div class="home-section home-section-contact">
+			<div class="left">
+				<h3>New Request</h3>
+				<p>John Smith wants to connect</p>
+			</div>
+			<a class="btnClear right ggHome-close" data-role="button" data-click="homeView.dismissNotification">
+				<img src="images/close.svg" class="icon-sm" />
+			</a>
+		</div>
+	</li>
+	<li class="home-section-header ggHome-contact">
+		<div>
+			<img src="images/smart-contacts.svg" class="icon-home-sm" /> Contacts
+			<span class="right"><a class="btnClear-light-sm right" data-role="button">hide</a></span>
+		</div>
+	</li>
+	<li data-role="button" data-click="homeView.openNotificationAction">
+		<div class="home-section home-section-contact">
+			<div class="left">
+				<h3>3 New Messages</h3>
+				<p>Family Chat</p>
+			</div>
+			<a class="btnClear right ggHome-close" data-role="button" data-click="homeView.dismissNotification">
+				<img src="images/close.svg" class="icon-sm" />
+			</a>
+		</div>
+	</li>
+	<li class="home-section-header ggHome-smart">
+		<div>
+			<img src="images/icon-smart-light.svg" class="icon-home-sm" /> Smart Events
+			<span class="right"><a class="btnClear-light-sm right" data-role="button">hide</a></span>
+		</div>
+	</li>
+	<li data-role="button" data-click="homeView.openNotificationAction">
+		<div class="home-section home-section-smart">
+			<img src="images/smart-event-home.svg" class="icon-smart-home left" />
+			<h3>Smart Event Title</h3>
+			<p>Event action or update</p>
+		</div>
+	</li>
+</script>
+
 <script type="text/x-kendo-template" id="notificationTemplate">
 	# 	var dateTime= new Date(date);
 	var formattedDate = dateTime.toDateString();
 	#
 	<div class="notify-box">
 		<div class="notify-info">
-		#if(data.type === 'Unread Messages'){#
+			#if(data.type === 'Unread Messages'){#
 				<span><img src="images/icon-notify-unread.svg" class="icon-notify" /> #= description #</span>
 			#} else if(data.type === 'ghostgram recommends'){#
 				<span><img src="images/icon-notify-recommend.svg" class="icon-notify" /> Recommended</span>
 			#} else if(data.type === 'New Member'){#
 				<span>New Member</span>
 			#}#
-			<a class="closeBox" data-role="button" data-uuid="#:uuid#" data-click="homeView.dismissNotification"><img src="images/close.svg" class="img-sm" /></a>
+			<a class="closeBox" data-role="button" data-uuid="#:uuid#" data-click="homeView.dismissNotification">
+				<img src="images/close.svg" class="img-sm" />
+			</a>
 		</div>
 		<div class="notify-content">
 
@@ -517,6 +596,9 @@
 	</div>
 	<div>
 		<ul id="checkin-listview"></ul>
+	</div>
+	<div class="emptyState">
+		<img src="images/empty-places-nearby.svg" />
 	</div>
 </div>
 
@@ -894,16 +976,17 @@
 
 
 <script type="text/x-kendo-template" id="checkinPlacesTemplate">
+	# console.log(data) #
 	<div>
 		# if (data.ggType === 'Venue') { #
 		<h4 class="textClamp">#:data.title#</h4>
 		<p>#:data.address#</p>
 		<p class="helper">
-           <span class="left">
+           <span class="left list-type">
 			   #: data.type #
 		   </span>
 			<span class="right">
-			   #: data.distance #
+			   #: data.distance # mi
 		   </span>
 		</p>
 		<div class="clearfix"> </div>
