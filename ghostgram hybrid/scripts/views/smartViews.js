@@ -1226,8 +1226,16 @@ var movieListView = {
                         if (movie.ratings !== undefined && movie.ratings.length > 0)
                             movieObj.rating = movie.ratings[0].code;
                         movieObj.description = movie.shortDescription;
-                        movieObj.genre = movie.genres[0];
-                        var posterUrl = 'http://developer.tmsimg.com/movies/' + movie.preferredImage.uri +'?api_key=9zah4ggnfz9zpautmrx4bh32';
+                        movieObj.genre = '';
+                        if (movie.genres !== undefined && movie.genres.length > 0)
+                            movieObj.genre = movie.genres[0];
+
+                        var posterUrl = '';
+                        if (movie.preferredImage.category !== undefined && movie.preferredImage.category === 'Poster Art') {
+                            posterUrl = 'http://developer.tmsimg.com/movies/' + movie.preferredImage.uri +'?api_key=9zah4ggnfz9zpautmrx4bh32';
+                        } else {
+                            posterUrl = 'http://developer.tmsimg.com/' + movie.preferredImage.uri +'?api_key=9zah4ggnfz9zpautmrx4bh32';
+                        }
                         posterArray[movie.tmsId] = posterUrl;
                         movieObj.posterUrl = posterUrl;
                         movieObj.tmsId = movie.tmsId;
