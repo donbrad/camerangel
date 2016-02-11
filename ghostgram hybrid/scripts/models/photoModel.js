@@ -864,8 +864,8 @@ var moviePosterPhoto  = {
             if (poster !== null) {
                 callback(poster);
             }
-            var movieTitle = movieTitle.replace(/\b/g, '+');
-            var imdbUrl = 'http://www.omdbapi.com/?t=' + movieTitle + '&y=&plot=full&r=json';
+            var title = movieTitle.replace(/\b/g, '+');
+            var imdbUrl = 'http://www.omdbapi.com/?t=' + title + '&y=&plot=full&r=json';
             $.ajax({
                 url: imdbUrl,
                 // dataType:"jsonp",
