@@ -1313,7 +1313,7 @@ var movieListView = {
         // Fetch the movie poster and rating data
         for (var i=0; i< len; i++) {
             var movie = movieArray[i];
-            photoModel.addPoster(movie.movieName, movie.tmsId, function (poster) {
+            moviePosterPhoto.addPoster(movie.movieName, movie.tmsId, function (poster) {
                 movieListView.posterArray[poster.tmsId] = poster;
                 // Decrement the counter as we get the data...
                 if (--counter === 0) {
