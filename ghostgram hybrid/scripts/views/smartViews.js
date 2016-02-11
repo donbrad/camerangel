@@ -1092,23 +1092,24 @@ var movieListView = {
     initActiveObject: function () {
         var obj = movieListView.activeObject;
 
-        obj.set('title', null);
+        obj.set('movieTitle', null);
         obj.set('description', null);
         obj.set('rating', null);
         obj.set('genre', null);
-        obj.set('posterUrl', null);
+        obj.set('runtime', null);
+        obj.set('imageUrl', null);
 
     },
 
     setActiveObject: function (movie) {
         var obj = movieListView.activeObject;
 
-        obj.set('title', movie.movieTitle);
+        obj.set('movieTitle', movie.movieTitle);
         obj.set('description', movie.description);
         obj.set('rating', movie.rating);
         obj.set('genre', movie.genre);
         obj.set('runtime', movie.runtime);
-        obj.set('posterUrl', null);  // Todo: Don - wire up movie posters
+        obj.set('imageUrl', movie.imageUrl);
 
     },
 
