@@ -870,7 +870,7 @@ var moviePosterPhoto  = {
 
 
         moviePosterPhoto.findPoster(movieTitle, function (poster) {
-            if (poster =  !== null) {
+            if (poster !== null) {
                 callback(poster);
             }
             var movieTitle = movieTitle.replace(/\b/g, '+');
