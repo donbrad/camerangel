@@ -881,6 +881,9 @@ var moviePosterPhoto  = {
                         obj.set('movieTitle', movieTitle);
                         obj.set('awards', awards);
                         obj.set('tmsId', tmsId);
+                        if (result.Poster === 'N/A') {
+                            result.Poster = null;
+                        }
                         obj.set('imageUrl', result.Poster);
                         obj.set('metaScore', result.Metascore);
                         obj.set('imdbRating', result.imdbRating);
