@@ -834,3 +834,75 @@ var photoModel = {
     }
 
 };
+
+var moviePosterPhoto  = {
+
+    findPoster: function (tmsId) {
+        var Poster = Parse.Object.extend("moviePoster");
+        var query = new Parse.Query(Poster);
+        query.equalTo("tmsId", tmsId);
+        query.find({
+            success: function(results) {
+                if (results.length > 0)
+                    return(results[0])
+                else
+                    return(null);
+            },
+            error: function(error) {
+                return(null);
+            }
+        });
+    },
+
+    getPosterUrl : function (tmsId) {
+        var poster = moviePosterPhoto.findPoster(tmsId);
+
+        if (poster !== null) {
+            return(poster.imageUrl);
+        }
+
+        return (null);
+    },
+
+
+    addPoster: function (tmsId, imageUrl, callback) {
+        var url = null;
+
+        if (url = moviePosterPhoto.findPosterUrl(tmsId) !== null) {
+            callback(url);
+        }
+
+        devicePhoto.convertImgToDataURL(imageUrl, function (dataUrl) {
+            var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
+
+            devicePhoto.cloudinaryUpload(tmsId, dataUrl, folder,  function (photoData) {
+                var Poster = Parse.Object.extend("moviePoster");
+                var moviePoster= new Poster();
+
+
+                var imageUrl = photoData.url;
+                var publicId = photoData.public_id;
+
+                moviePoster.set('tmsId', tmsId);
+                moviePoster.set('imageUrl', imageUrl);
+                moviePoster.set('publicId', publicId);
+                callback(imageUrl);
+                moviePoster.save(null, {
+                    success: function(photoIn) {
+
+
+                    },
+                    error: function(contact, error) {
+                        // Execute any logic that should take place if the save fails.
+                        // error is a Parse.Error with an error code and message.
+                        handleParseError(error);
+                    }
+                });
+
+
+            });
+        });
+
+    }
+
+};

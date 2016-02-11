@@ -1215,7 +1215,7 @@ var movieListView = {
             // dataType:"jsonp",
             //  contentType: 'application/json',
             success: function(results, textStatus, jqXHR) {
-                var movie = null, movieArray = [];
+                var movie = null, movieArray = [], posterArray = [];
 
                 for (var i=0; i< results.length; i++) {
                     var movieObj = {};
@@ -1227,7 +1227,9 @@ var movieListView = {
                             movieObj.rating = movie.ratings[0].code;
                         movieObj.description = movie.shortDescription;
                         movieObj.genre = movie.genres[0];
-                        movieObj.posterUrl = movie.preferredImage.uri;
+                        var posterUrl = 'http://developer.tmsimg.com/movies/' + movie.preferredImage.uri +'?api_key=9zah4ggnfz9zpautmrx4bh32';
+                        posterArray[movie.tmsId] = posterUrl;
+                        movieObj.posterUrl = posterUrl;
                         movieObj.tmsId = movie.tmsId;
                         movieObj.runTime = movieListView.processRuntime(movie.runTime);
                         movieObj.showTimes = movieListView.processShowTimes(movie.showtimes);
@@ -1269,6 +1271,13 @@ var movieListView = {
 
         return(runTimeStr);
     },
+
+    processMoviePosters : function (posterArray) {
+        var ids = Object.keys(posterArray);
+
+
+    },
+
 
     processShowTimes: function (showTimes) {
         var theatreArray = [], theatreNames = [], showtime = null, time = null, timeStr = null;
