@@ -859,7 +859,6 @@ var moviePosterPhoto  = {
     addPoster: function (movieTitle, tmsId,  callback) {
         var poster = null;
 
-
         moviePosterPhoto.findPoster(movieTitle, function (poster) {
             if (poster !== null) {
                 callback(poster);
