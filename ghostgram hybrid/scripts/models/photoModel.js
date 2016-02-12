@@ -842,10 +842,10 @@ var moviePosterPhoto  = {
         var filename = tmsId +'.jpg';
 
         //Check for the file.
-        window.resolveLocalFileSystemURL(store + filename, function(){}, function() {moviePosterPhoto.addToLocalCache(url, filename, photo)});
+        window.resolveLocalFileSystemURL(store + filename, function(){}, function() {moviePosterPhoto.addToLocalCache(url, filename)});
     },
 
-    addToLocalCache : function (url, name, photo) {
+    addToLocalCache : function (url, name) {
         var store = deviceModel.fileDirectory;
 
         var fileTransfer = new FileTransfer();
@@ -901,9 +901,12 @@ var moviePosterPhoto  = {
 
     addPoster: function (movieTitle, tmsId,  callback) {
         var poster = null;
+        var store = deviceModel.fileDirectory;
 
         moviePosterPhoto.findPosterById(tmsId, function (poster) {
             if (poster !== null) {
+                moviePosterPhoto.checkPhotoCache(poster.tmsId, poster.imgUrl);
+                obj.set('imageUrl', store+poster.tmsId +'.jpg');
                 callback(poster);
             }
             movieTitle = movieTitle.replace(" No.", ''); // Todo -- add movie name mapping function
@@ -918,7 +921,7 @@ var moviePosterPhoto  = {
                     if (result.Response === 'True') {
                         var Poster = Parse.Object.extend("moviePoster");
                         var obj = new Poster();
-                        var store = deviceModel.fileDirectory;
+
 
                         var awards = '';
                         if (result.Awards !== undefined)
