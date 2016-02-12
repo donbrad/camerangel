@@ -837,6 +837,29 @@ var photoModel = {
 
 var moviePosterPhoto  = {
 
+    checkPhotoCache : function (tmsId, url) {
+        var store = deviceModel.fileDirectory;
+        var filename = tmsId +'.jpg';
+
+        //Check for the file.
+        window.resolveLocalFileSystemURL(store + filename, function(){}, function() {moviePosterPhoto.addToLocalCache(url, filename, photo)});
+    },
+
+    addToLocalCache : function (url, name, photo) {
+        var store = deviceModel.fileDirectory;
+
+        var fileTransfer = new FileTransfer();
+        fileTransfer.download(url, store + name,
+            function(entry) {
+
+                console.log("Cached local copy of " + name);
+            },
+            function(err) {
+                console.log("Error");
+                console.dir(err);
+            });
+    },
+
     findPoster: function (movieName, callback) {
         var Poster = Parse.Object.extend("moviePoster");
         var query = new Parse.Query(Poster);
@@ -895,6 +918,7 @@ var moviePosterPhoto  = {
                     if (result.Response === 'True') {
                         var Poster = Parse.Object.extend("moviePoster");
                         var obj = new Poster();
+                        var store = deviceModel.fileDirectory;
 
                         var awards = '';
                         if (result.Awards !== undefined)
@@ -904,8 +928,13 @@ var moviePosterPhoto  = {
                         obj.set('tmsId', tmsId);
                         if (result.Poster === 'N/A') {
                             result.Poster = null;
+                            obj.set('imageUrl', null);
+                        } else {
+                            moviePosterPhoto.checkPhotoCache(tmsId, result.Poster);
+                            obj.set('imageUrl', store+tmsId +'.jpg');
                         }
-                        obj.set('imageUrl', result.Poster);
+
+
                         obj.set('metaScore', result.Metascore);
                         obj.set('imdbRating', result.imdbRating);
                         obj.set('imdbVotes', result.imdbVotes);
