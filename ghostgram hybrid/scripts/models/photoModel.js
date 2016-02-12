@@ -843,8 +843,10 @@ var moviePosterPhoto  = {
         query.equalTo("movieTitle", movieName);
         query.find({
             success: function(results) {
-                if (results.length > 0)
-                    callback(results[0]);
+                if (results.length > 0) {
+                    var poster = results[0].toJSON();
+                    callback(poster);
+                }
                 else
                     callback(null);
             },
@@ -860,8 +862,10 @@ var moviePosterPhoto  = {
         query.equalTo("tmsId", movieId);
         query.find({
             success: function(results) {
-                if (results.length > 0)
-                    callback(results[0]);
+                if (results.length > 0) {
+                    var poster = results[0].toJSON();
+                    callback(poster);
+                }
                 else
                     callback(null);
             },
