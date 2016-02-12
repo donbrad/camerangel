@@ -837,89 +837,147 @@ var photoModel = {
 
 var moviePosterPhoto  = {
 
-    findPoster: function (movieName) {
+    checkPhotoCache : function (tmsId, url) {
+        var store = deviceModel.fileDirectory;
+        var filename = tmsId +'.jpg';
+
+        //Check for the file.
+        window.resolveLocalFileSystemURL(store + filename, function(){}, function() {moviePosterPhoto.addToLocalCache(url, filename)});
+    },
+
+    addToLocalCache : function (url, name) {
+        var store = deviceModel.fileDirectory;
+
+        var fileTransfer = new FileTransfer();
+        fileTransfer.download(url, store + name,
+            function(entry) {
+
+                console.log("Cached local copy of " + name);
+            },
+            function(err) {
+                console.log("Error");
+                console.dir(err);
+            });
+    },
+
+    findPoster: function (movieName, callback) {
         var Poster = Parse.Object.extend("moviePoster");
         var query = new Parse.Query(Poster);
         query.equalTo("movieTitle", movieName);
         query.find({
             success: function(results) {
-                if (results.length > 0)
-                    return(results[0])
+                if (results.length > 0) {
+                    var poster = results[0].toJSON();
+                    callback(poster);
+                }
                 else
-                    return(null);
+                    callback(null);
             },
             error: function(error) {
-                return(null);
+                callback(null);
             }
         });
     },
 
-    getPosterUrl : function (movieName) {
-        var poster = moviePosterPhoto.findPoster(movieName);
-
-        if (poster !== null) {
-            return(poster.imageUrl);
-        }
-
-        return (null);
+    findPosterById: function (movieId, callback) {
+        var Poster = Parse.Object.extend("moviePoster");
+        var query = new Parse.Query(Poster);
+        query.equalTo("tmsId", movieId);
+        query.find({
+            success: function(results) {
+                if (results.length > 0) {
+                    var poster = results[0].toJSON();
+                    callback(poster);
+                }
+                else
+                    callback(null);
+            },
+            error: function(error) {
+                callback(null);
+            }
+        });
     },
 
 
     addPoster: function (movieTitle, tmsId,  callback) {
         var poster = null;
+        var store = deviceModel.fileDirectory;
 
-        if (poster = moviePosterPhoto.findPoster(movieTitle) !== null) {
-            callback(poster);
-        }
-        var movieTitle = movieTitle.replace(/\b/g, '+');
-        var imdbUrl = 'http://www.omdbapi.com/?t=' + movieTitle + '&y=&plot=full&r=json';
-        $.ajax({
-            url: imdbUrl,
-            // dataType:"jsonp",
-            //  contentType: 'application/json',
-            success: function (result, textStatus, jqXHR) {
-                if (result.Response === 'True') {
-                    var Poster = Parse.Object.extend("moviePoster");
-                    var obj = new Poster();
-
-                    var awards = '';
-                    if (result.Awards !== undefined)
-                        awards = result.Awards;
-                    obj.set('movieTitle', movieTitle);
-                    obj.set('awards', awards);
-                    obj.set('tmsId', tmsId);
-                    obj.set('imageUrl', result.Poster);
-                    obj.set('metaScore', result.Metascore);
-                    obj.set('imdbRating', result.imdbRating);
-                    obj.set('imdbVotes', result.imdbVotes);
-                    obj.set('imdbId', result.imdbId);
-                    obj.set('runtime', result.Runtime);
-                    obj.set('genre', result.Genre);
-                    obj.set('rating', result.Rated);
-
-                    poster = obj.toJSON();
-                    callback(poster);
-                    obj.save(null, {
-                        success: function(moviePoster) {
-                            // Execute any logic that should take place after the object is saved.;
-                            //var photo = contact.get('photo');
-
-                        },
-                        error: function(contact, error) {
-                            // Execute any logic that should take place if the save fails.
-                            // error is a Parse.Error with an error code and message.
-                            handleParseError(error);
-                        }
-                    });
-                }
-
-
-
-            },
-            error: function () {
-
+        moviePosterPhoto.findPosterById(tmsId, function (poster) {
+            if (poster !== null) {
+                moviePosterPhoto.checkPhotoCache(poster.tmsId, poster.imageUrl);
+                poster.imageUrl = store+poster.tmsId +'.jpg';
+                callback(poster);
             }
+            movieTitle = movieTitle.replace(" No.", ''); // Todo -- add movie name mapping function
+
+            var title = encodeURIComponent(movieTitle);
+            var imdbUrl = 'http://www.omdbapi.com/?t=' + title + '&y=&plot=full&r=json';
+            $.ajax({
+                url: imdbUrl,
+                // dataType:"jsonp",
+                //  contentType: 'application/json',
+                success: function (result, textStatus, jqXHR) {
+                    if (result.Response === 'True') {
+                        var Poster = Parse.Object.extend("moviePoster");
+                        var obj = new Poster();
+
+
+                        var awards = '';
+                        if (result.Awards !== undefined)
+                            awards = result.Awards;
+                        obj.set('movieTitle', movieTitle);
+                        obj.set('awards', awards);
+                        obj.set('tmsId', tmsId);
+                        if (result.Poster === 'N/A') {
+                            result.Poster = null;
+                            obj.set('imageUrl', null);
+                        } else {
+                            moviePosterPhoto.checkPhotoCache(tmsId, result.Poster);
+                            obj.set('imageUrl', store+tmsId +'.jpg');
+                        }
+
+
+                        obj.set('metaScore', result.Metascore);
+                        obj.set('imdbRating', result.imdbRating);
+                        obj.set('imdbVotes', result.imdbVotes);
+                        obj.set('imdbId', result.imdbID);
+                        if (result.Runtime === undefined) {
+                            result.Runtime = "0";
+                        }
+                        obj.set('runtime', result.Runtime);
+                        obj.set('genre', result.Genre);
+                        obj.set('rating', result.Rated);
+
+                        poster = obj.toJSON();
+                        callback(poster);
+                        obj.save(null, {
+                            success: function(moviePoster) {
+                                // Execute any logic that should take place after the object is saved.;
+                                //var photo = contact.get('photo');
+
+                            },
+                            error: function(contact, error) {
+                                // Execute any logic that should take place if the save fails.
+                                // error is a Parse.Error with an error code and message.
+                                handleParseError(error);
+                            }
+                        });
+                    } else {
+                        mobileNotify("Can't get poster info for " + movieTitle);
+                        callback(null);
+                    }
+
+
+
+                },
+                error: function () {
+                    mobileNotify("Can't get poster info for " + movieTitle);
+                }
+            });
         });
+
+
     }
 
 };
