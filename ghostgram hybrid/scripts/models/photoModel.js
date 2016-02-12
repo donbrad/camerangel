@@ -864,8 +864,9 @@ var moviePosterPhoto  = {
             if (poster !== null) {
                 callback(poster);
             }
-            movieTitle = movieTitle.replace(/\./g, '');
-            var title = encodeURI(movieTitle);
+            movieTitle = movieTitle.replace(" No. ", ''); // Todo -- add movie name mapping function
+
+            var title = encodeURIComponent(movieTitle);
             var imdbUrl = 'http://www.omdbapi.com/?t=' + title + '&y=&plot=full&r=json';
             $.ajax({
                 url: imdbUrl,
