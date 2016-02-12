@@ -854,12 +854,28 @@ var moviePosterPhoto  = {
         });
     },
 
+    findPosterById: function (movieId, callback) {
+        var Poster = Parse.Object.extend("moviePoster");
+        var query = new Parse.Query(Poster);
+        query.equalTo("tmsId", movieId);
+        query.find({
+            success: function(results) {
+                if (results.length > 0)
+                    callback(results[0]);
+                else
+                    callback(null);
+            },
+            error: function(error) {
+                callback(null);
+            }
+        });
+    },
 
 
     addPoster: function (movieTitle, tmsId,  callback) {
         var poster = null;
 
-        moviePosterPhoto.findPoster(movieTitle, function (poster) {
+        moviePosterPhoto.findPosterById(tmsId, function (poster) {
             if (poster !== null) {
                 callback(poster);
             }

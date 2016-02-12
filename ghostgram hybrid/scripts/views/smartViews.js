@@ -1242,6 +1242,10 @@ var movieListView = {
                         }*/
                         movieObj.imageUrl = imageUrl;
                         movieObj.tmsId = movie.tmsId;
+                        movieObj.imdbId = null;
+                        movieObj.imbdRating = null;
+                        movieObj.imdbVotes = null;
+                        movieObj.metaScore = null;
                         movieObj.runtime = movieListView.processRuntime(movie.runTime);
                         movieObj.showTimes = movieListView.processShowTimes(movie.showtimes);
 
