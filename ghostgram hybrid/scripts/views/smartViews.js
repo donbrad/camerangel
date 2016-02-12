@@ -1267,7 +1267,7 @@ var movieListView = {
 
                 }
 
-                movieListView.processMoviePosters(movieListView.movieArray);
+                movieListView.processMoviePosters();
                /* movieListView.moviesDS.data(movieArray);
                 movieListView.moviesDS.sync();
                 $("#movieListView-searchbox").removeClass('hidden');*/
@@ -1284,8 +1284,9 @@ var movieListView = {
         return(runTimeStr);
     },
 
-    finalizeMovieList : function (movieArray) {
-
+    finalizeMovieList : function () {
+        var movieArray = movieListView.movieArray;
+        
         for (var i=0; i< movieArray.length; i++) {
             var movie = movieArray[i];
             var poster = movieListView.posterArray[movie.tmsId];
@@ -1306,9 +1307,9 @@ var movieListView = {
         $("#movieListView-searchbox").removeClass('hidden');
     },
 
-    processMoviePosters : function (movieArray) {
+    processMoviePosters : function () {
 
-        var len = movieArray.length, counter = len;
+        var movieArray = movieListView.movieArray, len = movieArray.length, counter = len;
 
         mobileNotify("Getting Movie Posters and ratings...");
 
