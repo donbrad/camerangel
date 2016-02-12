@@ -2149,6 +2149,12 @@ var channelView = {
         channelView.setMessageLockIcon(channelView.messageLock);
     },
 
+
+    messageSearch : function (e) {
+        _preventDefault(e);
+        var ref = cordova.InAppBrowser.open('http://www.google.com', '_blank', 'location=yes');
+    },
+
     messageCamera : function (e) {
        _preventDefault(e);
 
