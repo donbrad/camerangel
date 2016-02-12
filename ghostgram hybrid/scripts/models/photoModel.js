@@ -910,13 +910,16 @@ var moviePosterPhoto  = {
                                 handleParseError(error);
                             }
                         });
+                    } else {
+                        mobileNotify("Can't get poster info for " + movieTitle);
+                        callback(null);
                     }
 
 
 
                 },
                 error: function () {
-
+                    mobileNotify("Can't get poster info for " + movieTitle);
                 }
             });
         });
