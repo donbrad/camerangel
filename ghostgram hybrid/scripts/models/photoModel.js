@@ -905,7 +905,7 @@ var moviePosterPhoto  = {
 
         moviePosterPhoto.findPosterById(tmsId, function (poster) {
             if (poster !== null) {
-                moviePosterPhoto.checkPhotoCache(poster.tmsId, poster.imgUrl);
+                moviePosterPhoto.checkPhotoCache(poster.tmsId, poster.imageUrl);
                 obj.set('imageUrl', store+poster.tmsId +'.jpg');
                 callback(poster);
             }
