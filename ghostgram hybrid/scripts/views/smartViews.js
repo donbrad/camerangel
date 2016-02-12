@@ -1181,6 +1181,7 @@ var movieListView = {
 
     onShowMovieList: function (e) {
         _preventDefault(e);
+        ux.hideKeyboard();
         $('#movieListView').removeClass('hidden');
         $('#movieDetailView').addClass('hidden')
     },
@@ -1604,6 +1605,8 @@ var smartMovieView = {
     },
 
     openModal: function (actionObj, callback) {
+        ux.hideKeyboard();
+        
         if (!smartMovieView._isInited) {
 
             $('#smartMovieView-date').pickadate({

@@ -95,11 +95,11 @@ var ux = {
 	},
 
 	hideKeyboard: function(){
-		/*if (window.navigator.simulator === false) {
+		if (window.navigator.simulator === undefined ) {
 			// hide keyboard
 			cordova.plugins.Keyboard.close();
 		}
-	*/
+
 	},
 
 	showActionBtn: function(show, view, href){
