@@ -1225,7 +1225,7 @@ var movieListView = {
                     var movieObj = {};
                     movie = results[i];
                     if (movie.entityType === 'Movie') {
-                        movieObj.movieTitle = movie.title;
+                        movieObj.movieTitle = movie.title.replace('No. ', ''); // Todo: add movie title normalization
                         movieObj.rating = '';
                         if (movie.ratings !== undefined && movie.ratings.length > 0)
                             movieObj.rating = movie.ratings[0].code;
@@ -1291,15 +1291,18 @@ var movieListView = {
             var movie = movieArray[i];
             var poster = movieListView.posterArray[movie.tmsId];
 
-            movie.imageUrl = poster.imageUrl;
-            movie.runtime = poster.runtime;
-            movie.awards = poster.awards;
-            movie.genre = poster.genre;
-            movie.metaScore = poster.metaScore;
-            movie.rating = poster.rating;
-            movie.imdbId = poster.imdbId;
-            movie.imdbRating = poster.imdbRating;
-            movie.imdbVotes = poster.imdbVotes;
+            if (poster !== undefined && poster !== null) {
+
+                movie.imageUrl = poster.imageUrl;
+                movie.runtime = poster.runtime;
+                movie.awards = poster.awards;
+                movie.genre = poster.genre;
+                movie.metaScore = poster.metaScore;
+                movie.rating = poster.rating;
+                movie.imdbId = poster.imdbId;
+                movie.imdbRating = poster.imdbRating;
+                movie.imdbVotes = poster.imdbVotes;
+            }
 
         }
         movieListView.moviesDS.data(movieArray);
