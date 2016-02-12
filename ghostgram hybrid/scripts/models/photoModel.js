@@ -864,7 +864,8 @@ var moviePosterPhoto  = {
             if (poster !== null) {
                 callback(poster);
             }
-            var title = encodeURIComponent(movieTitle);
+            movieTitle = movieTitle.replace(/./g, '');
+            var title = encodeURI(movieTitle);
             var imdbUrl = 'http://www.omdbapi.com/?t=' + title + '&y=&plot=full&r=json';
             $.ajax({
                 url: imdbUrl,
