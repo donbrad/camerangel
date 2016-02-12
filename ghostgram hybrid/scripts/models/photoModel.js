@@ -906,7 +906,7 @@ var moviePosterPhoto  = {
         moviePosterPhoto.findPosterById(tmsId, function (poster) {
             if (poster !== null) {
                 moviePosterPhoto.checkPhotoCache(poster.tmsId, poster.imageUrl);
-                poster.set('imageUrl', store+poster.tmsId +'.jpg');
+                poster.imageUrl = store+poster.tmsId +'.jpg';
                 callback(poster);
             }
             movieTitle = movieTitle.replace(" No.", ''); // Todo -- add movie name mapping function
