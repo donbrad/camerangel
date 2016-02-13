@@ -2178,9 +2178,9 @@ var channelView = {
         }
         channelView.winQuery = '?q='+query;
         channelView.winRef =  cordova.InAppBrowser.open(encodeURI(searchUrl), '_blank', 'location=yes');
-        channelView.winRef.addEventListener('loadstart', channelView.messageSearchLoad);
+      /*  channelView.winRef.addEventListener('loadstart', channelView.messageSearchLoad);
         channelView.winRef.addEventListener('exit', channelView.messageSearchEnd);
-
+*/
     },
 
     messageCamera : function (e) {
