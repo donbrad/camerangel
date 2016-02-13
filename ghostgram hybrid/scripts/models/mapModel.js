@@ -346,7 +346,7 @@ var mapModel = {
     _updatePosition : function (lat, lng) {
         lat = mapModel.validNumber(lat);
         lng = mapModel.validNumber(lng);
-        
+
         mapModel.lat = lat; mapModel.lng = lng;
         mapModel.latlng = new google.maps.LatLng(lat, lng);
         window.localStorage.setItem('ggLastPosition', JSON.stringify({lat: lat, lng: lng}));
