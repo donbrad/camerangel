@@ -2158,6 +2158,15 @@ var channelView = {
         return selectedText;
     },
 
+    messageSearchLoad : function () {
+
+    },
+
+    messageSearchEnd : function () {
+        channelView.winRef.removeEventListener('loadstart', channelView.messageSearchLoad);
+        channelView.winRef.removeEventListener('exit', channelView.messageSearchEnd);
+    },
+
     messageSearch : function (e) {
         _preventDefault(e);
 
@@ -2167,11 +2176,10 @@ var channelView = {
         if (query !== '') {
             searchUrl += '?q='+query;
         }
-
-        var ref = window.open(searchUrl, '_blank', "");
-        ref.addEventListener('loadstart', function() {
-            var url = '';
-        });
+        channelView.winQuery = '?q='+query;
+        channelView.winRef = window.open(searchUrl, '_blank', "");
+        channelView.winRef.addEventListener('loadstart', channelView.messageSearchLoad);
+        channelView.winRef.addEventListener('exit', channelView.messageSearchEnd);
 
     },
 
