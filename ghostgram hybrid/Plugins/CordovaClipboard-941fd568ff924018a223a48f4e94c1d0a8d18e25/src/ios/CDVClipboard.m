@@ -20,7 +20,9 @@
 - (void)paste:(CDVInvokedUrlCommand*)command {
 	[self.commandDelegate runInBackground:^{
 		UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-		NSString     *text       = [pasteboard valueForPasteboardType:@"public.text"];
+		NSData * data = [pasteboard dataForPasteboardType:(NSString*)kUTTypeText];
+        NSString * text =[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	
 	    
 	    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:text];
 	    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
