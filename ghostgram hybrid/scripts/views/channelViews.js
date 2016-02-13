@@ -2158,7 +2158,7 @@ var channelView = {
 
 
         if (window.navigator.simulator === undefined) {
-            window.plugins.paste(function (text) {
+            window.plugins.clipboard.paste(function (text) {
                 if (text !== "") {
                     searchUrl += encodeURIComponent(text);
                 }
