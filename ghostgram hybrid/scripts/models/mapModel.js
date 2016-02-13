@@ -330,6 +330,11 @@ var mapModel = {
         lat = mapModel.validNumber(lat);
         lng = mapModel.validNumber(lng);
 
+        if (lat === 0 || lng === 0) {
+            callback(null, "reverseGeoCode : lat or lng is 0");
+            return;
+        }
+
         var latlng = new google.maps.LatLng(lat, lng);
 
         mapModel.geocoder.geocode({
@@ -340,7 +345,7 @@ var mapModel = {
 
             } else {
                 mobileNotify('Geocoder failed with: ' + status);
-                callback(null, status)
+                callback(null, status);
             }
         });
 
