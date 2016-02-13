@@ -94,7 +94,7 @@ var mapModel = {
         if (number === undefined || number === null) {
             return(validNum);
         } else {
-            return(Number(number));
+            return(parseFloat(number));
         }
     },
 
@@ -168,8 +168,7 @@ var mapModel = {
         mapModel._boundsCheckIn = bounds;
 
     },
-
-
+    
     // Return ggPlaces within radius of current lat / lng
     matchPlaces : function (callback) {
 
@@ -260,6 +259,27 @@ var mapModel = {
             placeArray[i].distance = distance.toFixed(2);
 
         }
+    },
+
+    getCurrentPosition : function (callback) {
+        var currentPing = ggTime.currentTimeInSeconds();
+
+        if (currentPing > mapModel.lastPingSeconds + mapModel._pingInterval) {
+            mapModel.lastPingSeconds = ggTime.currentTimeInSeconds();
+            var options = mapModel.gpsOptions;
+            navigator.geolocation.getCurrentPosition(function (position) {
+                // Mask lat / lng to 6 digits to standardize comparison results
+                var lat = parseFloat(position.coords.latitude.toFixed(6)), lng = parseFloat(position.coords.longitude.toFixed(6));
+                mapModel._updatePosition(lat, lng);
+                callback(lat, lng);
+            }, function (error) {
+                mobileNotify("GPS error" + error.message);
+                callback(0, 0);
+            }, options);
+        } else {
+            callback(mapModel.lat, mapModel.lng);
+        }
+
     },
 
     getCurrentAddress : function (callback) {
@@ -362,27 +382,6 @@ var mapModel = {
         mapModel.lastPosition.lng = lng;
     },
 
-    getCurrentPosition : function (callback) {
-        var currentPing = ggTime.currentTimeInSeconds();
-
-        if (currentPing > mapModel.lastPingSeconds + mapModel._pingInterval) {
-            mapModel.lastPingSeconds = ggTime.currentTimeInSeconds();
-            var options = mapModel.gpsOptions;
-            navigator.geolocation.getCurrentPosition(function (position) {
-                // Mask lat / lng to 6 digits to standardize comparison results
-                var lat = parseFloat(position.coords.latitude.toFixed(6)), lng = parseFloat(position.coords.longitude.toFixed(6));
-                mapModel._updatePosition(lat, lng);
-
-                callback(lat, lng);
-            }, function (error) {
-                mobileNotify("GPS error" + error.message);
-                callback(0, 0);
-            }, options);
-        } else {
-            callback(mapModel.lat, mapModel.lng);
-        }
-
-    },
 
     setMapCenter : function (lat, lng) {
         if (lat === undefined || lng === undefined) {
