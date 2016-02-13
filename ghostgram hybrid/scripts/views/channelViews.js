@@ -2177,7 +2177,7 @@ var channelView = {
             searchUrl += '?q='+query;
         }
         channelView.winQuery = '?q='+query;
-        channelView.winRef = window.open(searchUrl, '_blank', "");
+        channelView.winRef =  cordova.InAppBrowser.open(searchUrl, '_blank', "");
         channelView.winRef.addEventListener('loadstart', channelView.messageSearchLoad);
         channelView.winRef.addEventListener('exit', channelView.messageSearchEnd);
 
