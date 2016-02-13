@@ -2168,8 +2168,8 @@ var channelView = {
             searchUrl += '?q='+query;
         }
 
-        var ref = window.open(searchUrl, '_search', "EnableViewPortScale=yes");
-        ref.addEventListener('loadstart', function(event) {
+        var ref = window.open(searchUrl, '_blank', "");
+        ref.addEventListener('loadstart', function() {
             var url = '';
         });
 
