@@ -1978,8 +1978,8 @@ var smartEventPlacesView = {
                                 var placeObj = {
                                     googleId : place.place_id,
                                     name: place.name.smartTruncate(38, true).toString(),
-                                    lat : Number(place.geometry.location.lat().toFixed(6)),
-                                    lng : Number(place.geometry.location.lng().toFixed(6)),
+                                    lat : parseFloat(place.geometry.location.lat().toFixed(6)),
+                                    lng : parseFloat(place.geometry.location.lng().toFixed(6)),
                                     vicinity : place.vicinity,
                                     address : address.streetNumber + ' ' + address.street + ", " + address.city + ", " + address.state + "  " + address.zipcode,
                                     city:  address.city,

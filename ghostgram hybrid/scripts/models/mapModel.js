@@ -66,7 +66,7 @@ var mapModel = {
         mapModel.geocoder =  new google.maps.Geocoder();
         mapModel.googlePlaces = new google.maps.places.PlacesService(mapModel.googleMap);
 
-        mapModel.lastPingSeconds = ggTime.currentTimeInSeconds() + mapModel._pingInterval + 10;
+        mapModel.lastPingSeconds = ggTime.currentTimeInSeconds() + mapModel._pingInterval - 1;
 
         mapModel.getCurrentAddress(function (isNew, address){
 
@@ -168,7 +168,7 @@ var mapModel = {
         mapModel._boundsCheckIn = bounds;
 
     },
-    
+
     // Return ggPlaces within radius of current lat / lng
     matchPlaces : function (callback) {
 
