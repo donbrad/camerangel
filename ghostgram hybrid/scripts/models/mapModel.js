@@ -88,8 +88,20 @@ var mapModel = {
 
     },
 
+    validNumber : function (number) {
+       var validNum = 0;
+
+        if (number === undefined || number === null) {
+            return(validNum);
+        } else {
+            return(Number(number));
+        }
+    },
+
     setLatLng : function (lat, lng) {
 
+        lat = mapModel.validNumber(lat);
+        lng = mapModel.validNumber(lng);
         mapModel.lat = lat;
         mapModel.lng = lng;
         mapModel.lastPosition.lat = lat;
@@ -98,7 +110,8 @@ var mapModel = {
     },
 
     isNewLocation : function (lat, lng) {
-
+        lat = mapModel.validNumber(lat);
+        lng = mapModel.validNumber(lng);
        return(! placesModel.inRadius(lat, lng, mapModel.lat, mapModel.lng, mapModel._radiusNewLocation));
 
     },
@@ -331,7 +344,9 @@ var mapModel = {
     },
 
     _updatePosition : function (lat, lng) {
-
+        lat = mapModel.validNumber(lat);
+        lng = mapModel.validNumber(lng);
+        
         mapModel.lat = lat; mapModel.lng = lng;
         mapModel.latlng = new google.maps.LatLng(lat, lng);
         window.localStorage.setItem('ggLastPosition', JSON.stringify({lat: lat, lng: lng}));
