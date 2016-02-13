@@ -329,7 +329,7 @@ var mapModel = {
     reverseGeoCode : function(lat,lng, callback) {
         lat = mapModel.validNumber(lat);
         lng = mapModel.validNumber(lng);
-        
+
         var latlng = new google.maps.LatLng(lat, lng);
 
         mapModel.geocoder.geocode({

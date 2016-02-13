@@ -2158,11 +2158,11 @@ var channelView = {
         return selectedText;
     },
 
-    messageSearchLoad : function () {
+    messageSearchLoad : function (event) {
 
     },
 
-    messageSearchEnd : function () {
+    messageSearchEnd : function (event) {
         channelView.winRef.removeEventListener('loadstart', channelView.messageSearchLoad);
         channelView.winRef.removeEventListener('exit', channelView.messageSearchEnd);
     },
@@ -2177,7 +2177,7 @@ var channelView = {
             searchUrl += '?q='+query;
         }
         channelView.winQuery = '?q='+query;
-        channelView.winRef =  cordova.InAppBrowser.open(searchUrl, '_blank', "");
+        channelView.winRef =  cordova.InAppBrowser.open(encodeURI(searchUrl), '_blank', 'location=yes');
         channelView.winRef.addEventListener('loadstart', channelView.messageSearchLoad);
         channelView.winRef.addEventListener('exit', channelView.messageSearchEnd);
 
