@@ -2153,7 +2153,12 @@ var channelView = {
     messageSearch : function (e) {
         _preventDefault(e);
         var textSelected =  $('#messageTextArea').redactor('selection.current');
+        var query;
         var searchUrl =  'http://www.google.com?pws=1&as_epq=';
+        if (textSelected.textContent !== undefined && textSelected.textContent !== '') {
+            query = textSelected.textContent;
+            searchUrl += query;
+        }
         var ref = cordova.InAppBrowser.open(searchUrl, '_blank', 'location=yes');
     },
 
