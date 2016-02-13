@@ -2154,7 +2154,7 @@ var channelView = {
         _preventDefault(e);
         var textSelected =  $('#messageTextArea').redactor('selection.current');
         var range = $('#messageTextArea').redactor('selection.range');
-        var start = range.getStart(), end = range.getEnd();
+        var start = range.startOffset, end = range.endOffset;
         var query;
         var searchUrl =  'http://www.google.com?pws=1&q=';
         if (textSelected.textContent !== undefined && textSelected.textContent !== '') {
