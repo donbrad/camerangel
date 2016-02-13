@@ -2150,32 +2150,26 @@ var channelView = {
     },
 
 
+   getSelectionText: function (){
+        var selectedText = "";
+        if (window.getSelection){ // all modern browsers and IE9+
+            selectedText = window.getSelection().toString();
+        }
+        return selectedText;
+    },
+
     messageSearch : function (e) {
         _preventDefault(e);
 
+        var searchUrl =  'http://www.google.com';
+        var query = channelView.getSelectionText();
 
-        var searchUrl =  'http://www.google.com?pws=1&q=';
-
-
-        if (window.navigator.simulator === undefined) {
-            window.plugins.clipboard.paste(function (text) {
-                if (text !== "") {
-                    searchUrl += encodeURIComponent(text);
-                }
-                var ref = window.open(searchUrl, '_search', 'location=no');
-            });
-        } else {
-            var textSelected =  $('#messageTextArea').redactor('selection.current');
-            var range = $('#messageTextArea').redactor('selection.range');
-            var start = range.startOffset, end = range.endOffset;
-            var query;
-            if (textSelected.textContent !== undefined && textSelected.textContent !== '') {
-                query = textSelected.textContent;
-                query = query.substring(start, end);
-                searchUrl += query;
-            }
-            var ref = window.open(searchUrl, '_search', 'location=no');
+        if (query !== '') {
+            searchUrl += '?q='+query;
         }
+
+        var ref = window.open(searchUrl, '_search', 'location=no');
+
     },
 
     messageCamera : function (e) {
