@@ -66,7 +66,7 @@ var mapModel = {
         mapModel.geocoder =  new google.maps.Geocoder();
         mapModel.googlePlaces = new google.maps.places.PlacesService(mapModel.googleMap);
 
-        mapModel.lastPingSeconds = ggTime.currentTimeInSeconds() + mapModel._pingInterval + 10;
+        mapModel.lastPingSeconds = ggTime.currentTimeInSeconds() + mapModel._pingInterval - 1;
 
         mapModel.getCurrentAddress(function (isNew, address){
 
@@ -88,8 +88,20 @@ var mapModel = {
 
     },
 
+    validNumber : function (number) {
+       var validNum = 0;
+
+        if (number === undefined || number === null) {
+            return(validNum);
+        } else {
+            return(parseFloat(number));
+        }
+    },
+
     setLatLng : function (lat, lng) {
 
+        lat = mapModel.validNumber(lat);
+        lng = mapModel.validNumber(lng);
         mapModel.lat = lat;
         mapModel.lng = lng;
         mapModel.lastPosition.lat = lat;
@@ -98,7 +110,8 @@ var mapModel = {
     },
 
     isNewLocation : function (lat, lng) {
-
+        lat = mapModel.validNumber(lat);
+        lng = mapModel.validNumber(lng);
        return(! placesModel.inRadius(lat, lng, mapModel.lat, mapModel.lng, mapModel._radiusNewLocation));
 
     },
@@ -155,7 +168,6 @@ var mapModel = {
         mapModel._boundsCheckIn = bounds;
 
     },
-
 
     // Return ggPlaces within radius of current lat / lng
     matchPlaces : function (callback) {
@@ -249,6 +261,27 @@ var mapModel = {
         }
     },
 
+    getCurrentPosition : function (callback) {
+        var currentPing = ggTime.currentTimeInSeconds();
+
+        if (currentPing > mapModel.lastPingSeconds + mapModel._pingInterval) {
+            mapModel.lastPingSeconds = ggTime.currentTimeInSeconds();
+            var options = mapModel.gpsOptions;
+            navigator.geolocation.getCurrentPosition(function (position) {
+                // Mask lat / lng to 6 digits to standardize comparison results
+                var lat = parseFloat(position.coords.latitude.toFixed(6)), lng = parseFloat(position.coords.longitude.toFixed(6));
+                mapModel._updatePosition(lat, lng);
+                callback(lat, lng);
+            }, function (error) {
+                mobileNotify("GPS error" + error.message);
+                callback(0, 0);
+            }, options);
+        } else {
+            callback(mapModel.lat, mapModel.lng);
+        }
+
+    },
+
     getCurrentAddress : function (callback) {
 
         mapModel.getCurrentPosition (function(lat, lng) {
@@ -314,6 +347,14 @@ var mapModel = {
     },
 
     reverseGeoCode : function(lat,lng, callback) {
+        lat = mapModel.validNumber(lat);
+        lng = mapModel.validNumber(lng);
+
+        if (lat === 0 || lng === 0) {
+            callback(null, "reverseGeoCode : lat or lng is 0");
+            return;
+        }
+
         var latlng = new google.maps.LatLng(lat, lng);
 
         mapModel.geocoder.geocode({
@@ -324,13 +365,15 @@ var mapModel = {
 
             } else {
                 mobileNotify('Geocoder failed with: ' + status);
-                callback(null, status)
+                callback(null, status);
             }
         });
 
     },
 
     _updatePosition : function (lat, lng) {
+        lat = mapModel.validNumber(lat);
+        lng = mapModel.validNumber(lng);
 
         mapModel.lat = lat; mapModel.lng = lng;
         mapModel.latlng = new google.maps.LatLng(lat, lng);
@@ -339,27 +382,6 @@ var mapModel = {
         mapModel.lastPosition.lng = lng;
     },
 
-    getCurrentPosition : function (callback) {
-        var currentPing = ggTime.currentTimeInSeconds();
-
-        if (currentPing > mapModel.lastPingSeconds + mapModel._pingInterval) {
-            mapModel.lastPingSeconds = ggTime.currentTimeInSeconds();
-            var options = mapModel.gpsOptions;
-            navigator.geolocation.getCurrentPosition(function (position) {
-                // Mask lat / lng to 6 digits to standardize comparison results
-                var lat = parseFloat(position.coords.latitude.toFixed(6)), lng = parseFloat(position.coords.longitude.toFixed(6));
-                mapModel._updatePosition(lat, lng);
-
-                callback(lat, lng);
-            }, function (error) {
-                mobileNotify("GPS error" + error.message);
-                callback(0, 0);
-            }, options);
-        } else {
-            callback(mapModel.lat, mapModel.lng);
-        }
-
-    },
 
     setMapCenter : function (lat, lng) {
         if (lat === undefined || lng === undefined) {

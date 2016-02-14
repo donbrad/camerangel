@@ -2149,6 +2149,40 @@ var channelView = {
         channelView.setMessageLockIcon(channelView.messageLock);
     },
 
+
+   getSelectionText: function (){
+        var selectedText = "";
+        if (window.getSelection){ // all modern browsers and IE9+
+            selectedText = window.getSelection().toString();
+        }
+        return selectedText;
+    },
+
+    messageSearchLoad : function (event) {
+
+    },
+
+    messageSearchEnd : function (event) {
+        channelView.winRef.removeEventListener('loadstart', channelView.messageSearchLoad);
+        channelView.winRef.removeEventListener('exit', channelView.messageSearchEnd);
+    },
+
+    messageSearch : function (e) {
+        _preventDefault(e);
+
+        var searchUrl =  'http://www.google.com';
+        var query = channelView.getSelectionText();
+
+        if (query !== '') {
+            searchUrl += '?q='+query;
+        }
+        channelView.winQuery = '?q='+query;
+        channelView.winRef =  cordova.InAppBrowser.open(encodeURI(searchUrl), '_blank', 'location=yes');
+      /*  channelView.winRef.addEventListener('loadstart', channelView.messageSearchLoad);
+        channelView.winRef.addEventListener('exit', channelView.messageSearchEnd);
+*/
+    },
+
     messageCamera : function (e) {
        _preventDefault(e);
 

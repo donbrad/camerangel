@@ -237,13 +237,13 @@ function inPlaceRadius (lat1, lng1, lat2, lng2, radius) {
 	}
 
 	if (typeof lat1 === 'string') {
-		lat1 = Number(lat1);
-		lng1 = Number(lng1);
+		lat1 = parseFloat(lat1);
+		lng1 = parseFloat(lng1);
 	}
 
 	if (typeof lat2 === 'string') {
-		lat2 = Number(lat2);
-		lng2 = Number(lng2);
+		lat2 = parseFloat(lat2);
+		lng2 = parseFloat(lng2);
 	}
 
 	var distance = getDistanceInMeters(lat1, lng1, lat2, lng2);

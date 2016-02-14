@@ -1606,7 +1606,7 @@ var smartMovieView = {
 
     openModal: function (actionObj, callback) {
         ux.hideKeyboard();
-        
+
         if (!smartMovieView._isInited) {
 
             $('#smartMovieView-date').pickadate({

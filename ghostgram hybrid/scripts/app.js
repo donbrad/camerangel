@@ -100,7 +100,7 @@
 			};
 		};*/
 
-		$.Redactor.prototype.source = function()
+	/*	$.Redactor.prototype.source = function()
 		{
 			return {
 				init: function()
@@ -292,7 +292,7 @@
 				}
 			};
 		};
-
+*/
 		// hide the splash screen as soon as the app is ready. otherwise
 		navigator.splashscreen.hide();
 		// Set status bar color
