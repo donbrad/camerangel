@@ -1289,7 +1289,7 @@ var movieListView = {
 
     processRuntime : function (runtime) {
         var runTimeStr = null;
-        if (runime === undefined || runtime === null) {
+        if (runtime === undefined || runtime === null) {
             runTimeStr = " ?? min";
         } else {
             runTimeStr = runtime.replace('PT0', '');
