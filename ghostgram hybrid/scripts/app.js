@@ -66,6 +66,7 @@
 		if (window.navigator.simulator === undefined) {
 			// Initialize AppBuilder App Feedback Plugin
 			feedback.initialize('152d2190-9201-11e5-94db-2f6555e1caa0');
+			window.open = cordova.InAppBrowser.open;
 		}
 		// Add event listeners
 		document.addEventListener("pause", deviceModel.onPause, false);
