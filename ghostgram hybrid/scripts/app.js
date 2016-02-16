@@ -4,7 +4,6 @@
 	var _app,
 		_private,
 		_isOnline = true;
-
 	// create an object to store the models for each view
 	window.APP = {
 		version: "prealpha : 0.2.2.7",
@@ -66,7 +65,7 @@
 		if (window.navigator.simulator === undefined) {
 			// Initialize AppBuilder App Feedback Plugin
 			feedback.initialize('152d2190-9201-11e5-94db-2f6555e1caa0');
-			//window.open = cordova.InAppBrowser.open;
+			window.open = cordova.InAppBrowser.open;
 		}
 		// Add event listeners
 		document.addEventListener("pause", deviceModel.onPause, false);
