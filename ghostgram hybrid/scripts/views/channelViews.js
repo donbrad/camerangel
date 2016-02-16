@@ -2150,7 +2150,7 @@ var channelView = {
     },
 
 
-   getSelectionText: function (){
+   getSelectionText: function (event){
         var selectedText = "";
         if (window.getSelection){ // all modern browsers and IE9+
             selectedText = window.getSelection().toString();
@@ -2162,9 +2162,17 @@ var channelView = {
 
     },
 
-    messageSearchEnd : function (event) {
-        channelView.winRef.removeEventListener('loadstart', channelView.messageSearchLoad);
-        channelView.winRef.removeEventListener('exit', channelView.messageSearchEnd);
+    messageSearchError : function (event) {
+
+    },
+
+    messageSearchEnd : function () {
+        if (channelView.winRef !== undefined && channelView.winRef !== null) {
+            channelView.winRef.removeEventListener('loadstart', channelView.messageSearchLoad);
+            channelView.winRef.removeEventListener('exit', channelView.messageSearchEnd);
+            channelView.winRef = null;
+        }
+
     },
 
     messageSearch : function (e) {
@@ -2177,8 +2185,9 @@ var channelView = {
             searchUrl += '?q='+query;
         }
         channelView.winQuery = '?q='+query;
-        channelView.winRef =  window.open(encodeURI(searchUrl), '_blank', 'location=yes');
+        channelView.winRef =  window.open(encodeURI(searchUrl), '_blank', 'location=no');
         channelView.winRef.addEventListener('loadstart', channelView.messageSearchLoad);
+        channelView.winRef.addEventListener('loaderror', channelView.messageSearchError);
         channelView.winRef.addEventListener('exit', channelView.messageSearchEnd);
 
     },
