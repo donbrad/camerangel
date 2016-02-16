@@ -1195,7 +1195,7 @@ var movieListView = {
         $('#movieListView-doneBtn').addClass('hidden');
     },
 
-    openModal : function (lat, lng, date, query, radius, callback) {
+    openModal : function (lat, lng, date, query, radius, allDay,  callback) {
 
         $("#movieListModal").data("kendoMobileModalView").open();
 
@@ -1210,7 +1210,10 @@ var movieListView = {
         } else {
             movieListView.callback = null;
         }
-        movieListView._radius = radius;
+
+        if (radius !== null)
+            movieListView._radius = radius;
+
         movieListView._minTime = moment(date).subtract(2, 'hours');
         movieListView._maxTime = moment(date).add(2, 'hours');
         var dateStr = moment(date).format('YYYY-MM-DD');
@@ -1262,8 +1265,12 @@ var movieListView = {
                             showtimeObj.date = moment(showtime.dateTime);
                             showtimeObj.dateStr = moment(showtime.dateTime).format('h:mm A');
 
-                            if (showtimeObj.date >= movieListView._minTime && showtimeObj.date <= movieListView._maxTime)
+                            if (allDay === false) {
+                                if (showtimeObj.date >= movieListView._minTime && showtimeObj.date <= movieListView._maxTime)
+                                    movieListView.showtimesDS.add(showtimeObj);
+                            } else {
                                 movieListView.showtimesDS.add(showtimeObj);
+                            }
 
                         }
 
@@ -1281,11 +1288,15 @@ var movieListView = {
     },
 
     processRuntime : function (runtime) {
-        var runTimeStr = runtime.replace('PT0', '');
-        runTimeStr = runtime.replace('PT', '');
-        runTimeStr = runTimeStr.replace('H', ' hr ');
-        runTimeStr = runTimeStr.replace('M', ' min');
-
+        var runTimeStr = null;
+        if (runime === undefined || runtime === null) {
+            runTimeStr = " ?? min";
+        } else {
+            runTimeStr = runtime.replace('PT0', '');
+            runTimeStr = runtime.replace('PT', '');
+            runTimeStr = runTimeStr.replace('H', ' hr ');
+            runTimeStr = runTimeStr.replace('M', ' min');
+        }
         return(runTimeStr);
     },
 

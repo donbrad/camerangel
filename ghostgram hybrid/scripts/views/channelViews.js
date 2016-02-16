@@ -2341,7 +2341,7 @@ var channelView = {
 
     messageMovie : function (e) {
         _preventDefault(e);
-        smartMovieView.openModal(null, function (movie) {
+        movieListView.openModal(mapModel.lat, mapModel.lng, new Date(), '', null, true, function (movie) {
 
           //  channelView.messageAddSmartEvent(event);
             mobileNotify("Sending Smart Movie...");
