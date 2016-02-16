@@ -2159,14 +2159,14 @@ var channelView = {
     },
 
     messageSearchLoad : function (event) {
-
+		mobileNotify('url: ' + event.url);
     },
 
     messageSearchError : function (event) {
-
+		mobileNotify('error: ' + event.message);
     },
 
-    messageSearchEnd : function () {
+    messageSearchEnd : function (event) {
         if (channelView.winRef !== undefined && channelView.winRef !== null) {
             channelView.winRef.removeEventListener('loadstart', channelView.messageSearchLoad);
             channelView.winRef.removeEventListener('exit', channelView.messageSearchEnd);
@@ -2185,7 +2185,7 @@ var channelView = {
             searchUrl += '?q='+query;
         }
         channelView.winQuery = '?q='+query;
-        channelView.winRef =  window.open(encodeURI(searchUrl), '_blank', 'location=no');
+        channelView.winRef =  window.open(encodeURI(searchUrl), '_blank', 'location=yes');
         channelView.winRef.addEventListener('loadstart', channelView.messageSearchLoad);
         channelView.winRef.addEventListener('loaderror', channelView.messageSearchError);
         channelView.winRef.addEventListener('exit', channelView.messageSearchEnd);
