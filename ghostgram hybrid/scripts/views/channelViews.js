@@ -2178,7 +2178,7 @@ var channelView = {
     messageSearch : function (e) {
         _preventDefault(e);
 
-        var searchUrl =  'http://www.google.com';
+        var searchUrl =  'http://www.google.com/search';
         var query = channelView.getSelectionText();
 
         if (query !== '') {
