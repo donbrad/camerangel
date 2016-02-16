@@ -2186,9 +2186,9 @@ var channelView = {
         }
         channelView.winQuery = '?q='+query;
         channelView.winRef =  window.open(encodeURI(searchUrl), '_blank', 'location=yes');
-        channelView.winRef.addEventListener('loadstart', channelView.messageSearchLoad);
+     /*   channelView.winRef.addEventListener('loadstart', channelView.messageSearchLoad);
         channelView.winRef.addEventListener('loaderror', channelView.messageSearchError);
-        channelView.winRef.addEventListener('exit', channelView.messageSearchEnd);
+        channelView.winRef.addEventListener('exit', channelView.messageSearchEnd);*/
 
     },
 
