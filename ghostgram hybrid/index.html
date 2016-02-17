@@ -2609,7 +2609,7 @@
 						case "N/A":
 							src = "";
 							break;
-					}
+						}
 					#
 					<img src="#=src#" class="gg-rating" />
 				</span>
@@ -2631,7 +2631,7 @@
 </script>
 
 <!-- smartMovie movieGram modal -->
-<div data-role="modalview" id="movieListModal" style="width: 100%;  height: 100%; z-index:1000; display: none; "  data-model="movieListView._activeObject" data-init="movieListView.onInit" data-open="movieListView.onShow" class="appearance">
+<div data-role="modalview" id="movieListModal" style="width: 100%;  height: 100%; z-index:10; display: none; "  data-model="movieListView.activeObject" data-init="movieListView.onInit" data-open="movieListView.onShow" class="appearance">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>Movie List</span>
@@ -2641,6 +2641,11 @@
 		</div>
 	</div>
 	<div id="movieListView" >
+		<div class="tempSearchBox"  id="movieListView-searchinfo">
+			<div style="text-align: center;">
+				<span><span id="movieListView-searchDate" data-bind="text: dateString">Today</span> Near <span id="movieListView-searchLocation" data-bind="text: address"> Me</span> <a data-click="movieListView.onEdit" data-role="button" class="btnClear-grey" >Edit</a></span>
+			</div>
+		</div>
 		<div class="tempSearchBox"  id="movieListView-searchbox">
 			<div style="text-align: center;">
 				<input style="width: 95%;" type="search" placeholder="Movie title..." id="movieListView-query" />
@@ -2667,13 +2672,95 @@
 
 		</ul>
 	</div>
-	<div class="footer" data-role="footer">
+	<div class="footer hidden" data-role="footer">
 		<a class="btnFull-modal btnPrimary" data-role="button" id="movieListView-doneBtn" data-click="movieListView.onDone">Select This Movie</a>
 	</div>
 </div>
 
 <!-- smartMovie movieGram modal -->
-<div data-role="modalview" id="smartMovieModal" style="width: 100%;  height: 100%; display: none;"  data-model="smartMovieView._activeObject" data-init="smartMovieView.onInit" data-open="smartMovieView.onShow" class="appearance">
+<div data-role="modalview" id="smartMovieEditor" style="width: 100%;  height: 100%; display: none; z-index: 100;"  data-model="smartMovieEdit._activeObject" data-init="smartMovieEdit.onInit" data-open="smartMovieEdit.onShow" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Find Movies</span>
+			<a data-click="smartMovieEdit.onCancel" data-role="button" class="btnClear-grey" data-align="left">
+				<img src="images/nav-back.svg" />
+			</a>
+		</div>
+	</div>
+
+	<form class="event-owner ">
+		<ul data-role="listview" data-style="inset">
+			<li>
+				<label> When </label>
+				<div class="clearfix"></div>
+				<div class="smallSearch">
+							<span class="searchIcon">
+								<img src='images/smart-event.svg' />
+							</span>
+					<input type="text" class="viewSearchBox" id="smartMovieEdit-date"/>
+				</div>
+				<div class="smallSearch-sm">
+						<span class="searchIcon">
+							<img src='images/smart-time.svg' />
+						</span>
+					<input type="search" id="smartMovieEdit-time"/>
+				</div>
+			</li>
+			<!--<li id="smartMovieView-add-calendar" class="event-valid" >
+				<label> Add to Calendar
+					<input type="checkbox" id="smartMovieView-addToCalendar"  data-role="switch" data-bind="checked: addToCalendar" data-change="smartMovieView.onChangeCalendar"/>
+				</label>
+			</li>-->
+			<li >
+				<label> Search Theatres In/Near
+					<input type="search" id="smartMovieEdit-placesearch"/>
+				</label>
+			</li>
+			<li id="smartMovieEdit-placesearchdiv" class="hidden">
+				<div>
+					<img src='images/icon-gps-selected.svg' class='icon-sm'/>
+					<a data-click="smartMovieEdit.onPlaceSearch" data-role="button" class="btnClear" id="smartMovieEdit-placesearchBtn"> Find... </a>
+				</div>
+			</li>
+			<li id="smartMovieEdit-placeadddiv" class="hidden">
+				<label>Where (Location or Place)</label>
+				<div>
+					<p id="smartMovieEditplaceAddBtn">
+						<img src='images/icon-location.svg' class='icon-sm'/>
+						<span id="smartMovieEdit-placeAddBtn-title" data-bind="text: placeName"></span>
+					</p>
+					<div id="smartMovieEdit-actionBtns">
+						<a class="btnClear-grey" data-role="button" data-click="smartMovieEdit.onAddPlace">Add to My Places</a>
+						<a class="btnClear-red" data-role="button" data-click="smartMovieEdit.onDropPlace">Drop Place</a>
+					</div>
+				</div>
+			</li>
+			<li>
+				<label> Distance to Search
+					<select id="smartMovieEdit-searchDistance">
+						<option value="5">5 Miles</option>
+						<option value="10">10 Miles</option>
+						<option value="15" selected>15 Miles</option>
+						<option value="25">25 Miles</option>
+						<option value="50">50 Miles</option>
+					</select>
+				</label>
+			</li>
+			<li id="searchMovieEdit-input">
+				<label> Find Movie
+					<input type="search" id="smartMovieEdit-moviesearch" placeholder="Whatever is playing.."/>
+				</label>
+			</li>
+		</ul>
+	</form>
+
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnPrimary" data-role="button" id=smartMovieEditSaveBtn" data-click="smartMovieEdit.onSave">Find Movies</a>
+	</div>
+</div>
+
+<!-- smartMovie movieGram modal -->
+<div data-role="modalview" id="smartMovieModal" style="width: 100%;  height: 100%; display: none;"  data-model="smartMovieView.activeObject" data-init="smartMovieView.onInit" data-open="smartMovieView.onShow" class="appearance">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>Smart Movie</span>
@@ -2711,11 +2798,11 @@
 					<input type="search" id="smartMovieView-time"/>
 				</div>
 			</li>
-			<li id="smartMovieView-add-calendar" class="event-valid" >
+			<!--<li id="smartMovieView-add-calendar" class="event-valid" >
 				<label> Add to Calendar
 					<input type="checkbox" id="smartMovieView-addToCalendar"  data-role="switch" data-bind="checked: addToCalendar" data-change="smartMovieView.onChangeCalendar"/>
 				</label>
-			</li>
+			</li>-->
 			<li id="searchMoviePlace-input">
 				<label> Search Theatres In/Near
 					<input type="search" id="smartMovieView-placesearch"/>

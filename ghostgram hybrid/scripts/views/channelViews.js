@@ -2150,7 +2150,7 @@ var channelView = {
     },
 
 
-   getSelectionText: function (){
+   getSelectionText: function (event){
         var selectedText = "";
         if (window.getSelection){ // all modern browsers and IE9+
             selectedText = window.getSelection().toString();
@@ -2159,28 +2159,39 @@ var channelView = {
     },
 
     messageSearchLoad : function (event) {
+		mobileNotify('url: ' + event.url);
+    },
 
+    messageSearchError : function (event) {
+		mobileNotify('error: ' + event.message);
     },
 
     messageSearchEnd : function (event) {
-        channelView.winRef.removeEventListener('loadstart', channelView.messageSearchLoad);
-        channelView.winRef.removeEventListener('exit', channelView.messageSearchEnd);
+        var exitUrl = event.url;
+
+        if (channelView.winRef !== undefined && channelView.winRef !== null) {
+            //channelView.winRef.removeEventListener('loadstart', channelView.messageSearchLoad);
+            channelView.winRef.removeEventListener("exit", channelView.messageSearchEnd);
+            channelView.winRef = null;
+        }
+
     },
 
     messageSearch : function (e) {
         _preventDefault(e);
 
-        var searchUrl =  'http://www.google.com';
+        var searchUrl =  'http://www.google.com/search';
         var query = channelView.getSelectionText();
 
         if (query !== '') {
             searchUrl += '?q='+query;
         }
         channelView.winQuery = '?q='+query;
-        channelView.winRef =  cordova.InAppBrowser.open(encodeURI(searchUrl), '_blank', 'location=yes');
-      /*  channelView.winRef.addEventListener('loadstart', channelView.messageSearchLoad);
-        channelView.winRef.addEventListener('exit', channelView.messageSearchEnd);
-*/
+        channelView.winRef =  window.open(encodeURI(searchUrl), '_blank', 'location=yes');
+     /*   channelView.winRef.addEventListener('loadstart', channelView.messageSearchLoad);
+        channelView.winRef.addEventListener('loaderror', channelView.messageSearchError); */
+        channelView.winRef.addEventListener("exit", channelView.messageSearchEnd);
+
     },
 
     messageCamera : function (e) {
@@ -2330,11 +2341,14 @@ var channelView = {
 
     messageMovie : function (e) {
         _preventDefault(e);
-        smartMovieView.openModal(null, function (movie) {
+        movieListView.openModal( null, function (movie) {
 
-          //  channelView.messageAddSmartEvent(event);
-            mobileNotify("Sending Smart Movie...");
-           // channelView.messageSend();
+            if (movie !== null) {
+                //  channelView.messageAddSmartEvent(event);
+                mobileNotify("Sending Smart Movie...");
+                // channelView.messageSend();
+            }
+
         });
     }
 
