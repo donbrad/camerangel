@@ -1117,7 +1117,7 @@ var movieListView = {
         var dateStr = new moment(activeObj).format("ddd, MMM Do");
         obj.set('query', activeObj.query);
         obj.set('date', activeObj.date);
-        obj.set('dateString', activeObj.dateStr);
+        obj.set('dateString', dateStr);
         obj.set('lat', activeObj.lat);
         obj.set('lng', activeObj.lng);
         obj.set('allDay', activeObj.allDay);
@@ -1210,7 +1210,10 @@ var movieListView = {
         $('#movieListView-doneBtn').addClass('hidden');
     },
 
-    _findMovies :function  (lat, lng, date) {
+    _findMovies :function  () {
+        var activeObj = movieListView.activeObject;
+        var lat = activeObj.lat, lng = activeObj.lng, date = activeObj.date;
+
         movieListView.moviesDS.data([]);
         movieListView.showtimesDS.data([]);
         movieListView.movieArray = [];
@@ -1308,7 +1311,7 @@ var movieListView = {
         movieListView._minTime = moment(date).subtract(2, 'hours');
         movieListView._maxTime = moment(date).add(2, 'hours');
 
-        movieListView._findMovies(activeObj.lat, activeObj.lng, date);
+        movieListView._findMovies();
 
         $("#movieListModal").data("kendoMobileModalView").open();
 
@@ -1418,7 +1421,8 @@ var movieListView = {
         _preventDefault(e);
 
         smartMovieEdit.openModal(null, function (obj) {
-            movieListView._findMovies(obj.lat, obj.lng, obj.date);
+            movieListView.setActiveObject(obj);
+            movieListView._findMovies();
         })
     },
 
