@@ -2343,9 +2343,12 @@ var channelView = {
         _preventDefault(e);
         movieListView.openModal( null, function (movie) {
 
-          //  channelView.messageAddSmartEvent(event);
-            mobileNotify("Sending Smart Movie...");
-           // channelView.messageSend();
+            if (movie !== null) {
+                //  channelView.messageAddSmartEvent(event);
+                mobileNotify("Sending Smart Movie...");
+                // channelView.messageSend();
+            }
+
         });
     }
 

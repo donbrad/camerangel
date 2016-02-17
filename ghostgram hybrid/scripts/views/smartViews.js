@@ -1290,7 +1290,8 @@ var movieListView = {
     },
 
     openModal : function (obj,  callback) {
-
+        ux.hideKeyboard();
+        
         if (obj === null) {
             movieListView.initActiveObject();
         } else {
@@ -1567,6 +1568,7 @@ var smartMovieEdit = {
             thisObj.set('placeId', null);
             thisObj.set('googleId', geo.googleId);
             thisObj.set('placeName', geo.name);
+            thisObj.set('city', geo.city);
             thisObj.set('address', geo.address);
             thisObj.set('placeType', geo.type);
             thisObj.set('lat', geo.lat);
@@ -1703,7 +1705,7 @@ var smartMovieEdit = {
 
 
 var smartMovieView = {
-    _activeObject : new kendo.data.ObservableObject(),
+    activeObject : new kendo.data.ObservableObject(),
     _date : new Date(),
     _placeId :null,
     _geoObj: null,
@@ -1720,7 +1722,7 @@ var smartMovieView = {
     },
 
     checkExpired : function (date) {
-        var thisObject = smartMovieView._activeObject;
+        var thisObject = smartMovieView.activeObject;
 
         if (moment(smartMovieView._date).isAfter(date)) {
             thisObject.set('isExpired', true);
@@ -1748,7 +1750,7 @@ var smartMovieView = {
 
 
     initActiveObject : function () {
-        var thisObj = smartMovieView._activeObject;
+        var thisObj = smartMovieView.activeObject;
         // todo - review update to make date/time more useful as defaults
         var newDate = new Date();
         var newDateHour = newDate.getHours();
@@ -1811,7 +1813,7 @@ var smartMovieView = {
     },
 
     setActiveObject: function (obj) {
-        var thisObj = smartMovieView._activeObject;
+        var thisObj = smartMovieView.activeObject;
 
         thisObj.set("uuid", obj.uuid);
         thisObj.set('senderUUID', obj.senderUUID);
@@ -1851,47 +1853,6 @@ var smartMovieView = {
 
         if (!smartMovieView._isInited) {
 
-            $('#smartMovieView-date').pickadate({
-                format: 'mmm, d yyyy',
-                formatSubmit: 'mm d yyyy',
-                min: true,
-                onSet : function (context) {
-                    smartEventView.updateDateString();
-                }
-            });
-
-            $('#smartMovieView-time').pickatime({
-                interval: 60,
-                min: [10,0],
-                max: [23,0],
-                clear: false
-            });
-
-            /* $("#smartEventView-date").on('blur', function () {
-
-             });*/
-
-
-           /* $("#smartMovieView-time").on('blur', function () {
-                var timeIn =  $("#smartMovieModal-time").val();
-                if (timeIn.length > 2) {
-
-                    var time = Date.parse(timeIn);
-                    var timeComp = new Date(time).toString("h:mm tt");
-                    $("#smartMovieView-time").val(timeComp);
-                    smartMovieView.updateDateString();
-                }
-            });*/
-
-            $("#smartMovieView-placesearch").on('input', function () {
-                var placeStr =  $("#smartMovieView-placesearch").val();
-                if (placeStr.length > 3) {
-                    $("#smartMovieView-placesearchBtn").text("Find " + placeStr);
-                    $("#smartMovieView-placesearchdiv").removeClass('hidden');
-                } else {
-                    $("#smartMovieView-placesearchdiv").addClass('hidden');
-                }
-            });
 
 
             smartMovieView._isInited = true;
@@ -1915,7 +1876,7 @@ var smartMovieView = {
             // we have an existing event
             smartMovieView.setActiveObject(actionObj);
         }
-        var thisObject = smartMovieView._activeObject;
+        var thisObject = smartMovieView.activeObject;
         // setting send/receiver
 
 
@@ -1963,7 +1924,9 @@ var smartMovieView = {
     onCancel : function (e) {
         _preventDefault(e);
         $("#smartMovieModal").data("kendoMobileModalView").close();
-        $("#eventBanner").removeClass();
+        if (smartMovieView._callback !== null) {
+            smartMovieView._callback(null);
+        }
     },
 
     onDone: function (e) {
@@ -1971,7 +1934,7 @@ var smartMovieView = {
 
         $("#smartMovieModal").data("kendoMobileModalView").close();
         if (smartMovieView._callback !== null) {
-            smartMovieView._callback(smartMovieView._activeObject);
+            smartMovieView._callback(smartMovieView.activeObject);
         }
     }
 };
