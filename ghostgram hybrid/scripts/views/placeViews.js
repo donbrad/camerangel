@@ -1964,6 +1964,8 @@ var smartEventPlacesView = {
 
                                 }
                                 smartEventPlacesView._processQuery(smartEventPlacesView._query);
+                            } else {
+                                mobileNotify("Couldn't find this place...");
                             }
                         });
 
