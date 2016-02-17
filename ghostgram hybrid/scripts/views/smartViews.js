@@ -1106,7 +1106,7 @@ var movieListView = {
         obj.set('placeId', null);
         obj.set('googleId', null);
         obj.set('placeName', null);
-        obj.set('address', mapModel.city);
+        obj.set('address', mapModel.currentCity);
         obj.set('placeType', null);
 
     },
