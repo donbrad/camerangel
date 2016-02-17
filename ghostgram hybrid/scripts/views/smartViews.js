@@ -1367,7 +1367,9 @@ var movieListView = {
         for (var i=0; i< len; i++) {
             var movie = movieArray[i];
             moviePosterPhoto.addPoster(movie.movieTitle, movie.tmsId, function (poster) {
-                movieListView.posterArray[poster.tmsId] = poster;
+                if (poster !== null) {
+                    movieListView.posterArray[poster.tmsId] = poster;
+                }
                 // Decrement the counter as we get the data...
                 if (--counter === 0) {
                     movieListView.finalizeMovieList(movieArray);
