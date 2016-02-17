@@ -1251,9 +1251,10 @@ var movieListView = {
                         movieObj.imdbVotes = null;
                         movieObj.metaScore = null;
                         movieObj.runtime = movieListView.processRuntime(movie.runTime);
-                        movieObj.showTimes = movieListView.processShowTimes(movie.showtimes);
+                        movieObj.showTimes = movie.showtimes;
+                        //movieObj.showTimes = movieListView.processShowTimes(movie.showtimes);
 
-                        for (var s=0; s<movie.showtimes.length; s++) {
+                       /* for (var s=0; s<movie.showtimes.length; s++) {
 
                             var showtimeObj = {};
                             var showtime = movie.showtimes[0];
@@ -1273,7 +1274,7 @@ var movieListView = {
                             }
 
                         }
-
+*/
                         movieListView.movieArray.push(movieObj);
                     }
 
@@ -1387,6 +1388,10 @@ var movieListView = {
 
     },
 
+    onEdit : function (e) {
+        _preventDefault(e);
+    },
+
     onDone: function (e) {
         _preventDefault(e);
         $("#movieListModal").data("kendoMobileModalView").close();
@@ -1402,6 +1407,349 @@ var movieListView = {
     }
 
 };
+
+var smartMovieEdit = {
+    _activeObject : new kendo.data.ObservableObject(),
+    _date : new Date(),
+    _placeId :null,
+    _geoObj: null,
+    _isInited : false,
+    _callback : null,
+    _movieId: null,
+    _theatreId: null,
+    _radius: 15,
+
+
+    onChangeCalendar: function (e) {
+        _preventDefault(e);
+
+
+    },
+
+    checkExpired : function (date) {
+        var thisObject = smartMovieEdit._activeObject;
+
+        if (moment(smartMovieEdit._date).isAfter(date)) {
+            thisObject.set('isExpired', true);
+            smartMovieEdit.setEventBanner("expired");
+
+        } else {
+            thisObject.set('isExpired', false);
+            //smartEventView.setEventBanner();
+        }
+    },
+
+    updateDateString : function () {
+        var date = $('#smartMovieEdit-date').val();
+        var time = $('#smartMovieEdit-time').val();
+
+        var finalDateStr = date + " " + time;
+        //$("#smartEventView-datestring").val(finalDateStr);
+
+        smartMovieEdit._activeObject.set('date', new Date(finalDateStr));
+    },
+
+    onSave: function (e) {
+        _preventDefault(e);
+
+        smartMovieEdit.onDone();
+    },
+
+    onInit: function (e) {
+        _preventDefault(e);
+
+
+
+    },
+
+    onFindMovies: function (e) {
+        _preventDefault(e);
+
+        smartMovieEdit.updateDateString();
+
+        var query = $("#smartMovieEdit-moviesearch").val();
+        var radius =   $("#smartMovieEdit-searchDistance").val();
+
+        radius = Number(radius);
+
+        if (radius < 5 || radius > 100) {
+            radius = 15;
+        }
+
+        $("#smartMovieEditor").data("kendoMobileModalView").close();
+        var thisObj = smartMovieEdit._activeObject;
+        movieListView.openModal(thisObj.lat, thisObj.lng, thisObj.date, query, radius, function (movieObj) {
+            smartMovieEdit.openModal(smartMovieEdit._activeObject);
+        });
+    },
+
+    initActiveObject : function () {
+        var thisObj = smartMovieEdit._activeObject;
+        // todo - review update to make date/time more useful as defaults
+        var newDate = new Date();
+        var newDateHour = newDate.getHours();
+        var newDateDay = newDate.getDate();
+
+        if(newDateHour < 20 && newDate > 0){
+            newDateHour += 3;
+            newDate.setHours(newDateHour);
+            newDate.setMinutes(0);
+        } else {
+            newDateDay += 1;
+            newDateHour = 10;
+            newDate.setDate(newDateDay);
+            newDate.setHours(newDateHour);
+            newDate.setMinutes(0);
+        }
+        thisObj.set("uuid", uuid.v4());
+        thisObj.set('senderUUID', userModel.currentUser.userUUID);
+        thisObj.set('senderName', userModel.currentUser.name);
+        thisObj.set('placeString', mapModel.currentCity + ". " + mapModel.currentState + "  " + mapModel.currentZipcode);
+        thisObj.set('channelId', null);
+        thisObj.set('movieTitle', null);
+        thisObj.set('tmsId', null);
+        thisObj.set('imdbId', null);
+        thisObj.set('type', "movie");
+        thisObj.set('theatreId', null);
+        thisObj.set('theatreName', null);
+        thisObj.set('theatreString', null);
+        thisObj.set('showtimes', []);
+        thisObj.set('showtime', null);
+        thisObj.set('showtimeString', null);
+        thisObj.set('action', null);
+        thisObj.set('description', null);
+        thisObj.set('imageUrl', null);
+        thisObj.set('address', null);
+        thisObj.set('googleId', null);
+        thisObj.set('calendarId', null);
+        thisObj.set('lat', mapModel.lat);
+        thisObj.set('lng', mapModel.lng);
+        thisObj.set('date', newDate);
+        thisObj.set('isDeleted', false);
+        thisObj.set('wasCancelled', false);
+        thisObj.set('movieSelected', false);  // if false, no movie selected - "let's see a movie at this theatre around this time
+        thisObj.set('movieId', null);
+        thisObj.set('movieName', null);
+        thisObj.set('addToCalendar', false);
+        thisObj.set('comment', null);
+        thisObj.set('wasSent', false);
+
+
+
+        // $('#smartEventView-placesearch').val(thisObj.placeName);
+        //$('#smartEventView-datestring').val(new Date(thisObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
+        $('#smartMovieEdit-date').val(new Date(thisObj.date).toString('MMM dd, yyyy'));
+        $('#smartMovieEdit-time').val(new Date(thisObj.date).toString('h:mm tt'));
+
+        $('#smartMovieEdit-placesearch').val(thisObj.get('placeString'));
+        //$("#smartEventView-placeadddiv").addClass('hidden');
+        //$("#searchEventPlace-input").removeClass('hidden');
+    },
+
+    setActiveObject: function (obj) {
+        var thisObj = smartMovieEdit._activeObject;
+
+        thisObj.set("uuid", obj.uuid);
+        thisObj.set('senderUUID', obj.senderUUID);
+        thisObj.set('senderName', obj.senderName);
+        thisObj.set('placeString', obj.placeString);
+        thisObj.set('channelId', obj.channelId);
+        thisObj.set('movieTitle', obj.movieTitle);
+        thisObj.set('tmsId', obj.tmsId);
+        thisObj.set('imdbId', obj.imdbId);
+        thisObj.set('type', obj.type);
+        thisObj.set('theatreId', obj.theatreId);
+        thisObj.set('theatreName', obj.theatreName);
+        thisObj.set('theatreString', obj.theatreString);
+        thisObj.set('showtimes', obj.showtimes);
+        thisObj.set('showtimeString', obj.showtimeString);
+        thisObj.set('action', obj.action);
+        thisObj.set('description', obj.description);
+        thisObj.set('imageUrl', obj.imageUrl);
+        thisObj.set('address', obj.address);
+        thisObj.set('googleId', obj.googleId);
+        thisObj.set('calendarId', obj.calendarId);
+        thisObj.set('lat', obj.lat);
+        thisObj.set('lng', obj.lng);
+        thisObj.set('date', obj.date);
+        thisObj.set('isDeleted', obj.isDeleted);
+        thisObj.set('wasCancelled', obj.wasCancelled);
+        thisObj.set('movieSelected', obj.movieSelected);  // if false, no movie selected - "let's see a movie at this theatre around this time
+        thisObj.set('movieId', obj.movieId);
+        thisObj.set('addToCalendar', obj.addToCalendar);
+        thisObj.set('comment', obj.comment);
+        thisObj.set('wasSent', obj.wasSent);
+    },
+
+    onPlaceSearch : function (e) {
+
+        _preventDefault(e);
+
+        var placeStr =  $("#smartMovieEdit-placesearch").val();
+
+        smartLocationView.openModal(placeStr, function (geo) {
+            if (geo === null) {
+                mobileNotify("Smart Location cancelled...");
+                return;
+            }
+
+            var thisObj = smartMovieEdit._activeObject;
+
+            thisObj.set('placeId', null);
+            thisObj.set('googleId', geo.googleId);
+            thisObj.set('placeName', geo.name);
+            thisObj.set('address', geo.address);
+            thisObj.set('placeType', geo.type);
+            thisObj.set('lat', geo.lat);
+            thisObj.set('lng', geo.lng);
+
+            var addressArray = geo.address.split(','), address = addressArray[0];
+            // Place addresses are just the Street Number and Street;
+            geo.address = address;
+            smartEventView._geoObj = geo;
+
+            //
+            $("#smartEventView-placesearch").val(geo.name);
+            // hide place search btn
+            $("#smartEventView-placesearchdiv").addClass('hidden');
+            // show selected place
+            $("#smartEventView-placeadddiv").removeClass('hidden');
+            // hide input
+            $("#searchEventPlace-input").addClass("hidden");
+        });
+
+    },
+
+    openModal: function (actionObj, callback) {
+        ux.hideKeyboard();
+
+        if (!smartMovieEdit._isInited) {
+
+            $('#smartMovieEdit-date').pickadate({
+                format: 'mmm, d yyyy',
+                formatSubmit: 'mm d yyyy',
+                min: true,
+                onSet : function (context) {
+                    smartEventView.updateDateString();
+                }
+            });
+
+            $('#smartMovieEdit-time').pickatime({
+                interval: 60,
+                min: [10,0],
+                max: [23,0],
+                clear: false
+            });
+
+            /* $("#smartEventView-date").on('blur', function () {
+
+             });*/
+
+
+            /* $("#smartMovieEdit-time").on('blur', function () {
+             var timeIn =  $("#smartMovieEditor-time").val();
+             if (timeIn.length > 2) {
+
+             var time = Date.parse(timeIn);
+             var timeComp = new Date(time).toString("h:mm tt");
+             $("#smartMovieEdit-time").val(timeComp);
+             smartMovieEdit.updateDateString();
+             }
+             });*/
+
+            $("#smartMovieEdit-placesearch").on('input', function () {
+                var placeStr =  $("#smartMovieEdit-placesearch").val();
+                if (placeStr.length > 3) {
+                    $("#smartMovieEdit-placesearchBtn").text("Find " + placeStr);
+                    $("#smartMovieEdit-placesearchdiv").removeClass('hidden');
+                } else {
+                    $("#smartMovieEdit-placesearchdiv").addClass('hidden');
+                }
+            });
+
+
+            smartMovieEdit._isInited = true;
+        }
+
+        if (callback === undefined) {
+            callback = null;
+        } else {
+            smartMovieEdit._callback = callback;
+        }
+
+
+
+        smartMovieEdit._date = new Date();
+
+
+        if (actionObj === undefined || actionObj === null) {
+            smartMovieEdit.initActiveObject();
+
+        } else {
+            // we have an existing event
+            smartMovieEdit.setActiveObject(actionObj);
+        }
+        var thisObject = smartMovieEdit._activeObject;
+        // setting send/receiver
+
+
+        if (thisObject.senderUUID === userModel.currentUser.userUUID) {
+            smartEventView.setSenderMode();
+        } else {
+            smartEventView.setRecipientMode();
+
+        }
+
+        // setting event location
+        if(thisObject.placeName !== null){
+            $(".event-location").removeClass("hidden");
+        } else {
+            $(".event-location").addClass("hidden");
+        }
+
+        // smartMovieEdit.updateCalendar();
+
+        var prettyDate = moment(thisObject.date).format('dddd MMMM, Do [at] h:mmA');
+        $(".event-date").text(prettyDate);
+
+
+        $("#smartMovieEdit-placesearchdiv").addClass('hidden');
+
+        if (thisObject.senderUUID === null || thisObject.senderUUID === userModel.currentUser.userUUID) {
+            $("#smartMovieEdit-organizer").text("You");
+        } else {
+            var contact = contactModel.findContactByUUID(thisObject.senderUUID);
+            if (contact !== undefined) {
+                $("#smartMovieEdit-organizer").text(contact.name);
+            }
+        }
+
+        smartMovieEdit.checkExpired();
+        $("#smartMovieEditor").data("kendoMobileModalView").open();
+    },
+
+    onShow: function (e) {
+        _preventDefault(e);
+        $("#smartMovieEditor").data("kendoMobileModalView").open();
+
+    },
+
+    onCancel : function (e) {
+        _preventDefault(e);
+        $("#smartMovieEditor").data("kendoMobileModalView").close();
+        $("#eventBanner").removeClass();
+    },
+
+    onDone: function (e) {
+        //_preventDefault(e);
+
+        $("#smartMovieEditor").data("kendoMobileModalView").close();
+        if (smartMovieEdit._callback !== null) {
+            smartMovieEdit._callback(smartMovieEdit._activeObject);
+        }
+    }
+};
+
 
 var smartMovieView = {
     _activeObject : new kendo.data.ObservableObject(),
@@ -1433,16 +1781,7 @@ var smartMovieView = {
             //smartEventView.setEventBanner();
         }
     },
-
-    updateDateString : function () {
-        var date = $('#smartMovieView-date').val();
-        var time = $('#smartMovieView-time').val();
-
-        var finalDateStr = date + " " + time;
-        //$("#smartEventView-datestring").val(finalDateStr);
-
-        smartMovieView._activeObject.set('date', new Date(finalDateStr));
-    },
+    
 
     onSave: function (e) {
         _preventDefault(e);
@@ -1457,26 +1796,6 @@ var smartMovieView = {
 
     },
 
-    onFindMovies: function (e) {
-        _preventDefault(e);
-
-        smartMovieView.updateDateString();
-
-        var query = $("#smartMovieView-moviesearch").val();
-        var radius =   $("#smartMovieView-searchDistance").val();
-
-        radius = Number(radius);
-
-        if (radius < 5 || radius > 100) {
-            radius = 15;
-        }
-
-        $("#smartMovieModal").data("kendoMobileModalView").close();
-        var thisObj = smartMovieView._activeObject;
-        movieListView.openModal(thisObj.lat, thisObj.lng, thisObj.date, query, radius, function (movieObj) {
-            smartMovieView.openModal(smartMovieView._activeObject);
-        });
-    },
 
     initActiveObject : function () {
         var thisObj = smartMovieView._activeObject;
@@ -1576,44 +1895,6 @@ var smartMovieView = {
         thisObj.set('wasSent', obj.wasSent);
     },
 
-    onPlaceSearch : function (e) {
-
-        _preventDefault(e);
-
-        var placeStr =  $("#smartMovieView-placesearch").val();
-
-        smartLocationView.openModal(placeStr, function (geo) {
-            if (geo === null) {
-                mobileNotify("Smart Location cancelled...");
-                return;
-            }
-
-            var thisObj = smartMovieView._activeObject;
-
-            thisObj.set('placeId', null);
-            thisObj.set('googleId', geo.googleId);
-            thisObj.set('placeName', geo.name);
-            thisObj.set('address', geo.address);
-            thisObj.set('placeType', geo.type);
-            thisObj.set('lat', geo.lat);
-            thisObj.set('lng', geo.lng);
-
-            var addressArray = geo.address.split(','), address = addressArray[0];
-            // Place addresses are just the Street Number and Street;
-            geo.address = address;
-            smartEventView._geoObj = geo;
-
-            //
-            $("#smartEventView-placesearch").val(geo.name);
-            // hide place search btn
-            $("#smartEventView-placesearchdiv").addClass('hidden');
-            // show selected place
-            $("#smartEventView-placeadddiv").removeClass('hidden');
-            // hide input
-            $("#searchEventPlace-input").addClass("hidden");
-        });
-
-    },
 
     openModal: function (actionObj, callback) {
         ux.hideKeyboard();
