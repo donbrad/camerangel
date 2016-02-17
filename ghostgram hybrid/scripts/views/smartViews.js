@@ -1114,7 +1114,7 @@ var movieListView = {
     setActiveObject: function (activeObj) {
         var obj = movieListView.activeObject;
 
-        var dateStr = new moment(activeObj).format("ddd, MMM Do");
+        var dateStr = new moment(activeObj.date).format("ddd, MMM Do");
         obj.set('query', activeObj.query);
         obj.set('date', activeObj.date);
         obj.set('dateString', dateStr);
