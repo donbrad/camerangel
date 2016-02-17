@@ -1291,7 +1291,7 @@ var movieListView = {
 
     openModal : function (obj,  callback) {
         ux.hideKeyboard();
-        
+
         if (obj === null) {
             movieListView.initActiveObject();
         } else {
