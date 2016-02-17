@@ -2599,7 +2599,7 @@
 </script>
 
 <!-- smartMovie movieGram modal -->
-<div data-role="modalview" id="movieListModal" style="width: 100%;  height: 100%; z-index:100; display: none; "  data-model="movieListView._activeObject" data-init="movieListView.onInit" data-open="movieListView.onShow" class="appearance">
+<div data-role="modalview" id="movieListModal" style="width: 100%;  height: 100%; z-index:10; display: none; "  data-model="movieListView._activeObject" data-init="movieListView.onInit" data-open="movieListView.onShow" class="appearance">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>Movie List</span>
@@ -2646,7 +2646,7 @@
 </div>
 
 <!-- smartMovie movieGram modal -->
-<div data-role="modalview" id="smartMovieEditor" style="width: 100%;  height: 100%; display: none; z-index: 1000;"  data-model="smartMovieEdit._activeObject" data-init="smartMovieEdit.onInit" data-open="smartMovieEdit.onShow" class="appearance">
+<div data-role="modalview" id="smartMovieEditor" style="width: 100%;  height: 100%; display: none; z-index: 100;"  data-model="smartMovieEdit._activeObject" data-init="smartMovieEdit.onInit" data-open="smartMovieEdit.onShow" class="appearance">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>Find Movies</span>
@@ -2655,7 +2655,6 @@
 			</a>
 		</div>
 	</div>
-
 
 	<form class="event-owner ">
 		<ul data-role="listview" data-style="inset">
@@ -2680,9 +2679,9 @@
 					<input type="checkbox" id="smartMovieView-addToCalendar"  data-role="switch" data-bind="checked: addToCalendar" data-change="smartMovieView.onChangeCalendar"/>
 				</label>
 			</li>-->
-			<li id="searchMoviePlace-input">
+			<li >
 				<label> Search Theatres In/Near
-					<input type="search" id="smartMovieView-placesearch"/>
+					<input type="search" id="smartMovieEdit-placesearch"/>
 				</label>
 			</li>
 			<li id="smartMovieEdit-placesearchdiv" class="hidden">
@@ -2699,14 +2698,14 @@
 						<span id="smartMovieEdit-placeAddBtn-title" data-bind="text: placeName"></span>
 					</p>
 					<div id="smartMovieEdit-actionBtns">
-						<a class="btnClear-grey" data-role="button" data-click="smartMovieView.onAddPlace">Add to My Places</a>
-						<a class="btnClear-red" data-role="button" data-click="smartMovieView.onDropPlace">Drop Place</a>
+						<a class="btnClear-grey" data-role="button" data-click="smartMovieEdit.onAddPlace">Add to My Places</a>
+						<a class="btnClear-red" data-role="button" data-click="smartMovieEdit.onDropPlace">Drop Place</a>
 					</div>
 				</div>
 			</li>
 			<li>
 				<label> Distance to Search
-					<select id="smartMovieView-searchDistance">
+					<select id="smartMovieEdit-searchDistance">
 						<option value="5">5 Miles</option>
 						<option value="10">10 Miles</option>
 						<option value="15" selected>15 Miles</option>
