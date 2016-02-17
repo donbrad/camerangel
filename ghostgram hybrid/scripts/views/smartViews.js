@@ -1683,7 +1683,6 @@ var smartMovieEdit = {
     onCancel : function (e) {
         _preventDefault(e);
         $("#smartMovieEditor").data("kendoMobileModalView").close();
-        $("#eventBanner").removeClass();
     },
 
     onDone: function (e) {
