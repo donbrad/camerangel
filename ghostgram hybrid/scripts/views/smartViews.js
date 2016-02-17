@@ -1088,6 +1088,7 @@ var movieListView = {
     _lat: mapModel.lat,
     _lng: mapModel.lng,
     _date : new Date(),
+    _dateString: 'Today',
     _minTime : null,
     _maxTime: null,
 
@@ -1097,10 +1098,16 @@ var movieListView = {
 
         obj.set('query', null);
         obj.set('date', movieListView._date);
+        obj.set('dateString', movieListView._dateString);
         obj.set('lat', movieListView._lat);
         obj.set('lng', movieListView._lng);
         obj.set('allDay', true);
         obj.set('radius', movieListView._radius);
+        obj.set('placeId', null);
+        obj.set('googleId', null);
+        obj.set('placeName', null);
+        obj.set('address', mapModel.address);
+        obj.set('placeType', null);
 
     },
 
@@ -1113,6 +1120,11 @@ var movieListView = {
         obj.set('lng', activeObj.lng);
         obj.set('allDay', activeObj.allDay);
         obj.set('radius', activeObj.radius);
+        obj.set('address', activeObj.address);
+        obj.set('placeId',  activeObj.placeId);
+        obj.set('googleId',  activeObj.googleId);
+        obj.set('placeName',  activeObj.placeName);
+        obj.set('placeType',  activeObj.placeType);
 
     },
 
@@ -1506,6 +1518,7 @@ var smartMovieEdit = {
         thisObj.set('placeName', null);
         thisObj.set('address', mapModel.address);
         thisObj.set('placeType', null);
+
         // $('#smartEventView-placesearch').val(thisObj.placeName);
         //$('#smartEventView-datestring').val(new Date(thisObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
         $('#smartMovieEdit-date').val(new Date(thisObj.date).toString('MMM dd, yyyy'));
@@ -1694,7 +1707,7 @@ var smartMovieView = {
     _movieId: null,
     _theatreId: null,
     _radius: 15,
-    
+
     onChangeCalendar: function (e) {
         _preventDefault(e);
 
