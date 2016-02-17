@@ -1634,13 +1634,6 @@ var smartMovieEdit = {
         // setting send/receiver
 
 
-        if (thisObject.senderUUID === userModel.currentUser.userUUID) {
-            smartEventView.setSenderMode();
-        } else {
-            smartEventView.setRecipientMode();
-
-        }
-
         // setting event location
         if(thisObject.placeName !== null){
             $(".event-location").removeClass("hidden");
@@ -1653,17 +1646,7 @@ var smartMovieEdit = {
         var prettyDate = moment(thisObject.date).format('dddd MMMM, Do [at] h:mmA');
         $(".event-date").text(prettyDate);
 
-
-        $("#smartMovieEdit-placesearchdiv").addClass('hidden');
-
-        if (thisObject.senderUUID === null || thisObject.senderUUID === userModel.currentUser.userUUID) {
-            $("#smartMovieEdit-organizer").text("You");
-        } else {
-            var contact = contactModel.findContactByUUID(thisObject.senderUUID);
-            if (contact !== undefined) {
-                $("#smartMovieEdit-organizer").text(contact.name);
-            }
-        }
+        
 
         smartMovieEdit.checkExpired();
         $("#smartMovieEditor").data("kendoMobileModalView").open();
