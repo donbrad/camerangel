@@ -1501,7 +1501,11 @@ var smartMovieEdit = {
         thisObj.set('lat', mapModel.lat);
         thisObj.set('lng', mapModel.lng);
         thisObj.set('date', newDate);
-
+        thisObj.set('placeId', null);
+        thisObj.set('googleId', null);
+        thisObj.set('placeName', null);
+        thisObj.set('address', mapModel.address);
+        thisObj.set('placeType', null);
         // $('#smartEventView-placesearch').val(thisObj.placeName);
         //$('#smartEventView-datestring').val(new Date(thisObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
         $('#smartMovieEdit-date').val(new Date(thisObj.date).toString('MMM dd, yyyy'));
@@ -1519,6 +1523,11 @@ var smartMovieEdit = {
         thisObj.set('lat', obj.lat);
         thisObj.set('lng', obj.lng);
         thisObj.set('date', obj.date);
+        thisObj.set('placeId', obj.placeId);
+        thisObj.set('googleId', obj.googleId);
+        thisObj.set('placeName', obj.name);
+        thisObj.set('address', obj.address);
+        thisObj.set('placeType', obj.type);
 
     },
 
@@ -1685,8 +1694,7 @@ var smartMovieView = {
     _movieId: null,
     _theatreId: null,
     _radius: 15,
-
-
+    
     onChangeCalendar: function (e) {
         _preventDefault(e);
 
