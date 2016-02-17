@@ -1646,7 +1646,7 @@ var smartMovieEdit = {
         var prettyDate = moment(thisObject.date).format('dddd MMMM, Do [at] h:mmA');
         $(".event-date").text(prettyDate);
 
-        
+
 
         smartMovieEdit.checkExpired();
         $("#smartMovieEditor").data("kendoMobileModalView").open();
