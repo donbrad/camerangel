@@ -2610,6 +2610,11 @@
 		</div>
 	</div>
 	<div id="movieListView" >
+		<div class="tempSearchBox"  id="movieListView-searchinfo">
+			<div style="text-align: center;">
+				<span> Movies Showing <span id="movieListView-searchDate"> Today</span> Near <span id="movieListView-searchLocation"></span> </span>
+			</div>
+		</div>
 		<div class="tempSearchBox"  id="movieListView-searchbox">
 			<div style="text-align: center;">
 				<input style="width: 95%;" type="search" placeholder="Movie title..." id="movieListView-query" />
@@ -2636,7 +2641,7 @@
 
 		</ul>
 	</div>
-	<div class="footer" data-role="footer">
+	<div class="footer hidden" data-role="footer">
 		<a class="btnFull-modal btnPrimary" data-role="button" id="movieListView-doneBtn" data-click="movieListView.onDone">Select This Movie</a>
 	</div>
 </div>

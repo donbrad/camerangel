@@ -2168,7 +2168,7 @@ var channelView = {
 
     messageSearchEnd : function (event) {
         var exitUrl = event.url;
-        
+
         if (channelView.winRef !== undefined && channelView.winRef !== null) {
             //channelView.winRef.removeEventListener('loadstart', channelView.messageSearchLoad);
             channelView.winRef.removeEventListener("exit", channelView.messageSearchEnd);
