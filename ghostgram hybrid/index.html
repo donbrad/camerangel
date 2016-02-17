@@ -976,7 +976,7 @@
 
 
 <script type="text/x-kendo-template" id="checkinPlacesTemplate">
-	# console.log(data) #
+
 	<div>
 		# if (data.ggType === 'Venue') { #
 		<h4 class="textClamp">#:data.title#</h4>
@@ -2573,21 +2573,52 @@
 
 
 <script type="text/x-kendo-template" id="movieListTemplate">
-	<div style="clear:both; ">
-		<div style="width: 95%; margin: 8px; border: 8px; text-align: center;">
+	<div class="smartMovie-poster">
 			<img src="#:data.imageUrl#" />
 		</div>
-		<div style="width: 95%;">
-
+		<div class="smartMovie-content">
 			<h4> #: data.movieTitle # </h4>
-			<p> #: data.description #</p>
-			<div style = "margin-left: 12px; margin-right: 12px;"> <span class="left">  Genre: #: data.genre# </span>  <span style="font-style: oblique" class="right">Rating:  #:data.rating# </span></div>
-			<div style=" clear:both; margin-left: 12px; margin-right: 12px;"><span > Plays for: #: data.runtime# </span></div>
-			<div  style = "margin-left: 12px; margin-right: 12px;"> #= data.showTimes.showTimesString #</div>
-			<div style="clear:both;"></div>
-			<hr>
+			<p class="smartMovie-genre"> #: data.genre# </p>
+			# if(data.description !== undefined){#
+			<div class="smartMovie-descrBox">
+				<p class="smartMovie-descr">
+					#: data.description #
+				</p>
+			</div>
+			#}#
+			<p>
+				<span class="smartMovie-rating">
+					#
+						var src = "";
+						switch(data.rating){
+						case "G":
+							src = "images/gg-rated-g.svg";
+							break;
+						case "PG":
+							src = "images/gg-rated-pg.svg";
+							break;
+						case "PG-13":
+							src = "images/gg-rated-pg13.svg";
+							break;
+						case "R":
+							src = "images/gg-rated-r.svg";
+							break;
+						case "NC-17":
+							src = "images/gg-rated-nc17.svg";
+							break;
+						case "N/A":
+							src = "";
+							break;
+					}
+					#
+					<img src="#=src#" class="gg-rating" />
+				</span>
+				# if(data.runtime !== undefined){#
+					<span class="smartMovie-runtime">#: data.runtime#</span>
+				#}#
+			</p>
 		</div>
-	</div>
+	<div class="clearfix"></div>
 </script>
 
 
@@ -2632,7 +2663,7 @@
 		<div style="text-align: center;">
 			<a class="btnClear" data-role="button" data-click="movieListView.onShowMovieList">Back to Movie List</a>
 		</div>
-		<ul id="movieDetailView-listview"  >
+		<ul id="movieDetailView-listview">
 
 		</ul>
 	</div>

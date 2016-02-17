@@ -311,6 +311,53 @@
 #smartNoteView-expires {
   border-bottom: 1px solid #E0E0E0;
 }
+.smartMovie-poster {
+  float: left;
+  width: 30%;
+  background: #E0E0E0;
+  height: 100%;
+  max-height: 10.5em;
+}
+.smartMovie-poster img {
+  height: 100%;
+  width: 67.5%;
+  text-align: center;
+}
+#movieListView-listview li {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0;
+}
+.smartMovie-descr {
+  font-size: 0.875em;
+  height: 4.5em;
+  overflow-x: hidden;
+}
+.smartMovie-descrBox:before {
+  content: "...";
+  text-align: right;
+  position: absolute;
+  display: block;
+  width: 2em;
+  height: 1em;
+  bottom: 1em;
+  right: 20px;
+}
+.smartMovie-content {
+  float: left;
+  width: 70%;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+.gg-rating {
+  height: 1em;
+  vertical-align: middle;
+}
+.smartMovie-genre {
+  font-size: 0.875em;
+  font-style: oblique;
+  margin-bottom: 0.5em;
+}
 .redactor-editor {
   padding: 0.5em !important;
   border: none !important;
@@ -679,6 +726,9 @@ form p {
 }
 .select select select:focus {
   outline: none;
+}
+#home > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div.appBox > div > div.emptyState {
+  margin-left: 0;
 }
 .emptyState {
   position: absolute;

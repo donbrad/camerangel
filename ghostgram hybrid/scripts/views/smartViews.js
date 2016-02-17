@@ -1281,12 +1281,15 @@ var movieListView = {
     },
 
     processRuntime : function (runtime) {
-        var runTimeStr = runtime.replace('PT0', '');
-        runTimeStr = runtime.replace('PT', '');
-        runTimeStr = runTimeStr.replace('H', ' hr ');
-        runTimeStr = runTimeStr.replace('M', ' min');
 
-        return(runTimeStr);
+        if(runtime !== undefined){
+            var runTimeStr = runtime.replace('PT0', '');
+            runTimeStr = runtime.replace('PT', '');
+            runTimeStr = runTimeStr.replace('H', ' hr ');
+            runTimeStr = runTimeStr.replace('M', ' min');
+            return(runTimeStr);
+        }
+
     },
 
     finalizeMovieList : function () {
@@ -1325,6 +1328,7 @@ var movieListView = {
         for (var i=0; i< len; i++) {
             var movie = movieArray[i];
             moviePosterPhoto.addPoster(movie.movieTitle, movie.tmsId, function (poster) {
+
                 movieListView.posterArray[poster.tmsId] = poster;
                 // Decrement the counter as we get the data...
                 if (--counter === 0) {
