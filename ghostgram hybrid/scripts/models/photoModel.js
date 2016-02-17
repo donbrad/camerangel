@@ -863,7 +863,7 @@ var moviePosterPhoto  = {
     addPoster: function (movieTitle, tmsId,  callback) {
         var poster = null;
         var store = deviceModel.fileDirectory;
-        
+
         movieTitle = movieTitle.replace(" No.", ''); // Todo -- add movie name mapping function
 
         var title = encodeURIComponent(movieTitle);
@@ -879,27 +879,27 @@ var moviePosterPhoto  = {
                     var awards = '';
                     if (result.Awards !== undefined)
                         awards = result.Awards;
-                    obj.set('movieTitle', movieTitle);
-                    obj.set('awards', awards);
-                    obj.set('tmsId', tmsId);
+                    obj.movieTitle = movieTitle;
+                    obj.awards = awards;
+                    obj.tmsId= tmsId;
                     if (result.Poster === 'N/A') {
                         result.Poster = null;
-                        obj.set('imageUrl', null);
+                        obj.imageUrl = null ;
                     } else {
                         moviePosterPhoto.checkPhotoCache(tmsId, result.Poster);
-                        obj.set('imageUrl', store+tmsId +'.jpg');
+                        obj.imageUrl = store+tmsId +'.jpg';
                     }
 
-                    obj.set('metaScore', result.Metascore);
-                    obj.set('imdbRating', result.imdbRating);
-                    obj.set('imdbVotes', result.imdbVotes);
-                    obj.set('imdbId', result.imdbID);
+                    obj.metaScore  = result.Metascore;
+                    obj.imdbRating = result.imdbRating;
+                    obj.imdbVotes = result.imdbVotes;
+                    obj.imdbId = result.imdbID;
                     if (result.Runtime === undefined) {
                         result.Runtime = "0";
                     }
-                    obj.set('runtime', result.Runtime);
-                    obj.set('genre', result.Genre);
-                    obj.set('rating', result.Rated);
+                    obj.runtime = result.Runtime;
+                    obj.genre = result.Genre;
+                    obj.rating  = result.Rated;
 
                     callback(obj);
 
