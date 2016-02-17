@@ -1085,8 +1085,8 @@ var movieListView = {
     movieArray : [],
     _radius: 15,
     _movieQuery: null,
-    _lat: mapModel.lat,
-    _lng: mapModel.lng,
+    _lat: null,
+    _lng: null,
     _date : new Date(),
     _dateString: 'Today',
     _minTime : null,
@@ -1099,14 +1099,14 @@ var movieListView = {
         obj.set('query', null);
         obj.set('date', movieListView._date);
         obj.set('dateString', movieListView._dateString);
-        obj.set('lat', movieListView._lat);
-        obj.set('lng', movieListView._lng);
+        obj.set('lat', mapModel.lat);
+        obj.set('lng', mapModel.lng);
         obj.set('allDay', true);
         obj.set('radius', movieListView._radius);
         obj.set('placeId', null);
         obj.set('googleId', null);
         obj.set('placeName', null);
-        obj.set('address', mapModel.address);
+        obj.set('address', mapModel.city);
         obj.set('placeType', null);
 
     },
@@ -1114,8 +1114,10 @@ var movieListView = {
     setActiveObject: function (activeObj) {
         var obj = movieListView.activeObject;
 
+        var dateStr = new moment(activeObj).format("ddd, MMM Do");
         obj.set('query', activeObj.query);
         obj.set('date', activeObj.date);
+        obj.set('dateString', activeObj.dateStr);
         obj.set('lat', activeObj.lat);
         obj.set('lng', activeObj.lng);
         obj.set('allDay', activeObj.allDay);
