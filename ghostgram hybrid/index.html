@@ -2623,9 +2623,9 @@
 
 
 <script type="text/x-kendo-template" id="movieShowtimeTemplate">
-	<div>
-		<h4> #: data.theatreName # </h4>
-		<p> #: data.dateStr #</p>
+	<div style="clear: both;">
+		<div> #: data.theatreName # </div>
+		<div > <span style="float:right;"> #: data.showtimeString #</span></div>
 
 	</div>
 </script>
@@ -2782,20 +2782,24 @@
 		</div>
 	</div>
 
-	<div class="event-view card hidden" id="movie-viewMode">
+	<div class="event-view card" id="movie-viewMode">
 		<div class="event-details">
 			<div style="height: 25%; float:left;">
 				<img data-bind="attr: { src: imageUrl}">
 			</div>
 			<h2 data-bind="text: movieTitle"></h2>
 			<p class="helper" data-bind="text: description"></p>
-			<p class="helper">Organized by <span id="smartMovieView-organizer" data-bind="text: senderName"></span></p>
-			<p class="helper">Theatre:  <span  data-bind="text: theatreString"></span></p>
-			<p class="helper hidden" id="smartMovieView-showtime">Showtime:  <span  data-bind="text: showtimeString"></span></p>
+			<p class="helper ">Genre <span  data-bind="text: genre"></span></p>
+			<p class="helper ">Rating <span  data-bind="text: rating"></span></p>
+			<p class="helper ">Runtime <span  data-bind="text: runtime"></span></p>
+			<p class="helper movie-viewer hidden">Organized by <span id="smartMovieView-organizer" data-bind="text: senderName"></span></p>
+			<p class="helper movie-selected hidden">Theatre:  <span  data-bind="text: theatreString"></span></p>
+			<p class="helper movie-selected hidden" id="smartMovieView-showtime">Showtime:  <span  data-bind="text: showtimeString"></span></p>
 		</div>
 		<div style="clear: both;"></div>
 	</div>
-	<form >
+
+	<form class="movie-selected hidden">
 		<ul data-role="listview" data-style="inset">
 			<li id="smartMovieView-add-calendar" class="event-valid" >
 				<label> Add to Calendar
@@ -2804,11 +2808,16 @@
 			</li>
 		</ul>
 	</form>
-	<ul id="smartMovieView-listview"  >
 
-	</ul>
+	<div id="smartMovieView-showtimes" class="movie-creator hidden">
+		<h3>ShowTimes</h3>
+		<ul id="smartMovieView-listview" >
+
+		</ul>
+	</div>
 	<div class="footer" data-role="footer">
 		<a class="btnFull-modal btnPrimary hidden" data-role="button" id=smartMovieViewSaveBtn" data-click="smartMovieView.onSave">Send SmartMovie</a>
+		<a class="btnFull-modal btnPrimary hidden" data-role="button" id=smartMovieViewDoneBtn" data-click="smartMovieView.onDone">Done</a>
 	</div>
 </div>
 

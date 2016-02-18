@@ -884,16 +884,18 @@ var moviePosterPhoto  = {
                     obj.tmsId= tmsId;
                     if (result.Poster === 'N/A') {
                         result.Poster = null;
-                        obj.imageUrl = null ;
+                        obj.deviceUrl = null ;
                     } else {
                         moviePosterPhoto.checkPhotoCache(tmsId, result.Poster);
-                        obj.imageUrl = store+tmsId +'.jpg';
+                        obj.deviceUrl = store+tmsId +'.jpg';
                     }
-
                     obj.metaScore  = result.Metascore;
                     obj.imdbRating = result.imdbRating;
                     obj.imdbVotes = result.imdbVotes;
                     obj.imdbId = result.imdbID;
+                    obj.imdbUrl = null;
+                    if (obj.imdbId !== undefined && obj.imdbId !== null)
+                        obj.imdbUrl = 'www.imdb.com/title/'+obj.imdbId+'/';
                     if (result.Runtime === undefined) {
                         result.Runtime = "0";
                     }
@@ -913,6 +915,7 @@ var moviePosterPhoto  = {
             },
             error: function () {
                 mobileNotify("Can't get poster info for " + movieTitle);
+                callback(null);
             }
         });
 
