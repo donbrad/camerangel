@@ -1190,6 +1190,7 @@ var movieListView = {
         $('#movieListView').removeClass('hidden');
         $('#movieDetailView').addClass('hidden');
         $('#movieListView-doneBtn').addClass('hidden');
+
     },
 
     _findMovies :function  () {
