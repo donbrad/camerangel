@@ -1819,11 +1819,31 @@ var smartMovieView = {
         }
     },
 
+    updateMovieLinks : function () {
+        var activeObj = smartMovieView.activeObject;
+        $('.movie-links').addClass('hidden');
+
+        if (activeObj.imdbId !== null) {
+            $('#smartMovieView-imdbLink').removeClass('hidden');
+        }
+
+        if (activeObj.officialUrl !== null) {
+            $('#smartMovieView-webLink').removeClass('hidden');
+        }
+
+        if (activeObj.ticketUrl !== null) {
+            $('#smartMovieView-fandangoLink').removeClass('hidden');
+        }
+
+
+    },
+
     initActiveObject : function (movie) {
         var thisObj = smartMovieView.activeObject;
 
         this.setCreatorMode();
         this.setMovieSelected(false);
+
         // Build the smartMovie / movieGram object
 
         thisObj.set("uuid", uuid.v4());
@@ -1868,10 +1888,13 @@ var smartMovieView = {
         thisObj.set('wasSent', false);
 
         smartMovieView.processShowTimes(movie.showtimes);
+
+        this.updateMovieLinks()
     },
 
     setActiveObject: function (obj) {
         var thisObj = smartMovieView.activeObject;
+
 
         this.setViewerMode();
         this.setMovieSelected(true);
@@ -1905,6 +1928,8 @@ var smartMovieView = {
         thisObj.set('addToCalendar', obj.addToCalendar);
         thisObj.set('comment', obj.comment);
         thisObj.set('wasSent', obj.wasSent);
+
+        this.updateMovieLinks();
     },
 
     openModalSelectShowtime: function (movie, callback) {
