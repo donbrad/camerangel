@@ -884,10 +884,10 @@ var moviePosterPhoto  = {
                     obj.tmsId= tmsId;
                     if (result.Poster === 'N/A') {
                         result.Poster = null;
-                        obj.imageUrl = null ;
+                        obj.deviceUrl = null ;
                     } else {
                         moviePosterPhoto.checkPhotoCache(tmsId, result.Poster);
-                        obj.imageUrl = store+tmsId +'.jpg';
+                        obj.deviceUrl = store+tmsId +'.jpg';
                     }
 
                     obj.metaScore  = result.Metascore;
