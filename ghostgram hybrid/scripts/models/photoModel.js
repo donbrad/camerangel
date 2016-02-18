@@ -915,6 +915,7 @@ var moviePosterPhoto  = {
             },
             error: function () {
                 mobileNotify("Can't get poster info for " + movieTitle);
+                callback(null);
             }
         });
 
