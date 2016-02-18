@@ -1732,7 +1732,7 @@ var smartMovieView = {
 
     onSave: function (e) {
         _preventDefault(e);
-
+        // Todo: don create and send smart movie
         smartMovieView.onDone();
     },
 
@@ -1986,6 +1986,26 @@ var smartMovieView = {
 
         smartMovieView.checkExpired();
         $("#smartMovieModal").data("kendoMobileModalView").open();
+    },
+
+    showLinkImdb: function (e) {
+        _preventDefault(e);
+        var imdbUrl = 'http://www.imdb.com/title/'+ smartMovieView.activeObject.imdbId + '/';
+
+        var ref = window.open(imdbUrl, '_blank', 'location=no');
+
+    },
+
+    showLinkWebSite: function (e) {
+        _preventDefault(e);
+        var webUrl = smartMovieView.activeObject.officialUrl;
+        var ref = window.open(webUrl, '_blank', 'location=no');
+    },
+
+    showLinkFandango: function (e) {
+        _preventDefault(e);
+        var fandangoUrl = smartMovieView.activeObject.ticketUrl;
+        var ref = window.open(fandangoUrl, '_blank', 'location=no');
     },
 
     onShow: function (e) {
