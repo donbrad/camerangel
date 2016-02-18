@@ -117,7 +117,7 @@ var smartEvent = {
 
     termsDS : null,
 
-    objectsDS: new kendo.data.DataSource({
+    eventsDS: new kendo.data.DataSource({
         offlineStorage:"smartEvent",
         sort: {
             field: "date",
@@ -133,8 +133,8 @@ var smartEvent = {
 
 
     fetch : function () {
-        var smartObjects = Parse.Object.extend(smartEvent._parseClass);
-        var query = new Parse.Query(smartObjects);
+        var smartEvents = Parse.Object.extend(smartEvent._parseClass);
+        var query = new Parse.Query(smartEvents);
 
         query.find({
             success: function(collection) {
@@ -144,8 +144,8 @@ var smartEvent = {
 
                     models.push(smartObj.toJSON());
                 }
-                deviceModel.setAppState('hasSmartObjects', true);
-                smartEvent.objectsDS.data(models);
+                deviceModel.setAppState('hasSmartEvents', true);
+                smartEvent.eventsDS.data(models);
                 deviceModel.isParseSyncComplete();
             },
             error: function(error) {
@@ -176,7 +176,7 @@ var smartEvent = {
 
         if (query === undefined)
             return(undefined);
-        var dataSource = smartEvent.objectsDS;
+        var dataSource = smartEvent.eventsDS;
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
             cacheFilter = {};
@@ -193,7 +193,7 @@ var smartEvent = {
     queryObject: function (query) {
         if (query === undefined)
             return(undefined);
-        var dataSource = smartEvent.objectsDS;
+        var dataSource = smartEvent.eventsDS;
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
             cacheFilter = {};
@@ -355,8 +355,8 @@ var smartEvent = {
     },
 
     addObject : function (objectIn, callback) {
-        var SmartObjects = Parse.Object.extend(smartEvent._parseClass);
-        var smartOb = new SmartObjects();
+        var smartEvents = Parse.Object.extend(smartEvent._parseClass);
+        var smartOb = new smartEvents();
 
 
         mobileNotify("Creating Smart Event...");
@@ -409,8 +409,8 @@ var smartEvent = {
         smartOb.set('rsvpList', objectIn.rsvpList);
 
         var smartObj = smartOb.toJSON();
-        smartEvent.objectsDS.add(smartObj);
-        smartEvent.objectsDS.sync();
+        smartEvent.eventsDS.add(smartObj);
+        smartEvent.eventsDS.sync();
 
         smartOb.save(null, {
             success: function(thisObject) {
