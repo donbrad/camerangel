@@ -1226,10 +1226,10 @@ var movieListView = {
                             movieObj.genre = movie.genres[0];
 
                         var imageUrl = '';
-                          if (movie.preferredImage.category !== undefined && movie.preferredImage.category === 'Poster Art') {
-                         imageUrl = 'http://developer.tmsimg.com/movies/' + movie.preferredImage.uri +'?api_key=9zah4ggnfz9zpautmrx4bh32';
+                        if (movie.preferredImage.category !== undefined && movie.preferredImage.category === 'Poster Art') {
+                            imageUrl = 'http://developer.tmsimg.com/movies/' + movie.preferredImage.uri +'?api_key=9zah4ggnfz9zpautmrx4bh32';
                          } else {
-                         imageUrl = 'http://developer.tmsimg.com/' + movie.preferredImage.uri +'?api_key=9zah4ggnfz9zpautmrx4bh32';
+                             imageUrl = 'http://developer.tmsimg.com/' + movie.preferredImage.uri +'?api_key=9zah4ggnfz9zpautmrx4bh32';
                          }
                         movieObj.imageUrl = imageUrl;
                         movieObj.officialUrl = movie.officialUrl;
