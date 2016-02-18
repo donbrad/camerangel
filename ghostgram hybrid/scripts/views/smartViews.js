@@ -1239,7 +1239,7 @@ var movieListView = {
                         movieObj.imdbVotes = null;
                         movieObj.metaScore = null;
                         movieObj.runtime = movieListView.processRuntime(movie.runTime);
-                        movieObj.showTimes = movie.showtimes;
+                        movieObj.showtimes = movie.showtimes;
                         //movieObj.showTimes = movieListView.processShowTimes(movie.showtimes);
 
                         /* for (var s=0; s<movie.showtimes.length; s++) {
@@ -1853,7 +1853,7 @@ var smartMovieView = {
 
         this.setViewerMode();
         this.setMovieSelected(true);
-        
+
         thisObj.set("uuid", obj.uuid);
         thisObj.set('senderUUID', obj.senderUUID);
         thisObj.set('senderName', obj.senderName);
