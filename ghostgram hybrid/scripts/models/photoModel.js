@@ -889,11 +889,13 @@ var moviePosterPhoto  = {
                         moviePosterPhoto.checkPhotoCache(tmsId, result.Poster);
                         obj.deviceUrl = store+tmsId +'.jpg';
                     }
-
                     obj.metaScore  = result.Metascore;
                     obj.imdbRating = result.imdbRating;
                     obj.imdbVotes = result.imdbVotes;
                     obj.imdbId = result.imdbID;
+                    obj.imdbUrl = null;
+                    if (obj.imdbId !== undefined && obj.imdbId !== null)
+                        obj.imdbUrl = 'www.imdb.com/title/'+obj.imdbId+'/';
                     if (result.Runtime === undefined) {
                         result.Runtime = "0";
                     }

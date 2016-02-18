@@ -1232,6 +1232,7 @@ var movieListView = {
                          imageUrl = 'http://developer.tmsimg.com/' + movie.preferredImage.uri +'?api_key=9zah4ggnfz9zpautmrx4bh32';
                          }
                         movieObj.imageUrl = imageUrl;
+                        movieObj.officialUrl = movie.officialUrl;
                         movieObj.tmsId = movie.tmsId;
                         movieObj.imdbId = null;
                         movieObj.imbdRating = null;
@@ -1766,6 +1767,10 @@ var smartMovieView = {
                 stObj.theatreName = showtime.theatre.name;
                 stObj.showtime = moment(showtime.dateTime);
                 stObj.showtimeString = moment(showtime.dateTime).format('h:mm A');
+                stObj.ticketUrl = null;
+                if (showtime.ticketURI !== undefined && showtime.ticketURI) {
+                    stObj.ticketUrl = showtime.ticketURI;
+                }
                 smartMovieView.showtimesDS.add(stObj);
 
             }
@@ -1787,9 +1792,12 @@ var smartMovieView = {
         thisObj.set('movieTitle', movie.movieTitle);
         thisObj.set('tmsId', movie.tmsId);
         thisObj.set('imdbId', movie.imdbId);
+        thisObj.set('imdbUrl', movie,imdbUrl);
         thisObj.set('imdbRating', movie.imdbRating);
         thisObj.set('imdbVotes', movie.imdbVotes);
         thisObj.set('metaScore', movie.metaScore);
+        thisObj.set('officialUrl', movie.officialUrl);
+        thisObj.set('ticketUrl', movie.ticketUrl);
         thisObj.set('rating', movie.rating);
         thisObj.set('runtime', movie.runtime);
         thisObj.set('date', movie.date);
