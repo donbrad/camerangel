@@ -1746,14 +1746,32 @@ var smartMovieView = {
                 //fixedHeaders: true,
                 click: function (e) {
                     var showtime = e.dataItem;
-
-
+                    smartMovieView.selectShowtime(showtime);
 
                 }
             }
         );
 
 
+    },
+
+    selectShowtime : function (showtime) {
+        var obj = smartMovieView.activeObject;
+
+        obj.set('theatreId', showtime.theatreId);
+        obj.set('theatreName', showtime.theatreName);
+        obj.set('showtime', showtime.showtime);
+        obj.set('showtimeString', showtime.showtimeString);
+        smartMovieView.setMovieSelected(true);
+        smartMovieView.enableSave(true);
+    },
+
+    enableSave: function (enabled) {
+        if (enabled) {
+            $('#smartMovieViewSaveBtn').removeClass('hidden');
+        } else {
+            $('#smartMovieViewSaveBtn').addClass('hidden');
+        }
     },
 
     processShowTimes : function (showtimes) {
@@ -1787,6 +1805,8 @@ var smartMovieView = {
     setViewerMode : function () {
         $('.movie-creator').addClass('hidden');
         $('.movie-viewer').removeClass('hidden');
+        $('#smartMovieViewSaveBtn').addClass('hidden');
+        $('#smartMovieViewDoneBtn').removeClass('hidden');
     },
 
     setMovieSelected : function (isSelected) {
@@ -1962,6 +1982,7 @@ var smartMovieView = {
                 $("#smartMovieView-organizer").text(contact.name);
             }
         }
+        smartMovieView.enableSave(false);
 
         smartMovieView.checkExpired();
         $("#smartMovieModal").data("kendoMobileModalView").open();
@@ -1969,6 +1990,7 @@ var smartMovieView = {
 
     onShow: function (e) {
         _preventDefault(e);
+
         $("#smartMovieModal").data("kendoMobileModalView").open();
 
     },

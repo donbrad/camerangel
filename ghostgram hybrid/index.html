@@ -2592,8 +2592,8 @@
 
 <script type="text/x-kendo-template" id="movieShowtimeTemplate">
 	<div style="clear: both;">
-		<span> #: data.theatreName # </span>
-		<span style="float:right;"> #: data.showtimeString #</span>
+		<div> #: data.theatreName # </div>
+		<div > <span style="float:right;"> #: data.showtimeString #</span></div>
 
 	</div>
 </script>
@@ -2773,6 +2773,7 @@
 	</div>
 	<div class="footer" data-role="footer">
 		<a class="btnFull-modal btnPrimary hidden" data-role="button" id=smartMovieViewSaveBtn" data-click="smartMovieView.onSave">Send SmartMovie</a>
+		<a class="btnFull-modal btnPrimary hidden" data-role="button" id=smartMovieViewDoneBtn" data-click="smartMovieView.onDone">Done</a>
 	</div>
 </div>
 
