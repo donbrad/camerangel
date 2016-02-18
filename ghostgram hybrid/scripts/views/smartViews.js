@@ -1160,8 +1160,7 @@ var movieListView = {
             filter: "contains",
             placeholder: "Movie title..."
         });
-
-
+        
         $("#movieListView-listview").kendoMobileListView({
                 dataSource: movieListView.moviesDS,
                 template: $("#movieListTemplate").html(),
