@@ -1859,7 +1859,11 @@ var smartMovieView = {
         thisObj.set('imdbRating', movie.imdbRating);
         thisObj.set('imdbVotes', movie.imdbVotes);
         thisObj.set('metaScore', movie.metaScore);
+        if (movie.officialUrl === undefined)
+            movie.officialUrl = null;
         thisObj.set('officialUrl', movie.officialUrl);
+        if (movie.ticketUrl === undefined)
+            movie.ticketUrl = null;
         thisObj.set('ticketUrl', movie.ticketUrl);
         thisObj.set('rating', movie.rating);
         thisObj.set('runtime', movie.runtime);
@@ -1916,6 +1920,8 @@ var smartMovieView = {
         thisObj.set('action', obj.action);
         thisObj.set('description', obj.description);
         thisObj.set('imageUrl', obj.imageUrl);
+        thisObj.set('officialUrl', obj.officialUrl);
+        thisObj.set('ticketUrl', obj.ticketUrl);
         thisObj.set('address', obj.address);
         thisObj.set('googleId', obj.googleId);
         thisObj.set('calendarId', obj.calendarId);
