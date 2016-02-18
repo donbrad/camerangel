@@ -1235,7 +1235,7 @@ var movieListView = {
                         movieObj.officialUrl = movie.officialUrl;
                         movieObj.tmsId = movie.tmsId;
                         movieObj.imdbId = null;
-                        movieObj.imbdRating = null;
+                        movieObj.imdbRating = null;
                         movieObj.imdbVotes = null;
                         movieObj.metaScore = null;
                         movieObj.runtime = movieListView.processRuntime(movie.runTime);
@@ -1334,6 +1334,7 @@ var movieListView = {
                 movie.metaScore = poster.metaScore;
                 movie.rating = poster.rating;
                 movie.imdbId = poster.imdbId;
+                movie.imdbUrl = poster.imdbUrl;
                 movie.imdbRating = poster.imdbRating;
                 movie.imdbVotes = poster.imdbVotes;
             }
@@ -1792,6 +1793,8 @@ var smartMovieView = {
         thisObj.set('movieTitle', movie.movieTitle);
         thisObj.set('tmsId', movie.tmsId);
         thisObj.set('imdbId', movie.imdbId);
+        if (movie.imdbUrl === undefined)
+            movie.imdbUrl = null;
         thisObj.set('imdbUrl', movie,imdbUrl);
         thisObj.set('imdbRating', movie.imdbRating);
         thisObj.set('imdbVotes', movie.imdbVotes);
