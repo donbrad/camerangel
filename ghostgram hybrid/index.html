@@ -2740,96 +2740,31 @@
 
 	<div class="event-view card hidden" id="movie-viewMode">
 		<div class="event-details">
+			<div style="height: 25%; float:left;">
+				<img data-bind="attr: { src: imageUrl}">
+			</div>
 			<h2 data-bind="text: movieTitle"></h2>
-			<p class="helper" data-bind="text: movieDescription"></p>
+			<p class="helper" data-bind="text: description"></p>
 			<p class="helper">Organized by <span id="smartMovieView-organizer" data-bind="text: senderName"></span></p>
-			<p class="helper">Showtimes:  <span  data-bind="text: showtimeString"></span></p>
 			<p class="helper">Theatre:  <span  data-bind="text: theatreString"></span></p>
+			<p class="helper hidden" id="smartMovieView-showtime">Showtime:  <span  data-bind="text: showtimeString"></span></p>
 		</div>
+		<div style="clear: both;"></div>
 	</div>
-
-	<form id="movie-editMode" class="event-owner hidden">
+	<form >
 		<ul data-role="listview" data-style="inset">
-			<li>
-				<label> When </label>
-				<div class="clearfix"></div>
-				<div class="smallSearch">
-							<span class="searchIcon">
-								<img src='images/smart-event.svg' />
-							</span>
-					<input type="text" class="viewSearchBox" id="smartMovieView-date"/>
-				</div>
-				<div class="smallSearch-sm">
-						<span class="searchIcon">
-							<img src='images/smart-time.svg' />
-						</span>
-					<input type="search" id="smartMovieView-time"/>
-				</div>
-			</li>
-			<!--<li id="smartMovieView-add-calendar" class="event-valid" >
+			<li id="smartMovieView-add-calendar" class="event-valid" >
 				<label> Add to Calendar
 					<input type="checkbox" id="smartMovieView-addToCalendar"  data-role="switch" data-bind="checked: addToCalendar" data-change="smartMovieView.onChangeCalendar"/>
-				</label>
-			</li>-->
-			<li id="searchMoviePlace-input">
-				<label> Search Theatres In/Near
-					<input type="search" id="smartMovieView-placesearch"/>
-				</label>
-			</li>
-			<li id="smartMovieView-placesearchdiv" class="hidden">
-				<div>
-					<img src='images/icon-gps-selected.svg' class='icon-sm'/>
-					<a data-click="smartMovieView.onPlaceSearch" data-role="button" class="btnClear" id="smartMovieView-placesearchBtn"> Find... </a>
-				</div>
-			</li>
-			<li id="smartMovieView-placeadddiv" class="hidden">
-				<label>Where (Location or Place)</label>
-				<div>
-					<p id="smartMovieView-placeAddBtn">
-						<img src='images/icon-location.svg' class='icon-sm'/>
-						<span id="smartMovieView-placeAddBtn-title" data-bind="text: placeName"></span>
-					</p>
-					<div id="smartMovieView-actionBtns">
-						<a class="btnClear-grey" data-role="button" data-click="smartMovieView.onAddPlace">Add to My Places</a>
-						<a class="btnClear-red" data-role="button" data-click="smartMovieView.onDropPlace">Drop Place</a>
-					</div>
-				</div>
-			</li>
-			<li>
-				<label> Distance to Search
-					<select id="smartMovieView-searchDistance">
-						<option value="5">5 Miles</option>
-						<option value="10">10 Miles</option>
-						<option value="15" selected>15 Miles</option>
-						<option value="25">25 Miles</option>
-						<option value="50">50 Miles</option>
-					</select>
-				</label>
-			</li>
-			<li id="searchMovieMovie-input">
-				<label> Find Movie
-					<input type="search" id="smartMovieView-moviesearch" placeholder="Whatever is playing.."/>
 				</label>
 			</li>
 		</ul>
 	</form>
+	<ul id="smartMovieView-listview"  >
 
-	<div style="text-align: center;">
-		<a class="btnClear" data-role="button" data-click="smartMovieView.onFindMovies">Explore Theatres and Movies</a>
-	</div>
-
-	<div class="event-view card hidden" id="smartMovieView-Selection">
-		<div class="event-details">
-			<h2 data-bind="text: movieTitle"></h2>
-			<p class="helper" data-bind="text: movieDescription"></p>
-			<p class="helper">Showtimes:  <span  data-bind="text: showtimeString"></span></p>
-			<p class="helper">Theatre:  <span  data-bind="text: theatreString"></span></p>
-		</div>
-	</div>
-
-
+	</ul>
 	<div class="footer" data-role="footer">
-		<a class="btnFull-modal btnPrimary hidden" data-role="button" id=smartMovieViewSaveBtn" data-click="smartMovieView.onSave">Save and Send Movie</a>
+		<a class="btnFull-modal btnPrimary hidden" data-role="button" id=smartMovieViewSaveBtn" data-click="smartMovieView.onSave">Send SmartMovie</a>
 	</div>
 </div>
 

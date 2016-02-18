@@ -1075,11 +1075,9 @@ var movieListView = {
 
     moviesDS :  new kendo.data.DataSource({
         //group: { field: "theatreString" }
+        sort: { field: "movieTitle", dir: "asc" }
     }),
 
-    showtimesDS :  new kendo.data.DataSource({
-        //group: { field: "theatreString" }
-    }),
 
     posterArray : [],
     movieArray : [],
@@ -1091,10 +1089,10 @@ var movieListView = {
     _dateString: 'Today',
     _minTime : null,
     _maxTime: null,
+    callback: null,
 
     initActiveObject: function () {
         var obj = movieListView.activeObject;
-
 
         obj.set('query', null);
         obj.set('date', movieListView._date);
@@ -1171,28 +1169,13 @@ var movieListView = {
                 //fixedHeaders: true,
                 click: function (e) {
                     var movie = e.dataItem;
-                    movieListView.setActiveObject(movie);
-                    $('#movieListView').addClass('hidden');
-                    $('#movieDetailView').removeClass('hidden');
-
+                    smartMovieView.openModal(movie,movieListView.callback);
+                    movieListView.onDone();
                 }
             }
         );
 
-        $("#movieDetailView-listview").kendoMobileListView({
-                dataSource: movieListView.showtimesDS,
-                template: $("#movieShowtimeTemplate").html(),
-                //headerTemplate: $("#findPlacesHeaderTemplate").html(),
-                //fixedHeaders: true,
-                click: function (e) {
-                    var movie = e.dataItem;
-
-
-                    $('#movieListView-doneBtn').removeClass('hidden');
-                }
-            }
-        );
-    },
+   },
 
     onShowMovieList: function (e) {
         _preventDefault(e);
@@ -1215,7 +1198,7 @@ var movieListView = {
         var lat = activeObj.lat, lng = activeObj.lng, date = activeObj.date;
 
         movieListView.moviesDS.data([]);
-        movieListView.showtimesDS.data([]);
+
         movieListView.movieArray = [];
         var dateStr = moment(date).format('YYYY-MM-DD');
         var url = 'http://data.tmsapi.com/v1.1/movies/showings?startDate='+ dateStr +'&lat=' + lat + '&lng=' + lng + '&radius=' + movieListView._radius + '&api_key=9zah4ggnfz9zpautmrx4bh32';
@@ -1603,7 +1586,7 @@ var smartMovieEdit = {
                 formatSubmit: 'mm d yyyy',
                 min: true,
                 onSet : function (context) {
-                    smartEventView.updateDateString();
+                    smartMovieEdit.updateDateString();
                 }
             });
 
@@ -1708,6 +1691,10 @@ var smartMovieEdit = {
 
 var smartMovieView = {
     activeObject : new kendo.data.ObservableObject(),
+    showtimesDS :  new kendo.data.DataSource({
+        //group: { field: "theatreString" }
+    }),
+
     _date : new Date(),
     _placeId :null,
     _geoObj: null,
@@ -1746,6 +1733,19 @@ var smartMovieView = {
     onInit: function (e) {
         _preventDefault(e);
 
+        $("#movieDetailView-listview").kendoMobileListView({
+                dataSource: movieListView.showtimesDS,
+                template: $("#movieShowtimeTemplate").html(),
+                //headerTemplate: $("#findPlacesHeaderTemplate").html(),
+                //fixedHeaders: true,
+                click: function (e) {
+                    var movie = e.dataItem;
+
+
+                    $('#movieListView-doneBtn').removeClass('hidden');
+                }
+            }
+        );
 
 
     },
