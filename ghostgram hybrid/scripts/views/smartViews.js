@@ -1867,6 +1867,8 @@ var smartMovieView = {
             smartMovieView._callback = callback;
         }
 
+        smartMovieView.initActiveObject(movie);
+        
         $("#smartMovieModal").data("kendoMobileModalView").open();
     },
 
