@@ -1779,11 +1779,29 @@ var smartMovieView = {
         }
 
     },
+    setCreatorMode : function () {
+        $('.movie-creator').removeClass('hidden');
+        $('.movie-viewer').addClass('hidden');
+    },
+
+    setViewerMode : function () {
+        $('.movie-creator').addClass('hidden');
+        $('.movie-viewer').removeClass('hidden');
+    },
+
+    setMovieSelected : function (isSelected) {
+        if (isSelected) {
+            $('.movie-selected').removeClass('hidden');
+        } else {
+            $('.movie-selected').addClass('hidden');
+        }
+    },
 
     initActiveObject : function (movie) {
         var thisObj = smartMovieView.activeObject;
 
-
+        this.setCreatorMode();
+        this.setMovieSelected(false);
         // Build the smartMovie / movieGram object
 
         thisObj.set("uuid", uuid.v4());
@@ -1833,6 +1851,9 @@ var smartMovieView = {
     setActiveObject: function (obj) {
         var thisObj = smartMovieView.activeObject;
 
+        this.setViewerMode();
+        this.setMovieSelected(true);
+        
         thisObj.set("uuid", obj.uuid);
         thisObj.set('senderUUID', obj.senderUUID);
         thisObj.set('senderName', obj.senderName);

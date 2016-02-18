@@ -2748,9 +2748,9 @@
 			<p class="helper ">Genre <span  data-bind="text: genre"></span></p>
 			<p class="helper ">Rating <span  data-bind="text: rating"></span></p>
 			<p class="helper ">Runtime <span  data-bind="text: runtime"></span></p>
-			<p class="helper hidden">Organized by <span id="smartMovieView-organizer" data-bind="text: senderName"></span></p>
-			<p class="helper hidden">Theatre:  <span  data-bind="text: theatreString"></span></p>
-			<p class="helper hidden" id="smartMovieView-showtime">Showtime:  <span  data-bind="text: showtimeString"></span></p>
+			<p class="helper movie-viewer hidden">Organized by <span id="smartMovieView-organizer" data-bind="text: senderName"></span></p>
+			<p class="helper movie-selected hidden">Theatre:  <span  data-bind="text: theatreString"></span></p>
+			<p class="helper movie-selected hidden" id="smartMovieView-showtime">Showtime:  <span  data-bind="text: showtimeString"></span></p>
 		</div>
 		<div style="clear: both;"></div>
 	</div>
@@ -2765,7 +2765,7 @@
 		</ul>
 	</form>
 
-	<div class="owner">
+	<div class="movie-creator hidden">
 		<h3>ShowTimes</h3>
 		<ul id="smartMovieView-listview" >
 
