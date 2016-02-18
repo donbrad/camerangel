@@ -1792,8 +1792,10 @@ var smartMovieView = {
     setMovieSelected : function (isSelected) {
         if (isSelected) {
             $('.movie-selected').removeClass('hidden');
+            $('#smartMovieView-showtimes').addClass('hidden');
         } else {
             $('.movie-selected').addClass('hidden');
+            $('#smartMovieView-showtimes').removeClass('hidden');
         }
     },
 
@@ -1807,7 +1809,7 @@ var smartMovieView = {
         thisObj.set("uuid", uuid.v4());
         thisObj.set('senderUUID', userModel.currentUser.userUUID);
         thisObj.set('senderName', userModel.currentUser.name);
-        thisObj.set('placeString', mapModel.currentCity + ". " + mapModel.currentState + "  " + mapModel.currentZipcode);
+        thisObj.set('placeString', movie.address);
         thisObj.set('movieTitle', movie.movieTitle);
         thisObj.set('tmsId', movie.tmsId);
         thisObj.set('imdbId', movie.imdbId);
@@ -1830,12 +1832,12 @@ var smartMovieView = {
         thisObj.set('showtimeString', null);
         thisObj.set('action', null);
         thisObj.set('description', movie.description);
-        thisObj.set('imageUrl', null);
+        thisObj.set('imageUrl', movie.imageUrl);
         thisObj.set('address', null);
         thisObj.set('googleId', null);
         thisObj.set('calendarId', null);
-        thisObj.set('lat', mapModel.lat);
-        thisObj.set('lng', mapModel.lng);
+        thisObj.set('lat', movie.lat);
+        thisObj.set('lng', movie.lng);
         thisObj.set('isDeleted', false);
         thisObj.set('wasCancelled', false);
         thisObj.set('movieSelected', false);  // if false, no movie selected - "let's see a movie at this theatre around this time

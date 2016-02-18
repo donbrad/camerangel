@@ -2591,9 +2591,9 @@
 
 
 <script type="text/x-kendo-template" id="movieShowtimeTemplate">
-	<div >
-		<h4> #: data.theatreName # </h4>
-		<p> #: data.showtimeString #</p>
+	<div style="clear: both;">
+		<span> #: data.theatreName # </span>
+		<span style="float:right;"> #: data.showtimeString #</span>
 
 	</div>
 </script>
@@ -2755,7 +2755,7 @@
 		<div style="clear: both;"></div>
 	</div>
 
-	<form >
+	<form class="movie-selected hidden">
 		<ul data-role="listview" data-style="inset">
 			<li id="smartMovieView-add-calendar" class="event-valid" >
 				<label> Add to Calendar
@@ -2765,7 +2765,7 @@
 		</ul>
 	</form>
 
-	<div class="movie-creator hidden">
+	<div id="smartMovieView-showtimes" class="movie-creator hidden">
 		<h3>ShowTimes</h3>
 		<ul id="smartMovieView-listview" >
 
