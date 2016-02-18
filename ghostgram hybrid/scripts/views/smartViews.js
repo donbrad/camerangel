@@ -1795,7 +1795,7 @@ var smartMovieView = {
         thisObj.set('imdbId', movie.imdbId);
         if (movie.imdbUrl === undefined)
             movie.imdbUrl = null;
-        thisObj.set('imdbUrl', movie,imdbUrl);
+        thisObj.set('imdbUrl', movie.imdbUrl);
         thisObj.set('imdbRating', movie.imdbRating);
         thisObj.set('imdbVotes', movie.imdbVotes);
         thisObj.set('metaScore', movie.metaScore);
