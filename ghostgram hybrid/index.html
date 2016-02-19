@@ -2783,12 +2783,22 @@
 			<img src="" id="smartMovie-ratingImg" class="gg-rating" />
 			<span data-bind="text: runtime"></span>
 		</p>
-		<p class="helper movie-selected hidden">Theatre:  <span  data-bind="text: theatreString"></span></p>
-		<p class="helper movie-selected hidden" id="smartMovieView-showtime">Showtime:  <span  data-bind="text: showtimeString"></span></p>
+		<p class="movie-selected hidden"><span data-bind="text: theatreString"></span></p>
+		<p class="movie-selected hidden" id="smartMovieView-showtime"> at <span data-bind="text: showtimeString"></span></p>
+		<p class="movie-selected hidden"><a class="btnClear" data-role="button">Change</a></p>
 	</div>
 
-	<div class="event-view card hidden" id="movie-viewMode">
-		<div class="event-details">
+	<div class="event-view" id="movie-viewMode">
+		<p class="helper movie-links hidden" id="smartMovieView-imdbLink">
+			<a data-role="button" data-click="smartMovieView.showLinkImdb" > imdb Review </a>
+		</p>
+		<p class="helper movie-links hidden " id="smartMovieView-webLink">
+			<a data-role="button" data-click="smartMovieView.showLinkWebSite" >Official Movie WebSite </a>
+		</p>
+		<p class="helper movie-links hidden " id="smartMovieView-fandangoLink">
+			<a data-role="button" data-click="smartMovieView.showLinkFandango" > Buy Tickets on Fandango</a>
+		</p>
+		<!--<div class="event-details">
 			<div style="height: 25%; float:left;">
 				<img data-bind="attr: { src: imageUrl}">
 			</div>
@@ -2797,13 +2807,19 @@
 			<p class="helper ">Genre <span  data-bind="text: genre"></span></p>
 			<p class="helper ">Rating <span  data-bind="text: rating"></span></p>
 			<p class="helper ">Runtime <span  data-bind="text: runtime"></span></p>
-			<p class="helper movie-links hidden" id="smartMovieView-imdbLink"> <a data-role="button" data-click="smartMovieView.showLinkImdb" > imdb Review </a></p>
-			<p class="helper movie-links hidden " id="smartMovieView-webLink"> <a data-role="button" data-click="smartMovieView.showLinkWebSite" >Official Movie WebSite </a> </p>
-			<p class="helper movie-links hidden " id="smartMovieView-fandangoLink"> <a data-role="button" data-click="smartMovieView.showLinkFandango" > Buy Tickets on Fandango</a></p>
+			<p class="helper movie-links hidden" id="smartMovieView-imdbLink">
+				<a data-role="button" data-click="smartMovieView.showLinkImdb" > imdb Review </a>
+			</p>
+			<p class="helper movie-links hidden " id="smartMovieView-webLink">
+				<a data-role="button" data-click="smartMovieView.showLinkWebSite" >Official Movie WebSite </a>
+			</p>
+			<p class="helper movie-links hidden " id="smartMovieView-fandangoLink">
+				<a data-role="button" data-click="smartMovieView.showLinkFandango" > Buy Tickets on Fandango</a>
+			</p>
 			<p class="helper movie-viewer hidden">Organized by <span id="smartMovieView-organizer" data-bind="text: senderName"></span></p>
 
 		</div>
-		<div style="clear: both;"></div>
+		<div style="clear: both;"></div>-->
 	</div>
 
 	<form class="movie-selected hidden">
@@ -2821,8 +2837,8 @@
 		<ul id="smartMovieView-listview"></ul>
 	</div>
 	<div class="footer" data-role="footer">
-		<a class="btnFull-modal btnPrimary hidden" data-role="button" id=smartMovieViewSaveBtn" data-click="smartMovieView.onSave">Send SmartMovie</a>
-		<a class="btnFull-modal btnPrimary hidden" data-role="button" id=smartMovieViewDoneBtn" data-click="smartMovieView.onDone">Done</a>
+		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartMovieViewSaveBtn" data-click="smartMovieView.onSave">Send SmartMovie</a>
+		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartMovieViewDoneBtn" data-click="smartMovieView.onDone">Done</a>
 	</div>
 </div>
 
