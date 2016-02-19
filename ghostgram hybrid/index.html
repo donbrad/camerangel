@@ -2773,7 +2773,7 @@
 		</div>
 	</div>
 	<div class="smartMovie-poster">
-		<img src="#:data.imageUrl#" />
+		<img data-bind="attr:{src : imageUrl}" />
 	</div>
 	<div class="smartMovie-content-dark">
 		<h3 data-bind="text: movieTitle"></h3>
@@ -2782,9 +2782,12 @@
 			<img src="" id="smartMovie-ratingImg" class="gg-rating" />
 			<span data-bind="text: runtime"></span>
 		</p>
-		<p class="movie-selected hidden"><span data-bind="text: theatreString"></span></p>
+		<p class="movie-selected hidden"><span data-bind="text: theatreName"></span></p>
 		<p class="movie-selected hidden" id="smartMovieView-showtime"> at <span data-bind="text: showtimeString"></span></p>
-		<p class="movie-selected hidden"><a class="btnClear" data-role="button">Change</a></p>
+		<p class="movie-selected hidden " id="smartMovieView-fandangoLink">
+			<a data-role="button" data-click="smartMovieView.showLinkFandango" > Buy Tickets on Fandango</a>
+		</p>
+		<p class="movie-selected hidden"><a class="btnClear" data-role="button" data-click="smartMovieView.onCancel">Change</a></p>
 	</div>
 
 	<div class="event-view" id="movie-viewMode">
@@ -2793,9 +2796,6 @@
 		</p>
 		<p class="helper movie-links hidden " id="smartMovieView-webLink">
 			<a data-role="button" data-click="smartMovieView.showLinkWebSite" >Official Movie WebSite </a>
-		</p>
-		<p class="helper movie-links hidden " id="smartMovieView-fandangoLink">
-			<a data-role="button" data-click="smartMovieView.showLinkFandango" > Buy Tickets on Fandango</a>
 		</p>
 		<!--<div class="event-details">
 			<div style="height: 25%; float:left;">

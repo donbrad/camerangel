@@ -1784,6 +1784,7 @@ var smartMovieView = {
     _callback : null,
     _movieId: null,
     _theatreId: null,
+    _showTimeSelected: false,
     _radius: 15,
 
     onChangeCalendar: function (e) {
@@ -1838,6 +1839,12 @@ var smartMovieView = {
         obj.set('theatreName', showtime.theatreName);
         obj.set('showtime', showtime.showtime);
         obj.set('showtimeString', showtime.showtimeString);
+        obj.set('ticketUrl', showtime.ticketUrl);
+        if (showtime.ticketUrl !== null) {
+
+            $('#smartMovieView-fandangoLink').removeClass('hidden');
+
+        }
         smartMovieView.setMovieSelected(true);
         smartMovieView.enableSave(true);
     },
@@ -1886,6 +1893,13 @@ var smartMovieView = {
     },
 
     setMovieSelected : function (isSelected) {
+        smartMovieView._showTimeSelected = isSelected;
+        var activeObj = smartMovieView.activeObject;
+        if (activeObj.ticketUrl !== null) {
+
+        } else {
+
+        }
         if (isSelected) {
             $('.movie-selected').removeClass('hidden');
             $('#smartMovieView-showtimes').addClass('hidden');
@@ -1908,11 +1922,6 @@ var smartMovieView = {
         if (activeObj.officialUrl !== null) {
             $('#smartMovieView-webLink').removeClass('hidden');
         }
-
-        if (activeObj.ticketUrl !== null) {
-            $('#smartMovieView-fandangoLink').removeClass('hidden');
-        }
-
 
     },
 
@@ -2131,10 +2140,15 @@ var smartMovieView = {
 
     onCancel : function (e) {
         _preventDefault(e);
-        $("#smartMovieModal").data("kendoMobileModalView").close();
-        if (smartMovieView._callback !== null) {
-            smartMovieView._callback(null);
+        if (smartMovieView._showTimeSelected) {
+            smartMovieView.setMovieSelected(false);
+        } else {
+            $("#smartMovieModal").data("kendoMobileModalView").close();
+            if (smartMovieView._callback !== null) {
+                smartMovieView._callback(null);
+            }
         }
+
     },
 
     onDone: function (e) {
