@@ -903,7 +903,24 @@ var moviePosterPhoto  = {
                     obj.genre = result.Genre;
                     obj.rating  = result.Rated;
 
-                    callback(obj);
+                    if (obj.imdbId !== null) {
+                        var theMovieDBUrl = 'https://api.themoviedb.org/3/find/' + obj.imdbId +'?external_source=imdb_id&api_key=4b2d2dd99958a2e41bb9b342195e74c1';
+                        $.ajax({
+                            url: theMovieDBUrl,
+                            // dataType:"jsonp",
+                            //  contentType: 'application/json',
+                            success: function (result, textStatus, jqXHR) {
+                                callback(obj);
+                            },
+                            error: function () {
+                                callback(obj);
+                            }
+                        });
+                    } else {
+                        callback(obj);
+                    }
+
+
 
                 } else {
                     mobileNotify("Can't get poster info for " + movieTitle);
