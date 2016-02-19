@@ -910,6 +910,14 @@ var moviePosterPhoto  = {
                             // dataType:"jsonp",
                             //  contentType: 'application/json',
                             success: function (result, textStatus, jqXHR) {
+                                if (result.textSuccess !== undefined && result.textSuccess === 'success') {
+                                    var imageUrl = 'http://image.tmdb.org/t/p/w342/';
+                                    if (result.movie_results.length > 0) {
+
+                                        obj.imageUrl = imageUrl + result.movie_results[0].poster_path;
+                                        obj.backdropUrl = imageUrl + result.movie_results[0].backdrop_path;
+                                    }
+                                }
                                 callback(obj);
                             },
                             error: function () {
