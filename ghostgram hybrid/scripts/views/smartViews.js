@@ -1841,9 +1841,9 @@ var smartMovieView = {
         obj.set('showtimeString', showtime.showtimeString);
         obj.set('ticketUrl', showtime.ticketUrl);
         if (showtime.ticketUrl !== null) {
-
             $('#smartMovieView-fandangoLink').removeClass('hidden');
-
+        } else {
+            $('#smartMovieView-fandangoLink').addClass('hidden');
         }
         smartMovieView.setMovieSelected(true);
         smartMovieView.enableSave(true);
@@ -1870,16 +1870,15 @@ var smartMovieView = {
                 stObj.showtime = moment(showtime.dateTime);
                 stObj.showtimeString = moment(showtime.dateTime).format('h:mm A');
                 stObj.ticketUrl = null;
-                if (showtime.ticketURI !== undefined && showtime.ticketURI) {
+                if (showtime.ticketURI !== undefined && showtime.ticketURI !== null) {
                     stObj.ticketUrl = showtime.ticketURI;
                 }
                 smartMovieView.showtimesDS.add(stObj);
 
             }
-
         }
-
     },
+
     setCreatorMode : function () {
         $('.movie-creator').removeClass('hidden');
         $('.movie-viewer').addClass('hidden');
@@ -1895,10 +1894,10 @@ var smartMovieView = {
     setMovieSelected : function (isSelected) {
         smartMovieView._showTimeSelected = isSelected;
         var activeObj = smartMovieView.activeObject;
-        if (activeObj.ticketUrl !== null) {
-
+        if (activeObj.ticketUrl !== undefined && activeObj.ticketUrl !== null) {
+            $('#smartMovieView-fandangoLink').removeClass('hidden');
         } else {
-
+            $('#smartMovieView-fandangoLink').addClass('hidden');
         }
         if (isSelected) {
             $('.movie-selected').removeClass('hidden');
@@ -2207,6 +2206,8 @@ var smartMovieView = {
                 return ratingImgStr = "";
                 break;
             default:
+                return ratingImgStr = "";
+                break;
                 //console.log("Movie did not have any rating");
         }
     }
