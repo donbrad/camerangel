@@ -285,3 +285,112 @@
 #smartNoteView-expires {
   border-bottom: 1px solid @shade-200;
 }
+
+// Smart Movie
+.smartMovie-poster {
+  float: left;
+  width: 32.5%;
+  background: @shade-200;
+  height: 100%;
+  max-height: 12em;
+  img {
+      height: 100%;
+      width: 100%;
+      text-align: center;
+  }
+}
+
+#movieListView-listview li {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0;
+}
+
+.smartMovie-descr {
+  font-size: 0.875em;
+  height: 4.5em;
+  overflow-x: hidden;
+}
+
+.smartMovie-content-dark {
+  &:extend(.smartMovie-content);
+  background-color: #4A4A4A !important;
+  color: #fff;
+  h3 {
+    color: #fff;
+  }
+  p {
+    font-size: 12px;
+  }
+}
+
+/*
+.smartMovie-descrBox:before {
+  content: "...";
+  text-align: right;
+  position: absolute;
+  display: block;
+  width: 2em;
+  height: 1em;
+  bottom: 1em;
+  right: 20px;
+}
+*/
+
+.movie-preselected {
+  opacity: 1;
+}
+
+#smartMovieModal > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
+  background: #fff;
+}
+
+#smartMovieView-listview {
+  width: 100%;
+  background: #fff;
+  li {
+    margin: 0.25em 1em;
+  }
+}
+
+.movieShowtime-theatre {
+  width: 70%;
+  float: left;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.movieShowtime-time {
+  width: 30%;
+  float: right;
+  text-align: right;
+}
+
+.smartMovie-content {
+  float: left;
+  width: 67.5%;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  background-color: #fff;
+  height: 12em;
+}
+
+.gg-rating {
+  height: 1em;
+  vertical-align: middle;
+}
+
+.smartMovie-genre {
+  font-size: 0.875em;
+  font-style: oblique;
+  margin-bottom: 0.5em;
+}
+
+.smartMovie-runtime {
+
+}
+
+.smartMovie-rating {
+  //margin-right: 0.5em;
+}

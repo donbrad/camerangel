@@ -1194,6 +1194,7 @@ var movieListView = {
         $('#movieListView').removeClass('hidden');
         $('#movieDetailView').addClass('hidden');
         $('#movieListView-doneBtn').addClass('hidden');
+
     },
 
     _findMovies :function  () {
@@ -1316,6 +1317,7 @@ var movieListView = {
             runTimeStr = runTimeStr.replace('M', ' min');
         }
         return(runTimeStr);
+
     },
 
     finalizeMovieList : function () {
@@ -1355,9 +1357,11 @@ var movieListView = {
         for (var i=0; i< len; i++) {
             var movie = movieArray[i];
             moviePosterPhoto.addPoster(movie.movieTitle, movie.tmsId, function (poster) {
+
                 if (poster !== null) {
                     movieListView.posterArray[poster.tmsId] = poster;
                 }
+
                 // Decrement the counter as we get the data...
                 if (--counter === 0) {
                     movieListView.finalizeMovieList(movieArray);
@@ -1813,9 +1817,11 @@ var smartMovieView = {
         if (isSelected) {
             $('.movie-selected').removeClass('hidden');
             $('#smartMovieView-showtimes').addClass('hidden');
+            $('.movie-preselected').velocity("fadeOut");
         } else {
             $('.movie-selected').addClass('hidden');
             $('#smartMovieView-showtimes').removeClass('hidden');
+            $('.movie-preselected').velocity("fadeIn");
         }
     },
 
@@ -1954,6 +1960,10 @@ var smartMovieView = {
 
         smartMovieView.initActiveObject(movie);
 
+        var movieImgSrc = smartMovieView.showRating(movie.rating, false);
+
+        $("#smartMovie-ratingImg").attr("src", movieImgSrc);
+
         $("#smartMovieModal").data("kendoMobileModalView").open();
     },
 
@@ -1997,7 +2007,8 @@ var smartMovieView = {
             $(".event-location").addClass("hidden");
         }
 
-       // smartMovieView.updateCalendar();
+        // smartMovieView.updateCalendar();
+
 
         var prettyDate = moment(thisObject.date).format('dddd MMMM, Do [at] h:mmA');
         $(".event-date").text(prettyDate);
@@ -2060,6 +2071,57 @@ var smartMovieView = {
         $("#smartMovieModal").data("kendoMobileModalView").close();
         if (smartMovieView._callback !== null) {
             smartMovieView._callback(smartMovieView.activeObject);
+        }
+    },
+
+    showRating: function(rating, lightStyle){
+        var ratingImgStr = "";
+        switch(rating){
+            case 'G':
+                if(lightStyle){
+                    ratingImgStr = "images/gg-rated-g.svg";
+                } else {
+                    ratingImgStr = "images/gg-rated-g-dark.svg";
+                }
+                return ratingImgStr;
+                break;
+            case 'PG':
+                if(lightStyle){
+                    ratingImgStr = "images/gg-rated-pg.svg";
+                } else {
+                    ratingImgStr = "images/gg-rated-pg-dark.svg";
+                }
+                return ratingImgStr;
+                break;
+            case "PG-13":
+                if(lightStyle){
+                    ratingImgStr = "images/gg-rated-pg13.svg";
+                } else {
+                    ratingImgStr = "images/gg-rated-pg-13-dark.svg";
+                }
+                return ratingImgStr;
+                break;
+            case "R":
+                if(lightStyle){
+                    ratingImgStr = "images/gg-rated-r.svg";
+                } else {
+                    ratingImgStr = "images/gg-rated-r-dark.svg";
+                }
+                return ratingImgStr;
+                break;
+            case "NC-17":
+                if(lightStyle){
+                    ratingImgStr = "images/gg-rated-nc17.svg";
+                } else {
+                    ratingImgStr = "images/gg-rated-nc17-dark.svg";
+                }
+                return ratingImgStr;
+                break;
+            case "N/A":
+                return ratingImgStr = "";
+                break;
+            default:
+                //console.log("Movie did not have any rating");
         }
     }
 };

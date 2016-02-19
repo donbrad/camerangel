@@ -976,7 +976,7 @@
 
 
 <script type="text/x-kendo-template" id="checkinPlacesTemplate">
-	# console.log(data) #
+
 	<div>
 		# if (data.ggType === 'Venue') { #
 		<h4 class="textClamp">#:data.title#</h4>
@@ -2573,29 +2573,46 @@
 
 
 <script type="text/x-kendo-template" id="movieListTemplate">
-	<div style="clear:both; ">
-		<div style="width: 95%; margin: 8px; border: 8px; text-align: center;">
-			<img src="#:data.imageUrl#" />
-		</div>
-		<div style="width: 95%;">
+	<div class="smartMovie-poster">
+			#if(data.imgUrl !== ""){#
+				<img src="#:data.imageUrl#" />
+			#} else {#
+				<img src="images/smart-movie-default.svg" />
+			#}#
 
-			<h4> #: data.movieTitle # </h4>
-			<p> #: data.description #</p>
-			<div style = "margin-left: 12px; margin-right: 12px;"> <span class="left">  Genre: #: data.genre# </span>  <span style="font-style: oblique" class="right">Rating:  #:data.rating# </span></div>
-			<div style=" clear:both; margin-left: 12px; margin-right: 12px;"><span > Plays for: #: data.runtime# </span></div>
-			<div style="clear:both;"></div>
-			<hr>
 		</div>
-	</div>
+		<div class="smartMovie-content">
+			<h4> #: data.movieTitle # </h4>
+			<p class="smartMovie-genre"> #: data.genre# </p>
+			# if(data.description !== undefined){#
+			<div class="smartMovie-descrBox">
+				<p class="smartMovie-descr">
+					#: data.description #
+				</p>
+			</div>
+			#}#
+			<p>
+				<span class="smartMovie-rating">
+					#
+						var imgStr = smartMovieView.showRating(data.rating, true);
+					#
+					#if(data.rating !== ''){#
+						<img src='#:imgStr#' class="gg-rating" />
+					#}#
+				</span>
+				# if(data.runtime !== undefined){#
+					<span class="smartMovie-runtime">#: data.runtime#</span>
+				#}#
+			</p>
+		</div>
+	<div class="clearfix"></div>
 </script>
 
 
 <script type="text/x-kendo-template" id="movieShowtimeTemplate">
-	<div style="clear: both;">
-		<div> #: data.theatreName # </div>
-		<div > <span style="float:right;"> #: data.showtimeString #</span></div>
-
-	</div>
+		<div class="movieShowtime-theatre"> #: data.theatreName # </div>
+		<div class="movieShowtime-time"><a class="btnClear"> #: data.showtimeString #</a></div>
+		<div class="clearfix"></div>
 </script>
 
 <!-- smartMovie movieGram modal -->
@@ -2606,37 +2623,55 @@
 			<a data-click="movieListView.onCancel" data-role="button" class="btnClear-grey" data-align="left">
 				<img src="images/nav-back.svg" />
 			</a>
+			<a data-align="right" data-role="button" data-click="ux.toggleSearch">
+				<img src="images/icon-search.svg"/>
+			</a>
+		</div>
+		<div class="gg_mainSearchBox" data-visible="false">
+			<div class="appendSearch">
+				<span class="searchIcon"><img src="images/search.svg" /></span>
+				<input type="text" class="doubleAppendSearch gg_mainSearchInput" placeholder="Movie title..." id="movieListView-query" />
+				<span class="enterSearch hidden"><a class="btnClear-grey"><img class="icon-sm" src="images/close.svg" /></a></span>
+			</div>
 		</div>
 	</div>
 	<div id="movieListView" >
 		<div class="tempSearchBox"  id="movieListView-searchinfo">
 			<div style="text-align: center;">
-				<span><span id="movieListView-searchDate" data-bind="text: dateString">Today</span> Near <span id="movieListView-searchLocation" data-bind="text: address"> Me</span> <a data-click="movieListView.onEdit" data-role="button" class="btnClear-grey" >Edit</a></span>
+				<span>
+					<span id="movieListView-searchDate" data-bind="text: dateString">Today</span>
+					near
+					<span id="movieListView-searchLocation" data-bind="text: address"> Me</span>
+					<a data-click="movieListView.onEdit" data-role="button" class="btnClear-grey" >Edit</a>
+				</span>
 			</div>
 		</div>
-		<div class="tempSearchBox"  id="movieListView-searchbox">
-			<div style="text-align: center;">
-				<input style="width: 95%;" type="search" placeholder="Movie title..." id="movieListView-query" />
-			</div>
-		</div>
-		<ul id="movieListView-listview" >
-
-		</ul>
+		<ul id="movieListView-listview"></ul>
 	</div>
 	<div id="movieDetailView" class="hidden">
-		<div class="event-view card" >
+
+		<div class="event-view card hidden">
 			<div class="event-details">
 				<h2 data-bind="text: movieTitle"></h2>
 				<p class="helper" data-bind="text: description"></p>
-				<div style = "margin-left: 12px; margin-right: 12px;"> <span class="left" data-bind="text: genre">  </span>  <span style="font-style: oblique" class="right" data-bind="text: rating"> </span></div>
-				<div style=" clear:both; margin-left: 12px; margin-right: 12px;"><span > Plays for: </span> <span data-bind="text: runtime"></span></div>
-				<p class="helper">Metascore:  <span  data-bind="text: metaScore"></span>   imdb Rating:  <span  data-bind="text: imdbRating"></span></p>
+				<div style = "margin-left: 12px; margin-right: 12px;">
+					<span class="left" data-bind="text: genre">  </span>
+					<span style="font-style: oblique" class="right" data-bind="text: rating"> </span>
+				</div>
+				<div style=" clear:both; margin-left: 12px; margin-right: 12px;">
+					<span > Plays for: </span>
+					<span data-bind="text: runtime"></span>
+				</div>
+				<p class="helper">
+					Metascore: <span  data-bind="text: metaScore"></span>
+					imdb Rating: <span  data-bind="text: imdbRating"></span>
+				</p>
 			</div>
 		</div>
 		<div style="text-align: center;">
 			<a class="btnClear" data-role="button" data-click="movieListView.onShowMovieList">Back to Movie List</a>
 		</div>
-		<ul id="movieDetailView-listview"  >
+		<ul id="movieDetailView-listview">
 
 		</ul>
 	</div>
@@ -2737,9 +2772,32 @@
 			</a>
 		</div>
 	</div>
+	<div class="smartMovie-poster">
+		<img src="#:data.imageUrl#" />
+	</div>
+	<div class="smartMovie-content-dark">
+		<h3 data-bind="text: movieTitle"></h3>
+		<p class="helper movie-preselected" data-bind="text: description"></p>
+		<p class="movie-preselected" id="smartMovie-rating">
+			<img src="" id="smartMovie-ratingImg" class="gg-rating" />
+			<span data-bind="text: runtime"></span>
+		</p>
+		<p class="movie-selected hidden"><span data-bind="text: theatreString"></span></p>
+		<p class="movie-selected hidden" id="smartMovieView-showtime"> at <span data-bind="text: showtimeString"></span></p>
+		<p class="movie-selected hidden"><a class="btnClear" data-role="button">Change</a></p>
+	</div>
 
-	<div class="event-view card" id="movie-viewMode">
-		<div class="event-details">
+	<div class="event-view" id="movie-viewMode">
+		<p class="helper movie-links hidden" id="smartMovieView-imdbLink">
+			<a data-role="button" data-click="smartMovieView.showLinkImdb" > imdb Review </a>
+		</p>
+		<p class="helper movie-links hidden " id="smartMovieView-webLink">
+			<a data-role="button" data-click="smartMovieView.showLinkWebSite" >Official Movie WebSite </a>
+		</p>
+		<p class="helper movie-links hidden " id="smartMovieView-fandangoLink">
+			<a data-role="button" data-click="smartMovieView.showLinkFandango" > Buy Tickets on Fandango</a>
+		</p>
+		<!--<div class="event-details">
 			<div style="height: 25%; float:left;">
 				<img data-bind="attr: { src: imageUrl}">
 			</div>
@@ -2748,14 +2806,19 @@
 			<p class="helper ">Genre <span  data-bind="text: genre"></span></p>
 			<p class="helper ">Rating <span  data-bind="text: rating"></span></p>
 			<p class="helper ">Runtime <span  data-bind="text: runtime"></span></p>
-			<p class="helper movie-links hidden" id="smartMovieView-imdbLink"> <a data-role="button" data-click="smartMovieView.showLinkImdb" > imdb Review </a></p>
-			<p class="helper movie-links hidden " id="smartMovieView-webLink"> <a data-role="button" data-click="smartMovieView.showLinkWebSite" >Official Movie WebSite </a> </p>
-			<p class="helper movie-links hidden " id="smartMovieView-fandangoLink"> <a data-role="button" data-click="smartMovieView.showLinkFandango" > Buy Tickets on Fandango</a></p>
+			<p class="helper movie-links hidden" id="smartMovieView-imdbLink">
+				<a data-role="button" data-click="smartMovieView.showLinkImdb" > imdb Review </a>
+			</p>
+			<p class="helper movie-links hidden " id="smartMovieView-webLink">
+				<a data-role="button" data-click="smartMovieView.showLinkWebSite" >Official Movie WebSite </a>
+			</p>
+			<p class="helper movie-links hidden " id="smartMovieView-fandangoLink">
+				<a data-role="button" data-click="smartMovieView.showLinkFandango" > Buy Tickets on Fandango</a>
+			</p>
 			<p class="helper movie-viewer hidden">Organized by <span id="smartMovieView-organizer" data-bind="text: senderName"></span></p>
-			<p class="helper movie-selected hidden">Theatre:  <span  data-bind="text: theatreString"></span></p>
-			<p class="helper movie-selected hidden" id="smartMovieView-showtime">Showtime:  <span  data-bind="text: showtimeString"></span></p>
+
 		</div>
-		<div style="clear: both;"></div>
+		<div style="clear: both;"></div>-->
 	</div>
 
 	<form class="movie-selected hidden">
@@ -2768,15 +2831,13 @@
 		</ul>
 	</form>
 
-	<div id="smartMovieView-showtimes" class="movie-creator hidden">
-		<h3>ShowTimes</h3>
-		<ul id="smartMovieView-listview" >
-
-		</ul>
+	<div id="smartMovieView-showtimes" class="movie-creator hidden" style="margin-top: 1em">
+		<p><img src="images/icon-showtime.svg" class="icon-md"/> Select a showtime</p>
+		<ul id="smartMovieView-listview"></ul>
 	</div>
 	<div class="footer" data-role="footer">
-		<a class="btnFull-modal btnPrimary hidden" data-role="button" id=smartMovieViewSaveBtn" data-click="smartMovieView.onSave">Send SmartMovie</a>
-		<a class="btnFull-modal btnPrimary hidden" data-role="button" id=smartMovieViewDoneBtn" data-click="smartMovieView.onDone">Done</a>
+		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartMovieViewSaveBtn" data-click="smartMovieView.onSave">Send SmartMovie</a>
+		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartMovieViewDoneBtn" data-click="smartMovieView.onDone">Done</a>
 	</div>
 </div>
 
