@@ -1347,8 +1347,75 @@ var movieListView = {
         $("#movieListView-searchbox").removeClass('hidden');
     },
 
-    processMoviePosters : function () {
+    finalizeMoviePosters : function () {
+        var movieArray = movieListView.movieArray;
 
+        for (var i=0; i< movieArray.length; i++) {
+            var movie = movieArray[i];
+            var poster = movieListView.posterArray[movie.tmsId];
+
+            if (poster !== undefined && poster !== null) {
+
+                movie.imageUrl = poster;
+
+            }
+
+        }
+        movieListView.moviesDS.data(movieArray);
+        movieListView.moviesDS.sync();
+        $("#movieListView-searchbox").removeClass('hidden');
+    },
+
+    _findPoster : function (movieTitle, tmsId, callback) {
+
+        var imageUrl = null;
+        var theMovieDBUrl = 'http://api.themoviedb.org/3/search/movie?api_key=4b2d2dd99958a2e41bb9b342195e74c1&query='+encodeURIComponent(movieTitle);
+        $.ajax({
+            url: theMovieDBUrl,
+            // dataType:"jsonp",
+            //  contentType: 'application/json',
+            success: function (result, textStatus, jqXHR) {
+                if (result.total_results >= 1) {
+                    var imageUrl = 'http://image.tmdb.org/t/p/w342/';
+                    if (result.results.length > 0) {
+
+                        imageUrl = imageUrl + result.results[0].poster_path;
+                    }
+                }
+                callback(imageUrl);
+            },
+            error: function () {
+                callback(imageUrl);
+            }
+        });
+    },
+
+    processMoviePosters : function () {
+        var movieArray = movieListView.movieArray, len = movieArray.length, counter = len;
+
+        mobileNotify("Getting Movie Posters and ratings...");
+
+        // Fetch the movie poster and rating data
+        for (var i=0; i< len; i++) {
+            var movie = movieArray[i];
+           this._findPoster(movie.movieTitle, movie.tmsId, function (poster) {
+
+                if (poster !== null) {
+                    movieListView.posterArray[poster.tmsId] = poster;
+                }
+
+                // Decrement the counter as we get the data...
+                if (--counter === 0) {
+                    movieListView.finalizeMoviePosters(movieArray);
+                }
+
+            });
+        }
+
+
+    },
+
+    processMovieDetails : function () {
         var movieArray = movieListView.movieArray, len = movieArray.length, counter = len;
 
         mobileNotify("Getting Movie Posters and ratings...");
