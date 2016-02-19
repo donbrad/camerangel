@@ -928,8 +928,6 @@ var moviePosterPhoto  = {
                         callback(obj);
                     }
 
-
-
                 } else {
                     mobileNotify("Can't get poster info for " + movieTitle);
                     callback(null);
