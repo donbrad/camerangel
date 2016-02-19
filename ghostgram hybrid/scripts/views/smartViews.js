@@ -1356,7 +1356,7 @@ var movieListView = {
 
             if (poster !== undefined && poster !== null) {
 
-                movie.imageUrl = poster;
+                movie.imageUrl = poster.imageUrl;
 
             }
 
@@ -1369,6 +1369,7 @@ var movieListView = {
     _findPoster : function (movieTitle, tmsId, callback) {
 
         var imageUrl = null;
+        var poster = {tmsId : tmsId, imageUrl : null};
         var theMovieDBUrl = 'http://api.themoviedb.org/3/search/movie?api_key=4b2d2dd99958a2e41bb9b342195e74c1&query='+encodeURIComponent(movieTitle);
         $.ajax({
             url: theMovieDBUrl,
@@ -1379,13 +1380,13 @@ var movieListView = {
                     var imageUrl = 'http://image.tmdb.org/t/p/w342/';
                     if (result.results.length > 0) {
 
-                        imageUrl = imageUrl + result.results[0].poster_path;
+                        poster.imageUrl = imageUrl + result.results[0].poster_path;
                     }
                 }
-                callback(imageUrl);
+                callback(poster);
             },
             error: function () {
-                callback(imageUrl);
+                callback(null);
             }
         });
     },
