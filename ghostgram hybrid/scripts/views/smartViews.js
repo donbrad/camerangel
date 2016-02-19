@@ -1368,9 +1368,13 @@ var movieListView = {
 
     _findPoster : function (movieTitle, tmsId, callback) {
 
+        var title = movieTitle.replace(': The IMAX Experience', '');
+        title = title.replace('3D', '');
+        // Todo: don add movie title normalization
         var imageUrl = null;
         var poster = {tmsId : tmsId, imageUrl : null};
-        var theMovieDBUrl = 'http://api.themoviedb.org/3/search/movie?api_key=4b2d2dd99958a2e41bb9b342195e74c1&query='+encodeURIComponent(movieTitle);
+
+        var theMovieDBUrl = 'http://api.themoviedb.org/3/search/movie?api_key=4b2d2dd99958a2e41bb9b342195e74c1&query='+encodeURIComponent(title);
         $.ajax({
             url: theMovieDBUrl,
             // dataType:"jsonp",
