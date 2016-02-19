@@ -1736,7 +1736,7 @@ var smartMovieView = {
 
     onSave: function (e) {
         _preventDefault(e);
-
+        // Todo: don create and send smart movie
         smartMovieView.onDone();
     },
 
@@ -1825,11 +1825,31 @@ var smartMovieView = {
         }
     },
 
+    updateMovieLinks : function () {
+        var activeObj = smartMovieView.activeObject;
+        $('.movie-links').addClass('hidden');
+
+        if (activeObj.imdbId !== null) {
+            $('#smartMovieView-imdbLink').removeClass('hidden');
+        }
+
+        if (activeObj.officialUrl !== null) {
+            $('#smartMovieView-webLink').removeClass('hidden');
+        }
+
+        if (activeObj.ticketUrl !== null) {
+            $('#smartMovieView-fandangoLink').removeClass('hidden');
+        }
+
+
+    },
+
     initActiveObject : function (movie) {
         var thisObj = smartMovieView.activeObject;
 
         this.setCreatorMode();
         this.setMovieSelected(false);
+
         // Build the smartMovie / movieGram object
 
         thisObj.set("uuid", uuid.v4());
@@ -1845,7 +1865,11 @@ var smartMovieView = {
         thisObj.set('imdbRating', movie.imdbRating);
         thisObj.set('imdbVotes', movie.imdbVotes);
         thisObj.set('metaScore', movie.metaScore);
+        if (movie.officialUrl === undefined)
+            movie.officialUrl = null;
         thisObj.set('officialUrl', movie.officialUrl);
+        if (movie.ticketUrl === undefined)
+            movie.ticketUrl = null;
         thisObj.set('ticketUrl', movie.ticketUrl);
         thisObj.set('rating', movie.rating);
         thisObj.set('runtime', movie.runtime);
@@ -1874,10 +1898,13 @@ var smartMovieView = {
         thisObj.set('wasSent', false);
 
         smartMovieView.processShowTimes(movie.showtimes);
+
+        this.updateMovieLinks()
     },
 
     setActiveObject: function (obj) {
         var thisObj = smartMovieView.activeObject;
+
 
         this.setViewerMode();
         this.setMovieSelected(true);
@@ -1899,6 +1926,8 @@ var smartMovieView = {
         thisObj.set('action', obj.action);
         thisObj.set('description', obj.description);
         thisObj.set('imageUrl', obj.imageUrl);
+        thisObj.set('officialUrl', obj.officialUrl);
+        thisObj.set('ticketUrl', obj.ticketUrl);
         thisObj.set('address', obj.address);
         thisObj.set('googleId', obj.googleId);
         thisObj.set('calendarId', obj.calendarId);
@@ -1911,6 +1940,8 @@ var smartMovieView = {
         thisObj.set('addToCalendar', obj.addToCalendar);
         thisObj.set('comment', obj.comment);
         thisObj.set('wasSent', obj.wasSent);
+
+        this.updateMovieLinks();
     },
 
     openModalSelectShowtime: function (movie, callback) {
@@ -1997,6 +2028,26 @@ var smartMovieView = {
 
         smartMovieView.checkExpired();
         $("#smartMovieModal").data("kendoMobileModalView").open();
+    },
+
+    showLinkImdb: function (e) {
+        _preventDefault(e);
+        var imdbUrl = 'http://www.imdb.com/title/'+ smartMovieView.activeObject.imdbId + '/';
+
+        var ref = window.open(imdbUrl, '_blank', 'location=no');
+
+    },
+
+    showLinkWebSite: function (e) {
+        _preventDefault(e);
+        var webUrl = smartMovieView.activeObject.officialUrl;
+        var ref = window.open(webUrl, '_blank', 'location=no');
+    },
+
+    showLinkFandango: function (e) {
+        _preventDefault(e);
+        var fandangoUrl = smartMovieView.activeObject.ticketUrl;
+        var ref = window.open(fandangoUrl, '_blank', 'location=no');
     },
 
     onShow: function (e) {

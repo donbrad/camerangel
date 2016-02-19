@@ -32,7 +32,8 @@ var deviceModel = {
         hasPhotos: false,
         hasNotes: false,
         hasNotifications: false,
-        hasSmartObjects: false,
+        hasSmartEvents: false,
+        hasSmartMovies: false,
         hasTags: false,
         introFetched: false,
         pubnubInit: false,
@@ -88,7 +89,8 @@ var deviceModel = {
         deviceModel.state.hasPrivateChannels = false;
         deviceModel.state.hasPlaces = false;
         deviceModel.state.hasPhotos = false;
-        deviceModel.state.hasSmartObjects = false;
+        deviceModel.state.hasSmartEvents = false;
+        deviceModel.state.hasSmartMovies = false;
         deviceModel.state.hasTags = false;
         deviceModel.state.hasNotes = false;
         deviceModel.state.hasNotifications = false;
@@ -116,7 +118,7 @@ var deviceModel = {
     isParseSyncComplete: function () {
 
         var channels = deviceModel.state.hasChannels, photos = deviceModel.state.hasPhotos,
-            contacts = deviceModel.state.hasContacts, objects = deviceModel.state.hasSmartObjects,
+            contacts = deviceModel.state.hasContacts, objects = deviceModel.state.hasSmartEvents,
             notes = deviceModel.state.hasNotes, tags = deviceModel.state.hasTags;
 
         if (channels && photos && contacts && objects & notes & tags) {
