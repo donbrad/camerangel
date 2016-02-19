@@ -2159,7 +2159,7 @@ var channelView = {
     },
 
     messageSearchLoad : function (event) {
-		mobileNotify('url: ' + event.url);
+		channelView.searchUrl = event.url;
     },
 
     messageSearchError : function (event) {
@@ -2170,7 +2170,7 @@ var channelView = {
         var exitUrl = event.url;
 
         if (channelView.winRef !== undefined && channelView.winRef !== null) {
-            //channelView.winRef.removeEventListener('loadstart', channelView.messageSearchLoad);
+            channelView.winRef.removeEventListener('loadstart', channelView.messageSearchLoad);
             channelView.winRef.removeEventListener("exit", channelView.messageSearchEnd);
             channelView.winRef = null;
         }
@@ -2188,8 +2188,8 @@ var channelView = {
         }
         channelView.winQuery = '?q='+query;
         channelView.winRef =  window.open(encodeURI(searchUrl), '_blank', 'location=yes');
-     /*   channelView.winRef.addEventListener('loadstart', channelView.messageSearchLoad);
-        channelView.winRef.addEventListener('loaderror', channelView.messageSearchError); */
+        channelView.winRef.addEventListener('loadstart', channelView.messageSearchLoad);
+     /*   channelView.winRef.addEventListener('loaderror', channelView.messageSearchError); */
         channelView.winRef.addEventListener("exit", channelView.messageSearchEnd);
 
     },
