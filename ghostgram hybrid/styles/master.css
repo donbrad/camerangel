@@ -333,6 +333,16 @@
   height: 4.5em;
   overflow-x: hidden;
 }
+.smartMovie-content-dark {
+  background-color: #4A4A4A !important;
+  color: #fff;
+}
+.smartMovie-content-dark h3 {
+  color: #fff;
+}
+.smartMovie-content-dark p {
+  font-size: 12px;
+}
 /*
 .smartMovie-descrBox:before {
   content: "...";
@@ -345,7 +355,33 @@
   right: 20px;
 }
 */
-.smartMovie-content {
+.movie-preselected {
+  opacity: 1;
+}
+#smartMovieModal > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
+  background: #fff;
+}
+#smartMovieView-listview {
+  width: 100%;
+  background: #fff;
+}
+#smartMovieView-listview li {
+  margin: 0.25em 1em;
+}
+.movieShowtime-theatre {
+  width: 70%;
+  float: left;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.movieShowtime-time {
+  width: 30%;
+  float: right;
+  text-align: right;
+}
+.smartMovie-content,
+.smartMovie-content-dark {
   float: left;
   width: 67.5%;
   padding-top: 0.5em;

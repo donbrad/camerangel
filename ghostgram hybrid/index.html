@@ -2574,7 +2574,12 @@
 
 <script type="text/x-kendo-template" id="movieListTemplate">
 	<div class="smartMovie-poster">
-			<img src="#:data.imageUrl#" />
+			#if(data.imgUrl !== ""){#
+				<img src="#:data.imageUrl#" />
+			#} else {#
+				<img src="images/smart-movie-default.svg" />
+			#}#
+
 		</div>
 		<div class="smartMovie-content">
 			<h4> #: data.movieTitle # </h4>
@@ -2589,29 +2594,12 @@
 			<p>
 				<span class="smartMovie-rating">
 					#
-						var src = "";
-						switch(data.rating){
-						case "G":
-							src = "images/gg-rated-g.svg";
-							break;
-						case "PG":
-							src = "images/gg-rated-pg.svg";
-							break;
-						case "PG-13":
-							src = "images/gg-rated-pg13.svg";
-							break;
-						case "R":
-							src = "images/gg-rated-r.svg";
-							break;
-						case "NC-17":
-							src = "images/gg-rated-nc17.svg";
-							break;
-						case "N/A":
-							src = "";
-							break;
-						}
+						console.log(data.rating);
+						var imgStr = smartMovieView.showRating(data.rating, true);
 					#
-					<img src="#=src#" class="gg-rating" />
+					#if(data.rating !== ''){#
+						<img src='#:imgStr#' class="gg-rating" />
+					#}#
 				</span>
 				# if(data.runtime !== undefined){#
 					<span class="smartMovie-runtime">#: data.runtime#</span>
@@ -2623,11 +2611,9 @@
 
 
 <script type="text/x-kendo-template" id="movieShowtimeTemplate">
-	<div style="clear: both;">
-		<div> #: data.theatreName # </div>
-		<div > <span style="float:right;"> #: data.showtimeString #</span></div>
-
-	</div>
+		<div class="movieShowtime-theatre"> #: data.theatreName # </div>
+		<div class="movieShowtime-time"><a class="btnClear"> #: data.showtimeString #</a></div>
+		<div class="clearfix"></div>
 </script>
 
 <!-- smartMovie movieGram modal -->
@@ -2653,13 +2639,19 @@
 	<div id="movieListView" >
 		<div class="tempSearchBox"  id="movieListView-searchinfo">
 			<div style="text-align: center;">
-				<span><span id="movieListView-searchDate" data-bind="text: dateString">Today</span> Near <span id="movieListView-searchLocation" data-bind="text: address"> Me</span> <a data-click="movieListView.onEdit" data-role="button" class="btnClear-grey" >Edit</a></span>
+				<span>
+					<span id="movieListView-searchDate" data-bind="text: dateString">Today</span>
+					near
+					<span id="movieListView-searchLocation" data-bind="text: address"> Me</span>
+					<a data-click="movieListView.onEdit" data-role="button" class="btnClear-grey" >Edit</a>
+				</span>
 			</div>
 		</div>
 		<ul id="movieListView-listview"></ul>
 	</div>
 	<div id="movieDetailView" class="hidden">
-		<div class="event-view card" >
+
+		<div class="event-view card hidden">
 			<div class="event-details">
 				<h2 data-bind="text: movieTitle"></h2>
 				<p class="helper" data-bind="text: description"></p>
@@ -2781,8 +2773,21 @@
 			</a>
 		</div>
 	</div>
+	<div class="smartMovie-poster">
+		<img src="#:data.imageUrl#" />
+	</div>
+	<div class="smartMovie-content-dark">
+		<h3 data-bind="text: movieTitle"></h3>
+		<p class="helper movie-preselected" data-bind="text: description"></p>
+		<p class="movie-preselected" id="smartMovie-rating">
+			<img src="" id="smartMovie-ratingImg" class="gg-rating" />
+			<span data-bind="text: runtime"></span>
+		</p>
+		<p class="helper movie-selected hidden">Theatre:  <span  data-bind="text: theatreString"></span></p>
+		<p class="helper movie-selected hidden" id="smartMovieView-showtime">Showtime:  <span  data-bind="text: showtimeString"></span></p>
+	</div>
 
-	<div class="event-view card" id="movie-viewMode">
+	<div class="event-view card hidden" id="movie-viewMode">
 		<div class="event-details">
 			<div style="height: 25%; float:left;">
 				<img data-bind="attr: { src: imageUrl}">
@@ -2793,8 +2798,7 @@
 			<p class="helper ">Rating <span  data-bind="text: rating"></span></p>
 			<p class="helper ">Runtime <span  data-bind="text: runtime"></span></p>
 			<p class="helper movie-viewer hidden">Organized by <span id="smartMovieView-organizer" data-bind="text: senderName"></span></p>
-			<p class="helper movie-selected hidden">Theatre:  <span  data-bind="text: theatreString"></span></p>
-			<p class="helper movie-selected hidden" id="smartMovieView-showtime">Showtime:  <span  data-bind="text: showtimeString"></span></p>
+
 		</div>
 		<div style="clear: both;"></div>
 	</div>
@@ -2809,11 +2813,9 @@
 		</ul>
 	</form>
 
-	<div id="smartMovieView-showtimes" class="movie-creator hidden">
-		<h3>ShowTimes</h3>
-		<ul id="smartMovieView-listview" >
-
-		</ul>
+	<div id="smartMovieView-showtimes" class="movie-creator hidden" style="margin-top: 1em">
+		<p><img src="images/icon-showtime.svg" class="icon-md"/> Select a showtime</p>
+		<ul id="smartMovieView-listview"></ul>
 	</div>
 	<div class="footer" data-role="footer">
 		<a class="btnFull-modal btnPrimary hidden" data-role="button" id=smartMovieViewSaveBtn" data-click="smartMovieView.onSave">Send SmartMovie</a>
