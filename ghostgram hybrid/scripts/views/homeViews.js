@@ -11,7 +11,7 @@
  */
 
 var homeView = {
-    _radius: 30, // 30 meters or approx 100 ft
+    _radius: 90, // 90 meters or approx 300 ft
 
     openNotificationAction: function(e){
         // todo - wire notification action
