@@ -21,12 +21,12 @@ var homeView = {
     openLocateMeModal: function () {
         $('#modalview-locate-me').data('kendoMobileModalView').open();
 
-        navigator.geolocation.getCurrentPosition( function (position) {
-            var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        mapModel.getCurrentPosition(true,function (lat, lng) {
+            var latlng = new google.maps.LatLng(lat, lng);
             var places = APP.map.googlePlaces;
             var nearbyResults = new kendo.data.DataSource();
 
-            var userPlaces = placesView.matchLocationToUserPlace(position.coords.latitude, position.coords.longitude);
+            var userPlaces = placesView.matchLocationToUserPlace(lat, lng);
 
             userPlaces.forEach( function (userPlace ) {
                 nearbyResults.add(userPlace);

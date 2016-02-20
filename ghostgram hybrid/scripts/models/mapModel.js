@@ -261,9 +261,12 @@ var mapModel = {
         }
     },
 
-    getCurrentPosition : function (callback) {
+    getCurrentPosition : function (force, callback) {
         var currentPing = ggTime.currentTimeInSeconds();
 
+        if (force) {
+            currentPing = mapModel.lastPingSeconds + mapModel._pingInterval + 10;
+        }
         if (currentPing > mapModel.lastPingSeconds + mapModel._pingInterval) {
             mapModel.lastPingSeconds = ggTime.currentTimeInSeconds();
             var options = mapModel.gpsOptions;
@@ -284,7 +287,7 @@ var mapModel = {
 
     getCurrentAddress : function (callback) {
 
-        mapModel.getCurrentPosition (function(lat, lng) {
+        mapModel.getCurrentPosition (false,function(lat, lng) {
             if (mapModel.isNewLocation(lat,lng)) {
                 // User is at a new location
                 var lat = parseFloat(position.coords.latitude.toFixed(6)), lng = parseFloat(position.coords.longitude.toFixed(6));
