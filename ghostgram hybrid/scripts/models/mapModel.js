@@ -42,7 +42,7 @@ var mapModel = {
 
     init: function () {
 
-        mapModel.lastPingSeconds = ggTime.currentTimeInSeconds() - 11;
+        mapModel.lastPingSeconds = ggTime.currentTimeInSeconds();
 
         var location = window.localStorage.getItem('ggLastPosition');
 
@@ -65,8 +65,6 @@ var mapModel = {
         mapModel.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
         mapModel.geocoder =  new google.maps.Geocoder();
         mapModel.googlePlaces = new google.maps.places.PlacesService(mapModel.googleMap);
-
-        mapModel.lastPingSeconds = ggTime.currentTimeInSeconds() + mapModel._pingInterval - 1;
 
         mapModel.getCurrentAddress(function (isNew, address){
 
