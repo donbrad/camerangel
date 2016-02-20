@@ -21,7 +21,7 @@ var homeView = {
     openLocateMeModal: function () {
         $('#modalview-locate-me').data('kendoMobileModalView').open();
 
-        mapModel.getCurrentPosition(true,function (lat, lng) {
+        mapModel.getCurrentPosition(true, function (lat, lng) {
             var latlng = new google.maps.LatLng(lat, lng);
             var places = APP.map.googlePlaces;
             var nearbyResults = new kendo.data.DataSource();
