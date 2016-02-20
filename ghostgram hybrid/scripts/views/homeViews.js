@@ -410,7 +410,8 @@ var userStatusView = {
         $("#statusCharCount").text(userStatusView._profileStatusMax);
         $(".statusCharacterCount").css("color", "#979797");
 
-        if (user.isCheckedIn && user.currentPlaceUUID !== null) {
+       // if (user.isCheckedIn && user.currentPlaceUUID !== null) {
+        if (user.isCheckedIn) {
             // hide location if the user is not checked in
             $("#profileLocation, #checked-in-place").removeClass("hidden");
 
