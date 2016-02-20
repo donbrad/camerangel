@@ -260,13 +260,13 @@ var smartEvent = {
 
     },
 
-    smartAddObject : function (objectIn, callback) {
+    smartaddEvent : function (objectIn, callback) {
         var objectId = objectIn.uuid;
 
         var event = smartEvent.findObject(objectId);
         if ( event  === undefined) {
             // Event doesnt exist -- need to create it
-            smartEvent.addObject(objectIn, callback);
+            smartEvent.addEvent(objectIn, callback);
         } else {
             // Event exists, so just return current instance
             if (callback !== undefined && callback !== null) {
@@ -354,7 +354,7 @@ var smartEvent = {
         }
     },
 
-    addObject : function (objectIn, callback) {
+    addEvent : function (objectIn, callback) {
         var smartEvents = Parse.Object.extend(smartEvent._parseClass);
         var smartOb = new smartEvents();
 

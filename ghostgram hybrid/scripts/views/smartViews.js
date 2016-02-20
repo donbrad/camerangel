@@ -726,7 +726,7 @@ var smartEventView = {
             commentStr = "Looking forward to it!"
         }
 
-        smartEvent.smartAddObject(thisEvent, function (event) {
+        smartEvent.smartaddEvent(thisEvent, function (event) {
 
             mobileNotify("Graciously accepting " + event.title);
 
@@ -747,7 +747,7 @@ var smartEventView = {
         }
 
 
-        smartEvent.smartAddObject(thisEvent, function (event) {
+        smartEvent.smartaddEvent(thisEvent, function (event) {
 
             mobileNotify("Respectfully declining " + event.title);
 
@@ -806,7 +806,7 @@ var smartEventView = {
         thisObject.rsvpList = thisObj.rsvpList;
         thisObject.inviteList = thisObj.inviteList;
 
-        smartEvent.addObject(thisObject);
+        smartEvent.addEvent(thisObject);
 
 
     },
@@ -1806,10 +1806,38 @@ var smartMovieView = {
         }
     },
 
+    addToCalendar : function (e) {
+        _preventDefault(e);
+
+        var thisObj = smartMovieView.activeObject;
+        var startDate = new Date(thisObj.showtime), endDate = new Date(moment(thisObj.showtime).add(150, 'minutes'));
+
+
+        if (window.navigator.simulator !== undefined) {
+            mobileNotify("Not supported in emulator");
+        } else {
+            window.plugins.calendar.createEvent(thisObj.movieTitle,
+                thisObj.theatreName,
+                thisObj.description,
+                startDate,
+                endDate,
+                function (message) {
+                    thisObj.set('calendarId', message);
+                    $('#smartEventView-view-calendar-add').addClass('hidden');
+                    $('#smartEventView-view-calendar').removeClass('hidden');
+                },
+                function (message) {
+                    mobileNotify('Calendar error :' + message);
+                });
+        }
+
+    },
 
     onSave: function (e) {
         _preventDefault(e);
-        // Todo: don create and send smart movie
+
+
+
         smartMovieView.onDone();
     },
 
@@ -1957,7 +1985,6 @@ var smartMovieView = {
         thisObj.set('type', "movie");
         thisObj.set('theatreId', null);
         thisObj.set('theatreName', null);
-        thisObj.set('theatreString', null);
         thisObj.set('showtime', null);
         thisObj.set('showtimeString', null);
         thisObj.set('action', null);
@@ -2000,7 +2027,6 @@ var smartMovieView = {
         thisObj.set('type', obj.type);
         thisObj.set('theatreId', obj.theatreId);
         thisObj.set('theatreName', obj.theatreName);
-        thisObj.set('theatreString', obj.theatreString);
         thisObj.set('showtimes', obj.showtimes);
         thisObj.set('showtimeString', obj.showtimeString);
         thisObj.set('action', obj.action);

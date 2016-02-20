@@ -1592,7 +1592,7 @@ var channelView = {
     messageAddSmartEvent : function (smartObj) {
         smartObj.channelId = channelView._channelId;
 
-        smartEvent.smartAddObject(smartObj);
+        smartEvent.smartaddEvent(smartObj);
 
         channelView.messageObjects.push(smartObj);
 
@@ -1764,8 +1764,13 @@ var channelView = {
 
                 if (object !== null) {
                     // User is interacting with the object so add it, if it doesn't already exist
-                    smartEvent.smartAddObject(object);
-                    smartEventView.openModal(object);
+                    if (object.ggType === 'Event') {
+                        smartEvent.smartaddEvent(object);
+                        smartEventView.openModal(object);
+                    } else if (object.ggType === 'Movie') {
+
+                    }
+
                 }
 
             } else {
@@ -1783,18 +1788,6 @@ var channelView = {
         var dateStr = moment(date).format('ddd MMM Do');
         var localTime = moment(date).format("LT");
 
-        /*var objectUrl = '<div><span class="btnSmart" data-role="button" data-objectid="' + objectId +
-            '" id="chatobject_' + objectId + '"'+
-            'data-click="channelView.onObjectClick" >' +
-            '<span class="btnSmart-type">' +
-            '<img src="images/smart-event-light.svg" class="icon-md" />' +
-            '</span>' +
-            '<span class="btnSmart-content">' +
-            '<p class="textClamp btnSmart-title">' + smartEvent.title + '</p>' +
-            '<p class="textClamp btnSmart-date">' + dateStr + ' ' + localTime + '</p>' +
-            '<p class="textClamp btnSmart-date">' + smartEvent.placeName + '</p>' +
-            '</span>' +
-            '</span></div>';*/
         var placeName = smartEvent.placeName;
         if(placeName === null){
             placeName = "";
@@ -1816,6 +1809,35 @@ var channelView = {
         var fullMessage = message + objectUrl;
 
         channelView.activeMessage.objects.push(smartEvent);
+
+        return (fullMessage);
+
+    },
+
+    addSmartMovieToMessage: function (smartMovie, message) {
+
+        //  var editor = $("#messageTextArea").data("kendoEditor");
+        var date = smartMovie.showtime, objectId = smartMovie.uuid;
+
+        var dateStr = moment(date).format('ddd MMM Do h:mm A');
+
+
+        var objectUrl = '<div><span class="btnSmart" data-role="button" data-objectid="' + objectId +
+            '" id="movieobject_' + objectId + '"'+
+            'data-click="channelView.onObjectClick" >' +
+            '<span class="btnSmart-type">' +
+            '<img src="images/smart-movie.svg" class="icon-smartBtn" />' +
+            '</span>' +
+            '<span class="btnSmart-content">' +
+            '<span class="btnSmart-title">' + smartMovie.movieTitle + ' </span><br /> ' +
+            '<span class="btnSmart-date">' + dateStr + '</span><br /> ' +
+            '<span class="btnSmart-date">' + smartMovie.theatreName + '</span> ' +
+            '</span>' +
+            '</span></div>';
+
+        var fullMessage = message + objectUrl;
+
+        channelView.activeMessage.objects.push(smartMovie);
 
         return (fullMessage);
 
