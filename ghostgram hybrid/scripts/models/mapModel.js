@@ -154,8 +154,8 @@ var mapModel = {
 
     setLocationAndBounds : function () {
         var geolocation = {
-            lat: mapModel.lat,
-            lng: mapModel.lng
+            lat: mapModel.validNumber(mapModel.lat),
+            lng: mapModel.validNumber(mapModel.lng)
         };
 
         mapModel._location = geolocation;
