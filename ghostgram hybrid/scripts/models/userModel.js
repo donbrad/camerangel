@@ -601,7 +601,7 @@ var userStatus = {
         var lat = userModel.currentUser.lat;
        /* if (lat !== null)
             lat = lat.toFixed(6);*/
-        status.set('lat', lat);
+        status.set('lat', userModel.currentUser.lat);
         var lng = userModel.currentUser.lng;
        /* if (lng !== null)
             lng = lng.toFixed(6);*/
