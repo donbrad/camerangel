@@ -1592,7 +1592,16 @@ var channelView = {
     messageAddSmartEvent : function (smartObj) {
         smartObj.channelId = channelView._channelId;
 
-        smartEvent.smartaddEvent(smartObj);
+        smartEvent.smartAddEvent(smartObj);
+
+        channelView.messageObjects.push(smartObj);
+
+    },
+
+    messageAddSmartMovie : function (smartObj) {
+        smartObj.channelId = channelView._channelId;
+
+        smartMovie.smartAddMovie(smartObj);
 
         channelView.messageObjects.push(smartObj);
 
@@ -1765,10 +1774,11 @@ var channelView = {
                 if (object !== null) {
                     // User is interacting with the object so add it, if it doesn't already exist
                     if (object.ggType === 'Event') {
-                        smartEvent.smartaddEvent(object);
+                        smartEvent.smartAddEvent(object);
                         smartEventView.openModal(object);
                     } else if (object.ggType === 'Movie') {
-
+                        smartMovie.smartAddMovie(object);
+                        smartMovieView.openModal(object);
                     }
 
                 }
@@ -2348,6 +2358,20 @@ var channelView = {
         });
     },
 
+
+    messageMovie : function (e) {
+        _preventDefault(e);
+        movieListView.openModal( null, function (movie) {
+
+            if (movie !== null) {
+                channelView.messageAddSmartMovie(event);
+                mobileNotify("Sending Smart Movie...");
+                channelView.messageSend();
+            }
+
+        });
+    },
+
     messageEvent : function (e) {
         _preventDefault(e);
         mobileNotify("Chat Event isn't wired up yet");
@@ -2362,20 +2386,8 @@ var channelView = {
     messageMusic : function (e) {
         _preventDefault(e);
         mobileNotify("Chat Music isn't wired up yet");
-    },
-
-    messageMovie : function (e) {
-        _preventDefault(e);
-        movieListView.openModal( null, function (movie) {
-
-            if (movie !== null) {
-                //  channelView.messageAddSmartEvent(event);
-                mobileNotify("Sending Smart Movie...");
-                // channelView.messageSend();
-            }
-
-        });
     }
+
 
 };
 

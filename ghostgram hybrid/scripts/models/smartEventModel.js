@@ -260,7 +260,7 @@ var smartEvent = {
 
     },
 
-    smartaddEvent : function (objectIn, callback) {
+    smartAddEvent : function (objectIn, callback) {
         var objectId = objectIn.uuid;
 
         var event = smartEvent.findObject(objectId);

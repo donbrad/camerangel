@@ -450,10 +450,7 @@ var smartEventView = {
                         var durationStr = juration.stringify(duration * 60, { format: 'long' });
                         smartEventView._activeObject.durationString = durationStr;
                         $("#smartEventView-duration").val(durationStr);
-
                     }
-
-
                 }
             });
 
@@ -726,7 +723,7 @@ var smartEventView = {
             commentStr = "Looking forward to it!"
         }
 
-        smartEvent.smartaddEvent(thisEvent, function (event) {
+        smartEvent.smartAddEvent(thisEvent, function (event) {
 
             mobileNotify("Graciously accepting " + event.title);
 
@@ -747,7 +744,7 @@ var smartEventView = {
         }
 
 
-        smartEvent.smartaddEvent(thisEvent, function (event) {
+        smartEvent.smartAddEvent(thisEvent, function (event) {
 
             mobileNotify("Respectfully declining " + event.title);
 
@@ -789,7 +786,7 @@ var smartEventView = {
         thisObject.address = thisObj.address;
         thisObject.senderUUID = userModel.currentUser.userUUID;
         thisObject.senderName = userModel.currentUser.name;
-        thisObject.channelId = thisObj.channelId;
+        thisObject.channelId = channelView._channelId;
         thisObject.calendarId = thisObj.calendarId;
         thisObject.eventChatId = thisObj.eventChatId;
         thisObject.lat = thisObj.lat;
@@ -1836,7 +1833,16 @@ var smartMovieView = {
     onSave: function (e) {
         _preventDefault(e);
 
+        var thisObj = smartMovieView.activeObject;
 
+        thisObj.set('channelId', channelView._channelId);
+        thisObj.set('senderName', userModel.currentUser.name);
+
+        if (thisObj.addToCalendar && thisObj.calendarId === null) {
+            smartMovieView.addToCalendar();
+        }
+
+        smartMovie.addMovie(thisObj);
 
         smartMovieView.onDone();
     },

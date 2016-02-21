@@ -45,6 +45,44 @@ var smartMovie = {
         });
     },
 
+    queryMovie: function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = smartMovie.moviesDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+
+        dataSource.filter(cacheFilter);
+
+        return (view[0]);
+    },
+
+    // Find all objects that aren't deleted...
+    findMovie: function (uuid) {
+        var result = smartMovie.queryMovie({ field: "uuid", operator: "eq", value: uuid });
+
+        return(result);
+    },
+
+    smartAddMovie : function (objectIn, callback) {
+        var objectId = objectIn.uuid;
+
+        var event = smartMovie.findObject(objectId);
+        if ( event  === undefined) {
+            // Event doesnt exist -- need to create it
+            smartMovie.addMovie(objectIn, callback);
+        } else {
+            // Event exists, so just return current instance
+            if (callback !== undefined && callback !== null) {
+                callback(event);
+            }
+        }
+    },
+
     addMovie : function (objectIn, callback) {
         var smartMovies = Parse.Object.extend(smartMovie._parseClass);
         var smartOb = new smartMovies();
