@@ -176,13 +176,13 @@ var placesView = {
 
 
         //$("#places > div.footerMenu.km-footer > a").removeAttr('href').css("display", "none");
-        
-        mapModel.getCurrentAddress(function (isNew, address) {
+
+        mapModel.getCurrentPosition(true, function (lat, lng) {
             // Is this a new location
-            if (isNew) {
+           // if (isNew) {
                 placesView.computePlaceDSDistance();
                 // modalView.openInfo("New Location","Are you somewhere new? Create a new Place!", "OK", null);
-            }
+           // }
 
         });
 
