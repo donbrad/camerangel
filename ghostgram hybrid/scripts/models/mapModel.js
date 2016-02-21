@@ -286,6 +286,7 @@ var mapModel = {
     getCurrentAddress : function (callback) {
 
         mapModel.getCurrentPosition (true,function(lat, lng) {
+
             if (mapModel.isNewLocation(lat,lng)) {
                 // User is at a new location
                 var lat = parseFloat(position.coords.latitude.toFixed(6)), lng = parseFloat(position.coords.longitude.toFixed(6));
@@ -303,7 +304,7 @@ var mapModel = {
                     }
                 });
             } else {
-                callback(false, null);
+                callback(false, mapModel.currentAddress);
             }
         });
 

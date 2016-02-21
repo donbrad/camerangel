@@ -176,8 +176,7 @@ var placesView = {
 
 
         //$("#places > div.footerMenu.km-footer > a").removeAttr('href').css("display", "none");
-
-
+        
         mapModel.getCurrentAddress(function (isNew, address) {
             // Is this a new location
             if (isNew) {
