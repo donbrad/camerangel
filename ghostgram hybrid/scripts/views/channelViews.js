@@ -2362,13 +2362,11 @@ var channelView = {
     messageMovie : function (e) {
         _preventDefault(e);
         movieListView.openModal( null, function (movie) {
-
             if (movie !== null) {
-                channelView.messageAddSmartMovie(event);
+                channelView.messageAddSmartMovie(movie);
                 mobileNotify("Sending Smart Movie...");
                 channelView.messageSend();
             }
-
         });
     },
 

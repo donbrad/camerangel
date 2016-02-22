@@ -2214,7 +2214,7 @@ var smartMovieView = {
                 if(lightStyle){
                     ratingImgStr = "images/gg-rated-pg13.svg";
                 } else {
-                    ratingImgStr = "images/gg-rated-pg-13-dark.svg";
+                    ratingImgStr = "images/gg-rated-pg13-dark.svg";
                 }
                 return ratingImgStr;
                 break;
