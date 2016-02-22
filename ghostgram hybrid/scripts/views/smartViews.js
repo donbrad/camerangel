@@ -1178,7 +1178,7 @@ var movieListView = {
                             movie.imdbRating = movieIn.imdbRating;
                             movie.imdbVotes = movieIn.imdbVotes;
                             movie.awards = movieIn.awards;
-                            movie.metaScore = movieIn.,metaScore;
+                            movie.metaScore = movieIn.metaScore;
                         }
 
                         smartMovieView.openModalSelectShowtime(movie, movieListView.callback);
