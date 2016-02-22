@@ -1168,8 +1168,8 @@ var movieListView = {
 
                     movie.date = activeObj.date;
                     movie.dateString = moment(movie.date).format('dddd, MMMM Do');
-                    mobileNotify("Getting latest info for " + activeObj.movieTitle);
-                    smartMovieView._getMovieDetails(activeObj.movieTitle, function (movieIn){
+                    mobileNotify("Getting latest info for " + movie.movieTitle);
+                    smartMovieView._getMovieDetails(movie.movieTitle, function (movieIn){
 
                         if (movieIn !== null) {
                             movie.runtime = movieIn.runtime;
