@@ -81,8 +81,6 @@ var smartEventView = {
         thisObj.set('comment', null);
         thisObj.set('wasSent', false);
 
-
-
         $('#smartEventView-placesearch').val(thisObj.placeName);
         //$('#smartEventView-datestring').val(new Date(thisObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
         $('#smartEventView-date').val(new Date(thisObj.date).toString('MMM dd, yyyy'));
@@ -1858,7 +1856,24 @@ var smartMovieView = {
                 //fixedHeaders: true,
                 click: function (e) {
                     var showtime = e.dataItem;
-                    smartMovieView.selectShowtime(showtime);
+                    var activeObj = smartMovieView.activeObject;
+                    mobileNotify("Getting latest info for " + activeObj.movieTitle);
+                    smartMovieView._getMovieDetails(activeObj.movieTitle, function (movie){
+
+                        if (movie !== null) {
+                            activeObj.runtime = movie.runtime;
+                            activeObj.rating = movie.rating;
+                            activeObj.imdbId = movie.imdbId;
+                            activeObj.imdbRating = movie.imdbRating;
+                            activeObj.imdbVotes = movie.imdbVotes;
+                            activeObj.imdbVotes = movie.imdbVotes;
+                            activeObj.awards = movie.awards;
+                            activeObj.metaScore = movie.,metaScore;
+                        }
+
+                        smartMovieView.selectShowtime(showtime);
+                    });
+
 
                 }
             }
@@ -1882,6 +1897,7 @@ var smartMovieView = {
         }
         smartMovieView.setMovieSelected(true);
         smartMovieView.enableSave(true);
+
     },
 
     enableSave: function (enabled) {
@@ -1916,13 +1932,17 @@ var smartMovieView = {
 
     setCreatorMode : function () {
         $('.movie-creator').removeClass('hidden');
+        $('#smartMovieView-showtimes').removeClass('hidden');
         $('.movie-viewer').addClass('hidden');
+        $('#smartMovieViewSaveBtn').addClass('hidden');
+        $('#smartMovieViewDoneBtn').addClass('hidden');
     },
 
     setViewerMode : function () {
         $('.movie-creator').addClass('hidden');
         $('.movie-viewer').removeClass('hidden');
         $('#smartMovieViewSaveBtn').addClass('hidden');
+        $('#smartMovieView-showtimes').addClass('hidden');
         $('#smartMovieViewDoneBtn').removeClass('hidden');
     },
 
@@ -2006,8 +2026,6 @@ var smartMovieView = {
         thisObj.set('isDeleted', false);
         thisObj.set('wasCancelled', false);
         thisObj.set('movieSelected', false);  // if false, no movie selected - "let's see a movie at this theatre around this time
-        thisObj.set('movieId', null);
-        thisObj.set('movieName', null);
         thisObj.set('addToCalendar', false);
         thisObj.set('comment', null);
         thisObj.set('wasSent', false);
@@ -2050,12 +2068,13 @@ var smartMovieView = {
         thisObj.set('date', obj.date);
         thisObj.set('isDeleted', obj.isDeleted);
         thisObj.set('wasCancelled', obj.wasCancelled);
-        thisObj.set('movieId', obj.movieId);
         thisObj.set('addToCalendar', obj.addToCalendar);
         thisObj.set('comment', obj.comment);
         thisObj.set('wasSent', obj.wasSent);
 
         this.updateMovieLinks();
+
+
     },
 
     openModalSelectShowtime: function (movie, callback) {
@@ -2095,8 +2114,6 @@ var smartMovieView = {
             smartMovieView._callback = callback;
         }
 
-        smartMovieView._date = new Date();
-
 
         if (actionObj === undefined || actionObj === null) {
            mobileNotify("Invalid MovieGram....");
@@ -2108,27 +2125,6 @@ var smartMovieView = {
         var thisObject = smartMovieView.activeObject;
         // setting send/receiver
 
-        if (thisObject.senderUUID === userModel.currentUser.userUUID) {
-            smartEventView.setSenderMode();
-        } else {
-            smartEventView.setRecipientMode();
-        }
-
-        // setting event location
-        if(thisObject.placeName !== null){
-            $(".event-location").removeClass("hidden");
-        } else {
-            $(".event-location").addClass("hidden");
-        }
-
-        // smartMovieView.updateCalendar();
-
-
-        var prettyDate = moment(thisObject.date).format('dddd MMMM, Do [at] h:mmA');
-        $(".event-date").text(prettyDate);
-
-
-        $("#smartMovieView-placesearchdiv").addClass('hidden');
 
         if (thisObject.senderUUID === null || thisObject.senderUUID === userModel.currentUser.userUUID) {
             $("#smartMovieView-organizer").text("You");
@@ -2244,6 +2240,54 @@ var smartMovieView = {
                 break;
                 //console.log("Movie did not have any rating");
         }
+    },
+
+    _getMovieDetails : function (movieTitle, callback) {
+
+        var title = movieTitle.replace(': The IMAX Experience', '');
+        title = title.replace('3D', '');
+        var title = encodeURIComponent(title);
+        var imdbUrl = 'http://www.omdbapi.com/?t=' + title + '&y=&plot=full&r=json';
+        $.ajax({
+            url: imdbUrl,
+            // dataType:"jsonp",
+            //  contentType: 'application/json',
+            success: function (result, textStatus, jqXHR) {
+                if (result.Response === 'True') {
+                    var obj = {};
+
+                    var awards = '';
+                    if (result.Awards !== undefined)
+                        awards = result.Awards;
+                    obj.movieTitle = movieTitle;
+                    obj.awards = awards;
+                    obj.metaScore  = result.Metascore;
+                    obj.imdbRating = result.imdbRating;
+                    obj.imdbVotes = result.imdbVotes;
+                    obj.imdbId = result.imdbID;
+                    obj.imdbUrl = null;
+                    if (obj.imdbId !== undefined && obj.imdbId !== null)
+                        obj.imdbUrl = 'www.imdb.com/title/'+obj.imdbId+'/';
+                    if (result.Runtime === undefined) {
+                        result.Runtime = "0";
+                    }
+                    obj.runtime = result.Runtime;
+                    obj.genre = result.Genre;
+                    obj.rating  = result.Rated;
+
+
+                } else {
+                    mobileNotify("Can't get poster info for " + movieTitle);
+                    callback(null);
+                }
+
+
+            },
+            error: function () {
+                mobileNotify("Can't get poster info for " + movieTitle);
+                callback(null);
+            }
+        });
     }
 };
 
