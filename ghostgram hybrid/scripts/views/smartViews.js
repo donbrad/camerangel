@@ -2192,6 +2192,10 @@ var smartMovieView = {
         }
     },
 
+    onViewDone: function (e) {
+        $("#smartMovieModal").data("kendoMobileModalView").close();
+    },
+
     showRating: function(rating, lightStyle){
         var ratingImgStr = "";
         switch(rating){
