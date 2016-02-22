@@ -68,6 +68,13 @@ var smartMovie = {
         return(result);
     },
 
+    // Find all objects that aren't deleted...
+    findMovieByTmsId: function (tmsId) {
+        var result = smartMovie.queryMovie({ field: "tmsId", operator: "eq", value: tmsId });
+
+        return(result);
+    },
+
     smartAddMovie : function (objectIn, callback) {
         var objectId = objectIn.uuid;
 

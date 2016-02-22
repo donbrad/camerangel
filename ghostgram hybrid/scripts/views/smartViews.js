@@ -1980,6 +1980,9 @@ var smartMovieView = {
             $('#smartMovieView-webLink').removeClass('hidden');
         }
 
+        if (activeObj.ticketUrl !== undefined && activeObj.ticketUrl !== null) {
+            $('#smartMovieView-fandangoLink').removeClass('hidden');
+        }
     },
 
     initActiveObject : function (movie) {
