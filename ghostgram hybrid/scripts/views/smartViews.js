@@ -2278,6 +2278,7 @@ var smartMovieView = {
                     obj.genre = result.Genre;
                     obj.rating  = result.Rated;
 
+                    callback(obj);
 
                 } else {
                     mobileNotify("Can't get poster info for " + movieTitle);
