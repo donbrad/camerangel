@@ -1168,8 +1168,24 @@ var movieListView = {
 
                     movie.date = activeObj.date;
                     movie.dateString = moment(movie.date).format('dddd, MMMM Do');
-                    smartMovieView.openModalSelectShowtime(movie, movieListView.callback);
-                    movieListView.onDone();
+                    mobileNotify("Getting latest info for " + activeObj.movieTitle);
+                    smartMovieView._getMovieDetails(activeObj.movieTitle, function (movieIn){
+
+                        if (movieIn !== null) {
+                            movie.runtime = movieIn.runtime;
+                            movie.rating = movieIn.rating;
+                            movie.imdbId = movieIn.imdbId;
+                            movie.imdbRating = movieIn.imdbRating;
+                            movie.imdbVotes = movieIn.imdbVotes;
+                            movie.awards = movieIn.awards;
+                            movie.metaScore = movieIn.,metaScore;
+                        }
+
+                        smartMovieView.openModalSelectShowtime(movie, movieListView.callback);
+                        movieListView.onDone();
+                    });
+
+
                 }
             }
         );
@@ -1857,22 +1873,9 @@ var smartMovieView = {
                 click: function (e) {
                     var showtime = e.dataItem;
                     var activeObj = smartMovieView.activeObject;
-                    mobileNotify("Getting latest info for " + activeObj.movieTitle);
-                    smartMovieView._getMovieDetails(activeObj.movieTitle, function (movie){
 
-                        if (movie !== null) {
-                            activeObj.runtime = movie.runtime;
-                            activeObj.rating = movie.rating;
-                            activeObj.imdbId = movie.imdbId;
-                            activeObj.imdbRating = movie.imdbRating;
-                            activeObj.imdbVotes = movie.imdbVotes;
-                            activeObj.imdbVotes = movie.imdbVotes;
-                            activeObj.awards = movie.awards;
-                            activeObj.metaScore = movie.,metaScore;
-                        }
+                    smartMovieView.selectShowtime(showtime);
 
-                        smartMovieView.selectShowtime(showtime);
-                    });
 
 
                 }
