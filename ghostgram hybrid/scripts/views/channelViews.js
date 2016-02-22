@@ -1661,8 +1661,12 @@ var channelView = {
         if (channelView.messageObjects.length > 0) {
             validMessage = true;
 
-            var smartEvent = channelView.messageObjects[0];
-            text = channelView.addSmartEventToMessage(smartEvent, text);
+            var smartObject = channelView.messageObjects[0];
+            if (smartObject.ggType === 'Event') {
+                text = channelView.addSmartEventToMessage(smartObject, text);
+            } else if (smartObject.ggType === 'Movie') {
+                text = channelView.addSmartMovieToMessage(smartObject, text);
+            }
 
         }
 
