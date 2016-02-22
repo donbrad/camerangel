@@ -2318,7 +2318,7 @@ var smartMovieView = {
     _getTheatreDetails : function (theatreId, callback) {
         var theatreUrl = 'http://data.tmsapi.com/v1.1/theatres/'+ theatreId + '?api_key=9zah4ggnfz9zpautmrx4bh32';
         $.ajax({
-            url: imdbUrl,
+            url: theatreUrl,
             // dataType:"jsonp",
             //  contentType: 'application/json',
             success: function (result, textStatus, jqXHR) {
