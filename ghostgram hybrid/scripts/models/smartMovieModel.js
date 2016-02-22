@@ -71,7 +71,7 @@ var smartMovie = {
     smartAddMovie : function (objectIn, callback) {
         var objectId = objectIn.uuid;
 
-        var event = smartMovie.findObject(objectId);
+        var event = smartMovie.findMovie(objectId);
         if ( event  === undefined) {
             // Event doesnt exist -- need to create it
             smartMovie.addMovie(objectIn, callback);
