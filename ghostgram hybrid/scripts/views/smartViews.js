@@ -46,6 +46,7 @@ var smartEventView = {
             newDate.setMinutes(0);
         }
         thisObj.set("uuid", uuid.v4());
+        thisObj.set("ggType", smartEvent._ggClass);
         thisObj.set('senderUUID', userModel.currentUser.userUUID);
         thisObj.set('senderName', userModel.currentUser.name);
         thisObj.set('channelId', null);
@@ -1967,6 +1968,7 @@ var smartMovieView = {
         // Build the smartMovie / movieGram object
 
         thisObj.set("uuid", uuid.v4());
+        thisObj.set("ggType", smartMovie._ggClass);
         thisObj.set('senderUUID', userModel.currentUser.userUUID);
         thisObj.set('senderName', userModel.currentUser.name);
         thisObj.set('placeString', movie.address);
