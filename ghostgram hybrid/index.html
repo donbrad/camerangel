@@ -2786,6 +2786,8 @@
 		</p>
 		<p class="movie-viewer hidden">Organized by <span data-bind="text: senderName"></span></p>
 		<p class="movie-selected hidden"><span data-bind="text: theatreName"></span></p>
+		<p class="movie-selected hidden"><span data-bind="text: theatreAddress"></span> <a data-role="button" data-click="smartMovieView.onTheatreDirections" class="btnClear">Directions</a></p>
+		<p class="movie-selected hidden"><span data-bind="text: theatrePhone"></span><a data-role="button" data-click="smartMovieView.onCallTheatre" class="btnClear">Call</a></p>
 		<p class="movie-selected hidden" id="smartMovieView-showtime"> at <span data-bind="text: showtimeString"></span></p>
 		<p class="movie-selected hidden " id="smartMovieView-fandangoLink">
 			<a data-role="button" data-click="smartMovieView.showLinkFandango" > Buy Tickets on Fandango</a>

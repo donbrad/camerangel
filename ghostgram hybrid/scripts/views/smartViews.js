@@ -1857,10 +1857,71 @@ var smartMovieView = {
             smartMovieView.addToCalendar();
         }
 
-        smartMovie.addMovie(thisObj);
+        mobileNotify("Getting Info for " + thisObj.theatreName);
+        smartMovieView._getTheatreDetails(thisObj.theatreId, function (theatre){
+            smartMovie.addMovie(thisObj);
 
-        smartMovieView.onDone();
+            smartMovieView.onDone();
+        });
+
     },
+
+    onCallTheatre : function (e) {
+        _preventDefault(e);
+        var thisObj = smartMovieView.activeObject;
+        if (thisObj.theatrePhone === undefined || thisObj.theatrePhone === null) {
+            mobileNotify("No phone number for " + thisObj.theatreName);
+        } else {
+            if (window.navigator.simulator === true){
+                mobileNotify("Phone Calls are't supported in the emulator");
+                return;
+            }
+
+            mobileNotify("Calling  " + thisObj.theatreName);
+
+            window.plugins.CallNumber.callNumber(
+
+                function(success) {
+                    mobileNotify("Dialing " + number);
+                },
+                function(err) {
+                    mobileNotify("Dailer error: " + err);
+                },
+                thisObj.theatrePhone
+            );
+        }
+    },
+
+    onTheatreDirections : function (e) {
+        _preventDefault(e);
+        var thisObj = smartMovieView.activeObject;
+        if (window.navigator.simulator === undefined) {
+            if (thisObj.theatreLat !== null) {
+                launchnavigator.navigate(
+                    [thisObj.theatreLat,thisObj.theatreLng],
+                    null,
+                    function(){
+                        mobileNotify("Launching Navigation...");
+                    },
+                    function(error){
+                        mobileNotify("Plugin error: "+ error);
+                    });
+            } else if (thisObj.theatreAddress !== null) {
+                launchnavigator.navigate(
+                    thisObj.theatreAddress,
+                    null,
+                    function(){
+                        mobileNotify("Launching Navigation...");
+                    },
+                    function(error){
+                        mobileNotify("Plugin error: "+ error);
+                    });
+            }
+        } else {
+            mobileNotify("Navigation not yet supported in emulator...");
+        }
+    },
+
 
     onInit: function (e) {
         _preventDefault(e);
@@ -2106,6 +2167,7 @@ var smartMovieView = {
         $("#smartMovieModal").data("kendoMobileModalView").open();
     },
 
+
     openModal: function (actionObj, callback) {
         ux.hideKeyboard();
 
@@ -2251,6 +2313,39 @@ var smartMovieView = {
                 //console.log("Movie did not have any rating");
         }
     },
+
+
+    _getTheatreDetails : function (theatreId, callback) {
+        var theatreUrl = 'http://data.tmsapi.com/v1.1/theatres/'+ theatreId + '?api_key=9zah4ggnfz9zpautmrx4bh32';
+        $.ajax({
+            url: imdbUrl,
+            // dataType:"jsonp",
+            //  contentType: 'application/json',
+            success: function (result, textStatus, jqXHR) {
+                if (result.error_code === undefined) {
+                    var obj = smartMovieView.activeObject;
+
+                    obj.theatreLat = result.location.geoCode.latitude;
+                    obj.theatreLng = result.location.geoCode.longitude;
+
+                    if (result.location.telephone !== undefined) {
+                        obj.theatrePhone = result.location.telephone;
+                    }
+
+                    obj.theatreAddress = result.location.address.street + ', ' + result.location.address.city + ",  " + result.location.address.state;
+
+                    callback(result);
+                }
+
+            },
+            error: function () {
+                mobileNotify("Can't get poster info for " + movieTitle);
+                callback(null);
+            }
+        });
+
+    },
+
 
     _getMovieDetails : function (movieTitle, callback) {
 
