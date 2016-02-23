@@ -1203,6 +1203,7 @@ var movieListView = {
         _preventDefault(e);
         movieListView.moviesDS.data([]);
         movieListView.showtimesDS.data([]);
+
         $('#movieListView').removeClass('hidden');
         $('#movieDetailView').addClass('hidden');
         $('#movieListView-doneBtn').addClass('hidden');
@@ -1380,9 +1381,17 @@ var movieListView = {
 
     _findPoster : function (movieTitle, tmsId, callback) {
 
+        var cache = movieListView.posterArray[tmsId];
+
+        if ( cache !== undefined) {
+            callback(cache);
+            return;
+        }
+
         var title = movieTitle.replace(': The IMAX Experience', '');
         title = title.replace('3D', '');
         // Todo: don add movie title normalization
+
         var imageUrl = null;
         var poster = {tmsId : tmsId, imageUrl : null};
 
@@ -1397,6 +1406,7 @@ var movieListView = {
                     if (result.results.length > 0) {
 
                         poster.imageUrl = imageUrl + result.results[0].poster_path;
+                        movieListView.posterArray[poster.tmsId] = poster;
                     }
                 }
                 callback(poster);
@@ -1412,14 +1422,14 @@ var movieListView = {
 
         mobileNotify("Getting Movie Posters and ratings...");
 
-        // Fetch the movie poster and rating data
+        // Fetch the movie posters
         for (var i=0; i< len; i++) {
             var movie = movieArray[i];
            this._findPoster(movie.movieTitle, movie.tmsId, function (poster) {
 
-                if (poster !== null) {
+              /*  if (poster !== null) {
                     movieListView.posterArray[poster.tmsId] = poster;
-                }
+                }*/
 
                 // Decrement the counter as we get the data...
                 if (--counter === 0) {

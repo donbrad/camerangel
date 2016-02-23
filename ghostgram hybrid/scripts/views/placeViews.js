@@ -177,7 +177,7 @@ var placesView = {
 
         //$("#places > div.footerMenu.km-footer > a").removeAttr('href').css("display", "none");
 
-        mapModel.getCurrentPosition(true, function (lat, lng) {
+        mapModel.getCurrentAddress(function () {
             // Is this a new location
            // if (isNew) {
                 placesView.computePlaceDSDistance();
