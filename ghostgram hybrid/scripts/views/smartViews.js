@@ -1203,7 +1203,7 @@ var movieListView = {
         _preventDefault(e);
         movieListView.moviesDS.data([]);
         movieListView.showtimesDS.data([]);
-        
+
         $('#movieListView').removeClass('hidden');
         $('#movieDetailView').addClass('hidden');
         $('#movieListView-doneBtn').addClass('hidden');

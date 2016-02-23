@@ -285,7 +285,7 @@ var mapModel = {
 
     getCurrentAddress : function (callback) {
 
-        mapModel.getCurrentPosition (true,function(lat, lng) {
+        mapModel.getCurrentPosition (true, function(lat, lng) {
 
             if (mapModel.isNewLocation(lat,lng)) {
                 // User is at a new location
