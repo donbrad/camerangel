@@ -203,19 +203,19 @@ var appDataChannel = {
 
             //  { type: 'eventAccept',  }
             case 'eventAccept' : {
-                if (m.version === appDataChannel._version && m.msgID !== undefined)
+                if (m.version === appDataChannel._version )
                     appDataChannel.processEventAccept(m.eventId, m.ownerId, m.comment);
             } break;
 
             //  { type: 'eventDecline',  }
             case 'eventDecline' : {
-                if (m.version === appDataChannel._version && m.msgID !== undefined)
+                if (m.version === appDataChannel._version )
                     appDataChannel.processEventDecline(m.eventId, m.ownerId, m.comment);
             } break;
 
             //  { type: 'eventUpdate',  }
             case 'eventUpdate' : {
-                if (m.version === appDataChannel._version && m.msgID !== undefined)
+                if (m.version === appDataChannel._version)
                     appDataChannel.processEventUpdate(m.eventId, m.ownerId, m.eventObject, m.comment);
             } break;
 

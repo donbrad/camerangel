@@ -1043,7 +1043,7 @@ var channelView = {
 
         ux.hideKeyboard();
 
-        
+
        /* if (window.navigator.simulator === undefined) {
             cordova.plugins.Keyboard.disableScroll(true); // false to enable again
         }
