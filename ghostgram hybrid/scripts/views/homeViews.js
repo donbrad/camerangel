@@ -11,7 +11,7 @@
  */
 
 var homeView = {
-    _radius: 30, // 30 meters or approx 100 ft
+    _radius: 90, // 90 meters or approx 300 ft
 
     openNotificationAction: function(e){
         // todo - wire notification action
@@ -21,12 +21,12 @@ var homeView = {
     openLocateMeModal: function () {
         $('#modalview-locate-me').data('kendoMobileModalView').open();
 
-        navigator.geolocation.getCurrentPosition( function (position) {
-            var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        mapModel.getCurrentPosition(true, function (lat, lng) {
+            var latlng = new google.maps.LatLng(lat, lng);
             var places = APP.map.googlePlaces;
             var nearbyResults = new kendo.data.DataSource();
 
-            var userPlaces = placesView.matchLocationToUserPlace(position.coords.latitude, position.coords.longitude);
+            var userPlaces = placesView.matchLocationToUserPlace(lat, lng);
 
             userPlaces.forEach( function (userPlace ) {
                 nearbyResults.add(userPlace);
@@ -64,8 +64,8 @@ var homeView = {
                             country: address.country,
                             googleId: '',
                             factualId: '',
-                            lat: position.coords.latitude,
-                            lng: position.coords.longitude,
+                            lat: lat,
+                            lng: lng,
                             publicName: '',
                             alias: '',
                             isVisible: true,
@@ -410,7 +410,8 @@ var userStatusView = {
         $("#statusCharCount").text(userStatusView._profileStatusMax);
         $(".statusCharacterCount").css("color", "#979797");
 
-        if (user.isCheckedIn && user.currentPlaceUUID !== null) {
+       // if (user.isCheckedIn && user.currentPlaceUUID !== null) {
+        if (user.isCheckedIn) {
             // hide location if the user is not checked in
             $("#profileLocation, #checked-in-place").removeClass("hidden");
 

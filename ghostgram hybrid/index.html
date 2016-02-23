@@ -36,7 +36,7 @@
 
 	<!-- other components -->
 	<script src="scripts/libs/parse.js"></script>
-    <script src="https://cdn.pubnub.com/pubnub-3.7.16.js"></script>
+    <script src="scripts/libs/pubnub.js"></script>
 	<script src="scripts/libs/date.js"></script>
 	<script src="scripts/libs/guid.js"></script>
 	<script src="scripts/libs/cryptico.js"></script>
@@ -77,6 +77,7 @@
 	<script src="scripts/models/placeModel.js"></script>
 	<script src="scripts/models/smartListModel.js"></script>
 	<script src="scripts/models/smartEventModel.js"></script>
+	<script src="scripts/models/smartMovieModel.js"></script>
 	<script src="scripts/models/tagModel.js"></script>
 	<script src="scripts/models/userModel.js"></script>
     <script src="scripts/views/sentinel.js"></script>
@@ -937,6 +938,7 @@
 		<a class="btnClear btnFull-modal" data-click="userStatusView.closeModal" data-role="button">Done</a>
 	</div>
 </div>
+
 <!-- Testing modal -->
 <div data-role="modalview" id="testing" style="width: 90%; display:none;" class="appearance">
 	<div class="modalview-content">
@@ -2594,7 +2596,6 @@
 			<p>
 				<span class="smartMovie-rating">
 					#
-						console.log(data.rating);
 						var imgStr = smartMovieView.showRating(data.rating, true);
 					#
 					#if(data.rating !== ''){#
@@ -2773,74 +2774,93 @@
 			</a>
 		</div>
 	</div>
+	<!-- Movie/ poster block-->
 	<div class="smartMovie-poster">
-		<img src="#:data.imageUrl#" />
+		<img data-bind="attr:{src : imageUrl}" />
 	</div>
 	<div class="smartMovie-content-dark">
-		<h3 data-bind="text: movieTitle"></h3>
+		<h3 data-role="button" id="smartMovie-title" data-click="smartMovieView.showLinkWebSite">
+			<span data-bind="text: movieTitle"></span>
+			<span style="margin-left: 0.5em;">
+				<img src="images/icon-external.svg" class="icon-sm" />
+			</span>
+		</h3>
 		<p class="helper movie-preselected" data-bind="text: description"></p>
 		<p class="movie-preselected" id="smartMovie-rating">
 			<img src="" id="smartMovie-ratingImg" class="gg-rating" />
 			<span data-bind="text: runtime"></span>
+			<a class="movie-links hidden btnClear right" id="smartMovieView-imdbLink" data-role="button" data-click="smartMovieView.showLinkImdb">
+				<img src="images/imdb-logo.svg" height="18px" />
+			</a>
 		</p>
-		<p class="movie-selected hidden"><span data-bind="text: theatreString"></span></p>
-		<p class="movie-selected hidden" id="smartMovieView-showtime"> at <span data-bind="text: showtimeString"></span></p>
-		<p class="movie-selected hidden"><a class="btnClear" data-role="button">Change</a></p>
+		<p class="movie-viewer hidden">Organized by <span data-bind="text: senderName"></span></p>
 	</div>
+	<div class="clearfix"></div>
 
-	<div class="event-view" id="movie-viewMode">
-		<p class="helper movie-links hidden" id="smartMovieView-imdbLink">
-			<a data-role="button" data-click="smartMovieView.showLinkImdb" > imdb Review </a>
-		</p>
-		<p class="helper movie-links hidden " id="smartMovieView-webLink">
-			<a data-role="button" data-click="smartMovieView.showLinkWebSite" >Official Movie WebSite </a>
-		</p>
-		<p class="helper movie-links hidden " id="smartMovieView-fandangoLink">
-			<a data-role="button" data-click="smartMovieView.showLinkFandango" > Buy Tickets on Fandango</a>
-		</p>
-		<!--<div class="event-details">
-			<div style="height: 25%; float:left;">
-				<img data-bind="attr: { src: imageUrl}">
-			</div>
-			<h2 data-bind="text: movieTitle"></h2>
-			<p class="helper" data-bind="text: description"></p>
-			<p class="helper ">Genre <span  data-bind="text: genre"></span></p>
-			<p class="helper ">Rating <span  data-bind="text: rating"></span></p>
-			<p class="helper ">Runtime <span  data-bind="text: runtime"></span></p>
-			<p class="helper movie-links hidden" id="smartMovieView-imdbLink">
-				<a data-role="button" data-click="smartMovieView.showLinkImdb" > imdb Review </a>
-			</p>
-			<p class="helper movie-links hidden " id="smartMovieView-webLink">
-				<a data-role="button" data-click="smartMovieView.showLinkWebSite" >Official Movie WebSite </a>
-			</p>
-			<p class="helper movie-links hidden " id="smartMovieView-fandangoLink">
-				<a data-role="button" data-click="smartMovieView.showLinkFandango" > Buy Tickets on Fandango</a>
-			</p>
-			<p class="helper movie-viewer hidden">Organized by <span id="smartMovieView-organizer" data-bind="text: senderName"></span></p>
-
+	<!-- Movie Selected -->
+	<div class="movie-selected movie-details">
+		<p class="helper" style="font-size: 0.875em;">Selected Showtime</p>
+		<div class="left">
+			<img src="images/smart-movie-circle.svg"  class="icon-smart-home" />
 		</div>
-		<div style="clear: both;"></div>-->
+		<div class="left">
+			<h3><span data-bind="text: theatreName"></span></h3>
+			<p id="smartMovieView-showtime"> at <span data-bind="text: showtimeString"></span></p>
+			<ul class="list-inline smartMovie-opts">
+				<li>
+					<a data-role="button" data-click="smartMovieView.onTheatreDirections" class="btnClear-grey">Directions</a>
+				</li>
+				<li>
+					<a data-role="button" data-click="smartMovieView.onCallTheatre" class="btnClear-grey">
+						Call
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div class="clearfix"></div>
+
+		<p id="smartMovieView-fandangoLink">
+			<a data-role="button" class="btnClearLine btnFull" data-click="smartMovieView.showLinkFandango">
+				<img src="images/fandango-logo.svg" style="width: 2.5em; vertical-align: text-bottom;" />
+				Buy Tickets
+			</a>
+		</p>
+		<div style="margin: 1em 0 1em;" class="hidden">
+			<label class="right"> Add to Calendar
+				<input  type="checkbox" id="smartMovieView-addToCalendar"  data-role="switch" data-bind="checked: addToCalendar" data-change="smartMovieView.onChangeCalendar" />
+			</label>
+		</div>
+
+		<p class="movie-selected movie-creator hidden" id="smartMovieView-changeShowtime">
+			<a class="btnClear-grey-sm" data-role="button" data-click="smartMovieView.onCancel">Change Showtime</a>
+		</p>
+>>>>>>> master
 	</div>
+
 
 	<form class="movie-selected hidden">
 		<ul data-role="listview" data-style="inset">
 			<li id="smartMovieView-add-calendar" class="event-valid" >
-				<label> Add to Calendar
-					<input type="checkbox" id="smartMovieView-addToCalendar"  data-role="switch" data-bind="checked: addToCalendar" data-change="smartMovieView.onChangeCalendar"/>
-				</label>
+
 			</li>
 		</ul>
 	</form>
 
-	<div id="smartMovieView-showtimes" class="movie-creator hidden" style="margin-top: 1em">
-		<p><img src="images/icon-showtime.svg" class="icon-md"/> Select a showtime</p>
+	<div id="smartMovieView-showtimes" class="movie-creator hidden">
+		<div class="smartMovieView-showtimeheader">
+			<p>Select showtime</p>
+		</div>
 		<ul id="smartMovieView-listview"></ul>
 	</div>
 	<div class="footer" data-role="footer">
 		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartMovieViewSaveBtn" data-click="smartMovieView.onSave">Send SmartMovie</a>
-		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartMovieViewDoneBtn" data-click="smartMovieView.onDone">Done</a>
+		<a class="btnFull-modal btnPrimary  hidden" data-role="button" id="smartMovieViewDoneBtn" data-click="smartMovieView.onViewDone">Done</a>
 	</div>
 </div>
+
+<script type="text/x-kendo-template" id="smartMovieView-headline">
+	Select a showtime
+</script>
 
 <!-- smartEvent eventGram modal -->
 <div data-role="modalview" id="smartEventModal" style="width: 100%;  height: 100%; display: none;"  data-model="smartEventView._activeObject" data-init="smartEventView.onInit" data-open="smartEventView.onShow" class="appearance">

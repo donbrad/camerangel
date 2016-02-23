@@ -903,7 +903,30 @@ var moviePosterPhoto  = {
                     obj.genre = result.Genre;
                     obj.rating  = result.Rated;
 
-                    callback(obj);
+                    if (obj.imdbId !== null) {
+                        var theMovieDBUrl = 'https://api.themoviedb.org/3/find/' + obj.imdbId +'?external_source=imdb_id&api_key=4b2d2dd99958a2e41bb9b342195e74c1';
+                        $.ajax({
+                            url: theMovieDBUrl,
+                            // dataType:"jsonp",
+                            //  contentType: 'application/json',
+                            success: function (result, textStatus, jqXHR) {
+                                if (result.textSuccess !== undefined && result.textSuccess === 'success') {
+                                    var imageUrl = 'http://image.tmdb.org/t/p/w342/';
+                                    if (result.movie_results.length > 0) {
+
+                                        obj.imageUrl = imageUrl + result.movie_results[0].poster_path;
+                                        obj.backdropUrl = imageUrl + result.movie_results[0].backdrop_path;
+                                    }
+                                }
+                                callback(obj);
+                            },
+                            error: function () {
+                                callback(obj);
+                            }
+                        });
+                    } else {
+                        callback(obj);
+                    }
 
                 } else {
                     mobileNotify("Can't get poster info for " + movieTitle);

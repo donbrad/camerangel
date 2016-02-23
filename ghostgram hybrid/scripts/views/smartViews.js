@@ -46,6 +46,7 @@ var smartEventView = {
             newDate.setMinutes(0);
         }
         thisObj.set("uuid", uuid.v4());
+        thisObj.set("ggType", smartEvent._ggClass);
         thisObj.set('senderUUID', userModel.currentUser.userUUID);
         thisObj.set('senderName', userModel.currentUser.name);
         thisObj.set('channelId', null);
@@ -79,8 +80,6 @@ var smartEventView = {
         thisObj.set('rsvpList', []);
         thisObj.set('comment', null);
         thisObj.set('wasSent', false);
-
-
 
         $('#smartEventView-placesearch').val(thisObj.placeName);
         //$('#smartEventView-datestring').val(new Date(thisObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
@@ -450,10 +449,7 @@ var smartEventView = {
                         var durationStr = juration.stringify(duration * 60, { format: 'long' });
                         smartEventView._activeObject.durationString = durationStr;
                         $("#smartEventView-duration").val(durationStr);
-
                     }
-
-
                 }
             });
 
@@ -726,7 +722,7 @@ var smartEventView = {
             commentStr = "Looking forward to it!"
         }
 
-        smartEvent.smartAddObject(thisEvent, function (event) {
+        smartEvent.smartAddEvent(thisEvent, function (event) {
 
             mobileNotify("Graciously accepting " + event.title);
 
@@ -747,7 +743,7 @@ var smartEventView = {
         }
 
 
-        smartEvent.smartAddObject(thisEvent, function (event) {
+        smartEvent.smartAddEvent(thisEvent, function (event) {
 
             mobileNotify("Respectfully declining " + event.title);
 
@@ -789,7 +785,7 @@ var smartEventView = {
         thisObject.address = thisObj.address;
         thisObject.senderUUID = userModel.currentUser.userUUID;
         thisObject.senderName = userModel.currentUser.name;
-        thisObject.channelId = thisObj.channelId;
+        thisObject.channelId = channelView._channelId;
         thisObject.calendarId = thisObj.calendarId;
         thisObject.eventChatId = thisObj.eventChatId;
         thisObject.lat = thisObj.lat;
@@ -806,7 +802,7 @@ var smartEventView = {
         thisObject.rsvpList = thisObj.rsvpList;
         thisObject.inviteList = thisObj.inviteList;
 
-        smartEvent.addObject(thisObject);
+        smartEvent.addEvent(thisObject);
 
 
     },
@@ -1172,8 +1168,24 @@ var movieListView = {
 
                     movie.date = activeObj.date;
                     movie.dateString = moment(movie.date).format('dddd, MMMM Do');
-                    smartMovieView.openModalSelectShowtime(movie, movieListView.callback);
-                    movieListView.onDone();
+                    mobileNotify("Getting latest info for " + movie.movieTitle);
+                    smartMovieView._getMovieDetails(movie.movieTitle, function (movieIn){
+
+                        if (movieIn !== null) {
+                            movie.runtime = movieIn.runtime;
+                            movie.rating = movieIn.rating;
+                            movie.imdbId = movieIn.imdbId;
+                            movie.imdbRating = movieIn.imdbRating;
+                            movie.imdbVotes = movieIn.imdbVotes;
+                            movie.awards = movieIn.awards;
+                            movie.metaScore = movieIn.metaScore;
+                        }
+
+                        smartMovieView.openModalSelectShowtime(movie, movieListView.callback);
+                        movieListView.onDone();
+                    });
+
+
                 }
             }
         );
@@ -1191,6 +1203,7 @@ var movieListView = {
         _preventDefault(e);
         movieListView.moviesDS.data([]);
         movieListView.showtimesDS.data([]);
+
         $('#movieListView').removeClass('hidden');
         $('#movieDetailView').addClass('hidden');
         $('#movieListView-doneBtn').addClass('hidden');
@@ -1347,8 +1360,89 @@ var movieListView = {
         $("#movieListView-searchbox").removeClass('hidden');
     },
 
-    processMoviePosters : function () {
+    finalizeMoviePosters : function () {
+        var movieArray = movieListView.movieArray;
 
+        for (var i=0; i< movieArray.length; i++) {
+            var movie = movieArray[i];
+            var poster = movieListView.posterArray[movie.tmsId];
+
+            if (poster !== undefined && poster !== null) {
+
+                movie.imageUrl = poster.imageUrl;
+
+            }
+
+        }
+        movieListView.moviesDS.data(movieArray);
+        movieListView.moviesDS.sync();
+        $("#movieListView-searchbox").removeClass('hidden');
+    },
+
+    _findPoster : function (movieTitle, tmsId, callback) {
+
+        var cache = movieListView.posterArray[tmsId];
+
+        if ( cache !== undefined) {
+            callback(cache);
+            return;
+        }
+
+        var title = movieTitle.replace(': The IMAX Experience', '');
+        title = title.replace('3D', '');
+        // Todo: don add movie title normalization
+
+        var imageUrl = null;
+        var poster = {tmsId : tmsId, imageUrl : null};
+
+        var theMovieDBUrl = 'http://api.themoviedb.org/3/search/movie?api_key=4b2d2dd99958a2e41bb9b342195e74c1&query='+encodeURIComponent(title);
+        $.ajax({
+            url: theMovieDBUrl,
+            // dataType:"jsonp",
+            //  contentType: 'application/json',
+            success: function (result, textStatus, jqXHR) {
+                if (result.total_results >= 1) {
+                    var imageUrl = 'http://image.tmdb.org/t/p/w342/';
+                    if (result.results.length > 0) {
+
+                        poster.imageUrl = imageUrl + result.results[0].poster_path;
+                        movieListView.posterArray[poster.tmsId] = poster;
+                    }
+                }
+                callback(poster);
+            },
+            error: function () {
+                callback(null);
+            }
+        });
+    },
+
+    processMoviePosters : function () {
+        var movieArray = movieListView.movieArray, len = movieArray.length, counter = len;
+
+        mobileNotify("Getting Movie Posters and ratings...");
+
+        // Fetch the movie posters
+        for (var i=0; i< len; i++) {
+            var movie = movieArray[i];
+           this._findPoster(movie.movieTitle, movie.tmsId, function (poster) {
+
+              /*  if (poster !== null) {
+                    movieListView.posterArray[poster.tmsId] = poster;
+                }*/
+
+                // Decrement the counter as we get the data...
+                if (--counter === 0) {
+                    movieListView.finalizeMoviePosters(movieArray);
+                }
+
+            });
+        }
+
+
+    },
+
+    processMovieDetails : function () {
         var movieArray = movieListView.movieArray, len = movieArray.length, counter = len;
 
         mobileNotify("Getting Movie Posters and ratings...");
@@ -1712,6 +1806,7 @@ var smartMovieView = {
     _callback : null,
     _movieId: null,
     _theatreId: null,
+    _showTimeSelected: false,
     _radius: 15,
 
     onChangeCalendar: function (e) {
@@ -1733,12 +1828,110 @@ var smartMovieView = {
         }
     },
 
+    addToCalendar : function (e) {
+        _preventDefault(e);
+
+        var thisObj = smartMovieView.activeObject;
+        var startDate = new Date(thisObj.showtime), endDate = new Date(moment(thisObj.showtime).add(150, 'minutes'));
+
+
+        if (window.navigator.simulator !== undefined) {
+            mobileNotify("Not supported in emulator");
+        } else {
+            window.plugins.calendar.createEvent(thisObj.movieTitle,
+                thisObj.theatreName,
+                thisObj.description,
+                startDate,
+                endDate,
+                function (message) {
+                    thisObj.set('calendarId', message);
+                    $('#smartEventView-view-calendar-add').addClass('hidden');
+                    $('#smartEventView-view-calendar').removeClass('hidden');
+                },
+                function (message) {
+                    mobileNotify('Calendar error :' + message);
+                });
+        }
+
+    },
 
     onSave: function (e) {
         _preventDefault(e);
-        // Todo: don create and send smart movie
-        smartMovieView.onDone();
+
+        var thisObj = smartMovieView.activeObject;
+
+        thisObj.set('channelId', channelView._channelId);
+        thisObj.set('senderName', userModel.currentUser.name);
+
+        if (thisObj.addToCalendar && thisObj.calendarId === null) {
+            smartMovieView.addToCalendar();
+        }
+
+        mobileNotify("Getting Info for " + thisObj.theatreName);
+        smartMovieView._getTheatreDetails(thisObj.theatreId, function (theatre){
+            smartMovie.addMovie(thisObj);
+
+            smartMovieView.onDone();
+        });
+
     },
+
+    onCallTheatre : function (e) {
+        _preventDefault(e);
+        var thisObj = smartMovieView.activeObject;
+        if (thisObj.theatrePhone === undefined || thisObj.theatrePhone === null) {
+            mobileNotify("No phone number for " + thisObj.theatreName);
+        } else {
+            if (window.navigator.simulator === true){
+                mobileNotify("Phone Calls are't supported in the emulator");
+                return;
+            }
+
+            mobileNotify("Calling  " + thisObj.theatreName);
+
+            window.plugins.CallNumber.callNumber(
+
+                function(success) {
+                    mobileNotify("Dialing " + number);
+                },
+                function(err) {
+                    mobileNotify("Dailer error: " + err);
+                },
+                thisObj.theatrePhone
+            );
+        }
+    },
+
+    onTheatreDirections : function (e) {
+        _preventDefault(e);
+        var thisObj = smartMovieView.activeObject;
+        if (window.navigator.simulator === undefined) {
+            if (thisObj.theatreLat !== null) {
+                launchnavigator.navigate(
+                    [thisObj.theatreLat,thisObj.theatreLng],
+                    null,
+                    function(){
+                        mobileNotify("Launching Navigation...");
+                    },
+                    function(error){
+                        mobileNotify("Plugin error: "+ error);
+                    });
+            } else if (thisObj.theatreAddress !== null) {
+                launchnavigator.navigate(
+                    thisObj.theatreAddress,
+                    null,
+                    function(){
+                        mobileNotify("Launching Navigation...");
+                    },
+                    function(error){
+                        mobileNotify("Plugin error: "+ error);
+                    });
+            }
+        } else {
+            mobileNotify("Navigation not yet supported in emulator...");
+        }
+    },
+
 
     onInit: function (e) {
         _preventDefault(e);
@@ -1746,11 +1939,15 @@ var smartMovieView = {
         $("#smartMovieView-listview").kendoMobileListView({
                 dataSource: smartMovieView.showtimesDS,
                 template: $("#movieShowtimeTemplate").html(),
-                //headerTemplate: $("#findPlacesHeaderTemplate").html(),
-                //fixedHeaders: true,
+                headerTemplate: $("#smartMovieView-headline").html(),
+                fixedHeaders: true,
                 click: function (e) {
                     var showtime = e.dataItem;
+                    var activeObj = smartMovieView.activeObject;
+
                     smartMovieView.selectShowtime(showtime);
+
+
 
                 }
             }
@@ -1766,8 +1963,15 @@ var smartMovieView = {
         obj.set('theatreName', showtime.theatreName);
         obj.set('showtime', showtime.showtime);
         obj.set('showtimeString', showtime.showtimeString);
+        obj.set('ticketUrl', showtime.ticketUrl);
+        if (showtime.ticketUrl !== null) {
+            $('#smartMovieView-fandangoLink').removeClass('hidden');
+        } else {
+            $('#smartMovieView-fandangoLink').addClass('hidden');
+        }
         smartMovieView.setMovieSelected(true);
         smartMovieView.enableSave(true);
+
     },
 
     enableSave: function (enabled) {
@@ -1791,37 +1995,48 @@ var smartMovieView = {
                 stObj.showtime = moment(showtime.dateTime);
                 stObj.showtimeString = moment(showtime.dateTime).format('h:mm A');
                 stObj.ticketUrl = null;
-                if (showtime.ticketURI !== undefined && showtime.ticketURI) {
+                if (showtime.ticketURI !== undefined && showtime.ticketURI !== null) {
                     stObj.ticketUrl = showtime.ticketURI;
                 }
                 smartMovieView.showtimesDS.add(stObj);
 
             }
-
         }
-
     },
+
     setCreatorMode : function () {
         $('.movie-creator').removeClass('hidden');
+        $('#smartMovieView-showtimes').removeClass('hidden');
         $('.movie-viewer').addClass('hidden');
+        $('#smartMovieViewSaveBtn').addClass('hidden');
+        $('#smartMovieViewDoneBtn').addClass('hidden');
     },
 
     setViewerMode : function () {
         $('.movie-creator').addClass('hidden');
         $('.movie-viewer').removeClass('hidden');
         $('#smartMovieViewSaveBtn').addClass('hidden');
+        $('#smartMovieView-showtimes').addClass('hidden');
         $('#smartMovieViewDoneBtn').removeClass('hidden');
     },
 
     setMovieSelected : function (isSelected) {
+        smartMovieView._showTimeSelected = isSelected;
+        var activeObj = smartMovieView.activeObject;
+
+        if (activeObj.ticketUrl !== undefined && activeObj.ticketUrl !== null) {
+            $('#smartMovieView-fandangoLink').removeClass('hidden');
+        } else {
+            $('#smartMovieView-fandangoLink').addClass('hidden');
+        }
         if (isSelected) {
             $('.movie-selected').removeClass('hidden');
             $('#smartMovieView-showtimes').addClass('hidden');
-            $('.movie-preselected').velocity("fadeOut");
+            //$('.movie-preselected').velocity("fadeOut");
         } else {
             $('.movie-selected').addClass('hidden');
             $('#smartMovieView-showtimes').removeClass('hidden');
-            $('.movie-preselected').velocity("fadeIn");
+            //$('.movie-preselected').velocity("fadeIn");
         }
     },
 
@@ -1837,11 +2052,9 @@ var smartMovieView = {
             $('#smartMovieView-webLink').removeClass('hidden');
         }
 
-        if (activeObj.ticketUrl !== null) {
+        if (activeObj.ticketUrl !== undefined && activeObj.ticketUrl !== null) {
             $('#smartMovieView-fandangoLink').removeClass('hidden');
         }
-
-
     },
 
     initActiveObject : function (movie) {
@@ -1853,6 +2066,7 @@ var smartMovieView = {
         // Build the smartMovie / movieGram object
 
         thisObj.set("uuid", uuid.v4());
+        thisObj.set("ggType", smartMovie._ggClass);
         thisObj.set('senderUUID', userModel.currentUser.userUUID);
         thisObj.set('senderName', userModel.currentUser.name);
         thisObj.set('placeString', movie.address);
@@ -1877,7 +2091,6 @@ var smartMovieView = {
         thisObj.set('type', "movie");
         thisObj.set('theatreId', null);
         thisObj.set('theatreName', null);
-        thisObj.set('theatreString', null);
         thisObj.set('showtime', null);
         thisObj.set('showtimeString', null);
         thisObj.set('action', null);
@@ -1891,8 +2104,6 @@ var smartMovieView = {
         thisObj.set('isDeleted', false);
         thisObj.set('wasCancelled', false);
         thisObj.set('movieSelected', false);  // if false, no movie selected - "let's see a movie at this theatre around this time
-        thisObj.set('movieId', null);
-        thisObj.set('movieName', null);
         thisObj.set('addToCalendar', false);
         thisObj.set('comment', null);
         thisObj.set('wasSent', false);
@@ -1920,7 +2131,6 @@ var smartMovieView = {
         thisObj.set('type', obj.type);
         thisObj.set('theatreId', obj.theatreId);
         thisObj.set('theatreName', obj.theatreName);
-        thisObj.set('theatreString', obj.theatreString);
         thisObj.set('showtimes', obj.showtimes);
         thisObj.set('showtimeString', obj.showtimeString);
         thisObj.set('action', obj.action);
@@ -1936,12 +2146,13 @@ var smartMovieView = {
         thisObj.set('date', obj.date);
         thisObj.set('isDeleted', obj.isDeleted);
         thisObj.set('wasCancelled', obj.wasCancelled);
-        thisObj.set('movieId', obj.movieId);
         thisObj.set('addToCalendar', obj.addToCalendar);
         thisObj.set('comment', obj.comment);
         thisObj.set('wasSent', obj.wasSent);
 
         this.updateMovieLinks();
+
+
     },
 
     openModalSelectShowtime: function (movie, callback) {
@@ -1967,6 +2178,7 @@ var smartMovieView = {
         $("#smartMovieModal").data("kendoMobileModalView").open();
     },
 
+
     openModal: function (actionObj, callback) {
         ux.hideKeyboard();
 
@@ -1981,8 +2193,6 @@ var smartMovieView = {
             smartMovieView._callback = callback;
         }
 
-        smartMovieView._date = new Date();
-
 
         if (actionObj === undefined || actionObj === null) {
            mobileNotify("Invalid MovieGram....");
@@ -1994,27 +2204,7 @@ var smartMovieView = {
         var thisObject = smartMovieView.activeObject;
         // setting send/receiver
 
-        if (thisObject.senderUUID === userModel.currentUser.userUUID) {
-            smartEventView.setSenderMode();
-        } else {
-            smartEventView.setRecipientMode();
-        }
 
-        // setting event location
-        if(thisObject.placeName !== null){
-            $(".event-location").removeClass("hidden");
-        } else {
-            $(".event-location").addClass("hidden");
-        }
-
-        // smartMovieView.updateCalendar();
-
-
-        var prettyDate = moment(thisObject.date).format('dddd MMMM, Do [at] h:mmA');
-        $(".event-date").text(prettyDate);
-
-
-        $("#smartMovieView-placesearchdiv").addClass('hidden');
 
         if (thisObject.senderUUID === null || thisObject.senderUUID === userModel.currentUser.userUUID) {
             $("#smartMovieView-organizer").text("You");
@@ -2059,10 +2249,15 @@ var smartMovieView = {
 
     onCancel : function (e) {
         _preventDefault(e);
-        $("#smartMovieModal").data("kendoMobileModalView").close();
-        if (smartMovieView._callback !== null) {
-            smartMovieView._callback(null);
+        if (smartMovieView._showTimeSelected) {
+            smartMovieView.setMovieSelected(false);
+        } else {
+            $("#smartMovieModal").data("kendoMobileModalView").close();
+            if (smartMovieView._callback !== null) {
+                smartMovieView._callback(null);
+            }
         }
+
     },
 
     onDone: function (e) {
@@ -2072,6 +2267,10 @@ var smartMovieView = {
         if (smartMovieView._callback !== null) {
             smartMovieView._callback(smartMovieView.activeObject);
         }
+    },
+
+    onViewDone: function (e) {
+        $("#smartMovieModal").data("kendoMobileModalView").close();
     },
 
     showRating: function(rating, lightStyle){
@@ -2097,7 +2296,7 @@ var smartMovieView = {
                 if(lightStyle){
                     ratingImgStr = "images/gg-rated-pg13.svg";
                 } else {
-                    ratingImgStr = "images/gg-rated-pg-13-dark.svg";
+                    ratingImgStr = "images/gg-rated-pg13-dark.svg";
                 }
                 return ratingImgStr;
                 break;
@@ -2121,8 +2320,93 @@ var smartMovieView = {
                 return ratingImgStr = "";
                 break;
             default:
+                return ratingImgStr = "";
+                break;
                 //console.log("Movie did not have any rating");
         }
+    },
+
+
+    _getTheatreDetails : function (theatreId, callback) {
+        var theatreUrl = 'http://data.tmsapi.com/v1.1/theatres/'+ theatreId + '?api_key=9zah4ggnfz9zpautmrx4bh32';
+        $.ajax({
+            url: theatreUrl,
+            // dataType:"jsonp",
+            //  contentType: 'application/json',
+            success: function (result, textStatus, jqXHR) {
+                if (result.error_code === undefined) {
+                    var obj = smartMovieView.activeObject;
+
+                    obj.theatreLat = result.location.geoCode.latitude;
+                    obj.theatreLng = result.location.geoCode.longitude;
+
+                    if (result.location.telephone !== undefined) {
+                        obj.theatrePhone = result.location.telephone;
+                    }
+
+                    obj.theatreAddress = result.location.address.street + ', ' + result.location.address.city + ",  " + result.location.address.state;
+
+                    callback(result);
+                }
+
+            },
+            error: function () {
+                mobileNotify("Can't get poster info for " + movieTitle);
+                callback(null);
+            }
+        });
+
+    },
+
+
+    _getMovieDetails : function (movieTitle, callback) {
+
+        var title = movieTitle.replace(': The IMAX Experience', '');
+        title = title.replace('3D', '');
+        var title = encodeURIComponent(title);
+        var imdbUrl = 'http://www.omdbapi.com/?t=' + title + '&y=&plot=full&r=json';
+        $.ajax({
+            url: imdbUrl,
+            // dataType:"jsonp",
+            //  contentType: 'application/json',
+            success: function (result, textStatus, jqXHR) {
+                if (result.Response === 'True') {
+                    var obj = {};
+
+                    var awards = '';
+                    if (result.Awards !== undefined)
+                        awards = result.Awards;
+                    obj.movieTitle = movieTitle;
+                    obj.awards = awards;
+                    obj.metaScore  = result.Metascore;
+                    obj.imdbRating = result.imdbRating;
+                    obj.imdbVotes = result.imdbVotes;
+                    obj.imdbId = result.imdbID;
+                    obj.imdbUrl = null;
+                    if (obj.imdbId !== undefined && obj.imdbId !== null)
+                        obj.imdbUrl = 'www.imdb.com/title/'+obj.imdbId+'/';
+                    if (result.Runtime === undefined) {
+                        result.Runtime = "0";
+                    }
+                    obj.runtime = result.Runtime;
+                    obj.genre = result.Genre;
+                    obj.rating  = result.Rated;
+
+                    callback(obj);
+
+                } else {
+                    mobileNotify("Can't get poster info for " + movieTitle);
+                    callback(null);
+                }
+
+
+            },
+            error: function () {
+                mobileNotify("Can't get poster info for " + movieTitle);
+                callback(null);
+            }
+        });
+
     }
 };
 

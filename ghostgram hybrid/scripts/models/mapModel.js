@@ -42,7 +42,7 @@ var mapModel = {
 
     init: function () {
 
-        mapModel.lastPingSeconds = ggTime.currentTimeInSeconds() - 11;
+        mapModel.lastPingSeconds = ggTime.currentTimeInSeconds();
 
         var location = window.localStorage.getItem('ggLastPosition');
 
@@ -65,8 +65,6 @@ var mapModel = {
         mapModel.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
         mapModel.geocoder =  new google.maps.Geocoder();
         mapModel.googlePlaces = new google.maps.places.PlacesService(mapModel.googleMap);
-
-        mapModel.lastPingSeconds = ggTime.currentTimeInSeconds() + mapModel._pingInterval - 1;
 
         mapModel.getCurrentAddress(function (isNew, address){
 
@@ -154,8 +152,8 @@ var mapModel = {
 
     setLocationAndBounds : function () {
         var geolocation = {
-            lat: mapModel.lat,
-            lng: mapModel.lng
+            lat: mapModel.validNumber(mapModel.lat),
+            lng: mapModel.validNumber(mapModel.lng)
         };
 
         mapModel._location = geolocation;
@@ -261,9 +259,12 @@ var mapModel = {
         }
     },
 
-    getCurrentPosition : function (callback) {
+    getCurrentPosition : function (force, callback) {
         var currentPing = ggTime.currentTimeInSeconds();
 
+        if (force) {
+            currentPing = mapModel.lastPingSeconds + mapModel._pingInterval + 10;
+        }
         if (currentPing > mapModel.lastPingSeconds + mapModel._pingInterval) {
             mapModel.lastPingSeconds = ggTime.currentTimeInSeconds();
             var options = mapModel.gpsOptions;
@@ -284,7 +285,8 @@ var mapModel = {
 
     getCurrentAddress : function (callback) {
 
-        mapModel.getCurrentPosition (function(lat, lng) {
+        mapModel.getCurrentPosition (true, function(lat, lng) {
+
             if (mapModel.isNewLocation(lat,lng)) {
                 // User is at a new location
                 var lat = parseFloat(position.coords.latitude.toFixed(6)), lng = parseFloat(position.coords.longitude.toFixed(6));
@@ -302,7 +304,7 @@ var mapModel = {
                     }
                 });
             } else {
-                callback(false, null);
+                callback(false, mapModel.currentAddress);
             }
         });
 

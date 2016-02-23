@@ -1592,7 +1592,16 @@ var channelView = {
     messageAddSmartEvent : function (smartObj) {
         smartObj.channelId = channelView._channelId;
 
-        smartEvent.smartAddObject(smartObj);
+        smartEvent.smartAddEvent(smartObj);
+
+        channelView.messageObjects.push(smartObj);
+
+    },
+
+    messageAddSmartMovie : function (smartObj) {
+        smartObj.channelId = channelView._channelId;
+
+        smartMovie.smartAddMovie(smartObj);
 
         channelView.messageObjects.push(smartObj);
 
@@ -1652,8 +1661,12 @@ var channelView = {
         if (channelView.messageObjects.length > 0) {
             validMessage = true;
 
-            var smartEvent = channelView.messageObjects[0];
-            text = channelView.addSmartEventToMessage(smartEvent, text);
+            var smartObject = channelView.messageObjects[0];
+            if (smartObject.ggType === 'Event') {
+                text = channelView.addSmartEventToMessage(smartObject, text);
+            } else if (smartObject.ggType === 'Movie') {
+                text = channelView.addSmartMovieToMessage(smartObject, text);
+            }
 
         }
 
@@ -1764,8 +1777,14 @@ var channelView = {
 
                 if (object !== null) {
                     // User is interacting with the object so add it, if it doesn't already exist
-                    smartEvent.smartAddObject(object);
-                    smartEventView.openModal(object);
+                    if (object.ggType === 'Event') {
+                        smartEvent.smartAddEvent(object);
+                        smartEventView.openModal(object);
+                    } else if (object.ggType === 'Movie') {
+                        smartMovie.smartAddMovie(object);
+                        smartMovieView.openModal(object);
+                    }
+
                 }
 
             } else {
@@ -1783,18 +1802,6 @@ var channelView = {
         var dateStr = moment(date).format('ddd MMM Do');
         var localTime = moment(date).format("LT");
 
-        /*var objectUrl = '<div><span class="btnSmart" data-role="button" data-objectid="' + objectId +
-            '" id="chatobject_' + objectId + '"'+
-            'data-click="channelView.onObjectClick" >' +
-            '<span class="btnSmart-type">' +
-            '<img src="images/smart-event-light.svg" class="icon-md" />' +
-            '</span>' +
-            '<span class="btnSmart-content">' +
-            '<p class="textClamp btnSmart-title">' + smartEvent.title + '</p>' +
-            '<p class="textClamp btnSmart-date">' + dateStr + ' ' + localTime + '</p>' +
-            '<p class="textClamp btnSmart-date">' + smartEvent.placeName + '</p>' +
-            '</span>' +
-            '</span></div>';*/
         var placeName = smartEvent.placeName;
         if(placeName === null){
             placeName = "";
@@ -1816,6 +1823,35 @@ var channelView = {
         var fullMessage = message + objectUrl;
 
         channelView.activeMessage.objects.push(smartEvent);
+
+        return (fullMessage);
+
+    },
+
+    addSmartMovieToMessage: function (smartMovie, message) {
+
+        //  var editor = $("#messageTextArea").data("kendoEditor");
+        var date = smartMovie.showtime, objectId = smartMovie.uuid;
+
+        var dateStr = moment(date).format('ddd MMM Do h:mm A');
+
+
+        var objectUrl = '<div><span class="btnSmart" data-role="button" data-objectid="' + objectId +
+            '" id="movieobject_' + objectId + '"'+
+            'data-click="channelView.onObjectClick" >' +
+            '<span class="btnSmart-type">' +
+            '<img src="images/smart-movie.svg" class="icon-smartBtn" />' +
+            '</span>' +
+            '<span class="btnSmart-content">' +
+            '<span class="btnSmart-title">' + smartMovie.movieTitle + ' </span><br /> ' +
+            '<span class="btnSmart-date">' + dateStr + '</span><br /> ' +
+            '<span class="btnSmart-date">' + smartMovie.theatreName + '</span> ' +
+            '</span>' +
+            '</span></div>';
+
+        var fullMessage = message + objectUrl;
+
+        channelView.activeMessage.objects.push(smartMovie);
 
         return (fullMessage);
 
@@ -2326,6 +2362,18 @@ var channelView = {
         });
     },
 
+
+    messageMovie : function (e) {
+        _preventDefault(e);
+        movieListView.openModal( null, function (movie) {
+            if (movie !== null) {
+                channelView.messageAddSmartMovie(movie);
+                mobileNotify("Sending Smart Movie...");
+                channelView.messageSend();
+            }
+        });
+    },
+
     messageEvent : function (e) {
         _preventDefault(e);
         mobileNotify("Chat Event isn't wired up yet");
@@ -2340,20 +2388,8 @@ var channelView = {
     messageMusic : function (e) {
         _preventDefault(e);
         mobileNotify("Chat Music isn't wired up yet");
-    },
-
-    messageMovie : function (e) {
-        _preventDefault(e);
-        movieListView.openModal( null, function (movie) {
-
-            if (movie !== null) {
-                //  channelView.messageAddSmartEvent(event);
-                mobileNotify("Sending Smart Movie...");
-                // channelView.messageSend();
-            }
-
-        });
     }
+
 
 };
 
