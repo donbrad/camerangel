@@ -1018,7 +1018,7 @@ var addPlaceView = {
         mapModel.reverseGeoCode(place.lat, place.lng, function (results, error) {
             if (results !== null) {
                 var address = findPlacesView.getAddressFromComponents(results[0].address_components);
-                place.set('address',  address.address);
+                place.set('address',  address.streetNumber + " " + address.street);
                 place.set('city',  address.city);
                 place.set('state',  address.state);
                 place.set('zipcode',  address.zip);
