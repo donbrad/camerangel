@@ -1929,8 +1929,8 @@ var smartMovieView = {
         $("#smartMovieView-listview").kendoMobileListView({
                 dataSource: smartMovieView.showtimesDS,
                 template: $("#movieShowtimeTemplate").html(),
-                //headerTemplate: $("#findPlacesHeaderTemplate").html(),
-                //fixedHeaders: true,
+                headerTemplate: $("#smartMovieView-headline").html(),
+                fixedHeaders: true,
                 click: function (e) {
                     var showtime = e.dataItem;
                     var activeObj = smartMovieView.activeObject;
@@ -2013,6 +2013,7 @@ var smartMovieView = {
     setMovieSelected : function (isSelected) {
         smartMovieView._showTimeSelected = isSelected;
         var activeObj = smartMovieView.activeObject;
+
         if (activeObj.ticketUrl !== undefined && activeObj.ticketUrl !== null) {
             $('#smartMovieView-fandangoLink').removeClass('hidden');
         } else {
@@ -2021,11 +2022,11 @@ var smartMovieView = {
         if (isSelected) {
             $('.movie-selected').removeClass('hidden');
             $('#smartMovieView-showtimes').addClass('hidden');
-            $('.movie-preselected').velocity("fadeOut");
+            //$('.movie-preselected').velocity("fadeOut");
         } else {
             $('.movie-selected').addClass('hidden');
             $('#smartMovieView-showtimes').removeClass('hidden');
-            $('.movie-preselected').velocity("fadeIn");
+            //$('.movie-preselected').velocity("fadeIn");
         }
     },
 
