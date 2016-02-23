@@ -813,7 +813,7 @@ var findPlacesView = {
 
             placesResults.forEach( function (placeResult) {
 
-                var address = findPlacesView._currentLocation;
+                //var address = findPlacesView._currentLocation;
                 var distance = getDistanceInMiles(lat, lng, placeResult.geometry.location.lat(), placeResult.geometry.location.lng());
                 ds.add({
                     category: 'Place',   // valid categories are: Place and Location
@@ -821,14 +821,12 @@ var findPlacesView = {
                     type: findPlacesView.getTypesFromComponents(placeResult.types),
                     googleId: placeResult.place_id,
                     icon: placeResult.icon,
-                    address: address.address,
-                    city:  address.city,
-                    state: address.state,
-                    zipcode: address.zipcode,
-                    country: address.country,
+                    address: placeResult.vicinity,
+                    city:  null,
+                    state: null,
+                    zipcode: null,
+                    country: null,
                     reference: placeResult.reference,
-                    //lat: placeResult.geometry.location.H,
-                    //lng: placeResult.geometry.location.L,
                     lat: placeResult.geometry.location.lat(),
                     lng: placeResult.geometry.location.lng(),
                     vicinity: placeResult.vicinity,
@@ -1016,15 +1014,34 @@ var addPlaceView = {
         var createChatFlag = $('#addPlaceCreateChat').is('checked');
 
         var place = addPlaceView._activePlace;
-        placesModel.addPlace(place, createChatFlag, function (placeObj) {
 
-            mobileNotify(placeObj.name + " added to your Places...");
+        mapModel.reverseGeoCode(place.lat, place.lng, function (results, error) {
+            if (results !== null) {
+                var address = findPlacesView.getAddressFromComponents(results[0].address_components);
+                place.set('address',  address.address);
+                place.set('city',  address.city);
+                place.set('state',  address.state);
+                place.set('zipcode',  address.zip);
 
-            addPlaceView.onDone();
 
-            if (createChatFlag) {
-                channelModel.addPlaceChannel(placeObj.placeChatId, placeObj.uuid, placeObj.name, placeObj.isPrivate);
+
+            } else {
+                place.set('city',  null);
+                place.set('state',  null);
+                place.set('zipcode',  null);
+
             }
+
+            placesModel.addPlace(place, createChatFlag, function (placeObj) {
+
+                mobileNotify(placeObj.name + " added to your Places...");
+
+                addPlaceView.onDone();
+
+                if (createChatFlag) {
+                    channelModel.addPlaceChannel(placeObj.placeChatId, placeObj.uuid, placeObj.name, placeObj.isPrivate);
+                }
+            });
         });
 
 
