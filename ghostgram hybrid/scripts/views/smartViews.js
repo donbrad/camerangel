@@ -400,6 +400,8 @@ var smartEventView = {
     },
 
     openModal: function (actionObj, callback) {
+        ux.hideKeyboard();
+
         if (!smartEventView._isInited) {
 
             smartEventView._eventList = smartEvent.getActionNames();
@@ -951,6 +953,8 @@ var smartNoteView = {
     },
 
     openModal: function (actionObj, callback) {
+        ux.hideKeyboard();
+
         if (!smartNoteView._isInited) {
             smartNoteView._isInited = true;
             $("#smartNoteView-tags").kendoMultiSelect({
