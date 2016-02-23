@@ -1022,9 +1022,7 @@ var addPlaceView = {
                 place.set('city',  address.city);
                 place.set('state',  address.state);
                 place.set('zipcode',  address.zip);
-
-
-
+                
             } else {
                 place.set('city',  null);
                 place.set('state',  null);
