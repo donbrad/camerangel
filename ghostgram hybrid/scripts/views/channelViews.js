@@ -1818,7 +1818,7 @@ var channelView = {
             '</span>' +
             '<span class="btnSmart-content">' +
             '<span class="btnSmart-title">' + smartEvent.title + ' </span><br /> ' +
-            '<span class="btnSmart-date">' + dateStr + ' ' + localTime + '</span><br /> ' +
+            '<span class="btnSmart-date">' + dateStr + ' at ' + localTime + '</span><br /> ' +
             '<span class="btnSmart-date">' + placeName + '</span> ' +
             '</span>' +
             '</span></div>';
