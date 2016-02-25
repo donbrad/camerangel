@@ -355,8 +355,7 @@
   float: left;
   width: 33.5%;
   background: #E0E0E0;
-  height: 100%;
-  max-height: 12em;
+  height: 12em;
 }
 .smartMovie-poster img {
   height: 100%;
