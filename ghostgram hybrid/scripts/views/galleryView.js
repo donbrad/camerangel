@@ -59,6 +59,8 @@ var galleryView = {
 
         _preventDefault(e);
 
+        ux.hideKeyboard();
+
         if (!galleryView._viewInitialized) {
             galleryView._viewInitialized = true;
 
@@ -358,6 +360,7 @@ var photoView = {
             photoView._activePhotoUrl = photoView._activePhoto.imageUrl;
         }
 
+        ux.hideKeyboard();
     },
 
     onHide: function (e) {

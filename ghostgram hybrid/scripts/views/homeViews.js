@@ -19,6 +19,8 @@ var homeView = {
 
 
     openLocateMeModal: function () {
+        ux.hideKeyboard();
+
         $('#modalview-locate-me').data('kendoMobileModalView').open();
 
         mapModel.getCurrentPosition(true, function (lat, lng) {
@@ -464,6 +466,8 @@ var userStatusView = {
     // Main entry point for userstatus modal
     openModal : function (e) {
         _preventDefault(e);
+
+        ux.hideKeyboard();
 
         //Cache the current view
         userStatusView._returnView = APP.kendo.view().id;
@@ -1236,6 +1240,8 @@ var signInView = {
     onShow : function (e) {
         _preventDefault(e);
 
+        ux.hideKeyboard();
+
         if (userModel.rememberUsername && userModel.username !== '') {
             $('#home-signin-username').val(userModel.username)
         }
@@ -1430,6 +1436,7 @@ var changePasswordView = {
     onShow: function (e) {
         _preventDefault(e);
         $("#newPassword1").val('');
+        ux.hideKeyboard();
 
     },
 

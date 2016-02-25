@@ -1041,6 +1041,9 @@ var channelView = {
     onShow : function (e) {
         _preventDefault(e);
 
+        ux.hideKeyboard();
+
+
        /* if (window.navigator.simulator === undefined) {
             cordova.plugins.Keyboard.disableScroll(true); // false to enable again
         }
@@ -1797,7 +1800,7 @@ var channelView = {
     addSmartEventToMessage: function (smartEvent, message) {
 
       //  var editor = $("#messageTextArea").data("kendoEditor");
-        var date = smartEvent.date.toLocaleString(), objectId = smartEvent.uuid;
+        var date = new Date(smartEvent.date).toLocaleString(), objectId = smartEvent.uuid;
 
         var dateStr = moment(date).format('ddd MMM Do');
         var localTime = moment(date).format("LT");
