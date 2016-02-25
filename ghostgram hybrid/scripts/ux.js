@@ -497,7 +497,13 @@ var ux = {
 		// kendo hack - this is needed
 		$(".enterSearch").click();
 		$(".gg_mainSearchBox").css("display", "none").data("visible", false);
-	}
+	},
+
+	bannerReset: function(){
+		$(".eventBanner").removeClass().addClass("hidden");
+		$(".eventBannerTitle").text("");
+		$(".eventBannerImg").attr("src", "");
+	},
 
 };
 

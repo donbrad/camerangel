@@ -1838,18 +1838,17 @@ var channelView = {
 
         var dateStr = moment(date).format('ddd MMM Do h:mm A');
 
-
-        var objectUrl = '<div><span class="btnSmart" data-role="button" data-objectid="' + objectId +
+        var objectUrl = '<div><span class="btnSmart-movie" data-role="button" data-objectid="' + objectId +
             '" id="movieobject_' + objectId + '"'+
             'data-click="channelView.onObjectClick" >' +
-            '<span class="btnSmart-type">' +
-            '<img src="images/smart-movie.svg" class="icon-smartBtn" />' +
-            '</span>' +
-            '<span class="btnSmart-content">' +
-            '<span class="btnSmart-title">' + smartMovie.movieTitle + ' </span><br /> ' +
-            '<span class="btnSmart-date">' + dateStr + '</span><br /> ' +
-            '<span class="btnSmart-date">' + smartMovie.theatreName + '</span> ' +
-            '</span>' +
+            '<div class="btnSmart-poster">' +
+            '<img src="' + smartMovie.imageUrl + '" class="btnSmart-img" />' +
+            '</div>' +
+            '<div class="btnSmart-content">' +
+            '<p class="btnSmart-title">' + smartMovie.movieTitle + ' </p> ' +
+            '<p class="btnSmart-date textClamp">' + dateStr + '</p> ' +
+            '<p class="btnSmart-date textClamp">' + smartMovie.theatreName + '</p> ' +
+            '</div>' +
             '</span></div>';
 
         var fullMessage = message + objectUrl;
