@@ -2692,7 +2692,6 @@
 			</a>
 		</div>
 	</div>
-
 	<form class="event-owner ">
 		<ul data-role="listview" data-style="inset">
 			<li>
@@ -2774,6 +2773,12 @@
 			</a>
 		</div>
 	</div>
+	<div class="eventBanner hidden">
+		<p>
+			<img src="" class="icon-sm eventBannerImg" />
+			<span class="eventBannerTitle"></span>
+		</p>
+	</div>
 	<!-- Movie/ poster block-->
 	<div class="smartMovie-poster">
 		<img data-bind="attr:{src : imageUrl}" />
@@ -2782,7 +2787,7 @@
 		<h3 data-role="button" id="smartMovie-title" data-click="smartMovieView.showLinkWebSite">
 			<span data-bind="text: movieTitle"></span>
 			<span style="margin-left: 0.5em;">
-				<img src="images/icon-external.svg" class="icon-sm" />
+				<img src="images/icon-external.svg" class="smartMovie-link" />
 			</span>
 		</h3>
 		<p class="helper movie-preselected" data-bind="text: description"></p>
@@ -2793,48 +2798,46 @@
 				<img src="images/imdb-logo.svg" height="18px" />
 			</a>
 		</p>
-		<p class="movie-viewer hidden">Organized by <span data-bind="text: senderName"></span></p>
 	</div>
 	<div class="clearfix"></div>
 
 	<!-- Movie Selected -->
+	<div class="smartMovieView-showtimeheader movie-selected movie-details">
+		<p class="helper">Selected Showtime</p>
+	</div>
 	<div class="movie-selected movie-details">
-		<p class="helper" style="font-size: 0.875em;">Selected Showtime</p>
-		<div class="left">
-			<img src="images/smart-movie-circle.svg"  class="icon-smart-home" />
+		<div class="smartMovie-selected-text">
+			<h3 class="textClamp" data-bind="text: theatreName"></h3>
+			<p id="smartMovieView-showtime"> at <span data-bind="text: showtimeString"></span>
+				<span class="movie-selected movie-creator hidden btnClear-grey-sm" id="smartMovieView-changeShowtime" data-role="button" data-click="smartMovieView.onCancel">Change</span>
+			</p>
 		</div>
-		<div class="left">
-			<h3><span data-bind="text: theatreName"></span></h3>
-			<p id="smartMovieView-showtime"> at <span data-bind="text: showtimeString"></span></p>
-			<ul class="list-inline smartMovie-opts">
-				<li>
-					<a data-role="button" data-click="smartMovieView.onTheatreDirections" class="btnClear-grey">Directions</a>
-				</li>
-				<li>
-					<a data-role="button" data-click="smartMovieView.onCallTheatre" class="btnClear-grey">
-						Call
-					</a>
-				</li>
-			</ul>
-		</div>
-		<div class="clearfix"></div>
+		<ul class="list-inline" id="smartMovie-opts">
+			<li id="smartMovieView-fandangoLink">
+				<a data-role="button"  data-click="smartMovieView.showLinkFandango" class="btnClear">
+					<img src="images/fandango-logo.svg" class="icon-sm" />
+					Buy Tickets on Fandango
+				</a>
+			</li>
+			<li>
+				<a data-role="button" data-click="smartMovieView.onTheatreDirections" class="btnClear">
+					<img src="images/icon-directions-active.svg" class="icon-sm" />
+					Directions
+				</a>
+			</li>
+			<li>
+				<a data-role="button" data-click="smartMovieView.onCallTheatre" class="btnClear">
+					<img src="images/icon-phone.svg" class="icon-sm" />
+					Call
+				</a>
+			</li>
+		</ul>
 
-		<p id="smartMovieView-fandangoLink">
-			<a data-role="button" class="btnClearLine btnFull" data-click="smartMovieView.showLinkFandango">
-				<img src="images/fandango-logo.svg" style="width: 2.5em; vertical-align: text-bottom;" />
-				Buy Tickets
-			</a>
-		</p>
 		<div style="margin: 1em 0 1em;" class="hidden">
 			<label class="right"> Add to Calendar
 				<input  type="checkbox" id="smartMovieView-addToCalendar"  data-role="switch" data-bind="checked: addToCalendar" data-change="smartMovieView.onChangeCalendar" />
 			</label>
 		</div>
-
-		<p class="movie-selected movie-creator hidden" id="smartMovieView-changeShowtime">
-			<a class="btnClear-grey-sm" data-role="button" data-click="smartMovieView.onCancel">Change Showtime</a>
-		</p>
->>>>>>> master
 	</div>
 
 
@@ -2872,7 +2875,7 @@
 			</a>
 		</div>
 	</div>
-	<div id="eventBanner">
+	<div class="eventBanner">
 		<p>
 			<img src="" class="icon-sm eventBannerImg" />
 			<span class="eventBannerTitle"></span>

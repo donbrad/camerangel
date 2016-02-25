@@ -587,7 +587,7 @@ var smartEventView = {
         $("#smartEventModal").data("kendoMobileModalView").open();
     },
 
-    setEventBanner: function(state){
+    setEventBanner: function(state, params){
         // Styling for event banner state
         switch(state) {
             case "expired":
@@ -613,6 +613,9 @@ var smartEventView = {
                 $(".eventBannerTitle").text("Declined");
 
                 break;
+            case "organizer":
+                $(".eventBanner").removeClass().addClass("eventOrganizer");
+                $(".eventBannerTitle").text("Event organized by " + params);
         }
 
     },
@@ -677,8 +680,6 @@ var smartEventView = {
        // Use onDone so the modal can redirect or restore state as required...  $("#smartEventModal").data("kendoMobileModalView").close();
 
         smartEventView._activeObject.set("wasCancelled", true);
-
-        //smartEventView.setEventBanner();
 
         smartEventView.onDone();
 
@@ -1518,6 +1519,7 @@ var movieListView = {
     onDone: function (e) {
         _preventDefault(e);
         $("#movieListModal").data("kendoMobileModalView").close();
+        ux.bannerReset();
     },
 
     onCancel: function (e) {
@@ -1526,7 +1528,7 @@ var movieListView = {
         if (movieListView.callback !== null) {
             movieListView.callback(null);
         }
-
+        ux.bannerReset();
     }
 
 };
@@ -1788,6 +1790,8 @@ var smartMovieEdit = {
         if (smartMovieEdit._callback !== null) {
             smartMovieEdit._callback(smartMovieEdit._activeObject);
         }
+
+        ux.bannerReset();
     }
 };
 
@@ -1820,7 +1824,7 @@ var smartMovieView = {
 
         if (moment(smartMovieView._date).isAfter(date)) {
             thisObject.set('isExpired', true);
-            smartMovieView.setEventBanner("expired");
+            smartEventView.setEventBanner("expired");
 
         } else {
             thisObject.set('isExpired', false);
@@ -1939,8 +1943,8 @@ var smartMovieView = {
         $("#smartMovieView-listview").kendoMobileListView({
                 dataSource: smartMovieView.showtimesDS,
                 template: $("#movieShowtimeTemplate").html(),
-                headerTemplate: $("#smartMovieView-headline").html(),
-                fixedHeaders: true,
+                //headerTemplate: $("#smartMovieView-headline").html(),
+                //fixedHeaders: true,
                 click: function (e) {
                     var showtime = e.dataItem;
                     var activeObj = smartMovieView.activeObject;
@@ -2013,11 +2017,16 @@ var smartMovieView = {
     },
 
     setViewerMode : function () {
+        var activeObj = smartMovieView.activeObject;
+
+
         $('.movie-creator').addClass('hidden');
         $('.movie-viewer').removeClass('hidden');
         $('#smartMovieViewSaveBtn').addClass('hidden');
         $('#smartMovieView-showtimes').addClass('hidden');
         $('#smartMovieViewDoneBtn').removeClass('hidden');
+        $('#movieBanner').removeClass("hidden");
+        smartEventView.setEventBanner("organizer", activeObj.senderName);
     },
 
     setMovieSelected : function (isSelected) {
@@ -2116,10 +2125,6 @@ var smartMovieView = {
     setActiveObject: function (obj) {
         var thisObj = smartMovieView.activeObject;
 
-
-        this.setViewerMode();
-        this.setMovieSelected(true);
-
         thisObj.set("uuid", obj.uuid);
         thisObj.set('senderUUID', obj.senderUUID);
         thisObj.set('senderName', obj.senderName);
@@ -2150,6 +2155,8 @@ var smartMovieView = {
         thisObj.set('comment', obj.comment);
         thisObj.set('wasSent', obj.wasSent);
 
+        this.setViewerMode();
+        this.setMovieSelected(true);
         this.updateMovieLinks();
 
 
