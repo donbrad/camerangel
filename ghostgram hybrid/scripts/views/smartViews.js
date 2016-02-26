@@ -1866,7 +1866,7 @@ var smartMovieView = {
     onSave: function (e) {
         _preventDefault(e);
 
-        var thisObj = smartMovieView.activeObject;
+        var thisObj = ;
 
         thisObj.set('channelId', channelView._channelId);
         thisObj.set('senderName', userModel.currentUser.name);
@@ -1877,7 +1877,9 @@ var smartMovieView = {
 
         mobileNotify("Getting Info for " + thisObj.theatreName);
         smartMovieView._getTheatreDetails(thisObj.theatreId, function (theatre){
-            smartMovie.addMovie(thisObj);
+
+
+            smartMovie.addMovie(smartMovieView.activeObject);
 
             smartMovieView.onDone();
         });
