@@ -1866,7 +1866,7 @@ var smartMovieView = {
     onSave: function (e) {
         _preventDefault(e);
 
-        var thisObj = ;
+        var thisObj = smartMovieView.activeObject;
 
         thisObj.set('channelId', channelView._channelId);
         thisObj.set('senderName', userModel.currentUser.name);
@@ -1877,8 +1877,6 @@ var smartMovieView = {
 
         mobileNotify("Getting Info for " + thisObj.theatreName);
         smartMovieView._getTheatreDetails(thisObj.theatreId, function (theatre){
-
-
             smartMovie.addMovie(smartMovieView.activeObject);
 
             smartMovieView.onDone();
@@ -2106,6 +2104,10 @@ var smartMovieView = {
         thisObj.set('type', "movie");
         thisObj.set('theatreId', null);
         thisObj.set('theatreName', null);
+        thisObj.set('theatrePhone', null);
+        thisObj.set('theatreAddress', null);
+        thisObj.set('theatreLat', null);
+        thisObj.set('theatreLng', null);
         thisObj.set('showtime', null);
         thisObj.set('showtimeString', null);
         thisObj.set('action', null);
@@ -2114,6 +2116,7 @@ var smartMovieView = {
         thisObj.set('address', null);
         thisObj.set('googleId', null);
         thisObj.set('calendarId', null);
+        thisObj.set('genre', movie.genre);
         thisObj.set('lat', movie.lat);
         thisObj.set('lng', movie.lng);
         thisObj.set('isDeleted', false);
@@ -2132,6 +2135,7 @@ var smartMovieView = {
         var thisObj = smartMovieView.activeObject;
 
         thisObj.set("uuid", obj.uuid);
+        thisObj.set("ggType",obj.ggType);
         thisObj.set('senderUUID', obj.senderUUID);
         thisObj.set('senderName', obj.senderName);
         thisObj.set('placeString', obj.placeString);
@@ -2139,11 +2143,20 @@ var smartMovieView = {
         thisObj.set('movieTitle', obj.movieTitle);
         thisObj.set('tmsId', obj.tmsId);
         thisObj.set('imdbId', obj.imdbId);
+        thisObj.set('imdbRating', obj.imdbRating);
+        thisObj.set('imdbVotes', obj.imdbVotes);
+        thisObj.set('metaScore', obj.metaScore);
         thisObj.set('type', obj.type);
         thisObj.set('theatreId', obj.theatreId);
         thisObj.set('theatreName', obj.theatreName);
+        thisObj.set('theatreAddress', obj.theatreAddress);
+        thisObj.set('theatrePhone', obj.theatrePhone);
+        thisObj.set('theatreLat', obj.theatreLat);
+        thisObj.set('theatreLng', obj.theatreLng);
         thisObj.set('showtimes', obj.showtimes);
         thisObj.set('showtimeString', obj.showtimeString);
+        thisObj.set('genre', obj.genre);
+        thisObj.set('runtime', obj.runtime);
         thisObj.set('action', obj.action);
         thisObj.set('description', obj.description);
         thisObj.set('imageUrl', obj.imageUrl);
