@@ -25,10 +25,10 @@ var mapModel = {
     newLocationDetected: false,         // has the user been prompted to check in here
     wasPrompted: false,         // has the user been prompted to check in here
 
-    gpsOptions : {enableHighAccuracy : true, timeout: 5000, maximumAge: 10000},
+    gpsOptions : {enableHighAccuracy : true, timeout: 3000, maximumAge: 5000},
     lastPosition: {},
     lastPingSeconds : null,
-    _pingInterval: 300, //Ping debounce interval in seconds.  app will only get position after _pingInterval seconds
+    _pingInterval: 30, //Ping debounce interval in seconds.  app will only get position after _pingInterval seconds
     _radiusCheckIn : 1000,
     _radiusNewLocation : 300,
     _boundsCheckIn : null,
