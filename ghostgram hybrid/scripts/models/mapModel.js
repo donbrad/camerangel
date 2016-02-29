@@ -30,7 +30,7 @@ var mapModel = {
     lastPingSeconds : null,
     _pingInterval: 30, //Ping debounce interval in seconds.  app will only get position after _pingInterval seconds
     _radiusCheckIn : 1000,
-    _radiusNewLocation : 300,
+    _radiusNewLocation : 500,
     _boundsCheckIn : null,
     _location : null,
 
