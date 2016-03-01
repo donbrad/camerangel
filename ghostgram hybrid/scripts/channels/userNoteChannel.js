@@ -18,37 +18,37 @@ var userNoteChannel = {
         offlineStorage: "privatenotes"
         }),
 
-    init: function (channelId) {
+    init: function () {
 
-        if (channelId !== undefined) {
-            userNoteChannel.channelId = userNoteChannel._prefix + channelId;
 
-            var ts = localStorage.getItem(userNoteChannel._userNotesLocalStorage);
-            if (ts !== undefined) {
-                userNoteChannel.lastAccess = parseInt(ts);
+        userNoteChannel.channelId = userNoteChannel._prefix + userModel.currentUser.userUUID;
 
-                // Was last access more than 24 hours ago -- if yes set it to 24 hours ago
-                if (userNoteChannel.lastAccess < ggTime.lastMonth()) {
-                    userNoteChannel.lastAccess = ggTime.lastMonth();
-                    localStorage.setItem(userNoteChannel._userNotesLocalStorage, userNoteChannel.lastAccess);
-                }
-            } else {
-                // No lastAccess stored so set it to month
+        var ts = localStorage.getItem(userNoteChannel._userNotesLocalStorage);
+        if (ts !== undefined) {
+            userNoteChannel.lastAccess = parseInt(ts);
+
+            // Was last access more than 24 hours ago -- if yes set it to 24 hours ago
+            if (userNoteChannel.lastAccess < ggTime.lastMonth()) {
                 userNoteChannel.lastAccess = ggTime.lastMonth();
                 localStorage.setItem(userNoteChannel._userNotesLocalStorage, userNoteChannel.lastAccess);
             }
-
-            APP.pubnub.subscribe({
-                channel: userNoteChannel.channelId,
-                windowing: 100,
-                message: userNoteChannel.channelRead,
-                connect: userNoteChannel.channelConnect,
-                disconnect:userNoteChannel.channelDisconnect,
-                reconnect: userNoteChannel.channelReconnect,
-                error: userNoteChannel.channelError
-
-            });
+        } else {
+            // No lastAccess stored so set it to month
+            userNoteChannel.lastAccess = ggTime.lastMonth();
+            localStorage.setItem(userNoteChannel._userNotesLocalStorage, userNoteChannel.lastAccess);
         }
+
+        APP.pubnub.subscribe({
+            channel: userNoteChannel.channelId,
+            windowing: 100,
+            message: userNoteChannel.channelRead,
+            connect: userNoteChannel.channelConnect,
+            disconnect:userNoteChannel.channelDisconnect,
+            reconnect: userNoteChannel.channelReconnect,
+            error: userNoteChannel.channelError
+
+        });
+
 
         userNoteChannel.notesDS.online(false);
         userNoteChannel.notesDS.fetch();

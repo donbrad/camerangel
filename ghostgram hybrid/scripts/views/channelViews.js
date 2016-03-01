@@ -817,7 +817,7 @@ var channelView = {
     privateContactId: null,
     privateContact : null,
     isPrivateChat: false,
-    isPrivateNotes: false,
+    isPrivateNote: false,
     privacyMode: false,  // Privacy mode - obscure messages after timeout
     currentContact: null,
     activeMessage: {},
@@ -1058,6 +1058,7 @@ var channelView = {
 
 
         var channelUUID = e.view.params.channelId;
+        channelView.isPrivateNote = e.view.params.isprivatenote !== undefined;
 
         if (e.view.params.returnview !== undefined){
             channelView._returnview = unpackParameter(e.view.params.returnview);
@@ -1113,9 +1114,18 @@ var channelView = {
 
         $("#channelName").text(name);
 
-      //  $("#channelNavBar").data('kendoMobileNavBar').title(name);
+        $("#messageSend").text('Send');
 
-        if (thisChannel.isPrivate) {
+
+        if (channelView.isPrivateNote) {
+            $("#messageSend").text('Save');
+
+            $("#channelName").text('Private Notes');
+            // Show contact img in header
+            $('#channelImage').attr('src', userModel.currentUser.photo).removeClass("hidden");
+
+
+        } else if (thisChannel.isPrivate) {
 
             channelView.isPrivateChat = true;
             channelView.messageLock = true;
