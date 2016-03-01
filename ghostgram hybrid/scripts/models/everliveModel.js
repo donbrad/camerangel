@@ -14,7 +14,7 @@ var everlive = {
             DisplayName: name
         };
 
-        APP.everlive.Users.register(username,
+        APP.everlive.users.register(username,
             password,
             attrs,
             function(data) {
@@ -26,7 +26,7 @@ var everlive = {
     },
 
     login : function (username, password, callback) {
-        APP.everlive.login(username, password,
+        APP.everlive.users.login(username, password,
             function (data) {
                 callback(null, data);
             },
