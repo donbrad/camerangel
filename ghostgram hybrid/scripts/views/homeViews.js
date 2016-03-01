@@ -1331,6 +1331,8 @@ var signInView = {
 
 
                 userModel.currentUser.set('username', userModel.parseUser.get('username'));
+                var name = userModel.parseUser.get('name');
+                userModel.currentUser.set('name', userModel.parseUser.get('name'));
                 userModel.currentUser.set('recoveryPassword', userModel.parseUser.get('recoveryPassword'));
                 userModel.currentUser.set('email', userModel.parseUser.get('email'));
                 userModel.currentUser.set('phone', userModel.parseUser.get('phone'));
@@ -1387,6 +1389,27 @@ var signInView = {
                 userModel.currentUser.set('emailValidated', userModel.parseUser.get('emailVerified'));
                 userModel.parseACL = new Parse.ACL(userModel.parseUser);
                 userModel.currentUser.bind('change', userModel.sync);
+
+
+                everlive.login(username,password, function (error, data){
+                    if (error !== null) {
+                        mobileNotify(JSON.stringify(error));
+
+                        everlive.createAccount(username, name, password, function (error1, data1) {
+                            if (error1 !== null) {
+                                mobileNotify(JSON.stringify(error1));
+                            } else {
+                                var token = data1;
+                                mobileNotify("Everlive account created for " + username);
+                            }
+
+                        });
+                    } else {
+                        mobileNotify("Everlive account confirmed -- migration enabled");
+                    }
+                });
+
+
                 userModel.initPubNub();
                 userModel.fetchParseData();
 

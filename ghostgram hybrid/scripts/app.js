@@ -54,6 +54,7 @@
 
 		kendo: null,
 		pubnub: null,
+		everlive: null,
 		map: {}
 
 	};
@@ -125,6 +126,10 @@
 		// Uncomment to load all device contacts at initialization - major performance hit!!
 		//contactModel.importDeviceContacts();
 
+		APP.everlive = new Everlive({
+			appId: 's2fo2sasaubcx7qe',
+			scheme: 'https'
+		});
 
 		APP.kendo = new kendo.mobile.Application(document.body, {
 
@@ -163,7 +168,7 @@
 						text       : 'ghostgrams missed you...',
 						sound      : null,
 						autoClear  : true,
-						at         : new Date(new Date().getTime() + 100)
+						at         : new Date(new Date().getTime())
 					});
 				});
 
