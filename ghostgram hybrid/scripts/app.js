@@ -101,7 +101,10 @@
 		APP.everlive = new Everlive({
 			appId: 's2fo2sasaubcx7qe',
 			scheme: 'https',
-			offline: true
+			offline: true,
+			authentication: {
+				persist: true
+			}
 		});
 
 		userNoteChannel.init();  // Depends on everlive...
