@@ -72,7 +72,7 @@ var privateNoteChannel = {
                 tags: [],
                 channelId: userModel.currentUser.userUUID,
                 content: content,
-                data: contentData,       
+                data: contentData,
                 time: currentTime,
                 fromHistory: false,
                 ttl: ttl
