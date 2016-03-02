@@ -1585,7 +1585,8 @@ var channelView = {
          *!/*/
     },
 
-    toggleTitleTag : function (e) {
+    toggleTitleTag : function () {
+
         if (channelView._titleTagActive)
             $('#messageComposeTitleTag').removeClass('hidden');
         else
@@ -1596,6 +1597,7 @@ var channelView = {
         _preventDefault(e);
 
         channelView._titleTagActive = !channelView._titleTagActive;
+        channelView.toggleTitleTag();
     },
 
     ghostgram: function (e) {
