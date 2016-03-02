@@ -59,31 +59,30 @@ var privateNoteChannel = {
         var currentTime =  ggTime.currentTime();
 
 
-        APP.pubnub.uuid(function (msgID) {
 
-            var message = {
-                type: 'privateNote',
-                recipient: userModel.currentUser.userUUID,
-                sender: userModel.currentUser.userUUID,
-                displayName: 'Me',
-                msgID: msgID,
-                title: "",
-                tagString: "",
-                tags: [],
-                channelId: userModel.currentUser.userUUID,
-                content: content,
-                data: contentData,
-                time: currentTime,
-                fromHistory: false,
-                ttl: ttl
-            };
 
-            channelView.messagesDS.add(message);
-            userNoteChannel.notesDS.add(message);
-            userNoteChannel.notesDS.sync();
-            channelView.scrollToBottom();
+        var message = {
+            type: 'privateNote',
+            recipient: userModel.currentUser.userUUID,
+            sender: userModel.currentUser.userUUID,
+            msgID: uuid.v4(),
+            title: "",
+            tagString: "",
+            tags: [],
+            channelId: userModel.currentUser.userUUID,
+            content: content,
+            data: contentData,
+            time: currentTime,
+            fromHistory: false,
+            ttl: ttl
+        };
 
-        });
+        channelView.messagesDS.add(message);
+        userNoteChannel.notesDS.add(message);
+        userNoteChannel.notesDS.sync();
+        channelView.scrollToBottom();
+
+
 
     },
 
