@@ -20,7 +20,7 @@ var privateNoteChannel = {
     },
 
     open : function () {
-        
+
         privateNoteChannel.publicKey = userModel.currentUser.publicKey;
 
     },
