@@ -456,8 +456,7 @@ var userModel = {
         smartEvent.fetch();
 
         userStatus.init();
-
-        privateNoteChannel.init();
+        
 
        /* var InviteModel = Parse.Object.extend("invites");
         var InviteCollection = Parse.Collection.extend({
