@@ -65,6 +65,7 @@ var privateNoteChannel = {
                 type: 'privateNote',
                 recipient: userModel.currentUser.userUUID,
                 sender: userModel.currentUser.userUUID,
+                displayName: 'Me',
                 msgID: msgID,
                 title: "",
                 tagString: "",
