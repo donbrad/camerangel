@@ -1041,6 +1041,7 @@ var channelView = {
     onShow : function (e) {
         _preventDefault(e);
 
+        var name = '';
         ux.hideKeyboard();
 
 
@@ -1097,24 +1098,19 @@ var channelView = {
                 $('#channel-titleBtn .icon-header').addClass('hidden');
             }
             channelModel.zeroUnreadCount(thisChannel.channelId);
+
+            name =  thisChannel.name;
+            $("#channelName").text(name);
+
+            channelView.members = thisChannel.members;
         }
         var contactUUID = null;
-        var thisChannelHandler = null;
-
-
-        var name =  thisChannel.name;
-
-        channelView.members = thisChannel.members;
-
 
         //default private mode off for now. Todo: don and jordan fix privacy mode
         channelView.privacyMode = false;
         // Privacy UI
         $('#privacyMode').html('<img src="images/privacy-off.svg" />');
         $("#privacyStatus").addClass("hidden");
-
-
-        $("#channelName").text(name);
 
         $("#messageSend").text('Send');
 
@@ -1125,7 +1121,8 @@ var channelView = {
             $("#channelName").text('Private Notes');
             // Show contact img in header
             $('#channelImage').attr('src', userModel.currentUser.photo).removeClass("hidden");
-
+            $('#messagePresenceButton').hide();
+            
             privateNoteChannel.open();
 
             channelView.messagesDS.data([]);

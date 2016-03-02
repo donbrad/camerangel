@@ -456,7 +456,7 @@ var userModel = {
         smartEvent.fetch();
 
         userStatus.init();
-        
+
 
        /* var InviteModel = Parse.Object.extend("invites");
         var InviteCollection = Parse.Collection.extend({
