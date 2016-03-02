@@ -10,50 +10,20 @@
 
 var userNoteChannel = {
 
-    _userNotesLocalStorage : 'ggUserDataTimeStamp',
-    _prefix: 'private_',
-    channelId: null,   // channelId is users uuid
-    lastAccess: 0,   // last access time stamp
     notesDS :  new kendo.data.DataSource({
-        offlineStorage: "privatenotes"
-        }),
+        offlineStorage: "privatenote",
+        type: 'everlive',
+        transport: {
+            typeName: 'privatenote'
+        },
+        schema: {
+            model: { id: Everlive.idField }
+        }
+    }),
 
     init: function () {
 
-
-        userNoteChannel.channelId = userNoteChannel._prefix + userModel.currentUser.userUUID;
-
-        var ts = localStorage.getItem(userNoteChannel._userNotesLocalStorage);
-        if (ts !== undefined) {
-            userNoteChannel.lastAccess = parseInt(ts);
-
-            // Was last access more than 24 hours ago -- if yes set it to 24 hours ago
-            if (userNoteChannel.lastAccess < ggTime.lastMonth()) {
-                userNoteChannel.lastAccess = ggTime.lastMonth();
-                localStorage.setItem(userNoteChannel._userNotesLocalStorage, userNoteChannel.lastAccess);
-            }
-        } else {
-            // No lastAccess stored so set it to month
-            userNoteChannel.lastAccess = ggTime.lastMonth();
-            localStorage.setItem(userNoteChannel._userNotesLocalStorage, userNoteChannel.lastAccess);
-        }
-
-        APP.pubnub.subscribe({
-            channel: userNoteChannel.channelId,
-            windowing: 100,
-            message: userNoteChannel.channelRead,
-            connect: userNoteChannel.channelConnect,
-            disconnect:userNoteChannel.channelDisconnect,
-            reconnect: userNoteChannel.channelReconnect,
-            error: userNoteChannel.channelError
-
-        });
-
-
-        userNoteChannel.notesDS.online(false);
         userNoteChannel.notesDS.fetch();
-        userNoteChannel.history();
-
 
     },
 
@@ -174,57 +144,6 @@ var userNoteChannel = {
 
         userNoteChannel._fetchHistory(timeStamp.toString());
 
-    },
-
-    channelRead : function (m) {
-
-
-        switch(m.type) {
-
-            case 'privateMessage' : {
-                userNoteChannel.updateTimeStamp();
-
-                privateChannel.receiveHandler(m);
-
-            } break;
-        }
-    },
-
-
-    publishCallback : function (m) {
-        if (m === undefined)
-            return;
-
-        var status = m[0], message = m[1], time = m[2];
-
-        if (status !== 1) {
-            mobileNotify('Error publishing user note: ' + message);
-        }
-
-    },
-
-    errorCallback : function (error) {
-        mobileNotify('UserNoteChannel Error : ' + error);
-    },
-
-    channelConnect: function () {
-
-    },
-
-    channelDisconnect: function () {
-        mobileNotify("User Note Channel Disconnected");
-    },
-
-    channelReconnect: function () {
-        mobileNotify("User Note Channel Reconnected");
-    },
-
-    channelSuccess : function (status) {
-
-    },
-
-    channelError : function (error) {
-        mobileNotify('User Note Channel Error : ' + error)
     }
 };
 

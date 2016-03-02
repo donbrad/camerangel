@@ -174,6 +174,8 @@ var deviceModel = {
         deviceModel.setAppState('isOnline', true);
         // Take all data sources online
 
+        APP.everlive.online();
+        APP.everlive.sync();
        // APP.models.home.invitesDS.online(true);
         notificationModel.notificationDS.online(true);
         channelModel.channelsDS.online(true);
@@ -192,6 +194,7 @@ var deviceModel = {
     onOffline: function() {
         deviceModel.setAppState('isOnline', false);
         // Take all data sources offline
+        APP.everlive.offline();
 
         //APP.models.home.invitesDS.online(false);
         notificationModel.notificationDS.online(false);
