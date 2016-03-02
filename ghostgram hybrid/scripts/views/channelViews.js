@@ -1079,23 +1079,25 @@ var channelView = {
             channelView._offersLoaded = true;
         });*/
 
-        var thisChannel = channelModel.findChannelModel(channelUUID);
-        if (thisChannel === null) {
-            mobileNotify("ChatView -- chat doesn't exist : " + channelUUID);
-            return;
+        if (!channelView.isPrivateNote) {
+            // This isn't privateNote so handle as private or group channel
+            var thisChannel = channelModel.findChannelModel(channelUUID);
+            if (thisChannel === null) {
+                mobileNotify("ChatView -- chat doesn't exist : " + channelUUID);
+                return;
+            }
+
+            channelView._channel = thisChannel;
+
+            if (thisChannel.isPlace !== undefined && thisChannel.isPlace === true) {
+                channelView.isPlaceChat = true;
+                $('#channel-titleBtn .icon-header').removeClass('hidden');
+            } else {
+                channelView.isPlaceChat = false;
+                $('#channel-titleBtn .icon-header').addClass('hidden');
+            }
+            channelModel.zeroUnreadCount(thisChannel.channelId);
         }
-
-        channelView._channel = thisChannel;
-
-        if (thisChannel.isPlace !== undefined && thisChannel.isPlace === true) {
-            channelView.isPlaceChat = true;
-            $('#channel-titleBtn .icon-header').removeClass('hidden');
-        } else {
-            channelView.isPlaceChat = false;
-            $('#channel-titleBtn .icon-header').addClass('hidden');
-        }
-        channelModel.zeroUnreadCount(thisChannel.channelId);
-
         var contactUUID = null;
         var thisChannelHandler = null;
 
@@ -1124,6 +1126,16 @@ var channelView = {
             // Show contact img in header
             $('#channelImage').attr('src', userModel.currentUser.photo).removeClass("hidden");
 
+            privateNoteChannel.open();
+
+            channelView.messagesDS.data([]);
+
+            privateNoteChannel.getMessageHistory(function (messages) {
+
+                channelView.messagesDS.data(messages);
+
+                channelView.loadImagesThenScroll()
+            });
 
         } else if (thisChannel.isPrivate) {
 

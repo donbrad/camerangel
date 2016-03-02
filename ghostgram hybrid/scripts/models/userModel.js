@@ -457,6 +457,8 @@ var userModel = {
 
         userStatus.init();
 
+        userNoteChannel.init();
+
        /* var InviteModel = Parse.Object.extend("invites");
         var InviteCollection = Parse.Collection.extend({
             model: InviteModel

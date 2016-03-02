@@ -128,7 +128,8 @@
 
 		APP.everlive = new Everlive({
 			appId: 's2fo2sasaubcx7qe',
-			scheme: 'https'
+			scheme: 'https',
+			offline: true
 		});
 
 		APP.kendo = new kendo.mobile.Application(document.body, {
