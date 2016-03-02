@@ -1122,7 +1122,7 @@ var channelView = {
             // Show contact img in header
             $('#channelImage').attr('src', userModel.currentUser.photo).removeClass("hidden");
             $('#messagePresenceButton').hide();
-            
+
             privateNoteChannel.open();
 
             channelView.messagesDS.data([]);

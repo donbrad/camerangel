@@ -20,8 +20,7 @@ var privateNoteChannel = {
     },
 
     open : function () {
-
-        privateNoteChannel.channelId = userNoteChannel._prefix + userModel.currentUser.userUUID;
+        
         privateNoteChannel.publicKey = userModel.currentUser.publicKey;
 
     },
