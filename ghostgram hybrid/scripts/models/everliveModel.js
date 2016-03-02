@@ -8,6 +8,9 @@
 
 var everlive = {
 
+    _token : null,
+    _signedIn : false,
+
     createAccount: function (username, name, password, callback) {
         var attrs = {
             Email: username,
@@ -18,6 +21,9 @@ var everlive = {
             password,
             attrs,
             function(data) {
+                everlive._token = data.result.Id;
+                everlive._signedIn = true;
+
                 callback(null, data);
             },
             function(error) {
@@ -28,6 +34,8 @@ var everlive = {
     login : function (username, password, callback) {
         APP.everlive.users.login(username, password,
             function (data) {
+                everlive._token = data.result.Id;
+                everlive._signedIn = true;
                 callback(null, data);
             },
             function(error){
@@ -37,6 +45,7 @@ var everlive = {
 
     logout : function () {
         APP.everlive.authentication.clearAuthorization();
+        everlive._signedIn = false;
     }
 
 };

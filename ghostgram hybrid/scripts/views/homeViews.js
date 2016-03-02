@@ -1399,13 +1399,14 @@ var signInView = {
                             if (error1 !== null) {
                                 mobileNotify(JSON.stringify(error1));
                             } else {
-                                var token = data1;
                                 mobileNotify("Everlive account created for " + username);
+                                userModel.currentUser.set('everliveToken', everlive._token);
                             }
 
                         });
                     } else {
                         mobileNotify("Everlive account confirmed -- migration enabled");
+                        userModel.currentUser.set('everliveToken', everlive._token);
                     }
                 });
 
