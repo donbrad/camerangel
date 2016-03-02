@@ -54,26 +54,19 @@ var privateNoteChannel = {
             ttl = 86400;  // 24 hours
         // if (recipient in users) {
         var content = text;
-        var contentData = data;
+        var contentData = JSON.stringify(data);
         var encryptMessage = '', encryptData = '';
         var currentTime =  ggTime.currentTime();
 
-
-
-
         var message = {
             type: 'privateNote',
-            recipient: userModel.currentUser.userUUID,
-            sender: userModel.currentUser.userUUID,
             msgID: uuid.v4(),
             title: "",
             tagString: "",
             tags: [],
-            channelId: userModel.currentUser.userUUID,
             content: content,
             data: contentData,
             time: currentTime,
-            fromHistory: false,
             ttl: ttl
         };
 
