@@ -106,7 +106,7 @@
 
 		userNoteChannel.init();  // Depends on everlive...
 
-		
+
 		contactModel.init();
 
 	/*	if (!deviceModel.state.introFetched) {

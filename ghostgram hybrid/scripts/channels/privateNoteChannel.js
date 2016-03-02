@@ -49,7 +49,7 @@ var privateNoteChannel = {
         return(parsedMsg);
     },
 
-    sendMessage: function (recipient, text, data, ttl) {
+    sendMessage: function (text, data, ttl) {
         if (ttl === undefined || ttl < 60)
             ttl = 86400;  // 24 hours
         // if (recipient in users) {

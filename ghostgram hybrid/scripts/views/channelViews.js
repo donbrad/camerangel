@@ -1695,7 +1695,9 @@ var channelView = {
         if (validMessage === true ) {
             channelView._initMessageTextArea();
 
-            if (channelView.isPrivateChat) {
+            if (channelView.isPrivateNote) {
+                privateNoteChannel.sendMessage(text, channelView.activeMessage, 86400);
+            } else if (channelView.isPrivateChat) {
                 privateChannel.sendMessage(channelView.privateContactId, text, channelView.activeMessage, 86400);
             } else {
                 groupChannel.sendMessage(text, channelView.activeMessage, 86400);
