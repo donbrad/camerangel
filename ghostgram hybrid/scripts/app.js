@@ -86,8 +86,8 @@
 
 		deviceModel.init();
 
-		userNoteChannel.init();
-		
+
+
 		// hide the splash screen as soon as the app is ready. otherwise
 		navigator.splashscreen.hide();
 		// Set status bar color
@@ -98,7 +98,15 @@
 		
 		Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
 		//Parse.User.enableRevocableSession();
+		APP.everlive = new Everlive({
+			appId: 's2fo2sasaubcx7qe',
+			scheme: 'https',
+			offline: true
+		});
 
+		userNoteChannel.init();  // Depends on everlive...
+
+		
 		contactModel.init();
 
 	/*	if (!deviceModel.state.introFetched) {
@@ -128,11 +136,8 @@
 		// Uncomment to load all device contacts at initialization - major performance hit!!
 		//contactModel.importDeviceContacts();
 
-		APP.everlive = new Everlive({
-			appId: 's2fo2sasaubcx7qe',
-			scheme: 'https',
-			offline: true
-		});
+
+
 
 		APP.kendo = new kendo.mobile.Application(document.body, {
 
