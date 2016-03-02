@@ -1727,9 +1727,12 @@
 			<div class="clearfix"></div>
 		</div>
 
+		# if (channelView.isPrivateNote !== undefined && channelView.isPrivateNote) { contactPhotoUrl = ''; } else {#
 		<div class="chat-message-user-img">
 			<img class="chat-message-profileImg circle-img-sm" src="#: contactPhotoUrl #" alt="" />
 		</div>
+		# } #
+		
 		# if (content !== "") {#
 			# if (isContact ) {#
 				<div class="chat-message-receiver chat-message-content  clearfix">
