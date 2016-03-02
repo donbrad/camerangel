@@ -1495,7 +1495,10 @@
 
 	<div data-role="footer" style="display: block; background: #fff; padding-left: 2px;"  id="messageEditor" style="min-height: 48px; max-height: 60%;">
 		<div class="messageCompose">
-			<div id="messageComposeTitleTag" class="hidden"></div>
+			<div id="messageComposeTitleTag" class="hidden">
+				<input type="search" id="messageComposeTitle" placeholder="Title...">
+				<input type="search" id="messageComposeTag" placeholder="Tags...">
+			</div>
 			<div id="messageComposeToolbar" class="hidden"></div>
 			<textarea id="messageTextArea" type='text' name="messageTextArea" autofocus="true"></textarea>
 			<div class="messageMediaBar">
@@ -1505,9 +1508,14 @@
 							<img src="images/chat-camera.svg" height="24">
 						</a>
 					</li>
+					<li id="messageTitleTagLi">
+						<a data-role="button" data-click="channelView.messageTitleTag">
+							<img  src="images/photo-tag.svg" height="24">
+						</a>
+					</li>
 					<li >
 						<a data-role="button" data-badge="0" data-click="channelView.ghostgram" id="chat-editorBtn">
-							<img src="images/icon-editor.svg" height="20" id="chat-editorBtnImg"/>
+							<img src="images/icon-editor.svg" height="24" id="chat-editorBtnImg"/>
 						</a>
 					</li>
 					<li>

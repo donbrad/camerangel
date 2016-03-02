@@ -833,6 +833,7 @@ var channelView = {
     _firstSpace: false,
     _editorActive: false,
     _returnview: null,
+    _titleTagActive: false,
 
     membersDS: new kendo.data.DataSource({
         sort: {
@@ -1054,10 +1055,11 @@ var channelView = {
         channelView.topOffset = $("#messages-listview").data("kendoMobileListView").scroller().scrollTop;
         channelView._active = true;
         channelView._offersLoaded = false;
+        channelView._titleTagActive = false;
         // hide action btn
         ux.showActionBtn(false, "#channel");
 
-
+        channelView.toggleTitleTag();
         var channelUUID = e.view.params.channelId;
         channelView.isPrivateNote = e.view.params.isprivatenote !== undefined;
 
@@ -1581,6 +1583,19 @@ var channelView = {
          $("#chat-editorBtn > span.km-badge").hide();
          }
          *!/*/
+    },
+
+    toggleTitleTag : function (e) {
+        if (channelView._titleTagActive)
+            $('#messageComposeTitleTag').removeClass('hidden');
+        else
+            $('#messageComposeTitleTag').addClass('hidden');
+    },
+
+    messageTitleTag : function (e) {
+        _preventDefault(e);
+
+        channelView._titleTagActive = !channelView._titleTagActive;
     },
 
     ghostgram: function (e) {
