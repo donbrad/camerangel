@@ -1710,6 +1710,9 @@
 	if(userModel.currentUser.useLargeView){
 		 messageClass = "userLgFontSize chat-message-text";
 	}
+	if (isContact === undefined) {
+		var isContact = false;
+	}
 	#
 	<div id=#:msgID# class="chat-message #=isPrivate# clearfix">
 		<div class="chat-details">
@@ -1732,7 +1735,7 @@
 			<img class="chat-message-profileImg circle-img-sm" src="#: contactPhotoUrl #" alt="" />
 		</div>
 		# } #
-		
+
 		# if (content !== "") {#
 			# if (isContact ) {#
 				<div class="chat-message-receiver chat-message-content  clearfix">
