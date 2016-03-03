@@ -61,7 +61,6 @@ var privateNoteChannel = {
         var uuidNote = uuid.v4();
         var message = {
             type: 'privateNote',
-            id: uuidNote,
             msgID: uuidNote,
             title: "",
             tagString: "",

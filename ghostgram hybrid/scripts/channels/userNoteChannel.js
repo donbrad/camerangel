@@ -18,7 +18,8 @@ var userNoteChannel = {
             offlineStorage: "privatenote-local",
             type: 'everlive',
             transport: {
-                typeName: 'privatenote'
+                typeName: 'privatenote',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { id: Everlive.idField }
