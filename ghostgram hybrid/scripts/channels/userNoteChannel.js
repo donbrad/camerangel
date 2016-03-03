@@ -25,7 +25,7 @@ var userNoteChannel = {
                 model: { id: 'msgID' }
             }
         });
-        //userNoteChannel.notesDS.fetch();
+        userNoteChannel.notesDS.fetch();
 
     },
 
@@ -55,16 +55,6 @@ var userNoteChannel = {
         } else {
             return(true);
         }
-    },
-
-
-    history : function () {
-
-        var timeStamp = ggTime.toPubNubTime(ggTime.currentTime());
-        var lastAccess = ggTime.toPubNubTime(userNoteChannel.lastAccess);
-
-        userNoteChannel._fetchHistory(timeStamp.toString());
-
     }
 };
 

@@ -74,7 +74,7 @@ var privateNoteChannel = {
 
         channelView.messagesDS.add(message);
         userNoteChannel.notesDS.add(message);
-        //userNoteChannel.notesDS.sync();
+        userNoteChannel.notesDS.sync();
         channelView.scrollToBottom();
 
 
