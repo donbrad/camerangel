@@ -55,12 +55,13 @@ var privateNoteChannel = {
         // if (recipient in users) {
         var content = text;
         var contentData = JSON.stringify(data);
+        data = JSON.parse(contentData);
         var encryptMessage = '', encryptData = '';
         var currentTime =  ggTime.currentTime();
 
         var message = {
             type: 'privateNote',
-            msgID: uuid.v4(),
+            id: uuid.v4(),
             title: "",
             tagString: "",
             tags: [],

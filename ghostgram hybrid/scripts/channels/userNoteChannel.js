@@ -21,7 +21,7 @@ var userNoteChannel = {
                 typeName: 'privatenote'
             },
             schema: {
-                model: { msgID: Everlive.idField }
+                model: { id: Everlive.idField }
             }
         });
         //userNoteChannel.notesDS.fetch();
