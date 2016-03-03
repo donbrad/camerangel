@@ -16,14 +16,13 @@ var userNoteChannel = {
 
         userNoteChannel.notesDS = new kendo.data.DataSource({
             offlineStorage: "privatenote",
-            batch: true,
             type: 'everlive',
             transport: {
                 typeName: 'privatenote',
                 dataProvider: APP.everlive
             },
             schema: {
-                model: { id: 'msgID' }
+                model: { id:  Everlive.idField}
             }
         });
 
