@@ -66,13 +66,14 @@ var privateNoteChannel = {
             tags: [],
             content: content,
             data: contentData,
+            dataObject: data,
             time: currentTime,
             ttl: ttl
         };
 
         channelView.messagesDS.add(message);
         userNoteChannel.notesDS.add(message);
-        userNoteChannel.notesDS.sync();
+        //userNoteChannel.notesDS.sync();
         channelView.scrollToBottom();
 
 
