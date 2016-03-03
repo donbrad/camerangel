@@ -43,6 +43,11 @@ var userNoteChannel = {
 
                     case "add" :
                         note = e.items[0];
+
+                        if (userNoteChannel.isDuplicateNote(note.msgID)) {
+                            userNoteChannel.notesDS.remove(note);
+                        }
+
                         // add to list if it's not a duplicate
 
                         break;
@@ -55,7 +60,7 @@ var userNoteChannel = {
 
     },
 
-    queryMessages : function (query) {
+    queryNotes: function (query) {
         if (query === undefined)
             return(undefined);
         var dataSource = userNoteChannel.notesDS;
@@ -71,8 +76,8 @@ var userNoteChannel = {
         return(view);
     },
 
-    isDuplicateMessage : function (msgID) {
-        var messages = userNoteChannel.queryMessages({ field: "msgID", operator: "eq", value: msgID });
+    isDuplicateNote : function (msgID) {
+        var messages = userNoteChannel.queryNotes({ field: "msgID", operator: "eq", value: msgID });
 
         if (messages === undefined) {
             return (false);
