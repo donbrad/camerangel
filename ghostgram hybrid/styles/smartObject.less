@@ -1,16 +1,24 @@
 /* Smart Object styles */
 
 // Smart object edit and view
-#eventBanner {
+.eventBanner {
   width: 100%;
-  padding: 0.25em 1em;
+  > div {
+    padding: 0.25em 1em;
+  }
   p {
     margin: 0;
   }
 }
 
+.eventBannerImg {
+  margin-right: 0.5em;
+  vertical-align: text-top;
+  height: 1em;
+}
+
 .event-details {
-  margin: 0.5em;
+  margin: 0.5em 1em;
   h1,h2,h3,h4,h5,p {
     margin-left: 0 !important;
     margin-right: 0 !important;
@@ -121,13 +129,20 @@
     //background: #65BBB3 !important;
   }
   .btnSmart-type {
-    width: 1.5em;
-    height: 1.5em;
+    width: 2em;
+    height: 2em;
     background: #fff !important;
     border-radius: 50%;
-    padding: 0.25em;
     margin-right: 0.25em;
+    position: absolute;
+    top: -0.5em;
+    right: -1em;
+    text-align: center;
+    .shadow-1;
+    padding: 0.25em;
     img {
+      height: 1.5em;
+      width: 1.5em;
       text-align: center;
       vertical-align: middle;
     }
@@ -153,7 +168,6 @@
     //background: #65BBB3 !important;
   }
   .btnSmart-poster {
-
     float: left;
     width: 5.4em;
     background: #fff !important;
@@ -170,7 +184,7 @@
     background-color: #fff !important;
     color: @black;
     float: left;
-    padding: 0.25em;
+    padding: 0.25em 0.5em;
     font-size: 0.875em;
     width: 70%;
     .btnSmart-title {
@@ -179,6 +193,25 @@
       overflow-y: hidden;
       font-weight: 600;
       line-height: 1.4;
+    }
+  }
+  .btnSmart-type {
+    width: 2em;
+    height: 2em;
+    background: #fff !important;
+    border-radius: 50%;
+    margin-right: 0.25em;
+    position: absolute;
+    top: -0.5em;
+    right: -1em;
+    text-align: center;
+    .shadow-1;
+    padding: 0.25em;
+    img {
+      height: 1.5em;
+      width: 1.5em;
+      text-align: center;
+      vertical-align: middle;
     }
   }
 }
@@ -191,7 +224,13 @@
 .smartMovie-link {
   height: 0.75em;
 }
-
+/*
+#smartMovie-title > span:first-child {
+  display: block;
+  height: 3em;
+  overflow-y: hidden;
+}
+*/
 #smartEventView-date:read-only {
   background: #fff !important;
 }
@@ -486,9 +525,13 @@
   margin-top: 0.5em;
 }
 
-.smartMovieView-showtimeheader {
+.smartMovieView-showtimeheader, .smart-subheader {
   width: 100%;
   background-color: @shade-300;
+}
+
+#smartEventModal > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container {
+  background: #fff;
 }
 
 #smartMovie-title {

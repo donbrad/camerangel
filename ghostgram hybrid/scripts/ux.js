@@ -500,9 +500,10 @@ var ux = {
 	},
 
 	bannerReset: function(){
-		$(".eventBanner").removeClass().addClass("hidden");
+		$(".eventBanner").addClass("hidden");
+		$(".eventBanner > div").removeClass().addClass("hidden");
 		$(".eventBannerTitle").text("");
-		$(".eventBannerImg").attr("src", "");
+		$(".eventBannerImg").addClass("hidden").attr("src", "");
 	},
 
 };

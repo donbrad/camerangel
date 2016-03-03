@@ -3066,6 +3066,7 @@ a:hover {
 .footerMenu {
   background: #fff;
   border-top: 1px solid @shade-200;
+  overflow: hidden;
 }
 
 .footerBk {
@@ -3080,7 +3081,7 @@ a:hover {
 }
 
 div.footerMenu.km-footer > ul > li > a {
-  padding: 0.65rem;
+  padding: 0.75em;
   margin: 0px;
 }
 
@@ -3152,8 +3153,17 @@ div.footerMenu.km-footer > ul > li > a {
 }
 
 div.footerMenu.km-footer > ul > li > a > span > svg {
-  height: 1.5rem;
+  height: 1.5em;
 }
+
+#home > div.footerMenu.km-footer > ul > li:nth-child(1) > a,
+#channels > div.footerMenu.km-footer > ul > li:nth-child(2) > a,
+#contacts > div.footerMenu.km-footer > ul > li:nth-child(3) > a,
+#places > div.footerMenu.km-footer > ul > li:nth-child(4) > a,
+#gallery > div.footerMenu.km-footer > ul > li:nth-child(5) > a{
+  //background-color: lighten(@primary-200, 25%);
+}
+
 
 // Footer nav svg
 
@@ -5348,6 +5358,7 @@ div.contactListBox.activeContact > div > div > ul {
   .font-size(14);
   color: @shade-100;
   padding-left: 14%;
+  margin-bottom: 0.25em;
   @media @mobile {
     .font-size(12);
     padding-left: 17%;

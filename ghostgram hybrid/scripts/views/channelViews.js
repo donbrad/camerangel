@@ -60,7 +60,7 @@ var channelsView = {
                         $(selection).velocity({translateX:"-45%"},{duration: "fast"}).addClass("chat-active");
                     // if smaller screen and owner
                     } else if ($(window).width() < 375 && $(selection).hasClass("owner")){
-						$(selection).velocity({translateX:"-60%"},{duration: "fast"}).addClass("chat-active");
+						$(selection).velocity({translateX:"-65%"},{duration: "fast"}).addClass("chat-active");
 					// other small screen 
 					} else if ($(window).width() < 375){
 						$(selection).velocity({translateX:"-45%"},{duration: "fast"}).addClass("chat-active");
@@ -69,7 +69,7 @@ var channelsView = {
                         $(selection).velocity({translateX:"-45%"},{duration: "fast"}).addClass("chat-active");
                     // if larger screen and owner
                 	} else if($(selection).hasClass("owner")){
-                		$(selection).velocity({translateX:"-60%"},{duration: "fast"}).addClass("chat-active");
+                		$(selection).velocity({translateX:"-65%"},{duration: "fast"}).addClass("chat-active");
                     // if larger screen
                     } else {
                         $(selection).velocity({translateX:"-45%"},{duration: "fast"}).addClass("chat-active");
@@ -1813,13 +1813,13 @@ var channelView = {
         var objectUrl = '<div><span class="btnSmart" data-role="button" data-objectid="' + objectId +
             '" id="chatobject_' + objectId + '"'+
             'data-click="channelView.onObjectClick" >' +
-            '<span class="btnSmart-type">' +
-            '<img src="images/smart-event-test.svg" class="icon-smartBtn" />' +
-            '</span>' +
             '<span class="btnSmart-content">' +
             '<span class="btnSmart-title">' + smartEvent.title + ' </span><br /> ' +
             '<span class="btnSmart-date">' + dateStr + ' at ' + localTime + '</span><br /> ' +
             '<span class="btnSmart-date">' + placeName + '</span> ' +
+            '</span>' +
+            '<span class="btnSmart-type">' +
+            '<img src="images/smart-event-test.svg" class="icon-smartBtn" />' +
             '</span>' +
             '</span></div>';
 
@@ -1849,6 +1849,9 @@ var channelView = {
             '<p class="btnSmart-date textClamp">' + dateStr + '</p> ' +
             '<p class="btnSmart-date textClamp">' + smartMovie.theatreName + '</p> ' +
             '</div>' +
+            '<span class="btnSmart-type">' +
+            '<img src="images/smart-movie-circle.svg" />' +
+            '</span>' +
             '</span></div>';
 
         var fullMessage = message + objectUrl;
