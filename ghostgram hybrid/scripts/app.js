@@ -102,7 +102,6 @@
 			appId: 's2fo2sasaubcx7qe',
 			scheme: 'https',
 			offline: true,
-			cache: true,
 			authentication: {
 				persist: true,
 				onAuthenticationRequired: function() {

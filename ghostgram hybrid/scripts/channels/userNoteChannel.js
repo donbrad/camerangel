@@ -22,7 +22,7 @@ var userNoteChannel = {
                 dataProvider: APP.everlive
             },
             schema: {
-                model: { id: msgID }
+                model: { id: 'msgID' }
             }
         });
         //userNoteChannel.notesDS.fetch();
