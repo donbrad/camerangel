@@ -16,6 +16,7 @@ var userNoteChannel = {
 
         userNoteChannel.notesDS = new kendo.data.DataSource({
             offlineStorage: "privatenote",
+            batch: true,
             type: 'everlive',
             transport: {
                 typeName: 'privatenote',
@@ -24,6 +25,31 @@ var userNoteChannel = {
             schema: {
                 model: { id: 'msgID' }
             }
+        });
+
+        userNoteChannel.notesDS.bind("change", function (e) {
+            var changedNotes = e.items;
+            var note = e.items[0];
+            if (e.action !== undefined) {
+                switch (e.action) {
+                    case "itemchange" :
+                        var field  =  e.field;
+                        var noteId = note.msgID;
+                        break;
+
+                    case "remove" :
+                        // delete from contact list
+                        break;
+
+                    case "add" :
+                        note = e.items[0];
+                        // add to list if it's not a duplicate
+
+                        break;
+                }
+            }
+
+
         });
         userNoteChannel.notesDS.fetch();
 
