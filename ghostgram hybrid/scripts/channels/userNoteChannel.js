@@ -81,10 +81,10 @@ var userNoteChannel = {
 
         if (messages === undefined) {
             return (false);
-        } else if (messages.length === 0) {
-            return (false);
+        } else if (messages.length > 1) {
+            return (true);
         } else {
-            return(true);
+            return(false);
         }
     }
 };
