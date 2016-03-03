@@ -62,7 +62,7 @@ var privateNoteChannel = {
         var message = {
             type: 'privateNote',
             id: uuidNote,
-            msgID, uuidNote,
+            msgID: uuidNote,
             title: "",
             tagString: "",
             tags: [],
