@@ -23,6 +23,7 @@
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-XdXhoF08ubebxTjTh9jf0Ra4xFV1Jwo&libraries=places"></script>
 
 	<!-- bower components -->
+	<script src="bower_components/everlive/src/everlive.all.js"></script>
 	<script src="bower_components/eventEmitter/EventEmitter.js"></script>
 	<script src="bower_components/q/q.js"></script>
 	<script src="bower_components/underscore/underscore.js"></script>
@@ -70,6 +71,7 @@
 	<script src="scripts/models/channelModel.js"></script>
 	<script src="scripts/models/contactModel.js"></script>
 	<script src="scripts/models/deviceModel.js"></script>
+	<script src="scripts/models/everliveModel.js"></script>
 	<script src="scripts/models/mapModel.js"></script>
 	<script src="scripts/models/noteModel.js"></script>
 	<script src="scripts/models/notificationModel.js"></script>
@@ -91,8 +93,10 @@
 	<script src="scripts/views/profileView.js"></script>
 	<script src="scripts/channels/appDataChannel.js"></script>
 	<script src="scripts/channels/userDataChannel.js"></script>
+	<script src="scripts/channels/userNoteChannel.js"></script>
 	<script src="scripts/channels/groupChannel.js"></script>
 	<script src="scripts/channels/privateChannel.js"></script>
+	<script src="scripts/channels/privateNoteChannel.js"></script>
 
 	<script src="scripts/app.js"></script>
 
@@ -871,7 +875,7 @@
 		<img class="circle-img-lg home-profile-img"/>
 		<img src="images/status-away.svg" class="userAvailable home-status-card-img" />
 		<h3>
-			<span class="primaryName"></span>
+			<a data-role="button" href="#channel?isprivatenote=true"><span class="primaryName"></span></a>
 			<span class="hidden" id="profileStatusVerified">
 				<img src="images/icon-verified-dark.svg" class="user-status-icon" />
 			</span>
@@ -1488,7 +1492,10 @@
 
 	<div data-role="footer" style="display: block; background: #fff; padding-left: 2px;"  id="messageEditor" style="min-height: 48px; max-height: 60%;">
 		<div class="messageCompose">
-			<div id="messageComposeTitleTag" class="hidden"></div>
+			<div id="messageComposeTitleTag" class="hidden">
+				<input type="search" id="messageComposeTitle" placeholder="Title...">
+				<input type="search" id="messageComposeTag" placeholder="Tags...">
+			</div>
 			<div id="messageComposeToolbar" class="hidden"></div>
 			<textarea id="messageTextArea" type='text' name="messageTextArea" autofocus="true"></textarea>
 			<div class="messageMediaBar">
@@ -1498,9 +1505,14 @@
 							<img src="images/chat-camera.svg" height="24">
 						</a>
 					</li>
+					<li id="messageTitleTagLi">
+						<a data-role="button" data-click="channelView.messageTitleTag">
+							<img  src="images/icon-tag.svg" height="24">
+						</a>
+					</li>
 					<li >
 						<a data-role="button" data-badge="0" data-click="channelView.ghostgram" id="chat-editorBtn">
-							<img src="images/icon-editor.svg" height="20" id="chat-editorBtnImg"/>
+							<img src="images/icon-editor.svg" height="24" id="chat-editorBtnImg"/>
 						</a>
 					</li>
 					<li>
@@ -1703,6 +1715,12 @@
 	if(userModel.currentUser.useLargeView){
 		 messageClass = "userLgFontSize chat-message-text";
 	}
+	if (isContact === undefined) {
+		var isContact = false;
+	}
+	if (displayName === undefined) {
+		var displayName = "";
+	}
 	#
 	<div id=#:msgID# class="chat-message #=isPrivate# clearfix">
 		<div class="chat-details">
@@ -1720,9 +1738,12 @@
 			<div class="clearfix"></div>
 		</div>
 
+		# if (channelView.isPrivateNote !== undefined && channelView.isPrivateNote) { contactPhotoUrl = ''; } else {#
 		<div class="chat-message-user-img">
 			<img class="chat-message-profileImg circle-img-sm" src="#: contactPhotoUrl #" alt="" />
 		</div>
+		# } #
+
 		# if (content !== "") {#
 			# if (isContact ) {#
 				<div class="chat-message-receiver chat-message-content  clearfix">

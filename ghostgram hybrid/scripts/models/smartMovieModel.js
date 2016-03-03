@@ -122,7 +122,7 @@ var smartMovie = {
         smartOb.set('imbdId', objectIn.imdbId);
         smartOb.set('tmsId', objectIn.tmsId);
         smartOb.set('imageUrl', objectIn.imageUrl);
-        smartOb.set('officalUrl', objectIn.officialUrl);
+        smartOb.set('officialUrl', objectIn.officialUrl);
         smartOb.set('ticketUrl', objectIn.ticketUrl);
         smartOb.set('rating', objectIn.rating);
         smartOb.set('runtime', objectIn.runtime);
@@ -152,6 +152,5 @@ var smartMovie = {
             }
         });
     }
-
 
 };

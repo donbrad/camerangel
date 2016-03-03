@@ -266,6 +266,49 @@ var userModel = {
                 userModel.initPubNub();
                 userModel.fetchParseData();
 
+                APP.everlive.users.currentUser(function(data) {
+                    if (data.result) {
+                        mobileNotify(data.result.Username + " is logged in to Everlive!");
+                    } else {
+                        var username = user.get('username'), password = user.get('recoveryPassword');
+                        everlive.login(username, password, function (error, data){
+                            if (error !== null) {
+                                mobileNotify(JSON.stringify(error));
+
+                                everlive.createAccount(username, name, password, function (error1, data1) {
+                                    if (error1 !== null) {
+                                        mobileNotify(JSON.stringify(error1));
+                                    } else {
+                                        var token = data1;
+                                        mobileNotify("Everlive account created for " + username);
+                                    }
+
+                                });
+                            } else {
+                                mobileNotify("Everlive account confirmed -- migration enabled");
+                            }
+                        });
+                    }
+                }, function(err) {
+                    var username = user.get('username'), password = user.get('recoveryPassword');
+                    everlive.login(username, password, function (error, data){
+                        if (error !== null) {
+                            mobileNotify(JSON.stringify(error));
+
+                            everlive.createAccount(username, name, password, function (error1, data1) {
+                                if (error1 !== null) {
+                                    mobileNotify(JSON.stringify(error1));
+                                } else {
+                                    var token = data1;
+                                    mobileNotify("Everlive account created for " + username);
+                                }
+
+                            });
+                        } else {
+                            mobileNotify("Everlive account confirmed -- migration enabled");
+                        }
+                    });
+                });
 
                 if (phoneVerified) {
                     deviceModel.setAppState('phoneVerified', true);
@@ -456,6 +499,7 @@ var userModel = {
         smartEvent.fetch();
 
         userStatus.init();
+
 
        /* var InviteModel = Parse.Object.extend("invites");
         var InviteCollection = Parse.Collection.extend({

@@ -817,7 +817,7 @@ var channelView = {
     privateContactId: null,
     privateContact : null,
     isPrivateChat: false,
-    isPrivateNotes: false,
+    isPrivateNote: false,
     privacyMode: false,  // Privacy mode - obscure messages after timeout
     currentContact: null,
     activeMessage: {},
@@ -833,6 +833,7 @@ var channelView = {
     _firstSpace: false,
     _editorActive: false,
     _returnview: null,
+    _titleTagActive: false,
 
     membersDS: new kendo.data.DataSource({
         sort: {
@@ -1041,6 +1042,7 @@ var channelView = {
     onShow : function (e) {
         _preventDefault(e);
 
+        var name = '';
         ux.hideKeyboard();
 
 
@@ -1053,11 +1055,13 @@ var channelView = {
         channelView.topOffset = $("#messages-listview").data("kendoMobileListView").scroller().scrollTop;
         channelView._active = true;
         channelView._offersLoaded = false;
+        channelView._titleTagActive = false;
         // hide action btn
         ux.showActionBtn(false, "#channel");
 
-
+        channelView.toggleTitleTag();
         var channelUUID = e.view.params.channelId;
+        channelView.isPrivateNote = e.view.params.isprivatenote !== undefined;
 
         if (e.view.params.returnview !== undefined){
             channelView._returnview = unpackParameter(e.view.params.returnview);
@@ -1078,31 +1082,31 @@ var channelView = {
             channelView._offersLoaded = true;
         });*/
 
-        var thisChannel = channelModel.findChannelModel(channelUUID);
-        if (thisChannel === null) {
-            mobileNotify("ChatView -- chat doesn't exist : " + channelUUID);
-            return;
+        if (!channelView.isPrivateNote) {
+            // This isn't privateNote so handle as private or group channel
+            var thisChannel = channelModel.findChannelModel(channelUUID);
+            if (thisChannel === null) {
+                mobileNotify("ChatView -- chat doesn't exist : " + channelUUID);
+                return;
+            }
+
+            channelView._channel = thisChannel;
+
+            if (thisChannel.isPlace !== undefined && thisChannel.isPlace === true) {
+                channelView.isPlaceChat = true;
+                $('#channel-titleBtn .icon-header').removeClass('hidden');
+            } else {
+                channelView.isPlaceChat = false;
+                $('#channel-titleBtn .icon-header').addClass('hidden');
+            }
+            channelModel.zeroUnreadCount(thisChannel.channelId);
+
+            name =  thisChannel.name;
+            $("#channelName").text(name);
+
+            channelView.members = thisChannel.members;
         }
-
-        channelView._channel = thisChannel;
-
-        if (thisChannel.isPlace !== undefined && thisChannel.isPlace === true) {
-            channelView.isPlaceChat = true;
-            $('#channel-titleBtn .icon-header').removeClass('hidden');
-        } else {
-            channelView.isPlaceChat = false;
-            $('#channel-titleBtn .icon-header').addClass('hidden');
-        }
-        channelModel.zeroUnreadCount(thisChannel.channelId);
-
         var contactUUID = null;
-        var thisChannelHandler = null;
-
-
-        var name =  thisChannel.name;
-
-        channelView.members = thisChannel.members;
-
 
         //default private mode off for now. Todo: don and jordan fix privacy mode
         channelView.privacyMode = false;
@@ -1110,12 +1114,29 @@ var channelView = {
         $('#privacyMode').html('<img src="images/privacy-off.svg" />');
         $("#privacyStatus").addClass("hidden");
 
+        $("#messageSend").text('Send');
 
-        $("#channelName").text(name);
 
-      //  $("#channelNavBar").data('kendoMobileNavBar').title(name);
+        if (channelView.isPrivateNote) {
+            $("#messageSend").text('Save');
 
-        if (thisChannel.isPrivate) {
+            $("#channelName").text('Private Notes');
+            // Show contact img in header
+            $('#channelImage').attr('src', userModel.currentUser.photo).removeClass("hidden");
+            $('#messagePresenceButton').hide();
+
+            privateNoteChannel.open();
+
+            channelView.messagesDS.data([]);
+
+            privateNoteChannel.getMessageHistory(function (messages) {
+
+                channelView.messagesDS.data(messages);
+
+                channelView.loadImagesThenScroll()
+            });
+
+        } else if (thisChannel.isPrivate) {
 
             channelView.isPrivateChat = true;
             channelView.messageLock = true;
@@ -1564,6 +1585,21 @@ var channelView = {
          *!/*/
     },
 
+    toggleTitleTag : function () {
+
+        if (channelView._titleTagActive)
+            $('#messageComposeTitleTag').removeClass('hidden');
+        else
+            $('#messageComposeTitleTag').addClass('hidden');
+    },
+
+    messageTitleTag : function (e) {
+        _preventDefault(e);
+
+        channelView._titleTagActive = !channelView._titleTagActive;
+        channelView.toggleTitleTag();
+    },
+
     ghostgram: function (e) {
         _preventDefault(e);
         channelView.ghostgramActive = !channelView.ghostgramActive;
@@ -1676,7 +1712,9 @@ var channelView = {
         if (validMessage === true ) {
             channelView._initMessageTextArea();
 
-            if (channelView.isPrivateChat) {
+            if (channelView.isPrivateNote) {
+                privateNoteChannel.sendMessage(text, channelView.activeMessage, 86400);
+            } else if (channelView.isPrivateChat) {
                 privateChannel.sendMessage(channelView.privateContactId, text, channelView.activeMessage, 86400);
             } else {
                 groupChannel.sendMessage(text, channelView.activeMessage, 86400);
