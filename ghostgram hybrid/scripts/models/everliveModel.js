@@ -46,6 +46,14 @@ var everlive = {
     logout : function () {
         APP.everlive.authentication.clearAuthorization();
         everlive._signedIn = false;
+    },
+
+    syncStart : function () {
+
+    },
+
+    syncEnd : function ()  {
+
     }
 
 };

@@ -103,8 +103,26 @@
 			scheme: 'https',
 			offline: true,
 			authentication: {
-				persist: true
+				persist: true,
+				onAuthenticationRequired: function() {
+					APP.kendo.navigate('#usersignin');
+				}
 			}
+		});
+
+
+		APP.everlive.on('syncStart', function() {
+			mobileNotify("Kendo Sync Start >>>");
+		});
+
+		APP.everlive.on('syncEnd', function(syncInfo) {
+			var err = syncInfo.error;
+			if (err) {
+				mobileNotify('Kendo Sync Error : ' + JSON.stringify(err));
+			} else if (err === '') {
+				mobileNotify('Kendo Sync Error : unknown...');
+			}
+
 		});
 
 		userNoteChannel.init();  // Depends on everlive...

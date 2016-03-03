@@ -855,6 +855,9 @@ var channelView = {
     photoUrlMap: [], // Dynamic map of photos to image urls based on offers
 
     messagesDS: new kendo.data.DataSource({  // this is the list view data source for chat messages
+        schema: {
+            model: { id: 'msgID' }
+        },
         sort: {
             field: "time",
             dir: "asc"
@@ -938,6 +941,30 @@ var channelView = {
             hold: channelView.holdChannel
         });
 
+        channelView.messagesDS.bind("change", function (e) {
+            var changedMessages = e.items;
+            var message = e.items[0];
+            if (e.action !== undefined) {
+                switch (e.action) {
+                    case "itemchange" :
+                        var field  =  e.field;
+                        var messageId = message.msgID;
+                        break;
+
+                    case "remove" :
+                        // delete from contact list
+                        break;
+
+                    case "add" :
+                       message = e.items[0];
+                        // add to list if it's not a duplicate
+
+                        break;
+                }
+            }
+
+
+        });
 
     },
 
