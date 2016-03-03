@@ -58,10 +58,11 @@ var privateNoteChannel = {
         data = JSON.parse(contentData);
         var encryptMessage = '', encryptData = '';
         var currentTime =  ggTime.currentTime();
-
+        var uuidNote = uuid.v4();
         var message = {
             type: 'privateNote',
-            id: uuid.v4(),
+            id: uuidNote,
+            msgID, uuidNote,
             title: "",
             tagString: "",
             tags: [],

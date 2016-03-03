@@ -125,7 +125,7 @@
 			}
 
 		});
-		
+
 		userNoteChannel.init();  // Depends on everlive...
 
 
