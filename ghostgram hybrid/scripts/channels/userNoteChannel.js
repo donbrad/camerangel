@@ -15,8 +15,9 @@ var userNoteChannel = {
     init: function () {
 
         userNoteChannel.notesDS = new kendo.data.DataSource({
-            offlineStorage: "privatenote",
             type: 'everlive',
+            offlineStorage: "privatenote",
+
             transport: {
                 typeName: 'privatenote',
                 dataProvider: APP.everlive

@@ -102,6 +102,15 @@
 			appId: 's2fo2sasaubcx7qe',
 			scheme: 'https',
 			offline: true,
+			offlineStorage: {
+				storage: {
+					//provider: Everlive.Constants.StorageProvider.LocalStorage
+					provider: Everlive.Constants.StorageProvider.FileSystem
+				},
+				conflicts: {
+					strategy: Everlive.Constants.ConflictResolutionStrategy.ClientWins
+				}
+			},
 			authentication: {
 				persist: true,
 				onAuthenticationRequired: function() {
