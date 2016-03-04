@@ -3559,18 +3559,71 @@
 		<ul id="placeView-listview"></ul>
 
 	</div>
-	<ul id="placeViewItemActions" data-role="actionsheet" data-cancel="Cancel">
-		<li><a data-role="button" data-click="placeView.editItem"> Edit </a></li>
-		<!--<li><a data-role="button">Add Place Chat</a></li>-->
-		<li><a data-role="button" data-action="placeView.shareItem" > Share </a></li>
-		<li><a data-role="button" data-action="placeView.deleteItem"> Delete </a></li>
-	</ul>
-	<div class="footer" data-role="footer">
-		<a class="actionBtn secondary-100" data-role="button" data-rel="actionsheet" href="#placeViewOptions">
-			<p class="actionBtn-text">Cancel</p>
-			<img src="images/nav-add-white.svg"/>
-		</a>
+	<div data-role="footer" style="display: block; background: #fff; padding-left: 2px;"  id=placeViewEditor" style="min-height: 48px; max-height: 60%;">
+	<div class="messageCompose">
+		<div id="placeViewTitleTag" class="hidden">
+			<input type="search" id="placeViewTitle" placeholder="Title...">
+			<input type="search" id="placeViewTag" placeholder="Tags...">
+		</div>
+		<div id="placeViewToolbar" class="hidden"></div>
+		<textarea id="placeViewTextArea" type='text' name="messageTextArea" autofocus="true"></textarea>
+		<div class="placeViewMediaBar">
+			<ul>
+				<li>
+					<a data-role="button" data-rel="actionsheet" href="#placeViewPhotoActions">
+						<img src="images/chat-camera.svg" height="24">
+					</a>
+				</li>
+				<li ">
+					<a data-role="button" data-click="placeView.messageTitleTag">
+						<img  src="images/icon-tag.svg" height="24">
+					</a>
+				</li>
+				<li >
+					<a data-role="button" data-badge="0" data-click="placeView.ghostgram" id="placeView-editorBtn">
+						<img src="images/icon-editor.svg" height="24"/>
+					</a>
+				</li>
+				<li>
+					<a data-role="button" data-click="placeView.noteSearch">
+						<img src="images/icon-search.svg" height="24">
+					</a>
+				</li>
+				<li>
+					<a data-role="button" data-rel="actionsheet" href="#placeViewSmartObjects">
+						<img src="images/icon-smartMenu.svg" height="24">
+					</a>
+				</li>
+
+				<li class="right">
+					<a data-role="button" class="btnClear"  data-click="placeView.saveNote">Save</a>
+				</li>
+			</ul>
+		</div>
 	</div>
+</div>
+
+	<ul data-role="actionsheet" id="placeViewSmartObjects" data-popup='{"direction": "left"}'>
+		<li><a data-action="channelView.messageCalendar"><img src="images/smart-event.svg" class="icon-sm"/> Add Event</a></li>
+		<!--<li><a data-action="channelView.messageFlight"><img src="images/smart-flight.svg" class="icon-sm"/> Add Flight</a></li>-->
+		<li><a data-action="channelView.messageMovie"><img src="images/smart-movie.svg" class="icon-sm"/> Add Movie</a></li>
+		<!--<li><a data-action="channelView.messageMusic"> Add Music</a></li>-->
+	</ul>
+
+	<ul data-role="actionsheet" id="placeViewPhotoActions" data-popup='{"direction": "left"}'>
+		<li><a data-action="placeView.messageCamera"> Phone Camera</a></li>
+		<li><a data-action="placeView.messagePhoto"> Phone Gallery</a></li>
+		<li><a data-action="placeView.messageGallery"> Memories Gallery</a></li>
+	</ul>
+
+
+	<ul id="placeViewItemActions" data-role="actionsheet" data-cancel="Cancel">
+			<li><a data-role="button" data-click="placeView.editItem"> Edit </a></li>
+			<!--<li><a data-role="button">Add Place Chat</a></li>-->
+			<li><a data-role="button" data-action="placeView.shareItem" > Share </a></li>
+			<li><a data-role="button" data-action="placeView.deleteItem"> Delete </a></li>
+	</ul>
+
 	<ul id="placeViewOptions" data-role="actionsheet" data-cancel="Cancel">
 		<li><a data-role="button" data-click="placeView.addNote"><img src="images/smart-note.svg" class="icon-sm"/> Add A Note </a></li>
 		<!--<li><a data-role="button">Add Place Chat</a></li>-->
