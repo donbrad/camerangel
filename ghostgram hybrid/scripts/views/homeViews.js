@@ -1499,11 +1499,3 @@ var changePasswordView = {
     }
 };
 
-/// Add temp private notes
-var privateNotesView = {
-
-    onInit: function(){
-
-    }
-
-};
