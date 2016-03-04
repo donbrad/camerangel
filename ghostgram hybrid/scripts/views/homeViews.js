@@ -277,16 +277,14 @@ var homeView = {
     onShow: function (e) {
         _preventDefault(e);
 
-        // hide search button and show gear
-        $(".homeToggleSetting").removeClass("hidden");
-        $(".homeToggleSearch").addClass("hidden");
+        ux.setSearchPlaceholder("Search notifications");
 
         // set verified ui for start screen
         if(userModel.currentUser.phoneVerified) {
             $("#startPhoneVerified").addClass("hidden");
         }
 
-        // Set user availibility
+        // Set user availability
         ux.updateHeaderStatusImages();
 
 
@@ -1499,4 +1497,13 @@ var changePasswordView = {
         _preventDefault(e);
         $("#modalview-changePassword").kendoMobileModalView("close");
     }
+};
+
+/// Add temp private notes
+var privateNotesView = {
+
+    onInit: function(){
+
+    }
+
 };

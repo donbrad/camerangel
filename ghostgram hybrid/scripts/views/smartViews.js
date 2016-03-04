@@ -255,6 +255,7 @@ var smartEventView = {
         //$('#smartEventView-datestring').val(new Date(thisEvent.date).toString("MMM dd, yyyy h:mm tt"));
         $('#smartEventView-date').val(new Date(thisEvent.date).toString("MMM dd, yyyy"));
         $('#smartEventView-time').val(new Date(thisEvent.date).toString("h:mm tt"));
+        $(".eventBanner").addClass("hidden");
     },
 
 
@@ -347,7 +348,7 @@ var smartEventView = {
 
         } else {
             thisObject.set('isExpired', false);
-            //smartEventView.setEventBanner();
+            smartEventView.setEventBanner();
         }
     },
 
@@ -551,7 +552,7 @@ var smartEventView = {
         var thisObject = smartEventView._activeObject;
         // setting send/receiver
 
-        $('#smartEventView-organizer').text(thisObject.senderName);
+        //$('#smartEventView-organizer').text(thisObject.senderName);
         smartEventView.checkExpired(thisObject.date);
 
         if (thisObject.senderUUID === userModel.currentUser.userUUID) {
@@ -576,14 +577,7 @@ var smartEventView = {
 
         $("#smartEventView-placesearchdiv").addClass('hidden');
 
-        if (thisObject.senderUUID === null || thisObject.senderUUID === userModel.currentUser.userUUID) {
-            $("#smartEventView-organizer").text("You");
-        } else {
-            var contact = contactModel.findContactByUUID(thisObject.senderUUID);
-            if (contact !== undefined) {
-                $("#smartEventView-organizer").text(contact.name);
-            }
-        }
+
 
         smartEventView.checkExpired();
         $("#smartEventModal").data("kendoMobileModalView").open();
@@ -593,30 +587,35 @@ var smartEventView = {
         // Styling for event banner state
         switch(state) {
             case "expired":
-                $("#eventBanner").removeClass("hidden, eventPending, eventAccepted, eventDeclined").addClass("eventExpired");
+                $(".eventBanner").removeClass("hidden");
+                $(".eventBanner > div").removeClass().addClass("eventExpired");
                 $(".eventBannerTitle").text("Event expired");
                 $(".eventBannerImg").attr("src", "images/smart-time-light.svg");
 
                 break;
             case "pending":
-                $("#eventBanner").removeClass("hidden, eventAccepted, eventDeclined, eventExpired").addClass("eventPending");
+                $(".eventBanner").removeClass("hidden");
+                $(".eventBanner > div").removeClass("hidden, eventAccepted, eventDeclined, eventExpired").addClass("eventPending");
                 $(".eventBannerTitle").text("Awaiting your response");
-                $(".eventBannerImg").attr("src", "images/icon-question.svg");
+                $(".eventBannerImg").removeClass("hidden").attr("src", "images/icon-question.svg");
 
                 break;
             case "accepted":
-                $("#eventBanner").removeClass("hidden, eventDeclined, eventExpired, eventPending").addClass("eventAccepted");
+                $(".eventBanner").removeClass("hidden");
+                $(".eventBanner > div").removeClass("hidden, eventDeclined, eventExpired, eventPending").addClass("eventAccepted");
                 $(".eventBannerTitle").text("Accepted!");
                 //$(".eventBannerImg").attr("src", "images/icon");
 
                 break;
             case "declined":
-                $("#eventBanner").removeClass("hidden, eventAccepted, eventExpired, eventPending").addClass("eventDeclined");
+                $(".eventBanner").removeClass("hidden");
+                $(".eventBanner > div").removeClass("hidden, eventAccepted, eventExpired, eventPending").addClass("eventDeclined");
                 $(".eventBannerTitle").text("Declined");
 
                 break;
             case "organizer":
-                $(".eventBanner").removeClass().addClass("eventOrganizer");
+                $(".eventBanner").removeClass("hidden");
+                $(".eventBanner > div").removeClass().addClass("eventOrganizer");
                 $(".eventBannerTitle").text("Event organized by " + params);
         }
 
@@ -906,7 +905,7 @@ var smartEventView = {
     onCancel : function (e) {
         _preventDefault(e);
         $("#smartEventModal").data("kendoMobileModalView").close();
-        $("#eventBanner").removeClass();
+        ux.bannerReset();
     },
 
     onDone: function (e) {
@@ -1560,7 +1559,7 @@ var smartMovieEdit = {
 
         if (moment(smartMovieEdit._date).isAfter(date)) {
             thisObject.set('isExpired', true);
-            smartMovieEdit.setEventBanner("expired");
+            smartEventView.setEventBanner("expired");
 
         } else {
             thisObject.set('isExpired', false);
@@ -1785,6 +1784,7 @@ var smartMovieEdit = {
     onCancel : function (e) {
         _preventDefault(e);
         $("#smartMovieEditor").data("kendoMobileModalView").close();
+        ux.bannerReset();
     },
 
     onDone: function (e) {
@@ -2277,12 +2277,14 @@ var smartMovieView = {
         _preventDefault(e);
         if (smartMovieView._showTimeSelected) {
             smartMovieView.setMovieSelected(false);
+            $("#smartMovieModal").data("kendoMobileModalView").close();
         } else {
             $("#smartMovieModal").data("kendoMobileModalView").close();
             if (smartMovieView._callback !== null) {
                 smartMovieView._callback(null);
             }
         }
+        ux.bannerReset();
 
     },
 
