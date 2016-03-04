@@ -4674,7 +4674,7 @@ RGBA form.
         */
         drawDOM(element: JQuery, options: any): JQueryPromise<any>;
         function /**
-        Exports a group of drawing elements as an image.The export operation is asynchronous and returns a promise.The promise will be resolved with a PNG image encoded as a Data URI.
+        Exports a group of drawing elements as an image.The group will be positioned at [0, 0] in the exported image. It's dimensions will be used as default dimensions for the image.The export operation is asynchronous and returns a promise.The promise will be resolved with a PNG image encoded as a Data URI.
         @method
         @param group - The root group containing all elements to export.
         @param options - Parameters for the exported image.
@@ -4682,7 +4682,7 @@ RGBA form.
         */
         exportImage(group: kendo.drawing.Group, options: any): JQueryPromise<any>;
         function /**
-        Exports a group of drawing elements as a PDF file.The export operation is asynchronous and returns a promise.The promise will be resolved with a PDF file encoded as a Data URI.
+        Exports a group of drawing elements as a PDF file.The group will be positioned at [0, 0] in the exported file. It's dimensions will be used as default dimensions for the image.The export operation is asynchronous and returns a promise.The promise will be resolved with a PDF file encoded as a Data URI.
         @method
         @param group - The root group containing all elements to export.
         @param options - Parameters for the exported PDF file.
@@ -4690,7 +4690,7 @@ RGBA form.
         */
         exportPDF(group: kendo.drawing.Group, options: kendo.drawing.PDFOptions): JQueryPromise<any>;
         function /**
-        Exports a group of drawing elements as an SVG document.The export operation is asynchronous and returns a promise.The promise will be resolved with a SVG document encoded as a Data URI.
+        Exports a group of drawing elements as an SVG document.The group will be positioned at [0, 0] in the exported file. It's dimensions will be used as default dimensions for the image.The export operation is asynchronous and returns a promise.The promise will be resolved with a SVG document encoded as a Data URI.
         @method
         @param group - The root group containing all elements to export.
         @param options - Export options.
@@ -5041,6 +5041,17 @@ All descendant elements are traversed.
 All descendant elements are traversed.
         */
         unbind(element: Element): void;
+
+    module pdf {
+        function /**
+        Defines a map with locations for TrueType Font (.ttf) files.The exportPDF method will use the font files when embedding them in a PDF document.
+As a fallback, fonts might be loaded from the locations listed in a style sheet font-face declarations.
+This will work only if the style sheet and fonts are loaded from the same domain.It's safe to call this method multiple times.
+        @method
+        @param map - A map for font names, variants and the location of its .ttf file.
+        */
+        defineFont(map: any): void;
+    }
 
 }
 declare module kendo.mobile.ui {
@@ -7697,6 +7708,11 @@ frozenRows instead.
         @member {string}
         */
         format?: string;
+        /**
+        Sets the formula that Excel uses to compute and display the cell value
+        @member {string}
+        */
+        formula?: string;
         /**
         Deprecated in versions 2015.3 and newer. Use textAlign instead.
         @member {string}
