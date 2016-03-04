@@ -12,6 +12,7 @@ var deviceModel = {
     tempDirectory: '',
     appVersion: '',
     deviceIsReady: false,
+    lastEverliveSync: null,
 
 
     state: {
@@ -45,6 +46,8 @@ var deviceModel = {
 
     init: function() {
         deviceModel.deviceIsReady = true;
+
+        deviceModel.lastEverliveSync = ggTime.currentTimeInSeconds() + 61;
 
         if (window.navigator.simulator !== true) {
             window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
@@ -170,13 +173,33 @@ var deviceModel = {
 
     },
 
+
+
+    syncEverlive: function () {
+
+        if (deviceModel.state.connection === 'none')
+            return;
+
+
+        var currentTime = ggTime.currentTimeInSeconds();
+
+
+        if (currentTime > deviceModel.lastEverliveSync + 60) {
+            deviceModel.lastEverliveSync = ggTime.currentTimeInSeconds();
+
+            APP.everlive.sync();
+        }
+
+    },
+
+
     onOnline: function() {
         deviceModel.setAppState('isOnline', true);
         // Take all data sources online
 
         if (APP.everlive !== null) {
             APP.everlive.online();
-            APP.everlive.sync();
+            deviceModel.syncEverlive();
         }
 
        // APP.models.home.invitesDS.online(true);

@@ -15,15 +15,15 @@ var userNoteChannel = {
     init: function () {
 
         userNoteChannel.notesDS = new kendo.data.DataSource({
-            offlineStorage: "privatenote",
-            batch: true,
             type: 'everlive',
+            offlineStorage: "privatenote",
+
             transport: {
                 typeName: 'privatenote',
                 dataProvider: APP.everlive
             },
             schema: {
-                model: { id: 'msgID' }
+                model: { id:  Everlive.idField}
             }
         });
 
@@ -81,10 +81,10 @@ var userNoteChannel = {
 
         if (messages === undefined) {
             return (false);
-        } else if (messages.length === 0) {
-            return (false);
+        } else if (messages.length > 1) {
+            return (true);
         } else {
-            return(true);
+            return(false);
         }
     }
 };
