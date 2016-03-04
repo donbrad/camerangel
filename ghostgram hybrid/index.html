@@ -875,7 +875,7 @@
 		<img class="circle-img-lg home-profile-img"/>
 		<img src="images/status-away.svg" class="userAvailable home-status-card-img" />
 		<h3>
-			<a data-role="button" href="#channel?isprivatenote=true"><span class="primaryName"></span></a>
+			<a data-role="button" href="#privateNotes"><span class="primaryName"></span></a>
 			<span class="hidden" id="profileStatusVerified">
 				<img src="images/icon-verified-dark.svg" class="user-status-icon" />
 			</span>
@@ -1510,7 +1510,7 @@
 							<img  src="images/icon-tag.svg" height="22">
 						</a>
 					</li>
-					<li >
+					<li>
 						<a data-role="button" data-badge="0" data-click="channelView.ghostgram" id="chat-editorBtn">
 							<img src="images/icon-editor.svg" height="22" id="chat-editorBtnImg"/>
 						</a>
@@ -3937,6 +3937,25 @@
 	</form>
 
 </div>
+
+<!--/*
+ * Private Notes
+ */-->
+<div data-role="view" id="privateNotes" data-title="My Notes" data-layout="main" class="appearance" data-init="privateNotesView.onInit" style="display: none;">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span data-role="view-title"></span>
+			<a data-role="button" href="#:back" data-align="left">
+				<img src="images/nav-back.svg" />
+			</a>
+		</div>
+	</div>
+	<div>
+		These are my notes!
+	</div>
+
+</div>
+
 
 </body>
 </html>

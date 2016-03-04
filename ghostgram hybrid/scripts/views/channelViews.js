@@ -982,7 +982,7 @@ var channelView = {
                 focus: true,
                 placeholder: 'Message....',
                 /* callbacks: {
-                 focus: function(e)
+                 change: function(e)
                  {
                  $('#messageTextArea').focus();
                  }

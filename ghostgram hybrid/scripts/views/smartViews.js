@@ -255,6 +255,7 @@ var smartEventView = {
         //$('#smartEventView-datestring').val(new Date(thisEvent.date).toString("MMM dd, yyyy h:mm tt"));
         $('#smartEventView-date').val(new Date(thisEvent.date).toString("MMM dd, yyyy"));
         $('#smartEventView-time').val(new Date(thisEvent.date).toString("h:mm tt"));
+        $(".eventBanner").addClass("hidden");
     },
 
 
@@ -576,15 +577,7 @@ var smartEventView = {
 
         $("#smartEventView-placesearchdiv").addClass('hidden');
 
-        if (thisObject.senderUUID === null || thisObject.senderUUID === userModel.currentUser.userUUID) {
-            $("#smartEventView-organizer").text("You");
-            smartEventView.setEventBanner('organizer', "You");
-        } else {
-            var contact = contactModel.findContactByUUID(thisObject.senderUUID);
-            if (contact !== undefined) {
-                smartEventView.setEventBanner('organizer', contact.name);
-            }
-        }
+
 
         smartEventView.checkExpired();
         $("#smartEventModal").data("kendoMobileModalView").open();

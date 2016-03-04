@@ -1498,3 +1498,12 @@ var changePasswordView = {
         $("#modalview-changePassword").kendoMobileModalView("close");
     }
 };
+
+/// Add temp private notes
+var privateNotesView = {
+
+    onInit: function(){
+
+    }
+
+};

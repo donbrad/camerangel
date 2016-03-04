@@ -546,6 +546,45 @@
   text-align: left;
   padding: 0.5rem 0.25rem;
 }
+#privateNotes-drawer > div > div.km-scroll-container {
+  background-color: #4A4A4A;
+}
+#privateNotes-list {
+  width: 100%;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+#privateNotes-list span {
+  font-size: 1.5em;
+}
+#privateNotes-list li {
+  padding: 0.5em 1em;
+  border-bottom: 1px solid #E0E0E0;
+}
+#privateNotes-list li:nth-child(2) {
+  background: #E57373;
+}
+#privateNotes-list li:nth-child(3) {
+  background: #FADDB0;
+  color: #4A4A4A;
+}
+#privateNotes-list li:nth-child(4) {
+  background: #6CADF3;
+}
+#privateNotes-list li:nth-child(5) {
+  background: #9E788F;
+}
+#privateNotes-list li:nth-child(6) {
+  background: #009688;
+}
+.privateNote-item {
+  padding-left: 1em;
+  padding-right: 1em;
+}
+.privateNote-item > img {
+  vertical-align: middle;
+}
 .redactor-editor {
   padding: 0.5em !important;
   border: none !important;
