@@ -5,16 +5,19 @@
     <meta charset="utf-8" />
 	<meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-eval';   img-src * data: blob: filesystem:; style-src  'self' 'unsafe-inline' *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *;">
     <!-- Styles -->
-	<link href="kendo/styles/kendo.common.min.css" rel="stylesheet" />
-	<!--<link href="kendo/styles/kendo.material.min.css" rel="stylesheet" />-->
-	<!--<link href="kendo/styles/kendo.material.mobile.min.css" rel="stylesheet" />-->
-    <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet" />
+
 	<link href="styles/strength.css" rel="stylesheet" />
 
 	<link href="bower_components/pickadate/lib/themes/default.css" rel="stylesheet" />
 	<link href="bower_components/pickadate/lib/themes/default.time.css" rel="stylesheet" />
 	<link href="bower_components/pickadate/lib/themes/default.date.css" rel="stylesheet" />
 	<link href="styles/redactor.css" rel="stylesheet" />
+
+	<link href="kendo/styles/kendo.common.min.css" rel="stylesheet" />
+	<!--<link href="kendo/styles/kendo.material.min.css" rel="stylesheet" />-->
+	<!--<link href="kendo/styles/kendo.material.mobile.min.css" rel="stylesheet" />-->
+	<link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet" />
+
 
     <link href="styles/master.css" rel="stylesheet" />
 
@@ -3561,48 +3564,48 @@
 
 	</div>
 	<div data-role="footer" style="display: block; background: #fff; padding-left: 2px;"  id=placeViewEditor" style="min-height: 48px; max-height: 60%;">
-	<div class="messageCompose">
-		<div id="placeViewTitleTag" class="hidden">
-			<input type="search" id="placeViewTitle" placeholder="Title...">
-			<input type="search" id="placeViewTag" placeholder="Tags...">
-		</div>
-		<div id="placeViewToolbar" class="hidden"></div>
-		<textarea id="placeViewTextArea" type='text' name="messageTextArea" autofocus="true"></textarea>
-		<div class="placeViewMediaBar">
-			<ul>
-				<li>
-					<a data-role="button" data-rel="actionsheet" href="#placeViewPhotoActions">
-						<img src="images/chat-camera.svg" height="24">
-					</a>
-				</li>
-				<li ">
-					<a data-role="button" data-click="placeView.messageTitleTag">
-						<img  src="images/icon-tag.svg" height="24">
-					</a>
-				</li>
-				<li >
-					<a data-role="button" data-badge="0" data-click="placeView.ghostgram" id="placeView-editorBtn">
-						<img src="images/icon-editor.svg" height="24"/>
-					</a>
-				</li>
-				<li>
-					<a data-role="button" data-click="placeView.noteSearch">
-						<img src="images/icon-search.svg" height="24">
-					</a>
-				</li>
-				<li>
-					<a data-role="button" data-rel="actionsheet" href="#placeViewSmartObjects">
-						<img src="images/icon-smartMenu.svg" height="24">
-					</a>
-				</li>
+		<div class="messageCompose">
+			<div id="placeViewTitleTag" class="hidden">
+				<input type="search" id="placeViewTitle" placeholder="Title...">
+				<input type="search" id="placeViewTag" placeholder="Tags...">
+			</div>
+			<div id="placeViewToolbar" class="hidden"></div>
+			<textarea id="placeViewTextArea" type='text' name="placeViewTextArea" autofocus="true"></textarea>
+			<div class="placeViewMediaBar">
+				<ul>
+					<li>
+						<a data-role="button" data-rel="actionsheet" href="#placeViewPhotoActions">
+							<img src="images/chat-camera.svg" height="24">
+						</a>
+					</li>
+					<li ">
+						<a data-role="button" data-click="placeView.messageTitleTag">
+							<img  src="images/icon-tag.svg" height="24">
+						</a>
+					</li>
+					<li >
+						<a data-role="button" data-badge="0" data-click="placeView.ghostgram" id="placeView-editorBtn">
+							<img src="images/icon-editor.svg" height="24"/>
+						</a>
+					</li>
+					<li>
+						<a data-role="button" data-click="placeView.noteSearch">
+							<img src="images/icon-search.svg" height="24">
+						</a>
+					</li>
+					<li>
+						<a data-role="button" data-rel="actionsheet" href="#placeViewSmartObjects">
+							<img src="images/icon-smartMenu.svg" height="24">
+						</a>
+					</li>
 
-				<li class="right">
-					<a data-role="button" class="btnClear"  data-click="placeView.saveNote">Save</a>
-				</li>
-			</ul>
+					<li class="right">
+						<a data-role="button" class="btnClear"  data-click="placeView.saveNote">Save</a>
+					</li>
+				</ul>
+			</div>
 		</div>
 	</div>
-</div>
 
 	<ul data-role="actionsheet" id="placeViewSmartObjects" data-popup='{"direction": "left"}'>
 		<li><a data-action="channelView.messageCalendar"><img src="images/smart-event.svg" class="icon-sm"/> Add Event</a></li>
