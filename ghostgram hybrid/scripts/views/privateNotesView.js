@@ -16,7 +16,7 @@ var privateNotesView = {
 
     onInit : function (e) {
         _preventDefault(e);
-        privateNoteModel.init();
+       
     },
 
 
