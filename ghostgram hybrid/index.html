@@ -5,15 +5,19 @@
     <meta charset="utf-8" />
 	<meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-eval';   img-src * data: blob: filesystem:; style-src  'self' 'unsafe-inline' *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *;">
     <!-- Styles -->
-	<link href="kendo/styles/kendo.common.min.css" rel="stylesheet" />
-	<link href="kendo/styles/kendo.material.min.css" rel="stylesheet" />
-    <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet" />
+
 	<link href="styles/strength.css" rel="stylesheet" />
 
 	<link href="bower_components/pickadate/lib/themes/default.css" rel="stylesheet" />
 	<link href="bower_components/pickadate/lib/themes/default.time.css" rel="stylesheet" />
 	<link href="bower_components/pickadate/lib/themes/default.date.css" rel="stylesheet" />
 	<link href="styles/redactor.css" rel="stylesheet" />
+
+	<link href="kendo/styles/kendo.common.min.css" rel="stylesheet" />
+	<!--<link href="kendo/styles/kendo.material.min.css" rel="stylesheet" />-->
+	<!--<link href="kendo/styles/kendo.material.mobile.min.css" rel="stylesheet" />-->
+	<link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet" />
+
 
     <link href="styles/master.css" rel="stylesheet" />
 
@@ -77,6 +81,7 @@
 	<script src="scripts/models/notificationModel.js"></script>
 	<script src="scripts/models/photoModel.js"></script>
 	<script src="scripts/models/placeModel.js"></script>
+	<script src="scripts/models/privateNoteModel.js"></script>
 	<script src="scripts/models/smartListModel.js"></script>
 	<script src="scripts/models/smartEventModel.js"></script>
 	<script src="scripts/models/smartMovieModel.js"></script>
@@ -91,12 +96,12 @@
 	<script src="scripts/views/homeViews.js"></script>
 	<script src="scripts/views/placeViews.js"></script>
 	<script src="scripts/views/profileView.js"></script>
+	<script src="scripts/views/privateNotesView.js"></script>
 	<script src="scripts/channels/appDataChannel.js"></script>
 	<script src="scripts/channels/userDataChannel.js"></script>
-	<script src="scripts/channels/userNoteChannel.js"></script>
 	<script src="scripts/channels/groupChannel.js"></script>
 	<script src="scripts/channels/privateChannel.js"></script>
-	<script src="scripts/channels/privateNoteChannel.js"></script>
+
 
 	<script src="scripts/app.js"></script>
 
@@ -1491,13 +1496,13 @@
 	</div>
 
 	<div data-role="footer" style="display: block; background: #fff; padding-left: 2px;"  id="messageEditor" style="min-height: 48px; max-height: 60%;">
-		<div class="messageCompose">
+		<div class="noteCompose">
 			<div id="messageComposeTitleTag" class="hidden">
 				<input type="search" id="messageComposeTitle" placeholder="Title...">
 				<input type="search" id="messageComposeTag" placeholder="Tags...">
 			</div>
 			<div id="messageComposeToolbar" class="hidden"></div>
-			<textarea id="messageTextArea" type='text' name="messageTextArea" autofocus="true"></textarea>
+			<textarea id="messageTextArea" type='text' name="messageTextArea"></textarea>
 			<div class="messageMediaBar">
 				<ul>
 					<li>
@@ -1548,7 +1553,7 @@
 		</div>
 	</div>
 
-	<ul data-role="actionsheet" id="newMessageActions" data-popup='{"direction": "left"}'>
+	<ul data-role="actionsheet" id="newMessageActions" data-popup='{"width": "auto", "height": "auto" }'>
 		<li><a data-action="channelView.messageCalendar"><img src="images/smart-event.svg" class="icon-sm"/> Add Event</a></li>
 		<!--<li><a data-action="channelView.messageFlight"><img src="images/smart-flight.svg" class="icon-sm"/> Add Flight</a></li>-->
 		<li><a data-action="channelView.messageMovie"><img src="images/smart-movie.svg" class="icon-sm"/> Add Movie</a></li>
@@ -3559,18 +3564,71 @@
 		<ul id="placeView-listview"></ul>
 
 	</div>
-	<ul id="placeViewItemActions" data-role="actionsheet" data-cancel="Cancel">
-		<li><a data-role="button" data-click="placeView.editItem"> Edit </a></li>
-		<!--<li><a data-role="button">Add Place Chat</a></li>-->
-		<li><a data-role="button" data-action="placeView.shareItem" > Share </a></li>
-		<li><a data-role="button" data-action="placeView.deleteItem"> Delete </a></li>
-	</ul>
-	<div class="footer" data-role="footer">
-		<a class="actionBtn secondary-100" data-role="button" data-rel="actionsheet" href="#placeViewOptions">
-			<p class="actionBtn-text">Cancel</p>
-			<img src="images/nav-add-white.svg"/>
-		</a>
+	<div data-role="footer" style="display: block; background: #fff; padding-left: 2px;"  id=placeViewEditor" style="min-height: 48px; max-height: 60%;">
+		<div class="messageCompose">
+			<div id="placeViewTitleTag" class="hidden">
+				<input type="search" id="placeViewTitle" placeholder="Title...">
+				<input type="search" id="placeViewTag" placeholder="Tags...">
+			</div>
+			<div id="placeViewToolbar" class="hidden"></div>
+			<textarea id="placeViewTextArea" type='text' name="placeViewTextArea" autofocus="true"></textarea>
+			<div class="messageMediaBar">
+				<ul>
+					<li>
+						<a data-role="button" data-rel="actionsheet" href="#placeViewPhotoActions">
+							<img src="images/chat-camera.svg" height="24">
+						</a>
+					</li>
+					<li>
+						<a data-role="button" data-click="placeView.messageTitleTag">
+							<img  src="images/icon-tag.svg" height="24">
+						</a>
+					</li>
+					<li >
+						<a data-role="button" data-badge="0" data-click="placeView.ghostgram" id="placeView-editorBtn">
+							<img src="images/icon-editor.svg" height="24"/>
+						</a>
+					</li>
+					<li>
+						<a data-role="button" data-click="placeView.noteSearch">
+							<img src="images/icon-search.svg" height="24">
+						</a>
+					</li>
+					<li>
+						<a data-role="button" data-rel="actionsheet" href="#placeViewSmartObjects">
+							<img src="images/icon-smartMenu.svg" height="24">
+						</a>
+					</li>
+
+					<li class="right">
+						<a data-role="button" class="btnClear"  data-click="placeView.saveNote">Save</a>
+					</li>
+				</ul>
+			</div>
+		</div>
 	</div>
+
+	<ul data-role="actionsheet" id="placeViewSmartObjects" >
+		<li><a data-action="channelView.messageCalendar"><img src="images/smart-event.svg" class="icon-sm"/> Add Event</a></li>
+		<!--<li><a data-action="channelView.messageFlight"><img src="images/smart-flight.svg" class="icon-sm"/> Add Flight</a></li>-->
+		<li><a data-action="channelView.messageMovie"><img src="images/smart-movie.svg" class="icon-sm"/> Add Movie</a></li>
+		<!--<li><a data-action="channelView.messageMusic"> Add Music</a></li>-->
+	</ul>
+
+	<ul data-role="actionsheet"  id="placeViewPhotoActions" >
+		<li><a data-action="placeView.messageCamera"> Phone Camera</a></li>
+		<li><a data-action="placeView.messagePhoto"> Phone Gallery</a></li>
+		<li><a data-action="placeView.messageGallery"> Memories Gallery</a></li>
+	</ul>
+
+
+	<ul id="placeViewItemActions" data-role="actionsheet" data-cancel="Cancel">
+			<li><a data-role="button" data-click="placeView.editItem"> Edit </a></li>
+			<!--<li><a data-role="button">Add Place Chat</a></li>-->
+			<li><a data-role="button" data-action="placeView.shareItem" > Share </a></li>
+			<li><a data-role="button" data-action="placeView.deleteItem"> Delete </a></li>
+	</ul>
+
 	<ul id="placeViewOptions" data-role="actionsheet" data-cancel="Cancel">
 		<li><a data-role="button" data-click="placeView.addNote"><img src="images/smart-note.svg" class="icon-sm"/> Add A Note </a></li>
 		<!--<li><a data-role="button">Add Place Chat</a></li>-->
@@ -3941,7 +3999,7 @@
 <!--/*
  * Private Notes
  */-->
-<div data-role="view" id="privateNotes" data-title="My Notes" data-layout="main" class="appearance" data-init="privateNotesView.onInit" style="display: none;">
+<div data-role="view" id="privateNotes" data-title="My Notes" data-layout="main" class="appearance" data-init="privateNotesView.onInit" data-show="privateNotesView.onShow" style="display: none;">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
@@ -3950,9 +4008,84 @@
 			</a>
 		</div>
 	</div>
-	<div>
-		These are my notes!
+	<div class="privateNoteContent">
+		<p class="helper" style="padding-top: 0.5em;">
+			<span class="hidden">
+				<img src="images/icon-memories.svg" class="icon" /> No Notes here yet
+			</span>
+
+		</p>
+		<div class="clearfix"></div>
+		<ul id="privateNotesView-listview"></ul>
+
 	</div>
+	<div data-role="footer" style="display: block; background: #fff; padding-left: 2px;"  id=privateNoteEditor" style="min-height: 48px; max-height: 60%;">
+		<div class="messageCompose">
+			<div id="placeViewTitleTag" class="hidden">
+				<input type="search" id="placeViewTitle" placeholder="Title...">
+				<input type="search" id="placeViewTag" placeholder="Tags...">
+			</div>
+			<div id="privateNoteToolbar" class="hidden"></div>
+			<textarea id="privateNoteTextArea" type='text'></textarea>
+			<div class="messageMediaBar">
+				<ul>
+					<li>
+						<a data-role="button" data-rel="actionsheet" href="#privateNotePhotoActions">
+							<img src="images/chat-camera.svg" height="24">
+						</a>
+					</li>
+					<li>
+					<a data-role="button" data-click="privateNotesView.noteTitleTag">
+						<img  src="images/icon-tag.svg" height="24">
+					</a>
+					</li>
+					<li >
+						<a data-role="button" data-badge="0" data-click="privateNotesView.noteEditor" id="privateNote-editorBtn">
+							<img src="images/icon-editor.svg" height="24"/>
+						</a>
+					</li>
+					<li>
+						<a data-role="button" data-click="privateNotesView.noteSearch">
+							<img src="images/icon-search.svg" height="24">
+						</a>
+					</li>
+					<li>
+						<a data-role="button" data-rel="actionsheet" href="#privateNoteSmartObjects">
+							<img src="images/icon-smartMenu.svg" height="24">
+						</a>
+					</li>
+
+					<li class="right">
+						<a data-role="button" class="btnClear"  data-click="privateNotesView.saveNote">Save</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<ul data-role="actionsheet" id="privateNoteSmartObjects" >
+		<li><a data-action="privateNotesView.addEvent"><img src="images/smart-event.svg" class="icon-sm"/> Add Event</a></li>
+		<!--<li><a data-action="channelView.messageFlight"><img src="images/smart-flight.svg" class="icon-sm"/> Add Flight</a></li>-->
+		<li><a data-action="privateNotesView.addMovie"><img src="images/smart-movie.svg" class="icon-sm"/> Add Movie</a></li>
+		<!--<li><a data-action="channelView.messageMusic"> Add Music</a></li>-->
+	</ul>
+
+	<ul data-role="actionsheet"  id="privateNotePhotoActions" >
+		<li><a data-action="privateNotesView.addCamera"> Phone Camera</a></li>
+		<li><a data-action="privateNotesView.addPhoto"> Phone Gallery</a></li>
+		<li><a data-action="privateNotesView.addGallery"> Memories Gallery</a></li>
+	</ul>
+
+
+	<ul id="privateNoteViewActions" data-role="actionsheet" data-cancel="Cancel">
+		<li><a data-role="button" data-click="privateNotesView.editNote"> Edit </a></li>
+		<!--<li><a data-role="button">Add Place Chat</a></li>-->
+		<li><a data-role="button" data-action="privateNotesView.shareNote" > Share </a></li>
+		<li><a data-role="button" data-action="privateNotesView.deleteNote"> Delete </a></li>
+	</ul>
+
+
+
 
 </div>
 

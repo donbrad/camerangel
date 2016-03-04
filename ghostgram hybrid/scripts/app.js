@@ -134,7 +134,7 @@
 
 		});
 
-		userNoteChannel.init();  // Depends on everlive...
+		privateNoteModel.init();  // Depends on everlive...
 
 
 		contactModel.init();
