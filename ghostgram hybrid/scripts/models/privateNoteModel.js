@@ -1,20 +1,20 @@
 /**
- * Created by donbrad on 8/10/15.
- * userNoteChannel - handles all privateNote storage and retrieval
+ * Created by donbrad on 3/3/16.
  *
- * !!! Must be included after pubnub and init must be called after pubnub is initialized
+ * privateNoteModel -- local and cloud management of user's private notes - My Notes...
+ *
  */
-
 
 'use strict';
 
-var userNoteChannel = {
-
-    notesDS : null,
+/*
+ * placesView
+ */
+var privateNoteModel = {
+    notesDS: null,
 
     init: function () {
-
-        userNoteChannel.notesDS = new kendo.data.DataSource({
+        this.notesDS = new kendo.data.DataSource({
             type: 'everlive',
             offlineStorage: "privatenote",
 
@@ -27,7 +27,7 @@ var userNoteChannel = {
             }
         });
 
-        userNoteChannel.notesDS.bind("change", function (e) {
+        this.notesDS.bind("change", function (e) {
             var changedNotes = e.items;
             var note = e.items[0];
             if (e.action !== undefined) {
@@ -44,8 +44,8 @@ var userNoteChannel = {
                     case "add" :
                         note = e.items[0];
 
-                        if (userNoteChannel.isDuplicateNote(note.msgID)) {
-                            userNoteChannel.notesDS.remove(note);
+                        if (this.isDuplicateNote(note.msgID)) {
+                            this.notesDS.remove(note);
                         }
 
                         // add to list if it's not a duplicate
@@ -56,7 +56,7 @@ var userNoteChannel = {
 
 
         });
-        userNoteChannel.notesDS.fetch();
+        this.notesDS.fetch();
 
     },
 
@@ -77,7 +77,7 @@ var userNoteChannel = {
     },
 
     isDuplicateNote : function (msgID) {
-        var messages = userNoteChannel.queryNotes({ field: "msgID", operator: "eq", value: msgID });
+        var messages = this.queryNotes({ field: "noteId", operator: "eq", value: noteId });
 
         if (messages === undefined) {
             return (false);
@@ -86,7 +86,23 @@ var userNoteChannel = {
         } else {
             return(false);
         }
+    },
+
+    deleteNote : function (note) {
+         if (note !== undefined) {
+             this.notesDS.remove(note);
+             this.notesDS.sync();
+         }
+
+    },
+
+    deleteNoteById : function (noteId) {
+        var note = this.queryNotes({ field: "noteId", operator: "eq", value: noteId });
+        if (note !== undefined && note !== null) {
+            this.notesDS.remove(note);
+            this.notesDS.sync();
+        }
+
     }
+
 };
-
-

@@ -179,10 +179,7 @@ var deviceModel = {
 
         if (deviceModel.state.connection === 'none')
             return;
-
-
         var currentTime = ggTime.currentTimeInSeconds();
-
 
         if (currentTime > deviceModel.lastEverliveSync + 60) {
             deviceModel.lastEverliveSync = ggTime.currentTimeInSeconds();
