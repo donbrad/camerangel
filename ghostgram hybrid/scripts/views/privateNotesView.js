@@ -13,6 +13,7 @@
 var privateNotesView = {
     notesDS : null,
     _titleTagActive: false,
+    _editorActive: false,
 
 
     onInit : function (e) {
@@ -78,8 +79,66 @@ var privateNotesView = {
         this.toggleTitleTag();
     },
 
+    activateEditor : function () {
+
+        $("#privateNoteToolbar").removeClass('hidden');
+        $("#privateNote-editorBtnImg").attr("src","images/icon-editor-active.svg");
+
+    },
+
+    deactivateEditor : function () {
+
+        $("#privateNoteToolbar").addClass('hidden');
+        $("#privateNote-editorBtnImg").attr("src","images/icon-editor.svg");
+
+    },
+
+    openEditor : function () {
+        if (this._editorActive === false) {
+
+            this._editorActive = true;
+
+            $('#privateNoteTextArea').redactor({
+                minHeight: 36,
+                maxHeight: 360,
+                focus: true,
+                placeholder: 'Add Note...',
+                /* callbacks: {
+                 change: function(e)
+                 {
+                 $('#messageTextArea').focus();
+                 }
+                 },*/
+                buttons: ['bold', 'italic', 'lists', 'horizontalrule'],
+                plugins: ['source'],
+                toolbarExternal: '#privateNoteToolbar'
+            });
+        }
+
+    },
+
+
+    closeEditor : function () {
+
+        if (this._editorActive) {
+
+            this._editorActive = false;
+            $('#privateNoteTextArea').redactor('core.destroy');
+        }
+
+        $("#privateNoteToolbar").addClass('hidden');
+
+    },
+
     noteEditor : function (e) {
         _preventDefault(e);
+        this._editorActive = !this._editorActive;
+        if (this._editorActive){
+            this.activateEditor();
+
+        } else {
+            this.deactivateEditor();
+        }
     },
 
     noteSearch : function (e) {
