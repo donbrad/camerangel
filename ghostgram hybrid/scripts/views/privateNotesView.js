@@ -54,7 +54,7 @@ var privateNotesView = {
         };
 
 
-        privateNotesModel.notesDS.add(message);
+        privateNoteModel.notesDS.add(message);
         //channelView.messagesDS.add(message);
         //  channelView.scrollToBottom();
 
@@ -66,7 +66,7 @@ var privateNotesView = {
 
     toggleTitleTag : function () {
 
-        if (this._titleTagActive)
+        if (privateNotesView._titleTagActive)
             $('#privateNoteTitleTag').removeClass('hidden');
         else
             $('#privateNoteTitleTag').addClass('hidden');
@@ -75,8 +75,8 @@ var privateNotesView = {
     noteTitleTag : function (e) {
         _preventDefault(e);
 
-        this._titleTagActive = !this._titleTagActive;
-        this.toggleTitleTag();
+        privateNotesView._titleTagActive = !privateNotesView._titleTagActive;
+        privateNotesView.toggleTitleTag();
     },
 
     activateEditor : function () {
@@ -94,9 +94,9 @@ var privateNotesView = {
     },
 
     openEditor : function () {
-        if (this._editorActive === false) {
+        if (privateNotesView._editorActive === false) {
 
-            this._editorActive = true;
+            privateNotesView._editorActive = true;
 
             $('#privateNoteTextArea').redactor({
                 minHeight: 36,
@@ -119,10 +119,9 @@ var privateNotesView = {
 
 
     closeEditor : function () {
-
-        if (this._editorActive) {
-
-            this._editorActive = false;
+        privateNotesView
+        if (privateNotesView._editorActive) {
+            privateNotesView._editorActive = false;
             $('#privateNoteTextArea').redactor('core.destroy');
         }
 
@@ -132,12 +131,12 @@ var privateNotesView = {
 
     noteEditor : function (e) {
         _preventDefault(e);
-        this._editorActive = !this._editorActive;
+        privateNotesView._editorActive = !privateNotesView._editorActive;
         if (this._editorActive){
-            this.activateEditor();
+            privateNotesView.activateEditor();
 
         } else {
-            this.deactivateEditor();
+            privateNotesView.deactivateEditor();
         }
     },
 
