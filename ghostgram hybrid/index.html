@@ -3594,7 +3594,7 @@
 							<img src="images/icon-web.svg" height="24">
 						</a>
 					</li>
-					<li>
+					<li class="hidden">
 						<a data-role="button" data-rel="actionsheet" href="#placeViewSmartObjects">
 							<img src="images/icon-smartMenu.svg" height="24">
 						</a>
@@ -4021,7 +4021,7 @@
 	</div>
 	<div data-role="footer" style="display: block; background: #fff; padding-left: 2px;"  id=privateNoteEditor" style="min-height: 48px; max-height: 60%;">
 		<div class="messageCompose">
-			<div id="placeViewTitleTag" class="hidden">
+			<div id="privateNoteTitleTag" class="hidden">
 				<input type="search" id="placeViewTitle" placeholder="Title...">
 				<input type="search" id="placeViewTag" placeholder="Tags...">
 			</div>
@@ -4079,15 +4079,55 @@
 
 	<ul id="privateNoteViewActions" data-role="actionsheet" data-cancel="Cancel">
 		<li><a data-role="button" data-click="privateNotesView.editNote"> Edit </a></li>
-		<!--<li><a data-role="button">Add Place Chat</a></li>-->
 		<li><a data-role="button" data-action="privateNotesView.shareNote" > Share </a></li>
 		<li><a data-role="button" data-action="privateNotesView.deleteNote"> Delete </a></li>
 	</ul>
 
 
-
-
 </div>
+<script type="text/x-kendo-template" id="privateNote-template">
+
+	#   var titleStr = "";
+	if (data.title === null || data.title === '') {
+	titleStr = "Untitled"; }
+	else {
+	titleStr = data.title
+	}
+	var tagString = "";
+	if (data.tagString !== undefined && data.tagString !== null) { tagString = data.tagString;}
+	var sender = 'You';
+	if (data.senderName !== undefined && data.senderName !== null && data.senderName !== "") { sender = data.senderName }
+	var dateString = moment(data.updatedAt).fromNow();
+	#
+	# if (data.ggType === "Note"){#
+	<div class="note">
+		<h3 class="textClamp">
+			<img src="images/smart-note-inline.svg" class="icon-md" />
+			<span>#: titleStr #</span>
+			<span class="helper right" style="font-size: 0.75em">#:dateString#</span>
+		</h3>
+		<p>#: tagString #</p>
+		<p style="margin-top: 0.5em; width: 100%;">#= data.content #</p>
+	</div>
+	#}#
+	# if(data.ggType === "Photo") {#
+	<div class="photo">
+		<h3>
+			<img src="images/smart-photo-inline.svg" class="icon-md" />
+			<span>#: titleStr # </span>
+			<span class="helper right" style="font-size: 12px">#:dateString#</span>
+		</h3>
+		<p> #: tagString #</p>
+		<div class="smartPhoto">
+			<img src="#= data.thumbnailUrl #" />
+		</div>
+		<div class="photoInfo">
+			<p class="helper"> From #: sender #</p>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	#}#
+</script>
 
 
 </body>
