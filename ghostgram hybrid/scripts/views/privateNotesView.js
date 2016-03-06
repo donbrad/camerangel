@@ -119,7 +119,6 @@ var privateNotesView = {
 
 
     closeEditor : function () {
-        privateNotesView
         if (privateNotesView._editorActive) {
             privateNotesView._editorActive = false;
             $('#privateNoteTextArea').redactor('core.destroy');
@@ -132,7 +131,7 @@ var privateNotesView = {
     noteEditor : function (e) {
         _preventDefault(e);
         privateNotesView._editorActive = !privateNotesView._editorActive;
-        if (this._editorActive){
+        if (privateNotesView._editorActive){
             privateNotesView.activateEditor();
 
         } else {
