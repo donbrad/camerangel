@@ -15,6 +15,7 @@ var privateNotesView = {
     notesDS : null,
     activeNote: {},
     noteObjects: [],
+    notePhotos: [],
     _titleTagActive: false,
     _editorActive: false,
 
@@ -51,7 +52,104 @@ var privateNotesView = {
         privateNotesView.closeEditor();
     },
 
+    _initTextArea : function () {
+
+        $('#privateNoteTextArea').val('');
+        $('#privateNoteTextArea').redactor('code.set', "");
+
+        if (privateNotesView._editorActive) {
+            privateNotesView._editorActive = false;
+            privateNotesView.deactivateEditor();
+        }
+
+    },
+
+
+    noteAddPhoto : function (photoId) {
+
+        var photo = photoModel.findPhotoById(photoId);
+
+        if (photo !== undefined) {
+
+            var photoObj  = {
+                photoId : photo.photoId,
+                channelId: null,
+                thumbnailUrl: photo.thumbnailUrl,
+                imageUrl: photo.imageUrl,
+                canCopy: true,
+                ownerId: userModel.currentUser.userUUID,
+                ownerName: userModel.currentUser.name
+            };
+        }
+
+
+        privateNotesView.photos.push(photoObj);
+        // photoModel.addPhotoOffer(photo.photoId, channelView._channelId, photo.thumbnailUrl, photo.imageUrl, canCopy);
+    },
+
+    validateNotePhotos : function () {
+        var validPhotos = [];
+        // var messageText = $('#messageTextArea').data("kendoEditor").value();
+        var messageText = $('#privateNoteTextArea').redactor('code.get');
+
+        for (var i=0; i< privateNotesView.notePhotos.length; i++) {
+            var photoId = privateNotesView.notePhotos[i];
+
+            if (messageText.indexOf(photoId) !== -1) {
+                //the photoId is in the current message text
+                channelView.messageAddPhotoOffer(photoId, !channelView.messageLock);
+            }
+        }
+
+    },
+
     saveNote: function () {
+        var validNote = false; // If message is valid, send is enabled
+        privateNotesView.activeNote = { objects: []};
+
+
+        //var text = $('#messageTextArea').val();
+        //var text = $('#messageTextArea').data("kendoEditor").value();
+        var text = $('#privateNoteTextArea').redactor('code.get');
+
+        if (text.length > 0) {
+            validNote = true;
+        }
+
+        privateNotesView.noteAddLocation();
+
+        // Are there any photos in the current message
+        if (privateNotesView.notePhotos.length > 0) {
+            validNote = true;
+
+            //Need to make sure the user didn't delete the photo reference in the html...
+            privateNotesView.validateNotePhotos();
+        }
+
+        if (privateNotesView.noteObjects.length > 0) {
+            validNote = true;
+
+            var smartObject = channelView.messageObjects[0];
+            if (smartObject.ggType === 'Event') {
+                text = channelView.addSmartEventToMessage(smartObject, text);
+            } else if (smartObject.ggType === 'Movie') {
+                text = channelView.addSmartMovieToMessage(smartObject, text);
+            }
+
+        }
+
+        if (validMessage === true ) {
+            channelView._initMessageTextArea();
+
+            if (channelView.isPrivateNote) {
+                privateNoteChannel.sendMessage(text, channelView.activeMessage, 86400);
+            } else if (channelView.isPrivateChat) {
+                privateChannel.sendMessage(channelView.privateContactId, text, channelView.activeMessage, 86400);
+            } else {
+                groupChannel.sendMessage(text, channelView.activeMessage, 86400);
+            }
+            channelView.messageInit();
+        }
 
     },
 
@@ -66,7 +164,7 @@ var privateNotesView = {
         var currentTime =  ggTime.currentTime();
         var uuidNote = uuid.v4();
         var message = {
-            type: 'privateNote',
+            type: 'Note',
             noteId: uuidNote,
             title: "",
             tagString: "",
@@ -125,7 +223,7 @@ var privateNotesView = {
             $('#privateNoteTextArea').redactor({
                 minHeight: 36,
                 maxHeight: 360,
-                focus: true,
+                focus: false,
                 placeholder: 'Add Note...',
                 /* callbacks: {
                  change: function(e)
@@ -133,8 +231,8 @@ var privateNotesView = {
                  $('#messageTextArea').focus();
                  }
                  },*/
-                buttons: ['bold', 'italic', 'lists', 'horizontalrule'],
-                plugins: ['source'],
+                formatting: ['p', 'blockquote', 'h1', 'h2','h3'],
+                buttons: ['format', 'bold', 'italic', 'lists', 'horizontalrule'],
                 toolbarExternal: '#privateNoteToolbar'
             });
         }
@@ -504,7 +602,7 @@ var privateNotesView = {
             noteId =   e.touch.target[0].attributes['data-uid'].value;
         }
 
-        if (messageId === undefined || messageId === null) {
+        if (noteId === undefined || noteId === null) {
             mobileNotify("No message content to display...");
         }
 

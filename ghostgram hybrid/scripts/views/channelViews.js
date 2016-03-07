@@ -979,7 +979,7 @@ var channelView = {
             $('#messageTextArea').redactor({
                 minHeight: 36,
                 maxHeight: 360,
-                focus: true,
+                focus: false,
                 placeholder: 'Message....',
                 /* callbacks: {
                  change: function(e)
