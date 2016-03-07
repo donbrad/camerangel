@@ -77,12 +77,12 @@ var privateNoteModel = {
         return(view);
     },
 
-    isDuplicateNote : function (msgID) {
-        var messages = this.queryNotes({ field: "noteId", operator: "eq", value: noteId });
+    isDuplicateNote : function (noteId) {
+        var notes = this.queryNotes({ field: "noteId", operator: "eq", value: noteId });
 
-        if (messages === undefined) {
+        if (notes === undefined) {
             return (false);
-        } else if (messages.length > 1) {
+        } else if (notes.length > 1) {
             return (true);
         } else {
             return(false);
