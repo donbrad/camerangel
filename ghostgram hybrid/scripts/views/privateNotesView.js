@@ -256,9 +256,6 @@ var privateNotesView = {
         }
     },
 
-    noteSearch : function (e) {
-        _preventDefault(e);
-    },
 
     addEvent : function (e) {
         _preventDefault(e);
@@ -470,24 +467,59 @@ var privateNotesView = {
         privateNotesView.noteObjects.push(smartObj);
 
     },
-    messageSearch : function (e) {
+
+    noteSearchLoad : function (event) {
+        privateNotesView.searchUrl =  event.url;
+    },
+
+    noteSearchError : function (event) {
+        mobileNotify('error: ' + event.message);
+    },
+
+    noteSearchEnd : function (event) {
+        var exitUrl = event.url;
+
+        if (privateNotesView.winRef !== undefined && privateNotesView.winRef !== null) {
+            privateNotesView.winRef.removeEventListener("loadstop", privateNotesView.messageSearchLoad);
+            privateNotesView.winRef.removeEventListener("exit", privateNotesView.messageSearchEnd);
+            privateNotesView.winRef = null;
+        }
+
+    },
+
+    noteSearch : function (e) {
         _preventDefault(e);
 
 
         var searchUrl =  'http://www.google.com/search';
-        var query = channelView.getSelectionText();
+        var query = privateNotesView.getSelectionText();
 
         if (query !== '') {
             searchUrl += '?q='+query;
         }
-        channelView.searchUrl = searchUrl;
-        channelView.winQuery = '?q='+query;
-        channelView.winRef =  window.open(encodeURI(searchUrl), '_blank', 'location=yes');
-        channelView.winRef.addEventListener("exit", channelView.messageSearchEnd);
-        channelView.winRef.addEventListener("loadstop", channelView.messageSearchLoad);
+        privateNotesView.searchUrl = searchUrl;
+        privateNotesView.winQuery = '?q='+query;
+        privateNotesView.winRef =  window.open(encodeURI(searchUrl), '_blank', 'location=yes');
+        privateNotesView.winRef.addEventListener("exit", privateNotesView.messageSearchEnd);
+        privateNotesView.winRef.addEventListener("loadstop", privateNotesView.messageSearchLoad);
         /* channelView.winRef.addEventListener('loaderror', channelView.messageSearchError); */
 
 
+    },
+
+
+    addImageToNote: function (photoId, displayUrl) {
+        var photoObj = photoModel.findPhotoById(photoId);
+
+        if (photoObj !== undefined) {
+
+            var imgUrl = '<img class="note-chat" data-photoid="'+ photoId + '" id="notephoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
+
+            $('#privateNoteTextArea').redactor('insert.node', $('<div />').html(imgUrl));
+
+        }
+
+        privateNotesView.notePhotos.push(photoId);
     },
 
     messageCamera : function (e) {
@@ -497,8 +529,8 @@ var privateNotesView = {
             1600, // max resolution in pixels
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
-            channelView._channelId,  // Current channel Id for offers
-            channelView.addImageToMessage  // Optional preview callback
+           null,  // Current channel Id for offers
+            privateNotesView.addImageToNote  // Optional preview callback
         );
     },
 
@@ -509,8 +541,8 @@ var privateNotesView = {
             1600, // max resolution in pixels
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
-            channelView._channelId,  // Current channel Id for offers
-            channelView.addImageToMessage  // Optional preview callback
+            null,  // Current channel Id for offers
+            privateNotesView.addImageToNote  // Optional preview callback
         );
     },
 
@@ -525,7 +557,7 @@ var privateNotesView = {
             if (photo.imageUrl !== undefined && photo.imageUrl !== null)
                 url = photo.imageUrl;
 
-            channelView.addImageToMessage(photo.photoId, url);
+            privateNotesView.addImageToNote(photo.photoId, url);
         });
         //  APP.kendo.navigate("views/gallery.html#gallery?mode=picker");
 
