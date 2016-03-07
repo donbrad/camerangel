@@ -23,7 +23,7 @@ var privateNotesView = {
     onInit : function (e) {
         _preventDefault(e);
 
-        $("#privateNoteView-listview").kendoMobileListView({
+        $("#privateNotesView-listview").kendoMobileListView({
             dataSource: privateNoteModel.notesDS,
             template: $("#privateNote-template").html()
 
@@ -181,6 +181,7 @@ var privateNotesView = {
         };
 
         privateNoteModel.notesDS.add(message);
+        privateNoteModel.notesDS.sync();
         //channelView.messagesDS.add(message);
         //  channelView.scrollToBottom();
 
