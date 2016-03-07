@@ -183,7 +183,7 @@ var privateNotesView = {
         privateNoteModel.notesDS.add(message);
         privateNoteModel.notesDS.sync();
         //channelView.messagesDS.add(message);
-        //  channelView.scrollToBottom();
+        privateNotesView.scrollToBottom();
 
         deviceModel.syncEverlive();
 
