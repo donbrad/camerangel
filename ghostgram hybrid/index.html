@@ -4087,16 +4087,16 @@
 <script type="text/x-kendo-template" id="privateNote-template">
 
 	#   var titleStr = "";
-	if (data.title === null || data.title === '') {
+	if (title === null || title === '') {
 	titleStr = "Untitled"; }
 	else {
 	titleStr = data.title
 	}
 	var tagString = "";
-	if (data.tagString !== undefined && data.tagString !== null) { tagString = data.tagString;}
-	var sender = 'You';
-	if (data.senderName !== undefined && data.senderName !== null && data.senderName !== "") { sender = data.senderName }
-	var dateString = moment(data.updatedAt).fromNow();
+	if (tagString !== undefined && tagString !== null) { tagString = tagString;}
+	var sender = 'Me';
+	if (senderName !== undefined && senderName !== null && senderName !== "") { sender = senderName }
+	var dateString = moment(time).fromNow();
 	#
 
 	<div class="private-note">
@@ -4106,7 +4106,7 @@
 			<span class="helper right" style="font-size: 0.75em">#:dateString#</span>
 		</h3>
 		<p>#: tagString #</p>
-		<p style="margin-top: 0.5em; width: 100%;">#= data.content #</p>
+		<p style="margin-top: 0.5em; width: 100%;">#= content #</p>
 	</div>
 
 </script>
