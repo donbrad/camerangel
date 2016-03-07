@@ -120,6 +120,7 @@ var privateNotesView = {
 
         privateNotesView.activeNote.title = title;
         privateNotesView.activeNote.tagString = tagString;
+        privateNotesView.activeNote.tags = [];
 
 
         privateNotesView.noteAddLocation();
@@ -170,9 +171,9 @@ var privateNotesView = {
         var message = {
             type: 'Note',
             noteId: uuidNote,
-            title: "",
-            tagString: "",
-            tags: [],
+            title: data.title,
+            tagString: data.tagString,
+            tags: data.tags,
             content: content,
             data: contentData,
             dataObject: data,
