@@ -37,6 +37,7 @@ var privateNotesView = {
 
     // Initialize the channel specific view data sources.
     noteInit : function () {
+
         privateNotesView.noteObjects = [];
         privateNotesView.activeNote = {objects: []};
     },
