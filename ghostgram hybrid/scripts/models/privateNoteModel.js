@@ -45,7 +45,8 @@ var privateNoteModel = {
                         note = e.items[0];
 
                         if (privateNoteModel.isDuplicateNote(note.msgID)) {
-                            privateNoteModel.notesDS.remove(note);
+                           // privateNoteModel.notesDS.remove(note);
+                            e.preventDefault();
                         }
 
                         // add to list if it's not a duplicate
