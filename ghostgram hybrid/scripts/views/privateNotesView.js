@@ -526,7 +526,7 @@ var privateNotesView = {
 
         if (photoObj !== undefined) {
 
-            var imgUrl = '<img class="note-chat" data-photoid="'+ photoId + '" id="notephoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
+            var imgUrl = '<img class="photo-note" data-photoid="'+ photoId + '" id="notephoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
 
             $('#privateNoteTextArea').redactor('insert.node', $('<div />').html(imgUrl));
 
@@ -535,7 +535,7 @@ var privateNotesView = {
         privateNotesView.notePhotos.push(photoId);
     },
 
-    messageCamera : function (e) {
+    noteCamera : function (e) {
         _preventDefault(e);
 
         devicePhoto.deviceCamera(
@@ -547,7 +547,7 @@ var privateNotesView = {
         );
     },
 
-    messagePhoto : function (e) {
+    notePhoto : function (e) {
         _preventDefault(e);
         // Call the device gallery function to get a photo and get it scaled to gg resolution
         devicePhoto.deviceGallery(
@@ -559,7 +559,7 @@ var privateNotesView = {
         );
     },
 
-    messageGallery : function (e) {
+    noteGallery : function (e) {
         _preventDefault(e);
 
         galleryPicker.openModal(function (photo) {
@@ -648,7 +648,7 @@ var privateNotesView = {
         // ux.hideKeyboard();
 
         // User actually clicked on the photo so show the open the photo viewer
-        if ($target.hasClass('photo-chat')) {
+        if ($target.hasClass('photo-note')) {
             // Todo: Don map chat photos to note photos -- ?convert photos from data to objects.
       /*      var photoId = $target.attr('data-photoId');
 
