@@ -25,7 +25,7 @@ var privateNotesView = {
 
         $("#privateNoteView-listview").kendoMobileListView({
             dataSource: privateNoteModel.notesDS,
-            template: $("#messagesTemplate").html()
+            template: $("#privateNote-template").html()
 
         }).kendoTouch({
             filter: "li",
@@ -145,9 +145,10 @@ var privateNotesView = {
         }
 
         if (validNote === true ) {
-            privateNotesView._initTextArea();
+
 
             privateNotesView._saveNote(text, privateNotesView.activeNote);
+            privateNotesView._initTextArea();
 
             privateNotesView.noteInit();
         }
