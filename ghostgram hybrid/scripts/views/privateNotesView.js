@@ -131,24 +131,19 @@ var privateNotesView = {
 
             var smartObject = channelView.messageObjects[0];
             if (smartObject.ggType === 'Event') {
-                text = channelView.addSmartEventToMessage(smartObject, text);
+                text = privateNotesView.addSmartEventToNote(smartObject, text);
             } else if (smartObject.ggType === 'Movie') {
-                text = channelView.addSmartMovieToMessage(smartObject, text);
+                text = privateNotesView.addSmartMovieToNote(smartObject, text);
             }
 
         }
 
-        if (validMessage === true ) {
-            channelView._initMessageTextArea();
+        if (validNote === true ) {
+            privateNotesView._initTextArea();
 
-            if (channelView.isPrivateNote) {
-                privateNoteChannel.sendMessage(text, channelView.activeMessage, 86400);
-            } else if (channelView.isPrivateChat) {
-                privateChannel.sendMessage(channelView.privateContactId, text, channelView.activeMessage, 86400);
-            } else {
-                groupChannel.sendMessage(text, channelView.activeMessage, 86400);
-            }
-            channelView.messageInit();
+            privateNotesView._saveNote(text, privateNotesView.activeNote);
+
+            privateNotesView.noteInit();
         }
 
     },
@@ -307,22 +302,22 @@ var privateNotesView = {
     // Handle a click on a smart object
     onNoteClick : function (e) {
         _preventDefault(e);
-/*
-        var uuid = e.sender.element[0].attributes['data-objectid'].value, id = e.sender.element[0].id;
-        var chatmessage = $('#'+id).closest('.chat-message');
-        var messageId = chatmessage[0].attributes.id.value;
 
-        if (messageId === null) {
-            mobileNotify("Sender deleted this Smart Event!");
+        var uuid = e.sender.element[0].attributes['data-objectid'].value, id = e.sender.element[0].id;
+        var note = $('#'+id).closest('.private-note');
+        var noteId = note[0].attributes.id.value;
+
+        if (noteId === null) {
+            mobileNotify("Can't find this Smart Event!");
             return;
         }
 
-        var message = channelView.findMessageById(messageId);
+        var noteObj = privateNoteModel.findNotesByObjectId(noteId);
 
-        if (message !== undefined) {
+        if (noteObj !== undefined) {
 
-            if (message.data.objects !== undefined && message.data.objects.length > 0) {
-                var objectList = message.data.objects,object = null;
+            if (noteObj.data.objects !== undefined && noteObj.data.objects.length > 0) {
+                var objectList = noteObj.data.objects,object = null;
 
                 for (var i=0; i<objectList.length; i++ ) {
                     if (objectList[i].uuid === uuid) {
@@ -333,20 +328,17 @@ var privateNotesView = {
                 if (object !== null) {
                     // User is interacting with the object so add it, if it doesn't already exist
                     if (object.ggType === 'Event') {
-                        smartEvent.smartAddEvent(object);
                         smartEventView.openModal(object);
                     } else if (object.ggType === 'Movie') {
-                        smartMovie.smartAddMovie(object);
                         smartMovieView.openModal(object);
                     }
 
                 }
 
             } else {
-                mobileNotify("Sender deleted this Smart Event!");
+                mobileNotify("Can't find this Smart Event!");
             }
         }
-*/
 
     },
 
@@ -365,7 +357,7 @@ var privateNotesView = {
 
         var objectUrl = '<div><span class="btnSmart" data-role="button" data-objectid="' + objectId +
             '" id="chatobject_' + objectId + '"'+
-            'data-click="channelView.onObjectClick" >' +
+            'data-click="privateNotesView.onObjectClick" >' +
             '<span class="btnSmart-content">' +
             '<span class="btnSmart-title">' + smartEvent.title + ' </span><br /> ' +
             '<span class="btnSmart-date">' + dateStr + ' at ' + localTime + '</span><br /> ' +
@@ -393,7 +385,7 @@ var privateNotesView = {
 
         var objectUrl = '<div><span class="btnSmart-movie" data-role="button" data-objectid="' + objectId +
             '" id="movieobject_' + objectId + '"'+
-            'data-click="channelView.onObjectClick" >' +
+            'data-click="privateNotesView.onObjectClick" >' +
             '<div class="btnSmart-poster">' +
             '<img src="' + smartMovie.imageUrl + '" class="btnSmart-img" />' +
             '</div>' +
