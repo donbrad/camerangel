@@ -111,10 +111,16 @@ var privateNotesView = {
         //var text = $('#messageTextArea').val();
         //var text = $('#messageTextArea').data("kendoEditor").value();
         var text = $('#privateNoteTextArea').redactor('code.get');
+        var title = $('#privateNoteTitle').val();
+        var tagString =  $('#privateNoteTags').val();
 
         if (text.length > 0) {
             validNote = true;
         }
+
+        privateNotesView.activeNote.title = title;
+        privateNotesView.activeNote.tagString = tagString;
+
 
         privateNotesView.noteAddLocation();
 
@@ -148,7 +154,7 @@ var privateNotesView = {
 
     },
 
-    _saveNote: function (text, data, ttl) {
+    _saveNote: function (text, data,ttl) {
         if (ttl === undefined || ttl < 60)
             ttl = 86400;  // 24 hours
         // if (recipient in users) {
@@ -158,6 +164,8 @@ var privateNotesView = {
         var encryptMessage = '', encryptData = '';
         var currentTime =  ggTime.currentTime();
         var uuidNote = uuid.v4();
+
+
         var message = {
             type: 'Note',
             noteId: uuidNote,
