@@ -34,7 +34,7 @@ var privateNoteModel = {
                 switch (e.action) {
                     case "itemchange" :
                         var field  =  e.field;
-                        var noteId = note.msgID;
+                        var noteId = note.noteId;
                         break;
 
                     case "remove" :
@@ -44,7 +44,7 @@ var privateNoteModel = {
                     case "add" :
                         note = e.items[0];
 
-                        if (privateNoteModel.isDuplicateNote(note.msgID)) {
+                        if (privateNoteModel.isDuplicateNote(note.noteId)) {
                            // privateNoteModel.notesDS.remove(note);
                             //e.preventDefault();
                         }
