@@ -1694,11 +1694,13 @@ var placeView = {
        }
        if (validNote === true ) {
            var newNote = noteModel.createNote(noteModel._places, placeView._activePlaceId, true);
-
+           var contentData = JSON.stringify(placeView.activeNote);
+           var data = JSON.parse(contentData);
            newNote.set('title', title);
            newNote.set('content', text);
-           newNote.set('tags', note.tags);
-           newNote.set('tagString', tagModel.createTagString(note.tags));
+           newNote.set('data',data);
+           newNote.set('tags', []);
+           newNote.set('tagString', tagString);
 
            noteModel.saveParseNote(newNote);
 
