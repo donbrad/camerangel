@@ -70,7 +70,7 @@ var privateNotesView = {
 
     shrinkEditor : function ()  {
         $('#privateNoteTextArea').css( "height","36" );
-        privateNotesView._editorExpanded false;
+        privateNotesView._editorExpanded = false;
     },
 
     _initTextArea : function () {
