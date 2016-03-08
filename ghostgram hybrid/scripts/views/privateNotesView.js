@@ -178,7 +178,7 @@ var privateNotesView = {
 
     },
 
-    _saveNote: function (text, data,ttl) {
+    _saveNote: function (text, data, ttl) {
         if (ttl === undefined || ttl < 60)
             ttl = 86400;  // 24 hours
         // if (recipient in users) {
@@ -209,8 +209,6 @@ var privateNotesView = {
         privateNotesView.scrollToBottom();
 
         deviceModel.syncEverlive();
-
-
 
     },
 

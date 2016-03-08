@@ -4097,17 +4097,37 @@
 	var sender = 'Me';
 	var dateString = moment(time).fromNow();
 	#
-
-	<div class="private-note">
+	# if (ggType === 'Note') { #
+		<div class="private-note">
+			<h3 class="textClamp">
+				<img src="images/smart-note-inline.svg" class="icon-md" />
+				<span>#: titleStr #</span>
+				<span class="helper right" style="font-size: 0.75em">#:dateString#</span>
+			</h3>
+			<p>#: tagString #</p>
+			<p style="margin-top: 0.5em; width: 100%;">#= content #</p>
+		</div>
+	# } #
+	# if (ggType === 'Event') { #
 		<h3 class="textClamp">
-			<img src="images/smart-note-inline.svg" class="icon-md" />
+			<img src="images/smart-event.svg" class="icon-md" />
 			<span>#: titleStr #</span>
 			<span class="helper right" style="font-size: 0.75em">#:dateString#</span>
 		</h3>
 		<p>#: tagString #</p>
 		<p style="margin-top: 0.5em; width: 100%;">#= content #</p>
-	</div>
-
+		</div>
+	# } #
+	# if (ggType === 'Movie') { #
+		<h3 class="textClamp">
+			<img src="images/smart-movie-circle.svg" class="icon-md" />
+			<span>#: titleStr #</span>
+			<span class="helper right" style="font-size: 0.75em">#:dateString#</span>
+		</h3>
+		<p>#: tagString #</p>
+		<p style="margin-top: 0.5em; width: 100%;">#= content #</p>
+		</div>
+	# } #
 </script>
 
 
