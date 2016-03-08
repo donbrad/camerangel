@@ -602,7 +602,7 @@ var privateNotesView = {
 
             privateNotesView.noteAddSmartEvent(event);
             mobileNotify("Sending Smart Event...");
-            privateNotesView.messageSend();
+            privateNotesView.saveNote();
         });
     },
 
@@ -613,7 +613,7 @@ var privateNotesView = {
             if (movie !== null) {
                 privateNotesView.noteAddSmartMovie(movie);
                 mobileNotify("Sending Smart Movie...");
-                privateNotesView.noteSave();
+                privateNotesView.saveNote();
             }
         });
     },
