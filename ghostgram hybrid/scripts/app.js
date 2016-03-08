@@ -95,7 +95,13 @@
 		StatusBar.overlaysWebView(false);
 		StatusBar.backgroundColorByHexString("#fff");
 		StatusBar.styleDefault();
-		
+
+		var provider = Everlive.Constants.StorageProvider.FileSystem;
+		if (window.navigator.simulator === undefined) {
+			// Use local storage in the emulator
+			provider = Everlive.Constants.StorageProvider.LocalStorage;
+		}
+
 		Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
 		//Parse.User.enableRevocableSession();
 		APP.everlive = new Everlive({
@@ -104,8 +110,7 @@
 			offline: true,
 			offlineStorage: {
 				storage: {
-					//provider: Everlive.Constants.StorageProvider.LocalStorage
-					provider: Everlive.Constants.StorageProvider.FileSystem
+					provider: provider
 				},
 				conflicts: {
 					strategy: Everlive.Constants.ConflictResolutionStrategy.ClientWins

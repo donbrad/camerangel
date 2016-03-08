@@ -14,7 +14,7 @@ var privateNoteModel = {
     notesDS: null,
 
     init: function () {
-        this.notesDS = new kendo.data.DataSource({
+        privateNoteModel.notesDS = new kendo.data.DataSource({
             type: 'everlive',
             offlineStorage: "privatenote",
 
@@ -27,14 +27,14 @@ var privateNoteModel = {
             }
         });
 
-        this.notesDS.bind("change", function (e) {
+        privateNoteModel.notesDS.bind("change", function (e) {
             var changedNotes = e.items;
             var note = e.items[0];
             if (e.action !== undefined) {
                 switch (e.action) {
                     case "itemchange" :
                         var field  =  e.field;
-                        var noteId = note.msgID;
+                        var noteId = note.noteId;
                         break;
 
                     case "remove" :
@@ -44,8 +44,9 @@ var privateNoteModel = {
                     case "add" :
                         note = e.items[0];
 
-                        if (this.isDuplicateNote(note.msgID)) {
-                            this.notesDS.remove(note);
+                        if (privateNoteModel.isDuplicateNote(note.noteId)) {
+                           // privateNoteModel.notesDS.remove(note);
+                            //e.preventDefault();
                         }
 
                         // add to list if it's not a duplicate
@@ -56,14 +57,15 @@ var privateNoteModel = {
 
 
         });
-        this.notesDS.fetch();
+
+        privateNoteModel.notesDS.fetch();
 
     },
 
     queryNotes: function (query) {
         if (query === undefined)
             return(undefined);
-        var dataSource = userNoteChannel.notesDS;
+        var dataSource = privateNoteModel.notesDS;
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
             cacheFilter = {};
@@ -76,12 +78,12 @@ var privateNoteModel = {
         return(view);
     },
 
-    isDuplicateNote : function (msgID) {
-        var messages = this.queryNotes({ field: "noteId", operator: "eq", value: noteId });
+    isDuplicateNote : function (noteId) {
+        var notes = this.queryNotes({ field: "noteId", operator: "eq", value: noteId });
 
-        if (messages === undefined) {
+        if (notes === undefined) {
             return (false);
-        } else if (messages.length > 1) {
+        } else if (notes.length > 1) {
             return (true);
         } else {
             return(false);
@@ -90,17 +92,17 @@ var privateNoteModel = {
 
     deleteNote : function (note) {
          if (note !== undefined) {
-             this.notesDS.remove(note);
-             this.notesDS.sync();
+             privateNoteModel.notesDS.remove(note);
+             privateNoteModel.notesDS.sync();
          }
 
     },
 
     deleteNoteById : function (noteId) {
-        var note = this.queryNotes({ field: "noteId", operator: "eq", value: noteId });
+        var note = privateNoteModel.queryNotes({ field: "noteId", operator: "eq", value: noteId });
         if (note !== undefined && note !== null) {
-            this.notesDS.remove(note);
-            this.notesDS.sync();
+            privateNoteModel.notesDS.remove(note);
+            privateNoteModel.notesDS.sync();
         }
 
     }
