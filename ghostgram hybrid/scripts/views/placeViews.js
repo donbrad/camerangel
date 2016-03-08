@@ -1263,6 +1263,7 @@ var placeView = {
     activeNote: {objects: []},
 
     onInit : function (e) {
+        
         _preventDefault(e);
         $("#placeView-listview").kendoMobileListView({
             dataSource: placeView._memoriesDS,
@@ -1370,6 +1371,7 @@ var placeView = {
     onShow : function (e) {
         _preventDefault(e);
         ux.hideKeyboard();
+
         placeView.topOffset = $("#placeView-listview").data("kendoMobileListView").scroller().scrollTop;
         placeView.openEditor();
 
