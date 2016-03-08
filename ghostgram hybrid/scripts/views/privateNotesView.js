@@ -104,10 +104,10 @@ var privateNotesView = {
             };
         }
 
-
-        privateNotesView.photos.push(photoObj);
+        privateNotesView.activeNote.photos.push(photoObj);
         // photoModel.addPhotoOffer(photo.photoId, channelView._channelId, photo.thumbnailUrl, photo.imageUrl, canCopy);
     },
+
 
     validateNotePhotos : function () {
         var validPhotos = [];
@@ -119,7 +119,7 @@ var privateNotesView = {
 
             if (messageText.indexOf(photoId) !== -1) {
                 //the photoId is in the current message text
-                //channelView.messageAddPhotoOffer(photoId, !channelView.messageLock);
+                privateNotesView.noteAddPhoto(photoId);
             }
         }
 

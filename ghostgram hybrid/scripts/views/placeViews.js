@@ -1259,6 +1259,8 @@ var placeView = {
         }
     }),
     notePhotos: [],
+    noteObjects: [],
+    activeNote: {objects: []},
 
     onInit : function (e) {
         _preventDefault(e);
@@ -1485,18 +1487,6 @@ var placeView = {
         placeView._editorExpanded = false;
     },
 
-    _initTextArea : function () {
-
-        $('#placeViewTextArea').val('');
-        $('#placeViewTextArea').redactor('code.set', "");
-
-        placeView.shrinkEditor();
-        if (placeView._editorActive) {
-            placeView._editorActive = false;
-            placeView.deactivateEditor();
-        }
-
-    },
 
     onDone: function (e) {
         _preventDefault(e);
@@ -1536,51 +1526,6 @@ var placeView = {
         placeView._activePlace.set('placeChatId', placeObj.placeChatId);
 
 
-    },
-
-    /*camera : function (e) {
-        $("#placeViewOptions").data("kendoMobileActionSheet").close();
-
-        devicePhoto.deviceCamera(
-            1600, // max resolution in pixels
-            75,  // quality: 1-99.
-            false,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
-            null,  // Current channel Id for offers
-            placeView.photoComplete  // Optional preview callback
-        );
-
-    },
-
-    gallery : function (e) {
-        $("#placeViewOptions").data("kendoMobileActionSheet").close();
-        devicePhoto.deviceGallery(
-            1600, // max resolution in pixels
-            75,  // quality: 1-99.
-            false,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
-            null,  // Current channel Id for offers
-            placeView.photoComplete // Optional preview callback
-        );
-    },*/
-
-    photoComplete : function (photoId, imageUrl) {
-
-        var photo = photoModel.findPhotoById(photoId);
-
-        if (photo !== undefined) {
-
-            // Override the place info the photo with information from this place
-            photo.set('placeId',  placeView._activePlace.placeId);
-            photo.set('placeString',  placeView._activePlace.name);
-            var addressString = placeView._activePlace.city + ', ' + placeView._activePlace.state + "  " +  placeView._activePlace.zipcode;
-            photo.set('addressString', addressString);
-
-            updateParseObject('photos','photoId', photoId, 'placeId',  placeView._activePlace.placeId);
-            updateParseObject('photos','photoId', photoId, 'placeString',  placeView._activePlace.name);
-            updateParseObject('photos','photoId', photoId, 'addressString',  addressString);
-            modalPhotoView.openModal(photo);
-
-            placeView._memoriesDS.add(photo);
-        }
     },
 
     doDirections : function (e) {
@@ -1714,11 +1659,19 @@ var placeView = {
 
             if (messageText.indexOf(photoId) !== -1) {
                 //the photoId is in the current message text
-                channelView.messageAddPhotoOffer(photoId, !channelView.messageLock);
+                placeView.noteAddPhoto(photoId, !channelView.messageLock);
             }
         }
 
     },
+
+    noteInit : function () {
+
+        placeView.noteObjects = [];
+        placeView.notePhotos = [];
+        placeView.activeNote = {objects: []};
+    },
+
    saveNote : function (e) {
         _preventDefault(e);
        var validNote = false; // If message is valid, send is enabled
@@ -1750,6 +1703,9 @@ var placeView = {
            noteModel.saveParseNote(newNote);
 
            placeView._memoriesDS.add(newNote.toJSON());
+
+           placeView._initTextArea();
+           placeView.noteInit()
        }
 
     },
@@ -1815,6 +1771,20 @@ var placeView = {
         }
         $("#placeViewItemActions").data("kendoMobileActionSheet").close();
     },
+
+    _initTextArea : function () {
+
+        $('#placeViewTextArea').val('');
+        $('#placeViewTextArea').redactor('code.set', "");
+
+        placeView.shrinkEditor();
+        if (placeView._editorActive) {
+            placeView._editorActive = false;
+            placeView.deactivateEditor();
+        }
+
+    },
+
     toggleTitleTag : function () {
 
         if (placeView._titleTagActive)
