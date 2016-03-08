@@ -301,17 +301,6 @@ var privateNotesView = {
         _preventDefault(e);
     },
 
-    addCamera : function (e) {
-        _preventDefault(e);
-    },
-
-    addPhoto : function (e) {
-        _preventDefault(e);
-    },
-
-    addGallery : function (e) {
-        _preventDefault(e);
-    },
 
     deleteNote : function (e) {
         _preventDefault(e);
@@ -558,7 +547,7 @@ var privateNotesView = {
         privateNotesView.notePhotos.push(photoId);
     },
 
-    noteCamera : function (e) {
+    addCamera : function (e) {
         _preventDefault(e);
 
         devicePhoto.deviceCamera(
@@ -570,7 +559,7 @@ var privateNotesView = {
         );
     },
 
-    notePhoto : function (e) {
+    addPhoto : function (e) {
         _preventDefault(e);
         // Call the device gallery function to get a photo and get it scaled to gg resolution
         devicePhoto.deviceGallery(
@@ -582,7 +571,7 @@ var privateNotesView = {
         );
     },
 
-    noteGallery : function (e) {
+    addGallery : function (e) {
         _preventDefault(e);
 
         galleryPicker.openModal(function (photo) {

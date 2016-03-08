@@ -1250,6 +1250,8 @@ var placeView = {
     _returnView : 'places',
     _returnModal: null,
     _showDetails: false,
+    _editorActive: false,
+    _titleTagActive : false,
     _memoriesDS : new kendo.data.DataSource({
         sort: {
             field: "date",
@@ -1589,28 +1591,73 @@ var placeView = {
         }
     },
 
-   addNote : function (e) {
+    addCamera : function (e) {
         _preventDefault(e);
 
-       $("#placeViewOptions").data("kendoMobileActionSheet").close();
+        devicePhoto.deviceCamera(
+            1600, // max resolution in pixels
+            75,  // quality: 1-99.
+            true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+            null,  // Current channel Id for offers
+            privateNotesView.addImageToNote  // Optional preview callback
+        );
+    },
 
-       smartNoteView.openModal(null, function (note) {
-           var newNote = noteModel.createNote(noteModel._places, placeView._activePlaceId, true );
+    addPhoto : function (e) {
+        _preventDefault(e);
+        // Call the device gallery function to get a photo and get it scaled to gg resolution
+        devicePhoto.deviceGallery(
+            1600, // max resolution in pixels
+            75,  // quality: 1-99.
+            true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+            null,  // Current channel Id for offers
+            privateNotesView.addImageToNote  // Optional preview callback
+        );
+    },
 
-           newNote.set('title',note.title);
-           newNote.set('expiration', Number(note.expiration));
-           newNote.set('content', note.content);
-           newNote.set('expirationDate', note.expirationDate);
-           newNote.set('tags', note.tags);
-           newNote.set('tagString', tagModel.createTagString(note.tags));
+    addGallery : function (e) {
+        _preventDefault(e);
 
-           noteModel.saveParseNote(newNote);
+        galleryPicker.openModal(function (photo) {
 
-           placeView._memoriesDS.add(newNote.toJSON());
+            // photoModel.addPhotoOffer(photo.photoId, channelView._channelId,  photo.thumbnailUrl, photo.imageUrl, true);
 
-           smartNoteView.onDone();
+            var url = photo.thumbnailUrl;
+            if (photo.imageUrl !== undefined && photo.imageUrl !== null)
+                url = photo.imageUrl;
 
-       });
+            privateNotesView.addImageToNote(photo.photoId, url);
+        });
+        //  APP.kendo.navigate("views/gallery.html#gallery?mode=picker");
+
+    },
+
+    getSelectionText: function (event){
+        var selectedText = "";
+        if (window.getSelection){ // all modern browsers and IE9+
+            selectedText = window.getSelection().toString();
+        }
+        return selectedText;
+    },
+
+   saveNote : function (e) {
+        _preventDefault(e);
+
+
+       var newNote = noteModel.createNote(noteModel._places, placeView._activePlaceId, true );
+
+       newNote.set('title',note.title);
+       newNote.set('expiration', Number(note.expiration));
+       newNote.set('content', note.content);
+       newNote.set('expirationDate', note.expirationDate);
+       newNote.set('tags', note.tags);
+       newNote.set('tagString', tagModel.createTagString(note.tags));
+
+       noteModel.saveParseNote(newNote);
+
+       placeView._memoriesDS.add(newNote.toJSON());
+
+
     },
 
 
@@ -1673,6 +1720,80 @@ var placeView = {
 
         }
         $("#placeViewItemActions").data("kendoMobileActionSheet").close();
+    },
+    toggleTitleTag : function () {
+
+        if (placeView._titleTagActive)
+            $('#placeViewTitleTag').removeClass('hidden');
+        else
+            $('#placeViewTitleTag').addClass('hidden');
+    },
+
+    noteTitleTag : function (e) {
+        _preventDefault(e);
+
+        placeView._titleTagActive = !placeView._titleTagActive;
+        placeView.toggleTitleTag();
+    },
+
+    activateEditor : function () {
+
+        $("#placeViewToolbar").removeClass('hidden');
+        $("#privateNote-editorBtnImg").attr("src","images/icon-editor-active.svg");
+
+    },
+
+    deactivateEditor : function () {
+
+        $("#placeViewToolbar").addClass('hidden');
+        $("#privateNote-editorBtnImg").attr("src","images/icon-editor.svg");
+
+    },
+
+    openEditor : function () {
+        if (placeView._editorActive === false) {
+
+            placeView._editorActive = true;
+
+            $('#placeViewTextArea').redactor({
+                minHeight: 36,
+                maxHeight: 360,
+                focus: false,
+                placeholder: 'Add Note...',
+                /* callbacks: {
+                 change: function(e)
+                 {
+                 $('#messageTextArea').focus();
+                 }
+                 },*/
+                formatting: ['p', 'blockquote', 'h1', 'h2','h3'],
+                buttons: ['format', 'bold', 'italic', 'lists', 'horizontalrule'],
+                toolbarExternal: '#placeViewToolbar'
+            });
+        }
+
+    },
+
+
+    closeEditor : function () {
+        if (placeView._editorActive) {
+            placeView._editorActive = false;
+            $('#placeViewTextArea').redactor('core.destroy');
+        }
+
+        $("#placeViewToolbar").addClass('hidden');
+
+    },
+
+    noteEditor : function (e) {
+        _preventDefault(e);
+        placeView._editorActive = !placeView._editorActive;
+        if (placeView._editorActive){
+            placeView.activateEditor();
+
+        } else {
+            placeView.deactivateEditor();
+        }
     },
 
 
