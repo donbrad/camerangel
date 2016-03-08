@@ -18,6 +18,7 @@ var privateNotesView = {
     notePhotos: [],
     _titleTagActive: false,
     _editorActive: false,
+    _editorExpanded : false,
 
 
     onInit : function (e) {
@@ -31,6 +32,14 @@ var privateNotesView = {
             filter: "li",
             tap: privateNotesView.tapNote,
             hold: privateNotesView.holdNote
+        });
+
+
+        $('#privateNoteTextArea').click(function() {
+            if (privateNotesView._editorExpanded)
+                return;
+
+            privateNotesView.expandEditor();
         });
 
     },
@@ -54,11 +63,22 @@ var privateNotesView = {
         privateNotesView.closeEditor();
     },
 
+    expandEditor : function () {
+        $('#privateNoteTextArea').css( "height","360" );
+        privateNotesView._editorExpanded = true;
+    },
+
+    shrinkEditor : function ()  {
+        $('#privateNoteTextArea').css( "height","36" );
+        privateNotesView._editorExpanded false;
+    },
+
     _initTextArea : function () {
 
         $('#privateNoteTextArea').val('');
         $('#privateNoteTextArea').redactor('code.set', "");
 
+        privateNotesView.shrinkEditor();
         if (privateNotesView._editorActive) {
             privateNotesView._editorActive = false;
             privateNotesView.deactivateEditor();
