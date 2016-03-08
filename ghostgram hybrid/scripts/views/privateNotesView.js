@@ -119,7 +119,7 @@ var privateNotesView = {
 
             if (messageText.indexOf(photoId) !== -1) {
                 //the photoId is in the current message text
-                channelView.messageAddPhotoOffer(photoId, !channelView.messageLock);
+                //channelView.messageAddPhotoOffer(photoId, !channelView.messageLock);
             }
         }
 
@@ -134,7 +134,7 @@ var privateNotesView = {
         //var text = $('#messageTextArea').data("kendoEditor").value();
         var text = $('#privateNoteTextArea').redactor('code.get');
         var title = $('#privateNoteTitle').val();
-        var tagString =  $('#privateNoteTags').val();
+        var tagString =  $('#privateNoteTag').val();
 
         if (text.length > 0) {
             validNote = true;
@@ -575,8 +575,6 @@ var privateNotesView = {
         _preventDefault(e);
 
         galleryPicker.openModal(function (photo) {
-
-            // photoModel.addPhotoOffer(photo.photoId, channelView._channelId,  photo.thumbnailUrl, photo.imageUrl, true);
 
             var url = photo.thumbnailUrl;
             if (photo.imageUrl !== undefined && photo.imageUrl !== null)

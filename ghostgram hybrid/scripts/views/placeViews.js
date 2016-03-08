@@ -1258,6 +1258,7 @@ var placeView = {
             dir: "desc"
         }
     }),
+    notePhotos: [],
 
     onInit : function (e) {
         _preventDefault(e);
@@ -1366,6 +1367,9 @@ var placeView = {
 
     onShow : function (e) {
         _preventDefault(e);
+        ux.hideKeyboard();
+        placeView.topOffset = $("#placeView-listview").data("kendoMobileListView").scroller().scrollTop;
+        placeView.openEditor();
 
         if (e.view.params !== undefined) {
             if (e.view.params.place !== undefined) {
@@ -1468,6 +1472,29 @@ var placeView = {
 
     onHide : function (e) {
         //_preventDefault(e);  Cant use here -- prevents navigation
+        placeView.closeEditor();
+    },
+
+    expandEditor : function () {
+        $('#placeViewTextArea').css( "height","360" );
+        placeView._editorExpanded = true;
+    },
+
+    shrinkEditor : function ()  {
+        $('#placeViewTextArea').css( "height","36" );
+        placeView._editorExpanded = false;
+    },
+
+    _initTextArea : function () {
+
+        $('#placeViewTextArea').val('');
+        $('#placeViewTextArea').redactor('code.set', "");
+
+        placeView.shrinkEditor();
+        if (placeView._editorActive) {
+            placeView._editorActive = false;
+            placeView.deactivateEditor();
+        }
 
     },
 
@@ -1511,7 +1538,7 @@ var placeView = {
 
     },
 
-    camera : function (e) {
+    /*camera : function (e) {
         $("#placeViewOptions").data("kendoMobileActionSheet").close();
 
         devicePhoto.deviceCamera(
@@ -1533,7 +1560,7 @@ var placeView = {
             null,  // Current channel Id for offers
             placeView.photoComplete // Optional preview callback
         );
-    },
+    },*/
 
     photoComplete : function (photoId, imageUrl) {
 
@@ -1591,6 +1618,20 @@ var placeView = {
         }
     },
 
+    addImageToNote: function (photoId, displayUrl) {
+        var photoObj = photoModel.findPhotoById(photoId);
+
+        if (photoObj !== undefined) {
+
+            var imgUrl = '<img class="photo-note" data-photoid="'+ photoId + '" id="notephoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
+
+            $('#placeViewTextArea').redactor('insert.node', $('<div />').html(imgUrl));
+
+        }
+
+        placeView.notePhotos.push(photoId);
+    },
+
     addCamera : function (e) {
         _preventDefault(e);
 
@@ -1599,7 +1640,7 @@ var placeView = {
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
             null,  // Current channel Id for offers
-            privateNotesView.addImageToNote  // Optional preview callback
+            placeView.addImageToNote  // Optional preview callback
         );
     },
 
@@ -1611,7 +1652,7 @@ var placeView = {
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
             null,  // Current channel Id for offers
-            privateNotesView.addImageToNote  // Optional preview callback
+            placeView.addImageToNote  // Optional preview callback
         );
     },
 
@@ -1626,7 +1667,7 @@ var placeView = {
             if (photo.imageUrl !== undefined && photo.imageUrl !== null)
                 url = photo.imageUrl;
 
-            privateNotesView.addImageToNote(photo.photoId, url);
+            placeView.addImageToNote(photo.photoId, url);
         });
         //  APP.kendo.navigate("views/gallery.html#gallery?mode=picker");
 
@@ -1640,23 +1681,76 @@ var placeView = {
         return selectedText;
     },
 
+
+    noteAddPhoto : function (photoId) {
+
+        var photo = photoModel.findPhotoById(photoId);
+
+        if (photo !== undefined) {
+
+            var photoObj  = {
+                photoId : photo.photoId,
+                channelId: null,
+                thumbnailUrl: photo.thumbnailUrl,
+                imageUrl: photo.imageUrl,
+                canCopy: true,
+                ownerId: userModel.currentUser.userUUID,
+                ownerName: userModel.currentUser.name
+            };
+        }
+
+
+        placeView.photos.push(photoObj);
+        // photoModel.addPhotoOffer(photo.photoId, channelView._channelId, photo.thumbnailUrl, photo.imageUrl, canCopy);
+    },
+
+    validateNotePhotos : function () {
+        var validPhotos = [];
+        // var messageText = $('#messageTextArea').data("kendoEditor").value();
+        var messageText = $('#placeViewTextArea').redactor('code.get');
+
+        for (var i=0; i< placeView.notePhotos.length; i++) {
+            var photoId = placeView.notePhotos[i];
+
+            if (messageText.indexOf(photoId) !== -1) {
+                //the photoId is in the current message text
+                channelView.messageAddPhotoOffer(photoId, !channelView.messageLock);
+            }
+        }
+
+    },
    saveNote : function (e) {
         _preventDefault(e);
+       var validNote = false; // If message is valid, send is enabled
+       placeView.activeNote = { objects: []};
 
+       var text = $('#placeViewTextArea').redactor('code.get');
+       var title = $('#placeViewTitle').val();
+       var tagString =  $('#placeViewTag').val();
 
-       var newNote = noteModel.createNote(noteModel._places, placeView._activePlaceId, true );
+       if (text.length > 0) {
+           validNote = true;
+       }
 
-       newNote.set('title',note.title);
-       newNote.set('expiration', Number(note.expiration));
-       newNote.set('content', note.content);
-       newNote.set('expirationDate', note.expirationDate);
-       newNote.set('tags', note.tags);
-       newNote.set('tagString', tagModel.createTagString(note.tags));
+       // Are there any photos in the current message
+       if (placeView.notePhotos.length > 0) {
+           validNote = true;
 
-       noteModel.saveParseNote(newNote);
+           //Need to make sure the user didn't delete the photo reference in the html...
+           placeView.validateNotePhotos();
+       }
+       if (validNote === true ) {
+           var newNote = noteModel.createNote(noteModel._places, placeView._activePlaceId, true);
 
-       placeView._memoriesDS.add(newNote.toJSON());
+           newNote.set('title', title);
+           newNote.set('content', text);
+           newNote.set('tags', note.tags);
+           newNote.set('tagString', tagModel.createTagString(note.tags));
 
+           noteModel.saveParseNote(newNote);
+
+           placeView._memoriesDS.add(newNote.toJSON());
+       }
 
     },
 
