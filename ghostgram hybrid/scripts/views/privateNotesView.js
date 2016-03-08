@@ -189,9 +189,14 @@ var privateNotesView = {
         var currentTime =  ggTime.currentTime();
         var uuidNote = uuid.v4();
 
+        var ggType = 'Note';
 
+        if (data.ggType !== undefined) {
+            ggType = data.ggType;
+        }
         var message = {
             type: 'Note',
+            ggType: ggType,
             noteId: uuidNote,
             title: data.title,
             tagString: data.tagString,
