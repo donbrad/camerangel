@@ -432,7 +432,12 @@ var userStatusView = {
 			$("#currentAvailableTxt").text("available");
 		}
 
-
+        // set verified
+        if(user.emailValidated){
+            $("#profileStatusVerified").removeClass("hidden");
+        } else {
+            $("#profileStatusVerified").addClass("hidden");
+        }
     },
 
     gotoSettings : function (e) {
