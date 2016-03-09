@@ -265,7 +265,7 @@ var privateNotesView = {
                      {
                         var contentOut = content;
 
-                         return(contentOut)
+                         return(contentOut);
                      },
                     click : function (e) {
 
