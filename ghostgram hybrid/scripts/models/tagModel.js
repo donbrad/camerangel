@@ -18,7 +18,7 @@ var tagModel = {
     tagsDS: null,
 
     init : function () {
-       tagModel.tagsDS.fetch();
+
 
         tagModel.tagsDS = new kendo.data.DataSource({
             type: 'everlive',
@@ -36,6 +36,9 @@ var tagModel = {
                 dir: "asc"
             }
         });
+
+
+        tagModel.tagsDS.fetch();
     },
 
 
