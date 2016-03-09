@@ -136,7 +136,8 @@ var privateNotesView = {
         //var text = $('#messageTextArea').data("kendoEditor").value();
         var text = $('#privateNoteTextArea').redactor('code.get');
         var title = $('#privateNoteTitle').val();
-        var tagString =  $('#privateNoteTag').val();
+        var tagString =  $('#privateNoteTags').val();
+        var tags = tagModel.parseTagString(tagString);
 
         if (text.length > 0) {
             validNote = true;
@@ -144,7 +145,7 @@ var privateNotesView = {
 
         privateNotesView.activeNote.title = title;
         privateNotesView.activeNote.tagString = tagString;
-        privateNotesView.activeNote.tags = [];
+        privateNotesView.activeNote.tags = tags;
 
 
         privateNotesView.noteAddLocation();
@@ -171,10 +172,8 @@ var privateNotesView = {
 
         if (validNote === true ) {
 
-
             privateNotesView._saveNote(text, privateNotesView.activeNote);
             privateNotesView._initTextArea();
-
             privateNotesView.noteInit();
         }
 
