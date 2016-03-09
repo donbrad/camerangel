@@ -42,6 +42,9 @@ var privateNotesView = {
             privateNotesView.expandEditor();
         });
 
+        $('#privateNoteTextArea').bind( 'paste', function( evt ) {
+            var items = evt.originalEvent.clipboardData.items;
+        });
     },
 
     // Initialize the channel specific view data sources.
