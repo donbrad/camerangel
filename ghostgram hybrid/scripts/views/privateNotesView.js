@@ -49,6 +49,8 @@ var privateNotesView = {
 
         privateNotesView.noteObjects = [];
         privateNotesView.activeNote = {objects: []};
+       $('#privateNoteTitle').val("");
+        $('#privateNoteTag').val("");
     },
 
     onShow : function (e) {
