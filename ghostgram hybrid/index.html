@@ -4111,6 +4111,8 @@
 		</div>
 	# } #
 	# if (ggType === 'Event') { #
+	<div class="private-note">
+
 		<h3 class="textClamp">
 			<img src="images/smart-event.svg" class="icon-md" />
 			<span>#: titleStr #</span>
@@ -4118,9 +4120,10 @@
 		</h3>
 		<p>#: tagString #</p>
 		<p style="margin-top: 0.5em; width: 100%;">#= content #</p>
-		</div>
+	</div>
 	# } #
 	# if (ggType === 'Movie') { #
+	<div class="private-note">
 		<h3 class="textClamp">
 			<img src="images/smart-movie-circle.svg" class="icon-md" />
 			<span>#: titleStr #</span>
@@ -4128,7 +4131,7 @@
 		</h3>
 		<p>#: tagString #</p>
 		<p style="margin-top: 0.5em; width: 100%;">#= content #</p>
-		</div>
+	</div>
 	# } #
 </script>
 
