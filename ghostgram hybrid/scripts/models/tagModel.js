@@ -250,6 +250,8 @@ var tagModel = {
     syncTags : function () {
         tagModel.syncPlaceTags();
         tagModel.syncContactTags();
+
+        deviceModel.syncEverlive();
     }
 
 };
