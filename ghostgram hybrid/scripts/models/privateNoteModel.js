@@ -79,7 +79,7 @@ var privateNoteModel = {
     },
 
     isDuplicateNote : function (noteId) {
-        var notes = this.queryNotes({ field: "noteId", operator: "eq", value: noteId });
+        var notes = privateNoteModel.queryNotes({ field: "noteId", operator: "eq", value: noteId });
 
         if (notes === undefined) {
             return (false);

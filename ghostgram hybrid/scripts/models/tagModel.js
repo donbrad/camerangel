@@ -11,96 +11,84 @@
 
 var tagModel = {
 
-    _parseClass : 'tag',
+    _ggClass : 'tag',
     _user : 'user',
     _version: 1,
 
     tagsDS: new kendo.data.DataSource({
+        type: 'everlive',
         offlineStorage: "tags",
+
+        transport: {
+            typeName: 'tags',
+            dataProvider: APP.everlive
+        },
+        schema: {
+            model: { id:  Everlive.idField}
+        },
         sort: {
-            field: "tagname",
+            field: "tagName",
             dir: "asc"
         }
     }),
 
     init : function () {
+       tagModel.tagsDS.fetch();
 
     },
 
-    fetch: function () {
-        var TagModel = Parse.Object.extend(tagModel._parseClass);
-        var query = new Parse.Query(TagModel);
-        query.limit(1000);
-        query.find({
-            success: function(collection) {
-                var userNotifications = [];
-                for (var i = 0; i < collection.length; i++) {
-                    var object = collection[i];
 
-                    var data = object.toJSON();
 
-                    tagModel.tagsDS.add(data);
-                    deviceModel.setAppState('hasTags', true);
-                }
+    addTag : function (tag, description, category, categoryId, semanticCategory) {
 
-            },
-            error: function(error) {
-                handleParseError(error);
-            }
-        });
-    },
+        var tagObj = tagModel.newTag();
 
-    addTag : function (tag) {
-        var Tags = Parse.Object.extend(tagModel._parseClass);
-        var tagParse = new Tags();
 
-        tagParse.setACL(userModel.parseACL);
-
-        tagParse.set('version', noteModel._version);
-        tagParse.set('uuid', tag.uuid);
-        tagParse.set('name', tag.name);
-        tagParse.set('tagName', tag.tagName);
-        tagParse.set('type', tag.type);
-        tagParse.set('alias', tag.alias);
-        tagParse.set('title', tag.title);
-        tagParse.set('ownerUUID', tag.ownerUUID);
-        tagParse.set('category', tag.category);
-
-        var tagObj = tagParse.toJSON();
+        tagObj.name = tag;
+        tagObj.tagName = tagModel.normalizeTag(tag);
+        tagObj.description = description;
+        tagObj.category = category;
+        tagObj.categoryId = categoryId;
+        tagObj.semanticCategory = semanticCategory;
 
         tagModel.tagsDS.add(tagObj);
         tagModel.tagsDS.sync();
 
-        tagParse.save(null, {
-            success: function(tagIn) {
-
-                // Execute any logic that should take place after the object is saved.
-
-            },
-            error: function(contact, error) {
-                // Execute any logic that should take place if the save fails.
-                // error is a Parse.Error with an error code and message.
-                handleParseError(error);
-            }
-        });
     },
 
 
-    createTag : function () {
+    newTag : function () {
         var tag = new Object();
 
         tag.uuid = uuid.v4();
+        tag.version = tagModel._version;
+        tag.ggType = tagModel._ggClass;
         tag.name = null;
         tag.tagName = null;
-        tag.alias = null;
-        tag.type = tagModel._user;
-        tag.objectUUID = null;
-        tag.title = null;
-        tag.ownerUUID = null;
-        tag.category = null;
-        tag.icon = null;
+        tag.category = tagModel._user;
+        tag.categoryId = null;
+        tag.semanticCategory = null;
+        tag.description = null;
+        tag.ownerUUID = userModel.currentUser.userUUID;
 
         return(tag);
+
+    },
+
+    normalizeTag : function (tagString) {
+
+        var normTag = tagString.toLowerCase();
+
+        normTag = normTag.replace(' ', '_');
+
+        return (normTag);
+    },
+
+    unnormalizeTag: function (normTag) {
+
+        var tag = normTag.replace('_', ' ');
+
+        return(tag.capitalize('title'));
 
     },
 
@@ -112,7 +100,7 @@ var tagModel = {
         var tagArray = tagString.split(",");
 
         for (var i=0; i< tagArray.length; i++) {
-            tagArray[i].trim();
+            tagArray[i] = tagModel.normalizeTag(tagArray[i]);
         }
 
         return(tagArray);
@@ -138,6 +126,30 @@ var tagModel = {
 
         return(tagString);
 
+    },
+
+    queryTags: function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = tagModel.tagsDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+
+        dataSource.filter(cacheFilter);
+
+        return(view);
+    },
+
+    findTag : function (tag) {
+        var normTag = tagModel.normalizeTag(tag);
+        var tags = tagModel.queryTags([{field: "name", operator: "eq", value: tag},
+            {field: "tagName", operator: "eq", value: normTag}]);
+
+        return (tags);
     }
 
 
