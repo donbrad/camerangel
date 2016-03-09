@@ -15,26 +15,27 @@ var tagModel = {
     _user : 'user',
     _version: 1,
 
-    tagsDS: new kendo.data.DataSource({
-        type: 'everlive',
-        offlineStorage: "tags",
-
-        transport: {
-            typeName: 'tags',
-            dataProvider: APP.everlive
-        },
-        schema: {
-            model: { id:  Everlive.idField}
-        },
-        sort: {
-            field: "tagName",
-            dir: "asc"
-        }
-    }),
+    tagsDS: null,
 
     init : function () {
        tagModel.tagsDS.fetch();
 
+        tagModel.tagsDS = new kendo.data.DataSource({
+            type: 'everlive',
+            offlineStorage: "tags",
+
+            transport: {
+                typeName: 'tags',
+                dataProvider: APP.everlive
+            },
+            schema: {
+                model: { id:  Everlive.idField}
+            },
+            sort: {
+                field: "tagName",
+                dir: "asc"
+            }
+        });
     },
 
 
