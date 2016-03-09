@@ -248,7 +248,7 @@ var tagModel = {
     },
 
     syncTags : function () {
-      tagModel.syncPlaceTags();
+        tagModel.syncPlaceTags();
         tagModel.syncContactTags();
     }
 
