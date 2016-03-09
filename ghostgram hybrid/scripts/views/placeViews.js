@@ -1263,7 +1263,7 @@ var placeView = {
     activeNote: {objects: []},
 
     onInit : function (e) {
-        
+
         _preventDefault(e);
         $("#placeView-listview").kendoMobileListView({
             dataSource: placeView._memoriesDS,
