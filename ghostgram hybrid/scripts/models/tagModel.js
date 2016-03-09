@@ -56,6 +56,53 @@ var tagModel = {
 
     },
 
+    addGroupTag : function (tag, description) {
+        var tagObj = tagModel.newTag();
+
+
+        tagObj.name = tag;
+        tagObj.tagName = tagModel.normalizeTag(tag);
+        tagObj.description = description;
+        tagObj.category = 'Group';
+        tagObj.categoryId = null;
+        tagObj.semanticCategory = 'Group';
+
+        tagModel.tagsDS.add(tagObj);
+        tagModel.tagsDS.sync();
+    },
+
+    addContactTag : function (tag, alias, description, categoryId) {
+        var tagObj = tagModel.newTag();
+
+
+        tagObj.name = tag;
+        tagObj.alias = alias;
+        tagObj.tagName = tagModel.normalizeTag(tag);
+        tagObj.description = description;
+        tagObj.category = 'Contact';
+        tagObj.categoryId = categoryId;
+        tagObj.semanticCategory = 'Contact';
+
+        tagModel.tagsDS.add(tagObj);
+        tagModel.tagsDS.sync();
+    },
+
+    addPlaceTag : function (tag, alias, description, categoryId) {
+        var tagObj = tagModel.newTag();
+
+
+        tagObj.name = tag;
+        tagObj.alias = alias;
+        tagObj.tagName = tagModel.normalizeTag(tag);
+        tagObj.description = description;
+        tagObj.category = 'Place';
+        tagObj.categoryId = categoryId;
+        tagObj.semanticCategory = 'Place';
+
+        tagModel.tagsDS.add(tagObj);
+        tagModel.tagsDS.sync();
+    },
+
 
     newTag : function () {
         var tag = new Object();
@@ -64,6 +111,7 @@ var tagModel = {
         tag.version = tagModel._version;
         tag.ggType = tagModel._ggClass;
         tag.name = null;
+        tag.alias = null;
         tag.tagName = null;
         tag.category = tagModel._user;
         tag.categoryId = null;
@@ -79,16 +127,18 @@ var tagModel = {
 
         var normTag = tagString.toLowerCase();
 
-        normTag = normTag.replace(' ', '_');
+       // normTag = normTag.replace(' ', '_');
 
         return (normTag);
     },
 
     unnormalizeTag: function (normTag) {
 
-        var tag = normTag.replace('_', ' ');
+       // var tag = normTag.replace('_', ' ');
 
-        return(tag.capitalize('title'));
+        var tag = normTag.capitalize('title');
+
+        return(tag);
 
     },
 
@@ -146,11 +196,60 @@ var tagModel = {
 
     findTag : function (tag) {
         var normTag = tagModel.normalizeTag(tag);
-        var tags = tagModel.queryTags([{field: "name", operator: "eq", value: tag},
-            {field: "tagName", operator: "eq", value: normTag}]);
+        var tags = tagModel.queryTags({field: "tagName", operator: "eq", value: normTag});
 
         return (tags);
-    }
+    },
 
+    findContactTag : function (tag, alias) {
+        var normTag = tagModel.normalizeTag(tag);
+        var tags = tagModel.queryTags({field: "tagName", operator: "eq", value: normTag});
+
+        return (tags);
+    },
+
+    syncContactTags : function () {
+        var ds = contactModel.contactsDS;
+
+        var length = ds.total;
+
+        for (var i=0; i<length; i++) {
+            var contact = ds.at(i);
+
+            if (contact.category === 'member' || contact.category === 'new') {
+
+                var tags = tagModel.findTag(contact.name);
+                if (tags !== undefined && tags.length > 1) {
+
+                } else {
+                    tagModel.addContactTag(contact.name, contact.alias, '', contact.uuid);
+                }
+            }
+        }
+
+    },
+
+    syncPlaceTags : function () {
+        var ds = placesModel.placesDS;
+
+        var length = ds.total;
+
+        for (var i=0; i<length; i++) {
+            var place = ds.at(i);
+
+            var tags = tagModel.findTag(place.name);
+            if (tags !== undefined && tags.length > 1) {
+
+            } else {
+                tagModel.addPlaceTag(place.name, place.alias, '', place.uuid);
+            }
+
+        }
+    },
+
+    syncTags : function () {
+      tagModel.syncPlaceTags();
+        tagModel.syncContactTags();
+    }
 
 };
