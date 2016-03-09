@@ -260,12 +260,19 @@ var privateNotesView = {
                 maxHeight: 360,
                 focus: false,
                 placeholder: 'Add Note...',
-                /* callbacks: {
-                 change: function(e)
-                 {
-                 $('#messageTextArea').focus();
-                 }
-                 },*/
+                callbacks: {
+                     paste: function(content)
+                     {
+                        var contentOut = content;
+
+                         return(contentOut)
+                     },
+                    click : function (e) {
+
+                    }
+                 },
+
+
                 formatting: ['p', 'blockquote', 'h1', 'h2','h3'],
                 buttons: ['format', 'bold', 'italic', 'lists', 'horizontalrule'],
                 toolbarExternal: '#privateNoteToolbar'
