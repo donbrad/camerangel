@@ -523,13 +523,40 @@ var privateNotesView = {
         if (query !== '') {
             searchUrl += '?q='+query;
         }
-        privateNotesView.searchUrl = searchUrl;
-        privateNotesView.winQuery = '?q='+query;
-        privateNotesView.winRef =  window.open(encodeURI(searchUrl), '_blank', 'location=yes');
-        privateNotesView.winRef.addEventListener("exit", privateNotesView.messageSearchEnd);
-        privateNotesView.winRef.addEventListener("loadstop", privateNotesView.messageSearchLoad);
-        /* channelView.winRef.addEventListener('loaderror', channelView.messageSearchError); */
 
+        SafariViewController.isAvailable(function (available) {
+            if (available) {
+                SafariViewController.show({
+                        url: encodeURI(searchUrl),
+                        hidden: false, // default false. You can use this to load cookies etc in the background (see issue #1 for details).
+                        animated: true, // default true, note that 'hide' will reuse this preference (the 'Done' button will always animate though)
+                        transition: 'curl', // unless animated is false you can choose from: curl, flip, fade, slide (default)
+                        enterReaderModeIfAvailable: true // default false
+                    },
+                    // this success handler will be invoked for the lifecycle events 'opened', 'loaded' and 'closed'
+                    function (result) {
+                        if (result.event === 'opened') {
+                            alert('opened');
+                        } else if (result.event === 'loaded') {
+                            alert('loaded');
+                        } else if (result.event === 'closed') {
+                            alert('closed');
+                        }
+                    },
+                    function (msg) {
+                        alert("KO: " + msg);
+                    })
+            } else {
+                // potentially powered by InAppBrowser because that (currently) clobbers window.open
+                privateNotesView.searchUrl = searchUrl;
+                privateNotesView.winQuery = '?q=' + query;
+                privateNotesView.winRef = window.open(encodeURI(searchUrl), '_blank', 'location=yes');
+                /* privateNotesView.winRef.addEventListener("exit", privateNotesView.messageSearchEnd);
+                 privateNotesView.winRef.addEventListener("loadstop", privateNotesView.messageSearchLoad);*/
+                /* channelView.winRef.addEventListener('loaderror', channelView.messageSearchError); */
+            }
+
+        });
 
     },
 
