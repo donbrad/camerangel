@@ -535,16 +535,16 @@ var privateNotesView = {
                     },
                     // this success handler will be invoked for the lifecycle events 'opened', 'loaded' and 'closed'
                     function (result) {
-                        if (result.event === 'opened') {
+                        /*if (result.event === 'opened') {
                             alert('opened');
                         } else if (result.event === 'loaded') {
                             alert('loaded');
-                        } else if (result.event === 'closed') {
-                            alert('closed');
+                        } else */if (result.event === 'closed') {
+                           mobileNotify(query + ' closed');
                         }
                     },
                     function (msg) {
-                        alert("KO: " + msg);
+                        mobileNotify("KO: " + msg);
                     })
             } else {
                 // potentially powered by InAppBrowser because that (currently) clobbers window.open
