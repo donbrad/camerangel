@@ -3,7 +3,7 @@ function ggSmartLink  (e)  {
 	var url = e.button[0].attributes["data-url"].value;
 
 	if (url !== undefined && url !== null) {
-		url = decodeURI(url);
+		url = decodeURIComponent(url);
 
 		SafariViewController.isAvailable(function (available) {
 			if (available) {
@@ -29,7 +29,7 @@ function ggSmartLink  (e)  {
 					})
 			} else {
 				// potentially powered by InAppBrowser because that (currently) clobbers window.open
-				window.open(encodeURI(url), '_blank', 'location=yes');
+				window.open(url, '_blank', 'location=yes');
 
 			}
 		});
