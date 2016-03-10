@@ -1,4 +1,5 @@
 function ggSmartLink  (e)  {
+	_preventDefault(e);
 
 	var url = e.button[0].attributes["data-url"].value;
 
