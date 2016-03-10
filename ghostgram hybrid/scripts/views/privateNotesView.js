@@ -283,7 +283,7 @@ var privateNotesView = {
 
             $('#privateNoteTextArea').redactor({
                 minHeight: 36,
-                maxHeight: 360,
+                maxHeight: 380,
                 focus: false,
                 placeholder: 'Add Note...',
                 callbacks: {
@@ -303,7 +303,7 @@ var privateNotesView = {
                      },
 
                     click : function (e) {
-
+                        
                     }
                  },
 
