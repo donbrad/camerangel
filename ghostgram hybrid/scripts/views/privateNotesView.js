@@ -43,6 +43,14 @@ var privateNotesView = {
             privateNotesView.expandEditor();
         });
 
+
+        $("#privateNoteTags").kendoMultiSelect({
+            placeholder: "Select tags...",
+            dataTextField: "name",
+            dataValueField: "uuid",
+            autoBind: false,
+            dataSource: tagModel.tagsDS
+        });
     },
 
     // Initialize the channel specific view data sources.
@@ -370,6 +378,9 @@ var privateNotesView = {
             $('#privateNoteTags').val(privateNotesView.activeNote.tagString);
             $('#privateNoteTextArea').redactor('code.set', content);
 
+            privateNotesView._titleTagActive = true;
+
+            privateNotesView.toggleTitleTag();
             $("#privateNoteViewActions").data("kendoMobileActionSheet").close();
         }
 

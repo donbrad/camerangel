@@ -48,6 +48,7 @@ var tagModel = {
         var tagObj = tagModel.newTag();
 
 
+
         tagObj.name = tag;
         tagObj.tagName = tagModel.normalizeTag(tag);
         tagObj.description = description;
@@ -109,7 +110,7 @@ var tagModel = {
 
 
     newTag : function () {
-        var tag = new Object();
+        var tag = {};
 
         tag.uuid = uuid.v4();
         tag.version = tagModel._version;
