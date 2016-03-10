@@ -324,12 +324,20 @@ var privateNotesView = {
 
     deleteNote : function (e) {
         _preventDefault(e);
-        var uuid = e.sender.element[0].attributes['data-objectid'].value
+       if (privateNotesView.activeNote !== null) {
+           privateNoteModel.deleteNote(privateNotesView.activeNote);
+           privateNotesView.activeNote = null;
+       }
 
     },
 
     editNote : function (e) {
         _preventDefault(e);
+
+        if (privateNotesView.activeNote !== null) {
+            $('#privateNoteTextArea').redactor('code.set', privateNotesView.activeNote.content);
+        }
+
     },
 
     shareNote : function (e) {
@@ -717,7 +725,12 @@ var privateNotesView = {
             mobileNotify("No message content to display...");
         }
 
-        //var note = dataSource.getByUid(note);
+        var note = dataSource.getByUid(noteId);
+
+        if (note !== undefined) {
+            privateNotesView.activeNote = note;
+        }
+
         // User has clicked in message area, so hide the keyboard
         // ux.hideKeyboard();
 
