@@ -271,6 +271,7 @@ var privateNotesView = {
                             var url = match[1];
                              contentOut += encodeURIComponent(url) + '"> ' + privateNotesView.searchQuery + '</a>';
                          }
+                         this.selection.restore();
                          this.selection.replace("");
                          return(contentOut);
                      },
@@ -538,8 +539,9 @@ var privateNotesView = {
         var searchUrl =  'http://www.google.com/search';
         var query = privateNotesView.getSelectionText();
 
-        var selection =  $('#privateNoteTextArea').redactor('selection.current'); //cache the current selection
-        
+        var selection =  $('#privateNoteTextArea').redactor('selection.save'); //cache the current selection
+
+
         privateNotesView.searchQuery = query;
 
         if (query !== '') {
