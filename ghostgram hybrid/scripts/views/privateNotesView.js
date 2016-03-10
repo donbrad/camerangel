@@ -192,7 +192,7 @@ var privateNotesView = {
                 var dataObj = JSON.parse(contentData);
                 note.set('title', title);
                 note.set('tagString', tagString);
-                note.set('tags, tags');
+                note.set('tags', tags);
                 note.set('content', text);
                 note.set('data', contentData);
                 note.set('dataObject', dataObj);
