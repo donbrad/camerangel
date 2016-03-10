@@ -709,7 +709,7 @@ var privateNotesView = {
        // e.preventDefault();
 
         var $target = $(e.touch.initialTouch);
-        var dataSource = privateNotesView.notesDS;
+        var dataSource = privateNoteModel.notesDS;
         var noteId = null;
 
 
