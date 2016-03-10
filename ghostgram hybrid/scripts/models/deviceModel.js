@@ -124,7 +124,7 @@ var deviceModel = {
             contacts = deviceModel.state.hasContacts, objects = deviceModel.state.hasSmartEvents,
             notes = deviceModel.state.hasNotes, tags = deviceModel.state.hasTags;
 
-        if (channels && photos && contacts && objects & notes & tags) {
+        if (channels && photos && contacts && objects /* & notes & tags*/) {
 
             deviceModel.state.parseSyncComplete = true;
 
