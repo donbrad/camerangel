@@ -4,7 +4,7 @@ function ggSmartLink  (e)  {
 
 	if (url !== undefined && url !== null) {
 		url = decodeURI(url);
-		
+
 		SafariViewController.isAvailable(function (available) {
 			if (available) {
 				SafariViewController.show({
