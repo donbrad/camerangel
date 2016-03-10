@@ -263,12 +263,13 @@ var privateNotesView = {
                 callbacks: {
                      paste: function(content)
                      {
-                        var contentOut = content;
+                        var contentOut = '<br> <a data-role="button" data-click="ggSmartLink" data-url="';
                          var re = /<\s*a\s+[^>]*href\s*=\s*[\"']?([^\"' >]+)[\"' >]/;
                          var match;
 
                          if ((match = re.exec(content)) !== null) {
-
+                            var url = match[1];
+                             contentOut += encodeURIComponent(url) + '"> ' + privateNotesView.searchQuery + '</a>';
                          }
                          return(contentOut);
                      },
@@ -535,6 +536,8 @@ var privateNotesView = {
 
         var searchUrl =  'http://www.google.com/search';
         var query = privateNotesView.getSelectionText();
+
+        privateNotesView.searchQuery = query;
 
         if (query !== '') {
             searchUrl += '?q='+query;

@@ -1,3 +1,37 @@
+function ggSmartLink  ()  {
+
+	var url = null;
+
+	SafariViewController.isAvailable(function (available) {
+		if (available) {
+			SafariViewController.show({
+					url: encodeURI(url),
+					hidden: false, // default false. You can use this to load cookies etc in the background (see issue #1 for details).
+					animated: true, // default true, note that 'hide' will reuse this preference (the 'Done' button will always animate though)
+					transition: 'curl', // unless animated is false you can choose from: curl, flip, fade, slide (default)
+					enterReaderModeIfAvailable: true // default false
+				},
+				// this success handler will be invoked for the lifecycle events 'opened', 'loaded' and 'closed'
+				function (result) {
+					/*if (result.event === 'opened') {
+					 alert('opened');
+					 } else if (result.event === 'loaded') {
+					 alert('loaded');
+					 } else */if (result.event === 'closed') {
+						mobileNotify(query + ' closed');
+					}
+				},
+				function (msg) {
+					mobileNotify("Ghostgram Browser Error: " + msg);
+				})
+		} else {
+			// potentially powered by InAppBrowser because that (currently) clobbers window.open
+			window.open(encodeURI(url), '_blank', 'location=yes');
+
+		}
+	});
+}
+
 function setButtonGroupIndex(buttonSelector, index) {
 
 	var buttonGroup = $(buttonSelector).data("kendoMobileButtonGroup");
