@@ -682,7 +682,7 @@ var privateNotesView = {
     },
 
     tapNote : function (e) {
-        e.preventDefault();
+       // e.preventDefault();
 
         var $target = $(e.touch.initialTouch);
         var dataSource = privateNotesView.notesDS;
@@ -701,7 +701,7 @@ var privateNotesView = {
             mobileNotify("No message content to display...");
         }
 
-        var note = dataSource.getByUid(note);
+        //var note = dataSource.getByUid(note);
         // User has clicked in message area, so hide the keyboard
         // ux.hideKeyboard();
 
