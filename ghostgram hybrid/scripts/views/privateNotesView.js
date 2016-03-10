@@ -377,6 +377,16 @@ var privateNotesView = {
 
     shareNote : function (e) {
         _preventDefault(e);
+
+        if (window.navigator.simulator === true) {
+            mobileNotify("Export and Sharing only on device...");
+
+        } else {
+
+            _socialShare(privateNotesView.activeNote.content, privateNotesView.activeNote.title, null, null);
+
+            // _socialShare(null, null,  null, photoView._activePhoto.image);
+        }
     },
 
     sendNote : function (e) {
