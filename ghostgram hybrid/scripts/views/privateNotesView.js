@@ -19,6 +19,7 @@ var privateNotesView = {
     _titleTagActive: false,
     _editorActive: false,
     _editorExpanded : false,
+    _editMode: false,
 
 
     onInit : function (e) {
@@ -49,6 +50,7 @@ var privateNotesView = {
 
         privateNotesView.noteObjects = [];
         privateNotesView.activeNote = {objects: []};
+        privateNotesView._editMode = false;
        $('#privateNoteTitle').val("");
         $('#privateNoteTags').val("");
     },
@@ -127,9 +129,19 @@ var privateNotesView = {
 
     },
 
+
+
+
     saveNote: function () {
+
+
         var validNote = false; // If message is valid, send is enabled
-        privateNotesView.activeNote = { objects: []};
+        if (privateNotesView._editMode) {
+            validNote = true;
+        } else {
+            // Initialize the activeNote if we're not editing.
+            privateNotesView.activeNote = {objects: []};
+        }
 
 
         //var text = $('#messageTextArea').val();
@@ -172,7 +184,24 @@ var privateNotesView = {
 
         if (validNote === true ) {
 
-            privateNotesView._saveNote(text, privateNotesView.activeNote);
+            if (privateNotesView._editMode) {
+                var activeNote = privateNotesView.activeNote;
+                var note = privateNoteModel.findNote(activeNote.noteId);
+
+                var contentData = JSON.stringify(activeNote.dataObject);
+                var dataObj = JSON.parse(contentData);
+                note.set('title', title);
+                note.set('tagString', tagString);
+                note.set('tags, tags');
+                note.set('content', text);
+                note.set('data', contentData);
+                note.set('dataObject', dataObj);
+                note.set('time',ggTime.currentTime());
+
+
+            } else {
+                privateNotesView._saveNote(text, privateNotesView.activeNote);
+            }
             privateNotesView._initTextArea();
             privateNotesView.noteInit();
         }
@@ -336,7 +365,12 @@ var privateNotesView = {
             if (privateNotesView.activeNote.content !== undefined) {
                content =  privateNotesView.activeNote.content;
             }
+            privateNotesView._editMode = true;
+            $('#privateNoteTitle').val(privateNotesView.activeNote.title);
+            $('#privateNoteTags').val(privateNotesView.activeNote.tagString);
             $('#privateNoteTextArea').redactor('code.set', content);
+
+            $("#privateNoteViewActions").data("kendoMobileActionSheet").close();
         }
 
     },
