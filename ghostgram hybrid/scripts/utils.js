@@ -1,4 +1,4 @@
-function ggSmartLink  ()  {
+function ggSmartLink  (e)  {
 
 	var url = null;
 
