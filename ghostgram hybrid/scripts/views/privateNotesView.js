@@ -324,6 +324,8 @@ var privateNotesView = {
 
     deleteNote : function (e) {
         _preventDefault(e);
+
+
     },
 
     editNote : function (e) {
