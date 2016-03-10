@@ -1,6 +1,6 @@
 function ggSmartLink  (e)  {
 
-	var url = e.button[0].attributes["data-url"].value;;
+	var url = e.button[0].attributes["data-url"].value;
 
 	SafariViewController.isAvailable(function (available) {
 		if (available) {
