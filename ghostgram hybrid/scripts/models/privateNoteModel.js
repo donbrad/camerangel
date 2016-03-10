@@ -90,6 +90,19 @@ var privateNoteModel = {
         }
     },
 
+    findNote : function (noteId) {
+        var notes = this.queryNotes({ field: "noteId", operator: "eq", value: noteId });
+
+        if (notes === undefined ) {
+            return null;
+        }
+        if (notes.length === 0) {
+            return null;
+        }
+
+        return notes[0];
+    },
+
     deleteNote : function (note) {
          if (note !== undefined) {
              privateNoteModel.notesDS.remove(note);

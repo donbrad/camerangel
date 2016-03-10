@@ -289,7 +289,7 @@ var privateNotesView = {
                 callbacks: {
                      paste: function(content)
                      {
-                        var contentOut = '<br> <a data-role="button" class="smart-link btnClear-link" data-click="ggSmartLink" data-url="';
+                        var contentOut = '<a data-role="button" class="smart-link btnClear-link" data-click="ggSmartLink" data-url="';
                          var re = /<\s*a\s+[^>]*href\s*=\s*[\"']?([^\"' >]+)[\"' >]/;
                          var match;
 
@@ -303,7 +303,7 @@ var privateNotesView = {
                      },
 
                     click : function (e) {
-                        
+
                     }
                  },
 
