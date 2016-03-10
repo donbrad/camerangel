@@ -52,7 +52,6 @@ String.prototype.smartTruncate =
 
 function _socialShare (message, subject, url, file) {
 
-
 	if (url !== null) {
 		var encodedurl = url.replace(/-/g, '%2D');
 
