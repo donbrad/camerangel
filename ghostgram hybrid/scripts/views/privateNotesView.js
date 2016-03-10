@@ -269,7 +269,7 @@ var privateNotesView = {
 
                          if ((match = re.exec(content)) !== null) {
                             var url = match[1];
-                             contentOut += encodeURIComponent(url) + '"> ' + privateNotesView.searchQuery + '</a>';
+                             contentOut += encodeURI(url) + '"> ' + privateNotesView.searchQuery + '</a>';
                          }
                          this.selection.restore();
                          this.selection.replace("");
