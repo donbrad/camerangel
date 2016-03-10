@@ -324,7 +324,7 @@ var privateNotesView = {
 
     deleteNote : function (e) {
         _preventDefault(e);
-
+        var uuid = e.sender.element[0].attributes['data-objectid'].value
 
     },
 
@@ -335,6 +335,16 @@ var privateNotesView = {
     shareNote : function (e) {
         _preventDefault(e);
     },
+
+    sendNote : function (e) {
+        _preventDefault(e);
+    },
+
+    sendChatNote : function (e) {
+        _preventDefault(e);
+    },
+
+
 
     updateTimeStamps: function () {
         $("#privateNote-listview").data("kendoMobileListView").refresh();
