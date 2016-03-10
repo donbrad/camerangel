@@ -162,6 +162,8 @@
 
 		smartEvent.init();
 
+		tagModel.init();
+
 		if (window.navigator.simulator === undefined) {
 			serverPush.init();
 		}

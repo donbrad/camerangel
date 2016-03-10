@@ -49,6 +49,10 @@ var privateNotesView = {
 
         privateNotesView.noteObjects = [];
         privateNotesView.activeNote = {objects: []};
+
+        $('#privateNoteTitle').val("");
+        $('#privateNoteTags').val("");
+
     },
 
     onShow : function (e) {
@@ -104,10 +108,10 @@ var privateNotesView = {
             };
         }
 
-
-        privateNotesView.photos.push(photoObj);
+        privateNotesView.activeNote.photos.push(photoObj);
         // photoModel.addPhotoOffer(photo.photoId, channelView._channelId, photo.thumbnailUrl, photo.imageUrl, canCopy);
     },
+
 
     validateNotePhotos : function () {
         var validPhotos = [];
@@ -119,7 +123,9 @@ var privateNotesView = {
 
             if (messageText.indexOf(photoId) !== -1) {
                 //the photoId is in the current message text
-                channelView.messageAddPhotoOffer(photoId, !channelView.messageLock);
+
+                privateNotesView.noteAddPhoto(photoId);
+
             }
         }
 
@@ -136,13 +142,16 @@ var privateNotesView = {
         var title = $('#privateNoteTitle').val();
         var tagString =  $('#privateNoteTags').val();
 
+        var tags = tagModel.parseTagString(tagString);
+
+
         if (text.length > 0) {
             validNote = true;
         }
 
         privateNotesView.activeNote.title = title;
         privateNotesView.activeNote.tagString = tagString;
-        privateNotesView.activeNote.tags = [];
+        privateNotesView.activeNote.tags = tags;
 
 
         privateNotesView.noteAddLocation();
@@ -168,8 +177,6 @@ var privateNotesView = {
         }
 
         if (validNote === true ) {
-
-
             privateNotesView._saveNote(text, privateNotesView.activeNote);
             privateNotesView._initTextArea();
 
@@ -189,9 +196,14 @@ var privateNotesView = {
         var currentTime =  ggTime.currentTime();
         var uuidNote = uuid.v4();
 
+        var ggType = 'Note';
 
+        if (data.ggType !== undefined) {
+            ggType = data.ggType;
+        }
         var message = {
             type: 'Note',
+            ggType: ggType,
             noteId: uuidNote,
             title: data.title,
             tagString: data.tagString,
@@ -296,17 +308,6 @@ var privateNotesView = {
         _preventDefault(e);
     },
 
-    addCamera : function (e) {
-        _preventDefault(e);
-    },
-
-    addPhoto : function (e) {
-        _preventDefault(e);
-    },
-
-    addGallery : function (e) {
-        _preventDefault(e);
-    },
 
     deleteNote : function (e) {
         _preventDefault(e);
@@ -354,7 +355,6 @@ var privateNotesView = {
                 }
 
                 if (object !== null) {
-                    console.log(object);
                     // User is interacting with the object so add it, if it doesn't already exist
                     if (object.ggType === 'Event') {
                         smartEventView.openModal(object);
@@ -529,13 +529,40 @@ var privateNotesView = {
         if (query !== '') {
             searchUrl += '?q='+query;
         }
-        privateNotesView.searchUrl = searchUrl;
-        privateNotesView.winQuery = '?q='+query;
-        privateNotesView.winRef =  window.open(encodeURI(searchUrl), '_blank', 'location=yes');
-        privateNotesView.winRef.addEventListener("exit", privateNotesView.messageSearchEnd);
-        privateNotesView.winRef.addEventListener("loadstop", privateNotesView.messageSearchLoad);
-        /* channelView.winRef.addEventListener('loaderror', channelView.messageSearchError); */
 
+        SafariViewController.isAvailable(function (available) {
+            if (available) {
+                SafariViewController.show({
+                        url: encodeURI(searchUrl),
+                        hidden: false, // default false. You can use this to load cookies etc in the background (see issue #1 for details).
+                        animated: true, // default true, note that 'hide' will reuse this preference (the 'Done' button will always animate though)
+                        transition: 'curl', // unless animated is false you can choose from: curl, flip, fade, slide (default)
+                        enterReaderModeIfAvailable: true // default false
+                    },
+                    // this success handler will be invoked for the lifecycle events 'opened', 'loaded' and 'closed'
+                    function (result) {
+                        if (result.event === 'opened') {
+                            alert('opened');
+                        } else if (result.event === 'loaded') {
+                            alert('loaded');
+                        } else if (result.event === 'closed') {
+                            alert('closed');
+                        }
+                    },
+                    function (msg) {
+                        alert("KO: " + msg);
+                    })
+            } else {
+                // potentially powered by InAppBrowser because that (currently) clobbers window.open
+                privateNotesView.searchUrl = searchUrl;
+                privateNotesView.winQuery = '?q=' + query;
+                privateNotesView.winRef = window.open(encodeURI(searchUrl), '_blank', 'location=yes');
+                /* privateNotesView.winRef.addEventListener("exit", privateNotesView.messageSearchEnd);
+                 privateNotesView.winRef.addEventListener("loadstop", privateNotesView.messageSearchLoad);*/
+                /* channelView.winRef.addEventListener('loaderror', channelView.messageSearchError); */
+            }
+
+        });
 
     },
 
@@ -554,7 +581,7 @@ var privateNotesView = {
         privateNotesView.notePhotos.push(photoId);
     },
 
-    noteCamera : function (e) {
+    addCamera : function (e) {
         _preventDefault(e);
 
         devicePhoto.deviceCamera(
@@ -566,7 +593,7 @@ var privateNotesView = {
         );
     },
 
-    notePhoto : function (e) {
+    addPhoto : function (e) {
         _preventDefault(e);
         // Call the device gallery function to get a photo and get it scaled to gg resolution
         devicePhoto.deviceGallery(
@@ -578,12 +605,10 @@ var privateNotesView = {
         );
     },
 
-    noteGallery : function (e) {
+    addGallery : function (e) {
         _preventDefault(e);
 
         galleryPicker.openModal(function (photo) {
-
-            // photoModel.addPhotoOffer(photo.photoId, channelView._channelId,  photo.thumbnailUrl, photo.imageUrl, true);
 
             var url = photo.thumbnailUrl;
             if (photo.imageUrl !== undefined && photo.imageUrl !== null)
@@ -611,7 +636,7 @@ var privateNotesView = {
 
             privateNotesView.noteAddSmartEvent(event);
             mobileNotify("Sending Smart Event...");
-            privateNotesView.messageSend();
+            privateNotesView.saveNote();
         });
     },
 
@@ -622,12 +647,12 @@ var privateNotesView = {
             if (movie !== null) {
                 privateNotesView.noteAddSmartMovie(movie);
                 mobileNotify("Sending Smart Movie...");
-                privateNotesView.noteSave();
+                privateNotesView.saveNote();
             }
         });
     },
 
-    noteEvent : function (e) {
+    noteEvent : function(e) {
         _preventDefault(e);
         mobileNotify("Chat Event isn't wired up yet");
     },

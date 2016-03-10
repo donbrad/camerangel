@@ -77,10 +77,12 @@
 	<script src="scripts/models/deviceModel.js"></script>
 	<script src="scripts/models/everliveModel.js"></script>
 	<script src="scripts/models/mapModel.js"></script>
+	<script src="scripts/models/monkeylearnModel.js"></script>
 	<script src="scripts/models/noteModel.js"></script>
 	<script src="scripts/models/notificationModel.js"></script>
 	<script src="scripts/models/photoModel.js"></script>
 	<script src="scripts/models/placeModel.js"></script>
+	<script src="scripts/models/placeNoteModel.js"></script>
 	<script src="scripts/models/privateNoteModel.js"></script>
 	<script src="scripts/models/smartListModel.js"></script>
 	<script src="scripts/models/smartEventModel.js"></script>
@@ -3572,7 +3574,7 @@
 				<input type="search" id="placeViewTag" placeholder="Tags...">
 			</div>
 			<div id="placeViewToolbar" class="hidden"></div>
-			<textarea id="placeViewTextArea" type='text' name="placeViewTextArea" autofocus="true"></textarea>
+			<textarea id="placeViewTextArea" type='text' name="placeViewTextArea" autofocus="false"></textarea>
 			<div class="messageMediaBar">
 				<ul>
 					<li>
@@ -3617,9 +3619,9 @@
 	</ul>
 
 	<ul data-role="actionsheet"  id="placeViewPhotoActions" >
-		<li><a data-action="placeView.messageCamera"> Phone Camera</a></li>
-		<li><a data-action="placeView.messagePhoto"> Phone Gallery</a></li>
-		<li><a data-action="placeView.messageGallery"> Memories Gallery</a></li>
+		<li><a data-action="placeView.addCamera"> Phone Camera</a></li>
+		<li><a data-action="placeView.addPhoto"> Phone Gallery</a></li>
+		<li><a data-action="placeView.addGallery"> Memories Gallery</a></li>
 	</ul>
 
 
@@ -4023,8 +4025,9 @@
 	<div data-role="footer" style="display: block; background: #fff; padding-left: 2px;"  id=privateNoteEditor" style="min-height: 48px; max-height: 60%;">
 		<div class="messageCompose">
 			<div id="privateNoteTitleTag" class="hidden">
-				<!--<input type="search" id="privateNoteTitle" placeholder="Title...">-->
+				<input style="font-weight: 600;"  type="search" id="privateNoteTitle" placeholder="Title...">
 				<input type="search" id="privateNoteTags" placeholder="Tags...">
+				<hr>
 			</div>
 			<div id="privateNoteToolbar" class="hidden"></div>
 			<textarea id="privateNoteTextArea" type='text'></textarea>
@@ -4091,7 +4094,7 @@
 	if (title === null || title === '') {
 	titleStr = "Untitled"; }
 	else {
-	titleStr = data.title
+		titleStr = title
 	}
 	var tagString = "";
 	if (tagString !== undefined && tagString !== null) { tagString = tagString;}
@@ -4110,6 +4113,9 @@
 		</div>
 	# } #
 	# if (ggType === 'Event') { #
+
+	<div class="private-note">
+
 		<h3 class="textClamp">
 			<img src="images/smart-event.svg" class="icon-md" />
 			<span>#: titleStr #</span>
@@ -4117,9 +4123,10 @@
 		</h3>
 		<p>#: tagString #</p>
 		<p style="margin-top: 0.5em; width: 100%;">#= content #</p>
-		</div>
+	</div>
 	# } #
 	# if (ggType === 'Movie') { #
+	<div class="private-note">
 		<h3 class="textClamp">
 			<img src="images/smart-movie-circle.svg" class="icon-md" />
 			<span>#: titleStr #</span>
@@ -4127,7 +4134,7 @@
 		</h3>
 		<p>#: tagString #</p>
 		<p style="margin-top: 0.5em; width: 100%;">#= content #</p>
-		</div>
+	</div>
 	# } #
 </script>
 

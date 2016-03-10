@@ -1250,14 +1250,20 @@ var placeView = {
     _returnView : 'places',
     _returnModal: null,
     _showDetails: false,
+    _editorActive: false,
+    _titleTagActive : false,
     _memoriesDS : new kendo.data.DataSource({
         sort: {
             field: "date",
             dir: "desc"
         }
     }),
+    notePhotos: [],
+    noteObjects: [],
+    activeNote: {objects: []},
 
     onInit : function (e) {
+
         _preventDefault(e);
         $("#placeView-listview").kendoMobileListView({
             dataSource: placeView._memoriesDS,
@@ -1364,6 +1370,10 @@ var placeView = {
 
     onShow : function (e) {
         _preventDefault(e);
+        ux.hideKeyboard();
+
+        placeView.topOffset = $("#placeView-listview").data("kendoMobileListView").scroller().scrollTop;
+        placeView.openEditor();
 
         if (e.view.params !== undefined) {
             if (e.view.params.place !== undefined) {
@@ -1466,8 +1476,19 @@ var placeView = {
 
     onHide : function (e) {
         //_preventDefault(e);  Cant use here -- prevents navigation
-
+        placeView.closeEditor();
     },
+
+    expandEditor : function () {
+        $('#placeViewTextArea').css( "height","360" );
+        placeView._editorExpanded = true;
+    },
+
+    shrinkEditor : function ()  {
+        $('#placeViewTextArea').css( "height","36" );
+        placeView._editorExpanded = false;
+    },
+
 
     onDone: function (e) {
         _preventDefault(e);
@@ -1509,51 +1530,6 @@ var placeView = {
 
     },
 
-    camera : function (e) {
-        $("#placeViewOptions").data("kendoMobileActionSheet").close();
-
-        devicePhoto.deviceCamera(
-            1600, // max resolution in pixels
-            75,  // quality: 1-99.
-            false,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
-            null,  // Current channel Id for offers
-            placeView.photoComplete  // Optional preview callback
-        );
-
-    },
-
-    gallery : function (e) {
-        $("#placeViewOptions").data("kendoMobileActionSheet").close();
-        devicePhoto.deviceGallery(
-            1600, // max resolution in pixels
-            75,  // quality: 1-99.
-            false,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
-            null,  // Current channel Id for offers
-            placeView.photoComplete // Optional preview callback
-        );
-    },
-
-    photoComplete : function (photoId, imageUrl) {
-
-        var photo = photoModel.findPhotoById(photoId);
-
-        if (photo !== undefined) {
-
-            // Override the place info the photo with information from this place
-            photo.set('placeId',  placeView._activePlace.placeId);
-            photo.set('placeString',  placeView._activePlace.name);
-            var addressString = placeView._activePlace.city + ', ' + placeView._activePlace.state + "  " +  placeView._activePlace.zipcode;
-            photo.set('addressString', addressString);
-
-            updateParseObject('photos','photoId', photoId, 'placeId',  placeView._activePlace.placeId);
-            updateParseObject('photos','photoId', photoId, 'placeString',  placeView._activePlace.name);
-            updateParseObject('photos','photoId', photoId, 'addressString',  addressString);
-            modalPhotoView.openModal(photo);
-
-            placeView._memoriesDS.add(photo);
-        }
-    },
-
     doDirections : function (e) {
         _preventDefault(e);
 
@@ -1589,28 +1565,153 @@ var placeView = {
         }
     },
 
-   addNote : function (e) {
+    addImageToNote: function (photoId, displayUrl) {
+        var photoObj = photoModel.findPhotoById(photoId);
+
+        if (photoObj !== undefined) {
+
+            var imgUrl = '<img class="photo-note" data-photoid="'+ photoId + '" id="notephoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
+
+            $('#placeViewTextArea').redactor('insert.node', $('<div />').html(imgUrl));
+
+        }
+
+        placeView.notePhotos.push(photoId);
+    },
+
+    addCamera : function (e) {
         _preventDefault(e);
 
-       $("#placeViewOptions").data("kendoMobileActionSheet").close();
+        devicePhoto.deviceCamera(
+            1600, // max resolution in pixels
+            75,  // quality: 1-99.
+            true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+            null,  // Current channel Id for offers
+            placeView.addImageToNote  // Optional preview callback
+        );
+    },
 
-       smartNoteView.openModal(null, function (note) {
-           var newNote = noteModel.createNote(noteModel._places, placeView._activePlaceId, true );
+    addPhoto : function (e) {
+        _preventDefault(e);
+        // Call the device gallery function to get a photo and get it scaled to gg resolution
+        devicePhoto.deviceGallery(
+            1600, // max resolution in pixels
+            75,  // quality: 1-99.
+            true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+            null,  // Current channel Id for offers
+            placeView.addImageToNote  // Optional preview callback
+        );
+    },
 
-           newNote.set('title',note.title);
-           newNote.set('expiration', Number(note.expiration));
-           newNote.set('content', note.content);
-           newNote.set('expirationDate', note.expirationDate);
-           newNote.set('tags', note.tags);
-           newNote.set('tagString', tagModel.createTagString(note.tags));
+    addGallery : function (e) {
+        _preventDefault(e);
+
+        galleryPicker.openModal(function (photo) {
+
+            // photoModel.addPhotoOffer(photo.photoId, channelView._channelId,  photo.thumbnailUrl, photo.imageUrl, true);
+
+            var url = photo.thumbnailUrl;
+            if (photo.imageUrl !== undefined && photo.imageUrl !== null)
+                url = photo.imageUrl;
+
+            placeView.addImageToNote(photo.photoId, url);
+        });
+        //  APP.kendo.navigate("views/gallery.html#gallery?mode=picker");
+
+    },
+
+    getSelectionText: function (event){
+        var selectedText = "";
+        if (window.getSelection){ // all modern browsers and IE9+
+            selectedText = window.getSelection().toString();
+        }
+        return selectedText;
+    },
+
+
+    noteAddPhoto : function (photoId) {
+
+        var photo = photoModel.findPhotoById(photoId);
+
+        if (photo !== undefined) {
+
+            var photoObj  = {
+                photoId : photo.photoId,
+                channelId: null,
+                thumbnailUrl: photo.thumbnailUrl,
+                imageUrl: photo.imageUrl,
+                canCopy: true,
+                ownerId: userModel.currentUser.userUUID,
+                ownerName: userModel.currentUser.name
+            };
+        }
+
+
+        placeView.photos.push(photoObj);
+        // photoModel.addPhotoOffer(photo.photoId, channelView._channelId, photo.thumbnailUrl, photo.imageUrl, canCopy);
+    },
+
+    validateNotePhotos : function () {
+        var validPhotos = [];
+        // var messageText = $('#messageTextArea').data("kendoEditor").value();
+        var messageText = $('#placeViewTextArea').redactor('code.get');
+
+        for (var i=0; i< placeView.notePhotos.length; i++) {
+            var photoId = placeView.notePhotos[i];
+
+            if (messageText.indexOf(photoId) !== -1) {
+                //the photoId is in the current message text
+                placeView.noteAddPhoto(photoId, !channelView.messageLock);
+            }
+        }
+
+    },
+
+    noteInit : function () {
+
+        placeView.noteObjects = [];
+        placeView.notePhotos = [];
+        placeView.activeNote = {objects: []};
+    },
+
+   saveNote : function (e) {
+        _preventDefault(e);
+       var validNote = false; // If message is valid, send is enabled
+       placeView.activeNote = { objects: []};
+
+       var text = $('#placeViewTextArea').redactor('code.get');
+       var title = $('#placeViewTitle').val();
+       var tagString =  $('#placeViewTag').val();
+
+       if (text.length > 0) {
+           validNote = true;
+       }
+
+       // Are there any photos in the current message
+       if (placeView.notePhotos.length > 0) {
+           validNote = true;
+
+           //Need to make sure the user didn't delete the photo reference in the html...
+           placeView.validateNotePhotos();
+       }
+       if (validNote === true ) {
+           var newNote = noteModel.createNote(noteModel._places, placeView._activePlaceId, true);
+           var contentData = JSON.stringify(placeView.activeNote);
+           var data = JSON.parse(contentData);
+           newNote.set('title', title);
+           newNote.set('content', text);
+           newNote.set('data',data);
+           newNote.set('tags', []);
+           newNote.set('tagString', tagString);
 
            noteModel.saveParseNote(newNote);
 
            placeView._memoriesDS.add(newNote.toJSON());
 
-           smartNoteView.onDone();
+           placeView._initTextArea();
+           placeView.noteInit()
+       }
 
-       });
     },
 
 
@@ -1673,6 +1774,94 @@ var placeView = {
 
         }
         $("#placeViewItemActions").data("kendoMobileActionSheet").close();
+    },
+
+    _initTextArea : function () {
+
+        $('#placeViewTextArea').val('');
+        $('#placeViewTextArea').redactor('code.set', "");
+
+        placeView.shrinkEditor();
+        if (placeView._editorActive) {
+            placeView._editorActive = false;
+            placeView.deactivateEditor();
+        }
+
+    },
+
+    toggleTitleTag : function () {
+
+        if (placeView._titleTagActive)
+            $('#placeViewTitleTag').removeClass('hidden');
+        else
+            $('#placeViewTitleTag').addClass('hidden');
+    },
+
+    noteTitleTag : function (e) {
+        _preventDefault(e);
+
+        placeView._titleTagActive = !placeView._titleTagActive;
+        placeView.toggleTitleTag();
+    },
+
+    activateEditor : function () {
+
+        $("#placeViewToolbar").removeClass('hidden');
+        $("#privateNote-editorBtnImg").attr("src","images/icon-editor-active.svg");
+
+    },
+
+    deactivateEditor : function () {
+
+        $("#placeViewToolbar").addClass('hidden');
+        $("#privateNote-editorBtnImg").attr("src","images/icon-editor.svg");
+
+    },
+
+    openEditor : function () {
+        if (placeView._editorActive === false) {
+
+            placeView._editorActive = true;
+
+            $('#placeViewTextArea').redactor({
+                minHeight: 36,
+                maxHeight: 360,
+                focus: false,
+                placeholder: 'Add Note...',
+                /* callbacks: {
+                 change: function(e)
+                 {
+                 $('#messageTextArea').focus();
+                 }
+                 },*/
+                formatting: ['p', 'blockquote', 'h1', 'h2','h3'],
+                buttons: ['format', 'bold', 'italic', 'lists', 'horizontalrule'],
+                toolbarExternal: '#placeViewToolbar'
+            });
+        }
+
+    },
+
+
+    closeEditor : function () {
+        if (placeView._editorActive) {
+            placeView._editorActive = false;
+            $('#placeViewTextArea').redactor('core.destroy');
+        }
+
+        $("#placeViewToolbar").addClass('hidden');
+
+    },
+
+    noteEditor : function (e) {
+        _preventDefault(e);
+        placeView._editorActive = !placeView._editorActive;
+        if (placeView._editorActive){
+            placeView.activateEditor();
+
+        } else {
+            placeView.deactivateEditor();
+        }
     },
 
 

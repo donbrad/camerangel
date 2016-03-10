@@ -134,6 +134,8 @@ var deviceModel = {
 
                 deviceModel.isPushProvisioned();
 
+                tagModel.syncTags();
+
            }
 
         }

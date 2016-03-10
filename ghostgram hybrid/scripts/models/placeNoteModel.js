@@ -1,25 +1,22 @@
 /**
  * Created by donbrad on 3/3/16.
  *
- * privateNoteModel -- local and cloud management of user's private notes - My Notes...
+ * placeNoteModel -- local and cloud management of place Notes
  *
  */
 
 'use strict';
 
-/*
- * privateNoteModel
- */
-var privateNoteModel = {
+var placeNoteModel = {
     notesDS: null,
 
     init: function () {
-        privateNoteModel.notesDS = new kendo.data.DataSource({
+        placeNoteModel.notesDS = new kendo.data.DataSource({
             type: 'everlive',
-            offlineStorage: "privatenote",
+            offlineStorage: "placenote",
 
             transport: {
-                typeName: 'privatenote',
+                typeName: 'placenote',
                 dataProvider: APP.everlive
             },
             schema: {
@@ -27,7 +24,7 @@ var privateNoteModel = {
             }
         });
 
-        privateNoteModel.notesDS.bind("change", function (e) {
+        placeNoteModel.notesDS.bind("change", function (e) {
             var changedNotes = e.items;
             var note = e.items[0];
             if (e.action !== undefined) {
@@ -44,8 +41,8 @@ var privateNoteModel = {
                     case "add" :
                         note = e.items[0];
 
-                        if (privateNoteModel.isDuplicateNote(note.noteId)) {
-                           // privateNoteModel.notesDS.remove(note);
+                        if (placeNoteModel.isDuplicateNote(note.noteId)) {
+                           // placeNoteModel.notesDS.remove(note);
                             //e.preventDefault();
                         }
 
@@ -58,14 +55,14 @@ var privateNoteModel = {
 
         });
 
-        privateNoteModel.notesDS.fetch();
+        placeNoteModel.notesDS.fetch();
 
     },
 
     queryNotes: function (query) {
         if (query === undefined)
             return(undefined);
-        var dataSource = privateNoteModel.notesDS;
+        var dataSource = placeNoteModel.notesDS;
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
             cacheFilter = {};
@@ -79,9 +76,7 @@ var privateNoteModel = {
     },
 
     isDuplicateNote : function (noteId) {
-
-        var notes = privateNoteModel.queryNotes({ field: "noteId", operator: "eq", value: noteId });
-
+        var notes = this.queryNotes({ field: "noteId", operator: "eq", value: noteId });
 
         if (notes === undefined) {
             return (false);
@@ -94,17 +89,17 @@ var privateNoteModel = {
 
     deleteNote : function (note) {
          if (note !== undefined) {
-             privateNoteModel.notesDS.remove(note);
-             privateNoteModel.notesDS.sync();
+             placeNoteModel.notesDS.remove(note);
+             placeNoteModel.notesDS.sync();
          }
 
     },
 
     deleteNoteById : function (noteId) {
-        var note = privateNoteModel.queryNotes({ field: "noteId", operator: "eq", value: noteId });
+        var note = placeNoteModel.queryNotes({ field: "noteId", operator: "eq", value: noteId });
         if (note !== undefined && note !== null) {
-            privateNoteModel.notesDS.remove(note);
-            privateNoteModel.notesDS.sync();
+            placeNoteModel.notesDS.remove(note);
+            placeNoteModel.notesDS.sync();
         }
 
     }

@@ -6,7 +6,7 @@
   "DisplayName": "ghostgrams",
   "Author": "don bradford",
   "Description": "ghostgrams for iOS and Android",
-  "BundleVersion": "0.0.6",
+  "BundleVersion": "0.0.7",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1"
@@ -82,7 +82,7 @@
     "com.phonegap.plugins.barcodescanner@2.0.0",
     "com.phonegap.plugins.PushPlugin@3.1.1",
     "com.telerik.feedback@2.0.0",
-    "com.telerik.plugins.nativepagetransitions@0.6.2",
+    "com.telerik.plugins.nativepagetransitions@0.6.3",
     "cordova-plugin-battery-status",
     "cordova-plugin-camera",
     "cordova-plugin-console",
@@ -110,7 +110,7 @@
     "hu.dpal.phonegap.plugins.SpinnerDialog@1.3.1",
     "nl.x-services.plugins.actionsheet@2.2.2",
     "nl.x-services.plugins.calendar@4.4.7",
-    "nl.x-services.plugins.socialsharing@5.0.10",
+    "nl.x-services.plugins.socialsharing@5.0.11",
     "nl.x-services.plugins.toast@2.4.2",
     "org.apache.cordova.labs.keyboard",
     "org.apache.cordova.plugin.sms@0.1.1",

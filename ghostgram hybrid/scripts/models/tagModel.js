@@ -11,94 +11,136 @@
 
 var tagModel = {
 
-    _parseClass : 'tag',
+    _ggClass : 'tag',
     _user : 'user',
     _version: 1,
 
-    tagsDS: new kendo.data.DataSource({
-        offlineStorage: "tags",
-        sort: {
-            field: "tagname",
-            dir: "asc"
-        }
-    }),
+    tagsDS: null,
 
     init : function () {
 
-    },
 
-    fetch: function () {
-        var TagModel = Parse.Object.extend(tagModel._parseClass);
-        var query = new Parse.Query(TagModel);
-        query.limit(1000);
-        query.find({
-            success: function(collection) {
-                var userNotifications = [];
-                for (var i = 0; i < collection.length; i++) {
-                    var object = collection[i];
+        tagModel.tagsDS = new kendo.data.DataSource({
+            type: 'everlive',
+            offlineStorage: "tags",
 
-                    var data = object.toJSON();
-
-                    tagModel.tagsDS.add(data);
-                    deviceModel.setAppState('hasTags', true);
-                }
-
+            transport: {
+                typeName: 'tags',
+                dataProvider: APP.everlive
             },
-            error: function(error) {
-                handleParseError(error);
+            schema: {
+                model: { id:  Everlive.idField}
+            },
+            sort: {
+                field: "tagName",
+                dir: "asc"
             }
         });
+
+
+        tagModel.tagsDS.fetch();
     },
 
-    addTag : function (tag) {
-        var Tags = Parse.Object.extend(tagModel._parseClass);
-        var tagParse = new Tags();
 
-        tagParse.setACL(userModel.parseACL);
 
-        tagParse.set('version', noteModel._version);
-        tagParse.set('uuid', tag.uuid);
-        tagParse.set('name', tag.name);
-        tagParse.set('tagName', tag.tagName);
-        tagParse.set('type', tag.type);
-        tagParse.set('alias', tag.alias);
-        tagParse.set('title', tag.title);
-        tagParse.set('ownerUUID', tag.ownerUUID);
-        tagParse.set('category', tag.category);
+    addTag : function (tag, description, category, categoryId, semanticCategory) {
 
-        var tagObj = tagParse.toJSON();
+        var tagObj = tagModel.newTag();
+
+
+        tagObj.name = tag;
+        tagObj.tagName = tagModel.normalizeTag(tag);
+        tagObj.description = description;
+        tagObj.category = category;
+        tagObj.categoryId = categoryId;
+        tagObj.semanticCategory = semanticCategory;
 
         tagModel.tagsDS.add(tagObj);
         tagModel.tagsDS.sync();
 
-        tagParse.save(null, {
-            success: function(tagIn) {
+    },
 
-                // Execute any logic that should take place after the object is saved.
+    addGroupTag : function (tag, description) {
+        var tagObj = tagModel.newTag();
 
-            },
-            error: function(contact, error) {
-                // Execute any logic that should take place if the save fails.
-                // error is a Parse.Error with an error code and message.
-                handleParseError(error);
-            }
-        });
+
+        tagObj.name = tag;
+        tagObj.tagName = tagModel.normalizeTag(tag);
+        tagObj.description = description;
+        tagObj.category = 'Group';
+        tagObj.categoryId = null;
+        tagObj.semanticCategory = 'Group';
+
+        tagModel.tagsDS.add(tagObj);
+        tagModel.tagsDS.sync();
+    },
+
+    addContactTag : function (tag, alias, description, categoryId) {
+        var tagObj = tagModel.newTag();
+
+
+        tagObj.name = tag;
+        tagObj.alias = alias;
+        tagObj.tagName = tagModel.normalizeTag(tag);
+        tagObj.description = description;
+        tagObj.category = 'Contact';
+        tagObj.categoryId = categoryId;
+        tagObj.semanticCategory = 'Contact';
+
+        tagModel.tagsDS.add(tagObj);
+        tagModel.tagsDS.sync();
+    },
+
+    addPlaceTag : function (tag, alias, description, categoryId) {
+        var tagObj = tagModel.newTag();
+
+
+        tagObj.name = tag;
+        tagObj.alias = alias;
+        tagObj.tagName = tagModel.normalizeTag(tag);
+        tagObj.description = description;
+        tagObj.category = 'Place';
+        tagObj.categoryId = categoryId;
+        tagObj.semanticCategory = 'Place';
+
+        tagModel.tagsDS.add(tagObj);
+        tagModel.tagsDS.sync();
     },
 
 
-    createTag : function () {
+    newTag : function () {
         var tag = new Object();
 
         tag.uuid = uuid.v4();
+        tag.version = tagModel._version;
+        tag.ggType = tagModel._ggClass;
         tag.name = null;
-        tag.tagName = null;
         tag.alias = null;
-        tag.type = tagModel._user;
-        tag.objectUUID = null;
-        tag.title = null;
-        tag.ownerUUID = null;
-        tag.category = null;
-        tag.icon = null;
+        tag.tagName = null;
+        tag.category = tagModel._user;
+        tag.categoryId = null;
+        tag.semanticCategory = null;
+        tag.description = null;
+        tag.ownerUUID = userModel.currentUser.userUUID;
+
+        return(tag);
+
+    },
+
+    normalizeTag : function (tagString) {
+
+        var normTag = tagString.toLowerCase();
+
+       // normTag = normTag.replace(' ', '_');
+
+        return (normTag);
+    },
+
+    unnormalizeTag: function (normTag) {
+
+       // var tag = normTag.replace('_', ' ');
+
+        var tag = normTag.capitalize('title');
 
         return(tag);
 
@@ -112,7 +154,7 @@ var tagModel = {
         var tagArray = tagString.split(",");
 
         for (var i=0; i< tagArray.length; i++) {
-            tagArray[i].trim();
+            tagArray[i] = tagModel.normalizeTag(tagArray[i]);
         }
 
         return(tagArray);
@@ -138,7 +180,82 @@ var tagModel = {
 
         return(tagString);
 
-    }
+    },
 
+    queryTags: function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = tagModel.tagsDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+
+        dataSource.filter(cacheFilter);
+
+        return(view);
+    },
+
+    findTag : function (tag) {
+        var normTag = tagModel.normalizeTag(tag);
+        var tags = tagModel.queryTags({field: "tagName", operator: "eq", value: normTag});
+
+        return (tags);
+    },
+
+    findContactTag : function (tag, alias) {
+        var normTag = tagModel.normalizeTag(tag);
+        var tags = tagModel.queryTags({field: "tagName", operator: "eq", value: normTag});
+
+        return (tags);
+    },
+
+    syncContactTags : function () {
+        var ds = contactModel.contactsDS;
+
+        var length = ds.total;
+
+        for (var i=0; i<length; i++) {
+            var contact = ds.at(i);
+
+            if (contact.category === 'member' || contact.category === 'new') {
+
+                var tags = tagModel.findTag(contact.name);
+                if (tags !== undefined && tags.length > 1) {
+
+                } else {
+                    tagModel.addContactTag(contact.name, contact.alias, '', contact.uuid);
+                }
+            }
+        }
+
+    },
+
+    syncPlaceTags : function () {
+        var ds = placesModel.placesDS;
+
+        var length = ds.total;
+
+        for (var i=0; i<length; i++) {
+            var place = ds.at(i);
+
+            var tags = tagModel.findTag(place.name);
+            if (tags !== undefined && tags.length > 1) {
+
+            } else {
+                tagModel.addPlaceTag(place.name, place.alias, '', place.uuid);
+            }
+
+        }
+    },
+
+    syncTags : function () {
+        tagModel.syncPlaceTags();
+        tagModel.syncContactTags();
+
+        deviceModel.syncEverlive();
+    }
 
 };
