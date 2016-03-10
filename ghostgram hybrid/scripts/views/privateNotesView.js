@@ -264,9 +264,15 @@ var privateNotesView = {
                      paste: function(content)
                      {
                         var contentOut = content;
+                         var re = /<\s*a\s+[^>]*href\s*=\s*[\"']?([^\"' >]+)[\"' >]/;
+                         var match;
 
+                         if ((match = re.exec(content)) !== null) {
+
+                         }
                          return(contentOut);
                      },
+
                     click : function (e) {
 
                     }
