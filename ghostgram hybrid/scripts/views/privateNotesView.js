@@ -49,7 +49,17 @@ var privateNotesView = {
             dataTextField: "name",
             dataValueField: "uuid",
             autoBind: false,
-            dataSource: tagModel.tagsDS
+            tagMode: "multiple",
+            ignoreCase: true,
+            dataSource: tagModel.tagsDS,
+            select: function (e) {
+                var item = e.item;
+                var text = item.text();
+            },
+            change: function(e) {
+                var value = this.value();
+                // Use the value of the widget
+            }
         });
     },
 
