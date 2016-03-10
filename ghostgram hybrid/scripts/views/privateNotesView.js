@@ -42,9 +42,6 @@ var privateNotesView = {
             privateNotesView.expandEditor();
         });
 
-        $('#privateNoteTextArea').bind( 'paste', function( evt ) {
-            var items = evt.originalEvent.clipboardData.items;
-        });
     },
 
     // Initialize the channel specific view data sources.
@@ -324,9 +321,9 @@ var privateNotesView = {
 
     deleteNote : function (e) {
         _preventDefault(e);
-       if (privateNotesView.activeNote !== null) {
+       if (privateNotesView.activeNote.noteId !== undefined) {
            privateNoteModel.deleteNote(privateNotesView.activeNote);
-           privateNotesView.activeNote = null;
+           privateNotesView.activeNote = {objects: []};
        }
 
     },
@@ -334,8 +331,12 @@ var privateNotesView = {
     editNote : function (e) {
         _preventDefault(e);
 
-        if (privateNotesView.activeNote !== null) {
-            $('#privateNoteTextArea').redactor('code.set', privateNotesView.activeNote.content);
+        if (privateNotesView.activeNote.noteId !== undefined) {
+            var content='<p></p>';
+            if (privateNotesView.activeNote.content !== undefined) {
+               content =  privateNotesView.activeNote.content;
+            }
+            $('#privateNoteTextArea').redactor('code.set', content);
         }
 
     },
@@ -759,7 +760,7 @@ var privateNotesView = {
     },
 
     holdNote : function (e) {
-        e.preventDefault();
+        _preventDefault(e);
         var dataSource = privateNoteModel.notesDS;
         var noteUID = $(e.touch.currentTarget).data("uid");
         var note = dataSource.getByUid(noteUID);
