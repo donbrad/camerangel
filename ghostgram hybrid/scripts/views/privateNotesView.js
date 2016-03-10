@@ -271,6 +271,7 @@ var privateNotesView = {
                             var url = match[1];
                              contentOut += encodeURIComponent(url) + '"> ' + privateNotesView.searchQuery + '</a>';
                          }
+                         this.selection.replace("");
                          return(contentOut);
                      },
 
