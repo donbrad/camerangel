@@ -353,7 +353,9 @@ var privateNotesView = {
 
                     focus: function(e){
                         _preventDefault(e);
-                        privateNotesView._editorView = true;
+                        privateNotesView.activateEditor();
+                        
+                       /* privateNotesView._editorView = true;
                         // Simulator fires focus event wrong
                         if (window.navigator.simulator === true) {
                             $(".redactor-editor").css("height", "15em");
@@ -364,7 +366,7 @@ var privateNotesView = {
                             } else {
                                 privateNotesView.deactivateEditor() ;
                             }
-                        }
+                        }*/
 
                     },
                     blur: function(e){
