@@ -69,9 +69,9 @@ var privateNotesView = {
         privateNotesView.noteObjects = [];
         privateNotesView.activeNote = {objects: []};
 
-        privateNotesView._editMode = false;
+        privateNotesView._editView = false;
+        privateNotesView.deactivateEditor();
        $('#privateNoteTitle').val("");
-
         $('#privateNoteTags').val("");
 
     },
@@ -103,14 +103,12 @@ var privateNotesView = {
         $('#privateNoteTextArea').val('');
         $('#privateNoteTextArea').redactor('code.set', "");
 
-        privateNotesView.shrinkEditor();
         if (privateNotesView._editorActive) {
             privateNotesView._editorActive = false;
             privateNotesView.deactivateEditor();
         }
 
     },
-
 
     noteAddPhoto : function (photoId) {
 
@@ -267,7 +265,6 @@ var privateNotesView = {
 
         privateNoteModel.notesDS.add(message);
         privateNoteModel.notesDS.sync();
-        //channelView.messagesDS.add(message);
         privateNotesView.scrollToBottom();
 
         deviceModel.syncEverlive();
@@ -291,16 +288,24 @@ var privateNotesView = {
 
     activateEditor : function () {
 
+        $(".redactor-editor").velocity({height: "15em"},{duration: 300});
+        privateNotesView._editorView = true;
         $("#privateNoteToolbar").removeClass('hidden');
-        $("#privateNote-editorBtnImg").attr("src","images/icon-editor-active.svg");
+        $('#privateNoteTitleTag').removeClass('hidden');
+
+        /*$("#privateNoteToolbar").removeClass('hidden');
+        $("#privateNote-editorBtnImg").attr("src","images/icon-editor-active.svg");*/
 
     },
 
     deactivateEditor : function () {
-
+        $(".redactor-editor").velocity({height: "3em"},{duration: 300});
+        privateNotesView._editorView = false;
         $("#privateNoteToolbar").addClass('hidden');
+        $('#privateNoteTitleTag').addClass('hidden');
+       /* $("#privateNoteToolbar").addClass('hidden');
         $("#privateNote-editorBtnImg").attr("src","images/icon-editor.svg");
-
+*/
     },
 
     openEditor : function () {
@@ -328,29 +333,29 @@ var privateNotesView = {
                          this.selection.replace("");
                          return(contentOut);
                      },
+
                     focus: function(e){
                         _preventDefault(e);
-
+                        privateNotesView._editorView = true;
                         // Simulator fires focus event wrong
                         if (window.navigator.simulator === true) {
                             $(".redactor-editor").css("height", "15em");
                         } else {
                             if(!privateNotesView._editorView){
-                                $(".redactor-editor").velocity({height: "15em"},{duration: 300});
-                                privateNotesView._editorView = true;
+                               privateNotesView.activateEditor();
+
                             } else {
-                                $(".redactor-editor").velocity({height: "3em"},{duration: 300});
-                                privateNotesView._editorView = false;
+                                privateNotesView.deactivateEditor() ;
                             }
                         }
-
 
                     },
                     blur: function(e){
                         _preventDefault(e);
 
-                        $(".redactor-editor").velocity({height: "3em"},{duration: 300});
-                        privateNotesView._editorView = false;
+                        if (!privateNotesView._editorView) {
+                            privateNotesView.deactivateEditor() ;
+                        }
 
 
                     },
