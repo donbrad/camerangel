@@ -45,7 +45,7 @@ var privateNotesView = {
 
 
         $("#privateNoteTags").kendoMultiSelect({
-            placeholder: "Select tags...",
+            placeholder: "Add tags...",
             dataTextField: "name",
             dataValueField: "uuid",
             autoBind: false,
