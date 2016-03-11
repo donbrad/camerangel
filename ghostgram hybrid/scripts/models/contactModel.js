@@ -77,11 +77,13 @@ var contactModel = {
                         var contact = e.items[0], contactId = contact.uuid;
                         var contactList = contactModel.findContactListUUID(contactId);
                         // if the contact's name or alias has been updated, need to update the tag...
-                        var contactTag = tagModel.findTagByCategoryId(contact.uuid);
+                        var tagList = tagModel.findTagByCategoryId(contact.uuid);
 
-                            contactTag.set('alias',contact.alias);
-                            contactTag.set('name', contact.name);
-
+                            if (tagList.length > 0) {
+                                var contactTag = tagList[0];
+                                contactTag.set('alias',contact.alias);
+                                contactTag.set('name', contact.name);
+                            }
                         contactList[field] = contact [field];
                         break;
 
@@ -95,7 +97,7 @@ var contactModel = {
                         var contactList = contactModel.findContactList(contact.uuid);
                         if (contactList !== undefined)
                             contactModel.contactListDS.add(contact);
-                        var contactTag = tagModel.findContactTag(contact.name);
+
                         tagModel.addContactTag(contact.name, contact.alias, '', contact.uuid);
                          break;
                 }

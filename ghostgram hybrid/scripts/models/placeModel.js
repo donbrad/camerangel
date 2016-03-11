@@ -153,9 +153,13 @@ var placesModel = {
                         var placeList = placesModel.findPlaceListUUID(placeId);
 
                         // if the places's name or alias has been updated, need to update the tag...
-                        var placeTag = tagModel.findTagByCategoryId(place.uuid);
-                        placeTag.set('alias',place.alias);
-                        placeTag.set('name', place.name);
+                        var placeList = tagModel.findTagByCategoryId(place.uuid);
+                        if (placeList.length > 0) {
+                            var placeTag = placeList[0];
+                            placeTag.set('alias',place.alias);
+                            placeTag.set('name', place.name);
+                        }
+
 
                         if (placeList !== undefined)
                             //placeList[field] = place [field];
