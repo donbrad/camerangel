@@ -133,11 +133,8 @@ var deviceModel = {
                 deviceModel.setAppState('pubnubInit', true);
 
                 deviceModel.isPushProvisioned();
-
-                tagModel.syncTags();
-
            }
-
+            tagModel.syncTags();
         }
     },
 
