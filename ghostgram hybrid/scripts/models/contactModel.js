@@ -67,6 +67,7 @@ var contactModel = {
             }
         });
 
+        contactModel.contactsDS.fetch();
 
         // Reflect any core contact changes to contactList
         contactModel.contactsDS.bind("change", function (e) {
@@ -221,7 +222,6 @@ var contactModel = {
 
                 deviceModel.isParseSyncComplete();
 
-                contactModel.contactsDS.fetch();
 
                 deviceModel.syncEverlive();
 

@@ -115,7 +115,7 @@ var placesModel = {
                 deviceModel.isParseSyncComplete();
                 deviceModel.syncEverlive();
 
-                placesModel.placesDS.fetch();
+
             },
             error: function(error) {
                 handleParseError(error);
@@ -140,6 +140,9 @@ var placesModel = {
                 dir: "asc"
             }
         });
+
+        placesModel.placesDS.fetch();
+
 
         // Reflect any core contact changes to contactList
         placesModel.placesDS.bind("change", function (e) {
