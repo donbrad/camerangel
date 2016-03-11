@@ -68,9 +68,9 @@ var privateNotesView = {
                 init: function ()
                 {
                     var button = this.button.add('clear', 'Clear');
-                    this.button.addCallback(button, this.advanced.clear);
+                    this.button.addCallback(button, this.clear.clear);
                 },
-                clear: function(clear)
+                clear: function()
                 {
                    privateNotesView.noteInit();
                 }
