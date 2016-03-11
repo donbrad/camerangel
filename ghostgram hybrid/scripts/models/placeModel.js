@@ -42,21 +42,7 @@ var placesModel = {
         isPrivate: true
     },
 
-    placesDS: new kendo.data.DataSource({
-        type: 'everlive',
-        offlineStorage: "places",
-        transport: {
-            typeName: 'places',
-            dataProvider: APP.everlive
-        },
-        schema: {
-            model: { id:  Everlive.idField}
-        },
-        sort: {
-            field: "distance",
-            dir: "asc"
-        }
-    }),
+    placesDS: null,
 
     placeListDS: new kendo.data.DataSource({
         sort: {
@@ -135,6 +121,23 @@ var placesModel = {
     },
 
     init : function () {
+
+        placesModel.placesDS = new kendo.data.DataSource({
+            type: 'everlive',
+            offlineStorage: "places",
+            transport: {
+                typeName: 'places',
+                dataProvider: APP.everlive
+            },
+            schema: {
+                model: { id:  Everlive.idField}
+            },
+            sort: {
+                field: "distance",
+                dir: "asc"
+            }
+        });
+        
         // Reflect any core contact changes to contactList
         placesModel.placesDS.bind("change", function (e) {
             // Rebuild the contactList cache when the underlying list changes: add, delete, update...
@@ -224,7 +227,7 @@ var placesModel = {
 
         return(place);
     },
-    
+
     matchLocation: function (lat, lng) {
         var length = placesModel.placesDS.total();
 

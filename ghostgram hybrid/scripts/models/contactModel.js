@@ -12,21 +12,7 @@ var contactModel = {
     _ggClass: 'Contact',
     _parseClass: 'contacts',
 
-   contactsDS: new kendo.data.DataSource({
-       type: 'everlive',
-        offlineStorage: "contacts",
-       transport: {
-           typeName: 'contacts',
-           dataProvider: APP.everlive
-       },
-       schema: {
-           model: { id:  Everlive.idField}
-       },
-        sort: {
-            field: "name",
-            dir: "asc"
-        }
-    }),
+   contactsDS: null,
 
 
 
@@ -65,6 +51,21 @@ var contactModel = {
 
         contactModel.contactListDS.online(false);
 
+        contactModel.contactsDS = new kendo.data.DataSource({
+            type: 'everlive',
+            offlineStorage: "contacts",
+            transport: {
+                typeName: 'contacts',
+                dataProvider: APP.everlive
+            },
+            schema: {
+                model: { id:  Everlive.idField}
+            },
+            sort: {
+                field: "name",
+                dir: "asc"
+            }
+        }),
         // Reflect any core contact changes to contactList
         contactModel.contactsDS.bind("change", function (e) {
             var changedContacts = e.items;
@@ -77,9 +78,9 @@ var contactModel = {
                         var contactList = contactModel.findContactListUUID(contactId);
                         // if the contact's name or alias has been updated, need to update the tag...
                         var contactTag = tagModel.findTagByCategoryId(contact.uuid);
+
                             contactTag.set('alias',contact.alias);
                             contactTag.set('name', contact.name);
-
 
                         contactList[field] = contact [field];
                         break;
