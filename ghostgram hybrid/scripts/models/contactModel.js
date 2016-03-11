@@ -67,6 +67,7 @@ var contactModel = {
             }
         });
 
+
         // Reflect any core contact changes to contactList
         contactModel.contactsDS.bind("change", function (e) {
             var changedContacts = e.items;
@@ -219,6 +220,8 @@ var contactModel = {
                 contactModel.updateContactListStatus(true);
 
                 deviceModel.isParseSyncComplete();
+
+                contactModel.contactsDS.fetch();
 
                 deviceModel.syncEverlive();
 
