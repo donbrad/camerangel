@@ -222,7 +222,6 @@ var contactModel = {
 
                 deviceModel.isParseSyncComplete();
 
-
                 APP.everlive.sync();
 
 
