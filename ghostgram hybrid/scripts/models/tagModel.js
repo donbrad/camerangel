@@ -14,6 +14,7 @@ var tagModel = {
     _ggClass : 'tag',
     _user : 'user',
     _version: 1,
+    _tagsSynced : false,
 
     tagsDS: null,
 
@@ -41,6 +42,10 @@ var tagModel = {
         tagModel.tagsDS.fetch();
     },
 
+
+    sync : function () {
+        tagModel.tagsDS.sync();
+    },
 
 
     addTag : function (tag, description, category, categoryId, semanticCategory) {
@@ -253,6 +258,11 @@ var tagModel = {
     },
 
     syncTags : function () {
+
+        if (tagModel._tagsSynced)
+            return;
+
+        tagModel._tagsSynced = true;
         tagModel.syncPlaceTags();
         tagModel.syncContactTags();
 
