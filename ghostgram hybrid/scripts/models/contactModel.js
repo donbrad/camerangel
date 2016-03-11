@@ -217,6 +217,8 @@ var contactModel = {
 
                 deviceModel.isParseSyncComplete();
 
+                deviceModel.syncEverlive();
+
 
             },
             error: function(error) {

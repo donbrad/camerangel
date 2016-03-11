@@ -113,6 +113,7 @@ var placesModel = {
                 placesModel.buildPlaceLists();
                 deviceModel.setAppState('hasPlaces', true);
                 deviceModel.isParseSyncComplete();
+                deviceModel.syncEverlive();
             },
             error: function(error) {
                 handleParseError(error);
