@@ -19,6 +19,7 @@ var privateNotesView = {
     _titleTagActive: false,
     _editorActive: false,
     _editorExpanded : false,
+    _editMode: false,
 
 
     onInit : function (e) {
@@ -50,7 +51,9 @@ var privateNotesView = {
         privateNotesView.noteObjects = [];
         privateNotesView.activeNote = {objects: []};
 
-        $('#privateNoteTitle').val("");
+        privateNotesView._editMode = false;
+       $('#privateNoteTitle').val("");
+
         $('#privateNoteTags').val("");
 
     },
@@ -131,9 +134,19 @@ var privateNotesView = {
 
     },
 
+
+
+
     saveNote: function () {
+
+
         var validNote = false; // If message is valid, send is enabled
-        privateNotesView.activeNote = { objects: []};
+        if (privateNotesView._editMode) {
+            validNote = true;
+        } else {
+            // Initialize the activeNote if we're not editing.
+            privateNotesView.activeNote = {objects: []};
+        }
 
 
         //var text = $('#messageTextArea').val();
@@ -177,7 +190,26 @@ var privateNotesView = {
         }
 
         if (validNote === true ) {
-            privateNotesView._saveNote(text, privateNotesView.activeNote);
+
+            if (privateNotesView._editMode) {
+                var activeNote = privateNotesView.activeNote;
+                var note = privateNoteModel.findNote(activeNote.noteId);
+
+                var contentData = JSON.stringify(activeNote.dataObject);
+                var dataObj = JSON.parse(contentData);
+                note.set('title', title);
+                note.set('tagString', tagString);
+                note.set('tags, tags');
+                note.set('content', text);
+                note.set('data', contentData);
+                note.set('dataObject', dataObj);
+                note.set('time',ggTime.currentTime());
+
+
+            } else {
+                privateNotesView._saveNote(text, privateNotesView.activeNote);
+            }
+
             privateNotesView._initTextArea();
 
             privateNotesView.noteInit();
@@ -263,12 +295,28 @@ var privateNotesView = {
                 maxHeight: 360,
                 focus: false,
                 placeholder: 'Add Note...',
-                /* callbacks: {
-                 change: function(e)
-                 {
-                 $('#messageTextArea').focus();
-                 }
-                 },*/
+                callbacks: {
+                     paste: function(content)
+                     {
+                        var contentOut = '<br> <a data-role="button" class="smart-link btnClear-link" data-click="ggSmartLink" data-url="';
+                         var re = /<\s*a\s+[^>]*href\s*=\s*[\"']?([^\"' >]+)[\"' >]/;
+                         var match;
+
+                         if ((match = re.exec(content)) !== null) {
+                            var url = match[1];
+                             contentOut += encodeURI(url) + '"> ' + privateNotesView.searchQuery + '</a>';
+                         }
+                         this.selection.restore();
+                         this.selection.replace("");
+                         return(contentOut);
+                     },
+
+                    click : function (e) {
+
+                    }
+                 },
+
+
                 formatting: ['p', 'blockquote', 'h1', 'h2','h3'],
                 buttons: ['format', 'bold', 'italic', 'lists', 'horizontalrule'],
                 toolbarExternal: '#privateNoteToolbar'
@@ -311,15 +359,44 @@ var privateNotesView = {
 
     deleteNote : function (e) {
         _preventDefault(e);
+       if (privateNotesView.activeNote.noteId !== undefined) {
+           privateNoteModel.deleteNote(privateNotesView.activeNote);
+           privateNotesView.activeNote = {objects: []};
+       }
+
     },
 
     editNote : function (e) {
         _preventDefault(e);
+
+        if (privateNotesView.activeNote.noteId !== undefined) {
+            var content='<p></p>';
+            if (privateNotesView.activeNote.content !== undefined) {
+               content =  privateNotesView.activeNote.content;
+            }
+            privateNotesView._editMode = true;
+            $('#privateNoteTitle').val(privateNotesView.activeNote.title);
+            $('#privateNoteTags').val(privateNotesView.activeNote.tagString);
+            $('#privateNoteTextArea').redactor('code.set', content);
+
+            $("#privateNoteViewActions").data("kendoMobileActionSheet").close();
+        }
+
     },
 
     shareNote : function (e) {
         _preventDefault(e);
     },
+
+    sendNote : function (e) {
+        _preventDefault(e);
+    },
+
+    sendChatNote : function (e) {
+        _preventDefault(e);
+    },
+
+
 
     updateTimeStamps: function () {
         $("#privateNote-listview").data("kendoMobileListView").refresh();
@@ -526,6 +603,11 @@ var privateNotesView = {
         var searchUrl =  'http://www.google.com/search';
         var query = privateNotesView.getSelectionText();
 
+        var selection =  $('#privateNoteTextArea').redactor('selection.save'); //cache the current selection
+
+
+        privateNotesView.searchQuery = query;
+
         if (query !== '') {
             searchUrl += '?q='+query;
         }
@@ -541,16 +623,16 @@ var privateNotesView = {
                     },
                     // this success handler will be invoked for the lifecycle events 'opened', 'loaded' and 'closed'
                     function (result) {
-                        if (result.event === 'opened') {
+                        /*if (result.event === 'opened') {
                             alert('opened');
                         } else if (result.event === 'loaded') {
                             alert('loaded');
-                        } else if (result.event === 'closed') {
-                            alert('closed');
+                        } else */if (result.event === 'closed') {
+                           mobileNotify(query + ' closed');
                         }
                     },
                     function (msg) {
-                        alert("KO: " + msg);
+                        mobileNotify("KO: " + msg);
                     })
             } else {
                 // potentially powered by InAppBrowser because that (currently) clobbers window.open
@@ -668,10 +750,10 @@ var privateNotesView = {
     },
 
     tapNote : function (e) {
-        e.preventDefault();
+       // e.preventDefault();
 
         var $target = $(e.touch.initialTouch);
-        var dataSource = privateNotesView.notesDS;
+        var dataSource = privateNoteModel.notesDS;
         var noteId = null;
 
 
@@ -687,7 +769,12 @@ var privateNotesView = {
             mobileNotify("No message content to display...");
         }
 
-        var note = dataSource.getByUid(note);
+        var note = dataSource.getByUid(noteId);
+
+        if (note !== undefined) {
+            privateNotesView.activeNote = note;
+        }
+
         // User has clicked in message area, so hide the keyboard
         // ux.hideKeyboard();
 
@@ -716,7 +803,7 @@ var privateNotesView = {
     },
 
     holdNote : function (e) {
-        e.preventDefault();
+        _preventDefault(e);
         var dataSource = privateNoteModel.notesDS;
         var noteUID = $(e.touch.currentTarget).data("uid");
         var note = dataSource.getByUid(noteUID);

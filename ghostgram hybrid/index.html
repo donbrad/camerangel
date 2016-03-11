@@ -4082,8 +4082,11 @@
 
 	<ul id="privateNoteViewActions" data-role="actionsheet" data-cancel="Cancel">
 		<li><a data-role="button" data-click="privateNotesView.editNote"> Edit Private Note </a></li>
-		<li><a data-role="button" data-action="privateNotesView.shareNote" > Share Private Note </a></li>
 		<li><a data-role="button" data-action="privateNotesView.deleteNote"> Delete Private Note </a></li>
+		<li><a data-role="button" data-action="privateNotesView.sendNote"> Send to Contact</a></li>
+		<li><a data-role="button" data-action="privateNotesView.sendChatNote"> Share in Chat </a></li>
+		<li><a data-role="button" data-action="privateNotesView.shareNote" > Share Private Note </a></li>
+
 	</ul>
 
 
@@ -4102,7 +4105,7 @@
 	var dateString = moment(time).fromNow();
 	#
 	# if (ggType === 'Note') { #
-		<div class="private-note">
+		<div class="private-note" data-objectId="#:noteId#">
 			<h3 class="textClamp">
 				<img src="images/smart-note-inline.svg" class="icon-md" />
 				<span>#: titleStr #</span>
@@ -4114,8 +4117,7 @@
 	# } #
 	# if (ggType === 'Event') { #
 
-	<div class="private-note">
-
+	<div class="private-note" >
 		<h3 class="textClamp">
 			<img src="images/smart-event.svg" class="icon-md" />
 			<span>#: titleStr #</span>
@@ -4126,7 +4128,7 @@
 	</div>
 	# } #
 	# if (ggType === 'Movie') { #
-	<div class="private-note">
+	<div class="private-note"">
 		<h3 class="textClamp">
 			<img src="images/smart-movie-circle.svg" class="icon-md" />
 			<span>#: titleStr #</span>
