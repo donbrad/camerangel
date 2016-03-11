@@ -137,7 +137,7 @@ var placesModel = {
                 dir: "asc"
             }
         });
-        
+
         // Reflect any core contact changes to contactList
         placesModel.placesDS.bind("change", function (e) {
             // Rebuild the contactList cache when the underlying list changes: add, delete, update...
