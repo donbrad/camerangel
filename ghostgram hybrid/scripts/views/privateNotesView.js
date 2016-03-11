@@ -43,6 +43,24 @@ var privateNotesView = {
             privateNotesView.expandEditor();
         });
 
+
+        $("#privateNoteTags").kendoMultiSelect({
+            placeholder: "Select tags...",
+            dataTextField: "name",
+            dataValueField: "uuid",
+            autoBind: false,
+            tagMode: "multiple",
+            ignoreCase: true,
+            dataSource: tagModel.tagsDS,
+            select: function (e) {
+                var item = e.item;
+                var text = item.text();
+            },
+            change: function(e) {
+                var value = this.value();
+                // Use the value of the widget
+            }
+        });
     },
 
     // Initialize the channel specific view data sources.
@@ -199,7 +217,7 @@ var privateNotesView = {
                 var dataObj = JSON.parse(contentData);
                 note.set('title', title);
                 note.set('tagString', tagString);
-                note.set('tags, tags');
+                note.set('tags', tags);
                 note.set('content', text);
                 note.set('data', contentData);
                 note.set('dataObject', dataObj);
@@ -292,13 +310,13 @@ var privateNotesView = {
 
             $('#privateNoteTextArea').redactor({
                 minHeight: 36,
-                maxHeight: 360,
+                maxHeight: 380,
                 focus: false,
                 placeholder: 'Add Note...',
                 callbacks: {
                      paste: function(content)
                      {
-                        var contentOut = '<br> <a data-role="button" class="smart-link btnClear-link" data-click="ggSmartLink" data-url="';
+                        var contentOut = '<a data-role="button" class="smart-link btnClear-link" data-click="ggSmartLink" data-url="';
                          var re = /<\s*a\s+[^>]*href\s*=\s*[\"']?([^\"' >]+)[\"' >]/;
                          var match;
 
@@ -379,6 +397,9 @@ var privateNotesView = {
             $('#privateNoteTags').val(privateNotesView.activeNote.tagString);
             $('#privateNoteTextArea').redactor('code.set', content);
 
+            privateNotesView._titleTagActive = true;
+
+            privateNotesView.toggleTitleTag();
             $("#privateNoteViewActions").data("kendoMobileActionSheet").close();
         }
 
@@ -386,6 +407,16 @@ var privateNotesView = {
 
     shareNote : function (e) {
         _preventDefault(e);
+
+        if (window.navigator.simulator === true) {
+            mobileNotify("Export and Sharing only on device...");
+
+        } else {
+
+            _socialShare(privateNotesView.activeNote.content, privateNotesView.activeNote.title, null, null);
+
+            // _socialShare(null, null,  null, photoView._activePhoto.image);
+        }
     },
 
     sendNote : function (e) {

@@ -14,6 +14,7 @@ var tagModel = {
     _ggClass : 'tag',
     _user : 'user',
     _version: 1,
+    _tagsSynced : false,
 
     tagsDS: null,
 
@@ -42,10 +43,15 @@ var tagModel = {
     },
 
 
+    sync : function () {
+        tagModel.tagsDS.sync();
+    },
+
 
     addTag : function (tag, description, category, categoryId, semanticCategory) {
 
         var tagObj = tagModel.newTag();
+
 
 
         tagObj.name = tag;
@@ -109,7 +115,7 @@ var tagModel = {
 
 
     newTag : function () {
-        var tag = new Object();
+        var tag = {};
 
         tag.uuid = uuid.v4();
         tag.version = tagModel._version;
@@ -215,7 +221,7 @@ var tagModel = {
     syncContactTags : function () {
         var ds = contactModel.contactsDS;
 
-        var length = ds.total;
+        var length = ds.total();
 
         for (var i=0; i<length; i++) {
             var contact = ds.at(i);
@@ -236,7 +242,7 @@ var tagModel = {
     syncPlaceTags : function () {
         var ds = placesModel.placesDS;
 
-        var length = ds.total;
+        var length = ds.total();
 
         for (var i=0; i<length; i++) {
             var place = ds.at(i);
@@ -252,6 +258,11 @@ var tagModel = {
     },
 
     syncTags : function () {
+
+        if (tagModel._tagsSynced)
+            return;
+
+        tagModel._tagsSynced = true;
         tagModel.syncPlaceTags();
         tagModel.syncContactTags();
 
