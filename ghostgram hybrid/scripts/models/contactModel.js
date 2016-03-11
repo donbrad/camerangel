@@ -13,7 +13,15 @@ var contactModel = {
     _parseClass: 'contacts',
 
    contactsDS: new kendo.data.DataSource({
+       type: 'everlive',
         offlineStorage: "contacts",
+       transport: {
+           typeName: 'contacts',
+           dataProvider: APP.everlive
+       },
+       schema: {
+           model: { id:  Everlive.idField}
+       },
         sort: {
             field: "name",
             dir: "asc"
@@ -21,13 +29,6 @@ var contactModel = {
     }),
 
 
-    contactTagsDS: new kendo.data.DataSource({
-        offlineStorage: 'contactTags',
-        sort: {
-            field: "name",
-            dir: "asc"
-        }
-    }),
 
     deviceContactsDS: new kendo.data.DataSource({
         sort: {
@@ -229,8 +230,7 @@ var contactModel = {
                 contactModel.updateContactListStatus(true);
 
                 deviceModel.isParseSyncComplete();
-
-
+                
 
             },
             error: function(error) {

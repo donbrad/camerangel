@@ -354,19 +354,7 @@ var privateNotesView = {
                     focus: function(e){
                         _preventDefault(e);
                         privateNotesView.activateEditor();
-                        
-                       /* privateNotesView._editorView = true;
-                        // Simulator fires focus event wrong
-                        if (window.navigator.simulator === true) {
-                            $(".redactor-editor").css("height", "15em");
-                        } else {
-                            if(privateNotesView._editorView) {
-                               privateNotesView.activateEditor();
 
-                            } else {
-                                privateNotesView.deactivateEditor() ;
-                            }
-                        }*/
 
                     },
                     blur: function(e){
@@ -382,7 +370,6 @@ var privateNotesView = {
 
                     }
                  },
-
 
                 formatting: ['p', 'blockquote', 'h1', 'h2','h3'],
                 buttons: ['format', 'bold', 'italic', 'lists', 'horizontalrule'],
