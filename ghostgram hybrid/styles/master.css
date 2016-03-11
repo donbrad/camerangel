@@ -3802,6 +3802,8 @@ li > .km-group-title {
   padding: 0.5rem;
   padding-bottom: 0;
   padding-top: 0;
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.12);
+  transition: all 0.2s ease-in-out;
 }
 .messageMediaBar ul {
   padding: 0;
@@ -6411,4 +6413,14 @@ table.k-editor {
 }
 #editorGhostMail > ul > li > a {
   margin-left: 0.5em;
+}
+#privateNotesView-listview {
+  background-color: #fff;
+}
+#privateNotesView-listview li {
+  background: #fff;
+  border-bottom: 1px solid #E0E0E0;
+}
+#privateNoteTags option {
+  background-color: #fff;
 }
