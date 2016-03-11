@@ -287,7 +287,7 @@ var privateNotesView = {
 
     },
 
-    toggleTitleTag : function () {
+  /*  toggleTitleTag : function () {
 
         if (privateNotesView._titleTagActive)
             $('#privateNoteTitleTag').removeClass('hidden');
@@ -301,7 +301,7 @@ var privateNotesView = {
         privateNotesView._titleTagActive = !privateNotesView._titleTagActive;
         privateNotesView.toggleTitleTag();
     },
-
+*/
     activateEditor : function () {
 
         $(".redactor-editor").velocity({height: "15em"},{duration: 300});
@@ -358,7 +358,7 @@ var privateNotesView = {
                         if (window.navigator.simulator === true) {
                             $(".redactor-editor").css("height", "15em");
                         } else {
-                            if(!privateNotesView._editorView){
+                            if(privateNotesView._editorView) {
                                privateNotesView.activateEditor();
 
                             } else {
@@ -397,10 +397,10 @@ var privateNotesView = {
             $('#privateNoteTextArea').redactor('core.destroy');
         }
 
-        $("#privateNoteToolbar").addClass('hidden');
+        privateNotesView.deactivateEditor();
 
     },
-
+/*
     noteEditor : function (e) {
         _preventDefault(e);
         privateNotesView._editorActive = !privateNotesView._editorActive;
@@ -410,7 +410,7 @@ var privateNotesView = {
         } else {
             privateNotesView.deactivateEditor();
         }
-    },
+    },*/
 
 
     addEvent : function (e) {
@@ -444,9 +444,7 @@ var privateNotesView = {
             $('#privateNoteTags').val(privateNotesView.activeNote.tagString);
             $('#privateNoteTextArea').redactor('code.set', content);
 
-            privateNotesView._titleTagActive = true;
-
-            privateNotesView.toggleTitleTag();
+            privateNotesView.activateEditor();
             $("#privateNoteViewActions").data("kendoMobileActionSheet").close();
         }
 
