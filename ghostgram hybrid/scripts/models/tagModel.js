@@ -211,6 +211,12 @@ var tagModel = {
         return (tags);
     },
 
+    findTagByCategoryId : function (tagId) {
+        var tags = tagModel.queryTags({field: "categoryId", operator: "eq", value: tagId});
+
+        return (tags);
+    },
+
     findContactTag : function (tag, alias) {
         var normTag = tagModel.normalizeTag(tag);
         var tags = tagModel.queryTags({field: "tagName", operator: "eq", value: normTag});
@@ -218,53 +224,9 @@ var tagModel = {
         return (tags);
     },
 
-    syncContactTags : function () {
-        var ds = contactModel.contactsDS;
 
-        var length = ds.total();
-
-        for (var i=0; i<length; i++) {
-            var contact = ds.at(i);
-
-            if (contact.category === 'member' || contact.category === 'new') {
-
-                var tags = tagModel.findTag(contact.name);
-                if (tags !== undefined && tags.length > 1) {
-
-                } else {
-                    tagModel.addContactTag(contact.name, contact.alias, '', contact.uuid);
-                }
-            }
-        }
-
-    },
-
-    syncPlaceTags : function () {
-        var ds = placesModel.placesDS;
-
-        var length = ds.total();
-
-        for (var i=0; i<length; i++) {
-            var place = ds.at(i);
-
-            var tags = tagModel.findTag(place.name);
-            if (tags !== undefined && tags.length > 1) {
-
-            } else {
-                tagModel.addPlaceTag(place.name, place.alias, '', place.uuid);
-            }
-
-        }
-    },
 
     syncTags : function () {
-
-        if (tagModel._tagsSynced)
-            return;
-
-        tagModel._tagsSynced = true;
-        tagModel.syncPlaceTags();
-        tagModel.syncContactTags();
 
         deviceModel.syncEverlive();
     }

@@ -43,7 +43,15 @@ var placesModel = {
     },
 
     placesDS: new kendo.data.DataSource({
+        type: 'everlive',
         offlineStorage: "places",
+        transport: {
+            typeName: 'places',
+            dataProvider: APP.everlive
+        },
+        schema: {
+            model: { id:  Everlive.idField}
+        },
         sort: {
             field: "distance",
             dir: "asc"
@@ -57,13 +65,6 @@ var placesModel = {
         }
     }),
 
-    placesTagsDS: new kendo.data.DataSource({
-        offlineStorage: "placeTags",
-        sort: {
-            field: "name",
-            dir: "asc"
-        }
-    }),
 
 
     newPlace : function () {
@@ -116,8 +117,7 @@ var placesModel = {
                         parseModel.save();
 
                     var model = parseModel.toJSON();
-                    var tag = {type: 'place', tagname: ux.returnUXPrimaryName(model.name, model.alias), name: model.name, uuid: model.uuid };
-                    placesModel.placesTagsDS.add(tag);
+
                     models.push(model);
                 }
 
@@ -148,19 +148,10 @@ var placesModel = {
                         var place = e.items[0], placeId = place.uuid;
                         var placeList = placesModel.findPlaceListUUID(placeId);
 
-                        // if the contact's name or alias has been updated, need to update the tag...
-                        if (field === 'name') {
-                            var newName = ux.returnUXPrimaryName(place.name, place.alias);
-                            var placeTag = placesModel.findPlaceTag(place.uuid);
-
-                            placeTag.name = newName;
-                        }
-                        if (field === 'alias') {
-                            var newName = ux.returnUXPrimaryName(place.name, place.alias);
-                            var placeTag = placesModel.findPlaceTag(place.uuid);
-                            placeTag.alias = place.alias;
-
-                        }
+                        // if the places's name or alias has been updated, need to update the tag...
+                        var placeTag = tagModel.findTagByCategoryId(place.uuid);
+                        placeTag.set('alias',place.alias);
+                        placeTag.set('name', place.name);
 
                         if (placeList !== undefined)
                             //placeList[field] = place [field];
@@ -178,14 +169,7 @@ var placesModel = {
                         var placeList = placesModel.findPlaceListUUID(place.uuid);
                         if (placeList === undefined)
                             placesModel.placeListDS.add(place);
-                        var tag = {
-                            type: 'place',
-                            tagname: ux.returnUXPrimaryName(place.name, place.alias),
-                            name: place.name,
-                            uuid: place.uuid,
-                            icon: 'images/icon-location.svg'
-                        };
-                        contactModel.contactTagsDS.add(tag);
+                        tagModel.addPlaceTag(place.name, place.alias, '', place.uuid);
                         break;
                 }
             }
@@ -195,16 +179,11 @@ var placesModel = {
      },
 
     buildPlaceLists : function () {
-        placesModel.placesTagsDS.data([]);
+
         placesModel.placeListDS.data([]);
         var placeList = placesModel.placesDS.data();
         placesModel.placeListDS.data(placeList);
 
-        for (var i=0; i< placeList.length; i++) {
-            var model = (placeList[i]).toJSON();
-            var tag = {type: 'place', tagname: ux.returnUXPrimaryName(model.name, model.alias), name: model.name, alias: model.alias, uuid: model.uuid, objectUUID: model.uuid, icon: 'images/icon-locationPin.svg' };
-            placesModel.placesTagsDS.add(tag);
-        }
     },
 
     queryPlace : function (query) {
@@ -245,29 +224,7 @@ var placesModel = {
 
         return(place);
     },
-
-    findPlaceTag: function (uuid) {
-        var placeList = placesModel.queryPlaceTag({ field: "uuid", operator: "eq", value: uuid });
-        return(placeList);
-    },
-
-    queryPlaceTag : function (query) {
-        if (query === undefined)
-            return(undefined);
-        var dataSource = placesModel.placesTagsDS;
-        var cacheFilter = dataSource.filter();
-        if (cacheFilter === undefined) {
-            cacheFilter = {};
-        }
-        dataSource.filter( query);
-        var view = dataSource.view();
-        var place = view[0];
-
-        dataSource.filter(cacheFilter);
-
-        return(place);
-    },
-
+    
     matchLocation: function (lat, lng) {
         var length = placesModel.placesDS.total();
 
