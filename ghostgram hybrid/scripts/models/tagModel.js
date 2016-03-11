@@ -216,7 +216,7 @@ var tagModel = {
     syncContactTags : function () {
         var ds = contactModel.contactsDS;
 
-        var length = ds.total;
+        var length = ds.total();
 
         for (var i=0; i<length; i++) {
             var contact = ds.at(i);
@@ -237,7 +237,7 @@ var tagModel = {
     syncPlaceTags : function () {
         var ds = placesModel.placesDS;
 
-        var length = ds.total;
+        var length = ds.total();
 
         for (var i=0; i<length; i++) {
             var place = ds.at(i);
