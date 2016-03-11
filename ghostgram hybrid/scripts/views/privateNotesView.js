@@ -61,6 +61,21 @@ var privateNotesView = {
                 // Use the value of the widget
             }
         });
+
+        $.Redactor.prototype.clear = function()
+        {
+            return {
+                init: function ()
+                {
+                    var button = this.button.add('clear', 'Clear');
+                    this.button.addCallback(button, this.advanced.clear);
+                },
+                clear: function(clear)
+                {
+                   privateNotesView.noteInit();
+                }
+            };
+        };
     },
 
     // Initialize the channel specific view data sources.
@@ -68,11 +83,12 @@ var privateNotesView = {
 
         privateNotesView.noteObjects = [];
         privateNotesView.activeNote = {objects: []};
-
         privateNotesView._editView = false;
         privateNotesView.deactivateEditor();
        $('#privateNoteTitle').val("");
         $('#privateNoteTags').val("");
+        $('#privateNoteTextArea').val('');
+        $('#privateNoteTextArea').redactor('code.set', "");
 
     },
 
@@ -226,7 +242,7 @@ var privateNotesView = {
                 privateNotesView._saveNote(text, privateNotesView.activeNote);
             }
 
-            privateNotesView._initTextArea();
+            //privateNotesView._initTextArea();
 
             privateNotesView.noteInit();
         }
@@ -318,6 +334,7 @@ var privateNotesView = {
                 maxHeight: 380,
                 focus: false,
                 placeholder: 'Add Note...',
+                plugins: ['clear'],
                 callbacks: {
                      paste: function(content)
                      {
