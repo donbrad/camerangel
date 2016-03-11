@@ -223,7 +223,7 @@ var contactModel = {
                 deviceModel.isParseSyncComplete();
 
 
-                deviceModel.syncEverlive();
+                APP.everlive.sync();
 
 
             },

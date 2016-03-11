@@ -113,7 +113,7 @@ var placesModel = {
                 placesModel.buildPlaceLists();
                 deviceModel.setAppState('hasPlaces', true);
                 deviceModel.isParseSyncComplete();
-                deviceModel.syncEverlive();
+                APP.everlive.sync();
 
 
             },
