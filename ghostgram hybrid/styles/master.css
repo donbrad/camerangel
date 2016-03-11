@@ -1049,6 +1049,9 @@ form p {
 .blue-100-txt {
   color: #2E93FD;
 }
+.primary-200-text {
+  color: #6CADF3;
+}
 .blue-200-txt {
   color: #6CADF3;
 }
@@ -1657,14 +1660,14 @@ div.km-header a img {
   background-color: #fff;
   border-color: #fff;
 }
+#profileStatus-top {
+  margin: 0.5em;
+}
 #profileStatusList > li:nth-child(3) > span > span {
   background: #fff !important;
 }
 #profileStatusList > li:nth-child(3) > div > span > span > * {
   background-color: #fff !important;
-}
-#profileStatusList > li:last-child {
-  border-top: 1px solid #E0E0E0;
 }
 .km-material .km-switch-handle {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
@@ -2124,6 +2127,13 @@ div.footerMenu.km-footer > ul > li > a:active {
   margin-left: 5%;
   margin-right: auto;
 }
+.userStatusView-img {
+  width: 1.5em;
+  height: 1.5em;
+  position: relative;
+  top: -1em;
+  left: 1em;
+}
 .home-status-img {
   width: 1.25em !important;
   height: 1.25em !important;
@@ -2183,12 +2193,8 @@ div.footerMenu.km-footer > ul > li > a:active {
   margin-right: 0px !important;
 }
 #profileStatusMessage {
-  text-overflow: ellipsis;
-  width: 85%;
   display: inline-block;
   font-style: italic;
-  margin-left: 0;
-  margin-right: 0;
 }
 #profilePhotoForm > div > ul > li:nth-child(1) {
   padding: 0px;
@@ -3247,6 +3253,11 @@ a:hover {
 #profileStatusPhoto {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
+.profileStatus-top {
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  padding: 1em;
+}
 #modalview-profileStatus > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div.modal-top > h3 {
   margin-top: 0.25em;
 }
@@ -3782,14 +3793,17 @@ li > .km-group-title {
 }
 #messageSend {
   font-weight: 600;
+  color: #2D93FF;
+  background-color: #fff;
   margin-top: 0;
-  padding: 0;
-  padding-top: 3px;
+  margin-right: 1em;
 }
 .messageCompose {
   padding: 0.5rem;
   padding-bottom: 0;
   padding-top: 0;
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.12);
+  transition: all 0.2s ease-in-out;
 }
 .messageMediaBar ul {
   padding: 0;
@@ -3806,7 +3820,6 @@ li > .km-group-title {
   border: none;
   box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.24);
 }
-#messageSend,
 #messageCamera {
   color: #2D93FF;
   background-color: #fff;
@@ -3814,6 +3827,9 @@ li > .km-group-title {
   padding: 6px;
   font-size: 16px;
   font-size: 1em;
+}
+.icon-send {
+  height: 22px;
 }
 #privacyStatus {
   width: 100%;
@@ -6397,4 +6413,14 @@ table.k-editor {
 }
 #editorGhostMail > ul > li > a {
   margin-left: 0.5em;
+}
+#privateNotesView-listview {
+  background-color: #fff;
+}
+#privateNotesView-listview li {
+  background: #fff;
+  border-bottom: 1px solid #E0E0E0;
+}
+#privateNoteTags option {
+  background-color: #fff;
 }

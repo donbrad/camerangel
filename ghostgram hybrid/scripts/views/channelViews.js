@@ -1141,7 +1141,7 @@ var channelView = {
         $('#privacyMode').html('<img src="images/privacy-off.svg" />');
         $("#privacyStatus").addClass("hidden");
 
-        $("#messageSend").text('Send');
+        $("#messageSend").html('<img src="images/icon-send.svg" class="icon-send" />');
 
 
         if (channelView.isPrivateNote) {

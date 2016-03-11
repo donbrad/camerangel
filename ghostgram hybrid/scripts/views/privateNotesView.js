@@ -20,7 +20,7 @@ var privateNotesView = {
     _editorActive: false,
     _editorExpanded : false,
     _editMode: false,
-
+    _editorView: false,
 
     onInit : function (e) {
         _preventDefault(e);
@@ -68,9 +68,12 @@ var privateNotesView = {
 
         privateNotesView.noteObjects = [];
         privateNotesView.activeNote = {objects: []};
+
         privateNotesView._editMode = false;
        $('#privateNoteTitle').val("");
+
         $('#privateNoteTags').val("");
+
     },
 
     onShow : function (e) {
@@ -141,7 +144,9 @@ var privateNotesView = {
 
             if (messageText.indexOf(photoId) !== -1) {
                 //the photoId is in the current message text
+
                 privateNotesView.noteAddPhoto(photoId);
+
             }
         }
 
@@ -167,7 +172,9 @@ var privateNotesView = {
         var text = $('#privateNoteTextArea').redactor('code.get');
         var title = $('#privateNoteTitle').val();
         var tagString =  $('#privateNoteTags').val();
+
         var tags = tagModel.parseTagString(tagString);
+
 
         if (text.length > 0) {
             validNote = true;
@@ -220,7 +227,9 @@ var privateNotesView = {
             } else {
                 privateNotesView._saveNote(text, privateNotesView.activeNote);
             }
+
             privateNotesView._initTextArea();
+
             privateNotesView.noteInit();
         }
 
@@ -319,7 +328,32 @@ var privateNotesView = {
                          this.selection.replace("");
                          return(contentOut);
                      },
+                    focus: function(e){
+                        _preventDefault(e);
 
+                        // Simulator fires focus event wrong
+                        if (window.navigator.simulator === true) {
+                            $(".redactor-editor").css("height", "15em");
+                        } else {
+                            if(!privateNotesView._editorView){
+                                $(".redactor-editor").velocity({height: "15em"},{duration: 300});
+                                privateNotesView._editorView = true;
+                            } else {
+                                $(".redactor-editor").velocity({height: "3em"},{duration: 300});
+                                privateNotesView._editorView = false;
+                            }
+                        }
+
+
+                    },
+                    blur: function(e){
+                        _preventDefault(e);
+
+                        $(".redactor-editor").velocity({height: "3em"},{duration: 300});
+                        privateNotesView._editorView = false;
+
+
+                    },
                     click : function (e) {
 
                     }
@@ -756,7 +790,7 @@ var privateNotesView = {
         });
     },
 
-    noteEvent : function (e) {
+    noteEvent : function(e) {
         _preventDefault(e);
         mobileNotify("Chat Event isn't wired up yet");
     },
