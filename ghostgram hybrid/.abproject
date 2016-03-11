@@ -6,7 +6,7 @@
   "DisplayName": "ghostgrams",
   "Author": "don bradford",
   "Description": "ghostgrams for iOS and Android",
-  "BundleVersion": "0.0.7",
+  "BundleVersion": "0.0.8",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1"
@@ -106,7 +106,7 @@
     "cordova-plugin-whitelist",
     "de.appplant.cordova.plugin.badge@0.7.1",
     "de.appplant.cordova.plugin.email-composer@0.8.2.1",
-    "de.appplant.cordova.plugin.local-notification@0.8.2dev4",
+    "de.appplant.cordova.plugin.local-notification@0.8.4",
     "hu.dpal.phonegap.plugins.SpinnerDialog@1.3.1",
     "nl.x-services.plugins.actionsheet@2.2.2",
     "nl.x-services.plugins.calendar@4.4.7",
