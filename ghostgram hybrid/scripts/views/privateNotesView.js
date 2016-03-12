@@ -358,14 +358,11 @@ var privateNotesView = {
                      },
 
                     focus: function(e){
-
                         privateNotesView.activateEditor();
 
 
                     },
                     blur: function(e){
-                       
-
                         if (!privateNotesView._editorView) {
                             privateNotesView.deactivateEditor() ;
                         }
@@ -395,17 +392,7 @@ var privateNotesView = {
         privateNotesView.deactivateEditor();
 
     },
-/*
-    noteEditor : function (e) {
-        _preventDefault(e);
-        privateNotesView._editorActive = !privateNotesView._editorActive;
-        if (privateNotesView._editorActive){
-            privateNotesView.activateEditor();
 
-        } else {
-            privateNotesView.deactivateEditor();
-        }
-    },*/
 
 
     addEvent : function (e) {
