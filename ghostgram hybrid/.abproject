@@ -34,7 +34,6 @@
     "android.permission.INTERNET",
     "android.permission.LOCATION_HARDWARE",
     "android.permission.MANAGE_DOCUMENTS",
-    "android.permission.NFC",
     "android.permission.PERSISTENT_ACTIVITY",
     "android.permission.READ_CALENDAR",
     "android.permission.READ_CONTACTS",
@@ -49,7 +48,6 @@
     "android.permission.WRITE_CONTACTS",
     "android.permission.WRITE_EXTERNAL_STORAGE",
     "android.permission.WRITE_SMS",
-    "com.android.alarm.permission.SET_ALARM",
     "com.android.launcher.permission.INSTALL_SHORTCUT"
   ],
   "DeviceOrientations": [
