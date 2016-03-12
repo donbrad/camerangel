@@ -30,62 +30,7 @@ SemanticDSs.prototype = {
 			value: 'name'
 		});
 
-/*		if (this.contacts.total() === 0 && 1) {
-
-			this.contacts.add({
-				name: 'Don Bradford',
-				alias: 'Don',
-				value: 'Don Bradford',
-				uuid: '1',
-				category: 'contacts'
-			});
-
-			this.contacts.add({
-				name: 'Jordan Escoto',
-				alias: 'Jordan',
-				value: 'Jordan Escoto',
-				uuid: '2',
-				category: 'contacts'
-			});
-
-			this.places.add({
-				name: 'Address',
-				alias: 'Home',
-				value: '221 Davis St.',
-				uuid: '3',
-				category: 'places'
-			});
-
-			this.places.add({
-				name: 'Brass Buckle',
-				alias: 'Brass Buckle',
-				value: 'Brass Buckle',
-				uuid: '4',
-				category: 'places'
-			});
-
-			this.chats.add({
-				name: 'myplacez design',
-				alias: 'myplacez design',
-				value: 'myplacez design',
-				uuid: '5',
-				category: 'chats'
-			});
-
-			this.chats.add({
-				name: 'ghostgrams design',
-				alias: 'ghostgrams design',
-				value: 'ghostgrams design',
-				uuid: '6',
-				category: 'chats'
-			});
-
-			this.contacts.sync();
-			this.places.sync();
-			this.chats.sync();
-		}
-*/
-		this.master = new kendo.data.DataSource({
+	this.master = new kendo.data.DataSource({
 			schema: {
 				model: {
 					id: 'uuid',

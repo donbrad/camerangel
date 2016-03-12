@@ -6,7 +6,7 @@
 		_isOnline = true;
 	// create an object to store the models for each view
 	window.APP = {
-		version: "prealpha : 0.2.2.7",
+		version: "prealpha : 0.8",
 
 		models: {
 
@@ -14,7 +14,7 @@
 			sync: {
 				operation: '',
 				requestActive: false
-			},
+			}/*,
 
 			semantic: {
 				masterDS: new kendo.data.DataSource({
@@ -48,7 +48,7 @@
 					}
 				}),
 				datesDS: new kendo.data.DataSource({})
-			}
+			}*/
 		},
 
 

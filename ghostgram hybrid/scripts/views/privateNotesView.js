@@ -319,6 +319,8 @@ var privateNotesView = {
         privateNotesView._editorView = false;
         $("#privateNoteToolbar").addClass('hidden');
         $('#privateNoteTitleTag').addClass('hidden');
+        ux.hideKeyboard();
+
        /* $("#privateNoteToolbar").addClass('hidden');
         $("#privateNote-editorBtnImg").attr("src","images/icon-editor.svg");
 */

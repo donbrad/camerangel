@@ -15,7 +15,6 @@ var contactModel = {
    contactsDS: null,
 
 
-
     deviceContactsDS: new kendo.data.DataSource({
         sort: {
             field: "name",
