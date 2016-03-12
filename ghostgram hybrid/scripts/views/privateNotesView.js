@@ -315,15 +315,19 @@ var privateNotesView = {
     },
 
     deactivateEditor : function () {
-        $(".redactor-editor").velocity({height: "3em"},{duration: 300});
+
         privateNotesView._editorView = false;
+       privateNotesView.hideEditor();
+
+
+    },
+
+
+    hideEditor : function () {
+        $(".redactor-editor").velocity({height: "3em"},{duration: 300});
         $("#privateNoteToolbar").addClass('hidden');
         $('#privateNoteTitleTag').addClass('hidden');
         ux.hideKeyboard();
-
-       /* $("#privateNoteToolbar").addClass('hidden');
-        $("#privateNote-editorBtnImg").attr("src","images/icon-editor.svg");
-*/
     },
 
     openEditor : function () {
@@ -819,7 +823,7 @@ var privateNotesView = {
     tapNote : function (e) {
        // e.preventDefault();
 
-       privateNotesView.deactivateEditor();
+       privateNotesView.hideEditor();
 
 
         var $target = $(e.touch.initialTouch);
