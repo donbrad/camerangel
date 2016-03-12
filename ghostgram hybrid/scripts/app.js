@@ -244,7 +244,7 @@
 		     domains: _emailDomainList //additional domains (optional)
 		 }); */
 
-		window.semanticDSs = new SemanticDSs();
+		//window.semanticDSs = new SemanticDSs();
 
 	}, false);
 
