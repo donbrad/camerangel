@@ -358,13 +358,13 @@ var privateNotesView = {
                      },
 
                     focus: function(e){
-                        _preventDefault(e);
+
                         privateNotesView.activateEditor();
 
 
                     },
                     blur: function(e){
-                        _preventDefault(e);
+                       
 
                         if (!privateNotesView._editorView) {
                             privateNotesView.deactivateEditor() ;
