@@ -82,7 +82,7 @@ var privateNotesView = {
     noteInit : function () {
 
         privateNotesView.noteObjects = [];
-        privateNotesView.activeNote = {objects: []};
+        privateNotesView.activeNote = {objects: [], photos:[]};
         privateNotesView._editView = false;
         privateNotesView.deactivateEditor();
        $('#privateNoteTitle').val("");
@@ -421,7 +421,7 @@ var privateNotesView = {
         _preventDefault(e);
        if (privateNotesView.activeNote.noteId !== undefined) {
            privateNoteModel.deleteNote(privateNotesView.activeNote);
-           privateNotesView.activeNote = {objects: []};
+           privateNotesView.activeNote = {objects: [], photos: []};
        }
 
     },
