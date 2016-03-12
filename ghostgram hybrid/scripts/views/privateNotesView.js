@@ -819,6 +819,9 @@ var privateNotesView = {
     tapNote : function (e) {
        // e.preventDefault();
 
+       privateNotesView.deactivateEditor();
+
+
         var $target = $(e.touch.initialTouch);
         var dataSource = privateNoteModel.notesDS;
         var noteId = null;
