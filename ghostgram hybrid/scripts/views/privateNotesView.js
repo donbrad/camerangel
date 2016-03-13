@@ -354,6 +354,8 @@ var privateNotesView = {
                 minHeight: 36,
                 maxHeight: 380,
                 focus: false,
+                imageEditable: false, // disable image edit mode on click
+                imageResizable: false // disable image resize mode on click
                 placeholder: 'Add Note...',
                 plugins: ['clear'],
                 callbacks: {
