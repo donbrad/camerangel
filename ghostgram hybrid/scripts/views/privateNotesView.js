@@ -76,6 +76,21 @@ var privateNotesView = {
                 }
             };
         };
+
+        $.Redactor.prototype.save = function()
+        {
+            return {
+                init: function ()
+                {
+                    var button = this.button.add('save', 'Save');
+                    this.button.addCallback(button, this.save.save);
+                },
+                save: function()
+                {
+                    privateNotesView.saveNote();
+                }
+            };
+        };
     },
 
     // Initialize the channel specific view data sources.
