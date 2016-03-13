@@ -13,7 +13,7 @@
 var privateNotesView = {
     topOffset: 0,
     notesDS : null,
-    activeNote: {},
+    activeNote: {objects: [], photos: []},
     noteObjects: [],
     notePhotos: [],
     _titleTagActive: false,
@@ -158,7 +158,7 @@ var privateNotesView = {
             };
         }
 
-        privateNotesView.activeNote.photos.push(photoObj);
+        privateNotesView.notePhotos.push(photoObj);
         // photoModel.addPhotoOffer(photo.photoId, channelView._channelId, photo.thumbnailUrl, photo.imageUrl, canCopy);
     },
 
@@ -192,7 +192,7 @@ var privateNotesView = {
             validNote = true;
         } else {
             // Initialize the activeNote if we're not editing.
-            privateNotesView.activeNote = {objects: []};
+            privateNotesView.activeNote = {objects: [], photos: []};
         }
 
 
