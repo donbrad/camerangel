@@ -845,7 +845,7 @@ var privateNotesView = {
         }
 
         if (noteId === undefined || noteId === null) {
-            mobileNotify("No message content to display...");
+            mobileNotify("No Note content to display...");
         }
 
         var note = dataSource.getByUid(noteId);
@@ -853,7 +853,7 @@ var privateNotesView = {
         if (note !== undefined) {
             privateNotesView.activeNote = note;
         }
-        
+
         // User actually clicked on the photo so show the open the photo viewer
         if ($target.hasClass('photo-chat')) {
 
