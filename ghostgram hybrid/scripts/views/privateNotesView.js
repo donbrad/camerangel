@@ -729,7 +729,7 @@ var privateNotesView = {
 
         if (photoObj !== undefined) {
 
-            var imgUrl = '<img class="photo-note" data-photoid="'+ photoId + '" id="notephoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
+            var imgUrl = '<img class="photo-cbat" data-photoid="'+ photoId + '" id="notephoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
 
             $('#privateNoteTextArea').redactor('insert.node', $('<div />').html(imgUrl));
 
