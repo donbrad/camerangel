@@ -707,7 +707,7 @@ var privateNotesView = {
                         }
                     },
                     function (msg) {
-                        mobileNotify("KO: " + msg);
+                        mobileNotify("SafariView Error : " + msg);
                     })
             } else {
                 // potentially powered by InAppBrowser because that (currently) clobbers window.open
@@ -729,7 +729,7 @@ var privateNotesView = {
 
         if (photoObj !== undefined) {
 
-            var imgUrl = '<img class="photo-cbat" data-photoid="'+ photoId + '" id="notephoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
+            var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="notephoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
 
             $('#privateNoteTextArea').redactor('insert.node', $('<div />').html(imgUrl));
 
