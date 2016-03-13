@@ -707,7 +707,7 @@ var privateNotesView = {
                         }
                     },
                     function (msg) {
-                        mobileNotify("KO: " + msg);
+                        mobileNotify("SafariView Error : " + msg);
                     })
             } else {
                 // potentially powered by InAppBrowser because that (currently) clobbers window.open
@@ -729,7 +729,7 @@ var privateNotesView = {
 
         if (photoObj !== undefined) {
 
-            var imgUrl = '<img class="photo-cbat" data-photoid="'+ photoId + '" id="notephoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
+            var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="notephoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
 
             $('#privateNoteTextArea').redactor('insert.node', $('<div />').html(imgUrl));
 
@@ -827,6 +827,7 @@ var privateNotesView = {
     tapNote : function (e) {
        // e.preventDefault();
 
+        // User has clicked in message area, so hide the keyboard
        privateNotesView.hideEditor();
 
 
@@ -852,16 +853,12 @@ var privateNotesView = {
         if (note !== undefined) {
             privateNotesView.activeNote = note;
         }
-
-        // User has clicked in message area, so hide the keyboard
-        // ux.hideKeyboard();
-
+        
         // User actually clicked on the photo so show the open the photo viewer
-        if ($target.hasClass('photo-note')) {
-            // Todo: Don map chat photos to note photos -- ?convert photos from data to objects.
-      /*      var photoId = $target.attr('data-photoId');
+        if ($target.hasClass('photo-chat')) {
 
-            // todo Don - review photos source
+            var photoId = $target.attr('data-photoId');
+
             if (message.data !== undefined && message.data.photos !== undefined) {
                 var photoList = message.data.photos;
 
@@ -873,9 +870,7 @@ var privateNotesView = {
                         return;
                     }
                 }
-            }*/
-
-
+            }
         }
 
     },
