@@ -1202,7 +1202,19 @@ var editContactView = {
     },
 
     syncWithDevice : function (e) {
+        _preventDefault(e);
 
+    },
+
+
+    deleteContact: function (e) {
+        _preventDefault(e);
+
+        contactModel.deleteContact(editContactView._activeContact.uuid);
+
+        mobileNotify("Deleting " + editContactView._activeContact.name);
+
+        editContactView.onDone();
     }
 };
 
