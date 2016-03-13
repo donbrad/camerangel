@@ -827,6 +827,7 @@ var privateNotesView = {
     tapNote : function (e) {
        // e.preventDefault();
 
+        // User has clicked in message area, so hide the keyboard
        privateNotesView.hideEditor();
 
 
@@ -852,16 +853,12 @@ var privateNotesView = {
         if (note !== undefined) {
             privateNotesView.activeNote = note;
         }
-
-        // User has clicked in message area, so hide the keyboard
-        // ux.hideKeyboard();
-
+        
         // User actually clicked on the photo so show the open the photo viewer
-        if ($target.hasClass('photo-note')) {
-            // Todo: Don map chat photos to note photos -- ?convert photos from data to objects.
-      /*      var photoId = $target.attr('data-photoId');
+        if ($target.hasClass('photo-chat')) {
 
-            // todo Don - review photos source
+            var photoId = $target.attr('data-photoId');
+
             if (message.data !== undefined && message.data.photos !== undefined) {
                 var photoList = message.data.photos;
 
@@ -873,9 +870,7 @@ var privateNotesView = {
                         return;
                     }
                 }
-            }*/
-
-
+            }
         }
 
     },
