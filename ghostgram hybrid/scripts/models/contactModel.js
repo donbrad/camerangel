@@ -121,11 +121,11 @@ var contactModel = {
 
 
     fetch : function () {
-        var ContactModel = Parse.Object.extend(contactModel._parseClass);
 
         contactModel.contactsDS.data([]);
 
-        var query = new Parse.Query(ContactModel);
+        var parseContactModel = Parse.Object.extend(contactModel._parseClass);
+        var query = new Parse.Query(parseContactModel);
         query.limit(1000);
 
         query.find({
