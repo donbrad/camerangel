@@ -48,7 +48,6 @@ var contactModel = {
 
     init : function () {
 
-        contactModel.contactListDS.online(false);
 
         contactModel.contactsDS = new kendo.data.DataSource({
             type: 'everlive',
@@ -66,7 +65,7 @@ var contactModel = {
             }
         });
 
-        contactModel.contactsDS.fetch();
+
 
         // Reflect any core contact changes to contactList
         contactModel.contactsDS.bind("change", function (e) {
@@ -107,6 +106,10 @@ var contactModel = {
 
 
         });
+
+        contactModel.contactsDS.fetch();
+
+        contactModel.contactListDS.online(false);
 
     },
 
