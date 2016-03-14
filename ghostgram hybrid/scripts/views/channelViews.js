@@ -1144,26 +1144,7 @@ var channelView = {
         $("#messageSend").html('<img src="images/icon-send.svg" class="icon-send" />');
 
 
-        if (channelView.isPrivateNote) {
-            $("#messageSend").text('Save');
-
-            $("#channelName").text('Private Notes');
-            // Show contact img in header
-            $('#channelImage').attr('src', userModel.currentUser.photo).removeClass("hidden");
-            $('#messagePresenceButton').hide();
-
-            privateNoteChannel.open();
-
-            channelView.messagesDS.data([]);
-
-            privateNoteChannel.getMessageHistory(function (messages) {
-
-                channelView.messagesDS.data(messages);
-
-                channelView.loadImagesThenScroll()
-            });
-
-        } else if (thisChannel.isPrivate) {
+        if (thisChannel.isPrivate) {
 
             channelView.isPrivateChat = true;
             channelView.messageLock = true;
@@ -1247,7 +1228,8 @@ var channelView = {
             if (recalledMessages.length > 0) {
                 hasRecalled = true;
             }
-
+            
+            groupChannel.hereNow();
             groupChannel.getMessageHistory(function (messages) {
                 var filteredMessages = [];
 
@@ -2533,8 +2515,8 @@ var channelPresence = {
     },
 
     onShow: function (e) {
-
-       /// currentChannelModel.buildMembersDS();
+        // Update presence count and members present
+        groupChannel.hereNow();
 
     },
 
