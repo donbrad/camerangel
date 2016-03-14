@@ -30,7 +30,7 @@ var tagModel = {
                 dataProvider: APP.everlive
             },
             schema: {
-                model: { id:  Everlive.idField}
+                model: { id:  'uuid'}
             },
             sort: {
                 field: "tagName",
@@ -86,7 +86,7 @@ var tagModel = {
         if (tagExists.length > 0) {
             return;
         }
-        
+
         var tagObj = tagModel.newTag();
 
         tagObj.name = tag;

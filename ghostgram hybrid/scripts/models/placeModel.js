@@ -62,7 +62,7 @@ var placesModel = {
                 dataProvider: APP.everlive
             },
             schema: {
-                model: { id:  Everlive.idField}
+                model: { id:  'uuid'}
             },
             sort: {
                 field: "distance",
