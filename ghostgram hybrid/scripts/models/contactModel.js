@@ -48,7 +48,6 @@ var contactModel = {
 
     init : function () {
 
-        contactModel.contactListDS.online(false);
 
         contactModel.contactsDS = new kendo.data.DataSource({
             type: 'everlive',
@@ -66,7 +65,7 @@ var contactModel = {
             }
         });
 
-        contactModel.contactsDS.fetch();
+
 
         // Reflect any core contact changes to contactList
         contactModel.contactsDS.bind("change", function (e) {
@@ -107,6 +106,10 @@ var contactModel = {
 
 
         });
+
+
+
+        contactModel.contactListDS.online(false);
 
     },
 
@@ -211,6 +214,7 @@ var contactModel = {
                 }
                 deviceModel.setAppState('hasContacts', true);
                 contactModel.contactsDS.data(models);
+                contactModel.contactsDS.fetch();
                 APP.everlive.sync();
 
                 // Update contactlistDs and get latest status for contacts
@@ -267,6 +271,7 @@ var contactModel = {
             contactModel.contactListDS.add(contact);
         }
 
+        contactModel.contactListDS.fetch();
     },
 
     addContactToContactList : function (contact) {
