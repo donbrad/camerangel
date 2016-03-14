@@ -17,20 +17,33 @@ var photoModel = {
     previewSize: "33%",
     optionsShown: false,
     parsePhoto: {},
-    photosDS: new kendo.data.DataSource({  // this is the gallery datasource
-        offlineStorage: "gallery"
-    }),
+    photosDS: null,
 
-    offersDS: new kendo.data.DataSource({  // this is the gallery datasource
+    offersDS: new kendo.data.DataSource({
         offlineStorage: "offers"
     }),
 
-    deletedPhotosDS: new kendo.data.DataSource({  // this is the gallery datasource
+    deletedPhotosDS: new kendo.data.DataSource({
         offlineStorage: "deletedphotos"
     }),
 
     init: function () {
 
+        photoModel.photosDS = new kendo.data.DataSource({  // this is the gallery datasource
+            type: 'everlive',
+            offlineStorage: "photos",
+            transport: {
+                typeName: 'photos',
+                dataProvider: APP.everlive
+            },
+            schema: {
+                model: { id:  Everlive.idField}
+            },
+            sort: {
+                field: "timestamp",
+                dir: "desc"
+            }
+        });
     },
 
     initOffer : function () {

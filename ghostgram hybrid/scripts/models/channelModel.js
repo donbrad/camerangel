@@ -18,13 +18,7 @@ var channelModel = {
 
     _messageCountRefresh : 300000,   // Delta between message count  calls (in milliseconds)
 
-    channelsDS: new kendo.data.DataSource({
-        offlineStorage: "channels",
-        sort: {
-            field: "lastAccess",
-            dir: "desc"
-        }
-    }),
+    channelsDS: null,
 
     // List of all active private channels (those with messages)
     privateChannelsDS: new kendo.data.DataSource({
@@ -44,6 +38,22 @@ var channelModel = {
         channelModel.recalledMessagesDS.online(false);
 
         channelModel.activeChannels = [];
+
+        channelModel.channelsDS = new kendo.data.DataSource({
+            type: 'everlive',
+            offlineStorage: "channels",
+            transport: {
+                typeName: 'channels',
+                dataProvider: APP.everlive
+            },
+            schema: {
+                model: { id:  Everlive.idField}
+            },
+            sort: {
+                field: "lastAccess",
+                dir: "desc"
+            }
+        });
 
         // Reflect any core channel changes to channelList
         channelModel.channelsDS.bind("change", function (e) {
