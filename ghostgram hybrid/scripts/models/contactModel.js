@@ -124,7 +124,7 @@ var contactModel = {
         var ContactModel = Parse.Object.extend(contactModel._parseClass);
 
         contactModel.contactsDS.data([]);
-        
+
         var query = new Parse.Query(ContactModel);
         query.limit(1000);
 
