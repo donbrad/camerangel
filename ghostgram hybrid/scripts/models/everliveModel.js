@@ -52,7 +52,13 @@ var everlive = {
 
     },
 
-    syncEnd : function ()  {
+    syncEnd : function (syncInfo)  {
+        var err = syncInfo.error;
+        if (err) {
+            mobileNotify('Kendo Sync Error : ' + JSON.stringify(err));
+        } else if (err === '') {
+            mobileNotify('Kendo Sync Error : unknown...');
+        }
 
     }
 

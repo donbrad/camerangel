@@ -122,21 +122,30 @@ var contactModel = {
 
     fetch : function () {
         var ContactModel = Parse.Object.extend(contactModel._parseClass);
+
+        contactModel.contactsDS.data([]);
+        
         var query = new Parse.Query(ContactModel);
         query.limit(1000);
 
         query.find({
             success: function(collection) {
-                var models = [];
                 for (var i = 0; i < collection.length; i++) {
                     var model = collection[i];
 
                     var identicon = model.get('identicon');
                     if (identicon === undefined || identicon === null || identicon === '') {
-                        var url = contactModel.createIdenticon(model.get('uuid'));
-                        model.set('identicon', url);
+                        var contactId = model.get('uuid');
+                        if (contactId !== undefined) {
+                            var url = contactModel.createIdenticon();
+                            model.set('identicon', url);
+                        }
+
                     }
 
+                    if (model.get('groups') === undefined){
+                        model.set('groups', []);
+                    }
                    /* var dirty = false;
 
 
@@ -217,10 +226,11 @@ var contactModel = {
                         model.save();*/
                     var data = model.toJSON();
 
-                    models.push(data);
+                    contactModel.contactsDS.add(data);
                 }
+
                 deviceModel.setAppState('hasContacts', true);
-                contactModel.contactsDS.data(models);
+
 
 
                 // Update contactlistDs and get latest status for contacts
