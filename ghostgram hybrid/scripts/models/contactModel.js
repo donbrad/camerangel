@@ -130,12 +130,19 @@ var contactModel = {
                 var models = [];
                 for (var i = 0; i < collection.length; i++) {
                     var model = collection[i];
-                    var dirty = false;
-                   // Set the photo to identicon
-                    var url = contactModel.createIdenticon(model.get('uuid'));
 
                     var identicon = model.get('identicon');
                     if (identicon === undefined || identicon === null || identicon === '') {
+                        var url = contactModel.createIdenticon(model.get('uuid'));
+                        model.set('identicon', url);
+                    }
+
+                   /* var dirty = false;
+
+
+                    var identicon = model.get('identicon');
+                    if (identicon === undefined || identicon === null || identicon === '') {
+                        var url = contactModel.createIdenticon(model.get('uuid'));
                         model.set('identicon', url);
                     }
                   //  var photo = model.get('photo');
@@ -207,15 +214,14 @@ var contactModel = {
                     }
 
                     if (dirty)
-                        model.save();
+                        model.save();*/
                     var data = model.toJSON();
 
                     models.push(data);
                 }
                 deviceModel.setAppState('hasContacts', true);
                 contactModel.contactsDS.data(models);
-                contactModel.contactsDS.fetch();
-                APP.everlive.sync();
+
 
                 // Update contactlistDs and get latest status for contacts
                // contactModel.contactListDS.data(models);
@@ -226,6 +232,8 @@ var contactModel = {
 
                 deviceModel.isParseSyncComplete();
 
+                contactModel.contactsDS.fetch();
+                APP.everlive.sync();
 
 
             },

@@ -119,6 +119,7 @@ var placesModel = {
 
         });
     },
+
     newPlace : function () {
         return(new Object(placesModel._placeModel));
     },
