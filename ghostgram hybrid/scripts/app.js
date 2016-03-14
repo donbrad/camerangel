@@ -104,6 +104,7 @@
 
 		Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
 		//Parse.User.enableRevocableSession();
+
 		APP.everlive = new Everlive({
 			appId: 's2fo2sasaubcx7qe',
 			scheme: 'https',
