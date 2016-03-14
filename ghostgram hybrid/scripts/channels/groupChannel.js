@@ -49,7 +49,7 @@ var groupChannel = {
             windowing: 500,
             restore: true,
             callback: groupChannel.receiveHandler,
-            presence: groupChannel.presenceHandler,
+           presence: groupChannel.presenceHandler,
             // Set our state to our user object, which contains our username and public key.
             state: groupChannel.thisUser
         });
@@ -110,14 +110,14 @@ var groupChannel = {
                 }
 
             }
-            // Otherwise, we have to call `here_now` to get the state of the new subscriber to the channel.
+           /* // Otherwise, we have to call `here_now` to get the state of the new subscriber to the channel.
             else {
                 APP.pubnub.here_now({
                     channel: groupChannel.channelId,
                     state: true,
                     callback: groupChannel.hereNowHandler
                 });
-            }
+            }*/
            
         }
         // A user has left or timed out of ghostgrams so we remove them from our users object.
@@ -140,14 +140,21 @@ var groupChannel = {
         channelView.setPresence(userId, isPresent);
     },
 
-    hereNowHandler : function (msg) {
-        groupChannel.users[groupChannel.userId] = groupChannel.thisUser;
-        for (var i = 0; i < msg.uuids.length; i++) {
-            if ("state" in msg.uuids[i]) {
-                groupChannel.users[msg.uuids[i].state.username] = msg.uuids[i].state;
+    hereNow : function () {
+        APP.pubnub.here_now({
+            channel: groupChannel.channelId,
+            state: true,
+            callback: function(msg) {
+                groupChannel.users[groupChannel.userId] = groupChannel.thisUser;
+                for (var i = 0; i < msg.uuids.length; i++) {
+                    if ("state" in msg.uuids[i]) {
+                        groupChannel.users[msg.uuids[i].state.username] = msg.uuids[i].state;
+                    }
+                }
+                channelView.updatePresence(groupChannel.users, msg.occupancy);
             }
-        }
-        channelView.updatePresence(groupChannel.users, msg.occupancy);
+        });
+
     },
 
     sendMessage: function (text, data, ttl) {
