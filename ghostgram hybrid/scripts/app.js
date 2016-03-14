@@ -139,10 +139,6 @@
 
 		});
 
-		privateNoteModel.init();  // Depends on everlive...
-
-
-		contactModel.init();
 
 	/*	if (!deviceModel.state.introFetched) {
 
@@ -159,6 +155,10 @@
 		mapModel.init();
 
 		placesModel.init();
+
+		privateNoteModel.init();  // Depends on everlive...
+
+		contactModel.init();
 
 		smartEvent.init();
 

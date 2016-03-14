@@ -211,6 +211,7 @@ var contactModel = {
                 }
                 deviceModel.setAppState('hasContacts', true);
                 contactModel.contactsDS.data(models);
+                APP.everlive.sync();
 
                 // Update contactlistDs and get latest status for contacts
                // contactModel.contactListDS.data(models);
@@ -221,7 +222,6 @@ var contactModel = {
 
                 deviceModel.isParseSyncComplete();
 
-                APP.everlive.sync();
 
 
             },

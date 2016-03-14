@@ -52,7 +52,73 @@ var placesModel = {
     }),
 
 
+    init : function () {
 
+        placesModel.placesDS = new kendo.data.DataSource({
+            type: 'everlive',
+            offlineStorage: "places",
+            transport: {
+                typeName: 'places',
+                dataProvider: APP.everlive
+            },
+            schema: {
+                model: { id:  Everlive.idField}
+            },
+            sort: {
+                field: "distance",
+                dir: "asc"
+            }
+        });
+
+        placesModel.placesDS.fetch();
+
+
+        // Reflect any core contact changes to contactList
+        placesModel.placesDS.bind("change", function (e) {
+            // Rebuild the contactList cache when the underlying list changes: add, delete, update...
+            //placesModel.buildPlaceLists();
+            var changedPlaces = e.items;
+
+            if (e.action !== undefined) {
+                switch (e.action) {
+                    case "itemchange" :
+                        var field  =  e.field;
+                        var place = e.items[0], placeId = place.uuid;
+                        var placeList = placesModel.findPlaceListUUID(placeId);
+
+                        // if the places's name or alias has been updated, need to update the tag...
+                        var tagList = tagModel.findTagByCategoryId(place.uuid);
+                        if (tagList.length > 0) {
+                            var placeTag = tagList[0];
+                            placeTag.set('alias',place.alias);
+                            placeTag.set('name', place.name);
+                        }
+
+
+                        if (placeList !== undefined)
+                        //placeList[field] = place [field];
+                            placeList.set(field, place[field]);
+
+                        break;
+
+                    case "remove" :
+                        // delete from contact list
+                        break;
+
+                    case "add" :
+                        var place = e.items[0];
+                        // add to contactlist and contacttags
+                        var placeList = placesModel.findPlaceListUUID(place.uuid);
+                        if (placeList === undefined)
+                            placesModel.placeListDS.add(place);
+                        tagModel.addPlaceTag(place.name, place.alias, '', place.uuid);
+                        break;
+                }
+            }
+
+
+        });
+    },
     newPlace : function () {
         return(new Object(placesModel._placeModel));
     },
@@ -123,73 +189,7 @@ var placesModel = {
         });
     },
 
-    init : function () {
 
-        placesModel.placesDS = new kendo.data.DataSource({
-            type: 'everlive',
-            offlineStorage: "places",
-            transport: {
-                typeName: 'places',
-                dataProvider: APP.everlive
-            },
-            schema: {
-                model: { id:  Everlive.idField}
-            },
-            sort: {
-                field: "distance",
-                dir: "asc"
-            }
-        });
-
-        placesModel.placesDS.fetch();
-
-
-        // Reflect any core contact changes to contactList
-        placesModel.placesDS.bind("change", function (e) {
-            // Rebuild the contactList cache when the underlying list changes: add, delete, update...
-            //placesModel.buildPlaceLists();
-            var changedPlaces = e.items;
-
-            if (e.action !== undefined) {
-                switch (e.action) {
-                    case "itemchange" :
-                        var field  =  e.field;
-                        var place = e.items[0], placeId = place.uuid;
-                        var placeList = placesModel.findPlaceListUUID(placeId);
-
-                        // if the places's name or alias has been updated, need to update the tag...
-                        var tagList = tagModel.findTagByCategoryId(place.uuid);
-                        if (tagList.length > 0) {
-                            var placeTag = tagList[0];
-                            placeTag.set('alias',place.alias);
-                            placeTag.set('name', place.name);
-                        }
-
-
-                        if (placeList !== undefined)
-                            //placeList[field] = place [field];
-                            placeList.set(field, place[field]);
-
-                        break;
-
-                    case "remove" :
-                        // delete from contact list
-                        break;
-
-                    case "add" :
-                        var place = e.items[0];
-                        // add to contactlist and contacttags
-                        var placeList = placesModel.findPlaceListUUID(place.uuid);
-                        if (placeList === undefined)
-                            placesModel.placeListDS.add(place);
-                        tagModel.addPlaceTag(place.name, place.alias, '', place.uuid);
-                        break;
-                }
-            }
-
-
-        });
-     },
 
     buildPlaceLists : function () {
 
