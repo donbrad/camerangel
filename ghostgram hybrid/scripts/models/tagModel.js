@@ -30,7 +30,7 @@ var tagModel = {
                 dataProvider: APP.everlive
             },
             schema: {
-                model: { id:  'uuid'}
+                model: { id:  Everlive.idField}
             },
             sort: {
                 field: "tagName",

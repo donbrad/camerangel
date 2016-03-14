@@ -57,7 +57,7 @@ var contactModel = {
                 dataProvider: APP.everlive
             },
             schema: {
-                model: { id:  'uuid'}
+                model: { id:  Everlive.idField}
             },
             sort: {
                 field: "name",
@@ -229,7 +229,9 @@ var contactModel = {
                     models.push(data);
                 }
 
-                contactModel.contactsDS.sync();
+                everlive.createAll('contacts', models);
+                contactModel.contactsDS.fetch();
+
                 deviceModel.setAppState('hasContacts', true);
 
                 // Update contactlistDs and get latest status for contacts
@@ -241,7 +243,7 @@ var contactModel = {
 
                 deviceModel.isParseSyncComplete();
 
-                contactModel.contactsDS.fetch();
+
 
 
             },

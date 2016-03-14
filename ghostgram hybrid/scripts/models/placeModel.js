@@ -62,7 +62,7 @@ var placesModel = {
                 dataProvider: APP.everlive
             },
             schema: {
-                model: { id:  'uuid'}
+                model: { id:  Everlive.idField}
             },
             sort: {
                 field: "distance",
@@ -181,8 +181,6 @@ var placesModel = {
                 placesModel.buildPlaceLists();
                 deviceModel.setAppState('hasPlaces', true);
                 deviceModel.isParseSyncComplete();
-
-
 
             },
             error: function(error) {

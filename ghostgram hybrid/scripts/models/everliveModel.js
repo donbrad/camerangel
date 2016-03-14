@@ -43,6 +43,28 @@ var everlive = {
             });
     },
 
+    updateAll : function (dataType, dataList) {
+        var data = APP.everlive.data(dataType);
+        data.update(dataList, // filter expression
+            function(data){
+                alert(JSON.stringify(data));
+            },
+            function(error){
+                alert(JSON.stringify(error));
+            });
+    },
+
+    createAll : function (dataType, dataList) {
+        var data = APP.everlive.data(dataType);
+        data.create(dataList, // filter expression
+            function(data){
+                alert(JSON.stringify(data));
+            },
+            function(error){
+                alert(JSON.stringify(error));
+            });
+    },
+
     logout : function () {
         APP.everlive.authentication.clearAuthorization();
         everlive._signedIn = false;
