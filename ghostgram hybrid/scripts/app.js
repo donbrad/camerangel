@@ -116,6 +116,9 @@
 					strategy: Everlive.Constants.ConflictResolutionStrategy.ClientWins
 				}
 			},
+			encryption: {
+				provider: Everlive.Constants.EncryptionProvider.Default
+			},
 			authentication: {
 				persist: true,
 				onAuthenticationRequired: function() {
@@ -125,17 +128,9 @@
 		});
 
 
-		APP.everlive.on('syncStart', function() {
-			mobileNotify("Kendo Sync Start >>>");
-		});
+		APP.everlive.on('syncStart', everlive.syncStart());
 
 		APP.everlive.on('syncEnd', function(syncInfo) {
-			var err = syncInfo.error;
-			if (err) {
-				mobileNotify('Kendo Sync Error : ' + JSON.stringify(err));
-			} else if (err === '') {
-				mobileNotify('Kendo Sync Error : unknown...');
-			}
 
 		});
 
