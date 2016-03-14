@@ -128,11 +128,10 @@
 		});
 
 
-		APP.everlive.on('syncStart', everlive.syncStart());
+		// Wire up the everlive sync monitors
+		APP.everlive.on('syncStart', everlive.syncStart);
 
-		APP.everlive.on('syncEnd', function(syncInfo) {
-
-		});
+		APP.everlive.on('syncEnd', everlive.syncEnd);
 
 
 	/*	if (!deviceModel.state.introFetched) {
