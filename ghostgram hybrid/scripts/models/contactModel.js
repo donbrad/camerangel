@@ -337,7 +337,9 @@ var contactModel = {
         dataSource.filter( query);
         var view = dataSource.view();
 
-        var contact = view[0].items[0];
+        var contact = null;
+        if (view.length > 0)
+        contact = view[0].items[0];
 
         dataSource.filter(cacheFilter);
 
