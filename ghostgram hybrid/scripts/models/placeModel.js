@@ -174,7 +174,7 @@ var placesModel = {
                     models.push(model);
                 }
 
-                placesModel.placesDS.data(models);
+                everlive.createAll('places', models);
                 placesModel.placesDS.sync();
                 mapModel.computePlaceDSDistance();
 
