@@ -81,12 +81,14 @@ var tagModel = {
     },
 
     addContactTag : function (tag, alias, description, categoryId) {
-        var tagObj = tagModel.newTag();
         var tagExists = tagModel.findTagByCategoryId(categoryId);
 
         if (tagExists.length > 0) {
             return;
         }
+        
+        var tagObj = tagModel.newTag();
+
         tagObj.name = tag;
         tagObj.alias = alias;
         tagObj.tagName = tagModel.normalizeTag(tag);
@@ -100,13 +102,15 @@ var tagModel = {
     },
 
     addPlaceTag : function (tag, alias, description, categoryId) {
-        var tagObj = tagModel.newTag();
-
         var tagExists = tagModel.findTagByCategoryId(categoryId);
 
         if (tagExists.length > 0) {
             return;
         }
+
+        var tagObj = tagModel.newTag();
+
+
         tagObj.name = tag;
         tagObj.alias = alias;
         tagObj.tagName = tagModel.normalizeTag(tag);
