@@ -175,12 +175,13 @@ var placesModel = {
                 }
 
                 placesModel.placesDS.data(models);
+                placesModel.placesDS.sync();
                 mapModel.computePlaceDSDistance();
 
                 placesModel.buildPlaceLists();
                 deviceModel.setAppState('hasPlaces', true);
                 deviceModel.isParseSyncComplete();
-                APP.everlive.sync();
+
 
 
             },

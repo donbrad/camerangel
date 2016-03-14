@@ -229,6 +229,7 @@ var contactModel = {
                     contactModel.contactsDS.add(data);
                 }
 
+                contactModel.contactsDS.sync();
                 deviceModel.setAppState('hasContacts', true);
 
 
@@ -243,7 +244,6 @@ var contactModel = {
                 deviceModel.isParseSyncComplete();
 
                 contactModel.contactsDS.fetch();
-                APP.everlive.sync();
 
 
             },

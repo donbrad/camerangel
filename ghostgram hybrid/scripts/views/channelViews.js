@@ -1228,7 +1228,7 @@ var channelView = {
             if (recalledMessages.length > 0) {
                 hasRecalled = true;
             }
-            
+
             groupChannel.hereNow();
             groupChannel.getMessageHistory(function (messages) {
                 var filteredMessages = [];
