@@ -155,6 +155,10 @@
 
 		contactModel.init();
 
+		photoModel.init();
+
+		channelModel.init();
+
 		smartEvent.init();
 
 		tagModel.init();

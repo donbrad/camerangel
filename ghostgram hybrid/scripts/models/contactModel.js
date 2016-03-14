@@ -229,7 +229,9 @@ var contactModel = {
                     models.push(data);
                 }
 
-                everlive.createAll('contacts', models);
+                everlive.createAll('contacts', models, function (data) {
+
+                });
                 contactModel.contactsDS.fetch();
 
                 deviceModel.setAppState('hasContacts', true);

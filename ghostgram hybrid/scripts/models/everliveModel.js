@@ -54,14 +54,14 @@ var everlive = {
             });
     },
 
-    createAll : function (dataType, dataList) {
+    createAll : function (dataType, dataList, callback) {
         var data = APP.everlive.data(dataType);
         data.create(dataList, // filter expression
             function(data){
-                alert(JSON.stringify(data));
+               callback(data);
             },
             function(error){
-                alert(JSON.stringify(error));
+                mobileNotify("Everlive CreateAll Error : " + JSON.stringify(error));
             });
     },
 
