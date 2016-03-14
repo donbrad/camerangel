@@ -122,14 +122,14 @@ var contactModel = {
 
     fetch : function () {
 
-        contactModel.contactsDS.data([]);
-
         var parseContactModel = Parse.Object.extend(contactModel._parseClass);
         var query = new Parse.Query(parseContactModel);
         query.limit(1000);
 
         query.find({
             success: function(collection) {
+                contactModel.contactsDS.data([]);
+
                 for (var i = 0; i < collection.length; i++) {
                     var model = collection[i];
 
