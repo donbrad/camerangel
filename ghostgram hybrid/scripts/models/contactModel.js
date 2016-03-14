@@ -107,7 +107,7 @@ var contactModel = {
 
         });
 
-        contactModel.contactsDS.fetch();
+
 
         contactModel.contactListDS.online(false);
 
@@ -214,6 +214,7 @@ var contactModel = {
                 }
                 deviceModel.setAppState('hasContacts', true);
                 contactModel.contactsDS.data(models);
+                contactModel.contactsDS.fetch();
                 APP.everlive.sync();
 
                 // Update contactlistDs and get latest status for contacts
@@ -270,6 +271,7 @@ var contactModel = {
             contactModel.contactListDS.add(contact);
         }
 
+        contactModel.contactListDS.fetch();
     },
 
     addContactToContactList : function (contact) {
