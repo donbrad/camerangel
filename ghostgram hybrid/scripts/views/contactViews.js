@@ -130,7 +130,9 @@ var contactsView = {
 
     onShow : function (e) {
        _preventDefault(e);
-       
+
+        $("#contacts-listview").data("kendoMobileListView").scroller().reset();
+        
         if (!contactsView._viewInitialized) {
             contactsView._viewInitialized = true;
          
