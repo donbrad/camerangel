@@ -76,7 +76,7 @@ var photoModel = {
                     models.push(photo);
                 }
 
-                everlive.getCount('photos', function(error, count){
+                /*everlive.getCount('photos', function(error, count){
                     if (error === null && count === 0) {
                         everlive.createAll('photos', models, function (error1, data) {
                             if (error1 !== null) {
@@ -85,12 +85,15 @@ var photoModel = {
                             photoModel.photosDS.sync();
                         });
                     } else {
-                        mobileNotify("Everlive Photo error " + JSON.stringify(error));
+                        if (error !== null)
+                            mobileNotify("Everlive Photo error " + JSON.stringify(error));
                     }
 
                 });
+                 photoModel.photosDS.fetch();
+*/
                 deviceModel.setAppState('hasPhotos', true);
-                photoModel.photosDS.fetch();
+                photoModel.photosDS.data(models);
                 deviceModel.isParseSyncComplete();
             },
             error: function(error) {

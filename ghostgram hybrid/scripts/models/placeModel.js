@@ -184,7 +184,8 @@ var placesModel = {
                             placesModel.placesDS.sync();
                         });
                     } else {
-                        mobileNotify("Everlive Places error " + JSON.stringify(error));
+                        if (error !== null)
+                            mobileNotify("Everlive Places error " + JSON.stringify(error));
                      }
 
                 });

@@ -238,7 +238,8 @@ var contactModel = {
                             contactModel.contactsDS.sync();
                         });
                     } else {
-                        mobileNotify("Everlive contacts error " + JSON.stringify(error));
+                        if (error !== null)
+                            mobileNotify("Everlive contacts error " + JSON.stringify(error));
                     }
 
                 });

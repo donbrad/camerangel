@@ -174,7 +174,8 @@ var channelModel = {
                             channelModel.channelsDS.sync();
                         });
                     } else {
-                        mobileNotify("Everlive Channels error " + JSON.stringify(error));
+                        if (error !== null)
+                            mobileNotify("Everlive Channels error " + JSON.stringify(error));
                     }
 
                 });
