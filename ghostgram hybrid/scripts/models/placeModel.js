@@ -184,20 +184,21 @@ var placesModel = {
                             placesModel.placesDS.sync();
                             //placesModel.computePlaceDSDistance();
                             placesModel.syncPlaceListDS();
+                            deviceModel.setAppState('hasPlaces', true);
+                            deviceModel.isParseSyncComplete();
                         });
                     } else {
                         if (error !== null)
                             mobileNotify("Everlive Places error " + JSON.stringify(error));
+
+                        placesModel.placesDS.fetch();
+                        placesModel.syncPlaceListDS();
+                        deviceModel.setAppState('hasPlaces', true);
+                        deviceModel.isParseSyncComplete();
                      }
 
                 });
 
-
-
-                placesModel.placesDS.fetch();
-                placesModel.syncPlaceListDS();
-                deviceModel.setAppState('hasPlaces', true);
-                deviceModel.isParseSyncComplete();
 
             },
             error: function(error) {

@@ -172,18 +172,25 @@ var channelModel = {
                                 mobileNotify("Everlive Channels error " + JSON.stringify(error1));
                             }
                             channelModel.channelsDS.sync();
+                            //channelModel.channelsDS.fetch();
+                            deviceModel.setAppState('hasChannels', true);
+                            deviceModel.isParseSyncComplete();
+
+                            notificationModel.processUnreadChannels();
                         });
                     } else {
                         if (error !== null)
                             mobileNotify("Everlive Channels error " + JSON.stringify(error));
+
+                        channelModel.channelsDS.fetch();
+                        deviceModel.setAppState('hasChannels', true);
+                        deviceModel.isParseSyncComplete();
+
+                        notificationModel.processUnreadChannels();
                     }
 
                 });
-                channelModel.channelsDS.fetch();
-                deviceModel.setAppState('hasChannels', true);
-                deviceModel.isParseSyncComplete();
 
-                notificationModel.processUnreadChannels();
             },
             error: function(error) {
                 handleParseError(error);

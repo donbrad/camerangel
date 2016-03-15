@@ -146,13 +146,16 @@
 
 		userModel.initParse();
 
+		contactModel.init();
+
+
 		mapModel.init();
 
 		placesModel.init();
 
 		privateNoteModel.init();  // Depends on everlive...
 
-		contactModel.init();
+
 
 		photoModel.init();
 
