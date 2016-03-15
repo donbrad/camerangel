@@ -134,6 +134,8 @@ var deviceModel = {
 
                 deviceModel.isPushProvisioned();
            }
+            // Todo: don -- move this back when everlive migration is complete
+            appDataChannel.history();
             tagModel.syncTags();
         }
     },

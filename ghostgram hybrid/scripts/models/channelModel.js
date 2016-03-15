@@ -67,7 +67,7 @@ var channelModel = {
                         var channel = e.items[0], channelId = channel.channelId;
                         var channelList = channelsView.findChannelModel(channelId);
                         if (channelList !== undefined)
-                            channelList.set(field, channel [field]);
+                        channelList.set(field, channel [field]);
                         break;
 
                     case "remove" :
@@ -408,43 +408,6 @@ var channelModel = {
             }
         }
     },
-
-   /* updateChannelsMessageCount : debounce(function () {
-        var channelArray = channelModel.channelsDS.data();
-
-        for (var i=0; i<channelArray.length; i++) {
-            var channel = channelArray[i];
-
-            // Only ping non-private (group)channels -- userDataChannels handles private channels
-            if (channel.isPrivate === false) {
-
-                APP.pubnub.history({
-                    channel: channel.channelId,
-                    end: ggTime.toPubNubTime(channel.lastAccess),
-
-                    callback: function(messages) {
-                        messages = messages[0];
-                        messages = messages || [];
-                        var len = messages.length;
-
-                    }
-                });
-            }
-
-
-        }
-    }, this._messageCountRefresh, true ),*/
-
-   /* // sync channel access/unread counts
-    updateParseChannels : function () {
-        var channels = channelModel.channelsDS.data();
-
-        for (var i=0; i<channels.length; i++) {
-            var channel = channels[i];
-            updateParseObject('channels', 'channelId', channel.channelId, 'unreadCount', channel.unreadCount);
-            updateParseObject('channels', 'channelId', channel.channelId, 'lastAccess', channel.lastAccess);
-        }
-    },*/
 
     syncParseChannels : function (callback) {
         // Only sync channels for users with atleast email or phone validated
