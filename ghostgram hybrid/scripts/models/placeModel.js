@@ -174,9 +174,19 @@ var placesModel = {
                     models.push(model);
                 }
 
-                everlive.createAll('places', models, function (data) {
+                everlive.getCount('places', function(error, count){
+                    if (error !== null) {
+                        everlive.createAll('places', models, function (error1, data) {
+                            if (error1 !== null) {
+                                mobileNotify(JSON.stringify(error1));
+                            }
+                        });
+                    }
 
                 });
+
+
+
                 placesModel.placesDS.sync();
                 mapModel.computePlaceDSDistance();
 

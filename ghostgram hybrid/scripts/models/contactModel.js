@@ -228,10 +228,19 @@ var contactModel = {
 
                     models.push(data);
                 }
-
-                everlive.createAll('contacts', models, function (data) {
+                everlive.getCount('contacts', function(error, count){
+                    if (error === null) {
+                        everlive.createAll('contacts', models, function (error1, data) {
+                            if (error1 !== null) {
+                                mobileNotify("Everlive contacts error " + JSON.stringify(error1));
+                            }
+                        });
+                    } else {
+                        mobileNotify("Everlive contacts error " + JSON.stringify(error));
+                    }
 
                 });
+
                 contactModel.contactsDS.fetch();
 
                 deviceModel.setAppState('hasContacts', true);

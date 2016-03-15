@@ -43,6 +43,31 @@ var everlive = {
             });
     },
 
+
+    getCount : function (dataType, callback) {
+        var data = APP.everlive.data(dataType);
+        data.count()
+            .then(function(data){
+                    callback(null, data)
+                },
+                function(error){
+                    callback(error, null);
+                });
+    },
+
+
+
+    updateOne: function (dataType, dataObject, callback) {
+        var data = APP.everlive.data(dataType);
+        data.update(dataObject,
+            function(data){
+                callback(null, data);
+            },
+            function(error){
+                callback(error, null);
+            });
+    },
+
     updateAll : function (dataType, dataList) {
         var data = APP.everlive.data(dataType);
         data.update(dataList, // filter expression
@@ -54,14 +79,48 @@ var everlive = {
             });
     },
 
+
+    createOne: function (dataType, dataObject, callback) {
+        var data = APP.everlive.data(dataType);
+        data.create(dataObject,
+            function(data){
+                callback(null, data);
+            },
+            function(error){
+                callback(error, null);
+            });
+    },
+
     createAll : function (dataType, dataList, callback) {
         var data = APP.everlive.data(dataType);
         data.create(dataList, // filter expression
             function(data){
-               callback(data);
+               callback(null, data);
             },
             function(error){
-                mobileNotify("Everlive CreateAll Error : " + JSON.stringify(error));
+               callback(error, null);
+            });
+    },
+
+    deleteOne : function (dataType, dataObject,callback) {
+        var data = APP.everlive.data(dataType);
+        data.destroy(dataObject, // filter expression
+            function(data){
+                callback(null, data);
+            },
+            function(error){
+                callback(error, null);
+            });
+    },
+
+    deleteAll : function (dataType, callback) {
+        var data = APP.everlive.data(dataType);
+        data.destroy( // filter expression
+            function(data){
+                callback(null, data);
+            },
+            function(error){
+                callback(error, null);
             });
     },
 
