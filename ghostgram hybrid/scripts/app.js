@@ -148,7 +148,6 @@
 
 		contactModel.init();
 
-
 		mapModel.init();
 
 		placesModel.init();

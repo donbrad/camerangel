@@ -90,6 +90,7 @@ var contactModel = {
 
                     case "remove" :
                         // delete from contact list
+
                         break;
 
                     case "add" :
@@ -116,7 +117,23 @@ var contactModel = {
     processContactUpdates : function (contacts) {
         for (var i=0; i<contacts.length; i++) {
 
+
         }
+    },
+
+    syncContactTags: function () {
+        var ds = contactModel.contactsDS;
+
+        var length = ds.total();
+        for (var i=0; i<length; i++) {
+            var contact = ds.at(i);
+
+            if (contact.category === 'member' || contact.category === 'new') {
+                tagModel.addContactTag(contact.name, contact.alias, '', contact.uuid);
+            }
+
+        }
+
     },
 
 
@@ -238,7 +255,7 @@ var contactModel = {
                             contactModel.contactsDS.sync();
                             contactModel.buildContactList();
                             contactModel.updateContactListStatus(true);
-
+                            contactModel.syncContactTags();
                             deviceModel.setAppState('hasContacts', true);
                             deviceModel.isParseSyncComplete();
                         });
@@ -249,7 +266,7 @@ var contactModel = {
                         contactModel.contactsDS.sync();
                         contactModel.buildContactList();
                         contactModel.updateContactListStatus(true);
-
+                        contactModel.syncContactTags();
                         deviceModel.setAppState('hasContacts', true);
                         deviceModel.isParseSyncComplete();
                     }

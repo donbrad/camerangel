@@ -135,7 +135,7 @@ var deviceModel = {
                 deviceModel.isPushProvisioned();
            }
 
-           APP.everlive.sync();
+            tagModel.syncTags();
         }
     },
 

@@ -133,7 +133,7 @@ var everlive = {
     },
 
     syncStart : function () {
-
+        mobileNotify("Syncing with Everlive");
     },
 
     syncEnd : function (syncInfo)  {
