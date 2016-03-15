@@ -66,8 +66,8 @@ var channelModel = {
                         var field  =  e.field;
                         var channel = e.items[0], channelId = channel.channelId;
                         var channelList = channelsView.findChannelModel(channelId);
-
-                        channelList.set(field, channel [field]);
+                        if (channelList !== undefined)
+                            channelList.set(field, channel [field]);
                         break;
 
                     case "remove" :
