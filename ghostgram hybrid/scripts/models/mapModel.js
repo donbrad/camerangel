@@ -289,7 +289,6 @@ var mapModel = {
 
             if (mapModel.isNewLocation(lat,lng)) {
                 // User is at a new location
-                var lat = parseFloat(position.coords.latitude.toFixed(6)), lng = parseFloat(position.coords.longitude.toFixed(6));
                 mapModel._updatePosition(lat, lng);
 
                 mapModel.reverseGeoCode(lat, lng, function (results, error) {
