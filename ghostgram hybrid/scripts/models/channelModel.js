@@ -178,7 +178,7 @@ var channelModel = {
                     }
 
                 });
-                channelModel.channelsDS.sync();
+                channelModel.channelsDS.fetch();
                 deviceModel.setAppState('hasChannels', true);
                 deviceModel.isParseSyncComplete();
 

@@ -82,6 +82,7 @@ var photoModel = {
                             if (error1 !== null) {
                                 mobileNotify("Everlive Photo error " + JSON.stringify(error1));
                             }
+                            photoModel.photosDS.sync();
                         });
                     } else {
                         mobileNotify("Everlive Photo error " + JSON.stringify(error));
@@ -89,7 +90,7 @@ var photoModel = {
 
                 });
                 deviceModel.setAppState('hasPhotos', true);
-                photoModel.photosDS.sync();
+                photoModel.photosDS.fetch();
                 deviceModel.isParseSyncComplete();
             },
             error: function(error) {

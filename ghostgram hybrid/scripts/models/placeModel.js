@@ -191,7 +191,7 @@ var placesModel = {
 
 
 
-                placesModel.placesDS.sync();
+                placesModel.placesDS.fetch();
                 mapModel.computePlaceDSDistance();
 
                 placesModel.buildPlaceLists();
