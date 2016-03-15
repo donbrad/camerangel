@@ -236,29 +236,27 @@ var contactModel = {
                                 mobileNotify("Everlive contacts error " + JSON.stringify(error1));
                             }
                             contactModel.contactsDS.sync();
-
-                            deviceModel.setAppState('hasContacts', true);
                             contactModel.buildContactList();
-
                             contactModel.updateContactListStatus(true);
 
+                            deviceModel.setAppState('hasContacts', true);
                             deviceModel.isParseSyncComplete();
                         });
                     } else {
                         if (error !== null)
                             mobileNotify("Everlive contacts error " + JSON.stringify(error));
 
-                        deviceModel.setAppState('hasContacts', true);
+                        contactModel.contactsDS.fetch();
                         contactModel.buildContactList();
-
                         contactModel.updateContactListStatus(true);
-
+                        
+                        deviceModel.setAppState('hasContacts', true);
                         deviceModel.isParseSyncComplete();
                     }
 
                 });
 
-                contactModel.contactsDS.fetch();
+
 
 
                 // Update contactlistDs and get latest status for contacts
