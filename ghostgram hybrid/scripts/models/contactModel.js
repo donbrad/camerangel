@@ -246,10 +246,10 @@ var contactModel = {
                         if (error !== null)
                             mobileNotify("Everlive contacts error " + JSON.stringify(error));
 
-                        contactModel.contactsDS.fetch();
+                        contactModel.contactsDS.sync();
                         contactModel.buildContactList();
                         contactModel.updateContactListStatus(true);
-                        
+
                         deviceModel.setAppState('hasContacts', true);
                         deviceModel.isParseSyncComplete();
                     }
