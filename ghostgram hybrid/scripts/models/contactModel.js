@@ -24,7 +24,6 @@ var contactModel = {
 
     // Contact data plus contact status
     contactListDS: new kendo.data.DataSource({
-        offlineStorage: "contactlist",
         group: 'category',
         sort: {
             field: "name",
