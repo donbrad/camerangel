@@ -58,7 +58,7 @@ var photoModel = {
 
         query.find({
             success: function(collection) {
-                var models = [];
+                var models = [], elModels = [],
                 for (var i = 0; i < collection.length; i++) {
 
                     var parsePhoto = collection[i];
@@ -73,7 +73,15 @@ var photoModel = {
 
                     photo.ggType = photoModel._ggClass;
 
+                    var elPhoto = photo;
+
+                    delete elPhoto.ACL;
+
+                    delete elPhoto.geoPoint.__type;
+
                     models.push(photo);
+
+                    elModels.push(elPhoto);
                 }
 
                 /*everlive.getCount('photos', function(error, count){
@@ -94,6 +102,7 @@ var photoModel = {
 */
                 deviceModel.setAppState('hasPhotos', true);
                 photoModel.photosDS.data(models);
+                photoModel.photosDS.sync();
                 deviceModel.isParseSyncComplete();
             },
             error: function(error) {
