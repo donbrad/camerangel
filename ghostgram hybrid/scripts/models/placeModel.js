@@ -208,7 +208,7 @@ var placesModel = {
 
 
    updateDistance : function() {
-        var length = placesModel.placesListDS.total();
+        var length = placesModel.placeListDS.total();
 
         for (var i=0; i< length; i++) {
             var place = placesModel.placeListDS.at(i);
