@@ -213,7 +213,7 @@ var placesModel = {
         for (var i=0; i< length; i++) {
             var place = placesModel.placeListDS.at(i);
             var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, place.lat, place.lng);
-            place.set('distance', distance.toFixed(2));
+            place.set('distance', parseFloat(distance.toFixed(2)));
         }
 
     },
@@ -224,7 +224,7 @@ var placesModel = {
         if (placeModel !== undefined) {
             // computer and store distance in miles
             var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, placeModel.lat, placeModel.lng);
-            placeModel.set('distance', distance.toFixed(2));
+            placeModel.set('distance', parseFloat(distance.toFixed(2)));
         }
 
     },

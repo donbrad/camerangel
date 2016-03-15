@@ -175,12 +175,12 @@ var placesView = {
 
         //$("#places > div.footerMenu.km-footer > a").removeAttr('href').css("display", "none");
 
-        mapModel.getCurrentAddress(function () {
+        mapModel.getCurrentAddress(function (isNew, address) {
             // Is this a new location
-           // if (isNew) {
-                placesView.computePlaceDSDistance();
+            if (isNew) {
+                placesModel.updateDistance();
                 // modalView.openInfo("New Location","Are you somewhere new? Create a new Place!", "OK", null);
-           // }
+           }
 
         });
 
@@ -199,8 +199,8 @@ var placesView = {
                 var place = placesModel.queryPlaceList({ field: "uuid", operator: "eq", value: newPlace.uuid });
                 if (place === undefined) {
 
-                    var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, newPlace.lat, newPlace.lng);
-                    newPlace.set('distance', distance.toFixed(2));
+                  /*  var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, newPlace.lat, newPlace.lng);
+                    newPlace.set('distance', distance.toFixed(2));*/
                     placesModel.placeListDS.add(newPlace);
                     placesModel.placeListDS.sync();
                 }
@@ -222,10 +222,10 @@ var placesView = {
             var newValue = newItem[field];
 
             if (oldPlace !== undefined) {
-                if (field === 'lat' || field === 'lng') {
+               /* if (field === 'lat' || field === 'lng') {
                     var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, oldPlace.lat, oldPlace.lng);
                     oldPlace.set('distance', distance.toFixed(2));
-                }
+                }*/
 
                 oldPlace.set(field, newValue);
             }
