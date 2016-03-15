@@ -76,7 +76,7 @@ var placesModel = {
         // Reflect any core contact changes to contactList
         placesModel.placesDS.bind("change", function (e) {
             // Rebuild the contactList cache when the underlying list changes: add, delete, update...
-            //placesModel.buildPlaceLists();
+            //placesModel.syncPlaceListDS();
             var changedPlaces = e.items;
 
             if (e.action !== undefined) {
@@ -182,9 +182,8 @@ var placesModel = {
                             }
 
                             placesModel.placesDS.sync();
-                            mapModel.computePlaceDSDistance();
-
-                            placesModel.buildPlaceLists();
+                            //placesModel.computePlaceDSDistance();
+                            placesModel.syncPlaceListDS();
                         });
                     } else {
                         if (error !== null)
@@ -196,9 +195,7 @@ var placesModel = {
 
 
                 placesModel.placesDS.fetch();
-                mapModel.computePlaceDSDistance();
-
-                placesModel.buildPlaceLists();
+                placesModel.syncPlaceListDS();
                 deviceModel.setAppState('hasPlaces', true);
                 deviceModel.isParseSyncComplete();
 
@@ -210,12 +207,34 @@ var placesModel = {
     },
 
 
+   updateDistance : function() {
+        var length = placesModel.placesListDS.total();
 
-    buildPlaceLists : function () {
+        for (var i=0; i< length; i++) {
+            var place = placesModel.placeListDS.at(i);
+            var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, place.lat, place.lng);
+            place.set('distance', distance.toFixed(2));
+        }
+
+    },
+
+    computePlaceDistance: function (placeUUID) {
+
+        var placeModel = placesModel.getPlaceModel(placeUUID);
+        if (placeModel !== undefined) {
+            // computer and store distance in miles
+            var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, placeModel.lat, placeModel.lng);
+            placeModel.set('distance', distance.toFixed(2));
+        }
+
+    },
+
+    syncPlaceListDS : function () {
 
         placesModel.placeListDS.data([]);
         var placeList = placesModel.placesDS.data();
         placesModel.placeListDS.data(placeList);
+        placesModel.updateDistance();
 
     },
 
