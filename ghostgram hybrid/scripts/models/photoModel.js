@@ -73,29 +73,9 @@ var photoModel = {
 
                     photo.ggType = photoModel._ggClass;
 
-                    var elPhoto = photo;
-
-                    delete elPhoto.ACL;
-
-                    delete elPhoto.__proto__;
-
-                    delete elPhoto.image;
-
-                    delete elPhoto.thumbnail;
-
-                    delete elPhoto.objectId;
-                    
-                    delete elPhoto.geoPoint.__type;
-
-                    delete elPhoto.geoPoint.__proto__;
-
-                    elPhoto.modifiedAt = elPhoto.updatedAt;
-
-                    elPhoto.uuid = elPhoto.photoId;
-
                     models.push(photo);
 
-                    elModels.push(elPhoto);
+                    /*elModels.push(elPhoto);*/
                 }
 
                 /*everlive.getCount('photos', function(error, count){
@@ -123,6 +103,29 @@ var photoModel = {
                 handleParseError(error);
             }
         });
+    },
+
+    _filterEverlive : function (photo) {
+        var elPhoto = photo;
+
+         delete elPhoto.ACL;
+
+         delete elPhoto.__proto__;
+
+         delete elPhoto.image;
+
+         delete elPhoto.thumbnail;
+
+         delete elPhoto.objectId;
+
+         delete elPhoto.geoPoint.__type;
+
+         delete elPhoto.geoPoint.__proto__;
+
+         elPhoto.modifiedAt = elPhoto.updatedAt;
+
+         elPhoto.uuid = elPhoto.photoId;
+
     },
 
 
