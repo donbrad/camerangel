@@ -112,10 +112,10 @@
 			offlineStorage: {
 				storage: {
 					provider: provider
-				},
+				}/*,
 				conflicts: {
 					strategy: Everlive.Constants.ConflictResolutionStrategy.ClientWins
-				}
+				}*/
 			},
 			encryption: {
 				provider: Everlive.Constants.EncryptionProvider.Default
