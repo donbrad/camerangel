@@ -30,15 +30,15 @@ var photoModel = {
     init: function () {
 
         photoModel.photosDS = new kendo.data.DataSource({  // this is the gallery datasource
-            type: 'everlive',
             offlineStorage: "photos",
+          /*  type: 'everlive',
             transport: {
                 typeName: 'photos',
                 dataProvider: APP.everlive
             },
             schema: {
                 model: { id:  Everlive.idField}
-            },
+            },*/
             sort: {
                 field: "timestamp",
                 dir: "desc"
