@@ -1109,33 +1109,32 @@ var channelView = {
             channelView._offersLoaded = true;
         });*/
 
-        if (!channelView.isPrivateNote) {
-            // This isn't privateNote so handle as private or group channel
-            var thisChannel = channelModel.findChannelModel(channelUUID);
-            if (thisChannel === null) {
-                mobileNotify("ChatView -- chat doesn't exist : " + channelUUID);
-                return;
-            }
 
-            channelView._channel = thisChannel;
-
-            if (thisChannel.isPlace !== undefined && thisChannel.isPlace === true) {
-                channelView.isPlaceChat = true;
-                $('#channel-titleBtn .icon-header').removeClass('hidden');
-            } else {
-                channelView.isPlaceChat = false;
-                $('#channel-titleBtn .icon-header').addClass('hidden');
-            }
-            channelModel.zeroUnreadCount(thisChannel.channelId);
-
-            name =  thisChannel.name;
-            $("#channelName").text(name);
-
-            channelView.members = thisChannel.members;
+        // This isn't privateNote so handle as private or group channel
+        var thisChannel = channelModel.findChannelModel(channelUUID);
+        if (thisChannel === null) {
+            mobileNotify("ChatView -- chat doesn't exist : " + channelUUID);
+            return;
         }
+
+        channelView._channel = thisChannel;
+
+        if (thisChannel.isPlace !== undefined && thisChannel.isPlace === true) {
+            channelView.isPlaceChat = true;
+            $('#channel-titleBtn .icon-header').removeClass('hidden');
+        } else {
+            channelView.isPlaceChat = false;
+            $('#channel-titleBtn .icon-header').addClass('hidden');
+        }
+        channelModel.zeroUnreadCount(thisChannel.channelId);
+
+        name =  thisChannel.name;
+        $("#channelName").text(name);
+
+        channelView.members = thisChannel.members;
+
         var contactUUID = null;
 
-        //default private mode off for now. Todo: don and jordan fix privacy mode
         channelView.privacyMode = false;
         // Privacy UI
         $('#privacyMode').html('<img src="images/privacy-off.svg" />');

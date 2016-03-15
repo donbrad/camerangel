@@ -1507,6 +1507,12 @@ var placeView = {
 
         var placeObj = placesModel.getPlaceModel(placeId);
 
+        if (placeObj === undefined) {
+            mobileNotify("Couldn't find shared place");
+            placeView.onDone();
+            return;
+        }
+        
         placeView._activePlaceModel = placeObj;
         placeView._activePlace.set('placeId', placeId);
         placeView._activePlace.set('name', placeObj.name);
