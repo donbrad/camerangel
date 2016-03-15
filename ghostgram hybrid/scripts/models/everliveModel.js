@@ -48,7 +48,10 @@ var everlive = {
         var data = APP.everlive.data(dataType);
         data.count()
             .then(function(data){
-                    callback(null, data)
+                    var count = null;
+                    if (data.result !== undefined)
+                        count = data.result;
+                    callback(null, count)
                 },
                 function(error){
                     callback(error, null);

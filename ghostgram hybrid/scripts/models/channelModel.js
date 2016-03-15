@@ -164,7 +164,21 @@ var channelModel = {
                     var data = object.toJSON();
                     models.push(data);
                 }
-                channelModel.channelsDS.data(models);
+
+                everlive.getCount('channels', function(error, count){
+                    if (error === null && count === 0) {
+                        everlive.createAll('channels', models, function (error1, data) {
+                            if (error1 !== null) {
+                                mobileNotify("Everlive Channels error " + JSON.stringify(error1));
+                            }
+                            channelModel.channelsDS.sync();
+                        });
+                    } else {
+                        mobileNotify("Everlive Channels error " + JSON.stringify(error));
+                    }
+
+                });
+                channelModel.channelsDS.sync();
                 deviceModel.setAppState('hasChannels', true);
                 deviceModel.isParseSyncComplete();
 

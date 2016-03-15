@@ -175,13 +175,17 @@ var placesModel = {
                 }
 
                 everlive.getCount('places', function(error, count){
-                    if (error !== null) {
+                    if (error === null && count === 0) {
                         everlive.createAll('places', models, function (error1, data) {
                             if (error1 !== null) {
-                                mobileNotify(JSON.stringify(error1));
+                                mobileNotify("Everlive Places error " + JSON.stringify(error1));
                             }
+
+                            placesModel.placesDS.sync();
                         });
-                    }
+                    } else {
+                        mobileNotify("Everlive Places error " + JSON.stringify(error));
+                     }
 
                 });
 
