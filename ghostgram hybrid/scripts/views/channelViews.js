@@ -817,7 +817,6 @@ var channelView = {
     privateContactId: null,
     privateContact : null,
     isPrivateChat: false,
-    isPrivateNote: false,
     privacyMode: false,  // Privacy mode - obscure messages after timeout
     currentContact: null,
     activeMessage: {},
@@ -1088,7 +1087,6 @@ var channelView = {
 
         channelView.toggleTitleTag();
         var channelUUID = e.view.params.channelId;
-        channelView.isPrivateNote = e.view.params.isprivatenote !== undefined;
 
         if (e.view.params.returnview !== undefined){
             channelView._returnview = unpackParameter(e.view.params.returnview);
@@ -1720,9 +1718,7 @@ var channelView = {
         if (validMessage === true ) {
             channelView._initMessageTextArea();
 
-            if (channelView.isPrivateNote) {
-                privateNoteChannel.sendMessage(text, channelView.activeMessage, 86400);
-            } else if (channelView.isPrivateChat) {
+           if (channelView.isPrivateChat) {
                 privateChannel.sendMessage(channelView.privateContactId, text, channelView.activeMessage, 86400);
             } else {
                 groupChannel.sendMessage(text, channelView.activeMessage, 86400);

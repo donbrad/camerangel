@@ -1512,7 +1512,7 @@ var placeView = {
             placeView.onDone();
             return;
         }
-        
+
         placeView._activePlaceModel = placeObj;
         placeView._activePlace.set('placeId', placeId);
         placeView._activePlace.set('name', placeObj.name);
