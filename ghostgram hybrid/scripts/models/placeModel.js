@@ -182,6 +182,9 @@ var placesModel = {
                             }
 
                             placesModel.placesDS.sync();
+                            mapModel.computePlaceDSDistance();
+
+                            placesModel.buildPlaceLists();
                         });
                     } else {
                         if (error !== null)
