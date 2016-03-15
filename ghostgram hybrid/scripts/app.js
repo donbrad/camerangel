@@ -116,7 +116,7 @@
 				}*/
 			},
 			encryption: {
-				provider: Everlive.Constants.EncryptionProvider.Default,
+				provider: Everlive.Constants.EncryptionProvider.Default
 				//key: 'intelligram'
 			},
 			authentication: {
