@@ -137,7 +137,7 @@ var contactModel = {
                     if (identicon === undefined || identicon === null || identicon === '') {
                         var contactId = model.get('uuid');
                         if (contactId !== undefined) {
-                            var url = contactModel.createIdenticon();
+                            var url = contactModel.createIdenticon(contactId);
                             model.set('identicon', url);
                         }
 
