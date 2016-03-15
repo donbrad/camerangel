@@ -263,7 +263,7 @@ var contactModel = {
                         if (error !== null)
                             mobileNotify("Everlive contacts error " + JSON.stringify(error));
 
-                        contactModel.contactsDS.sync();
+                        contactModel.contactsDS.fetch();
                         contactModel.buildContactList();
                         contactModel.updateContactListStatus(true);
                         contactModel.syncContactTags();
