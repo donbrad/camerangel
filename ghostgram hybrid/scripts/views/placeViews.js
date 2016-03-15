@@ -226,7 +226,7 @@ var placesView = {
                     var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, oldPlace.lat, oldPlace.lng);
                     oldPlace.set('distance', distance.toFixed(2));
                 }
-               
+
                 oldPlace.set(field, newValue);
             }
 
