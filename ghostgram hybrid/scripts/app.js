@@ -86,8 +86,6 @@
 
 		deviceModel.init();
 
-
-
 		// hide the splash screen as soon as the app is ready. otherwise
 		navigator.splashscreen.hide();
 		// Set status bar color
