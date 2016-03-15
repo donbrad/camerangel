@@ -58,7 +58,7 @@ var photoModel = {
 
         query.find({
             success: function(collection) {
-                var models = [], elModels = [],
+                var models = [], elModels = [];
                 for (var i = 0; i < collection.length; i++) {
 
                     var parsePhoto = collection[i];
