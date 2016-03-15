@@ -77,7 +77,21 @@ var photoModel = {
 
                     delete elPhoto.ACL;
 
+                    delete elPhoto.__proto__;
+
+                    delete elPhoto.image;
+
+                    delete elPhoto.thumbnail;
+
+                    delete elPhoto.objectId;
+                    
                     delete elPhoto.geoPoint.__type;
+
+                    delete elPhoto.geoPoint.__proto__;
+
+                    elPhoto.modifiedAt = elPhoto.updatedAt;
+
+                    elPhoto.uuid = elPhoto.photoId;
 
                     models.push(photo);
 
