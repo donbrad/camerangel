@@ -268,6 +268,7 @@ var userModel = {
 
                 APP.everlive.users.currentUser(function(data) {
                     if (data.result) {
+                        everlive._user = data.result;
                         mobileNotify(data.result.Username + " is logged in to Everlive!");
                     } else {
                         var username = user.get('username'), password = user.get('recoveryPassword');

@@ -10,6 +10,7 @@ var everlive = {
 
     _token : null,
     _signedIn : false,
+    _user : null,
 
     createAccount: function (username, name, password, callback) {
         var attrs = {
@@ -43,6 +44,15 @@ var everlive = {
             });
     },
 
+    currentUser : function () {
+        APP.everlive.Users.currentUser()
+            .then(function (data) {
+                    everlive._user = data.result;
+                },
+                function(error){
+                   mobileNotify("Everlive User Error : " + JSON.stringify(error));
+                });
+    },
 
     getCount : function (dataType, callback) {
         var data = APP.everlive.data(dataType);
