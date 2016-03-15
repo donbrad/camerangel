@@ -43,6 +43,90 @@ var everlive = {
             });
     },
 
+
+    getCount : function (dataType, callback) {
+        var data = APP.everlive.data(dataType);
+        data.count()
+            .then(function(data){
+                    var count = null;
+                    if (data.result !== undefined)
+                        count = data.result;
+                    callback(null, count)
+                },
+                function(error){
+                    callback(error, null);
+                });
+    },
+
+
+
+    updateOne: function (dataType, dataObject, callback) {
+        var data = APP.everlive.data(dataType);
+        data.update(dataObject,
+            function(data){
+                callback(null, data);
+            },
+            function(error){
+                callback(error, null);
+            });
+    },
+
+    updateAll : function (dataType, dataList) {
+        var data = APP.everlive.data(dataType);
+        data.update(dataList, // filter expression
+            function(data){
+                alert(JSON.stringify(data));
+            },
+            function(error){
+                alert(JSON.stringify(error));
+            });
+    },
+
+
+    createOne: function (dataType, dataObject, callback) {
+        var data = APP.everlive.data(dataType);
+        data.create(dataObject,
+            function(data){
+                callback(null, data);
+            },
+            function(error){
+                callback(error, null);
+            });
+    },
+
+    createAll : function (dataType, dataList, callback) {
+        var data = APP.everlive.data(dataType);
+        data.create(dataList, // filter expression
+            function(data){
+               callback(null, data);
+            },
+            function(error){
+               callback(error, null);
+            });
+    },
+
+    deleteOne : function (dataType, dataObject,callback) {
+        var data = APP.everlive.data(dataType);
+        data.destroy(dataObject, // filter expression
+            function(data){
+                callback(null, data);
+            },
+            function(error){
+                callback(error, null);
+            });
+    },
+
+    deleteAll : function (dataType, callback) {
+        var data = APP.everlive.data(dataType);
+        data.destroy( // filter expression
+            function(data){
+                callback(null, data);
+            },
+            function(error){
+                callback(error, null);
+            });
+    },
+
     logout : function () {
         APP.everlive.authentication.clearAuthorization();
         everlive._signedIn = false;
@@ -52,7 +136,13 @@ var everlive = {
 
     },
 
-    syncEnd : function ()  {
+    syncEnd : function (syncInfo)  {
+        var err = syncInfo.error;
+        if (err) {
+            mobileNotify('Kendo Sync Error : ' + JSON.stringify(err));
+        } else if (err === '') {
+            mobileNotify('Kendo Sync Error : unknown...');
+        }
 
     }
 

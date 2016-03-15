@@ -13,7 +13,7 @@
 var privateNotesView = {
     topOffset: 0,
     notesDS : null,
-    activeNote: {},
+    activeNote: {objects: [], photos: []},
     noteObjects: [],
     notePhotos: [],
     _titleTagActive: false,
@@ -45,7 +45,7 @@ var privateNotesView = {
 
 
         $("#privateNoteTags").kendoMultiSelect({
-            placeholder: "Select tags...",
+            placeholder: "Add tags...",
             dataTextField: "name",
             dataValueField: "uuid",
             autoBind: false,
@@ -61,18 +61,49 @@ var privateNotesView = {
                 // Use the value of the widget
             }
         });
+
+        $.Redactor.prototype.clear = function()
+        {
+            return {
+                init: function ()
+                {
+                    var button = this.button.add('clear', 'Clear');
+                    this.button.addCallback(button, this.clear.clear);
+                },
+                clear: function()
+                {
+                   privateNotesView.noteInit();
+                }
+            };
+        };
+
+        $.Redactor.prototype.save = function()
+        {
+            return {
+                init: function ()
+                {
+                    var button = this.button.add('save', 'Save');
+                    this.button.addCallback(button, this.save.save);
+                },
+                save: function()
+                {
+                    privateNotesView.saveNote();
+                }
+            };
+        };
     },
 
     // Initialize the channel specific view data sources.
     noteInit : function () {
 
         privateNotesView.noteObjects = [];
-        privateNotesView.activeNote = {objects: []};
-
-        privateNotesView._editMode = false;
+        privateNotesView.activeNote = {objects: [], photos:[]};
+        privateNotesView._editView = false;
+        privateNotesView.deactivateEditor();
        $('#privateNoteTitle').val("");
-
         $('#privateNoteTags').val("");
+        $('#privateNoteTextArea').val('');
+        $('#privateNoteTextArea').redactor('code.set', "");
 
     },
 
@@ -103,14 +134,12 @@ var privateNotesView = {
         $('#privateNoteTextArea').val('');
         $('#privateNoteTextArea').redactor('code.set', "");
 
-        privateNotesView.shrinkEditor();
         if (privateNotesView._editorActive) {
             privateNotesView._editorActive = false;
             privateNotesView.deactivateEditor();
         }
 
     },
-
 
     noteAddPhoto : function (photoId) {
 
@@ -129,7 +158,7 @@ var privateNotesView = {
             };
         }
 
-        privateNotesView.activeNote.photos.push(photoObj);
+        privateNotesView.notePhotos.push(photoObj);
         // photoModel.addPhotoOffer(photo.photoId, channelView._channelId, photo.thumbnailUrl, photo.imageUrl, canCopy);
     },
 
@@ -163,7 +192,7 @@ var privateNotesView = {
             validNote = true;
         } else {
             // Initialize the activeNote if we're not editing.
-            privateNotesView.activeNote = {objects: []};
+            privateNotesView.activeNote = {objects: [], photos: []};
         }
 
 
@@ -228,7 +257,7 @@ var privateNotesView = {
                 privateNotesView._saveNote(text, privateNotesView.activeNote);
             }
 
-            privateNotesView._initTextArea();
+            //privateNotesView._initTextArea();
 
             privateNotesView.noteInit();
         }
@@ -267,14 +296,13 @@ var privateNotesView = {
 
         privateNoteModel.notesDS.add(message);
         privateNoteModel.notesDS.sync();
-        //channelView.messagesDS.add(message);
         privateNotesView.scrollToBottom();
 
         deviceModel.syncEverlive();
 
     },
 
-    toggleTitleTag : function () {
+  /*  toggleTitleTag : function () {
 
         if (privateNotesView._titleTagActive)
             $('#privateNoteTitleTag').removeClass('hidden');
@@ -288,19 +316,33 @@ var privateNotesView = {
         privateNotesView._titleTagActive = !privateNotesView._titleTagActive;
         privateNotesView.toggleTitleTag();
     },
-
+*/
     activateEditor : function () {
 
+        $(".redactor-editor").velocity({height: "15em"},{duration: 300});
+        privateNotesView._editorView = true;
         $("#privateNoteToolbar").removeClass('hidden');
-        $("#privateNote-editorBtnImg").attr("src","images/icon-editor-active.svg");
+        $('#privateNoteTitleTag').removeClass('hidden');
+
+        /*$("#privateNoteToolbar").removeClass('hidden');
+        $("#privateNote-editorBtnImg").attr("src","images/icon-editor-active.svg");*/
 
     },
 
     deactivateEditor : function () {
 
-        $("#privateNoteToolbar").addClass('hidden');
-        $("#privateNote-editorBtnImg").attr("src","images/icon-editor.svg");
+        privateNotesView._editorView = false;
+       privateNotesView.hideEditor();
 
+
+    },
+
+
+    hideEditor : function () {
+        $(".redactor-editor").velocity({height: "3em"},{duration: 300});
+        $("#privateNoteToolbar").addClass('hidden');
+        $('#privateNoteTitleTag').addClass('hidden');
+        ux.hideKeyboard();
     },
 
     openEditor : function () {
@@ -312,7 +354,10 @@ var privateNotesView = {
                 minHeight: 36,
                 maxHeight: 380,
                 focus: false,
+                imageEditable: false, // disable image edit mode on click
+                imageResizable: false, // disable image resize mode on click
                 placeholder: 'Add Note...',
+                plugins: ['clear', 'save'],
                 callbacks: {
                      paste: function(content)
                      {
@@ -328,29 +373,16 @@ var privateNotesView = {
                          this.selection.replace("");
                          return(contentOut);
                      },
-                    focus: function(e){
-                        _preventDefault(e);
 
-                        // Simulator fires focus event wrong
-                        if (window.navigator.simulator === true) {
-                            $(".redactor-editor").css("height", "15em");
-                        } else {
-                            if(!privateNotesView._editorView){
-                                $(".redactor-editor").velocity({height: "15em"},{duration: 300});
-                                privateNotesView._editorView = true;
-                            } else {
-                                $(".redactor-editor").velocity({height: "3em"},{duration: 300});
-                                privateNotesView._editorView = false;
-                            }
-                        }
+                    focus: function(e){
+                        privateNotesView.activateEditor();
 
 
                     },
                     blur: function(e){
-                        _preventDefault(e);
-
-                        $(".redactor-editor").velocity({height: "3em"},{duration: 300});
-                        privateNotesView._editorView = false;
+                        if (!privateNotesView._editorView) {
+                            privateNotesView.deactivateEditor() ;
+                        }
 
 
                     },
@@ -358,7 +390,6 @@ var privateNotesView = {
 
                     }
                  },
-
 
                 formatting: ['p', 'blockquote', 'h1', 'h2','h3'],
                 buttons: ['format', 'bold', 'italic', 'lists', 'horizontalrule'],
@@ -375,20 +406,10 @@ var privateNotesView = {
             $('#privateNoteTextArea').redactor('core.destroy');
         }
 
-        $("#privateNoteToolbar").addClass('hidden');
+        privateNotesView.deactivateEditor();
 
     },
 
-    noteEditor : function (e) {
-        _preventDefault(e);
-        privateNotesView._editorActive = !privateNotesView._editorActive;
-        if (privateNotesView._editorActive){
-            privateNotesView.activateEditor();
-
-        } else {
-            privateNotesView.deactivateEditor();
-        }
-    },
 
 
     addEvent : function (e) {
@@ -404,7 +425,7 @@ var privateNotesView = {
         _preventDefault(e);
        if (privateNotesView.activeNote.noteId !== undefined) {
            privateNoteModel.deleteNote(privateNotesView.activeNote);
-           privateNotesView.activeNote = {objects: []};
+           privateNotesView.activeNote = {objects: [], photos: []};
        }
 
     },
@@ -422,9 +443,7 @@ var privateNotesView = {
             $('#privateNoteTags').val(privateNotesView.activeNote.tagString);
             $('#privateNoteTextArea').redactor('code.set', content);
 
-            privateNotesView._titleTagActive = true;
-
-            privateNotesView.toggleTitleTag();
+            privateNotesView.activateEditor();
             $("#privateNoteViewActions").data("kendoMobileActionSheet").close();
         }
 
@@ -688,7 +707,7 @@ var privateNotesView = {
                         }
                     },
                     function (msg) {
-                        mobileNotify("KO: " + msg);
+                        mobileNotify("SafariView Error : " + msg);
                     })
             } else {
                 // potentially powered by InAppBrowser because that (currently) clobbers window.open
@@ -710,7 +729,7 @@ var privateNotesView = {
 
         if (photoObj !== undefined) {
 
-            var imgUrl = '<img class="photo-note" data-photoid="'+ photoId + '" id="notephoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
+            var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="notephoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
 
             $('#privateNoteTextArea').redactor('insert.node', $('<div />').html(imgUrl));
 
@@ -808,6 +827,10 @@ var privateNotesView = {
     tapNote : function (e) {
        // e.preventDefault();
 
+        // User has clicked in message area, so hide the keyboard
+       privateNotesView.hideEditor();
+
+
         var $target = $(e.touch.initialTouch);
         var dataSource = privateNoteModel.notesDS;
         var noteId = null;
@@ -822,7 +845,7 @@ var privateNotesView = {
         }
 
         if (noteId === undefined || noteId === null) {
-            mobileNotify("No message content to display...");
+            mobileNotify("No Note content to display...");
         }
 
         var note = dataSource.getByUid(noteId);
@@ -831,15 +854,11 @@ var privateNotesView = {
             privateNotesView.activeNote = note;
         }
 
-        // User has clicked in message area, so hide the keyboard
-        // ux.hideKeyboard();
-
         // User actually clicked on the photo so show the open the photo viewer
-        if ($target.hasClass('photo-note')) {
-            // Todo: Don map chat photos to note photos -- ?convert photos from data to objects.
-      /*      var photoId = $target.attr('data-photoId');
+        if ($target.hasClass('photo-chat')) {
 
-            // todo Don - review photos source
+            var photoId = $target.attr('data-photoId');
+
             if (message.data !== undefined && message.data.photos !== undefined) {
                 var photoList = message.data.photos;
 
@@ -851,9 +870,7 @@ var privateNotesView = {
                         return;
                     }
                 }
-            }*/
-
-
+            }
         }
 
     },

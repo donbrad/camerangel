@@ -26,6 +26,7 @@ var contactsView = {
         $("#contacts-listview").kendoMobileListView({
             dataSource: contactModel.contactListDS,
             template: $("#contactsTemplate").html(),
+            autoBind: false,
             headerTemplate: $("#contactsHeaderTemplate").html(),
             fixedHeaders: true,
             dataBound: function(e){
@@ -129,7 +130,9 @@ var contactsView = {
 
     onShow : function (e) {
        _preventDefault(e);
-       
+
+        $("#contacts-listview").data("kendoMobileListView").scroller().reset();
+
         if (!contactsView._viewInitialized) {
             contactsView._viewInitialized = true;
          
@@ -1202,7 +1205,19 @@ var editContactView = {
     },
 
     syncWithDevice : function (e) {
+        _preventDefault(e);
 
+    },
+
+
+    deleteContact: function (e) {
+        _preventDefault(e);
+
+        contactModel.deleteContact(editContactView._activeContact.uuid);
+
+        mobileNotify("Deleting " + editContactView._activeContact.name);
+
+        editContactView.onDone();
     }
 };
 

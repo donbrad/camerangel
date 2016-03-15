@@ -17,20 +17,33 @@ var photoModel = {
     previewSize: "33%",
     optionsShown: false,
     parsePhoto: {},
-    photosDS: new kendo.data.DataSource({  // this is the gallery datasource
-        offlineStorage: "gallery"
-    }),
+    photosDS: null,
 
-    offersDS: new kendo.data.DataSource({  // this is the gallery datasource
+    offersDS: new kendo.data.DataSource({
         offlineStorage: "offers"
     }),
 
-    deletedPhotosDS: new kendo.data.DataSource({  // this is the gallery datasource
+    deletedPhotosDS: new kendo.data.DataSource({
         offlineStorage: "deletedphotos"
     }),
 
     init: function () {
 
+        photoModel.photosDS = new kendo.data.DataSource({  // this is the gallery datasource
+            type: 'everlive',
+            offlineStorage: "photos",
+            transport: {
+                typeName: 'photos',
+                dataProvider: APP.everlive
+            },
+            schema: {
+                model: { id:  Everlive.idField}
+            },
+            sort: {
+                field: "timestamp",
+                dir: "desc"
+            }
+        });
     },
 
     initOffer : function () {
@@ -45,7 +58,7 @@ var photoModel = {
 
         query.find({
             success: function(collection) {
-                var models = [];
+                var models = [], elModels = [];
                 for (var i = 0; i < collection.length; i++) {
 
                     var parsePhoto = collection[i];
@@ -61,15 +74,58 @@ var photoModel = {
                     photo.ggType = photoModel._ggClass;
 
                     models.push(photo);
+
+                    /*elModels.push(elPhoto);*/
                 }
+
+                /*everlive.getCount('photos', function(error, count){
+                    if (error === null && count === 0) {
+                        everlive.createAll('photos', models, function (error1, data) {
+                            if (error1 !== null) {
+                                mobileNotify("Everlive Photo error " + JSON.stringify(error1));
+                            }
+                            photoModel.photosDS.sync();
+                        });
+                    } else {
+                        if (error !== null)
+                            mobileNotify("Everlive Photo error " + JSON.stringify(error));
+                    }
+
+                });
+                 photoModel.photosDS.fetch();
+*/
                 deviceModel.setAppState('hasPhotos', true);
                 photoModel.photosDS.data(models);
+                photoModel.photosDS.sync();
                 deviceModel.isParseSyncComplete();
             },
             error: function(error) {
                 handleParseError(error);
             }
         });
+    },
+
+    _filterEverlive : function (photo) {
+        var elPhoto = photo;
+
+         delete elPhoto.ACL;
+
+         delete elPhoto.__proto__;
+
+         delete elPhoto.image;
+
+         delete elPhoto.thumbnail;
+
+         delete elPhoto.objectId;
+
+         delete elPhoto.geoPoint.__type;
+
+         delete elPhoto.geoPoint.__proto__;
+
+         elPhoto.modifiedAt = elPhoto.updatedAt;
+
+         elPhoto.uuid = elPhoto.photoId;
+
     },
 
 

@@ -42,13 +42,7 @@ var placesModel = {
         isPrivate: true
     },
 
-    placesDS: new kendo.data.DataSource({
-        offlineStorage: "places",
-        sort: {
-            field: "distance",
-            dir: "asc"
-        }
-    }),
+    placesDS: null,
 
     placeListDS: new kendo.data.DataSource({
         sort: {
@@ -57,14 +51,74 @@ var placesModel = {
         }
     }),
 
-    placesTagsDS: new kendo.data.DataSource({
-        offlineStorage: "placeTags",
-        sort: {
-            field: "name",
-            dir: "asc"
-        }
-    }),
 
+    init : function () {
+
+        placesModel.placesDS = new kendo.data.DataSource({
+            type: 'everlive',
+            offlineStorage: "places",
+            transport: {
+                typeName: 'places',
+                dataProvider: APP.everlive
+            },
+            schema: {
+                model: { id:  Everlive.idField}
+            },
+            sort: {
+                field: "distance",
+                dir: "asc"
+            }
+        });
+
+        placesModel.placesDS.fetch();
+
+
+        // Reflect any core contact changes to contactList
+        placesModel.placesDS.bind("change", function (e) {
+            // Rebuild the contactList cache when the underlying list changes: add, delete, update...
+            //placesModel.syncPlaceListDS();
+            var changedPlaces = e.items;
+
+            if (e.action !== undefined) {
+                switch (e.action) {
+                    case "itemchange" :
+                        var field  =  e.field;
+                        var place = e.items[0], placeId = place.uuid;
+                        var placeList = placesModel.findPlaceListUUID(placeId);
+
+                        // if the places's name or alias has been updated, need to update the tag...
+                        var tagList = tagModel.findTagByCategoryId(place.uuid);
+                        if (tagList.length > 0) {
+                            var placeTag = tagList[0];
+                            placeTag.set('alias',place.alias);
+                            placeTag.set('name', place.name);
+                        }
+
+
+                        if (placeList !== undefined)
+                        //placeList[field] = place [field];
+                            placeList.set(field, place[field]);
+
+                        break;
+
+                    case "remove" :
+                        // delete from contact list
+                        break;
+
+                    case "add" :
+                        var place = e.items[0];
+                        // add to contactlist and contacttags
+                        var placeList = placesModel.findPlaceListUUID(place.uuid);
+                        if (placeList === undefined)
+                            placesModel.placeListDS.add(place);
+                        tagModel.addPlaceTag(place.name, place.alias, '', place.uuid);
+                        break;
+                }
+            }
+
+
+        });
+    },
 
     newPlace : function () {
         return(new Object(placesModel._placeModel));
@@ -116,17 +170,36 @@ var placesModel = {
                         parseModel.save();
 
                     var model = parseModel.toJSON();
-                    var tag = {type: 'place', tagname: ux.returnUXPrimaryName(model.name, model.alias), name: model.name, uuid: model.uuid };
-                    placesModel.placesTagsDS.add(tag);
+
                     models.push(model);
                 }
 
-                placesModel.placesDS.data(models);
-                mapModel.computePlaceDSDistance();
+                everlive.getCount('places', function(error, count){
+                    if (error === null && count === 0) {
+                        everlive.createAll('places', models, function (error1, data) {
+                            if (error1 !== null) {
+                                mobileNotify("Everlive Places error " + JSON.stringify(error1));
+                            }
 
-                placesModel.buildPlaceLists();
-                deviceModel.setAppState('hasPlaces', true);
-                deviceModel.isParseSyncComplete();
+                            placesModel.placesDS.sync();
+                            //placesModel.computePlaceDSDistance();
+                            placesModel.syncPlaceListDS();
+                            deviceModel.setAppState('hasPlaces', true);
+                            deviceModel.isParseSyncComplete();
+                        });
+                    } else {
+                        if (error !== null)
+                            mobileNotify("Everlive Places error " + JSON.stringify(error));
+
+                        placesModel.placesDS.fetch();
+                        placesModel.syncPlaceListDS();
+                        deviceModel.setAppState('hasPlaces', true);
+                        deviceModel.isParseSyncComplete();
+                     }
+
+                });
+
+
             },
             error: function(error) {
                 handleParseError(error);
@@ -134,77 +207,36 @@ var placesModel = {
         });
     },
 
-    init : function () {
-        // Reflect any core contact changes to contactList
-        placesModel.placesDS.bind("change", function (e) {
-            // Rebuild the contactList cache when the underlying list changes: add, delete, update...
-            //placesModel.buildPlaceLists();
-            var changedPlaces = e.items;
 
-            if (e.action !== undefined) {
-                switch (e.action) {
-                    case "itemchange" :
-                        var field  =  e.field;
-                        var place = e.items[0], placeId = place.uuid;
-                        var placeList = placesModel.findPlaceListUUID(placeId);
+   updateDistance : function() {
+        var length = placesModel.placeListDS.total();
 
-                        // if the contact's name or alias has been updated, need to update the tag...
-                        if (field === 'name') {
-                            var newName = ux.returnUXPrimaryName(place.name, place.alias);
-                            var placeTag = placesModel.findPlaceTag(place.uuid);
+        for (var i=0; i< length; i++) {
+            var place = placesModel.placeListDS.at(i);
+            var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, place.lat, place.lng);
+            place.set('distance', parseFloat(distance.toFixed(2)));
+        }
 
-                            placeTag.name = newName;
-                        }
-                        if (field === 'alias') {
-                            var newName = ux.returnUXPrimaryName(place.name, place.alias);
-                            var placeTag = placesModel.findPlaceTag(place.uuid);
-                            placeTag.alias = place.alias;
+    },
 
-                        }
+    computePlaceDistance: function (placeUUID) {
 
-                        if (placeList !== undefined)
-                            //placeList[field] = place [field];
-                            placeList.set(field, place[field]);
+        var placeModel = placesModel.getPlaceModel(placeUUID);
+        if (placeModel !== undefined) {
+            // computer and store distance in miles
+            var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, placeModel.lat, placeModel.lng);
+            placeModel.set('distance', parseFloat(distance.toFixed(2)));
+        }
 
-                        break;
+    },
 
-                    case "remove" :
-                        // delete from contact list
-                        break;
+    syncPlaceListDS : function () {
 
-                    case "add" :
-                        var place = e.items[0];
-                        // add to contactlist and contacttags
-                        var placeList = placesModel.findPlaceListUUID(place.uuid);
-                        if (placeList === undefined)
-                            placesModel.placeListDS.add(place);
-                        var tag = {
-                            type: 'place',
-                            tagname: ux.returnUXPrimaryName(place.name, place.alias),
-                            name: place.name,
-                            uuid: place.uuid,
-                            icon: 'images/icon-location.svg'
-                        };
-                        contactModel.contactTagsDS.add(tag);
-                        break;
-                }
-            }
-
-
-        });
-     },
-
-    buildPlaceLists : function () {
-        placesModel.placesTagsDS.data([]);
         placesModel.placeListDS.data([]);
         var placeList = placesModel.placesDS.data();
         placesModel.placeListDS.data(placeList);
+        placesModel.updateDistance();
 
-        for (var i=0; i< placeList.length; i++) {
-            var model = (placeList[i]).toJSON();
-            var tag = {type: 'place', tagname: ux.returnUXPrimaryName(model.name, model.alias), name: model.name, alias: model.alias, uuid: model.uuid, objectUUID: model.uuid, icon: 'images/icon-locationPin.svg' };
-            placesModel.placesTagsDS.add(tag);
-        }
     },
 
     queryPlace : function (query) {
@@ -233,28 +265,6 @@ var placesModel = {
         if (query === undefined)
             return(undefined);
         var dataSource = placesModel.placeListDS;
-        var cacheFilter = dataSource.filter();
-        if (cacheFilter === undefined) {
-            cacheFilter = {};
-        }
-        dataSource.filter( query);
-        var view = dataSource.view();
-        var place = view[0];
-
-        dataSource.filter(cacheFilter);
-
-        return(place);
-    },
-
-    findPlaceTag: function (uuid) {
-        var placeList = placesModel.queryPlaceTag({ field: "uuid", operator: "eq", value: uuid });
-        return(placeList);
-    },
-
-    queryPlaceTag : function (query) {
-        if (query === undefined)
-            return(undefined);
-        var dataSource = placesModel.placesTagsDS;
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
             cacheFilter = {};

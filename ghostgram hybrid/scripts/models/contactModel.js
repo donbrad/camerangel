@@ -12,22 +12,8 @@ var contactModel = {
     _ggClass: 'Contact',
     _parseClass: 'contacts',
 
-   contactsDS: new kendo.data.DataSource({
-        offlineStorage: "contacts",
-        sort: {
-            field: "name",
-            dir: "asc"
-        }
-    }),
+   contactsDS: null,
 
-
-    contactTagsDS: new kendo.data.DataSource({
-        offlineStorage: 'contactTags',
-        sort: {
-            field: "name",
-            dir: "asc"
-        }
-    }),
 
     deviceContactsDS: new kendo.data.DataSource({
         sort: {
@@ -62,8 +48,24 @@ var contactModel = {
 
     init : function () {
 
-        contactModel.contactListDS.online(false);
-        contactModel.contactTagsDS.online(false);
+
+        contactModel.contactsDS = new kendo.data.DataSource({
+            type: 'everlive',
+            offlineStorage: "contacts",
+            transport: {
+                typeName: 'contacts',
+                dataProvider: APP.everlive
+            },
+            schema: {
+                model: { id:  Everlive.idField}
+            },
+            sort: {
+                field: "name",
+                dir: "asc"
+            }
+        });
+
+
 
         // Reflect any core contact changes to contactList
         contactModel.contactsDS.bind("change", function (e) {
@@ -76,18 +78,13 @@ var contactModel = {
                         var contact = e.items[0], contactId = contact.uuid;
                         var contactList = contactModel.findContactListUUID(contactId);
                         // if the contact's name or alias has been updated, need to update the tag...
-                        if (field === 'name') {
-                            var newName = ux.returnUXPrimaryName(contact.name, contact.alias);
-                            var contactTag = contactModel.findContactTag(contact.uuid);
-                            contactTag.alias = newName;
-                            contactTag.name = contact.name;
-                        }
-                        if (field === 'alias') {
-                            var newName = ux.returnUXPrimaryName(contact.name, contact.alias);
-                            var contactTag = contactModel.findContactTag(contact.uuid);
-                            contactTag.alias = newName;
-                            contactTag.alias = contact.alias;
-                        }
+                        var tagList = tagModel.findTagByCategoryId(contact.uuid);
+
+                            if (tagList.length > 0) {
+                                var contactTag = tagList[0];
+                                contactTag.set('alias',contact.alias);
+                                contactTag.set('name', contact.name);
+                            }
                         contactList[field] = contact [field];
                         break;
 
@@ -101,21 +98,18 @@ var contactModel = {
                         var contactList = contactModel.findContactList(contact.uuid);
                         if (contactList !== undefined)
                             contactModel.contactListDS.add(contact);
-                        var tag = {
-                            type: 'contact',
-                            tagname: ux.returnUXPrimaryName(contact.name, contact.alias),
-                            name: contact.name,
-                            uuid: contact.uuid,
-                            contactUUID: contact.contactUUID,
-                            icon: 'images/icon-contact.svg'
-                        };
-                        contactModel.contactTagsDS.add(tag);
+
+                        tagModel.addContactTag(contact.name, contact.alias, '', contact.uuid);
                          break;
                 }
             }
 
 
         });
+
+
+
+        contactModel.contactListDS.online(false);
 
     },
 
@@ -127,21 +121,37 @@ var contactModel = {
 
 
     fetch : function () {
-        var ContactModel = Parse.Object.extend(contactModel._parseClass);
-        var query = new Parse.Query(ContactModel);
+
+        var parseContactModel = Parse.Object.extend(contactModel._parseClass);
+        var query = new Parse.Query(parseContactModel);
         query.limit(1000);
 
         query.find({
             success: function(collection) {
+                contactModel.contactsDS.data([]);
                 var models = [];
                 for (var i = 0; i < collection.length; i++) {
                     var model = collection[i];
-                    var dirty = false;
-                   // Set the photo to identicon
-                    var url = contactModel.createIdenticon(model.get('uuid'));
 
                     var identicon = model.get('identicon');
                     if (identicon === undefined || identicon === null || identicon === '') {
+                        var contactId = model.get('uuid');
+                        if (contactId !== undefined) {
+                            var url = contactModel.createIdenticon(contactId);
+                            model.set('identicon', url);
+                        }
+
+                    }
+
+                    if (model.get('groups') === undefined){
+                        model.set('groups', []);
+                    }
+                   /* var dirty = false;
+
+
+                    var identicon = model.get('identicon');
+                    if (identicon === undefined || identicon === null || identicon === '') {
+                        var url = contactModel.createIdenticon(model.get('uuid'));
                         model.set('identicon', url);
                     }
                   //  var photo = model.get('photo');
@@ -213,23 +223,44 @@ var contactModel = {
                     }
 
                     if (dirty)
-                        model.save();
+                        model.save();*/
                     var data = model.toJSON();
 
                     models.push(data);
                 }
-                deviceModel.setAppState('hasContacts', true);
-                contactModel.contactsDS.data(models);
+
+                everlive.getCount('contacts', function(error, count){
+                    if (error === null && count === 0) {
+                        everlive.createAll('contacts', models, function (error1, data) {
+                            if (error1 !== null) {
+                                mobileNotify("Everlive contacts error " + JSON.stringify(error1));
+                            }
+                            contactModel.contactsDS.sync();
+                            contactModel.buildContactList();
+                            contactModel.updateContactListStatus(true);
+
+                            deviceModel.setAppState('hasContacts', true);
+                            deviceModel.isParseSyncComplete();
+                        });
+                    } else {
+                        if (error !== null)
+                            mobileNotify("Everlive contacts error " + JSON.stringify(error));
+
+                        contactModel.contactsDS.sync();
+                        contactModel.buildContactList();
+                        contactModel.updateContactListStatus(true);
+
+                        deviceModel.setAppState('hasContacts', true);
+                        deviceModel.isParseSyncComplete();
+                    }
+
+                });
+
+
+
 
                 // Update contactlistDs and get latest status for contacts
                // contactModel.contactListDS.data(models);
-
-                contactModel.buildContactList();
-
-                contactModel.updateContactListStatus(true);
-
-                deviceModel.isParseSyncComplete();
-
 
 
             },
@@ -250,7 +281,6 @@ var contactModel = {
     // Build an identity list for contacts indexed by contactUUID
     buildContactList : function () {
         var array = contactModel.contactsDS.data();
-        contactModel.contactTagsDS.data([]);
         contactModel.contactListDS.data([]);
         contactModel.contactList = [];
 
@@ -272,19 +302,11 @@ var contactModel = {
                     isBlocked: contact.isBlocked
                 };
             }
-            var tag = {
-                type: 'contact',
-                tagname: ux.returnUXPrimaryName(contact.name, contact.alias),
-                name: contact.name,
-                alias: contact.alias,
-                uuid: contact.uuid,
-                objectUUID: contact.contactUUID,
-                icon: 'images/icon-contact.svg'
-            };
-            contactModel.contactTagsDS.add(tag);
+
             contactModel.contactListDS.add(contact);
         }
 
+        contactModel.contactListDS.fetch();
     },
 
     addContactToContactList : function (contact) {
@@ -344,28 +366,6 @@ var contactModel = {
         return(contact);
     },
 
-    findContactTag : function (uuid) {
-        var contact = contactModel.queryContactTag({ field: "uuid", operator: "eq", value: uuid });
-
-        return (contact);
-    },
-
-    queryContactTag : function (query) {
-        if (query === undefined)
-            return(undefined);
-        var dataSource = contactModel.contactTagsDS;
-        var cacheFilter = dataSource.filter();
-        if (cacheFilter === undefined) {
-            cacheFilter = {};
-        }
-        dataSource.filter( query);
-        var view = dataSource.view();
-        var contact = view[0];
-
-        dataSource.filter(cacheFilter);
-
-        return(contact);
-    },
     queryContactList : function (query) {
         if (query === undefined)
             return(undefined);
@@ -377,7 +377,9 @@ var contactModel = {
         dataSource.filter( query);
         var view = dataSource.view();
 
-        var contact = view[0].items[0];
+        var contact = null;
+        if (view.length > 0)
+        contact = view[0].items[0];
 
         dataSource.filter(cacheFilter);
 

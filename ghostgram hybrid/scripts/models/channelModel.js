@@ -18,13 +18,7 @@ var channelModel = {
 
     _messageCountRefresh : 300000,   // Delta between message count  calls (in milliseconds)
 
-    channelsDS: new kendo.data.DataSource({
-        offlineStorage: "channels",
-        sort: {
-            field: "lastAccess",
-            dir: "desc"
-        }
-    }),
+    channelsDS: null,
 
     // List of all active private channels (those with messages)
     privateChannelsDS: new kendo.data.DataSource({
@@ -45,6 +39,22 @@ var channelModel = {
 
         channelModel.activeChannels = [];
 
+        channelModel.channelsDS = new kendo.data.DataSource({
+            type: 'everlive',
+            offlineStorage: "channels",
+            transport: {
+                typeName: 'channels',
+                dataProvider: APP.everlive
+            },
+            schema: {
+                model: { id:  Everlive.idField}
+            },
+            sort: {
+                field: "lastAccess",
+                dir: "desc"
+            }
+        });
+
         // Reflect any core channel changes to channelList
         channelModel.channelsDS.bind("change", function (e) {
             // Rebuild the channelView.channelListDS when the underlying list changes: add, delete, update...
@@ -56,7 +66,7 @@ var channelModel = {
                         var field  =  e.field;
                         var channel = e.items[0], channelId = channel.channelId;
                         var channelList = channelsView.findChannelModel(channelId);
-
+                        if (channelList !== undefined)
                         channelList.set(field, channel [field]);
                         break;
 
@@ -154,11 +164,33 @@ var channelModel = {
                     var data = object.toJSON();
                     models.push(data);
                 }
-                channelModel.channelsDS.data(models);
-                deviceModel.setAppState('hasChannels', true);
-                deviceModel.isParseSyncComplete();
 
-                notificationModel.processUnreadChannels();
+                everlive.getCount('channels', function(error, count){
+                    if (error === null && count === 0) {
+                        everlive.createAll('channels', models, function (error1, data) {
+                            if (error1 !== null) {
+                                mobileNotify("Everlive Channels error " + JSON.stringify(error1));
+                            }
+                            channelModel.channelsDS.sync();
+                            //channelModel.channelsDS.fetch();
+                            deviceModel.setAppState('hasChannels', true);
+                            deviceModel.isParseSyncComplete();
+
+                            notificationModel.processUnreadChannels();
+                        });
+                    } else {
+                        if (error !== null)
+                            mobileNotify("Everlive Channels error " + JSON.stringify(error));
+
+                        channelModel.channelsDS.fetch();
+                        deviceModel.setAppState('hasChannels', true);
+                        deviceModel.isParseSyncComplete();
+
+                        notificationModel.processUnreadChannels();
+                    }
+
+                });
+
             },
             error: function(error) {
                 handleParseError(error);
@@ -383,43 +415,6 @@ var channelModel = {
             }
         }
     },
-
-   /* updateChannelsMessageCount : debounce(function () {
-        var channelArray = channelModel.channelsDS.data();
-
-        for (var i=0; i<channelArray.length; i++) {
-            var channel = channelArray[i];
-
-            // Only ping non-private (group)channels -- userDataChannels handles private channels
-            if (channel.isPrivate === false) {
-
-                APP.pubnub.history({
-                    channel: channel.channelId,
-                    end: ggTime.toPubNubTime(channel.lastAccess),
-
-                    callback: function(messages) {
-                        messages = messages[0];
-                        messages = messages || [];
-                        var len = messages.length;
-
-                    }
-                });
-            }
-
-
-        }
-    }, this._messageCountRefresh, true ),*/
-
-   /* // sync channel access/unread counts
-    updateParseChannels : function () {
-        var channels = channelModel.channelsDS.data();
-
-        for (var i=0; i<channels.length; i++) {
-            var channel = channels[i];
-            updateParseObject('channels', 'channelId', channel.channelId, 'unreadCount', channel.unreadCount);
-            updateParseObject('channels', 'channelId', channel.channelId, 'lastAccess', channel.lastAccess);
-        }
-    },*/
 
     syncParseChannels : function (callback) {
         // Only sync channels for users with atleast email or phone validated

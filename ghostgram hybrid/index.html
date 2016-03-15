@@ -31,7 +31,6 @@
 	<script src="bower_components/eventEmitter/EventEmitter.js"></script>
 	<script src="bower_components/q/q.js"></script>
 	<script src="bower_components/underscore/underscore.js"></script>
-	<script src='bower_components/autosize/dist/autosize.js'></script>
 	<script src="bower_components/moment/moment.js"></script>
 	<script src="bower_components/velocity/velocity.js"></script>
 	<script src="bower_components/lodash/lodash.js"></script>
@@ -58,7 +57,7 @@
 	<script src="scripts/libs/strength.js"></script>
 	<script src="scripts/libs/jdenticon-1.3.0.js"></script>
 
-    <script src="scripts/parseKendoDataSourceFactory.js"></script>
+    <!--<script src="scripts/parseKendoDataSourceFactory.js"></script>-->
 	<script src="scripts/geo.js"></script>
 	<script src="scripts/home.js"></script>
 	<script src="scripts/channels.js"></script>
@@ -70,7 +69,7 @@
 	<script src="scripts/utils.js"></script>
 	<script src="scripts/ux.js"></script>
     <script src="scripts/jquery.email-autocomplete.js"></script>
-    <script src="scripts/models/semanticDSs.js"></script>
+    <!--<script src="scripts/models/semanticDSs.js"></script>-->
     <script src="scripts/models/archive.js"></script>
 	<script src="scripts/models/channelModel.js"></script>
 	<script src="scripts/models/contactModel.js"></script>
@@ -89,7 +88,7 @@
 	<script src="scripts/models/smartMovieModel.js"></script>
 	<script src="scripts/models/tagModel.js"></script>
 	<script src="scripts/models/userModel.js"></script>
-    <script src="scripts/views/sentinel.js"></script>
+    <!--<script src="scripts/views/sentinel.js"></script>-->
 	<script src="scripts/views/smartViews.js"></script>
     <script src="scripts/views/archiveView.js"></script>
 	<script src="scripts/views/channelViews.js"></script>
@@ -940,6 +939,13 @@
 					My Notes
 				</a>
 			</li>
+			<li>
+				<div>
+					<a data-role="button" class="btnClear" data-click='userStatusView.doSignOut'>
+						Sign Out
+					</a>
+				</div>
+			</li>
 		</ul>
 	</div>
 	<div class="footer" data-role="footer">
@@ -1771,7 +1777,7 @@
 </script>
 
 
-<div data-role="modalview" id="channelPresence"  data-init="channelPresence.onInit" data-open="channelPresence.onShow"  style="width: 90%;">
+<div data-role="modalview" id="channelPresence"  data-init="channelPresence.onInit" data-open="channelPresence.onShow"  style="width: 90%; height: 90%;">
 	<div data-role="header">
 		<div data-role="navbar">
 			<a data-align="left" data-role="button" data-click="channelPresence.closeModal">
@@ -2079,7 +2085,7 @@
 				<a data-role="button" class="btnClear-grey" id="editContact-resyncDeviceBtn" data-click="editContactView.syncWithDevice">
 					<img src="images/icon-sync.svg" class="icon-sm" />  Sync Contact with Device
 				</a>
-				<a data-role="button" class="btnClear-red " id="editContact-deleteBtn" data-click="deleteContact">
+				<a data-role="button" class="btnClear-red " id="editContact-deleteBtn" data-click="editContactView.deleteContact">
 					<img src="images/icon-trash.svg" />  Delete Contact
 				</a>
 			</div>
@@ -4025,9 +4031,8 @@
 	<div data-role="footer" style="display: block; background: #fff; padding-left: 2px;"  id=privateNoteEditor" style="min-height: 48px; max-height: 60%;">
 		<div class="messageCompose">
 			<div id="privateNoteTitleTag" class="hidden">
-				<input style="font-weight: 600;"  type="search" id="privateNoteTitle" placeholder="Title...">
-				<input type="search" id="privateNoteTags" placeholder="Tags...">
-				<hr>
+				<input style="font-weight: 600;"  type="search" id="privateNoteTitle" placeholder="Add Title...">
+				<input type="search" id="privateNoteTags" placeholder="Add Tags...">
 			</div>
 			<div id="privateNoteToolbar" class="hidden"></div>
 			<textarea id="privateNoteTextArea" type='text'></textarea>
@@ -4043,7 +4048,7 @@
 						<img  src="images/icon-tag.svg" height="24">
 					</a>
 					</li>
-					<li >
+					<li class="hidden">
 						<a data-role="button" data-click="privateNotesView.noteEditor" id="privateNote-editorBtn">
 							<img src="images/icon-editor.svg" height="24" id="privateNote-editorBtnImg"/>
 						</a>

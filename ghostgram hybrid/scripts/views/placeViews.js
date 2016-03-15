@@ -152,9 +152,7 @@ var placesView = {
                     $("#quickFindPlaceBtn").addClass("hidden");
 			});
 
-            placesModel.placeListDS.data(placesModel.placesDS.data());
-            placesView.computePlaceDSDistance();
-
+            placesModel.syncPlaceListDS();
 
             placesModel.placesDS.bind("change", placesView.syncPlacesListDS);
 
@@ -177,12 +175,12 @@ var placesView = {
 
         //$("#places > div.footerMenu.km-footer > a").removeAttr('href').css("display", "none");
 
-        mapModel.getCurrentAddress(function () {
+        mapModel.getCurrentAddress(function (isNew, address) {
             // Is this a new location
-           // if (isNew) {
-                placesView.computePlaceDSDistance();
+            if (isNew) {
+                placesModel.updateDistance();
                 // modalView.openInfo("New Location","Are you somewhere new? Create a new Place!", "OK", null);
-           // }
+           }
 
         });
 
@@ -200,6 +198,9 @@ var placesView = {
                 var newPlace = newPlaces[a];
                 var place = placesModel.queryPlaceList({ field: "uuid", operator: "eq", value: newPlace.uuid });
                 if (place === undefined) {
+
+                  /*  var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, newPlace.lat, newPlace.lng);
+                    newPlace.set('distance', distance.toFixed(2));*/
                     placesModel.placeListDS.add(newPlace);
                     placesModel.placeListDS.sync();
                 }
@@ -221,23 +222,17 @@ var placesView = {
             var newValue = newItem[field];
 
             if (oldPlace !== undefined) {
+               /* if (field === 'lat' || field === 'lng') {
+                    var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, oldPlace.lat, oldPlace.lng);
+                    oldPlace.set('distance', distance.toFixed(2));
+                }*/
+
                 oldPlace.set(field, newValue);
             }
 
         } else if (e.action === 'sync') {
             var changeList = e.items;
 
-        }
-
-    },
-
-    computePlaceDSDistance : function() {
-        var length = placesModel.placesDS.total();
-
-        for (var i=0; i< length; i++) {
-            var place = placesModel.placesDS.at(i);
-            var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, place.lat, place.lng);
-            place.set('distance', distance.toFixed(2));
         }
 
     },
@@ -1511,6 +1506,12 @@ var placeView = {
         placeView._activePlaceId = placeId;
 
         var placeObj = placesModel.getPlaceModel(placeId);
+
+        if (placeObj === undefined) {
+            mobileNotify("Couldn't find shared place");
+            placeView.onDone();
+            return;
+        }
 
         placeView._activePlaceModel = placeObj;
         placeView._activePlace.set('placeId', placeId);

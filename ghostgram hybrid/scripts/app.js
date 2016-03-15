@@ -6,7 +6,7 @@
 		_isOnline = true;
 	// create an object to store the models for each view
 	window.APP = {
-		version: "prealpha : 0.2.2.7",
+		version: "prealpha : 0.8",
 
 		models: {
 
@@ -14,7 +14,7 @@
 			sync: {
 				operation: '',
 				requestActive: false
-			},
+			}/*,
 
 			semantic: {
 				masterDS: new kendo.data.DataSource({
@@ -48,7 +48,7 @@
 					}
 				}),
 				datesDS: new kendo.data.DataSource({})
-			}
+			}*/
 		},
 
 
@@ -86,8 +86,6 @@
 
 		deviceModel.init();
 
-
-
 		// hide the splash screen as soon as the app is ready. otherwise
 		navigator.splashscreen.hide();
 		// Set status bar color
@@ -104,6 +102,7 @@
 
 		Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
 		//Parse.User.enableRevocableSession();
+
 		APP.everlive = new Everlive({
 			appId: 's2fo2sasaubcx7qe',
 			scheme: 'https',
@@ -111,10 +110,14 @@
 			offlineStorage: {
 				storage: {
 					provider: provider
-				},
+				}/*,
 				conflicts: {
 					strategy: Everlive.Constants.ConflictResolutionStrategy.ClientWins
-				}
+				}*/
+			},
+			encryption: {
+				provider: Everlive.Constants.EncryptionProvider.Default
+				//key: 'intelligram'
 			},
 			authentication: {
 				persist: true,
@@ -125,24 +128,11 @@
 		});
 
 
-		APP.everlive.on('syncStart', function() {
-			mobileNotify("Kendo Sync Start >>>");
-		});
+		// Wire up the everlive sync monitors
+		APP.everlive.on('syncStart', everlive.syncStart);
 
-		APP.everlive.on('syncEnd', function(syncInfo) {
-			var err = syncInfo.error;
-			if (err) {
-				mobileNotify('Kendo Sync Error : ' + JSON.stringify(err));
-			} else if (err === '') {
-				mobileNotify('Kendo Sync Error : unknown...');
-			}
+		APP.everlive.on('syncEnd', everlive.syncEnd);
 
-		});
-
-		privateNoteModel.init();  // Depends on everlive...
-
-
-		contactModel.init();
 
 	/*	if (!deviceModel.state.introFetched) {
 
@@ -156,9 +146,20 @@
 
 		userModel.initParse();
 
+		contactModel.init();
+
+
 		mapModel.init();
 
 		placesModel.init();
+
+		privateNoteModel.init();  // Depends on everlive...
+
+
+
+		photoModel.init();
+
+		channelModel.init();
 
 		smartEvent.init();
 
@@ -188,7 +189,7 @@
 
 		// Provide basic functionality in the simulator and deployable simulator
 		if (window.navigator.simulator !== undefined) {
-			deviceModel.appVersion = "emulator: 0.2.3.1";
+			deviceModel.appVersion = "emulator: 0.0.10";
 			userModel.currentUser.set('appVersion', deviceModel.appVersion);
 		} else {
 			cordova.getAppVersion.getVersionCode(function(version) {
@@ -244,7 +245,7 @@
 		     domains: _emailDomainList //additional domains (optional)
 		 }); */
 
-		window.semanticDSs = new SemanticDSs();
+		//window.semanticDSs = new SemanticDSs();
 
 	}, false);
 

@@ -703,7 +703,7 @@ var ghostEditView = {
     onInit: function (e) {
 
         _preventDefault(e);
-        autosize($('#ghostEmailEditor'));
+        //autosize($('#ghostEmailEditor'));
 
         $("#ghostEmailEditor").kendoEditor({
             stylesheets:["styles/editor.css"],
@@ -732,7 +732,7 @@ var ghostEditView = {
             ghostEditView._returnview = null;
         }
 
-        autosize.update($('#ghostEmailEditor'));
+        //autosize.update($('#ghostEmailEditor'));
         $('#ghostEmailEditor').data("kendoEditor").value("");
         $('#ghostEmailEditor').data("kendoEditor").focus();
     },
