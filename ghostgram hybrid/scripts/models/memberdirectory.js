@@ -13,6 +13,12 @@ var memberdirectory = {
     _ggClass : 'memberdirectory',
     _version : 1,
     _id : null,
+    _member : new kendo.data.ObservableObject(),
+
+    setMember : function (member) {
+        memberdirectory._member.id = memberdirectory._id;
+        memberdirectory._member.userUUID = member.userUUID;
+    },
 
     init : function () {
 
@@ -27,6 +33,7 @@ var memberdirectory = {
                     } else {
                         var member = data.result[0];
                         memberdirectory._id = member.Id;
+                        memberdirectory.setMember(data);
                     }
 
                 },
@@ -38,13 +45,23 @@ var memberdirectory = {
     create : function () {
         var data = APP.everlive.data(memberdirectory._ggClass);
 
+        var verified = false;
+        if ( userModel.currentUser.isVerified !== undefined) {
+            verified  =  userModel.currentUser.isVerified;
+        } else {
+            verified = userModel.currentUser.emailValidated || userModel.currentUser.phoneVerified;
+        }
+
+
         var dirObj = {
             userUUID : userModel.currentUser.userUUID,
             name : userModel.currentUser.name,
             alias : userModel.currentUser.alias,
             phone : userModel.currentUser.phone,
             email:  userModel.currentUser.email,
-            publicKey: userModel.currentUser.publicKey
+            publicKey: userModel.currentUser.publicKey,
+            isVerified : verified
+
         };
 
         data.create(dirObj,
@@ -59,6 +76,13 @@ var memberdirectory = {
     update : function () {
         var data = APP.everlive.data(memberdirectory._ggClass);
 
+        var verified = false;
+        if ( userModel.currentUser.isVerified !== undefined) {
+            verified  =  userModel.currentUser.isVerified;
+        } else {
+            verified = userModel.currentUser.emailValidated || userModel.currentUser.phoneVerified;
+        }
+
         var dirObj = {
             Id: memberdirectory._id,
             userUUID : userModel.currentUser.userUUID,
@@ -66,7 +90,8 @@ var memberdirectory = {
             alias : userModel.currentUser.alias,
             phone : userModel.currentUser.phone,
             email:  userModel.currentUser.email,
-            publicKey: userModel.currentUser.publicKey
+            publicKey: userModel.currentUser.publicKey,
+            isVerified : verified
         };
 
         data.update(dirObj,
