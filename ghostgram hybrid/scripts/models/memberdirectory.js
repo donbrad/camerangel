@@ -12,9 +12,21 @@ var memberdirectory = {
 
     _ggClass : 'memberdirectory',
     _version : 1,
+    _id : null,
 
     init : function () {
 
+        var filter = new Everlive.Query();
+        filter.where().eq('userUUID', userModel.currentUser.userUUID);
+
+        var data = el.data(memberdirectory._ggClass);
+        data.get(filter)
+            .then(function(data){
+                    memberdirectory._id = data.result.id;
+                },
+                function(error){
+                    mobileNotify("Member Directory Init error : " + JSON.stringify(error));
+                });
     },
 
     update : function () {
