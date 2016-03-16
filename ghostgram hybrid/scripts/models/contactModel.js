@@ -437,10 +437,10 @@ var contactModel = {
             }
            // dataSource.remove(contact);
 
-            updateParseObject("contacts", 'uuid', contactId, "isDeleted", true);
+          /*  updateParseObject("contacts", 'uuid', contactId, "isDeleted", true);
             updateParseObject("contacts", 'uuid', contactId, "category", 'zapped');
             updateParseObject("contacts", 'uuid', contactId, "xcategory", contact.get('xcategory'));
-
+*/
             // Delete any current private channel
             channelModel.deletePrivateChannel(contactId);
 
@@ -469,10 +469,10 @@ var contactModel = {
             }
             // dataSource.remove(contact);
 
-            updateParseObject("contacts", 'uuid', contactId, "isDeleted", false);
+           /* updateParseObject("contacts", 'uuid', contactId, "isDeleted", false);
             updateParseObject("contacts", 'uuid', contactId, "category", xcategory);
             updateParseObject("contacts", 'uuid', contactId, "xcategory", null);
-
+*/
         }
     },
 
@@ -503,13 +503,7 @@ var contactModel = {
 
     findContact: function (contactUUID) {
         var contact = contactModel.queryContact({ field: "contactUUID", operator: "eq", value: contactUUID });
-
-       /* var dataSource = contactModel.contactsDS;
-        dataSource.filter( { field: "contactUUID", operator: "eq", value: contactUUID });
-        var view = dataSource.view();
-        var contact = view[0];
-        dataSource.filter([]);*/
-
+        
         return(contact);
     },
 
@@ -517,38 +511,17 @@ var contactModel = {
     findContactByUUID : function(uuid) {
         var contact = contactModel.queryContact({ field: "uuid", operator: "eq", value: uuid });
 
-       /* var dataSource = contactModel.contactsDS;
-        dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
-        var view = dataSource.view();
-        var contact = view[0];
-        dataSource.filter([]);*/
-
         return(contact);
     },
 
     findContactList : function (contactUUID) {
         var contact = contactModel.queryContactList({ field: "contactUUID", operator: "eq", value: contactUUID });
 
-        /*var dataSource = contactModel.contactListDS;
-        dataSource.filter( { field: "contactUUID", operator: "eq", value: contactUUID });
-        var view = dataSource.view();
-        if (view.length === 0 || view[0].items.length === 0)
-            return(undefined);
-        var contact = view[0].items[0];
-        dataSource.filter([]);*/
-
         return(contact);
     },
 
     findContactListUUID : function ( uuid) {
         var contact = contactModel.queryContactList({ field: "uuid", operator: "eq", value: uuid });
-       /* var dataSource = contactModel.contactListDS;
-        dataSource.filter( { field: "uuid", operator: "eq", value: uuid });
-        var view = dataSource.view();
-        if (view.length === 0 || view[0].items.length === 0)
-            return(undefined);
-        var contact = view[0].items[0];
-        dataSource.filter([]);*/
 
         return(contact);
     },
@@ -576,7 +549,7 @@ var contactModel = {
                 mobileNotify(contact.name + " is not a Chat Member!");
             } else {
                 contact.set("connectSent",true);
-                updateParseObject("contacts", 'uuid', contactId, "connectSent", true);
+                //updateParseObject("contacts", 'uuid', contactId, "connectSent", true);
                 appDataChannel.connectRequest(contact.contactUUID, comment);
             }
         }
@@ -615,7 +588,7 @@ var contactModel = {
 
         if (contact !== undefined) {
             contact.set('isBlocked', true);
-            updateParseObject("contacts", 'uuid', contactId, "isBlocked", true);
+            //updateParseObject("contacts", 'uuid', contactId, "isBlocked", true);
             var contactList = contactModel.queryContactList({ field: "contactUUID", operator: "eq", value: contact.contactUUID });
             if (contactList !== undefined) {
                 contactList.set('isBlocked', true);
@@ -630,7 +603,7 @@ var contactModel = {
 
             contact.set('isBlocked', false);
 
-            updateParseObject("contacts", 'uuid', contactId, "isBlocked", false);
+            //updateParseObject("contacts", 'uuid', contactId, "isBlocked", false);
             var contactList = contactModel.queryContactList({ field: "contactUUID", operator: "eq", value: contact.contactUUID });
             if (contactList !== undefined) {
                 contactList.set('isBlocked', false);
@@ -687,7 +660,7 @@ var contactModel = {
         thisContact.set('publicKey', contact.publicKey);
         thisContactList.set('publicKey', contact.publicKey);
 
-        if (isDirty) {
+        /*if (isDirty) {
             updateParseObject('contacts', 'uuid', thisContact.uuid, 'category', thisContact.category);
             updateParseObject('contacts', 'uuid', thisContact.uuid, 'publicKey', thisContact.publicKey);
             updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactPhone', thisContact.contactPhone);
@@ -701,7 +674,7 @@ var contactModel = {
             updateParseObject('contacts', 'uuid', thisContact.uuid, 'address', thisContact.address);
 
         }
-
+*/
     },
 
 
@@ -835,13 +808,13 @@ var contactModel = {
                 model.set('publicKey',  result.user.publicKey);
 
                 model.set("contactUUID", result.user.userUUID);
-                if (contactUUID === undefined) {
+              /*  if (contactUUID === undefined) {
                     updateParseObject('contacts', 'uuid', uuid, 'contactUUID',  result.user.userUUID);
                 }
 
                 if (publicKey === undefined) {
                     updateParseObject('contacts', 'uuid', uuid, 'publicKey',result.user.publicKey );
-                }
+                }*/
                 if (phoneVerified !== result.user.phoneVerified) {
                     if (result.user.phoneVerified === undefined)
                         result.user.phoneVerified = false;
@@ -850,7 +823,7 @@ var contactModel = {
                         model.set('category', "member");
                     }
                     model.set("phoneVerified", result.user.phoneVerified);
-                    updateParseObject('contacts', 'uuid', uuid, 'phoneVerified', result.user.phoneVerified );
+                  /*  updateParseObject('contacts', 'uuid', uuid, 'phoneVerified', result.user.phoneVerified );*/
                 }
             }
 
@@ -892,11 +865,15 @@ var contactModel = {
 
 
     addChatContact : function (guid, name, alias, contactUUID) {
-        var Contacts = Parse.Object.extend("contacts");
+      /*  var Contacts = Parse.Object.extend("contacts");
         var contact = new Contacts();
 
 
-        contact.setACL(userModel.parseACL);
+        contact.setACL(userModel.parseACL);*/
+
+        var contact = new kendo.data.ObservableObject();
+        contact.set('version', contactModel._version);
+        contact.set('ggType', contactModel._ggClass);
         contact.set("name", name );
         contact.set("alias", alias);
         contact.set('category', "unknown");
@@ -911,7 +888,11 @@ var contactModel = {
         contact.set('contactEmail', null);
         contact.set('ownerUUID', userModel.currentUser.userUUID);
 
-        contact.save(null, {
+        contactModel.contactsDS.add(contact);
+        contactModel.contactsDS.sync();
+
+
+        /*contact.save(null, {
             success: function(contact) {
                 // Execute any logic that should take place after the object is saved.;
                 //var photo = contact.get('photo');
@@ -935,7 +916,7 @@ var contactModel = {
                 // error is a Parse.Error with an error code and message.
                 handleParseError(error);
             }
-        });
+        });*/
     },
 
     importDeviceContacts: function() {
