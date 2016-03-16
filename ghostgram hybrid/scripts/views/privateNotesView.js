@@ -252,6 +252,8 @@ var privateNotesView = {
                 note.set('dataObject', dataObj);
                 note.set('time',ggTime.currentTime());
 
+                privateNoteModel.notesDS.sync();
+               
 
             } else {
                 privateNotesView._saveNote(text, privateNotesView.activeNote);

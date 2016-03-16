@@ -26,7 +26,7 @@ var memberdirectory = {
                         memberdirectory.create();
                     } else {
                         var member = data.result[0];
-                        memberdirectory._id = member.id;
+                        memberdirectory._id = member.Id;
                     }
 
                 },
@@ -49,7 +49,7 @@ var memberdirectory = {
 
         data.create(dirObj,
             function(data){
-                var count = data.count;
+                memberdirectory._id = data.result.Id;
             },
             function(error){
                 mobileNotify("Member Directory Init error : " + JSON.stringify(error));
@@ -57,7 +57,25 @@ var memberdirectory = {
     },
 
     update : function () {
+        var data = APP.everlive.data(memberdirectory._ggClass);
 
+        var dirObj = {
+            Id: memberdirectory._id,
+            userUUID : userModel.currentUser.userUUID,
+            name : userModel.currentUser.name,
+            alias : userModel.currentUser.alias,
+            phone : userModel.currentUser.phone,
+            email:  userModel.currentUser.email,
+            publicKey: userModel.currentUser.publicKey
+        };
+
+        data.update(dirObj,
+            function(data){
+                memberdirectory._id = data.result.Id;
+            },
+            function(error){
+                mobileNotify("Member Directory Update error : " + JSON.stringify(error));
+            });
     },
 
     findMemberByUUID : function (uuid) {
