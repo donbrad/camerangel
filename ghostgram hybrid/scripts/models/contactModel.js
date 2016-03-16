@@ -107,16 +107,14 @@ var contactModel = {
 
         });
 
-
-
-        contactModel.contactListDS.online(false);
-
         contactModel.contactsDS.fetch();
         contactModel.buildContactList();
         contactModel.updateContactListStatus(true);
         contactModel.syncContactTags();
         deviceModel.setAppState('hasContacts', true);
         deviceModel.isParseSyncComplete();
+
+        contactModel.contactListDS.online(false);
 
     },
 
@@ -362,6 +360,7 @@ var contactModel = {
             return(0);
         }
     },
+
     createIdenticon: function (hash) {
         var url;
         hash = hash.replace(/-/g,'');
@@ -379,12 +378,12 @@ var contactModel = {
         if (cacheFilter === undefined) {
             cacheFilter = {};
         }
-
         dataSource.filter( query);
         var view = dataSource.view();
         var contact = view[0];
 
         dataSource.filter(cacheFilter);
+
         return(contact);
     },
 
@@ -509,7 +508,7 @@ var contactModel = {
 
     findContact: function (contactUUID) {
         var contact = contactModel.queryContact({ field: "contactUUID", operator: "eq", value: contactUUID });
-        
+
         return(contact);
     },
 
