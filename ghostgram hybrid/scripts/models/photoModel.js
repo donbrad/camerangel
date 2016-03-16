@@ -493,10 +493,12 @@ var photoModel = {
     addChatPhoto : function (photoObj, callback) {
 
         mobileNotify("Adding Chat photo to Memories...");
-        var Photos = Parse.Object.extend(photoModel._parseClass);
-        var photo = new Photos();
+      /*  var Photos = Parse.Object.extend(photoModel._parseClass);
+        var photo = new Photos();*/
 
-        photo.setACL(userModel.parseACL);
+        var photo = new kendo.data.ObservableObject();
+
+        //photo.setACL(userModel.parseACL);
         photo.set('version', photoModel._version);
         photo.set('ggType', photoModel._ggClass);
 
@@ -551,12 +553,12 @@ var photoModel = {
         photo.set('thumbnailUrl',photoObj.thumbnailUrl);
         photo.set('imageUrl',photoObj.imageUrl);
 
-        var photoObj = photo.toJSON();
+       // var photoObj = photo.toJSON();
 
-        photoModel.photosDS.add(photoObj);
+        photoModel.photosDS.add(photo);
         photoModel.photosDS.sync();
 
-        photo.save(null, {
+       /* photo.save(null, {
             success: function(photoIn) {
 
                 // Execute any logic that should take place after the object is saved.
@@ -569,7 +571,7 @@ var photoModel = {
                 handleParseError(error);
             }
         });
-
+*/
         /*devicePhoto.convertImgToDataURL(photoObj.thumbnailUrl, function (dataUrl) {
             var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
             var parseFile = new Parse.File("thumbnail_" + filename + ".jpg", {'base64': imageBase64});
@@ -734,10 +736,13 @@ var photoModel = {
     addDevicePhoto: function (devicePhoto) {
         mobileNotify("Adding  photo....");
         // Todo: add additional processing to create Parse photoOffer
-        var Photos = Parse.Object.extend(photoModel._parseClass);
+      /*  var Photos = Parse.Object.extend(photoModel._parseClass);
         var photo = new Photos();
+*/
+        var photo = new kendo.data.ObservableObject();
 
-        photo.setACL(userModel.parseACL);
+        //photo.setACL(userModel.parseACL);
+
         photo.set('version', photoModel._version);
         photo.set('ggType', photoModel._ggClass);
 
@@ -803,11 +808,11 @@ var photoModel = {
             photo.set('placeString', userModel.currentUser.currentPlace);
         }
 
-        var photoObj = photo.toJSON();
-        photoModel.photosDS.add(photoObj);
+       // var photoObj = photo.toJSON();
+        photoModel.photosDS.add(photo);
         photoModel.photosDS.sync();
 
-        photo.save(null, {
+       /* photo.save(null, {
             success: function(photoIn) {
 
                 // Execute any logic that should take place after the object is saved.
@@ -821,7 +826,7 @@ var photoModel = {
                 handleParseError(error);
             }
         });
-
+*/
 
        /* var parseFile = new Parse.File("thumbnail_"+photoModel.currentPhoto.filename + ".jpeg",{'base64': data.imageData}, "image/jpg");
         parseFile.save().then(function() {
@@ -880,7 +885,7 @@ var photoModel = {
         // Remove from isotope and then rerender the layout
         //$('#gallery-grid').isotope( 'remove', photoModel.currentIsoModel ).isotope('layout');
         // Delete from remote parse collection
-        deleteParseObject('photos', 'photoId', photo.photoId);
+        //deleteParseObject('photos', 'photoId', photo.photoId);
     },
 
     deleteAllPhotos : function () {
