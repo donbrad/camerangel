@@ -489,11 +489,11 @@ var userModel = {
        //channelModel.fetch();
 
         // fetch contact models (objects) from parse.
-        contactModel.fetch();
+        //contactModel.fetch();
 
        // placesModel.fetch();
 
-        photoModel.fetch();
+       // photoModel.fetch();
 
         noteModel.fetch();
 
