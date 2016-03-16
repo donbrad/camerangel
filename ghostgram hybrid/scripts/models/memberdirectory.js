@@ -33,7 +33,7 @@ var memberdirectory = {
                     } else {
                         var member = data.result[0];
                         memberdirectory._id = member.Id;
-                        memberdirectory.setMember(data);
+                        memberdirectory.setMember(member);
                     }
 
                 },
@@ -98,16 +98,64 @@ var memberdirectory = {
             });
     },
 
-    findMemberByUUID : function (uuid) {
+    findMemberByUUID : function (uuid, callback) {
+        var filter = new Everlive.Query();
+        filter.where().eq('userUUID', uuid);
 
+        var data = APP.everlive.data(memberdirectory._ggClass);
+        data.get(filter)
+            .then(function(data){
+                    if (data.count === 0) {
+                        callback(null)
+                    } else {
+                        var member = data.result[0];
+                       callback(member);
+                    }
+
+                },
+                function(error){
+                    mobileNotify("MemberDirectory Find error : " + JSON.stringify(error));
+                });
     },
 
     findMemberByPhone : function (phone) {
+        var filter = new Everlive.Query();
+        filter.where().eq('phone', phone);
 
+        var data = APP.everlive.data(memberdirectory._ggClass);
+        data.get(filter)
+            .then(function(data){
+                    if (data.count === 0) {
+                        callback(null)
+                    } else {
+                        var member = data.result[0];
+                        callback(member);
+                    }
+
+                },
+                function(error){
+                    mobileNotify("MemberDirectory Find phone error : " + JSON.stringify(error));
+                });
     },
 
     findMemberByEmail : function (email) {
+        var filter = new Everlive.Query();
+        filter.where().eq('email', email);
 
+        var data = APP.everlive.data(memberdirectory._ggClass);
+        data.get(filter)
+            .then(function(data){
+                    if (data.count === 0) {
+                        callback(null)
+                    } else {
+                        var member = data.result[0];
+                        callback(member);
+                    }
+
+                },
+                function(error){
+                    mobileNotify("MemberDirectory Find email error : " + JSON.stringify(error));
+                });
     }
 
 };
