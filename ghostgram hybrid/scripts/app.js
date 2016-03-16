@@ -154,7 +154,7 @@
 
 		privateNoteModel.init();  // Depends on everlive...
 
-
+		memberdirectory.init();
 
 		photoModel.init();
 
