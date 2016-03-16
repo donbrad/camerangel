@@ -19,7 +19,7 @@ var memberdirectory = {
         var filter = new Everlive.Query();
         filter.where().eq('userUUID', userModel.currentUser.userUUID);
 
-        var data = el.data(memberdirectory._ggClass);
+        var data = APP.everlive.data(memberdirectory._ggClass);
         data.get(filter)
             .then(function(data){
                     memberdirectory._id = data.result.id;
