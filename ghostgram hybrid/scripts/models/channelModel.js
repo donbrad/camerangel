@@ -91,6 +91,12 @@ var channelModel = {
         });
 
 
+        channelModel.channelsDS.fetch();
+        deviceModel.setAppState('hasChannels', true);
+        deviceModel.isParseSyncComplete();
+
+        notificationModel.processUnreadChannels();
+
         // Start the updateMessageCount async after 5 seconds...
      /*   setTimeout(function(){
            // channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
