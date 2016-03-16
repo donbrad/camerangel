@@ -44,7 +44,7 @@ var memberdirectory = {
             alias : userModel.currentUser.alias,
             phone : userModel.currentUser.phone,
             email:  userModel.currentUser.email,
-            publicKey: userModel.currentUser.publcKey
+            publicKey: userModel.currentUser.publicKey
         };
 
         data.create(dirObj,
