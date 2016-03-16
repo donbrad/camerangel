@@ -45,12 +45,8 @@ var memberdirectory = {
     create : function () {
         var data = APP.everlive.data(memberdirectory._ggClass);
 
-        var verified = false;
-        if ( userModel.currentUser.isVerified !== undefined) {
-            verified  =  userModel.currentUser.isVerified;
-        } else {
-            verified = userModel.currentUser.emailValidated || userModel.currentUser.phoneVerified;
-        }
+        var verified = userModel.currentUser.emailValidated || userModel.currentUser.phoneVerified;
+
 
 
         var dirObj = {
@@ -60,6 +56,8 @@ var memberdirectory = {
             phone : userModel.currentUser.phone,
             email:  userModel.currentUser.email,
             publicKey: userModel.currentUser.publicKey,
+            emailVerified: userModel.currentUser.emailValidated,
+            phoneVerified : userModel.currentUser.phoneVerified,
             isVerified : verified
 
         };
@@ -76,12 +74,7 @@ var memberdirectory = {
     update : function () {
         var data = APP.everlive.data(memberdirectory._ggClass);
 
-        var verified = false;
-        if ( userModel.currentUser.isVerified !== undefined) {
-            verified  =  userModel.currentUser.isVerified;
-        } else {
-            verified = userModel.currentUser.emailValidated || userModel.currentUser.phoneVerified;
-        }
+        var verified = userModel.currentUser.emailValidated || userModel.currentUser.phoneVerified;
 
         var dirObj = {
             Id: memberdirectory._id,
@@ -91,6 +84,8 @@ var memberdirectory = {
             phone : userModel.currentUser.phone,
             email:  userModel.currentUser.email,
             publicKey: userModel.currentUser.publicKey,
+            emailVerified: userModel.currentUser.emailValidated,
+            phoneVerified : userModel.currentUser.phoneVerified,
             isVerified : verified
         };
 
