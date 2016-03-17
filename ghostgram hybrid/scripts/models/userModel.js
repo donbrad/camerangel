@@ -548,6 +548,11 @@ var userModel = {
 var userStatus = {
     parseUserStatus: null,
     parseUserStatusACL : null,   // this ACL can be used to create public read objects that only the user can create, update and delete
+    _ggClass : 'userStatus',
+    _version : 1,
+    _statusObj : new kendo.data.ObservableObject(),
+    _id : null,
+
 
     init: function () {
         var UserStatusModel = Parse.Object.extend("userStatus");
@@ -562,6 +567,7 @@ var userStatus = {
                     userStatus.parseUserStatus = new UserStatusModel();
                     userStatus.parseUserStatus.setACL(userStatus.parseUserStatusACL);
                     userStatus.update();
+                    userStatus.updateEverlive();
                 }
 
             },
@@ -569,6 +575,24 @@ var userStatus = {
                 mobileNotify("Parse User Status Error: " + error.code + " " + error.message);
             }
         });
+
+        var filter = new Everlive.Query();
+        filter.where().eq('userUUID', userModel.currentUser.userUUID);
+
+        var data = APP.everlive.data(userStatus._ggClass);
+        data.get(filter)
+            .then(function(data){
+                    if (data.count === 0) {
+                        userStatus.create();
+                    } else {
+                        var member = data.result[0];
+                        userStatus._id = member.Id;
+                    }
+
+                },
+                function(error){
+                    mobileNotify("Member Directory Init error : " + JSON.stringify(error));
+                });
 
     },
 
@@ -606,6 +630,22 @@ var userStatus = {
         }
     },
 
+    create : function () {
+        var data = APP.everlive.data(userStatus._ggClass);
+
+        userStatus.updateEverlive();
+
+        data.create(dirObj,
+            function(data){
+                userStatus._id = data.result.Id;
+                userStatus._statusObj.id  = data.result.Id;
+                userStatus.updateEverlive();
+            },
+            function(error){
+                mobileNotify("User Status Init error : " + JSON.stringify(error));
+            });
+    },
+
     update : function () {
         var status = userStatus.parseUserStatus;
 
@@ -639,7 +679,33 @@ var userStatus = {
         });
 
 
+    },
+
+    updateEverlive : function () {
+        var status = userStatus._statusObj;
+
+        status.set('userUUID', userModel.currentUser.userUUID);
+        status.set('isAvailable', userModel.currentUser.isAvailable);
+        status.set('isVisible', userModel.currentUser.isVisible);
+        status.set('statusMessage', userModel.currentUser.statusMessage);
+        status.set('currentPlace', userModel.currentUser.currentPlace);
+        var lat = userModel.currentUser.lat;
+        /* if (lat !== null)
+         lat = lat.toFixed(6);*/
+        status.set('lat', userModel.currentUser.lat);
+        var lng = userModel.currentUser.lng;
+        /* if (lng !== null)
+         lng = lng.toFixed(6);*/
+        status.set('lng', userModel.currentUser.lng);
+        status.set('googlePlaceId', userModel.currentUser.googlePlaceId);
+        status.set('currentPlaceUUID', userModel.currentUser.currentPlaceUUID);
+        status.set('isCheckedIn', userModel.currentUser.isCheckedIn);
+        status.set('lastUpdate', ggTime.currentTime());
+
+        userStatus._statusObj.sync();
+
     }
+
 
 
 };
