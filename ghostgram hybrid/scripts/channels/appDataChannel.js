@@ -191,7 +191,7 @@ var appDataChannel = {
 
             case 'placeAdd' : {
                 if (m.version === appDataChannel._version && m.msgID !== undefined)
-                    appDataChannel.processPlaceAdd(m.placeId, m.placeName, m.ownerId,  m.ownerName);
+                    appDataChannel.processPlaceAdd(m.placeUUID, m.placeName, m.ownerId,  m.ownerName);
             } break;
 
 
@@ -823,7 +823,7 @@ var appDataChannel = {
     },
 
 
-    processPlaceAdd : function (placeId, placeName, ownerId,  ownerName) {
+    processPlaceAdd : function (placeUUID, placeName, ownerId,  ownerName) {
 
     },
 

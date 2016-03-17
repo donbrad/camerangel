@@ -434,10 +434,10 @@ var userModel = {
         }
     },
 
-    checkIn : function (placeId, lat, lng, locationName, googlePlaceId) {
+    checkIn : function (placeUUID, lat, lng, locationName, googlePlaceId) {
 
-        if (placeId !== null) {
-            var place = placesModel.getPlaceModel(placeId);
+        if (placeUUID !== null) {
+            var place = placesModel.getPlaceModel(placeUUID);
 
             userModel.currentUser.set('currentPlace', place.name);
             userModel.currentUser.set('currentPlaceUUID', place.uuid);

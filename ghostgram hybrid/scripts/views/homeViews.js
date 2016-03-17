@@ -55,7 +55,7 @@ var homeView = {
                         var newAdd = nearbyResults.add({
                             uuid: uuid.v4(),
                             category: 'Street Address',   // valid categories are: Place and Location
-                            placeId: '',
+                            placeUUID: '',
                             name: address.streetNumber+' '+address.street,
                             venueName: '',
                             streetNumber: address.streetNumber,
@@ -93,7 +93,7 @@ var homeView = {
                     nearbyResults.add({
                         uuid: '',
                         category: 'Street Address',   // valid categories are: Place and Location
-                        placeId: '',
+                        placeUUID: '',
                         name: placeResult.name,
                         venueName: placeResult.name,
                         streetNumber: '',
@@ -532,8 +532,8 @@ var userStatusView = {
         _preventDefault(e);
 
         var placeUUID = userModel.currentUser.currentPlaceUUID;
-        var placeId = LZString.compressToEncodedURIComponent(placeUUID);
-        APP.kendo.navigate("#placeView?place="+placeId+"&returnmodal=userstatus");
+        var placeUUID = LZString.compressToEncodedURIComponent(placeUUID);
+        APP.kendo.navigate("#placeView?place="+placeUUID+"&returnmodal=userstatus");
     },
 
     openCheckIn : function (e) {

@@ -768,7 +768,7 @@ var channelModel = {
                     newChannel.channelUUID,
                     newChannel.ownerId,
                     newChannel.ownerName,
-                    newChannel.placeId,
+                    newChannel.placeUUID,
                     newChannel.placeName,
                     newChannel.isPrivatePlace,
                     members
@@ -779,7 +779,7 @@ var channelModel = {
     },
 
 
-    addPlaceChannel : function (channelUUID, placeId, placeName, isPrivatePlace) {
+    addPlaceChannel : function (channelUUID, placeUUID, placeName, isPrivatePlace) {
 
         var channel = channelModel.findChannelModel(channelUUID);
         if (channel !== undefined)  {
@@ -820,7 +820,7 @@ var channelModel = {
 
         channel.set('isPlace', true);
         channel.set('isPrivatePlace', isPrivatePlace);
-        channel.set('placeUUID', placeId);
+        channel.set('placeUUID', placeUUID);
         channel.set('placeName', placeName);
         channel.set('category', 'Place');
 
@@ -988,14 +988,14 @@ var channelModel = {
                 }
 
                 if (channel.isPlace) {
-                    var placeId = channel.placeUUID;
-                    if (placeId !== undefined && placeId !== null) {
-                        var place = placesModel.getPlaceModel(placeId);
+                    var placeUUID = channel.placeUUID;
+                    if (placeUUID !== undefined && placeUUID !== null) {
+                        var place = placesModel.getPlaceModel(placeUUID);
                         if (place !== undefined) {
                             place.set('hasPlaceChat', false);
                             place.set('placeChatId', null);
-                            updateParseObject("places", 'uuid', placeId, 'hasPlaceChat', false);
-                            updateParseObject("places", 'uuid', placeId, 'placeChatId', null);
+                            updateParseObject("places", 'uuid', placeUUID, 'hasPlaceChat', false);
+                            updateParseObject("places", 'uuid', placeUUID, 'placeChatId', null);
                         }
                     }
                 }

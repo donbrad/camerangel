@@ -13,7 +13,7 @@
 var smartEventView = {
     _activeObject : new kendo.data.ObservableObject(),
     _date : new Date(),
-    _placeId :null,
+    _placeUUID :null,
     _geoObj: null,
     _isInited : false,
     _callback : null,
@@ -59,7 +59,7 @@ var smartEventView = {
         thisObj.set('address', null);
         thisObj.set('placeName', null);
         thisObj.set('placeType', null);
-        thisObj.set('placeId', null);
+        thisObj.set('placeUUID', null);
         thisObj.set('googleId', null);
         thisObj.set('calendarId', null);
         thisObj.set('lat', null);
@@ -120,7 +120,7 @@ var smartEventView = {
         thisObj.set('placeName', newObj.placeName);
         thisObj.set('placeType', newObj.placeType);
         thisObj.set('calendarId', newObj.calendarId);
-        thisObj.set('placeId', newObj.placeId);
+        thisObj.set('placeUUID', newObj.placeUUID);
         thisObj.set('googleId', newObj.googleId);
         thisObj.set('lat', newObj.lat);
         thisObj.set('lng', newObj.lng);
@@ -176,7 +176,7 @@ var smartEventView = {
             $('#smartEventView-recipientListDiv').removeClass('hidden');
 
             // show/hide place btn
-            if(thisEvent.placeId === null){
+            if(thisEvent.placeUUID === null){
                 $(".event-place").addClass("hidden");
             } else {
                 $(".event-place").removeClass("hidden");
@@ -230,7 +230,7 @@ var smartEventView = {
             }
         }
         // show/hide place btn
-        if(thisEvent.placeId === null){
+        if(thisEvent.placeUUID === null){
             $(".event-place").addClass("hidden");
         } else {
             $(".event-place").removeClass("hidden");
@@ -275,7 +275,7 @@ var smartEventView = {
 
     onShow: function(e) {
         _preventDefault(e);
-        smartEventView._placeId = null;
+        smartEventView._placeUUID = null;
         smartEventView._geoObj = null;
 
         $("#smartEventView-placesearchBtn").text("");
@@ -314,7 +314,7 @@ var smartEventView = {
 
                var thisObj = smartEventView._activeObject;
 
-               thisObj.set('placeId', null);
+               thisObj.set('placeUUID', null);
                thisObj.set('googleId', geo.googleId);
                thisObj.set('placeName', geo.name);
                thisObj.set('address', geo.address);
@@ -485,14 +485,14 @@ var smartEventView = {
                 change: function (e) {
                     var placeStr = $("#smartEventView-placesearch").val();
 
-                    if (smartEventView._placeId !== null) {
-                        var place = placesModel.getPlaceModel(smartEventView._placeId);
+                    if (smartEventView._placeUUID !== null) {
+                        var place = placesModel.getPlaceModel(smartEventView._placeUUID);
 
                         if (placeStr === place.name) {
                             return;
                         }
-                        smartEventView._placeId = null;
-                        smartEventView._activeObject.set('placeId', smartEventView._placeId);
+                        smartEventView._placeUUID = null;
+                        smartEventView._activeObject.set('placeUUID', smartEventView._placeUUID);
                         smartEventView._activeObject.set('placeName',placeStr);
                         smartEventView._activeObject.set('address', null);
                         smartEventView._activeObject.set('lat',null);
@@ -513,8 +513,8 @@ var smartEventView = {
                     // User has selected one of their places
                     var place = e.item;
                     var dataItem = this.dataItem(e.item.index());
-                    smartEventView._placeId = dataItem.uuid;
-                    smartEventView._activeObject.set('placeId', smartEventView._placeId);
+                    smartEventView._placeUUID = dataItem.uuid;
+                    smartEventView._activeObject.set('placeUUID', smartEventView._placeUUID);
                     smartEventView._activeObject.set('placeName',dataItem.name);
                     smartEventView._activeObject.set('address',dataItem.address +  ' ' + dataItem.city + ', ' + dataItem.state);
                     smartEventView._activeObject.set('lat',dataItem.lat);
@@ -635,12 +635,12 @@ var smartEventView = {
 
         var event =  smartEventView._activeObject;
 
-        if (event.placeId !== null) {
-            var place = placesModel.getPlaceModel(event.placeId);
+        if (event.placeUUID !== null) {
+            var place = placesModel.getPlaceModel(event.placeUUID);
             if (place !== undefined) {
 
-                var placeId = packParameter(event.placeId), channelUrl = packParameter('channel?channelUUID='+channelView._channelUUID);
-                APP.kendo.navigate('#placeView?place=' + placeId + '&returnview=' + channelUrl);
+                var placeUUID = packParameter(event.placeUUID), channelUrl = packParameter('channel?channelUUID='+channelView._channelUUID);
+                APP.kendo.navigate('#placeView?place=' + placeUUID + '&returnview=' + channelUrl);
 
             }
 

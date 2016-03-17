@@ -265,9 +265,9 @@ var photoModel = {
         return(photoModel.queryPhotos({ field: "channelUUID", operator: "eq", value: channelUUID }));
     },
 
-    findPhotosByPlaceId : function (placeId) {
+    findPhotosByPlaceId : function (placeUUID) {
 
-        return(photoModel.queryPhotos({ field: "placeId", operator: "eq", value: placeId }));
+        return(photoModel.queryPhotos({ field: "placeUUID", operator: "eq", value: placeUUID }));
     },
 
     findPhotosByPlaceString : function (placeString) {
@@ -392,11 +392,11 @@ var photoModel = {
                 updateParseObject('photos', "photoId", photo.photoId, "channelName",  null);
             }
 
-            if (photo.placeId === undefined) {
-                photo.placeId = null;
+            if (photo.placeUUID === undefined) {
+                photo.placeUUID = null;
                 photo.placeName= null;
 
-                updateParseObject('photos', "photoId", photo.photoId, "placeId",  null);
+                updateParseObject('photos', "photoId", photo.photoId, "placeUUID",  null);
                 updateParseObject('photos', "photoId", photo.photoId, "placeName",  null);
             }
 
@@ -548,7 +548,7 @@ var photoModel = {
         photo.set('eventName', photoObj.eventName);
         photo.set('tagString', photoObj.tagString);
         photo.set('tags', photoObj.tags);
-        photo.set('placeId', photoObj.placeId);
+        photo.set('placeUUID', photoObj.placeUUID);
         photo.set('placeName', photoObj.placeName);
         photo.set('address', photoObj.address);
         photo.set('lat', photoObj.lat);
@@ -771,7 +771,7 @@ var photoModel = {
         photo.set('tagString', null);
         photo.set('tags', []);
         photo.set('tagsString', null);
-        photo.set('placeId', null);
+        photo.set('placeUUID', null);
         photo.set('placeName', null);
         photo.set('address', null);
         photo.set('offerId', null);
@@ -809,7 +809,7 @@ var photoModel = {
         }
 
         if (userModel.currentUser.currentPlaceUUID !== null) {
-            photo.set('placeId', userModel.currentUser.currentPlaceUUID);
+            photo.set('placeUUID', userModel.currentUser.currentPlaceUUID);
             photo.set('placeString', userModel.currentUser.currentPlace);
         }
 

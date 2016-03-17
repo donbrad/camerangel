@@ -1043,9 +1043,9 @@ var channelView = {
             contactActionView.openModal(contact.uuid);
 
         } else if (channelView.isPlaceChat) {
-            var placeId = channelView._channel.placeUUID;
+            var placeUUID = channelView._channel.placeUUID;
 
-            var placeUrl = LZString.compressToEncodedURIComponent(placeId);
+            var placeUrl = LZString.compressToEncodedURIComponent(placeUUID);
 
           //  channelView.onHide();
            // setTimeout( function () {APP.kendo.navigate('#placeView?place=' + placeUrl);}, 500);

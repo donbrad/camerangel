@@ -468,7 +468,7 @@ var devicePhoto = {
         }
 
         if (userModel.currentUser.currentPlaceUUID !== null) {
-            photo.set('placeId', userModel.currentUser.currentPlaceUUID);
+            photo.set('placeUUID', userModel.currentUser.currentPlaceUUID);
             photo.set('placeString', userModel.currentUser.currentPlace);
         }
 
