@@ -162,6 +162,8 @@
 
 		smartEvent.init();
 
+		smartMovie.init();
+
 		tagModel.init();
 
 		if (window.navigator.simulator === undefined) {

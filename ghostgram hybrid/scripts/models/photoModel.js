@@ -31,19 +31,24 @@ var photoModel = {
 
         photoModel.photosDS = new kendo.data.DataSource({  // this is the gallery datasource
             offlineStorage: "photos",
-          /*  type: 'everlive',
+            type: 'everlive',
             transport: {
                 typeName: 'photos',
                 dataProvider: APP.everlive
             },
             schema: {
                 model: { id:  Everlive.idField}
-            },*/
+            },
             sort: {
                 field: "timestamp",
                 dir: "desc"
             }
         });
+
+
+        photoModel.photosDS.fetch();
+        deviceModel.setAppState('hasPhotos', true);
+        deviceModel.isParseSyncComplete();
     },
 
     initOffer : function () {
