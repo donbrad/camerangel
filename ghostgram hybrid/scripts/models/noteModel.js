@@ -17,16 +17,23 @@ var noteModel = {
     _ggClass: 'Note',
     _version: 1,
 
-    notesDS: new kendo.data.DataSource({
-        offlineStorage: "note",
-        sort: {
-            field: "date",
-            dir: "desc"
-        }
-    }),
+    notesDS: null,
+    
 
     init: function () {
-
+        noteModel.notesDS = new kendo.data.DataSource({
+            offlineStorage: "note",
+            type: 'everlive',
+            transport: {
+                typeName: 'note',
+                dataProvider: APP.everlive
+            },
+            schema: {
+                model: { id:  Everlive.idField}
+            }
+        });
+        
+        noteModel.notesDS.fetch();
     },
 
     findNote: function (type, uuid) {
@@ -105,38 +112,40 @@ var noteModel = {
     },
 
     addNote : function (note) {
-        var Notes = Parse.Object.extend(noteModel._parseClass);
-        var noteParse = new Notes();
+       /* var Notes = Parse.Object.extend(noteModel._parseClass);
+        var noteParse = new Notes();*/
 
+        var noteObj = new kendo.data.ObservableObject();
 
-        if (note.isPrivate === undefined || note.isPrivate) {
+       /* if (note.isPrivate === undefined || note.isPrivate) {
             noteParse.setACL(userModel.parseACL);
-        }
-        noteParse.set('version', noteModel._version);
-        noteParse.set('uuid', note.uuid);
-        noteParse.set('userUUID', note.userUUID);
-        noteParse.set('objectType', note.objectType);
-        noteParse.set('objectUUID', note.objectUUID);
-        noteParse.set('title', note.title);
-        noteParse.set('tagString', note.tagString);
-        noteParse.set('metaTagString',  note.metaTagString);
-        noteParse.set('content', note.content);
-        noteParse.set('tags', note.tags);
+        }*/
+        noteObj.set('version', noteModel._version);
+        noteObj.set('ggType', noteModel._ggClass);
+        noteObj.set('uuid', note.uuid);
+        noteObj.set('userUUID', note.userUUID);
+        noteObj.set('objectType', note.objectType);
+        noteObj.set('objectUUID', note.objectUUID);
+        noteObj.set('title', note.title);
+        noteObj.set('tagString', note.tagString);
+        noteObj.set('metaTagString',  note.metaTagString);
+        noteObj.set('content', note.content);
+        noteObj.set('tags', note.tags);
         var dateString = new Date().toISOString();
-        var d = {"__type":"Date","iso":dateString};
-        noteParse.set('date',  d);
-        noteParse.set('expiration', Number(note.expiration));
+        //var d = {"__type":"Date","iso":dateString};
+        noteObj.set('date',  dateString);
+        noteObj.set('expiration', Number(note.expiration));
         dateString = new Date(note.expirationDate).toISOString();
-        d = {"__type":"Date","iso":dateString};
-        noteParse.set('expirationDate', d);
-        noteParse.set('isPrivate',  note.isPrivate);
-        noteParse.set('isExpired',  note.isExpired);
-        var noteObj = noteParse.toJSON();
+       // d = {"__type":"Date","iso":dateString};
+        noteObj.set('expirationDate', dateString);
+        noteObj.set('isPrivate',  note.isPrivate);
+        noteObj.set('isExpired',  note.isExpired);
+       // var noteObj = noteParse.toJSON();
 
         noteModel.notesDS.add(noteObj);
         noteModel.notesDS.sync();
 
-        noteParse.save(null, {
+        /*noteParse.save(null, {
             success: function(noteIn) {
 
                 // Execute any logic that should take place after the object is saved.
@@ -147,7 +156,7 @@ var noteModel = {
                 // error is a Parse.Error with an error code and message.
                 handleParseError(error);
             }
-        });
+        });*/
     },
 
     saveParseNote : function (noteParse) {
@@ -180,9 +189,9 @@ var noteModel = {
     // object id is uuid / is for the parent object
     // private sets the acl on the note to available to this user only
     createNote : function (type, objectId, isPrivate) {
-        var Notes = Parse.Object.extend(noteModel._parseClass);
-        var note = new Notes();
-
+      /*  var Notes = Parse.Object.extend(noteModel._parseClass);
+        var note = new Notes();*/
+        var note = new kendo.data.ObservableObject();
         note.set('uuid',uuid.v4());
 
         note.set('ggType',noteModel._ggClass);
@@ -217,7 +226,7 @@ var noteModel = {
                     var field = keys[i];
                     if (noteObj[field] !== note[field]) {
                         noteObj.set(field, note[field]);
-                        updateParseObject(noteModel._parseClass, 'uuid', note.uuid, field, note[field]);
+                      //  updateParseObject(noteModel._parseClass, 'uuid', note.uuid, field, note[field]);
 
                     }
                 }

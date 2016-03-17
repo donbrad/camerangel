@@ -156,6 +156,8 @@
 
 		memberdirectory.init();
 
+		note.init();
+		
 		photoModel.init();
 
 		channelModel.init();
