@@ -242,9 +242,28 @@
 
 	<ul data-role="listview" class="km-listinset">
 		<li> <div><h3>Hot Buttons</h3></div></li>
-		<li>My Notes </li>
-		<li>Camera </li>
-		<li>Scan </li>
+		<li>
+			<a class="btnClear" data-role="button" href="#privateNotes">
+				<img src="images/icon-myNotes-alt.svg" class="icon-sm" />
+				My Notes
+			</a>
+		</li>
+		<li>
+			<div>
+				<a data-role="button" class="btnClear" data-click='userStatusView.camera'>
+					<img src="images/icon-camera.svg" class="icon-sm" />
+					Camera
+				</a>
+			</div>
+		</li>
+		<li>
+			<div>
+				<a data-role="button" class="btnClear" data-click='userStatusView.doSignOut'>
+					<img src="images/icon-external.svg" class="icon-sm" />
+					Sign Out
+				</a>
+			</div>
+		</li>
 		<li> <div><h3>Personal Safety</h3></div></li>
 		<li> Police Emergency</li>
 		<li> Fire Emergency</li>
