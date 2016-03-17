@@ -18,6 +18,7 @@ var memberdirectory = {
     setMember : function (member) {
         memberdirectory._member.id = memberdirectory._id;
         memberdirectory._member.userUUID = member.userUUID;
+        userModel.currentUser.set('id', memberdirectory._member.id);
     },
 
     init : function () {

@@ -281,12 +281,12 @@ var userModel = {
                                         mobileNotify(JSON.stringify(error1));
                                     } else {
                                         var token = data1;
-                                        mobileNotify("Everlive account created for " + username);
+                                        userModel.updateEverliveUser();
                                     }
 
                                 });
                             } else {
-                                mobileNotify("Everlive account confirmed -- migration enabled");
+                                userModel.updateEverliveUser();
                             }
                         });
                     }
@@ -301,12 +301,12 @@ var userModel = {
                                     mobileNotify(JSON.stringify(error1));
                                 } else {
                                     var token = data1;
-                                    mobileNotify("Everlive account created for " + username);
+                                    userModel.updateEverliveUser();
                                 }
 
                             });
                         } else {
-                            mobileNotify("Everlive account confirmed -- migration enabled");
+                            userModel.updateEverliveUser();
                         }
                     });
                 });
@@ -329,6 +329,17 @@ var userModel = {
                 }
             });
         }
+
+    },
+
+    updateEverliveUser : function () {
+        APP.everlive.Users.updateSingle(userModel.currentUser,
+            function(data){
+                mobileNotify("Everlive User Account Updated");
+            },
+            function(error){
+               mobileNotify("Everlive User Update Error : " + JSON.stringify(error));
+            });
 
     },
 
@@ -495,9 +506,9 @@ var userModel = {
 
        // photoModel.fetch();
 
-        noteModel.fetch();
+       // noteModel.fetch();
 
-        smartEvent.fetch();
+        //smartEvent.fetch();
 
         userStatus.init();
 
