@@ -156,7 +156,7 @@
 
 		memberdirectory.init();
 
-		note.init();
+		noteModel.init();
 		
 		photoModel.init();
 
