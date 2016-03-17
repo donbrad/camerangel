@@ -43,7 +43,7 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, privateKey, con
 				
             var parsedMsg = {
                 msgID: msg.msgID,
-                channelId: channelUUID,
+                channelUUID: channelUUID,
                 content: content,
 				data: data,
                 TTL: msg.ttl,
@@ -171,7 +171,7 @@ function secureChannel( channelUUID, userUUID, alias, publicKey, privateKey, con
                         callback: function () {
                             var parsedMsg = {
                                 msgID: msgID,
-                                channelId: channelUUID,
+                                channelUUID: channelUUID,
                                 content: content,
 								data: contentData,
                                 TTL: ttl,

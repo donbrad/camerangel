@@ -8,7 +8,7 @@
 var groupChannel = {
     thisUser : {},
     users: [],
-    channelId : '',
+    channelUUID : '',
     channelName : '',
     userId : '',
     userName : '',
@@ -18,20 +18,20 @@ var groupChannel = {
     channelFetchCallBack : null,
 
     close: function () {
-        if (groupChannel.channelId !== null) {
+        if (groupChannel.channelUUID !== null) {
             APP.pubnub.unsubscribe({
-                channel: groupChannel.channelId
+                channel: groupChannel.channelUUID
             });
 
-            groupChannel.channelId = null;
+            groupChannel.channelUUID = null;
             groupChannel.channelName = null;
             groupChannel.users = [];
         }
 
     },
     
-    open : function (channelId, channelName, userId, name, alias, phoneNumber) {
-        groupChannel.channelId = channelId;
+    open : function (channelUUID, channelName, userId, name, alias, phoneNumber) {
+        groupChannel.channelUUID = channelUUID;
         groupChannel.channelName = channelName;
         groupChannel.userId = userId;
         groupChannel.thisUser.username = userId;
@@ -45,7 +45,7 @@ var groupChannel = {
 
         // Subscribe to our PubNub channel.
         APP.pubnub.subscribe({
-            channel: groupChannel.channelId,
+            channel: groupChannel.channelUUID,
             windowing: 500,
             restore: true,
             callback: groupChannel.receiveHandler,
@@ -75,7 +75,7 @@ var groupChannel = {
 
         channelView.messagesDS.add(message);
         channelModel.cacheGroupMessage(message);
-        channelModel.updateLastAccess(channelView._channelId, null);
+        channelModel.updateLastAccess(channelView._channelUUID, null);
         if (message.data.photos !== undefined && message.data.photos.length > 0) {
             var selector = '#' + message.msgID + " img";
             var $img = $(selector), n = $img.length;
@@ -113,7 +113,7 @@ var groupChannel = {
            /* // Otherwise, we have to call `here_now` to get the state of the new subscriber to the channel.
             else {
                 APP.pubnub.here_now({
-                    channel: groupChannel.channelId,
+                    channel: groupChannel.channelUUID,
                     state: true,
                     callback: groupChannel.hereNowHandler
                 });
@@ -142,7 +142,7 @@ var groupChannel = {
 
     hereNow : function () {
         APP.pubnub.here_now({
-            channel: groupChannel.channelId,
+            channel: groupChannel.channelUUID,
             state: true,
             callback: function(msg) {
                 groupChannel.users[groupChannel.userId] = groupChannel.thisUser;
@@ -168,7 +168,7 @@ var groupChannel = {
             var notificationString = "Group Chat : " + groupChannel.channelName ;
             var thisMessage = {
                 msgID: msgID,
-                channelId : groupChannel.channelId,
+                channelUUID : groupChannel.channelUUID,
                 pn_apns: {
                     aps: {
                         alert : notificationString,
@@ -176,8 +176,8 @@ var groupChannel = {
                         'content-available' : 1
                     },
                     senderId: userModel.currentUser.userUUID,
-                    target: '#channel?channelId='+ groupChannel.channelId,
-                    channelId: groupChannel.channelId,
+                    target: '#channel?channelUUID='+ groupChannel.channelUUID,
+                    channelUUID: groupChannel.channelUUID,
                     isMessage: true,
                     isPrivate: false
                 },
@@ -186,8 +186,8 @@ var groupChannel = {
                         title: notificationString,
                         message: "Message from " + userModel.currentUser.name,
                         senderId: userModel.currentUser.userUUID,
-                        target: '#channel?channelId='+ groupChannel.channelId,
-                        channelId: groupChannel.channelId,
+                        target: '#channel?channelUUID='+ groupChannel.channelUUID,
+                        channelUUID: groupChannel.channelUUID,
                         isMessage: true,
                         isPrivate: false
                     }
@@ -200,7 +200,7 @@ var groupChannel = {
                 ttl: ttl
             };
             APP.pubnub.publish({
-                channel: groupChannel.channelId,
+                channel: groupChannel.channelUUID,
                 message: thisMessage,
                 callback: function (m) {
                     if (m === undefined)
@@ -214,7 +214,7 @@ var groupChannel = {
 
                     /*var parsedMsg = {
                          msgID: msgID,
-                         channelId: groupChannel.channelId,
+                         channelUUID: groupChannel.channelUUID,
                          content: message,
                          data: data,
                          ttl: ttl,
@@ -224,7 +224,7 @@ var groupChannel = {
 
                      };*/
 
-                    channelModel.updateLastAccess(groupChannel.channelId, null);
+                    channelModel.updateLastAccess(groupChannel.channelUUID, null);
                     channelView.scrollToBottom();
                    // groupChannel.receiveMessage(thisMessage);
 
@@ -237,7 +237,7 @@ var groupChannel = {
     getAllMessages:  function(timetoken) {
         APP.pubnub.history({
             start: timetoken,
-            channel: groupChannel.channelId,
+            channel: groupChannel.channelUUID,
             callback: function(payload) {
                 var msgs = payload[0];
                 var start = payload[1];
@@ -257,7 +257,7 @@ var groupChannel = {
     },
 
     getMessageHistory: function (callBack) {
-        var channel = channelModel.findChannelModel(groupChannel.channelId);
+        var channel = channelModel.findChannelModel(groupChannel.channelUUID);
         var endTime = ggTime.currentTime() * 1000, lastTime = ggTime.lastMonth() * 1000;
         groupChannel.channelFetchCallBack = callBack;
 
@@ -269,7 +269,7 @@ var groupChannel = {
         }
 
         APP.pubnub.history({
-            channel: groupChannel.channelId,
+            channel: groupChannel.channelUUID,
             end: endTime.toString(),
             error: function (error) {
 
@@ -333,7 +333,7 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
         if (msg.recipient === userUUID) {
             var parsedMsg = {
                 msgID: msg.msgID,
-                channelId: channelUUID,
+                channelUUID: channelUUID,
                 content: msg.content,
                 data: msg.data,
                 TTL: msg.ttl,
@@ -437,7 +437,7 @@ function groupChannel( channelUUID, userUUID, alias, publicKey) {
                         callback: function () {
                            var parsedMsg = {
                                 msgID: msgID,
-                               channelId: channelUUID,
+                               channelUUID: channelUUID,
                                 content: message,
                                 data: data,
                                 TTL: ttl,

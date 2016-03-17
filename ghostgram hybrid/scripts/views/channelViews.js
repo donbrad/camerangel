@@ -43,8 +43,8 @@ var channelsView = {
                 //var selector = e.target[0].parentElement;
                 var selector = $(e.sender.events.currentTarget);
                 if(selector.hasClass("chat-mainBox") === true || e.target[0].className === "chat-mainBox"){
-                    var channelId = selector.context.parentElement.id;
-                    var channelUrl = "#channel?channelId=" + channelId;
+                    var channelUUID = selector.context.parentElement.id;
+                    var channelUrl = "#channel?channelUUID=" + channelUUID;
                     APP.kendo.navigate(channelUrl);
                 }
             },
@@ -196,12 +196,12 @@ var channelsView = {
         return(channel);
     },
 
-    findChannelModel: function (channelId) {
+    findChannelModel: function (channelUUID) {
 
-        return(channelsView.queryChannel({ field: "channelId", operator: "eq", value: channelId }));
+        return(channelsView.queryChannel({ field: "channelUUID", operator: "eq", value: channelUUID }));
 
         /*var dataSource =  channelModel.channelsDS;
-         dataSource.filter( { field: "channelId", operator: "eq", value: channelId });
+         dataSource.filter( { field: "channelUUID", operator: "eq", value: channelUUID });
          var view = dataSource.view();
          var channel = view[0];
          dataSource.filter([]);
@@ -215,39 +215,39 @@ var channelsView = {
         }
         // Did a quick bind to the button, feel free to change
 
-        var channelId = e.button[0].attributes["data-channel"].value;
+        var channelUUID = e.button[0].attributes["data-channel"].value;
 
 
-        APP.kendo.navigate('#editChannel?channel='+channelId);
+        APP.kendo.navigate('#editChannel?channel='+channelUUID);
 
     },
 
     deleteChannel: function (e) {
         e.preventDefault();
 
-        var channelId = e.button[0].attributes["data-channel"].value;
+        var channelUUID = e.button[0].attributes["data-channel"].value;
 
-        var channelListModel = channelsView.findChannelModel(channelId);
+        var channelListModel = channelsView.findChannelModel(channelUUID);
         channelsView._channelListDS.remove(channelListModel);
-        channelModel.deleteChannel(channelId);
+        channelModel.deleteChannel(channelUUID);
 
     },
 
     muteChannel : function (e) {
         e.preventDefault();
 
-        var channelId = e.button[0].attributes["data-channel"].value;
-        var channel = channelModel.findChannelModel(channelId);
-        var channelListModel = channelsView.findChannelModel(channelId);
+        var channelUUID = e.button[0].attributes["data-channel"].value;
+        var channel = channelModel.findChannelModel(channelUUID);
+        var channelListModel = channelsView.findChannelModel(channelUUID);
         channelListModel.set('isMuted', channel.isMuted);
 
         if(channel.isMuted){
-            channelModel.muteChannel(channelId, false);
+            channelModel.muteChannel(channelUUID, false);
             mobileNotify(channel.name + " is unmuted");
 
 
         } else {
-            channelModel.muteChannel(channelId, true);
+            channelModel.muteChannel(channelUUID, true);
             mobileNotify(channel.name + " is muted");
         }
 
@@ -391,7 +391,7 @@ var addChannelView = {
  */
 
 var editChannelView = {
-    _activeChannelId : null,
+    _activechannelUUID : null,
     _activeChannel : new kendo.data.ObservableObject(),
 
     potentialMembersDS: new kendo.data.DataSource({
@@ -437,11 +437,11 @@ var editChannelView = {
 
         if (e.view.params.channel !== undefined) {
 
-            editChannelView._activeChannelId = e.view.params.channel;
+            editChannelView._activechannelUUID = e.view.params.channel;
 
             editChannelView.orginalMembers = [];
 
-            var channel = channelModel.findChannelModel(editChannelView._activeChannelId);
+            var channel = channelModel.findChannelModel(editChannelView._activechannelUUID);
             editChannelView.setActiveChannel(channel);
 
             var members = editChannelView._activeChannel.members,  invitedMembers = editChannelView._activeChannel.invitedMembers, thisMember = {};
@@ -527,7 +527,7 @@ var editChannelView = {
 
         var memberArray = [], invitedMemberArray = [], invitedPhoneArray = [], inviteArray = [],members = editChannelView.membersDS.data();
 
-        var channelId = editChannelView._activeChannelId;
+        var channelUUID = editChannelView._activechannelUUID;
         // It's a group channel so push this users UUID
 
         memberArray.push(userModel.currentUser.userUUID);
@@ -553,7 +553,7 @@ var editChannelView = {
             var contactId = membersDeleted[md].contactUUID;
             if (contactId !== null && ($.inArray(contactId, memberArray) == -1)) {  // if this user is still in the member array don't send a delete
                 // This is a ggMember -- send delete.
-                appDataChannel.groupChannelDelete(contactId, channelId,  editChannelView._activeChannel.name, editChannelView._activeChannel.name + " has been deleted.");
+                appDataChannel.groupChannelDelete(contactId, channelUUID,  editChannelView._activeChannel.name, editChannelView._activeChannel.name + " has been deleted.");
             } else {
                 // Invited member -- need to look up userId by phone number before sending delete notification
                 var phone = editChannelView.membersDeleted[md].phone;
@@ -561,7 +561,7 @@ var editChannelView = {
                     findUserByPhone(phone, function (result) {
                         if (result.found) {
                             var user = result.user, contactId = user.get('userUUID');
-                            appDataChannel.groupChannelDelete(contactId, channelId, editChannelView._activeChannel.name, editChannelView._activeChannel.name + " has been deleted.");
+                            appDataChannel.groupChannelDelete(contactId, channelUUID, editChannelView._activeChannel.name, editChannelView._activeChannel.name + " has been deleted.");
                         }
 
                     });
@@ -588,7 +588,7 @@ var editChannelView = {
             var contactId = membersAdded[ma].contactUUID;
             if (contactId !== undefined && contactId !== null) {
                 inviteArray.push(contactId);
-                appDataChannel.groupChannelInvite(contactId, channelId,  editChannelView._activeChannel.name,  editChannelView._activeChannel.description, memberArray,
+                appDataChannel.groupChannelInvite(contactId, channelUUID,  editChannelView._activeChannel.name,  editChannelView._activeChannel.description, memberArray,
                     options);
             } else {
                 console.error("Invalid Contact " + contactId);
@@ -604,14 +604,14 @@ var editChannelView = {
             var invited = ($.inArray(memberArray[m],inviteArray) !== -1);
             // Only send updates to current members (new members got an invite above)
             if (memberArray[m] !== userModel.currentUser.userUUID &&  invited === false) {
-                appDataChannel.groupChannelUpdate(memberArray[m], channelId,  editChannelView._activeChannel.name, editChannelView._activeChannel.description, memberArray);
+                appDataChannel.groupChannelUpdate(memberArray[m], channelUUID,  editChannelView._activeChannel.name, editChannelView._activeChannel.description, memberArray);
             }
         }
 
 
 
         // Update the kendo object
-        var channelObj = channelModel.findChannelModel(channelId);
+        var channelObj = channelModel.findChannelModel(channelUUID);
 
         channelObj.set('name', editChannelView._activeChannel.name);
         channelObj.set('description', editChannelView._activeChannel.description);
@@ -619,10 +619,10 @@ var editChannelView = {
         channelObj.set('inviteMembers', invitedMemberArray);
 
         //Update the parse object
-        updateParseObject('channels', 'channelId', channelId, 'name',  editChannelView._activeChannel.name);
-        updateParseObject('channels', 'channelId', channelId, 'description',  editChannelView._activeChannel.description);
-        updateParseObject('channels', 'channelId', channelId, 'members', memberArray);
-        updateParseObject('channels', 'channelId', channelId, 'invitedMembers', invitedMemberArray);
+        updateParseObject('channels', 'channelUUID', channelUUID, 'name',  editChannelView._activeChannel.name);
+        updateParseObject('channels', 'channelUUID', channelUUID, 'description',  editChannelView._activeChannel.description);
+        updateParseObject('channels', 'channelUUID', channelUUID, 'members', memberArray);
+        updateParseObject('channels', 'channelUUID', channelUUID, 'invitedMembers', invitedMemberArray);
 
 
         // Reset UI
@@ -864,7 +864,7 @@ var channelView = {
     }),
 
     _channel : null,
-    _channelId : null,
+    _channelUUID : null,
 
     queryMessage: function (query) {
         if (query === undefined)
@@ -1049,7 +1049,7 @@ var channelView = {
 
           //  channelView.onHide();
            // setTimeout( function () {APP.kendo.navigate('#placeView?place=' + placeUrl);}, 500);
-            APP.kendo.navigate('#placeView?place=' + placeUrl + "&returnview=" + packParameter("channel?channelId="+channelView._channelId));
+            APP.kendo.navigate('#placeView?place=' + placeUrl + "&returnview=" + packParameter("channel?channelUUID="+channelView._channelUUID));
         }
 
 
@@ -1086,7 +1086,7 @@ var channelView = {
         ux.showActionBtn(false, "#channel");
 
         channelView.toggleTitleTag();
-        var channelUUID = e.view.params.channelId;
+        var channelUUID = e.view.params.channelUUID;
 
         if (e.view.params.returnview !== undefined){
             channelView._returnview = unpackParameter(e.view.params.returnview);
@@ -1094,7 +1094,7 @@ var channelView = {
             channelView._returnview = null;
         }
 
-        channelView._channelId = channelUUID;
+        channelView._channelUUID = channelUUID;
 
         var thisUser = userModel.currentUser;
 
@@ -1124,7 +1124,7 @@ var channelView = {
             channelView.isPlaceChat = false;
             $('#channel-titleBtn .icon-header').addClass('hidden');
         }
-        channelModel.zeroUnreadCount(thisChannel.channelId);
+        channelModel.zeroUnreadCount(thisChannel.channelUUID);
 
         name =  thisChannel.name;
         $("#channelName").text(name);
@@ -1158,7 +1158,7 @@ var channelView = {
 
           var userKey = thisUser.publicKey, privateKey = thisUser.privateKey, name = thisUser.name;
 
-          contactUUID = thisChannel.channelId;
+          contactUUID = thisChannel.channelUUID;
 
 
           channelView.privateContactId = contactUUID;
@@ -1290,7 +1290,7 @@ var channelView = {
 
     onHide : function (e) {
 
-        channelView._channelId = null;
+        channelView._channelUUID = null;
         channelView._channel = null;
         channelView._active  = false;
         if (channelView.updateTimer !== undefined) {
@@ -1635,7 +1635,7 @@ var channelView = {
 
 
     messageAddSmartEvent : function (smartObj) {
-        smartObj.channelId = channelView._channelId;
+        smartObj.channelUUID = channelView._channelUUID;
 
         smartEvent.smartAddEvent(smartObj);
 
@@ -1644,7 +1644,7 @@ var channelView = {
     },
 
     messageAddSmartMovie : function (smartObj) {
-        smartObj.channelId = channelView._channelId;
+        smartObj.channelUUID = channelView._channelUUID;
 
         smartMovie.smartAddMovie(smartObj);
 
@@ -1661,7 +1661,7 @@ var channelView = {
 
             var photoObj  = {
                 photoId : photo.photoId,
-                channelId: channelView._channelId,
+                channelUUID: channelView._channelUUID,
                 thumbnailUrl: photo.thumbnailUrl,
                 imageUrl: photo.imageUrl,
                 canCopy: canCopy,
@@ -1672,7 +1672,7 @@ var channelView = {
 
 
         channelView.activeMessage.photos.push(photoObj);
-       // photoModel.addPhotoOffer(photo.photoId, channelView._channelId, photo.thumbnailUrl, photo.imageUrl, canCopy);
+       // photoModel.addPhotoOffer(photo.photoId, channelView._channelUUID, photo.thumbnailUrl, photo.imageUrl, canCopy);
     },
 
     messageAddRichText : function (text) {
@@ -2194,14 +2194,14 @@ var channelView = {
                 var member = members[i];
 
                 if (member !== thisUser)
-                    appDataChannel.recallMessage(member, channelView._channelId, message.msgID, thisUser, channelView.isPrivateChat);
+                    appDataChannel.recallMessage(member, channelView._channelUUID, message.msgID, thisUser, channelView.isPrivateChat);
 
             }
 
             mobileNotify("Recalling message " + message.msgID);
             // Add the recall Message for this user (as the message is still in the respective channel
             // until it ages out...
-            channelModel.addMessageRecall(channelView._channelId, message.msgID, thisUser,  channelView.isPrivateChat)
+            channelModel.addMessageRecall(channelView._channelUUID, message.msgID, thisUser,  channelView.isPrivateChat)
 
         }
 
@@ -2278,7 +2278,7 @@ var channelView = {
             1600, // max resolution in pixels
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
-            channelView._channelId,  // Current channel Id for offers
+            channelView._channelUUID,  // Current channel Id for offers
             channelView.addImageToMessage  // Optional preview callback
         );
     },
@@ -2290,7 +2290,7 @@ var channelView = {
             1600, // max resolution in pixels
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
-            channelView._channelId,  // Current channel Id for offers
+            channelView._channelUUID,  // Current channel Id for offers
             channelView.addImageToMessage  // Optional preview callback
         );
     },
@@ -2300,7 +2300,7 @@ var channelView = {
 
          galleryPicker.openModal(function (photo) {
 
-            // photoModel.addPhotoOffer(photo.photoId, channelView._channelId,  photo.thumbnailUrl, photo.imageUrl, true);
+            // photoModel.addPhotoOffer(photo.photoId, channelView._channelUUID,  photo.thumbnailUrl, photo.imageUrl, true);
 
              var url = photo.thumbnailUrl;
              if (photo.imageUrl !== undefined && photo.imageUrl !== null)
@@ -2470,7 +2470,7 @@ var askRequestModal = {
 
 
 var channelPresence = {
-    _channelId : null,
+    _channelUUID : null,
     _channelModel : null,
 
     onInit: function (e) {

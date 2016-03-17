@@ -831,7 +831,7 @@ var ghostEditView = {
     insertImage: function(e) {
         galleryPicker.openModal(function (photo) {
 
-            photoModel.addPhotoOffer(photo.photoId, channelView._channelId, photo.thumbnailUrl, photo.imageUrl, true);
+            photoModel.addPhotoOffer(photo.photoId, channelView._channelUUID, photo.thumbnailUrl, photo.imageUrl, true);
 
             var url = photo.thumbnailUrl;
             if (photo.imageUrl !== undefined && photo.imageUrl !== null){

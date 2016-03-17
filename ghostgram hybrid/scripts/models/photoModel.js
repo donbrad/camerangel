@@ -260,9 +260,9 @@ var photoModel = {
         return(photoModel.queryPhoto({ field: "photoId", operator: "eq", value: photoId }));
     },
 
-    findPhotosByChannel : function (channelId) {
+    findPhotosByChannel : function (channelUUID) {
 
-        return(photoModel.queryPhotos({ field: "channelId", operator: "eq", value: channelId }));
+        return(photoModel.queryPhotos({ field: "channelUUID", operator: "eq", value: channelUUID }));
     },
 
     findPhotosByPlaceId : function (placeId) {
@@ -285,11 +285,11 @@ var photoModel = {
         return(photoModel.queryPhotos({ field: "senderUUID", operator: "eq", value: senderId }));
     },
 
-     getChannelOffers : function (channelId, callback) {
+     getChannelOffers : function (channelUUID, callback) {
         var ParsePhotoOffer = Parse.Object.extend("photoOffer");
         var queryOffer = new Parse.Query(ParsePhotoOffer);
 
-         queryOffer.equalTo("channelId", channelId);
+         queryOffer.equalTo("channelUUID", channelUUID);
         queryOffer.find({
             success: function(collection) {
 
@@ -313,10 +313,10 @@ var photoModel = {
         });
     },
 
-    getPhotoOffer : function (channelId, photoId, callback) {
+    getPhotoOffer : function (channelUUID, photoId, callback) {
         var ParsePhotoOffer = Parse.Object.extend("photoOffer");
         var queryOffer = new Parse.Query(ParsePhotoOffer);
-        queryOffer.equalTo("channelId", channelId);
+        queryOffer.equalTo("channelUUID", channelUUID);
         queryOffer.equalTo("photoId", photoId);
         queryOffer.find({
             success: function(collection) {
@@ -384,11 +384,11 @@ var photoModel = {
                 updateParseObject('photos', "photoId", photo.photoId, "senderName",  null);
             }
 
-            if (photo.channelId === undefined) {
-                photo.channelId = null;
+            if (photo.channelUUID === undefined) {
+                photo.channelUUID = null;
                 photo.channelName = null;
 
-                updateParseObject('photos', "photoId", photo.photoId, "channelId",  null);
+                updateParseObject('photos', "photoId", photo.photoId, "channelUUID",  null);
                 updateParseObject('photos', "photoId", photo.photoId, "channelName",  null);
             }
 
@@ -513,9 +513,9 @@ var photoModel = {
 
         var filename = photoId.replace(/-/g,'');
 
-        var channelId = photoObj.channelId;
+        var channelUUID = photoObj.channelUUID;
 
-        var channel = channelModel.findChannelModel(channelId);
+        var channel = channelModel.findChannelModel(channelUUID);
         if (channel !== undefined) {
             photo.set('channelName', channel.name);
         }
@@ -524,7 +524,7 @@ var photoModel = {
 
         photo.set('photoId', photoObj.photoId);  // use the original photo id from sender to enable recall
         photo.set('uuid', photoObj.photoId);
-        photo.set('channelId', channelId);
+        photo.set('channelUUID', channelUUID);
         photo.set('version', photoModel._version);
 
         photo.set('senderUUID',ownerId );
@@ -623,7 +623,7 @@ var photoModel = {
        return(acl);
     },
 
-    addPhotoOffer : function (photoId, channelId, thumbnailUrl, imageUrl, canCopy) {
+    addPhotoOffer : function (photoId, channelUUID, thumbnailUrl, imageUrl, canCopy) {
 
         var PhotoOffer = Parse.Object.extend("photoOffer");
         var offer = new PhotoOffer();
@@ -638,7 +638,7 @@ var photoModel = {
 
         offer.set('uuid', offeruuid);
         offer.set('photoId', photoId);
-        offer.set('channelId', channelId);
+        offer.set('channelUUID', channelUUID);
         offer.set('ownerId', userModel.currentUser.userUUID);
         offer.set('ownerName', userModel.currentUser.name);
 
@@ -778,12 +778,12 @@ var photoModel = {
 
 
         if (channelView._active) {
-            var channelId = channelView._channelId;
+            var channelUUID = channelView._channelUUID;
             var channelName = channelView._channel.name;
-            photo.set('channelId', channelId);
+            photo.set('channelUUID', channelUUID);
             photo.set('channelName', channelName);
         } else {
-            photo.set('channelId', null);
+            photo.set('channelUUID', null);
             photo.set('channelName', null);
         }
 

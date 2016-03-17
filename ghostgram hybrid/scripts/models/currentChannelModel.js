@@ -8,7 +8,7 @@ var currentChannelModel = {
     currentChannel: new kendo.data.ObservableObject(),  // data for current channel
     handler : null,  // Handler functions for the current channel
     currentMessage: {},
-    channelId : null,
+    channelUUID : null,
     membersAdded : [],
     membersDeleted: [],
     memberList: [],
@@ -62,18 +62,18 @@ var currentChannelModel = {
         //currentChannelModel.potentialMembersDS.sync();
     },
 
-    setCurrentChannel : function (channelId) {
-        if (channelId === undefined || channelId === null) {
+    setCurrentChannel : function (channelUUID) {
+        if (channelUUID === undefined || channelUUID === null) {
             mobileNotify("CurrentChat :  Invalid Chat Id!!");
             return (null);
         }
 
         currentChannelModel.initDataSources();
 
-        var channel = channelModel.findChannelModel(channelId);
+        var channel = channelModel.findChannelModel(channelUUID);
         if (channel !== undefined) {
             currentChannelModel.currentChannel = channel;
-            currentChannelModel.channelId = channelId;
+            currentChannelModel.channelUUID = channelUUID;
 
             if (channel.category !== 'Private') {
                 currentChannelModel.buildMemberList();
@@ -111,7 +111,7 @@ var currentChannelModel = {
 
     syncChannelMembers : function (callback) {
 
-        getChannelDetails(currentChannelModel.channelId, function (result) {
+        getChannelDetails(currentChannelModel.channelUUID, function (result) {
             var members = [];
             if (result.found) {
                 members = result.channel.members;
@@ -234,19 +234,19 @@ var currentChannelModel = {
 
     zeroUnreadCount : function () {
         // Messages from parse
-        updateParseObject('channels', 'channelId', channelId, 'unreadCount', 0);
+        updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', 0);
     },
 
     // Need to debounce this so we're not updating lastAccess on each message read.
     updateLastAccess: debounce(function () {
-        var accessTime = ggTime.currentTime(), channelId = currentChannelModel.currentChannel.channelId;
-        updateParseObject('channels', 'channelId', channelId, 'lastAccess', accessTime);
+        var accessTime = ggTime.currentTime(), channelUUID = currentChannelModel.currentChannel.channelUUID;
+        updateParseObject('channels', 'channelUUID', channelUUID, 'lastAccess', accessTime);
 
     }, this._debounceInterval),
 
     updateClearBefore: function () {
-        var clearTime = ggTime.currentTime(), channelId = currentChannelModel.currentChannel.channelId;
-        updateParseObject('channels', 'channelId', channelId, 'clearBefore', clearTime);
+        var clearTime = ggTime.currentTime(), channelUUID = currentChannelModel.currentChannel.channelUUID;
+        updateParseObject('channels', 'channelUUID', channelUUID, 'clearBefore', clearTime);
     }
 
 

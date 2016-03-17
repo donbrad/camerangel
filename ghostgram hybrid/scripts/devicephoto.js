@@ -49,7 +49,7 @@ var devicePhoto = {
             });
     },
 
-    deviceCamera : function (resolution, quality, isChat, channelId,  displayCallback) {
+    deviceCamera : function (resolution, quality, isChat, channelUUID,  displayCallback) {
         if (resolution === undefined) {
             resolution = devicePhoto._resolution;  // default resolution for ghostgrams
         }
@@ -149,7 +149,7 @@ var devicePhoto = {
                                             }
 
 
-                                            //photoModel.addPhotoOffer(photouuid, channelId, parseFile._url, null, null , false);
+                                            //photoModel.addPhotoOffer(photouuid, channelUUID, parseFile._url, null, null , false);
 
 
                                         });
@@ -185,7 +185,7 @@ var devicePhoto = {
     },
 
 
-    deviceGallery : function (resolution, quality, isChat, channelId, displayCallback) {
+    deviceGallery : function (resolution, quality, isChat, channelUUID, displayCallback) {
         if (resolution === undefined) {
             resolution = devicePhoto._resolution;  // default resolution for ghostgrams
         }
@@ -285,7 +285,7 @@ var devicePhoto = {
                                 }
 
 
-                                //photoModel.addPhotoOffer(photouuid, channelId, parseFile._url, null, null , false);
+                                //photoModel.addPhotoOffer(photouuid, channelUUID, parseFile._url, null, null , false);
 
 
                             });
@@ -316,7 +316,7 @@ var devicePhoto = {
 
                                 photoModel.addDevicePhoto(devicePhoto.currentPhoto);
                                 if (isChat) {
-                                  //  photoModel.addPhotoOffer(photouuid, channelId, parseFile._url, null, null, false);
+                                  //  photoModel.addPhotoOffer(photouuid, channelUUID, parseFile._url, null, null, false);
                                     if (displayCallback !== undefined) {
                                         displayCallback(photouuid, imageUrl);
                                     }
@@ -450,7 +450,7 @@ var devicePhoto = {
         photo.setACL(userModel.parseACL);
         photo.set('photoId', photoModel.currentPhoto.photoId);
         photo.set('deviceUrl', photoModel.currentPhoto.phoneUrl);
-        photo.set('channelId', currentChannelModel.currentChannel.get('channelId'));
+        photo.set('channelUUID', currentChannelModel.currentChannel.get('channelUUID'));
         photo.set('channelName', currentChannelModel.currentChannel.get('name'));
 
         var timeStamp = new Date().getTime();

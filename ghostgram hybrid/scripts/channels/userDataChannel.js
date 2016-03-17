@@ -10,16 +10,16 @@
 
 var userDataChannel = {
 
-    channelId: null,   // channelId is users uuid
+    channelUUID: null,   // channelUUID is users uuid
     lastAccess: 0,   // last access time stamp
     messagesDS :  new kendo.data.DataSource({
         offlineStorage: "privatemessages"
         }),
 
-    init: function (channelId) {
+    init: function (channelUUID) {
 
-        if (channelId !== undefined) {
-            userDataChannel.channelId = channelId;
+        if (channelUUID !== undefined) {
+            userDataChannel.channelUUID = channelUUID;
 
             var ts = localStorage.getItem('ggUserDataTimeStamp');
             if (ts !== undefined) {
@@ -37,7 +37,7 @@ var userDataChannel = {
             }
 
             APP.pubnub.subscribe({
-                channel: userDataChannel.channelId,
+                channel: userDataChannel.channelUUID,
                 windowing: 100,
                 message: userDataChannel.channelRead,
                 connect: userDataChannel.channelConnect,
@@ -98,7 +98,7 @@ var userDataChannel = {
 
         // Get any messages in the channel
         APP.pubnub.history({
-            channel: userDataChannel.channelId,
+            channel: userDataChannel.channelUUID,
             start: start.toString(),
             end: timeStamp,
             error: userDataChannel.error,
@@ -135,7 +135,7 @@ var userDataChannel = {
                         var parsedMsg = {
                             type: 'privateMessage',
                             msgID: msg.msgID,
-                            channelId: msg.sender,   // Private channelId is just contacts UUID...
+                            channelUUID: msg.sender,   // Private channelUUID is just contacts UUID...
                             content: content,
                             data: data,
                             TTL: msg.ttl,
@@ -144,7 +144,7 @@ var userDataChannel = {
                             recipient: msg.recipient
                         };
 
-                        channelModel.updatePrivateUnreadCount(msg.channelId, 1);
+                        channelModel.updatePrivateUnreadCount(msg.channelUUID, 1);
                         userDataChannel.messagesDS.add(parsedMsg);
 
                     }

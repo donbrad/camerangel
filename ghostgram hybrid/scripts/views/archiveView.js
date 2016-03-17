@@ -12,7 +12,7 @@ var archiveView = {
 			// chat
 			archive.add({
 				message: {
-					channelId: '1',
+					channelUUID: '1',
 					channelName: 'myplacez design',
 
 					sender: {
@@ -40,7 +40,7 @@ var archiveView = {
 			// events
 			archive.add({
 				message: {
-					channelId: '1',
+					channelUUID: '1',
 					channelName: 'myplacez design',
 
 					sender: {
@@ -77,7 +77,7 @@ var archiveView = {
 			// urls
 			archive.add({
 				message: {
-					channelId: '2',
+					channelUUID: '2',
 					channelName: 'ghostgram design',
 
 					sender: {
@@ -108,7 +108,7 @@ var archiveView = {
 			// photos
 			archive.add({
 				message: {
-					channelId: '2',
+					channelUUID: '2',
 					channelName: 'ghostgram design',
 
 					sender: {
@@ -224,7 +224,7 @@ var archiveView = {
 		}
 
 		if (archiveView.sentinel.filters.chats !== undefined) {
-			filters.push({ field: 'channelId', operator: 'eq', value: archiveView.sentinel.filters.chats });
+			filters.push({ field: 'channelUUID', operator: 'eq', value: archiveView.sentinel.filters.chats });
 		}
 
 		if (archiveView.sentinel.filters.places !== undefined) {

@@ -1609,7 +1609,7 @@ var placeView = {
 
         galleryPicker.openModal(function (photo) {
 
-            // photoModel.addPhotoOffer(photo.photoId, channelView._channelId,  photo.thumbnailUrl, photo.imageUrl, true);
+            // photoModel.addPhotoOffer(photo.photoId, channelView._channelUUID,  photo.thumbnailUrl, photo.imageUrl, true);
 
             var url = photo.thumbnailUrl;
             if (photo.imageUrl !== undefined && photo.imageUrl !== null)
@@ -1638,7 +1638,7 @@ var placeView = {
 
             var photoObj  = {
                 photoId : photo.photoId,
-                channelId: null,
+                channelUUID: null,
                 thumbnailUrl: photo.thumbnailUrl,
                 imageUrl: photo.imageUrl,
                 canCopy: true,
@@ -1649,7 +1649,7 @@ var placeView = {
 
 
         placeView.photos.push(photoObj);
-        // photoModel.addPhotoOffer(photo.photoId, channelView._channelId, photo.thumbnailUrl, photo.imageUrl, canCopy);
+        // photoModel.addPhotoOffer(photo.photoId, channelView._channelUUID, photo.thumbnailUrl, photo.imageUrl, canCopy);
     },
 
     validateNotePhotos : function () {
@@ -1875,7 +1875,7 @@ var placeView = {
 
         if (placeView._activePlace.hasPlaceChat) {
 
-           APP.kendo.navigate('#channel?channelId=' + placeView._activePlace.placeChatId);
+           APP.kendo.navigate('#channel?channelUUID=' + placeView._activePlace.placeChatId);
         }
     }
 };

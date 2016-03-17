@@ -11,7 +11,7 @@
 var appDataChannel = {
 
 
-    channelId: '',   // current app channel
+    channelUUID: '',   // current app channel
     lastAccess: 0,   // last access time stamp
     _channelName: 'app',
     _version: 1,
@@ -26,7 +26,7 @@ var appDataChannel = {
         var channel = userModel.currentUser.userUUID.replace(/-/g,'_');
 
 
-        appDataChannel.channelId = channel;
+        appDataChannel.channelUUID = channel;
 
         var ts = localStorage.getItem('appDataChannel');
 
@@ -44,7 +44,7 @@ var appDataChannel = {
 
 
         APP.pubnub.subscribe({
-            channel: appDataChannel.channelId,
+            channel: appDataChannel.channelUUID,
             windowing: 500,
             message: appDataChannel.channelRead,
             connect: appDataChannel.channelConnect,
@@ -93,8 +93,8 @@ var appDataChannel = {
         }
     },
 
-    getContactAppChannel : function (channelId) {
-        return(channelId.replace(/-/g,'_'));
+    getContactAppChannel : function (channelUUID) {
+        return(channelUUID.replace(/-/g,'_'));
     },
 
     history : function () {
@@ -104,7 +104,7 @@ var appDataChannel = {
         // Get any messages in the channel
 
         APP.pubnub.history({
-            channel: appDataChannel.channelId,
+            channel: appDataChannel.channelUUID,
             start: timeStamp,
             reverse: true,
             callback: function(messages) {
@@ -171,21 +171,21 @@ var appDataChannel = {
                 updateParseObject('contacts', 'uuid', contact.uuid, 'publicKey', m.publicKey);
             } break;
 
-            //  { type: 'channelInvite',  channelId: <channelUUID>, ownerID: <ownerUUID>,  ownerName: <text>, channelName: <text>, channelDescription: <text>}
+            //  { type: 'channelInvite',  channelUUID: <channelUUID>, ownerID: <ownerUUID>,  ownerName: <text>, channelName: <text>, channelDescription: <text>}
             case 'groupInvite' : {
                 if (m.version === appDataChannel._version && m.msgID !== undefined)
-                    appDataChannel.processGroupInvite( m.channelId, m.channelName, m.channelDescription,  m.channelMembers, m.ownerId, m.ownerName,  m.options);
+                    appDataChannel.processGroupInvite( m.channelUUID, m.channelName, m.channelDescription,  m.channelMembers, m.ownerId, m.ownerName,  m.options);
             } break;
 
-            //  { type: 'channelInvite',  channelId: <channelUUID>, owner: <ownerUUID>}
+            //  { type: 'channelInvite',  channelUUID: <channelUUID>, owner: <ownerUUID>}
             case 'groupDelete' : {
                 if (m.version === appDataChannel._version && m.msgID !== undefined)
-                    appDataChannel.processGroupDelete(m.channelId, m.channelName, m.ownerId, m.ownerName);
+                    appDataChannel.processGroupDelete(m.channelUUID, m.channelName, m.ownerId, m.ownerName);
             } break;
 
             case 'groupUpdate' : {
                 if (m.version === appDataChannel._version && m.msgID !== undefined)
-                    appDataChannel.processGroupUpdate(m.channelId, m.channelName, m.channelDescription, m.channelMembers, m.ownerId, m.ownerName);
+                    appDataChannel.processGroupUpdate(m.channelUUID, m.channelName, m.channelDescription, m.channelMembers, m.ownerId, m.ownerName);
             } break;
 
 
@@ -195,10 +195,10 @@ var appDataChannel = {
             } break;
 
 
-            //  { type: 'recallMessage',  channelId: <channel Id>,  messageId: <messageId>: ownerId: <ownerUUID>}
+            //  { type: 'recallMessage',  channelUUID: <channel Id>,  messageId: <messageId>: ownerId: <ownerUUID>}
             case 'recallMessage' : {
                 if (m.version === appDataChannel._version && m.msgID !== undefined)
-                    appDataChannel.processRecallMessage(m.channelId, m.messageId, m.ownerId, m.isPrivateChat);
+                    appDataChannel.processRecallMessage(m.channelUUID, m.messageId, m.ownerId, m.isPrivateChat);
             } break;
 
             //  { type: 'eventAccept',  }
@@ -235,12 +235,12 @@ var appDataChannel = {
 
             } break;
 
-            //  { type: 'packageOffer',  channelId: <channelUUID>, owner: <ownerUUID>, packageId: <packageUUID>, private: true|false, type: 'text'|'pdf'|'image'|'video', title: <text>, message: <text>}
+            //  { type: 'packageOffer',  channelUUID: <channelUUID>, owner: <ownerUUID>, packageId: <packageUUID>, private: true|false, type: 'text'|'pdf'|'image'|'video', title: <text>, message: <text>}
             case 'packageOffer' : {
 
             } break;
 
-            //  { type: 'packageRequest',  channelId: <channelUUID>, owner: <ownerUUID>, packageId: <packageUUID>, private: true|false, message: <text>}
+            //  { type: 'packageRequest',  channelUUID: <channelUUID>, owner: <ownerUUID>, packageId: <packageUUID>, private: true|false, message: <text>}
             case 'packageRequest' : {
 
             } break;
@@ -270,20 +270,20 @@ var appDataChannel = {
 
 
         APP.pubnub.publish({
-            channel: appDataChannel.channelId,
+            channel: appDataChannel.channelUUID,
             message: msg,
             success: appDataChannel.channelSuccess,
             error: appDataChannel.channelError
         });
     },
 
-    recallMessage : function (contactId, channelId, messageId, ownerId, isPrivateChat) {
+    recallMessage : function (contactId, channelUUID, messageId, ownerId, isPrivateChat) {
         var msg = {};
 
         msg.msgID = uuid.v4();
         msg.type = 'recallMessage';
         msg.version = appDataChannel._version;
-        msg.channelId = channelId;
+        msg.channelUUID = channelUUID;
         msg.messageId = messageId;
         msg.ownerId = ownerId;
         msg.isPrivateChat = isPrivateChat;
@@ -312,7 +312,7 @@ var appDataChannel = {
 
 
         APP.pubnub.publish({
-            channel: appDataChannel.channelId,
+            channel: appDataChannel.channelUUID,
             message: msg,
             success: appDataChannel.channelSuccess,
             error: appDataChannel.channelError
@@ -616,7 +616,7 @@ var appDataChannel = {
         msg.version = appDataChannel._version;
         msg.ownerId = userModel.currentUser.get('userUUID');
         msg.ownerName = userModel.currentUser.get('name');
-        msg.channelId = channelUUID;
+        msg.channelUUID = channelUUID;
         msg.channelName = channelName;
         msg.channelDescription = channelDescription;
         msg.channelMembers = members;
@@ -634,17 +634,17 @@ var appDataChannel = {
                 'content-available' : 1
             },
             isMessage: false,
-            target: '#channel?channelId=' + channelUUID,
-            channelId :channelUUID
+            target: '#channel?channelUUID=' + channelUUID,
+            channelUUID :channelUUID
         };
         msg.pn_gcm = {
             data : {
                 title: notificationString,
                 message: "You've been invited to " + channelName,
-                target: '#channel?channelId=' + channelUUID,
+                target: '#channel?channelUUID=' + channelUUID,
                 image: "icon",
                 isMessage: false,
-                channelId : channelUUID
+                channelUUID : channelUUID
             }
         };
 
@@ -668,7 +668,7 @@ var appDataChannel = {
         msg.version = appDataChannel._version;
         msg.ownerId = userModel.currentUser.get('userUUID');
         msg.ownerName = userModel.currentUser.get('name');
-        msg.channelId = channelUUID;
+        msg.channelUUID = channelUUID;
         msg.channelName = channelName;
         msg.message  = message;
         msg.time = new Date().getTime();
@@ -679,7 +679,7 @@ var appDataChannel = {
             },
             isMessage: false,
             target: '#channels',
-            channelId :channelUUID
+            channelUUID :channelUUID
         };
         msg.pn_gcm = {
             data : {
@@ -688,7 +688,7 @@ var appDataChannel = {
                 target: "#channels",
                 image: "icon",
                 isMessage: false,
-                channelId : channelUUID
+                channelUUID : channelUUID
             }
         };
 
@@ -712,7 +712,7 @@ var appDataChannel = {
         msg.version = appDataChannel._version;
         msg.ownerId = userModel.currentUser.get('userUUID');
         msg.ownerName = userModel.currentUser.get('name');
-        msg.channelId = channelUUID;
+        msg.channelUUID = channelUUID;
         msg.channelName = channelName;
         msg.channelDescription = channelDescription;
         msg.channelMembers = members;
@@ -726,7 +726,7 @@ var appDataChannel = {
             },
             isMessage: false,
             target: '#channels',
-            channelId :channelUUID
+            channelUUID :channelUUID
         };
         msg.pn_gcm = {
             data : {
@@ -735,7 +735,7 @@ var appDataChannel = {
                 target: '#channels',
                 image: "icon",
                 isMessage: false,
-                channelId : channelUUID
+                channelUUID : channelUUID
             }
         };
         var channel = appDataChannel.getContactAppChannel(contactUUID);
@@ -783,31 +783,31 @@ var appDataChannel = {
     },
 
 
-    processGroupInvite: function (channelId, channelName, channelDescription, channelMembers, ownerId, ownerName, options) {
+    processGroupInvite: function (channelUUID, channelName, channelDescription, channelMembers, ownerId, ownerName, options) {
         // Todo:  Does channel exist?  If not create,  if so notify user of request
-        var channel = channelModel.findChannelModel(channelId);
+        var channel = channelModel.findChannelModel(channelUUID);
 
         if (channel === undefined && channelMembers !== undefined && channelMembers.length > 1) {
             //mobileNotify("Chat invite from  " + ownerName + ' " ' + channelName + '"');
 
-            getChannelDetails(channelId, function (result) {
+            getChannelDetails(channelUUID, function (result) {
                 if (result.found) {
-                    channelModel.addMemberChannel(channelId, channelName, channelDescription, channelMembers, ownerId, ownerName, options, false);
+                    channelModel.addMemberChannel(channelUUID, channelName, channelDescription, channelMembers, ownerId, ownerName, options, false);
                 } else {
                     mobileNotify('Warning - owner may have deleted : ' + channelName);
-                    channelModel.addMemberChannel(channelId, channelName, channelDescription, channelMembers, ownerId, ownerName, options, false);
+                    channelModel.addMemberChannel(channelUUID, channelName, channelDescription, channelMembers, ownerId, ownerName, options, false);
 
                 }
             });
-                    //notificationModel.addNewChatNotification(channelId, channelName, "new channel...");
+                    //notificationModel.addNewChatNotification(channelUUID, channelName, "new channel...");
 
         }
 
     },
 
-    processGroupDelete: function (channelId, channelName, ownerId, ownerName) {
+    processGroupDelete: function (channelUUID, channelName, ownerId, ownerName) {
         // Todo:  Does channel exist?  If not do nothing,  if so delete the channel
-        var channel = channelModel.findChannelModel(channelId);
+        var channel = channelModel.findChannelModel(channelUUID);
         if (channel === undefined) {
            // mobileNotify('Owner has deleted Chat: "' + channelName + '"');
             channelModel.deleteChannel(channel);
@@ -815,10 +815,10 @@ var appDataChannel = {
 
     },
 
-    processGroupUpdate: function (channelId, channelName, channelDescription, channelMembers, ownerId, ownerName) {
+    processGroupUpdate: function (channelUUID, channelName, channelDescription, channelMembers, ownerId, ownerName) {
 
         if (channelMembers !== undefined && channelMembers !== null && channelMembers.length > 1)
-            channelModel.updateChannel(channelId, channelName, channelDescription, channelMembers);
+            channelModel.updateChannel(channelUUID, channelName, channelDescription, channelMembers);
 
     },
 
@@ -827,8 +827,8 @@ var appDataChannel = {
 
     },
 
-    processRecallMessage: function (channelId, messageId, ownerId, isPrivateChat) {
-        channelModel.addMessageRecall(channelId, messageId, ownerId, isPrivateChat);
+    processRecallMessage: function (channelUUID, messageId, ownerId, isPrivateChat) {
+        channelModel.addMessageRecall(channelUUID, messageId, ownerId, isPrivateChat);
     },
 
     publishCallback : function (m) {

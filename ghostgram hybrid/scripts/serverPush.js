@@ -56,19 +56,19 @@ var serverPush = {
     // Handle iOS / Apple Notifications
     onNotificationAPN : function (e) {
 
-        // If this is a message and there's a channelId, update activeChannels so we can
+        // If this is a message and there's a channelUUID, update activeChannels so we can
         // build inApp notifications on launch.
         if (e.isMessage !== undefined && e.isMessage) {
             //This is userDataChannel Notification
-            if (e.channelId !== undefined) {
+            if (e.channelUUID !== undefined) {
                 // Update unread  unless it's the current channel
-                if (e.channelId !== channelView._channelId) {
+                if (e.channelUUID !== channelView._channelUUID) {
                     if (e.senderId !== undefined && e.senderId !== userModel.currentUser.userUUID) {
                         if (e.isPrivate) {
-                            channelModel.updatePrivateUnreadCount(e.channelId);
+                            channelModel.updatePrivateUnreadCount(e.channelUUID);
                         } else {
-                            channelModel.updateUnreadCount(e.channelId,1);
-                            channelModel.updateActiveChannel(e.channelId);
+                            channelModel.updateUnreadCount(e.channelUUID,1);
+                            channelModel.updateActiveChannel(e.channelUUID);
                         }
                     }
                 }
@@ -85,8 +85,8 @@ var serverPush = {
             // Just show gg quick notification is the app is running in the foreground
             // and the channel isn't the current channel
             if (e.alert) {
-                if (e.isMessage !== undefined && e.isMessage === true && e.channelId !== undefined) {
-                    if (e.channelId !== channelView._channelId) {
+                if (e.isMessage !== undefined && e.isMessage === true && e.channelUUID !== undefined) {
+                    if (e.channelUUID !== channelView._channelUUID) {
                         mobileNotify(e.alert);
                     }
 
@@ -205,15 +205,15 @@ var serverPush = {
                 for (var i=0; i< channels.length; i++) {
                     var channel = channels[i];
 
-                    serverPush.provisionGroupChannel(channel.channelId)
+                    serverPush.provisionGroupChannel(channel.channelUUID)
                 }
             }
         }
     },
 
-    provisionGroupChannel : function (channelId) {
+    provisionGroupChannel : function (channelUUID) {
 
-        if (channelId === undefined || channelId === null) {
+        if (channelUUID === undefined || channelUUID === null) {
             mobileNotify("Can't provision null channnel");
             return;
 
@@ -229,14 +229,14 @@ var serverPush = {
             device_id: regId,
             op    : 'add',
             gw_type  : type,
-            channel  :  channelId,
+            channel  :  channelUUID,
             callback : serverPush._success,
             error  : serverPush._error
         });
     },
 
-    unprovisionGroupChannel : function (channelId) {
-        if (channelId === undefined || channelId === null) {
+    unprovisionGroupChannel : function (channelUUID) {
+        if (channelUUID === undefined || channelUUID === null) {
             mobileNotify("Can't provision null channnel");
             return;
 
@@ -252,7 +252,7 @@ var serverPush = {
             device_id: regId,
             op    : 'remove',
             gw_type  : type,
-            channel  :  channelId,
+            channel  :  channelUUID,
             callback : serverPush._success,
             error  : serverPush._error
         });
@@ -269,7 +269,7 @@ var serverPush = {
             }
 
             var regId = serverPush._regId;
-            var dataChannel = appDataChannel.channelId, userChannel = userDataChannel.channelId;
+            var dataChannel = appDataChannel.channelUUID, userChannel = userDataChannel.channelUUID;
 
             APP.pubnub.mobile_gw_provision ({
                 device_id: regId,

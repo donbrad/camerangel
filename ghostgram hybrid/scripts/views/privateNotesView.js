@@ -149,7 +149,7 @@ var privateNotesView = {
 
             var photoObj  = {
                 photoId : photo.photoId,
-                channelId: null,
+                channelUUID: null,
                 thumbnailUrl: photo.thumbnailUrl,
                 imageUrl: photo.imageUrl,
                 canCopy: true,
@@ -159,7 +159,7 @@ var privateNotesView = {
         }
 
         privateNotesView.notePhotos.push(photoObj);
-        // photoModel.addPhotoOffer(photo.photoId, channelView._channelId, photo.thumbnailUrl, photo.imageUrl, canCopy);
+        // photoModel.addPhotoOffer(photo.photoId, channelView._channelUUID, photo.thumbnailUrl, photo.imageUrl, canCopy);
     },
 
 

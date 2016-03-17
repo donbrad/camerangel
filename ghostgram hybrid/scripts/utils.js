@@ -340,9 +340,9 @@ function _smartSetNull(original, newValue) {
 	return(original);
 }
 
-function getChannelDetails(channelId, callBack) {
+function getChannelDetails(channelUUID, callBack) {
 	Parse.Cloud.run('getChannelDetails', {
-		channelId: channelId
+		channelUUID: channelUUID
 	}, {
 		success: function(result, error) {
 			if (result.status === 'ok') {

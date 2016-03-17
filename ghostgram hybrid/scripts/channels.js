@@ -17,7 +17,7 @@ function onBeforeHideChannels(){
 
 function archiveChannel(e) {
 	e.preventDefault();
-    var channelId = e.context;
+    var channelUUID = e.context;
     mobileNotify("Archiving channel"); 
 }
 

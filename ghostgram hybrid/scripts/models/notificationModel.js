@@ -141,28 +141,28 @@ var notificationModel = {
             '#contacts', true);
     },
 
-    addUnreadNotification : function (channelId, channelName, unreadCount) {
-        this.newNotification(this._unreadCount, channelId, channelName, null, unreadCount + " new messages.", 'Read Messages', null,
-        '#channel?channelId='+channelId, true);
+    addUnreadNotification : function (channelUUID, channelName, unreadCount) {
+        this.newNotification(this._unreadCount, channelUUID, channelName, null, unreadCount + " new messages.", 'Read Messages', null,
+        '#channel?channelUUID='+channelUUID, true);
     },
 
-    addNewChatNotification : function (channelId, channelName, channelDescription) {
-        this.newNotification(this._newChat, channelId, channelName, null, channelDescription, 'Goto Chat', null,
-            '#channel?channelId='+channelId, true);
+    addNewChatNotification : function (channelUUID, channelName, channelDescription) {
+        this.newNotification(this._newChat, channelUUID, channelName, null, channelDescription, 'Goto Chat', null,
+            '#channel?channelUUID='+channelUUID, true);
     },
 
-    addNewPrivateChatNotification : function (channelId, channelName) {
-        this.newNotification(this._newPrivate, channelId, channelName, null, 'New Private Chat', 'Goto Chat', null,
-            '#channel?channelId='+channelId, true);
+    addNewPrivateChatNotification : function (channelUUID, channelName) {
+        this.newNotification(this._newPrivate, channelUUID, channelName, null, 'New Private Chat', 'Goto Chat', null,
+            '#channel?channelUUID='+channelUUID, true);
     },
 
-    deleteChatNotification : function (channelId, channelName) {
-        this.newNotification(this._deleteChat, channelId, channelName, null, "Has been deleted.", null, null,
+    deleteChatNotification : function (channelUUID, channelName) {
+        this.newNotification(this._deleteChat, channelUUID, channelName, null, "Has been deleted.", null, null,
            null, true);
     },
 
-    deletePrivateChatNotification : function (channelId, channelName) {
-        this.newNotification(this._deletePrivateChat, channelId, channelName, null, "Has been deleted.", null, null,
+    deletePrivateChatNotification : function (channelUUID, channelName) {
+        this.newNotification(this._deletePrivateChat, channelUUID, channelName, null, "Has been deleted.", null, null,
             null, true);
     },
 
@@ -222,12 +222,12 @@ var notificationModel = {
         return(contact);*/
     },
 
-    updateUnreadNotification : function (channelId, channelName, unreadCount) {
-        var notObj = notificationModel.findNotificationByPrivateId(channelId);
+    updateUnreadNotification : function (channelUUID, channelName, unreadCount) {
+        var notObj = notificationModel.findNotificationByPrivateId(channelUUID);
 
         if (notObj === undefined ) {
             if (unreadCount > 0)
-                notificationModel.addUnreadNotification(channelId, channelName, unreadCount);
+                notificationModel.addUnreadNotification(channelUUID, channelName, unreadCount);
         } else {
             if (unreadCount === undefined || unreadCount === 0) {
                 notificationModel.notificationDS.remove(notObj);
@@ -248,7 +248,7 @@ var notificationModel = {
             if (channel.unreadCount === undefined)
                 channel.unreadCount = 0;
 
-            notificationModel.updateUnreadNotification(channel.channelId, channel.name, Number(channel.unreadCount));
+            notificationModel.updateUnreadNotification(channel.channelUUID, channel.name, Number(channel.unreadCount));
 
 
         }

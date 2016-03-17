@@ -639,7 +639,7 @@ var smartEventView = {
             var place = placesModel.getPlaceModel(event.placeId);
             if (place !== undefined) {
 
-                var placeId = packParameter(event.placeId), channelUrl = packParameter('channel?channelId='+channelView._channelUUID);
+                var placeId = packParameter(event.placeId), channelUrl = packParameter('channel?channelUUID='+channelView._channelUUID);
                 APP.kendo.navigate('#placeView?place=' + placeId + '&returnview=' + channelUrl);
 
             }
@@ -787,7 +787,7 @@ var smartEventView = {
         thisObject.address = thisObj.address;
         thisObject.senderUUID = userModel.currentUser.userUUID;
         thisObject.senderName = userModel.currentUser.name;
-        thisObject.channelUUID = channelView._channelId;
+        thisObject.channelUUID = channelView._channelUUID;
         thisObject.calendarId = thisObj.calendarId;
         thisObject.eventChatId = thisObj.eventChatId;
         thisObject.lat = thisObj.lat;
@@ -1868,7 +1868,7 @@ var smartMovieView = {
 
         var thisObj = smartMovieView.activeObject;
 
-        thisObj.set('channelUUID', channelView._channelId);
+        thisObj.set('channelUUID', channelView._channelUUID);
         thisObj.set('senderName', userModel.currentUser.name);
 
         if (thisObj.addToCalendar && thisObj.calendarId === null) {
@@ -2139,7 +2139,7 @@ var smartMovieView = {
         thisObj.set('senderUUID', obj.senderUUID);
         thisObj.set('senderName', obj.senderName);
         thisObj.set('placeString', obj.placeString);
-        thisObj.set('channelId', obj.channelId);
+        thisObj.set('channelUUID', obj.channelUUID);
         thisObj.set('movieTitle', obj.movieTitle);
         thisObj.set('tmsId', obj.tmsId);
         thisObj.set('imdbId', obj.imdbId);
