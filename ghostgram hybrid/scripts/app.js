@@ -178,8 +178,6 @@
 		//contactModel.importDeviceContacts();
 
 
-
-
 		APP.kendo = new kendo.mobile.Application(document.body, {
 
 			// comment out the following line to get a UI which matches the look
