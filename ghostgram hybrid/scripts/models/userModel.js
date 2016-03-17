@@ -75,6 +75,7 @@ var userModel = {
             userModel.hasAccount = false;
             userModel.initialView = '#newuserhome';
         }
+        
     },
 
 
@@ -546,8 +547,7 @@ var userModel = {
 };
 
 var userStatus = {
-    parseUserStatus: null,
-    parseUserStatusACL : null,   // this ACL can be used to create public read objects that only the user can create, update and delete
+
     _ggClass : 'userStatus',
     _version : 1,
     _statusObj : new kendo.data.ObservableObject(),
@@ -555,27 +555,6 @@ var userStatus = {
 
 
     init: function () {
-        var UserStatusModel = Parse.Object.extend("userStatus");
-        userStatus.setACL();
-        var query = new Parse.Query(UserStatusModel);
-        query.equalTo("userUUID", userModel.currentUser.userUUID);
-        query.find({
-            success: function(results) {
-                if (results.length > 0) {
-                    userStatus.parseUserStatus = results[0];
-                } else {
-                    userStatus.parseUserStatus = new UserStatusModel();
-                    userStatus.parseUserStatus.setACL(userStatus.parseUserStatusACL);
-                    userStatus.update();
-                    userStatus.updateEverlive();
-                }
-
-            },
-            error: function(error) {
-                mobileNotify("Parse User Status Error: " + error.code + " " + error.message);
-            }
-        });
-
         var filter = new Everlive.Query();
         filter.where().eq('userUUID', userModel.currentUser.userUUID);
 
@@ -596,14 +575,7 @@ var userStatus = {
 
     },
 
-    // create a special ACL with public read and user only write access
-    setACL : function () {
-        var acl = new Parse.ACL();
-        acl.setPublicReadAccess(true);
-        acl.setPublicWriteAccess(false);
-        acl.setWriteAccess(Parse.User.current().id, true);
-        userStatus.parseUserStatusACL = acl;
-    },
+
 
     syncField : function (field) {
         switch(field) {
