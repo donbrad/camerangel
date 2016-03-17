@@ -107,7 +107,7 @@ var smartMovie = {
             mobileNotify("Creating Smart Movie...");
 
         if (objectIn.senderUUID === undefined || objectIn.senderUUID === null) {
-            objectIn.senderUUID = userModel.currentUser.userUUID;
+            objectIn.senderUUID = userModel._user.userUUID;
         }
 
         //smartOb.setACL(userModel.parseACL);

@@ -176,7 +176,7 @@ function doShowChannelPresence (e) {
 	var members = currentChannelModel.currentChannel.members;
 	if (currentChannelModel.isPrivate) {
 		var privateContact = '';
-		if (members[0] === userModel.currentUser.userUUID) {
+		if (members[0] === userModel._user.userUUID) {
 			privateContact = contactModel.findContact(members[1]);
 		} else {
 			privateContact = contactModel.findContact(members[0]);

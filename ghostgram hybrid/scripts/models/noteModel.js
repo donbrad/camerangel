@@ -196,7 +196,7 @@ var noteModel = {
 
         note.set('ggType',noteModel._ggClass);
         note.set('version',noteModel._version);
-        note.set('userUUID',  userModel.currentUser.userUUID);
+        note.set('userUUID',  userModel._user.userUUID);
         note.set('date',new Date());
         note.set('objectType', type);
         note.set('objectUUID',objectId);

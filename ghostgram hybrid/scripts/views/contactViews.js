@@ -784,7 +784,7 @@ var addContactView = {
         contact.set('contactUUID', null);
         contact.set('contactPhone', null);
         contact.set('contactEmail', null);
-        contact.set('ownerUUID', userModel.currentUser.userUUID);
+        contact.set('ownerUUID', userModel._user.userUUID);
 
         //phone = phone.replace(/\+[0-9]{1-2}/,'');
 

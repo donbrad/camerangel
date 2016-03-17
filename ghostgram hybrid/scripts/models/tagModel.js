@@ -137,7 +137,7 @@ var tagModel = {
         tag.categoryId = null;
         tag.semanticCategory = null;
         tag.description = null;
-        tag.ownerUUID = userModel.currentUser.userUUID;
+        tag.ownerUUID = userModel._user.userUUID;
 
         return(tag);
 

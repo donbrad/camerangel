@@ -181,7 +181,7 @@ var contactModel = {
                    // }
                     //Push to the ownerUUID to legacy contacts...
                     if (model.get('ownerUUID') === undefined) {
-                        model.set('ownerUUID', userModel.currentUser.userUUID);
+                        model.set('ownerUUID', userModel._user.userUUID);
                         dirty = true;
                     }
 
@@ -891,7 +891,7 @@ var contactModel = {
         contact.set('contactUUID', contactUUID);
         contact.set('contactPhone', null);
         contact.set('contactEmail', null);
-        contact.set('ownerUUID', userModel.currentUser.userUUID);
+        contact.set('ownerUUID', userModel._user.userUUID);
 
         contactModel.contactsDS.add(contact);
         contactModel.contactsDS.sync();

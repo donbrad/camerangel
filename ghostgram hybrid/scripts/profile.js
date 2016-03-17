@@ -31,11 +31,11 @@ function whichGhost(e) {
         e.preventDefault();
     var selection = e.target[0].id;
     var selectionPath = "images/" + selection + ".svg";
-    var currentAlias = userModel.currentUser.aliasPhoto;
+    var currentAlias = userModel._user.aliasPhoto;
 
     if (selection !== undefined){
         $(".myPublicImg").attr("src", selectionPath);
-        userModel.currentUser.set("aliasPhoto", selectionPath);
+        userModel._user.set("aliasPhoto", selectionPath);
     }
     closeChooseGhost()
 }
@@ -58,7 +58,7 @@ function profilePhotoScaleSuccess (data) {
 }
 
 function saveUserProfilePhoto (url) {
-    var profileUrl = url, currentUser = userModel.currentUser,  uuid = currentUser.get('userUUID'), user = Parse.User.current();
+    var profileUrl = url, _user = userModel._user,  uuid = _user.get('userUUID'), user = Parse.User.current();
 
 	mobileNotify('Syncing your Profile Photo....');
     getBase64FromImageUrl(profileUrl, function (fileData) {
@@ -67,9 +67,9 @@ function saveUserProfilePhoto (url) {
             user.set("parsePhoto", parseFile);
             user.set("photo", parseFile._url);
 			
-			// Update currentUser (local) to sync all instances of profile photo
-			currentUser.set("parsePhoto", parseFile);
-            currentUser.set("photo", parseFile._url);
+			// Update _user (local) to sync all instances of profile photo
+			_user.set("parsePhoto", parseFile);
+            _user.set("photo", parseFile._url);
             
             user.save(null, {
                 success: function(contact) {
@@ -192,11 +192,11 @@ function doProfileGallery(e) {
 function onInitProfile(e) {
 	e.preventDefault();
     
-    if (userModel.currentUser.emailVerified){
+    if (userModel._user.emailVerified){
         $("#verified-email").removeClass("hidden");
     }
     
-    if(userModel.currentUser.phoneVerified){
+    if(userModel._user.phoneVerified){
         $("#verified-phone").removeClass("hidden");
     }
     

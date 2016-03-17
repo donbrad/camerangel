@@ -154,12 +154,12 @@ var channelModel = {
 
                     if (object.get('isOwner')) {
                         if (object.get('ownerId') === undefined) {
-                            object.set('ownerId', userModel.currentUser.userUUID);
+                            object.set('ownerId', userModel._user.userUUID);
                             dirty = true;
                         }
 
                         if (object.get('ownerName') === undefined) {
-                            object.set('ownerName', userModel.currentUser.name);
+                            object.set('ownerName', userModel._user.name);
                             dirty = true;
                         }
                     }
@@ -425,8 +425,8 @@ var channelModel = {
     syncParseChannels : function (callback) {
         // Only sync channels for users with atleast email or phone validated
 
-       if (userModel.currentUser.phoneVerified || userModel.currentUser.emailValidated)  {
-           var uuid = userModel.currentUser.userUUID;
+       if (userModel._user.phoneVerified || userModel._user.emailValidated)  {
+           var uuid = userModel._user.userUUID;
 
            getUserChannels(uuid, function (result) {
                if (result.found) {
@@ -528,7 +528,7 @@ var channelModel = {
             return;
         }
 
-        var userId = userModel.currentUser.userUUID;
+        var userId = userModel._user.userUUID;
         for (var i=0; i<members.length; i++) {
             if (members[i] !== userId) {
                 var contact = contactModel.findContact(members[i]);
@@ -593,7 +593,7 @@ var channelModel = {
         if (channelList === undefined || channelList.length === 0) {
             return;
         }
-        var uuid = userModel.currentUser.userUUID;
+        var uuid = userModel._user.userUUID;
 
         for (var i=0; i<channelKeys.length; i++) {
             var key = channelKeys[i];
@@ -647,7 +647,7 @@ var channelModel = {
         channel.set("channelUUID", contactUUID);
         channel.set("contactUUID", contactUUID);
         channel.set('contactKey', contactPublicKey);
-        channel.set("members", [userModel.currentUser.userUUID, contactUUID]);
+        channel.set("members", [userModel._user.userUUID, contactUUID]);
 
         var channelObj = channel.toJSON();
         channelModel.channelsDS.add(channelObj);
@@ -801,8 +801,8 @@ var channelModel = {
         // If user is creating new channel, they own it so create new uuid and update ownerUUID and ownerName
 
 
-        var ownerUUID = userModel.currentUser.userUUID;
-        var ownerName = userModel.currentUser.name;
+        var ownerUUID = userModel._user.userUUID;
+        var ownerName = userModel._user.name;
 
         // Ensure we have a valid duration for this channel
 
@@ -888,8 +888,8 @@ var channelModel = {
         // If user is creating new channel, they own it so create new uuid and update ownerUUID and ownerName
 
         var channelUUID = uuid.v4();
-        var ownerUUID = userModel.currentUser.userUUID;
-        var ownerName = userModel.currentUser.name;
+        var ownerUUID = userModel._user.userUUID;
+        var ownerName = userModel._user.name;
 
 
         // Ensure we have a valid duration for this channel

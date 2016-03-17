@@ -153,8 +153,8 @@ var privateNotesView = {
                 thumbnailUrl: photo.thumbnailUrl,
                 imageUrl: photo.imageUrl,
                 canCopy: true,
-                ownerId: userModel.currentUser.userUUID,
-                ownerName: userModel.currentUser.name
+                ownerId: userModel._user.userUUID,
+                ownerName: userModel._user.name
             };
         }
 
@@ -631,8 +631,8 @@ var privateNotesView = {
     noteAddLocation : function  () {
         channelView.activeMessage.geo= {lat: mapModel.lat, lng: mapModel.lng};
         channelView.activeMessage.address = mapModel.currentAddress;
-        if (userModel.currentUser.currentPlaceUUID !== null) {
-            channelView.activeMessage.place = {name: userModel.currentUser.currentPlace, uuid: userModel.currentUser.currentPlaceUUID};
+        if (userModel._user.currentPlaceUUID !== null) {
+            channelView.activeMessage.place = {name: userModel._user.currentPlace, uuid: userModel._user.currentPlaceUUID};
         }
     },
 

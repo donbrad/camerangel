@@ -102,7 +102,7 @@ var currentChannelModel = {
         currentChannelModel.membersDS.data([]);
 
         for (var i=0; i< length; i++) {
-            if (members[i] !== userModel.currentUser.userUUID) {
+            if (members[i] !== userModel._user.userUUID) {
                 currentChannelModel.membersDS.add(currentChannelModel.memberList[members[i]]);
             }
         }
@@ -160,7 +160,7 @@ var currentChannelModel = {
         if (contactArray === undefined || contactArray === null)
             return;
 
-        var userId = userModel.currentUser.userUUID;
+        var userId = userModel._user.userUUID;
 
         for (var i=0; i< contactArray.length; i++) {
             var contact = {};
@@ -169,10 +169,10 @@ var currentChannelModel = {
                 contact.isContact = false;
                 contact.uuid = userId;
                 contact.contactId = null;
-                contact.alias = userModel.currentUser.alias;
-                contact.name = userModel.currentUser.name;
-                contact.photo = userModel.currentUser.photo;
-                contact.publicKey = userModel.currentUser.publicKey;
+                contact.alias = userModel._user.alias;
+                contact.name = userModel._user.name;
+                contact.photo = userModel._user.photo;
+                contact.publicKey = userModel._user.publicKey;
                 contact.isPresent = true;
                 currentChannelModel.memberList[contact.uuid] = contact;
                 // this is our user.

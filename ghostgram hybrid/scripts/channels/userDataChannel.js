@@ -106,7 +106,7 @@ var userDataChannel = {
                 messages = messages[0];
                 var start = messages[1], end = messages[2];
                 messages = messages || [];
-                var RSAKey = cryptico.privateKeyFromString(userModel.currentUser.privateKey);
+                var RSAKey = cryptico.privateKeyFromString(userModel._user.privateKey);
                 var latestTime = 0;
                 for (var i = 0; i < messages.length; i++) {
 
@@ -116,7 +116,7 @@ var userDataChannel = {
                     if (msg.type === 'privateMessage' && !userDataChannel.isDuplicateMessage(msg.msgID)) {
 
                         // Add the last 24 hours worth of messages to the private channel archive
-                       /* if (msg.sender !== userModel.currentUser.userUUID) {
+                       /* if (msg.sender !== userModel._user.userUUID) {
                             // if the sender isn't this user, update the channel list
                             channelList[msg.sender] = channelList[msg.sender]++;
                         }

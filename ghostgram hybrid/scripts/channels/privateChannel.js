@@ -30,7 +30,7 @@ var privateChannel = {
             alias: alias,
             name: name,
             username: userUUID,
-            publicKey: userModel.currentUser.get('publicKey')
+            publicKey: userModel._user.get('publicKey')
         };
 
         privateChannel.contactId = contactUUID;
@@ -92,7 +92,7 @@ var privateChannel = {
     },
 
     decryptMessage : function (msg) {
-        var RSAKey = cryptico.privateKeyFromString(userModel.currentUser.privateKey);
+        var RSAKey = cryptico.privateKeyFromString(userModel._user.privateKey);
         var data = null;
         var content = cryptico.decrypt(msg.content.cipher, RSAKey).plaintext;
         if (msg.data !== undefined && msg.data !== null) {
@@ -179,11 +179,11 @@ var privateChannel = {
             encryptData = null;
 
         APP.pubnub.uuid(function (msgID) {
-            var notificationString = "Private Chat: " + userModel.currentUser.name;
+            var notificationString = "Private Chat: " + userModel._user.name;
             var message = {
                 type: 'privateMessage',
                 recipient: recipient,
-                sender: userModel.currentUser.userUUID,
+                sender: userModel._user.userUUID,
                 pn_apns: {
                     aps: {
                         alert : notificationString,
@@ -192,18 +192,18 @@ var privateChannel = {
                     },
                     target: '#channel?channelUUID=' + privateChannel.userId,
                     channelUUID : privateChannel.userId,
-                    senderId: userModel.currentUser.userUUID,
+                    senderId: userModel._user.userUUID,
                     isMessage: true,
                     isPrivate: true
                 },
                 pn_gcm : {
                     data : {
                         title: notificationString,
-                        message: 'Private Message from ' + userModel.currentUser.name,
+                        message: 'Private Message from ' + userModel._user.name,
                         target: '#channel?channelUUID=' + privateChannel.userId,
                         image: "icon",
                         channelUUID : privateChannel.userId,
-                        senderId: userModel.currentUser.userUUID,
+                        senderId: userModel._user.userUUID,
                         isMessage: true,
                         isPrivate: true
                     }
@@ -234,7 +234,7 @@ var privateChannel = {
                     var parsedMsg = {
                         type: 'privateMessage',
                         recipient: message.recipient,
-                        sender: userModel.currentUser.userUUID,
+                        sender: userModel._user.userUUID,
                         msgID: message.msgID,
                         channelUUID: message.recipient,
                         content: content,

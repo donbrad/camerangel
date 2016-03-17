@@ -639,8 +639,8 @@ var photoModel = {
         offer.set('uuid', offeruuid);
         offer.set('photoId', photoId);
         offer.set('channelUUID', channelUUID);
-        offer.set('ownerId', userModel.currentUser.userUUID);
-        offer.set('ownerName', userModel.currentUser.name);
+        offer.set('ownerId', userModel._user.userUUID);
+        offer.set('ownerName', userModel._user.name);
 
        /* if (thumbnailUrl === undefined || thumbnailUrl === null) {
             thumbnailUrl = null;
@@ -764,8 +764,8 @@ var photoModel = {
         photo.set('thumbnail', devicePhoto.thumbnailFile);
         photo.set('title', null);
         photo.set('description', null);
-        photo.set('senderUUID', userModel.currentUser.userUUID);
-        photo.set('senderName', userModel.currentUser.name);
+        photo.set('senderUUID', userModel._user.userUUID);
+        photo.set('senderName', userModel._user.name);
         photo.set('eventId', null);
         photo.set('eventName', null);
         photo.set('tagString', null);
@@ -808,9 +808,9 @@ var photoModel = {
             photo.set('addressString', addressStr);
         }
 
-        if (userModel.currentUser.currentPlaceUUID !== null) {
-            photo.set('placeUUID', userModel.currentUser.currentPlaceUUID);
-            photo.set('placeString', userModel.currentUser.currentPlace);
+        if (userModel._user.currentPlaceUUID !== null) {
+            photo.set('placeUUID', userModel._user.currentPlaceUUID);
+            photo.set('placeString', userModel._user.currentPlace);
         }
 
        // var photoObj = photo.toJSON();

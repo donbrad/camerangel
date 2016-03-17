@@ -1642,8 +1642,8 @@ var placeView = {
                 thumbnailUrl: photo.thumbnailUrl,
                 imageUrl: photo.imageUrl,
                 canCopy: true,
-                ownerId: userModel.currentUser.userUUID,
-                ownerName: userModel.currentUser.name
+                ownerId: userModel._user.userUUID,
+                ownerName: userModel._user.name
             };
         }
 

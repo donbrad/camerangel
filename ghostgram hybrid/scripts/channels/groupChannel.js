@@ -104,7 +104,7 @@ var groupChannel = {
             if ("data" in msg) {
                 groupChannel.users[msg.data.username] = msg.data;
                 // Only update presence if it's not THIS user...
-                if (msg.data.username !== userModel.currentUser.userUUID) {
+                if (msg.data.username !== userModel._user.userUUID) {
                     mobileNotify(msg.data.name + ' (' + msg.data.alias +  ") has joined...");
                     groupChannel.presenceChange(msg.data.username,  true);
                 }
@@ -123,7 +123,7 @@ var groupChannel = {
         // A user has left or timed out of ghostgrams so we remove them from our users object.
         else if (msg.action === "timeout" || msg.action === "leave") {
             // Don't report presence for this user -- only other members
-            if (msg.uuid !== userModel.currentUser.userUUID) {
+            if (msg.uuid !== userModel._user.userUUID) {
                 if (groupChannel.users.length > 0) {
                     mobileNotify(msg.data.name + ' (' + msg.data.alias + ") has left ...");
                     delete groupChannel.users[msg.data.username];
@@ -175,7 +175,7 @@ var groupChannel = {
                         badge: 1,
                         'content-available' : 1
                     },
-                    senderId: userModel.currentUser.userUUID,
+                    senderId: userModel._user.userUUID,
                     target: '#channel?channelUUID='+ groupChannel.channelUUID,
                     channelUUID: groupChannel.channelUUID,
                     isMessage: true,
@@ -184,15 +184,15 @@ var groupChannel = {
                 pn_gcm : {
                     data : {
                         title: notificationString,
-                        message: "Message from " + userModel.currentUser.name,
-                        senderId: userModel.currentUser.userUUID,
+                        message: "Message from " + userModel._user.name,
+                        senderId: userModel._user.userUUID,
                         target: '#channel?channelUUID='+ groupChannel.channelUUID,
                         channelUUID: groupChannel.channelUUID,
                         isMessage: true,
                         isPrivate: false
                     }
                 },
-                sender: userModel.currentUser.userUUID,
+                sender: userModel._user.userUUID,
                 content: text,
                 data: data,
                 time: currentTime,
@@ -219,7 +219,7 @@ var groupChannel = {
                          data: data,
                          ttl: ttl,
                          time: currentTime,
-                         sender: userModel.currentUser.userUUID,
+                         sender: userModel._user.userUUID,
                          fromHistory: false
 
                      };*/

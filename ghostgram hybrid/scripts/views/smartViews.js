@@ -47,8 +47,8 @@ var smartEventView = {
         }
         thisObj.set("uuid", uuid.v4());
         thisObj.set("ggType", smartEvent._ggClass);
-        thisObj.set('senderUUID', userModel.currentUser.userUUID);
-        thisObj.set('senderName', userModel.currentUser.name);
+        thisObj.set('senderUUID', userModel._user.userUUID);
+        thisObj.set('senderName', userModel._user.name);
         thisObj.set('channelUUID', null);
         thisObj.set('calendarId', null);
         thisObj.set('eventChatId', null);
@@ -104,8 +104,8 @@ var smartEventView = {
         thisObj.set('senderUUID', newObj.senderUUID);
 
         if (newObj.senderName === null) {
-            if (newObj.senderUUID === userModel.currentUser.userUUID) {
-                newObj.senderName = userModel.currentUser.name;
+            if (newObj.senderUUID === userModel._user.userUUID) {
+                newObj.senderName = userModel._user.name;
             } else {
                 var contact = contactModel.findContact(newObj.senderUUID);
                 if (contact !== undefined) {
@@ -150,7 +150,7 @@ var smartEventView = {
             $('#actionMeeting-addToCalendar').prop('readonly', false);
         }
 
-        if (newObj.senderUUID === null || newObj.senderUUID === userModel.currentUser.userUUID) {
+        if (newObj.senderUUID === null || newObj.senderUUID === userModel._user.userUUID) {
             smartEventView.setSenderMode();
         } else {
             smartEventView.setRecipientMode();
@@ -555,7 +555,7 @@ var smartEventView = {
         //$('#smartEventView-organizer').text(thisObject.senderName);
         smartEventView.checkExpired(thisObject.date);
 
-        if (thisObject.senderUUID === userModel.currentUser.userUUID) {
+        if (thisObject.senderUUID === userModel._user.userUUID) {
                 smartEventView.setSenderMode();
         } else {
                 smartEventView.setRecipientMode();
@@ -785,8 +785,8 @@ var smartEventView = {
         thisObject.googleId = thisObj.googleId;
         thisObject.placeName = thisObj.placeName;
         thisObject.address = thisObj.address;
-        thisObject.senderUUID = userModel.currentUser.userUUID;
-        thisObject.senderName = userModel.currentUser.name;
+        thisObject.senderUUID = userModel._user.userUUID;
+        thisObject.senderName = userModel._user.name;
         thisObject.channelUUID = channelView._channelUUID;
         thisObject.calendarId = thisObj.calendarId;
         thisObject.eventChatId = thisObj.eventChatId;
@@ -890,7 +890,7 @@ var smartEventView = {
         }
 
         thisObj.set('date', saveDate);
-        thisObj.set('senderName', userModel.currentUser.name);
+        thisObj.set('senderName', userModel._user.name);
 
          if (thisObj.addToCalendar && thisObj.calendarId === null) {
             smartEventView.addToCalendar();
@@ -1869,7 +1869,7 @@ var smartMovieView = {
         var thisObj = smartMovieView.activeObject;
 
         thisObj.set('channelUUID', channelView._channelUUID);
-        thisObj.set('senderName', userModel.currentUser.name);
+        thisObj.set('senderName', userModel._user.name);
 
         if (thisObj.addToCalendar && thisObj.calendarId === null) {
             smartMovieView.addToCalendar();
@@ -2080,8 +2080,8 @@ var smartMovieView = {
 
         thisObj.set("uuid", uuid.v4());
         thisObj.set("ggType", smartMovie._ggClass);
-        thisObj.set('senderUUID', userModel.currentUser.userUUID);
-        thisObj.set('senderName', userModel.currentUser.name);
+        thisObj.set('senderUUID', userModel._user.userUUID);
+        thisObj.set('senderName', userModel._user.name);
         thisObj.set('placeString', movie.address);
         thisObj.set('movieTitle', movie.movieTitle);
         thisObj.set('tmsId', movie.tmsId);
@@ -2232,7 +2232,7 @@ var smartMovieView = {
 
 
 
-        if (thisObject.senderUUID === null || thisObject.senderUUID === userModel.currentUser.userUUID) {
+        if (thisObject.senderUUID === null || thisObject.senderUUID === userModel._user.userUUID) {
             $("#smartMovieView-organizer").text("You");
         } else {
             var contact = contactModel.findContactByUUID(thisObject.senderUUID);

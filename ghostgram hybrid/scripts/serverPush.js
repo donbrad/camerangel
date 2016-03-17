@@ -63,7 +63,7 @@ var serverPush = {
             if (e.channelUUID !== undefined) {
                 // Update unread  unless it's the current channel
                 if (e.channelUUID !== channelView._channelUUID) {
-                    if (e.senderId !== undefined && e.senderId !== userModel.currentUser.userUUID) {
+                    if (e.senderId !== undefined && e.senderId !== userModel._user.userUUID) {
                         if (e.isPrivate) {
                             channelModel.updatePrivateUnreadCount(e.channelUUID);
                         } else {

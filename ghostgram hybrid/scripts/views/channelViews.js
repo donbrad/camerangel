@@ -530,7 +530,7 @@ var editChannelView = {
         var channelUUID = editChannelView._activechannelUUID;
         // It's a group channel so push this users UUID
 
-        memberArray.push(userModel.currentUser.userUUID);
+        memberArray.push(userModel._user.userUUID);
         for (var i = 0; i < members.length; i++) {
             if (members[i].contactUUID !== null) {
                 memberArray.push(members[i].contactUUID);
@@ -603,7 +603,7 @@ var editChannelView = {
 
             var invited = ($.inArray(memberArray[m],inviteArray) !== -1);
             // Only send updates to current members (new members got an invite above)
-            if (memberArray[m] !== userModel.currentUser.userUUID &&  invited === false) {
+            if (memberArray[m] !== userModel._user.userUUID &&  invited === false) {
                 appDataChannel.groupChannelUpdate(memberArray[m], channelUUID,  editChannelView._activeChannel.name, editChannelView._activeChannel.description, memberArray);
             }
         }
@@ -1096,7 +1096,7 @@ var channelView = {
 
         channelView._channelUUID = channelUUID;
 
-        var thisUser = userModel.currentUser;
+        var thisUser = userModel._user;
 
         channelView.initDataSources();
         channelView.messageInit();
@@ -1274,7 +1274,7 @@ var channelView = {
         var contactPhotoUrl = contactData.photoUrl;
         message.isContact = contactData.isContact;
         message.contactPhotoUrl = contactPhotoUrl;
-        if (message.sender === userModel.currentUser.userUUID) {
+        if (message.sender === userModel._user.userUUID) {
             message.displayName = "Me";
         } else {
             message.displayName = ux.returnUXPrimaryName(name, alias);
@@ -1351,16 +1351,16 @@ var channelView = {
         var contact = {isContact: true};
         //var data = channelView.contactData[uuid];x
 
-       if (uuid === userModel.currentUser.userUUID) {
+       if (uuid === userModel._user.userUUID) {
            contact.isContact = false;
-           contact.uuid = userModel.currentUser.userUUID;
-           contact.alias = userModel.currentUser.alias;
-           contact.name = userModel.currentUser.name;
-           contact.photoUrl = userModel.currentUser.photo;
+           contact.uuid = userModel._user.userUUID;
+           contact.alias = userModel._user.alias;
+           contact.name = userModel._user.name;
+           contact.photoUrl = userModel._user.photo;
            if (contact.photoUrl === undefined || contact.photoUrl === null || contact.photoUrl === '') {
                contact.photoUrl = userModel.identiconUrl;
            }
-           contact.publicKey = userModel.currentUser.publicKey;
+           contact.publicKey = userModel._user.publicKey;
            contact.isPresent = true;
 
            return (contact);
@@ -1404,7 +1404,7 @@ var channelView = {
         if (contactArray === undefined || contactArray === null)
             return;
 
-        var userId = userModel.currentUser.userUUID;
+        var userId = userModel._user.userUUID;
 
         for (var i=0; i< contactArray.length; i++) {
             var contact = {};
@@ -1413,10 +1413,10 @@ var channelView = {
                 contact.isContact = false;
                 contact.uuid = userId;
                 contact.contactId = null;
-                contact.alias = userModel.currentUser.alias;
-                contact.name = userModel.currentUser.name;
-                contact.photo = userModel.currentUser.photo;
-                contact.publicKey = userModel.currentUser.publicKey;
+                contact.alias = userModel._user.alias;
+                contact.name = userModel._user.name;
+                contact.photo = userModel._user.photo;
+                contact.publicKey = userModel._user.publicKey;
                 contact.isPresent = true;
                 channelView.memberList[contact.uuid] = contact;
                 // this is our user.
@@ -1505,7 +1505,7 @@ var channelView = {
 
     setPresence: function (userId, isPresent) {
         // Don't set presence for the current user -- they already know they're in the channel
-        if (userId === userModel.currentUser.userUUID || channelView.isPrivateChat) {
+        if (userId === userModel._user.userUUID || channelView.isPrivateChat) {
             return;
         }
 
@@ -1534,7 +1534,7 @@ var channelView = {
         for (var member in members) {
             var userId = member.username;
 
-            if (userId !== userModel.currentUser.userUUID) {
+            if (userId !== userModel._user.userUUID) {
                 var member = channelView.findChatMember(userId);
                 if (member === undefined || member === null) {
                     channelView.setPresence(userId, true);
@@ -1628,8 +1628,8 @@ var channelView = {
     messageAddLocation : function  () {
         channelView.activeMessage.geo= {lat: mapModel.lat, lng: mapModel.lng};
         channelView.activeMessage.address = mapModel.currentAddress;
-        if (userModel.currentUser.currentPlaceUUID !== null) {
-            channelView.activeMessage.place = {name: userModel.currentUser.currentPlace, uuid: userModel.currentUser.currentPlaceUUID};
+        if (userModel._user.currentPlaceUUID !== null) {
+            channelView.activeMessage.place = {name: userModel._user.currentPlace, uuid: userModel._user.currentPlaceUUID};
         }
     },
 
@@ -2081,7 +2081,7 @@ var channelView = {
             });
         }
 
-        if (message.sender === userModel.currentUser.userUUID) {
+        if (message.sender === userModel._user.userUUID) {
             $("#messageActionsSender").data("kendoMobileActionSheet").open();
         } else {
             if (message.data.canCopy) {
@@ -2185,7 +2185,7 @@ var channelView = {
         _preventDefault(e);
         var message = channelView.activeMessage;
         var memberList = channelView.memberList, members = Object.keys(memberList);
-        var thisUser = userModel.currentUser.userUUID;
+        var thisUser = userModel._user.userUUID;
 
         var recallMessage = channelView.findMessageById(message.msgID);
         if (recallMessage !== undefined) {

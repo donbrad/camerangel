@@ -292,7 +292,7 @@ var smartEvent = {
             event.set('isAccepted', true);
             event.set('isDeclined', false);
 
-            appDataChannel.eventAccept(eventId, senderId, userModel.currentUser.userUUID, comment);
+            appDataChannel.eventAccept(eventId, senderId, userModel._user.userUUID, comment);
            /* updateParseObject('smartobject', 'uuid', eventId, 'isAccepted', true);
             updateParseObject('smartobject', 'uuid', eventId, 'isDeclined', false);*/
         }
@@ -305,7 +305,7 @@ var smartEvent = {
             event.set('isAccepted', false);
             event.set('isDeclined', true);
 
-            appDataChannel.eventDecline(eventId, senderId, userModel.currentUser.userUUID, comment);
+            appDataChannel.eventDecline(eventId, senderId, userModel._user.userUUID, comment);
           /*  updateParseObject('smartobject', 'uuid', eventId, 'isAccepted', false);
             updateParseObject('smartobject', 'uuid', eventId, 'isDeclined', true);*/
         }
@@ -372,7 +372,7 @@ var smartEvent = {
         mobileNotify("Creating Smart Event...");
 
         if (objectIn.senderUUID === undefined || objectIn.senderUUID === null) {
-            objectIn.senderUUID = userModel.currentUser.userUUID;
+            objectIn.senderUUID = userModel._user.userUUID;
         }
 
         //smartOb.setACL(userModel.parseACL);

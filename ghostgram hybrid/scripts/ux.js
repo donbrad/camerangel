@@ -127,11 +127,11 @@ var ux = {
 	},
 
 	toggleIsAvailable: function(){
-		var currentState = userModel.currentUser.isAvailable;
+		var currentState = userModel._user.isAvailable;
 		if(currentState){
-			userModel.currentUser.set('isAvailable', false);
+			userModel._user.set('isAvailable', false);
 		} else {
-			userModel.currentUser.set('isAvailable', true);
+			userModel._user.set('isAvailable', true);
 		}
 		ux.updateHeaderStatusImages();
 
@@ -139,17 +139,17 @@ var ux = {
 
 	// Globally update profile and status images in the application header
 	updateHeaderStatusImages: function() {
-		var isAvailable  = userModel.currentUser.get('isAvailable');
+		var isAvailable  = userModel._user.get('isAvailable');
 		if (isAvailable) {
-			userModel.currentUser.set('availImgUrl', 'images/status-available.svg');
+			userModel._user.set('availImgUrl', 'images/status-available.svg');
 		} else {
-			userModel.currentUser.set('availImgUrl', 'images/status-away.svg');
+			userModel._user.set('availImgUrl', 'images/status-away.svg');
 		}
-		$('.userAvailable').attr('src',userModel.currentUser.get('availImgUrl'));
+		$('.userAvailable').attr('src',userModel._user.get('availImgUrl'));
 
 
 
-	    var useIdenticon = userModel.currentUser.get('useIdenticon');
+	    var useIdenticon = userModel._user.get('useIdenticon');
 	    if (useIdenticon === undefined)
 	        useIdenticon = true;
 
@@ -157,7 +157,7 @@ var ux = {
 	        $('.home-profile-img').attr('src',userModel.identiconUrl);
 	      //  userModel.enableIdenticon();
 	    } else {
-			var photoUrl = userModel.currentUser.get('photo');
+			var photoUrl = userModel._user.get('photo');
 
 			if (photoUrl === undefined || photoUrl === null) {
 				$('.home-profile-img').attr('src',userModel.identiconUrl);
@@ -392,11 +392,11 @@ var ux = {
 
 
 	   if (userModel.parseUser !== null) {
-	        userUUID = userModel.currentUser.get('userUUID');
-	        name = userModel.currentUser.get('name');
-	        email = userModel.currentUser.get('email');
-	        phone = userModel.currentUser.get('phone');
-		   	version = userModel.currentUser.get('appVersion');
+	        userUUID = userModel._user.get('userUUID');
+	        name = userModel._user.get('name');
+	        email = userModel._user.get('email');
+	        phone = userModel._user.get('phone');
+		   	version = userModel._user.get('appVersion');
 	    }
 	    
 	    var Support = Parse.Object.extend('support');

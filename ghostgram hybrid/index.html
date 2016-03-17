@@ -1786,7 +1786,7 @@
 		}
 	}
 	var messageClass = "chat-message-text";
-	if(userModel.currentUser.useLargeView){
+	if(userModel._user.useLargeView){
 		 messageClass = "userLgFontSize chat-message-text";
 	}
 	if (isContact === undefined) {
@@ -4011,22 +4011,22 @@
 			</li>
 			<li>
 				<label>Use Retina Photos
-					<input type="checkbox" id="settingsRetinaPhoto" data-role="switch" data-bind="checked: currentUser.isRetina"/>
+					<input type="checkbox" id="settingsRetinaPhoto" data-role="switch" data-bind="checked: _user.isRetina"/>
 				</label>
 			</li>
 			<li>
 				<label> Sync on WIFI Only
-					<input type="checkbox" id="settingsWIFIOnly" data-role="switch" data-bind="checked: currentUser.isWIFIOnly" />
+					<input type="checkbox" id="settingsWIFIOnly" data-role="switch" data-bind="checked: _user.isWIFIOnly" />
 				</label>
 			</li>
 			<li>
 				<label> Keep Original Photo
-					<input type="checkbox" id="settingsKeepPhoto" data-role="switch" data-bind="checked: currentUser.isPhotoStored" />
+					<input type="checkbox" id="settingsKeepPhoto" data-role="switch" data-bind="checked: _user.isPhotoStored" />
 				</label>
 			</li>
 			<li>
 				<label> Save to Phone Photo Album
-					<input type="checkbox" id="settingsSaveToAlbum" data-role="switch"  data-bind="checked: currentUser.saveToPhotoAlbum"/>
+					<input type="checkbox" id="settingsSaveToAlbum" data-role="switch"  data-bind="checked: _user.saveToPhotoAlbum"/>
 				</label>
 			</li>
 			<li>
@@ -4042,12 +4042,12 @@
 			</li>
 			<li>
 				<label>User Id (UUID) <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
-					<input type="text" id="profile-uuid" data-bind="value: currentUser.userUUID" readonly/>
+					<input type="text" id="profile-uuid" data-bind="value: _user.userUUID" readonly/>
 				</label>
 			</li>
 			<li>
 				<label>App Version <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
-					<input type="text" id="profile-version" data-bind="value: currentUser.appVersion" readonly/>
+					<input type="text" id="profile-version" data-bind="value: _user.appVersion" readonly/>
 				</label>
 			</li>
 			<li>

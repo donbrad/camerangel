@@ -18,13 +18,13 @@ var memberdirectory = {
     setMember : function (member) {
         memberdirectory._member.id = memberdirectory._id;
         memberdirectory._member.userUUID = member.userUUID;
-        userModel.currentUser.set('id', memberdirectory._member.id);
+        userModel._user.set('id', memberdirectory._member.id);
     },
 
     init : function () {
 
         var filter = new Everlive.Query();
-        filter.where().eq('userUUID', userModel.currentUser.userUUID);
+        filter.where().eq('userUUID', userModel._user.userUUID);
 
         var data = APP.everlive.data(memberdirectory._ggClass);
         data.get(filter)
@@ -46,19 +46,19 @@ var memberdirectory = {
     create : function () {
         var data = APP.everlive.data(memberdirectory._ggClass);
 
-        var verified = userModel.currentUser.emailValidated || userModel.currentUser.phoneVerified;
+        var verified = userModel._user.emailValidated || userModel._user.phoneVerified;
 
 
 
         var dirObj = {
-            userUUID : userModel.currentUser.userUUID,
-            name : userModel.currentUser.name,
-            alias : userModel.currentUser.alias,
-            phone : userModel.currentUser.phone,
-            email:  userModel.currentUser.email,
-            publicKey: userModel.currentUser.publicKey,
-            emailVerified: userModel.currentUser.emailValidated,
-            phoneVerified : userModel.currentUser.phoneVerified,
+            userUUID : userModel._user.userUUID,
+            name : userModel._user.name,
+            alias : userModel._user.alias,
+            phone : userModel._user.phone,
+            email:  userModel._user.email,
+            publicKey: userModel._user.publicKey,
+            emailVerified: userModel._user.emailValidated,
+            phoneVerified : userModel._user.phoneVerified,
             isVerified : verified
 
         };
@@ -75,18 +75,18 @@ var memberdirectory = {
     update : function () {
         var data = APP.everlive.data(memberdirectory._ggClass);
 
-        var verified = userModel.currentUser.emailValidated || userModel.currentUser.phoneVerified;
+        var verified = userModel._user.emailValidated || userModel._user.phoneVerified;
 
         var dirObj = {
             Id: memberdirectory._id,
-            userUUID : userModel.currentUser.userUUID,
-            name : userModel.currentUser.name,
-            alias : userModel.currentUser.alias,
-            phone : userModel.currentUser.phone,
-            email:  userModel.currentUser.email,
-            publicKey: userModel.currentUser.publicKey,
-            emailVerified: userModel.currentUser.emailValidated,
-            phoneVerified : userModel.currentUser.phoneVerified,
+            userUUID : userModel._user.userUUID,
+            name : userModel._user.name,
+            alias : userModel._user.alias,
+            phone : userModel._user.phone,
+            email:  userModel._user.email,
+            publicKey: userModel._user.publicKey,
+            emailVerified: userModel._user.emailValidated,
+            phoneVerified : userModel._user.phoneVerified,
             isVerified : verified
         };
 

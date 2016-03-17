@@ -23,7 +23,7 @@ var appDataChannel = {
 
         // Generate a unique channel name for the app data channel that is recognizable to related userDataChannel
         // replacing - with _ should achive this...
-        var channel = userModel.currentUser.userUUID.replace(/-/g,'_');
+        var channel = userModel._user.userUUID.replace(/-/g,'_');
 
 
         appDataChannel.channelUUID = channel;
@@ -324,18 +324,18 @@ var appDataChannel = {
         var msg = new Object();
 
         var event = smartEvent.findObject(eventId);
-        var notificationString =  userModel.currentUser.name + " wants to connect on Ghostgrams";
+        var notificationString =  userModel._user.name + " wants to connect on Ghostgrams";
         msg.msgID = uuid.v4();
         msg.type = 'connectRequest';
         msg.version = appDataChannel._version;
         msg.date = new Date.today();
         msg.comment = comment;
-        msg.userUUID = userModel.currentUser.userUUID;
-        msg.name = userModel.currentUser.name;
-        msg.alias = userModel.currentUser.alias;
-        msg.phone = userModel.currentUser.phone;
-        msg.email = userModel.currentUser.email;
-        msg.publicKey = userModel.currentUser.publicKey;
+        msg.userUUID = userModel._user.userUUID;
+        msg.name = userModel._user.name;
+        msg.alias = userModel._user.alias;
+        msg.phone = userModel._user.phone;
+        msg.email = userModel._user.email;
+        msg.publicKey = userModel._user.publicKey;
         msg.pn_apns = {
             aps: {
                 alert : notificationString,
@@ -350,7 +350,7 @@ var appDataChannel = {
         msg.pn_gcm = {
             data : {
                 title: notificationString,
-                message: userModel.currentUser.name +  ' wants to share contact information with you.',
+                message: userModel._user.name +  ' wants to share contact information with you.',
                 target: '#contacts',
                 image: "icon",
                 isMessage: false,
@@ -373,26 +373,26 @@ var appDataChannel = {
         var msg = new Object();
 
         var event = smartEvent.findObject(eventId);
-        var notificationString =  userModel.currentUser.name + " wants to connect on Ghostgrams";
+        var notificationString =  userModel._user.name + " wants to connect on Ghostgrams";
         msg.msgID = uuid.v4();
         msg.type = 'connectResponse';
         msg.version = appDataChannel._version;
         msg.date = new Date.today();
         msg.accept = accept;
         if (accept === true) {
-            msg.userUUID = userModel.currentUser.userUUID;
-            msg.name = userModel.currentUser.name;
-            msg.alias = userModel.currentUser.alias;
-            msg.phone = userModel.currentUser.phone;
-            msg.email = userModel.currentUser.email;
-            msg.publicKey = userModel.currentUser.publicKey;
+            msg.userUUID = userModel._user.userUUID;
+            msg.name = userModel._user.name;
+            msg.alias = userModel._user.alias;
+            msg.phone = userModel._user.phone;
+            msg.email = userModel._user.email;
+            msg.publicKey = userModel._user.publicKey;
         }
         msg.comment = comment;
-        msg.userUUID = userModel.currentUser.userUUID;
-        msg.name = userModel.currentUser.name;
-        msg.alias = userModel.currentUser.alias;
-        msg.phone = userModel.currentUser.phone;
-        msg.email = userModel.currentUser.email;
+        msg.userUUID = userModel._user.userUUID;
+        msg.name = userModel._user.name;
+        msg.alias = userModel._user.alias;
+        msg.phone = userModel._user.phone;
+        msg.email = userModel._user.email;
         msg.pn_apns = {
             aps: {
                 alert : notificationString,
@@ -407,7 +407,7 @@ var appDataChannel = {
         msg.pn_gcm = {
             data : {
                 title: notificationString,
-                message: userModel.currentUser.name +  ' wants to share contact information with you.',
+                message: userModel._user.name +  ' wants to share contact information with you.',
                 target: '#contacts',
                 image: "icon",
                 isMessage: false,
@@ -432,7 +432,7 @@ var appDataChannel = {
         var event = smartEvent.findObject(eventId);
 
 
-        var notificationString =  userModel.currentUser.name + " has accepted " + event.title;
+        var notificationString =  userModel._user.name + " has accepted " + event.title;
         msg.msgID = uuid.v4();
         msg.type = 'eventAccept';
         msg.version = appDataChannel._version;
@@ -454,7 +454,7 @@ var appDataChannel = {
         msg.pn_gcm = {
             data : {
                 title: notificationString,
-                message: userModel.currentUser.name +  ' says "' + comment + '"',
+                message: userModel._user.name +  ' says "' + comment + '"',
                 target: '#smartEvent?event='+eventId,
                 image: "icon",
                 isMessage: false,
@@ -478,7 +478,7 @@ var appDataChannel = {
 
         var event = smartEvent.findObject(eventId);
 
-        var notificationString =  userModel.currentUser.name + " has declined " + event.title;
+        var notificationString =  userModel._user.name + " has declined " + event.title;
         msg.msgID = uuid.v4();
         msg.type = 'eventDecline';
         msg.version = appDataChannel._version;
@@ -500,7 +500,7 @@ var appDataChannel = {
         msg.pn_gcm = {
             data : {
                 title: notificationString,
-                message: userModel.currentUser.name +  ' says "' + comment + '"',
+                message: userModel._user.name +  ' says "' + comment + '"',
                 target: '#smartEvent?event='+eventId,
                 image: "icon",
                 isMessage: false,
@@ -523,7 +523,7 @@ var appDataChannel = {
         var msg = new Object();
         var event = smartEvent.findObject(eventId);
 
-        var notificationString =  userModel.currentUser.name + " has cancelled " + event.name;
+        var notificationString =  userModel._user.name + " has cancelled " + event.name;
         msg.msgID = uuid.v4();
         msg.type = 'eventCancel';
         msg.version = appDataChannel._version;
@@ -544,7 +544,7 @@ var appDataChannel = {
         msg.pn_gcm = {
             data : {
                 title: notificationString,
-                message: userModel.currentUser.name +  ' says "' + comment + '"',
+                message: userModel._user.name +  ' says "' + comment + '"',
                 target: '#',
                 image: "icon",
                 isMessage: false,
@@ -566,7 +566,7 @@ var appDataChannel = {
         var msg = new Object();
         var event = smartEvent.findObject(eventId);
 
-        var notificationString =  userModel.currentUser.name + " has updated " + event.name;
+        var notificationString =  userModel._user.name + " has updated " + event.name;
         msg.msgID = uuid.v4();
         msg.type = 'eventUpdate';
         msg.version = appDataChannel._version;
@@ -589,7 +589,7 @@ var appDataChannel = {
         msg.pn_gcm = {
             data : {
                 title: notificationString,
-                message: userModel.currentUser.name +  ' says "' + comment + '"',
+                message: userModel._user.name +  ' says "' + comment + '"',
                 target: '#smartEvent?event='+eventId,
                 image: "icon",
                 isMessage: false,
@@ -614,8 +614,8 @@ var appDataChannel = {
         var notificationString = "Chat Invite : " + channelName;
         msg.type = 'groupInvite';
         msg.version = appDataChannel._version;
-        msg.ownerId = userModel.currentUser.get('userUUID');
-        msg.ownerName = userModel.currentUser.get('name');
+        msg.ownerId = userModel._user.get('userUUID');
+        msg.ownerName = userModel._user.get('name');
         msg.channelUUID = channelUUID;
         msg.channelName = channelName;
         msg.channelDescription = channelDescription;
@@ -666,8 +666,8 @@ var appDataChannel = {
         msg.msgID = uuid.v4();
         msg.type = 'groupDelete';
         msg.version = appDataChannel._version;
-        msg.ownerId = userModel.currentUser.get('userUUID');
-        msg.ownerName = userModel.currentUser.get('name');
+        msg.ownerId = userModel._user.get('userUUID');
+        msg.ownerName = userModel._user.get('name');
         msg.channelUUID = channelUUID;
         msg.channelName = channelName;
         msg.message  = message;
@@ -710,8 +710,8 @@ var appDataChannel = {
         msg.msgID = uuid.v4();
         msg.type = 'groupUpdate';
         msg.version = appDataChannel._version;
-        msg.ownerId = userModel.currentUser.get('userUUID');
-        msg.ownerName = userModel.currentUser.get('name');
+        msg.ownerId = userModel._user.get('userUUID');
+        msg.ownerName = userModel._user.get('name');
         msg.channelUUID = channelUUID;
         msg.channelName = channelName;
         msg.channelDescription = channelDescription;

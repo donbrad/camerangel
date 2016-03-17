@@ -64,7 +64,7 @@ var devicePhoto = {
 
         var destinationType = navigator.camera.DestinationType; // sets the format of returned value
 
-        var saveToAlbum = userModel.currentUser.get('saveToPhotoAlbum');
+        var saveToAlbum = userModel._user.get('saveToPhotoAlbum');
 
        /* if (device.platform === 'iOS') {
             destinationType = navigator.camera.DestinationType.NATIVE_URI;
@@ -467,9 +467,9 @@ var devicePhoto = {
             photo.set('addressString', addressStr);
         }
 
-        if (userModel.currentUser.currentPlaceUUID !== null) {
-            photo.set('placeUUID', userModel.currentUser.currentPlaceUUID);
-            photo.set('placeString', userModel.currentUser.currentPlace);
+        if (userModel._user.currentPlaceUUID !== null) {
+            photo.set('placeUUID', userModel._user.currentPlaceUUID);
+            photo.set('placeString', userModel._user.currentPlace);
         }
 
 
